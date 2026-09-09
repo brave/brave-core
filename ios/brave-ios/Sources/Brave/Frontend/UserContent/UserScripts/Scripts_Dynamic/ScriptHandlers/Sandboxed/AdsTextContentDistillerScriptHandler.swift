@@ -1,0 +1,55 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import BraveCore
+import Foundation
+@_spi(ChromiumWebViewAccess) import Web
+import WebKit
+import os.log
+
+/// Legacy (`WKWebView`) counterpart of `TextContentDistillerJavaScriptFeature`, used to distill a
+/// page's text content for ad text classification when
+/// `FeatureList.kUseProfileWebViewConfiguration` is disabled. Shares its underlying script
+/// (`TextContentDistillerScript.js`) with `BraveLeoScriptHandler`'s AI Chat article distillation.
+class AdsTextContentDistillerScriptHandler: NSObject, TabContentScript {
+  static let getTextContent = "getTextContent\(uniqueID)"
+
+  /// The registration identity used for `TabContentScriptManager`. Distinct from
+  /// `scriptFileName` so it does not collide with `BraveLeoScriptHandler`, which shares the same
+  /// underlying script file.
+  static let scriptName = "AdsTextContentDistillerScript"
+  private static let scriptFileName = "TextContentDistillerScript"
+  static let scriptId = UUID().uuidString
+  static let messageHandlerName = "\(scriptName)_\(messageUUID)"
+  static let scriptSandbox: WKContentWorld = .defaultClient
+  static let userScript: WKUserScript? = {
+    guard var script = loadUserScript(named: scriptFileName) else {
+      return nil
+    }
+    // Distinct `includeOnce` key from `BraveLeoScriptHandler`'s, since both handlers share this
+    // script's source but each defines their own `$<getTextContent>` under it.
+    script = script.replacingOccurrences(of: "$<include_once_key>", with: scriptName)
+
+    return WKUserScript(
+      source: secureScript(
+        handlerNamesMap: ["$<getTextContent>": getTextContent],
+        securityToken: scriptId,
+        script: script
+      ),
+      injectionTime: .atDocumentEnd,
+      forMainFrameOnly: true,
+      in: scriptSandbox
+    )
+  }()
+
+  func tab(
+    _ tab: some TabState,
+    receivedScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
+  ) {
+    // This handler only exposes a callable function and never receives script messages.
+    replyHandler(nil, nil)
+  }
+}
