@@ -22,6 +22,53 @@
 
 namespace ai_chat {
 
+namespace {
+
+// Also called without a WebUIController, to fetch a service worker script for
+// this host. See LeoWorkspaceUIConfig::RegisterURLDataSource().
+void CreateAndAddWorkspaceDataSource(content::BrowserContext* browser_context) {
+  content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
+      browser_context, kAIChatLeoWorkspaceUIURL);
+
+  webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
+                              IDR_AI_CHAT_LEO_WORKSPACE_HTML);
+
+  // This page runs its own first-party module bundle only. No network, no
+  // frames, no embedding by other pages. The FileSystemDirectoryHandle it will
+  // operate on is delivered out-of-band (launchQueue), not fetched.
+  //
+  // A service worker registered for this host is not served by this data
+  // source and does not get this policy: its responses carry headers of their
+  // own.
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ScriptSrc,
+      "script-src 'self' chrome-untrusted://resources;");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::StyleSrc,
+      "style-src 'self' chrome-untrusted://resources;");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'none';");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ObjectSrc, "object-src 'none';");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameSrc, "frame-src 'none';");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameAncestors,
+      "frame-ancestors 'none';");
+  // Only this origin's own worker. Registration is browser-side, so this does
+  // not gate it, but the page has no business creating workers of its own.
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::WorkerSrc, "worker-src 'self';");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FormAction, "form-action 'none';");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::BaseURI, "base-uri 'none';");
+}
+
+}  // namespace
+
 bool LeoWorkspaceUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
   return IsAIChatEnabled(user_prefs::UserPrefs::Get(browser_context)) &&
@@ -40,41 +87,19 @@ LeoWorkspaceUIConfig::LeoWorkspaceUIConfig()
 
 LeoWorkspaceUIConfig::~LeoWorkspaceUIConfig() = default;
 
+void LeoWorkspaceUIConfig::RegisterURLDataSource(
+    content::BrowserContext* browser_context) {
+  CreateAndAddWorkspaceDataSource(browser_context);
+}
+
+bool LeoWorkspaceUIConfig::ShouldInterceptNavigationsWithServiceWorker() {
+  return true;
+}
+
 LeoWorkspaceUI::LeoWorkspaceUI(content::WebUI* web_ui)
     : ui::UntrustedWebUIController(web_ui) {
-  auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
-  auto* source = content::WebUIDataSource::CreateAndAdd(
-      browser_context, kAIChatLeoWorkspaceUIURL);
-
-  webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
-                              IDR_AI_CHAT_LEO_WORKSPACE_HTML);
-
-  // This page runs its own first-party module bundle only. No network, no
-  // frames, no embedding by other pages. The FileSystemDirectoryHandle it will
-  // operate on is delivered out-of-band (launchQueue), not fetched.
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ScriptSrc,
-      "script-src 'self' chrome-untrusted://resources;");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::StyleSrc,
-      "style-src 'self' chrome-untrusted://resources;");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'none';");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ObjectSrc, "object-src 'none';");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FrameSrc, "frame-src 'none';");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FrameAncestors,
-      "frame-ancestors 'none';");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::WorkerSrc, "worker-src 'none';");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FormAction, "form-action 'none';");
-  source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::BaseURI, "base-uri 'none';");
+  CreateAndAddWorkspaceDataSource(
+      web_ui->GetWebContents()->GetBrowserContext());
 }
 
 LeoWorkspaceUI::~LeoWorkspaceUI() = default;
