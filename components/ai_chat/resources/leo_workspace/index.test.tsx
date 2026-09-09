@@ -49,6 +49,13 @@ beforeEach(() => {
     },
   })
 
+  // serveFiles() listens for the service worker's file requests.
+  Object.defineProperty(navigator, 'serviceWorker', {
+    configurable: true,
+    writable: true,
+    value: { addEventListener: jest.fn(), startMessages: jest.fn() },
+  })
+
   jest.spyOn(console, 'log').mockImplementation(() => {})
   jest.spyOn(console, 'error').mockImplementation(() => {})
 })
@@ -56,6 +63,8 @@ beforeEach(() => {
 afterEach(() => {
   delete document.modelContext
   delete window.launchQueue
+  // @ts-expect-error - remove the stand-in container.
+  delete navigator.serviceWorker
 })
 
 describe('leo workspace entry point', () => {

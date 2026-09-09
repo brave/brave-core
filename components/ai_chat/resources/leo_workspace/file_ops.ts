@@ -93,6 +93,23 @@ async function readText(
   return (await fh.getFile()).text()
 }
 
+// Throws if |rel| is not a file in the workspace, or is larger than
+// |maxBytes|. Safe to call with a path from outside: splitPath() rejects '..',
+// and getFileHandle() rejects separators, so nothing resolves out of |root|.
+export async function readBytes(
+  root: FileSystemDirectoryHandle,
+  rel: string,
+  maxBytes: number,
+): Promise<Uint8Array> {
+  const fh = await getFile(root, rel)
+  const file = await fh.getFile()
+  // Checked before reading, so an oversized file costs a stat, not its size.
+  if (file.size > maxBytes) {
+    throw new Error(`file is too large to serve: ${rel} (${file.size} bytes)`)
+  }
+  return new Uint8Array(await file.arrayBuffer())
+}
+
 async function writeText(
   root: FileSystemDirectoryHandle,
   rel: string,
