@@ -223,6 +223,15 @@ if (is_android) {
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
 
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.omnibox") {
+    sources = [ "src/org/chromium/chrome/browser/omnibox/BraveLocationBarFocusScrimHandlerUnitTest.java" ]
+
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/ui/android/omnibox:java",
+    ]
+  }
+
   robolectric_library(
       "brave_junit_tests_org.chromium.chrome.browser.omnibox.geo") {
     sources = [ "src/org/chromium/chrome/browser/omnibox/geo/BraveGeolocationHeaderUnitTest.java" ]
