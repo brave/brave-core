@@ -44,6 +44,7 @@ export type Dialog =
   | { type: 'ENTRY' | 'PASSWORD_RESET' | 'SIGN_IN' }
   | { type: 'OTP'; intent: VerificationIntent }
   | { type: 'CREDENTIALS'; verification?: CredentialsVerification }
+  | { type: 'ACCOUNT_DELETION' }
 
 export class BraveAccountDialogsElement extends CrLitElement {
   static get is() {
@@ -104,6 +105,18 @@ export class BraveAccountDialogsElement extends CrLitElement {
     this.accountStateListenerId =
       this.browserProxy.authenticationObserverCallbackRouter.onAccountStateChanged.addListener(
         (state: AccountState) => {
+          if (this.browserProxy.isAccountDeletion()) {
+            if (
+              whichAccountState(state) === AccountStateFieldTags.LOGGED_IN
+              && !state.loggedIn!.verification
+            ) {
+              this.dialog = { type: 'ACCOUNT_DELETION' }
+            } else {
+              this.onCloseDialog()
+            }
+            return
+          }
+
           switch (whichAccountState(state)) {
             case AccountStateFieldTags.LOGGED_OUT: {
               const verification = state.loggedOut!.verification

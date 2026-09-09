@@ -25,7 +25,8 @@ class BraveAccountRowHandler : public mojom::RowHandler {
 
  private:
   // brave_account::mojom::RowHandler:
-  void OpenDialog(const std::string& initiating_service_name) override;
+  void OpenDialog(const std::string& initiating_service_name,
+                  bool is_account_deletion) override;
 
   const raw_ptr<content::WebUI> web_ui_;
 };

@@ -20,6 +20,11 @@ import {
   ChangePasswordServerErrorCode,
 } from './change_password.mojom-webui.js'
 import {
+  DeleteAccountClientErrorCode,
+  DeleteAccountError,
+  DeleteAccountServerErrorCode,
+} from './delete_account.mojom-webui.js'
+import {
   LoginClientErrorCode,
   LoginError,
   LoginServerErrorCode,
@@ -42,6 +47,7 @@ import {
 
 type FlowError =
   | { kind: 'changePassword'; details: ChangePasswordError }
+  | { kind: 'deleteAccount'; details: DeleteAccountError }
   | { kind: 'login'; details: LoginError }
   | { kind: 'register'; details: RegisterError }
   | { kind: 'resendVerificationEmail'; details: ResendVerificationEmailError }
@@ -68,8 +74,8 @@ type ClientErrorCodeOf<Kind extends FlowKind> = NonNullable<
 >['errorCode']
 
 // Every flow's client error enum has `kUnexpected`; all but
-// `resendVerificationEmail` (which never invokes the OPAQUE bindings) also
-// have `kOpaqueError`. Both are read off these enums by name, so a call site
+// `deleteAccount` and `resendVerificationEmail` (which never invoke the
+// OPAQUE bindings) also have `kOpaqueError`. Both are read off these enums by name, so a call site
 // names neither -- it only passes a code to distinguish one specific OPAQUE
 // string from the rest (see `opaqueErrors`).
 const CLIENT_ERROR_CODES: {
@@ -79,6 +85,7 @@ const CLIENT_ERROR_CODES: {
   }
 } = {
   changePassword: ChangePasswordClientErrorCode,
+  deleteAccount: DeleteAccountClientErrorCode,
   login: LoginClientErrorCode,
   register: RegisterClientErrorCode,
   resendVerificationEmail: ResendVerificationEmailClientErrorCode,
@@ -144,6 +151,14 @@ const CHANGE_PASSWORD_SERVER_ERROR_STRINGS: Partial<
   [ChangePasswordServerErrorCode.kTokenHasExpired]:
     BraveAccountSharedStrings.BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
 }
+
+const DELETE_ACCOUNT_CLIENT_ERROR_STRINGS: Partial<
+  Record<DeleteAccountClientErrorCode, string>
+> = {}
+
+const DELETE_ACCOUNT_SERVER_ERROR_STRINGS: Partial<
+  Record<DeleteAccountServerErrorCode, string>
+> = {}
 
 const LOGIN_CLIENT_ERROR_STRINGS: Partial<
   Record<LoginClientErrorCode, string>
@@ -237,6 +252,7 @@ const RESET_PASSWORD_SERVER_ERROR_STRINGS: Partial<
 // type a parameter or field with them -- see `ClientErrorCodeOf`.
 type ClientErrorCode =
   | ChangePasswordClientErrorCode
+  | DeleteAccountClientErrorCode
   | LoginClientErrorCode
   | RegisterClientErrorCode
   | ResendVerificationEmailClientErrorCode
@@ -244,6 +260,7 @@ type ClientErrorCode =
 
 type ServerErrorCode =
   | ChangePasswordServerErrorCode
+  | DeleteAccountServerErrorCode
   | LoginServerErrorCode
   | RegisterServerErrorCode
   | ResendVerificationEmailServerErrorCode
@@ -306,6 +323,12 @@ function getErrorMessage(error: FlowError): string {
       return getErrorMessageImpl(
         CHANGE_PASSWORD_CLIENT_ERROR_STRINGS,
         CHANGE_PASSWORD_SERVER_ERROR_STRINGS,
+        error.details,
+      )
+    case 'deleteAccount':
+      return getErrorMessageImpl(
+        DELETE_ACCOUNT_CLIENT_ERROR_STRINGS,
+        DELETE_ACCOUNT_SERVER_ERROR_STRINGS,
         error.details,
       )
     case 'login':

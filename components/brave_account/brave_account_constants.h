@@ -8,6 +8,7 @@
 
 namespace brave_account {
 
+inline constexpr char kAccountDeletionQueryParam[] = "deletion";
 inline constexpr char kInitiatingServiceNameQueryParam[] =
     "initiating-service-name";
 
