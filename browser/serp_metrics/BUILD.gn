@@ -41,7 +41,6 @@ static_library("serp_metrics") {
     "//brave/components/serp_metrics:prefs",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
-    "//chrome/browser/profiles:profile_manager",
     "//chrome/browser/profiles:profile_util",
     "//components/keyed_service/core",
     "//components/prefs",
