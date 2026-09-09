@@ -21,11 +21,6 @@ bool operator==(const AccountsDelete::Response::SuccessBody&,
   return true;
 }
 
-bool operator==(const AccountsDelete::Response::ErrorBody&,
-                const AccountsDelete::Response::ErrorBody&) {
-  return true;
-}
-
 namespace {
 
 using AccountsDeleteTestCase = EndpointTestCase<AccountsDelete>;

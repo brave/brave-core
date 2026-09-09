@@ -14,6 +14,7 @@
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/flows/cancel_verification.h"
 #include "brave/components/brave_account/flows/change_password.h"
+#include "brave/components/brave_account/flows/delete_account.h"
 #include "brave/components/brave_account/flows/get_service_token.h"
 #include "brave/components/brave_account/flows/log_out.h"
 #include "brave/components/brave_account/flows/resend_verification_email.h"
@@ -29,13 +30,14 @@ class SharedURLLoaderFactory;
 namespace brave_account {
 
 // `mojom::Authentication` surface available after login: the log-out,
-// password-change, and service-token steps, which are delegated to the
-// `log_out_`, `change_password_`, and `get_service_token_` helpers. The
-// `update_email_` helper additionally drives itself, periodically refreshing
-// the stored email in the background. `ResendVerificationEmail()` and
-// `CancelVerification()` are valid in both states, so this state owns its own
-// `resend_verification_email_` and `cancel_verification_` helpers. All other
-// methods inherit `StateBase`'s wrong-state default.
+// account deletion, password-change, and service-token steps, which are
+// delegated to the `log_out_`, `delete_account_`, `change_password_`, and
+// `get_service_token_` helpers. The `update_email_` helper additionally drives
+// itself, periodically refreshing the stored email in the background.
+// `ResendVerificationEmail()` and `CancelVerification()` are valid in both
+// states, so this state owns its own `resend_verification_email_` and
+// `cancel_verification_` helpers. All other methods inherit `StateBase`'s
+// wrong-state default.
 class LoggedInState : public StateBase {
  public:
   LoggedInState(
@@ -69,6 +71,8 @@ class LoggedInState : public StateBase {
   void ChangePasswordStep4(const std::string& serialized_record,
                            ChangePasswordStep4Callback callback) override;
 
+  void DeleteAccount(DeleteAccountCallback callback) override;
+
   void GetServiceToken(mojom::Service service,
                        GetServiceTokenCallback callback) override;
 
@@ -80,6 +84,7 @@ class LoggedInState : public StateBase {
 
   class CancelVerification cancel_verification_;
   ChangePassword change_password_;
+  class DeleteAccount delete_account_;
   class GetServiceToken get_service_token_;
   class LogOut log_out_;
   class ResendVerificationEmail resend_verification_email_;

@@ -19,6 +19,7 @@ LoggedInState::LoggedInState(
     : StateBase(std::move(add_observer)),
       cancel_verification_(account_state_prefs, url_loader_factory, encryptor),
       change_password_(account_state_prefs, url_loader_factory, encryptor),
+      delete_account_(account_state_prefs, url_loader_factory, encryptor),
       get_service_token_(account_state_prefs, url_loader_factory, encryptor),
       log_out_(account_state_prefs, url_loader_factory, encryptor),
       resend_verification_email_(account_state_prefs,
@@ -52,6 +53,10 @@ void LoggedInState::ChangePasswordStep3(const std::string& blinded_message,
 void LoggedInState::ChangePasswordStep4(const std::string& serialized_record,
                                         ChangePasswordStep4Callback callback) {
   change_password_.Step4(serialized_record, std::move(callback));
+}
+
+void LoggedInState::DeleteAccount(DeleteAccountCallback callback) {
+  delete_account_(std::move(callback));
 }
 
 void LoggedInState::GetServiceToken(mojom::Service service,

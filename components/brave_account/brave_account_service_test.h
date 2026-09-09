@@ -67,6 +67,7 @@ struct ChangePasswordStep1TestCase;
 struct ChangePasswordStep2TestCase;
 struct ChangePasswordStep3TestCase;
 struct ChangePasswordStep4TestCase;
+struct DeleteAccountTestCase;
 struct GetServiceTokenTestCase;
 struct LoginStep1TestCase;
 struct LoginStep2TestCase;
@@ -130,6 +131,7 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
                   std::is_same_v<TestCase, ChangePasswordStep2TestCase> ||
                   std::is_same_v<TestCase, ChangePasswordStep3TestCase> ||
                   std::is_same_v<TestCase, ChangePasswordStep4TestCase> ||
+                  std::is_same_v<TestCase, DeleteAccountTestCase> ||
                   std::is_same_v<TestCase, GetServiceTokenTestCase> ||
                   std::is_same_v<TestCase, LoginStep1TestCase> ||
                   std::is_same_v<TestCase, LoginStep2TestCase> ||
