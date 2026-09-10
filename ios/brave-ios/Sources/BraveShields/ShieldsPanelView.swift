@@ -21,7 +21,6 @@ public struct ShieldsPanelView: View {
   private var action: (ShieldsPanelAction) -> Void
 
   @ScaledMetric private var faviconCircleSize = 32
-  @Environment(\.openURL) private var openURL
 
   public init(
     url: URL,
@@ -75,6 +74,13 @@ public struct ShieldsPanelView: View {
         onContentHeightChanged?(height)
       }
     }
+    .environment(
+      \.openURL,
+      .init(handler: { [action] url in
+        action(.openURLInNewTab(url))
+        return .handled
+      })
+    )
   }
 
   @ViewBuilder private var shieldsUpView: some View {

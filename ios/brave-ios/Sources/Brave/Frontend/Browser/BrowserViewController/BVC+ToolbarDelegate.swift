@@ -481,6 +481,14 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
         weakShieldsPanelVC?.dismiss(animated: true) {
           self.shredData(for: url, in: selectedTab)
         }
+      case .openURLInNewTab(let url):
+        weakShieldsPanelVC?.dismiss(animated: true) {
+          self.tabManager.addTabAndSelect(
+            URLRequest(url: url),
+            afterTab: selectedTab,
+            isPrivate: selectedTab.isPrivate
+          )
+        }
       }
     }
     if FeatureList.kShowUpdatedShieldsPanel.enabled {
