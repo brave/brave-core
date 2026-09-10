@@ -11,8 +11,8 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/flat_set.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_ads {
 
@@ -84,7 +84,7 @@ class CreativeAdRoundRobin final {
   }
 
  private:
-  base::flat_set<std::string> served_creative_instance_ids_;
+  absl::flat_hash_set<std::string> served_creative_instance_ids_;
   std::optional<std::string> last_served_creative_instance_id_;
 };
 

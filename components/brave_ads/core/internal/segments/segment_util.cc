@@ -11,13 +11,13 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/containers/flat_set.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_info.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_types.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/reactions/reactions.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_ads {
 
@@ -37,7 +37,7 @@ std::vector<std::string> SplitSegment(const std::string& segment) {
 SegmentList GetSegments(const CatalogInfo& catalog) {
   SegmentList segments;
 
-  base::flat_set<std::string> exists;
+  absl::flat_hash_set<std::string> exists;
 
   for (const auto& campaign : catalog.campaigns) {
     for (const auto& creative_set : campaign.creative_sets) {
@@ -67,7 +67,7 @@ std::string GetParentSegment(const std::string& segment) {
 SegmentList GetParentSegments(const SegmentList& segments) {
   SegmentList parent_segments;
 
-  base::flat_set<std::string> exists;
+  absl::flat_hash_set<std::string> exists;
 
   for (const auto& segment : segments) {
     CHECK(!segment.empty());

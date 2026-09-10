@@ -6,10 +6,10 @@
 #include "brave/components/brave_ads/core/internal/ml/ml_prediction_util.h"
 
 #include <cmath>
-#include <map>
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -21,7 +21,7 @@ TEST_F(BraveAdsMLPredictionUtilTest, SoftmaxTest) {
   // Arrange
   constexpr double kTolerance = 1e-8;
 
-  const std::map<std::string, double> group_1 = {
+  const absl::flat_hash_map<std::string, double> group_1 = {
       {"c1", -1.0}, {"c2", 2.0}, {"c3", 3.0}};
 
   // Act
@@ -44,10 +44,10 @@ TEST_F(BraveAdsMLPredictionUtilTest, ExtendedSoftmaxTest) {
   // Arrange
   constexpr double kTolerance = 1e-8;
 
-  const std::map<std::string, double> group_1 = {
+  const absl::flat_hash_map<std::string, double> group_1 = {
       {"c1", 0.0}, {"c2", 1.0}, {"c3", 2.0}};
 
-  const std::map<std::string, double> group_2 = {
+  const absl::flat_hash_map<std::string, double> group_2 = {
       {"c1", 3.0}, {"c2", 4.0}, {"c3", 5.0}};
 
   // Act

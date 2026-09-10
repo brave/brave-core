@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/diagnostic_manager_campaign_diagnostics_util.h"
 
 #include <algorithm>
-#include <map>
 #include <optional>
 #include <string>
 #include <utility>
@@ -27,6 +26,7 @@
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/subdivision_targeting_exclusion_rule.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_ads {
 
@@ -125,7 +125,7 @@ struct CreativeSetInfo {
   // segment (see `creatives_builder.cc`), so the distinct segments across
   // its rows are its targeting list.
   base::flat_set<std::string> segments;
-  std::map<std::string, CreativeInfo> creatives_by_instance_id;
+  absl::flat_hash_map<std::string, CreativeInfo> creatives_by_instance_id;
 };
 
 // Aggregates every creative ad belonging to the same campaign into a single
@@ -140,7 +140,7 @@ struct CampaignInfo {
   int priority = 0;
   double pass_through_rate = 0.0;
   std::string metric_type;
-  std::map<std::string, CreativeSetInfo> creative_sets_by_id;
+  absl::flat_hash_map<std::string, CreativeSetInfo> creative_sets_by_id;
   // The catalog's own geo-targeting for this campaign, as opposed to the
   // device's own locale-derived country; shown on the Resources tab's
   // Catalog card since it's the more meaningful "what region is this data
@@ -157,8 +157,8 @@ struct CampaignInfo {
 // creative set it was asked about, rather than the full event history once
 // per frequency-cap window.
 struct ServedImpressionTimestamps final {
-  std::map<std::string, std::vector<base::Time>> by_campaign_id;
-  std::map<std::string, std::vector<base::Time>> by_creative_set_id;
+  absl::flat_hash_map<std::string, std::vector<base::Time>> by_campaign_id;
+  absl::flat_hash_map<std::string, std::vector<base::Time>> by_creative_set_id;
 };
 
 ServedImpressionTimestamps BuildServedImpressionTimestamps(
@@ -224,7 +224,7 @@ void BuildCampaigns(GetCampaignsDiagnosticsCallback callback,
       BuildServedImpressionTimestamps(ad_events);
 
   size_t active_ad_count = 0;
-  std::map<std::string, CampaignInfo> campaigns;
+  absl::flat_hash_map<std::string, CampaignInfo> campaigns;
 
   for (const auto& creative_ad : creative_ads) {
     if (!exclusion_rule.ShouldInclude(creative_ad)) {

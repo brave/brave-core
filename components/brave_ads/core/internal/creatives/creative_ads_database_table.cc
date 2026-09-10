@@ -6,7 +6,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table.h"
 
 #include <cstddef>
-#include <map>
 #include <utility>
 
 #include "base/check.h"
@@ -17,6 +16,7 @@
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ads_database_table_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_ads::database::table {
 
@@ -45,7 +45,7 @@ CreativeAdList GetCreativeAdsFromResponse(
   CHECK(mojom_db_transaction_result);
   CHECK(mojom_db_transaction_result->rows_union);
 
-  std::map<std::string, CreativeAdInfo> creative_ads;
+  absl::flat_hash_map<std::string, CreativeAdInfo> creative_ads;
 
   for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {

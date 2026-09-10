@@ -7,7 +7,6 @@
 
 #include <cstddef>
 #include <cstdint>
-#include <map>
 #include <utility>
 #include <vector>
 
@@ -30,6 +29,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_ads::database::table {
 
@@ -100,7 +100,7 @@ CreativeNewTabPageAdList GetCreativeAdsFromResponse(
   CHECK(mojom_db_transaction_result);
   CHECK(mojom_db_transaction_result->rows_union);
 
-  std::map<std::string, CreativeNewTabPageAdInfo> creative_ads;
+  absl::flat_hash_map<std::string, CreativeNewTabPageAdInfo> creative_ads;
 
   for (const auto& mojom_db_row :
        mojom_db_transaction_result->rows_union->get_rows()) {

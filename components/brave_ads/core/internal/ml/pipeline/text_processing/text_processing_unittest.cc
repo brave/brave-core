@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/ml/pipeline/test/linear_pipeline_test_util.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/hashed_ngrams_transformation.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/lowercase_transformation.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -76,7 +77,7 @@ TEST_F(BraveAdsTextProcessingTest, BuildSimplePipeline) {
   const std::vector<float> data_1 = {1.0, 2.0, 3.0};
   const std::vector<float> data_2 = {3.0, 2.0, 1.0};
   const std::vector<float> data_3 = {2.0, 2.0, 2.0};
-  const std::map<std::string, VectorData> weights = {
+  const absl::flat_hash_map<std::string, VectorData> weights = {
       {"class_1", VectorData(data_1)},
       {"class_2", VectorData(data_2)},
       {"class_3", VectorData(data_3)}};

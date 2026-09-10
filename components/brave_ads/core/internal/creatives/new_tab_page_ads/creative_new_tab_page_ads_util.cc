@@ -38,6 +38,7 @@
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/common/url/url_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace brave_ads {
 
@@ -282,7 +283,7 @@ void ParseAndSaveNewTabPageAds(base::DictValue dict, ResultCallback callback) {
       continue;
     }
 
-    base::flat_set<std::string> geo_targets;
+    absl::flat_hash_set<std::string> geo_targets;
     for (const auto& geo_target_value : *geo_target_list) {
       const std::string* const geo_target = geo_target_value.GetIfString();
       if (!geo_target) {

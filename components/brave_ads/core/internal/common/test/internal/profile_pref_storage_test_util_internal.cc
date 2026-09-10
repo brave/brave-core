@@ -5,17 +5,18 @@
 
 #include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_storage_test_util_internal.h"
 
-#include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/current_test_util_internal.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/pref_value_test_info.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_ads::test {
 
 namespace {
 
-base::flat_map</*uuid=*/std::string, PrefValueInfo>& ProfilePrefStorage() {
-  static base::NoDestructor<base::flat_map<std::string, PrefValueInfo>> prefs;
+absl::flat_hash_map</*uuid=*/std::string, PrefValueInfo>& ProfilePrefStorage() {
+  static base::NoDestructor<absl::flat_hash_map<std::string, PrefValueInfo>>
+      prefs;
   return *prefs;
 }
 
