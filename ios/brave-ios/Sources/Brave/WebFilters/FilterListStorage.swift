@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShields
 import Combine
 import Data
 import Foundation
@@ -86,19 +87,28 @@ import Preferences
     from regionalFilterLists: [AdblockFilterListCatalogEntry],
     adBlockService: AdblockService
   ) {
+    // Filter lists that focus on the user's language are enabled by default, but only the first
+    // time we see a catalog so that the user may disable them afterwards.
+    let enableDefaultLanguageLists =
+      !Preferences.Shields.checkedDefaultRegionalFilterLists.value
+
     var filterLists = regionalFilterLists.enumerated().compactMap {
       index,
       entry -> FilterList? in
       let setting = allFilterListSettings.first(where: {
         $0.componentId == entry.componentId
       })
-      // Some special filter lists don't have specific UI to disable it
-      // (except for disabling all of ad-blocking)
-      // For example the "default" and "first-party" list is controlled using our general Ad-block and TP toggle.
-      let isEnabled =
-        entry.hidden
-        ? entry.defaultEnabled
-        : setting?.isEnabled
+      let isEnabled: Bool?
+      if entry.hidden {
+        // Some special filter lists don't have specific UI to disable it
+        // (except for disabling all of ad-blocking)
+        // For example the "default" and "first-party" list is controlled using our general Ad-block and TP toggle.
+        isEnabled = entry.defaultEnabled
+      } else if enableDefaultLanguageLists && entry.matchesCurrentLanguage {
+        isEnabled = true
+      } else {
+        isEnabled = setting?.isEnabled
+      }
 
       return FilterList(
         from: entry,
@@ -125,6 +135,10 @@ import Preferences
     // Create missing filter lists
     for filterList in filterLists {
       upsert(filterList: filterList)
+    }
+
+    if !regionalFilterLists.isEmpty {
+      Preferences.Shields.checkedDefaultRegionalFilterLists.value = true
     }
 
     FilterListSetting.save(inMemory: !persistChanges)
@@ -297,14 +311,19 @@ import Preferences
   }
 }
 
-// MARK: - FilterListLanguageProvider - A way to share `defaultToggle` logic between multiple structs/classes
+// MARK: - Language matching
 
 extension AdblockFilterListCatalogEntry {
-  @available(iOS 16, *)
-  /// A list of regions that this filter list focuses on.
-  /// An empty set means this filter list doesn't focus on any specific region.
-  fileprivate var supportedLanguageCodes: Set<Locale.LanguageCode> {
+  /// A list of languages that this filter list focuses on.
+  /// An empty set means this filter list doesn't focus on any specific language.
+  private var supportedLanguageCodes: Set<Locale.LanguageCode> {
     return Set(languages.map({ Locale.LanguageCode($0) }))
+  }
+
+  /// Whether this filter list focuses on the language the browser is currently displayed in.
+  var matchesCurrentLanguage: Bool {
+    guard let languageCode = Locale.current.language.languageCode else { return false }
+    return supportedLanguageCodes.contains(languageCode)
   }
 }
 
