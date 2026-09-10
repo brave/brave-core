@@ -864,14 +864,12 @@ public class BrowserViewController: UIViewController {
     tabManager.persistSessionOnBackground()
 
     if let tabId = tabManager.selectedTab?.id {
-      SessionTab.setSelected(tabId: tabId)
+      SessionTab.setSelected(tabId: tabId, synchronously: true)
     }
 
     Preferences.Privacy.lastSessionWindowId.value = windowId.uuidString
 
-    let isPrivate = BrowserState.browsingModeToPersistOnBackground(
-      isCurrentlyPrivate: privateBrowsingManager.isPrivateBrowsing
-    )
+    let isPrivate = privateBrowsingManager.isPrivateBrowsing
     let sceneForPersistence = scene ?? currentScene
     if let sceneForPersistence {
       BrowserState.persistRememberedBrowsingMode(
@@ -898,12 +896,6 @@ public class BrowserViewController: UIViewController {
   }
 
   @objc func sceneWillResignActiveNotification(_ notification: NSNotification) {
-    if let scene = notification.object as? UIScene {
-      persistSessionStateOnBackground(scene: scene)
-    } else {
-      persistSessionStateOnBackground()
-    }
-
     guard let scene = notification.object as? UIScene, scene == currentScene else {
       return
     }
@@ -1315,7 +1307,7 @@ public class BrowserViewController: UIViewController {
   private func setupTabs() {
     let noTabsAdded = self.tabManager.tabsForCurrentMode.isEmpty
 
-    if noTabsAdded && BrowserState.shouldRestorePrivateBrowsingMode {
+    if noTabsAdded && BrowserState.shouldRestorePrivateBrowsingMode(windowId: windowId) {
       privateBrowsingManager.isPrivateBrowsing = true
     }
 

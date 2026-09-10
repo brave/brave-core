@@ -366,7 +366,6 @@ class TabManager: NSObject {
 
     if let tabId = tab?.id {
       SessionTab.setSelected(tabId: tabId)
-      persistLastSelectedTabId(tabId)
     }
 
     UIImpactFeedbackGenerator(style: .light).vibrate()
@@ -614,7 +613,7 @@ class TabManager: NSObject {
     saveTabOrder()
   }
 
-  private func saveTabOrder() {
+  private func saveTabOrder(synchronously: Bool = false) {
     if Preferences.Privacy.privateBrowsingOnly.value
       || (privateBrowsingManager.isPrivateBrowsing
         && !Preferences.Privacy.persistentPrivateBrowsing.value)
@@ -622,7 +621,7 @@ class TabManager: NSObject {
       return
     }
     let allTabIds = allTabs.compactMap { $0.id }
-    SessionTab.saveTabOrder(tabIds: allTabIds)
+    SessionTab.saveTabOrder(tabIds: allTabIds, synchronously: synchronously)
   }
 
   @MainActor func configureTab(
@@ -701,7 +700,7 @@ class TabManager: NSObject {
     }
   }
 
-  func saveAllTabs() {
+  func saveAllTabs(synchronously: Bool = false) {
     if Preferences.Privacy.privateBrowsingOnly.value
       || (privateBrowsingManager.isPrivateBrowsing
         && !Preferences.Privacy.persistentPrivateBrowsing.value)
@@ -716,19 +715,19 @@ class TabManager: NSObject {
       tabs: tabs.map {
         (
           $0.id,
-          $0.sessionData ?? Data(),
+          $0.sessionData,
           $0.title ?? "",
-          $0.visibleURL ?? TabManager.ntpInteralURL,
-          $0.isPrivate
+          $0.visibleURL ?? TabManager.ntpInteralURL
         )
-      }
+      },
+      synchronously: synchronously
     )
   }
 
-  /// Persists tab session data and tab order when the app backgrounds.
+  /// Persists tab session data and tab order when the app backgrounds or terminates.
   func persistSessionOnBackground() {
-    saveAllTabs()
-    saveTabOrder()
+    saveAllTabs(synchronously: true)
+    saveTabOrder(synchronously: true)
   }
 
   func saveTab(_ tab: some TabState, saveOrder: Bool = false) {
@@ -739,7 +738,7 @@ class TabManager: NSObject {
     }
     SessionTab.update(
       tabId: tab.id,
-      interactionState: tab.sessionData ?? Data(),
+      interactionState: tab.sessionData,
       title: tab.title ?? "",
       url: tab.visibleURL ?? TabManager.ntpInteralURL
     )
@@ -1075,12 +1074,6 @@ class TabManager: NSObject {
 
     SessionTab.delete(tabId: tab.id)
 
-    var lastSelectedByWindow = Preferences.Privacy.lastSelectedTabIdByWindow.value
-    if lastSelectedByWindow[windowId.uuidString] == tab.id.uuidString {
-      lastSelectedByWindow.removeValue(forKey: windowId.uuidString)
-      Preferences.Privacy.lastSelectedTabIdByWindow.value = lastSelectedByWindow
-    }
-
     currentTabs = tabs(isPrivate: tab.isPrivate)
 
     // Let's select the tab to be selected next.
@@ -1328,17 +1321,17 @@ class TabManager: NSObject {
   }
 
   @MainActor private func savedTabsForRestore(from allSaved: [SessionTab]? = nil) -> [SessionTab] {
-    if let allSaved {
-      return allSaved.sorted { $0.index < $1.index }
-    }
-    return SessionTab.all()
+    let tabs = allSaved ?? SessionTab.all()
+    return tabs.filter { $0.sessionWindow?.windowId == windowId }
   }
 
   @MainActor private func reorderAllTabs(toMatch savedTabs: [SessionTab]) {
-    let tabIdOrder = savedTabs.map(\.tabId)
+    let tabIdOrder = Dictionary(
+      uniqueKeysWithValues: savedTabs.enumerated().map { ($0.element.tabId, $0.offset) }
+    )
     allTabs.sort {
-      let left = tabIdOrder.firstIndex(of: $0.id) ?? Int.max
-      let right = tabIdOrder.firstIndex(of: $1.id) ?? Int.max
+      let left = tabIdOrder[$0.id] ?? Int.max
+      let right = tabIdOrder[$1.id] ?? Int.max
       return left < right
     }
   }
@@ -1347,14 +1340,6 @@ class TabManager: NSObject {
     from savedTabs: [SessionTab]
   ) -> (any TabState)? {
     let isPrivate = privateBrowsingManager.isPrivateBrowsing
-
-    if let lastId = Preferences.Privacy.lastSelectedTabIdByWindow.value[windowId.uuidString]
-      .flatMap(UUID.init),
-      let tab = getTabForID(lastId),
-      tab.isPrivate == isPrivate
-    {
-      return tab
-    }
 
     if let selectedSaved = savedTabs.first(where: { $0.isSelected && $0.isPrivate == isPrivate }),
       let tab = getTabForID(selectedSaved.tabId)
@@ -1369,12 +1354,6 @@ class TabManager: NSObject {
     }
 
     return tabsForCurrentMode.last
-  }
-
-  private func persistLastSelectedTabId(_ tabId: UUID) {
-    var lastSelectedByWindow = Preferences.Privacy.lastSelectedTabIdByWindow.value
-    lastSelectedByWindow[windowId.uuidString] = tabId.uuidString
-    Preferences.Privacy.lastSelectedTabIdByWindow.value = lastSelectedByWindow
   }
 
   @MainActor fileprivate var restoreTabsInternal: (any TabState)? {
