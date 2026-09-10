@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.ui.messages.snackbar;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
@@ -13,6 +15,8 @@ import android.text.SpannableString;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -24,6 +28,7 @@ import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.ui.messages.R;
+import org.chromium.components.browser_ui.widget.gesture.SwipeGestureListener;
 import org.chromium.ui.KeyboardVisibilityDelegate;
 import org.chromium.ui.base.WindowAndroid;
 
@@ -43,9 +48,28 @@ public class BraveSnackbarView extends SnackbarView {
     // estimate.
     private static final int MINIMUM_AVAILABLE_WIDTH = 100;
 
-    // Will be deleted in bytecode. Variable from the parent class will be used instead.
+    // Will be deleted in bytecode. Variables from the parent class will be used instead.
     @SuppressWarnings({"UnusedVariable", "HidingField"})
     protected @Nullable ViewGroup mContainerView;
+
+    @SuppressWarnings({"UnusedVariable", "HidingField"})
+    protected @Nullable SnackbarSwipeHandler mSnackbarSwipeHandler;
+
+    @SuppressWarnings({"UnusedVariable", "HidingField"})
+    protected boolean mIsAnimating;
+
+    // Source of the customizations requested for the snackbar this view shows. This view is rebuilt
+    // on some dismissal paths, so the manager, not the view, outlives a queued snackbar's request.
+    private final @Nullable BraveSnackbarManager mBraveSnackbarManager;
+    // Recognizes the swipe-to-dismiss gesture, driving the same handler SnackbarView uses so the
+    // drag position and dismissal behave exactly as upstream.
+    private final SwipeGestureListener mSwipeGestureListener;
+    // Recognizes a completed tap on the snackbar; see makeClickable().
+    private final GestureDetector mTapDetector;
+    // The whole-snackbar click follows the snackbar that requested it, not this (reused) view, so
+    // a later snackbar shown in the same view does not run a stale callback.
+    private @Nullable Runnable mClickCallback;
+    private @Nullable Snackbar mClickableSnackbar;
 
     // Reference to the title TextView we add programmatically. Non-null only while the custom-text
     // layout is applied.
@@ -87,6 +111,62 @@ public class BraveSnackbarView extends SnackbarView {
                 windowAndroid,
                 additionalBottomMarginPxSupplier,
                 isFullscreenSupplier);
+
+        mBraveSnackbarManager =
+                manager instanceof BraveSnackbarManager ? (BraveSnackbarManager) manager : null;
+        mSwipeGestureListener =
+                new SwipeGestureListener(activity, assumeNonNull(mSnackbarSwipeHandler));
+        mTapDetector =
+                new GestureDetector(
+                        activity,
+                        new GestureDetector.SimpleOnGestureListener() {
+                            @Override
+                            public boolean onSingleTapUp(MotionEvent event) {
+                                runClickCallback();
+                                return true;
+                            }
+                        });
+
+        // Replaces the touch listener installed by SnackbarView, which calls performClick() for
+        // every touch event, ACTION_DOWN included. An OnClickListener would therefore fire the
+        // whole-snackbar action as soon as a finger lands, before the swipe gesture can be
+        // recognized. Swipe handling is unchanged; only the click is now reported for a completed
+        // tap.
+        assumeNonNull(mContainerView)
+                .setOnTouchListener(
+                        (view, event) -> {
+                            if (mSwipeGestureListener.onTouchEvent(event)) return true;
+                            // Disable touch inputs during animation.
+                            if (mIsAnimating) return true;
+                            mTapDetector.onTouchEvent(event);
+                            // Keeps SnackbarView's own click listener, which resets the dismiss
+                            // timeout on touch.
+                            view.performClick();
+                            return true;
+                        });
+
+        applyRequestedCustomizations(snackbar);
+    }
+
+    /**
+     * Applies whatever the manager holds for {@code snackbar}, the snackbar this view now shows. A
+     * request can be made while its snackbar is still queued behind another one, and the view that
+     * was current then is not necessarily the one that ends up showing it.
+     */
+    private void applyRequestedCustomizations(Snackbar snackbar) {
+        if (mBraveSnackbarManager == null) {
+            return;
+        }
+        mBraveSnackbarManager.applyCustomizations(this, snackbar);
+    }
+
+    /** Runs the whole-snackbar click callback, if the snackbar showing now asked for one. */
+    private void runClickCallback() {
+        Runnable clickCallback = mClickCallback;
+        if (clickCallback == null || mSnackbar != mClickableSnackbar) {
+            return;
+        }
+        clickCallback.run();
     }
 
     /**
@@ -110,26 +190,25 @@ public class BraveSnackbarView extends SnackbarView {
     }
 
     /**
-     * Makes the entire snackbar clickable by setting an OnClickListener on the container view.
+     * Makes the entire snackbar clickable. The callback runs on a completed tap only, so swiping
+     * the snackbar away does not trigger it.
      *
-     * @param clickCallback Callback to execute when the snackbar is clicked.
+     * @param snackbar The snackbar the callback belongs to.
+     * @param clickCallback Callback to execute when the snackbar is tapped.
      */
-    public void makeClickable(@Nullable Runnable clickCallback) {
-        if (mContainerView == null) {
-            Log.e(TAG, "makeClickable: mContainerView is null, cannot make snackbar clickable");
-            return;
-        }
-
+    public void makeClickable(Snackbar snackbar, @Nullable Runnable clickCallback) {
         if (clickCallback == null) {
             Log.e(TAG, "makeClickable: clickCallback is null");
             return;
         }
 
-        mContainerView.setOnClickListener(
-                v -> {
-                    clickCallback.run();
-                });
-        mContainerView.setClickable(true);
+        if (snackbar != mSnackbar) {
+            // The callback belongs to a snackbar that is not the one shown in this view.
+            return;
+        }
+
+        mClickCallback = clickCallback;
+        mClickableSnackbar = snackbar;
     }
 
     /**
@@ -147,6 +226,9 @@ public class BraveSnackbarView extends SnackbarView {
      * └─────────────────────────────────────────────┘
      * </pre>
      *
+     * @param snackbar The snackbar this layout belongs to. When it is not the snackbar currently
+     *     shown in this view — it is queued behind a higher priority one — the request is only
+     *     remembered, and applied once that snackbar takes the view over (see update()).
      * @param closeIconResId Drawable resource for the close button (resolved in the caller's
      *     resource package). Ignored when {@code onCloseCallback} is null.
      * @param closeContentDescription Accessibility label for the close button, or null.
@@ -154,15 +236,18 @@ public class BraveSnackbarView extends SnackbarView {
      *     added.
      */
     public void setActionBelowMessage(
+            Snackbar snackbar,
             int closeIconResId,
             @Nullable String closeContentDescription,
             @Nullable Runnable onCloseCallback) {
         // Remember the request so it can follow this snackbar across view reuse (see update()).
-        mActionBelowSnackbar = mSnackbar;
+        mActionBelowSnackbar = snackbar;
         mActionBelowCloseIconResId = closeIconResId;
         mActionBelowCloseContentDescription = closeContentDescription;
         mActionBelowCloseCallback = onCloseCallback;
-        applyActionBelowMessage();
+        if (snackbar == mSnackbar) {
+            applyActionBelowMessage();
+        }
     }
 
     /**
@@ -186,6 +271,7 @@ public class BraveSnackbarView extends SnackbarView {
         if (snackbar == mActionBelowSnackbar) {
             applyActionBelowMessage();
         }
+        applyRequestedCustomizations(snackbar);
         return result;
     }
 
@@ -341,17 +427,22 @@ public class BraveSnackbarView extends SnackbarView {
      * title appears on top of the entire snackbar (above favicon), followed by page title (bold)
      * and URL next to the favicon.
      *
+     * @param snackbar The snackbar this text belongs to. When it is not the snackbar currently
+     *     shown in this view — it is queued behind a higher priority one — the request is only
+     *     remembered, and applied once that snackbar takes the view over (see update()).
      * @param title The title text (e.g., "Get back to your most recent tab")
      * @param pageTitle The page title (displayed in bold)
      * @param url The URL to display
      */
-    public void setCustomText(String title, String pageTitle, String url) {
+    public void setCustomText(Snackbar snackbar, String title, String pageTitle, String url) {
         // Remember the request so it can follow this snackbar across view reuse (see update()).
-        mCustomTextSnackbar = mSnackbar;
+        mCustomTextSnackbar = snackbar;
         mCustomTextTitle = title;
         mCustomTextPageTitle = pageTitle;
         mCustomTextUrl = url;
-        applyCustomText();
+        if (snackbar == mSnackbar) {
+            applyCustomText();
+        }
     }
 
     /** Applies the text last passed to {@link #setCustomText} to the current view hierarchy. */
