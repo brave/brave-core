@@ -80,7 +80,7 @@ struct PrivateTabsView: View {
             if newValue {
               tabManager?.saveAllTabs()
             } else {
-              Preferences.Privacy.lastPrivateBrowsingMode.value = false
+              BrowserState.clearRememberedBrowsingMode()
               tabManager?.removeAllTabsForPrivateMode(isPrivate: true, isActiveTabIncluded: true)
             }
           }
@@ -91,19 +91,16 @@ struct PrivateTabsView: View {
                 Text(Strings.TabsSettings.rememberBrowsingModeTitle)
                   .foregroundStyle(Color(braveSystemName: .textPrimary))
                 Text(Strings.TabsSettings.rememberBrowsingModeDescription)
-                  .foregroundStyle(Color(braveSystemName: .textSecondary))
+                  .foregroundStyle(Color(braveSystemName: .textTertiary))
                   .font(.footnote)
               }
             }
-            .toggleStyle(SwitchToggleStyle(tint: .accentColor))
+            .tint(Color(braveSystemName: .primitivePrimary40))
             .onChange(of: rememberBrowsingMode.value) { _, newValue in
-              if newValue {
-                BrowserState.persistRememberedBrowsingMode(
-                  isPrivate: tabManager?.privateBrowsingManager.isPrivateBrowsing == true
-                )
-              } else {
-                Preferences.Privacy.lastPrivateBrowsingMode.value = false
-              }
+              BrowserState.handleRememberBrowsingModeToggled(
+                enabled: newValue,
+                isCurrentlyPrivate: tabManager?.privateBrowsingManager.isPrivateBrowsing == true
+              )
             }
           }
         }
