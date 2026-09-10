@@ -10,6 +10,7 @@
 #include "brave/components/brave_account/endpoint_client/request_types.h"
 #include "brave/components/brave_account/endpoint_client/response.h"
 #include "brave/components/brave_account/endpoints/accounts_delete_bodies.h"
+#include "brave/components/brave_account/endpoints/error_body.h"
 
 namespace brave_account::endpoints {
 
@@ -17,8 +18,7 @@ using AccountsDelete = endpoint_client::BraveEndpoint<
     "accounts.bsg",
     "/v2/accounts",
     endpoint_client::DELETE<AccountsDeleteRequestBody>,
-    endpoint_client::Response<AccountsDeleteSuccessBody,
-                              AccountsDeleteErrorBody>>;
+    endpoint_client::Response<AccountsDeleteSuccessBody, ErrorBody>>;
 
 }  // namespace brave_account::endpoints
 

@@ -119,6 +119,11 @@ class MockBraveAccountAuthentication : public mojom::Authentication {
   MOCK_METHOD(void, LogOut, (), (override));
 
   MOCK_METHOD(void,
+              DeleteAccount,
+              (DeleteAccountCallback callback),
+              (override));
+
+  MOCK_METHOD(void,
               GetServiceToken,
               (mojom::Service service, GetServiceTokenCallback callback),
               (override));

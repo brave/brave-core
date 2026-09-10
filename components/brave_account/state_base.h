@@ -64,6 +64,8 @@ class StateBase : public mojom::Authentication {
   void ChangePasswordStep4(const std::string& serialized_record,
                            ChangePasswordStep4Callback callback) override;
 
+  void DeleteAccount(DeleteAccountCallback callback) override;
+
   void GetServiceToken(mojom::Service service,
                        GetServiceTokenCallback callback) override;
 
