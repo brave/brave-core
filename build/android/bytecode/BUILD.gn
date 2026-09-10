@@ -125,6 +125,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveRadioButtonGroupHomepagePreferenceClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveReaderModeManagerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveReturnToChromeUtilClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveScreenshotProtectionControllerClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSearchBarCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSearchEngineAdapterClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveSearchEnginePreferenceClassAdapter.java",

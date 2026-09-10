@@ -393,11 +393,12 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
         setPreferenceOrder(PREF_CONTENT_SETTINGS, ++generalOrder);
         setPreferenceOrder(PREF_DOWNLOADS, ++generalOrder);
-        if (BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
+        boolean tabGroupsSettingsEnabled =
+                BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled();
+        if (tabGroupsSettingsEnabled) {
             removePreferenceIfPresent(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);
         } else {
             setPreferenceVisibleIfPresent(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, true);
-            setPreferenceOrder(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, ++generalOrder);
         }
 
         if (IncognitoReauthManager.isIncognitoReauthFeatureAvailable()) {
@@ -406,7 +407,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         } else {
             removePreferenceIfPresent(PREF_BROWSER_LOCK);
         }
-        setPreferenceOrder(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, ++generalOrder);
+
+        if (!tabGroupsSettingsEnabled) {
+            setPreferenceOrder(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, ++generalOrder);
+        }
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
             setPreferenceOrder(PREF_BRAVE_ORIGIN, ++generalOrder);
