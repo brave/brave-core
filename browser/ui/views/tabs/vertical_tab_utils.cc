@@ -10,7 +10,6 @@
 #include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/ui/browser_command_controller.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
@@ -42,7 +41,7 @@ bool IsVerticalTabToggleEnabled(BrowserWindowInterface* browser) {
   if (!browser) {
     return true;
   }
-  return browser->GetFeatures().browser_command_controller()->IsCommandEnabled(
+  return chrome::BrowserCommandController::From(browser)->IsCommandEnabled(
       IDC_TOGGLE_VERTICAL_TABS);
 #else
   return true;
