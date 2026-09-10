@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.fullscreen;
 import android.app.Activity;
 
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.media.BraveFullscreenVideoPictureInPictureController;
 import org.chromium.chrome.browser.tab.TabHidingType;
 
 /**
@@ -27,16 +28,15 @@ public abstract class BraveFullscreenHtmlApiHandlerBase {
      */
     protected boolean mTabHiddenByChangedTabs;
 
-    /**
-     * Invoked from upstream observer hooks (tab hidden, activity stopped) to decide whether the
-     * persistent fullscreen teardown should be skipped. When a Brave-managed YouTube
-     * Picture-in-Picture session is alive we want to keep both the browser and DOM fullscreen state
-     * intact across transient hides (screen-off, PiP window occlusion) so there is no visible
-     * flicker when the user returns. {@code activity} is the activity bound to the calling
-     * fullscreen handler so that multi-window setups only preserve state for the window that owns
-     * the PiP session.
-     */
+    /** Keeps fullscreen state when hiding or stopping the activity interrupts an active PiP. */
     public boolean shouldPreservePersistentFullscreenForPictureInPicture(Activity activity) {
+        // Screen lock must not turn a playing PiP into a fullscreen-exit pause.
+        if (activity.isInPictureInPictureMode()
+                && BraveFullscreenVideoPictureInPictureController
+                        .shouldPreservePlaybackOnScreenLock()) {
+            return true;
+        }
+
         return activity instanceof final BraveActivity braveActivity
                 && braveActivity.isYouTubePictureInPictureActive();
     }
