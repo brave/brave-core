@@ -284,6 +284,11 @@ void BraveRendererUpdater::UpdateRenderer(
   bool install_window_brave_cardano_provider =
       can_install_providers && brave_wallet::IsCardanoDAppSupportEnabled() &&
       default_cardano_wallet == brave_wallet::mojom::DefaultWallet::BraveWallet;
+
+  // There is no default-wallet pref for Polkadot yet, so the feature flag is
+  // the only per-chain gate.
+  bool install_window_brave_polkadot_provider =
+      can_install_providers && brave_wallet::IsPolkadotDAppSupportEnabled();
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   PrefService* pref_service = profile_->GetPrefs();
@@ -317,6 +322,8 @@ void BraveRendererUpdater::UpdateRenderer(
   params->install_window_ethereum_provider = install_window_ethereum_provider;
   params->install_window_brave_cardano_provider =
       install_window_brave_cardano_provider;
+  params->install_window_brave_polkadot_provider =
+      install_window_brave_polkadot_provider;
   params->allow_overwrite_window_ethereum_provider =
       allow_overwrite_window_ethereum_provider;
   params->brave_use_native_solana_wallet = brave_use_native_solana_wallet;

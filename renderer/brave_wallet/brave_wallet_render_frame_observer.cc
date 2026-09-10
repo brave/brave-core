@@ -11,6 +11,7 @@
 #include "base/notreached.h"
 #include "brave/components/brave_wallet/renderer/js_cardano_provider.h"
 #include "brave/components/brave_wallet/renderer/js_ethereum_provider.h"
+#include "brave/components/brave_wallet/renderer/js_polkadot_provider.h"
 #include "brave/components/brave_wallet/renderer/js_solana_provider.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "content/public/renderer/render_frame.h"
@@ -69,6 +70,7 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
   if (!dynamic_params.install_window_brave_ethereum_provider &&
       !dynamic_params.install_window_ethereum_provider &&
       !dynamic_params.install_window_brave_cardano_provider &&
+      !dynamic_params.install_window_brave_polkadot_provider &&
       !dynamic_params.brave_use_native_solana_wallet) {
     return;
   }
@@ -98,6 +100,12 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
                                                          "cardano") &&
       dynamic_params.install_window_brave_cardano_provider) {
     JSCardanoProvider::Install(render_frame());
+  }
+
+  // Unlike the other chains there is no "polkadot" permissions policy feature
+  // to consult yet.
+  if (dynamic_params.install_window_brave_polkadot_provider) {
+    JSPolkadotProvider::Install(render_frame());
   }
 }
 
