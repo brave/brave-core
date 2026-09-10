@@ -41,6 +41,11 @@ const SettingsGridBoldText = styled.div`
   font: ${font.default.semibold};
 `
 
+const SettingsGridUrlText = styled.div`
+  color: ${color.text.tertiary};
+  font: ${font.small.regular};
+`
+
 const SettingProgressRing = styled(Ring)`
   --leo-progressring-size: ${spacing.xl};
   padding-right: ${spacing.l};
@@ -95,7 +100,7 @@ export interface Props {
 }
 
 const getFaviconSrc = (url: string) => {
-  return `chrome://favicon2?size=64&pageUrl=${encodeURIComponent(url)}`
+  return `chrome://favicon2?size=64&pageUrl=${encodeURIComponent(url)}&allowGoogleServerFallback=0`
 }
 
 const SettingsCard: React.FC<Props> = ({
@@ -110,7 +115,10 @@ const SettingsCard: React.FC<Props> = ({
           <Favicon src={getFaviconSrc(url)} />
         </FaviconContainer>
         <div>
-          <SettingsGridBoldText>{url}</SettingsGridBoldText>
+          <SettingsGridBoldText>
+            {progressModelState?.siteName || url}
+          </SettingsGridBoldText>
+          <SettingsGridUrlText>{url}</SettingsGridUrlText>
         </div>
       </SettingGridHeaderRow>
       {progressModelState

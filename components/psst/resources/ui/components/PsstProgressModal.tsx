@@ -84,6 +84,7 @@ export const PsstProgressModal = () => {
   const { performPrivacyTuning } = api.usePerformPrivacyTuning()
 
   const siteUrl = siteData ? siteData.siteUrl : ''
+  const siteName = siteData ? siteData.siteName : ''
 
   React.useEffect(() => {
     if (!siteData) return
@@ -228,7 +229,7 @@ export const PsstProgressModal = () => {
       <SettingsCard
         url={siteUrl}
         progressModelState={{
-          siteName: siteUrl,
+          siteName,
           optionsStatuses,
         }}
         onItemChecked={handleSettingItemCheck}
