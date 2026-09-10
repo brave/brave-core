@@ -143,25 +143,24 @@ substitutions:
           const base::DictValue* dict = value->GetIfDict();
 
   - description: |-
-      Don't crash the browser when a write names a pipe id we don't hold.
+      Say which facade a write's unknown pipe id was unknown to.
 
-      Upstream hit this same "handle unknown to the facade" failure on the
-      sibling call site and made it non-fatal in 62168f0dc5969 ([iOS] Make
-      MojoFacade::HandleMojoBindInterface non-fatal), cherry-picked into the
-      8010 branch this rebase targets, without touching this one. A WebUI
-      page shouldn't be able to take the browser down either way.
+      Upstream made this non-fatal in e79df70d635ae ([iOS/web] Replace CHECKs
+      in Mojo facade) and returns MOJO_RESULT_INVALID_ARGUMENT silently, which
+      is the right answer for a page sending a bad handle. Brave runs a facade
+      per WebUI host, so the id may well be one a sibling facade holds, and
+      that is a Brave bug rather than a misbehaving page: the dump is what
+      tells the two apart.
     regex:
       re_pattern: |-
-        CHECK\(pipe_id\.has_value\(\)\);
-          mojo::MessagePipeHandle pipe = GetPipeFromId\(\*pipe_id\);
-          CHECK\(pipe\.is_valid\(\)\);
+        mojo::MessagePipeHandle pipe = GetPipeFromId\(\*pipe_id\);
+          std::optional<std::vector<uint8_t>> bytes = base::Base64Decode\(\*buffer\);
       replace: |-
-        mojo::MessagePipeHandle pipe =
-              pipe_id.has_value() ? GetPipeFromId(*pipe_id) : mojo::MessagePipeHandle();
+        mojo::MessagePipeHandle pipe = GetPipeFromId(*pipe_id);
           if (!pipe.is_valid()) {
             ReportUnknownPipe("MojoHandle.writeMessage", pipe_id);
-            return base::Value(static_cast<int>(MOJO_RESULT_INVALID_ARGUMENT));
           }
+          std::optional<std::vector<uint8_t>> bytes = base::Base64Decode(*buffer);
 
   - description: |-
       Gate Mojo.bindInterface against Brave's chrome-untrusted:// per-origin
@@ -172,5 +171,7 @@ substitutions:
       brave/chromium_src/ios/web/public/web_state.h for the allowlist itself.
     preempt_function_impl:
       function_name: MojoFacade::HandleMojoBindInterface
-      return_if: '!IsBindInterfaceAllowedForFrame(args)'
-      return_value: 'false'
+      code: |-
+        if (!IsBindInterfaceAllowedForFrame(args)) {
+          return base::Value(static_cast<int>(MOJO_RESULT_INVALID_ARGUMENT));
+        }
