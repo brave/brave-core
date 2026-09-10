@@ -8,14 +8,17 @@
 #include <memory>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
+#include "brave/components/brave_wayback_machine/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -147,6 +150,9 @@ WaybackMachinePageActionController::GetBubbleViewForTesting() {
 void WaybackMachinePageActionController::OnWaybackStateChanged(
     WaybackState state) {
   UpdatePageAction(tab_->GetContents());
+  if (state == WaybackState::kNeedToCheck) {
+    MaybeAutoShowBubble();
+  }
 }
 
 void WaybackMachinePageActionController::ShowBubble(actions::ActionItem* item,
@@ -175,6 +181,34 @@ void WaybackMachinePageActionController::ShowBubble(actions::ActionItem* item,
   bubble_view->ShowForReason(user_gesture
                                  ? LocationBarBubbleDelegateView::USER_GESTURE
                                  : LocationBarBubbleDelegateView::AUTOMATIC);
+}
+
+void WaybackMachinePageActionController::MaybeAutoShowBubble() {
+  if (!base::FeatureList::IsEnabled(
+          brave_wayback_machine::features::kWaybackMachineAutoShowBubble)) {
+    return;
+  }
+  if (!tab_->IsActivated()) {
+    return;
+  }
+
+  auto* bwi = tab_->GetBrowserWindowInterface();
+  if (!bwi) {
+    return;
+  }
+
+  auto* root_item = bwi->GetFeatures().GetRootActionItem();
+  if (!root_item) {
+    return;
+  }
+
+  auto* item = actions::ActionManager::Get().FindAction(
+      kActionShowWaybackMachine, root_item);
+  if (!item) {
+    return;
+  }
+
+  ShowBubble(item, /*user_gesture=*/false);
 }
 
 void WaybackMachinePageActionController::AttachToTabHelper(
