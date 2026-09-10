@@ -67,6 +67,13 @@ CWV_EXPORT
 /// Decides whether or not JavaScript should be blocked on the resulting page
 - (BOOL)webView:(CWVWebView*)webView
     shouldBlockJavaScriptForRequest:(NSURLRequest*)request;
+/// Decides whether or not lockdown mode should be enabled on the resulting
+/// page. `defaultValue` is the value currently assigned to the navigation's
+/// `WKWebpagePreferences.lockdownModeEnabled` (which reflects OS-level and
+/// browser-level lockdown mode), return it to keep the default behavior.
+- (BOOL)webView:(CWVWebView*)webView
+    shouldEnableLockdownModeForRequest:(NSURLRequest*)request
+                          defaultValue:(BOOL)defaultValue;
 /// Asks the delegate for a custom user agent to set for a given request
 - (nullable NSString*)webView:(CWVWebView*)webView
     userAgentForUserAgentType:(CWVUserAgentType)userAgentType
