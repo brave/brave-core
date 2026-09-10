@@ -10,6 +10,7 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -78,8 +79,8 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreenForBrowser() const {
   if (!browser_view().browser()) {
     return false;
   }
-  const ExclusiveAccessManager* exclusive_access_manager =
-      ExclusiveAccessManager::From(browser_view().browser());
+  auto* const exclusive_access_manager = ExclusiveAccessManager::From(
+      const_cast<BrowserWindowInterface*>(browser_view().browser()));
   if (!exclusive_access_manager) {
     return false;
   }
@@ -93,8 +94,8 @@ bool BrowserViewLayoutDelegateImpl::IsFullscreenForTab() const {
   if (!browser_view().browser()) {
     return false;
   }
-  const ExclusiveAccessManager* exclusive_access_manager =
-      ExclusiveAccessManager::From(browser_view().browser());
+  auto* const exclusive_access_manager = ExclusiveAccessManager::From(
+      const_cast<BrowserWindowInterface*>(browser_view().browser()));
   if (!exclusive_access_manager) {
     return false;
   }
