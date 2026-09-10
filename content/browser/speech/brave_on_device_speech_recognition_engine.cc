@@ -36,7 +36,8 @@ void BraveOnDeviceSpeechRecognitionEngine::SetAudioParameters(
   // Call the grandparent, so the base class cannot pass the sample rate to its
   // Core and start an optimization guide session of its own.
   SpeechRecognitionEngine::SetAudioParameters(audio_parameters);
-  TryStartSession();
+  // Starts the stream if the session remote has already arrived.
+  TryCreateSession();
 }
 
 void BraveOnDeviceSpeechRecognitionEngine::AudioChunksEnded() {
@@ -66,10 +67,11 @@ void BraveOnDeviceSpeechRecognitionEngine::OnAsrSessionReady(
     mojo::PendingRemote<local_ai::mojom::AsrSession> pending) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(main_sequence_checker_);
   asr_session_.Bind(std::move(pending));
-  TryStartSession();
+  // Starts the stream if the audio parameters have already arrived.
+  TryCreateSession();
 }
 
-void BraveOnDeviceSpeechRecognitionEngine::TryStartSession() {
+void BraveOnDeviceSpeechRecognitionEngine::TryCreateSession() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(main_sequence_checker_);
   if (session_created_ || !asr_session_.is_bound() ||
       !audio_parameters_.IsValid()) {

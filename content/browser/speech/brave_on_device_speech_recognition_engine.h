@@ -43,10 +43,10 @@ class CONTENT_EXPORT BraveOnDeviceSpeechRecognitionEngine
   void OnAsrSessionReady(
       mojo::PendingRemote<local_ai::mojom::AsrSession> pending);
 
-  // Creates the worker stream once both the AsrSession remote and the audio
-  // parameters are in. They arrive in either order, so this runs after each and
-  // does nothing until it has both.
-  void TryStartSession();
+  // Creates the worker stream, at most once, when the AsrSession remote and
+  // the audio parameters are both ready. They arrive in either order, so this
+  // runs after each and does nothing until it has both.
+  void TryCreateSession();
 
   // This recognition's session with the speech worker.
   mojo::Remote<local_ai::mojom::AsrSession> asr_session_;

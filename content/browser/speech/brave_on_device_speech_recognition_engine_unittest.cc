@@ -195,7 +195,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, NormalFlow) {
   EXPECT_EQ(kSampleRateHz, static_cast<int>(session.options->sample_rate_hz));
   EXPECT_EQ("en-US", session.options->language);
 
-  // Only verifies audio reaches the worker over the pipe TryStartSession
+  // Only verifies audio reaches the worker over the pipe TryCreateSession
   // created. Accumulating and converting it is the base class's, and tested
   // there.
   constexpr std::array<int16_t, 4> kSamples = {0, 16384, -16384, 32767};
