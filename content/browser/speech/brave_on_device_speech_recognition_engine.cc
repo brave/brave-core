@@ -6,6 +6,7 @@
 #include "brave/content/browser/speech/brave_on_device_speech_recognition_engine.h"
 
 #include <utility>
+#include <vector>
 
 #include "base/functional/bind.h"
 #include "content/public/browser/browser_thread.h"
@@ -42,6 +43,7 @@ void BraveOnDeviceSpeechRecognitionEngine::SetAudioParameters(
 
 void BraveOnDeviceSpeechRecognitionEngine::AudioChunksEnded() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(main_sequence_checker_);
+  audio_ended_ = true;
   // Closing the input stream makes the worker emit its final result, so the
   // responder stays bound for it. Upstream would end recognition with an empty
   // result before that arrives, so we have to override this behavior to reply
@@ -61,6 +63,25 @@ void BraveOnDeviceSpeechRecognitionEngine::EndRecognition() {
   // Drop any GetAsrSession reply still in flight, so it cannot start a stream.
   brave_weak_factory_.InvalidateWeakPtrs();
   asr_session_.reset();
+}
+
+void BraveOnDeviceSpeechRecognitionEngine::OnResponse(
+    std::vector<on_device_model::mojom::SpeechRecognitionResultPtr> result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(main_sequence_checker_);
+  // Nothing between here and blink consults interim_results, so the engine is
+  // the only place that can honor it. Past the end of audio a provisional is
+  // unwanted regardless: the recognizer reports it and then keeps waiting.
+  if (audio_ended_ || !config_.interim_results) {
+    const bool had_results = !result.empty();
+    std::erase_if(result, [](const auto& r) { return !r->is_final; });
+    // An empty vector means nothing was recognized, and that result is what
+    // ends the session, so it still has to go through.
+    if (had_results && result.empty()) {
+      return;
+    }
+  }
+
+  OnDeviceSpeechRecognitionEngine::OnResponse(std::move(result));
 }
 
 void BraveOnDeviceSpeechRecognitionEngine::OnAsrSessionReady(
