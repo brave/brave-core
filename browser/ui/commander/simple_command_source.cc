@@ -22,8 +22,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/accelerator_utils.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "ui/base/accelerators/accelerator.h"
 
@@ -64,7 +64,7 @@ CommandSource::CommandResults SimpleCommandSource::GetCommands(
     const std::u16string& input,
     BrowserWindowInterface* browser) const {
   CommandSource::CommandResults results;
-  if (!browser || !browser->GetFeatures().browser_command_controller()) {
+  if (!browser || !chrome::BrowserCommandController::From(browser)) {
     return results;
   }
 
