@@ -20,12 +20,14 @@
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "base/win/shortcut.h"
+#include "base/win/windows_version.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_shortcut_manager_win.h"
 #include "chrome/browser/shell_integration_win.h"
+#include "chrome/browser/win/taskbar_manager.h"
 #include "chrome/installer/util/install_util.h"
 #include "chrome/installer/util/shell_util.h"
 #include "chrome/installer/util/taskbar_util.h"
@@ -145,6 +147,22 @@ bool PinToTaskbarImpl(const base::FilePath& profile_path,
   return PinShortcutToTaskbar(shortcut_path->file_path());
 }
 
+// Microsoft blocked pinning via IPinnedList3 in Windows 11 24H2. From that
+// version on, the TaskbarManager limited access feature is the only way to pin,
+// and it's what shows the OS system notification.
+bool ShouldUseLimitedAccessFeature() {
+  return base::win::GetVersion() >= base::win::Version::WIN11_24H2;
+}
+
+void DoPinToTaskbarWithLimitedAccessFeature(
+    base::OnceCallback<void(bool)> callback) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  browser_util::PinAppToTaskbar(
+      ShellUtil::GetBrowserModelId(InstallUtil::IsPerUserInstall()),
+      browser_util::PinAppToTaskbarChannel::kSettingsPage, std::move(callback));
+}
+
 void DoPinToTaskbar(const base::FilePath& profile_path,
                     base::OnceCallback<void(bool)> callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
@@ -191,6 +209,10 @@ void PinToTaskbar(Profile* profile,
         if (succeeded && is_pinned_to_taskbar) {
           // Early return. Already pinned.
           std::move(result_callback).Run(true);
+          return;
+        }
+        if (ShouldUseLimitedAccessFeature()) {
+          DoPinToTaskbarWithLimitedAccessFeature(std::move(result_callback));
           return;
         }
         DoPinToTaskbar(profile_path, std::move(result_callback));
