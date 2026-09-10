@@ -775,6 +775,59 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_WebSocketBlocking) {
                                                 ws_url.spec())));
 }
 
+// See crbug.com/1372291.
+#if BUILDFLAG(IS_ANDROID)
+#define MAYBE_SharedWorkerWebSocketBlocking \
+  DISABLED_SharedWorkerWebSocketBlocking
+#define MAYBE_ServiceWorkerWebSocketBlocking \
+  DISABLED_ServiceWorkerWebSocketBlocking
+#else
+#define MAYBE_SharedWorkerWebSocketBlocking SharedWorkerWebSocketBlocking
+#define MAYBE_ServiceWorkerWebSocketBlocking ServiceWorkerWebSocketBlocking
+#endif
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       MAYBE_SharedWorkerWebSocketBlocking) {
+  UpdateAdBlockInstanceWithRules("*$websocket");
+
+  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
+  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
+  ASSERT_TRUE(ws_server.Start());
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  NavigateToURL(url);
+  content::WebContents* contents = web_contents();
+
+  GURL ws_url =
+      net::test_server::GetWebSocketURL(ws_server, "/echo-with-no-extension");
+
+  EXPECT_EQ(false,
+            EvalJs(contents, content::JsReplace(
+                                 "checkSharedWorkerWebsocketConnection($1)",
+                                 ws_url.spec())));
+}
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       MAYBE_ServiceWorkerWebSocketBlocking) {
+  UpdateAdBlockInstanceWithRules("*$websocket");
+
+  net::EmbeddedTestServer ws_server(net::EmbeddedTestServer::TYPE_HTTPS);
+  net::test_server::InstallDefaultWebSocketHandlers(&ws_server);
+  ASSERT_TRUE(ws_server.Start());
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  NavigateToURL(url);
+  content::WebContents* contents = web_contents();
+
+  GURL ws_url =
+      net::test_server::GetWebSocketURL(ws_server, "/echo-with-no-extension");
+
+  EXPECT_EQ(false,
+            EvalJs(contents, content::JsReplace(
+                                 "checkServiceWorkerWebsocketConnection($1)",
+                                 ws_url.spec())));
+}
+
 // Load a page with an ad image which is matched by a filter in the additional
 // engine, but make sure it is saved by an exception in the default engine.
 // This test is the same as AdsGetBlockedByRegionalBlocker except for at the
