@@ -2513,6 +2513,31 @@
 -BrowserCommandControllerBrowserTest.ExecuteShowIdentityDocs
 -BrowserCommandControllerBrowserTest.ExecuteShowTravel
 
+# Upstream flake, tracked upstream as crbug.com/544197164: Chromium's gardener
+# disabled it on Windows at ToT in crrev a9b6e70460ff, which our
+# 153.0.8010.28 pin predates. WebContents::GetBackgroundColor() returns nullopt
+# until the renderer sends DidChangeBackgroundColor, which Blink emits from
+# WebFrameWidgetImpl::UpdateLifecycle only on a full (kAll) lifecycle update,
+# while content::WaitForLoadStop() waits only for DidStopLoading -- so on a
+# loaded bot the assertion can run first and see nullopt instead of
+# SK_ColorTRANSPARENT. check-upstream-flake.py reports 0.9% over 30 days, but
+# that aggregate is diluted by high-volume CQ trybots: the CI waterfall shows
+# 15.0% (Linux Tests), 15.3% (Mac13 Tests) and 53.8% (win11-arm64-rel-tests),
+# while the Windows x64 bots stay at or below 0.2%. Per config, the averages
+# update-upstream-flake-filters.py computes are ~10% on macos -- the only
+# config its generated filters pick the test up on, see
+# generated/browser_tests-macos.filter -- but 0.87% on linux and 0.73% on
+# windows, just under its 1% threshold, so this all-platform file covers the
+# rest. Upstream's guard is Windows-only and the failures filed against Brave
+# are Linux x64, so the roll past crrev a9b6e70460ff will not retire this
+# entry. No Brave chromium_src override or patch touches the base background
+# color the assertion reads: ActorOverlayWebView::ShowUI sets it via
+# WebContents::SetPageBaseBackgroundColor(SK_ColorTRANSPARENT), and
+# chromium_src/chrome/browser/resources/actor_overlay/app.css only restyles the
+# :host(.background-visible) gradient/cursor and the #border-* colors.
+# https://github.com/brave/brave-browser/issues/58297
+-ActorOverlayTest.OverlayWebViewIsTransparentAfterNavigation
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
