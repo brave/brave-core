@@ -89,9 +89,16 @@ import WebKit
       return []
     }
 
-    var userScriptTypes: Set<UserScriptType> = [
-      .siteStateListener, .gpc(isGPCEnabled),
-    ]
+    var userScriptTypes: Set<UserScriptType> = [.siteStateListener]
+
+    // On iOS 27+ WebKit handles GPC natively when the feature is enabled
+    var isGPCHandledByWebKit = false
+    if #available(iOS 27.0, *), FeatureList.kWebKitGlobalPrivacyControl.enabled {
+      isGPCHandledByWebKit = true
+    }
+    if !isGPCHandledByWebKit {
+      userScriptTypes.insert(.gpc(isGPCEnabled))
+    }
 
     // Handle dynamic domain level scripts on the main document.
     // These are scripts that change depending on the domain and the main document

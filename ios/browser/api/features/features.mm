@@ -374,6 +374,11 @@
                                            kWebKitAdvancedPrivacyProtections];
 }
 
++ (Feature*)kWebKitGlobalPrivacyControl {
+  return [[Feature alloc]
+      initWithFeature:&brave_shields::features::kWebKitGlobalPrivacyControl];
+}
+
 + (Feature*)kBraveOrigin {
   return
       [[Feature alloc] initWithFeature:&brave_origin::features::kBraveOrigin];
