@@ -53,10 +53,10 @@ import org.chromium.components.user_prefs.UserPrefs;
  * Tests for {@link BraveBrowserLockSettingsFragment}.
  *
  * <p>Regression coverage for a bug where the "Private tabs" toggle wrote only a Brave-only pref
- * that nothing read for enforcement, silently making private-tab locking non-functional. The
- * toggle must read/write Chromium's own {@link Pref#INCOGNITO_REAUTHENTICATION_FOR_ANDROID} — the
- * pref {@link org.chromium.chrome.browser.incognito.reauth.IncognitoReauthControllerImpl} actually
- * gates on.
+ * that nothing read for enforcement, silently making private-tab locking non-functional. The toggle
+ * must read/write Chromium's own {@link Pref#INCOGNITO_REAUTHENTICATION_FOR_ANDROID} — the pref
+ * {@link org.chromium.chrome.browser.incognito.reauth.IncognitoReauthControllerImpl} actually gates
+ * on.
  */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
