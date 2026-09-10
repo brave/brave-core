@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "base/check.h"
 #include "ui/views/layout/box_layout.h"
 
 #include <ui/views/window/dialog_client_view.cc>
@@ -20,11 +19,6 @@ void DialogClientView::SetupButtonsLayoutVertically() {
   button_row_container_->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, button_row_insets_,
       kVerticalButtonsSpacing));
-}
-
-void DialogClientView::IgnoreNextWindowStationaryStateChanged() {
-  DCHECK(input_protector_);
-  input_protector_->IgnoreNextWindowStationaryStateChanged();
 }
 
 }  // namespace views
