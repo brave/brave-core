@@ -8,15 +8,10 @@
 
 class WebDiscoveryDialogClientView;
 
-#define SetupLayout                              \
-  SetupLayout_UnUsed() {}                        \
-  friend class ::WebDiscoveryDialogClientView;   \
-  void SetupButtonsLayoutVertically();           \
-                                                 \
- public:                                         \
-  void IgnoreNextWindowStationaryStateChanged(); \
-                                                 \
- private:                                        \
+#define SetupLayout                            \
+  SetupLayout_UnUsed() {}                      \
+  friend class ::WebDiscoveryDialogClientView; \
+  void SetupButtonsLayoutVertically();         \
   virtual void SetupLayout
 
 #include <ui/views/window/dialog_client_view.h>  // IWYU pragma: export
