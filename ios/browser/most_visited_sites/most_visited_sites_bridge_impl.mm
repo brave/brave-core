@@ -8,6 +8,7 @@
 #include <map>
 #include <utility>
 
+#include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
 #include "components/ntp_tiles/most_visited_sites.h"
 #include "components/ntp_tiles/ntp_tile.h"
@@ -34,9 +35,16 @@ namespace {
 class MostVisitedSitesObserverImpl
     : public ntp_tiles::MostVisitedSites::Observer {
  public:
-  explicit MostVisitedSitesObserverImpl(
-      id<MostVisitedSitesObserverBridge> observer)
-      : observer_(observer) {}
+  MostVisitedSitesObserverImpl(ntp_tiles::MostVisitedSites* service,
+                               id<MostVisitedSitesObserverBridge> observer,
+                               size_t max_num_sites)
+      : service_(service), observer_(observer) {
+    service_->AddMostVisitedURLsObserver(this, max_num_sites);
+  }
+
+  ~MostVisitedSitesObserverImpl() override {
+    service_->RemoveMostVisitedURLsObserver(this);
+  }
 
   void OnURLsAvailable(
       bool is_user_triggered,
@@ -65,27 +73,28 @@ class MostVisitedSitesObserverImpl
   }
 
  private:
+  raw_ptr<ntp_tiles::MostVisitedSites> service_;
   __weak id<MostVisitedSitesObserverBridge> observer_;
 };
 
 }  // namespace
 
-@interface MostVisitedSitesObservationImpl
-    : NSObject <MostVisitedSitesObservation>
+@interface MostVisitedSitesScopedObservationImpl
+    : NSObject <MostVisitedSitesScopedObservation>
 
-- (instancetype)initWithObserverBridge:
-    (std::unique_ptr<MostVisitedSitesObserverImpl>)observerBridge;
+- (instancetype)initWithObserverImpl:
+    (std::unique_ptr<MostVisitedSitesObserverImpl>)observerImpl;
 
 @end
 
-@implementation MostVisitedSitesObservationImpl {
-  std::unique_ptr<MostVisitedSitesObserverImpl> _observerBridge;
+@implementation MostVisitedSitesScopedObservationImpl {
+  std::unique_ptr<MostVisitedSitesObserverImpl> _observer;
 }
 
-- (instancetype)initWithObserverBridge:
-    (std::unique_ptr<MostVisitedSitesObserverImpl>)observerBridge {
+- (instancetype)initWithObserverImpl:
+    (std::unique_ptr<MostVisitedSitesObserverImpl>)observerImpl {
   if ((self = [super init])) {
-    _observerBridge = std::move(observerBridge);
+    _observer = std::move(observerImpl);
   }
   return self;
 }
@@ -95,7 +104,7 @@ class MostVisitedSitesObserverImpl
 }
 
 - (void)invalidate {
-  _observerBridge.reset();
+  _observer.reset();
 }
 
 @end
@@ -112,15 +121,13 @@ class MostVisitedSitesObserverImpl
   return self;
 }
 
-- (id<MostVisitedSitesObservation>)
+- (id<MostVisitedSitesScopedObservation>)
     addMostVisitedURLsObserver:(id<MostVisitedSitesObserverBridge>)observer
                    maxNumSites:(NSUInteger)maxNumSites {
-  auto observerBridge =
-      std::make_unique<MostVisitedSitesObserverImpl>(observer);
-  _mostVisitedSites->AddMostVisitedURLsObserver(observerBridge.get(),
-                                                maxNumSites);
-  return [[MostVisitedSitesObservationImpl alloc]
-      initWithObserverBridge:std::move(observerBridge)];
+  auto observerImpl = std::make_unique<MostVisitedSitesObserverImpl>(
+      _mostVisitedSites.get(), observer, maxNumSites);
+  return [[MostVisitedSitesScopedObservationImpl alloc]
+      initWithObserverImpl:std::move(observerImpl)];
 }
 
 - (void)enableTopSitesOnlyTileTypes {
