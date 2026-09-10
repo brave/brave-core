@@ -425,7 +425,7 @@ if (is_android) {
       "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridItemTouchHelperCallbackTest.java",
       "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupsPaneTest.java",
       "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilitiesUnitTest.java",
-      "src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs_strip/BravePinnedTabStripItemContextMenuCoordinatorTest.java",
+      "src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs/BravePinnedTabStripItemContextMenuCoordinatorTest.java",
     ]
 
     deps = [
