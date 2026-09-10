@@ -36,7 +36,7 @@ struct SettingCardDataItem {
 };
 
 struct SettingCardData {
-    string site_name;
+    string site_url;
     array<SettingCardDataItem> items;
 };
 

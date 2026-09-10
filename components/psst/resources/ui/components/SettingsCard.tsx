@@ -89,13 +89,17 @@ interface PsstProgressModalState {
 }
 
 export interface Props {
-  title: string
+  url: string
   progressModelState: PsstProgressModalState | undefined
   onItemChecked: (uid: string, checked: boolean) => void
 }
 
+const getFaviconSrc = (url: string) => {
+  return `chrome://favicon2?size=64&pageUrl=${encodeURIComponent(url)}`
+}
+
 const SettingsCard: React.FC<Props> = ({
-  title,
+  url,
   progressModelState,
   onItemChecked,
 }) => {
@@ -103,14 +107,10 @@ const SettingsCard: React.FC<Props> = ({
     <SettingGrid>
       <SettingGridHeaderRow>
         <FaviconContainer>
-          <Favicon
-            src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
-              title,
-            )}`}
-          />
+          <Favicon src={getFaviconSrc(url)} />
         </FaviconContainer>
         <div>
-          <SettingsGridBoldText>{title}</SettingsGridBoldText>
+          <SettingsGridBoldText>{url}</SettingsGridBoldText>
         </div>
       </SettingGridHeaderRow>
       {progressModelState
