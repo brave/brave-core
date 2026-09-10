@@ -9,6 +9,8 @@
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "content/browser/speech/on_device_speech_recognition_engine_impl.h"
 #include "content/common/content_export.h"
@@ -48,6 +50,11 @@ class CONTENT_EXPORT BraveOnDeviceSpeechRecognitionEngine
  private:
   friend class BraveOnDeviceSpeechRecognitionEngineTest;
 
+  // How long the worker may go silent after the input stream closes. Nothing
+  // in the recognizer times out the state AudioChunksEnded leaves it in, so a
+  // worker that never answers would park the session forever.
+  static constexpr base::TimeDelta kFinalResultTimeout = base::Seconds(30);
+
   void OnAsrSessionReady(
       mojo::PendingRemote<local_ai::mojom::AsrSession> pending);
 
@@ -56,11 +63,15 @@ class CONTENT_EXPORT BraveOnDeviceSpeechRecognitionEngine
   // runs after each and does nothing until it has both.
   void TryCreateSession();
 
+  void OnFinalResultTimeout();
+
   // This recognition's session with the speech worker.
   mojo::Remote<local_ai::mojom::AsrSession> asr_session_;
 
   bool session_created_ = false;
   bool audio_ended_ = false;
+
+  base::OneShotTimer final_result_timer_;
 
   base::WeakPtrFactory<BraveOnDeviceSpeechRecognitionEngine>
       brave_weak_factory_{this};

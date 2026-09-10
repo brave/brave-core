@@ -50,6 +50,13 @@ void BraveOnDeviceSpeechRecognitionEngine::AudioChunksEnded() {
   // with a final result from the worker instead.
   if (asr_stream_.is_bound()) {
     asr_stream_.reset();
+    // Nothing else reports a worker that stays alive but never answers. The
+    // timer is a member, so it cannot fire after `this` is destroyed.
+    final_result_timer_.Start(
+        FROM_HERE, kFinalResultTimeout,
+        base::BindOnce(
+            &BraveOnDeviceSpeechRecognitionEngine::OnFinalResultTimeout,
+            base::Unretained(this)));
     return;
   }
 
@@ -59,6 +66,7 @@ void BraveOnDeviceSpeechRecognitionEngine::AudioChunksEnded() {
 
 void BraveOnDeviceSpeechRecognitionEngine::EndRecognition() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(main_sequence_checker_);
+  final_result_timer_.Stop();
   OnDeviceSpeechRecognitionEngine::EndRecognition();
   // Drop any GetAsrSession reply still in flight, so it cannot start a stream.
   brave_weak_factory_.InvalidateWeakPtrs();
@@ -68,6 +76,11 @@ void BraveOnDeviceSpeechRecognitionEngine::EndRecognition() {
 void BraveOnDeviceSpeechRecognitionEngine::OnResponse(
     std::vector<on_device_model::mojom::SpeechRecognitionResultPtr> result) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(main_sequence_checker_);
+  // Any message means the worker is still alive and working, reset the timer.
+  if (final_result_timer_.IsRunning()) {
+    final_result_timer_.Reset();
+  }
+
   // Nothing between here and blink consults interim_results, so the engine is
   // the only place that can honor it. Past the end of audio a provisional is
   // unwanted regardless: the recognizer reports it and then keeps waiting.
@@ -82,6 +95,13 @@ void BraveOnDeviceSpeechRecognitionEngine::OnResponse(
   }
 
   OnDeviceSpeechRecognitionEngine::OnResponse(std::move(result));
+}
+
+void BraveOnDeviceSpeechRecognitionEngine::OnFinalResultTimeout() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(main_sequence_checker_);
+  // The empty result makes the recognizer end the session, which releases the
+  // worker.
+  OnDeviceSpeechRecognitionEngine::AudioChunksEnded();
 }
 
 void BraveOnDeviceSpeechRecognitionEngine::OnAsrSessionReady(
