@@ -1009,17 +1009,24 @@ test with a non-zero duration. `Tests took 0 seconds` for a browser test means
 nothing ran.
 
 If the tests are missing, build a **separate** output directory with the flag
-enabled rather than reconfiguring a shared one:
+flipped rather than reconfiguring a shared one:
 
 ```bash
-pnpm run build Component -C ComponentAIChat --target=brave_browser_tests
+pnpm run build Component -C ComponentAIChat --target=brave_browser_tests \
+  --gn is_brave_origin_branded:false
 ```
 
 `-C` is relative to `out/` (`-C out/Foo` creates `out/out/Foo` and trips a gn
-assertion about output-directory depth). Note that `.env`-backed args such as
-`is_brave_origin_branded` are read only from `.env` and `package.json`'s
-`config` — an environment variable or `--gn` override will not change them,
-because the branding import is selected from the same value.
+assertion about output-directory depth). `--gn` is what flips the arg:
+`buildArgs.ts` forwards the `.env`/`package.json` value into the gn args first
+and applies `--gn` values last, so the override wins.
+
+`--gn` does not, however, change which branding defaults are imported — that
+choice comes from `config.isBraveOriginBranded`, which `EnvConfig` reads only
+from `.env` and `package.json`'s `config`, never from a process environment
+variable. The dir you get therefore has `is_brave_origin_branded=false` with
+`brave_origin` branding still imported, which is enough to compile a gated test
+target back in; edit `.env`/`package.json` if you need the branding to match.
 
 The same "matches nothing, still succeeds" failure mode applies to parameterized
 suites; see [TI-042](#TI-042).
