@@ -7,6 +7,7 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 import Dialog from '@brave/leo/react/dialog'
 import Icon from '@brave/leo/react/icon'
+import Link from '@brave/leo/react/link'
 
 import { useAppState, useAppActions } from '../lib/app_context'
 import { DiagnosticEntry } from '../lib/app_store'
@@ -406,7 +407,19 @@ export function Diagnostics() {
     <>
       <TabHeader
         title='General'
-        description='Overview of the current state of the ads system.'
+        description={
+          <>
+            Overview of the current state of the ads system. Enable{' '}
+            <Link
+              href='brave://flags/#ads-internals-verbose-mode'
+              target='_blank'
+              rel='noopener noreferrer'
+            >
+              brave://flags/#ads-internals-verbose-mode
+            </Link>{' '}
+            for additional diagnostics.
+          </>
+        }
         onRefresh={actions.loadDiagnostics}
       >
         <DeviceIdRow />

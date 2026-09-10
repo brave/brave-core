@@ -8,7 +8,7 @@ import Button from '@brave/leo/react/button'
 
 import { useAppState, useAppActions } from '../lib/app_context'
 import { AdEvent } from '../lib/app_store'
-import { renderCopyableText } from '../lib/copyable_text'
+import { RelatedCopyText, renderCopyableText } from '../lib/copyable_text'
 import {
   formatUnixEpochToLocalDate,
   formatUnixEpochToLocalTime,
@@ -50,6 +50,41 @@ const COLUMN_WIDTH_CLASSES: Partial<Record<keyof AdEvent, string>> = {
   'Event Type': 'narrow-value-column',
 }
 
+function buildPlacementEventsMap(rows: AdEvent[]) {
+  const map = new Map<string, AdEvent[]>()
+  for (const row of rows) {
+    const placementId = row['Placement ID']
+    const events = map.get(placementId)
+    if (events) {
+      events.push(row)
+    } else {
+      map.set(placementId, [row])
+    }
+  }
+  return map
+}
+
+// Always returned (even when `current` is the only event for its placement
+// ID), so the Cmd/Ctrl+click hint is consistent across every Placement ID
+// cell rather than only appearing once a second event has been recorded.
+function formatOtherPlacementEvents(
+  events: AdEvent[],
+  current: AdEvent,
+): RelatedCopyText {
+  const others = events.filter((event) => event !== current)
+  const sorted = [current, ...others].sort(
+    (a, b) => b['Created At'] - a['Created At'])
+  return {
+    hint: 'Cmd/Ctrl+click to copy other events with this placement ID',
+    text: [
+      `Placement ID: ${current['Placement ID']}`,
+      ...sorted.map((event) =>
+        `${formatUnixEpochToLocalTime(event['Created At'])} | ` +
+          `${event['Ad Type']} | ${event['Event Type']}`),
+    ].join('\n'),
+  }
+}
+
 function downloadAdEvents(rows: AdEvent[]) {
   const lines = rows.map((row) => [
     formatUnixEpochToLocalTime(row['Created At']),
@@ -73,8 +108,12 @@ function downloadAdEvents(rows: AdEvent[]) {
   document.body.removeChild(element)
 }
 
-function AdEventTable({ data }: { data: AdEvent[] }) {
+function AdEventTable({ data, allRows }: { data: AdEvent[], allRows: AdEvent[] }) {
   const copy = useCopyToClipboard()
+  const placementEventsMap = React.useMemo(
+    () => buildPlacementEventsMap(allRows),
+    [allRows],
+  )
 
   return (
     <table>
@@ -107,7 +146,17 @@ function AdEventTable({ data }: { data: AdEvent[] }) {
               }
               return (
                 <td key={header} className={className}>
-                  {renderCopyableText(row[header] as string, `${index}-${header}`, copy)}
+                  {renderCopyableText(row[header] as string, `${index}-${header}`, copy,
+                    header === 'Placement ID'
+                      ? {
+                          getRelated: (value) => {
+                            const events = placementEventsMap.get(value)
+                            return events
+                              ? formatOtherPlacementEvents(events, row)
+                              : undefined
+                          },
+                        }
+                      : undefined)}
                 </td>
               )
             })}
@@ -209,7 +258,7 @@ export function Events() {
           </h4>
 
           <section>
-            <AdEventTable data={group.rows} />
+            <AdEventTable data={group.rows} allRows={rows} />
           </section>
         </div>
       ))}

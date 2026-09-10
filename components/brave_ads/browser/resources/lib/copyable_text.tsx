@@ -38,14 +38,27 @@ const COPYABLE_TEXT_REGEX = new RegExp(
 // measured here reflect this span's own truncation, whether the clipping is
 // caused by this span filling a `truncate-cell` or by it merely running out
 // of room within flowing text.
-export function CopyableSpan({ value, className, onCopy }: {
+// What Cmd/Ctrl+click copies instead of `value`, for values that have a
+// caller-defined relation to other data (e.g. an id family, or other table
+// rows sharing the same value).
+export interface RelatedCopyText {
+  hint: string
+  text: string
+}
+
+export function CopyableSpan({ value, className, onCopy, related }: {
   value: string
   className: string
   onCopy: (value: string) => void
+  related?: RelatedCopyText
 }) {
   const ref = React.useRef<HTMLSpanElement>(null)
   const [isTruncated, setIsTruncated] = React.useState(false)
   const idFamily = useIdFamily(value)
+  const effectiveRelated = related ?? (idFamily && {
+    hint: 'Cmd/Ctrl+click to copy related IDs',
+    text: formatIdFamily(idFamily),
+  })
 
   function checkTruncation() {
     const element = ref.current
@@ -55,8 +68,8 @@ export function CopyableSpan({ value, className, onCopy }: {
   }
 
   const hints = ['Click to copy']
-  if (idFamily) {
-    hints.push('Cmd/Ctrl+click to copy related IDs')
+  if (effectiveRelated) {
+    hints.push(effectiveRelated.hint)
   }
   const hintText = `(${hints.join('; ')})`
 
@@ -67,8 +80,8 @@ export function CopyableSpan({ value, className, onCopy }: {
       title={isTruncated ? `${value} ${hintText}` : hintText}
       onMouseEnter={checkTruncation}
       onClick={(event) => {
-        if (idFamily && (event.metaKey || event.ctrlKey)) {
-          onCopy(formatIdFamily(idFamily))
+        if (effectiveRelated && (event.metaKey || event.ctrlKey)) {
+          onCopy(effectiveRelated.text)
         } else {
           onCopy(value)
         }
@@ -90,7 +103,10 @@ export function renderCopyableText(
   text: string,
   keyPrefix: string,
   onCopy: (value: string) => void,
-  { monospace = true }: { monospace?: boolean } = {},
+  { monospace = true, getRelated }: {
+    monospace?: boolean
+    getRelated?: (value: string) => RelatedCopyText | undefined
+  } = {},
 ) {
   const className = monospace ? 'copyable-text copyable-text-mono' : 'copyable-text'
   const nodes: React.ReactNode[] = []
@@ -111,6 +127,7 @@ export function renderCopyableText(
         value={value}
         className={isUrl ? `${className} copyable-text-wrap` : className}
         onCopy={onCopy}
+        related={getRelated?.(value)}
       />,
     )
     lastIndex = matchIndex + value.length
