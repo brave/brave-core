@@ -16,6 +16,7 @@
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/logging.h"
@@ -72,51 +73,34 @@ bool HasStrippableImage(
       });
 }
 
-// Helps to ensure we only touch files in the |temp_root_dir| we created.
-bool CanDeleteTempPath(const base::FilePath& temp_root_dir,
-                       const base::FilePath& temp_path) {
-  return !temp_path.empty() && !temp_path.ReferencesParent() &&
-         (temp_path == temp_root_dir || temp_root_dir.IsParent(temp_path));
-}
-
 // Algorithm:
 // 1) Create one unique temporary root directory for this selection.
 // 2) Iterate over each item in the |selected_files|.
 // 3) If the "ith" item is not strippable, continue with 2.
 // 4) If the "ith" is strippable then:
-//    4.a) Copy it into a unique subdir of the root, and use the filename of
-//    the original file. On macOS file controls show the name the user picked.
-//    4.b) Try and strip the metadata from that copy.
-//         4.b.1) If failed: Delete the subdir and go to Step 2.
-//         4.b.2) Otherwise, mark the copy for upload.
-// 5) If nothing was stripped, delete the temporary root directory created in
-// step 1.
-// 6) Else we queue the temporary root directory created in step 1 for
-// deletion via |temporary_files|.
+//    4.a) Copy it into a unique `ScopedTempDir` subdir of the root, and use the
+//    filename of the original file. On macOS file controls show the name the
+//    user picked. 4.b) Try and strip the metadata from that copy.
+//         4.b.1) If failed: ScopedTempDir automatically deletes the subdir.
+//         4.b.2) Otherwise, Take() the subdir and mark the copy for upload.
+// 5) If nothing was stripped, ScopedTempDir deletes the temporary root
+// directory created in step 1.
+// 6) Else Take() the path and queue it for deletion via |temporary_files|.
 StripResult StripListOnBlockingThread(
     std::vector<blink::mojom::FileChooserFileInfoPtr> selected_files) {
   StripResult result;
 
   // 1) Create one unique temporary root directory for this selection.
-  base::FilePath temp_root_dir;
-  if (!base::CreateNewTempDirectory(kUploadStripTempDirPrefix,
-                                    &temp_root_dir)) {
+  base::ScopedTempDir temp_root;
+  if (!temp_root.CreateUniqueTempDir(kUploadStripTempDirPrefix)) {
     LOG(ERROR) << "Upload strip skipped; temp directory could not be created.";
     result.selected_files = std::move(selected_files);
     return result;
   }
+  const base::FilePath& temp_root_dir = temp_root.GetPath();
 
-  // This will be used to create teh sub directory inside the |temp_root_dir|.
+  // This will be used to create the sub directory inside the |temp_root_dir|.
   size_t temp_sub_dir_index = 0;
-
-  // Delete the |temp_root_dir| if no stripping was done, or a sub
-  // directory. If the deletion fails, we push the path to be cleaned up in
-  // upstream's DeleteTemporaryFiles cleanup.
-  auto temp_dir_deleter = [root = temp_root_dir, &result](base::FilePath path) {
-    if (!CanDeleteTempPath(root, path) || !base::DeletePathRecursively(path)) {
-      result.temp_files.push_back(std::move(path));
-    }
-  };
 
   bool stripped_any = false;
   // 2. Iterate over each item in the |selected_files|.
@@ -142,20 +126,20 @@ StripResult StripListOnBlockingThread(
     }
 
     // 4.a) Copy it into a unique subdir of the root, ...
-    const base::FilePath sub_dir_path =
-        temp_root_dir.AppendASCII(base::NumberToString(temp_sub_dir_index++));
-    if (!base::CreateDirectory(sub_dir_path)) {
+    base::ScopedTempDir sub_dir;
+    if (!sub_dir.Set(temp_root_dir.AppendASCII(
+            base::NumberToString(temp_sub_dir_index++)))) {
       LOG(ERROR) << "Upload strip skipped; temp subdir could not be created: "
                  << src;
       continue;
     }
 
     // 4.a) ... and use the filename of the original file.
-    const base::FilePath temp_stripped_file = sub_dir_path.Append(basename);
+    const base::FilePath temp_stripped_file =
+        sub_dir.GetPath().Append(basename);
     if (!base::CopyFile(src, temp_stripped_file)) {
       DVLOG(1) << "Upload strip skipped; Failed to copy the image file to a "
                   "temporary file.";
-      temp_dir_deleter(sub_dir_path);
       continue;
     }
 
@@ -164,8 +148,7 @@ StripResult StripListOnBlockingThread(
             image_metadata_stripper::StrippingClient::kFileSelect,
             temp_stripped_file)) {
       DVLOG(1) << "No stripping occured; keeping original: " << src;
-      // 4.b.1) If failed: Delete the subdir and go to Step 2.
-      temp_dir_deleter(sub_dir_path);
+      // 4.b.1) If failed: ScopedTempDir deletes the subdir.
       continue;
     }
 
@@ -176,18 +159,15 @@ StripResult StripListOnBlockingThread(
     if (native->display_name.empty()) {
       native->display_name = basename.AsUTF16Unsafe();
     }
-    // This would defer the deletion of the |temp_root_dir| cleanup to the
-    // upstream which will delete it once the tab is closed.
+    // Keep the stripped copy under the parent until FileSelectHelper cleanup.
+    sub_dir.Take();
     stripped_any = true;
   }
 
-  if (!stripped_any) {
-    // 5) If nothing was stripped, delete the temporary root directory.
-    temp_dir_deleter(std::move(temp_root_dir));
-  } else {
-    // Else we queue the temporary root directory created in step 1 for deletion
-    // via |temporary_files|.
-    result.temp_files.push_back(std::move(temp_root_dir));
+  if (stripped_any) {
+    // Queue the temporary root for FileSelectHelper cleanup. Take() so the
+    // copies survive until the tab closes.
+    result.temp_files.push_back(temp_root.Take());
   }
 
   result.selected_files = std::move(selected_files);

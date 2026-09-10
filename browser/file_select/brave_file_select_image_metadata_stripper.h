@@ -15,7 +15,7 @@
 
 namespace brave {
 
-// Prefix passed to CreateNewTempDirectory for stripped upload copies.
+// Prefix passed to CreateUniqueTempDir for stripped upload copies.
 inline constexpr base::FilePath::CharType kUploadStripTempDirPrefix[] =
     FILE_PATH_LITERAL("brave_upload_strip");
 
