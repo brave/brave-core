@@ -87,7 +87,7 @@ function collectText(root: Node, out: string[]): void {
   }
 }
 
-function getMainArticle(): string {
+function getTextContent(): string {
   const rootNodes = getRootNodes()
   const textParts: string[] = []
   for (const node of rootNodes) {
@@ -97,6 +97,6 @@ function getMainArticle(): string {
   return text.length !== 0 ? text : document.body ? document.body.innerText : ''
 }
 
-const aiChatDistillerApi = new CrWebApi('aiChatDistiller')
-aiChatDistillerApi.addFunction('getMainArticle', getMainArticle)
-gCrWeb.registerApi(aiChatDistillerApi)
+const textContentDistillerApi = new CrWebApi('textContentDistiller')
+textContentDistillerApi.addFunction('getTextContent', getTextContent)
+gCrWeb.registerApi(textContentDistillerApi)

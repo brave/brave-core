@@ -208,7 +208,7 @@ var package = Package(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/YoutubeQualityScript.js"
         ),
         .copy(
-          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/BraveLeoScript.js"
+          "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/TextContentDistillerScript.js"
         ),
         .copy(
           "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DarkReaderScript.js"

@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("text_content_distiller") {
+  sources = [
+    "text_content_distiller_javascript_feature.h",
+    "text_content_distiller_javascript_feature.mm",
+  ]
+  deps = [
+    ":text_content_distiller_js",
+    "//base",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("text_content_distiller_js") {
+  visibility = [ ":text_content_distiller" ]
+
+  sources = [ "resources/text_content_distiller.ts" ]
+
+  deps = [ "//ios/web/public/js_messaging:gcrweb" ]
+}

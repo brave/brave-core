@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-window.__firefox__.includeOnce('BraveLeoScript', function($) {
+window.__firefox__.includeOnce('TextContentDistillerScript', function($) {
 
   const kRolesToSkip = [
     "audio", "banner", "button", "complementary",
@@ -11,13 +11,13 @@ window.__firefox__.includeOnce('BraveLeoScript', function($) {
     "textbox", "combobox", "listbox", "checkbox", "radiobutton",
     "slider", "spinbutton", "searchbox"
   ];
-  
+
   const kTagsToSkip = [
     "AUDIO", "HEADER", "BUTTON", "ASIDE",
     "FOOTER", "IMG", "PICTURE", "LABEL", "NAV",
     "INPUT", "BUTTON", "SEARCH", "STYLE"
   ];
-  
+
   // Walk the node tree to find <main> and <article> tags
   // Returns the child tags of <main> and <article>
   function getRootNodes() {
@@ -38,7 +38,7 @@ window.__firefox__.includeOnce('BraveLeoScript', function($) {
     }
     return result;
   }
-  
+
   // Walk the `root` node tree and find all tags we're interested in
   // Filters out all the `TagsToSkip` and returns all the child tags of `root`
   function getContentNodes(root) {
@@ -55,14 +55,14 @@ window.__firefox__.includeOnce('BraveLeoScript', function($) {
       }
 
       //result.push(node);
-  
+
       for (const child of node.childNodes) {
         queue.push(child);
       }
     }
     return result;
   }
-  
+
   // Iterate the <main> and <article> tags
   // Filter out the TagsToSkip
   // Filter further for only Text Nodes
@@ -75,15 +75,15 @@ window.__firefox__.includeOnce('BraveLeoScript', function($) {
     for (const node of rootNodes) {
       contentNodes.push(...getContentNodes(node));
     }
-    
+
     var textNodes = [];
     while(contentNodes.length != 0) {
       const node = contentNodes.pop();
-      
+
       if (node.nodeType == Node.TEXT_NODE) {
         textNodes.push(node.wholeText);  // node.data
       }
-      
+
       for (const child of node.childNodes) {
         contentNodes.push(child);
       }
@@ -92,7 +92,7 @@ window.__firefox__.includeOnce('BraveLeoScript', function($) {
     return textNodes.join(" ");
   }
 
-  Object.defineProperty(window.__firefox__, '$<getMainArticle>', {
+  Object.defineProperty(window.__firefox__, '$<getTextContent>', {
       enumerable: false,
       configurable: false,
       writable: false,
@@ -101,9 +101,9 @@ window.__firefox__.includeOnce('BraveLeoScript', function($) {
         if (token != SECURITY_TOKEN) {
           return null;
         }
-        
-        const mainArticleText = getTextNodes();
-        return mainArticleText.length != 0 ? mainArticleText : document.body.innerText;
+
+        const textContent = getTextNodes();
+        return textContent.length != 0 ? textContent : document.body.innerText;
       }
   });
 });
