@@ -51,7 +51,6 @@
 #include "ui/views/layout/box_layout.h"
 #include "ui/views/style/typography.h"
 #include "ui/views/widget/widget.h"
-#include "ui/views/window/dialog_client_view.h"
 #include "ui/views/window/dialog_delegate.h"
 
 #if BUILDFLAG(ENABLE_WIDEVINE)
@@ -158,10 +157,8 @@ class PermissionLifetimeCombobox : public views::Combobox,
   METADATA_HEADER(PermissionLifetimeCombobox, views::Combobox)
  public:
   explicit PermissionLifetimeCombobox(
-      views::BubbleDialogDelegateView& dialog_delegate_view,
       permissions::PermissionPrompt::Delegate& delegate)
-      : dialog_delegate_view_(dialog_delegate_view),
-        delegate_(delegate),
+      : delegate_(delegate),
         lifetime_options_(permissions::CreatePermissionLifetimeOptions()) {
     SetCallback(base::BindRepeating(&PermissionLifetimeCombobox::OnItemSelected,
                                     base::Unretained(this)));
@@ -186,14 +183,8 @@ class PermissionLifetimeCombobox : public views::Combobox,
   void OnItemSelected() {
     SetRequestsLifetime(lifetime_options_, GetSelectedIndex().value(),
                         &*delegate_);
-    // Workaround an upstream issue when a ComboBox close prevents any
-    // interaction with the Permission bubble for 500ms.
-    if (auto* dialog = dialog_delegate_view_->GetDialogClientView()) {
-      dialog->IgnoreNextWindowStationaryStateChanged();
-    }
   }
 
-  const raw_ref<views::BubbleDialogDelegateView> dialog_delegate_view_;
   const raw_ref<permissions::PermissionPrompt::Delegate, DanglingUntriaged>
       delegate_;
   std::vector<permissions::PermissionLifetimeOption> lifetime_options_;
@@ -377,9 +368,8 @@ views::View* AddPermissionLifetimeComboboxIfNeeded(
 
   // Add the combobox.
   DCHECK(delegate);
-  auto* combobox =
-      container->AddChildView(std::make_unique<PermissionLifetimeCombobox>(
-          *dialog_delegate_view, *delegate));
+  auto* combobox = container->AddChildView(
+      std::make_unique<PermissionLifetimeCombobox>(*delegate));
   static_cast<views::BoxLayout*>(container->GetLayoutManager())
       ->SetFlexForView(combobox, 1);
 
