@@ -183,7 +183,10 @@ struct OtherPrivacySettingsSectionView: View {
       if settings.isSponsoredAdsSupported {
         ToggleView(
           title: Strings.Settings.sponsoredAdsEnabledTitle,
-          subtitle: Strings.Settings.sponsoredAdsEnabledDescription,
+          subtitle: String.localizedStringWithFormat(
+            Strings.Settings.sponsoredAdsEnabledDescription,
+            URL.brave.sponsoredAdsLearnMoreLinkUrl.absoluteString
+          ),
           toggle: Binding(
             get: { Preferences.NewTabPage.backgroundMediaType.isSponsored },
             set: {

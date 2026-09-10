@@ -147,6 +147,9 @@ constexpr char16_t kLeoPrivacyPolicyURL[] =
 constexpr char16_t kAdBlockOnlyModeLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/38076796692109";
 
+constexpr char16_t kSponsoredAdsLearnMoreUrl[] =
+    u"https://support.brave.app/hc/en-us/articles/48376231110413";
+
 constexpr char16_t kSurveyPanelistLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/36550092449165";
 
@@ -1271,6 +1274,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringFUTF16(IDS_SETTINGS_LEO_ASSISTANT_YOUR_MEMORIES_DESC,
                                  kLeoMemoryLearnMoreURL));
 #endif
+
+  html_source->AddString("sponsoredAdsLearnMoreURL", kSponsoredAdsLearnMoreUrl);
 
   html_source->AddString("braveSurveyPanelistLearnMoreURL",
                          kSurveyPanelistLearnMoreURL);
