@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Skip upstream autocomplete when the Brave autocomplete pref is off
+
+      Brave gates autocomplete on its own `kAutocompleteEnabled` pref. When it
+      is off, keyword mode is cleared and the upstream autocomplete start is
+      never performed. `IsAutocompleteEnabled` lives in the chromium_src
+      shadow.
+    preempt_function_impl:
+      function_name: OmniboxController::StartAutocomplete
+      code: |-
+        if (!IsAutocompleteEnabled(client_->GetPrefs())) {
+          ClearPopupKeywordMode();
+          return;
+        }
+
+  - description: |
+      Disable zero suggest prefetch
+
+      Per the security/privacy team, Brave must not prefetch zero-suggest
+      results, so the upstream body is replaced by a no-op.
+    regex:
+      re_pattern:
+        '(void OmniboxController::StartZeroSuggestPrefetch\(\)\s*\{).*?\n\}'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          // Disables zero suggest prefetch by doing nothing in here.
+        }
