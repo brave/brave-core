@@ -6,6 +6,8 @@
 import("//build/util/branding.gni")
 
 vpn_agent_executable_name = "brave_vpn_agent_app"
+vpn_agent_ipc_name =
+    string_replace(chrome_product_full_name, " ", ".") + ".vpn.agent"
 
 if (is_mac) {
   vpn_agent_product_full_name = "$chrome_product_full_name VPN Agent"
