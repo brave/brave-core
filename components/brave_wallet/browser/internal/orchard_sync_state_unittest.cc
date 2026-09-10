@@ -27,10 +27,17 @@ namespace {
 
 constexpr uint32_t kDefaultCommitmentSeed = 1;
 
-OrchardNote MakeTestNote(uint32_t block_id, uint8_t nullifier_byte) {
+// Distinct amounts for each pool so tests can assert that Orchard and Ironwood
+// notes never get mixed together.
+constexpr uint64_t kOrchardNoteAmount = 10000;
+constexpr uint64_t kIronwoodNoteAmount = 20000;
+
+OrchardNote MakeTestNote(uint32_t block_id,
+                         uint8_t nullifier_byte,
+                         uint64_t amount = kOrchardNoteAmount) {
   OrchardNote note;
   note.block_id = block_id;
-  note.amount = 10000;
+  note.amount = amount;
   note.nullifier.fill(nullifier_byte);
   note.note_version = 2;
   return note;
@@ -654,6 +661,22 @@ class OrchardSyncStateRewindTest : public OrchardSyncStateTest {
     }
   }
 
+  // Verifies both the block id and amount of every note, so tests can assert
+  // that a pool holds exactly its own notes and none from the other pool.
+  void ExpectAllNotes(
+      OrchardPool pool,
+      const std::vector<std::pair<uint32_t, uint64_t>>& block_id_amounts) {
+    auto notes = sync_state()->GetSpendableNotes(pool, account_id(), {});
+    ASSERT_TRUE(notes.has_value());
+    ASSERT_TRUE(notes.value().has_value());
+    ASSERT_EQ(block_id_amounts.size(), notes.value()->all_notes.size());
+    for (size_t i = 0; i < block_id_amounts.size(); ++i) {
+      EXPECT_EQ(block_id_amounts[i].first,
+                notes.value()->all_notes[i].block_id);
+      EXPECT_EQ(block_id_amounts[i].second, notes.value()->all_notes[i].amount);
+    }
+  }
+
  private:
   base::test::ScopedFeatureList feature_list_;
 };
@@ -723,17 +746,24 @@ TEST_F(OrchardSyncStateRewindTest, ToMarkedHeight_IronwoodEnabled) {
         OrchardTreeState(),
         MakeToMarkedHeightCommitments(kDefaultCommitmentSeed + 10), 1000,
         "1000");
-    result.ironwood->discovered_notes = {MakeTestNote(1, 11),
-                                         MakeTestNote(2, 12)};
-    result.ironwood->found_spends.push_back(MakeTestSpend(2, 11));
+    // Ironwood uses a different block layout and note count than Orchard to
+    // prove the two pools never share note data: three notes at blocks 5/6/7
+    // (with a distinct amount) instead of Orchard's two notes at blocks 1/2.
+    result.ironwood->discovered_notes = {
+        MakeTestNote(5, 11, kIronwoodNoteAmount),
+        MakeTestNote(6, 12, kIronwoodNoteAmount),
+        MakeTestNote(7, 13, kIronwoodNoteAmount)};
+    result.ironwood->found_spends.push_back(MakeTestSpend(8, 11));
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
               sync_state()
                   ->ApplyScanResults(account_id(), std::move(result))
                   .value());
   }
 
-  ExpectAllNoteBlockIds(OrchardPool::kOrchard, {2u});
-  ExpectAllNoteBlockIds(OrchardPool::kIronwood, {2u});
+  ExpectAllNotes(OrchardPool::kOrchard, {{2u, kOrchardNoteAmount}});
+  // The spend removed the block-5 note, leaving the block-6 and block-7 notes.
+  ExpectAllNotes(OrchardPool::kIronwood,
+                 {{6u, kIronwoodNoteAmount}, {7u, kIronwoodNoteAmount}});
   EXPECT_EQ(
       2u,
       storage().CheckpointCount(OrchardPool::kIronwood, account_id()).value());
@@ -749,8 +779,10 @@ TEST_F(OrchardSyncStateRewindTest, ToMarkedHeight_IronwoodEnabled) {
   EXPECT_EQ(OrchardStorage::Result::kSuccess,
             sync_state()->Rewind(account_id(), 1, "1").value());
 
-  ExpectAllNoteBlockIds(OrchardPool::kOrchard, {1u});
-  ExpectAllNoteBlockIds(OrchardPool::kIronwood, {1u});
+  ExpectAllNotes(OrchardPool::kOrchard, {{1u, kOrchardNoteAmount}});
+  // Every Ironwood note lived at blocks 5-7, so rewinding to block 1 removes
+  // all of them, whereas Orchard's block-1 note survives.
+  ExpectAllNotes(OrchardPool::kIronwood, {});
   // TruncateToCheckpoint(1) drops checkpoint 1 and later.
   EXPECT_EQ(
       0u,
@@ -772,15 +804,21 @@ TEST_F(OrchardSyncStateRewindTest, ToMarkedHeight_IronwoodEnabled) {
         std::move(ironwood_tree_state),
         MakeToMarkedHeightPostRewindCommitments(kDefaultCommitmentSeed + 10),
         1000, "1000");
-    result.ironwood->discovered_notes.push_back(MakeTestNote(2, 12));
+    result.ironwood->discovered_notes = {
+        MakeTestNote(5, 11, kIronwoodNoteAmount),
+        MakeTestNote(6, 12, kIronwoodNoteAmount),
+        MakeTestNote(7, 13, kIronwoodNoteAmount)};
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
               sync_state()
                   ->ApplyScanResults(account_id(), std::move(result))
                   .value());
   }
 
-  ExpectAllNoteBlockIds(OrchardPool::kOrchard, {1u, 2u});
-  ExpectAllNoteBlockIds(OrchardPool::kIronwood, {1u, 2u});
+  ExpectAllNotes(OrchardPool::kOrchard,
+                 {{1u, kOrchardNoteAmount}, {2u, kOrchardNoteAmount}});
+  ExpectAllNotes(OrchardPool::kIronwood, {{5u, kIronwoodNoteAmount},
+                                          {6u, kIronwoodNoteAmount},
+                                          {7u, kIronwoodNoteAmount}});
 
   auto actual_witness = sync_state()->CalculateWitnessForCheckpoint(
       OrchardPool::kOrchard, account_id(), {input}, 2);
@@ -876,17 +914,29 @@ TEST_F(OrchardSyncStateRewindTest, Rewind_IronwoodEnabled) {
     result.ironwood = CreateIronwoodPoolResultForTesting(
         OrchardTreeState(), MakeRewindCommitments(kDefaultCommitmentSeed + 10),
         1000, "1000");
-    result.ironwood->discovered_notes = {MakeTestNote(1, 11),
-                                         MakeTestNote(2, 12)};
-    result.ironwood->found_spends.push_back(MakeTestSpend(3, 11));
+    // Ironwood uses a different block layout and note count than Orchard to
+    // prove the two pools never share note data. It has a note at block 1
+    // (below the rewind height, so it survives the rewind) plus notes at
+    // blocks 5/6/7 (above the rewind height, so they are dropped), all with a
+    // distinct amount, versus Orchard's two notes at blocks 1/2.
+    result.ironwood->discovered_notes = {
+        MakeTestNote(1, 11, kIronwoodNoteAmount),
+        MakeTestNote(5, 12, kIronwoodNoteAmount),
+        MakeTestNote(6, 13, kIronwoodNoteAmount),
+        MakeTestNote(7, 14, kIronwoodNoteAmount)};
+    result.ironwood->found_spends.push_back(MakeTestSpend(8, 12));
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
               sync_state()
                   ->ApplyScanResults(account_id(), std::move(result))
                   .value());
   }
 
-  ExpectAllNoteBlockIds(OrchardPool::kOrchard, {2u});
-  ExpectAllNoteBlockIds(OrchardPool::kIronwood, {2u});
+  ExpectAllNotes(OrchardPool::kOrchard, {{2u, kOrchardNoteAmount}});
+  // The spend removed the block-5 note, leaving the block-1, block-6 and
+  // block-7 notes.
+  ExpectAllNotes(OrchardPool::kIronwood, {{1u, kIronwoodNoteAmount},
+                                          {6u, kIronwoodNoteAmount},
+                                          {7u, kIronwoodNoteAmount}});
   EXPECT_EQ(
       2u,
       storage().CheckpointCount(OrchardPool::kIronwood, account_id()).value());
@@ -899,9 +949,13 @@ TEST_F(OrchardSyncStateRewindTest, Rewind_IronwoodEnabled) {
 
   EXPECT_EQ(OrchardStorage::Result::kSuccess,
             sync_state()->Rewind(account_id(), 2, "2").value());
-  // Nullifier was deleted so we should have 2 spendable notes now.
-  ExpectAllNoteBlockIds(OrchardPool::kOrchard, {1u, 2u});
-  ExpectAllNoteBlockIds(OrchardPool::kIronwood, {1u, 2u});
+  // Orchard's spend nullifier was removed by the rewind, so its spent note is
+  // spendable again (blocks 1 and 2). Ironwood keeps its block-1 note, which is
+  // below the rewind height, while its block-5/6/7 notes are above the rewind
+  // height and are dropped - proving the two pools are rewound independently.
+  ExpectAllNotes(OrchardPool::kOrchard,
+                 {{1u, kOrchardNoteAmount}, {2u, kOrchardNoteAmount}});
+  ExpectAllNotes(OrchardPool::kIronwood, {{1u, kIronwoodNoteAmount}});
   EXPECT_EQ(
       1u,
       storage().CheckpointCount(OrchardPool::kIronwood, account_id()).value());
