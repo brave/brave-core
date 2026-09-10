@@ -67,6 +67,10 @@ bool IsPolkadotAssetDiscoveryEnabled() {
   return IsPolkadotEnabled() && features::kPolkadotAssetDiscovery.Get();
 }
 
+bool IsPolkadotDAppSupportEnabled() {
+  return IsPolkadotEnabled() && features::kPolkadotDAppSupport.Get();
+}
+
 bool IsWalletDebugEnabled() {
 #if !defined(OFFICIAL_BUILD)
   return base::FeatureList::IsEnabled(features::kBraveWalletDebugFeature);
