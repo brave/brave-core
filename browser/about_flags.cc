@@ -630,6 +630,21 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(brave::kUpgradeWhenIdle),                         \
       }))
 
+#if !BUILDFLAG(IS_ANDROID)
+#define BRAVE_RESTART_GPU_ON_PRESENT_STALL_FEATURE_ENTRY                       \
+  EXPAND_FEATURE_ENTRIES({                                                     \
+      "brave-restart-gpu-on-present-stall",                                    \
+      "Restart GPU process on compositor present stall",                       \
+      "Restart the GPU process if a visible window keeps submitting frames "   \
+      "that never present. Recovers macOS UI freezes where the GPU process "   \
+      "is stuck in WindowServer/CATransaction and closing tabs does nothing.", \
+      kOsWin | kOsMac | kOsLinux,                                              \
+      FEATURE_VALUE_TYPE(features::kBraveRestartGpuOnPresentStall),            \
+  })
+#else
+#define BRAVE_RESTART_GPU_ON_PRESENT_STALL_FEATURE_ENTRY
+#endif
+
 #if defined(TOOLKIT_VIEWS)
 #define BRAVE_DARKER_THEME_FEATURE_ENTRIES                           \
   EXPAND_FEATURE_ENTRIES({                                           \
@@ -1619,6 +1634,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \
   BRAVE_UPGRADE_WHEN_IDLE_FEATURE_ENTRY                                        \
+  BRAVE_RESTART_GPU_ON_PRESENT_STALL_FEATURE_ENTRY                             \
   BRAVE_EXTENSIONS_MANIFEST_V2                                                 \
   BRAVE_EXTENSION_AUTO_UPDATE_FEATURE_ENTRY                                    \
   BRAVE_EXTENSION_MALWARE_BLOCKLIST_FEATURE_ENTRY                              \

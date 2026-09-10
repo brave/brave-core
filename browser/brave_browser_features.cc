@@ -46,6 +46,21 @@ BASE_FEATURE(kBraveOverrideDownloadDangerLevel,
 BASE_FEATURE(kBraveDayZeroExperiment,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+#if !BUILDFLAG(IS_ANDROID)
+// Restart the GPU process when a visible compositor keeps committing frames
+// that never present. On macOS this recovers UI freezes caused by a GPU
+// process stuck in CATransaction/WindowServer, which the GPU watchdog does
+// not kill and which tab closes cannot recover.
+BASE_FEATURE(kBraveRestartGpuOnPresentStall,
+             "BraveRestartGpuOnPresentStall",
+#if BUILDFLAG(IS_MAC)
+             base::FEATURE_ENABLED_BY_DEFAULT
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT
+#endif
+);
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 #if BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
 // Run WebAssembly code in the DrumBrake interpreter instead of the optimizing
 // compiler. Automatically enabled when V8 is in jitless mode.
@@ -83,6 +98,24 @@ const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant{
     &kBraveDayZeroExperiment,
     /*name=*/"variant",
     /*default_value=*/""};
+
+#if !BUILDFLAG(IS_ANDROID)
+const base::FeatureParam<int> kBraveRestartGpuOnPresentStallTimeoutSeconds{
+    &kBraveRestartGpuOnPresentStall,
+    /*name=*/"stall_timeout_seconds",
+    /*default_value=*/15};
+
+const base::FeatureParam<int> kBraveRestartGpuOnPresentStallCooldownSeconds{
+    &kBraveRestartGpuOnPresentStall,
+    /*name=*/"cooldown_seconds",
+    /*default_value=*/60};
+
+const base::FeatureParam<int>
+    kBraveRestartGpuOnPresentStallCheckIntervalSeconds{
+        &kBraveRestartGpuOnPresentStall,
+        /*name=*/"check_interval_seconds",
+        /*default_value=*/2};
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(IS_ANDROID)
 // The variant of the fresh NTP experiment: B (the default) or A for the control

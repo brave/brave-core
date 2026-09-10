@@ -16,6 +16,7 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/gpu/gpu_present_stall_restarter.h"
 #include "brave/browser/importer/brave_importer_p3a.h"
 #include "brave/browser/p3a/p3a_core_metrics.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_message_handler.h"
@@ -93,6 +94,7 @@ void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
   // The code below is not supported on android.
 #if !BUILDFLAG(IS_ANDROID)
   brave::BraveWindowTracker::CreateInstance(g_browser_process->local_state());
+  brave::GpuPresentStallRestarter::GetInstance()->Start();
 #endif  // !BUILDFLAG(IS_ANDROID)
   g_brave_browser_process->process_misc_metrics()->uptime_monitor()->Init();
 }
@@ -105,5 +107,6 @@ void BraveBrowserMainExtraParts::PostDestroyThreads() {
   if (brave::BraveWindowTracker::HasInstance()) {
     brave::BraveWindowTracker::ClearInstance();
   }
+  brave::GpuPresentStallRestarter::GetInstance()->Stop();
 #endif  // !BUILDFLAG(IS_ANDROID)
 }

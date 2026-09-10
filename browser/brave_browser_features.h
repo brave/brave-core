@@ -11,6 +11,7 @@
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
 #include "brave/components/v8/buildflags/buildflags.h"
+#include "build/build_config.h"
 
 namespace features {
 
@@ -21,6 +22,15 @@ BASE_DECLARE_FEATURE(kBraveCopyCleanLinkFromJs);
 BASE_DECLARE_FEATURE(kBraveOverrideDownloadDangerLevel);
 BASE_DECLARE_FEATURE(kBraveRoundedCornersByDefault);
 BASE_DECLARE_FEATURE(kBraveDayZeroExperiment);
+#if !BUILDFLAG(IS_ANDROID)
+BASE_DECLARE_FEATURE(kBraveRestartGpuOnPresentStall);
+extern const base::FeatureParam<int>
+    kBraveRestartGpuOnPresentStallTimeoutSeconds;
+extern const base::FeatureParam<int>
+    kBraveRestartGpuOnPresentStallCooldownSeconds;
+extern const base::FeatureParam<int>
+    kBraveRestartGpuOnPresentStallCheckIntervalSeconds;
+#endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)
 BASE_DECLARE_FEATURE(kBraveWebAssemblyJitless);
 #endif  // BUILDFLAG(BRAVE_V8_ENABLE_DRUMBRAKE)

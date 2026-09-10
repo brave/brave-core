@@ -121,6 +121,15 @@ source_set("unit_tests") {
   sources = []
   deps = []
 
+  if (!is_android) {
+    sources += [ "gpu/gpu_present_stall_detector_unittest.cc" ]
+    deps += [
+      "//base",
+      "//brave/browser",
+      "//testing/gtest",
+    ]
+  }
+
   if (is_win) {
     sources += [ "default_protocol_handler_utils_win_unittest.cc" ]
 
