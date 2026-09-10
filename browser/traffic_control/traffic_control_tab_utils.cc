@@ -16,7 +16,7 @@ namespace traffic_control {
 namespace {
 
 bool IsEmptyOrNtpUrl(const GURL& url) {
-  if (!url.is_valid() || url.IsAboutBlank() || url.spec() == "about:blank") {
+  if (!url.is_valid() || url.IsAboutBlank()) {
     return true;
   }
   return NewTabUI::IsNewTab(url);
@@ -26,13 +26,6 @@ bool IsEmptyOrNtpUrl(const GURL& url) {
 
 bool IsDiscardableEmptyTab(content::WebContents* web_contents) {
   if (!web_contents) {
-    return false;
-  }
-
-  // Prefer last committed; fall back to visible for mid-navigation NTP.
-  const GURL& committed = web_contents->GetLastCommittedURL();
-  const GURL& visible = web_contents->GetVisibleURL();
-  if (!IsEmptyOrNtpUrl(committed) && !IsEmptyOrNtpUrl(visible)) {
     return false;
   }
 
@@ -46,7 +39,8 @@ bool IsDiscardableEmptyTab(content::WebContents* web_contents) {
     return false;
   }
 
-  return true;
+  return controller.IsInitialBlankNavigation() ||
+         IsEmptyOrNtpUrl(web_contents->GetLastCommittedURL());
 }
 
 bool IsOmniboxNavigation(ui::PageTransition transition) {
