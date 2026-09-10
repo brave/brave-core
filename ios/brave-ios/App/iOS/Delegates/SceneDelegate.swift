@@ -369,7 +369,9 @@ extension SceneDelegate {
       attributionManager: profileState.attributionManager,
       rewards: profileState.rewards,
       newsFeedDataSource: AppState.shared.newsFeedDataSource,
-      userActivity: sceneState.connectionOptions.userActivities.first,
+      userActivity: BrowserState.windowUserActivity(
+        from: sceneState.connectionOptions.userActivities
+      ),
       downloadBackgroundTaskModel: AppState.shared.downloadBackgroundTaskModel
     )
 
@@ -742,20 +744,32 @@ extension SceneDelegate {
     let urlToOpen: URL?
 
     let activeWindow = SessionWindow.getActiveWindow(context: DataController.swiftUIContext)
-    windowId = resolveCanonicalWindowId(
-      session: scene.session,
-      userActivity: userActivity,
-      activeWindow: activeWindow
+    let activityInfo = userActivity.map { BrowserState.getNewWindowInfo(from: $0) }
+    let claimedWindowIds = claimedWindowIds(excluding: scene.session)
+    windowId = BrowserState.resolveWindowId(
+      activityWindowId: activityInfo?.windowId.flatMap(UUID.init),
+      sessionWindowId: BrowserState.getWindowId(from: scene.session).flatMap(UUID.init),
+      lastSessionWindowId: Preferences.Privacy.lastSessionWindowId.value.flatMap(UUID.init),
+      activeWindowId: activeWindow?.windowId,
+      existingWindows: SessionWindow.all().map { ($0.windowId, $0.sessionTabs?.count ?? 0) },
+      claimedWindowIds: claimedWindowIds,
+      supportsMultipleScenes: UIApplication.shared.supportsMultipleScenes
     )
 
-    if isSingleWindowBrowserSession {
-      consolidateSessionTabs(to: windowId)
+    if !UIApplication.shared.supportsMultipleScenes {
+      consolidateSessionTabsToSingleWindow(windowId)
     }
 
-    isPrivate = resolveLaunchIsPrivate(
-      windowId: windowId,
-      userActivity: userActivity,
-      session: scene.session
+    let windowTabs = SessionTab.all().filter { $0.sessionWindow?.windowId == windowId }
+    let privateTabs = windowTabs.filter(\.isPrivate)
+    isPrivate = BrowserState.resolveLaunchIsPrivate(
+      rememberBrowsingModeEnabled: rememberBrowsingModeIsEnabled,
+      privateBrowsingOnly: Preferences.Privacy.privateBrowsingOnly.value,
+      lastPrivateBrowsingMode: Preferences.Privacy.lastPrivateBrowsingMode.value,
+      hasPrivateTabsInWindow: !privateTabs.isEmpty,
+      activityRequestsPrivate: activityInfo?.isPrivate == true,
+      selectedTabIsPrivate: windowTabs.first(where: { $0.isSelected })?.isPrivate ?? false,
+      windowHasOnlyPrivateTabs: !windowTabs.isEmpty && privateTabs.count == windowTabs.count
     )
     privateBrowsingManager.isPrivateBrowsing = isPrivate
 
@@ -830,154 +844,32 @@ extension SceneDelegate {
     return browserViewController
   }
 
-  private var isSingleWindowBrowserSession: Bool {
-    if !UIApplication.shared.supportsMultipleScenes {
-      return true
-    }
-    let browserScenes = UIApplication.shared.connectedScenes.compactMap { $0 as? UIWindowScene }
-      .filter { $0.browserViewController != nil }
-    return browserScenes.count <= 1
-  }
-
-  private func resolveCanonicalWindowId(
-    session: UISceneSession,
-    userActivity: NSUserActivity?,
-    activeWindow: SessionWindow?
-  ) -> UUID {
-    if isSingleWindowBrowserSession,
-      let persisted = Preferences.Privacy.lastSessionWindowId.value.flatMap(UUID.init)
-    {
-      return persisted
-    }
-
-    return resolveWindowId(
-      activeWindow: activeWindow,
-      session: session,
-      userActivity: userActivity
-    )
-  }
-
-  private func consolidateSessionTabs(to windowId: UUID) {
-    SessionWindow.createWindow(isSelected: true, uuid: windowId)
-    for tab in SessionTab.all() where tab.sessionWindow?.windowId != windowId {
-      SessionTab.move(tab: tab.tabId, toWindow: windowId)
-    }
-
-    // Keep tab selection stable across launches even when stale window IDs existed in Core Data.
-    let windowIdString = windowId.uuidString
-    var lastSelectedByWindow = Preferences.Privacy.lastSelectedTabIdByWindow.value
-    if let selectedTabId = lastSelectedByWindow.values.first(where: { candidateId in
-      SessionTab.all().contains(where: { $0.tabId.uuidString == candidateId })
-    }) {
-      lastSelectedByWindow = [windowIdString: selectedTabId]
-      Preferences.Privacy.lastSelectedTabIdByWindow.value = lastSelectedByWindow
-    } else if lastSelectedByWindow.count > 1 {
-      lastSelectedByWindow = lastSelectedByWindow.filter { $0.key == windowIdString }
-      Preferences.Privacy.lastSelectedTabIdByWindow.value = lastSelectedByWindow
-    }
-  }
-
-  /// Resolves the window ID to restore, falling back to scene session state or windows with saved tabs.
-  private func resolveWindowId(
-    activeWindow: SessionWindow?,
-    session: UISceneSession,
-    userActivity: NSUserActivity? = nil
-  ) -> UUID {
-    if isSingleWindowBrowserSession,
-      let persisted = Preferences.Privacy.lastSessionWindowId.value.flatMap(UUID.init)
-    {
-      return persisted
-    }
-
-    if let activeWindow {
-      return activeWindow.windowId
-    }
-
-    if let persisted = Preferences.Privacy.lastSessionWindowId.value.flatMap(UUID.init) {
-      return persisted
-    }
-
-    if let windowWithTabs = SessionWindow.all().max(by: {
-      ($0.sessionTabs?.count ?? 0) < ($1.sessionTabs?.count ?? 0)
-    }), (windowWithTabs.sessionTabs?.count ?? 0) > 0 {
-      return windowWithTabs.windowId
-    }
-
-    if let activityWindowId = userActivity.flatMap({
-      BrowserState.getNewWindowInfo(from: $0).windowId
-    }).flatMap(UUID.init) {
-      return activityWindowId
-    }
-
-    if let sessionWindowId = BrowserState.getWindowId(from: session).flatMap(UUID.init) {
-      return sessionWindowId
-    }
-
-    return SessionWindow.all().first?.windowId ?? UUID()
-  }
-
-  /// Resolves whether the window should launch in private mode, using persisted scene state when available.
-  private func resolveLaunchIsPrivate(
-    windowId: UUID,
-    userActivity: NSUserActivity?,
-    session: UISceneSession
-  ) -> Bool {
-    guard rememberBrowsingModeIsEnabled else {
-      return defaultLaunchBrowsingModeIsPrivate()
-    }
-
-    if Preferences.Privacy.lastPrivateBrowsingMode.value {
-      return true
-    }
-
-    guard hasPrivateTabsForRestore(windowId: windowId) else {
-      return defaultLaunchBrowsingModeIsPrivate()
-    }
-
-    if shouldLaunchInPrivateModeFromTabs(windowId: windowId) {
-      return true
-    }
-
-    if let userActivity, BrowserState.getNewWindowInfo(from: userActivity).isPrivate {
-      return true
-    }
-
-    if BrowserState.getSessionState(from: session).isPrivate {
-      return true
-    }
-
-    return false
-  }
-
   private var rememberBrowsingModeIsEnabled: Bool {
     Preferences.Privacy.persistentPrivateBrowsing.value
       && Preferences.Privacy.rememberBrowsingMode.value
   }
 
-  private func defaultLaunchBrowsingModeIsPrivate() -> Bool {
-    Preferences.Privacy.privateBrowsingOnly.value
-  }
-
-  private func hasPrivateTabsForRestore(windowId: UUID) -> Bool {
-    SessionTab.all().contains(where: \.isPrivate)
-  }
-
-  /// Infers private launch mode from saved tab selection when no persisted browsing mode is available.
-  private func shouldLaunchInPrivateModeFromTabs(windowId: UUID) -> Bool {
-    let windowTabs = SessionTab.all()
-    let privateTabs = windowTabs.filter(\.isPrivate)
-
-    guard !privateTabs.isEmpty else {
-      return false
+  /// iPhone-only: merge leftover window rows so a drifted id still restores tabs.
+  private func consolidateSessionTabsToSingleWindow(_ windowId: UUID) {
+    SessionWindow.createWindow(isSelected: true, uuid: windowId)
+    for tab in SessionTab.all() where tab.sessionWindow?.windowId != windowId {
+      SessionTab.move(tab: tab.tabId, toWindow: windowId)
     }
+  }
 
-    // Launch in private mode if the selected tab is private, or if the window has only private tabs.
-    // When no tab is marked selected (nil), selectedTabIsPrivate defaults to false; onlyPrivateTabs
-    // still correctly launches in private mode when all tabs are private.
-    let selectedTabIsPrivate = windowTabs.first(where: { $0.isSelected })?.isPrivate ?? false
-    let onlyPrivateTabs = privateTabs.count == windowTabs.count
-
-    return selectedTabIsPrivate || onlyPrivateTabs
+  private func claimedWindowIds(excluding session: UISceneSession) -> Set<UUID> {
+    var ids = Set(
+      UIApplication.shared.openSessions.compactMap { openSession -> UUID? in
+        guard openSession != session else { return nil }
+        return BrowserState.getWindowId(from: openSession).flatMap(UUID.init)
+      }
+    )
+    for windowScene in UIApplication.shared.connectedScenes.compactMap({ $0 as? UIWindowScene }) {
+      if let windowId = windowScene.browserViewController?.windowId {
+        ids.insert(windowId)
+      }
+    }
+    return ids
   }
 }
 
