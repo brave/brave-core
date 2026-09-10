@@ -51,6 +51,7 @@ constexpr base::TimeDelta kEpochLenTimeDelta = base::Days(4);
 constexpr char kTestStarRandomnessHost[] = "https://localhost:9443";
 constexpr char kTestStarUploadHost[] = "https://localhost:10443";
 constexpr char kTestDefaultBrowserMetric[] = "Brave.Test.DefaultBrowserMetric";
+constexpr char kTestPriorityMetricPrefix[] = "Brave.Test.PriorityMetric.";
 
 }  // namespace
 
@@ -85,12 +86,19 @@ class P3AMessageManagerTest : public testing::Test,
       };
       return &kConfig;
     }
+    if (histogram_name.starts_with(kTestPriorityMetricPrefix)) {
+      static constexpr MetricConfig kConfig = {
+          .priority = true,
+      };
+      return &kConfig;
+    }
     return GetBaseMetricConfig(histogram_name);
   }
 
   std::optional<MetricLogType> GetLogTypeForHistogram(
       std::string_view histogram_name) const override {
-    if (histogram_name == kTestDefaultBrowserMetric) {
+    if (histogram_name == kTestDefaultBrowserMetric ||
+        histogram_name.starts_with(kTestPriorityMetricPrefix)) {
       return MetricLogType::kTypical;
     }
     return GetBaseLogTypeForHistogram(histogram_name);
@@ -751,6 +759,56 @@ TEST_F(P3AMessageManagerTest, DeferredMetricSentAfterDefaultBrowserStatus) {
   EXPECT_EQ(points_requests_made_[MetricLogType::kTypical], 1U);
   EXPECT_EQ(p3a_constellation_sent_messages_[MetricLogType::kTypical].size(),
             1U);
+}
+
+TEST_F(P3AMessageManagerTest, PriorityMetricSentFasterThanStandardInterval) {
+#if BUILDFLAG(IS_MAC)
+  // TODO(crbug.com/434660312): Re-enable on macOS 26 once issues with
+  // unexpected test timeout failures are resolved.
+  if (base::mac::MacOSMajorVersion() == 26) {
+    GTEST_SKIP() << "Disabled on macOS Tahoe.";
+  }
+#endif
+  SetUpManager();
+
+  std::vector<std::string> normal_metrics =
+      GetTestHistogramNames(MetricLogType::kTypical, 2);
+  for (const auto& metric : normal_metrics) {
+    message_manager_->UpdateMetricValue(metric, 1);
+  }
+  message_manager_->UpdateMetricValue(
+      base::StrCat({kTestPriorityMetricPrefix, "1"}), 1);
+  message_manager_->UpdateMetricValue(
+      base::StrCat({kTestPriorityMetricPrefix, "2"}), 1);
+
+  // The priority metrics should be prepared and uploaded using the accelerated
+  // priority intervals (7s prep + 2s upload), well within the standard 120s
+  // upload interval.
+  task_environment_.FastForwardBy(base::Seconds(30));
+  EXPECT_EQ(points_requests_made_[MetricLogType::kTypical], 2U);
+  EXPECT_EQ(p3a_constellation_sent_messages_[MetricLogType::kTypical].size(),
+            2U);
+
+  // Normal metrics are sent at the standard interval, one per cycle.
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds + 15));
+  EXPECT_EQ(points_requests_made_[MetricLogType::kTypical], 3U);
+  EXPECT_EQ(p3a_constellation_sent_messages_[MetricLogType::kTypical].size(),
+            3U);
+
+  task_environment_.FastForwardBy(base::Seconds(kUploadIntervalSeconds + 15));
+  EXPECT_EQ(points_requests_made_[MetricLogType::kTypical], 4U);
+  EXPECT_EQ(p3a_constellation_sent_messages_[MetricLogType::kTypical].size(),
+            4U);
+
+  // Advance to the next epoch; all 4 metrics should be sent again.
+  current_epoch_++;
+  next_epoch_time_ += kEpochLenTimeDelta;
+  task_environment_.FastForwardBy(kEpochLenTimeDelta +
+                                  base::Seconds(kUploadIntervalSeconds * 100));
+
+  EXPECT_EQ(points_requests_made_[MetricLogType::kTypical], 8U);
+  EXPECT_EQ(p3a_constellation_sent_messages_[MetricLogType::kTypical].size(),
+            8U);
 }
 
 }  // namespace p3a

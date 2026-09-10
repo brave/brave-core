@@ -46,6 +46,9 @@ class MetricLogStore : public metrics::LogStore {
     // status). Deferred metrics are not eligible for staging/upload until
     // ReevaluateDeferredEntries() moves them.
     virtual bool ShouldDeferMetric(std::string_view histogram_name) const = 0;
+    // Returns true if the metric should be staged ahead of non-priority
+    // metrics.
+    virtual bool IsPriorityMetric(std::string_view histogram_name) const = 0;
     virtual ~Delegate() {}
   };
 
@@ -69,6 +72,13 @@ class MetricLogStore : public metrics::LogStore {
   // Marks all saved values as unsent.
   void ResetUploadStamps();
 
+  // Returns true if any unsent entry is configured as a priority metric.
+  bool has_unsent_priority_logs() const;
+
+  // Must be called whenever metric configurations may have changed.
+  // Removes obsolete metrics and acknowledges priority metrics as needed.
+  void NotifyConfigReady();
+
   // metrics::LogStore:
   bool has_unsent_logs() const override;
   bool has_staged_log() const override;
@@ -88,7 +98,6 @@ class MetricLogStore : public metrics::LogStore {
   void TrimAndPersistUnsentLogs(bool overwrite_in_memory_store) override;
   // Returns early if founds malformed persisted values.
   void LoadPersistedUnsentLogs() override;
-  void RemoveObsoleteLogs();
 
   void ReevaluateDeferredEntries();
 
@@ -121,6 +130,7 @@ class MetricLogStore : public metrics::LogStore {
   // TODO(iefremov): Try to replace with std::string_view?
   base::flat_map<std::string, LogEntry> log_;
   base::flat_set<std::string> unsent_entries_;
+  base::flat_set<std::string> priority_unsent_entries_;
   base::flat_set<std::string> deferred_entries_;
 
   std::string staged_entry_key_;

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
@@ -114,6 +115,7 @@ void MetricLogStore::UpdateValue(const std::string& histogram_name,
 void MetricLogStore::RemoveValueIfExists(const std::string& histogram_name) {
   log_.erase(histogram_name);
   unsent_entries_.erase(histogram_name);
+  priority_unsent_entries_.erase(histogram_name);
   deferred_entries_.erase(histogram_name);
 
   // Update the persistent value.
@@ -132,6 +134,7 @@ void MetricLogStore::ResetUploadStamps() {
     if (it->second.sent) {
       DCHECK(!it->second.sent_timestamp.is_null());
       DCHECK(!unsent_entries_.contains(it->first));
+      DCHECK(!priority_unsent_entries_.contains(it->first));
 
       auto metric_log_type = delegate_->GetLogTypeForHistogram(it->first);
       if (!metric_log_type || metric_log_type != type_ ||
@@ -157,11 +160,13 @@ void MetricLogStore::ResetUploadStamps() {
 
   // Only record the sent answers count metric for weekly metrics
   if (type_ == MetricLogType::kTypical) {
-    RecordSentAnswersCount(log_.size() - unsent_entries_.size());
+    RecordSentAnswersCount(log_.size() - unsent_entries_.size() -
+                           priority_unsent_entries_.size());
   }
 
   // Rebuild the unsent and deferred sets.
   unsent_entries_.clear();
+  priority_unsent_entries_.clear();
   deferred_entries_.clear();
   for (const auto& pair : log_) {
     InsertUnsentEntry(pair.first);
@@ -169,7 +174,35 @@ void MetricLogStore::ResetUploadStamps() {
 }
 
 bool MetricLogStore::has_unsent_logs() const {
-  return !unsent_entries_.empty();
+  return !unsent_entries_.empty() || !priority_unsent_entries_.empty();
+}
+
+bool MetricLogStore::has_unsent_priority_logs() const {
+  return !priority_unsent_entries_.empty();
+}
+
+void MetricLogStore::NotifyConfigReady() {
+  // Drop values for metrics that are no longer configured, or that are now
+  // configured for a different log type.
+  std::vector<std::string> metrics_to_remove;
+  for (const auto& [name, entry] : log_) {
+    auto metric_log_type = delegate_->GetLogTypeForHistogram(name);
+    if (!metric_log_type || *metric_log_type != type_) {
+      metrics_to_remove.push_back(name);
+    }
+  }
+  for (const auto& name : metrics_to_remove) {
+    RemoveValueIfExists(name);
+  }
+  // Promote newly prioritized entries out of the standard pool.
+  for (auto it = unsent_entries_.begin(); it != unsent_entries_.end();) {
+    if (delegate_->IsPriorityMetric(*it)) {
+      priority_unsent_entries_.insert(*it);
+      it = unsent_entries_.erase(it);
+    } else {
+      ++it;
+    }
+  }
 }
 
 bool MetricLogStore::has_staged_log() const {
@@ -211,10 +244,13 @@ std::optional<uint64_t> MetricLogStore::staged_log_user_id() const {
 }
 
 void MetricLogStore::StageNextLog() {
-  // Stage the next item.
+  // Stage the next item. Priority metrics are drained first.
   DCHECK(has_unsent_logs());
-  uint64_t rand_idx = base::RandGenerator(unsent_entries_.size());
-  staged_entry_key_ = *(unsent_entries_.begin() + rand_idx);
+  const auto& pool = priority_unsent_entries_.empty()
+                         ? unsent_entries_
+                         : priority_unsent_entries_;
+  uint64_t rand_idx = base::RandGenerator(pool.size());
+  staged_entry_key_ = *(pool.begin() + rand_idx);
   DCHECK(!log_.find(staged_entry_key_)->second.sent);
 
   uint64_t staged_entry_value = log_[staged_entry_key_].value;
@@ -242,10 +278,10 @@ void MetricLogStore::DiscardStagedLogImpl(std::string_view reason) {
   log_dict->Set(kLogTimestampKey,
                 log_iter->second.sent_timestamp.InSecondsFSinceUnixEpoch());
 
-  // Erase the entry from the unsent queue.
-  auto unsent_entries_iter = unsent_entries_.find(staged_entry_key_);
-  DCHECK(unsent_entries_iter != unsent_entries_.end());
-  unsent_entries_.erase(unsent_entries_iter);
+  // Erase the entry from whichever unsent queue holds it.
+  size_t erased = priority_unsent_entries_.erase(staged_entry_key_) +
+                  unsent_entries_.erase(staged_entry_key_);
+  DCHECK_EQ(erased, 1u);
 
   staged_entry_key_.clear();
   staged_log_.clear();
@@ -260,6 +296,7 @@ void MetricLogStore::TrimAndPersistUnsentLogs(bool overwrite_in_memory_store) {
 void MetricLogStore::LoadPersistedUnsentLogs() {
   DCHECK(log_.empty());
   DCHECK(unsent_entries_.empty());
+  DCHECK(priority_unsent_entries_.empty());
 
   const char* pref_name = GetPrefName();
 
@@ -301,24 +338,11 @@ void MetricLogStore::LoadPersistedUnsentLogs() {
 void MetricLogStore::ReevaluateDeferredEntries() {
   for (auto it = deferred_entries_.begin(); it != deferred_entries_.end();) {
     if (!delegate_->ShouldDeferMetric(*it)) {
-      unsent_entries_.insert(*it);
+      InsertUnsentEntry(*it);
       it = deferred_entries_.erase(it);
     } else {
       ++it;
     }
-  }
-}
-
-void MetricLogStore::RemoveObsoleteLogs() {
-  std::vector<std::string> metrics_to_remove;
-  for (const auto& [name, entry] : log_) {
-    auto metric_log_type = delegate_->GetLogTypeForHistogram(name);
-    if (!metric_log_type || *metric_log_type != type_) {
-      metrics_to_remove.push_back(name);
-    }
-  }
-  for (const auto& name : metrics_to_remove) {
-    RemoveValueIfExists(name);
   }
 }
 
@@ -330,6 +354,8 @@ const metrics::LogMetadata MetricLogStore::staged_log_metadata() const {
 void MetricLogStore::InsertUnsentEntry(std::string_view histogram_name) {
   if (delegate_->ShouldDeferMetric(histogram_name)) {
     deferred_entries_.emplace(histogram_name);
+  } else if (delegate_->IsPriorityMetric(histogram_name)) {
+    priority_unsent_entries_.emplace(histogram_name);
   } else {
     unsent_entries_.emplace(histogram_name);
   }
