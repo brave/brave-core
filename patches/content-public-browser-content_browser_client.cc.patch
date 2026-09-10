@@ -1,0 +1,15 @@
+diff --git a/content/public/browser/content_browser_client.cc b/content/public/browser/content_browser_client.cc
+index 20bf75c79badf223c40c72961fd35266b112f1f0..b3f39f9963f10bfe440b64a663d0113be41628d6 100644
+--- a/content/public/browser/content_browser_client.cc
++++ b/content/public/browser/content_browser_client.cc
+@@ -1113,7 +1113,9 @@ void ContentBrowserClient::CreateWebSocket(
+     const std::optional<std::string>& user_agent,
+     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+         handshake_client,
+-    ContentBrowserClient::WebSocketOptions options) {
++    ContentBrowserClient::WebSocketOptions options,
++    std::optional<int>,
++    std::optional<url::Origin>) {
+   // NOTREACHED because WillInterceptWebSocket returns false.
+   NOTREACHED();
+ }

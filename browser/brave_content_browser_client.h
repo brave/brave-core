@@ -20,6 +20,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
+#include "url/origin.h"
 
 class BraveBluetoothDelegate;
 class PrefChangeRegistrar;
@@ -141,7 +142,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const std::optional<std::string>& user_agent,
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client,
-      content::ContentBrowserClient::WebSocketOptions options) override;
+      content::ContentBrowserClient::WebSocketOptions options,
+      std::optional<int> process_id,
+      std::optional<url::Origin> initiator_origin) override;
 
   void MaybeHideReferrer(content::BrowserContext* browser_context,
                          const GURL& request_url,
@@ -224,6 +227,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client,
       content::ContentBrowserClient::WebSocketOptions options,
+      std::optional<int> process_id,
+      std::optional<url::Origin> initiator_origin,
       BraveProxyingWebSocket<T>* proxy);
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
