@@ -65,7 +65,8 @@ class FlowBaseTest : public testing::Test {
   }
 
   void TearDown() override {
-    flow_.reset();
+    // RequestHandleDeleter posts DeleteSoon(SimpleURLLoader).
+    // Drain it so LSAN does not report a leak.
     task_environment_.RunUntilIdle();
   }
 
