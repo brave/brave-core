@@ -350,6 +350,7 @@ class TabGridViewModel {
         if newValue {
           persistPrivateTabs()
         } else {
+          BrowserState.clearRememberedBrowsingMode()
           unpersistPrivateTabs()
         }
       }
