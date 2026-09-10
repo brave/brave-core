@@ -16,24 +16,4 @@ bool IsAutocompleteEnabled(const PrefService* prefs) {
 
 }  // namespace
 
-#define StartAutocomplete StartAutocomplete_ChromiumImpl
-#define StartZeroSuggestPrefetch StartZeroSuggestPrefetch_Unused
-
 #include <chrome/browser/ui/omnibox/omnibox_controller.cc>
-
-#undef StartZeroSuggestPrefetch
-#undef StartAutocomplete
-
-void OmniboxController::StartAutocomplete(
-    const AutocompleteInput& input) const {
-  if (!IsAutocompleteEnabled(client_->GetPrefs())) {
-    ClearPopupKeywordMode();
-    return;
-  }
-
-  StartAutocomplete_ChromiumImpl(input);
-}
-
-void OmniboxController::StartZeroSuggestPrefetch() {
-  // Disables zero suggest prefetch by doing nothing in here.
-}
