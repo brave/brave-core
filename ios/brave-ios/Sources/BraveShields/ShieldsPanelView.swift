@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveShared
+import BraveUI
 import DesignSystem
 import Favicon
 import Strings
@@ -20,6 +21,7 @@ public struct ShieldsPanelView: View {
   private var action: (ShieldsPanelAction) -> Void
 
   @ScaledMetric private var faviconCircleSize = 32
+  @Environment(\.openURL) private var openURL
 
   public init(
     url: URL,
@@ -39,6 +41,15 @@ public struct ShieldsPanelView: View {
     NavigationStack {
       Form {
         shieldsToggle
+          .osAvailabilityModifiers {
+            // we only want to tweak horizontal when possible
+            // 4pts horizontal padding so the toggle isn't cut off
+            if #available(iOS 26, *) {
+              $0.listRowInsets([.horizontal], 4)
+            } else {
+              $0.listRowInsets(EdgeInsets(top: 8, leading: 4, bottom: 8, trailing: 4))
+            }
+          }
           .listRowBackground(Color.clear)
           .onChange(of: viewModel.shieldsEnabled) { _, _ in
             action(.changedShieldSettings)
@@ -69,11 +80,11 @@ public struct ShieldsPanelView: View {
   @ViewBuilder private var shieldsUpView: some View {
     Section {
       HStack {
-        Text("\(viewModel.stats.total)")
+        Text(viewModel.stats.total, format: .number)
           .font(.title2.weight(.semibold))
         Text(Strings.Shields.trackersAdsAndMoreBlocked)
-          .font(.footnote)
       }
+      .accessibilityElement(children: .combine)
     } footer: {
       if !viewModel.isAdvancedControlsEnabled {
         // display footer still when advanced controls disabled
@@ -99,7 +110,7 @@ public struct ShieldsPanelView: View {
 
   @ViewBuilder private var shieldsToggle: some View {
     Toggle(isOn: $viewModel.shieldsEnabled) {
-      HStack {
+      AccessibilityHStack {
         FaviconImage(
           url: url,
           isPrivateBrowsing: viewModel.isPrivateBrowsing
@@ -116,6 +127,9 @@ public struct ShieldsPanelView: View {
           URLElidedText(text: displayHost)
             .font(.title2.weight(.semibold))
             .foregroundStyle(viewModel.shieldsEnabled ? .primary : .secondary)
+            // keep text centred for AccessibilityHStack when isAccessibilitySize
+            .frame(maxWidth: .infinity)
+            .multilineTextAlignment(.center)
           Text(
             LocalizedStringKey(
               viewModel.shieldsEnabled
@@ -124,6 +138,9 @@ public struct ShieldsPanelView: View {
           )
           .font(.footnote)
           .foregroundStyle(.secondary)
+          // keep text centred for AccessibilityHStack when isAccessibilitySize
+          .frame(maxWidth: .infinity)
+          .multilineTextAlignment(.center)
         }
       }
     }
@@ -212,6 +229,7 @@ public struct ShieldsPanelView: View {
     Section {
       HStack {
         Text(Strings.Shields.siteNotWorkingCorrectly)
+        Spacer()
         Button {
           action(.navigate(.reportBrokenSite, dismiss: true))
         } label: {
@@ -264,7 +282,6 @@ public class ShieldsPanelViewController: UIHostingController<ShieldsPanelView> {
   public init(
     url: URL,
     viewModel: ShieldsPanelViewModel,
-    isShredEnabled: Bool = true,
     action: @escaping (ShieldsPanelAction) -> Void
   ) {
     super.init(
@@ -330,4 +347,27 @@ public class ShieldsPanelViewController: UIHostingController<ShieldsPanelView> {
 
 extension UISheetPresentationController.Detent.Identifier {
   fileprivate static let fitsContent: Self = .init("fitsContent")
+}
+
+/// HStack unless using an accessibility text size, then uses a VStack
+private struct AccessibilityHStack<Content: View>: View {
+
+  let content: Content
+  @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+  init(@ViewBuilder content: () -> Content) {
+    self.content = content()
+  }
+
+  var body: some View {
+    if dynamicTypeSize.isAccessibilitySize {
+      VStack {
+        content
+      }
+    } else {
+      HStack {
+        content
+      }
+    }
+  }
 }
