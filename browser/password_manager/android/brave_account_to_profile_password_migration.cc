@@ -16,7 +16,6 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/location.h"
-#include "base/memory/ref_counted.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
@@ -94,11 +93,11 @@ class PasswordFetchRequest : public password_manager::PasswordStoreConsumer {
 // exists in both stores with different passwords, the most recently changed
 // one wins, so an account-only newer password is never dropped.
 //
-// Ref-counted so it outlives the async store operations: each step binds a
-// reference into its completion callback, and the object is destroyed once the
-// last step finishes.
-class AccountToProfilePasswordMigrator
-    : public base::RefCounted<AccountToProfilePasswordMigrator> {
+// Self-owned: it holds its own `unique_ptr` (`self_`) so it outlives the async
+// store operations, and drops it to delete itself once the last step finishes.
+// Callbacks are bound with weak pointers, so an in-flight step that is dropped
+// (e.g. the store shuts down) simply stops the chain.
+class AccountToProfilePasswordMigrator {
  public:
   AccountToProfilePasswordMigrator(
       scoped_refptr<PasswordStoreInterface> account_store,
@@ -113,17 +112,16 @@ class AccountToProfilePasswordMigrator
   AccountToProfilePasswordMigrator& operator=(
       const AccountToProfilePasswordMigrator&) = delete;
 
-  void Start() {
+  // Takes ownership of itself via `self` and starts the migration.
+  void Start(std::unique_ptr<AccountToProfilePasswordMigrator> self) {
+    self_ = std::move(self);
     // Step 1: read the account store.
     ReadStore(account_store_.get(),
               base::BindOnce(&AccountToProfilePasswordMigrator::OnAccountLogins,
-                             this));
+                             weak_factory_.GetWeakPtr()));
   }
 
  private:
-  friend class base::RefCounted<AccountToProfilePasswordMigrator>;
-  ~AccountToProfilePasswordMigrator() = default;
-
   // Reads all logins from `store`, passing the (owned) fetch request to
   // `on_results` when done.
   void ReadStore(PasswordStoreInterface* store,
@@ -138,15 +136,15 @@ class AccountToProfilePasswordMigrator
   void OnAccountLogins(std::unique_ptr<PasswordFetchRequest> request) {
     account_forms_ = request->TakeResults();
     if (account_forms_.empty()) {
-      std::move(on_complete_).Run();  // Nothing to migrate.
+      Finish();  // Nothing to migrate.
       return;
     }
     // Step 2: read the profile store before deciding how to merge each
     // credential.
-    ReadStore(
-        profile_store_.get(),
-        base::BindOnce(
-            &AccountToProfilePasswordMigrator::OnProfileLoginsForMerge, this));
+    ReadStore(profile_store_.get(),
+              base::BindOnce(
+                  &AccountToProfilePasswordMigrator::OnProfileLoginsForMerge,
+                  weak_factory_.GetWeakPtr()));
   }
 
   void OnProfileLoginsForMerge(std::unique_ptr<PasswordFetchRequest> request) {
@@ -185,7 +183,7 @@ class AccountToProfilePasswordMigrator
         barrier_count,
         base::BindOnce(
             &AccountToProfilePasswordMigrator::VerifyAndDrainAccountStore,
-            this));
+            weak_factory_.GetWeakPtr()));
     if (!to_add.empty()) {
       profile_store_->AddLogins(std::move(to_add), barrier);
     }
@@ -197,10 +195,10 @@ class AccountToProfilePasswordMigrator
   void VerifyAndDrainAccountStore() {
     // Step 3: re-read the profile store to confirm the writes landed before
     // deleting anything from the account store.
-    ReadStore(
-        profile_store_.get(),
-        base::BindOnce(
-            &AccountToProfilePasswordMigrator::OnProfileLoginsForVerify, this));
+    ReadStore(profile_store_.get(),
+              base::BindOnce(
+                  &AccountToProfilePasswordMigrator::OnProfileLoginsForVerify,
+                  weak_factory_.GetWeakPtr()));
   }
 
   void OnProfileLoginsForVerify(std::unique_ptr<PasswordFetchRequest> request) {
@@ -220,13 +218,19 @@ class AccountToProfilePasswordMigrator
     }
     // Finish only after the removals above have been processed. RemoveLogin has
     // no completion callback, but store operations run in order, so a trailing
-    // read completes after them (and keeps `this` alive until then).
-    ReadStore(
-        account_store_.get(),
-        base::BindOnce(&AccountToProfilePasswordMigrator::OnFinished, this));
+    // read completes after them.
+    ReadStore(account_store_.get(),
+              base::BindOnce(&AccountToProfilePasswordMigrator::OnFinished,
+                             weak_factory_.GetWeakPtr()));
   }
 
-  void OnFinished(std::unique_ptr<PasswordFetchRequest> request) {
+  void OnFinished(std::unique_ptr<PasswordFetchRequest> request) { Finish(); }
+
+  // Runs the completion callback and deletes `this`. `self_` is moved into a
+  // local first so `this` stays alive during the callback and is destroyed when
+  // the local goes out of scope.
+  void Finish() {
+    std::unique_ptr<AccountToProfilePasswordMigrator> self = std::move(self_);
     std::move(on_complete_).Run();
   }
 
@@ -234,6 +238,8 @@ class AccountToProfilePasswordMigrator
   const scoped_refptr<PasswordStoreInterface> profile_store_;
   std::vector<PasswordForm> account_forms_;
   base::OnceClosure on_complete_;
+  std::unique_ptr<AccountToProfilePasswordMigrator> self_;
+  base::WeakPtrFactory<AccountToProfilePasswordMigrator> weak_factory_{this};
 };
 
 }  // namespace
@@ -255,10 +261,11 @@ void MaybeMigrateAccountPasswordsToProfileStore(Profile* profile,
     std::move(on_complete).Run();
     return;
   }
-  base::MakeRefCounted<AccountToProfilePasswordMigrator>(
+  auto migrator = std::make_unique<AccountToProfilePasswordMigrator>(
       std::move(account_store), std::move(profile_store),
-      std::move(on_complete))
-      ->Start();
+      std::move(on_complete));
+  AccountToProfilePasswordMigrator* migrator_ptr = migrator.get();
+  migrator_ptr->Start(std::move(migrator));
 }
 
 }  // namespace brave_password_manager
