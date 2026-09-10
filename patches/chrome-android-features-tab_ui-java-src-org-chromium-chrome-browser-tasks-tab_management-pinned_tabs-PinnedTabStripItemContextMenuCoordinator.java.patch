@@ -1,0 +1,13 @@
+diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs/PinnedTabStripItemContextMenuCoordinator.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs/PinnedTabStripItemContextMenuCoordinator.java
+index bcd794b038c77b7243b6e1c4ec7dee70f9040040..70d9e63dc66f3932edb24ec372250e2e3522d1d2 100644
+--- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs/PinnedTabStripItemContextMenuCoordinator.java
++++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs/PinnedTabStripItemContextMenuCoordinator.java
+@@ -262,7 +262,7 @@ public class PinnedTabStripItemContextMenuCoordinator
+                 profile.isOffTheRecord() ? null : TabGroupSyncServiceFactory.getForProfile(profile);
+         CollaborationService collaborationService =
+                 CollaborationServiceFactory.getForProfile(profile);
+-        return new PinnedTabStripItemContextMenuCoordinator(
++        return new BravePinnedTabStripItemContextMenuCoordinator(
+                 activity,
+                 profile,
+                 tabBookmarkerSupplier,
