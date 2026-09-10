@@ -69,7 +69,7 @@ RegisterPolymerTemplateModifications({
 
     // Remove Sign in to Brave for passwords promotion
     const signinPromoTemplate = templateContent.
-      querySelector('template[is=dom-if][if="[[shouldShowSyncAccountControl_]]"]')
+      querySelector('template[is=dom-if][if^="[[shouldShowSyncAccountControl_"]')
     if (signinPromoTemplate) {
         signinPromoTemplate.remove()
     } else {
