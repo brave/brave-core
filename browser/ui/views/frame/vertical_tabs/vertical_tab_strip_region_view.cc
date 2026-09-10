@@ -465,9 +465,9 @@ void BraveVerticalTabStripRegionView::OnWidgetActivationChanged(
   // and re-arms its input protection - the bubble silently drops clicks for
   // as long as the animation runs, plus the cooldown.
   //
-  // A bubble holds a paint-as-active lock on its parent, but may not have
-  // taken it yet when this runs (on macOS the browser window resigns key
-  // before the bubble becomes key), so re-check on the next task.
+  // Where activation went isn't known yet: Widget notifies us before it
+  // updates its own active state, and the bubble becomes active after the
+  // browser window resigns activation. Decide on the next task instead.
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(
@@ -476,14 +476,25 @@ void BraveVerticalTabStripRegionView::OnWidgetActivationChanged(
 }
 
 void BraveVerticalTabStripRegionView::CollapseIfWindowIsInactive() {
-  auto* widget = GetWidget();
-  if (!widget || widget->ShouldPaintAsActive()) {
+  if (state_ != State::kFloating) {
     return;
   }
 
-  if (state_ == State::kFloating) {
-    SetState(State::kCollapsed);
+  auto* widget = GetWidget();
+  if (!widget || widget->IsActive()) {
+    return;
   }
+
+  // A bubble anchored in this window holds activation while it's open, and
+  // the window it's anchored in hasn't lost the user's attention.
+  for (views::Widget* owned :
+       views::Widget::GetAllOwnedWidgets(widget->GetNativeView())) {
+    if (owned->IsActive()) {
+      return;
+    }
+  }
+
+  SetState(State::kCollapsed);
 }
 
 void BraveVerticalTabStripRegionView::OnWidgetDestroying(

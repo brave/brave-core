@@ -199,8 +199,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripInteractiveUITest,
   auto* browser_widget = browser_view()->GetWidget();
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return !browser_widget->IsActive(); }));
-  // The bubble holds a paint-as-active lock on the window it's anchored in.
-  ASSERT_TRUE(browser_widget->ShouldPaintAsActive());
+  ASSERT_TRUE(bubble->IsActive());
 
   // The collapse decision is deferred by a task; let it run.
   base::test::TestFuture<void> flushed;
@@ -235,7 +234,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripInteractiveUITest,
   Browser* other_browser = CreateBrowser(browser()->GetProfile());
   views::test::WaitForWidgetActive(
       BrowserView::GetBrowserViewForBrowser(other_browser)->GetWidget(), true);
-  ASSERT_FALSE(browser_view()->GetWidget()->ShouldPaintAsActive());
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return !browser_view()->GetWidget()->IsActive(); }));
 
   EXPECT_TRUE(base::test::RunUntil(
       [&]() { return region_view->state() == State::kCollapsed; }));
