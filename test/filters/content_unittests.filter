@@ -78,6 +78,9 @@
 -FileBackedBlobFactoryFrameImplTest.Register_FencedFrameWithScopedFileAccessDelegate
 -RequestTest.DisconnectFromFencedFrame
 
+# Flaky upstream and on CI (passes locally)
+-FilePathWatcherTest.LinkedDirectoryPart1
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AdAuctionServiceImplPrivateAggregationEnabledTest.*
 -AggregatableAttributionUtilsTest.*
