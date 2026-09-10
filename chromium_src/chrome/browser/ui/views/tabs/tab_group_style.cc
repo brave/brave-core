@@ -63,44 +63,9 @@ SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
       .detach();
 }
 
-gfx::Insets TabGroupStyle::GetInsetsForHeaderChip() const {
-  auto insets = TabGroupStyle_ChromiumImpl::GetInsetsForHeaderChip();
-  if (!tabs::HorizontalTabsUpdateEnabled()) {
-    return insets;
-  }
-  if (!ShouldShowBraveVerticalTabs()) {
-    return gfx::Insets::VH(tabs::GetTabGroupTitleVerticalInset(),
-                           tabs::GetTabGroupTitleHorizontalInset());
-  }
-  return insets;
-}
-
-gfx::Point TabGroupStyle::GetTitleChipOffset(
-    std::optional<int> text_height) const {
-  if (!tabs::HorizontalTabsUpdateEnabled()) {
-    return TabGroupStyle_ChromiumImpl::GetTitleChipOffset(text_height);
-  }
-  return gfx::Point(tabs::kHorizontalTabInset,
-                    tabs::GetHorizontalTabVerticalSpacing());
-}
-
 bool TabGroupStyle::ShouldShowBraveVerticalTabs() const {
   auto* vertical_tab_controller = VerticalTabController::FromBrowser(
       tab_group_views_->GetBrowserWindowInterface());
   return vertical_tab_controller &&
          vertical_tab_controller->ShouldShowBraveVerticalTabs();
-}
-
-float TabGroupStyle::GetEmptyChipSize() const {
-  if (!tabs::HorizontalTabsUpdateEnabled()) {
-    return TabGroupStyle_ChromiumImpl::GetEmptyChipSize();
-  }
-  return tabs::GetHorizontalTabHeight();
-}
-
-int TabGroupStyle::GetChipCornerRadius() const {
-  if (!tabs::HorizontalTabsUpdateEnabled()) {
-    return TabGroupStyle_ChromiumImpl::GetChipCornerRadius();
-  }
-  return tabs::kTabBorderRadius;
 }
