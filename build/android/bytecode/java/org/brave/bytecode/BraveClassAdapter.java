@@ -75,8 +75,10 @@ public class BraveClassAdapter {
         chain = new BraveHttpURLConnectionFactoryImplClassAdapter(chain);
         chain = new BraveHubManagerImplClassAdapter(chain);
         chain = new BraveIdentityDiscControllerClassAdapter(chain);
+        chain = new BraveIncognitoCustomTabSnapshotControllerClassAdapter(chain);
         chain = new BraveIncognitoNewTabPageClassAdapter(chain);
         chain = new BraveIncognitoTabSwitcherPaneClassAdapter(chain);
+        chain = new BraveIncognitoTabbedSnapshotControllerClassAdapter(chain);
         chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLauncherActivityClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
