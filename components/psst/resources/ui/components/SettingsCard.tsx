@@ -118,7 +118,9 @@ const SettingsCard: React.FC<Props> = ({
           <SettingsGridBoldText>
             {progressModelState?.siteName || url}
           </SettingsGridBoldText>
-          <SettingsGridUrlText>{url}</SettingsGridUrlText>
+          {progressModelState?.siteName && (
+            <SettingsGridUrlText>{url}</SettingsGridUrlText>
+          )}
         </div>
       </SettingGridHeaderRow>
       {progressModelState
