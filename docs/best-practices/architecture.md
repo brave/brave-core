@@ -173,8 +173,16 @@ if (rewards_service) {  // Returns null when disabled
 **Don't use `shared_ptr` to take ownership of something you don't own.**
 
 Using `shared_ptr` on memory owned by another class causes crashes when the
-`shared_ptr` frees memory that is still referenced elsewhere. Avoid shared
-pointers unless there is a strong reason for shared ownership.
+`shared_ptr` frees memory that is still referenced elsewhere.
+
+**`std::shared_ptr` is banned in Chromium code outright** — there is no "strong
+reason for shared ownership" exception (see
+[CSM-005](coding-standards-memory.md#CSM-005) and the
+[Chromium smart pointer guidelines](https://www.chromium.org/developers/smart-pointer-guidelines/)).
+If you think you need shared ownership, rethink the design first; where it is
+genuinely unavoidable, use `scoped_refptr<T>` with a `base::RefCounted` type —
+but prefer redesign over reference counting (see
+[CSM-032](coding-standards-memory.md#CSM-032)).
 
 **BAD:**
 
