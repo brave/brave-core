@@ -544,8 +544,11 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
     }
   }
 
+  // Keep the invalidation inside the tab strip. This runs from Layout(), and an
+  // invalidation that reaches BrowserView re-dirties the whole widget for the
+  // next frame.
   tab_strip_->SetProperty(views::kMarginsKey, margins);
-  tab_strip_->InvalidateLayout();
+  tab_strip_->InvalidateLayout(/*avoid_propagate_during_layout*/ true);
 
   // This will move the right margin to the trailing scroll button when it is
   // visible. So this should be called after the right margin for tab strip is
