@@ -9,8 +9,7 @@
 
 namespace assist_ranker {
 
-RankerURLFetcher::RankerURLFetcher()
-    : state_(IDLE), retry_count_(0), max_retry_on_5xx_(0) {}
+RankerURLFetcher::RankerURLFetcher() = default;
 
 RankerURLFetcher::~RankerURLFetcher() = default;
 
