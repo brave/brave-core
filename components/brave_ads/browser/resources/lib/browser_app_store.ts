@@ -20,6 +20,8 @@ export function createAppStore(): AppStore {
   store.update({
     logsSupported,
     verboseLoggingEnabled: loadTimeData.getBoolean('verboseLoggingEnabled'),
+    adsInternalsVerboseModeEnabled:
+      loadTimeData.getBoolean('adsInternalsVerboseModeEnabled'),
   })
 
   // Rewards enabled/wallet connected can change from another tab (e.g.

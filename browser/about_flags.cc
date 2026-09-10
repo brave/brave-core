@@ -12,6 +12,7 @@
 #include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/updater/buildflags.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_education/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -60,6 +61,10 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/ads_internals/ads_internals_verbose_mode_feature.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -380,6 +385,18 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
                    kOsAll,                                             \
                    FEATURE_VALUE_TYPE(psst::features::kEnablePsst),    \
                }))
+
+#define ADS_INTERNALS_VERBOSE_MODE_FEATURE_ENTRIES                        \
+  IF_BUILDFLAG(                                                           \
+      ENABLE_BRAVE_ADS,                                                   \
+      EXPAND_FEATURE_ENTRIES({                                            \
+          "ads-internals-verbose-mode",                                   \
+          "Enable brave://ads-internals verbose mode",                    \
+          "Shows extra debugging tabs and tools on brave://ads-"          \
+          "internals.",                                                   \
+          kOsDesktop | kOsAndroid,                                        \
+          FEATURE_VALUE_TYPE(brave_ads::kAdsInternalsVerboseModeFeature), \
+      }))
 
 #if !BUILDFLAG(IS_ANDROID)
 #define BRAVE_COMMANDS_FEATURE_ENTRIES                                      \
@@ -1578,6 +1595,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_NEWS_FEATURE_ENTRIES                                                   \
   SPEEDREADER_FEATURE_ENTRIES                                                  \
   REQUEST_OTR_FEATURE_ENTRIES                                                  \
+  ADS_INTERNALS_VERBOSE_MODE_FEATURE_ENTRIES                                   \
   BRAVE_MODULE_FILENAME_PATCH                                                  \
   PLAYLIST_FEATURE_ENTRIES                                                     \
   BRAVE_COMMANDS_FEATURE_ENTRIES                                               \

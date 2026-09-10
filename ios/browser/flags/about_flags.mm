@@ -6,6 +6,7 @@
 // This file is included into //ios/chrome/browser/flags/about_flags.mm
 
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/features.h"
 #include "brave/components/brave_origin/features.h"
 #include "brave/components/brave_rewards/core/features.h"
@@ -26,6 +27,10 @@
 #include "components/webui/flags/feature_entry_macros.h"
 #include "components/webui/flags/flags_state.h"
 #include "net/base/features.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/ads_internals/ads_internals_verbose_mode_feature.h"
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
@@ -266,6 +271,19 @@ const flags_ui::FeatureEntry::FeatureVariation
 #define BRAVE_WALLET_FEATURE_ENTRIES
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#define ADS_INTERNALS_VERBOSE_MODE_FEATURE_ENTRIES                      \
+  EXPAND_FEATURE_ENTRIES({                                              \
+      "ads-internals-verbose-mode",                                     \
+      "Enable brave://ads-internals verbose mode",                      \
+      "Shows extra debugging tabs and tools on brave://ads-internals.", \
+      flags_ui::kOsIos,                                                 \
+      FEATURE_VALUE_TYPE(brave_ads::kAdsInternalsVerboseModeFeature),   \
+  })
+#else
+#define ADS_INTERNALS_VERBOSE_MODE_FEATURE_ENTRIES
+#endif
+
 #define BRAVE_PLAYLIST_FEATURE_ENTRIES                   \
   EXPAND_FEATURE_ENTRIES({                               \
       "brave-playlist",                                  \
@@ -391,6 +409,7 @@ const flags_ui::FeatureEntry::FeatureVariation
           FEATURE_VALUE_TYPE(brave_origin::features::kBraveOrigin),            \
       })                                                                       \
   BRAVE_SHIELDS_FEATURE_ENTRIES                                                \
+  ADS_INTERNALS_VERBOSE_MODE_FEATURE_ENTRIES                                   \
   BRAVE_NATIVE_WALLET_FEATURE_ENTRIES                                          \
   BRAVE_SKU_SDK_FEATURE_ENTRIES                                                \
   BRAVE_AI_CHAT_FEATURE_ENTRIES                                                \

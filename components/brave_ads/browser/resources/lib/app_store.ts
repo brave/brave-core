@@ -166,6 +166,7 @@ export interface AppState {
   variationsCountryCode: string
   logsSupported: boolean
   verboseLoggingEnabled: boolean
+  adsInternalsVerboseModeEnabled: boolean
   log: string
   autoRefreshEnabled: boolean
   errorsOnlyEnabled: boolean
@@ -225,6 +226,7 @@ export function defaultAppStore() {
     variationsCountryCode: '',
     logsSupported: false,
     verboseLoggingEnabled: false,
+    adsInternalsVerboseModeEnabled: false,
     log: '',
     autoRefreshEnabled: false,
     errorsOnlyEnabled: true,
