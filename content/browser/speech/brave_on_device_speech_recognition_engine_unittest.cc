@@ -93,6 +93,14 @@ class FakeAsrSession : public local_ai::mojom::AsrSession,
     responder.FlushForTesting();
   }
 
+  // Reports that nothing was recognized, then waits for delivery. This result
+  // is what ends a session with no transcript, so it must survive filtering.
+  void SendEmptyResult() {
+    responder->OnResponse(
+        std::vector<on_device_model::mojom::SpeechRecognitionResultPtr>());
+    responder.FlushForTesting();
+  }
+
   base::test::TestFuture<void> started;
   base::test::TestFuture<on_device_model::mojom::AudioDataPtr> audio_chunk;
   on_device_model::mojom::AsrStreamOptionsPtr options;
@@ -148,12 +156,14 @@ class BraveOnDeviceSpeechRecognitionEngineTest : public testing::Test {
   // Builds the engine against a client that hands out `session`. The session is
   // asked for on the UI thread, so it has not arrived when this returns.
   void CreateEngine(FakeAsrSession& session,
-                    const std::string& language = "en-US") {
+                    const std::string& language = "en-US",
+                    bool interim_results = false) {
     client_ = std::make_unique<FakeContentBrowserClient>(session);
     client_setting_ =
         std::make_unique<ScopedContentBrowserClientSetting>(client_.get());
     SpeechRecognitionSessionConfig config;
     config.language = language;
+    config.interim_results = interim_results;
     engine_ = std::make_unique<BraveOnDeviceSpeechRecognitionEngine>(config);
     engine_->set_delegate(&delegate_);
   }
@@ -183,13 +193,14 @@ class BraveOnDeviceSpeechRecognitionEngineTest : public testing::Test {
   std::unique_ptr<BraveOnDeviceSpeechRecognitionEngine> engine_;
 };
 
-// The sequence a real session runs. Audio reaches the worker, interim results
-// come back, the end of audio closes the input stream so the worker can emit
-// its final result, and only then does ending recognition drop the session
-// remote, which is what releases the worker.
+// The sequence a real session runs, for a page that asked for interim
+// results. Audio reaches the worker, interim results come back, the end of
+// audio closes the input stream so the worker can emit its final result, and
+// only then does ending recognition drop the session remote, which is what
+// releases the worker.
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, NormalFlow) {
   FakeAsrSession session;
-  CreateEngine(session);
+  CreateEngine(session, "en-US", /*interim_results=*/true);
   SetAudioParameters();
   ASSERT_TRUE(session.started.Wait());
   EXPECT_EQ(kSampleRateHz, static_cast<int>(session.options->sample_rate_hz));
@@ -224,6 +235,56 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, NormalFlow) {
   session.session_receiver.set_disconnect_handler(session_closed.GetCallback());
   engine_->EndRecognition();
   EXPECT_TRUE(session_closed.Wait());
+}
+
+// Nothing between the engine and blink consults interim_results, so honoring
+// the page's choice is the engine's job.
+TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
+       InterimResultsDroppedWhenNotRequested) {
+  FakeAsrSession session;
+  CreateEngine(session, "en-US", /*interim_results=*/false);
+  SetAudioParameters();
+  ASSERT_TRUE(session.started.Wait());
+
+  // SendResult waits for delivery, so the strict delegate proves it was
+  // dropped rather than merely late.
+  session.SendResult("partial", /*is_final=*/false);
+
+  EXPECT_CALL(delegate_, OnSpeechRecognitionEngineResults(
+                             SingleResult("final", /*is_provisional=*/false)));
+  session.SendResult("final", /*is_final=*/true);
+}
+
+// Past the end of audio the recognizer takes any result for the final one, so
+// a provisional is unwanted even from a session that asked for interims.
+TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
+       InterimResultsDroppedAfterAudioEnds) {
+  FakeAsrSession session;
+  CreateEngine(session, "en-US", /*interim_results=*/true);
+  SetAudioParameters();
+  ASSERT_TRUE(session.started.Wait());
+
+  engine_->AudioChunksEnded();
+
+  // Asked for, but no longer of any use, so the strict delegate rejects it.
+  session.SendResult("partial", /*is_final=*/false);
+
+  EXPECT_CALL(delegate_, OnSpeechRecognitionEngineResults(
+                             SingleResult("final", /*is_provisional=*/false)));
+  session.SendResult("final", /*is_final=*/true);
+}
+
+// An empty result is what ends a session with no transcript, so filtering
+// interims must not swallow it.
+TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
+       EmptyResultSurvivesInterimFiltering) {
+  FakeAsrSession session;
+  CreateEngine(session, "en-US", /*interim_results=*/false);
+  SetAudioParameters();
+  ASSERT_TRUE(session.started.Wait());
+
+  EXPECT_CALL(delegate_, OnSpeechRecognitionEngineResults(testing::IsEmpty()));
+  session.SendEmptyResult();
 }
 
 // The stream needs both the session remote and the audio parameters, which

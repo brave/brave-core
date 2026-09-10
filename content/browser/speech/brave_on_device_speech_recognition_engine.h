@@ -6,6 +6,8 @@
 #ifndef BRAVE_CONTENT_BROWSER_SPEECH_BRAVE_ON_DEVICE_SPEECH_RECOGNITION_ENGINE_H_
 #define BRAVE_CONTENT_BROWSER_SPEECH_BRAVE_ON_DEVICE_SPEECH_RECOGNITION_ENGINE_H_
 
+#include <vector>
+
 #include "base/memory/weak_ptr.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "content/browser/speech/on_device_speech_recognition_engine_impl.h"
@@ -13,6 +15,7 @@
 #include "media/base/audio_parameters.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "services/on_device_model/public/mojom/on_device_model.mojom.h"
 
 namespace content {
 
@@ -37,6 +40,11 @@ class CONTENT_EXPORT BraveOnDeviceSpeechRecognitionEngine
   void AudioChunksEnded() override;
   void EndRecognition() override;
 
+  // on_device_model::mojom::AsrStreamResponder:
+  void OnResponse(
+      std::vector<on_device_model::mojom::SpeechRecognitionResultPtr> result)
+      override;
+
  private:
   friend class BraveOnDeviceSpeechRecognitionEngineTest;
 
@@ -52,6 +60,7 @@ class CONTENT_EXPORT BraveOnDeviceSpeechRecognitionEngine
   mojo::Remote<local_ai::mojom::AsrSession> asr_session_;
 
   bool session_created_ = false;
+  bool audio_ended_ = false;
 
   base::WeakPtrFactory<BraveOnDeviceSpeechRecognitionEngine>
       brave_weak_factory_{this};
