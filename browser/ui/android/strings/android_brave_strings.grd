@@ -747,6 +747,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SPONSORED_ADS_ENABLED_SUMMARY" desc="Description under the settings toggle that enables Sponsored Ads">
         Help support Brave's mission to build an independent, user-first Web with Sponsored Ads. We measure ad performance privately, without identifying you.
       </message>
+      <message name="IDS_SPONSORED_ADS_LEARN_MORE" desc="Title of learn more link for the sponsored ads toggle.">
+        Learn more about Sponsored Ads
+      </message>
       <message name="IDS_SURVEY_PANELIST_TITLE" desc="Title for enable/disable brave survey panelist toggle.">
         Allow Brave surveys
       </message>
