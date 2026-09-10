@@ -178,7 +178,15 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
     features.push_back(DocumentFetchJavaScriptFeature::GetInstance());
     features.push_back(ForcePasteJavaScriptFeature::GetInstance());
     features.push_back(FullscreenHelperJavaScriptFeature::GetInstance());
-    features.push_back(GPCJavaScriptFeature::FromBrowserState(browser_state));
+    // On iOS 27+ WebKit handles GPC natively when the feature is enabled
+    bool gpc_handled_by_webkit = false;
+    if (@available(iOS 27.0, *)) {
+      gpc_handled_by_webkit = base::FeatureList::IsEnabled(
+          brave_shields::features::kWebKitGlobalPrivacyControl);
+    }
+    if (!gpc_handled_by_webkit) {
+      features.push_back(GPCJavaScriptFeature::FromBrowserState(browser_state));
+    }
     features.push_back(
         MediaBackgroundingJavaScriptFeature::FromBrowserState(browser_state));
     features.push_back(NightModeJavaScriptFeature::GetInstance());
