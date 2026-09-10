@@ -108,7 +108,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.NTP.DefaultPage", {}},
     {"Brave.NTP.OpeningScreenSwitch", MetricConfig{.ephemeral = true}},
     {"Brave.NTP.SponsoredMediaType", {}},
-    {"Brave.NTP.ShowSponsoredSites", {}},
+    {"Brave.NTP.ShowSponsoredAds", {}},
     {"Brave.Omnibox.SearchCount.NonRewards", {}},
     {"Brave.Omnibox.SearchCount.Rewards", {}},
     {"Brave.Omnibox.SearchCount.RewardsWallet", {}},

@@ -45,8 +45,8 @@ inline constexpr char kShieldsDevModeEnabledHistogramName[] =
     "Brave.Shields.DevModeEnabled";
 inline constexpr char kSurveyPanelistEnabledHistogramName[] =
     "Brave.Ads.SurveyPanelistEnabled";
-inline constexpr char kNewTabPageShowSponsoredSitesHistogramName[] =
-    "Brave.NTP.ShowSponsoredSites";
+inline constexpr char kNewTabPageShowSponsoredAdsHistogramName[] =
+    "Brave.NTP.ShowSponsoredAds";
 
 class ProfileMiscMetricsService : public KeyedService {
  public:

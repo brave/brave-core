@@ -183,13 +183,13 @@ void ProfileMiscMetricsService::ReportSimpleMetrics() {
   UMA_HISTOGRAM_EXACT_LINEAR(kShieldsDevModeEnabledHistogramName,
                              shields_dev_mode_enabled ? 1 : INT_MAX - 1, 2);
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-  bool show_sponsored_sites =
+  bool show_sponsored_ads =
       profile_prefs_->GetBoolean(brave_ads::prefs::kSponsoredEnabled);
 #else
-  bool show_sponsored_sites = false;
+  bool show_sponsored_ads = false;
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
-  UMA_HISTOGRAM_EXACT_LINEAR(kNewTabPageShowSponsoredSitesHistogramName,
-                             show_sponsored_sites ? INT_MAX - 1 : 0, 2);
+  UMA_HISTOGRAM_EXACT_LINEAR(kNewTabPageShowSponsoredAdsHistogramName,
+                             show_sponsored_ads ? INT_MAX - 1 : 0, 2);
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
