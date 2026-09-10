@@ -54,55 +54,15 @@ public class ReaderModeHandler: InternalSchemeResponse {
     // Must generate a unique nonce, every single time as per Content-Policy spec.
     let setTitleNonce = UUID().uuidString.replacingOccurrences(of: "-", with: "")
 
-    // Create our own CSPs
-    var policies = [
-      ("default-src", "'none'"),
-      ("base-uri", "'none'"),
-      ("form-action", "'none'"),
-      ("frame-ancestors", "'none'"),
-      //("sandbox", ""),                  // Do not enable `sandbox` as it causes `Wikipedia` to not work and possibly other pages
-      ("upgrade-insecure-requests", "1"),
-      ("img-src", "*"),
-      ("style-src", "\(InternalURL.baseUrl) '\(ReaderModeHandler.readerModeStyleHash)'"),
-      ("font-src", "\(InternalURL.baseUrl)"),
-      ("script-src", "'nonce-\(setTitleNonce)'"),
-    ]
-
-    // Parse CSP Header
-    if let originalCSP = headers.first(where: { $0.key.lowercased() == "content-security-policy" })?
-      .value
-    {
-      var originalPolicies = [(String, String)]()
-      let policiesStrings = originalCSP.components(separatedBy: ";")
-        .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-      for policy in policiesStrings {
-        let components = policy.components(separatedBy: " ")
-        if components.count == 1 {
-          originalPolicies.append((policy, ""))
-        } else {
-          let key = components[0]
-          let value = components[1...].joined(separator: " ")
-          originalPolicies.append((key, value))
-        }
-      }
-
-      // Remove unwanted policies
-      originalPolicies.removeAll(where: { key, _ in
-        key == "report-uri" || key == "report-to"
-      })
-
-      if originalPolicies.contains(where: { key, _ in key == "img-src" }) {
-        policies.removeAll(where: { key, _ in key == "img-src" })
-      }
-
-      // Add original CSPs onto our own
-      policies.append(contentsOf: originalPolicies)
-    }
-
-    headers["Content-Security-Policy"] = String(
-      policies.map({ (key, value) in
-        return value.isEmpty ? "\(key);" : "\(key) \(value);"
-      }).joined(by: " ")
+    // Only the img-src directive is adopted from the original page's CSP. Remove the original
+    // header (its key casing may differ) so it is not emitted alongside our own policy.
+    let originalCSP = headers.first(where: {
+      $0.key.lowercased() == "content-security-policy"
+    })?.value
+    headers = headers.filter({ $0.key.lowercased() != "content-security-policy" })
+    headers["Content-Security-Policy"] = ReaderModeHandler.contentSecurityPolicy(
+      originalCSP: originalCSP,
+      scriptNonce: setTitleNonce
     )
 
     if url.url.lastPathComponent == "page-exists" {
@@ -172,5 +132,69 @@ public class ReaderModeHandler: InternalSchemeResponse {
 
     assert(false)
     return nil
+  }
+
+  /// Builds the Content-Security-Policy header value for a reader mode page.
+  ///
+  /// Only the `img-src` directive is adopted from the original page's CSP so that images the
+  /// original page allowed can still load. Every other directive is ignored so that a page cannot
+  /// weaken the reader mode policy, e.g. via `script-src-elem`/`script-src-attr` which take
+  /// precedence over the nonce-based `script-src` for inline event handlers, or `frame-src` which
+  /// would allow framing internal pages.
+  static func contentSecurityPolicy(originalCSP: String?, scriptNonce: String) -> String {
+    // Create our own CSPs
+    var policies = [
+      ("default-src", "'none'"),
+      ("base-uri", "'none'"),
+      ("form-action", "'none'"),
+      ("frame-ancestors", "'none'"),
+      //("sandbox", ""),                  // Do not enable `sandbox` as it causes `Wikipedia` to not work and possibly other pages
+      ("upgrade-insecure-requests", "1"),
+      ("img-src", "*"),
+      ("style-src", "\(InternalURL.baseUrl) '\(ReaderModeHandler.readerModeStyleHash)'"),
+      ("font-src", "\(InternalURL.baseUrl)"),
+      ("script-src", "'nonce-\(scriptNonce)'"),
+    ]
+
+    // The original value may be a comma-separated list of policies since `allHeaderFields`
+    // coalesces repeated CSP headers. Each policy is enforced in conjunction with the others,
+    // so an `img-src` is adopted from each one.
+    var adoptedBaseImageSource = false
+    var additionalImageSources: [String] = []
+    if let originalCSP {
+      for originalPolicy in originalCSP.components(separatedBy: ",") {
+        let directives = originalPolicy.components(separatedBy: ";")
+          .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+        for directive in directives {
+          // Directive tokens may be separated by any whitespace, not just spaces
+          let components = directive.components(separatedBy: .whitespacesAndNewlines).filter({
+            !$0.isEmpty
+          })
+          guard components.first?.lowercased() == "img-src" else { continue }
+          // Strip newline characters so the value cannot break header serialization
+          // An empty source list (a bare `img-src`) is valid and blocks all image loads
+          let value = components.dropFirst().joined(separator: " ").filter({ !$0.isNewline })
+          if !adoptedBaseImageSource {
+            policies.removeAll(where: { key, _ in key == "img-src" })
+            policies.append(("img-src", value))
+            adoptedBaseImageSource = true
+          } else {
+            // The base policy already adopted an `img-src`, so retain this one as its own
+            // policy to preserve the intersection semantics of the original policies
+            additionalImageSources.append(value)
+          }
+          // CSP uses the first occurrence of a directive and ignores later duplicates
+          break
+        }
+      }
+    }
+
+    var serialized = policies.map({ (key, value) in
+      return value.isEmpty ? "\(key);" : "\(key) \(value);"
+    }).joined(separator: " ")
+    for source in additionalImageSources {
+      serialized += source.isEmpty ? ", img-src" : ", img-src \(source)"
+    }
+    return serialized
   }
 }
