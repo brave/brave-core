@@ -1,0 +1,28 @@
+diff --git a/third_party/blink/renderer/build/scripts/templates/web_runtime_features_base.cc.tmpl b/third_party/blink/renderer/build/scripts/templates/web_runtime_features_base.cc.tmpl
+index a22d2d660644c990f3f8ea7c1e7a3756732b1aa8..6fd874c8ba2bfb3c22e199c7f47161294d25d408 100644
+--- a/third_party/blink/renderer/build/scripts/templates/web_runtime_features_base.cc.tmpl
++++ b/third_party/blink/renderer/build/scripts/templates/web_runtime_features_base.cc.tmpl
+@@ -9,6 +9,23 @@
+ 
+ namespace blink {
+ 
++std::vector<WebRuntimeFeaturesBase::RuntimeFeatureStateForTesting>
++WebRuntimeFeaturesBase::GetRuntimeFeatureStatesForTesting() {
++  return {
++{% for feature in features %}
++    {"{{feature.name}}", "{{feature.base_feature}}",
++     RuntimeEnabledFeatures::{{feature.name}}Enabled(nullptr)},
++{% endfor %}
++  };
++}
++
++void WebRuntimeFeaturesBase::ResetRuntimeFeaturesForTesting() {
++{% for feature in features %}
++  RuntimeEnabledFeatures::Set{{feature.name}}Enabled(false);
++{% endfor %}
++  RuntimeEnabledFeatures::SetStableFeaturesEnabled(true);
++}
++
+ {% for feature in features %}
+ {% if feature.public %}
+ // static

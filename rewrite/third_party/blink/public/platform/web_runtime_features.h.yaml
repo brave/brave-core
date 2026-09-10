@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: 'Include the callback used to restore runtime feature state.'
+    regex:
+      pattern: '#include <string_view>'
+      replace: |-
+        #include <string_view>
+
+        #include "base/functional/callback.h"
+
+  - description: |-
+      Allow tests to isolate renderer feature initialization.
+
+      The returned closure restores the original runtime flags and scrollbar
+      settings after a test has exercised the production startup sequence.
+    add_to_public:
+      class_name: WebRuntimeFeatures
+      code: |-
+        static base::OnceClosure BackupAndResetRuntimeFeaturesForTesting();

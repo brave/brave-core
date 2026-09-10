@@ -1,0 +1,21 @@
+diff --git a/third_party/blink/public/platform/web_runtime_features.h b/third_party/blink/public/platform/web_runtime_features.h
+index d7584122c0b89e646cec244febbaeb9df57877dc..e650f13f235ffe224663ad19613df666feaea6b9 100644
+--- a/third_party/blink/public/platform/web_runtime_features.h
++++ b/third_party/blink/public/platform/web_runtime_features.h
+@@ -33,6 +33,8 @@
+ 
+ #include <string_view>
+ 
++#include "base/functional/callback.h"
++
+ #include "third_party/blink/public/platform/web_common.h"
+ #include "third_party/blink/public/platform/web_runtime_features_base.h"
+ 
+@@ -71,6 +73,7 @@ class BLINK_PLATFORM_EXPORT WebRuntimeFeatures : public WebRuntimeFeaturesBase {
+   static void EnableLocalNetworkAccessWebRTC(bool);
+ 
+   WebRuntimeFeatures() = delete;
++  static base::OnceClosure BackupAndResetRuntimeFeaturesForTesting();
+ };
+ 
+ }  // namespace blink

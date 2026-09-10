@@ -9,3 +9,11 @@ include_rules = [
   "+content/public/test",
   "+ui/compositor",
 ]
+
+specific_include_rules = {
+  "runtime_feature_test_support\\.(cc|h)": [
+    "+brave/renderer/brave_content_renderer_client.h",
+    "+content/public/renderer/content_renderer_client.h",
+    "+third_party/blink/public/platform/web_runtime_features.h",
+  ],
+}

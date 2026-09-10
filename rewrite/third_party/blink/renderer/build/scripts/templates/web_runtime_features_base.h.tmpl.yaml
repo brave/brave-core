@@ -1,0 +1,35 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Include the types used by the runtime feature test catalogue.'
+    regex:
+      pattern: '#include "third_party/blink/public/platform/web_common.h"'
+      replace: |-
+        #include <string_view>
+        #include <vector>
+
+        #include "third_party/blink/public/platform/web_common.h"
+
+  - description: |-
+      Expose runtime feature associations and values to tests.
+
+      Include non-public features, so tests can find Blink counterparts for
+      base features without maintaining a second list of runtime flags.
+    regex:
+      re_pattern: '(^[ \t]*)WebRuntimeFeaturesBase\(\) = delete;'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1struct RuntimeFeatureStateForTesting {
+        \1  std::string_view name;
+        \1  std::string_view base_feature_name;
+        \1  bool enabled;
+        \1};
+
+        \1static std::vector<RuntimeFeatureStateForTesting>
+        \1GetRuntimeFeatureStatesForTesting();
+        \1static void ResetRuntimeFeaturesForTesting();
+
+        \1WebRuntimeFeaturesBase() = delete;

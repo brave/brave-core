@@ -133,6 +133,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/variations:buildflags",
+    "//brave/test:runtime_feature_test_support",
     "//chrome/browser",
     "//chrome/browser:browser_features",
     "//chrome/browser/devtools",

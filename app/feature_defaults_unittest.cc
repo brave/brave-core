@@ -3,9 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <algorithm>
+#include <string_view>
+
 #include "base/debug/debugging_buildflags.h"
 #include "base/feature_list.h"
 #include "base/features.h"
+#include "base/memory/raw_ptr.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/test/base/runtime_feature_test_support.h"
 #include "chrome/browser/browser_features.h"
 #include "chrome/browser/devtools/features.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
@@ -108,6 +114,12 @@
 #endif
 
 TEST(FeatureDefaultsTest, DisabledFeatures) {
+  // Keep patched defaults as defaults: overriding these features would make
+  // Blink's base-feature sync disable them and conceal missing renderer
+  // disables.
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitWithEmptyFeatureAndFieldTrialLists();
+
   // Please, keep alphabetized
   const base::Feature* disabled_features[] = {
       &attribution_reporting::features::kConversionMeasurement,
@@ -304,9 +316,53 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &webapps::features::kWebAppsEnableMLModelForPromotion,
   };
 
-  for (const auto* feature : disabled_features) {
-    EXPECT_FALSE(base::FeatureList::IsEnabled(*feature)) << feature->name;
+  const auto runtime_features =
+      brave::GetRendererRuntimeFeatureStatesForTesting();
+  ASSERT_FALSE(runtime_features.empty());
+
+  // These associations are made in Content/Brave renderer code rather than
+  // JSON5, and the base and runtime feature names differ.
+  struct RuntimeFeatureAlias {
+    const raw_ptr<const base::Feature> base_feature;
+    std::string_view runtime_name;
+  };
+  const RuntimeFeatureAlias runtime_feature_aliases[] = {
+      {&attribution_reporting::features::kConversionMeasurement,
+       "AttributionReporting"},
+      {&features::kDigitalGoodsApi, "DigitalGoods"},
+      {&network::features::kBrowsingTopics, "TopicsAPI"},
+  };
+  for (const auto& alias : runtime_feature_aliases) {
+    ASSERT_TRUE(std::ranges::any_of(runtime_features,
+                                    [&](const auto& runtime) {
+                                      return runtime.name == alias.runtime_name;
+                                    }))
+        << "Unknown Blink runtime feature: " << alias.runtime_name;
   }
+
+  size_t checked_runtime_features = 0;
+  for (const auto* feature : disabled_features) {
+    const bool base_enabled = base::FeatureList::IsEnabled(*feature);
+    EXPECT_FALSE(base_enabled) << feature->name;
+
+    for (const auto& runtime : runtime_features) {
+      const bool is_alias = std::ranges::any_of(
+          runtime_feature_aliases, [&](const RuntimeFeatureAlias& alias) {
+            return alias.base_feature == feature &&
+                   alias.runtime_name == runtime.name;
+          });
+      if (runtime.name != feature->name &&
+          runtime.base_feature_name != feature->name && !is_alias) {
+        continue;
+      }
+      ++checked_runtime_features;
+      EXPECT_EQ(base_enabled, runtime.enabled)
+          << "Base feature: " << feature->name
+          << "; Blink runtime feature after renderer initialization: "
+          << runtime.name;
+    }
+  }
+  EXPECT_GT(checked_runtime_features, 0u);
 }
 
 TEST(FeatureDefaultsTest, EnabledFeatures) {

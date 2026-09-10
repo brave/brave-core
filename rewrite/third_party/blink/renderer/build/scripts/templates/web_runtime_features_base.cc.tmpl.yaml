@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Generate runtime feature readers and a fresh-start reset for tests.
+
+      Use the normal getters to account for dependencies, implications and
+      protected flags. A null context queries without an origin-trial token.
+    regex:
+      pattern: 'namespace blink {'
+      replace: |-
+        namespace blink {
+
+        std::vector<WebRuntimeFeaturesBase::RuntimeFeatureStateForTesting>
+        WebRuntimeFeaturesBase::GetRuntimeFeatureStatesForTesting() {
+          return {
+        {% for feature in features %}
+            {"{{feature.name}}", "{{feature.base_feature}}",
+             RuntimeEnabledFeatures::{{feature.name}}Enabled(nullptr)},
+        {% endfor %}
+          };
+        }
+
+        void WebRuntimeFeaturesBase::ResetRuntimeFeaturesForTesting() {
+        {% for feature in features %}
+          RuntimeEnabledFeatures::Set{{feature.name}}Enabled(false);
+        {% endfor %}
+          RuntimeEnabledFeatures::SetStableFeaturesEnabled(true);
+        }

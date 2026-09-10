@@ -1,0 +1,31 @@
+diff --git a/third_party/blink/renderer/build/scripts/templates/web_runtime_features_base.h.tmpl b/third_party/blink/renderer/build/scripts/templates/web_runtime_features_base.h.tmpl
+index bdeb4e992059c55e2c92e68ac501a798a7fe5011..02399320cb8184e32a3eb525cab9592cc20ad160 100644
+--- a/third_party/blink/renderer/build/scripts/templates/web_runtime_features_base.h.tmpl
++++ b/third_party/blink/renderer/build/scripts/templates/web_runtime_features_base.h.tmpl
+@@ -6,6 +6,9 @@
+ #ifndef {{header_guard}}
+ #define {{header_guard}}
+ 
++#include <string_view>
++#include <vector>
++
+ #include "third_party/blink/public/platform/web_common.h"
+ 
+ namespace blink {
+@@ -23,6 +26,16 @@ class BLINK_PLATFORM_EXPORT WebRuntimeFeaturesBase {
+ {% endif %}
+ {% endfor %}
+ 
++  struct RuntimeFeatureStateForTesting {
++    std::string_view name;
++    std::string_view base_feature_name;
++    bool enabled;
++  };
++
++  static std::vector<RuntimeFeatureStateForTesting>
++  GetRuntimeFeatureStatesForTesting();
++  static void ResetRuntimeFeaturesForTesting();
++
+   WebRuntimeFeaturesBase() = delete;
+ };
+ 
