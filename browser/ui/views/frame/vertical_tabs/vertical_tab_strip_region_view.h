@@ -150,10 +150,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            LayoutAfterFirstTabCreation);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, LayoutSanity);
-  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripInteractiveUITest,
-                           FloatingStateSurvivesOwnBubbleActivation);
-  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripInteractiveUITest,
-                           FloatingStateCollapsesWhenAnotherWindowActivates);
 
   FullscreenController* GetFullscreenController() const;
   bool IsTabFullscreen() const;
@@ -182,10 +178,6 @@ class BraveVerticalTabStripRegionView : public views::View,
   bool IsFloatingEnabledForBrowserFullscreen() const;
   bool IsFloatingEnabledForBrowserMode() const;
   void UpdateFloatingStateForBrowserMode();
-
-  // Collapses a floating strip, but only if the browser window really lost
-  // the user's attention - not when one of its own bubbles took activation.
-  void CollapseIfWindowIsInactive();
 
   void ScheduleFloatingModeTimer();
   void ScheduleCollapseTimer();

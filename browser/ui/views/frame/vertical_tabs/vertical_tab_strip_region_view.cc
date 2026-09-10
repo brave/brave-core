@@ -18,7 +18,6 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_split.h"
-#include "base/task/sequenced_task_runner.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
@@ -73,7 +72,6 @@
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/view_utils.h"
-#include "ui/views/widget/widget.h"
 #include "ui/views/window/hit_test_utils.h"
 
 #if BUILDFLAG(IS_WIN)
@@ -453,34 +451,8 @@ void BraveVerticalTabStripRegionView::OnWidgetActivationChanged(
     return;
   }
 
+  // When parent widget is deactivated, we should collapse vertical tab
   mouse_enter_timer_.Stop();
-  if (state_ != State::kFloating) {
-    return;
-  }
-
-  // The browser widget also deactivates when one of its own bubbles takes
-  // activation (permission prompt, page info, ...), which isn't the user
-  // leaving the window. Collapsing then animates the strip, and every
-  // animation frame lays out BrowserView, which re-anchors the open bubble
-  // and re-arms its input protection - the bubble silently drops clicks for
-  // as long as the animation runs, plus the cooldown.
-  //
-  // A bubble holds a paint-as-active lock on its parent, but may not have
-  // taken it yet when this runs (on macOS the browser window resigns key
-  // before the bubble becomes key), so re-check on the next task.
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(
-          &BraveVerticalTabStripRegionView::CollapseIfWindowIsInactive,
-          weak_factory_.GetWeakPtr()));
-}
-
-void BraveVerticalTabStripRegionView::CollapseIfWindowIsInactive() {
-  auto* widget = GetWidget();
-  if (!widget || widget->ShouldPaintAsActive()) {
-    return;
-  }
-
   if (state_ == State::kFloating) {
     SetState(State::kCollapsed);
   }
