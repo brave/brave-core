@@ -5,6 +5,39 @@
 
 substitutions:
   - description: |-
+      Preserve background playback when screen lock stops the PiP activity.
+
+      Chromium 153 added media suspension in onStop, treating an activity stop
+      as a PiP close:
+      https://chromium.googlesource.com/chromium/src/+/11ba5e6a08d432b71f625f56410410e0b6a6465b
+
+      Screen lock also stops the activity. When background playback is enabled,
+      this hook prevents screen lock from suspending playback on any website.
+      It keeps the pending stop flag so closing PiP later still pauses playback.
+    regex:
+      re_pattern: '(public void onStop\(\) \{)'
+      replace: |-
+        \1
+                if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
+                        .maybeHandleStopForScreenLock(mShouldSuspendMediaOnStop)) {
+                    return;
+                }
+
+  - description: |-
+      Keep active PiP when unlocking resumes the activity.
+
+      A resume after screen lock is not the user expanding PiP. Preserve the
+      window and pending close flag until a real close or normal resume.
+    regex:
+      re_pattern: '(public void onResume\(\) \{)'
+      replace: |-
+        \1
+                if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
+                        .maybeHandleResumeAfterScreenLock(mActivity)) {
+                    return;
+                }
+
+  - description: |-
       Delegate YouTube PiP entry to Brave.
 
       Inserts a guarded early return just before the inline
