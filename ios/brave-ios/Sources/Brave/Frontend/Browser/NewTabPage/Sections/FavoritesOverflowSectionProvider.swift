@@ -12,10 +12,18 @@ import Shared
 import UIKit
 
 class FavoritesOverflowButton: SpringButton {
-  private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .light)).then {
-    $0.clipsToBounds = true
-    $0.isUserInteractionEnabled = false
-  }
+  private let backgroundView: UIVisualEffectView = {
+    let view = UIVisualEffectView()
+    view.clipsToBounds = true
+    view.isUserInteractionEnabled = false
+    if #available(iOS 26.0, *) {
+      view.effect = UIGlassEffect(style: .regular)
+    } else {
+      view.effect = UIBlurEffect(style: .systemThinMaterial)
+    }
+    view.overrideUserInterfaceStyle = .dark
+    return view
+  }()
 
   override init(frame: CGRect) {
     super.init(frame: frame)
@@ -58,7 +66,7 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   init(action: @escaping () -> Void) {
     self.action = action
     frc = Favorite.frc()
-    frc.fetchRequest.fetchLimit = 10
+    frc.fetchRequest.fetchLimit = 20
     super.init()
     try? frc.performFetch()
     frc.delegate = self
@@ -108,7 +116,14 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     _ collectionView: UICollectionView,
     layout collectionViewLayout: UICollectionViewLayout,
     insetForSectionAt section: Int
-  ) -> UIEdgeInsets { .zero }
+  ) -> UIEdgeInsets {
+    let insets = horizontalInsets(
+      for: collectionView,
+      maxWidth: FavoritesSectionProvider.maxWidth,
+      minimumInset: 16
+    )
+    return UIEdgeInsets(top: 0, left: insets.left, bottom: 0, right: insets.right)
+  }
 }
 
 extension FavoritesOverflowSectionProvider: NSFetchedResultsControllerDelegate {
