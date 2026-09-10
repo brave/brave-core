@@ -16,7 +16,9 @@
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/time/time.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "components/speech/audio_buffer.h"
@@ -153,6 +155,11 @@ MATCHER_P2(SingleResult, transcript, is_provisional, "") {
 
 class BraveOnDeviceSpeechRecognitionEngineTest : public testing::Test {
  protected:
+  BraveOnDeviceSpeechRecognitionEngineTest() = default;
+  explicit BraveOnDeviceSpeechRecognitionEngineTest(
+      base::test::TaskEnvironment::TimeSource time_source)
+      : task_environment_(time_source) {}
+
   // Builds the engine against a client that hands out `session`. The session is
   // asked for on the UI thread, so it has not arrived when this returns.
   void CreateEngine(FakeAsrSession& session,
@@ -185,6 +192,10 @@ class BraveOnDeviceSpeechRecognitionEngineTest : public testing::Test {
   // Set before Start is queued, so unlike the fake's view it cannot be fooled
   // by a message that has been sent but not yet delivered.
   bool session_created() const { return engine_->session_created_; }
+
+  static constexpr base::TimeDelta final_result_timeout() {
+    return BraveOnDeviceSpeechRecognitionEngine::kFinalResultTimeout;
+  }
 
   BrowserTaskEnvironment task_environment_;
   testing::StrictMock<MockDelegate> delegate_;
@@ -401,6 +412,45 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, WorkerDeathReportsError) {
   session.responder.reset();
 
   // The error path ends recognition, which drops the session remote.
+  EXPECT_TRUE(session_closed.Wait());
+}
+
+// Nothing in the recognizer times out the state AudioChunksEnded leaves it in,
+// so the engine has to end a recognition the worker never answers.
+class BraveOnDeviceSpeechRecognitionEngineTimeoutTest
+    : public BraveOnDeviceSpeechRecognitionEngineTest {
+ protected:
+  BraveOnDeviceSpeechRecognitionEngineTimeoutTest()
+      : BraveOnDeviceSpeechRecognitionEngineTest(
+            base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
+};
+
+TEST_F(BraveOnDeviceSpeechRecognitionEngineTimeoutTest,
+       SilentWorkerEndsRecognition) {
+  FakeAsrSession session;
+  CreateEngine(session);
+  SetAudioParameters();
+  ASSERT_TRUE(session.started.Wait());
+
+  engine_->AudioChunksEnded();
+
+  // A result is a sign of life, so the deadline follows the last one. This one
+  // is filtered before the delegate sees it, and still counts.
+  task_environment_.FastForwardBy(final_result_timeout() - base::Seconds(1));
+  session.SendResult("partial", /*is_final=*/false);
+
+  // Past the original deadline and short of the new one, so it is still the
+  // worker's turn and the strict delegate fails on any result.
+  task_environment_.FastForwardBy(final_result_timeout() - base::Seconds(1));
+  ASSERT_TRUE(session.responder.is_connected());
+
+  EXPECT_CALL(delegate_, OnSpeechRecognitionEngineResults(testing::IsEmpty()));
+  task_environment_.FastForwardBy(base::Seconds(1));
+
+  // Ending the session is what drops the session remote.
+  base::test::TestFuture<void> session_closed;
+  session.session_receiver.set_disconnect_handler(session_closed.GetCallback());
+  engine_->EndRecognition();
   EXPECT_TRUE(session_closed.Wait());
 }
 
