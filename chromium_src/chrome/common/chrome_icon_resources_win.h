@@ -43,12 +43,18 @@ enum {
   kBetaFileTypeIndex = 11,
   kDevFileTypeIndex = 12,
   kSxSFileTypeIndex = 13,
+
+  // The Omnibox Everywhere icon.
+  kOmniboxEverywhereIndex = 14,
 #else
   // The Brave Developer App Launcher icon.
   kAppLauncherIndex = 1,
 
   // The Brave Developer incognito icon.
   kIncognitoIndex = 2,
+
+  // The Brave Developer Omnibox Everywhere icon.
+  kOmniboxEverywhereIndex = 6,
 #endif
 
   // Brave has no dedicated isolated mode icon; reuse the incognito icon.
