@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/android/nala/icons.gni")
+import("//brave/node_modules/@brave/leo/tokens/android/sources.gni")
 import("//build/config/android/rules.gni")
 
 nala_base_path = "../../node_modules/@brave/leo/tokens/android"
@@ -147,6 +148,51 @@ foreach(override, nala_chrome_app_icon_raster_overrides) {
   }
 }
 
+# Nala emits a color as a ColorStateList, rather than as a `<color>` entry in
+# `values*/colors.xml`, when it applies an opacity to another token: only a CSL
+# can carry `android:alpha` over a reference, so only a CSL keeps the token
+# following whatever it points at. A CSL's filename is its resource name, so
+# each one needs a file of its own, in both `color/` and `color-night/`.
+#
+# `nala_composed_colors` comes from Nala's generated sources.gni, so it tracks
+# the tokens automatically instead of being a copy that has to be updated on
+# every bump.
+template("nala_composed_color_resources") {
+  action(target_name) {
+    script = "sync_nala_resources.py"
+    _source_dir = "$nala_base_path/${invoker.res_dir}"
+    _output_dir = "$target_gen_dir/res/${invoker.res_dir}"
+    sources = []
+    outputs = []
+    foreach(color, nala_composed_colors) {
+      sources += [ "$_source_dir/$color" ]
+      outputs += [ "$_output_dir/$color" ]
+    }
+    args = [
+             "--source-dir",
+             rebase_path(_source_dir, root_build_dir),
+             "--output-dir",
+             rebase_path(_output_dir, root_build_dir),
+           ] + nala_composed_colors
+  }
+}
+
+# Guard against Nala emitting no composed colors at all, which would otherwise
+# leave the actions below with no outputs and fail `gn gen`.
+_nala_composed_color_deps = []
+if (nala_composed_colors != []) {
+  nala_composed_color_resources("nala_composed_colors") {
+    res_dir = "color"
+  }
+  nala_composed_color_resources("nala_composed_colors_night") {
+    res_dir = "color-night"
+  }
+  _nala_composed_color_deps = [
+    ":nala_composed_colors",
+    ":nala_composed_colors_night",
+  ]
+}
+
 # Copies Nala Android tokens to the gen directory.
 # Note: We need to copy on a per folder basis as GN can't
 # preserve the directory structure in a copy target.
@@ -157,6 +203,7 @@ group("nala") {
     ":nala_icons",
   ]
   public_deps += _nala_override_deps
+  public_deps += _nala_composed_color_deps
 }
 
 copy("nala_colors") {
@@ -185,6 +232,12 @@ android_resources("java_resources") {
   ]
   foreach(icon, nala_icons) {
     sources += [ "$target_gen_dir/res/drawable/$icon" ]
+  }
+  foreach(color, nala_composed_colors) {
+    sources += [
+      "$target_gen_dir/res/color-night/$color",
+      "$target_gen_dir/res/color/$color",
+    ]
   }
   foreach(override, nala_icon_overrides) {
     sources += [ "$target_gen_dir/res/drawable/${override.dest}" ]
