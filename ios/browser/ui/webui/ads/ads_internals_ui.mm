@@ -39,7 +39,8 @@ AdsInternalsUI::AdsInternalsUI(web::WebUIIOS* web_ui, const GURL& url)
                AdsInternalsHandler::GetComponentIdCallback(),
                AdsInternalsHandler::GetComponentIdCallback(),
                AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
-               AdsInternalsHandler::GetComponentIdCallback()) {
+               AdsInternalsHandler::GetComponentIdCallback(),
+               AdsInternalsHandler::GetIsSponsoredTilesShownCallback()) {
   BraveWebUIIOSDataSource* source = brave::CreateAndAddWebUIDataSource(
       web_ui, url.host(), base::span(kAdsInternalsGenerated),
       IDR_ADS_INTERNALS_HTML);

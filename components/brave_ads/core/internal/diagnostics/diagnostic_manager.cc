@@ -33,6 +33,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/catalog_next_update_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/catalog_version_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/confirmation_tokens_remaining_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/country_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/device_id_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/language_diagnostic_entry.h"
@@ -46,6 +47,7 @@
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/resource_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/schema_version_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/sponsored_ads_enabled_diagnostic_entry.h"
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/subdivision_code_diagnostic_entry.h"
 #include "brave/components/brave_ads/core/internal/global_state/global_state.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/browser_is_active_permission_rule.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/catalog_permission_rule.h"
@@ -71,6 +73,7 @@ constexpr char kRewardsEntriesKey[] = "rewardsEntries";
 constexpr char kStorageEntriesKey[] = "storageEntries";
 constexpr char kResourcesEntriesKey[] = "resourcesEntries";
 constexpr char kPermissionRulesEntriesKey[] = "permissionRulesEntries";
+constexpr char kConfirmationTokensEntriesKey[] = "confirmationTokensEntries";
 
 std::optional<bool> IsWalletValid() {
   const std::optional<WalletInfo>& wallet = GetAccount().GetWallet();
@@ -170,6 +173,10 @@ constexpr auto kRewardsDiagnosticEntryTypes =
          DiagnosticEntryType::kWalletConnected,
          DiagnosticEntryType::kIssuersValid});
 
+constexpr auto kConfirmationTokensDiagnosticEntryTypes =
+    base::MakeFixedFlatSet<DiagnosticEntryType>(
+        {DiagnosticEntryType::kConfirmationTokensRemaining});
+
 constexpr auto kStorageDiagnosticEntryTypes =
     base::MakeFixedFlatSet<DiagnosticEntryType>(
         {DiagnosticEntryType::kSchemaVersion,
@@ -202,6 +209,10 @@ bool IsRewardsDiagnosticEntryType(DiagnosticEntryType type) {
   return kRewardsDiagnosticEntryTypes.contains(type);
 }
 
+bool IsConfirmationTokensDiagnosticEntryType(DiagnosticEntryType type) {
+  return kConfirmationTokensDiagnosticEntryTypes.contains(type);
+}
+
 bool IsStorageDiagnosticEntryType(DiagnosticEntryType type) {
   return kStorageDiagnosticEntryTypes.contains(type);
 }
@@ -212,13 +223,6 @@ bool IsResourcesDiagnosticEntryType(DiagnosticEntryType type) {
 
 bool IsPermissionRulesDiagnosticEntryType(DiagnosticEntryType type) {
   return kPermissionRulesDiagnosticEntryTypes.contains(type);
-}
-
-bool IsTabSpecificDiagnosticEntryType(DiagnosticEntryType type) {
-  return IsRewardsDiagnosticEntryType(type) ||
-         IsStorageDiagnosticEntryType(type) ||
-         IsResourcesDiagnosticEntryType(type) ||
-         IsPermissionRulesDiagnosticEntryType(type);
 }
 
 }  // namespace
@@ -233,6 +237,7 @@ DiagnosticManager::DiagnosticManager() {
   SetEntry(std::make_unique<OptionalBoolDiagnosticEntry>(
       DiagnosticEntryType::kIssuersValid, "Issuers valid",
       base::BindRepeating(&AreIssuersValid)));
+  SetEntry(std::make_unique<ConfirmationTokensRemainingDiagnosticEntry>());
   SetEntry(std::make_unique<CatalogIdDiagnosticEntry>());
   SetEntry(std::make_unique<CatalogVersionDiagnosticEntry>());
   SetEntry(std::make_unique<CatalogLastUpdatedDiagnosticEntry>());
@@ -242,6 +247,7 @@ DiagnosticManager::DiagnosticManager() {
   SetEntry(std::make_unique<NewTabPageAdsSchemaVersionDiagnosticEntry>());
   SetEntry(std::make_unique<LanguageDiagnosticEntry>());
   SetEntry(std::make_unique<CountryDiagnosticEntry>());
+  SetEntry(std::make_unique<SubdivisionCodeDiagnosticEntry>());
   SetEntry(std::make_unique<SchemaVersionDiagnosticEntry>());
   SetEntry(
       std::make_unique<LastDatabaseMigrationFailureReasonDiagnosticEntry>());
@@ -275,30 +281,43 @@ void DiagnosticManager::SetEntry(
 }
 
 void DiagnosticManager::GetDiagnostics(GetDiagnosticsCallback callback) const {
+  base::ListValue entries;
+  base::ListValue rewards_entries;
+  base::ListValue storage_entries;
+  base::ListValue resources_entries;
+  base::ListValue permission_rules_entries;
+  base::ListValue confirmation_tokens_entries;
+
+  // Single pass over `diagnostics_`, sorting each entry into the one bucket
+  // it belongs to, rather than one full pass per bucket.
+  for (const auto& [type, entry] : diagnostics_) {
+    CHECK(entry);
+
+    if (IsRewardsDiagnosticEntryType(type)) {
+      AppendDiagnosticEntry(rewards_entries, *entry);
+    } else if (IsStorageDiagnosticEntryType(type)) {
+      AppendDiagnosticEntry(storage_entries, *entry);
+    } else if (IsResourcesDiagnosticEntryType(type)) {
+      AppendDiagnosticEntry(resources_entries, *entry);
+    } else if (IsPermissionRulesDiagnosticEntryType(type)) {
+      AppendDiagnosticEntry(permission_rules_entries, *entry);
+    } else if (IsConfirmationTokensDiagnosticEntryType(type)) {
+      AppendDiagnosticEntry(confirmation_tokens_entries, *entry);
+    } else {
+      AppendDiagnosticEntry(entries, *entry);
+    }
+  }
+
   std::move(callback).Run(
       base::DictValue()
-          .Set(kEntriesKey,
-               DiagnosticsToList(
-                   diagnostics_,
-                   base::BindRepeating([](DiagnosticEntryType type) {
-                     return !IsTabSpecificDiagnosticEntryType(type);
-                   })))
-          .Set(kRewardsEntriesKey,
-               DiagnosticsToList(
-                   diagnostics_,
-                   base::BindRepeating(&IsRewardsDiagnosticEntryType)))
-          .Set(kStorageEntriesKey,
-               DiagnosticsToList(
-                   diagnostics_,
-                   base::BindRepeating(&IsStorageDiagnosticEntryType)))
-          .Set(kResourcesEntriesKey,
-               DiagnosticsToList(
-                   diagnostics_,
-                   base::BindRepeating(&IsResourcesDiagnosticEntryType)))
+          .Set(kEntriesKey, std::move(entries))
+          .Set(kRewardsEntriesKey, std::move(rewards_entries))
+          .Set(kConfirmationTokensEntriesKey,
+               std::move(confirmation_tokens_entries))
+          .Set(kStorageEntriesKey, std::move(storage_entries))
+          .Set(kResourcesEntriesKey, std::move(resources_entries))
           .Set(kPermissionRulesEntriesKey,
-               DiagnosticsToList(diagnostics_,
-                                 base::BindRepeating(
-                                     &IsPermissionRulesDiagnosticEntryType))));
+               std::move(permission_rules_entries)));
 }
 
 void DiagnosticManager::GetConfirmationQueue(

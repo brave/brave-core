@@ -74,6 +74,10 @@ TEST_F(BraveAdsDiagnosticManagerTest, GetDiagnostics) {
                 "value": "KY"
               },
               {
+                "name": "Subdivision code",
+                "value": "N/A"
+              },
+              {
                 "name": "Catalog ID",
                 "value": "29e5c8bc0ba319069980bb390d8e8f9b58c05a20"
               },
@@ -98,6 +102,12 @@ TEST_F(BraveAdsDiagnosticManagerTest, GetDiagnostics) {
               {
                 "name": "Issuers valid",
                 "value": "N/A"
+              }
+            ],
+            "confirmationTokensEntries": [
+              {
+                "name": "Confirmation tokens remaining",
+                "value": "0"
               }
             ],
             "storageEntries": [

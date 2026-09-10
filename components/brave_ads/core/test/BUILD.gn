@@ -415,6 +415,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/diagnostics/entries/catalog_id_diagnostic_entry_unittest.cc",
     "//brave/components/brave_ads/core/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry_unittest.cc",
     "//brave/components/brave_ads/core/internal/diagnostics/entries/catalog_version_diagnostic_entry_unittest.cc",
+    "//brave/components/brave_ads/core/internal/diagnostics/entries/confirmation_tokens_remaining_diagnostic_entry_unittest.cc",
     "//brave/components/brave_ads/core/internal/diagnostics/entries/country_diagnostic_entry_unittest.cc",
     "//brave/components/brave_ads/core/internal/diagnostics/entries/device_id_diagnostic_entry_unittest.cc",
     "//brave/components/brave_ads/core/internal/diagnostics/entries/language_diagnostic_entry_unittest.cc",

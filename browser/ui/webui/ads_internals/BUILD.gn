@@ -18,7 +18,9 @@ source_set("ads_internals") {
     "//brave/components/brave_ads/browser/resources:generated_resources",
     "//brave/components/brave_ads/core",
     "//brave/components/brave_rewards/core",
+    "//brave/components/ntp_background_images/browser",
     "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/new_tab_page/prefs",
     "//chrome/browser/profiles:profile",
     "//components/variations/service",
   ]

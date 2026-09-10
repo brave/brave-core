@@ -19,14 +19,28 @@ export interface DateRangeFilterState {
   toDate: string
 }
 
+// The Condition Matchers tab's "Test" form. Lifted up here for the same
+// reason as `DateRangeFilterState` above, so it survives navigating away
+// from the tab and back.
+export interface TestConditionMatcherFormState {
+  prefPath: string
+  condition: string
+  testValue: string
+}
+
 // Keys match the literal column labels produced by `BuildAdsInternals` in
 // //brave/components/brave_ads/core/internal/ads_internals/ads_internals_util.cc
 export interface ConversionUrlPattern {
+  'Creative Set ID': string
+  'Ad Type': string
   'URL Pattern': string
   'Expires At': number
+  'Observation Window': number
 }
 
 export interface AdEvent {
+  'Placement ID': string
+  'Creative Instance ID': string
   'Target URL': string
   'Ad Type': string
   'Event Type': string
@@ -150,6 +164,7 @@ export interface AppState {
   ntpSponsoredImagesManifestVersion: string
   countryResourceComponentId: string
   languageResourceComponentId: string
+  isSponsoredTilesShown: boolean
   dislikedAds: string[]
   likedAds: string[]
   dislikedSegments: string[]
@@ -164,6 +179,11 @@ export interface AppState {
   // `DiagnosticManager`, so it is tracked separately from `diagnosticEntries`
   // rather than folded into that list.
   variationsCountryCode: string
+  rewardsDiagnosticEntries: DiagnosticEntry[]
+  permissionRulesDiagnosticEntries: DiagnosticEntry[]
+  storageDiagnosticEntries: DiagnosticEntry[]
+  resourcesDiagnosticEntries: DiagnosticEntry[]
+  confirmationTokensDiagnosticEntries: DiagnosticEntry[]
   logsSupported: boolean
   verboseLoggingEnabled: boolean
   adsInternalsVerboseModeEnabled: boolean
@@ -172,6 +192,7 @@ export interface AppState {
   errorsOnlyEnabled: boolean
   eventsDateRangeFilter: DateRangeFilterState
   transactionsDateRangeFilter: DateRangeFilterState
+  testConditionMatcherForm: TestConditionMatcherFormState
   actions: {
     loadAdsInternals: () => void
     loadDiagnostics: () => void
@@ -185,6 +206,7 @@ export interface AppState {
     setErrorsOnlyEnabled: (enabled: boolean) => void
     setEventsDateRangeFilter: (filter: DateRangeFilterState) => void
     setTransactionsDateRangeFilter: (filter: DateRangeFilterState) => void
+    setTestConditionMatcherForm: (form: TestConditionMatcherFormState) => void
     testConditionMatcher: (
       prefPath: string, condition: string, testValue: string | null) =>
       Promise<{ currentValue: string, matches: string }>
@@ -213,6 +235,7 @@ export function defaultAppStore() {
     ntpSponsoredImagesManifestVersion: '',
     countryResourceComponentId: '',
     languageResourceComponentId: '',
+    isSponsoredTilesShown: false,
     dislikedAds: [],
     likedAds: [],
     likedSegments: [],
@@ -224,6 +247,11 @@ export function defaultAppStore() {
     isInitialized: false,
     diagnosticEntries: [],
     variationsCountryCode: '',
+    rewardsDiagnosticEntries: [],
+    permissionRulesDiagnosticEntries: [],
+    storageDiagnosticEntries: [],
+    resourcesDiagnosticEntries: [],
+    confirmationTokensDiagnosticEntries: [],
     logsSupported: false,
     verboseLoggingEnabled: false,
     adsInternalsVerboseModeEnabled: false,
@@ -232,6 +260,7 @@ export function defaultAppStore() {
     errorsOnlyEnabled: true,
     eventsDateRangeFilter: { preset: 'day', fromDate: '', toDate: '' },
     transactionsDateRangeFilter: { preset: 'day', fromDate: '', toDate: '' },
+    testConditionMatcherForm: { prefPath: '', condition: '', testValue: '' },
     actions: {
       loadAdsInternals() {},
       loadDiagnostics() {},
@@ -249,6 +278,7 @@ export function defaultAppStore() {
       setErrorsOnlyEnabled(enabled) {},
       setEventsDateRangeFilter(filter) {},
       setTransactionsDateRangeFilter(filter) {},
+      setTestConditionMatcherForm(form) {},
       async testConditionMatcher() {
         return { currentValue: 'Unknown', matches: 'N/A' }
       },

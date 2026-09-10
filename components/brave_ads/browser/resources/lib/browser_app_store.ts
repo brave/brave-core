@@ -123,12 +123,18 @@ export function createAppStore(): AppStore {
         diagnosticId = '',
         isInitialized = false,
         entries = [],
+        rewardsEntries = [],
+        permissionRulesEntries = [],
+        storageEntries = [],
+        resourcesEntries = [],
+        confirmationTokensEntries = [],
         variationsCountryCode = '',
         ntpSponsoredImagesComponentId = '',
         ntpSponsoredImagesLoaded = false,
         ntpSponsoredImagesManifestVersion = '',
         countryResourceComponentId = '',
         languageResourceComponentId = '',
+        isSponsoredTilesShown = false,
       } = JSON.parse(response)
 
       store.update({
@@ -136,11 +142,17 @@ export function createAppStore(): AppStore {
         isInitialized,
         diagnosticEntries: entries,
         variationsCountryCode,
+        rewardsDiagnosticEntries: rewardsEntries,
+        permissionRulesDiagnosticEntries: permissionRulesEntries,
+        storageDiagnosticEntries: storageEntries,
+        resourcesDiagnosticEntries: resourcesEntries,
+        confirmationTokensDiagnosticEntries: confirmationTokensEntries,
         ntpSponsoredImagesComponentId,
         ntpSponsoredImagesLoaded,
         ntpSponsoredImagesManifestVersion,
         countryResourceComponentId,
         languageResourceComponentId,
+        isSponsoredTilesShown,
       })
     } catch (error) {
       console.error('Error getting ads diagnostics', error)
@@ -280,6 +292,10 @@ export function createAppStore(): AppStore {
 
       setTransactionsDateRangeFilter(filter) {
         store.update({ transactionsDateRangeFilter: filter })
+      },
+
+      setTestConditionMatcherForm(form) {
+        store.update({ testConditionMatcherForm: form })
       },
 
       async testConditionMatcher(prefPath, condition, testValue) {

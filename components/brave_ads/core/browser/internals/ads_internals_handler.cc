@@ -32,6 +32,7 @@ constexpr char kLanguageResourceComponentIdKey[] =
 constexpr char kNtpSponsoredImagesLoadedKey[] = "ntpSponsoredImagesLoaded";
 constexpr char kNtpSponsoredImagesManifestVersionKey[] =
     "ntpSponsoredImagesManifestVersion";
+constexpr char kIsSponsoredTilesShownKey[] = "isSponsoredTilesShown";
 constexpr char kIsInitializedKey[] = "isInitialized";
 }  // namespace
 
@@ -43,7 +44,8 @@ AdsInternalsHandler::AdsInternalsHandler(
     GetComponentIdCallback get_country_resource_component_id_callback,
     GetComponentIdCallback get_language_resource_component_id_callback,
     GetIsSponsoredImagesLoadedCallback get_is_sponsored_images_loaded_callback,
-    GetComponentIdCallback get_ntp_sponsored_images_manifest_version_callback)
+    GetComponentIdCallback get_ntp_sponsored_images_manifest_version_callback,
+    GetIsSponsoredTilesShownCallback get_is_sponsored_tiles_shown_callback)
     : ads_service_(ads_service ? ads_service->GetWeakPtr() : nullptr),
       prefs_(prefs),
       variations_service_(variations_service),
@@ -56,7 +58,9 @@ AdsInternalsHandler::AdsInternalsHandler(
       get_is_sponsored_images_loaded_callback_(
           std::move(get_is_sponsored_images_loaded_callback)),
       get_ntp_sponsored_images_manifest_version_callback_(
-          std::move(get_ntp_sponsored_images_manifest_version_callback)) {
+          std::move(get_ntp_sponsored_images_manifest_version_callback)),
+      get_is_sponsored_tiles_shown_callback_(
+          std::move(get_is_sponsored_tiles_shown_callback)) {
   pref_change_registrar_.Init(&*prefs_);
   pref_change_registrar_.Add(
       brave_rewards::prefs::kEnabled,
@@ -218,6 +222,10 @@ base::DictValue AdsInternalsHandler::BuildDiagnosticsDict() const {
             get_ntp_sponsored_images_manifest_version_callback_.Run()) {
       dict.Set(kNtpSponsoredImagesManifestVersionKey, *manifest_version);
     }
+  }
+  if (get_is_sponsored_tiles_shown_callback_) {
+    dict.Set(kIsSponsoredTilesShownKey,
+             get_is_sponsored_tiles_shown_callback_.Run());
   }
 
   return dict;

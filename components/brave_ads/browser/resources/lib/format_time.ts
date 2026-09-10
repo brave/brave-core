@@ -10,6 +10,11 @@ function utcSuffix(date: Date) {
   return date.getTimezoneOffset() === 0 ? ' UTC' : ''
 }
 
+// Backend timestamps are Unix epoch seconds, not milliseconds.
+export function nowInSeconds() {
+  return Date.now() / 1000
+}
+
 // Matches the "Wednesday, November 18, 1970 at 12:34:56 PM" style used for
 // backend-formatted timestamps (e.g. "Catalog last updated") so dates read
 // consistently across tabs, rather than a terse locale-dependent numeric

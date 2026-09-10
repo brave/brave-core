@@ -75,7 +75,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -104,7 +105,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -138,7 +140,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -172,7 +175,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -200,7 +204,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -233,7 +238,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -268,7 +274,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -307,7 +314,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -356,7 +364,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -397,7 +406,8 @@ TEST_F(BraveAdsInternalsHandlerTest, SetDiagnosticIdUpdatesPrefWithValidUuid) {
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -429,7 +439,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -457,7 +468,8 @@ TEST_F(BraveAdsInternalsHandlerTest, SetDiagnosticIdClearsPrefWithEmptyValue) {
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -520,7 +532,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -551,7 +564,9 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
-      AdsInternalsHandler::GetComponentIdCallback());
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -583,7 +598,9 @@ TEST_F(BraveAdsInternalsHandlerTest,
       /*get_language_resource_component_id_callback=*/
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
-      AdsInternalsHandler::GetComponentIdCallback());
+      /*get_ntp_sponsored_images_manifest_version_callback=*/
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
@@ -622,7 +639,8 @@ TEST_F(BraveAdsInternalsHandlerTest,
       AdsInternalsHandler::GetComponentIdCallback(),
       AdsInternalsHandler::GetIsSponsoredImagesLoadedCallback(),
       /*get_ntp_sponsored_images_manifest_version_callback=*/
-      AdsInternalsHandler::GetComponentIdCallback());
+      AdsInternalsHandler::GetComponentIdCallback(),
+      AdsInternalsHandler::GetIsSponsoredTilesShownCallback());
 
   mojo::Remote<bat_ads::mojom::AdsInternals> ads_internals_remote;
   handler.BindInterface(ads_internals_remote.BindNewPipeAndPassReceiver());
