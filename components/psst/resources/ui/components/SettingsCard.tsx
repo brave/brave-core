@@ -68,7 +68,7 @@ const SettingErrorText = styled(SettingText)`
   color: ${color.systemfeedback.errorText};
 `
 
-const DummyIconContainer = styled.div`
+const FaviconContainer = styled.div`
   width: ${spacing['3Xl']};
   height: ${spacing['3Xl']};
   border-radius: ${radius.m};
@@ -77,6 +77,11 @@ const DummyIconContainer = styled.div`
   justify-content: center;
   align-items: center;
   margin-right: ${spacing.l};
+`
+
+const Favicon = styled.img`
+  width: ${spacing.xl};
+  height: ${spacing.xl};
 `
 interface PsstProgressModalState {
   siteName: string
@@ -97,7 +102,13 @@ const SettingsCard: React.FC<Props> = ({
   return (
     <SettingGrid>
       <SettingGridHeaderRow>
-        <DummyIconContainer />
+        <FaviconContainer>
+          <Favicon
+            src={`chrome://favicon2?size=64&pageUrl=${encodeURIComponent(
+              title,
+            )}`}
+          />
+        </FaviconContainer>
         <div>
           <SettingsGridBoldText>{title}</SettingsGridBoldText>
         </div>
