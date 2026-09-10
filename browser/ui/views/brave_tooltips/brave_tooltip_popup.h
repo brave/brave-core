@@ -16,7 +16,7 @@
 #include "brave/browser/ui/brave_tooltips/brave_tooltip.h"
 #include "brave/browser/ui/views/brave_tooltips/brave_tooltip_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
-#include "ui/compositor_extra/decoration_util.h"
+#include "ui/decoration/decoration_util.h"
 #include "ui/display/display_observer.h"
 #include "ui/gfx/shadow_value.h"
 #include "ui/views/controls/button/button.h"
@@ -124,7 +124,7 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
 
   void RecomputeAlignment();
 
-  const gfx::ShadowDetails& GetShadowDetails() const;
+  const ui::decoration::ShadowDetails& GetShadowDetails() const;
   gfx::Insets GetShadowMargin() const;
 
   void CreateWidgetView();
