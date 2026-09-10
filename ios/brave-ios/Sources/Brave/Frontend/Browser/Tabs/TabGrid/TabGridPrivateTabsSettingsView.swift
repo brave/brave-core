@@ -64,14 +64,14 @@ struct TabGridPrivateTabsSettings: View {
               .foregroundStyle(Color(braveSystemName: .iconDefault))
           }
         }
-        .tint(Color.accentColor)
+        .tint(Color(braveSystemName: .primitivePrimary40))
         if persistentPrivateBrowsing.value {
           Toggle(isOn: $rememberBrowsingMode.value) {
             Label {
               Text(Strings.TabsSettings.rememberBrowsingModeTitle)
-                .tint(Color(braveSystemName: .primitivePrimary40))
+                .foregroundStyle(Color(braveSystemName: .textPrimary))
               Text(Strings.TabsSettings.rememberBrowsingModeDescription)
-                .foregroundStyle(Color(braveSystemName: .textSecondary))
+                .foregroundStyle(Color(braveSystemName: .textTertiary))
                 .font(.footnote)
             } icon: {
               Image(braveSystemName: "leo.product.private-window")
@@ -79,13 +79,12 @@ struct TabGridPrivateTabsSettings: View {
             }
           }
           .onChange(of: rememberBrowsingMode.value) { _, newValue in
-            if newValue {
-              BrowserState.persistRememberedBrowsingMode(isPrivate: viewModel.isPrivateBrowsing)
-            } else {
-              Preferences.Privacy.lastPrivateBrowsingMode.value = false
-            }
+            BrowserState.handleRememberBrowsingModeToggled(
+              enabled: newValue,
+              isCurrentlyPrivate: viewModel.isPrivateBrowsing
+            )
           }
-          .tint(Color.accentColor)
+          .tint(Color(braveSystemName: .primitivePrimary40))
         }
 
         if let authenticationKind {

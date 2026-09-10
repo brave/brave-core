@@ -110,12 +110,12 @@ extension SessionWindow {
     isSelected: Bool,
     in context: NSManagedObjectContext
   ) -> SessionWindow? {
+    if isSelected {
+      deselectAllWindows(in: context)
+    }
+
     if let sessionWindow = SessionWindow.from(windowId: windowId, in: context) {
       if isSelected {
-        let predicate = NSPredicate(format: "isSelected == true")
-        all(where: predicate, context: context)?.forEach {
-          $0.isSelected = false
-        }
         sessionWindow.isSelected = true
       }
       return sessionWindow
@@ -129,6 +129,13 @@ extension SessionWindow {
     )
     window.windowId = windowId
     return window
+  }
+
+  private static func deselectAllWindows(in context: NSManagedObjectContext) {
+    let predicate = NSPredicate(format: "isSelected == true")
+    all(where: predicate, context: context)?.forEach {
+      $0.isSelected = false
+    }
   }
 
   /// Marks the specified window as selected
