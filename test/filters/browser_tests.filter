@@ -317,6 +317,34 @@
 -ManifestV3WebRequestApiTest.ResetURLLoaderFactoriesOnMayHaveProxiesTransitions
 -ManifestV3WebRequestApiTest.ResetURLLoaderFactoryDoesntBreakRegistration
 
+# Upstream test race that crashes the browser_tests process (null dereference,
+# surfaces as an ASAN access-violation on the zero page). The test only waits
+# for the extension's "started_incognito" message, which the background script
+# sends while it is still evaluating, i.e. before the incognito split-mode
+# service worker registration has an active version. When it then calls
+# browsertest_util::StopServiceWorkerForExtensionGlobalScope() for the OTR
+# profile, ServiceWorkerContextWrapper::FindReadyRegistrationForScope() only
+# finds the still-installing registration and replies kErrorNotFound with a
+# null registration, but content::StopServiceWorkerForRegistration()
+# (content/public/test/service_worker_test_helpers.cc) dereferences it
+# unconditionally. Only the status DCHECK guards that, so the crash needs a
+# build with DCHECKs off - a release-build property, not an ASAN one. Both the
+# test and the helper are upstream test-only code, so this is filtered rather
+# than patched.
+# Occasional upstream failures: 1.4% flake rate over 30 days per LUCI
+# Analysis, concentrated on Windows (win-fieldtrial-rel 22.2%, Win10 Tests x64
+# 20.5%, Win11 Tests x64 9.2%) but also present on Linux (1-4%) and macOS
+# (mac-fieldtrial-tester 5.2%), so this goes in the all-platform filter file
+# rather than a Windows- or ASAN-specific one. Upstream's own win-asan builder
+# is clean (0/114), consistent with the DCHECK-off requirement above. Upstream
+# has already disabled the test on Android (crbug.com/548629160).
+# NOTE: at Chromium ToT this test was reparented to the parameterized
+# ManifestV3WebRequestApiDispatchModeTest suite, so after the next roll the
+# id gains an "All/" prefix, the new suite name and a "/0" or "/1" suffix, and
+# this entry stops matching - re-check which variants flake and update it then.
+# https://github.com/brave/brave-browser/issues/58319
+-ManifestV3WebRequestApiTest.LazyDispatchDoesNotWakeIncognitoSplitModeWorker
+
 # These tests fail because they expect the infobar count to be 1, but we
 # display an additional confirmation infobar for P3A
 -All/InfoBarContainerSplitTabTest.InfobarsAreIndependentInSplitTabs/Prioritization*
