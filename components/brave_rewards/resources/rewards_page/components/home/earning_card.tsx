@@ -16,6 +16,8 @@ import {
 } from '../../lib/app_context'
 import { useConnectAccountRouter } from '../../lib/connect_account_router'
 import { shouldResetExternalWallet } from '../../../shared/lib/external_wallet'
+import { useRoute } from '../../lib/router'
+import * as routes from '../../lib/app_routes'
 import { PayoutStatusView } from './payout_status_view'
 import { AdsSummary } from './ads_summary'
 import { AdsSettingsModal } from './ads_settings_modal'
@@ -38,6 +40,13 @@ export function EarningCard() {
   const [showAdDetails, setShowAdDetails] = React.useState(!isBubble)
   const [showAdsSettingsModal, setShowAdsSettingsModal] = React.useState(false)
   const [showAdsHistoryModal, setShowAdsHistoryModal] = React.useState(false)
+
+  useRoute((route, router) => {
+    if (route === routes.adsSettings) {
+      setShowAdsSettingsModal(true)
+      router.replaceRoute('/')
+    }
+  })
 
   let adsReceivedThisMonth = 0
   if (adsInfo) {
