@@ -52,15 +52,15 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--leo-spacing-s);
+  gap: var(--leo-spacing-m);
   // Pills size to their content, shrinking down to a 120px minimum, after
   // which the row scrolls horizontally.
   flex: 0 1 auto;
   min-width: 120px;
   max-width: max-content;
   box-sizing: border-box;
-  padding: var(--leo-spacing-xs) var(--leo-spacing-s) var(--leo-spacing-xs)
-    var(--leo-spacing-m);
+  padding: var(--leo-spacing-s);
+  padding-inline-start: var(--leo-spacing-m);
   border: 1px solid var(--leo-color-divider-subtle);
   border-radius: var(--leo-radius-full);
   background-color: var(--leo-color-container-background);
@@ -103,11 +103,32 @@
 
 .toolPillTitle {
   display: block;
+  flex: 0 1 auto;
+  min-width: 0;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
   font: var(--leo-font-small-regular);
   color: var(--leo-color-text-primary);
+}
+
+.toolPillCount {
+  --leo-icon-size: 14px;
+  --leo-icon-color: var(--leo-color-neutral-60);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-xs);
+  flex: 0 0 auto;
+  margin-inline-start: calc(var(--leo-spacing-m) - var(--leo-spacing-s));
+  height: 20px;
+  box-sizing: border-box;
+  padding: 0 var(--leo-spacing-s);
+  border-radius: 6px;
+  background-color: var(--leo-color-neutral-10);
+  font: var(--leo-font-components-label);
+  color: var(--leo-color-neutral-60);
 }
 
 .toolPillRemove {

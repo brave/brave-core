@@ -696,7 +696,7 @@
   <message name="IDS_CHAT_UI_WEBSITE_TOOLS_TITLE" desc="Title of the dialog that lists the tools an attached website provides to Leo" formatter_data="webui=AiChat">
     Available website tools
   </message>
-  <message name="IDS_CHAT_UI_WEBSITE_TOOLS_LIST_LABEL" desc="Heading above the list of tools in the website tools dialog. The placeholder is the number of tools, e.g. 'Available tools (10)'" formatter_data="webui=AiChat">
+  <message name="IDS_CHAT_UI_WEBSITE_TOOLS_LIST_LABEL" desc="Heading above the list of tools in the website tools dialog, also used as the accessible label for the tool count on an attached page's tools pill. The placeholder is the number of tools, e.g. 'Available tools (10)'" formatter_data="webui=AiChat">
     Available tools (<ph name="TOOL_COUNT">$1<ex>10</ex></ph>)
   </message>
   <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_ALWAYS_ALLOW" desc="Dropdown option letting Leo use a website tool without asking each time" formatter_data="webui=AiChat">
