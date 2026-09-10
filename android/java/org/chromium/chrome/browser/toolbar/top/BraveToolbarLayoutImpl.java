@@ -17,7 +17,6 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.PorterDuff;
-import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -30,6 +29,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.widget.ImageViewCompat;
@@ -72,7 +72,6 @@ import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.media.PictureInPicture;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarCoordinator;
-import org.chromium.chrome.browser.omnibox.LocationBarBackgroundDrawable;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
@@ -120,7 +119,6 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistItem;
 import org.chromium.playlist.mojom.PlaylistService;
 import org.chromium.ui.base.DeviceFormFactor;
-import org.chromium.ui.base.LocalizationUtils;
 import org.chromium.ui.base.ViewUtils;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.interpolators.Interpolators;
@@ -192,6 +190,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     private View mBraveWalletBadge;
     private ImageView mWalletIcon;
     private int mCurrentToolbarColor;
+    // True once the Brave buttons sit inside the location bar text box, which happens on tablet
+    // only. The location bar then paints their background, and the segment drawables the phone
+    // toolbar relies on no longer apply.
+    private boolean mBraveButtonsInLocationBar;
 
     @Nullable private final Runnable mToolbarSnapshotCaptureRunnable;
 
@@ -308,7 +310,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             BraveTouchUtils.ensureMinTouchTarget(mYouTubePipButton);
         }
 
-        maybeSquareLocationBarTrailingCorners();
+        maybeAnchorBraveButtonsInLocationBar();
 
         mUnifiedPanelHandler = new BraveUnifiedPanelHandler(getContext());
         mUnifiedPanelHandler.addObserver(
@@ -1269,6 +1271,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     @Override
     public void updateModernLocationBarColorImpl(int color) {
         mCurrentToolbarColor = color;
+        // Inside the location bar the buttons have no background of their own to tint.
+        if (mBraveButtonsInLocationBar) {
+            return;
+        }
         if (mShieldsLayout != null) {
             mShieldsLayout.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
         }
@@ -1524,35 +1530,56 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     /**
-     * Squares off the trailing corners of the tablet location bar background, so that the Brave
-     * button segments laid out right after it continue the same rounded rectangle. Upstream builds
-     * that background programmatically with a single corner radius, which leaves a notch at the
-     * junction with the segments.
+     * Anchors the Brave button row at the trailing end of the tablet location bar, so that the
+     * focus ring upstream draws around the text box encloses the shields and rewards buttons as
+     * well. The row is inflated as a child of the location bar (see toolbar_tablet.xml), which is a
+     * ConstraintLayout, so it has no usable constraints until they are set here.
      */
-    private void maybeSquareLocationBarTrailingCorners() {
+    private void maybeAnchorBraveButtonsInLocationBar() {
         if (!BraveReflectionUtil.equalTypes(this.getClass(), ToolbarTablet.class)) {
             return;
         }
 
-        View locationBar = findViewById(R.id.location_bar);
-        Drawable background = locationBar != null ? locationBar.getBackground() : null;
-        if (!(background instanceof LocationBarBackgroundDrawable)) {
+        View braveButtons = findViewById(R.id.brave_toolbar_container);
+        View marginSpacer = findViewById(R.id.margin_spacer);
+        if (braveButtons == null || marginSpacer == null) {
             return;
         }
+        ConstraintLayout.LayoutParams spacerParams =
+                (ConstraintLayout.LayoutParams) marginSpacer.getLayoutParams();
 
-        float radius =
-                getResources()
-                        .getDimensionPixelSize(R.dimen.modern_toolbar_background_corner_radius);
-        // Radii are listed clockwise from the top left corner, as x/y pairs.
-        float[] radii =
-                LocalizationUtils.isLayoutRtl()
-                        ? new float[] {0, 0, radius, radius, radius, radius, 0, 0}
-                        : new float[] {radius, radius, 0, 0, 0, 0, radius, radius};
-        ((LocationBarBackgroundDrawable) background).getBackgroundGradient().setCornerRadii(radii);
+        Resources resources = getResources();
+        ConstraintLayout.LayoutParams params =
+                new ConstraintLayout.LayoutParams(
+                        ConstraintLayout.LayoutParams.WRAP_CONTENT,
+                        resources.getDimensionPixelSize(R.dimen.modern_toolbar_background_size));
+        params.endToEnd = ConstraintLayout.LayoutParams.PARENT_ID;
+        params.topToTop = ConstraintLayout.LayoutParams.PARENT_ID;
+        params.bottomToBottom = ConstraintLayout.LayoutParams.PARENT_ID;
+        params.setMarginEnd(
+                resources.getDimensionPixelSize(R.dimen.location_bar_url_action_offset));
+        braveButtons.setLayoutParams(params);
+
+        // Every upstream action button chain ends at |margin_spacer|, and the barriers that keep
+        // the URL text clear of those buttons reference it, so re-anchoring it ahead of the Brave
+        // row is enough to make room for the row.
+        spacerParams.startToEnd = ConstraintLayout.LayoutParams.UNSET;
+        spacerParams.endToStart = braveButtons.getId();
+        marginSpacer.setLayoutParams(spacerParams);
+
+        mBraveButtonsInLocationBar = true;
+        // The location bar paints the text box behind the buttons now, so the segment drawables
+        // that continue it on phones would only double up here.
+        for (View layout :
+                new View[] {mYouTubePipLayout, mWalletLayout, mShieldsLayout, mRewardsLayout}) {
+            if (layout != null) {
+                layout.setBackground(null);
+            }
+        }
     }
 
     private void updateShieldsLayoutBackground(boolean rounded) {
-        if (mShieldsLayout == null) {
+        if (mShieldsLayout == null || mBraveButtonsInLocationBar) {
             return;
         }
 
