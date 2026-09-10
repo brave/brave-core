@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index 4e7ecb965cb4066179d044d78307b2216a6b9e7b..d9b84ffa8820422ef988b55ecf969e0a29544075 100644
+index e9b8c0800ff6b43badc6acd832da7ae11ff3f82d..50803a77ab0fdd1445acff6196e55f4815123981 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
 @@ -51,14 +51,22 @@ std::optional<int> FindIntOrDoubleAsInt(const base::DictValue& args,
@@ -49,31 +49,27 @@ index 4e7ecb965cb4066179d044d78307b2216a6b9e7b..d9b84ffa8820422ef988b55ecf969e0a
  
    const base::DictValue* dict = value->GetIfDict();
    if (dict) {
-@@ -231,6 +242,7 @@ void MojoFacade::HandleMojoMessage(
+@@ -231,6 +242,9 @@ void MojoFacade::HandleMojoMessage(
  }
  
- bool MojoFacade::HandleMojoBindInterface(const base::DictValue& args) {
-+  if (!IsBindInterfaceAllowedForFrame(args)) return false;
+ base::Value MojoFacade::HandleMojoBindInterface(const base::DictValue& args) {
++  if (!IsBindInterfaceAllowedForFrame(args)) {
++    return base::Value(static_cast<int>(MOJO_RESULT_INVALID_ARGUMENT));
++  }
    const std::string* interface_name = args.FindString("interfaceName");
    std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "requestHandle");
  
-@@ -279,9 +291,12 @@ base::Value MojoFacade::HandleMojoCreateMessagePipe(
- base::Value MojoFacade::HandleMojoHandleWriteMessage(
-     const base::DictValue& args) {
-   std::optional<int> pipe_id = FindIntOrDoubleAsInt(args, "handle");
--  CHECK(pipe_id.has_value());
--  mojo::MessagePipeHandle pipe = GetPipeFromId(*pipe_id);
--  CHECK(pipe.is_valid());
-+  mojo::MessagePipeHandle pipe =
-+      pipe_id.has_value() ? GetPipeFromId(*pipe_id) : mojo::MessagePipeHandle();
+@@ -288,6 +302,9 @@ base::Value MojoFacade::HandleMojoHandleWriteMessage(
+   }
+ 
+   mojo::MessagePipeHandle pipe = GetPipeFromId(*pipe_id);
 +  if (!pipe.is_valid()) {
 +    ReportUnknownPipe("MojoHandle.writeMessage", pipe_id);
-+    return base::Value(static_cast<int>(MOJO_RESULT_INVALID_ARGUMENT));
 +  }
- 
-   const base::ListValue* handles_list = args.FindList("handles");
-   CHECK(handles_list);
-@@ -453,8 +468,9 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
+   std::optional<std::vector<uint8_t>> bytes = base::Base64Decode(*buffer);
+   if (!pipe.is_valid() || !bytes.has_value()) {
+     return base::Value(static_cast<int>(MOJO_RESULT_INVALID_ARGUMENT));
+@@ -467,8 +484,9 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
  void MojoFacade::WebFrameBecameAvailable(WebFramesManager* web_frames_manager,
                                           WebFrame* web_frame) {
    DCHECK_CURRENTLY_ON(WebThread::UI);
@@ -84,7 +80,7 @@ index 4e7ecb965cb4066179d044d78307b2216a6b9e7b..d9b84ffa8820422ef988b55ecf969e0a
    }
  }
  
-@@ -477,11 +493,6 @@ void MojoFacade::PageLoaded(WebState* web_state,
+@@ -491,11 +509,6 @@ void MojoFacade::PageLoaded(WebState* web_state,
    if (load_completion_status == PageLoadCompletionStatus::SUCCESS &&
        GetMainWebFrame() &&
        web_state_->GetInterfaceBinderForMainFrame()->HasRegisteredInterfaces()) {
