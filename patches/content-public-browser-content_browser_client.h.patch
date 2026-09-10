@@ -1,0 +1,15 @@
+diff --git a/content/public/browser/content_browser_client.h b/content/public/browser/content_browser_client.h
+index 0db044d5ba5be8ee8846720ac389578b7fdc25a2..b58f3bd0a637df70ab9b3ce9a234db7da638ad3e 100644
+--- a/content/public/browser/content_browser_client.h
++++ b/content/public/browser/content_browser_client.h
+@@ -2011,7 +2011,9 @@ class CONTENT_EXPORT ContentBrowserClient {
+       const std::optional<std::string>& user_agent,
+       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+           handshake_client,
+-      WebSocketOptions options);
++      WebSocketOptions options,
++      std::optional<int> process_id = std::nullopt,
++      std::optional<url::Origin> initiator_origin = std::nullopt);
+ 
+   // Allows the embedder to control if establishing a WebTransport connection is
+   // allowed.

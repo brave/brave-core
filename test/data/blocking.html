@@ -152,6 +152,26 @@ function checkWebsocketConnection(url) {
     return false;
   });
 }
+
+function checkSharedWorkerWebsocketConnection(url) {
+  return new Promise(resolve => {
+    const worker = new SharedWorker(
+        './shared_worker_websocket.js', `websocket-${crypto.randomUUID()}`);
+    worker.port.onmessage = event => resolve(event.data);
+    worker.onerror = () => resolve(false);
+    worker.port.postMessage(url);
+  });
+}
+
+async function checkServiceWorkerWebsocketConnection(url) {
+  const registration = await navigator.serviceWorker.register(
+      './service_worker_websocket.js', {scope: './'});
+  await navigator.serviceWorker.ready;
+  return new Promise(resolve => {
+    navigator.serviceWorker.onmessage = event => resolve(event.data);
+    registration.active.postMessage(url);
+  });
+}
 </script>
 </head>
 <body>

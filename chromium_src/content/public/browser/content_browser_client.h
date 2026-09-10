@@ -9,6 +9,7 @@
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
+#include "url/origin.h"
 
 namespace content {
 class StoragePartitionConfig;
