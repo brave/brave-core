@@ -122,6 +122,7 @@ public class BraveClassAdapter {
         chain = new BravePureJavaExceptionReporterClassAdapter(chain);
         chain = new BraveReaderModeManagerClassAdapter(chain);
         chain = new BraveReturnToChromeUtilClassAdapter(chain);
+        chain = new BraveScreenshotProtectionControllerClassAdapter(chain);
         chain = new BraveSearchBarCoordinatorClassAdapter(chain);
         chain = new BraveSearchEngineAdapterClassAdapter(chain);
         chain = new BraveSearchEnginePreferenceClassAdapter(chain);
