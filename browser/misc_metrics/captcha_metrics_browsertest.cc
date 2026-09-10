@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/misc_metrics/captcha_metrics/captcha_metrics.h"
+#include "brave/browser/misc_metrics/captcha_metrics.h"
 
 #include <memory>
 #include <string_view>

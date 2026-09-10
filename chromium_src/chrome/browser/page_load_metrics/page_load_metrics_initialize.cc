@@ -14,7 +14,7 @@
 #include "chrome/browser/profiles/profile.h"
 
 // Forward-declared to avoid adding a compile-time dependency.
-// impl target is //brave/browser/misc_metrics/captcha_metrics.
+// impl target is //brave/browser/misc_metrics:misc_metrics_impl.
 std::unique_ptr<page_load_metrics::PageLoadMetricsObserverInterface>
 BraveCreateCaptchaPageLoadMetricsObserver();
 

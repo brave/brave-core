@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_MISC_METRICS_CAPTCHA_METRICS_CAPTCHA_METRICS_H_
-#define BRAVE_BROWSER_MISC_METRICS_CAPTCHA_METRICS_CAPTCHA_METRICS_H_
+#ifndef BRAVE_BROWSER_MISC_METRICS_CAPTCHA_METRICS_H_
+#define BRAVE_BROWSER_MISC_METRICS_CAPTCHA_METRICS_H_
 
 #include <memory>
 
@@ -79,4 +79,4 @@ class CaptchaMetrics {
 
 }  // namespace misc_metrics
 
-#endif  // BRAVE_BROWSER_MISC_METRICS_CAPTCHA_METRICS_CAPTCHA_METRICS_H_
+#endif  // BRAVE_BROWSER_MISC_METRICS_CAPTCHA_METRICS_H_
