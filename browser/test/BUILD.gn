@@ -19,6 +19,7 @@ if (!is_android) {
       "disabled_features/reporting_observer_browsertest.cc",
       "disabled_features/window_name_browsertest.cc",
       "document_location_browsertest.cc",
+      "webui_subdomain_browsertest.cc",
     ]
 
     deps = [
@@ -27,12 +28,18 @@ if (!is_android) {
       "//brave/common",
       "//chrome/browser",
       "//chrome/browser/content_settings:content_settings_factory",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/profiles/keep_alive",
+      "//chrome/browser/sessions",
+      "//chrome/browser/sessions:test_support",
       "//chrome/browser/ui",
       "//chrome/common",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//components/keep_alive_registry",
       "//content/public/browser",
       "//content/test:test_support",
+      "//ui/webui",
       "//ui/webui:test_support",
     ]
 
