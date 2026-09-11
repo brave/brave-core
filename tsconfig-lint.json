@@ -6,6 +6,7 @@
     "./build/**/*",
     "./ios/**/*",
     "./web/**/*",
+    "./tools/cr/test/plasters/**/*",
     "./*.js",
     "./*.ts",
     "./*.mjs",

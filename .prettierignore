@@ -49,8 +49,11 @@ components/brave_wallet/resources/solana_web3_script.js
 # Ignore JSON gen tests files for the recipes engine.
 /tools/recipes/**/*.expected/*.json
 
-# Ignore plaster's golden fixtures: they stand in for upstream Chromium sources,
-# so they are written in Chromium's style, not ours.
+# Plaster's golden fixtures. The `-expected.ts` files record a rewriter's exact
+# output, including the blank line deliberately left where a dropped statement
+# used to be, which Prettier would strip as trailing whitespace. Their
+# `-original.ts` inputs are excluded alongside them so each before/after pair
+# stays formatted the same way.
 /tools/cr/test/plasters/
 
 # Ignore generated bots config output.

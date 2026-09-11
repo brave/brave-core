@@ -4,14 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
+  - description: >-
       Let chromium_src register `certificate-manager` after restyling it.
-
-      chromium_src/.../certificate_manager/certificate_manager.ts calls
-      injectStyle() on CertificateManagerElement to restyle its nav menu items,
-      which only takes effect while the element is still unregistered. So the
-      shadow file registers the class itself, once the style override is in
-      place, and upstream's own registration -- which would otherwise win the
-      race -- has to go.
     drop_custom_element_registration:
       class_name: CertificateManagerElement
