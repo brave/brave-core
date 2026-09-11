@@ -83,6 +83,7 @@ export const PsstProgressModal = () => {
 
   const { performPrivacyTuning } = api.usePerformPrivacyTuning()
 
+  const siteUrl = siteData ? siteData.siteUrl : ''
   const siteName = siteData ? siteData.siteName : ''
 
   React.useEffect(() => {
@@ -226,7 +227,7 @@ export const PsstProgressModal = () => {
       </Flex>
       <ModalTitleBody>{getLocale(S.PSST_CONSENT_DIALOG_BODY)}</ModalTitleBody>
       <SettingsCard
-        title={siteName}
+        url={siteUrl}
         progressModelState={{
           siteName,
           optionsStatuses,

@@ -18,8 +18,12 @@
     }
     :host, body, #root {
       display: block;
-      width: 100vw;
+      width: 100%;
+      max-width: 100%;
       height: auto;
+    }
+    html {
+      overflow-x: hidden;
     }
   </style>
 </head>

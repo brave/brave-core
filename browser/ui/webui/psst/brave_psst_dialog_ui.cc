@@ -17,9 +17,13 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/webui/favicon_source.h"
+#include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_webui_strings.h"
+#include "content/public/browser/url_data_source.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "services/network/public/mojom/content_security_policy.mojom.h"
 
 using content::WebUIMessageHandler;
 
@@ -33,6 +37,14 @@ BravePsstDialogUI::BravePsstDialogUI(content::WebUI* web_ui)
   source->AddLocalizedStrings(webui::kPsstStrings);
   source->AddString("psstReportDialogLearnMoreUrl",
                     kPsstReportDialogLearnMoreUrl);
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      "img-src 'self' chrome://resources chrome://favicon2;");
+
+  Profile* profile = Profile::FromWebUI(web_ui);
+  content::URLDataSource::Add(
+      profile, std::make_unique<FaviconSource>(
+                   profile, chrome::FaviconUrlFormat::kFavicon2));
 }
 
 BravePsstDialogUI::~BravePsstDialogUI() = default;

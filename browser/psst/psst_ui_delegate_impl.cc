@@ -127,6 +127,7 @@ psst::mojom::SettingCardDataPtr PsstUiDelegateImpl::GetShowDialogData() {
   }
 
   return psst::mojom::SettingCardData::New(origin_->GetURL().spec(),
+                                           user_script_result_->site_name,
                                            std::move(items));
 }
 

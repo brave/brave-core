@@ -19,11 +19,13 @@ const DEFAULT_ITEMS: Mojom.SettingCardDataItem[] = []
 function PsstDialogStory({
   requestDelay = 1000,
   errorUids = DEFAULT_ERROR_UIDS,
-  siteName = 'example.com',
+  siteUrl = 'example.com',
+  siteName = 'Example Site',
   items = DEFAULT_ITEMS,
 }: {
   readonly requestDelay?: number
   readonly errorUids?: string[]
+  readonly siteUrl?: string
   readonly siteName?: string
   readonly items?: Mojom.SettingCardDataItem[]
 }) {
@@ -32,6 +34,7 @@ function PsstDialogStory({
       requestDelay,
       errorUids,
       settingsCardData: {
+        siteUrl,
         siteName,
         items,
       },
@@ -44,7 +47,7 @@ function PsstDialogStory({
       dialogHandler: result.dialogHandler,
       siteData: result.siteData,
     }
-  }, [requestDelay, errorUids, siteName, items])
+  }, [requestDelay, errorUids, siteUrl, siteName, items])
 
   return (
     <Flex
@@ -75,6 +78,10 @@ export default {
     },
   },
   argTypes: {
+    siteUrl: {
+      control: 'text',
+      description: 'URL of the site to configure privacy settings for',
+    },
     siteName: {
       control: 'text',
       description: 'Name of the site to configure privacy settings for',
@@ -97,7 +104,8 @@ type Story = StoryObj<typeof PsstDialogStory>
  */
 export const Default: Story = {
   args: {
-    siteName: 'example.com',
+    siteUrl: 'example.com',
+    siteName: 'Example Site',
     requestDelay: 1000,
     items: [
       {
@@ -126,7 +134,8 @@ export const Default: Story = {
  */
 export const WithErrors: Story = {
   args: {
-    siteName: 'example.com',
+    siteUrl: 'example.com',
+    siteName: 'Example Site',
     requestDelay: 1500,
     items: [
       {
@@ -187,7 +196,8 @@ function createStorybookAPI(options: MockPsstDialogAPIOptions) {
   } = options
 
   const finalSettingsData: Mojom.SettingCardData = {
-    siteName: settingsCardData.siteName || 'example.com',
+    siteUrl: settingsCardData.siteUrl || 'example.com',
+    siteName: settingsCardData.siteName || 'Example Site',
     items: settingsCardData.items || [],
   }
 

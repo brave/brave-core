@@ -30,6 +30,7 @@ static_library("psst") {
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs",
     "//chrome/browser/ui/webui",
+    "//chrome/browser/ui/webui:favicon_source",
     "//chrome/browser/ui/webui/top_chrome",
     "//components/constrained_window",
     "//components/web_modal",
