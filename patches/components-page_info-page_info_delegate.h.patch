@@ -1,0 +1,12 @@
+diff --git a/components/page_info/page_info_delegate.h b/components/page_info/page_info_delegate.h
+index a2b7183749e2d2b90b08260fb639fec8799ce9d4..d91cc75449a3c1bbee33fe956e4c8e0ab803b933 100644
+--- a/components/page_info/page_info_delegate.h
++++ b/components/page_info/page_info_delegate.h
+@@ -148,6 +148,7 @@ class PageInfoDelegate {
+   // safe" on a Suspicious Site Warning.
+   virtual void OnSuspiciousSiteBackToSafety() {}
+   virtual void OnSuspiciousSiteMarkAsSafe() {}
++  virtual bool BraveShouldShowPermission(ContentSettingsType type) = 0;
+ };
+ 
+ #endif  // COMPONENTS_PAGE_INFO_PAGE_INFO_DELEGATE_H_
