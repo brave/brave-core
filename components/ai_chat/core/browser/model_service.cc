@@ -488,10 +488,10 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->is_suggested_model = true;
       model->is_near_model = true;
 
-      // GLM 5.1 (private inference / OHTTP)
+      // GLM 5.3 (private inference / OHTTP)
       options->name = "near-glm-5-1";
       model->key = "chat-near-glm-5-1";
-      model->display_name = "GLM 5.1";
+      model->display_name = "GLM 5.3";
       model->supported_capabilities = {mojom::ConversationCapability::CHAT};
       model->supports_private_inference = true;
 
