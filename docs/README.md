@@ -55,6 +55,9 @@ resources outside this repository, go to:
   \*.test.ts(x) suites.
 - [WebUI Strings Overview](./webui_strings_explainer.md) - Including strings in
   a Web UI frontend.
+- [WebUI Service Workers](./webui_service_workers.md) - Serving a
+  `chrome-untrusted://` WebUI from a service worker, and the restrictions that
+  come with it.
 
 ## Creating Documentation
 
