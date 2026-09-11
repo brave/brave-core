@@ -14,20 +14,16 @@ import WidgetKit
 
 struct LockScreenFavoriteWidget: Widget {
   var body: some WidgetConfiguration {
-    if #available(iOSApplicationExtension 16.0, *) {
-      return IntentConfiguration(
-        kind: "LockScreenFavoriteWidget",
-        intent: LockScreenFavoriteConfigurationIntent.self,
-        provider: LockScreenFavoriteProvider()
-      ) { entry in
-        LockScreenFavoriteView(entry: entry)
-      }
-      .configurationDisplayName(Strings.Widgets.favoritesWidgetTitle)
-      .description(Strings.Widgets.favoritesWidgetDescription)
-      .supportedFamilies([.accessoryCircular])
-    } else {
-      return EmptyWidgetConfiguration()
+    return IntentConfiguration(
+      kind: "LockScreenFavoriteWidget",
+      intent: LockScreenFavoriteConfigurationIntent.self,
+      provider: LockScreenFavoriteProvider()
+    ) { entry in
+      LockScreenFavoriteView(entry: entry)
     }
+    .configurationDisplayName(Strings.Widgets.favoritesWidgetTitle)
+    .description(Strings.Widgets.favoritesWidgetDescription)
+    .supportedFamilies([.accessoryCircular])
   }
 }
 
@@ -90,7 +86,7 @@ private struct LockScreenFavoriteView: View {
   var body: some View {
     ZStack {
       AccessoryWidgetBackground()
-        .widgetBackground { EmptyView() }
+        .containerBackground(for: .widget) { EmptyView() }
       if let fav = entry.favorite {
         Group {
           if let attributes = fav.favicon, let image = attributes.image {

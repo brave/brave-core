@@ -3,7 +3,6 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import Storage
 import UIKit
 
 extension BrowserViewController: UIDropInteractionDelegate {

@@ -11,7 +11,6 @@ import Foundation
 import Onboarding
 import Preferences
 import Shared
-import Storage
 import WebKit
 import os.log
 
@@ -79,11 +78,6 @@ extension BrowserViewController {
     let popover = PopoverController(contentController: braveRewardsPanel)
     popover.addsConvenientDismissalMargins = false
     popover.present(from: topToolbar.rewardsButton, on: self)
-  }
-
-  @objc func resetNTPNotification() {
-    Preferences.NewTabPage.brandedImageShowed.value = false
-    Preferences.NewTabPage.atleastOneNTPNotificationWasShowed.value = false
   }
 
   private func loadNewTabWithRewardsURL(_ url: URL) {

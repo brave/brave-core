@@ -11,26 +11,6 @@ import os.log
 
 extension BraveRewardsAPI {
 
-  public var isLedgerTransferExpired: Bool {
-    if Locale.current.region?.identifier != "JP" {
-      return false
-    }
-    let now = Date()
-    let deadlineComponents = DateComponents(year: 2021, month: 3, day: 13)
-    guard
-      let deadlineDate = Calendar(identifier: .gregorian).nextDate(
-        after: now,
-        matching: deadlineComponents,
-        matchingPolicy: .strict
-      )
-    else {
-      return true
-    }
-    return now >= deadlineDate
-  }
-
-  // MARK: -
-
   /// Creates the ledger wallet and fetches wallet properties and balances
   ///
   /// Use this is in UI instead of `createWallet` directly unless required

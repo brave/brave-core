@@ -92,7 +92,7 @@ private struct TopNewsListView: View {
       HStack(spacing: 4) {
         Image("brave-icon-no-bg")
           .resizable()
-          .widgetAccentedRenderingModeFullColor()
+          .widgetAccentedRenderingMode(.fullColor)
           .aspectRatio(contentMode: .fit)
           .frame(width: 16, height: 16)
         Text(Strings.Widgets.braveNews)
@@ -155,7 +155,7 @@ private struct TopNewsListView: View {
                       .overlay(
                         Image(uiImage: image)
                           .resizable()
-                          .widgetAccentedRenderingModeFullColor()
+                          .widgetAccentedRenderingMode(.fullColor)
                           .aspectRatio(contentMode: .fill)
                       )
                       .clipShape(RoundedRectangle(cornerRadius: 8, style: .continuous))
@@ -207,7 +207,7 @@ private struct TopNewsListView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
       }
     }
-    .widgetBackground { Color(braveSystemName: .containerBackground) }
+    .containerBackground(for: .widget) { Color(braveSystemName: .containerBackground) }
   }
 }
 

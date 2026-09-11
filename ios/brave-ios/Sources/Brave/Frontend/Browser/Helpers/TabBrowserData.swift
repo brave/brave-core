@@ -9,7 +9,6 @@ import Data
 import Foundation
 import Preferences
 import Shared
-import Storage
 import Web
 
 extension TabDataValues {

@@ -26,7 +26,7 @@ public class ReaderModeHandler: InternalSchemeResponse {
 
     // Decode the original page's response headers
     var headers = [String: String]()
-    if let base64EncodedHeaders = _url.getQuery()["headers"]?.unescape(),
+    if let base64EncodedHeaders = _url.getQuery()["headers"]?.removingPercentEncoding,
       let data = Data(base64Encoded: base64EncodedHeaders),
       let decodedHeaders = try? JSONSerialization.jsonObject(with: data) as? [String: String]
     {

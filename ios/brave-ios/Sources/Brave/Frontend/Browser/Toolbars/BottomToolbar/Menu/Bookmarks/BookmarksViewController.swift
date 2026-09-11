@@ -258,7 +258,7 @@ class BookmarksViewController: SiteTableViewController, ToolbarUrlActionsProtoco
   }
 
   @objc private func importExportAction(_ sender: UIBarButtonItem) {
-    let alert = AlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+    let alert = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
     alert.popoverPresentationController?.barButtonItem = sender
     let importAction = UIAlertAction(title: Strings.bookmarksImportAction, style: .default) {
       [weak self] _ in

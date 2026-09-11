@@ -16,16 +16,6 @@ import XCTest
     XCTAssertEqual("", "123456".stringByTrimmingLeadingCharactersInSet(.decimalDigits))
   }
 
-  func testPreferredSearchSuggestionText() {
-    XCTAssertEqual("brave", "   brave   ".preferredSearchSuggestionText)
-    XCTAssertEqual("bravesearch123", "bravesearch123".preferredSearchSuggestionText)
-    XCTAssertEqual("brave", "    brave".preferredSearchSuggestionText)
-    XCTAssertEqual(
-      "brave search talk- engine",
-      "brave search talk- engine ".preferredSearchSuggestionText
-    )
-  }
-
   func testPercentEscaping() {
     func roundtripTest(
       _ input: String,
@@ -35,7 +25,7 @@ import XCTest
     ) {
       let observed = input.escape()!
       XCTAssertEqual(observed, expected, "input is \(input)", file: file, line: line)
-      let roundtrip = observed.unescape()
+      let roundtrip = observed.removingPercentEncoding
       XCTAssertEqual(roundtrip, input, "encoded is \(observed)", file: file, line: line)
     }
 

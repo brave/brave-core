@@ -25,7 +25,6 @@ var package = Package(
     .library(name: "BraveWallet", targets: ["BraveWallet"]),
     .library(name: "Data", targets: ["Data"]),
     .library(name: "DataImporter", targets: ["DataImporter"]),
-    .library(name: "Storage", targets: ["Storage"]),
     .library(name: "BrowserIntentsModels", targets: ["BrowserIntentsModels"]),
     .library(name: "BraveWidgetsModels", targets: ["BraveWidgetsModels"]),
     .library(name: "Strings", targets: ["Strings"]),
@@ -89,7 +88,6 @@ var package = Package(
         "DesignSystem",
         "Data",
         "DataImporter",
-        "Storage",
         "Fuzi",
         "SnapKit",
         "Static",
@@ -324,13 +322,8 @@ var package = Package(
       path: "../third_party/GRDWireGuardKit/GRDWireGuardKit.xcframework"
     ),
     .target(
-      name: "Storage",
-      dependencies: ["Shared"],
-      plugins: ["LoggerPlugin"]
-    ),
-    .target(
       name: "Data",
-      dependencies: ["BraveShared", "Storage", "Strings", "Preferences", "Shared"],
+      dependencies: ["BraveShared", "Strings", "Preferences", "Shared"],
       plugins: ["LoggerPlugin"]
     ),
     .target(
@@ -420,7 +413,6 @@ var package = Package(
         "Preferences",
         "Shared",
         "SnapKit",
-        "Storage",
         "Strings",
         "Then",
         .product(name: "Collections", package: "swift-collections"),
@@ -475,7 +467,6 @@ var package = Package(
         "Preferences",
         "Shared",
         "SnapKit",
-        "Storage",
       ],
       resources: [
         .copy("LottieAssets/onboarding-rewards.json"),
@@ -533,11 +524,6 @@ var package = Package(
         .product(name: "CustomDump", package: "swift-custom-dump"),
       ]
     ),
-    .testTarget(
-      name: "StorageTests",
-      dependencies: ["Storage", "TestHelpers"],
-      resources: [.copy("fixtures/v33.db"), .copy("testcert1.pem"), .copy("testcert2.pem")]
-    ),
     .testTarget(name: "DataTests", dependencies: ["Data", "TestHelpers", "BraveShields"]),
     .testTarget(
       name: "ClientTests",
@@ -562,7 +548,7 @@ var package = Package(
     .target(
       name: "Playlist",
       dependencies: [
-        "Data", "BraveShared", "Shared", "Storage", "Preferences", "Strings", "CodableHelpers",
+        "Data", "BraveShared", "Shared", "Preferences", "Strings", "CodableHelpers",
         "UserAgent", "Then", "BraveShields",
       ],
       plugins: ["LoggerPlugin"]
@@ -596,7 +582,7 @@ var package = Package(
     .target(
       name: "Web",
       dependencies: [
-        "BraveCore", "FaviconModels", "BraveShared", "Shared", "CertificateUtilities", "Storage",
+        "BraveCore", "FaviconModels", "BraveShared", "Shared", "CertificateUtilities",
         "BraveStrings", "Strings",
         .product(name: "OrderedCollections", package: "swift-collections"),
       ],

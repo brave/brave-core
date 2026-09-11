@@ -6,7 +6,6 @@
 import BraveUI
 import Shared
 import SnapKit
-import Storage
 import UIKit
 
 protocol LoginInfoTableViewCellDelegate: AnyObject {

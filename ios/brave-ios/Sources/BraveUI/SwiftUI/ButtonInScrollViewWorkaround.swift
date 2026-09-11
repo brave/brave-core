@@ -14,10 +14,6 @@ extension View {
   /// FB18927179
   @ViewBuilder public func enableButtonScrollViewDragWorkaround() -> some View {
     // This is currently a bug as of 18.0 and tested to still be broken up to iOS 26.0
-    if #available(iOS 18, *) {
-      self.simultaneousGesture(TapGesture())
-    } else {
-      self
-    }
+    self.simultaneousGesture(TapGesture())
   }
 }

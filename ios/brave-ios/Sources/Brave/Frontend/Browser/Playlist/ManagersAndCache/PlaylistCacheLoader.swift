@@ -12,7 +12,6 @@ import MobileCoreServices
 import Playlist
 import Preferences
 import Shared
-import Storage
 @_spi(ChromiumWebViewAccess) import Web
 import WebKit
 import os.log
@@ -32,7 +31,6 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
 
   private let tab: any TabState
 
-  private weak var certStore: CertStore?
   private var handler: ((PlaylistInfo?) -> Void)?
   private var timeoutTask: Task<Void, Error>?
 
@@ -103,7 +101,6 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         return
       }
 
-      self.certStore = browserViewController.profile.certStore
       tab.addObserver(self)
       tab.addPolicyDecider(self)
 

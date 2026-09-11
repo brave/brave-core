@@ -4,7 +4,6 @@
 
 import BraveShared
 import Shared
-import Storage
 import TestHelpers
 import UIKit
 import WebKit

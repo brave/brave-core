@@ -11,7 +11,6 @@ import Preferences
 import SafariServices
 import Shared
 import SnapKit
-import Storage
 import UIKit
 
 public enum OnboardingRewardsState {

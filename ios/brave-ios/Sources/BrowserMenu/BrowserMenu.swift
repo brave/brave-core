@@ -139,7 +139,7 @@ public struct BrowserMenu: View {
           .buttonStyle(MenuRowButtonStyle())
           .background(Color(braveSystemName: .schemesSurfaceBright))
           .clipShape(.rect(cornerRadius: 14, style: .continuous))
-          .transition(.blurReplace())
+          .transition(.blurReplace)
         }
         Button {
           handlePresentation(.settings)
@@ -207,7 +207,7 @@ private struct QuickActionsView: View {
         }
         .buttonStyle(QuickActionButtonStyle(state: action.state, traits: action.traits))
         .disabled(action.attributes.contains(.disabled))
-        .transition(.blurReplace())
+        .transition(.blurReplace)
         .id(action)
       }
     }
@@ -318,7 +318,7 @@ private struct ActionButton: View {
     }
     .buttonStyle(MenuRowButtonStyle())
     .disabled(action.attributes.contains(.disabled))
-    .transition(.blurReplace())
+    .transition(.blurReplace)
     .id(action)
   }
 }

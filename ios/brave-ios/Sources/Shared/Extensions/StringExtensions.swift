@@ -15,10 +15,6 @@ extension String {
     return self.addingPercentEncoding(withAllowedCharacters: allowedEscapes)
   }
 
-  public func unescape() -> String? {
-    return self.removingPercentEncoding
-  }
-
   private var stringWithAdditionalEscaping: String {
     return self.replacingOccurrences(of: "|", with: "%7C")
   }
@@ -41,23 +37,9 @@ extension String {
     return trimmed
   }
 
-  // Minimize trimming effort for characterset based on string
-  public func trim(_ charactersInString: String) -> String {
-    return self.trimmingCharacters(in: CharacterSet(charactersIn: charactersInString))
-  }
-
   public func separatedBy(_ string: String) -> [String] {
     let cleaned = self.replacingOccurrences(of: "\n", with: " ")
     return cleaned.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: string)
-  }
-
-  /// Truncates the string to the specified length number of characters and appends an optional trailing string if longer.
-  /// - Parameter length: Desired maximum lengths of a string
-  /// - Parameter trailing: A 'String' that will be appended after the truncation.
-  ///
-  /// - Returns: 'String' object.
-  public func truncate(length: Int, trailing: String = "…") -> String {
-    return (self.count > length) ? self.prefix(length) + trailing : self
   }
 
   public var capitalizeFirstLetter: String {

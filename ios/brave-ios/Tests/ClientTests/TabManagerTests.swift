@@ -4,7 +4,6 @@
 
 import Preferences
 import Shared
-import Storage
 import UIKit
 import Web
 import XCTest

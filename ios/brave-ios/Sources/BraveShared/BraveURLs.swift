@@ -10,24 +10,15 @@ extension URL {
     public static let community = URL(string: "https://community.brave.app/")!
     public static let account = URL(string: "https://account.brave.com")!
     public static let privacy = URL(string: "https://brave.com/privacy/")!
-    public static let braveNews = URL(string: "https://brave.com/brave-news/")!
     public static let braveNewsPrivacy = URL(string: "https://brave.com/privacy/#brave-news")!
     public static let braveOffers = URL(string: "https://offers.brave.com/")!
     public static let playlist = URL(string: "https://brave.com/playlist")!
-    public static let rewardsOniOS = URL(string: "https://brave.com/rewards-ios/")!
     public static let rewardsUnverifiedPublisherLearnMoreURL = URL(
       string: "https://brave.com/faq-rewards/#unclaimed-funds"
     )!
     public static let termsOfUse = URL(string: "https://www.brave.com/terms_of_use")!
-    public static let batTermsOfUse = URL(
-      string: "https://basicattentiontoken.org/user-terms-of-service/"
-    )!
-    public static let ntpTutorialPage = URL(string: "https://brave.com/ja/ntp-tutorial")!
     public static let privacyFeatures = URL(string: "https://brave.com/privacy-features/")!
     public static let support = URL(string: "https://support.brave.app")!
-    public static let p3aHelpArticle = URL(
-      string: "https://support.brave.app/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave-"
-    )!
     public static let braveVPNFaq = URL(
       string: "https://support.brave.app/hc/en-us/articles/360045045952"
     )!
@@ -59,15 +50,6 @@ extension URL {
     public static let screenTimeHelp = URL(
       string: "https://support.apple.com/guide/security/secd8831e732/web"
     )!
-    public static let braveLeoManageSubscriptionProd = URL(
-      string: "https://account.brave.com/plans?mtm_campaign=iap-ios"
-    )!
-    public static let braveLeoManageSubscriptionStaging = URL(
-      string: "https://account.bravesoftware.com/plans?mtm_campaign=iap-ios"
-    )!
-    public static let braveLeoManageSubscriptionDev = URL(
-      string: "https://account.brave.software/plans?mtm_campaign=iap-ios"
-    )!
     public static let braveLeoCheckoutURL = URL(
       string: "https://account.brave.com/?intent=checkout&product=leo&mtm_campaign=iap-ios"
     )!
@@ -85,14 +67,6 @@ extension URL {
     public static let braveLeoRefreshCredentials = URL(
       string:
         "https://account.brave.com/?intent=recover&product=leo&ux=mobile&mtm_campaign=refresh-ios"
-    )!
-    public static let braveLeoModelCategorySupport = URL(
-      string:
-        "https://support.brave.app/hc/en-us/articles/26727364100493-What-are-the-differences-between-Leo-s-AI-Models"
-    )!
-    public static let braveLeoPrivacyFeedbackLearnMoreLinkUrl = URL(
-      string:
-        "https://brave.com/privacy/browser/#your-feedback"
     )!
     public static let braveVPNSmartProxySupport = URL(
       string:

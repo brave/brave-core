@@ -9,16 +9,11 @@ import Foundation
 // may have unintended negative consequences for App Extensions such as
 // increased startup times which may lead to termination by the OS.
 import Shared
-import Storage
 import os.log
 
 open class LegacyBrowserProfile {
   public lazy var searchEngines: SearchEngines = {
     return SearchEngines()
-  }()
-
-  public lazy var certStore: CertStore = {
-    return CertStore()
   }()
 
   public init() {}

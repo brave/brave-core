@@ -54,13 +54,6 @@
       }
     },
     {
-      "target" : {
-        "containerPath" : "container:..",
-        "identifier" : "StorageTests",
-        "name" : "StorageTests"
-      }
-    },
-    {
       "skippedTests" : [
         "CertificatePinningTest\/testSelfSignedRootAllowed2()"
       ],

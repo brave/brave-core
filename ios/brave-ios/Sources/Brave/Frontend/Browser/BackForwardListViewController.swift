@@ -5,7 +5,6 @@
 import BraveShared
 import Shared
 import SnapKit
-import Storage
 import UIKit
 import Web
 import WebKit

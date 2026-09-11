@@ -11,14 +11,12 @@ import Data
 import Foundation
 import MediaPlayer
 import Shared
-import Storage
 import UserAgent
 import WebKit
 import os.log
 
 public class PlaylistMediaStreamer {
   private weak var playerView: UIView?
-  private weak var certStore: CertStore?
   private var webLoader: (any PlaylistWebLoader)?
   private var webLoaderFactory: any PlaylistWebLoaderFactory
 
