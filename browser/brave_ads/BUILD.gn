@@ -156,8 +156,6 @@ source_set("browser_tests") {
 
   sources = [
     "ads_service_delegate_browsertest.cc",
-    "ads_service_waiter.cc",
-    "ads_service_waiter.h",
     "analytics/p3a/brave_stats_helper_browsertest.cc",
     "application_state/notification_helper/notification_helper_impl_mock.cc",
     "application_state/notification_helper/notification_helper_impl_mock.h",
@@ -166,6 +164,7 @@ source_set("browser_tests") {
   deps = [
     ":brave_ads",
     ":impl",
+    "//brave/components/brave_ads/core/browser/service:test_support",
     "//chrome/browser",
     "//chrome/browser/lifetime",
     "//chrome/test:test_support",

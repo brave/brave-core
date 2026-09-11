@@ -20,6 +20,7 @@
 #include "brave/components/brave_ads/core/public/ads_callback.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
 #include "brave/components/brave_ads/core/public/common/functional/once_closure_task_queue.h"
+#include "components/prefs/pref_change_registrar.h"
 
 class PrefService;
 
@@ -165,7 +166,11 @@ class AdsServiceImplIOS : public AdsService {
   void ClearAdsPrefs();
   void ClearAdsDataCallback(ResultCallback callback);
 
+  void OnSponsoredAdsPrefChanged();
+
   const raw_ref<PrefService> prefs_;
+
+  PrefChangeRegistrar pref_change_registrar_;
 
   const scoped_refptr<base::SequencedTaskRunner> file_task_runner_;
 

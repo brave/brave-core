@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_WAITER_H_
-#define BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_WAITER_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_TEST_ADS_SERVICE_WAITER_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_TEST_ADS_SERVICE_WAITER_H_
 
 #include "base/memory/raw_ref.h"
 #include "base/run_loop.h"
@@ -62,4 +62,4 @@ class AdsServiceWaiter final : public AdsServiceObserver {
 
 }  // namespace brave_ads
 
-#endif  // BRAVE_BROWSER_BRAVE_ADS_ADS_SERVICE_WAITER_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_BROWSER_SERVICE_TEST_ADS_SERVICE_WAITER_H_

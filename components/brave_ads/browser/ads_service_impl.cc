@@ -782,6 +782,17 @@ void AdsServiceImpl::InitializeSponsoredAdsPrefChangeRegistrar() {
 }
 
 void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
+  if (path == prefs::kSponsoredEnabled && !IsSponsoredAdsEnabled()) {
+    // Clear ads data now that sponsored ads are disabled. Posted because
+    // `ClearData` can synchronously reach `ClearAdsPrefs`, which mutates
+    // `pref_change_registrar_` and must not do so re-entrantly from within
+    // this pref's own change notification.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(&AdsServiceImpl::ClearData,
+                                  weak_ptr_factory_.GetWeakPtr(),
+                                  /*intentional*/ base::DoNothing()));
+  }
+
   if (!CanStartBatAdsService()) {
     // The pref change made the service ineligible to run, so tear it down and
     // release resource components that are no longer needed.

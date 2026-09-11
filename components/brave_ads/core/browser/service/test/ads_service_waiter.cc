@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/brave_ads/ads_service_waiter.h"
+#include "brave/components/brave_ads/core/browser/service/test/ads_service_waiter.h"
 
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 

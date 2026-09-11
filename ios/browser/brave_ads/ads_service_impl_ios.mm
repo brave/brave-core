@@ -50,7 +50,13 @@ AdsServiceImplIOS::AdsServiceImplIOS(PrefService& prefs)
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
-      ads_client_notifier_(std::make_unique<AdsClientNotifier>()) {}
+      ads_client_notifier_(std::make_unique<AdsClientNotifier>()) {
+  pref_change_registrar_.Init(&*prefs_);
+  pref_change_registrar_.Add(
+      prefs::kSponsoredEnabled,
+      base::BindRepeating(&AdsServiceImplIOS::OnSponsoredAdsPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+}
 
 AdsServiceImplIOS::~AdsServiceImplIOS() = default;
 
@@ -519,7 +525,29 @@ void AdsServiceImplIOS::ClearAdsPrefs() {
 
 void AdsServiceImplIOS::ClearAdsDataCallback(ResultCallback callback) {
   NotifyDidClearAdsServiceData();
+
+  if (!ads_client_) {
+    // Never initialized, so there is nothing to restart, e.g. sponsored ads
+    // were disabled before the ads service was ever initialized.
+    return std::move(callback).Run(/*success=*/true);
+  }
+
   InitializeAds(std::move(callback));
+}
+
+void AdsServiceImplIOS::OnSponsoredAdsPrefChanged() {
+  if (prefs_->GetBoolean(prefs::kSponsoredEnabled)) {
+    return;
+  }
+
+  // Clear ads data now that sponsored ads are disabled. Posted because
+  // `ClearData` can synchronously reach `ClearAdsPrefs`, which mutates
+  // `pref_change_registrar_` and must not do so re-entrantly from within this
+  // pref's own change notification.
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(&AdsServiceImplIOS::ClearData,
+                                weak_ptr_factory_.GetWeakPtr(),
+                                /*intentional*/ base::DoNothing()));
 }
 
 }  // namespace brave_ads
