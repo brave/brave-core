@@ -193,6 +193,48 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
 }
 
 TEST_F(BraveAdsCreativeAdRoundRobinTest,
+       AdShouldBeEligibleAgainWhenItIsTheOnlyAd) {
+  // Arrange
+  const CreativeNewTabPageAdInfo creative_ad =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  CreativeNewTabPageAdList creative_ads = {creative_ad};
+
+  creative_ad_round_robin_.MarkAsServed(creative_ad);
+
+  // Act
+  creative_ad_round_robin_.Filter(creative_ads);
+
+  // Assert
+  EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad));
+}
+
+TEST_F(BraveAdsCreativeAdRoundRobinTest,
+       FilteringEmptyAdsShouldNotAffectServedState) {
+  // Arrange
+  const CreativeNewTabPageAdInfo creative_ad_1 =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  creative_ad_round_robin_.MarkAsServed(creative_ad_1);
+
+  const CreativeNewTabPageAdInfo creative_ad_2 =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+
+  CreativeNewTabPageAdList empty_creative_ads;
+
+  // Act: filtering an empty list is a no-op and should not reset the
+  // priority bucket's served state.
+  creative_ad_round_robin_.Filter(empty_creative_ads);
+
+  CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2};
+  creative_ad_round_robin_.Filter(creative_ads);
+
+  // Assert
+  EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad_2));
+}
+
+TEST_F(BraveAdsCreativeAdRoundRobinTest,
        PriorityBucketsShouldRotateIndependently) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad_1 =
@@ -214,6 +256,72 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
 
   // Assert
   EXPECT_THAT(other_priority_creative_ads, testing::ElementsAre(creative_ad_2));
+}
+
+TEST_F(BraveAdsCreativeAdRoundRobinTest, FilteringTwiceShouldBeIdempotent) {
+  // Arrange
+  const CreativeNewTabPageAdInfo creative_ad_1 =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  const CreativeNewTabPageAdInfo creative_ad_2 =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  creative_ad_round_robin_.MarkAsServed(creative_ad_1);
+
+  CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2};
+
+  // Act
+  creative_ad_round_robin_.Filter(creative_ads);
+  creative_ad_round_robin_.Filter(creative_ads);
+
+  // Assert
+  EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad_2));
+}
+
+TEST_F(BraveAdsCreativeAdRoundRobinTest,
+       MarkAsServedShouldCreateNewPriorityBucketOnDemand) {
+  // Arrange
+  CreativeNewTabPageAdInfo creative_ad =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  creative_ad.priority = 3;
+
+  // Act
+  creative_ad_round_robin_.MarkAsServed(creative_ad);
+
+  CreativeNewTabPageAdList creative_ads = {creative_ad};
+  creative_ad_round_robin_.Filter(creative_ads);
+
+  // Assert: the bucket for priority 3 was created and reset because the only
+  // ad in it has now been served.
+  EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad));
+}
+
+TEST_F(BraveAdsCreativeAdRoundRobinTest,
+       BucketShouldResetOnEveryRotationNotJustTheFirst) {
+  // Arrange
+  const CreativeNewTabPageAdInfo creative_ad_1 =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  const CreativeNewTabPageAdInfo creative_ad_2 =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+
+  // Act & Assert: first rotation.
+  creative_ad_round_robin_.MarkAsServed(creative_ad_1);
+  creative_ad_round_robin_.MarkAsServed(creative_ad_2);
+
+  CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2};
+  creative_ad_round_robin_.Filter(creative_ads);
+  EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad_1, creative_ad_2));
+
+  // Act & Assert: second rotation.
+  creative_ad_round_robin_.MarkAsServed(creative_ad_1);
+  creative_ad_round_robin_.MarkAsServed(creative_ad_2);
+
+  creative_ads = {creative_ad_1, creative_ad_2};
+  creative_ad_round_robin_.Filter(creative_ads);
+  EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad_1, creative_ad_2));
 }
 
 }  // namespace brave_ads
