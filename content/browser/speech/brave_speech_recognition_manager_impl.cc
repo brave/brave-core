@@ -15,20 +15,19 @@
 #include "brave/content/browser/speech/brave_on_device_speech_recognition_engine.h"
 #include "content/browser/speech/on_device_speech_recognition_engine_impl.h"
 #include "content/browser/speech/speech_recognition_engine.h"
-#include "content/common/content_export.h"
 #include "content/public/browser/speech_recognition_session_config.h"
 
 namespace content {
 
 // Whether to use Brave's engine for on-device speech recognition sessions.
-CONTENT_EXPORT bool UsesBraveOnDeviceSpeechEngine() {
+bool UsesBraveOnDeviceSpeechEngine() {
   return base::FeatureList::IsEnabled(
       local_ai::kBraveOnDeviceSpeechRecognition);
 }
 
 // Builds the engine for the on-device branch.
-CONTENT_EXPORT std::unique_ptr<SpeechRecognitionEngine>
-MakeOnDeviceSpeechEngine(const SpeechRecognitionSessionConfig& config) {
+std::unique_ptr<SpeechRecognitionEngine> MakeOnDeviceSpeechEngine(
+    const SpeechRecognitionSessionConfig& config) {
   if (UsesBraveOnDeviceSpeechEngine()) {
     return std::make_unique<BraveOnDeviceSpeechRecognitionEngine>(config);
   }

@@ -7,7 +7,6 @@
 
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "build/build_config.h"
-#include "content/common/content_export.h"
 #include "content/public/browser/speech_recognition_session_config.h"
 
 #if !BUILDFLAG(ENABLE_LOCAL_AI) && !BUILDFLAG(IS_ANDROID)
@@ -23,11 +22,10 @@ class SpeechRecognitionEngine;
 // Both are defined in brave/content/browser/speech/
 // brave_speech_recognition_manager_impl.cc, which is compiled into
 // //content/browser through brave_content_browser_sources. Declared here rather
-// than included, so this override depends on no Brave target. They are exported
-// because the unit tests for them live outside the content component.
-CONTENT_EXPORT bool UsesBraveOnDeviceSpeechEngine();
-CONTENT_EXPORT std::unique_ptr<SpeechRecognitionEngine>
-MakeOnDeviceSpeechEngine(const SpeechRecognitionSessionConfig& config);
+// than included, so this override depends on no Brave target.
+bool UsesBraveOnDeviceSpeechEngine();
+std::unique_ptr<SpeechRecognitionEngine> MakeOnDeviceSpeechEngine(
+    const SpeechRecognitionSessionConfig& config);
 
 #else  // BUILDFLAG(ENABLE_LOCAL_AI)
 
