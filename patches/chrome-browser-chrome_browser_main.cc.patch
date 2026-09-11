@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
+index cbf3b6c563090a64c427e1b0ce8cbf7118aa82d2..3815c68b1d802065424d70b7d1203e228ba1eb8e 100644
+--- a/chrome/browser/chrome_browser_main.cc
++++ b/chrome/browser/chrome_browser_main.cc
+@@ -1070,6 +1070,7 @@ void ChromeBrowserMainParts::ToolkitInitialized() {
+ 
+ #if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_UPDATER)
+ void PromptUpdaterPromotion() {
++  if (!ShouldPromptUpdaterPromotion()) return;
+   content::GetUIThreadTaskRunner({})->PostTask(
+       FROM_HERE, base::BindOnce([]() {
+         if (base::CommandLine::ForCurrentProcess()->HasSwitch(
