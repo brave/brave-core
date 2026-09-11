@@ -87,6 +87,10 @@
 #include "brave/components/playlist/core/common/features.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/core/common/constants.h"
+#endif
+
 namespace settings {
 
 namespace {
@@ -1280,9 +1284,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                                  kExtensionsV2LearnMoreURL));
 
 #if BUILDFLAG(ENABLE_PSST)
-  html_source->AddString(
-      "psstLearnMoreURL",
-      l10n_util::GetStringUTF16(IDS_PSST_REPORT_DIALOG_BODY_LEARN_MORE_LINK));
+  html_source->AddString("psstLearnMoreURL",
+                         psst::kPsstReportDialogLearnMoreUrl);
 #endif
   // Disabled due to crash with tab group dragging.
   // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.

@@ -12,6 +12,7 @@ import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 import Flex from '$web-common/Flex'
+import { loadTimeData } from '$web-common/loadTimeData'
 import { formatLocale, getLocale } from '$web-common/locale'
 import { Container, PsstDlgButton, RightAlignedItem } from './basic/structure'
 import { OptionStatus, SettingState } from './PsstProgressModal'
@@ -86,7 +87,7 @@ const SentBanner = styled.div`
 
 const SentButton = styled(PsstDlgButton)`
   --leo-color-button-background: ${leo.color.button.successBackground};
-  --leo-color-schemes-on-primary: ${leo.color.button.successText}
+  --leo-color-schemes-on-primary: ${leo.color.button.successText};
 `
 
 export interface Props {
@@ -114,7 +115,7 @@ export const PsstReportModal: React.FC<Props> = ({
   api.useOnPsstErrorsReportSent(() => {
     setReportSendState('sent')
   })
-  
+
   const failedSteps = React.useMemo(
     () =>
       (optionsStatuses ?? [])
@@ -157,7 +158,7 @@ export const PsstReportModal: React.FC<Props> = ({
         {formatLocale(S.PSST_REPORT_DIALOG_BODY, {
           $1: (content) => (
             <a
-              href={getLocale(S.PSST_REPORT_DIALOG_BODY_LEARN_MORE_LINK)}
+              href={loadTimeData.getString('psstReportDialogLearnMoreUrl')}
               target='_blank'
               rel='noopener noreferrer'
             >

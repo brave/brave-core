@@ -27,9 +27,6 @@
     <message name="IDS_PSST_REPORT_DIALOG_BODY" formatter_data="webui=Psst" desc="Body text for the screen used to report failed PSST steps to Brave">
         Send a report of the failed steps to the Brave team. This report will contain the information needed for us to fix the issue. <ph name="LINK_BEFORE">$1</ph>Learn more.<ph name="LINK_AFTER">/$1</ph>
     </message>
-    <message name="IDS_PSST_REPORT_DIALOG_BODY_LEARN_MORE_LINK" formatter_data="webui=Psst" desc="Url for the report dialog body learn more link">
-        https://support.brave.app/hc/en-us/articles/47405731650957
-    </message>
     <message name="IDS_PSST_REPORT_DIALOG_CURRENT_URL_LABEL" formatter_data="webui=Psst" desc="Label for the current site URL shown on the PSST failed steps report screen">
         Current URL
     </message>
