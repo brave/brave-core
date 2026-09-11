@@ -25,6 +25,10 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/search_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/policy/core/browser/browser_policy_connector.h"
+#include "components/policy/core/common/mock_configuration_policy_provider.h"
+#include "components/policy/core/common/policy_map.h"
+#include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
@@ -39,7 +43,27 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
       delete;
   ~BraveActionsContainerTest() override = default;
 
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    provider_.SetDefaultReturns(
+        /*is_initialization_complete_return=*/true,
+        /*is_first_policy_load_complete_return=*/true);
+    policy::BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
+  }
+
   void SetUpOnMainThread() override { Init(browser()); }
+
+  void BlockRewardsByPolicy(bool value) {
+    policy::PolicyMap policies;
+    policies.Set(policy::key::kBraveRewardsDisabled,
+                 policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+                 policy::POLICY_SOURCE_PLATFORM, base::Value(value), nullptr);
+    provider_.UpdateChromePolicy(policies);
+    EXPECT_EQ(
+        prefs_->IsManagedPreference(brave_rewards::prefs::kDisabledByPolicy) &&
+            prefs_->GetBoolean(brave_rewards::prefs::kDisabledByPolicy),
+        value);
+  }
 
   void Init(BrowserWindowInterface* browser) {
     BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
@@ -64,6 +88,7 @@ class BraveActionsContainerTest : public InProcessBrowserTest {
  protected:
   raw_ptr<BraveActionsContainer, DanglingUntriaged> brave_actions_ = nullptr;
   raw_ptr<PrefService, DanglingUntriaged> prefs_ = nullptr;
+  policy::MockConfigurationPolicyProvider provider_;
 };
 
 IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
@@ -77,6 +102,22 @@ IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
 
   // Set to show.
   prefs_->SetBoolean(brave_rewards::prefs::kShowLocationBarButton, true);
+  CheckBraveRewardsActionShown(true);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
+                       HideBraveRewardsActionWhenDisabledByPolicy) {
+  // By default the action should be shown.
+  EXPECT_TRUE(prefs_->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
+  CheckBraveRewardsActionShown(true);
+
+  // Disabling Rewards via policy after the container was already
+  // constructed should hide the button.
+  BlockRewardsByPolicy(true);
+  CheckBraveRewardsActionShown(false);
+
+  // Lifting the policy should bring the button back.
+  BlockRewardsByPolicy(false);
   CheckBraveRewardsActionShown(true);
 }
 
