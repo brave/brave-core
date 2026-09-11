@@ -11,7 +11,6 @@
 		0A5E04F923FEADA800E5A3E9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0A5E04F823FEADA800E5A3E9 /* LaunchScreen.storyboard */; };
 		0A5E04FB23FEB53700E5A3E9 /* LaunchScreen.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A5E04FA23FEB53700E5A3E9 /* LaunchScreen.xcassets */; };
 		270ECFC82838210F0089B8B7 /* Brave in Frameworks */ = {isa = PBXBuildFile; productRef = 270ECFC72838210F0089B8B7 /* Brave */; };
-		2713FCD82A96429600398A57 /* WidgetBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2713FCD72A96429100398A57 /* WidgetBackground.swift */; };
 		2714EE6B2AF2D4CD002090A9 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2714EE6A2AF2D4CD002090A9 /* AuthenticationServices.framework */; };
 		2714EE6E2AF2D4CD002090A9 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2714EE6D2AF2D4CD002090A9 /* CredentialProviderViewController.swift */; };
 		2714EE762AF2D4CD002090A9 /* AutoFillProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2714EE692AF2D4CD002090A9 /* AutoFillProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -54,7 +53,6 @@
 		27D7FF7329BB816E0096DD93 /* PrivateCDN in Frameworks */ = {isa = PBXBuildFile; productRef = 27D7FF7229BB816E0096DD93 /* PrivateCDN */; };
 		27D972E628BD4D9900DDCF79 /* BraveNews in Frameworks */ = {isa = PBXBuildFile; productRef = 27D972E528BD4D9900DDCF79 /* BraveNews */; };
 		27DB270828BE9CB4005CB7AC /* LockScreenFavoriteWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */; };
-		27E0E2142CA0162D001DA292 /* WidgetAccentable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E0E2132CA01629001DA292 /* WidgetAccentable.swift */; };
 		27E998272B7BE1BC00D9ECF7 /* BraveCore in Frameworks */ = {isa = PBXBuildFile; productRef = 27E998262B7BE1BC00D9ECF7 /* BraveCore */; };
 		27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27FA21752837F8EA00FA2C45 /* BrowserIntentsModels in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21742837F8EA00FA2C45 /* BrowserIntentsModels */; };
@@ -63,7 +61,6 @@
 		27FA21812837FB0100FA2C45 /* BraveWallet in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21802837FB0100FA2C45 /* BraveWallet */; };
 		27FA21832837FB0100FA2C45 /* Data in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21822837FB0100FA2C45 /* Data */; };
 		27FA21892837FB0100FA2C45 /* Shared in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21882837FB0100FA2C45 /* Shared */; };
-		27FA218B2837FB0100FA2C45 /* Storage in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA218A2837FB0100FA2C45 /* Storage */; };
 		27FA21A42838019000FA2C45 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 27FA21902838018E00FA2C45 /* InfoPlist.strings */; };
 		2F4A572429E608C8003454F8 /* BrowserIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
 		2F4A572529E608CC003454F8 /* BrowserIntents.intentdefinition in Sources */ = {isa = PBXBuildFile; fileRef = 27D67621282DAD3700BCE16E /* BrowserIntents.intentdefinition */; settings = {ATTRIBUTES = (no_codegen, ); }; };
@@ -191,7 +188,6 @@
 		0A6AC4E824484FBC003D1ED7 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		2703FC14284FDB6300970FD2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Shortcuts/ru.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		270ECFC628381E270089B8B7 /* brave-ios */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "brave-ios"; path = ..; sourceTree = "<group>"; };
-		2713FCD72A96429100398A57 /* WidgetBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetBackground.swift; sourceTree = "<group>"; };
 		2714EE692AF2D4CD002090A9 /* AutoFillProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AutoFillProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		2714EE6A2AF2D4CD002090A9 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
 		2714EE6D2AF2D4CD002090A9 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
@@ -255,7 +251,6 @@
 		27D7FF7129BA78820096DD93 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LockScreenFavoriteWidget.swift; sourceTree = "<group>"; };
 		27DD1330284FDAFB004E1E1F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = Shortcuts/fr.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
-		27E0E2132CA01629001DA292 /* WidgetAccentable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetAccentable.swift; sourceTree = "<group>"; };
 		27E30417284FDB57009A07F2 /* pt-BR */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "pt-BR"; path = "Shortcuts/pt-BR.lproj/BrowserIntents.strings"; sourceTree = "<group>"; };
 		27EDE18129A7D98000F34870 /* Debug (AppStore).entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Debug (AppStore).entitlements"; sourceTree = "<group>"; };
 		27EDE18229A7DA0E00F34870 /* Debug-AppStore.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = "Debug-AppStore.xcconfig"; sourceTree = "<group>"; };
@@ -565,7 +560,6 @@
 			files = (
 				270ECFC82838210F0089B8B7 /* Brave in Frameworks */,
 				7DDE6308292FEC9500B8B585 /* SDWebImage in Frameworks */,
-				27FA218B2837FB0100FA2C45 /* Storage in Frameworks */,
 				27FA21832837FB0100FA2C45 /* Data in Frameworks */,
 				27FA21892837FB0100FA2C45 /* Shared in Frameworks */,
 				27C1C5ED29B6AA8800739BE5 /* Preferences in Frameworks */,
@@ -801,8 +795,6 @@
 				272947DF29C8DE4300BF2FDC /* NewsTopics */,
 				27444B6929831B9E002E1EBE /* DevelopmentAssets */,
 				CA0391DA271E12D9000EB13C /* Entitlements */,
-				27E0E2132CA01629001DA292 /* WidgetAccentable.swift */,
-				2713FCD72A96429100398A57 /* WidgetBackground.swift */,
 				27A28ED428C00C19001466A4 /* LockScreenShortcutWidget.swift */,
 				27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */,
 				CA0391F4271E143F000EB13C /* FavoritesWidget.swift */,
@@ -1095,7 +1087,6 @@
 				27FA21802837FB0100FA2C45 /* BraveWallet */,
 				27FA21822837FB0100FA2C45 /* Data */,
 				27FA21882837FB0100FA2C45 /* Shared */,
-				27FA218A2837FB0100FA2C45 /* Storage */,
 				270ECFC72838210F0089B8B7 /* Brave */,
 				27466BB0288EDB9C00584C90 /* RuntimeWarnings */,
 				27D972E528BD4D9900DDCF79 /* BraveNews */,
@@ -1395,9 +1386,7 @@
 				CA0391FC271E143F000EB13C /* SingleStatWidget.swift in Sources */,
 				27A28ED528C00C1D001466A4 /* LockScreenShortcutWidget.swift in Sources */,
 				CA0391FB271E143F000EB13C /* StatsWidget.swift in Sources */,
-				2713FCD82A96429600398A57 /* WidgetBackground.swift in Sources */,
 				CA0391F8271E143F000EB13C /* ShortcutsWidget.swift in Sources */,
-				27E0E2142CA0162D001DA292 /* WidgetAccentable.swift in Sources */,
 				27DB270828BE9CB4005CB7AC /* LockScreenFavoriteWidget.swift in Sources */,
 				441A6360272445F9001492C3 /* StatDataModel.swift in Sources */,
 				2F4A572529E608CC003454F8 /* BrowserIntents.intentdefinition in Sources */,
@@ -4160,10 +4149,6 @@
 		27FA21882837FB0100FA2C45 /* Shared */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Shared;
-		};
-		27FA218A2837FB0100FA2C45 /* Storage */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = Storage;
 		};
 		7DDE6307292FEC9500B8B585 /* SDWebImage */ = {
 			isa = XCSwiftPackageProductDependency;

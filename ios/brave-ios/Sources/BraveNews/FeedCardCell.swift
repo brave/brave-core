@@ -5,7 +5,6 @@
 import BraveUI
 import Foundation
 import SnapKit
-import Storage
 import UIKit
 
 /// Defines the basic feed card cell. A feed card can display 1 or more feed

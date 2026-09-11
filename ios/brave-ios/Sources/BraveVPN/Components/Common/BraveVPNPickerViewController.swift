@@ -102,7 +102,7 @@ public class BraveVPNPickerViewController: UIViewController {
 
   func showErrorAlert(title: String, message: String?) {
     DispatchQueue.main.async {
-      let alert = AlertController(
+      let alert = UIAlertController(
         title: Strings.VPN.regionPickerErrorTitle,
         message: Strings.VPN.regionPickerErrorMessage,
         preferredStyle: .alert

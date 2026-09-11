@@ -83,15 +83,9 @@ struct MediaScrubber<Label: View>: View {
                   ),
                   alignment: .leading
                 )
-                .osAvailabilityModifiers { content in
-                  if #available(iOS 17.0, *) {
-                    content.transaction(value: currentTime) { tx in
-                      if tx.animation == nil && !tx.disablesAnimations {
-                        tx.animation = .linear(duration: 0.1)
-                      }
-                    }
-                  } else {
-                    content.animation(.linear(duration: 0.1), value: currentTime)
+                .transaction(value: currentTime) { tx in
+                  if tx.animation == nil && !tx.disablesAnimations {
+                    tx.animation = .linear(duration: 0.1)
                   }
                 }
             }
@@ -139,15 +133,9 @@ struct MediaScrubber<Label: View>: View {
                       currentTime = seconds
                     }
                 )
-                .osAvailabilityModifiers { content in
-                  if #available(iOS 17.0, *) {
-                    content.transaction(value: currentTime) { tx in
-                      if tx.animation == nil && !tx.disablesAnimations {
-                        tx.animation = .linear(duration: 0.1)
-                      }
-                    }
-                  } else {
-                    content.animation(.linear(duration: 0.1), value: currentTime)
+                .transaction(value: currentTime) { tx in
+                  if tx.animation == nil && !tx.disablesAnimations {
+                    tx.animation = .linear(duration: 0.1)
                   }
                 }
             }

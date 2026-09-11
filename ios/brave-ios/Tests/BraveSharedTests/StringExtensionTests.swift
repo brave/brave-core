@@ -7,28 +7,6 @@ import XCTest
 
 class StringExtensionTests: XCTestCase {
 
-  func testFirstURL() {
-    let urlString = "https://brave.com"
-    let url = URL(string: urlString)!
-    XCTAssertEqual(urlString, url.absoluteString)
-
-    let prefixedString = "Prefixed Text then the URL: \(urlString)"
-    XCTAssertEqual(url, prefixedString.firstURL)
-
-    let postfixedString = "\(urlString) The url is before this text"
-    XCTAssertEqual(url, postfixedString.firstURL)
-
-    let stringWithMultipleURLs =
-      "\(urlString) This one has more than one url https://duckduckgo.com"
-    XCTAssertEqual(url, stringWithMultipleURLs.firstURL)
-
-    let stringWithNoURLs = "This one is just text"
-    XCTAssertNil(stringWithNoURLs.firstURL)
-
-    let schemelessURL = "brave.com"
-    XCTAssertNotNil(schemelessURL.firstURL)
-  }
-
   func testURLEncoding() {
     let urlString = "https://example.com/test%"
     let urlStringEncoded = "https://example.com/test%25"
@@ -36,24 +14,6 @@ class StringExtensionTests: XCTestCase {
       urlString.addingPercentEncoding(withAllowedCharacters: .urlAllowed),
       urlStringEncoded
     )
-  }
-
-  func testWords() {
-    let longMultilinedText = """
-      Multiple words
-
-      On multiple lines.
-
-      That will get stripped!\r
-      """
-
-    XCTAssertEqual(
-      longMultilinedText.words,
-      ["Multiple", "words", "On", "multiple", "lines", "That", "will", "get", "stripped"]
-    )
-
-    let wordsWithPunctuation = "\"It's a wonderful life—isn't it…\""
-    XCTAssertEqual(wordsWithPunctuation.words, ["It's", "a", "wonderful", "life", "isn't", "it"])
   }
 
   func testJavascriptEscapedString() {

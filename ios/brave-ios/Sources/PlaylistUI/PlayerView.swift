@@ -187,21 +187,17 @@ extension PlayerView {
     var body: some View {
       VStack {
         HStack(spacing: 16) {
-          if #available(iOS 18.0, *) {
-            // iOS 18 breaks simultaneous gestures on `Menu`, so we'll swap in a the old Button
-            // instead for those users for the time being...
-            Button {
-              model.playbackSpeed.cycle()
-            } label: {
-              Label(
-                Strings.Playlist.accessibilityPlaybackSpeed,
-                braveSystemImage: model.playbackSpeed.braveSystemName
-              )
-              .transition(.opacity.animation(.linear(duration: 0.1)))
-              .contentShape(.rect)
-            }
-          } else {
-            PlaybackSpeedPicker(playbackSpeed: $model.playbackSpeed)
+          // iOS 18 breaks simultaneous gestures on `Menu`, so we must use the old Button instead
+          // of PlaybackSpeedPicker
+          Button {
+            model.playbackSpeed.cycle()
+          } label: {
+            Label(
+              Strings.Playlist.accessibilityPlaybackSpeed,
+              braveSystemImage: model.playbackSpeed.braveSystemName
+            )
+            .transition(.opacity.animation(.linear(duration: 0.1)))
+            .contentShape(.rect)
           }
           Spacer()
           Toggle(isOn: $model.isShuffleEnabled) {
@@ -220,37 +216,31 @@ extension PlayerView {
             }
           }
           .toggleStyle(.button)
-          Group {
-            if #available(iOS 18.0, *) {
-              // iOS 18 breaks simultaneous gestures on `Menu`, so we'll swap in a the old Button
-              // instead for those users for the time being...
-              Button {
-                model.repeatMode.cycle()
-              } label: {
-                Group {
-                  switch model.repeatMode {
-                  case .none:
-                    Label(
-                      Strings.Playlist.accessibilityRepeatModeOff,
-                      braveSystemImage: "leo.loop.off"
-                    )
-                  case .one:
-                    Label(
-                      Strings.Playlist.accessibilityRepeatModeOne,
-                      braveSystemImage: "leo.loop.1"
-                    )
-                  case .all:
-                    Label(
-                      Strings.Playlist.accessibilityRepeatModeAll,
-                      braveSystemImage: "leo.loop.all"
-                    )
-                  }
-                }
-                .transition(.opacity.animation(.linear(duration: 0.1)))
+          // iOS 18 breaks simultaneous gestures on `Menu`, so we must use the old Button instead
+          // of RepeatModePicker
+          Button {
+            model.repeatMode.cycle()
+          } label: {
+            Group {
+              switch model.repeatMode {
+              case .none:
+                Label(
+                  Strings.Playlist.accessibilityRepeatModeOff,
+                  braveSystemImage: "leo.loop.off"
+                )
+              case .one:
+                Label(
+                  Strings.Playlist.accessibilityRepeatModeOne,
+                  braveSystemImage: "leo.loop.1"
+                )
+              case .all:
+                Label(
+                  Strings.Playlist.accessibilityRepeatModeAll,
+                  braveSystemImage: "leo.loop.all"
+                )
               }
-            } else {
-              RepeatModePicker(repeatMode: $model.repeatMode)
             }
+            .transition(.opacity.animation(.linear(duration: 0.1)))
           }
           .disabled(model.duration.isIndefinite)
           Button {

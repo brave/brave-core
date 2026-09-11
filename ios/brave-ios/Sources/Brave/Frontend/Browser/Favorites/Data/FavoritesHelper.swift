@@ -6,7 +6,6 @@ import CoreData
 import Data
 import Foundation
 import Shared
-import Storage
 import UIKit
 
 /// A set of methods related to managing favorites. Most are just wrappers over Bookmark model.

@@ -18,19 +18,4 @@ class DateTimeExtensionTests: XCTestCase {
     XCTAssertEqual(1.days, 86400)
     XCTAssertEqual(12.days, 1_036_800)
   }
-
-  func testTimeStampToDate() {
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss Z"
-    dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-
-    let date1 = dateFormatter.date(from: "2022-03-03 20:47:07 +0000")!
-    let date2 = dateFormatter.date(from: "2009-06-30 08:28:47 +0000")!
-
-    let timeStamp1: UInt64 = 1_646_340_427_908_992
-    let timeStamp2: UInt64 = 1_246_350_527_908_882
-
-    XCTAssertTrue(timeStamp1.toDate() == date1)
-    XCTAssertTrue(timeStamp2.toDate() == date2)
-  }
 }

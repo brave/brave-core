@@ -153,7 +153,7 @@ extension CustomEngineViewController {
         return
       }
 
-      ensureMainThread {
+      DispatchQueue.main.async {
         self?.loadSearchEngineMetaData(from: data, url: host)
       }
     }

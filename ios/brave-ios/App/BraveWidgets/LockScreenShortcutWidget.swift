@@ -12,20 +12,16 @@ import WidgetKit
 
 struct LockScreenShortcutWidget: Widget {
   var body: some WidgetConfiguration {
-    if #available(iOSApplicationExtension 16.0, *) {
-      return IntentConfiguration(
-        kind: "LockScreenShortcutWidget",
-        intent: LockScreenShortcutConfigurationIntent.self,
-        provider: LockScreenShortcutProvider()
-      ) { entry in
-        LockScreenShortcutView(entry: entry)
-      }
-      .configurationDisplayName(Strings.Widgets.shortcutsWidgetTitle)
-      .description(Strings.Widgets.shortcutsWidgetDescription)
-      .supportedFamilies([.accessoryCircular])
-    } else {
-      return EmptyWidgetConfiguration()
+    return IntentConfiguration(
+      kind: "LockScreenShortcutWidget",
+      intent: LockScreenShortcutConfigurationIntent.self,
+      provider: LockScreenShortcutProvider()
+    ) { entry in
+      LockScreenShortcutView(entry: entry)
     }
+    .configurationDisplayName(Strings.Widgets.shortcutsWidgetTitle)
+    .description(Strings.Widgets.shortcutsWidgetDescription)
+    .supportedFamilies([.accessoryCircular])
   }
 }
 
@@ -85,7 +81,7 @@ struct LockScreenShortcutView: View {
   var body: some View {
     ZStack {
       AccessoryWidgetBackground()
-        .widgetBackground { EmptyView() }
+        .containerBackground(for: .widget) { EmptyView() }
       Group {
         if let widgetShortcut = entry.widgetShortcut {
           widgetShortcut.image

@@ -23,7 +23,6 @@ import ScreenTime
 import Shared
 import SnapKit
 import SpeechRecognition
-import Storage
 import StoreKit
 import SwiftUI
 import Translation
@@ -1047,12 +1046,6 @@ public class BrowserViewController: UIViewController {
         name: UIApplication.willTerminateNotification,
         object: nil
       )
-      $0.addObserver(
-        self,
-        selector: #selector(resetNTPNotification),
-        name: .adsOrRewardsToggledInSettings,
-        object: nil
-      )
       if profileController.profile.prefs.isBraveVPNAvailable {
         $0.addObserver(
           self,
@@ -1415,15 +1408,13 @@ public class BrowserViewController: UIViewController {
   public override func viewIsAppearing(_ animated: Bool) {
     super.viewIsAppearing(animated)
 
-    if #available(iOS 17, *) {
-      // Have to defer this to the next cycle to avoid an iOS bug which lays out the toolbars without any
-      // bottom safe area, resulting in a layout bug.
-      DispatchQueue.main.async {
-        // On iOS 17 rotating the device with a full screen modal presented (e.g. Playlist, Tab Tray)
-        // to landscape then back to portrait does not trigger `traitCollectionDidChange`/`willTransition`/etc
-        // calls and so the toolbar remains in the wrong state.
-        self.updateToolbarStateForTraitCollection(self.traitCollection)
-      }
+    // Have to defer this to the next cycle to avoid an iOS bug which lays out the toolbars without any
+    // bottom safe area, resulting in a layout bug.
+    DispatchQueue.main.async {
+      // On iOS 17 rotating the device with a full screen modal presented (e.g. Playlist, Tab Tray)
+      // to landscape then back to portrait does not trigger `traitCollectionDidChange`/`willTransition`/etc
+      // calls and so the toolbar remains in the wrong state.
+      self.updateToolbarStateForTraitCollection(self.traitCollection)
     }
 
     // Present Onboarding to new users, existing users will not see the onboarding

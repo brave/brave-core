@@ -219,7 +219,7 @@ private struct ShortcutsView: View {
               Text(Strings.Widgets.shortcutsEnterURLButton)
             } icon: {
               Image("brave-logo-no-bg-small")
-                .widgetAccentedRenderingModeFullColor()
+                .widgetAccentedRenderingMode(.fullColor)
             }
             .foregroundColor(Color(braveSystemName: .textPrimary))
             .frame(maxWidth: .infinity)
@@ -264,7 +264,7 @@ private struct ShortcutsView: View {
       .frame(maxHeight: .infinity)
     }
     .padding(8)
-    .widgetBackground { Color(UIColor(braveSystemName: .containerHighlight)) }
+    .containerBackground(for: .widget) { Color(UIColor(braveSystemName: .containerHighlight)) }
   }
 }
 

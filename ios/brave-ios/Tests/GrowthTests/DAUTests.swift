@@ -695,3 +695,9 @@ class DAUTests: XCTestCase {
     )
   }
 }
+
+extension String {
+  fileprivate func truncate(length: Int, trailing: String = "…") -> String {
+    return (self.count > length) ? self.prefix(length) + trailing : self
+  }
+}

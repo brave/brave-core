@@ -2174,18 +2174,9 @@ private class AppIconCell: UITableViewCell, Cell {
     content.imageProperties.cornerRadius = 6
     let scaledValue = UIFontMetrics.default.scaledValue(for: 24)
     content.imageProperties.maximumSize = .init(width: scaledValue, height: scaledValue)
-    if #available(iOS 18, *) {
-      content.imageProperties.strokeColor = UIColor(white: 0, alpha: 0.1)
-      content.imageProperties.strokeWidth = 1
-    }
+    content.imageProperties.strokeColor = UIColor(white: 0, alpha: 0.1)
+    content.imageProperties.strokeWidth = 1
     contentConfiguration = content
-    if #unavailable(iOS 18) {
-      // Have to grab the image view from the UIListContentView as the standard `imageView` is nil
-      // when using the content configuration API
-      let imageView = contentView.subviews.compactMap({ $0 as? UIImageView }).first
-      imageView?.layer.borderColor = UIColor(white: 0, alpha: 0.1).cgColor
-      imageView?.layer.borderWidth = 1
-    }
     accessoryType = .disclosureIndicator
   }
 }

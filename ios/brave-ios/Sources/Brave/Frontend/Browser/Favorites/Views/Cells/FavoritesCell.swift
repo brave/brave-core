@@ -130,11 +130,6 @@ class FavoritesCell: UICollectionViewCell, CollectionViewReusable {
     addInteraction(UIPointerInteraction(delegate: self))
   }
 
-  deinit {
-    NotificationCenter.default.removeObserver(self, name: .thumbnailEditOn, object: nil)
-    NotificationCenter.default.removeObserver(self, name: .thumbnailEditOff, object: nil)
-  }
-
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }

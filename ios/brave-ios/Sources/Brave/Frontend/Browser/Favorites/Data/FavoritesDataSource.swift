@@ -7,7 +7,6 @@ import CoreData
 import Data
 import Foundation
 import Shared
-import Storage
 import UIKit
 
 /// CoreData's diffable method relies on managed object ID only.

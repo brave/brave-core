@@ -175,7 +175,7 @@ class ExternalAppURLTabHelper: TabPolicyDecider, @preconcurrency TabObserver {
       return false
     }
 
-    if #available(iOS 17.4, *), !ProcessInfo.processInfo.isiOSAppOnVisionOS {
+    if !ProcessInfo.processInfo.isiOSAppOnVisionOS {
       // Accessing `MarketplaceKitURIScheme` on Vision OS results in a crash
       if scheme == MarketplaceKitURIScheme {
         return false

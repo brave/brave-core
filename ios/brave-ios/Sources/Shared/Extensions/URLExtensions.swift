@@ -8,14 +8,7 @@ import UIKit
 // MARK: - Local Resource URL Extensions
 extension URL {
 
-  public func allocatedFileSize() -> Int64 {
-    // First try to get the total allocated size and in failing that, get the file allocated size
-    return getResourceLongLongForKey(URLResourceKey.totalFileAllocatedSizeKey.rawValue)
-      ?? getResourceLongLongForKey(URLResourceKey.fileAllocatedSizeKey.rawValue)
-      ?? 0
-  }
-
-  public func getResourceValueForKey(_ key: String) -> Any? {
+  private func getResourceValueForKey(_ key: String) -> Any? {
     let resourceKey = URLResourceKey(key)
     let keySet = Set<URLResourceKey>([resourceKey])
 
@@ -35,20 +28,12 @@ extension URL {
     }
   }
 
-  public func getResourceLongLongForKey(_ key: String) -> Int64? {
-    return (getResourceValueForKey(key) as? NSNumber)?.int64Value
-  }
-
   public func getResourceBoolForKey(_ key: String) -> Bool? {
     return getResourceValueForKey(key) as? Bool
   }
 
   public var isRegularFile: Bool {
     return getResourceBoolForKey(URLResourceKey.isRegularFileKey.rawValue) ?? false
-  }
-
-  public func lastComponentIsPrefixedBy(_ prefix: String) -> Bool {
-    return (pathComponents.last?.hasPrefix(prefix) ?? false)
   }
 
   public func shouldRequestBeOpenedAsPopup() -> Bool {
@@ -422,7 +407,7 @@ public struct InternalURL {
   }
 
   public var extractedUrlParam: URL? {
-    if let nestedUrl = url.getQuery()[InternalURL.Param.url.rawValue]?.unescape() {
+    if let nestedUrl = url.getQuery()[InternalURL.Param.url.rawValue]?.removingPercentEncoding {
       return URL(string: nestedUrl)
     }
     return nil

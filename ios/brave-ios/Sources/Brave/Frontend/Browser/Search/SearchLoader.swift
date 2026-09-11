@@ -6,7 +6,6 @@ import BraveCore
 import Data
 import Preferences
 import Shared
-import Storage
 import Web
 
 /// Shared data source for the SearchViewController and the URLBar domain completion.

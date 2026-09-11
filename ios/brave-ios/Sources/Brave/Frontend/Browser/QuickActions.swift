@@ -6,7 +6,6 @@ import BraveUI
 import Foundation
 import Preferences
 import Shared
-import Storage
 import UIKit
 
 enum ShortcutType: String {

@@ -5,7 +5,6 @@
 import BraveCore
 import Foundation
 import Shared
-import Storage
 @_spi(ChromiumWebViewAccess) import Web
 import WebKit
 import os.log

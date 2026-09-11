@@ -5,7 +5,6 @@
 
 import BraveCore
 import Foundation
-import Storage
 import XCTest
 
 @testable import Brave
