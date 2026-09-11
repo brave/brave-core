@@ -191,13 +191,22 @@ Practical scenarios:
 
 1. Create your Chromium feature, likely off by default. You can expose it via
    brave://flags for testing purposes while it's under development.
-2. When ready for a bigger audience, enable it on Nightly and/or Beta via Griffin (always Nightly first). You can test the PR locally with `--variations-pr=1234` to enable the seed from pull request 1234.
-3. As train migrations happen, the feature lands in Release. Enable it via Griffin with a gradual rollout, enable it by default in code, or both.
-4. Eventually, decide: enable the feature in code by default, or remove it from the code. In either case, set a `max_version` value under the study's filters in Griffin - no need to delete the experiment.
-5. Once Release has the feature enabled by default, remove the guards around the feature and the feature itself.
+2. When ready for a bigger audience, enable it on Nightly and/or Beta via
+   Griffin (always Nightly first). You can test the PR locally with
+   `--variations-pr=1234` to enable the seed from pull request 1234.
+3. As train migrations happen, the feature lands in Release. Enable it via
+   Griffin with a gradual rollout, enable it by default in code, or both.
+4. Eventually, decide: enable the feature in code by default, or remove it from
+   the code. In either case, set a `max_version` value under the study's filters
+   in Griffin - no need to delete the experiment.
+5. Once Release has the feature enabled by default, remove the guards around the
+   feature and the feature itself.
 
-## Enable the feature by default in master before using variations
+## Enable the feature by default in master before enabling on Release
 
-If a feature is going to rely on a Griffin variations flag,
-it should also be enabled by default in the code on master
-(`base::FEATURE_ENABLED_BY_DEFAULT`).
+When a feature is being enabled on the Release channel via a Griffin variations
+flag, it should be enabled by default in the code on master
+(`base::FEATURE_ENABLED_BY_DEFAULT`). It is fine to roll a disabled-by-default
+feature on Nightly and/or Beta via Griffin - this requirement only applies once
+the feature ships to Release, so that CI (unit and browser tests, ASAN/MSAN/etc.
+builds) exercises the enabled code path before it reaches Release users.
