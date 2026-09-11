@@ -177,6 +177,7 @@ export interface WalletState {
   isCardanoEnabled: boolean
   isCardanoDappSupportEnabled: boolean
   isPolkadotEnabled: boolean
+  isPolkadotDappSupportEnabled: boolean
   isCardStackUiEnabled: boolean
 }
 
