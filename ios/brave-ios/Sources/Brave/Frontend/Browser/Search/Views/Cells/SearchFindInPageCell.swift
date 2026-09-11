@@ -64,15 +64,14 @@ class SearchFindInPageCell: UICollectionViewCell, CollectionViewReusable {
     searchImageView.snp.makeConstraints {
       $0.size.equalTo(20)
     }
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.setTheme()
+    }
   }
 
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    setTheme()
   }
 
   private func setTheme() {

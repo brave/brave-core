@@ -62,12 +62,13 @@ class SendTabToSelfController: SendTabTransitioningController {
     contentView.addSubview(contentNavigationController.view)
 
     updateLayoutConstraints()
-  }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    updateLayoutConstraints()
+    registerForTraitChanges([
+      UITraitHorizontalSizeClass.self,
+      UITraitVerticalSizeClass.self,
+    ]) { (self: Self, _) in
+      self.updateLayoutConstraints()
+    }
   }
 
   private func updateLayoutConstraints() {
@@ -250,13 +251,11 @@ class SendTabToSelfContentHeaderFooterView: UITableViewHeaderFooterView, TableVi
 
     updateFont()
     updateLayoutConstraints()
-  }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    updateFont()
-    updateLayoutConstraints()
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.updateFont()
+      self.updateLayoutConstraints()
+    }
   }
 
   private func updateFont() {

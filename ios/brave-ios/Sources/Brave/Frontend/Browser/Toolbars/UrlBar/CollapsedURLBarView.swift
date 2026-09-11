@@ -163,11 +163,10 @@ class CollapsedURLBarView: UIView {
     }
 
     updateForTraitCollectionAndBrowserColors()
-  }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    updateForTraitCollectionAndBrowserColors()
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.updateForTraitCollectionAndBrowserColors()
+    }
   }
 
   private func updateForTraitCollectionAndBrowserColors() {

@@ -40,12 +40,6 @@ class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable 
     backgroundColor = .clear
   }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    setTheme()
-  }
-
   override init(frame: CGRect) {
     super.init(frame: frame)
 
@@ -55,6 +49,13 @@ class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable 
     doLayout()
 
     addInteraction(UIPointerInteraction(delegate: self))
+
+    registerForTraitChanges([
+      UITraitUserInterfaceStyle.self,
+      UITraitPreferredContentSizeCategory.self,
+    ]) { (self: Self, _) in
+      self.setTheme()
+    }
   }
 
   required init?(coder aDecoder: NSCoder) {

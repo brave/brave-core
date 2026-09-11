@@ -72,6 +72,10 @@ class TabBarCell: UICollectionViewCell {
     updateFont()
 
     isSelected = false
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.updateFont()
+    }
   }
 
   private var privateModeCancellable: AnyCancellable?
@@ -133,11 +137,6 @@ class TabBarCell: UICollectionViewCell {
     }
     updateFont()
     updateColors()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    updateFont()
   }
 
   func resetConfiguration() {

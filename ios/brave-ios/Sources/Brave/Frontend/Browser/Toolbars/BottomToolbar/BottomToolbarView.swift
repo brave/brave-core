@@ -77,6 +77,14 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     )
 
     updateColors()
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.helper?.updateForTraitCollection(
+        self.traitCollection,
+        browserColors: self.privateBrowsingManager.browserColors,
+        isBottomToolbar: true
+      )
+    }
   }
 
   private var privateModeCancellable: AnyCancellable?
@@ -106,15 +114,6 @@ class BottomToolbarView: UIView, ToolbarProtocol {
       make.height.equalTo(UIConstants.toolbarHeight)
     }
     super.updateConstraints()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    helper?.updateForTraitCollection(
-      traitCollection,
-      browserColors: privateBrowsingManager.browserColors,
-      isBottomToolbar: true
-    )
   }
 
   private func setupAccessibility() {

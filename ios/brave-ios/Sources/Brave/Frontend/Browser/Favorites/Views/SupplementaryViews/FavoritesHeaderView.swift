@@ -25,16 +25,15 @@ class FavoritesHeaderView: UICollectionReusableView {
     label.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.setTheme()
+    }
   }
 
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    setTheme()
   }
 
   private func setTheme() {

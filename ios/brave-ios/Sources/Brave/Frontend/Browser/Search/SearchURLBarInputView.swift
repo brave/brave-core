@@ -193,17 +193,21 @@ class SearchURLBarInputView: UIView {
 
     updateColors()
     updateLocationBarRightView(showToolbarActions: true)
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      let clampedTraitCollection = self.traitCollection.clampingSizeCategory(
+        maximum: .accessibilityLarge
+      )
+      self.textField.font = .preferredFont(
+        forTextStyle: .body,
+        compatibleWith: clampedTraitCollection
+      )
+    }
   }
 
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    let clampedTraitCollection = traitCollection.clampingSizeCategory(maximum: .accessibilityLarge)
-    textField.font = .preferredFont(forTextStyle: .body, compatibleWith: clampedTraitCollection)
   }
 
   private func makePlaceholder(colors: some BrowserColors) -> NSAttributedString {

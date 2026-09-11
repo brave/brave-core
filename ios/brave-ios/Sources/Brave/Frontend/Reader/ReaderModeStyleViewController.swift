@@ -188,12 +188,10 @@ class ReaderModeStyleViewController: UIViewController {
     updateFontSizeButtons()
     selectTheme(readerModeStyle.theme)
     slider.value = Float(UIScreen.main.brightness)
-  }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    view.backgroundColor = UX.fontTypeRowBackground
+    registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _) in
+      self.view.backgroundColor = UX.fontTypeRowBackground
+    }
   }
 
   /// Setup constraints for a row of buttons. Left to right. They are all given the same width.
