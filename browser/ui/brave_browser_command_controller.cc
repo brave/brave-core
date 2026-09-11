@@ -25,7 +25,6 @@
 #include "brave/browser/ui/views/toolbar/screenshot_button.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
-#include "brave/components/brave_rewards/core/rewards_util.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
@@ -98,12 +97,18 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_rewards/core/rewards_util.h"
+#endif
+
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/components/brave_talk/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
@@ -267,15 +272,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   // to a normal window in this case.
   const bool is_guest_session = browser_->GetProfile()->IsGuestSession();
   if (!is_guest_session) {
-    // If Rewards is not supported due to OFAC sanctions we still want to show
-    // the menu item.
-    if (brave_rewards::IsSupported(browser_->GetProfile()->GetPrefs())) {
-      UpdateCommandForBraveRewards();
-    }
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+    UpdateCommandForBraveRewards();
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-    if (brave_wallet::IsAllowed(browser_->GetProfile()->GetPrefs())) {
-      UpdateCommandForBraveWallet();
-    }
+    UpdateCommandForBraveWallet();
 #endif
     if (syncer::IsSyncAllowedByFlag()) {
       UpdateCommandForBraveSync();
@@ -290,6 +291,23 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandForPlaylist();
   UpdateCommandForWaybackMachine();
   pref_change_registrar_.Init(browser_->GetProfile()->GetPrefs());
+
+  if (!is_guest_session) {
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+    pref_change_registrar_.Add(
+        brave_rewards::prefs::kDisabledByPolicy,
+        base::BindRepeating(
+            &BraveBrowserCommandController::UpdateCommandForBraveRewards,
+            base::Unretained(this)));
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    pref_change_registrar_.Add(
+        brave_wallet::kBraveWalletDisabledByPolicy,
+        base::BindRepeating(
+            &BraveBrowserCommandController::UpdateCommandForBraveWallet,
+            base::Unretained(this)));
+#endif
+  }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   UpdateCommandForAIChat();
@@ -423,9 +441,13 @@ void BraveBrowserCommandController::UpdateCommandsForFullscreenMode() {
 #endif
 }
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void BraveBrowserCommandController::UpdateCommandForBraveRewards() {
-  UpdateCommandEnabled(IDC_SHOW_BRAVE_REWARDS, true);
+  UpdateCommandEnabled(
+      IDC_SHOW_BRAVE_REWARDS,
+      brave_rewards::IsSupported(browser_->GetProfile()->GetPrefs()));
 }
+#endif
 
 void BraveBrowserCommandController::UpdateCommandForWebcompatReporter() {
   UpdateCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER, true);
@@ -604,9 +626,11 @@ void BraveBrowserCommandController::UpdateCommandForBraveSync() {
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void BraveBrowserCommandController::UpdateCommandForBraveWallet() {
-  UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET, true);
-  UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL, true);
-  UpdateCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL, true);
+  const bool allowed =
+      brave_wallet::IsAllowed(browser_->GetProfile()->GetPrefs());
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET, allowed);
+  UpdateCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL, allowed);
+  UpdateCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL, allowed);
 }
 #endif
 
@@ -643,9 +667,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       }
       NewIncognitoWindow(browser_->GetProfile()->GetOriginalProfile());
       break;
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
     case IDC_SHOW_BRAVE_REWARDS:
       brave::ShowBraveRewards(&*browser_);
       break;
+#endif
     case IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER:
       brave::ShowWebcompatReporter(&*browser_);
       break;
