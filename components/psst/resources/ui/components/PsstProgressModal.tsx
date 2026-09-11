@@ -143,18 +143,6 @@ export const PsstProgressModal = () => {
   })
 
   const [showReportModal, setShowReportModal] = React.useState(false)
-  const [reportSendState, setReportSendState] = React.useState<
-    'idle' | 'sending' | 'sent'
-  >('idle')
-
-  const handlePsstErrorsReportSend = React.useCallback(() => {
-    api.reportFailedContent()
-    setReportSendState('sending')
-  }, [api])
-
-  api.useOnPsstErrorsReportSent(() => {
-    setReportSendState('sent')
-  })
 
   const handleSettingItemCheck = React.useCallback(
     (uid: string, checked: boolean) => {
@@ -212,11 +200,7 @@ export const PsstProgressModal = () => {
       <PsstReportModal
         siteName={siteName}
         optionsStatuses={optionsStatuses}
-        isSending={reportSendState === 'sending'}
-        isSent={reportSendState === 'sent'}
         onBack={() => setShowReportModal(false)}
-        onClose={api.closeDialog}
-        onSendReport={handlePsstErrorsReportSend}
       />
     )
   }
@@ -277,8 +261,7 @@ export const PsstProgressModal = () => {
             <PsstDlgButton
               kind='outline'
               size='medium'
-              isDisabled={reportSendState === 'sending'}
-              isLoading={reportSendState === 'sending'}
+              isDisabled={isInProgress}
               onClick={() => setShowReportModal(true)}
             >
               {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}

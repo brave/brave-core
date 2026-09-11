@@ -17,6 +17,7 @@ import { Container, PsstDlgButton, RightAlignedItem } from './basic/structure'
 import { OptionStatus, SettingState } from './PsstProgressModal'
 
 import '../strings'
+import { usePsstDialogAPI } from '../api/psst_dialog_api_context'
 
 // Styled components
 const ModalTitleRow = styled.div`
@@ -91,22 +92,29 @@ const SentButton = styled(PsstDlgButton)`
 export interface Props {
   siteName: string
   optionsStatuses: OptionStatus[] | undefined
-  isSending: boolean
-  isSent: boolean
   onBack: () => void
-  onClose: () => void
-  onSendReport: () => void
 }
 
 export const PsstReportModal: React.FC<Props> = ({
   siteName,
   optionsStatuses,
-  isSending,
-  isSent,
   onBack,
-  onClose,
-  onSendReport,
 }) => {
+  const { api } = usePsstDialogAPI()
+
+  const [reportSendState, setReportSendState] = React.useState<
+    'idle' | 'sending' | 'sent'
+  >('idle')
+
+  const handlePsstErrorsReportSend = React.useCallback(() => {
+    api.reportFailedContent()
+    setReportSendState('sending')
+  }, [api])
+
+  api.useOnPsstErrorsReportSent(() => {
+    setReportSendState('sent')
+  })
+  
   const failedSteps = React.useMemo(
     () =>
       (optionsStatuses ?? [])
@@ -114,6 +122,9 @@ export const PsstReportModal: React.FC<Props> = ({
         .map((option) => option.description),
     [optionsStatuses],
   )
+
+  const isSent = () => reportSendState === 'sent'
+  const isSending = () => reportSendState === 'sending'
 
   return (
     <Container>
@@ -136,7 +147,7 @@ export const PsstReportModal: React.FC<Props> = ({
           <Button
             fab
             kind='plain-faint'
-            onClick={onClose}
+            onClick={api.closeDialog}
           >
             <Icon name='close-circle' />
           </Button>
@@ -171,23 +182,23 @@ export const PsstReportModal: React.FC<Props> = ({
           ))}
         </ReportCardSection>
       </ReportCard>
-      {isSent && (
+      {isSent() && (
         <SentBanner>{getLocale(S.PSST_REPORT_DIALOG_SENT_MESSAGE)}</SentBanner>
       )}
       <RightAlignedItem>
         <PsstDlgButton
           kind='outline'
           size='medium'
-          isDisabled={isSent || isSending}
-          onClick={onClose}
+          isDisabled={isSent() || isSending()}
+          onClick={api.closeDialog}
         >
           {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_CANCEL)}
         </PsstDlgButton>
-        {isSent ? (
+        {isSent() ? (
           <SentButton
             kind='filled'
             size='medium'
-            onClick={onClose}
+            onClick={api.closeDialog}
           >
             <Icon
               slot='icon-before'
@@ -199,9 +210,9 @@ export const PsstReportModal: React.FC<Props> = ({
           <PsstDlgButton
             kind='filled'
             size='medium'
-            isDisabled={isSending}
-            isLoading={isSending}
-            onClick={onSendReport}
+            isDisabled={isSending()}
+            isLoading={isSending()}
+            onClick={handlePsstErrorsReportSend}
           >
             {getLocale(S.PSST_REPORT_DIALOG_SEND_BUTTON)}
           </PsstDlgButton>
