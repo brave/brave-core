@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/chrome_browser_main.cc b/chrome/browser/chrome_browser_main.cc
+index d3f0088e6309f2e0e4af62da96a16dea0158df21..ac79584f57ace1cb29c86d8558a0f03361ecb9dd 100644
+--- a/chrome/browser/chrome_browser_main.cc
++++ b/chrome/browser/chrome_browser_main.cc
+@@ -1072,6 +1072,11 @@ void ChromeBrowserMainParts::ToolkitInitialized() {
+ 
+ #if BUILDFLAG(IS_MAC) && BUILDFLAG(ENABLE_UPDATER)
+ void PromptUpdaterPromotion() {
++  #if BUILDFLAG(ENABLE_OMAHA4)
++  if (!brave_updater::ShouldUseOmaha4()) {
++    return;
++  }
++  #endif
+   content::GetUIThreadTaskRunner({})->PostTask(
+       FROM_HERE, base::BindOnce([]() {
+         if (base::CommandLine::ForCurrentProcess()->HasSwitch(
