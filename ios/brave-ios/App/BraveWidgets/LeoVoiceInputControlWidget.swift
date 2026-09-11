@@ -12,8 +12,8 @@ import WidgetKit
 struct LeoVoiceInputControlWidget: ControlWidget {
   var body: some ControlWidgetConfiguration {
     StaticControlConfiguration(kind: "LeoVoiceInputControlWidget") {
-      ControlWidgetButton(action: ShortcutControlIntent()) {
-        Label(Strings.Widgets.braveLeoVoiceInput, braveSystemImage: "leo.leo.voice-input")
+      ControlWidgetButton(action: LeoVoiceInputControlWidgetIntent()) {
+        Label(Strings.Widgets.leoVoiceInputWidgetTitle, braveSystemImage: "leo.leo.voice-input")
       }
     }
     .displayName(LocalizedStringResource(stringLiteral: Strings.Widgets.leoVoiceInputWidgetTitle))
