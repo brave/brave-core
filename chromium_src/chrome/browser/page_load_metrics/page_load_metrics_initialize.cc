@@ -8,7 +8,16 @@
 #include <chrome/browser/page_load_metrics/page_load_metrics_initialize.cc>
 #undef InitializePageLoadMetricsForWebContents
 
+#include <memory>
+
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_page_metrics_observer.h"
+#include "chrome/browser/profiles/profile.h"
+
+// Forward-declared to avoid adding a compile-time dependency.
+// impl target is //brave/browser/misc_metrics:misc_metrics_impl.
+// Returns a nullptr for non-regular profile.
+std::unique_ptr<page_load_metrics::PageLoadMetricsObserverInterface>
+BraveCreateCaptchaPageLoadMetricsObserver(Profile* profile);
 
 namespace {
 
@@ -40,6 +49,12 @@ void BravePageLoadMetricsEmbedder::RegisterObservers(
   tracker->AddObserver(
       std::make_unique<
           brave_perf_predictor::PerfPredictorPageMetricsObserver>());
+
+  auto* profile =
+      Profile::FromBrowserContext(web_contents()->GetBrowserContext());
+  if (auto observer = BraveCreateCaptchaPageLoadMetricsObserver(profile)) {
+    tracker->AddObserver(std::move(observer));
+  }
 }
 
 }  // namespace
