@@ -9,12 +9,19 @@
 
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/test/scoped_feature_list.h"
+#include "brave/components/image_metadata_stripper/common/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave {
 
 class BraveFileSelectImageMetadataStripperUnitTest : public testing::Test {
  protected:
+  BraveFileSelectImageMetadataStripperUnitTest() {
+    feature_list_.InitAndEnableFeature(
+        image_metadata_stripper::features::kStripImageMetadataV1);
+  }
+
   void TearDown() override {
     for (const auto& path : cleanup_) {
       base::DeletePathRecursively(path);
@@ -46,6 +53,7 @@ class BraveFileSelectImageMetadataStripperUnitTest : public testing::Test {
   }
 
   std::vector<base::FilePath> cleanup_;
+  base::test::ScopedFeatureList feature_list_;
 };
 
 TEST_F(BraveFileSelectImageMetadataStripperUnitTest,
@@ -59,6 +67,24 @@ TEST_F(BraveFileSelectImageMetadataStripperUnitTest,
 
   EXPECT_TRUE(paths.empty());
   EXPECT_FALSE(base::PathExists(temp_root_dir));
+}
+
+TEST_F(BraveFileSelectImageMetadataStripperUnitTest,
+       DoesNothingWhenFeatureIsDisabled) {
+  base::test::ScopedFeatureList disabled_feature_list;
+  disabled_feature_list.InitAndDisableFeature(
+      image_metadata_stripper::features::kStripImageMetadataV1);
+
+  const base::FilePath temp_root_dir = CreateTempRootDir();
+  ASSERT_TRUE(
+      base::WriteFile(temp_root_dir.AppendASCII("photo.jpg"), "stripped"));
+
+  std::vector<base::FilePath> paths = {temp_root_dir};
+  MaybeDeleteImageMetadataStripperTemporaryDir(paths);
+
+  ASSERT_EQ(1u, paths.size());
+  EXPECT_EQ(temp_root_dir, paths[0]);
+  EXPECT_TRUE(base::PathExists(temp_root_dir));
 }
 
 TEST_F(BraveFileSelectImageMetadataStripperUnitTest,
