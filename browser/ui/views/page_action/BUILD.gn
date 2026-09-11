@@ -136,6 +136,7 @@ source_set("impl") {
       "//brave/components/brave_wayback_machine",
       "//brave/components/vector_icons",
       "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_actions",
       "//chrome/browser/ui/actions",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/color:mixers",
