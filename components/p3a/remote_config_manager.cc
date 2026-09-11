@@ -27,6 +27,18 @@ namespace p3a {
 
 namespace {
 
+bool ResolveEnabledState(RemoteMetricConfig::EnabledState state,
+                         bool default_value) {
+  switch (state) {
+    case RemoteMetricConfig::EnabledState::kUnspecified:
+      return default_value;
+    case RemoteMetricConfig::EnabledState::kFalse:
+      return false;
+    case RemoteMetricConfig::EnabledState::kTrue:
+      return true;
+  }
+}
+
 // Reads and parses the p3a_manifest.json file from disk
 std::unique_ptr<base::flat_map<std::string, RemoteMetricConfig>>
 ReadAndParseJsonRules(const base::FilePath& manifest_file_path) {
@@ -137,16 +149,17 @@ void RemoteConfigManager::SetMetricConfigs(
     auto metric_config = base_config ? *base_config : MetricConfig{};
 
     metric_config.ephemeral =
-        remote_config.ephemeral.value_or(metric_config.ephemeral);
-    metric_config.nebula = remote_config.nebula.value_or(metric_config.nebula);
+        ResolveEnabledState(remote_config.ephemeral, metric_config.ephemeral);
+    metric_config.nebula =
+        ResolveEnabledState(remote_config.nebula, metric_config.nebula);
     metric_config.disable_country_strip =
-        remote_config.disable_country_strip.value_or(
-            metric_config.disable_country_strip);
+        ResolveEnabledState(remote_config.disable_country_strip,
+                            metric_config.disable_country_strip);
     metric_config.record_activation_date =
-        remote_config.record_activation_date.value_or(
-            metric_config.record_activation_date);
+        ResolveEnabledState(remote_config.record_activation_date,
+                            metric_config.record_activation_date);
     metric_config.priority =
-        remote_config.priority.value_or(metric_config.priority);
+        ResolveEnabledState(remote_config.priority, metric_config.priority);
 
     if (remote_config.attributes) {
       metric_config.attributes = remote_config.attributes;
