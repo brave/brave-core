@@ -213,9 +213,9 @@ extension Strings {
     public static let leoVoiceInputWidgetTitle = NSLocalizedString(
       "widgets.leoVoiceInputWidgetTitle",
       bundle: widgetBundle,
-      value: "Leo Voice Input",
+      value: "Leo AI Voice",
       comment:
-        "Title for the Leo voice input widget on 'add widget' screen. Leo is the name of a product and should not be translated"
+        "Title for the Leo AI voice input widget on 'add custom control' screen. Leo is the name of a product and should not be translated"
     )
     public static let leoVoiceInputWidgetDescription = NSLocalizedString(
       "widgets.leoVoiceInputWidgetDescription",
