@@ -37,8 +37,12 @@ import {
 } from './shield_zcash_account.style'
 import { Column, Text, Row } from '../../../shared/style'
 import { NumberInput } from '../../../shared/number_input/number_input'
-
-const MIN_ACCOUNT_BIRTHDAY_BLOCK = 1687104
+import {
+  getZCashBirthdayBlockError,
+  isAllowedZCashBirthdayBlockInput,
+  MIN_ACCOUNT_BIRTHDAY_BLOCK,
+  shouldBlockZCashBirthdayBlockKey,
+} from './zcash_birthday_block'
 
 interface Props {
   account: BraveWallet.AccountInfo
@@ -70,14 +74,11 @@ export const ShieldZCashAccountModal = (props: Props) => {
   const existingShieldBirthday = zcashAccountInfo?.accountShieldBirthday
   const accountBirthdayBlock =
     customBirthdayBlock !== '' ? Number(customBirthdayBlock) : 0
-  const birthdayBlockIsToLow =
-    customBirthdayBlock !== ''
-    && accountBirthdayBlock < MIN_ACCOUNT_BIRTHDAY_BLOCK
-  const birthdayBlockIsToHigh =
-    customBirthdayBlock !== ''
-    && chainTipStatus?.chainTip !== undefined
-    && accountBirthdayBlock > chainTipStatus.chainTip
-  const invalidBirthdayBlock = birthdayBlockIsToLow || birthdayBlockIsToHigh
+  const birthdayBlockError = getZCashBirthdayBlockError(
+    customBirthdayBlock,
+    chainTipStatus?.chainTip,
+  )
+  const invalidBirthdayBlock = birthdayBlockError !== undefined
   const isBusy = isShielding || isResettingBirthday
   const birthdayBlockIsDifferent =
     existingShieldBirthday
@@ -91,7 +92,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
 
   // Methods
   const onShieldAccount = React.useCallback(async () => {
-    if (!account.accountId) {
+    if (!account.accountId || invalidBirthdayBlock) {
       return
     }
     setIsShielding(true)
@@ -101,10 +102,16 @@ export const ShieldZCashAccountModal = (props: Props) => {
     })
     setIsShielding(false)
     onClose()
-  }, [shieldAccount, account, onClose, accountBirthdayBlock])
+  }, [
+    shieldAccount,
+    account,
+    onClose,
+    accountBirthdayBlock,
+    invalidBirthdayBlock,
+  ])
 
   const onResetShieldAccountBirthday = React.useCallback(async () => {
-    if (!account.accountId || !existingShieldBirthday) {
+    if (!account.accountId || !existingShieldBirthday || invalidBirthdayBlock) {
       return
     }
     setIsResettingBirthday(true)
@@ -120,11 +127,31 @@ export const ShieldZCashAccountModal = (props: Props) => {
     accountBirthdayBlock,
     existingShieldBirthday,
     onClose,
+    invalidBirthdayBlock,
   ])
 
   const onToggleShowAdvanced = () => {
     setShowAdvanced((prev) => !prev)
   }
+
+  const onBirthdayBlockInput = React.useCallback((e: { value: string }) => {
+    if (isAllowedZCashBirthdayBlockInput(e.value)) {
+      setCustomBirthdayBlock(e.value)
+    }
+  }, [])
+
+  const onBirthdayBlockKeyDown = React.useCallback(
+    (e: { innerEvent: Event }) => {
+      const event = e.innerEvent as KeyboardEvent
+      if (event.metaKey || event.ctrlKey || event.altKey) {
+        return
+      }
+      if (shouldBlockZCashBirthdayBlockKey(event.key, customBirthdayBlock)) {
+        event.preventDefault()
+      }
+    },
+    [customBirthdayBlock],
+  )
 
   return (
     <PopupModal
@@ -237,12 +264,16 @@ export const ShieldZCashAccountModal = (props: Props) => {
                 </Text>
                 <NumberInput
                   size='small'
+                  step={1}
+                  min={1}
                   value={customBirthdayBlock}
-                  onInput={(e) => setCustomBirthdayBlock(e.value)}
+                  onKeyDown={onBirthdayBlockKeyDown}
+                  onInput={onBirthdayBlockInput}
                   showErrors={invalidBirthdayBlock}
                 />
               </Row>
-              {invalidBirthdayBlock && (
+              {(birthdayBlockError === 'too-low'
+                || birthdayBlockError === 'too-high') && (
                 <Row
                   padding='0px 8px 12px 28px'
                   justifyContent='flex-end'
@@ -252,7 +283,7 @@ export const ShieldZCashAccountModal = (props: Props) => {
                     textSize='12px'
                     isBold={false}
                   >
-                    {birthdayBlockIsToLow
+                    {birthdayBlockError === 'too-low'
                       ? getLocale(
                           S.BRAVE_WALLET_ACCOUNT_BIRTHDAY_TOO_LOW,
                         ).replace('$1', MIN_ACCOUNT_BIRTHDAY_BLOCK.toString())
