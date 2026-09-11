@@ -497,6 +497,16 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       FEATURE_VALUE_TYPE(                                                      \
           preferences::features::kBraveBackgroundVideoPlayback),               \
   })
+#define BRAVE_YOUTUBE_FULLSCREEN_SETTINGS_WORKAROUND_ANDROID                 \
+  EXPAND_FEATURE_ENTRIES({                                                   \
+      "brave-youtube-fullscreen-settings-workaround",                        \
+      "Fix YouTube settings taps in fullscreen playback",                    \
+      "Work around a bug on m.youtube.com where taps of the video's gear "   \
+      "icon no-ops.",                                                        \
+      kOsAndroid,                                                            \
+      FEATURE_VALUE_TYPE(                                                    \
+          preferences::features::kBraveYoutubeFullscreenSettingsWorkaround), \
+  })
 #define BRAVE_SAFE_BROWSING_ANDROID                                           \
   EXPAND_FEATURE_ENTRIES({                                                    \
       "brave-safe-browsing",                                                  \
@@ -534,6 +544,7 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
   })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
+#define BRAVE_YOUTUBE_FULLSCREEN_SETTINGS_WORKAROUND_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
 #define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID
 #define BRAVE_CUSTOM_SEARCH_ENGINES
@@ -1620,6 +1631,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   CONTAINERS_FEATURE_ENTRIES                                                   \
   TRAFFIC_CONTROL_FEATURE_ENTRIES                                              \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
+  BRAVE_YOUTUBE_FULLSCREEN_SETTINGS_WORKAROUND_ANDROID                         \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
   BRAVE_ANDROID_TAB_GROUPS_SETTINGS                                            \
