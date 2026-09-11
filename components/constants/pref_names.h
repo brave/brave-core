@@ -11,6 +11,8 @@
 
 inline constexpr char kBraveAutofillPrivateWindows[] =
     "brave.autofill_private_windows";
+inline constexpr char kBravePasswordManagerFillEnabled[] =
+    "brave.password_manager.fill_enabled";
 inline constexpr char kManagedBraveShieldsDisabledForUrls[] =
     "brave.managed_shields_disabled";
 inline constexpr char kManagedBraveShieldsEnabledForUrls[] =
