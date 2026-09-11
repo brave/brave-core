@@ -32,7 +32,12 @@ BASE_FEATURE(kBraveWalletZCashFeature,
 
 BASE_FEATURE(kBraveWalletPolkadotFeature,
              "BraveWalletPolkadot",
-             base::FEATURE_ENABLED_BY_DEFAULT);
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+             base::FEATURE_ENABLED_BY_DEFAULT
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT
+#endif
+);
 
 const base::FeatureParam<bool> kPolkadotAssetDiscovery{
     &kBraveWalletPolkadotFeature, "polkadot_asset_discovery", false};
