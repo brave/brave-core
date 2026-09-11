@@ -151,6 +151,7 @@ introduce more rewriters. These are the ones we have supported for now.
 | `set_feature_flag_default_state`          | `cxx`     | macro | Sets a `BASE_FEATURE`'s default state.                |
 | `insert_into_list`                        | `gn`      | gn    | Inserts value(s) into a target's list attribute.      |
 | `set_blink_runtime_enabled_feature_state` | `js`      | AST   | Sets a Blink runtime feature's `base_feature_status`. |
+| `drop_custom_element_registration`        | `ts`      | AST   | Removes a WebUI element's `customElements.define`.    |
 
 Use `plaster --help` to discover rewriters and read their full docs:
 

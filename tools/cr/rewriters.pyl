@@ -424,6 +424,38 @@ has:
                 "node": "object",
             },
         },
+
+        # The statement registering `class_name` as a custom element, i.e. the
+        # `customElements.define(<tag>, {class_name})` call WebUI sources end
+        # with. The match is the whole expression_statement, so the trailing
+        # semicolon and a call broken over several lines are both covered.
+        #
+        # The class is matched as an identifier argument of the call rather than
+        # by the tag name, since the tag is spelled `{class_name}.is` about as
+        # often as it is a string literal, and the class is what a plaster
+        # knows. Both `customElements.define(Foo.is, Foo)` and
+        # `customElements.define('x-foo', Foo)` therefore match, while
+        # a registration of some *other* class does not, however its tag is
+        # spelled.
+        "ts.find_custom_element_registration": {
+            "template": """\
+kind: expression_statement
+has:
+  kind: call_expression
+  all:
+    - has:
+        field: function
+        regex: ^customElements\\.define$
+    - has:
+        field: arguments
+        has:
+          kind: identifier
+          regex: ^{class_name}$
+""",
+            "result": {
+                "node": "expression_statement",
+            },
+        },
     },
     "ast.rewriter": {
 
@@ -710,6 +742,33 @@ has:
             },
             "result": {
                 "node": "object",
+            },
+        },
+
+        # The custom element registration removed outright, so the tag name it
+        # claimed is left free for a Brave subclass in `chromium_src/` to
+        # register instead.
+        #
+        # `lead` is the whitespace before the statement that belongs to the
+        # line(s) it occupies -- its own indentation, the newline ending the
+        # line above, and, when the registration is the file's last statement,
+        # the blank line that separated it. Consuming it is what makes the
+        # statement's line(s) go away whole instead of leaving an empty line, or
+        # a trailing blank one at the end of the file, behind. The frontend
+        # rewriter reads it off the match, since how much of it there is depends
+        # on the source rather than on the caller. The newline *after* the
+        # statement is deliberately kept: it becomes the terminator of whichever
+        # line is now last.
+        "ts.drop_custom_element_registration": {
+            "matcher": "ts.find_custom_element_registration",
+            "inputs": ["class_name", "lead"],
+            "replace": {
+                "consume_before": "{lead}",
+                "re_pattern": "(?s)^.+$",
+                "replace": "",
+            },
+            "result": {
+                "node": "expression_statement",
             },
         },
     },
