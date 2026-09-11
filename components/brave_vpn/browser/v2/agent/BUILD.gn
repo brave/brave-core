@@ -37,6 +37,7 @@ static_library("agent") {
   ]
 
   deps = [
+    "//brave/components/brave_vpn/common/v2:branding_buildflags",
     "//brave/components/brave_vpn/common/v2:common",
     "//components/named_mojo_ipc_server",
   ]
@@ -66,11 +67,16 @@ source_set("unit_tests") {
 
   sources = [ "agent_client_unittest.cc" ]
 
+  if (is_mac) {
+    sources += [ "agent_launcher_mac_unittest.mm" ]
+  }
+
   deps = [
     ":agent",
     ":test_support",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_vpn/common/v2:branding_buildflags",
     "//testing/gtest",
   ]
 }

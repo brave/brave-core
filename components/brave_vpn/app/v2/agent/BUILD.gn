@@ -4,9 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/v2/branding.gni")
+
 if (is_mac) {
   import("//build/config/mac/rules.gni")
-  import("//build/util/branding.gni")
   import("//build/util/process_version.gni")
 }
 if (is_win) {
@@ -73,12 +74,12 @@ source_set("core") {
 if (is_win) {
   process_version_rc_template("version_resources") {
     sources = [ "win/agent.ver" ]
-    output = "$target_gen_dir/brave_vpn_agent_app.rc"
+    output = "$target_gen_dir/$vpn_agent_executable_name.rc"
   }
 }
 
 executable("agent") {
-  output_name = "brave_vpn_agent_app"
+  output_name = vpn_agent_executable_name
 
   configs += [ "//build/config/compiler:wexit_time_destructors" ]
   sources = [ "main.cc" ]
@@ -106,9 +107,6 @@ executable("agent") {
 }
 
 if (is_mac) {
-  vpn_agent_product_full_name = "$chrome_product_full_name VPN Agent"
-  vpn_agent_bundle_id = "$chrome_mac_bundle_id.vpn.agent"
-
   # Assembles the agent executable and Info.plist into an app bundle.
   mac_app_bundle("brave_vpn_agent_bundle") {
     info_plist = "mac/Info.plist"
