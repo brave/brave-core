@@ -15,6 +15,10 @@ if (is_android) {
   ]
 }
 
+# Test targets that reach into //content/browser internals, mirroring what
+# upstream lists for its own per-directory test targets.
+brave_content_browser_for_content_tests_visibility = []
+
 brave_content_browser_deps = [
   "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/brave_service_keys",
@@ -34,4 +38,6 @@ if (enable_local_ai) {
     "//brave/components/local_ai/core:features",
     "//brave/components/local_ai/core:speech_recognition_mojom",
   ]
+  brave_content_browser_for_content_tests_visibility +=
+      [ "//brave/content/browser/speech:unit_tests" ]
 }
