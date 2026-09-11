@@ -259,6 +259,12 @@ void AssociatedContentManager::OnToolInfosFetched(
     const url::Origin& origin,
     GetToolInfosCallback callback,
     std::vector<std::unique_ptr<Tool>> tools) {
+  std::move(callback).Run(ToToolInfos(origin, std::move(tools)));
+}
+
+std::vector<mojom::ToolInfoPtr> AssociatedContentManager::ToToolInfos(
+    const url::Origin& origin,
+    std::vector<std::unique_ptr<Tool>> tools) const {
   tools.resize(std::min(tools.size(), kMaxToolsPerContent));
   std::vector<mojom::ToolInfoPtr> infos;
   infos.reserve(tools.size());
@@ -269,7 +275,7 @@ void AssociatedContentManager::OnToolInfosFetched(
                              std::string(tool->DisplayDescription()),
                              GetToolPermission(origin, tool->DisplayName())));
   }
-  std::move(callback).Run(std::move(infos));
+  return infos;
 }
 
 void AssociatedContentManager::SetToolPermission(
@@ -345,8 +351,16 @@ void AssociatedContentManager::OnContentToolsDetected(
   if (!delegate) {
     return;
   }
-  bool tools_attached = !tools.empty();
-  if (delegate->tools_attached() == tools_attached) {
+
+  const bool tools_attached = !tools.empty();
+  NotifyContentToolsChanged(
+      delegate->uuid(),
+      ToToolInfos(url::Origin::Create(delegate->url()), std::move(tools)));
+
+  // Only the attachment is the user's to settle, so leave it alone once they
+  // (or a submitted turn) have.
+  if (!IsEligibleForAutoToolsUpdate(delegate->uuid()) ||
+      delegate->tools_attached() == tools_attached) {
     return;
   }
   delegate->set_tools_attached(tools_attached);
@@ -360,9 +374,6 @@ bool AssociatedContentManager::IsEligibleForAutoToolsUpdate(
 
 void AssociatedContentManager::OnContentToolsChanged(
     AssociatedContentDelegate* delegate) {
-  if (!IsEligibleForAutoToolsUpdate(delegate->uuid())) {
-    return;
-  }
   DetectContentTools(delegate);
 }
 

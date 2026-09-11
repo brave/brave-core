@@ -156,13 +156,15 @@ class AssociatedContentManager : public ToolProvider,
  private:
   void DetachContent();
 
-  // Fetches the tools |delegate| exposes, updating its tools_attached state via
+  // Fetches the tools |delegate| exposes, handing them to
   // OnContentToolsDetected().
   void DetectContentTools(AssociatedContentDelegate* delegate);
 
-  // Attaches |delegate| when the tools it exposes are non-empty (and detaches
-  // it otherwise), so its tools are surfaced (via the tools pill) before any
-  // generation occurs. Invoked with the result of GetContentTools().
+  // Pushes the tools |delegate| now exposes to the UI, and attaches |delegate|
+  // when they are non-empty (or detaches it otherwise) so they are surfaced
+  // (via the tools pill) before any generation occurs. Attaching is skipped
+  // for content that isn't eligible for an automatic update. Invoked with the
+  // result of GetContentTools().
   void OnContentToolsDetected(base::WeakPtr<AssociatedContentDelegate> delegate,
                               std::vector<std::unique_ptr<Tool>> tools);
 
@@ -175,8 +177,13 @@ class AssociatedContentManager : public ToolProvider,
                           GetToolInfosCallback callback,
                           std::vector<std::unique_ptr<Tool>> tools);
 
-  // Invoked with the result of GetToolInfos(), to push the list every UI bound
-  // to this conversation should now be showing.
+  // Describes |tools| for display to the user, capped at the same limit as the
+  // tools handed to the LLM so the UI doesn't overpromise.
+  std::vector<mojom::ToolInfoPtr> ToToolInfos(
+      const url::Origin& origin,
+      std::vector<std::unique_ptr<Tool>> tools) const;
+
+  // Pushes the list every UI bound to this conversation should now be showing.
   void NotifyContentToolsChanged(const std::string& content_uuid,
                                  std::vector<mojom::ToolInfoPtr> tools);
 

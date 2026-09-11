@@ -1133,15 +1133,14 @@ TEST_F(AssociatedContentManagerUnitTest,
 }
 
 TEST_F(AssociatedContentManagerUnitTest,
-       OnContentToolsChanged_IgnoresContentAssociatedWithTurn) {
-  // Associated content is no longer staged, so changes are ignored.
+       OnContentToolsChanged_LeavesContentAssociatedWithTurnDetached) {
+  // Associated content is no longer staged, so its attachment is settled.
   NiceMock<MockAssociatedContent> content;
   FakePageTools page_tools(content, /*has_tools=*/false);
 
   auto* manager = conversation_handler_->associated_content_manager();
   manager->AddContent(&content);
   ASSERT_FALSE(content.tools_attached());
-  ASSERT_EQ(1, page_tools.probe_count());
 
   auto turn = mojom::ConversationTurn::New(
       "test-turn-uuid", std::nullopt /* thread_uuid */,
@@ -1155,7 +1154,7 @@ TEST_F(AssociatedContentManagerUnitTest,
   page_tools.set_has_tools(true);
   content.NotifyContentToolsChanged();
 
-  // Drive a change we do expect to be probed, so the ignored one has had its
+  // Drive a change we do expect to attach, so the settled one has had its
   // chance to run.
   NiceMock<MockAssociatedContent> other_content;
   FakePageTools other_page_tools(other_content, /*has_tools=*/true);
@@ -1163,26 +1162,24 @@ TEST_F(AssociatedContentManagerUnitTest,
   ASSERT_TRUE(
       base::test::RunUntil([&] { return other_content.tools_attached(); }));
 
-  EXPECT_EQ(1, page_tools.probe_count());
   EXPECT_FALSE(content.tools_attached());
 }
 
 TEST_F(AssociatedContentManagerUnitTest,
-       OnContentToolsChanged_IgnoresUserOverriddenContent) {
+       OnContentToolsChanged_LeavesUserOverriddenContentDetached) {
   NiceMock<MockAssociatedContent> content;
   FakePageTools page_tools(content, /*has_tools=*/false);
 
   auto* manager = conversation_handler_->associated_content_manager();
   manager->AddContent(&content);
   ASSERT_FALSE(content.tools_attached());
-  ASSERT_EQ(1, page_tools.probe_count());
 
   manager->SetToolsAttached(content.uuid(), /*tools_attached=*/false);
 
   page_tools.set_has_tools(true);
   content.NotifyContentToolsChanged();
 
-  // Drive a change we do expect to be probed, so the ignored one has had its
+  // Drive a change we do expect to attach, so the settled one has had its
   // chance to run.
   NiceMock<MockAssociatedContent> other_content;
   FakePageTools other_page_tools(other_content, /*has_tools=*/true);
@@ -1190,8 +1187,32 @@ TEST_F(AssociatedContentManagerUnitTest,
   ASSERT_TRUE(
       base::test::RunUntil([&] { return other_content.tools_attached(); }));
 
-  EXPECT_EQ(1, page_tools.probe_count());
   EXPECT_FALSE(content.tools_attached());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_PushesSettledContentsNewTools) {
+  // The UI lists the tools of content whose attachment is settled, so it still
+  // needs the new list when the page changes what it exposes.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  FakePageTools page_tools(content, /*has_tools=*/true);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_TRUE(base::test::RunUntil([&] { return content.tools_attached(); }));
+
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/true);
+
+  TestConversationUI ui(conversation_handler_.get());
+  page_tools.set_has_tools(false);
+  content.NotifyContentToolsChanged();
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return ui.push_count() > 0; }));
+  EXPECT_TRUE(ui.tools().empty());
+  // The user asked for these tools, so they stay attached even once the page
+  // has stopped offering them.
+  EXPECT_TRUE(content.tools_attached());
 }
 
 TEST_F(AssociatedContentManagerUnitTest,

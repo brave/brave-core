@@ -175,7 +175,7 @@ export default function createConversationApi(
             api.getState.update({ associatedContent })
           },
 
-          // Pushed by the browser when it changes a content's tools, so the
+          // Pushed by the browser whenever a content's tools change, so the
           // dialog settles on the browser's list without re-asking the page
           // itself - that could return a different list mid-interaction.
           onContentToolsChanged: (contentUuid, tools) => {
