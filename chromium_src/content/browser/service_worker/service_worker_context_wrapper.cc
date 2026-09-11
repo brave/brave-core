@@ -19,10 +19,12 @@ namespace {
 // Gives |bundle_info| a factory that can serve |scope|'s WebUI resources, so
 // that the script of a chrome-untrusted:// service worker can be fetched.
 //
-// The fetch is browser-initiated, so it reaches neither the frame nor the
-// worker ContentBrowserClient factory hooks, and it happens without a
-// WebUIController - which is what would ordinarily register the data source
-// the script has to come from. See WebUIConfig::RegisterURLDataSource().
+// The bundle cloned here is the one built by ContentBrowserClient's
+// RegisterNonNetworkServiceWorkerUpdateURLLoaderFactories(), which could
+// supply the factory but not the data source the script has to come from:
+// the fetch is browser-initiated, so no WebUIController registers it, and the
+// hook is not told the scope, so it cannot find the WebUIConfig that would.
+// See WebUIConfig::RegisterURLDataSource().
 void MaybeAddUntrustedWebUIScriptFactory(
     BrowserContext* browser_context,
     const GURL& scope,
