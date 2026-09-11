@@ -181,7 +181,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/history/side_bar.html.ts
 +++ gen/chrome/browser/resources/history/preprocessed/side_bar.html.ts
-@@ -4,47 +4,46 @@
+@@ -4,48 +4,50 @@
  
  export function getHtml(this: HistorySideBarElement) {
    // clang-format off
@@ -189,11 +189,9 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -<cr-menu-selector id="menu" selected="\${this.selectedPage}"
 -    @selected-changed="\${this.onSelectorSelectedChanged_}"
 -    selectable=".page-item" attr-for-selected="path"
--    @iron-activate="\${this.onMenuIronActivate_}"
--    selected-attribute="selected">
+-    @iron-activate="\${this.onMenuIronActivate_}" selected-attribute="selected">
 -  <a id="history" role="menuitem" class="page-item cr-nav-menu-item"
--      href="\${this.getHistoryItemHref_()}"
--      path="\${this.getHistoryItemPath_()}"
+-      href="\${this.getHistoryItemHref_()}" path="\${this.getHistoryItemPath_()}"
 -      @click="\${this.onItemClick_}">
 +<cr-menu-selector id="menu" selected="\${this.selectedPage}" @selected-changed="\${this.onSelectorSelectedChanged_}" selectable=".page-item" attr-for-selected="path" @iron-activate="\${this.onMenuIronActivate_}" selected-attribute="selected">
 +  <a id="history" role="menuitem" class="page-item cr-nav-menu-item" href="\${this.getHistoryItemHref_()}" path="\${this.getHistoryItemPath_()}" @click="\${this.onItemClick_}">
@@ -202,15 +200,14 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
      <cr-ripple></cr-ripple>
    </a>
 -  <a id="syncedTabs" role="menuitem" href="/syncedTabs"
--      class="page-item cr-nav-menu-item"
--      path="syncedTabs" @click="\${this.onItemClick_}">
+-      class="page-item cr-nav-menu-item" path="syncedTabs"
+-      @click="\${this.onItemClick_}">
 +  <a id="syncedTabs" role="menuitem" href="/syncedTabs" class="page-item cr-nav-menu-item" path="syncedTabs" @click="\${this.onItemClick_}">
      <cr-icon icon="cr:devices"></cr-icon>
      $i18n{openTabsMenuItem}
      <cr-ripple></cr-ripple>
    </a>
--  <a role="menuitem" id="clear-browsing-data"
--      class="cr-nav-menu-item"
+-  <a role="menuitem" id="clear-browsing-data" class="cr-nav-menu-item"
 -      href="chrome://settings/clearBrowserData"
 -      @click="\${this.onClearBrowsingDataClick_}"
 -      ?disabled="\${this.guestSession_}"
@@ -242,14 +239,19 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  <div id="footer" ?hidden="\${!this.showFooter_}">
    <div class="separator"></div>
    <managed-footnote></managed-footnote>
--  <div id="google-account-footer"
--      ?hidden="\${!this.showGoogleAccountFooter_}"
+-  <div id="google-account-footer" ?hidden="\${!this.showGoogleAccountFooter_}"
 -      @click="\${this.onGoogleAccountFooterClick_}">
 +  <div id="google-account-footer" ?hidden="\${!this.showGoogleAccountFooter_}" @click="\${this.onGoogleAccountFooterClick_}">
      <cr-icon icon="cr:info"></cr-icon>
      <div ?hidden="\${!this.showGMAOnly_}">$i18nRaw{sidebarFooterGMAOnly}</div>
      <div ?hidden="\${!this.showGAAOnly_}">$i18nRaw{sidebarFooterGAAOnly}</div>
-     <div ?hidden="\${!this.showGMAAndGAA_}">$i18nRaw{sidebarFooterGMAAndGAA}</div>
+-    <div
+-        ?hidden="\${!this.showGMAAndGAA_}">$i18nRaw{sidebarFooterGMAAndGAA}</div>
++    <div ?hidden="\${!this.showGMAAndGAA_}">$i18nRaw{sidebarFooterGMAAndGAA}</div>
+   </div>
+ </div>
+ <!--_html_template_end_-->\`;
+   // clang-format on
 "
 `;
 
@@ -257,8 +259,9 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/history/synced_device_manager.html.ts
 +++ gen/chrome/browser/resources/history/preprocessed/synced_device_manager.html.ts
-@@ -1,16 +1,15 @@
+@@ -1,17 +1,16 @@
  import {html} from '//resources/lit/v3_0/lit.rollup.js';
+ 
 -// <if expr="not is_chromeos">
 +// 
  import {HistorySignInState} from './constants.js';
@@ -274,11 +277,11 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -    ?hidden="\${!this.syncedDevices_.length}">
 +<div id="synced-device-list" class="history-cards" ?hidden="\${!this.syncedDevices_.length}">
    \${this.syncedDevices_.map((syncedDevice, index) => html\`
-     <history-synced-device-card
-         .device="\${syncedDevice.device}"
+     <history-synced-device-card .device="\${syncedDevice.device}"
          .lastUpdateTime="\${syncedDevice.lastUpdateTime}"
-@@ -23,26 +22,23 @@
-         data-index="\${index}">
+         .tabs="\${syncedDevice.tabs}"
+@@ -21,26 +20,23 @@
+         @opened-changed="\${this.onCardOpenedChanged_}" data-index="\${index}">
      </history-synced-device-card>
    \`)}
  </div>
@@ -289,10 +292,10 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  </div>
  
 -<div id="signInGuide"
--    ?hidden="\${!this.showSignInGuide_()
--      || this.replaceSyncPromosWithSignInPromos_}">
-+<div id="signInGuide" ?hidden="\${!this.showSignInGuide_()
-+      || this.replaceSyncPromosWithSignInPromos_}" style="display: none">
+-    ?hidden="\${
+-        !this.showSignInGuide_() || this.replaceSyncPromosWithSignInPromos_}">
++<div id="signInGuide" ?hidden="\${
++        !this.showSignInGuide_() || this.replaceSyncPromosWithSignInPromos_}" style="display: none">
    <div id="sync-promo-illustration"></div>
    <div id="turn-on-sync-promo">$i18n{turnOnSyncPromo}</div>
    <div id="turn-on-sync-promo-desc">$i18n{turnOnSyncPromoDesc}</div>
@@ -305,35 +308,25 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  
 -<if expr="not is_chromeos">
 +
-   \${this.shouldShowHistorySyncOptIn_() ? html\`
-     <div id="history-sync-optin" class="history-sync-optin">
-       \${this.isSignInState_(HistorySignInState.SIGNED_OUT)
-         || this.isSignInState_(HistorySignInState.WEB_ONLY_SIGNED_IN) ? html\`
-@@ -120,11 +116,11 @@
-             $i18n{turnOnSyncHistoryButton}
-           </cr-button>\`}
-     </div>
-   \` : ''}
+ \${this.shouldShowHistorySyncOptIn_() ? html\`
+   <div id="history-sync-optin" class="history-sync-optin">
+     \${this.isSignInState_(HistorySignInState.SIGNED_OUT) ||
+             this.isSignInState_(HistorySignInState.WEB_ONLY_SIGNED_IN) ?
+@@ -124,12 +120,11 @@
+       </cr-button>
+     \`}
+   </div>
+ \` : ''}
 -</if>
  
--<cr-lazy-render-lit id="menu" .template='\${() => html\`
+-<cr-lazy-render-lit id="menu"
+-    .template="\${() => html\`
 +
 +<cr-lazy-render-lit id="menu" .template="\${() => html\`
-   <cr-action-menu role-description="$i18n{menu}">
-     <button id="menuOpenButton" class="dropdown-item"
-         @click="\${this.onOpenAllClick_}">
-       $i18n{openAll}
-@@ -133,9 +129,9 @@
-         @click="\${this.onDeleteSessionClick_}">
-       $i18n{deleteSession}
-     </button>
-   </cr-action-menu>
--\`}'>
-+\`}">
- </cr-lazy-render-lit>
- <!--_html_template_end_-->\`;
-   // clang-format on
- }
+       <cr-action-menu role-description="$i18n{menu}">
+         <button id="menuOpenButton" class="dropdown-item"
+             @click="\${this.onOpenAllClick_}">
+           $i18n{openAll}
 "
 `;
 
