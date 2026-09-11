@@ -16,5 +16,5 @@ substitutions:
         #if BUILDFLAG(IS_ANDROID)
         BASE_FEATURE(kPrivateAi, base::FEATURE_ENABLED_BY_DEFAULT);
         #else
-        BASE_FEATURE(kPrivateAi, base::FEATURE_DISABLED_BY_DEFAULT);
+        BASE_OVERRIDDEN_FEATURE(kPrivateAi, base::FEATURE_DISABLED_BY_DEFAULT);
         #endif

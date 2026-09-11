@@ -28,7 +28,7 @@ substitutions:
         base::FEATURE_DISABLED_BY_DEFAULT);'
       replace: |-
         #if !BUILDFLAG(IS_ANDROID)
-        BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
+        BASE_OVERRIDDEN_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
         #else
         BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
         #endif

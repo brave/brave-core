@@ -165,6 +165,7 @@ test("brave_unit_tests") {
     "//brave/app:unit_tests",
     "//brave/base:base_unittests",
     "//brave/base/test:test_vendor_is_brave",
+    "//brave/base/test:unit_tests",
     "//brave/brave_domains:unit_tests",
     "//brave/browser",
     "//brave/browser:unit_tests",
