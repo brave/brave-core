@@ -1125,7 +1125,11 @@ std::string SPLTokenProgramToProgramID(mojom::SPLTokenProgram program) {
 std::string GetAccountPermissionIdentifier(
     const mojom::AccountIdPtr& account_id) {
   CHECK(account_id);
-  if (account_id->coin == mojom::CoinType::ADA) {
+  // Polkadot addresses are SS58-encoded with a chain-specific prefix, so the
+  // same key has a different address per chain. Key permissions on the
+  // account instead, as cardano does.
+  if (account_id->coin == mojom::CoinType::ADA ||
+      account_id->coin == mojom::CoinType::DOT) {
     return account_id->unique_key;
   } else {
     return account_id->address;

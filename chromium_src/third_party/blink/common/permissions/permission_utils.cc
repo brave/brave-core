@@ -16,13 +16,16 @@
   case PermissionType::BRAVE_SOLANA:                       \
     return "BraveSolana";                                  \
   case PermissionType::BRAVE_CARDANO:                      \
-    return "BraveCardano";
+    return "BraveCardano";                                 \
+  case PermissionType::BRAVE_POLKADOT:                     \
+    return "BravePolkadot";
 #else
 // CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_UTIL_GET_PERMISSION_STRING \
   case PermissionType::BRAVE_ETHEREUM:                     \
   case PermissionType::BRAVE_SOLANA:                       \
   case PermissionType::BRAVE_CARDANO:                      \
+  case PermissionType::BRAVE_POLKADOT:                     \
     NOTREACHED();
 #endif
 
@@ -67,9 +70,12 @@
     return std::nullopt;
 #endif
 
+// Polkadot has no permissions policy feature of its own yet, so it falls in
+// with the types that map to nothing.
 #define kDisplayCapture                                 \
   kDisplayCapture;                                      \
   BRAVE_WALLET_K_DISPLAY_CAPTURE                        \
+  case PermissionType::BRAVE_POLKADOT:                  \
   case PermissionType::BRAVE_ADS:                       \
   case PermissionType::BRAVE_TRACKERS:                  \
   case PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES: \
@@ -90,13 +96,16 @@
   case PermissionName::BRAVE_SOLANA:                               \
     return PermissionType::BRAVE_SOLANA;                           \
   case PermissionName::BRAVE_CARDANO:                              \
-    return PermissionType::BRAVE_CARDANO;
+    return PermissionType::BRAVE_CARDANO;                          \
+  case PermissionName::BRAVE_POLKADOT:                             \
+    return PermissionType::BRAVE_POLKADOT;
 #else
 // CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE \
   case PermissionName::BRAVE_ETHEREUM:                             \
   case PermissionName::BRAVE_SOLANA:                               \
   case PermissionName::BRAVE_CARDANO:                              \
+  case PermissionName::BRAVE_POLKADOT:                             \
     NOTREACHED();
 #endif
 

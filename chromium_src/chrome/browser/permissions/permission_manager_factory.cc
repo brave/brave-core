@@ -45,6 +45,9 @@ PermissionManagerFactory::BuildServiceInstanceForBrowserContext(
   permission_contexts[ContentSettingsType::BRAVE_CARDANO] =
       std::make_unique<permissions::BraveWalletPermissionContext>(
           profile, ContentSettingsType::BRAVE_CARDANO);
+  permission_contexts[ContentSettingsType::BRAVE_POLKADOT] =
+      std::make_unique<permissions::BraveWalletPermissionContext>(
+          profile, ContentSettingsType::BRAVE_POLKADOT);
 #endif
   permission_contexts[ContentSettingsType::BRAVE_GOOGLE_SIGN_IN] =
       std::make_unique<permissions::BraveGoogleSignInPermissionContext>(

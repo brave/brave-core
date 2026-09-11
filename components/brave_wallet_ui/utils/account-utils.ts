@@ -166,6 +166,18 @@ export function isHardwareAccount(account: BraveWallet.AccountId) {
   return account.kind === BraveWallet.AccountKind.kHardware
 }
 
+/**
+ * Whether dApp permissions for this coin are keyed on the account's uniqueKey
+ * rather than its address. Cardano has no single address per account, and a
+ * Polkadot address is SS58-encoded per chain, so neither can be keyed on one.
+ * Mirrors GetAccountPermissionIdentifier in brave_wallet_utils.cc.
+ */
+export const usesUniqueKeyPermissions = (coin: BraveWallet.CoinType) => {
+  return (
+    coin === BraveWallet.CoinType.ADA || coin === BraveWallet.CoinType.DOT
+  )
+}
+
 export const isPolkadotRelayNetwork = (chainId: string) => {
   return (
     chainId === BraveWallet.POLKADOT_MAINNET
