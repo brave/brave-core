@@ -63,10 +63,12 @@ substitutions:
             {ContentSettingsType::BRAVE_ETHEREUM, "ethereum"},
             {ContentSettingsType::BRAVE_SOLANA, "solana"},
             {ContentSettingsType::BRAVE_CARDANO, "cardano"},
+            {ContentSettingsType::BRAVE_POLKADOT, "polkadot"},
         #else
             {ContentSettingsType::BRAVE_ETHEREUM, nullptr},
             {ContentSettingsType::BRAVE_SOLANA, nullptr},
             {ContentSettingsType::BRAVE_CARDANO, nullptr},
+            {ContentSettingsType::BRAVE_POLKADOT, nullptr},
         #endif
             {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},
             {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},

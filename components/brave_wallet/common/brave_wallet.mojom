@@ -263,6 +263,44 @@ interface CardanoProvider {
   IsEnabled() => (bool enabled);
 };
 
+struct PolkadotProviderErrorBundle {
+  PolkadotProviderError code;
+  string message;
+};
+
+// `InjectedAccount`, as handed to a dapp by `accounts.get()`.
+// https://github.com/polkadot-js/extension/blob/master/packages/extension-inject/src/types.ts
+struct PolkadotInjectedAccount {
+  // SS58-encoded with the prefix of the chain the account belongs to.
+  string address;
+  // Set when the account is restricted to a single chain, letting a dapp
+  // filter out accounts that can't be used with the chain it talks to.
+  string? genesis_hash;
+  string name;
+  // `KeypairType`, e.g. "sr25519".
+  string type;
+};
+
+// The `Injected` object that `enable()` resolves to. One instance per granted
+// permission, bound to the account the user picked.
+interface PolkadotApi {
+  // `accounts.get(anyType)`. `any_type` asks for accounts that can't be used
+  // for signing either, which we have none of.
+  GetAccounts(bool any_type)
+      => (array<PolkadotInjectedAccount>? accounts,
+          PolkadotProviderErrorBundle? error);
+};
+
+// https://github.com/polkadot-js/extension#injection-information
+interface PolkadotProvider {
+  // `enable()`. Requests the Polkadot dapp permission for the origin, showing
+  // the account selection prompt when it isn't granted yet. The `origin`
+  // argument dapps pass to `enable()` is a self-declared display name, so it
+  // is dropped in the renderer rather than being trusted here.
+  Enable()
+      => (pending_remote<PolkadotApi>? api, PolkadotProviderErrorBundle? error);
+};
+
 struct ChainId {
   CoinType coin;
   string chain_id;
@@ -1010,6 +1048,7 @@ struct AllAccountsInfo {
   AccountInfo? eth_dapp_selected_account;
   AccountInfo? sol_dapp_selected_account;
   AccountInfo? ada_dapp_selected_account;
+  AccountInfo? dot_dapp_selected_account;
 };
 
 struct WalletInfo {
@@ -1028,6 +1067,7 @@ struct WalletInfo {
   array<CoinType> enabled_coins;
   bool is_cardano_dapp_support_enabled;
   bool is_polkadot_enabled;
+  bool is_polkadot_dapp_support_enabled;
 };
 
 // Browser-side handler for common panel / page things

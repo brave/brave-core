@@ -41,7 +41,8 @@ bool ChromePermissionsClient::BraveCanBypassEmbeddingOriginCheck(
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   if (type == ContentSettingsType::BRAVE_ETHEREUM ||
       type == ContentSettingsType::BRAVE_SOLANA ||
-      type == ContentSettingsType::BRAVE_CARDANO) {
+      type == ContentSettingsType::BRAVE_CARDANO ||
+      type == ContentSettingsType::BRAVE_POLKADOT) {
     return true;
   }
 #endif
@@ -63,12 +64,16 @@ ChromePermissionsClient::MaybeCreateMessageUI(
     permissions::RequestType request_type = requests[0]->request_type();
     if (request_type == permissions::RequestType::kBraveEthereum ||
         request_type == permissions::RequestType::kBraveSolana ||
-        request_type == permissions::RequestType::kBraveCardano) {
+        request_type == permissions::RequestType::kBraveCardano ||
+        request_type == permissions::RequestType::kBravePolkadot) {
       if (request_type == permissions::RequestType::kBraveSolana) {
         coin_type = brave_wallet::mojom::CoinType::SOL;
       }
       if (request_type == permissions::RequestType::kBraveCardano) {
         coin_type = brave_wallet::mojom::CoinType::ADA;
+      }
+      if (request_type == permissions::RequestType::kBravePolkadot) {
+        coin_type = brave_wallet::mojom::CoinType::DOT;
       }
       auto delegate = std::make_unique<BraveWalletPermissionPrompt::Delegate>(
           std::move(prompt));

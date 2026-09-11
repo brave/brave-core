@@ -2774,7 +2774,7 @@ mojom::AllAccountsInfoPtr KeyringService::GetAllAccountsSync() {
   return mojom::AllAccountsInfo::New(
       std::move(all_accounts), GetSelectedWalletAccount(),
       GetSelectedEthereumDappAccount(), GetSelectedSolanaDappAccount(),
-      GetSelectedCardanoDappAccount());
+      GetSelectedCardanoDappAccount(), GetSelectedPolkadotDappAccount());
 }
 
 void KeyringService::SetSelectedAccount(mojom::AccountIdPtr account_id,
@@ -3842,6 +3842,15 @@ mojom::AccountInfoPtr KeyringService::GetSelectedCardanoDappAccount() {
   return GetSelectedDappAccount(mojom::CoinType::ADA);
 }
 
+mojom::AccountInfoPtr KeyringService::GetSelectedPolkadotDappAccount() {
+  // Polkadot only supports dapps when the feature param is on, and
+  // GetSelectedDappAccount requires a dapp-capable coin.
+  if (!CoinSupportsDapps(mojom::CoinType::DOT)) {
+    return nullptr;
+  }
+  return GetSelectedDappAccount(mojom::CoinType::DOT);
+}
+
 mojom::AccountInfoPtr KeyringService::GetSelectedDappAccount(
     mojom::CoinType coin) {
   CHECK(CoinSupportsDapps(coin));
@@ -3857,6 +3866,9 @@ mojom::AccountInfoPtr KeyringService::GetSelectedDappAccount(
     case mojom::CoinType::ADA:
       keyring_ids = {mojom::KeyringId::kCardanoMainnet,
                      mojom::KeyringId::kCardanoTestnet};
+      break;
+    case mojom::CoinType::DOT:
+      keyring_ids = GetPolkadotKeyrings();
       break;
     default:
       NOTREACHED();

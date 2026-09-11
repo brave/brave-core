@@ -26,7 +26,9 @@ std::unique_ptr<permissions::PermissionPrompt> CreatePermissionPrompt(
       delegate->Requests()[0]->request_type() ==
           permissions::RequestType::kBraveSolana ||
       delegate->Requests()[0]->request_type() ==
-          permissions::RequestType::kBraveCardano) {
+          permissions::RequestType::kBraveCardano ||
+      delegate->Requests()[0]->request_type() ==
+          permissions::RequestType::kBravePolkadot) {
     if (!GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
             web_contents)) {
       DLOG(WARNING)

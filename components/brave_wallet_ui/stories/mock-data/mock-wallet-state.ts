@@ -53,4 +53,5 @@ export const mockWalletState: WalletState = {
   isCardanoEnabled: true,
   isCardanoDappSupportEnabled: true,
   isPolkadotEnabled: true,
+  isPolkadotDappSupportEnabled: true,
 }

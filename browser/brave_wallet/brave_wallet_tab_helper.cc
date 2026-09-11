@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_provider_impl.h"
 #include "brave/components/brave_wallet/browser/ethereum_provider_impl.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_provider_impl.h"
 #include "brave/components/brave_wallet/browser/solana_provider_impl.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
@@ -171,6 +172,36 @@ void BraveWalletTabHelper::BindCardanoProvider(
       std::move(receiver));
 }
 
+// static
+void BraveWalletTabHelper::BindPolkadotProvider(
+    content::RenderFrameHost* const frame_host,
+    mojo::PendingReceiver<mojom::PolkadotProvider> receiver) {
+  if (!IsPolkadotDAppSupportEnabled()) {
+    return;
+  }
+  auto* brave_wallet_service = BraveWalletServiceFactory::GetServiceForContext(
+      frame_host->GetBrowserContext());
+  if (!brave_wallet_service) {
+    return;
+  }
+  content::WebContents* web_contents =
+      content::WebContents::FromRenderFrameHost(frame_host);
+
+  auto* tab_helper = BraveWalletTabHelper::FromWebContents(web_contents);
+  if (!tab_helper) {
+    return;
+  }
+
+  url::Origin origin = frame_host->GetLastCommittedOrigin();
+  tab_helper->polkadot_provider_receivers_.Add(
+      std::make_unique<PolkadotProviderImpl>(
+          *brave_wallet_service,
+          base::BindRepeating(&CreateDelegate, web_contents,
+                              frame_host->GetGlobalId()),
+          origin),
+      std::move(receiver));
+}
+
 void BraveWalletTabHelper::AddSolanaConnectedAccount(
     const content::GlobalRenderFrameHostId& id,
     const std::string& account) {
@@ -283,7 +314,9 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
        manager->Requests()[0]->request_type() !=
            permissions::RequestType::kBraveSolana &&
        manager->Requests()[0]->request_type() !=
-           permissions::RequestType::kBraveCardano)) {
+           permissions::RequestType::kBraveCardano &&
+       manager->Requests()[0]->request_type() !=
+           permissions::RequestType::kBravePolkadot)) {
     return webui_url;
   }
 

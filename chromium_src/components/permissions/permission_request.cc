@@ -27,6 +27,7 @@
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
   case RequestType::kBraveCardano:  \
+  case RequestType::kBravePolkadot: \
   case RequestType::kWidevine:      \
     NOTREACHED();
 #else
@@ -35,6 +36,7 @@
   case RequestType::kBraveEthereum: \
   case RequestType::kBraveSolana:   \
   case RequestType::kBraveCardano:  \
+  case RequestType::kBravePolkadot: \
   case RequestType::kWidevine:      \
     NOTREACHED();
 #endif

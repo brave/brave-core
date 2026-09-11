@@ -46,7 +46,8 @@ bool PermissionRequestManager::ShouldGroupRequests(PermissionRequest* a,
   url::Origin origin_b;
   if (a->request_type() == RequestType::kBraveEthereum ||
       a->request_type() == RequestType::kBraveSolana ||
-      a->request_type() == RequestType::kBraveCardano) {
+      a->request_type() == RequestType::kBraveCardano ||
+      a->request_type() == RequestType::kBravePolkadot) {
     if (a->request_type() == b->request_type() &&
         brave_wallet::ParseRequestingOriginFromSubRequest(
             a->request_type(), url::Origin::Create(a->requesting_origin()),
@@ -83,7 +84,8 @@ bool PermissionRequestManager::IsCurrentRequestBraveWalletInitiated() const {
   const RequestType request_type = requests_.front()->request_type();
   return request_type == RequestType::kBraveEthereum ||
          request_type == RequestType::kBraveSolana ||
-         request_type == RequestType::kBraveCardano;
+         request_type == RequestType::kBraveCardano ||
+         request_type == RequestType::kBravePolkadot;
 #else
   return false;
 #endif

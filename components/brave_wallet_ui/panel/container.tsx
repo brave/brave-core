@@ -6,8 +6,8 @@
 import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 
-// constants
-import { BraveWallet } from '../constants/types'
+// Utils
+import { usesUniqueKeyPermissions } from '../utils/account-utils'
 
 // Components
 import {
@@ -182,7 +182,7 @@ function Container() {
 
   if (selectedPanel === 'connectWithSite') {
     const accountsToConnect = accounts.filter((account) => {
-      if (account.accountId.coin === BraveWallet.CoinType.ADA) {
+      if (usesUniqueKeyPermissions(account.accountId.coin)) {
         return connectingAccounts.includes(account.accountId.uniqueKey)
       } else {
         return connectingAccounts.includes(account.address.toLowerCase())

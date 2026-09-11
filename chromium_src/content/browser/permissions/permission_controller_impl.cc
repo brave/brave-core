@@ -22,6 +22,7 @@
   case PermissionType::BRAVE_GOOGLE_SIGN_IN:            \
   case PermissionType::BRAVE_OPEN_AI_CHAT:              \
   case PermissionType::BRAVE_CARDANO:                   \
+  case PermissionType::BRAVE_POLKADOT:                  \
   case PermissionType::NUM
 
 #include <content/browser/permissions/permission_controller_impl.cc>

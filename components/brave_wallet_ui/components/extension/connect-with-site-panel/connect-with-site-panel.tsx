@@ -55,6 +55,7 @@ import {
 
 // Utils
 import { getLocale } from '../../../../common/locale'
+import { usesUniqueKeyPermissions } from '../../../utils/account-utils'
 
 // Hooks
 import { useBalancesFetcher } from '../../../common/hooks/use-balances-fetcher'
@@ -127,7 +128,7 @@ export const ConnectWithSite = (props: Props) => {
         setAddressToConnect(undefined)
         return
       }
-      if (account.accountId.coin === BraveWallet.CoinType.ADA) {
+      if (usesUniqueKeyPermissions(account.accountId.coin)) {
         setAddressToConnect(account.accountId.uniqueKey)
       } else {
         setAddressToConnect(account.address)
