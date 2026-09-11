@@ -153,6 +153,10 @@ void PrintTo(const mojom::ToolUseEvent& event, std::ostream* os) {
     *os << "  description: "
         << event.permission_challenge->description.value_or("<nullopt>")
         << "\n";
+    *os << "  supports_always_allow: "
+        << (event.permission_challenge->supports_always_allow ? "true"
+                                                              : "false")
+        << "\n";
   } else {
     *os << "[nullopt]\n";
   }

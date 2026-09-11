@@ -314,6 +314,30 @@ void AssociatedContentManager::SetToolPermission(
                    weak_ptr_factory_.GetWeakPtr(), std::string(content_uuid)));
 }
 
+void AssociatedContentManager::SetToolPermissionForModelToolName(
+    std::string_view model_tool_name,
+    mojom::ToolPermission permission) {
+  auto tool_it = std::ranges::find_if(tools_, [&](const auto& entry) {
+    return entry.tool->Name() == model_tool_name;
+  });
+  if (tool_it == tools_.end()) {
+    return;
+  }
+
+  // Recorded through the content which exposed the tool, so that a choice made
+  // by answering a permission challenge is keyed by the tool's page-registered
+  // name, and announced to the UIs, exactly like one made in the dialog.
+  auto delegate_it =
+      std::ranges::find_if(content_delegates_, [&](const auto& delegate) {
+        return url::Origin::Create(delegate->url()) == tool_it->origin;
+      });
+  if (delegate_it == content_delegates_.end()) {
+    return;
+  }
+  SetToolPermission((*delegate_it)->uuid(), tool_it->tool->DisplayName(),
+                    permission);
+}
+
 void AssociatedContentManager::NotifyContentToolsChanged(
     const std::string& content_uuid,
     std::vector<mojom::ToolInfoPtr> tools) {
@@ -698,15 +722,15 @@ void AssociatedContentManager::AddToolsForGenerationLoop(
       continue;
     }
     tool->SetUserPermissionStrategy(permission);
-    tools_.push_back(std::move(tool));
+    tools_.push_back({std::move(tool), origin});
   }
 }
 
 std::vector<base::WeakPtr<Tool>> AssociatedContentManager::GetTools() {
   std::vector<base::WeakPtr<Tool>> tool_ptrs;
   tool_ptrs.reserve(tools_.size());
-  for (const auto& tool : tools_) {
-    tool_ptrs.push_back(tool->GetWeakPtr());
+  for (const auto& entry : tools_) {
+    tool_ptrs.push_back(entry.tool->GetWeakPtr());
   }
   return tool_ptrs;
 }

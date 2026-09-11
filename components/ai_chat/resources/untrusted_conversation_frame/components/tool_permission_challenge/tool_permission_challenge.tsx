@@ -112,6 +112,16 @@ export default function ToolPermissionChallenge(props: Props) {
     return null
   }
 
+  const answer = (decision: Mojom.PermissionChallengeDecision) => {
+    if (!props.isInteractive) {
+      return
+    }
+    conversationContext.conversationHandler?.processPermissionChallenge?.(
+      props.toolUseEvent.id,
+      decision,
+    )
+  }
+
   // Tools can provide a human-readable, markdown-formatted description of
   // what they want permission to do (e.g. website-provided WebMCP tools
   // describe themselves as "Brave AI would like to execute **name** on
@@ -167,33 +177,37 @@ export default function ToolPermissionChallenge(props: Props) {
           className={styles.permissionButton}
           icon={<>✅</>}
           isDisabled={!props.isInteractive}
-          onClick={
-            props.isInteractive
-              ? () =>
-                  conversationContext.conversationHandler?.processPermissionChallenge?.(
-                    props.toolUseEvent.id,
-                    true,
-                  )
-              : () => {}
-          }
+          onClick={() => answer(Mojom.PermissionChallengeDecision.kAllowOnce)}
         >
           <div className={styles.permissionButtonText}>
             {getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_ALLOW_BUTTON)}
           </div>
         </ConversationAreaButton>
+        {/*
+          Only some tools have a standing permission to record the answer
+          against - currently website-provided (WebMCP) tools, whose choices
+          the website tools dialog lists. The label matches that dialog's
+          option, since it sets the same thing.
+        */}
+        {permissionChallenge.supportsAlwaysAllow && (
+          <ConversationAreaButton
+            className={styles.permissionButton}
+            icon={<>♾️</>}
+            isDisabled={!props.isInteractive}
+            onClick={() =>
+              answer(Mojom.PermissionChallengeDecision.kAlwaysAllow)
+            }
+          >
+            <div className={styles.permissionButtonText}>
+              {getLocale(S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ALWAYS_ALLOW)}
+            </div>
+          </ConversationAreaButton>
+        )}
         <ConversationAreaButton
           className={styles.permissionButton}
           icon={<>❌</>}
           isDisabled={!props.isInteractive}
-          onClick={
-            props.isInteractive
-              ? () =>
-                  conversationContext.conversationHandler?.processPermissionChallenge?.(
-                    props.toolUseEvent.id,
-                    false,
-                  )
-              : () => {}
-          }
+          onClick={() => answer(Mojom.PermissionChallengeDecision.kDeny)}
         >
           <div className={styles.permissionButtonText}>
             {getLocale(S.CHAT_UI_PERMISSION_CHALLENGE_DENY_BUTTON)}

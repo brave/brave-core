@@ -173,6 +173,17 @@ enum ToolPermission {
   kNeverAllow,
 };
 
+// How the user answered a tool's permission challenge.
+enum PermissionChallengeDecision {
+  // Run the tool, but keep asking for it.
+  kAllowOnce,
+  // Run the tool and stop asking for it, by recording kAlwaysAllow against it.
+  // Only offered when the challenge sets |supports_always_allow|.
+  kAlwaysAllow,
+  // Don't run the tool, and abandon the rest of the turn's tool uses.
+  kDeny,
+};
+
 // Describes a tool for display to the user - its name and description as they
 // were registered, rather than the mangled model-facing variants.
 struct ToolInfo {
@@ -367,6 +378,12 @@ struct PermissionChallenge {
   // **https://example.com**" for website-provided (WebMCP) tools. Tools
   // must markdown-escape any untrusted values they embed.
   string? description;
+  // Whether answering this challenge can also record kAlwaysAllow for the
+  // tool, so that it stops asking. Only true for tools which have somewhere to
+  // record it (currently website-provided tools, whose choices the website
+  // tools dialog shows) - a challenge raised by the server's alignment check
+  // is shown whatever the user answered before, so it never offers this.
+  bool supports_always_allow = false;
 };
 
 struct ToolUseEvent {

@@ -1218,7 +1218,7 @@ void ConversationHandler::RespondToToolUseRequest(
 
 void ConversationHandler::ProcessPermissionChallenge(
     const std::string& tool_use_id,
-    bool user_result) {
+    mojom::PermissionChallengeDecision decision) {
   auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
   if (!tool_use) {
     DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
@@ -1230,10 +1230,10 @@ void ConversationHandler::ProcessPermissionChallenge(
     return;
   }
 
-  DVLOG(0) << __func__ << " user " << (user_result ? "approved" : "denied")
-           << " permission for: " << tool_use->tool_name;
+  DVLOG(0) << __func__ << " user answered " << decision
+           << " for permission for: " << tool_use->tool_name;
 
-  if (!user_result) {
+  if (decision == mojom::PermissionChallengeDecision::kDeny) {
     // User declined - send rejection output and stop tool loop
     std::vector<mojom::ContentBlockPtr> result;
     result.push_back(mojom::ContentBlock::NewTextContentBlock(
@@ -1250,6 +1250,15 @@ void ConversationHandler::ProcessPermissionChallenge(
         << "Permission denied, stopping tool loop and performing generation";
     PerformPostToolAssistantGeneration();
     return;
+  }
+
+  // Stop asking for this tool, if the challenge offered that. A challenge from
+  // the server's alignment check is shown every time, whatever the user
+  // answered before, so a client can't record a standing choice against one.
+  if (decision == mojom::PermissionChallengeDecision::kAlwaysAllow &&
+      tool_use->permission_challenge->supports_always_allow) {
+    associated_content_manager_->SetToolPermissionForModelToolName(
+        tool_use->tool_name, mojom::ToolPermission::kAlwaysAllow);
   }
 
   // User approved - clear the permission challenge
