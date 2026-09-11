@@ -18,6 +18,7 @@ namespace net {
 namespace {
 #if BUILDFLAG(INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST)
 #include "net/http/transport_security_state_static.h"
+#include "net/http/transport_security_state_static_pins.h"
 #endif  // INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST
 }  // namespace
 }  // namespace net
