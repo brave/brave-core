@@ -156,14 +156,6 @@ export const PsstProgressModal = () => {
     setReportSendState('sent')
   })
 
-  const failedSteps = React.useMemo(
-    () =>
-      (optionsStatuses ?? [])
-        .filter((option) => option.settingState === SettingState.Failed)
-        .map((option) => option.description),
-    [optionsStatuses],
-  )
-
   const handleSettingItemCheck = React.useCallback(
     (uid: string, checked: boolean) => {
       updateAllMatchingOptionsStatuses((prevOptionsStatuses) => {
@@ -219,7 +211,7 @@ export const PsstProgressModal = () => {
     return (
       <PsstReportModal
         siteName={siteName}
-        failedSteps={failedSteps}
+        optionsStatuses={optionsStatuses}
         isSending={reportSendState === 'sending'}
         isSent={reportSendState === 'sent'}
         onBack={() => setShowReportModal(false)}

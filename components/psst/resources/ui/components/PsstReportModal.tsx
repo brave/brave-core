@@ -14,6 +14,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import Flex from '$web-common/Flex'
 import { formatLocale, getLocale } from '$web-common/locale'
 import { Container, PsstDlgButton, RightAlignedItem } from './basic/structure'
+import { OptionStatus, SettingState } from './PsstProgressModal'
 
 import '../strings'
 
@@ -89,7 +90,7 @@ const SentButton = styled(PsstDlgButton)`
 
 export interface Props {
   siteName: string
-  failedSteps: string[]
+  optionsStatuses: OptionStatus[] | undefined
   isSending: boolean
   isSent: boolean
   onBack: () => void
@@ -99,13 +100,21 @@ export interface Props {
 
 export const PsstReportModal: React.FC<Props> = ({
   siteName,
-  failedSteps,
+  optionsStatuses,
   isSending,
   isSent,
   onBack,
   onClose,
   onSendReport,
 }) => {
+  const failedSteps = React.useMemo(
+    () =>
+      (optionsStatuses ?? [])
+        .filter((option) => option.settingState === SettingState.Failed)
+        .map((option) => option.description),
+    [optionsStatuses],
+  )
+
   return (
     <Container>
       <Flex

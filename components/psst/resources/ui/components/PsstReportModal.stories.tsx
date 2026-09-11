@@ -8,19 +8,29 @@ import { Meta, StoryObj } from '@storybook/react'
 
 import Flex from '$web-common/Flex'
 import { PsstReportModal } from './PsstReportModal'
+import { OptionStatus, SettingState } from './PsstProgressModal'
+
+const defaultOptionsStatuses: OptionStatus[] = [
+  'Disable personalized ads.',
+  "Disable sharing additional information with X's business partners.",
+  'Another step that failed',
+].map((description, index) => ({
+  uid: String(index),
+  description,
+  error: null,
+  checked: true,
+  disabled: false,
+  settingState: SettingState.Failed,
+}))
 
 function PsstReportModalStory({
   siteName = 'x.com',
-  failedSteps = [
-    'Disable personalized ads.',
-    "Disable sharing additional information with X's business partners.",
-    'Another step that failed',
-  ],
+  optionsStatuses = defaultOptionsStatuses,
   isSending = false,
   isSent = false,
 }: {
   readonly siteName?: string
-  readonly failedSteps?: string[]
+  readonly optionsStatuses?: OptionStatus[]
   readonly isSending?: boolean
   readonly isSent?: boolean
 }) {
@@ -32,7 +42,7 @@ function PsstReportModalStory({
     >
       <PsstReportModal
         siteName={siteName}
-        failedSteps={failedSteps}
+        optionsStatuses={optionsStatuses}
         isSending={isSending}
         isSent={isSent}
         onBack={() => console.log('[Storybook] Back')}
