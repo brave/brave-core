@@ -9,15 +9,15 @@ import Strings
 
 // This intent must belong to both the app target and the control widget extension because
 // `perform()` runs in the app process once `openAppWhenRun` foregrounds it
-struct LeoVoiceInputControlWidgetIntent: AppIntent {
+struct AskBraveControlWidgetIntent: AppIntent {
   static var title: LocalizedStringResource = LocalizedStringResource(
-    "appIntent.leoVoiceInputControl.Title",
-    defaultValue: "Open Leo Voice AI"
+    "appIntent.askBraveControl.Title",
+    defaultValue: "Open Ask Brave"
   )
   static var openAppWhenRun: Bool = true
 
   func perform() async throws -> some IntentResult {
-    PendingWidgetIntentAction.set(.braveLeoVoiceInput)
+    PendingWidgetIntentAction.set(.askBrave)
     return .result()
   }
 }
