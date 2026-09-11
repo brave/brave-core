@@ -25,6 +25,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/browser/ui/brave_pages.h"
+#include "brave/browser/ui/brave_scheme_utils.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -732,6 +733,13 @@ void RenderViewContextMenu::AddSpellCheckServiceItem(ui::SimpleMenuModel* menu,
 
 void RenderViewContextMenu::AddAccessibilityLabelsServiceItem(bool is_checked) {
   // Suppress adding "Get image descriptions from Brave"
+}
+
+std::u16string RenderViewContextMenu::FormatURLForClipboard(const GURL& url) {
+  std::u16string text =
+      RenderViewContextMenu_Chromium::FormatURLForClipboard(url);
+  brave_utils::ReplaceChromeToBraveScheme(text);
+  return text;
 }
 
 void RenderViewContextMenu::AppendDeveloperItems() {

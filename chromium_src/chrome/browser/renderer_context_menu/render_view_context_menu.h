@@ -39,7 +39,15 @@ using RenderViewContextMenu_BraveImpl = RenderViewContextMenu;
   static void RegisterMenuShownCallbackForTesting_unused
 #define AppendReadAnythingItem virtual AppendReadAnythingItem
 #define AppendDeveloperItems virtual AppendDeveloperItems
+// The upstream declaration is `static std::u16string
+// FormatURLForClipboard(...)`. `static` and `virtual` can't coexist, so the
+// leading `static std::u16string` is used to declare an unused method, and
+// the real declaration is re-emitted as non-static and virtual.
+#define FormatURLForClipboard                          \
+  UnusedFormatURLForClipboardMethod() { return {}; }    \
+  virtual std::u16string FormatURLForClipboard
 #include <chrome/browser/renderer_context_menu/render_view_context_menu.h>  // IWYU pragma: export
+#undef FormatURLForClipboard
 #undef AppendDeveloperItems
 #undef AppendReadAnythingItem
 #undef RegisterMenuShownCallbackForTesting
@@ -96,6 +104,10 @@ class RenderViewContextMenu : public RenderViewContextMenu_Chromium
   // RenderViewContextMenuBase:
   void InitMenu() override;
   void NotifyMenuShown() override;
+
+  // Rewrites chrome:// to brave:// so links/images copied from WebUI pages
+  // reflect the scheme shown in the address bar.
+  std::u16string FormatURLForClipboard(const GURL& url) override;
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   void BuildEmailAliasesMenu();
