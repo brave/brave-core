@@ -184,8 +184,8 @@
   <message name="IDS_IDC_SHOW_PAYMENT_METHODS">
     Show payment methods
   </message>
-  <message name="IDS_IDC_SHOW_ADDRESSES">
-    Show addresses
+  <message name="IDS_IDC_SHOW_CONTACT_INFO">
+    Show contact info
   </message>
   <message name="IDS_IDC_FIND_NEXT">
     Find next
