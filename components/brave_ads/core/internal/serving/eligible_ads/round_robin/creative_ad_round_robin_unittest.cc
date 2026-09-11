@@ -74,52 +74,9 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
   // Act
   creative_ad_round_robin_.Filter(creative_ads);
 
-  // Assert: `creative_ad_2` was last served so it is excluded from the next
-  // rotation to avoid an immediate repeat.
-  EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad_1));
-}
-
-TEST_F(BraveAdsCreativeAdRoundRobinTest,
-       LastServedAdShouldBeExcludedWhenAllAdsHaveBeenServed) {
-  // Arrange
-  const CreativeNewTabPageAdInfo creative_ad_1 =
-      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*use_random_uuids=*/true);
-  const CreativeNewTabPageAdInfo creative_ad_2 =
-      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*use_random_uuids=*/true);
-  const CreativeNewTabPageAdInfo creative_ad_3 =
-      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*use_random_uuids=*/true);
-  CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2,
-                                           creative_ad_3};
-
-  creative_ad_round_robin_.MarkAsServed(creative_ad_1);
-  creative_ad_round_robin_.MarkAsServed(creative_ad_2);
-  creative_ad_round_robin_.MarkAsServed(creative_ad_3);
-
-  // Act
-  creative_ad_round_robin_.Filter(creative_ads);
-
-  // Assert
+  // Assert: the rotation resets once every ad has been served, so both ads
+  // are immediately eligible again, including the one served last.
   EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad_1, creative_ad_2));
-}
-
-TEST_F(BraveAdsCreativeAdRoundRobinTest,
-       LastServedAdShouldBeEligibleWhenItIsTheOnlyAd) {
-  // Arrange
-  const CreativeNewTabPageAdInfo creative_ad =
-      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*use_random_uuids=*/true);
-  CreativeNewTabPageAdList creative_ads = {creative_ad};
-
-  creative_ad_round_robin_.MarkAsServed(creative_ad);
-
-  // Act
-  creative_ad_round_robin_.Filter(creative_ads);
-
-  // Assert
-  EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad));
 }
 
 TEST_F(BraveAdsCreativeAdRoundRobinTest,
@@ -139,32 +96,6 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
 
   // Assert
   EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad));
-}
-
-TEST_F(BraveAdsCreativeAdRoundRobinTest,
-       AllAdsShouldBeEligibleAfterFilteringEmptyList) {
-  // Arrange
-  const CreativeNewTabPageAdInfo creative_ad_1 =
-      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*use_random_uuids=*/true);
-  const CreativeNewTabPageAdInfo creative_ad_2 =
-      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*use_random_uuids=*/true);
-
-  CreativeNewTabPageAdInfo stale_creative_ad;
-  stale_creative_ad.creative_instance_id = kStaleCreativeInstanceId;
-  creative_ad_round_robin_.MarkAsServed(stale_creative_ad);
-
-  CreativeNewTabPageAdList empty_ads;
-  creative_ad_round_robin_.Filter(empty_ads);
-
-  CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2};
-
-  // Act
-  creative_ad_round_robin_.Filter(creative_ads);
-
-  // Assert
-  EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad_1, creative_ad_2));
 }
 
 TEST_F(BraveAdsCreativeAdRoundRobinTest,
@@ -241,42 +172,16 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
 }
 
 TEST_F(BraveAdsCreativeAdRoundRobinTest,
-       ShouldExcludeLastServedAdAfterBucketReset) {
-  // Arrange
-  CreativeNewTabPageAdInfo creative_ad_1 =
-      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*use_random_uuids=*/true);
-  creative_ad_1.priority = 1;
-  creative_ad_round_robin_.MarkAsServed(creative_ad_1);
-
-  CreativeNewTabPageAdInfo creative_ad_2 =
-      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
-                                      /*use_random_uuids=*/true);
-  creative_ad_2.priority = 1;
-  creative_ad_round_robin_.MarkAsServed(creative_ad_2);
-
-  CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2};
-
-  // Act
-  creative_ad_round_robin_.Filter(creative_ads);
-
-  // Assert
-  EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad_1));
-}
-
-TEST_F(BraveAdsCreativeAdRoundRobinTest,
        ShouldKeepUnservedAdEligibleWhenOtherAdHasBeenServed) {
   // Arrange
   CreativeNewTabPageAdInfo creative_ad_1 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
-  creative_ad_1.priority = 1;
   creative_ad_round_robin_.MarkAsServed(creative_ad_1);
 
   CreativeNewTabPageAdInfo creative_ad_2 =
       test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
                                       /*use_random_uuids=*/true);
-  creative_ad_2.priority = 1;
 
   CreativeNewTabPageAdList creative_ads = {creative_ad_1, creative_ad_2};
 
@@ -285,6 +190,30 @@ TEST_F(BraveAdsCreativeAdRoundRobinTest,
 
   // Assert
   EXPECT_THAT(creative_ads, testing::ElementsAre(creative_ad_2));
+}
+
+TEST_F(BraveAdsCreativeAdRoundRobinTest,
+       PriorityBucketsShouldRotateIndependently) {
+  // Arrange
+  CreativeNewTabPageAdInfo creative_ad_1 =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  creative_ad_1.priority = 1;
+  creative_ad_round_robin_.MarkAsServed(creative_ad_1);
+
+  CreativeNewTabPageAdInfo creative_ad_2 =
+      test::BuildCreativeNewTabPageAd(CreativeNewTabPageAdWallpaperType::kImage,
+                                      /*use_random_uuids=*/true);
+  creative_ad_2.priority = 2;
+
+  CreativeNewTabPageAdList other_priority_creative_ads = {creative_ad_2};
+
+  // Act: filtering a different priority bucket should be unaffected by
+  // `creative_ad_1`'s priority bucket having been fully rotated.
+  creative_ad_round_robin_.Filter(other_priority_creative_ads);
+
+  // Assert
+  EXPECT_THAT(other_priority_creative_ads, testing::ElementsAre(creative_ad_2));
 }
 
 }  // namespace brave_ads

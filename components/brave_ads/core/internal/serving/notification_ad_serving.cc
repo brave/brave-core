@@ -181,6 +181,8 @@ void NotificationAdServing::GetEligibleAdsCallback(
               << creative_ad.creative_instance_id << " and a priority of "
               << creative_ad.priority);
 
+  creative_ad_round_robin_.MarkAsServed(creative_ad);
+
   ServeAd(BuildNotificationAd(creative_ad));
 }
 
@@ -225,8 +227,6 @@ void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {
     BLOG(0, "Notification ad not served: Invalid ad");
     return FailedToServeAd();
   }
-
-  creative_ad_round_robin_.MarkAsServed(ad);
 
   eligible_ads_->SetLastServedAd(ad);
 
