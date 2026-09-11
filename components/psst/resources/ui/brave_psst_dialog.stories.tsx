@@ -205,6 +205,12 @@ function createStorybookAPI(options: MockPsstDialogAPIOptions) {
 
   const { api, dialogHandler } = createPsstDialogApi(mockConsentHelper)
 
+  mockConsentHelper.reportFailedContent = async () => {
+    onReportFailedContent()
+    // Simulate the report upload completing
+    setTimeout(() => dialogHandler.onPsstErrorsReportSent(), requestDelay)
+  }
+
   mockConsentHelper.performPrivacyTuning = async (performForUids: string[]) => {
     for (const item of finalSettingsData.items) {
       // Simulate request status update

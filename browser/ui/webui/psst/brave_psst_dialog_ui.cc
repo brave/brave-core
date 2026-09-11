@@ -31,6 +31,8 @@ BravePsstDialogUI::BravePsstDialogUI(content::WebUI* web_ui)
                                              kBravePsstDialogGenerated,
                                              IDR_BRAVE_PSST_DIALOG_HTML);
   source->AddLocalizedStrings(webui::kPsstStrings);
+  source->AddString("psstReportDialogLearnMoreUrl",
+                    kPsstReportDialogLearnMoreUrl);
 }
 
 BravePsstDialogUI::~BravePsstDialogUI() = default;
