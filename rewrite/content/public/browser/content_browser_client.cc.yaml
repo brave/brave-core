@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Accept the optional WebSocket request context in the default
+      implementation.
+
+      Matches the extra CreateWebSocket parameters needed for frameless
+      SharedWorker and ServiceWorker handshakes (crbug.com/40195467).
+    regex:
+      re_pattern:
+        '(void ContentBrowserClient::CreateWebSocket\([^{}]*?)(\)\s*\{)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1,
+            std::optional<int>,
+            std::optional<url::Origin>\2

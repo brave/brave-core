@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Append optional process and initiator context to WebSocket interception.
+
+      SharedWorker and ServiceWorker WebSockets have no RenderFrameHost
+      (crbug.com/40195467), so embedders need the renderer process ID and
+      initiator origin as separate inputs. Drop this once upstream proxies
+      frameless requests itself.
+    regex:
+      re_pattern: '(\bvirtual void CreateWebSocket\([^;]*?)(\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1,
+              std::optional<int> process_id = std::nullopt,
+              std::optional<url::Origin> initiator_origin = std::nullopt\2

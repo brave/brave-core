@@ -143,8 +143,10 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
+#include "net/base/net_errors.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
+#include "services/network/public/mojom/websocket.mojom.h"
 #include "services/service_manager/public/cpp/binder_registry.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/features.h"
@@ -153,6 +155,7 @@
 #include "third_party/blink/public/mojom/webpreferences/web_preferences.mojom.h"
 #include "third_party/widevine/cdm/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "url/origin.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/hid/brave_hid_delegate.h"
@@ -283,9 +286,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/tor/onion_location_navigation_throttle.h"
 #include "brave/components/tor/pref_names.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
-#include "net/base/net_errors.h"
 #include "net/base/url_util.h"
-#include "services/network/public/mojom/websocket.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -1267,8 +1268,11 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
 }
 
 bool BraveContentBrowserClient::WillInterceptWebSocket(
-    content::RenderFrameHost* frame) {
-  return (frame != nullptr);
+    content::RenderFrameHost*) {
+  // Intercept frame and worker handshakes so they go through Brave's network
+  // request handling (e.g. ad blocking). Shared and service workers have no
+  // RenderFrameHost; see crbug.com/40195467.
+  return true;
 }
 
 template <template <typename> class T>
@@ -1280,11 +1284,14 @@ void BraveContentBrowserClient::CreateChromeWebSocket(
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
     content::ContentBrowserClient::WebSocketOptions options,
+    std::optional<int> process_id,
+    std::optional<url::Origin> initiator_origin,
     BraveProxyingWebSocket<T>* proxy) {
   if (ChromeContentBrowserClient::WillInterceptWebSocket(frame)) {
     ChromeContentBrowserClient::CreateWebSocket(
         frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
-        user_agent, std::move(handshake_client), std::move(options));
+        user_agent, std::move(handshake_client), std::move(options), process_id,
+        initiator_origin);
   } else {
     proxy->Start(std::move(handshake_client), std::move(options.header_client));
   }
@@ -1297,37 +1304,62 @@ void BraveContentBrowserClient::CreateWebSocket(
     const std::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
-    content::ContentBrowserClient::WebSocketOptions options) {
-#if BUILDFLAG(ENABLE_TOR)
+    content::ContentBrowserClient::WebSocketOptions options,
+    std::optional<int> process_id,
+    std::optional<url::Origin> initiator_origin) {
+  content::BrowserContext* browser_context = nullptr;
+  content::GlobalRenderFrameHostToken render_frame_token;
+  url::Origin request_initiator;
   if (frame) {
-    content::BrowserContext* browser_context = frame->GetBrowserContext();
-    Profile* profile = Profile::FromBrowserContext(browser_context);
-    if (!profile->IsTor() &&
-        profile->GetPrefs()->GetBoolean(tor::prefs::kOnionOnlyInTorWindows) &&
-        net::IsOnion(url)) {
+    browser_context = frame->GetBrowserContext();
+    render_frame_token = frame->GetGlobalFrameToken();
+    request_initiator = frame->GetLastCommittedOrigin();
+  } else {
+    CHECK(process_id);
+    CHECK(initiator_origin);
+    auto* process = content::RenderProcessHost::FromID(*process_id);
+    if (!process) {
+      // The initiating renderer is already gone; close the handshake rather
+      // than leaving the pipe hanging.
       mojo::Remote<network::mojom::WebSocketHandshakeClient> client(
           std::move(handshake_client));
-      client->OnFailure(std::string(), net::ERR_NAME_NOT_RESOLVED, 0);
+      client->OnFailure(std::string(), net::ERR_FAILED, 0);
       return;
     }
+    browser_context = process->GetBrowserContext();
+    request_initiator = *initiator_origin;
+  }
+
+#if BUILDFLAG(ENABLE_TOR)
+  Profile* profile = Profile::FromBrowserContext(browser_context);
+  if (!profile->IsTor() &&
+      profile->GetPrefs()->GetBoolean(tor::prefs::kOnionOnlyInTorWindows) &&
+      net::IsOnion(url)) {
+    mojo::Remote<network::mojom::WebSocketHandshakeClient> client(
+        std::move(handshake_client));
+    client->OnFailure(std::string(), net::ERR_NAME_NOT_RESOLVED, 0);
+    return;
   }
 #endif
 
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     auto* proxy = BraveProxyingWebSocket<base::WeakPtr>::ProxyWebSocket(
-        frame, std::move(factory), url, site_for_cookies, user_agent);
+        browser_context, render_frame_token, request_initiator,
+        std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<base::WeakPtr>(
         frame, url, site_for_cookies, user_agent, std::move(handshake_client),
-        std::move(options), proxy);
+        std::move(options), process_id, initiator_origin, proxy);
   } else {
     // Ignore shared_ptr presubmit error, this is old code we are trying to
     // convert to unique_ptr/WeakPtr
     auto* proxy =
         BraveProxyingWebSocket<std::shared_ptr>::ProxyWebSocket(  // nocheck
-            frame, std::move(factory), url, site_for_cookies, user_agent);
+            browser_context, render_frame_token, request_initiator,
+            std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<std::shared_ptr>(  // nocheck
         frame, url, site_for_cookies,        // nocheck
-        user_agent, std::move(handshake_client), std::move(options), proxy);
+        user_agent, std::move(handshake_client), std::move(options), process_id,
+        initiator_origin, proxy);
   }
 }
 
