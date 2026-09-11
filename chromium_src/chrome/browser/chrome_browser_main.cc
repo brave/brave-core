@@ -6,9 +6,16 @@
 #include "chrome/browser/chrome_browser_main.h"
 
 #include "brave/browser/brave_browser_process_impl.h"
+#include "brave/browser/updater/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/metrics/chrome_browser_main_extra_parts_metrics.h"
 #include "chrome/browser/profiles/chrome_browser_main_extra_parts_profiles.h"
+
+// Used by the plaster on PromptUpdaterPromotion() at
+// brave/rewrite/chrome/browser/chrome_browser_main.cc.yaml.
+#if BUILDFLAG(ENABLE_OMAHA4)
+#include "brave/browser/updater/features.h"
+#endif  // BUILDFLAG(ENABLE_OMAHA4)
 
 #if BUILDFLAG(IS_MAC)
 #include "brave/browser/brave_browser_main_parts_mac.h"
