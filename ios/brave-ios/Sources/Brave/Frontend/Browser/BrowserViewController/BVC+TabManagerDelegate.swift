@@ -27,6 +27,9 @@ extension BrowserViewController: TabManagerDelegate {
     }
     if !FeatureList.kUseProfileWebViewConfiguration.enabled {
       tab.youtubeQualityTabHelper = .init(tab: tab)
+      if !tab.isPrivate {
+        tab.adsTextContentTabHelper = .init(tab: tab, rewards: rewards)
+      }
     }
     SnackBarTabHelper.create(for: tab)
     tab.braveUserAgentExceptions = braveCore.braveUserAgentExceptions
