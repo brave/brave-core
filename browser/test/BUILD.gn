@@ -19,6 +19,7 @@ if (!is_android) {
       "disabled_features/reporting_observer_browsertest.cc",
       "disabled_features/window_name_browsertest.cc",
       "document_location_browsertest.cc",
+      "webui_service_worker_browsertest.cc",
     ]
 
     deps = [
@@ -33,6 +34,8 @@ if (!is_android) {
       "//chrome/test:test_support_ui",
       "//content/public/browser",
       "//content/test:test_support",
+      "//third_party/blink/public/common",
+      "//ui/webui",
       "//ui/webui:test_support",
     ]
 
