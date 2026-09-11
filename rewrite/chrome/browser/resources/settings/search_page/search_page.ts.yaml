@@ -4,12 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
+  - description: >-
       Free `settings-search-page` for the Brave subclass to register.
-
-      chromium_src/.../search_page/search_page.ts subclasses
-      SettingsSearchPageElement to add Brave's search engine settings, and
-      registers that subclass under the same tag. A tag can only be registered
-      once, so upstream's own registration has to go.
     drop_custom_element_registration:
       class_name: SettingsSearchPageElement

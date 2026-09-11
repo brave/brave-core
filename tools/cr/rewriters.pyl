@@ -749,21 +749,19 @@ has:
         # claimed is left free for a Brave subclass in `chromium_src/` to
         # register instead.
         #
-        # `lead` is the whitespace before the statement that belongs to the
-        # line(s) it occupies -- its own indentation, the newline ending the
-        # line above, and, when the registration is the file's last statement,
-        # the blank line that separated it. Consuming it is what makes the
-        # statement's line(s) go away whole instead of leaving an empty line, or
-        # a trailing blank one at the end of the file, behind. The frontend
-        # rewriter reads it off the match, since how much of it there is depends
-        # on the source rather than on the caller. The newline *after* the
-        # statement is deliberately kept: it becomes the terminator of whichever
-        # line is now last.
+        # `consume_after` folds in the newline ending the statement's line, so
+        # the line goes away whole rather than being left behind empty. The
+        # blank line above the statement is deliberately kept: it is context
+        # separating the code that remains, and a patch that removed an empty
+        # line at a hunk boundary would trip `patches/PRESUBMIT.py`. A
+        # registration that is the last line of a file with no trailing newline
+        # has no `\n` to consume and is reported as an unmatched count rather
+        # than rewritten -- Chromium sources always end in one.
         "ts.drop_custom_element_registration": {
             "matcher": "ts.find_custom_element_registration",
-            "inputs": ["class_name", "lead"],
+            "inputs": ["class_name"],
             "replace": {
-                "consume_before": "{lead}",
+                "consume_after": "\n",
                 "re_pattern": "(?s)^.+$",
                 "replace": "",
             },

@@ -18,12 +18,7 @@ substitutions:
       replace: |
         \1import 'chrome://resources/brave/polymer_overriding.js';
 
-  - description: |
+  - description: >-
       Free `profile-customization-app` for the Brave subclass to register.
-
-      chromium_src/.../profile_customization/profile_customization_app.ts
-      subclasses ProfileCustomizationAppElement to confirm the dialog on Enter,
-      and registers that subclass under the same tag. A tag can only be
-      registered once, so upstream's own registration has to go.
     drop_custom_element_registration:
       class_name: ProfileCustomizationAppElement

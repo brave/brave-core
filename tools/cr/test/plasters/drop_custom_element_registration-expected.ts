@@ -17,3 +17,4 @@ declare global {
     'settings-search-page': SettingsSearchPageElement;
   }
 }
+
