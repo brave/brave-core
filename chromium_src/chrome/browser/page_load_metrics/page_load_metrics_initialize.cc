@@ -15,8 +15,9 @@
 
 // Forward-declared to avoid adding a compile-time dependency.
 // impl target is //brave/browser/misc_metrics:misc_metrics_impl.
+// Returns a nullptr for non-regular profile.
 std::unique_ptr<page_load_metrics::PageLoadMetricsObserverInterface>
-BraveCreateCaptchaPageLoadMetricsObserver();
+BraveCreateCaptchaPageLoadMetricsObserver(Profile* profile);
 
 namespace {
 
@@ -51,11 +52,8 @@ void BravePageLoadMetricsEmbedder::RegisterObservers(
 
   auto* profile =
       Profile::FromBrowserContext(web_contents()->GetBrowserContext());
-  // Capture metrics only in regular mode.
-  if (profile && profile->IsRegularProfile()) {
-    if (auto observer = BraveCreateCaptchaPageLoadMetricsObserver()) {
-      tracker->AddObserver(std::move(observer));
-    }
+  if (auto observer = BraveCreateCaptchaPageLoadMetricsObserver(profile)) {
+    tracker->AddObserver(std::move(observer));
   }
 }
 

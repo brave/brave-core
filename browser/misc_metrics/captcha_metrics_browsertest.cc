@@ -144,7 +144,7 @@ class CaptchaMetricsBrowserTest : public CaptchaMetricsBrowserTestBase {
         kMiscMetricsCaptchaLastRecordTime, base::Time::Now() - base::Days(1));
     g_brave_browser_process->process_misc_metrics()
         ->captcha_metrics()
-        ->ReportCounts();
+        ->ReportToP3AIfPossible();
   }
 
  protected:

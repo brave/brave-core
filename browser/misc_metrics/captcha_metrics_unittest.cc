@@ -12,8 +12,30 @@
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace misc_metrics {
+
+namespace {
+
+GURL GoogleCaptchaUrl() {
+  return GURL("https://www.google.com/recaptcha/api2/anchor");
+}
+
+GURL CloudflareCaptchaUrl() {
+  return GURL(
+      "https://challenges.cloudflare.com/cdn-cgi/challenge-platform/turnstile");
+}
+
+GURL HCaptchaUrl() {
+  return GURL("https://www.hcaptcha.com/captcha/index.html");
+}
+
+GURL NonCaptchaUrl() {
+  return GURL("https://example.com/simple.html");
+}
+
+}  // namespace
 
 class CaptchaMetricsTest : public testing::Test {
  public:
@@ -23,6 +45,7 @@ class CaptchaMetricsTest : public testing::Test {
   void SetUp() override {
     CaptchaMetrics::RegisterPrefs(pref_service_.registry());
     metrics_ = std::make_unique<CaptchaMetrics>(&pref_service_);
+    metrics_->EnsureDefaultCaptchaProviders();
 
     // Construction sets last-report time to t=0 without emitting. Events
     // recorded at t=0 would be dropped when the timer fires at t=24h
@@ -38,8 +61,8 @@ class CaptchaMetricsTest : public testing::Test {
     histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
   }
 
-  void RecordCaptcha(CaptchaProvider provider) {
-    metrics_->RecordCaptcha(provider);
+  void MaybeRecordCaptchaForUrl(const GURL& url) {
+    metrics_->MaybeRecordCaptchaForUrl(url);
   }
 
  protected:
@@ -54,10 +77,16 @@ TEST_F(CaptchaMetricsTest, DoesNotReportOnConstruction) {
 }
 
 TEST_F(CaptchaMetricsTest, DoesNotReportUntilInterval) {
-  RecordCaptcha(CaptchaProvider::kGoogle);
-  RecordCaptcha(CaptchaProvider::kCloudflare);
-  RecordCaptcha(CaptchaProvider::kHCaptcha);
-  RecordCaptcha(CaptchaProvider::kOther);
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
+  MaybeRecordCaptchaForUrl(CloudflareCaptchaUrl());
+  MaybeRecordCaptchaForUrl(HCaptchaUrl());
+
+  ExpectNoSamples();
+}
+
+TEST_F(CaptchaMetricsTest, DoesNotRecordNonCaptchaUrl) {
+  MaybeRecordCaptchaForUrl(NonCaptchaUrl());
+  task_environment_.FastForwardBy(base::Days(1));
 
   ExpectNoSamples();
 }
@@ -71,7 +100,7 @@ TEST_F(CaptchaMetricsTest, DoesNotRereportOnRestartWithinInterval) {
 TEST_F(CaptchaMetricsTest, BucketsDailyCounts) {
   auto record_and_report = [this](int count) {
     for (int i = 0; i < count; ++i) {
-      RecordCaptcha(CaptchaProvider::kOther);
+      MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
     }
     task_environment_.FastForwardBy(base::Days(1));
   };
@@ -106,15 +135,14 @@ TEST_F(CaptchaMetricsTest, BucketsDailyCounts) {
 }
 
 TEST_F(CaptchaMetricsTest, RecordsProviderCounts) {
-  RecordCaptcha(CaptchaProvider::kGoogle);
-  RecordCaptcha(CaptchaProvider::kGoogle);
-  RecordCaptcha(CaptchaProvider::kCloudflare);
-  RecordCaptcha(CaptchaProvider::kHCaptcha);
-  RecordCaptcha(CaptchaProvider::kOther);
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
+  MaybeRecordCaptchaForUrl(CloudflareCaptchaUrl());
+  MaybeRecordCaptchaForUrl(HCaptchaUrl());
 
   task_environment_.FastForwardBy(base::Days(1));
 
-  // total=5 → 3-5, google=2, cloudflare=1, hcaptcha=1
+  // total=4 → 3-5, google=2, cloudflare=1, hcaptcha=1
   histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 3, 1);
   histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 2, 1);
   histogram_tester_.ExpectBucketCount(kCaptchaCloudflareCountHistogramName, 1,
@@ -124,7 +152,7 @@ TEST_F(CaptchaMetricsTest, RecordsProviderCounts) {
 
 TEST_F(CaptchaMetricsTest, ExpiresAfterOneDay) {
   for (int i = 0; i < 6; ++i) {
-    RecordCaptcha(CaptchaProvider::kGoogle);
+    MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
   }
   task_environment_.FastForwardBy(base::Days(1));
   histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 4, 1);

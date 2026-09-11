@@ -14,6 +14,7 @@
 class GURL;
 class PrefRegistrySimple;
 class PrefService;
+class Profile;
 
 namespace page_load_metrics {
 class PageLoadMetricsObserverInterface;
@@ -30,13 +31,6 @@ inline constexpr char kCaptchaCloudflareCountHistogramName[] =
 inline constexpr char kCaptchaHCaptchaCountHistogramName[] =
     "Brave.CaptchaCount.hCaptcha";
 
-enum class CaptchaProvider {
-  kOther = 0,
-  kGoogle = 1,
-  kCloudflare = 2,
-  kHCaptcha = 3
-};
-
 // This class provides the back-end implementation to record a captcha metrics
 // once the captcha was detected by the BraveCaptchaPageLoadMetricsObserver.
 class CaptchaMetrics {
@@ -51,26 +45,26 @@ class CaptchaMetrics {
   // Registers the captcha related prefs to store the histogram count.
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
-  // Returns a page-load observer when captcha metrics collection is enabled.
+  // Returns a page-load observer when captcha metrics collection is enabled
+  // and |profile| is a regular profile. Returns nullptr otherwise.
   static std::unique_ptr<page_load_metrics::PageLoadMetricsObserverInterface>
-  CreatePageLoadMetricsObserver();
+  CreatePageLoadMetricsObserver(Profile* profile);
 
  private:
   friend class BraveCaptchaPageLoadMetricsObserver;
   friend class CaptchaMetricsBrowserTest;
   friend class CaptchaMetricsTest;
 
-  // Records a captcha for |provider| in the dictionary pref. Does not emit P3A.
-  void RecordCaptcha(CaptchaProvider provider);
+  // Seeds CaptchaProviderManager with Chromium's URL patterns when empty.
+  static void EnsureDefaultCaptchaProviders();
 
   // Records a captcha if |url| matches a known provider. Does not emit P3A.
   void MaybeRecordCaptchaForUrl(const GURL& url);
 
   // Emits the last 24h counts to P3A and schedules the next report.
-  void ReportCounts();
-
-  // Seeds CaptchaProviderManager with Chromium's URL patterns when empty.
-  static void EnsureDefaultCaptchaProviders();
+  // Reports a histogram for a corresponding captcha provider iff the count was
+  // non zero.
+  void ReportToP3AIfPossible();
 
   // The timer to help schedule the next reporting.
   base::WallClockTimer report_timer_;

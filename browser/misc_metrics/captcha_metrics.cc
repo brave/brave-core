@@ -17,6 +17,7 @@
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "chrome/browser/page_load_metrics/observers/captcha_provider_manager.h"
+#include "chrome/browser/profiles/profile.h"
 #include "components/page_load_metrics/browser/page_load_metrics_observer.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -30,13 +31,13 @@ namespace misc_metrics {
 namespace {
 
 // Keys to the dictionary pref.
-inline constexpr char kMiscMetricsCaptchaCount[] =
+inline constexpr char kMiscMetricsCaptchaCountPref[] =
     "brave.misc_metrics.captcha_count";
-inline constexpr char kMiscMetricsCaptchaGoogleCount[] =
+inline constexpr char kMiscMetricsCaptchaGoogleCountPref[] =
     "brave.misc_metrics.captcha_google_count";
-inline constexpr char kMiscMetricsCaptchaCloudflareCount[] =
+inline constexpr char kMiscMetricsCaptchaCloudflareCountPref[] =
     "brave.misc_metrics.captcha_cloudflare_count";
-inline constexpr char kMiscMetricsCaptchaHCaptchaCount[] =
+inline constexpr char kMiscMetricsCaptchaHCaptchaCountPref[] =
     "brave.misc_metrics.captcha_hcaptcha_count";
 
 constexpr base::TimeDelta kReportInterval = base::Days(1);
@@ -51,11 +52,7 @@ class BraveCaptchaPageLoadMetricsObserver
   explicit BraveCaptchaPageLoadMetricsObserver(CaptchaMetrics* captcha_metrics)
       : captcha_metrics_(captcha_metrics) {}
 
-  const char* GetObserverName() const override {
-    static const char kName[] = "BraveCaptchaPageLoadMetricsObserver";
-    return kName;
-  }
-
+ private:
   ObservePolicy OnPrerenderStart(content::NavigationHandle*,
                                  const GURL&) override {
     // Brave disables prerender. If this runs, captcha metrics need a real
@@ -99,25 +96,29 @@ class BraveCaptchaPageLoadMetricsObserver
 
     captcha_metrics_->MaybeRecordCaptchaForUrl(navigation_handle->GetURL());
   }
-
- private:
   raw_ptr<CaptchaMetrics> captcha_metrics_;
 };
 
 CaptchaMetrics::CaptchaMetrics(PrefService* local_state)
     : local_state_(local_state) {
-  ReportCounts();
+  ReportToP3AIfPossible();
 }
 
 CaptchaMetrics::~CaptchaMetrics() = default;
 
+// static
 void CaptchaMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kMiscMetricsCaptchaDictionaryPref, {});
   registry->RegisterTimePref(kMiscMetricsCaptchaLastRecordTime, {});
 }
 
+// static
 std::unique_ptr<page_load_metrics::PageLoadMetricsObserverInterface>
-CaptchaMetrics::CreatePageLoadMetricsObserver() {
+CaptchaMetrics::CreatePageLoadMetricsObserver(Profile* profile) {
+  if (!profile || !profile->IsRegularProfile()) {
+    return nullptr;
+  }
+
   if (!g_brave_browser_process ||
       !g_brave_browser_process->process_misc_metrics() ||
       !g_brave_browser_process->process_misc_metrics()->captcha_metrics()) {
@@ -129,6 +130,7 @@ CaptchaMetrics::CreatePageLoadMetricsObserver() {
       g_brave_browser_process->process_misc_metrics()->captcha_metrics());
 }
 
+// static
 void CaptchaMetrics::EnsureDefaultCaptchaProviders() {
   auto* manager = page_load_metrics::CaptchaProviderManager::GetInstance();
   if (!manager->empty()) {
@@ -150,35 +152,10 @@ void CaptchaMetrics::EnsureDefaultCaptchaProviders() {
   });
 }
 
-void CaptchaMetrics::RecordCaptcha(CaptchaProvider provider) {
+void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url) {
   // ScopedDictPrefUpdate needs to be run on UI thread.
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  ScopedDictPrefUpdate update(local_state_, kMiscMetricsCaptchaDictionaryPref);
-  auto increment = [&update](const char* key) {
-    update->Set(key, update->FindInt(key).value_or(0) + 1);
-  };
-
-  increment(kMiscMetricsCaptchaCount);
-
-  switch (provider) {
-    case CaptchaProvider::kGoogle:
-      increment(kMiscMetricsCaptchaGoogleCount);
-      return;
-    case CaptchaProvider::kCloudflare:
-      increment(kMiscMetricsCaptchaCloudflareCount);
-      return;
-    case CaptchaProvider::kHCaptcha:
-      increment(kMiscMetricsCaptchaHCaptchaCount);
-      return;
-    case CaptchaProvider::kOther:
-      return;
-  }
-
-  NOTREACHED();
-}
-
-void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url) {
   std::optional<page_load_metrics::CaptchaProvider> captcha_provider =
       page_load_metrics::CaptchaProviderManager::GetInstance()
           ->GetCaptchaProviderForUrl(url);
@@ -186,24 +163,31 @@ void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url) {
     return;
   }
 
-  CaptchaProvider provider = CaptchaProvider::kOther;
+  ScopedDictPrefUpdate update(local_state_, kMiscMetricsCaptchaDictionaryPref);
+  auto increment = [&update](const char* key) {
+    update->Set(key, update->FindInt(key).value_or(0) + 1);
+  };
+
+  increment(kMiscMetricsCaptchaCountPref);
+
   switch (*captcha_provider) {
     case page_load_metrics::CaptchaProvider::kReCaptcha:
-      provider = CaptchaProvider::kGoogle;
-      break;
+      increment(kMiscMetricsCaptchaGoogleCountPref);
+      return;
     case page_load_metrics::CaptchaProvider::kCloudflareTurnstile:
-      provider = CaptchaProvider::kCloudflare;
-      break;
+      increment(kMiscMetricsCaptchaCloudflareCountPref);
+      return;
     case page_load_metrics::CaptchaProvider::kHCaptcha:
-      provider = CaptchaProvider::kHCaptcha;
-      break;
+      increment(kMiscMetricsCaptchaHCaptchaCountPref);
+      return;
     case page_load_metrics::CaptchaProvider::kUnknown:
-      break;
+      return;
   }
-  RecordCaptcha(provider);
+
+  NOTREACHED();
 }
 
-void CaptchaMetrics::ReportCounts() {
+void CaptchaMetrics::ReportToP3AIfPossible() {
   base::Time now = base::Time::Now();
   base::Time last_recorded_time =
       local_state_->GetTime(kMiscMetricsCaptchaLastRecordTime);
@@ -215,7 +199,7 @@ void CaptchaMetrics::ReportCounts() {
   if (!last_recorded_time.is_null() &&
       now - last_recorded_time < kReportInterval) {
     report_timer_.Start(FROM_HERE, last_recorded_time + kReportInterval, this,
-                        &CaptchaMetrics::ReportCounts);
+                        &CaptchaMetrics::ReportToP3AIfPossible);
     return;
   }
 
@@ -224,26 +208,27 @@ void CaptchaMetrics::ReportCounts() {
   // captchas were seen.
   const base::DictValue& counts =
       local_state_->GetDict(kMiscMetricsCaptchaDictionaryPref);
-  const int total_captchas =
-      counts.FindInt(kMiscMetricsCaptchaCount).value_or(0);
 
   // Record only if the metric actually has a non zero value.
-  auto maybe_record = [](std::string_view histogram_name, const int value) {
+  auto maybe_record = [](const char* histogram_name, const int value) {
     if (value > 0) {
-      p3a_utils::RecordToHistogramBucket(histogram_name.data(),
-                                         kCaptchaCountBuckets, value);
+      p3a_utils::RecordToHistogramBucket(histogram_name, kCaptchaCountBuckets,
+                                         value);
     }
   };
 
   if (!last_recorded_time.is_null()) {
-    maybe_record(kCaptchaTotalCountHistogramName, total_captchas);
-    maybe_record(kCaptchaGoogleCountHistogramName,
-                 counts.FindInt(kMiscMetricsCaptchaGoogleCount).value_or(0));
+    maybe_record(kCaptchaTotalCountHistogramName,
+                 counts.FindInt(kMiscMetricsCaptchaCountPref).value_or(0));
+    maybe_record(
+        kCaptchaGoogleCountHistogramName,
+        counts.FindInt(kMiscMetricsCaptchaGoogleCountPref).value_or(0));
     maybe_record(
         kCaptchaCloudflareCountHistogramName,
-        counts.FindInt(kMiscMetricsCaptchaCloudflareCount).value_or(0));
-    maybe_record(kCaptchaHCaptchaCountHistogramName,
-                 counts.FindInt(kMiscMetricsCaptchaHCaptchaCount).value_or(0));
+        counts.FindInt(kMiscMetricsCaptchaCloudflareCountPref).value_or(0));
+    maybe_record(
+        kCaptchaHCaptchaCountHistogramName,
+        counts.FindInt(kMiscMetricsCaptchaHCaptchaCountPref).value_or(0));
     // Re-initialize the dict.
     local_state_->ClearPref(kMiscMetricsCaptchaDictionaryPref);
   }
@@ -251,12 +236,12 @@ void CaptchaMetrics::ReportCounts() {
   // Update the last recorded time to now, and start the timer.
   local_state_->SetTime(kMiscMetricsCaptchaLastRecordTime, now);
   report_timer_.Start(FROM_HERE, now + kReportInterval, this,
-                      &CaptchaMetrics::ReportCounts);
+                      &CaptchaMetrics::ReportToP3AIfPossible);
 }
 
 }  // namespace misc_metrics
 
 std::unique_ptr<page_load_metrics::PageLoadMetricsObserverInterface>
-BraveCreateCaptchaPageLoadMetricsObserver() {
-  return misc_metrics::CaptchaMetrics::CreatePageLoadMetricsObserver();
+BraveCreateCaptchaPageLoadMetricsObserver(Profile* profile) {
+  return misc_metrics::CaptchaMetrics::CreatePageLoadMetricsObserver(profile);
 }
