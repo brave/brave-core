@@ -6,14 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_RENDERER_BRAVE_SEARCH_SERVICE_WORKER_HOLDER_H_
 #define BRAVE_COMPONENTS_BRAVE_SEARCH_RENDERER_BRAVE_SEARCH_SERVICE_WORKER_HOLDER_H_
 
-#include "base/memory/raw_ptr.h"
 #include "v8/include/v8.h"
 
 class GURL;
 
 namespace blink {
 class WebServiceWorkerContextProxy;
-class ThreadSafeBrowserInterfaceBrokerProxy;
 }  // namespace blink
 
 namespace brave_search {
@@ -27,8 +25,6 @@ class BraveSearchServiceWorkerHolder {
       const BraveSearchServiceWorkerHolder&) = delete;
   ~BraveSearchServiceWorkerHolder();
 
-  void SetBrowserInterfaceBrokerProxy(
-      blink::ThreadSafeBrowserInterfaceBrokerProxy* broker);
   void WillEvaluateServiceWorkerOnWorkerThread(
       blink::WebServiceWorkerContextProxy* context_proxy,
       v8::Local<v8::Context> v8_context,
@@ -40,10 +36,6 @@ class BraveSearchServiceWorkerHolder {
       int64_t service_worker_version_id,
       const GURL& service_worker_scope,
       const GURL& script_url);
-
- private:
-  raw_ptr<blink::ThreadSafeBrowserInterfaceBrokerProxy> broker_ =
-      nullptr;  // not owned
 };
 
 }  // namespace brave_search
