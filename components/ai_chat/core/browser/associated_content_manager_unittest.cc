@@ -57,6 +57,16 @@ class MockAIChatCredentialManager : public AIChatCredentialManager {
   MOCK_METHOD(void, PutCredentialInCache, (CredentialCacheEntry), (override));
 };
 
+// Like a content tool, whose mangled name the model calls it by and whose
+// display name the website tools dialog lists it by must not be interchanged.
+class MangledNameTool : public MockTool {
+ public:
+  MangledNameTool() : MockTool("web_shop_cancel_cart") {}
+  ~MangledNameTool() override = default;
+
+  std::string_view DisplayName() const override { return "cancel_cart"; }
+};
+
 // Stands in for an open conversation UI, recording the tool lists the browser
 // pushes to it.
 class TestConversationUI : public mojom::ConversationUI {
@@ -764,14 +774,14 @@ TEST_F(AssociatedContentManagerUnitTest, GetToolInfos_ReportsToolPermissions) {
   EXPECT_EQ(mojom::ToolPermission::kAsk, initial.Get()[1]->permission);
 
   manager->SetToolPermission(content.uuid(), "browse_store",
-                             mojom::ToolPermission::kAlwaysAllow);
+                             mojom::ToolPermission::kAllowSession);
   manager->SetToolPermission(content.uuid(), "cancel_cart",
                              mojom::ToolPermission::kNeverAllow);
 
   base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> updated;
   manager->GetToolInfos(content.uuid(), updated.GetCallback());
   ASSERT_EQ(2u, updated.Get().size());
-  EXPECT_EQ(mojom::ToolPermission::kAlwaysAllow, updated.Get()[0]->permission);
+  EXPECT_EQ(mojom::ToolPermission::kAllowSession, updated.Get()[0]->permission);
   EXPECT_EQ(mojom::ToolPermission::kNeverAllow, updated.Get()[1]->permission);
 
   // Blocked tools stay listed in the dialog, so the choice can be undone.
@@ -838,7 +848,7 @@ TEST_F(AssociatedContentManagerUnitTest,
   auto* manager = conversation_handler_->associated_content_manager();
   manager->AddContent(&content);
   manager->SetToolPermission(content.uuid(), "browse_store",
-                             mojom::ToolPermission::kAlwaysAllow);
+                             mojom::ToolPermission::kAllowSession);
 
   base::test::TestFuture<void> done;
   manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
@@ -847,9 +857,66 @@ TEST_F(AssociatedContentManagerUnitTest,
   EXPECT_THAT(applied,
               ::testing::UnorderedElementsAre(
                   std::pair<const std::string, mojom::ToolPermission>(
-                      "browse_store", mojom::ToolPermission::kAlwaysAllow),
+                      "browse_store", mojom::ToolPermission::kAllowSession),
                   std::pair<const std::string, mojom::ToolPermission>(
                       "cancel_cart", mojom::ToolPermission::kAsk)));
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermissionForModelToolName_RecordsAgainstTheDisplayName) {
+  // A challenge is answered against the mangled name the model called the tool
+  // by, but the choice has to land under the name the dialog reads by.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(std::make_unique<NiceMock<MangledNameTool>>());
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  base::test::TestFuture<void> loaded;
+  manager->UpdateToolsForNewGenerationLoop(loaded.GetCallback());
+  ASSERT_TRUE(loaded.Wait());
+
+  manager->SetToolPermissionForModelToolName(
+      "web_shop_cancel_cart", mojom::ToolPermission::kAllowSession);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos(content.uuid(), infos.GetCallback());
+  ASSERT_EQ(1u, infos.Get().size());
+  EXPECT_EQ("cancel_cart", infos.Get()[0]->name);
+  EXPECT_EQ(mojom::ToolPermission::kAllowSession, infos.Get()[0]->permission);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermissionForModelToolName_UnknownToolIsIgnored) {
+  // Only content tools have a permission to record.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  manager->SetToolPermissionForModelToolName(
+      "semantic_history_search", mojom::ToolPermission::kAllowSession);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos(content.uuid(), infos.GetCallback());
+  ASSERT_EQ(1u, infos.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAsk, infos.Get()[0]->permission);
 }
 
 TEST_F(AssociatedContentManagerUnitTest,

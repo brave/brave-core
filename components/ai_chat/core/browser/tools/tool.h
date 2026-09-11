@@ -102,7 +102,7 @@ class Tool {
   // A decision the user has already made about this tool, so that
   // RequiresUserInteractionBeforeHandling() can skip the challenge it would
   // otherwise raise. kNeverAllow tools are withheld from the model by whoever
-  // provides them, so implementors only need to handle kAsk and kAlwaysAllow.
+  // provides them, so implementors only need to handle kAsk and kAllowSession.
   virtual void SetUserPermissionStrategy(mojom::ToolPermission permission);
 
   // Returns a human-readable, markdown-formatted description of what this

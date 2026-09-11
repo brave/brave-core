@@ -130,7 +130,7 @@ describe('WebsiteToolsModal', () => {
     await act(async () => {
       container.querySelectorAll('leo-dropdown')[0].dispatchEvent(
         Object.assign(new Event('change', { bubbles: true }), {
-          value: String(Mojom.ToolPermission.kAlwaysAllow),
+          value: String(Mojom.ToolPermission.kAllowSession),
         }),
       )
     })
@@ -138,7 +138,7 @@ describe('WebsiteToolsModal', () => {
     expect(setContentToolPermission).toHaveBeenCalledWith(
       'content-uuid',
       'browse_store',
-      Mojom.ToolPermission.kAlwaysAllow,
+      Mojom.ToolPermission.kAllowSession,
     )
   })
 
@@ -167,7 +167,7 @@ describe('WebsiteToolsModal', () => {
 
     await act(async () => {
       observerRef.current!.onContentToolsChanged('content-uuid', [
-        { ...TOOLS[0], permission: Mojom.ToolPermission.kAlwaysAllow },
+        { ...TOOLS[0], permission: Mojom.ToolPermission.kAllowSession },
         TOOLS[1],
       ])
     })
@@ -175,7 +175,7 @@ describe('WebsiteToolsModal', () => {
     await waitFor(() => {
       expect(container.querySelectorAll('leo-dropdown')[0]).toHaveProperty(
         'value',
-        String(Mojom.ToolPermission.kAlwaysAllow),
+        String(Mojom.ToolPermission.kAllowSession),
       )
     })
     expect(getContentTools).toHaveBeenCalledTimes(1)

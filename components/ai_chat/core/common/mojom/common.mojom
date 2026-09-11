@@ -166,11 +166,21 @@ struct AssociatedContent {
 // The user's choice for a website-provided tool. Only affects the client's own
 // permission check - a challenge raised by the server's alignment check is
 // always shown, whatever this says. kNeverAllow withholds the tool from the
-// model entirely rather than failing it when called.
+// model entirely rather than failing it when called. kAllowSession only lasts
+// as long as the content stays attached to the conversation.
 enum ToolPermission {
   kAsk,
-  kAlwaysAllow,
+  kAllowSession,
   kNeverAllow,
+};
+
+// How the user answered a tool's permission challenge.
+enum PermissionChallengeDecision {
+  kAllowOnce,
+  // Only offered when the challenge sets |supports_allow_session|.
+  kAllowSession,
+  // Also abandons the rest of the turn's tool uses.
+  kDeny,
 };
 
 // Describes a tool for display to the user - its name and description as they
@@ -367,6 +377,10 @@ struct PermissionChallenge {
   // **https://example.com**" for website-provided (WebMCP) tools. Tools
   // must markdown-escape any untrusted values they embed.
   string? description;
+  // Whether the answer can also be recorded as the tool's standing permission,
+  // which only the tools a page exposes have. Never set for the server's
+  // alignment check, which is shown whatever the user answered before.
+  bool supports_allow_session = false;
 };
 
 struct ToolUseEvent {

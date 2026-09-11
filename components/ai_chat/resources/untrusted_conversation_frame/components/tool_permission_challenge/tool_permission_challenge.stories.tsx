@@ -65,6 +65,7 @@ export const _ToolPermissionChallenge = {
         description: args.isWebTool
           ? 'Brave AI would like to execute **get_stock_price** on **https://example.com**'
           : undefined,
+        supportsAllowSession: args.isWebTool,
       },
     }
     return (
