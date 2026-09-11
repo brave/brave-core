@@ -7,12 +7,22 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_local_ai)
 
-# The engine itself is compiled into //content/browser through
-# brave_content_browser_sources, so this target is only its tests.
+# Brave sources compiled into //content/browser through
+# brave_content_browser_sources, so this target holds only their tests.
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "brave_on_device_speech_recognition_engine_unittest.cc" ]
+  # Testing them means including headers private to //content/browser, which
+  # lists this target in its for_content_tests visibility. The check still has
+  # to be off in component builds. See //content/BUILD.gn for why.
+  if (is_component_build) {
+    check_includes = false
+  }
+
+  sources = [
+    "brave_on_device_speech_recognition_engine_unittest.cc",
+    "brave_speech_recognition_manager_impl_unittest.cc",
+  ]
 
   deps = [
     "//base",
@@ -20,10 +30,11 @@ source_set("unit_tests") {
     "//brave/components/local_ai/core:features",
     "//brave/components/local_ai/core:speech_recognition_mojom",
     "//components/speech",
+    "//content/browser:for_content_tests",
     "//content/public/browser",
-    "//content/public/common",
     "//content/test:test_support",
     "//media",
+    "//media:test_support",
     "//media/mojo/mojom:web_speech_recognition",
     "//mojo/public/cpp/bindings",
     "//services/on_device_model/public/mojom",
