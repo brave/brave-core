@@ -1045,6 +1045,10 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       map->Add<brave_wallet::mojom::CardanoProvider>(base::BindRepeating(
           &brave_wallet::BraveWalletTabHelper::BindCardanoProvider));
     }
+    if (brave_wallet::IsPolkadotDAppSupportEnabled()) {
+      map->Add<brave_wallet::mojom::PolkadotProvider>(base::BindRepeating(
+          &brave_wallet::BraveWalletTabHelper::BindPolkadotProvider));
+    }
   }
 #endif
 
