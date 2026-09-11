@@ -83,8 +83,8 @@ const SentBanner = styled.div`
 `
 
 const SentButton = styled(PsstDlgButton)`
-  --leo-color-button-background: var(--leo-color-button-success-background);
-  --leo-color-schemes-on-primary: var(--leo-color-button-success-text);
+  --leo-color-button-background: ${leo.color.button.successBackground};
+  --leo-color-schemes-on-primary: ${leo.color.button.successText}
 `
 
 export interface Props {
