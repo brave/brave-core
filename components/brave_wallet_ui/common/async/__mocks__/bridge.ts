@@ -32,6 +32,8 @@ import {
   mockEthAccount,
   mockFilecoinAccount,
   mockFilecoinMainnetNetwork,
+  mockOnRampCurrencies,
+  mockPolkadotAccount,
   mockSolanaAccount,
   mockSolanaMainnetNetwork,
 } from '../../constants/mocks'
@@ -541,7 +543,7 @@ export class MockedWalletApiProxy {
         ethDappSelectedAccount: selectedAccount,
         solDappSelectedAccount: mockSolanaAccount,
         adaDappSelectedAccount: mockCardanoAccount,
-        dotDappSelectedAccount: undefined,
+        dotDappSelectedAccount: mockPolkadotAccount,
       }
       return { allAccounts }
     },
