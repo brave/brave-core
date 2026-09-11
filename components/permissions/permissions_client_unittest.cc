@@ -40,7 +40,11 @@ TEST_F(PermissionsClientUnitTest, BraveCanBypassEmbeddingOriginCheck) {
             "test.com__"
             "addr1q8gg2r3vf9zggn48g7m8vx62rwf6warcs4k7ej8mdzmqmesj30jz7psduyk6n"
             "4n2qrud2xlv9fgj53n6ds3t8cs4fvzs05yzmz:123"),
-       ContentSettingsType::BRAVE_CARDANO}};
+       ContentSettingsType::BRAVE_CARDANO},
+      // Polkadot, like cardano, keys permissions on AccountId::unique_key.
+      {GURL("https://test.com__354_14_0_0"),
+       GURL("https://test.com__354_14_0_0:123"),
+       ContentSettingsType::BRAVE_POLKADOT}};
 
   size_t i = 0;
   for (const auto& test_case : cases) {

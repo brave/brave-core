@@ -1339,7 +1339,8 @@ void BraveWalletService::OnContentSettingChanged(
     ContentSettingsTypeSet content_type_set) {
   if (!content_type_set.Contains(ContentSettingsType::BRAVE_ETHEREUM) &&
       !content_type_set.Contains(ContentSettingsType::BRAVE_SOLANA) &&
-      !content_type_set.Contains(ContentSettingsType::BRAVE_CARDANO)) {
+      !content_type_set.Contains(ContentSettingsType::BRAVE_CARDANO) &&
+      !content_type_set.Contains(ContentSettingsType::BRAVE_POLKADOT)) {
     return;
   }
   tx_service_->RejectUnapprovedTransactionsWithoutPermission();

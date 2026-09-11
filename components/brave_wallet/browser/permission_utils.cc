@@ -56,7 +56,8 @@ bool ParseRequestingOriginInternal(permissions::RequestType type,
                                    std::string* account) {
   if (origin.opaque() || (type != permissions::RequestType::kBraveEthereum &&
                           type != permissions::RequestType::kBraveSolana &&
-                          type != permissions::RequestType::kBraveCardano)) {
+                          type != permissions::RequestType::kBraveCardano &&
+                          type != permissions::RequestType::kBravePolkadot)) {
     return false;
   }
 
@@ -70,7 +71,10 @@ bool ParseRequestingOriginInternal(permissions::RequestType type,
       pattern = "(.*)(0x[[:xdigit:]]{40})";
       break;
     case permissions::RequestType::kBraveCardano:
-      // AccountId->unique_key is used as account identifier for cardano.
+    case permissions::RequestType::kBravePolkadot:
+      // AccountId->unique_key is used as account identifier for cardano and
+      // polkadot. For polkadot this also avoids keying permissions on an
+      // address, whose SS58 encoding depends on the chain being talked to.
       pattern = "(.*)__([0-9_]+)";
       break;
     case permissions::RequestType::kBraveSolana:
@@ -112,7 +116,8 @@ std::optional<url::Origin> GetSubRequestOrigin(permissions::RequestType type,
                                                std::string_view account) {
   if (type != permissions::RequestType::kBraveEthereum &&
       type != permissions::RequestType::kBraveSolana &&
-      type != permissions::RequestType::kBraveCardano) {
+      type != permissions::RequestType::kBraveCardano &&
+      type != permissions::RequestType::kBravePolkadot) {
     return std::nullopt;
   }
   if (account.empty()) {
@@ -160,6 +165,8 @@ std::optional<blink::PermissionType> CoinTypeToPermissionType(
       return blink::PermissionType::BRAVE_SOLANA;
     case mojom::CoinType::ADA:
       return blink::PermissionType::BRAVE_CARDANO;
+    case mojom::CoinType::DOT:
+      return blink::PermissionType::BRAVE_POLKADOT;
     default:
       return std::nullopt;
   }
@@ -174,6 +181,8 @@ std::optional<permissions::RequestType> CoinTypeToPermissionRequestType(
       return permissions::RequestType::kBraveSolana;
     case mojom::CoinType::ADA:
       return permissions::RequestType::kBraveCardano;
+    case mojom::CoinType::DOT:
+      return permissions::RequestType::kBravePolkadot;
     default:
       return std::nullopt;
   }
