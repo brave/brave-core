@@ -69,6 +69,8 @@ source_set("unit_tests") {
 
   if (is_mac) {
     sources += [ "agent_launcher_mac_unittest.mm" ]
+  } else if (is_win) {
+    sources += [ "agent_launcher_win_unittest.cc" ]
   }
 
   deps = [
