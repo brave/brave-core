@@ -131,6 +131,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/security_principal.h"
+#include "content/public/browser/service_worker_version_base_info.h"
 #include "content/public/browser/site_instance.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/weak_document_ptr.h"
@@ -140,12 +141,13 @@
 #include "content/public/common/content_switches.h"
 #include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/bindings/self_owned_associated_receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "net/cookies/site_for_cookies.h"
-#include "services/service_manager/public/cpp/binder_registry.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
@@ -399,7 +401,8 @@ void BindCosmeticFiltersResources(
 
 void BindBraveSearchFallbackHost(
     content::ChildProcessId process_id,
-    mojo::PendingReceiver<brave_search::mojom::BraveSearchFallback> receiver) {
+    mojo::PendingAssociatedReceiver<brave_search::mojom::BraveSearchFallback>
+        receiver) {
   content::RenderProcessHost* render_process_host =
       content::RenderProcessHost::FromID(process_id);
   if (!render_process_host) {
@@ -409,7 +412,7 @@ void BindBraveSearchFallbackHost(
   content::BrowserContext* context = render_process_host->GetBrowserContext();
   auto* backup_results_service =
       brave_search::BackupResultsServiceFactory::GetForBrowserContext(context);
-  mojo::MakeSelfOwnedReceiver(
+  mojo::MakeSelfOwnedAssociatedReceiver(
       std::make_unique<brave_search::BraveSearchFallbackHost>(
           backup_results_service),
       std::move(receiver));
@@ -985,15 +988,19 @@ bool BraveContentBrowserClient::CanCreateWindow(
                                   opener, opener_url, target_url);
 }
 
-void BraveContentBrowserClient::ExposeInterfacesToRenderer(
-    service_manager::BinderRegistry* registry,
-    blink::AssociatedInterfaceRegistry* associated_registry,
-    content::RenderProcessHost* render_process_host) {
-  ChromeContentBrowserClient::ExposeInterfacesToRenderer(
-      registry, associated_registry, render_process_host);
-  registry->AddInterface(base::BindRepeating(&BindBraveSearchFallbackHost,
-                                             render_process_host->GetID()),
-                         content::GetUIThreadTaskRunner({}));
+void BraveContentBrowserClient::
+    RegisterAssociatedInterfaceBindersForServiceWorker(
+        const content::ServiceWorkerVersionBaseInfo&
+            service_worker_version_info,
+        blink::AssociatedInterfaceRegistry& associated_registry) {
+  ChromeContentBrowserClient::
+      RegisterAssociatedInterfaceBindersForServiceWorker(
+          service_worker_version_info, associated_registry);
+  if (brave_search::IsAllowedHost(service_worker_version_info.scope)) {
+    associated_registry.AddInterface<brave_search::mojom::BraveSearchFallback>(
+        base::BindRepeating(&BindBraveSearchFallbackHost,
+                            service_worker_version_info.process_id));
+  }
 }
 
 void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(

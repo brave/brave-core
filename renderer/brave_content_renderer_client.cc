@@ -174,8 +174,6 @@ void BraveContentRendererClient::RenderThreadStarted() {
 
   brave_observer_ = std::make_unique<BraveRenderThreadObserver>();
   content::RenderThread::Get()->AddObserver(brave_observer_.get());
-  brave_search_service_worker_holder_.SetBrowserInterfaceBrokerProxy(
-      browser_interface_broker_.get());
 }
 
 void BraveContentRendererClient::RenderFrameCreated(

@@ -171,10 +171,9 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
                        bool opener_suppressed,
                        bool* no_javascript_access) override;
 
-  void ExposeInterfacesToRenderer(
-      service_manager::BinderRegistry* registry,
-      blink::AssociatedInterfaceRegistry* associated_registry,
-      content::RenderProcessHost* render_process_host) override;
+  void RegisterAssociatedInterfaceBindersForServiceWorker(
+      const content::ServiceWorkerVersionBaseInfo& service_worker_version_info,
+      blink::AssociatedInterfaceRegistry& associated_registry) override;
 
   bool OverrideWebPreferencesAfterNavigation(
       content::WebContents* web_contents,
