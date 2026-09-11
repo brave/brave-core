@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add BraveShouldShowPermission to the base PageInfoDelegate interface.
+
+      Brave needs BraveShouldShowPermission on the base PageInfoDelegate
+      interface so components/page_info/page_info.cc (already plaster-converted
+      separately) can call it polymorphically; the declaration used to be
+      spliced in via a #define IsContentDisplayedInVrHeadset token-hijack in
+      the now-deleted chromium_src/components/page_info/page_info_delegate.h
+      shadow.
+    add_to_public:
+      class_name: PageInfoDelegate
+      code: |
+        virtual bool BraveShouldShowPermission(ContentSettingsType type) = 0;
