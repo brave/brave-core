@@ -409,10 +409,10 @@
     Addresses and more
   </message>
   <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_LABEL" desc="Label for a toggle that allows users to control whether email addresses should be automatically confirmed on supported sites." formatter_data="android_java">
-    Automatically confirm your emails
+    Automatically verify your email
   </message>
   <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_SECTION_TITLE" desc="Title for the email verification section in settings." formatter_data="android_java">
-    Verified Email
+    Verified email
   </message>
   <message name="IDS_AUTOFILL_SETTINGS_EMAIL_VERIFICATION_EMPTY_LABEL" desc="Label shown when no verified email addresses are stored." formatter_data="android_java">
     Verified email addresses will appear here
@@ -922,8 +922,8 @@
   <message name="IDS_AUTOFILL_AI_SUGGESTED_BY_GEMINI" desc="Sublabel text indicating that a suggestion is sourced from Gemini.">
     Suggested by Gemini
   </message>
-  <message name="IDS_AUTOFILL_AI_SOURCE_FROM_APP" desc="Source attribution showing which app an Autofill AI item came from. $1 is the app name (e.g. Photos, Gmail).">
-    From <ph name="APP_NAME">$1<ex>Photos</ex></ph>
+  <message name="IDS_AUTOFILL_AI_SUGGESTED_BY_GEMINI_WITH_SOURCES" desc="Header for Autofill AI personal context child menu attributing the information to source applications. $1 is the formatted list of sources with citation badges (e.g. Gmail [1] [2] · Photos [1]).">
+    Suggested by Gemini · <ph name="SOURCES">$1<ex>Gmail [1] [2] · Photos [1]</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_AI_SOURCE_APP_PHOTOS" desc="App name for Google Photos.">
     Photos
@@ -1866,9 +1866,16 @@
   <message name="IDS_SETTINGS_AUTOFILL_AI_AUTHENTICATION_TOGGLE_TITLE" desc="The title of the toggle shown in the settings page that allows managing the authentication requirement before seeings smarter form understanding settings sensitive fields, such as passport number and national id card number." formatter_data="android_java">
     Verify it’s you to autofill sensitive info
   </message>
-  <message name="IDS_AT_MEMORY_PROMO_TITLE" desc="Title of the at-memory promo bubble.">
-    Type @@ in any form to find and fill info without switching tabs
-  </message>
+  <if expr="is_macosx">
+    <message name="IDS_AT_MEMORY_PROMO_TITLE" desc="Title of the AtMemory promo bubble on macOS. '⌘ ⌘' represents pressing the Command key twice.">
+      Press ⌘ ⌘ in any form to find and fill info without switching tabs
+    </message>
+  </if>
+  <if expr="not is_macosx">
+    <message name="IDS_AT_MEMORY_PROMO_TITLE" desc="Title of the AtMemory promo bubble.">
+      Press Ctrl twice in any form to find and fill info without switching tabs
+    </message>
+  </if>
   <message name="IDS_AT_MEMORY_PROMO_DESCRIPTION" desc="Description of the at-memory promo bubble.">
     Enhanced autofill can now find and fill info — like flight numbers and appointment times — from apps like Gmail and Photos
   </message>
