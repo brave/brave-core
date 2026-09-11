@@ -1,0 +1,13 @@
+diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListEditorManager.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListEditorManager.java
+index a9f02e367e5e1f9b092533ff64f460657a0ce70f..64f3972d79daed55d4858f3946d3c31e03056ab5 100644
+--- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListEditorManager.java
++++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabListEditorManager.java
+@@ -57,7 +57,7 @@ public class TabListEditorManager {
+     private final MonotonicObservableSupplier<EdgeToEdgeController> mEdgeToEdgeSupplier;
+ 
+     private @Nullable TabListEditorCoordinator mTabListEditorCoordinator;
+-    private @Nullable List<TabListEditorAction> mTabListEditorActions;
++    protected @Nullable List<TabListEditorAction> mTabListEditorActions;
+ 
+     /**
+      * @param activity The current activity.
