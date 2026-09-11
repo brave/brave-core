@@ -19,8 +19,8 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/win/access_token.h"
-#include "brave/components/brave_vpn/app/v2/agent/branding_buildflags.h"
 #include "brave/components/brave_vpn/browser/v2/agent/agent_launcher_internal.h"
+#include "brave/components/brave_vpn/common/v2/branding_buildflags.h"
 
 namespace brave_vpn::v2::internal {
 namespace {

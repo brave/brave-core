@@ -10,8 +10,8 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/scoped_path_override.h"
-#include "brave/components/brave_vpn/app/v2/agent/branding_buildflags.h"
 #include "brave/components/brave_vpn/browser/v2/agent/agent_launcher_internal.h"
+#include "brave/components/brave_vpn/common/v2/branding_buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_vpn::v2::internal {
