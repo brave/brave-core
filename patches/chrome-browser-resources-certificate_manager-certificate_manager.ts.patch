@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/certificate_manager/certificate_manager.ts b/chrome/browser/resources/certificate_manager/certificate_manager.ts
-index ae4ab5203dc2d7f03a5affaabcda810bcea36d5b..8c6adda0cc11bedf9347abba0dba20b18bdc975a 100644
+index ae4ab5203dc2d7f03a5affaabcda810bcea36d5b..3d017d2a6ad72e865b80bb9404a7ccb3aa04e675 100644
 --- a/chrome/browser/resources/certificate_manager/certificate_manager.ts
 +++ b/chrome/browser/resources/certificate_manager/certificate_manager.ts
-@@ -481,4 +481,4 @@ declare global {
+@@ -480,5 +480,3 @@ declare global {
+     'certificate-manager': CertificateManagerElement;
    }
  }
- 
+-
 -customElements.define(CertificateManagerElement.is, CertificateManagerElement);
-+// customElements.define(CertificateManagerElement.is, CertificateManagerElement);

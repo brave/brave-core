@@ -1,9 +1,10 @@
 diff --git a/chrome/browser/resources/settings/search_page/search_page.ts b/chrome/browser/resources/settings/search_page/search_page.ts
-index 1b507bec10d4432b68e2a7b928a8951d24be4828..6a6ed258ccbff637c4e95aeebf6ecccb326b19a3 100644
+index 1b507bec10d4432b68e2a7b928a8951d24be4828..4e9e13f1300636fb2c0487e59ccdbdb19667a3ae 100644
 --- a/chrome/browser/resources/settings/search_page/search_page.ts
 +++ b/chrome/browser/resources/settings/search_page/search_page.ts
-@@ -220,4 +220,3 @@ declare global {
+@@ -219,5 +219,3 @@ declare global {
+     'settings-search-page': SettingsSearchPageElement;
    }
  }
- 
+-
 -customElements.define(SettingsSearchPageElement.is, SettingsSearchPageElement);
