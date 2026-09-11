@@ -17,11 +17,6 @@ import { Container, PsstDlgButton, RightAlignedItem } from './basic/structure'
 
 import '../strings'
 
-// Keep in sync with kPsstLearnMoreUrl in
-// brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.cc
-const PSST_LEARN_MORE_URL =
-  'https://support.brave.app/hc/en-us/articles/47405731650957'
-
 // Styled components
 const ModalTitleRow = styled.div`
   display: flex;
@@ -142,7 +137,7 @@ export const PsstReportModal: React.FC<Props> = ({
         {formatLocale(S.PSST_REPORT_DIALOG_BODY, {
           $1: (content) => (
             <a
-              href={PSST_LEARN_MORE_URL}
+              href={getLocale(S.PSST_REPORT_DIALOG_BODY_LEARN_MORE_LINK)}
               target='_blank'
               rel='noopener noreferrer'
             >

@@ -153,11 +153,6 @@ constexpr char16_t kSurveyPanelistLearnMoreURL[] =
 constexpr char16_t kExtensionsV2LearnMoreURL[] =
     u"https://brave.com/blog/brave-shields-manifest-v3/";
 
-#if BUILDFLAG(ENABLE_PSST)
-constexpr char16_t kPsstLearnMoreUrl[] =
-    u"https://support.brave.app/hc/en-us/articles/47405731650957";
-#endif
-
 constexpr char16_t kBraveAccountLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/45530506862349";
 
@@ -1285,7 +1280,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                                  kExtensionsV2LearnMoreURL));
 
 #if BUILDFLAG(ENABLE_PSST)
-  html_source->AddString("psstLearnMoreURL", kPsstLearnMoreUrl);
+  html_source->AddString(
+      "psstLearnMoreURL",
+      l10n_util::GetStringUTF16(IDS_PSST_REPORT_DIALOG_BODY_LEARN_MORE_LINK));
 #endif
   // Disabled due to crash with tab group dragging.
   // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.
