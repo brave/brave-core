@@ -33,6 +33,7 @@ import {
   mockFilecoinAccount,
   mockFilecoinMainnetNetwork,
   mockOnRampCurrencies,
+  mockPolkadotAccount,
   mockSolanaAccount,
   mockSolanaMainnetNetwork,
 } from '../../constants/mocks'
@@ -554,6 +555,7 @@ export class MockedWalletApiProxy {
         ethDappSelectedAccount: selectedAccount,
         solDappSelectedAccount: mockSolanaAccount,
         adaDappSelectedAccount: mockCardanoAccount,
+        dotDappSelectedAccount: mockPolkadotAccount,
       }
       return { allAccounts }
     },
@@ -1330,6 +1332,7 @@ export class MockedWalletApiProxy {
             BraveWallet.CoinType.DOT,
           ],
           isCardanoDappSupportEnabled: false,
+          isPolkadotDappSupportEnabled: false,
         },
       }
     },

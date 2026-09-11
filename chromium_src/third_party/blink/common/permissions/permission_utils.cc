@@ -16,13 +16,16 @@
   case PermissionType::BRAVE_SOLANA:                       \
     return "BraveSolana";                                  \
   case PermissionType::BRAVE_CARDANO:                      \
-    return "BraveCardano";
+    return "BraveCardano";                                 \
+  case PermissionType::BRAVE_POLKADOT:                     \
+    return "BravePolkadot";
 #else
 // CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_UTIL_GET_PERMISSION_STRING \
   case PermissionType::BRAVE_ETHEREUM:                     \
   case PermissionType::BRAVE_SOLANA:                       \
   case PermissionType::BRAVE_CARDANO:                      \
+  case PermissionType::BRAVE_POLKADOT:                     \
     NOTREACHED();
 #endif
 
@@ -57,13 +60,16 @@
   case PermissionType::BRAVE_SOLANA:                            \
     return network::mojom::PermissionsPolicyFeature::kSolana;   \
   case PermissionType::BRAVE_CARDANO:                           \
-    return network::mojom::PermissionsPolicyFeature::kCardano;
+    return network::mojom::PermissionsPolicyFeature::kCardano;  \
+  case PermissionType::BRAVE_POLKADOT:                          \
+    return network::mojom::PermissionsPolicyFeature::kPolkadot;
 #else
 // CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_K_DISPLAY_CAPTURE \
   case PermissionType::BRAVE_ETHEREUM: \
   case PermissionType::BRAVE_SOLANA:   \
   case PermissionType::BRAVE_CARDANO:  \
+  case PermissionType::BRAVE_POLKADOT: \
     return std::nullopt;
 #endif
 
@@ -90,13 +96,16 @@
   case PermissionName::BRAVE_SOLANA:                               \
     return PermissionType::BRAVE_SOLANA;                           \
   case PermissionName::BRAVE_CARDANO:                              \
-    return PermissionType::BRAVE_CARDANO;
+    return PermissionType::BRAVE_CARDANO;                          \
+  case PermissionName::BRAVE_POLKADOT:                             \
+    return PermissionType::BRAVE_POLKADOT;
 #else
 // CHROMIUM_SRC_INTERNAL_USE
 #define BRAVE_WALLET_PERMISSION_DESCRIPTOR_INFO_TO_PERMISSION_TYPE \
   case PermissionName::BRAVE_ETHEREUM:                             \
   case PermissionName::BRAVE_SOLANA:                               \
   case PermissionName::BRAVE_CARDANO:                              \
+  case PermissionName::BRAVE_POLKADOT:                             \
     NOTREACHED();
 #endif
 

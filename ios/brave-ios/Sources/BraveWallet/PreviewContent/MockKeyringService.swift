@@ -644,6 +644,20 @@ extension BraveWallet.AccountInfo {
     name: "Cardano Account 1",
     hardware: nil
   )
+
+  static let mockDotAccount: BraveWallet.AccountInfo = .init(
+    accountId: .init(
+      coin: .dot,
+      keyringId: BraveWallet.KeyringId.polkadotMainnet,
+      kind: .derived,
+      address: "",
+      accountIndex: 0,
+      uniqueKey: "354_14_0_0"
+    ),
+    address: "5GrwvaEF5zXb26Fz9rcQpDWS57CtERHpNehXCPcNoHGKutQY",
+    name: "Polkadot Account 1",
+    hardware: nil
+  )
 }
 
 extension BraveWallet.AllAccountsInfo {
@@ -659,6 +673,7 @@ extension BraveWallet.AllAccountsInfo {
     selectedAccount: .mockEthAccount,
     ethDappSelectedAccount: .mockEthAccount,
     solDappSelectedAccount: .mockSolAccount,
-    adaDappSelectedAccount: .mockAdaAccount
+    adaDappSelectedAccount: .mockAdaAccount,
+    dotDappSelectedAccount: .mockDotAccount
   )
 }

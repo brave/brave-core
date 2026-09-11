@@ -23,6 +23,24 @@ namespace {
 constexpr char kHardwareVendor[] = "hardware.vendor";
 constexpr char kHardwareDerivationPath[] = "hardware.derivation_path";
 constexpr char kHardwareDeviceId[] = "hardware.device_id";
+
+const char* SelectedDappAccountPrefName(mojom::CoinType dapp_coin) {
+  switch (dapp_coin) {
+    case mojom::CoinType::ETH:
+      return kBraveWalletSelectedEthDappAccount;
+    case mojom::CoinType::SOL:
+      return kBraveWalletSelectedSolDappAccount;
+    case mojom::CoinType::ADA:
+      return kBraveWalletSelectedAdaDappAccount;
+    case mojom::CoinType::DOT:
+      return kBraveWalletSelectedDotDappAccount;
+    case mojom::CoinType::BTC:
+    case mojom::CoinType::ZEC:
+    case mojom::CoinType::FIL:
+      NOTREACHED();
+  }
+  NOTREACHED();
+}
 }  // namespace
 
 std::string KeyringIdPrefString(mojom::KeyringId keyring_id) {
@@ -163,22 +181,14 @@ bool SetSelectedWalletAccountInPrefs(PrefService* profile_prefs,
 std::string GetSelectedDappAccountFromPrefs(PrefService* profile_prefs,
                                             mojom::CoinType dapp_coin) {
   CHECK(CoinSupportsDapps(dapp_coin));
-  const char* pref_name =
-      dapp_coin == mojom::CoinType::ETH   ? kBraveWalletSelectedEthDappAccount
-      : dapp_coin == mojom::CoinType::SOL ? kBraveWalletSelectedSolDappAccount
-                                          : kBraveWalletSelectedAdaDappAccount;
-
-  return profile_prefs->GetString(pref_name);
+  return profile_prefs->GetString(SelectedDappAccountPrefName(dapp_coin));
 }
 
 bool SetSelectedDappAccountInPrefs(PrefService* profile_prefs,
                                    mojom::CoinType dapp_coin,
                                    std::string_view unique_key) {
   CHECK(CoinSupportsDapps(dapp_coin));
-  const char* pref_name =
-      dapp_coin == mojom::CoinType::ETH   ? kBraveWalletSelectedEthDappAccount
-      : dapp_coin == mojom::CoinType::SOL ? kBraveWalletSelectedSolDappAccount
-                                          : kBraveWalletSelectedAdaDappAccount;
+  const char* pref_name = SelectedDappAccountPrefName(dapp_coin);
   if (unique_key == profile_prefs->GetString(pref_name)) {
     return false;
   }
