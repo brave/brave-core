@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/download/download_ui_model.cc b/chrome/browser/download/download_ui_model.cc
-index c90c8536e34c14bad1ebc200f442c3b07e6b9fb9..3f2acb0f8fe9636ac4b372979f846793a911f8cd 100644
+index 992e5cd302f041ec1258a9e6b123afd139272ec2..813d0b2dcf3ef0339b7733253219facd354a30dd 100644
 --- a/chrome/browser/download/download_ui_model.cc
 +++ b/chrome/browser/download/download_ui_model.cc
-@@ -615,6 +615,9 @@ bool DownloadUIModel::IsCommandEnabled(
+@@ -617,6 +617,9 @@ bool DownloadUIModel::IsCommandEnabled(
      case DownloadCommands::ALWAYS_OPEN_TYPE:
      case DownloadCommands::OPEN_WITH_MEDIA_APP:
      case DownloadCommands::EDIT_WITH_MEDIA_APP:
@@ -12,7 +12,7 @@ index c90c8536e34c14bad1ebc200f442c3b07e6b9fb9..3f2acb0f8fe9636ac4b372979f846793
        NOTREACHED();
      case DownloadCommands::CANCEL:
        return !IsDone();
-@@ -679,6 +682,9 @@ bool DownloadUIModel::IsCommandChecked(
+@@ -681,6 +684,9 @@ bool DownloadUIModel::IsCommandChecked(
      case DownloadCommands::CANCEL_DEEP_SCAN:
      case DownloadCommands::OPEN_WITH_MEDIA_APP:
      case DownloadCommands::EDIT_WITH_MEDIA_APP:
@@ -22,7 +22,7 @@ index c90c8536e34c14bad1ebc200f442c3b07e6b9fb9..3f2acb0f8fe9636ac4b372979f846793
        return false;
    }
    return false;
-@@ -754,6 +760,9 @@ void DownloadUIModel::ExecuteCommand(DownloadCommands* download_commands,
+@@ -756,6 +762,9 @@ void DownloadUIModel::ExecuteCommand(DownloadCommands* download_commands,
        break;
      case DownloadCommands::OPEN_WITH_MEDIA_APP:
      case DownloadCommands::EDIT_WITH_MEDIA_APP:
@@ -32,7 +32,7 @@ index c90c8536e34c14bad1ebc200f442c3b07e6b9fb9..3f2acb0f8fe9636ac4b372979f846793
  #if BUILDFLAG(IS_CHROMEOS)
        OpenUsingMediaApp();
        break;
-@@ -1099,7 +1108,7 @@ std::u16string
+@@ -1101,7 +1110,7 @@ std::u16string
  DownloadUIModel::StatusTextBuilderBase::GetCompletedRemovedOrSavedStatusText()
      const {
    if (model_->GetFileExternallyRemoved()) {

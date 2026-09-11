@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/autofill/chrome_autofill_client.h b/chrome/browser/ui/autofill/chrome_autofill_client.h
-index d67c56e16bcb7734dc6e2c74c6a40a7e829a8539..dfeb4b5905899a8ee8c036d4f7074a52601645f4 100644
+index ea61debbb1269c7b7b6bbd12566b5a89143a700f..023ccd25426ae8e89e82551f97920c9928deee26 100644
 --- a/chrome/browser/ui/autofill/chrome_autofill_client.h
 +++ b/chrome/browser/ui/autofill/chrome_autofill_client.h
 @@ -147,8 +147,7 @@ class ChromeAutofillClient : public ContentAutofillClient {
@@ -12,7 +12,7 @@ index d67c56e16bcb7734dc6e2c74c6a40a7e829a8539..dfeb4b5905899a8ee8c036d4f7074a52
    FieldClassificationModelHandler* GetAutofillFieldClassificationModelHandler()
        final;
    FieldClassificationModelHandler*
-@@ -235,12 +234,12 @@ class ChromeAutofillClient : public ContentAutofillClient {
+@@ -236,12 +235,12 @@ class ChromeAutofillClient : public ContentAutofillClient {
    bool IsTabInActorMode() const final;
    ActorAutofillManager* GetActorAutofillManager() final;
    int64_t GetNavigationId() const final;

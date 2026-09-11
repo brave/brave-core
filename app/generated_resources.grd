@@ -658,9 +658,6 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_CONTENT_CONTEXT_LIVE_CAPTION_DISABLE" desc="The name of the Live Caption command in the content area context menu to disable Live Caption">
           &amp;Disable Live Caption
         </message>
-        <message name="IDS_YOUR_SAVED_INFO_CONTACT_INFO_SUBMENU_OPTION" desc="The text label of the contact info option for the Your saved info submenu that allows user to manage their list of saved addresses and Autofill preferences for addresses.">
-          &amp;Contact info
-        </message>
 
         <message name="IDS_PASSWORDS_AND_AUTOFILL_MENU" desc="The text label of the passwords and autofill menu item">
           Passwords and &amp;autofill
@@ -684,6 +681,10 @@ are declared in tools/grit/grit_args.gni.
 
         <message name="IDS_INCOGNITO" desc="The text label for the Private button in the block header section of the App Menu">
           Private
+        </message>
+
+        <message name="IDS_ISOLATED" desc="The text label for the Isolated button in the block header section of the App Menu">
+          Isolated
         </message>
 
         <message name="IDS_PROFILE_ROW_SYNC_IS_ON" desc="The text label of a menu item that notifies the user that sync is on.">
@@ -1091,8 +1092,8 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SUGGEST_PASSWORD" desc="This is a context menu entry in the passwords submenu. It triggers password generation.">
             Suggest password...
           </message>
-          <message name="IDS_ADDRESSES_AND_MORE_SUBMENU_OPTION" desc="The text label of the addresses and more item for the passwords and autofill submenu">
-            &amp;Addresses and more
+          <message name="IDS_YOUR_SAVED_INFO_CONTACT_INFO_SUBMENU_OPTION" desc="The text label of the contact info option for the Your saved info submenu that allows user to manage their list of saved addresses and Autofill preferences for addresses.">
+            &amp;Contact info
           </message>
         </if>
         <if expr="use_titlecase">
@@ -1457,8 +1458,8 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_AUTOFILL_FALLBACK_PASSWORDS_SUGGEST_PASSWORD" desc="In Title Case: This is a context menu entry in the passwords submenu. It triggers password generation.">
             Suggest Password...
           </message>
-          <message name="IDS_ADDRESSES_AND_MORE_SUBMENU_OPTION" desc="In Title Case: The text label of the addresses and more item for the passwords and autofill submenu">
-            &amp;Addresses and More
+          <message name="IDS_YOUR_SAVED_INFO_CONTACT_INFO_SUBMENU_OPTION" desc="In Title Case: The text label of the contact info option for the Your saved info submenu that allows user to manage their list of saved addresses and Autofill preferences for addresses.">
+            &amp;Contact Info
           </message>
         </if>
 
@@ -1511,6 +1512,9 @@ are declared in tools/grit/grit_args.gni.
 
       <!-- Page menu. Android has separate strings for its menu -->
       <if expr="not is_android">
+        <message name="IDS_APP_MENU_SEARCH_PLACEHOLDER" desc="Placeholder text for the search bar in the app menu.">
+          Search menu, or type an action
+        </message>
         <message name="IDS_APP_MENU_TOOLS_AND_ACTIONS_HEADER" desc="Header title for the Tools and Actions section in the main App Menu">
           Tools and Actions
         </message>
@@ -1564,9 +1568,6 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_FIND" desc="The text label of the Find... menu item">
             &amp;Find...
-          </message>
-          <message name="IDS_PAYMENT_METHOD_SUBMENU_OPTION" desc="The text label of the payment method for the passwords and autofill submenu">
-            &amp;Payment methods
           </message>
           <message name="IDS_YOUR_SAVED_INFO_PAYMENTS_SUBMENU_OPTION" desc="The text label of the payments option for the Your saved info submenu that allows user to manage their list of saved payment methods and Autofill preferences for payment methods.">
             &amp;Payments
@@ -1672,9 +1673,6 @@ are declared in tools/grit/grit_args.gni.
             &amp;Find...
           </message>
 
-          <message name="IDS_PAYMENT_METHOD_SUBMENU_OPTION" desc="In Title Case: The text label of the payment method for the passwords and autofill submenu">
-            &amp;Payment Methods
-          </message>
           <message name="IDS_YOUR_SAVED_INFO_PAYMENTS_SUBMENU_OPTION" desc="In Title Case: The text label of the payments option for the Your saved info submenu that allows user to manage their list of saved payment methods and Autofill preferences for payment methods.">
             &amp;Payments
           </message>
@@ -1754,6 +1752,9 @@ are declared in tools/grit/grit_args.gni.
 
       <message name="IDS_NEW_INCOGNITO_TAB" desc="The text label of a menu item for opening a new private tab">
         New Private &amp;tab
+      </message>
+      <message name="IDS_NEW_ISOLATED_TAB" desc="The text label of a menu item for opening a new isolated tab">
+        New Isolated &amp;tab
       </message>
       <if expr="not use_titlecase">
         <message name="IDS_VIEW_SOURCE" desc="The text label of the View Page Source menu item">
@@ -4524,6 +4525,9 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_TASK_MANAGER_KILL" desc="The caption of the Task Manager kill button" formatter_data="android_java">
           End process
         </message>
+        <message name="IDS_TASK_MANAGER_SEARCH_HINT" desc="The placeholder text for the Task Manager search box" formatter_data="android_java">
+          Search
+        </message>
         <message name="IDS_TASK_MANAGER_KILL_V2" desc="The caption of the Task Manager kill button">
           End task
         </message>
@@ -4589,6 +4593,9 @@ are declared in tools/grit/grit_args.gni.
         </message>
         <message name="IDS_TASK_MANAGER_JAVASCRIPT_MEMORY_ALLOCATED_COLUMN" desc="Task manager JavaScript memory allocated column.  Shows the amount of memory used by JavaScript within a process">
           JavaScript memory
+        </message>
+        <message name="IDS_TASK_MANAGER_CPPGC_MEMORY_ALLOCATED_COLUMN" desc="Task manager CppGC memory allocated column.  Shows the amount of memory used by CppGC within a process">
+          CppGC memory
         </message>
         <message name="IDS_TASK_MANAGER_KEEPALIVE_COUNT_COLUMN" desc="Task manager keepalive count column.  Specific to Brave extension processes, and only to those which use 'lazy' event pages, this indicates how many activities are making use of the extension, and therefore causing it to be kept alive.">
           Keepalive count
@@ -4664,12 +4671,18 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_TASK_MANAGER_JAVASCRIPT_MEMORY_ALLOCATED_COLUMN" desc="Task manager JavaScript memory allocated column.  Shows the amount of memory used by JavaScript within a process">
           JavaScript Memory
         </message>
+        <message name="IDS_TASK_MANAGER_CPPGC_MEMORY_ALLOCATED_COLUMN" desc="Task manager CppGC memory allocated column.  Shows the amount of memory used by CppGC within a process">
+          CppGC Memory
+        </message>
         <message name="IDS_TASK_MANAGER_KEEPALIVE_COUNT_COLUMN" desc="Task manager keepalive count column.  Specific to Brave extension processes, and only to those which use 'lazy' event pages, this indicates how many activities are making use of the extension, and therefore causing it to be kept alive.">
           Keepalive Count
         </message>
       </if>
-      <message name="IDS_TASK_MANAGER_MEM_CELL_TEXT" desc="The value displayed in the memory usage cells." formatter_data="android_java">
+      <message name="IDS_TASK_MANAGER_MEM_CELL_TEXT" desc="The value displayed in the memory usage cells.">
         <ph name="NUM_KILOBYTES">$1<ex>5,000</ex></ph>K
+      </message>
+      <message name="IDS_TASK_MANAGER_MEM_CELL_MB_TEXT" desc="The value displayed in the memory usage cells in megabytes." formatter_data="android_java">
+        <ph name="NUM_MEGABYTES">%1$s<ex>50</ex></ph> MB
       </message>
       <message name="IDS_TASK_MANAGER_CACHE_SIZE_CELL_TEXT" desc="The value displayed in the cache size cells.">
         <ph name="NUM_KILOBYTES">$1<ex>5,000</ex></ph>K (<ph name="NUM_KILOBYTES_LIVE">$2<ex>5,000</ex></ph>K live)
@@ -5279,6 +5292,9 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_DEVICE_ATTRIBUTES" desc="Permission string for enterprise device attributes permission.">
           See device information, such as its serial number or asset ID
         </message>
+        <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_WEBRTC" desc="Permission string for the enterprise WebRTC diagnostics permission.">
+          See which sites you call from and when your camera or microphone is used
+        </message>
         <message name="IDS_EXTENSION_PROMPT_WARNING_ENTERPRISE_KIOSK_INPUT" desc="Permission string for enterprise kiosk input permission.">
           Change the system keyboard layout
         </message>
@@ -5690,12 +5706,6 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN_ACCESSIBLE_NAME" desc="The accessible name indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (sentence case).">
             <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> is pinned by your administrator
           </message>
-          <message name="IDS_EXTENSIONS_SUBMENU_OPEN_SIDE_PANEL_ITEM" desc="The text for the link in the extensions menu to open the side panel corresponding to the extension (sentence case).">
-            Open side panel
-          </message>
-          <message name="IDS_EXTENSIONS_SUBMENU_CLOSE_SIDE_PANEL_ITEM" desc="The text for the link in the extensions menu to close the side panel corresponding to the extension (sentence case).">
-            Close side panel
-          </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_EXTENSIONS_DISABLE" desc="The link for disabling an extension (title case).">
@@ -5719,6 +5729,19 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_EXTENSIONS_PINNED_BY_ADMIN_ACCESSIBLE_NAME" desc="The accessible name indicating that an extension has been 'pinned' to the toolbar by the controlling administrator (sentence case).">
             <ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph> is pinned by your Administrator
           </message>
+        </if>
+      </if>
+
+      <if expr="enable_extensions_core">
+        <if expr="not use_titlecase">
+          <message name="IDS_EXTENSIONS_SUBMENU_OPEN_SIDE_PANEL_ITEM" desc="The text for the link in the extensions menu to open the side panel corresponding to the extension (sentence case).">
+            Open side panel
+          </message>
+          <message name="IDS_EXTENSIONS_SUBMENU_CLOSE_SIDE_PANEL_ITEM" desc="The text for the link in the extensions menu to close the side panel corresponding to the extension (sentence case).">
+            Close side panel
+          </message>
+        </if>
+        <if expr="use_titlecase">
           <message name="IDS_EXTENSIONS_SUBMENU_OPEN_SIDE_PANEL_ITEM" desc="The text for the link in the extensions menu to open the side panel corresponding to the extension (title case).">
             Open Side Panel
           </message>
@@ -6511,6 +6534,18 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Sign in as
       </message>
 
+      <!-- Remote Actor Credential Sharing Dialog -->
+      <!-- TODO(crbug.com/558163687): Enable translations closer to launch. -->
+      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_TITLE" desc="Title of the dialog asking the user to share credentials with Gemini Spark." translateable="false">
+        Allow Gemini Spark to sign in to <ph name="DOMAIN">$1<ex>example.com</ex></ph> for you?
+      </message>
+      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_SUBTITLE" desc="Subtitle of the dialog asking the user to share credentials with Gemini Spark." translateable="false">
+        Spark can use Brave Password Manager to sign in for you. <ph name="BEGIN_LINK">$1</ph>Learn how Spark handles your data<ph name="END_LINK">$2</ph>
+      </message>
+      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_ALLOW_BUTTON" desc="Button label to allow password sharing for Gemini Spark this time." translateable="false">
+        Allow this time
+      </message>
+
       <if expr="not use_titlecase">
         <message name="IDS_PASSWORD_GENERATION_SUGGESTION_GPM" desc="Text shown next to a generated password describing it as a suggestion.">
           Use strong password
@@ -7153,6 +7188,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_OMNIBOX_EVERYWHERE_STATUS_ICON_MENU_SETTINGS" desc="Label for settings item in the Search in Brave status tray context menu.">
           Settings
         </message>
+        <message name="IDS_OMNIBOX_EVERYWHERE_STATUS_ICON_MENU_EXIT" desc="Label for quit item in the Search in Brave status tray context menu.">
+          Quit
+        </message>
       </if>
       <message name="IDS_OMNIBOX_EVERYWHERE_LENS_PROMO_BODY" desc="Body text for the promo highlighting screen sharing and Google Lens search in Omnibox Everywhere." translateable="false">
         Ask about what's on your screen
@@ -7300,40 +7338,19 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_GOOGLE_LENS_SEARCH_BOX_EMPTY_HINT" desc="The text displayed in the lens searchboxes when they are empty.">
         Search
       </message>
-      <message name="IDS_LOOMNIBOX_FRE_TITLE" desc="Title of the First Run Experience (FRE) modal for Loomnibox.">
-        Ask Brave from anywhere
-      </message>
       <message name="IDS_LOOMNIBOX_FRE_LENS_PRIMARY" desc="Primary text explaining how to use Google Lens in the Loomnibox.">
-        Use the lens button to share what’s on your screen
-      </message>
-      <message name="IDS_LOOMNIBOX_FRE_LENS_SECONDARY" desc="Secondary description detailing Google Lens functionality in Loomnibox.">
-        Add context to your question by selecting an area or your entire screen
-      </message>
-      <message name="IDS_LOOMNIBOX_FRE_KEYBOARD_PRIMARY" desc="Label instructing the user on the keyboard shortcut to open Loomnibox.">
-        Easily open with
+        Share what’s on your screen with Google Lens
       </message>
       <if expr="is_macosx">
-        <message name="IDS_LOOMNIBOX_FRE_KEYBOARD_BADGE_OPTION" desc="Key badge label for Option key on macOS.">
-          Option
+        <message name="IDS_LOOMNIBOX_FRE_WHERE_TO_FIND_PRIMARY" desc="Primary text telling macOS users where to find Search with Brave in their menu bar.">
+          Open from the Mac menu bar
         </message>
       </if>
       <if expr="not is_macosx">
-        <message name="IDS_LOOMNIBOX_FRE_KEYBOARD_BADGE_OPTION" desc="Key badge label for Alt key on Windows.">
-          Alt
+        <message name="IDS_LOOMNIBOX_FRE_WHERE_TO_FIND_PRIMARY" desc="Primary text telling Windows users where to find Search with Brave in their taskbar.">
+          Open from the Windows task bar
         </message>
       </if>
-      <message name="IDS_LOOMNIBOX_FRE_KEYBOARD_BADGE_SPACE" desc="Key badge label for Space key.">
-        Space
-      </message>
-      <message name="IDS_LOOMNIBOX_FRE_OR" desc="Conjunction 'or' separating the accept hotkey button and the custom shortcut settings link in the Loomnibox FRE modal.">
-        or
-      </message>
-      <message name="IDS_LOOMNIBOX_FRE_KEYBOARD_OPTION_EDIT_OWN" desc="Link text allowing the user to customize their own keyboard shortcut in settings.">
-        edit your own
-      </message>
-      <message name="IDS_LOOMNIBOX_FRE_ACCEPT_HOTKEY" desc="Button label allowing the user to accept the default keyboard shortcut in the Loomnibox FRE modal.">
-        Accept hotkey
-      </message>
       <message name="IDS_LOOMNIBOX_FRE_CLOSE_BUTTON_ARIA" desc="Accessibility label for the Close button on the FRE modal.">
         Close
       </message>
@@ -9820,6 +9837,25 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_READING_MODE_PRESENTATION_MODE_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="Text for the help bubble describing how to toggle reading mode from immersive mode to side panel mode.">
         Switch back to the side-by-side view by opening Settings, then View, and select Side Panel.
       </message>
+      <message name="IDS_READING_MODE_LINE_FOCUS_IPH_TITLE" desc="Title for the help bubble describing the line focus feature in Reading Mode.">
+        Try line focus
+      </message>
+      <if expr="is_macosx">
+        <message name="IDS_READING_MODE_LINE_FOCUS_IPH_BODY" desc="Text for the help bubble describing how to turn on line focus.">
+          Apply a reading line or window to help with focus. Press ⌥L or go to Settings.
+        </message>
+        <message name="IDS_READING_MODE_LINE_FOCUS_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="Accessible text for the help bubble describing how to turn on line focus.">
+          Apply a reading line or window to help with focus. Press ⌥L or go to Settings.
+        </message>
+      </if>
+      <if expr="not is_macosx">
+        <message name="IDS_READING_MODE_LINE_FOCUS_IPH_BODY" desc="Text for the help bubble describing how to turn on line focus.">
+          Apply a reading line or window to help with focus. Press Alt+L or go to Settings.
+        </message>
+        <message name="IDS_READING_MODE_LINE_FOCUS_IPH_SCREENREADER" is_accessibility_with_no_ui="true" desc="Accessible text for the help bubble describing how to turn on line focus.">
+          Apply a reading line or window to help with focus. Press Alt+L or go to Settings.
+        </message>
+      </if>
 
       <!-- Google Lens side panel -->
       <message name="IDS_GOOGLE_LENS_TITLE" desc="Title of the Google Lens side panel">
@@ -9828,14 +9864,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_LENS_DEFAULT_TITLE" desc="Default title of the Lens side panel">
         Image Search
       </message>
-      <message name="IDS_LENS_COBROWSE_IPH_HEADER" desc="Instruction for the user to use Google Lens visual selection in co browse panel.">
-        Select anything on the page to search
-      </message>
-      <message name="IDS_LENS_COBROWSE_IPH_DESCRIPTION" desc="Informs user how Google Lens can be used in cobrowse.">
-        Use Google Lens to learn more about specific images or text on a page.
-      </message>
       <message name="IDS_LENS_COBROWSE_CURRENT_TAB_IPH_DESCRIPTION" desc="Informs user that the content and URL of their current tab is shared with Brave to get more relevant answers.">
-        The content and the URL of your current tab is shared with Brave to give you more relevant answers. You can add or remove tabs as you browse.
+        The page title, URL, and content of your current tab is shared with Brave to give you more relevant answers. You can add or remove tabs as you browse.
       </message>
 
       <!--Tooltip strings -->
@@ -10126,11 +10156,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
           <message name="IDS_SWITCH_TO_HORIZONTAL_TAB_MAC" desc="In Title Case: The button in context menu that switches to horizontal tab view.">
             Show Tabs Horizontally
           </message>
-          <message name="IDS_COLLAPSE_VERTICAL_TABS" desc="In Title Case: The tooltip for the button in the top container that collapses the vertical tab strip.">
+          <message name="IDS_COLLAPSE_VERTICAL_TABS" desc="In Title Case: The text for the menu item that collapses the vertical tab strip.">
             Collapse Tabs
           </message>
-          <message name="IDS_EXPAND_VERTICAL_TABS" desc="In Title Case: The tooltip for the button in the top container that expands the vertical tab strip.">
+          <message name="IDS_EXPAND_VERTICAL_TABS" desc="In Title Case: The text for the menu item that expands the vertical tab strip.">
             Expand Tabs
+          </message>
+          <message name="IDS_COLLAPSE_VERTICAL_TABS_TOOLTIP" is_accessibility_with_no_ui="true" desc="In Title Case: The tooltip for the button in the top container that collapses the vertical tab strip.">
+            Collapse Tabs (<ph name="KEYBOARD_SHORTCUT">$1<ex>⇧⌘L</ex></ph>)
+          </message>
+          <message name="IDS_EXPAND_VERTICAL_TABS_TOOLTIP" is_accessibility_with_no_ui="true" desc="In Title Case: The tooltip for the button in the top container that expands the vertical tab strip.">
+            Expand Tabs (<ph name="KEYBOARD_SHORTCUT">$1<ex>⇧⌘L</ex></ph>)
           </message>
           <message name="IDS_VERTICAL_TABS_SEND_FEEDBACK" desc="In Title Case: The button in context menu that allows users to send feedback about vertical tabs.">
             Send Feedback About the Tab Strip
@@ -10155,11 +10191,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
           </message>
         </then>
         <else>
-          <message name="IDS_COLLAPSE_VERTICAL_TABS" desc="The tooltip for the button in the top container that collapses the vertical tab strip.">
+          <message name="IDS_COLLAPSE_VERTICAL_TABS" desc="The text for the menu item that collapses the vertical tab strip.">
             Collapse tabs
           </message>
-          <message name="IDS_EXPAND_VERTICAL_TABS" desc="The tooltip for the button in the top container that expands the vertical tab strip.">
+          <message name="IDS_EXPAND_VERTICAL_TABS" desc="The text for the menu item that expands the vertical tab strip.">
             Expand tabs
+          </message>
+          <message name="IDS_COLLAPSE_VERTICAL_TABS_TOOLTIP" is_accessibility_with_no_ui="true" desc="The tooltip for the button in the top container that collapses the vertical tab strip.">
+            Collapse tabs (<ph name="KEYBOARD_SHORTCUT">$1<ex>Ctrl+Shift+L</ex></ph>)
+          </message>
+          <message name="IDS_EXPAND_VERTICAL_TABS_TOOLTIP" is_accessibility_with_no_ui="true" desc="The tooltip for the button in the top container that expands the vertical tab strip.">
+            Expand tabs (<ph name="KEYBOARD_SHORTCUT">$1<ex>Ctrl+Shift+L</ex></ph>)
           </message>
           <message name="IDS_VERTICAL_TABS_SEND_FEEDBACK" desc="The button in context menu that allows users to send feedback about vertical tabs.">
             Send feedback about the tab strip
@@ -10279,6 +10321,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </if>
       <message name="IDS_ORGANIZER_PANEL" desc="The name of the organizer panel announced by screenreaders." is_accessibility_with_no_ui="true">
         Organizer
+      </message>
+      <message name="IDS_ORGANIZER_PANEL_TAB_GROUPS" desc="The label on the organizer panel list section corresponding to tab groups.">
+        Tab Groups
       </message>
       <if expr="use_titlecase">
         <message name="IDS_TAB_STRIP_UNPIN_TAB_SEARCH" desc="In Title Case: Name of the tab strip system menu item for unpinning tab search.">
@@ -13545,6 +13590,22 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       <message name="IDS_MENU_SEND_TAB_TO_SELF" desc="The label of a menu entry to share the current tab to another device">
         Send to your &amp;device
       </message>
+      <if expr="not use_titlecase">
+        <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF" desc="The label of a menu entry to share the current tab to another device in context menus">
+          Send to your &amp;device
+        </message>
+        <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF_MANAGE_DEVICES" desc="The label for a menu item to manage the devices that can receive tabs in context menus">
+          Manage your devices
+        </message>
+      </if>
+      <if expr="use_titlecase">
+        <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF" desc="In Title Case: The label of a menu entry to share the current tab to another device in context menus">
+          Send to Your &amp;Device
+        </message>
+        <message name="IDS_CONTEXT_MENU_SEND_TAB_TO_SELF_MANAGE_DEVICES" desc="In Title Case: The label for a menu item to manage the devices that can receive tabs in context menus">
+          Manage Your Devices
+        </message>
+      </if>
       <message name="IDS_SEND_TAB_TO_SELF_DEVICE_LABEL" desc="The label for a target device in the Send Tab to Self context menu, which includes the device name and its last active time.">
         <ph name="DEVICE_NAME">$1<ex>Pixel 9 Pro</ex></ph> (<ph name="LAST_ACTIVE_TIME">$2<ex>Active 5 mins ago</ex></ph>)
       </message>
@@ -14444,6 +14505,12 @@ This can include information about installed software, files, your browser, the 
         <message name="IDS_ACCOUNT_PREVIEW_PROMO_SUBTITLE_SAVED_INFO_WITH_DEVICE" desc="Subtitle of a sign-in promo informing the user they can access their saved info (such as autofill data, addresses, and payment methods) from their other device.">
           Sign in to get your saved info and more from <ph name="DEVICE">$1<ex>your phone</ex></ph>
         </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROMO_SUBTITLE_READING_LIST_WITH_DEVICE" desc="Subtitle of a sign-in promo informing the user they can access their reading list from their other device.">
+          Sign in to get your reading list and more from <ph name="DEVICE">$1<ex>your phone</ex></ph>
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROMO_SUBTITLE_EXTENSIONS_WITH_DEVICE" desc="Subtitle of a sign-in promo informing the user they can access their extensions from their computer. Only desktop/computer DEVICE are supported for extensions.">
+          Sign in to get your extensions and more from <ph name="DEVICE">$1<ex>your computer</ex></ph>
+        </message>
         <message name="IDS_ACCOUNT_PREVIEW_PROMO_SUBTITLE_PASSWORDS" desc="Subtitle of a sign-in promo informing the user they can access their passwords on all their devices.">
           Sign in to get your passwords and more on all your devices
         </message>
@@ -14452,6 +14519,12 @@ This can include information about installed software, files, your browser, the 
         </message>
         <message name="IDS_ACCOUNT_PREVIEW_PROMO_SUBTITLE_SAVED_INFO" desc="Subtitle of a sign-in promo informing the user they can access their saved info (such as autofill data, addresses, and payment methods) on all their devices.">
           Sign in to get your saved info and more on all your devices
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROMO_SUBTITLE_READING_LIST" desc="Subtitle of a sign-in promo informing the user they can access their reading list on all their devices.">
+          Sign in to get your reading list and more on all your devices
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROMO_SUBTITLE_EXTENSIONS" desc="Subtitle of a sign-in promo informing the user they can access their extensions on all your devices.">
+          Sign in to get your extensions and more on all your devices
         </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC_MANAGED_BY_TOKEN" desc="Body of the web signin interception bubble when the new account is managed via a token">
           You just signed in a managed account, creating a new managed profile will allow you to access some resources linked to that account.
@@ -14559,13 +14632,6 @@ This can include information about installed software, files, your browser, the 
       </message>
       <message name="IDS_SIGNIN_EMAIL_CONFIRMATION_CONFIRM_BUTTON_LABEL" desc="Label of the confirmation button in the signin email confirmation dialog.">
         Continue
-      </message>
-
-      <message name="IDS_PLUGIN_CRASHED_PROMPT" desc="Infobar message to notify about a crashed plugin">
-       <ph name="PLUGIN_NAME">$1<ex>Flash</ex></ph> has crashed
-      </message>
-      <message name="IDS_RELOAD_PAGE_WITH_PLUGIN" desc="Infobar button to reload the page where a plugin crashed or disconnected.">
-        Reload
       </message>
 
       <!-- External Protocol Dialog -->
@@ -17366,6 +17432,18 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_RELAUNCH_REQUIRED_CANCEL_BUTTON" desc="The text in the cancel button that dismisses a dialog telling users the browser must be relaunched.">
         Dismiss
       </message>
+      <message name="IDS_RELAUNCH_RECOMMENDED_RESTART_NOW" desc="Button label to restart immediately." translateable="false">
+        Restart now
+      </message>
+      <message name="IDS_RELAUNCH_RECOMMENDED_RESTART_WHEN_IDLE" desc="Button label to restart when idle." translateable="false">
+        Restart when idle
+      </message>
+      <message name="IDS_RELAUNCH_RECOMMENDED_BODY_SCHEDULE" desc="The body text for the scheduled restart reminder bubble dialog." translateable="false">
+        Restart now to finish updating, or restart next time you're idle for 5 minutes. Your open tabs and windows will restore. Private windows won't reopen.
+      </message>
+      <message name="IDS_APP_MENU_BUTTON_RESTART_SCHEDULED" desc="Short label next to app-menu button when a scheduled restart is pending." translateable="false">
+        Restart scheduled
+      </message>
     </if>
 
     <!-- Idle timeout dialog. -->
@@ -18888,7 +18966,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <!-- Dictation strings -->
       <message name="IDS_DICTATION_ONBOARDING_BULLET_DATA_SHARING" desc="The second paragraph in the onboarding dialog describing data sharing with Brave servers." translateable="false">
-        The content and URL of the page you're on will be sent to Brave to generate text based on your spoken audio and the page context
+        The content and URL of the page you're on and your spoken audio will be sent to Brave to generate text based on what you say and the page context
       </message>
       <message name="IDS_DICTATION_ONBOARDING_BUTTON_ACCEPT" desc="Button label on the onboarding dialog to confirm the provided information and use the feature." translateable="false">
         Allow

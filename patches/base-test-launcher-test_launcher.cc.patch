@@ -1,5 +1,5 @@
 diff --git a/base/test/launcher/test_launcher.cc b/base/test/launcher/test_launcher.cc
-index e5cf52b39bdabd892f05b9f6856e98f986d2b9d0..08b0f1a4a3836a46d6966d6938f424e241cbd8f7 100644
+index e2ef6af57f4885a432903355b9e74724dc58de71..bae975e30d407e2f0ceee0648d90c0e5a9831d84 100644
 --- a/base/test/launcher/test_launcher.cc
 +++ b/base/test/launcher/test_launcher.cc
 @@ -430,7 +430,7 @@ int LaunchChildTestProcessWithOptions(const CommandLine& command_line,

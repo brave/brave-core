@@ -19,6 +19,7 @@ source_set("browser_tests") {
     "//chrome/browser/ui",
     "//chrome/browser/ui:ui_features",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/views/frame:multi_contents_background_view",
     "//chrome/browser/ui/views/infobars",
     "//chrome/browser/ui/views/tabs:tab_style_views",
     "//chrome/test:test_support",

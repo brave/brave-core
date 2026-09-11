@@ -210,6 +210,12 @@ CHAR_LIMIT guidelines:
       <message name="IDS_PREFS_SECTION_ADVANCED" desc="Title of &quot;Advanced&quot; section of preferences. [CHAR_LIMIT=32]">
         Advanced
       </message>
+      <message name="IDS_CCT_ALWAYS_OPEN_IN_BROWSER_TITLE" desc="Title for preference toggle in Settings to always open Custom Tabs in Brave browser. [CHAR_LIMIT=40]">
+        Always open custom tabs in Brave
+      </message>
+      <message name="IDS_CCT_ALWAYS_OPEN_IN_BROWSER_SUMMARY" desc="Summary for preference toggle in Settings to always open Custom Tabs in Brave browser. [CHAR_LIMIT=60]">
+        Open web pages in Brave browser instead of custom tabs
+      </message>
       <message name="IDS_PREFS_NEW_LABEL" desc="The label displayed next to the title of newly added preferences.">
         <ph name="PREF_TITLE">%1$s</ph>  <ph name="BEGIN_NEW">&lt;new&gt;</ph>New<ph name="END_NEW">&lt;/new&gt;</ph>
       </message>
@@ -787,9 +793,6 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_CONFIRMATION_DIALOG_TITLE" desc="Title for the dialog where the user confirms their intention to delete their saved CVCs.">
         Delete saved security codes?
       </message>
-      <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_CONFIRMATION_DIALOG_MESSAGE" desc="Message for the dialog where the user confirms their intention to delete their saved CVCs.">
-        All security codes saved on your device and in your Brave sync chain will be deleted
-      </message>
       <message name="IDS_AUTOFILL_DELETE_SAVED_CVCS_IN_WALLET_CONFIRMATION_DIALOG_MESSAGE" desc="Message for the dialog where the user confirms their intention to delete their saved CVCs in Brave Wallet.">
         All security codes saved on your device and in Brave Wallet will be deleted
       </message>
@@ -1039,6 +1042,9 @@ For more settings that use data to improve your Brave experience, go to <ph name
       </message>
       <message name="IDS_DO_NOT_TRACK_TITLE" desc="Title for the 'Do Not Track' preference. Please leave the 'Do Not Track' part in English according to the glossary.">
         Send a “Do Not Track” request
+      </message>
+      <message name="IDS_DO_NOT_TRACK_SUMMARY_DISCLAIMER" desc="Summary for the 'Do Not Track' preference. Explains that sites may not respond to 'Do Not Track' requests even when this toggle is on. Please leave the 'Do Not Track' part in English according to the glossary.">
+        Sites, including Brave, use their discretion when responding to this request.
       </message>
       <message name="IDS_DO_NOT_TRACK_DESCRIPTION" desc="Description for 'Do Not Track' preference">
         Enabling “Do Not Track” means that a request will be included with your browsing traffic. Any effect depends on whether a website responds to the request, and how the request is interpreted.
@@ -3835,6 +3841,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       Cancel
       </message>
 
+      <!-- Android Desktop Account Menu -->
+      <message name="IDS_ACCOUNT_MENU_PROMO_CARD_DESCRIPTION" desc="Subtitle of the promo card in the account menu when signed out.">
+        Sign in to get your bookmarks, passwords, and more on all your devices
+      </message>
+
       <!-- Strings for Seamless Sign-in -->
       <message name="IDS_SIGNIN_PROMO_TITLE_NTP_SIGN_IN_AS_BUTTON" desc="This string is the headline of a card that appears when the user visits Brave's new tab page; the user isn't signed in to Brave. The line below this string is ether 'To get your passwords and more on all your devices, sign in to Brave' or 'To get your passwords and more on all your devices, sign in to Brave as john.doe@example.com'.">
         Your Brave, everywhere
@@ -4284,9 +4295,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_MENU_PAGE_INFO" desc="Tooltip on Android for the button to view information about the current web page. Info is short for information.  [CHAR_LIMIT=27]">
         Page info
-      </message>
-      <message name="IDS_MENU_APP_INFO" desc="Tooltip on Android for the button to view information about the current app. Info is short for information.  [CHAR_LIMIT=27]">
-        App info
       </message>
       <message name="IDS_MENU_STOP_REFRESH" desc="Tooltip on Android for the button to stop refreshing the current web page. [CHAR_LIMIT=27]">
         Stop refreshing
@@ -5071,8 +5079,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_PDF_CANNOT_EDIT_PDF" desc="Toast message shown when a PDF document cannot be edited.">
         Cannot edit PDF
       </message>
-      <message name="IDS_PDF_DRAW" desc="Accessibility label and content description for the draw button to annotate a PDF.">
+      <message name="IDS_PDF_DRAW" is_accessibility_with_no_ui="true" desc="Accessibility label and content description for the draw button to annotate a PDF.">
         Draw
+      </message>
+      <message name="IDS_PDF_PAGE_NUMBER" is_accessibility_with_no_ui="true" desc="Accessibility label and content description for the current page in the PDF toolbar.">
+        Page <ph name="CURRENT_PAGE">%1$d<ex>1</ex></ph> of <ph name="TOTAL_PAGE_COUNT">%2$d<ex>10</ex></ph>
       </message>
 
       <!-- Accessibility -->
@@ -5086,6 +5097,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_MIC" desc="Content description for the voice search button.">
         Start voice search
+      </message>
+      <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_AI_OVERLAY_MIC" desc="Content description for the AI Overlay Microphone button." translateable="false">
+        TTC
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_COMPOSEPLATE" is_accessibility_with_no_ui="true" desc="Content description for the composeplate.">
         Start search
@@ -5499,6 +5513,9 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCESSIBILITY_OMNIBOX_ADD_TABS" desc="Accessibility announcement when the 'Tabs' option in the Omnibox 'Add context' popup is highlighted.">
         Attach tabs
       </message>
+      <message name="IDS_ACCESSIBILITY_OMNIBOX_ADD_FROM_DRIVE" desc="Accessibility announcement when the 'Drive' option in the Omnibox 'Add context' popup is highlighted.">
+        Attach files from Drive
+      </message>
 
       <message name="IDS_ACCESSIBILITY_SHARE_SELECTED_ITEMS" desc="Content description for the button to share selected items. [ICU Syntax]">
         {NUM_SELECTED, plural,
@@ -5905,6 +5922,15 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_TWA_CLEAR_DATA_SITE_SELECTION_TITLE" desc="Title of screen showing the sites linked to TWA, allowing the user to clean data in any of them.">
         Linked sites
       </message>
+      <message name="IDS_TWA_POST_UNINSTALL_NOTIFICATION_TITLE" desc="Title for the notification sent after a TWA app is uninstalled">
+        <ph name="APP_NAME">%1$s<ex>YouTube</ex></ph> was uninstalled
+      </message>
+      <message name="IDS_TWA_POST_UNINSTALL_NOTIFICATION_TITLE_GENERIC" desc="Title for the notification sent after a TWA app is uninstalled when the app name is unknown">
+        App was uninstalled
+      </message>
+      <message name="IDS_TWA_POST_UNINSTALL_NOTIFICATION_TEXT" desc="Text for the notification sent after a TWA app is uninstalled">
+        Tap to delete browsing data in Brave
+      </message>
 
       <message name="IDS_WEBAPP_TAP_TO_COPY_URL" desc="Message on the notification that indicates that taping it will copy a Web App's URL into the clipboard.">
         Tap to copy the URL for this app
@@ -6059,6 +6085,12 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_KEYBOARD_SHORTCUT_TOGGLE_CARET_BROWSING" desc="A text label that appears next to the keyboard shortcut that will toggle caret browsing. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
         Toggle caret browsing
+      </message>
+      <message name="IDS_KEYBOARD_SHORTCUT_QUIT_CHROME" desc="A text label that appears next to the keyboard shortcut that will quit Brave. The shortcut description is shown in a system dialog along with all other supported shortcuts. [CHAR_LIMIT=55]">
+        Quit Brave
+      </message>
+      <message name="IDS_CONFIRM_TO_QUIT_TOAST" desc="Toast message instructing the user to hold Ctrl+Q to quit Brave.">
+        Hold Ctrl+Q to quit
       </message>
 
       <if expr="enable_arcore">

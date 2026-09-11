@@ -1,8 +1,8 @@
 diff --git a/ui/accessibility/platform/ax_platform_node_cocoa.mm b/ui/accessibility/platform/ax_platform_node_cocoa.mm
-index f9154d0900689534ae5e1391af875f9f40f65cba..ccc8e76add180d4b372c0efa321c8637be8d6e48 100644
+index e1dac79b8cd09dada33bbe8243b288ad52ae0df2..d5a0b19ad7f9d72765728a97754149e8f21933de 100644
 --- a/ui/accessibility/platform/ax_platform_node_cocoa.mm
 +++ b/ui/accessibility/platform/ax_platform_node_cocoa.mm
-@@ -3667,6 +3667,7 @@ const ui::CocoaActionList& GetCocoaActionListForTesting() {
+@@ -3669,6 +3669,7 @@ const ui::CocoaActionList& GetCocoaActionListForTesting() {
    if (!_node)
      return nil;
  

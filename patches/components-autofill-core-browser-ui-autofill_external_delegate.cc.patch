@@ -1,5 +1,5 @@
 diff --git a/components/autofill/core/browser/ui/autofill_external_delegate.cc b/components/autofill/core/browser/ui/autofill_external_delegate.cc
-index 6de26b12f1aa657ced4b21ca51d8a57567c7b130..c54c4d28fdc363fd060656cdb06e2faf5ec6e4d7 100644
+index 3a840a9d145c565a82d7c51cedcd94a113ecc30c..9a63a9d11ee592c94914fe4ec6be6070603e3a36 100644
 --- a/components/autofill/core/browser/ui/autofill_external_delegate.cc
 +++ b/components/autofill/core/browser/ui/autofill_external_delegate.cc
 @@ -523,6 +523,13 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(

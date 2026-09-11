@@ -18,7 +18,6 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "chrome/browser/profiles/profile_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #endif
@@ -52,8 +51,7 @@ void OpenBrowserWindowAndSidePanel(
             // TODO(petemill): Move this to the AIChatAgentProfileManager
             // on `BrowserListObserver::OnBrowserAdded` when the kChatUI side
             // panel is global and not per-tab.
-            SidePanelUI* side_panel_ui =
-                browser_window->GetFeatures().side_panel_ui();
+            SidePanelUI* side_panel_ui = SidePanelUI::From(browser_window);
             if (side_panel_ui) {
               side_panel_ui->Show(SidePanelEntryId::kChatUI);
             }

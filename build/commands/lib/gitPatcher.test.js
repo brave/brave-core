@@ -205,6 +205,7 @@ describe('Apply Patches', function () {
     expect(status[0]).toHaveProperty('patchPath', testFile1PatchPath)
     expect(status[0]).toHaveProperty('error')
     expect(status[0]).toHaveProperty('reason', patchApplyReasons.SRC_REMOVED)
+    expect(status[0]).toHaveProperty('path', file1Name)
   })
 
   test('handles bad patch file', async function () {

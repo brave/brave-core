@@ -181,7 +181,8 @@ bool InstallBraveWireguardService(const base::FilePath& root_dir) {
       service_cmd, base::CommandLine(base::CommandLine::NO_PROGRAM),
       brave_vpn::wireguard::GetBraveVpnWireguardServiceRegistryStoragePath(),
       {brave_vpn::GetBraveVpnWireguardServiceClsid()},
-      {brave_vpn::GetBraveVpnWireguardServiceIid()});
+      {brave_vpn::GetBraveVpnWireguardServiceIid()},
+      /*previous_iids*/ {});
   install_service_work_item.set_best_effort(true);
   install_service_work_item.set_rollback_enabled(false);
   if (install_service_work_item.Do()) {
@@ -240,7 +241,8 @@ bool InstallBraveVPNHelperService(const base::FilePath& root_dir) {
       brave_vpn::GetBraveVpnHelperServiceDisplayName(),
       brave_vpn::GetBraveVpnHelperServiceDescription(), SERVICE_DEMAND_START,
       service_cmd, base::CommandLine(base::CommandLine::NO_PROGRAM),
-      GetBraveVpnHelperRegistryStoragePath(), {}, {});
+      GetBraveVpnHelperRegistryStoragePath(), /*clsids*/ {}, /*iids*/ {},
+      /*previous_iids*/ {});
   install_service_work_item.set_best_effort(true);
   install_service_work_item.set_rollback_enabled(false);
   if (install_service_work_item.Do()) {

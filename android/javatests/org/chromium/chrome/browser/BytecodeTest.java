@@ -8,7 +8,6 @@ package org.chromium.chrome.browser;
 import static org.junit.Assert.fail;
 
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -1112,6 +1111,7 @@ public class BytecodeTest {
                         boolean.class,
                         boolean.class,
                         boolean.class,
+                        boolean.class,
                         int.class));
         Assert.assertTrue(
                 methodExists(
@@ -1577,6 +1577,7 @@ public class BytecodeTest {
                         StatusBarColorController.class,
                         AppMenuDelegate.class,
                         ActivityLifecycleDispatcher.class,
+                        MultiWindowModeStateDispatcher.class,
                         BottomSheetController.class,
                         DataSharingTabManager.class,
                         TabContentManager.class,
@@ -1903,8 +1904,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager", // presubmit: ignore-long-line
                         ModelList.class,
                         Context.class,
-                        NonNullObservableSupplier.class,
-                        OmniboxResourceProvider.class));
+                        NonNullObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
@@ -2069,6 +2069,7 @@ public class BytecodeTest {
                         ActivityResultTracker.class,
                         OneshotSupplier.class,
                         ActivityLifecycleDispatcher.class,
+                        MultiWindowModeStateDispatcher.class,
                         MonotonicObservableSupplier.class,
                         MenuOrKeyboardActionController.class,
                         Supplier.class,
@@ -2097,7 +2098,6 @@ public class BytecodeTest {
                         Bundle.class,
                         PersistableBundle.class,
                         MultiInstanceManager.class,
-                        NonNullObservableSupplier.class,
                         MonotonicObservableSupplier.class,
                         EdgeToEdgeManager.class,
                         MonotonicObservableSupplier.class,
@@ -2150,7 +2150,9 @@ public class BytecodeTest {
                         BookmarkManagerOpener.class,
                         PriceDropNotificationManager.class,
                         Function.class,
-                        BackPressManager.class));
+                        BackPressManager.class,
+                        SigninAndHistorySyncActivityLauncher.class,
+                        DeviceLockActivityLauncher.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkManagerMediator",
@@ -2206,7 +2208,11 @@ public class BytecodeTest {
                         ActivityResultTracker.class,
                         Profile.class,
                         NativePageHost.class,
-                        ComponentName.class,
+                        BookmarkOpener.class,
+                        BookmarkManagerOpener.class,
+                        PriceDropNotificationManager.class,
+                        SigninAndHistorySyncActivityLauncher.class,
+                        DeviceLockActivityLauncher.class,
                         BackPressManager.class));
         Assert.assertTrue(
                 constructorsMatch(

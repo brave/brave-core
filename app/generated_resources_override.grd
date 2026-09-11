@@ -520,6 +520,13 @@ are declared in tools/grit/grit_args.gni.
           </if>
       </if>
 
+      <if expr="enable_extensions_core">
+        <if expr="not use_titlecase">
+          </if>
+        <if expr="use_titlecase">
+          </if>
+      </if>
+
       <message name="IDS_EXTENSIONS_ADDED_WITHOUT_KNOWLEDGE" desc="Text shown in the extensions settings for items that might have been forcefully added to Brave without the user's knowledge">
         This extension is not listed in the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph> and may have been added without your knowledge.
       </message>
@@ -675,6 +682,11 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="not is_macosx">
         </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="not is_macosx">
+        </if>
+
       <if expr="enable_extensions_core">
       </if>
       <if expr="is_macosx">
@@ -945,6 +957,10 @@ are declared in tools/grit/grit_args.gni.
       <if expr="is_linux">
         </if>
 
+      <if expr="not use_titlecase">
+        </if>
+      <if expr="use_titlecase">
+        </if>
       <if expr="not use_titlecase">
         </if>
       <if expr="use_titlecase">
@@ -1231,6 +1247,9 @@ are declared in tools/grit/grit_args.gni.
         </if>
       <if expr="is_chromeos">
         </if>
+      <message name="IDS_RELAUNCH_RECOMMENDED_BODY_SCHEDULE" desc="The body text for the scheduled restart reminder bubble dialog." translateable="false">
+        Restart now to finish updating, or restart next time you're idle for 5 minutes. Your open tabs and windows will restore. Private windows won't reopen.
+      </message>
       </if>
 
     <if expr="not is_android and not is_chromeos">

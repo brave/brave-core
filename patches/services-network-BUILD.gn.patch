@@ -1,8 +1,8 @@
 diff --git a/services/network/BUILD.gn b/services/network/BUILD.gn
-index dd91e7c38f4afc02875f8f7fda6970edf799f76f..57c8987f229d2952574d32d1a890ffc9f6dbc1b5 100644
+index a029e50ac98ef9e0307dadc206ad169a7a081d41..beb138ceb9a8318f7a7412bd624b3ed3d96991cc 100644
 --- a/services/network/BUILD.gn
 +++ b/services/network/BUILD.gn
-@@ -398,6 +398,7 @@ component("network_service") {
+@@ -391,6 +391,7 @@ component("network_service") {
      "//third_party/zstd:decompress",
      "//url",
    ]

@@ -215,6 +215,7 @@ public class FullScreenCustomTabActivity extends CustomTabActivity {
                         getActivityResultTracker(),
                         getChromeAndroidTaskSupplier(),
                         getLifecycleDispatcher(),
+                        getMultiWindowModeStateDispatcher(),
                         getLayoutManagerSupplier(),
                         /* menuOrKeyboardActionController= */ this,
                         this::getActivityThemeColor,

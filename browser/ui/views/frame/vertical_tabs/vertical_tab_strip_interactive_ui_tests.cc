@@ -10,7 +10,6 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -54,10 +53,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripInteractiveUITest,
   ASSERT_EQ(State::kExpanded, region_view->state());
   ASSERT_GT(host_view->GetPreferredSize().width(), 0);
 
-  auto* fullscreen_controller = browser()
-                                    ->GetFeatures()
-                                    .exclusive_access_manager()
-                                    ->fullscreen_controller();
+  auto* fullscreen_controller =
+      ExclusiveAccessManager::From(browser())->fullscreen_controller();
   auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
 
   {
@@ -114,10 +111,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripInteractiveUITest,
   ASSERT_EQ(State::kExpanded, region_view->state());
   ASSERT_GT(host_view->GetPreferredSize().width(), 0);
 
-  auto* fullscreen_controller = browser()
-                                    ->GetFeatures()
-                                    .exclusive_access_manager()
-                                    ->fullscreen_controller();
+  auto* fullscreen_controller =
+      ExclusiveAccessManager::From(browser())->fullscreen_controller();
 
   {
     ui_test_utils::FullscreenWaiter waiter(browser(),

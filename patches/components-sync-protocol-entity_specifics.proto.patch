@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/entity_specifics.proto b/components/sync/protocol/entity_specifics.proto
-index 1053d111b16b79b697660d52239c60855f180e3a..81186feca293dbe385160411d33a20d35c6548a8 100644
+index c7c91e8c4e3ec43a0568da901885862d19f65d17..5de483b688b94e939013c69771957f637afa3b05 100644
 --- a/components/sync/protocol/entity_specifics.proto
 +++ b/components/sync/protocol/entity_specifics.proto
 @@ -13,6 +13,7 @@ package sync_pb;
@@ -10,10 +10,10 @@ index 1053d111b16b79b697660d52239c60855f180e3a..81186feca293dbe385160411d33a20d3
  import "components/sync/protocol/ai_thread_specifics.proto";
  import "components/sync/protocol/app_list_specifics.proto";
  import "components/sync/protocol/app_setting_specifics.proto";
-@@ -181,6 +182,7 @@ message EntitySpecifics {
-     EncryptedTabContextItemSpecifics encrypted_tab_context_item = 1661069;
+@@ -183,6 +184,7 @@ message EntitySpecifics {
      NotebookSpecifics notebook = 1670544;
      JourneySpecifics journey = 1670131;
+     AutofillEntitySuppressionSpecifics autofill_entity_suppression = 1688594;
 +    AIChatConversationSpecifics ai_chat_conversation = 10000001;
      // When adding a new type, follow the docs below and keep this comment as
      // the last entry.

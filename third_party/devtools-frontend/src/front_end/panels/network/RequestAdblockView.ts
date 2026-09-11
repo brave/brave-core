@@ -12,7 +12,6 @@ const { render, html } = Lit
 
 export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
   .WrappableComponent {
-  static readonly litTagName = Lit.StaticHtml.literal`devtools-request-adblock-info`
   readonly #shadow = this.attachShadow({ mode: 'open' })
   readonly #request: SDK.NetworkRequest.NetworkRequest
   #manager: SDK.NetworkManager.NetworkManager | null

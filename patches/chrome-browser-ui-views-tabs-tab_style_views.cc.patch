@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index 3bc10a66bbd7dbc61fc947811d4c487404cac2eb..b0f468d66487eb01268130995cf3cfc56cb7f329 100644
+index 9ed4e9a31b7769f316c7245c97e95409f608316b..d912fb320cdad571bd05530d875581200314b45c 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
 @@ -61,6 +61,7 @@ ui::metadata::TypeConverter<TabStyle::TabColors>::GetValidStrings() {

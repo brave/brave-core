@@ -13,7 +13,6 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -63,7 +62,7 @@ void WalletPanelHandler::CloseSidePanel() {
     return;
   }
 
-  SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
+  SidePanelUI* side_panel_ui = SidePanelUI::From(browser);
   if (side_panel_ui &&
       side_panel_ui->GetCurrentEntryId() == SidePanelEntryId::kWallet) {
     side_panel_ui->Close();

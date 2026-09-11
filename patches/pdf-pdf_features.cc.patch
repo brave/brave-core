@@ -1,8 +1,8 @@
 diff --git a/pdf/pdf_features.cc b/pdf/pdf_features.cc
-index 7f0e882c06e1d335394ef54f4a299151ab065a16..764d6720e0cf60d778390298e1231b254bb78519 100644
+index 7b96d86fc7292b6babdd75145a5474ec3141c391..f19c67c654c996e10d3eb76ca9bda107979cfa15 100644
 --- a/pdf/pdf_features.cc
 +++ b/pdf/pdf_features.cc
-@@ -86,9 +86,11 @@ const base::FeatureParam<bool> kPdfInk2TextAnnotationsExtraStyles{
+@@ -85,9 +85,11 @@ const base::FeatureParam<bool> kPdfInk2TextAnnotationsExtraStyles{
  
  #if BUILDFLAG(ENABLE_PDF_SAVE_TO_DRIVE)
  // Saves the PDF file to Google Drive.

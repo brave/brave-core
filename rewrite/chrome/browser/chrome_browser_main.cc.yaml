@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Only prompt for updater promotion when Brave is using Omaha 4.
+
+      Most macOS users are still updated by Sparkle, which manages promotion
+      itself, so the Keystone promotion infobar must not reach them. The
+      includes this needs are added by
+      brave/chromium_src/chrome/browser/chrome_browser_main.cc.
+    preempt_function_impl:
+      function_name: PromptUpdaterPromotion
+      code: |-
+        #if BUILDFLAG(ENABLE_OMAHA4)
+        if (!brave_updater::ShouldUseOmaha4()) {
+          return;
+        }
+        #endif

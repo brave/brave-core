@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 562496763d418d8e0d897a269ff3e3c7285030dc..eed1e0fa683f519bba9149d26cdd07f7a1d5e854 100644
+index fe0fc8c3f2537bc58a879eadc20502468d170961..7c5a1bcf6b1d753a09462fc383c3ca4d905a2617 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -293,29 +293,29 @@ class AppBrowserController;
+@@ -278,29 +278,29 @@ class AppBrowserController;
  // Do not add more public accessors. Instead use the UnownedUserData design
  // pattern, see ui/base/unowned_user_data/README.md.
  // TODO(crbug.com/481268779a): Remove existing public accessors.
@@ -27,8 +27,8 @@ index 562496763d418d8e0d897a269ff3e3c7285030dc..eed1e0fa683f519bba9149d26cdd07f7
  
    // Called exactly once to initialize features that depend on the window object
    // being created.
--  void InitPostWindowConstruction(Browser* browser);
-+  virtual void InitPostWindowConstruction(Browser* browser);
+-  void InitPostWindowConstruction(BrowserWindowInterface* browser);
++  virtual void InitPostWindowConstruction(BrowserWindowInterface* browser);
  
    // Called exactly once to initialize features that depend on the view
    // hierarchy in BrowserView.
@@ -39,24 +39,11 @@ index 562496763d418d8e0d897a269ff3e3c7285030dc..eed1e0fa683f519bba9149d26cdd07f7
 -  void TearDownPreBrowserWindowDestruction();
 +  virtual void TearDownPreBrowserWindowDestruction();
  
-   ui::AcceleratorProvider* accelerator_provider() {
-     return accelerator_provider_;
-@@ -390,6 +390,7 @@ class BrowserWindowFeatures {
-   // of this class, we use lowercase_with_underscores even though the
-   // implementation is not inlined.
-   SidePanelUI* side_panel_ui();
-+  const SidePanelUI* side_panel_ui() const;
- 
-   SigninViewController* signin_view_controller() {
-     return signin_view_controller_.get();
-@@ -413,7 +414,12 @@ class BrowserWindowFeatures {
-   static ui::UserDataFactoryWithOwner<BrowserWindowInterface>&
+   // Get the FindBarController for this browser window, creating it if it does
+   // not yet exist.
+@@ -334,6 +334,7 @@ class BrowserWindowFeatures {
    GetUserDataFactoryForTesting();
  
-+  const ExclusiveAccessManager* exclusive_access_manager() const {
-+    return exclusive_access_manager_.get();
-+  }
-+
   private:
 +  friend class BrowserWindowFeatures;
    static ui::UserDataFactoryWithOwner<BrowserWindowInterface>&

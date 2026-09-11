@@ -1,17 +1,17 @@
 diff --git a/components/sync/protocol/proto_value_conversions_unittest.cc b/components/sync/protocol/proto_value_conversions_unittest.cc
-index cfe2280d06e8ce21f8c49236396864d563794066..2e41053f3d73c47985f8b472a6f94e2181ed3bc1 100644
+index 34006358eb8e1e4c500a3d860b25d38c5a0cb836..bf4c1d601ace8ea0bf816239618f7decb19cfcb6 100644
 --- a/components/sync/protocol/proto_value_conversions_unittest.cc
 +++ b/components/sync/protocol/proto_value_conversions_unittest.cc
 @@ -71,7 +71,7 @@ using ::testing::Pointee;
  
  DEFINE_SPECIFICS_TO_VALUE_TEST(encrypted)
  
--static_assert(65 == syncer::GetNumDataTypes(),
-+static_assert(65 + 1 == syncer::GetNumDataTypes(),
+-static_assert(66 == syncer::GetNumDataTypes(),
++static_assert(66 + 1 == syncer::GetNumDataTypes(),
                "When adding a new field, add a DEFINE_SPECIFICS_TO_VALUE_TEST "
                "for your field below, and optionally a test for the specific "
                "conversions.");
-@@ -142,6 +142,7 @@ DEFINE_SPECIFICS_TO_VALUE_TEST(web_app)
+@@ -143,6 +143,7 @@ DEFINE_SPECIFICS_TO_VALUE_TEST(web_app)
  DEFINE_SPECIFICS_TO_VALUE_TEST(webauthn_credential)
  DEFINE_SPECIFICS_TO_VALUE_TEST(wifi_configuration)
  DEFINE_SPECIFICS_TO_VALUE_TEST(workspace_desk)

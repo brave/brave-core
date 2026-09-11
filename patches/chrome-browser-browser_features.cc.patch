@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/browser_features.cc b/chrome/browser/browser_features.cc
-index 123db77799e8e4ff5d34fac0db8ed8ca69f2e860..7ab2475181b8df957fba88579bdc3c59d92ea055 100644
+index c502836b808fbb2414f6f65f671458577cc278ef..14fd6032313a70f613d6e439450b72d2582b0695 100644
 --- a/chrome/browser/browser_features.cc
 +++ b/chrome/browser/browser_features.cc
-@@ -23,14 +23,16 @@ BASE_FEATURE(kAutocompleteActionPredictorConfidenceCutoff,
+@@ -24,14 +24,16 @@ BASE_FEATURE(kAutocompleteActionPredictorConfidenceCutoff,
  
  // This is used as a kill switch for Bookmark triggered prerendering. See
  // crbug.com/40259793 for more details of Bookmark triggered prerendering.
@@ -20,7 +20,7 @@ index 123db77799e8e4ff5d34fac0db8ed8ca69f2e860..7ab2475181b8df957fba88579bdc3c59
  BASE_FEATURE(kBookmarkTriggerForPrefetch, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Enables Certificate Transparency on Desktop and Android Browser (CT is
-@@ -41,11 +43,7 @@ BASE_FEATURE(kBookmarkTriggerForPrefetch, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -42,11 +44,7 @@ BASE_FEATURE(kBookmarkTriggerForPrefetch, base::FEATURE_DISABLED_BY_DEFAULT);
  // On builds where CT is enabled, this flag is also used as an emergency kill
  // switch.
  BASE_FEATURE(kCertificateTransparencyAskBeforeEnabling,
@@ -32,7 +32,7 @@ index 123db77799e8e4ff5d34fac0db8ed8ca69f2e860..7ab2475181b8df957fba88579bdc3c59
  
  // Enables using network time for certificate verification. If enabled, network
  // time will be used to verify certificate validity, however certificates that
-@@ -72,11 +70,7 @@ BASE_FEATURE(kDbusSecretPortal, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -73,11 +71,7 @@ BASE_FEATURE(kDbusSecretPortal, base::FEATURE_ENABLED_BY_DEFAULT);
  // Destroy profiles when their last browser window is closed, instead of when
  // the browser exits.
  BASE_FEATURE(kDestroyProfileOnBrowserClose,
@@ -44,7 +44,7 @@ index 123db77799e8e4ff5d34fac0db8ed8ca69f2e860..7ab2475181b8df957fba88579bdc3c59
  
  // Enables showing the email of the flex org admin that setup CBCM in the
  // management disclosures.
-@@ -102,7 +96,8 @@ BASE_FEATURE(kNetworkAnnotationMonitoring, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -103,7 +97,8 @@ BASE_FEATURE(kNetworkAnnotationMonitoring, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // This flag is used for enabling New Tab Page triggered prerendering. See
  // crbug.com/40275094 for more details of New Tab Page triggered prerendering.

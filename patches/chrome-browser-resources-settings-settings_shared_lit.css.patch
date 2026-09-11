@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings_shared_lit.css b/chrome/browser/resources/settings/settings_shared_lit.css
-index f36c2ec3c67452777ef7cf8a296764b4715a16b8..8733f5f3440df676bd248032744226da28e5d00e 100644
+index c395aba353999cb0592c9ed8496b885632c5a757..076288aa7730bd0e1df3dee7cc0315ca9a4246fd 100644
 --- a/chrome/browser/resources/settings/settings_shared_lit.css
 +++ b/chrome/browser/resources/settings/settings_shared_lit.css
 @@ -8,7 +8,8 @@
@@ -11,4 +11,4 @@ index f36c2ec3c67452777ef7cf8a296764b4715a16b8..8733f5f3440df676bd248032744226da
 + * #include=cr-shared-style-lit search-highlight-style-lit br-settings-shared-lit
   * #css_wrapper_metadata_end */
  
- /* Common styles for Material Design settings. */
+ /* Style overrides for Settings Refresh 2026 experiment */

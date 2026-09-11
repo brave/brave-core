@@ -9,6 +9,7 @@
 
 #include "brave/installer/setup/archive_patch_helper.h"
 
+#include "base/base_paths.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -56,6 +57,29 @@ TEST_F(ArchivePatchHelperTest, ZucchiniPatching) {
   EXPECT_TRUE(archive_helper.ZucchiniEnsemblePatch());
   base::FilePath base = data_dir_.AppendASCII("archive2.7z");
   EXPECT_TRUE(base::ContentsEqual(dest, base));
+}
+
+// UncompressAndPatch is the composite operation used by the setup.exe
+// self-patch flow (--update-setup-exe): uncompress a compressed archive
+// holding a patch file, then apply that patch. test_patch.packed.7z holds a
+// copy of zucchini_archive.diff, which patches archive1.7z into archive2.7z.
+TEST_F(ArchivePatchHelperTest, UncompressAndPatch) {
+  base::FilePath src_root;
+  ASSERT_TRUE(base::PathService::Get(base::DIR_SRC_TEST_DATA_ROOT, &src_root));
+  base::FilePath compressed = src_root.AppendASCII("brave")
+                                  .AppendASCII("test")
+                                  .AppendASCII("data")
+                                  .AppendASCII("installer")
+                                  .AppendASCII("test_patch.packed.7z");
+  base::FilePath src = data_dir_.AppendASCII("archive1.7z");
+  base::FilePath dest = test_dir_.GetPath().AppendASCII("archive2.7z");
+  EXPECT_TRUE(installer::ArchivePatchHelper::UncompressAndPatch(
+      test_dir_.GetPath(), compressed, src, dest,
+      installer::UnPackConsumer::UNCOMPRESSED_CHROME_ARCHIVE));
+  EXPECT_TRUE(base::ContentsEqual(dest, data_dir_.AppendASCII("archive2.7z")));
+  // The extracted patch file is deleted after it has been applied.
+  EXPECT_FALSE(
+      base::PathExists(test_dir_.GetPath().AppendASCII("chrome_patch.diff")));
 }
 
 TEST_F(ArchivePatchHelperTest, InvalidDiff_MisalignedCblen) {

@@ -1,12 +1,12 @@
 diff --git a/content/browser/renderer_host/clipboard_host_impl.cc b/content/browser/renderer_host/clipboard_host_impl.cc
-index bf6f3a80e7edfad1d65692ba17a8f143e85a9a8d..389ff99507bd75bed9aed7442738ea90717b4894 100644
+index e6290a6dcff536b7c02baf170be15bf073e79dde..6132e5d4b6d234160fbf70e8bef4fa012d6f9450 100644
 --- a/content/browser/renderer_host/clipboard_host_impl.cc
 +++ b/content/browser/renderer_host/clipboard_host_impl.cc
-@@ -614,6 +614,7 @@ void ClipboardHostImpl::WriteText(const std::u16string& text) {
+@@ -599,6 +599,7 @@ void ClipboardHostImpl::WriteText(const std::u16string& text) {
    ClipboardPasteData data;
    data.text = text;
    ++pending_writes_;
 +  BRAVE_CLIPBOARD_HOST_IMPL_SANITIZE
    GetContentClient()->browser()->IsClipboardCopyAllowedByPolicy(
-       CreateClipboardEndpoint(render_frame_host()),
+       CreateClipboardEndpoint(),
        {

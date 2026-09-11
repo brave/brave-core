@@ -329,6 +329,7 @@
 # display an additional confirmation infobar for P3A
 -All/DefaultBrowserInfoBarManagerBrowserTest.DismissRecordsTheInteractionAndPrefs/*
 -All/DefaultBrowserInfoBarManagerBrowserTest.ShowShowsThePromptInEveryWindow/*
+-All/DevToolsConfirmInfoBarTest.*
 -All/ExtensionInstallUIInstallationErrorBrowserTest.OnInstallFailureShowsInfoBar/*
 -All/InfoBarContainerSplitTabTest.InfobarsAreIndependentInSplitTabs/Prioritization*
 -All/KnownInterceptionDisclosurePlatformBrowserTest.*
@@ -457,7 +458,9 @@
 -DeclarativeNetRequestApiPrerenderingTest.PrerenderedPageInterception
 -ExtensionBackForwardCacheWithPrerenderBrowserTest.PortIsStillOpenAfterPrerenderAndActivate
 -ExtensionApiTabPrerenderingTest.PrerenderingIntoANewTab
+-ExtensionScriptTrackerBrowserTest.TrackingDisabledForPrerenderedNonDefaultSearchResultPage
 -ExtensionScriptTrackerBrowserTest.TrackingDisabledForPrerenderedNonDsePage
+-ExtensionScriptTrackerBrowserTest.TrackingEnabledForPrerenderedDefaultSearchResultPage
 -ExtensionScriptTrackerBrowserTest.TrackingEnabledForPrerenderedDsePage
 -FrameNodeImplPrerenderBrowserTest.Bind_PrerenderNavigation
 -GWSPageLoadMetricsObserverBrowserTest.PrerenderSRPAndActivate
@@ -472,6 +475,7 @@
 -PreloadBookmarkBarPrefetchEnabledPrerenderEnabledNavigationTest.*
 -PreloadServingMetricsPageLoadMetricsObserverBrowserTest.Prefetch
 -PreloadServingMetricsPageLoadMetricsObserverBrowserTest.Prerender
+-PreloadServingMetricsPageLoadMetricsObserverPrefetchAheadOfPrerenderBrowserTest.PrerenderWithPrefetchAheadOfPrerender
 -PrerenderDataSaverProtocolTest.CheckReportedDisabledByDataSaverPreloadingState
 -PrerenderFormSubmissionBrowserTest.*
 -PrerenderUntilScriptBrowserTest.UseCounter
@@ -724,6 +728,7 @@
 -SigninPromoTabHelperTest.CallPasswordMoveCallbackAfterSignInFromTab
 -SigninViewControllerBrowserCookieParamTest.SignOut/NoCookie
 -SigninViewControllerBrowserTest.SignoutOrReauth*
+-SigninViewControllerBrowserTest.ShowChromeSigninDialogForExtensionsPromptKeyjackingProtection
 -SigninViewControllerBrowserTest.UpdateAccessPointOfSignInTab
 -SigninViewControllerInteractiveBrowserTest.*
 -SupervisedProfilePickerHideGuestModeTest.DeleteLastSupervisedProfile
@@ -1120,6 +1125,8 @@
 # identity_manager->AreRefreshTokensLoaded()
 -AccountSettingsPagePixelBrowserTest.*
 -All/AvatarToolbarButtonBrowserTest.*
+-All/AvatarToolbarButtonEnterpriseIsolatedBrowserTest.EnterpriseIsolatedBrowser/*
+-All/AvatarToolbarButtonEnterpriseIsolatedBrowserTest.EnterpriseIsolatedWindowCount/*
 -All/AvatarToolbarButtonPasskeyUnlockErrorBrowserTest.PasskeyUnlockError/*
 -All/AvatarToolbarButtonSignInBenefitsNewSigninIphParameterizedTest.NotShownIfLegacyWasShown/*
 -All/AvatarToolbarButtonWithSyncBrowserTest.*
@@ -1211,8 +1218,11 @@
 -SaveCardBubbleViewsFullFormBrowserTest.Upload_ClickingSave_ShowsLoadingView/*
 -SaveCardBubbleViewsFullFormBrowserTest.Upload_InProgress_ShowsLoadingView/*
 -SingleBookmarkUploadDialogPixelTest.InvokeUi
+-SkillsUiWindowControllerBrowserTest.AccountPaused_ClosesDialogAndReloadsPage
+-SkillsUiWindowControllerBrowserTest.PrimaryAccountChanged_ClosesDialogAndReloadsPage
 -SyncConfirmationUIDialogPixelTest.InvokeUi_default/*
 -SyncConfirmationUIWindowPixelTest.InvokeUi_default/*
+-TabContextDecryptionTokenTabHelperBrowserTest.*
 
 # This test fails because of the following CHECK in identity_test_utils.cc:
 # !primary_account_info.IsEmpty()
@@ -1634,6 +1644,7 @@
 -DestroyProfileOnBrowserClose/ProfileManagerBrowserTest.*
 -ExtensionCrxInstallerTest.InstallFailsDuringProfileShutdown
 -ExtensionServiceBrowserTest.NoHostObservationAfterShutDown
+-InitialWebUIProfileServiceShutdownBrowserTest.DestroyProfileWithoutTakingToolbarContents
 -ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithCurrentProfile
 -ProfilePickerGlicFlowControllerBrowserTest.PickProfileWithProfileNotLoaded
 -ProfilePickerWithGlicParamBrowserTest.GlicLearnMoreClicked/*
@@ -1702,6 +1713,7 @@
 -ControlledFrameDisabledPermissionSerialTest.WebSerial/*
 -ControlledFrameDisabledPermissionUsbTest.WebUSB/*
 -ControlledFrameDisabledPermissionWebBluetoothTest.WebBluetooth/*
+-ControlledFrameMediaPermissionCacheBrowserTest.ClearBrowsingDataClearsCache
 -ControlledFrameNewWindowBrowserTest.*
 -ControlledFrameNewWindowHidBrowserTest.*
 -ControlledFramePermissionStatusLeakTest.*
@@ -1731,6 +1743,7 @@
 -ControlledFrameNotAvailableChannels/ControlledFrameNotAvailableChannelTest.*
 -ControlledFramePEPC/ControlledFramePermissionRequestPEPCTest.Camera/*
 -ControlledFramePEPC/ControlledFramePermissionRequestPEPCTest.Microphone/*
+-DevToolsIwaWorkerPolicyBrowserTest.*
 -ExtensionApiTabsIwaDuplicateTest.*
 -ExtensionApiTabsIwaMoveTest.*
 -ExtensionApiTabsIwaNavigateTest.*
@@ -1932,6 +1945,7 @@
 -All/ReportingBrowserTestMoreContextData.CrashReportUnresponsive/*
 -All/ReportingBrowserTestMoreContextData.CrashReportUnresponsiveCrossOriginIframe/*
 -All/ReportingBrowserTestSpecifyCrashEndpoint.SpecifyCrashEndpoint/*
+-All/ReportingBrowserTestUnresponsiveWithoutHungExitCode.CrashReportUnresponsiveWithoutHungExitCode/*
 
 # These tests fail because we disable one time permission functionality in
 # components/content_settings/core/browser/content_settings_utils.cc override.

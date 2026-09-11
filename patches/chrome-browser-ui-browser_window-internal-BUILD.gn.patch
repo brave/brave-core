@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/internal/BUILD.gn b/chrome/browser/ui/browser_window/internal/BUILD.gn
-index 968179d9ed668d0282bbad614ce3a4c436fc329a..da230bd824a35f6ab1972a5d3e9c1ee5f78074cd 100644
+index d7e13688cae63ebb6a60ff18b3949d87b2747882..6706eccbd75b422fd2bada14c1563e82e51a13a2 100644
 --- a/chrome/browser/ui/browser_window/internal/BUILD.gn
 +++ b/chrome/browser/ui/browser_window/internal/BUILD.gn
-@@ -216,6 +216,7 @@ source_set("internal") {
+@@ -217,6 +217,7 @@ source_set("internal") {
        "//chrome/browser/ui:browser_select_file_dialog_controller",
      ]
    }

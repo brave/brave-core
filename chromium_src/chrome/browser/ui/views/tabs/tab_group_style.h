@@ -24,14 +24,6 @@ class TabGroupStyle : public TabGroupStyle_ChromiumImpl {
 
   SkPath GetUnderlinePath(gfx::Rect local_bounds) const override;
 
-  gfx::Insets GetInsetsForHeaderChip() const override;
-
-  gfx::Point GetTitleChipOffset(std::optional<int> text_height) const override;
-
-  int GetChipCornerRadius() const override;
-
-  float GetEmptyChipSize() const override;
-
  private:
   bool ShouldShowBraveVerticalTabs() const;
 };

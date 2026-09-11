@@ -1,5 +1,5 @@
 diff --git a/components/browser_actuator/public/features.cc b/components/browser_actuator/public/features.cc
-index bf26063345e6b9b9f1a9b1f6711eb6cb278d0fa0..acae7f6ba0bb7df0ded35e219e3bcae70a3be368 100644
+index c254ff63474c85e82986b0c31cfd87fc5ad467fb..aa7b8106d1a718d3542df22f80ba66a76b6e4982 100644
 --- a/components/browser_actuator/public/features.cc
 +++ b/components/browser_actuator/public/features.cc
 @@ -6,6 +6,7 @@
@@ -8,5 +8,5 @@ index bf26063345e6b9b9f1a9b1f6711eb6cb278d0fa0..acae7f6ba0bb7df0ded35e219e3bcae7
  
 +// kBrowserActuator feature state is enforced via plaster rewrite.
  BASE_FEATURE(kBrowserActuator, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kBrowserActuatorInternals, base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kEnableBrowserActuatorForGlicExperimentalTriggering,
-              base::FEATURE_DISABLED_BY_DEFAULT);

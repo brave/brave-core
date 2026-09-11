@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/data_type.cc b/components/sync/base/data_type.cc
-index e987e5b4d6c701478d7b332f94e297888cc7b0d4..0100fd8c74ffca94f8e7b426e1d36bea22396c7e 100644
+index 850edce8b7e41eef0de62e97866259962d9c7bcc..26f207a17993e545615ae78ee61e9cf0332f0f44 100644
 --- a/components/sync/base/data_type.cc
 +++ b/components/sync/base/data_type.cc
-@@ -1193,10 +1193,25 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
+@@ -1209,10 +1209,25 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
              .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,
              .local_sync_support_policy = LocalSyncSupportPolicy::kUnsupported,
          },
@@ -24,14 +24,14 @@ index e987e5b4d6c701478d7b332f94e297888cc7b0d4..0100fd8c74ffca94f8e7b426e1d36bea
      }};
  
  // LINT.IfChange(DataTypeHistogramSuffix)
--static_assert(GetNumDataTypes() == 65,
-+static_assert(GetNumDataTypes() == 65 + 1,
+-static_assert(GetNumDataTypes() == 66,
++static_assert(GetNumDataTypes() == 66 + 1,
                "When adding a new type, update kDataTypeInfoTable, update "
                "histograms.xml and follow the integration checklist in "
                "https://www.chromium.org/developers/design-documents/sync/"
-@@ -1419,6 +1434,9 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
-     case JOURNEY:
-       specifics->mutable_journey();
+@@ -1438,6 +1453,9 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
+     case AUTOFILL_ENTITY_SUPPRESSION:
+       specifics->mutable_autofill_entity_suppression();
        break;
 +    case AI_CHAT_CONVERSATION:
 +      specifics->mutable_ai_chat_conversation();
@@ -39,10 +39,10 @@ index e987e5b4d6c701478d7b332f94e297888cc7b0d4..0100fd8c74ffca94f8e7b426e1d36bea
    }
  }
  
-@@ -1757,6 +1775,8 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
-       return DataTypeForHistograms::kNotebook;
-     case JOURNEY:
+@@ -1778,6 +1796,8 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
        return DataTypeForHistograms::kJourney;
+     case AUTOFILL_ENTITY_SUPPRESSION:
+       return DataTypeForHistograms::kAutofillEntitySuppression;
 +    case AI_CHAT_CONVERSATION:
 +      return DataTypeForHistograms::kAIChatConversation;
    }

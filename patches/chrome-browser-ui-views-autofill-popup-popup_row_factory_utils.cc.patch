@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/autofill/popup/popup_row_factory_utils.cc b/chrome/browser/ui/views/autofill/popup/popup_row_factory_utils.cc
-index 88d5341c8233896c0eb7293a1a0712062dbde200..74228b2af46f9761c097889e30651c62b3059460 100644
+index 4e7b68de7901b3e7e27600ca7ba6ee6ebb2ca182..1f507612db52f3d423b155b4d0d2ead121391788 100644
 --- a/chrome/browser/ui/views/autofill/popup/popup_row_factory_utils.cc
 +++ b/chrome/browser/ui/views/autofill/popup/popup_row_factory_utils.cc
-@@ -325,7 +325,7 @@ std::vector<std::unique_ptr<views::View>> CreateSubtextViews(
+@@ -332,7 +332,7 @@ std::vector<std::unique_ptr<views::View>> CreateSubtextViews(
          // To make sure the popup width will not exceed its maximum value,
          // divide the maximum label width by the number of labels.
          FormatLabel(*label, label_text, main_filling_product,
@@ -11,7 +11,7 @@ index 88d5341c8233896c0eb7293a1a0712062dbde200..74228b2af46f9761c097889e30651c62
        }
      }
      result.push_back(std::move(label_row_container_view));
-@@ -729,7 +729,7 @@ std::unique_ptr<PopupRowContentView> CreatePopupRowContentView(
+@@ -876,7 +876,7 @@ std::unique_ptr<PopupRowContentView> CreatePopupRowContentView(
                                         filter_match->main_text_match);
    }
  
@@ -20,7 +20,7 @@ index 88d5341c8233896c0eb7293a1a0712062dbde200..74228b2af46f9761c097889e30651c62
    popup_cell_utils::AddSuggestionContentToView(
        suggestion, std::move(main_text_label), CreateMinorTextLabels(suggestion),
        /*description_label=*/nullptr,
-@@ -804,7 +804,7 @@ std::unique_ptr<PopupRowView> CreatePopupRowView(
+@@ -951,7 +951,7 @@ std::unique_ptr<PopupRowView> CreatePopupRowView(
    SuggestionType type = suggestion.type;
    FillingProduct main_filling_product = controller->GetMainFillingProduct();
  

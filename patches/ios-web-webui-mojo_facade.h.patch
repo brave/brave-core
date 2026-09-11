@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.h b/ios/web/webui/mojo_facade.h
-index 19ba6de19e0e7f8dad41b8eaf62a0c21258825f3..5d23b666ba35e3f352cd3425b2cac75aa508ebbb 100644
+index 9994bc2da674c2ed6f173c4c519d8a11e57f2803..8adcbfb12dbd3406827e39d96bd30f077031860d 100644
 --- a/ios/web/webui/mojo_facade.h
 +++ b/ios/web/webui/mojo_facade.h
 @@ -35,7 +35,8 @@ class MojoFacade : public web::WebStateObserver,
