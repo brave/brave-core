@@ -5,6 +5,22 @@
 
 import("//build/config/android/rules.gni")
 
+source_set("password_migration") {
+  sources = [
+    "brave_account_to_profile_password_migration.cc",
+    "brave_account_to_profile_password_migration.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_sync:features",
+    "//chrome/browser/password_manager/factories",
+    "//components/keyed_service/core",
+    "//components/password_manager/core/browser:password_form",
+    "//components/password_manager/core/browser/password_store:password_store_interface",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
@@ -14,6 +30,7 @@ source_set("unit_tests") {
   ]
 
   deps = [
+    ":password_migration",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_sync:features",
