@@ -1,20 +1,18 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_next_features.cc b/chrome/browser/ui/omnibox/omnibox_next_features.cc
-index ae6fd60f3716ece6d74afff174df0da167f4a82e..3c734134637cc01f3fc7b718d026c59c281a5381 100644
+index ae6fd60f3716ece6d74afff174df0da167f4a82e..942b71dea8fd696e41cccd1612d5233434b93558 100644
 --- a/chrome/browser/ui/omnibox/omnibox_next_features.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_next_features.cc
-@@ -33,11 +33,13 @@ namespace omnibox {
+@@ -33,11 +33,11 @@ namespace omnibox {
  namespace internal {
  
  // If enabled, shows the omnibox suggestions in the popup in WebUI.
 -BASE_FEATURE(kWebUIOmniboxPopup, ENABLED);
-+// kWebUIOmniboxPopup feature state is enforced via plaster rewrite.
-+BASE_FEATURE(kWebUIOmniboxPopup, DISABLED);
++BASE_OVERRIDDEN_FEATURE(kWebUIOmniboxPopup, DISABLED);
  
  // If enabled, Omnibox popup will transition to AI-Mode with the compose-box
  // panel taking up the whole of the popup, covering the location bar completely.
 -BASE_FEATURE(kWebUIOmniboxAimPopup, ENABLED);
-+// kWebUIOmniboxAimPopup feature state is enforced via plaster rewrite.
-+BASE_FEATURE(kWebUIOmniboxAimPopup, DISABLED);
++BASE_OVERRIDDEN_FEATURE(kWebUIOmniboxAimPopup, DISABLED);
  
  // If enabled, the Omnibox Popup will enable a different UI state when on a
  // webpage.

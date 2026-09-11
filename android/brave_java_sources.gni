@@ -9,7 +9,6 @@ import("//brave/android/java/org/chromium/chrome/browser/billing/sources.gni")
 import(
     "//brave/android/java/org/chromium/chrome/browser/fullscreen/brave_fullscreen_java_sources.gni")
 import("//brave/android/java/org/chromium/chrome/browser/playlist/sources.gni")
-import("//brave/base/brave_base_shared_preferences_java.gni")
 import("//brave/browser/autofill/android/java_sources.gni")
 import("//brave/browser/bookmarks/android/sources.gni")
 import("//brave/browser/brave_ads/android/java_sources.gni")
@@ -548,14 +547,6 @@ brave_browser_ui_android_toolbar_sources = [
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/BottomTabSwitcherActionMenuCoordinator.java",
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherActionMenuCoordinator.java",
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
-]
-
-brave_java_base_sources = [
-  "//brave/android/java/org/chromium/base/BraveCommandLineInitUtil.java",
-  "//brave/android/java/org/chromium/base/BraveFeatureList.java",
-  "//brave/android/java/org/chromium/base/BravePreferenceKeys.java",
-  "//brave/android/java/org/chromium/base/BraveReflectionUtil.java",
-  "//brave/android/java/org/chromium/base/BraveUrlConstants.java",
 ]
 
 brave_java_base_module_sources = [

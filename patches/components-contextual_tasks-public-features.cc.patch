@@ -1,20 +1,22 @@
 diff --git a/components/contextual_tasks/public/features.cc b/components/contextual_tasks/public/features.cc
-index e1f33744f01919c847af6e4e7931964715a11d3d..7966971a204e81f84b9c5edfaade403e56af71b4 100644
+index e1f33744f01919c847af6e4e7931964715a11d3d..d97d0d6de64fdf4054ec942d544da837045ae9b7 100644
 --- a/components/contextual_tasks/public/features.cc
 +++ b/components/contextual_tasks/public/features.cc
-@@ -33,6 +33,7 @@ std::optional<bool> g_sticky_conversation_enabled_override;
+@@ -33,7 +33,7 @@ std::optional<bool> g_sticky_conversation_enabled_override;
  namespace contextual_tasks {
  
  // Enables the contextual tasks side panel while browsing.
-+// kContextualTasks feature state is enforced via plaster rewrite.
- BASE_FEATURE(kContextualTasks, base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kContextualTasks, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kContextualTasks, base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kContextualTasksPrivateApiNoAnimation,
               base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -169,6 +170,7 @@ BASE_FEATURE(kContextualTasksOverrideShowBottomSheetOnLargeScreen,
+ 
+@@ -169,7 +169,7 @@ BASE_FEATURE(kContextualTasksOverrideShowBottomSheetOnLargeScreen,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Enables prefetching of cookies for contextual tasks.
-+// kContextualTasksCookiePrefetch feature state is enforced via plaster rewrite.
- BASE_FEATURE(kContextualTasksCookiePrefetch, base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kContextualTasksCookiePrefetch, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kContextualTasksCookiePrefetch, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kAimTriggeredThreadLinks, base::FEATURE_ENABLED_BY_DEFAULT);
+ 

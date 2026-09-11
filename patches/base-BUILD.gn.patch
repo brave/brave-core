@@ -1,20 +1,32 @@
 diff --git a/base/BUILD.gn b/base/BUILD.gn
-index 37e006910a1bb91bc506a59319d8021ea9b7660c..c2f39c2569842d5621eadfb3ed5e7aa439ccc714 100644
+index 37e006910a1bb91bc506a59319d8021ea9b7660c..c68716fb79cc036e8d774208d8bcab3678fba849 100644
 --- a/base/BUILD.gn
 +++ b/base/BUILD.gn
-@@ -5136,6 +5136,7 @@ if (is_android) {
-       "android/java/src/org/chromium/base/UserDataHost.java",
-       "android/java/src/org/chromium/base/ValueChangedCallback.java",
+@@ -243,6 +243,7 @@ source_set("asan_raw_ptr_service") {
+ # directory) which should use source_set as is recommended for GN targets).
+ component("base") {
+   sources = [
++    "//brave/base/compile_overridden_features.cc",
+     "allocator/allocator_check.cc",
+     "allocator/allocator_check.h",
+     "allocator/dispatcher/configuration.h",
+@@ -5108,6 +5109,11 @@ if (is_android) {
+     # New additions should have their own independent android_library. Please
+     # do no append to this list.
+     sources = [
++      "//brave/android/java/org/chromium/base/BraveCommandLineInitUtil.java",
++      "//brave/android/java/org/chromium/base/BraveFeatureList.java",
++      "//brave/android/java/org/chromium/base/BravePreferenceKeys.java",
++      "//brave/android/java/org/chromium/base/BraveReflectionUtil.java",
++      "//brave/android/java/org/chromium/base/BraveUrlConstants.java",
+       "android/java/src/org/chromium/base/ApkAssets.java",
+       "android/java/src/org/chromium/base/BaseFeatureList.java",
+       "android/java/src/org/chromium/base/BaseFeatureMap.java",
+@@ -5814,6 +5820,7 @@ if (is_android) {
      ]
-+    sources += brave_java_base_sources
  
-     resources_package = "org.chromium.base"
- 
-@@ -5821,6 +5822,7 @@ if (is_android) {
-       "android/java/src/org/chromium/base/shared_preferences/SharedPreferencesManager.java",
-       "android/java/src/org/chromium/base/shared_preferences/StrictPreferenceKeyChecker.java",
-     ]
-+    sources += brave_base_shared_preferences_java_sources
-   }
- 
-   android_library("flagged_apis_java") {
+     sources = [
++      "//brave/base/android/java/src/org/chromium/base/shared_preferences/BraveStrictPreferenceKeyChecker.java",
+       "android/java/src/org/chromium/base/shared_preferences/KeyPrefix.java",
+       "android/java/src/org/chromium/base/shared_preferences/KnownPreferenceKeyRegistries.java",
+       "android/java/src/org/chromium/base/shared_preferences/PreferenceKeyChecker.java",

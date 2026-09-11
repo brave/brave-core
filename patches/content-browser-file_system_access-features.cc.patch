@@ -1,14 +1,14 @@
 diff --git a/content/browser/file_system_access/features.cc b/content/browser/file_system_access/features.cc
-index 8cd0a59ee415095e315a1b4a9a7d01681830f287..ffee2dd41dff5c7474308260eacbdce7ea928e9e 100644
+index 8cd0a59ee415095e315a1b4a9a7d01681830f287..9f25c488a96809992374981d61a118c98bec5e7b 100644
 --- a/content/browser/file_system_access/features.cc
 +++ b/content/browser/file_system_access/features.cc
-@@ -17,8 +17,9 @@ namespace content::features {
+@@ -17,8 +17,8 @@ namespace content::features {
  //
  // When enabled, GetFile() and GetEntries() on a directory handle performs
  // the blocklist check on child file handles.
-+// kFileSystemAccessDirectoryIterationBlocklistCheck feature state is enforced via plaster rewrite.
- BASE_FEATURE(kFileSystemAccessDirectoryIterationBlocklistCheck,
+-BASE_FEATURE(kFileSystemAccessDirectoryIterationBlocklistCheck,
 -             base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kFileSystemAccessDirectoryIterationBlocklistCheck,
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  
  // When enabled, sites are limited in how much underlying operating resources

@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Build the compile-time feature override list into base.
+
+      It has to live in the same component as base::FeatureList, which is
+      what reads the list, and as the BASE_OVERRIDDEN_FEATURE symbols it
+      defines, which every component referring to such a feature links
+      against.
+    insert_into_list:
+      target: base
+      list_name: sources
+      values: //brave/base/compile_overridden_features.cc
+
+  - description: 'Add the Brave additions to org.chromium.base.'
+    insert_into_list:
+      target: base_java
+      list_name: sources
+      values:
+        - //brave/android/java/org/chromium/base/BraveCommandLineInitUtil.java
+        - //brave/android/java/org/chromium/base/BraveFeatureList.java
+        - //brave/android/java/org/chromium/base/BravePreferenceKeys.java
+        - //brave/android/java/org/chromium/base/BraveReflectionUtil.java
+        - //brave/android/java/org/chromium/base/BraveUrlConstants.java
+
+  - description: 'Add the Brave additions to the shared preferences library.'
+    insert_into_list:
+      target: base_shared_preferences_java
+      list_name: sources
+      values: //brave/base/android/java/src/org/chromium/base/shared_preferences/BraveStrictPreferenceKeyChecker.java

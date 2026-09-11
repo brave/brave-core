@@ -10,3 +10,13 @@ source_set("test_vendor_is_brave") {
   sources = [ "test_vendor_is_brave.cc" ]
   deps = [ "//base/test:test_support" ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "compile_overridden_features_unittest.cc" ]
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//testing/gtest",
+  ]
+}

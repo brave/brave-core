@@ -1,36 +1,35 @@
 diff --git a/components/optimization_guide/core/optimization_guide_features.cc b/components/optimization_guide/core/optimization_guide_features.cc
-index 389050b1f655b01349751f86199258c6ebb1fec8..24fc763dfd3fed924f52f887db39a9e8bb55d7f0 100644
+index 389050b1f655b01349751f86199258c6ebb1fec8..df7d5c22956ae824a5916feb1091cd5135542a0c 100644
 --- a/components/optimization_guide/core/optimization_guide_features.cc
 +++ b/components/optimization_guide/core/optimization_guide_features.cc
-@@ -57,7 +57,8 @@ constexpr auto enabled_by_default_mobile_only =
+@@ -57,7 +57,7 @@ constexpr auto enabled_by_default_mobile_only =
  
  // Enables the syncing of the Optimization Hints component, which provides
  // hints for what optimizations can be applied on a page load.
 -BASE_FEATURE(kOptimizationHints, base::FEATURE_ENABLED_BY_DEFAULT);
-+// kOptimizationHints feature state is enforced via plaster rewrite.
-+BASE_FEATURE(kOptimizationHints, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kOptimizationHints, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Enables the prediction of optimization targets.
  BASE_FEATURE(kOptimizationTargetPrediction, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -80,9 +81,10 @@ BASE_FEATURE(kOverrideNumThreadsForModelExecution,
+@@ -80,9 +80,9 @@ BASE_FEATURE(kOverrideNumThreadsForModelExecution,
  
  // Killswitch for fetching on search results from a remote Optimization Guide
  // Service.
-+// kOptimizationGuideFetchingForSRP feature state is enforced via plaster rewrite.
- BASE_FEATURE(kOptimizationGuideFetchingForSRP,
+-BASE_FEATURE(kOptimizationGuideFetchingForSRP,
++BASE_OVERRIDDEN_FEATURE(kOptimizationGuideFetchingForSRP,
               "OptimizationHintsFetchingSRP",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Kill switch for disabling model quality logging.
  BASE_FEATURE(kModelQualityLogging, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -95,8 +97,9 @@ BASE_FEATURE(kOptimizationGuidePredictionModelKillswitch,
+@@ -95,8 +95,8 @@ BASE_FEATURE(kOptimizationGuidePredictionModelKillswitch,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Whether to enable model execution.
-+// kOptimizationGuideModelExecution feature state is enforced via plaster rewrite.
- BASE_FEATURE(kOptimizationGuideModelExecution,
+-BASE_FEATURE(kOptimizationGuideModelExecution,
 -             base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kOptimizationGuideModelExecution,
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Whether to use the on device model service in optimization guide.

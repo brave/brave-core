@@ -1,40 +1,38 @@
 diff --git a/components/permissions/features.cc b/components/permissions/features.cc
-index 0928e763d1ed6f91cf44ef042c212829fd944410..d50f95d30ca5d5cbc3574574231d237a9140c2fd 100644
+index 0928e763d1ed6f91cf44ef042c212829fd944410..2dcdc9f7b6aeef61c5e207e46028221b51787ba4 100644
 --- a/components/permissions/features.cc
 +++ b/components/permissions/features.cc
-@@ -34,7 +34,8 @@ BASE_FEATURE(kPermissionElementPromptPositioning,
+@@ -34,7 +34,7 @@ BASE_FEATURE(kPermissionElementPromptPositioning,
  // Enables heuristic auto-grant for permissions.
  BASE_FEATURE(kPermissionHeuristicAutoGrant, base::FEATURE_DISABLED_BY_DEFAULT);
  
 -BASE_FEATURE(kPermissionPredictionsV2, base::FEATURE_ENABLED_BY_DEFAULT);
-+// kPermissionPredictionsV2 feature state is enforced via plaster rewrite.
-+BASE_FEATURE(kPermissionPredictionsV2, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kPermissionPredictionsV2, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kPermissionsAIv4, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -64,7 +65,11 @@ BASE_FEATURE(kPermissionPromiseLifetimeModulationAndroid,
+@@ -64,7 +64,11 @@ BASE_FEATURE(kPermissionPromiseLifetimeModulationAndroid,
  // configuring `PermissionAction` does not make sense in that case, since the
  // user has not yet taken an action. Therefore, that parameter is ignored in
  // that case.
 +#if !BUILDFLAG(IS_ANDROID)
- BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
 +#else
-+BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kPermissionsPromptSurvey, base::FEATURE_DISABLED_BY_DEFAULT);
 +#endif
  
  // When enabled, use the value of the `allowlist_urls` FeatureParam as the
  // list of origins which would be allowed to access browser permission and
-@@ -90,10 +95,12 @@ BASE_FEATURE(kRecordChooserPermissionLastVisitedTimestamps,
+@@ -90,10 +94,10 @@ BASE_FEATURE(kRecordChooserPermissionLastVisitedTimestamps,
  // When enabled, blocks condition to exclude auto granted permissions for
  // storage access exceptions. This will allow RWS permission grants to be
  // visible in the Embedded content settings page.
-+// kShowRelatedWebsiteSetsPermissionGrants feature state is enforced via plaster rewrite.
- BASE_FEATURE(kShowRelatedWebsiteSetsPermissionGrants,
+-BASE_FEATURE(kShowRelatedWebsiteSetsPermissionGrants,
++BASE_OVERRIDDEN_FEATURE(kShowRelatedWebsiteSetsPermissionGrants,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
 -BASE_FEATURE(kCpssUseTfliteSignatureRunner, base::FEATURE_ENABLED_BY_DEFAULT);
-+// kCpssUseTfliteSignatureRunner feature state is enforced via plaster rewrite.
-+BASE_FEATURE(kCpssUseTfliteSignatureRunner, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kCpssUseTfliteSignatureRunner, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kGlicActorPermissionsAutoReject, base::FEATURE_ENABLED_BY_DEFAULT);
  

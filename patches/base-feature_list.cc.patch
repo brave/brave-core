@@ -1,0 +1,34 @@
+diff --git a/base/feature_list.cc b/base/feature_list.cc
+index e41b0ac1f7a98a74ab57525dca4a90c3ad135868..e8be5ef8799bba22678b60cbe00143be02cb8508 100644
+--- a/base/feature_list.cc
++++ b/base/feature_list.cc
+@@ -658,6 +658,9 @@ base::flat_set<std::string> FeatureList::GetFeaturesAssociatedWithTrial(
+ }
+ 
+ bool FeatureList::IsFeatureOverridden(std::string_view feature_name) const {
++  if (IsCompileOverriddenFeature(feature_name)) {
++    return true;
++  }
+   return GetOverrideEntryByFeatureName(feature_name);
+ }
+ 
+@@ -1114,6 +1117,7 @@ bool FeatureList::IsFeatureEnabled(const Feature& feature) const {
+ 
+ std::optional<bool> FeatureList::IsFeatureEnabledIfOverridden(
+     const Feature& feature) const {
++  std::optional<bool> state = [&]() -> std::optional<bool> {
+   OverrideState overridden_state = GetOverrideState(feature);
+ 
+   // If marked as OVERRIDE_USE_DEFAULT, fall through to returning empty.
+@@ -1122,6 +1126,11 @@ std::optional<bool> FeatureList::IsFeatureEnabledIfOverridden(
+   }
+ 
+   return std::nullopt;
++  }();
++  if (!state.has_value() && IsCompileOverriddenFeature(feature.name)) {
++    return IsFeatureEnabled(feature);
++  }
++  return state;
+ }
+ 
+ FeatureList::OverrideState FeatureList::GetOverrideState(

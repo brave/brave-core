@@ -1,5 +1,5 @@
 diff --git a/components/sync/base/features.cc b/components/sync/base/features.cc
-index 245205cee06b8409560fbe42f8400296a302a985..14872de28c9cff1260fcdf249776ae1f79a594b7 100644
+index 245205cee06b8409560fbe42f8400296a302a985..68567813fc641ae453bc1747d626177ab8c55ea2 100644
 --- a/components/sync/base/features.cc
 +++ b/components/sync/base/features.cc
 @@ -89,6 +89,7 @@ BASE_FEATURE(kReplaceSyncPromosWithSigninPromosNewSignin,
@@ -15,7 +15,7 @@ index 245205cee06b8409560fbe42f8400296a302a985..14872de28c9cff1260fcdf249776ae1f
  #endif
  
 -DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuableMetadata);
-+BASE_FEATURE(kSyncAutofillValuableMetadata, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kSyncAutofillValuableMetadata, base::FEATURE_DISABLED_BY_DEFAULT);
  
  DEFINE_SYNC_AUTOFILL_AI_FEATURE(kSyncWalletFlightReservations);
  

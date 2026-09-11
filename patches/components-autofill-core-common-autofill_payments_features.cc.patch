@@ -1,32 +1,38 @@
 diff --git a/components/autofill/core/common/autofill_payments_features.cc b/components/autofill/core/common/autofill_payments_features.cc
-index 50cb7d3d5f5b5cc2203bcfac67d45d9d447a2271..a9634ada7bc73791e1a145dbd94b4a678220a9d4 100644
+index 50cb7d3d5f5b5cc2203bcfac67d45d9d447a2271..93c6f268cab00c6b0ffdf57e09032bf3c9be21d6 100644
 --- a/components/autofill/core/common/autofill_payments_features.cc
 +++ b/components/autofill/core/common/autofill_payments_features.cc
-@@ -47,13 +47,7 @@ BASE_FEATURE(kAutofillEnableAiCardRecommendation,
+@@ -46,14 +46,8 @@ BASE_FEATURE(kAutofillEnableAiCardRecommendation,
+ 
  // When enabled, Chrome will extract the checkout amount from the checkout page
  // of the allowlisted merchant websites.
- BASE_FEATURE(kAutofillEnableAmountExtraction,
+-BASE_FEATURE(kAutofillEnableAmountExtraction,
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 -#else
-              base::FEATURE_DISABLED_BY_DEFAULT);
+-             base::FEATURE_DISABLED_BY_DEFAULT);
 -#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
 -        // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
++BASE_OVERRIDDEN_FEATURE(kAutofillEnableAmountExtraction,
++                        base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Enables testing of the result of checkout amount extraction on desktop.
  // This flag will allow amount extraction to run on any website when a CC
-@@ -80,13 +74,7 @@ BASE_FEATURE(kAutofillEnableBottomSheetScanCardAndFill,
+@@ -79,14 +73,8 @@ BASE_FEATURE(kAutofillEnableBottomSheetScanCardAndFill,
+ #endif
  
  // When enabled, buy now pay later (BNPL) in Autofill will be offered.
- BASE_FEATURE(kAutofillEnableBuyNowPayLater,
+-BASE_FEATURE(kAutofillEnableBuyNowPayLater,
 -#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) || \
 -    BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 -#else
-              base::FEATURE_DISABLED_BY_DEFAULT);
+-             base::FEATURE_DISABLED_BY_DEFAULT);
 -#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX) ||
 -        // BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_ANDROID)
++BASE_OVERRIDDEN_FEATURE(kAutofillEnableBuyNowPayLater,
++                        base::FEATURE_DISABLED_BY_DEFAULT);
  
  // When enabled, additional steps are required to autofill buy now pay later
  // (BNPL) issuers that are externally linked.

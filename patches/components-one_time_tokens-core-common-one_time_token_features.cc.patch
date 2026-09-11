@@ -1,12 +1,13 @@
 diff --git a/components/one_time_tokens/core/common/one_time_token_features.cc b/components/one_time_tokens/core/common/one_time_token_features.cc
-index 3c0161179125270ba002eefc79535fc1cc9ef13c..478176468f70910c2b5695619f05f2842ff73798 100644
+index 3c0161179125270ba002eefc79535fc1cc9ef13c..03795c84a688522bb4d7e4737850eed1a9203442 100644
 --- a/components/one_time_tokens/core/common/one_time_token_features.cc
 +++ b/components/one_time_tokens/core/common/one_time_token_features.cc
-@@ -10,6 +10,7 @@ namespace one_time_tokens::features {
+@@ -10,7 +10,7 @@ namespace one_time_tokens::features {
  
  // If enabled, Autofill will retrieve one-time passwords from Gmail.
  // TODO(crbug.com/452607505): Clean up when launched.
-+// kGmailOtpRetrievalService feature state is enforced via plaster rewrite.
- BASE_FEATURE(kGmailOtpRetrievalService, base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kGmailOtpRetrievalService, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kGmailOtpRetrievalService, base::FEATURE_DISABLED_BY_DEFAULT);
  
  const base::FeatureParam<base::TimeDelta> kGmailOtpSubscriptionPeriodParam{
+     &kGmailOtpRetrievalService, /*name=*/"subscription_period",
