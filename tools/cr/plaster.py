@@ -2235,17 +2235,17 @@ class TsDropCustomElementRegistrationRewriter(_AstGrepRewriter):
         Removes the `customElements.define(...)` call registering `class_name`,
         freeing the tag name it claimed.
 
-        A custom element tag can only be registered once, so a Brave subclass in
-        `chromium_src/` cannot take over an element while upstream still
+        A custom element tag can only be registered once, so a Brave subclass
+        in `chromium_src/` cannot take over an element while upstream still
         registers its own class under the same tag. Dropping the upstream
-        registration is what lets the shadow file register the subclass instead —
-        which is where the replacement `customElements.define` belongs, next to
-        the subclass, rather than in a plaster.
+        registration is what lets the shadow file register the subclass
+        instead — which is where the replacement `customElements.define`
+        belongs, next to the subclass, rather than in a plaster.
 
-        The whole statement goes, along with the line(s) it occupied and the
-        blank line separating it from the code above when it was the file's last
-        statement, so no stray blank line is left behind. The call is found by
-        the class it registers, so the tag may be spelled either `class_name.is`
+        The whole statement goes, along with the line it occupied, so nothing
+        is left behind where it stood. The blank line above it is kept, as
+        context separating the code that remains. The call is found by the
+        class it registers, so the tag may be spelled either `class_name.is`
         or a string literal.
 
         Fields:
@@ -2262,11 +2262,10 @@ class TsDropCustomElementRegistrationRewriter(_AstGrepRewriter):
               class_name: SettingsSearchPageElement
         ```
 
+        The statement is removed whole, its own line included:
+
         ```diff
-          }
-         }
-        -
-        -customElements.define(SettingsSearchPageElement.is, SettingsSearchPageElement);
+        -customElements.define(SearchPageElement.is, SearchPageElement);
         ```
     """
 
@@ -2278,79 +2277,6 @@ class TsDropCustomElementRegistrationRewriter(_AstGrepRewriter):
             raise ValueError(f'{cls.NAME} removes a single registration and '
                              f'does not accept a count other than 1 '
                              f'(in "{description}")')
-
-    def __init__(self, *, class_name: str):
-        super().__init__()
-        self._class_name = class_name
-
-    def apply(
-        self,
-        contents: str,
-        *,
-        count: int,
-        description: str,
-        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
-    ) -> tuple[str, list[str]]:
-        # How much whitespace before the statement goes with it depends on the
-        # source, not on the caller, so the statement is located first and the
-        # op then run with the `lead` read off that match.
-        del count, description
-        engine = AstRewriter(RewritersEval.load(),
-                             contents,
-                             blank_for_parse=blank_for_parse)
-        inputs = {'class_name': self._class_name}
-        match = engine.first_match(Operation(self.OP_ID, inputs))
-        source = contents.encode('utf-8')
-        # A missing registration leaves the run to report the count shortfall.
-        lead = '' if match is None else self._lead(source, match)
-        op = Operation(self.OP_ID, inputs | {'lead': lead},
-                       MatchExpectation.exactly(1))
-        changes = engine.run(op)
-        error = op.expectation.error_for(changes)
-        return engine.content, [error] if error else []
-
-    @staticmethod
-    def _lead(source: bytes, match: AstMatch) -> str:
-        """The whitespace before `match` that its own line(s) own.
-
-        Deleting the statement alone would leave the line it sat on empty, and
-        the blank line that separated it from the code above dangling at the end
-        of the file. So the span grows backwards over the statement's
-        indentation and the newline ending the line above it, plus -- when the
-        registration is the last statement in the file -- that blank separator
-        line as well. A statement sharing its line with other code owns none of
-        this, and only the statement itself goes.
-        """
-        start = match.start - len(_leading_indent(source, match.start))
-        if source[start - 1:start] != b'\n':
-            return ''
-        start -= 1
-        if not source[match.end:].strip() and source[start - 1:start] == b'\n':
-            start -= 1
-        return source[start:match.start].decode('utf-8')
-
-    @classmethod
-    def parse(cls, body: object, *,
-              description: str) -> TsDropCustomElementRegistrationRewriter:
-        """Validate a `drop_custom_element_registration:` body.
-
-        `lead` is one of the op's inputs but not one of this rewriter's fields:
-        `apply` derives it from the match, so the default `parse` -- which
-        expects the body to name every declared input -- does not apply.
-        """
-        if not isinstance(body, dict):
-            raise ValueError(
-                f'"{cls.NAME}" must be a mapping (in "{description}")')
-        unknown = sorted(set(body) - {'class_name'})
-        if unknown:
-            raise ValueError(
-                f'Unrecognised {cls.NAME} arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
-        class_name = body.get('class_name')
-        if not isinstance(class_name, str) or not class_name:
-            raise ValueError(f'{cls.NAME} `class_name` must be a non-empty '
-                             f'string (in "{description}")')
-        return cls(class_name=class_name)
 
 
 # The hand-written rewriters. `_REWRITERS` is assembled from these plus the

@@ -4015,9 +4015,9 @@ class RewriterFormsTest(unittest.TestCase):
 
     # -- ts.drop_custom_element_registration op (real ast-grep) --------------
     #
-    # Targets WebUI `.ts` sources, parsed with ast-grep's `ts` grammar. How
-    # much whitespace goes with the statement depends on the source, so the
-    # rewriter reads it off the match at apply time.
+    # Targets WebUI `.ts` sources, parsed with ast-grep's `ts` grammar. The
+    # statement's own line goes with it; the blank line above stays, being
+    # context for the code that remains.
 
     _REGISTRATION_YAML = (
         'substitutions:\n'
@@ -4025,11 +4025,9 @@ class RewriterFormsTest(unittest.TestCase):
         '    drop_custom_element_registration:\n'
         '      class_name: FooElement\n')
 
-    def test_drop_custom_element_registration_takes_the_blank_line_with_it(
-            self):
+    def test_drop_custom_element_registration_removes_the_whole_line(self):
         # The shape every upstream WebUI source has: the registration closes
-        # the file, separated from the code above by a blank line that is only
-        # trailing whitespace once it is gone.
+        # the file, separated from the code above by a blank line.
         result = self._apply(
             'element.ts', 'declare global {\n'
             '  interface HTMLElementTagNameMap {\n'
@@ -4044,7 +4042,18 @@ class RewriterFormsTest(unittest.TestCase):
             '  interface HTMLElementTagNameMap {\n'
             "    'x-foo': FooElement;\n"
             '  }\n'
-            '}\n')
+            '}\n'
+            '\n')
+
+    def test_drop_custom_element_registration_keeps_the_blank_line_above(self):
+        # Removing it too would make the generated patch drop an empty line at
+        # a hunk boundary, which `patches/PRESUBMIT.py` warns about.
+        result = self._apply(
+            'blank.ts', '}\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n',
+            self._REGISTRATION_YAML)
+        self.assertEqual(result, '}\n\n')
 
     def test_drop_custom_element_registration_handles_a_wrapped_call(self):
         # A long class name puts the arguments on their own line; the match is
@@ -4054,11 +4063,11 @@ class RewriterFormsTest(unittest.TestCase):
             '\n'
             'customElements.define(\n'
             '    FooElement.is, FooElement);\n', self._REGISTRATION_YAML)
-        self.assertEqual(result, 'const x = 1;\n')
+        self.assertEqual(result, 'const x = 1;\n\n')
 
     def test_drop_custom_element_registration_keeps_following_code(self):
-        # Not the last statement, so the blank line above it still separates
-        # the code that remains and only the statement's own line goes.
+        # Not the last statement, so only the statement's own line goes and
+        # everything around it is left as it stands.
         result = self._apply(
             'midfile.ts', 'const x = 1;\n'
             '\n'
@@ -4076,7 +4085,7 @@ class RewriterFormsTest(unittest.TestCase):
             '\n'
             "customElements.define('x-foo', FooElement);\n",
             self._REGISTRATION_YAML)
-        self.assertEqual(result, 'const x = 1;\n')
+        self.assertEqual(result, 'const x = 1;\n\n')
 
     def test_drop_custom_element_registration_parses_type_syntax(self):
         # The `js` grammar cannot parse this, which is why `.ts` has a
@@ -4091,12 +4100,12 @@ class RewriterFormsTest(unittest.TestCase):
         self.assertEqual(
             result, 'export class FooElement extends CrLitElement {\n'
             '  private value_: string = getValue() as string;\n'
-            '}\n')
+            '}\n'
+            '\n')
 
     def test_drop_custom_element_registration_leaves_other_classes_alone(self):
         result = self._apply(
             'sibling.ts', 'customElements.define(BarElement.is, BarElement);\n'
-            '\n'
             'customElements.define(FooElement.is, FooElement);\n',
             self._REGISTRATION_YAML)
         self.assertEqual(
@@ -4132,18 +4141,16 @@ class RewriterFormsTest(unittest.TestCase):
             'substitutions:\n'
             '  - description: missing arg\n'
             '    drop_custom_element_registration: {}\n',
-            '`class_name` must be a non-empty string',
+            'drop_custom_element_registration requires arg(s): class_name',
             name='validation.ts')
 
     def test_drop_custom_element_registration_unknown_arg_rejected(self):
-        # `lead` is an op input the rewriter derives itself, so naming it is
-        # as wrong as naming anything else.
         self._expect_value_error(
             'substitutions:\n'
             '  - description: stray arg\n'
             '    drop_custom_element_registration:\n'
             '      class_name: FooElement\n'
-            "      lead: '\\n'\n",
+            '      tag_name: x-foo\n',
             'Unrecognised drop_custom_element_registration arg',
             name='validation.ts')
 

@@ -4,12 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
+  - description: >-
       Free `history-side-bar` for the Brave subclass to register.
-
-      chromium_src/.../history/side_bar.ts subclasses HistorySideBarElement to
-      add Brave's history embeddings toggle and to restyle the nav menu items,
-      and registers that subclass under the same tag. A tag can only be
-      registered once, so upstream's own registration has to go.
     drop_custom_element_registration:
       class_name: HistorySideBarElement
