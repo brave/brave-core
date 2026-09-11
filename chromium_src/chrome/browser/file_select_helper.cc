@@ -16,8 +16,8 @@ class FilePath;
 
 namespace brave {
 
-// The upload-metadata strip is spliced into NotifyListenerAndEnd by
-// rewrite/chrome/browser/file_select_helper.cc.yaml. Defined in
+// The upload-metadata strip is spliced into NotifyListenerAndEnd and
+// DeleteFiles by rewrite/chrome/browser/file_select_helper.cc.yaml. Defined in
 // brave/browser/file_select/brave_file_select_image_metadata_stripper.cc, and
 // declared here so that chrome/browser does not depend on Brave targets.
 bool MaybeStripImageMetadataForUpload(
@@ -26,6 +26,14 @@ bool MaybeStripImageMetadataForUpload(
     std::vector<blink::mojom::FileChooserFileInfoPtr>& list,
     base::OnceCallback<void(std::vector<blink::mojom::FileChooserFileInfoPtr>)>
         notify);
+
+// Called from the upstream when it tries to delete the temporary files which
+// were created during the file select process. This method iterates over the
+// |paths| to find the temporary root directory that was created by our stripper
+// and deletes it recursively. It also removes the entry from |paths| after
+// deletion.
+void MaybeDeleteImageMetadataStripperTemporaryDir(
+    std::vector<base::FilePath>& paths);
 
 }  // namespace brave
 
