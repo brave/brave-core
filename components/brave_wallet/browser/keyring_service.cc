@@ -22,6 +22,7 @@
 #include "base/containers/span.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
+#include "base/metrics/histogram_macros.h"
 #include "base/notreached.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/rand_util.h"
@@ -1247,6 +1248,8 @@ bool KeyringService::CreateWalletInternal(const std::string& mnemonic,
     Reset(true);
     return false;
   }
+
+  ReportUsageMetrics();
 
   for (const auto& observer : observers_) {
     if (from_restore) {
@@ -2657,6 +2660,12 @@ void KeyringService::Lock() {
   StopAutoLockTimer();
 }
 
+void KeyringService::ReportUsageMetrics() {
+  UMA_HISTOGRAM_BOOLEAN(kWalletUsageDailyHistogramName, true);
+  UMA_HISTOGRAM_BOOLEAN(kWalletUsageWeeklyHistogramName, true);
+  UMA_HISTOGRAM_BOOLEAN(kWalletUsageMonthlyHistogramName, true);
+}
+
 void KeyringService::Unlock(const std::string& password,
                             KeyringService::UnlockCallback callback) {
   MaybeRunPasswordMigrations(profile_prefs_, password);
@@ -2688,6 +2697,9 @@ void KeyringService::Unlock(const std::string& password,
 
   UpdateLastUnlockPref(local_state_);
   request_unlock_pending_ = false;
+
+  ReportUsageMetrics();
+
   for (const auto& observer : observers_) {
     observer->Unlocked();
   }
