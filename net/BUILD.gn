@@ -47,6 +47,7 @@ test("brave_cert_pinning_tests") {
     "//net",
     "//net:test_support",
     "//net/http:generate_transport_security_state",
+    "//net/http:generate_transport_security_state_pins",
     "//testing/gtest",
     "//url",
   ]
