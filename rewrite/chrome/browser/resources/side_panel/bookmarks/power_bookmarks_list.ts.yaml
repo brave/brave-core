@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Let chromium_src register `power-bookmarks-list` after restyling it.
+
+      chromium_src/.../side_panel/bookmarks/power_bookmarks_list.ts calls
+      injectStyle() on PowerBookmarksListElement, which only takes effect while
+      the element is still unregistered. So the shadow file registers the class
+      itself, once the style override is in place, and upstream's own
+      registration -- which would otherwise win the race -- has to go.
+    drop_custom_element_registration:
+      class_name: PowerBookmarksListElement

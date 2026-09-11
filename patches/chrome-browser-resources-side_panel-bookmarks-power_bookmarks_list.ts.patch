@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
-index 9ebdb6b6205472bf0c131f0eac81862f0590f53e..28de19d4897f5092fb9b2ccaaaa706d98e041f35 100644
+index 9ebdb6b6205472bf0c131f0eac81862f0590f53e..35be3834ad6bb3f924a717a30faed22ec85b590a 100644
 --- a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
 +++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_list.ts
-@@ -939,4 +939,4 @@ declare global {
+@@ -938,5 +938,3 @@ declare global {
+     'power-bookmarks-list': PowerBookmarksListElement;
    }
  }
- 
+-
 -customElements.define(PowerBookmarksListElement.is, PowerBookmarksListElement);
-+// customElements.define(PowerBookmarksListElement.is, PowerBookmarksListElement);

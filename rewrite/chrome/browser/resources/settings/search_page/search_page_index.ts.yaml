@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Free `settings-search-page-index` for the Brave subclass to register.
+
+      chromium_src/.../search_page_index.ts subclasses
+      SettingsSearchPageIndexElement to route the Brave search settings
+      subpages, and registers that subclass under the same tag. A tag can only
+      be registered once, so upstream's own registration has to go.
+    drop_custom_element_registration:
+      class_name: SettingsSearchPageIndexElement

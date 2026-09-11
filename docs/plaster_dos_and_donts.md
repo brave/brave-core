@@ -291,6 +291,38 @@ subclassing:
   properties of a type, and an insertion into a function body is a poor place to
   express them.
 
+## Free a WebUI element's tag, don't comment its registration out
+
+A custom element tag can only be registered once, so a Brave subclass (or a
+`lit_overriding` style injection, which only takes effect while the element is
+still undefined) can only take over an element if upstream's own
+`customElements.define` is gone. Use `drop_custom_element_registration`, which
+removes the statement and the line(s) it occupied, and put the replacement
+`customElements.define` in the `chromium_src` shadow file next to the subclass
+it registers.
+
+Do:
+
+```yaml
+# rewrite/chrome/browser/resources/settings/search_page/search_page.ts.yaml
+substitutions:
+  - description: 'Free `settings-search-page` for the Brave subclass.'
+    drop_custom_element_registration:
+      class_name: SettingsSearchPageElement
+```
+
+Don't — commenting the registration out leaves dead code in upstream, and a
+regex over the call is both fragile (the call is wrapped when the class name is
+long) and silent about why it is being removed:
+
+```yaml
+substitutions:
+  - description: 'Comment out the registration'
+    regex:
+      re_pattern: '(customElements.define\(SettingsSearchPageElement)'
+      replace: '// \1'
+```
+
 ## Don't use plaster for mere additions
 
 A `chromium_src` shadow file can introduce any file-scope code (headers,

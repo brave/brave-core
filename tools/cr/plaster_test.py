@@ -4013,6 +4013,151 @@ class RewriterFormsTest(unittest.TestCase):
             'does not accept a count other than 1',
             name='validation.json5')
 
+    # -- ts.drop_custom_element_registration op (real ast-grep) --------------
+    #
+    # Targets WebUI `.ts` sources, parsed with ast-grep's `ts` grammar. How
+    # much whitespace goes with the statement depends on the source, so the
+    # rewriter reads it off the match at apply time.
+
+    _REGISTRATION_YAML = (
+        'substitutions:\n'
+        '  - description: Free the tag for the Brave subclass.\n'
+        '    drop_custom_element_registration:\n'
+        '      class_name: FooElement\n')
+
+    def test_drop_custom_element_registration_takes_the_blank_line_with_it(
+            self):
+        # The shape every upstream WebUI source has: the registration closes
+        # the file, separated from the code above by a blank line that is only
+        # trailing whitespace once it is gone.
+        result = self._apply(
+            'element.ts', 'declare global {\n'
+            '  interface HTMLElementTagNameMap {\n'
+            "    'x-foo': FooElement;\n"
+            '  }\n'
+            '}\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n',
+            self._REGISTRATION_YAML)
+        self.assertEqual(
+            result, 'declare global {\n'
+            '  interface HTMLElementTagNameMap {\n'
+            "    'x-foo': FooElement;\n"
+            '  }\n'
+            '}\n')
+
+    def test_drop_custom_element_registration_handles_a_wrapped_call(self):
+        # A long class name puts the arguments on their own line; the match is
+        # the whole statement, so both lines go.
+        result = self._apply(
+            'wrapped.ts', 'const x = 1;\n'
+            '\n'
+            'customElements.define(\n'
+            '    FooElement.is, FooElement);\n', self._REGISTRATION_YAML)
+        self.assertEqual(result, 'const x = 1;\n')
+
+    def test_drop_custom_element_registration_keeps_following_code(self):
+        # Not the last statement, so the blank line above it still separates
+        # the code that remains and only the statement's own line goes.
+        result = self._apply(
+            'midfile.ts', 'const x = 1;\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n'
+            'export {};\n', self._REGISTRATION_YAML)
+        self.assertEqual(result, 'const x = 1;\n'
+                         '\n'
+                         'export {};\n')
+
+    def test_drop_custom_element_registration_accepts_a_string_tag(self):
+        # The class is what a plaster knows, so the tag may be a literal
+        # rather than the `.is` getter.
+        result = self._apply(
+            'literal_tag.ts', 'const x = 1;\n'
+            '\n'
+            "customElements.define('x-foo', FooElement);\n",
+            self._REGISTRATION_YAML)
+        self.assertEqual(result, 'const x = 1;\n')
+
+    def test_drop_custom_element_registration_parses_type_syntax(self):
+        # The `js` grammar cannot parse this, which is why `.ts` has a
+        # namespace of its own.
+        result = self._apply(
+            'typed.ts', 'export class FooElement extends CrLitElement {\n'
+            '  private value_: string = getValue() as string;\n'
+            '}\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n',
+            self._REGISTRATION_YAML)
+        self.assertEqual(
+            result, 'export class FooElement extends CrLitElement {\n'
+            '  private value_: string = getValue() as string;\n'
+            '}\n')
+
+    def test_drop_custom_element_registration_leaves_other_classes_alone(self):
+        result = self._apply(
+            'sibling.ts', 'customElements.define(BarElement.is, BarElement);\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n',
+            self._REGISTRATION_YAML)
+        self.assertEqual(
+            result, 'customElements.define(BarElement.is, BarElement);\n')
+
+    def test_drop_custom_element_registration_missing_call_fails(self):
+        # Upstream dropping the registration itself is a breakage worth
+        # reporting: the shadow file's own `customElements.define` may now be
+        # the second one, or redundant.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply('absent.ts', 'const x = 1;\n', self._REGISTRATION_YAML)
+
+    def test_drop_custom_element_registration_other_define_fails(self):
+        # A `define` on something that is not `customElements` is not a
+        # registration, however the class is named.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'other_define.ts', 'const x = 1;\n'
+                '\n'
+                'Object.define(FooElement.is, FooElement);\n',
+                self._REGISTRATION_YAML)
+
+    def test_drop_custom_element_registration_is_not_available_for_cxx(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: wrong kind of target\n'
+            '    drop_custom_element_registration:\n'
+            '      class_name: FooElement\n',
+            'is not available for this source')
+
+    def test_drop_custom_element_registration_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing arg\n'
+            '    drop_custom_element_registration: {}\n',
+            '`class_name` must be a non-empty string',
+            name='validation.ts')
+
+    def test_drop_custom_element_registration_unknown_arg_rejected(self):
+        # `lead` is an op input the rewriter derives itself, so naming it is
+        # as wrong as naming anything else.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: stray arg\n'
+            '    drop_custom_element_registration:\n'
+            '      class_name: FooElement\n'
+            "      lead: '\\n'\n",
+            'Unrecognised drop_custom_element_registration arg',
+            name='validation.ts')
+
+    def test_drop_custom_element_registration_count_other_than_one_rejected(
+            self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 2\n'
+            '    drop_custom_element_registration:\n'
+            '      class_name: FooElement\n',
+            'does not accept a count other than 1',
+            name='validation.ts')
+
     # -- validation ---------------------------------------------------------
 
     def test_two_op_keys_rejected(self):
@@ -4362,6 +4507,14 @@ class RewriterNamespaceTest(unittest.TestCase):
             self.assertEqual(
                 plaster._namespace_of_source(Path('rewrite/dir') / name),
                 'cxx', name)
+
+    def test_ts_targets_resolve_to_the_ts_namespace(self):
+        # A generated `.html.ts` template is still TypeScript: only the suffix
+        # right before `.yaml` decides.
+        for name in ('foo.ts.yaml', 'foo.html.ts.yaml'):
+            self.assertEqual(
+                plaster._namespace_of_source(Path('rewrite/dir') / name), 'ts',
+                name)
 
     def test_unclaimed_suffix_resolves_to_no_namespace(self):
         self.assertIsNone(
