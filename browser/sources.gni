@@ -775,6 +775,7 @@ brave_chrome_browser_public_deps = [
   "//brave/common/importer:interfaces",
   "//brave/components/brave_sync:constants",
   "//brave/components/containers/buildflags",
+  "//brave/components/os_crypt_key_history",
   "//brave/components/psst/buildflags",
   "//brave/components/traffic_control/buildflags",
   "//brave/components/v8/buildflags",

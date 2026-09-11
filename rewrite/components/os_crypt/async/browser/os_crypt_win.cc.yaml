@@ -27,7 +27,9 @@ substitutions:
       `DPAPIKeyProvider::GetKey()` and `AppBoundEncryptionProviderWin` already
       treat their own decryption failures, and leave the stored key alone.
     regex:
-      re_pattern: 'case InitResult::kKeyDoesNotExist:\s+case InitResult::kDecryptionFailed:\s+break;'
+      re_pattern:
+        'case InitResult::kKeyDoesNotExist:\s+case
+        InitResult::kDecryptionFailed:\s+break;'
       replace: |-
         case InitResult::kKeyDoesNotExist:
               break;
@@ -37,7 +39,8 @@ substitutions:
   - description: |
       Keep a copy of any key that is about to be replaced.
     regex:
-      pattern: 'local_state->SetString(kOsCryptEncryptedKeyPrefName, base64_key);'
+      pattern:
+        'local_state->SetString(kOsCryptEncryptedKeyPrefName, base64_key);'
       replace: |-
         BraveBackUpKeyBeforeReplacing(local_state, kOsCryptEncryptedKeyPrefName);
           local_state->SetString(kOsCryptEncryptedKeyPrefName, base64_key);
@@ -45,7 +48,8 @@ substitutions:
   - description: |
       Register the pref holding the backup key.
     regex:
-      pattern: 'registry->RegisterBooleanPref(kOsCryptAuditEnabledPrefName, false);'
+      pattern:
+        'registry->RegisterBooleanPref(kOsCryptAuditEnabledPrefName, false);'
       replace: |-
         registry->RegisterBooleanPref(kOsCryptAuditEnabledPrefName, false);
           registry->RegisterStringPref(kBraveEncryptedKeyBackupPrefName,

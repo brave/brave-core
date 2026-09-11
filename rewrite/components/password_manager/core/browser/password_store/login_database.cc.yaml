@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Note that the encryption key still decrypts stored passwords.
+
+      This is the success return at the end of
+      `StatementToStoredCredentials()`, reached only when no row failed to
+      decrypt. Credentials in hand there were on disk before this session, so
+      decrypting them shows the key still matches what the user saved, which
+      is the only evidence a key is worth recording on.
+      See https://github.com/brave/brave-browser/issues/40375.
+    regex:
+      re_pattern: 'return FormRetrievalResult::kEncryptionServiceFailure;\s+\}\s+return FormRetrievalResult::kSuccess;'
+      replace: |-
+        return FormRetrievalResult::kEncryptionServiceFailure;
+          }
+          if (!credentials->empty()) {
+            brave::os_crypt_key_history_recorder::NotifyDecryptedStoredData();
+          }
+          return FormRetrievalResult::kSuccess;

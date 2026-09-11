@@ -11,7 +11,8 @@ substitutions:
       reaches `Local State`, including the one minted after a decryption failure
       is classified as permanent.
     regex:
-      pattern: 'local_state_->SetString(kAppBoundEncryptedKeyPrefName, base64_key);'
+      pattern:
+        'local_state_->SetString(kAppBoundEncryptedKeyPrefName, base64_key);'
       replace: |-
         BraveBackUpAppBoundKeyBeforeReplacing(local_state_,
                                                 kAppBoundEncryptedKeyPrefName);
@@ -20,7 +21,9 @@ substitutions:
   - description: |
       Register the pref holding the backup app-bound key.
     regex:
-      pattern: 'registry->RegisterStringPref(kAppBoundEncryptedKeyPrefName, std::string());'
+      pattern:
+        'registry->RegisterStringPref(kAppBoundEncryptedKeyPrefName,
+        std::string());'
       replace: |-
         registry->RegisterStringPref(kAppBoundEncryptedKeyPrefName, std::string());
           registry->RegisterStringPref(kBraveAppBoundEncryptedKeyBackupPrefName,

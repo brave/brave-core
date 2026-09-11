@@ -14,6 +14,7 @@ include_rules += [
   "+brave/components/history_embeddings",
   "+brave/components/local_ai/buildflags",
   "+brave/components/local_ai/core",
+  "+brave/components/os_crypt_key_history",
   "+brave/components/playlist/core/common/buildflags",
   "+brave/components/version_info",
   # Make sure renderer directories are not included for components with

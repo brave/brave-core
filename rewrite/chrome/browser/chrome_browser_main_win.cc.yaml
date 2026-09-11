@@ -18,3 +18,22 @@ substitutions:
         LOG_IF(ERROR, !os_crypt_init)
               << "OSCrypt was not initialized; encrypted data is unavailable "
                  "for this session.";
+
+  - description: |
+      Point the OSCrypt key history recorder at this installation's key.
+
+      Runs here because `Local State` is loaded and the user data directory is
+      known, and because it is before anything can decrypt. Nothing is written
+      until a decrypt of stored data proves the key still works.
+    regex:
+      pattern: |-
+        base::SetExtraNoExecuteAllowedPath(chrome::DIR_USER_DATA);
+      replace: |-
+        {
+            base::FilePath user_data_dir;
+            base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
+            brave::InitializeOSCryptKeyHistoryRecorder(user_data_dir,
+                                                       local_state);
+          }
+
+          base::SetExtraNoExecuteAllowedPath(chrome::DIR_USER_DATA);

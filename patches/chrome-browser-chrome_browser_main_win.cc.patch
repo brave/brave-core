@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/chrome_browser_main_win.cc b/chrome/browser/chrome_browser_main_win.cc
-index d0083fd565d66e150bb3dd06fc9a2a6360eca9e3..89790c6a71d7999fb0549d2b570f3b947c7ce82e 100644
+index 967ccba64ae8943acf40557f0bb75687c6efcd4a..fe3ac30b7c482757eb5b9ac7e207d9fa044768c7 100644
 --- a/chrome/browser/chrome_browser_main_win.cc
 +++ b/chrome/browser/chrome_browser_main_win.cc
-@@ -565,7 +565,9 @@ void ChromeBrowserMainPartsWin::PreCreateMainMessageLoop() {
+@@ -564,7 +564,16 @@ void ChromeBrowserMainPartsWin::PreCreateMainMessageLoop() {
  
    // Initialize the OSCrypt.
    bool os_crypt_init = os_crypt_async::Init(local_state);
@@ -10,6 +10,13 @@ index d0083fd565d66e150bb3dd06fc9a2a6360eca9e3..89790c6a71d7999fb0549d2b570f3b94
 +  LOG_IF(ERROR, !os_crypt_init)
 +      << "OSCrypt was not initialized; encrypted data is unavailable "
 +         "for this session.";
++
++  {
++    base::FilePath user_data_dir;
++    base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir);
++    brave::InitializeOSCryptKeyHistoryRecorder(user_data_dir,
++                                               local_state);
++  }
  
    base::SetExtraNoExecuteAllowedPath(chrome::DIR_USER_DATA);
  

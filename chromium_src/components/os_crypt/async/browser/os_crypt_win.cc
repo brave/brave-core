@@ -27,8 +27,8 @@ inline constexpr char kBraveEncryptedKeyBackupPrefName[] =
 // `HasPrefPath()` cannot tell that apart from "`Local State` could not be
 // read". A file that is corrupt (`JsonPrefStore` moves it aside as `Local
 // State.bad` and carries on with empty preferences), locked by another process,
-// or unreadable all arrive as an empty pref set, and reading that as a first run
-// mints a new key over one that is still sitting on disk.
+// or unreadable all arrive as an empty pref set, and reading that as a first
+// run mints a new key over one that is still sitting on disk.
 bool BraveCanConcludeKeyIsAbsent(PrefService* local_state) {
   switch (local_state->GetInitializationStatus()) {
     case PrefService::INITIALIZATION_STATUS_SUCCESS:

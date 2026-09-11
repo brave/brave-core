@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("os_crypt_key_history") {
+  assert_no_deps = [ "//chrome/*" ]
+
+  sources = [
+    "os_crypt_key_history.cc",
+    "os_crypt_key_history.h",
+    "os_crypt_key_history_recorder.cc",
+    "os_crypt_key_history_recorder.h",
+  ]
+
+  deps = [ "//base" ]
+
+  if (is_win) {
+    sources += [
+      "os_crypt_key_history_win.cc",
+      "os_crypt_key_history_win.h",
+    ]
+
+    deps += [ "//components/prefs" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "os_crypt_key_history_unittest.cc" ]
+
+  deps = [
+    ":os_crypt_key_history",
+    "//base",
+    "//base/test:test_support",
+    "//testing/gtest",
+  ]
+}

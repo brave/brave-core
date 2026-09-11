@@ -239,6 +239,7 @@ test("brave_unit_tests") {
     "//brave/components/ntp_background_images/buildflags",
     "//brave/components/ntp_background_images/common",
     "//brave/components/omnibox/browser:unit_tests",
+    "//brave/components/os_crypt_key_history:unit_tests",
     "//brave/components/p3a",
     "//brave/components/p3a:unit_tests",
     "//brave/components/p3a_utils/test:p3a_utils_unit_tests",

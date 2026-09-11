@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      `login_database.cc` reports a successful decrypt of stored passwords to
+      the OSCrypt key history. Anchored on `password_store_impl`'s deps, the
+      only list here holding `blink_buildflags`.
+    regex:
+      re_pattern: '"//build:blink_buildflags",\s+"//components/affiliations/core/browser:affiliations",'
+      replace: |-
+        "//brave/components/os_crypt_key_history",
+            "//build:blink_buildflags",
+            "//components/affiliations/core/browser:affiliations",
