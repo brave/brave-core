@@ -1,5 +1,5 @@
 diff --git a/components/permissions/features.cc b/components/permissions/features.cc
-index 0928e763d1ed6f91cf44ef042c212829fd944410..d50f95d30ca5d5cbc3574574231d237a9140c2fd 100644
+index 4af77bfbb20c9e188b420b9546d5e6900655beba..245e058357dac46bdfc3e90d609a08143ce1d364 100644
 --- a/components/permissions/features.cc
 +++ b/components/permissions/features.cc
 @@ -34,7 +34,8 @@ BASE_FEATURE(kPermissionElementPromptPositioning,

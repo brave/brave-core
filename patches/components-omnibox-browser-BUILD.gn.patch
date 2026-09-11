@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 1fe7f40cfccf93526e2133e2e87eaa8d16ad5935..98afc50d7e2f9d0d82cd70f921bc56d3fefc07c5 100644
+index 8e42c0208c77bae1ce2cbbe56acfbd84059aae9c..af705708550430b9a9837f5b20fc9d783ca5d5c7 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -523,6 +523,9 @@ static_library("browser") {
@@ -12,7 +12,7 @@ index 1fe7f40cfccf93526e2133e2e87eaa8d16ad5935..98afc50d7e2f9d0d82cd70f921bc56d3
  }
  
  source_set("pref_names") {
-@@ -1122,6 +1125,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
+@@ -1124,6 +1127,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
  }
  
  mojom("mojo_bindings") {
@@ -20,7 +20,7 @@ index 1fe7f40cfccf93526e2133e2e87eaa8d16ad5935..98afc50d7e2f9d0d82cd70f921bc56d3
    sources = [ "omnibox.mojom" ]
    webui_module_path = "chrome://resources/mojo/components/omnibox/browser"
  
-@@ -1143,6 +1147,7 @@ mojom("mojo_bindings") {
+@@ -1145,6 +1149,7 @@ mojom("mojo_bindings") {
  
  if (!is_ios) {
    mojom("fusebox_action_mojo_bindings") {

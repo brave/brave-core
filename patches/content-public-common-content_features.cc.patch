@@ -1,5 +1,5 @@
 diff --git a/content/public/common/content_features.cc b/content/public/common/content_features.cc
-index bcd31f3837f5bda67710eed44f34352678b6c427..0fb21f28f5d2b081866567946b4cf8e3b856bd4d 100644
+index 24eeb008a1f1dfab2392994c27e88c67c787b014..ec14862ef990230329da375414a77a6eae5e0cd4 100644
 --- a/content/public/common/content_features.cc
 +++ b/content/public/common/content_features.cc
 @@ -302,13 +302,9 @@ BASE_FEATURE(kDeviceBoundSessionTerminationEvictBackForwardCache,
@@ -92,7 +92,7 @@ index bcd31f3837f5bda67710eed44f34352678b6c427..0fb21f28f5d2b081866567946b4cf8e3
  
  // Trial to disable synchronous draw for synchronous compositor (ie Android
  // WebView).
-@@ -1528,7 +1532,11 @@ BASE_FEATURE(kIOThreadInteractiveThreadType, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -1530,7 +1534,11 @@ BASE_FEATURE(kIOThreadInteractiveThreadType, base::FEATURE_DISABLED_BY_DEFAULT);
  const base::FeatureParam<int> kNavigationCapturingIPHGuardrailStorageDuration{
      &kPwaNavigationCapturing, "link_capturing_guardrail_storage_duration", 30};
  

@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/entity_specifics.proto b/components/sync/protocol/entity_specifics.proto
-index ae6cf1ae726215081fda4392fa045b372480c0ea..60e7fd7e6c0525678705640be66d6e61beefb598 100644
+index c7c91e8c4e3ec43a0568da901885862d19f65d17..5de483b688b94e939013c69771957f637afa3b05 100644
 --- a/components/sync/protocol/entity_specifics.proto
 +++ b/components/sync/protocol/entity_specifics.proto
 @@ -13,6 +13,7 @@ package sync_pb;

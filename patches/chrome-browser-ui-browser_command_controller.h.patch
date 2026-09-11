@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_command_controller.h b/chrome/browser/ui/browser_command_controller.h
-index b2b1dccc2112184f37db7df5dd98f87d940d581a..b326b15dae04ab52d545fd41d830d395d192390a 100644
+index 54a4ff842bf2a687751343e3144a3b3fdadb1456..cdb2575ecc6ff26d004a370755d3e4075685ff09 100644
 --- a/chrome/browser/ui/browser_command_controller.h
 +++ b/chrome/browser/ui/browser_command_controller.h
 @@ -121,6 +121,7 @@ class BrowserCommandController : public CommandUpdater,

@@ -1,5 +1,5 @@
 diff --git a/services/network/public/cpp/features.cc b/services/network/public/cpp/features.cc
-index ec0b3711216b34c73eb545fca545acc6d7c8b21e..64ebc481e74afde1d9cda663829ed49cbd55c064 100644
+index 19af7208c4b3308487501349ac335369bf20902c..0518e70b2df1b69527485df6593bcf0f27cb8135 100644
 --- a/services/network/public/cpp/features.cc
 +++ b/services/network/public/cpp/features.cc
 @@ -275,6 +275,7 @@ BASE_FEATURE_PARAM(bool,
@@ -10,7 +10,7 @@ index ec0b3711216b34c73eb545fca545acc6d7c8b21e..64ebc481e74afde1d9cda663829ed49c
  BASE_FEATURE(kLocalNetworkAccessChecksWebSockets,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
-@@ -426,7 +427,8 @@ BASE_FEATURE(kUpdateRequestForCorsRedirect, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -429,7 +430,8 @@ BASE_FEATURE(kAvoidCorsURLLoaderRestartOnRedirect,
  
  // https://github.com/patcg-individual-drafts/topics
  // Kill switch for the Topics API.

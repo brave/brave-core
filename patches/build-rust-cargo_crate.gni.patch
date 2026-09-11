@@ -1,8 +1,8 @@
 diff --git a/build/rust/cargo_crate.gni b/build/rust/cargo_crate.gni
-index 5ba5f98fa3d79f8af25f1a2cbdcc717d49e494dd..9c48fc7de635fe0a2a56cce441385cc89099c1f2 100644
+index f55cfef4c087b2fedce2af21991603b4bcdfafab..914c5ed52f7fe215faba2ded7650708eda033de3 100644
 --- a/build/rust/cargo_crate.gni
 +++ b/build/rust/cargo_crate.gni
-@@ -280,6 +280,7 @@ template("cargo_crate") {
+@@ -281,6 +281,7 @@ template("cargo_crate") {
        testonly = _testonly
        if (defined(invoker.visibility)) {
          visibility = invoker.visibility

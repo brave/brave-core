@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/component_loader.h b/chrome/browser/extensions/component_loader.h
-index ff07122e6a38397997de9727d7d3adc6a96fb5a1..221a120f3b37bcb4222903f6ea9d11740f90a13f 100644
+index fb2867f727fb3f7264bf5a41db5e8bb19d44959d..efc11ba68d9aa5873eff426cffb0bc778485ef63 100644
 --- a/chrome/browser/extensions/component_loader.h
 +++ b/chrome/browser/extensions/component_loader.h
-@@ -108,7 +108,7 @@ class ComponentLoader : public KeyedService {
+@@ -113,7 +113,7 @@ class ComponentLoader : public KeyedService {
    // the loader will skip loading component extensions that weren't supposed to
    // be loaded unless we are in signed user session (ChromeOS). For all other
    // platforms this `skip_session_components` is expected to be unset.
@@ -11,7 +11,7 @@ index ff07122e6a38397997de9727d7d3adc6a96fb5a1..221a120f3b37bcb4222903f6ea9d1174
  
    // Similar to above but adds the default component extensions for kiosk mode.
    void AddDefaultComponentExtensionsForKioskMode(bool skip_session_components);
-@@ -156,6 +156,7 @@ class ComponentLoader : public KeyedService {
+@@ -161,6 +161,7 @@ class ComponentLoader : public KeyedService {
    void set_profile_for_testing(Profile* profile) { profile_ = profile; }
  
   private:

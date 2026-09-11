@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/cr_elements/BUILD.gn b/ui/webui/resources/cr_elements/BUILD.gn
-index 91309f07f38bdb2bfc204ee16d06a65c4585dfd8..ab846274b0c554bff680846ada0a5d777da0ecfd 100644
+index 94f8d770fc8d345d0b74d5d04e2d393ddb5400ba..ede316b53fc10f95d73d1f7b6a8c3c093ee9481b 100644
 --- a/ui/webui/resources/cr_elements/BUILD.gn
 +++ b/ui/webui/resources/cr_elements/BUILD.gn
-@@ -255,6 +255,7 @@ build_webui("build") {
+@@ -252,6 +252,7 @@ build_webui("build") {
      "//tools/typescript/definitions/pending.d.ts",
      "//tools/typescript/definitions/settings_private.d.ts",
    ]

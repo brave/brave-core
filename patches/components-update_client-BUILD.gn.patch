@@ -1,5 +1,5 @@
 diff --git a/components/update_client/BUILD.gn b/components/update_client/BUILD.gn
-index 3b2f387695256c03e84f2221b066f496a0a3b91e..04f258507b13c02157834f451335c1ca93037e14 100644
+index 82ba5c3990a93c18195726763e2c6e71e893f705..d28970049e3bd4c97b73b304c0649dd1fbe24751 100644
 --- a/components/update_client/BUILD.gn
 +++ b/components/update_client/BUILD.gn
 @@ -203,6 +203,7 @@ static_library("update_client") {

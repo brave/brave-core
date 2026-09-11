@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
-index 7b7578690cd7b90ed433be9d552d725f83b74bf1..8ff4614fb670a2106a4cf13702d9305e3e028cb1 100644
+index 68287f6eb78bf85479a488bee3be414657db072a..7523a136262b855fb8735988ab7a4c2ac7402674 100644
 --- a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
 +++ b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
-@@ -220,6 +220,7 @@ void BookmarkBarController::OnSplitTabChanged(const SplitTabChange& change) {
+@@ -221,6 +221,7 @@ void BookmarkBarController::OnSplitTabChanged(const SplitTabChange& change) {
  }
  
  bool BookmarkBarController::ShouldShowBookmarkBar() const {
@@ -10,7 +10,7 @@ index 7b7578690cd7b90ed433be9d552d725f83b74bf1..8ff4614fb670a2106a4cf13702d9305e
    Profile* profile = browser_->GetProfile();
    if (profile->IsGuestSession()) {
      return false;
-@@ -268,7 +269,7 @@ bool BookmarkBarController::ShouldShowBookmarkBar() const {
+@@ -269,7 +270,7 @@ bool BookmarkBarController::ShouldShowBookmarkBar() const {
  
    bookmarks::BookmarkModel* bookmark_model =
        BookmarkModelFactory::GetForBrowserContext(profile);

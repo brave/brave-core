@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 811dc6a001ba78b8e3f3c25308c524f30c097ad9..5c535b4f1be2749edf91d0a4bcb92e56d2882ba2 100644
+index 4fa8c22e89a6a3437d77bd1b11bac2e4925be5c2..dfc733ba187e304d37f43834b315e5128aec395e 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -1015,6 +1015,7 @@ inline constexpr char kInvalidationPerSenderActiveRegistrationTokens[] =

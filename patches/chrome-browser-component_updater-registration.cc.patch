@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/component_updater/registration.cc b/chrome/browser/component_updater/registration.cc
-index 9fd11c9f722cba716e52f7ad6c60ece6e6ede556..54d796a334f7af44c9bd200a66835f0e82e00a2c 100644
+index b11907b0f46d6a4aeeff96e89b731851aeac969a..f567fd73ff50aa8537d44c3e1c24e6130cae9500 100644
 --- a/chrome/browser/component_updater/registration.cc
 +++ b/chrome/browser/component_updater/registration.cc
-@@ -137,6 +137,7 @@ void DeleteOldComponents(const base::FilePath& user_data_dir) {
+@@ -142,6 +142,7 @@ void DeleteOldComponents(const base::FilePath& user_data_dir) {
  }  // namespace
  
  void RegisterComponentsForUpdate() {
@@ -10,7 +10,7 @@ index 9fd11c9f722cba716e52f7ad6c60ece6e6ede556..54d796a334f7af44c9bd200a66835f0e
    auto* const cus = g_browser_process->component_updater();
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
-@@ -246,6 +247,8 @@ void RegisterComponentsForUpdate() {
+@@ -254,6 +255,8 @@ void RegisterComponentsForUpdate() {
          FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
          base::BindOnce(&DeleteOldComponents, path));
    }

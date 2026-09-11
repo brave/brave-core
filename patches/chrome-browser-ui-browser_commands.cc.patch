@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 24dd8897dfefe61b3b8893b4b0228cb61e86236a..30021fc869bd1b5096b064b0cd5e739d763f6052 100644
+index 12ee081cb2802f392cd2ea323706fe4197a0eee6..9bb8203ec6d5ef5df038d4a5dae1442bcfb122e1 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -495,7 +495,12 @@ void MoveTabsToWindowImpl(BrowserWindowInterface* source,
+@@ -496,7 +496,12 @@ void MoveTabsToWindowImpl(BrowserWindowInterface* source,
      } else if (auto collection =
                     std::get_if<std::unique_ptr<DetachedTabCollection>>(
                         &tab_or_collection)) {
@@ -16,7 +16,7 @@ index 24dd8897dfefe61b3b8893b4b0228cb61e86236a..30021fc869bd1b5096b064b0cd5e739d
                collection->get()->collection_)) {
          target_model->InsertDetachedTabGroupAt(std::move(*collection),
                                                 target_model->count());
-@@ -731,6 +736,11 @@ void ReloadInternal(BrowserWindowInterface* browser,
+@@ -732,6 +737,11 @@ void ReloadInternal(BrowserWindowInterface* browser,
    bool multiple_ui_tabs_selected =
        active_tab && tab_strip_model->selection_model().size() >
                          (active_tab->IsSplit() ? 2 : 1);
@@ -28,7 +28,7 @@ index 24dd8897dfefe61b3b8893b4b0228cb61e86236a..30021fc869bd1b5096b064b0cd5e739d
  
    if (multiple_ui_tabs_selected) {
      // Reloading a tab may change the selection (see crbug.com/339061099), so
-@@ -1164,6 +1174,7 @@ void Reload(BrowserWindowInterface* browser,
+@@ -1165,6 +1175,7 @@ void Reload(BrowserWindowInterface* browser,
  
  void ReloadBypassingCache(BrowserWindowInterface* browser,
                            WindowOpenDisposition disposition) {
@@ -36,7 +36,7 @@ index 24dd8897dfefe61b3b8893b4b0228cb61e86236a..30021fc869bd1b5096b064b0cd5e739d
    base::RecordAction(UserMetricsAction("ReloadBypassingCache"));
    ReloadInternal(browser, disposition, true);
  }
-@@ -1465,7 +1476,9 @@ void CloseTab(BrowserWindowInterface* browser) {
+@@ -1466,7 +1477,9 @@ void CloseTab(BrowserWindowInterface* browser) {
        active_tab->IsSplit() &&
        browser->GetTabStripModel()->selection_model().size() == 2;
  
@@ -47,7 +47,7 @@ index 24dd8897dfefe61b3b8893b4b0228cb61e86236a..30021fc869bd1b5096b064b0cd5e739d
      RecordTabCloseCount(1);
      active_tab->GetContents()->Close();
      return;
-@@ -1485,6 +1498,7 @@ void CloseTab(BrowserWindowInterface* browser) {
+@@ -1486,6 +1499,7 @@ void CloseTab(BrowserWindowInterface* browser) {
  #endif
  
    ToastController* toast_controller = ToastController::From(browser);
@@ -55,7 +55,7 @@ index 24dd8897dfefe61b3b8893b4b0228cb61e86236a..30021fc869bd1b5096b064b0cd5e739d
    if (!toast_controller) {
      CloseSelectedTabAndRecordTabCountMetric(browser);
      return;
-@@ -1809,7 +1823,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
+@@ -1810,7 +1824,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
    const GURL new_tab_url =
        !browser->GetProfile()->IsPrimaryOTRProfileWithRegularParent() &&
                tab_strip_model->count() > 1

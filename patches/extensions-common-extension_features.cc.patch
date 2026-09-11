@@ -1,8 +1,8 @@
 diff --git a/extensions/common/extension_features.cc b/extensions/common/extension_features.cc
-index ba028c9a0dc2430e61e2f47c11b0cc165432c8b3..a44a3ffdcc8f0402b096080cbbfeaacfd60ba3dd 100644
+index 5f94900aa5e3024fb42d9095794b32f57f6a7f52..51504047cb98ce9c86b807663fcf2082df149fb6 100644
 --- a/extensions/common/extension_features.cc
 +++ b/extensions/common/extension_features.cc
-@@ -30,7 +30,8 @@ BASE_FEATURE(kApiOdfsConfigPrivate, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -28,7 +28,8 @@ BASE_FEATURE(kApiOdfsConfigPrivate, base::FEATURE_ENABLED_BY_DEFAULT);
  
  BASE_FEATURE(kApiContextualTasksPrivate, base::FEATURE_DISABLED_BY_DEFAULT);
  

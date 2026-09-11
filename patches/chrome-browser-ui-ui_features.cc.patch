@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index aa39154c2005b048e0dc2280d5b0508905cebf53..4d396f4403a54cd9f6c1b9c46d39d24f5decbdaa 100644
+index 07a71006afc58e526ba0fcb00d3f0a4a704c2afc..974a510e9d20a6b6f51c6a8a2b1779e33a2ba541 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
-@@ -108,7 +108,8 @@ bool IsWebuiRefresh2026Enabled() {
+@@ -129,7 +129,8 @@ bool ShouldUseActionsForBrowserCommands() {
  BASE_FEATURE(kDseIntegrity, base::FEATURE_ENABLED_BY_DEFAULT);
  // Enables the feature to remove the last confirmation dialog when relaunching
  // to update Chrome.
@@ -12,7 +12,7 @@ index aa39154c2005b048e0dc2280d5b0508905cebf53..4d396f4403a54cd9f6c1b9c46d39d24f
  
  BASE_FEATURE(kLegacySearchIntegrityCheck, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif
-@@ -126,7 +127,8 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -147,7 +148,8 @@ BASE_FEATURE(kExtensionsPinnedByDefault, base::FEATURE_DISABLED_BY_DEFAULT);
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
  // Shows an infobar on PDFs offering to become the default PDF viewer if Chrome
  // isn't the default already.
@@ -22,7 +22,7 @@ index aa39154c2005b048e0dc2280d5b0508905cebf53..4d396f4403a54cd9f6c1b9c46d39d24f
  
  BASE_FEATURE(kSeparateDefaultAndPinPrompt,
  #if BUILDFLAG(IS_WIN)
-@@ -243,13 +245,9 @@ bool IsTabGroupHoverCardsEnabled() {
+@@ -264,13 +266,9 @@ bool IsTabGroupHoverCardsEnabled() {
  
  // Enables preview images in tab-hover cards.
  // https://crbug.com/41439486
