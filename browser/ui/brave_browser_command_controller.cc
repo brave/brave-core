@@ -114,6 +114,7 @@
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/containers_service_factory.h"
+#include "brave/components/containers/core/browser/containers_service.h"
 #endif
 
 namespace {
@@ -261,6 +262,22 @@ bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
              : BrowserCommandController::UpdateCommandEnabled(id, state);
 }
 
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveBrowserCommandController::UpdateContainerCommands() {
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser_->GetProfile());
+
+  const size_t container_count =
+      containers_service ? containers_service->GetContainers().size() : 0;
+
+  for (int id = IDC_NEW_TAB_IN_CONTAINER_1; id <= IDC_NEW_TAB_IN_CONTAINER_9;
+       ++id) {
+    const int index = id - IDC_NEW_TAB_IN_CONTAINER_1;
+    UpdateCommandEnabled(id, index < static_cast<int>(container_count));
+  }
+}
+#endif
+
 void BraveBrowserCommandController::InitBraveCommandState() {
   // Sync, Rewards, and Wallet pages don't work in tor(guest) sessions.
   // They also don't work in private windows but they are redirected
@@ -393,9 +410,20 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
-  UpdateCommandEnabled(
-      IDC_NEW_TEMPORARY_CONTAINER,
-      ContainersServiceFactory::GetForProfile(browser_->GetProfile()));
+  auto* containers_service =
+      ContainersServiceFactory::GetForProfile(browser_->GetProfile());
+
+  UpdateCommandEnabled(IDC_NEW_TEMPORARY_CONTAINER, containers_service);
+
+  if (containers_service) {
+    if (!containers_service_observation_.IsObserving()) {
+      containers_service_observation_.Observe(containers_service);
+    }
+  } else {
+    containers_service_observation_.Reset();
+  }
+
+  UpdateContainerCommands();
 #endif
 
   if (browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
@@ -408,6 +436,12 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
   UpdateCommandForFocusMode();
 }
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+void BraveBrowserCommandController::OnContainersListChanged() {
+  UpdateContainerCommands();
+}
+#endif
 
 void BraveBrowserCommandController::UpdateCommandsForFullscreenMode() {
   BrowserCommandController::UpdateCommandsForFullscreenMode();
@@ -841,6 +875,37 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
+    case IDC_NEW_TAB_IN_CONTAINER_1:
+    case IDC_NEW_TAB_IN_CONTAINER_2:
+    case IDC_NEW_TAB_IN_CONTAINER_3:
+    case IDC_NEW_TAB_IN_CONTAINER_4:
+    case IDC_NEW_TAB_IN_CONTAINER_5:
+    case IDC_NEW_TAB_IN_CONTAINER_6:
+    case IDC_NEW_TAB_IN_CONTAINER_7:
+    case IDC_NEW_TAB_IN_CONTAINER_8:
+    case IDC_NEW_TAB_IN_CONTAINER_9: {
+      int index = id - IDC_NEW_TAB_IN_CONTAINER_1;
+
+      auto* containers_service =
+          ContainersServiceFactory::GetForProfile(browser_->GetProfile());
+
+      if (!containers_service) {
+        break;
+      }
+
+      auto containers = containers_service->GetContainers();
+
+      if (index >= static_cast<int>(containers.size())) {
+        break;
+      }
+
+      brave::OpenUrlInContainer(base::to_address(browser_),
+                                browser_->GetNewTabURL(), containers[index],
+                                /*is_link=*/false);
+
+      break;
+    }
+
     case IDC_NEW_TEMPORARY_CONTAINER:
       brave::CreateTemporaryContainerAndOpenUrl(
           base::to_address(browser_), chrome::GetNewTabURL(&*browser_),
