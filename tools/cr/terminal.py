@@ -352,10 +352,10 @@ class Terminal:
         """
         cmd = ['pnpm', 'run'] + list(cmd)
         if self.infra_mode and len(cmd) == 3 and cmd[-1] == 'init':
-            # Special flag to avoid running into issues in jenkins when running
-            # `gclient sync` with `--revision`. For more details see:
+            # Checks out Chromium directly rather than through `gclient sync
+            # --revision`, which hangs in jenkins. For more details see:
             # https://github.com/brave/brave-browser/issues/44921
-            cmd.append('--with_issue_44921')
+            cmd.append('--lean-sync')
         return self.run(cmd)
 
 

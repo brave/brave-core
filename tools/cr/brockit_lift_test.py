@@ -2199,7 +2199,7 @@ class LiftInfraModeTest(LiftTestCase):
         terminal.terminal.infra_mode = True
         self.addCleanup(setattr, terminal.terminal, 'infra_mode', False)
 
-    def test_init_carries_the_workaround_flag(self):
+    def test_init_carries_the_lean_sync_flag(self):
         """On infra, `init` is run with the flag that works around
         https://github.com/brave/brave-browser/issues/44921."""
         with self.env.upstream_release(MINOR_TARGET):
@@ -2210,7 +2210,7 @@ class LiftInfraModeTest(LiftTestCase):
         self.assert_succeeded(run)
         init = next(cmd for cmd in self.env.terminal.calls
                     if cmd[1:3] == ['run', INIT])
-        self.assertIn('--with_issue_44921', init)
+        self.assertIn('--lean-sync', init)
 
 
 class LiftRoughEdgesTest(LiftTestCase):
