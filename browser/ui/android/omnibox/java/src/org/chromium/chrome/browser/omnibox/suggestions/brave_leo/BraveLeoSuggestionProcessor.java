@@ -72,7 +72,9 @@ public class BraveLeoSuggestionProcessor extends BaseSuggestionViewProcessor {
 
     @Override
     public PropertyModel createModel() {
-        return new PropertyModel(SuggestionViewProperties.ALL_KEYS);
+        // createPropertyModel(), rather than a bare PropertyModel: it seeds
+        // SuggestionCommonProperties.RESOURCE_PROVIDER, which BaseSuggestionViewBinder reads.
+        return createPropertyModel(SuggestionViewProperties.ALL_KEYS);
     }
 
     @Override
