@@ -66,6 +66,9 @@ void BraveOnDeviceSpeechRecognitionEngine::EndRecognition() {
 void BraveOnDeviceSpeechRecognitionEngine::OnAsrSessionReady(
     mojo::PendingRemote<local_ai::mojom::AsrSession> pending) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(main_sequence_checker_);
+  if (!pending.is_valid()) {
+    return;
+  }
   asr_session_.Bind(std::move(pending));
   // Starts the stream if the audio parameters have already arrived.
   TryCreateSession();
