@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <vector>
 
 #include "base/i18n/rtl.h"
 #include "base/strings/string_number_conversions.h"
@@ -49,13 +50,16 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_context_menu_controller.h"
+#include "chrome/browser/ui/views/tabs/tab_group_header.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/interactive_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
+#include "components/tab_groups/tab_group_id.h"
 #include "content/public/test/browser_test.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/base/test/ui_controls.h"
 #include "ui/display/screen.h"
@@ -1530,6 +1534,90 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   InvalidateAndRunLayoutForVerticalTabStrip();
   EXPECT_FALSE(GetTabAt(browser(), 0)->GetVisible());
   EXPECT_TRUE(GetTabAt(browser(), model->count() - 1)->GetVisible());
+}
+
+// A scroll of a settled strip takes a fast path (BraveTabContainer::
+// ScrollByDelta) that shifts the existing ideal bounds instead of running the
+// full layout. Its result must be indistinguishable from a full layout at the
+// same offset: bounds, visibility and clip paths of every slot view.
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       ScrollFastPathMatchesFullLayout) {
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
+          ->GetTabContainerForTesting());
+  ASSERT_TRUE(brave_tab_container);
+
+  auto* tab_strip = browser_view()->horizontal_tab_strip_for_testing();
+  auto* model = browser()->tab_strip_model();
+
+  // A pinned tab gives the unpinned tabs a clip path that depends on their
+  // position, and a group adds header views that scroll along with the tabs.
+  model->SetTabPinned(0, true);
+  tab_strip->StopAnimating();
+  while (brave_tab_container->GetMaxScrollOffsetForTesting() <
+         4 * tabs::kVerticalTabHeight) {
+    AppendTab(browser());
+    tab_strip->StopAnimating();
+    InvalidateAndRunLayoutForVerticalTabStrip();
+  }
+  const tab_groups::TabGroupId group = AddTabToNewGroup(browser(), 2);
+  AddTabToExistingGroup(browser(), 3, group);
+  tab_strip->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  TabGroupHeader* header = tab_strip->group_header(group);
+  ASSERT_TRUE(header);
+
+  struct SlotState {
+    gfx::Rect bounds;
+    bool visible = false;
+    SkPath clip_path;
+  };
+  auto capture = [&]() {
+    std::vector<SlotState> states;
+    for (int i = 0; i < model->count(); ++i) {
+      Tab* tab = GetTabAt(browser(), i);
+      states.push_back({tab->bounds(), tab->GetVisible(), tab->clip_path()});
+    }
+    states.push_back(
+        {header->bounds(), header->GetVisible(), header->clip_path()});
+    return states;
+  };
+
+  // Settle the strip so that the first scroll below takes the fast path.
+  brave_tab_container->CompleteAnimationAndLayout();
+
+  const int max_offset = brave_tab_container->GetMaxScrollOffsetForTesting();
+  ASSERT_GT(max_offset, 0);
+  for (int offset : {max_offset / 2, max_offset, 0}) {
+    SCOPED_TRACE(testing::Message() << "offset " << offset);
+
+    // Preconditions of ScrollByDelta(): without them the scroll would fall
+    // back to the full layout and this test would compare it with itself.
+    ASSERT_TRUE(brave_tab_container->last_layout_size_ ==
+                brave_tab_container->size());
+    ASSERT_FALSE(brave_tab_container->IsAnimating());
+
+    brave_tab_container->SetScrollOffsetForTesting(offset);
+    const std::vector<SlotState> fast = capture();
+
+    // Run the full layout at the same offset, which is exactly what
+    // SetScrollOffset() did before the fast path existed, and compare.
+    brave_tab_container->InvalidateIdealBounds();
+    brave_tab_container->CompleteAnimationAndLayout();
+    ASSERT_EQ(offset, brave_tab_container->GetScrollOffsetForTesting());
+    const std::vector<SlotState> full = capture();
+
+    ASSERT_EQ(fast.size(), full.size());
+    for (size_t i = 0; i < fast.size(); ++i) {
+      SCOPED_TRACE(testing::Message() << "slot " << i);
+      EXPECT_EQ(fast[i].bounds, full[i].bounds);
+      EXPECT_EQ(fast[i].visible, full[i].visible);
+      EXPECT_TRUE(fast[i].clip_path == full[i].clip_path);
+    }
+  }
 }
 
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
