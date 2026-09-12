@@ -9,12 +9,15 @@ static_library("brave_account") {
     "brave_account_navigation_throttle.h",
     "brave_account_service_factory.cc",
     "brave_account_service_factory.h",
+    "dialog_mode_holder.cc",
+    "dialog_mode_holder.h",
   ]
 
   deps = [
     "//base",
     "//brave/components/brave_account",
     "//brave/components/brave_account:features",
+    "//brave/components/brave_account/mojom",
     "//brave/components/constants",
     "//chrome/browser:browser_process",
     "//chrome/browser/profiles:profile",
@@ -24,6 +27,11 @@ static_library("brave_account") {
     "//ui/base",
     "//url",
   ]
+
+  if (is_android) {
+    sources += [ "android/brave_account_dialog_mode_android.cc" ]
+    deps += [ "//brave/browser/brave_account/android:jni_headers" ]
+  }
 }
 
 source_set("unit_tests") {

@@ -7,6 +7,7 @@ import {
   Authentication,
   AuthenticationObserverCallbackRouter,
   DialogController,
+  DialogMode,
   Service,
 } from './brave_account.mojom-webui.js'
 import type {
@@ -23,6 +24,7 @@ export interface BraveAccountBrowserProxy {
   dialog_controller: DialogControllerInterface
   password_strength_meter: PasswordStrengthMeterInterface
   closeDialog: () => void
+  getDialogMode: () => Promise<DialogMode>
   getInitiatingService: () => Service
 }
 
@@ -31,6 +33,8 @@ export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
   authenticationObserverCallbackRouter: AuthenticationObserverCallbackRouter
   dialog_controller: DialogControllerInterface
   password_strength_meter: PasswordStrengthMeterInterface
+
+  private dialogMode?: Promise<DialogMode>
 
   private constructor() {
     this.authentication = Authentication.getRemote()
@@ -46,6 +50,14 @@ export class BraveAccountBrowserProxyImpl implements BraveAccountBrowserProxy {
 
   closeDialog() {
     this.dialog_controller.closeDialog()
+  }
+
+  // The mode is fixed for the page's lifetime, so the round trip is made once
+  // and every caller awaits the same promise.
+  getDialogMode(): Promise<DialogMode> {
+    return (this.dialogMode ??= this.dialog_controller
+      .getDialogMode()
+      .then(({ dialogMode }) => dialogMode))
   }
 
   getInitiatingService(): Service {

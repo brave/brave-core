@@ -33,13 +33,12 @@ export class BraveAccountLoggedInRowElement extends
   static override get properties() {
     return {
       ...super.properties,
-      isChangingPassword: { type: Boolean, state: true },
       truncatedEmail: { type: String, state: true },
     }
   }
 
-  protected accessor isChangingPassword = false
   protected accessor truncatedEmail = ''
+  private isChangingPassword = false
   private measure?: (text: string) => number
   private resizeObserver?: ResizeObserver
 
@@ -73,7 +72,7 @@ export class BraveAccountLoggedInRowElement extends
     try {
       await this.browserProxy.authentication.changePasswordStep1(
         this.state.email)
-      this.openBraveAccountDialog()
+      this.openDialogInDefaultMode()
     } catch (e) {
       showError('changePassword', e, {
         title: this.i18n(
