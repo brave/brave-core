@@ -46,6 +46,7 @@
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/glass_frame_service.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "chrome/common/pref_names.h"
@@ -328,7 +329,17 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
       GetShortcutTextForNewTabButton(browser_view), browser_));
 
   resize_area_ = AddChildView(std::make_unique<ResettableResizeArea>(this));
-  SetBackground(views::CreateSolidBackground(kColorToolbar));
+
+  if (auto* const glass_frame_service = GlassFrameService::GetInstance()) {
+    is_glass_frame_eligible_ =
+        glass_frame_service->IsBrowserWindowEligible(browser_);
+    glass_frame_subscription_ =
+        glass_frame_service->RegisterGlassFrameEligibilityChangedCallback(
+            browser_, base::BindRepeating(&BraveVerticalTabStripRegionView::
+                                              OnGlassFrameEligibilityChanged,
+                                          base::Unretained(this)));
+  }
+  UpdateBackground();
 
   auto* prefs = browser_->GetProfile()->GetPrefs();
 
@@ -530,6 +541,7 @@ void BraveVerticalTabStripRegionView::SetState(State state) {
 
   last_state_ = std::exchange(state_, state);
   resize_area_->SetEnabled(state == State::kExpanded);
+  UpdateBackground();
 
   if (!VerticalTabController::FromBrowser(browser_)
            ->ShouldShowBraveVerticalTabs()) {
@@ -772,6 +784,26 @@ void BraveVerticalTabStripRegionView::OnThemeChanged() {
   View::OnThemeChanged();
 
   UpdateBorder();
+}
+
+void BraveVerticalTabStripRegionView::OnGlassFrameEligibilityChanged(
+    bool is_eligible) {
+  if (is_glass_frame_eligible_ == is_eligible) {
+    return;
+  }
+
+  is_glass_frame_eligible_ = is_eligible;
+  UpdateBackground();
+}
+
+void BraveVerticalTabStripRegionView::UpdateBackground() {
+  // With the glass frame, the window is one continuous glass surface and the
+  // tab strip lets it show through. While floating, the strip sits on top of
+  // the web contents instead of the window frame, so it stays opaque.
+  const bool show_glass =
+      is_glass_frame_eligible_ && state_ != State::kFloating;
+  SetBackground(show_glass ? nullptr
+                           : views::CreateSolidBackground(kColorToolbar));
 }
 
 void BraveVerticalTabStripRegionView::OnMouseExited(
