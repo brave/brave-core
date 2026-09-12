@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/browser/tabs/model/BUILD.gn b/ios/chrome/browser/tabs/model/BUILD.gn
+index fbfd83723e8f4356b528cb18379baf72d14a39c3..1e6e770b04e4640aa1aeae51eb49581609bc97e2 100644
+--- a/ios/chrome/browser/tabs/model/BUILD.gn
++++ b/ios/chrome/browser/tabs/model/BUILD.gn
+@@ -180,6 +180,7 @@ source_set("tabs_internal") {
+     "//ios/web/public/security",
+     "//ui/base",
+   ]
++  deps += [ "//brave/components/brave_shields/core/common" ]
+   frameworks = [
+     "Foundation.framework",
+     "UIKit.framework",
