@@ -5,15 +5,6 @@
 
 substitutions:
   - description: |
-      Return if the bookmark bar isn't enabled by prefs.
-
-      This plaster inserts a check for the Brave-specific pref that disables the bookmark bar.
-    preempt_function_impl:
-      function_name: 'BookmarkBarController::ShouldShowBookmarkBar'
-      return_if: '!ShowBookmarkBarEnabled(browser_->GetProfile()->GetPrefs())'
-      return_value: 'false'
-
-  - description: |
       Replaces bookmark_model->HasBookmarks() with `true` to prevent early 
       return due to empty items in bookmark bar.
 
