@@ -178,6 +178,16 @@ void BraveVPNConnectionManager::SetSelectedRegion(const std::string& name) {
   }
 }
 
+bool BraveVPNConnectionManager::ShouldBlockUntunneledTraffic() {
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  return local_prefs_->GetBoolean(
+             prefs::kBraveVPNWireguardBlockUntunneledTraffic) &&
+         local_prefs_->GetBoolean(prefs::kBraveVPNWireguardEnabled);
+#else
+  NOTREACHED();
+#endif
+}
+
 std::string BraveVPNConnectionManager::GetHostname() const {
   if (connection_api_impl_) {
     return connection_api_impl_->GetHostname();

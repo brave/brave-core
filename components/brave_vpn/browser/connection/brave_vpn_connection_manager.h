@@ -82,6 +82,7 @@ class BraveVPNConnectionManager {
   void CheckConnection();
 
   void SetSelectedRegion(const std::string& name);
+  bool ShouldBlockUntunneledTraffic();
 
   // Returns user friendly error string if existed.
   // Otherwise returns empty.

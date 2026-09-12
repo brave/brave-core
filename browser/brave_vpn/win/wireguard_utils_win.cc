@@ -149,11 +149,11 @@ bool IsBraveVPNWireguardTunnelServiceRunning() {
          status.value() == SERVICE_START_PENDING;
 }
 
-bool EnableBraveVpnWireguardServiceImpl(
-    const std::string& server_public_key,
-    const std::string& client_private_key,
-    const std::string& mapped_ip4_address,
-    const std::string& vpn_server_hostname) {
+bool EnableBraveVpnWireguardServiceImpl(const std::string& server_public_key,
+                                        const std::string& client_private_key,
+                                        const std::string& mapped_ip4_address,
+                                        const std::string& vpn_server_hostname,
+                                        const bool block_untunneled_traffic) {
   base::win::AssertComInitialized();
   MaybeEnableSystemProxy();
 
@@ -184,10 +184,10 @@ bool EnableBraveVpnWireguardServiceImpl(
       base::UTF8ToWide(vpn_server_hostname));
 
   DWORD last_error = ERROR_SUCCESS;
-  HRESULT res = service->EnableVpn(server_public_key_data.Get(),
-                                   client_private_key_data.Get(),
-                                   mapped_ip4_address_data.Get(),
-                                   vpn_server_hostname_data.Get(), &last_error);
+  HRESULT res = service->EnableVpn(
+      server_public_key_data.Get(), client_private_key_data.Get(),
+      mapped_ip4_address_data.Get(), vpn_server_hostname_data.Get(),
+      block_untunneled_traffic, &last_error);
 
   if (!SUCCEEDED(res)) {
     VLOG(1) << "Failure calling EnableVpn. Result: "
@@ -203,6 +203,7 @@ void EnableBraveVpnWireguardService(const std::string& server_public_key,
                                     const std::string& client_private_key,
                                     const std::string& mapped_ip4_address,
                                     const std::string& vpn_server_hostname,
+                                    const bool block_untunneled_traffic,
                                     std::optional<std::string> smart_proxy_url,
                                     wireguard::BooleanCallback callback) {
   // If all params are empty this is a reconnect (using last known good config).
@@ -226,7 +227,7 @@ void EnableBraveVpnWireguardService(const std::string& server_public_key,
           FROM_HERE,
           base::BindOnce(&EnableBraveVpnWireguardServiceImpl, server_public_key,
                          client_private_key, mapped_ip4_address,
-                         vpn_server_hostname),
+                         vpn_server_hostname, block_untunneled_traffic),
           std::move(callback));
 }
 

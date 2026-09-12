@@ -28,6 +28,7 @@ class BraveWireguardManager
                            BSTR private_key,
                            BSTR address,
                            BSTR endpoint,
+                           BOOL block_untunneled_traffic,
                            DWORD* last_error) override;
   IFACEMETHODIMP DisableVpn(DWORD* last_error) override;
 
