@@ -1,8 +1,8 @@
 diff --git a/chrome/common/profiler/thread_profiler_configuration.cc b/chrome/common/profiler/thread_profiler_configuration.cc
-index 32b2639773cc42a29b0bdc235f0b0200de39d750..680d97a04f5cf09d863f32a189ccd63fbdd232f7 100644
+index 077152dc87754eddcff852ef9592f6e718d6d73b..1cb2becf1285b4d19e8257891d3e2ba63745c6ca 100644
 --- a/chrome/common/profiler/thread_profiler_configuration.cc
 +++ b/chrome/common/profiler/thread_profiler_configuration.cc
-@@ -88,6 +88,9 @@ bool ThreadProfilerConfiguration::IsProfilerEnabledForCurrentProcess() const {
+@@ -92,6 +92,9 @@ bool ThreadProfilerConfiguration::IsBrowserTestModeEnabled() const {
  
  bool ThreadProfilerConfiguration::IsProfilerEnabledForCurrentProcessAndThread(
      sampling_profiler::ProfilerThreadType thread) const {

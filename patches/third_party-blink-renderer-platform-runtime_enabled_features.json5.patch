@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e24f0a9b1e 100644
+index b6fa80893dca2dcc84436ce1b62134ea7c7ed417..b53886bf0621b39009b21c6ca998e7a185730e25 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -297,6 +297,7 @@
@@ -61,7 +61,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -1292,7 +1296,7 @@
+@@ -1305,7 +1309,7 @@
        // objects that live on the compositor thread.
        // [1] https://drafts.csswg.org/css-animations-2/#timeline-triggers
        name: "CompositorTimelineTrigger",
@@ -70,7 +70,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
      },
      {
        name: "CompressionDictionaryTransport",
-@@ -1375,6 +1379,7 @@
+@@ -1381,6 +1385,7 @@
        // https://github.com/WICG/controlled-frame/blob/main/README.md for more
        // info.
        name: "ControlledFrame",
@@ -78,7 +78,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        public: true,
        status: "stable",
      },
-@@ -2847,7 +2852,8 @@
+@@ -2819,7 +2824,8 @@
      },
      {
        name: "FencedFrames",
@@ -88,7 +88,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        // This helps enable and expose the <fencedframe> element, but note that
        // blink::features::kFencedFrames must be enabled as well, as we require
        // the support of the browser process to fully enable the feature.
-@@ -2948,6 +2954,7 @@
+@@ -2920,6 +2926,7 @@
      {
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
@@ -96,7 +96,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: "experimental",
      },
      {
-@@ -2962,6 +2969,7 @@
+@@ -2934,6 +2941,7 @@
      {
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
@@ -104,7 +104,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: {"default": "stable"},
      },
      {
-@@ -3085,6 +3093,7 @@
+@@ -3061,6 +3069,7 @@
      },
      {
        name: "Fledge",
@@ -112,7 +112,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: "stable",
        public: true,
      },
-@@ -3796,7 +3805,7 @@
+@@ -3792,7 +3801,7 @@
          "Android": "test",
          "default": "",
        },
@@ -121,7 +121,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -4154,6 +4163,7 @@
+@@ -4150,6 +4159,7 @@
      // "experimental" is the support on other platforms.
      {
        name: "MiddleClickAutoscroll",
@@ -129,7 +129,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: "test",
      },
      // Killswitch for crbug.com/40062462 fix.
-@@ -4625,6 +4635,7 @@
+@@ -4627,6 +4637,7 @@
      {
        // PARAKEET ad serving runtime flag/JS API.
        name: "Parakeet",
@@ -137,7 +137,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        origin_trial_feature_name: "Parakeet",
      },
      {
-@@ -4797,6 +4808,7 @@
+@@ -4799,6 +4810,7 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -145,7 +145,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: "stable",
      },
      {
-@@ -5028,6 +5040,7 @@
+@@ -5025,6 +5037,7 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -153,7 +153,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: "stable",
      },
      {
-@@ -6445,7 +6458,7 @@
+@@ -6440,7 +6453,7 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -162,7 +162,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -6620,6 +6633,7 @@
+@@ -6615,6 +6628,7 @@
      },
      {
        name: "UserMediaElement",
@@ -170,7 +170,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: "stable",
        public: true,
      },
-@@ -7425,5 +7439,10 @@
+@@ -7420,5 +7434,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

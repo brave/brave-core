@@ -1,0 +1,9 @@
+diff --git a/chrome/browser/resources/settings/people_page/people_page.ts b/chrome/browser/resources/settings/people_page/people_page.ts
+index 0dcc177daa1ad84d453a5c0bc27ea2b137bf25f9..66266dd8edfcedc9bde7a7f286873f8845bf7b19 100644
+--- a/chrome/browser/resources/settings/people_page/people_page.ts
++++ b/chrome/browser/resources/settings/people_page/people_page.ts
+@@ -507,4 +507,3 @@ declare global {
+   }
+ }
+ 
+-customElements.define(SettingsPeoplePageElement.is, SettingsPeoplePageElement);

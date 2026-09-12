@@ -62,7 +62,6 @@ public class BraveIntentHandler {
     protected static String extractUrlFromIntent(@Nullable Intent intent) {
         if (intent == null) return null;
         String url = IntentHandler.getUrlFromVoiceSearchResult(intent);
-        if (url == null) url = getUrlForCustomTab(intent);
         if (url == null) url = getUrlForWebapp(intent);
         if (url == null) url = IntentHandler.getUrlFromShareIntent(intent);
         if (url == null) url = intent.getDataString();
@@ -186,12 +185,6 @@ public class BraveIntentHandler {
         } catch (Exception e) {
             Log.e(TAG, "Could not retrieve search query: " + e);
         }
-        return null;
-    }
-
-    @Nullable
-    private static String getUrlForCustomTab(Intent unused_intent) {
-        assert false;
         return null;
     }
 

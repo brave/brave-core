@@ -1,10 +1,10 @@
 diff --git a/components/browser_actuator/public/features.cc b/components/browser_actuator/public/features.cc
-index 88a4a36008bcbb030419d724e8846f27ce65707a..82d8d2f9fc6739203d242d19cef7af53e7cab382 100644
+index bf26063345e6b9b9f1a9b1f6711eb6cb278d0fa0..acae7f6ba0bb7df0ded35e219e3bcae70a3be368 100644
 --- a/components/browser_actuator/public/features.cc
 +++ b/components/browser_actuator/public/features.cc
-@@ -24,6 +24,7 @@ const base::FeatureParam<std::string> kWatchSessionsPathParam{
+@@ -6,6 +6,7 @@
  
- }  // namespace
+ namespace browser_actuator {
  
 +// kBrowserActuator feature state is enforced via plaster rewrite.
  BASE_FEATURE(kBrowserActuator, base::FEATURE_DISABLED_BY_DEFAULT);

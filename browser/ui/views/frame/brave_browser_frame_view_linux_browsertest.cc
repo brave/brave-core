@@ -181,7 +181,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserFrameViewTest,
   ScopedLinuxUiGetter scoped_getter(&fake_getter);
   ThemeServiceFactory::GetForProfile(browser()->GetProfile())->UseSystemTheme();
 
-  Browser* gtk_browser = CreateBrowser(browser()->GetProfile());
+  BrowserWindowInterface* gtk_browser = CreateBrowser(browser()->GetProfile());
   auto* native_frame = views::AsViewClass<BraveBrowserFrameViewLinuxNative>(
       BrowserView::GetBrowserViewForBrowser(gtk_browser)
           ->browser_widget()

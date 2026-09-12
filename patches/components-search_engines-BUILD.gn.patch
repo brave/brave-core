@@ -1,8 +1,8 @@
 diff --git a/components/search_engines/BUILD.gn b/components/search_engines/BUILD.gn
-index 80b3a7cd01ad56ec8506a89f60f05ac280305127..3f703ae273d77891e78d46650bffbf22ba3be478 100644
+index 56e40464d01fdc8e75d87b51f63f3264aa47fc4c..d35c141041f59048f39369b67e8822958e75b5e3 100644
 --- a/components/search_engines/BUILD.gn
 +++ b/components/search_engines/BUILD.gn
-@@ -161,6 +161,7 @@ static_library("search_engines") {
+@@ -163,6 +163,7 @@ static_library("search_engines") {
        "enterprise/site_search_policy_handler.h",
      ]
    }

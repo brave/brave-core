@@ -16,7 +16,6 @@
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
@@ -172,7 +171,8 @@ void BraveRestoreProfileMenu() {
   // callback, or immediately if no dialog is needed.
   {
     NSMenu* mainMenu = [NSApp mainMenu];
-    NSMenuItem* profileMenu = [mainMenu itemWithTag:kProfileMenuId];
+    NSMenuItem* profileMenu =
+        [mainMenu itemWithTag:IDC_PROFILE_MENU_IN_APP_MENU];
     if (profileMenu) {
       _profileMenuIndex = [mainMenu indexOfItem:profileMenu];
       _profileMenuItem = profileMenu;
@@ -181,7 +181,7 @@ void BraveRestoreProfileMenu() {
   }
 #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
-  NSMenu* editMenu = [[[NSApp mainMenu] itemWithTag:kEditMenuId] submenu];
+  NSMenu* editMenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
   _copyMenuItem = [editMenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
   DCHECK(_copyMenuItem);
 
@@ -192,7 +192,7 @@ void BraveRestoreProfileMenu() {
 
 #if BUILDFLAG(ENABLE_TOR)
   // Find and set up the main menu Tor item
-  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:kMacFileMenuId] submenu];
+  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:IDC_FILE_MENU] submenu];
   _torMainMenuItem = [fileMenu itemWithTag:IDC_NEW_OFFTHERECORD_WINDOW_TOR];
   CHECK(_torMainMenuItem);
   [[_torMainMenuItem menu] setDelegate:self];
@@ -221,7 +221,7 @@ void BraveRestoreProfileMenu() {
   [super applicationWillTerminate:notification];
 }
 
-- (Browser*)getBrowser {
+- (BrowserWindowInterface*)getBrowser {
   Profile* profile = [self lastProfileIfLoaded];
   if (!profile) {
     return nullptr;
@@ -237,11 +237,11 @@ void BraveRestoreProfileMenu() {
     return nullptr;
   }
 
-  return browser_interface->GetBrowserForMigrationOnly();
+  return browser_interface;
 }
 
 - (BOOL)shouldShowCleanLinkItem {
-  Browser* browser = [self getBrowser];
+  BrowserWindowInterface* browser = [self getBrowser];
   if (!browser) {
     return NO;
   }
@@ -351,7 +351,7 @@ void BraveRestoreProfileMenu() {
 
   NSInteger tag = [sender tag];
   if (tag == IDC_COPY_CLEAN_LINK) {
-    Browser* browser = [self getBrowser];
+    BrowserWindowInterface* browser = [self getBrowser];
     if (!browser) {
       return;
     }

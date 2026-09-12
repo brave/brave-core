@@ -192,7 +192,7 @@ SidebarShowOptionMenu::SidebarShowOptionMenu(BraveAppMenu* app_menu,
 
 }  // namespace
 
-BraveAppMenu::BraveAppMenu(Browser* browser,
+BraveAppMenu::BraveAppMenu(BrowserWindowInterface* browser,
                            ui::MenuModel* model,
                            int run_types,
                            base::RepeatingClosure on_menu_closed_callback)

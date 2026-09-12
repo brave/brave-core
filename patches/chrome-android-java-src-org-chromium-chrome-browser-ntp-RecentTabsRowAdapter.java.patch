@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/RecentTabsRowAdapter.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/RecentTabsRowAdapter.java
-index de8b14cb68a9368453c966f88061efd37482cd45..eab5854fcab308b5a8483941cd5bdb2758203aae 100644
+index f501f73a9c6700219ffa18e4b5783c6984fabb99..6deaa6f3c76b6ccfdf3fff90519df7a1b814ccba 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/RecentTabsRowAdapter.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/RecentTabsRowAdapter.java
-@@ -1094,8 +1094,7 @@ public class RecentTabsRowAdapter extends BaseExpandableListAdapter {
+@@ -1107,8 +1107,7 @@ public class RecentTabsRowAdapter extends BaseExpandableListAdapter {
          if (mRecentTabsManager.shouldShowPromo()) {
              addGroup(new SigninPromoGroup());
          } else {

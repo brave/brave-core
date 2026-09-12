@@ -1,8 +1,8 @@
 diff --git a/third_party/tflite/BUILD.gn b/third_party/tflite/BUILD.gn
-index 0d88bf57cb1c4affcf9b7a53bcccddfd0892e06b..6ff78c145d90a196c784c280306960c951892e28 100644
+index 9a02b6f87709174d86ea71233498ec725c133660..c915e7f6030c087918440d1b78395e74b3cd76b5 100644
 --- a/third_party/tflite/BUILD.gn
 +++ b/third_party/tflite/BUILD.gn
-@@ -388,6 +388,7 @@ if (!use_litert_tflite) {
+@@ -389,6 +389,7 @@ if (!use_litert_tflite) {
  
      visibility = [
        ":tflite_benchmark",

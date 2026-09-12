@@ -5,12 +5,9 @@
 
 substitutions:
   - description: |-
-      Append the AI Chat model error as the new kMaxValue. Anchored on the enum
-      and the existing kMaxValue, value-agnostically. The new value and kMaxValue
-      share a line so the upstream java_cpp_enum parser still emits kMaxValue.
-    regex:
-      re_pattern: '(enum class Type \{.+?,)(\s+)kMaxValue = \w+'
-      re_flags: [DOTALL]
-      replace: |-
-        \1
-            kAIChatFailedToLoadMetadata = 193, kMaxValue = kAIChatFailedToLoadMetadata
+      Append the AI Chat model error as the new kMaxValue.
+    add_enum_entries:
+      enum_name: Type
+      max_value: kMaxValue
+      entries:
+        - kAIChatFailedToLoadMetadata

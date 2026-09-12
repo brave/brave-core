@@ -13,7 +13,6 @@
 #include "components/version_info/channel.h"
 #include "ui/views/bubble/bubble_border.h"
 
-class Browser;
 class BrowserWindowInterface;
 class GURL;
 class PrefService;
@@ -29,7 +28,7 @@ class WebContents;
 namespace sidebar {
 
 bool CanUseSidebar(BrowserWindowInterface* browser);
-bool CanAddCurrentActiveTabToSidebar(Browser* browser);
+bool CanAddCurrentActiveTabToSidebar(BrowserWindowInterface* browser);
 bool IsWebPanelFeatureEnabled();
 
 // True if `focused_contents`'s focus event is web-panel-related: either its own

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
-index b967a844d73b6e830be27d78b9f1a21d20fab023..f829fd99b57bfde67a6a377ab8e59c8f8f5b941c 100644
+index fdb8c2352410194d558f8d778af00509cf5c1266..b3527d9b210b15ca4c8e7275e6048ed6935c6008 100644
 --- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
 +++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/LocationBarFocusScrimHandler.java
 @@ -47,7 +47,6 @@ public class LocationBarFocusScrimHandler {
@@ -10,7 +10,7 @@ index b967a844d73b6e830be27d78b9f1a21d20fab023..f829fd99b57bfde67a6a377ab8e59c8f
      private final SettableNonNullObservableSupplier<Boolean> mScrimVisibilitySupplier =
              ObservableSuppliers.createNonNull(false);
  
-@@ -72,7 +71,6 @@ public class LocationBarFocusScrimHandler {
+@@ -73,7 +72,6 @@ public class LocationBarFocusScrimHandler {
              BottomControlsStacker bottomControlsStacker) {
          mScrimManager = scrimManager;
          mLocationBarDataProvider = locationBarDataProvider;
@@ -18,7 +18,7 @@ index b967a844d73b6e830be27d78b9f1a21d20fab023..f829fd99b57bfde67a6a377ab8e59c8f
          mContext = context;
          Callback<Boolean> visibilityChangeCallbackWrapper =
                  visible -> {
-@@ -107,6 +105,7 @@ public class LocationBarFocusScrimHandler {
+@@ -108,6 +106,7 @@ public class LocationBarFocusScrimHandler {
                      mScrimModel.set(ScrimProperties.TOP_MARGIN, newHeight);
                  };
          mTabStripHeightSupplier.addSyncObserverAndPostIfNonNull(mTabStripHeightChangeCallback);
@@ -26,7 +26,7 @@ index b967a844d73b6e830be27d78b9f1a21d20fab023..f829fd99b57bfde67a6a377ab8e59c8f
      }
  
  
-@@ -128,9 +127,7 @@ public class LocationBarFocusScrimHandler {
+@@ -129,9 +128,7 @@ public class LocationBarFocusScrimHandler {
              scrimColor = mLightScrimColor;
          }
          mScrimModel.set(ScrimProperties.BACKGROUND_COLOR, scrimColor);

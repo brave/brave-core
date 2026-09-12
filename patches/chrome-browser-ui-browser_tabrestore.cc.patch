@@ -1,24 +1,19 @@
 diff --git a/chrome/browser/ui/browser_tabrestore.cc b/chrome/browser/ui/browser_tabrestore.cc
-index c8e946c19e0bfdc5d932532a7413ce5ce861283b..e326b1b81ff7384ed283f3805b7ca94ae5cd0b0f 100644
+index fa43dd782cdb8c9f01e4c8f448e51f99e3e24d35..1d2665b1d5dee95e4e04925a3ae03c798591111e 100644
 --- a/chrome/browser/ui/browser_tabrestore.cc
 +++ b/chrome/browser/ui/browser_tabrestore.cc
-@@ -74,7 +74,14 @@ std::unique_ptr<WebContents> CreateRestoredTab(
+@@ -71,6 +71,10 @@ std::unique_ptr<WebContents> CreateRestoredTab(
+       content::CreateMapWithDefaultSessionStorageNamespace(
            browser->GetProfile(), session_storage_namespace);
-   WebContents::CreateParams create_params(
-       browser->GetProfile(),
--      tab_util::GetSiteInstanceForNewTab(browser->GetProfile(), restore_url));
-+      tab_util::GetSiteInstanceForNewTab(
-+          browser->GetProfile(), restore_url
+   WebContents::CreateParams create_params(browser->GetProfile());
 +#if BUILDFLAG(ENABLE_CONTAINERS)
-+          ,
-+          containers::GetStoragePartitionConfigToRestore(
-+              browser->GetProfile(), navigations, selected_navigation)
++  MaybeSetContainerSiteInstance(browser, navigations, selected_navigation,
++                                &create_params);
 +#endif  // BUILDFLAG(ENABLE_CONTAINERS)
-+  ));
    create_params.initially_hidden = initially_hidden;
    create_params.desired_renderer_state =
        WebContents::CreateParams::kNoRendererProcess;
-@@ -291,9 +298,10 @@ WebContents* AddRestoredTab(
+@@ -287,9 +291,10 @@ WebContents* AddRestoredTab(
        last_active_time_ticks, last_active_time, session_storage_namespace,
        user_agent_override, extra_data, initially_hidden, from_session_restore);
  
@@ -30,7 +25,7 @@ index c8e946c19e0bfdc5d932532a7413ce5ce861283b..e326b1b81ff7384ed283f3805b7ca94a
  }
  
  WebContents* ReplaceRestoredTab(
-@@ -332,6 +340,7 @@ WebContents* ReplaceRestoredTab(
+@@ -328,6 +333,7 @@ WebContents* ReplaceRestoredTab(
  
    LoadRestoredTabIfVisible(browser, raw_web_contents);
  

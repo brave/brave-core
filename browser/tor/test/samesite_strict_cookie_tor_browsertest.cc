@@ -67,7 +67,7 @@ std::unique_ptr<net::test_server::HttpResponse> HandleSetStrictCookie(
   return response;
 }
 
-IconLabelBubbleView* GetOnionLocationView(Browser* browser) {
+IconLabelBubbleView* GetOnionLocationView(BrowserWindowInterface* browser) {
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
   if (!browser_view) {
     return nullptr;
@@ -78,7 +78,7 @@ IconLabelBubbleView* GetOnionLocationView(Browser* browser) {
       kActionShowOnionLocation);
 }
 
-void ClickOnionLocationIcon(Browser* browser) {
+void ClickOnionLocationIcon(BrowserWindowInterface* browser) {
   auto* onion_location_view = GetOnionLocationView(browser);
   ASSERT_TRUE(onion_location_view);
   ui::MouseEvent pressed(ui::EventType::kMousePressed, gfx::Point(),
@@ -138,7 +138,7 @@ class SameSiteStrictCookieTorBrowserTest : public InProcessBrowserTest {
 
 IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest,
                        OpenLinkInTorDoesNotSendSameSiteStrictCookie) {
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const auto set_cookie_url =
@@ -183,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest, OnionLocation) {
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const auto set_cookie_url =
@@ -212,7 +212,7 @@ IN_PROC_BROWSER_TEST_F(SameSiteStrictCookieTorBrowserTest, OnionLocation) {
 IN_PROC_BROWSER_TEST_F(
     SameSiteStrictCookieTorBrowserTest,
     BlockedOnionLinkCrossSiteDoesNotSendSameSiteStrictCookie) {
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   const GURL set_cookie_url =

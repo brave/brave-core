@@ -78,7 +78,9 @@ class OpenTabSearchBrowserTest : public InProcessBrowserTest {
     return https_server_.GetURL(host, path);
   }
 
-  void AppendTab(Browser* target, const GURL& url, const std::string& title) {
+  void AppendTab(BrowserWindowInterface* target,
+                 const GURL& url,
+                 const std::string& title) {
     ui_test_utils::NavigateToURLWithDisposition(
         target, url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
         ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
@@ -89,7 +91,7 @@ class OpenTabSearchBrowserTest : public InProcessBrowserTest {
         base::UTF8ToUTF16(title));
   }
 
-  int TabIdAt(Browser* target, int index) {
+  int TabIdAt(BrowserWindowInterface* target, int index) {
     return target->tab_strip_model()
         ->GetTabAtIndex(index)
         ->GetHandle()
@@ -217,7 +219,7 @@ IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, ExcludesOtherProfileTabs) {
   const GURL foo_url = GetURL("foo.com", "/empty.html");
   const GURL bar_url = GetURL("bar.com", "/empty.html");
   AppendTab(browser(), foo_url, "Foo");
-  Browser* incognito = CreateIncognitoBrowser();
+  BrowserWindowInterface* incognito = CreateIncognitoBrowser();
   AppendTab(incognito, bar_url, "Bar (incognito)");
 
   const int foo_tab_id = TabIdAt(browser(), 1);

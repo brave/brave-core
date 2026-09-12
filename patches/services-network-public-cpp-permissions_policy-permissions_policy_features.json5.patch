@@ -1,8 +1,8 @@
 diff --git a/services/network/public/cpp/permissions_policy/permissions_policy_features.json5 b/services/network/public/cpp/permissions_policy/permissions_policy_features.json5
-index f4470e3433ad7477cc831764fd416eebd1bfd511..ae8d5cc9c0f6517fca7501f5ee69a416f952423d 100644
+index c2c7a94c24aa932f63529d6130eda32d950c631e..a627a90ee7dacd879f86490bc71abbde3da278f3 100644
 --- a/services/network/public/cpp/permissions_policy/permissions_policy_features.json5
 +++ b/services/network/public/cpp/permissions_policy/permissions_policy_features.json5
-@@ -629,6 +629,18 @@
+@@ -634,6 +634,18 @@
        permissions_policy_name: "writer",
        depends_on: ["AIWriterAPI"],
      },

@@ -6,12 +6,6 @@
 #include "brave/browser/brave_tab_helpers.h"
 #include "chrome/browser/font_prewarmer_tab_helper.h"
 #include "chrome/browser/net/net_error_tab_helper.h"
-#include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/ui_features.h"
-
-// Enable ThumbnailTabHelper
-#define kTabHoverCardImages kTabHoverCardImages) || \
-  base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs
 
 #define BRAVE_TAB_HELPERS brave::AttachTabHelpers(web_contents);
 
@@ -39,4 +33,3 @@ class NoTabHelper {
 #undef FontPrewarmerTabHelper
 #undef chrome_browser_net
 #undef BRAVE_TAB_HELPERS
-#undef kTabHoverCardImages

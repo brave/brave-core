@@ -63,20 +63,6 @@
   <message name="IDS_BOOKMARK_MANAGER_MENU_OPEN_INCOGNITO" desc="Menu description for opening a bookmark in Private window">
     Open in Private window
   </message>
-  <if expr="not use_titlecase">
-    </if>
-  <if expr="use_titlecase">
-    </if>
-  <if expr="not use_titlecase">
-    </if>
-  <if expr="use_titlecase">
-    </if>
-  <if expr="not use_titlecase">
-    </if>
-  <if expr="use_titlecase">
-    </if>
-  <if expr="not use_titlecase">
-    </if>
-  <if expr="use_titlecase">
+  <if expr="is_macosx">
     </if>
   </grit-part>

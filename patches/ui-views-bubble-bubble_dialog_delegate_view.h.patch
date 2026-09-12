@@ -1,0 +1,20 @@
+diff --git a/ui/views/bubble/bubble_dialog_delegate_view.h b/ui/views/bubble/bubble_dialog_delegate_view.h
+index 23820b4ffa4549f591c220ed0ea40d8e041c0cc1..4574b7baf8ff0ea69f2e8a1a786d194c4c5ad955 100644
+--- a/ui/views/bubble/bubble_dialog_delegate_view.h
++++ b/ui/views/bubble/bubble_dialog_delegate_view.h
+@@ -828,6 +828,15 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,
+   gfx::Size GetMaximumSize() const final;
+ 
+  private:
++  friend class ::BraveNewsBubbleView;
++  friend class ::BraveHelpBubbleDelegateView;
++  friend class ::WaybackMachineBubbleView;
++  friend class ::playlist::PlaylistBubbleView;
++  friend class ::SplitViewMenuBubble;
++  friend class ::SidebarItemAddedFeedbackBubble;
++  friend class ::SidebarEditItemBubbleDelegateView;
++  friend class ::SidebarAddItemBubbleDelegateView;
++  friend class ::views::BraveBubbleDialogDelegateView;
+   FRIEND_TEST_ALL_PREFIXES(BubbleDelegateTest, CreateDelegate);
+   FRIEND_TEST_ALL_PREFIXES(BubbleDelegateTest, NonClientHitTest);
+ 

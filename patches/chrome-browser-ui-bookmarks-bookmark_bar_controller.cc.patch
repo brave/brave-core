@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
-index f985dcebfa70b1ea5b8dc9fb2ccb1a2e0c0d031b..a64ef2b7eaabe57798c10b5acce562a6ce0c2227 100644
+index 7b7578690cd7b90ed433be9d552d725f83b74bf1..8ff4614fb670a2106a4cf13702d9305e3e028cb1 100644
 --- a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
 +++ b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
 @@ -220,6 +220,7 @@ void BookmarkBarController::OnSplitTabChanged(const SplitTabChange& change) {

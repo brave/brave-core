@@ -1,5 +1,5 @@
 diff --git a/ios/web/webui/mojo_facade.mm b/ios/web/webui/mojo_facade.mm
-index cbc39d0594174bb896c7f79198325959c7d304be..cc7962fa32ea71666f20d8d4613961af1ec883dd 100644
+index 4e7ecb965cb4066179d044d78307b2216a6b9e7b..d9b84ffa8820422ef988b55ecf969e0a29544075 100644
 --- a/ios/web/webui/mojo_facade.mm
 +++ b/ios/web/webui/mojo_facade.mm
 @@ -51,14 +51,22 @@ std::optional<int> FindIntOrDoubleAsInt(const base::DictValue& args,
@@ -73,7 +73,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..cc7962fa32ea71666f20d8d4613961af
  
    const base::ListValue* handles_list = args.FindList("handles");
    CHECK(handles_list);
-@@ -449,8 +464,9 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
+@@ -453,8 +468,9 @@ mojo::ScopedMessagePipeHandle MojoFacade::TakePipeFromId(int id) {
  void MojoFacade::WebFrameBecameAvailable(WebFramesManager* web_frames_manager,
                                           WebFrame* web_frame) {
    DCHECK_CURRENTLY_ON(WebThread::UI);
@@ -84,7 +84,7 @@ index cbc39d0594174bb896c7f79198325959c7d304be..cc7962fa32ea71666f20d8d4613961af
    }
  }
  
-@@ -473,11 +489,6 @@ void MojoFacade::PageLoaded(WebState* web_state,
+@@ -477,11 +493,6 @@ void MojoFacade::PageLoaded(WebState* web_state,
    if (load_completion_status == PageLoadCompletionStatus::SUCCESS &&
        GetMainWebFrame() &&
        web_state_->GetInterfaceBinderForMainFrame()->HasRegisteredInterfaces()) {

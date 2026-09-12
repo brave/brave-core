@@ -80,7 +80,7 @@ class AIChatProfilesEnabledTest
     ASSERT_TRUE(browser_);
   }
 
-  Browser* CreateBrowser() {
+  BrowserWindowInterface* CreateBrowser() {
     switch (GetParam()) {
       case ProfileType::kRegular:
         return browser();
@@ -108,7 +108,7 @@ class AIChatProfilesEnabledTest
   }
 
  protected:
-  raw_ptr<Browser, DanglingUntriaged> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface, DanglingUntriaged> browser_ = nullptr;
 
  private:
   base::test::ScopedFeatureList scoped_feature_list_;

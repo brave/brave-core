@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Ship kSiteTokenProviderEnabled disabled.
+
+      Feeds a per-domain, OAuth-authenticated token tied to the signed-in
+      Google account to any origin that requests it via
+      chrome-experimental-site-token-provider.
+    set_feature_flag_default_state:
+      feature_name: kSiteTokenProviderEnabled
+      value: base::FEATURE_DISABLED_BY_DEFAULT

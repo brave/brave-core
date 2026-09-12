@@ -248,8 +248,7 @@ void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
     BrowserWindowInterface* target = nullptr;
     GlobalBrowserCollection::GetInstance()->ForEach(
         [&target, &iter, this](BrowserWindowInterface* bwi) {
-          if (!ShouldTrackBrowser(profile_,
-                                  bwi->GetBrowserForMigrationOnly())) {
+          if (!ShouldTrackBrowser(profile_, bwi)) {
             return true;
           }
 

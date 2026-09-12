@@ -100,8 +100,7 @@ void BraveBrowserWebContentsDelegate::BeforeUnloadFired(
 bool BraveBrowserWebContentsDelegate::ShouldSuppressDialogs(
     content::WebContents* source) {
   auto* tab = tabs::TabInterface::MaybeGetFromContents(source);
-  auto* brave_browser =
-      static_cast<BraveBrowser*>(browser_->GetBrowserForMigrationOnly());
+  auto* brave_browser = static_cast<BraveBrowser*>(&*browser_);
   return (tab && brave_browser->ShouldIgnoreBeforeUnloadHandlerForTab(
                      tab->GetHandle())) ||
          BrowserWebContentsDelegate::ShouldSuppressDialogs(source);

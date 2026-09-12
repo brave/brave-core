@@ -41,6 +41,7 @@
 #include "components/password_manager/core/browser/leak_detection/leak_detection_check_impl.h"
 #include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/browser/password_store/password_form_converters.h"
+#include "components/password_manager/core/browser/password_string.h"
 #include "components/password_manager/core/browser/password_ui_utils.h"
 #include "components/password_manager/core/browser/ui/credential_provider_interface.h"
 #include "components/password_manager/core/browser/ui/credential_ui_entry.h"
@@ -157,7 +158,8 @@ void PasswordUiViewAndroid::InsertPasswordEntryForTesting(
   form.url = GURL(origin);
   form.signon_realm = password_manager::GetSignonRealm(form.url);
   form.username_value = username;
-  form.password_value = password;
+  form.password_value =
+      password_manager::PasswordString(std::u16string(password));
 
   profile_store_->AddLogin(password_manager::FromPasswordForm(form));
 }

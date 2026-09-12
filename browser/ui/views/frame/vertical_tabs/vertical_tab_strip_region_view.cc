@@ -417,11 +417,14 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
 }
 
 BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
-  auto* container =
-      views::AsViewClass<BraveTabContainer>(tab_strip()->tab_container_);
-  CHECK(container);
-  // This view can be destroyed before the tab container is destroyed.
-  container->SetVerticalTabStripRegionView(nullptr);
+  // The tab container can be null here: upstream's own vertical tabs feature
+  // resets `tab_container_` whenever `prefs::kVerticalTabsEnabled` toggles on,
+  // regardless of whether our own vertical tab strip is what's actually shown.
+  // Nothing to unlink from in that case.
+  if (auto* container =
+          views::AsViewClass<BraveTabContainer>(tab_strip()->tab_container_)) {
+    container->SetVerticalTabStripRegionView(nullptr);
+  }
 
   // We need to move tab strip region to its original parent to avoid crash
   // during drag and drop session.

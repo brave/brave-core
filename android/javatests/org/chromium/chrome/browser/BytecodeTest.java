@@ -147,6 +147,7 @@ import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ToolbarThemeColorProvider;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
+import org.chromium.chrome.browser.toolbar.ControlContainer;
 import org.chromium.chrome.browser.toolbar.ToolbarDataProvider;
 import org.chromium.chrome.browser.toolbar.ToolbarManager;
 import org.chromium.chrome.browser.toolbar.ToolbarProgressBar;
@@ -852,13 +853,6 @@ public class BytecodeTest {
                         TabModel.class,
                         TabCreator.class,
                         HomeSurfaceTracker.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/IntentHandler",
-                        "getUrlForCustomTab",
-                        MethodModifier.STATIC,
-                        String.class,
-                        Intent.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/IntentHandler",
@@ -1607,7 +1601,8 @@ public class BytecodeTest {
                         ActionRegistry.class,
                         OneshotSupplier.class,
                         GlicButtonDelegate.class,
-                        boolean.class));
+                        boolean.class,
+                        OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -2299,11 +2294,12 @@ public class BytecodeTest {
                         Context.class,
                         LayoutUpdateHost.class,
                         LayoutRenderHost.class,
-                        BrowserControlsStateProvider.class,
+                        BrowserControlsVisibilityManager.class,
                         LayoutManager.class,
                         ToolbarThemeColorProvider.class,
                         NonNullObservableSupplier.class,
                         ViewGroup.class,
+                        ControlContainer.class,
                         Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(

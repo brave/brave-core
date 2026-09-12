@@ -245,8 +245,8 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResultsOrErrorFrom(
   }
 
   if (passwordForm.passwordValue) {
-    passwordCredentialForm.password_value =
-        base::SysNSStringToUTF16(passwordForm.passwordValue);
+    passwordCredentialForm.password_value = password_manager::PasswordString(
+        base::SysNSStringToUTF16(passwordForm.passwordValue));
   }
 
   if (passwordForm.dateCreated) {
@@ -359,7 +359,8 @@ void PasswordStoreConsumerIOS::OnGetPasswordStoreResultsOrErrorFrom(
             usernameElement:base::SysUTF16ToNSString(result.username_element)
               usernameValue:base::SysUTF16ToNSString(result.username_value)
             passwordElement:base::SysUTF16ToNSString(result.password_element)
-              passwordValue:base::SysUTF16ToNSString(result.password_value)
+              passwordValue:base::SysUTF16ToNSString(
+                                result.password_value.value())
             isBlockedByUser:result.blocked_by_user
                      scheme:brave::ios::
                                 PasswordFormSchemeFromPasswordManagerScheme(

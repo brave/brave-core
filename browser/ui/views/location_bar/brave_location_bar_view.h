@@ -24,6 +24,7 @@
 class BraveActionsContainer;
 class BraveActionsContainerTest;
 class BraveShieldsPageInfoController;
+class BrowserWindowInterface;
 class PromotionButtonController;
 class PromotionButtonView;
 class RewardsBrowserTest;
@@ -38,7 +39,7 @@ FORWARD_DECLARE_TEST(BraveRewardsPolicyTest, RewardsIconIsHidden);
 class BraveLocationBarView : public LocationBarView {
   METADATA_HEADER(BraveLocationBarView, LocationBarView)
  public:
-  BraveLocationBarView(Browser* browser,
+  BraveLocationBarView(BrowserWindowInterface* browser,
                        Profile* profile,
                        CommandUpdater* command_updater,
                        Delegate* delegate,
@@ -67,8 +68,6 @@ class BraveLocationBarView : public LocationBarView {
 
   // views::View:
   gfx::Size GetMinimumSize() const override;
-  gfx::Size CalculatePreferredSize(
-      const views::SizeBounds& available_size) const override;
   void OnThemeChanged() override;
   void ChildVisibilityChanged(views::View* child) override;
   void AddedToWidget() override;

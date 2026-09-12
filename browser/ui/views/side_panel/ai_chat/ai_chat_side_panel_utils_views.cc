@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/feature_list.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.h"
@@ -15,7 +16,6 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_list/tab_list_interface.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -25,6 +25,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_animation_content_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/tabs/public/tab_interface.h"
@@ -37,7 +38,8 @@
 
 namespace ai_chat {
 
-Browser* GetBrowserForWebContents(content::WebContents* web_contents) {
+BrowserWindowInterface* GetBrowserForWebContents(
+    content::WebContents* web_contents) {
   if (!web_contents) {
     return nullptr;
   }
@@ -57,7 +59,7 @@ void ClosePanel(content::WebContents* web_contents) {
     return;
   }
 
-  Browser* browser = GetBrowserForWebContents(web_contents);
+  BrowserWindowInterface* browser = GetBrowserForWebContents(web_contents);
   if (!browser) {
     return;
   }
@@ -72,7 +74,7 @@ void ClosePanelIfChatActive(content::WebContents* web_contents) {
     return;
   }
 
-  Browser* browser = GetBrowserForWebContents(web_contents);
+  BrowserWindowInterface* browser = GetBrowserForWebContents(web_contents);
   if (!browser) {
     return;
   }
@@ -196,8 +198,11 @@ content::WebContents* GetSidePanelWebContents(BrowserWindowInterface* browser) {
     return nullptr;
   }
 
-  views::WebView* web_view = views::AsViewClass<views::WebView>(
-      browser_view->GetSidePanelAnimationContent());
+  views::WebView* web_view = nullptr;
+  if (auto* anim_view = browser_view->GetSidePanelAnimationContent()) {
+    CHECK_EQ(anim_view->children().size(), 1u);
+    web_view = views::AsViewClass<views::WebView>(anim_view->children()[0]);
+  }
   if (!web_view) {
     web_view = views::AsViewClass<views::WebView>(
         browser_view->side_panel()->GetViewByID(

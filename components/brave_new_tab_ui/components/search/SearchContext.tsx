@@ -106,6 +106,9 @@ class SearchPage implements PageInterface {
   updateSmartTabSharingActive(active: boolean): void { }
   setAimButtonConfig(text: string, tooltip: string, a11yLabel: string, iconUrl: Url): void { }
   resetPopupToInitialState(): void { }
+  onScreenshotMenuClosed(): void { }
+  setShowFre(show: boolean): void { }
+  updateProfileInfo(avatarUrl: string, name: string, email: string): void { }
 }
 
 export const search = new SearchPage()
@@ -144,7 +147,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   React.useEffect(() => {
     if (query) {
       const keywordQuery = `${searchEngine?.keyword} ${query}`
-      omniboxController.queryAutocomplete(activeQueryId++, keywordQuery, false, keywordQuery.length, SuggestInventory.kDefault, false, '', InputMethod.kKeyboard);
+      omniboxController.queryAutocomplete(activeQueryId++, null, keywordQuery, false, keywordQuery.length, SuggestInventory.kDefault, false, '', InputMethod.kKeyboard);
     } else {
       omniboxController.stopAutocomplete(true)
     }

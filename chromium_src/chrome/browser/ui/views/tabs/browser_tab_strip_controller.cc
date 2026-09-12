@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/tabs/browser_tab_strip_controller.h"
 
+#include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/split_tab_util.h"
 
 namespace split_tabs {
@@ -19,6 +20,9 @@ int PassThrough(int model_index) {
 // a split tab.
 #define GetIndexOfLastActiveTab(...) PassThrough(model_index)
 
+#define TabMenuModel BraveTabMenuModel
+
 #include <chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc>
 
+#undef TabMenuModel
 #undef GetIndexOfLastActiveTab

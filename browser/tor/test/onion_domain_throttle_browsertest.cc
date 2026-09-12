@@ -86,24 +86,24 @@ class OnionDomainThrottleBrowserTest
 
   net::EmbeddedTestServer* test_server() { return https_server_.get(); }
 
-  Browser* GetBrowser(bool tor_window) {
+  BrowserWindowInterface* GetBrowser(bool tor_window) {
     if (!tor_window) {
       return browser();
     }
     return TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
   }
 
-  content::WebContents* GetActiveWebContents(Browser* browser) {
+  content::WebContents* GetActiveWebContents(BrowserWindowInterface* browser) {
     return (browser ? browser : this->browser())
         ->tab_strip_model()
         ->GetActiveWebContents();
   }
 
-  Browser* SetUpScenario(const OnionAccessScenario& scenario) {
+  BrowserWindowInterface* SetUpScenario(const OnionAccessScenario& scenario) {
     browser()->GetProfile()->GetPrefs()->SetBoolean(
         tor::prefs::kOnionOnlyInTorWindows, scenario.onion_only_in_tor_windows);
 
-    Browser* browser = GetBrowser(scenario.tor_window);
+    BrowserWindowInterface* browser = GetBrowser(scenario.tor_window);
 
     [&]() {
       ASSERT_TRUE(ui_test_utils::NavigateToURL(
@@ -204,7 +204,7 @@ INSTANTIATE_TEST_SUITE_P(
 IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest,
                        DirectSubresourceToOnion) {
   const OnionAccessScenario scenario = GetParam();
-  Browser* browser = SetUpScenario(scenario);
+  BrowserWindowInterface* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
 
   auto loaded =
@@ -215,7 +215,7 @@ IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest,
 
 IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, ImgRedirectToOnion) {
   const OnionAccessScenario scenario = GetParam();
-  Browser* browser = SetUpScenario(scenario);
+  BrowserWindowInterface* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
 
   auto loaded =
@@ -226,7 +226,7 @@ IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, ImgRedirectToOnion) {
 
 IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, FetchRedirectToOnion) {
   const OnionAccessScenario scenario = GetParam();
-  Browser* browser = SetUpScenario(scenario);
+  BrowserWindowInterface* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
 
   auto loaded =
@@ -237,7 +237,7 @@ IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, FetchRedirectToOnion) {
 
 IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, IframeOnionNavigation) {
   const OnionAccessScenario scenario = GetParam();
-  Browser* browser = SetUpScenario(scenario);
+  BrowserWindowInterface* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
 
   const GURL onion_url = OnionResourceUrl().GetWithEmptyPath();
@@ -258,7 +258,7 @@ IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, IframeOnionNavigation) {
 
 IN_PROC_BROWSER_TEST_P(OnionDomainThrottleBrowserTest, WebSocketToOnion) {
   const OnionAccessScenario scenario = GetParam();
-  Browser* browser = SetUpScenario(scenario);
+  BrowserWindowInterface* browser = SetUpScenario(scenario);
   content::WebContents* web_contents = GetActiveWebContents(browser);
 
   const GURL ws_url = net::test_server::GetWebSocketURL(
