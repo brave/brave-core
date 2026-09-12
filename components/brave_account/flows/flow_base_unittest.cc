@@ -64,6 +64,12 @@ class FlowBaseTest : public testing::Test {
         *encryptor_);
   }
 
+  void TearDown() override {
+    // RequestHandleDeleter posts DeleteSoon(SimpleURLLoader).
+    // Drain it so LSAN does not report a leak.
+    task_environment_.RunUntilIdle();
+  }
+
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<AccountStatePrefs> account_state_prefs_;
