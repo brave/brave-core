@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/predictors/predictor_database.cc b/chrome/browser/predictors/predictor_database.cc
+index 29bd286fdd4b138d5c3976a739970eda1a6b4e86..fedcc7c6df67e1b6222ef1698a0e552f23306bd9 100644
+--- a/chrome/browser/predictors/predictor_database.cc
++++ b/chrome/browser/predictors/predictor_database.cc
+@@ -136,6 +136,7 @@ void PredictorDatabaseInternal::Initialize() {
+   }
+ 
+   autocomplete_table_->Initialize(db_.get());
++  MaybeClearLoadingPredictorData(db_.get(), is_loading_predictor_enabled_);
+   resource_prefetch_tables_->Initialize(db_.get());
+ 
+   LogDatabaseStats();
