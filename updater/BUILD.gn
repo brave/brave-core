@@ -13,6 +13,12 @@ if (is_win || is_mac || is_linux) {
       "ping_configurator_unittest.cc",
       "run_all_unittests.cc",
     ]
+    if (is_win) {
+      sources += [
+        "win_constants_unittest.cc",
+        "win_util_unittest.cc",
+      ]
+    }
     if (is_mac) {
       sources += [ "keystone_install_sh_mac_unittest.cc" ]
       data = [
