@@ -578,7 +578,10 @@ def CheckNalaRasterOverridesMatchUpstream(input_api, output_api):
 
 def CheckNewSourceFileWithoutGnChangeOnUpload(input_api, output_api):
     """Checks newly added source files have corresponding GN changes."""
-    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (r"chromium_src/.*", )
+    files_to_skip = input_api.DEFAULT_FILES_TO_SKIP + (
+        r"base/compile_overridden_features.cc",
+        r"chromium_src/.*",
+    )
 
     source_file_filter = lambda f: input_api.FilterSourceFile(
         f,

@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Treat features selected by Brave at compile time as overridden.
+    preempt_function_impl:
+      function_name: FeatureList::IsFeatureOverridden
+      code: |-
+        if (IsCompileOverriddenFeature(feature_name)) {
+          return true;
+        }
+
+  - description: |
+      Return the effective state for features overridden at compile time.
+    after_function_impl:
+      function_name: FeatureList::IsFeatureEnabledIfOverridden
+      result_var: state
+      code: |-
+        if (!state.has_value() && IsCompileOverriddenFeature(feature.name)) {
+          return IsFeatureEnabled(feature);
+        }
+        return state;
