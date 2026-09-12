@@ -210,5 +210,68 @@ extension Strings {
       value: "Turned off by your organization's policy",
       comment: "Displayed on a news widget wont load due to admin policies"
     )
+    public static let leoVoiceInputWidgetTitle = NSLocalizedString(
+      "widgets.leoVoiceInputWidgetTitle",
+      bundle: widgetBundle,
+      value: "Leo AI Voice",
+      comment:
+        "Title for the Leo AI voice input widget on 'add custom control' screen. Leo is the name of a product and should not be translated"
+    )
+    public static let leoVoiceInputWidgetDescription = NSLocalizedString(
+      "widgets.leoVoiceInputWidgetDescription",
+      bundle: widgetBundle,
+      value: "Ask Leo a question by voice.",
+      comment:
+        "Description for the Leo voice input widget on 'add widget' screen. Leo is the name of a product and should not be translated"
+    )
+    public static let leoAIWidgetTitle = NSLocalizedString(
+      "widgets.leoAIWidgetTitle",
+      bundle: widgetBundle,
+      value: "Leo AI",
+      comment:
+        "Title for the Leo AI widget on 'add custom control' screen. Leo is the name of a product and should not be translated"
+    )
+    public static let leoAIWidgetDescription = NSLocalizedString(
+      "widgets.leoAIWidgetDescription",
+      bundle: widgetBundle,
+      value: "Ask Leo a question.",
+      comment:
+        "Description for the Leo AI widget on 'add custom control' screen. Leo is the name of a product and should not be translated"
+    )
+    public static let braveSearch = NSLocalizedString(
+      "widgets.braveSearch",
+      bundle: widgetBundle,
+      value: "Brave Search",
+      comment:
+        "Title for the Brave Search control. Brave is the company name and should not be translated"
+    )
+    public static let braveSearchWidgetTitle = NSLocalizedString(
+      "widgets.braveSearchWidgetTitle",
+      bundle: widgetBundle,
+      value: "Brave Search",
+      comment:
+        "Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated"
+    )
+    public static let braveSearchWidgetDescription = NSLocalizedString(
+      "widgets.braveSearchWidgetDescription",
+      bundle: widgetBundle,
+      value: "Search the web with Brave.",
+      comment:
+        "Description for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated"
+    )
+    public static let askBraveWidgetTitle = NSLocalizedString(
+      "widgets.askBraveWidgetTitle",
+      bundle: widgetBundle,
+      value: "Ask Brave",
+      comment:
+        "Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated"
+    )
+    public static let askBraveWidgetDescription = NSLocalizedString(
+      "widgets.askBraveWidgetDescription",
+      bundle: widgetBundle,
+      value: "Ask Brave a question.",
+      comment:
+        "Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated"
+    )
   }
 }
