@@ -64,6 +64,9 @@
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ERROR_TITLE" desc="Title for the alert shown when starting the password change process fails" formatter_data="webui=BraveAccountSettings android_java">
     Unable to change password
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ACCOUNT_DELETE_ACCOUNT_BUTTON_LABEL" desc="Label for the button that starts the account deletion process when clicked" formatter_data="webui=BraveAccountSettings">
+    Delete account
+  </message>
   <message name="IDS_SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL" desc="Label for the button that signs the user out of their account when clicked" formatter_data="webui=BraveAccountSettings android_java">
     Log out
   </message>
@@ -172,6 +175,26 @@
   </message>
   <message name="IDS_BRAVE_ACCOUNT_RESEND_EMAIL_CODE_BUTTON_LABEL" desc="Label for the button that resends the OTP code via email" formatter_data="webui=BraveAccount">
     Resend email code
+  </message>
+
+  <!-- 'Account deletion' dialog: -->
+  <message name="IDS_BRAVE_ACCOUNT_DELETION_DIALOG_TITLE" desc="Title for the dialog where the user can delete their Brave Account" formatter_data="webui=BraveAccount">
+    Delete your Brave account?
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_DELETION_DIALOG_DESCRIPTION" desc="Description for the Brave Account deletion dialog explaining that account deletion cannot be undone" formatter_data="webui=BraveAccount">
+    By deleting your Brave account, you will remove access for any email aliases. This action cannot be undone. Are you sure you want to proceed?
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_DELETION_CONFIRMATION_KEYWORD" desc="Word the user must type to confirm account deletion" formatter_data="webui=BraveAccount">
+    DELETE
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_DELETION_CONFIRMATION_LABEL" desc="Label for the text box requiring the user to type the confirmation keyword. The placeholder is that keyword, which the typed text must match exactly." formatter_data="webui=BraveAccount">
+    Type <ph name="KEYWORD">$1<ex>DELETE</ex></ph> to enable account deletion
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_DELETE_ACCOUNT_BUTTON_LABEL" desc="Label for the button that initiates account deletion" formatter_data="webui=BraveAccount">
+    Delete Brave account
+  </message>
+  <message name="IDS_BRAVE_ACCOUNT_CANCEL_BUTTON_LABEL" desc="Label for the button that cancels an action and closes the dialog" formatter_data="webui=BraveAccount">
+    Cancel
   </message>
 
   <!-- Error toasts: -->

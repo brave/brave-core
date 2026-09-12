@@ -7,6 +7,8 @@ source_set("brave_account") {
   sources = [
     "brave_account_ui_ios.h",
     "brave_account_ui_ios.mm",
+    "dialog_mode_holder.h",
+    "dialog_mode_holder.mm",
   ]
 
   deps = [

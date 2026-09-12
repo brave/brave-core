@@ -12,6 +12,7 @@
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/brave_account/dialog_mode_holder.h"
 #include "brave/components/brave_account/brave_account_constants.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -113,6 +114,11 @@ void BraveAccountUIDesktop::CloseDialog() {
   constrained_delegate->OnDialogCloseFromWebUI();
 }
 
+void BraveAccountUIDesktop::GetDialogMode(GetDialogModeCallback callback) {
+  std::move(callback).Run(brave_account::DialogModeHolder::GetDialogMode(
+      CHECK_DEREF(web_ui()->GetWebContents())));
+}
+
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIDesktop)
 
 BraveAccountUIDesktopConfig::BraveAccountUIDesktopConfig()
@@ -121,7 +127,8 @@ BraveAccountUIDesktopConfig::BraveAccountUIDesktopConfig()
 }
 
 void ShowBraveAccountDialog(content::WebUI* web_ui,
-                            const std::string& initiating_service_name) {
+                            const std::string& initiating_service_name,
+                            brave_account::mojom::DialogMode dialog_mode) {
   auto* web_contents = CHECK_DEREF(web_ui).GetWebContents();
   CHECK(web_contents);
 
@@ -129,14 +136,19 @@ void ShowBraveAccountDialog(content::WebUI* web_ui,
     return;
   }
 
-  auto* delegate = ShowConstrainedWebDialogWithAutoResize(
+  auto& delegate = CHECK_DEREF(ShowConstrainedWebDialogWithAutoResize(
       Profile::FromWebUI(web_ui),
       std::make_unique<BraveAccountDialogDelegate>(web_contents,
                                                    initiating_service_name),
-      web_contents, kDialogMinSize, kDialogMaxSize);
+      web_contents, kDialogMinSize, kDialogMaxSize));
 
-  auto* widget = views::Widget::GetWidgetForNativeWindow(
-      CHECK_DEREF(delegate).GetNativeDialog());
+  // On the dialog's own `WebContents` - the one that hosts brave://account,
+  // not the opener's.
+  brave_account::DialogModeHolder::SetDialogMode(
+      CHECK_DEREF(delegate.GetWebContents()), dialog_mode);
+
+  auto* widget =
+      views::Widget::GetWidgetForNativeWindow(delegate.GetNativeDialog());
   if (!widget) {
     return;
   }

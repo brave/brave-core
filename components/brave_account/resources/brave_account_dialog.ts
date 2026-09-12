@@ -48,15 +48,22 @@ export class BraveAccountDialogElement extends CrLitElement {
       })
     }
 
-    const firstInput = this.shadowRoot
-      ?.querySelector<HTMLSlotElement>('slot[name="inputs"]')
-      ?.assignedElements()[0]
-      ?.querySelector<CrLitElement>(
-        'brave-account-email-input, brave-account-password-input',
-      )
-    // Wait for the input's own first render so its inner <leo-input> exists
-    // before forwarding focus to it.
-    firstInput?.updateComplete.then(() => firstInput.focus())
+    // Deferred until our own render settles: the inputs are slotted in by the
+    // dialog around us, and <leo-input> only mounts the native <input> it
+    // delegates focus to once it renders.
+    //
+    // Focus through the element's own `focus()`: our wrappers override it to
+    // reach the <leo-input> they hold, while a bare <leo-input> delegates to
+    // its <input> natively.
+    this.updateComplete.then(() => {
+      this.shadowRoot
+        ?.querySelector<HTMLSlotElement>('slot[name="inputs"]')
+        ?.assignedElements()[0]
+        ?.querySelector<HTMLElement>(
+          'brave-account-email-input, brave-account-password-input, leo-input',
+        )
+        ?.focus()
+    })
   }
 }
 
