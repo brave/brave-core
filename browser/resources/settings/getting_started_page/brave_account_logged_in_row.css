@@ -13,3 +13,23 @@
 #email {
   text-wrap-mode: nowrap;
 }
+
+leo-buttonmenu {
+  leo-button[size='tiny'] {
+    --leo-button-padding: 0;
+  }
+
+  leo-icon {
+    --leo-icon-size: var(--leo-icon-m);
+  }
+
+  leo-menu-item {
+    align-items: center;
+    display: flex;
+    gap: var(--leo-spacing-l);
+
+    &.delete-account-menu-item {
+      color: var(--leo-color-systemfeedback-error-text);
+    }
+  }
+}
