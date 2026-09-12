@@ -7,11 +7,8 @@
 
 #include <utility>
 
-#include "base/check.h"
-#include "base/check_is_test.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/ad_units/search_result_ad/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
@@ -20,14 +17,10 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
-#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 
 namespace brave_ads {
 
 namespace {
-
-SearchResultAdHandler* g_search_result_ad_handler_for_testing = nullptr;
-bool g_defer_triggering_of_ad_viewed_event_for_testing = false;
 
 void FireEventCallback(ResultCallback callback,
                        bool success,
@@ -44,38 +37,6 @@ SearchResultAdHandler::SearchResultAdHandler(SiteVisit& site_visit)
 }
 
 SearchResultAdHandler::~SearchResultAdHandler() = default;
-
-// static
-void SearchResultAdHandler::DeferTriggeringAdViewedEventForTesting() {
-  CHECK_IS_TEST();
-  CHECK(!g_defer_triggering_of_ad_viewed_event_for_testing);
-
-  g_defer_triggering_of_ad_viewed_event_for_testing = true;
-}
-
-// static
-void SearchResultAdHandler::TriggerDeferredAdViewedEventForTesting() {
-  CHECK_IS_TEST();
-  CHECK(g_defer_triggering_of_ad_viewed_event_for_testing);
-
-  g_defer_triggering_of_ad_viewed_event_for_testing = false;
-
-  absl::Cleanup cleanup = [] {
-    // `g_search_result_ad_handler_for_testing` was set in
-    // `FireAdViewedEventCallback` to defer the ad viewed event. Reset it when
-    // this scope exits now that the deferred event has been triggered.
-    g_search_result_ad_handler_for_testing = nullptr;
-  };
-
-  if (!g_search_result_ad_handler_for_testing) {
-    return;
-  }
-
-  g_search_result_ad_handler_for_testing->is_processing_viewed_ad_event_queue_ =
-      false;
-  g_search_result_ad_handler_for_testing->MaybeTriggerDeferredAdViewedEvent(
-      /*intentional*/ base::DoNothing());
-}
 
 void SearchResultAdHandler::TriggerEvent(
     mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
@@ -121,51 +82,10 @@ void SearchResultAdHandler::FireServedEventCallback(
     return std::move(callback).Run(/*success=*/false);
   }
 
-  viewed_ad_event_queue_.push_front(std::move(mojom_creative_ad));
-
-  MaybeTriggerDeferredAdViewedEvent(std::move(callback));
-}
-
-void SearchResultAdHandler::MaybeTriggerDeferredAdViewedEvent(
-    ResultCallback callback) {
-  CHECK((!viewed_ad_event_queue_.empty() ||
-         !is_processing_viewed_ad_event_queue_));
-
-  if (viewed_ad_event_queue_.empty() || is_processing_viewed_ad_event_queue_) {
-    return std::move(callback).Run(/*success=*/true);
-  }
-  is_processing_viewed_ad_event_queue_ = true;
-
-  mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad =
-      std::move(viewed_ad_event_queue_.back());
-  viewed_ad_event_queue_.pop_back();
-
   event_handler_.FireEvent(
       std::move(mojom_creative_ad),
       mojom::SearchResultAdEventType::kViewedImpression,
-      base::BindOnce(&SearchResultAdHandler::FireAdViewedEventCallback,
-                     weak_factory_.GetWeakPtr(), std::move(callback)));
-}
-
-void SearchResultAdHandler::FireAdViewedEventCallback(
-    ResultCallback callback,
-    bool success,
-    const std::string& /*placement_id*/,
-    mojom::SearchResultAdEventType mojom_ad_event_type) {
-  CHECK_EQ(mojom_ad_event_type,
-           mojom::SearchResultAdEventType::kViewedImpression);
-
-  if (g_defer_triggering_of_ad_viewed_event_for_testing) {
-    CHECK_IS_TEST();
-
-    g_search_result_ad_handler_for_testing = this;
-
-    return std::move(callback).Run(success);
-  }
-
-  is_processing_viewed_ad_event_queue_ = false;
-
-  MaybeTriggerDeferredAdViewedEvent(std::move(callback));
+      base::BindOnce(&FireEventCallback, std::move(callback)));
 }
 
 void SearchResultAdHandler::OnDidFireSearchResultAdServedEvent(
