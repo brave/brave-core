@@ -542,6 +542,17 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       kOsAndroid,                                                    \
       FEATURE_VALUE_TYPE(features::kBraveAndroidTabGroupsSettings),  \
   })
+#define BRAVE_ANDROID_SYNC_PASSWORDS_IN_PROFILE_STORE                      \
+  EXPAND_FEATURE_ENTRIES({                                                 \
+      "brave-android-sync-passwords-in-profile-store",                     \
+      "Sync passwords in profile store",                                   \
+      "Sync passwords via the profile store (like desktop) instead of "    \
+      "the account store, migrating existing passwords on startup. Not "   \
+      "cleanly reversible once enabled.",                                  \
+      kOsAndroid,                                                          \
+      FEATURE_VALUE_TYPE(                                                  \
+          brave_sync::features::kBraveAndroidSyncPasswordsInProfileStore), \
+  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_YOUTUBE_FULLSCREEN_SETTINGS_WORKAROUND_ANDROID
@@ -549,6 +560,7 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 #define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID
 #define BRAVE_CUSTOM_SEARCH_ENGINES
 #define BRAVE_ANDROID_TAB_GROUPS_SETTINGS
+#define BRAVE_ANDROID_SYNC_PASSWORDS_IN_PROFILE_STORE
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -1635,6 +1647,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
   BRAVE_ANDROID_TAB_GROUPS_SETTINGS                                            \
+  BRAVE_ANDROID_SYNC_PASSWORDS_IN_PROFILE_STORE                                \
   BRAVE_CUSTOM_PROFILE_IMAGE_FEATURE_ENTRY                                     \
   BRAVE_CUSTOM_SEARCH_ENGINES                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
