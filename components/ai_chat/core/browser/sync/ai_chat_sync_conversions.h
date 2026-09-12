@@ -13,12 +13,14 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/functional/function_ref.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 
 namespace sync_pb {
 class AIChatCompressibleString;
 class AIChatConversationSpecifics;
+class AIChatConversationSpecifics_Entry;
 class AIChatUploadedFile;
 class EntitySpecifics;
 }  // namespace sync_pb
@@ -37,11 +39,16 @@ inline constexpr std::string_view kEntryStorageKeyPrefix = "e:";
 // gain little and may grow under compression overhead.
 inline constexpr size_t kSyncCompressionThresholdBytes = 256;
 
-// Soft cap on the serialized size of a single sync record. Leaves headroom
-// under the 400 KB-per-entity server limit for sync framing and encryption
-// overhead. When an Entry would exceed this size, the size-budget policy omits
-// low-priority fields until it fits.
-inline constexpr size_t kSyncMaxRecordBytes = 350 * 1024;
+// Soft cap on the serialized size of a single sync record, measured on the
+// plaintext specifics. AI_CHAT_CONVERSATION is an encryptable type, so what
+// reaches the server is Nigori::Encrypt() of these bytes: an IV, AES-CBC
+// ciphertext and an HMAC, the whole thing base64-encoded. Base64 makes that
+// overhead multiplicative rather than additive — a record at this cap commits
+// at roughly 4/3 * (size + 64) bytes — so 256 KB arrives near 341 KB, leaving
+// ~59 KB under the 400 KB-per-entity server limit for the rest of the
+// SyncEntity. When an Entry would exceed this size, the size-budget policy
+// omits low-priority fields until it fits.
+inline constexpr size_t kSyncMaxRecordBytes = 256 * 1024;
 
 // Hard cap on the decompressed size of a single field. Protection against
 // malicious or corrupted data that might otherwise allocate unbounded memory.
@@ -76,6 +83,29 @@ void OmitUploadedFileData(sync_pb::AIChatUploadedFile* file);
 std::optional<std::string> ReadCompressibleString(
     const sync_pb::AIChatCompressibleString& in);
 
+// Invokes |visit| for every AIChatCompressibleString on |entry| that
+// FitEntryWithinSyncBudget is allowed to omit. Code on the receiving side that
+// has to recognise or undo an omission uses this so it covers exactly the field
+// set the budget policy can drop, rather than maintaining a second list of its
+// own. Uploaded file bytes are not covered — they are raw bytes rather than an
+// AIChatCompressibleString, so callers handle
+// AIChatUploadedFile::omitted_data_hash separately.
+using CompressibleStringVisitor =
+    base::FunctionRef<void(sync_pb::AIChatCompressibleString&)>;
+void ForEachOmittableString(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                            CompressibleStringVisitor visit);
+
+// Drops long-text and binary fields from |entry| (replacing each with a
+// content hash so the receiver can restore it from a byte-identical local
+// copy) until the serialized record fits under the per-record size budget.
+// Fields are dropped in a fixed priority order — see the omission passes in
+// the implementation. Returns true if the entry fits, either because no
+// omission was needed or because omitting brought it under budget, and false
+// if it remains too large even after every omittable field is gone — callers
+// must refuse to commit such records.
+bool FitEntryWithinSyncBudget(
+    sync_pb::AIChatConversationSpecifics_Entry* entry);
+
 // Builds a sync entity containing only conversation metadata.
 sync_pb::AIChatConversationSpecifics ConversationMetadataToSpecifics(
     const mojom::Conversation& conversation);
@@ -103,7 +133,7 @@ mojom::ConversationPtr SpecificsToConversationMetadata(
 // |conversation_turn_uuid|. When non-null, |associated_content_texts|
 // receives the last_contents value for each AC where the sender provided
 // one; absent map entries mean the caller should preserve any existing
-// local text (forward-compat or truncated-for-sync).
+// local text (forward-compat or omitted-for-sync).
 mojom::ConversationTurnPtr SpecificsToEntry(
     const sync_pb::AIChatConversationSpecifics& specifics,
     std::vector<mojom::AssociatedContentPtr>& associated_content,
