@@ -9,9 +9,11 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_news/direct_feed_fetcher_delegate_impl.h"
+#include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_policy/policy_initialization_waiter.h"
 #include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -103,7 +105,8 @@ BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
       history_service, profile->GetURLLoaderFactory(),
       std::make_unique<DirectFeedFetcherDelegateImpl>(
           host_content_settings_map),
-      std::move(delegate));
+      std::move(delegate),
+      brave_stats::IsFirstRun(g_browser_process->local_state()));
 }
 
 bool BraveNewsControllerFactory::ServiceIsNULLWhileTesting() const {

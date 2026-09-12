@@ -25,6 +25,8 @@ BASE_FEATURE(kBraveNewsFeedUpdate,
              base::FEATURE_ENABLED_BY_DEFAULT
 #endif
 );
+
+BASE_FEATURE(kBraveNewsNewUserOptIn, base::FEATURE_DISABLED_BY_DEFAULT);
 const base::FeatureParam<int> kBraveNewsMinBlockCards{&kBraveNewsFeedUpdate,
                                                       "min-block-cards", 1};
 

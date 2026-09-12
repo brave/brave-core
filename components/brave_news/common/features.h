@@ -19,6 +19,9 @@ BASE_DECLARE_FEATURE(kBraveNewsCardPeekFeature);
 BASE_DECLARE_FEATURE(kBraveNewsSidebar);
 
 BASE_DECLARE_FEATURE(kBraveNewsFeedUpdate);
+
+// When enabled, first-run users are automatically opted into Brave News.
+BASE_DECLARE_FEATURE(kBraveNewsNewUserOptIn);
 // The minimum number of cards (following the hero) in a block.
 extern const base::FeatureParam<int> kBraveNewsMinBlockCards;
 
