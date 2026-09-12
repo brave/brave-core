@@ -105,11 +105,48 @@ export function createBackgroundStore() {
     },
 
     async removeCustomBackground(background) {
-      store.update((state) => ({
-        customBackgrounds: state.customBackgrounds.filter(
+      store.update((state) => {
+        const customBackgrounds = state.customBackgrounds.filter(
           (elem) => elem !== background,
-        ),
-      }))
+        )
+        const sticky =
+          state.customBackgroundStickyUrl === background
+            ? null
+            : state.customBackgroundStickyUrl
+        return {
+          customBackgrounds,
+          customBackgroundStickyUrl:
+            sticky && customBackgrounds.includes(sticky)
+              ? sticky
+              : (customBackgrounds[0] ?? null),
+        }
+      })
+    },
+
+    setBraveBackgroundEnabled(background, enabled) {
+      store.update((state) => {
+        const disabled = new Set(state.disabledBraveBackgrounds)
+        if (enabled) {
+          disabled.delete(background)
+        } else {
+          disabled.add(background)
+        }
+        const nextState: Partial<typeof state> = {
+          disabledBraveBackgrounds: [...disabled],
+        }
+        if (
+          !enabled
+          && state.selectedBackground.type === SelectedBackgroundType.kBrave
+          && state.selectedBackground.value === background
+        ) {
+          nextState.selectedBackground = {
+            type: SelectedBackgroundType.kBrave,
+            value: '',
+          }
+          nextState.backgroundRandomValue = Math.random()
+        }
+        return nextState
+      })
     },
 
     notifySponsoredImageLoadError() {},
