@@ -1,0 +1,25 @@
+diff --git a/base/feature_list.cc b/base/feature_list.cc
+index e41b0ac1f7a98a74ab57525dca4a90c3ad135868..c1c62a370ba5e254a1f19ecfb291e7685df11045 100644
+--- a/base/feature_list.cc
++++ b/base/feature_list.cc
+@@ -1114,6 +1114,7 @@ bool FeatureList::IsFeatureEnabled(const Feature& feature) const {
+ 
+ std::optional<bool> FeatureList::IsFeatureEnabledIfOverridden(
+     const Feature& feature) const {
++  std::optional<bool> state = [&]() -> std::optional<bool> {
+   OverrideState overridden_state = GetOverrideState(feature);
+ 
+   // If marked as OVERRIDE_USE_DEFAULT, fall through to returning empty.
+@@ -1122,6 +1123,12 @@ std::optional<bool> FeatureList::IsFeatureEnabledIfOverridden(
+   }
+ 
+   return std::nullopt;
++  }();
++  if (!state.has_value() &&
++      feature.default_state == FEATURE_DISABLED_BY_OVERRIDE) {
++    return false;
++  }
++  return state;
+ }
+ 
+ FeatureList::OverrideState FeatureList::GetOverrideState(

@@ -1,0 +1,19 @@
+diff --git a/base/feature.h b/base/feature.h
+index be01a04d8d7f8c0e673b03fdbc0996581974dd00..9049e067053a3405f6a6954b5fd910a5d1f989bd 100644
+--- a/base/feature.h
++++ b/base/feature.h
+@@ -182,12 +182,14 @@ enum FeatureState {
+   // disabled if Chrome does not have information about the current country.
+   // Use only together with `BASE_FEATURE_WITH_COUNTRY_RESTRICTIONS`.
+   FEATURE_ENABLED_FOR_COUNTRIES,
++  FEATURE_DISABLED_BY_OVERRIDE,
+ };
+ 
+ constexpr bool IsCountrySpecificFeatureState(FeatureState state) {
+   switch (state) {
+     case FEATURE_DISABLED_BY_DEFAULT:
+     case FEATURE_ENABLED_BY_DEFAULT:
++    case FEATURE_DISABLED_BY_OVERRIDE:
+       return false;
+     case FEATURE_DISABLED_FOR_COUNTRIES:
+     case FEATURE_ENABLED_FOR_COUNTRIES:
