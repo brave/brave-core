@@ -12,6 +12,7 @@ import { getNetworkId } from '../../common/slices/entities/network.entity'
 export const mockWalletState: WalletState = {
   addUserAssetError: false,
   hasInitialized: true,
+  isFilecoinLedgerEnabled: true,
   isBitcoinEnabled: true,
   isBitcoinImportEnabled: true,
   isBitcoinLedgerEnabled: true,

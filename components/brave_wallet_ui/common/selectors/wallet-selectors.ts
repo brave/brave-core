@@ -13,6 +13,8 @@ const selectWalletState = (state: State) => state.wallet
 
 // safe selectors (primitive return types only)
 export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
+export const isFilecoinLedgerEnabled = ({ wallet }: State) =>
+  wallet.isFilecoinLedgerEnabled
 export const isBitcoinEnabled = ({ wallet }: State) => wallet.isBitcoinEnabled
 export const isBitcoinImportEnabled = ({ wallet }: State) =>
   wallet.isBitcoinImportEnabled
