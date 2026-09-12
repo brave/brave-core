@@ -12,6 +12,7 @@ inline constexpr char kBraveUsageStandardPath[] = "/1/usage/brave-core";
 
 inline constexpr char kBraveReferralsInitPath[] = "/promo/initialize/nonua";
 inline constexpr char kBraveReferralsActivityPath[] = "/promo/activity";
+inline constexpr char kBraveConversionPath[] = "/1/conversion";
 
 inline constexpr char kBraveSafeBrowsing2Proxy[] = "safebrowsing2.brave.com";
 inline constexpr char kBraveSafeBrowsingSslProxy[] = "sb-ssl.brave.com";
