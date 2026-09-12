@@ -8,9 +8,16 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
+#include "brave/components/playlist/content/browser/media_stream_classifier.h"
+#include "brave/components/playlist/content/browser/playlist_constants.h"
+#include "brave/components/playlist/core/common/features.h"
 
 namespace playlist {
 
@@ -29,7 +36,7 @@ PlaylistMediaFileDownloadManager::DownloadJob::~DownloadJob() = default;
 PlaylistMediaFileDownloadManager::PlaylistMediaFileDownloadManager(
     content::BrowserContext* context,
     Delegate* delegate)
-    : delegate_(delegate) {
+    : delegate_(delegate), context_(context) {
   DCHECK(delegate_) << "We don't consider where |delegate| is null";
   media_file_downloader_ =
       std::make_unique<PlaylistMediaFileDownloader>(this, context);
@@ -86,12 +93,102 @@ void PlaylistMediaFileDownloadManager::TryStartingDownloadTask() {
 
   DCHECK(current_job_->item);
 
-  if (!pause_download_for_testing_) {
-    VLOG(2) << __func__ << ": " << current_job_->item->name;
-    media_file_downloader_->DownloadMediaFileForPlaylistItem(
-        current_job_->item,
-        delegate_->GetMediaPathForPlaylistItemItem(current_job_->item->id));
+  if (pause_download_for_testing_) {
+    return;
   }
+
+  VLOG(2) << __func__ << ": " << current_job_->item->name;
+
+  if (base::FeatureList::IsEnabled(features::kPlaylistServiceV2) &&
+      !IsYoutubeLegacyPlaylistSite(current_job_->item->page_source) &&
+      IsStreamManifestUrl(current_job_->item->media_source)) {
+    StartHlsDownloadTask();
+    return;
+  }
+
+  media_file_downloader_->DownloadMediaFileForPlaylistItem(
+      current_job_->item,
+      delegate_->GetMediaPathForPlaylistItemItem(current_job_->item->id));
+}
+
+void PlaylistMediaFileDownloadManager::StartHlsDownloadTask() {
+  const std::string id = current_job_->item->id;
+  const GURL manifest_url = current_job_->item->media_source;
+  const base::FilePath directory =
+      delegate_->GetMediaPathForPlaylistItemItem(id).DirName().AppendASCII(
+          "hls");
+
+  waiting_for_hls_directory_ = true;
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock(), base::TaskPriority::USER_VISIBLE},
+      base::BindOnce(
+          [](const base::FilePath& directory) {
+            return base::CreateDirectory(directory);
+          },
+          directory),
+      base::BindOnce(&PlaylistMediaFileDownloadManager::OnHlsDirectoryCreated,
+                     weak_factory_.GetWeakPtr(), id, manifest_url, directory));
+}
+
+void PlaylistMediaFileDownloadManager::OnHlsDirectoryCreated(
+    const std::string& id,
+    const GURL& manifest_url,
+    const base::FilePath& directory,
+    bool created) {
+  waiting_for_hls_directory_ = false;
+
+  // Compare against the job directly rather than asking which download is in
+  // progress: clearing the flag above already made that answer "none".
+  if (!current_job_ || current_job_->item->id != id) {
+    // Cancelled, or superseded, while we were touching the disk.
+    return;
+  }
+
+  if (!created) {
+    OnMediaFileGenerationFailed(id);
+    return;
+  }
+
+  hls_downloader_ = std::make_unique<PlaylistStreamDownloader>(context_);
+  hls_downloader_->Start(
+      manifest_url, directory,
+      base::BindRepeating(
+          [](base::WeakPtr<PlaylistMediaFileDownloadManager> self,
+             const std::string& id, int64_t received_bytes,
+             int percent_complete) {
+            if (self) {
+              self->OnMediaFileDownloadProgressed(
+                  id, /*total_bytes=*/0, received_bytes, percent_complete,
+                  base::TimeDelta());
+            }
+          },
+          weak_factory_.GetWeakPtr(), id),
+      base::BindOnce(&PlaylistMediaFileDownloadManager::OnHlsDownloaded,
+                     weak_factory_.GetWeakPtr(), id, directory));
+}
+
+void PlaylistMediaFileDownloadManager::OnHlsDownloaded(
+    const std::string& id,
+    const base::FilePath& directory,
+    base::expected<PlaylistStreamDownloader::Result,
+                   PlaylistStreamDownloader::Error> result) {
+  hls_downloader_.reset();
+
+  // Same reasoning as above: the downloader is already gone by this point.
+  if (!current_job_ || current_job_->item->id != id) {
+    return;
+  }
+
+  if (!result.has_value()) {
+    VLOG(1) << __func__ << ": " << id << ": "
+            << PlaylistStreamDownloader::ErrorToString(result.error());
+    OnMediaFileGenerationFailed(id);
+    return;
+  }
+
+  OnMediaFileReady(
+      id, directory.AppendASCII(result->manifest_file_name).AsUTF8Unsafe(),
+      result->received_bytes);
 }
 
 std::unique_ptr<PlaylistMediaFileDownloadManager::DownloadJob>
@@ -113,7 +210,13 @@ PlaylistMediaFileDownloadManager::PopNextJob() {
 
 std::string
 PlaylistMediaFileDownloadManager::GetCurrentDownloadingPlaylistItemID() const {
-  if (IsCurrentDownloadingInProgress()) {
+  // A stream download never reaches `media_file_downloader_`, so its id has to
+  // come from the job itself.
+  if (hls_downloader_ || waiting_for_hls_directory_) {
+    return current_job_ ? current_job_->item->id : std::string();
+  }
+
+  if (media_file_downloader_->in_progress()) {
     return media_file_downloader_->current_item_id();
   }
 
@@ -128,11 +231,17 @@ void PlaylistMediaFileDownloadManager::CancelCurrentDownloadingPlaylistItem() {
   }
 
   media_file_downloader_->RequestCancelCurrentPlaylistGeneration();
+  // Destroying the stream downloader abandons everything it has in flight.
+  hls_downloader_.reset();
+  waiting_for_hls_directory_ = false;
   current_job_.reset();
 }
 
 bool PlaylistMediaFileDownloadManager::IsCurrentDownloadingInProgress() const {
-  return media_file_downloader_->in_progress();
+  // A stream download doesn't go through `media_file_downloader_`, so ask both
+  // - otherwise a second job would start on top of one in flight.
+  return media_file_downloader_->in_progress() || hls_downloader_ ||
+         waiting_for_hls_directory_;
 }
 
 void PlaylistMediaFileDownloadManager::OnMediaFileDownloadProgressed(

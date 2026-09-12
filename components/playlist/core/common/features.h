@@ -15,6 +15,10 @@ namespace playlist::features {
 
 BASE_DECLARE_FEATURE(kPlaylist);
 
+// Enables the network-observation based media detection and the
+// HLS/DASH capable downloader, replacing the DOM scraping detector.
+BASE_DECLARE_FEATURE(kPlaylistServiceV2);
+
 BASE_DECLARE_FEATURE(kPlaylistFakeUA);
 
 }  // namespace playlist::features

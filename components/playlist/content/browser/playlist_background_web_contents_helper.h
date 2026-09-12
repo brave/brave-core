@@ -6,9 +6,14 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_CONTENT_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTS_HELPER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_CONTENT_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTS_HELPER_H_
 
+#include <vector>
+
+#include "base/memory/weak_ptr.h"
 #include "brave/components/playlist/content/browser/playlist_media_handler.h"
+#include "brave/components/playlist/core/common/mojom/playlist.mojom.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "url/gurl.h"
 
 namespace content {
 class NavigationHandle;
@@ -21,7 +26,7 @@ class PlaylistService;
 
 // `PlaylistBackgroundWebContentsHelper` is attached to a background
 // `WebContents` (see `PlaylistBackgroundWebContentses`). It's responsible for
-// setting up the `PlaylistMediaHandler` for the background `WebContents`, and
+// joining legacy and V2 detector results for the background `WebContents`, and
 // initializing renderer-side state (i.e. the scripts that
 // `PlaylistRenderFrameObserver` injects into the page) via
 // `WebContentsObserver::ReadyToCommitNavigation()`.
@@ -46,14 +51,23 @@ class PlaylistBackgroundWebContentsHelper final
   using content::WebContentsUserData<
       PlaylistBackgroundWebContentsHelper>::CreateForWebContents;
 
-  PlaylistBackgroundWebContentsHelper(content::WebContents* web_contents,
-                                      PlaylistService* service);
+  PlaylistBackgroundWebContentsHelper(
+      content::WebContents* web_contents,
+      PlaylistService* service,
+      PlaylistMediaHandler::OnceCallback on_media_detected_callback);
+
+  // Runs `on_media_detected_callback_` for the first non-empty batch, whether
+  // that came from the script or from the network.
+  void OnMediaDetected(GURL url, std::vector<mojom::PlaylistItemPtr> items);
 
   // content::WebContentsObserver:
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
 
   raw_ptr<PlaylistService> service_;
+  PlaylistMediaHandler::OnceCallback on_media_detected_callback_;
+
+  base::WeakPtrFactory<PlaylistBackgroundWebContentsHelper> weak_factory_{this};
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
