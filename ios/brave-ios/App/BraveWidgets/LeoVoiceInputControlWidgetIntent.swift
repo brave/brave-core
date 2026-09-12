@@ -17,7 +17,7 @@ struct LeoVoiceInputControlWidgetIntent: AppIntent {
   static var openAppWhenRun: Bool = true
 
   func perform() async throws -> some IntentResult {
-    PendingWidgetIntentAction.set(.braveLeoVoiceInput)
+    await PendingWidgetIntentAction.set(.braveLeoVoiceInput)
     return .result()
   }
 }
