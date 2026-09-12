@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
@@ -55,7 +56,8 @@ class OllamaModelFetcherTest : public testing::Test {
     ModelService::RegisterProfilePrefs(pref_service_.registry());
 
     model_service_ = std::make_unique<ModelService>(
-        &pref_service_, os_crypt_async_.get(), network::NetworkContextGetter());
+        &pref_service_, os_crypt_async_.get(), network::NetworkContextGetter(),
+        /*url_loader_factory=*/nullptr, base::FilePath());
 
     // Create mock delegate
     mock_delegate_ = std::make_unique<MockDelegate>();

@@ -9,6 +9,7 @@
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/functional/callback_helpers.h"
 #include "base/json/json_writer.h"
 #include "base/memory/scoped_refptr.h"
@@ -102,7 +103,8 @@ class EngineConsumerConversationAPIUnitTest : public testing::Test {
     prefs::RegisterProfilePrefs(prefs_.registry());
     ModelService::RegisterProfilePrefs(prefs_.registry());
     model_service_ = std::make_unique<ModelService>(
-        &prefs_, os_crypt_async_.get(), network::NetworkContextGetter());
+        &prefs_, os_crypt_async_.get(), network::NetworkContextGetter(),
+        /*url_loader_factory=*/nullptr, base::FilePath());
 
     auto options = mojom::LeoModelOptions::New();
     options->display_maker = "Test Maker";
@@ -3077,20 +3079,21 @@ TEST_F(EngineConsumerConversationAPIUnitTest, GenerateQuestionSuggestions) {
   // Test empty completion event
   {
     EXPECT_CALL(*mock_api_client, PerformRequest)
-        .WillOnce([&](std::vector<OAIMessage> messages,
-                      std::optional<base::ListValue> oai_tool_definitions,
-                      const std::optional<std::string>& preferred_tool_name,
-                      const ConversationCapabilitySet&
-                          conversation_capabilities,
-                      EngineConsumer::GenerationDataCallback data_callback,
-                      EngineConsumer::GenerationCompletedCallback callback,
-                      const std::optional<std::string>& model_name) {
-          auto completion_event =
-              mojom::ConversationEntryEvent::NewCompletionEvent(
-                  mojom::CompletionEvent::New(""));
-          std::move(callback).Run(base::ok(EngineConsumer::GenerationResultData(
-              std::move(completion_event), std::nullopt)));
-        });
+        .WillOnce(
+            [&](std::vector<OAIMessage> messages,
+                std::optional<base::ListValue> oai_tool_definitions,
+                const std::optional<std::string>& preferred_tool_name,
+                const ConversationCapabilitySet& conversation_capabilities,
+                EngineConsumer::GenerationDataCallback data_callback,
+                EngineConsumer::GenerationCompletedCallback callback,
+                const std::optional<std::string>& model_name) {
+              auto completion_event =
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New(""));
+              std::move(callback).Run(
+                  base::ok(EngineConsumer::GenerationResultData(
+                      std::move(completion_event), std::nullopt)));
+            });
 
     engine_->GenerateQuestionSuggestions(
         page_contents,

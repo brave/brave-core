@@ -21,6 +21,7 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/containers/checked_iterators.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/scoped_refptr.h"
@@ -38,6 +39,7 @@
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer_oai.h"
 #include "brave/components/ai_chat/core/browser/engine/oblivious_http_config_manager.h"
 #include "brave/components/ai_chat/core/browser/model_validator.h"
+#include "brave/components/ai_chat/core/browser/remote_models_provider.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -50,7 +52,9 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "mojo/public/cpp/bindings/clone_traits.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "url/gurl.h"
 
@@ -584,12 +588,22 @@ base::DictValue ModelService::CustomModelToPrefDict(
   return model_dict;
 }
 
-ModelService::ModelService(PrefService* prefs_service,
-                           os_crypt_async::OSCryptAsync* os_crypt_async,
-                           network::NetworkContextGetter network_context_getter)
-    : pref_service_(prefs_service),
+ModelService::ModelService(
+    PrefService* prefs_service,
+    os_crypt_async::OSCryptAsync* os_crypt_async,
+    network::NetworkContextGetter network_context_getter,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    base::FilePath profile_path)
+    : leo_models_(mojo::Clone(GetLeoModels())),
+      pref_service_(prefs_service),
       network_context_getter_(std::move(network_context_getter)) {
   ObliviousHttpConfigManager::DeleteExpiredKeyConfigs(pref_service_);
+
+  if (base::FeatureList::IsEnabled(features::kAIChatRemoteModelsConfig)) {
+    remote_models_provider_ = std::make_unique<RemoteModelsProvider>(
+        std::move(url_loader_factory), pref_service_, std::move(profile_path));
+  }
+
   // Load the model list synchronously so callers can resolve a default
   // model immediately after construction. Custom-model API keys decrypt
   // to empty strings until `OnEncryptorReady()` delivers the `Encryptor`;
@@ -618,6 +632,17 @@ ModelService::ModelService(PrefService* prefs_service,
 
 ModelService::~ModelService() = default;
 
+void ModelService::Shutdown() {
+  // Invalidate first so the outstanding OSCryptAsync::GetInstance() callback
+  // (bound in the constructor) can't run OnEncryptorReady() against
+  // pref_service_/observers_ once other KeyedServices start tearing down.
+  weak_ptr_factory_.InvalidateWeakPtrs();
+  // Tears down the pending fetch/disk-cache work (and its
+  // SharedURLLoaderFactory and PrefService use) before other KeyedServices
+  // start shutting down, rather than leaving it to the destructor.
+  remote_models_provider_.reset();
+}
+
 void ModelService::OnEncryptorReady(
     scoped_refptr<os_crypt_async::Encryptor> encryptor) {
   encryptor_ = std::move(encryptor);
@@ -640,10 +665,10 @@ void ModelService::RefreshCustomModelApiKeys() {
     if (!key || !encrypted) {
       continue;
     }
-    auto it = std::ranges::find_if(models_, [&](const mojom::ModelPtr& m) {
+    auto it = std::ranges::find_if(all_models_, [&](const mojom::ModelPtr& m) {
       return m->key == *key && m->options->is_custom_model_options();
     });
-    if (it != models_.end()) {
+    if (it != all_models_.end()) {
       (*it)->options->get_custom_model_options()->api_key =
           DecryptAPIKey(*encrypted);
     }
@@ -799,21 +824,21 @@ void ModelService::OnPremiumStatus(mojom::PremiumStatus status) {
 }
 
 void ModelService::InitModels() {
-  // Get leo and custom models
-  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
+  // Get custom models; leo_models_ is already populated (hardcoded at
+  // construction, merged with remote entries thereafter)
   const std::vector<mojom::ModelPtr> custom_models = GetCustomModels();
 
   // Reserve space in the combined models vector
-  models_.clear();
-  models_.reserve(leo_models.size() + custom_models.size());
+  all_models_.clear();
+  all_models_.reserve(leo_models_.size() + custom_models.size());
 
   // Ensure we return only in intended display order
-  std::transform(leo_models.cbegin(), leo_models.cend(),
-                 std::back_inserter(models_),
+  std::transform(leo_models_.cbegin(), leo_models_.cend(),
+                 std::back_inserter(all_models_),
                  [](const mojom::ModelPtr& model) { return model.Clone(); });
 
   std::transform(custom_models.cbegin(), custom_models.cend(),
-                 std::back_inserter(models_),
+                 std::back_inserter(all_models_),
                  [](const mojom::ModelPtr& model) { return model.Clone(); });
 
   for (auto& obs : observers_) {
@@ -821,8 +846,70 @@ void ModelService::InitModels() {
   }
 }
 
+void ModelService::OnRemoteModelsReady(
+    std::vector<mojom::ModelPtr> fetched_models) {
+  // Empty is indistinguishable from a fetch/parse failure here, so keep the
+  // existing list rather than clear it.
+  if (fetched_models.empty()) {
+    return;
+  }
+
+  std::vector<std::string> previous_keys;
+  previous_keys.reserve(leo_models_.size());
+  for (const auto& model : leo_models_) {
+    previous_keys.push_back(model->key);
+  }
+
+  // The automatic model is always kept at index 0 (see GetLeoModels() and
+  // the invariant this function maintains below), so preserving it across
+  // the merge is just a matter of keeping the first entry.
+  absl::flat_hash_set<std::string> current_keys;
+  mojom::ModelPtr automatic_model;
+  if (!leo_models_.empty()) {
+    automatic_model = std::move(leo_models_.front());
+  }
+  leo_models_.clear();
+  if (automatic_model) {
+    current_keys.insert(automatic_model->key);
+    leo_models_.push_back(std::move(automatic_model));
+  }
+
+  for (auto& fetched_model : fetched_models) {
+    current_keys.insert(fetched_model->key);
+    auto existing = std::ranges::find_if(
+        leo_models_, [&fetched_model](const mojom::ModelPtr& model) {
+          return model->key == fetched_model->key;
+        });
+    if (existing != leo_models_.end()) {
+      *existing = std::move(fetched_model);
+    } else {
+      leo_models_.push_back(std::move(fetched_model));
+    }
+  }
+
+  absl::flat_hash_set<std::string> removed_keys;
+  for (const auto& previous_key : previous_keys) {
+    if (!current_keys.contains(previous_key)) {
+      removed_keys.insert(previous_key);
+    }
+  }
+
+  std::string current_default_key = GetDefaultModelKey();
+  if (removed_keys.contains(current_default_key)) {
+    pref_service_->ClearPref(kDefaultModelKey);
+    observers_.Notify(&Observer::OnDefaultModelChanged, current_default_key,
+                      GetDefaultModelKey());
+  }
+
+  InitModels();
+
+  for (const auto& removed_key : removed_keys) {
+    observers_.Notify(&Observer::OnModelRemoved, removed_key);
+  }
+}
+
 const std::vector<mojom::ModelPtr>& ModelService::GetModels() {
-  return models_;
+  return all_models_;
 }
 
 std::vector<mojom::ModelWithSubtitlePtr>
@@ -907,15 +994,13 @@ const mojom::Model* ModelService::GetModel(std::string_view key) {
 
 std::optional<std::string> ModelService::GetLeoModelKeyByName(
     std::string_view name) {
-  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
-
   auto match_iter = std::find_if(
-      leo_models.cbegin(), leo_models.cend(),
+      leo_models_.cbegin(), leo_models_.cend(),
       [name](const mojom::ModelPtr& model) {
         CHECK(model->options->is_leo_model_options());
         return model->options->get_leo_model_options()->name == name;
       });
-  if (match_iter != leo_models.cend()) {
+  if (match_iter != leo_models_.cend()) {
     return (*match_iter)->key;
   }
 
@@ -924,12 +1009,10 @@ std::optional<std::string> ModelService::GetLeoModelKeyByName(
 
 std::optional<std::string> ModelService::GetLeoModelNameByKey(
     std::string_view key) {
-  const std::vector<mojom::ModelPtr>& leo_models = GetLeoModels();
-
   auto match_iter = std::find_if(
-      leo_models.cbegin(), leo_models.cend(),
+      leo_models_.cbegin(), leo_models_.cend(),
       [key](const mojom::ModelPtr& model) { return model->key == key; });
-  if (match_iter != leo_models.cend()) {
+  if (match_iter != leo_models_.cend()) {
     CHECK((*match_iter)->options->is_leo_model_options());
     return (*match_iter)->options->get_leo_model_options()->name;
   }
@@ -1188,7 +1271,15 @@ std::unique_ptr<EngineConsumer> ModelService::GetEngineForModel(
     // Model no longer exists — fall back to the configured default.
     model = GetModel(features::kAIModelsDefaultKey.Get());
   }
-  CHECK(model) << "Default model missing from model list";
+  if (!model) {
+    // The configured default can itself be retired by a remote model
+    // refresh. Fall back to the first model in the list — matching
+    // ConversationHandler::GetCurrentModel()'s last-resort tier — since
+    // OnRemoteModelsReady() guarantees the automatic model is always kept
+    // at index 0.
+    model = GetModels().at(0).get();
+  }
+  CHECK(model) << "Model list is empty";
 
   std::unique_ptr<EngineConsumer> engine;
   if (model->supports_private_inference ||
