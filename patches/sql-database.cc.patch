@@ -1,0 +1,13 @@
+diff --git a/sql/database.cc b/sql/database.cc
+index 2cfd555ce71179b1df8dda288b67c941e4149752..81040a5e6074b853de70a706251725d2e832e0c2 100644
+--- a/sql/database.cc
++++ b/sql/database.cc
+@@ -84,7 +84,7 @@ namespace sql {
+ // When enabled, don't commit or rollback transactions if they have already been
+ // rolled back by a statement error (e.g. SQLITE_FULL).
+ BASE_FEATURE(kCheckAutoCommitInCommitAndRollback,
+-             base::FEATURE_DISABLED_BY_DEFAULT);
++             base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ namespace {
+ 
