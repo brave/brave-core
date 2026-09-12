@@ -21,6 +21,8 @@
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
 
+using extensions::ExtensionRegistry;
+
 namespace webcompat_reporter {
 
 WebcompatReporterServiceDelegateImpl::WebcompatReporterServiceDelegateImpl(
@@ -29,13 +31,15 @@ WebcompatReporterServiceDelegateImpl::WebcompatReporterServiceDelegateImpl(
     component_updater::ComponentUpdateService* component_update_service,
     brave_shields::AdBlockService* adblock_service,
     HostContentSettingsMap* host_content_settings_map,
-    scoped_refptr<content_settings::CookieSettings> content_settings)
+    scoped_refptr<content_settings::CookieSettings> content_settings,
+    content::BrowserContext* browser_context)
     : WebcompatReporterServiceDelegateBase(component_update_service),
       local_state_(local_state),
       application_locale_(application_locale),
       adblock_service_(adblock_service),
       host_content_settings_map_(host_content_settings_map),
-      cookie_settings_(content_settings) {}
+      cookie_settings_(content_settings),
+      context_(browser_context) {}
 
 WebcompatReporterServiceDelegateImpl::~WebcompatReporterServiceDelegateImpl() =
     default;
@@ -110,5 +114,26 @@ WebcompatReporterServiceDelegateImpl::GetAdblockOnlyModeEnabled() const {
   return BoolToString(
       local_state_->GetBoolean(brave_shields::prefs::kAdBlockOnlyModeEnabled));
 }
+
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+  std::optional<std::string>
+  WebcompatReporterServiceDelegateImpl::GetAdblockExtensionInstalled() const {
+    ExtensionRegistry* registry = ExtensionRegistry::Get(context_);
+    if (!registry) {
+      return std::nullopt;
+    }
+
+    const char adblock_plus_extension_id[] = "cfhdojbkjhnklbpkdaibdccddilifddb";
+    const char adguard_extension_id[] = "bgnkhhnnamicmpeenaelnjfhikgbkllg";
+    const char ublock_origin_extension_id[] = "jcokkipkhhgiakinbnnplhkdbjbgcgpe"; 
+    const char ublock_origin_lite_extension_id[] = "ddkjiahejlhfcafbddmgiahcphecmpfh";
+
+      return BoolToString(registry->GetInstalledExtension(adblock_plus_extension_id) != nullptr ||
+                          registry->GetInstalledExtension(adguard_extension_id) != nullptr ||
+                          registry->GetInstalledExtension(ublock_origin_extension_id) != nullptr ||
+                          registry->GetInstalledExtension(ublock_origin_lite_extension_id) != nullptr);
+    }
+  }
+#endif
 
 }  // namespace webcompat_reporter
