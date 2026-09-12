@@ -275,10 +275,15 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #endif
 
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  // Survey Panelist is tied to Brave Rewards, which is compiled out of Brave
-  // Origin branded builds, so the setting is never available there.
+  // Sponsored Ads and Survey Panelist are tied to Brave Rewards, which is
+  // compiled out of Brave Origin branded builds, so neither setting is ever
+  // available there.
+  html_source->AddBoolean("isSponsoredAdsAllowed", false);
   html_source->AddBoolean("isSurveyPanelistAllowed", false);
 #else
+  html_source->AddBoolean("isSponsoredAdsAllowed",
+                          !profile->GetPrefs()->GetBoolean(
+                              brave_rewards::prefs::kDisabledByPolicy));
   html_source->AddBoolean("isSurveyPanelistAllowed",
                           base::FeatureList::IsEnabled(
                               ntp_background_images::features::
