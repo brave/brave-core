@@ -239,6 +239,12 @@ bool MaybeStripImageMetadataForUpload(
 
 void MaybeDeleteImageMetadataStripperTemporaryDir(
     std::vector<base::FilePath>& paths) {
+  // This only makes sense when the feature is enabled.
+  if (!base::FeatureList::IsEnabled(
+          image_metadata_stripper::features::kStripImageMetadataV1)) {
+    return;
+  }
+
   const auto temp_root_dir =
       std::ranges::find_if(paths, [](const base::FilePath& path) {
         return !path.empty() && !path.ReferencesParent() &&
