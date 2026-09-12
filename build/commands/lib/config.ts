@@ -30,6 +30,7 @@ type UpdateOptions = buildOptions.BuildDirOptions
   & buildOptions.NinjaOptions & {
     build_config?: string | undefined
     gclient_verbose?: boolean | undefined
+    leanSync?: boolean | undefined
   }
 
 const validTargetOSValues = ['android', 'ios', 'linux', 'mac', 'win'] as const
@@ -59,6 +60,7 @@ export class Config {
   gclientFile: string
   gclientVerbose: boolean
   disableGclientConfigUpdate: boolean
+  leanSync: boolean
   gclientGlobalVars: Record<string, any>
   targetArch: string
   targetEnvironment: string | undefined
@@ -169,6 +171,7 @@ export class Config {
       ['disable_gclient_config_update'],
       false,
     )
+    this.leanSync = envConfig.getBoolean(['lean_sync'], false)
     this.gclientGlobalVars = envConfig.getMergedObject([
       'gclient',
       'global_vars',
@@ -607,6 +610,10 @@ export class Config {
 
     if (options.gclient_verbose) {
       this.gclientVerbose = options.gclient_verbose
+    }
+
+    if (options.leanSync) {
+      this.leanSync = options.leanSync
     }
 
     if (options.ignore_compile_failure) {

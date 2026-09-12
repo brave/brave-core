@@ -41,8 +41,8 @@ program
   )
   .option('--nohooks', 'Do not run hooks after updating')
   .option(
-    '--with_issue_44921',
-    'Do not pass --revision to gclient to avoid process hanging on jenkins. https://github.com/brave/brave-browser/issues/44921',
+    '--lean-sync',
+    'An experimental lean sync checkout mode. https://github.com/brave/brave-browser/issues/44921',
   )
   .action(sync)
   .parse()
