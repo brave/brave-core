@@ -1,0 +1,13 @@
+diff --git a/content/public/browser/webui_config.h b/content/public/browser/webui_config.h
+index 0e32041a05b114f8fc55c307116a954fd7447885..936d2cc3bdb3a6a7f7f8542d854edbf9ed4e7616 100644
+--- a/content/public/browser/webui_config.h
++++ b/content/public/browser/webui_config.h
+@@ -84,6 +84,8 @@ class CONTENT_EXPORT WebUIConfig {
+   // the WebUIController or resources will fail to load.
+   virtual void RegisterURLDataSource(BrowserContext* browser_context) {}
+ 
++  virtual bool ShouldHandleSubdomains() const;
++
+  private:
+   const std::string scheme_;
+   const std::string host_;
