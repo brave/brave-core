@@ -194,6 +194,13 @@ CWV_EXPORT
 @end
 
 CWV_EXPORT
+@interface BraveWebView (ErrorPage)
+/// Loads Chromium's generic network error page for `URL` in place of the
+/// current page, as if a navigation to `URL` had failed.
+- (void)loadGenericErrorPageForURL:(NSURL*)URL;
+@end
+
+CWV_EXPORT
 @interface BraveWebView (PageMetadata)
 // Fetches the page metadata (OpenSearch & RSS feeds from the page) and returns
 // a JSON string with the results
