@@ -60,6 +60,13 @@ public protocol TabDelegate: AnyObject {
     inBackground: Bool
   ) -> (any TabState)?
   func tab(_ tab: some TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
+  /// Decides whether or not lockdown mode should be enabled on the resulting
+  /// page. Return nil to keep the default behavior (OS-level and browser-level
+  /// lockdown mode).
+  func tab(
+    _ tab: some TabState,
+    shouldEnableLockdownModeForRequest request: URLRequest
+  ) -> Bool?
   func tab(_ tab: some TabState, shouldBlockUniversalLinksForRequest request: URLRequest) -> Bool
   func tab(_ tab: some TabState, buildEditMenuWithBuilder builder: any UIMenuBuilder)
   func tab(_ tab: some TabState, defaultUserAgentTypeForURL url: URL) -> UserAgentType
@@ -157,6 +164,13 @@ extension TabDelegate {
   public func tab(_ tab: some TabState, shouldBlockJavaScriptForRequest request: URLRequest) -> Bool
   {
     return false
+  }
+
+  public func tab(
+    _ tab: some TabState,
+    shouldEnableLockdownModeForRequest request: URLRequest
+  ) -> Bool? {
+    return nil
   }
 
   public func tab(
