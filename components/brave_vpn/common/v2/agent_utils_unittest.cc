@@ -16,10 +16,15 @@
 #include "mojo/public/cpp/platform/named_platform_channel.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
+#if BUILDFLAG(IS_MAC)
+#include <servers/bootstrap.h>
+#endif
+
 namespace brave_vpn::v2 {
 namespace {
-#if BUILDFLAG(IS_POSIX)
-constexpr char kSocketRuntimeDir[] = "/run/user/1000";
+#if BUILDFLAG(IS_LINUX)
+constexpr char kSocketAbsoluteRuntimeDir[] = "/run/user/1000";
+constexpr char kSocketRelativeRuntimeDir[] = "run/user/1000";
 #endif
 }  // namespace
 
@@ -30,8 +35,8 @@ TEST(BraveVpnAgentUtils, ServerNameIsStableWithinProcess) {
   // Test bots frequently have no XDG_RUNTIME_DIR, which would leave both calls
   // below as nullopt and pass without a name ever being built. Safe to override
   // here because these tests start no threads.
-  base::ScopedEnvironmentVariableOverride runtime_dir("XDG_RUNTIME_DIR",
-                                                      kSocketRuntimeDir);
+  base::ScopedEnvironmentVariableOverride runtime_dir(
+      "XDG_RUNTIME_DIR", kSocketAbsoluteRuntimeDir);
 #endif  // BUILDFLAG(IS_LINUX)
 
   const std::optional<mojo::NamedPlatformChannel::ServerName> first =
@@ -52,18 +57,20 @@ TEST(BraveVpnAgentUtils, NoRuntimeDirectoryYieldsNoServerName) {
   EXPECT_FALSE(GetAgentServerName().has_value());
 }
 
-#endif  // BUILDFLAG(IS_LINUX)
-
-#if BUILDFLAG(IS_POSIX)
-
 // An unusable socket directory has to fail rather than fall back to a
 // relative path, which would bind into the working directory.
 TEST(BraveVpnAgentUtils, NoSocketDirectoryYieldsNoServerName) {
   EXPECT_FALSE(GetAgentServerNameForDirectory(base::FilePath()).has_value());
 }
 
+TEST(BraveVpnAgentUtils, RelativeSocketDirectoryYieldsNoServerName) {
+  EXPECT_FALSE(
+      GetAgentServerNameForDirectory(base::FilePath(kSocketRelativeRuntimeDir))
+          .has_value());
+}
+
 TEST(BraveVpnAgentUtils, ServerNameIsAnAbsolutePathInsideTheDirectory) {
-  const base::FilePath dir(kSocketRuntimeDir);
+  const base::FilePath dir(kSocketAbsoluteRuntimeDir);
 
   const std::optional<mojo::NamedPlatformChannel::ServerName> name =
       GetAgentServerNameForDirectory(dir);
@@ -79,7 +86,7 @@ TEST(BraveVpnAgentUtils, ServerNameIsAnAbsolutePathInsideTheDirectory) {
 // agent could disagree about which socket to use.
 TEST(BraveVpnAgentUtils, LeafNameDoesNotDependOnTheDirectory) {
   const std::optional<mojo::NamedPlatformChannel::ServerName> first =
-      GetAgentServerNameForDirectory(base::FilePath(kSocketRuntimeDir));
+      GetAgentServerNameForDirectory(base::FilePath(kSocketAbsoluteRuntimeDir));
   const std::optional<mojo::NamedPlatformChannel::ServerName> second =
       GetAgentServerNameForDirectory(base::FilePath("/tmp"));
 
@@ -115,15 +122,34 @@ TEST(BraveVpnAgentUtils, SocketPathLengthLimitIsEnforcedExactly) {
   EXPECT_FALSE(rejected.has_value());
 }
 
-#else  // BUILDFLAG(IS_POSIX)
+#elif BUILDFLAG(IS_MAC)
 
-TEST(BraveVpnAgentUtils, ServerNameIsAvailableOnNonPosix) {
+// Mojo hands the name to bootstrap APIs verbatim, so it has to be a flat name.
+// A path prefix would still "work" while wasting the length budget and coupling
+// the name to the environment.
+TEST(BraveVpnAgentUtils, ServerNameIsFlatBootstrapName) {
   const std::optional<mojo::NamedPlatformChannel::ServerName> name =
       GetAgentServerName();
   ASSERT_TRUE(name.has_value());
+
   EXPECT_FALSE(name->empty());
+  EXPECT_EQ(std::string::npos, name->find('/'));
+  EXPECT_LT(name->size(), static_cast<size_t>(BOOTSTRAP_MAX_NAME_LEN));
 }
 
-#endif  // BUILDFLAG(IS_POSIX)
+#elif BUILDFLAG(IS_WIN)
+
+// Mojo decorates this into "\\.\pipe\mojo.<name>", so the leaf must not carry
+// separators of its own.
+TEST(BraveVpnAgentUtils, ServerNameIsBarePipeLeaf) {
+  const std::optional<mojo::NamedPlatformChannel::ServerName> name =
+      GetAgentServerName();
+  ASSERT_TRUE(name.has_value());
+
+  EXPECT_FALSE(name->empty());
+  EXPECT_EQ(std::wstring::npos, name->find(L'\\'));
+}
+
+#endif  // BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN)
 
 }  // namespace brave_vpn::v2

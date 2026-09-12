@@ -11,17 +11,20 @@ assert(enable_brave_vpn_v2)
 
 buildflag_header("branding_buildflags") {
   header = "branding_buildflags.h"
+  flags = [ "VPN_AGENT_IPC_NAME=\"$vpn_agent_ipc_name\"" ]
   if (is_mac) {
-    flags = [ "VPN_AGENT_APP_NAME=\"$vpn_agent_product_full_name.app\"" ]
+    flags += [ "VPN_AGENT_APP_NAME=\"$vpn_agent_product_full_name.app\"" ]
   } else if (is_win) {
-    flags = [ "VPN_AGENT_EXE_NAME=\"$vpn_agent_executable_name.exe\"" ]
+    flags += [ "VPN_AGENT_EXE_NAME=\"$vpn_agent_executable_name.exe\"" ]
   } else {
-    flags = [ "VPN_AGENT_EXE_NAME=\"$vpn_agent_executable_name\"" ]
+    flags += [ "VPN_AGENT_EXE_NAME=\"$vpn_agent_executable_name\"" ]
   }
 }
 
 source_set("common") {
   sources = []
+
+  deps = []
 
   public_deps = []
 
@@ -30,6 +33,8 @@ source_set("common") {
       "agent_utils.cc",
       "agent_utils.h",
     ]
+
+    deps += [ ":branding_buildflags" ]
 
     public_deps += [
       "//base",
