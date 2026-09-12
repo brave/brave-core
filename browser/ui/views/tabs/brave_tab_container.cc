@@ -1532,16 +1532,60 @@ void BraveTabContainer::SetScrollOffset(int offset) {
     return;
   }
 
-  // When offset changes, relayout tabs even when size doesn't change.
   // Callers must pass offset in [0, GetMaxScrollOffset()].
+  const int delta = offset - scroll_offset_;
   scroll_offset_ = offset;
-  last_layout_size_ = std::nullopt;
-  CompleteAnimationAndLayout();
+
+  if (!ScrollByDelta(delta)) {
+    // The fast path declined: the strip is not settled (a layout is
+    // pending, an animation or drag session is running, or the layout is
+    // locked), so the new offset needs the full layout. Reset the layout
+    // size so it runs even though the size did not change.
+    last_layout_size_ = std::nullopt;
+    CompleteAnimationAndLayout();
+  }
   UpdateScrollBarState();
 
   if (scroll_direction == views::LayoutOrientation::kHorizontal) {
     horizontal_scroll_offset_changed_callbacks_.Notify();
   }
+}
+
+bool BraveTabContainer::ScrollByDelta(int delta) {
+  // The fast path only applies to a settled vertical strip: ideal bounds and
+  // view bounds agree and were computed for the current size. Anything else
+  // (pending layout, running animation, drag session, locked layout) goes
+  // through the full layout, which also handles those cases today.
+  if (GetScrollDirection() != views::LayoutOrientation::kVertical ||
+      layout_locked_ || last_layout_size_ != size() || IsAnimating() ||
+      IsDragSessionActive()) {
+    return false;
+  }
+
+  // A scroll does not change the layout, only where it is placed relative
+  // to the viewport. Shift the ideal bounds that UpdateIdealBounds() already
+  // produced instead of recomputing them: the result is identical to what
+  // UpdateIdealBounds() would compute for the new offset.
+  const int tab_count = GetTabCount();
+  for (int i = 0; i < tab_count; ++i) {
+    if (GetTabAtModelIndex(i)->data().pinned) {
+      continue;
+    }
+    gfx::Rect bounds = tabs_view_model_.ideal_bounds(i);
+    bounds.Offset(0, -delta);
+    tabs_view_model_.set_ideal_bounds(i, bounds);
+  }
+  for (auto& [group_id, _] : group_views_) {
+    layout_helper_->group_header_ideal_bounds().at(group_id).Offset(0, -delta);
+  }
+
+  // The visibility pass reads the ideal bounds shifted above, so it sees the
+  // new offset without recomputing anything.
+  SnapToIdealBounds();
+  SetTabSlotVisibility();
+  UpdateClipPathForSlotViews();
+  SchedulePaint();
+  return true;
 }
 
 base::CallbackListSubscription
