@@ -45,9 +45,14 @@ int GetIconIndexForFileType() {
   GetProgIdEntries(app_info, entries);
 
 // Give BraveXXFile prog id for some file type.(ex, .pdf or .svg) instead of
-// BraveHTML.
+// BraveHTML. Only applies when registering Brave's own browser handler — must
+// not run for PWA file_handler registration, which calls
+// ShellUtil::AddFileAssociations with the PWA's own prog id and needs that
+// prog id (not BraveFile) written to `<ext>\OpenWithProgids` so the PWA
+// appears in the Windows "Open with" picker (fixes brave/brave-browser#55550).
 #define BRAVE_GET_APP_EXT_REGISTRATION_ENTRIES                         \
-  if (installer::ShouldUseFileTypeProgId(ext)) {                       \
+  if (installer::ShouldUseFileTypeProgId(ext) &&                       \
+      installer::IsBrowserProgId(prog_id)) {                           \
     entries->push_back(std::make_unique<RegistryEntry>(                \
         key_name, installer::GetProgIdForFileType(), std::wstring())); \
     return;                                                            \
