@@ -23,10 +23,16 @@ function SettingsPanel(props: Props) {
     enabled: false
   })
 
+  const [blockUntunneledTraffic, setBlockUntunneledTraffic] = React.useState({
+    available: false,
+    blocked: true
+  })
+
   const smartProxyRoutingEnabled = useSelector((state) => state.smartProxyRoutingEnabled)
 
   React.useEffect(() => {
     getPanelBrowserAPI().serviceHandler.getOnDemandState().then(setOnDemand)
+    getPanelBrowserAPI().serviceHandler.getBlockUntunneledTraffic().then(setBlockUntunneledTraffic)
   }, [])
 
   const handleClick = (entry: ManageURLType) => {
@@ -50,6 +56,11 @@ function SettingsPanel(props: Props) {
   const handleToggleChange = ({ checked }: { checked: boolean }) => {
     setOnDemand({ ...onDemand, enabled: checked })
     getPanelBrowserAPI().serviceHandler.enableOnDemand(checked)
+  }
+
+  const handleBlockUntunneledTrafficChange = ({ checked }: { checked: boolean }) => {
+    setBlockUntunneledTraffic({ ...blockUntunneledTraffic, blocked: checked })
+    getPanelBrowserAPI().serviceHandler.blockUntunneledTraffic(checked)
   }
 
   const handleSmartProxyRoutingChange = ({ checked }: { checked: boolean }) => {
@@ -86,6 +97,30 @@ function SettingsPanel(props: Props) {
                   onChange={handleToggleChange}
                   size='small'
                   aria-label='Reconnect automatically'
+                />
+              </Styles.Setting>
+            </>
+          )}
+          {blockUntunneledTraffic.available && (
+            <>
+              <Styles.Setting
+                onClick={
+                  e => handleBlockUntunneledTrafficChange({
+                    checked: !blockUntunneledTraffic.blocked
+                  })
+                }
+              >
+                <Styles.StyledIcon name='refresh'></Styles.StyledIcon>
+                <Styles.SettingLabelBox>
+                  <Styles.SettingLabel>
+                    {getLocale(S.BRAVE_VPN_BLOCK_UNTUNNELED_TRAFFIC)}
+                  </Styles.SettingLabel>
+                </Styles.SettingLabelBox>
+                <Toggle
+                  checked={blockUntunneledTraffic.blocked}
+                  onChange={handleBlockUntunneledTrafficChange}
+                  size='small'
+                  aria-label={getLocale(S.BRAVE_VPN_BLOCK_UNTUNNELED_TRAFFIC)}
                 />
               </Styles.Setting>
             </>

@@ -383,7 +383,12 @@ void BraveVpnServiceImpl::GetBlockUntunneledTraffic(
     GetBlockUntunneledTrafficCallback callback) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   std::move(callback).Run(
-      local_prefs_->GetBoolean(prefs::kBraveVPNWireguardEnabled),
+      // For now, only VPN panel UI is ready for untunneled traffic
+      // control. Hide this option till its business logic is available
+      // by sending false for available param.
+      // Use local_prefs_->GetBoolean(prefs::kBraveVPNWireguardEnabled)
+      // when it's ready.
+      /*available*/ false,
       local_prefs_->GetBoolean(
           prefs::kBraveVPNWireguardBlockUntunneledTraffic));
 #else

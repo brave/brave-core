@@ -90,6 +90,10 @@
     Reconnect automatically
   </message>
 
+  <message name="IDS_BRAVE_VPN_BLOCK_UNTUNNELED_TRAFFIC" desc="Label to toggle block untunneled traffic toggle" formatter_data="webui=Vpn">
+    Block untunneled traffic
+  </message>
+
   <message name="IDS_BRAVE_VPN_SMART_PROXY_ROUTING" desc="Label to toggle smart proxy routing" formatter_data="webui=Vpn">
     Smart proxy routing
   </message>
