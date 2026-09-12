@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Load Brave's Polymer overrides before this page's components.
+
+      polymer_overriding.js hooks Polymer's registration so Brave's branding
+      overrides (e.g. for `cr-button`) are picked up as each component is
+      defined, which means it has to run before any of them. Anchoring on the
+      end of the license header puts the import ahead of every other one in the
+      module; a chromium_src shadow file cannot do this, since importing the
+      upstream module is what runs its imports.
+    regex:
+      re_pattern: '(// found in the LICENSE file\.\n\n)'
+      replace: |
+        \1import 'chrome://resources/brave/polymer_overriding.js';
+
+  - description: >-
+      Free `profile-customization-app` for the Brave subclass to register.
+    drop_custom_element_registration:
+      class_name: ProfileCustomizationAppElement

@@ -424,6 +424,38 @@ has:
                 "node": "object",
             },
         },
+
+        # The statement registering `class_name` as a custom element, i.e. the
+        # `customElements.define(<tag>, {class_name})` call WebUI sources end
+        # with. The match is the whole expression_statement, so the trailing
+        # semicolon and a call broken over several lines are both covered.
+        #
+        # The class is matched as an identifier argument of the call rather than
+        # by the tag name, since the tag is spelled `{class_name}.is` about as
+        # often as it is a string literal, and the class is what a plaster
+        # knows. Both `customElements.define(Foo.is, Foo)` and
+        # `customElements.define('x-foo', Foo)` therefore match, while
+        # a registration of some *other* class does not, however its tag is
+        # spelled.
+        "ts.find_custom_element_registration": {
+            "template": """\
+kind: expression_statement
+has:
+  kind: call_expression
+  all:
+    - has:
+        field: function
+        regex: ^customElements\\.define$
+    - has:
+        field: arguments
+        has:
+          kind: identifier
+          regex: ^{class_name}$
+""",
+            "result": {
+                "node": "expression_statement",
+            },
+        },
     },
     "ast.rewriter": {
 
@@ -710,6 +742,31 @@ has:
             },
             "result": {
                 "node": "object",
+            },
+        },
+
+        # The custom element registration removed outright, so the tag name it
+        # claimed is left free for a Brave subclass in `chromium_src/` to
+        # register instead.
+        #
+        # `consume_after` folds in the newline ending the statement's line, so
+        # the line goes away whole rather than being left behind empty. The
+        # blank line above the statement is deliberately kept: it is context
+        # separating the code that remains, and a patch that removed an empty
+        # line at a hunk boundary would trip `patches/PRESUBMIT.py`. A
+        # registration that is the last line of a file with no trailing newline
+        # has no `\n` to consume and is reported as an unmatched count rather
+        # than rewritten -- Chromium sources always end in one.
+        "ts.drop_custom_element_registration": {
+            "matcher": "ts.find_custom_element_registration",
+            "inputs": ["class_name"],
+            "replace": {
+                "consume_after": "\n",
+                "re_pattern": "(?s)^.+$",
+                "replace": "",
+            },
+            "result": {
+                "node": "expression_statement",
             },
         },
     },

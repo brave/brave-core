@@ -631,7 +631,7 @@ def CheckPlasterFiles(input_api, output_api):
         local_path = f.LocalPath()
         if (local_path.startswith("patches/") and local_path.endswith(".patch")
             ) or (local_path.startswith("rewrite/")
-                  and local_path.endswith(".toml")):
+                  and local_path.endswith(".yaml")):
             affected_files.append(local_path)
 
     if not affected_files:

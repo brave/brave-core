@@ -559,6 +559,13 @@ _NAMESPACES: Final = (
     RewriterNamespace(name='js',
                       ast_grep_language='js',
                       suffixes=frozenset({'.js', '.json5'})),
+    # TypeScript gets its own namespace rather than riding on `js`: the JS
+    # grammar chokes on the type syntax WebUI sources are full of (`declare
+    # global`, type annotations, `as` casts), which would leave a matcher
+    # searching a partially-parsed tree.
+    RewriterNamespace(name='ts',
+                      ast_grep_language='ts',
+                      suffixes=frozenset({'.ts'})),
 )
 
 _NAMESPACE_BY_NAME: Final = MappingProxyType(
@@ -2217,6 +2224,61 @@ class JsSetBlinkRuntimeEnabledFeatureStateRewriter(_AstGrepRewriter):
         return engine.content, [error] if error else []
 
 
+class TsDropCustomElementRegistrationRewriter(_AstGrepRewriter):
+    """Remove a WebUI element's `customElements.define` call."""
+
+    NAME: Final = 'drop_custom_element_registration'
+    OP_ID: Final = 'ts.drop_custom_element_registration'
+    SUMMARY: Final = "Remove a class's `customElements.define` registration."
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Removes the `customElements.define(...)` call registering `class_name`,
+        freeing the tag name it claimed.
+
+        A custom element tag can only be registered once, so a Brave subclass
+        in `chromium_src/` cannot take over an element while upstream still
+        registers its own class under the same tag. Dropping the upstream
+        registration is what lets the shadow file register the subclass
+        instead — which is where the replacement `customElements.define`
+        belongs, next to the subclass, rather than in a plaster.
+
+        The whole statement goes, along with the line it occupied, so nothing
+        is left behind where it stood. The blank line above it is kept, as
+        context separating the code that remains. The call is found by the
+        class it registers, so the tag may be spelled either `class_name.is`
+        or a string literal.
+
+        Fields:
+
+        - `class_name` — the element class whose registration to remove.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: >-
+              Free `settings-search-page` so the Brave subclass can claim it.
+            drop_custom_element_registration:
+              class_name: SettingsSearchPageElement
+        ```
+
+        The statement is removed whole, its own line included:
+
+        ```diff
+        -customElements.define(SearchPageElement.is, SearchPageElement);
+        ```
+    """
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # A tag can only be registered once, so a class has exactly one
+        # registration to remove and no other count means anything.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} removes a single registration and '
+                             f'does not accept a count other than 1 '
+                             f'(in "{description}")')
+
+
 # The hand-written rewriters. `_REWRITERS` is assembled from these plus the
 # ones generated from `rewriters.pyl` for `RegexMacro`.
 _DECLARED_REWRITERS: Final = (AllRegexRewriter, CxxMakeVirtualRewriter,
@@ -2227,7 +2289,8 @@ _DECLARED_REWRITERS: Final = (AllRegexRewriter, CxxMakeVirtualRewriter,
                               CxxAddToProtectedRewriter,
                               CxxAddToPublicRewriter,
                               CxxAddEnumEntriesRewriter,
-                              JsSetBlinkRuntimeEnabledFeatureStateRewriter)
+                              JsSetBlinkRuntimeEnabledFeatureStateRewriter,
+                              TsDropCustomElementRegistrationRewriter)
 
 
 class RewriterRegistry:

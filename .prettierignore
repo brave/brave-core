@@ -46,6 +46,10 @@ components/brave_wallet/resources/solana_web3_script.js
 # Ignore JSON gen tests files for the recipes engine.
 /tools/recipes/**/*.expected/*.json
 
+# Ignore plaster's golden fixtures: they stand in for upstream Chromium sources,
+# so they are written in Chromium's style, not ours.
+/tools/cr/test/plasters/
+
 # Ignore generated bots config output.
 /infra/config/generated/**/*.json
 
