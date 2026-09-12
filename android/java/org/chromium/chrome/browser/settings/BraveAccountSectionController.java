@@ -23,6 +23,7 @@ import org.chromium.brave_account.mojom.ChangePasswordError;
 import org.chromium.brave_account.mojom.ChangePasswordServerError;
 import org.chromium.brave_account.mojom.ChangePasswordServerErrorCode;
 import org.chromium.brave_account.mojom.ChangePasswordStep1Result;
+import org.chromium.brave_account.mojom.DialogMode;
 import org.chromium.brave_account.mojom.LoggedInState;
 import org.chromium.brave_account.mojom.LoggedInVerificationIntent;
 import org.chromium.brave_account.mojom.LoggedOutState;
@@ -87,6 +88,7 @@ public class BraveAccountSectionController
     private static final String PREF_USER_INFO = "user_info";
     private static final String PREF_CHANGE_PASSWORD = "change_password";
     private static final String PREF_SIGN_OUT = "sign_out";
+    private static final String PREF_DELETE_ACCOUNT = "delete_account";
     private static final String PREF_ALMOST_THERE = "almost_there";
     private static final String PREF_ENTER_VERIFICATION_CODE = "enter_verification_code";
     private static final String PREF_RESEND_CONFIRMATION_EMAIL = "resend_confirmation_email";
@@ -98,6 +100,7 @@ public class BraveAccountSectionController
                 PREF_USER_INFO,
                 PREF_CHANGE_PASSWORD,
                 PREF_SIGN_OUT,
+                PREF_DELETE_ACCOUNT,
                 PREF_ALMOST_THERE,
                 PREF_ENTER_VERIFICATION_CODE,
                 PREF_RESEND_CONFIRMATION_EMAIL,
@@ -143,6 +146,10 @@ public class BraveAccountSectionController
     }
 
     private boolean openBraveAccountDialog() {
+        return openBraveAccountDialog(DialogMode.DEFAULT);
+    }
+
+    private boolean openBraveAccountDialog(@DialogMode.EnumType int dialogMode) {
         if (!mFragment.isAdded() || mFragment.isDetached()) {
             return false;
         }
@@ -152,7 +159,7 @@ public class BraveAccountSectionController
             return false;
         }
 
-        BraveAccountCustomTabActivity.show(activity);
+        BraveAccountCustomTabActivity.show(activity, dialogMode);
         return true;
     }
 
@@ -165,6 +172,12 @@ public class BraveAccountSectionController
                         mBraveAccountService.logOut();
                         return true;
                     });
+        }
+
+        Preference deleteAccountPreference = mFragment.findPreference(PREF_DELETE_ACCOUNT);
+        if (deleteAccountPreference != null) {
+            deleteAccountPreference.setOnPreferenceClickListener(
+                    preference -> openBraveAccountDialog(DialogMode.ACCOUNT_DELETION));
         }
 
         Preference enterVerificationCodePreference =
@@ -189,6 +202,7 @@ public class BraveAccountSectionController
         Preference userInfoPref = mFragment.findPreference(PREF_USER_INFO);
         Preference changePasswordPref = mFragment.findPreference(PREF_CHANGE_PASSWORD);
         Preference signOutPref = mFragment.findPreference(PREF_SIGN_OUT);
+        Preference deleteAccountPref = mFragment.findPreference(PREF_DELETE_ACCOUNT);
         Preference almostTherePref = mFragment.findPreference(PREF_ALMOST_THERE);
         Preference enterVerificationCodePref =
                 mFragment.findPreference(PREF_ENTER_VERIFICATION_CODE);
@@ -201,6 +215,7 @@ public class BraveAccountSectionController
         setVisibility(userInfoPref, false);
         setVisibility(changePasswordPref, false);
         setVisibility(signOutPref, false);
+        setVisibility(deleteAccountPref, false);
         setVisibility(almostTherePref, false);
         setVisibility(enterVerificationCodePref, false);
         setVisibility(resendConfirmationEmailPref, false);
@@ -226,6 +241,7 @@ public class BraveAccountSectionController
                     setVisibility(userInfoPref, true);
                     setVisibility(changePasswordPref, true);
                     setVisibility(signOutPref, true);
+                    setVisibility(deleteAccountPref, true);
                     break;
                 }
 
