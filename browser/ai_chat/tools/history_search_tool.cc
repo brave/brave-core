@@ -162,9 +162,9 @@ HistorySearchTool::RequiresUserInteractionBeforeHandling(
   // that. The user-facing wording is in
   // `get_tool_permission_implications.tsx` so it goes through i18n; this
   // C++ side only needs to surface a non-null challenge.
-  return mojom::PermissionChallenge::New(/*assessment=*/std::nullopt,
-                                         /*plan=*/std::nullopt,
-                                         /*description=*/std::nullopt);
+  return mojom::PermissionChallenge::New(
+      /*assessment=*/std::nullopt, /*plan=*/std::nullopt,
+      /*description=*/std::nullopt, /*supports_always_allow=*/false);
 }
 
 void HistorySearchTool::UserPermissionGranted(const std::string& tool_use_id) {

@@ -99,6 +99,14 @@ class AssociatedContentManager : public ToolProvider,
                          std::string_view tool_name,
                          mojom::ToolPermission permission);
 
+  // Records |permission| for the content tool the model calls
+  // |model_tool_name|, i.e. the mangled name a permission challenge is
+  // answered against rather than the page-registered one the dialog lists.
+  // No-op unless a content tool of that name is in the current generation
+  // loop, so answering any other tool's challenge records nothing.
+  void SetToolPermissionForModelToolName(std::string_view model_tool_name,
+                                         mojom::ToolPermission permission);
+
   // Clears all content from the conversation.
   void ClearContent();
 
@@ -197,7 +205,14 @@ class AssociatedContentManager : public ToolProvider,
 
   raw_ptr<ConversationHandler> conversation_;
 
-  std::vector<std::unique_ptr<Tool>> tools_;
+  // A tool for the current generation loop, with the origin of the content
+  // which exposed it, so that a choice made about it later can be recorded
+  // against the same key GetToolInfos() reads by.
+  struct GenerationLoopTool {
+    std::unique_ptr<Tool> tool;
+    url::Origin origin;
+  };
+  std::vector<GenerationLoopTool> tools_;
 
   // Content tools only (i.e. those a page exposes): origin -> tool name ->
   // choice, for anything moved off the kAsk default.

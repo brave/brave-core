@@ -234,6 +234,9 @@ TEST_F(ContentToolTest, RequiresPermissionChallengeUntilGranted) {
   EXPECT_EQ(challenge->description,
             "Brave AI would like to execute **echo** on "
             "**https\\:\\/\\/example\\.com**");
+  // Page-exposed tools have a standing permission in the website tools dialog,
+  // so the user can answer the challenge with it instead of being asked again.
+  EXPECT_TRUE(challenge->supports_always_allow);
 
   tool.UserPermissionGranted(/*tool_use_id=*/"any");
 

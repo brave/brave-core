@@ -65,6 +65,9 @@ export const _ToolPermissionChallenge = {
         description: args.isWebTool
           ? 'Brave AI would like to execute **get_stock_price** on **https://example.com**'
           : undefined,
+        // Only website-provided tools have a standing permission to record an
+        // "always allow" answer against.
+        supportsAlwaysAllow: args.isWebTool,
       },
     }
     return (

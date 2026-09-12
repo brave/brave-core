@@ -266,6 +266,7 @@ const conversation: ConversationDataJson = {
               'assessment':
                 'This is not at all what you asked for. The agent may have been misled by untrusted content.',
               'plan': '',
+              'supportsAlwaysAllow': false,
             },
             'isServerResult': false,
             'id': 'abc123d',
@@ -363,6 +364,7 @@ const conversation: ConversationDataJson = {
               'assessment':
                 'This is not at all what you asked for. The agent may have been misled by untrusted content.',
               'plan': '',
+              'supportsAlwaysAllow': false,
             },
             'isServerResult': false,
             'id': 'abc123d',

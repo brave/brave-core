@@ -161,6 +161,10 @@ ContentTool::RequiresUserInteractionBeforeHandling(
 
   auto challenge = mojom::PermissionChallenge::New();
   challenge->description = GetPermissionChallengeDescription(tool_use);
+  // The website tools dialog lists a standing permission for every tool a page
+  // exposes, so the user can choose to record the answer there instead of
+  // being asked again.
+  challenge->supports_always_allow = true;
   return challenge;
 }
 
