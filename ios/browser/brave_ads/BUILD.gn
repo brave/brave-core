@@ -55,7 +55,10 @@ optimize_ts("ads_media_reporting_js") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "ads_tab_helper_unittest.mm" ]
+  sources = [
+    "ads_service_impl_ios_unittest.mm",
+    "ads_tab_helper_unittest.mm",
+  ]
 
   deps = [
     ":brave_ads",
@@ -63,6 +66,7 @@ source_set("unit_tests") {
     "//brave/components/brave_ads/core/browser/service:test_support",
     "//brave/components/brave_ads/core/public:headers",
     "//brave/components/brave_rewards/core",
+    "//components/prefs:test_support",
     "//ios/chrome/browser/shared/model/profile/test",
     "//ios/chrome/test:test_support",
     "//ios/web/public/test",
