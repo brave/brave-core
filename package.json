@@ -7,6 +7,7 @@
   "scripts": {
     "pnpm:devPreinstall": "node ./build/commands/scripts/devPreinstall.ts",
     "help": "node ./build/commands/scripts/commands.js --help",
+    "tool": "node ./build/commands/scripts/tool.ts",
     "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
     "init": "pnpm install --frozen-lockfile && node ./build/commands/scripts/sync.ts --init",
     "sync": "pnpm install --frozen-lockfile && node ./build/commands/scripts/sync.ts",
