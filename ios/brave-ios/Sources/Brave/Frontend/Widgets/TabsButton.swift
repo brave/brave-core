@@ -46,6 +46,13 @@ class TabsButton: UIButton {
       $0.edges.equalToSuperview()
     }
     updateForTraitCollectionAndBrowserColors()
+
+    registerForTraitChanges([
+      UITraitUserInterfaceStyle.self,
+      UITraitPreferredContentSizeCategory.self,
+    ]) { (self: Self, _) in
+      self.updateForTraitCollectionAndBrowserColors()
+    }
   }
 
   @available(*, unavailable)
@@ -59,11 +66,6 @@ class TabsButton: UIButton {
       countLabel.textColor = color
       borderView.layer.borderColor = color.resolvedColor(with: traitCollection).cgColor
     }
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    updateForTraitCollectionAndBrowserColors()
   }
 
   private func updateForTraitCollectionAndBrowserColors() {

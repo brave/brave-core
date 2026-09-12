@@ -45,6 +45,10 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
 
     setTheme()
     doLayout()
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.setTheme()
+    }
   }
 
   @available(*, unavailable)
@@ -55,12 +59,6 @@ class SearchActionsCell: UICollectionViewCell, CollectionViewReusable {
   override func prepareForReuse() {
     super.prepareForReuse()
     backgroundColor = .clear
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    setTheme()
   }
 
   private func doLayout() {
