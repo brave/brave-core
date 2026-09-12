@@ -199,6 +199,8 @@
             android:title="@string/sponsored_ads_enabled_title"
             android:summary="@string/sponsored_ads_enabled_summary"
             android:defaultValue="true" />
+        <org.chromium.chrome.browser.settings.BraveTextButtonPreference
+            android:key="sponsored_ads_learn_more" />
         <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
             android:key="survey_panelist"
             android:title="@string/survey_panelist_title"

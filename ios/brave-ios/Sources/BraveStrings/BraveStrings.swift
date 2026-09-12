@@ -2407,8 +2407,8 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Help support Brave's mission to build an independent, user-first Web with Sponsored Ads. We measure ad performance privately, without identifying you.",
-        comment: "Description under the settings toggle that enables Sponsored Ads"
+          "Help support Brave's mission to build an independent, user-first Web with Sponsored Ads. We measure ad performance privately, without identifying you. [Learn more](%@)",
+        comment: "Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized."
       )
 
     public static let surveyPanelistTitle =
