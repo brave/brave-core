@@ -53,10 +53,15 @@ source_set("unit_tests") {
 
   deps = [
     ":new_tab_takeover",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/constants",
     "//brave/components/new_tab_takeover/mojom",
     "//brave/components/ntp_background_images/browser",
     "//brave/components/ntp_background_images/browser:test_support",
+    "//chrome/browser/search_engines",
     "//chrome/test:test_support",
+    "//components/search_engines",
     "//content/test:test_support",
     "//mojo/public/cpp/bindings",
     "//testing/gmock",
