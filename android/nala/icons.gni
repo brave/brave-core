@@ -328,6 +328,8 @@ nala_icons = [
   "ic_autofill.xml",
   "ic_bar_chart.xml",
   "ic_bar_chart_search.xml",
+  "ic_biometric_login.xml",
+  "ic_brave_icon_release_color.xml",
   "ic_brave_icon_search.xml",
   "ic_browser_customizable_shortcut.xml",
   "ic_browser_group.xml",
