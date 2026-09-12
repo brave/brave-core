@@ -17,7 +17,7 @@ struct AskBraveControlWidgetIntent: AppIntent {
   static var openAppWhenRun: Bool = true
 
   func perform() async throws -> some IntentResult {
-    PendingWidgetIntentAction.set(.askBrave)
+    await PendingWidgetIntentAction.set(.askBrave)
     return .result()
   }
 }

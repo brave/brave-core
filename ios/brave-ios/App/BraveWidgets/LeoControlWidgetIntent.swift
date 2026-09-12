@@ -17,7 +17,7 @@ struct LeoControlWidgetIntent: AppIntent {
   static var openAppWhenRun: Bool = true
 
   func perform() async throws -> some IntentResult {
-    PendingWidgetIntentAction.set(.braveLeo)
+    await PendingWidgetIntentAction.set(.braveLeo)
     return .result()
   }
 }

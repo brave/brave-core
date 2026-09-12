@@ -10,20 +10,32 @@ import Preferences
 ///
 /// Although Control Widget `AppIntent`s can foreground the app (`openAppWhenRun`),  there is no supported way to also deliver a custom-scheme URL alongside it
 /// because`OpenURLIntent` and `URLRepresentableEnum`/`URLRepresentableIntent` all require a universal link.
-/// Instead, the intent writes the requested shortcut to a mailbox (preferences), and the app consumes it once it becomes active.
+/// Instead, the intent writes the requested shortcut to a mailbox, and the app consumes it once it becomes active.
+///
+/// perform()` runs in the app rocess after `openAppWhenRun` foregrounds it, then hops here to `set`.
+/// A leftover from an interrupted consume must not run the shortcut on a later launch.
+
+@MainActor
 public enum PendingWidgetIntentAction {
-  private static let option = Preferences.Option<Int?>(
-    key: "widgets.pendingIntentAction",
-    default: nil
-  )
+  private static var pending: WidgetShortcut?
+
+  /// Drop any value persisted by an earlier build so it cannot run on this launch.
+  private static let forgetPersistedMailbox: Void = {
+    Preferences.Option<Int?>(
+      key: "appIntent.control.pending.shortcut",
+      default: nil
+    ).reset()
+  }()
 
   public static func set(_ shortcut: WidgetShortcut) {
-    option.value = shortcut.rawValue
+    _ = forgetPersistedMailbox
+    pending = shortcut
   }
 
-  /// Returns and clears the pending shortcut, if any.
+  /// Returns and clears the pending shortcut for this process, if any.
   public static func consume() -> WidgetShortcut? {
-    defer { option.value = nil }
-    return option.value.flatMap(WidgetShortcut.init(rawValue:))
+    _ = forgetPersistedMailbox
+    defer { pending = nil }
+    return pending
   }
 }
