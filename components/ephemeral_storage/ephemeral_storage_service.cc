@@ -12,11 +12,14 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
+#include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/values.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/url_storage_checker.h"
@@ -37,26 +40,129 @@ namespace ephemeral_storage {
 
 namespace {
 
+// Keys of a first party storage area entry stored in the
+// kFirstPartyStorageOriginsToCleanup pref.
+constexpr char kUrlKey[] = "u";
+constexpr char kPartitionDomainKey[] = "pd";
+constexpr char kPartitionNameKey[] = "pn";
+// Time of the last tab close. Entries stored by older versions don't have it
+// and are always treated as expired.
+constexpr char kClosedAtKey[] = "t";
+
 GURL GetFirstPartyStorageURL(const std::string& ephemeral_domain) {
   return GURL(base::StrCat({url::kHttpsScheme, "://", ephemeral_domain}));
 }
 
 base::Value GetFirstPartyStorageValueToCleanup(
     const GURL& url,
+    const content::StoragePartitionConfig& storage_partition_config,
+    std::optional<base::Time> time) {
+  base::DictValue dict =
+      base::DictValue()
+          .Set(kUrlKey, url.spec())
+          .Set(kPartitionDomainKey, storage_partition_config.partition_domain())
+          .Set(kPartitionNameKey, storage_partition_config.partition_name());
+  dict.Set(kClosedAtKey, base::TimeToValue(time.value_or(base::Time::Now())));
+  return base::Value(std::move(dict));
+}
+
+// Returns the time the last tab using the area was closed. Entries stored by
+// older versions don't have it.
+std::optional<base::Time> GetFirstPartyStorageAreaClosedAt(
+    const base::Value& value) {
+  const base::DictValue* dict = value.GetIfDict();
+  return dict ? base::ValueToTime(dict->Find(kClosedAtKey)) : std::nullopt;
+}
+
+// Matches a stored entry by the storage area identity only, ignoring the close
+// time.
+bool IsSameFirstPartyStorageArea(
+    const base::Value& value,
+    const GURL& url,
     const content::StoragePartitionConfig& storage_partition_config) {
-  if (storage_partition_config.is_default()) {
-    return base::Value(url.spec());
+  if (value.is_string()) {
+    // Entries stored by older versions used a bare url spec for the default
+    // storage partition.
+    return storage_partition_config.is_default() &&
+           value.GetString() == url.spec();
   }
-  return base::Value(base::DictValue()
-                         .Set("u", url.spec())
-                         .Set("pd", storage_partition_config.partition_domain())
-                         .Set("pn", storage_partition_config.partition_name()));
+  const base::DictValue* dict = value.GetIfDict();
+  if (!dict) {
+    return false;
+  }
+  const std::string* url_spec = dict->FindString(kUrlKey);
+  const std::string* partition_domain = dict->FindString(kPartitionDomainKey);
+  const std::string* partition_name = dict->FindString(kPartitionNameKey);
+  return url_spec && partition_domain && partition_name &&
+         *url_spec == url.spec() &&
+         *partition_domain == storage_partition_config.partition_domain() &&
+         *partition_name == storage_partition_config.partition_name();
+}
+
+base::Value* FindFirstPartyStorageArea(
+    base::ListValue& list,
+    const GURL& url,
+    const content::StoragePartitionConfig& storage_partition_config) {
+  for (base::Value& value : list) {
+    if (IsSameFirstPartyStorageArea(value, url, storage_partition_config)) {
+      return &value;
+    }
+  }
+  return nullptr;
+}
+
+void EraseFirstPartyStorageArea(
+    base::ListValue& list,
+    const GURL& url,
+    const content::StoragePartitionConfig& storage_partition_config) {
+  list.EraseIf([&](const base::Value& value) {
+    return IsSameFirstPartyStorageArea(value, url, storage_partition_config);
+  });
+}
+
+// Queues the area for cleanup.
+void UpsertFirstPartyStorageOriginsToCleanup(
+    ScopedListPrefUpdate& pref_update,
+    const GURL& url,
+    const content::StoragePartitionConfig& storage_partition_config,
+    bool set_elapsed_timestamp) {
+  const auto time =
+      set_elapsed_timestamp ? base::Time::Min() : base::Time::Now();
+  base::Value* queued_area =
+      FindFirstPartyStorageArea(*pref_update, url, storage_partition_config);
+  if (!queued_area || !queued_area->is_dict()) {
+    pref_update->Append(GetFirstPartyStorageValueToCleanup(
+        url, storage_partition_config, time));
+    return;
+  }
+
+  base::DictValue& dict = queued_area->GetDict();
+  dict.Set(kClosedAtKey, base::TimeToValue(time));
+}
+
+// Returns true if the keepalive that was pending when the area was stored has
+// already elapsed, i.e. using the area again should no longer cancel the queued
+// cleanup.
+bool IsFirstPartyStorageAreaKeepAliveExpired(const base::Value& value,
+                                             base::TimeDelta keep_alive) {
+  const std::optional<base::Time> closed_at =
+      GetFirstPartyStorageAreaClosedAt(value);
+  if (!closed_at) {
+    return true;
+  }
+  const base::TimeDelta elapsed = base::Time::Now() - *closed_at;
+  DVLOG(1) << __func__ << " closed_at:" << closed_at.value()
+           << " elapsed:" << elapsed.InSeconds()
+           << " keep_alive:" << keep_alive;
+  // A backwards clock jump is treated as an expired keepalive.
+  return elapsed.is_negative() || elapsed >= keep_alive;
 }
 
 std::optional<std::pair<GURL, content::StoragePartitionConfig>>
 GetFirstPartyStorageURLAndStoragePartitionConfig(
     const base::Value& value,
     content::BrowserContext* browser_context) {
+  // Support old format
   if (value.is_string()) {
     return std::make_pair(
         GURL(value.GetString()),
@@ -66,11 +172,18 @@ GetFirstPartyStorageURLAndStoragePartitionConfig(
     return std::nullopt;
   }
   const auto& dict = value.GetDict();
-  const std::string* url_spec = dict.FindString("u");
-  const std::string* partition_domain = dict.FindString("pd");
-  const std::string* partition_name = dict.FindString("pn");
+  const std::string* url_spec = dict.FindString(kUrlKey);
+  const std::string* partition_domain = dict.FindString(kPartitionDomainKey);
+  const std::string* partition_name = dict.FindString(kPartitionNameKey);
   if (!url_spec || !partition_domain || !partition_name) {
     return std::nullopt;
+  }
+  if (partition_domain->empty()) {
+    // The default storage partition is stored with empty partition values,
+    // StoragePartitionConfig::Create() doesn't accept them.
+    return std::make_pair(
+        GURL(*url_spec),
+        content::StoragePartitionConfig::CreateDefault(browser_context));
   }
   return std::make_pair(
       GURL(*url_spec),
@@ -96,9 +209,9 @@ EphemeralStorageService::EphemeralStorageService(
   tld_ephemeral_area_keep_alive_ = base::Seconds(
       net::features::kBraveEphemeralStorageKeepAliveTimeInSeconds.Get());
 
-  RegisterFirstWindowOpenedCallback(base::BindOnce(
-      &EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup,
-      weak_ptr_factory_.GetWeakPtr()));
+  RegisterFirstWindowOpenedCallback(
+      base::BindOnce(&EphemeralStorageService::CleanupOnStartup,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 EphemeralStorageService::~EphemeralStorageService() = default;
@@ -298,9 +411,9 @@ void EphemeralStorageService::RemoveObserver(
 void EphemeralStorageService::TriggerCurrentAppStateNotification() {
   // Register again, as on Android the EphemeralStorageService may remain alive
   // across multiple app states, requiring the callback to be re-registered.
-  RegisterFirstWindowOpenedCallback(base::BindOnce(
-      &EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup,
-      weak_ptr_factory_.GetWeakPtr()));
+  RegisterFirstWindowOpenedCallback(
+      base::BindOnce(&EphemeralStorageService::CleanupOnStartup,
+                     weak_ptr_factory_.GetWeakPtr()));
 
   delegate_->TriggerCurrentAppStateNotification();
 }
@@ -337,23 +450,41 @@ void EphemeralStorageService::FirstPartyStorageAreaInUse(
     return;
   }
 
-  if (!context_->IsOffTheRecord()) {
-    const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
-    const base::Value value_to_cleanup =
-        GetFirstPartyStorageValueToCleanup(url, storage_partition_config);
-    auto auto_shred_mode = delegate_->GetAutoShredMode(url);
-    if (auto_shred_mode.has_value() &&
-        auto_shred_mode.value() ==
-            brave_shields::mojom::AutoShredMode::APP_EXIT) {
-      return;
-    }
+  if (context_->IsOffTheRecord()) {
+    return;
+  }
+
+  const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
+  const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
+  DVLOG(1) << __func__ << " url:" << url;
+
+  if (auto_shred_mode.has_value() &&
+      auto_shred_mode.value() ==
+          brave_shields::mojom::AutoShredMode::APP_EXIT) {
+    DVLOG(1) << __func__ << " Skipped for app exit mode url:" << url;
+    return;
+  }
+
+  bool keep_alive_expired = false;
+  auto& first_party_storage_areas_to_cleanup_on_startup =
+      prefs_->GetList(kFirstPartyStorageOriginsToCleanup);
+  auto queued_area_it =
+      std::ranges::find_if(first_party_storage_areas_to_cleanup_on_startup,
+                           [&](const base::Value& value) {
+                             return IsSameFirstPartyStorageArea(
+                                 value, url, storage_partition_config);
+                           });
+
+  if (queued_area_it != first_party_storage_areas_to_cleanup_on_startup.end()) {
+    keep_alive_expired = IsFirstPartyStorageAreaKeepAliveExpired(
+        *queued_area_it, tld_ephemeral_area_keep_alive_);
+  }
+
+  if (!keep_alive_expired) {
     ScopedListPrefUpdate pref_update(prefs_,
                                      kFirstPartyStorageOriginsToCleanup);
-    pref_update->EraseValue(value_to_cleanup);
-
     // Make sure to cancel the scheduled cleanup for this area.
-    first_party_storage_areas_to_cleanup_on_startup_.EraseValue(
-        value_to_cleanup);
+    EraseFirstPartyStorageArea(*pref_update, url, storage_partition_config);
   }
 }
 
@@ -402,8 +533,13 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
   if (!context_->IsOffTheRecord()) {
     ScopedListPrefUpdate pref_update(prefs_,
                                      kFirstPartyStorageOriginsToCleanup);
-    pref_update->Append(
-        GetFirstPartyStorageValueToCleanup(url, storage_partition_config));
+    // For auto-shred on app close, perform the cleanup immediately.
+    const bool set_elapsed_timestamp =
+        auto_shred_mode_enabled &&
+        auto_shred_mode.value() ==
+            brave_shields::mojom::AutoShredMode::APP_EXIT;
+    UpsertFirstPartyStorageOriginsToCleanup(
+        pref_update, url, storage_partition_config, set_elapsed_timestamp);
   }
   return true;
 }
@@ -444,64 +580,72 @@ void EphemeralStorageService::CleanupTLDEphemeralArea(
 void EphemeralStorageService::CleanupFirstPartyStorageArea(
     const TLDEphemeralAreaKey& key) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
-  delegate_->CleanupFirstPartyStorageArea(key);
+  delegate_->CleanupFirstPartyStorageArea(key, base::NullCallback());
   if (!context_->IsOffTheRecord()) {
-    const base::Value value_to_cleanup = GetFirstPartyStorageValueToCleanup(
-        GetFirstPartyStorageURL(key.first), key.second);
     ScopedListPrefUpdate pref_update(prefs_,
                                      kFirstPartyStorageOriginsToCleanup);
-    pref_update->EraseValue(value_to_cleanup);
+    EraseFirstPartyStorageArea(*pref_update, GetFirstPartyStorageURL(key.first),
+                               key.second);
   }
 }
 
-void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
-  DVLOG(1) << __func__;
-  DCHECK(!context_->IsOffTheRecord());
-  first_party_storage_areas_to_cleanup_on_startup_ =
-      prefs_->GetList(kFirstPartyStorageOriginsToCleanup).Clone();
+void EphemeralStorageService::CleanupPendingFirstPartyStorageArea(
+    const GURL& url,
+    const content::StoragePartitionConfig& storage_partition_config,
+    base::OnceClosure callback) {
+  DVLOG(1) << __func__ << " " << url << " " << storage_partition_config;
+  const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
+  const TLDEphemeralAreaKey key(std::string(url.host()),
+                                storage_partition_config);
+  delegate_->CleanupFirstPartyStorageArea(key, std::move(callback));
 
-  first_party_storage_areas_startup_cleanup_timer_.Start(
-      FROM_HERE,
-      base::Seconds(
-          net::features::
-              kBraveForgetFirstPartyStorageStartupCleanupDelayInSeconds.Get()),
-      base::BindOnce(&EphemeralStorageService::CleanupOnStartup,
-                     weak_ptr_factory_.GetWeakPtr()));
+  if (auto_shred_mode.has_value() &&
+      auto_shred_mode.value() != brave_shields::mojom::AutoShredMode::NEVER &&
+      delegate_->IsShredBrowsingHistoryEnabled()) {
+    // We should clean up the browsing history if shred for browsing history is
+    // enabled.
+    delegate_->CleanupTLDBrowsingHistory(key);
+  }
 }
 
 void EphemeralStorageService::CleanupOnStartup() {
   DCHECK(!context_->IsOffTheRecord());
+  base::ListValue first_party_storage_areas_to_cleanup_on_startup =
+      prefs_->GetList(kFirstPartyStorageOriginsToCleanup).Clone();
+  DVLOG(1) << __func__ << " Queued for cleanup:"
+           << first_party_storage_areas_to_cleanup_on_startup.DebugString();
+
   ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
 
-  for (const auto& url_to_cleanup :
-       first_party_storage_areas_to_cleanup_on_startup_) {
+  for (base::Value& area_to_cleanup :
+       first_party_storage_areas_to_cleanup_on_startup) {
+    if (!IsFirstPartyStorageAreaKeepAliveExpired(
+            area_to_cleanup, tld_ephemeral_area_keep_alive_)) {
+      continue;
+    }
+    pref_update->EraseValue(area_to_cleanup);
+
     const auto url_and_storage_partition_config =
-        GetFirstPartyStorageURLAndStoragePartitionConfig(url_to_cleanup,
+        GetFirstPartyStorageURLAndStoragePartitionConfig(area_to_cleanup,
                                                          context_);
-    pref_update->EraseValue(url_to_cleanup);
     if (!url_and_storage_partition_config) {
       continue;
     }
+
     const auto& [url, storage_partition_config] =
         *url_and_storage_partition_config;
     if (!url.is_valid()) {
       continue;
     }
 
-    auto key =
-        std::make_pair(std::string(url.host()), storage_partition_config);
-    delegate_->CleanupFirstPartyStorageArea(key);
-
-    const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
-    if (auto_shred_mode.has_value() &&
-        auto_shred_mode.value() != brave_shields::mojom::AutoShredMode::NEVER &&
-        delegate_->IsShredBrowsingHistoryEnabled()) {
-      // We should clean up the browsing history if shred for browsing
-      // history is enabled
-      delegate_->CleanupTLDBrowsingHistory(key);
-    }
+    CleanupPendingFirstPartyStorageArea(
+        url, storage_partition_config,
+        base::BindOnce(&EphemeralStorageService::ReloadTabsForEphemeralDomain,
+                       weak_ptr_factory_.GetWeakPtr(),
+                       net::URLToEphemeralStorageDomain(url)));
   }
-  first_party_storage_areas_to_cleanup_on_startup_.clear();
+
+  first_party_storage_areas_to_cleanup_on_startup.clear();
 }
 
 void EphemeralStorageService::RegisterFirstWindowOpenedCallback(
@@ -515,6 +659,11 @@ void EphemeralStorageService::RegisterFirstWindowOpenedCallback(
   delegate_->RegisterFirstWindowOpenedCallback(std::move(callback));
 }
 
+void EphemeralStorageService::ReloadTabsForEphemeralDomain(
+    const std::string& ephemeral_domain) {
+  delegate_->ReloadTabIfMatchingEphemeralDomain(ephemeral_domain);
+}
+
 size_t EphemeralStorageService::FireCleanupTimersForTesting() {
   std::vector<base::OneShotTimer*> timers;
   for (const auto& areas_to_cleanup : tld_ephemeral_areas_to_cleanup_) {
@@ -524,11 +673,7 @@ size_t EphemeralStorageService::FireCleanupTimersForTesting() {
     timer->FireNow();
   }
   const size_t first_party_storage_areas_to_cleanup_count =
-      first_party_storage_areas_to_cleanup_on_startup_.size();
-  if (first_party_storage_areas_startup_cleanup_timer_.IsRunning()) {
-    first_party_storage_areas_startup_cleanup_timer_.FireNow();
-  }
-  DCHECK(first_party_storage_areas_to_cleanup_on_startup_.empty());
+      prefs_->GetList(kFirstPartyStorageOriginsToCleanup).size();
   return timers.size() + first_party_storage_areas_to_cleanup_count;
 }
 

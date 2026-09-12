@@ -133,15 +133,17 @@ class EphemeralStorageService : public KeyedService {
                                bool cleanup_first_party_storage_area,
                                bool cleanup_browsing_history_for_tld);
 
-  // If a website was closed, but not yet cleaned-up because of storage lifetime
-  // keepalive, we store the origin into a pref to perform a cleanup on browser
-  // startup. It's impossible to do a cleanup on shutdown, because the process
-  // is asynchronous and cannot block the browser shutdown.
-  void ScheduleFirstPartyStorageAreasCleanupOnStartup();
   void CleanupOnStartup();
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
+  // Cleans up an area that was queued for cleanup in prefs, i.e. its keepalive
+  // was still pending when the browser was closed.
+  void CleanupPendingFirstPartyStorageArea(
+      const GURL& url,
+      const content::StoragePartitionConfig& storage_partition_config,
+      base::OnceClosure callback);
 
   void RegisterFirstWindowOpenedCallback(base::OnceClosure callback);
+  void ReloadTabsForEphemeralDomain(const std::string& ephemeral_domain);
 
   size_t FireCleanupTimersForTesting();
 
@@ -155,13 +157,10 @@ class EphemeralStorageService : public KeyedService {
   base::ObserverList<EphemeralStorageServiceObserver> observer_list_;
 
   base::TimeDelta tld_ephemeral_area_keep_alive_;
-  base::TimeDelta first_party_storage_startup_cleanup_delay_;
   std::map<TLDEphemeralAreaKey, std::unique_ptr<base::OneShotTimer>>
       tld_ephemeral_areas_to_cleanup_;
   // Contains First Party Ephemeral Storage tokens to partition storage.
   base::flat_map<std::string, base::UnguessableToken> fpes_tokens_;
-  base::ListValue first_party_storage_areas_to_cleanup_on_startup_;
-  base::OneShotTimer first_party_storage_areas_startup_cleanup_timer_;
 
   base::WeakPtrFactory<EphemeralStorageService> weak_ptr_factory_{this};
 };

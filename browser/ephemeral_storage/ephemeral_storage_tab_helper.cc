@@ -6,12 +6,18 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
+#include "base/logging.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/site_instance.h"
@@ -31,7 +37,6 @@ using content::NavigationHandle;
 using content::WebContents;
 
 namespace ephemeral_storage {
-
 
 #if BUILDFLAG(IS_ANDROID)
 namespace {
@@ -133,6 +138,18 @@ void EphemeralStorageTabHelper::EnforceFirstPartyStorageCleanup(
   }
 }
 
+void EphemeralStorageTabHelper::ReloadBypassingCacheWhenReady(
+    const std::string& cleaned_ephemeral_domain) {
+  auto& controller = web_contents()->GetController();
+  if (controller.GetPendingEntry()) {
+    reload_on_ready_callback_ =
+        base::BindOnce(&EphemeralStorageTabHelper::MaybeReloadBypassingCache,
+                       weak_factory_.GetWeakPtr(), cleaned_ephemeral_domain);
+    return;
+  }
+  MaybeReloadBypassingCache(cleaned_ephemeral_domain);
+}
+
 void EphemeralStorageTabHelper::DidStartNavigation(
     NavigationHandle* navigation_handle) {
   if (!navigation_handle->IsInMainFrame() ||
@@ -163,6 +180,12 @@ void EphemeralStorageTabHelper::DidFinishNavigation(
   // Clear all provisional ephemeral lifetimes. A committed ephemeral lifetime
   // is created in ReadyToCommitNavigation().
   provisional_tld_ephemeral_lifetimes_.clear();
+
+  if (navigation_handle->HasCommitted() && !navigation_handle->IsErrorPage() &&
+      reload_on_ready_callback_) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, std::move(reload_on_ready_callback_));
+  }
 }
 
 void EphemeralStorageTabHelper::ReadyToCommitNavigation(
@@ -242,6 +265,48 @@ void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
       url.host(), shields_enabled && cookies_restricted);
 }
 
+void EphemeralStorageTabHelper::MaybeReloadBypassingCache(
+    const std::string& cleaned_ephemeral_domain) {
+  auto& controller = web_contents()->GetController();
+
+  // Check if a navigation is currently in progress
+  if (controller.GetPendingEntry() || web_contents()->IsLoading()) {
+    const std::string pending_domain =
+        net::URLToEphemeralStorageDomain(web_contents()->GetLastCommittedURL());
+    if (pending_domain == cleaned_ephemeral_domain) {
+      reload_on_ready_callback_ =
+          base::BindOnce(&EphemeralStorageTabHelper::MaybeReloadBypassingCache,
+                         weak_factory_.GetWeakPtr(), cleaned_ephemeral_domain);
+    } else {
+      DVLOG(1) << __func__ << " Dropped cache-bypassing reload; user "
+               << "navigated to a different ephemeral domain: "
+               << web_contents()->GetLastCommittedURL();
+    }
+    return;
+  }
+
+  // Guard against reloading a page the user has navigated to since the
+  // cleanup was requested.
+  const std::string committed_domain =
+      net::URLToEphemeralStorageDomain(web_contents()->GetLastCommittedURL());
+  if (committed_domain != cleaned_ephemeral_domain) {
+    DVLOG(1) << __func__ << " Dropped cache-bypassing reload; committed "
+             << "domain changed: " << web_contents()->GetLastCommittedURL();
+    return;
+  }
+
+  // Prevent non-user-initiated reloads from re-triggering purchases, comments,
+  // and similar actions.
+  const content::NavigationEntry* entry =
+      web_contents()->GetController().GetLastCommittedEntry();
+  if (entry && entry->GetHasPostData()) {
+    DVLOG(1) << __func__ << " Dropped cache-bypassing reload; committed "
+             << "entry has POST data.";
+    return;
+  }
+  controller.Reload(content::ReloadType::BYPASSING_CACHE, false);
+}
+
 #if BUILDFLAG(IS_ANDROID)
 void EphemeralStorageTabHelper::WillCloseTab(TabAndroid* tab) {
   if (!tab || tab->web_contents() != web_contents()) {
@@ -254,6 +319,7 @@ void EphemeralStorageTabHelper::WillCloseTab(TabAndroid* tab) {
   weak_factory_.InvalidateWeakPtrs();
   RemoveTabModelObserver(registered_tab_model_, this);
   registered_tab_model_ = nullptr;
+  reload_on_ready_callback_.Reset();
 }
 #endif
 
