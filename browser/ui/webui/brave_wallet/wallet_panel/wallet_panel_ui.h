@@ -15,6 +15,7 @@
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/ledger_bridge.mojom.h"
+#include "brave/components/brave_wallet/common/trezor_bridge.mojom.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "chrome/browser/ui/webui/top_chrome/top_chrome_webui_config.h"
 #include "content/public/browser/web_ui_message_handler.h"
@@ -33,6 +34,7 @@ class WebContents;
 
 class WalletPanelUI : public TopChromeWebUIController,
                       public brave_wallet::mojom::LedgerBridgeService,
+                      public brave_wallet::mojom::TrezorBridgeService,
                       public brave_wallet::mojom::PanelHandlerFactory {
  public:
   explicit WalletPanelUI(content::WebUI* web_ui);
@@ -49,9 +51,17 @@ class WalletPanelUI : public TopChromeWebUIController,
   void BindInterface(
       mojo::PendingReceiver<brave_wallet::mojom::LedgerBridgeService> receiver);
 
+  // Binds the `TrezorBridgeService` requested by the trusted renderer.
+  void BindInterface(
+      mojo::PendingReceiver<brave_wallet::mojom::TrezorBridgeService> receiver);
+
   // Called with `LedgerBridge` coming from untrusted subframe.
   void BindLedgerBridge(
       mojo::PendingRemote<brave_wallet::mojom::LedgerBridge> bridge);
+
+  // Called with `TrezorBridge` coming from untrusted subframe.
+  void BindTrezorBridge(
+      mojo::PendingRemote<brave_wallet::mojom::TrezorBridge> bridge);
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void BindInterface(
@@ -112,6 +122,12 @@ class WalletPanelUI : public TopChromeWebUIController,
 
   void MaybeFuseLedgerBridge();
 
+  // mojom::TrezorBridgeService:
+  void BindTrezorBridge(mojo::PendingReceiver<brave_wallet::mojom::TrezorBridge>
+                            receiver) override;
+
+  void MaybeFuseTrezorBridge();
+
   std::unique_ptr<WalletPanelHandler> panel_handler_;
   std::unique_ptr<brave_wallet::WalletHandler> wallet_handler_;
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -123,8 +139,14 @@ class WalletPanelUI : public TopChromeWebUIController,
   mojo::PendingReceiver<brave_wallet::mojom::LedgerBridge>
       ledger_bridge_receiver_;
 
-  mojo::Receiver<brave_wallet::mojom::LedgerBridgeService> service_receiver_{
-      this};
+  mojo::PendingRemote<brave_wallet::mojom::TrezorBridge> trezor_bridge_remote_;
+  mojo::PendingReceiver<brave_wallet::mojom::TrezorBridge>
+      trezor_bridge_receiver_;
+
+  mojo::Receiver<brave_wallet::mojom::LedgerBridgeService>
+      ledger_bridge_service_receiver_{this};
+  mojo::Receiver<brave_wallet::mojom::TrezorBridgeService>
+      trezor_bridge_service_receiver_{this};
 
   mojo::Receiver<brave_wallet::mojom::PanelHandlerFactory>
       panel_factory_receiver_{this};

@@ -1,0 +1,114 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_wallet.mojom;
+
+import "brave/components/brave_wallet/common/brave_wallet.mojom";
+
+// A per-command device error.
+struct TrezorError {
+  string message;
+  string? code;
+};
+
+// One account returned by GetAccounts.
+struct TrezorAccount {
+  string public_key;
+  string serialized_path;
+  uint32 fingerprint;
+};
+
+struct TrezorEthLegacyTransaction {
+  string to;
+  string value;
+  array<uint8> data;
+  int32 chain_id;
+  string nonce;
+  string gas_limit;
+  string gas_price;
+};
+
+struct TrezorEthEip1559Transaction {
+  string to;
+  string value;
+  array<uint8> data;
+  int32 chain_id;
+  string nonce;
+  string gas_limit;
+  string max_fee_per_gas;
+  string max_priority_fee_per_gas;
+};
+
+union TrezorEthTransaction {
+  TrezorEthLegacyTransaction legacy;
+  TrezorEthEip1559Transaction eip1559;
+};
+
+union TrezorDeviceNameResult {
+  string device_name;
+  TrezorError error;
+};
+
+union TrezorAccountsResult {
+  array<TrezorAccount> accounts;
+  TrezorError error;
+};
+
+union TrezorSignTransactionResult {
+  EthereumSignatureVRS signature;
+  TrezorError error;
+};
+
+union TrezorSignMessageResult {
+  EthereumSignatureBytes signature;
+  TrezorError error;
+};
+
+// Implemented by the untrusted `chrome-untrusted://trezor-bridge` frame
+// (renderer). The trusted wallet page/panel renderer holds the Remote and
+// calls these methods.
+interface TrezorBridge {
+  // Ensures a device is connected and unlocked. A null error means success.
+  Unlock() => (TrezorError? error);
+
+  GetDeviceName() => (TrezorDeviceNameResult result);
+
+  GetAccounts(array<string> paths) => (TrezorAccountsResult result);
+
+  SignTransaction(string path, TrezorEthTransaction transaction)
+      => (TrezorSignTransactionResult result);
+
+  SignMessage(string path, string message)
+      => (TrezorSignMessageResult result);
+
+  // `types_json`, `domain_json` and `message_json` are the JSON-encoded EIP-712
+  // type/domain/message objects; the untrusted frame parses them right before
+  // passing them to `@trezor/connect-web`, which needs the full structured
+  // data (not just the hashes) to display on the device.
+  SignTypedMessage(string path,
+                   string domain_separator_hash,
+                   string message_hash,
+                   string types_json,
+                   string primary_type,
+                   string domain_json,
+                   string message_json) => (TrezorSignMessageResult result);
+};
+
+// Implemented by the browser (the UntrustedTrezorUI controller).
+interface TrezorBridgeUIHandler {
+  // The child passes the remote end of its TrezorBridge; the browser fuses it
+  // with the receiver end passed by the parent to `TrezorBridgeService`,
+  // splicing the two pipes into one that connects the parent and child
+  // renderers directly.
+  BindTrezorBridge(pending_remote<TrezorBridge> bridge);
+};
+
+// Implemented by the browser (the wallet page/panel controller).
+interface TrezorBridgeService {
+  // The parent passes the receiver end of its TrezorBridge; the browser fuses
+  // it with the remote end passed by the untrusted child frame to
+  // `TrezorBridgeUIHandler`.
+  BindTrezorBridge(pending_receiver<TrezorBridge> bridge);
+};
