@@ -372,6 +372,25 @@ void BraveVpnServiceImpl::GetSmartProxyRoutingState(
       local_prefs_->GetBoolean(prefs::kBraveVPNSmartProxyRoutingEnabled));
 }
 
+void BraveVpnServiceImpl::BlockUntunneledTraffic(bool block) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  local_prefs_->SetBoolean(prefs::kBraveVPNWireguardBlockUntunneledTraffic,
+                           block);
+#endif
+}
+
+void BraveVpnServiceImpl::GetBlockUntunneledTraffic(
+    GetBlockUntunneledTrafficCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  std::move(callback).Run(
+      local_prefs_->GetBoolean(prefs::kBraveVPNWireguardEnabled),
+      local_prefs_->GetBoolean(
+          prefs::kBraveVPNWireguardBlockUntunneledTraffic));
+#else
+  std::move(callback).Run(/*available*/ false, /*blocked*/ false);
+#endif
+}
+
 // NOTE(bsclifton): Desktop uses API to create a ticket.
 // Android and iOS directly send an email.
 void BraveVpnServiceImpl::OnCreateSupportTicket(
