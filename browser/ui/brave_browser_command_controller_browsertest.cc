@@ -47,7 +47,9 @@
 #include "components/prefs/pref_service.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
 #include "components/sync/base/command_line_switches.h"
+#include "content/public/browser/media_session.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_utils.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
 
@@ -226,6 +228,86 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
   policy::MockConfigurationPolicyProvider provider_;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
+
+#if !BUILDFLAG(IS_ANDROID)
+class BraveBrowserCommandControllerPictureInPictureTest
+    : public BraveBrowserCommandControllerTest {
+ public:
+  void SetUpOnMainThread() override {
+    BraveBrowserCommandControllerTest::SetUpOnMainThread();
+    embedded_test_server()->ServeFilesFromSourceDirectory("chrome/test/data");
+    ASSERT_TRUE(embedded_test_server()->Start());
+  }
+
+  void LoadPlayingVideo() {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), embedded_test_server()->GetURL(
+                       "/media/picture-in-picture/window-size.html")));
+    EXPECT_EQ(true, content::EvalJs(
+                        contents(),
+                        R"((async () => {
+                          const video = document.querySelector('video');
+                          video.loop = true;
+                          video.addEventListener('enterpictureinpicture', () => {
+                            document.title = 'enterpictureinpicture';
+                          });
+                          video.addEventListener('leavepictureinpicture', () => {
+                            document.title = 'leavepictureinpicture';
+                          });
+                          await video.play();
+                          return true;
+                        })())"));
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return content::MediaSession::Get(contents())->GetRoutedFrame() != nullptr;
+    }));
+  }
+
+  content::WebContents* contents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerPictureInPictureTest,
+                       TogglePictureInPicture) {
+  ASSERT_NO_FATAL_FAILURE(LoadPlayingVideo());
+
+  content::TitleWatcher enter_watcher(contents(), u"enterpictureinpicture");
+  ASSERT_TRUE(
+      chrome::ExecuteCommand(browser(), IDC_TOGGLE_PICTURE_IN_PICTURE));
+  EXPECT_EQ(u"enterpictureinpicture", enter_watcher.WaitAndGetTitle());
+  EXPECT_TRUE(contents()->HasPictureInPictureVideo());
+
+  content::TitleWatcher leave_watcher(contents(), u"leavepictureinpicture");
+  ASSERT_TRUE(
+      chrome::ExecuteCommand(browser(), IDC_TOGGLE_PICTURE_IN_PICTURE));
+  EXPECT_EQ(u"leavepictureinpicture", leave_watcher.WaitAndGetTitle());
+  EXPECT_FALSE(contents()->HasPictureInPictureVideo());
+  EXPECT_EQ(false, content::EvalJs(
+                       contents(), "document.querySelector('video').paused"));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerPictureInPictureTest,
+                       NoVideo) {
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("about:blank")));
+  ASSERT_TRUE(
+      chrome::ExecuteCommand(browser(), IDC_TOGGLE_PICTURE_IN_PICTURE));
+  EXPECT_FALSE(contents()->HasPictureInPictureVideo());
+  EXPECT_FALSE(contents()->HasPictureInPictureDocument());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerPictureInPictureTest,
+                       UnavailableVideo) {
+  ASSERT_NO_FATAL_FAILURE(LoadPlayingVideo());
+  ASSERT_TRUE(content::ExecJs(
+      contents(),
+      "document.querySelector('video').disablePictureInPicture = true"));
+  ASSERT_TRUE(
+      chrome::ExecuteCommand(browser(), IDC_TOGGLE_PICTURE_IN_PICTURE));
+  EXPECT_FALSE(contents()->HasPictureInPictureVideo());
+  EXPECT_FALSE(contents()->HasPictureInPictureDocument());
+}
+
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 // Regular window
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
