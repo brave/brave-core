@@ -10,7 +10,9 @@
 #include <string>
 #include <utility>
 
+#include "base/base64.h"
 #include "base/functional/bind.h"
+#include "base/json/json_reader.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -32,6 +34,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
@@ -45,6 +48,24 @@ constexpr char kTestDomain[] = "vpn.brave.com";
 constexpr char kTestEnvironment[] = "unittest-env";
 #if !BUILDFLAG(IS_ANDROID)
 constexpr char kTestEmail[] = "test@example.com";
+#else   // !BUILDFLAG(IS_ANDROID)
+constexpr char kTestPurchaseToken[] = "test-purchase-token";
+constexpr char kTestPackage[] = "com.brave.browser_nightly";
+constexpr char kTestProductId[] = "test-product-id";
+constexpr char kExpectedDefaultPackage[] = "com.brave.browser";
+constexpr char kExpectedDefaultProductId[] = "brave-firewall-vpn-premium";
+
+// The payload the Java side receives: base64 of a flat JSON dict. Returns
+// nullopt if either layer fails to decode, so a malformed payload fails the
+// test instead of silently comparing empty values.
+std::optional<base::DictValue> DecodePurchaseToken(const std::string& encoded) {
+  std::string json;
+  if (!base::Base64Decode(encoded, &json)) {
+    return std::nullopt;
+  }
+  return base::JSONReader::ReadDict(json,
+                                    base::JSONParserOptions::JSON_PARSE_RFC);
+}
 #endif  // !BUILDFLAG(IS_ANDROID)
 }  // namespace
 
@@ -96,6 +117,14 @@ class BraveVpnServiceImplTest : public testing::Test {
     EXPECT_EQ(brave_vpn::IsBraveVPNDisabledByPolicy(&profile_pref_service_),
               value);
   }
+
+#if BUILDFLAG(IS_ANDROID)
+  std::string GetPurchaseToken() {
+    base::test::TestFuture<std::string> future;
+    service_->GetPurchaseToken(future.GetCallback<const std::string&>());
+    return future.Take();
+  }
+#endif  // BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   // Mirrors the wiring in BraveVpnServiceImpl's constructor. Keep in sync.
@@ -210,8 +239,78 @@ TEST_F(BraveVpnServiceImplTest, SafeDefaultsAfterShutdown) {
     EXPECT_FALSE(future.Get<0>());
     EXPECT_TRUE(future.Get<1>().empty());
   }
+#else   // !BUILDFLAG(IS_ANDROID)
+  // The purchase token comes straight from the prefs, which outlive the
+  // service, so this one keeps working rather than degrading to a default.
+  {
+    profile_pref_service_.SetString(prefs::kBraveVPNPackageAndroid,
+                                    kTestPackage);
+    const std::optional<base::DictValue> payload =
+        DecodePurchaseToken(GetPurchaseToken());
+    ASSERT_TRUE(payload);
+    EXPECT_THAT(payload->FindString("package"),
+                testing::Pointee(std::string(kTestPackage)));
+  }
 #endif  // !BUILDFLAG(IS_ANDROID)
 }
+
+#if BUILDFLAG(IS_ANDROID)
+
+// The Java side hands this payload to account.brave.com verbatim, so both the
+// encoding and the exact key names are contract.
+TEST_F(BraveVpnServiceImplTest, PurchaseTokenFallsBackToReleaseDefaults) {
+  CreateService();
+
+  const std::optional<base::DictValue> payload =
+      DecodePurchaseToken(GetPurchaseToken());
+  ASSERT_TRUE(payload);
+
+  EXPECT_THAT(payload->FindString("type"),
+              testing::Pointee(std::string("android")));
+  EXPECT_THAT(payload->FindString("raw_receipt"),
+              testing::Pointee(std::string()));
+  EXPECT_THAT(payload->FindString("package"),
+              testing::Pointee(std::string(kExpectedDefaultPackage)));
+  EXPECT_THAT(payload->FindString("subscription_id"),
+              testing::Pointee(std::string(kExpectedDefaultProductId)));
+  EXPECT_EQ(payload->size(), 4u);
+}
+
+TEST_F(BraveVpnServiceImplTest, PurchaseTokenReflectsPrefs) {
+  CreateService();
+
+  profile_pref_service_.SetString(prefs::kBraveVPNPackageAndroid, kTestPackage);
+  {
+    const std::optional<base::DictValue> payload =
+        DecodePurchaseToken(GetPurchaseToken());
+    ASSERT_TRUE(payload);
+
+    EXPECT_THAT(payload->FindString("package"),
+                testing::Pointee(std::string(kTestPackage)));
+    EXPECT_THAT(payload->FindString("raw_receipt"),
+                testing::Pointee(std::string()));
+    EXPECT_THAT(payload->FindString("subscription_id"),
+                testing::Pointee(std::string(kExpectedDefaultProductId)));
+  }
+  profile_pref_service_.SetString(prefs::kBraveVPNPurchaseTokenAndroid,
+                                  kTestPurchaseToken);
+  profile_pref_service_.SetString(prefs::kBraveVPNProductIdAndroid,
+                                  kTestProductId);
+  {
+    const std::optional<base::DictValue> payload =
+        DecodePurchaseToken(GetPurchaseToken());
+    ASSERT_TRUE(payload);
+
+    EXPECT_THAT(payload->FindString("raw_receipt"),
+                testing::Pointee(std::string(kTestPurchaseToken)));
+    EXPECT_THAT(payload->FindString("package"),
+                testing::Pointee(std::string(kTestPackage)));
+    EXPECT_THAT(payload->FindString("subscription_id"),
+                testing::Pointee(std::string(kTestProductId)));
+  }
+}
+
+#endif  // BUILDFLAG(IS_ANDROID)
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
