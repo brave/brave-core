@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/chrome_content_browser_client.cc b/chrome/browser/chrome_content_browser_client.cc
+index cbac8ed6171b76d887a52b694e5c926b11081ed4..4125191fee82b4df5aab6f8ede14c0d0152494ac 100644
+--- a/chrome/browser/chrome_content_browser_client.cc
++++ b/chrome/browser/chrome_content_browser_client.cc
+@@ -6887,7 +6887,9 @@ void ChromeContentBrowserClient::CreateWebSocket(
+     const std::optional<std::string>& user_agent,
+     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+         handshake_client,
+-    content::ContentBrowserClient::WebSocketOptions options) {
++    content::ContentBrowserClient::WebSocketOptions options,
++    std::optional<content::GlobalRenderFrameHostId>,
++    std::optional<url::Origin>) {
+ #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
+   // TODO(crbug.com/40195467): Request w/o a frame also should be proxied.
+   if (!frame) {

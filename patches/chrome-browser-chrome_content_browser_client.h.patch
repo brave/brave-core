@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/chrome_content_browser_client.h b/chrome/browser/chrome_content_browser_client.h
+index e21e743a9f932eb4fcf1ae81a7605ee980de47a0..fddc37d63f5f05e1eeeb0b67b6bafb671225eea9 100644
+--- a/chrome/browser/chrome_content_browser_client.h
++++ b/chrome/browser/chrome_content_browser_client.h
+@@ -753,7 +753,9 @@ class ChromeContentBrowserClient : public content::ContentBrowserClient {
+       const std::optional<std::string>& user_agent,
+       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+           handshake_client,
+-      content::ContentBrowserClient::WebSocketOptions options) override;
++      content::ContentBrowserClient::WebSocketOptions options,
++      std::optional<content::GlobalRenderFrameHostId> frame_id,
++      std::optional<url::Origin> initiator_origin) override;
+   void WillCreateWebTransport(
+       int process_id,
+       int frame_routing_id,
