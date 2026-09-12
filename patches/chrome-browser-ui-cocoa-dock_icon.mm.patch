@@ -1,0 +1,99 @@
+diff --git a/chrome/browser/ui/cocoa/dock_icon.mm b/chrome/browser/ui/cocoa/dock_icon.mm
+index 3cb3285ab04fa7042369858ae868adc04db50c25..29f7bde3e31093e99819970ea043ff680e8523e0 100644
+--- a/chrome/browser/ui/cocoa/dock_icon.mm
++++ b/chrome/browser/ui/cocoa/dock_icon.mm
+@@ -181,6 +181,15 @@ constexpr struct {
+ @end
+ 
+ @implementation DockIcon {
++  // The number of downloads in progress.
++  int _downloads;
++
++  // Whether the progress of those downloads is known yet.
++  BOOL _indeterminate;
++
++  // The progress made on those downloads. Ranges from [0..1].
++  float _progress;
++
+   // The time that the icon was last updated.
+   base::TimeTicks _lastUpdate;
+ 
+@@ -190,14 +199,30 @@ constexpr struct {
+ }
+ 
+ + (DockIcon*)sharedDockIcon {
+-  static DockIcon* icon = [] {
+-    NSApp.dockTile.contentView = [[DockTileView alloc] init];
+-    return [[DockIcon alloc] init];
+-  }();
++  static DockIcon* icon = [[DockIcon alloc] init];
+ 
+   return icon;
+ }
+ 
++// The badge to describe the downloads in progress with, or nil for none.
++- (NSString*)badgeLabel {
++  if (_downloads == 0) {
++    return nil;
++  }
++
++  NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
++
++  // A percentage can only speak for a single download, and only once enough
++  // of it has been seen to know how much there is to come.
++  if (_downloads > 1 || _indeterminate) {
++    return [formatter stringFromNumber:@(_downloads)];
++  }
++
++  formatter.numberStyle = NSNumberFormatterPercentStyle;
++  formatter.maximumFractionDigits = 0;
++  return [formatter stringFromNumber:@(_progress)];
++}
++
+ - (void)updateIcon {
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+ 
+@@ -212,37 +237,31 @@ constexpr struct {
+   _lastUpdate = now;
+   _forceUpdate = NO;
+ 
+-  [NSApp.dockTile display];
++  NSApp.dockTile.badgeLabel = [self badgeLabel];
+ }
+ 
+ - (void)setDownloads:(int)downloads {
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+-  DockTileView* dockTileView =
+-      base::apple::ObjCCast<DockTileView>(NSApp.dockTile.contentView);
+ 
+-  if (downloads != dockTileView.downloads) {
+-    dockTileView.downloads = downloads;
++  if (downloads != _downloads) {
++    _downloads = downloads;
+     _forceUpdate = YES;
+   }
+ }
+ 
+ - (void)setIndeterminate:(BOOL)indeterminate {
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+-  DockTileView* dockTileView =
+-      base::apple::ObjCCast<DockTileView>(NSApp.dockTile.contentView);
+ 
+-  if (indeterminate != dockTileView.indeterminate) {
+-    dockTileView.indeterminate = indeterminate;
++  if (indeterminate != _indeterminate) {
++    _indeterminate = indeterminate;
+     _forceUpdate = YES;
+   }
+ }
+ 
+ - (void)setProgress:(float)progress {
+   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+-  DockTileView* dockTileView =
+-      base::apple::ObjCCast<DockTileView>(NSApp.dockTile.contentView);
+ 
+-  dockTileView.progress = progress;
++  _progress = progress;
+ }
+ 
+ @end
