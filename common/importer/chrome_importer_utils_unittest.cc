@@ -16,6 +16,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "build/build_config.h"
 #include "components/user_data_importer/common/importer_data_types.h"
+#include "components/version_info/channel.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 class BraveChromeImporterUtilsTest : public testing::Test {
@@ -208,6 +209,95 @@ TEST(BraveImporterUserDataFolderTest, GetBraveUserDataFolderIsNotEmpty) {
   EXPECT_FALSE(brave_path.empty());
   // The path should contain a Brave-specific directory name.
   EXPECT_NE(brave_path.MaybeAsASCII().find("Brave"), std::string::npos);
+}
+
+TEST(BraveImporterUserDataFolderTest, GetBraveUserDataDirNamePerChannel) {
+  // Brave Browser: stable/unknown use the plain base name; non-stable channels
+  // append their suffix.
+  EXPECT_EQ(GetBraveUserDataDirName(BraveImporterProduct::kBraveBrowser,
+                                    version_info::Channel::STABLE),
+            "Brave-Browser");
+  EXPECT_EQ(GetBraveUserDataDirName(BraveImporterProduct::kBraveBrowser,
+                                    version_info::Channel::UNKNOWN),
+            "Brave-Browser");
+  EXPECT_EQ(GetBraveUserDataDirName(BraveImporterProduct::kBraveBrowser,
+                                    version_info::Channel::BETA),
+            "Brave-Browser-Beta");
+  EXPECT_EQ(GetBraveUserDataDirName(BraveImporterProduct::kBraveBrowser,
+                                    version_info::Channel::DEV),
+            "Brave-Browser-Dev");
+  EXPECT_EQ(GetBraveUserDataDirName(BraveImporterProduct::kBraveBrowser,
+                                    version_info::Channel::CANARY),
+            "Brave-Browser-Nightly");
+
+  // Brave Origin uses the separate "Brave-Origin" base name with the same
+  // channel suffixes, so it never collides with Brave Browser.
+  EXPECT_EQ(GetBraveUserDataDirName(BraveImporterProduct::kBraveOrigin,
+                                    version_info::Channel::STABLE),
+            "Brave-Origin");
+  EXPECT_EQ(GetBraveUserDataDirName(BraveImporterProduct::kBraveOrigin,
+                                    version_info::Channel::BETA),
+            "Brave-Origin-Beta");
+  EXPECT_EQ(GetBraveUserDataDirName(BraveImporterProduct::kBraveOrigin,
+                                    version_info::Channel::DEV),
+            "Brave-Origin-Dev");
+  EXPECT_EQ(GetBraveUserDataDirName(BraveImporterProduct::kBraveOrigin,
+                                    version_info::Channel::CANARY),
+            "Brave-Origin-Nightly");
+}
+
+TEST(BraveImporterUserDataFolderTest, GetBraveUserDataFolderPerProduct) {
+  // Brave Browser and Brave Origin resolve to distinct, non-empty folders even
+  // for the same channel.
+  base::FilePath brave = GetBraveUserDataFolder(
+      BraveImporterProduct::kBraveBrowser, version_info::Channel::STABLE);
+  base::FilePath origin = GetBraveUserDataFolder(
+      BraveImporterProduct::kBraveOrigin, version_info::Channel::STABLE);
+  EXPECT_FALSE(brave.empty());
+  EXPECT_FALSE(origin.empty());
+  EXPECT_NE(brave, origin);
+  EXPECT_NE(brave.MaybeAsASCII().find("Brave-Browser"), std::string::npos);
+  EXPECT_NE(origin.MaybeAsASCII().find("Brave-Origin"), std::string::npos);
+}
+
+TEST(BraveImporterSourcesTest, ExcludesOnlyCurrentInstall) {
+  // Brave ships three channels (Release/Beta/Nightly), across two products
+  // (Brave Browser + Brave Origin) = 6 installs. Running on a given
+  // product+channel offers the other 5, never lists the exact install that is
+  // running, and never lists a Dev channel (not shipped). Crucially, a stable
+  // Brave Browser still offers stable Brave Origin (a different product) and
+  // vice versa.
+  for (auto product : {BraveImporterProduct::kBraveBrowser,
+                       BraveImporterProduct::kBraveOrigin}) {
+    for (auto channel :
+         {version_info::Channel::STABLE, version_info::Channel::BETA,
+          version_info::Channel::CANARY}) {
+      auto sources = GetBraveImporterSources(product, channel);
+      EXPECT_EQ(sources.size(), 5u);
+      bool has_other_product_same_channel = false;
+      for (const auto& source : sources) {
+        // The running install must never appear.
+        EXPECT_FALSE(source.product == product && source.channel == channel);
+        // The unshipped Dev channel must never be offered.
+        EXPECT_NE(source.channel, version_info::Channel::DEV);
+        EXPECT_NE(source.name, nullptr);
+        if (source.product != product && source.channel == channel) {
+          has_other_product_same_channel = true;
+        }
+      }
+      EXPECT_TRUE(has_other_product_same_channel);
+    }
+  }
+}
+
+TEST(BraveImporterSourcesTest, UnknownChannelOffersAllInstalls) {
+  // A local developer build reports UNKNOWN and lives in its own
+  // "-Development" user data folder, so it matches no shipping install and
+  // should offer every shipping product/channel combination (2 products x 3
+  // channels = 6).
+  auto sources = GetBraveImporterSources(BraveImporterProduct::kBraveBrowser,
+                                         version_info::Channel::UNKNOWN);
+  EXPECT_EQ(sources.size(), 6u);
 }
 
 TEST_F(BraveChromeImporterUtilsTest, BadFiles) {

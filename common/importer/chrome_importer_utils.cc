@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/check.h"
 #include "base/files/file_path.h"
@@ -166,6 +167,64 @@ bool CanImportPasswordsForType(user_data_importer::ImporterType type) {
 }
 
 }  // namespace
+
+std::string GetBraveUserDataDirName(BraveImporterProduct product,
+                                    version_info::Channel channel) {
+  std::string dir_name = product == BraveImporterProduct::kBraveOrigin
+                             ? "Brave-Origin"
+                             : "Brave-Browser";
+  switch (channel) {
+    case version_info::Channel::BETA:
+      dir_name += "-Beta";
+      break;
+    case version_info::Channel::DEV:
+      dir_name += "-Dev";
+      break;
+    case version_info::Channel::CANARY:
+      dir_name += "-Nightly";
+      break;
+    case version_info::Channel::STABLE:
+    case version_info::Channel::UNKNOWN:
+      break;
+  }
+  return dir_name;
+}
+
+std::vector<BraveImporterSource> GetBraveImporterSources(
+    BraveImporterProduct current_product,
+    version_info::Channel current_channel) {
+  // Brave ships three channels: Release (STABLE), Beta, and Nightly (CANARY).
+  // There is no publicly distributed Dev channel, so it is not enumerated.
+  const BraveImporterSource kAllSources[] = {
+      {BraveImporterProduct::kBraveBrowser, version_info::Channel::STABLE,
+       kBraveBrowser},
+      {BraveImporterProduct::kBraveBrowser, version_info::Channel::BETA,
+       kBraveBrowserBeta},
+      {BraveImporterProduct::kBraveBrowser, version_info::Channel::CANARY,
+       kBraveBrowserNightly},
+      {BraveImporterProduct::kBraveOrigin, version_info::Channel::STABLE,
+       kBraveOrigin},
+      {BraveImporterProduct::kBraveOrigin, version_info::Channel::BETA,
+       kBraveOriginBeta},
+      {BraveImporterProduct::kBraveOrigin, version_info::Channel::CANARY,
+       kBraveOriginNightly},
+  };
+
+  // Offer every product/channel combination except the exact install that is
+  // currently running. Brave Browser and Brave Origin install side-by-side in
+  // separate user data directories, so a stable Brave Browser must still see a
+  // stable Brave Origin install (and vice versa). A local developer build
+  // reports UNKNOWN, which matches no shipping channel, so nothing is excluded.
+  std::vector<BraveImporterSource> sources;
+  for (const auto& source : kAllSources) {
+    if (source.product == current_product &&
+        source.channel == current_channel) {
+      continue;
+    }
+    sources.push_back(source);
+  }
+  return sources;
+}
 
 base::ListValue GetChromeSourceProfiles(
     const base::FilePath& local_state_path) {
