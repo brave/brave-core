@@ -56,6 +56,24 @@ const saveFeed = (feed?: FeedV2) => {
 
 const isTooOld = (feed: FeedV2) => mojoTimeToJSDate(feed.constructTime).getTime() + MAX_AGE_FOR_CACHED_FEED < Date.now()
 
+/**
+ * Parses a feed out of session/local storage. Storage can hold truncated or
+ * otherwise malformed data (for example if a quota error interrupted a write),
+ * and |maybeLoadFeed| runs during render, so an uncaught SyntaxError here would
+ * take down the whole feed tree. Returns undefined instead so callers fall back
+ * to fetching a fresh feed.
+ */
+const parseCachedFeed = (data: string | null): FeedV2 | undefined => {
+  if (!data) return undefined
+
+  try {
+    return JSON.parse(data) as FeedV2
+  } catch (err) {
+    console.error('Brave News: discarding unparseable cached feed', err)
+    return undefined
+  }
+}
+
 const maybeLoadFeed = (view?: FeedView) => {
   const cachedFeed = localCache[view!]
   if (cachedFeed && !isTooOld(cachedFeed)) {
@@ -71,7 +89,14 @@ const maybeLoadFeed = (view?: FeedView) => {
 
   if (!data) return
 
-  const feed: FeedV2 = JSON.parse(data)
+  const feed = parseCachedFeed(data)
+
+  // Remove unparseable data so we fall back to fetching a fresh feed.
+  if (!feed) {
+    localStorage.removeItem(FEED_KEY)
+    sessionStorage.removeItem(FEED_KEY)
+    return undefined
+  }
 
   // Remove any cached feed whose items include a type no longer supported
   // in the FeedItemV2.
@@ -144,9 +169,8 @@ export const useFeedV2 = (enabled: boolean) => {
       }
 
       // If what's in localStorage isn't from the latest data, make sure we remove
-      // it. Without the eslint-disable-next-line comment the below will fail on iOS
-
-      const localStorageData = JSON.parse(localStorage.getItem(FEED_KEY)!) as FeedV2 | null
+      // it.
+      const localStorageData = parseCachedFeed(localStorage.getItem(FEED_KEY))
       if (localStorageData?.sourceHash !== latestHash) {
         localStorage.removeItem(FEED_KEY)
       }
