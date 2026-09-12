@@ -1,0 +1,45 @@
+diff --git a/chrome/browser/ui/omnibox/omnibox_controller.cc b/chrome/browser/ui/omnibox/omnibox_controller.cc
+index 65d51e2ae1699e6320e389e9d34bca30e413ae4d..2916369c6146e1577c7bc0db7b74b6846ba863d5 100644
+--- a/chrome/browser/ui/omnibox/omnibox_controller.cc
++++ b/chrome/browser/ui/omnibox/omnibox_controller.cc
+@@ -72,6 +72,10 @@ OmniboxController::~OmniboxController() = default;
+ 
+ void OmniboxController::StartAutocomplete(
+     const AutocompleteInput& input) const {
++  if (!IsAutocompleteEnabled(client_->GetPrefs())) {
++    ClearPopupKeywordMode();
++    return;
++  }
+   TRACE_EVENT0("omnibox", "OmniboxController::StartAutocomplete");
+   ClearPopupKeywordMode();
+ 
+@@ -88,28 +92,7 @@ void OmniboxController::StopAutocomplete(bool clear_result) const {
+ }
+ 
+ void OmniboxController::StartZeroSuggestPrefetch() {
+-  TRACE_EVENT0("omnibox", "OmniboxController::StartZeroSuggestPrefetch");
+-  if (base::FeatureList::IsEnabled(features::kPrewarm) &&
+-      base::FeatureList::IsEnabled(features::kPrewarmZeroSuggestTrigger)) {
+-    client_->MaybePrewarmForDefaultSearchEngine(PrewarmTrigger::kZeroSuggest);
+-  }
+-
+-  auto page_classification =
+-      client_->GetPageClassification(/*is_prefetch=*/true);
+-
+-  GURL current_url = client_->GetURL();
+-  std::u16string text = base::UTF8ToUTF16(current_url.spec());
+-
+-  if (omnibox::IsNTPPage(page_classification)) {
+-    text.clear();
+-  }
+-
+-  AutocompleteInput input(text, page_classification,
+-                          client_->GetSchemeClassifier());
+-  input.set_current_url(current_url);
+-  input.set_current_title(client_->GetTitle());
+-  input.set_focus_type(metrics::OmniboxFocusType::INTERACTION_FOCUS);
+-  autocomplete_controller_->StartPrefetch(input);
++  // Disables zero suggest prefetch by doing nothing in here.
+ }
+ 
+ void OmniboxController::OnResultChanged(AutocompleteController* controller,
