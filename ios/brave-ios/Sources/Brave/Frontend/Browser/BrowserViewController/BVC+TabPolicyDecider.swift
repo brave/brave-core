@@ -159,9 +159,9 @@ extension BrowserViewController: TabPolicyDecider {
         return .cancel
       case .load(let resolvedURL):
         if resolvedURL.isIPFSScheme,
-          let resolvedIPFSURL = profileController.ipfsAPI.resolveGatewayUrl(for: resolvedURL)
+          profileController.ipfsAPI.resolveGatewayUrl(for: resolvedURL) != nil
         {
-          // FIXME: This should cancel & load the resolvedIPFSURL
+          // FIXME: This should cancel & load the resolved IPFS URL
         } else {
           // FIXME: This should cancel & load the resolvedURL
         }
