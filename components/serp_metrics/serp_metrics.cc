@@ -77,6 +77,44 @@ base::Time GetEndOfStalePeriod(base::Time now) {
   return GetStartOfYesterday(now) - base::Milliseconds(1);
 }
 
+// Returns the UTC midnight of the Monday that starts the current ISO week.
+base::Time GetStartOfThisWeek(base::Time now) {
+  base::Time::Exploded exploded;
+  now.UTCExplode(&exploded);
+  const int days_since_monday =
+      (exploded.day_of_week == 0) ? 6 : exploded.day_of_week - 1;
+  return (now - base::Days(days_since_monday)).UTCMidnight();
+}
+
+// Returns the UTC midnight of the Monday that started the previous ISO week.
+base::Time GetStartOfLastWeek(base::Time now) {
+  return GetStartOfThisWeek(now) - base::Days(7);
+}
+
+// Returns the final millisecond of the previous ISO week (Sunday 23:59:59.999
+// UTC).
+base::Time GetEndOfLastWeek(base::Time now) {
+  return GetStartOfThisWeek(now) - base::Milliseconds(1);
+}
+
+// Returns UTC midnight on the first day of the current calendar month.
+base::Time GetStartOfThisMonth(base::Time now) {
+  base::Time::Exploded exploded;
+  now.UTCExplode(&exploded);
+  return (now - base::Days(exploded.day_of_month - 1)).UTCMidnight();
+}
+
+// Returns UTC midnight on the first day of the previous calendar month.
+base::Time GetStartOfLastMonth(base::Time now) {
+  return GetStartOfThisMonth(GetStartOfThisMonth(now) - base::Milliseconds(1));
+}
+
+// Returns the final millisecond of the previous calendar month
+// (last day 23:59:59.999 UTC).
+base::Time GetEndOfLastMonth(base::Time now) {
+  return GetStartOfThisMonth(now) - base::Milliseconds(1);
+}
+
 // Returns the sum of metrics recorded during yesterday (UTC) that have
 // not already been reported. The later of the start of yesterday and the start
 // of the stale period is used as the cutoff to avoid double-counting previously
@@ -129,18 +167,71 @@ size_t SerpMetrics::GetSearchCountForYesterday(SerpMetricType type) const {
   const base::Time now = base::Time::Now();
   return GetYesterdaySumAfterLastCheckedCutoff(
       storage, GetStartOfYesterday(now), GetEndOfYesterday(now),
-      GetStartOfStalePeriod());
+      GetStartOfStaleDayPeriod());
+}
+
+size_t SerpMetrics::GetSearchCountForLastWeek(SerpMetricType type) const {
+  CHECK_NE(SerpMetricType::kUndefined, type);
+  CHECK(time_period_storages_.contains(type));
+  const base::Time now = base::Time::Now();
+  return time_period_storages_.at(type)->GetCountForTimeRange(
+      GetStartOfLastWeek(now), GetEndOfLastWeek(now));
+}
+
+size_t SerpMetrics::GetSearchCountForLastMonth(SerpMetricType type) const {
+  CHECK_NE(SerpMetricType::kUndefined, type);
+  CHECK(time_period_storages_.contains(type));
+  const base::Time now = base::Time::Now();
+  return time_period_storages_.at(type)->GetCountForTimeRange(
+      GetStartOfLastMonth(now), GetEndOfLastMonth(now));
 }
 
 size_t SerpMetrics::GetSearchCountForStalePeriod() const {
   const base::Time now = base::Time::Now();
-  const base::Time start_of_stale_period = GetStartOfStalePeriod();
+  const base::Time start_of_stale_period = GetStartOfStaleDayPeriod();
   const base::Time end_of_stale_period = GetEndOfStalePeriod(now);
 
+  // `GetStartOfStaleDayPeriod` returns an empty time when no daily ping has
+  // been sent yet, which causes `GetCountForTimeRange` to sum the full
+  // retention window. This is intentional since all stored data is stale.
   size_t count = 0;
   for (const auto& [_, time_period_storage] : time_period_storages_) {
     count += time_period_storage->GetCountForTimeRange(start_of_stale_period,
                                                        end_of_stale_period);
+  }
+  return count;
+}
+
+size_t SerpMetrics::GetSearchCountForStaleWeekPeriod() const {
+  const base::Time now = base::Time::Now();
+  const base::Time start_of_stale_week_period = GetStartOfStaleWeekPeriod();
+  const base::Time end_of_stale_week_period =
+      GetStartOfLastWeek(now) - base::Milliseconds(1);
+
+  // `GetStartOfStaleWeekPeriod` returns an empty time when no weekly ping has
+  // been sent yet, which causes `GetCountForTimeRange` to sum the full
+  // retention window. This is intentional since all stored data is stale.
+  size_t count = 0;
+  for (const auto& [_, time_period_storage] : time_period_storages_) {
+    count += time_period_storage->GetCountForTimeRange(
+        start_of_stale_week_period, end_of_stale_week_period);
+  }
+  return count;
+}
+
+size_t SerpMetrics::GetSearchCountForStaleMonthPeriod() const {
+  const base::Time now = base::Time::Now();
+  const base::Time start_of_stale_month_period = GetStartOfStaleMonthPeriod();
+  const base::Time end_of_stale_month_period =
+      GetStartOfLastMonth(now) - base::Milliseconds(1);
+
+  // `GetStartOfStaleMonthPeriod` returns an empty time when no monthly ping has
+  // been sent yet, which causes `GetCountForTimeRange` to sum the full
+  // retention window. This is intentional since all stored data is stale.
+  size_t count = 0;
+  for (const auto& [_, time_period_storage] : time_period_storages_) {
+    count += time_period_storage->GetCountForTimeRange(
+        start_of_stale_month_period, end_of_stale_month_period);
   }
   return count;
 }
@@ -162,22 +253,43 @@ size_t SerpMetrics::GetSearchCountForTesting(SerpMetricType type) const {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-base::Time SerpMetrics::GetStartOfStalePeriod() const {
-  // `kLastReportedAt` tracks when SERP metrics were last reported, so we can
-  // compute how far back metrics should be considered stale.
-  const base::Time last_reported_at =
-      local_state_->GetTime(prefs::kLastReportedAt);
-  if (last_reported_at.is_null()) {
-    // `kLastReportedAt` was not yet written, so fall back to the daily ping
-    // `kLastCheckYMD` pref. Once the ping with UTC base SERP metric is sent,
-    // `kLastReportedAt` will be populated and this branch will no longer be
-    // taken.
-    return GetMigrationStaleBoundaryFromLastCheckYMD(*local_state_);
+base::Time SerpMetrics::GetStartOfStaleDayPeriod() const {
+  // `kLastDailyReportedAt` records the UTC timestamp of the last successful
+  // daily ping. A null time means no ping has been sent, so the full retention
+  // window is stale.
+  const base::Time last_daily_reported_at =
+      local_state_->GetTime(prefs::kLastDailyReportedAt);
+  if (!last_daily_reported_at.is_null()) {
+    return last_daily_reported_at.UTCMidnight();
   }
 
-  // Searches recorded on the day of `kLastReportedAt` have not yet been
-  // reported, so the stale period begins at UTC midnight of that day.
-  return last_reported_at.UTCMidnight();
+  // Fall back to the legacy `kLastCheckYMD` pref for installs that have not
+  // yet received a daily ping under the new scheme.
+  return GetMigrationStaleBoundaryFromLastCheckYMD(*local_state_);
+}
+
+base::Time SerpMetrics::GetStartOfStaleWeekPeriod() const {
+  // `kLastWeeklyReportedAt` records the UTC timestamp of the last successful
+  // weekly ping. A null time means no weekly ping has been sent, so the full
+  // retention window is stale.
+  const base::Time last_weekly_reported_at =
+      local_state_->GetTime(prefs::kLastWeeklyReportedAt);
+  if (last_weekly_reported_at.is_null()) {
+    return {};
+  }
+  return GetStartOfThisWeek(last_weekly_reported_at);
+}
+
+base::Time SerpMetrics::GetStartOfStaleMonthPeriod() const {
+  // `kLastMonthlyReportedAt` records the UTC timestamp of the last successful
+  // monthly ping. A null time means no monthly ping has been sent, so the full
+  // retention window is stale.
+  const base::Time last_monthly_reported_at =
+      local_state_->GetTime(prefs::kLastMonthlyReportedAt);
+  if (last_monthly_reported_at.is_null()) {
+    return {};
+  }
+  return GetStartOfThisMonth(last_monthly_reported_at);
 }
 
 }  // namespace serp_metrics

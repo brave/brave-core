@@ -85,7 +85,8 @@ NSString* const kWebcompatReportEndpoint =
   _localPrefs->SetString(kLastCheckYMD,
                          brave_stats::GetDateAsYMD(base::Time::FromNSDate(date),
                                                    /*use_utc=*/true));
-  _localPrefs->SetTime(serp_metrics::prefs::kLastReportedAt, base::Time::Now());
+  _localPrefs->SetTime(serp_metrics::prefs::kLastDailyReportedAt,
+                       base::Time::Now());
 }
 
 @end

@@ -21,7 +21,7 @@ namespace brave_stats {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kStatsReportingEnabled, true);
   registry->RegisterStringPref(kLastCheckYMD, std::string());
-  registry->RegisterTimePref(serp_metrics::prefs::kLastReportedAt,
+  registry->RegisterTimePref(serp_metrics::prefs::kLastDailyReportedAt,
                              base::Time());
 }
 

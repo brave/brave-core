@@ -11,7 +11,7 @@ class ListValue;
 }  // namespace base
 
 // An interface for classes that store list of time period values for a
-// TimePeriodStorage.
+// `TimePeriodStorage`.
 class TimePeriodStore {
  public:
   virtual ~TimePeriodStore() = default;

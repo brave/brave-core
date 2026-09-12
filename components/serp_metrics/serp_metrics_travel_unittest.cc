@@ -7,6 +7,7 @@
 
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/serp_metrics/pref_names.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
 #include "brave/components/serp_metrics/serp_metrics.h"
@@ -38,8 +39,10 @@ class SerpMetricsTravelTest : public testing::Test {
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
-    local_state_.registry()->RegisterTimePref(prefs::kLastReportedAt,
-                                              base::Time());
+    local_state_.registry()->RegisterStringPref(kLastCheckYMD, "");
+    local_state_.registry()->RegisterTimePref(
+        prefs::kLastDailyReportedAt,
+        /* Never reported */ base::Time());
 
     serp_metrics_ = std::make_unique<SerpMetrics>(
         &local_state_, test::FakeSerpMetricsTimePeriodStoreFactory());
@@ -68,8 +71,8 @@ TEST_F(SerpMetricsTravelTest,
   {
     const test::ScopedTimezoneForTesting scoped_timezone("Pacific/Kiritimati");
     AdvanceClockToNextLocalMidnight();
-    // Ping fires at local midnight and sets `kLastReportedAt` value.
-    local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
+    // Ping fires at local midnight and sets `kLastDailyReportedAt` value.
+    local_state_.SetTime(prefs::kLastDailyReportedAt, base::Time::Now());
 
     AdvanceClockToNextUTCMidnight();
 
@@ -99,8 +102,8 @@ TEST_F(
   {
     const test::ScopedTimezoneForTesting scoped_timezone("Pacific/Baker");
     AdvanceClockToNextLocalMidnight();
-    // Ping fires at local midnight and sets `kLastReportedAt` value.
-    local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
+    // Ping fires at local midnight and sets `kLastDailyReportedAt` value.
+    local_state_.SetTime(prefs::kLastDailyReportedAt, base::Time::Now());
 
     AdvanceClockToNextUTCMidnight();
 
@@ -129,8 +132,8 @@ TEST_F(SerpMetricsTravelTest,
   {
     const test::ScopedTimezoneForTesting scoped_timezone("UTC");
     AdvanceClockToNextLocalMidnight();
-    // Ping fires at local midnight and sets `kLastReportedAt` value.
-    local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
+    // Ping fires at local midnight and sets `kLastDailyReportedAt` value.
+    local_state_.SetTime(prefs::kLastDailyReportedAt, base::Time::Now());
 
     AdvanceClockToNextUTCMidnight();
 
@@ -159,8 +162,8 @@ TEST_F(SerpMetricsTravelTest,
   {
     const test::ScopedTimezoneForTesting scoped_timezone("Pacific/Baker");
     AdvanceClockToNextLocalMidnight();
-    // Ping fires at local midnight and sets `kLastReportedAt` value.
-    local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
+    // Ping fires at local midnight and sets `kLastDailyReportedAt` value.
+    local_state_.SetTime(prefs::kLastDailyReportedAt, base::Time::Now());
 
     AdvanceClockToNextUTCMidnight();
 
@@ -189,8 +192,8 @@ TEST_F(SerpMetricsTravelTest,
   {
     const test::ScopedTimezoneForTesting scoped_timezone("UTC");
     AdvanceClockToNextLocalMidnight();
-    // Ping fires at local midnight and sets `kLastReportedAt` value.
-    local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
+    // Ping fires at local midnight and sets `kLastDailyReportedAt` value.
+    local_state_.SetTime(prefs::kLastDailyReportedAt, base::Time::Now());
 
     AdvanceClockToNextUTCMidnight();
 
@@ -219,8 +222,8 @@ TEST_F(SerpMetricsTravelTest,
   {
     const test::ScopedTimezoneForTesting scoped_timezone("Pacific/Kiritimati");
     AdvanceClockToNextLocalMidnight();
-    // Ping fires at local midnight and sets `kLastReportedAt` value.
-    local_state_.SetTime(prefs::kLastReportedAt, base::Time::Now());
+    // Ping fires at local midnight and sets `kLastDailyReportedAt` value.
+    local_state_.SetTime(prefs::kLastDailyReportedAt, base::Time::Now());
 
     AdvanceClockToNextUTCMidnight();
 

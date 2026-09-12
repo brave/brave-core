@@ -15,7 +15,7 @@ class PrefService;
 namespace serp_metrics {
 
 // Called during migration to derive the stale-period boundary from
-// `kLastCheckYMD` when `kLastReportedAt` has not yet been written. The
+// `kLastCheckYMD` when `kLastDailyReportedAt` has not yet been written. The
 // day boundary approximation may cause under counting on the first reporting
 // cycle after migration.
 // Returns `base::Time::Now()` on parse failure to avoid double reporting.
