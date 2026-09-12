@@ -293,6 +293,7 @@ if (is_android) {
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.shields") {
     sources = [
       "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelFaviconPriorityTest.java",
+      "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelHandlerLifecycleTest.java",
       "src/org/chromium/chrome/browser/shields/BraveUnifiedPanelHandlerStatTest.java",
       "src/org/chromium/chrome/browser/shields/UrlSanitizerServiceFactoryUnitTest.java",
     ]
