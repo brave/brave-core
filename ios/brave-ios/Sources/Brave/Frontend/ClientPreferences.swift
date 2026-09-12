@@ -264,6 +264,16 @@ extension Preferences {
       key: "privacy.remember-browsing-mode",
       default: false
     )
+    /// Last browsing mode when the app was backgrounded (used to restore private mode on relaunch).
+    public static let lastPrivateBrowsingMode = Option<Bool>(
+      key: "privacy.last-private-browsing-mode",
+      default: false
+    )
+    /// Canonical session window id for single-window restore (prevents tab/window id drift).
+    public static let lastSessionWindowId = Option<String?>(
+      key: "privacy.last-session-window-id",
+      default: nil
+    )
     /// The toggles states for clear private data screen
     static let clearPrivateDataToggles = Option<[Bool]>(
       key: "privacy.clear-data-toggles",

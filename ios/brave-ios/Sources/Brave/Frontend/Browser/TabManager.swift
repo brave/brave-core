@@ -324,8 +324,15 @@ class TabManager: NSObject {
     if previous === tab {
       return
     }
-    // Convert the global mode to normal/private
-    privateBrowsingManager.isPrivateBrowsing = tab?.isPrivate == true
+    // Convert the global mode to normal/private, but preserve the launch mode during tab restore
+    // when "Remember Browsing Mode" is enabled.
+    let shouldPreserveBrowsingMode =
+      isRestoring
+      && Preferences.Privacy.persistentPrivateBrowsing.value
+      && Preferences.Privacy.rememberBrowsingMode.value
+    if !shouldPreserveBrowsingMode {
+      privateBrowsingManager.isPrivateBrowsing = tab?.isPrivate == true
+    }
 
     // Make sure to wipe the private tabs if the user has the pref turned on
     if tab?.isPrivate == false
@@ -605,7 +612,7 @@ class TabManager: NSObject {
     saveTabOrder()
   }
 
-  private func saveTabOrder() {
+  private func saveTabOrder(synchronously: Bool = false) {
     if Preferences.Privacy.privateBrowsingOnly.value
       || (privateBrowsingManager.isPrivateBrowsing
         && !Preferences.Privacy.persistentPrivateBrowsing.value)
@@ -613,7 +620,7 @@ class TabManager: NSObject {
       return
     }
     let allTabIds = allTabs.compactMap { $0.id }
-    SessionTab.saveTabOrder(tabIds: allTabIds)
+    SessionTab.saveTabOrder(tabIds: allTabIds, synchronously: synchronously)
   }
 
   @MainActor func configureTab(
@@ -702,15 +709,24 @@ class TabManager: NSObject {
 
     let tabs =
       Preferences.Privacy.persistentPrivateBrowsing.value ? allTabs : tabs(isPrivate: false)
-    SessionTab.updateAll(
-      synchronously: synchronously,
-      tabs: tabs.compactMap({
-        if let sessionData = $0.sessionData {
-          return ($0.id, sessionData, $0.title ?? "", $0.visibleURL ?? TabManager.ntpInteralURL)
-        }
-        return nil
-      })
+    SessionTab.persistTabs(
+      windowId: windowId,
+      tabs: tabs.map {
+        (
+          $0.id,
+          $0.sessionData,
+          $0.title ?? "",
+          $0.visibleURL ?? TabManager.ntpInteralURL
+        )
+      },
+      synchronously: synchronously
     )
+  }
+
+  /// Persists tab session data and tab order when the app backgrounds or terminates.
+  func persistSessionOnBackground() {
+    saveAllTabs(synchronously: true)
+    saveTabOrder(synchronously: true)
   }
 
   func saveTab(_ tab: some TabState, saveOrder: Bool = false) {
@@ -721,7 +737,7 @@ class TabManager: NSObject {
     }
     SessionTab.update(
       tabId: tab.id,
-      interactionState: tab.sessionData ?? Data(),
+      interactionState: tab.sessionData,
       title: tab.title ?? "",
       url: tab.visibleURL ?? TabManager.ntpInteralURL
     )
@@ -1303,6 +1319,42 @@ class TabManager: NSObject {
     SessionTab.updateScreenshot(tabId: tab.id, screenshot: screenshot)
   }
 
+  @MainActor private func savedTabsForRestore(from allSaved: [SessionTab]? = nil) -> [SessionTab] {
+    let tabs = allSaved ?? SessionTab.all()
+    return tabs.filter { $0.sessionWindow?.windowId == windowId }
+  }
+
+  @MainActor private func reorderAllTabs(toMatch savedTabs: [SessionTab]) {
+    let tabIdOrder = Dictionary(
+      uniqueKeysWithValues: savedTabs.enumerated().map { ($0.element.tabId, $0.offset) }
+    )
+    allTabs.sort {
+      let left = tabIdOrder[$0.id] ?? Int.max
+      let right = tabIdOrder[$1.id] ?? Int.max
+      return left < right
+    }
+  }
+
+  @MainActor private func resolveRestoredTabSelection(
+    from savedTabs: [SessionTab]
+  ) -> (any TabState)? {
+    let isPrivate = privateBrowsingManager.isPrivateBrowsing
+
+    if let selectedSaved = savedTabs.first(where: { $0.isSelected && $0.isPrivate == isPrivate }),
+      let tab = getTabForID(selectedSaved.tabId)
+    {
+      return tab
+    }
+
+    if let recentlyUsed = savedTabs.filter({ $0.isPrivate == isPrivate }).max(by: {
+      $0.lastUpdated < $1.lastUpdated
+    }), let tab = getTabForID(recentlyUsed.tabId) {
+      return tab
+    }
+
+    return tabsForCurrentMode.last
+  }
+
   @MainActor fileprivate var restoreTabsInternal: (any TabState)? {
     var savedTabs = [SessionTab]()
 
@@ -1313,11 +1365,11 @@ class TabManager: NSObject {
       // then delete old tabs(background thread context)
       savedTabs = SessionTab.all(noOlderThan: autocloseTime)
       SessionTab.deleteAll(olderThan: autocloseTime)
+      savedTabs = savedTabsForRestore(from: savedTabs)
     } else {
-      savedTabs = SessionTab.all()
+      savedTabs = savedTabsForRestore()
     }
 
-    savedTabs = savedTabs.filter({ $0.sessionWindow?.windowId == windowId })
     if savedTabs.isEmpty { return nil }
 
     /// Cache on if we should shred a given domain.
@@ -1352,7 +1404,7 @@ class TabManager: NSObject {
       return shouldShredTab
     }
 
-    var tabToSelect: (any TabState)?
+    var restoredTabCount = 0
     for savedTab in savedTabs {
       if let tabURL = savedTab.url {
         // Provide an empty request to prevent a new tab from loading the home screen
@@ -1383,11 +1435,7 @@ class TabManager: NSObject {
         Task { @MainActor in
           tab.browserData?.setScreenshot(savedTab.screenshot)
         }
-
-        // Select the tab if it was selected and matches current mode (private vs regular)
-        if savedTab.isSelected && savedTab.isPrivate == privateBrowsingManager.isPrivateBrowsing {
-          tabToSelect = tab
-        }
+        restoredTabCount += 1
       } else {
         let tab = addTab(
           nil,
@@ -1399,26 +1447,19 @@ class TabManager: NSObject {
 
         tab.lastTitle = savedTab.title
         tab.browserData?.setScreenshot(savedTab.screenshot)
-
-        // Select the tab if it was selected and matches current mode (private vs regular)
-        if savedTab.isSelected && savedTab.isPrivate == privateBrowsingManager.isPrivateBrowsing {
-          tabToSelect = tab
-        }
+        restoredTabCount += 1
       }
     }
 
-    if let tabToSelect = tabToSelect ?? tabsForCurrentMode.last {
-      // Only tell our delegates that we restored tabs if we actually restored something
+    reorderAllTabs(toMatch: savedTabs)
+
+    if restoredTabCount > 0 {
       delegates.forEach {
         $0.get()?.tabManagerDidRestoreTabs(self)
       }
-
-      // No tab selection, since this is unfamiliar with launch timings (e.g. compiling blocklists)
-
-      // Must return inside this `if` to potentially return the conditional fallback
-      return tabToSelect
     }
-    return nil
+
+    return resolveRestoredTabSelection(from: savedTabs) ?? tabsForCurrentMode.last
   }
 
   func restoreTab(_ tab: some TabState) {
@@ -1466,12 +1507,15 @@ class TabManager: NSObject {
 
     isRestoring = true
     let tabToSelect = self.restoreTabsInternal
-    isRestoring = false
 
     // Always make sure there is at least one tab.
     let isPrivate =
       privateBrowsingManager.isPrivateBrowsing || Preferences.Privacy.privateBrowsingOnly.value
     return tabToSelect ?? self.addTab(isPrivate: isPrivate)
+  }
+
+  @MainActor func finishTabRestore() {
+    isRestoring = false
   }
 
   func restoreDeletedTabs(_ savedTabs: [any TabState]) {
