@@ -616,8 +616,9 @@ class ResolveInvocationTest(unittest.TestCase):
                 [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
 
     def test_missing_node_falls_back_when_download_deploys_nothing(self):
-        # The bootstrap is attempted but deploys no node; with fallback allowed
-        # the system node is used instead.
+        # The bootstrap succeeds but deploys no node (an older checkout whose
+        # installer knows nothing of this entry); with fallback allowed the
+        # system node is used instead.
         with tempfile.TemporaryDirectory() as tmp:
             root, key = Path(tmp), self._key()
             checkout = self._checkout(root)
@@ -630,7 +631,7 @@ class ResolveInvocationTest(unittest.TestCase):
                                        dep, deployed=False)):
                 with mock.patch.object(launcher.subprocess,
                                        'call',
-                                       return_value=1) as call:
+                                       return_value=0) as call:
                     with mock.patch.object(launcher.shutil,
                                            'which',
                                            return_value='/usr/bin/node'):
@@ -639,6 +640,50 @@ class ResolveInvocationTest(unittest.TestCase):
                                 'node', checkout, True)
             call.assert_called_once()
             self.assertEqual(invocation, ['/usr/bin/node'])
+
+    def test_failed_deploy_raises_rather_than_falling_back(self):
+        # A failing installer must NOT be swallowed: the checkout asked for a
+        # pinned node and could not get it, so falling back to whatever node is
+        # on $PATH would hide the failure and re-run the broken download on
+        # every single invocation.
+        with tempfile.TemporaryDirectory() as tmp:
+            root, key = Path(tmp), self._key()
+            checkout = self._checkout(root)
+            self._make_installer(checkout)
+            dep = launcher.SHIM_TARGETS[
+                f'node-{key}'].self_update_extra_dep_entry
+            with mock.patch.object(launcher.SelfUpdater,
+                                   '_load_extra_deps',
+                                   return_value=self._fake_extra_deps(
+                                       dep, deployed=False)):
+                with mock.patch.object(launcher.subprocess,
+                                       'call',
+                                       return_value=1):
+                    with mock.patch.object(launcher.shutil,
+                                           'which',
+                                           return_value='/usr/bin/node'):
+                        with self.assertRaises(
+                                launcher.subprocess.CalledProcessError):
+                            launcher.resolve_invocation('node', checkout, True)
+
+    def test_unlaunchable_installer_raises(self):
+        # The installer is there but cannot be executed at all.
+        with tempfile.TemporaryDirectory() as tmp:
+            root, key = Path(tmp), self._key()
+            checkout = self._checkout(root)
+            self._make_installer(checkout)
+            dep = launcher.SHIM_TARGETS[
+                f'node-{key}'].self_update_extra_dep_entry
+            with mock.patch.object(launcher.SelfUpdater,
+                                   '_load_extra_deps',
+                                   return_value=self._fake_extra_deps(
+                                       dep, deployed=False)):
+                with mock.patch.object(launcher.subprocess,
+                                       'call',
+                                       side_effect=OSError('no exec')):
+                    with self.assertRaisesRegex(OSError, 'no exec'):
+                        launcher.resolve_invocation(f'node-{key}', checkout,
+                                                    False)
 
     def test_no_bootstrap_without_installer(self):
         # With no install_extra_deps.py present the bootstrap is a no-op, and
@@ -1141,6 +1186,55 @@ class MainPropagatesCheckoutEnvTest(unittest.TestCase):
         self.assertIn(
             'pnpm: no checkout-local binary found and no pnpm on $PATH.',
             stderr.getvalue())
+
+
+class MainFailsOnBrokenSelfUpdateTest(unittest.TestCase):
+    """End-to-end regression: a shim whose pinned target cannot be deployed
+    fails and runs nothing.
+
+    A swallowed installer failure used to leave the shim running some other
+    node (or none), so a broken download never failed a build -- it just
+    re-downloaded, and re-failed, on every invocation. The failure is left
+    unhandled on purpose, so the traceback reaches whoever has to investigate
+    it.
+    """
+
+    def test_main_fails_without_running_the_tool(self):
+        key = launcher.host_platform_key()
+        if key is None:
+            self.skipTest('unsupported host platform')
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            checkout = root / 'src' / 'brave'
+            sentinel = checkout / 'tools' / 'cr' / 'bootstrap' / 'launcher.py'
+            sentinel.parent.mkdir(parents=True, exist_ok=True)
+            sentinel.write_text('', encoding='utf-8', newline='')
+            installer = checkout / 'tools' / 'cr' / 'tarball_installer.py'
+            installer.write_text('', encoding='utf-8', newline='')
+            # The node target is present but stale, so the shim self-updates.
+            node = root / launcher.SHIM_TARGETS[f'node-{key}'].path
+            node.parent.mkdir(parents=True, exist_ok=True)
+            node.write_text('', encoding='utf-8', newline='')
+
+            module = mock.Mock()
+            module.check_extra_deps_installed.return_value = False
+            argv = ['launcher.py', 'node', 'build.js']
+            os.environ.pop(launcher._CHECKOUT_ENV_VAR, None)
+            with mock.patch.object(launcher.Path, 'cwd',
+                                   return_value=checkout):
+                with mock.patch.object(launcher.SelfUpdater,
+                                       '_load_extra_deps',
+                                       return_value=module):
+                    with mock.patch.object(launcher.sys, 'argv', argv):
+                        with mock.patch.object(launcher.subprocess,
+                                               'call',
+                                               return_value=1) as call:
+                            with self.assertRaises(
+                                    launcher.subprocess.CalledProcessError):
+                                launcher.main()
+            # Only the installer ran: the tool itself was never invoked.
+            call.assert_called_once()
+            self.assertEqual(Path(call.call_args.args[0][1]), installer)
 
 
 class MultiRepoSelfUpdaterTest(unittest.TestCase):
