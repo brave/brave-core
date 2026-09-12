@@ -59,10 +59,11 @@ cd /tmp
 node --version                    # falls back to the system node
 ```
 
-## The chicken-and-egg `node` problem
+## Bootstrapping a fresh checkout
 
-The shims for `node`/`npm` run cheap checks for the tarball installations, to
-determine if a new file needs to be downloaded. This is done through the
-`EXTRA_DEPS` mechanism itself, which makes this a lightweight sync check. For
-repos with no mechanism for self-updating, the path resolution degrades back to
-whatever is the system underlying binaries.
+A fresh checkout can be fetched simply by doing:
+
+```
+mkdir brave-browser
+curl -fsSL https://raw.githubusercontent.com/brave/brave-core/master/tools/cr/bootstrap/fetch_brave.py | python3 -
+```
