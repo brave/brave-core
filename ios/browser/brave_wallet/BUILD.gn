@@ -25,6 +25,10 @@ source_set("brave_wallet") {
     "ethereum_provider_tab_helper.mm",
     "features.h",
     "features.mm",
+    "solana_provider_javascript_feature.h",
+    "solana_provider_javascript_feature.mm",
+    "solana_provider_tab_helper.h",
+    "solana_provider_tab_helper.mm",
     "wallet_data_files_installer_delegate_impl.h",
     "wallet_data_files_installer_delegate_impl.mm",
     "wallet_pref_names_bridge.h",
@@ -33,6 +37,7 @@ source_set("brave_wallet") {
   deps = [
     ":cardano_provider_js",
     ":ethereum_provider_js",
+    ":solana_provider_js",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:pref_names",
@@ -40,6 +45,7 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+    "//brave/components/resources:static_resources_grit",
     "//brave/ios/browser/api/brave_wallet:provider_delegate",
     "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
     "//brave/ios/browser/keyed_service",
@@ -81,6 +87,17 @@ optimize_ts("cardano_provider_js") {
   visibility = [ ":brave_wallet" ]
 
   sources = [ "resources/cardano_provider.ts" ]
+
+  deps = [
+    "//brave/ios/web/js_messaging:safe_builtins",
+    "//brave/ios/web/js_messaging:util_scripts",
+  ]
+}
+
+optimize_ts("solana_provider_js") {
+  visibility = [ ":brave_wallet" ]
+
+  sources = [ "resources/solana_provider.ts" ]
 
   deps = [
     "//brave/ios/web/js_messaging:safe_builtins",
