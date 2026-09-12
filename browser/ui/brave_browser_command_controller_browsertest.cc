@@ -67,6 +67,14 @@
 #include "brave/components/brave_vpn/common/pref_names.h"
 #endif
 
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/components/brave_rewards/core/rewards_util.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#endif
+
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/email_aliases/features.h"
@@ -109,6 +117,30 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
                  policy::POLICY_SOURCE_PLATFORM, base::Value(!value), nullptr);
     provider_.UpdateChromePolicy(policies);
     EXPECT_EQ(ai_chat::IsAIChatEnabled(browser()->GetProfile()->GetPrefs()),
+              !value);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  void BlockRewardsByPolicy(bool value) {
+    policy::PolicyMap policies;
+    policies.Set(policy::key::kBraveRewardsDisabled,
+                 policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+                 policy::POLICY_SOURCE_PLATFORM, base::Value(value), nullptr);
+    provider_.UpdateChromePolicy(policies);
+    EXPECT_EQ(brave_rewards::IsSupported(browser()->GetProfile()->GetPrefs()),
+              !value);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  void BlockWalletByPolicy(bool value) {
+    policy::PolicyMap policies;
+    policies.Set(policy::key::kBraveWalletDisabled,
+                 policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+                 policy::POLICY_SOURCE_PLATFORM, base::Value(value), nullptr);
+    provider_.UpdateChromePolicy(policies);
+    EXPECT_EQ(brave_wallet::IsAllowed(browser()->GetProfile()->GetPrefs()),
               !value);
   }
 #endif
@@ -232,19 +264,14 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTest) {
   // Test normal browser's brave commands status.
   auto* command_controller = chrome::BrowserCommandController::From(browser());
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
-#if BUILDFLAG(ENABLE_TOR)
+  EXPECT_EQ(BUILDFLAG(ENABLE_BRAVE_REWARDS),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
-  EXPECT_TRUE(
-      command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-#else
-  EXPECT_FALSE(
-      command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
-  EXPECT_FALSE(
-      command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-#endif
+  EXPECT_EQ(BUILDFLAG(ENABLE_TOR) command_controller->IsCommandEnabled(
+      IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   EXPECT_FALSE(brave_vpn::IsBraveVPNDisabledByPolicy(
@@ -256,15 +283,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   CheckBraveVPNCommands(browser());
 #endif
 
-  if (syncer::IsSyncAllowedByFlag()) {
-    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  } else {
-    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  }
+  EXPECT_EQ(syncer::IsSyncAllowedByFlag(),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
-#endif
+  EXPECT_EQ(BUILDFLAG(ENABLE_BRAVE_WALLET),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
@@ -287,24 +310,21 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   auto* private_browser = CreateIncognitoBrowser();
   auto* command_controller =
       chrome::BrowserCommandController::From(private_browser);
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
-#if BUILDFLAG(ENABLE_TOR)
+  EXPECT_EQ(BUILDFLAG(ENABLE_BRAVE_REWARDS),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
-  EXPECT_TRUE(
-      command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-#endif
+  EXPECT_EQ(BUILDFLAG(ENABLE_TOR), command_controller->IsCommandEnabled(
+                                       IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 
-  if (syncer::IsSyncAllowedByFlag()) {
-    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  } else {
-    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  }
+  EXPECT_EQ(syncer::IsSyncAllowedByFlag(),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
-#endif
+  EXPECT_EQ(BUILDFLAG(ENABLE_BRAVE_WALLET),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
+
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
@@ -408,6 +428,58 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_AI_CHAT));
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       RewardsButton_HiddenWhenDisabledByPolicy) {
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
+  // Sanity check Rewards is enabled by default.
+  EXPECT_TRUE(brave_rewards::IsSupported(browser()->GetProfile()->GetPrefs()));
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+
+  // When Rewards is disabled by policy, the app menu entry (and, downstream,
+  // the location bar button) should become unavailable, even though the
+  // window/command controller was already created before the policy change.
+  BlockRewardsByPolicy(true);
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+
+  // Once the policy is lifted, the entry should become available again.
+  BlockRewardsByPolicy(false);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
+                       WalletButton_HiddenWhenDisabledByPolicy) {
+  auto* command_controller = chrome::BrowserCommandController::From(browser());
+  // Sanity check Wallet is allowed by default.
+  EXPECT_TRUE(brave_wallet::IsAllowed(browser()->GetProfile()->GetPrefs()));
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL));
+
+  // When Wallet is disabled by policy, the app menu entry should become
+  // unavailable, even though the window/command controller was already
+  // created before the policy change.
+  BlockWalletByPolicy(true);
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
+  EXPECT_FALSE(
+      command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL));
+  EXPECT_FALSE(
+      command_controller->IsCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL));
+
+  // Once the policy is lifted, the entry should become available again.
+  BlockWalletByPolicy(false);
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET_PANEL));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_CLOSE_BRAVE_WALLET_PANEL));
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsCloseTabsToLeft) {
