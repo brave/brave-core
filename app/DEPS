@@ -78,6 +78,9 @@ specific_include_rules = {
     "+chrome/test/base",
     "+content/public/test",
   ],
+  "blink_runtime_feature_defaults_unittest\.cc": [
+    "+third_party/blink/public/platform/web_runtime_features.h",
+  ],
   "feature_defaults_unittest\.cc": [
     "+android_webview/common/aw_features.h",
     "+components/browser_actuator/internal/features.h",
