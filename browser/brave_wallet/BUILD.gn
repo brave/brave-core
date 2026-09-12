@@ -278,5 +278,13 @@ source_set("browser_tests") {
       "//url",
     ]
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+    if (enable_snaps) {
+      sources += [ "snaps_service_browsertest.cc" ]
+      deps += [
+        "//brave/components/brave_wallet/browser/snap",
+        "//chrome/browser/profiles:profile",
+      ]
+    }
   }
 }  # source_set("browser_tests")

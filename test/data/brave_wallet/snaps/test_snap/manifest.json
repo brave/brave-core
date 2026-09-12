@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "description": "Test snap fixture for browser tests.",
+  "manifestVersion": "0.1",
+  "source": {
+    "shasum": "",
+    "location": { "npm": { "filePath": "bundle.js", "packageName": "test-snap" } }
+  },
+  "initialPermissions": { "endowment:rpc": { "dapps": false, "snaps": true } }
+}

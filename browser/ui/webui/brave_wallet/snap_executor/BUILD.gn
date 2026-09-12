@@ -1,0 +1,45 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(enable_brave_wallet)
+assert(enable_snaps)
+
+source_set("snap_executor") {
+  sources = [
+    "snap_executor_ui.cc",
+    "snap_executor_ui.h",
+  ]
+  deps = [
+    "//brave/components/brave_wallet/common:common_constants",
+    "//brave/components/brave_wallet_ui:resources",
+    "//brave/components/brave_wallet_ui/snap_executor:snap_executor_generated",
+    "//brave/components/resources:static_resources_grit",
+    "//content/public/browser",
+    "//content/public/common",
+    "//services/network/public/mojom",
+    "//ui/webui",
+    "//url",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "snap_executor_browsertest.cc" ]
+  deps = [
+    ":snap_executor",
+    "//base/test:test_support",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:common_constants",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//testing/gtest",
+  ]
+}

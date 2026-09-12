@@ -18,6 +18,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
@@ -34,6 +35,10 @@
 #include "content/public/common/url_constants.h"
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
+
+#if BUILDFLAG(ENABLE_SNAPS)
+#include "brave/components/brave_wallet/browser/snaps_service.h"
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/webui/plural_string_handler.h"
@@ -103,11 +108,16 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::ImgSrc,
       "img-src 'self' data: chrome://resources chrome://erc-token-images "
       "chrome://image;");
+  std::string frame_src = std::string("frame-src ") + kUntrustedTrezorURL +
+                          " " + kUntrustedLedgerURL + " " + kUntrustedNftURL +
+                          " " + kUntrustedLineChartURL + " " +
+                          kUntrustedMarketURL;
+#if BUILDFLAG(ENABLE_SNAPS)
+  frame_src += std::string(" ") + kUntrustedSnapExecutorURL;
+#endif
+  frame_src += ";";
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FrameSrc,
-      std::string("frame-src ") + kUntrustedTrezorURL + " " +
-          kUntrustedLedgerURL + " " + kUntrustedNftURL + " " +
-          kUntrustedLineChartURL + " " + kUntrustedMarketURL + ";");
+      network::mojom::CSPDirectiveName::FrameSrc, frame_src);
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->AddString("braveWalletTrezorBridgeUrl", kUntrustedTrezorURL);
   source->AddString("braveWalletNftBridgeUrl", kUntrustedNftURL);
@@ -119,6 +129,7 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean("isLedgerMojoBridgeEnabled",
                      IsMojoForHardwareWalletEnabled());
   source->AddBoolean("walletDebug", IsWalletDebugEnabled());
+  source->AddBoolean("isSnapsEnabled", IsSnapsFeatureEnabled());
 
 #if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
@@ -159,6 +170,19 @@ void WalletPageUI::BindInterface(
       nullptr, profile->GetPrefs());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
+
+#if BUILDFLAG(ENABLE_SNAPS)
+void WalletPageUI::BindInterface(
+    mojo::PendingReceiver<mojom::SnapsService> receiver) {
+  auto* profile = Profile::FromWebUI(web_ui());
+  if (auto* wallet_service =
+          BraveWalletServiceFactory::GetServiceForContext(profile)) {
+    if (auto* snaps_service = wallet_service->snaps_service()) {
+      snaps_service->Bind(std::move(receiver));
+    }
+  }
+}
+#endif  // BUILDFLAG(ENABLE_SNAPS)
 
 void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<mojom::PageHandler> page_receiver,
