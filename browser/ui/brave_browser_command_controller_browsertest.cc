@@ -264,19 +264,14 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTest) {
   // Test normal browser's brave commands status.
   auto* command_controller = chrome::BrowserCommandController::From(browser());
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
-#if BUILDFLAG(ENABLE_TOR)
+  EXPECT_EQ(BUILDFLAG(ENABLE_BRAVE_REWARDS),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
-  EXPECT_TRUE(
-      command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-#else
-  EXPECT_FALSE(
-      command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
-  EXPECT_FALSE(
-      command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-#endif
+  EXPECT_EQ(BUILDFLAG(ENABLE_TOR) command_controller->IsCommandEnabled(
+      IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   EXPECT_FALSE(brave_vpn::IsBraveVPNDisabledByPolicy(
@@ -288,15 +283,11 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   CheckBraveVPNCommands(browser());
 #endif
 
-  if (syncer::IsSyncAllowedByFlag()) {
-    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  } else {
-    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  }
+  EXPECT_EQ(syncer::IsSyncAllowedByFlag(),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
-#endif
+  EXPECT_EQ(BUILDFLAG(ENABLE_BRAVE_WALLET),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
@@ -319,24 +310,21 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   auto* private_browser = CreateIncognitoBrowser();
   auto* command_controller =
       chrome::BrowserCommandController::From(private_browser);
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
 
-#if BUILDFLAG(ENABLE_TOR)
+  EXPECT_EQ(BUILDFLAG(ENABLE_BRAVE_REWARDS),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_REWARDS));
+
   EXPECT_FALSE(
       command_controller->IsCommandEnabled(IDC_NEW_TOR_CONNECTION_FOR_SITE));
-  EXPECT_TRUE(
-      command_controller->IsCommandEnabled(IDC_NEW_OFFTHERECORD_WINDOW_TOR));
-#endif
+  EXPECT_EQ(BUILDFLAG(ENABLE_TOR), command_controller->IsCommandEnabled(
+                                       IDC_NEW_OFFTHERECORD_WINDOW_TOR));
 
-  if (syncer::IsSyncAllowedByFlag()) {
-    EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  } else {
-    EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
-  }
+  EXPECT_EQ(syncer::IsSyncAllowedByFlag(),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_SYNC));
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
-#endif
+  EXPECT_EQ(BUILDFLAG(ENABLE_BRAVE_WALLET),
+            command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WALLET));
+
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_ADD_NEW_PROFILE));
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_OPEN_GUEST_PROFILE));
   EXPECT_TRUE(
