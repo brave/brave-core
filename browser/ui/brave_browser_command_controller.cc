@@ -325,6 +325,7 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   UpdateCommandEnabled(IDC_OPEN_GUEST_PROFILE, open_guest_profile_enabled);
   UpdateCommandEnabled(IDC_COPY_CLEAN_LINK, true);
   UpdateCommandEnabled(IDC_TOGGLE_TAB_MUTE, true);
+  UpdateCommandEnabled(IDC_TOGGLE_PICTURE_IN_PICTURE, true);
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   if (base::FeatureList::IsEnabled(
@@ -723,6 +724,9 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_TOGGLE_TAB_MUTE:
       brave::ToggleActiveTabAudioMute(&*browser_);
+      break;
+    case IDC_TOGGLE_PICTURE_IN_PICTURE:
+      brave::TogglePictureInPicture(&*browser_);
       break;
     case IDC_TOGGLE_VERTICAL_TABS:
       brave::ToggleVerticalTabStrip(&*browser_);

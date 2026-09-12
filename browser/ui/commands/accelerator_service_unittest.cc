@@ -9,6 +9,7 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/commands/default_accelerators.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -91,6 +92,43 @@ class AcceleratorServiceUnitTest : public testing::Test {
   TestingProfile profile_;
   base::test::ScopedFeatureList features_;
 };
+
+TEST_F(AcceleratorServiceUnitTest, PictureInPictureShortcutCanBeCustomized) {
+  const auto default_shortcut = FromCodesString("Alt+KeyP");
+  const auto custom_shortcut = FromCodesString("Control+Alt+KeyP");
+
+  {
+    AcceleratorService service(profile().GetPrefs(), GetDefaultAccelerators());
+    auto command = service.GetCommandForTesting(IDC_TOGGLE_PICTURE_IN_PICTURE);
+    ASSERT_EQ(1u, command->accelerators.size());
+    EXPECT_FALSE(command->accelerators[0]->unmodifiable);
+    EXPECT_THAT(service.GetAcceleratorsForCommand(IDC_TOGGLE_PICTURE_IN_PICTURE),
+                testing::ElementsAre(default_shortcut));
+
+    service.UnassignAcceleratorFromCommand(IDC_TOGGLE_PICTURE_IN_PICTURE,
+                                           "Alt+KeyP");
+    EXPECT_TRUE(service.GetAcceleratorsForCommand(IDC_TOGGLE_PICTURE_IN_PICTURE)
+                    .empty());
+    service.AssignAcceleratorToCommand(IDC_TOGGLE_PICTURE_IN_PICTURE,
+                                       "Control+Alt+KeyP");
+  }
+
+  {
+    AcceleratorService service(profile().GetPrefs(), GetDefaultAccelerators());
+    EXPECT_THAT(
+        service.GetAcceleratorsForCommand(IDC_TOGGLE_PICTURE_IN_PICTURE),
+        testing::ElementsAre(custom_shortcut));
+    service.UnassignAcceleratorFromCommand(IDC_TOGGLE_PICTURE_IN_PICTURE,
+                                           "Control+Alt+KeyP");
+  }
+
+  AcceleratorService service(profile().GetPrefs(), GetDefaultAccelerators());
+  EXPECT_TRUE(
+      service.GetAcceleratorsForCommand(IDC_TOGGLE_PICTURE_IN_PICTURE).empty());
+  service.ResetAcceleratorsForCommand(IDC_TOGGLE_PICTURE_IN_PICTURE);
+  EXPECT_THAT(service.GetAcceleratorsForCommand(IDC_TOGGLE_PICTURE_IN_PICTURE),
+              testing::ElementsAre(default_shortcut));
+}
 
 TEST_F(AcceleratorServiceUnitTest, CanOverrideExistingShortcut) {
   commands::AcceleratorService service(
