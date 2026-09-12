@@ -1762,7 +1762,7 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
   }
 }
 
-TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_IronwoodMatrix) {
+TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_IronwoodEnabled) {
   auto account_1 =
       GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
   auto account_id_1 = account_1->account_id.Clone();
@@ -1783,6 +1783,12 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_IronwoodMatrix) {
   ASSERT_NE(account_info->orchard_internal_address,
             account_2_info->orchard_internal_address);
 
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "true"}});
+
   auto get_tx_type = [&](mojom::ZCashTokenType from_token,
                          const std::string& addr) {
     base::test::TestFuture<mojom::ZCashTxType, mojom::ZCashAddressError> future;
@@ -1791,147 +1797,201 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_IronwoodMatrix) {
     return future.Take();
   };
 
-  // Ironwood feature ON, shielded ON:
-  {
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitAndEnableFeatureWithParameters(
-        features::kBraveWalletZCashFeature,
-        {{"zcash_shielded_transactions_enabled", "true"},
-         {"zcash_ironwood_enabled", "true"}});
+  // t → orchard addr → kTransparentToIronwood
+  auto [t, e] =
+      get_tx_type(mojom::ZCashTokenType::kTransparent, kOrchardUnifiedAddress);
+  EXPECT_EQ(t, mojom::ZCashTxType::kTransparentToIronwood);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
 
-    // t → orchard addr → kTransparentToIronwood
-    auto [t, e] = get_tx_type(mojom::ZCashTokenType::kTransparent,
-                              kOrchardUnifiedAddress);
-    EXPECT_EQ(t, mojom::ZCashTxType::kTransparentToIronwood);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+  // orchard → orchard addr → kOrchardToIronwood
+  std::tie(t, e) =
+      get_tx_type(mojom::ZCashTokenType::kOrchard, kOrchardUnifiedAddress);
+  EXPECT_EQ(t, mojom::ZCashTxType::kOrchardToIronwood);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
 
-    // orchard → orchard addr → kOrchardToIronwood
-    std::tie(t, e) =
-        get_tx_type(mojom::ZCashTokenType::kOrchard, kOrchardUnifiedAddress);
-    EXPECT_EQ(t, mojom::ZCashTxType::kOrchardToIronwood);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+  // ironwood → orchard addr → kIronwoodToIronwood
+  std::tie(t, e) =
+      get_tx_type(mojom::ZCashTokenType::kIronwood, kOrchardUnifiedAddress);
+  EXPECT_EQ(t, mojom::ZCashTxType::kIronwoodToIronwood);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
 
-    // ironwood → orchard addr → kIronwoodToIronwood
-    std::tie(t, e) =
-        get_tx_type(mojom::ZCashTokenType::kIronwood, kOrchardUnifiedAddress);
-    EXPECT_EQ(t, mojom::ZCashTxType::kIronwoodToIronwood);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+  // t → orchard_internal → kShieldingIronwood
+  std::tie(t, e) = get_tx_type(mojom::ZCashTokenType::kTransparent,
+                               account_info->orchard_internal_address.value());
+  EXPECT_EQ(t, mojom::ZCashTxType::kShieldingIronwood);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
 
-    // t → orchard_internal → kShieldingIronwood
-    std::tie(t, e) =
-        get_tx_type(mojom::ZCashTokenType::kTransparent,
-                    account_info->orchard_internal_address.value());
-    EXPECT_EQ(t, mojom::ZCashTxType::kShieldingIronwood);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+  // orchard → orchard_internal → kMigratingIronwood
+  std::tie(t, e) = get_tx_type(mojom::ZCashTokenType::kOrchard,
+                               account_info->orchard_internal_address.value());
+  EXPECT_EQ(t, mojom::ZCashTxType::kMigratingIronwood);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
 
-    // orchard → orchard_internal → kMigratingIronwood
-    std::tie(t, e) =
-        get_tx_type(mojom::ZCashTokenType::kOrchard,
-                    account_info->orchard_internal_address.value());
-    EXPECT_EQ(t, mojom::ZCashTxType::kMigratingIronwood);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+  // ironwood → orchard_internal → kIronwoodToIronwood
+  std::tie(t, e) = get_tx_type(mojom::ZCashTokenType::kIronwood,
+                               account_info->orchard_internal_address.value());
+  EXPECT_EQ(t, mojom::ZCashTxType::kIronwoodToIronwood);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
 
-    // ironwood → orchard_internal → kIronwoodToIronwood
-    std::tie(t, e) =
-        get_tx_type(mojom::ZCashTokenType::kIronwood,
-                    account_info->orchard_internal_address.value());
-    EXPECT_EQ(t, mojom::ZCashTxType::kIronwoodToIronwood);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+  // Another same-keyring account's internal address counts as a migration
+  // target too, so orchard → that address is still kMigratingIronwood.
+  std::tie(t, e) =
+      get_tx_type(mojom::ZCashTokenType::kOrchard,
+                  account_2_info->orchard_internal_address.value());
+  EXPECT_EQ(t, mojom::ZCashTxType::kMigratingIronwood);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
 
-    // Another same-keyring account's internal address counts as a migration
-    // target too, so orchard → that address is still kMigratingIronwood.
-    std::tie(t, e) =
-        get_tx_type(mojom::ZCashTokenType::kOrchard,
-                    account_2_info->orchard_internal_address.value());
-    EXPECT_EQ(t, mojom::ZCashTxType::kMigratingIronwood);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+  // t → another account's orchard_internal → kShieldingIronwood
+  std::tie(t, e) =
+      get_tx_type(mojom::ZCashTokenType::kTransparent,
+                  account_2_info->orchard_internal_address.value());
+  EXPECT_EQ(t, mojom::ZCashTxType::kShieldingIronwood);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
 
-    // t → another account's orchard_internal → kShieldingIronwood
-    std::tie(t, e) =
-        get_tx_type(mojom::ZCashTokenType::kTransparent,
-                    account_2_info->orchard_internal_address.value());
-    EXPECT_EQ(t, mojom::ZCashTxType::kShieldingIronwood);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+  // orchard → transparent → kOrchardToTransparent
+  std::tie(t, e) =
+      get_tx_type(mojom::ZCashTokenType::kOrchard, kTransparentAddress);
+  EXPECT_EQ(t, mojom::ZCashTxType::kOrchardToTransparent);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
 
-    // orchard → transparent → kOrchardToTransparent
-    std::tie(t, e) =
-        get_tx_type(mojom::ZCashTokenType::kOrchard, kTransparentAddress);
-    EXPECT_EQ(t, mojom::ZCashTxType::kOrchardToTransparent);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+  // ironwood → transparent → kIronwoodToTransparent
+  std::tie(t, e) =
+      get_tx_type(mojom::ZCashTokenType::kIronwood, kTransparentAddress);
+  EXPECT_EQ(t, mojom::ZCashTxType::kIronwoodToTransparent);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
 
-    // ironwood → transparent → kIronwoodToTransparent
-    std::tie(t, e) =
-        get_tx_type(mojom::ZCashTokenType::kIronwood, kTransparentAddress);
-    EXPECT_EQ(t, mojom::ZCashTxType::kIronwoodToTransparent);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+  // t → transparent → kTransparentToTransparent
+  std::tie(t, e) =
+      get_tx_type(mojom::ZCashTokenType::kTransparent, kTransparentAddress);
+  EXPECT_EQ(t, mojom::ZCashTxType::kTransparentToTransparent);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+}
 
-    // t → transparent → kTransparentToTransparent
-    std::tie(t, e) =
-        get_tx_type(mojom::ZCashTokenType::kTransparent, kTransparentAddress);
-    EXPECT_EQ(t, mojom::ZCashTxType::kTransparentToTransparent);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
-  }
+TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_IronwoodDisabled) {
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
 
-  // Ironwood feature OFF, shielded ON:
-  {
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitAndEnableFeatureWithParameters(
-        features::kBraveWalletZCashFeature,
-        {{"zcash_shielded_transactions_enabled", "true"},
-         {"zcash_ironwood_enabled", "false"}});
+  static constexpr char kOrchardUnifiedAddress[] =
+      "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"
+      "ugytcmlf96rrmtgwldc75x94qn4n8pgen36y8tywlq6yjk7lkf3"
+      "fa8wzjrav8z2xpxqnrnmjxh8tmz6jhfh425t7f3vy6p4pd3zmqa"
+      "yq49efl2c4xydc0gszg660q9p";
+  static constexpr char kTransparentAddress[] =
+      "t1WTZNzKCvU2GeM1ZWRyF7EvhMHhr7magiT";
 
-    auto expect_unknown = [&](mojom::ZCashTokenType from_token,
-                              const std::string& address,
-                              mojom::ZCashAddressError expected_error) {
-      const auto [tx_type, error] = get_tx_type(from_token, address);
-      EXPECT_EQ(tx_type, mojom::ZCashTxType::kUnknown);
-      EXPECT_EQ(error, expected_error);
-    };
+  auto account_info = keyring_service_->GetZCashAccountInfo(account_id_1);
 
-    // All Ironwood-related transaction types are unavailable.
-    expect_unknown(mojom::ZCashTokenType::kTransparent, kOrchardUnifiedAddress,
-                   mojom::ZCashAddressError::kInvalidRecipientType);
-    expect_unknown(mojom::ZCashTokenType::kOrchard, kOrchardUnifiedAddress,
-                   mojom::ZCashAddressError::kInvalidRecipientType);
-    expect_unknown(mojom::ZCashTokenType::kIronwood, kOrchardUnifiedAddress,
-                   mojom::ZCashAddressError::kInvalidSenderType);
-    expect_unknown(mojom::ZCashTokenType::kTransparent,
-                   account_info->orchard_internal_address.value(),
-                   mojom::ZCashAddressError::kInvalidRecipientType);
-    expect_unknown(mojom::ZCashTokenType::kIronwood, kTransparentAddress,
-                   mojom::ZCashAddressError::kInvalidSenderType);
-    expect_unknown(
-        mojom::ZCashTokenType::kIronwood,
-        account_info->next_transparent_receive_address->address_string,
-        mojom::ZCashAddressError::kInvalidSenderType);
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "false"}});
 
-    // t → transparent → kTransparentToTransparent
-    const auto [t, e] =
-        get_tx_type(mojom::ZCashTokenType::kTransparent, kTransparentAddress);
-    EXPECT_EQ(t, mojom::ZCashTxType::kTransparentToTransparent);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
-  }
+  auto get_tx_type = [&](mojom::ZCashTokenType from_token,
+                         const std::string& addr) {
+    base::test::TestFuture<mojom::ZCashTxType, mojom::ZCashAddressError> future;
+    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), from_token,
+                                              addr, future.GetCallback());
+    return future.Take();
+  };
 
-  // Shielded transactions disabled:
-  {
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitAndEnableFeatureWithParameters(
-        features::kBraveWalletZCashFeature,
-        {{"zcash_shielded_transactions_enabled", "false"},
-         {"zcash_ironwood_enabled", "true"}});
+  auto expect_unknown = [&](mojom::ZCashTokenType from_token,
+                            const std::string& address,
+                            mojom::ZCashAddressError expected_error) {
+    const auto [tx_type, error] = get_tx_type(from_token, address);
+    EXPECT_EQ(tx_type, mojom::ZCashTxType::kUnknown);
+    EXPECT_EQ(error, expected_error);
+  };
 
-    // orchard sender → kUnknown (shielded disabled)
-    auto [t, e] =
-        get_tx_type(mojom::ZCashTokenType::kOrchard, kOrchardUnifiedAddress);
-    EXPECT_EQ(t, mojom::ZCashTxType::kUnknown);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kInvalidSenderType);
+  // t → orchard (t→o) is Ironwood shielding, so it is unavailable.
+  expect_unknown(mojom::ZCashTokenType::kTransparent, kOrchardUnifiedAddress,
+                 mojom::ZCashAddressError::kInvalidRecipientType);
+  expect_unknown(mojom::ZCashTokenType::kTransparent,
+                 account_info->orchard_internal_address.value(),
+                 mojom::ZCashAddressError::kInvalidRecipientType);
 
-    // t → transparent → kTransparentToTransparent
-    std::tie(t, e) =
-        get_tx_type(mojom::ZCashTokenType::kTransparent, kTransparentAddress);
-    EXPECT_EQ(t, mojom::ZCashTxType::kTransparentToTransparent);
-    EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
-  }
+  // orchard → orchard and Ironwood senders are unavailable.
+  expect_unknown(mojom::ZCashTokenType::kOrchard, kOrchardUnifiedAddress,
+                 mojom::ZCashAddressError::kInvalidRecipientType);
+  expect_unknown(mojom::ZCashTokenType::kIronwood, kOrchardUnifiedAddress,
+                 mojom::ZCashAddressError::kInvalidSenderType);
+  expect_unknown(mojom::ZCashTokenType::kIronwood, kTransparentAddress,
+                 mojom::ZCashAddressError::kInvalidSenderType);
+  expect_unknown(mojom::ZCashTokenType::kIronwood,
+                 account_info->next_transparent_receive_address->address_string,
+                 mojom::ZCashAddressError::kInvalidSenderType);
+
+  // orchard → transparent (o→t) still works without Ironwood.
+  auto [t, e] =
+      get_tx_type(mojom::ZCashTokenType::kOrchard, kTransparentAddress);
+  EXPECT_EQ(t, mojom::ZCashTxType::kOrchardToTransparent);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+
+  std::tie(t, e) = get_tx_type(
+      mojom::ZCashTokenType::kOrchard,
+      account_info->next_transparent_receive_address->address_string);
+  EXPECT_EQ(t, mojom::ZCashTxType::kUnshieldingOrchard);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+
+  // t → transparent → kTransparentToTransparent
+  std::tie(t, e) =
+      get_tx_type(mojom::ZCashTokenType::kTransparent, kTransparentAddress);
+  EXPECT_EQ(t, mojom::ZCashTxType::kTransparentToTransparent);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
+}
+
+TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_ShieldedDisabled) {
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
+
+  static constexpr char kOrchardUnifiedAddress[] =
+      "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"
+      "ugytcmlf96rrmtgwldc75x94qn4n8pgen36y8tywlq6yjk7lkf3"
+      "fa8wzjrav8z2xpxqnrnmjxh8tmz6jhfh425t7f3vy6p4pd3zmqa"
+      "yq49efl2c4xydc0gszg660q9p";
+  static constexpr char kTransparentAddress[] =
+      "t1WTZNzKCvU2GeM1ZWRyF7EvhMHhr7magiT";
+
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "false"},
+       {"zcash_ironwood_enabled", "true"}});
+
+  auto get_tx_type = [&](mojom::ZCashTokenType from_token,
+                         const std::string& addr) {
+    base::test::TestFuture<mojom::ZCashTxType, mojom::ZCashAddressError> future;
+    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), from_token,
+                                              addr, future.GetCallback());
+    return future.Take();
+  };
+
+  // orchard → orchard and orchard → transparent (o→t) are both rejected.
+  auto [t, e] =
+      get_tx_type(mojom::ZCashTokenType::kOrchard, kOrchardUnifiedAddress);
+  EXPECT_EQ(t, mojom::ZCashTxType::kUnknown);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kInvalidSenderType);
+
+  std::tie(t, e) =
+      get_tx_type(mojom::ZCashTokenType::kOrchard, kTransparentAddress);
+  EXPECT_EQ(t, mojom::ZCashTxType::kUnknown);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kInvalidSenderType);
+
+  // t → orchard (t→o) is treated as an invalid transparent recipient.
+  std::tie(t, e) =
+      get_tx_type(mojom::ZCashTokenType::kTransparent, kOrchardUnifiedAddress);
+  EXPECT_EQ(t, mojom::ZCashTxType::kUnknown);
+  EXPECT_EQ(
+      e,
+      mojom::ZCashAddressError::kInvalidUnifiedAddressMissingTransparentPart);
+
+  // t → transparent → kTransparentToTransparent
+  std::tie(t, e) =
+      get_tx_type(mojom::ZCashTokenType::kTransparent, kTransparentAddress);
+  EXPECT_EQ(t, mojom::ZCashTxType::kTransparentToTransparent);
+  EXPECT_EQ(e, mojom::ZCashAddressError::kNoError);
 }
 
 TEST_F(ZCashWalletServiceUnitTest,

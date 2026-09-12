@@ -384,6 +384,52 @@ TEST_F(ZCashDecoderUnitTest, ParseRawTransaction) {
   }
 }
 
+TEST_F(ZCashDecoderUnitTest, ParseTreeState_IronwoodEnabled) {
+  ::zcash::TreeState response;
+  response.set_hash("hash");
+  response.set_network("network");
+  response.set_height(2);
+  response.set_time(1);
+  response.set_orchardtree("orchard_tree");
+  response.set_saplingtree("sapling_tree");
+  response.set_ironwoodtree("ironwood_tree");
+
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature, {{"zcash_ironwood_enabled", "true"}});
+
+  base::MockCallback<ZCashDecoder::ParseTreeStateCallback> callback;
+  EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::TreeState::New(
+                            "network", 2, "hash", 1, "sapling_tree",
+                            "orchard_tree", "ironwood_tree"))));
+  decoder()->ParseTreeState(GetPrefixedProtobuf(response.SerializeAsString()),
+                            callback.Get());
+}
+
+TEST_F(ZCashDecoderUnitTest, ParseTreeState_IronwoodDisabled) {
+  ::zcash::TreeState response;
+  response.set_hash("hash");
+  response.set_network("network");
+  response.set_height(2);
+  response.set_time(1);
+  response.set_orchardtree("orchard_tree");
+  response.set_saplingtree("sapling_tree");
+  response.set_ironwoodtree("ironwood_tree");
+
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_ironwood_enabled", "false"}});
+
+  base::MockCallback<ZCashDecoder::ParseTreeStateCallback> callback;
+  EXPECT_CALL(
+      callback,
+      Run(EqualsMojo(zcash::mojom::TreeState::New(
+          "network", 2, "hash", 1, "sapling_tree", "orchard_tree", ""))));
+  decoder()->ParseTreeState(GetPrefixedProtobuf(response.SerializeAsString()),
+                            callback.Get());
+}
+
 TEST_F(ZCashDecoderUnitTest, ParseTreeState) {
   ::zcash::TreeState response;
   response.set_hash("hash");
@@ -394,36 +440,6 @@ TEST_F(ZCashDecoderUnitTest, ParseTreeState) {
   response.set_saplingtree("sapling_tree");
   response.set_ironwoodtree("ironwood_tree");
 
-  // Correct input, Ironwood feature enabled
-  {
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitAndEnableFeatureWithParameters(
-        features::kBraveWalletZCashFeature,
-        {{"zcash_ironwood_enabled", "true"}});
-
-    base::MockCallback<ZCashDecoder::ParseTreeStateCallback> callback;
-    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::TreeState::New(
-                              "network", 2, "hash", 1, "sapling_tree",
-                              "orchard_tree", "ironwood_tree"))));
-    decoder()->ParseTreeState(GetPrefixedProtobuf(response.SerializeAsString()),
-                              callback.Get());
-  }
-  // Correct input, Ironwood feature disabled: ironwood tree is not decoded
-  // even though present in the response.
-  {
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitAndEnableFeatureWithParameters(
-        features::kBraveWalletZCashFeature,
-        {{"zcash_ironwood_enabled", "false"}});
-
-    base::MockCallback<ZCashDecoder::ParseTreeStateCallback> callback;
-    EXPECT_CALL(
-        callback,
-        Run(EqualsMojo(zcash::mojom::TreeState::New(
-            "network", 2, "hash", 1, "sapling_tree", "orchard_tree", ""))));
-    decoder()->ParseTreeState(GetPrefixedProtobuf(response.SerializeAsString()),
-                              callback.Get());
-  }
   // Missed protobuf prefix is incorrect
   {
     base::MockCallback<ZCashDecoder::ParseTreeStateCallback> callback;
@@ -458,62 +474,66 @@ TEST_F(ZCashDecoderUnitTest, ParseTreeState) {
   }
 }
 
-TEST_F(ZCashDecoderUnitTest, ParseCompactBlock) {
+TEST_F(ZCashDecoderUnitTest, ParseCompactBlock_IronwoodEnabled) {
   std::vector<::zcash::CompactBlock> blocks = GenerateBlocks();
   std::vector<zcash::mojom::CompactBlockPtr> expected_blocks =
       GenerateMojoBlocks();
 
-  // Correct input, Ironwood feature enabled
-  {
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitAndEnableFeatureWithParameters(
-        features::kBraveWalletZCashFeature,
-        {{"zcash_ironwood_enabled", "true"}});
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature, {{"zcash_ironwood_enabled", "true"}});
 
-    std::vector<std::string> input;
-    for (const auto& block : blocks) {
-      input.push_back(GetPrefixedProtobuf(block.SerializeAsString()));
-    }
-
-    base::MockCallback<ZCashDecoder::ParseCompactBlocksCallback> callback;
-    EXPECT_CALL(callback, Run(testing::_))
-        .WillOnce([&](std::optional<std::vector<zcash::mojom::CompactBlockPtr>>
-                          blocks) {
-          EXPECT_EQ(expected_blocks.size(), blocks->size());
-          for (size_t i = 0; i < expected_blocks.size(); i++) {
-            EXPECT_TRUE(mojo::Equals(expected_blocks[i], blocks.value()[i]));
-          }
-        });
-    decoder()->ParseCompactBlocks(input, callback.Get());
+  std::vector<std::string> input;
+  for (const auto& block : blocks) {
+    input.push_back(GetPrefixedProtobuf(block.SerializeAsString()));
   }
-  // Correct input, Ironwood feature disabled: ironwood actions and commitment
-  // tree size are not decoded even though present in the response.
-  {
-    base::test::ScopedFeatureList feature_list;
-    feature_list.InitAndEnableFeatureWithParameters(
-        features::kBraveWalletZCashFeature,
-        {{"zcash_ironwood_enabled", "false"}});
 
-    std::vector<std::string> input;
-    for (const auto& block : blocks) {
-      input.push_back(GetPrefixedProtobuf(block.SerializeAsString()));
-    }
+  base::MockCallback<ZCashDecoder::ParseCompactBlocksCallback> callback;
+  EXPECT_CALL(callback, Run(testing::_))
+      .WillOnce([&](std::optional<std::vector<zcash::mojom::CompactBlockPtr>>
+                        blocks) {
+        EXPECT_EQ(expected_blocks.size(), blocks->size());
+        for (size_t i = 0; i < expected_blocks.size(); i++) {
+          EXPECT_TRUE(mojo::Equals(expected_blocks[i], blocks.value()[i]));
+        }
+      });
+  decoder()->ParseCompactBlocks(input, callback.Get());
+}
 
-    base::MockCallback<ZCashDecoder::ParseCompactBlocksCallback> callback;
-    EXPECT_CALL(callback, Run(testing::_))
-        .WillOnce([&](std::optional<std::vector<zcash::mojom::CompactBlockPtr>>
-                          result) {
-          ASSERT_TRUE(result.has_value());
-          ASSERT_EQ(expected_blocks.size(), result->size());
-          for (const auto& block : result.value()) {
-            EXPECT_EQ(0u, block->chain_metadata->ironwood_commitment_tree_size);
-            for (const auto& tx : block->vtx) {
-              EXPECT_TRUE(tx->ironwood_actions.empty());
-            }
-          }
-        });
-    decoder()->ParseCompactBlocks(input, callback.Get());
+TEST_F(ZCashDecoderUnitTest, ParseCompactBlock_IronwoodDisabled) {
+  std::vector<::zcash::CompactBlock> blocks = GenerateBlocks();
+  std::vector<zcash::mojom::CompactBlockPtr> expected_blocks =
+      GenerateMojoBlocks();
+
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_ironwood_enabled", "false"}});
+
+  std::vector<std::string> input;
+  for (const auto& block : blocks) {
+    input.push_back(GetPrefixedProtobuf(block.SerializeAsString()));
   }
+
+  base::MockCallback<ZCashDecoder::ParseCompactBlocksCallback> callback;
+  EXPECT_CALL(callback, Run(testing::_))
+      .WillOnce([&](std::optional<std::vector<zcash::mojom::CompactBlockPtr>>
+                        result) {
+        ASSERT_TRUE(result.has_value());
+        ASSERT_EQ(expected_blocks.size(), result->size());
+        for (const auto& block : result.value()) {
+          EXPECT_EQ(0u, block->chain_metadata->ironwood_commitment_tree_size);
+          for (const auto& tx : block->vtx) {
+            EXPECT_TRUE(tx->ironwood_actions.empty());
+          }
+        }
+      });
+  decoder()->ParseCompactBlocks(input, callback.Get());
+}
+
+TEST_F(ZCashDecoderUnitTest, ParseCompactBlock) {
+  std::vector<::zcash::CompactBlock> blocks = GenerateBlocks();
+
   // Missed protobuf prefix is incorrect
   {
     std::vector<std::string> input;
