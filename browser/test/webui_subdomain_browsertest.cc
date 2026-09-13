@@ -10,18 +10,13 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/strings/strcat.h"
-#include "chrome/browser/profiles/keep_alive/profile_keep_alive_types.h"
-#include "chrome/browser/profiles/keep_alive/scoped_profile_keep_alive.h"
+#include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/sessions/session_restore.h"
-#include "chrome/browser/sessions/session_restore_test_helper.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
-#include "components/keep_alive_registry/keep_alive_types.h"
-#include "components/keep_alive_registry/scoped_keep_alive.h"
+#include "content/public/browser/browser_main_parts.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
@@ -126,8 +121,19 @@ std::string GetStorage(std::string_view storage) {
 // Each subdomain must behave as a completely ordinary, separate origin.
 class WebUISubdomainBrowserTest : public InProcessBrowserTest {
  public:
-  void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
+  void TearDownOnMainThread() override {
+    subdomains_config_ = nullptr;
+    no_subdomains_registration_.reset();
+    subdomains_registration_.reset();
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
+ protected:
+  // The configs have to be registered before the browser starts up, as a
+  // restored session begins loading its tabs before `SetUpOnMainThread()`.
+  void CreatedBrowserMainParts(
+      content::BrowserMainParts* browser_main_parts) override {
+    InProcessBrowserTest::CreatedBrowserMainParts(browser_main_parts);
 
     auto subdomains_config = std::make_unique<TestUntrustedConfig>(
         kSubdomainsHost, /*should_handle_subdomains=*/true);
@@ -142,14 +148,6 @@ class WebUISubdomainBrowserTest : public InProcessBrowserTest {
                 kNoSubdomainsHost, /*should_handle_subdomains=*/false));
   }
 
-  void TearDownOnMainThread() override {
-    subdomains_config_ = nullptr;
-    no_subdomains_registration_.reset();
-    subdomains_registration_.reset();
-    InProcessBrowserTest::TearDownOnMainThread();
-  }
-
- protected:
   content::WebContents* GetActiveWebContents() {
     return browser()->tab_strip_model()->GetActiveWebContents();
   }
@@ -189,42 +187,6 @@ class WebUISubdomainBrowserTest : public InProcessBrowserTest {
     EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
     observer.Wait();
     return observer.last_navigation_succeeded();
-  }
-
-  // Session restore defers loading tabs, so force the tab at `index` to load
-  // before inspecting its contents.
-  content::WebContents* LoadRestoredTabAt(int index) {
-    content::WebContents* web_contents =
-        browser()->tab_strip_model()->GetWebContentsAt(index);
-    if (web_contents->GetController().NeedsReload()) {
-      content::TestNavigationObserver observer(web_contents);
-      web_contents->GetController().LoadIfNecessary();
-      observer.Wait();
-      EXPECT_TRUE(observer.last_navigation_succeeded())
-          << "restoring tab " << index;
-    } else {
-      EXPECT_TRUE(content::WaitForLoadStop(web_contents));
-    }
-    return web_contents;
-  }
-
-  // Closes the browser and restores the last session, leaving `browser()`
-  // pointing at the restored browser.
-  void CloseBrowserAndRestoreSession() {
-    Profile* const profile = GetProfile();
-    const ScopedKeepAlive scoped_keep_alive(KeepAliveOrigin::SESSION_RESTORE,
-                                            KeepAliveRestartOption::DISABLED);
-    ScopedProfileKeepAlive profile_keep_alive(
-        profile, ProfileKeepAliveOrigin::kSessionRestore);
-    CloseBrowserSynchronously(browser());
-
-    ui_test_utils::BrowserCreatedObserver browser_created_observer;
-    SessionRestoreTestHelper session_restore_test_helper;
-    chrome::OpenWindowWithRestoredTabs(profile);
-    if (SessionRestore::IsRestoring(profile)) {
-      session_restore_test_helper.Wait();
-    }
-    SetBrowser(browser_created_observer.Wait());
   }
 
   TestUntrustedConfig& subdomains_config() { return *subdomains_config_; }
@@ -430,21 +392,62 @@ IN_PROC_BROWSER_TEST_F(WebUISubdomainBrowserTest, ReloadAndHistoryWork) {
   EXPECT_FALSE(web_contents->IsCrashed());
 }
 
+// Fixture for the session restore tests. Setting the startup preference to
+// LAST makes the next launch restore the previous session, so the `PRE_` test
+// can set up tabs that the following test verifies after a real relaunch.
+class WebUISubdomainSessionRestoreBrowserTest
+    : public WebUISubdomainBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    WebUISubdomainBrowserTest::SetUpOnMainThread();
+    SessionStartupPref::SetStartupPref(
+        browser()->GetProfile(), SessionStartupPref(SessionStartupPref::LAST));
+  }
+
+ protected:
+  // Session restore defers loading tabs, so force the tab at `index` to load
+  // before inspecting its contents.
+  content::WebContents* LoadRestoredTabAt(int index) {
+    content::WebContents* web_contents =
+        browser()->tab_strip_model()->GetWebContentsAt(index);
+    if (web_contents->GetController().NeedsReload()) {
+      content::TestNavigationObserver observer(web_contents);
+      web_contents->GetController().LoadIfNecessary();
+      observer.Wait();
+      EXPECT_TRUE(observer.last_navigation_succeeded())
+          << "restoring tab " << index;
+    } else {
+      EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+    }
+    return web_contents;
+  }
+};
+
+// Leaves two subdomain instances open, each with its own localStorage, for the
+// following test to inspect once they have been restored.
+IN_PROC_BROWSER_TEST_F(WebUISubdomainSessionRestoreBrowserTest,
+                       PRE_SessionRestore) {
+  content::WebContents* tab_a =
+      NavigateActiveTab(PageURL("instance-a", kSubdomainsHost));
+  ASSERT_EQ("ok", content::EvalJs(tab_a, SetStorage(kLocalStorage, "value-a")));
+
+  content::WebContents* tab_b =
+      NavigateNewTab(PageURL("instance-b", kSubdomainsHost));
+  ASSERT_EQ("ok", content::EvalJs(tab_b, SetStorage(kLocalStorage, "value-b")));
+
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+}
+
 // Subdomain URLs round-trip through the session service, so restoring a session
 // brings each instance back on its own origin with its own storage.
-IN_PROC_BROWSER_TEST_F(WebUISubdomainBrowserTest, SessionRestore) {
+IN_PROC_BROWSER_TEST_F(WebUISubdomainSessionRestoreBrowserTest,
+                       SessionRestore) {
   const GURL url_a = PageURL("instance-a", kSubdomainsHost);
   const GURL url_b = PageURL("instance-b", kSubdomainsHost);
 
-  ASSERT_EQ("ok", content::EvalJs(NavigateActiveTab(url_a),
-                                  SetStorage(kLocalStorage, "value-a")));
-  ASSERT_EQ("ok", content::EvalJs(NavigateNewTab(url_b),
-                                  SetStorage(kLocalStorage, "value-b")));
-  ASSERT_EQ(2, browser()->tab_strip_model()->count());
-
-  CloseBrowserAndRestoreSession();
-
-  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+  // The two tabs from `PRE_SessionRestore` are restored ahead of the
+  // `about:blank` tab that browser tests launch the browser with.
+  ASSERT_EQ(3, browser()->tab_strip_model()->count());
 
   content::WebContents* restored_a = LoadRestoredTabAt(0);
   EXPECT_EQ(url_a, restored_a->GetLastCommittedURL());
