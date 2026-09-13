@@ -200,8 +200,8 @@ class PlaylistStreamPlaybackBrowserTest : public PlatformBrowserTest {
     base::test::TestFuture<base::expected<PlaylistStreamDownloader::Result,
                                           PlaylistStreamDownloader::Error>>
         future;
-    downloader.Start(manifest_url, dir, base::DoNothing(),
-                     future.GetCallback());
+    downloader.Start(manifest_url, GURL("https://example.com/"), dir,
+                     base::DoNothing(), future.GetCallback());
     return future.Take();
   }
 

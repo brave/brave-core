@@ -75,13 +75,20 @@ class PlaylistStreamDownloader {
   PlaylistStreamDownloader& operator=(const PlaylistStreamDownloader&) = delete;
   ~PlaylistStreamDownloader();
 
-  // `destination_dir` must already exist.
+  // `destination_dir` must already exist. `page_source` is sent as the
+  // Referer on every fetch, since CDNs that hotlink-protect their media
+  // reject a request that doesn't look like it came from the page that
+  // played it.
   void Start(const GURL& manifest_url,
+             const GURL& page_source,
              const base::FilePath& destination_dir,
              ProgressCallback on_progress,
              ResultCallback on_result);
 
   static std::string_view ErrorToString(Error error);
+
+  void SetURLLoaderFactoryForTesting(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
 
  private:
   // One remote file to save locally, plus the name to save it under.
@@ -107,10 +114,16 @@ class PlaylistStreamDownloader {
   void OnDashManifestParsed(
       base::expected<DashManifest, DashParseError> parsed);
   void OnMediaPlaylistFetched(size_t rendition_index,
+                              GURL playlist_url,
                               std::optional<std::string> body);
 
   // Returns false if the playlist is unusable, having already reported why.
-  bool BuildRenditionJob(size_t rendition_index, std::string_view body);
+  // `playlist_url` is the URL this exact body was fetched from - not
+  // necessarily `manifest_url_` - since it's the base relative segment URIs
+  // must be resolved against.
+  bool BuildRenditionJob(size_t rendition_index,
+                         const GURL& playlist_url,
+                         std::string_view body);
 
   void MaybeStartSegmentDownloads();
   void StartNextSegmentDownload();
@@ -128,6 +141,7 @@ class PlaylistStreamDownloader {
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   GURL manifest_url_;
+  GURL page_source_;
   base::FilePath destination_dir_;
   ProgressCallback on_progress_;
   ResultCallback on_result_;

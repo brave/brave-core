@@ -52,6 +52,9 @@ std::string WriteHlsMediaPlaylist(const HlsRendition& rendition) {
   }
 
   for (const auto& segment : rendition.segments) {
+    if (segment.discontinuity) {
+      base::StrAppend(&manifest, {"#EXT-X-DISCONTINUITY\n"});
+    }
     absl::StrAppendFormat(&manifest, "#EXTINF:%.6f,\n",
                           segment.duration.InSecondsF());
     base::StrAppend(&manifest, {segment.file_name, "\n"});

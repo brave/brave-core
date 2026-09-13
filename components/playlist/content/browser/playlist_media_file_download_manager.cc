@@ -114,6 +114,7 @@ void PlaylistMediaFileDownloadManager::TryStartingDownloadTask() {
 void PlaylistMediaFileDownloadManager::StartHlsDownloadTask() {
   const std::string id = current_job_->item->id;
   const GURL manifest_url = current_job_->item->media_source;
+  const GURL page_source = current_job_->item->page_source;
   const base::FilePath directory =
       delegate_->GetMediaPathForPlaylistItemItem(id).DirName().AppendASCII(
           "hls");
@@ -127,12 +128,14 @@ void PlaylistMediaFileDownloadManager::StartHlsDownloadTask() {
           },
           directory),
       base::BindOnce(&PlaylistMediaFileDownloadManager::OnHlsDirectoryCreated,
-                     weak_factory_.GetWeakPtr(), id, manifest_url, directory));
+                     weak_factory_.GetWeakPtr(), id, manifest_url, page_source,
+                     directory));
 }
 
 void PlaylistMediaFileDownloadManager::OnHlsDirectoryCreated(
     const std::string& id,
     const GURL& manifest_url,
+    const GURL& page_source,
     const base::FilePath& directory,
     bool created) {
   waiting_for_hls_directory_ = false;
@@ -151,7 +154,7 @@ void PlaylistMediaFileDownloadManager::OnHlsDirectoryCreated(
 
   hls_downloader_ = std::make_unique<PlaylistStreamDownloader>(context_);
   hls_downloader_->Start(
-      manifest_url, directory,
+      manifest_url, page_source, directory,
       base::BindRepeating(
           [](base::WeakPtr<PlaylistMediaFileDownloadManager> self,
              const std::string& id, int64_t received_bytes,

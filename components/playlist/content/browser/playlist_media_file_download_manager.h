@@ -113,6 +113,7 @@ class PlaylistMediaFileDownloadManager
   void StartHlsDownloadTask();
   void OnHlsDirectoryCreated(const std::string& id,
                              const GURL& manifest_url,
+                             const GURL& page_source,
                              const base::FilePath& directory,
                              bool created);
   void OnHlsDownloaded(const std::string& id,

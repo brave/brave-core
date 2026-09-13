@@ -123,12 +123,19 @@ PlaylistStreamDownloader::PlaylistStreamDownloader(
 
 PlaylistStreamDownloader::~PlaylistStreamDownloader() = default;
 
+void PlaylistStreamDownloader::SetURLLoaderFactoryForTesting(
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
+  url_loader_factory_ = std::move(url_loader_factory);
+}
+
 void PlaylistStreamDownloader::Start(const GURL& manifest_url,
+                                     const GURL& page_source,
                                      const base::FilePath& destination_dir,
                                      ProgressCallback on_progress,
                                      ResultCallback on_result) {
   CHECK(on_result);
   manifest_url_ = manifest_url;
+  page_source_ = page_source;
   destination_dir_ = destination_dir;
   on_progress_ = std::move(on_progress);
   on_result_ = std::move(on_result);
@@ -145,6 +152,13 @@ void PlaylistStreamDownloader::FetchManifest(
   request->url = url;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
+  // Without these, this looks nothing like the request the page itself made
+  // to fetch this same manifest during playback. CDNs that hotlink-protect
+  // media on Referer/Origin reject a bare, referrer-less fetch.
+  request->referrer = page_source_;
+  request->referrer_policy =
+      net::ReferrerPolicy::CLEAR_ON_TRANSITION_FROM_SECURE_TO_INSECURE;
+  request->request_initiator = url::Origin::Create(page_source_);
 
   auto loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
@@ -199,7 +213,7 @@ void PlaylistStreamDownloader::OnRootManifestFetched(
   if (kind.kind == media::hls::Playlist::Kind::kMediaPlaylist) {
     renditions_.push_back(
         RenditionJob{.playlist_file_name = kSingleRenditionFileName});
-    if (!BuildRenditionJob(0, *body)) {
+    if (!BuildRenditionJob(0, manifest_url_, *body)) {
       return;
     }
     MaybeStartSegmentDownloads();
@@ -268,12 +282,13 @@ void PlaylistStreamDownloader::OnRootManifestFetched(
   FetchManifest(
       best->GetPrimaryRenditionUri(),
       base::BindOnce(&PlaylistStreamDownloader::OnMediaPlaylistFetched,
-                     weak_factory_.GetWeakPtr(), 0u));
+                     weak_factory_.GetWeakPtr(), 0u,
+                     best->GetPrimaryRenditionUri()));
   if (audio_url) {
     FetchManifest(
         *audio_url,
         base::BindOnce(&PlaylistStreamDownloader::OnMediaPlaylistFetched,
-                       weak_factory_.GetWeakPtr(), 1u));
+                       weak_factory_.GetWeakPtr(), 1u, *audio_url));
   }
 }
 
@@ -363,6 +378,7 @@ void PlaylistStreamDownloader::OnDashManifestParsed(
 
 void PlaylistStreamDownloader::OnMediaPlaylistFetched(
     size_t rendition_index,
+    GURL playlist_url,
     std::optional<std::string> body) {
   if (finished_) {
     return;
@@ -373,7 +389,7 @@ void PlaylistStreamDownloader::OnMediaPlaylistFetched(
     return;
   }
 
-  if (!BuildRenditionJob(rendition_index, *body)) {
+  if (!BuildRenditionJob(rendition_index, playlist_url, *body)) {
     return;
   }
 
@@ -384,6 +400,7 @@ void PlaylistStreamDownloader::OnMediaPlaylistFetched(
 }
 
 bool PlaylistStreamDownloader::BuildRenditionJob(size_t rendition_index,
+                                                 const GURL& playlist_url,
                                                  std::string_view body) {
   auto identification = media::hls::Playlist::IdentifyPlaylist(body);
   if (!identification.has_value()) {
@@ -391,8 +408,12 @@ bool PlaylistStreamDownloader::BuildRenditionJob(size_t rendition_index,
     return false;
   }
 
+  // `playlist_url`, not `manifest_url_`: a multivariant playlist's renditions
+  // routinely live on a different host or path (e.g. a CDN redirect), and
+  // this playlist's own relative segment URIs must resolve against where it
+  // was actually fetched from.
   auto parsed = media::hls::MediaPlaylist::Parse(
-      body, manifest_url_, url::Origin::Create(manifest_url_),
+      body, playlist_url, url::Origin::Create(playlist_url),
       std::move(identification).value().version,
       /*parent_playlist=*/nullptr);
   if (!parsed.has_value()) {
@@ -442,8 +463,8 @@ bool PlaylistStreamDownloader::BuildRenditionJob(size_t rendition_index,
 
     const std::string file_name = MakeLocalFileName(
         prefix, job.manifest.segments.size(), segment->GetUri());
-    job.manifest.segments.push_back(
-        HlsSegmentEntry{file_name, segment->GetDuration()});
+    job.manifest.segments.push_back(HlsSegmentEntry{
+        file_name, segment->GetDuration(), segment->HasDiscontinuity()});
     job.files.push_back(PendingFile{segment->GetUri(), file_name});
   }
 
@@ -493,6 +514,10 @@ void PlaylistStreamDownloader::StartNextSegmentDownload() {
   request->url = file.url;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
+  request->referrer = page_source_;
+  request->referrer_policy =
+      net::ReferrerPolicy::CLEAR_ON_TRANSITION_FROM_SECURE_TO_INSECURE;
+  request->request_initiator = url::Origin::Create(page_source_);
 
   auto loader = network::SimpleURLLoader::Create(
       std::move(request), GetNetworkTrafficAnnotationTag());
@@ -518,6 +543,10 @@ void PlaylistStreamDownloader::OnSegmentDownloaded(
     size_t file_index,
     network::SimpleURLLoader* loader,
     base::FilePath path) {
+  // Read before erasing: that destroys `loader`, and it's the only place this
+  // segment's size is available - `DownloadToFile` doesn't hand it back some
+  // other way.
+  const int64_t content_size = loader->GetContentSize();
   in_flight_.erase(loader);
 
   if (finished_) {
@@ -530,9 +559,10 @@ void PlaylistStreamDownloader::OnSegmentDownloaded(
   }
 
   ++files_completed_;
+  if (content_size > 0) {
+    received_bytes_ += content_size;
+  }
 
-  // `DownloadToFile` doesn't report sizes, and stat-ing every segment on the
-  // UI thread isn't worth it; the manifest bytes are negligible either way.
   if (on_progress_) {
     const int percent = static_cast<int>(files_completed_ * 100 / total_files_);
     on_progress_.Run(received_bytes_, percent);

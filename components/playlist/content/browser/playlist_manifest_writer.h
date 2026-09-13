@@ -18,6 +18,12 @@ struct HlsSegmentEntry {
   // Relative to the manifest, so the whole item directory stays movable.
   std::string file_name;
   base::TimeDelta duration;
+  // Set when the source signaled `EXT-X-DISCONTINUITY` immediately before
+  // this segment - e.g. a splice between an intro bumper and the main
+  // content, each with their own timestamps. Dropping this would leave the
+  // demuxer expecting continuous timestamps across the splice, which can
+  // break playback outright rather than just glitch.
+  bool discontinuity = false;
 };
 
 struct HlsRendition {
