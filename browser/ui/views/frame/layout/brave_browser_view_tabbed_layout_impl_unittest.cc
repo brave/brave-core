@@ -67,7 +67,6 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   void UpdateWindowControlsOverlay(const gfx::Rect&) override {}
   bool ShouldLayoutTabStrip() const override { return false; }
   int GetExtraInfobarOffset() const override { return 0; }
-  bool IsOrganizerPanelVisible() const override { return false; }
   base::CallbackListSubscription AddOnGlassModeChangedCallback(
       base::RepeatingCallback<void(bool)> callback,
       bool* current_state_out) override {
