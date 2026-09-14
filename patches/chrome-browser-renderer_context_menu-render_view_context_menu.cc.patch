@@ -1,8 +1,16 @@
 diff --git a/chrome/browser/renderer_context_menu/render_view_context_menu.cc b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-index 835dd9a5fcbfa2b816b7468f89cd65c1b3545977..6e611ce56a5f307c23ea1447341e1245505a8ec9 100644
+index 835dd9a5fcbfa2b816b7468f89cd65c1b3545977..70c10d0d972e8d52bd8c281705239bca5316133b 100644
 --- a/chrome/browser/renderer_context_menu/render_view_context_menu.cc
 +++ b/chrome/browser/renderer_context_menu/render_view_context_menu.cc
-@@ -2932,6 +2932,7 @@ void RenderViewContextMenu::AppendSearchProvider() {
+@@ -1158,6 +1158,7 @@ std::u16string RenderViewContextMenu::FormatURLForClipboard(const GURL& url) {
+         base::UnescapeRule::PATH_SEPARATORS |
+         base::UnescapeRule::URL_SPECIAL_CHARS_EXCEPT_PATH_SEPARATORS;
+   } else {
++    BRAVE_REPLACE_CHROME_TO_BRAVE_SCHEME
+     format_types = url_formatter::kFormatUrlOmitNothing;
+     unescape_rules = base::UnescapeRule::NONE;
+   }
+@@ -2932,6 +2933,7 @@ void RenderViewContextMenu::AppendSearchProvider() {
    if (!selection_navigation_url_.is_valid()) {
      return;
    }

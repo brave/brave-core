@@ -137,6 +137,13 @@ void RenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting(
       return;                                                            \
   }
 
+#define BRAVE_REPLACE_CHROME_TO_BRAVE_SCHEME                       \
+  if (url_to_format.SchemeIs(content::kChromeUIScheme)) {          \
+    GURL::Replacements replacements;                               \
+    replacements.SetSchemeStr(content::kBraveUIScheme);            \
+    url_to_format = url_to_format.ReplaceComponents(replacements); \
+  }
+
 // Use our subclass to initialize SpellingOptionsSubMenuObserver.
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
 #define RegisterMenuShownCallbackForTesting \
@@ -151,6 +158,7 @@ void RenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting(
 // Make it clear which class we mean here.
 #undef RenderViewContextMenu
 #undef BRAVE_APPEND_SEARCH_PROVIDER
+#undef BRAVE_REPLACE_CHROME_TO_BRAVE_SCHEME
 
 namespace {
 
