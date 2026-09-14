@@ -428,6 +428,10 @@ if (!is_android) {
   # BraveHidDelegate inherits from ChromeHidDelegate, and referenced by
   # BraveContentBrowserClient, so we put into the same source_set.
   brave_chrome_browser_sources += [
+    "//brave/browser/gpu/gpu_present_stall_detector.cc",
+    "//brave/browser/gpu/gpu_present_stall_detector.h",
+    "//brave/browser/gpu/gpu_present_stall_restarter.cc",
+    "//brave/browser/gpu/gpu_present_stall_restarter.h",
     "//brave/browser/hid/brave_hid_delegate.cc",
     "//brave/browser/hid/brave_hid_delegate.h",
   ]
