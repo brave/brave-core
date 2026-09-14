@@ -299,8 +299,8 @@ export class Config {
             'reapi_instance': 'default',
           }
         : {}),
-      ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
       ...(this.is_msan ? { 'checkout_instrumented_libraries': true } : {}),
+      ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
     }
 
     if (this.cacheDir && !fs.existsSync(this.cacheDir)) {
