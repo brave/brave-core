@@ -11,9 +11,14 @@
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/p3a/p3a_service.h"
+#include "build/build_config.h"
 #include "components/metrics/metrics_pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/os_crypt/dpapi_risk.h"
+#endif
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/importer/brave_importer_p3a.h"
@@ -77,6 +82,12 @@ void BraveBrowserMainExtraParts::PreProfileInit() {
 
 void BraveBrowserMainExtraParts::PostBrowserStart() {
   g_brave_browser_process->StartBraveServices();
+
+#if BUILDFLAG(IS_WIN)
+  // Detection blocks, so it runs on a pool task from here rather than
+  // anywhere on the startup path.
+  brave::RecordDPAPIRiskSignals(g_browser_process->local_state());
+#endif  // BUILDFLAG(IS_WIN)
 }
 
 void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
