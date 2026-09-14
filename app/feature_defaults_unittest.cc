@@ -158,7 +158,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &chrome_pdf::features::kPdfSaveToDriveSurvey,
 #endif
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
-      &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
       &commerce::kPriceAnnotations,
       &commerce::kShoppingList,
