@@ -135,7 +135,7 @@ public class AppReviewManager: ObservableObject {
 
       DispatchQueue.main.async {
         if let windowScene = controller.currentScene {
-          SKStoreReviewController.requestReview(in: windowScene)
+          AppStore.requestReview(in: windowScene)
         }
       }
     }

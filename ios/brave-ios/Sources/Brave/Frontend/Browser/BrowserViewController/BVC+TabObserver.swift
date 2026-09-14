@@ -164,7 +164,7 @@ extension BrowserViewController: TabObserver {
       isSelected: tabManager.selectedTab === tab,
       isPrivate: privateBrowsingManager.isPrivateBrowsing
     )
-    tab.browserData?.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
+    tab.browserData?.reportPageLoad(to: rewards)
 
     if tab.visibleURL?.isLocal == false {
       // Set rewards inter site url as new page load url.
@@ -188,7 +188,7 @@ extension BrowserViewController: TabObserver {
       if tab === tabManager.selectedTab {
         if let displayURL = tab.visibleURL?.displayURL {
           updateToolbarCurrentURL(displayURL)
-        } else if let url = tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
+        } else if let url = tab.lastCommittedURL, !url.isLocal, !InternalURL.isValid(url: url) {
           updateToolbarCurrentURL(url.displayURL)
         }
         updateWebViewPageZoom(tab: tab)
@@ -227,7 +227,7 @@ extension BrowserViewController: TabObserver {
       // didCommit is called and it will cause url bar be empty in that period
       // To fix this when tab display url is empty, webview url is used
       if tab === tabManager.selectedTab, tab.visibleURL?.displayURL == nil {
-        if let url = tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
+        if let url = tab.visibleURL, !url.isLocal, !InternalURL.isValid(url: url) {
           updateToolbarCurrentURL(url.displayURL)
         }
       } else if tab === tabManager.selectedTab, tab.visibleURL?.displayURL?.scheme == "about",
@@ -254,7 +254,7 @@ extension BrowserViewController: TabObserver {
         let rewardsURL = tab.rewardsXHRLoadURL,
         url.host == rewardsURL.host
       {
-        tab.browserData?.reportPageLoad(to: rewards, redirectChain: [url])
+        tab.browserData?.reportPageLoad(to: rewards)
       }
     }
 
