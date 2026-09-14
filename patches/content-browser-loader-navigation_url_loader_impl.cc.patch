@@ -1,0 +1,27 @@
+diff --git a/content/browser/loader/navigation_url_loader_impl.cc b/content/browser/loader/navigation_url_loader_impl.cc
+index bf56800508aa5b6f66282e74e396b98379f0ffe6..832ed3efe61d3047f673d4021a80ea3a64374801 100644
+--- a/content/browser/loader/navigation_url_loader_impl.cc
++++ b/content/browser/loader/navigation_url_loader_impl.cc
+@@ -700,7 +700,9 @@ void NavigationURLLoaderImpl::Start() {
+     // or be intercepted, so we just let it go here.
+     std::string scheme = request_info_->common_params->url.GetScheme();
+     if (std::ranges::contains(URLDataManagerBackend::GetWebUISchemes(),
+-                              scheme)) {
++                              scheme) &&
++        !ShouldInterceptWebUINavigation(
++            browser_context_, request_info_->common_params->url)) {
+       FrameTreeNode* frame_tree_node =
+           FrameTreeNode::GloballyFindByID(frame_tree_node_id_);
+       CHECK(frame_tree_node);
+@@ -2198,6 +2200,11 @@ NavigationURLLoaderImpl::CreateTerminalNonNetworkLoaderFactory(
+     return factory_from_client;
+   }
+ 
++  if (mojo::PendingRemote<network::mojom::URLLoaderFactory> webui =
++          MaybeCreateWebUILoaderFactory(frame_tree_node, url)) {
++    return webui;
++  }
++
+   if (url.GetScheme() == url::kFileSystemScheme) {
+     bool is_nav_allowed =
+         GetContentClient()->browser()->IsFileSystemURLNavigationAllowed(
