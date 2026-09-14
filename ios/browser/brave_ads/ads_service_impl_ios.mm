@@ -51,11 +51,7 @@ AdsServiceImplIOS::AdsServiceImplIOS(PrefService& prefs)
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       ads_client_notifier_(std::make_unique<AdsClientNotifier>()) {
-  pref_change_registrar_.Init(&*prefs_);
-  pref_change_registrar_.Add(
-      prefs::kSponsoredEnabled,
-      base::BindRepeating(&AdsServiceImplIOS::OnSponsoredAdsPrefChanged,
-                          weak_ptr_factory_.GetWeakPtr()));
+  InitializePrefChangeRegistrar();
 }
 
 AdsServiceImplIOS::~AdsServiceImplIOS() = default;
@@ -182,9 +178,14 @@ void AdsServiceImplIOS::OnNotificationAdClicked(
 
 void AdsServiceImplIOS::ClearData(ResultCallback callback) {
   UMA_HISTOGRAM_BOOLEAN(kClearDataHistogramName, true);
+
+  // Remember whether the service was running before shutting it down, so
+  // `ClearAdsDataCallback` only restarts it if it was running in the first
+  // place.
+  const bool was_running = IsInitialized();
   ShutdownAds(base::BindOnce(&AdsServiceImplIOS::ClearAdsData,
                              weak_ptr_factory_.GetWeakPtr(),
-                             std::move(callback)));
+                             std::move(callback), was_running));
 }
 
 void AdsServiceImplIOS::AddBatAdsObserver(
@@ -484,7 +485,9 @@ void AdsServiceImplIOS::ShutdownAdsCallback(ResultCallback callback,
   std::move(callback).Run(success);
 }
 
-void AdsServiceImplIOS::ClearAdsData(ResultCallback callback, bool success) {
+void AdsServiceImplIOS::ClearAdsData(ResultCallback callback,
+                                     bool was_running,
+                                     bool success) {
   if (!success) {
     return std::move(callback).Run(/*success=*/false);
   }
@@ -507,10 +510,17 @@ void AdsServiceImplIOS::ClearAdsData(ResultCallback callback, bool success) {
           },
           storage_path_),
       base::BindOnce(&AdsServiceImplIOS::ClearAdsDataCallback,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     was_running));
 }
 
 void AdsServiceImplIOS::ClearAdsPrefs() {
+  // Stop observing prefs before they are set below, otherwise restoring
+  // `kSponsoredEnabled` to its prior value would fire
+  // `OnSponsoredAdsPrefChanged` re-entrantly, since clearing the prefix above
+  // resets it to its default.
+  pref_change_registrar_.RemoveAll();
+
   std::optional<bool> sponsored_enabled;
   if (prefs_->HasPrefPath(prefs::kSponsoredEnabled)) {
     sponsored_enabled = prefs_->GetBoolean(prefs::kSponsoredEnabled);
@@ -521,14 +531,28 @@ void AdsServiceImplIOS::ClearAdsPrefs() {
   if (sponsored_enabled) {
     prefs_->SetBoolean(prefs::kSponsoredEnabled, *sponsored_enabled);
   }
+
+  InitializePrefChangeRegistrar();
 }
 
-void AdsServiceImplIOS::ClearAdsDataCallback(ResultCallback callback) {
+void AdsServiceImplIOS::InitializePrefChangeRegistrar() {
+  pref_change_registrar_.Init(&*prefs_);
+  pref_change_registrar_.Add(
+      prefs::kSponsoredEnabled,
+      base::BindRepeating(&AdsServiceImplIOS::OnSponsoredAdsPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr()));
+}
+
+void AdsServiceImplIOS::ClearAdsDataCallback(ResultCallback callback,
+                                             bool was_running) {
   NotifyDidClearAdsServiceData();
 
-  if (!ads_client_) {
-    // Never initialized, so there is nothing to restart, e.g. sponsored ads
-    // were disabled before the ads service was ever initialized.
+  // Only restart the service if it was running before `ClearData` was
+  // called. If it's already initialized, something else (e.g. the app
+  // reinitializing on foreground) restarted it while the data was being
+  // cleared, so restarting here would hit `InitializeAds`'s
+  // `CHECK(!IsInitialized())`.
+  if (!was_running || IsInitialized()) {
     return std::move(callback).Run(/*success=*/true);
   }
 
