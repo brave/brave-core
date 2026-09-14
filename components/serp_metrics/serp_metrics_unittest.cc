@@ -879,7 +879,7 @@ TEST_F(SerpMetricsTest, YesterdayUsesExplicitCutoff) {
   // 1 Brave search.
   AdvanceClockToNextUTCMidnight();
   EXPECT_EQ(1U, serp_metrics_->GetSearchCountForYesterday(
-                    SerpMetricType::kBrave, /*last_report_time=*/std::nullopt));
+                    SerpMetricType::kBrave, /*last_reported_at=*/std::nullopt));
 
   // If we set the cutoff to the start of today (Day 2), yesterday is fully
   // covered by the cutoff — nothing remains to report.
@@ -906,7 +906,7 @@ TEST_F(SerpMetricsTest, StalePeriodUsesExplicitCutoff) {
   // kLastCheckYMD is empty, so the migration returns epoch — the full
   // retention window is stale. Stale = Day 0 (3 searches).
   EXPECT_EQ(3U, serp_metrics_->GetSearchCountForStalePeriod(
-                    /*last_report_time=*/std::nullopt));
+                    /*last_reported_at=*/std::nullopt));
 
   // A null base::Time cutoff means nothing reported — same as above.
   EXPECT_EQ(3U, serp_metrics_->GetSearchCountForStalePeriod(base::Time()));
@@ -930,7 +930,7 @@ TEST_F(SerpMetricsTest, ExplicitCutoffOverridesKLastReportedAt) {
   // Default cutoff (kLastReportedAt = Day 0): Day 0 is unreported, so it
   // counts as yesterday.
   EXPECT_EQ(1U, serp_metrics_->GetSearchCountForYesterday(
-                    SerpMetricType::kBrave, /*last_report_time=*/std::nullopt));
+                    SerpMetricType::kBrave, /*last_reported_at=*/std::nullopt));
 
   // Explicit cutoff at today start (Day 1 midnight): Day 0 was already
   // reported, so yesterday returns 0.

@@ -35,12 +35,12 @@ class SerpMetricsAllProfilesAggregatorMock
 
   MOCK_METHOD(size_t,
               GetSearchCountForYesterday,
-              (SerpMetricType type, std::optional<base::Time> last_report_time),
+              (SerpMetricType type, std::optional<base::Time> last_reported_at),
               (const, override));
 
   MOCK_METHOD(size_t,
               GetSearchCountForStalePeriod,
-              (std::optional<base::Time> last_report_time),
+              (std::optional<base::Time> last_reported_at),
               (const, override));
 };
 

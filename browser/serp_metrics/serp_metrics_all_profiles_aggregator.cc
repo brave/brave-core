@@ -29,26 +29,26 @@ SerpMetricsAllProfilesAggregator::~SerpMetricsAllProfilesAggregator() = default;
 
 size_t SerpMetricsAllProfilesAggregator::GetSearchCountForYesterday(
     SerpMetricType type,
-    std::optional<base::Time> last_report_time) const {
+    std::optional<base::Time> last_reported_at) const {
   return std::accumulate(
       profile_attributes_serp_metrics_.cbegin(),
       profile_attributes_serp_metrics_.cend(), size_t{0},
-      [type, last_report_time](
+      [type, last_reported_at](
           size_t count, const std::unique_ptr<SerpMetrics>& serp_metrics) {
         return count +
-               serp_metrics->GetSearchCountForYesterday(type, last_report_time);
+               serp_metrics->GetSearchCountForYesterday(type, last_reported_at);
       });
 }
 
 size_t SerpMetricsAllProfilesAggregator::GetSearchCountForStalePeriod(
-    std::optional<base::Time> last_report_time) const {
+    std::optional<base::Time> last_reported_at) const {
   return std::accumulate(
       profile_attributes_serp_metrics_.cbegin(),
       profile_attributes_serp_metrics_.cend(), size_t{0},
-      [last_report_time](size_t count,
+      [last_reported_at](size_t count,
                          const std::unique_ptr<SerpMetrics>& serp_metrics) {
         return count +
-               serp_metrics->GetSearchCountForStalePeriod(last_report_time);
+               serp_metrics->GetSearchCountForStalePeriod(last_reported_at);
       });
 }
 

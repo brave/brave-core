@@ -35,10 +35,10 @@ namespace serp_metrics {
 
 namespace {
 
-constexpr char kBraveSerpDictKey[] = "brave";
-constexpr char kGoogleSerpDictKey[] = "google";
-constexpr char kOtherSerpDictKey[] = "other";
-constexpr char kStaleSerpDictKey[] = "stale";
+constexpr std::string_view kBraveSerpDictKey = "brave";
+constexpr std::string_view kGoogleSerpDictKey = "google";
+constexpr std::string_view kOtherSerpDictKey = "other";
+constexpr std::string_view kStaleSerpDictKey = "stale";
 
 constexpr auto kSerpHistogramToDictKey =
     base::MakeFixedFlatMap<std::string_view, std::string_view>({

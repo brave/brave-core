@@ -26,7 +26,7 @@ class SerpMetricsTimePeriodStoreFactory;
 //
 // Counts are exposed for two reporting windows, based on a stale-period
 // cutoff (derived from `kLastReportedAt` by default, or from an explicit
-// `last_report_time` parameter when provided):
+// `last_reported_at` parameter when provided):
 //  - Yesterday: searches from the most recent completed calendar day
 //    (00:00:00 to 23:59:59 UTC), adjusted so that searches already covered by
 //    the cutoff are not re-counted.
@@ -47,18 +47,18 @@ class SerpMetrics final {
 
   // Returns the count for yesterday (the most recent completed UTC calendar
   // day), excluding any portion already covered by the stale-period cutoff.
-  // When `last_report_time` is provided, it overrides the default
+  // When `last_reported_at` is provided, it overrides the default
   // `kLastReportedAt`-based cutoff. A null `base::Time` means nothing has been
   // reported yet, so the entire retention period is considered stale.
   size_t GetSearchCountForYesterday(
       SerpMetricType type,
-      std::optional<base::Time> last_report_time = std::nullopt) const;
+      std::optional<base::Time> last_reported_at = std::nullopt) const;
 
   // Returns the total search count across all engine types for the stale
   // period (older than yesterday, within retention, not yet reported).
   // Uses the same cutoff semantics as `GetSearchCountForYesterday`.
   size_t GetSearchCountForStalePeriod(
-      std::optional<base::Time> last_report_time = std::nullopt) const;
+      std::optional<base::Time> last_reported_at = std::nullopt) const;
 
   void ClearHistory();
 
@@ -74,7 +74,7 @@ class SerpMetrics final {
   // last reported date is unavailable or invalid, an empty time is returned to
   // indicate that the full retention period should be considered stale.
   base::Time GetStartOfStalePeriod(
-      std::optional<base::Time> last_report_time) const;
+      std::optional<base::Time> last_reported_at) const;
 
   const raw_ref<PrefService> local_state_;
 

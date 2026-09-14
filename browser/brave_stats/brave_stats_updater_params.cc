@@ -199,25 +199,28 @@ GURL BraveStatsUpdaterParams::GetUpdateURL(
         update_url, "braveSearch",
         base::NumberToString(
             serp_metrics_aggregator->GetSearchCountForYesterday(
-                serp_metrics::SerpMetricType::kBrave, std::nullopt)));
+                serp_metrics::SerpMetricType::kBrave,
+                /*last_reported_at=*/std::nullopt)));
 
     update_url = net::AppendQueryParameter(
         update_url, "googleSearch",
         base::NumberToString(
             serp_metrics_aggregator->GetSearchCountForYesterday(
-                serp_metrics::SerpMetricType::kGoogle, std::nullopt)));
+                serp_metrics::SerpMetricType::kGoogle,
+                /*last_reported_at=*/std::nullopt)));
 
     update_url = net::AppendQueryParameter(
         update_url, "otherSearch",
         base::NumberToString(
             serp_metrics_aggregator->GetSearchCountForYesterday(
-                serp_metrics::SerpMetricType::kOther, std::nullopt)));
+                serp_metrics::SerpMetricType::kOther,
+                /*last_reported_at=*/std::nullopt)));
 
     update_url = net::AppendQueryParameter(
         update_url, "staleSearch",
         base::NumberToString(
             serp_metrics_aggregator->GetSearchCountForStalePeriod(
-                std::nullopt)));
+                /*last_reported_at=*/std::nullopt)));
   }
 
   return update_url;

@@ -81,14 +81,14 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
   SerpMetricsAllProfilesAggregator aggregator(local_state(),
                                               profile_attributes_storage());
   EXPECT_EQ(0U, aggregator.GetSearchCountForYesterday(
-                    SerpMetricType::kBrave, /*last_report_time=*/std::nullopt));
+                    SerpMetricType::kBrave, /*last_reported_at=*/std::nullopt));
   EXPECT_EQ(0U,
             aggregator.GetSearchCountForYesterday(
-                SerpMetricType::kGoogle, /*last_report_time=*/std::nullopt));
+                SerpMetricType::kGoogle, /*last_reported_at=*/std::nullopt));
   EXPECT_EQ(0U, aggregator.GetSearchCountForYesterday(
-                    SerpMetricType::kOther, /*last_report_time=*/std::nullopt));
+                    SerpMetricType::kOther, /*last_reported_at=*/std::nullopt));
   EXPECT_EQ(0U, aggregator.GetSearchCountForStalePeriod(
-                    /*last_report_time=*/std::nullopt));
+                    /*last_reported_at=*/std::nullopt));
 }
 
 TEST_F(SerpMetricsAllProfilesAggregatorTest,
@@ -116,12 +116,12 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
   SerpMetricsAllProfilesAggregator aggregator(local_state(),
                                               profile_attributes_storage());
   EXPECT_EQ(1U, aggregator.GetSearchCountForYesterday(
-                    SerpMetricType::kBrave, /*last_report_time=*/std::nullopt));
+                    SerpMetricType::kBrave, /*last_reported_at=*/std::nullopt));
   EXPECT_EQ(1U,
             aggregator.GetSearchCountForYesterday(
-                SerpMetricType::kGoogle, /*last_report_time=*/std::nullopt));
+                SerpMetricType::kGoogle, /*last_reported_at=*/std::nullopt));
   EXPECT_EQ(1U, aggregator.GetSearchCountForYesterday(
-                    SerpMetricType::kOther, /*last_report_time=*/std::nullopt));
+                    SerpMetricType::kOther, /*last_reported_at=*/std::nullopt));
 }
 
 TEST_F(SerpMetricsAllProfilesAggregatorTest,
@@ -149,11 +149,11 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
   SerpMetricsAllProfilesAggregator aggregator(local_state(),
                                               profile_attributes_storage());
   EXPECT_EQ(3U, aggregator.GetSearchCountForStalePeriod(
-                    /*last_report_time=*/std::nullopt));
+                    /*last_reported_at=*/std::nullopt));
 }
 
 TEST_F(SerpMetricsAllProfilesAggregatorTest,
-       AggregateWithNonNullLastReportTime) {
+       AggregateWithNonNullLastReportedAt) {
   base::FilePath profile_path =
       base::FilePath(kUserDataDir).AppendASCII("testing_profile");
   AddProfile(profile_path);
@@ -173,12 +173,12 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
   // after the cutoff, so Day 1's search is counted.
   EXPECT_EQ(1U, aggregator.GetSearchCountForYesterday(
                     SerpMetricType::kBrave,
-                    /*last_report_time=*/base::Time::Now() - base::Days(1)));
+                    /*last_reported_at=*/base::Time::Now() - base::Days(1)));
   // If the metric was already reported today, the cutoff falls after
   // yesterday's end, so nothing is counted.
   EXPECT_EQ(0U, aggregator.GetSearchCountForYesterday(
                     SerpMetricType::kBrave,
-                    /*last_report_time=*/base::Time::Now()));
+                    /*last_reported_at=*/base::Time::Now()));
 }
 
 TEST_F(SerpMetricsAllProfilesAggregatorTest,
@@ -194,9 +194,9 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
                                               profile_attributes_storage());
 
   EXPECT_EQ(0U, aggregator.GetSearchCountForYesterday(
-                    SerpMetricType::kBrave, /*last_report_time=*/std::nullopt));
+                    SerpMetricType::kBrave, /*last_reported_at=*/std::nullopt));
   EXPECT_EQ(0U, aggregator.GetSearchCountForStalePeriod(
-                    /*last_report_time=*/std::nullopt));
+                    /*last_reported_at=*/std::nullopt));
 }
 
 TEST_F(SerpMetricsAllProfilesAggregatorTest,
@@ -235,12 +235,12 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
   SerpMetricsAllProfilesAggregator aggregator(local_state(),
                                               profile_attributes_storage());
   EXPECT_EQ(2U, aggregator.GetSearchCountForYesterday(
-                    SerpMetricType::kBrave, /*last_report_time=*/std::nullopt));
+                    SerpMetricType::kBrave, /*last_reported_at=*/std::nullopt));
   EXPECT_EQ(2U,
             aggregator.GetSearchCountForYesterday(
-                SerpMetricType::kGoogle, /*last_report_time=*/std::nullopt));
+                SerpMetricType::kGoogle, /*last_reported_at=*/std::nullopt));
   EXPECT_EQ(2U, aggregator.GetSearchCountForYesterday(
-                    SerpMetricType::kOther, /*last_report_time=*/std::nullopt));
+                    SerpMetricType::kOther, /*last_reported_at=*/std::nullopt));
 }
 
 TEST_F(SerpMetricsAllProfilesAggregatorTest,
@@ -279,7 +279,7 @@ TEST_F(SerpMetricsAllProfilesAggregatorTest,
   SerpMetricsAllProfilesAggregator aggregator(local_state(),
                                               profile_attributes_storage());
   EXPECT_EQ(6U, aggregator.GetSearchCountForStalePeriod(
-                    /*last_report_time=*/std::nullopt));
+                    /*last_reported_at=*/std::nullopt));
 }
 
 }  // namespace serp_metrics
