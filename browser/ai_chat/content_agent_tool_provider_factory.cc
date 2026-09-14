@@ -23,8 +23,9 @@ ContentAgentToolProviderFactory::~ContentAgentToolProviderFactory() = default;
 
 std::unique_ptr<ToolProvider>
 ContentAgentToolProviderFactory::CreateToolProvider() {
-  return std::make_unique<ContentAgentToolProvider>(profile_,
-                                                    actor_service_.get());
+  return std::make_unique<ContentAgentToolProvider>(
+      profile_, actor_service_.get(),
+      *actor_service_->GetActorUiStateManager());
 }
 
 }  // namespace ai_chat
