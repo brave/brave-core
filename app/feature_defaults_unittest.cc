@@ -282,9 +282,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::kOptimizationHints,
       &passage_embeddings::kPassageEmbedder,
       &permissions::features::kCpssUseTfliteSignatureRunner,
-#if !BUILDFLAG(IS_ANDROID)
       &permissions::features::kPermissionsPromptSurvey,
-#endif
       &permissions::features::kPermissionPredictionsV2,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &personal_context::features::kPersonalContext,
