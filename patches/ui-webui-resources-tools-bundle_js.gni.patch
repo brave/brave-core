@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/tools/bundle_js.gni b/ui/webui/resources/tools/bundle_js.gni
-index dc7540cfe05c6e8779814cc432c1dbb8e0460a47..1ecd0b6f4c584127ddc719235ab3a3ead2b9546b 100644
+index dc7540cfe05c6e8779814cc432c1dbb8e0460a47..885b9dbab3c658cab7af8926b461a10a95cf5a4c 100644
 --- a/ui/webui/resources/tools/bundle_js.gni
 +++ b/ui/webui/resources/tools/bundle_js.gni
 @@ -70,6 +70,7 @@ template("bundle_js") {
@@ -10,11 +10,11 @@ index dc7540cfe05c6e8779814cc432c1dbb8e0460a47..1ecd0b6f4c584127ddc719235ab3a3ea
      if (defined(invoker.excludes)) {
        args += [ "--exclude" ] + invoker.excludes
      }
-@@ -123,6 +124,7 @@ template("bundle_js") {
+@@ -122,6 +123,7 @@ template("bundle_js") {
+     }
      external_paths += [ "//resources/lit/v3_0/|$lit_path" ]
  
++    if (is_chrome_untrusted) { external_paths += brave_resource_tools_extra_external_paths_chrome_untrusted } else { external_paths += brave_resource_tools_extra_external_paths }
      if (!is_chrome_untrusted) {
-+      external_paths += brave_resource_tools_extra_external_paths
        external_paths += [ "chrome://resources/|$resources_path" ]
      }
-     external_paths += [ "//resources/|$resources_path" ]
