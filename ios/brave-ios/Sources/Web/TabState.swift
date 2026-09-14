@@ -144,9 +144,6 @@ public protocol TabState: AnyObject {
   var serverTrust: SecTrust? { get }
   /// The current cached favicon for the realized tab
   var faviconStatus: FaviconStatus? { get }
-  /// The current URL loaded on the page, regardless of the navigation status or spoofing
-  @available(iOS, deprecated, message: "Use `visibleURL` or `lastCommittedURL` instead")
-  var url: URL? { get }
   /// Gets the URL currently being displayed in the URL bar, if there is one.
   ///
   /// This URL might be a pending navigation that hasn't committed yet, so it is not guaranteed to
@@ -171,15 +168,6 @@ public protocol TabState: AnyObject {
   var canGoForward: Bool { get }
   /// The current back forward list
   var backForwardList: (any BackForwardListProxy)? { get }
-  /// The current redirect chain for the navigation.
-  ///
-  /// If no redirects occur during the navigation, this only contains the original request URL
-  @available(
-    iOS,
-    deprecated,
-    message: "Assemble a redirect chain in a tab helper using TabObserver instead"
-  )
-  var redirectChain: [URL] { get }
   /// The original request for the current page
   ///
   /// Remove when CWVBackFowardListItem exposes original request URL
