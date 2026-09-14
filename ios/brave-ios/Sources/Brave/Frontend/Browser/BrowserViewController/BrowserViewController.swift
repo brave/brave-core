@@ -602,7 +602,6 @@ public class BrowserViewController: UIViewController {
     AppReviewManager.shared.processMainCriteria(for: .daysInUse)
 
     // P3A Record
-    maybeRecordInitialShieldsP3A()
     recordVPNUsageP3A(vpnEnabled: BraveVPN.isConnected)
     recordAccessibilityDisplayZoomEnabledP3A()
     recordAccessibilityDocumentsDirectorySizeP3A()
@@ -3006,14 +3005,12 @@ extension BrowserViewController: PreferencesObserver {
       tabManager.reloadSelectedTab()
     case Preferences.Shields.blockAdsAndTrackingLevelRaw.key:
       tabManager.reloadSelectedTab()
-      recordGlobalAdBlockShieldsP3A()
       // Global shield setting changed, reset selectors cache.
       tabManager.allTabs.forEach({
         $0.cosmeticFilteringTabHelper?.resetSelectorsCache()
       })
     case Preferences.Shields.fingerprintingProtection.key:
       tabManager.reloadSelectedTab()
-      recordGlobalFingerprintingShieldsP3A()
     case Preferences.General.defaultPageZoomLevel.key:
       tabManager.allTabs.forEach({
         guard let url = $0.visibleURL else { return }

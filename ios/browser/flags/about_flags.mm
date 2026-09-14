@@ -144,15 +144,6 @@ const flags_ui::FeatureEntry::FeatureVariation
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveShredCacheData),   \
       },                                                                       \
       {                                                                        \
-          "brave-shields-content-settings",                                    \
-          "Brave Shields use Content Settings",                                \
-          "Brave Shields will use content settings for persisting Shields "    \
-          "preferences",                                                       \
-          flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_shields::features::kBraveShieldsContentSettingsIOS),       \
-      },                                                                       \
-      {                                                                        \
           "brave-show-updated-shields-panel",                                  \
           "Show updated shields panel",                                        \
           "Shows an updated design for the Brave Shields panel.",              \

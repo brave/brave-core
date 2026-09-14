@@ -64,8 +64,7 @@ public class BraveProfileMigrations {
   }
 
   @MainActor public func migrateShieldsToContentSettings() {
-    guard FeatureList.kBraveShieldsContentSettings.enabled,
-      !Preferences.Shields.Migration.shieldsCoreDataToContentSettingsCompleted.value,
+    guard !Preferences.Shields.Migration.shieldsCoreDataToContentSettingsCompleted.value,
       let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(
         profile: profileController.profile
       )

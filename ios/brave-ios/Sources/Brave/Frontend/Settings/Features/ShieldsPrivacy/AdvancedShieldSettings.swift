@@ -87,9 +87,7 @@ import os
   @Published var adBlockAndTrackingPreventionLevel: ShieldLevel {
     didSet {
       guard oldValue != adBlockAndTrackingPreventionLevel else { return }
-      if shouldWriteToContentSettings {
-        braveShieldsSettings?.defaultAdBlockMode = adBlockAndTrackingPreventionLevel.adBlockMode
-      }
+      braveShieldsSettings?.defaultAdBlockMode = adBlockAndTrackingPreventionLevel.adBlockMode
       // Also assign to existing pref until deprecated so reverse migration is not required
       Preferences.Shields.blockAdsAndTrackingLevel = adBlockAndTrackingPreventionLevel
     }
@@ -97,9 +95,7 @@ import os
   @Published var isBlockScriptsEnabled: Bool {
     didSet {
       guard oldValue != isBlockScriptsEnabled else { return }
-      if shouldWriteToContentSettings {
-        braveShieldsSettings?.isBlockScriptsEnabledByDefault = isBlockScriptsEnabled
-      }
+      braveShieldsSettings?.isBlockScriptsEnabledByDefault = isBlockScriptsEnabled
       // Also assign to existing pref until deprecated so reverse migration is not required
       Preferences.Shields.blockScripts.value = isBlockScriptsEnabled
     }
@@ -107,10 +103,8 @@ import os
   @Published var isBlockFingerprintingEnabled: Bool {
     didSet {
       guard oldValue != isBlockFingerprintingEnabled else { return }
-      if shouldWriteToContentSettings {
-        braveShieldsSettings?.defaultFingerprintMode =
-          isBlockFingerprintingEnabled ? .standardMode : .allowMode
-      }
+      braveShieldsSettings?.defaultFingerprintMode =
+        isBlockFingerprintingEnabled ? .standardMode : .allowMode
       // Also assign to existing pref until deprecated so reverse migration is not required
       Preferences.Shields.fingerprintingProtection.value = isBlockFingerprintingEnabled
     }
@@ -126,9 +120,7 @@ import os
   }
   @Published var shredLevel: SiteShredLevel {
     didSet {
-      if shouldWriteToContentSettings {
-        braveShieldsSettings?.defaultAutoShredMode = shredLevel.autoShredMode
-      }
+      braveShieldsSettings?.defaultAutoShredMode = shredLevel.autoShredMode
       Preferences.Shields.shredLevel = shredLevel
     }
   }
@@ -161,19 +153,6 @@ import os
   /// supported.
   var isSponsoredAdsSupported: Bool {
     BraveRewardsAPI.isSupported(prefs)
-  }
-
-  /// If we should write Shields setting changes to content settings.
-  private var shouldWriteToContentSettings: Bool {
-    // If Shields content settings feature flag is enabled, we should always
-    // write. However if Shields content settings is disabled, but we've
-    // already performed the migration to content settings, we should write so
-    // no data is lost when they re-enable the flag. This could happen if we
-    // roll out the feature flag using percentages as there is no guarantee
-    // that a user in the first study at say 25%, would be included in the
-    // follow-up studies.
-    return FeatureList.kBraveShieldsContentSettings.enabled
-      || Preferences.Shields.Migration.shieldsCoreDataToContentSettingsCompleted.value
   }
 
   typealias ClearDataCallback = @MainActor (Bool, Bool) -> Void
@@ -217,19 +196,12 @@ import os
     self.clearDataCallback = clearDataCallback
     self.braveStats = braveStats
     self.prefs = braveCore.profile.prefs
-    if FeatureList.kBraveShieldsContentSettings.enabled {
-      self.adBlockAndTrackingPreventionLevel =
-        braveShieldsSettings?.defaultAdBlockMode.shieldLevel ?? .standard
-      self.isBlockScriptsEnabled = braveShieldsSettings?.isBlockScriptsEnabledByDefault ?? false
-      self.isBlockFingerprintingEnabled =
-        (braveShieldsSettings?.defaultFingerprintMode ?? .standardMode) == .standardMode
-      self.shredLevel = braveShieldsSettings?.defaultAutoShredMode.siteShredLevel ?? .never
-    } else {
-      self.adBlockAndTrackingPreventionLevel = Preferences.Shields.blockAdsAndTrackingLevel
-      self.isBlockScriptsEnabled = Preferences.Shields.blockScripts.value
-      self.isBlockFingerprintingEnabled = Preferences.Shields.fingerprintingProtection.value
-      self.shredLevel = Preferences.Shields.shredLevel
-    }
+    self.adBlockAndTrackingPreventionLevel =
+      braveShieldsSettings?.defaultAdBlockMode.shieldLevel ?? .standard
+    self.isBlockScriptsEnabled = braveShieldsSettings?.isBlockScriptsEnabledByDefault ?? false
+    self.isBlockFingerprintingEnabled =
+      (braveShieldsSettings?.defaultFingerprintMode ?? .standardMode) == .standardMode
+    self.shredLevel = braveShieldsSettings?.defaultAutoShredMode.siteShredLevel ?? .never
     self.httpsUpgradeLevel = Preferences.Shields.httpsUpgradeLevel
     self.isDeAmpEnabled = prefs.boolean(forPath: kDeAmpEnabled)
     self.isGPCEnabled = prefs.boolean(forPath: kGlobalPrivacyControlEnabled)

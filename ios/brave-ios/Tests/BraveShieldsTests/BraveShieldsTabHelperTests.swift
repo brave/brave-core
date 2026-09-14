@@ -25,41 +25,8 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
     Preferences.Shields.shredLevelRaw.reset()
   }
 
-  /// Test `isBraveShieldsEnabled(for:)` with
-  /// `isBraveShieldsContentSettingsEnabled` flag disabled.
+  /// Test `isBraveShieldsEnabled(for:)`.
   func testIsBraveShieldsEnabled() {
-    let testBraveShieldsSettings = TestBraveShieldsSettings()
-    testBraveShieldsSettings._isBraveShieldsEnabled = { _ in
-      XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
-      return false
-    }
-    testBraveShieldsSettings._setBraveShieldsEnabled = { _, _ in
-      XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
-    }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    let tabState = FakeTabState()
-    // Test with `isBraveShieldsContentSettingsEnabled` disabled
-    let braveShieldsTabHelper = BraveShieldsTabHelper(
-      tab: tabState,
-      braveShieldsSettings: testBraveShieldsSettings,
-      isBraveShieldsContentSettingsEnabled: false
-    )
-
-    // Verify initial values
-    XCTAssertTrue(braveShieldsTabHelper.isBraveShieldsEnabled(for: url))
-    XCTAssertTrue(!domain.areAllShieldsOff)
-    // Update value
-    backgroundSaveAndWaitForExpectation {
-      braveShieldsTabHelper.setBraveShieldsEnabled(false, for: url)
-    }
-    // Verify updated values
-    XCTAssertFalse(braveShieldsTabHelper.isBraveShieldsEnabled(for: url))
-    XCTAssertFalse(!domain.areAllShieldsOff)
-  }
-
-  /// Test `isBraveShieldsEnabled(for:)` with
-  /// `isBraveShieldsContentSettingsEnabled` flag enabled.
-  func testIsBraveShieldsEnabledContentSettings() {
     var isBraveShieldsEnabled = true
 
     let testBraveShieldsSettings = TestBraveShieldsSettings()
@@ -74,11 +41,9 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
     }
 
     let tabState = FakeTabState()
-    // Test with `isBraveShieldsContentSettingsEnabled` enabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
-      braveShieldsSettings: testBraveShieldsSettings,
-      isBraveShieldsContentSettingsEnabled: true
+      braveShieldsSettings: testBraveShieldsSettings
     )
 
     // Verify initial value
@@ -90,90 +55,8 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
     XCTAssertFalse(braveShieldsTabHelper.isBraveShieldsEnabled(for: url))
   }
 
-  /// Test `shieldLevel(for:considerAllShieldsOption:)` with
-  /// `isBraveShieldsContentSettingsEnabled` flag disabled.
+  /// Test `shieldLevel(for:considerAllShieldsOption:)`.
   func testShieldLevel() {
-    let testBraveShieldsSettings = TestBraveShieldsSettings()
-    testBraveShieldsSettings._adBlockMode = { _ in
-      XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
-      return .standard
-    }
-    testBraveShieldsSettings._setAdBlockMode = { _, _ in
-      XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
-    }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    let tabState = FakeTabState()
-    // Test with `isBraveShieldsContentSettingsEnabled` disabled
-    let braveShieldsTabHelper = BraveShieldsTabHelper(
-      tab: tabState,
-      braveShieldsSettings: testBraveShieldsSettings,
-      isBraveShieldsContentSettingsEnabled: false
-    )
-
-    // Verify initial values
-    XCTAssertEqual(
-      braveShieldsTabHelper.shieldLevel(for: url, considerAllShieldsOption: false),
-      .standard
-    )
-    XCTAssertNil(domain.shield_blockAdsAndTrackingLevel)
-    // Update value
-    backgroundSaveAndWaitForExpectation {
-      braveShieldsTabHelper.setShieldLevel(.aggressive, for: url)
-    }
-    // Verify updated values
-    XCTAssertEqual(
-      braveShieldsTabHelper.shieldLevel(for: url, considerAllShieldsOption: false),
-      .aggressive
-    )
-    XCTAssertEqual(domain.shield_blockAdsAndTrackingLevel, ShieldLevel.aggressive.rawValue)
-    // Verify `considerAllShieldsOption`
-    braveShieldsTabHelper.setBraveShieldsEnabled(false, for: url)
-    XCTAssertFalse(braveShieldsTabHelper.isBraveShieldsEnabled(for: url))
-    XCTAssertEqual(
-      braveShieldsTabHelper.shieldLevel(for: url, considerAllShieldsOption: true),
-      .disabled
-    )
-
-    // Verify `considerAlwaysAggressiveETLDs` is respected
-    let alwaysAggressiveURL = URL(string: "https://m.youtube.com")!
-    XCTAssertEqual(
-      braveShieldsTabHelper.shieldLevel(
-        for: alwaysAggressiveURL,
-        considerAllShieldsOption: true,
-        considerAlwaysAggressiveETLDs: false
-      ),
-      .standard
-    )
-    XCTAssertEqual(
-      braveShieldsTabHelper.shieldLevel(
-        for: alwaysAggressiveURL,
-        considerAllShieldsOption: true,
-        considerAlwaysAggressiveETLDs: true
-      ),
-      .aggressive
-    )
-    braveShieldsTabHelper.setShieldLevel(.disabled, for: alwaysAggressiveURL)
-    XCTAssertEqual(
-      braveShieldsTabHelper.shieldLevel(
-        for: alwaysAggressiveURL,
-        considerAllShieldsOption: true,
-        considerAlwaysAggressiveETLDs: true
-      ),
-      .disabled
-    )
-    XCTAssertEqual(
-      braveShieldsTabHelper.shieldLevel(
-        for: alwaysAggressiveURL,
-        considerAllShieldsOption: true,
-        considerAlwaysAggressiveETLDs: false
-      ),
-      .disabled
-    )
-  }
-
-  /// Test `shieldLevel(for:considerAllShieldsOption:)` with
-  /// `isBraveShieldsContentSettingsEnabled` flag enabled.
-  func testShieldLevelContentSettings() {
     var adBlockMode: BraveShields.AdBlockMode = .standard
     var isBraveShieldsEnabled = true
 
@@ -190,11 +73,9 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
     }
 
     let tabState = FakeTabState()
-    // Test with `isBraveShieldsContentSettingsEnabled` enabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
-      braveShieldsSettings: testBraveShieldsSettings,
-      isBraveShieldsContentSettingsEnabled: true
+      braveShieldsSettings: testBraveShieldsSettings
     )
 
     // Verify initial value
@@ -258,65 +139,8 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
   }
 
   /// Test `isShieldExpected(for:shield:considerAllShieldsOption:)` for Block
-  /// Scripts with `isBraveShieldsContentSettingsEnabled` flag disabled.
+  /// Scripts.
   func testBlockScriptsEnabled() {
-    let testBraveShieldsSettings = TestBraveShieldsSettings()
-    testBraveShieldsSettings._isBlockScriptsEnabled = { _ in
-      XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
-      return false
-    }
-    testBraveShieldsSettings._setBlockScriptsEnabled = { _, _ in
-      XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
-    }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    let tabState = FakeTabState()
-    // Test with `isBraveShieldsContentSettingsEnabled` disabled
-    let braveShieldsTabHelper = BraveShieldsTabHelper(
-      tab: tabState,
-      braveShieldsSettings: testBraveShieldsSettings,
-      isBraveShieldsContentSettingsEnabled: false
-    )
-
-    // Verify initial values
-    XCTAssertEqual(
-      braveShieldsTabHelper.isShieldExpected(
-        for: url,
-        shield: .noScript,
-        considerAllShieldsOption: false
-      ),
-      false
-    )
-    XCTAssertNil(domain.shield_noScript)
-    // Update value
-    backgroundSaveAndWaitForExpectation {
-      braveShieldsTabHelper.setBlockScriptsEnabled(true, for: url)
-    }
-    // Verify updated values
-    XCTAssertEqual(
-      braveShieldsTabHelper.isShieldExpected(
-        for: url,
-        shield: .noScript,
-        considerAllShieldsOption: false
-      ),
-      true
-    )
-    XCTAssertEqual(domain.shield_noScript, NSNumber(booleanLiteral: true))
-    // Verify `considerAllShieldsOption`
-    braveShieldsTabHelper.setBraveShieldsEnabled(false, for: url)
-    XCTAssertFalse(braveShieldsTabHelper.isBraveShieldsEnabled(for: url))
-    XCTAssertEqual(
-      braveShieldsTabHelper.isShieldExpected(
-        for: url,
-        shield: .noScript,
-        considerAllShieldsOption: true
-      ),
-      false
-    )
-  }
-
-  /// Test `isShieldExpected(for:shield:considerAllShieldsOption:)` for Block
-  /// Scripts with `isBraveShieldsContentSettingsEnabled` flag enabled.
-  func testBlockScriptsEnabledContentSettings() {
     var isBlockScriptsEnabled = false
 
     let testBraveShieldsSettings = TestBraveShieldsSettings()
@@ -335,11 +159,9 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
     }
 
     let tabState = FakeTabState()
-    // Test with `isBraveShieldsContentSettingsEnabled` enabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
-      braveShieldsSettings: testBraveShieldsSettings,
-      isBraveShieldsContentSettingsEnabled: true
+      braveShieldsSettings: testBraveShieldsSettings
     )
 
     // Verify initial values
@@ -376,74 +198,8 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
   }
 
   /// Test `isShieldExpected(for:shield:considerAllShieldsOption:)` for Block
-  /// Fingerprinting with `isBraveShieldsContentSettingsEnabled` flag disabled.
+  /// Fingerprinting.
   func testBlockFingerprintingEnabled() {
-    let testBraveShieldsSettings = TestBraveShieldsSettings()
-    testBraveShieldsSettings._fingerprintMode = { _ in
-      XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
-      return .standardMode
-    }
-    testBraveShieldsSettings._setFingerprintMode = { _, _ in
-      XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
-    }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    let tabState = FakeTabState()
-    // Test with `isBraveShieldsContentSettingsEnabled` disabled
-    let braveShieldsTabHelper = BraveShieldsTabHelper(
-      tab: tabState,
-      braveShieldsSettings: testBraveShieldsSettings,
-      isBraveShieldsContentSettingsEnabled: false
-    )
-
-    // Verify initial values
-    XCTAssertTrue(
-      braveShieldsTabHelper.isShieldExpected(
-        for: url,
-        shield: .fpProtection,
-        considerAllShieldsOption: false
-      )
-    )
-    XCTAssertNil(domain.shield_fpProtection)
-    // Update value
-    backgroundSaveAndWaitForExpectation {
-      braveShieldsTabHelper.setBlockFingerprintingEnabled(false, for: url)
-    }
-    // Verify updated values
-    XCTAssertFalse(
-      braveShieldsTabHelper.isShieldExpected(
-        for: url,
-        shield: .fpProtection,
-        considerAllShieldsOption: false
-      )
-    )
-    XCTAssertEqual(domain.shield_fpProtection, NSNumber(booleanLiteral: false))
-
-    // Reset back to enabled so we can test `considerAllShieldsOption`
-    backgroundSaveAndWaitForExpectation {
-      braveShieldsTabHelper.setBlockFingerprintingEnabled(true, for: url)
-    }
-    XCTAssertTrue(
-      braveShieldsTabHelper.isShieldExpected(
-        for: url,
-        shield: .fpProtection,
-        considerAllShieldsOption: false
-      )
-    )
-    // Verify `considerAllShieldsOption`
-    braveShieldsTabHelper.setBraveShieldsEnabled(false, for: url)
-    XCTAssertFalse(braveShieldsTabHelper.isBraveShieldsEnabled(for: url))
-    XCTAssertFalse(
-      braveShieldsTabHelper.isShieldExpected(
-        for: url,
-        shield: .fpProtection,
-        considerAllShieldsOption: true
-      )
-    )
-  }
-
-  /// Test `isShieldExpected(for:shield:considerAllShieldsOption:)` for Block
-  /// Fingerprinting with `isBraveShieldsContentSettingsEnabled` flag enabled.
-  func testBlockFingerprintingEnabledContentSettings() {
     var fingerPrintMode: BraveShields.FingerprintMode = .standardMode
 
     let testBraveShieldsSettings = TestBraveShieldsSettings()
@@ -462,11 +218,9 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
     }
 
     let tabState = FakeTabState()
-    // Test with `isBraveShieldsContentSettingsEnabled` enabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
-      braveShieldsSettings: testBraveShieldsSettings,
-      isBraveShieldsContentSettingsEnabled: true
+      braveShieldsSettings: testBraveShieldsSettings
     )
 
     // Verify initial values
@@ -499,44 +253,8 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
     )
   }
 
-  /// Test `shredLevel(for:)` with `isBraveShieldsContentSettingsEnabled` flag disabled.
+  /// Test `shredLevel(for:considerAllShieldsOption:)`.
   func testShredLevel() {
-    let testBraveShieldsSettings = TestBraveShieldsSettings()
-    testBraveShieldsSettings._fingerprintMode = { _ in
-      XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
-      return .standardMode
-    }
-    testBraveShieldsSettings._setFingerprintMode = { _, _ in
-      XCTFail("BraveShieldsSettings should not be called when feature flag is disabled")
-    }
-    let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    let tabState = FakeTabState()
-    // Test with `isBraveShieldsContentSettingsEnabled` disabled
-    let braveShieldsTabHelper = BraveShieldsTabHelper(
-      tab: tabState,
-      braveShieldsSettings: testBraveShieldsSettings,
-      isBraveShieldsContentSettingsEnabled: false
-    )
-
-    // Verify initial values
-    XCTAssertEqual(
-      braveShieldsTabHelper.shredLevel(for: url, considerAllShieldsOption: false),
-      .never
-    )
-    XCTAssertNil(domain.shield_shredLevel)
-    // Update value
-    backgroundSaveAndWaitForExpectation {
-      braveShieldsTabHelper.setShredLevel(.appExit, for: url)
-    }
-    // Verify updated values
-    XCTAssertEqual(
-      braveShieldsTabHelper.shredLevel(for: url, considerAllShieldsOption: false),
-      .appExit
-    )
-    XCTAssertEqual(domain.shield_shredLevel, SiteShredLevel.appExit.rawValue)
-  }
-
-  func testShredLevelContentSetting() {
     var autoShredMode: BraveShields.AutoShredMode = .never
 
     let testBraveShieldsSettings = TestBraveShieldsSettings()
@@ -556,11 +274,9 @@ class BraveShieldsTabHelperTests: CoreDataTestCase {
     }
 
     let tabState = FakeTabState()
-    // Test with `isBraveShieldsContentSettingsEnabled` enabled
     let braveShieldsTabHelper = BraveShieldsTabHelper(
       tab: tabState,
-      braveShieldsSettings: testBraveShieldsSettings,
-      isBraveShieldsContentSettingsEnabled: true
+      braveShieldsSettings: testBraveShieldsSettings
     )
 
     // Verify initial values

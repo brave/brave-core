@@ -735,55 +735,47 @@ class TabManager: NSObject {
   func forgetDataOnAppExitDomains() {
     guard BraveCore.FeatureList.kBraveShredFeature.enabled else { return }
     Task { @MainActor in
-      var shredOnAppExitURLs: [URL] = []
-      if FeatureList.kBraveShieldsContentSettings.enabled {
-        guard let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
-        else { return }
-        // iterate over WKWebsiteDataStore data records
-        let dataRecords = await WKWebsiteDataStore.default().dataRecords(
-          ofTypes: WKWebsiteDataStore.allWebsiteDataTypesIncludingPrivate()
-        )
-        shredOnAppExitURLs = dataRecords.compactMap { record in
-          guard let url = URL(string: "https://" + record.displayName),
-            braveShieldsSettings.autoShredMode(for: url, considerAllShieldsOption: true) == .appExit
-          else {
-            return nil
-          }
-          return url
+      guard let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
+      else { return }
+      // iterate over WKWebsiteDataStore data records
+      let dataRecords = await WKWebsiteDataStore.default().dataRecords(
+        ofTypes: WKWebsiteDataStore.allWebsiteDataTypesIncludingPrivate()
+      )
+      var shredOnAppExitURLs: [URL] = dataRecords.compactMap { record in
+        guard let url = URL(string: "https://" + record.displayName),
+          braveShieldsSettings.autoShredMode(for: url, considerAllShieldsOption: true) == .appExit
+        else {
+          return nil
         }
-        if Preferences.Shields.shredHistoryItems.value {
-          // if user enabled shred and/or shred history but does not have data
-          // in WKWebsiteDataStore, we still need to shred it.
-          if let historyNodes = await historyAPI?.search(
-            withQuery: nil,
-            options: HistorySearchOptions(
-              maxCount: 0,
-              hostOnly: false,
-              duplicateHandling: .removeAll,
-              begin: nil,
-              end: nil
-            )
-          ) {
-            for node in historyNodes {
-              if braveShieldsSettings.autoShredMode(for: node.url) == .appExit {
-                shredOnAppExitURLs.append(node.url)
-              }
-            }
-          }
-          // Similar to history above for Recently Closed tabs
-          for tab in RecentlyClosed.all() {
-            if let url = URL(string: tab.url),
-              braveShieldsSettings.autoShredMode(for: url) == .appExit
-            {
-              shredOnAppExitURLs.append(url)
+        return url
+      }
+      if Preferences.Shields.shredHistoryItems.value {
+        // if user enabled shred and/or shred history but does not have data
+        // in WKWebsiteDataStore, we still need to shred it.
+        if let historyNodes = await historyAPI?.search(
+          withQuery: nil,
+          options: HistorySearchOptions(
+            maxCount: 0,
+            hostOnly: false,
+            duplicateHandling: .removeAll,
+            begin: nil,
+            end: nil
+          )
+        ) {
+          for node in historyNodes {
+            if braveShieldsSettings.autoShredMode(for: node.url) == .appExit {
+              shredOnAppExitURLs.append(node.url)
             }
           }
         }
-      } else {  // kBraveShieldsContentSettings disabled
-        shredOnAppExitURLs = await Domain.allURLsWithShredLevel(
-          rawShredLevel: SiteShredLevel.appExit.rawValue,
-          isGlobalShredLevel: Preferences.Shields.shredLevel.shredOnAppExit
-        )
+        // Similar to history above for Recently Closed tabs
+        for tab in RecentlyClosed.all() {
+          if let url = URL(string: tab.url),
+            braveShieldsSettings.autoShredMode(for: url) == .appExit
+          {
+            shredOnAppExitURLs.append(url)
+          }
+        }
       }
       guard !shredOnAppExitURLs.isEmpty else { return }
       await forgetData(for: shredOnAppExitURLs)
@@ -1329,24 +1321,13 @@ class TabManager: NSObject {
       if let shouldShredDomain = shouldShredDomainCache[cacheKey] {
         shouldShredTab = shouldShredDomain
       } else {
-        if FeatureList.kBraveShieldsContentSettings.enabled {
-          let profile = isPrivate ? self.profile.offTheRecordProfile : self.profile
-          let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
-          shouldShredTab =
-            braveShieldsSettings?.autoShredMode(
-              for: url,
-              considerAllShieldsOption: true
-            ).siteShredLevel.shredOnAppExit ?? false
-        } else {
-          // Don't access `shredLevel` directly, but `TabState` is unavailable
-          // to access via `BraveShieldsTabHelper`. Deprecated access here until
-          // `kBraveShieldsContentSettings` feature flag is removed.
-          let siteDomain = Domain.getOrCreate(
-            forUrl: url,
-            persistent: !isPrivate
-          )
-          shouldShredTab = siteDomain.shredLevel.shredOnAppExit
-        }
+        let profile = isPrivate ? self.profile.offTheRecordProfile : self.profile
+        let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
+        shouldShredTab =
+          braveShieldsSettings?.autoShredMode(
+            for: url,
+            considerAllShieldsOption: true
+          ).siteShredLevel.shredOnAppExit ?? false
         shouldShredDomainCache[cacheKey] = shouldShredTab
       }
       return shouldShredTab

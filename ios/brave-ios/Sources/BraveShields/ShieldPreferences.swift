@@ -65,11 +65,6 @@ extension Preferences {
       key: "shields.checked-default-regional-filter-lists",
       default: false
     )
-    /// Whether or not we've reported the initial state of shields for p3a
-    public static let initialP3AStateReportedRevision = Option<Int>(
-      key: "shields.initial-p3a-state-reported-revision",
-      default: 0
-    )
 
     private static let defaultBlockAdsAndTrackingLevel: ShieldLevel = .standard
     private static let defaultHTTPsUpgradeLevel: HTTPSUpgradeLevel = .standard

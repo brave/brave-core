@@ -66,7 +66,6 @@ class DomainTests: CoreDataTestCase {
 
   @MainActor func testDefaultShieldSettings() {
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    XCTAssertEqual(domain.globalBlockAdsAndTrackingLevel, .standard)
     XCTAssertFalse(domain.isShieldExpected(BraveShield.allOff, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.noScript, considerAllShieldsOption: true))
     XCTAssertTrue(domain.isShieldExpected(BraveShield.fpProtection, considerAllShieldsOption: true))
@@ -82,7 +81,6 @@ class DomainTests: CoreDataTestCase {
       Domain.setBraveShield(forUrl: url, shield: .allOff, isOn: true, isPrivateBrowsing: false)
     }
 
-    XCTAssertEqual(domain.globalBlockAdsAndTrackingLevel, .disabled)
     XCTAssertFalse(domain.isShieldExpected(BraveShield.allOff, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.noScript, considerAllShieldsOption: true))
     XCTAssertFalse(
@@ -93,7 +91,6 @@ class DomainTests: CoreDataTestCase {
       Domain.setBraveShield(forUrl: url, shield: .allOff, isOn: false, isPrivateBrowsing: false)
     }
 
-    XCTAssertEqual(domain.globalBlockAdsAndTrackingLevel, .standard)
     XCTAssertFalse(domain.isShieldExpected(BraveShield.allOff, considerAllShieldsOption: true))
     XCTAssertFalse(domain.isShieldExpected(BraveShield.noScript, considerAllShieldsOption: true))
     XCTAssertTrue(domain.isShieldExpected(BraveShield.fpProtection, considerAllShieldsOption: true))
@@ -111,9 +108,7 @@ class DomainTests: CoreDataTestCase {
     }
 
     let domain = Domain.getOrCreate(forUrl: url2HTTPS, persistent: true)
-    // These should be the same in this situation
     XCTAssertEqual(domain.domainBlockAdsAndTrackingLevel, .disabled)
-    XCTAssertEqual(domain.globalBlockAdsAndTrackingLevel, .disabled)
 
     backgroundSaveAndWaitForExpectation {
       Domain.performChangesOnDomain(
@@ -125,7 +120,7 @@ class DomainTests: CoreDataTestCase {
     }
 
     domain.managedObjectContext?.refreshAllObjects()
-    XCTAssertEqual(domain.globalBlockAdsAndTrackingLevel, .standard)
+    XCTAssertEqual(domain.domainBlockAdsAndTrackingLevel, .standard)
   }
 
   func testWalletEthDappPermission() {
@@ -362,89 +357,6 @@ class DomainTests: CoreDataTestCase {
     XCTAssertEqual(appExitDomains.count, 1)
     XCTAssertNotNil(appExitDomains.first?.url?.asURL?.baseDomain)
     XCTAssertEqual(appExitDomains.first?.url?.asURL?.baseDomain, compound.baseDomain)
-  }
-
-  @MainActor func testAllDomainsWithShredLevelAppExit() async {
-    let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    // domain should use `Preferences.Shields.shredLevel` value (default)
-    let domain2 = Domain.getOrCreate(forUrl: url2, persistent: true)
-    domain.shredLevel = .never
-    let domain3 = Domain.getOrCreate(forUrl: compound, persistent: true)
-    domain2.shredLevel = .appExit
-
-    // save context before fetching off background thread
-    DataController.performOnMainContext { context in
-      try? context.save()
-    }
-
-    // verify default is SiteShredLevel.never
-    Preferences.Shields.shredLevelRaw.value = nil
-    XCTAssertEqual(Preferences.Shields.shredLevel, .never)
-
-    var allDomainsWithShredLevelAppExit = await Domain.allURLsWithShredLevel(
-      rawShredLevel: SiteShredLevel.appExit.rawValue,
-      isGlobalShredLevel: Preferences.Shields.shredLevel.shredOnAppExit
-    )
-    XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 1)
-    XCTAssertFalse(
-      allDomainsWithShredLevelAppExit.contains(where: { $0.absoluteString == domain.url })
-    )
-    XCTAssertTrue(
-      allDomainsWithShredLevelAppExit.contains(where: { $0.absoluteString == domain2.url })
-    )
-    XCTAssertFalse(
-      allDomainsWithShredLevelAppExit.contains(where: { $0.absoluteString == domain3.url })
-    )
-
-    // update default to SiteShredLevel.appExit
-    Preferences.Shields.shredLevel = .appExit
-    XCTAssertEqual(Preferences.Shields.shredLevel, .appExit)
-
-    // should contain domain2 & domain3
-    allDomainsWithShredLevelAppExit = await Domain.allURLsWithShredLevel(
-      rawShredLevel: SiteShredLevel.appExit.rawValue,
-      isGlobalShredLevel: Preferences.Shields.shredLevel.shredOnAppExit
-    )
-    XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 2)
-    XCTAssertFalse(
-      allDomainsWithShredLevelAppExit.contains(where: { $0.absoluteString == domain.url })
-    )
-    XCTAssertTrue(
-      allDomainsWithShredLevelAppExit.contains(where: { $0.absoluteString == domain2.url })
-    )
-    XCTAssertTrue(
-      allDomainsWithShredLevelAppExit.contains(where: { $0.absoluteString == domain3.url })
-    )
-  }
-
-  @MainActor func testAllDomainsWithShredLevelAppExitGlobalPref() async {
-    Preferences.Shields.shredLevel = .appExit
-    // Add some mock data
-    let domainURL = URL(string: "https://brave.com")!
-    let domain = Domain.getOrCreate(forUrl: domainURL, persistent: true)
-    domain.shredLevel = .appExit
-    // Add secure & insecure Domain object for same baseDomain, but set
-    // explicit shred level on secure version to verify explicit opt-out for
-    // baseDomain matches will be filtered out of default value shred level
-    // matches. See brave-browser#46560.
-    let insecureDomainURL = URL(string: "http://github.com")!
-    _ = Domain.getOrCreate(forUrl: insecureDomainURL, persistent: true)
-    let secureDomainURL = URL(string: "https://github.com")!
-    let secureDomain = Domain.getOrCreate(forUrl: secureDomainURL, persistent: true)
-    secureDomain.shredLevel = .never
-
-    // save context before fetching off background thread
-    DataController.performOnMainContext { context in
-      try? context.save()
-    }
-
-    // verify insecureDomain is filtered out because baseDomain matches
-    let allDomainsWithShredLevelAppExit = await Domain.allURLsWithShredLevel(
-      rawShredLevel: SiteShredLevel.appExit.rawValue,
-      isGlobalShredLevel: true
-    )
-    XCTAssertEqual(allDomainsWithShredLevelAppExit.count, 1)
-    XCTAssertEqual(allDomainsWithShredLevelAppExit.first, URL(string: "https://brave.com"))
   }
 
 }
