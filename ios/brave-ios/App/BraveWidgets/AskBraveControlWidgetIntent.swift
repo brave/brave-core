@@ -10,10 +10,7 @@ import Strings
 // This intent must belong to both the app target and the control widget extension because
 // `perform()` runs in the app process once `openAppWhenRun` foregrounds it
 struct AskBraveControlWidgetIntent: AppIntent {
-  static var title: LocalizedStringResource = LocalizedStringResource(
-    "appIntent.askBraveControl.Title",
-    defaultValue: "Open Ask Brave"
-  )
+  static var title: LocalizedStringResource = LocalizedStringResource("Ask Brave")
   static var openAppWhenRun: Bool = true
 
   func perform() async throws -> some IntentResult {
