@@ -19,10 +19,6 @@ namespace content {
 
 namespace {
 
-// A valid BrowserContext is not needed for these tests: IsWebUIEnabled() below
-// ignores it.
-BrowserContext* const kBrowserContext = nullptr;
-
 class TestConfig : public WebUIConfig {
  public:
   explicit TestConfig(std::string_view host,
@@ -30,6 +26,7 @@ class TestConfig : public WebUIConfig {
       : WebUIConfig(scheme, host) {}
   ~TestConfig() override = default;
 
+  // `browser_context` is ignored, so the tests below can pass nullptr.
   bool IsWebUIEnabled(BrowserContext* browser_context) override {
     return enabled;
   }
@@ -76,28 +73,25 @@ TEST(BraveWebUIConfigSubdomainTest, OptedInConfigHandlesSubdomains) {
   auto& map = WebUIConfigMap::GetInstance();
   ScopedWebUIConfigRegistration registration(MakeSubdomainConfig("workspaces"));
 
-  auto* config =
-      map.GetConfig(kBrowserContext, GURL("chrome-untrusted://workspaces"));
+  auto* config = map.GetConfig(nullptr, GURL("chrome-untrusted://workspaces"));
   ASSERT_TRUE(config);
 
   // Single-label subdomains route to the same config.
+  EXPECT_EQ(config, map.GetConfig(
+                        nullptr, GURL("chrome-untrusted://abc123.workspaces")));
   EXPECT_EQ(config,
-            map.GetConfig(kBrowserContext,
-                          GURL("chrome-untrusted://abc123.workspaces")));
-  EXPECT_EQ(config, map.GetConfig(kBrowserContext,
-                                  GURL("chrome-untrusted://"
-                                       "00000000-1111-2222-3333-444444444444."
-                                       "workspaces")));
+            map.GetConfig(nullptr, GURL("chrome-untrusted://"
+                                        "00000000-1111-2222-3333-444444444444."
+                                        "workspaces")));
 
   // Multi-label subdomains only match their direct parent, which has no
   // config, so they do not resolve.
-  EXPECT_EQ(nullptr, map.GetConfig(kBrowserContext,
-                                   GURL("chrome-untrusted://a.b.workspaces")));
+  EXPECT_EQ(nullptr,
+            map.GetConfig(nullptr, GURL("chrome-untrusted://a.b.workspaces")));
 
   // The opted-in host must be the suffix, not a subdomain of the request.
-  EXPECT_EQ(nullptr,
-            map.GetConfig(kBrowserContext,
-                          GURL("chrome-untrusted://workspaces.other")));
+  EXPECT_EQ(nullptr, map.GetConfig(
+                         nullptr, GURL("chrome-untrusted://workspaces.other")));
 }
 
 // A config that does not opt in must never be reached via a subdomain, even
@@ -109,10 +103,9 @@ TEST(BraveWebUIConfigSubdomainTest, ConfigWithoutOptInRejectsSubdomains) {
   ScopedWebUIConfigRegistration registration(
       std::make_unique<TestConfig>("settings"));
 
-  EXPECT_TRUE(
-      map.GetConfig(kBrowserContext, GURL("chrome-untrusted://settings")));
-  EXPECT_EQ(nullptr, map.GetConfig(kBrowserContext,
-                                   GURL("chrome-untrusted://evil.settings")));
+  EXPECT_TRUE(map.GetConfig(nullptr, GURL("chrome-untrusted://settings")));
+  EXPECT_EQ(nullptr,
+            map.GetConfig(nullptr, GURL("chrome-untrusted://evil.settings")));
 }
 
 // A config must be registered for the parent origin, otherwise the subdomain
@@ -120,10 +113,9 @@ TEST(BraveWebUIConfigSubdomainTest, ConfigWithoutOptInRejectsSubdomains) {
 TEST(BraveWebUIConfigSubdomainTest, SubdomainRequiresRegisteredConfig) {
   auto& map = WebUIConfigMap::GetInstance();
 
+  EXPECT_EQ(nullptr, map.GetConfig(nullptr, GURL("chrome-untrusted://orphan")));
   EXPECT_EQ(nullptr,
-            map.GetConfig(kBrowserContext, GURL("chrome-untrusted://orphan")));
-  EXPECT_EQ(nullptr, map.GetConfig(kBrowserContext,
-                                   GURL("chrome-untrusted://sub.orphan")));
+            map.GetConfig(nullptr, GURL("chrome-untrusted://sub.orphan")));
 }
 
 // The full subdomain URL (not the collapsed parent) is passed on to the matched
@@ -135,7 +127,7 @@ TEST(BraveWebUIConfigSubdomainTest, SubdomainPassesFullUrlToMatchedConfig) {
   ScopedWebUIConfigRegistration registration(std::move(owned_config));
 
   const GURL subdomain_url("chrome-untrusted://instance-42.widgets");
-  EXPECT_EQ(config, map.GetConfig(kBrowserContext, subdomain_url));
+  EXPECT_EQ(config, map.GetConfig(nullptr, subdomain_url));
   EXPECT_EQ(subdomain_url, config->last_handled_url);
 }
 
@@ -147,11 +139,11 @@ TEST(BraveWebUIConfigSubdomainTest, DisabledConfigRejectsSubdomain) {
   owned_config->enabled = false;
   ScopedWebUIConfigRegistration registration(std::move(owned_config));
 
-  EXPECT_EQ(nullptr, map.GetConfig(kBrowserContext,
-                                   GURL("chrome-untrusted://disabled-host")));
   EXPECT_EQ(nullptr,
-            map.GetConfig(kBrowserContext,
-                          GURL("chrome-untrusted://sub.disabled-host")));
+            map.GetConfig(nullptr, GURL("chrome-untrusted://disabled-host")));
+  EXPECT_EQ(
+      nullptr,
+      map.GetConfig(nullptr, GURL("chrome-untrusted://sub.disabled-host")));
 }
 
 // Subdomain handling is limited to chrome-untrusted://: a chrome:// config
@@ -163,10 +155,9 @@ TEST(BraveWebUIConfigSubdomainTest, TrustedSchemeIgnoresSubdomainOptIn) {
       MakeSubdomainConfig("trusted-host", kChromeUIScheme));
 
   // The exact chrome:// origin still resolves.
-  EXPECT_TRUE(map.GetConfig(kBrowserContext, GURL("chrome://trusted-host")));
+  EXPECT_TRUE(map.GetConfig(nullptr, GURL("chrome://trusted-host")));
   // But its subdomains do not.
-  EXPECT_EQ(nullptr,
-            map.GetConfig(kBrowserContext, GURL("chrome://sub.trusted-host")));
+  EXPECT_EQ(nullptr, map.GetConfig(nullptr, GURL("chrome://sub.trusted-host")));
 }
 
 }  // namespace content
