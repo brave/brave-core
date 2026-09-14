@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "chrome/browser/ui/views/tabs/tab_group_style.h"
+#include "chrome/browser/ui/views/tabs/tab_group_style_views.h"
 
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_underline.h"
@@ -12,28 +12,28 @@
 #include "third_party/skia/include/core/SkPathBuilder.h"
 
 #define TabGroupUnderline BraveTabGroupUnderline
-#define TabGroupStyle TabGroupStyle_ChromiumImpl
+#define TabGroupStyleViews TabGroupStyleViews_ChromiumImpl
 
-#include <chrome/browser/ui/views/tabs/tab_group_style.cc>
+#include <chrome/browser/ui/views/tabs/tab_group_style_views.cc>
 
-#undef TabGroupStyle
+#undef TabGroupStyleViews
 #undef TabGroupUnderline
 
-bool TabGroupStyle::TabGroupUnderlineShouldBeHidden() const {
+bool TabGroupStyleViews::TabGroupUnderlineShouldBeHidden() const {
   return false;
 }
 
 // Upstream currently hides the tab group underline in certain scenarios,
 // whereas we always show the underline.
-bool TabGroupStyle::TabGroupUnderlineShouldBeHidden(
+bool TabGroupStyleViews::TabGroupUnderlineShouldBeHidden(
     const views::View* leading_view,
     const views::View* trailing_view) const {
   return false;
 }
 
-SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
+SkPath TabGroupStyleViews::GetUnderlinePath(gfx::Rect local_bounds) const {
   if (!ShouldShowBraveVerticalTabs()) {
-    return TabGroupStyle_ChromiumImpl::GetUnderlinePath(local_bounds);
+    return TabGroupStyleViews_ChromiumImpl::GetUnderlinePath(local_bounds);
   }
 
   // In vertical tabs, underline is not actually "underline'. It's vertical line
@@ -63,7 +63,7 @@ SkPath TabGroupStyle::GetUnderlinePath(gfx::Rect local_bounds) const {
       .detach();
 }
 
-bool TabGroupStyle::ShouldShowBraveVerticalTabs() const {
+bool TabGroupStyleViews::ShouldShowBraveVerticalTabs() const {
   auto* vertical_tab_controller = VerticalTabController::FromBrowser(
       tab_group_views_->GetBrowserWindowInterface());
   return vertical_tab_controller &&

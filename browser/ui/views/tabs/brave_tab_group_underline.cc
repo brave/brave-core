@@ -12,7 +12,7 @@
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
-#include "chrome/browser/ui/views/tabs/tab_group_style.h"
+#include "chrome/browser/ui/views/tabs/tab_group_style_views.h"
 #include "chrome/browser/ui/views/tabs/tab_group_views.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/canvas.h"
@@ -22,7 +22,7 @@
 BraveTabGroupUnderline::BraveTabGroupUnderline(
     TabGroupViews* tab_group_views,
     const tab_groups::TabGroupId& group,
-    const TabGroupStyle& style)
+    const TabGroupStyleViews& style)
     : TabGroupUnderline(tab_group_views, group, style) {}
 
 BraveTabGroupUnderline::~BraveTabGroupUnderline() = default;
@@ -43,7 +43,7 @@ void BraveTabGroupUnderline::UpdateBounds(const views::View* leading_view,
   }
 
   SetBounds(0, tab_group_underline_bounds.y(),
-            TabGroupStyle::kStrokeThicknessForVerticalTabs,
+            TabGroupStyleViews::kStrokeThicknessForVerticalTabs,
             tab_group_underline_bounds.height());
 }
 
