@@ -143,10 +143,10 @@ TEST_F(WaybackMachinePageActionControllerTest, VisibleWhenFetching) {
   EXPECT_TRUE(observer().visible());
 }
 
-TEST_F(WaybackMachinePageActionControllerTest, VisibleWhenLoaded) {
+TEST_F(WaybackMachinePageActionControllerTest, HiddenWhenLoaded) {
   tab_helper()->SetWaybackStateForTesting(WaybackState::kLoaded);
 
-  EXPECT_TRUE(observer().visible());
+  EXPECT_FALSE(observer().visible());
 }
 
 TEST_F(WaybackMachinePageActionControllerTest, VisibleWhenNotAvailable) {
@@ -156,7 +156,7 @@ TEST_F(WaybackMachinePageActionControllerTest, VisibleWhenNotAvailable) {
 }
 
 TEST_F(WaybackMachinePageActionControllerTest, HiddenAgainAfterReset) {
-  tab_helper()->SetWaybackStateForTesting(WaybackState::kLoaded);
+  tab_helper()->SetWaybackStateForTesting(WaybackState::kNotAvailable);
   ASSERT_TRUE(observer().visible());
 
   tab_helper()->SetWaybackStateForTesting(WaybackState::kInitial);
@@ -165,8 +165,7 @@ TEST_F(WaybackMachinePageActionControllerTest, HiddenAgainAfterReset) {
 
 // The tab's contents can be swapped out - by tab discarding, or by a shared
 // pinned tab being moved to another window. The controller has to stop
-// listening to the outgoing contents' tab helper, which holds a single callback
-// and CHECKs that it was cleared before it's destroyed.
+// listening to the outgoing contents' tab helper.
 TEST_F(WaybackMachinePageActionControllerTest, DetachesFromDiscardedContents) {
   content::WebContents* const discarded_contents = contents();
   tab_interface().DiscardContents();
@@ -175,12 +174,12 @@ TEST_F(WaybackMachinePageActionControllerTest, DetachesFromDiscardedContents) {
   // The discarded contents no longer drives the page action.
   const int model_change_count = observer().model_change_count();
   BraveWaybackMachineTabHelper::FromWebContents(discarded_contents)
-      ->SetWaybackStateForTesting(WaybackState::kLoaded);
+      ->SetWaybackStateForTesting(WaybackState::kNotAvailable);
   EXPECT_EQ(model_change_count, observer().model_change_count());
   EXPECT_FALSE(observer().visible());
 
   // The swapped in contents does.
-  tab_helper()->SetWaybackStateForTesting(WaybackState::kLoaded);
+  tab_helper()->SetWaybackStateForTesting(WaybackState::kNotAvailable);
   EXPECT_TRUE(observer().visible());
 }
 

@@ -96,8 +96,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-#define BRAVE_WAYBACK_MACHINE_COLOR_IDS      \
-    E_CPONLY(kColorWaybackMachineURLLoaded)  \
+#define BRAVE_WAYBACK_MACHINE_COLOR_IDS \
     E_CPONLY(kColorWaybackMachineURLNotAvailable)
 #else
 #define BRAVE_WAYBACK_MACHINE_COLOR_IDS

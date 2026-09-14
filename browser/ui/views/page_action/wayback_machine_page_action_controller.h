@@ -8,7 +8,6 @@
 
 #include "base/callback_list.h"
 #include "base/memory/raw_ref.h"
-#include "base/memory/weak_ptr.h"
 #include "brave/components/brave_wayback_machine/wayback_state.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
 #include "components/tabs/public/tab_interface.h"
@@ -26,10 +25,10 @@ class WebContents;
 
 namespace page_actions {
 
-// Drives the Wayback Machine page action: shows an icon (badged once a
-// snapshot lookup has completed) when the current page looks like it might be
-// available on the Wayback Machine, and shows the Wayback Machine bubble when
-// clicked or, when enabled, automatically after a failed navigation.
+// Drives the Wayback Machine page action: shows an icon (badged if a snapshot
+// lookup finds nothing) when the current page looks like it might be available
+// on the Wayback Machine, and shows the Wayback Machine bubble when clicked or,
+// when enabled, automatically after a failed navigation.
 class WaybackMachinePageActionController {
  public:
   WaybackMachinePageActionController(
@@ -58,14 +57,9 @@ class WaybackMachinePageActionController {
   void MaybeAutoShowBubble();
 
   // (Re-)registers for wayback-state updates on |contents|'
-  // BraveWaybackMachineTabHelper, since the tab's contents can be swapped out
-  // (e.g. tab discarding).
+  // BraveWaybackMachineTabHelper, dropping any previous registration, since the
+  // tab's contents can be swapped out (e.g. tab discarding).
   void AttachToTabHelper(content::WebContents* contents);
-
-  // Unregisters from |contents|' BraveWaybackMachineTabHelper. Must be called
-  // for contents that are being swapped out, as the helper CHECKs that no
-  // callback is left registered when it's destroyed.
-  void DetachFromTabHelper(content::WebContents* contents);
 
   void UpdatePageAction(content::WebContents* contents);
 
@@ -74,10 +68,9 @@ class WaybackMachinePageActionController {
 
   base::CallbackListSubscription did_activate_subscription_;
   base::CallbackListSubscription will_discard_contents_subscription_;
+  base::CallbackListSubscription wayback_state_changed_subscription_;
 
   views::ViewTracker bubble_tracker_;
-
-  base::WeakPtrFactory<WaybackMachinePageActionController> weak_factory_{this};
 };
 
 }  // namespace page_actions
