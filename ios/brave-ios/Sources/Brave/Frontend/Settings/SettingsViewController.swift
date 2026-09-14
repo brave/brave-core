@@ -438,6 +438,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         cellClass: BraveAccountIconCell.self,
         context: [
           BraveAccountIconCell.textColor: self.view.tintColor
+            ?? UIColor(braveSystemName: .textInteractive)
         ]
       )
     }
@@ -482,6 +483,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         cellClass: BraveAccountIconCell.self,
         context: [
           BraveAccountIconCell.textColor: self.view.tintColor
+            ?? UIColor(braveSystemName: .textInteractive)
         ],
         uuid: self.braveAccountResendConfirmationEmailRowUUID.uuidString
       )
@@ -552,6 +554,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
               cellClass: BraveAccountIconCell.self,
               context: [
                 BraveAccountIconCell.textColor: view.tintColor
+                  ?? UIColor(braveSystemName: .textInteractive)
               ],
               uuid: braveAccountChangePasswordRowUUID.uuidString
             ),
@@ -562,6 +565,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
               cellClass: BraveAccountIconCell.self,
               context: [
                 BraveAccountIconCell.textColor: view.tintColor
+                  ?? UIColor(braveSystemName: .textInteractive)
               ]
             ),
           ],

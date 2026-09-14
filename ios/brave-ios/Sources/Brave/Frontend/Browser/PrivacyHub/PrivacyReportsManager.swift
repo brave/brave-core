@@ -88,7 +88,7 @@ public struct PrivacyReportsManager {
     isOriginPurchased: Bool
   ) -> PrivacyReportsView {
     let last = BraveVPNAlert.last(3)
-    var view = PrivacyReportsView(
+    let view = PrivacyReportsView(
       lastVPNAlerts: last,
       isPrivateBrowsing: isPrivateBrowsing,
       isOriginPurchased: isOriginPurchased

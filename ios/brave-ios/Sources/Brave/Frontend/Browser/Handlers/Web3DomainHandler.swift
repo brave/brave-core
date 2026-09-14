@@ -52,7 +52,6 @@ extension Web3Service {
     case .unstoppable:
       let termsOfUseUrl = WalletConstants.ensTermsOfUseURL.absoluteString
       let privacyPolicyUrl = WalletConstants.ensPrivacyPolicyURL.absoluteString
-      let nonCryptoExtensions = WalletConstants.supportedUDExtensions.filter { $0 != ".crypto" }
       return String.localizedStringWithFormat(
         Strings.Wallet.udDomainInterstitialPageDescription,
         termsOfUseUrl,

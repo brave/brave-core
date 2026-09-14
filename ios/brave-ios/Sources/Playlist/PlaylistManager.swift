@@ -554,7 +554,7 @@ public class PlaylistManager: NSObject {
           return true
         }
         Logger.module.error(
-          "An error occured deleting Playlist Cached Item \(cacheItem.name ?? item.tagId): \(error.localizedDescription)"
+          "An error occured deleting Playlist Cached Item \(cacheItem.name): \(error.localizedDescription)"
         )
         return false
       }

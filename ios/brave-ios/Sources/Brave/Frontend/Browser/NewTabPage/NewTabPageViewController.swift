@@ -1324,14 +1324,11 @@ extension NewTabPageViewController: UICollectionViewDelegateFlowLayout {
     layout collectionViewLayout: UICollectionViewLayout,
     insetForSectionAt section: Int
   ) -> UIEdgeInsets {
-    let sectionProvider = sections[section]
-    var inset =
-      sectionProvider.collectionView?(
-        collectionView,
-        layout: collectionViewLayout,
-        insetForSectionAt: section
-      ) ?? .zero
-    return inset
+    sections[section].collectionView?(
+      collectionView,
+      layout: collectionViewLayout,
+      insetForSectionAt: section
+    ) ?? .zero
   }
   func collectionView(
     _ collectionView: UICollectionView,
