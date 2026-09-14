@@ -25,7 +25,10 @@ class TranslateURLBarButton: UIButton {
 
   override init(frame: CGRect) {
     super.init(frame: frame)
-    adjustsImageWhenHighlighted = false
+    var configuration = UIButton.Configuration.plain()
+    configuration.baseBackgroundColor = .clear
+    configuration.contentInsets = .zero
+    self.configuration = configuration
     setImage(imageIcon, for: .normal)
     updateIconSize()
 

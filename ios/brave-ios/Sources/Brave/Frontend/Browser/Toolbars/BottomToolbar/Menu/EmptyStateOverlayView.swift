@@ -19,8 +19,12 @@ struct EmptyOverlayStateDetails {
 class EmptyStateOverlayView: UIView {
 
   private struct UX {
-    static let titleEdgeInsets = UIEdgeInsets(top: -10.0, left: -35.0, bottom: -10.0, right: -35.0)
-    static let contentEdgeInsets = UIEdgeInsets(top: 10.0, left: 35.0, bottom: 10.0, right: 35.0)
+    static let contentInsets = NSDirectionalEdgeInsets(
+      top: 10.0,
+      leading: 35.0,
+      bottom: 10.0,
+      trailing: 35.0
+    )
     static let buttonHeight = 40.0
   }
 
@@ -43,11 +47,13 @@ class EmptyStateOverlayView: UIView {
   }
 
   private let actionButton = UIButton().then {
+    var configuration = UIButton.Configuration.plain()
+    configuration.baseBackgroundColor = .clear
+    configuration.contentInsets = UX.contentInsets
+    $0.configuration = configuration
     $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
     $0.layer.cornerCurve = .continuous
     $0.layer.cornerRadius = UX.buttonHeight / 2.0
-    $0.titleEdgeInsets = UX.titleEdgeInsets
-    $0.contentEdgeInsets = UX.contentEdgeInsets
     $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
   }
 
@@ -176,7 +182,12 @@ class EmptyStateOverlayView: UIView {
 
     informationLabel.font = .systemFont(ofSize: informationFont.pointSize, weight: .medium)
     descriptionLabel.font = descriptionFont
-    actionButton.titleLabel?.font = .systemFont(ofSize: buttonFont.pointSize)
+    actionButton.configuration?.titleTextAttributesTransformer =
+      UIConfigurationTextAttributesTransformer { incoming in
+        var outgoing = incoming
+        outgoing.font = .systemFont(ofSize: buttonFont.pointSize)
+        return outgoing
+      }
     actionDescriptionLabel.font = descriptionFont
   }
 

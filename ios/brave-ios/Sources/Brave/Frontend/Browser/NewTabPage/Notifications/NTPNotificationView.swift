@@ -64,18 +64,27 @@ class NTPNotificationView: UIStackView {
   }
 
   lazy var primaryButton = RoundInterfaceButton(type: .system).then {
+    var configuration = UIButton.Configuration.plain()
+    configuration.baseBackgroundColor = .clear
+    configuration.contentInsets = NSDirectionalEdgeInsets(
+      top: 12,
+      leading: 25,
+      bottom: 12,
+      trailing: 25
+    )
+    if config.primaryButtonConfig?.showCoinIcon == true {
+      configuration.image = UIImage(
+        named: "turn_rewards_on_money_icon",
+        in: .module,
+        compatibleWith: nil
+      )!
+      configuration.imagePadding = 10
+    }
+    $0.configuration = configuration
     $0.setTitle(config.primaryButtonConfig?.text, for: .normal)
     $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
     $0.setContentCompressionResistancePriority(.defaultHigh, for: .horizontal)
-    $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
     $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
-    if config.primaryButtonConfig?.showCoinIcon == true {
-      $0.setImage(
-        UIImage(named: "turn_rewards_on_money_icon", in: .module, compatibleWith: nil)!,
-        for: .normal
-      )
-      $0.imageEdgeInsets = UIEdgeInsets(top: 0, left: -10, bottom: 0, right: 0)
-    }
   }
 
   lazy var secondaryButton = RoundInterfaceButton(type: .system).then {

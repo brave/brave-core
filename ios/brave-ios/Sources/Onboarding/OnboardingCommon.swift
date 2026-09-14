@@ -27,10 +27,18 @@ struct OnboardingCommon {
   struct Views {
     static func primaryButton(text: String = Strings.OBContinueButton) -> UIButton {
       let button = RoundInterfaceButton().then {
+        var configuration = UIButton.Configuration.plain()
+        configuration.baseBackgroundColor = .clear
+        configuration.contentInsets = NSDirectionalEdgeInsets(
+          top: 12,
+          leading: 25,
+          bottom: 12,
+          trailing: 25
+        )
+        $0.configuration = configuration
         $0.setTitle(text, for: .normal)
         $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
         $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
-        $0.contentEdgeInsets = UIEdgeInsets(top: 12, left: 25, bottom: 12, right: 25)
       }
 
       return button

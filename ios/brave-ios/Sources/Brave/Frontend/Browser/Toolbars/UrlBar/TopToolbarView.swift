@@ -149,7 +149,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
   private lazy var shortcutButton = ToolbarButton().then {
     $0.addTarget(self, action: #selector(didClickShortcutButton), for: .touchUpInside)
-    $0.contentEdgeInsets = .init(top: 4, left: 4, bottom: 4, right: 4)
+    $0.configuration?.contentInsets = .init(top: 4, leading: 4, bottom: 4, trailing: 4)
     $0.snp.makeConstraints {
       $0.size.greaterThanOrEqualTo(32)
     }
@@ -300,11 +300,11 @@ class TopToolbarView: UIView, ToolbarProtocol {
     leadingItemsStackView.addArrangedSubview(shareButton)
 
     [backButton, forwardButton].forEach {
-      $0.contentEdgeInsets = UIEdgeInsets(
+      $0.configuration?.contentInsets = NSDirectionalEdgeInsets(
         top: 0,
-        left: UX.locationPadding,
+        leading: UX.locationPadding,
         bottom: 0,
-        right: UX.locationPadding
+        trailing: UX.locationPadding
       )
     }
 

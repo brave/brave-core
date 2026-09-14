@@ -42,12 +42,20 @@ public class WelcomeNTPOnboardingController: UIViewController, PopoverContentCom
   }
 
   private let button = RoundInterfaceButton(type: .custom).then {
+    var configuration = UIButton.Configuration.plain()
+    configuration.baseBackgroundColor = .clear
+    configuration.contentInsets = NSDirectionalEdgeInsets(
+      top: 0,
+      leading: 16,
+      bottom: 0,
+      trailing: 16
+    )
+    $0.configuration = configuration
     $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
     $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
     $0.titleLabel?.numberOfLines = 0
     $0.titleLabel?.minimumScaleFactor = 0.7
     $0.titleLabel?.adjustsFontSizeToFitWidth = true
-    $0.contentEdgeInsets = .init(top: 0, left: 16, bottom: 0, right: 16)
   }
 
   public var buttonText: String?

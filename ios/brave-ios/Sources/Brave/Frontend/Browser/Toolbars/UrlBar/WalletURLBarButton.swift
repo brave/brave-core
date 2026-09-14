@@ -32,23 +32,23 @@ class WalletURLBarButton: UIButton {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    adjustsImageWhenHighlighted = false
-    setImage(UIImage(braveSystemNamed: "leo.product.brave-wallet"), for: .normal)
-    imageView?.contentMode = .scaleAspectFit
-    imageEdgeInsets = .init(top: 3, left: 3, bottom: 3, right: 3)
+    var configuration = UIButton.Configuration.plain()
+    configuration.baseForegroundColor = UIColor(braveSystemName: .textPrimary)
+    configuration.baseBackgroundColor = .clear
+    configuration.contentInsets = .init(top: 3, leading: 3, bottom: 3, trailing: 3)
+    configuration.image = UIImage(braveSystemNamed: "leo.product.brave-wallet")
+    configuration.imageColorTransformer = .init { _ in
+      if self.isHighlighted {
+        return UIColor(braveSystemName: .textInteractive)
+      }
+      return UIColor(braveSystemName: .textPrimary)
+    }
+    self.configuration = configuration
 
     updateIconSize()
 
     registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
       self.updateIconSize()
-    }
-  }
-
-  override open var isHighlighted: Bool {
-    didSet {
-      self.tintColor =
-        isHighlighted
-        ? UIColor(braveSystemName: .textInteractive) : UIColor(braveSystemName: .textPrimary)
     }
   }
 
@@ -75,15 +75,17 @@ class WalletURLBarButton: UIButton {
   }
 
   private func updateIconSize() {
+    var configuration = self.configuration
     let sizeCategory = traitCollection.toolbarButtonContentSizeCategory
-    let pointSize = UIFont.preferredFont(
-      forTextStyle: .body,
-      compatibleWith: .init(preferredContentSizeCategory: sizeCategory)
-    ).pointSize
-    setPreferredSymbolConfiguration(
-      .init(pointSize: pointSize, weight: .regular, scale: .large),
-      forImageIn: .normal
-    )
+    // Inset the icon by 3 points to match the size of the other URL bar icons
+    let pointSize =
+      UIFont.preferredFont(
+        forTextStyle: .body,
+        compatibleWith: .init(preferredContentSizeCategory: sizeCategory)
+      ).pointSize - 3
+    configuration?.preferredSymbolConfigurationForImage =
+      .init(pointSize: pointSize, weight: .regular, scale: .large)
+    self.configuration = configuration
   }
 
   override func layoutSubviews() {

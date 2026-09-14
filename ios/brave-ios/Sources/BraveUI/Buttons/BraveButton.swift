@@ -7,9 +7,7 @@ import UIKit
 
 /// A generic Button with a few extras:
 ///   - Showing a loader inside it
-///   - Flipping the image placement
 ///   - Applying a larger hit area without adjusting the bounds
-///   - Sizing correctly when adding setting `titleEdgeInsets` and `imageEdgeInsets`
 open class BraveButton: UIButton {
 
   // MARK: - Activity
@@ -120,40 +118,6 @@ open class BraveButton: UIButton {
       }
       .startAnimation()
     }
-  }
-
-  // MARK: - Image Placement
-
-  open var flipImageOrigin: Bool = false
-
-  override open func imageRect(forContentRect contentRect: CGRect) -> CGRect {
-    var frame = super.imageRect(forContentRect: contentRect)
-    if flipImageOrigin {
-      frame.origin.x =
-        super.titleRect(forContentRect: contentRect).maxX - frame.width - imageEdgeInsets.right
-        + imageEdgeInsets.left + titleEdgeInsets.right - titleEdgeInsets.left
-    }
-    return frame
-  }
-
-  override open func titleRect(forContentRect contentRect: CGRect) -> CGRect {
-    var frame = super.titleRect(forContentRect: contentRect)
-    if flipImageOrigin {
-      frame.origin.x -= imageRect(forContentRect: contentRect).width
-    }
-    return frame
-  }
-
-  override open var intrinsicContentSize: CGSize {
-    var size = super.intrinsicContentSize
-    size.width +=
-      abs(imageEdgeInsets.left) + abs(imageEdgeInsets.right) + abs(titleEdgeInsets.left)
-      + abs(titleEdgeInsets.right)
-    size.height += max(
-      abs(titleEdgeInsets.top) + abs(titleEdgeInsets.bottom),
-      abs(imageEdgeInsets.top) + abs(imageEdgeInsets.bottom)
-    )
-    return size
   }
 
   // MARK: - Touch Extension

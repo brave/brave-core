@@ -157,12 +157,25 @@ extension FeedItemView {
   public class CallToActionButton: BraveButton {
     public override init(frame: CGRect) {
       super.init(frame: frame)
+      var configuration = UIButton.Configuration.plain()
+      configuration.baseBackgroundColor = .clear
+      configuration.contentInsets = NSDirectionalEdgeInsets(
+        top: 8,
+        leading: 12,
+        bottom: 8,
+        trailing: 12
+      )
+      configuration.titleTextAttributesTransformer = UIConfigurationTextAttributesTransformer {
+        incoming in
+        var outgoing = incoming
+        outgoing.font = .systemFont(ofSize: 13, weight: .semibold)
+        return outgoing
+      }
+      self.configuration = configuration
       setTitleColor(.white, for: .normal)
-      titleLabel?.font = .systemFont(ofSize: 13, weight: .semibold)
       layer.borderWidth = 1.0
       layer.borderColor = UIColor.white.withAlphaComponent(0.7).cgColor
       layer.masksToBounds = true
-      contentEdgeInsets = UIEdgeInsets(top: 8, left: 12, bottom: 8, right: 12)
     }
 
     @available(*, unavailable)
