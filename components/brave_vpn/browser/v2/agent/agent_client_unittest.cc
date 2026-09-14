@@ -30,10 +30,29 @@ constexpr base::TimeDelta kTimeBriefly = base::Milliseconds(10);
 // backoff is growing.
 constexpr base::TimeDelta kTimeBetweenRetryWindows = base::Seconds(10);
 
+// Time span in which the failing client is still under the persistent
+// threshold.
+constexpr base::TimeDelta kTimeBeforePersistentFailure = base::Seconds(12);
+
+// Time spans of either side of the minimum stable session, which decides
+// whether a dropped session ends a run of failures or counts as another failure
+// in it.
+constexpr base::TimeDelta kTimeShorterThanStableSession = base::Seconds(1);
+constexpr base::TimeDelta kTimeLongerThanStableSession = base::Seconds(4);
+
+// A first retry delay is at most the backoff's initial delay, so anything
+// higher than this can only come from a run of failures that wasn't cleared.
+constexpr base::TimeDelta kLongestFirstRetryDelay = base::Seconds(1);
+
 class TestObserver : public AgentClient::Observer {
  public:
   void OnAgentConnected() override {
     ++connected_count_;
+    Notify();
+  }
+
+  void OnAgentSessionStable() override {
+    ++session_stable_count_;
     Notify();
   }
 
@@ -42,10 +61,9 @@ class TestObserver : public AgentClient::Observer {
     Notify();
   }
 
-  void OnAgentUnavailable(
-      std::optional<mojom::BrowserAuthResult> result) override {
-    ++unavailable_count_;
-    last_unavailable_result_ = result;
+  void OnAgentConnectionFailed(AgentClient::Error error) override {
+    ++connection_error_count_;
+    last_connection_error_ = error;
     Notify();
   }
 
@@ -62,11 +80,12 @@ class TestObserver : public AgentClient::Observer {
   }
 
   int connected_count() const { return connected_count_; }
+  int session_stable_count() const { return session_stable_count_; }
   int disconnected_count() const { return disconnected_count_; }
-  int unavailable_count() const { return unavailable_count_; }
+  int connection_error_count() const { return connection_error_count_; }
   int not_running_count() const { return not_running_count_; }
-  std::optional<mojom::BrowserAuthResult> last_unavailable_result() const {
-    return last_unavailable_result_;
+  std::optional<AgentClient::Error> last_connection_error() const {
+    return last_connection_error_;
   }
 
  private:
@@ -78,9 +97,10 @@ class TestObserver : public AgentClient::Observer {
 
   int connected_count_ = 0;
   int disconnected_count_ = 0;
-  int unavailable_count_ = 0;
+  int connection_error_count_ = 0;
+  int session_stable_count_ = 0;
   int not_running_count_ = 0;
-  std::optional<mojom::BrowserAuthResult> last_unavailable_result_;
+  std::optional<AgentClient::Error> last_connection_error_;
   base::RepeatingClosure on_notification_;
 };
 }  // namespace
@@ -124,13 +144,23 @@ class AgentClientTest : public testing::Test {
     WaitForNotification();
   }
 
+  // Advances just far enough for the scheduled retry to run and the connect it
+  // starts to settle.
+  void RunNextScheduledRetry() {
+    const base::TimeDelta delay =
+        task_environment_.NextMainThreadPendingTaskDelay();
+    ASSERT_NE(delay, base::TimeDelta::Max());
+    task_environment_.FastForwardBy(delay + kTimeBriefly);
+  }
+
   // Every refusal is terminal in the same way, whatever the agent's reason.
-  void ExpectRefusalIsTerminal(mojom::BrowserAuthResult result) {
+  void ExpectRefusalIsTerminal(mojom::BrowserAuthResult result,
+                               AgentClient::Error expected_error) {
     agent_.set_auth_result(result);
     ConnectAndWait();
 
-    EXPECT_EQ(observer_.unavailable_count(), 1);
-    EXPECT_EQ(observer_.last_unavailable_result(), result);
+    EXPECT_EQ(observer_.connection_error_count(), 1);
+    EXPECT_EQ(observer_.last_connection_error(), expected_error);
     EXPECT_EQ(observer_.connected_count(), 0);
     EXPECT_EQ(client_->state(), AgentClient::State::kUnavailable);
     EXPECT_FALSE(client_->browser_host());
@@ -163,7 +193,7 @@ TEST_F(AgentClientTest, HandshakeSucceeds) {
 
   EXPECT_EQ(observer_.connected_count(), 1);
   EXPECT_EQ(observer_.not_running_count(), 0);
-  EXPECT_EQ(observer_.unavailable_count(), 0);
+  EXPECT_EQ(observer_.connection_error_count(), 0);
 
   EXPECT_EQ(client_->state(), AgentClient::State::kConnected);
   EXPECT_TRUE(client_->is_connected());
@@ -226,6 +256,9 @@ TEST_F(AgentClientTest, UnreachableAgentIsRetriedUntilItAppears) {
   EXPECT_GT(agent_.connect_attempts(), 1);
   EXPECT_EQ(client_->state(), AgentClient::State::kConnected);
   EXPECT_EQ(observer_.connected_count(), 1);
+
+  // An outage that resolved on its own is not worth telling anyone about.
+  EXPECT_EQ(observer_.connection_error_count(), 0);
 }
 
 // The service reacts to this by trying to start the agent, so it has to be one
@@ -250,6 +283,27 @@ TEST_F(AgentClientTest, NotRunningIsNotifiedOncePerRunOfFailures) {
   EXPECT_EQ(observer_.not_running_count(), 2);
 }
 
+// Reaching the agent answers an outstanding launch request, even if the
+// session it established is too short to end the run of failures. Otherwise an
+// agent that dies right after connecting would be started once and then left
+// alone for the rest of the run.
+TEST_F(AgentClientTest, ShortSessionStillAllowsAnotherLaunchRequest) {
+  agent_.set_transport_fails(true);
+  ConnectAndWait();
+  ASSERT_EQ(observer_.not_running_count(), 1);
+
+  agent_.set_transport_fails(false);
+  RunNextScheduledRetry();
+  ASSERT_EQ(client_->state(), AgentClient::State::kConnected);
+
+  task_environment_.FastForwardBy(kTimeShorterThanStableSession);
+  agent_.set_transport_fails(true);
+  agent_.CloseAllConnections();
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+
+  EXPECT_EQ(observer_.not_running_count(), 2);
+}
+
 TEST_F(AgentClientTest, RetryDelayGrowsWhileFailing) {
   agent_.set_transport_fails(true);
   ConnectAndWait();
@@ -266,9 +320,11 @@ TEST_F(AgentClientTest, RetryDelayGrowsWhileFailing) {
   EXPECT_GT(first_window, second_window);
 }
 
-// A session that was up and then dropped is not evidence that reconnecting will
-// fail, so the ramp starts over rather than continuing from where it was.
-TEST_F(AgentClientTest, LosingSessionResetsTheBackoff) {
+// A run of failures ends once a session has lasted kMinStableSession, so a ramp
+// climbed before connecting is not inherited by the failures that follow it.
+// The drop is not what clears it: one that came sooner would've counted as
+// another failure in the same run.
+TEST_F(AgentClientTest, ConnectedSessionResetsTheBackoff) {
   // Climb the ramp first, so that inheriting it would be visible.
   agent_.set_transport_fails(true);
   ConnectAndWait();
@@ -294,16 +350,72 @@ TEST_F(AgentClientTest, LosingSessionResetsTheBackoff) {
   EXPECT_GT(agent_.connect_attempts(), attempts);
 }
 
+// A session that ran for a while and then dropped is not evidence that
+// reconnecting will fail, so each drop starts the ramp over.
+TEST_F(AgentClientTest, StableSessionsKeepTheBackoffAtItsFirstDelay) {
+  ConnectAndWait();
+  ASSERT_EQ(client_->state(), AgentClient::State::kConnected);
+
+  for (int i = 0; i < 3; ++i) {
+    task_environment_.FastForwardBy(kTimeLongerThanStableSession);
+    agent_.CloseAllConnections();
+    WaitForNotification();
+    ASSERT_EQ(client_->state(), AgentClient::State::kWaitingToRetry)
+        << "drop " << i;
+
+    EXPECT_LE(task_environment_.NextMainThreadPendingTaskDelay(),
+              kLongestFirstRetryDelay)
+        << "drop " << i;
+
+    RunNextScheduledRetry();
+    ASSERT_EQ(client_->state(), AgentClient::State::kConnected)
+        << "reconnect " << i;
+  }
+}
+
+// The opposite case, and the one an agent that crashes on startup produces:
+// sessions that die immediately are part of the run of failures rather than
+// evidence against it. Were they to clear it, the client would reconnect on
+// the initial delay forever and never report anything.
+TEST_F(AgentClientTest, ShortSessionsDoNotResetTheBackoff) {
+  ConnectAndWait();
+  ASSERT_EQ(client_->state(), AgentClient::State::kConnected);
+
+  constexpr int kShortSessions = 5;
+  for (int i = 0; i < kShortSessions; ++i) {
+    task_environment_.FastForwardBy(kTimeShorterThanStableSession);
+    agent_.CloseAllConnections();
+    WaitForNotification();
+    ASSERT_EQ(client_->state(), AgentClient::State::kWaitingToRetry)
+        << "drop " << i;
+
+    if (i + 1 == kShortSessions) {
+      break;
+    }
+    RunNextScheduledRetry();
+    ASSERT_EQ(client_->state(), AgentClient::State::kConnected)
+        << "reconnect " << i;
+  }
+
+  // Five failures in one run puts the next delay well past a first delay,
+  // whose ceiling is the backoff's initial delay.
+  EXPECT_GT(task_environment_.NextMainThreadPendingTaskDelay(),
+            kLongestFirstRetryDelay);
+}
+
 TEST_F(AgentClientTest, RejectionIsTerminal) {
-  ExpectRefusalIsTerminal(mojom::BrowserAuthResult::kRejected);
+  ExpectRefusalIsTerminal(mojom::BrowserAuthResult::kRejected,
+                          AgentClient::Error::kBrowserRejected);
 }
 
 TEST_F(AgentClientTest, VersionMismatchIsTerminal) {
-  ExpectRefusalIsTerminal(mojom::BrowserAuthResult::kVersionMismatch);
+  ExpectRefusalIsTerminal(mojom::BrowserAuthResult::kVersionMismatch,
+                          AgentClient::Error::kBrowserRejected);
 }
 
 TEST_F(AgentClientTest, HostAlreadyRequestedIsTerminal) {
-  ExpectRefusalIsTerminal(mojom::BrowserAuthResult::kHostAlreadyRequested);
+  ExpectRefusalIsTerminal(mojom::BrowserAuthResult::kHostAlreadyRequested,
+                          AgentClient::Error::kUnexpectedBehavior);
 }
 
 // The reason the provider pipe is held open in the terminal state: the verdict
@@ -329,9 +441,9 @@ TEST_F(AgentClientTest, NoServerNameIsTerminalUntilReset) {
   agent_.set_server_name_available(false);
   ConnectAndWait();
 
-  EXPECT_EQ(observer_.unavailable_count(), 1);
+  EXPECT_EQ(observer_.connection_error_count(), 1);
   // Not an auth result: there was no agent to hear from.
-  EXPECT_EQ(observer_.last_unavailable_result(), std::nullopt);
+  EXPECT_EQ(observer_.last_connection_error(), AgentClient::Error::kNoEndpoint);
   EXPECT_EQ(client_->state(), AgentClient::State::kUnavailable);
   EXPECT_EQ(agent_.connect_attempts(), 0);
 
@@ -347,9 +459,44 @@ TEST_F(AgentClientTest, NoServerNameIsTerminalUntilReset) {
   EXPECT_EQ(client_->state(), AgentClient::State::kConnected);
 }
 
-// A peer that takes the connection and never answers, shouldn't hold the client
-// in kConnecting forever.
-TEST_F(AgentClientTest, SilentAgentTimesOutAndRetries) {
+// Retryable errors are reported only once a run of them has lasted long
+// enough to stop looking like a blip, and then only once.
+TEST_F(AgentClientTest, PersistentFailureIsReportedOncePerRun) {
+  agent_.set_transport_fails(true);
+  ConnectAndWait();
+
+  // Several failures, but not yet long enough to be a verdict.
+  task_environment_.FastForwardBy(kTimeBeforePersistentFailure);
+  ASSERT_GT(agent_.connect_attempts(), 1);
+  EXPECT_EQ(observer_.connection_error_count(), 0);
+
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+  ASSERT_EQ(observer_.connection_error_count(), 1);
+  EXPECT_EQ(observer_.last_connection_error(),
+            AgentClient::Error::kAgentUnreachable);
+  // Reporting is not a state change: the client is still trying.
+  EXPECT_EQ(client_->state(), AgentClient::State::kWaitingToRetry);
+
+  // However long the run goes on, it is the same news.
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+  EXPECT_EQ(observer_.connection_error_count(), 1);
+
+  // A success ends the run, so the next one is reportable again.
+  agent_.set_transport_fails(false);
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+  ASSERT_EQ(client_->state(), AgentClient::State::kConnected);
+
+  agent_.set_transport_fails(true);
+  agent_.CloseAllConnections();
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+  EXPECT_EQ(observer_.connection_error_count(), 2);
+}
+
+// The case nothing else reports: a peer holds the endpoint and never answers.
+// The transport connects, so the agent is never treated as missing and no
+// launch is asked for - correctly, since starting the agent cannot take an
+// endpoint another process is already holding.
+TEST_F(AgentClientTest, SilentPeerIsReportedWithoutBeingTreatedAsMissing) {
   agent_.set_auth_result(std::nullopt);
   client_->EnsureConnected();
   task_environment_.FastForwardBy(kTimeBriefly);
@@ -357,9 +504,130 @@ TEST_F(AgentClientTest, SilentAgentTimesOutAndRetries) {
 
   task_environment_.FastForwardBy(kTimePastEveryRetry);
 
+  ASSERT_EQ(observer_.connection_error_count(), 1);
+  EXPECT_EQ(observer_.last_connection_error(),
+            AgentClient::Error::kAgentNotResponding);
+  EXPECT_EQ(observer_.not_running_count(), 0);
   EXPECT_EQ(observer_.connected_count(), 0);
   EXPECT_FALSE(client_->browser_host());
   EXPECT_GT(agent_.connect_attempts(), 1);
+}
+
+// An inconclusive verdict is retried rather than treated as a refusal, but a
+// run of them still has to surface.
+TEST_F(AgentClientTest, RepeatedInconclusiveResultsAreReportedAndRetried) {
+  agent_.set_auth_result(mojom::BrowserAuthResult::kInconclusive);
+  ConnectAndWait();
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+
+  ASSERT_EQ(observer_.connection_error_count(), 1);
+  EXPECT_EQ(observer_.last_connection_error(),
+            AgentClient::Error::kBrowserUnverified);
+  EXPECT_EQ(client_->state(), AgentClient::State::kWaitingToRetry);
+  EXPECT_GT(agent_.connect_attempts(), 1);
+}
+
+TEST_F(AgentClientTest, ResetClearsTheReportedError) {
+  agent_.set_transport_fails(true);
+  ConnectAndWait();
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+  ASSERT_EQ(observer_.connection_error_count(), 1);
+
+  client_->Reset();
+  client_->EnsureConnected();
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+
+  EXPECT_EQ(observer_.connection_error_count(), 2);
+}
+
+// Acceptance is not evidence that connecting works; staying connected is.
+TEST_F(AgentClientTest, SessionIsReportedStableOnlyAfterItLasted) {
+  ConnectAndWait();
+  ASSERT_EQ(observer_.connected_count(), 1);
+  EXPECT_EQ(observer_.session_stable_count(), 0);
+
+  task_environment_.FastForwardBy(kTimeShorterThanStableSession);
+  EXPECT_EQ(observer_.session_stable_count(), 0);
+
+  task_environment_.FastForwardBy(kTimeLongerThanStableSession);
+  EXPECT_EQ(observer_.session_stable_count(), 1);
+}
+
+TEST_F(AgentClientTest, SessionLostBeforeStabilityIsNeverReportedStable) {
+  ConnectAndWait();
+  task_environment_.FastForwardBy(kTimeShorterThanStableSession);
+
+  // Nothing to reconnect to, so the client cannot quietly establish a second
+  // session that would become stable on its own.
+  agent_.set_transport_fails(true);
+  agent_.CloseAllConnections();
+  WaitForNotification();
+  ASSERT_EQ(client_->state(), AgentClient::State::kWaitingToRetry);
+
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+  EXPECT_EQ(observer_.session_stable_count(), 0);
+}
+
+// A run of failures that shifts between retryable reasons is still one piece
+// of news. Reporting each turn would churn whatever the owner puts in front of
+// the customer - an agent crash loop alternates on every cycle.
+TEST_F(AgentClientTest, ShiftingRetryableReasonsAreReportedOnce) {
+  agent_.set_transport_fails(true);
+  ConnectAndWait();
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+  ASSERT_EQ(observer_.connection_error_count(), 1);
+  ASSERT_EQ(observer_.last_connection_error(),
+            AgentClient::Error::kAgentUnreachable);
+
+  // The agent spins up, but now holds the connection without answering: a
+  // different retryable reason within the same run.
+  agent_.set_transport_fails(false);
+  agent_.set_auth_result(std::nullopt);
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+
+  ASSERT_EQ(observer_.connected_count(), 0);
+  EXPECT_EQ(observer_.connection_error_count(), 1);
+  EXPECT_EQ(observer_.last_connection_error(),
+            AgentClient::Error::kAgentUnreachable);
+}
+
+// A verdict retrying cannot change has to reach the customer even though
+// something already has, because the advice it carries is different.
+TEST_F(AgentClientTest, EscalationToTerminalReasonIsStillReported) {
+  agent_.set_transport_fails(true);
+  ConnectAndWait();
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+  ASSERT_EQ(observer_.connection_error_count(), 1);
+  ASSERT_EQ(observer_.last_connection_error(),
+            AgentClient::Error::kAgentUnreachable);
+
+  agent_.set_transport_fails(false);
+  agent_.set_auth_result(mojom::BrowserAuthResult::kRejected);
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+
+  EXPECT_EQ(observer_.connection_error_count(), 2);
+  EXPECT_EQ(observer_.last_connection_error(),
+            AgentClient::Error::kBrowserRejected);
+  EXPECT_EQ(client_->state(), AgentClient::State::kUnavailable);
+}
+
+// A verdict belongs to the agent binary that gave it, so losing that agent
+// clears the run and its replacement is asked afresh. If the replacement
+// refuses too, that is news again rather than a repeat: the previous answer
+// was about a process that no longer exists.
+TEST_F(AgentClientTest, ReplacementAgentRefusingAgainIsReported) {
+  agent_.set_auth_result(mojom::BrowserAuthResult::kRejected);
+  ConnectAndWait();
+  ASSERT_EQ(observer_.connection_error_count(), 1);
+
+  agent_.CloseAllConnections();
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+
+  ASSERT_GT(agent_.connect_attempts(), 1);
+  EXPECT_EQ(observer_.connection_error_count(), 2);
+  EXPECT_EQ(observer_.last_connection_error(),
+            AgentClient::Error::kBrowserRejected);
+  EXPECT_EQ(client_->state(), AgentClient::State::kUnavailable);
 }
 
 // The reply travels on the provider pipe and the refusal drops handles on two
