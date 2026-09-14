@@ -7,7 +7,7 @@ import styled, { css } from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Alert, { AlertProps } from '@brave/leo/react/alert'
 
-import { layoutPanelWidth } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 import { Text } from '../../../../components/shared/style'
 
 export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`

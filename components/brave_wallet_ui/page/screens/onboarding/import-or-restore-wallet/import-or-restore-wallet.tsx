@@ -15,7 +15,9 @@ import {
 import { WalletRoutes } from '../../../../constants/types'
 
 // components
-import { CenteredPageLayout } from '../../../../components/desktop/centered-page-layout/centered-page-layout'
+import {
+  CenteredPageLayout, //
+} from '$wallet/page/components/centered_page_layout/centered_page_layout'
 import {
   OnboardingStepsNavigation, //
 } from '../components/onboarding-steps-navigation/onboarding-steps-navigation'

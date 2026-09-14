@@ -22,7 +22,7 @@ import { UISelectors, WalletSelectors } from '../../../common/selectors'
 
 import {
   WalletPageLayout, //
-} from '../../../components/desktop/wallet-page-layout'
+} from '$wallet/page/components/wallet_page_layout/wallet_page_layout'
 import {
   ProtectedRoute, //
 } from '../../../components/shared/protected-routing/protected-route'

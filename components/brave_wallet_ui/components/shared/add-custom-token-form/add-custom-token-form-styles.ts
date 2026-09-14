@@ -10,7 +10,7 @@ import ProgressRing from '@brave/leo/react/progressRing'
 // Shared Styles
 import { Text, WalletButton, Row } from '../style'
 import { CaratStrongDownIcon } from 'brave-ui/components/icons'
-import { layoutPanelWidth } from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 // graphics
 import NftPlaceholderIcon from '../../../assets/svg-icons/nft-placeholder.svg'

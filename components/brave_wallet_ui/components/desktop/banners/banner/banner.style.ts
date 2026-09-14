@@ -10,7 +10,7 @@ import LeoIcon from '@brave/leo/react/icon'
 // Shared Styles
 import {
   layoutPanelWidth, //
-} from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 import { Row } from '../../../shared/style'
 
 export const StyledWrapper = styled(Row)`

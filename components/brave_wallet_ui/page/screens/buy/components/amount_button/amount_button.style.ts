@@ -13,7 +13,7 @@ import { Column, Text } from '../../../../../components/shared/style'
 import { AmountInput as Input } from '../../../composer_ui/shared_composer.style'
 import {
   layoutPanelWidth, //
-} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const Wrapper = styled(Column)`
   align-items: flex-end;

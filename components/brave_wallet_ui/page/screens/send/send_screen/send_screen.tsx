@@ -92,7 +92,7 @@ import {
 } from '../../composer_ui/select_token_modal/select_token_modal'
 import {
   WalletPageWrapper, //
-} from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import { FromAsset } from '../../composer_ui/from_asset/from_asset'
 import {
   DefaultPanelHeader, //

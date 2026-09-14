@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css/variables'
 import {
   layoutSmallWidth, //
-} from '$wallet/components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`
   display: grid;

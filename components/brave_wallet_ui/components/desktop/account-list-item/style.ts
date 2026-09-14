@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
 import { WalletButton, Text, Row } from '../../shared/style'
-import { layoutPanelWidth } from '../wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const StyledWrapper = styled.div<{
   isRewardsAccount: boolean

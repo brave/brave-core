@@ -28,7 +28,7 @@ import { getLocale } from '$web-common/locale'
 // Components
 import {
   WalletPageWrapper, //
-} from '../../desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   DefaultPanelHeader, //
 } from '../../desktop/card-headers/default-panel-header'

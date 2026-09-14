@@ -7,10 +7,10 @@ import * as React from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 
 // Utils
-import { getLocale } from '../../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Types
-import { NavOption } from '../../../../constants/types'
+import { NavOption } from '$wallet/constants/types'
 
 // Styled Components
 import {
@@ -18,7 +18,7 @@ import {
   ButtonIcon,
   ButtonText,
   SelectedIndicator,
-} from './wallet-nav-button.style'
+} from './wallet_nav_button.style'
 
 export interface Props {
   option: NavOption

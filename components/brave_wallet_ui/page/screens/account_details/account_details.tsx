@@ -101,7 +101,7 @@ import {
 } from '../../../components/desktop/popup-modals/add-edit-nft-modal/add-edit-nft-modal'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   EmptyTokenListState, //
 } from '../../../components/desktop/empty_token_list_state/empty_token_list_state'

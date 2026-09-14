@@ -6,8 +6,8 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
-import { WalletButton, Text } from '../../../shared/style'
-import { layoutSmallWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { WalletButton, Text } from '$wallet/components/shared/style'
+import { layoutSmallWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const StyledButton = styled(WalletButton)<{ isSelected?: boolean }>`
   --icon-color: ${(p) =>

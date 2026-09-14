@@ -43,7 +43,7 @@ import { UISelectors } from '../../../common/selectors'
 // components
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   ActivityPageHeader, //
 } from '../../../components/desktop/card-headers/activity_page_header'

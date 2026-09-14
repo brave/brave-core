@@ -12,20 +12,20 @@ import Icon from '@brave/leo/react/icon'
 // Local Storage
 import {
   useSyncedLocalStorage, //
-} from '../../../common/hooks/use_local_storage'
+} from '$wallet/common/hooks/use_local_storage'
 import {
   LOCAL_STORAGE_KEYS, //
-} from '../../../common/constants/local-storage-keys'
+} from '$wallet/common/constants/local-storage-keys'
 
 // Hooks
-import { useRoute } from '../../../common/hooks/use_route'
+import { useRoute } from '$wallet/common/hooks/use_route'
 
 // Selectors
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../common/selectors'
+import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors } from '$wallet/common/selectors'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Options
 import {
@@ -33,10 +33,10 @@ import {
   PanelNavOptions,
   BuySendSwapDepositOptions,
   BuySendSwapDepositIOSOptions,
-} from '../../../options/nav-options'
+} from '$wallet/options/nav-options'
 
 // Components
-import { WalletNavButton } from './wallet-nav-button/wallet-nav-button'
+import { WalletNavButton } from './wallet_nav_button/wallet_nav_button'
 
 // Styled Components
 import {
@@ -50,8 +50,8 @@ import {
   CloseButton,
   Header,
   BackgroundOverlay,
-} from './wallet-nav.style'
-import { Row, Text, VerticalDivider } from '../../shared/style'
+} from './wallet_nav.style'
+import { Row, Text, VerticalDivider } from '$wallet/components/shared/style'
 
 export const WalletNav = () => {
   // UI Selectors (safe)

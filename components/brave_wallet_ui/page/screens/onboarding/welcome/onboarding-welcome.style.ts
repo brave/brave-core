@@ -12,7 +12,7 @@ import backgroundImageLight from '../../../../assets/svg-icons/onboarding/welcom
 import backgroundImageDark from '../../../../assets/svg-icons/onboarding/welcome_background_dark.svg'
 // styles
 import { Column } from '../../../../components/shared/style'
-import { layoutPanelWidth } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const WelcomePageBackground = styled.div`
   display: flex;

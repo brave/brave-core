@@ -17,7 +17,7 @@ import {
 import { LPIcon } from '../../shared-swap.styles'
 import {
   layoutPanelWidth, //
-} from '../../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const StyledWrapper = styled(Column)`
   overflow: hidden;

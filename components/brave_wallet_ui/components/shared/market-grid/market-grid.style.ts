@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import {
   layoutPanelWidth,
   layoutSmallWidth,
-} from '../../desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 import { WalletButton, Text } from '../style'
 
 export const breakpoints = {
