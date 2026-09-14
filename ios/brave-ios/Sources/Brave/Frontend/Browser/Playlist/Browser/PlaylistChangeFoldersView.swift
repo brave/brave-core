@@ -101,12 +101,8 @@ struct PlaylistChangeFoldersView: View {
       guard let folder = folders.first(where: { $0.id == newValue }) else { return }
       PlaylistItem.moveItems(items: [item.objectID], to: folder.uuid)
     }
-    .background {
-      NavigationLink(isActive: $isNewFolderActive) {
-        CreateFolderView(item: item, selectedFolderID: $selectedFolderID)
-      } label: {
-        EmptyView()
-      }
+    .navigationDestination(isPresented: $isNewFolderActive) {
+      CreateFolderView(item: item, selectedFolderID: $selectedFolderID)
     }
   }
 
@@ -178,10 +174,9 @@ struct PlaylistChangeFoldersContainerView: View {
   var item: PlaylistItem
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       PlaylistChangeFoldersView(item: item)
     }
-    .navigationViewStyle(.stack)
     .environment(\.managedObjectContext, DataController.swiftUIContext)
   }
 }

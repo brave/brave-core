@@ -238,14 +238,11 @@ public struct OnboardingPlaylistView: View {
         }
       }
     }
-    .onChange(
-      of: model.step,
-      perform: { newValue in
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-          accessibilityFocusStep = newValue.accessibilityStep
-        }
+    .onChange(of: model.step) { _, newValue in
+      DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+        accessibilityFocusStep = newValue.accessibilityStep
       }
-    )
+    }
     .accessibilitySortPriority(2)
     .overlay(alignment: .bottom) {
       if model.step == .details {

@@ -1034,36 +1034,30 @@ extension PlaylistManager {
       asset = await self.asset(for: item.tagId, mediaSrc: item.src)
     }
 
-    // Accessing tracks blocks the main-thread if not already loaded
-    // So we first need to check the track status before attempting to access it!
-    var error: NSError?
-    let trackStatus = asset.statusOfValue(forKey: "tracks", error: &error)
-
-    if trackStatus == .loaded {
-      if !asset.tracks.isEmpty,
-        let track = asset.tracks(withMediaType: .video).first
-          ?? asset.tracks(withMediaType: .audio).first
-      {
-        if track.timeRange.duration.isIndefinite {
-          return TimeInterval.infinity
-        } else {
-          return track.timeRange.duration.seconds
-        }
+    if case .loaded = asset.status(of: .tracks),
+      let tracks = try? await asset.load(.tracks),
+      let track = tracks.first(where: { $0.mediaType == .video })
+        ?? tracks.first(where: { $0.mediaType == .audio }),
+      let timeRange = try? await track.load(.timeRange)
+    {
+      if timeRange.duration.isIndefinite {
+        return TimeInterval.infinity
+      } else {
+        return timeRange.duration.seconds
       }
     }
 
-    // Accessing duration or commonMetadata blocks the main-thread if not already loaded
-    // So we first need to check the track status before attempting to access it!
-    let durationStatus = asset.statusOfValue(forKey: "duration", error: &error)
-    if durationStatus == .loaded {
+    if case .loaded = asset.status(of: .duration),
+      let duration = try? await asset.load(.duration)
+    {
       // If it's live/indefinite
-      if asset.duration.isIndefinite {
+      if duration.isIndefinite {
         return TimeInterval.infinity
       }
 
       // If it's a valid duration
-      if abs(asset.duration.seconds.distance(to: 0.0)) >= tolerance {
-        return asset.duration.seconds
+      if abs(duration.seconds.distance(to: 0.0)) >= tolerance {
+        return duration.seconds
       }
     }
 
@@ -1086,7 +1080,7 @@ extension PlaylistManager {
           if let track = loadedTracks.first(where: { $0.mediaType == .video })
             ?? loadedTracks.first(where: { $0.mediaType == .audio })
           {
-            duration = track.timeRange.duration
+            duration = try await track.load(.timeRange).duration
           } else {
             duration = loadedDuration
           }
@@ -1184,25 +1178,5 @@ extension PlaylistManager {
         }
       }
     }
-  }
-}
-
-extension AVAsset {
-  func displayNames(for mediaSelection: AVMediaSelection) -> String? {
-    var names = ""
-    for mediaCharacteristic in availableMediaCharacteristicsWithMediaSelectionOptions {
-      guard
-        let mediaSelectionGroup = mediaSelectionGroup(forMediaCharacteristic: mediaCharacteristic),
-        let option = mediaSelection.selectedMediaOption(in: mediaSelectionGroup)
-      else { continue }
-
-      if names.isEmpty {
-        names += " " + option.displayName
-      } else {
-        names += ", " + option.displayName
-      }
-    }
-
-    return names.isEmpty ? nil : names
   }
 }
