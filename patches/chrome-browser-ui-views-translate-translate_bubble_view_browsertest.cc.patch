@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/translate/translate_bubble_view_browsertest.cc b/chrome/browser/ui/views/translate/translate_bubble_view_browsertest.cc
+index a15f922d92af489d59a50ce2c703752c0c613260..c8413ee6650b821a92fb8f9840ba199eefd5b7b2 100644
+--- a/chrome/browser/ui/views/translate/translate_bubble_view_browsertest.cc
++++ b/chrome/browser/ui/views/translate/translate_bubble_view_browsertest.cc
+@@ -249,7 +249,7 @@ class TranslateBubbleViewPdfBrowserTest : public TranslateBubbleViewBrowserTest
+   TranslateBubbleViewPdfBrowserTest() {
+     feature_list_.InitWithFeatures(
+         {translate::kEnableTranslatePdf,
+-         features::kReadAnythingTranslateEntryPoint},
++         ::features::kReadAnythingTranslateEntryPoint},
+         {});
+   }
+ 
