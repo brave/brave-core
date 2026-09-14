@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Retry the config lookup against the parent host.
+
+      A WebUIConfig that opts in via `ShouldHandleSubdomains()` also serves the
+      single-label subdomains of its host, each as a distinct origin, so a
+      lookup that misses on the exact origin has to fall back to the config
+      registered for the parent host. `FindConfigForSubdomain()` is defined in
+      the chromium_src override.
+    regex:
+      re_pattern:
+        '(auto origin_and_config =
+        configs_map_\.find\(url::Origin::Create\(url\)\);)'
+      replace: |-
+        \1
+          if (origin_and_config == configs_map_.end()) {
+            origin_and_config = FindConfigForSubdomain(configs_map_, url);
+          }
