@@ -6,6 +6,7 @@
 import Foundation
 
 /// A scheme handler to deal with the old NTP urls while users migrate away from them
+@MainActor
 public class LegacyNTPHandler: InternalSchemeResponse {
   public static let path = "about/home"
   public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
