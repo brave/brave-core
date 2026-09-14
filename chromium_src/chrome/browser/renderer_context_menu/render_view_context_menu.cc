@@ -25,6 +25,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/renderer_context_menu/brave_spelling_options_submenu_observer.h"
 #include "brave/browser/ui/brave_pages.h"
+#include "brave/browser/ui/brave_scheme_utils.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/browser_dialogs.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -44,6 +45,7 @@
 #include "components/omnibox/browser/autocomplete_match_type.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
 #include "net/base/filename_util.h"
 #include "ui/base/models/menu_separator_types.h"
 #include "ui/base/resource/resource_bundle.h"
@@ -122,6 +124,24 @@ base::OnceCallback<void(RenderViewContextMenu*)>* BraveGetMenuShownCallback() {
   return callback.get();
 }
 
+// Only rewrite chrome:// to brave:// when the copy happened on a page that is
+// itself chrome:// or brave://, so chrome:// text found on an arbitrary
+// website is left untouched.
+//
+// current_url_ is never actually brave:// at runtime: Brave rewrites brave://
+// to chrome:// at the navigation layer before a frame commits, so a
+// committed frame's URL is always chrome://, never brave://. The
+// SchemeIs(kBraveUIScheme) check is kept anyway as a defensive measure, in
+// case that assumption ever stops holding.
+std::u16string BraveMaybeReplaceChromeToBraveScheme(std::u16string text,
+                                                     const GURL& current_url) {
+  if (current_url.SchemeIs(content::kChromeUIScheme) ||
+      current_url.SchemeIs(content::kBraveUIScheme)) {
+    brave_utils::ReplaceChromeToBraveScheme(text);
+  }
+  return text;
+}
+
 }  // namespace
 
 void RenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting(
@@ -137,6 +157,9 @@ void RenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting(
       return;                                                            \
   }
 
+#define BRAVE_REPLACE_CHROME_TO_BRAVE_SCHEME(text) \
+  BraveMaybeReplaceChromeToBraveScheme(text, current_url_)
+
 // Use our subclass to initialize SpellingOptionsSubMenuObserver.
 #define SpellingOptionsSubMenuObserver BraveSpellingOptionsSubMenuObserver
 #define RegisterMenuShownCallbackForTesting \
@@ -151,6 +174,7 @@ void RenderViewContextMenu_Chromium::RegisterMenuShownCallbackForTesting(
 // Make it clear which class we mean here.
 #undef RenderViewContextMenu
 #undef BRAVE_APPEND_SEARCH_PROVIDER
+#undef BRAVE_REPLACE_CHROME_TO_BRAVE_SCHEME
 
 namespace {
 
