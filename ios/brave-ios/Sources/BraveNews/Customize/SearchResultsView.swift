@@ -161,7 +161,7 @@ struct SearchResultsView: View {
       }
 
       // Check if `data` is actually an OPML list
-      if let opml = OPMLParser.parse(data: data), !opml.outlines.isEmpty {
+      if let opml = OPMLParser.parseSynchronously(data: data), !opml.outlines.isEmpty {
         let locations = opml.outlines.compactMap(self.rssLocationFromOPMLOutline)
         completion(locations.isEmpty ? .failure(.noFeedsFound) : .success(locations))
         return

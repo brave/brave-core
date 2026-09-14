@@ -9,7 +9,7 @@ import Shared
 import WidgetKit
 import os.log
 
-public struct WidgetFavorite: Codable {
+public struct WidgetFavorite: Codable, Sendable {
   public var url: URL
   public var title: String?
   public var favicon: Favicon?

@@ -80,6 +80,7 @@ extension Web3Service {
   }
 }
 
+@MainActor
 public class Web3DomainHandler: InternalSchemeResponse {
 
   public static let path = "web3/ddns"
