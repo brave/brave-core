@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.cc b/chrome/browser/ui/tabs/tab_strip_model.cc
-index 48140cb488e51ca30e55afcd492861b94dec6278..220c812862a713ffcc1ccb37f6bcf90838f84646 100644
+index 48140cb488e51ca30e55afcd492861b94dec6278..5c332d154a5aa0dfd9c7935464289b60d5cb7bd7 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_model.cc
 @@ -184,7 +184,7 @@ std::unique_ptr<TabGroupModel> TabGroupModelFactory::Create() {
@@ -59,7 +59,7 @@ index 48140cb488e51ca30e55afcd492861b94dec6278..220c812862a713ffcc1ccb37f6bcf908
      int destination_index) {
    const int pinned_tab_count = IndexOfFirstNonPinnedTab();
    const std::vector<int> pinned_selected_indices = GetSelectedPinnedTabs();
-@@ -4708,8 +4726,10 @@ void TabStripModel::InsertTabAtIndexImpl(
+@@ -4708,8 +4726,9 @@ void TabStripModel::InsertTabAtIndexImpl(
    }
  
    tabs::TabInterface* old_active_tab = GetActiveTab();
@@ -67,7 +67,6 @@ index 48140cb488e51ca30e55afcd492861b94dec6278..220c812862a713ffcc1ccb37f6bcf908
    contents_data_->AddTabRecursive(tabs::ScopedTab(tab_model.release()), index,
 -                                  group, pin);
 +                                  group, pin, opener);
-+
    selection_model_.InvalidateListSelectionModel(base::PassKey<TabStripModel>());
  
    // If a tab is added that does not belong to the focused group (and is not
