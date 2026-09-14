@@ -34,8 +34,25 @@ class SerpMetricsAllProfilesAggregator {
 
   virtual ~SerpMetricsAllProfilesAggregator();
 
+  // Returns yesterday's search count for `type`, summed across all profiles.
   virtual size_t GetSearchCountForYesterday(SerpMetricType type) const;
+
+  // Returns last week's search count for `type`, summed across all profiles.
+  virtual size_t GetSearchCountForLastWeek(SerpMetricType type) const;
+
+  // Returns last month's search count for `type`, summed across all profiles.
+  virtual size_t GetSearchCountForLastMonth(SerpMetricType type) const;
+  // Returns searches older than yesterday but within the retention window,
+  // summed across all profiles and engine types.
   virtual size_t GetSearchCountForStalePeriod() const;
+
+  // Returns searches older than last week's start but within the retention
+  // window, summed across all profiles and engine types.
+  virtual size_t GetSearchCountForStaleWeekPeriod() const;
+
+  // Returns searches older than last month's start but within the retention
+  // window, summed across all profiles and engine types.
+  virtual size_t GetSearchCountForStaleMonthPeriod() const;
 
   size_t GetSearchCountForTesting(SerpMetricType type) const;
 
