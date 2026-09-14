@@ -59,6 +59,12 @@ extension Preferences {
       key: "shields.advanced-controls-visible",
       default: false
     )
+    /// Whether or not we've enabled the regional filter lists that match the user's language.
+    /// This is only done once so the user may disable them afterwards.
+    public static let checkedDefaultRegionalFilterLists = Option<Bool>(
+      key: "shields.checked-default-regional-filter-lists",
+      default: false
+    )
     /// Whether or not we've reported the initial state of shields for p3a
     public static let initialP3AStateReportedRevision = Option<Int>(
       key: "shields.initial-p3a-state-reported-revision",
