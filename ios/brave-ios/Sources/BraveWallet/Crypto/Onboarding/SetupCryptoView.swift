@@ -110,25 +110,15 @@ struct SetupCryptoView: View {
         .aspectRatio(contentMode: .fill)
     )
     .edgesIgnoringSafeArea(.all)
-    .background(
-      NavigationLink(
-        isActive: Binding(
-          get: { setupOption != nil },
-          set: { if !$0 { setupOption = nil } }
-        ),
-        destination: {
-          if let option = setupOption {
-            LegalView(
-              keyringStore: keyringStore,
-              setupOption: option,
-              dismissAction: dismissAction
-            )
-          }
-        },
-        label: {
-          EmptyView()
-        }
-      )
+    .navigationDestination(
+      item: $setupOption,
+      destination: { option in
+        LegalView(
+          keyringStore: keyringStore,
+          setupOption: option,
+          dismissAction: dismissAction
+        )
+      }
     )
     .accessibilityEmbedInScrollView()
     .transparentNavigationBar(
@@ -141,7 +131,7 @@ struct SetupCryptoView: View {
 #if DEBUG
 struct SetupCryptoView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       SetupCryptoView(
         keyringStore: .previewStore,
         dismissAction: {}
