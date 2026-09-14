@@ -162,10 +162,11 @@ class AdsServiceImplIOS : public AdsService {
 
   void ShutdownAdsCallback(ResultCallback callback, bool success);
 
-  void ClearAdsData(ResultCallback callback, bool success);
+  void ClearAdsData(ResultCallback callback, bool was_running, bool success);
   void ClearAdsPrefs();
-  void ClearAdsDataCallback(ResultCallback callback);
+  void ClearAdsDataCallback(ResultCallback callback, bool was_running);
 
+  void InitializePrefChangeRegistrar();
   void OnSponsoredAdsPrefChanged();
 
   const raw_ref<PrefService> prefs_;
