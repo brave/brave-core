@@ -165,8 +165,7 @@ TEST_F(WaybackMachinePageActionControllerTest, HiddenAgainAfterReset) {
 
 // The tab's contents can be swapped out - by tab discarding, or by a shared
 // pinned tab being moved to another window. The controller has to stop
-// listening to the outgoing contents' tab helper, which holds a single callback
-// and CHECKs that it was cleared before it's destroyed.
+// listening to the outgoing contents' tab helper.
 TEST_F(WaybackMachinePageActionControllerTest, DetachesFromDiscardedContents) {
   content::WebContents* const discarded_contents = contents();
   tab_interface().DiscardContents();
