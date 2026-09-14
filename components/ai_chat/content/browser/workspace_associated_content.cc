@@ -10,7 +10,6 @@
 
 #include "base/functional/bind.h"
 #include "base/logging.h"
-#include "base/strings/strcat.h"
 #include "base/time/time.h"
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/content_tool.h"
@@ -31,12 +30,12 @@
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/mojom/file_system_access/file_system_access_directory_handle.mojom.h"
 #include "third_party/blink/public/mojom/web_launch/web_launch.mojom.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
-#include "url/url_constants.h"
 
 namespace ai_chat {
 
@@ -49,9 +48,8 @@ WorkspaceAssociatedContent::WorkspaceAssociatedContent(
   // The uuid is the page's subdomain rather than a path under the workspace
   // host, so that each workspace is a distinct origin and doesn't share storage
   // or File System Access grants with any other workspace.
-  GURL url(base::StrCat({content::kChromeUIUntrustedScheme,
-                         url::kStandardSchemeSeparator, uuid,
-                         kAIChatLeoWorkspaceUIHostSuffix, "/"}));
+  GURL url(absl::StrFormat("%s://%s.%s/", content::kChromeUIUntrustedScheme,
+                           uuid, kAIChatLeoWorkspaceUIHost));
   CHECK(url.is_valid());
   DVLOG(2) << __func__ << " creating workspace content at " << url.spec()
            << " for folder " << folder_path_;

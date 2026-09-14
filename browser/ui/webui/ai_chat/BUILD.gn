@@ -68,6 +68,7 @@ source_set("ai_chat") {
     "//pdf:buildflags",
     "//printing",
     "//services/data_decoder/public/cpp",
+    "//third_party/abseil-cpp:absl",
     "//ui/base",
     "//ui/gfx/codec",
     "//ui/webui",

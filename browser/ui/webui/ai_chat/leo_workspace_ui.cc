@@ -17,9 +17,9 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/webui/webui_util.h"
 #include "url/gurl.h"
-#include "url/origin.h"
 
 namespace ai_chat {
 
@@ -50,9 +50,13 @@ LeoWorkspaceUI::LeoWorkspaceUI(content::WebUI* web_ui, const GURL& url)
   auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
   // Untrusted data sources are named after, and looked up by, the origin they
   // serve, so each workspace subdomain needs a data source of its own rather
-  // than one shared by the parent host.
+  // than one shared by the parent host. The name is built from the host because
+  // URLDataManagerBackend keys chrome-untrusted:// sources on
+  // "chrome-untrusted://<host>/".
   auto* source = content::WebUIDataSource::CreateAndAdd(
-      browser_context, url::Origin::Create(url).GetURL().spec());
+      browser_context,
+      absl::StrFormat("%s://%s/", content::kChromeUIUntrustedScheme,
+                      url.host()));
 
   webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
                               IDR_AI_CHAT_LEO_WORKSPACE_HTML);
