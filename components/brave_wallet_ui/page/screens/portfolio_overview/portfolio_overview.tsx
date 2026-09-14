@@ -91,7 +91,7 @@ import {
 } from '../transactions/transactions-screen'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   PortfolioOverviewHeader, //
 } from '../../../components/desktop/card-headers/portfolio-overview-header'

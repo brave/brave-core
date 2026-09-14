@@ -9,8 +9,8 @@ import * as React from 'react'
 import {
   WalletPageStory, //
 } from '../../../stories/wrappers/wallet-page-story-wrapper'
-import WalletPageLayout from '../wallet-page-layout'
-import WalletSubViewLayout from '../wallet-sub-view-layout'
+import WalletPageLayout from '$wallet/page/components/wallet_page_layout/wallet_page_layout'
+import WalletSubViewLayout from '$wallet/page/components/wallet_sub_view_layout/wallet_sub_view_layout'
 import { PortfolioTransactionItem } from './portfolio_transaction_item'
 
 // mocks

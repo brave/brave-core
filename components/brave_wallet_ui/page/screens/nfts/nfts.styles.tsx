@@ -10,7 +10,7 @@ import styled from 'styled-components'
 import { Row, ScrollableColumn } from '../../../components/shared/style'
 import {
   layoutPanelWidth, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const NftGrid = styled.div<{
   padding?: string

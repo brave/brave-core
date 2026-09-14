@@ -79,7 +79,7 @@ import {
 } from '../../../components/desktop/popup-modals/hide_token_modal/hide_token_modal'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   AssetDetailsHeader, //
 } from '../../../components/desktop/card-headers/asset-details-header'

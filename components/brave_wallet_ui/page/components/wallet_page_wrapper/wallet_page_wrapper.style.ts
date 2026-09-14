@@ -12,7 +12,7 @@ import LinesDark from './assets/portfolio_lines_background_dark.png'
 import ConnectionDotsBackground from './assets/connection_dots_background.svg'
 
 // Shared Styles
-import { Row } from '../../shared/style'
+import { Row } from '$wallet/components/shared/style'
 
 const minCardHeight = 466
 export const maxCardWidth = 768

@@ -11,7 +11,7 @@ import LeoButton from '@brave/leo/react/button'
 import { Row } from '../../../shared/style'
 import {
   layoutPanelWidth, //
-} from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const Wrapper = styled(Row)`
   padding: 0px 32px;

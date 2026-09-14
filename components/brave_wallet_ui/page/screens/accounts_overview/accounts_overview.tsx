@@ -33,7 +33,7 @@ import { Column, Row, Text } from '$wallet/components/shared/style'
 import AccountListItem from '$wallet/components/desktop/account-list-item'
 import {
   WalletPageWrapper, //
-} from '$wallet/components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import AccountsHeader from '$wallet/components/desktop/card-headers/accounts-header'
 
 // Hooks

@@ -14,7 +14,7 @@ import { NftScreen } from '../nft/components/nft-details/nft-screen'
 import {
   ContainerCard,
   LayoutCardWrapper,
-} from '../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 import { TabOption, Tabs } from '../components/shared/tabs/tabs'
 import {
   AutoDiscoveryEmptyState, //

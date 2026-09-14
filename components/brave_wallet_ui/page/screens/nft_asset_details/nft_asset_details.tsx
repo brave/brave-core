@@ -42,7 +42,7 @@ import { useRoute } from '../../../common/hooks/use_route'
 import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import { Column } from '../../../components/shared/style'
 
 export const NFTAssetDetails = () => {

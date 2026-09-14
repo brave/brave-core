@@ -11,7 +11,7 @@ import Icon from '@brave/leo/react/icon'
 import { Text, WalletButton } from '../../shared/style'
 import {
   layoutSmallWidth, //
-} from '../wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const HeaderTitle = styled(Text)`
   word-break: break-all;

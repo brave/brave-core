@@ -13,7 +13,7 @@ import InfoLogo from '../../../../assets/svg-icons/info-icon.svg'
 
 // Shared Styles
 import { Column, Text } from '../../../shared/style'
-import { layoutPanelWidth } from '../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const StyledWrapper = styled.div`
   display: flex;

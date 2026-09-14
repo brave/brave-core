@@ -9,15 +9,15 @@ import Navigation from '@brave/leo/react/navigation'
 import Button from '@brave/leo/react/button'
 
 // Assets
-import WalletLogoLight from '../../../assets/svg-icons/wallet_logo_light.svg'
-import WalletLogoDark from '../../../assets/svg-icons/wallet_logo_dark.svg'
+import WalletLogoLight from '$wallet/assets/svg-icons/wallet_logo_light.svg'
+import WalletLogoDark from '$wallet/assets/svg-icons/wallet_logo_dark.svg'
 
 // Shared Styles
-import { Row } from '../../shared/style'
+import { Row } from '$wallet/components/shared/style'
 import {
   layoutSmallWidth,
   navWidth,
-} from '../wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const Wrapper = styled.div`
   display: flex;

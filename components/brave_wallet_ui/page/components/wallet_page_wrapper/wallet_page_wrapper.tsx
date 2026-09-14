@@ -6,25 +6,25 @@
 import * as React from 'react'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Selectors
-import { WalletSelectors, UISelectors } from '../../../common/selectors'
+import { WalletSelectors, UISelectors } from '$wallet/common/selectors'
 
 // Hooks
 import {
   useSafeWalletSelector,
   useSafeUISelector,
-} from '../../../common/hooks/use-safe-selector'
+} from '$wallet/common/hooks/use-safe-selector'
 
 // Components
-import { WalletNav } from '../wallet-nav/wallet-nav'
+import { WalletNav } from '$wallet/page/components/wallet_nav/wallet_nav'
 import {
   CTAButton, //
-} from '../../shared/cta_button/cta_button'
+} from '$wallet/components/shared/cta_button/cta_button'
 import {
   TabHeader, //
-} from '../../../page/screens/shared-screen-components/tab-header/tab-header'
+} from '$wallet/page/screens/shared-screen-components/tab-header/tab-header'
 
 // Styles
 import {
@@ -41,7 +41,7 @@ import {
   PortfolioBackgroundWatermark,
   ConnectionBackgroundWatermark,
   ConnectionBackgroundColor,
-} from './wallet-page-wrapper.style'
+} from './wallet_page_wrapper.style'
 
 export interface Props {
   wrapContentInBox?: boolean

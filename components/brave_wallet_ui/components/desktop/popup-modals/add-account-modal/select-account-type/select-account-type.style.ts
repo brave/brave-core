@@ -8,7 +8,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
 import { Column, Text, WalletButton } from '../../../../shared/style'
-import { layoutPanelWidth } from '../../../wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const StyledWrapper = styled(Column)`
   padding: 0px 32px 32px 32px;

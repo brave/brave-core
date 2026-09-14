@@ -35,7 +35,7 @@ import { SelectTokenModal } from '../composer_ui/select_token_modal/select_token
 import { QuoteInfo } from './components/swap/quote-info/quote-info'
 import { PrivacyModal } from './components/swap/privacy-modal/privacy-modal'
 import { ComposerControls } from '../composer_ui/composer_controls/composer_controls'
-import WalletPageWrapper from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import WalletPageWrapper from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import { DefaultPanelHeader } from '../../../components/desktop/card-headers/default-panel-header'
 import { PanelActionHeader } from '../../../components/desktop/card-headers/panel-action-header'
 import { SwapProviders } from './components/swap/swap_providers/swap_providers'

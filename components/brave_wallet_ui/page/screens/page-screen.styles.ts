@@ -8,7 +8,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 import LeoAlertCenter from '@brave/leo/react/alertCenter'
 import { Column, Row, WalletButton } from '../../components/shared/style'
-import { layoutPanelWidth } from '../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 import {
   NoTransactionsIconDark,

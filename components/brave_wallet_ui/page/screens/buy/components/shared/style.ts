@@ -15,7 +15,7 @@ import Input from '@brave/leo/react/input'
 import { WalletButton } from '../../../../../components/shared/style'
 import {
   layoutPanelWidth, //
-} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
 
 export const Label = styled.label`
   color: ${color.text.tertiary};

@@ -107,7 +107,7 @@ import {
 } from '../../../components/desktop/network-filter-selector'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   PageTitleHeader, //
 } from '../../../components/desktop/card-headers/page-title-header'

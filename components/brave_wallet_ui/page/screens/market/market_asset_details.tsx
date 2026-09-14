@@ -85,7 +85,7 @@ import { Row, Column } from '../../../components/shared/style'
 import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
 import {
   WalletPageWrapper, //
-} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import { ButtonRow, StyledWrapper } from './market.style'
 
 const emptyPriceList: TokenPriceHistory[] = []
