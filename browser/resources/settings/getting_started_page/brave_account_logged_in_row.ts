@@ -33,13 +33,12 @@ export class BraveAccountLoggedInRowElement extends
   static override get properties() {
     return {
       ...super.properties,
-      isChangingPassword: { type: Boolean, state: true },
       truncatedEmail: { type: String, state: true },
     }
   }
 
-  protected accessor isChangingPassword = false
   protected accessor truncatedEmail = ''
+  private isChangingPassword = false
   private measure?: (text: string) => number
   private resizeObserver?: ResizeObserver
 
