@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/android/nala/icons.gni")
+import("//brave/node_modules/@brave/leo/tokens/android/sources.gni")
 import("//build/config/android/rules.gni")
 
 nala_base_path = "../../node_modules/@brave/leo/tokens/android"
@@ -154,6 +155,8 @@ group("nala") {
   public_deps = [
     ":nala_colors",
     ":nala_colors_night",
+    ":nala_composed_colors",
+    ":nala_composed_colors_night",
     ":nala_icons",
   ]
   public_deps += _nala_override_deps
@@ -167,6 +170,26 @@ copy("nala_colors") {
 copy("nala_colors_night") {
   sources = [ "$nala_base_path/values-night/colors.xml" ]
   outputs = [ "$target_gen_dir/res/values-night/colors.xml" ]
+}
+
+# Composed colors (a token plus an opacity) can't be expressed as a <color>, so
+# Nala emits them as one ColorStateList per resource under color/ and
+# color-night/ instead of inside values/colors.xml. The file names come from the
+# nala_composed_colors manifest Nala generates alongside them.
+copy("nala_composed_colors") {
+  sources = []
+  foreach(color, nala_composed_colors) {
+    sources += [ "$nala_base_path/color/$color" ]
+  }
+  outputs = [ "$target_gen_dir/res/color/{{source_file_part}}" ]
+}
+
+copy("nala_composed_colors_night") {
+  sources = []
+  foreach(color, nala_composed_colors) {
+    sources += [ "$nala_base_path/color-night/$color" ]
+  }
+  outputs = [ "$target_gen_dir/res/color-night/{{source_file_part}}" ]
 }
 
 copy("nala_icons") {
@@ -183,6 +206,12 @@ android_resources("java_resources") {
     "$target_gen_dir/res/values-night/colors.xml",
     "$target_gen_dir/res/values/colors.xml",
   ]
+  foreach(color, nala_composed_colors) {
+    sources += [
+      "$target_gen_dir/res/color-night/$color",
+      "$target_gen_dir/res/color/$color",
+    ]
+  }
   foreach(icon, nala_icons) {
     sources += [ "$target_gen_dir/res/drawable/$icon" ]
   }
