@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Forward `SanitizeOnNextWriteText` from the document-scoped clipboard
+      helper to its underlying `ClipboardHostImpl`.
+
+      Brave extends `blink::mojom::ClipboardHost` with
+      `SanitizeOnNextWriteText`, so `ClipboardHostDocumentHelper`, which
+      also implements that interface, must forward it like every other
+      method it wraps.
+    add_to_public:
+      class_name: ClipboardHostDocumentHelper
+      code: |-
+        void SanitizeOnNextWriteText() override {
+          impl_->SanitizeOnNextWriteText();
+        }
+
+  - description: |-
+      Sanitize the text before it's written to the clipboard, when requested.
+
+      Anchored right after `data.text` and `pending_writes_` are set, and
+      before the async copy-allowed check reads `data.text`.
+    regex:
+      re_pattern: '(data\.text = text;\n  \+\+pending_writes_;\n)'
+      replace: |
+        \1  MaybeSanitizeClipboardText(
+              &sanitize_on_next_write_text_, GetContentClient()->browser(),
+              render_frame_host_->GetMainFrame(), &data.text);
