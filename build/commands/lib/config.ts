@@ -300,6 +300,7 @@ export class Config {
           }
         : {}),
       ...envConfig.getMergedObject(['projects', 'chrome', 'custom_vars']),
+      ...(this.is_msan ? { 'checkout_instrumented_libraries': true } : {}),
     }
 
     if (this.cacheDir && !fs.existsSync(this.cacheDir)) {
