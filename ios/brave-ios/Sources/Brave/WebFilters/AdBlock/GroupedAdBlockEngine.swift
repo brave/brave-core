@@ -267,7 +267,7 @@ public actor GroupedAdBlockEngine {
     case .data:
       return try AdblockEngine(serializedData: Data(contentsOf: group.localFileURL))
     case .text:
-      return try AdblockEngine(rules: String(contentsOf: group.localFileURL))
+      return try AdblockEngine(rules: String(contentsOf: group.localFileURL, encoding: .utf8))
     }
   }
 }

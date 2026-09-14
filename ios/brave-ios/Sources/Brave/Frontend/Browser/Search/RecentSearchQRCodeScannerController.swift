@@ -93,10 +93,6 @@ class RecentSearchQRCodeScannerController: UIViewController {
   }
 
   override func viewDidAppear(_ animated: Bool) {
-    if let orientation = view.window?.windowScene?.interfaceOrientation {
-      scannerView.cameraView.videoPreviewLayer?.connection?.videoOrientation =
-        AVCaptureVideoOrientation(ui: orientation)
-    }
     scannerView.cameraView.startRunning()
   }
 
@@ -109,10 +105,6 @@ class RecentSearchQRCodeScannerController: UIViewController {
     coordinator.animate(alongsideTransition: nil) { [weak self] _ in
       guard let self else { return }
 
-      if let orientation = self.view.window?.windowScene?.interfaceOrientation {
-        self.scannerView.cameraView.videoPreviewLayer?.connection?.videoOrientation =
-          AVCaptureVideoOrientation(ui: orientation)
-      }
       self.scannerView.cameraView.startRunning()
     }
   }

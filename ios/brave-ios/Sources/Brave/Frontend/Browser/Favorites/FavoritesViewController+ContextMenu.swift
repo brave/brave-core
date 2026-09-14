@@ -12,10 +12,12 @@ import UIKit
 extension FavoritesViewController {
   func collectionView(
     _ collectionView: UICollectionView,
-    contextMenuConfigurationForItemAt indexPath: IndexPath,
+    contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
     point: CGPoint
   ) -> UIContextMenuConfiguration? {
-    guard let section = availableSections[safe: indexPath.section] else {
+    guard let indexPath = indexPaths.first,
+      let section = availableSections[safe: indexPath.section]
+    else {
       assertionFailure("Invalid Section")
       return nil
     }
@@ -72,10 +74,10 @@ extension FavoritesViewController {
 
   func collectionView(
     _ collectionView: UICollectionView,
-    previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    contextMenuConfiguration configuration: UIContextMenuConfiguration,
+    highlightPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let indexPath = configuration.identifier as? IndexPath,
-      let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
+    guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
     else {
       return nil
     }
@@ -84,10 +86,10 @@ extension FavoritesViewController {
 
   func collectionView(
     _ collectionView: UICollectionView,
-    previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    contextMenuConfiguration configuration: UIContextMenuConfiguration,
+    dismissalPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let indexPath = configuration.identifier as? IndexPath,
-      let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
+    guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
     else {
       return nil
     }

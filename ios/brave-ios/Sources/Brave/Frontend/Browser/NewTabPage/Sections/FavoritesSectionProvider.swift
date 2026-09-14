@@ -185,10 +185,12 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
 
   func collectionView(
     _ collectionView: UICollectionView,
-    contextMenuConfigurationForItemAt indexPath: IndexPath,
+    contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
     point: CGPoint
   ) -> UIContextMenuConfiguration? {
-    guard let favourite = frc.fetchedObjects?[indexPath.item] else { return nil }
+    guard let indexPath = indexPaths.first,
+      let favourite = frc.fetchedObjects?[indexPath.item]
+    else { return nil }
     return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
       _ -> UIMenu? in
       let openInNewTab = UIAction(
@@ -234,10 +236,10 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
 
   func collectionView(
     _ collectionView: UICollectionView,
-    previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    contextMenuConfiguration configuration: UIContextMenuConfiguration,
+    highlightPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let indexPath = configuration.identifier as? IndexPath,
-      let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
+    guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
     else {
       return nil
     }
@@ -252,10 +254,10 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
 
   func collectionView(
     _ collectionView: UICollectionView,
-    previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    contextMenuConfiguration configuration: UIContextMenuConfiguration,
+    dismissalPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let indexPath = configuration.identifier as? IndexPath,
-      let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
+    guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
     else {
       return nil
     }

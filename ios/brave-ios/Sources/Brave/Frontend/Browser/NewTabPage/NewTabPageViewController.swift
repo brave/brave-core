@@ -1414,37 +1414,36 @@ extension NewTabPageViewController: UICollectionViewDataSource {
   }
   func collectionView(
     _ collectionView: UICollectionView,
-    contextMenuConfigurationForItemAt indexPath: IndexPath,
+    contextMenuConfigurationForItemsAt indexPaths: [IndexPath],
     point: CGPoint
   ) -> UIContextMenuConfiguration? {
-    sections[indexPath.section].collectionView?(
+    guard let indexPath = indexPaths.first else { return nil }
+    return sections[indexPath.section].collectionView?(
       collectionView,
-      contextMenuConfigurationForItemAt: indexPath,
+      contextMenuConfigurationForItemsAt: indexPaths,
       point: point
     )
   }
   func collectionView(
     _ collectionView: UICollectionView,
-    previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    contextMenuConfiguration configuration: UIContextMenuConfiguration,
+    highlightPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let indexPath = configuration.identifier as? IndexPath else {
-      return nil
-    }
     return sections[indexPath.section].collectionView?(
       collectionView,
-      previewForHighlightingContextMenuWithConfiguration: configuration
+      contextMenuConfiguration: configuration,
+      highlightPreviewForItemAt: indexPath
     )
   }
   func collectionView(
     _ collectionView: UICollectionView,
-    previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+    contextMenuConfiguration configuration: UIContextMenuConfiguration,
+    dismissalPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let indexPath = configuration.identifier as? IndexPath else {
-      return nil
-    }
     return sections[indexPath.section].collectionView?(
       collectionView,
-      previewForHighlightingContextMenuWithConfiguration: configuration
+      contextMenuConfiguration: configuration,
+      dismissalPreviewForItemAt: indexPath
     )
   }
   func collectionView(

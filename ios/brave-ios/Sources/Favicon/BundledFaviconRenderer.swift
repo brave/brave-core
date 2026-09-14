@@ -64,7 +64,7 @@ public actor BundledFaviconRenderer {
     let backgroundName = fileName + Self.faviconOverridesBackgroundSuffix
     let backgroundPath = folder.appendingPathComponent(backgroundName)
     do {
-      let colorString = try String(contentsOf: backgroundPath)
+      let colorString = try String(contentsOf: backgroundPath, encoding: .utf8)
       let colorFromHex = UIColor(colorString: colorString)
 
       if await AsyncFileManager.default.fileExists(

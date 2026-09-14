@@ -108,7 +108,7 @@ class BottomSheetViewController: UIViewController {
 
   private var isLandscapePhone: Bool {
     traitCollection.userInterfaceIdiom == .phone
-      && UIApplication.shared.statusBarOrientation.isLandscape
+      && view.window?.windowScene?.interfaceOrientation.isLandscape == true
   }
 
   // MARK: - Lifecycle

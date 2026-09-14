@@ -29,7 +29,6 @@ struct VPNContactFormView: View {
     var appVersion: Bool = false
     var timezone: Bool = false
     var networkType: Bool = false
-    var cellularCarrier: Bool = false
     var logs: Bool = false
   }
 
@@ -71,13 +70,6 @@ struct VPNContactFormView: View {
         }
         Toggle(isOn: $includes.networkType) {
           LabeledContent(Strings.VPN.contactFormNetworkType, value: networkType)
-        }
-        Toggle(isOn: $includes.cellularCarrier) {
-          LabeledContent(
-            Strings.VPN.contactFormCarrier,
-            value: CTTelephonyNetworkInfo().serviceSubscriberCellularProviders?
-              .first?.value.carrierName ?? "-"
-          )
         }
         Toggle(Strings.VPN.contactFormLogs, isOn: $includes.logs)
       }
@@ -186,14 +178,6 @@ struct VPNContactFormView: View {
     if includes.networkType {
       body.append(Strings.VPN.contactFormNetworkType)
       body.append("\n\(networkType)\n\n")
-    }
-
-    if includes.cellularCarrier {
-      let carrierName =
-        CTTelephonyNetworkInfo().serviceSubscriberCellularProviders?
-        .first?.value.carrierName ?? "-"
-      body.append(Strings.VPN.contactFormCarrier)
-      body.append("\n\(carrierName)\n\n")
     }
 
     if includes.logs {

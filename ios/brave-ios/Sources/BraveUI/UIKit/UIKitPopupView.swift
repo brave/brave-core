@@ -306,7 +306,10 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
     dialogView.removeFromSuperview()
 
     if presentsOverWindow {
-      UIApplication.shared.keyWindow?.addSubview(self)
+      let keyWindow = UIApplication.shared.connectedScenes
+        .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+        .first
+      keyWindow?.addSubview(self)
     } else {
       let currentViewController: AnyObject = (applicationWindow?.rootViewController)!
       if currentViewController is UINavigationController {

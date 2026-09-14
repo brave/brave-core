@@ -837,13 +837,6 @@ extension Strings {
       comment: "Network Type field for customer support contact form."
     )
 
-    public static let contactFormCarrier = NSLocalizedString(
-      "vpn.contactFormCarrier",
-      bundle: .module,
-      value: "Cellular Carrier",
-      comment: "Cellular Carrier field for customer support contact form."
-    )
-
     public static let contactFormLogs = NSLocalizedString(
       "vpn.contactFormLogs",
       bundle: .module,

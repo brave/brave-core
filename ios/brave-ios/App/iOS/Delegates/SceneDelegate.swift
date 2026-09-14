@@ -19,6 +19,7 @@ import Preferences
 import Shared
 import SwiftUI
 import UIKit
+import UserNotifications
 import os.log
 
 extension Logger {
@@ -202,7 +203,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     AppState.shared.uptimeMonitor.beginMonitoring()
 
     appDelegate.receivedURLs = nil
-    UIApplication.shared.applicationIconBadgeNumber = 0
+    UNUserNotificationCenter.current().setBadgeCount(0)
 
     if let browserViewController = scene.browserViewController {
       Preferences.AppState.backgroundedCleanly.value = false
