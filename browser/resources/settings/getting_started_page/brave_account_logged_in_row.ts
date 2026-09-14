@@ -73,7 +73,7 @@ export class BraveAccountLoggedInRowElement extends
     try {
       await this.browserProxy.authentication.changePasswordStep1(
         this.state.email)
-      this.openBraveAccountDialog()
+      this.openDialogInDefaultMode()
     } catch (e) {
       showError('changePassword', e, {
         title: this.i18n(

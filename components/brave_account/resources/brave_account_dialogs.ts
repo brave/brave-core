@@ -6,6 +6,7 @@
 import {
   AccountState,
   AccountStateFieldTags,
+  DialogMode,
   VerificationIntent,
   whichAccountState,
 } from './brave_account.mojom-webui.js'
@@ -44,6 +45,7 @@ export type Dialog =
   | { type: 'ENTRY' | 'PASSWORD_RESET' | 'SIGN_IN' }
   | { type: 'OTP'; intent: VerificationIntent }
   | { type: 'CREDENTIALS'; verification?: CredentialsVerification }
+  | { type: 'ACCOUNT_DELETION' }
 
 export class BraveAccountDialogsElement extends CrLitElement {
   static get is() {
@@ -103,7 +105,25 @@ export class BraveAccountDialogsElement extends CrLitElement {
     // across all tabs.
     this.accountStateListenerId =
       this.browserProxy.authenticationObserverCallbackRouter.onAccountStateChanged.addListener(
-        (state: AccountState) => {
+        async (state: AccountState) => {
+          // Handled on its own, ahead of the state mapping: such a page only
+          // ever shows the deletion dialog, so the mapping never has to know
+          // the mode exists.
+          if (
+            (await this.browserProxy.getDialogMode())
+            === DialogMode.kAccountDeletion
+          ) {
+            if (
+              whichAccountState(state) === AccountStateFieldTags.LOGGED_IN
+              && !state.loggedIn!.verification
+            ) {
+              this.dialog = { type: 'ACCOUNT_DELETION' }
+            } else {
+              this.onCloseDialog()
+            }
+            return
+          }
+
           switch (whichAccountState(state)) {
             case AccountStateFieldTags.LOGGED_OUT: {
               const verification = state.loggedOut!.verification
@@ -171,7 +191,7 @@ export class BraveAccountDialogsElement extends CrLitElement {
     }
 
     switch (e.key) {
-      // Clicks the action button (only if there's exactly one enabled).
+      // Clicks the dialog's action button.
       case 'Enter': {
         // Only clicks it when a text field is focused: any other focused
         // element (e.g. the "Forgot your password?" link) keeps its own Enter
@@ -184,12 +204,15 @@ export class BraveAccountDialogsElement extends CrLitElement {
           (el) => el instanceof HTMLElement && el.shadowRoot,
         )
 
-        const buttons = dialog?.shadowRoot?.querySelectorAll<HTMLElement>(
-          'leo-button[slot="buttons"]:not([isDisabled])',
+        // The action button is the first one slotted; anything after it is
+        // secondary (cancel, resend, ...) and must never be triggered by
+        // Enter, however the action's own disabled state leaves them.
+        const actionButton = dialog?.shadowRoot?.querySelector<HTMLElement>(
+          'leo-button[slot="buttons"]',
         )
 
-        if (buttons?.length === 1) {
-          buttons[0]!.click()
+        if (actionButton?.matches(':not([isDisabled])')) {
+          actionButton.click()
           e.preventDefault()
         }
         break

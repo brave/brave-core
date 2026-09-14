@@ -6,6 +6,7 @@
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 
 import './brave_account_credentials_dialog.js'
+import './brave_account_deletion_dialog.js'
 import './brave_account_entry_dialog.js'
 import './brave_account_otp_dialog.js'
 import './brave_account_password_reset_dialog.js'
@@ -56,6 +57,11 @@ export function getHtml(this: BraveAccountDialogsElement) {
           .verification=${this.dialog.verification}
         >
         </brave-account-credentials-dialog>
+      `
+
+    case 'ACCOUNT_DELETION':
+      return html`
+        <brave-account-deletion-dialog> </brave-account-deletion-dialog>
       `
   }
 }

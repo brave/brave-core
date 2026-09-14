@@ -38,6 +38,7 @@ class BraveAccountUIAndroid
  private:
   // brave_account::mojom::DialogController:
   void CloseDialog() override;
+  void GetDialogMode(GetDialogModeCallback callback) override;
 
   mojo::Receiver<brave_account::mojom::DialogController> receiver_{this};
 

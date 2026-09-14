@@ -8,6 +8,8 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_deref.h"
+#include "brave/browser/brave_account/dialog_mode_holder.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -33,6 +35,11 @@ void BraveAccountUIAndroid::BindInterface(
 
 void BraveAccountUIAndroid::CloseDialog() {
   web_ui()->GetWebContents()->Close();
+}
+
+void BraveAccountUIAndroid::GetDialogMode(GetDialogModeCallback callback) {
+  std::move(callback).Run(brave_account::DialogModeHolder::GetDialogMode(
+      CHECK_DEREF(web_ui()->GetWebContents())));
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIAndroid)
