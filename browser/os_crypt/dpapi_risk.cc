@@ -85,10 +85,8 @@ DPAPIEnvironment DetectDPAPIEnvironment() {
   environment.azure_ad_joined = base::win::IsJoinedToAzureAD();
   environment.device_managed = base::win::IsDeviceRegisteredWithManagement();
 
-  base::FilePath user_data_dir;
-  if (base::PathService::Get(chrome::DIR_USER_DATA, &user_data_dir)) {
-    environment.user_data_dir_on_network = user_data_dir.IsNetwork();
-  }
+  environment.user_data_dir_on_network =
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA).IsNetwork();
 
   // Anything other than a local profile: roaming, mandatory or temporary.
   DWORD profile_type = 0;

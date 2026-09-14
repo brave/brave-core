@@ -17,7 +17,10 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 #if BUILDFLAG(IS_WIN)
+#include "base/path_service.h"
 #include "brave/browser/os_crypt/dpapi_risk.h"
+#include "brave/browser/os_crypt/key_backup.h"
+#include "chrome/common/chrome_paths.h"
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -84,9 +87,12 @@ void BraveBrowserMainExtraParts::PostBrowserStart() {
   g_brave_browser_process->StartBraveServices();
 
 #if BUILDFLAG(IS_WIN)
-  // Detection blocks, so it runs on a pool task from here rather than
-  // anywhere on the startup path.
+  // Both of these block, so they run on pool tasks from here rather
+  // than anywhere on the startup path.
   brave::RecordDPAPIRiskSignals(g_browser_process->local_state());
+
+  brave::BackUpOSCryptKey(base::PathService::CheckedGet(chrome::DIR_USER_DATA),
+                          g_browser_process->local_state());
 #endif  // BUILDFLAG(IS_WIN)
 }
 
