@@ -32,6 +32,9 @@
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/simulation_service.h"
+#if BUILDFLAG(ENABLE_SNAPS)
+#include "brave/components/brave_wallet/browser/snaps_service.h"
+#endif
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/browser/tx_storage.h"
@@ -292,6 +295,12 @@ BraveWalletService::BraveWalletService(
         url_loader_factory);
   }
 
+#if BUILDFLAG(ENABLE_SNAPS)
+  if (IsSnapsFeatureEnabled()) {
+    snaps_service_ = std::make_unique<SnapsService>();
+  }
+#endif
+
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
       GetCardanoWalletService(), GetPolkadotWalletService(), *keyring_service(),
@@ -487,6 +496,16 @@ void BraveWalletService::Bind(
     mojo::PendingReceiver<mojom::IpfsService> receiver) {
   ipfs_service()->Bind(std::move(receiver));
 }
+
+#if BUILDFLAG(ENABLE_SNAPS)
+template <>
+void BraveWalletService::Bind(
+    mojo::PendingReceiver<mojom::SnapsService> receiver) {
+  if (snaps_service()) {
+    snaps_service()->Bind(std::move(receiver));
+  }
+}
+#endif
 
 void BraveWalletService::GetUserAssets(const std::string& chain_id,
                                        mojom::CoinType coin,
