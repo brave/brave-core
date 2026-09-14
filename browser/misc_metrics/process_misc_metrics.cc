@@ -11,6 +11,7 @@
 #include "brave/browser/misc_metrics/doh_metrics.h"
 #include "brave/browser/misc_metrics/media_session_metrics_impl.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
+#include "brave/browser/serp_metrics/serp_metrics_p3a.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "brave/components/misc_metrics/features.h"
@@ -58,6 +59,8 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state)
   uptime_monitor_ = std::make_unique<UptimeMonitorImpl>(local_state);
   media_session_metrics_ = std::make_unique<MediaSessionMetricsImpl>(
       local_state, uptime_monitor_.get());
+  serp_metrics_p3a_ =
+      std::make_unique<serp_metrics::SerpMetricsP3A>(*local_state);
 
   ReportSimpleMetrics();
 }
@@ -106,6 +109,10 @@ CaptchaMetrics* ProcessMiscMetrics::captcha_metrics() {
   return captcha_metrics_.get();
 }
 
+serp_metrics::SerpMetricsP3A* ProcessMiscMetrics::serp_metrics_p3a() {
+  return serp_metrics_p3a_.get();
+}
+
 Web3Metrics& ProcessMiscMetrics::web3_metrics() {
   return web3_metrics_;
 }
@@ -129,6 +136,7 @@ void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   DohMetrics::RegisterPrefs(registry);
   MediaSessionMetricsImpl::RegisterPrefs(registry);
   UptimeMonitorImpl::RegisterPrefs(registry);
+  serp_metrics::SerpMetricsP3A::RegisterPrefs(registry);
 }
 
 }  // namespace misc_metrics
