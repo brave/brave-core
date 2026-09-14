@@ -139,11 +139,10 @@ export function getHtml(this: TabFocusPageElement) {
                           <leo-button
                             id="${this.getTopicId_(index)}"
                             data-testid="${this.getTopicId_(index)}"
-                            data-index="${index}"
                             class="topics-button"
                             size="small"
                             kind="outline"
-                            @click=${this.onTopicClick_}
+                            @click=${() => this.onTopicClick_(index)}
                           >
                             <div class="topic-description">
                               <div class="emoji-wrapper">
