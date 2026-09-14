@@ -7,7 +7,6 @@ import BraveStrings
 import Data
 import DesignSystem
 import Foundation
-import Introspect
 import SwiftUI
 
 struct PlaylistChangeFoldersView: View {

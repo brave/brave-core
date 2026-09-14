@@ -18,12 +18,16 @@ import Web
 struct SubmitReportView: View {
   @Environment(\.dismiss) private var dismiss: DismissAction
   let url: URL
-  let isPrivateBrowsing: Bool
+  let webcompatReporter: any WebcompatReporterWebcompatReporterHandler
   private weak var tab: (any TabState)?
 
-  init(url: URL, isPrivateBrowsing: Bool, tab: (any TabState)?) {
+  init(
+    url: URL,
+    webcompatReporter: any WebcompatReporterWebcompatReporterHandler,
+    tab: (any TabState)?
+  ) {
     self.url = url
-    self.isPrivateBrowsing = isPrivateBrowsing
+    self.webcompatReporter = webcompatReporter
     self.tab = tab
   }
 
@@ -111,16 +115,9 @@ struct SubmitReportView: View {
             .autocorrectionDisabled()
             .textInputAutocapitalization(.never)
             .onAppear {
-              guard
-                let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(
-                  privateMode: isPrivateBrowsing
-                )
-              else {
-                return
-              }
               Task { @MainActor in
-                self.categories = await webcompatReporterAPI.webcompatCategories()
-                let browserParams = await webcompatReporterAPI.browserParams()
+                self.categories = await webcompatReporter.webcompatCategories()
+                let browserParams = await webcompatReporter.browserParams()
                 self.contactDetails = browserParams.0 ?? ""
                 self.isContactInfoDescVisible = browserParams.1
               }
@@ -181,11 +178,7 @@ struct SubmitReportView: View {
   }
 
   @MainActor func createAndSubmitReport() async {
-    guard !isSubmitDisabled,
-      let webcompatReporterAPI = WebcompatReporter.ServiceFactory.get(
-        privateMode: isPrivateBrowsing
-      )
-    else {
+    guard !isSubmitDisabled else {
       return
     }
     let version = String(
@@ -209,7 +202,7 @@ struct SubmitReportView: View {
       .compactMap({ return $0.isEnabled ? $0.entry.title : nil })
       .joined(separator: ",")
     isSubmittingReport = true
-    webcompatReporterAPI.submitWebcompatReport(
+    webcompatReporter.submitWebcompatReport(
       reportInfo: .init(
         channel: AppConstants.buildChannel.webCompatReportName,
         braveVersion: version,
@@ -247,13 +240,35 @@ struct SubmitReportView: View {
   }
 }
 
+#if DEBUG
+
+class MockWebcompatReporter: WebcompatReporterWebcompatReporterHandler {
+  func submitWebcompatReport(reportInfo: WebcompatReporter.ReportInfo) {
+  }
+
+  func setContactInfoSaveFlag(value: Bool) {
+  }
+
+  func browserParams(completion: @escaping @Sendable (String?, Bool, [String]) -> Void) {
+    completion(nil, false, [])
+  }
+
+  func webcompatCategories(
+    completion: @escaping @Sendable ([WebcompatReporter.WebcompatCategoryItem]) -> Void
+  ) {
+    completion([])
+  }
+}
+
 #Preview {
   SubmitReportView(
     url: URL(string: "https://brave.com/privacy-features")!,
-    isPrivateBrowsing: false,
+    webcompatReporter: MockWebcompatReporter(),
     tab: FakeTabState()
   )
 }
+
+#endif
 
 extension ShieldLevel {
   /// The value that is sent to the webcompat report server

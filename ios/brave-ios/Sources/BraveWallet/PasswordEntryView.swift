@@ -8,6 +8,7 @@ import BraveStrings
 import DesignSystem
 import LocalAuthentication
 import SwiftUI
+@_spi(Advanced) import SwiftUIIntrospect
 
 struct PasswordEntryError: LocalizedError, Equatable {
   let message: String
@@ -80,13 +81,13 @@ struct PasswordEntryField: View {
       SecureField(placeholder, text: $password, onCommit: onCommit)
         .textContentType(.password)
         .font(.subheadline)
-        .introspectTextField(customize: { tf in
+        .introspect(.textField, on: .iOS(.v18...)) { tf in
           // Fix for animation issue when pushing SwiftUI view onto navigation
           // stack when trying to show keyboard immediately #6267 / #6297
           DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             tf.becomeFirstResponder()
           }
-        })
+        }
         .textFieldStyle(BraveValidatedTextFieldStyle(error: error))
       if shouldShowBiometrics, keyringStore.isKeychainPasswordStored, let icon = biometricsIcon {
         Button(action: fillPasswordFromKeychain) {

@@ -143,7 +143,6 @@ struct OnboardingNetworkSelectionView: View {
     .safeAreaInset(edge: .bottom) {
       continueButton
     }
-    .transparentUnlessScrolledNavigationAppearance()
     .background(
       NavigationLink(
         destination: CreateWalletView(

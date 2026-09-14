@@ -423,12 +423,16 @@ class QuickViewController: UIViewController {
     var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
     components?.fragment = nil
     components?.queryItems = nil
-    guard let cleanedURL = components?.url else { return }
+    guard let cleanedURL = components?.url,
+      let webcompatReporter = WebcompatReporter.ServiceFactory.get(
+        profile: currentTab.profile
+      )
+    else { return }
 
     let viewController = UIHostingController(
       rootView: SubmitReportView(
         url: cleanedURL,
-        isPrivateBrowsing: profile.isOffTheRecord,
+        webcompatReporter: webcompatReporter,
         tab: currentTab
       )
     )

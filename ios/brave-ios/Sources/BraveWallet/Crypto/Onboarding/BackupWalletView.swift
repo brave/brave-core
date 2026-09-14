@@ -7,6 +7,7 @@ import DesignSystem
 import Foundation
 import Strings
 import SwiftUI
+@_spi(Advanced) import SwiftUIIntrospect
 
 struct BackupWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -115,7 +116,7 @@ struct BackupWalletView: View {
     .navigationBarBackButtonHidden(true)
     .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .introspectViewController { vc in
+    .introspect(.viewController, on: .iOS(.v18...)) { vc in
       vc.navigationItem.backButtonTitle = Strings.Wallet.backupWalletBackButtonTitle
       vc.navigationItem.backButtonDisplayMode = .minimal
     }

@@ -4,7 +4,6 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import DesignSystem
-import Introspect
 import SwiftUI
 
 /// A `TextEditor` made to look in the same way as `BraveTextFieldStyle` and adds a similar looking "prompt" (placeholder) to the view.
@@ -23,11 +22,9 @@ public struct BraveTextEditor: View {
 
   public var body: some View {
     TextEditor(text: $text)
+      .contentMargins(.vertical, -8, for: .scrollContent)
+      .contentMargins(.horizontal, -4, for: .scrollContent)
       .braveInputStyle()
-      .introspectTextView { textView in
-        textView.textContainerInset = .zero
-        textView.textContainer.lineFragmentPadding = 0
-      }
       .scrollContentBackground(.hidden)
       .overlay(
         Text(prompt)

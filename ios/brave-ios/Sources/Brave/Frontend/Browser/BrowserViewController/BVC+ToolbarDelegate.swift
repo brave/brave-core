@@ -611,13 +611,18 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
     var components = URLComponents(url: url, resolvingAgainstBaseURL: false)
     components?.fragment = nil
     components?.queryItems = nil
-    guard let cleanedURL = components?.url else { return }
+    guard let cleanedURL = components?.url,
+      let selectedTab = tabManager.selectedTab,
+      let webcompatReporter = WebcompatReporter.ServiceFactory.get(
+        profile: selectedTab.profile
+      )
+    else { return }
 
     let viewController = UIHostingController(
       rootView: SubmitReportView(
         url: cleanedURL,
-        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
-        tab: tabManager.selectedTab
+        webcompatReporter: webcompatReporter,
+        tab: selectedTab
       )
     )
 

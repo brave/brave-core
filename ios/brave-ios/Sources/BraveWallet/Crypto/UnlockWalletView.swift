@@ -141,7 +141,6 @@ struct UnlockWalletView: View {
     }
     .navigationTitle(Strings.Wallet.cryptoTitle)
     .navigationBarTitleDisplayMode(.inline)
-    .transparentUnlessScrolledNavigationAppearance()
     .ignoresSafeArea(.keyboard, edges: .bottom)
   }
 

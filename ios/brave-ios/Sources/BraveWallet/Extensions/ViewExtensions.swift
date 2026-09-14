@@ -5,6 +5,7 @@
 
 import BraveCore
 import SwiftUI
+@_spi(Advanced) import SwiftUIIntrospect
 import UIKit
 
 extension View {
@@ -23,7 +24,7 @@ extension View {
     backButtonTitle: String? = nil,
     backButtonDisplayMode: UINavigationItem.BackButtonDisplayMode = .default
   ) -> some View {
-    self.introspectViewController { vc in
+    self.introspect(.viewController, on: .iOS(.v18...)) { vc in
       let appearance = UINavigationBarAppearance()
       appearance.configureWithTransparentBackground()
       vc.navigationItem.compactAppearance = appearance
@@ -32,43 +33,6 @@ extension View {
       vc.navigationItem.backButtonTitle = backButtonTitle
       vc.navigationItem.backButtonDisplayMode = backButtonDisplayMode
     }
-  }
-
-  func transparentUnlessScrolledNavigationAppearance() -> some View {
-    introspectViewController(customize: { vc in
-      vc.navigationItem.do {
-        // no shadow when content is at top.
-        let noShadowAppearance: UINavigationBarAppearance = {
-          let appearance = UINavigationBarAppearance()
-          appearance.configureWithTransparentBackground()
-          appearance.titleTextAttributes = [
-            .foregroundColor: UIColor(braveSystemName: .textPrimary)
-          ]
-          appearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor(braveSystemName: .textPrimary)
-          ]
-          appearance.backgroundColor = .clear
-          appearance.shadowColor = .clear
-          return appearance
-        }()
-        $0.scrollEdgeAppearance = noShadowAppearance
-        $0.compactScrollEdgeAppearance = noShadowAppearance
-        // shadow when content is scrolled behind navigation bar.
-        let shadowAppearance: UINavigationBarAppearance = {
-          let appearance = UINavigationBarAppearance()
-          appearance.configureWithOpaqueBackground()
-          appearance.titleTextAttributes = [
-            .foregroundColor: UIColor(braveSystemName: .textPrimary)
-          ]
-          appearance.largeTitleTextAttributes = [
-            .foregroundColor: UIColor(braveSystemName: .textPrimary)
-          ]
-          return appearance
-        }()
-        $0.standardAppearance = shadowAppearance
-        $0.compactAppearance = shadowAppearance
-      }
-    })
   }
 
   func addAccount(

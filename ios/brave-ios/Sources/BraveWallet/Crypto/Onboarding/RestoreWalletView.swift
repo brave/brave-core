@@ -249,7 +249,6 @@ struct RestoreWalletView: View {
         }
       }
     }
-    .transparentUnlessScrolledNavigationAppearance()
   }
 
   private func resignFirstResponder() {
