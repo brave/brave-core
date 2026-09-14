@@ -73,10 +73,12 @@ export function AdFormats() {
           </div>
           {/* Search result ads are always shown regardless of Rewards state;
               it's only the ad event metrics sent for them that depend on
-              whether a wallet is connected. */}
+              sponsored ads being enabled and no wallet being connected. */}
           <div>
             <span>Search result ad metrics</span>
-            <MatchIcon isMatch={!walletConnected} />
+            <MatchIcon
+              isMatch={isMatch('Sponsored ads enabled') && !walletConnected}
+            />
           </div>
           {TILES_SUPPORTED && (
             <div>
