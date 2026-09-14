@@ -2889,6 +2889,70 @@ TEST_F(ZCashWalletServiceUnitTest,
 }
 
 TEST_F(ZCashWalletServiceUnitTest,
+       StartShieldSync_ClearsIronwoodMigrationFlagWhenFeatureDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "false"}});
+
+  auto account_id_1 = account_id();
+  keyring_service()->SetZCashAccountBirthday(
+      account_id_1.Clone(),
+      mojom::ZCashAccountShieldBirthday::New(100u, "hash"));
+  ASSERT_TRUE(keyring_service()->SetZCashIronwoodSyncStateReset(
+      account_id_1.Clone(), true));
+  EXPECT_TRUE(
+      keyring_service()->GetZCashIronwoodSyncStateReset(account_id_1.Clone()));
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(200u, std::vector<uint8_t>()));
+      });
+
+  base::test::TestFuture<const std::optional<std::string>&> sync_future;
+  zcash_wallet_service_->StartShieldSync(account_id_1.Clone(), 0,
+                                         sync_future.GetCallback());
+  EXPECT_EQ(std::nullopt, sync_future.Take());
+  EXPECT_FALSE(
+      keyring_service()->GetZCashIronwoodSyncStateReset(account_id_1.Clone()));
+}
+
+TEST_F(ZCashWalletServiceUnitTest,
+       StartShieldSync_PreservesIronwoodMigrationFlagWhenFeatureEnabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "true"}});
+
+  auto account_id_1 = account_id();
+  keyring_service()->SetZCashAccountBirthday(
+      account_id_1.Clone(),
+      mojom::ZCashAccountShieldBirthday::New(100u, "hash"));
+  ASSERT_TRUE(keyring_service()->SetZCashIronwoodSyncStateReset(
+      account_id_1.Clone(), true));
+  EXPECT_TRUE(
+      keyring_service()->GetZCashIronwoodSyncStateReset(account_id_1.Clone()));
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(200u, std::vector<uint8_t>()));
+      });
+
+  base::test::TestFuture<const std::optional<std::string>&> sync_future;
+  zcash_wallet_service_->StartShieldSync(account_id_1.Clone(), 0,
+                                         sync_future.GetCallback());
+  EXPECT_EQ(std::nullopt, sync_future.Take());
+  EXPECT_TRUE(
+      keyring_service()->GetZCashIronwoodSyncStateReset(account_id_1.Clone()));
+}
+
+TEST_F(ZCashWalletServiceUnitTest,
        MaybeInitAutoSyncManagers_DoesNotPerformIronwoodMigration) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(

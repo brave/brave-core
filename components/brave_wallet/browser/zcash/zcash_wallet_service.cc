@@ -164,6 +164,11 @@ void ZCashWalletService::StartShieldSync(mojom::AccountIdPtr account_id,
     return;
   }
 
+  if (!IsZCashIronwoodEnabled() &&
+      keyring_service_->GetZCashIronwoodSyncStateReset(account_id)) {
+    keyring_service_->SetZCashIronwoodSyncStateReset(account_id, false);
+  }
+
   if (IsZCashIronwoodEnabled() &&
       !keyring_service_->GetZCashIronwoodSyncStateReset(account_id)) {
     if (!pending_sync_callback_.is_null()) {
