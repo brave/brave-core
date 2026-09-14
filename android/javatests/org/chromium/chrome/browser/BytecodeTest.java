@@ -3138,6 +3138,10 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/tabmodel/BraveTabCreator"));
         Assert.assertTrue(
                 checkSuperName(
+                        "org/chromium/chrome/browser/tab/TabImpl$DeferredContentViewStub",
+                        "org/chromium/components/embedder_support/view/BraveContentView"));
+        Assert.assertTrue(
+                checkSuperName(
                         "org/chromium/chrome/browser/ui/appmenu/BraveAppMenu",
                         "org/chromium/chrome/browser/ui/appmenu/AppMenu"));
         Assert.assertTrue(
