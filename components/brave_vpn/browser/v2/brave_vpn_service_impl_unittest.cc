@@ -145,16 +145,26 @@ class BraveVpnServiceImplTest : public testing::Test {
   void UpdateAgentConnection(mojom::PurchasedState state) {
     service_->UpdateAgentConnection(state);
   }
+  void NotifyAgentConnected() { service_->OnAgentConnected(); }
+  void NotifyAgentSessionStable() { service_->OnAgentSessionStable(); }
   void NotifyAgentNotRunning() { service_->OnAgentNotRunning(); }
   void NotifyAgentDisconnected() { service_->OnAgentDisconnected(); }
-  void NotifyAgentUnavailable(mojom::BrowserAuthResult result) {
-    service_->OnAgentUnavailable(result);
+  void NotifyAgentConnectionFailed(AgentClient::Error error) {
+    service_->OnAgentConnectionFailed(error);
   }
   void NotifyAgentLaunchFailed(AgentLauncher::LaunchError error) {
     service_->OnAgentLaunchFailed(error);
   }
 
   AgentClient* agent_client() { return service_->agent_client_.get(); }
+
+  void SetConnectionState(mojom::ConnectionState state) {
+    service_->SetConnectionStateForTesting(state);
+  }
+  mojom::ConnectionState connection_state() const {
+    return service_->connection_state_;
+  }
+
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
  protected:
@@ -224,10 +234,12 @@ TEST_F(BraveVpnServiceImplTest, SafeDefaultsAfterShutdown) {
   UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
   UpdateAgentConnection(mojom::PurchasedState::NOT_PURCHASED);
 
+  NotifyAgentConnected();
   NotifyAgentNotRunning();
   NotifyAgentDisconnected();
-  NotifyAgentUnavailable(mojom::BrowserAuthResult::kInconclusive);
+  NotifyAgentConnectionFailed(AgentClient::Error::kAgentNotResponding);
   NotifyAgentLaunchFailed(AgentLauncher::LaunchError::kLaunchFailed);
+  NotifyAgentSessionStable();
   EXPECT_EQ(launch_record_.launch_count(), 0u);
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
@@ -363,7 +375,7 @@ TEST_F(BraveVpnServiceImplTest, OnlyMissingAgentTriggersLaunch) {
   UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
 
   NotifyAgentDisconnected();
-  NotifyAgentUnavailable(mojom::BrowserAuthResult::kRejected);
+  NotifyAgentConnectionFailed(AgentClient::Error::kBrowserRejected);
 
   EXPECT_EQ(launch_record_.launch_count(), 0u);
 }
@@ -426,6 +438,74 @@ TEST_F(BraveVpnServiceImplTest, StaleLaunchFailureKeepsLiveSession) {
   EXPECT_EQ(agent_client()->state(), AgentClient::State::kConnected);
   EXPECT_TRUE(agent_client()->browser_host());
   EXPECT_EQ(fake_agent_.session_count(), 1u);
+}
+
+TEST_F(BraveVpnServiceImplTest, AgentErrorShowsConnectFailure) {
+  CreateService();
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
+
+  NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NOT_ALLOWED);
+  EXPECT_FALSE(service_->GetLastConnectionError().empty());
+}
+
+TEST_F(BraveVpnServiceImplTest, StableSessionClearsConnectFailure) {
+  CreateService();
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
+
+  NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NOT_ALLOWED);
+  NotifyAgentSessionStable();
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
+}
+
+// Acceptance alone is not enough. An agent that crashes on startup reaches
+// OnAgentConnected() on every cycle, so clearing there would hide a crash loop
+// behind a UI that looks fine.
+TEST_F(BraveVpnServiceImplTest, ConnectingAloneDoesNotClearTheError) {
+  CreateService();
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
+
+  NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NOT_ALLOWED);
+
+  NotifyAgentConnected();
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NOT_ALLOWED);
+}
+
+// The real connection state that arrived in the meantime must survive.
+TEST_F(BraveVpnServiceImplTest, StableSessionLeavesANonErrorStateAlone) {
+  CreateService();
+  SetConnectionState(mojom::ConnectionState::CONNECTED);
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECTED);
+
+  NotifyAgentSessionStable();
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECTED);
+}
+
+// A launch that never happened is terminal in effect: the handler also resets
+// the client, so no retries are left to recover it.
+TEST_F(BraveVpnServiceImplTest, LaunchFailureShowsConnectNotAllowed) {
+  CreateService();
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
+
+  NotifyAgentLaunchFailed(AgentLauncher::LaunchError::kAppNotFound);
+
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NOT_ALLOWED);
+  EXPECT_FALSE(service_->GetLastConnectionError().empty());
+}
+
+// Losing the subscription has to leave nothing behind: the agent connection
+// and any error it reported both belong to a profile that no longer has a VPN.
+TEST_F(BraveVpnServiceImplTest, LosingThePurchaseClearsConnectFailure) {
+  CreateService();
+  NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECT_NOT_ALLOWED);
+
+  UpdateAgentConnection(mojom::PurchasedState::NOT_PURCHASED);
+
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
+  EXPECT_TRUE(service_->GetLastConnectionError().empty());
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)

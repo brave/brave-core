@@ -49,6 +49,13 @@ constexpr net::BackoffEntry::Policy kBackoffPolicy = {
 // treated as failed.
 constexpr base::TimeDelta kHandshakeTimeout = base::Seconds(10);
 
+// How long connecting may keep failing before a customer is told, for failures
+// a retry could still fix.
+constexpr base::TimeDelta kPersistentFailureThreshold = base::Seconds(15);
+
+// How long a session has to last to count as evidence that connecting works.
+constexpr base::TimeDelta kMinStableSession = base::Seconds(3);
+
 // A helper that establishes the transport to the agent's IPC server and returns
 // the pipe its BrowserHostProvider is bound to.
 mojo::ScopedMessagePipeHandle ConnectToAgentServer(
@@ -70,7 +77,45 @@ mojo::ScopedMessagePipeHandle ConnectToAgentServer(
   return pipe;
 }
 
+bool IsRetryableError(AgentClient::Error error) {
+  switch (error) {
+    case AgentClient::Error::kAgentUnreachable:
+    case AgentClient::Error::kAgentNotResponding:
+    case AgentClient::Error::kAgentUnstable:
+    case AgentClient::Error::kBrowserUnverified:
+      // All four describe a situation, not a verdict: the agent may yet start,
+      // stop wedging, stay up, or manage to verify this browser.
+      return true;
+    case AgentClient::Error::kNoEndpoint:
+    case AgentClient::Error::kBrowserRejected:
+    case AgentClient::Error::kUnexpectedBehavior:
+      // Settled for as long as this browser and this agent are both running.
+      // Recovery needs the agent replaced, or a reset from the owner.
+      return false;
+  }
+}
+
 }  // namespace
+
+// static
+std::string_view AgentClient::ErrorToString(Error error) {
+  switch (error) {
+    case AgentClient::Error::kNoEndpoint:
+      return "no endpoint for this session";
+    case AgentClient::Error::kAgentUnreachable:
+      return "agent unreachable";
+    case AgentClient::Error::kAgentNotResponding:
+      return "agent not responding";
+    case AgentClient::Error::kAgentUnstable:
+      return "agent unstable";
+    case AgentClient::Error::kBrowserUnverified:
+      return "browser could not be verified";
+    case AgentClient::Error::kBrowserRejected:
+      return "browser rejected by the agent";
+    case AgentClient::Error::kUnexpectedBehavior:
+      return "unexpected peer behavior";
+  }
+}
 
 AgentClient::AgentClient()
     : AgentClient(base::BindRepeating(&GetAgentServerName),
@@ -161,7 +206,7 @@ AgentClient::ConnectResult AgentClient::ConnectBlocking(
       server_name_provider.Run();
   if (!server_name) {
     // Already logged by the resolver.
-    return base::unexpected(ConnectError::kNoServerName);
+    return base::unexpected(ConnectFailure::kNoServerName);
   }
 
   // TODO(https://github.com/brave/brave-browser/issues/54608)
@@ -176,7 +221,7 @@ AgentClient::ConnectResult AgentClient::ConnectBlocking(
 
   mojo::ScopedMessagePipeHandle pipe = connector.Run(*server_name);
   if (!pipe.is_valid()) {
-    return base::unexpected(ConnectError::kNoAgentRunning);
+    return base::unexpected(ConnectFailure::kNoAgentRunning);
   }
   return pipe;
 }
@@ -201,17 +246,21 @@ void AgentClient::OnConnectBlockingCompleted(ConnectResult result) {
   CHECK(state_ == State::kConnecting);
 
   if (!result.has_value()) {
-    if (result.error() == ConnectError::kNoServerName) {
+    if (result.error() == ConnectFailure::kNoServerName) {
       // Terminal rather than retried: the session id, runtime dir, and temp dir
       // this is derived from are fixed for the life of the process, so every
       // later attempt would fail identically.
-      EnterUnavailable("no agent server name for this session", std::nullopt);
+      EnterUnavailable(Error::kNoEndpoint);
       return;
     }
-    TeardownAndRetry("couldn't reach the agent");
+    TeardownAndRetry(Error::kAgentUnreachable);
     ReportNotRunningIfNeeded();
     return;
   }
+
+  // Reaching the agent indicates that it is running, but only a session that
+  // lasts is evidence that connecting works.
+  not_running_reported_ = false;
 
   // The pipe the transport was established on is what the agent bound its
   // BrowserHostProvider to. Dropping it later drops the transport with it. Pass
@@ -250,18 +299,22 @@ void AgentClient::OnAuthResult(mojom::BrowserAuthResult result) {
   handshake_timer_.Stop();
 
   // This value came off the wire from a peer that has not been verified, so it
-  // decides policy but never invariants: no CHECK on any branch below.
+  // decides policy but never invariants: no CHECK on the branches.
   switch (result) {
     case mojom::BrowserAuthResult::kAccepted:
       if (session_pipe_dropped_) {
         // Accepted, but one of the pipes the session runs on is already gone.
         // Treat it as a failed attempt rather than publishing a host that
         // cannot deliver anything.
-        TeardownAndRetry("session pipe closed during handshake");
+        VLOG(1) << "Agent session pipe closed during handshake";
+        TeardownAndRetry(Error::kAgentUnstable);
         return;
       }
-      ClearFailureRun();
       state_ = State::kConnected;
+      stable_session_timer_.Start(
+          FROM_HERE, kMinStableSession,
+          base::BindOnce(&AgentClient::OnSessionBecameStable,
+                         weak_factory_.GetWeakPtr()));
       observers_.Notify(&Observer::OnAgentConnected);
       return;
 
@@ -270,36 +323,44 @@ void AgentClient::OnAuthResult(mojom::BrowserAuthResult result) {
       // was replaced mid-update, a signing cert rotated, the accept-time
       // capture expired. None is a verdict about this binary, and a fresh
       // connection may well succeed.
-      TeardownAndRetry("agent could not verify this browser");
+      TeardownAndRetry(Error::kBrowserUnverified);
       return;
 
     case mojom::BrowserAuthResult::kVersionMismatch:
       // The agent accepts a range ending at the version it was built with, so
       // this is usually a browser that updated ahead of the agent it is talking
       // to. Retrying against this agent cannot help; a replacement can.
-      EnterUnavailable("protocol version outside the agent's accepted range",
-                       result);
+      VLOG(1) << "Protocol version outside the agent's accepted range";
+      EnterUnavailable(Error::kBrowserRejected);
       return;
 
     case mojom::BrowserAuthResult::kRejected:
       // The agent ran its peer check on us and said no. That verdict is about
       // this binary, which does not change while it runs, so back off entirely.
-      EnterUnavailable("agent rejected this browser", result);
+      VLOG(1) << "Agent rejected the browser";
+      EnterUnavailable(Error::kBrowserRejected);
       return;
 
     case mojom::BrowserAuthResult::kHostAlreadyRequested:
       // The agent scopes this to one BindBrowserHost() per connection, and this
       // is a connection we have just opened and called once, so either this is
       // a bug or the peer is not the agent.
-      LOG(ERROR) << "Agent reports this connection is already authenticated";
-      EnterUnavailable("connection already authenticated", result);
+      VLOG(1) << "Agent reports the connection is already authenticated";
+      EnterUnavailable(Error::kUnexpectedBehavior);
       return;
   }
 }
 
 void AgentClient::OnHandshakeTimeout() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  TeardownAndRetry("agent did not answer the handshake");
+  VLOG(1) << "Agent did not answer the handshake";
+  TeardownAndRetry(Error::kAgentNotResponding);
+}
+
+void AgentClient::OnSessionBecameStable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  ClearFailureRun();
+  observers_.Notify(&Observer::OnAgentSessionStable);
 }
 
 void AgentClient::OnProviderDisconnected() {
@@ -315,7 +376,8 @@ void AgentClient::OnProviderDisconnected() {
     StartConnect();
     return;
   }
-  TeardownAndRetry("provider pipe closed");
+  VLOG(1) << "Provider pipe dropped";
+  TeardownAndRetry(Error::kAgentNotResponding);
 }
 
 void AgentClient::OnSessionPipeDisconnected(std::string_view reason) {
@@ -327,21 +389,31 @@ void AgentClient::OnSessionPipeDisconnected(std::string_view reason) {
     session_pipe_dropped_ = true;
     return;
   }
-  TeardownAndRetry(reason);
+  VLOG(1) << "Session pipe dropped: " << reason;
+  TeardownAndRetry(Error::kAgentNotResponding);
 }
 
-void AgentClient::TeardownAndRetry(std::string_view reason) {
+void AgentClient::TeardownAndRetry(Error error) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(IsRetryableError(error));
   const bool was_connected = state_ == State::kConnected;
+  // A session still inside its stability window is not evidence that
+  // reconnecting will work; it is the signature of an agent that cannot stay
+  // up. A session that outlived the window already cleared the run itself.
+  const bool was_unstable = was_connected && stable_session_timer_.IsRunning();
+  if (error == Error::kAgentNotResponding && was_unstable) {
+    error = Error::kAgentUnstable;
+  }
+
   ResetConnection();
-  if (was_connected) {
-    ClearFailureRun();
+  if (!failure_run_timer_) {
+    failure_run_timer_.emplace();
   }
   backoff_.InformOfRequest(/*succeeded=*/false);
 
   const base::TimeDelta delay = backoff_.GetTimeUntilRelease();
-  VLOG(1) << "Agent connection failed (" << reason << "); retrying in "
-          << delay;
+  VLOG(1) << "Agent connection failed (" << ErrorToString(error)
+          << "); retrying in " << delay;
 
   state_ = State::kWaitingToRetry;
   retry_timer_.Start(
@@ -351,23 +423,23 @@ void AgentClient::TeardownAndRetry(std::string_view reason) {
   if (was_connected) {
     observers_.Notify(&Observer::OnAgentDisconnected);
   }
+  ReportErrorIfPersistent(error);
 }
 
-void AgentClient::EnterUnavailable(
-    std::string_view reason,
-    std::optional<mojom::BrowserAuthResult> result) {
+void AgentClient::EnterUnavailable(Error error) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(!IsRetryableError(error));
   const bool was_connected = state_ == State::kConnected;
 
   retry_timer_.Stop();
   ResetSession();
   state_ = State::kUnavailable;
-  VLOG(1) << "Agent unavailable to this browser: " << reason;
+  VLOG(1) << "Agent unavailable to this browser: " << ErrorToString(error);
 
   if (was_connected) {
     observers_.Notify(&Observer::OnAgentDisconnected);
   }
-  observers_.Notify(&Observer::OnAgentUnavailable, result);
+  ReportError(error);
 }
 
 void AgentClient::ReportNotRunningIfNeeded() {
@@ -378,16 +450,40 @@ void AgentClient::ReportNotRunningIfNeeded() {
   observers_.Notify(&Observer::OnAgentNotRunning);
 }
 
+void AgentClient::ReportError(Error error) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // A run that keeps failing for shifting reasons is still one piece of news;
+  // only an escalation to something retrying cannot fix is worth repeating.
+  if (reported_failure_ &&
+      (*reported_failure_ == error || IsRetryableError(error))) {
+    return;
+  }
+  reported_failure_ = error;
+  observers_.Notify(&Observer::OnAgentConnectionFailed, error);
+}
+
+void AgentClient::ReportErrorIfPersistent(Error error) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!failure_run_timer_ ||
+      failure_run_timer_->Elapsed() < kPersistentFailureThreshold) {
+    return;
+  }
+  ReportError(error);
+}
+
 void AgentClient::ClearFailureRun() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   backoff_.Reset();
   not_running_reported_ = false;
+  failure_run_timer_.reset();
+  reported_failure_.reset();
 }
 
 void AgentClient::ResetSession() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   handshake_timer_.Stop();
   session_pipe_dropped_ = false;
+  stable_session_timer_.Stop();
   host_.reset();
   browser_endpoint_.reset();
 }
