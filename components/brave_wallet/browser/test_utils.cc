@@ -11,11 +11,13 @@
 #include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/notreached.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_storage.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -125,7 +127,8 @@ mojom::AccountInfoPtr AccountUtils::CreateDerivedAccount(
 mojom::AccountInfoPtr AccountUtils::GetImportedAccount(
     mojom::KeyringId keyring_id,
     uint32_t index) {
-  EXPECT_TRUE(IsBitcoinImportKeyring(keyring_id));
+  EXPECT_TRUE(IsBitcoinImportKeyring(keyring_id) ||
+              IsPolkadotImportKeyring(keyring_id));
 
   auto all_accounts = keyring_service_->GetAllAccountsSync();
   for (auto& acc : all_accounts->accounts) {
@@ -163,6 +166,19 @@ mojom::AccountInfoPtr AccountUtils::GetHardwareAccount(
 mojom::AccountInfoPtr AccountUtils::CreateImportedAccount(
     mojom::KeyringId keyring_id,
     const std::string& name) {
+  if (IsPolkadotImportKeyring(keyring_id)) {
+    const auto key_index =
+        base::checked_cast<uint32_t>(AllAccounts(keyring_id).size());
+    auto acc = keyring_service_->ImportPolkadotAccountSync(
+        name, MakePolkadotImportJsonExport(keyring_id, key_index),
+        kPolkadotImportExportPassword,
+        keyring_id == mojom::KeyringId::kPolkadotImport
+            ? mojom::kPolkadotMainnet
+            : mojom::kPolkadotTestnet);
+    EXPECT_TRUE(acc);
+    return acc;
+  }
+
   EXPECT_TRUE(IsBitcoinImportKeyring(keyring_id));
   const auto network = GetNetworkForBitcoinKeyring(keyring_id);
   auto acc = keyring_service_->ImportBitcoinAccountSync(
@@ -203,7 +219,8 @@ mojom::AccountInfoPtr AccountUtils::CreateHardwareAccount(
 
 mojom::AccountInfoPtr AccountUtils::EnsureAccount(mojom::KeyringId keyring_id,
                                                   uint32_t index) {
-  if (IsBitcoinImportKeyring(keyring_id)) {
+  if (IsBitcoinImportKeyring(keyring_id) ||
+      IsPolkadotImportKeyring(keyring_id)) {
     for (auto i = 0u; i <= index; ++i) {
       if (!GetImportedAccount(keyring_id, i)) {
         EXPECT_TRUE(
@@ -304,6 +321,14 @@ mojom::AccountInfoPtr AccountUtils::EnsureDotTestAccount(uint32_t index) {
   return EnsureAccount(mojom::KeyringId::kPolkadotTestnet, index);
 }
 
+mojom::AccountInfoPtr AccountUtils::EnsureDotImportAccount(uint32_t index) {
+  return EnsureAccount(mojom::KeyringId::kPolkadotImport, index);
+}
+
+mojom::AccountInfoPtr AccountUtils::EnsureDotImportTestAccount(uint32_t index) {
+  return EnsureAccount(mojom::KeyringId::kPolkadotImportTestnet, index);
+}
+
 mojom::AccountInfoPtr AccountUtils::CreateEthAccount(const std::string& name) {
   return CreateDerivedAccount(mojom::KeyringId::kDefault, name);
 }
@@ -346,6 +371,15 @@ mojom::AccountInfoPtr AccountUtils::CreateAdaAccount(const std::string& name) {
 mojom::AccountInfoPtr AccountUtils::CreateAdaTestAccount(
     const std::string& name) {
   return CreateDerivedAccount(mojom::KeyringId::kCardanoTestnet, name);
+}
+
+mojom::AccountInfoPtr AccountUtils::CreateDotAccount(const std::string& name) {
+  return CreateDerivedAccount(mojom::KeyringId::kPolkadotMainnet, name);
+}
+
+mojom::AccountInfoPtr AccountUtils::CreateDotTestAccount(
+    const std::string& name) {
+  return CreateDerivedAccount(mojom::KeyringId::kPolkadotTestnet, name);
 }
 
 mojom::AccountInfoPtr AccountUtils::CreateEthHWAccount() {
@@ -440,6 +474,16 @@ std::vector<mojom::AccountInfoPtr> AccountUtils::AllAdaAccounts() {
 
 std::vector<mojom::AccountInfoPtr> AccountUtils::AllAdaTestAccounts() {
   return AllAccounts(mojom::KeyringId::kCardanoTestnet);
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllDotAccounts() {
+  return AllAccounts(
+      {mojom::KeyringId::kPolkadotMainnet, mojom::KeyringId::kPolkadotImport});
+}
+
+std::vector<mojom::AccountInfoPtr> AccountUtils::AllDotTestAccounts() {
+  return AllAccounts({mojom::KeyringId::kPolkadotTestnet,
+                      mojom::KeyringId::kPolkadotImportTestnet});
 }
 
 TestBraveWalletServiceDelegate::TestBraveWalletServiceDelegate() {

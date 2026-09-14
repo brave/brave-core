@@ -1904,6 +1904,12 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
     expected_chain_ids.push_back(mojom::kCardanoMainnet);
     expected_chain_ids.push_back(mojom::kCardanoTestnet);
   }
+  if (IsPolkadotEnabled()) {
+    base::Extend(expected_chain_ids,
+                 {mojom::kPolkadotMainnet, mojom::kPolkadotMainnetAssetHub,
+                  mojom::kPolkadotTestnet, mojom::kPolkadotTestnetAssetHub,
+                  mojom::kPolkadotPaseoAssetHub});
+  }
   EXPECT_THAT(all_chain_ids, ElementsAreArray(expected_chain_ids));
 
   EXPECT_THAT(all_networks->custom_chain_ids,
@@ -1921,6 +1927,11 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
   };
   if (IsCardanoEnabled()) {
     expected_hidden_chain_ids.push_back(mojom::kCardanoTestnet);
+  }
+  if (IsPolkadotEnabled()) {
+    base::Extend(expected_hidden_chain_ids,
+                 {mojom::kPolkadotTestnet, mojom::kPolkadotTestnetAssetHub,
+                  mojom::kPolkadotPaseoAssetHub});
   }
   EXPECT_THAT(all_networks->hidden_chain_ids,
               ElementsAreArray(expected_hidden_chain_ids));
@@ -1967,16 +1978,19 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
 
 TEST_F(JsonRpcServiceUnitTest, GetHiddenNetworks) {
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeature(
-      features::kBraveWalletCardanoFeature);
+  scoped_feature_list.InitWithFeatures({features::kBraveWalletCardanoFeature,
+                                        features::kBraveWalletPolkadotFeature},
+                                       {});
 
   TestFuture<mojom::AllNetworksPtr> all_networks_future;
   TestFuture<bool> bool_future;
 
   const std::vector<std::string_view> k_other_hidden = {
-      mojom::kSolanaDevnet,   mojom::kSolanaTestnet, mojom::kFilecoinTestnet,
-      mojom::kBitcoinTestnet, mojom::kZCashTestnet,  mojom::kCardanoTestnet,
-  };
+      mojom::kSolanaDevnet,         mojom::kSolanaTestnet,
+      mojom::kFilecoinTestnet,      mojom::kBitcoinTestnet,
+      mojom::kZCashTestnet,         mojom::kCardanoTestnet,
+      mojom::kPolkadotTestnet,      mojom::kPolkadotTestnetAssetHub,
+      mojom::kPolkadotPaseoAssetHub};
   auto expected_hidden =
       [&k_other_hidden](std::vector<std::string_view> eth_hidden) {
         base::Extend(eth_hidden, k_other_hidden);

@@ -421,7 +421,7 @@ TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
 
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST_F(NetworkManagerUnitTest, GetNetworkURLTest) {
