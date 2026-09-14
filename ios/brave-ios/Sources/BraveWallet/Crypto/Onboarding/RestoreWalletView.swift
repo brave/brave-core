@@ -233,7 +233,7 @@ struct RestoreWalletView: View {
       }
     })
     .sheet(isPresented: $isShowingCreateNewPassword) {
-      NavigationView {
+      NavigationStack {
         CreateWalletView(
           keyringStore: keyringStore,
           setupSelections: setupSelections,
@@ -287,7 +287,7 @@ struct RestoreWalletView: View {
 #if DEBUG
 struct RestoreWalletView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       RestoreWalletView(
         keyringStore: .previewStore,
         setupSelections: .init(setupOption: .new, networks: []),

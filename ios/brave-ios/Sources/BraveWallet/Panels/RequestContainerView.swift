@@ -18,7 +18,7 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
   var onViewInActivity: () -> Void
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       Group {
         if let pendingRequest = cryptoStore.pendingRequest {
           switch pendingRequest {
@@ -95,6 +95,5 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
         toolbarDismissContent
       }
     }
-    .navigationViewStyle(.stack)
   }
 }

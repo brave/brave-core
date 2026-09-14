@@ -122,22 +122,17 @@ struct BackupWalletView: View {
     }
     .modifier(ToolbarModifier(isShowingCancel: !keyringStore.isOnboardingVisible))
     .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
-    .background(
-      NavigationLink(
-        isActive: Binding(
-          get: { !recoveryWords.isEmpty },
-          set: { if !$0 { recoveryWords = [] } }
-        ),
-        destination: {
-          BackupRecoveryPhraseView(
-            password: password,
-            keyringStore: keyringStore
-          )
-        },
-        label: {
-          EmptyView()
-        }
-      )
+    .navigationDestination(
+      isPresented: Binding(
+        get: { !recoveryWords.isEmpty },
+        set: { if !$0 { recoveryWords = [] } }
+      ),
+      destination: {
+        BackupRecoveryPhraseView(
+          password: password,
+          keyringStore: keyringStore
+        )
+      }
     )
   }
 
@@ -169,7 +164,7 @@ struct BackupWalletView: View {
 #if DEBUG
 struct BackupWalletView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       BackupWalletView(
         password: "",
         keyringStore: .previewStore
