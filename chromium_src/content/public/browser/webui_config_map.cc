@@ -20,8 +20,8 @@ namespace {
 // If `url`'s host is a single-label subdomain of a host with a registered
 // chrome-untrusted:// config that opts into handling its own subdomains via
 // WebUIConfig::ShouldHandleSubdomains(), returns that config (e.g.
-// chrome-untrusted://<id>.leo-workspaces resolves to the config registered for
-// chrome-untrusted://leo-workspaces). Otherwise returns `configs.end()`.
+// chrome-untrusted://<id>.leo-workspace resolves to the config registered for
+// chrome-untrusted://leo-workspace). Otherwise returns `configs.end()`.
 // Called from WebUIConfigMap::GetConfig() via the plaster for
 // content/public/browser/webui_config_map.cc.
 std::map<url::Origin, std::unique_ptr<WebUIConfig>>::iterator

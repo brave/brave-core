@@ -27,7 +27,8 @@ class WebContents;
 namespace ai_chat {
 
 // Associated content backed by a hidden, headless
-// chrome-untrusted://leo-workspace page. The page holds a
+// chrome-untrusted://<uuid>.leo-workspace page, where the uuid is this
+// delegate's own, giving each workspace its own origin. The page holds a
 // FileSystemDirectoryHandle for a user-picked folder (delivered by the browser
 // via launchQueue) and registers the local file tools with Leo via WebMCP
 // (navigator.modelContext). This delegate owns the background WebContents, so

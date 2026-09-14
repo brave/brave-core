@@ -20,6 +20,9 @@ class LeoWorkspaceUIConfig : public content::WebUIConfig {
 
   // content::WebUIConfig:
   bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
+  // Every workspace is served from its own subdomain of the host this config is
+  // registered for, so that each one is a separate origin.
+  bool ShouldHandleSubdomains() const override;
   std::unique_ptr<content::WebUIController> CreateWebUIController(
       content::WebUI* web_ui,
       const GURL& url) override;
@@ -30,11 +33,13 @@ class LeoWorkspaceUIConfig : public content::WebUIConfig {
 // launchQueue) for a user-picked folder, implements the file tools in
 // JavaScript against it, and registers them with Leo via WebMCP
 // (navigator.modelContext). One instance is created per conversation and served
-// at chrome-untrusted://leo-workspace/<guid>; it runs with a locked-down CSP
-// that only permits its own first-party bundle. This page has no visible UI.
+// from its own origin at chrome-untrusted://<guid>.leo-workspace; it runs with
+// a locked-down CSP that only permits its own first-party bundle. This page has
+// no visible UI.
 class LeoWorkspaceUI : public ui::UntrustedWebUIController {
  public:
-  explicit LeoWorkspaceUI(content::WebUI* web_ui);
+  // `url` is the URL being loaded, whose origin is the workspace's own origin.
+  LeoWorkspaceUI(content::WebUI* web_ui, const GURL& url);
   ~LeoWorkspaceUI() override;
 
   LeoWorkspaceUI(const LeoWorkspaceUI&) = delete;

@@ -27,6 +27,7 @@
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
@@ -35,6 +36,7 @@
 #include "third_party/blink/public/mojom/web_launch/web_launch.mojom.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
+#include "url/url_constants.h"
 
 namespace ai_chat {
 
@@ -44,7 +46,13 @@ WorkspaceAssociatedContent::WorkspaceAssociatedContent(
     base::OnceCallback<void(content::WebContents*)> attach_tab_helpers)
     : folder_path_(std::move(folder_path)) {
   std::string uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
-  GURL url(base::StrCat({kAIChatLeoWorkspaceUIURL, uuid}));
+  // The uuid is the page's subdomain rather than a path under the workspace
+  // host, so that each workspace is a distinct origin and doesn't share storage
+  // or File System Access grants with any other workspace.
+  GURL url(base::StrCat({content::kChromeUIUntrustedScheme,
+                         url::kStandardSchemeSeparator, uuid,
+                         kAIChatLeoWorkspaceUIHostSuffix, "/"}));
+  CHECK(url.is_valid());
   DVLOG(2) << __func__ << " creating workspace content at " << url.spec()
            << " for folder " << folder_path_;
 
@@ -132,16 +140,17 @@ void WorkspaceAssociatedContent::DocumentOnLoadCompletedInPrimaryMainFrame() {
 void WorkspaceAssociatedContent::DeliverDirectoryHandle(
     content::RenderFrameHost* rfh) {
   // The permission grant below is an origin-scoped security decision, so it
-  // uses the origin. |committed_url| (which carries the per-workspace uuid
-  // path) is only used where the full URL is what's wanted: the binding
-  // context's SafeBrowsing/Quarantine url, and the launch url.
+  // uses the origin. |committed_url| is only used where the full URL is what's
+  // wanted: the binding context's SafeBrowsing/Quarantine url, and the launch
+  // url.
   const GURL origin_url = rfh->GetLastCommittedOrigin().GetURL();
   const GURL committed_url = rfh->GetLastCommittedURL();
 
   // Auto-grant File System Access read/write for the workspace origin so the
   // page can use the delivered handle without a permission prompt. The origin
-  // is our own system-owned chrome-untrusted://leo-workspace page, and access
-  // is scoped by the handle to the user-picked folder.
+  // is our own system-owned chrome-untrusted://<uuid>.leo-workspace page, and
+  // access is scoped by the handle to the user-picked folder. Because the uuid
+  // is part of the origin, this grants nothing to any other workspace.
   auto* map = permissions::PermissionsClient::Get()->GetSettingsMap(
       web_contents_->GetBrowserContext());
   map->SetContentSettingDefaultScope(

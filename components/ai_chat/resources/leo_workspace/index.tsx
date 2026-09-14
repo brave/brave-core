@@ -4,11 +4,12 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Headless workspace page. This bundle runs inside the hidden
-// chrome-untrusted://leo-workspace/<guid> WebContents that is attached to a Leo
-// conversation. It receives a FileSystemDirectoryHandle for the user-picked
-// folder (delivered by the browser via window.launchQueue), implements the file
-// tools against it, and registers them with Leo via WebMCP
-// (navigator.modelContext). There is no visible UI.
+// chrome-untrusted://<guid>.leo-workspace WebContents that is attached to a Leo
+// conversation. Each workspace has its own subdomain, and therefore its own
+// origin, so no state is shared between workspaces. It receives a
+// FileSystemDirectoryHandle for the user-picked folder (delivered by the browser
+// via window.launchQueue), implements the file tools against it, and registers
+// them with Leo via WebMCP (navigator.modelContext). There is no visible UI.
 //
 // The handle is delivered via launchQueue; once captured, the file tools are
 // registered with Leo via WebMCP (see tools.ts / file_ops.ts).
@@ -46,7 +47,7 @@ function onLaunch(params: LaunchParams) {
 }
 
 function initialize() {
-  console.log('[leo-workspace] bundle loaded at', window.location.pathname)
+  console.log('[leo-workspace] bundle loaded at', window.location.origin)
   if (window.launchQueue) {
     window.launchQueue.setConsumer(onLaunch)
   } else {

@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/script_tools/model_context.cc b/third_party/blink/renderer/core/script_tools/model_context.cc
-index 0586b2995e7cae94bb2cc1fd2b4c36557c4baee1..183890374ec37ef30e1a0b70a652d8f26ae9526f 100644
+index 0586b2995e7cae94bb2cc1fd2b4c36557c4baee1..a80def5979e07d69002df1cfabd45da840c5cf8c 100644
 --- a/third_party/blink/renderer/core/script_tools/model_context.cc
 +++ b/third_party/blink/renderer/core/script_tools/model_context.cc
 @@ -900,6 +900,9 @@ void ModelContext::PauseExecution() {
@@ -20,8 +20,8 @@ index 0586b2995e7cae94bb2cc1fd2b4c36557c4baee1..183890374ec37ef30e1a0b70a652d8f2
 +          !document_->GetSettings()->GetWebSecurityEnabled()) ||
 +         (document_->GetExecutionContext()->GetSecurityOrigin()->Protocol() ==
 +              "chrome-untrusted" &&
-+           document_->GetExecutionContext()->GetSecurityOrigin()->Host() ==
-+              ai_chat::kAIChatLeoWorkspaceUIHost);
++           document_->GetExecutionContext()->GetSecurityOrigin()->Host().ends_with(
++              ai_chat::kAIChatLeoWorkspaceUIHostSuffix));
  }
  
  ScriptPromise<IDLSequence<RegisteredTool>> ModelContext::getTools(
