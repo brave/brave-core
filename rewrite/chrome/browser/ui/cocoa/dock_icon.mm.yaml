@@ -3,39 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# Report download progress through the Dock tile's badge label rather than
-# through a custom content view.
-#
-# Brave ships a layered app icon, whose light, dark and tinted variants live in
-# the asset catalog as `IconImageStack` renditions that only the Dock knows how
-# to composite. Setting `NSDockTile.contentView` takes that compositing away and
-# leaves the app to draw the icon itself, and the only thing an app can get hold
-# of is the single flattened `Icon Image` rendition, which carries no appearance
-# variants at all. `-[NSImage imageNamed:NSImageNameApplicationIcon]`,
-# `-[NSApplication applicationIconImage]`, `-[NSWorkspace iconForFile:]` and
-# `NSURLEffectiveIconKey` all return that same flattened image, under either
-# appearance and whether or not the lookup is made inside
-# `-[NSAppearance performAsCurrentDrawingAppearance:]`.
-#
-# So for as long as a content view is attached the icon cannot follow the system
-# appearance, and upstream attaches one for the whole of the process lifetime.
-# That is why the icon only picked up a light/dark switch across a restart, and
-# why it went flat as soon as anything was downloaded. Upstream does not see
-# this because Chrome's icon is the same in either appearance.
-#
-# The badge label leaves the tile's content view alone, so the Dock keeps
-# compositing the icon for the current appearance. `DockTileView` is left in
-# place unused: deleting it would swell the patch without changing behaviour.
-# A single determinate download is shown as a percentage; otherwise the badge
-# is the count.
+# Do not set NSDockTile.contentView: Brave's appearance variants exist only
+# as Dock-composited IconImageStacks, and a contentView replaces them with a
+# flattened bitmap. Report downloads via badgeLabel. Leave DockTileView unused.
 
 substitutions:
   - description: |
-      Keep download state on DockIcon.
+      Keep the download state on DockIcon.
 
-      The Dock tile's content view is left unset so the Dock can keep
-      compositing the layered icon; the counts that used to live on that
-      view therefore have to live here.
+      The Dock tile's content view is left unset so that the Dock can keep
+      compositing the layered icon, so the state that used to live on that
+      view has to live here.
     regex:
       pattern: '@implementation DockIcon {'
       replace: |
@@ -50,108 +28,47 @@ substitutions:
           float _progress;
 
   - description: |
-      Do not install a custom Dock tile content view.
+      Do not install a Dock tile content view.
 
-      A content view replaces the icon rather than drawing over it, which
-      is what stops the layered icon from following the system appearance.
+      A content view replaces the icon rather than drawing over it, which is
+      what stops the layered icon from following the system appearance.
     regex:
       re_pattern:
-        'static DockIcon\* icon = \[\] \{.*?return \[\[DockIcon alloc\]
-        init\];\s*\}\(\);'
-      re_flags: [DOTALL]
-      replace: 'static DockIcon* icon = [[DockIcon alloc] init];'
-
-  - description: |
-      Report downloads through the Dock tile's badge label.
-
-      A single determinate download is shown as a percentage; otherwise the
-      badge is the number of downloads in progress.
-    regex:
-      pattern: '- (void)updateIcon {'
-      replace: |-
-        // The badge to describe the downloads in progress with, or nil for none.
-        - (NSString*)badgeLabel {
-          if (_downloads == 0) {
-            return nil;
-          }
-
-          NSNumberFormatter* formatter = [[NSNumberFormatter alloc] init];
-
-          // A percentage can only speak for a single download, and only once enough
-          // of it has been seen to know how much there is to come.
-          if (_downloads > 1 || _indeterminate) {
-            return [formatter stringFromNumber:@(_downloads)];
-          }
-
-          formatter.numberStyle = NSNumberFormatterPercentStyle;
-          formatter.maximumFractionDigits = 0;
-          return [formatter stringFromNumber:@(_progress)];
-        }
-
-        - (void)updateIcon {
+        '\s*NSApp\.dockTile\.contentView = \[\[DockTileView alloc\] init\];'
+      replace: ''
 
   - description: |
       Update the badge instead of redrawing a content view.
     regex:
       pattern: '[NSApp.dockTile display];'
-      replace: 'NSApp.dockTile.badgeLabel = [self badgeLabel];'
+      replace: |-
+        NSApp.dockTile.badgeLabel =
+              DockBadgeLabel(_downloads, _indeterminate, _progress);
 
   - description: |
-      Store the in-progress download count on DockIcon.
+      Take the download state off the Dock tile's content view.
+
+      The setters below write to the `DockIcon` ivars instead.
+    count: 3 # setDownloads:, setIndeterminate: and setProgress:.
     regex:
       re_pattern:
-        '- \(void\)setDownloads:\(int\)downloads
-        \{\s*DCHECK_CURRENTLY_ON\(BrowserThread::UI\);\s*DockTileView\*
-        dockTileView
-        =\s*base::apple::ObjCCast<DockTileView>\(NSApp\.dockTile\.contentView\);\s*if
-        \(downloads != dockTileView\.downloads\) \{\s*dockTileView\.downloads =
-        downloads;\s*_forceUpdate = YES;\s*\}\s*\}'
-      re_flags: [DOTALL]
-      replace: |-
-        - (void)setDownloads:(int)downloads {
-          DCHECK_CURRENTLY_ON(BrowserThread::UI);
+        '\s*DockTileView\* dockTileView
+        =\s+base::apple::ObjCCast<DockTileView>\(NSApp\.dockTile\.contentView\);'
+      replace: ''
 
-          if (downloads != _downloads) {
-            _downloads = downloads;
-            _forceUpdate = YES;
-          }
-        }
-
-  - description: |
-      Store whether download progress is still unknown on DockIcon.
+  - description: 'Count the downloads in progress on DockIcon.'
+    count: 2 # Read and then written by setDownloads:.
     regex:
-      re_pattern:
-        '- \(void\)setIndeterminate:\(BOOL\)indeterminate
-        \{\s*DCHECK_CURRENTLY_ON\(BrowserThread::UI\);\s*DockTileView\*
-        dockTileView
-        =\s*base::apple::ObjCCast<DockTileView>\(NSApp\.dockTile\.contentView\);\s*if
-        \(indeterminate != dockTileView\.indeterminate\)
-        \{\s*dockTileView\.indeterminate = indeterminate;\s*_forceUpdate =
-        YES;\s*\}\s*\}'
-      re_flags: [DOTALL]
-      replace: |-
-        - (void)setIndeterminate:(BOOL)indeterminate {
-          DCHECK_CURRENTLY_ON(BrowserThread::UI);
+      pattern: 'dockTileView.downloads'
+      replace: '_downloads'
 
-          if (indeterminate != _indeterminate) {
-            _indeterminate = indeterminate;
-            _forceUpdate = YES;
-          }
-        }
-
-  - description: |
-      Store download progress on DockIcon.
+  - description: 'Track whether download progress is known on DockIcon.'
+    count: 2 # Read and then written by setIndeterminate:.
     regex:
-      re_pattern:
-        '- \(void\)setProgress:\(float\)progress
-        \{\s*DCHECK_CURRENTLY_ON\(BrowserThread::UI\);\s*DockTileView\*
-        dockTileView
-        =\s*base::apple::ObjCCast<DockTileView>\(NSApp\.dockTile\.contentView\);\s*dockTileView\.progress
-        = progress;\s*\}'
-      re_flags: [DOTALL]
-      replace: |-
-        - (void)setProgress:(float)progress {
-          DCHECK_CURRENTLY_ON(BrowserThread::UI);
+      pattern: 'dockTileView.indeterminate'
+      replace: '_indeterminate'
 
-          _progress = progress;
-        }
+  - description: 'Track download progress on DockIcon.'
+    regex:
+      pattern: 'dockTileView.progress'
+      replace: '_progress'
