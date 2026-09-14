@@ -1,5 +1,5 @@
 diff --git a/components/commerce/core/commerce_feature_list.cc b/components/commerce/core/commerce_feature_list.cc
-index 30567b8c4ae4498861fd49e92038fc8cd1405df1..2a465555abe286ed306d342e971d34ccd10bf686 100644
+index 9372e366f408642e515c5bdde3887ea4aa71713c..d72d9f2033069790295339e3dc4becc4fae3c0cb 100644
 --- a/components/commerce/core/commerce_feature_list.cc
 +++ b/components/commerce/core/commerce_feature_list.cc
 @@ -125,14 +125,14 @@ const re2::RE2& GetCouponPartnerMerchantPattern() {
@@ -36,15 +36,12 @@ index 30567b8c4ae4498861fd49e92038fc8cd1405df1..2a465555abe286ed306d342e971d34cc
  
  BASE_FEATURE(kSubscriptionsApi, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -227,9 +227,9 @@ BASE_FEATURE(kInStockNotification, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -227,7 +227,7 @@ BASE_FEATURE(kInStockNotification, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kShoppingPageTypes, base::FEATURE_DISABLED_BY_DEFAULT);
  
 -BASE_FEATURE(kRetailCoupons, base::FEATURE_ENABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kRetailCoupons, base::FEATURE_DISABLED_BY_DEFAULT);
- 
--BASE_FEATURE(kCommerceDeveloper, base::FEATURE_DISABLED_BY_DEFAULT);
-+BASE_OVERRIDDEN_FEATURE(kCommerceDeveloper, base::FEATURE_DISABLED_BY_DEFAULT);
  
  const char kRetailCouponsWithCodeParam[] = "RetailCouponsWithCodeParam";
  
