@@ -421,8 +421,8 @@ if (enable_local_ai) {
 }
 
 if (!is_android) {
-  # Brave chrome://history toggle handler + WebUI subclass — desktop only;
-  # upstream Android uses HistoryUIAndroid which we don't extend.
+  # Brave chrome://history toggle handler + WebUI subclass (desktop only).
+  # Upstream Android uses HistoryUIAndroid which we don't extend.
   brave_chrome_browser_deps += [ "//brave/browser/ui/webui/history" ]
 
   # BraveHidDelegate inherits from ChromeHidDelegate, and referenced by
@@ -751,6 +751,7 @@ if (is_win) {
   ]
 
   brave_chrome_browser_deps += [
+    "//brave/browser/os_crypt",
     "//brave/components/windows_recall",
     "//chrome/browser/win",
     "//chrome/install_static:install_static_util",
