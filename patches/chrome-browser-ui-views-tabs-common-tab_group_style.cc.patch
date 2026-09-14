@@ -1,8 +1,8 @@
-diff --git a/chrome/browser/ui/views/tabs/tab_group_style.cc b/chrome/browser/ui/views/tabs/tab_group_style.cc
-index f2579755e4eeafcfb93c62e0b4aaf5b41e62ab87..4ef17d169a5673331700f3146916761b3ddb29d2 100644
---- a/chrome/browser/ui/views/tabs/tab_group_style.cc
-+++ b/chrome/browser/ui/views/tabs/tab_group_style.cc
-@@ -44,6 +44,10 @@ int TabGroupStyle::GetTabGroupOverlapAdjustment() {
+diff --git a/chrome/browser/ui/views/tabs/common/tab_group_style.cc b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
+index 8fdffc5a7eff4b7d45c46e05494fb67020d55697..37537d303bee0095f7cc2a6d79af81f5aece9deb 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_group_style.cc
++++ b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
+@@ -30,6 +30,10 @@ int TabGroupStyle::GetTabGroupOverlapAdjustment() {
  
  // static
  int TabGroupStyle::GetChipCornerRadius(TabStripOrientation orientation) {
@@ -13,7 +13,15 @@ index f2579755e4eeafcfb93c62e0b4aaf5b41e62ab87..4ef17d169a5673331700f3146916761b
    return orientation == TabStripOrientation::kHorizontal
               ? kCornerRadius
               : kVerticalCornerRadius;
-@@ -108,6 +112,10 @@ gfx::Rect TabGroupStyle::GetEmptyTitleChipBounds(
+@@ -37,11 +41,18 @@ int TabGroupStyle::GetChipCornerRadius(TabStripOrientation orientation) {
+ 
+ // static
+ int TabGroupStyle::GetEmptyChipSize() {
++  if (tabs::HorizontalTabsUpdateEnabled()) {
++    return tabs::GetHorizontalTabHeight();
++  }
+   return kEmptyChipSize;
+ }
  
  // static
  gfx::Point TabGroupStyle::GetTitleChipOffset(std::optional<int> text_height) {
@@ -24,7 +32,7 @@ index f2579755e4eeafcfb93c62e0b4aaf5b41e62ab87..4ef17d169a5673331700f3146916761b
    const int total_space =
        GetLayoutConstant(LayoutConstant::kTabStripHeight) - GetEmptyChipSize() -
        GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap);
-@@ -127,6 +135,11 @@ int TabGroupStyle::GetHighlightPathGeneratorCornerRadius(
+@@ -51,6 +62,11 @@ gfx::Point TabGroupStyle::GetTitleChipOffset(std::optional<int> text_height) {
  // static
  gfx::Insets TabGroupStyle::GetInsetsForHeaderChip(
      TabStripOrientation orientation) {
@@ -36,13 +44,3 @@ index f2579755e4eeafcfb93c62e0b4aaf5b41e62ab87..4ef17d169a5673331700f3146916761b
    return orientation == TabStripOrientation::kHorizontal
               ? gfx::Insets::VH(kHeaderChipVerticalInset, kCornerRadius)
               : gfx::Insets::VH(0, kVerticalHeaderChipHorizontalInset);
-@@ -141,6 +154,9 @@ int TabGroupStyle::GetTitleAdjustmentToTabGroupHeaderDesiredWidth(
- 
- // static
- int TabGroupStyle::GetEmptyChipSize() {
-+  if (tabs::HorizontalTabsUpdateEnabled()) {
-+    return tabs::GetHorizontalTabHeight();
-+  }
-   return kEmptyChipSize;
- }
- 
