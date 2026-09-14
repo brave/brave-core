@@ -427,6 +427,8 @@ class KeyringService : public mojom::KeyringService {
 
   void OnAutoLockFired();
 
+  void ReportUsageMetrics();
+
   template <typename T>
   T* GetKeyring(mojom::KeyringId keyring_id) const;
   template <typename T>

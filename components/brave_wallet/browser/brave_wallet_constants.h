@@ -31,6 +31,14 @@ inline constexpr uint256_t kDefaultERC20ApproveGasLimit = 300000;
 inline constexpr int32_t kAutoLockMinutesMin = 1;
 inline constexpr int32_t kAutoLockMinutesMax = 10080;
 
+// P3A usage metrics histogram names, recorded on wallet unlock.
+inline constexpr char kWalletUsageDailyHistogramName[] =
+    "Brave.Wallet.UsageDaily";
+inline constexpr char kWalletUsageWeeklyHistogramName[] =
+    "Brave.Wallet.UsageWeekly";
+inline constexpr char kWalletUsageMonthlyHistogramName[] =
+    "Brave.Wallet.UsageMonthly";
+
 inline constexpr int32_t kAssetDiscoveryMinutesPerRequest = 1;
 inline constexpr size_t kBalanceScannerBatchSize = 4000;
 

@@ -25,6 +25,7 @@
 #include "base/strings/string_split.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "base/test/mock_callback.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -846,6 +847,34 @@ TEST_F(KeyringServiceUnitTest, LockAndUnlock) {
     observer.WaitAndVerify();
     EXPECT_FALSE(service.IsLockedSync());
   }
+}
+
+TEST_F(KeyringServiceUnitTest, RecordsUsageMetrics) {
+  base::HistogramTester histogram_tester;
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  histogram_tester.ExpectTotalCount(kWalletUsageDailyHistogramName, 0);
+  histogram_tester.ExpectTotalCount(kWalletUsageWeeklyHistogramName, 0);
+  histogram_tester.ExpectTotalCount(kWalletUsageMonthlyHistogramName, 0);
+
+  AccountUtils(&service).CreateWallet(
+      *bip39::GenerateMnemonic(crypto::RandBytesAsVector(16)), kPasswordBrave);
+  histogram_tester.ExpectUniqueSample(kWalletUsageDailyHistogramName, 1, 1);
+  histogram_tester.ExpectUniqueSample(kWalletUsageWeeklyHistogramName, 1, 1);
+  histogram_tester.ExpectUniqueSample(kWalletUsageMonthlyHistogramName, 1, 1);
+
+  ASSERT_TRUE(Lock(&service));
+
+  // Failed unlock attempt doesn't record usage.
+  EXPECT_FALSE(Unlock(&service, kPasswordBrave123));
+  histogram_tester.ExpectUniqueSample(kWalletUsageDailyHistogramName, 1, 1);
+  histogram_tester.ExpectUniqueSample(kWalletUsageWeeklyHistogramName, 1, 1);
+  histogram_tester.ExpectUniqueSample(kWalletUsageMonthlyHistogramName, 1, 1);
+
+  EXPECT_TRUE(Unlock(&service, kPasswordBrave));
+  histogram_tester.ExpectUniqueSample(kWalletUsageDailyHistogramName, 1, 2);
+  histogram_tester.ExpectUniqueSample(kWalletUsageWeeklyHistogramName, 1, 2);
+  histogram_tester.ExpectUniqueSample(kWalletUsageMonthlyHistogramName, 1, 2);
 }
 
 TEST_F(KeyringServiceUnitTest, Reset) {
