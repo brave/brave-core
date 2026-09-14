@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/page_info/chrome_page_info_delegate.h b/chrome/browser/ui/page_info/chrome_page_info_delegate.h
+index 4c1526695b3c0d467eb8aa8bed85bdd154df04e4..f33bdd0a02d3dd7fb23b065a62a9d19d8471c171 100644
+--- a/chrome/browser/ui/page_info/chrome_page_info_delegate.h
++++ b/chrome/browser/ui/page_info/chrome_page_info_delegate.h
+@@ -136,6 +136,8 @@ class ChromePageInfoDelegate : public PageInfoDelegate {
+   void OnSuspiciousSiteBackToSafety() override;
+   void OnSuspiciousSiteMarkAsSafe() override;
+ 
++  bool BraveShouldShowPermission(ContentSettingsType type) override;
++
+  private:
+   Profile* GetProfile() const;
+ 

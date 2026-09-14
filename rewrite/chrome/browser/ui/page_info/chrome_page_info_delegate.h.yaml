@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Override BraveShouldShowPermission on ChromePageInfoDelegate.
+
+      This is the derived-class override of the base interface method added in
+      the sibling rewrite/components/page_info/page_info_delegate.h.yaml.
+    add_to_public:
+      class_name: ChromePageInfoDelegate
+      code: |
+        bool BraveShouldShowPermission(ContentSettingsType type) override;
