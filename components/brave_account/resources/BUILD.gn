@@ -18,6 +18,8 @@ build_webui("build") {
     "brave_account_common.ts",
     "brave_account_credentials_dialog.html.ts",
     "brave_account_credentials_dialog.ts",
+    "brave_account_deletion_dialog.html.ts",
+    "brave_account_deletion_dialog.ts",
     "brave_account_dialog.html.ts",
     "brave_account_dialog.ts",
     "brave_account_dialogs.html.ts",
@@ -46,6 +48,7 @@ build_webui("build") {
 
   css_files = [
     "brave_account_common.css",
+    "brave_account_deletion_dialog.css",
     "brave_account_dialog.css",
     "brave_account_entry_dialog.css",
     "brave_account_otp_input.css",

@@ -36,5 +36,9 @@ export function focusLeoInput(leoInput: Element | null | undefined) {
     return
   }
   input.focus()
-  input.setSelectionRange(input.value.length, input.value.length)
+  // `selectionStart` is null exactly on the input types that don't support
+  // selection (e.g. type="email"), where `setSelectionRange` would throw.
+  if (input.selectionStart !== null) {
+    input.setSelectionRange(input.value.length, input.value.length)
+  }
 }
