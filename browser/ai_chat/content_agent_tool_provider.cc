@@ -63,8 +63,11 @@ constexpr auto kActorStatesToNotify =
 
 ContentAgentToolProvider::ContentAgentToolProvider(
     Profile* profile,
-    actor::ActorKeyedService* actor_service)
-    : actor_service_(actor_service), profile_(profile) {
+    actor::ActorKeyedService* actor_service,
+    actor::ui::ActorUiStateManagerInterface& ui_state_manager)
+    : actor_service_(actor_service),
+      profile_(profile),
+      ui_state_manager_(ui_state_manager) {
   // This class should only exist if the feature is enabled
   CHECK(ai_chat::features::IsAIChatAgentProfileEnabled());
   // This class should only exist with a valid actor service
@@ -80,10 +83,11 @@ ContentAgentToolProvider::ContentAgentToolProvider(
   // not have access to any tabs previously acted on in the same conversation,
   // we should create a new task inside
   // `ToolProvider::UpdateToolsForNewGenerationLoop`.
-  task_id_ = actor_service_->CreateTask(
+  task_id_ = actor_service_->CreateTaskWithOptions(
       actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
                             /*id=*/std::nullopt),
-      AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker());
+      AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
+      /*options=*/nullptr, /*delegate=*/nullptr, &*ui_state_manager_);
 
   actor_task_state_changed_subscription_ =
       actor_service_->AddTaskStateChangedCallback(base::BindRepeating(
@@ -137,10 +141,11 @@ void ContentAgentToolProvider::ResumeAllTasks() {
 void ContentAgentToolProvider::StopAllTasks() {
   if (!task_id_.is_null()) {
     actor::TaskId stopping_task_id = std::move(task_id_);
-    task_id_ = actor_service_->CreateTask(
+    task_id_ = actor_service_->CreateTaskWithOptions(
         actor::TaskSourceInfo(actor::TaskSourceInfo::Client::kExperimentalActor,
                               /*id=*/std::nullopt),
-        AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker());
+        AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
+        /*options=*/nullptr, /*delegate=*/nullptr, &*ui_state_manager_);
     actor_service_->StopTask(stopping_task_id,
                              actor::ActorTask::StoppedReason::kTaskComplete);
   }
