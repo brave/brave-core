@@ -6,8 +6,10 @@
 #include "brave/browser/ai_chat/content_agent_tool_provider.h"
 
 #include <memory>
+#include <optional>
 #include <vector>
 
+#include "base/auto_reset.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
@@ -65,7 +67,10 @@ class ContentAgentToolProviderTest : public testing::Test {
     profile_ = testing_profile_manager_.CreateTestingProfile("profile");
 
     actor_service_ = actor::ActorKeyedService::Get(profile_);
-    actor_service_->SetActorUiStateManagerForTesting(BuildUiStateManagerMock());
+    ui_state_manager_ = BuildUiStateManagerMock();
+    ui_state_manager_reset_.emplace(
+        ContentAgentToolProvider::SetUiStateManagerForTesting(
+            ui_state_manager_.get()));
 
     // Create ContentAgentToolProvider
     tool_provider_ = std::make_unique<ContentAgentToolProvider>(
@@ -104,6 +109,9 @@ class ContentAgentToolProviderTest : public testing::Test {
   TestingProfileManager testing_profile_manager_;
   raw_ptr<TestingProfile> profile_;
   raw_ptr<actor::ActorKeyedService> actor_service_;
+  std::unique_ptr<actor::ui::ActorUiStateManagerInterface> ui_state_manager_;
+  std::optional<base::AutoReset<actor::ui::ActorUiStateManagerInterface*>>
+      ui_state_manager_reset_;
   std::unique_ptr<ContentAgentToolProvider> tool_provider_;
   content::TestWebContentsFactory web_contents_factory_;
 };
