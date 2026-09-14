@@ -87,6 +87,7 @@ class BraveActionsContainer : public views::View {
 
   // Listen for Brave Rewards preferences changes.
   BooleanPrefMember show_brave_rewards_button_;
+  BooleanPrefMember rewards_disabled_by_policy_;
 #endif
 
   base::WeakPtrFactory<BraveActionsContainer> weak_ptr_factory_{this};
