@@ -80,18 +80,19 @@ class EmptyStateOverlayView: UIView {
     doLayout(details: overlayDetails)
 
     updateFont()
+
+    registerForTraitChanges([
+      UITraitVerticalSizeClass.self,
+      UITraitPreferredContentSizeCategory.self,
+    ]) { (self: Self, _) in
+      self.doLayout(details: self.overlayDetails)
+      self.updateFont()
+    }
   }
 
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    doLayout(details: overlayDetails)
-    updateFont()
   }
 
   override func layoutSubviews() {

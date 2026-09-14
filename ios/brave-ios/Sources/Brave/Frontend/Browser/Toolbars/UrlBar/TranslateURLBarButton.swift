@@ -28,6 +28,10 @@ class TranslateURLBarButton: UIButton {
     adjustsImageWhenHighlighted = false
     setImage(imageIcon, for: .normal)
     updateIconSize()
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.updateIconSize()
+    }
   }
 
   @available(*, unavailable)
@@ -60,11 +64,6 @@ class TranslateURLBarButton: UIButton {
 
   private func updateAppearance() {
     self.tintColor = (isHighlighted || isSelected) ? selectedTintColor : unselectedTintColor
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    updateIconSize()
   }
 
   private func updateIconSize() {

@@ -368,22 +368,21 @@ class TopToolbarView: UIView, ToolbarProtocol {
     self.displayTabTraySwipeGestureRecognizer = swipeGestureRecognizer
 
     updateColors()
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.helper?.updateForTraitCollection(
+        self.traitCollection,
+        browserColors: self.privateBrowsingManager.browserColors,
+        isBottomToolbar: false,
+        additionalButtons: [self.shortcutButton]
+      )
+      self.updateForTraitCollection()
+    }
   }
 
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    helper?.updateForTraitCollection(
-      traitCollection,
-      browserColors: privateBrowsingManager.browserColors,
-      isBottomToolbar: false,
-      additionalButtons: [shortcutButton]
-    )
-    updateForTraitCollection()
   }
 
   private func updateForTraitCollection() {

@@ -38,6 +38,10 @@ class WalletURLBarButton: UIButton {
     imageEdgeInsets = .init(top: 3, left: 3, bottom: 3, right: 3)
 
     updateIconSize()
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.updateIconSize()
+    }
   }
 
   override open var isHighlighted: Bool {
@@ -68,11 +72,6 @@ class WalletURLBarButton: UIButton {
         make.centerY.equalTo(imageView.snp.top).inset(badgeSize / 4)
       }
     }
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    updateIconSize()
   }
 
   private func updateIconSize() {

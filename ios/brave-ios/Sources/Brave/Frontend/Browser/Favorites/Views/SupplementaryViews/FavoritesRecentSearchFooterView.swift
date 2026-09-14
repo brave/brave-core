@@ -26,16 +26,15 @@ class FavoritesRecentSearchFooterView: UICollectionReusableView {
       $0.top.leading.trailing.equalToSuperview()
       $0.bottom.equalToSuperview().inset(24)
     }
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.setTheme()
+    }
   }
 
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    setTheme()
   }
 
   private func setTheme() {

@@ -91,12 +91,10 @@ class SendTabProcessController: SendTabTransitioningController {
     updateFont()
 
     changeProcessStatus()
-  }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    updateFont()
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.updateFont()
+    }
   }
 
   private func updateLayoutConstraints() {

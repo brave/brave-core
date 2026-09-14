@@ -23,6 +23,10 @@ class FavoritesRecentSearchHeaderView: UICollectionReusableView {
 
     setTheme()
     doLayout()
+
+    registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
+      self.setTheme()
+    }
   }
 
   @available(*, unavailable)
@@ -74,12 +78,6 @@ class FavoritesRecentSearchHeaderView: UICollectionReusableView {
       $0.setContentCompressionResistancePriority(.required, for: .horizontal)
       $0.contentHorizontalAlignment = .trailing
     }
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    setTheme()
   }
 
   func setButtonVisibility(showClearButtonVisible: Bool) {

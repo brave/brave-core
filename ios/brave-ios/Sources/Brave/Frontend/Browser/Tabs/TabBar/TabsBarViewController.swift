@@ -127,6 +127,11 @@ class TabsBarViewController: UIViewController {
         self.updatePlusButtonMenu()
         self.updateColors()
       })
+
+    registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _) in
+      // Updates overflow colors which use CGColor's
+      self.overflowIndicators()
+    }
   }
 
   override func viewDidAppear(_ animated: Bool) {
@@ -159,12 +164,6 @@ class TabsBarViewController: UIViewController {
 
   deinit {
     NotificationCenter.default.removeObserver(self)
-  }
-
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-    // Updates overflow colors which use CGColor's
-    overflowIndicators()
   }
 
   override func viewWillTransition(

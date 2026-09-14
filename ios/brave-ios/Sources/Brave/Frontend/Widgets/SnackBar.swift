@@ -146,13 +146,11 @@ class SnackBar: UIView {
     layer.cornerRadius = 6
     layer.cornerCurve = .continuous
     clipsToBounds = true
-  }
 
-  override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-    super.traitCollectionDidChange(previousTraitCollection)
-
-    self.layer.borderColor =
-      UIColor(braveSystemName: .dividerStrong).resolvedColor(with: traitCollection).cgColor
+    registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, _) in
+      self.layer.borderColor =
+        UIColor(braveSystemName: .dividerStrong).resolvedColor(with: self.traitCollection).cgColor
+    }
   }
 
   required init?(coder aDecoder: NSCoder) {
