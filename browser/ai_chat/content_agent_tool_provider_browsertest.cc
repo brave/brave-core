@@ -162,8 +162,8 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
     ASSERT_NE(actor_service, nullptr);
 
     // Create the tool provider
-    tool_provider_ =
-        std::make_unique<ContentAgentToolProvider>(GetProfile(), actor_service);
+    tool_provider_ = std::make_unique<ContentAgentToolProvider>(
+        GetProfile(), actor_service, *actor_service->GetActorUiStateManager());
     ASSERT_NE(tool_provider_, nullptr);
   }
 

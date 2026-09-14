@@ -65,11 +65,11 @@ class ContentAgentToolProviderTest : public testing::Test {
     profile_ = testing_profile_manager_.CreateTestingProfile("profile");
 
     actor_service_ = actor::ActorKeyedService::Get(profile_);
-    actor_service_->SetActorUiStateManagerForTesting(BuildUiStateManagerMock());
+    ui_state_manager_ = BuildUiStateManagerMock();
 
     // Create ContentAgentToolProvider
     tool_provider_ = std::make_unique<ContentAgentToolProvider>(
-        profile_, actor_service_.get());
+        profile_, actor_service_.get(), *ui_state_manager_);
   }
 
   // Helper to create an Actions proto for testing ExecuteActions
@@ -104,6 +104,7 @@ class ContentAgentToolProviderTest : public testing::Test {
   TestingProfileManager testing_profile_manager_;
   raw_ptr<TestingProfile> profile_;
   raw_ptr<actor::ActorKeyedService> actor_service_;
+  std::unique_ptr<actor::ui::ActorUiStateManagerInterface> ui_state_manager_;
   std::unique_ptr<ContentAgentToolProvider> tool_provider_;
   content::TestWebContentsFactory web_contents_factory_;
 };
