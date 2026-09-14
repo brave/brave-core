@@ -71,6 +71,8 @@ import org.chromium.webcompat_reporter.mojom.WebcompatReporterHandler;
 public class BravePrivacySettings extends PrivacySettings {
     private static final String BLOCK_ALL_COOKIES_LEARN_MORE_LINK =
             "https://github.com/brave/brave-browser/wiki/Block-all-cookies-global-Shields-setting";
+    private static final String SPONSORED_ADS_LEARN_MORE_LINK =
+            "https://support.brave.app/hc/en-us/articles/48376231110413";
     private static final String SURVEY_PANELIST_LEARN_MORE_LINK =
             "https://support.brave.app/hc/en-us/articles/36550092449165";
 
@@ -121,6 +123,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private static final String PREF_SEND_CRASH_REPORTS = "send_crash_reports";
     private static final String PREF_BRAVE_STATS_USAGE_PING = "brave_stats_usage_ping";
     private static final String PREF_SPONSORED_ADS_ENABLED = "sponsored_ads_enabled";
+    private static final String PREF_SPONSORED_ADS_LEARN_MORE = "sponsored_ads_learn_more";
     private static final String PREF_SURVEY_PANELIST = "survey_panelist";
     private static final String PREF_SURVEY_PANELIST_LEARN_MORE = "survey_panelist_learn_more";
     public static final String PREF_APP_LINKS = "app_links";
@@ -199,6 +202,7 @@ public class BravePrivacySettings extends PrivacySettings {
         PREF_SEND_CRASH_REPORTS,
         PREF_BRAVE_STATS_USAGE_PING,
         PREF_SPONSORED_ADS_ENABLED,
+        PREF_SPONSORED_ADS_LEARN_MORE,
         PREF_SURVEY_PANELIST,
         PREF_SURVEY_PANELIST_LEARN_MORE,
         PREF_USAGE_STATS,
@@ -235,6 +239,7 @@ public class BravePrivacySettings extends PrivacySettings {
     private @Nullable ChromeSwitchPreference mSendCrashReports;
     private @Nullable ChromeSwitchPreference mBraveStatsUsagePing;
     private @Nullable ChromeSwitchPreference mSponsoredAdsEnabled;
+    private @Nullable BraveTextButtonPreference mSponsoredAdsLearnMore;
     private ChromeSwitchPreference mSurveyPanelist;
     private BraveTextButtonPreference mSurveyPanelistLearnMore;
     private ChromeSwitchPreference mBlockSwitchToAppNoticesPref;
@@ -439,11 +444,22 @@ public class BravePrivacySettings extends PrivacySettings {
         // Hide Sponsored Ads setting if Brave Rewards is disabled by policy
         if (BraveRewardsPolicy.isDisabledByPolicy(getProfile())) {
             removePreferenceIfPresent(PREF_SPONSORED_ADS_ENABLED);
+            removePreferenceIfPresent(PREF_SPONSORED_ADS_LEARN_MORE);
             mSponsoredAdsEnabled = null;
+            mSponsoredAdsLearnMore = null;
         } else {
             mSponsoredAdsEnabled =
                     (ChromeSwitchPreference) findPreference(PREF_SPONSORED_ADS_ENABLED);
             mSponsoredAdsEnabled.setOnPreferenceChangeListener(this);
+            mSponsoredAdsLearnMore =
+                    (BraveTextButtonPreference) findPreference(PREF_SPONSORED_ADS_LEARN_MORE);
+            mSponsoredAdsLearnMore.setTitle(R.string.sponsored_ads_learn_more);
+            mSponsoredAdsLearnMore.setOnPreferenceClickListener(
+                    preference -> {
+                        TabUtils.openUrlInCustomTab(
+                                requireContext(), SPONSORED_ADS_LEARN_MORE_LINK);
+                        return true;
+                    });
         }
 
         boolean surveyPanelistEnabled =

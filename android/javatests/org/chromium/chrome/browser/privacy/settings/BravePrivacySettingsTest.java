@@ -46,6 +46,7 @@ public class BravePrivacySettingsTest {
     private static final String PREF_FORGET_FIRST_PARTY_STORAGE = "forget_first_party_storage";
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_SPONSORED_ADS_ENABLED = "sponsored_ads_enabled";
+    private static final String PREF_SPONSORED_ADS_LEARN_MORE = "sponsored_ads_learn_more";
     private static final String PREF_SURVEY_PANELIST = "survey_panelist";
     private static final String PREF_SURVEY_PANELIST_LEARN_MORE = "survey_panelist_learn_more";
     private static final String PREF_PASSWORD_LEAK_DETECTION = "password_leak_detection";
@@ -89,6 +90,7 @@ public class BravePrivacySettingsTest {
         checkPreferenceExists(PREF_SECURE_DNS);
         checkPreferenceExists(PREF_INCOGNITO_LOCK);
         checkPreferenceExists(PREF_SPONSORED_ADS_ENABLED);
+        checkPreferenceExists(PREF_SPONSORED_ADS_LEARN_MORE);
         checkPreferenceExists(PREF_SURVEY_PANELIST);
         checkPreferenceExists(PREF_SURVEY_PANELIST_LEARN_MORE);
         checkPreferenceExists(PREF_USE_CUSTOM_TABS);
