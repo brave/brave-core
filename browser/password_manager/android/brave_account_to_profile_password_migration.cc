@@ -48,6 +48,20 @@ base::Time LatestTimestamp(const PasswordForm& form) {
       {form.date_last_used, form.date_password_modified, form.date_created});
 }
 
+// Converts an account-store form into a StoredCredential for the profile store,
+// clearing the username/password of blocklisted ("never save") entries. The
+// profile store CHECKs that blocklisted credentials have empty username and
+// password (PasswordStore::AddLogins / UpdateLogins), so a malformed synced
+// entry could otherwise trip that CHECK during migration.
+StoredCredential ToProfileStoreCredential(const PasswordForm& form) {
+  PasswordForm sanitized = form;
+  if (sanitized.blocked_by_user) {
+    sanitized.username_value.clear();
+    sanitized.password_value.clear();
+  }
+  return password_manager::FromPasswordForm(std::move(sanitized));
+}
+
 // Reads all logins from a single store and runs `done_callback` when finished.
 // Keeps itself alive by being moved into that callback, and is destroyed once
 // it runs. Mirrors PasswordLocalDataBatchUploader::PasswordFetchRequest. On a
@@ -160,10 +174,10 @@ class AccountToProfilePasswordMigrator {
                 profile_form, account_form);
           });
       if (it == profile_forms.end()) {
-        to_add.push_back(password_manager::FromPasswordForm(account_form));
+        to_add.push_back(ToProfileStoreCredential(account_form));
       } else if (it->password_value != account_form.password_value &&
                  LatestTimestamp(*it) < LatestTimestamp(account_form)) {
-        to_update.push_back(password_manager::FromPasswordForm(account_form));
+        to_update.push_back(ToProfileStoreCredential(account_form));
       }
       // Otherwise the profile copy already wins; it will still be drained from
       // the account store in the verify step below.
