@@ -3,16 +3,13 @@
 ## Upstream services_unittests tests with a flake rate >= 1.0% on
 ## windows-asan bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 4.1% flake rate over 30 days per LUCI Analysis (284 passed, 0 failed, 12 flaky).
+# 2.1% flake rate over 30 days per LUCI Analysis (279 passed, 0 failed, 6 flaky).
 -AudioServiceOutputDeviceTest.VerifyDataFlow
 
-# 1.0% flake rate over 30 days per LUCI Analysis (293 passed, 0 failed, 3 flaky).
+# 1.1% flake rate over 30 days per LUCI Analysis (282 passed, 0 failed, 3 flaky).
 -NetworkContextTest.PreconnectFour
 
-# 3.7% flake rate over 30 days per LUCI Analysis (285 passed, 0 failed, 11 flaky).
+# 2.1% flake rate over 30 days per LUCI Analysis (279 passed, 0 failed, 6 flaky).
 -SoundsManagerTest.Play
-
-# 1.0% flake rate over 30 days per LUCI Analysis (293 passed, 0 failed, 3 flaky).
--TracingSampleProfilerTest.SamplingChildThread

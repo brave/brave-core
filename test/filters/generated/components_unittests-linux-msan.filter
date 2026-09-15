@@ -3,16 +3,13 @@
 ## Upstream components_unittests tests with a flake rate >= 1.0% on
 ## linux-msan bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 4.4% flake rate over 30 days per LUCI Analysis (735 passed, 0 failed, 34 flaky).
+# 4.5% flake rate over 30 days per LUCI Analysis (742 passed, 0 failed, 35 flaky).
 -All/HeapProfilerControllerProcessTest.ChildProcess/10
 
-# 1.2% flake rate over 30 days per LUCI Analysis (760 passed, 0 failed, 9 flaky).
+# 1.2% flake rate over 30 days per LUCI Analysis (768 passed, 0 failed, 9 flaky).
 -GaiaCookieManagerServiceTest.GaiaCookieLastListAccountsDataSaved
 
-# 5.5% flake rate over 30 days per LUCI Analysis (727 passed, 0 failed, 42 flaky).
+# 5.7% flake rate over 30 days per LUCI Analysis (734 passed, 0 failed, 44 flaky).
 -PredictionServiceTest.ResponsesAreCorrect
-
-# 1.0% flake rate over 30 days per LUCI Analysis (761 passed, 0 failed, 8 flaky).
--TabGroupSyncServiceImplTest.MoveTab

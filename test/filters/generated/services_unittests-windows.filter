@@ -3,28 +3,31 @@
 ## Upstream services_unittests tests with a flake rate >= 1.0% on
 ## windows bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 13.0% flake rate over 30 days per LUCI Analysis (20 passed, 3 failed, 0 flaky).
+# 41.7% flake rate over 30 days per LUCI Analysis (14 passed, 10 failed, 0 flaky).
 -BackgroundTracingManagerTest.SavedCountPreventsStart
 
-# 73.9% flake rate over 30 days per LUCI Analysis (6 passed, 0 failed, 17 flaky).
+# 83.3% flake rate over 30 days per LUCI Analysis (4 passed, 0 failed, 20 flaky).
 -CoordinatorImplTest.DumpsAreAddedToTraceWhenRequested
 
-# 99.1% flake rate over 30 days per LUCI Analysis (104 passed, 13 failed, 11747 flaky).
+# 93.4% flake rate over 30 days per LUCI Analysis (1135 passed, 30 failed, 16113 flaky).
 -HeapProfilingDataSourceTest.EmitSamples
 
-# 20.3% flake rate over 30 days per LUCI Analysis (11860 passed, 1 failed, 3028 flaky).
+# 9.3% flake rate over 30 days per LUCI Analysis (17272 passed, 1 failed, 1776 flaky).
 -HistogramSamplesDataSourceTest.RecordAllHistogramsWithoutTrackEvent
 
-# 8.1% flake rate over 30 days per LUCI Analysis (16769 passed, 1 failed, 1468 flaky).
+# 4.2% flake rate over 30 days per LUCI Analysis (18247 passed, 1 failed, 801 flaky).
 -NetworkContextTest.PreconnectMax
 
-# 1.2% flake rate over 30 days per LUCI Analysis (18022 passed, 1 failed, 215 flaky).
+# 1.1% flake rate over 30 days per LUCI Analysis (18830 passed, 1 failed, 218 flaky).
 -PlatformSensorProviderTestWinrt.SensorCreationReturnCheck
 
-# 27.1% flake rate over 30 days per LUCI Analysis (13291 passed, 0 failed, 4948 flaky).
+# 5.3% flake rate over 30 days per LUCI Analysis (108 passed, 6 failed, 0 flaky).
+-SharedHttpCacheCorsURLLoaderFactoryTest.RedirectNotCached
+
+# 23.2% flake rate over 30 days per LUCI Analysis (14629 passed, 0 failed, 4423 flaky).
 -TracingServiceTest.PerfettoClientConsumer
 
-# 3.5% flake rate over 30 days per LUCI Analysis (17595 passed, 0 failed, 645 flaky).
+# 2.2% flake rate over 30 days per LUCI Analysis (18633 passed, 0 failed, 419 flaky).
 -TracingServiceTest.TracingServiceInstantiate

@@ -3,76 +3,79 @@
 ## Upstream content_unittests tests with a flake rate >= 1.0% on
 ## windows bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -BackgroundSyncManagerTest.WakeBrowserCalledForOneShotSync
 
-# 95.9% flake rate over 30 days per LUCI Analysis (117 passed, 1 failed, 2707 flaky).
+# 98.7% flake rate over 30 days per LUCI Analysis (117 passed, 1 failed, 9010 flaky).
 -BrowserMainLoopTest.PostCreateThreadsResultAbortsStartup
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -BtmServiceHistogramTest.Deletion_Enforced
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -BtmServiceStateRemovalTest.BrowsingDataDeletion_Enabled
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -BtmServiceStateRemovalTest.BrowsingDataDeletion_RespectsStorageAccessGrantExceptions
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -IndexedDBTest.PutWithInvalidBlob/LevelDB
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -IndexedDBTest.PutWithInvalidBlob/SQLite
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
+-InputRouterImplTest.GestureTypesIgnoringAck
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -InputRouterImplTest.TimeoutMonitorStopWithMainThreadTouchAction
 
-# 57.3% flake rate over 30 days per LUCI Analysis (9164 passed, 0 failed, 12313 flaky).
+# 64.7% flake rate over 30 days per LUCI Analysis (7896 passed, 0 failed, 14475 flaky).
 -LevelDbBackingStoreTest.CompactionTaskTiming
 
-# 64.4% flake rate over 30 days per LUCI Analysis (7652 passed, 0 failed, 13825 flaky).
+# 71.2% flake rate over 30 days per LUCI Analysis (6454 passed, 0 failed, 15917 flaky).
 -LevelDbBackingStoreTest.TombstoneSweeperTiming
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/0
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/1
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/2
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/3
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -MediaStreamManagerCapturedSurfaceControlActionTest.FailsIfSelfCapture/4
 
-# 1.3% flake rate over 30 days per LUCI Analysis (21198 passed, 1 failed, 278 flaky).
+# 1.2% flake rate over 30 days per LUCI Analysis (22104 passed, 0 failed, 266 flaky).
 -NavigationURLLoaderImplTest.ForceAsyncInterceptorForRedirect
 
-# 1.5% flake rate over 30 days per LUCI Analysis (21152 passed, 1 failed, 324 flaky).
+# 1.5% flake rate over 30 days per LUCI Analysis (22040 passed, 0 failed, 330 flaky).
 -NavigationURLLoaderImplTest.ForceAsyncParseHeaders
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -PrefetchCanaryCheckerTest.NetworkConnectionShardsCache
 
-# 2.2% flake rate over 30 days per LUCI Analysis (21010 passed, 1 failed, 466 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 11 failed, 0 flaky).
+-PrerenderHostRegistryTest.CreateAndStartHost_WhenPendingPrerendersExist
+
+# 2.3% flake rate over 30 days per LUCI Analysis (21865 passed, 0 failed, 509 flaky).
 -RenderFrameHostImplTest.CalculateStorageKeyFirstPartyOverride
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -RenderWidgetHostViewAuraOverscrollTest.ReverseFlingCancelsOverscroll
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -RendererWebAudioDeviceImplBufferSizeTest.ExactLatency_HighHardwareBufferSize_CapsAtMaxBufferSize
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -WebContentsImplTest.NoEarlyStop
 
-# 6.8% flake rate over 30 days per LUCI Analysis (22326 passed, 0 failed, 1627 flaky).
+# 5.4% flake rate over 30 days per LUCI Analysis (23707 passed, 0 failed, 1358 flaky).
 -WebRtcInternalsMessageHandlerTest.DontRunJSBeforeNavigationCommitted
-
-# 5.9% flake rate over 30 days per LUCI Analysis (16 passed, 0 failed, 1 flaky).
--WebUIJankMonitorTest.DetectsJankAndReportsStackTrace
