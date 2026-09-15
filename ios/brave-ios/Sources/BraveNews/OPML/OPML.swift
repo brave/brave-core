@@ -30,7 +30,11 @@ public struct OPML: Equatable {
 ///     - The set of "outlines", or feed entries, whos type is "rss" and aren't commented out
 public class OPMLParser {
   /// Parses the data passed and returns an OPML object
-  public static func parse(data: Data) -> OPML? {
+  public static func parse(data: Data) async -> OPML? {
+    return parseSynchronously(data: data)
+  }
+  /// Parses the data synchronously passed and returns an OPML object
+  public static func parseSynchronously(data: Data) -> OPML? {
     guard let document = try? XMLDocument(data: data),
       let _ = document.firstChild(xpath: "//opml")
     else {

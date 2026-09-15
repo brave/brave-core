@@ -9,6 +9,7 @@ import Foundation
 import Shared
 import WebKit
 
+@MainActor
 public class BlockedDomainHandler: InternalSchemeResponse {
   public static let path = InternalURL.Path.blocked.rawValue
 
