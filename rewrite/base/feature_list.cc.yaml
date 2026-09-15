@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Report a default state that was declared as an override.
+
+      A real override still wins: the upstream body resolves those, and only a
+      feature left at its default state comes back empty.
+
+      Nothing else needs to know about `FEATURE_DISABLED_BY_OVERRIDE`: every
+      other place that reads a default state asks whether it is
+      `FEATURE_ENABLED_BY_DEFAULT`, which already answers no.
+    after_function_impl:
+      function_name: FeatureList::IsFeatureEnabledIfOverridden
+      result_var: state
+      code: |-
+        if (!state.has_value() &&
+            feature.default_state == FEATURE_DISABLED_BY_OVERRIDE) {
+          return false;
+        }
+        return state;
