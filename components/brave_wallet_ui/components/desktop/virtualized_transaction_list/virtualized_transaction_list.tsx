@@ -22,14 +22,15 @@ const MemoizedTransactionItem = React.memo(PortfolioTransactionItem)
 
 type Transaction = SearchableTransaction | SerializableTransactionInfo
 
-interface Props {
-  transactionList: Transaction[]
-  onSelectTransaction?: (transaction: Transaction) => void
+interface Props<T extends Transaction> {
+  transactionList: T[]
+  onSelectTransaction?: (transaction: T) => void
 }
 
-export const VirtualizedTransactionList = React.memo((props: Props) => {
-  const { transactionList, onSelectTransaction } = props
-
+function VirtualizedTransactionListBase<T extends Transaction>({
+  transactionList,
+  onSelectTransaction,
+}: Readonly<Props<T>>) {
   // State
   // Start with 5 items
   const [visibleCount, setVisibleCount] = React.useState(5)
@@ -44,12 +45,14 @@ export const VirtualizedTransactionList = React.memo((props: Props) => {
     [transactionList, visibleCount],
   )
 
-  // Memoize the click handler to prevent unnecessary re-renders
   const handleTransactionClick = React.useCallback(
-    (transaction: Transaction) => {
-      onSelectTransaction?.(transaction)
+    (tx: { id: string }) => {
+      const transaction = transactionList.find((item) => item.id === tx.id)
+      if (transaction) {
+        onSelectTransaction?.(transaction)
+      }
     },
-    [onSelectTransaction],
+    [onSelectTransaction, transactionList],
   )
 
   // Load more items when we're near the bottom
@@ -119,4 +122,9 @@ export const VirtualizedTransactionList = React.memo((props: Props) => {
       ))}
     </Column>
   )
-})
+}
+
+// Preserve the generic parameter through React.memo.
+export const VirtualizedTransactionList = React.memo(
+  VirtualizedTransactionListBase,
+) as typeof VirtualizedTransactionListBase
