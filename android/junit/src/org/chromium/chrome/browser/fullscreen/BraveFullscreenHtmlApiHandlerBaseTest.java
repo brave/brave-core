@@ -31,6 +31,9 @@ import org.chromium.chrome.browser.tab.TabHidingType;
 
 @RunWith(BaseRobolectricTestRunner.class)
 public class BraveFullscreenHtmlApiHandlerBaseTest {
+    private static final String DISABLE_BACKGROUND_MEDIA_SUSPEND =
+            "disable-background-media-suspend";
+
     private static final class TestBraveFullscreenHtmlApiHandlerBase
             extends BraveFullscreenHtmlApiHandlerBase {}
 
@@ -55,7 +58,7 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     }
 
     @Test
-    @CommandLineFlags.Add("disable-background-media-suspend")
+    @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void generalPictureInPicture_screenOff_preservesFullscreen() {
         when(mActivity.isInPictureInPictureMode()).thenReturn(true);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
@@ -64,7 +67,7 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     }
 
     @Test
-    @CommandLineFlags.Add("disable-background-media-suspend")
+    @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void generalPictureInPicture_locked_preservesFullscreenUntilUnlocked() {
         when(mActivity.isInPictureInPictureMode()).thenReturn(true);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(true);
@@ -77,7 +80,7 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     }
 
     @Test
-    @CommandLineFlags.Add("disable-background-media-suspend")
+    @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void nonPictureInPicture_screenOffAndLocked_doesNotPreserveFullscreen() {
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(true);
@@ -86,7 +89,7 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     }
 
     @Test
-    @CommandLineFlags.Remove("disable-background-media-suspend")
+    @CommandLineFlags.Remove(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void generalPictureInPicture_backgroundPlaybackDisabledScreenOff_doesNotPreserve() {
         when(mActivity.isInPictureInPictureMode()).thenReturn(true);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
@@ -95,7 +98,7 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     }
 
     @Test
-    @CommandLineFlags.Remove("disable-background-media-suspend")
+    @CommandLineFlags.Remove(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void generalPictureInPicture_backgroundPlaybackDisabledLocked_doesNotPreserve() {
         when(mActivity.isInPictureInPictureMode()).thenReturn(true);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(true);
@@ -104,7 +107,7 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
     }
 
     @Test
-    @CommandLineFlags.Add("disable-background-media-suspend")
+    @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void tabHidden_lockedPictureInPicture_recordsAndClearsTabSwitch() {
         when(mActivity.isInPictureInPictureMode()).thenReturn(true);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(true);

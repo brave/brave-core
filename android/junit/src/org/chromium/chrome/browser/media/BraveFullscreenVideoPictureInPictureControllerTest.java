@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.media;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -42,10 +43,12 @@ import java.time.Duration;
 
 @RunWith(BaseRobolectricTestRunner.class)
 public class BraveFullscreenVideoPictureInPictureControllerTest {
+    private static final String DISABLE_BACKGROUND_MEDIA_SUSPEND =
+            "disable-background-media-suspend";
+
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private BraveActivity mBraveActivity;
-    @Mock private Activity mActivity;
     @Mock private FullscreenManager mFullscreenManager;
     @Mock private Tab mTab;
     @Mock private MockWebContents mWebContents;
@@ -90,7 +93,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @CommandLineFlags.Add("disable-background-media-suspend")
+    @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onStop_screenOff_preservesPlaybackUntilAwakeClose() {
         FullscreenVideoPictureInPictureController controller =
                 enterPlayingPictureInPicture(mBraveActivity);
@@ -114,10 +117,11 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @CommandLineFlags.Add("disable-background-media-suspend")
+    @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onStop_nonBraveActivityLocked_preservesPlaybackUntilUnlockedClose() {
+        Activity activity = mock(Activity.class);
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mActivity);
+                enterPlayingPictureInPicture(activity);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(true);
 
         controller.onStop();
@@ -137,7 +141,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @CommandLineFlags.Add("disable-background-media-suspend")
+    @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onStop_awakeClose_suspendsOnce() {
         FullscreenVideoPictureInPictureController controller =
                 enterPlayingPictureInPicture(mBraveActivity);
@@ -151,10 +155,10 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @CommandLineFlags.Remove("disable-background-media-suspend")
+    @CommandLineFlags.Remove(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onStop_backgroundPlaybackDisabledScreenOff_suspendsOnce() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mActivity);
+                enterPlayingPictureInPicture(mBraveActivity);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
 
         controller.onStop();
@@ -166,7 +170,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @CommandLineFlags.Remove("disable-background-media-suspend")
+    @CommandLineFlags.Remove(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onStop_backgroundPlaybackDisabledLocked_suspendsOnce() {
         FullscreenVideoPictureInPictureController controller =
                 enterPlayingPictureInPicture(mBraveActivity);
@@ -181,11 +185,11 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @CommandLineFlags.Add("disable-background-media-suspend")
+    @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onResume_afterRepeatedScreenLocks_keepsPictureInPictureUntilClose() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mActivity);
-        when(mActivity.isInPictureInPictureMode()).thenReturn(true);
+                enterPlayingPictureInPicture(mBraveActivity);
+        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
 
         for (int i = 0; i < 2; i++) {
             Shadows.shadowOf(mPowerManager).setIsInteractive(false);
@@ -197,7 +201,7 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
             controller.onResume();
         }
 
-        verify(mActivity, never()).moveTaskToBack(/* nonRoot= */ true);
+        verify(mBraveActivity, never()).moveTaskToBack(/* nonRoot= */ true);
         verify(mMediaSession, never()).suspend(SuspendType.SYSTEM);
         verify(mMediaSession, never()).resume(SuspendType.SYSTEM);
 
@@ -209,11 +213,11 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
     }
 
     @Test
-    @CommandLineFlags.Add("disable-background-media-suspend")
+    @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onResume_userPausedBeforeScreenLock_keepsPictureInPicturePaused() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mActivity);
-        when(mActivity.isInPictureInPictureMode()).thenReturn(true);
+                enterPlayingPictureInPicture(mBraveActivity);
+        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
         mObserver.mediaStoppedPlaying(0);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
         Shadows.shadowOf(mKeyguardManager).setKeyguardLocked(true);
@@ -228,54 +232,54 @@ public class BraveFullscreenVideoPictureInPictureControllerTest {
         controller.onResume();
         controller.onStop();
 
-        verify(mActivity, never()).moveTaskToBack(/* nonRoot= */ true);
+        verify(mBraveActivity, never()).moveTaskToBack(/* nonRoot= */ true);
         verify(mMediaSession, never()).suspend(SuspendType.SYSTEM);
         verify(mMediaSession, never()).resume(SuspendType.SYSTEM);
     }
 
     @Test
-    @CommandLineFlags.Add("disable-background-media-suspend")
+    @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onResume_withoutScreenLock_preservesUpstreamDismiss() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mActivity);
-        when(mActivity.isInPictureInPictureMode()).thenReturn(true);
+                enterPlayingPictureInPicture(mBraveActivity);
+        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
 
         controller.onResume();
 
-        verify(mActivity).moveTaskToBack(/* nonRoot= */ true);
+        verify(mBraveActivity).moveTaskToBack(/* nonRoot= */ true);
         verify(mMediaSession, never()).resume(SuspendType.SYSTEM);
     }
 
     @Test
-    @CommandLineFlags.Add("disable-background-media-suspend")
+    @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onResume_afterUnlockThenOrdinaryResume_dismissesPictureInPicture() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mActivity);
-        when(mActivity.isInPictureInPictureMode()).thenReturn(true);
+                enterPlayingPictureInPicture(mBraveActivity);
+        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
         controller.onStop();
         Shadows.shadowOf(mPowerManager).setIsInteractive(true);
         controller.onResume();
-        verify(mActivity, never()).moveTaskToBack(/* nonRoot= */ true);
+        verify(mBraveActivity, never()).moveTaskToBack(/* nonRoot= */ true);
 
         controller.onResume();
 
-        verify(mActivity).moveTaskToBack(/* nonRoot= */ true);
+        verify(mBraveActivity).moveTaskToBack(/* nonRoot= */ true);
         verify(mMediaSession, never()).resume(SuspendType.SYSTEM);
     }
 
     @Test
-    @CommandLineFlags.Add("disable-background-media-suspend")
+    @CommandLineFlags.Add(DISABLE_BACKGROUND_MEDIA_SUSPEND)
     public void onResume_leftPictureInPictureAfterScreenLock_preservesUpstreamDismiss() {
         FullscreenVideoPictureInPictureController controller =
-                enterPlayingPictureInPicture(mActivity);
+                enterPlayingPictureInPicture(mBraveActivity);
         Shadows.shadowOf(mPowerManager).setIsInteractive(false);
         controller.onStop();
         Shadows.shadowOf(mPowerManager).setIsInteractive(true);
 
         controller.onResume();
 
-        verify(mActivity).moveTaskToBack(/* nonRoot= */ true);
+        verify(mBraveActivity).moveTaskToBack(/* nonRoot= */ true);
         verify(mMediaSession, never()).resume(SuspendType.SYSTEM);
     }
 
