@@ -104,7 +104,6 @@ gn_args.config(
 gn_args.config(
     name='ci_desktop_defaults',
     args={
-        'devtools_skip_typecheck': False,
         'enable_hangout_services_extension': False,
         'use_libfuzzer': False,
     },
