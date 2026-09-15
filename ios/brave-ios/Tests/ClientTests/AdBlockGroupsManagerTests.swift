@@ -177,7 +177,7 @@ final class AdBlockGroupsManagerTests: XCTestCase {
     await groupsManager.compileEnginesIfNeeded()
 
     let mainFrameURL = URL(string: "https://dev-pages.bravesoftware.com")!
-    let domain = await MainActor.run {
+    _ = await MainActor.run {
       return Domain.getOrCreate(forUrl: mainFrameURL, persistent: false)
     }
 

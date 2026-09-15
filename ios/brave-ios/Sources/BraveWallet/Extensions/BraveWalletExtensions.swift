@@ -767,7 +767,7 @@ extension BraveWallet.ZCashAddressError {
       return Strings.Wallet.sendErrorZecAddressOrchardPartMissing
     case .invalidAddressNetworkMismatch:
       return Strings.Wallet.sendErrorZecAddressNetworkMissmatch
-    case .notZCashAccount, .invalidSenderType:
+    case .notZCashAccount, .invalidSenderType, .invalidRecipientType:
       fallthrough
     @unknown default:
       return Strings.Wallet.unknownError

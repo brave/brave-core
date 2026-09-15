@@ -264,7 +264,7 @@ class MockWebcompatReporter: WebcompatReporterWebcompatReporterHandler {
   SubmitReportView(
     url: URL(string: "https://brave.com/privacy-features")!,
     webcompatReporter: MockWebcompatReporter(),
-    tab: FakeTabState()
+    tab: nil
   )
 }
 
