@@ -29,6 +29,7 @@
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "brave/components/local_ai/core/utils.h"
 #include "components/component_updater/component_installer.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -53,14 +54,6 @@ constexpr uint8_t kPublicKeySHA256[32] = {
     0xf1, 0x10, 0x04, 0x5e, 0xf9, 0x33, 0xf5, 0xe9, 0x6c, 0x4d};
 static_assert(std::size(kPublicKeySHA256) == crypto::kSHA256Length,
               "Wrong hash length");
-
-// Whether the component may be installed. The feature is fixed for the session
-// but `kBraveLocalAIEnabled` is managed by Brave Origin and can flip at any
-// time.
-bool IsComponentAllowed(const PrefService* local_state) {
-  return base::FeatureList::IsEnabled(kBraveOnDeviceSpeechRecognition) &&
-         (!local_state || local_state->GetBoolean(prefs::kBraveLocalAIEnabled));
-}
 
 // Owns the component registration for the whole session and follows the master
 // switch so it stays in sync with it. It is also the one place that decides
@@ -114,7 +107,8 @@ class OnDeviceSpeechModelsComponentRegistrar
     // caller's own call.
     callback = base::BindPostTaskToCurrentDefault(std::move(callback));
 
-    if (!cus_ || !IsComponentAllowed(pref_change_registrar_.prefs())) {
+    if (!cus_ ||
+        !IsOnDeviceSpeechRecognitionAllowed(pref_change_registrar_.prefs())) {
       std::move(callback).Run(false);
       return;
     }
@@ -138,7 +132,7 @@ class OnDeviceSpeechModelsComponentRegistrar
   ~OnDeviceSpeechModelsComponentRegistrar() override = default;
 
   void Sync() {
-    if (!IsComponentAllowed(pref_change_registrar_.prefs())) {
+    if (!IsOnDeviceSpeechRecognitionAllowed(pref_change_registrar_.prefs())) {
       Unregister();
       return;
     }
@@ -156,7 +150,7 @@ class OnDeviceSpeechModelsComponentRegistrar
     // The switch turned off while this was in flight, so the unregister it ran
     // found nothing to remove. Nothing else will try again, so finish the
     // removal here.
-    if (!IsComponentAllowed(pref_change_registrar_.prefs())) {
+    if (!IsOnDeviceSpeechRecognitionAllowed(pref_change_registrar_.prefs())) {
       Unregister();
       return;
     }
@@ -317,7 +311,7 @@ void OnDeviceSpeechModelsComponentInstallerPolicy::ComponentReady(
   }
   // Unregistration is deferred behind an in-flight update, so this still fires
   // for a download that started before the switch turned off.
-  if (!IsComponentAllowed(local_state_)) {
+  if (!IsOnDeviceSpeechRecognitionAllowed(local_state_)) {
     return;
   }
   OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(install_dir);

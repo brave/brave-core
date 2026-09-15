@@ -281,7 +281,7 @@ TEST_F(OnDeviceSpeechModelsComponentInstallerUnitTest,
 
 // Tests that `ManageOnDeviceSpeechModelsComponentRegistration` removes the
 // model when Brave's own feature flag is off, one of the two conditions
-// `IsComponentAllowed` requires.
+// `IsOnDeviceSpeechRecognitionAllowed` requires.
 TEST_F(
     OnDeviceSpeechModelsComponentInstallerUnitTest,
     ManageOnDeviceSpeechModelsComponentRegistration_RemovesWhenFeatureDisabled) {
@@ -293,8 +293,8 @@ TEST_F(
 
 // Tests that `ManageOnDeviceSpeechModelsComponentRegistration` removes the
 // model when the Local AI master switch is off, the other condition
-// `IsComponentAllowed` requires. Brave Origin manages this one, so it can turn
-// off long after startup.
+// `IsOnDeviceSpeechRecognitionAllowed` requires. Brave Origin manages this
+// one, so it can turn off long after startup.
 TEST_F(
     OnDeviceSpeechModelsComponentInstallerUnitTest,
     ManageOnDeviceSpeechModelsComponentRegistration_RemovesWhenLocalAIDisabled) {

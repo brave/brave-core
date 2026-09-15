@@ -16,6 +16,7 @@ source_set("on_device_speech_browser_tests") {
 
   deps = [
     "//base/test:test_support",
+    "//brave/components/local_ai/buildflags",
     "//chrome/browser/speech",
     "//chrome/test:test_support",
     "//chrome/test:test_support_ui",
@@ -25,9 +26,24 @@ source_set("on_device_speech_browser_tests") {
     "//net:test_support",
     "//testing/gtest",
   ]
+
+  if (enable_local_ai) {
+    deps += [ "//brave/components/local_ai/core:features" ]
+  }
 }
 
 if (enable_local_ai) {
+  source_set("chromium_impl") {
+    sources = [ "on_device_speech_recognition_util.cc" ]
+
+    deps = [
+      "//base/i18n:language_tag",
+      "//brave/components/local_ai/core",
+      "//chrome/browser:browser_process",
+      "//media/mojo/mojom:web_speech_recognition",
+    ]
+  }
+
   static_library("speech") {
     sources = [
       "on_device_speech_recognition_controller.cc",
