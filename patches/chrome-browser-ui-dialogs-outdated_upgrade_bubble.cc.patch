@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc b/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
+index d08dce0a2bde8d248408329e482986fa8ee176c4..4a4af90ccf888bd57673f7cf747c27e3ed2504a4 100644
+--- a/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
++++ b/chrome/browser/ui/dialogs/outdated_upgrade_bubble.cc
+@@ -102,8 +102,7 @@ void ShowOutdatedUpgradeBubble(BrowserWindowInterface* browser,
+ 
+   g_upgrade_bubble_is_showing = true;
+ 
+-  auto update_url = std::string(kUpdateBrowserRedirectUrl) +
+-                    GetUpdateUrlChannelSuffix(chrome::GetChannel());
++  auto update_url = BraveGetUpdateUrl().spec();
+ 
+   auto dialog_model =
+       ui::DialogModel::Builder()

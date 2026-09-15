@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Reinstall via `BraveGetUpdateUrl()` instead of Chrome's redirect URL.
+
+      Patched at the source of `update_url`, not at its use in
+      `OnDialogAccepted()`, so that parameter stays in genuine use.
+    regex:
+      re_pattern:
+        'auto update_url =
+        std::string\(kUpdateBrowserRedirectUrl\)\s*\+\s*GetUpdateUrlChannelSuffix\(chrome::GetChannel\(\)\);'
+      replace: 'auto update_url = BraveGetUpdateUrl().spec();'
