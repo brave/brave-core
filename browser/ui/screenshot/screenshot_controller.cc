@@ -24,6 +24,7 @@
 #include "chrome/browser/download/download_prefs.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
 #include "components/viz/common/frame_sinks/copy_output_result.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/web_contents.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -359,6 +360,9 @@ void ScreenshotController::CopyToClipboard(std::vector<uint8_t> png) {
   SkBitmap bitmap = gfx::PNGCodec::Decode(png);
   ui::ScopedClipboardWriter clipboard_writer(ui::ClipboardBuffer::kCopyPaste);
   clipboard_writer.WriteImage(bitmap);
+  if (profile_->IsOffTheRecord()) {
+    clipboard_writer.MarkAsOffTheRecord();
+  }
   ResultCallback cb = std::move(pending_callback_);
   Reset();
   if (cb) {
