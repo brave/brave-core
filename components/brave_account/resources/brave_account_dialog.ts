@@ -60,7 +60,8 @@ export class BraveAccountDialogElement extends CrLitElement {
         ?.querySelector<HTMLSlotElement>('slot[name="inputs"]')
         ?.assignedElements()[0]
         ?.querySelector<HTMLElement>(
-          'brave-account-email-input, brave-account-password-input, leo-input',
+          'brave-account-email-input, brave-account-otp-input,'
+            + ' brave-account-password-input, leo-input',
         )
         ?.focus()
     })
