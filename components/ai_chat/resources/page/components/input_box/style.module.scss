@@ -66,6 +66,16 @@
   --leo-icon-color: var(--leo-color-icon-interactive);
 }
 
+.dictationIconActive {
+  --leo-icon-color: var(--leo-color-systemfeedback-error-icon);
+}
+
+.dictationError {
+  padding: 0 var(--leo-spacing-xl) var(--leo-spacing-s);
+  color: var(--leo-color-systemfeedback-error-text);
+  font: var(--leo-font-small-regular);
+}
+
 .taskStateActions {
   display: flex;
   align-items: center;
