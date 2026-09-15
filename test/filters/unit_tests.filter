@@ -39,6 +39,8 @@
 -SkillsUiTabController*Test.*_CallsInvoke*
 -SkillsUiTabController*Test.InvokeSkill_*
 -TabStripActionContainerTest.Glic*
+-TabStripActionContainerTest.SeparatorVisibilityFollowsGlicButton
+-TabStripActionContainerWithToolbarButtonTest.SeparatorHiddenWhenToolbarButtonEnabled
 
 # These tests fail because we don't use kChromeUINewTabPageThirdPartyURL
 -All/PermissionSubscriptionGeolocationTest.SubscribeUnsubscribeForNewTabPage/*
@@ -74,6 +76,7 @@
 
 # These tests fail because the message they check has Brave intead of Google (or
 # the url they check uses a brave: scheme when a chrome: scheme is expected).
+-AutofillAiImportDataBubbleViewTest.WalletSubtitleBrandedWhenNoticeStringIdIsBranded
 -CookieBrowsingDataCounterUtilsTest.CookieCounterResult
 -GeminiDisclosureTest.*
 -GoogleChromeSchemeUtilTest.ExtractGoogleChromeSchemeInnerUrl
@@ -347,6 +350,8 @@
 -PeopleHandlerSignoutTest.SignoutWithSyncOn
 -PeopleHandlerTest.*
 -PeopleHandlerWebOnlySigninTest.ChromeSigninUserAvailableOnWebSignin
+-ProfileDynamicMenuTest.BuildSyncSection_SignedInProfile
+-ProfileDynamicMenuTest.BuildSyncSection_SyncError
 -SendTabToSelfPromoBubbleViewEnhancedTest.LoadsAccountAwareDesign
 -ShowPromoTest.*
 -SigninUtilHistorySyncOptinTest.*
@@ -536,6 +541,7 @@
 -All/IncidentReportingServiceTest.*
 
 # This test times out because TaskEnvironment::FastForwardBy never returns.
+-ActorTaskListBubbleControllerOsNotificationTest.ShowBubble_InactiveBrowserWindow_DoesNotShowBubble
 -NotificationsEngagementServiceTest.EraseStaleEntries
 
 # This test fails because we stub out NetworkService::UpdateKeysPinList
@@ -865,6 +871,10 @@
 
 # This test fails because we suppress kLinkCopied toast.
 -ToastControllerUnitTest.RecordToastDismissReasonHistogram
+
+# Thit test fails because we override MenuConfig so the expected values don't 
+# match.
+-ActionAppMenuTest.HeaderAndMenuItemBorderLayout
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

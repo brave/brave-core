@@ -996,7 +996,10 @@
 -All/IntentPickerIconFencedFrameBrowserTest.ShouldShowIntentPickerInFencedFrame/*
 -All/PDFExtensionPrerenderAndFencedFrameTest.*
 -All/PaintPreviewFencedFrameBrowserTest.*
+-All/SafeBrowsingTriggeredPopupBlockerFencedFrameBrowserTest.ShouldNotTriggerPopupBlocker/*
+-All/SafeBrowsingTriggeredPopupBlockerFencedFrameBrowserTest.ShouldTriggerPopupBlocker/*
 -All/SecurityStateTabHelperFencedFrameTest.*
+-All/SubresourceFilterFencedFrameBrowserTest.*
 -AmpPageLoadMetricsFencedFrameBrowserTest.AmpFencedFrame
 -AppBannerManagerFencedFrameBrowserTest.FencedFrameShouldNotUpdateState
 -AutoplayPolicyFencedFrameTest.AutoplayAllowedByPolicy
@@ -1956,6 +1959,7 @@
 
 # These tests fail because we change BACKGROUND_SYNC content setting to be
 # BLOCKED by default. This prevents reports from being sent.
+-All/CrashReportingBrowserTest.CrashReportMemoryExhaust/*
 -All/CrashReportingBrowserTest.CrashReportOOM/*
 -All/CrashReportingBrowserTest.CrashReportOOMTakesPriorityOverUnresponsive/*
 -All/CrashReportingBrowserTest.CrashReportUnresponsiveWithoutHungExitCode/*
@@ -2250,6 +2254,7 @@
 
 # This test fails because the expected width of the chip doesn't match (24px
 # vs 28px)
+-PaymentHandlerWebFlowViewCameraUxTest.BlockedCameraIndicator_DismissalLifecycleAndRepeatDismissal
 -PaymentHandlerWebFlowViewCameraUxTest.CameraInUseIndicator_ExpandsAndAutoCollapses
 
 # These tests fail because they try to toggle Glic UI via toolbar button which
