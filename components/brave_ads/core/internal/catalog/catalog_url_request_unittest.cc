@@ -9,7 +9,9 @@
 #include <optional>
 #include <string>
 
+#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/catalog/catalog_url_request_builder_util.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/catalog/test/catalog_test_constants.h"
 #include "brave/components/brave_ads/core/internal/catalog/test/catalog_url_request_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_test_util.h"
@@ -37,6 +39,8 @@ class BraveAdsCatalogUrlRequestTest : public test::TestBase {
 TEST_F(BraveAdsCatalogUrlRequestTest,
        SchedulesPeriodicFetchAfterHttpOkResponseStatusCode) {
   // Arrange
+  SetCatalogPing(base::Hours(2));
+
   const std::optional<std::string> response_body =
       test::MaybeReadFileToStringAndReplaceTags(
           test::kCatalogWithSingleCampaignJsonFilename);
@@ -122,6 +126,8 @@ TEST_F(
     BraveAdsCatalogUrlRequestTest,
     SchedulesPeriodicFetchAfterRetryingHttpInternalServerErrorResponseStatusCode) {
   // Arrange
+  SetCatalogPing(base::Hours(2));
+
   const std::optional<std::string> response_body =
       test::MaybeReadFileToStringAndReplaceTags(
           test::kCatalogWithSingleCampaignJsonFilename);
@@ -145,6 +151,8 @@ TEST_F(
 
 TEST_F(BraveAdsCatalogUrlRequestTest, DoNotFetchIfAlreadyPeriodicallyFetching) {
   // Arrange
+  SetCatalogPing(base::Hours(2));
+
   const std::optional<std::string> response_body =
       test::MaybeReadFileToStringAndReplaceTags(
           test::kCatalogWithSingleCampaignJsonFilename);

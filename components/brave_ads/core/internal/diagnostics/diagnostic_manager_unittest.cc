@@ -131,7 +131,7 @@ TEST_F(BraveAdsDiagnosticManagerTest, GetDiagnostics) {
               },
               {
                 "name": "Catalog next update",
-                "value": "Wednesday, November 18, 1970 at 2:34:56 PM (15093 days ago)"
+                "value": "Wednesday, November 18, 1970 at 12:34:56 PM (15093 days ago)"
               },
               {
                 "name": "Text classification resource",

@@ -7,28 +7,16 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/json/values_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/test/internal/pref_value_test_info.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_storage_test_util_internal.h"
+#include "components/prefs/testing_pref_service.h"
 
 namespace brave_ads::test {
 
 void SetProfilePrefValue(const std::string& path, base::Value value) {
-  CHECK(HasProfilePref(path))
-      << "Check failed. Trying to write an unregistered pref: " << path;
-
-  ProfilePref(path).value = std::move(value);
-}
-
-void SetDefaultProfilePrefValue(const std::string& path,
-                                base::Value default_value) {
-  CHECK(HasProfilePref(path))
-      << "Check failed. Trying to write an unregistered pref: " << path;
-
-  ProfilePref(path).default_value = std::move(default_value);
+  GetProfilePrefServiceForTesting().Set(path, value);
 }
 
 void SetProfileBooleanPrefValue(const std::string& path, bool value) {
