@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/memory/ptr_util.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "build/build_config.h"
@@ -27,9 +28,12 @@
 #include "content/public/browser/context_menu_params.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_renderer_host.h"
+#include "content/public/test/web_contents_tester.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/clipboard/clipboard.h"
+#include "ui/base/clipboard/test/clipboard_test_util.h"
 #include "ui/base/models/menu_model.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -121,8 +125,9 @@ class BraveRenderViewContextMenuTest : public testing::Test {
         TemplateURLServiceFactory::GetInstance(),
         base::BindRepeating(&TemplateURLServiceFactory::BuildInstanceFor));
     profile_ = builder.Build();
-    web_contents_ = content::WebContents::Create(
-        content::WebContents::CreateParams(profile_.get()));
+    web_contents_ =
+        base::WrapUnique(content::WebContentsTester::CreateTestWebContents(
+            content::WebContents::CreateParams(profile_.get())));
     auto* service = TemplateURLServiceFactory::GetForProfile(profile_.get());
     EXPECT_TRUE(service);
     client_ =
@@ -153,6 +158,7 @@ class BraveRenderViewContextMenuTest : public testing::Test {
 
  private:
   content::BrowserTaskEnvironment browser_task_environment;
+  content::RenderViewHostTestEnabler rvh_test_enabler_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<custom_handlers::ProtocolHandlerRegistry> registry_;
   std::unique_ptr<Browser> browser_;
@@ -210,6 +216,54 @@ TEST_F(BraveRenderViewContextMenuTest, MenuForLink) {
   EXPECT_EQ(*split_view_index, *first_separator_index - 1)
       << "Open link in split view should be right before the first separator";
 #endif
+}
+
+// current_url_ is never actually brave:// at runtime: Brave rewrites brave://
+// to chrome:// at the navigation layer before a frame commits (see
+// HandleChromeAboutAndChromeSyncRewrite), and BraveWebUIControllerFactory
+// DCHECKs it is never asked to resolve a raw brave:// URL. The
+// SchemeIs(kBraveUIScheme) branch in BraveMaybeReplaceChromeToBraveScheme is
+// there defensively, but isn't reachable via a real navigation, so there's no
+// equivalent test for it here.
+TEST_F(BraveRenderViewContextMenuTest,
+       CopyLinkAddressRewritesChromeSchemeToBrave) {
+  content::WebContentsTester::For(GetWebContents())
+      ->NavigateAndCommit(GURL("chrome://test-internal-page"));
+
+  content::ContextMenuParams params =
+      CreateLinkParams(GURL("chrome://flags/#test-flag"));
+  auto context_menu = CreateContextMenu(GetWebContents(), params);
+  EXPECT_TRUE(context_menu);
+
+  context_menu->ExecuteCommand(IDC_CONTENT_CONTEXT_COPYLINKLOCATION,
+                               /*event_flags=*/0);
+
+  std::u16string text_from_clipboard = ui::clipboard_test_util::ReadText(
+      ui::Clipboard::GetForCurrentThread(), ui::ClipboardBuffer::kCopyPaste,
+      nullptr);
+  EXPECT_EQ(text_from_clipboard, u"brave://flags/#test-flag");
+}
+
+// A chrome://-scheme URL found on a normal (non-chrome://) page, e.g. text on
+// an arbitrary website, must not be rewritten to brave://. Only links copied
+// from a page that is itself chrome:// or brave:// should be rewritten.
+TEST_F(BraveRenderViewContextMenuTest,
+       CopyLinkAddressDoesNotRewriteChromeSchemeOnNonChromeFrame) {
+  content::WebContentsTester::For(GetWebContents())
+      ->NavigateAndCommit(GURL("https://example.com/"));
+
+  content::ContextMenuParams params =
+      CreateLinkParams(GURL("chrome://flags/#test-flag"));
+  auto context_menu = CreateContextMenu(GetWebContents(), params);
+  EXPECT_TRUE(context_menu);
+
+  context_menu->ExecuteCommand(IDC_CONTENT_CONTEXT_COPYLINKLOCATION,
+                               /*event_flags=*/0);
+
+  std::u16string text_from_clipboard = ui::clipboard_test_util::ReadText(
+      ui::Clipboard::GetForCurrentThread(), ui::ClipboardBuffer::kCopyPaste,
+      nullptr);
+  EXPECT_EQ(text_from_clipboard, u"chrome://flags/#test-flag");
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
