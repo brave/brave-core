@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Clear loading predictor data left behind by earlier versions.
+
+      With the predictor disabled (see the plaster for
+      chrome/browser/predictors/loading_predictor_config.cc) nothing reads or
+      writes these tables again, so a profile that collected data before it
+      was turned off would keep it forever. MaybeClearLoadingPredictorData()
+      is defined by the chromium_src override for this file.
+    regex:
+      pattern: 'resource_prefetch_tables_->Initialize(db_.get());'
+      replace: |-
+        MaybeClearLoadingPredictorData(db_.get(), is_loading_predictor_enabled_);
+          resource_prefetch_tables_->Initialize(db_.get());
