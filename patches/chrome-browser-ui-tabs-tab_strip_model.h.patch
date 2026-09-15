@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_model.h b/chrome/browser/ui/tabs/tab_strip_model.h
-index 1b9940b67e8ddd7067ad149be80bb76f06a99be9..c7a6edff665013c392f3da12fdba07caa4828293 100644
+index b51d7b38feb71bc80d249eb006272c0c42011676..8cd0c2cfcf34111877b9f6647ff0f40b02734857 100644
 --- a/chrome/browser/ui/tabs/tab_strip_model.h
 +++ b/chrome/browser/ui/tabs/tab_strip_model.h
-@@ -47,7 +47,7 @@
+@@ -48,7 +48,7 @@
  #error This file should only be included on desktop.
  #endif
  
@@ -11,7 +11,7 @@ index 1b9940b67e8ddd7067ad149be80bb76f06a99be9..c7a6edff665013c392f3da12fdba07ca
  class Profile;
  class TabGroupModel;
  class TabStripModelDelegate;
-@@ -94,7 +94,7 @@ class TabGroupModelFactory {
+@@ -95,7 +95,7 @@ class TabGroupModelFactory {
  struct DetachedTabCollection {
    DetachedTabCollection(
        std::variant<std::unique_ptr<tabs::TabGroupTabCollection>,
@@ -20,7 +20,7 @@ index 1b9940b67e8ddd7067ad149be80bb76f06a99be9..c7a6edff665013c392f3da12fdba07ca
        std::optional<int> active_index,
        bool pinned_);
    DetachedTabCollection(const DetachedTabCollection&) = delete;
-@@ -102,7 +102,7 @@ struct DetachedTabCollection {
+@@ -103,7 +103,7 @@ struct DetachedTabCollection {
    ~DetachedTabCollection();
    DetachedTabCollection(DetachedTabCollection&&);
    std::variant<std::unique_ptr<tabs::TabGroupTabCollection>,
@@ -29,7 +29,7 @@ index 1b9940b67e8ddd7067ad149be80bb76f06a99be9..c7a6edff665013c392f3da12fdba07ca
        collection_;
    // Store the index of tab that was active in the detached group.
    std::optional<int> active_index_;
-@@ -218,7 +218,7 @@ class TabStripModel {
+@@ -219,7 +219,7 @@ class TabStripModel {
    TabStripModel(const TabStripModel&) = delete;
    TabStripModel& operator=(const TabStripModel&) = delete;
  
@@ -38,7 +38,7 @@ index 1b9940b67e8ddd7067ad149be80bb76f06a99be9..c7a6edff665013c392f3da12fdba07ca
  
    // Retrieves the TabStripModelDelegate associated with this TabStripModel.
    TabStripModelDelegate* delegate() const { return delegate_; }
-@@ -364,7 +364,7 @@ class TabStripModel {
+@@ -365,7 +365,7 @@ class TabStripModel {
    // Detaches the WebContents at the specified index and immediately deletes it.
    void DetachAndDeleteWebContentsAt(int index);
  
@@ -47,7 +47,7 @@ index 1b9940b67e8ddd7067ad149be80bb76f06a99be9..c7a6edff665013c392f3da12fdba07ca
                             std::unique_ptr<DetachedTabCollection>>>
    DetachTabsAndCollectionsForInsertion(const std::vector<int>& tab_indices);
  
-@@ -631,7 +631,7 @@ class TabStripModel {
+@@ -632,7 +632,7 @@ class TabStripModel {
    // returns the index of the tabs in the current model that would end up being
    // the adjacent tabs of the selected unpinned tabs post move operation.
    std::pair<std::optional<int>, std::optional<int>>
@@ -56,7 +56,7 @@ index 1b9940b67e8ddd7067ad149be80bb76f06a99be9..c7a6edff665013c392f3da12fdba07ca
                                     int destination_index);
  
    // Updates the layout for the tabs with `split_id` and notifies observers.
-@@ -889,7 +889,12 @@ class TabStripModel {
+@@ -890,7 +890,12 @@ class TabStripModel {
    tabs::TabInterface* GetTabForWebContents(
        const content::WebContents* contents) const;
  
@@ -69,7 +69,7 @@ index 1b9940b67e8ddd7067ad149be80bb76f06a99be9..c7a6edff665013c392f3da12fdba07ca
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, GetIndicesClosedByCommand);
    // Temporary private API.
    FRIEND_TEST_ALL_PREFIXES(TabStripModelTest, FindGroupIdFor);
-@@ -1177,7 +1182,7 @@ class TabStripModel {
+@@ -1178,7 +1183,7 @@ class TabStripModel {
    };
  
    // Selects either the next tab (kNext), or the previous tab (kPrevious).

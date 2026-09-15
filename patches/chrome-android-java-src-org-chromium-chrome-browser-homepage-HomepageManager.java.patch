@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/homepage/HomepageManager.java b/chrome/android/java/src/org/chromium/chrome/browser/homepage/HomepageManager.java
-index ec6c93db2f9abfc5fc040ebc83b46286141c105b..003f96864434c988a9e2367b07d00b651b8a68e9 100644
+index 0066f770a8893b71e664a505d4110cdb6ecdaea7..4b37d47f58c28061987cb51da34bd9a2c9a00a26 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/homepage/HomepageManager.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/homepage/HomepageManager.java
 @@ -64,7 +64,7 @@ public class HomepageManager
