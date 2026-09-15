@@ -216,17 +216,7 @@ struct AddAccountView: View {
         )
       ) {
         ForEach(WalletConstants.supportedCoinTypes().elements) { coin in
-          NavigationLink(
-            tag: coin,
-            selection: $selectedCoin
-          ) {
-            addAccountView
-              .onDisappear {
-                name = ""
-                originPassword = ""
-                privateKey = ""
-              }
-          } label: {
+          NavigationLink(value: coin) {
             HStack(spacing: 10) {
               Image(coin.iconName, bundle: .module)
                 .resizable()
@@ -252,6 +242,18 @@ struct AddAccountView: View {
     .listStyle(.insetGrouped)
     .navigationBarTitleDisplayMode(.inline)
     .navigationTitle(Strings.Wallet.addAccountTitle)
+    .navigationDestination(for: BraveWallet.CoinType.self) { coin in
+      addAccountView
+        .onAppear {
+          selectedCoin = coin
+        }
+        .onDisappear {
+          selectedCoin = nil
+          name = ""
+          originPassword = ""
+          privateKey = ""
+        }
+    }
   }
 
   var body: some View {
@@ -431,7 +433,7 @@ struct AddAccountView: View {
 #if DEBUG
 struct AddAccountView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       AddAccountView(
         keyringStore: .previewStore,
         networkStore: .previewStore

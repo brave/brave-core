@@ -114,7 +114,7 @@ public struct CryptoView: View {
             case .panelUnlockOrSetup:
               EmptyView()
             case .accountSelection:
-              NavigationView {
+              NavigationStack {
                 AccountSelectionView(
                   keyringStore: keyringStore,
                   networkStore: store.networkStore,
@@ -123,9 +123,8 @@ public struct CryptoView: View {
                   }
                 )
               }
-              .navigationViewStyle(.stack)
             case .settings:
-              NavigationView {
+              NavigationStack {
                 Web3SettingsView(
                   settingsStore: store.settingsStore,
                   networkStore: store.networkStore,
@@ -135,7 +134,6 @@ public struct CryptoView: View {
                   dismissButtonToolbarContents
                 }
               }
-              .navigationViewStyle(.stack)
             case .editSiteConnection(let origin, let handler):
               EditSiteConnectionView(
                 keyringStore: keyringStore,
@@ -147,7 +145,7 @@ public struct CryptoView: View {
                 }
               )
             case .createAccount(let request):
-              NavigationView {
+              NavigationStack {
                 AddAccountView(
                   keyringStore: keyringStore,
                   networkStore: store.networkStore,
@@ -164,17 +162,15 @@ public struct CryptoView: View {
                   }
                 )
               }
-              .navigationViewStyle(.stack)
             case .webUI(let action):
               if action == .backup {
-                NavigationView {
+                NavigationStack {
                   BackupWalletView(
                     password: nil,
                     keyringStore: keyringStore
                   )
                 }
                 .accentColor(Color(braveSystemName: .primitivePrimary40))
-                .navigationViewStyle(.stack)
               } else {
                 EmptyView()  // screen will be handled via `visibleScreen`
               }
@@ -183,7 +179,7 @@ public struct CryptoView: View {
           .transition(.asymmetric(insertion: .identity, removal: .opacity))
         }
       case .unlock:
-        UIKitNavigationView {
+        NavigationStack {
           UnlockWalletView(keyringStore: keyringStore, dismissAction: dismissAction)
             .toolbar {
               dismissButtonToolbarContents
@@ -193,13 +189,13 @@ public struct CryptoView: View {
         .zIndex(1)  // Needed or the dismiss animation messes up
       case .onboarding:
         if isOnboardingCompleted.value {
-          UIKitNavigationView {
+          NavigationStack {
             OnboardingCompletedView(keyringStore: keyringStore)
           }
           .transition(.move(edge: .bottom))
           .zIndex(2)  // Needed or the dismiss animation messes up
         } else {
-          UIKitNavigationView {
+          NavigationStack {
             Group {
               if case .webUI(let action) = presentingContext,
                 case .onboarding(let isNewAccount) = action

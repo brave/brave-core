@@ -249,13 +249,12 @@ struct SuggestedNetworkView: View {
     .background(
       Color.clear
         .sheet(item: $isPresentingNetworkDetails) { detailsModel in
-          NavigationView {
+          NavigationStack {
             NetworkDetailsView(
               networkStore: networkStore,
               model: detailsModel
             )
           }
-          .navigationViewStyle(StackNavigationViewStyle())
         }
     )
     .background(

@@ -77,7 +77,7 @@ extension View {
         .sheet(
           isPresented: isShowingAddAccount
         ) {
-          NavigationView {
+          NavigationStack {
             AddAccountView(
               keyringStore: keyringStore,
               networkStore: networkStore,
@@ -85,7 +85,6 @@ extension View {
               preSelectedAccountNetwork: preselectedAccountNetwork
             )
           }
-          .navigationViewStyle(.stack)
           .onDisappear { onAddAccountDismissed() }
         }
     )

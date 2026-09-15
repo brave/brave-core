@@ -143,37 +143,31 @@ struct OnboardingNetworkSelectionView: View {
     .safeAreaInset(edge: .bottom) {
       continueButton
     }
-    .background(
-      NavigationLink(
-        destination: CreateWalletView(
+    .navigationDestination(
+      isPresented: $isShowingCreateNewWallet,
+      destination: {
+        CreateWalletView(
           keyringStore: keyringStore,
           setupSelections: .init(
             setupOption: setupOption,
             networks: networks
           ),
           dismissAction: dismissAction
-        ),
-        isActive: $isShowingCreateNewWallet,
-        label: {
-          EmptyView()
-        }
-      )
+        )
+      }
     )
-    .background(
-      NavigationLink(
-        destination: RestoreWalletView(
+    .navigationDestination(
+      isPresented: $isShowingRestoreExistedWallet,
+      destination: {
+        RestoreWalletView(
           keyringStore: keyringStore,
           setupSelections: .init(
             setupOption: setupOption,
             networks: networks
           ),
           dismissAction: dismissAction
-        ),
-        isActive: $isShowingRestoreExistedWallet,
-        label: {
-          EmptyView()
-        }
-      )
+        )
+      }
     )
     .task {
       guard networks.isEmpty else { return }
@@ -295,7 +289,7 @@ struct OnboardingNetworkSelectionView: View {
 
 #if DEBUG
 #Preview {
-  NavigationView {
+  NavigationStack {
     OnboardingNetworkSelectionView(
       keyringStore: .previewStore,
       setupOption: .new,

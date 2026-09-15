@@ -213,15 +213,13 @@ struct CreateWalletView: View {
       .padding(.bottom, 20)
     }
     .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
-    .background(
-      NavigationLink(
-        destination: BackupRecoveryPhraseView(
+    .navigationDestination(
+      isPresented: $isNewWalletCreated,
+      destination: {
+        BackupRecoveryPhraseView(
           password: password,
           keyringStore: keyringStore
-        ).navigationBarBackButtonHidden(),
-        isActive: $isNewWalletCreated
-      ) {
-        EmptyView()
+        ).navigationBarBackButtonHidden()
       }
     )
     .onChange(of: password) { _, newValue in
@@ -263,7 +261,7 @@ struct CreateWalletView: View {
 #if DEBUG
 struct CreateWalletView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       CreateWalletView(
         keyringStore: .previewStore,
         setupSelections: .init(setupOption: .new, networks: []),

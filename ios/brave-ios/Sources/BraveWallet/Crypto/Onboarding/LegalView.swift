@@ -77,18 +77,15 @@ struct LegalView: View {
       }
     }
     .padding()
-    .background(
-      NavigationLink(
-        destination: OnboardingNetworkSelectionView(
+    .navigationDestination(
+      isPresented: $isShowingNetworkSelection,
+      destination: {
+        OnboardingNetworkSelectionView(
           keyringStore: keyringStore,
           setupOption: setupOption,
           dismissAction: dismissAction
-        ),
-        isActive: $isShowingNetworkSelection,
-        label: {
-          EmptyView()
-        }
-      )
+        )
+      }
     )
     .accessibilityEmbedInScrollView()
     .background(Color(braveSystemName: .containerBackground).edgesIgnoringSafeArea(.all))
