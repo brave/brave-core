@@ -9,6 +9,7 @@ domain Page
       ethereum
       solana
       cardano
+      polkadot
 
   # Generates a Page Graph report for the page.
   experimental command generatePageGraph
