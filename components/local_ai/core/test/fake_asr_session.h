@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_LOCAL_AI_CORE_TEST_FAKE_ASR_SESSION_H_
 #define BRAVE_COMPONENTS_LOCAL_AI_CORE_TEST_FAKE_ASR_SESSION_H_
 
+#include <optional>
 #include <string>
 
 #include "base/test/test_future.h"
@@ -19,8 +20,7 @@
 namespace local_ai {
 
 // The worker end of one recognition, in place of the session
-// `OnDeviceSpeechRecognitionController` hands out. Members are public so tests
-// can drive and inspect the pipes without an accessor for each one.
+// `OnDeviceSpeechRecognitionController` hands out.
 class FakeAsrSession : public mojom::AsrSession,
                        public on_device_model::mojom::AsrStreamInput {
  public:
@@ -49,13 +49,46 @@ class FakeAsrSession : public mojom::AsrSession,
   // is what ends a session with no transcript, so it must survive filtering.
   void SendEmptyResult();
 
-  base::test::TestFuture<void> started;
-  on_device_model::mojom::AsrStreamOptionsPtr options;
-  base::test::TestFuture<on_device_model::mojom::AudioDataPtr> audio_chunk;
+  // Reports `transcript` as a final result when the next audio chunk arrives,
+  // once. Lets a test that drives a real recognition get an answer without
+  // watching for the chunk itself.
+  void RespondOnNextAudioChunk(const std::string& transcript);
 
-  mojo::Receiver<mojom::AsrSession> session_receiver{this};
-  mojo::Receiver<on_device_model::mojom::AsrStreamInput> stream_receiver{this};
-  mojo::Remote<on_device_model::mojom::AsrStreamResponder> responder;
+  base::test::TestFuture<void>& started() { return started_; }
+
+  const on_device_model::mojom::AsrStreamOptionsPtr& options() const {
+    return options_;
+  }
+
+  // The first chunk the engine forwards. A recognition driven from a page
+  // streams chunks for as long as it runs, and setting a future that already
+  // holds a value fails the test, so later chunks are not kept.
+  base::test::TestFuture<on_device_model::mojom::AudioDataPtr>& audio_chunk() {
+    return audio_chunk_;
+  }
+
+  mojo::Receiver<mojom::AsrSession>& session_receiver() {
+    return session_receiver_;
+  }
+
+  mojo::Receiver<on_device_model::mojom::AsrStreamInput>& stream_receiver() {
+    return stream_receiver_;
+  }
+
+  mojo::Remote<on_device_model::mojom::AsrStreamResponder>& responder() {
+    return responder_;
+  }
+
+ private:
+  void SendResultInternal(const std::string& transcript, bool is_final);
+
+  base::test::TestFuture<void> started_;
+  on_device_model::mojom::AsrStreamOptionsPtr options_;
+  base::test::TestFuture<on_device_model::mojom::AudioDataPtr> audio_chunk_;
+  mojo::Receiver<mojom::AsrSession> session_receiver_{this};
+  mojo::Receiver<on_device_model::mojom::AsrStreamInput> stream_receiver_{this};
+  mojo::Remote<on_device_model::mojom::AsrStreamResponder> responder_;
+  std::optional<std::string> pending_transcript_;
 };
 
 }  // namespace local_ai
