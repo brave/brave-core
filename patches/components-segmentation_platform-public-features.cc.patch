@@ -1,34 +1,34 @@
 diff --git a/components/segmentation_platform/public/features.cc b/components/segmentation_platform/public/features.cc
-index e1449a262f6be896d19e13080607eca8c93593cc..07be3a4ec13f9b8b21bdd2f92cccb001858aa398 100644
+index e1449a262f6be896d19e13080607eca8c93593cc..75f1e31ba66cbb73d24b22cd503bbf5d6d63ade8 100644
 --- a/components/segmentation_platform/public/features.cc
 +++ b/components/segmentation_platform/public/features.cc
-@@ -11,9 +11,10 @@
+@@ -11,9 +11,9 @@
  
  namespace segmentation_platform::features {
  
-+// kSegmentationPlatformFeature feature state is enforced via plaster rewrite.
- BASE_FEATURE(kSegmentationPlatformFeature,
+-BASE_FEATURE(kSegmentationPlatformFeature,
++BASE_OVERRIDDEN_FEATURE(kSegmentationPlatformFeature,
               "SegmentationPlatform",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kSegmentationPlatformUkmEngine,
  
-@@ -73,7 +74,8 @@ const base::FeatureParam<bool>
+@@ -73,7 +73,7 @@ const base::FeatureParam<bool>
  BASE_FEATURE(kSegmentationDefaultReportingSegments,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
 -BASE_FEATURE(kSegmentationPlatformDeviceTier, base::FEATURE_ENABLED_BY_DEFAULT);
-+// kSegmentationPlatformDeviceTier feature state is enforced via plaster rewrite.
-+BASE_FEATURE(kSegmentationPlatformDeviceTier, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kSegmentationPlatformDeviceTier, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kSegmentationPlatformTabletProductivityUser,
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -99,6 +101,7 @@ BASE_FEATURE(kSegmentationPlatformAndroidHomeModuleRanker,
+@@ -99,7 +99,7 @@ BASE_FEATURE(kSegmentationPlatformAndroidHomeModuleRanker,
  BASE_FEATURE(kSegmentationPlatformAndroidHomeModuleRankerV2,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
-+// kSegmentationPlatformTimeDelaySampling feature state is enforced via plaster rewrite.
- BASE_FEATURE(kSegmentationPlatformTimeDelaySampling,
+-BASE_FEATURE(kSegmentationPlatformTimeDelaySampling,
++BASE_OVERRIDDEN_FEATURE(kSegmentationPlatformTimeDelaySampling,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
+ // Enabled only on iOS to improve startup performance of the module ranker.

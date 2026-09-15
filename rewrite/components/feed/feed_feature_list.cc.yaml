@@ -8,26 +8,25 @@
 
 substitutions:
   - description: 'Ship kAndroidOpenIncognitoAsWindow disabled on Android.'
-    regex:
-      pattern:
-        'BASE_FEATURE(kAndroidOpenIncognitoAsWindow,
-        base::FEATURE_ENABLED_BY_DEFAULT);'
-      replace: |-
+    set_feature_flag_default_state:
+      feature_name: kAndroidOpenIncognitoAsWindow
+      value: |
+
         #if BUILDFLAG(IS_ANDROID)
-        BASE_FEATURE(kAndroidOpenIncognitoAsWindow, base::FEATURE_DISABLED_BY_DEFAULT);
+          base::FEATURE_DISABLED_BY_DEFAULT
         #else
-        BASE_FEATURE(kAndroidOpenIncognitoAsWindow, base::FEATURE_ENABLED_BY_DEFAULT);
+          base::FEATURE_ENABLED_BY_DEFAULT
         #endif
 
   - description: 'Ship kFeedContainment disabled on Android.'
-    regex:
-      pattern:
-        'BASE_FEATURE(kFeedContainment, base::FEATURE_ENABLED_BY_DEFAULT);'
-      replace: |-
+    set_feature_flag_default_state:
+      feature_name: kFeedContainment
+      value: |
+
         #if BUILDFLAG(IS_ANDROID)
-        BASE_FEATURE(kFeedContainment, base::FEATURE_DISABLED_BY_DEFAULT);
+          base::FEATURE_DISABLED_BY_DEFAULT
         #else
-        BASE_FEATURE(kFeedContainment, base::FEATURE_ENABLED_BY_DEFAULT);
+          base::FEATURE_ENABLED_BY_DEFAULT
         #endif
 
   - description: |-
@@ -36,12 +35,12 @@ substitutions:
       InterestFeedV2 is cached in ChromeCachedFlags. If the default value
       here is changed, please update the cached one's default value in
       CachedFeatureFlags.
-    regex:
-      pattern:
-        'BASE_FEATURE(kInterestFeedV2, base::FEATURE_ENABLED_BY_DEFAULT);'
-      replace: |-
+    set_feature_flag_default_state:
+      feature_name: kInterestFeedV2
+      value: |
+
         #if BUILDFLAG(IS_ANDROID)
-        BASE_FEATURE(kInterestFeedV2, base::FEATURE_DISABLED_BY_DEFAULT);
+          base::FEATURE_DISABLED_BY_DEFAULT
         #else
-        BASE_FEATURE(kInterestFeedV2, base::FEATURE_ENABLED_BY_DEFAULT);
+          base::FEATURE_ENABLED_BY_DEFAULT
         #endif
