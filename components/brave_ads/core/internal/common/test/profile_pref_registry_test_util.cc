@@ -7,20 +7,41 @@
 
 #include <utility>
 
-#include "base/check.h"
 #include "base/json/values_util.h"
+#include "base/notreached.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/test/internal/pref_value_test_info.h"
 #include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_storage_test_util_internal.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/testing_pref_service.h"
 
 namespace brave_ads::test {
 
 void RegisterProfilePref(const std::string& path, base::Value default_value) {
-  CHECK(!HasProfilePref(path))
-      << "Trying to register a previously registered pref: " << path;
+  PrefRegistrySimple* const registry =
+      GetProfilePrefServiceForTesting().registry();
 
-  ProfilePref(path).default_value = std::move(default_value);
+  switch (default_value.type()) {
+    case base::Value::Type::BOOLEAN:
+      return registry->RegisterBooleanPref(path, default_value.GetBool());
+    case base::Value::Type::INTEGER:
+      return registry->RegisterIntegerPref(path, default_value.GetInt());
+    case base::Value::Type::DOUBLE:
+      return registry->RegisterDoublePref(path, default_value.GetDouble());
+    case base::Value::Type::STRING:
+      return registry->RegisterStringPref(path, default_value.GetString());
+    case base::Value::Type::DICT:
+      return registry->RegisterDictionaryPref(
+          path, std::move(default_value).TakeDict());
+    case base::Value::Type::LIST:
+      return registry->RegisterListPref(path,
+                                        std::move(default_value).TakeList());
+    case base::Value::Type::NONE:
+    case base::Value::Type::BINARY:
+      break;
+  }
+
+  NOTREACHED() << "Unsupported pref value type for: " << path;
 }
 
 void RegisterProfileBooleanPref(const std::string& path, bool default_value) {
