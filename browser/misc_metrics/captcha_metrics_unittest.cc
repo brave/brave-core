@@ -61,8 +61,9 @@ class CaptchaMetricsTest : public testing::Test {
     histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
   }
 
-  void MaybeRecordCaptchaForUrl(const GURL& url) {
-    metrics_->MaybeRecordCaptchaForUrl(url);
+  void MaybeRecordCaptchaForUrl(const GURL& url,
+                                bool is_user_activated = false) {
+    metrics_->MaybeRecordCaptchaForUrl(url, is_user_activated);
   }
 
  protected:
@@ -148,6 +149,31 @@ TEST_F(CaptchaMetricsTest, RecordsProviderCounts) {
   histogram_tester_.ExpectBucketCount(kCaptchaCloudflareCountHistogramName, 1,
                                       1);
   histogram_tester_.ExpectBucketCount(kCaptchaHCaptchaCountHistogramName, 1, 1);
+}
+
+TEST_F(CaptchaMetricsTest, RecordsUserActivatedCounts) {
+  // Two google captchas shown; only one is interacted with by the user.
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl());
+  MaybeRecordCaptchaForUrl(GoogleCaptchaUrl(), /*is_user_activated=*/true);
+
+  task_environment_.FastForwardBy(base::Days(1));
+
+  // Shown counts include both loads.
+  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 1, 1);
+  histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 1, 1);
+
+  // User-activated counts include only the interacted-with load.
+  histogram_tester_.ExpectBucketCount(
+      kCaptchaTotalCountUserActivatedHistogramName, 1, 1);
+  histogram_tester_.ExpectBucketCount(
+      kCaptchaGoogleCountUserActivatedHistogramName, 1, 1);
+
+  // Providers that were never interacted with emit nothing on the
+  // user-activated series.
+  histogram_tester_.ExpectTotalCount(
+      kCaptchaCloudflareCountUserActivatedHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(
+      kCaptchaHCaptchaCountUserActivatedHistogramName, 0);
 }
 
 TEST_F(CaptchaMetricsTest, ExpiresAfterOneDay) {

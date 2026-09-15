@@ -22,14 +22,26 @@ class PageLoadMetricsObserverInterface;
 
 namespace misc_metrics {
 
+// Keep the histogram name consistent with metric_names.h
 inline constexpr char kCaptchaTotalCountHistogramName[] =
     "Brave.CaptchaCount.Total";
+inline constexpr char kCaptchaTotalCountUserActivatedHistogramName[] =
+    "Brave.CaptchaCount.Total.UserActivated";
+
 inline constexpr char kCaptchaGoogleCountHistogramName[] =
     "Brave.CaptchaCount.Google";
+inline constexpr char kCaptchaGoogleCountUserActivatedHistogramName[] =
+    "Brave.CaptchaCount.Google.UserActivated";
+
 inline constexpr char kCaptchaCloudflareCountHistogramName[] =
     "Brave.CaptchaCount.Cloudflare";
+inline constexpr char kCaptchaCloudflareCountUserActivatedHistogramName[] =
+    "Brave.CaptchaCount.Cloudflare.UserActivated";
+
 inline constexpr char kCaptchaHCaptchaCountHistogramName[] =
     "Brave.CaptchaCount.hCaptcha";
+inline constexpr char kCaptchaHCaptchaCountUserActivatedHistogramName[] =
+    "Brave.CaptchaCount.hCaptcha.UserActivated";
 
 // This class provides the back-end implementation to record a captcha metrics
 // once the captcha was detected by the BraveCaptchaPageLoadMetricsObserver.
@@ -59,7 +71,12 @@ class CaptchaMetrics {
   static void EnsureDefaultCaptchaProviders();
 
   // Records a captcha if |url| matches a known provider. Does not emit P3A.
-  void MaybeRecordCaptchaForUrl(const GURL& url);
+  // |is_user_activated| is a signal fired by
+  // PageLoadMetricsObserver.FrameReceivedUserActivation which is true when
+  // the user interacted with the frame like click, mouse events etc and false
+  // otherwise.
+  void MaybeRecordCaptchaForUrl(const GURL& url,
+                                const bool is_user_activated = false);
 
   // Emits the last 24h counts to P3A and schedules the next report.
   // Reports a histogram for a corresponding captcha provider iff the count was
