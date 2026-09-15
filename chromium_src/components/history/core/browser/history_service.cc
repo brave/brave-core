@@ -28,7 +28,7 @@ base::TimeDelta HistoryRetentionDaysToTimeDelta(int days) {
 
 void HistoryService::GetKnownToSyncCount(
     base::OnceCallback<void(HistoryCountResult)> callback) {
-  backend_task_runner_->PostTaskAndReplyWithResult(
+  GetBackendTaskRunner()->PostTaskAndReplyWithResult(
       FROM_HERE,
       base::BindOnce(&HistoryBackend::GetKnownToSyncCount, history_backend_),
       std::move(callback));
@@ -47,7 +47,7 @@ void HistoryService::InitHistoryRetentionPref(PrefService* prefs) {
 void HistoryService::OnHistoryRetentionDaysChanged() {
   const base::TimeDelta threshold =
       HistoryRetentionDaysToTimeDelta(history_retention_days_.GetValue());
-  backend_task_runner_->PostTask(
+  GetBackendTaskRunner()->PostTask(
       FROM_HERE, base::BindOnce(&HistoryBackend::UpdateExpirationThreshold,
                                 history_backend_, threshold));
 }
