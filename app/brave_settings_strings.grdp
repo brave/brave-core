@@ -1757,6 +1757,12 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_DESC" desc="The description for settings option to enable tab focus mode">
     Enable tab organization in Tab Search page. When opened, this will automatically send the titles and origins of all non-private tabs to Leo to classify them. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_SEND_PAGE_CONTENT_LABEL" desc="Label for the toggle, nested under the Tab Focus Mode toggle, that lets tab focus send excerpts of page text to the model that organizes the tabs">
+    Send page content for tab focus
+  </message>
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_SEND_PAGE_CONTENT_DESC" desc="Description below the toggle that lets tab focus send excerpts of page text to the model that organizes the tabs. That model is Leo by default, or the user's own model if they picked one in the 'Default model for tab focus' dropdown. The placeholder is the name of the Semantic History Search toggle on the history page.">
+    Also send short excerpts of each tab's text, so tabs are grouped by what a page is about instead of its title. Excerpts go to Leo, or to your own model if you chose one for tab focus. This needs <ph name="SEMANTIC_HISTORY_SEARCH">$1<ex>Semantic History Search</ex></ph>, which builds the excerpts on your device.
+  </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_LABEL" desc="The label for the tab organization model selection dropdown">
     Default model for tab focus
   </message>

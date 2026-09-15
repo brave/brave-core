@@ -6,13 +6,16 @@
 #include "chrome/browser/ui/webui/tab_search/tab_search_page_handler.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/map_util.h"
 #include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -52,6 +55,7 @@
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/history_embeddings/open_tab_search.h"
+#include "brave/components/history_embeddings/content/open_tab_passages.h"
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #define TabSearchPageHandler TabSearchPageHandler_ChromiumImpl
@@ -94,8 +98,10 @@ void TabSearchPageHandler::OnTabOrganizationFeaturePrefChanged(
       ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 }
 
-std::vector<ai_chat::Tab> TabSearchPageHandler::GetTabsForAIEngine() {
+void TabSearchPageHandler::GetTabsForAIEngine(
+    TabsForAIEngineCallback callback) {
   std::vector<ai_chat::Tab> tabs;
+  std::vector<GURL> urls;
   auto profile_data = CreateProfileData();
   for (const auto& window : profile_data->windows) {
     for (const auto& tab : window->tabs) {
@@ -107,11 +113,75 @@ std::vector<ai_chat::Tab> TabSearchPageHandler::GetTabsForAIEngine() {
       // handling HTTP/HTTPS tab URLs.
       tabs.push_back(ai_chat::Tab(base::NumberToString(tab->tab_id), tab->title,
                                   url::Origin::Create(tab->url)));
+      urls.push_back(tab->url);
     }
   }
 
-  return tabs;
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  Profile* profile = Profile::FromWebUI(web_ui_);
+  if (MaySendPageContent(profile)) {
+    auto* history_service = HistoryServiceFactory::GetForProfile(
+        profile, ServiceAccessType::EXPLICIT_ACCESS);
+    auto* embeddings_service =
+        HistoryEmbeddingsServiceFactory::GetForProfile(profile);
+    // Passages come from the test override, or from the two services.
+    if (tab_passages_fetcher_for_testing_ ||
+        (history_service && embeddings_service)) {
+      auto on_ready = base::BindOnce(&TabSearchPageHandler::OnTabPassagesReady,
+                                     weak_ptr_factory_.GetWeakPtr(),
+                                     std::move(tabs), std::move(callback));
+      if (tab_passages_fetcher_for_testing_) {
+        tab_passages_fetcher_for_testing_.Run(urls, std::move(on_ready));
+      } else {
+        history_embeddings::GetPassagesForUrls(
+            history_service, embeddings_service->AsWeakPtr(), urls,
+            ai_chat::kMaxPassagesPerTab, ai_chat::kMaxPassageBytes,
+            std::move(on_ready), &query_url_task_tracker_);
+      }
+      return;
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, base::BindOnce(std::move(callback), std::move(tabs)));
 }
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+bool TabSearchPageHandler::MaySendPageContent(Profile* profile) {
+  // Sending page excerpts needs its own opt-in, because the history
+  // embeddings setting promises on-device-only processing. It additionally
+  // requires that setting, since it is what builds the passage index.
+  //
+  // Off the record, page text from the regular profile's history must never
+  // be attached to private-window tabs; the embeddings service is
+  // original-only so this is belt and braces, but the prefs alone would say
+  // yes here.
+  // Reading the pref before it is registered is fatal, and registration is
+  // conditional on the AI Chat feature being on at runtime.
+  return !profile->IsOffTheRecord() && ai_chat::features::IsAIChatEnabled() &&
+         profile->GetPrefs()->GetBoolean(
+             ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent) &&
+         history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile);
+}
+
+void TabSearchPageHandler::OnTabPassagesReady(
+    std::vector<ai_chat::Tab> tabs,
+    TabsForAIEngineCallback callback,
+    std::vector<std::vector<std::string>> passages_by_tab) {
+  CHECK_EQ(tabs.size(), passages_by_tab.size());
+  // The reads are asynchronous, so re-check consent before attaching what
+  // they returned; the user may have withdrawn it while they were in flight.
+  if (!MaySendPageContent(Profile::FromWebUI(web_ui_))) {
+    std::move(callback).Run(std::move(tabs));
+    return;
+  }
+  for (size_t i = 0; i < tabs.size(); ++i) {
+    tabs[i].passages = std::move(passages_by_tab[i]);
+  }
+  std::move(callback).Run(std::move(tabs));
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 tab_search::mojom::ErrorPtr TabSearchPageHandler::GetError(
     ai_chat::mojom::APIError api_error) {
@@ -140,7 +210,14 @@ tab_search::mojom::ErrorPtr TabSearchPageHandler::GetError(
 
 void TabSearchPageHandler::GetSuggestedTopics(
     GetSuggestedTopicsCallback callback) {
-  std::vector<ai_chat::Tab> tabs = GetTabsForAIEngine();
+  GetTabsForAIEngine(
+      base::BindOnce(&TabSearchPageHandler::OnTabsReadyForSuggestedTopics,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void TabSearchPageHandler::OnTabsReadyForSuggestedTopics(
+    GetSuggestedTopicsCallback callback,
+    std::vector<ai_chat::Tab> tabs) {
   ai_chat::AIChatService* ai_chat_service =
       ai_chat::AIChatServiceFactory::GetForBrowserContext(
           Profile::FromWebUI(web_ui_));
@@ -168,13 +245,21 @@ void TabSearchPageHandler::GetFocusTabs(const std::string& topic,
                                         GetFocusTabsCallback callback) {
   original_tabs_info_by_window_.clear();
 
+  GetTabsForAIEngine(base::BindOnce(
+      &TabSearchPageHandler::OnTabsReadyForFocusTabs,
+      weak_ptr_factory_.GetWeakPtr(), topic, std::move(callback)));
+}
+
+void TabSearchPageHandler::OnTabsReadyForFocusTabs(
+    const std::string& topic,
+    GetFocusTabsCallback callback,
+    std::vector<ai_chat::Tab> tabs) {
   ai_chat::AIChatService* ai_chat_service =
       ai_chat::AIChatServiceFactory::GetForBrowserContext(
           Profile::FromWebUI(web_ui_));
   // Must be available as related UI is only shown if the service is
   // available.
   CHECK(ai_chat_service);
-  std::vector<ai_chat::Tab> tabs = GetTabsForAIEngine();
   ai_chat_service->GetFocusTabs(
       tabs, topic,
       base::BindOnce(&TabSearchPageHandler::OnGetFocusTabs,
