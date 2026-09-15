@@ -12,7 +12,12 @@ brave_resource_tools_extra_excludes = [
 
 brave_resources_path =
     rebase_path("$root_gen_dir/brave/ui/webui/resources/tsc/", root_build_dir)
-brave_resource_tools_extra_external_paths = [
-  "chrome://resources/brave/|$brave_resources_path",
-  "//resources/brave/|$brave_resources_path",
-]
+
+# chrome:// URLs must not be listed for chrome-untrusted:// contexts (see
+# comment in bundle_js.gni), so keep a subset with just the scheme-relative
+# entry for those bundles.
+brave_resource_tools_extra_external_paths_chrome_untrusted =
+    [ "//resources/brave/|$brave_resources_path" ]
+brave_resource_tools_extra_external_paths =
+    [ "chrome://resources/brave/|$brave_resources_path" ] +
+    brave_resource_tools_extra_external_paths_chrome_untrusted

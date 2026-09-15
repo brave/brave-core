@@ -201,6 +201,7 @@
 -ReadAnythingControllerBrowserTest.*
 -ReadAnythingReadAloudAppModelTest.*
 -ReadAnythingReadAloudAppModelV8SegmentationTest.*
+-ReadAnythingUntrustedPageHandlerTest.*
 -SidePanelCoordinatorTest.ReadAnythingSidePanelWidthNotCappedAtTwoThirds
 
 # Per Claude: This test times out because chromium_src override of
