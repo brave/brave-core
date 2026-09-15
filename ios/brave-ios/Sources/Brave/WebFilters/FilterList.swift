@@ -10,7 +10,16 @@ struct FilterList: Identifiable, Equatable {
   var id: String { return entry.uuid }
   let order: Int
   let entry: AdblockFilterListCatalogEntry
-  var isEnabled: Bool = false
+  /// Whether the user has explicitly enabled or disabled this filter list.
+  ///
+  /// `nil` means the user has never made a choice for it.
+  var isEnabled: Bool?
+
+  /// The enabled state to use, falling back to the catalog default when the user
+  /// has never made a choice for this filter list.
+  var isEnabledOrDefault: Bool {
+    return isEnabled ?? entry.defaultEnabled
+  }
 
   var isHidden: Bool {
     return entry.hidden
@@ -25,6 +34,6 @@ struct FilterList: Identifiable, Equatable {
   init(from entry: AdblockFilterListCatalogEntry, order: Int, isEnabled: Bool?) {
     self.entry = entry
     self.order = order
-    self.isEnabled = isEnabled ?? entry.defaultEnabled
+    self.isEnabled = isEnabled
   }
 }

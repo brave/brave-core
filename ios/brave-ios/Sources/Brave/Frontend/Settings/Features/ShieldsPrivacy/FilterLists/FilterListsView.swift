@@ -221,7 +221,7 @@ struct FilterListsView: View {
     #if DEBUG
     let allEnabled = Binding {
       filterListStorage.filterLists.allSatisfy({
-        $0.isEnabled || !$0.satisfies(searchText: searchText)
+        $0.isEnabledOrDefault || !$0.satisfies(searchText: searchText)
       })
     } set: { isEnabled in
       filterListStorage.filterLists.enumerated().forEach { index, filterList in
@@ -240,7 +240,13 @@ struct FilterListsView: View {
 
     ForEach($filterListStorage.filterLists) { $filterList in
       if !filterList.isHidden && filterList.satisfies(searchText: searchText) {
-        Toggle(isOn: $filterList.isEnabled) {
+        let isEnabled = Binding {
+          filterList.isEnabledOrDefault
+        } set: { isEnabled in
+          $filterList.wrappedValue.isEnabled = isEnabled
+        }
+
+        Toggle(isOn: isEnabled) {
           VStack(alignment: .leading) {
             Text(filterList.entry.title)
             Text(filterList.entry.desc)

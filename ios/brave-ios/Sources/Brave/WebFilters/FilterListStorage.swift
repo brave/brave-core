@@ -99,14 +99,13 @@ import Preferences
         $0.componentId == entry.componentId
       })
       let isEnabled: Bool?
-      if entry.hidden {
-        // Some special filter lists don't have specific UI to disable it
-        // (except for disabling all of ad-blocking)
-        // For example the "default" and "first-party" list is controlled using our general Ad-block and TP toggle.
-        isEnabled = entry.defaultEnabled
-      } else if enableDefaultLanguageLists && entry.matchesCurrentLanguage {
+      if !entry.hidden && enableDefaultLanguageLists && entry.matchesCurrentLanguage {
+        // The only case where we enable a filter list on the user's behalf.
         isEnabled = true
       } else {
+        // Otherwise we only have a value if the user made an explicit choice.
+        // Hidden lists (i.e. the "default" and "first-party" lists) get theirs from
+        // `ensureFilterList` when the general Ad-block and TP toggle changes.
         isEnabled = setting?.isEnabled
       }
 
@@ -174,7 +173,7 @@ import Preferences
 
   /// - Warning: Do not call this before we load core data
   public func isEnabled(for componentId: String) -> Bool {
-    return filterLists.first(where: { $0.entry.componentId == componentId })?.isEnabled
+    return filterLists.first(where: { $0.entry.componentId == componentId })?.isEnabledOrDefault
       ?? allFilterListSettings.first(where: { $0.componentId == componentId })?
       .isEnabledOrDefault
       ?? pendingDefaults[componentId]
@@ -193,7 +192,7 @@ import Preferences
           // Ensure the service is fetching the files
           self.adBlockService?.enableFilterList(
             forUUID: filterList.entry.uuid,
-            isEnabled: filterList.isEnabled
+            isEnabled: filterList.isEnabledOrDefault
           )
         }
       }
@@ -220,7 +219,7 @@ import Preferences
   /// - Warning: Do not call this before we load core data
   private func upsertSetting(
     uuid: String,
-    isEnabled: Bool,
+    isEnabled: Bool?,
     isHidden: Bool,
     componentId: String,
     allowCreation: Bool,
@@ -256,7 +255,7 @@ import Preferences
   private func updateSetting(
     uuid: String,
     componentId: String,
-    isEnabled: Bool,
+    isEnabled: Bool?,
     isHidden: Bool,
     order: Int,
     isAlwaysAggressive: Bool,
@@ -265,6 +264,10 @@ import Preferences
     guard let index = allFilterListSettings.firstIndex(where: { $0.uuid == uuid }) else {
       return
     }
+
+    // A `nil` value means the user never made a choice for this filter list,
+    // which must not clobber a choice they made previously.
+    let isEnabled = isEnabled ?? allFilterListSettings[index].isEnabled
 
     // Ensure we stop if this is already in sync in order to avoid an event loop
     // And things hanging for too long.
@@ -292,7 +295,7 @@ import Preferences
   private func create(
     uuid: String,
     componentId: String,
-    isEnabled: Bool,
+    isEnabled: Bool?,
     isHidden: Bool,
     order: Int,
     isAlwaysAggressive: Bool,
@@ -337,7 +340,7 @@ extension FilterListStorage {
         .sorted(by: { $0.order?.intValue ?? 0 <= $1.order?.intValue ?? 0 })
         .compactMap(\.engineSource)
       : filterLists
-        .filter(\.isEnabled)
+        .filter(\.isEnabledOrDefault)
         .map(\.engineSource)
   }
 
