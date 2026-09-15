@@ -40,6 +40,11 @@ export interface BackgroundState {
   sponsoredImagesEnabled: boolean
   braveBackgrounds: BraveBackground[]
   customBackgrounds: string[]
+  // Keeps the random custom background stable for this NTP while the list
+  // changes (e.g. the user removes a different image). Cleared/reassigned when
+  // that sticky URL is removed or a new tab rotates the index.
+  customBackgroundStickyUrl: string | null
+  disabledBraveBackgrounds: string[]
   selectedBackground: SelectedBackground
   backgroundRotateIndex: number
   backgroundRandomValue: number
@@ -100,6 +105,8 @@ export function defaultBackgroundStore(): BackgroundStore {
     sponsoredImagesEnabled: true,
     braveBackgrounds: [],
     customBackgrounds: [],
+    customBackgroundStickyUrl: null,
+    disabledBraveBackgrounds: [],
     selectedBackground: {
       type: SelectedBackgroundType.kGradient,
       value: gradientPreviewBackground,
@@ -116,6 +123,7 @@ export function defaultBackgroundStore(): BackgroundStore {
         return false
       },
       async removeCustomBackground(background) {},
+      setBraveBackgroundEnabled(background, enabled) {},
       notifySponsoredImageLoadError() {},
       notifySponsoredImageLogoClicked() {},
       notifySponsoredRichMediaEvent(type) {},
@@ -129,6 +137,7 @@ export interface BackgroundActions {
   selectBackground: (type: SelectedBackgroundType, value: string) => void
   showCustomBackgroundChooser: () => Promise<boolean>
   removeCustomBackground: (background: string) => Promise<void>
+  setBraveBackgroundEnabled: (background: string, enabled: boolean) => void
   notifySponsoredImageLoadError: () => void
   notifySponsoredImageLogoClicked: () => void
   notifySponsoredRichMediaEvent: (type: NewTabPageAdEventType) => void
@@ -148,6 +157,46 @@ function chooseIndex<T>(list: T[], index: number): T | null {
   return list[index % list.length]
 }
 
+// Prefer the sticky URL when it is still in the list so removing a different
+// custom image does not remapped rotateIndex to a new background mid-session.
+export function resolveCustomBackgroundUrl(
+  customBackgrounds: string[],
+  rotateIndex: number,
+  stickyUrl: string | null,
+): string | null {
+  if (stickyUrl && customBackgrounds.includes(stickyUrl)) {
+    return stickyUrl
+  }
+  return chooseIndex(customBackgrounds, rotateIndex)
+}
+
+// Picks a Brave background using a seed into the full catalog, then skips any
+// disabled entries. Indexing the full list (not the filtered one) keeps the
+// current NTP image stable when the user disables a different image.
+function chooseBraveBackground(
+  braveBackgrounds: BraveBackground[],
+  disabledBraveBackgrounds: string[],
+  randomValue: number,
+): BraveBackground | null {
+  if (braveBackgrounds.length === 0) {
+    return null
+  }
+
+  const disabled = new Set(disabledBraveBackgrounds)
+  const start = Math.floor(randomValue * braveBackgrounds.length)
+
+  for (let offset = 0; offset < braveBackgrounds.length; offset++) {
+    const candidate =
+      braveBackgrounds[(start + offset) % braveBackgrounds.length]
+    if (!disabled.has(candidate.imageUrl)) {
+      return candidate
+    }
+  }
+
+  // Every image is disabled — fall back to the seeded entry in the full list.
+  return braveBackgrounds[start]
+}
+
 const defaultBackground: Background = {
   type: 'color',
   cssValue: gradientPreviewBackground,
@@ -161,6 +210,8 @@ export function getCurrentBackground(
     backgroundsEnabled,
     braveBackgrounds,
     customBackgrounds,
+    customBackgroundStickyUrl,
+    disabledBraveBackgrounds,
     selectedBackground,
     backgroundRandomValue: randomValue,
     backgroundRotateIndex: rotateIndex,
@@ -189,11 +240,27 @@ export function getCurrentBackground(
 
   switch (type) {
     case SelectedBackgroundType.kBrave: {
-      const braveBackground = chooseRandom(braveBackgrounds, randomValue)
+      if (value) {
+        const pinned = braveBackgrounds.find((b) => b.imageUrl === value)
+        if (pinned) {
+          return { type: 'brave', ...pinned }
+        }
+      }
+      const braveBackground = chooseBraveBackground(
+        braveBackgrounds,
+        disabledBraveBackgrounds,
+        randomValue,
+      )
       return braveBackground ? { type: 'brave', ...braveBackground } : null
     }
     case SelectedBackgroundType.kCustom: {
-      const imageUrl = value || chooseIndex(customBackgrounds, rotateIndex)
+      const imageUrl =
+        value
+        || resolveCustomBackgroundUrl(
+          customBackgrounds,
+          rotateIndex,
+          customBackgroundStickyUrl,
+        )
       return imageUrl ? { type: 'custom', imageUrl } : null
     }
     case SelectedBackgroundType.kSolid: {
