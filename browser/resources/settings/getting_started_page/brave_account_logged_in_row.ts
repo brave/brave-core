@@ -47,6 +47,12 @@ export class BraveAccountLoggedInRowElement extends
     return { loggedInIntent: intent }
   }
 
+  protected override get verificationIntentDescription() {
+    return this.i18n(
+      BraveAccountSettingsStrings
+        .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ROW_DESCRIPTION_1)
+  }
+
   override disconnectedCallback() {
     super.disconnectedCallback()
 

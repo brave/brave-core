@@ -6,8 +6,10 @@
 import { assert } from '//resources/js/assert.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import { BraveAccountBrowserProxy } from './brave_account_browser_proxy.js'
+import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
 import { DialogMode, VerificationIntent } from '../brave_account.mojom-webui.js'
 import { showError, showSuccess } from '../brave_account_shared.js'
 
@@ -39,10 +41,33 @@ export abstract class BraveAccountRowBaseElement<
   // Tags the bare per-state intent into the union the service expects.
   protected abstract makeVerificationIntent(intent: Intent): VerificationIntent
 
-  protected async onResendConfirmationEmailLinkClicked(
-        e: CustomEvent<{event: Event}>) {
-    e.detail.event.preventDefault()
+  // Opening sentence of the pending-verification description. Differs per row
+  // and per intent, so each row supplies its own.
+  protected abstract get verificationIntentDescription(): string
 
+  // The pending-verification description ends with a sentence that wraps its
+  // `resend` link text in `<a>` tags, so that the link text is translated in
+  // context rather than as a standalone message. The tags are only used to
+  // locate the link text - they are never parsed as HTML.
+  protected getVerificationDescription() {
+    const [beforeLink, linkLabel, afterLink] = loadTimeData.getString(
+      BraveAccountSettingsStrings
+        .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3)
+      .split(/<a>|<\/a>/)
+
+    return {
+      beforeLink: [
+        this.verificationIntentDescription,
+        this.i18n(BraveAccountSettingsStrings
+          .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2),
+        beforeLink,
+      ].join(' '),
+      linkLabel,
+      afterLink,
+    }
+  }
+
+  protected async onResendConfirmationEmailLinkClicked() {
     if (this.isResendingConfirmationEmail) return
     this.isResendingConfirmationEmail = true
 
