@@ -12,8 +12,10 @@
 // them with Leo via WebMCP (navigator.modelContext). There is no visible UI.
 //
 // The handle is delivered via launchQueue; once captured, the file tools are
-// registered with Leo via WebMCP (see tools.ts / file_ops.ts).
+// registered with Leo via WebMCP (see tools.ts / file_ops.ts). The `view.`
+// sibling origin can also read files over postMessage (see message_handler.ts).
 
+import { installMessageHandler } from './message_handler'
 import { registerTools } from './tools'
 
 // launchQueue is not in the default TS DOM lib; declare the minimal surface we
@@ -30,7 +32,16 @@ declare global {
   }
 }
 
-let rootHandle: FileSystemDirectoryHandle | null = null
+// The directory handle arrives asynchronously, so expose it as a promise that
+// consumers can await rather than a slot they have to poll.
+const {
+  promise: rootHandle,
+  resolve: resolveRoot,
+  reject: rejectRoot,
+} = Promise.withResolvers<FileSystemDirectoryHandle>()
+// Nothing awaits it until a request arrives, so don't let a failed launch
+// surface as an unhandled rejection. Awaiting consumers still see it.
+rootHandle.catch(() => {})
 
 function onLaunch(params: LaunchParams) {
   const entry = params.files?.[0]
@@ -39,19 +50,23 @@ function onLaunch(params: LaunchParams) {
       '[leo-workspace] launch params missing a directory handle',
       params,
     )
+    rejectRoot(new Error('workspace folder is unavailable'))
     return
   }
-  rootHandle = entry as FileSystemDirectoryHandle
-  console.log('[leo-workspace] received directory handle:', rootHandle.name)
-  void registerTools(rootHandle)
+  const root = entry as FileSystemDirectoryHandle
+  console.log('[leo-workspace] received directory handle:', root.name)
+  resolveRoot(root)
+  void registerTools(root)
 }
 
 function initialize() {
   console.log('[leo-workspace] bundle loaded at', window.location.origin)
+  installMessageHandler(rootHandle)
   if (window.launchQueue) {
     window.launchQueue.setConsumer(onLaunch)
   } else {
     console.error('[leo-workspace] window.launchQueue is unavailable')
+    rejectRoot(new Error('workspace folder is unavailable'))
   }
 }
 

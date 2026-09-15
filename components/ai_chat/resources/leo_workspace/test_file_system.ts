@@ -40,11 +40,17 @@ class FakeFileHandle {
     public contents: string,
   ) {}
 
+  // Stands in for the File the real API returns; it can't be a real File because
+  // jsdom's Blob implements neither text() nor stream(). `size` and arrayBuffer()
+  // are in bytes, as in the browser.
   async getFile() {
+    const bytes = new TextEncoder().encode(this.contents)
     return {
       name: this.name,
-      size: this.contents.length,
+      size: bytes.byteLength,
+      type: '',
       text: async () => this.contents,
+      arrayBuffer: async () => bytes.buffer,
     }
   }
 
