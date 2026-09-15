@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Build the pinsets from Brave's roots instead of Chrome's.
+
+      Brave pins against its own set of roots, so the certificates file the
+      generator was handed is of no interest.
+    preempt_function_impl:
+      function_name: ParseCertificatesFile
+      code: |-
+        certs_input = kBraveCerts;
+
+  - description: |
+      Preload Brave's pins instead of Chrome's.
+
+      Google has asked us not to ship the pins that come with Chrome, so the
+      pins file the generator was handed is of no interest.
+    preempt_function_impl:
+      function_name: ParsePkpJson
+      code: |-
+        pins_json = kBravePinsJson;
+
+  - description: |
+      Preload Brave's HSTS entries alongside Chrome's.
+
+      Chrome's entries that are not force-https are only there to carry pins
+      we drop, so they go before Brave's own entries are parsed in a second
+      pass through the same body.
+    after_function_impl:
+      function_name: ParseHstsJson
+      result_var: parsed
+      code: |-
+        if (!parsed || hsts_json == kBraveHstsJson) {
+          return parsed;
+        }
+        KeepOnlyForceHttpsEntries(entries);
+        return ParseHstsJson(kBraveHstsJson, entries);

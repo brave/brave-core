@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/location_bar/location_bar_view.cc b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-index b9988028f46205d0c5cb21c19c1c72143eba8adc..23d2a837c42540eb831882cb4ea2c33eb3ba7368 100644
+index df6e4661faa3b3c2f43afff0f6c27a895062546b..9145e784faff7509a5799f5ff9af5c9293cadb23 100644
 --- a/chrome/browser/ui/views/location_bar/location_bar_view.cc
 +++ b/chrome/browser/ui/views/location_bar/location_bar_view.cc
-@@ -764,6 +764,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -790,6 +790,7 @@ void LocationBarView::Layout(PassKey) {
                                    .indent_input_when_popup_closed) &&
                               !location_icon_view_->ShouldShowLabel() &&
                               !ShouldShowKeywordBubble();
@@ -10,7 +10,7 @@ index b9988028f46205d0c5cb21c19c1c72143eba8adc..23d2a837c42540eb831882cb4ea2c33e
    if (should_indent) {
      icon_left += 7 /*icon_indent*/;
      icon_left += omnibox_feature_configs::AdjustOmniboxIndent()
-@@ -832,6 +833,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -858,6 +859,7 @@ void LocationBarView::Layout(PassKey) {
          vertical_padding, location_height, false, kLeadingDecorationMaxFraction,
          /*intra_item_padding=*/0, icon_left, selected_keyword_view_);
      selected_keyword_view_->SetKeyword(keyword);
@@ -18,7 +18,7 @@ index b9988028f46205d0c5cb21c19c1c72143eba8adc..23d2a837c42540eb831882cb4ea2c33e
    } else if (location_icon_view_->GetShowText() &&
               !ShouldChipOverrideLocationIcon()) {
      location_icon_view_->SetVisible(true);
-@@ -877,6 +879,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -903,6 +905,7 @@ void LocationBarView::Layout(PassKey) {
      // When the AIM page action is shown as the right-most page action in the
      // location bar, it should be positioned flush against the right edge of the
      // location bar.
@@ -26,7 +26,7 @@ index b9988028f46205d0c5cb21c19c1c72143eba8adc..23d2a837c42540eb831882cb4ea2c33e
      constexpr int kTrailingEdgePaddingForAim = 5;
      add_trailing_decoration(page_action_container_,
                              /*intra_item_padding=*/0,
-@@ -896,6 +899,7 @@ void LocationBarView::Layout(PassKey) {
+@@ -922,6 +925,7 @@ void LocationBarView::Layout(PassKey) {
  
    add_trailing_decoration(clear_all_button_, /*intra_item_padding=*/0,
                            /*edge_padding=*/trailing_decorations_edge_padding);

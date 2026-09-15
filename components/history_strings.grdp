@@ -318,11 +318,20 @@
   <message name="IDS_HISTORY_REVIEW_GEMINI_ACTIVITY" desc="Command in the history entry drop-down menu. Opens Gemini Apps Activity page." translateable="false">
     Review Gemini activity
   </message>
+  <message name="IDS_HISTORY_GO_TO_GEMINI_CHAT" desc="Command in the history entry drop-down menu. Opens the Gemini conversation in split view." translateable="false">
+    Go to Gemini chat
+  </message>
+  <message name="IDS_HISTORY_GO_TO_GEMINI_CHAT_ERROR" desc="Toast notification shown when opening Gemini chat fails." translateable="false">
+    Couldn't open Gemini chat
+  </message>
   <message name="IDS_HISTORY_OTHER_FORMS_OF_HISTORY_GMA_AND_GAA_CRITICAL_ACTIONS" desc="The notification at the bottom of the history page indicating that deleting Brave browsing history will not delete other forms of history stored at Brave My Activity and Gemini Apps Activity, shown when critical actions are enabled." translateable="false">
     Your Brave sync chain may have other forms of browsing history at <ph name="BEGIN_LINK_GMA">&lt;a target="_blank" id="footerBraveMyActivityLink" href="$1"&gt;</ph>myactivity.google.com<ph name="END_LINK_GMA">&lt;/a&gt;</ph>, such as auto browse visits in your <ph name="BEGIN_LINK_GAA">&lt;a target="_blank" id="footerGeminiAppsActivityLink" href="$2"&gt;</ph>Gemini Apps Activity<ph name="END_LINK_GAA">&lt;/a&gt;</ph>
   </message>
   <message name="IDS_HISTORY_GEMINI_KEY_BROWSING_ACTIONS_TITLE" desc="Tooltip text for the expand button on history items for Gemini actor visits." translateable="false">
     Gemini key browsing actions
+  </message>
+  <message name="IDS_HISTORY_CRITICAL_ACTION_LINKOUT_A11Y_LABEL" desc="Accessibility label for a critical action linkout icon in history item indicating the destination." translateable="false">
+    <ph name="DESTINATION">$1<ex>Contact info</ex></ph>, opens in a new tab
   </message>
   <message name="IDS_HISTORY_CRITICAL_ACTION_PASSWORD_FILLED" desc="Label for password filled critical action in history item." translateable="false">
     Password filled

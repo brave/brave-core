@@ -1,5 +1,5 @@
 diff --git a/components/sync/base/user_selectable_type.cc b/components/sync/base/user_selectable_type.cc
-index e834dc402fd39a8fe8fa6e25e554bf79640c00a8..91b825b6304b0133434fb0e6c0aed3371c96bd83 100644
+index 908cdfcb9bae38d63123d6c5a3e577c792af0b9a..b84ec85ccb9dd4ddba2b64837ece7412a9b9ff25 100644
 --- a/components/sync/base/user_selectable_type.cc
 +++ b/components/sync/base/user_selectable_type.cc
 @@ -57,7 +57,7 @@ UserSelectableTypeInfo GetUserSelectableTypeInfo(

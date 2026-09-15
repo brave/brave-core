@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Send an opaque Origin header for cross-origin requests from .onion pages.
+
+      A .onion page must not disclose the address it came from, which is the
+      same treatment upstream already gives a request with a tainted origin.
+    regex:
+      re_pattern: '(origin_value = )tainted_'
+      replace: '\1tainted_ || IsCrossOriginOnionRequest(request_)'

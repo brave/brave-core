@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/chrome_extensions_browser_client.cc b/chrome/browser/extensions/chrome_extensions_browser_client.cc
-index 0f89eff01970621556641ffd4647c0769bf57ddf..db05b91832fcef5507fffea3d82af8dfd319414c 100644
+index 18c8da68d3917ac40afcd0c5552d85c0a5f5118c..85e7f15df0a9f28c0dd8d37e395c088a8370c146 100644
 --- a/chrome/browser/extensions/chrome_extensions_browser_client.cc
 +++ b/chrome/browser/extensions/chrome_extensions_browser_client.cc
 @@ -275,7 +275,7 @@ bool RegisterTransformers() {

@@ -1,0 +1,16 @@
+diff --git a/ui/views/layout/layout_manager_base.cc b/ui/views/layout/layout_manager_base.cc
+index e3b23272e27affac8406dd6eec9c45e9e083eb51..8dc107799bdbe84622ff735f17359cbdcc0fe961 100644
+--- a/ui/views/layout/layout_manager_base.cc
++++ b/ui/views/layout/layout_manager_base.cc
+@@ -197,7 +197,10 @@ bool LayoutManagerBase::CanBeVisible(const View* child) const {
+ }
+ 
+ void LayoutManagerBase::LayoutImpl() {
+-  ApplyLayout(GetProposedLayout(host_view_->size()));
++  // Hold a copy: `ApplyLayout()` can re-enter `GetProposedLayout()` and
++  // reassign the `cached_layout_` this would otherwise reference.
++  const ProposedLayout layout = GetProposedLayout(host_view_->size());
++  ApplyLayout(layout);
+ }
+ 
+ void LayoutManagerBase::BeforeApplyLayout(const ProposedLayout& layout) {

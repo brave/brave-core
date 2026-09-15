@@ -54,6 +54,7 @@ source_set("ai_chat") {
     "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/navigator",
     "//chrome/browser/ui/select_file_policy",
     "//chrome/browser/ui/webui:favicon_source",
     "//components/favicon/core",

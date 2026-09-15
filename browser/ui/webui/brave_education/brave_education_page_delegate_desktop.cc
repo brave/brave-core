@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_education/brave_education_page_delegate_desktop.h"
 
 #include "base/check.h"
+#include "base/types/to_address.h"
 #include "brave/browser/ui/brave_vpn/brave_vpn_controller.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
@@ -56,8 +57,8 @@ void BraveEducationPageDelegateDesktop::OpenVPNPanel() {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 void BraveEducationPageDelegateDesktop::OpenAIChat() {
-  window_interface_->GetFeatures().side_panel_ui()->Show(
-      SidePanelEntry::Key(SidePanelEntryId::kChatUI));
+  SidePanelUI::From(base::to_address(window_interface_))
+      ->Show(SidePanelEntry::Key(SidePanelEntryId::kChatUI));
 }
 #endif
 

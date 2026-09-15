@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Reinstall via `BraveGetUpdateUrl()` instead of Chrome's redirect URL.
+
+      Swap the URL passed to `OpenURLParams::CreateBrowserInitiated()` in
+      `OnDialogAccepted()` for `BraveGetUpdateUrl()` (defined in the
+      chromium_src shadow), which builds the download URL for Brave's channel
+      instead of Chrome's.
+    regex:
+      re_pattern: '(OnDialogAccepted\(.*?CreateBrowserInitiated\(\s*)GURL\(update_browser_redirect_url\)'
+      re_flags: [DOTALL]
+      replace: '\1BraveGetUpdateUrl()'

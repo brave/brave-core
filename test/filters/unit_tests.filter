@@ -33,6 +33,8 @@
 -GlicMetricsTrustFirstOnboardingTest.*
 -GlicEnablingProfileReadyStateTestBase.*
 -MultistepFilterServiceFactoryTest.*
+-ProfilePickerTest.ComputeFirstRunSkipReasonPrecedence
+-ProfilePickerTest.ComputeFirstRunSkipReasonProfileAlreadySetUp
 -SigninUiUtilTest.*
 -SkillsUiTabController*Test.*_CallsInvoke*
 -SkillsUiTabController*Test.InvokeSkill_*
@@ -220,6 +222,7 @@
 -PrerenderManagerBasicRequirementTest.*
 -PrerenderManagerPrewarmTest.*
 -PrerenderManagerTest.*
+-SaasUsageNavigationObserverTest.DoNotReportPrerenderNavigation
 
 # This test fails due to Brave's disabling of header variation (e.g overrides
 # for GetClientDataHeaders)
@@ -303,6 +306,7 @@
 -AccountExtensionTrackerUnitTest.AccountExtensionsRemovedWhenSignedOut
 -AccountExtensionTrackerUnitTest.ExtensionSyncDisabledWhileSignedIn
 -AccountsPolicyManagerTest.ClearProfileWhenSigninAndSignoutNotAllowed
+-ActionAppMenuManagerTest.ProfileSubmenu
 -ActorTaskListBubbleControllerTest.ShowBubble*
 -ActorTaskListBubbleTest.*
 -All/DiceResponseHandlerParamTest.Signin*/*
@@ -311,6 +315,7 @@
 -AvatarButtonPromoManagerTest.SigninPromoSupportIndependantProfileAndAccount*
 -BrowserSigninDetectorServiceTest.LateObservation
 -ChromePaymentsAutofillClientTest.ShowPaymentsChurnedUsersUI_WithAccountInfo
+-ComputeProfileMenuAvatarButtonPromoInfoParamTest.*
 -ConnectorsServiceRealTimeURLIdentifierTest.ReturnsCorrectIdentifier/*
 -ContextualSearchboxHandlerSignedInTestTabsTest.GetRecentTabs_SetsShowInRecentTabChip
 -ContextualTasksEligibilityManagerTest.*
@@ -670,9 +675,12 @@
 -WebRtcLoggingControllerTest.ManagedProfileWithUnsetPolicy
 -WebRtcLoggingControllerTest.UnmanagedProfileWithUnsetPolicy
 
-# The following test uses Chromium's list of "starter pack engines", which
+# The following tests use Chromium's list of "starter pack engines", which
 # includes entries not supported by Brave (i.e. "@gemini").
 -OmniboxEditModelPopupTest.GetPopupAccessibilityLabelForCurrentSelection_KeywordMode
+-SearchIntegrityTest.CheckDuplicateKeywordReport_Comprehensive
+-SearchIntegrityTest.CheckDuplicateKeywordReport_StarterPackDuplicate
+-SearchIntegrityTest.Histograms_DuplicateKeyword
 
 # These tests fail because ContextualTasksContextService cannot be created
 # because it depends on PageEmbeddingsService being created and that service is
@@ -815,6 +823,10 @@
 # CHECK(rfh) in GetThrottleManager().
 -StorageAccessAPITabHelperTest.OnFrameReceivedUserActivation_FencedFrame
 
+# These tests fail because we disable blink::features::kFencedFrames.
+-ActorOneTimeTokenFillingServiceImplTest.ValidateFormFillingContext_FencedFrame_InsecureContext
+-SaasUsageNavigationObserverTest.DoNotReportFencedFrameNavigation
+
 # These tests enable kReplaceSyncPromos* via ScopedFeatureList and assert
 # the sign-in-promo behavior that Brave unconditionally disables,
 # brave-browser#58511
@@ -850,6 +862,9 @@
 -ProfileManagerTest.ProfileAvatarRecordedAtProfileInit
 -ProfileMetricsTest.LogProfileAvatar
 -TurnSyncOnHelperTest.*
+
+# This test fails because we suppress kLinkCopied toast.
+-ToastControllerUnitTest.RecordToastDismissReasonHistogram
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

@@ -17,6 +17,9 @@ using CertificateTest = PlatformTest;
 namespace net {
 namespace {
 #if BUILDFLAG(INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST)
+#include "net/http/transport_security_state_static_pins.h"
+// Pins header must be included first because this header uses kFindHostPin
+// defined in the pinds header.
 #include "net/http/transport_security_state_static.h"
 #endif  // INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST
 }  // namespace

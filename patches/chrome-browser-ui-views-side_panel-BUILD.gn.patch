@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/side_panel/BUILD.gn b/chrome/browser/ui/views/side_panel/BUILD.gn
-index eedffc77fbb88fbfdaf7a819da060ecfefb8f8f8..239b97035235eb5ce1f8051a2feec6ee08573ffc 100644
+index f51ca03ca233cd31098de9cd2bf80cd9e129b28e..c88ff8d4c51c6f2dcff26fcc117fb454c9ab4a7c 100644
 --- a/chrome/browser/ui/views/side_panel/BUILD.gn
 +++ b/chrome/browser/ui/views/side_panel/BUILD.gn
-@@ -176,6 +176,7 @@ source_set("side_panel") {
+@@ -177,6 +177,7 @@ source_set("side_panel") {
      "//ui/webui",
    ]
  

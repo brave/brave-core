@@ -28,6 +28,7 @@ source_set("brave_tooltips") {
     "//ui/accessibility",
     "//ui/base",
     "//ui/compositor",
+    "//ui/decoration",
     "//ui/display",
     "//ui/gfx",
     "//ui/native_theme",
