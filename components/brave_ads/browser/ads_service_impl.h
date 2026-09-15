@@ -203,7 +203,8 @@ class AdsServiceImpl : public AdsService,
   void InitializeNotificationAdsPrefChangeRegistrar();
   void InitializeSponsoredAdsPrefChangeRegistrar();
   void OnAdsPrefChanged(const std::string& path);
-  void MaybeClearDataForDisabledSponsoredAds();
+  bool ShouldClearAdsData(const std::string& path) const;
+  void MaybeClearAdsData(const std::string& path);
   void OnVariationsCountryPrefChanged();
   void NotifyPrefChanged(const std::string& path) const;
 

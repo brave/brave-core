@@ -29,6 +29,7 @@
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
@@ -449,6 +450,14 @@ bool AdsServiceImplIOS::CanStartBatAdsService() const {
   return brave_rewards::IsSupported(&*prefs_);
 }
 
+bool AdsServiceImplIOS::UserHasJoinedBraveRewards() const {
+  if (prefs_->IsManagedPreference(brave_rewards::prefs::kDisabledByPolicy) &&
+      prefs_->GetBoolean(brave_rewards::prefs::kDisabledByPolicy)) {
+    return false;
+  }
+  return prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
+}
+
 void AdsServiceImplIOS::InitializeBatAds(ResultCallback callback) {
   CHECK(!IsInitialized());
 
@@ -516,9 +525,8 @@ void AdsServiceImplIOS::ClearAdsData(ResultCallback callback,
 
 void AdsServiceImplIOS::ClearAdsPrefs() {
   // Stop observing prefs before they are set below, otherwise restoring
-  // `kSponsoredEnabled` to its prior value would fire
-  // `OnSponsoredAdsPrefChanged` re-entrantly, since clearing the prefix above
-  // resets it to its default.
+  // `kSponsoredEnabled` to its prior value would fire `OnAdsPrefChanged`
+  // re-entrantly, since clearing the prefix above resets it to its default.
   pref_change_registrar_.RemoveAll();
 
   std::optional<bool> sponsored_enabled;
@@ -555,23 +563,51 @@ void AdsServiceImplIOS::InitializePrefChangeRegistrar() {
   pref_change_registrar_.Init(&*prefs_);
   pref_change_registrar_.Add(
       prefs::kSponsoredEnabled,
-      base::BindRepeating(&AdsServiceImplIOS::OnSponsoredAdsPrefChanged,
-                          weak_ptr_factory_.GetWeakPtr()));
+      base::BindRepeating(&AdsServiceImplIOS::OnAdsPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr(),
+                          prefs::kSponsoredEnabled));
+  pref_change_registrar_.Add(
+      brave_rewards::prefs::kEnabled,
+      base::BindRepeating(&AdsServiceImplIOS::OnAdsPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr(),
+                          brave_rewards::prefs::kEnabled));
 }
 
-void AdsServiceImplIOS::OnSponsoredAdsPrefChanged() {
-  if (prefs_->GetBoolean(prefs::kSponsoredEnabled)) {
+bool AdsServiceImplIOS::ShouldClearAdsData(const std::string& path) const {
+  // Only clear ads data once neither Sponsored Ads nor Brave Rewards remain
+  // enabled. The service keeps running for Rewards users even when Sponsored
+  // Ads are disabled, so clearing on either pref alone would wipe data the
+  // service is still using for the other ad unit.
+  return (path == prefs::kSponsoredEnabled ||
+          path == brave_rewards::prefs::kEnabled) &&
+         !prefs_->GetBoolean(prefs::kSponsoredEnabled) &&
+         !UserHasJoinedBraveRewards();
+}
+
+void AdsServiceImplIOS::OnAdsPrefChanged(const std::string& path) {
+  if (!ShouldClearAdsData(path)) {
     return;
   }
 
-  // Clear ads data now that sponsored ads are disabled. Posted because
-  // `ClearData` can synchronously reach `ClearAdsPrefs`, which mutates
-  // `pref_change_registrar_` and must not do so re-entrantly from within this
-  // pref's own change notification.
+  // Clear ads data now. Posted because `ClearData` can synchronously reach
+  // `ClearAdsPrefs`, which mutates `pref_change_registrar_` and must not do
+  // so re-entrantly from within this pref's own change notification.
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE, base::BindOnce(&AdsServiceImplIOS::ClearData,
-                                weak_ptr_factory_.GetWeakPtr(),
-                                /*intentional*/ base::DoNothing()));
+      FROM_HERE,
+      base::BindOnce(&AdsServiceImplIOS::MaybeClearAdsData,
+                     weak_ptr_factory_.GetWeakPtr(), path));
+}
+
+void AdsServiceImplIOS::MaybeClearAdsData(const std::string& path) {
+  if (!ShouldClearAdsData(path)) {
+    // The triggering pref was toggled back before this posted task ran, so
+    // the data is still relevant and the service may already be running
+    // again. Clearing it now would wipe live data and needlessly restart
+    // the service.
+    return;
+  }
+
+  ClearData(/*intentional*/ base::DoNothing());
 }
 
 }  // namespace brave_ads

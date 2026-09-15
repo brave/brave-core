@@ -745,9 +745,8 @@ void AdsServiceImpl::InitializeBraveRewardsPrefChangeRegistrar() {
 
   pref_change_registrar_.Add(
       brave_rewards::prefs::kEnabled,
-      base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
-                          base::Unretained(this),
-                          brave_rewards::prefs::kEnabled));
+      base::BindRepeating(&AdsServiceImpl::OnAdsPrefChanged,
+                          base::Unretained(this)));
 }
 
 void AdsServiceImpl::InitializeSubdivisionTargetingPrefChangeRegistrar() {
@@ -792,16 +791,25 @@ void AdsServiceImpl::InitializeSponsoredAdsPrefChangeRegistrar() {
                           base::Unretained(this)));
 }
 
+bool AdsServiceImpl::ShouldClearAdsData(const std::string& path) const {
+  // Only clear ads data once neither Sponsored Ads nor Brave Rewards remain
+  // enabled, matching `CanStartBatAdsService`'s eligibility check. Clearing on
+  // either pref alone would wipe data the service is still using for the
+  // other ad unit.
+  return (path == prefs::kSponsoredEnabled ||
+          path == brave_rewards::prefs::kEnabled) &&
+         !IsSponsoredAdsEnabled() && !UserHasJoinedBraveRewards();
+}
+
 void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
-  if (path == prefs::kSponsoredEnabled && !IsSponsoredAdsEnabled()) {
-    // Clear ads data now that sponsored ads are disabled. Posted because
-    // `ClearData` can synchronously reach `ClearAdsPrefs`, which mutates
-    // `pref_change_registrar_` and must not do so re-entrantly from within
-    // this pref's own change notification.
+  if (ShouldClearAdsData(path)) {
+    // Clear ads data now. Posted because `ClearData` can synchronously reach
+    // `ClearAdsPrefs`, which mutates `pref_change_registrar_` and must not do
+    // so re-entrantly from within this pref's own change notification.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
-        base::BindOnce(&AdsServiceImpl::MaybeClearDataForDisabledSponsoredAds,
-                       weak_ptr_factory_.GetWeakPtr()));
+        base::BindOnce(&AdsServiceImpl::MaybeClearAdsData,
+                       weak_ptr_factory_.GetWeakPtr(), path));
   }
 
   if (!CanStartBatAdsService()) {
@@ -826,11 +834,11 @@ void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
   NotifyPrefChanged(path);
 }
 
-void AdsServiceImpl::MaybeClearDataForDisabledSponsoredAds() {
-  if (IsSponsoredAdsEnabled()) {
-    // Sponsored ads were re-enabled before this posted task ran, so the data
-    // is still relevant and the service may already be running again.
-    // Clearing it now would wipe live data and needlessly restart the
+void AdsServiceImpl::MaybeClearAdsData(const std::string& path) {
+  if (!ShouldClearAdsData(path)) {
+    // The triggering pref was toggled back before this posted task ran, so
+    // the data is still relevant and the service may already be running
+    // again. Clearing it now would wipe live data and needlessly restart the
     // service.
     return;
   }

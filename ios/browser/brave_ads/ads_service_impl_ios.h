@@ -157,6 +157,7 @@ class AdsServiceImplIOS : public AdsService {
   void Shutdown() override;
 
   bool CanStartBatAdsService() const;
+  bool UserHasJoinedBraveRewards() const;
   void InitializeBatAds(ResultCallback callback);
   void InitializeBatAdsCallback(ResultCallback callback, bool success);
 
@@ -167,7 +168,9 @@ class AdsServiceImplIOS : public AdsService {
   void ClearAdsDataCallback(ResultCallback callback, bool was_running);
 
   void InitializePrefChangeRegistrar();
-  void OnSponsoredAdsPrefChanged();
+  void OnAdsPrefChanged(const std::string& path);
+  bool ShouldClearAdsData(const std::string& path) const;
+  void MaybeClearAdsData(const std::string& path);
 
   const raw_ref<PrefService> prefs_;
 
