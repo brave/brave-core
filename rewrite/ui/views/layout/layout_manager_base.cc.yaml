@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Apply a copy of the proposed layout instead of the cached reference.
+
+      `GetProposedLayout()` hands back a reference to `cached_layout_`, and
+      `ApplyLayout()` iterates it while setting child bounds and visibility. A
+      child that lays out synchronously can re-enter `GetProposedLayout()` with
+      a different host size, reassigning `cached_layout_` and destroying the
+      `ChildLayout` entries mid-iteration. Upstream returned this by value until
+      https://chromium-review.googlesource.com/c/chromium/src/+/8340933.
+    regex:
+      pattern: |-
+        ApplyLayout(GetProposedLayout(host_view_->size()));
+      replace: |-
+        // Hold a copy: `ApplyLayout()` can re-enter `GetProposedLayout()` and
+          // reassign the `cached_layout_` this would otherwise reference.
+          const ProposedLayout layout = GetProposedLayout(host_view_->size());
+          ApplyLayout(layout);
