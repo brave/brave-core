@@ -160,7 +160,7 @@ import XCTest
         completion(.mockBitcoinMainnet)
       case .zec:
         completion(.mockZcashMainnet)
-      case .ada:
+      case .ada, .dot:
         fallthrough
       @unknown default:
         completion(.mockMainnet)
