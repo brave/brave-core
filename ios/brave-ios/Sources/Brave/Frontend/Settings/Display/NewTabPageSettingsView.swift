@@ -14,7 +14,8 @@ struct NewTabPageSettingsView: View {
 
   @ObservedObject private var backgroundImages = Preferences.NewTabPage.backgroundImages
   @ObservedObject private var showNewTabPrivacyHub = Preferences.NewTabPage.showNewTabPrivacyHub
-  @ObservedObject private var showNewTabFavourites = Preferences.NewTabPage.showNewTabFavourites
+  @ObservedObject private var showTopsites = Preferences.NewTabPage.showTopsites
+  @ObservedObject private var topsitesModeSelection = Preferences.NewTabPage.topsitesMode
 
   // This is observed to ensure the view updates correctly, but we instead access
   // Preferences.NewTabPage.backgroundMediaType which accesses backgroundMediaTypeRaw
@@ -57,7 +58,21 @@ struct NewTabPageSettingsView: View {
       }
       Section {
         Toggle(Strings.PrivacyHub.privacyReportsTitle, isOn: $showNewTabPrivacyHub.value)
-        Toggle(Strings.Widgets.favoritesWidgetTitle, isOn: $showNewTabFavourites.value)
+        Toggle(Strings.NTP.showTopsites, isOn: $showTopsites.value)
+        if showTopsites.value {
+          Picker(
+            Strings.NTP.topsitesType,
+            selection: Binding(
+              get: { topsitesModeSelection.value ?? .favourite },
+              set: { topsitesModeSelection.value = $0 }
+            )
+          ) {
+            ForEach(TopsitesMode.allCases) { mode in
+              Text(mode.title)
+            }
+          }
+          .tint(Color(braveSystemName: .textTertiary))
+        }
       } header: {
         Text(Strings.Widgets.widgetTitle)
       }

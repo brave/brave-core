@@ -85,7 +85,6 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
 
     let isShowShowMoreButtonVisible =
       count > FavoritesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
-      && Preferences.NewTabPage.showNewTabFavourites.value
     return isShowShowMoreButtonVisible ? 1 : 0
   }
 

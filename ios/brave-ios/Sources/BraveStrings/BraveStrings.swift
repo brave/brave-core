@@ -4206,6 +4206,21 @@ extension Strings {
       comment: "A button title to show more bookmarks, that opens a new menu."
     )
 
+    public static let showTopsites = NSLocalizedString(
+      "ntp.showTopsites",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Top Sites",
+      comment: "The title of a toggle for user to show or hide top sites section in NTP"
+    )
+
+    public static let topsitesType = NSLocalizedString(
+      "ntp.topsitesType",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Top Sites Type",
+      comment: "The title of a picker for user to pick which type of topsites to show in NTP"
+    )
   }
 
 }
