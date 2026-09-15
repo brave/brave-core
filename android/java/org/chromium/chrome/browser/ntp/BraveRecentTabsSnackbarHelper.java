@@ -45,7 +45,8 @@ import java.lang.ref.WeakReference;
 @NullMarked
 public class BraveRecentTabsSnackbarHelper {
     private static final String TAG = "RecentTabsSnackbar";
-    private static final int SNACKBAR_DISMISS_DELAY_MS = 8000; // 8 seconds
+    // Effectively no auto-close: the snackbar is dismissed by tap, swipe, or leaving the NTP.
+    private static final int SNACKBAR_DISMISS_DELAY_MS = Integer.MAX_VALUE;
     private static final int SNACKBAR_SHOW_DELAY_MS = 500; // Wait for view hierarchy to settle
 
     private @Nullable Tab mLastTab;
@@ -224,10 +225,11 @@ public class BraveRecentTabsSnackbarHelper {
 
                         // Set custom formatted text with title, page title, and URL
                         mSnackbarManager.setCustomText(
-                                mSnackbarTitle, mSnackbarPageTitle, mSnackbarUrl);
+                                mCurrentSnackbar, mSnackbarTitle, mSnackbarPageTitle, mSnackbarUrl);
 
                         // Make entire snackbar clickable
                         mSnackbarManager.makeSnackbarClickable(
+                                mCurrentSnackbar,
                                 () -> {
                                     if (!mUserClickedSnackbar && mSnackbarController != null) {
                                         mUserClickedSnackbar = true;
@@ -391,7 +393,8 @@ public class BraveRecentTabsSnackbarHelper {
             mSnackbarManager.showSnackbar(mCurrentSnackbar);
             // Restore custom text after re-showing
             if (!mSnackbarTitle.isEmpty()) {
-                mSnackbarManager.setCustomText(mSnackbarTitle, mSnackbarPageTitle, mSnackbarUrl);
+                mSnackbarManager.setCustomText(
+                        mCurrentSnackbar, mSnackbarTitle, mSnackbarPageTitle, mSnackbarUrl);
             }
         } finally {
             mIsUpdatingSnackbar = false;

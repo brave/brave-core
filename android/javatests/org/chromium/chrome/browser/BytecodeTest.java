@@ -2826,6 +2826,14 @@ public class BytecodeTest {
                         "mContainerView"));
         Assert.assertTrue(
                 fieldExists(
+                        "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarView",
+                        "mSnackbarSwipeHandler"));
+        Assert.assertTrue(
+                fieldExists(
+                        "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarView",
+                        "mIsAnimating"));
+        Assert.assertTrue(
+                fieldExists(
                         "org/chromium/chrome/browser/ui/messages/snackbar/SnackbarManager",
                         "mView"));
         Assert.assertTrue(
