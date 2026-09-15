@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index b0923f5e9cd918e32eb25c086d54d1efcb975ce6..aeafd8361ef5d291a2653921cb09bb62438cc229 100644
+index 6ccdf1e52f7fd305c36b0f109586b19d6080004b..758934dcfb0196ecbe640bfc6b868fa64a3f04d1 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
 @@ -1024,6 +1024,7 @@ inline constexpr char kPluginVmEngagementTimeDayId[] =
