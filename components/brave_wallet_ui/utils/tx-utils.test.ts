@@ -1250,6 +1250,27 @@ describe('Polkadot send transfer formatting', () => {
     ).toBe(mockPolkadotNativeToken)
   })
 
+  it('findTransactionToken treats a null assetId as a native send', () => {
+    // Optional Mojo fields are `null` when unset (not `undefined`).
+    const tx = {
+      ...mockPolkadotSendTransaction,
+      txDataUnion: {
+        ...mockPolkadotSendTransaction.txDataUnion,
+        polkadotTxData: {
+          ...mockPolkadotSendTransaction.txDataUnion.polkadotTxData,
+          assetId: null,
+        },
+      },
+    } as unknown as SerializableTransactionInfo
+
+    expect(
+      findTransactionToken(tx, [
+        mockPolkadotAssetToken,
+        mockPolkadotNativeToken,
+      ]),
+    ).toBe(mockPolkadotNativeToken)
+  })
+
   it('getTransactionTransferredToken returns the asset, not native DOT', () => {
     expect(
       getTransactionTransferredToken({

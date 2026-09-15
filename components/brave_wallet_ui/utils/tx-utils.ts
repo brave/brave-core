@@ -312,7 +312,8 @@ export function isPolkadotAssetTransaction(
 } {
   return (
     isPolkadotTransaction(tx)
-    && tx.txDataUnion.polkadotTxData.assetId !== undefined
+    // Mojo optional fields decode as null when unset, not undefined.
+    && tx.txDataUnion.polkadotTxData.assetId != null
   )
 }
 
