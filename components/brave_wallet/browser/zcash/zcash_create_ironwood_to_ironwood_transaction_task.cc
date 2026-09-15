@@ -108,9 +108,8 @@ void ZCashCreateIronwoodToIronwoodTransactionTask::OnGetSpendableNotes(
 void ZCashCreateIronwoodToIronwoodTransactionTask::CreateTransaction() {
   CHECK(spendable_notes_);
   auto pick_result =
-      PickZCashOrchardInputs(spendable_notes_->spendable_notes, amount_,
-                             ZCashTargetOutputType::kOrchard,
-                             /*orchard_cross_address_disabled=*/false);
+      PickZCashIronwoodInputs(spendable_notes_->spendable_notes, amount_,
+                              ZCashTargetOutputType::kIronwood);
   if (!pick_result) {
     error_ = "Can't pick inputs";
     ScheduleWorkOnTask();
