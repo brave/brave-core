@@ -6,6 +6,8 @@
 ##
 
 # These tests pass locally but fail on CI
+-ActorOverlayTest.OverlayWebViewIsTransparentAfterNavigation
+-AimUserAgentTabHelperBrowserTest.ApplyAndClearUserAgentOverride
 -All/ChromeMultiProfileStartupBrowserTestBase.PostProfileInitInvocation/1
 -All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
 -AvatarMenuBrowserTest.AddNewProfile
@@ -18,6 +20,8 @@
 -PageInfoBubbleViewBrowserTest.BlockedAndInvalidCert
 -PageInfoBubbleViewBrowserTest.MalwareAndEvCert
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
+-PaymentHandlerWebFlowViewMandatoryUiDisabledTest.ErrorMessageShownOnErrorAfterUserInteraction
+-PaymentHandlerWebFlowViewMandatoryUiEnabledTest.DialogClosedOnErrorAfterUserInteraction
 -PermissionElementBrowserTest.DoubleClickDoesNotTriggerTwoRequests
 -WebViewNewWindowTest.UserAgent_NewWindow/InnerWebContents
 

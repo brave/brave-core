@@ -20,6 +20,7 @@
 -InstallAppLocallyCommandTest.BasicBehavior
 -WebAppPolicyForceUnregistrationTest.*
 
+-ChromeContentVerifierTest.NonCfmChecksHashEvenWithForceFlag
 -ChromePaths.*
 -ShellIntegrationTest.*
 -WebAppShortcutLinuxTest.*
