@@ -14,6 +14,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/task/thread_pool/thread_pool_instance.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -227,7 +228,7 @@ TEST_F(BraveVpnServiceImplTest, SafeDefaultsAfterShutdown) {
   NotifyAgentDisconnected();
   NotifyAgentUnavailable(mojom::BrowserAuthResult::kInconclusive);
   NotifyAgentLaunchFailed(AgentLauncher::LaunchError::kLaunchFailed);
-  EXPECT_EQ(launch_record_.launch_count, 0);
+  EXPECT_EQ(launch_record_.launch_count(), 0u);
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -346,12 +347,12 @@ TEST_F(BraveVpnServiceImplTest, PolicyDisabledKeepsAgentDisconnected) {
 
 TEST_F(BraveVpnServiceImplTest, AgentNotRunningLaunchesAgent) {
   CreateService();
-  ASSERT_EQ(launch_record_.launch_count, 0);
+  ASSERT_EQ(launch_record_.launch_count(), 0u);
 
   NotifyAgentNotRunning();
 
-  EXPECT_EQ(launch_record_.launch_count, 1);
-  EXPECT_TRUE(launch_record_.last_failure_callback);
+  EXPECT_EQ(launch_record_.launch_count(), 1u);
+  EXPECT_TRUE(launch_record_.failure_callbacks.back());
 }
 
 // Only a missing agent justifies a launch. A refusal means the agent is right
@@ -364,7 +365,7 @@ TEST_F(BraveVpnServiceImplTest, OnlyMissingAgentTriggersLaunch) {
   NotifyAgentDisconnected();
   NotifyAgentUnavailable(mojom::BrowserAuthResult::kRejected);
 
-  EXPECT_EQ(launch_record_.launch_count, 0);
+  EXPECT_EQ(launch_record_.launch_count(), 0u);
 }
 
 // A launch that never happened leaves nothing to connect to, so the retry loop
@@ -376,9 +377,9 @@ TEST_F(BraveVpnServiceImplTest, AgentLaunchFailureStopsRetrying) {
   ASSERT_EQ(agent_client()->state(), AgentClient::State::kConnecting);
 
   NotifyAgentNotRunning();
-  ASSERT_TRUE(launch_record_.last_failure_callback);
-  std::move(launch_record_.last_failure_callback)
-      .Run(AgentLauncher::LaunchError::kAppNotFound);
+  ASSERT_EQ(launch_record_.launch_count(), 1u);
+  launch_record_.TakeFailureCallback(0).Run(
+      AgentLauncher::LaunchError::kAppNotFound);
 
   EXPECT_EQ(agent_client()->state(), AgentClient::State::kDisconnected);
 }
@@ -390,13 +391,41 @@ TEST_F(BraveVpnServiceImplTest, LaunchFailureAfterShutdownDoesNotCrash) {
   CreateService();
   UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
   NotifyAgentNotRunning();
-  ASSERT_TRUE(launch_record_.last_failure_callback);
+  ASSERT_EQ(launch_record_.launch_count(), 1u);
+  AgentLauncher::LaunchFailureCallback failure =
+      launch_record_.TakeFailureCallback(0);
 
   ShutdownService();
 
   // Must not crash.
-  std::move(launch_record_.last_failure_callback)
-      .Run(AgentLauncher::LaunchError::kLaunchFailed);
+  std::move(failure).Run(AgentLauncher::LaunchError::kLaunchFailed);
+}
+
+// A launch failure that arrives after the agent got connected anywas says
+// nothing about the session that is now live, and resetting the client on it is
+// what left the VPN unrecoverable until the person acted again.
+TEST_F(BraveVpnServiceImplTest, StaleLaunchFailureKeepsLiveSession) {
+  CreateService();
+
+  // The client could not reach the agent, so the service starts one.
+  NotifyAgentNotRunning();
+  ASSERT_EQ(launch_record_.launch_count(), 1u);
+  AgentLauncher::LaunchFailureCallback stale_failure =
+      launch_record_.TakeFailureCallback(0);
+
+  // The agent spawns while that launch is still in flight, and the client
+  // establishes a session.
+  UpdateAgentConnection(mojom::PurchasedState::PURCHASED);
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return agent_client()->state() == AgentClient::State::kConnected;
+  })) << "the fake agent never accepted the connection";
+
+  // Only now does the launch report: nothing about the live session changes.
+  std::move(stale_failure).Run(AgentLauncher::LaunchError::kLaunchFailed);
+
+  EXPECT_EQ(agent_client()->state(), AgentClient::State::kConnected);
+  EXPECT_TRUE(agent_client()->browser_host());
+  EXPECT_EQ(fake_agent_.session_count(), 1u);
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
