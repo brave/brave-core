@@ -63,7 +63,7 @@ var package = Package(
     .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI", from: "2.2.0"),
     .package(url: "https://github.com/nmdias/FeedKit", from: "9.1.2"),
     .package(url: "https://github.com/apple/swift-collections", from: "1.0.0"),
-    .package(url: "https://github.com/siteline/SwiftUI-Introspect", from: "0.1.3"),
+    .package(url: "https://github.com/siteline/SwiftUI-Introspect", from: "26.0.2"),
     .package(url: "https://github.com/apple/swift-algorithms", from: "1.0.0"),
     .package(url: "https://github.com/devxoul/Then", from: "2.7.0"),
     .package(name: "Swift-BigInt", path: "../third_party/swift-bigint"),
@@ -286,7 +286,7 @@ var package = Package(
         "DesignSystem",
         "SDWebImage",
         "SnapKit",
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
         "Then",
         "Static",
         "Preferences",
@@ -346,7 +346,7 @@ var package = Package(
         "Growth",
         "Strings",
         .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -370,7 +370,7 @@ var package = Package(
         .product(name: "BigNumber", package: "Swift-BigInt"),
         .product(name: "Algorithms", package: "swift-algorithms"),
         .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -425,7 +425,7 @@ var package = Package(
         "Strings",
         "Then",
         .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
         .product(name: "Lottie", package: "lottie-spm"),
       ],
       resources: [
@@ -458,7 +458,7 @@ var package = Package(
         "DesignSystem",
         "Preferences",
         .product(name: "Collections", package: "swift-collections"),
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ],
       plugins: ["LoggerPlugin"]
     ),
@@ -622,7 +622,7 @@ var package = Package(
         "Strings",
         "BraveCore",
         "BraveStore",
-        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "SwiftUIIntrospect", package: "SwiftUI-Introspect"),
       ]
     ),
   ],

@@ -5,7 +5,6 @@
 
 import BraveCore
 import BraveStrings
-import Introspect
 import SwiftUI
 
 private struct StoreKitReceiptSimpleLineView: View {

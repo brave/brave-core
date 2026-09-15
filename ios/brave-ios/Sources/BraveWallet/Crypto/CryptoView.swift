@@ -6,7 +6,6 @@
 import BraveCore
 import BraveUI
 import Foundation
-import Introspect
 import Preferences
 import SwiftUI
 import UIKit

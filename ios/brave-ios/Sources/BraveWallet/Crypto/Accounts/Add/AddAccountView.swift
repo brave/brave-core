@@ -368,6 +368,7 @@ struct AddAccountView: View {
       }
       Group {
         TextEditor(text: $privateKey)
+          .keyboardType(.asciiCapable)
           .autocapitalization(.none)
           .font(.system(.body, design: .monospaced))
           .frame(height: privateKeyFieldHeight)
@@ -385,9 +386,6 @@ struct AddAccountView: View {
             .accessibilityHidden(true),
             alignment: .top
           )
-          .introspectTextView { textView in
-            textView.smartQuotesType = .no
-          }
           .accessibilityValue(
             privateKey.isEmpty ? Strings.Wallet.importAccountPlaceholder : privateKey
           )

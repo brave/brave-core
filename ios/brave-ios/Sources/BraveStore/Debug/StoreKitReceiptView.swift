@@ -4,7 +4,6 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
-import Introspect
 import SwiftUI
 
 extension BraveStoreKitPurchase: Identifiable {
