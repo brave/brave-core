@@ -102,9 +102,9 @@ void BraveWalletRenderFrameObserver::DidClearWindowObject() {
     JSCardanoProvider::Install(render_frame());
   }
 
-  // Unlike the other chains there is no "polkadot" permissions policy feature
-  // to consult yet.
-  if (dynamic_params.install_window_brave_polkadot_provider) {
+  if (web_frame->GetDocument().IsDOMFeaturePolicyEnabled(isolate, context,
+                                                         "polkadot") &&
+      dynamic_params.install_window_brave_polkadot_provider) {
     JSPolkadotProvider::Install(render_frame());
   }
 }
