@@ -283,9 +283,14 @@ inline constexpr auto kCollectedExpressHistograms =
       .record_activation_date = true,
     }},
     {"Brave.CaptchaCount.Cloudflare", MetricConfig{.ephemeral = true}},
+    {"Brave.CaptchaCount.Cloudflare.UserActivated", MetricConfig{.ephemeral = true}},
     {"Brave.CaptchaCount.Google", MetricConfig{.ephemeral = true}},
+    {"Brave.CaptchaCount.Google.UserActivated", MetricConfig{.ephemeral = true}},
     {"Brave.CaptchaCount.Total", MetricConfig{.ephemeral = true}},
+    {"Brave.CaptchaCount.Total.UserActivated", MetricConfig{.ephemeral = true}},
     {"Brave.CaptchaCount.hCaptcha", MetricConfig{.ephemeral = true}},
+    {"Brave.CaptchaCount.hCaptcha.UserActivated", MetricConfig{.ephemeral = true}},
+
     {"Brave.Core.IsDefaultDaily.2", MetricConfig{
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kChannel, MetricAttribute::kDateOfInstall, MetricAttribute::kDateOfActivation, MetricAttribute::kGeneralPlatform, MetricAttribute::kSubregion, MetricAttribute::kVersion},
       .record_activation_date = true,
