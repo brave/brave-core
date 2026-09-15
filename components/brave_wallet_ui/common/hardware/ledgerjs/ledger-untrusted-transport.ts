@@ -49,11 +49,11 @@ export class LedgerUntrustedMessagingTransport //
   /** Verifies that a Ledger device is connected before creating a
    * transport for it. */
   protected createTransport = async (): Promise<Transport> => {
-    const devices = await TransportWebHID.list()
-    if (devices.length === 0) {
+    try {
+      return await TransportWebHID.create()
+    } catch (error) {
       throw new Error('No Ledger device found.')
     }
-    return TransportWebHID.create()
   }
 
   private handleGetDeviceName = async (
