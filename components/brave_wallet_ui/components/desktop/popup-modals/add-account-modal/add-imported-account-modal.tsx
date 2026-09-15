@@ -119,6 +119,7 @@ export const ImportAccountModal = () => {
   const createAccountOptions = React.useMemo(() => {
     return CreateAccountOptions({
       visibleNetworks,
+      isFilecoinEnabled: true,
       isBitcoinEnabled: isBitcoinImportEnabled,
       isZCashEnabled: false, // No zcash imported accounts by now.
       isCardanoEnabled: false, // No cardano imported accounts by now.

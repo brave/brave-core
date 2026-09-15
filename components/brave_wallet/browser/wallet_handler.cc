@@ -33,13 +33,23 @@ void WalletHandler::GetWalletInfo(GetWalletInfoCallback callback) {
   auto* keyring_service = brave_wallet_service_->keyring_service();
 
   std::move(callback).Run(mojom::WalletInfo::New(
-      keyring_service->IsWalletCreatedSync(), keyring_service->IsLockedSync(),
-      keyring_service->IsWalletBackedUpSync(), IsBitcoinEnabled(),
-      IsBitcoinImportEnabled(), IsBitcoinLedgerEnabled(), IsZCashEnabled(),
-      IsAnkrBalancesEnabled(), IsTransactionSimulationsEnabled(),
-      IsZCashShieldedTransactionsEnabled(), IsZCashIronwoodEnabled(),
-      IsCardanoEnabled(), GetEnabledCoins(), IsCardanoDAppSupportEnabled(),
-      IsPolkadotEnabled()));
+      keyring_service->IsWalletCreatedSync(),   //
+      keyring_service->IsLockedSync(),          //
+      keyring_service->IsWalletBackedUpSync(),  //
+      IsFilecoinLedgerEnabled(),                //
+      IsBitcoinEnabled(),                       //
+      IsBitcoinImportEnabled(),                 //
+      IsBitcoinLedgerEnabled(),                 //
+      IsZCashEnabled(),                         //
+      IsAnkrBalancesEnabled(),                  //
+      IsTransactionSimulationsEnabled(),        //
+      IsZCashShieldedTransactionsEnabled(),     //
+      IsZCashIronwoodEnabled(),                 //
+      IsCardanoEnabled(),                       //
+      GetEnabledCoins(),                        //
+      IsCardanoDAppSupportEnabled(),            //
+      IsPolkadotEnabled()                       //
+      ));
 }
 
 }  // namespace brave_wallet
