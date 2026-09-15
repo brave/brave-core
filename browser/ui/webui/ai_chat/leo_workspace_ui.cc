@@ -6,6 +6,8 @@
 #include "brave/browser/ui/webui/ai_chat/leo_workspace_ui.h"
 
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "brave/components/ai_chat/content/browser/workspace_content_source.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -49,17 +51,35 @@ LeoWorkspaceUI::LeoWorkspaceUI(content::WebUI* web_ui)
   webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
                               IDR_AI_CHAT_LEO_WORKSPACE_HTML);
 
-  // This page runs its own first-party module bundle only. No network, no
-  // frames, no embedding by other pages. The FileSystemDirectoryHandle it will
-  // operate on is delivered out-of-band (launchQueue), not fetched.
+  // Serves each workspace's folder under /<uuid>/files/; everything else on
+  // this host is the tool page and its bundle.
+  source->SetRequestFilter(
+      base::BindRepeating(&ShouldHandleWorkspaceFileRequest),
+      base::BindRepeating(&HandleWorkspaceFileRequest,
+                          browser_context->GetWeakPtr()));
+
+  // A data source has one policy, shared by the tool page and the workspace
+  // files served alongside it, so this is written for the files and is no
+  // boundary between the two (see workspace_content_source.h).
+  // 'unsafe-inline'/'unsafe-eval' therefore cost nothing: same-origin .js out
+  // of the folder already runs.
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
+      network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'self';");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      "script-src 'self' chrome-untrusted://resources;");
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' "
+      "chrome-untrusted://resources;");
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
-      "style-src 'self' chrome-untrusted://resources;");
+      "style-src 'self' 'unsafe-inline' chrome-untrusted://resources;");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc, "img-src 'self' data: blob:;");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FontSrc, "font-src 'self' data:;");
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::MediaSrc,
+      "media-src 'self' data: blob:;");
+  // No network, so a served file cannot send a folder's contents anywhere.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'none';");
   source->OverrideContentSecurityPolicy(
