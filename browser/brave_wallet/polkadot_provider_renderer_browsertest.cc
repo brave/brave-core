@@ -40,7 +40,7 @@ class PolkadotProviderRendererTest : public InProcessBrowserTest {
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
     // The provider is only injected once a wallet exists, so create one before
-    // the navigation below.
+    // the call to NavigateToURL.
     ASSERT_TRUE(GetKeyringService()->RestoreWalletSync(
         kMnemonicScarePiece, kTestWalletPassword, false));
     ASSERT_TRUE(test_server_handle_ =
