@@ -65,7 +65,10 @@ source_set("test_support") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "agent_client_unittest.cc" ]
+  sources = [
+    "agent_client_unittest.cc",
+    "agent_launcher_unittest.cc",
+  ]
 
   if (is_mac) {
     sources += [ "agent_launcher_mac_unittest.mm" ]

@@ -219,13 +219,23 @@ void BraveVpnServiceImpl::OnAgentLaunchFailed(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   LOG(ERROR) << "Failed to launch agent: "
              << AgentLauncher::ErrorToString(error);
+  // Ignore launch errors if the service has already shut down.
+  if (!agent_client_) {
+    return;
+  }
+
+  // Ignore launch errors if the agent is there: started by a helper, by a
+  // sibling profile, manually by user. This call becomes a report about a
+  // launch that has been overtaken by external events.
+  if (agent_client_->is_connected()) {
+    VLOG(1) << "Ignoring launch failure; the agent is already connected";
+    return;
+  }
 
   // Purchased state is untouched - the subscription is valid and the UI stays
   // fully enabled. Just stop the retry loop; the next user-initiated connect
   // starts a fresh sequence.
-  if (agent_client_) {
-    agent_client_->Reset();
-  }
+  agent_client_->Reset();
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
