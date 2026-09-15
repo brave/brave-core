@@ -22,14 +22,48 @@ class PageLoadMetricsObserverInterface;
 
 namespace misc_metrics {
 
+// Keep the histogram name consistent with metric_names.h
 inline constexpr char kCaptchaTotalCountHistogramName[] =
     "Brave.CaptchaCount.Total";
+inline constexpr char kCaptchaTotalCountUserActivatedHistogramName[] =
+    "Brave.CaptchaCount.Total.UserActivated";
+
 inline constexpr char kCaptchaGoogleCountHistogramName[] =
     "Brave.CaptchaCount.Google";
+inline constexpr char kCaptchaGoogleCountUserActivatedHistogramName[] =
+    "Brave.CaptchaCount.Google.UserActivated";
+
 inline constexpr char kCaptchaCloudflareCountHistogramName[] =
     "Brave.CaptchaCount.Cloudflare";
+inline constexpr char kCaptchaCloudflareCountUserActivatedHistogramName[] =
+    "Brave.CaptchaCount.Cloudflare.UserActivated";
+
 inline constexpr char kCaptchaHCaptchaCountHistogramName[] =
     "Brave.CaptchaCount.hCaptcha";
+inline constexpr char kCaptchaHCaptchaCountUserActivatedHistogramName[] =
+    "Brave.CaptchaCount.hCaptcha.UserActivated";
+
+// The corresponding prefs in the dictionary kMiscMetricsCaptchaDictionaryPref
+// "brave.misc_metrics.captcha_dict".
+inline constexpr char kCaptchaTotalCountPref[] =
+    "brave.misc_metrics.captcha_count";
+inline constexpr char kCaptchaTotalCountUserActivatedPref[] =
+    "brave.misc_metrics.captcha_count_user_activated";
+
+inline constexpr char kCaptchaGoogleCountPref[] =
+    "brave.misc_metrics.captcha_google_count";
+inline constexpr char kCaptchaGoogleCountUserActivatedPref[] =
+    "brave.misc_metrics.captcha_google_count_user_activated";
+
+inline constexpr char kCaptchaCloudflareCountPref[] =
+    "brave.misc_metrics.captcha_cloudflare_count";
+inline constexpr char kCaptchaCloudflareCountUserActivatedPref[] =
+    "brave.misc_metrics.captcha_cloudflare_count_user_activated";
+
+inline constexpr char kCaptchaHCaptchaCountPref[] =
+    "brave.misc_metrics.captcha_hcaptcha_count";
+inline constexpr char kCaptchaHCaptchaCountUserActivatedPref[] =
+    "brave.misc_metrics.captcha_hcaptcha_count_user_activated";
 
 // This class provides the back-end implementation to record a captcha metrics
 // once the captcha was detected by the BraveCaptchaPageLoadMetricsObserver.
@@ -59,7 +93,8 @@ class CaptchaMetrics {
   static void EnsureDefaultCaptchaProviders();
 
   // Records a captcha if |url| matches a known provider. Does not emit P3A.
-  void MaybeRecordCaptchaForUrl(const GURL& url);
+  void MaybeRecordCaptchaForUrl(const GURL& url,
+                                const bool is_user_activated = false);
 
   // Emits the last 24h counts to P3A and schedules the next report.
   // Reports a histogram for a corresponding captcha provider iff the count was

@@ -208,6 +208,27 @@ IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, RecordsMainFrameGoogle) {
   histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
 }
 
+IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, RecordsUserActivatedGoogle) {
+  NavigateAndWaitForLoad(GoogleCaptchaUrl());
+
+  // ExecJs runs with a user gesture by default, which drives the captcha
+  // frame's FrameReceivedUserActivation and records a user-activated captcha.
+  ASSERT_TRUE(content::ExecJs(web_contents(), "true"));
+
+  ReportPendingCounts();
+
+  // The captcha is counted as shown twice: once on commit, and again on
+  // activation (which always bumps the shown counter). count=2 → bucket 2.
+  histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 2, 1);
+  histogram_tester_.ExpectUniqueSample(kCaptchaGoogleCountHistogramName, 2, 1);
+
+  // User activation is recorded once. count=1 → bucket 1.
+  histogram_tester_.ExpectUniqueSample(
+      kCaptchaTotalCountUserActivatedHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(
+      kCaptchaGoogleCountUserActivatedHistogramName, 1, 1);
+}
+
 IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, DoesNotRecordNonCaptcha) {
   NavigateAndWaitForLoad(GetURL("example.com", "/simple.html"));
   ReportPendingCounts();

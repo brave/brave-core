@@ -9,6 +9,7 @@
 #include <string_view>
 
 #include "base/check.h"
+#include "base/containers/fixed_flat_map.h"
 #include "base/notreached.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -29,21 +30,25 @@
 namespace misc_metrics {
 
 namespace {
-
-// Keys to the dictionary pref.
-inline constexpr char kMiscMetricsCaptchaCountPref[] =
-    "brave.misc_metrics.captcha_count";
-inline constexpr char kMiscMetricsCaptchaGoogleCountPref[] =
-    "brave.misc_metrics.captcha_google_count";
-inline constexpr char kMiscMetricsCaptchaCloudflareCountPref[] =
-    "brave.misc_metrics.captcha_cloudflare_count";
-inline constexpr char kMiscMetricsCaptchaHCaptchaCountPref[] =
-    "brave.misc_metrics.captcha_hcaptcha_count";
-
 constexpr base::TimeDelta kReportInterval = base::Days(1);
 // 0, 1, 2, 3-5, 6-10, 11+
 constexpr int kCaptchaCountBuckets[] = {0, 1, 2, 5, 10};
 
+constexpr auto kHistogramToPrefMap =
+    base::MakeFixedFlatMap<std::string_view, std::string_view>({
+        {kCaptchaTotalCountHistogramName, kCaptchaTotalCountPref},
+        {kCaptchaTotalCountUserActivatedHistogramName,
+         kCaptchaTotalCountUserActivatedPref},
+        {kCaptchaGoogleCountHistogramName, kCaptchaGoogleCountPref},
+        {kCaptchaGoogleCountUserActivatedHistogramName,
+         kCaptchaGoogleCountUserActivatedPref},
+        {kCaptchaCloudflareCountHistogramName, kCaptchaCloudflareCountPref},
+        {kCaptchaCloudflareCountUserActivatedHistogramName,
+         kCaptchaCloudflareCountUserActivatedPref},
+        {kCaptchaHCaptchaCountHistogramName, kCaptchaHCaptchaCountPref},
+        {kCaptchaHCaptchaCountUserActivatedHistogramName,
+         kCaptchaHCaptchaCountUserActivatedPref},
+    });
 }  // namespace
 
 class BraveCaptchaPageLoadMetricsObserver
@@ -93,9 +98,33 @@ class BraveCaptchaPageLoadMetricsObserver
             .has_value()) {
       return;
     }
-
     captcha_metrics_->MaybeRecordCaptchaForUrl(navigation_handle->GetURL());
   }
+
+  // This is called each time the user interacts with the captcha frame.
+  void FrameReceivedUserActivation(
+      content::RenderFrameHost* render_frame_host) override {
+    // This helps to avoid re-recording the metrics on other user activation
+    // input like mouse events. We don't explicitly check the click event as
+    // it's not straightforward to isolate that. However, simply checking on a
+    // general user activation should be good enough to detect captcha checks
+    // which required user to interact with the frame.
+    if (recorded_user_activation_) {
+      return;
+    }
+
+    const GURL url = render_frame_host->GetLastCommittedURL();
+    std::optional<page_load_metrics::CaptchaProvider> captcha_provider =
+        page_load_metrics::CaptchaProviderManager::GetInstance()
+            ->GetCaptchaProviderForUrl(url);
+    if (captcha_provider.has_value()) {
+      recorded_user_activation_ = true;
+      captcha_metrics_->MaybeRecordCaptchaForUrl(url,
+                                                 /*is_user_activated= */ true);
+    }
+  }
+
+  bool recorded_user_activation_ = false;
   raw_ptr<CaptchaMetrics> captcha_metrics_;
 };
 
@@ -138,47 +167,71 @@ void CaptchaMetrics::EnsureDefaultCaptchaProviders() {
   }
   // List taken from Chromium's Captcha Providers component. Brave blocks that
   // CRX, so load the same URL patterns locally.
+  //
+  // Note, we differ from the upstream by not intercepting the bframe for
+  // Google's recaptcha. This is done to avoid double counting in
+  // OnDidFinishSubFrameNavigation. Recaptcha embeds two widgets - 1) not a
+  // robot checkbox (which gets loaded via /anchor) and the 3x3 image tiles
+  // (loaded via /bframe). Therefore, hooking only on the "/anchor" is enough
+  // for the current use-case.
   manager->SetCaptchaProviders({
       "*google.com/recaptcha/api2/anchor",
-      "*google.com/recaptcha/api2/bframe",
       "*google.com/recaptcha/enterprise/anchor",
-      "*google.com/recaptcha/enterprise/bframe",
       "*recaptcha.net/recaptcha/api2/anchor",
-      "*recaptcha.net/recaptcha/api2/bframe",
       "*recaptcha.net/recaptcha/enterprise/anchor",
-      "*recaptcha.net/recaptcha/enterprise/bframe",
       "*hcaptcha.com/captcha/*",
       "*challenges.cloudflare.com/*",
   });
 }
 
-void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url) {
+void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url,
+                                              const bool is_user_activated) {
   // ScopedDictPrefUpdate needs to be run on UI thread.
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   std::optional<page_load_metrics::CaptchaProvider> captcha_provider =
       page_load_metrics::CaptchaProviderManager::GetInstance()
           ->GetCaptchaProviderForUrl(url);
+  // Note that for Cloudflare, the Captcha providers only matches if a frame
+  // document was navigated to a URL matching "*challenges.cloudflare.com/*"
+  // which is the complete turnstile check.
+  //
+  //  However, Cloudflare also provides a lightweight technique for security
+  //  checks via their javascript detections solution which are scripts embedded
+  //  directly in the same origin and is located in
+  //  "<origin>/cdn-cgi/challenge-platform/...". To observe that, we need to
+  //  hook into WebContentsObserver and observe the resource load events.
+  //
+  // See
+  // https://developers.cloudflare.com/cloudflare-challenges/challenge-types/javascript-detections/
+  // for more details.
   if (!captcha_provider.has_value()) {
     return;
   }
 
   ScopedDictPrefUpdate update(local_state_, kMiscMetricsCaptchaDictionaryPref);
-  auto increment = [&update](const char* key) {
-    update->Set(key, update->FindInt(key).value_or(0) + 1);
+  auto increment = [&update, &is_user_activated](
+                       const char* pref, const char* user_activated_pref) {
+    update->Set(pref, update->FindInt(pref).value_or(0) + 1);
+    if (is_user_activated) {
+      update->Set(user_activated_pref,
+                  update->FindInt(user_activated_pref).value_or(0) + 1);
+    }
   };
 
-  increment(kMiscMetricsCaptchaCountPref);
+  increment(kCaptchaTotalCountPref, kCaptchaTotalCountUserActivatedPref);
 
   switch (*captcha_provider) {
     case page_load_metrics::CaptchaProvider::kReCaptcha:
-      increment(kMiscMetricsCaptchaGoogleCountPref);
+      increment(kCaptchaGoogleCountPref, kCaptchaGoogleCountUserActivatedPref);
       return;
     case page_load_metrics::CaptchaProvider::kCloudflareTurnstile:
-      increment(kMiscMetricsCaptchaCloudflareCountPref);
+      increment(kCaptchaCloudflareCountPref,
+                kCaptchaCloudflareCountUserActivatedPref);
       return;
     case page_load_metrics::CaptchaProvider::kHCaptcha:
-      increment(kMiscMetricsCaptchaHCaptchaCountPref);
+      increment(kCaptchaHCaptchaCountPref,
+                kCaptchaHCaptchaCountUserActivatedPref);
       return;
     case page_load_metrics::CaptchaProvider::kUnknown:
       return;
@@ -204,31 +257,21 @@ void CaptchaMetrics::ReportToP3AIfPossible() {
   }
 
   // In the first ever recorded run, last_recorded_time is null and so are the
-  // various captcha storages. So, we can skip emitting as it doesn't reflect no
-  // captchas were seen.
+  // various captcha storages. So, we can skip emitting as it doesn't reflect
+  // no captchas were seen.
   const base::DictValue& counts =
       local_state_->GetDict(kMiscMetricsCaptchaDictionaryPref);
 
-  // Record only if the metric actually has a non zero value.
-  auto maybe_record = [](const char* histogram_name, const int value) {
-    if (value > 0) {
-      p3a_utils::RecordToHistogramBucket(histogram_name, kCaptchaCountBuckets,
-                                         value);
-    }
-  };
-
   if (!last_recorded_time.is_null()) {
-    maybe_record(kCaptchaTotalCountHistogramName,
-                 counts.FindInt(kMiscMetricsCaptchaCountPref).value_or(0));
-    maybe_record(
-        kCaptchaGoogleCountHistogramName,
-        counts.FindInt(kMiscMetricsCaptchaGoogleCountPref).value_or(0));
-    maybe_record(
-        kCaptchaCloudflareCountHistogramName,
-        counts.FindInt(kMiscMetricsCaptchaCloudflareCountPref).value_or(0));
-    maybe_record(
-        kCaptchaHCaptchaCountHistogramName,
-        counts.FindInt(kMiscMetricsCaptchaHCaptchaCountPref).value_or(0));
+    for (const auto& [histogram, pref] : kHistogramToPrefMap) {
+      // Record only if the metric actually has a non zero value.
+      const int value = counts.FindInt(pref).value_or(0);
+      if (value > 0) {
+        p3a_utils::RecordToHistogramBucket(histogram.data(),
+                                           kCaptchaCountBuckets, value);
+      }
+    }
+
     // Re-initialize the dict.
     local_state_->ClearPref(kMiscMetricsCaptchaDictionaryPref);
   }
