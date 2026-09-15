@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/build/scripts/templates/runtime_enabled_features.h.tmpl b/third_party/blink/renderer/build/scripts/templates/runtime_enabled_features.h.tmpl
+index e2e96bad04e6d620b5054d645ee785d3cec9c756..ff1dae0d099e486c7e94599acb6d641305653f2a 100644
+--- a/third_party/blink/renderer/build/scripts/templates/runtime_enabled_features.h.tmpl
++++ b/third_party/blink/renderer/build/scripts/templates/runtime_enabled_features.h.tmpl
+@@ -111,6 +111,7 @@ class PLATFORM_EXPORT RuntimeEnabledFeaturesBase {
+   {% endfor %}
+ 
+   static bool IsFeatureEnabledFromString(std::string_view name);
++  static bool IsFeatureEnabledFromStringForTesting(std::string_view name);
+ 
+  protected:
+   // See the comment in RuntimeEnabledFeatures for why these are protected.

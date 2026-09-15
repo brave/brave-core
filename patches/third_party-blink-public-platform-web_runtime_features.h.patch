@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/public/platform/web_runtime_features.h b/third_party/blink/public/platform/web_runtime_features.h
+index d7584122c0b89e646cec244febbaeb9df57877dc..395fa110a480712d0139783db11382e74a031de8 100644
+--- a/third_party/blink/public/platform/web_runtime_features.h
++++ b/third_party/blink/public/platform/web_runtime_features.h
+@@ -71,6 +71,7 @@ class BLINK_PLATFORM_EXPORT WebRuntimeFeatures : public WebRuntimeFeaturesBase {
+   static void EnableLocalNetworkAccessWebRTC(bool);
+ 
+   WebRuntimeFeatures() = delete;
++  static bool IsFeatureEnabledFromStringForTesting(std::string_view);
+ };
+ 
+ }  // namespace blink

@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare a runtime flag reader that answers for every feature.
+
+      `IsFeatureEnabledFromString` refuses an origin-trial controlled
+      feature, since what such a feature is enabled for is a question about a
+      context rather than the flag. The flag is still the state a page
+      without a token gets, and forcing it is how Brave ships a good number
+      of features disabled, so a test needs to read it back for those
+      features too — by name, so that one test covers the whole set rather
+      than the features that happen to declare `public: true`.
+    regex:
+      pattern: |2-
+          static bool IsFeatureEnabledFromString(std::string_view name);
+      replace: |2-
+          static bool IsFeatureEnabledFromString(std::string_view name);
+          static bool IsFeatureEnabledFromStringForTesting(std::string_view name);

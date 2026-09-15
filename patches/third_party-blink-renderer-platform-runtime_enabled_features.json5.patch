@@ -1,32 +1,58 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e24f0a9b1e 100644
+index 22bb1b8232d1028dc9c74472d0df3fd334df1929..d1ec427a9714bc563f92d24d12a3f42e2a4450d7 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-@@ -297,6 +297,7 @@
+@@ -297,7 +297,7 @@
      {
        // Interest Group JS API/runtimeflag.
        name: "AdInterestGroupAPI",
+-      status: "stable",
 +      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
-       status: "stable",
        origin_trial_feature_name: "AdInterestGroupAPI",
        implied_by: ["Fledge", "Parakeet"],
-@@ -407,6 +408,7 @@
+       public: true,
+@@ -407,14 +407,8 @@
      },
      {
        name: "AIPromptAPI",
 +      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
        public: true,
-       status: {
-         "Win": "stable",
-@@ -434,6 +436,7 @@
+-      status: {
+-        "Win": "stable",
+-        "Mac": "stable",
+-        "Linux": "stable",
+-        "ChromeOS": "stable",
+-        "default": "",
+-      },
+     },
+     {
+       name: "AIPromptAPIForWorkers",
+@@ -434,13 +428,7 @@
      },
      {
        name: "AIPromptAPIMultimodalInput",
+-      status: {
+-        "Win": "stable",
+-        "Mac": "stable",
+-        "Linux": "stable",
+-        "ChromeOS": "stable",
+-        "default": "",
+-      },
 +      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
-       status: {
-         "Win": "stable",
-         "Mac": "stable",
-@@ -488,7 +491,7 @@
+     },
+     {
+       // Gates access to inference parameter enhancements for "AIPromptAPI".
+@@ -478,32 +466,18 @@
+     },
+     {
+       name: "AIProofreadingAPI",
+-      status: {
+-        "Win": "experimental",
+-        "Mac": "experimental",
+-        "Linux": "experimental",
+-        "ChromeOS": "experimental",
+-        "default": "",
+-      },
        origin_trial_feature_name: "AIProofreaderAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -35,7 +61,14 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -503,7 +506,7 @@
+       name: "AIRewriterAPI",
+-      status: {
+-        "Win": "experimental",
+-        "Mac": "experimental",
+-        "Linux": "experimental",
+-        "ChromeOS": "experimental",
+-        "default": "",
+-      },
        origin_trial_feature_name: "AIRewriterAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -44,15 +77,32 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -512,6 +515,7 @@
+@@ -512,13 +486,7 @@
      },
      {
        name: "AISummarizationAPI",
+-      status: {
+-        "Win": "stable",
+-        "Mac": "stable",
+-        "Linux": "stable",
+-        "ChromeOS": "stable",
+-        "default": "",
+-      },
 +      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
-       status: {
-         "Win": "stable",
-         "Mac": "stable",
-@@ -539,7 +543,7 @@
+     },
+     {
+       name: "AISummarizationAPIForWorkers",
+@@ -529,17 +497,10 @@
+     },
+     {
+       name: "AIWriterAPI",
+-      status: {
+-        "Win": "experimental",
+-        "Mac": "experimental",
+-        "Linux": "experimental",
+-        "ChromeOS": "experimental",
+-        "default": "",
+-      },
        origin_trial_feature_name: "AIWriterAPI",
        origin_trial_os: ["win", "mac", "linux", "chromeos"],
        origin_trial_allows_third_party: true,
@@ -61,7 +111,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -1292,7 +1296,7 @@
+@@ -1292,7 +1253,7 @@
        // objects that live on the compositor thread.
        // [1] https://drafts.csswg.org/css-animations-2/#timeline-triggers
        name: "CompositorTimelineTrigger",
@@ -70,25 +120,32 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
      },
      {
        name: "CompressionDictionaryTransport",
-@@ -1375,6 +1379,7 @@
+@@ -1375,8 +1336,8 @@
        // https://github.com/WICG/controlled-frame/blob/main/README.md for more
        // info.
        name: "ControlledFrame",
 +      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
        public: true,
-       status: "stable",
+-      status: "stable",
      },
-@@ -2847,7 +2852,8 @@
+     {
+       // Enable support for requesting SecurityInfo in WebRequest API
+@@ -2847,13 +2808,13 @@
      },
      {
        name: "FencedFrames",
--      base_feature: "none",
 +      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
-+      base_feature: "FencedFramesRuntime",
+       base_feature: "none",
        // This helps enable and expose the <fencedframe> element, but note that
        // blink::features::kFencedFrames must be enabled as well, as we require
        // the support of the browser process to fully enable the feature.
-@@ -2948,6 +2954,7 @@
+       // Enabling this runtime enabled feature alone has no effect.
+       public: true,
+-      status: "stable",
+     },
+     {
+       name: "FencedFramesAPIChanges",
+@@ -2948,6 +2909,7 @@
      {
        // In-development features for the File System Access API.
        name: "FileSystemAccessAPIExperimental",
@@ -96,7 +153,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: "experimental",
      },
      {
-@@ -2962,6 +2969,7 @@
+@@ -2962,6 +2924,7 @@
      {
        // Non-OPFS File System Access API.
        name: "FileSystemAccessLocal",
@@ -104,24 +161,33 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: {"default": "stable"},
      },
      {
-@@ -3085,6 +3093,7 @@
+@@ -3085,7 +3048,7 @@
      },
      {
        name: "Fledge",
+-      status: "stable",
 +      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
-       status: "stable",
        public: true,
      },
-@@ -3796,7 +3805,7 @@
-         "Android": "test",
-         "default": "",
-       },
+     {
+@@ -3788,15 +3751,7 @@
+     },
+     {
+       name: "LanguageDetectionAPI",
+-      status: {
+-        "Win": "stable",
+-        "Mac": "stable",
+-        "Linux": "stable",
+-        "ChromeOS": "stable",
+-        "Android": "test",
+-        "default": "",
+-      },
 -      base_feature_status: "enabled",
 +      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -4154,6 +4163,7 @@
+@@ -4154,6 +4109,7 @@
      // "experimental" is the support on other platforms.
      {
        name: "MiddleClickAutoscroll",
@@ -129,7 +195,7 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: "test",
      },
      // Killswitch for crbug.com/40062462 fix.
-@@ -4625,6 +4635,7 @@
+@@ -4625,6 +4581,7 @@
      {
        // PARAKEET ad serving runtime flag/JS API.
        name: "Parakeet",
@@ -137,15 +203,16 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        origin_trial_feature_name: "Parakeet",
      },
      {
-@@ -4797,6 +4808,7 @@
+@@ -4797,7 +4754,7 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
+-      status: "stable",
 +      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
-       status: "stable",
      },
      {
-@@ -5028,6 +5040,7 @@
+       // Used to allow prerender cross-origin iframes with an opt-in response
+@@ -5028,6 +4985,7 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -153,24 +220,32 @@ index 22bb1b8232d1028dc9c74472d0df3fd334df1929..444b3b836b228068eaf9c05fb6a356e2
        status: "stable",
      },
      {
-@@ -6445,7 +6458,7 @@
-         "ChromeOS": "stable",
-         "default": "",
-       },
+@@ -6438,14 +6396,7 @@
+     },
+     {
+       name: "TranslationAPI",
+-      status: {
+-        "Win": "stable",
+-        "Mac": "stable",
+-        "Linux": "stable",
+-        "ChromeOS": "stable",
+-        "default": "",
+-      },
 -      base_feature_status: "enabled",
 +      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -6620,6 +6633,7 @@
+@@ -6620,7 +6571,7 @@
      },
      {
        name: "UserMediaElement",
+-      status: "stable",
 +      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
-       status: "stable",
        public: true,
      },
-@@ -7425,5 +7439,10 @@
+     {
+@@ -7425,5 +7376,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },

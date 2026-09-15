@@ -120,6 +120,7 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "blink_runtime_feature_defaults_unittest.cc",
     "brave_main_delegate_unittest.cc",
     "feature_defaults_unittest.cc",
   ]
@@ -198,6 +199,7 @@ source_set("unit_tests") {
     "//services/device/public/cpp:device_features",
     "//services/network/public/cpp",
     "//testing/gtest",
+    "//third_party/blink/public:blink",
     "//ui/base",
   ]
   if (is_android) {
