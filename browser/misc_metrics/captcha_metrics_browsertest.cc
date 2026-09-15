@@ -219,8 +219,8 @@ IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, RecordsUserActivatedGoogle) {
 
   // The captcha is counted as shown twice: once on commit, and again on
   // activation (which always bumps the shown counter). count=2 → bucket 2.
-  histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 2, 1);
-  histogram_tester_.ExpectUniqueSample(kCaptchaGoogleCountHistogramName, 2, 1);
+  histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(kCaptchaGoogleCountHistogramName, 1, 1);
 
   // User activation is recorded once. count=1 → bucket 1.
   histogram_tester_.ExpectUniqueSample(

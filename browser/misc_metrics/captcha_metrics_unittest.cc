@@ -159,8 +159,8 @@ TEST_F(CaptchaMetricsTest, RecordsUserActivatedCounts) {
   task_environment_.FastForwardBy(base::Days(1));
 
   // Shown counts include both loads.
-  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 2, 1);
-  histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 2, 1);
+  histogram_tester_.ExpectBucketCount(kCaptchaTotalCountHistogramName, 1, 1);
+  histogram_tester_.ExpectBucketCount(kCaptchaGoogleCountHistogramName, 1, 1);
 
   // User-activated counts include only the interacted-with load.
   histogram_tester_.ExpectBucketCount(

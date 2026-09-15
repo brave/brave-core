@@ -25,6 +25,7 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/render_frame_host.h"
 #include "url/gurl.h"
 
 namespace misc_metrics {
@@ -123,7 +124,6 @@ class BraveCaptchaPageLoadMetricsObserver
     captcha_metrics_->MaybeRecordCaptchaForUrl(navigation_handle->GetURL());
   }
 
-  // This is called each time the user interacts with the captcha frame.
   void FrameReceivedUserActivation(
       content::RenderFrameHost* render_frame_host) override {
     // This helps to avoid re-recording the metrics on other user activation
@@ -234,10 +234,11 @@ void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url,
   ScopedDictPrefUpdate update(local_state_, kMiscMetricsCaptchaDictionaryPref);
   auto increment = [&update, &is_user_activated](
                        const char* pref, const char* user_activated_pref) {
-    update->Set(pref, update->FindInt(pref).value_or(0) + 1);
     if (is_user_activated) {
       update->Set(user_activated_pref,
                   update->FindInt(user_activated_pref).value_or(0) + 1);
+    } else {
+      update->Set(pref, update->FindInt(pref).value_or(0) + 1);
     }
   };
 
