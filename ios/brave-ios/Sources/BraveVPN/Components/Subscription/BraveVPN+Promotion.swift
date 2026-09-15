@@ -3,47 +3,31 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import GuardianConnect
+import BraveStore
 import Preferences
+import StoreKit
 import os.log
 
 extension BraveVPN {
 
   /// Editing product promotion order first yearly and monthly after
   @MainActor public static func updateStorePromotionOrder() async {
-    let storePromotionController = SKProductStorePromotionController.default()
-    // Fetch Products
-    guard let yearlyProduct = BraveVPNProductInfo.yearlySubProduct,
-      let monthlyProduct = BraveVPNProductInfo.monthlySubProduct
-    else {
-      Logger.module.debug("Found empty while fetching SKProducts for promotion order")
-      return
-    }
-
-    // Update the order
     do {
-      try await storePromotionController.update(promotionOrder: [yearlyProduct, monthlyProduct])
+      try await Product.PromotionInfo.updateProductOrder(byID: [
+        BraveStoreProduct.vpnYearly.rawValue,
+        BraveStoreProduct.vpnMonthly.rawValue,
+      ])
     } catch {
-      Logger.module.debug("Error while opdating product promotion order ")
+      Logger.module.debug("Error while updating product promotion order")
     }
   }
 
   /// Hiding Store pormotion if the active subscription for the type
   @MainActor public static func hideActiveStorePromotion() async {
-    let storePromotionController = SKProductStorePromotionController.default()
-
-    // Fetch Products
-    guard let yearlyProduct = BraveVPNProductInfo.yearlySubProduct,
-      let monthlyProduct = BraveVPNProductInfo.monthlySubProduct
-    else {
-      Logger.module.debug("Found empty while fetching SKProducts for promotion order")
-      return
-    }
-
     // No promotion for VPN is purchased through website side
     if Preferences.VPN.skusCredential.value != nil {
-      await hideSubscriptionType(yearlyProduct)
-      await hideSubscriptionType(monthlyProduct)
+      await hideSubscriptionType(BraveStoreProduct.vpnYearly.rawValue)
+      await hideSubscriptionType(BraveStoreProduct.vpnMonthly.rawValue)
 
       return
     }
@@ -53,27 +37,29 @@ extension BraveVPN {
 
     switch activeSubscriptionType {
     case .monthly:
-      await hideSubscriptionType(monthlyProduct)
+      await hideSubscriptionType(BraveStoreProduct.vpnMonthly.rawValue)
     case .yearly:
-      await hideSubscriptionType(yearlyProduct)
+      await hideSubscriptionType(BraveStoreProduct.vpnYearly.rawValue)
     default:
       break
     }
+  }
 
-    func hideSubscriptionType(_ product: SKProduct) async {
-      do {
-        try await storePromotionController.update(promotionVisibility: .hide, for: product)
-      } catch {
-        Logger.module.debug("Error while opdating product promotion order ")
-      }
+  private static func hideSubscriptionType(_ productID: String) async {
+    do {
+      try await Product.PromotionInfo.updateProductVisibility(.hidden, for: productID)
+    } catch {
+      Logger.module.debug("Error while updating product promotion visibility")
     }
   }
 
-  public static func activatePaymentTypeForStoredPromotion(savedPayment: SKPayment?) {
-    if let payment = savedPayment {
-      SKPaymentQueue.default().add(payment)
+  public static func activatePaymentTypeForStoredPromotion(product: Product?) {
+    if let product {
+      Task {
+        await iapObserver.purchase(product: product)
+      }
     }
 
-    iapObserver.savedPayment = nil
+    iapObserver.savedPromotedProduct = nil
   }
 }

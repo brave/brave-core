@@ -13,6 +13,7 @@ import OSLog
 import Preferences
 import Shared
 import Static
+import StoreKit
 import SwiftUI
 import UIKit
 
@@ -422,14 +423,16 @@ public struct VPNSettingsView: View {
           }
           .foregroundStyle(Color(braveSystemName: .textInteractive))
           Button {
-            SKPaymentQueue.default().presentCodeRedemptionSheet()
+            Task {
+              await BraveVPN.presentOfferCodeRedeemSheet()
+            }
           } label: {
             Text(Strings.VPN.settingsRedeemOfferCode)
           }
           .foregroundStyle(Color(braveSystemName: .textInteractive))
           Button {
             Task {
-              try await BraveVPNInAppPurchaseObserver.refreshReceipt()
+              try await AppStore.sync()
             }
             openURL(.brave.braveVPNLinkReceiptProd)
           } label: {
@@ -439,7 +442,7 @@ public struct VPNSettingsView: View {
           if viewModel.isDevReceiptLinkingAvailable {
             Button {
               Task {
-                try await BraveVPNInAppPurchaseObserver.refreshReceipt()
+                try await AppStore.sync()
               }
               openURL(.brave.braveVPNLinkReceiptStaging)
             } label: {
@@ -448,7 +451,7 @@ public struct VPNSettingsView: View {
             .foregroundStyle(Color(braveSystemName: .textInteractive))
             Button {
               Task {
-                try await BraveVPNInAppPurchaseObserver.refreshReceipt()
+                try await AppStore.sync()
               }
               openURL(.brave.braveVPNLinkReceiptDev)
             } label: {

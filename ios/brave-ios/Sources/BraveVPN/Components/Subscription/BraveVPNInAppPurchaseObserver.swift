@@ -10,7 +10,8 @@ import Shared
 import StoreKit
 import os.log
 
-public class BraveVPNIAPObserverManager: NSObject, ObservableObject {
+@MainActor
+public class BraveVPNIAPObserverManager: ObservableObject {
 
   public enum BraveVPNPaymentStatus: Equatable {
     case ongoing
@@ -25,23 +26,18 @@ public class BraveVPNIAPObserverManager: NSObject, ObservableObject {
 
   public init(iapObserver: BraveVPNInAppPurchaseObserver) {
     self.iapObserver = iapObserver
-    super.init()
-    self.iapObserver.delegate = self
+    iapObserver.delegate = self
   }
 }
 
 // MARK: - IAPObserverDelegate
 extension BraveVPNIAPObserverManager: BraveVPNInAppPurchaseObserverDelegate {
   public func purchasedOrRestoredProduct(validateReceipt: Bool) {
-    DispatchQueue.main.async {
-      self.paymentStatus = .success(receiptValidationRequired: validateReceipt)
-    }
+    paymentStatus = .success(receiptValidationRequired: validateReceipt)
   }
 
   public func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
-    DispatchQueue.main.async {
-      self.paymentStatus = .failure(error)
-    }
+    paymentStatus = .failure(error)
   }
 
   public func handlePromotedInAppPurchase() {
@@ -49,204 +45,222 @@ extension BraveVPNIAPObserverManager: BraveVPNInAppPurchaseObserverDelegate {
   }
 }
 
+@MainActor
 public protocol BraveVPNInAppPurchaseObserverDelegate: AnyObject {
   func purchasedOrRestoredProduct(validateReceipt: Bool)
   func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError)
   func handlePromotedInAppPurchase()
 }
 
-public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserver {
+public class BraveVPNInAppPurchaseObserver {
 
   public enum PurchaseError: Equatable {
-    case transactionError(error: SKError?)
+    /// The user cancelled the purchase or the AppStore authentication
+    case cancelled
+    /// The purchase or restore failed with an error from the AppStore
+    case transactionFailed
+    /// The transaction succeeded but receipt validation failed afterwards
     case receiptError
+    /// A restore was attempted but the account has never bought the product
+    case nothingToRestore
   }
 
-  public weak var delegate: BraveVPNInAppPurchaseObserverDelegate?
-  public var savedPayment: SKPayment?
+  public weak var delegate: (any BraveVPNInAppPurchaseObserverDelegate)?
 
-  // MARK: - Handling transactions
+  /// A promoted AppStore purchase that was deferred until onboarding completes
+  public var savedPromotedProduct: Product?
 
-  private func processTransactions(_ transactions: [SKPaymentTransaction], on queue: SKPaymentQueue)
-  {
-    // This helper variable helps to call the IAPObserverDelegate delegate purchased method only once.
-    // Reason is when restoring or sometimes when purchasing or restoring a product there's multiple transactions
-    // that are returned in `transactions` array.
-    // Apple advices to call `finishTransaction` for all of them,
-    // but to show the UI we only want to call the delegate method once.
-    var callPurchaseDelegateOnce = true
+  /// Transaction ids that have already been reported to the delegate.
+  /// A single purchase can be delivered both through `Product.purchase` and `Transaction.updates`.
+  private var reportedTransactionIDs = Set<UInt64>()
 
-    // Filter for VPN only transactions. We do not want to call `finishTransaction` on other transactions
-    let vpnTransactions = transactions.filter({
-      ($0.payment.productIdentifier == BraveStoreProduct.vpnMonthly.rawValue)
-        || ($0.payment.productIdentifier == BraveStoreProduct.vpnYearly.rawValue)
-    })
+  private var transactionUpdatesTask: Task<Void, Never>?
+  private var purchaseIntentsTask: Task<Void, Never>?
 
-    // There was no VPN purchases
-    if vpnTransactions.isEmpty {
-      let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "not-purchased"])
-      self.delegate?.purchaseFailed(error: .transactionError(error: errorRestore))
+  public init() {
+    transactionUpdatesTask = Task { [weak self] in
+      for await update in Transaction.updates {
+        await self?.handleTransactionUpdate(update)
+      }
+    }
+
+    purchaseIntentsTask = Task { [weak self] in
+      for await intent in PurchaseIntent.intents {
+        await self?.handlePurchaseIntent(intent)
+      }
+    }
+
+    // Process any transactions that were not finished before the app was last terminated
+    Task { [weak self] in
+      for await update in Transaction.unfinished {
+        await self?.handleTransactionUpdate(update)
+      }
+    }
+  }
+
+  deinit {
+    transactionUpdatesTask?.cancel()
+    purchaseIntentsTask?.cancel()
+  }
+
+  // MARK: - Purchasing
+
+  @MainActor
+  public func purchase(product: Product) async {
+    do {
+      let result = try await product.purchase(options: [.simulatesAskToBuyInSandbox(false)])
+
+      switch result {
+      case .success(let verificationResult):
+        guard case .verified(let transaction) = verificationResult else {
+          Logger.module.error("Purchase returned an unverified transaction")
+          delegate?.purchaseFailed(error: .transactionFailed)
+          return
+        }
+
+        let didNotify = await processPurchasedTransaction(transaction)
+        if !didNotify {
+          // The transaction was already processed, which happens when the user already owns
+          // the subscription and it was delivered through Transaction.updates beforehand.
+          // Notify the delegate again so callers waiting on this purchase can resolve.
+          await delegate?.purchasedOrRestoredProduct(validateReceipt: true)
+        }
+      case .userCancelled:
+        // The user cancelled the purchase, no error should be surfaced
+        delegate?.purchaseFailed(error: .cancelled)
+      case .pending:
+        // Deferred purchase (e.g. ask to buy), the transaction will arrive
+        // through Transaction.updates once approved
+        break
+      @unknown default:
+        assertionFailure("Unknown purchase result")
+      }
+    } catch {
+      Logger.module.error("Purchase failed: \(error.localizedDescription)")
+      delegate?.purchaseFailed(error: .transactionFailed)
+    }
+  }
+
+  // MARK: - Restoring
+
+  @MainActor
+  public func restorePurchases() async {
+    do {
+      try await AppStore.sync()
+    } catch StoreKitError.userCancelled {
+      // The user dismissed the AppStore authentication, no error should be surfaced
+      delegate?.purchaseFailed(error: .cancelled)
+      return
+    } catch {
+      Logger.module.error("Restoring purchases failed: \(error.localizedDescription)")
+      delegate?.purchaseFailed(error: .transactionFailed)
       return
     }
 
-    vpnTransactions
-      .sorted(by: { $0.transactionDate ?? Date() > $1.transactionDate ?? Date() })
-      .forEach { transaction in
-        switch transaction.transactionState {
-        case .purchased:
-          Logger.module.debug("Received transaction state: purchased")
-          // This should be always called, no matter if transaction is successful or not.
-          queue.finishTransaction(transaction)
-          if callPurchaseDelegateOnce {
-            Preferences.VPN.subscriptionProductId.value = transaction.payment.productIdentifier
-            self.delegate?.purchasedOrRestoredProduct(validateReceipt: true)
-          }
-          callPurchaseDelegateOnce = false
-        case .restored:
-          Logger.module.debug("Received transaction state: restored")
-          // This should be always called, no matter if transaction is successful or not.
-          queue.finishTransaction(transaction)
+    var latestTransaction: Transaction?
+    for await result in Transaction.currentEntitlements {
+      guard case .verified(let transaction) = result,
+        isVPNProduct(transaction.productID),
+        transaction.revocationDate == nil
+      else { continue }
 
-          if callPurchaseDelegateOnce {
-            Preferences.VPN.subscriptionProductId.value = transaction.payment.productIdentifier
-
-            Task {
-              do {
-                let response = try await BraveVPN.validateReceiptData()
-                if response?.status == .expired {
-                  // Receipt either expired or receipt validation returned some error.
-                  self.delegate?.purchaseFailed(error: .receiptError)
-                } else {
-                  self.delegate?.purchasedOrRestoredProduct(validateReceipt: false)
-                  // If we purchased via Apple's IAP we reset the Brave SKUs credential
-                  // to avoid mixing two purchase types in the app.
-                  //
-                  // The user will be able to retrieve the shared credential
-                  // after log in to account.brave website.
-                  BraveVPN.clearSkusCredentials(includeExpirationDate: false)
-                }
-              } catch {
-                Logger.module.error("Error validating receipt: \(error)")
-                self.delegate?.purchaseFailed(error: .transactionError(error: SKError(.unknown)))
-              }
-            }
-          }
-
-          callPurchaseDelegateOnce = false
-        case .purchasing, .deferred:
-          Logger.module.debug("Received transaction state: purchasing")
-        case .failed:
-          Logger.module.debug("Received transaction state: failed")
-          queue.finishTransaction(transaction)
-          if callPurchaseDelegateOnce {
-            self.delegate?.purchaseFailed(
-              error: .transactionError(error: transaction.error as? SKError)
-            )
-          }
-          callPurchaseDelegateOnce = false
-        @unknown default:
-          assertionFailure("Unknown transactionState")
-        }
+      if let current = latestTransaction, transaction.purchaseDate <= current.purchaseDate {
+        continue
       }
-  }
 
-  public func paymentQueue(
-    _ queue: SKPaymentQueue,
-    updatedTransactions transactions: [SKPaymentTransaction]
-  ) {
-    processTransactions(transactions, on: queue)
-  }
+      latestTransaction = transaction
+    }
 
-  // MARK: - Restoring Transactions
-
-  public func paymentQueue(
-    _ queue: SKPaymentQueue,
-    restoreCompletedTransactionsFailedWithError error: Error
-  ) {
-    Logger.module.debug("Restoring transaction failed")
-    self.delegate?.purchaseFailed(error: .transactionError(error: error as? SKError))
-  }
-
-  // Used to handle restoring transaction error for users never purchased but trying to restore
-  public func paymentQueueRestoreCompletedTransactionsFinished(_ queue: SKPaymentQueue) {
-    if queue.transactions.isEmpty {
+    guard let transaction = latestTransaction else {
       Logger.module.debug(
         "Restoring transaction failed - Nothing to restore - Account never bought this product"
       )
-
-      let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "not-purchased"])
-      delegate?.purchaseFailed(error: .transactionError(error: errorRestore))
+      delegate?.purchaseFailed(error: .nothingToRestore)
       return
     }
 
-    processTransactions(queue.transactions, on: queue)
+    Preferences.VPN.subscriptionProductId.value = transaction.productID
+
+    do {
+      let response = try await BraveVPN.validateReceiptData()
+      if response?.status == .expired {
+        // Receipt either expired or receipt validation returned some error.
+        delegate?.purchaseFailed(error: .receiptError)
+      } else {
+        delegate?.purchasedOrRestoredProduct(validateReceipt: false)
+        // If we purchased via Apple's IAP we reset the Brave SKUs credential
+        // to avoid mixing two purchase types in the app.
+        //
+        // The user will be able to retrieve the shared credential
+        // after log in to account.brave website.
+        BraveVPN.clearSkusCredentials(includeExpirationDate: false)
+      }
+    } catch {
+      Logger.module.error("Error validating receipt: \(error)")
+      delegate?.purchaseFailed(error: .transactionFailed)
+    }
+  }
+
+  // MARK: - Handling transactions
+
+  private func handleTransactionUpdate(_ result: VerificationResult<Transaction>) async {
+    guard case .verified(let transaction) = result else {
+      Logger.module.error("Received an unverified transaction update")
+      return
+    }
+
+    // Only handle VPN transactions, other products are handled by BraveStoreSDK
+    guard isVPNProduct(transaction.productID) else { return }
+
+    Logger.module.debug(
+      "Received transaction update for \(transaction.productID, privacy: .public)"
+    )
+
+    await processPurchasedTransaction(transaction)
+  }
+
+  /// - Returns: True if the transaction was processed by this call, false if it was already processed
+  @discardableResult
+  private func processPurchasedTransaction(_ transaction: Transaction) async -> Bool {
+    // A purchase is delivered through both `Product.purchase` and `Transaction.updates`,
+    // but the delegate should only be notified once
+    guard reportedTransactionIDs.insert(transaction.id).inserted else {
+      Logger.module.debug("Transaction \(transaction.id) was already processed")
+      return false
+    }
+
+    // StoreKit 2 does not reliably add the AppStore receipt to the app bundle after a
+    // transaction, force a refresh so backend receipt validation can see the purchase
+    try? await AppStoreReceipt.sync()
+
+    Preferences.VPN.subscriptionProductId.value = transaction.productID
+    await delegate?.purchasedOrRestoredProduct(validateReceipt: true)
+    await transaction.finish()
+    return true
   }
 
   // MARK: - Handling promoted in-app purchases
 
-  public func paymentQueue(
-    _ queue: SKPaymentQueue,
-    shouldAddStorePayment payment: SKPayment,
-    for product: SKProduct
-  ) -> Bool {
+  private func handlePurchaseIntent(_ intent: PurchaseIntent) async {
+    let product = intent.product
+
     // Check the product triggered from ad is a VPN product
     // This check is done because this observer is used in browser
-    let productIdentifier = product.productIdentifier
-    guard
-      productIdentifier == BraveStoreProduct.vpnMonthly.rawValue
-        || productIdentifier == BraveStoreProduct.vpnYearly.rawValue
-    else {
-      return false
-    }
+    guard isVPNProduct(product.id) else { return }
 
     // Check if there is an active onboarding happening
-    let shouldDeferPayment = Preferences.AppState.shouldDeferPromotedPurchase.value
-
-    // If you need to defer until onboarding is complete, save the payment and return false.
-    if shouldDeferPayment {
-      savedPayment = payment
-      return false
+    // If you need to defer until onboarding is complete, save the product for later
+    if Preferences.AppState.shouldDeferPromotedPurchase.value {
+      savedPromotedProduct = product
+      return
     }
 
-    delegate?.handlePromotedInAppPurchase()
-    return true
-  }
-}
-
-extension BraveVPNInAppPurchaseObserver {
-  @MainActor
-  static func refreshReceipt() async throws {
-    let request = SKReceiptRefreshRequest()
-    let delegate = ReceiptRefreshDelegate()
-    request.delegate = delegate
-
-    try await withCheckedThrowingContinuation { continuation in
-      delegate.completion = { result in
-        switch result {
-        case .success:
-          continuation.resume()
-        case .failure(let error):
-          continuation.resume(throwing: error)
-        }
-      }
-
-      request.start()
-    }
+    await delegate?.handlePromotedInAppPurchase()
+    await purchase(product: product)
   }
 
-  private class ReceiptRefreshDelegate: NSObject, SKRequestDelegate {
-    var completion: ((Result<Void, Error>) -> Void)?
-
-    func requestDidFinish(_ request: SKRequest) {
-      completion?(.success(()))
-      completion = nil
-      request.delegate = nil
-    }
-
-    func request(_ request: SKRequest, didFailWithError error: Error) {
-      completion?(.failure(error))
-      completion = nil
-      request.delegate = nil
-    }
+  private func isVPNProduct(_ productID: String) -> Bool {
+    productID == BraveStoreProduct.vpnMonthly.rawValue
+      || productID == BraveStoreProduct.vpnYearly.rawValue
   }
 }
