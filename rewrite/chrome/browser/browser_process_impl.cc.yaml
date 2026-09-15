@@ -5,12 +5,12 @@
 
 substitutions:
   - description: |
-      Construct a stub `SodaInstaller` as the global one, because Brave ships
-      no SODA. Upstream's reports SODA's languages as downloadable and then
-      parks an install() reply on a download that never arrives.
+      Construct Brave's `SodaInstaller` as the global one, because Brave ships
+      no SODA and installs its own on-device speech model in its place.
 
       `CreateBraveSodaInstaller` is defined in the chromium_src override of
-      this source.
+      this source, returning either Brave's own installer or a stub that
+      reports nothing in builds that ship no model.
     regex:
       pattern: 'std::make_unique<speech::SodaInstallerImpl>()'
       replace: 'speech::CreateBraveSodaInstaller()'
