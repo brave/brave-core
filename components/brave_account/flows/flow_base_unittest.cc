@@ -64,6 +64,18 @@ class FlowBaseTest : public testing::Test {
         *encryptor_);
   }
 
+  void TearDown() override {
+    // Cancelling a request frees its `SimpleURLLoader` via `DeleteSoon()`
+    // (see `~RequestHandleDeleter`), and `~TaskEnvironment` drops pending
+    // tasks instead of running them - so without draining here, LSAN reports
+    // the loader as leaked. The deletion task is already queued on this
+    // sequence, so a quit closure posted behind it runs strictly after it.
+    base::RunLoop run_loop;
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, run_loop.QuitClosure());
+    run_loop.Run();
+  }
+
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
   std::unique_ptr<AccountStatePrefs> account_state_prefs_;
