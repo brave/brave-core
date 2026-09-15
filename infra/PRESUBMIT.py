@@ -11,17 +11,23 @@ PRESUBMIT_VERSION = '2.0.0'
 
 
 def CheckTests(input_api, output_api):
+    """Run every *_test.py file found under this directory.
+    """
     script_dir = input_api.PresubmitLocalPath()
     tests = []
     for root, dirs, files in os.walk(script_dir):
         dirs[:] = [d for d in dirs if d != '__pycache__']
-        if any(f.endswith('_test.py') for f in files):
-            tests.extend(
-                input_api.canned_checks.GetUnitTestsInDirectory(
-                    input_api,
-                    output_api,
-                    root,
-                    files_to_check=[r'.+_test\.py$']))
+        for f in files:
+            if not f.endswith('_test.py'):
+                continue
+            test_path = input_api.os_path.join(root, f)
+            tests.append(
+                input_api.Command(
+                    name=test_path,
+                    cmd=[test_path],
+                    kwargs={'cwd': script_dir},
+                    message=output_api.PresubmitError,
+                ))
     return input_api.RunTests(tests)
 
 
