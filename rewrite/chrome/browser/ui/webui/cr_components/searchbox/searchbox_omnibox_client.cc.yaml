@@ -13,6 +13,6 @@ substitutions:
       Search keyword matches. Anchored on `OnAutocompleteAccept` so the
       identically-shaped `OpenURL()` call in `OpenUrl()` is left untouched.
     regex:
-      re_pattern: '(SearchboxOmniboxClient::OnAutocompleteAccept\(.*?web_contents_->OpenURL\(\s*)(content::OpenURLParams\((?:[^()]|\([^()]*\))*\))'
+      re_pattern: '(SearchboxOmniboxClient::OnAutocompleteAccept\(.*?web_contents_->OpenURL\(\s*)(content::OpenURLParams(?:::CreateBrowserInitiated)?\((?:[^()]|\([^()]*\))*\))'
       re_flags: [DOTALL]
       replace: '\1MaybeOverrideURLParams(\2, match, GetTemplateURLService())'
