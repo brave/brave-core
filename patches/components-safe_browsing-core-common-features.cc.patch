@@ -1,45 +1,45 @@
 diff --git a/components/safe_browsing/core/common/features.cc b/components/safe_browsing/core/common/features.cc
-index 13a01c06a849e6f680073f3655d38fc5d9a2227d..90d2a10c6949d1aa3183b68c822df3f19444fc4a 100644
+index 13a01c06a849e6f680073f3655d38fc5d9a2227d..7fc6bfc09bd09afc0846c0cd21ef73a48ac0449f 100644
 --- a/components/safe_browsing/core/common/features.cc
 +++ b/components/safe_browsing/core/common/features.cc
-@@ -41,6 +41,7 @@ BASE_FEATURE(kAdSamplerTriggerFeature,
+@@ -41,7 +41,7 @@ BASE_FEATURE(kAdSamplerTriggerFeature,
  BASE_FEATURE(kAddWarningShownTSToClientSafeBrowsingReport,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
-+// kAntivirusTelemetryForDownloads feature state is enforced via plaster rewrite.
- BASE_FEATURE(kAntivirusTelemetryForDownloads,
+-BASE_FEATURE(kAntivirusTelemetryForDownloads,
++BASE_OVERRIDDEN_FEATURE(kAntivirusTelemetryForDownloads,
               base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -73,8 +74,9 @@ constexpr base::FeatureParam<std::string> kClientSideDetectionBypassTiersList{
+ BASE_FEATURE(kAutoRevokeSuspiciousNotification,
+@@ -73,8 +73,8 @@ constexpr base::FeatureParam<std::string> kClientSideDetectionBypassTiersList{
      &kClientSideDetectionBypassTiers, "ClientSideDetectionBypassTiersList",
      /*default_value=*/""};
  
-+// kClientSideDetectionClipboardCopyApi feature state is enforced via plaster rewrite.
- BASE_FEATURE(kClientSideDetectionClipboardCopyApi,
+-BASE_FEATURE(kClientSideDetectionClipboardCopyApi,
 -             base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kClientSideDetectionClipboardCopyApi,
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  constexpr base::FeatureParam<double> kCsdClipboardCopyApiHCAcceptanceRate{
      &kClientSideDetectionClipboardCopyApi, "HCAcceptanceRate",
      /*default_value=*/1.0};
-@@ -313,9 +315,10 @@ constexpr base::FeatureParam<double>
+@@ -313,9 +313,9 @@ constexpr base::FeatureParam<double>
  BASE_FEATURE(kGlobalCacheListForGatingNotificationProtections,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
-+// kGooglePlayProtectInApkTelemetry feature state is enforced via plaster rewrite.
- BASE_FEATURE(kGooglePlayProtectInApkTelemetry,
+-BASE_FEATURE(kGooglePlayProtectInApkTelemetry,
++BASE_OVERRIDDEN_FEATURE(kGooglePlayProtectInApkTelemetry,
               "SafeBrowsingGooglePlayProtectInApkTelemetry",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kGooglePlayProtectReducesWarnings,
               "SafeBrowsingGooglePlayProtectReducesWarnings",
-@@ -404,7 +407,8 @@ BASE_FEATURE(kMovePasswordLeakDetectionToggleIos,
+@@ -404,7 +404,7 @@ BASE_FEATURE(kMovePasswordLeakDetectionToggleIos,
  
  BASE_FEATURE(kNoticeQueueForEsb, base::FEATURE_ENABLED_BY_DEFAULT);
  
 -BASE_FEATURE(kNotificationTelemetry, base::FEATURE_ENABLED_BY_DEFAULT);
-+// kNotificationTelemetry feature state is enforced via plaster rewrite.
-+BASE_FEATURE(kNotificationTelemetry, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kNotificationTelemetry, base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE(kProactivePasswordProtection, base::FEATURE_DISABLED_BY_DEFAULT);
  const base::FeatureParam<double> kCsdProactivePasswordProtectionSampleRate{

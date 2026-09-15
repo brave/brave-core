@@ -8,7 +8,7 @@ substitutions:
     regex:
       pattern: 'DEFINE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(kAutofillAiServerModel);'
       replace:
-        'BASE_FEATURE(kAutofillAiServerModel,
+        'BASE_OVERRIDDEN_FEATURE(kAutofillAiServerModel,
         base::FEATURE_DISABLED_BY_DEFAULT);'
 
   - description: |-
@@ -19,5 +19,5 @@ substitutions:
     regex:
       pattern: 'DEFINE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(kAutofillAiWithDataSchema);'
       replace:
-        'BASE_FEATURE(kAutofillAiWithDataSchema,
+        'BASE_OVERRIDDEN_FEATURE(kAutofillAiWithDataSchema,
         base::FEATURE_DISABLED_BY_DEFAULT);'
