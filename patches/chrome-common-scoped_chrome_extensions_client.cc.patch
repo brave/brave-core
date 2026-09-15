@@ -1,13 +1,29 @@
 diff --git a/chrome/common/scoped_chrome_extensions_client.cc b/chrome/common/scoped_chrome_extensions_client.cc
-index bf55ba3d757daf2c917a24b5be0e06e5b8353d51..f54dfe027187b3c4d421015e302c7e67679ca8d0 100644
+index bf55ba3d757daf2c917a24b5be0e06e5b8353d51..efee8a2a34f33bb02d7b67149d5ab08dc3c51212 100644
 --- a/chrome/common/scoped_chrome_extensions_client.cc
 +++ b/chrome/common/scoped_chrome_extensions_client.cc
-@@ -61,7 +61,7 @@ CombineAllAvailabilityCheckMaps() {
+@@ -61,7 +61,12 @@ CombineAllAvailabilityCheckMaps() {
  }  // namespace
  
  ScopedChromeExtensionsClient::ScopedChromeExtensionsClient()
 -    : client_(std::make_unique<ChromeExtensionsClient>()) {
 +    : client_(std::make_unique<BraveExtensionsClient>()) {
++  if (g_process_wide_client_owner) {
++    client_.reset();
++    return;
++  }
++  g_process_wide_client_owner = this;
    client_->SetFeatureDelegatedAvailabilityCheckMap(
        CombineAllAvailabilityCheckMaps());
  #if BUILDFLAG(ENABLE_PLATFORM_APPS)
+@@ -82,6 +87,10 @@ ScopedChromeExtensionsClient::ScopedChromeExtensionsClient()
+ }
+ 
+ ScopedChromeExtensionsClient::~ScopedChromeExtensionsClient() {
++  if (g_process_wide_client_owner != this) {
++    return;
++  }
++  g_process_wide_client_owner = nullptr;
+   DCHECK_EQ(ExtensionsClient::Get(), client_.get());
+   ExtensionsClient::Set(nullptr);
+ }

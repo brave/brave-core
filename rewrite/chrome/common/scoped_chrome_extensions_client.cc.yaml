@@ -12,3 +12,33 @@ substitutions:
     rename_class:
       class_name: ChromeExtensionsClient
       rename: BraveExtensionsClient
+
+  - description: |
+      Have the first instance own the process-wide ExtensionsClient
+
+      ExtensionsClient::Set() CHECKs that no client has been registered yet,
+      but with `--single-process` BrowserProcessImpl and
+      ChromeContentRendererClient both live in the browser process, and each
+      one of them creates a ScopedChromeExtensionsClient. The first instance
+      registers the client, and any other one shares it.
+    preempt_function_impl:
+      function_name: ScopedChromeExtensionsClient::ScopedChromeExtensionsClient
+      code: |-
+        if (g_process_wide_client_owner) {
+          client_.reset();
+          return;
+        }
+        g_process_wide_client_owner = this;
+
+  - description: |
+      Unregister the process-wide ExtensionsClient from its owner only
+
+      Instances sharing the client registered by another one (see above) have
+      nothing to unregister.
+    preempt_function_impl:
+      function_name: ScopedChromeExtensionsClient::~ScopedChromeExtensionsClient
+      code: |-
+        if (g_process_wide_client_owner != this) {
+          return;
+        }
+        g_process_wide_client_owner = nullptr;
