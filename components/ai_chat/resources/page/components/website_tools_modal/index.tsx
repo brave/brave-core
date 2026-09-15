@@ -27,8 +27,8 @@ interface Props {
 // and parsed back out.
 const PERMISSION_OPTIONS = [
   {
-    permission: Mojom.ToolPermission.kAlwaysAllow,
-    label: S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ALWAYS_ALLOW,
+    permission: Mojom.ToolPermission.kAllowSession,
+    label: S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ALLOW_SESSION,
   },
   {
     permission: Mojom.ToolPermission.kAsk,

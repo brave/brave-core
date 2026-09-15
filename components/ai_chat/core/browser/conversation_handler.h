@@ -255,8 +255,9 @@ class ConversationHandler : public mojom::ConversationHandler,
       const std::string& tool_id,
       std::vector<mojom::ContentBlockPtr> output_json,
       std::vector<mojom::ToolArtifactPtr> artifacts) override;
-  void ProcessPermissionChallenge(const std::string& tool_use_id,
-                                  bool user_result) override;
+  void ProcessPermissionChallenge(
+      const std::string& tool_use_id,
+      mojom::PermissionChallengeDecision decision) override;
 
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.

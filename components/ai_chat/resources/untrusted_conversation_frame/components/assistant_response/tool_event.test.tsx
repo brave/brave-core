@@ -129,6 +129,7 @@ describe('ToolEvent', () => {
               assessment: 'This is an assessment',
               plan: 'This is a plan',
               description: undefined,
+              supportsAllowSession: false,
             },
           }}
           isEntryActive={true}
@@ -146,12 +147,21 @@ describe('ToolEvent', () => {
       S.CHAT_UI_PERMISSION_CHALLENGE_ALLOW_BUTTON,
     )
     fireEvent.click(approveButton)
-    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith('123', true)
+    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith(
+      '123',
+      Mojom.PermissionChallengeDecision.kAllowOnce,
+    )
     const denyButton = screen.getByText(
       S.CHAT_UI_PERMISSION_CHALLENGE_DENY_BUTTON,
     )
     fireEvent.click(denyButton)
-    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith('123', false)
+    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith(
+      '123',
+      Mojom.PermissionChallengeDecision.kDeny,
+    )
+    expect(
+      screen.queryByText(S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ALLOW_SESSION),
+    ).not.toBeInTheDocument()
   })
 
   it('should show permission challenge with no content', () => {
@@ -175,6 +185,7 @@ describe('ToolEvent', () => {
               assessment: undefined,
               plan: undefined,
               description: undefined,
+              supportsAllowSession: false,
             },
           }}
           isEntryActive={true}
@@ -188,12 +199,18 @@ describe('ToolEvent', () => {
       S.CHAT_UI_PERMISSION_CHALLENGE_ALLOW_BUTTON,
     )
     fireEvent.click(approveButton)
-    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith('123', true)
+    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith(
+      '123',
+      Mojom.PermissionChallengeDecision.kAllowOnce,
+    )
     const denyButton = screen.getByText(
       S.CHAT_UI_PERMISSION_CHALLENGE_DENY_BUTTON,
     )
     fireEvent.click(denyButton)
-    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith('123', false)
+    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith(
+      '123',
+      Mojom.PermissionChallengeDecision.kDeny,
+    )
   })
 
   it('should show human-readable markdown description when provided', () => {
@@ -213,6 +230,7 @@ describe('ToolEvent', () => {
               description:
                 'Brave AI would like to execute **get_stock_price** '
                 + 'on **https://example.com**',
+              supportsAllowSession: true,
             },
           }}
           isEntryActive={true}
@@ -227,6 +245,40 @@ describe('ToolEvent', () => {
     expect(
       screen.queryByText(S.CHAT_UI_PERMISSION_CHALLENGE_SUMMARY),
     ).not.toBeInTheDocument()
+  })
+
+  it('should record the answer when allow for this session is offered', () => {
+    const mockProcessPermissionChallenge = jest.fn()
+    render(
+      <MockContext
+        conversationHandler={{
+          processPermissionChallenge: mockProcessPermissionChallenge,
+        }}
+      >
+        <ToolEvent
+          toolUseEvent={{
+            toolName: 'web_example_com_get_stock_price',
+            id: '123',
+            argumentsJson: '{}',
+            output: undefined,
+            permissionChallenge: {
+              assessment: undefined,
+              plan: undefined,
+              description: undefined,
+              supportsAllowSession: true,
+            },
+          }}
+          isEntryActive={true}
+        />
+      </MockContext>,
+    )
+    fireEvent.click(
+      screen.getByText(S.CHAT_UI_WEBSITE_TOOL_PERMISSION_ALLOW_SESSION),
+    )
+    expect(mockProcessPermissionChallenge).toHaveBeenCalledWith(
+      '123',
+      Mojom.PermissionChallengeDecision.kAllowSession,
+    )
   })
 
   it('should not allow permission challenge interaction in a non-active event', () => {
@@ -250,6 +302,7 @@ describe('ToolEvent', () => {
               assessment: undefined,
               plan: undefined,
               description: undefined,
+              supportsAllowSession: false,
             },
           }}
           isEntryActive={false}
@@ -285,6 +338,7 @@ describe('ToolEvent', () => {
                 assessment: undefined,
                 plan: undefined,
                 description: undefined,
+                supportsAllowSession: false,
               },
             }}
             isEntryActive={true}

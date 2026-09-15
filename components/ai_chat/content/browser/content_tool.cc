@@ -155,12 +155,15 @@ std::variant<bool, mojom::PermissionChallengePtr>
 ContentTool::RequiresUserInteractionBeforeHandling(
     const mojom::ToolUseEvent& tool_use) const {
   if (user_permission_granted_ ||
-      user_permission_strategy_ == mojom::ToolPermission::kAlwaysAllow) {
+      user_permission_strategy_ == mojom::ToolPermission::kAllowSession) {
     return false;
   }
 
   auto challenge = mojom::PermissionChallenge::New();
   challenge->description = GetPermissionChallengeDescription(tool_use);
+  // Every tool a page exposes has a standing permission in the website tools
+  // dialog for the answer to be recorded as.
+  challenge->supports_allow_session = true;
   return challenge;
 }
 

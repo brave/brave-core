@@ -699,8 +699,8 @@
   <message name="IDS_CHAT_UI_WEBSITE_TOOLS_LIST_LABEL" desc="Heading above the list of tools in the website tools dialog, also used as the accessible label for the tool count on an attached page's tools pill. The placeholder is the number of tools, e.g. 'Available tools (10)'" formatter_data="webui=AiChat">
     Available tools (<ph name="TOOL_COUNT">$1<ex>10</ex></ph>)
   </message>
-  <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_ALWAYS_ALLOW" desc="Dropdown option letting Leo use a website tool without asking each time" formatter_data="webui=AiChat">
-    Always allow
+  <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_ALLOW_SESSION" desc="Dropdown option letting Leo use a website tool without asking each time, for as long as the site stays attached to the conversation" formatter_data="webui=AiChat">
+    Allow for this session
   </message>
   <message name="IDS_CHAT_UI_WEBSITE_TOOL_PERMISSION_ASK" desc="Dropdown option asking for approval each time Leo wants to use a website tool" formatter_data="webui=AiChat">
     Ask every time
@@ -939,8 +939,8 @@
   <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_ASSESSMENT_INTRO" desc="Introduction to an assessment for why a permission challenge is being presented" formatter_data="webui=AiChat">
     The operation was detected as potentially misaligned with your request:
   </message>
-  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_ALLOW_BUTTON" desc="Button text to approve the permission challenge" formatter_data="webui=AiChat">
-    Allow
+  <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_ALLOW_BUTTON" desc="Button text to approve the permission challenge this one time" formatter_data="webui=AiChat">
+    Allow once
   </message>
   <message name="IDS_CHAT_UI_PERMISSION_CHALLENGE_DENY_BUTTON" desc="Button text to deny the permission challenge" formatter_data="webui=AiChat">
     Deny

@@ -224,7 +224,7 @@ const SAMPLE_CONTENT_TOOLS: Mojom.ToolInfo[] = [
   {
     name: 'create_invoice',
     description: 'Create a new draft invoice for a given customer and amount.',
-    permission: Mojom.ToolPermission.kAlwaysAllow,
+    permission: Mojom.ToolPermission.kAllowSession,
   },
   {
     name: 'send_invoice',
