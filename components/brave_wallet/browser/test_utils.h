@@ -112,6 +112,8 @@ class AccountUtils {
   mojom::AccountInfoPtr EnsureAdaTestAccount(uint32_t index);
   mojom::AccountInfoPtr EnsureDotAccount(uint32_t index);
   mojom::AccountInfoPtr EnsureDotTestAccount(uint32_t index);
+  mojom::AccountInfoPtr EnsureDotImportAccount(uint32_t index);
+  mojom::AccountInfoPtr EnsureDotImportTestAccount(uint32_t index);
 
   mojom::AccountInfoPtr CreateEthAccount(const std::string& name);
   mojom::AccountInfoPtr CreateSolAccount(const std::string& name);
@@ -123,6 +125,8 @@ class AccountUtils {
   mojom::AccountInfoPtr CreateZecTestAccount(const std::string& name);
   mojom::AccountInfoPtr CreateAdaAccount(const std::string& name);
   mojom::AccountInfoPtr CreateAdaTestAccount(const std::string& name);
+  mojom::AccountInfoPtr CreateDotAccount(const std::string& name);
+  mojom::AccountInfoPtr CreateDotTestAccount(const std::string& name);
 
   mojom::AccountInfoPtr CreateEthHWAccount();
   mojom::AccountInfoPtr CreateBtcHWAccount();
@@ -142,6 +146,8 @@ class AccountUtils {
   std::vector<mojom::AccountInfoPtr> AllZecTestAccounts();
   std::vector<mojom::AccountInfoPtr> AllAdaAccounts();
   std::vector<mojom::AccountInfoPtr> AllAdaTestAccounts();
+  std::vector<mojom::AccountInfoPtr> AllDotAccounts();
+  std::vector<mojom::AccountInfoPtr> AllDotTestAccounts();
 
  private:
   raw_ptr<KeyringService> keyring_service_;

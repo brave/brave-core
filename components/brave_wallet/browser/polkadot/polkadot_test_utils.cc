@@ -12,10 +12,14 @@
 #include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/files/file_util.h"
+#include "base/functional/bind.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -289,6 +293,28 @@ PolkadotChainMetadata MakePolkadotAssetHubMetadata() {
 
 PolkadotChainMetadata MakePaseoAssetHubMetadata() {
   return PolkadotMetadataFromChainName("Paseo Asset Hub").value();
+}
+
+std::string MakePolkadotImportJsonExport(mojom::KeyringId keyring_id,
+                                         uint32_t key_index) {
+  CHECK(IsPolkadotImportKeyring(keyring_id));
+
+  auto hd_keyring_id = keyring_id == mojom::KeyringId::kPolkadotImport
+                           ? mojom::KeyringId::kPolkadotMainnet
+                           : mojom::KeyringId::kPolkadotTestnet;
+
+  auto seed = bip39::MnemonicToEntropyToSeed(kPolkadotImportMnemonic);
+  CHECK(seed);
+
+  PolkadotKeyring keyring(
+      base::span(*seed).first<kPolkadotSeedSize>(), hd_keyring_id,
+      base::BindRepeating([](const std::string&) { return true; }));
+  CHECK(keyring.AddNewHDAccount(key_index));
+
+  auto json_export = keyring.EncodePrivateKeyForExport(
+      key_index, kPolkadotImportExportPassword);
+  CHECK(json_export);
+  return *json_export;
 }
 
 PolkadotMockRpc::PolkadotMockRpc(

@@ -541,7 +541,7 @@ TEST(CommonUtils, GetEnabledKeyrings) {
     EXPECT_EQ(last_pos, keyrings.size());
   }
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST(CommonUtils, GetPolkadotKeyrings) {
@@ -642,7 +642,7 @@ TEST(CommonUtils, GetSupportedKeyringsForKnownNetwork) {
 
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST(CommonUtils, MakeAccountId) {
@@ -730,7 +730,7 @@ TEST(CommonUtils, MakeAccountId) {
                                     mojom::AccountKind::kDerived, "0xabc"));
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST(CommonUtils, MakeIndexBasedAccountId) {
@@ -800,7 +800,7 @@ TEST(CommonUtils, MakeIndexBasedAccountId_BTC) {
                                       mojom::AccountKind::kHardware, 123));
   static_assert(AllCoinsTested<7>());
 
-  static_assert(AllKeyringsTested<14>());
+  static_assert(AllKeyringsTested<18>());
 }
 
 TEST(CommonUtils, MakeIndexBasedAccountId_ZEC) {
