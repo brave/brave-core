@@ -17,6 +17,7 @@ import {
   SolanaLedgerMojoBridgeKeyring,
 } from '../../common/hardware/ledgerjs/ledger_mojo_bridge_keyring'
 import TrezorBridgeKeyring from '../../common/hardware/trezor/trezor_bridge_keyring'
+import TrezorMojoBridgeKeyring from '$wallet/common/hardware/trezor/trezor_mojo_bridge_keyring'
 import {
   createTrezorBridge,
   TrezorBridgeTransport,
@@ -65,6 +66,10 @@ function useLedgerMojoBridge(): boolean {
   return loadTimeData.getBoolean('isLedgerMojoBridgeEnabled')
 }
 
+function useTrezorMojoBridge(): boolean {
+  return loadTimeData.getBoolean('isTrezorMojoBridgeEnabled')
+}
+
 export function getLedgerEthereumHardwareKeyring(): EthereumLedgerBridgeKeyring {
   if (!ethereumHardwareKeyring) {
     ethereumHardwareKeyring = useLedgerMojoBridge()
@@ -103,10 +108,14 @@ export function getLedgerBitcoinHardwareKeyring(): BitcoinLedgerBridgeKeyring {
 
 export async function getTrezorHardwareKeyring(): Promise<TrezorBridgeKeyring> {
   if (!trezorHardwareKeyring) {
-    const bridge = await createTrezorBridge(kTrezorBridgeUrl)
-    trezorHardwareKeyring = new TrezorBridgeKeyring(
-      new TrezorBridgeTransport(kTrezorBridgeUrl, bridge),
-    )
+    if (useTrezorMojoBridge()) {
+      trezorHardwareKeyring = new TrezorMojoBridgeKeyring()
+    } else {
+      const bridge = await createTrezorBridge(kTrezorBridgeUrl)
+      trezorHardwareKeyring = new TrezorBridgeKeyring(
+        new TrezorBridgeTransport(kTrezorBridgeUrl, bridge),
+      )
+    }
   }
   return trezorHardwareKeyring
 }
