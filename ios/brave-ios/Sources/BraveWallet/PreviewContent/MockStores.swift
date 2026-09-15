@@ -250,12 +250,7 @@ extension BraveWallet.TestBraveWalletService {
 
 extension BraveWallet.TestAssetRatioService {
   static var previewAssetRatioService: BraveWallet.TestAssetRatioService {
-    let assetRatioService = BraveWallet.TestAssetRatioService()
-    assetRatioService._buyUrlV1 = { _, _, _, _, _, _, completion in
-      completion("", nil)
-    }
-
-    return assetRatioService
+    return BraveWallet.TestAssetRatioService()
   }
 }
 
