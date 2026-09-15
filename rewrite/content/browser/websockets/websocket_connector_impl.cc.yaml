@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Preserve renderer process and initiator origin for intercepted WebSockets.
+
+      SharedWorker and ServiceWorker WebSockets have no RenderFrameHost
+      (crbug.com/40195467), so embedders need this context to resolve the
+      BrowserContext and per-site settings. Drop this once upstream proxies
+      frameless requests itself.
+    regex:
+      re_pattern:
+        '(void
+        WebSocketConnectorImpl::Connect\b.*?GetContentClient\(\)->browser\(\)->CreateWebSocket\([^;]*?)(\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1,
+                frame_id_.child_id.value(), origin_\2
