@@ -2476,6 +2476,20 @@
 # in CR152), see https://issues.chromium.org/issues/539681873
 -ContextualSearchboxHandlerBrowserTest.WaitForTabFaviconLoad_Cached
 
+# Occasional upstream flake: 3.3% flake rate over 30 days per Chromium LUCI
+# Analysis (107008 pass / 131 fail / 3501 flaky of 110640 verdicts). This is an
+# upstream Chromium test (chrome/browser/ssl/https_upgrades_browsertest.cc).
+# Brave disables net::features::kBraveHttpsByDefault for this fixture via a
+# chromium_src override, so HttpsUpgradesInterceptor::MaybeCreateLoader falls
+# through to the upstream Chromium implementation -- the test exercises the
+# upstream code path and inherits its flakiness. The failure is an upstream
+# timing race between the asynchronous Safe Browsing URL check and the
+# HTTPS-Upgrades fallback-to-HTTP path: when the Safe Browsing verdict is slow,
+# the navigation falls back to HTTP before the Safe Browsing interstitial is
+# committed, so the test observes no interstitial and the visible URL on HTTP
+# instead of the HTTPS URL. https://github.com/brave/brave-browser/issues/56511
+-HttpsUpgradesSafeBrowsingTest.SafeBrowsingBlock_ShouldNotTriggerHFM
+
 # These tests fail because we disable `net::features::kTLSTrustAnchorIDs`. The
 # /1 (kVerifyMTCs=true) variants expect the server to select certs by TAI, which
 # no longer happens; the /0 variants pass because they already expect the no-TAI
