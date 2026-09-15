@@ -29,7 +29,8 @@ import ToolsAttachments from './tools_attachments'
 import usePromise from '$web-common/usePromise'
 import { isFullPageScreenshot } from '../../../common/conversation_history_utils'
 import Editable from './editable'
-import { stringifyContent } from './editable_content'
+import { Content, stringifyContent } from './editable_content'
+import { useSpeechRecognition } from './use_speech_recognition'
 
 const LEARN_MORE_CONTENT_AGENT_URL =
   'https://support.brave.app/hc/en-us/articles/41240379376909'
@@ -135,6 +136,13 @@ function useChipClassName(totalVisible: number, isStandalone: boolean) {
   }, [totalVisible, isStandalone])
 }
 
+/** Places dictated text after whatever the user had already composed. */
+function appendTranscript(base: Content, transcript: string): Content {
+  const baseText = stringifyContent(base)
+  const separator = baseText && !baseText.endsWith(' ') ? ' ' : ''
+  return [...base, separator + transcript]
+}
+
 function getVisibleUploadCount(files: Mojom.UploadedFile[]) {
   const hasFullPage = files.some(isFullPageScreenshot)
   const nonFullPageCount = files.filter((f) => !isFullPageScreenshot(f)).length
@@ -225,6 +233,29 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
 
     const handleMic = () => {
       props.context.handleVoiceRecognition?.()
+    }
+
+    // What the composer held when dictation started, so every result event
+    // replaces only the dictated tail of the text.
+    const dictationBaseRef = React.useRef<Content>([])
+    const setInputText = props.context.setInputText
+
+    const handleTranscript = React.useCallback(
+      (transcript: string) => {
+        setInputText(appendTranscript(dictationBaseRef.current, transcript))
+      },
+      [setInputText],
+    )
+
+    const dictation = useSpeechRecognition(handleTranscript)
+
+    const handleDictation = () => {
+      if (dictation.isListening) {
+        dictation.stop()
+        return
+      }
+      dictationBaseRef.current = props.context.inputText
+      dictation.start()
     }
 
     const handleOnKeyDown = (e: React.KeyboardEvent) => {
@@ -412,6 +443,14 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
             }}
             onPaste={handleOnPaste}
           />
+          {dictation.error && (
+            <div
+              className={styles.dictationError}
+              data-testid='web-speech-dictation-error'
+            >
+              {`Speech recognition error: ${dictation.error}`}
+            </div>
+          )}
           <div className={styles.toolsContainer}>
             <div className={styles.tools}>
               <Button
@@ -443,6 +482,29 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
                   title={getLocale(S.AI_CHAT_USE_MICROPHONE_BUTTON_LABEL)}
                 >
                   <Icon name='microphone' />
+                </Button>
+              )}
+              {dictation.isSupported && (
+                <Button
+                  fab
+                  kind='plain-faint'
+                  onClick={handleDictation}
+                  disabled={props.context.shouldDisableUserInput}
+                  title={
+                    dictation.isListening
+                      ? 'Stop dictation'
+                      : 'Dictate (Web Speech API)'
+                  }
+                  data-testid='web-speech-dictation-button'
+                >
+                  <Icon
+                    className={classnames({
+                      [styles.dictationIconActive]: dictation.isListening,
+                    })}
+                    name={
+                      dictation.isListening ? 'microphone' : 'microphone-off'
+                    }
+                  />
                 </Button>
               )}
               <AttachmentButtonMenu
