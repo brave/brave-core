@@ -27,9 +27,18 @@ enum BackgroundMediaType: Int, CaseIterable {
   }
 }
 
-public enum TopsitesMode: Int {
+public enum TopsitesMode: Int, CaseIterable, Identifiable {
   case mostVisited
   case favourite
+
+  public var id: Self { self }
+
+  public var title: String {
+    switch self {
+    case .mostVisited: return "Frequently Visited"
+    case .favourite: return "Favorites"
+    }
+  }
 }
 
 extension Preferences {
@@ -342,9 +351,12 @@ extension Preferences {
       default: false
     )
 
-    /// Tells the app whether we should show Favourites in new tab page view controller
+    /// Tells the app whether we should show Favourites/MostVisited in new tab page view controller
     public static let showNewTabFavourites =
       Option<Bool>(key: "newtabpage.show-newtab-favourites", default: true)
+
+    public static let showTopsites =
+      Option<Bool>(key: "newtabpage.show-topsites", default: true)
 
     /// Mode to display NTP tiles in NTP
     public static let topsitesMode = Option<TopsitesMode?>(
