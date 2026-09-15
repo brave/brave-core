@@ -9,6 +9,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "extensions/buildflags/buildflags.h"
 
@@ -22,13 +23,18 @@
 
 namespace speech {
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+// Forward declared to avoid adding a compile-time dependency.
+// Implementation is provided by //brave/browser/speech:chromium_impl.
+std::unique_ptr<SodaInstaller> CreateBraveSodaInstaller();
+#else
 namespace {
 
-// Brave ships no SODA, so this replaces upstream's global installer. Reporting
-// no languages keeps Web Speech's `available()` unavailable and `install()`
-// refused, where upstream's reports en-US as downloadable and then parks the
-// `install()` reply on a download that never arrives. `Init` is a no-op so
-// nothing registers a language pack at startup.
+// Builds that ship no model still replace upstream's global installer.
+// Reporting no languages keeps Web Speech's `available()` unavailable and
+// `install()` refused, where upstream's reports en-US as downloadable and then
+// parks the `install()` reply on a download that never arrives. `Init` is a
+// no-op so nothing registers a language pack at startup.
 //
 // A stub rather than no installer at all, because `Install` dereferences
 // `SodaInstaller::GetInstance()` without a null check.
@@ -64,6 +70,7 @@ class StubSodaInstaller final : public SodaInstaller {
 std::unique_ptr<SodaInstaller> CreateBraveSodaInstaller() {
   return std::make_unique<StubSodaInstaller>();
 }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 }  // namespace speech
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
