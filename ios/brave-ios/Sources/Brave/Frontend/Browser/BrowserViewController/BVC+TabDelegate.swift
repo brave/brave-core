@@ -411,18 +411,20 @@ extension BrowserViewController: TabDelegate {
         }
       }
     }
-    let searchWithBrave = UIAction(title: Strings.searchWithBrave) { [weak tab, weak self] _ in
-      tab?.evaluateJavaScript(
-        functionName: "getSelection().toString",
-        contentWorld: .defaultClient
-      ) {
-        result,
-        _ in
-        guard let tab, let selectedText = result as? String else { return }
-        self?.didSelectSearchWithBrave(selectedText, tab: tab)
+    // JavaScript selection does not work when WKWebView renders a PDF directly.
+    // So exclude "Search with Brave" menu option item
+    if let lookupMenu = builder.menu(for: .lookup), tab.contentsMimeType != MIMEType.pdf {
+      let searchWithBrave = UIAction(title: Strings.searchWithBrave) { [weak tab, weak self] _ in
+        tab?.evaluateJavaScript(
+          functionName: "getSelection().toString",
+          contentWorld: .defaultClient
+        ) {
+          result,
+          _ in
+          guard let tab, let selectedText = result as? String else { return }
+          self?.didSelectSearchWithBrave(selectedText, tab: tab)
+        }
       }
-    }
-    if let lookupMenu = builder.menu(for: .lookup) {
       builder.replace(
         menu: .lookup,
         with: LookupMenuReplacement(
