@@ -43,7 +43,7 @@ public class MediaThumbnailLoader: ObservableObject {
       throw MediaThumbnailError.invalidURL
     }
     // FIXME: Bring over HLSThumbnailGenerator to handle HLS stream thumbnails
-    let generator = AVAssetImageGenerator(asset: .init(url: assetURL))
+    let generator = AVAssetImageGenerator(asset: AVURLAsset(url: assetURL))
     let cgImage = try await generator.image(at: .init(seconds: 3, preferredTimescale: 1)).image
     try Task.checkCancellation()
     await MainActor.run {
