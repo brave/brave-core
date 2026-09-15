@@ -217,6 +217,20 @@ if (is_android) {
     ]
   }
 
+  robolectric_library("brave_junit_tests_org.chromium.chrome.browser.privacy") {
+    sources = [ "src/org/chromium/chrome/browser/privacy/BraveBrowserLockManagerTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.privacy.settings") {
+    resources_package = "org.chromium.chrome.browser.privacy.settings"
+    sources = [ "src/org/chromium/chrome/browser/privacy/settings/BraveBrowserLockSettingsFragmentTest.java" ]
+
+    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.ui") {
     sources = [ "src/org/chromium/chrome/browser/ui/system/BraveStatusBarColorControllerUnitTest.java" ]
 
