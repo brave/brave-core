@@ -29,6 +29,7 @@ import WhaleSVG from '../svg/browser-icons/whale'
 import YandexSVG from '../svg/browser-icons/yandex'
 import MicrosoftIE from '../svg/browser-icons/ie'
 import BraveSVG from '../svg/browser-icons/brave'
+import BraveOriginSVG from '../svg/browser-icons/brave-origin'
 
 interface BrowserItemButtonProps {
   browserName: keyof typeof browserIcons
@@ -50,6 +51,7 @@ const browserIcons = {
   'NAVER Whale': <WhaleSVG />,
   'Yandex': <YandexSVG />,
   'Microsoft Internet Explorer': <MicrosoftIE />,
+  'Brave Origin': <BraveOriginSVG />,
   'Brave': <BraveSVG />
 }
 

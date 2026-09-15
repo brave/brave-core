@@ -31,6 +31,7 @@ export enum BrowserType {
   Yandex = 'Yandex',
   Whale = 'NAVER Whale',
   Microsoft_IE = 'Microsoft Internet Explorer',
+  Brave_Origin = 'Brave Origin',
   Brave = 'Brave'
 }
 
