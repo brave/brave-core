@@ -338,6 +338,27 @@ bool BraveWebClient::IsGlobalPrivacyControlEnabled(
       global_privacy_control::kGlobalPrivacyControlEnabled);
 }
 
+bool BraveWebClient::ShouldEnableLockdownMode(web::WebState* webState,
+                                              NSURLRequest* request,
+                                              bool defaultValue) {
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:webState];
+  if (!webView) {
+    return defaultValue;
+  }
+  id<BraveWebViewNavigationDelegate> navigationDelegate =
+      webView.navigationDelegate;
+
+  if ([navigationDelegate
+          respondsToSelector:
+              @selector(
+                  webView:shouldEnableLockdownModeForRequest:defaultValue:)]) {
+    return [navigationDelegate webView:webView
+        shouldEnableLockdownModeForRequest:request
+                              defaultValue:defaultValue];
+  }
+  return defaultValue;
+}
+
 bool BraveWebClient::CanRunOpenPanel(web::WebState* source) const
     API_AVAILABLE(ios(18.4)) {
   return false;
