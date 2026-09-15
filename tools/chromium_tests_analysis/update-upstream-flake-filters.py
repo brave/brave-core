@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -7,7 +7,7 @@
 Update the auto-generated filter files for flaky upstream tests.
 
 Usage:
-    python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py \\
+    vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py \\
         [suite ...] [--days 30] [--min-flake-rate 1.0]
 
 N.B.: The generated list of flaky tests is not exhaustive because the
@@ -36,6 +36,11 @@ information on LUCI's data model, see README.md in this directory.
     `Clusters.QueryClusterFailures` lists recent failures inside the cluster,
     and the script collects the test IDs with the most failures from them.
 
+    Note that this second step always looks at the last 7 days, whatever
+    `--days` says: the window is hardcoded upstream and the RPC takes no time
+    range. A longer lookback therefore widens the flake rates computed in steps
+    3 and 4, but not the discovery of candidates through multi-test clusters.
+
 Any test with a meaningful flake rate must fail regularly, so it is expected to
 surface in one of these clusters: in its test name cluster, or, if a bug is
 already filed on it, in the bug's rule cluster.
@@ -56,25 +61,53 @@ written to `test/filters/generated/<suite>-<configuration>.filter`. Note that
 this includes tests that consistently fail upstream, not only flaky ones.
 """
 
+from __future__ import annotations
+
+# Requests run as greenlets, so `socket` and `ssl` have to be cooperative
+# before `http.client` is imported anywhere below. Nothing else may
+# precede this.
+from gevent import monkey
+
+monkey.patch_all()
+
+# pylint: disable=wrong-import-position
 import argparse
 import os
 import sys
+import time
 from collections import Counter
-from concurrent.futures import ThreadPoolExecutor
-from datetime import datetime, timedelta, timezone
+from collections.abc import Callable, Iterable, Iterator
+from contextlib import AbstractContextManager, contextmanager
+from dataclasses import dataclass
+from pathlib import Path
+from typing import NoReturn, TypeVar
+
+from gevent.pool import Pool
+from rich.console import Console, Group
+from rich.live import Live
+from rich.markup import escape
+from rich.progress import (BarColumn, Progress, ProgressColumn, SpinnerColumn,
+                           Task, TaskID, TextColumn, TimeElapsedColumn)
+from rich.table import Column
+from rich.text import Text
 
 from luci_analysis import (
-    LuciAnalysisError,
     MIN_MEANINGFUL_VERDICTS,
-    analyze_stats,
-    get_flakiness_stats,
-    get_test_variants,
-    query_cluster_failures,
-    query_cluster_summaries,
+    ClusterSummary,
+    Flakiness,
+    LuciAnalysis,
+    LuciAnalysisError,
+    RequestStats,
+    StatsGroup,
+    TestVariant,
+    Window,
 )
 
-BRAVE_CORE_ROOT = os.path.dirname(
-    os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# The item a batch of parallel work is applied to, and what it yields.
+T = TypeVar("T")
+R = TypeVar("R")
+
+BRAVE_CORE_ROOT = Path(__file__).resolve().parent.parent.parent
 
 # Upstream test suites Brave runs on CI.
 DEFAULT_SUITES = [
@@ -89,8 +122,7 @@ DEFAULT_SUITES = [
     "unit_tests",
 ]
 
-GENERATED_FILTERS_DIR = os.path.join(BRAVE_CORE_ROOT, "test", "filters",
-                                     "generated")
+GENERATED_FILTERS_DIR = BRAVE_CORE_ROOT / "test" / "filters" / "generated"
 
 # Platforms Brave runs upstream test suites on, mapped to the "os"
 # prefixes of the corresponding upstream bots. Bots for other platforms
@@ -116,36 +148,242 @@ SANITIZERS = ("asan", "msan", "ubsan")
 EXCLUDED_BUILDER_KEYWORDS = ("android", "chromeos", "chromium os", "fuchsia",
                              "ios", "tsan")
 
-# For clusters spanning many tests (parameterized families, bug rules),
-# only the test IDs with the most recent failures are checked
-# individually.
-MAX_VARIANTS_PER_CLUSTER = 100
+# For clusters spanning many tests (parameterized families, bug rules), how many
+# of their test IDs to check individually, worst first by failure count.
+#
+# The ranking is by absolute failures while the threshold is a rate, so the two
+# disagree: a test that runs rarely and fails most times it runs sinks in the
+# ranking. At 100, a quarter of what was discarded from browser_tests' largest
+# clusters would in fact have been filtered.
+#
+# Each surviving candidate costs one QueryStats query, so the cap buys coverage
+# with wall time. Across all nine suites at 30 days the fetch phase takes 10.1m
+# at 100, 14.4m at 1000 and 15.2m at 2000, where it stops changing, because
+# upstream serves at most 2000 failure groups per cluster and no cap above that
+# can reach further.
+MAX_VARIANTS_PER_CLUSTER = 1000
 
-STATS_WORKERS = 32
+# Requests in flight across the whole run. Every batch of work shares one
+# pool.
+#
+# Raising this does not necessarily  means a faster run and in fact it can slow
+# things as the service absorbs a deeper queue, making everyone wait longer.
+REQUEST_CONCURRENCY = 64
+
+# Suites worked on at once.
+SUITE_CONCURRENCY = 3
+
+# Everything the script renders goes to stderr, leaving stdout free. `log_path`
+# is off because every log line comes from `log` below, so the source location
+# rich would print is the same useless one every time.
+console = Console(stderr=True, log_path=False)
+
+# Width of the progress description column..
+DESCRIPTION_WIDTH = 50
+
+# Width of the completed/total column, right-aligned..
+COUNT_WIDTH = len("9999/9999")
+
+# How often the live display repaints, in Hz.
+REFRESH_RATE = 10
 
 
-def log(message):
-    print(message, file=sys.stderr)
+class CountColumn(ProgressColumn):
+    """A progress column showing "completed/total".
+
+    `MofNCompleteColumn` pads `completed` out to the width of `total`, and this
+    causes rows whose totals differ in length to not line up with each other.
+    Leaving that padding out and right-aligning the column instead lines every
+    row up.
+    """
+
+    def render(self, task: Task) -> Text:
+        total = int(task.total) if task.total is not None else "?"
+        return Text(f"{int(task.completed)}/{total}",
+                    style="progress.download")
 
 
-def candidate_windows(days):
+@dataclass(frozen=True)
+class Phase:
+    """One unit of work with a progress row of its own."""
+
+    # The display's progress table, which owns the row.
+    progress: Progress
+
+    # Identifies this phase's row within it.
+    task_id: TaskID
+
+    def advance(self, count: int = 1) -> None:
+        """Mark `count` more items of this phase as done."""
+        self.progress.advance(self.task_id, count)
+
+
+class Display:
+    """Run-wide counters above a progress row per phase in flight.
+
+    Laid out the way siso reports a build: one summary line that keeps counting
+    while the work proceeds, and under it a row for each task currently running.
+    """
+
+    def __init__(self, stats: RequestStats) -> None:
+        # The counters the summary line reports; a client's, in a run.
+        self._stats = stats
+
+        self._progress = Progress(
+            SpinnerColumn(),
+            TextColumn("[progress.description]{task.description}",
+                       table_column=Column(width=DESCRIPTION_WIDTH,
+                                           no_wrap=True,
+                                           overflow="ellipsis")),
+            BarColumn(),
+            CountColumn(table_column=Column(
+                min_width=COUNT_WIDTH, justify="right", no_wrap=True)),
+            TimeElapsedColumn(),
+            # The enclosing `Live` drives the repaints; a `Progress` that
+            # refreshed itself would start a second live region.
+            auto_refresh=False,
+        )
+
+        # When the run began, for the elapsed time and the rate. Reset by
+        # `live`, so constructing a Display early costs nothing.
+        self._started = time.monotonic()
+
+        # Suites finished, and how many there are in total.
+        self._suites_done = 0
+        self._suites_total = 0
+
+        # Totals of the phases that have finished and left the display, so the
+        # summary keeps counting them.
+        self._retired_done = 0
+        self._retired_total = 0
+
+    def __rich__(self) -> Group:
+        return Group(self._summary(), self._progress)
+
+    @property
+    def tasks(self) -> list[Task]:
+        """The progress rows currently on screen."""
+        return self._progress.tasks
+
+    def _units(self) -> tuple[int, int]:
+        """Items done and known, over every phase of the run."""
+        done = self._retired_done + sum(
+            int(task.completed) for task in self.tasks)
+        total = self._retired_total + sum(
+            int(task.total or 0) for task in self.tasks)
+        return done, total
+
+    def _summary(self) -> Text:
+        """The top line: how the run as a whole is getting on."""
+        elapsed = time.monotonic() - self._started
+        done, total = self._units()
+        rate = self._stats.completed / elapsed if elapsed > 0 else 0.0
+        parts = [
+            f"[bold][{done}/{total}][/]",
+            f"{elapsed:.2f}s",
+            f"suites:{self._suites_done}/{self._suites_total}",
+            f"active:{len(self.tasks)}",
+            f"inflight:{self._stats.in_flight}",
+            f"retries:{self._stats.retries}",
+            f"{rate:.1f}/s",
+        ]
+        if self._stats.failures:
+            parts.append(f"[red]errors:{self._stats.failures}[/]")
+        return Text.from_markup(" ".join(parts))
+
+    @contextmanager
+    def live(self, suites_total: int) -> Iterator["Display"]:
+        """Show the display until the run finishes."""
+        self._started = time.monotonic()
+        self._suites_total = suites_total
+        with Live(self,
+                  console=console,
+                  refresh_per_second=REFRESH_RATE,
+                  transient=False):
+            yield self
+
+    def suite_finished(self) -> None:
+        """Count one suite off the summary line."""
+        self._suites_done += 1
+
+    @contextmanager
+    def phase(self, suite: str, description: str,
+              total: int) -> Iterator[Phase]:
+        """Show a row for one phase of work on `suite`.
+
+        The row goes away once the phase ends, but its counts stay in the
+        summary line above.
+
+        Args:
+            suite: The test suite the phase belongs to.
+            description: What the phase is doing, e.g. "fetching test
+                history".
+            total: How many items the phase has to get through.
+        """
+        task_id = self._progress.add_task(f"[bold]{suite}[/] {description}",
+                                          total=total)
+        try:
+            yield Phase(self._progress, task_id)
+        finally:
+            task = self._progress.tasks[self._progress.task_ids.index(task_id)]
+            self._retired_done += int(task.completed)
+            self._retired_total += int(task.total or 0)
+            self._progress.remove_task(task_id)
+
+
+def log(message: str) -> None:
+    """Log a line above the live display."""
+    console.log(message)
+
+
+@contextmanager
+def worker_pool(size: int = REQUEST_CONCURRENCY) -> Iterator[Pool]:
+    """A greenlet pool that gives up promptly when the work is abandoned.
+
+    Killing the pool unwinds its greenlets wherever they are, including out of a
+    socket read, so an interrupt does not have to wait for the requests already
+    on the wire.
+    """
+    pool = Pool(size)
+    try:
+        yield pool
+    except BaseException:
+        pool.kill(block=False)
+        raise
+    pool.join()
+
+
+# Every API request of the run goes through this pool.
+requests_pool = Pool(REQUEST_CONCURRENCY)
+
+
+def run_in_parallel(function: Callable[[T], R],
+                    items: Iterable[T]) -> Iterator[R]:
+    """Apply `function` across `items` concurrently, yielding in order.
+
+    The greenlet that feeds the pool sits outside it, so killing the pool alone
+    would leave it spawning more work. Killing it when the caller stops
+    consuming, on an interrupt, or any other error, shuts the fan-out down with
+    them.
+    """
+    mapping = requests_pool.imap(function, items)
+    try:
+        yield from mapping
+    finally:
+        mapping.kill()
+
+
+def get_candidate_windows(days: int) -> list[Window]:
     """Time windows used for candidate discovery.
 
     The full lookback window plus weekly slices, to work around the
     200-cluster cap of QueryClusterSummaries.
     """
-    now = datetime.now(timezone.utc)
-    windows = [(now - timedelta(days=days), now)]
-    start = 0
-    while start < days:
-        end = min(start + 7, days)
-        windows.append(
-            (now - timedelta(days=end), now - timedelta(days=start)))
-        start = end
-    return windows
+    window = Window.last_days(days)
+    return [window] + window.split_weekly()
 
 
-def discovery_filters(suite):
+def get_discovery_filters(suite: str) -> Iterator[str]:
     """Failure filters used for candidate discovery.
 
     One fleet-wide filter, plus filters scoped to each sanitizer and
@@ -163,18 +401,7 @@ def discovery_filters(suite):
             yield f'{base} variant.os:"{os_prefix}"'
 
 
-def is_like_pattern(title):
-    """Return True if a testname cluster title is a LIKE pattern.
-
-    Titles of clusters that group multiple tests (e.g. parameterized
-    variants) are SQL LIKE patterns with literals escaped by backslash.
-    Titles of single-test clusters are verbatim test IDs, which never
-    contain "\\\\", "\\_" or "%" (only "\\:" from flat test ID encoding).
-    """
-    return "%" in title or "\\\\" in title or "\\_" in title
-
-
-def normalize_test_id(test_id):
+def normalize_test_id(test_id: str) -> str:
     """Map WebUI JS sub-result test IDs to their parent test case.
 
     WebUI browser tests report JS sub-results as separate
@@ -189,7 +416,7 @@ def normalize_test_id(test_id):
     return head + "#" + case + (slash + param if slash else "")
 
 
-def structured_id_to_gtest_name(test_id):
+def structured_id_to_gtest_name(test_id: str) -> str | None:
     """Convert a structured LUCI test ID to a gtest test name.
 
     Examples:
@@ -217,78 +444,7 @@ def structured_id_to_gtest_name(test_id):
     return f"{instantiation}/{suite}.{case}/{value}"
 
 
-def collect_candidate_test_ids(suite, days):
-    """Discover test IDs in a suite with recent upstream failures."""
-    # Matches the ":<suite>!gtest" portion of structured test IDs like
-    # "://chrome/test\:browser_tests!gtest::Suite#Case".
-    suite_marker = f":{suite}!gtest"
-
-    clusters = {}
-    for earliest, latest in candidate_windows(days):
-        summaries = []
-        for failure_filter in discovery_filters(suite):
-            summaries.extend(
-                query_cluster_summaries(failure_filter, earliest, latest))
-        for summary in summaries:
-            cluster = summary["clusterId"]
-            # "reason" clusters can be skipped because their failures
-            # also count towards "testname" clusters. Failures claimed
-            # by a bug ("rules" cluster) however are excluded from all
-            # suggested clusters, so tracked flaky tests only show up
-            # through their rules cluster.
-            if cluster["algorithm"].startswith("reason"):
-                continue
-            clusters[(cluster["algorithm"], cluster["id"])] = \
-                summary["title"]
-
-    test_ids = set()
-    multi_test_clusters = []
-    for (algorithm, cluster_id), title in sorted(clusters.items()):
-        if algorithm.startswith("testname") and not is_like_pattern(title):
-            # The title is the verbatim test ID.
-            if suite_marker in title:
-                test_ids.add(normalize_test_id(title))
-            continue
-        multi_test_clusters.append((algorithm, cluster_id, title))
-
-    # The remaining clusters group multiple test IDs (a parameterized
-    # test family, or a bug rule matching failures from any number of
-    # tests). Enumerate their recent failures to get exact IDs.
-    def enumerate_cluster(cluster):
-        algorithm, cluster_id, title = cluster
-        failure_counts = Counter()
-        for failure in query_cluster_failures(algorithm, cluster_id):
-            test_id = failure.get("testId", "")
-            if suite_marker in test_id:
-                failure_counts[normalize_test_id(test_id)] += int(
-                    failure.get("count", 1))
-        return title, failure_counts
-
-    with ThreadPoolExecutor(max_workers=STATS_WORKERS) as executor:
-        for title, failure_counts in executor.map(enumerate_cluster,
-                                                  multi_test_clusters):
-            top = failure_counts.most_common(MAX_VARIANTS_PER_CLUSTER)
-            dropped = len(failure_counts) - len(top)
-            if dropped > 0:
-                log(f"  Note: cluster '{title[:80]}' has "
-                    f"{len(failure_counts)} recently failing variants; only "
-                    f"checking the top {len(top)} by failure count.")
-            test_ids.update(test_id for test_id, _ in top)
-
-    return sorted(test_ids)
-
-
-def fetch_candidate_stats(test_ids, days):
-    """Fetch raw per-variant flakiness stats for each candidate test ID."""
-
-    def fetch_one(test_id):
-        return test_id, get_flakiness_stats(test_id, days)
-
-    with ThreadPoolExecutor(max_workers=STATS_WORKERS) as executor:
-        return dict(executor.map(fetch_one, test_ids))
-
-
-def all_configs():
+def get_all_configs() -> Iterator[str]:
     """All test configs filter files are generated for."""
     for platform in PLATFORM_OS_PREFIXES:
         yield platform
@@ -296,25 +452,20 @@ def all_configs():
             yield f"{platform}-{sanitizer}"
 
 
-def config_for_variant(variant_def):
+def get_config_for_variant(variant: TestVariant) -> str | None:
     """Map an upstream bot variant to a Brave test config.
 
     Returns e.g. "linux" or "linux-asan", or None for configs Brave
     doesn't run (e.g. ChromeOS, Android or TSan bots).
     """
     platform = None
-    os_name = variant_def.get("os", "")
     for candidate, prefixes in PLATFORM_OS_PREFIXES.items():
-        if os_name.startswith(prefixes):
+        if variant.os.startswith(prefixes):
             platform = candidate
             break
     if platform is None:
         return None
-    # Chromium's flake-retry bots run as builder "runner" in bucket
-    # "reviver"; the bot whose failures they retry is in "reviver_builder".
-    builder_names = (variant_def.get("builder", ""),
-                     variant_def.get("reviver_builder", ""))
-    builder = " ".join(filter(None, builder_names)).lower()
+    builder = variant.builder_description
     if any(keyword in builder for keyword in EXCLUDED_BUILDER_KEYWORDS):
         return None
     for sanitizer in SANITIZERS:
@@ -326,137 +477,330 @@ def config_for_variant(variant_def):
     return platform
 
 
-def resolve_variant_configs(stats_by_test_id):
-    """Map each variant hash seen in the stats to a Brave test config.
-
-    Variant hashes are shared between tests that run on the same bot
-    config, so one QueryVariants call typically resolves the hashes of
-    most tests in a suite; further calls are only made for tests whose
-    stats contain still-unknown hashes.
-    """
-    config_by_hash = {}
-    for test_id, groups in stats_by_test_id.items():
-        if all(g.get("variantHash") in config_by_hash for g in groups):
-            continue
-        for entry in get_test_variants(test_id):
-            variant_def = entry.get("variant", {}).get("def", {})
-            config_by_hash[entry["variantHash"]] = \
-                config_for_variant(variant_def)
-        # Don't re-query for hashes QueryVariants didn't return.
-        for group in groups:
-            config_by_hash.setdefault(group.get("variantHash"), None)
-    return config_by_hash
-
-
-def analyze_per_config(groups, config_by_hash):
-    """Compute per-config flakiness analyses from raw stats groups."""
-    analyses = {}
-    for config in all_configs():
-        config_groups = [
-            g for g in groups
-            if config_by_hash.get(g.get("variantHash")) == config
-        ]
-        analyses[config] = analyze_stats(config_groups)
-    return analyses
-
-
-def build_filter_content(suite, config, entries, days, min_flake_rate):
-    """Build the content of a generated filter file.
+def analyze_per_config(
+        groups: list[StatsGroup],
+        config_by_hash: dict[str, str | None]) -> dict[str, Flakiness]:
+    """Read a test's history separately for each config it ran on.
 
     Args:
-        suite: Test suite name.
-        config: Brave test config name (e.g. "linux" or "linux-asan").
-        entries: List of (gtest_name, analysis_dict) tuples.
-        days: Lookback window in days.
-        min_flake_rate: Flake rate threshold (fraction).
-
-    Returns:
-        The filter file content string.
+        groups: The test's per-day, per-variant history.
+        config_by_hash: Which Brave config each variant hash belongs to,
+            or None for bots Brave does not test.
     """
-    lines = [
-        "## AUTO-GENERATED FILE -- DO NOT EDIT.",
-        "##",
-        f"## Upstream {suite} tests with a flake rate >="
-        f" {min_flake_rate:.1%} on",
-        f"## {config} bots over the past {days} days per Chromium LUCI"
-        " Analysis.",
-        "## Regenerate with:",
-        "##   python3 tools/chromium_tests_analysis/"
-        "update-upstream-flake-filters.py",
-    ]
-    for gtest_name, analysis in sorted(entries):
-        lines.append("")
-        lines.append(f"# {analysis['flake_rate']:.1%} flake rate over"
-                     f" {days} days per LUCI Analysis"
-                     f" ({analysis['passed']} passed,"
-                     f" {analysis['failed']} failed,"
-                     f" {analysis['flaky']} flaky).")
-        lines.append(f"-{gtest_name}")
-    return "\n".join(lines) + "\n"
+    return {
+        config: Flakiness.of_groups(
+            g for g in groups if config_by_hash.get(g.variant_hash) == config)
+        for config in get_all_configs()
+    }
 
 
-def update_suite_filters(suite, days, min_flake_rate):
-    """Regenerate the per-config filter files for one suite."""
-    log(f"[{suite}] Discovering candidate flaky tests...")
-    test_ids = collect_candidate_test_ids(suite, days)
-    log(f"[{suite}] Checking flake rate of {len(test_ids)} candidates...")
-    stats_by_test_id = fetch_candidate_stats(test_ids, days)
-    config_by_hash = resolve_variant_configs(stats_by_test_id)
+class SuiteUpdater:
+    """The work of bringing one suite's filter files up to date.
 
-    entries_by_config = {config: [] for config in all_configs()}
-    for test_id, groups in stats_by_test_id.items():
-        gtest_name = structured_id_to_gtest_name(test_id)
-        if not gtest_name:
-            continue
-        analyses = analyze_per_config(groups, config_by_hash)
-        for config, analysis in analyses.items():
-            if analysis["meaningful_verdicts"] < MIN_MEANINGFUL_VERDICTS:
+    A run is four phases: a) discover candidates, b) read their history, c) work
+    out which config each ran on, and d) write the files. Each stage needs the
+    same handful of things: a client to ask, a display to report to, and the
+    suite and thresholds being worked to.
+    """
+
+    def __init__(self, suite: str, *, client: LuciAnalysis, display: Display,
+                 days: int, min_flake_rate: float, filters_dir: Path) -> None:
+
+        # The upstream test suite being brought up to date.
+        self._suite = suite
+
+        # Who to ask about LUCI; shared with every other suite in the run.
+        self._client = client
+
+        # Where to report progress; likewise shared.
+        self._display = display
+
+        # How far back to look. Note this does not widen cluster-based
+        # discovery, which upstream fixes at 7 days.
+        self._days = days
+
+        # Flake rate, as a fraction, at or above which a test is
+        # excluded on a given config.
+        self._min_flake_rate = min_flake_rate
+
+        # Directory the .filter files are written to.
+        self._filters_dir = filters_dir
+
+        # Matches the ":<suite>!gtest" portion of structured test IDs
+        # like "://chrome/test\:browser_tests!gtest::Suite#Case".
+        self._suite_marker = f":{suite}!gtest"
+
+    def run(self) -> None:
+        """Bring this suite's filter files up to date."""
+        test_ids = self.discover_candidates()
+        history = self.read_history(test_ids)
+        config_by_hash = self.resolve_configs(history)
+        self.write_filters(self.entries_by_config(history, config_by_hash))
+
+    # -- reporting
+
+    def _phase(self, description: str,
+               total: int) -> AbstractContextManager[Phase]:
+        """A progress row for this suite, over `total` items."""
+        return self._display.phase(self._suite, description, total)
+
+    def _log(self, message: str) -> None:
+        """Log a line about this suite."""
+        log(f"[bold]{self._suite}[/] {message}")
+
+    # -- the phases
+
+    def discover_candidates(self) -> list[str]:
+        """Find test IDs in this suite with recent upstream failures."""
+        clusters = self._query_clusters()
+
+        test_ids: set[str] = set()
+        multi_test_clusters: list[ClusterSummary] = []
+        for _, summary in sorted(clusters.items()):
+            if summary.names_one_test:
+                if self._suite_marker in summary.title:
+                    test_ids.add(normalize_test_id(summary.title))
                 continue
-            if analysis["flake_rate"] < min_flake_rate:
+            multi_test_clusters.append(summary)
+
+        test_ids.update(self._enumerate_clusters(multi_test_clusters))
+        return sorted(test_ids)
+
+    def _query_clusters(self) -> dict[tuple[str, str], ClusterSummary]:
+        """The failure clusters this suite shows up in."""
+        # One query per (window, filter) pair. Run as a batch: they are
+        # independent, and serially they dominate a suite's wall time.
+        queries = [(failure_filter, window)
+                   for window in get_candidate_windows(self._days)
+                   for failure_filter in get_discovery_filters(self._suite)]
+
+        clusters: dict[tuple[str, str], ClusterSummary] = {}
+        with self._phase("querying failure clusters", len(queries)) as task:
+            for summaries in run_in_parallel(
+                    lambda query: self._client.cluster_summaries(*query),
+                    queries):
+                for summary in summaries:
+                    # Failures in a "reason" cluster also count towards
+                    # a test name cluster, so following both up would
+                    # repeat work. Failures claimed by a bug ("rules"
+                    # cluster) are excluded from every suggested cluster
+                    # though, so a tracked flaky test only shows up
+                    # through its rule.
+                    if not summary.groups_by_failure_reason:
+                        clusters[summary.key] = summary
+                task.advance()
+        return clusters
+
+    def _enumerate_clusters(self, clusters: list[ClusterSummary]) -> set[str]:
+        """Read the test IDs out of clusters that cover several tests.
+
+        These are parameterised test families and bug rules, whose
+        titles name no single test, so their recent failures have to be
+        listed to find out what is in them.
+        """
+        test_ids: set[str] = set()
+        # Big clusters are the norm rather than the exception, so report
+        # what the cap left out once, not once per cluster.
+        capped_clusters = 0
+        variants_seen = 0
+        variants_checked = 0
+
+        with self._phase("enumerating clusters", len(clusters)) as task:
+            for failure_counts in run_in_parallel(self._failures_by_test,
+                                                  clusters):
+                top = failure_counts.most_common(MAX_VARIANTS_PER_CLUSTER)
+                if len(failure_counts) > len(top):
+                    capped_clusters += 1
+                    variants_seen += len(failure_counts)
+                    variants_checked += len(top)
+                test_ids.update(test_id for test_id, _ in top)
+                task.advance()
+
+        if capped_clusters:
+            self._log(f"{capped_clusters} clusters were over the"
+                      f" {MAX_VARIANTS_PER_CLUSTER}-variant cap: checked"
+                      f" {variants_checked} of their {variants_seen} recently"
+                      " failing variants, the worst by failure count.")
+        return test_ids
+
+    def _failures_by_test(self, cluster: ClusterSummary) -> Counter[str]:
+        """How often each of this suite's tests failed inside a cluster."""
+        failure_counts: Counter[str] = Counter()
+        for failure in self._client.cluster_failures(cluster):
+            if self._suite_marker in failure.test_id:
+                failure_counts[normalize_test_id(
+                    failure.test_id)] += failure.count
+        return failure_counts
+
+    def read_history(self, test_ids: list[str]) -> dict[str, list[StatsGroup]]:
+        """Fetch the per-day, per-variant history of each candidate."""
+        window = Window.last_days(self._days)
+
+        def fetch_one(test_id: str) -> tuple[str, list[StatsGroup]]:
+            return test_id, self._client.history(test_id, window)
+
+        history: dict[str, list[StatsGroup]] = {}
+        with self._phase("fetching test history", len(test_ids)) as task:
+            for test_id, groups in run_in_parallel(fetch_one, test_ids):
+                history[test_id] = groups
+                task.advance()
+        return history
+
+    def resolve_configs(
+            self, history: dict[str,
+                                list[StatsGroup]]) -> dict[str, str | None]:
+        """Map each variant hash in the history to a Brave test config.
+
+        Variant hashes are shared between tests that run on the same bot
+        config, so one QueryVariants call typically resolves the hashes
+        of most tests in a suite; further calls are only made for tests
+        whose history holds still-unknown hashes.
+        """
+        config_by_hash: dict[str, str | None] = {}
+        with self._phase("resolving bot variants", len(history)) as task:
+            for test_id, groups in history.items():
+                if not all(g.variant_hash in config_by_hash for g in groups):
+                    for variant in self._client.variants(test_id):
+                        config_by_hash[variant.variant_hash] = \
+                            get_config_for_variant(variant)
+                    # Don't re-query hashes QueryVariants didn't return.
+                    for group in groups:
+                        config_by_hash.setdefault(group.variant_hash, None)
+                task.advance()
+        return config_by_hash
+
+    def entries_by_config(
+        self, history: dict[str,
+                            list[StatsGroup]], config_by_hash: dict[str,
+                                                                    str | None]
+    ) -> dict[str, list[tuple[str, Flakiness]]]:
+        """Pick out which tests to exclude, on which config.
+
+        Args:
+            history: Each candidate's per-day, per-variant history.
+            config_by_hash: Which Brave config each variant hash belongs
+                to, or None for bots Brave does not test.
+        """
+        entries: dict[str, list[tuple[str, Flakiness]]] = {
+            config: []
+            for config in get_all_configs()
+        }
+        for test_id, groups in history.items():
+            gtest_name = structured_id_to_gtest_name(test_id)
+            if not gtest_name:
                 continue
-            entries_by_config[config].append((gtest_name, analysis))
+            for config, flakiness in analyze_per_config(
+                    groups, config_by_hash).items():
+                if flakiness.counts.meaningful < MIN_MEANINGFUL_VERDICTS:
+                    continue
+                if flakiness.flake_rate < self._min_flake_rate:
+                    continue
+                entries[config].append((gtest_name, flakiness))
 
-    # Platform filter files also apply to sanitizer runs, so sanitizer
-    # files only need the tests that aren't already filtered for the
-    # platform in general.
-    for platform in PLATFORM_OS_PREFIXES:
-        platform_names = {name for name, _ in entries_by_config[platform]}
-        for sanitizer in SANITIZERS:
-            config = f"{platform}-{sanitizer}"
-            entries_by_config[config] = [
-                entry for entry in entries_by_config[config]
-                if entry[0] not in platform_names
-            ]
+        # Platform filter files also apply to sanitizer runs, so
+        # sanitizer files only need the tests that aren't already
+        # filtered for the platform in general.
+        for platform in PLATFORM_OS_PREFIXES:
+            platform_names = {name for name, _ in entries[platform]}
+            for sanitizer in SANITIZERS:
+                config = f"{platform}-{sanitizer}"
+                entries[config] = [
+                    entry for entry in entries[config]
+                    if entry[0] not in platform_names
+                ]
+        return entries
 
-    os.makedirs(GENERATED_FILTERS_DIR, exist_ok=True)
-    written = set()
-    for config, entries in entries_by_config.items():
-        # Platform files are always written; sanitizer files only when
-        # they have entries.
-        if config not in PLATFORM_OS_PREFIXES and not entries:
-            continue
-        filename = f"{suite}-{config}.filter"
-        path = os.path.join(GENERATED_FILTERS_DIR, filename)
-        with open(path, "w", encoding="utf-8") as f:
-            f.write(
-                build_filter_content(suite, config, entries, days,
-                                     min_flake_rate))
-        written.add(filename)
-        log(f"[{suite}] Wrote {len(entries)} entries to"
-            f" {os.path.relpath(path, BRAVE_CORE_ROOT)}")
+    # -- writing the files
 
-    # Remove files from previous runs that were not regenerated, e.g. a
-    # sanitizer file whose tests all dropped below the threshold.
-    for filename in os.listdir(GENERATED_FILTERS_DIR):
-        is_stale = (filename.startswith(f"{suite}-")
-                    or filename == f"{suite}.filter")
-        if is_stale and filename.endswith(".filter") \
-                and filename not in written:
-            os.remove(os.path.join(GENERATED_FILTERS_DIR, filename))
-            log(f"[{suite}] Removed stale {filename}")
+    def write_filters(
+            self,
+            entries_by_config: dict[str, list[tuple[str, Flakiness]]]) -> None:
+        """Write this suite's filter files, and retire the stale ones."""
+        self._filters_dir.mkdir(parents=True, exist_ok=True)
+        written: set[str] = set()
+        for config, entries in entries_by_config.items():
+            # Platform files are always written. Sanitizer files only
+            # when they have entries.
+            if config not in PLATFORM_OS_PREFIXES and not entries:
+                continue
+            filename = f"{self._suite}-{config}.filter"
+            path = self._filters_dir / filename
+            # These files are committed, so they have to come out byte
+            # for byte the same wherever the script is run: `newline=""`
+            # keeps Windows from turning every "\n" into "\r\n".
+            path.write_text(self.filter_content(config, entries),
+                            encoding="utf-8",
+                            newline="")
+            written.add(filename)
+            self._log(f"wrote {len(entries)} entries to"
+                      f" {os.path.relpath(path, BRAVE_CORE_ROOT)}")
+        self._remove_stale_filters(written)
+
+    def _remove_stale_filters(self, written: set[str]) -> None:
+        """Drop files a previous run left behind.
+
+        A sanitizer file whose tests all dropped below the threshold,
+        for instance, is no longer regenerated and would otherwise keep
+        excluding them for ever.
+        """
+        for path in self._filters_dir.iterdir():
+            is_stale = (path.name.startswith(f"{self._suite}-")
+                        or path.name == f"{self._suite}.filter")
+            if is_stale and path.suffix == ".filter" \
+                    and path.name not in written:
+                path.unlink()
+                self._log(f"removed stale {path.name}")
+
+    def filter_content(self, config: str,
+                       entries: list[tuple[str, Flakiness]]) -> str:
+        """The text of one generated filter file.
+
+        Args:
+            config: Brave test config name, e.g. "linux" or "linux-asan".
+            entries: The (gtest_name, flakiness) pairs to exclude.
+        """
+        lines = [
+            "## AUTO-GENERATED FILE -- DO NOT EDIT.",
+            "##",
+            f"## Upstream {self._suite} tests with a flake rate >="
+            f" {self._min_flake_rate:.1%} on",
+            f"## {config} bots over the past {self._days} days per Chromium"
+            " LUCI Analysis.",
+            "## Regenerate with:",
+            "##   vpython3 tools/chromium_tests_analysis/"
+            "update-upstream-flake-filters.py",
+        ]
+        for gtest_name, flakiness in sorted(entries, key=lambda e: e[0]):
+            counts = flakiness.counts
+            lines.append("")
+            lines.append(f"# {flakiness.flake_rate:.1%} flake rate over"
+                         f" {self._days} days per LUCI Analysis"
+                         f" ({counts.passed} passed,"
+                         f" {counts.failed} failed,"
+                         f" {counts.flaky} flaky).")
+            lines.append(f"-{gtest_name}")
+        return "\n".join(lines) + "\n"
 
 
-def main():
+def handle_interrupt(client: LuciAnalysis) -> NoReturn:
+    """Leave straight away after Ctrl+C.
+
+    The suite pool is killed as the interrupt unwinds through
+    `worker_pool`, but the request greenlets those suites had already
+    spawned belong to `requests_pool` and have to be killed here, along
+    with telling the client to stop retrying. Killing a greenlet unwinds
+    it wherever it is, a blocked socket read included, so nothing is
+    left holding the process. Each filter file is written and closed
+    before the next one starts, so none is left half-written.
+    """
+    client.request_shutdown()
+    requests_pool.kill(block=False)
+    console.print("[yellow]Interrupted.[/] Filter files already written are"
+                  " left in place.")
+    sys.exit(130)
+
+
+def main() -> None:
     parser = argparse.ArgumentParser(
         description=("Update test/filters/generated/*.filter with upstream"
                      " tests that are flaky per Chromium LUCI Analysis."))
@@ -470,7 +814,9 @@ def main():
         "--days",
         type=int,
         default=30,
-        help="Number of days to look back (default: 30, max: 90)",
+        help=("Number of days to look back (default: 30, max: 90). Note"
+              " that discovery through multi-test clusters is fixed at 7"
+              " days upstream and does not widen with this."),
     )
     parser.add_argument(
         "--min-flake-rate",
@@ -481,16 +827,38 @@ def main():
     args = parser.parse_args()
 
     if args.days < 1 or args.days > 90:
-        print("Error: --days must be between 1 and 90.", file=sys.stderr)
+        console.print("[red]Error:[/] --days must be between 1 and 90.")
         sys.exit(1)
 
-    for suite in args.suites:
-        update_suite_filters(suite, args.days, args.min_flake_rate / 100.0)
+    suites = args.suites
+    min_flake_rate = args.min_flake_rate / 100.0
+
+    # One connection to LUCI and one display for the whole run, shared
+    # by every suite so the fan-out stays capped and the summary line
+    # counts everything.
+    client = LuciAnalysis()
+    display = Display(client.stats)
+
+    def update_one(suite: str) -> None:
+        SuiteUpdater(suite,
+                     client=client,
+                     display=display,
+                     days=args.days,
+                     min_flake_rate=min_flake_rate,
+                     filters_dir=GENERATED_FILTERS_DIR).run()
+
+    try:
+        with display.live(len(suites)):
+            with worker_pool(SUITE_CONCURRENCY) as suite_pool:
+                for _ in suite_pool.imap_unordered(update_one, suites):
+                    display.suite_finished()
+    except KeyboardInterrupt:
+        handle_interrupt(client)
 
 
 if __name__ == "__main__":
     try:
         main()
     except LuciAnalysisError as e:
-        print(f"Error: {e}", file=sys.stderr)
+        console.print(f"[red]Error:[/] {escape(str(e))}")
         sys.exit(1)
