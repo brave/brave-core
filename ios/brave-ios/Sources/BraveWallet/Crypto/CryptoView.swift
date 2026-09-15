@@ -252,6 +252,8 @@ public struct CryptoView: View {
         // 2. wallet is unlocked from wallet webui
         // 3. onboarding is completed from wallet webui
         dismissAction()
+      case .webUI(.backup):
+        break
       default:
         openWalletURLAction?(.webUI.wallet.home)
       }
