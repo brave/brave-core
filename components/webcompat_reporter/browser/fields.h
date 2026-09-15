@@ -17,6 +17,7 @@ inline constexpr char kAdBlockComponentsVersionField[] =
     "adBlockComponentsInfo";
 inline constexpr char kShieldsEnabledField[] = "shieldsEnabled";
 inline constexpr char kAdblockOnlyModeEnabledField[] = "adblockOnlyModeEnabled";
+inline constexpr char kAdblockExtensionInstalledField[] ="adblockExtensionInstalled";
 inline constexpr char kLanguagesField[] = "languages";
 inline constexpr char kLanguageFarblingField[] = "languageFarblingEnabled";
 inline constexpr char kBraveVPNEnabledField[] = "braveVPNEnabled";
