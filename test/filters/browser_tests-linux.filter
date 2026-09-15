@@ -173,6 +173,92 @@
 # https://github.com/brave/brave-browser/issues/53717 (Windows, closed)
 -InstallableManagerBrowserTest.CheckWebapp
 
+# Upstream Chromium test (chrome/browser/ui/webui/tab_search/
+# tab_search_page_handler_browsertest.cc). Fails intermittently on Linux x64
+# with "Mock function called more times than expected ... TabUpdated ...
+# over-saturated and active".
+#
+# The test sets EXPECT_CALL(page_, TabUpdated(_)).Times(0) on a StrictMock,
+# which shadows the AnyNumber() expectation SetUpOnMainThread() installed, and
+# then calls AddTabWithTitle() twice. Each of those spins the run loop
+# (WaitForLoadStop(), ExecJs(), TitleWatcher::WaitAndGetTitle()), so any
+# tab-UI update still pending for a tab in a browser the handler tracks gets
+# delivered inside the test body and over-saturates the expectation. The most
+# likely source is BrowserUiController::ScheduleUIUpdate(), which coalesces
+# WebContents invalidations into a 200ms delayed ProcessPendingUIUpdates()
+# that notifies TabChangeType::kAll, which BuildTabFieldMask() maps onto the
+# fields HasTabSiteDataChanged() tests, so
+# TabSearchPageHandler::OnTabDataChanged() forwards it as TabUpdated() with no
+# debounce. There are other kAll producers and the CI log does not identify
+# which one fired, but either way the test never bounds that window, so it is
+# timing-dependent by construction.
+#
+# Upstream considers this fixture flaky too. At our pinned Chromium
+# (153.0.8010.28), TabSearchPageHandlerTest.TabUpdated is disabled on all of
+# Linux and .TabSearchUsedPref on Linux MSan, both citing crbug.com/537538766;
+# .GetTabs is disabled on Linux dbg/asan/msan with no bug referenced; and
+# TabsNotChanged itself is already disabled on ChromeOS (crbug.com/537468010).
+#
+# Brave is not the cause. Every Brave entry point into this mechanism was
+# checked:
+#  - The only Brave code that invalidates tab UI at all is Tor's:
+#    tor_profile_manager.cc passes INVALIDATE_TYPE_ALL from
+#    OnTorCircuitEstablished() on a Tor window's NTP tab, and
+#    INVALIDATE_TYPE_URL from that same file's OpenURL() and from
+#    onion_location_tab_helper.cc. ScheduleUIUpdate() handles the URL-only
+#    invalidations synchronously and strips the flag before anything is
+#    queued for the coalesced kAll path, and the ALL site is not reachable
+#    for an about:blank tab in a non-Tor profile. Nothing else under brave/
+#    calls NavigationStateChanged(), UpdateWebContentsStateAt(),
+#    NotifyTabChanged(), TabChangeType::kAll or SetNeedsAttention(), and
+#    Brave has no patch or chromium_src override on tab_ui_helper.* or the
+#    tab alert controller, which are what TabData::FromTabInterface() reads
+#    and whose inequality gates the kAll notify.
+#  - The patch on browser_ui_controller.cc injects
+#    MaybeUpdateSidebarForUrlChange() as the first statement of
+#    ScheduleUIUpdate(), but it returns early unless INVALIDATE_TYPE_URL is
+#    set for the active tab and its only effect is
+#    Sidebar::UpdateSidebarItemsState(), a views-only refresh. It schedules no
+#    task and touches no tab state.
+#  - The patch on tab_model.cc swaps in BraveTabFeatures for every tab, which
+#    attaches per-tab page-action controllers and WebContents observers (AI
+#    Chat, PSST, containers, Speedreader, Wayback Machine, Playlist, Tor,
+#    Brave News) plus a contextual side panel registration. None of them
+#    reach the entry points above.
+#  - The tab_search_page_handler and tab_search_ui chromium_src overrides only
+#    add tab-organization and content-search mojo methods, a pref observer
+#    emitting TabFocusEnabledChanged()/TabFocusShowFREChanged(), and extra
+#    WebUI data source values. tab_data.cc's hooks are inert for an
+#    about:blank tab, tab_converters.cc only redefines the TREE_NODE/SPLIT
+#    collection case rather than BuildTabFieldMask(), and the existing patch
+#    on this test file only adds two MOCK_METHODs.
+#
+# The only tab in a tracked browser here is InProcessBrowserTest's about:blank
+# tab in browser1 (browser2 is tracked too, but this test never gives it a
+# tab).
+#
+# script/check-upstream-flake.py reports "STABLE UPSTREAM" (0.2% over 30
+# days), below the 1% bar, so this entry rests on the mechanism above and on
+# Brave being ruled out rather than on the aggregate rate. That aggregate is
+# diluted by two high-volume CQ trybots, linux-rel (~29k verdicts) and win-rel
+# (~28k), together ~66% of all verdicts, whose events are all "failed" and
+# none "flaky", i.e. attributable to the CL under test. Counting only flaky
+# verdicts, which are the test's own fault, gives 67 on Linux --
+# concentrated in linux_chromium_asan_rel_ng 5.48%, Linux ASan LSan Tests (1)
+# 4.02%, linux_chromium_dbg_ng 2.41%, linux-wayland-mutter-rel-tests 1.88%,
+# Linux Tests (dbg)(1) 1.03% and linux-arm64-wayland-rel-fyi 0.93% -- against
+# 4 across every Windows and macOS builder combined. That gradient tracks how
+# loaded the builder is, which is what a 200ms coalescing window predicts.
+#
+# Hence this file and not the all-platform browser_tests.filter: both Brave
+# reports (browser linux x64 beta v1.95.92, origin linux x64 nightly v1.96.30)
+# are Linux x64. And not browser_tests-linux-asan.filter: upstream's
+# non-sanitizer Linux builders flake too, and Brave's own failures are Release
+# builds.
+#
+# https://github.com/brave/brave-browser/issues/58475
+-TabSearchPageHandlerTest.TabsNotChanged
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
