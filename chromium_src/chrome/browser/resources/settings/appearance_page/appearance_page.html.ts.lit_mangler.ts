@@ -55,6 +55,20 @@ mangle((root) => {
   sidePanelList.previousElementSibling?.remove()
   sidePanelList.remove()
 
+  // Remove the tab position (vertical tabs) dropdown row entirely; we have our
+  // own equivalent control on the Tabs settings page.
+  const tabStripPosition = root.getElementById('tabStripPosition')
+  if (!tabStripPosition) {
+    throw new Error(
+      `[Settings] Appearance page: couldn't find tabStripPosition`)
+  }
+  const tabStripPositionRow = tabStripPosition.closest('.cr-row')
+  if (!tabStripPositionRow) {
+    throw new Error(
+      `[Settings] Appearance page: couldn't find tabStripPosition row`)
+  }
+  tabStripPositionRow.remove()
+
   // showSavedTabGroups and autoPinNewTabGroups are shown in
   // <settings-brave-appearance-toolbar> instead, after the bookmark bar
   // setting.
