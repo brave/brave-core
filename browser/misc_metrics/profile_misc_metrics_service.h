@@ -43,10 +43,10 @@ inline constexpr char kSearchSuggestEnabledHistogramName[] =
     "Brave.Search.SearchSuggest";
 inline constexpr char kShieldsDevModeEnabledHistogramName[] =
     "Brave.Shields.DevModeEnabled";
+inline constexpr char kSponsoredAdsEnabledHistogramName[] =
+    "Brave.Ads.SponsoredEnabled";
 inline constexpr char kSurveyPanelistEnabledHistogramName[] =
     "Brave.Ads.SurveyPanelistEnabled";
-inline constexpr char kNewTabPageShowSponsoredAdsHistogramName[] =
-    "Brave.NTP.ShowSponsoredAds";
 
 class ProfileMiscMetricsService : public KeyedService {
  public:
