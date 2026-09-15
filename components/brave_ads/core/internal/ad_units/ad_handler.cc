@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposit_util.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/fixed/page_land_user_data.h"
@@ -43,8 +44,11 @@ void AdHandler::TriggerNotificationAdEvent(
     ResultCallback callback) {
   CHECK(!placement_id.empty());
 
-  notification_ad_handler_.TriggerEvent(placement_id, mojom_ad_event_type,
-                                        std::move(callback));
+  notification_ad_event_task_queue_.Add(
+      base::BindOnce(&NotificationAdHandler::TriggerEvent,
+                     base::Unretained(&notification_ad_handler_), placement_id,
+                     mojom_ad_event_type),
+      std::move(callback));
 }
 
 void AdHandler::ParseAndSaveNewTabPageAds(base::DictValue dict,
@@ -64,9 +68,11 @@ void AdHandler::TriggerNewTabPageAdEvent(
     ResultCallback callback) {
   CHECK(!placement_id.empty());
 
-  new_tab_page_ad_handler_.TriggerEvent(placement_id, creative_instance_id,
-                                        mojom_ad_event_type,
-                                        std::move(callback));
+  new_tab_page_ad_event_task_queue_.Add(
+      base::BindOnce(&NewTabPageAdHandler::TriggerEvent,
+                     base::Unretained(&new_tab_page_ad_handler_), placement_id,
+                     creative_instance_id, mojom_ad_event_type),
+      std::move(callback));
 }
 
 std::optional<mojom::CreativeSearchResultAdInfoPtr>
@@ -87,8 +93,11 @@ void AdHandler::TriggerSearchResultAdEvent(
                                 mojom_creative_ad->Clone());
   }
 
-  search_result_ad_handler_.TriggerEvent(
-      std::move(mojom_creative_ad), mojom_ad_event_type, std::move(callback));
+  search_result_ad_event_task_queue_.Add(
+      base::BindOnce(&SearchResultAdHandler::TriggerEvent,
+                     base::Unretained(&search_result_ad_handler_),
+                     std::move(mojom_creative_ad), mojom_ad_event_type),
+      std::move(callback));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
