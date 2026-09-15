@@ -175,7 +175,8 @@ import Preferences
   /// - Warning: Do not call this before we load core data
   public func isEnabled(for componentId: String) -> Bool {
     return filterLists.first(where: { $0.entry.componentId == componentId })?.isEnabled
-      ?? allFilterListSettings.first(where: { $0.componentId == componentId })?.isEnabled
+      ?? allFilterListSettings.first(where: { $0.componentId == componentId })?
+      .isEnabledOrDefault
       ?? pendingDefaults[componentId]
       ?? false
   }
@@ -332,7 +333,7 @@ extension FilterListStorage {
   @MainActor var enabledSources: [GroupedAdBlockEngine.Source] {
     return filterLists.isEmpty
       ? allFilterListSettings
-        .filter(\.isEnabled)
+        .filter(\.isEnabledOrDefault)
         .sorted(by: { $0.order?.intValue ?? 0 <= $1.order?.intValue ?? 0 })
         .compactMap(\.engineSource)
       : filterLists
