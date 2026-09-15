@@ -6,6 +6,7 @@
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { getDeepActiveElement, hasKeyModifiers } from '//resources/js/util.js'
 
+import { focusLeoInput } from './brave_account_common.js'
 import { getCss } from './brave_account_otp_input.css.js'
 import { getHtml } from './brave_account_otp_input.html.js'
 
@@ -32,6 +33,10 @@ export class BraveAccountOtpInputElement extends CrLitElement {
     return {
       length: { type: Number },
     }
+  }
+
+  override focus() {
+    focusLeoInput(this.shadowRoot?.querySelector('leo-input'))
   }
 
   protected get indices() {
