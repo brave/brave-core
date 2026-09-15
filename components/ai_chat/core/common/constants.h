@@ -54,9 +54,21 @@ inline constexpr char kAIChatCodeSandboxUIURL[] =
     "chrome-untrusted://aichat-code-sandbox/";
 
 // The chrome-untrusted WebUI that hosts Leo's local "workspace" file tools.
+// Each workspace is served from its own subdomain of this host
+// (chrome-untrusted://<uuid>.leo-workspace) rather than from a path under it,
+// so that every workspace is its own origin and therefore gets its own storage
+// and its own File System Access grants. LeoWorkspaceUIConfig opts into this by
+// overriding WebUIConfig::ShouldHandleSubdomains().
 inline constexpr char kAIChatLeoWorkspaceUIHost[] = "leo-workspace";
-inline constexpr char kAIChatLeoWorkspaceUIURL[] =
-    "chrome-untrusted://leo-workspace/";
+
+// The suffix every workspace host ends with. For code which only has a host (or
+// an origin) to go on and can't reason about the per-workspace label, such as
+// the WebMCP origin check in blink.
+inline constexpr char kAIChatLeoWorkspaceUIHostSuffix[] = ".leo-workspace";
+static_assert(
+    std::string_view(kAIChatLeoWorkspaceUIHostSuffix).substr(1) ==
+        std::string_view(kAIChatLeoWorkspaceUIHost),
+    "The workspace host suffix must be the workspace host, preceded by a dot.");
 
 }  // namespace ai_chat
 

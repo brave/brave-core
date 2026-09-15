@@ -17,6 +17,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/webui/webui_util.h"
 #include "url/gurl.h"
 
@@ -28,10 +29,14 @@ bool LeoWorkspaceUIConfig::IsWebUIEnabled(
          base::FeatureList::IsEnabled(features::kAIChatWorkspaceTools);
 }
 
+bool LeoWorkspaceUIConfig::ShouldHandleSubdomains() const {
+  return true;
+}
+
 std::unique_ptr<content::WebUIController>
 LeoWorkspaceUIConfig::CreateWebUIController(content::WebUI* web_ui,
                                             const GURL& url) {
-  return std::make_unique<LeoWorkspaceUI>(web_ui);
+  return std::make_unique<LeoWorkspaceUI>(web_ui, url);
 }
 
 LeoWorkspaceUIConfig::LeoWorkspaceUIConfig()
@@ -40,11 +45,18 @@ LeoWorkspaceUIConfig::LeoWorkspaceUIConfig()
 
 LeoWorkspaceUIConfig::~LeoWorkspaceUIConfig() = default;
 
-LeoWorkspaceUI::LeoWorkspaceUI(content::WebUI* web_ui)
+LeoWorkspaceUI::LeoWorkspaceUI(content::WebUI* web_ui, const GURL& url)
     : ui::UntrustedWebUIController(web_ui) {
   auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
+  // Untrusted data sources are named after, and looked up by, the origin they
+  // serve, so each workspace subdomain needs a data source of its own rather
+  // than one shared by the parent host. The name is built from the host because
+  // URLDataManagerBackend keys chrome-untrusted:// sources on
+  // "chrome-untrusted://<host>/".
   auto* source = content::WebUIDataSource::CreateAndAdd(
-      browser_context, kAIChatLeoWorkspaceUIURL);
+      browser_context,
+      absl::StrFormat("%s://%s/", content::kChromeUIUntrustedScheme,
+                      url.host()));
 
   webui::SetupWebUIDataSource(source, kAiChatUiGenerated,
                               IDR_AI_CHAT_LEO_WORKSPACE_HTML);

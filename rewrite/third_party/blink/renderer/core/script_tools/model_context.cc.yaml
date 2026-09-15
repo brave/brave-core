@@ -20,13 +20,16 @@ substitutions:
       Allow chrome-untrusted:// WebUI documents to use the Model Context (WebMCP)
       API.
 
-      The Leo "workspace" tools run on a hidden chrome-untrusted://leo-workspace
-      page and register themselves via navigator.modelContext.
+      The Leo "workspace" tools run on a hidden
+      chrome-untrusted://<uuid>.leo-workspace page and register themselves via
+      navigator.modelContext. Each workspace has its own subdomain, so the check
+      is on the host suffix; no other chrome-untrusted:// host can end with it,
+      as WebUI hosts have a single label unless they opt into subdomains.
     regex:
       re_pattern: '(!document_->GetSettings\(\)->GetWebSecurityEnabled\(\)\));'
       replace: |-
         \1 ||
                  (document_->GetExecutionContext()->GetSecurityOrigin()->Protocol() ==
                       "chrome-untrusted" &&
-                   document_->GetExecutionContext()->GetSecurityOrigin()->Host() ==
-                      ai_chat::kAIChatLeoWorkspaceUIHost);
+                   document_->GetExecutionContext()->GetSecurityOrigin()->Host().ends_with(
+                      ai_chat::kAIChatLeoWorkspaceUIHostSuffix));
