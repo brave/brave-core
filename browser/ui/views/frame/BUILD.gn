@@ -30,6 +30,7 @@ source_set("frame") {
     "//chrome/browser/ui/exclusive_access",
     "//chrome/browser/ui/views/bookmarks",
     "//chrome/browser/ui/views/infobars",
+    "//ui/base:features",
     "//ui/compositor",
   ]
 }

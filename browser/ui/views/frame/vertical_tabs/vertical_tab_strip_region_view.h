@@ -214,6 +214,12 @@ class BraveVerticalTabStripRegionView : public views::View,
   // of this view if it's needed
   void OnCollapseAnimationEnded();
 
+  void OnGlassFrameEligibilityChanged(bool is_eligible);
+
+  // Picks between the opaque toolbar background and no background at all, so
+  // the macOS glass frame can show through the tab strip.
+  void UpdateBackground();
+
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<Browser> browser_ = nullptr;
   raw_ptr<HorizontalTabStripRegionView> original_region_view_ = nullptr;
@@ -257,6 +263,9 @@ class BraveVerticalTabStripRegionView : public views::View,
   base::OneShotTimer mouse_exit_timer_;
 
   bool mouse_events_for_test_ = false;
+
+  bool is_glass_frame_eligible_ = false;
+  base::CallbackListSubscription glass_frame_subscription_;
 
   gfx::SlideAnimation width_animation_{this};
 
