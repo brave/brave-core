@@ -8,7 +8,7 @@ substitutions:
       Add Brave-specific ContextMenuCommand entries, keeping CommandLast as max.
 
       CommandRestoreTab - Restores a recently closed tab from history
-      CommandBookmarkAllTabs - Bookmarks all tabs in the current window
+      CommandBookmarkTab - Bookmarks the right-clicked tab
       CommandShowVerticalTabs - Toggles vertical tab strip display mode
       CommandToggleTabMuted - Toggles mute/unmute state of selected tabs
       CommandBringAllTabsToThisWindow
@@ -21,7 +21,7 @@ substitutions:
       max_value: CommandLast
       entries:
         - CommandRestoreTab
-        - CommandBookmarkAllTabs
+        - CommandBookmarkTab
         - CommandShowVerticalTabs
         - CommandToggleTabMuted
         - CommandBringAllTabsToThisWindow
@@ -69,19 +69,17 @@ substitutions:
       method_name: 'DetachTabsAndCollectionsForInsertion'
 
   - description: |
-      Add DetachTreeTabNodeForInsertion() for drag-and-drop.
+      Add DetachTreeTabNodeForInsertion() and InsertDetachedTreeTabNodeAt()
+      for drag-and-drop.
 
-      This method is used to detach a tab while keep its tree structure intact.
-    add_to_public:
-      class_name: TabStripModel
-      code: |
-        std::unique_ptr<DetachedTabCollection> DetachTreeTabNodeForInsertion(tabs::TabInterface* subtree_root_tab, const std::vector<tabs::TabInterface*>& moving_tabs);
-
-  - description: |
-      Add InsertDetachedTreeTabNodeAt() for drag-and-drop.
-
-      This method is used to insert a detached tree tab node into the tab strip.
-    add_to_public:
-      class_name: TabStripModel
-      code: |
-        gfx::Range InsertDetachedTreeTabNodeAt(std::unique_ptr<DetachedTabCollection> tree_node, int index);
+      Uses regex rather than add_to_public so the patch does not add an empty
+      line at the hunk boundary (presubmit CheckPatchFile).
+    regex:
+      pattern: "      const content::WebContents* contents) const;\n\n private:"
+      replace:
+        "      const content::WebContents* contents)
+        const;\n\n  std::unique_ptr<DetachedTabCollection>
+        DetachTreeTabNodeForInsertion(tabs::TabInterface* subtree_root_tab,
+        const std::vector<tabs::TabInterface*>& moving_tabs);\n\n  gfx::Range
+        InsertDetachedTreeTabNodeAt(std::unique_ptr<DetachedTabCollection>
+        tree_node, int index);\n private:"

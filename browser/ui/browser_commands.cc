@@ -15,7 +15,9 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/containers/flat_map.h"
 #include "base/feature_list.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/file_util_icu.h"
 #include "base/i18n/time_formatting.h"
@@ -46,12 +48,19 @@
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/url_sanitizer/core/browser/url_sanitizer_service.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/bookmarks/bookmark_html_writer.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/favicon/favicon_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_metrics.h"
 #include "chrome/browser/profiles/profile_window.h"
+#include "chrome/browser/ui/bookmarks/bookmark_editor.h"
+#include "chrome/browser/ui/bookmarks/bookmark_stats.h"
+#include "chrome/browser/ui/bookmarks/bookmark_utils.h"
+#include "chrome/browser/ui/bookmarks/bookmark_utils_desktop.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -76,6 +85,8 @@
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/grit/generated_resources.h"
+#include "components/bookmarks/browser/bookmark_model.h"
+#include "components/bookmarks/browser/bookmark_utils.h"
 #include "components/split_tabs/split_tab_visual_data.h"
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "components/tabs/public/tab_group.h"
@@ -458,6 +469,111 @@ void ToggleActiveTabAudioMute(Browser* browser) {
   bool mute_tab = !contents->IsAudioMuted();
   SetTabAudioMuted(contents, mute_tab, TabMutedReason::kAudioIndicator,
                    std::string());
+}
+
+void BookmarkTabs(BrowserWindowInterface* browser,
+                  const std::vector<content::WebContents*>& web_contentses) {
+  CHECK(browser);
+  if (web_contentses.empty()) {
+    return;
+  }
+
+  // Use ::bookmarks to avoid colliding with brave::bookmarks.
+  Profile* profile = browser->GetProfile();
+  ::bookmarks::BookmarkModel* model =
+      BookmarkModelFactory::GetForBrowserContext(profile);
+  if (!model || !model->loaded()) {
+    return;
+  }
+
+  // Multiple tabs: open the folder-picker dialog, matching Chromium's
+  // "Bookmark all tabs..." flow (ShowBookmarkAllTabsDialog), but only for the
+  // selected tabs.
+  if (web_contentses.size() > 1) {
+    const ::bookmarks::BookmarkNode* parent =
+        ::bookmarks::GetParentForNewNodes(model);
+    BookmarkEditor::EditDetails details =
+        BookmarkEditor::EditDetails::AddFolder(parent,
+                                               parent->children().size());
+    details.window_title_id = IDS_BOOKMARK_SELECTED_TABS_DIALOG_TITLE;
+
+    std::vector<std::pair<GURL, std::u16string>> tab_entries;
+    base::flat_map<int, ::bookmarks::TabGroupData> groups_by_index;
+    TabStripModel* tab_strip_model = browser->GetTabStripModel();
+    for (size_t i = 0; i < web_contentses.size(); ++i) {
+      WebContents* contents = web_contentses[i];
+      CHECK(contents);
+
+      std::pair<GURL, std::u16string> entry;
+      chrome::GetURLAndTitleToBookmark(contents, &entry.first, &entry.second);
+      tab_entries.push_back(entry);
+
+      const int tab_index = tab_strip_model->GetIndexOfWebContents(contents);
+      std::optional<tab_groups::TabGroupId> tab_group_id;
+      std::u16string group_title;
+      if (tab_strip_model->ContainsIndex(tab_index)) {
+        tab_group_id = tab_strip_model->GetTabGroupForTab(tab_index);
+        if (tab_group_id.has_value()) {
+          group_title = tab_strip_model->group_model()
+                            ->GetTabGroup(tab_group_id.value())
+                            ->visual_data()
+                            ->title();
+        }
+      }
+      groups_by_index.emplace(static_cast<int>(i),
+                              std::make_pair(tab_group_id, group_title));
+    }
+    ::bookmarks::GetURLsAndFoldersForTabEntries(
+        &(details.bookmark_data.children), std::move(tab_entries),
+        std::move(groups_by_index));
+    if (details.bookmark_data.children.empty()) {
+      return;
+    }
+
+    BookmarkEditor::Show(
+        browser->GetWindow()->GetNativeWindow(), profile, details,
+        BookmarkEditor::SHOW_TREE,
+        base::BindOnce(
+            [](const Profile* profile) { RecordBookmarksAdded(profile); },
+            base::Unretained(profile)));
+    return;
+  }
+
+  // Single tab: bookmark immediately and show the star bubble.
+  WebContents* web_contents = web_contentses[0];
+  CHECK(web_contents);
+
+  GURL url;
+  std::u16string title;
+  if (!chrome::GetURLAndTitleToBookmark(web_contents, &url, &title)) {
+    return;
+  }
+
+  if (!model->IsBookmarked(url) &&
+      web_contents->GetBrowserContext()->IsOffTheRecord()) {
+    // If we're incognito the favicon may not have been saved. Save it now
+    // so that bookmarks have an icon for the page.
+    favicon::SaveFaviconEvenIfInIncognito(web_contents);
+  }
+
+  const bool was_bookmarked_by_user =
+      ::bookmarks::IsBookmarkedByUser(model, url);
+  ::bookmarks::AddIfNotBookmarked(model, url, title);
+  const bool is_bookmarked_by_user =
+      ::bookmarks::IsBookmarkedByUser(model, url);
+
+  // Show the bubble matching the star button. A bookmark isn't created if the
+  // url is invalid.
+  if (browser->GetWindow()->IsActive() && is_bookmarked_by_user) {
+    // Only show the bubble if the window is active, otherwise we may get into
+    // weird situations where the bubble is deleted as soon as it is shown.
+    BrowserWindow::FromBrowser(browser)->ShowBookmarkBubble(
+        url, was_bookmarked_by_user);
+  }
+
+  if (!was_bookmarked_by_user && is_bookmarked_by_user) {
+    RecordBookmarksAdded(profile);
+  }
 }
 
 void ToggleSidebarPosition(Browser* browser) {
