@@ -101,9 +101,15 @@ public class BraveRewards: PreferencesObserver {
         self.isTurningOnRewards = false
         return
       }
+      if let toggleAds {
+        // Enable notification ads first so the ads service is eligible to
+        // start; otherwise `initialize` below would no-op when no other ad
+        // type is enabled.
+        self.ads.isEnabled = toggleAds
+      }
       self.ads.initialize(walletInfo: walletInfo) { success in
-        if success, let toggleAds {
-          self.ads.isEnabled = toggleAds
+        if !success, toggleAds != nil {
+          self.ads.isEnabled = false
         }
         self.isTurningOnRewards = false
       }

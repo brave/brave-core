@@ -16,6 +16,7 @@
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
+#include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/notimplemented.h"
 #include "base/task/sequenced_task_runner.h"
@@ -73,7 +74,12 @@ void AdsServiceImplIOS::InitializeAds(
     mojom::BuildChannelInfoPtr mojom_build_channel,
     mojom::WalletInfoPtr mojom_wallet,
     ResultCallback callback) {
-  if (IsInitialized() || !CanStartBatAdsService()) {
+  if (IsInitialized()) {
+    return std::move(callback).Run(/*success=*/false);
+  }
+
+  if (!CanStartBatAdsService()) {
+    NotifyAdsServiceIneligibleToStart();
     return std::move(callback).Run(/*success=*/false);
   }
 
@@ -120,7 +126,27 @@ void AdsServiceImplIOS::TriggerNotificationAdEvent(
                                    std::move(callback));
 }
 
-void AdsServiceImplIOS::NotifyDidInitializeAdsService() const {
+void AdsServiceImplIOS::NotifyAdsServiceIneligibleToStart() {
+  if (is_ineligible_to_start_) {
+    // Guard against notifying observers multiple times since this can be
+    // reached from several pref change handlers.
+    return;
+  }
+
+  is_ineligible_to_start_ = true;
+
+  for (AdsServiceObserver& observer : observers_) {
+    observer.OnAdsServiceIneligibleToStart();
+  }
+}
+
+void AdsServiceImplIOS::NotifyDidInitializeAdsService() {
+  // Re-arm the single-notification guard so that a subsequent pref change can
+  // still notify observers of ineligibility.
+  is_ineligible_to_start_ = false;
+
+  ads_client_notifier_->NotifyDidInitializeAds();
+
   for (AdsServiceObserver& observer : observers_) {
     observer.OnDidInitializeAdsService();
   }
@@ -143,8 +169,7 @@ base::WeakPtr<AdsService> AdsServiceImplIOS::GetWeakPtr() {
 }
 
 bool AdsServiceImplIOS::IsIneligibleToStart() const {
-  // iOS has no eligibility gate; the service is never ineligible to start.
-  return false;
+  return is_ineligible_to_start_;
 }
 
 bool AdsServiceImplIOS::IsInitialized() const {
@@ -444,15 +469,31 @@ void AdsServiceImplIOS::NotifyDidSolveAdaptiveCaptcha() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void AdsServiceImplIOS::Shutdown() {
+  if (IsInitialized()) {
+    VLOG(2) << "Shutting down Bat Ads Service";
+  }
+
   NotifyDidShutdownAdsService();
 
   ads_.reset();
 }
 
 bool AdsServiceImplIOS::CanStartBatAdsService() const {
-  // Never start if Rewards is disabled by policy, feature flag, or
-  // unsupported region, regardless of which ad units are enabled.
-  return brave_rewards::IsSupported(&*prefs_);
+  if (!brave_rewards::IsSupported(&*prefs_)) {
+    // Never start if Rewards is disabled by policy, feature flag, or
+    // unsupported region, regardless of which ad units are enabled.
+    return false;
+  }
+
+  if (UserHasJoinedBraveRewards()) {
+    // Always start the service if the user has joined Brave Rewards, even if
+    // all ad units are disabled.
+    return true;
+  }
+
+  // The user has not joined Brave Rewards, so we only start the service if
+  // sponsored ads are enabled.
+  return IsSponsoredAdsEnabled();
 }
 
 bool AdsServiceImplIOS::UserHasJoinedBraveRewards() const {
@@ -463,8 +504,19 @@ bool AdsServiceImplIOS::UserHasJoinedBraveRewards() const {
   return prefs_->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
+bool AdsServiceImplIOS::IsSponsoredAdsEnabled() const {
+  return prefs_->GetBoolean(prefs::kSponsoredEnabled);
+}
+
 void AdsServiceImplIOS::InitializeBatAds(ResultCallback callback) {
   CHECK(!IsInitialized());
+
+  if (!ads_client_) {
+    // `InitializeAds` has not yet stored a client, so there is nothing to
+    // start. This happens when a pref change makes the service eligible
+    // again before the Swift layer has ever called `InitializeAds`.
+    return std::move(callback).Run(/*success=*/false);
+  }
 
   ads_ = ads_factory_->CreateAds(
       *ads_client_, storage_path_.AppendASCII(kAdsDatabaseFilename));
@@ -530,8 +582,9 @@ void AdsServiceImplIOS::ClearAdsData(ResultCallback callback,
 
 void AdsServiceImplIOS::ClearAdsPrefs() {
   // Stop observing prefs before they are set below, otherwise restoring
-  // `kSponsoredEnabled` to its prior value would fire `OnAdsPrefChanged`
-  // re-entrantly, since clearing the prefix above resets it to its default.
+  // `kSponsoredEnabled` to its prior value, or the pref change itself, could
+  // trigger `OnAdsPrefChanged` re-entrantly (e.g. starting or stopping the
+  // service) before the clear has finished.
   pref_change_registrar_.RemoveAll();
 
   std::optional<bool> sponsored_enabled;
@@ -576,6 +629,11 @@ void AdsServiceImplIOS::InitializePrefChangeRegistrar() {
       base::BindRepeating(&AdsServiceImplIOS::OnAdsPrefChanged,
                           weak_ptr_factory_.GetWeakPtr(),
                           brave_rewards::prefs::kEnabled));
+  pref_change_registrar_.Add(
+      prefs::kNotificationsEnabled,
+      base::BindRepeating(&AdsServiceImplIOS::OnAdsPrefChanged,
+                          weak_ptr_factory_.GetWeakPtr(),
+                          prefs::kNotificationsEnabled));
 }
 
 bool AdsServiceImplIOS::ShouldClearAdsData(const std::string& path) const {
@@ -590,17 +648,33 @@ bool AdsServiceImplIOS::ShouldClearAdsData(const std::string& path) const {
 }
 
 void AdsServiceImplIOS::OnAdsPrefChanged(const std::string& path) {
-  if (!ShouldClearAdsData(path)) {
+  if (ShouldClearAdsData(path)) {
+    // Clear ads data now. Posted because `ClearData` can synchronously reach
+    // `ClearAdsPrefs`, which mutates `pref_change_registrar_` and must not do
+    // so re-entrantly from within this pref's own change notification.
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE,
+        base::BindOnce(&AdsServiceImplIOS::MaybeClearAdsData,
+                       weak_ptr_factory_.GetWeakPtr(), path));
+  }
+
+  if (path == prefs::kNotificationsEnabled &&
+      prefs_->GetBoolean(prefs::kNotificationsEnabled)) {
+    // Starting the service when notification ads are enabled via the
+    // Rewards toggle is handled explicitly on the Swift side
+    // in `BraveRewards.fetchWalletAndInitializeAds`, which calls
+    // `InitializeAds` right after setting this pref.
     return;
   }
 
-  // Clear ads data now. Posted because `ClearData` can synchronously reach
-  // `ClearAdsPrefs`, which mutates `pref_change_registrar_` and must not do
-  // so re-entrantly from within this pref's own change notification.
-  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-      FROM_HERE,
-      base::BindOnce(&AdsServiceImplIOS::MaybeClearAdsData,
-                     weak_ptr_factory_.GetWeakPtr(), path));
+  if (!CanStartBatAdsService()) {
+    NotifyAdsServiceIneligibleToStart();
+    return ShutdownAds(base::DoNothing());
+  }
+
+  if (!IsInitialized()) {
+    InitializeBatAds(base::DoNothing());
+  }
 }
 
 void AdsServiceImplIOS::MaybeClearAdsData(const std::string& path) {
