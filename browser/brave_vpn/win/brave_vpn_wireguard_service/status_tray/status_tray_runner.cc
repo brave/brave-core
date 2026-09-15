@@ -121,7 +121,10 @@ void StatusTrayRunner::ConnectVPN() {
         // passing empty params will reconnect using last known good config.
         // TODO(https://github.com/brave/brave-browser/issues/47115): fetch
         // actual server details. See issue for more info.
-        "", "", "", "", std::nullopt,
+        //
+        // Passing false to |allow_lan_traffic| is a no-op as this reconnect
+        // will use last known good config instead of updating current config.
+        "", "", "", "", /*allow_lan_traffic*/ false, std::nullopt,
         base::BindOnce(&StatusTrayRunner::OnConnected,
                        weak_factory_.GetWeakPtr()));
   } else {

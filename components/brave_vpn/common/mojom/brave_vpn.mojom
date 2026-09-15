@@ -96,6 +96,15 @@ interface ServiceHandler {
 
   [EnableIfNot=is_android]
   GetSmartProxyRoutingState() => (bool enabled);
+
+  // Set |allow| to true to allow LAN traffic while connected.
+  [EnableIfNot=is_android]
+  AllowLanTraffic(bool allow);
+
+  // |available|: allowing LAN traffic is supported.
+  // |allowed|: LAN traffic is allowed.
+  [EnableIfNot=is_android]
+  GetAllowLanTraffic() => (bool available, bool allowed);
 };
 
 // WebUI-side handler for requests from the browser.

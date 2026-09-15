@@ -15,6 +15,7 @@
 namespace brave_vpn {
 const CLSID& GetBraveVpnWireguardServiceClsid();
 const IID& GetBraveVpnWireguardServiceIid();
+const IID& GetBraveVpnWireguardServiceIid2();
 std::wstring GetBraveVpnWireguardTunnelServiceName();
 std::wstring GetBraveVpnWireguardServiceName();
 std::wstring GetBraveVpnWireguardServiceDisplayName();
