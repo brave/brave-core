@@ -143,9 +143,12 @@ CHAR_LIMIT guidelines:
       <message name="IDS_SAFETY_HUB_SAFETY_TIPS_INCOGNITO_SUMMARY" desc="Subtitle for a entry in the Safety Hub user education section. The entry leads the user to a help center article about Private.">
         Private mode keeps your browsing private from others who use your device
       </message>
-      <if expr="enable_screen_capture">
-        </if>
-
+      <message name="IDS_ACCOUNT_SETTINGS_SWITCH_TO_INCOGNITO" desc="Title of the preference to switch to Private mode in Account settings. [CHAR_LIMIT=32]">
+        Open new Private window
+      </message>
+      <message name="IDS_ACCOUNT_SETTINGS_SWITCH_TO_INCOGNITO_SUMMARY" desc="Summary description for the Switch to Private preference in settings. Informs the user that it will open a new private window and offers a 'Learn more' link.">
+        When you're browsing in Private, others who use this device won't see your activity, so you can browse more privately. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Learn more<ph name="END_LINK">&lt;/link&gt;</ph>
+      </message>
       <message name="IDS_ACCESSIBILITY_TAB_SWITCHER_INCOGNITO_STACK" desc="Content description for the Private stack selection 'button'.">
         Private tabs
       </message>
