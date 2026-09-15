@@ -20,6 +20,9 @@ bool WebUIConfig::ShouldInterceptNavigationsWithServiceWorker() {
   return false;
 }
 
+// A config that opts in is handed every URL whose nearest registered ancestor
+// host is its own, at any depth, so it must reject the host shapes it does not
+// serve from ShouldHandleURL().
 bool WebUIConfig::ShouldHandleSubdomains() const {
   return false;
 }
