@@ -119,9 +119,8 @@ void ZCashCreateIronwoodToTransparentTransactionTask::CreateTransaction() {
 
   // Pick Ironwood inputs.
   auto pick_result =
-      PickZCashOrchardInputs(spendable_notes_->spendable_notes, amount_,
-                             ZCashTargetOutputType::kTransparent,
-                             /*orchard_cross_address_disabled=*/false);
+      PickZCashIronwoodInputs(spendable_notes_->spendable_notes, amount_,
+                              ZCashTargetOutputType::kTransparent);
   if (!pick_result) {
     error_ = "Can't pick inputs";
     ScheduleWorkOnTask();
