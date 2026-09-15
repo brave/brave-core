@@ -100,7 +100,13 @@ ContentAgentToolProvider::ContentAgentToolProvider(
 ContentAgentToolProvider::~ContentAgentToolProvider() {
   // When this tool provider and its owned uses (e.g. conversation)are closed,
   // we should hand back state of the tab to regular uses of the browser.
-  StopAllTasks();
+  // Don't use StopAllTasks(): it creates a replacement task that would be
+  // orphaned (nobody left to stop it) and hold a dangling reference to the
+  // current UI state manager once this provider is gone.
+  if (!task_id_.is_null()) {
+    actor_service_->StopTask(task_id_,
+                             actor::ActorTask::StoppedReason::kTaskComplete);
+  }
 }
 
 std::vector<base::WeakPtr<Tool>> ContentAgentToolProvider::GetTools() {

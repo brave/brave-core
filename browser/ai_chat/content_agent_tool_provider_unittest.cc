@@ -57,7 +57,14 @@ class ContentAgentToolProviderTest : public testing::Test {
     scoped_feature_list_.InitAndEnableFeature(
         ai_chat::features::kAIChatAgentProfile);
   }
-  ~ContentAgentToolProviderTest() override = default;
+  ~ContentAgentToolProviderTest() override {
+    // ActorTask deletion (which releases the UI state manager reference held
+    // by its UiEventDispatcher) is posted, not synchronous. Flush it here,
+    // before `ui_state_manager_` is destroyed below, to avoid a dangling
+    // reference to the mock.
+    tool_provider_.reset();
+    actor::WaitForPostedTask();
+  }
 
   // testing::Test:
   void SetUp() override {
