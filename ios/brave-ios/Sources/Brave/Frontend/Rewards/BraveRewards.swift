@@ -201,7 +201,7 @@ public class BraveRewards: PreferencesObserver {
     isSelected: Bool,
     isPrivate: Bool
   ) {
-    guard let url = tab.redirectChain.last else {
+    guard let url = tab.visibleURL else {
       // Don't report update for tabs that haven't finished loading.
       return
     }
@@ -215,7 +215,7 @@ public class BraveRewards: PreferencesObserver {
   /// Report that a page has loaded in the current browser tab, and the
   /// text/HTML content is available for analysis.
   func reportLoadedPage(tab: some TabState) {
-    guard let url = tab.redirectChain.last else {
+    guard let url = tab.visibleURL else {
       // Don't report update for tabs that haven't finished loading.
       return
     }

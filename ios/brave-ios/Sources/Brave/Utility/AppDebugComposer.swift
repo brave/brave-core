@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Data
 import Foundation
 import Preferences
@@ -23,49 +24,47 @@ struct AppDebugComposer {
   }
 
   /// This function prepares data to help us identify any app storage problems users may have.
-  static func composeAppSize() -> String {
-    var printFolderTreeStructure: String {
-      let fm = FileManager.default
-      guard
-        let enumerator = fm.enumerator(
-          at: URL(fileURLWithPath: NSHomeDirectory()),
-          includingPropertiesForKeys: nil
-        )
-      else { return "" }
+  static func composeAppSize() async -> String {
+    let fm = FileManager.default
+    guard
+      let enumerator = fm.enumerator(
+        at: URL(fileURLWithPath: NSHomeDirectory()),
+        includingPropertiesForKeys: nil
+      )
+    else { return "" }
 
-      let formatter = ByteCountFormatter().then {
-        $0.countStyle = .file
-        $0.allowsNonnumericFormatting = false
-        $0.allowedUnits = [.useKB, .useMB, .useGB, .useTB]
-      }
+    let formatter = ByteCountFormatter().then {
+      $0.countStyle = .file
+      $0.allowsNonnumericFormatting = false
+      $0.allowedUnits = [.useKB, .useMB, .useGB, .useTB]
+    }
 
-      var result = ""
+    var printFolderTreeStructure = ""
 
-      while let file = enumerator.nextObject() as? URL {
-        do {
+    while let file = enumerator.nextObject() as? URL {
+      do {
 
-          let isDirectory =
-            (try file.resourceValues(forKeys: [.isDirectoryKey])).isDirectory == true
-          // Skip individual files, skip folders below 4th level of nesting.
-          guard isDirectory, enumerator.level <= 4 else { continue }
+        let isDirectory =
+          (try file.resourceValues(forKeys: [.isDirectoryKey])).isDirectory == true
+        // Skip individual files, skip folders below 4th level of nesting.
+        guard isDirectory, enumerator.level <= 4 else { continue }
 
-          let _1MB = 1000 * 1000
-          // Skip folders smaller than 1MB
-          guard let directorySize = try fm.directorySize(at: file), directorySize > _1MB else {
-            continue
-          }
-
-          let formattedSize = formatter.string(fromByteCount: Int64(directorySize))
-
-          let indentation = String(repeating: "\t", count: enumerator.level - 1)
-          result += indentation + file.lastPathComponent + "(\(formattedSize))\n"
-        } catch {
-          Logger.module.error("AppStorageDebug error: \(error)")
+        let _1MB = 1000 * 1000
+        // Skip folders smaller than 1MB
+        guard case let directorySize = try await AsyncFileManager.default.sizeOfDirectory(at: file),
+          directorySize > _1MB
+        else {
           continue
         }
-      }
 
-      return result
+        let formattedSize = formatter.string(fromByteCount: Int64(directorySize))
+
+        let indentation = String(repeating: "\t", count: enumerator.level - 1)
+        printFolderTreeStructure += indentation + file.lastPathComponent + "(\(formattedSize))\n"
+      } catch {
+        Logger.module.error("AppStorageDebug error: \(error)")
+        continue
+      }
     }
 
     let result =
