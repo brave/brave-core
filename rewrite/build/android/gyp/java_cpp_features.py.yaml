@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Support BASE_OVERRIDDEN_FEATURE() macro in cpp->java feature mapper.
+    regex:
+      pattern: |-
+        r'BASE_FEATURE
+      replace: |-
+        r'(?:BASE_FEATURE|BASE_OVERRIDDEN_FEATURE)

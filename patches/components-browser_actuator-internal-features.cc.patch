@@ -1,14 +1,14 @@
 diff --git a/components/browser_actuator/internal/features.cc b/components/browser_actuator/internal/features.cc
-index f2cc4cf7db5f1ede9916ede7055dd520e981d3c4..4efae3dfc2f5407272dec9dbf932794145564622 100644
+index f2cc4cf7db5f1ede9916ede7055dd520e981d3c4..c524314f18eedd09f879c371d17eab9a8cf63024 100644
 --- a/components/browser_actuator/internal/features.cc
 +++ b/components/browser_actuator/internal/features.cc
-@@ -8,8 +8,9 @@ namespace browser_actuator {
+@@ -8,8 +8,8 @@ namespace browser_actuator {
  
  BASE_FEATURE(kBrowserActuatorChannelEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
  
-+// kBrowserActuatorProtoStreamTransport feature state is enforced via plaster rewrite.
- BASE_FEATURE(kBrowserActuatorProtoStreamTransport,
+-BASE_FEATURE(kBrowserActuatorProtoStreamTransport,
 -             base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kBrowserActuatorProtoStreamTransport,
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  
  BASE_FEATURE_PARAM(base::TimeDelta,

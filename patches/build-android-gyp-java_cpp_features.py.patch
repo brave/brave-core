@@ -1,0 +1,13 @@
+diff --git a/build/android/gyp/java_cpp_features.py b/build/android/gyp/java_cpp_features.py
+index 620371c33982a5edbed8811cd5e296555a997438..090b602b62bb8c9713850adfee9fdbdf2df195e5 100755
+--- a/build/android/gyp/java_cpp_features.py
++++ b/build/android/gyp/java_cpp_features.py
+@@ -23,7 +23,7 @@ class FeatureParserDelegate(java_cpp_utils.CppConstantParser.Delegate):
+     #   ExtractValue() -> '"StringNameOfTheFeature"' or '"ConstantName"'
+     # TODO(crbug.com/482451012): Support parsing `BASE_RUNTIME_MUTABLE_FEATURE`
+     # macros with mutabilty support in the generated Java code.
+-    _FEATURE_RE = re.compile(r'BASE_FEATURE\(\s*(k\w+),')
++    _FEATURE_RE = re.compile(r'(?:BASE_FEATURE|BASE_OVERRIDDEN_FEATURE)\(\s*(k\w+),')
+     _STRING_LITERAL_RE = re.compile(r'"(?:\\"|[^"])*"')
+     _constant_name = None  # The name of the current macro.
+     _comma_count = 0  # Number of commas seen in the current macro.

@@ -1,3 +1,9 @@
 include_rules = [
   "+brave/base/test/launcher",
 ]
+
+specific_include_rules = {
+  "feature_internal\\.h": [
+    "+brave/base/compile_overridden_features.inc",
+  ],
+}

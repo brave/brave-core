@@ -40,6 +40,9 @@ jest.config.js
 pnpm-lock.yaml
 snapcraft.yaml
 
+# Ignore inc files
+*.inc
+
 # Ignored minified javascript
 components/brave_wallet/resources/solana_web3_script.js
 
