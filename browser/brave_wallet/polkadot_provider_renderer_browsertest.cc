@@ -133,16 +133,21 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, NonWritableEntry) {
 
 // `window.injectedWeb3` is shared with every other injecting wallet, and
 // @polkadot/extension-inject reassigns the property itself before adding its
-// own key, from strict mode. Neither may be broken by our entry.
+// own key.
 // See:
 // https://github.com/polkadot-js/extension/blob/d7c9ce214557e8bd359fac29c4bc38d0e329c1d4/packages/extension-inject/src/bundle.ts#L20-L47
 IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, OtherWalletCanInject) {
   auto result = content::EvalJs(web_contents(browser()),
-                                R"('use strict';
-         window.injectedWeb3 = window.injectedWeb3 || {};
-         window.injectedWeb3['other-wallet'] = { version: '1' };
-         !!window.injectedWeb3['brave-wallet'] &&
-             !!window.injectedWeb3['other-wallet'])");
+                                R"(
+    (function() {
+      'use strict';
+      window.injectedWeb3 = window.injectedWeb3 || {};
+      window.injectedWeb3['other-wallet'] = { version: '1' };
+    })();
+
+    !!window.injectedWeb3['brave-wallet'] &&
+        !!window.injectedWeb3['other-wallet']
+)");
   EXPECT_EQ(base::Value(true), result);
 }
 
