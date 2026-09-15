@@ -150,7 +150,14 @@ void InitSystemRequestHandlerCallback() {
 
 using content::BrowserThread;
 
-BraveBrowserProcessImpl::~BraveBrowserProcessImpl() = default;
+BraveBrowserProcessImpl::~BraveBrowserProcessImpl() {
+  // StartTearDown is skipped on early startup exits, leaving P3AService
+  // observing process_misc_metrics_, which is destroyed first. Members are
+  // still alive here, so tear down while the observed object is valid.
+  if (p3a_service_) {
+    p3a_service_->StartTeardown();
+  }
+}
 
 BraveBrowserProcessImpl::BraveBrowserProcessImpl(StartupData* startup_data)
     : BrowserProcessImpl(startup_data) {
