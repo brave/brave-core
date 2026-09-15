@@ -116,8 +116,7 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean("isMobile", IsMobile());
   source->AddBoolean("isIOS", false);
   source->AddBoolean("rewardsFeatureEnabled", IsRewardsFeatureEnabled(profile));
-  source->AddBoolean("isLedgerMojoBridgeEnabled",
-                     IsMojoForHardwareWalletEnabled());
+  source->AddBoolean("isLedgerMojoBridgeEnabled", IsMojoForLedgerEnabled());
   source->AddBoolean("walletDebug", IsWalletDebugEnabled());
 
 #if !BUILDFLAG(IS_ANDROID)

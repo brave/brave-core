@@ -36,7 +36,7 @@ bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
 bool IsAccountHidingEnabled();
 bool IsWalletDebugEnabled();
-bool IsMojoForHardwareWalletEnabled();
+bool IsMojoForLedgerEnabled();
 bool IsSnapsFeatureEnabled();
 
 bool IsEthereumKeyring(mojom::KeyringId keyring_id);

@@ -75,9 +75,9 @@ bool IsWalletDebugEnabled() {
 #endif
 }
 
-bool IsMojoForHardwareWalletEnabled() {
+bool IsMojoForLedgerEnabled() {
   return base::FeatureList::IsEnabled(
-      features::kBraveWalletMojoForHardwareWalletFeature);
+      features::kBraveWalletMojoForLedgerFeature);
 }
 
 bool IsAnkrBalancesEnabled() {

@@ -103,7 +103,7 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->AddBoolean("rewardsFeatureEnabled", false);
 #endif
   source->AddBoolean("isLedgerMojoBridgeEnabled",
-                     brave_wallet::IsMojoForHardwareWalletEnabled());
+                     brave_wallet::IsMojoForLedgerEnabled());
   source->AddBoolean("walletDebug", brave_wallet::IsWalletDebugEnabled());
 
   content::URLDataSource::Add(profile,
