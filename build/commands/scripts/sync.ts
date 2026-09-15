@@ -15,6 +15,7 @@ import * as Log from '../lib/log.ts'
 import depotTools from '../lib/depotTools.js'
 import { isCI } from '../lib/ciDetect.ts'
 import syncUtil from '../lib/syncUtils.js'
+import { removeStaleCheckouts } from '../lib/staleCheckoutUtils.ts'
 import sisoUtils from '../lib/sisoUtils.js'
 
 program
@@ -120,6 +121,10 @@ async function sync(options) {
   if (isCI) {
     options.delete_unused_deps = true
   }
+
+  Log.progressScope('check stale checkouts', () => {
+    removeStaleCheckouts()
+  })
 
   Log.progressScope('gclient sync', () => {
     const didSyncChromium = syncUtil.syncChromium(options)
