@@ -31,28 +31,6 @@ JSPolkadotProvider::JSPolkadotProvider(content::RenderFrame* render_frame)
 
 JSPolkadotProvider::~JSPolkadotProvider() = default;
 
-void JSPolkadotProvider::WillReleaseScriptContext(
-    v8::Local<v8::Context> context,
-    int32_t world_id) {
-  if (world_id != content::ISOLATED_WORLD_ID_GLOBAL) {
-    return;
-  }
-
-  Cleanup();
-}
-
-void JSPolkadotProvider::OnDestruct() {
-  Cleanup();
-}
-
-void JSPolkadotProvider::Cleanup() {
-  Dispose();
-}
-
-std::string JSPolkadotProvider::GetVersion() {
-  return kVersion;
-}
-
 // gin::Wrappable<JSPolkadotProvider>
 gin::ObjectTemplateBuilder JSPolkadotProvider::GetObjectTemplateBuilder(
     v8::Isolate* isolate) {
@@ -124,6 +102,28 @@ void JSPolkadotProvider::Install(content::RenderFrame* render_frame) {
   SetProviderNonWritable(
       context, injected_web3_object, polkadot_provider_object,
       gin::StringToV8(isolate, kBraveWallet), /*is_enumerable=*/true);
+}
+
+std::string JSPolkadotProvider::GetVersion() {
+  return kVersion;
+}
+
+void JSPolkadotProvider::WillReleaseScriptContext(
+    v8::Local<v8::Context> context,
+    int32_t world_id) {
+  if (world_id != content::ISOLATED_WORLD_ID_GLOBAL) {
+    return;
+  }
+
+  Cleanup();
+}
+
+void JSPolkadotProvider::OnDestruct() {
+  Cleanup();
+}
+
+void JSPolkadotProvider::Cleanup() {
+  Dispose();
 }
 
 }  // namespace brave_wallet
