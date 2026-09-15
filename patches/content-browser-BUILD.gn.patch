@@ -1,5 +1,5 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index ac8af97f18f2928a00659cf7014d80080b35ac77..40a05556d667315ed27ebcbb2c78fd76a67f99dd 100644
+index ac8af97f18f2928a00659cf7014d80080b35ac77..0e88dc3da00d69687a5ca7fbfb1503dc7fc78f6b 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
 @@ -3600,6 +3600,7 @@ source_set("browser") {
@@ -7,6 +7,14 @@ index ac8af97f18f2928a00659cf7014d80080b35ac77..40a05556d667315ed27ebcbb2c78fd76
      public_deps += [ "//components/vrp_flags:mojom" ]
    }
 +  import("//brave/content/browser/sources.gni") sources += brave_content_browser_sources deps += brave_content_browser_deps
+ }
+ 
+ if (is_android) {
+@@ -3628,6 +3629,7 @@ group("for_content_tests") {
+   } else {
+     public_deps = [ "//third_party/leveldatabase" ]
+   }
++  import("//brave/content/browser/sources.gni") visibility += brave_content_browser_for_content_tests_visibility
  }
  
  if (is_android) {
