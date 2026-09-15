@@ -58,7 +58,9 @@ class BraveProxyingWebSocket
   ~BraveProxyingWebSocket() override;
 
   static BraveProxyingWebSocket* ProxyWebSocket(
-      content::RenderFrameHost* frame,
+      content::BrowserContext* browser_context,
+      content::GlobalRenderFrameHostToken render_frame_token,
+      const url::Origin& initiator_origin,
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
       const net::SiteForCookies& site_for_cookies,
