@@ -77,7 +77,6 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
   /// given the available width, which is the lesser of the number of fetched
   /// favorites and the maximum number of items that fit in the row.
   func displayedItemCount(in collectionView: UICollectionView, section: Int) -> Int {
-    guard Preferences.NewTabPage.showNewTabFavourites.value else { return 0 }
     return min(
       numberOfFavorites,
       Self.numberOfItems(

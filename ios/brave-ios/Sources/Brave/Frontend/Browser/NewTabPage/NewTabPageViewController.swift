@@ -194,89 +194,9 @@ class NewTabPageViewController: UIViewController {
     super.init(nibName: nil, bundle: nil)
 
     Preferences.NewTabPage.showNewTabPrivacyHub.observe(from: self)
-    Preferences.NewTabPage.showNewTabFavourites.observe(from: self)
+    Preferences.NewTabPage.showTopsites.observe(from: self)
 
-    sections = [
-      StatsSectionProvider(
-        isPrivateBrowsing: tab.isPrivate,
-        openPrivacyHubPressed: { [weak self] in
-          guard let self, let tab = browserTab else { return }
-          if privateBrowsingManager.isPrivateBrowsing == true {
-            return
-          }
-
-          let isOriginPurchased =
-            BraveOriginServiceFactory.get(profile: tab.profile)?.isPurchased() == true
-          let host = UIHostingController(
-            rootView: PrivacyReportsManager.prepareView(
-              isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
-              isOriginPurchased: isOriginPurchased
-            )
-          )
-          host.rootView.onDismiss = { [weak self] in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-              guard let self = self else { return }
-
-              // Handle App Rating
-              // User finished viewing the privacy report (tapped close)
-              AppReviewManager.shared.handleAppReview(for: .revised, using: self)
-            }
-          }
-
-          host.rootView.openPrivacyReportsUrl = { [weak self] in
-            self?.delegate?.navigateToInput(
-              URL.brave.privacyFeatures.absoluteString,
-              inNewTab: false,
-              // Privacy Reports view is unavailable in private mode.
-              switchingToPrivateMode: false
-            )
-          }
-
-          present(host, animated: true)
-        },
-        hidePrivacyHubPressed: { [weak self] in
-          self?.hidePrivacyHub()
-        }
-      ),
-      FavoritesSectionProvider(
-        action: { [weak self] bookmark, action in
-          self?.handleFavoriteAction(favorite: bookmark, action: action)
-        },
-        legacyLongPressAction: { [weak self] alertController in
-          self?.present(alertController, animated: true)
-        },
-        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
-      ),
-      FavoritesOverflowSectionProvider(action: { [weak self] in
-        self?.delegate?.focusURLBar()
-      }),
-    ]
-
-    var isBackgroundNTPSI = false
-    if let ntpBackground = background.currentBackground, case .sponsoredMedia = ntpBackground {
-      isBackgroundNTPSI = true
-    }
-    let ntpDefaultBrowserCalloutProvider = NTPDefaultBrowserCalloutProvider(
-      isBackgroundNTPSI: isBackgroundNTPSI
-    )
-
-    // This is a one-off view, adding it to the NTP only if necessary.
-    if ntpDefaultBrowserCalloutProvider.shouldShowCallout() {
-      sections.insert(ntpDefaultBrowserCalloutProvider, at: 0)
-    }
-
-    if !privateBrowsingManager.isPrivateBrowsing, profilePrefs.isBraveNewsAvailable {
-      sections.append(
-        BraveNewsSectionProvider(
-          dataSource: feedDataSource,
-          rewards: rewards,
-          actionHandler: { [weak self] in
-            self?.handleBraveNewsAction($0)
-          }
-        )
-      )
-      layout.braveNewsSection = sections.firstIndex(where: { $0 is BraveNewsSectionProvider })
-    }
+    setupSectionProviders()
 
     collectionView.do {
       $0.delegate = self
@@ -380,25 +300,6 @@ class NewTabPageViewController: UIViewController {
       $0.edges.equalTo(backgroundView)
     }
 
-    sections.enumerated().forEach { (index, provider) in
-      provider.registerCells(to: collectionView)
-      if let observableProvider = provider as? NTPObservableSectionProvider {
-        observableProvider.sectionDidChange = { [weak self] in
-          guard let self = self else { return }
-          if self.parent != nil {
-            UIView.performWithoutAnimation {
-              // As of iOS 16.4, reloadSections seems to do some sort of validation of the underlying data
-              // for other sections that aren't being refreshed. This can cause assertions for sections that
-              // may need to reload in the same batch but don't. Since we don't animate this section anyways
-              // we can just switch to `reloadData` here.
-              self.collectionView.reloadData()
-            }
-          }
-          self.collectionView.collectionViewLayout.invalidateLayout()
-        }
-      }
-    }
-
     registerForTraitChanges([UITraitVerticalSizeClass.self]) { (self: Self, _) in
       self.calculateBackgroundCenterPoints()
     }
@@ -478,6 +379,124 @@ class NewTabPageViewController: UIViewController {
     backgroundView.imageView.image = parent == nil ? nil : background.backgroundImage
 
     lastViewedSponsoredBackgroundId = nil
+  }
+
+  // MARK: - Section Providers
+  private func setupSectionProviders() {
+    guard let tab = browserTab else { return }
+
+    sections.removeAll()
+
+    let statusSectionProvider = StatsSectionProvider(
+      isPrivateBrowsing: tab.isPrivate,
+      openPrivacyHubPressed: { [weak self] in
+        guard let self, let tab = browserTab else { return }
+        if privateBrowsingManager.isPrivateBrowsing == true {
+          return
+        }
+
+        let isOriginPurchased =
+          BraveOriginServiceFactory.get(profile: tab.profile)?.isPurchased() == true
+        let host = UIHostingController(
+          rootView: PrivacyReportsManager.prepareView(
+            isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
+            isOriginPurchased: isOriginPurchased
+          )
+        )
+        host.rootView.onDismiss = { [weak self] in
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+            guard let self = self else { return }
+
+            // Handle App Rating
+            // User finished viewing the privacy report (tapped close)
+            AppReviewManager.shared.handleAppReview(for: .revised, using: self)
+          }
+        }
+
+        host.rootView.openPrivacyReportsUrl = { [weak self] in
+          self?.delegate?.navigateToInput(
+            URL.brave.privacyFeatures.absoluteString,
+            inNewTab: false,
+            // Privacy Reports view is unavailable in private mode.
+            switchingToPrivateMode: false
+          )
+        }
+
+        present(host, animated: true)
+      },
+      hidePrivacyHubPressed: { [weak self] in
+        self?.hidePrivacyHub()
+      }
+    )
+
+    sections.append(statusSectionProvider)
+
+    if Preferences.NewTabPage.showTopsites.value {
+      let favSectionProvider = FavoritesSectionProvider(
+        action: { [weak self] bookmark, action in
+          self?.handleFavoriteAction(favorite: bookmark, action: action)
+        },
+        legacyLongPressAction: { [weak self] alertController in
+          self?.present(alertController, animated: true)
+        },
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+      )
+      let favOverflowSectionProvider = FavoritesOverflowSectionProvider(
+        action: { [weak self] in
+          self?.delegate?.focusURLBar()
+        }
+      )
+      sections.append(contentsOf: [favSectionProvider, favOverflowSectionProvider])
+    }
+
+    var isBackgroundNTPSI = false
+    if let ntpBackground = background.currentBackground, case .sponsoredMedia = ntpBackground {
+      isBackgroundNTPSI = true
+    }
+    let ntpDefaultBrowserCalloutProvider = NTPDefaultBrowserCalloutProvider(
+      isBackgroundNTPSI: isBackgroundNTPSI
+    )
+
+    // This is a one-off view, adding it to the NTP only if necessary.
+    if ntpDefaultBrowserCalloutProvider.shouldShowCallout() {
+      sections.insert(ntpDefaultBrowserCalloutProvider, at: 0)
+    }
+
+    if !privateBrowsingManager.isPrivateBrowsing, profilePrefs.isBraveNewsAvailable {
+      sections.append(
+        BraveNewsSectionProvider(
+          dataSource: feedDataSource,
+          rewards: rewards,
+          actionHandler: { [weak self] in
+            self?.handleBraveNewsAction($0)
+          }
+        )
+      )
+      layout.braveNewsSection = sections.firstIndex(where: { $0 is BraveNewsSectionProvider })
+    }
+
+    registerSectionProviders()
+  }
+
+  private func registerSectionProviders() {
+    sections.enumerated().forEach { (index, provider) in
+      provider.registerCells(to: collectionView)
+      if let observableProvider = provider as? NTPObservableSectionProvider {
+        observableProvider.sectionDidChange = { [weak self] in
+          guard let self = self else { return }
+          if self.parent != nil {
+            UIView.performWithoutAnimation {
+              // As of iOS 16.4, reloadSections seems to do some sort of validation of the underlying data
+              // for other sections that aren't being refreshed. This can cause assertions for sections that
+              // may need to reload in the same batch but don't. Since we don't animate this section anyways
+              // we can just switch to `reloadData` here.
+              self.collectionView.reloadData()
+            }
+          }
+          self.collectionView.collectionViewLayout.invalidateLayout()
+        }
+      }
+    }
   }
 
   // MARK: - Background
@@ -1066,8 +1085,9 @@ class NewTabPageViewController: UIViewController {
 extension NewTabPageViewController: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     if key == Preferences.NewTabPage.showNewTabPrivacyHub.key
-      || key == Preferences.NewTabPage.showNewTabFavourites.key
+      || key == Preferences.NewTabPage.showTopsites.key
     {
+      setupSectionProviders()
       collectionView.reloadData()
       return
     }
@@ -1376,6 +1396,7 @@ extension NewTabPageViewController: UICollectionViewDelegate {
     didEndDisplaying cell: UICollectionViewCell,
     forItemAt indexPath: IndexPath
   ) {
+    guard sections.indices.contains(indexPath.section) else { return }
     sections[indexPath.section].collectionView?(
       collectionView,
       didEndDisplaying: cell,
