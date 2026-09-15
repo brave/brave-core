@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/aim_eligibility_service_features.cc b/components/omnibox/browser/aim_eligibility_service_features.cc
-index f46d43d5c5fd855ed901066f5dc40c7c7ef079e4..c8651364a29989af7b7a8b6f5a33f7a0e78d51a4 100644
+index c23cef8903ea8fba76e17a03558a1f4580144300..8702b20ebfae5aa21b43ced6e3b086df4ad35f72 100644
 --- a/components/omnibox/browser/aim_eligibility_service_features.cc
 +++ b/components/omnibox/browser/aim_eligibility_service_features.cc
 @@ -8,7 +8,7 @@

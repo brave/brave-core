@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 24dd8897dfefe61b3b8893b4b0228cb61e86236a..30021fc869bd1b5096b064b0cd5e739d763f6052 100644
+index 19b58e11263f194a50736c6b6fe8a681eab93f5b..88c6bf394c3fc2412a2957c0f4287ac443140681 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -495,7 +495,12 @@ void MoveTabsToWindowImpl(BrowserWindowInterface* source,
+@@ -496,7 +496,12 @@ void MoveTabsToWindowImpl(BrowserWindowInterface* source,
      } else if (auto collection =
                     std::get_if<std::unique_ptr<DetachedTabCollection>>(
                         &tab_or_collection)) {
@@ -16,7 +16,7 @@ index 24dd8897dfefe61b3b8893b4b0228cb61e86236a..30021fc869bd1b5096b064b0cd5e739d
                collection->get()->collection_)) {
          target_model->InsertDetachedTabGroupAt(std::move(*collection),
                                                 target_model->count());
-@@ -731,6 +736,11 @@ void ReloadInternal(BrowserWindowInterface* browser,
+@@ -732,6 +737,11 @@ void ReloadInternal(BrowserWindowInterface* browser,
    bool multiple_ui_tabs_selected =
        active_tab && tab_strip_model->selection_model().size() >
                          (active_tab->IsSplit() ? 2 : 1);
@@ -28,7 +28,7 @@ index 24dd8897dfefe61b3b8893b4b0228cb61e86236a..30021fc869bd1b5096b064b0cd5e739d
  
    if (multiple_ui_tabs_selected) {
      // Reloading a tab may change the selection (see crbug.com/339061099), so
-@@ -1164,6 +1174,7 @@ void Reload(BrowserWindowInterface* browser,
+@@ -1165,6 +1175,7 @@ void Reload(BrowserWindowInterface* browser,
  
  void ReloadBypassingCache(BrowserWindowInterface* browser,
                            WindowOpenDisposition disposition) {

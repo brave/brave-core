@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/setup/install_worker.cc b/chrome/installer/setup/install_worker.cc
-index bf819dec3bda5526e736cecb1269307d9ed858ec..8897f46d895b8554156ba7e12701b1e20c617d2c 100644
+index 5ddec8caa708c70a13e4676a52a74d58a7482b46..bfba14d64f16d2536ea9045fd390741d6623b442 100644
 --- a/chrome/installer/setup/install_worker.cc
 +++ b/chrome/installer/setup/install_worker.cc
 @@ -108,6 +108,7 @@ void AddInstallerCopyTasks(const InstallParams& install_params,
@@ -10,7 +10,7 @@ index bf819dec3bda5526e736cecb1269307d9ed858ec..8897f46d895b8554156ba7e12701b1e2
  }
  
  // Adds work items to register the Elevation Service with Windows. Only for
-@@ -284,6 +285,7 @@ void AddChromeWorkItems(const InstallParams& install_params,
+@@ -285,6 +286,7 @@ void AddChromeWorkItems(const InstallParams& install_params,
          installer_state.GetInstallerDirectory(current_version));
      base::FilePath old_archive(
          old_installer_dir.Append(installer::kChromeArchive));

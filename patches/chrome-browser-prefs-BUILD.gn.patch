@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/BUILD.gn b/chrome/browser/prefs/BUILD.gn
-index 2122b050eddef482f820dc1c8b2fd8ffc2e84aef..12f196373b58248fef0cad4a4a40ae1124044aa3 100644
+index 817cd91bdac667c3165d33c55d01ca16842b75a7..b51d03f4004f420078ea4b656d1319f940b5821b 100644
 --- a/chrome/browser/prefs/BUILD.gn
 +++ b/chrome/browser/prefs/BUILD.gn
-@@ -207,6 +207,7 @@ source_set("impl") {
+@@ -206,6 +206,7 @@ source_set("impl") {
      "//services/preferences/tracked:features",
      "//ui/webui:buildflags",
    ]

@@ -1,5 +1,5 @@
 diff --git a/content/browser/loader/navigation_url_loader_impl.cc b/content/browser/loader/navigation_url_loader_impl.cc
-index bf56800508aa5b6f66282e74e396b98379f0ffe6..832ed3efe61d3047f673d4021a80ea3a64374801 100644
+index ac9efb69bac1a5ee3d494ab96066caf7466b406b..a27d265200713bcba2ad3864dcc0ebc7f71228ad 100644
 --- a/content/browser/loader/navigation_url_loader_impl.cc
 +++ b/content/browser/loader/navigation_url_loader_impl.cc
 @@ -700,7 +700,9 @@ void NavigationURLLoaderImpl::Start() {
@@ -13,7 +13,7 @@ index bf56800508aa5b6f66282e74e396b98379f0ffe6..832ed3efe61d3047f673d4021a80ea3a
        FrameTreeNode* frame_tree_node =
            FrameTreeNode::GloballyFindByID(frame_tree_node_id_);
        CHECK(frame_tree_node);
-@@ -2198,6 +2200,11 @@ NavigationURLLoaderImpl::CreateTerminalNonNetworkLoaderFactory(
+@@ -2222,6 +2224,11 @@ NavigationURLLoaderImpl::CreateTerminalNonNetworkLoaderFactory(
      return factory_from_client;
    }
  
