@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_ui_controller/BUILD.gn b/chrome/browser/ui/browser_ui_controller/BUILD.gn
-index b91d5e4be0913c5f176ec5bc0e486d1d6005a7bb..e1ad409c939f20aae8d9394930ac1ba91c561811 100644
+index 1c4a56340d8764d929e640ae966af06ce4f06578..5fea3f3960d3adece3bd12aa23423856113cdd08 100644
 --- a/chrome/browser/ui/browser_ui_controller/BUILD.gn
 +++ b/chrome/browser/ui/browser_ui_controller/BUILD.gn
 @@ -27,6 +27,7 @@ source_set("impl") {

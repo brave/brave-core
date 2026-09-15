@@ -1,8 +1,8 @@
 diff --git a/build/android/gyp/proguard.py b/build/android/gyp/proguard.py
-index 11a7a5838ba398f446304b505e9007e4788bddb2..fae1b80106e45145d70088c26bd7a7bd08c3c61f 100755
+index e95132a9303d804bd0086ba51f4986261933b07b..b8e3d4a5fab9a7db7b3de05b905c3fabcf317bc5 100755
 --- a/build/android/gyp/proguard.py
 +++ b/build/android/gyp/proguard.py
-@@ -487,8 +487,6 @@ def _OptimizeWithR8(options, config_paths, libraries, dynamic_config_data):
+@@ -489,8 +489,6 @@ def _OptimizeWithR8(options, config_paths, libraries, dynamic_config_data):
              '{}:{}'.format(options.r8_path, options.custom_r8_path),
              'org.chromium.build.CustomR8',
              '--no-data-resources',

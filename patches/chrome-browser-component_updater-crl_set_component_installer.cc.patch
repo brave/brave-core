@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/component_updater/crl_set_component_installer.cc b/chrome/browser/component_updater/crl_set_component_installer.cc
-index 0835c0ac9182aac930c3e5a03d3f5577828f4d75..2b19d535eed6b300f19b6a060f60480af8bd1c96 100644
+index 2530fd245b06c289a503c5650dd9f6bcb408ffdc..b211df6971c87e818640abbc0e2cc63e84c81f2c 100644
 --- a/chrome/browser/component_updater/crl_set_component_installer.cc
 +++ b/chrome/browser/component_updater/crl_set_component_installer.cc
 @@ -154,7 +154,8 @@ update_client::InstallerAttributes CRLSetPolicy::GetInstallerAttributes()

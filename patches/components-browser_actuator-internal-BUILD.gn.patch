@@ -1,8 +1,8 @@
 diff --git a/components/browser_actuator/internal/BUILD.gn b/components/browser_actuator/internal/BUILD.gn
-index 51558237f1f83710bbd2da624b99abc830317325..6de60732d079e8724dd782ecfc8e0d9c4587e378 100644
+index 62636b70f7c8d2c8f3ce4a137b20edd6bde7f287..64bb5e391933b85e96f8d5259cbc44d19b85d27b 100644
 --- a/components/browser_actuator/internal/BUILD.gn
 +++ b/components/browser_actuator/internal/BUILD.gn
-@@ -22,6 +22,7 @@ source_set("features") {
+@@ -34,6 +34,7 @@ source_set("features") {
    ]
  
    visibility = [ "//components/browser_actuator/*" ]

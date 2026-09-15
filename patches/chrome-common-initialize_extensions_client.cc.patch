@@ -1,8 +1,8 @@
 diff --git a/chrome/common/initialize_extensions_client.cc b/chrome/common/initialize_extensions_client.cc
-index a2ef646e6822892dc9da083750c7a546d89d24a4..59a7e64257320bffa60a561a032f89c4ec2d12bf 100644
+index 42af3cc2abb503661ec1db94d4d36899898221b0..9ff21f96b26fc4f0a90711c5ab77d063a79c0929 100644
 --- a/chrome/common/initialize_extensions_client.cc
 +++ b/chrome/common/initialize_extensions_client.cc
-@@ -65,7 +65,7 @@ CombineAllAvailabilityCheckMaps() {
+@@ -66,7 +66,7 @@ CombineAllAvailabilityCheckMaps() {
  void EnsureExtensionsClientInitialized() {
    static bool initialized = false;
  

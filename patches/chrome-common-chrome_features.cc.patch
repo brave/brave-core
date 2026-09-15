@@ -1,5 +1,5 @@
 diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
-index 1c4a2d2160009ebcc17f632d5bea03ae075c1de4..22499745591d5655082281a687bd26af3c9a56cc 100644
+index e9f21e32e51947e33568700ba41eaf22f9e83fe9..edd4644b39d7c8ef847940c311d64872113dcb5c 100644
 --- a/chrome/common/chrome_features.cc
 +++ b/chrome/common/chrome_features.cc
 @@ -200,7 +200,7 @@ bool RemoteActorCredentialSharingEnabled() {
@@ -29,7 +29,7 @@ index 1c4a2d2160009ebcc17f632d5bea03ae075c1de4..22499745591d5655082281a687bd26af
  // Controls whether the Actor Overlay in the actor ui is enabled.
  const base::FeatureParam<bool> kGlicActorUiOverlay{
      &kGlicActorUi, kGlicActorUiOverlayName, true};
-@@ -1287,7 +1287,7 @@ const base::FeatureParam<bool>
+@@ -1292,7 +1292,7 @@ const base::FeatureParam<bool>
  
  // Enables HTTPS-First Mode in a balanced configuration that doesn't warn on
  // HTTP when HTTPS can't be reasonably expected.
@@ -38,7 +38,7 @@ index 1c4a2d2160009ebcc17f632d5bea03ae075c1de4..22499745591d5655082281a687bd26af
  
  // Automatically enables HTTPS-First Mode in a balanced configuration when
  // possible.
-@@ -1344,7 +1344,7 @@ BASE_FEATURE(kIncomingCallNotifications,
+@@ -1349,7 +1349,7 @@ BASE_FEATURE(kIncomingCallNotifications,
  #endif  // BUILDFLAG(IS_WIN)
  
  // Experimental image replacement feature. b/482792874
@@ -47,7 +47,7 @@ index 1c4a2d2160009ebcc17f632d5bea03ae075c1de4..22499745591d5655082281a687bd26af
  BASE_FEATURE(kIndigoContextualCueingV2, base::FEATURE_DISABLED_BY_DEFAULT);
  
  const base::FeatureParam<bool> kIndigoRequireGlicEnabling{
-@@ -1655,7 +1655,7 @@ BASE_FEATURE(kSafetyHubTrustSafetySentimentSurvey,
+@@ -1660,7 +1660,7 @@ BASE_FEATURE(kSafetyHubTrustSafetySentimentSurvey,
  // Safe Browsing Reporting to perform a k-anonymous query to see if Google knows
  // about an SCT seen in the wild. If it hasn't been seen, then it is considered
  // a security incident and uploaded to Google.
@@ -56,7 +56,7 @@ index 1c4a2d2160009ebcc17f632d5bea03ae075c1de4..22499745591d5655082281a687bd26af
  
  // An estimated high bound for the time it takes Google to ingest updates to an
  // SCT log. Chrome will wait for at least this time plus the Log's Maximum Merge
-@@ -1754,7 +1754,7 @@ BASE_FEATURE(kTreatUnsafeDownloadsAsActive, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -1759,7 +1759,7 @@ BASE_FEATURE(kTreatUnsafeDownloadsAsActive, base::FEATURE_ENABLED_BY_DEFAULT);
  // TrustSafetySentimentSurvey
  #if !BUILDFLAG(IS_ANDROID)
  // Enables surveying of users of Trust & Safety features with HaTS.
@@ -65,7 +65,7 @@ index 1c4a2d2160009ebcc17f632d5bea03ae075c1de4..22499745591d5655082281a687bd26af
  // The minimum and maximum time after a user has interacted with a Trust and
  // Safety they are eligible to be surveyed.
  const base::FeatureParam<base::TimeDelta>
-@@ -1817,7 +1817,7 @@ const base::FeatureParam<base::TimeDelta>
+@@ -1822,7 +1822,7 @@ const base::FeatureParam<base::TimeDelta>
  #if !BUILDFLAG(IS_ANDROID)
  // Enables the second version of the sentiment survey for users of Trust &
  // Safety features, using HaTS.

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index daed2c76ac524c4d7caf8764d432a0d07e5047c8..06693324d6c9082ab329d3e95db2b467d1af3650 100644
+index 51f030104cf30ce651c65e48c1ac0ca353070f39..04beee37efbd51eef818b9c6e5f16359d71cad83 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
 @@ -117,13 +117,13 @@ class ToolbarView : public views::AccessiblePaneView,
@@ -27,7 +27,7 @@ index daed2c76ac524c4d7caf8764d432a0d07e5047c8..06693324d6c9082ab329d3e95db2b467
  
    // Returns true if the view is a descendant of the ToolbarView and should be
    // treated as caption area for window dragging purposes.
-@@ -265,6 +265,8 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -270,6 +270,8 @@ class ToolbarView : public views::AccessiblePaneView,
    // Updates glic button parenting after hiding glic actor task icon.
    void FinalizeHideGlicActorTaskIcon();
  
@@ -36,7 +36,7 @@ index daed2c76ac524c4d7caf8764d432a0d07e5047c8..06693324d6c9082ab329d3e95db2b467
   protected:
    // This controls Toolbar, LocationBar and CustomTabBar visibility.
    // If we don't set all three, tab navigation from the app menu breaks
-@@ -272,6 +274,9 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -277,6 +279,9 @@ class ToolbarView : public views::AccessiblePaneView,
    void SetToolbarVisibility(bool visible);
  
   private:
@@ -46,7 +46,7 @@ index daed2c76ac524c4d7caf8764d432a0d07e5047c8..06693324d6c9082ab329d3e95db2b467
    // Forwards view overrides to this class.
    class ContainerView;
  
-@@ -328,7 +333,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -333,7 +338,7 @@ class ToolbarView : public views::AccessiblePaneView,
    void OnChromeLabsPrefChanged();
  
    // Loads the images for all the child views.
