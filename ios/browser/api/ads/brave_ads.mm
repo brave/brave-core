@@ -19,6 +19,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/scoped_observation.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
@@ -28,6 +29,7 @@
 #include "base/values.h"
 #import "brave/build/ios/mojom/cpp_transformations.h"
 #include "brave/components/brave_ads/core/browser/network/http_client.h"
+#include "brave/components/brave_ads/core/browser/service/ads_service_observer.h"
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
@@ -91,15 +93,21 @@ constexpr NSString* kComponentUpdaterMetadataPrefKey =
     @"BraveAdsComponentUpdaterMetadata";
 constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
+class AdsServiceObserverBridge;
+
 }  // namespace
 
 @interface BraveAds () <AdsClientBridge> {
   std::unique_ptr<brave_ads::VirtualPrefProvider> virtualPrefProvider;
   std::unique_ptr<brave_ads::HttpClient> httpClient;
   raw_ptr<brave_ads::AdsServiceImplIOS> adsService;
+  std::unique_ptr<AdsServiceObserverBridge> adsServiceObserverBridge;
   nw_path_monitor_t networkMonitor;
   dispatch_queue_t monitorQueue;
 }
+
+- (void)onDidInitializeAdsService;
+- (void)onDidShutdownAdsService;
 
 // TODO(https://github.com/brave/brave-browser/issues/33730): Unify Brave Ads
 // common operations.
@@ -120,6 +128,37 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 @property(nonatomic) PrefService* profilePrefService;
 @property(nonatomic) PrefService* localStatePrefService;
 @end
+
+namespace {
+
+// Forwards `AdsService` observer notifications to `BraveAds`.
+class AdsServiceObserverBridge final : public brave_ads::AdsServiceObserver {
+ public:
+  AdsServiceObserverBridge(BraveAds* ads, brave_ads::AdsService& ads_service)
+      : ads_(ads) {
+    observation_.Observe(&ads_service);
+  }
+
+  AdsServiceObserverBridge(const AdsServiceObserverBridge&) = delete;
+  AdsServiceObserverBridge& operator=(const AdsServiceObserverBridge&) = delete;
+
+  ~AdsServiceObserverBridge() override = default;
+
+  // AdsServiceObserver:
+  void OnDidInitializeAdsService() override {
+    [ads_ onDidInitializeAdsService];
+  }
+
+  void OnDidShutdownAdsService() override { [ads_ onDidShutdownAdsService]; }
+
+ private:
+  __weak BraveAds* ads_;  // Not owned.
+
+  base::ScopedObservation<brave_ads::AdsService, brave_ads::AdsServiceObserver>
+      observation_{this};
+};
+
+}  // namespace
 
 @implementation BraveAds
 
@@ -169,6 +208,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)cleanupAdsService {
+  adsServiceObserverBridge.reset();
   adsService = nil;
 }
 
@@ -245,7 +285,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                     walletInfo:(nullable BraveAdsWalletInfo*)walletInfo
                     completion:(void (^)(bool))completion {
   if ([self isServiceRunning]) {
-    return completion(/*success=*/false);
+    return completion(/*success=*/true);
   }
 
   auto cppSysInfo =
@@ -260,17 +300,14 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   ProfileIOS* profile = [self getLastUsedProfile];
   adsService = brave_ads::AdsServiceFactoryIOS::GetForProfile(profile);
   CHECK(adsService);
+  adsServiceObserverBridge =
+      std::make_unique<AdsServiceObserverBridge>(self, *adsService);
 
-  adsService->InitializeAds(
+  adsService->Init(
       base::SysNSStringToUTF8(self.storagePath),
       std::make_unique<AdsClientIOS>(self), std::move(cppSysInfo),
       std::move(cppBuildChannelInfo), std::move(cppWalletInfo),
       base::BindOnce(^(bool success) {
-        if (success) {
-          [self registerAdsResources];
-          [self periodicallyCheckForAdsResourceUpdates];
-          [self notifyDidInitializeAds];
-        }
         completion(success);
       }));
 }
@@ -512,6 +549,18 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
                  }];
 
   return YES;
+}
+
+- (void)onDidInitializeAdsService {
+  // Cancel any timer from a previous start so updates aren't scheduled early.
+  [self stopComponentUpdaterTimer];
+
+  [self registerAdsResources];
+  [self periodicallyCheckForAdsResourceUpdates];
+}
+
+- (void)onDidShutdownAdsService {
+  [self stopComponentUpdaterTimer];
 }
 
 - (void)registerAdsResources {
@@ -1602,12 +1651,6 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)notifyPendingObservers {
   if (adsService) {
     adsService->GetAdsClientNotifier()->NotifyPendingObservers();
-  }
-}
-
-- (void)notifyDidInitializeAds {
-  if (adsService) {
-    adsService->GetAdsClientNotifier()->NotifyDidInitializeAds();
   }
 }
 
