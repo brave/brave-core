@@ -3,7 +3,10 @@
 ## Upstream net_unittests tests with a flake rate >= 1.0% on
 ## windows-asan bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 1.5% flake rate over 30 days per LUCI Analysis (268 passed, 0 failed, 4 flaky).
--URLFetcherClientCertTest.CertificateSelectionWithoutCert
+# 3.0% flake rate over 30 days per LUCI Analysis (259 passed, 0 failed, 8 flaky).
+-URLFetcherTest.FollowRedirect
+
+# 1.5% flake rate over 30 days per LUCI Analysis (263 passed, 0 failed, 4 flaky).
+-URLFetcherTest.RedirectSecureSpecCompliantMetadataSynchronization

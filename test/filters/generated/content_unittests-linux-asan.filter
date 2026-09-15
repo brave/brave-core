@@ -3,82 +3,94 @@
 ## Upstream content_unittests tests with a flake rate >= 1.0% on
 ## linux-asan bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 57.8% flake rate over 30 days per LUCI Analysis (1116 passed, 0 failed, 1526 flaky).
+# 1.4% flake rate over 30 days per LUCI Analysis (19045 passed, 0 failed, 267 flaky).
+-FilePathWatcherWithChangeInfoTest.ModifiedFile/0
+
+# 1.8% flake rate over 30 days per LUCI Analysis (18990 passed, 0 failed, 346 flaky).
+-FilePathWatcherWithChangeInfoTest.ModifiedFile/1
+
+# 1.3% flake rate over 30 days per LUCI Analysis (19059 passed, 0 failed, 255 flaky).
+-FilePathWatcherWithChangeInfoTest.ModifiedFile/2
+
+# 48.1% flake rate over 30 days per LUCI Analysis (4151 passed, 0 failed, 3842 flaky).
 -RenderWidgetHostInputEventRouterTest.AckedTouchEventsAfterRouterDestroyed
 
-# 34.6% flake rate over 30 days per LUCI Analysis (12190 passed, 0 failed, 6456 flaky).
+# 33.9% flake rate over 30 days per LUCI Analysis (12772 passed, 0 failed, 6550 flaky).
 -RenderWidgetHostInputEventRouterTest.AsyncTargetingCoordinateValidation
 
-# 5.0% flake rate over 30 days per LUCI Analysis (17728 passed, 0 failed, 927 flaky).
+# 4.6% flake rate over 30 days per LUCI Analysis (18448 passed, 0 failed, 893 flaky).
 -RenderWidgetHostInputEventRouterTest.AutoscrollCoordinateTransformation
 
-# 2.5% flake rate over 30 days per LUCI Analysis (18189 passed, 0 failed, 466 flaky).
+# 1.8% flake rate over 30 days per LUCI Analysis (18988 passed, 0 failed, 353 flaky).
 -RenderWidgetHostInputEventRouterTest.AutoscrollValidation
 
-# 61.0% flake rate over 30 days per LUCI Analysis (7271 passed, 0 failed, 11370 flaky).
+# 57.8% flake rate over 30 days per LUCI Analysis (8151 passed, 0 failed, 11167 flaky).
 -RenderWidgetHostInputEventRouterTest.CanCallShowContextMenuAtPoint
 
-# 86.4% flake rate over 30 days per LUCI Analysis (2538 passed, 0 failed, 16103 flaky).
+# 83.2% flake rate over 30 days per LUCI Analysis (3246 passed, 0 failed, 16072 flaky).
 -RenderWidgetHostInputEventRouterTest.CancelNestedBubblingOnNewGestureToBubblingTarget
 
-# 84.2% flake rate over 30 days per LUCI Analysis (2955 passed, 0 failed, 15691 flaky).
+# 84.6% flake rate over 30 days per LUCI Analysis (2973 passed, 0 failed, 16350 flaky).
 -RenderWidgetHostInputEventRouterTest.DoBubbleIfSourceDeviceMismatch
 
-# 92.0% flake rate over 30 days per LUCI Analysis (1483 passed, 0 failed, 17158 flaky).
+# 91.9% flake rate over 30 days per LUCI Analysis (1562 passed, 0 failed, 17756 flaky).
 -RenderWidgetHostInputEventRouterTest.DoNotBubbleIfUnrelatedGestureInTarget
 
-# 2.6% flake rate over 30 days per LUCI Analysis (18166 passed, 0 failed, 489 flaky).
+# 2.1% flake rate over 30 days per LUCI Analysis (18933 passed, 0 failed, 408 flaky).
 -RenderWidgetHostInputEventRouterTest.DoNotChangeTargetViewDuringTouchScrollGesture
 
-# 51.0% flake rate over 30 days per LUCI Analysis (9142 passed, 0 failed, 9499 flaky).
+# 43.6% flake rate over 30 days per LUCI Analysis (10904 passed, 0 failed, 8413 flaky).
 -RenderWidgetHostInputEventRouterTest.DoNotCoalesceGestureEvents
 
-# 42.7% flake rate over 30 days per LUCI Analysis (10689 passed, 0 failed, 7954 flaky).
+# 36.0% flake rate over 30 days per LUCI Analysis (12358 passed, 0 failed, 6962 flaky).
 -RenderWidgetHostInputEventRouterTest.DoNotCoalesceTouchEvents
 
-# 87.2% flake rate over 30 days per LUCI Analysis (2393 passed, 0 failed, 16248 flaky).
+# 81.2% flake rate over 30 days per LUCI Analysis (3625 passed, 0 failed, 15693 flaky).
 -RenderWidgetHostInputEventRouterTest.DoNotSendMouseLeaveEventsForDisconnectedGuestView
 
-# 1.3% flake rate over 30 days per LUCI Analysis (18406 passed, 0 failed, 235 flaky).
+# 1.1% flake rate over 30 days per LUCI Analysis (19113 passed, 0 failed, 204 flaky).
 -RenderWidgetHostInputEventRouterTest.EmulatedTouchUsesTargetRootView
 
-# 6.9% flake rate over 30 days per LUCI Analysis (17355 passed, 0 failed, 1286 flaky).
+# 5.5% flake rate over 30 days per LUCI Analysis (18264 passed, 0 failed, 1053 flaky).
 -RenderWidgetHostInputEventRouterTest.EnsureDroppedTouchEventsAreAcked
 
-# 2.7% flake rate over 30 days per LUCI Analysis (18144 passed, 0 failed, 511 flaky).
+# 2.2% flake rate over 30 days per LUCI Analysis (18915 passed, 0 failed, 426 flaky).
 -RenderWidgetHostInputEventRouterTest.EnsureRendererDestroyedHandlesUnAckedTouchEvents
 
-# 80.1% flake rate over 30 days per LUCI Analysis (3718 passed, 0 failed, 14923 flaky).
+# 74.0% flake rate over 30 days per LUCI Analysis (5024 passed, 0 failed, 14294 flaky).
 -RenderWidgetHostInputEventRouterTest.FilteredGestureDoesntInterruptBubbling
 
-# 11.3% flake rate over 30 days per LUCI Analysis (16542 passed, 0 failed, 2104 flaky).
+# 9.1% flake rate over 30 days per LUCI Analysis (17566 passed, 0 failed, 1756 flaky).
 -RenderWidgetHostInputEventRouterTest.FindViewFromFrameSinkIdWithAncestorVerification
 
-# 82.8% flake rate over 30 days per LUCI Analysis (3213 passed, 0 failed, 15433 flaky).
+# 81.9% flake rate over 30 days per LUCI Analysis (3490 passed, 0 failed, 15833 flaky).
 -RenderWidgetHostInputEventRouterTest.NestedDoNotBubbleIfUnrelatedGestureInTarget
 
-# 77.2% flake rate over 30 days per LUCI Analysis (2987 passed, 0 failed, 10091 flaky).
+# 72.5% flake rate over 30 days per LUCI Analysis (5076 passed, 0 failed, 13353 flaky).
 -RenderWidgetHostInputEventRouterTest.PromotesMouseTargetPastUnregisteredAncestor
 
-# 48.4% flake rate over 30 days per LUCI Analysis (9611 passed, 0 failed, 9030 flaky).
+# 48.1% flake rate over 30 days per LUCI Analysis (10028 passed, 0 failed, 9290 flaky).
 -RenderWidgetHostInputEventRouterTest.QueryResultAfterChildViewDead
 
-# 24.9% flake rate over 30 days per LUCI Analysis (6399 passed, 0 failed, 2124 flaky).
+# 27.0% flake rate over 30 days per LUCI Analysis (10126 passed, 0 failed, 3747 flaky).
 -RenderWidgetHostInputEventRouterTest.RestartTouchscreenBubblingAfterRootUnregisters
 
-# 35.4% flake rate over 30 days per LUCI Analysis (5507 passed, 0 failed, 3017 flaky).
+# 37.0% flake rate over 30 days per LUCI Analysis (8743 passed, 0 failed, 5131 flaky).
 -RenderWidgetHostInputEventRouterTest.UnregisterDetachedIntermediateScrollBubblingTarget
 
-# 26.0% flake rate over 30 days per LUCI Analysis (13795 passed, 0 failed, 4848 flaky).
+# 25.2% flake rate over 30 days per LUCI Analysis (14459 passed, 0 failed, 4861 flaky).
 -RenderWidgetHostTest.DoNotAcceptPopupBoundsUntilScreenRectsAcked
 
-# 1.1% flake rate over 30 days per LUCI Analysis (18451 passed, 0 failed, 204 flaky).
+# 6.3% flake rate over 30 days per LUCI Analysis (148 passed, 0 failed, 10 flaky).
+-RenderWidgetHostTest.PopupBoundsAreClampedToTheDisplay
+
+# 1.0% flake rate over 30 days per LUCI Analysis (19141 passed, 0 failed, 200 flaky).
 -RenderWidgetHostTest.ResizeScreenInfo
 
-# 14.9% flake rate over 30 days per LUCI Analysis (15861 passed, 0 failed, 2782 flaky).
+# 11.7% flake rate over 30 days per LUCI Analysis (17063 passed, 0 failed, 2257 flaky).
 -RenderWidgetHostTest.SynchronizeVisualProperties
 
-# 18.8% flake rate over 30 days per LUCI Analysis (15141 passed, 0 failed, 3505 flaky).
+# 16.4% flake rate over 30 days per LUCI Analysis (16146 passed, 0 failed, 3177 flaky).
 -WebContentsFrameTrackerTest.CalculatesPreferredSizeNoLargerThanCaptureSize

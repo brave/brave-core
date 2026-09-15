@@ -3,31 +3,46 @@
 ## Upstream net_unittests tests with a flake rate >= 1.0% on
 ## windows bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -BbrSenderTest.ShallowDrain
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -CubicBytesTest.AboveOrigin
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
+-DiskCacheBackendTest.SimpleCachePrioritizedEntryOrder
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -HttpStreamFactoryJobControllerTest.ResumeMainJobImmediatelyOnStreamFailed
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -NetworkQualityEstimatorTest.TestTCPSocketRTT
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -OgHttp2AdapterTest.ClientHandlesInvalidTrailers
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 21.4% flake rate over 30 days per LUCI Analysis (88 passed, 24 failed, 0 flaky).
+-QpackDecodedHeadersAccumulatorTest.ExceedLimitBlocked
+
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -QuicSentPacketManagerTest.RetransmitTwiceThenAckPreviousBeforeSend
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -Tests/QuicSpdyStreamTest.HeadersAccumulatorNullptr/RFCv1
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -Tests/QuicSpdyStreamTest.HeadersAccumulatorNullptr/RFCv2
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 23 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -Tests/QuicSpdyStreamTest.HeadersAccumulatorNullptr/draft29
+
+# 4.6% flake rate over 30 days per LUCI Analysis (10031 passed, 0 failed, 488 flaky).
+-URLFetcherTest.BasicSuccess
+
+# 1.3% flake rate over 30 days per LUCI Analysis (10380 passed, 0 failed, 139 flaky).
+-URLFetcherTest.Non2xxResponse
+
+# 4.0% flake rate over 30 days per LUCI Analysis (10099 passed, 0 failed, 420 flaky).
+-URLFetcherTest.RedirectInsecureProtocolDowngradeBlocked

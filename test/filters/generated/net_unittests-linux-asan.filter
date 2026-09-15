@@ -3,10 +3,13 @@
 ## Upstream net_unittests tests with a flake rate >= 1.0% on
 ## linux-asan bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 1.0% flake rate over 30 days per LUCI Analysis (1542 passed, 0 failed, 16 flaky).
--EndToEndTests/EndToEndTest.SconeProtocolServerToClientAsynchronousWithPacketLoss/RFCv1_B2ON_poll_2__16
+# 1.3% flake rate over 30 days per LUCI Analysis (3501 passed, 0 failed, 47 flaky).
+-EndToEndTests/EndToEndTest.SconeProtocolServerToClientAsynchronousWithPacketLoss/RFCv1_QBIC_poll_2__16
 
-# 9.5% flake rate over 30 days per LUCI Analysis (1747 passed, 0 failed, 183 flaky).
+# 9.2% flake rate over 30 days per LUCI Analysis (3561 passed, 0 failed, 360 flaky).
 -HttpCacheTest.GenerateCacheKeyUploadDataIdentifier
+
+# 9.1% flake rate over 30 days per LUCI Analysis (10 passed, 1 failed, 0 flaky).
+-QuicMigrationAttemptContextTest.SetIneligibleAndRecordIneligible

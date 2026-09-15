@@ -3,7 +3,7 @@
 ## Upstream base_unittests tests with a flake rate >= 1.0% on
 ## linux bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -All/ThreadPoolImplTest.IdentifiableStacks/0
@@ -29,11 +29,8 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -All/ThreadPoolImplTest.IdentifiableStacks/7
 
-# 5.6% flake rate over 30 days per LUCI Analysis (84 passed, 2 failed, 3 flaky).
+# 3.4% flake rate over 30 days per LUCI Analysis (86 passed, 1 failed, 2 flaky).
 -AlternateBucketDistributionAndPartitionFreeList/PartitionAllocThreadCacheTest.PeriodicPurgeSumsOverAllThreads/0
-
-# 9.0% flake rate over 30 days per LUCI Analysis (81 passed, 2 failed, 6 flaky).
--AlternateBucketDistributionAndPartitionFreeList/PartitionAllocThreadCacheTest.PeriodicPurgeSumsOverAllThreads/1
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -AlternateTestParams/PartitionAllocDeathTest.RepeatedAllocReturnNull/0
@@ -47,19 +44,13 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -AlternateTestParams/PartitionAllocDeathTest.RepeatedReallocReturnNull/1
 
-# 59.0% flake rate over 30 days per LUCI Analysis (16 passed, 0 failed, 23 flaky).
+# 66.7% flake rate over 30 days per LUCI Analysis (17 passed, 0 failed, 34 flaky).
 -AlternateTestParams/PartitionAllocTest.Bookkeeping/2
 
-# 59.0% flake rate over 30 days per LUCI Analysis (16 passed, 0 failed, 23 flaky).
+# 64.7% flake rate over 30 days per LUCI Analysis (18 passed, 0 failed, 33 flaky).
 -AlternateTestParams/PartitionAllocTest.ReallocDirectMapAligned/2
 
-# 5.1% flake rate over 30 days per LUCI Analysis (37 passed, 0 failed, 2 flaky).
--AlternateTestParams/PartitionAllocTest.ReallocDirectMapAligned/3
-
-# 2.6% flake rate over 30 days per LUCI Analysis (38 passed, 0 failed, 1 flaky).
--AlternateTestParams/PartitionAllocTest.ReallocDirectMapAlignedRelocate/2
-
-# 3.4% flake rate over 30 days per LUCI Analysis (86 passed, 0 failed, 3 flaky).
+# 2.2% flake rate over 30 days per LUCI Analysis (87 passed, 0 failed, 2 flaky).
 -FileTest.TouchGetInfo
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
@@ -74,7 +65,7 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -RustGTestInteropTest.WithError
 
-# 71.9% flake rate over 30 days per LUCI Analysis (25 passed, 0 failed, 64 flaky).
+# 77.5% flake rate over 30 days per LUCI Analysis (20 passed, 0 failed, 69 flaky).
 -SamplingHeapProfilerTest.SequentialLargeSmallStats
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
@@ -173,8 +164,11 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -StackSamplingProfilerTest.WillRestartSamplerAfterIdleShutdown
 
-# 49.4% flake rate over 30 days per LUCI Analysis (45 passed, 5 failed, 39 flaky).
+# 51.7% flake rate over 30 days per LUCI Analysis (43 passed, 6 failed, 40 flaky).
 -StreamingUtf8ValidatorThoroughTest.TestEverything
+
+# 1.1% flake rate over 30 days per LUCI Analysis (88 passed, 0 failed, 1 flaky).
+-TaskEnvironmentTest.ParallelExecutionFence
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -ThreadDelegatePosixTest.CurrentThreadBase
@@ -188,5 +182,5 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -ToolsSanityTest.AddressSanitizerNullDerefCrashTest
 
-# 89.5% flake rate over 30 days per LUCI Analysis (1955 passed, 0 failed, 16753 flaky).
+# 86.3% flake rate over 30 days per LUCI Analysis (2277 passed, 0 failed, 14307 flaky).
 -TraceSessionObserverListTest.CompileTimeDetection

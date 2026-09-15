@@ -3,28 +3,28 @@
 ## Upstream services_unittests tests with a flake rate >= 1.0% on
 ## macos bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 2.4% flake rate over 30 days per LUCI Analysis (25582 passed, 1 failed, 624 flaky).
+# 2.6% flake rate over 30 days per LUCI Analysis (26379 passed, 1 failed, 698 flaky).
 -CertNetFetcherURLLoaderTest.CancelAll
 
-# 5.2% flake rate over 30 days per LUCI Analysis (24856 passed, 1 failed, 1350 flaky).
+# 4.0% flake rate over 30 days per LUCI Analysis (26004 passed, 1 failed, 1073 flaky).
 -CertNetFetcherURLLoaderTest.ParallelFetchDuplicates
 
-# 99.5% flake rate over 30 days per LUCI Analysis (81 passed, 89 failed, 17012 flaky).
+# 94.2% flake rate over 30 days per LUCI Analysis (1421 passed, 200 failed, 23035 flaky).
 -HeapProfilingDataSourceTest.EmitSamples
 
-# 2.6% flake rate over 30 days per LUCI Analysis (16736 passed, 161 failed, 281 flaky).
+# 5.6% flake rate over 30 days per LUCI Analysis (23268 passed, 328 failed, 1059 flaky).
 -HeapProfilingDataSourceTest.MultipleInstances
 
-# 8.7% flake rate over 30 days per LUCI Analysis (4868 passed, 161 failed, 303 flaky).
+# 12.8% flake rate over 30 days per LUCI Analysis (11164 passed, 374 failed, 1271 flaky).
 -HeapProfilingDataSourceTest.StartOnSetup
 
-# 19.7% flake rate over 30 days per LUCI Analysis (17179 passed, 1 failed, 4201 flaky).
+# 9.0% flake rate over 30 days per LUCI Analysis (24654 passed, 1 failed, 2425 flaky).
 -HistogramSamplesDataSourceTest.RecordAllHistogramsWithoutTrackEvent
 
-# 51.9% flake rate over 30 days per LUCI Analysis (12609 passed, 1 failed, 13600 flaky).
+# 37.6% flake rate over 30 days per LUCI Analysis (16909 passed, 1 failed, 10171 flaky).
 -TracingServiceTest.PerfettoClientConsumer
 
-# 8.8% flake rate over 30 days per LUCI Analysis (23911 passed, 1 failed, 2298 flaky).
+# 7.3% flake rate over 30 days per LUCI Analysis (25099 passed, 1 failed, 1981 flaky).
 -TracingServiceTest.TracingServiceInstantiate
