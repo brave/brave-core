@@ -381,14 +381,15 @@ TEST_F(BraveAdsAdsServiceImplTest,
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-// Sponsored ads are disabled so the service does not start during
-// `Startup`, keeping each test's trigger isolated.
-TEST_F(BraveAdsAdsServiceImplTest, ServiceStartsWhenNotificationAdsAreEnabled) {
+TEST_F(BraveAdsAdsServiceImplTest,
+       ServiceDoesNotRestartWhenNotificationAdsAreEnabledWhileAlreadyRunning) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
   Startup();
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
-  ASSERT_EQ(0U, bat_ads_service_factory_->launch_count());
+  // Joining Brave Rewards always starts the service, even with all ad units
+  // disabled.
+  ASSERT_EQ(1U, bat_ads_service_factory_->launch_count());
 
   // Act
   prefs_.SetBoolean(prefs::kNotificationsEnabled, true);
@@ -427,8 +428,26 @@ TEST_F(
   EXPECT_EQ(0U, bat_ads_service_factory_->shutdown_count());
 }
 
+TEST_F(
+    BraveAdsAdsServiceImplTest,
+    PreservesAdsDataWhenSponsoredAdsBecomeDisabledForBraveRewardsUserWhileServiceKeepsRunning) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  Startup();
+  ASSERT_EQ(1U, bat_ads_service_factory_->launch_count());
+  // A proxy for the `brave.brave_ads.*` prefs preserved alongside it.
+  prefs_.SetString(prefs::kDiagnosticId, "foo");
+
+  // Act
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+
+  // Assert
+  EXPECT_EQ("foo", prefs_.GetString(prefs::kDiagnosticId));
+}
+
 TEST_F(BraveAdsAdsServiceImplTest,
-       ClearsAdsDataWhenSponsoredAdsBecomeDisabledWhileServiceKeepsRunning) {
+       ClearsAdsDataWhenBraveRewardsBecomesDisabled) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
@@ -439,12 +458,11 @@ TEST_F(BraveAdsAdsServiceImplTest,
   test::AdsServiceWaiter waiter(*ads_service_);
 
   // Act
-  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, false);
   waiter.WaitForOnDidClearAdsServiceData();
 
   // Assert
   EXPECT_FALSE(prefs_.HasPrefPath(prefs::kDiagnosticId));
-  EXPECT_FALSE(prefs_.GetBoolean(prefs::kSponsoredEnabled));
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 

@@ -9,6 +9,8 @@
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_waiter.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_registry.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "testing/platform_test.h"
@@ -19,6 +21,7 @@ class AdsServiceImplIOSTest : public PlatformTest {
  public:
   AdsServiceImplIOSTest() {
     RegisterProfilePrefs(prefs_.registry());
+    brave_rewards::RegisterProfilePrefs(prefs_.registry());
     ads_service_ = std::make_unique<AdsServiceImplIOS>(prefs_);
   }
 
@@ -66,6 +69,37 @@ TEST_F(AdsServiceImplIOSTest, DoesNotClearAdsDataWhenSponsoredAdsAreEnabled) {
 
   // Assert
   EXPECT_EQ("foo", prefs_.GetString(prefs::kDiagnosticId));
+}
+
+TEST_F(
+    AdsServiceImplIOSTest,
+    PreservesAdsDataWhenSponsoredAdsBecomeDisabledForBraveRewardsUser) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetString(prefs::kDiagnosticId, "foo");
+
+  // Act
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+
+  // Assert
+  EXPECT_EQ("foo", prefs_.GetString(prefs::kDiagnosticId));
+}
+
+TEST_F(AdsServiceImplIOSTest, ClearsAdsDataWhenBraveRewardsBecomesDisabled) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  // A proxy for the `brave.brave_ads.*` prefs cleared alongside it.
+  prefs_.SetString(prefs::kDiagnosticId, "foo");
+  test::AdsServiceWaiter waiter(*ads_service_);
+
+  // Act
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, false);
+  waiter.WaitForOnDidClearAdsServiceData();
+
+  // Assert
+  EXPECT_FALSE(prefs_.HasPrefPath(prefs::kDiagnosticId));
 }
 
 }  // namespace brave_ads
