@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveStore
 import BraveVPN
 import Foundation
 import Shared
@@ -46,10 +47,8 @@ class BraveSkusWebHelper {
   }
 
   fileprivate func fetchReceipt() async -> String? {
-    guard let receiptUrl = Bundle.main.appStoreReceiptURL else { return nil }
-
     do {
-      return try Data(contentsOf: receiptUrl).base64EncodedString
+      return try AppStoreReceipt.receipt
     } catch {
       Logger.module.error("Failed to encode or get receipt data: \(error.localizedDescription)")
       return nil
