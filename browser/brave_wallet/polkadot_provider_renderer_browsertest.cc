@@ -9,7 +9,6 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
-#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"  // IWYU pragma: keep
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
