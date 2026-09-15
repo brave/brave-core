@@ -3,61 +3,55 @@
 ## Upstream content_unittests tests with a flake rate >= 1.0% on
 ## macos bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 86.1% flake rate over 30 days per LUCI Analysis (545 passed, 1 failed, 3367 flaky).
+# 94.2% flake rate over 30 days per LUCI Analysis (713 passed, 1 failed, 11587 flaky).
 -BrowserMainLoopTest.PostCreateThreadsResultAbortsStartup
 
-# 1.4% flake rate over 30 days per LUCI Analysis (28717 passed, 0 failed, 400 flaky).
+# 1.4% flake rate over 30 days per LUCI Analysis (29558 passed, 0 failed, 425 flaky).
 -ChildProcessTaskPortProviderTest.ChildLifecycle
 
-# 49.9% flake rate over 30 days per LUCI Analysis (14578 passed, 0 failed, 14540 flaky).
+# 49.1% flake rate over 30 days per LUCI Analysis (15257 passed, 0 failed, 14727 flaky).
 -FilePathWatcherTest.DeleteAndRecreate
 
-# 19.2% flake rate over 30 days per LUCI Analysis (23520 passed, 3938 failed, 1659 flaky).
+# 18.4% flake rate over 30 days per LUCI Analysis (24480 passed, 3756 failed, 1747 flaky).
 -FilePathWatcherTest.DirAttributesChanged
 
-# 51.7% flake rate over 30 days per LUCI Analysis (14078 passed, 1 failed, 15039 flaky).
+# 50.6% flake rate over 30 days per LUCI Analysis (14809 passed, 1 failed, 15174 flaky).
 -FilePathWatcherTest.DirectoryChain
 
-# 54.0% flake rate over 30 days per LUCI Analysis (13396 passed, 1 failed, 15721 flaky).
+# 52.7% flake rate over 30 days per LUCI Analysis (14169 passed, 1 failed, 15814 flaky).
 -FilePathWatcherTest.ModifiedFile
 
-# 17.7% flake rate over 30 days per LUCI Analysis (23961 passed, 3089 failed, 2067 flaky).
+# 16.4% flake rate over 30 days per LUCI Analysis (25080 passed, 2811 failed, 2093 flaky).
 -FilePathWatcherTest.MoveChild
 
-# 48.4% flake rate over 30 days per LUCI Analysis (15014 passed, 0 failed, 14104 flaky).
+# 48.6% flake rate over 30 days per LUCI Analysis (15408 passed, 0 failed, 14576 flaky).
 -FilePathWatcherTest.MoveParent
 
-# 36.0% flake rate over 30 days per LUCI Analysis (18625 passed, 0 failed, 10493 flaky).
+# 37.5% flake rate over 30 days per LUCI Analysis (18737 passed, 0 failed, 11247 flaky).
 -FilePathWatcherTest.MovedToFile
 
-# 52.4% flake rate over 30 days per LUCI Analysis (13862 passed, 0 failed, 15256 flaky).
+# 52.1% flake rate over 30 days per LUCI Analysis (14365 passed, 0 failed, 15619 flaky).
 -FilePathWatcherTest.MultipleWatchersSingleFile
 
-# 44.2% flake rate over 30 days per LUCI Analysis (16258 passed, 1 failed, 12859 flaky).
+# 44.7% flake rate over 30 days per LUCI Analysis (16574 passed, 1 failed, 13409 flaky).
 -FilePathWatcherTest.NewFile
 
-# 48.3% flake rate over 30 days per LUCI Analysis (15045 passed, 0 failed, 14073 flaky).
+# 48.7% flake rate over 30 days per LUCI Analysis (15393 passed, 0 failed, 14591 flaky).
 -FilePathWatcherTest.NonExistentDirectory
 
-# 51.1% flake rate over 30 days per LUCI Analysis (14453 passed, 0 failed, 15101 flaky).
+# 52.2% flake rate over 30 days per LUCI Analysis (14568 passed, 0 failed, 15892 flaky).
 -LevelDbBackingStoreTest.CompactionTaskTiming
 
-# 64.6% flake rate over 30 days per LUCI Analysis (10457 passed, 0 failed, 19097 flaky).
+# 64.0% flake rate over 30 days per LUCI Analysis (10964 passed, 0 failed, 19496 flaky).
 -LevelDbBackingStoreTest.TombstoneSweeperTiming
 
-# 1.6% flake rate over 30 days per LUCI Analysis (29091 passed, 224 failed, 238 flaky).
+# 1.7% flake rate over 30 days per LUCI Analysis (29950 passed, 237 failed, 272 flaky).
 -NavigationURLLoaderImplTest.ForceAsyncParseHeaders
 
-# 1.0% flake rate over 30 days per LUCI Analysis (29248 passed, 4 failed, 302 flaky).
+# 1.0% flake rate over 30 days per LUCI Analysis (30150 passed, 3 failed, 312 flaky).
 -PrerenderHostRegistryTest.OneTaskToDeleteAllHosts
 
-# 1.3% flake rate over 30 days per LUCI Analysis (29164 passed, 387 failed, 3 flaky).
--WebContentsImplTest.OnColorProviderChangedTriggersPageBroadcast
-
-# 7.3% flake rate over 30 days per LUCI Analysis (29582 passed, 2 failed, 2319 flaky).
+# 6.2% flake rate over 30 days per LUCI Analysis (30898 passed, 1 failed, 2039 flaky).
 -WebRtcInternalsMessageHandlerTest.DontRunJSBeforeNavigationCommitted
-
-# 23.5% flake rate over 30 days per LUCI Analysis (13 passed, 0 failed, 4 flaky).
--WebUIJankMonitorTest.DetectsJankAndReportsStackTrace
