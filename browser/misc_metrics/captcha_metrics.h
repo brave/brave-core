@@ -71,6 +71,10 @@ class CaptchaMetrics {
   static void EnsureDefaultCaptchaProviders();
 
   // Records a captcha if |url| matches a known provider. Does not emit P3A.
+  // |is_user_activated| is a signal fired by
+  // PageLoadMetricsObserver.FrameReceivedUserActivation which is true when
+  // the user interacted with the frame like click, mouse events etc and false
+  // otherwise.
   void MaybeRecordCaptchaForUrl(const GURL& url,
                                 const bool is_user_activated = false);
 
