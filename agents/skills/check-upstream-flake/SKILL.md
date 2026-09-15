@@ -41,16 +41,16 @@ When invoked with a test name:
 
 ```bash
 # Basic: check a specific test (default 30-day lookback)
-python3 ./tools/chromium_tests_analysis/check-upstream-flake.py "WebUIURLLoaderFactoryTest.RangeRequest"
+vpython3 ./tools/chromium_tests_analysis/check-upstream-flake.py "WebUIURLLoaderFactoryTest.RangeRequest"
 
 # Longer lookback window
-python3 ./tools/chromium_tests_analysis/check-upstream-flake.py "WebUIURLLoaderFactoryTest.RangeRequest" --days 60
+vpython3 ./tools/chromium_tests_analysis/check-upstream-flake.py "WebUIURLLoaderFactoryTest.RangeRequest" --days 60
 
 # JSON output (for programmatic use)
-python3 ./tools/chromium_tests_analysis/check-upstream-flake.py "WebUIURLLoaderFactoryTest.RangeRequest" --json
+vpython3 ./tools/chromium_tests_analysis/check-upstream-flake.py "WebUIURLLoaderFactoryTest.RangeRequest" --json
 
 # Search by test class name (finds all methods)
-python3 ./tools/chromium_tests_analysis/check-upstream-flake.py "WebUIURLLoaderFactoryTest"
+vpython3 ./tools/chromium_tests_analysis/check-upstream-flake.py "WebUIURLLoaderFactoryTest"
 ```
 
 **Arguments:**

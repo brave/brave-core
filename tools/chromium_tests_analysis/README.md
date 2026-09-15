@@ -112,3 +112,18 @@ From then on, the rule _claims_ the matching failures: they still belong to
 their suggested clusters, but no longer count towards those clusters' failure
 counts. A heavily failing test that is already tracked by a bug therefore shows
 a test name cluster with a failure count near zero.
+
+#### Limits on reading clusters
+
+Two server-side limits shape what `update-upstream-flake-filters.py` can
+discover through clusters. Neither appears in the proto:
+
+- `QueryClusterSummaries` returns at most 200 clusters and does not paginate — a
+  bare `LIMIT 200` in `analysis/internal/analysis/cluster_summaries.go`. That
+  cap is why the script queries each week of the lookback separately as well as
+  the whole of it.
+- `QueryClusterFailures` returns at most 2000 failure groups, and **only ever
+  reads the last 7 days** whatever lookback the run was given — see
+  `ReadClusterFailures` in `analysis/internal/analysis/cluster_failures.go`. So
+  `--days 60` widens the flake rates computed for a candidate, but not the
+  discovery of candidates through multi-test clusters.

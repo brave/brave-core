@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -11,7 +11,7 @@ Queries the LUCI Analysis REST API (pRPC protocol) to retrieve
 flakiness statistics for a given test in the Chromium project.
 
 Usage:
-    python3 tools/chromium_tests_analysis/check-upstream-flake.py \\
+    vpython3 tools/chromium_tests_analysis/check-upstream-flake.py \\
         "TestSuite.TestName" [--days 30] [--json]
 """
 
@@ -19,28 +19,28 @@ import argparse
 import json
 import sys
 
-from luci_analysis import (
-    LuciAnalysisError,
-    analyze_stats,
-    analyze_verdicts,
-    get_flakiness_stats,
-    get_test_verdicts,
-    search_tests,
-)
+from luci_analysis import Flakiness, LuciAnalysis, LuciAnalysisError, Window
+
+# The run's single connection to LUCI Analysis.
+client = LuciAnalysis()
+
+# What a test's history is called throughout this script.
+Match = tuple[str, Flakiness]
 
 
-def format_report_markdown(test_name, test_results, days):
+def format_report_markdown(test_name: str, test_results: list[Match],
+                           days: int) -> str:
     """Format the analysis results as human-readable markdown.
 
     Args:
         test_name: Original search string.
-        test_results: List of (test_id, analysis_dict) tuples.
+        test_results: List of (test_id, flakiness) pairs.
         days: Lookback window in days.
 
     Returns:
         Formatted markdown string.
     """
-    lines = []
+    lines: list[str] = []
     lines.append(f"# Upstream Flake Check: {test_name}")
     lines.append("")
     lines.append(f"Lookback period: {days} days")
@@ -57,64 +57,52 @@ def format_report_markdown(test_name, test_results, days):
             "This test may be Brave-specific or use a different ID format.")
         return "\n".join(lines)
 
-    for test_id, analysis in test_results:
+    for test_id, flakiness in test_results:
+        counts = flakiness.counts
         lines.append(f"## Test: `{test_id}`")
         lines.append("")
-
-        verdict_display = {
-            "known_upstream_flake": "KNOWN UPSTREAM FLAKE",
-            "occasional_upstream_failures": "OCCASIONAL UPSTREAM FAILURES",
-            "stable_upstream": "STABLE UPSTREAM",
-            "insufficient_data": "INSUFFICIENT DATA",
-        }
-        lines.append(
-            "### Verdict: "
-            f"{verdict_display.get(analysis['verdict'], analysis['verdict'])}")
+        lines.append(f"### Verdict: {flakiness.verdict.headline}")
         lines.append("")
-        lines.append(f"**Recommendation:** {analysis['recommendation']}")
+        lines.append(f"**Recommendation:** {flakiness.verdict.recommendation}")
         lines.append("")
 
         lines.append("### Statistics")
         lines.append("")
         lines.append("- Meaningful verdicts (pass+fail+flaky):"
-                     f" {analysis['meaningful_verdicts']}")
-        lines.append(f"- Passed: {analysis['passed']}")
-        lines.append(f"- Failed: {analysis['failed']}")
-        lines.append(f"- Flaky: {analysis['flaky']}")
-        if analysis.get('skipped', 0) > 0:
-            lines.append(f"- Skipped: {analysis['skipped']}")
-        if analysis.get('execution_errored', 0) > 0:
-            lines.append(
-                f"- Execution errors: {analysis['execution_errored']}")
-        lines.append(f"- Flake rate: {analysis['flake_rate']:.1%}")
+                     f" {counts.meaningful}")
+        lines.append(f"- Passed: {counts.passed}")
+        lines.append(f"- Failed: {counts.failed}")
+        lines.append(f"- Flaky: {counts.flaky}")
+        if counts.skipped:
+            lines.append(f"- Skipped: {counts.skipped}")
+        if counts.execution_errored:
+            lines.append(f"- Execution errors: {counts.execution_errored}")
+        lines.append(f"- Flake rate: {flakiness.flake_rate:.1%}")
         lines.append("")
 
-        if analysis["daily_breakdown"]:
+        if flakiness.daily:
             lines.append("### Daily Breakdown")
             lines.append("")
             lines.append("| Date | Total | Pass | Fail | Flaky | Rate |")
             lines.append("|------|-------|------|------|-------|------|")
-            for day in analysis["daily_breakdown"]:
-                day_meaningful = day["passed"] + day["failed"] + day["flaky"]
-                if day_meaningful > 0:
-                    day_rate = (day["failed"] + day["flaky"]) / day_meaningful
-                    rate_str = f"{day_rate:.0%}"
-                else:
-                    rate_str = "N/A"
-                lines.append(
-                    f"| {day['date']} | {day['total']} | {day['passed']} "
-                    f"| {day['failed']} | {day['flaky']} | {rate_str} |")
+            for day in flakiness.daily:
+                rate = (f"{day.counts.flake_rate:.0%}"
+                        if day.counts.meaningful else "N/A")
+                lines.append(f"| {day.date} | {day.counts.total} "
+                             f"| {day.counts.passed} | {day.counts.failed} "
+                             f"| {day.counts.flaky} | {rate} |")
             lines.append("")
 
     return "\n".join(lines)
 
 
-def format_report_json(test_name, test_results, days):
+def format_report_json(test_name: str, test_results: list[Match],
+                       days: int) -> str:
     """Format the analysis results as machine-readable JSON.
 
     Args:
         test_name: Original search string.
-        test_results: List of (test_id, analysis_dict) tuples.
+        test_results: List of (test_id, flakiness) pairs.
         days: Lookback window in days.
 
     Returns:
@@ -123,27 +111,16 @@ def format_report_json(test_name, test_results, days):
     output = {
         "test_name": test_name,
         "lookback_days": days,
-        "matched_tests": [],
+        "matched_tests": [{
+            "test_id": test_id,
+            **flakiness.as_json(),
+        } for test_id, flakiness in test_results],
     }
 
-    for test_id, analysis in test_results:
-        output["matched_tests"].append({
-            "test_id": test_id,
-            **analysis,
-        })
-
-    # Overall verdict: use the worst verdict across all matched tests
     if test_results:
-        verdict_priority = {
-            "known_upstream_flake": 0,
-            "occasional_upstream_failures": 1,
-            "insufficient_data": 2,
-            "stable_upstream": 3,
-        }
-        worst = min(test_results,
-                    key=lambda t: verdict_priority.get(t[1]["verdict"], 99))
-        output["overall_verdict"] = worst[1]["verdict"]
-        output["overall_recommendation"] = worst[1]["recommendation"]
+        worst = min(test_results, key=lambda m: m[1].verdict.severity)[1]
+        output["overall_verdict"] = worst.verdict.value
+        output["overall_recommendation"] = worst.verdict.recommendation
     else:
         output["overall_verdict"] = "not_found"
         output["overall_recommendation"] = (
@@ -153,12 +130,12 @@ def format_report_json(test_name, test_results, days):
     return json.dumps(output, indent=2)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(
         description=("Check if a test is a known upstream"
                      " flake in Chromium's LUCI Analysis"
                      " database."),
-        epilog=("Example: python3"
+        epilog=("Example: vpython3"
                 " tools/chromium_tests_analysis/check-upstream-flake.py"
                 " 'WebUIURLLoaderFactoryTest"
                 ".RangeRequest'"),
@@ -192,7 +169,7 @@ def main():
     # Step 1: Search for matching test IDs
     print(f"Searching for '{test_name}' in Chromium LUCI Analysis...",
           file=sys.stderr)
-    test_ids = search_tests(test_name)
+    test_ids = client.tests_matching(test_name)
 
     if not test_ids:
         print("No matching test IDs found.", file=sys.stderr)
@@ -206,7 +183,7 @@ def main():
 
     # Limit to top 5 most relevant matches
     # Prefer exact matches (test name at the end of the ID)
-    def relevance_sort_key(tid):
+    def relevance_sort_key(tid: str) -> tuple[int, str]:
         # Exact suffix match is most relevant
         if tid.endswith("/" + test_name):
             return (0, tid)
@@ -217,39 +194,21 @@ def main():
     test_ids.sort(key=relevance_sort_key)
     test_ids = test_ids[:5]
 
-    # Step 2: Get flakiness stats for each matched test
-    test_results = []
+    # Step 2: read each matched test's history
+    window = Window.last_days(days)
+    test_results: list[Match] = []
     for test_id in test_ids:
         print(f"Fetching stats for: {test_id}", file=sys.stderr)
-        stats = get_flakiness_stats(test_id, days)
-
-        if stats:
-            analysis = analyze_stats(stats)
+        groups = client.history(test_id, window)
+        if groups:
+            flakiness = Flakiness.of_groups(groups)
         else:
-            # Fallback: try Query endpoint for individual verdicts
+            # Fallback: ask for individual verdicts instead. An empty
+            # Flakiness reads as "insufficient data" on its own.
             print("  No stats data, trying verdict query...", file=sys.stderr)
-            verdicts = get_test_verdicts(test_id, days)
-            if verdicts:
-                analysis = analyze_verdicts(verdicts)
-            else:
-                analysis = {
-                    "total_verdicts": 0,
-                    "meaningful_verdicts": 0,
-                    "passed": 0,
-                    "failed": 0,
-                    "flaky": 0,
-                    "skipped": 0,
-                    "execution_errored": 0,
-                    "precluded": 0,
-                    "flake_rate": 0.0,
-                    "verdict": "insufficient_data",
-                    "recommendation": ("Cannot determine -- no data"
-                                       " found for this test ID in"
-                                       " the lookback period."),
-                    "daily_breakdown": [],
-                }
+            flakiness = Flakiness.of_verdicts(client.verdicts(test_id, window))
 
-        test_results.append((test_id, analysis))
+        test_results.append((test_id, flakiness))
 
     # Step 3: Output report
     if args.json_output:
