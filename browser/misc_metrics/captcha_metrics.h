@@ -43,28 +43,6 @@ inline constexpr char kCaptchaHCaptchaCountHistogramName[] =
 inline constexpr char kCaptchaHCaptchaCountUserActivatedHistogramName[] =
     "Brave.CaptchaCount.hCaptcha.UserActivated";
 
-// The corresponding prefs in the dictionary kMiscMetricsCaptchaDictionaryPref
-// "brave.misc_metrics.captcha_dict".
-inline constexpr char kCaptchaTotalCountPref[] =
-    "brave.misc_metrics.captcha_count";
-inline constexpr char kCaptchaTotalCountUserActivatedPref[] =
-    "brave.misc_metrics.captcha_count_user_activated";
-
-inline constexpr char kCaptchaGoogleCountPref[] =
-    "brave.misc_metrics.captcha_google_count";
-inline constexpr char kCaptchaGoogleCountUserActivatedPref[] =
-    "brave.misc_metrics.captcha_google_count_user_activated";
-
-inline constexpr char kCaptchaCloudflareCountPref[] =
-    "brave.misc_metrics.captcha_cloudflare_count";
-inline constexpr char kCaptchaCloudflareCountUserActivatedPref[] =
-    "brave.misc_metrics.captcha_cloudflare_count_user_activated";
-
-inline constexpr char kCaptchaHCaptchaCountPref[] =
-    "brave.misc_metrics.captcha_hcaptcha_count";
-inline constexpr char kCaptchaHCaptchaCountUserActivatedPref[] =
-    "brave.misc_metrics.captcha_hcaptcha_count_user_activated";
-
 // This class provides the back-end implementation to record a captcha metrics
 // once the captcha was detected by the BraveCaptchaPageLoadMetricsObserver.
 class CaptchaMetrics {
