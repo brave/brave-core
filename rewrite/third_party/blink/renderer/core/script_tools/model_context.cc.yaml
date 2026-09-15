@@ -23,13 +23,14 @@ substitutions:
       The Leo "workspace" tools run on a hidden
       chrome-untrusted://<uuid>.leo-workspace page and register themselves via
       navigator.modelContext. Each workspace has its own subdomain, so the check
-      is on the host suffix; no other chrome-untrusted:// host can end with it,
-      as WebUI hosts have a single label unless they opt into subdomains.
+      is on the host shape rather than a fixed host.
+      `IsAIChatLeoWorkspaceHost()` matches one label followed by the workspace
+      host, which excludes the workspace's viewer document at
+      chrome-untrusted://view.<uuid>.leo-workspace - it has no tools of its
+      own.
     regex:
       re_pattern: '(!document_->GetSettings\(\)->GetWebSecurityEnabled\(\)\));'
       replace: |-
         \1 ||
-                 (document_->GetExecutionContext()->GetSecurityOrigin()->Protocol() ==
-                      "chrome-untrusted" &&
-                   document_->GetExecutionContext()->GetSecurityOrigin()->Host().ends_with(
-                      ai_chat::kAIChatLeoWorkspaceUIHostSuffix));
+                 (document_->GetExecutionContext()->GetSecurityOrigin()->Protocol() == "chrome-untrusted" &&
+                  ai_chat::IsAIChatLeoWorkspaceHost(document_->GetExecutionContext()->GetSecurityOrigin()->Host().Utf8()));
