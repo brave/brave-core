@@ -80,6 +80,7 @@
 #include "components/tab_groups/tab_group_visual_data.h"
 #include "components/tabs/public/tab_group.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/media_session.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/clipboard/clipboard_buffer.h"
@@ -458,6 +459,21 @@ void ToggleActiveTabAudioMute(Browser* browser) {
   bool mute_tab = !contents->IsAudioMuted();
   SetTabAudioMuted(contents, mute_tab, TabMutedReason::kAudioIndicator,
                    std::string());
+}
+
+void TogglePictureInPicture(Browser* browser) {
+  WebContents* contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!contents) {
+    return;
+  }
+
+  auto* media_session = content::MediaSession::Get(contents);
+  if (contents->HasPictureInPictureVideo()) {
+    media_session->ExitPictureInPicture();
+    return;
+  }
+
+  media_session->EnterPictureInPicture();
 }
 
 void ToggleSidebarPosition(Browser* browser) {
