@@ -168,31 +168,46 @@
   return self;
 }
 
-- (void)dealloc {
+- (void)shutDown {
   _downloadManager.reset();
   _otrDownloadManager.reset();
 
-  _otr_browserList =
-      BrowserListFactory::GetForProfile(_otr_browser->GetProfile());
-  [_otr_browser->GetCommandDispatcher() prepareForShutdown];
-  _otr_browserList->RemoveBrowser(_otr_browser.get());
-  SessionRestorationServiceFactory::GetForProfile(_otr_browser->GetProfile())
-      ->Disconnect(_otr_browser.get());
-  CloseAllWebStates(*_otr_browser->GetWebStateList(),
-                    WebStateList::ClosingReason::kDefault);
+  // CWVWebView's must be closed via the CWVWebViewConfigurations as they don't
+  // live in the WebStateList.
+  if (_profile) {
+    [self.defaultWebViewConfiguration shutDown];
+    [self.nonPersistentWebViewConfiguration shutDown];
+  }
+
+  if (_otr_browser) {
+    _otr_browserList =
+        BrowserListFactory::GetForProfile(_otr_browser->GetProfile());
+    [_otr_browser->GetCommandDispatcher() prepareForShutdown];
+    _otr_browserList->RemoveBrowser(_otr_browser.get());
+    SessionRestorationServiceFactory::GetForProfile(_otr_browser->GetProfile())
+        ->Disconnect(_otr_browser.get());
+    CloseAllWebStates(*_otr_browser->GetWebStateList(),
+                      WebStateList::ClosingReason::kDefault);
+  }
   _otr_browser.reset();
 
-  _browserList = BrowserListFactory::GetForProfile(_browser->GetProfile());
-  [_browser->GetCommandDispatcher() prepareForShutdown];
-  _browserList->RemoveBrowser(_browser.get());
-  SessionRestorationServiceFactory::GetForProfile(_browser->GetProfile())
-      ->Disconnect(_browser.get());
-  CloseAllWebStates(*_browser->GetWebStateList(),
-                    WebStateList::ClosingReason::kDefault);
+  if (_browser) {
+    _browserList = BrowserListFactory::GetForProfile(_browser->GetProfile());
+    [_browser->GetCommandDispatcher() prepareForShutdown];
+    _browserList->RemoveBrowser(_browser.get());
+    SessionRestorationServiceFactory::GetForProfile(_browser->GetProfile())
+        ->Disconnect(_browser.get());
+    CloseAllWebStates(*_browser->GetWebStateList(),
+                      WebStateList::ClosingReason::kDefault);
+  }
   _browser.reset();
 
   _profile = nil;
   _profileKeepAlive.Reset();
+}
+
+- (void)dealloc {
+  [self shutDown];
 }
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
