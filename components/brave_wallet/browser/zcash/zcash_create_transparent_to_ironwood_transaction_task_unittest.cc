@@ -185,8 +185,9 @@ TEST_F(ZCashCreateTransparentToIronwoodTransactionTaskTest,
   EXPECT_EQ(tx_result.value().transparent_part().inputs.size(), 1u);
   EXPECT_EQ(tx_result.value().transparent_part().inputs[0].utxo_value, 60000u);
 
-  // fee = CalculateZCashTxFee(1 transparent input, 0 orchard input,
-  // kOrchard) = max(2, max(1,1) + max(2, max(0,1,2))) * 5000 = 15000.
+  // fee: 1 transparent input + 1 transparent change output, and an Ironwood
+  // bundle holding the target output.
+  // max(2, max(1, 1) + max(0, 1, 2)) * 5000 = 15000.
   EXPECT_EQ(tx_result.value().fee(), 15000u);
 
   // change = 60000 - 10000 - 15000 = 35000.
@@ -248,8 +249,9 @@ TEST_F(ZCashCreateTransparentToIronwoodTransactionTaskTest,
   EXPECT_EQ(tx_result.value().transparent_part().inputs.size(), 3u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 0u);
 
-  // fee = CalculateZCashTxFee(3 transparent inputs, 0 orchard input,
-  // kOrchard) = max(2, max(3,1) + max(2, max(0,1,2))) * 5000 = 25000.
+  // fee: 3 transparent inputs, no change output (max amount), and an Ironwood
+  // bundle holding the target output.
+  // max(2, max(3, 0) + max(0, 1, 2)) * 5000 = 25000.
   EXPECT_EQ(tx_result.value().fee(), 25000u);
 
   EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs.size(), 1u);

@@ -3,11 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-/* Copyright (c) 2024 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
-
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_TRANSACTION_UTILS_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_TRANSACTION_UTILS_H_
 
@@ -40,15 +35,19 @@ struct PickInputsResult {
   PickInputsResult& operator=(PickInputsResult&& other) = delete;
 };
 
-// `orchard_cross_address_disabled` must be true when `orchard_input_notes`
-// spends the legacy Orchard pool inside a v6 transaction (post-NU6.3), since
-// that pool's actions can't pair a spend with an unrelated output — it changes
-// how many Orchard actions the resulting bundle needs, and therefore the fee.
+// Exactly one of the input counts must be non-zero — mixed inputs are not
+// supported. Change, when `has_change` is true, is assumed to go back to the
+// pool the inputs came from; pass false for full amount sends, which have no
+// change output.
+// The legacy Orchard pool is only spent inside a v6 transaction (post-NU6.3),
+// where its actions can't pair a spend with an unrelated output, so its bundle
+// needs `spends + outputs` actions rather than `max(spends, outputs)`.
 base::CheckedNumeric<uint64_t> CalculateZCashTxFee(
     const base::StrictNumeric<uint32_t> transparent_input_count,
-    const base::StrictNumeric<uint32_t> orchard_input_notes,
+    const base::StrictNumeric<uint32_t> orchard_input_count,
+    const base::StrictNumeric<uint32_t> ironwood_input_count,
     ZCashTargetOutputType output_type,
-    bool orchard_cross_address_disabled = false);
+    bool has_change);
 
 std::optional<PickInputsResult> PickZCashTransparentInputs(
     const ZCashWalletService::UtxoMap& utxo_map,
@@ -71,12 +70,20 @@ struct PickOrchardInputsResult {
   PickOrchardInputsResult& operator=(PickOrchardInputsResult&& other) = delete;
 };
 
-// See `CalculateZCashTxFee` for `orchard_cross_address_disabled`.
+// Picks notes from the legacy Orchard pool.
 std::optional<PickOrchardInputsResult> PickZCashOrchardInputs(
     const std::vector<OrchardNote>& notes,
     uint64_t amount,
-    ZCashTargetOutputType output_type,
-    bool orchard_cross_address_disabled);
+    ZCashTargetOutputType output_type);
+
+// Picks notes from the Ironwood pool. Ironwood notes are `OrchardNote`s too —
+// only the pool they belong to differs (see `OrchardPool`). Unlike the legacy
+// Orchard pool, Ironwood always permits cross-address transfers, so its
+// actions pair a spend with an output and its fee is correspondingly lower.
+std::optional<PickOrchardInputsResult> PickZCashIronwoodInputs(
+    const std::vector<OrchardNote>& notes,
+    uint64_t amount,
+    ZCashTargetOutputType output_type);
 
 }  // namespace brave_wallet
 
