@@ -5,4 +5,4 @@
 
 #include "brave/common/extensions/brave_extensions_client.h"
 
-#include <chrome/common/initialize_extensions_client.cc>
+#include <chrome/common/scoped_chrome_extensions_client.cc>
