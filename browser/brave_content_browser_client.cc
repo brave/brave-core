@@ -881,7 +881,7 @@ void BraveContentBrowserClient::RegisterUntrustedWebUIInterfaceBrokers(
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET) && !BUILDFLAG(IS_ANDROID)
-  if (brave_wallet::IsMojoForHardwareWalletEnabled()) {
+  if (brave_wallet::IsMojoForLedgerEnabled()) {
     registry.ForWebUI<ledger::UntrustedLedgerUI>()
         .Add<brave_wallet::mojom::LedgerBridgeUIHandler>();
   }

@@ -47,7 +47,7 @@ BASE_DECLARE_FEATURE(kBraveWalletSnapsFeature);
 
 BASE_DECLARE_FEATURE(kBraveWalletSidePanel);
 
-BASE_DECLARE_FEATURE(kBraveWalletMojoForHardwareWalletFeature);
+BASE_DECLARE_FEATURE(kBraveWalletMojoForLedgerFeature);
 
 }  // namespace brave_wallet::features
 
