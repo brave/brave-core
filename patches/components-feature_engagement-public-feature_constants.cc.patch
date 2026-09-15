@@ -1,74 +1,75 @@
 diff --git a/components/feature_engagement/public/feature_constants.cc b/components/feature_engagement/public/feature_constants.cc
-index 1634cac47577ae0d05491b9f8f08553e1aa1d452..8c8490bc298fa52022b0f897c7244712da10c50f 100644
+index 1634cac47577ae0d05491b9f8f08553e1aa1d452..95e0c43324320e3af1a0d8150abecb15c0744f7e 100644
 --- a/components/feature_engagement/public/feature_constants.cc
 +++ b/components/feature_engagement/public/feature_constants.cc
-@@ -65,9 +65,10 @@ BASE_FEATURE(kIPHDesktopCustomizeChromeAutoOpenFeature,
+@@ -65,9 +65,9 @@ BASE_FEATURE(kIPHDesktopCustomizeChromeAutoOpenFeature,
  BASE_FEATURE(kIPHDesktopRealboxContextualSearchFeature,
               "IPH_DesktopRealboxContextualSearchFeature",
               base::FEATURE_DISABLED_BY_DEFAULT);
-+// kIPHDiscardRingFeature feature state is enforced via plaster rewrite.
- BASE_FEATURE(kIPHDiscardRingFeature,
+-BASE_FEATURE(kIPHDiscardRingFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHDiscardRingFeature,
               "IPH_DiscardRing",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kIPHDownloadEsbPromoFeature,
               "IPH_DownloadEsbPromo",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -119,9 +120,10 @@ BASE_FEATURE(kIPHGlicTrustFirstOnboardingShortcutSnoozePromoFeature,
+@@ -119,9 +119,9 @@ BASE_FEATURE(kIPHGlicTrustFirstOnboardingShortcutSnoozePromoFeature,
  BASE_FEATURE(kIPHGlicTryItFeature,
               "IPH_GlicTryIt",
               base::FEATURE_DISABLED_BY_DEFAULT);
-+// kIPHGMCCastStartStopFeature feature state is enforced via plaster rewrite.
- BASE_FEATURE(kIPHGMCCastStartStopFeature,
+-BASE_FEATURE(kIPHGMCCastStartStopFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHGMCCastStartStopFeature,
               "IPH_GMCCastStartStop",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kIPHGMCLocalMediaCastingFeature,
               "IPH_GMCLocalMediaCasting",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -163,9 +165,10 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
+@@ -163,9 +163,9 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
  BASE_FEATURE(kIPHPasswordsSaveRecoveryPromoFeature,
               "IPH_PasswordsSaveRecoveryPromo",
               base::FEATURE_ENABLED_BY_DEFAULT);
-+// kIPHPasswordsManagementBubbleAfterSaveFeature feature state is enforced via plaster rewrite.
- BASE_FEATURE(kIPHPasswordsManagementBubbleAfterSaveFeature,
+-BASE_FEATURE(kIPHPasswordsManagementBubbleAfterSaveFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHPasswordsManagementBubbleAfterSaveFeature,
               "IPH_PasswordsManagementBubbleAfterSave",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kIPHPasswordsManagementBubbleDuringSigninFeature,
               "IPH_PasswordsManagementBubbleDuringSignin",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -181,9 +184,10 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
+@@ -181,9 +181,9 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
  BASE_FEATURE(kIPHPdfGlicSummarizeFeature,
               "IPH_PdfGlicSummarizeFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
-+// kIPHPdfInkSignaturesFeature feature state is enforced via plaster rewrite.
- BASE_FEATURE(kIPHPdfInkSignaturesFeature,
+-BASE_FEATURE(kIPHPdfInkSignaturesFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHPdfInkSignaturesFeature,
               "IPH_PdfInkSignatures",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kIPHPdfSearchifyFeature,
               "IPH_PdfSearchifyFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -214,6 +218,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
+@@ -214,7 +214,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
  BASE_FEATURE(kIPHReadingListEntryPointFeature,
               "IPH_ReadingListEntryPoint",
               base::FEATURE_DISABLED_BY_DEFAULT);
-+// kIPHReadingListInSidePanelFeature feature state is enforced via plaster rewrite.
- BASE_FEATURE(kIPHReadingListInSidePanelFeature,
+-BASE_FEATURE(kIPHReadingListInSidePanelFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHReadingListInSidePanelFeature,
               "IPH_ReadingListInSidePanel",
               base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -241,21 +246,24 @@ BASE_FEATURE(kIPHSmartTabSharingFeature,
+ BASE_FEATURE(kIPHReadingModeKeyboardShortcutFeature,
+@@ -241,21 +241,21 @@ BASE_FEATURE(kIPHSmartTabSharingFeature,
  BASE_FEATURE(kIPHSmartTabSharingTryItFeature,
               "IPH_SmartTabSharingTryItFeature",
               base::FEATURE_DISABLED_BY_DEFAULT);
-+// kIPHSideBySidePinnableFeature feature state is enforced via plaster rewrite.
- BASE_FEATURE(kIPHSideBySidePinnableFeature,
+-BASE_FEATURE(kIPHSideBySidePinnableFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHSideBySidePinnableFeature,
               "IPH_SideBySidePinnableFeature",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
+-BASE_FEATURE(kIPHSideBySideTabSwitchFeature,
 +             base::FEATURE_DISABLED_BY_DEFAULT);
-+// kIPHSideBySideTabSwitchFeature feature state is enforced via plaster rewrite.
- BASE_FEATURE(kIPHSideBySideTabSwitchFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHSideBySideTabSwitchFeature,
               "IPH_SideBySideTabSwitchFeature",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
@@ -78,32 +79,32 @@ index 1634cac47577ae0d05491b9f8f08553e1aa1d452..8c8490bc298fa52022b0f897c7244712
  BASE_FEATURE(kIPHVerticalTabsExpandOnHoverFeature,
               "IPH_VerticalTabsExpandOnHoverFeature",
               base::FEATURE_DISABLED_BY_DEFAULT);
-+// kIPHVerticalTabstripTutorialFeature feature state is enforced via plaster rewrite.
- BASE_FEATURE(kIPHVerticalTabstripTutorialFeature,
+-BASE_FEATURE(kIPHVerticalTabstripTutorialFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHVerticalTabstripTutorialFeature,
               "IPH_VerticalTabstripTutorialFeature",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kIPHSidePanelGenericPinnableFeature,
               "IPH_SidePanelGenericPinnableFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -277,9 +285,10 @@ BASE_FEATURE(kIPHSideSearchPageActionLabelFeature,
+@@ -277,9 +277,9 @@ BASE_FEATURE(kIPHSideSearchPageActionLabelFeature,
  BASE_FEATURE(kIPHPwaQuietNotificationFeature,
               "IPH_PwaQuietNotification",
               base::FEATURE_ENABLED_BY_DEFAULT);
-+// kIPHTabGroupsSaveV2IntroFeature feature state is enforced via plaster rewrite.
- BASE_FEATURE(kIPHTabGroupsSaveV2IntroFeature,
+-BASE_FEATURE(kIPHTabGroupsSaveV2IntroFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHTabGroupsSaveV2IntroFeature,
               "IPH_TabGroupsSaveV2Intro",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kIPHTabGroupsSaveV2CloseGroupFeature,
               "IPH_TabGroupsSaveV2CloseGroup",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -1004,9 +1013,10 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
+@@ -1004,9 +1004,9 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
  BASE_FEATURE(kIPHAutofillHomeWorkProfileSuggestionFeature,
               "IPH_AutofillHomeWorkProfileSuggestion",
               base::FEATURE_ENABLED_BY_DEFAULT);
-+// kIPHAutofillAccountNameEmailSuggestionFeature feature state is enforced via plaster rewrite.
- BASE_FEATURE(kIPHAutofillAccountNameEmailSuggestionFeature,
+-BASE_FEATURE(kIPHAutofillAccountNameEmailSuggestionFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHAutofillAccountNameEmailSuggestionFeature,
               "IPH_AutofillAccountNameEmailSuggestion",
 -             base::FEATURE_ENABLED_BY_DEFAULT);
 +             base::FEATURE_DISABLED_BY_DEFAULT);
