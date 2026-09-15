@@ -4114,8 +4114,9 @@ class RegexMacroDispatchTest(unittest.TestCase):
             '      feature_name: kFoo\n'
             '      value: base::FEATURE_DISABLED_BY_DEFAULT\n')
         self.assertEqual(
-            result, '// kFoo feature state is enforced via plaster rewrite.\n'
-            'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);')
+            result,
+            'BASE_OVERRIDDEN_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);'
+        )
 
     def test_registered_under_its_bare_name(self):
         # The YAML key is the op id with its `cxx.` prefix stripped, and the
@@ -4198,8 +4199,9 @@ class RegexMacroDispatchTest(unittest.TestCase):
         # The macro always matches -- and so always reports a `count:` of 1,
         # never 0 -- even when the current value already equals the one
         # being set, so the substitution can never silently stop applying as
-        # upstream's own default happens to converge on ours. The comment it
-        # inserts is what makes this rerun visible in the diff.
+        # upstream's own default happens to converge on ours. The rename to
+        # `BASE_OVERRIDDEN_FEATURE` is what makes this rerun visible in the
+        # diff.
         result = self._apply(
             'already_set.cc',
             'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);',
@@ -4209,8 +4211,9 @@ class RegexMacroDispatchTest(unittest.TestCase):
             '      feature_name: kFoo\n'
             '      value: base::FEATURE_DISABLED_BY_DEFAULT\n')
         self.assertEqual(
-            result, '// kFoo feature state is enforced via plaster rewrite.\n'
-            'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);')
+            result,
+            'BASE_OVERRIDDEN_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);'
+        )
 
     def test_rejected_on_a_source_outside_every_namespace_it_serves(self):
         # The name belongs to `cxx` alone, and a `.idl` target is not in it.
@@ -6781,12 +6784,13 @@ class RegexMacroEngineTest(unittest.TestCase):
 class OverrideFeatureDefaultStateTest(unittest.TestCase):
     """Exercises the shipped `cxx.set_feature_flag_default_state` macro.
 
-    The macro replaces a `BASE_FEATURE` call's whole last argument -- from its
-    last top-level comma to the call's own closing `);` -- rather than trying
-    to recognise a particular spelling of the state itself. These tests cover
-    every argument shape the macro is meant to handle, plus the corner cases
-    that shape implies: telling one call's `);` apart from a nested one's, and
-    not running past this call into the next.
+    The macro renames the call to `BASE_OVERRIDDEN_FEATURE` and replaces its
+    whole last argument -- from its last top-level comma to the call's own
+    closing `);` -- rather than trying to recognise a particular spelling of
+    the state itself. These tests cover every argument shape the macro is
+    meant to handle, plus the corner cases that shape implies: telling one
+    call's `);` apart from a nested one's, and not running past this call into
+    the next.
     """
 
     _OP_ID = 'cxx.set_feature_flag_default_state'
@@ -6809,11 +6813,10 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      feature_name='kIPHDiscardRingFeature',
                                      value='base::FEATURE_ENABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
-        self.assertEqual(content, (
-            '// kIPHDiscardRingFeature feature state is enforced via plaster rewrite.\n'
-            'BASE_FEATURE(kIPHDiscardRingFeature,\n'
-            '             "IPH_DiscardRing",\n'
-            '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
+        self.assertEqual(content,
+                         ('BASE_OVERRIDDEN_FEATURE(kIPHDiscardRingFeature,\n'
+                          '             "IPH_DiscardRing",\n'
+                          '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
 
     def test_three_argument_flips_enabled_to_disabled(self):
         source = ('BASE_FEATURE(kFoo,\n'
@@ -6824,11 +6827,9 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      value='base::FEATURE_DISABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
         self.assertEqual(
-            content,
-            ('// kFoo feature state is enforced via plaster rewrite.\n'
-             'BASE_FEATURE(kFoo,\n'
-             '             "Foo",\n'
-             '             base::FEATURE_DISABLED_BY_DEFAULT);\n'))
+            content, ('BASE_OVERRIDDEN_FEATURE(kFoo,\n'
+                      '             "Foo",\n'
+                      '             base::FEATURE_DISABLED_BY_DEFAULT);\n'))
 
     def test_three_argument_single_line(self):
         source = 'BASE_FEATURE(kFoo, "Foo", base::FEATURE_DISABLED_BY_DEFAULT);'
@@ -6837,8 +6838,8 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      value='base::FEATURE_ENABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
         self.assertEqual(
-            content, '// kFoo feature state is enforced via plaster rewrite.\n'
-            'BASE_FEATURE(kFoo, "Foo", base::FEATURE_ENABLED_BY_DEFAULT);')
+            content, 'BASE_OVERRIDDEN_FEATURE(kFoo, "Foo", '
+            'base::FEATURE_ENABLED_BY_DEFAULT);')
 
     # -- modern two-argument form: BASE_FEATURE(kFoo, state) -----------------
     # The display-name string was dropped entirely (https://crbug.com/1362858).
@@ -6850,11 +6851,9 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      feature_name='kMyFeature',
                                      value='base::FEATURE_ENABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
-        self.assertEqual(
-            content,
-            ('// kMyFeature feature state is enforced via plaster rewrite.\n'
-             'BASE_FEATURE(kMyFeature,\n'
-             '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
+        self.assertEqual(content,
+                         ('BASE_OVERRIDDEN_FEATURE(kMyFeature,\n'
+                          '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
 
     def test_two_argument_form_single_line(self):
         source = 'BASE_FEATURE(kMyFeature, base::FEATURE_DISABLED_BY_DEFAULT);'
@@ -6863,9 +6862,8 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      value='base::FEATURE_ENABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
         self.assertEqual(
-            content,
-            '// kMyFeature feature state is enforced via plaster rewrite.\n'
-            'BASE_FEATURE(kMyFeature, base::FEATURE_ENABLED_BY_DEFAULT);')
+            content, 'BASE_OVERRIDDEN_FEATURE(kMyFeature, '
+            'base::FEATURE_ENABLED_BY_DEFAULT);')
 
     # -- preprocessor-conditional state: per-platform default states are
     # spelled out as an #if/#else/#endif rather than a single token. The whole
@@ -6891,11 +6889,9 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
         self.assertNotIn('#endif', content)
         self.assertNotIn('BUILDFLAG', content)
         self.assertNotIn('FEATURE_ENABLED_BY_DEFAULT', content)
-        self.assertIn('BASE_FEATURE(kStackScanMaxFramePointerToStackEndGap,',
-                      content)
         self.assertIn(
-            '// kStackScanMaxFramePointerToStackEndGap feature state is '
-            'enforced via plaster rewrite.', content)
+            'BASE_OVERRIDDEN_FEATURE(kStackScanMaxFramePointerToStackEndGap,',
+            content)
         self.assertTrue(
             content.rstrip().endswith('base::FEATURE_DISABLED_BY_DEFAULT);'))
 
@@ -6915,8 +6911,7 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      value='base::FEATURE_ENABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
         self.assertEqual(
-            content, '// kFoo feature state is enforced via plaster rewrite.\n'
-            'BASE_FEATURE(kFoo,\n'
+            content, 'BASE_OVERRIDDEN_FEATURE(kFoo,\n'
             'base::FEATURE_ENABLED_BY_DEFAULT);\n')
 
     # -- namespace qualification: the state is matched wholesale, so any
@@ -6929,9 +6924,8 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      value='FEATURE_ENABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
         self.assertEqual(
-            content,
-            '// kMyFeature feature state is enforced via plaster rewrite.\n'
-            'BASE_FEATURE(kMyFeature, FEATURE_ENABLED_BY_DEFAULT);')
+            content, 'BASE_OVERRIDDEN_FEATURE(kMyFeature, '
+            'FEATURE_ENABLED_BY_DEFAULT);')
 
     def test_fully_qualified_state(self):
         source = 'BASE_FEATURE(kMyFeature, ::base::FEATURE_DISABLED_BY_DEFAULT);'
@@ -6941,9 +6935,8 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
             value='::base::FEATURE_ENABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
         self.assertEqual(
-            content,
-            '// kMyFeature feature state is enforced via plaster rewrite.\n'
-            'BASE_FEATURE(kMyFeature, ::base::FEATURE_ENABLED_BY_DEFAULT);')
+            content, 'BASE_OVERRIDDEN_FEATURE(kMyFeature, '
+            '::base::FEATURE_ENABLED_BY_DEFAULT);')
 
     def test_closing_parenthesis_is_preserved(self):
         # Regression check: the closing `);` sits in its own capture group,
@@ -6957,11 +6950,7 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
     # -- `value` introducing a brand-new conditional: `value` is only ever
     # spliced into `replace`, never into the compiled `re_pattern`, so a
     # `BUILDFLAG(IS_ANDROID)` inside it can no longer shift the pattern's own
-    # capture-group numbering. The inserted comment names `feature_name`
-    # rather than `value` for exactly this case: `feature_name` is always a
-    # single identifier, so the comment stays a single, short line above the
-    # `BASE_FEATURE` call regardless of how many lines a multi-line `value`
-    # like this one spans below it.
+    # capture-group numbering.
 
     def test_new_conditional_value_with_parens_keeps_the_closing_paren(self):
         source = 'BASE_FEATURE(kFoo, base::FEATURE_ENABLED_BY_DEFAULT);\n'
@@ -6976,8 +6965,7 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
         self.assertIn('BUILDFLAG(IS_ANDROID)', content)
         self.assertTrue(content.rstrip('\n').endswith('#endif);'))
         self.assertEqual(
-            content, '// kFoo feature state is enforced via plaster rewrite.\n'
-            'BASE_FEATURE(kFoo, \n'
+            content, 'BASE_OVERRIDDEN_FEATURE(kFoo, \n'
             '#if BUILDFLAG(IS_ANDROID)\n'
             '             base::FEATURE_ENABLED_BY_DEFAULT\n'
             '#else\n'
@@ -7004,13 +6992,12 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      value='base::FEATURE_ENABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
         self.assertEqual(
-            content,
-            ('// kFeatureA feature state is enforced via plaster rewrite.\n'
-             'BASE_FEATURE(kFeatureA, base::FEATURE_ENABLED_BY_DEFAULT);\n'
-             '\n'
-             'BASE_FEATURE(kFeatureB,\n'
-             '             "FeatureB",\n'
-             '             base::FEATURE_DISABLED_BY_DEFAULT);\n'))
+            content, ('BASE_OVERRIDDEN_FEATURE(kFeatureA, '
+                      'base::FEATURE_ENABLED_BY_DEFAULT);\n'
+                      '\n'
+                      'BASE_FEATURE(kFeatureB,\n'
+                      '             "FeatureB",\n'
+                      '             base::FEATURE_DISABLED_BY_DEFAULT);\n'))
 
     def test_two_then_three_argument_targeting_the_second(self):
         source = (
@@ -7027,8 +7014,7 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
             content,
             ('BASE_FEATURE(kFeatureA, base::FEATURE_DISABLED_BY_DEFAULT);\n'
              '\n'
-             '// kFeatureB feature state is enforced via plaster rewrite.\n'
-             'BASE_FEATURE(kFeatureB,\n'
+             'BASE_OVERRIDDEN_FEATURE(kFeatureB,\n'
              '             "FeatureB",\n'
              '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
 
@@ -7045,8 +7031,7 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
         self.assertEqual(matches, 1)
         self.assertEqual(
             content,
-            ('// kFeatureA feature state is enforced via plaster rewrite.\n'
-             'BASE_FEATURE(kFeatureA,\n'
+            ('BASE_OVERRIDDEN_FEATURE(kFeatureA,\n'
              '             "FeatureA",\n'
              '             base::FEATURE_ENABLED_BY_DEFAULT);\n'
              '\n'
@@ -7063,14 +7048,13 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      feature_name='kFeatureB',
                                      value='base::FEATURE_ENABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
-        self.assertEqual(
-            content,
-            ('BASE_FEATURE(kFeatureA,\n'
-             '             "FeatureA",\n'
-             '             base::FEATURE_DISABLED_BY_DEFAULT);\n'
-             '\n'
-             '// kFeatureB feature state is enforced via plaster rewrite.\n'
-             'BASE_FEATURE(kFeatureB, base::FEATURE_ENABLED_BY_DEFAULT);\n'))
+        self.assertEqual(content,
+                         ('BASE_FEATURE(kFeatureA,\n'
+                          '             "FeatureA",\n'
+                          '             base::FEATURE_DISABLED_BY_DEFAULT);\n'
+                          '\n'
+                          'BASE_OVERRIDDEN_FEATURE(kFeatureB, '
+                          'base::FEATURE_ENABLED_BY_DEFAULT);\n'))
 
     def test_only_the_named_feature_is_overridden_when_both_are_three_argument(
             self):
@@ -7090,20 +7074,18 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
             '             "FeatureA",\n'
             '             base::FEATURE_DISABLED_BY_DEFAULT', content)
         self.assertIn(
-            '// kFeatureB feature state is enforced via plaster rewrite.\n'
-            'BASE_FEATURE(kFeatureB,\n'
+            'BASE_OVERRIDDEN_FEATURE(kFeatureB,\n'
             '             "FeatureB",\n'
-            '             base::FEATURE_ENABLED_BY_DEFAULT', content)
+            '             base::FEATURE_ENABLED_BY_DEFAULT)', content)
 
     # -- always-matches cases -------------------------------------------------
     #
     # Setting a feature to the value it already has still finds a match
-    # (`count` of 1, never 0) and still rewrites the text, inserting the
-    # `// <feature_name> feature state is enforced via plaster rewrite.`
-    # comment: `count` answers "is this override in force", not "did the
-    # text change shape", so the substitution can never silently stop
-    # applying just because upstream's own default has converged on the
-    # value Brave wants.
+    # (`count` of 1, never 0) and still rewrites the text, renaming the call
+    # to `BASE_OVERRIDDEN_FEATURE`: `count` answers "is this override in
+    # force", not "did the text change shape", so the substitution can never
+    # silently stop applying just because upstream's own default has
+    # converged on the value Brave wants.
 
     def test_still_matches_when_two_argument_form_already_has_the_value(self):
         source = 'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);'
@@ -7112,8 +7094,8 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      value='base::FEATURE_DISABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
         self.assertEqual(
-            content, '// kFoo feature state is enforced via plaster rewrite.\n'
-            'BASE_FEATURE(kFoo, base::FEATURE_DISABLED_BY_DEFAULT);')
+            content, 'BASE_OVERRIDDEN_FEATURE(kFoo, '
+            'base::FEATURE_DISABLED_BY_DEFAULT);')
 
     def test_still_matches_when_three_argument_form_already_has_the_value(
             self):
@@ -7125,11 +7107,9 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      value='base::FEATURE_DISABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
         self.assertEqual(
-            content,
-            ('// kFoo feature state is enforced via plaster rewrite.\n'
-             'BASE_FEATURE(kFoo,\n'
-             '             "Foo",\n'
-             '             base::FEATURE_DISABLED_BY_DEFAULT);\n'))
+            content, ('BASE_OVERRIDDEN_FEATURE(kFoo,\n'
+                      '             "Foo",\n'
+                      '             base::FEATURE_DISABLED_BY_DEFAULT);\n'))
 
     def test_still_matches_when_the_value_actually_differs(self):
         # Sanity check alongside the always-matches cases above: a genuinely
@@ -7141,12 +7121,10 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      feature_name='kFoo',
                                      value='base::FEATURE_ENABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
-        self.assertEqual(
-            content,
-            ('// kFoo feature state is enforced via plaster rewrite.\n'
-             'BASE_FEATURE(kFoo,\n'
-             '             "Foo",\n'
-             '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
+        self.assertEqual(content,
+                         ('BASE_OVERRIDDEN_FEATURE(kFoo,\n'
+                          '             "Foo",\n'
+                          '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
 
     def test_match_is_specific_to_the_named_feature(self):
         # The other feature in the file already holds the value being set on
@@ -7162,8 +7140,8 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
         self.assertEqual(matches, 1)
         self.assertEqual(
             content,
-            ('// kFeatureA feature state is enforced via plaster rewrite.\n'
-             'BASE_FEATURE(kFeatureA, base::FEATURE_ENABLED_BY_DEFAULT);\n'
+            ('BASE_OVERRIDDEN_FEATURE(kFeatureA, '
+             'base::FEATURE_ENABLED_BY_DEFAULT);\n'
              '\n'
              'BASE_FEATURE(kFeatureB, base::FEATURE_ENABLED_BY_DEFAULT);\n'))
 
@@ -7182,14 +7160,13 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      feature_name='kFeatureA',
                                      value='base::FEATURE_DISABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
-        self.assertEqual(
-            content,
-            ('// kFeatureA feature state is enforced via plaster rewrite.\n'
-             'BASE_FEATURE(kFeatureA, base::FEATURE_DISABLED_BY_DEFAULT);\n'
-             '\n'
-             'BASE_FEATURE(kFeatureB,\n'
-             '             "FeatureB",\n'
-             '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
+        self.assertEqual(content,
+                         ('BASE_OVERRIDDEN_FEATURE(kFeatureA, '
+                          'base::FEATURE_DISABLED_BY_DEFAULT);\n'
+                          '\n'
+                          'BASE_FEATURE(kFeatureB,\n'
+                          '             "FeatureB",\n'
+                          '             base::FEATURE_ENABLED_BY_DEFAULT);\n'))
 
     def test_preprocessor_conditional_state_is_replaced_by_a_matching_branch(
             self):
@@ -7209,8 +7186,7 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                                      value='FEATURE_DISABLED_BY_DEFAULT')
         self.assertEqual(matches, 1)
         self.assertEqual(
-            content, '// kFoo feature state is enforced via plaster rewrite.\n'
-            'BASE_FEATURE(kFoo,\n'
+            content, 'BASE_OVERRIDDEN_FEATURE(kFoo,\n'
             'FEATURE_DISABLED_BY_DEFAULT);\n')
 
     def test_no_match_for_a_different_feature_name(self):
