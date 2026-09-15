@@ -109,8 +109,12 @@ public class QuickActions: NSObject {
   }
 
   fileprivate func dismissAlertPopupView() {
-    UIApplication.shared.keyWindow?.subviews.forEach {
-      ($0 as? AlertPopupView)?.dismissWithType(dismissType: .noAnimation)
+    for window in UIApplication.shared.connectedScenes.compactMap({
+      ($0 as? UIWindowScene)?.keyWindow
+    }) {
+      window.subviews.forEach {
+        ($0 as? AlertPopupView)?.dismissWithType(dismissType: .noAnimation)
+      }
     }
   }
 

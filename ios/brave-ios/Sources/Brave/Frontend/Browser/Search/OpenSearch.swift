@@ -271,7 +271,7 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
   }
 
   private func regionalClientParam(_ locale: Locale) -> String {
-    if shortName == EngineNames.duckDuckGo, let region = locale.regionCode {
+    if shortName == EngineNames.duckDuckGo, let region = locale.region?.identifier {
       switch region {
       case "AU", "IE", "NZ": return "braveed"
       case "DE": return "bravened"

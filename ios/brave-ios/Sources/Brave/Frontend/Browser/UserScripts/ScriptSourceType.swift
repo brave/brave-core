@@ -30,6 +30,6 @@ enum ScriptSourceType {
       throw ScriptLoadFailure.notFound
     }
 
-    return try String(contentsOfFile: path)
+    return try String(contentsOfFile: path, encoding: .utf8)
   }
 }

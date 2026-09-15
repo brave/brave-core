@@ -302,7 +302,7 @@ import os.log
     do {
       do {
         result = try await Task.detached {
-          let filterSet = try String(contentsOf: localFileURL)
+          let filterSet = try String(contentsOf: localFileURL, encoding: .utf8)
           return try AdblockEngine.contentBlockerRules(fromFilterSet: filterSet)
         }.value
         Self.signpost.endInterval("convertRules", state)

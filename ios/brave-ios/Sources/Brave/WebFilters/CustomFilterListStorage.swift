@@ -220,7 +220,7 @@ struct CustomScriptlet: Identifiable, Hashable {
   public func loadCustomRules() async throws -> String? {
     guard let url = try savedCustomRulesFileURL() else { return nil }
     return try await Task.detached {
-      try String(contentsOf: url)
+      try String(contentsOf: url, encoding: .utf8)
     }.value
   }
 

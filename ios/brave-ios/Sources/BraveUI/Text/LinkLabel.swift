@@ -205,12 +205,21 @@ extension LinkLabel: UITextViewDelegate {
 
   public func textView(
     _ textView: UITextView,
-    shouldInteractWith url: URL,
-    in characterRange: NSRange,
-    interaction: UITextItemInteraction
-  ) -> Bool {
-    onLinkedTapped?(url)
-    return false
+    primaryActionFor textItem: UITextItem,
+    defaultAction: UIAction
+  ) -> UIAction? {
+    guard case .link(let url) = textItem.content else { return defaultAction }
+    return UIAction { [weak self] _ in
+      self?.onLinkedTapped?(url)
+    }
+  }
+
+  public func textView(
+    _ textView: UITextView,
+    menuConfigurationFor textItem: UITextItem,
+    defaultMenu: UIMenu
+  ) -> UITextItem.MenuConfiguration? {
+    return nil
   }
 
   override public func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
