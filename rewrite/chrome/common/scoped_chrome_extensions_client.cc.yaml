@@ -12,3 +12,32 @@ substitutions:
     rename_class:
       class_name: ChromeExtensionsClient
       rename: BraveExtensionsClient
+
+  - description: |
+      Let browser tests share the process-wide ExtensionsClient
+
+      ExtensionsClient::Set() CHECKs that no client has been registered yet,
+      but with `--single-process` BrowserProcessImpl and
+      ChromeContentRendererClient both live in the browser process, and each
+      one of them creates a ScopedChromeExtensionsClient. In that case the
+      first instance registers the client and any other one shares it. Only
+      browser tests share, see ClaimProcessWideClient().
+    preempt_function_impl:
+      function_name: ScopedChromeExtensionsClient::ScopedChromeExtensionsClient
+      code: |-
+        if (!UseGlobalExtensionsClientForSingleProcessTests(this)) {
+          client_.reset();
+          return;
+        }
+
+  - description: |
+      Unregister the process-wide ExtensionsClient from its owner only
+
+      Instances sharing a client registered by another one (see above) have
+      nothing to unregister.
+    preempt_function_impl:
+      function_name: ScopedChromeExtensionsClient::~ScopedChromeExtensionsClient
+      code: |-
+        if (!ReleaseGlobalExtensionsClientForSingleProcessTests(this)) {
+          return;
+        }
