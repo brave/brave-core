@@ -6,9 +6,13 @@
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
 
 #include <ranges>
+#include <string>
+#include <string_view>
 
+#include "base/check.h"
 #include "base/containers/span.h"
 #include "base/json/json_writer.h"
+#include "base/no_destructor.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_util.h"
 #include "base/values.h"
@@ -17,6 +21,7 @@
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
+#include "third_party/re2/src/re2/re2.h"
 
 namespace ai_chat {
 
@@ -51,13 +56,39 @@ std::vector<mojom::ContentBlockPtr> GetStrippedWebSources(
   return result;
 }
 
-std::string SerializeTabsToJson(base::span<const Tab> tabs) {
+// Neutralizes the tabs wrapper in a page's text, so an excerpt can't close
+// the tag the prompt wraps it in. Mirrors sanitize_untrusted_content() in the
+// Leo server's aichat/services/security_utils.py, so a user's own model gets
+// the same treatment and the server's own pass has nothing left to do.
+std::string SanitizeUntrustedTabText(std::string_view text) {
+  // Attributes count: a model reads `</tabs foo>` as a closing tag too.
+  static const base::NoDestructor<re2::RE2> kWrapperTag(
+      R"((?i)<\s*/?\s*tabs\b[^<>]*>)");
+  // GlobalReplace is a silent no-op on an invalid pattern, which would
+  // disable the sanitizer without any other symptom.
+  CHECK(kWrapperTag->ok());
+  std::string sanitized(text);
+  re2::RE2::GlobalReplace(&sanitized, *kWrapperTag, "<fake_tag>");
+  return sanitized;
+}
+
+std::string SerializeTabsToJson(base::span<const Tab> tabs,
+                                bool sanitize_passages) {
   base::ListValue tab_value_list;
   for (const auto& tab : tabs) {
-    tab_value_list.Append(base::DictValue()
-                              .Set("id", tab.id)
-                              .Set("title", tab.title)
-                              .Set("url", tab.origin.Serialize()));
+    auto tab_value = base::DictValue()
+                         .Set("id", tab.id)
+                         .Set("title", tab.title)
+                         .Set("url", tab.origin.Serialize());
+    if (!tab.passages.empty()) {
+      base::ListValue passages;
+      for (const auto& passage : tab.passages) {
+        passages.Append(sanitize_passages ? SanitizeUntrustedTabText(passage)
+                                          : passage);
+      }
+      tab_value.Set("passages", std::move(passages));
+    }
+    tab_value_list.Append(std::move(tab_value));
   }
   return base::WriteJson(tab_value_list).value_or("");
 }
@@ -677,7 +708,8 @@ std::vector<OAIMessage> BuildOAIDedupeTopicsMessages(
 
 std::vector<std::vector<OAIMessage>> BuildChunkedTabFocusMessages(
     const std::vector<Tab>& tabs,
-    const std::string& topic) {
+    const std::string& topic,
+    bool sanitize_passages) {
   std::vector<std::vector<OAIMessage>> chunked_messages;
   size_t num_chunks = (tabs.size() + kTabListChunkSize - 1) / kTabListChunkSize;
 
@@ -687,7 +719,7 @@ std::vector<std::vector<OAIMessage>> BuildChunkedTabFocusMessages(
     base::span<const Tab> chunk_tabs =
         base::span(tabs).subspan(start, end - start);
 
-    std::string tabs_json = SerializeTabsToJson(chunk_tabs);
+    std::string tabs_json = SerializeTabsToJson(chunk_tabs, sanitize_passages);
 
     // Create appropriate content block
     mojom::ContentBlockPtr content_block;

@@ -301,7 +301,8 @@ void EngineConsumerOAIRemote::DedupeTopics(
 void EngineConsumerOAIRemote::GetSuggestedTopics(
     const std::vector<Tab>& tabs,
     GetSuggestedTopicsCallback callback) {
-  auto chunked_messages = BuildChunkedTabFocusMessages(tabs, "");
+  auto chunked_messages =
+      BuildChunkedTabFocusMessages(tabs, "", /*sanitize_passages=*/true);
   if (chunked_messages.empty()) {
     std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
     return;
@@ -321,7 +322,8 @@ void EngineConsumerOAIRemote::GetSuggestedTopics(
 void EngineConsumerOAIRemote::GetFocusTabs(const std::vector<Tab>& tabs,
                                            const std::string& topic,
                                            GetFocusTabsCallback callback) {
-  auto chunked_messages = BuildChunkedTabFocusMessages(tabs, topic);
+  auto chunked_messages =
+      BuildChunkedTabFocusMessages(tabs, topic, /*sanitize_passages=*/true);
   if (chunked_messages.empty()) {
     std::move(callback).Run(base::unexpected(mojom::APIError::InternalError));
     return;
