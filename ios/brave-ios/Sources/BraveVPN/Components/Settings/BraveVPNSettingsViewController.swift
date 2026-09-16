@@ -13,7 +13,6 @@ import OSLog
 import Preferences
 import Shared
 import Static
-import StoreKit
 import SwiftUI
 import UIKit
 
@@ -432,9 +431,9 @@ public struct VPNSettingsView: View {
           .foregroundStyle(Color(braveSystemName: .textInteractive))
           Button {
             Task {
-              try await AppStore.sync()
+              try? await AppStoreReceipt.sync()
+              openURL(.brave.braveVPNLinkReceiptProd)
             }
-            openURL(.brave.braveVPNLinkReceiptProd)
           } label: {
             Text(Strings.VPN.settingsLinkReceipt)
           }
@@ -442,18 +441,18 @@ public struct VPNSettingsView: View {
           if viewModel.isDevReceiptLinkingAvailable {
             Button {
               Task {
-                try await AppStore.sync()
+                try? await AppStoreReceipt.sync()
+                openURL(.brave.braveVPNLinkReceiptStaging)
               }
-              openURL(.brave.braveVPNLinkReceiptStaging)
             } label: {
               Text("[Staging] Link Receipt")
             }
             .foregroundStyle(Color(braveSystemName: .textInteractive))
             Button {
               Task {
-                try await AppStore.sync()
+                try? await AppStoreReceipt.sync()
+                openURL(.brave.braveVPNLinkReceiptDev)
               }
-              openURL(.brave.braveVPNLinkReceiptDev)
             } label: {
               Text("[Dev] Link Receipt")
             }

@@ -52,6 +52,7 @@ public protocol BraveVPNInAppPurchaseObserverDelegate: AnyObject {
   func handlePromotedInAppPurchase()
 }
 
+@MainActor
 public class BraveVPNInAppPurchaseObserver {
 
   public enum PurchaseError: Equatable {
@@ -105,7 +106,6 @@ public class BraveVPNInAppPurchaseObserver {
 
   // MARK: - Purchasing
 
-  @MainActor
   public func purchase(product: Product) async {
     do {
       let result = try await product.purchase(options: [.simulatesAskToBuyInSandbox(false)])
@@ -123,7 +123,7 @@ public class BraveVPNInAppPurchaseObserver {
           // The transaction was already processed, which happens when the user already owns
           // the subscription and it was delivered through Transaction.updates beforehand.
           // Notify the delegate again so callers waiting on this purchase can resolve.
-          await delegate?.purchasedOrRestoredProduct(validateReceipt: true)
+          delegate?.purchasedOrRestoredProduct(validateReceipt: true)
         }
       case .userCancelled:
         // The user cancelled the purchase, no error should be surfaced
@@ -143,7 +143,6 @@ public class BraveVPNInAppPurchaseObserver {
 
   // MARK: - Restoring
 
-  @MainActor
   public func restorePurchases() async {
     do {
       try await AppStore.sync()
@@ -180,6 +179,10 @@ public class BraveVPNInAppPurchaseObserver {
     }
 
     Preferences.VPN.subscriptionProductId.value = transaction.productID
+
+    // Receipt validation reads the receipt from the app bundle, which StoreKit 2 does not
+    // reliably write after restoring a purchase
+    try? await AppStoreReceipt.sync()
 
     do {
       let response = try await BraveVPN.validateReceiptData()
@@ -234,7 +237,7 @@ public class BraveVPNInAppPurchaseObserver {
     try? await AppStoreReceipt.sync()
 
     Preferences.VPN.subscriptionProductId.value = transaction.productID
-    await delegate?.purchasedOrRestoredProduct(validateReceipt: true)
+    delegate?.purchasedOrRestoredProduct(validateReceipt: true)
     await transaction.finish()
     return true
   }
@@ -255,7 +258,7 @@ public class BraveVPNInAppPurchaseObserver {
       return
     }
 
-    await delegate?.handlePromotedInAppPurchase()
+    delegate?.handlePromotedInAppPurchase()
     await purchase(product: product)
   }
 

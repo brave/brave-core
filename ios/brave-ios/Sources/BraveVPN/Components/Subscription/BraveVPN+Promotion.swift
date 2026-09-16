@@ -53,7 +53,7 @@ extension BraveVPN {
     }
   }
 
-  public static func activatePaymentTypeForStoredPromotion(product: Product?) {
+  @MainActor public static func activatePaymentTypeForStoredPromotion(product: Product?) {
     if let product {
       Task {
         await iapObserver.purchase(product: product)

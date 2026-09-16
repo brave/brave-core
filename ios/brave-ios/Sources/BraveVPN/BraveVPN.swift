@@ -21,7 +21,7 @@ public class BraveVPN {
   public static let housekeepingApi = GRDHousekeepingAPI()
   public static let helper = GRDVPNHelper.sharedInstance()
 
-  public static let iapObserver = BraveVPNInAppPurchaseObserver()
+  @MainActor public static let iapObserver = BraveVPNInAppPurchaseObserver()
 
   private static let connectionName = "Brave VPN"  // Non translatable
 
