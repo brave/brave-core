@@ -5,7 +5,7 @@
 
 import StoreKit
 
-class BraveVPNMockSKProduct: SKProduct {
+class BraveVPNMockSKProduct: SKProduct, @unchecked Sendable {
   private let mockProductIdentifier: String
   private let mockLocalizedTitle: String
   private let mockLocalizedDescription: String
