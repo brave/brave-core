@@ -7,18 +7,22 @@
 
 #include <memory>
 
+#include "base/functional/bind.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/brave_pages.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "components/prefs/pref_service.h"
@@ -26,6 +30,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/menus/simple_menu_model.h"
 #include "ui/views/accessibility/view_accessibility.h"
+#include "ui/views/controls/button/button_controller.h"
 #include "url/gurl.h"
 
 AIChatButton::AIChatButton(BrowserWindowInterface* browser)
@@ -33,6 +38,11 @@ AIChatButton::AIChatButton(BrowserWindowInterface* browser)
                                         base::Unretained(this))),
       browser_(*browser),
       prefs_(*browser_->GetProfile()->GetOriginalProfile()->GetPrefs()) {
+  opens_full_page_.Init(
+      ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage, &prefs_.get(),
+      base::BindRepeating(&AIChatButton::UpdateButtonHighlight,
+                          base::Unretained(this)));
+
   SetMenuModel(CreateMenuModel());
 
   SetVectorIcon(kLeoProductBraveLeoIcon);
@@ -42,10 +52,28 @@ AIChatButton::AIChatButton(BrowserWindowInterface* browser)
 
   SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_AI_CHAT_TOOLBAR_BUTTON));
   set_context_menu_controller(this);
+  button_controller()->set_notify_action(
+      views::ButtonController::NotifyAction::kOnPress);
   GetViewAccessibility().SetHasPopup(ax::mojom::HasPopup::kMenu);
+
+  if (auto* sidebar_controller = browser_->GetFeatures().sidebar_controller()) {
+    sidebar_model_observation_.Observe(sidebar_controller->model());
+  }
 }
 
 AIChatButton::~AIChatButton() = default;
+
+void AIChatButton::OnThemeChanged() {
+  ToolbarButton::OnThemeChanged();
+
+  // Theme change clears button's highlight state.
+  UpdateButtonHighlight();
+}
+
+void AIChatButton::OnActiveIndexChanged(std::optional<size_t> /*old_index*/,
+                                        std::optional<size_t> /*new_index*/) {
+  UpdateButtonHighlight();
+}
 
 void AIChatButton::ButtonPressed() {
   auto* prefs = browser_->GetProfile()->GetOriginalProfile()->GetPrefs();
@@ -55,6 +83,8 @@ void AIChatButton::ButtonPressed() {
   } else {
     chrome::ExecuteCommand(&browser_.get(), IDC_TOGGLE_AI_CHAT);
   }
+
+  UpdateButtonHighlight();
 
   auto* profile_metrics =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
@@ -121,6 +151,25 @@ bool AIChatButton::IsCommandIdChecked(int command_id) const {
   }
 
   NOTREACHED();
+}
+
+bool AIChatButton::ShouldHighlight() const {
+  if (opens_full_page_.GetValue()) {
+    return false;
+  }
+
+  auto* sidebar_controller = browser_->GetFeatures().sidebar_controller();
+  if (!sidebar_controller) {
+    return false;
+  }
+
+  const auto index = sidebar_controller->model()->GetIndexOf(
+      sidebar::SidebarItem::BuiltInItemType::kChatUI);
+  return index.has_value() && sidebar_controller->IsActiveIndex(index);
+}
+
+void AIChatButton::UpdateButtonHighlight() {
+  SetHighlighted(ShouldHighlight());
 }
 
 BEGIN_METADATA(AIChatButton)
