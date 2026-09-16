@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import { BraveAccountLoggedOutRowElement } from './brave_account_logged_out_row.js'
 import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
@@ -17,7 +18,7 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
         </leo-icon>
         <div class="title-and-description">
           <div class="title">
-            ${this.i18n(
+            ${loadTimeData.getString(
                 BraveAccountSettingsStrings
                      .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE)}
           </div>
@@ -25,7 +26,7 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
             ${this.state.verification.intent
                 === LoggedOutVerificationIntent.kResetPassword
                 && this.state.verification.verifiedEmail
-              ? this.i18n(BraveAccountSettingsStrings
+              ? loadTimeData.getString(BraveAccountSettingsStrings
                   .SETTINGS_BRAVE_ACCOUNT_RESET_PASSWORD_VERIFIED_ROW_DESCRIPTION)
               : html`${this.getVerificationDescription().beforeLink}<leo-link
                     @click=${this.onResendConfirmationEmailLinkClicked}
@@ -38,7 +39,7 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
         <leo-button kind="plain"
                     size="small"
                     @click=${this.openDialogInDefaultMode}>
-          ${this.i18n(this.state.verification.intent
+          ${loadTimeData.getString(this.state.verification.intent
               === LoggedOutVerificationIntent.kResetPassword
               && this.state.verification.verifiedEmail
               ? BraveAccountSettingsStrings
@@ -50,7 +51,7 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
                     size="small"
                     class="cancel-verification-button"
                     @click=${this.onCancelVerificationButtonClicked}>
-          ${this.i18n(this.state.verification.intent
+          ${loadTimeData.getString(this.state.verification.intent
               === LoggedOutVerificationIntent.kResetPassword
               ? BraveAccountSettingsStrings
                   .SETTINGS_BRAVE_ACCOUNT_CANCEL_RESET_PASSWORD_BUTTON_LABEL
@@ -64,13 +65,13 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
         </leo-icon>
         <div class="title-and-description">
           <div class="title">
-            ${this.i18n(
+            ${loadTimeData.getString(
                 BraveAccountSettingsStrings
                      .SETTINGS_BRAVE_ACCOUNT_LOGGED_OUT_ROW_TITLE)}
           </div>
           <div class="description">
             ${this.getLoggedOutDescription().beforeLink}<leo-link
-                href=${this.i18n('braveAccountLearnMoreURL')}
+                href=${loadTimeData.getString('braveAccountLearnMoreURL')}
                 target="_blank"
                 >${this.getLoggedOutDescription().linkLabel}</leo-link>${
               this.getLoggedOutDescription().afterLink}
@@ -79,7 +80,7 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
         <leo-button kind="filled"
                     size="small"
                     @click=${this.openDialogInDefaultMode}>
-          ${this.i18n(
+          ${loadTimeData.getString(
               BraveAccountSettingsStrings
                    .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL)}
         </leo-button>

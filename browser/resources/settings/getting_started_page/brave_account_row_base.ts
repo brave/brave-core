@@ -5,7 +5,6 @@
 
 import { assert } from '//resources/js/assert.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
-import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import { BraveAccountBrowserProxy } from './brave_account_browser_proxy.js'
@@ -20,7 +19,7 @@ import { showError, showSuccess } from '../brave_account_shared.js'
 export abstract class BraveAccountRowBaseElement<
   Intent,
   State extends { verification: { intent: Intent } | null },
-> extends I18nMixinLit(CrLitElement) {
+> extends CrLitElement {
   static override get properties() {
     return {
       browserProxy: { type: Object },
@@ -58,7 +57,7 @@ export abstract class BraveAccountRowBaseElement<
     return {
       beforeLink: [
         this.verificationIntentDescription,
-        this.i18n(BraveAccountSettingsStrings
+        loadTimeData.getString(BraveAccountSettingsStrings
           .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2),
         beforeLink,
       ].join(' '),
@@ -97,8 +96,12 @@ export abstract class BraveAccountRowBaseElement<
     this.openDialog(DialogMode.kAccountDeletion)
   }
 
+  // How the dialog is opened is the host's decision, not the row's, so the
+  // rows only announce the intent and let their mount act on it.
   private openDialog(dialogMode: DialogMode) {
-    this.browserProxy.rowHandler.openDialog(
-        this.initiatingServiceName, dialogMode)
+    this.fire('open-brave-account-dialog', {
+      initiatingServiceName: this.initiatingServiceName,
+      dialogMode,
+    })
   }
 }
