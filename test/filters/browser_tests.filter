@@ -3149,3 +3149,47 @@
 -WebUiNtpBrowserTest.*
 -WebViewTest.*
 -WebstoreReinstallerBrowserTest.*
+
+# RecentTabsSubMenuModelTest: these refer to g_brave_browser_process, which is
+# not initialized in browser tests, is null, and so they crash. Not related to
+# RecentTabsSubMenuModel's additional "More..." menu item.
+-RecentTabsSubMenuModelTest.RecentlyClosedTabsFromCurrentSession
+-RecentTabsSubMenuModelTest.RecentlyClosedGroupsFromCurrentSession
+
+# RecentTabsSubMenuModelTest.MaxSessionsAndRecency references menu items
+# explicitly by index, which doesn't match our menu since we insert an
+# additional "Clear browsing data" item ahead of the entries of interest.
+-RecentTabsSubMenuModelTest.MaxSessionsAndRecency
+
+# RecentTabsSubMenuModelTest.MaxTabsPerSessionAndRecency fails because our
+# "More..." item doesn't match the test's expectation of the tab name.
+-RecentTabsSubMenuModelTest.MaxTabsPerSessionAndRecency
+
+# RecentTabsSubMenuModelTest.RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh:
+# we have refresh disabled, but it fails because
+# ExtensionWebContentsObserver::GetForWebContents returns nullptr and crashes.
+-RecentTabsSubMenuModelTest.RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh
+
+# These RecentTabsSubMenuModelSplitTest/RecentTabsSubMenuModelTest tests
+# reference the recently-closed submenu by explicit index
+# (GetSubmenuModelAt(4)), which doesn't match Brave's menu since we disable
+# History Clusters and every item shifts down by one (submenu is at index 3
+# for us).
+-RecentTabsSubMenuModelSplitTest.RecentlyClosedSplitsFromCurrentSession
+-RecentTabsSubMenuModelSplitTest.RecentlyClosedWindowWithSplit
+-RecentTabsSubMenuModelSplitTest.RecentlyClosedWindowWithGroupsAndSplits
+-RecentTabsSubMenuModelSplitTest.RecentlyClosedWindowWithSplitAndRegularTabs
+-RecentTabsSubMenuModelSplitTest.RecentlyClosedGroupWithSplit
+-RecentTabsSubMenuModelTest.SavingBrowserHistoryDisabledPolicyChangeMidSession
+
+# RecentTabsSubMenuModelTest.OtherDevicesAvailability: Brave Sync uses its own
+# keypair-based auth instead of Google identity, so it never reports
+# signed-in from signin::MakeAccountAvailable() and
+# SyncUserSettingsImpl::SetSelectedType() then hits NOTREACHED for
+# kNotSignedIn.
+-RecentTabsSubMenuModelTest.OtherDevicesAvailability
+
+# RecentTabsSubMenuModelTest.LogMenuMetricsForShowGroupedHistory: upstream
+# code won't execute the IDC_SHOW_HISTORY_CLUSTERS_SIDE_PANEL command when
+# history clusters aren't enabled, but the test doesn't check for that.
+-RecentTabsSubMenuModelTest.LogMenuMetricsForShowGroupedHistory

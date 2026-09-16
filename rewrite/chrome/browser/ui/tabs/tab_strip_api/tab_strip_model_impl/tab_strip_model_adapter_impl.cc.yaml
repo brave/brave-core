@@ -1,0 +1,43 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Treat TREE_NODE as an unsupported MoveTab target, like SPLIT/TABSTRIP.
+
+      Anchored on TabStripModelAdapterImpl::MoveTab's own TABSTRIP/SPLIT
+      fallthrough group so this doesn't also match MoveCollection's separate
+      SPLIT handler (which casts to SplitTabCollection and must NOT receive
+      TREE_NODE).
+    regex:
+      pattern: |-
+        case tabs::TabCollection::Type::TABSTRIP:
+            case tabs::TabCollection::Type::SPLIT:
+              NOTIMPLEMENTED();
+      replace: |-
+        case tabs::TabCollection::Type::TABSTRIP:
+            case tabs::TabCollection::Type::SPLIT:
+            case tabs::TabCollection::Type::TREE_NODE:
+              NOTIMPLEMENTED();
+
+  - description: |
+      Treat TREE_NODE as an unsupported MoveCollection target.
+
+      Anchored on MoveCollection's own PINNED/UNPINNED/TABSTRIP "unsupported"
+      fallthrough group, deliberately NOT the SPLIT case a few lines above
+      (which does `static_cast<const tabs::SplitTabCollection*>(collection)`
+      -- a TREE_NODE collection must never flow through that cast).
+    regex:
+      pattern: |-
+        case tabs::TabCollection::Type::PINNED:
+            case tabs::TabCollection::Type::UNPINNED:
+            case tabs::TabCollection::Type::TABSTRIP:
+              NOTIMPLEMENTED();
+      replace: |-
+        case tabs::TabCollection::Type::PINNED:
+            case tabs::TabCollection::Type::UNPINNED:
+            case tabs::TabCollection::Type::TABSTRIP:
+            case tabs::TabCollection::Type::TREE_NODE:
+              NOTIMPLEMENTED();

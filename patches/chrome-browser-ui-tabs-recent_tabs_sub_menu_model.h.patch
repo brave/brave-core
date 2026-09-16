@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h
+index 52600474533fba696d90c956dc63ead09995b4a5..4a7cfb63a19fe60728e29ee7add77f7696d69b49 100644
+--- a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h
++++ b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.h
+@@ -78,6 +78,7 @@ class RecentTabsSubMenuModel : public ui::SimpleMenuModel,
+   void RegisterLogMenuMetricsCallback(LogMenuMetricsCallback callback);
+ 
+  private:
++  friend class BraveRecentTabsSubMenuModel;
+   // The various command types this menu supports.
+   enum CommandType {
+     Tab,          // Includes local and remote tabs.
+@@ -303,6 +304,15 @@ class RecentTabsSubMenuModel : public ui::SimpleMenuModel,
+   size_t last_local_model_index_ = 0;
+ 
+   base::CancelableTaskTracker local_tab_cancelable_task_tracker_;
++  std::unique_ptr<sessions::SessionTab> stub_tab_;
++
++  // Appends a "show more" stub item to `device_menu_model` when
++  // `tabs_in_session` holds more tabs than `max_tabs_to_show`, linking it
++  // to brave://history/syncedTabs.
++  void MaybeAppendOverflowStubTab(
++      std::vector<const sessions::SessionTab*>& tabs_in_session,
++      size_t max_tabs_to_show,
++      SimpleMenuModel* device_menu_model);
+ 
+   base::ScopedObservation<sessions::TabRestoreService,
+                           sessions::TabRestoreServiceObserver>

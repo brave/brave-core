@@ -1,0 +1,25 @@
+diff --git a/chrome/browser/ui/tabs/tab_model.h b/chrome/browser/ui/tabs/tab_model.h
+index e7b5824cb2284ecb4adb2a9f8325c580a221eabf..3c63c6c7127f760fd094be19d1b8b750ade25ec6 100644
+--- a/chrome/browser/ui/tabs/tab_model.h
++++ b/chrome/browser/ui/tabs/tab_model.h
+@@ -57,6 +57,12 @@ class TabModel final : public TabInterface,
+   }
+   std::optional<tab_groups::TabGroupId> group() const { return group_; }
+ 
++  void set_opener_was_set_for_empty_new_tab() {
++    opener_was_set_for_empty_new_tab_ = true;
++  }
++  bool opener_was_set_for_empty_new_tab() const {
++    return opener_was_set_for_empty_new_tab_;
++  }
+   void set_opener(tabs::TabInterface* opener);
+   void set_reset_opener_on_active_tab_change(
+       bool reset_opener_on_active_tab_change) {
+@@ -237,6 +243,7 @@ class TabModel final : public TabInterface,
+   bool will_be_detaching_ = false;
+   tabs::TabHandle opener_handle_;
+   bool reset_opener_on_active_tab_change_ = false;
++  bool opener_was_set_for_empty_new_tab_ = false;
+   bool pinned_ = false;
+   bool blocked_ = false;
+   bool visible_ = false;

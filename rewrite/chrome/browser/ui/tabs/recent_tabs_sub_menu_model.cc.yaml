@@ -1,0 +1,55 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Replace the sign-in-to-sync prompt with a plain "no device tabs"
+      message.
+
+      Brave doesn't offer the "sign in to see tabs from other devices" flow;
+      always show the same placeholder regardless of sign-in state. Falling
+      through without an early return is intentional: `sessions` stays empty
+      so the loop below is a no-op, and the DCHECK_GT(GetItemCount(), 0u)
+      right after it holds because AddItemWithStringId() here already added
+      an item.
+    regex:
+      pattern: |-
+        if (!open_tabs || !open_tabs->GetAllForeignSessions(&sessions)) {
+            if (open_tabs) {
+              AddItemWithStringId(IDC_RECENT_TABS_NO_DEVICE_TABS,
+                                  IDS_RECENT_TABS_NO_DEVICE_TABS);
+            } else if (syncer::IsReplaceSyncPromosWithSignInPromosEnabled()) {
+              AddItemWithStringIdAndIcon(
+                  IDC_RECENT_TABS_SEE_DEVICE_TABS, IDS_RECENT_TABS_SEE_DEVICE_TABS,
+                  ui::ImageModel::FromVectorIcon(
+                      features::IsRoundedIconsEnabled() ? vector_icons::kSyncIcon
+                                                        : kSyncRefreshOldIcon,
+                      ui::kColorMenuIcon, ui::SimpleMenuModel::kDefaultIconSize));
+            } else {
+              AddItemWithStringIdAndIcon(
+                  IDC_RECENT_TABS_LOGIN_FOR_DEVICE_TABS,
+                  IDS_RECENT_TABS_LOGIN_FOR_DEVICE_TABS,
+                  ui::ImageModel::FromVectorIcon(
+                      features::IsRoundedIconsEnabled() ? vector_icons::kSyncIcon
+                                                        : kSyncRefreshOldIcon,
+                      ui::kColorMenuIcon, ui::SimpleMenuModel::kDefaultIconSize));
+            }
+            return;
+          }
+      replace: |-
+        if (!open_tabs || !open_tabs->GetAllForeignSessions(&sessions)) {
+            AddItemWithStringId(IDC_RECENT_TABS_NO_DEVICE_TABS,
+                                IDS_RECENT_TABS_NO_DEVICE_TABS);
+          }
+
+  - description: |
+      Append a "more tabs" stub item when a device has more tabs than shown.
+    regex:
+      pattern: |-
+        CreateOtherDeviceSubMenu(session, tabs_in_session);
+      replace: |-
+        CreateOtherDeviceSubMenu(session, tabs_in_session);
+            MaybeAppendOverflowStubTab(tabs_in_session, kMaxSessionsToShow,
+                                       device_menu_model.get());

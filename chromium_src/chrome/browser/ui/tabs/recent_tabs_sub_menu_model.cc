@@ -15,41 +15,36 @@ constexpr char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
 
 }  //  namespace
 
-#define BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES      \
-  if (tabs_in_session.size() > kMaxSessionsToShow) {                        \
-    /* Not all the tabs are shown in menu */                                \
-    if (!stub_tab_.get()) {                                                 \
-      stub_tab_.reset(new sessions::SessionTab());                          \
-      sessions::SerializedNavigationEntry stub_nav_entry;                   \
-      stub_nav_entry.set_title(                                             \
-          l10n_util::GetStringUTF16(IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS)); \
-      stub_nav_entry.set_virtual_url(GURL(kBraveSyncedTabsUrl));            \
-      stub_tab_->navigations.push_back(stub_nav_entry);                     \
-      stub_tab_->tab_id = SessionID::NewUnique();                           \
-    }                                                                       \
-    tabs_in_session[kMaxSessionsToShow] = stub_tab_.get();                  \
-    BuildOtherDevicesTabItem(device_menu_model.get(), kBraveStubSessionTag, \
-                             *tabs_in_session[kMaxSessionsToShow]);         \
-  }
-
-// Do not show the menu item to signin to show tabs from other devices. Instead,
-// always show the "No tabs from other devices" string.
-#define GetAllForeignSessions(SESSIONS) GetAllForeignSessions(&sessions)) { \
-    AddItemWithStringId(IDC_RECENT_TABS_NO_DEVICE_TABS,                     \
-                        IDS_RECENT_TABS_NO_DEVICE_TABS);                    \
-  }                                                                         \
-  if (false
-
 #include <chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc>
-
-#undef GetAllForeignSessions
-#undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES
 
 #include "brave/browser/ui/toolbar/brave_recent_tabs_sub_menu_model.h"
 
-// Methods of BraveRecentTabsSubMenuModel are implemented below instead of
+// Methods of BraveRecentTabsSubMenuModel and RecentTabsSubMenuModel's
+// MaybeAppendOverflowStubTab() are implemented below instead of
 // brave_recent_tabs_sub_menu_model.cc to have the access to functions in
 // anonymous namespace in recent_tabs_sub_menu_model.cc
+
+void RecentTabsSubMenuModel::MaybeAppendOverflowStubTab(
+    std::vector<const sessions::SessionTab*>& tabs_in_session,
+    size_t max_tabs_to_show,
+    SimpleMenuModel* device_menu_model) {
+  if (tabs_in_session.size() <= max_tabs_to_show) {
+    return;
+  }
+  // Not all the tabs are shown in menu.
+  if (!stub_tab_.get()) {
+    stub_tab_.reset(new sessions::SessionTab());
+    sessions::SerializedNavigationEntry stub_nav_entry;
+    stub_nav_entry.set_title(
+        l10n_util::GetStringUTF16(IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS));
+    stub_nav_entry.set_virtual_url(GURL(kBraveSyncedTabsUrl));
+    stub_tab_->navigations.push_back(stub_nav_entry);
+    stub_tab_->tab_id = SessionID::NewUnique();
+  }
+  tabs_in_session[max_tabs_to_show] = stub_tab_.get();
+  BuildOtherDevicesTabItem(device_menu_model, kBraveStubSessionTag,
+                           *tabs_in_session[max_tabs_to_show]);
+}
 
 BraveRecentTabsSubMenuModel::BraveRecentTabsSubMenuModel(
     ui::AcceleratorProvider* accelerator_provider,

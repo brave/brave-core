@@ -1,12 +1,42 @@
 diff --git a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
-index a127f8225ef7dcfc7fb6debc15b1c6aabb0d992e..4cecc54150ceeccb54f7228f4922e33e2a6dfd9d 100644
+index a127f8225ef7dcfc7fb6debc15b1c6aabb0d992e..cbf9c53b0af5e88c3639a9a49322359676e8dcf9 100644
 --- a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
 +++ b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
-@@ -620,6 +620,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
+@@ -577,26 +577,8 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
+   std::vector<raw_ptr<const sync_sessions::SyncedSession, VectorExperimental>>
+       sessions;
+   if (!open_tabs || !open_tabs->GetAllForeignSessions(&sessions)) {
+-    if (open_tabs) {
+-      AddItemWithStringId(IDC_RECENT_TABS_NO_DEVICE_TABS,
+-                          IDS_RECENT_TABS_NO_DEVICE_TABS);
+-    } else if (syncer::IsReplaceSyncPromosWithSignInPromosEnabled()) {
+-      AddItemWithStringIdAndIcon(
+-          IDC_RECENT_TABS_SEE_DEVICE_TABS, IDS_RECENT_TABS_SEE_DEVICE_TABS,
+-          ui::ImageModel::FromVectorIcon(
+-              features::IsRoundedIconsEnabled() ? vector_icons::kSyncIcon
+-                                                : kSyncRefreshOldIcon,
+-              ui::kColorMenuIcon, ui::SimpleMenuModel::kDefaultIconSize));
+-    } else {
+-      AddItemWithStringIdAndIcon(
+-          IDC_RECENT_TABS_LOGIN_FOR_DEVICE_TABS,
+-          IDS_RECENT_TABS_LOGIN_FOR_DEVICE_TABS,
+-          ui::ImageModel::FromVectorIcon(
+-              features::IsRoundedIconsEnabled() ? vector_icons::kSyncIcon
+-                                                : kSyncRefreshOldIcon,
+-              ui::kColorMenuIcon, ui::SimpleMenuModel::kDefaultIconSize));
+-    }
+-    return;
++    AddItemWithStringId(IDC_RECENT_TABS_NO_DEVICE_TABS,
++                        IDS_RECENT_TABS_NO_DEVICE_TABS);
+   }
+ 
+   // Sort sessions from most recent to least recent.
+@@ -620,6 +602,8 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
      DCHECK(!session->GetSessionName().empty());
      std::unique_ptr<ui::SimpleMenuModel> device_menu_model =
          CreateOtherDeviceSubMenu(session, tabs_in_session);
-+    BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES
++    MaybeAppendOverflowStubTab(tabs_in_session, kMaxSessionsToShow,
++                               device_menu_model.get());
      const int command_id = GetAndIncrementNextMenuID();
      AddSubMenu(command_id, base::UTF8ToUTF16(session->GetSessionName()),
                 device_menu_model.get());

@@ -1,0 +1,36 @@
+substitutions:
+- add_friend:
+    class_name: RecentTabsSubMenuModel
+    friend_type: class BraveRecentTabsSubMenuModel
+  description: 'Let BraveRecentTabsSubMenuModel reach RecentTabsSubMenuModel''s private
+
+    members.
+
+    '
+- description: 'Add stub_tab_ and a private helper to show a "more tabs" overflow
+    item.
+
+
+    MaybeAppendOverflowStubTab() is defined in
+
+    recent_tabs_sub_menu_model.cc.yaml''s shadow (this method needs access to
+
+    the private stub_tab_ member and BuildOtherDevicesTabItem(), so it lives
+
+    on RecentTabsSubMenuModel itself rather than a free function or the
+
+    BraveRecentTabsSubMenuModel subclass - the latter would require an
+
+    unsafe downcast since RecentTabsSubMenuModelTest instantiates the plain
+
+    base class directly).
+
+    '
+  regex:
+    pattern: '  base::CancelableTaskTracker local_tab_cancelable_task_tracker_;'
+    replace: "  base::CancelableTaskTracker local_tab_cancelable_task_tracker_;\n\
+      \  std::unique_ptr<sessions::SessionTab> stub_tab_;\n\n  // Appends a \"show\
+      \ more\" stub item to `device_menu_model` when\n  // `tabs_in_session` holds\
+      \ more tabs than `max_tabs_to_show`, linking it\n  // to brave://history/syncedTabs.\n\
+      \  void MaybeAppendOverflowStubTab(\n      std::vector<const sessions::SessionTab*>&\
+      \ tabs_in_session,\n      size_t max_tabs_to_show,\n      SimpleMenuModel* device_menu_model);"

@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Return shared-pinned-tab data early when the tab is a shared pinned
+      dummy.
+    preempt_function_impl:
+      function_name: TabData::FromTabInterface
+      code: |-
+        if (auto tab_data = MaybeGetSharedPinnedTabData(tab_interface)) {
+          return *tab_data;
+        }
+
+  - description: |
+      Apply Brave's favicon-theming/unloaded-status overrides before
+      returning.
+    after_function_impl:
+      function_name: TabData::FromTabInterface
+      result_var: tab_data
+      code: |-
+        ApplyBraveTabDataOverrides(tab_interface, tab_data);
+        return tab_data;

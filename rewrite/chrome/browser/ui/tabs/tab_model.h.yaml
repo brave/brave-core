@@ -1,0 +1,27 @@
+substitutions:
+- description: 'Add an accessor for opener_was_set_for_empty_new_tab.
+
+
+    Used for tree tabs to check if the opener was set for an empty new tab
+
+    in TabStripModel::AddTab() (see tab_strip_model.cc.yaml).
+
+    '
+  regex:
+    pattern: '  void set_opener(tabs::TabInterface* opener);'
+    replace: "  void set_opener_was_set_for_empty_new_tab() {\n    opener_was_set_for_empty_new_tab_\
+      \ = true;\n  }\n  bool opener_was_set_for_empty_new_tab() const {\n    return\
+      \ opener_was_set_for_empty_new_tab_;\n  }\n  void set_opener(tabs::TabInterface*\
+      \ opener);"
+- description: 'Add opener_was_set_for_empty_new_tab_ private member.
+
+
+    Used for tree tabs to track whether the opener was set for an empty
+
+    new tab in TabStripModel::AddTab().
+
+    '
+  regex:
+    pattern: '  bool reset_opener_on_active_tab_change_ = false;'
+    replace: "  bool reset_opener_on_active_tab_change_ = false;\n  bool opener_was_set_for_empty_new_tab_\
+      \ = false;"
