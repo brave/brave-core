@@ -9,6 +9,7 @@ source_set("brave_account") {
     "brave_account_authentication_provider.mm",
     "brave_account_constants_bridge.h",
     "brave_account_constants_bridge.mm",
+    "brave_account_dialog_presenting.h",
     "brave_account_feature_bridge.h",
     "brave_account_feature_bridge.mm",
     "brave_account_service_factory_ios.h",

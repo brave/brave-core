@@ -117,8 +117,8 @@ public class BraveAccountCustomTabActivity extends CustomTabActivity {
         return dpToPx(this, 56); // the standard action bar height on phones in portrait
     }
 
-    public static void show(Activity activity, @DialogMode.EnumType int dialogMode) {
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("brave://account"));
+    public static void show(Activity activity, String url, @DialogMode.EnumType int dialogMode) {
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         intent.setClassName(activity, BraveAccountCustomTabActivity.class.getName());
         intent.putExtra(EXTRA_DIALOG_MODE, dialogMode);
         intent.putExtra(Browser.EXTRA_APPLICATION_ID, activity.getPackageName());

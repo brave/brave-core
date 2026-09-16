@@ -59,7 +59,9 @@ protocol SettingsDelegate: AnyObject {
   func settingsCreateFakeHistory()
 }
 
-class SettingsViewController: TableViewController, BraveAccountAuthenticationObserver {
+class SettingsViewController: TableViewController, BraveAccountAuthenticationObserver,
+  BraveAccountDialogPresenting
+{
   weak var settingsDelegate: SettingsDelegate?
 
   private let profile: LegacyBrowserProfile
@@ -316,8 +318,24 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
   }()
 
   private lazy var defaultBrowserSection: Static.Section = {
-    Static.Section(
-      rows: [
+    var rows: [Row] = []
+
+    if IsBraveAccountEnabled() {
+      rows.append(
+        Row(
+          text: L10nUtils.string(messageId: .SETTINGS_BRAVE_ACCOUNT_ROW_TITLE),
+          selection: { [unowned self] in
+            openBraveAccountDialog(path: "/settings")
+          },
+          image: UIImage(sharedNamed: "brave.logo"),
+          accessory: .disclosureIndicator,
+          cellClass: BraveAccountIconCell.self
+        )
+      )
+    }
+
+    rows.append(
+      contentsOf: [
         Row(
           text: Strings.setDefaultBrowserSettingsCell,
           selection: { [unowned self] in
@@ -383,6 +401,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         ),
       ]
     )
+
+    return Static.Section(rows: rows)
   }()
 
   private func setCellEnabled(_ enabled: Bool, rowUUID: UUID, sectionUUID: UUID) {
@@ -403,16 +423,38 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     }
   }
 
-  private func openBraveAccountDialog(dialogMode: BraveAccount.DialogMode = .default) {
+  private func openBraveAccountDialog(
+    path: String = "",
+    dialogMode: BraveAccount.DialogMode = .default
+  ) {
+    presentBraveAccountDialog(
+      for: URL(string: "brave://account\(path)")!,
+      dialogMode: dialogMode
+    )
+  }
+
+  // MARK: - BraveAccountDialogPresenting
+
+  // Also called from the WebUI serving the account rows, which asks for the
+  // flows to be presented over it rather than navigating in place.
+  func presentBraveAccountDialog(for url: URL, dialogMode: BraveAccount.DialogMode) {
     let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
     let container = UINavigationController(rootViewController: controller)
     controller.title = L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)
     controller.webView.braveAccountDialogMode = dialogMode
-    controller.webView.load(URLRequest(url: URL(string: "brave://account")!))
+    controller.webView.load(URLRequest(url: url))
     controller.navigationItem.rightBarButtonItem = .doneButton { [unowned container] in
       container.dismiss(animated: true)
     }
-    present(container, animated: true)
+
+    // The rows are themselves served in a presented WebUI, so present the flows
+    // from whatever is on top rather than from here - UIKit ignores a second
+    // presentation from a controller that is already presenting.
+    var presenter: UIViewController = navigationController ?? self
+    while let presented = presenter.presentedViewController {
+      presenter = presented
+    }
+    presenter.present(container, animated: true)
   }
 
   private var braveAccountSection: Static.Section? {
@@ -451,7 +493,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           messageId: .SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL
         ),
         detailText: L10nUtils.string(
-          messageId: .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3
+          messageId: .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3_NATIVE
         ),
         selection: { [unowned self] in
           setCellEnabled(

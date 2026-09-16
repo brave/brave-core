@@ -73,11 +73,18 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
             )}
           </div>
           <div class="description">
-            ${this.getLoggedOutDescription().beforeLink}<leo-link
-              href=${loadTimeData.getString('braveAccountLearnMoreURL')}
-              target="_blank"
-              >${this.getLoggedOutDescription().linkLabel}</leo-link
-            >${this.getLoggedOutDescription().afterLink}
+            <if expr="not is_android and not is_ios">
+              ${this.getLoggedOutDescription().beforeLink}<leo-link
+                href=${loadTimeData.getString('braveAccountLearnMoreURL')}
+                target="_blank"
+                >${this.getLoggedOutDescription().linkLabel}</leo-link
+              >${this.getLoggedOutDescription().afterLink}
+            </if>
+            <if expr="is_android or is_ios">
+              ${loadTimeData.getString(
+                BraveAccountSettingsStrings.BRAVE_ACCOUNT_DESCRIPTION,
+              )}
+            </if>
           </div>
         </div>
         <leo-button

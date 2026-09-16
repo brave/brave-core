@@ -13,6 +13,7 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_account/brave_account_constants.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
@@ -159,9 +160,6 @@ constexpr char16_t kSurveyPanelistLearnMoreURL[] =
 
 constexpr char16_t kExtensionsV2LearnMoreURL[] =
     u"https://brave.com/blog/brave-shields-manifest-v3/";
-
-constexpr char16_t kBraveAccountLearnMoreURL[] =
-    u"https://support.brave.app/hc/en-us/articles/45530506862349";
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -1334,7 +1332,7 @@ void BraveAddBraveAccountStrings(content::WebUIDataSource* html_source) {
     html_source->AddLocalizedStrings(webui::kBraveAccountSettingsStrings);
     html_source->AddLocalizedStrings(webui::kBraveAccountSharedStrings);
     html_source->AddString("braveAccountLearnMoreURL",
-                           kBraveAccountLearnMoreURL);
+                           brave_account::kBraveAccountLearnMoreURL);
   }
 }
 

@@ -41,10 +41,28 @@ build_webui("build") {
     "brave_account_password_reset_dialog.ts",
     "brave_account_password_strength_meter.html.ts",
     "brave_account_password_strength_meter.ts",
+    "brave_account_route.ts",
     "brave_account_shared.ts",
     "brave_account_sign_in_dialog.html.ts",
     "brave_account_sign_in_dialog.ts",
   ]
+
+  # Settings is native on Android/iOS, so the account rows are served as a page
+  # from this WebUI there. On desktop they are compiled into the
+  # brave://settings bundle instead - see
+  # //brave/browser/resources/settings/sources.gni.
+  if (is_android || is_ios) {
+    ts_files += [
+      "brave_account_logged_in_row.html.ts",
+      "brave_account_logged_in_row.ts",
+      "brave_account_logged_out_row.html.ts",
+      "brave_account_logged_out_row.ts",
+      "brave_account_row.html.ts",
+      "brave_account_row.ts",
+      "brave_account_row_base.ts",
+      "brave_account_row_browser_proxy.ts",
+    ]
+  }
 
   css_files = [
     "brave_account_common.css",
@@ -57,6 +75,13 @@ build_webui("build") {
     "brave_account_password_strength_meter.css",
     "brave_account_sign_in_dialog.css",
   ]
+
+  if (is_android || is_ios) {
+    css_files += [
+      "brave_account_logged_in_row.css",
+      "brave_account_row_common.css",
+    ]
+  }
 
   webui_context_type = "trusted"
 

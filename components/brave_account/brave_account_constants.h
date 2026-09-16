@@ -11,6 +11,9 @@ namespace brave_account {
 inline constexpr char kInitiatingServiceNameQueryParam[] =
     "initiating-service-name";
 
+inline constexpr char16_t kBraveAccountLearnMoreURL[] =
+    u"https://support.brave.app/hc/en-us/articles/45530506862349";
+
 }  // namespace brave_account
 
 #endif  // BRAVE_COMPONENTS_BRAVE_ACCOUNT_BRAVE_ACCOUNT_CONSTANTS_H_

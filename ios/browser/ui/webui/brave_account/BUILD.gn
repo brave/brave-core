@@ -22,6 +22,7 @@ source_set("brave_account") {
     "//ios/web/public",
     "//ios/web/public/webui",
     "//mojo/public/cpp/bindings",
+    "//net",
     "//url",
   ]
 }

@@ -90,6 +90,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge.h",
   "//brave/ios/browser/brave_account/brave_account_authentication_provider.h",
   "//brave/ios/browser/brave_account/brave_account_constants_bridge.h",
+  "//brave/ios/browser/brave_account/brave_account_dialog_presenting.h",
   "//brave/ios/browser/brave_account/brave_account_feature_bridge.h",
   "//brave/ios/browser/brave_origin/brave_origin_navigation_bridge.h",
   "//brave/ios/browser/brave_origin/brave_origin_service_bridge.h",
