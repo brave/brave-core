@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/site_data/page_specific_site_data_dialog.h"
 
+#include "brave/components/content_settings/core/browser/brave_content_settings_browsing_data_utils.h"
 #include "chrome/common/webui_url_constants.h"
 
 #define kOnDeviceSiteDataSubpage kCookieSettingsSubPage
