@@ -21,6 +21,16 @@ HRESULT BraveWireguardManager::EnableVpn(const BSTR public_key,
                                          const BSTR address,
                                          const BSTR endpoint,
                                          DWORD* last_error) {
+  return EnableVpn2(public_key, private_key, address, endpoint,
+                    /*allow_lan_traffic=*/TRUE, last_error);
+}
+
+HRESULT BraveWireguardManager::EnableVpn2(const BSTR public_key,
+                                          const BSTR private_key,
+                                          const BSTR address,
+                                          const BSTR endpoint,
+                                          BOOL allow_lan_traffic,
+                                          DWORD* last_error) {
   // if all params are empty, reconnect using last known good config.
   // browser/brave_vpn/win/brave_vpn_wireguard_service/service/wireguard_tunnel_service.cc
   bool reconnect_using_last_config = public_key && wcslen(public_key) == 0 &&

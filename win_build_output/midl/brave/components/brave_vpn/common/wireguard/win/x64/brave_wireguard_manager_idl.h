@@ -60,11 +60,25 @@ typedef interface IBraveVpnWireguardManager IBraveVpnWireguardManager;
 #endif 	/* __IBraveVpnWireguardManager_FWD_DEFINED__ */
 
 
+#ifndef __IBraveVpnWireguardManager2_FWD_DEFINED__
+#define __IBraveVpnWireguardManager2_FWD_DEFINED__
+typedef interface IBraveVpnWireguardManager2 IBraveVpnWireguardManager2;
+
+#endif 	/* __IBraveVpnWireguardManager2_FWD_DEFINED__ */
+
+
 #ifndef __IBraveVpnWireguardManager_FWD_DEFINED__
 #define __IBraveVpnWireguardManager_FWD_DEFINED__
 typedef interface IBraveVpnWireguardManager IBraveVpnWireguardManager;
 
 #endif 	/* __IBraveVpnWireguardManager_FWD_DEFINED__ */
+
+
+#ifndef __IBraveVpnWireguardManager2_FWD_DEFINED__
+#define __IBraveVpnWireguardManager2_FWD_DEFINED__
+typedef interface IBraveVpnWireguardManager2 IBraveVpnWireguardManager2;
+
+#endif 	/* __IBraveVpnWireguardManager2_FWD_DEFINED__ */
 
 
 /* header files for imported files */
@@ -179,12 +193,128 @@ EXTERN_C const IID IID_IBraveVpnWireguardManager;
 #endif 	/* __IBraveVpnWireguardManager_INTERFACE_DEFINED__ */
 
 
+#ifndef __IBraveVpnWireguardManager2_INTERFACE_DEFINED__
+#define __IBraveVpnWireguardManager2_INTERFACE_DEFINED__
+
+/* interface IBraveVpnWireguardManager2 */
+/* [unique][helpstring][uuid][oleautomation][object] */ 
+
+
+EXTERN_C const IID IID_IBraveVpnWireguardManager2;
+
+#if defined(__cplusplus) && !defined(CINTERFACE)
+    
+    MIDL_INTERFACE("199DAF4E-A602-49CC-A3B0-2F51B9559682")
+    IBraveVpnWireguardManager2 : public IBraveVpnWireguardManager
+    {
+    public:
+        virtual HRESULT STDMETHODCALLTYPE EnableVpn2( 
+            /* [in] */ BSTR public_key,
+            /* [in] */ BSTR private_key,
+            /* [in] */ BSTR address,
+            /* [in] */ BSTR endpoint,
+            /* [in] */ BOOL allow_lan_traffic,
+            /* [out] */ DWORD *last_error) = 0;
+        
+    };
+    
+    
+#else 	/* C style interface */
+
+    typedef struct IBraveVpnWireguardManager2Vtbl
+    {
+        BEGIN_INTERFACE
+        
+        DECLSPEC_XFGVIRT(IUnknown, QueryInterface)
+        HRESULT ( STDMETHODCALLTYPE *QueryInterface )( 
+            IBraveVpnWireguardManager2 * This,
+            /* [in] */ REFIID riid,
+            /* [annotation][iid_is][out] */ 
+            _COM_Outptr_  void **ppvObject);
+        
+        DECLSPEC_XFGVIRT(IUnknown, AddRef)
+        ULONG ( STDMETHODCALLTYPE *AddRef )( 
+            IBraveVpnWireguardManager2 * This);
+        
+        DECLSPEC_XFGVIRT(IUnknown, Release)
+        ULONG ( STDMETHODCALLTYPE *Release )( 
+            IBraveVpnWireguardManager2 * This);
+        
+        DECLSPEC_XFGVIRT(IBraveVpnWireguardManager, EnableVpn)
+        HRESULT ( STDMETHODCALLTYPE *EnableVpn )( 
+            IBraveVpnWireguardManager2 * This,
+            /* [in] */ BSTR public_key,
+            /* [in] */ BSTR private_key,
+            /* [in] */ BSTR address,
+            /* [in] */ BSTR endpoint,
+            /* [out] */ DWORD *last_error);
+        
+        DECLSPEC_XFGVIRT(IBraveVpnWireguardManager, DisableVpn)
+        HRESULT ( STDMETHODCALLTYPE *DisableVpn )( 
+            IBraveVpnWireguardManager2 * This,
+            /* [out] */ DWORD *last_error);
+        
+        DECLSPEC_XFGVIRT(IBraveVpnWireguardManager2, EnableVpn2)
+        HRESULT ( STDMETHODCALLTYPE *EnableVpn2 )( 
+            IBraveVpnWireguardManager2 * This,
+            /* [in] */ BSTR public_key,
+            /* [in] */ BSTR private_key,
+            /* [in] */ BSTR address,
+            /* [in] */ BSTR endpoint,
+            /* [in] */ BOOL allow_lan_traffic,
+            /* [out] */ DWORD *last_error);
+        
+        END_INTERFACE
+    } IBraveVpnWireguardManager2Vtbl;
+
+    interface IBraveVpnWireguardManager2
+    {
+        CONST_VTBL struct IBraveVpnWireguardManager2Vtbl *lpVtbl;
+    };
+
+    
+
+#ifdef COBJMACROS
+
+
+#define IBraveVpnWireguardManager2_QueryInterface(This,riid,ppvObject)	\
+    ( (This)->lpVtbl -> QueryInterface(This,riid,ppvObject) ) 
+
+#define IBraveVpnWireguardManager2_AddRef(This)	\
+    ( (This)->lpVtbl -> AddRef(This) ) 
+
+#define IBraveVpnWireguardManager2_Release(This)	\
+    ( (This)->lpVtbl -> Release(This) ) 
+
+
+#define IBraveVpnWireguardManager2_EnableVpn(This,public_key,private_key,address,endpoint,last_error)	\
+    ( (This)->lpVtbl -> EnableVpn(This,public_key,private_key,address,endpoint,last_error) ) 
+
+#define IBraveVpnWireguardManager2_DisableVpn(This,last_error)	\
+    ( (This)->lpVtbl -> DisableVpn(This,last_error) ) 
+
+
+#define IBraveVpnWireguardManager2_EnableVpn2(This,public_key,private_key,address,endpoint,allow_lan_traffic,last_error)	\
+    ( (This)->lpVtbl -> EnableVpn2(This,public_key,private_key,address,endpoint,allow_lan_traffic,last_error) ) 
+
+#endif /* COBJMACROS */
+
+
+#endif 	/* C style interface */
+
+
+
+
+#endif 	/* __IBraveVpnWireguardManager2_INTERFACE_DEFINED__ */
+
+
 
 #ifndef __BraveVpnWireguardServiceLib_LIBRARY_DEFINED__
 #define __BraveVpnWireguardServiceLib_LIBRARY_DEFINED__
 
 /* library BraveVpnWireguardServiceLib */
 /* [helpstring][version][uuid] */ 
+
 
 
 

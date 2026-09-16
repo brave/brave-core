@@ -146,6 +146,16 @@ void BraveVpnServiceImpl::GetSmartProxyRoutingState(
   std::move(callback).Run(false);
 }
 
+void BraveVpnServiceImpl::AllowLanTraffic(bool /*allow*/) {
+  NOTIMPLEMENTED();
+}
+
+void BraveVpnServiceImpl::GetAllowLanTraffic(
+    GetAllowLanTrafficCallback callback) {
+  NOTIMPLEMENTED();
+  std::move(callback).Run(false, false);
+}
+
 void BraveVpnServiceImpl::SetConnectionStateForTesting(  // IN-TEST
     mojom::ConnectionState state) {
   connection_state_ = state;
