@@ -248,12 +248,12 @@ export function supportTestOptions<
     .option(
       '--ios_simulator_platform <simulator_platform>',
       'platform to use for ios simulator',
-      'iPhone 17',
+      'iPhone 18 Pro',
     )
     .option(
       '--ios_simulator_version <simulator_version>',
       'ios version for simulator',
-      '26.2',
+      '27.0',
     ) // should match ios_deployment_target
 }
 
