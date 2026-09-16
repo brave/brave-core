@@ -7,23 +7,23 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
 // Types
-import { NavOption } from '../../../constants/types'
+import { NavOption } from '$wallet/constants/types'
 
 // Options
 import {
   BuySendSwapDepositOptions,
   BuySendSwapDepositIOSOptions,
-} from '../../../options/nav-options'
+} from '$wallet/options/nav-options'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Selectors
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../common/selectors'
+import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors } from '$wallet/common/selectors'
 
 // Styled Components
-import { ButtonMenu } from './wellet-menus.style'
+import { ButtonMenu } from './wallet_menus.style'
 
 interface Props {
   children: React.ReactNode

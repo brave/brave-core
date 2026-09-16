@@ -8,30 +8,30 @@ import { showAlert } from '@brave/leo/react/alertCenter'
 import Icon from '@brave/leo/react/icon'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet } from '$wallet/constants/types'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
-import { copyToClipboard } from '../../../utils/copy-to-clipboard'
+import { getLocale } from '$web-common/locale'
+import { copyToClipboard } from '$wallet/utils/copy-to-clipboard'
 
 // Hooks
 import {
   useOnClickOutside, //
-} from '../../../common/hooks/useOnClickOutside'
+} from '$wallet/common/hooks/useOnClickOutside'
 
 // Components
 import {
   DepositModal, //
-} from '../popup-modals/account-settings-modal/account-settings-modal'
+} from '$wallet/components/desktop/popup-modals/account-settings-modal/account-settings-modal'
 import {
   ViewOnBlockExplorerModal, //
-} from '../popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
-import { PopupModal } from '../popup-modals'
+} from '$wallet/components/desktop/popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
+import { PopupModal } from '$wallet/components/desktop/popup-modals'
 
 // Styled Components
-import { ButtonMenu } from './wellet-menus.style'
+import { ButtonMenu } from './wallet_menus.style'
 import { Button } from './address_actions_menu.style'
-import { VerticalDivider, Column } from '../../shared/style'
+import { VerticalDivider, Column } from '$wallet/components/shared/style'
 
 export interface Props {
   account: BraveWallet.AccountInfo

@@ -29,7 +29,7 @@ import { UISelectors } from '../../../../../common/selectors'
 // Components
 import {
   PortfolioActionsMoreMenu, //
-} from '../../../../../components/desktop/wallet-menus/portfolio_actions_more_menu'
+} from '$wallet/page/components/wallet_menus/portfolio_actions_more_menu'
 
 // Styled Components
 import { Button, ButtonIcon } from './buy_send_swap_deposit_nav.style'

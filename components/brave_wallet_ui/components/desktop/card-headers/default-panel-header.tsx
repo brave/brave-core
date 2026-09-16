@@ -27,7 +27,7 @@ import { openWalletRouteTab } from '../../../utils/routes-utils'
 import { getLocale } from '../../../../common/locale'
 
 // Components
-import { WalletSettingsMenu } from '../wallet-menus/wallet_settings_menu'
+import { WalletSettingsMenu } from '$wallet/page/components/wallet_menus/wallet_settings_menu'
 
 // Styled Components
 import {

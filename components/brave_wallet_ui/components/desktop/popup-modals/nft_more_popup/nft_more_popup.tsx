@@ -9,7 +9,7 @@ import Icon from '@brave/leo/react/icon'
 import { getLocale } from '../../../../../common/locale'
 
 // Styled Components
-import { ButtonMenu } from '../../wallet-menus/wellet-menus.style'
+import { ButtonMenu } from '$wallet/page/components/wallet_menus/wallet_menus.style'
 
 interface Props {
   children: React.ReactNode

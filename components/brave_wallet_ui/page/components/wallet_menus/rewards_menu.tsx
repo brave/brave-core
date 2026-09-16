@@ -10,14 +10,14 @@ import Icon from '@brave/leo/react/icon'
 // Queries
 import {
   useGetRewardsInfoQuery, //
-} from '../../../common/slices/api.slice'
-import { emptyRewardsInfo } from '../../../common/async/base-query-cache'
+} from '$wallet/common/slices/api.slice'
+import { emptyRewardsInfo } from '$wallet/common/async/base-query-cache'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Styled Components
-import { ButtonMenu } from './wellet-menus.style'
+import { ButtonMenu } from './wallet_menus.style'
 
 const onClickRewardsSettings = () => {
   chrome.tabs.create(

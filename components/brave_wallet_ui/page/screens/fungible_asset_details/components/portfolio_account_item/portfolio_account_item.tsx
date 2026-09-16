@@ -34,10 +34,10 @@ import {
 } from '$wallet/page/components/with_hide_balance_placeholder/with_hide_balance_placeholder'
 import {
   PortfolioAccountMenu, //
-} from '$wallet/components/desktop/wallet-menus/portfolio-account-menu'
+} from '$wallet/page/components/wallet_menus/portfolio_account_menu'
 import {
   RewardsMenu, //
-} from '$wallet/components/desktop/wallet-menus/rewards_menu'
+} from '$wallet/page/components/wallet_menus/rewards_menu'
 import {
   PopupModal, //
 } from '$wallet/components/desktop/popup-modals/index'

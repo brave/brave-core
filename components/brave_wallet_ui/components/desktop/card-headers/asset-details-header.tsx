@@ -43,7 +43,7 @@ import useExplorer from '../../../common/hooks/explorer'
 
 // Components
 import withPlaceholderIcon from '../../shared/create-placeholder-icon'
-import { AssetDetailsMenu } from '../wallet-menus/asset-details-menu'
+import { AssetDetailsMenu } from '$wallet/page/components/wallet_menus/asset_details_menu'
 import { CreateNetworkIcon } from '../../shared/create-network-icon'
 import { ShieldedLabel } from '../../shared/shielded_label/shielded_label'
 
