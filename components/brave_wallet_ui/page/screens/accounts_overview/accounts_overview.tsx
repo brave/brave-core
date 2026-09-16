@@ -30,7 +30,7 @@ import { AccountsListWrapper } from './accounts_overview.style'
 import { Column, Row, Text } from '$wallet/components/shared/style'
 
 // Components
-import AccountListItem from '$wallet/components/desktop/account-list-item'
+import { AccountListItem } from './components/account_list_item/account_list_item'
 import {
   WalletPageWrapper, //
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'

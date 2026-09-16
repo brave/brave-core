@@ -31,7 +31,7 @@ import { getLocale } from '$web-common/locale'
 // Components
 import {
   WithHideBalancePlaceholder, //
-} from '$wallet/components/desktop/with-hide-balance-placeholder'
+} from '$wallet/page/components/with_hide_balance_placeholder/with_hide_balance_placeholder'
 import {
   PortfolioAccountMenu, //
 } from '$wallet/components/desktop/wallet-menus/portfolio-account-menu'

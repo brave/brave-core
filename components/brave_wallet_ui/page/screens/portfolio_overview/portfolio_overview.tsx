@@ -73,7 +73,7 @@ import { LoadingSkeleton } from '../../../components/shared/loading-skeleton/ind
 import {
   SegmentedControl, //
 } from '../../../components/shared/segmented_control/segmented_control'
-import { PortfolioAssetItem } from '../../../components/desktop/portfolio-asset-item/index'
+import { PortfolioAssetItem } from '$wallet/page/components/portfolio_asset_item/portfolio_asset_item'
 import { TokenLists } from './components/token_lists/token_list'
 import {
   PortfolioOverviewChart, //

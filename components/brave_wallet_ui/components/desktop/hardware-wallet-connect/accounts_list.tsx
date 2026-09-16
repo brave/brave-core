@@ -30,7 +30,7 @@ import {
 
 // Components
 import { SearchBar } from '../../shared/search-bar/index'
-import { NetworkFilterSelector } from '../network-filter-selector'
+import { NetworkFilterSelector } from '$wallet/page/components/network_filter_selector/network_filter_selector'
 import { AccountListItem } from './account_list_item'
 
 // Styles

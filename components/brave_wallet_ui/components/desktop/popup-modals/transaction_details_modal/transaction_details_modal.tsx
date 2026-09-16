@@ -126,7 +126,7 @@ import {
   SellIconPlaceholder,
   BuyIconPlaceholder,
   SwapPlaceholderIcon,
-} from '../../portfolio_transaction_item/portfolio_transaction_item.style'
+} from '$wallet/page/components/virtualized_transaction_list/portfolio_transaction_item/portfolio_transaction_item.style'
 import {
   Column,
   HorizontalSpace,
