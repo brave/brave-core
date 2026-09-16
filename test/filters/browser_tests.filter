@@ -2727,6 +2727,14 @@
 # is never constructed and the nudge never fires.
 -ScheduledRestartBubbleControllerBrowserTest.TriggerBubbleOnNTPCreation
 
+# Brave removes the Cookies, JavaScript and StorageAccess content setting image
+# models (see BraveGenerateContentSettingImageModels), so these variants have no
+# icon to invoke and hit the NOTREACHED() in
+# GetContentSettingImageModelIndexForTesting. All other variants pass.
+-ContentSettingBubbleDialogTest.InvokeUi_cookies/*
+-ContentSettingBubbleDialogTest.InvokeUi_javascript/*
+-ContentSettingBubbleDialogTest.InvokeUi_storage_access/*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
@@ -2817,7 +2825,6 @@
 -ConsumerDeepScanningBrowserTest.*
 -ContentFaviconDriverTest.*
 -ContentScriptApiTestWithActivityLog.*
--ContentSettingBubbleDialogTest.*
 -ContentSettingBubbleModelMediaStreamTest.BubbleContentForNonBlockedMic
 -ContentSettingImageModelBrowserTest.*
 -ContentSettingsBackForwardCacheBrowserTest.*
