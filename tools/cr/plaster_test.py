@@ -4620,6 +4620,147 @@ class RewriterFormsTest(unittest.TestCase):
             "Unrecognised add_literal_to_variable arg(s): 'target'",
             name='validation.gni')
 
+    # -- append_to_target (real ast-grep binary) --------------------------
+
+    def test_append_to_target_appends_code_at_the_end(self):
+        result = self._apply(
+            'append_target.gn', 'component("color") {\n'
+            '  sources = [ "m.cc" ]\n}\n', 'substitutions:\n'
+            '  - description: add the brave color mixers\n'
+            '    append_to_target:\n'
+            '      target: color\n'
+            '      code: |-\n'
+            '        sources += brave_color_sources\n'
+            '        deps += brave_color_deps\n')
+        self.assertEqual(
+            result, 'component("color") {\n  sources = [ "m.cc" ]\n'
+            '  sources += brave_color_sources\n'
+            '  deps += brave_color_deps\n}\n')
+
+    def test_append_to_target_appends_after_a_conditional(self):
+        # The body ends in an `if`, and the code closes the body rather than
+        # landing inside that conditional.
+        result = self._apply(
+            'append_after_if.gn', 'source_set("b") {\n  if (is_win) {\n'
+            '    sources += [ "w.cc" ]\n  }\n}\n', 'substitutions:\n'
+            '  - description: append past the conditional\n'
+            '    append_to_target:\n'
+            '      target: b\n'
+            '      code: deps += brave_deps\n')
+        self.assertEqual(
+            result, 'source_set("b") {\n  if (is_win) {\n'
+            '    sources += [ "w.cc" ]\n  }\n  deps += brave_deps\n}\n')
+
+    def test_append_to_target_indents_to_a_nested_target(self):
+        # A target inside a conditional sits one level in, so its body is two,
+        # which every line of the block is indented to.
+        result = self._apply(
+            'append_nested.gn', 'if (is_android) {\n  source_set("b") {\n'
+            '    sources = [ "a.cc" ]\n  }\n}\n', 'substitutions:\n'
+            '  - description: append to the nested target\n'
+            '    append_to_target:\n'
+            '      target: b\n'
+            '      code: |-\n'
+            '        deps += brave_deps\n'
+            '        configs += brave_configs\n')
+        self.assertEqual(
+            result, 'if (is_android) {\n  source_set("b") {\n'
+            '    sources = [ "a.cc" ]\n    deps += brave_deps\n'
+            '    configs += brave_configs\n  }\n}\n')
+
+    def test_append_to_target_keeps_a_block_in_the_code(self):
+        # `code` is free-form, so a conditional of its own is indented as a
+        # block rather than flattened.
+        result = self._apply(
+            'append_block.gn', 'source_set("b") {\n  sources = [ "a.cc" ]\n}\n',
+            'substitutions:\n'
+            '  - description: append a conditional\n'
+            '    append_to_target:\n'
+            '      target: b\n'
+            '      code: |-\n'
+            '        if (is_win) {\n'
+            '          deps += brave_win_deps\n'
+            '        }\n')
+        self.assertEqual(
+            result, 'source_set("b") {\n  sources = [ "a.cc" ]\n'
+            '  if (is_win) {\n    deps += brave_win_deps\n  }\n}\n')
+
+    def test_append_to_target_rejects_an_import_field(self):
+        # An import is a file-level change with its own rewriter, so this one
+        # does not carry a field for it; the two pair up as entries instead.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: import is not a field here\n'
+            '    append_to_target:\n'
+            '      target: utility\n'
+            '      code: sources += brave_utility_sources\n'
+            '      import: //brave/utility/sources.gni\n',
+            "Unrecognised append_to_target arg(s): 'import'",
+            name='validation.gn')
+
+    def test_append_to_target_pairs_with_add_import(self):
+        # Two entries in one plaster: the import, then the append that reads
+        # what it supplies.
+        result = self._apply(
+            'append_paired.gn', self._GN_HEADER +
+            'source_set("utility") {\n  sources = [ "u.cc" ]\n}\n',
+            'substitutions:\n'
+            '  - description: import the brave utility sources\n'
+            '    add_import:\n'
+            '      import: //brave/utility/sources.gni\n'
+            '  - description: append them to the target\n'
+            '    append_to_target:\n'
+            '      target: utility\n'
+            '      code: sources += brave_utility_sources\n')
+        self.assertEqual(
+            result, self._GN_HEADER +
+            'import("//brave/utility/sources.gni")\n\n'
+            'source_set("utility") {\n  sources = [ "u.cc" ]\n'
+            '  sources += brave_utility_sources\n}\n')
+
+    def test_append_to_target_missing_target_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'append_missing.gn', 'source_set("other") {\n}\n',
+                'substitutions:\n'
+                '  - description: no such target\n'
+                '    append_to_target:\n'
+                '      target: b\n'
+                '      code: deps += brave_deps\n')
+        self.assertIn("found no body for target 'b'", str(ctx.exception))
+
+    def test_append_to_target_declared_twice_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'append_twice.gn', 'if (is_win) {\n  copy("b") {\n'
+                '    sources = [ "a" ]\n  }\n} else {\n  group("b") {\n'
+                '  }\n}\n', 'substitutions:\n'
+                '  - description: ambiguous target\n'
+                '    append_to_target:\n'
+                '      target: b\n'
+                '      code: deps += brave_deps\n')
+        self.assertIn('found 2 declarations of target', str(ctx.exception))
+
+    def test_append_to_target_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing code\n'
+            '    append_to_target:\n'
+            '      target: b\n',
+            'append_to_target requires arg(s): code',
+            name='validation.gn')
+
+    def test_append_to_target_count_other_than_one_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 2\n'
+            '    append_to_target:\n'
+            '      target: b\n'
+            '      code: deps += brave_deps\n',
+            'does not accept a count other than 1',
+            name='validation.gn')
+
     # -- add_import (real ast-grep binary) --------------------------------
 
     def test_add_import_adds_below_the_copyright(self):
