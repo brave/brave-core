@@ -3,43 +3,109 @@
 ## Upstream components_unittests tests with a flake rate >= 1.0% on
 ## windows-asan bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 5.3% flake rate over 30 days per LUCI Analysis (288 passed, 0 failed, 16 flaky).
+# 5.9% flake rate over 30 days per LUCI Analysis (272 passed, 0 failed, 17 flaky).
 -All/MultilingualSpellCheckTest.MultilingualSpellCheckSuggestions/0
 
-# 4.6% flake rate over 30 days per LUCI Analysis (289 passed, 0 failed, 14 flaky).
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 0 failed, 3 flaky).
+-FilesystemProxyTest.LockFile/1
+
+# 3.8% flake rate over 30 days per LUCI Analysis (277 passed, 0 failed, 11 flaky).
 -MediaItemUIDetailedViewTest.ProgressViewCheck
 
-# 4.0% flake rate over 30 days per LUCI Analysis (291 passed, 12 failed, 0 flaky).
--NamedMojoIpcServerTest.CloseReceiver_RemoteDisconnected/Isolated
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-OnDeviceTranslationServiceTest.CanTranslateFaulure
 
-# 4.0% flake rate over 30 days per LUCI Analysis (291 passed, 12 failed, 0 flaky).
--NamedMojoIpcServerTest.DeleteNamedMojoServer_RemoteDisconnected/Isolated
+# 1.0% flake rate over 30 days per LUCI Analysis (286 passed, 3 failed, 0 flaky).
+-OnDeviceTranslationServiceTest.CanTranslateSuccess
 
-# 3.9% flake rate over 30 days per LUCI Analysis (292 passed, 12 failed, 0 flaky).
--NamedMojoIpcServerTest.DisconnectHandler/Isolated
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-OnDeviceTranslationServiceTest.CreateTranslatorFaulure
 
-# 3.9% flake rate over 30 days per LUCI Analysis (292 passed, 12 failed, 0 flaky).
--NamedMojoIpcServerTest.IpcServerRestarted_NewIpcsCanBeMade/Isolated
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-OnDeviceTranslationServiceTest.CreateTranslatorSuccess
 
-# 4.0% flake rate over 30 days per LUCI Analysis (291 passed, 12 failed, 0 flaky).
--NamedMojoIpcServerTest.ParallelIpcs/Isolated
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-OnDeviceTranslationServiceTest.TranslateFailure
 
-# 3.9% flake rate over 30 days per LUCI Analysis (292 passed, 12 failed, 0 flaky).
--NamedMojoIpcServerTest.RemoteProcessTerminated_ConnectionRemoved/Isolated
+# 1.0% flake rate over 30 days per LUCI Analysis (286 passed, 0 failed, 3 flaky).
+-SmallAndLargeFiles/FileMetricsProviderTest.AccessEmbeddedFallbackMetricsWithoutProfile/1
 
-# 4.0% flake rate over 30 days per LUCI Analysis (291 passed, 12 failed, 0 flaky).
--NamedMojoIpcServerTest.SendEcho/Isolated
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 0 failed, 3 flaky).
+-SmallAndLargeFiles/FileMetricsProviderTest.AccessInitialMetrics/0
 
-# 3.9% flake rate over 30 days per LUCI Analysis (292 passed, 12 failed, 0 flaky).
--NamedMojoIpcServerTest.StopServer_RemoteDisconnected/Isolated
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 0 failed, 3 flaky).
+-SmallAndLargeFiles/FileMetricsProviderTest.AccessInitialMetrics/1
 
-# 1.7% flake rate over 30 days per LUCI Analysis (298 passed, 0 failed, 5 flaky).
+# 1.7% flake rate over 30 days per LUCI Analysis (283 passed, 0 failed, 5 flaky).
+-SmallAndLargeFiles/FileMetricsProviderTest.RecordInitialHistogramSnapshotsStabilityHistograms/0
+
+# 1.7% flake rate over 30 days per LUCI Analysis (283 passed, 0 failed, 5 flaky).
 -TabGroupChangeNotifierImplTest.TestTabSelection
 
-# 3.0% flake rate over 30 days per LUCI Analysis (294 passed, 0 failed, 9 flaky).
+# 3.1% flake rate over 30 days per LUCI Analysis (279 passed, 0 failed, 9 flaky).
 -ThreadWrapper/TaskQueueTest.PostDelayedAfterDestruct/0
 
-# 10.2% flake rate over 30 days per LUCI Analysis (272 passed, 0 failed, 31 flaky).
+# 3.5% flake rate over 30 days per LUCI Analysis (278 passed, 0 failed, 10 flaky).
+-ThreadWrapper/TaskQueueTest.PostDelayedHighPrecisionAfterDestruct/0
+
+# 1.0% flake rate over 30 days per LUCI Analysis (286 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.CanTranslateBrokenLanguagePack
+
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.CanTranslateMatchingLanguagePack
+
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.CanTranslateNoConfig
+
+# 1.0% flake rate over 30 days per LUCI Analysis (286 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.CanTranslateNoMatchingLanguagePack
+
+# 1.0% flake rate over 30 days per LUCI Analysis (286 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.FailingBinary
+
+# 1.0% flake rate over 30 days per LUCI Analysis (286 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.GetTranslatorBrokenLanguagePack
+
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.GetTranslatorMatchingLanguagePack
+
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.GetTranslatorNoConfig
+
+# 1.0% flake rate over 30 days per LUCI Analysis (286 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.GetTranslatorNoMatchingLanguagePack
+
+# 1.0% flake rate over 30 days per LUCI Analysis (286 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.InvalidFunctionPointerBinary
+
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.LoadBinary
+
+# 1.0% flake rate over 30 days per LUCI Analysis (286 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.SameTranslator
+
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.SplitSentences
+
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.SplitSentencesEmptyInput
+
+# 1.0% flake rate over 30 days per LUCI Analysis (286 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.SplitSentencesFailure
+
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.SplitSentencesNotSupported
+
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.TranslateFailure
+
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.TwoTranslators
+
+# 1.0% flake rate over 30 days per LUCI Analysis (285 passed, 3 failed, 0 flaky).
+-TranslateKitClientTest.UpdatingConfig
+
+# 12.2% flake rate over 30 days per LUCI Analysis (253 passed, 0 failed, 35 flaky).
 -WebDatabaseMigrationTest.VersionXxSqlFilesAreGolden

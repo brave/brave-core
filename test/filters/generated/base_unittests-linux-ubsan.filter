@@ -3,10 +3,10 @@
 ## Upstream base_unittests tests with a flake rate >= 1.0% on
 ## linux-ubsan bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 2.1% flake rate over 30 days per LUCI Analysis (548 passed, 0 failed, 12 flaky).
+# 1.6% flake rate over 30 days per LUCI Analysis (551 passed, 0 failed, 9 flaky).
 -TaskEnvironmentTest.MultiThreadedMockTimeAndThreadPoolQueuedMode
 
-# 1.4% flake rate over 30 days per LUCI Analysis (552 passed, 0 failed, 8 flaky).
+# 1.6% flake rate over 30 days per LUCI Analysis (551 passed, 0 failed, 9 flaky).
 -ThreadGroupImplImplStartInBodyTest.RepeatedWillBlockDoesNotCreateTooManyWorkers

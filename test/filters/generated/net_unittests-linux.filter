@@ -3,22 +3,19 @@
 ## Upstream net_unittests tests with a flake rate >= 1.0% on
 ## linux bots over the past 30 days per Chromium LUCI Analysis.
 ## Regenerate with:
-##   python3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -BbrSenderTest.ShallowDrain
 
-# 12.3% flake rate over 30 days per LUCI Analysis (11113 passed, 0 failed, 1564 flaky).
+# 11.2% flake rate over 30 days per LUCI Analysis (11541 passed, 0 failed, 1455 flaky).
 -CertNetFetcherURLRequestTest.CancelAll
 
-# 13.6% flake rate over 30 days per LUCI Analysis (10949 passed, 0 failed, 1728 flaky).
+# 12.9% flake rate over 30 days per LUCI Analysis (11314 passed, 0 failed, 1682 flaky).
 -CertNetFetcherURLRequestTest.ParallelFetchDuplicates
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -CubicBytesTest.AboveOrigin
-
-# 1.1% flake rate over 30 days per LUCI Analysis (88 passed, 0 failed, 1 flaky).
--DiskCacheBackendTest.SimpleCachePrioritizedEntryOrder
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -EndToEndTests/EndToEndTest.TestHugeResponseWithPacketLoss/RFCv1_B2ON_poll_2__16
@@ -56,40 +53,40 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -EndToEndTests/EndToEndTest.TestHugeResponseWithPacketLoss/draft29_TBBR_poll_2__8
 
-# 96.6% flake rate over 30 days per LUCI Analysis (3 passed, 84 failed, 2 flaky).
+# 96.6% flake rate over 30 days per LUCI Analysis (3 passed, 85 failed, 1 flaky).
 -EndToEndTests/EndToEndTest.WebTransportSessionResetReliability/RFCv1_B2ON_poll_2__16
 
-# 89.9% flake rate over 30 days per LUCI Analysis (9 passed, 76 failed, 4 flaky).
+# 91.0% flake rate over 30 days per LUCI Analysis (8 passed, 78 failed, 3 flaky).
 -EndToEndTests/EndToEndTest.WebTransportSessionResetReliability/RFCv1_B2ON_poll_2__8
 
-# 92.1% flake rate over 30 days per LUCI Analysis (7 passed, 79 failed, 3 flaky).
+# 91.0% flake rate over 30 days per LUCI Analysis (8 passed, 78 failed, 3 flaky).
 -EndToEndTests/EndToEndTest.WebTransportSessionResetReliability/RFCv1_QBIC_poll_2__16
 
-# 94.4% flake rate over 30 days per LUCI Analysis (5 passed, 81 failed, 3 flaky).
+# 96.6% flake rate over 30 days per LUCI Analysis (3 passed, 81 failed, 5 flaky).
 -EndToEndTests/EndToEndTest.WebTransportSessionResetReliability/RFCv1_QBIC_poll_2__8
 
-# 97.8% flake rate over 30 days per LUCI Analysis (2 passed, 86 failed, 1 flaky).
+# 96.6% flake rate over 30 days per LUCI Analysis (3 passed, 84 failed, 2 flaky).
 -EndToEndTests/EndToEndTest.WebTransportSessionResetReliability/RFCv1_TBBR_poll_2__16
 
-# 95.5% flake rate over 30 days per LUCI Analysis (4 passed, 83 failed, 2 flaky).
+# 93.3% flake rate over 30 days per LUCI Analysis (6 passed, 80 failed, 3 flaky).
 -EndToEndTests/EndToEndTest.WebTransportSessionResetReliability/RFCv1_TBBR_poll_2__8
 
-# 92.1% flake rate over 30 days per LUCI Analysis (7 passed, 78 failed, 4 flaky).
+# 94.4% flake rate over 30 days per LUCI Analysis (5 passed, 81 failed, 3 flaky).
 -EndToEndTests/EndToEndTest.WebTransportSessionResetReliability/draft29_B2ON_poll_2__16
 
-# 96.6% flake rate over 30 days per LUCI Analysis (3 passed, 82 failed, 4 flaky).
+# 94.4% flake rate over 30 days per LUCI Analysis (5 passed, 80 failed, 4 flaky).
 -EndToEndTests/EndToEndTest.WebTransportSessionResetReliability/draft29_B2ON_poll_2__8
 
-# 98.9% flake rate over 30 days per LUCI Analysis (1 passed, 86 failed, 2 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 87 failed, 2 flaky).
 -EndToEndTests/EndToEndTest.WebTransportSessionResetReliability/draft29_QBIC_poll_2__16
 
-# 93.3% flake rate over 30 days per LUCI Analysis (6 passed, 78 failed, 5 flaky).
+# 95.5% flake rate over 30 days per LUCI Analysis (4 passed, 80 failed, 5 flaky).
 -EndToEndTests/EndToEndTest.WebTransportSessionResetReliability/draft29_QBIC_poll_2__8
 
-# 92.1% flake rate over 30 days per LUCI Analysis (7 passed, 76 failed, 6 flaky).
+# 91.0% flake rate over 30 days per LUCI Analysis (8 passed, 72 failed, 9 flaky).
 -EndToEndTests/EndToEndTest.WebTransportSessionResetReliability/draft29_TBBR_poll_2__16
 
-# 96.6% flake rate over 30 days per LUCI Analysis (3 passed, 81 failed, 5 flaky).
+# 94.4% flake rate over 30 days per LUCI Analysis (5 passed, 80 failed, 4 flaky).
 -EndToEndTests/EndToEndTest.WebTransportSessionResetReliability/draft29_TBBR_poll_2__8
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
@@ -98,7 +95,7 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -OgHttp2AdapterTest.ClientHandlesInvalidTrailers
 
-# 1.9% flake rate over 30 days per LUCI Analysis (3288 passed, 64 failed, 0 flaky).
+# 43.8% flake rate over 30 days per LUCI Analysis (114 passed, 89 failed, 0 flaky).
 -QpackDecodedHeadersAccumulatorTest.ExceedLimitBlocked
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
