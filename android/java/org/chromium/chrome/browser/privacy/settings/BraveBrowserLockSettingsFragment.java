@@ -46,8 +46,9 @@ import org.chromium.components.user_prefs.UserPrefs;
  * org.chromium.chrome.browser.incognito.reauth.IncognitoReauthControllerImpl}), not a Brave-only
  * pref — this is the pref that actually gates per-tab incognito reauth.
  *
- * <p>A third toggle, "Prevent screenshot/video capture", only appears once at least one lock target
- * is enabled, and blocks screen capture for whatever is currently locked down.
+ * <p>A third toggle, "Prevent screenshot/video capture", is independent of the two lock toggles —
+ * changing it also requires authentication, so there is no need to gate its availability on
+ * anything else being locked first.
  *
  * <p>This fragment is only reachable when a device screen lock is configured; the main settings
  * item redirects to OS security settings instead when none is set up.
@@ -60,7 +61,6 @@ public class BraveBrowserLockSettingsFragment extends Fragment
             ObservableSuppliers.createMonotonic();
 
     private @Nullable Profile mProfile;
-    private @Nullable View mPreventCaptureContainer;
 
     @Override
     public void setProfile(Profile profile) {
@@ -91,7 +91,6 @@ public class BraveBrowserLockSettingsFragment extends Fragment
         MaterialSwitch switchEntireApp = view.findViewById(R.id.switch_entire_application);
         MaterialSwitch switchPrivateTabs = view.findViewById(R.id.switch_private_tabs);
         MaterialSwitch switchPreventCapture = view.findViewById(R.id.switch_prevent_capture);
-        mPreventCaptureContainer = view.findViewById(R.id.prevent_capture_container);
 
         assumeNonNull(switchEntireApp);
         assumeNonNull(switchPrivateTabs);
@@ -108,7 +107,6 @@ public class BraveBrowserLockSettingsFragment extends Fragment
         switchEntireApp.setChecked(isEntireAppEnabled());
         switchPrivateTabs.setChecked(profile != null && isPrivateTabsEnabled(profile));
         switchPreventCapture.setChecked(isPreventCaptureEnabled());
-        updatePreventCaptureVisibility();
 
         switchEntireApp.setOnCheckedChangeListener(
                 (buttonView, isChecked) ->
@@ -157,7 +155,6 @@ public class BraveBrowserLockSettingsFragment extends Fragment
                                     /* fallbackToDefault= */ false);
                             BraveRelaunchUtils.askForRelaunch(getActivity());
                         }
-                        updatePreventCaptureVisibility();
                     }
 
                     @Override
@@ -176,7 +173,6 @@ public class BraveBrowserLockSettingsFragment extends Fragment
         toggle.setChecked(previousValue);
         toggle.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> onToggleChanged(prefKey, toggle, isChecked));
-        updatePreventCaptureVisibility();
     }
 
     private void onPrivateTabsToggleChanged(MaterialSwitch toggle, boolean isChecked) {
@@ -199,7 +195,6 @@ public class BraveBrowserLockSettingsFragment extends Fragment
                         reauth.destroy();
                         UserPrefs.get(profile)
                                 .setBoolean(Pref.INCOGNITO_REAUTHENTICATION_FOR_ANDROID, isChecked);
-                        updatePreventCaptureVisibility();
                     }
 
                     @Override
@@ -218,16 +213,6 @@ public class BraveBrowserLockSettingsFragment extends Fragment
         toggle.setChecked(previousValue);
         toggle.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> onPrivateTabsToggleChanged(toggle, isChecked));
-        updatePreventCaptureVisibility();
-    }
-
-    private void updatePreventCaptureVisibility() {
-        View container = mPreventCaptureContainer;
-        if (container == null) return;
-        Profile profile = mProfile;
-        boolean anyLocked =
-                isEntireAppEnabled() || (profile != null && isPrivateTabsEnabled(profile));
-        container.setVisibility(anyLocked ? View.VISIBLE : View.GONE);
     }
 
     private static boolean defaultForPref(String prefKey) {

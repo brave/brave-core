@@ -266,14 +266,19 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     }
 
     /**
-     * Returns whether Brave's own lock should force FLAG_SECURE on regardless of what tab/layout
-     * state upstream's own incognito-scoped screenshot protection (e.g. {@link
+     * Returns whether Brave should force FLAG_SECURE on regardless of what tab/layout state
+     * upstream's own incognito-scoped screenshot protection (e.g. {@link
      * org.chromium.chrome.browser.incognito.IncognitoSnapshotController}) would otherwise decide.
      * Called from Brave subclasses of those upstream controllers so they can defer to this decision
      * instead of unconditionally clearing the flag whenever no incognito tab is showing.
+     *
+     * <p>Deliberately independent of {@link #isBrowserLockEnabled()} — changing this setting
+     * already requires authentication, so there is no reason to also require a lock to be enabled
+     * first. A user may want screenshot/capture protection for the whole browser without wanting
+     * the biometric lock screen at all.
      */
     public static boolean shouldForceSecureWindow() {
-        return isBrowserLockEnabled() && isPreventCaptureEnabled();
+        return isPreventCaptureEnabled();
     }
 
     private void applySecureFlagToAllActivities() {
