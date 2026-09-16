@@ -374,8 +374,6 @@ class ChromiumTabState: TabState, TabStateImpl {
   }
   var backForwardList: (any BackForwardListProxy)?
 
-  var redirectChain: [URL] = []
-
   var currentInitialURL: URL? {
     webView?.originalRequestURLForLastCommitedNavigation
   }

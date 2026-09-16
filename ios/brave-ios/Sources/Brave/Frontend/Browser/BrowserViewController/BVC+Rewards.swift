@@ -138,8 +138,8 @@ extension BrowserViewController {
 }
 
 extension TabBrowserData {
-  func reportPageLoad(to rewards: BraveRewards, redirectChain: [URL]) {
-    guard let tab, let url = redirectChain.last, !url.isLocal, !tab.isPrivate
+  func reportPageLoad(to rewards: BraveRewards) {
+    guard let tab, let url = tab.visibleURL, !url.isLocal, !tab.isPrivate
     else {
       return
     }

@@ -465,8 +465,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             guard let self else { return }
             DispatchQueue.main.async {
               let alert = UIAlertController(
-                title: resendConfirmationEmailAlertTitle(failure: failure),
-                message: failure.map { resendConfirmationEmailAlertMessage(failure: $0) }
+                title: self.resendConfirmationEmailAlertTitle(failure: failure),
+                message: failure.map { self.resendConfirmationEmailAlertMessage(failure: $0) }
                   ?? L10nUtils.string(
                     messageId: .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS
                   ),
@@ -474,10 +474,10 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
               )
               alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
               self.present(alert, animated: true)
-              setCellEnabled(
+              self.setCellEnabled(
                 true,
-                rowUUID: braveAccountResendConfirmationEmailRowUUID,
-                sectionUUID: braveAccountSectionUUID
+                rowUUID: self.braveAccountResendConfirmationEmailRowUUID,
+                sectionUUID: self.braveAccountSectionUUID
               )
             }
           }
@@ -537,7 +537,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
                         title: L10nUtils.string(
                           messageId: .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ERROR_TITLE
                         ),
-                        message: changePasswordAlertMessage(failure: failure),
+                        message: self.changePasswordAlertMessage(failure: failure),
                         preferredStyle: .alert
                       )
                       alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
@@ -545,10 +545,10 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
                     } else {
                       self.openBraveAccountDialog()
                     }
-                    setCellEnabled(
+                    self.setCellEnabled(
                       true,
-                      rowUUID: braveAccountChangePasswordRowUUID,
-                      sectionUUID: braveAccountSectionUUID
+                      rowUUID: self.braveAccountChangePasswordRowUUID,
+                      sectionUUID: self.braveAccountSectionUUID
                     )
                   }
                 }
@@ -685,6 +685,9 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       )
     case .null:
       assertionFailure("Unexpected .null BraveAccount state!")
+      return nil
+    @unknown default:
+      assertionFailure("Unexpected unknown BraveAccount state!")
       return nil
     }
   }
@@ -1693,10 +1696,13 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
               title: Strings.copyAppSizeInfoToClipboard,
               style: .default
             ) { _ in
-              UIPasteboard.general.setSecureString(
-                AppDebugComposer.composeAppSize(),
-                expirationDate: Date().addingTimeInterval(2.minutes)
-              )
+              Task { @MainActor in
+                let size = await AppDebugComposer.composeAppSize()
+                UIPasteboard.general.setSecureString(
+                  size,
+                  expirationDate: Date().addingTimeInterval(2.minutes)
+                )
+              }
             }
 
             actionSheet.addAction(copyDebugInfoAction)
