@@ -170,7 +170,7 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<NotificationDisplayServiceTester> notification_tester_;
-  raw_ptr<Browser> incognito_browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> incognito_browser_ = nullptr;
   net::EmbeddedTestServer https_server_;
 };
 

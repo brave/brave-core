@@ -1,5 +1,5 @@
 diff --git a/content/browser/webui/web_ui_data_source_impl.cc b/content/browser/webui/web_ui_data_source_impl.cc
-index f4a2b992008e7edc1d7be98b274e8ba11387c598..d7347713f370f310e61a678d73773f119f38de27 100644
+index 6361e1d38d31ca3e658320eeeff87b0f13c8828d..c7e5876f93b0502a7d4bd941d3d3af6248a787f5 100644
 --- a/content/browser/webui/web_ui_data_source_impl.cc
 +++ b/content/browser/webui/web_ui_data_source_impl.cc
 @@ -349,7 +349,7 @@ void WebUIDataSourceImpl::OverrideContentSecurityPolicy(

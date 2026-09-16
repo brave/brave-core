@@ -1,10 +1,10 @@
 diff --git a/third_party/i18n/collect-strings.js b/third_party/i18n/collect-strings.js
-index 4f586cf8509c506038b1fd0c288d863d4f4b6095..4f632e316de0141beb60861a3210c2f62d82d6d1 100644
+index e9cbe3a8f59f306d8839e10a1d49f1109c032230..26c409677cecc0da992c5b6e007356ea9ebe69a8 100644
 --- a/third_party/i18n/collect-strings.js
 +++ b/third_party/i18n/collect-strings.js
-@@ -27,6 +27,7 @@ export const IGNORED_PATH_COMPONENTS = [
-   '**/third_party/**',
-   '**/*.test.ts',
+@@ -30,6 +30,7 @@ export const IGNORED_PATH_COMPONENTS = [
+   '**/*.test.api.ts',
+   '**/*.docs.ts',
  ];
 +IGNORED_PATH_COMPONENTS.push('**/*.patch.ts', '**/RequestAdblockView.ts')
  

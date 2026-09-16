@@ -71,7 +71,8 @@ CommandSource::CommandResults OpenURLCommandSource::GetCommands(
     item->command =
         base::BindOnce(&chrome::AddTabAt, base::Unretained(browser),
                        command_spec.second, /*index=*/-1, /*foreground=*/true,
-                       /*group=*/std::nullopt, /*pinned=*/false);
+                       /*group=*/std::nullopt, /*pinned=*/false,
+                       /*window_action=*/std::nullopt);
     results.push_back(std::move(item));
   }
   return results;

@@ -180,9 +180,8 @@ void WelcomeDOMHandler::HandleRecordP3A(const base::ListValue& args) {
 
 void WelcomeDOMHandler::HandleOpenSettingsPage(const base::ListValue& args) {
   CHECK(profile_);
-  auto* browser = ProfileBrowserCollection::GetForProfile(profile_)
-                      ->FindTabbedBrowser()
-                      ->GetBrowserForMigrationOnly();
+  auto* browser =
+      ProfileBrowserCollection::GetForProfile(profile_)->FindTabbedBrowser();
   if (browser) {
     content::OpenURLParams open_params(
         GURL("brave://settings/privacy"), content::Referrer(),

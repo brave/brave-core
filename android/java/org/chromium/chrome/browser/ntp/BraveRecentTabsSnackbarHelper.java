@@ -21,7 +21,6 @@ import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutType;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.tab.EmptyTabObserver;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObserver;
 import org.chromium.chrome.browser.tab.TabSelectionType;
@@ -261,7 +260,7 @@ public class BraveRecentTabsSnackbarHelper {
         // Observer to detect navigation on the NTP tab (e.g., clicking a favorite)
         if (mNtpTab != null) {
             mTabObserver =
-                    new EmptyTabObserver() {
+                    new TabObserver() {
                         @Override
                         public void onPageLoadStarted(Tab tab, GURL url) {
                             if (mDestroyed) {

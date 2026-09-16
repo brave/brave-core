@@ -25,8 +25,8 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/animation/browser_animation_controller.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/animations/side_panel_animations.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -86,7 +86,7 @@ class AIChatGlobalSidePanelBrowserTest
   bool IsMoveToSidePanelEnabled() const { return std::get<1>(GetParam()); }
 
  protected:
-  void OpenSidePanelAndVerify(Browser* browser) {
+  void OpenSidePanelAndVerify(BrowserWindowInterface* browser) {
     auto* side_panel_coordinator = SidePanelCoordinator::From(browser);
     ASSERT_TRUE(side_panel_coordinator);
 
@@ -100,7 +100,7 @@ class AIChatGlobalSidePanelBrowserTest
     content::WaitForLoadStop(side_panel_web_contents);
   }
 
-  bool IsSidePanelOpen(Browser* browser) {
+  bool IsSidePanelOpen(BrowserWindowInterface* browser) {
     auto* side_panel_coordinator = SidePanelCoordinator::From(browser);
     if (!side_panel_coordinator) {
       return false;
@@ -111,7 +111,7 @@ class AIChatGlobalSidePanelBrowserTest
                SidePanelEntry::Id::kChatUI;
   }
 
-  bool IsGlobalSidePanel(Browser* browser) {
+  bool IsGlobalSidePanel(BrowserWindowInterface* browser) {
     // Test global behavior by checking if sidepanel stays open when switching
     // tabs
     auto* side_panel_coordinator = SidePanelCoordinator::From(browser);
@@ -152,7 +152,7 @@ class AIChatGlobalSidePanelBrowserTest
   // Creates a fresh, empty conversation via the AIChatService for `browser`'s
   // profile. Returns the conversation uuid (empty only if a precondition EXPECT
   // failed, in which case the test is already failing).
-  std::string CreateConversation(Browser* browser) {
+  std::string CreateConversation(BrowserWindowInterface* browser) {
     ai_chat::AIChatService* service =
         ai_chat::AIChatServiceFactory::GetForBrowserContext(
             browser->GetProfile());
@@ -181,10 +181,10 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   // Regardless of feature flag, AI Chat agent profile browser should always
   // have global sidepanel behavior.
-  base::test::TestFuture<Browser*> ai_chat_browser_future;
+  base::test::TestFuture<BrowserWindowInterface*> ai_chat_browser_future;
   ai_chat::OpenBrowserWindowForAIChatAgentProfileForTesting(
       *browser()->GetProfile(), ai_chat_browser_future.GetCallback());
-  Browser* ai_chat_browser = ai_chat_browser_future.Get();
+  BrowserWindowInterface* ai_chat_browser = ai_chat_browser_future.Get();
   ASSERT_TRUE(ai_chat_browser);
   ASSERT_TRUE(ai_chat_browser->GetProfile()->IsAIChatAgent());
 

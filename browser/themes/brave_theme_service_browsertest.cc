@@ -125,7 +125,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, ColorProviderTest) {
 IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NonNormalWindowDarkModeTest) {
   // Check non-normal window's color provider mode is dark.
   profiles::SwitchToGuestProfile();
-  Browser* guest_browser = ui_test_utils::WaitForBrowserToOpen();
+  BrowserWindowInterface* guest_browser = ui_test_utils::WaitForBrowserToOpen();
   ASSERT_TRUE(guest_browser);
   ASSERT_TRUE(guest_browser->GetProfile()->IsGuestSession());
   ASSERT_FALSE(guest_browser->GetProfile()->IsIncognitoProfile());
@@ -143,7 +143,7 @@ IN_PROC_BROWSER_TEST_F(BraveThemeServiceTest, NonNormalWindowDarkModeTest) {
   EXPECT_EQ(ui::ColorProviderKey::ColorMode::kDark, key.color_mode);
 
 #if BUILDFLAG(ENABLE_TOR)
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
   ASSERT_TRUE(tor_browser);
   ASSERT_TRUE(tor_browser->GetProfile()->IsIncognitoProfile());
