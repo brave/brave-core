@@ -12,7 +12,7 @@ namespace {
 
 bool IsDefaultSearchProviderByExtension(PrefService* pref_service) {
   // |kDefaultSearchProviderByExtension| is only used by desktop.
-#if BUILDFLAG(IS_ANDROID)
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
   return false;
 #else
   if (pref_service->FindPreference(prefs::kDefaultSearchProviderByExtension)) {

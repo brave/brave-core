@@ -1,5 +1,5 @@
 diff --git a/components/sessions/BUILD.gn b/components/sessions/BUILD.gn
-index ce6660a10524d573c77f8947fb68f9012419033b..c03ac8c0053a9eed00fc37dcb867d9d91c331756 100644
+index 8fdb01e9efaf2b351ebbcdc24e50c5917f9d0031..bca7939e7dac68c633c73cc825a43e865b773cfc 100644
 --- a/components/sessions/BUILD.gn
 +++ b/components/sessions/BUILD.gn
 @@ -47,6 +47,7 @@ if (use_blink && !(is_ios && target_platform == "iphoneos")) {

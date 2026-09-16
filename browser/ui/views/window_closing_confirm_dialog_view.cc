@@ -16,8 +16,8 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/grit/branded_strings.h"
@@ -73,7 +73,7 @@ END_METADATA
 
 // static
 void WindowClosingConfirmDialogView::Show(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     base::OnceCallback<void(bool)> response_callback) {
   // The dialog eats mouse events which results in the close button
   // getting stuck in the hover state. Reset the window controls to
@@ -101,7 +101,7 @@ void WindowClosingConfirmDialogView::SetCreationCallbackForTesting(
 }
 
 WindowClosingConfirmDialogView::WindowClosingConfirmDialogView(
-    Browser* browser,
+    BrowserWindowInterface* browser,
     base::OnceCallback<void(bool)> response_callback)
     : browser_(browser),
       response_callback_(std::move(response_callback)),
@@ -138,7 +138,7 @@ WindowClosingConfirmDialogView::WindowClosingConfirmDialogView(
       header_font));
   header_label->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
-  const int tab_count = browser_->tab_strip_model()->count();
+  const int tab_count = browser_->GetTabStripModel()->count();
   const std::u16string tab_count_part = l10n_util::GetStringFUTF16Int(
       IDS_WINDOW_CLOSING_CONFIRM_DLG_CONTENTS_LABEL_TAB_NUM_PART, tab_count);
   size_t offset;

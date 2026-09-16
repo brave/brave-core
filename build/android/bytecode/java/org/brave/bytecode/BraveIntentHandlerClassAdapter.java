@@ -16,10 +16,6 @@ public class BraveIntentHandlerClassAdapter extends BraveClassVisitor {
     public BraveIntentHandlerClassAdapter(ClassVisitor visitor) {
         super(visitor);
 
-        makePublicMethod(sIntentHandlerClassName, "getUrlForCustomTab");
-        changeMethodOwner(
-                sBraveIntentHandlerClassName, "getUrlForCustomTab", sIntentHandlerClassName);
-
         makePublicMethod(sIntentHandlerClassName, "getUrlForWebapp");
         changeMethodOwner(sBraveIntentHandlerClassName, "getUrlForWebapp", sIntentHandlerClassName);
 

@@ -295,4 +295,10 @@ bool CoseSign1::IsCosignatureVerificationResultAcceptable(
   return true;
 }
 
+bool CoseSign1::IsDebugLogEnabled() {
+  return false;
+}
+
+void CoseSign1::DebugLog(std::string_view msg) {}
+
 }  // namespace nitro_utils

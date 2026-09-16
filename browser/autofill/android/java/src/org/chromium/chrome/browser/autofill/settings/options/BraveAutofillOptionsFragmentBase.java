@@ -43,6 +43,7 @@ public abstract class BraveAutofillOptionsFragmentBase extends ChromeBaseSetting
     static void validateAutofillOptionsReferrer(@AutofillOptionsReferrer int referrer) {
         switch (referrer) {
             case AutofillOptionsReferrer.SETTINGS:
+            case AutofillOptionsReferrer.SETTINGS_SEARCH:
             case AutofillOptionsReferrer.PAYMENT_METHODS_FRAGMENT:
             case AutofillOptionsReferrer.AUTOFILL_PROFILES_FRAGMENT:
             case AutofillOptionsReferrer.AUTOFILL_AND_PASSWORDS_FRAGMENT:

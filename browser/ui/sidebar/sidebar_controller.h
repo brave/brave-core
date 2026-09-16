@@ -16,7 +16,7 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "ui/base/window_open_disposition.h"
 
-class Browser;
+class BrowserWindowInterface;
 class GURL;
 class Profile;
 class SidePanelUI;
@@ -40,7 +40,7 @@ class SidebarWebPanelController;
 // Browser dependency. We should pass what we need like TabStripModel.
 class SidebarController : public SidebarService::Observer {
  public:
-  SidebarController(Browser* browser, Profile* profile);
+  SidebarController(BrowserWindowInterface* browser, Profile* profile);
   ~SidebarController() override;
 
   SidebarController(const SidebarController&) = delete;
@@ -113,7 +113,7 @@ class SidebarController : public SidebarService::Observer {
   bool sidebar_pinned_ = false;
   raw_ptr<TabStripModel> tab_strip_model_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<Sidebar> sidebar_ = nullptr;
   raw_ptr<SidePanelUI> side_panel_ui_for_testing_ = nullptr;
 

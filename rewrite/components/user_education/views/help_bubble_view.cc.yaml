@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Stop MdTextButton::UpdateTextColor() from overwriting the help bubble
+      button's text color.
+
+      MdIPHBubbleButton sets its text color in the constructor, but
+      MdTextButton::UpdateTextColor() overwrites it afterwards. Overriding it
+      with an empty body prevents that.
+    add_to_public:
+      class_name: MdIPHBubbleButton
+      code: 'void UpdateTextColor() override {}'
