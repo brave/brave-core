@@ -35,11 +35,11 @@ importers:
         specifier: 0.40.6
         version: 0.40.6(react@19.2.7)(styled-components@6.4.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@brave/leo':
-        specifier: github:brave/leo#53850d6d6b12ea0e675dba71c8460f51b22bf90a
-        version: https://codeload.github.com/brave/leo/tar.gz/53850d6d6b12ea0e675dba71c8460f51b22bf90a(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.65.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.102.0)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)
+        specifier: github:brave/leo#2703d99eb79a19b67f44f83034585917236af269
+        version: https://codeload.github.com/brave/leo/tar.gz/2703d99eb79a19b67f44f83034585917236af269(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.65.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.102.0)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)
       '@brave/leo-sf-symbols':
-        specifier: github:brave/leo-sf-symbols#d6c826a443dd10bc02e2349812fe3f9727460e0d
-        version: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/d6c826a443dd10bc02e2349812fe3f9727460e0d
+        specifier: github:brave/leo-sf-symbols#b5a6139df7ebd3f7d55aa8d6af60a524edab87b0
+        version: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0
       '@brave/wallet-standard-brave':
         specifier: 0.0.16
         version: 0.0.16(bufferutil@4.1.0)(typescript@5.9.3)(utf-8-validate@6.0.6)
@@ -691,12 +691,12 @@ packages:
       react: 19.2.7
       styled-components: 6.4.3
 
-  '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/d6c826a443dd10bc02e2349812fe3f9727460e0d':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/d6c826a443dd10bc02e2349812fe3f9727460e0d}
+  '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0':
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0}
     version: 1.0.103
 
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/53850d6d6b12ea0e675dba71c8460f51b22bf90a':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/brave/leo/tar.gz/53850d6d6b12ea0e675dba71c8460f51b22bf90a}
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/2703d99eb79a19b67f44f83034585917236af269':
+    resolution: {gitHosted: true, tarball: https://codeload.github.com/brave/leo/tar.gz/2703d99eb79a19b67f44f83034585917236af269}
     version: 0.0.1
     hasBin: true
     peerDependencies:
@@ -8339,9 +8339,9 @@ snapshots:
       react: 19.2.7
       styled-components: 6.4.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
 
-  '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/d6c826a443dd10bc02e2349812fe3f9727460e0d': {}
+  '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0': {}
 
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/53850d6d6b12ea0e675dba71c8460f51b22bf90a(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.65.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.102.0)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)':
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/2703d99eb79a19b67f44f83034585917236af269(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.65.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.102.0)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)':
     dependencies:
       '@storybook/test': 8.6.15(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))
       svelte: 5.55.7(@typescript-eslint/types@8.65.0)
