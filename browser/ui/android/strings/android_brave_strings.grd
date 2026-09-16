@@ -1353,6 +1353,12 @@ Are you sure you want to do this?
       <message name="IDS_SHOW_BRAVE_STATS" desc="New tab page settings title">
         Show Brave Stats
       </message>
+      <message name="IDS_SHOW_FREQUENTLY_VISITED_SITES" desc="Option to make the top sites widget show frequently visited sites">
+        Show frequently visited sites
+      </message>
+      <message name="IDS_SHOW_FAVORITES" desc="Option to make the top sites widget show favorites (pinned shortcuts)">
+        Show favorites
+      </message>
       <message name="IDS_OPENING_SCREEN_TITLE" desc="Title for opening screen settings category">
         Opening Screen
       </message>
