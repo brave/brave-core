@@ -4013,6 +4013,216 @@ class RewriterFormsTest(unittest.TestCase):
             'does not accept a count other than 1',
             name='validation.json5')
 
+    # -- add_literal_to_list op (real ast-grep binary) -----------------------
+
+    def test_add_literal_to_list_appends_to_existing_list(self):
+        # The list already exists, so the literal is appended with `+=` right
+        # after it, at the same indentation.
+        result = self._apply(
+            'append.gn',
+            'source_set("browser") {\n  deps = [\n    "//base",\n  ]\n}\n',
+            'substitutions:\n'
+            '  - description: append the brave deps\n'
+            '    add_literal_to_list:\n'
+            '      target: browser\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n')
+        self.assertEqual(
+            result, 'source_set("browser") {\n  deps = [\n    "//base",\n'
+            '  ]\n  deps += brave_extra_deps\n}\n')
+
+    def test_add_literal_to_list_creates_missing_list(self):
+        # The target declares no `deps` yet, so it is assigned fresh as the
+        # target's first statement.
+        result = self._apply(
+            'create.gn',
+            'source_set("browser") {\n  sources = [ "a.cc" ]\n}\n',
+            'substitutions:\n'
+            '  - description: create deps\n'
+            '    add_literal_to_list:\n'
+            '      target: browser\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n')
+        self.assertEqual(
+            result, 'source_set("browser") {\n'
+            '  deps = brave_extra_deps\n  sources = [ "a.cc" ]\n}\n')
+
+    def test_add_literal_to_list_scoped_to_named_target(self):
+        # Only the named target is touched; a sibling target with the same
+        # list_name is left alone.
+        result = self._apply(
+            'scoped.gn', 'source_set("a") {\n  deps = [ "//x" ]\n}\n\n'
+            'source_set("b") {\n  deps = [ "//y" ]\n}\n', 'substitutions:\n'
+            '  - description: append only to b\n'
+            '    add_literal_to_list:\n'
+            '      target: b\n'
+            '      list_name: deps\n'
+            '      literal: brave_b_deps\n')
+        self.assertEqual(
+            result, 'source_set("a") {\n  deps = [ "//x" ]\n}\n\n'
+            'source_set("b") {\n  deps = [ "//y" ]\n'
+            '  deps += brave_b_deps\n}\n')
+
+    # The copyright header a real build file opens with, which an added
+    # import has to land below rather than above.
+    _GN_HEADER = ('# Copyright 2026 The Chromium Authors\n'
+                  '# Use of this source code is governed by a BSD-style '
+                  'license that can be\n'
+                  '# found in the LICENSE file.\n\n')
+
+    _IMPORT_YAML = ('substitutions:\n'
+                    '  - description: append with an import\n'
+                    '    add_literal_to_list:\n'
+                    '      target: browser\n'
+                    '      list_name: deps\n'
+                    '      literal: brave_extra_deps\n'
+                    '      import: //brave/extra.gni\n')
+
+    def test_add_literal_to_list_adds_import_below_the_copyright(self):
+        # The import opens the file's statements -- under the copyright header,
+        # since a comment is not a statement -- and a blank line separates it
+        # from the code below.
+        result = self._apply(
+            'import.gn', self._GN_HEADER +
+            'source_set("browser") {\n  deps = [ "//base" ]\n}\n',
+            self._IMPORT_YAML)
+        self.assertEqual(
+            result, self._GN_HEADER + 'import("//brave/extra.gni")\n\n'
+            'source_set("browser") {\n  deps = [ "//base" ]\n'
+            '  deps += brave_extra_deps\n}\n')
+
+    def test_add_literal_to_list_import_joins_existing_import_block(self):
+        # With imports already there, the new one joins that block rather than
+        # being split off from it by a blank line.
+        result = self._apply(
+            'import_block.gn',
+            self._GN_HEADER + 'import("//build/config/features.gni")\n\n'
+            'source_set("browser") {\n  deps = [ "//base" ]\n}\n',
+            self._IMPORT_YAML)
+        self.assertEqual(
+            result, self._GN_HEADER + 'import("//brave/extra.gni")\n'
+            'import("//build/config/features.gni")\n\n'
+            'source_set("browser") {\n  deps = [ "//base" ]\n'
+            '  deps += brave_extra_deps\n}\n')
+
+    def test_add_literal_to_list_skips_import_already_present(self):
+        # The exact import line is already there, so it is not duplicated.
+        result = self._apply(
+            'import_dedup.gn',
+            self._GN_HEADER + 'import("//brave/extra.gni")\n'
+            '\nsource_set("browser") {\n  deps = [ "//base" ]\n}\n',
+            self._IMPORT_YAML)
+        self.assertEqual(
+            result, self._GN_HEADER + 'import("//brave/extra.gni")\n\n'
+            'source_set("browser") {\n  deps = [ "//base" ]\n'
+            '  deps += brave_extra_deps\n}\n')
+
+    def test_add_literal_to_list_ignores_nested_assignment(self):
+        # Only an assignment the target makes directly is appended to; one
+        # inside a nested `if` leaves the attribute to be created instead.
+        result = self._apply(
+            'nested_if.gn', 'source_set("browser") {\n  if (is_win) {\n'
+            '    deps = [ "//win" ]\n  }\n}\n', 'substitutions:\n'
+            '  - description: create deps despite the conditional one\n'
+            '    add_literal_to_list:\n'
+            '      target: browser\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n')
+        self.assertEqual(
+            result, 'source_set("browser") {\n  deps = brave_extra_deps\n'
+            '  if (is_win) {\n    deps = [ "//win" ]\n  }\n}\n')
+
+    def test_add_literal_to_list_target_declared_twice_fails(self):
+        # GN lets one name be declared once per `if`/`else` branch, and
+        # nothing here can tell which branch the literal belongs in -- editing
+        # only the branch that happens to assign the list would apply it for
+        # that configuration alone, so it is refused.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'two_branches.gn', 'if (is_win) {\n'
+                '  copy("browser") {\n    deps = [ "//base" ]\n  }\n'
+                '} else {\n  group("browser") {\n  }\n}\n', 'substitutions:\n'
+                '  - description: ambiguous target\n'
+                '    add_literal_to_list:\n'
+                '      target: browser\n'
+                '      list_name: deps\n'
+                '      literal: brave_extra_deps\n')
+        self.assertIn('found 2 declarations of target', str(ctx.exception))
+
+    def test_add_literal_to_list_missing_target_fails(self):
+        # No target named `missing` exists, so there is nothing to anchor on.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'missing_target.gn',
+                'source_set("browser") {\n  deps = [ "//base" ]\n}\n',
+                'substitutions:\n'
+                '  - description: no such target\n'
+                '    add_literal_to_list:\n'
+                '      target: missing\n'
+                '      list_name: deps\n'
+                '      literal: brave_extra_deps\n')
+
+    def test_add_literal_to_list_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    add_literal_to_list:\n'
+            '      target: browser\n'
+            '      list_name: deps\n'
+            '      litreal: brave_extra_deps\n',
+            'Unrecognised add_literal_to_list arg',
+            name='validation.gn')
+
+    def test_add_literal_to_list_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing literal\n'
+            '    add_literal_to_list:\n'
+            '      target: browser\n'
+            '      list_name: deps\n',
+            'add_literal_to_list requires arg',
+            name='validation.gn')
+
+    def test_add_literal_to_list_import_must_be_a_string(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: import as a list\n'
+            '    add_literal_to_list:\n'
+            '      target: browser\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n'
+            '      import: [//brave/extra.gni]\n',
+            'add_literal_to_list `import` must be a non-empty string',
+            name='validation.gn')
+
+    def test_add_literal_to_list_empty_import_rejected(self):
+        # Omitting the key is how no import is asked for; an empty one is a
+        # mistake, so it is not quietly treated as the same thing.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: blank import\n'
+            '    add_literal_to_list:\n'
+            '      target: browser\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n'
+            "      import: ''\n",
+            'add_literal_to_list `import` must be a non-empty string',
+            name='validation.gn')
+
+    def test_add_literal_to_list_count_other_than_one_rejected(self):
+        # It always adds the literal exactly once, so any other count is a
+        # config error.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 2\n'
+            '    add_literal_to_list:\n'
+            '      target: browser\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n',
+            'does not accept a count other than 1',
+            name='validation.gn')
+
     # -- validation ---------------------------------------------------------
 
     def test_two_op_keys_rejected(self):
@@ -8219,12 +8429,15 @@ class GnBinaryPathTest(unittest.TestCase):
 
 
 class GnNamespaceTest(unittest.TestCase):
-    """The `gn` namespace claims build files and names no grammar."""
+    """The `gn` namespace claims build files and, via the bundled
+    tree-sitter-gn grammar, also serves ast ops (alongside `gn edit`-backed
+    `gn_edit` ops, which remain the only way to touch a target's own
+    attributes)."""
 
-    def test_an_ast_op_cannot_live_in_the_gn_namespace(self):
-        # `gn` is a second grammar-less namespace alongside `all`, so the rule
-        # that ast ops need a parseable namespace now has another way to be
-        # broken.
+    def test_an_ast_op_can_live_in_the_gn_namespace(self):
+        # The `gn` namespace names the `gn` ast-grep grammar (built from
+        # tree-sitter-gn), so an `ast.matcher`/`ast.rewriter` op may be
+        # declared there just like `cxx`/`js`.
         spec = {
             'ast.matcher': {
                 'gn.find_thing': {
@@ -8235,9 +8448,7 @@ class GnNamespaceTest(unittest.TestCase):
                 },
             },
         }
-        with self.assertRaises(plaster.RewritersSchemaError) as cm:
-            plaster.RewritersEval(repr(spec))
-        self.assertIn('names no grammar to parse with', str(cm.exception))
+        plaster.RewritersEval(repr(spec))
 
     def test_build_gn_and_gni_targets_resolve_to_the_gn_namespace(self):
         for name in ('BUILD.gn.yaml', 'sources.gni.yaml', 'build_webui.gni'
@@ -8246,11 +8457,11 @@ class GnNamespaceTest(unittest.TestCase):
                 plaster._namespace_of_source(Path('rewrite/dir') / name), 'gn',
                 name)
 
-    def test_the_gn_namespace_names_no_grammar(self):
-        # gn does its own parsing, so there is no ast-grep language for it and
-        # an ast op may never be declared in this namespace.
+    def test_the_gn_namespace_names_the_gn_grammar(self):
+        # gn files are parsed by the bundled tree-sitter-gn grammar, under
+        # ast-grep's `gn` custom-language id.
         namespace = plaster._NAMESPACE_BY_NAME[plaster._GN_NAMESPACE]
-        self.assertIsNone(namespace.ast_grep_language)
+        self.assertEqual(namespace.ast_grep_language, 'gn')
 
     def test_a_gn_target_is_not_a_cxx_source(self):
         self.assertFalse(plaster._is_cxx_source(Path('rewrite/BUILD.gn.yaml')))
