@@ -12,8 +12,6 @@
 #include "base/test/test_future.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
-// Private to //content/browser, reachable because this target is listed in
-// that target's for_content_tests visibility.
 #include "content/browser/speech/speech_recognition_manager_impl.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
@@ -135,9 +133,9 @@ class BraveSpeechRecognitionManagerImplDisabledTest
       : BraveSpeechRecognitionManagerImplTest(/*brave_engine_enabled=*/false) {}
 };
 
-// The preempted IsOptimizationGuideSpeechModel puts an on-device session on the
-// optimization guide path, where MakeOnDeviceSpeechEngine builds Brave's engine
-// in place of upstream's.
+// The preempted IsOptimizationGuideSpeechModel puts an on-device session on
+// the optimization guide path, where CreateOnDeviceSpeechRecognitionEngine
+// builds Brave's engine in place of upstream's.
 TEST_F(BraveSpeechRecognitionManagerImplEnabledTest,
        OnDeviceSessionUsesBraveEngine) {
   CreateOnDeviceSession();

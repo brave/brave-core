@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/content/browser/speech/brave_on_device_speech_recognition_engine.h"
+
 #include <array>
 #include <memory>
 #include <string>
@@ -21,6 +23,7 @@
 #include "base/time/time.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "components/speech/audio_buffer.h"
+#include "content/browser/speech/speech_recognition_engine.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/content_browser_client.h"
 #include "content/public/browser/speech_recognition_session_config.h"
@@ -38,11 +41,6 @@
 #include "services/on_device_model/public/mojom/on_device_model.mojom.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
-
-// Private to //content/browser, reachable because this target is listed in
-// that target's for_content_tests visibility.
-#include "brave/content/browser/speech/brave_on_device_speech_recognition_engine.h"
-#include "content/browser/speech/speech_recognition_engine.h"
 
 namespace content {
 

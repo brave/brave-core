@@ -25,12 +25,12 @@
 
 namespace content {
 
-bool UsesBraveOnDeviceSpeechEngine() {
+bool IsBraveOnDeviceSpeechRecognitionEnabled() {
   return false;
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-std::unique_ptr<SpeechRecognitionEngine> MakeOnDeviceSpeechEngine(
+std::unique_ptr<SpeechRecognitionEngine> CreateOnDeviceSpeechRecognitionEngine(
     const SpeechRecognitionSessionConfig& config) {
   return std::make_unique<OnDeviceSpeechRecognitionEngine>(config);
 }

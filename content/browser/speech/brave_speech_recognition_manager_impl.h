@@ -15,8 +15,8 @@ namespace content {
 
 // Both are called by the plaster substitutions on
 // content/browser/speech/speech_recognition_manager_impl.cc.
-bool UsesBraveOnDeviceSpeechEngine();
-std::unique_ptr<SpeechRecognitionEngine> MakeOnDeviceSpeechEngine(
+bool IsBraveOnDeviceSpeechRecognitionEnabled();
+std::unique_ptr<SpeechRecognitionEngine> CreateOnDeviceSpeechRecognitionEngine(
     const SpeechRecognitionSessionConfig& config);
 
 }  // namespace content

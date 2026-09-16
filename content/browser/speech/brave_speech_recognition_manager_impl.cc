@@ -15,15 +15,15 @@
 namespace content {
 
 // Whether to use Brave's engine for on-device speech recognition sessions.
-bool UsesBraveOnDeviceSpeechEngine() {
+bool IsBraveOnDeviceSpeechRecognitionEnabled() {
   return base::FeatureList::IsEnabled(
       local_ai::kBraveOnDeviceSpeechRecognition);
 }
 
 // Builds the engine for the on-device branch.
-std::unique_ptr<SpeechRecognitionEngine> MakeOnDeviceSpeechEngine(
+std::unique_ptr<SpeechRecognitionEngine> CreateOnDeviceSpeechRecognitionEngine(
     const SpeechRecognitionSessionConfig& config) {
-  if (UsesBraveOnDeviceSpeechEngine()) {
+  if (IsBraveOnDeviceSpeechRecognitionEnabled()) {
     return std::make_unique<BraveOnDeviceSpeechRecognitionEngine>(config);
   }
   return std::make_unique<OnDeviceSpeechRecognitionEngine>(config);
