@@ -4031,6 +4031,39 @@ class RewriterFormsTest(unittest.TestCase):
             result, 'source_set("browser") {\n  deps = [\n    "//base",\n'
             '  ]\n  deps += brave_extra_deps\n}\n')
 
+    def test_add_literal_to_list_appends_after_an_augmented_assignment(self):
+        # Upstream often collects a list with `+=` alone, having seeded it
+        # elsewhere, which is as good an anchor as a plain assignment.
+        result = self._apply(
+            'append_pluseq.gn', 'source_set("b") {\n'
+            '  deps += [ "//x" ]\n}\n', 'substitutions:\n'
+            '  - description: append after the augmented assignment\n'
+            '    add_literal_to_list:\n'
+            '      target: b\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n')
+        self.assertEqual(
+            result, 'source_set("b") {\n  deps += [ "//x" ]\n'
+            '  deps += brave_extra_deps\n}\n')
+
+    def test_add_literal_to_list_appends_once_for_several_assignments(self):
+        # A target may assign the list more than once; an append after any of
+        # them lands the same value, so the first is taken and the literal is
+        # added once rather than after each.
+        result = self._apply(
+            'append_several.gn', 'source_set("b") {\n'
+            '  deps = [ "//x" ]\n  sources = [ "a.cc" ]\n'
+            '  deps += [ "//y" ]\n}\n', 'substitutions:\n'
+            '  - description: append once\n'
+            '    add_literal_to_list:\n'
+            '      target: b\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n')
+        self.assertEqual(
+            result, 'source_set("b") {\n  deps = [ "//x" ]\n'
+            '  deps += brave_extra_deps\n  sources = [ "a.cc" ]\n'
+            '  deps += [ "//y" ]\n}\n')
+
     def test_add_literal_to_list_creates_missing_list(self):
         # The target declares no `deps` yet, so it is assigned fresh as the
         # target's first statement.
@@ -4620,6 +4653,85 @@ class RewriterFormsTest(unittest.TestCase):
             "Unrecognised add_literal_to_variable arg(s): 'target'",
             name='validation.gni')
 
+    def test_add_literal_to_list_type_picks_a_declaration_apart(self):
+        # GN lets one name be declared once per `if`/`else` branch; naming
+        # what declares the wanted one resolves which to edit.
+        result = self._apply(
+            'type_branches.gn', 'if (is_win) {\n'
+            '  copy("default_extensions") {\n    sources = [ "w" ]\n  }\n'
+            '} else {\n  group("default_extensions") {\n  }\n}\n',
+            'substitutions:\n'
+            '  - description: add to the copy branch\n'
+            '    add_literal_to_list:\n'
+            '      target: default_extensions\n'
+            '      list_name: sources\n'
+            '      literal: brave_sources\n'
+            '      type: copy\n')
+        self.assertEqual(
+            result, 'if (is_win) {\n  copy("default_extensions") {\n'
+            '    sources = [ "w" ]\n    sources += brave_sources\n  }\n'
+            '} else {\n  group("default_extensions") {\n  }\n}\n')
+
+    def test_add_literal_to_list_type_reaches_a_template_declaration(self):
+        # A `template()` declares its target through `target_name`, so there
+        # is no string literal to match; `type` names the declaring call and
+        # `target` the variable it is given.
+        result = self._apply(
+            'type_template.gni', 'template("chrome_repack_locales") {\n'
+            '  repack_locales(target_name) {\n'
+            '    source_patterns = [ "a" ]\n  }\n}\n', 'substitutions:\n'
+            '  - description: add the brave locale source patterns\n'
+            '    add_literal_to_list:\n'
+            '      target: target_name\n'
+            '      list_name: source_patterns\n'
+            '      literal: brave_locale_source_patterns\n'
+            '      type: repack_locales\n')
+        self.assertEqual(
+            result, 'template("chrome_repack_locales") {\n'
+            '  repack_locales(target_name) {\n'
+            '    source_patterns = [ "a" ]\n'
+            '    source_patterns += brave_locale_source_patterns\n  }\n}\n')
+
+    def test_add_literal_to_list_type_that_does_not_declare_it_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'type_wrong.gn',
+                'source_set("browser") {\n  deps = [ "//b" ]\n}\n',
+                'substitutions:\n'
+                '  - description: wrong declaring call\n'
+                '    add_literal_to_list:\n'
+                '      target: browser\n'
+                '      list_name: deps\n'
+                '      literal: brave_deps\n'
+                '      type: action\n')
+        self.assertIn('found no body for target', str(ctx.exception))
+
+    def test_add_literal_to_list_ambiguous_target_names_type(self):
+        # The refusal points at the field that resolves it.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'type_ambiguous.gn', 'if (is_win) {\n  copy("b") {\n'
+                '    sources = [ "w" ]\n  }\n} else {\n  group("b") {\n'
+                '  }\n}\n', 'substitutions:\n'
+                '  - description: ambiguous\n'
+                '    add_literal_to_list:\n'
+                '      target: b\n'
+                '      list_name: sources\n'
+                '      literal: brave_sources\n')
+        self.assertIn('`type:`', str(ctx.exception))
+
+    def test_add_literal_to_list_empty_type_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: blank type\n'
+            '    add_literal_to_list:\n'
+            '      target: browser\n'
+            '      list_name: deps\n'
+            '      literal: brave_deps\n'
+            "      type: ''\n",
+            'add_literal_to_list `type` must be a non-empty string',
+            name='validation.gn')
+
     # -- append_to_target (real ast-grep binary) --------------------------
 
     def test_append_to_target_appends_code_at_the_end(self):
@@ -4717,6 +4829,21 @@ class RewriterFormsTest(unittest.TestCase):
             'import("//brave/utility/sources.gni")\n\n'
             'source_set("utility") {\n  sources = [ "u.cc" ]\n'
             '  sources += brave_utility_sources\n}\n')
+
+    def test_append_to_target_type_picks_a_declaration_apart(self):
+        result = self._apply(
+            'append_type.gn', 'if (is_win) {\n  copy("b") {\n'
+            '    sources = [ "w" ]\n  }\n} else {\n  group("b") {\n'
+            '  }\n}\n', 'substitutions:\n'
+            '  - description: append to the copy branch\n'
+            '    append_to_target:\n'
+            '      target: b\n'
+            '      type: copy\n'
+            '      code: sources += brave_sources\n')
+        self.assertEqual(
+            result, 'if (is_win) {\n  copy("b") {\n    sources = [ "w" ]\n'
+            '    sources += brave_sources\n  }\n} else {\n'
+            '  group("b") {\n  }\n}\n')
 
     def test_append_to_target_missing_target_fails(self):
         with self.assertRaises(plaster.PlasterApplyError) as ctx:

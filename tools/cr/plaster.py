@@ -2248,6 +2248,8 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
           e.g. `is_android`. It is appended inside the target's own
           `if (<condition>)`, or that conditional is added after the list's
           assignment when the target does not have it.
+        - `type` — optional call declaring the target, e.g. `source_set`,
+          narrowing `target` to that declaration.
         - `assume_defined` — optional flag indicating that the attribute has
           been defined elsewhere, always using `+=` for assignment.
 
@@ -2304,9 +2306,12 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
     _ANY_CONDITION: Final = '.'
 
     def __init__(self, *, target: str, list_name: str, literal: str,
-                 import_path: str, conditional: str, assume_defined: bool):
+                 import_path: str, conditional: str, assume_defined: bool,
+                 target_type: str):
         super().__init__()
         self._target = target
+        # Empty when the plaster entry gave no `type:`.
+        self._target_type = target_type
         self._list_name = list_name
         self._literal = literal
 
@@ -2354,7 +2359,11 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         when the target has none, mirroring how a value would be added by
         hand. A target that is not declared exactly once is refused first.
         """
-        inputs = {'target': self._target, 'list_name': self._list_name}
+        inputs = {
+            'target': self._target,
+            'type': _gn_type_pattern(self._target_type),
+            'list_name': self._list_name,
+        }
         # This rewriter only supports count one, so if an attribute is declared
         # more than once, in different conditional branches, we error out.
         bodies = engine.matches(Operation(self._ASSIGN_NEW, inputs))
@@ -2364,8 +2373,8 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         if len(bodies) > 1:
             return (f'{self.NAME} found {len(bodies)} declarations of target '
                     f'{self._target!r} and cannot tell which one the literal '
-                    f'belongs in; a target declared once per `if`/`else` '
-                    f'branch has to be patched by hand')
+                    f'belongs in; name what declares the one you mean with '
+                    f'`type:`, or patch it by hand')
 
         if self._conditional:
             return self._add_conditional_literal(engine, inputs)
@@ -2494,7 +2503,7 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
             raise ValueError(
                 f'"{cls.NAME}" must be a mapping (in "{description}")')
         required = {'target', 'list_name', 'literal'}
-        optional = {'import', 'conditional'}
+        optional = {'import', 'conditional', 'type'}
         flags = {'assume_defined'}
         unknown = sorted(set(body) - required - optional - flags)
         if unknown:
@@ -2527,7 +2536,17 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
                    literal=body['literal'],
                    import_path=body.get('import', ''),
                    conditional=body.get('conditional', ''),
-                   assume_defined=assume_defined)
+                   assume_defined=assume_defined,
+                   target_type=body.get('type', ''))
+
+
+def _gn_type_pattern(target_type: str) -> str:
+    """The regex matching the call that declares a target.
+
+    A matcher always carries the constraint, so an entry naming no `type:`
+    passes a pattern matching whichever call it happens to be.
+    """
+    return f'^{re.escape(target_type)}$' if target_type else '.'
 
 
 def _add_gn_import(engine: AstRewriter, import_path: str,
@@ -2711,7 +2730,7 @@ class GnAddLiteralToVariableRewriter(_GnVariableRewriter):
           `.gni` the file does not already import. Added at the top of the
           file if not present.
 
-        - `assume_defined` — optional flag indicating that a variable is asusmed
+        - `assume_defined` — optional flag indicating that a variable is assumed
           to have been defined elsewhere, always using `+=` for assignment.
           Without it the variable has to be assigned by the file being patched.
 
@@ -2830,6 +2849,8 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
           `static_library("browser")`.
         - `code` — the statements to append. Write it flush-left; the whole
           block is indented to the target's body level for you.
+        - `type` — optional call declaring the target, e.g. `source_set`,
+          narrowing `target` to that declaration.
 
         Example:
 
@@ -2858,10 +2879,12 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
     # One level of GN body indentation. gn format fixes this at two spaces.
     _BODY_INDENT: Final = '  '
 
-    def __init__(self, *, target: str, code: str):
+    def __init__(self, *, target: str, code: str, target_type: str):
         super().__init__()
         self._target = target
         self._code = code
+        # Empty when the plaster entry gave no `type:`.
+        self._target_type = target_type
 
     @classmethod
     def validate_count(cls, count: int, description: str) -> None:
@@ -2889,15 +2912,18 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
 
     def _append_code(self, engine: AstRewriter) -> str | None:
         """Append the code to the target's body; a failure, or None."""
-        inputs = {'target': self._target}
+        inputs = {
+            'target': self._target,
+            'type': _gn_type_pattern(self._target_type),
+        }
         bodies = engine.matches(Operation(self._FIND_BODY, inputs))
         if not bodies:
             return f'{self.NAME} found no body for target {self._target!r}'
         if len(bodies) > 1:
             return (f'{self.NAME} found {len(bodies)} declarations of target '
                     f'{self._target!r} and cannot tell which one the code '
-                    f'belongs in; a target declared once per `if`/`else` '
-                    f'branch has to be appended to by hand')
+                    f'belongs in; name what declares the one you mean with '
+                    f'`type:`, or append to it by hand')
         # The brace closing the body has a line of its own to read a column
         # off, which the code then sits one level in from.
         indent = _leading_indent(engine.content.encode('utf-8'),
@@ -2919,7 +2945,8 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
             raise ValueError(
                 f'"{cls.NAME}" must be a mapping (in "{description}")')
         required = {'target', 'code'}
-        unknown = sorted(set(body) - required)
+        optional = {'type'}
+        unknown = sorted(set(body) - required - optional)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
@@ -2928,11 +2955,14 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
         if missing:
             raise ValueError(f'{cls.NAME} requires arg(s): '
                              f'{", ".join(missing)} (in "{description}")')
-        for key in sorted(required):
-            if not isinstance(body[key], str) or not body[key]:
+        for key in sorted(required | optional):
+            value = body.get(key, '')
+            if not isinstance(value, str) or (key in body and not value):
                 raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
                                  f'string (in "{description}")')
-        return cls(target=body['target'], code=body['code'])
+        return cls(target=body['target'],
+                   code=body['code'],
+                   target_type=body.get('type', ''))
 
 
 class GnAddImportRewriter(_AstGrepRewriter):
