@@ -9,33 +9,26 @@
 #include "build/build_config.h"
 #include "content/public/browser/speech_recognition_session_config.h"
 
-#if !BUILDFLAG(ENABLE_LOCAL_AI) && !BUILDFLAG(IS_ANDROID)
-#include "content/browser/speech/on_device_speech_recognition_engine_impl.h"
+// Hooks are defined in brave/content/browser/speech/
+// brave_speech_recognition_manager_impl.cc, which is compiled into
+// //content/browser through brave_content_browser_sources.
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/content/browser/speech/brave_speech_recognition_manager_impl.h"
 #endif
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "content/browser/speech/on_device_speech_recognition_engine_impl.h"
+#include "content/browser/speech/speech_recognition_engine.h"
+#endif
+
+#if !BUILDFLAG(ENABLE_LOCAL_AI)
 
 namespace content {
 
-class SpeechRecognitionEngine;
-
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-
-// Both are defined in brave/content/browser/speech/
-// brave_speech_recognition_manager_impl.cc, which is compiled into
-// //content/browser through brave_content_browser_sources. Declared here rather
-// than included, so this override depends on no Brave target.
-bool UsesBraveOnDeviceSpeechEngine();
-std::unique_ptr<SpeechRecognitionEngine> MakeOnDeviceSpeechEngine(
-    const SpeechRecognitionSessionConfig& config);
-
-#else  // BUILDFLAG(ENABLE_LOCAL_AI)
-
-// A build without local AI has no engine of Brave's to route to.
 bool UsesBraveOnDeviceSpeechEngine() {
   return false;
 }
 
-// Guarded to match the upstream call site, which sits inside
-// `#if !BUILDFLAG(IS_ANDROID)`.
 #if !BUILDFLAG(IS_ANDROID)
 std::unique_ptr<SpeechRecognitionEngine> MakeOnDeviceSpeechEngine(
     const SpeechRecognitionSessionConfig& config) {
@@ -43,8 +36,8 @@ std::unique_ptr<SpeechRecognitionEngine> MakeOnDeviceSpeechEngine(
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
-#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
-
 }  // namespace content
+
+#endif  // !BUILDFLAG(ENABLE_LOCAL_AI)
 
 #include <content/browser/speech/speech_recognition_manager_impl.cc>

@@ -2,4 +2,5 @@ include_rules = [
   "+brave/components/constants/brave_services_key.h",
   "+brave/components/local_ai/buildflags",
   "+brave/components/speech_to_text",
+  "+brave/content/browser/speech",
 ]
