@@ -448,6 +448,13 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
     more_tools_model->RemoveItemAt(*index);
   }
 
+  // Remove upstream's "Show vertical tabs" menu item. Vertical tabs can still
+  // be toggled via the tab strip context menu and settings.
+  if (const auto index =
+          more_tools_model->GetIndexOfCommandId(IDC_TOGGLE_VERTICAL_TABS)) {
+    more_tools_model->RemoveItemAt(*index);
+  }
+
   // Remove upstream's about menu. It's moved into help sub menu.
   if (const auto index = GetIndexOfCommandId(IDC_ABOUT)) {
     RemoveItemAt(*index);
