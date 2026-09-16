@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/common/autofill_features.cc b/components/autofill/core/common/autofill_features.cc
-index a4857b59bed15c9d76fa4ce0745b07db004eafe6..ad9364f5728057f7ba5de5dc80ea5abdbf486563 100644
+index 1c35dfbd61fbae6a95fce51a0be9a5283c25e49a..ab62f60db70040783532a8941282678ffc7d1515 100644
 --- a/components/autofill/core/common/autofill_features.cc
 +++ b/components/autofill/core/common/autofill_features.cc
-@@ -291,7 +291,7 @@ BASE_FEATURE_PARAM(
+@@ -286,7 +286,7 @@ BASE_FEATURE_PARAM(
  
  // If enabled, the client may trigger the server model for AutofillAI type
  // predictions.
@@ -11,7 +11,7 @@ index a4857b59bed15c9d76fa4ce0745b07db004eafe6..ad9364f5728057f7ba5de5dc80ea5abd
  
  // The maximum duration for which an AutofillAI server model response is kept in
  // the local cache. NOTE: It is advisable to choose a value that is at least as
-@@ -431,7 +431,7 @@ DEFINE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(
+@@ -426,7 +426,7 @@ DEFINE_FEATURE_WITH_MOBILE_COUNTRY_RESTRICTION(
      kAutofillAiWalletVehicleRegistration);
  
  // Enables the second iteration AutofillAI.

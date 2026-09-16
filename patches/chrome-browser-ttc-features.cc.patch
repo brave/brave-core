@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ttc/features.cc b/chrome/browser/ttc/features.cc
+index e732019b8544172097b6cbc4277d3b4bf1baecd2..12c687b304db415a155d5f850271f689f2457c01 100644
+--- a/chrome/browser/ttc/features.cc
++++ b/chrome/browser/ttc/features.cc
+@@ -6,6 +6,7 @@
+ 
+ namespace ttc {
+ 
++// kTtc feature state is enforced via plaster rewrite.
+ BASE_FEATURE(kTtc, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ }  // namespace ttc

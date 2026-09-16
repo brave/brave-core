@@ -29,7 +29,7 @@ namespace {
 // newly shown windows may never be activated by the window server.
 // Browser::DidBecomeActive only notifies on an active-state transition, so
 // force a deactivate/activate cycle.
-void NotifyBrowserActivated(Browser* browser) {
+void NotifyBrowserActivated(BrowserWindowInterface* browser) {
   auto* browser_active_state_manager = BrowserActiveStateManager::From(browser);
   browser_active_state_manager->DidBecomeInactive();
   browser_active_state_manager->DidBecomeActive();
@@ -138,7 +138,7 @@ IN_PROC_BROWSER_TEST_F(AcceleratorMenuCoordinatorMacBrowserTest,
   Profile& second_profile = profiles::testing::CreateProfileSync(
       profile_manager,
       profile_manager->user_data_dir().AppendASCII("Second Profile"));
-  Browser* second_browser = CreateBrowser(&second_profile);
+  BrowserWindowInterface* second_browser = CreateBrowser(&second_profile);
   NotifyBrowserActivated(second_browser);
   EXPECT_NSEQ(default_key_equivalent, item.keyEquivalent);
 

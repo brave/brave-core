@@ -69,7 +69,7 @@ IN_PROC_BROWSER_TEST_F(TabStripPlacementCoordinatorBrowserTest,
   browser()->GetProfile()->GetPrefs()->SetBoolean(
       brave_tabs::kVerticalTabsEnabled, true);
 
-  Browser* second = CreateBrowser(browser()->GetProfile());
+  BrowserWindowInterface* second = CreateBrowser(browser()->GetProfile());
   ASSERT_TRUE(second);
 
   auto* second_view =

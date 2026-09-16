@@ -1,5 +1,5 @@
 diff --git a/components/lens/lens_features.cc b/components/lens/lens_features.cc
-index c1276e4a41d18984a3f42a9c76a87a073e8e1280..5a164f1f8c006eaad148031dfffa789e6bfbfc28 100644
+index 5775195551f21c1b3603c3b052b9f9e252370967..7d008372de4d6b1341c42d5e19d7c0ecb611559d 100644
 --- a/components/lens/lens_features.cc
 +++ b/components/lens/lens_features.cc
 @@ -16,17 +16,14 @@
@@ -10,7 +10,7 @@ index c1276e4a41d18984a3f42a9c76a87a073e8e1280..5a164f1f8c006eaad148031dfffa789e
 +// kLensStandalone feature state is enforced via plaster rewrite.
 +BASE_FEATURE(kLensStandalone, base::FEATURE_DISABLED_BY_DEFAULT);
  
- BASE_FEATURE(kShowContextualTasksMenuIcon, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kShowContextualTasksMenuIcon, base::FEATURE_ENABLED_BY_DEFAULT);
  
 +// kLensOverlay feature state is enforced via plaster rewrite.
  BASE_FEATURE(kLensOverlay,

@@ -33,8 +33,8 @@
 #include "chrome/browser/actor/site_policy.h"
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_action_container.h"
@@ -94,10 +94,10 @@ class AIChatConversationTaskBrowserTest
     ASSERT_TRUE(embedded_https_test_server().Start());
 
     // Create the agent profile
-    base::test::TestFuture<Browser*> browser_future;
+    base::test::TestFuture<BrowserWindowInterface*> browser_future;
     OpenBrowserWindowForAIChatAgentProfileForTesting(
         *browser()->GetProfile(), browser_future.GetCallback());
-    Browser* agent_browser = browser_future.Take();
+    BrowserWindowInterface* agent_browser = browser_future.Take();
     ASSERT_NE(agent_browser, nullptr);
     agent_profile_ = agent_browser->GetProfile();
     agent_browser_window_ = agent_browser;
@@ -177,7 +177,7 @@ class AIChatConversationTaskBrowserTest
   }
 
   raw_ptr<Profile> agent_profile_ = nullptr;
-  raw_ptr<Browser> agent_browser_window_ = nullptr;
+  raw_ptr<BrowserWindowInterface> agent_browser_window_ = nullptr;
   raw_ptr<ContentAgentToolProvider> content_agent_tool_provider_ = nullptr;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
@@ -331,7 +331,14 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
     auto callbacks = generate_future->Take();
     // Send first message response
     // Simulate tool use event
-    GURL test_url = embedded_https_test_server().GetURL("/actor/link.html");
+    //
+    // Use a named host rather than the server's literal 127.0.0.1 IP:
+    // `kGlicActorLocalhostIsSensitive` (enabled by default) now treats literal
+    // loopback URLs as sensitive, which blocks the actor's navigation since
+    // this profile has no delegate wired up to answer the resulting
+    // user-confirmation request.
+    GURL test_url =
+        embedded_https_test_server().GetURL("example.com", "/actor/link.html");
     callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewToolUseEvent(
             CreateNavigateToolUseEvent("tool_id_1", test_url)),
@@ -371,7 +378,8 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
     ASSERT_TRUE(VerifyElementState("stop-task-button"));
     ClickElement("stop-task-button");
 
-    GURL test_url = embedded_https_test_server().GetURL("/actor/drag.html");
+    GURL test_url =
+        embedded_https_test_server().GetURL("example.com", "/actor/drag.html");
     callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("Hmm, I want a different page")),
@@ -420,7 +428,8 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest, TaskStopAction) {
     auto callbacks = generate_future->Take();
     // Send first message response
     // Simulate tool use event
-    GURL test_url = embedded_https_test_server().GetURL("/actor/link.html");
+    GURL test_url =
+        embedded_https_test_server().GetURL("example.com", "/actor/link.html");
     callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewToolUseEvent(
             CreateNavigateToolUseEvent("tool_id_1", test_url)),
@@ -638,7 +647,8 @@ IN_PROC_BROWSER_TEST_F(AIChatConversationTaskBrowserTest,
     conversation_handler_->SubmitHumanConversationEntry(
         "Navigate to example.com", std::nullopt);
     auto callbacks = generate_future->Take();
-    GURL test_url = embedded_https_test_server().GetURL("/actor/link.html");
+    GURL test_url =
+        embedded_https_test_server().GetURL("example.com", "/actor/link.html");
     callbacks.data_callback.Run(EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewToolUseEvent(
             CreateNavigateToolUseEvent("tool_id_1", test_url)),

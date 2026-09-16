@@ -1,8 +1,8 @@
 diff --git a/services/network/public/cpp/features.cc b/services/network/public/cpp/features.cc
-index 56689dab5a3c9e0ea9af2f67e94cc577639b0fde..83cad3d473d7060769084fb2f09eb222565c2777 100644
+index ec0b3711216b34c73eb545fca545acc6d7c8b21e..64ebc481e74afde1d9cda663829ed49cbd55c064 100644
 --- a/services/network/public/cpp/features.cc
 +++ b/services/network/public/cpp/features.cc
-@@ -269,6 +269,7 @@ BASE_FEATURE_PARAM(bool,
+@@ -275,6 +275,7 @@ BASE_FEATURE_PARAM(bool,
  // of vulnerable local devices.
  //
  // Spec: https://wicg.github.io/local-network-access/
@@ -10,7 +10,7 @@ index 56689dab5a3c9e0ea9af2f67e94cc577639b0fde..83cad3d473d7060769084fb2f09eb222
  BASE_FEATURE(kLocalNetworkAccessChecksWebSockets,
               base::FEATURE_ENABLED_BY_DEFAULT);
  
-@@ -420,7 +421,8 @@ BASE_FEATURE(kUpdateRequestForCorsRedirect, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -426,7 +427,8 @@ BASE_FEATURE(kUpdateRequestForCorsRedirect, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // https://github.com/patcg-individual-drafts/topics
  // Kill switch for the Topics API.

@@ -144,7 +144,7 @@ IN_PROC_BROWSER_TEST_F(BraveOmniboxViewViewsTest, PasteAndSearchTest) {
             GURL(service->GetDefaultSearchProvider()->url()).host());
 
   // Create private window.
-  Browser* private_browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser();
   auto* private_service =
       TemplateURLServiceFactory::GetForProfile(private_browser->GetProfile());
   EXPECT_TRUE(VerifyTemplateURLServiceLoad(private_service));

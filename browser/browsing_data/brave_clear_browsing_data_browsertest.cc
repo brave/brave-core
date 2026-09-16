@@ -191,11 +191,11 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
 
  protected:
   // Open a new browser window with the provided |profile|.
-  Browser* NewBrowserWindow(Profile* profile) {
+  BrowserWindowInterface* NewBrowserWindow(Profile* profile) {
     DCHECK(profile);
     ui_test_utils::BrowserCreatedObserver browser_created_observer;
     chrome::NewEmptyWindow(profile);
-    Browser* browser = browser_created_observer.Wait();
+    BrowserWindowInterface* browser = browser_created_observer.Wait();
     DCHECK(browser);
     content::WaitForLoadStopWithoutSuccessCheck(
         browser->tab_strip_model()->GetActiveWebContents());
@@ -203,10 +203,10 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
   }
 
   // Open a new browser window with a guest session.
-  Browser* NewGuestBrowserWindow() {
+  BrowserWindowInterface* NewGuestBrowserWindow() {
     ui_test_utils::BrowserCreatedObserver browser_created_observer;
     profiles::SwitchToGuestProfile(base::DoNothing());
-    Browser* browser = browser_created_observer.Wait();
+    BrowserWindowInterface* browser = browser_created_observer.Wait();
     DCHECK(browser);
     // When a guest |browser| closes a BrowsingDataRemover will be created and
     // executed. It needs a loaded TemplateUrlService or else it hangs on to a
@@ -223,7 +223,7 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
   }
 
   // Open a new browser window with a new profile.
-  Browser* NewProfileBrowserWindow() {
+  BrowserWindowInterface* NewProfileBrowserWindow() {
     base::FilePath path;
     base::PathService::Get(chrome::DIR_USER_DATA, &path);
     path = path.AppendASCII("Profile 2");
@@ -243,7 +243,7 @@ class BraveClearDataOnExitTwoBrowsersTest : public BraveClearDataOnExitTest {
   }
 
   // Close the provided |browser| window and wait until done.
-  void CloseBrowserWindow(Browser* browser) {
+  void CloseBrowserWindow(BrowserWindowInterface* browser) {
     ui_test_utils::BrowserDestroyedObserver browser_destroyed_observer(browser);
     chrome::ExecuteCommand(browser, IDC_CLOSE_WINDOW);
     browser_destroyed_observer.Wait();
@@ -270,7 +270,8 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, SameProfile) {
   SetExepectedRemoveDataCallCount(1);
 
   // Open a second browser window.
-  Browser* second_window = NewBrowserWindow(browser()->GetProfile());
+  BrowserWindowInterface* second_window =
+      NewBrowserWindow(browser()->GetProfile());
   // Close second browser window
   CloseBrowserWindow(second_window);
   EXPECT_EQ(0, remove_data_call_count());
@@ -286,7 +287,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneOTR) {
   SetExepectedRemoveDataCallCount(1);
 
   // Open a second browser window with OTR profile.
-  Browser* second_window = NewBrowserWindow(
+  BrowserWindowInterface* second_window = NewBrowserWindow(
       browser()->GetProfile()->GetPrimaryOTRProfile(/*create_if_needed=*/true));
   // Close second browser window
   CloseBrowserWindow(second_window);
@@ -303,7 +304,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneOTRExitsLast) {
   SetExepectedRemoveDataCallCount(1);
 
   // Open a second browser window with OTR profile.
-  Browser* second_window = NewBrowserWindow(
+  BrowserWindowInterface* second_window = NewBrowserWindow(
       browser()->GetProfile()->GetPrimaryOTRProfile(/*create_if_needed=*/true));
 
   // Close regular profile window.
@@ -321,7 +322,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneGuest) {
   SetExepectedRemoveDataCallCount(1);
 
   // Open a second browser window with Guest session.
-  Browser* guest_window = NewGuestBrowserWindow();
+  BrowserWindowInterface* guest_window = NewGuestBrowserWindow();
 
   // Close Guest session window: regular profile cleanup shouldn't happen.
   CloseBrowserWindow(guest_window);
@@ -338,7 +339,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, OneGuestExitsLast) {
   SetExepectedRemoveDataCallCount(1);
 
   // Open a second browser window with Guest session.
-  Browser* guest_window = NewGuestBrowserWindow();
+  BrowserWindowInterface* guest_window = NewGuestBrowserWindow();
 
   // Close regular profile window.
   CloseBrowserWindow(browser());
@@ -353,7 +354,7 @@ IN_PROC_BROWSER_TEST_F(BraveClearDataOnExitTwoBrowsersTest, TwoProfiles) {
   SetDeleteBrowsingHistoryOnExit();
 
   // Open a second browser window with a different profile.
-  Browser* second_profile_window = NewProfileBrowserWindow();
+  BrowserWindowInterface* second_profile_window = NewProfileBrowserWindow();
   DCHECK(second_profile_window);
   // Delete browsing history for this profile on exit too.
   Profile* second_profile = second_profile_window->GetProfile();

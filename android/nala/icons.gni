@@ -203,11 +203,6 @@ nala_chrome_app_icon_overrides = [
     dest = "ic_mobile_friendly_24dp.xml"
   },
   {
-    # Override Chromium's Open web app (app menu).
-    source = "ic_phone_call_out.xml"
-    dest = "ic_open_webapk.xml"
-  },
-  {
     # Override Chromium's Image descriptions (app menu).
     source = "ic_image.xml"
     dest = "ic_image_descriptions.xml"

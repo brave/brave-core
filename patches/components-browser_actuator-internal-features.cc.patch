@@ -1,8 +1,8 @@
 diff --git a/components/browser_actuator/internal/features.cc b/components/browser_actuator/internal/features.cc
-index f2cc4cf7db5f1ede9916ede7055dd520e981d3c4..4efae3dfc2f5407272dec9dbf932794145564622 100644
+index ffd3a19a0303dc367ae17d5cd3ba357e344f3f90..9d7aad7c5a292958b51132395fcd8f265f18fce1 100644
 --- a/components/browser_actuator/internal/features.cc
 +++ b/components/browser_actuator/internal/features.cc
-@@ -8,8 +8,9 @@ namespace browser_actuator {
+@@ -30,8 +30,9 @@ const base::FeatureParam<std::string> kWatchSessionsPathParam{
  
  BASE_FEATURE(kBrowserActuatorChannelEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
  

@@ -32,7 +32,7 @@ class SidebarBrowserTest;
 }  // namespace sidebar
 
 class BraveBrowser;
-class Browser;
+class BrowserWindowInterface;
 
 // This view is the parent view of all sidebar ui.
 // Direct child views are control view and panel view.
@@ -50,7 +50,7 @@ class SidebarContainerView : public sidebar::Sidebar,
                              public FocusModeController::Observer {
   METADATA_HEADER(SidebarContainerView, views::View)
  public:
-  explicit SidebarContainerView(Browser* browser);
+  explicit SidebarContainerView(BrowserWindowInterface* browser);
   ~SidebarContainerView() override;
 
   SidebarContainerView(const SidebarContainerView&) = delete;
@@ -136,7 +136,7 @@ class SidebarContainerView : public sidebar::Sidebar,
   // a precocious downcast.
   BraveBrowser* GetBraveBrowser() const;
 
-  raw_ptr<Browser> browser_ = nullptr;
+  raw_ptr<BrowserWindowInterface> browser_ = nullptr;
   raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;
   bool initialized_ = false;
   bool sidebar_on_left_ = true;

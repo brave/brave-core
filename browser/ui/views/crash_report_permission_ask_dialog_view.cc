@@ -16,8 +16,8 @@
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/browser/ui/session_crashed_bubble.h"
@@ -40,7 +40,7 @@
 
 namespace brave {
 
-void ShowCrashReportPermissionAskDialog(Browser* browser) {
+void ShowCrashReportPermissionAskDialog(BrowserWindowInterface* browser) {
   CrashReportPermissionAskDialogView::Show(browser);
 }
 
@@ -73,7 +73,7 @@ void OpenSettingPage() {
 }  // namespace
 
 // static
-void CrashReportPermissionAskDialogView::Show(Browser* browser) {
+void CrashReportPermissionAskDialogView::Show(BrowserWindowInterface* browser) {
   constrained_window::CreateBrowserModalDialogViews(
       new CrashReportPermissionAskDialogView(browser),
       BrowserWindow::FromBrowser(browser)->GetNativeWindow())
@@ -81,7 +81,7 @@ void CrashReportPermissionAskDialogView::Show(Browser* browser) {
 }
 
 CrashReportPermissionAskDialogView::CrashReportPermissionAskDialogView(
-    Browser* browser) {
+    BrowserWindowInterface* browser) {
   set_should_ignore_snapping(true);
 
   SetButtonLabel(ui::mojom::DialogButton::kOk,

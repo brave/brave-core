@@ -663,7 +663,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest,
       std::make_optional<ui_test_utils::BrowserCreatedObserver>();
 
   chrome::MoveTabsToNewWindow(browser(), split_indices);
-  Browser* new_browser = browser_created_observer->Wait();
+  BrowserWindowInterface* new_browser = browser_created_observer->Wait();
 
   ASSERT_TRUE(new_browser);
   EXPECT_FALSE(tab_strip_model->ContainsSplit(*split_id));
@@ -1565,7 +1565,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewLinkTest, WindowOpenVariationsWhenRedirected) {
     ASSERT_TRUE(content::ExecJs(left_pane, "windowOpenWithFeatures();"));
 
     // Wait for new browser window (popup) to be created
-    Browser* popup_browser = browser_created_observer.Wait();
+    BrowserWindowInterface* popup_browser = browser_created_observer.Wait();
     ASSERT_TRUE(popup_browser);
 
     // Verify a popup window was created

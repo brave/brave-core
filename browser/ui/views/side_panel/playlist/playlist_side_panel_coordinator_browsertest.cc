@@ -21,7 +21,8 @@ namespace {
 
 // Opens a new popup window from |web_contents| on |target_url| and returns
 // the Browser it opened in.
-Browser* OpenPopup(content::WebContents* web_contents, const GURL& target_url) {
+BrowserWindowInterface* OpenPopup(content::WebContents* web_contents,
+                                  const GURL& target_url) {
   ui_test_utils::BrowserCreatedObserver browser_change_observer;
   content::TestNavigationObserver nav_observer(target_url);
   nav_observer.StartWatchingNewWebContents();
@@ -50,7 +51,7 @@ class PlaylistCoordinatorBrowserTest : public web_app::WebAppBrowserTestBase {
   ~PlaylistCoordinatorBrowserTest() override = default;
 
  protected:
-  Browser* InstallPWA(const GURL& start_url) {
+  BrowserWindowInterface* InstallPWA(const GURL& start_url) {
     auto web_app_info =
         web_app::WebAppInstallInfo::CreateWithStartUrlForTesting(start_url);
     web_app_info->scope = start_url.GetWithoutFilename();
@@ -83,8 +84,8 @@ IN_PROC_BROWSER_TEST_F(PlaylistCoordinatorBrowserTest,
 IN_PROC_BROWSER_TEST_F(PlaylistCoordinatorBrowserTest,
                        ControllerNotCreatedInPopup) {
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  Browser* popup = OpenPopup(browser_view->GetActiveWebContents(),
-                             GURL("http://example.com"));
+  BrowserWindowInterface* popup = OpenPopup(
+      browser_view->GetActiveWebContents(), GURL("http://example.com"));
   EXPECT_TRUE(popup);
 
   BrowserView* popup_view = BrowserView::GetBrowserViewForBrowser(popup);

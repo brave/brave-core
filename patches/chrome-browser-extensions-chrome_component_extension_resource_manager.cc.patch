@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-index 927665628da0ff02681003235028e766af6e3480..9622fa7082f47ab07c810bcdea75f28fc65bcf05 100644
+index 6f4212366baf9b35666158d548fd7e375c73266f..9692964d109bb37a57391e8701f57842ecfa8baa 100644
 --- a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
 +++ b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-@@ -91,6 +91,7 @@ class ChromeComponentExtensionResourceManager::Data {
+@@ -105,6 +105,7 @@ class ChromeComponentExtensionResourceManager::Data {
  };
  
  ChromeComponentExtensionResourceManager::Data::Data() {
@@ -10,7 +10,7 @@ index 927665628da0ff02681003235028e766af6e3480..9622fa7082f47ab07c810bcdea75f28f
    static const webui::ResourcePath kExtraComponentExtensionResources[] = {
  #if BUILDFLAG(IS_CHROMEOS)
      {"web_store/webstore_icon_128.png", IDR_WEBSTORE_APP_ICON_128},
-@@ -179,6 +180,9 @@ ChromeComponentExtensionResourceManager::Data::Data() {
+@@ -193,6 +194,9 @@ ChromeComponentExtensionResourceManager::Data::Data() {
          std::move(pdf_viewer_replacements);
    }
  #endif

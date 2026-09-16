@@ -17,7 +17,7 @@ std::unique_ptr<SplitTabMenuModel> CreateBraveSplitTabMenuModel(
     TabStripModel* tab_strip_model,
     SplitTabMenuModel::MenuSource source);
 
-SplitTabsToolbarButton::SplitTabsToolbarButton(Browser* browser)
+SplitTabsToolbarButton::SplitTabsToolbarButton(BrowserWindowInterface* browser)
     : SplitTabsToolbarButton_ChromiumImpl(browser) {
   split_tab_menu_ = CreateBraveSplitTabMenuModel(
       browser_->tab_strip_model(),

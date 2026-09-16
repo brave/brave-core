@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/search_engines_handler.h b/chrome/browser/ui/webui/settings/search_engines_handler.h
-index 76977fc0455b19ed0c2555f483cf0de7ebe6084a..2338a10c4ef7a637ffd8971d022ad3a8f88e2938 100644
+index 3cc1160a6eeee13bfb7ddd964d4681be8c8f195d..62add8f36b289c767824caff3f6ddfb52b61f79c 100644
 --- a/chrome/browser/ui/webui/settings/search_engines_handler.h
 +++ b/chrome/browser/ui/webui/settings/search_engines_handler.h
-@@ -46,6 +46,7 @@ class SearchEnginesHandler : public SettingsPageUIHandler,
+@@ -48,6 +48,7 @@ class SearchEnginesHandler : public SettingsPageUIHandler,
    void OnJavascriptDisallowed() override;
  
   private:
@@ -10,7 +10,7 @@ index 76977fc0455b19ed0c2555f483cf0de7ebe6084a..2338a10c4ef7a637ffd8971d022ad3a8
    friend class SearchEnginesHandlerTest;
  
    // Retrieves all search engines and returns them to WebUI.
-@@ -57,7 +58,7 @@ class SearchEnginesHandler : public SettingsPageUIHandler,
+@@ -59,7 +60,7 @@ class SearchEnginesHandler : public SettingsPageUIHandler,
    // TODO (crbug.com/494551138): Remove once `SearchSettingsUpdate` is launched.
    void HandleGetSearchEnginesList(const base::ListValue& args);
  

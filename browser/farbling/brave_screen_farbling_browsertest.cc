@@ -133,9 +133,10 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
 
   content::RenderFrameHost* IFrame() const { return ChildFrameAt(Parent(), 0); }
 
-  Browser* OpenPopup(const std::string& script, bool from_iframe) const {
+  BrowserWindowInterface* OpenPopup(const std::string& script,
+                                    bool from_iframe) const {
     content::ExecuteScriptAsync(from_iframe ? Parent() : IFrame(), script);
-    Browser* popup = ui_test_utils::WaitForBrowserToOpen();
+    BrowserWindowInterface* popup = ui_test_utils::WaitForBrowserToOpen();
     EXPECT_NE(popup, browser());
     auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
     EXPECT_TRUE(WaitForRenderFrameReady(popup_contents->GetPrimaryMainFrame()));
@@ -293,7 +294,8 @@ class BraveScreenFarblingBrowserTest : public InProcessBrowserTest {
             "`);";
         content::RenderFrameHost* host =
             test_mode == TestMode::kIframe ? Parent() : IFrame();
-        Browser* popup = OpenPopup(script, test_mode == TestMode::kIframe);
+        BrowserWindowInterface* popup =
+            OpenPopup(script, test_mode == TestMode::kIframe);
         auto* popup_contents = popup->tab_strip_model()->GetActiveWebContents();
         content::WaitForLoadStop(popup_contents);
         gfx::Rect child_bounds = BrowserWindow::FromBrowser(popup)->GetBounds();

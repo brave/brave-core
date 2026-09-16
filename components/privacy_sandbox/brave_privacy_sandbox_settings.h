@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_PRIVACY_SANDBOX_BRAVE_PRIVACY_SANDBOX_SETTINGS_H_
 #define BRAVE_COMPONENTS_PRIVACY_SANDBOX_BRAVE_PRIVACY_SANDBOX_SETTINGS_H_
 
-#include <string>
-
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "components/prefs/pref_change_registrar.h"
@@ -38,17 +36,6 @@ class BravePrivacySandboxSettings
       const url::Origin& destination_origin,
       privacy_sandbox::PrivacySandboxAttestationsGatedAPI invoking_api)
       const override;
-  bool IsSharedStorageAllowed(
-      const url::Origin& top_frame_origin,
-      const url::Origin& accessing_origin,
-      std::string* out_debug_message,
-      content::RenderFrameHost* console_frame,
-      bool* out_block_is_site_setting_specific) const override;
-  bool IsSharedStorageSelectURLAllowed(
-      const url::Origin& top_frame_origin,
-      const url::Origin& accessing_origin,
-      std::string* out_debug_message,
-      bool* out_block_is_site_setting_specific) const override;
   void AddObserver(Observer* observer) override;
   void RemoveObserver(Observer* observer) override;
 
