@@ -10,7 +10,9 @@
 #include "base/functional/callback_helpers.h"
 #include "base/i18n/base_i18n_switches.h"
 #include "base/i18n/rtl.h"
+#include "base/location.h"
 #include "base/memory/raw_ptr.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -317,7 +319,6 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
       ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage));
 
   BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-  browser_view->side_panel()->DisableAnimationsForTesting();
   auto* toolbar_view_ = static_cast<BraveToolbarView*>(browser_view->toolbar());
   AIChatButton* button = toolbar_view_->ai_chat_button();
   ASSERT_TRUE(button);
@@ -329,32 +330,46 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
 
   SidePanelEntryKey ai_chat_key =
       SidePanelEntry::Key(SidePanelEntryId::kChatUI);
+  SidePanelEntryKey bookmarks_key =
+      SidePanelEntry::Key(SidePanelEntryId::kBookmarks);
   auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
+  // Show() waits for panel contents to load; skip that delay and animations so
+  // entry switches are observable without racing WaitForEntry.
+  side_panel_coordinator->SetNoDelaysForTesting(true);
+  side_panel_coordinator->DisableAnimationsForTesting();
   ASSERT_FALSE(side_panel_coordinator->IsSidePanelShowing());
   EXPECT_FALSE(is_highlighted());
 
+  auto wait_for_entry = [&](const SidePanelEntryKey& key, bool showing,
+                            const base::Location& loc = FROM_HERE) {
+    SCOPED_TRACE(loc.ToString());
+    ASSERT_TRUE(base::test::RunUntil([&]() {
+      return side_panel_coordinator->IsSidePanelEntryShowing(key) == showing;
+    }));
+  };
+
   button->ButtonPressed();
-  EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
+  wait_for_entry(ai_chat_key, true);
   EXPECT_TRUE(is_highlighted());
 
   // Switching to another sidebar panel should clear the highlight.
-  side_panel_coordinator->Show(
-      SidePanelEntry::Key(SidePanelEntryId::kBookmarks));
+  side_panel_coordinator->Show(bookmarks_key);
+  wait_for_entry(bookmarks_key, true);
   EXPECT_FALSE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
   EXPECT_FALSE(is_highlighted());
 
   button->ButtonPressed();
-  EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
+  wait_for_entry(ai_chat_key, true);
   EXPECT_TRUE(is_highlighted());
 
   button->ButtonPressed();
-  EXPECT_FALSE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
+  wait_for_entry(ai_chat_key, false);
   EXPECT_FALSE(is_highlighted());
 
   // Opening Leo from the side panel (not the toolbar button) should still
   // highlight the button while it is configured to open in the sidebar.
   side_panel_coordinator->Show(ai_chat_key);
-  EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
+  wait_for_entry(ai_chat_key, true);
   EXPECT_TRUE(is_highlighted());
 
   prefs->SetBoolean(ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage,
@@ -367,7 +382,7 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
   EXPECT_TRUE(is_highlighted());
 
   side_panel_coordinator->Close();
-  EXPECT_FALSE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
+  wait_for_entry(ai_chat_key, false);
   EXPECT_FALSE(is_highlighted());
 
   // Full-page mode should not highlight when the toolbar button is pressed.
