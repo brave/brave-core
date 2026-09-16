@@ -39,6 +39,7 @@ source_set("location_bar") {
     "//chrome/browser/profiles",
     "//chrome/browser/search_engines",
     "//chrome/browser/themes",
+    "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui:layout_constants",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/omnibox",
