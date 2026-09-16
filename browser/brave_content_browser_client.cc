@@ -1293,7 +1293,8 @@ bool BraveContentBrowserClient::WillInterceptWebSocket(
   // Intercept frame and worker handshakes so they go through Brave's network
   // request handling (e.g. ad blocking). Shared and service workers have no
   // RenderFrameHost; see crbug.com/40195467.
-  return true;
+  return base::FeatureList::IsEnabled(
+      features::kBraveEnableShieldsForWebSocketsFromWorkers);
 }
 
 template <template <typename> class T>
