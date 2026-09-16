@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/AutofillEditorBase.java b/chrome/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/AutofillEditorBase.java
-index 25e6d58d545fa2e487be482ead0a2834d98bf5f7..fe797eaaf568e0d5e8e4507e44d271108041cef7 100644
+index dbe08735dc22d64ea67ee46ba02f3a17709ff380..f9d43c14edf1faff8492172b59006ba622f0ed24 100644
 --- a/chrome/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/AutofillEditorBase.java
 +++ b/chrome/browser/autofill/android/java/src/org/chromium/chrome/browser/autofill/AutofillEditorBase.java
 @@ -4,6 +4,8 @@
@@ -10,16 +10,13 @@ index 25e6d58d545fa2e487be482ead0a2834d98bf5f7..fe797eaaf568e0d5e8e4507e44d27110
 +
  import static org.chromium.build.NullUtil.assumeNonNull;
  
- import android.annotation.SuppressLint;
-@@ -42,10 +44,15 @@ import org.chromium.ui.text.EmptyTextWatcher;
+ import android.content.Context;
+@@ -34,7 +36,12 @@ import org.chromium.ui.text.EmptyTextWatcher;
  /** Base class for Autofill editors (e.g. credit cards and profiles). */
  @NullMarked
  public abstract class AutofillEditorBase extends Fragment
--        implements EmbeddableSettingsPage,
-+        implements BottomInsetViewProvider, EmbeddableSettingsPage,
-                 OnItemSelectedListener,
-                 OnTouchListener,
-                 EmptyTextWatcher {
+-        implements EmbeddableSettingsPage, EmptyTextWatcher {
++        implements BottomInsetViewProvider, EmbeddableSettingsPage, EmptyTextWatcher {
 +    @Override
 +    public View getBottomInsetView(View fragmentView) {
 +        return fragmentView;
