@@ -49,11 +49,11 @@ class PolkadotProviderRendererTest : public InProcessBrowserTest {
         browser(), embedded_test_server()->GetURL("/empty.html")));
   }
 
-  content::WebContents* web_contents(Browser* browser) const {
+  content::WebContents* web_contents(BrowserWindowInterface* browser) const {
     return browser->tab_strip_model()->GetActiveWebContents();
   }
 
-  void ReloadAndWaitForLoadStop(Browser* browser) {
+  void ReloadAndWaitForLoadStop(BrowserWindowInterface* browser) {
     chrome::Reload(browser, WindowOpenDisposition::CURRENT_TAB);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents(browser)));
   }
@@ -113,7 +113,7 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest,
 }
 
 IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Incognito) {
-  Browser* private_browser = CreateIncognitoBrowser(nullptr);
+  auto* private_browser = CreateIncognitoBrowser(nullptr);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(
       private_browser, embedded_test_server()->GetURL("/empty.html")));
 
