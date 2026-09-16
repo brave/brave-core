@@ -46,6 +46,7 @@ import org.chromium.mojo.system.MojoException;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.function.Consumer;
 
 @NullMarked
 public class BraveAccountSectionController
@@ -84,6 +85,7 @@ public class BraveAccountSectionController
                     ResendVerificationEmailServerErrorCode.TOKEN_HAS_EXPIRED,
                     R.string.brave_account_resend_confirmation_email_token_has_expired);
 
+    private static final String PREF_BRAVE_ACCOUNT = "brave_account";
     private static final String PREF_BRAVE_ACCOUNT_SECTION = "brave_account_section";
     private static final String PREF_USER_INFO = "user_info";
     private static final String PREF_CHANGE_PASSWORD = "change_password";
@@ -96,6 +98,9 @@ public class BraveAccountSectionController
     private static final String PREF_GET_STARTED = "get_started";
     public static final String[] ALL_PREFERENCE_KEYS =
             new String[] {
+                // Ordered ahead of the section header, so it forms its own
+                // group above it rather than sitting under "Brave Account".
+                PREF_BRAVE_ACCOUNT,
                 PREF_BRAVE_ACCOUNT_SECTION,
                 PREF_USER_INFO,
                 PREF_CHANGE_PASSWORD,
@@ -145,11 +150,7 @@ public class BraveAccountSectionController
         initBraveAccountService();
     }
 
-    private boolean openBraveAccountDialog() {
-        return openBraveAccountDialog(DialogMode.DEFAULT);
-    }
-
-    private boolean openBraveAccountDialog(@DialogMode.EnumType int dialogMode) {
+    private boolean withActivity(Consumer<Activity> action) {
         if (!mFragment.isAdded() || mFragment.isDetached()) {
             return false;
         }
@@ -159,11 +160,31 @@ public class BraveAccountSectionController
             return false;
         }
 
-        BraveAccountCustomTabActivity.show(activity, dialogMode);
+        action.accept(activity);
         return true;
     }
 
+    private boolean openBraveAccountDialog() {
+        return openBraveAccountDialog(DialogMode.DEFAULT);
+    }
+
+    private boolean openBraveAccountDialog(@DialogMode.EnumType int dialogMode) {
+        return withActivity(
+                activity ->
+                        BraveAccountCustomTabActivity.openBraveAccountDialog(activity, dialogMode));
+    }
+
+    private boolean openBraveAccountSettings() {
+        return withActivity(BraveAccountCustomTabActivity::openBraveAccountSettings);
+    }
+
     private void setupPreferenceListeners() {
+        Preference braveAccountPreference = mFragment.findPreference(PREF_BRAVE_ACCOUNT);
+        if (braveAccountPreference != null) {
+            braveAccountPreference.setOnPreferenceClickListener(
+                    preference -> openBraveAccountSettings());
+        }
+
         Preference signOutPreference = mFragment.findPreference(PREF_SIGN_OUT);
         if (signOutPreference != null) {
             signOutPreference.setOnPreferenceClickListener(

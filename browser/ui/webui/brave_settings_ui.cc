@@ -428,7 +428,8 @@ void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<brave_account::mojom::DialogController>
         pending_receiver) {
   MakeOwnedReceiver(
-      std::make_unique<brave_account::BraveAccountDialogController>(web_ui()),
+      std::make_unique<brave_account::BraveAccountDialogController>(
+          CHECK_DEREF(web_ui())),
       std::move(pending_receiver));
 }
 

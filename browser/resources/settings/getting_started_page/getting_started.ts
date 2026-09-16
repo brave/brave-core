@@ -6,7 +6,7 @@
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js'
 
-import './brave_account_row.js'
+import '../brave_account_row.js'
 import '../people_page/people_page.js'
 import '../settings_page/settings_section.js'
 import '../default_browser_page/default_browser_page.js'

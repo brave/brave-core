@@ -48,6 +48,7 @@ export class BraveAccountLoggedOutRowElement extends BraveAccountRowBaseElement<
     )
   }
 
+  // <if expr="not is_android and not is_ios">
   // The logged-out description wraps its `Learn more` link text in `<a>` tags,
   // so that the link text is translated in context rather than as a standalone
   // message. The tags are only used to locate the link text - they are never
@@ -61,6 +62,7 @@ export class BraveAccountLoggedOutRowElement extends BraveAccountRowBaseElement<
 
     return { beforeLink, linkLabel, afterLink }
   }
+  // </if>
 }
 
 declare global {

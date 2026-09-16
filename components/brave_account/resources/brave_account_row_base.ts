@@ -99,12 +99,11 @@ export abstract class BraveAccountRowBaseElement<
     this.openDialog(DialogMode.kAccountDeletion)
   }
 
-  // How the dialog is opened is the host's decision, not the row's, so the
-  // rows only announce the intent and let their mount act on it.
+  // Where the flows are opened is the host's decision: brave://settings opens a
+  // dialog over the page, mobile presents them over the page serving the rows.
+  // Either way the browser does it, so both go through the same call.
   private openDialog(dialogMode: DialogMode) {
-    this.fire('open-brave-account-dialog', {
-      initiatingServiceName: this.initiatingServiceName,
-      dialogMode,
-    })
+    this.browserProxy.dialogController.openDialog(
+      this.initiatingServiceName, dialogMode)
   }
 }

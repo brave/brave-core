@@ -7,12 +7,14 @@
 
 #include <utility>
 
-#include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
+#include "base/check_deref.h"
+#include "brave/browser/ui/brave_account/brave_account_dialog_opener.h"
+#include "content/public/browser/web_ui.h"
 
 namespace brave_account {
 
 BraveAccountDialogController::BraveAccountDialogController(
-    content::WebUI* web_ui)
+    content::WebUI& web_ui)
     : web_ui_(web_ui) {}
 
 BraveAccountDialogController::~BraveAccountDialogController() = default;
@@ -20,7 +22,8 @@ BraveAccountDialogController::~BraveAccountDialogController() = default;
 void BraveAccountDialogController::OpenDialog(
     const std::string& initiating_service_name,
     mojom::DialogMode dialog_mode) {
-  ShowBraveAccountDialog(web_ui_, initiating_service_name, dialog_mode);
+  OpenBraveAccountDialog(CHECK_DEREF(web_ui_->GetWebContents()),
+                         initiating_service_name, dialog_mode);
 }
 
 void BraveAccountDialogController::GetDialogMode(

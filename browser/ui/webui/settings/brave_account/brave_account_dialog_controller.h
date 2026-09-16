@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 
 namespace content {
@@ -23,7 +23,7 @@ namespace brave_account {
 // is why CloseDialog() and GetDialogMode() are not meaningful here.
 class BraveAccountDialogController : public mojom::DialogController {
  public:
-  explicit BraveAccountDialogController(content::WebUI* web_ui);
+  explicit BraveAccountDialogController(content::WebUI& web_ui);
 
   ~BraveAccountDialogController() override;
 
@@ -34,7 +34,7 @@ class BraveAccountDialogController : public mojom::DialogController {
   void CloseDialog() override {}
   void GetDialogMode(GetDialogModeCallback callback) override;
 
-  const raw_ptr<content::WebUI> web_ui_;
+  const raw_ref<content::WebUI> web_ui_;
 };
 
 }  // namespace brave_account

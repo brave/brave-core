@@ -127,8 +127,6 @@ brave_settings_ts_files = [
   "brave_window.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
-  "getting_started_page/brave_account_row.html.ts",
-  "getting_started_page/brave_account_row.ts",
   "shortcuts_page/shortcuts_page.ts",
 ]
 
@@ -143,6 +141,8 @@ brave_account_settings_ts_files = [
   "brave_account_logged_in_row.ts",
   "brave_account_logged_out_row.html.ts",
   "brave_account_logged_out_row.ts",
+  "brave_account_row.html.ts",
+  "brave_account_row.ts",
   "brave_account_row_base.ts",
   "brave_account_row_browser_proxy.ts",
   "brave_account_shared.ts",

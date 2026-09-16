@@ -59,7 +59,9 @@ protocol SettingsDelegate: AnyObject {
   func settingsCreateFakeHistory()
 }
 
-class SettingsViewController: TableViewController, BraveAccountAuthenticationObserver {
+class SettingsViewController: TableViewController, BraveAccountAuthenticationObserver,
+  BraveAccountDialogOpening
+{
   weak var settingsDelegate: SettingsDelegate?
 
   private let profile: LegacyBrowserProfile
@@ -316,8 +318,24 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
   }()
 
   private lazy var defaultBrowserSection: Static.Section = {
-    Static.Section(
-      rows: [
+    var rows: [Row] = []
+
+    if IsBraveAccountEnabled() {
+      rows.append(
+        Row(
+          text: L10nUtils.string(messageId: .SETTINGS_BRAVE_ACCOUNT_ROW_TITLE),
+          selection: { [unowned self] in
+            openBraveAccountSettings()
+          },
+          image: UIImage(sharedNamed: "brave.logo"),
+          accessory: .disclosureIndicator,
+          cellClass: BraveAccountIconCell.self
+        )
+      )
+    }
+
+    rows.append(
+      contentsOf: [
         Row(
           text: Strings.setDefaultBrowserSettingsCell,
           selection: { [unowned self] in
@@ -383,6 +401,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         ),
       ]
     )
+
+    return Static.Section(rows: rows)
   }()
 
   private func setCellEnabled(_ enabled: Bool, rowUUID: UUID, sectionUUID: UUID) {
@@ -403,16 +423,67 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     }
   }
 
-  private func openBraveAccountDialog(dialogMode: BraveAccount.DialogMode = .default) {
+  private func openBraveAccountWebUI(
+    url: URL,
+    dialogMode: BraveAccount.DialogMode? = nil
+  ) {
     let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
     let container = UINavigationController(rootViewController: controller)
     controller.title = L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)
-    controller.webView.braveAccountDialogMode = dialogMode
-    controller.webView.load(URLRequest(url: URL(string: "brave://account")!))
+    if let dialogMode {
+      controller.webView.braveAccountDialogMode = dialogMode
+    }
+    controller.webView.load(URLRequest(url: url))
     controller.navigationItem.rightBarButtonItem = .doneButton { [unowned container] in
       container.dismiss(animated: true)
     }
-    present(container, animated: true)
+
+    // Present from whatever is on top rather than from here - UIKit ignores a
+    // second presentation from a controller that is already presenting.
+    var presenter: UIViewController = navigationController ?? self
+    while let presented = presenter.presentedViewController {
+      presenter = presented
+    }
+    presenter.present(container, animated: true)
+  }
+
+  private func openBraveAccountSettings() {
+    openBraveAccountWebUI(
+      url: URL(string: "brave://account/\(BraveAccountSettingsPath)")!
+    )
+  }
+
+  private func openBraveAccountDialog(
+    dialogMode: BraveAccount.DialogMode = .default
+  ) {
+    openBraveAccountDialog(
+      initiatingServiceName: "",
+      dialogMode: dialogMode
+    )
+  }
+
+  // MARK: - BraveAccountDialogOpening
+
+  // Also called from the WebUI serving the account rows, which asks for the
+  // dialog to be opened over it.
+  func openBraveAccountDialog(
+    initiatingServiceName: String,
+    dialogMode: BraveAccount.DialogMode
+  ) {
+    var components = URLComponents(string: "brave://account")!
+    if !initiatingServiceName.isEmpty {
+      components.queryItems = [
+        URLQueryItem(
+          name: BraveAccountInitiatingServiceNameQueryParam,
+          value: initiatingServiceName
+        )
+      ]
+    }
+
+    openBraveAccountWebUI(
+      url: components.url!,
+      dialogMode: dialogMode
+    )
   }
 
   private var braveAccountSection: Static.Section? {
@@ -451,7 +522,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           messageId: .SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL
         ),
         detailText: L10nUtils.string(
-          messageId: .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3
+          messageId: .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3_NATIVE
         ),
         selection: { [unowned self] in
           setCellEnabled(

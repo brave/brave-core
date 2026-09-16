@@ -111,6 +111,7 @@ brave_chrome_all_java_deps = [
   "//brave/browser/messages/android:java",
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
   "//brave/browser/password_entry_edit/android/internal:java",
+  "//brave/browser/ui/android/brave_account:java",
 ]
 
 brave_chrome_java_srcjar_deps = [
