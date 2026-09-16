@@ -129,6 +129,7 @@ test("brave_unit_tests") {
     "//brave/chromium_src/components/variations/service/field_trial_unittest.cc",
     "//brave/chromium_src/content/browser/renderer_host/navigation_entry_impl_unittest.cc",
     "//brave/chromium_src/net/cookies/brave_canonical_cookie_unittest.cc",
+    "//brave/chromium_src/net/cookies/cookie_monster_ephemeral_unittest.cc",
     "//brave/common/brave_content_client_unittest.cc",
     "//brave/common/profiler/thread_profile_configuration_unittest.cc",
     "//brave/components/brave_perf_predictor/browser/bandwidth_linreg_unittest.cc",

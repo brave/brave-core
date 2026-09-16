@@ -1314,6 +1314,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               net::features::kBraveProvisionalTLDEphemeralLifetime),           \
       },                                                                       \
       {                                                                        \
+          "brave-cookie-jar-shared-version",                                   \
+          "CookieJar shared-memory version",                                   \
+          "Use shared memory to skip document.cookie IPCs when cookies have "  \
+          "not changed. Disable to force the sync IPC path.",                  \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(net::features::kBraveCookieJarSharedVersion),     \
+      },                                                                       \
+      {                                                                        \
           "brave-ephemeral-storage-keep-alive",                                \
           "Ephemeral Storage Keep Alive",                                      \
           "Keep ephemeral storage partitions alive for a specified time "      \
