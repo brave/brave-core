@@ -7,20 +7,25 @@
 
 #include <memory>
 
+#include "base/check.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/brave_pages.h"
+#include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/singleton_tabs.h"
+#include "components/prefs/pref_member.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -43,9 +48,30 @@ AIChatButton::AIChatButton(BrowserWindowInterface* browser)
   SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_AI_CHAT_TOOLBAR_BUTTON));
   set_context_menu_controller(this);
   GetViewAccessibility().SetHasPopup(ax::mojom::HasPopup::kMenu);
+
+  auto* sidebar_controller = browser_->GetFeatures().sidebar_controller();
+  CHECK(sidebar_controller);
+  sidebar_model_observation_.Observe(sidebar_controller->model());
+
+  opens_full_page_.Init(
+      ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage, &prefs_.get(),
+      base::BindRepeating(&AIChatButton::UpdateButtonHighlight,
+                          base::Unretained(this)));
 }
 
 AIChatButton::~AIChatButton() = default;
+
+void AIChatButton::OnThemeChanged() {
+  ToolbarButton::OnThemeChanged();
+
+  // Theme change recreates the ink drop and clears highlight state.
+  UpdateButtonHighlight();
+}
+
+void AIChatButton::OnActiveIndexChanged(std::optional<size_t> old_index,
+                                        std::optional<size_t> new_index) {
+  UpdateButtonHighlight();
+}
 
 void AIChatButton::ButtonPressed() {
   auto* prefs = browser_->GetProfile()->GetOriginalProfile()->GetPrefs();
@@ -83,6 +109,31 @@ std::unique_ptr<ui::SimpleMenuModel> AIChatButton::CreateMenuModel() {
   model->AddItemWithStringId(ContextMenuCommand::kHideAIChatButton,
                              IDS_HIDE_BRAVE_AI_CHAT_ICON_ON_TOOLBAR);
   return model;
+}
+
+bool AIChatButton::ShouldHighlight() const {
+  if (prefs_->GetBoolean(
+          ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage)) {
+    return false;
+  }
+
+  auto* sidebar_controller = browser_->GetFeatures().sidebar_controller();
+  if (!sidebar_controller) {
+    return false;
+  }
+
+  const auto* model = sidebar_controller->model();
+  const auto active_index = model->active_index();
+  if (!active_index) {
+    return false;
+  }
+
+  return model->GetAllSidebarItems()[*active_index].built_in_item_type ==
+         sidebar::SidebarItem::BuiltInItemType::kChatUI;
+}
+
+void AIChatButton::UpdateButtonHighlight() {
+  SetHighlighted(ShouldHighlight());
 }
 
 void AIChatButton::ExecuteCommand(int command_id, int event_flags) {

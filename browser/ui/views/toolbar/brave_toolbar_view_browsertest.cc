@@ -66,6 +66,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/views/animation/ink_drop.h"
 #include "ui/views/view.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -305,6 +306,56 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
   button->ButtonPressed();
   auto* web_contents = tab_strip_model->GetActiveWebContents();
   EXPECT_EQ(GURL(kAIChatUIURL), web_contents->GetVisibleURL());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
+                       AIChatButtonHighlightState) {
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  auto* toolbar_view = static_cast<BraveToolbarView*>(browser_view->toolbar());
+  AIChatButton* button = toolbar_view->ai_chat_button();
+  auto* ink_drop = views::InkDrop::Get(button)->GetInkDrop();
+  SidePanelEntryKey ai_chat_key =
+      SidePanelEntry::Key(SidePanelEntryId::kChatUI);
+  auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
+  side_panel_coordinator->DisableAnimationsForTesting();
+
+  // Sidebar is the default open target. The button starts inactive.
+  EXPECT_FALSE(prefs->GetBoolean(
+      ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage));
+  EXPECT_NE(views::InkDropState::ACTIVATED, ink_drop->GetTargetInkDropState());
+
+  // Opening Leo in the sidebar highlights the toolbar button.
+  button->ButtonPressed();
+  EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
+  EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop->GetTargetInkDropState());
+
+  // Closing Leo in the sidebar clears the highlight.
+  button->ButtonPressed();
+  EXPECT_FALSE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
+  EXPECT_NE(views::InkDropState::ACTIVATED, ink_drop->GetTargetInkDropState());
+
+  // Switching the button to full page while Leo is open in the sidebar
+  // should clear the highlight.
+  button->ButtonPressed();
+  EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
+  EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop->GetTargetInkDropState());
+  prefs->SetBoolean(ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage,
+                    true);
+  EXPECT_NE(views::InkDropState::ACTIVATED, ink_drop->GetTargetInkDropState());
+
+  // Full-page mode never highlights, even if Leo is open in the sidebar.
+  side_panel_coordinator->Close();
+  EXPECT_FALSE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
+  side_panel_coordinator->Show(ai_chat_key);
+  EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
+  EXPECT_NE(views::InkDropState::ACTIVATED, ink_drop->GetTargetInkDropState());
+
+  // Clicking the button in full-page mode also leaves it inactive.
+  button->ButtonPressed();
+  auto* web_contents = browser()->tab_strip_model()->GetActiveWebContents();
+  EXPECT_EQ(GURL(kAIChatUIURL), web_contents->GetVisibleURL());
+  EXPECT_NE(views::InkDropState::ACTIVATED, ink_drop->GetTargetInkDropState());
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,

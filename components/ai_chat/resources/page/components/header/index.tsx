@@ -123,39 +123,39 @@ export const ConversationHeader = React.forwardRef(function (
         <Logo isPremium={aiChatContext.isPremiumUser} />
       )}
       <div className={styles.actions}>
+        {aiChatContext.hasAcceptedAgreement && shouldDisplayEraseAction && (
+          <Button
+            fab
+            kind='plain-faint'
+            aria-label={newChatButtonLabel}
+            title={newChatButtonLabel}
+            onClick={createNewConversation}
+          >
+            <Icon
+              name={
+                aiChatContext.isHistoryFeatureEnabled ? 'edit-box' : 'erase'
+              }
+            />
+          </Button>
+        )}
+        {canShowFullScreenButton && (
+          <Button
+            fab
+            kind='plain-faint'
+            aria-label={openFullPageButtonLabel}
+            title={openFullPageButtonLabel}
+            data-testid='open-full-page-button'
+            onClick={() =>
+              aiChatContext.api.uiHandler.openConversationFullPage(
+                conversationContext.conversationUuid!,
+              )
+            }
+          >
+            <Icon name='expand' />
+          </Button>
+        )}
         {aiChatContext.hasAcceptedAgreement && (
           <>
-            {shouldDisplayEraseAction && (
-              <Button
-                fab
-                kind='plain-faint'
-                aria-label={newChatButtonLabel}
-                title={newChatButtonLabel}
-                onClick={createNewConversation}
-              >
-                <Icon
-                  name={
-                    aiChatContext.isHistoryFeatureEnabled ? 'edit-box' : 'erase'
-                  }
-                />
-              </Button>
-            )}
-            {canShowFullScreenButton && (
-              <Button
-                fab
-                kind='plain-faint'
-                aria-label={openFullPageButtonLabel}
-                title={openFullPageButtonLabel}
-                data-testid='open-full-page-button'
-                onClick={() =>
-                  aiChatContext.api.uiHandler.openConversationFullPage(
-                    conversationContext.conversationUuid!,
-                  )
-                }
-              >
-                <Icon name='expand' />
-              </Button>
-            )}
             {canShareConversation && (
               <Button
                 fab
@@ -168,19 +168,19 @@ export const ConversationHeader = React.forwardRef(function (
               </Button>
             )}
             <FeatureButtonMenu {...props} />
-            {!aiChatContext.isStandalone && (
-              <Button
-                fab
-                kind='plain-faint'
-                aria-label={closeButtonLabel}
-                title={closeButtonLabel}
-                className={styles.closeButton}
-                onClick={() => aiChatContext.api.uiHandler.closeUI()}
-              >
-                <Icon name='close' />
-              </Button>
-            )}
           </>
+        )}
+        {!aiChatContext.isStandalone && (
+          <Button
+            fab
+            kind='plain-faint'
+            aria-label={closeButtonLabel}
+            title={closeButtonLabel}
+            className={styles.closeButton}
+            onClick={() => aiChatContext.api.uiHandler.closeUI()}
+          >
+            <Icon name='close' />
+          </Button>
         )}
       </div>
     </div>
