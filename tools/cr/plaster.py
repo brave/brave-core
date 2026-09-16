@@ -2244,6 +2244,10 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         - `import` — optional path to `import()`, if `literal` comes from a
           `.gni` the target file does not already import. Added at the top of
           the file if not present.
+        - `conditional` — optional gn condition the literal is added under,
+          e.g. `is_android`. It is appended inside the target's own
+          `if (<condition>)`, or that conditional is added after the list's
+          assignment when the target does not have it.
 
         Example:
 
@@ -2277,20 +2281,32 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
     # Assigns `list_name` fresh, when the target declares none yet.
     _ASSIGN_NEW: Final = 'gn.assign_literal_to_list'
 
+    # Appends inside the conditional body `conditional:` names.
+    _APPEND_CONDITIONAL: Final = 'gn.append_literal_to_conditional'
+
+    # Adds that conditional, for a target that does not have it yet.
+    _ASSIGN_CONDITIONAL: Final = 'gn.assign_conditional_literal_to_list'
+
     # Adds the optional `import()` line at the top of the file.
     _ADD_IMPORT: Final = 'gn.add_import'
 
     # One level of GN body indentation. gn format fixes this at two spaces.
     _BODY_INDENT: Final = '  '
 
+    # The condition regex that matches whichever conditions a target has, for
+    # asking whether it conditions the list at all rather than matching one.
+    _ANY_CONDITION: Final = '.'
+
     def __init__(self, *, target: str, list_name: str, literal: str,
-                 import_path: str):
+                 import_path: str, conditional: str):
         super().__init__()
         self._target = target
         self._list_name = list_name
         self._literal = literal
         # Empty when the plaster entry gave no `import:`.
         self._import_path = import_path
+        # Empty when the plaster entry gave no `conditional:`.
+        self._conditional = conditional
 
     @classmethod
     def validate_count(cls, count: int, description: str) -> None:
@@ -2340,24 +2356,100 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
                     f'belongs in; a target declared once per `if`/`else` '
                     f'branch has to be patched by hand')
 
+        if self._conditional:
+            return self._add_conditional_literal(engine, inputs)
+        return self._add_direct_literal(engine, inputs, bodies[0])
+
+    def _add_direct_literal(self, engine: AstRewriter, inputs: dict[str, str],
+                            body: AstMatch) -> str | None:
+        """Add the literal to the target's body itself; a failure, or None."""
         anchor = engine.first_match(Operation(self._APPEND_EXISTING, inputs))
         if anchor is not None:
             # The `+=` opens the line below the assignment, at its column.
             op_id = self._APPEND_EXISTING
             indent = self._indent_at(engine, anchor.start)
         else:
+            if self._assigns_conditionally(engine, inputs):
+                return (f'{self.NAME} found {self._list_name!r} assigned only '
+                        f'inside a conditional in target {self._target!r}; '
+                        f'creating it unconditionally would apply '
+                        f'{self._literal!r} in every configuration, so name '
+                        f'that condition with `conditional:` instead')
             # The assignment opens the body, one level in from the brace that
             # closes it, which unlike the opening brace, has a line of its
             # own to read an indentation off.
             op_id = self._ASSIGN_NEW
-            indent = self._indent_at(engine,
-                                     bodies[0].end - 1) + self._BODY_INDENT
+            indent = self._indent_at(engine, body.end - 1) + self._BODY_INDENT
         op = Operation(op_id, {
             **inputs,
             'literal': self._literal,
             'indent': indent,
         }, MatchExpectation.exactly(1))
         return op.expectation.error_for(engine.run(op))
+
+    def _add_conditional_literal(self, engine: AstRewriter,
+                                 inputs: dict[str, str]) -> str | None:
+        """Add the literal under `conditional:`; a failure, or None.
+
+        Appends inside the conditional when the target already has it, and
+        adds the conditional itself when it does not.
+        """
+        # The matcher takes the condition as a regex, so an exact one is
+        # escaped and anchored; `!` and `&&` are common in a gn condition.
+        # The ops name that input `condition`, since a condition is what
+        # they interpolate, where the entry's field names the conditional.
+        conditional_inputs = dict(
+            inputs, condition=f'^{re.escape(self._conditional)}$')
+        block = engine.first_match(
+            Operation(self._APPEND_CONDITIONAL, conditional_inputs))
+        if block is not None:
+            # The append is the conditional body's last statement, indented
+            # one level in from the brace closing that body.
+            op = Operation(
+                self._APPEND_CONDITIONAL, {
+                    **conditional_inputs,
+                    'literal': self._literal,
+                    'indent': self._indent_at(engine, block.end - 1),
+                }, MatchExpectation.exactly(1))
+            return op.expectation.error_for(engine.run(op))
+
+        # With no such conditional, one is added after the list's own
+        # assignment. Lacking that too there is nothing to append to, and a
+        # `+=` against an undefined variable is a gn error, so rather than
+        # guess at an assignment the target never makes, it is refused.
+        anchor = engine.first_match(Operation(self._APPEND_EXISTING, inputs))
+        if anchor is None:
+            return (f'{self.NAME} found no `if ({self._conditional})` in target '
+                    f'{self._target!r}, nor a {self._list_name!r} assignment '
+                    f'to add one after')
+        op = Operation(
+            self._ASSIGN_CONDITIONAL, {
+                **inputs,
+                'condition': self._conditional,
+                'literal': self._literal,
+                'indent': self._indent_at(engine, anchor.start),
+            }, MatchExpectation.exactly(1))
+        return op.expectation.error_for(engine.run(op))
+
+    def _assigns_conditionally(self, engine: AstRewriter,
+                               inputs: dict[str, str]) -> bool:
+        """Whether the target assigns `list_name` only inside a conditional.
+
+        Only ever asked once the target makes no direct assignment, so a hit
+        here means an unconditional one would change what upstream conditions.
+        The conditional bodies come from the AST; which of them assigns the
+        list is read off their text, since any of gn's assignment operators
+        counts and the matchers pin one.
+        """
+        assigns = re.compile(
+            rb'^\s*' + re.escape(self._list_name.encode('utf-8')) +
+            rb'\s*[-+]?=', re.MULTILINE)
+        source = engine.content.encode('utf-8')
+        blocks = engine.matches(
+            Operation(self._APPEND_CONDITIONAL,
+                      dict(inputs, condition=self._ANY_CONDITION)))
+        return any(
+            assigns.search(source[block.start:block.end]) for block in blocks)
 
     def _add_import(self, engine: AstRewriter) -> str | None:
         """Add the optional `import()` to the file; a failure, or None.
@@ -2411,7 +2503,7 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
             raise ValueError(
                 f'"{cls.NAME}" must be a mapping (in "{description}")')
         required = {'target', 'list_name', 'literal'}
-        optional = {'import'}
+        optional = {'import', 'conditional'}
         unknown = sorted(set(body) - required - optional)
         if unknown:
             raise ValueError(
@@ -2425,17 +2517,18 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
             if not isinstance(body[key], str) or not body[key]:
                 raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
                                  f'string (in "{description}")')
-        # `import` is optional, but an empty one is a mistake rather than a
-        # way to ask for no import: leaving the key out is that.
-        import_path = body.get('import', '')
-        if not isinstance(import_path, str) or ('import' in body
-                                                and not import_path):
-            raise ValueError(f'{cls.NAME} `import` must be a non-empty '
-                             f'string (in "{description}")')
+        # Both optional keys reject an empty value: leaving the key out is how
+        # the rewriter is asked to do without, so a blank one is a mistake.
+        for key in sorted(optional):
+            value = body.get(key, '')
+            if not isinstance(value, str) or (key in body and not value):
+                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
+                                 f'string (in "{description}")')
         return cls(target=body['target'],
                    list_name=body['list_name'],
                    literal=body['literal'],
-                   import_path=import_path)
+                   import_path=body.get('import', ''),
+                   conditional=body.get('conditional', ''))
 
 
 # The hand-written rewriters. `_REWRITERS` is assembled from these plus the

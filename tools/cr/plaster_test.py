@@ -4117,20 +4117,140 @@ class RewriterFormsTest(unittest.TestCase):
             'source_set("browser") {\n  deps = [ "//base" ]\n'
             '  deps += brave_extra_deps\n}\n')
 
-    def test_add_literal_to_list_ignores_nested_assignment(self):
-        # Only an assignment the target makes directly is appended to; one
-        # inside a nested `if` leaves the attribute to be created instead.
+    def test_add_literal_to_list_nested_assignment_needs_a_condition(self):
+        # A target that only assigns the list inside a conditional has no
+        # unconditional assignment to append to, and creating one would add
+        # the literal to every configuration, so it is refused and the fix
+        # named rather than applied silently.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'nested_if.gn', 'source_set("browser") {\n  if (is_win) {\n'
+                '    deps = [ "//win" ]\n  }\n}\n', 'substitutions:\n'
+                '  - description: create deps despite the conditional one\n'
+                '    add_literal_to_list:\n'
+                '      target: browser\n'
+                '      list_name: deps\n'
+                '      literal: brave_extra_deps\n')
+        message = str(ctx.exception)
+        self.assertIn("assigned only inside a conditional", message)
+        self.assertIn('`conditional:`', message)
+
+    def test_add_literal_to_list_condition_appends_into_the_conditional(self):
+        # With the condition named, the append lands as the last statement of
+        # the target's own `if`, which is where it applies conditionally.
         result = self._apply(
-            'nested_if.gn', 'source_set("browser") {\n  if (is_win) {\n'
-            '    deps = [ "//win" ]\n  }\n}\n', 'substitutions:\n'
-            '  - description: create deps despite the conditional one\n'
+            'cond_append.gn', 'source_set("unit_tests") {\n'
+            '  deps = [ "//base" ]\n  if (is_android) {\n'
+            '    deps += [ "//tabs" ]\n  }\n}\n', 'substitutions:\n'
+            '  - description: add the android-only deps\n'
+            '    add_literal_to_list:\n'
+            '      target: unit_tests\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n'
+            '      conditional: is_android\n')
+        self.assertEqual(
+            result, 'source_set("unit_tests") {\n  deps = [ "//base" ]\n'
+            '  if (is_android) {\n    deps += [ "//tabs" ]\n'
+            '    deps += brave_extra_deps\n  }\n}\n')
+
+    def test_add_literal_to_list_condition_appends_last_in_the_conditional(
+            self):
+        # Last rather than first: a conditional that assigns the list with a
+        # plain `=` would overwrite an append placed above it.
+        result = self._apply(
+            'cond_last.gn', 'source_set("b") {\n  deps = []\n'
+            '  if (is_win) {\n    deps = [ "//win" ]\n  }\n}\n',
+            'substitutions:\n'
+            '  - description: add after the conditional assignment\n'
+            '    add_literal_to_list:\n'
+            '      target: b\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n'
+            '      conditional: is_win\n')
+        self.assertEqual(
+            result, 'source_set("b") {\n  deps = []\n  if (is_win) {\n'
+            '    deps = [ "//win" ]\n    deps += brave_extra_deps\n  }\n}\n')
+
+    def test_add_literal_to_list_condition_adds_the_conditional(self):
+        # The target does not condition the list yet, so the conditional is
+        # added after the list's own assignment.
+        result = self._apply(
+            'cond_create.gn', 'source_set("b") {\n  deps = [ "//base" ]\n}\n',
+            'substitutions:\n'
+            '  - description: add the non-android deps\n'
+            '    add_literal_to_list:\n'
+            '      target: b\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n'
+            "      conditional: '!is_android'\n")
+        self.assertEqual(
+            result, 'source_set("b") {\n  deps = [ "//base" ]\n'
+            '  if (!is_android) {\n    deps += brave_extra_deps\n  }\n}\n')
+
+    def test_add_literal_to_list_condition_matches_operators(self):
+        # A condition is matched as text, so the `&&` and `!` a real one
+        # carries have to survive being turned into a matcher.
+        result = self._apply(
+            'cond_ops.gn', 'source_set("b") {\n'
+            '  if (is_win && !is_official_build) {\n    deps += [ "//w" ]\n'
+            '  }\n}\n', 'substitutions:\n'
+            '  - description: add under a compound condition\n'
+            '    add_literal_to_list:\n'
+            '      target: b\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n'
+            "      conditional: 'is_win && !is_official_build'\n")
+        self.assertEqual(
+            result, 'source_set("b") {\n'
+            '  if (is_win && !is_official_build) {\n    deps += [ "//w" ]\n'
+            '    deps += brave_extra_deps\n  }\n}\n')
+
+    def test_add_literal_to_list_condition_skips_the_else_branch(self):
+        # The condition names the `if`, so its consequence is what takes the
+        # append; the `else` body is a different configuration.
+        result = self._apply(
+            'cond_else.gn', 'source_set("b") {\n  if (is_android) {\n'
+            '    deps += [ "//a" ]\n  } else {\n    deps += [ "//d" ]\n'
+            '  }\n}\n', 'substitutions:\n'
+            '  - description: add to the android branch only\n'
+            '    add_literal_to_list:\n'
+            '      target: b\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n'
+            '      conditional: is_android\n')
+        self.assertEqual(
+            result, 'source_set("b") {\n  if (is_android) {\n'
+            '    deps += [ "//a" ]\n    deps += brave_extra_deps\n'
+            '  } else {\n    deps += [ "//d" ]\n  }\n}\n')
+
+    def test_add_literal_to_list_condition_with_no_anchor_fails(self):
+        # Neither the conditional nor an assignment to hang one off: `+=`
+        # against an undefined variable is a gn error, so nothing is guessed.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'cond_none.gn',
+                'source_set("b") {\n  sources = [ "a.cc" ]\n}\n',
+                'substitutions:\n'
+                '  - description: no anchor for the conditional\n'
+                '    add_literal_to_list:\n'
+                '      target: b\n'
+                '      list_name: deps\n'
+                '      literal: brave_extra_deps\n'
+                '      conditional: is_android\n')
+        self.assertIn('found no `if (is_android)` in target',
+                      str(ctx.exception))
+
+    def test_add_literal_to_list_empty_condition_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: blank condition\n'
             '    add_literal_to_list:\n'
             '      target: browser\n'
             '      list_name: deps\n'
-            '      literal: brave_extra_deps\n')
-        self.assertEqual(
-            result, 'source_set("browser") {\n  deps = brave_extra_deps\n'
-            '  if (is_win) {\n    deps = [ "//win" ]\n  }\n}\n')
+            '      literal: brave_extra_deps\n'
+            "      conditional: ''\n",
+            'add_literal_to_list `conditional` must be a non-empty string',
+            name='validation.gn')
 
     def test_add_literal_to_list_target_declared_twice_fails(self):
         # GN lets one name be declared once per `if`/`else` branch, and

@@ -496,6 +496,40 @@ inside:
             },
         },
 
+        # The body of an `if` that `target` declares directly, selected by
+        # `condition` -- a regex, since a condition carries characters a plain
+        # comparison would have to escape anyway (`!`, `&&`, `||`). The
+        # frontend anchors an exact condition, and passes a wildcard when it
+        # only needs to know whether the target conditions the list at all.
+        #
+        # Anchoring on the `block` whose immediate parent is the `if_statement`
+        # takes the consequence and never an `else` body, whose own block hangs
+        # off an `else_statement` instead.
+        "gn.find_target_conditional_block": {
+            "template": """\
+kind: block
+inside:
+  kind: if_statement
+  has:
+    field: condition
+    regex: {condition}
+  inside:
+    kind: block
+    inside:
+      kind: primary_expression
+      follows:
+        kind: primary_expression
+        has:
+          kind: call_expression
+          has:
+            kind: primary_expression
+            regex: ^"{target}"$
+""",
+            "result": {
+                "node": "block",
+            },
+        },
+
         # The file's first statement, which an import is inserted above so it
         # lands at the top of the fil, but below the copyright header, since a
         # comment is not a statement.
@@ -838,6 +872,48 @@ nthChild:
             "replace": {
                 "re_pattern": "$",
                 "replace": "\\n{indent}{list_name} += {literal}",
+            },
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # `+= {literal}` appended as the LAST statement of the conditional
+        # body, rather than the first: a block that assigns `list_name` with a
+        # plain `=` would otherwise overwrite an append placed above it.
+        #
+        # `indent` is the column of the brace closing the body, so the two
+        # spaces before `list_name` are the one level of GN body indentation
+        # that `gn format` fixes.
+        "gn.append_literal_to_conditional": {
+            "matcher": "gn.find_target_conditional_block",
+            "inputs": [
+                "target", "condition", "list_name", "literal", "indent"
+            ],
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{indent}  {list_name} += {literal}"
+                           "\\n{indent}}}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # A fresh `if ({condition}) { list_name += {literal} }` appended after
+        # `target`'s existing `list_name` assignment, for a target that does
+        # not condition the list yet. `condition` is the condition's own text
+        # here, where the matcher above takes a regex for it.
+        "gn.assign_conditional_literal_to_list": {
+            "matcher": "gn.find_target_list_assignment",
+            "inputs": [
+                "target", "condition", "list_name", "literal", "indent"
+            ],
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{indent}if ({condition}) {{"
+                           "\\n{indent}  {list_name} += {literal}"
+                           "\\n{indent}}}",
             },
             "result": {
                 "node": "assignment_statement",
