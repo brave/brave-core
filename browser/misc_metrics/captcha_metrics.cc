@@ -5,11 +5,11 @@
 
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 
+#include <array>
 #include <optional>
 #include <string_view>
 
 #include "base/check.h"
-#include "base/containers/fixed_flat_map.h"
 #include "base/notreached.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -31,47 +31,101 @@
 namespace misc_metrics {
 
 namespace {
+// kMiscMetricsCaptchaDictionaryPref "brave.misc_metrics.captcha_dict" is the
+// root dictionary that we write to the local state whose values contains
+// another dictionary where the "key" corresponds to the captcha provider we
+// support collecting metrics on, and the value corresponds to the various
+// counts we are interested to record.
+//
+//  "captcha_dict" : {
+//      "all" : {"total" : total_count, "user_activated":
+//      user_activated_count},
+//      "google" : {"total" : total_count, "user_activated":
+//      user_activated_count},
+//      "cloudflare" : {"total" : total_count, "user_activated":
+//      user_activated_count},
+//      "hcaptcha" : {"total" : total_count, "user_activated":
+//      user_activated_count}
+// }
+inline constexpr char kCaptchaAllProvidersDictKey[] = "all";
+inline constexpr char kCaptchaGoogleDictKey[] = "google";
+inline constexpr char kCaptchaCloudflareDictKey[] = "cloudflare";
+inline constexpr char kCaptchaHcaptchaDictKey[] = "hcaptcha";
+// These keys corresponds to the keys of the inner dictionary corresponding to a
+// provider.
+inline constexpr char kCaptchaDictValueTotalKey[] = "total";
+inline constexpr char kCaptchaDictValueUserActivatedKey[] = "user_activated";
+
+// This holds the various histogram names we will upload to p3a, and, the key of
+// the provider dictionary we write to local state which contains the count.
+struct CaptchaProviderMetricDetails {
+  // This corresponds to the histogram names outlined in captcha_metrics.h.
+  // New histograms must be added here.
+  const char* total_histogram_name;
+  const char* user_activated_histogram_name;
+
+  // This corresponds to the root key for captcha providers which will hold the
+  // dictionary with corresponding counts. See kCaptchaDictValueTotalKey and
+  // kCaptchaDictValueUserActivatedKey.
+  const char* provider_dict_root_key;
+};
+
 constexpr base::TimeDelta kReportInterval = base::Days(1);
+
 // 0, 1, 2, 3-5, 6-10, 11+
 constexpr int kCaptchaCountBuckets[] = {0, 1, 2, 5, 10};
 
-// The corresponding prefs in the dictionary kMiscMetricsCaptchaDictionaryPref
-// "brave.misc_metrics.captcha_dict".
-inline constexpr char kCaptchaTotalCountPref[] =
-    "brave.misc_metrics.captcha_count";
-inline constexpr char kCaptchaTotalCountUserActivatedPref[] =
-    "brave.misc_metrics.captcha_count_user_activated";
-
-inline constexpr char kCaptchaGoogleCountPref[] =
-    "brave.misc_metrics.captcha_google_count";
-inline constexpr char kCaptchaGoogleCountUserActivatedPref[] =
-    "brave.misc_metrics.captcha_google_count_user_activated";
-
-inline constexpr char kCaptchaCloudflareCountPref[] =
-    "brave.misc_metrics.captcha_cloudflare_count";
-inline constexpr char kCaptchaCloudflareCountUserActivatedPref[] =
-    "brave.misc_metrics.captcha_cloudflare_count_user_activated";
-
-inline constexpr char kCaptchaHCaptchaCountPref[] =
-    "brave.misc_metrics.captcha_hcaptcha_count";
-inline constexpr char kCaptchaHCaptchaCountUserActivatedPref[] =
-    "brave.misc_metrics.captcha_hcaptcha_count_user_activated";
-
-constexpr auto kHistogramToPrefMap =
-    base::MakeFixedFlatMap<std::string_view, std::string_view>({
-        {kCaptchaTotalCountHistogramName, kCaptchaTotalCountPref},
-        {kCaptchaTotalCountUserActivatedHistogramName,
-         kCaptchaTotalCountUserActivatedPref},
-        {kCaptchaGoogleCountHistogramName, kCaptchaGoogleCountPref},
-        {kCaptchaGoogleCountUserActivatedHistogramName,
-         kCaptchaGoogleCountUserActivatedPref},
-        {kCaptchaCloudflareCountHistogramName, kCaptchaCloudflareCountPref},
-        {kCaptchaCloudflareCountUserActivatedHistogramName,
-         kCaptchaCloudflareCountUserActivatedPref},
-        {kCaptchaHCaptchaCountHistogramName, kCaptchaHCaptchaCountPref},
-        {kCaptchaHCaptchaCountUserActivatedHistogramName,
-         kCaptchaHCaptchaCountUserActivatedPref},
+constexpr auto kCaptchaProvidersToReport =
+    std::to_array<CaptchaProviderMetricDetails>({
+        {
+            kCaptchaTotalCountHistogramName,
+            kCaptchaTotalCountUserActivatedHistogramName,
+            kCaptchaAllProvidersDictKey,
+        },
+        {
+            kCaptchaGoogleCountHistogramName,
+            kCaptchaGoogleCountUserActivatedHistogramName,
+            kCaptchaGoogleDictKey,
+        },
+        {
+            kCaptchaCloudflareCountHistogramName,
+            kCaptchaCloudflareCountUserActivatedHistogramName,
+            kCaptchaCloudflareDictKey,
+        },
+        {
+            kCaptchaHCaptchaCountHistogramName,
+            kCaptchaHCaptchaCountUserActivatedHistogramName,
+            kCaptchaHcaptchaDictKey,
+        },
     });
+
+void ReportProviderToP3AIfPossible(
+    PrefService* local_state,
+    const CaptchaProviderMetricDetails& provider_details) {
+  const base::DictValue& counts =
+      local_state->GetDict(kMiscMetricsCaptchaDictionaryPref);
+
+  const base::DictValue* provider =
+      counts.FindDict(provider_details.provider_dict_root_key);
+  if (!provider) {
+    return;
+  }
+
+  const int total = provider->FindInt(kCaptchaDictValueTotalKey).value_or(0);
+  if (total > 0) {
+    p3a_utils::RecordToHistogramBucket(provider_details.total_histogram_name,
+                                       kCaptchaCountBuckets, total);
+  }
+
+  const int user_activated =
+      provider->FindInt(kCaptchaDictValueUserActivatedKey).value_or(0);
+  if (user_activated > 0) {
+    p3a_utils::RecordToHistogramBucket(
+        provider_details.user_activated_histogram_name, kCaptchaCountBuckets,
+        user_activated);
+  }
+}
+
 }  // namespace
 
 class BraveCaptchaPageLoadMetricsObserver
@@ -214,15 +268,18 @@ void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url,
   std::optional<page_load_metrics::CaptchaProvider> captcha_provider =
       page_load_metrics::CaptchaProviderManager::GetInstance()
           ->GetCaptchaProviderForUrl(url);
-  // Note that for Cloudflare, the Captcha providers only matches if a frame
+
+  // TODO(https://github.com/brave/brave-browser/issues/59024): Add support for
+  // javascript detections.
+  //
+  // For Cloudflare the captcha providers only matches if a frame
   // document was navigated to a URL matching "*challenges.cloudflare.com/*"
   // which is the complete turnstile check.
-  //
-  //  However, Cloudflare also provides a lightweight technique for security
-  //  checks via their javascript detections solution which are scripts embedded
-  //  directly in the same origin and is located in
-  //  "<origin>/cdn-cgi/challenge-platform/...". To observe that, we need to
-  //  hook into WebContentsObserver and observe the resource load events.
+  // However, Cloudflare also provides a lightweight technique for security
+  // checks via their javascript detections solution which are scripts embedded
+  // directly in the same origin and is located in
+  // "<origin>/cdn-cgi/challenge-platform/...". To observe that, we need to
+  // hook into WebContentsObserver and observe the resource load events.
   //
   // See
   // https://developers.cloudflare.com/cloudflare-challenges/challenge-types/javascript-detections/
@@ -232,29 +289,25 @@ void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url,
   }
 
   ScopedDictPrefUpdate update(local_state_, kMiscMetricsCaptchaDictionaryPref);
-  auto increment = [&update, &is_user_activated](
-                       const char* pref, const char* user_activated_pref) {
-    if (is_user_activated) {
-      update->Set(user_activated_pref,
-                  update->FindInt(user_activated_pref).value_or(0) + 1);
-    } else {
-      update->Set(pref, update->FindInt(pref).value_or(0) + 1);
-    }
+  auto increment = [&update, is_user_activated](std::string_view provider_key) {
+    base::DictValue* provider = update->EnsureDict(provider_key);
+    const char* count_key = is_user_activated
+                                ? kCaptchaDictValueUserActivatedKey
+                                : kCaptchaDictValueTotalKey;
+    provider->Set(count_key, provider->FindInt(count_key).value_or(0) + 1);
   };
 
-  increment(kCaptchaTotalCountPref, kCaptchaTotalCountUserActivatedPref);
+  increment(kCaptchaAllProvidersDictKey);
 
   switch (*captcha_provider) {
     case page_load_metrics::CaptchaProvider::kReCaptcha:
-      increment(kCaptchaGoogleCountPref, kCaptchaGoogleCountUserActivatedPref);
+      increment(kCaptchaGoogleDictKey);
       return;
     case page_load_metrics::CaptchaProvider::kCloudflareTurnstile:
-      increment(kCaptchaCloudflareCountPref,
-                kCaptchaCloudflareCountUserActivatedPref);
+      increment(kCaptchaCloudflareDictKey);
       return;
     case page_load_metrics::CaptchaProvider::kHCaptcha:
-      increment(kCaptchaHCaptchaCountPref,
-                kCaptchaHCaptchaCountUserActivatedPref);
+      increment(kCaptchaHcaptchaDictKey);
       return;
     case page_load_metrics::CaptchaProvider::kUnknown:
       return;
@@ -282,17 +335,9 @@ void CaptchaMetrics::ReportToP3AIfPossible() {
   // In the first ever recorded run, last_recorded_time is null and so are the
   // various captcha storages. So, we can skip emitting as it doesn't reflect
   // no captchas were seen.
-  const base::DictValue& counts =
-      local_state_->GetDict(kMiscMetricsCaptchaDictionaryPref);
-
   if (!last_recorded_time.is_null()) {
-    for (const auto& [histogram, pref] : kHistogramToPrefMap) {
-      // Record only if the metric actually has a non zero value.
-      const int value = counts.FindInt(pref).value_or(0);
-      if (value > 0) {
-        p3a_utils::RecordToHistogramBucket(histogram.data(),
-                                           kCaptchaCountBuckets, value);
-      }
+    for (const auto& provider : kCaptchaProvidersToReport) {
+      ReportProviderToP3AIfPossible(local_state_, provider);
     }
 
     // Re-initialize the dict.
