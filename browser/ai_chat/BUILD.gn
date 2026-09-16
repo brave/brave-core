@@ -403,6 +403,7 @@ source_set("browser_tests") {
       "//chrome/browser/glic/actor",
       "//chrome/browser/pdf:pdf_extension_test_utils",
       "//chrome/browser/screen_ai:screen_ai_install_state",
+      "//chrome/browser/ui:browser_window_header",
       "//chrome/browser/ui/animation",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
@@ -430,6 +431,7 @@ source_set("browser_tests") {
       sources += [ "tools/tab_management_tool_browsertest.cc" ]
       deps += [
         ":ai_chat_tab_management_tool_impl",
+        "//chrome/browser/ui:browser_window_header",
         "//chrome/browser/ui/tabs:tabs_public",
         "//components/tab_groups",
       ]
@@ -475,6 +477,7 @@ source_set("browser_tests") {
         "//brave/components/brave_origin",
         "//chrome/browser/actor",
         "//chrome/browser/ui",
+        "//chrome/browser/ui:browser_window_header",
         "//components/optimization_guide/content/browser",
         "//components/policy/core/common:common_constants",
       ]
