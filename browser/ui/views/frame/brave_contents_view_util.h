@@ -10,7 +10,7 @@
 
 #include "ui/gfx/geometry/rounded_corners_f.h"
 
-class Browser;
+class BrowserWindowInterface;
 
 namespace ui {
 class ColorProvider;
@@ -29,8 +29,8 @@ class BraveContentsViewUtil {
 
   // If rounded corners are enabled, returns the additional margin required to
   // get the shadow to display properly. Otherwise 0.
-  static int GetRoundedCornersWebViewMargin(Browser* browser);
-  static int GetRoundedCornersWebViewMargin(const Browser* browser);
+  static int GetRoundedCornersWebViewMargin(
+      const BrowserWindowInterface* browser);
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_CONTENTS_VIEW_UTIL_H_

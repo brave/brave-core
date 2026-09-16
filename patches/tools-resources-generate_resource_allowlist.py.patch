@@ -1,13 +1,13 @@
 diff --git a/tools/resources/generate_resource_allowlist.py b/tools/resources/generate_resource_allowlist.py
-index 1732feb9b5e2d6001a7e660890d8496dff7073cb..64cea96e39e8c3b53ed87c3e9664f4ecca27a01d 100755
+index d10a0ec2428b36d461b50a53817c75a7f583dc19..1100dc27cc8eebc6702c797a71fdc57660fca8e8 100755
 --- a/tools/resources/generate_resource_allowlist.py
 +++ b/tools/resources/generate_resource_allowlist.py
-@@ -140,7 +140,7 @@ def WriteResourceAllowlist(args):
+@@ -150,7 +150,7 @@ def WriteResourceAllowlist(args):
      deps.update(cur_deps)
  
    # The last time this broke, exactly two resources were still being found.
 -  if len(resource_ids) < 100:
 +  if len(resource_ids) < 40:
-     raise RuntimeError('Suspiciously few resources found. Likely an issue with '
-                        'the regular expression in this script. Found: ' +
-                        ','.join(str(x) for x in sorted(resource_ids)))
+     raise Exception(
+       'Suspiciously few resources found. Likely an issue with '
+       'the regular expression in this script. Found: '

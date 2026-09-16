@@ -212,11 +212,11 @@ class BraveSiteHacksNetworkDelegateBrowserTest : public InProcessBrowserTest {
     return last_origin_[internal_url];
   }
 
-  content::WebContents* contents(Browser* browser) {
+  content::WebContents* contents(BrowserWindowInterface* browser) {
     return browser->tab_strip_model()->GetActiveWebContents();
   }
 
-  void NavigateToURLAndWaitForRedirects(Browser* browser,
+  void NavigateToURLAndWaitForRedirects(BrowserWindowInterface* browser,
                                         const GURL& original_url,
                                         const GURL& landing_url) {
     ui_test_utils::UrlLoadObserver load_complete(landing_url);
@@ -408,7 +408,7 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
                        OnionReferrers) {
   net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
   tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   // Same-origin navigations
@@ -513,7 +513,7 @@ IN_PROC_BROWSER_TEST_F(BraveSiteHacksNetworkDelegateBrowserTest,
                        OnionAncestorOrigins) {
   net::ProxyConfigServiceTor::SetBypassTorProxyConfigForTesting(true);
   tor::TorNavigationThrottle::SetSkipWaitForTorConnectedForTesting(true);
-  Browser* tor_browser =
+  BrowserWindowInterface* tor_browser =
       TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
 
   // Same-origin .onion iframes

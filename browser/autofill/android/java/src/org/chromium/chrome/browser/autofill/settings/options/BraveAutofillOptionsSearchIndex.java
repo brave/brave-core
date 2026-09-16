@@ -53,8 +53,10 @@ public final class BraveAutofillOptionsSearchIndex {
         }
     }
 
-    private static Bundle createAutofillOptionsSettingsArgs() {
-        return AutofillOptionsFragment.createRequiredArgs(AutofillOptionsReferrer.SETTINGS);
+    // All entries updated here are reached through Settings search, so they carry the same referrer
+    // upstream uses for its own search index entries.
+    private static Bundle createAutofillOptionsSearchArgs() {
+        return AutofillOptionsFragment.createRequiredArgs(AutofillOptionsReferrer.SETTINGS_SEARCH);
     }
 
     private static Bundle createHomeOfTransactionsArgs(SettingsRoutes routes) {
@@ -77,7 +79,7 @@ public final class BraveAutofillOptionsSearchIndex {
                     BraveAutofillOptionsFragmentBase.PREF_AUTOFILL_PRIVATE_WINDOW,
                     R.string.prefs_autofill_private_window_title,
                     R.string.prefs_autofill_private_window_summary,
-                    createAutofillOptionsSettingsArgs());
+                    createAutofillOptionsSearchArgs());
             return;
         }
 
@@ -87,7 +89,7 @@ public final class BraveAutofillOptionsSearchIndex {
                         .setTitle(context.getString(R.string.prefs_autofill_private_window_title))
                         .setSummary(
                                 context.getString(R.string.prefs_autofill_private_window_summary))
-                        .setArguments(createAutofillOptionsSettingsArgs())
+                        .setArguments(createAutofillOptionsSearchArgs())
                         .build());
     }
 
@@ -122,7 +124,7 @@ public final class BraveAutofillOptionsSearchIndex {
                 new SettingsIndexData.Entry.Builder(legacyAutofillOptionsEntry)
                         .setTitle(AutofillOptionsMediator.getFragmentTitle(context))
                         .setFragment(AutofillOptionsFragment.class.getName())
-                        .setArguments(createAutofillOptionsSettingsArgs())
+                        .setArguments(createAutofillOptionsSearchArgs())
                         .build());
     }
 
@@ -140,7 +142,7 @@ public final class BraveAutofillOptionsSearchIndex {
                 homeOfTransactionsAutofillOptionsEntry.id,
                 new SettingsIndexData.Entry.Builder(homeOfTransactionsAutofillOptionsEntry)
                         .setFragment(AutofillOptionsFragment.class.getName())
-                        .setArguments(createAutofillOptionsSettingsArgs())
+                        .setArguments(createAutofillOptionsSearchArgs())
                         .build());
     }
 

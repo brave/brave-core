@@ -88,7 +88,7 @@ TabStrip* GetTabStripForBrowser(BrowserWindowInterface* browser) {
 // window. This is used instead of BrowserWindow::SetBounds() on platforms
 // where clients don't have complete control over window bounds (i.e.,
 // Wayland).
-void ResizeUsingMouseEmulation(Browser* browser,
+void ResizeUsingMouseEmulation(BrowserWindowInterface* browser,
                                const gfx::Rect& target_bounds) {
 #if BUILDFLAG(IS_LINUX)
   auto* window = browser->GetWindow()->GetNativeWindow();
@@ -264,7 +264,7 @@ class TreeTabDragControllerTest
 
   // Creates a new Browser and resizes browser() and the new browser to be
   // side by side.
-  Browser* CreateAnotherBrowserAndResize() {
+  BrowserWindowInterface* CreateAnotherBrowserAndResize() {
     // Resize the two windows so they're right next to each other.
     //
     // If we're using ResizeUsingMouseEmulation(), it's important we resize
@@ -297,7 +297,7 @@ class TreeTabDragControllerTest
       browser_rect.set_x(browser_rect.right() - 2 * window_decoration_width);
     }
 
-    Browser* browser2 = CreateBrowser(browser()->GetProfile());
+    BrowserWindowInterface* browser2 = CreateBrowser(browser()->GetProfile());
     if (PlatformSupportsScreenCoordinates()) {
       ui_test_utils::SetAndWaitForBounds(*browser2, browser_rect);
     } else {
@@ -428,7 +428,7 @@ IN_PROC_BROWSER_TEST_F(
   CHECK(tab_strip);
   tab_strip->StopAnimating();
 
-  Browser* const browser2 = CreateAnotherBrowserAndResize();
+  BrowserWindowInterface* const browser2 = CreateAnotherBrowserAndResize();
   ui_test_utils::WaitForBrowserSetLastActive(browser2);
   TabStrip* const tab_strip2 = GetTabStripForBrowser(browser2);
   CHECK(tab_strip2);

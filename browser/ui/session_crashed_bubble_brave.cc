@@ -15,8 +15,7 @@ void SessionCrashedBubble::ShowIfNotOffTheRecordProfileBrave(
   // If crash report permission ask dialog is launched, tab restore bubble will
   // be shown after closing aks dialog.
   if (ShouldShowCrashReportPermissionAskDialog()) {
-    brave::ShowCrashReportPermissionAskDialog(
-        browser->GetBrowserForMigrationOnly());
+    brave::ShowCrashReportPermissionAskDialog(browser);
     return;
   }
 
