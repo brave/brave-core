@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
@@ -45,6 +46,9 @@ class ContainersSettingsHandler : public mojom::ContainersSettingsHandler {
   // after data cleanup is complete.
   void RemoveContainer(const std::string& id,
                        RemoveContainerCallback callback) override;
+  // Reorders containers to match the order of `ordered_ids`.
+  void ReorderContainers(const std::vector<std::string>& ordered_ids,
+                         ReorderContainersCallback callback) override;
 
   // Returns an error if the given container properties are invalid.
   static std::optional<mojom::ContainerOperationError>

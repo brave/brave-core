@@ -137,6 +137,9 @@
     <message name="IDS_SETTINGS_CONTAINERS_ERROR_NOT_FOUND" desc="The error if container is not found" formatter_data="webui=Containers">
       Container is not found
     </message>
+    <message name="IDS_SETTINGS_DRAG_TO_REORDER_LABEL" desc="Accessible label for a list item reorder handle that supports arrow-key movement" formatter_data="webui=Containers">
+      Reorder item. Use arrow keys to move.
+    </message>
   </if>
   <if expr="enable_traffic_control">
     <message name="IDS_SETTINGS_TRAFFIC_CONTROL_SECTION_LABEL" desc="The label for section containing Traffic Control settings" formatter_data="webui=TrafficControl">

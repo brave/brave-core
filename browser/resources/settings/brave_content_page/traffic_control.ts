@@ -27,6 +27,7 @@ import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_prox
 import { getCss } from './traffic_control.css.js'
 import { getHtml } from './traffic_control.html.js'
 import { TrafficControlSettingsHandlerBrowserProxy } from './traffic_control_browser_proxy.js'
+import { DragReorderMixin, getDragReorderCss } from './drag_reorder_mixin.js'
 import {
   cloneRuleForEdit,
   createEmptyRule,
@@ -36,8 +37,9 @@ import {
   urlFilterListLabel,
 } from './traffic_control_utils.js'
 
-const SettingsBraveContentTrafficControlElementBase =
-  PrefServiceObserverMixinLit(I18nMixinLit(CrLitElement))
+const SettingsBraveContentTrafficControlElementBase = DragReorderMixin(
+  PrefServiceObserverMixinLit(I18nMixinLit(CrLitElement)),
+)
 
 /**
  * 'settings-brave-content-traffic-control' manages profile-scoped traffic rules.
@@ -48,7 +50,7 @@ export class SettingsBraveContentTrafficControlElement extends SettingsBraveCont
   }
 
   static override get styles() {
-    return getCss()
+    return [getCss(), getDragReorderCss()]
   }
 
   override render() {
@@ -102,6 +104,22 @@ export class SettingsBraveContentTrafficControlElement extends SettingsBraveCont
 
   private onRulesUpdated_(rules: TrafficRule[]) {
     this.rulesList_ = rules
+    this.onReorderableItemsUpdated_()
+  }
+
+  override getReorderableIds_(): string[] {
+    return this.rulesList_.map((r) => r.id)
+  }
+
+  override onItemsReordered_(orderedIds: string[]) {
+    this.browserProxy.handler
+      .reorderRules(orderedIds)
+      .then(({ error }) => {
+        if (error != null) {
+          this.onReorderableItemsUpdated_()
+        }
+      })
+      .catch(() => this.onReorderableItemsUpdated_())
   }
 
   private onContainersUpdated_(containers: Container[]) {
