@@ -204,6 +204,7 @@
 -ReadAnythingReadAloudAppModelTest.*
 -ReadAnythingReadAloudAppModelV8SegmentationTest.*
 -ReadAnythingUntrustedPageHandlerTest.*
+-Screen2xDistillerTest.*
 -SidePanelCoordinatorTest.ReadAnythingSidePanelWidthNotCappedAtTwoThirds
 
 # Per Claude: This test times out because chromium_src override of
@@ -1168,6 +1169,7 @@
 -BookmarkEditorViewBrowserTestWithAccountBookmarks.InvokeUi_OnlyAccountNodes
 -BookmarkEditorViewBrowserTestWithAccountBookmarks.InvokeUi_OnlyLocalChildren
 -BookmarkEditorViewBrowserTestWithAccountBookmarks.InvokeUi_OnlyLocalNodes
+-BookmarkMessageHandlerBatchUploadTest.BatchUploadPromoNotShownIfSubsetUploaded
 -BookmarkMessageHandlerTest.*
 -ChromeSigninClientHatsSurveyBrowserTest.*
 -ComposeEnablingBrowserTest.EnableComposeViaSettings
@@ -1909,6 +1911,9 @@
 -BrowserCommandsTest.CopyingUrlOpensToast
 -ContextMenuBrowserTest.ShowsToastOnImageCopied
 -ContextMenuBrowserTest.ShowsToastOnLinkCopied
+-PinnedTabServiceBrowserTest.ClosePinnedTabViaAccelerator
+-PinnedTabServiceBrowserTest.MultipleWindowsCloseFirstPinnedTabViaAccelerator
+-PinnedTabServiceBrowserTest.MultipleWindowsCloseLastPinnedTabViaAccelerator
 
 # This test fails because we show brave://welcome page on first run
 -StartupBrowserCreatorTriggeredResetFirstRunTest.TestTriggeredResetDoesNotShowWithFirstRunURLs
@@ -2591,6 +2596,23 @@
 # This test fails because padding expectation doesn't match
 -HorizontalTabGroupViewBrowserTest.PaddingBetweenCollapsedHeadersMatchesLegacy
 
+# Brave drops NetErrorTabHelper (chromium_src/chrome/browser/ui/tab_helpers.cc),
+# so the DNS probe never runs and DNS error pages stay on the "checking
+# the connection" (DNS_PROBE_POSSIBLE) variant instead of being updated with the
+# ERR_NAME_NOT_RESOLVED details these tests look for.
+-DNSErrorPageIsolatedModeTest.IsolatedMode
+-DNSErrorPageTest.DNSError_Basic
+-DNSErrorPageTest.DNSError_DoReload
+-DNSErrorPageTest.DNSError_DoReloadAfterSameDocumentNavigation
+-DNSErrorPageTest.DNSError_GoBack*
+-DNSErrorPageTest.Incognito
+
+# Brave's NTP favicon is the full-color Brave lion, not the dark monochrome
+# icon upstream ships, so favicon::ThemeFavicon() leaves it as-is on a dark
+# table (its contrast is already above kMinimumVisibleContrastRatio) and the
+# test's expectation that the icon is recolored never holds.
+-TaskManagerViewTest.ThemeableFaviconsAreRecoloredForTheTableTheme
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
@@ -2698,7 +2720,6 @@
 -CookiePolicyStorageBrowserTest.*
 -CredentialManagerBrowserTest.*
 -CrossProfileDebuggerApiTest.GetTargets
--DNSErrorPageTest.*
 -DataSaverWebAPIsBrowserTest.*
 -DataSharingSDKDelegateDesktopBrowserTest.ReadGroupLoadsWebContents
 -DebuggerApiTest.*
