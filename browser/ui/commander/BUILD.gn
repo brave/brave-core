@@ -38,6 +38,7 @@ source_set("interactive_ui_tests") {
     "//brave/components/commander/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
+    "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui/location_bar",
     "//chrome/test:test_support_ui",
     "//content/test:test_support",
