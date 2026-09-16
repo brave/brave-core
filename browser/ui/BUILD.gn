@@ -213,6 +213,7 @@ source_set("ui") {
         "//brave/browser/ui/webui/brave_wallet/trezor",
         "//brave/browser/ui/webui/brave_wallet/wallet_panel",
         "//chrome/browser/picture_in_picture",
+        "//chrome/browser/ui:browser_window_header",
       ]
 
       if (enable_snap) {
@@ -509,6 +510,7 @@ source_set("ui") {
       "//chrome/browser/themes",
       "//chrome/browser/ui:browser_actions",
       "//chrome/browser/ui:browser_content_setting_bubble_model_delegate",
+      "//chrome/browser/ui:browser_window_header",
       "//chrome/browser/ui:chrome_pages",
       "//chrome/browser/ui:layout_constants",
       "//chrome/browser/ui:session_crashed_bubble",
@@ -770,6 +772,7 @@ source_set("ui") {
       "//chrome/browser/sharing_hub",
       "//chrome/browser/ui:accelerator_table",
       "//chrome/browser/ui:browser_init_state",
+      "//chrome/browser/ui:browser_window_header",
       "//chrome/browser/ui:view_ids",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
@@ -1239,6 +1242,7 @@ source_set("ui") {
       "//brave/browser/ui/views/sidebar",
       "//brave/components/sidebar/browser",
       "//chrome/app:generated_resources",
+      "//chrome/browser/ui:browser_window_header",
       "//chrome/browser/ui/views",
       "//components/favicon_base",
     ]
