@@ -164,7 +164,12 @@ export const ConversationHeader = React.forwardRef(function (
             <Icon name='share' />
           </Button>
         )}
-        {aiChatContext.hasAcceptedAgreement && <FeatureButtonMenu {...props} />}
+        {aiChatContext.hasAcceptedAgreement && (
+          <FeatureButtonMenu
+            setIsConversationsListOpen={props.setIsConversationsListOpen}
+            manageSharedConversations={props.manageSharedConversations}
+          />
+        )}
         {!aiChatContext.isStandalone && (
           <Button
             fab

@@ -12,11 +12,6 @@ import { MockContext } from '../../state/mock_context'
 import { clearAllDataForTesting } from '$web-common/api'
 import { ConversationHeader } from './index'
 
-const defaultHeaderProps = {
-  startSharingConversation: () => {},
-  manageSharedConversations: () => {},
-}
-
 const sidebarState = {
   isStandalone: false,
   conversationState: { conversationUuid: 'test-conversation' },
@@ -30,6 +25,15 @@ async function renderHeader(
     result = render(children)
   })
   return result!
+}
+
+function TestConversationHeader() {
+  return (
+    <ConversationHeader
+      startSharingConversation={() => {}}
+      manageSharedConversations={() => {}}
+    />
+  )
 }
 
 describe('ConversationHeader', () => {
@@ -47,7 +51,7 @@ describe('ConversationHeader', () => {
           serviceState: { hasAcceptedAgreement: false },
         }}
       >
-        <ConversationHeader {...defaultHeaderProps} />
+        <TestConversationHeader />
       </MockContext>,
     )
 
@@ -69,7 +73,7 @@ describe('ConversationHeader', () => {
           serviceState: { hasAcceptedAgreement: false },
         }}
       >
-        <ConversationHeader {...defaultHeaderProps} />
+        <TestConversationHeader />
       </MockContext>,
     )
 
@@ -91,7 +95,7 @@ describe('ConversationHeader', () => {
           serviceState: { hasAcceptedAgreement: true },
         }}
       >
-        <ConversationHeader {...defaultHeaderProps} />
+        <TestConversationHeader />
       </MockContext>,
     )
 
@@ -114,7 +118,7 @@ describe('ConversationHeader', () => {
           serviceState: { hasAcceptedAgreement: false },
         }}
       >
-        <ConversationHeader {...defaultHeaderProps} />
+        <TestConversationHeader />
       </MockContext>,
     )
 
@@ -138,7 +142,7 @@ describe('ConversationHeader', () => {
           serviceState: { hasAcceptedAgreement: false },
         }}
       >
-        <ConversationHeader {...defaultHeaderProps} />
+        <TestConversationHeader />
       </MockContext>,
     )
 
