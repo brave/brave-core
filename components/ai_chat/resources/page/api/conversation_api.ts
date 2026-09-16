@@ -67,7 +67,7 @@ export default function createConversationApi(
             errorDetails: undefined,
             temporary: false,
             toolUseTaskState: Mojom.TaskState.kNone,
-            capabilitiesEnabled: [Mojom.ConversationCapability.CHAT],
+            capabilitiesEnabled: [],
           } as Mojom.ConversationState,
         },
         getConversationHistory: {

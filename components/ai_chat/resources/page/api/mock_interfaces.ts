@@ -66,7 +66,7 @@ export const defaultConversationState: Mojom.ConversationState & {
   errorDetails: undefined,
   temporary: false,
   toolUseTaskState: Mojom.TaskState.kNone,
-  capabilitiesEnabled: [Mojom.ConversationCapability.CHAT],
+  capabilitiesEnabled: [],
 }
 
 const emptyTurn: Mojom.ConversationTurn = {
