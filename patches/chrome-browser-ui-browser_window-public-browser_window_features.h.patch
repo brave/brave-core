@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 309eced7f092e28c5c9f7119696860068d626ed9..6e955df0e95fad7c4cb582d662e15a7cffa6ebab 100644
+index 70cfbf75b6b2e1a04831b640e63ea432bbf5e5a5..43201ccaf6a933a8b308b78681182cf57a2fc308 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -278,29 +278,29 @@ class AppBrowserController;
+@@ -277,29 +277,29 @@ class AppBrowserController;
  // Do not add more public accessors. Instead use the UnownedUserData design
  // pattern, see ui/base/unowned_user_data/README.md.
  // TODO(crbug.com/481268779a): Remove existing public accessors.
@@ -39,9 +39,9 @@ index 309eced7f092e28c5c9f7119696860068d626ed9..6e955df0e95fad7c4cb582d662e15a7c
 -  void TearDownPreBrowserWindowDestruction();
 +  virtual void TearDownPreBrowserWindowDestruction();
  
-   // Get the FindBarController for this browser window, creating it if it does
-   // not yet exist.
-@@ -334,6 +334,7 @@ class BrowserWindowFeatures {
+   LocationBarModel* location_bar_model() { return location_bar_model_.get(); }
+   const LocationBarModel* location_bar_model() const {
+@@ -316,6 +316,7 @@ class BrowserWindowFeatures {
    GetUserDataFactoryForTesting();
  
   private:

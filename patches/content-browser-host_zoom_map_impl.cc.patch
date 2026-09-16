@@ -1,10 +1,10 @@
 diff --git a/content/browser/host_zoom_map_impl.cc b/content/browser/host_zoom_map_impl.cc
-index c321160361ca8ad9bce5f1bd583231825a87e030..a084189726f5c70472f31764daae6559b6f27ad7 100644
+index 2ad01cbe758b825a3bb8d172ddf42a4c97ac8b5c..17babed40ae113a3641531c6c262bbd6f87d535e 100644
 --- a/content/browser/host_zoom_map_impl.cc
 +++ b/content/browser/host_zoom_map_impl.cc
 @@ -118,6 +118,7 @@ HostZoomMap* HostZoomMap::GetForStoragePartition(
      StoragePartition* storage_partition) {
-   DCHECK_CURRENTLY_ON(BrowserThread::UI);
+   CHECK_CURRENTLY_ON(BrowserThread::UI, base::NotFatalUntil::M160);
    CHECK(storage_partition);
 +  BRAVE_HOST_ZOOM_MAP_GET_FOR_STORAGE_PARTITION
    return storage_partition->GetHostZoomMap();

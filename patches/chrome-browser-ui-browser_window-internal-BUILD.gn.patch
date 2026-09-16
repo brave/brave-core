@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_window/internal/BUILD.gn b/chrome/browser/ui/browser_window/internal/BUILD.gn
-index ef3ebaa68ad6ea801d151fb0bbf2b17851db44ce..8104cb69d0ad979b1b1cc54a1a27ff3c1132e494 100644
+index 20cde29e74f407de9cf7794ab9473ca7326a65e2..4ce7e32f4c304a497b7d3b08eeebf7238aa9bb1d 100644
 --- a/chrome/browser/ui/browser_window/internal/BUILD.gn
 +++ b/chrome/browser/ui/browser_window/internal/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -17,4 +17,4 @@ index ef3ebaa68ad6ea801d151fb0bbf2b17851db44ce..8104cb69d0ad979b1b1cc54a1a27ff3c
 +  deps += brave_browser_window_internal_deps
  
    if (is_android) {
-     sources += [
+     # On Android, this target shouldn't be used by anything outside this
