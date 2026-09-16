@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 17e4cb7be702784f48c1a4f6d1e2b4a098a4b01f..ef55ec9254e53965ba08cf9e8b56a6837c780d1a 100644
+index 17e4cb7be702784f48c1a4f6d1e2b4a098a4b01f..5b025fcc2338365a15835b5c4981a5184c8334d6 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -297,6 +297,7 @@
@@ -112,7 +112,15 @@ index 17e4cb7be702784f48c1a4f6d1e2b4a098a4b01f..ef55ec9254e53965ba08cf9e8b56a683
        status: "stable",
        public: true,
      },
-@@ -3792,7 +3801,7 @@
+@@ -3294,6 +3303,7 @@
+       // Killswitch for the visible deprecation warning banner shown on
+       // XSLT-transformed documents.
+       name: "GenerateXSLTWarningBanner",
++      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
+       status: "stable",
+     },
+     {
+@@ -3792,7 +3802,7 @@
          "Android": "test",
          "default": "",
        },
@@ -121,7 +129,7 @@ index 17e4cb7be702784f48c1a4f6d1e2b4a098a4b01f..ef55ec9254e53965ba08cf9e8b56a683
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -4150,6 +4159,7 @@
+@@ -4150,6 +4160,7 @@
      // "experimental" is the support on other platforms.
      {
        name: "MiddleClickAutoscroll",
@@ -129,7 +137,7 @@ index 17e4cb7be702784f48c1a4f6d1e2b4a098a4b01f..ef55ec9254e53965ba08cf9e8b56a683
        status: "test",
      },
      // Killswitch for crbug.com/40062462 fix.
-@@ -4627,6 +4637,7 @@
+@@ -4627,6 +4638,7 @@
      {
        // PARAKEET ad serving runtime flag/JS API.
        name: "Parakeet",
@@ -137,7 +145,7 @@ index 17e4cb7be702784f48c1a4f6d1e2b4a098a4b01f..ef55ec9254e53965ba08cf9e8b56a683
        origin_trial_feature_name: "Parakeet",
      },
      {
-@@ -4799,6 +4810,7 @@
+@@ -4799,6 +4811,7 @@
        //
        // It also has some feature params defined throughout the codebase.
        name: "Prerender2",
@@ -145,7 +153,7 @@ index 17e4cb7be702784f48c1a4f6d1e2b4a098a4b01f..ef55ec9254e53965ba08cf9e8b56a683
        status: "stable",
      },
      {
-@@ -5025,6 +5037,7 @@
+@@ -5025,6 +5038,7 @@
      // but we still keep this flag for future phase tests.
      {
        name: "ReduceUserAgentMinorVersion",
@@ -153,7 +161,7 @@ index 17e4cb7be702784f48c1a4f6d1e2b4a098a4b01f..ef55ec9254e53965ba08cf9e8b56a683
        status: "stable",
      },
      {
-@@ -6444,7 +6457,7 @@
+@@ -6444,7 +6458,7 @@
          "ChromeOS": "stable",
          "default": "",
        },
@@ -162,7 +170,7 @@ index 17e4cb7be702784f48c1a4f6d1e2b4a098a4b01f..ef55ec9254e53965ba08cf9e8b56a683
        copied_from_base_feature_if: "overridden",
      },
      {
-@@ -6619,6 +6632,7 @@
+@@ -6619,6 +6633,7 @@
      },
      {
        name: "UserMediaElement",
@@ -170,7 +178,15 @@ index 17e4cb7be702784f48c1a4f6d1e2b4a098a4b01f..ef55ec9254e53965ba08cf9e8b56a683
        status: "stable",
        public: true,
      },
-@@ -7424,5 +7438,10 @@
+@@ -7391,6 +7406,7 @@
+       // with its responseXML document.
+       // https://crbug.com/466303347
+       name: "XMLRustForNonXslt",
++      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
+       status: "stable",
+     },
+     {
+@@ -7424,5 +7440,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
      },
