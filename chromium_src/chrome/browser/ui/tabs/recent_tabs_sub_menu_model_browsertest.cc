@@ -7,6 +7,9 @@
 
 #include "base/containers/to_vector.h"
 
+// Note that we disable tests here instead of browser_tests.filter because these
+// tests are included in brave_browser_tests target as well.
+
 // Disabling these tests because they refer to g_brave_browser_process which is
 // not initialized in unit tests, is null and so they are crashing. Not related
 // to change in RecentTabsSubMenuModel for additional `More...` menu item
@@ -58,18 +61,10 @@
 #define LogMenuMetricsForShowGroupedHistory \
   DISABLED_LogMenuMetricsForShowGroupedHistory
 
-#define BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST           \
-  void VerifyModel(const RecentTabsSubMenuModel& model, \
-                   base::span<const ModelData> data);   \
-  void VerifyModel(const ui::MenuModel* model,          \
-                   base::span<const ModelData> data);
-
 // The case when number of tabs on other device is <=4 so we do not add
 // `More...` item is tested by RecentTabsSubMenuModelTest.MaxSessionsAndRecency
 
 #include <chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc>
-
-#undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
 
 #undef LogMenuMetricsForShowGroupedHistory
 #undef SavingBrowserHistoryDisabledPolicyChangeMidSession

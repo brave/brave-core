@@ -1,12 +1,23 @@
 diff --git a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
-index a127f8225ef7dcfc7fb6debc15b1c6aabb0d992e..4cecc54150ceeccb54f7228f4922e33e2a6dfd9d 100644
+index a127f8225ef7dcfc7fb6debc15b1c6aabb0d992e..7c6a64f85b7f1fa485fcc0c5b4b21b1dc093105f 100644
 --- a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
 +++ b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc
-@@ -620,6 +620,7 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
+@@ -577,6 +577,9 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
+   std::vector<raw_ptr<const sync_sessions::SyncedSession, VectorExperimental>>
+       sessions;
+   if (!open_tabs || !open_tabs->GetAllForeignSessions(&sessions)) {
++    AddItemWithStringId(IDC_RECENT_TABS_NO_DEVICE_TABS,
++                        IDS_RECENT_TABS_NO_DEVICE_TABS);
++    return;
+     if (open_tabs) {
+       AddItemWithStringId(IDC_RECENT_TABS_NO_DEVICE_TABS,
+                           IDS_RECENT_TABS_NO_DEVICE_TABS);
+@@ -620,6 +623,8 @@ void RecentTabsSubMenuModel::BuildTabsFromOtherDevices() {
      DCHECK(!session->GetSessionName().empty());
      std::unique_ptr<ui::SimpleMenuModel> device_menu_model =
          CreateOtherDeviceSubMenu(session, tabs_in_session);
-+    BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES
++    MaybeAppendOverflowStubTab(tabs_in_session, kMaxSessionsToShow,
++                               device_menu_model.get());
      const int command_id = GetAndIncrementNextMenuID();
      AddSubMenu(command_id, base::UTF8ToUTF16(session->GetSessionName()),
                 device_menu_model.get());

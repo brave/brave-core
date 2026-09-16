@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Always show the "no device tabs" placeholder and return early.
+
+      Brave doesn't offer the "sign in to see tabs from other devices" flow;
+      always show the same placeholder regardless of sign-in state.
+    regex:
+      re_pattern: |-
+        (if\ \(!open_tabs\ \|\|\ !open_tabs->GetAllForeignSessions\(&sessions\)\)\ {)
+      replace: |-
+        \1
+            AddItemWithStringId(IDC_RECENT_TABS_NO_DEVICE_TABS,
+                                IDS_RECENT_TABS_NO_DEVICE_TABS);
+            return;
+
+  - description: |
+      Append a "more tabs" stub item when a device has more tabs than shown.
+    regex:
+      pattern: |-
+        CreateOtherDeviceSubMenu(session, tabs_in_session);
+      replace: |-
+        CreateOtherDeviceSubMenu(session, tabs_in_session);
+            MaybeAppendOverflowStubTab(tabs_in_session, kMaxSessionsToShow,
+                                       device_menu_model.get());
