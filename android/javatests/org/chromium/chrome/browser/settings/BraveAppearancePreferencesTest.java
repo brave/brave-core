@@ -22,6 +22,7 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
@@ -29,6 +30,7 @@ import org.chromium.base.test.util.MinAndroidSdkLevel;
 import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
+import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 
 /** Test for {@link AppearancePreferences}. */
 @RunWith(ChromeJUnit4ClassRunner.class)
@@ -72,6 +74,7 @@ public class BraveAppearancePreferencesTest {
             AppearancePreferences.PREF_ENABLE_MULTI_WINDOWS,
             AppearancePreferences.PREF_GENERAL_SECTION,
             AppearancePreferences.PREF_BRAVE_NIGHT_MODE_ENABLED,
+            BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES,
             AppearancePreferences.PREF_BRAVE_DISABLE_SHARING_HUB,
             AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON,
             AppearancePreferences.PREF_ADS_SWITCH,
@@ -156,6 +159,41 @@ public class BraveAppearancePreferencesTest {
                 mAppearancePreferences
                         .getPreferenceScreen()
                         .findPreference(AppearancePreferences.PREF_SHOW_UNDO_WHEN_TABS_CLOSED));
+    }
+
+    @Test
+    @SmallTest
+    public void testFullscreenNoticesDefaultAndPersistence() {
+        String key = BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES;
+        ChromeSharedPreferences.getInstance().removeKey(key);
+        startSettings();
+        try {
+            ThreadUtils.runOnUiThreadBlocking(
+                    () -> {
+                        ChromeSwitchPreference preference =
+                                (ChromeSwitchPreference) mAppearancePreferences.findPreference(key);
+                        Assert.assertNotNull(preference);
+                        assertTrue(preference.isChecked());
+                        Assert.assertEquals("Show fullscreen notices", preference.getTitle());
+                        assertTrue(preference.callChangeListener(false));
+                        preference.setChecked(false);
+                        Assert.assertFalse(
+                                ChromeSharedPreferences.getInstance().readBoolean(key, true));
+                    });
+            mSettingsActivityTestRule.recreateActivity();
+            mAppearancePreferences = mSettingsActivityTestRule.getFragment();
+            ThreadUtils.runOnUiThreadBlocking(
+                    () -> {
+                        ChromeSwitchPreference preference =
+                                (ChromeSwitchPreference) mAppearancePreferences.findPreference(key);
+                        Assert.assertFalse(preference.isChecked());
+                        assertTrue(preference.callChangeListener(true));
+                        preference.setChecked(true);
+                        assertTrue(ChromeSharedPreferences.getInstance().readBoolean(key, false));
+                    });
+        } finally {
+            ChromeSharedPreferences.getInstance().removeKey(key);
+        }
     }
 
     private void startSettings() {

@@ -156,6 +156,12 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
   </translations>
   <release seq="1" allow_pseudo="false">
     <messages fallback_to_english="true">
+      <message name="IDS_SHOW_FULLSCREEN_NOTICES_TITLE" desc="Title of the Android Appearance switch controlling ordinary webpage fullscreen notices">
+        Show fullscreen notices
+      </message>
+      <message name="IDS_SHOW_FULLSCREEN_NOTICES_SUMMARY" desc="Summary of the fullscreen notices switch; these notices identify the website and explain how to leave fullscreen">
+        Display the site address and how to exit fullscreen.
+      </message>
       <message name="IDS_CONTEXTMENU_COPY_CLEAN_LINK"  desc="Text for Copy clean link">
         Copy clean link
       </message>

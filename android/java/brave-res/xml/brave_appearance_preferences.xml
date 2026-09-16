@@ -51,6 +51,14 @@
         android:summary="@string/night_mode_summary" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_show_fullscreen_notices"
+        android:persistent="false"
+        android:defaultValue="true"
+        android:icon="@drawable/ic_notification"
+        android:title="@string/show_fullscreen_notices_title"
+        android:summary="@string/show_fullscreen_notices_summary" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_disable_sharing_hub"
         android:icon="@drawable/ic_share"
         android:title="@string/brave_sharing_hub_title"

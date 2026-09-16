@@ -14,6 +14,7 @@ import android.app.KeyguardManager;
 import android.content.Context;
 import android.os.PowerManager;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,13 +22,18 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
+import org.robolectric.Robolectric;
 import org.robolectric.Shadows;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.base.test.util.CommandLineFlags;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.TabHidingType;
+import org.chromium.chrome.browser.ui.ExclusiveAccessBubble;
+import org.chromium.chrome.browser.ui.ExclusiveAccessContext;
 
 @RunWith(BaseRobolectricTestRunner.class)
 public class BraveFullscreenHtmlApiHandlerBaseTest {
@@ -50,6 +56,8 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
 
     @Before
     public void setUp() {
+        ChromeSharedPreferences.getInstance()
+                .removeKey(BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES);
         Context context = ContextUtils.getApplicationContext();
         mPowerManager = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
         mKeyguardManager = (KeyguardManager) context.getSystemService(Context.KEYGUARD_SERVICE);
@@ -138,5 +146,50 @@ public class BraveFullscreenHtmlApiHandlerBaseTest {
         when(mBraveActivity.isYouTubePictureInPictureActive()).thenReturn(true);
 
         assertTrue(mHandler.shouldPreservePersistentFullscreenForPictureInPicture(mBraveActivity));
+    }
+
+    @After
+    public void clearFullscreenNoticePreference() {
+        ChromeSharedPreferences.getInstance()
+                .removeKey(BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES);
+    }
+
+    @Test
+    public void legacyToast_readsPreferenceOnEachDisplay() {
+        Activity activity = Robolectric.buildActivity(Activity.class).setup().get();
+        FullscreenToast toast = new FullscreenToast.AndroidToast(activity, () -> true);
+        try {
+            toast.onFullscreenLayout();
+            assertTrue(toast.isVisible());
+
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES, false);
+            toast.onWindowFocusChanged(true);
+            assertFalse(toast.isVisible());
+            toast.onFullscreenLayout();
+            assertFalse(toast.isVisible());
+
+            ChromeSharedPreferences.getInstance()
+                    .writeBoolean(BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES, true);
+            toast.onWindowFocusChanged(true);
+            assertTrue(toast.isVisible());
+        } finally {
+            toast.onExitFullscreen();
+            activity.finish();
+        }
+    }
+
+    @Test
+    public void nativeBubblePreference_readsCurrentValueWithoutCaching() {
+        ExclusiveAccessBubble bubble =
+                ExclusiveAccessBubble.create(
+                        org.mockito.Mockito.mock(ExclusiveAccessContext.class));
+        assertTrue(bubble.shouldShowFullscreenNotice());
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES, false);
+        assertFalse(bubble.shouldShowFullscreenNotice());
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES, true);
+        assertTrue(bubble.shouldShowFullscreenNotice());
     }
 }

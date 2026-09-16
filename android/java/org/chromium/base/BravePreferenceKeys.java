@@ -9,6 +9,7 @@ import org.chromium.build.annotations.NullMarked;
 
 @NullMarked
 public final class BravePreferenceKeys {
+    public static final String BRAVE_SHOW_FULLSCREEN_NOTICES = "brave_show_fullscreen_notices";
     public static final String BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY =
             "brave_bottom_toolbar_enabled_key";
     public static final String BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED =

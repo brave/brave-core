@@ -167,6 +167,14 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             adsSwitchPref.setOnPreferenceChangeListener(this);
         }
 
+        ChromeSwitchPreference fullscreenNotices =
+                (ChromeSwitchPreference)
+                        findPreference(BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES);
+        fullscreenNotices.setChecked(
+                ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES, true));
+        fullscreenNotices.setOnPreferenceChangeListener(this);
+
         Preference nightModeEnabled = findPreference(PREF_BRAVE_NIGHT_MODE_ENABLED);
         nightModeEnabled.setOnPreferenceChangeListener(this);
         if (nightModeEnabled instanceof ChromeSwitchPreference) {
@@ -296,7 +304,9 @@ public class AppearancePreferences extends AppearanceSettingsFragment
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String key = preference.getKey();
         boolean shouldRelaunch = false;
-        if (BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY.equals(key)) {
+        if (BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES.equals(key)) {
+            ChromeSharedPreferences.getInstance().writeBoolean(key, (boolean) newValue);
+        } else if (BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY.equals(key)) {
             Boolean originalStatus = BottomToolbarConfiguration.isBraveBottomControlsEnabled();
             updatePreferenceSummary(
                     BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
@@ -424,12 +434,13 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         setPreferenceOrder(PREF_ENABLE_MULTI_WINDOWS, 7);
         setPreferenceOrder(PREF_GENERAL_SECTION, 8);
         setPreferenceOrder(PREF_BRAVE_NIGHT_MODE_ENABLED, 9);
-        setPreferenceOrder(PREF_BRAVE_DISABLE_SHARING_HUB, 10);
-        setPreferenceOrder(PREF_SHOW_BRAVE_REWARDS_ICON, 11);
-        setPreferenceOrder(PREF_ADS_SWITCH, 12);
-        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOOKMARK_BAR, 13);
-        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 14);
-        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 15);
+        setPreferenceOrder(BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES, 10);
+        setPreferenceOrder(PREF_BRAVE_DISABLE_SHARING_HUB, 11);
+        setPreferenceOrder(PREF_SHOW_BRAVE_REWARDS_ICON, 12);
+        setPreferenceOrder(PREF_ADS_SWITCH, 13);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOOKMARK_BAR, 14);
+        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 15);
+        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 16);
     }
 
     private void setPreferenceOrder(String key, int order) {
