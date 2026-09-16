@@ -56,13 +56,13 @@ void BraveActionsContainer::Init() {
   SetLayoutManager(std::move(vertical_container_layout));
 
   // children
-  RoundedSeparator* brave_button_separator_ = new RoundedSeparator();
-  brave_button_separator_->SetColorId(nala::kColorDividerSubtle);
-  brave_button_separator_->SetPreferredSize(
+  RoundedSeparator* brave_button_separator = new RoundedSeparator();
+  brave_button_separator->SetColorId(nala::kColorDividerSubtle);
+  brave_button_separator->SetPreferredSize(
       gfx::Size(kSeparatorWidth + kSeparatorMargin,
                 GetLayoutConstant(LayoutConstant::kLocationBarIconSize)));
   // Left margin only; right-side gap comes from between_child_spacing above.
-  brave_button_separator_->SetBorder(
+  brave_button_separator->SetBorder(
       views::CreateEmptyBorder(gfx::Insets::TLBR(0, kSeparatorMargin, 0, 0)));
   // Just in case the extensions load before this function does (not likely!)
   // add children to the front in reverse order.
@@ -70,12 +70,18 @@ void BraveActionsContainer::Init() {
   AddActionViewForRewards();
 #endif
   AddActionViewForShields();
-  AddChildViewAt(brave_button_separator_, 0);
+  AddChildViewAt(brave_button_separator, 0);
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // React to Brave Rewards preferences changes.
   show_brave_rewards_button_.Init(
       brave_rewards::prefs::kShowLocationBarButton,
+      browser_window_interface_->GetProfile()->GetPrefs(),
+      base::BindRepeating(
+          &BraveActionsContainer::OnBraveRewardsPreferencesChanged,
+          base::Unretained(this)));
+  rewards_disabled_by_policy_.Init(
+      brave_rewards::prefs::kDisabledByPolicy,
       browser_window_interface_->GetProfile()->GetPrefs(),
       base::BindRepeating(
           &BraveActionsContainer::OnBraveRewardsPreferencesChanged,
