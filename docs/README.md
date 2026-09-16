@@ -28,6 +28,9 @@ resources outside this repository, go to:
 
 - [Premium Account Privacy](premium_account_privacy.md) - How blind tokens
   decouple payment identity from service usage.
+- [Playlist: network-based media detection (V2)](playlist_service_v2.md) -
+  Replacing DOM-scraping media detection with network observation and native
+  HLS/DASH support, behind `kPlaylistServiceV2`.
 - [Cryptographic Features](cryptography.md) - Cryptographic features in Brave
   beyond standard Chromium encryption.
 

@@ -26,6 +26,7 @@ class MockPlaylistRenderFrameObserverConfigurator
               (override));
 
   MOCK_METHOD(void, AddMediaDetector, (const std::string&), (override));
+  MOCK_METHOD(void, ClearMediaScripts, (), (override));
 
   void BindReceiver(mojo::ScopedInterfaceEndpointHandle handle);
 

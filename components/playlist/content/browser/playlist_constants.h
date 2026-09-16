@@ -6,9 +6,20 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_CONTENT_BROWSER_PLAYLIST_CONSTANTS_H_
 #define BRAVE_COMPONENTS_PLAYLIST_CONTENT_BROWSER_PLAYLIST_CONSTANTS_H_
 
+#include "net/base/schemeful_site.h"
+#include "url/gurl.h"
+
 namespace playlist {
 
 inline constexpr char kDefaultPlaylistID[] = "default";
+
+// Playlist V2 intentionally keeps the existing detector-based implementation
+// for YouTube while its SABR transport remains unsupported. Match the legacy
+// site-specific detector exactly: HTTPS youtube.com and its subdomains.
+inline bool IsYoutubeLegacyPlaylistSite(const GURL& url) {
+  return net::SchemefulSite(url) ==
+         net::SchemefulSite(GURL("https://youtube.com"));
+}
 
 }  // namespace playlist
 
