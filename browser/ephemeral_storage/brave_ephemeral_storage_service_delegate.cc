@@ -5,7 +5,6 @@
 
 #include "brave/browser/ephemeral_storage/brave_ephemeral_storage_service_delegate.h"
 
-#include <algorithm>
 #include <memory>
 #include <optional>
 #include <utility>
@@ -13,11 +12,12 @@
 
 #include "base/check.h"
 #include "base/containers/flat_set.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
-#include "base/scoped_observation.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/browsing_history_cleaner.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"

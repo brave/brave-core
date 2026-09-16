@@ -1,28 +1,8 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index 31cc627e9a6f978367e994a44e39ff94d80908d4..3b892a6c1e621ee05e5c634e3aa6617861adf680 100644
+index 31cc627e9a6f978367e994a44e39ff94d80908d4..cd4a2e5905bfc5649a97b3e9501d052e4f7c8437 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
-@@ -1120,6 +1120,8 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
-       new_group = it->second;
-     }
- 
-+    const bool cleaned = MaybeCleanupEphemeralStorage(tab.navigations[selected_index].virtual_url(), profile_);
-+
-     // Apply the stored group.
-     WebContents* web_contents = chrome::AddRestoredTab(
-         browser, tab.navigations, tab_index, selected_index,
-@@ -1132,7 +1134,9 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
-     RestoredTab restored_tab(web_contents, is_selected_tab,
-                              tab.extension_app_id.empty(), tab.pinned,
-                              new_group, tab.split_id);
--    restored_tabs.push_back(restored_tab);
-+    if (!cleaned) {
-+      restored_tabs.push_back(restored_tab);
-+    }
- 
-     if (tab.split_id) {
-       // add tab to tabs_by_split_id.
-@@ -1379,6 +1383,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1379,6 +1379,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
                                 : WindowOpenDisposition::NEW_BACKGROUND_TAB;
        params.tabstrip_add_types = add_types;
        is_first_tab = false;

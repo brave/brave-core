@@ -11,19 +11,3 @@ substitutions:
       replace: |-
         \1BraveModifyStartupTabNavigationParams(startup_tab, browser, params);
         \1\2
-  - description: 'Insert MaybeCleanupEphemeralStorage before AddRestoredTab call'
-    regex:
-      re_pattern: |-
-        ( *)(// Apply the stored group\.\n *WebContents\* web_contents = chrome::AddRestoredTab\()
-      replace: |-
-        \1const bool cleaned = MaybeCleanupEphemeralStorage(tab.navigations[selected_index].virtual_url(), profile_);
-
-        \1\2
-  - description: 'Wrap restored_tabs.push_back in ephemeral storage cleaned check'
-    regex:
-      re_pattern: |-
-        ( *)(restored_tabs\.push_back\(restored_tab\);)
-      replace: |-
-        \1if (!cleaned) {
-        \1  \2
-        \1}
