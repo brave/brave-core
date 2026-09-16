@@ -26,8 +26,16 @@ import {
 declare module './search_page-chromium.js' {
   interface SettingsSearchPageElement {
     bravePrefs_: { [key: string]: unknown }|undefined
-    onPrefsChanged_: () => void
+    onPrefsChanged_: (e: Event) => void
+    onBravePrefsChanged_: (e: Event) => void
   }
+}
+
+// Detail of Polymer's `<property>-changed` notification event. `path` is only
+// present when a sub-path of the property changed.
+interface PolymerNotifyDetail {
+  path?: string
+  value: unknown
 }
 
 // Finds the global settings-prefs singleton, which lives in settings-ui's
@@ -57,10 +65,36 @@ class SettingsSearchPageElement extends SettingsSearchPageElementChromium {
   override accessor bravePrefs_: { [key: string]: unknown }|undefined =
       undefined
 
-  override onPrefsChanged_ = () => {
+  // settings-brave-search-page is Polymer and writes prefs through the classic
+  // PrefsMixin, which mutates the shared prefs object in place and relies on a
+  // two-way `prefs="{{prefs}}"` binding to notify settings-prefs, the only
+  // thing that calls settingsPrivate.setPref(). `.prefs` above is a one-way
+  // Lit binding, so that notification stops here: the toggles look like they
+  // work (the shared object did change) but nothing is written to the profile
+  // and the values are lost on restart. Replay the notification on the
+  // singleton, which holds the very same object, so its `prefs.*` observer
+  // runs. Polymer dirty-checks the path, so this can't echo back.
+  override onBravePrefsChanged_ = (e: Event) => {
+    const {path} = (e as CustomEvent<PolymerNotifyDetail>).detail
+    if (path) {
+      getPrefsElement()?.notifyPath(path)
+    }
+  }
+
+  // The other direction: pref changes coming from the browser (a rejected
+  // setPref(), policy, another settings tab) reach settings-prefs but can't
+  // cross back into the Polymer subtree on their own -- reassigning
+  // bravePrefs_ is a no-op for Lit, since it's the same object reference.
+  override onPrefsChanged_ = (e: Event) => {
     const prefsElement = getPrefsElement()
-    if (prefsElement?.prefs) {
-      this.bravePrefs_ = prefsElement.prefs
+    if (!prefsElement?.prefs) {
+      return
+    }
+    this.bravePrefs_ = prefsElement.prefs
+    const {path} = (e as CustomEvent<PolymerNotifyDetail>).detail
+    if (path) {
+      this.shadowRoot?.querySelector('settings-brave-search-page')
+          ?.notifyPath(path)
     }
   }
 
