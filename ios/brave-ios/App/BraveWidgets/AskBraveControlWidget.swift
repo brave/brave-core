@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import AppIntents
+import BraveWidgetsModels
 import DesignSystem
 import Strings
 import SwiftUI
@@ -11,14 +12,18 @@ import WidgetKit
 
 struct AskBraveControlWidget: ControlWidget {
   var body: some ControlWidgetConfiguration {
-    StaticControlConfiguration(kind: "AskBraveControlWidget") {
-      ControlWidgetButton(action: AskBraveControlWidgetIntent()) {
-        Label(Strings.Widgets.askBrave, braveSystemImage: "leo.brave.ask")
+    if #available(iOS 26.0, *) {
+      return StaticControlConfiguration(kind: "AskBraveControlWidget") {
+        ControlWidgetButton(action: OpenControlWidgetShortcutIntent(shortcut: .askBrave)) {
+          Label(Strings.Widgets.askBrave, braveSystemImage: "leo.brave.ask")
+        }
       }
+      .displayName(LocalizedStringResource(stringLiteral: Strings.Widgets.askBraveWidgetTitle))
+      .description(
+        LocalizedStringResource(stringLiteral: Strings.Widgets.askBraveWidgetDescription)
+      )
+    } else {
+      return EmptyControlWidgetConfiguration()
     }
-    .displayName(LocalizedStringResource(stringLiteral: Strings.Widgets.askBraveWidgetTitle))
-    .description(
-      LocalizedStringResource(stringLiteral: Strings.Widgets.askBraveWidgetDescription)
-    )
   }
 }

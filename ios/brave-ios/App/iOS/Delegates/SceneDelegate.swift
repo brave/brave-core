@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import AppIntents
 import Brave
 import BraveCore
 import BraveNews
@@ -109,6 +110,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   private static var profileState: ProfileState?
 
   private var cancellables: Set<AnyCancellable> = []
+  private var pendingControlWidgetShortcut: WidgetShortcut?
 
   func scene(
     _ scene: UIScene,
@@ -210,7 +212,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       sendDAUPingIfNeeded()
       refreshSKUsCredentials(in: scene)
       handleQuickActionsIfNeeded(browserViewController: browserViewController)
-      handlePendingWidgetShortcutIfNeeded(browserViewController: browserViewController)
+      handlePendingControlWidgetShortcutIfNeeded(browserViewController: browserViewController)
     }
   }
 
@@ -481,7 +483,10 @@ extension SceneDelegate {
       sendDAUPingIfNeeded()
       refreshSKUsCredentials(in: sceneState.windowScene)
       handleQuickActionsIfNeeded(browserViewController: browserViewController)
-      handlePendingWidgetShortcutIfNeeded(browserViewController: browserViewController)
+      handlePendingControlWidgetShortcutIfNeeded(
+        browserViewController: browserViewController,
+        connectionOptions: sceneState.connectionOptions
+      )
     }
   }
 
@@ -496,8 +501,19 @@ extension SceneDelegate {
     }
   }
 
-  private func handlePendingWidgetShortcutIfNeeded(browserViewController: BrowserViewController) {
-    guard let shortcut = PendingWidgetIntentAction.consume() else { return }
+  private func handlePendingControlWidgetShortcutIfNeeded(
+    browserViewController: BrowserViewController,
+    connectionOptions: UIScene.ConnectionOptions? = nil
+  ) {
+    if #available(iOS 26.0, *),
+      let intent = connectionOptions?.appIntent as? OpenControlWidgetShortcutIntent
+    {
+      pendingControlWidgetShortcut = nil
+      browserViewController.handleNavigationPath(path: .widgetShortcutURL(intent.shortcut))
+      return
+    }
+    guard let shortcut = pendingControlWidgetShortcut else { return }
+    pendingControlWidgetShortcut = nil
     browserViewController.handleNavigationPath(path: .widgetShortcutURL(shortcut))
   }
 
@@ -914,6 +930,21 @@ extension SceneDelegate {
     let onlyPrivateTabs = privateTabs.count == windowTabs.count
 
     return selectedTabIsPrivate || onlyPrivateTabs
+  }
+}
+
+@available(iOS 26.0, *)
+extension SceneDelegate: AppIntentSceneDelegate {
+  func scene(_ scene: UIScene, willPerformAppIntent appIntent: any UISceneAppIntent) {
+    guard let intent = appIntent as? OpenControlWidgetShortcutIntent,
+      let windowScene = scene as? UIWindowScene
+    else { return }
+    if let browserViewController = windowScene.browserViewController {
+      pendingControlWidgetShortcut = nil
+      browserViewController.handleNavigationPath(path: .widgetShortcutURL(intent.shortcut))
+    } else {
+      pendingControlWidgetShortcut = intent.shortcut
+    }
   }
 }
 

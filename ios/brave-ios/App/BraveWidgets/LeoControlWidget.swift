@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import AppIntents
+import BraveWidgetsModels
 import DesignSystem
 import Strings
 import SwiftUI
@@ -11,14 +12,18 @@ import WidgetKit
 
 struct LeoControlWidget: ControlWidget {
   var body: some ControlWidgetConfiguration {
-    StaticControlConfiguration(kind: "LeoControlWidget") {
-      ControlWidgetButton(action: LeoControlWidgetIntent()) {
-        Label(Strings.Widgets.braveLeo, braveSystemImage: "leo.product.brave-leo")
+    if #available(iOS 26.0, *) {
+      return StaticControlConfiguration(kind: "LeoControlWidget") {
+        ControlWidgetButton(action: OpenControlWidgetShortcutIntent(shortcut: .braveLeo)) {
+          Label(Strings.Widgets.braveLeo, braveSystemImage: "leo.product.brave-leo")
+        }
       }
+      .displayName(LocalizedStringResource(stringLiteral: Strings.Widgets.leoAIWidgetTitle))
+      .description(
+        LocalizedStringResource(stringLiteral: Strings.Widgets.leoAIWidgetDescription)
+      )
+    } else {
+      return EmptyControlWidgetConfiguration()
     }
-    .displayName(LocalizedStringResource(stringLiteral: Strings.Widgets.leoAIWidgetTitle))
-    .description(
-      LocalizedStringResource(stringLiteral: Strings.Widgets.leoAIWidgetDescription)
-    )
   }
 }
