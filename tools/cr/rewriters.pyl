@@ -455,7 +455,9 @@ has:
         "gn.find_target_list_assignment": {
             "template": """\
 kind: assignment_statement
-pattern: {list_name} = $VALUE
+any:
+  - pattern: {list_name} = $VALUE
+  - pattern: {list_name} += $VALUE
 inside:
   kind: block
   inside:
@@ -464,9 +466,15 @@ inside:
       kind: primary_expression
       has:
         kind: call_expression
-        has:
-          kind: primary_expression
-          regex: ^"{target}"$
+        all:
+          - has:
+              field: function
+              regex: {type}
+          - has:
+              kind: primary_expression
+              any:
+                - regex: ^"{target}"$
+                - regex: ^{target}$
 """,
             "result": {
                 "node": "assignment_statement",
@@ -487,9 +495,15 @@ inside:
     kind: primary_expression
     has:
       kind: call_expression
-      has:
-        kind: primary_expression
-        regex: ^"{target}"$
+      all:
+        - has:
+            field: function
+            regex: {type}
+        - has:
+            kind: primary_expression
+            any:
+              - regex: ^"{target}"$
+              - regex: ^{target}$
 """,
             "result": {
                 "node": "block",
@@ -521,9 +535,15 @@ inside:
         kind: primary_expression
         has:
           kind: call_expression
-          has:
-            kind: primary_expression
-            regex: ^"{target}"$
+          all:
+            - has:
+                field: function
+                regex: {type}
+            - has:
+                kind: primary_expression
+                any:
+                  - regex: ^"{target}"$
+                  - regex: ^{target}$
 """,
             "result": {
                 "node": "block",
@@ -903,7 +923,8 @@ nthChild:
         # newline that `$` would otherwise match ahead of.
         "gn.append_literal_to_list": {
             "matcher": "gn.find_target_list_assignment",
-            "inputs": ["target", "list_name", "literal", "indent"],
+            "inputs": ["target", "type", "list_name", "literal", "indent"],
+            "first_match": True,
             "replace": {
                 "re_pattern": "$",
                 "replace": "\\n{indent}{list_name} += {literal}",
@@ -923,7 +944,7 @@ nthChild:
         "gn.append_literal_to_conditional": {
             "matcher": "gn.find_target_conditional_block",
             "inputs": [
-                "target", "condition", "list_name", "literal", "indent"
+                "target", "type", "condition", "list_name", "literal", "indent"
             ],
             "replace": {
                 "re_pattern": "\\n[ \\t]*\\}$",
@@ -942,8 +963,9 @@ nthChild:
         "gn.assign_conditional_literal_to_list": {
             "matcher": "gn.find_target_list_assignment",
             "inputs": [
-                "target", "condition", "list_name", "literal", "indent"
+                "target", "type", "condition", "list_name", "literal", "indent"
             ],
+            "first_match": True,
             "replace": {
                 "re_pattern": "$",
                 "replace": "\\n{indent}if ({condition}) {{"
@@ -959,7 +981,7 @@ nthChild:
         # body, for when it declares no `list_name` yet.
         "gn.assign_literal_to_list": {
             "matcher": "gn.find_target_block",
-            "inputs": ["target", "list_name", "literal", "indent"],
+            "inputs": ["target", "type", "list_name", "literal", "indent"],
             "replace": {
                 "re_pattern": "^\\{",
                 "replace": "{{\\n{indent}{list_name} = {literal}",
@@ -1022,7 +1044,7 @@ nthChild:
         # labour `cxx.append_to_public_before_close` uses.
         "gn.append_code_to_body": {
             "matcher": "gn.find_target_block",
-            "inputs": ["target", "code", "indent"],
+            "inputs": ["target", "type", "code", "indent"],
             "replace": {
                 "re_pattern": "\\n[ \\t]*\\}$",
                 "replace": "\\n{code}\\n{indent}}}",
@@ -1042,7 +1064,7 @@ nthChild:
         # that `gn format` fixes.
         "gn.append_literal_to_body": {
             "matcher": "gn.find_target_block",
-            "inputs": ["target", "list_name", "literal", "indent"],
+            "inputs": ["target", "type", "list_name", "literal", "indent"],
             "replace": {
                 "re_pattern": "\\n[ \\t]*\\}$",
                 "replace": "\\n{indent}  {list_name} += {literal}"
