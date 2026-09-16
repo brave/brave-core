@@ -277,7 +277,8 @@ class SyncWelcomeViewController: SyncViewController {
       addDevice.enableNavigationPrevention()
 
       // DidJoinSyncChain result should be also checked when creating a new chain
-      self.syncAPI.setDidJoinSyncChain { result in
+      self.syncAPI.setDidJoinSyncChain { [weak self] result in
+        guard let self else { return }
         if result {
           self.syncDeviceInfoObserver = self.syncAPI.addDeviceStateObserver { [weak self] in
             guard let self else { return }
@@ -399,7 +400,8 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
   ) {
     // DidJoinSyncChain is checking If the chain user trying to join is deleted recently
     // returning an error accordingly - only error is Deleted Sync Chain atm
-    syncAPI.setDidJoinSyncChain { result in
+    syncAPI.setDidJoinSyncChain { [weak self] result in
+      guard let self else { return }
       if result {
         // If chain is not deleted start listening for device state observer
         // to validate devices are added to chain and show settings

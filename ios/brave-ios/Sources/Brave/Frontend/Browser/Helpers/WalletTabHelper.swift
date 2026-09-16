@@ -182,7 +182,7 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
     completion: @escaping RequestPermissionsCallback
   ) {
     guard let tab else { return }
-    Task { @MainActor in
+    Task { @MainActor [self] in
       let permissionRequestManager = WalletProviderPermissionRequestsManager.shared
 
       if permissionRequestManager.hasPendingRequest(for: origin, coinTypes: [coinType]) {
@@ -341,7 +341,7 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
     else {
       return
     }
-    Task { @MainActor in
+    Task { @MainActor [self] in
       // check if we receive account creation request without a wallet setup
       let isWalletCreated = await keyringService.isWalletCreated()
       if !isWalletCreated {
@@ -561,7 +561,7 @@ extension WalletTabHelper: BraveWalletSolanaEventsListener {
     else {
       return
     }
-    Task {
+    _ = Task {
       var arguments: [Any] = [event.name]
       if let eventArgs = event.arguments {
         arguments.append(eventArgs)

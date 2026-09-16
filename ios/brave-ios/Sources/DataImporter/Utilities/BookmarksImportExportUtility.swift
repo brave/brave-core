@@ -52,7 +52,7 @@ public class BookmarksImportExportUtility {
       "Bookmarks Import - Error Importing while an Import/Export operation is in progress"
     )
 
-    let doImport = { (path: URL, nativePath: String) async -> Bool in
+    let doImport = { [self] (path: URL, nativePath: String) async -> Bool in
       await withCheckedContinuation { continuation in
         self.importer.import(
           fromFile: nativePath,
@@ -103,7 +103,7 @@ public class BookmarksImportExportUtility {
 
       defer {
         Task {
-          try await AsyncFileManager.default.removeItem(at: zipFileExtractedURL)
+          try? await AsyncFileManager.default.removeItem(at: zipFileExtractedURL)
         }
       }
 

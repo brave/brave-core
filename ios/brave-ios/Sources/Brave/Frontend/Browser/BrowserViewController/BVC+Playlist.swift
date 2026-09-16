@@ -39,7 +39,7 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
         self.dismiss(animated: true) {
           switch action {
           case .openPlaylist:
-            DispatchQueue.main.async {
+            DispatchQueue.main.async { [self] in
               if let tab, let playlist = tab.playlist {
                 playlist.getCurrentTime(nodeTag: item.tagId) {
                   [weak self] currentTime in
@@ -118,7 +118,7 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
       UIAlertAction(
         title: Strings.PlayList.addToPlayListAlertTitle,
         style: .default,
-        handler: { _ in
+        handler: { [unowned self] _ in
           // Update playlist with new items..
 
           guard let item = item else { return }
@@ -171,12 +171,12 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
         // Ensure url bar is expanded before presenting a popover on it
         toolbarVisibilityViewModel.toolbarState = .expanded
 
-        DispatchQueue.main.async {
+        DispatchQueue.main.async { [self, weak tab] in
           let model = OnboardingPlaylistModel()
           let popover = PopoverController(content: OnboardingPlaylistView(model: model))
           popover.previewForOrigin = .init(
             view: self.topToolbar.locationView.playlistButton,
-            action: { [weak tab] popover in
+            action: { popover in
               guard let item = tab?.playlistItem else {
                 popover.dismissPopover()
                 return
@@ -190,7 +190,7 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
           )
           popover.present(from: self.topToolbar.locationView.playlistButton, on: self)
 
-          model.onboardingCompleted = { [weak tab, weak popover] in
+          model.onboardingCompleted = { [weak popover] in
             popover?.dismissPopover()
             self.openPlaylist(tab: tab, item: tab?.playlistItem)
           }
@@ -281,7 +281,7 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
 
         if let url = URL(string: item.src), url.scheme == "blob" {
           // Spawn a WebView to load the non-blob asset
-          Task { @MainActor in
+          Task { @MainActor [self] in
             let mediaStreamer = PlaylistMediaStreamer(
               playerView: self.view,
               webLoaderFactory: LivePlaylistWebLoaderFactory(
@@ -289,8 +289,10 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
               )
             )
 
-            let newItem = try await mediaStreamer.loadMediaStreamingAsset(item)
-            PlaylistManager.shared.autoDownload(item: newItem)
+            do {
+              let newItem = try await mediaStreamer.loadMediaStreamingAsset(item)
+              PlaylistManager.shared.autoDownload(item: newItem)
+            } catch {}
           }
         } else {
           PlaylistManager.shared.autoDownload(item: item)
@@ -305,7 +307,7 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
       }
     }
 
-    Task { @MainActor in
+    Task { @MainActor [self] in
       let shouldWarnAboutStorage =
         await PlaylistManager.shared.isDiskSpaceEncumberedAfterReclamation()
         && !BrowserViewController.didShowStorageFullWarning

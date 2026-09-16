@@ -168,8 +168,8 @@ import Shared
           }
         }
       },
-      transcriptChunkReceived: { data in
-        Task { [weak self] in
+      transcriptChunkReceived: { [weak self] data in
+        Task {
           await self?.jitsiTranscriptProcessor?.processTranscript(dictionary: data)
         }
       }

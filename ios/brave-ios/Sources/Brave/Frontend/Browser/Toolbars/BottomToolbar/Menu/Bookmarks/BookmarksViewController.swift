@@ -912,7 +912,7 @@ extension BookmarksViewController: UIDocumentPickerDelegate, UIDocumentInteracti
   func documentInteractionControllerDidEndPreview(_ controller: UIDocumentInteractionController) {
     documentInteractionController = nil
     guard let url = controller.url else { return }
-    Task { try await AsyncFileManager.default.removeItem(at: url) }
+    _ = Task { try await AsyncFileManager.default.removeItem(at: url) }
   }
 
   func documentInteractionControllerDidDismissOptionsMenu(
@@ -920,7 +920,7 @@ extension BookmarksViewController: UIDocumentPickerDelegate, UIDocumentInteracti
   ) {
     documentInteractionController = nil
     guard let url = controller.url else { return }
-    Task { try await AsyncFileManager.default.removeItem(at: url) }
+    _ = Task { try await AsyncFileManager.default.removeItem(at: url) }
   }
 
   func documentInteractionControllerDidDismissOpenInMenu(
@@ -928,7 +928,7 @@ extension BookmarksViewController: UIDocumentPickerDelegate, UIDocumentInteracti
   ) {
     documentInteractionController = nil
     guard let url = controller.url else { return }
-    Task { try await AsyncFileManager.default.removeItem(at: url) }
+    _ = Task { try await AsyncFileManager.default.removeItem(at: url) }
   }
 }
 

@@ -462,7 +462,7 @@ public class PlaylistManager: NSObject {
 
     // Delete items from the folder
     return await withCheckedContinuation { continuation in
-      PlaylistItem.removeItems(itemsToDelete) {
+      PlaylistItem.removeItems(itemsToDelete) { [self] in
         // Attempt to delete the folder if we can
         if success, folder.uuid != PlaylistFolder.savedFolderUUID {
           PlaylistFolder.removeFolder(folder.uuid ?? "") { [weak self] in

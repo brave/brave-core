@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveStrings
+import CoreData
 import Data
 import DesignSystem
 import Foundation

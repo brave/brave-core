@@ -138,8 +138,10 @@ public class PlaylistMediaStreamer {
       }
 
       Task {
-        try await Task.sleep(nanoseconds: NSEC_PER_SEC)
-        PlaylistManager.shared.autoDownload(item: newItem)
+        do {
+          try await Task.sleep(nanoseconds: NSEC_PER_SEC)
+          PlaylistManager.shared.autoDownload(item: newItem)
+        } catch {}
       }
       return item
     } onCancel: {

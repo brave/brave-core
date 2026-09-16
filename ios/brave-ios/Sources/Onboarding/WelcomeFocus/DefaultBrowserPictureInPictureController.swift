@@ -128,11 +128,13 @@ public final class DefaultBrowserPictureInPictureController: NSObject,
       await withCheckedContinuation { continuation in
         var observer: NSKeyValueObservation?
         Task.detached {
-          try await Task.sleep(for: .milliseconds(500))
-          if observer != nil {
-            observer = nil
-            continuation.resume()
-          }
+          do {
+            try await Task.sleep(for: .milliseconds(500))
+            if observer != nil {
+              observer = nil
+              continuation.resume()
+            }
+          } catch {}
         }
         observer = controller.observe(\.isPictureInPicturePossible, options: [.new]) { _, change in
           if observer != nil, let isPossible = change.newValue, isPossible {

@@ -36,7 +36,7 @@ extension BrowserViewController: TabDelegate {
       return UIContextMenuConfiguration(identifier: nil, previewProvider: nil, actionProvider: nil)
     }
 
-    let actionProvider: UIContextMenuActionProvider = { _ -> UIMenu? in
+    let actionProvider: UIContextMenuActionProvider = { [self] _ -> UIMenu? in
       var actions = [UIAction]()
 
       if let currentTab = self.tabManager.selectedTab {
@@ -57,7 +57,7 @@ extension BrowserViewController: TabDelegate {
         let openNewPrivateTabAction = UIAction(
           title: Strings.openNewPrivateTabButtonTitle,
           image: UIImage(braveSystemNamed: "leo.product.private-window")
-        ) { _ in
+        ) { [unowned self] _ in
           if !isPrivate, Preferences.Privacy.privateBrowsingLock.value {
             self.askForLocalAuthentication { [weak self] success, error in
               if success {
