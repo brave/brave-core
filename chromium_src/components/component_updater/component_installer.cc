@@ -52,6 +52,7 @@ void ComponentInstaller::Register(
           "ninodabcejpeglfjbkhdplaoglpcbffj",  // Actor Safety Lists
           "pficcddpglkpaaihklmahepgjmefdnom",  // Captcha Provider
           "fklghjjljmnfjoepjmlobpekiapffcja",  // OptGuideOnDeviceModel
+          "ceofaddefefcbblgcgnibnonglccbfja",  // OptGuideOnDeviceModelsManifest
 #if BUILDFLAG(IS_ANDROID)
           "lmelglejhemejginpboagddgdfbepgmp",  // Optimization Hints
           "obedbbhbpmojnkanicioggnmelmoomoc"   // OnDeviceHeadSuggest
