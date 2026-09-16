@@ -29,9 +29,9 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
                 this.state.verification.intent
                   === LoggedOutVerificationIntent.kResetPassword
                 && this.state.verification.verifiedEmail
-                  ? loadTimeData.getString(
+                  ? html`${loadTimeData.getString(
                       BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_RESET_PASSWORD_VERIFIED_ROW_DESCRIPTION,
-                    )
+                    )}`
                   : html`${this.getVerificationDescription().beforeLink}
                     <if expr="not is_android and not is_ios">
                       <leo-link
@@ -69,10 +69,9 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
 <if expr="is_android or is_ios">
           ${
             this.state.verification.intent
-              === LoggedOutVerificationIntent.kResetPassword
-            && this.state.verification.verifiedEmail
-              ? nothing
-              : html`<leo-button
+              !== LoggedOutVerificationIntent.kResetPassword
+            || !this.state.verification.verifiedEmail
+              ? html`<leo-button
                   kind="plain"
                   size=${ROW_BUTTON_SIZE}
                   ?isDisabled=${this.isResendingConfirmationEmail}
@@ -82,6 +81,7 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
                     BraveAccountSettingsStrings.BRAVE_ACCOUNT_RESEND_EMAIL_CODE_BUTTON_LABEL,
                   )}
                 </leo-button>`
+              : nothing
           }
 </if>
           <leo-button
