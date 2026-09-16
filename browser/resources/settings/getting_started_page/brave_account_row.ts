@@ -7,9 +7,9 @@ import { assert } from '//resources/js/assert.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
 import {
-  BraveAccountBrowserProxy,
-  BraveAccountBrowserProxyImpl
-} from './brave_account_browser_proxy.js'
+  BraveAccountRowBrowserProxy,
+  BraveAccountRowBrowserProxyImpl
+} from '../brave_account_row_browser_proxy.js'
 import { AccountState, DialogMode } from '../brave_account.mojom-webui.js'
 import { getHtml } from './brave_account_row.html.js'
 
@@ -30,8 +30,8 @@ export class SettingsBraveAccountRowElement extends CrLitElement {
     }
   }
 
-  protected accessor browserProxy: BraveAccountBrowserProxy =
-    new BraveAccountBrowserProxyImpl()
+  protected accessor browserProxy: BraveAccountRowBrowserProxy =
+    new BraveAccountRowBrowserProxyImpl()
   protected accessor initiatingServiceName = ''
   protected accessor state: AccountState | undefined = undefined
 

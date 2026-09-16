@@ -6,19 +6,21 @@
 import { loadTimeData } from '//resources/js/load_time_data.js'
 import { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
 
-import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
+import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js'
 import {
   LoggedInState,
   LoggedInVerificationIntent,
   VerificationIntent,
-} from '../brave_account.mojom-webui.js'
-import { showError } from '../brave_account_shared.js'
+} from './brave_account.mojom-webui.js'
+import { showError } from './brave_account_shared.js'
 import { BraveAccountRowBaseElement } from './brave_account_row_base.js'
 import { getCss } from './brave_account_logged_in_row.css.js'
 import { getHtml } from './brave_account_logged_in_row.html.js'
 
-export class BraveAccountLoggedInRowElement extends
-    BraveAccountRowBaseElement<LoggedInVerificationIntent, LoggedInState> {
+export class BraveAccountLoggedInRowElement extends BraveAccountRowBaseElement<
+  LoggedInVerificationIntent,
+  LoggedInState
+> {
   static get is() {
     return 'brave-account-logged-in-row'
   }
@@ -44,7 +46,8 @@ export class BraveAccountLoggedInRowElement extends
   private resizeObserver?: ResizeObserver
 
   protected override makeVerificationIntent(
-        intent: LoggedInVerificationIntent): VerificationIntent {
+    intent: LoggedInVerificationIntent,
+  ): VerificationIntent {
     return { loggedInIntent: intent }
   }
 
@@ -78,7 +81,8 @@ export class BraveAccountLoggedInRowElement extends
 
     try {
       await this.browserProxy.authentication.changePasswordStep1(
-        this.state.email)
+        this.state.email,
+      )
       this.openDialogInDefaultMode()
     } catch (e) {
       showError('changePassword', e, {
@@ -145,8 +149,11 @@ export class BraveAccountLoggedInRowElement extends
     const makeCandidate = (kept: number): string => {
       const prefixLen = Math.ceil(kept / 2)
       const suffixLen = Math.floor(kept / 2)
-      return chars.slice(0, prefixLen).join('') + '…' +
-             chars.slice(-suffixLen).join('')
+      return (
+        chars.slice(0, prefixLen).join('')
+        + '…'
+        + chars.slice(-suffixLen).join('')
+      )
     }
 
     let truncatedEmail = ''
@@ -178,4 +185,6 @@ declare global {
 }
 
 customElements.define(
-  BraveAccountLoggedInRowElement.is, BraveAccountLoggedInRowElement)
+  BraveAccountLoggedInRowElement.is,
+  BraveAccountLoggedInRowElement,
+)
