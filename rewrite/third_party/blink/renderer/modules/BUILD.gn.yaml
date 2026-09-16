@@ -4,26 +4,21 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
-      Extend the file-scope modules visibility with brave entries.
-    regex:
-      re_pattern: '(^visibility = \[.*?\])'
-      re_flags: [DOTALL, MULTILINE]
-      replace: '\1\nvisibility += brave_blink_renderer_modules_visibility'
+  - description: Extend the file-scope modules visibility with brave entries.
+    add_literal_to_variable:
+      variable: visibility
+      literal: brave_blink_renderer_modules_visibility
 
   - description: |
       brave_blink_sub_modules add to `component("modules")`.
 
-      Anchored right after the initial `sub_modules = [ ... ]` assignment so that
-      the brave entries are always part of `sub_modules` before it is consumed
-      (via `public_deps = sub_modules` and `allow_circular_includes_from =
-      sub_modules`), regardless of the order in which those consumers appear.
-      Without this, brave sub modules never become public_deps of
-      `component("modules")` and their symbols fail to link into
-      libblink_modules.so.
-    regex:
-      re_pattern: '(component\("modules"\) \{.*?sub_modules = \[.*?\])'
-      re_flags: [DOTALL]
-      replace: |-
-        \1
-          sub_modules += brave_blink_sub_modules
+      Anchored on the `sub_modules` assignment so the brave entries are part
+      of it before it is consumed (via `public_deps = sub_modules` and
+      `allow_circular_includes_from = sub_modules`), regardless of the order
+      in which those consumers appear. Without this, brave sub modules never
+      become public_deps of `component("modules")` and their symbols fail to
+      link into libblink_modules.so.
+    add_literal_to_list:
+      target: modules
+      list_name: sub_modules
+      literal: brave_blink_sub_modules

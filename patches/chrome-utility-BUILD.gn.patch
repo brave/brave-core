@@ -1,12 +1,36 @@
 diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
-index 500cbc7ed8e76b552a23147279fc233af9649197..f0db97f2fa87c9426c61680635b834338328c0a5 100644
+index 500cbc7ed8e76b552a23147279fc233af9649197..2b3b299ee18e4c2b20a2712f9bf271e933541f6c 100644
 --- a/chrome/utility/BUILD.gn
 +++ b/chrome/utility/BUILD.gn
-@@ -267,6 +267,7 @@ static_library("utility") {
-   if (is_android) {
-     deps += [ "//chrome/services/readaloud" ]
-   }
-+  import("//brave/utility/sources.gni") sources += brave_utility_sources deps += brave_utility_deps public_deps += brave_utility_public_deps
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- if (!is_android) {
++import("//brave/utility/sources.gni")
+ import("//build/config/sysroot.gni")
+ import("//chrome/common/features.gni")
+ import("//chrome/services/speech/buildflags/buildflags.gni")
+@@ -22,6 +23,7 @@ static_library("utility") {
+     "services.cc",
+     "services.h",
+   ]
++  sources += brave_utility_sources
+ 
+   defines = []
+   configs += [
+@@ -30,6 +32,7 @@ static_library("utility") {
+   ]
+ 
+   public_deps = []
++  public_deps += brave_utility_public_deps
+   deps = [
+     "//base",
+     "//build:chromeos_buildflags",
+@@ -76,6 +79,7 @@ static_library("utility") {
+     "//third_party/zlib/google:zip",
+     "//ui/base:buildflags",
+   ]
++  deps += brave_utility_deps
+ 
+   if (is_win) {
+     deps += [
