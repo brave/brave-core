@@ -424,6 +424,120 @@ has:
                 "node": "object",
             },
         },
+
+        # The two matchers that follow both reach a GN target through its call,
+        # e.g. `source_set("browser") { ... }`, and both spell that the same
+        # roundabout way, for two reasons.
+        #
+        # tree-sitter-gn does not attach the trailing `{ ... }` to the
+        # `call_expression`: the call and the block that follows it end up as
+        # two adjacent nodes instead, hence `follows` rather than a
+        # `has`/`inside` pair.
+        #
+        # The `has` matching the target's name string also goes one level
+        # deeper than it looks like it should: `call_expression`'s arguments are
+        # declared as `$.expression`, which tree-sitter-gn *does* inline, but
+        # the `primary_expression` alternative it resolves to (covering a bare
+        # string, identifier, etc.) is not itself inlined, so a plain string
+        # argument shows up as `primary_expression > string`, not `string`
+        # directly, hence matching a `primary_expression` node by regex instead
+        # of `string`.
+        #
+        # A metavariable (`$VALUE` below) only parses at all because the
+        # generated `sgconfig.yml` sets `expandoChar: _`: a bare `$` is not
+        # valid GN outside a string, so ast-grep swaps the sign for a character
+        # the grammar accepts in an identifier before parsing.
+
+        # The assignment already setting `list_name` (with a plain `=`, not
+        # `+=`/`-=`) as a direct statement of `target`'s block, if any. Used to
+        # tell whether `gn.add_literal_to_list` should append to it or create it
+        # fresh.
+        "gn.find_target_list_assignment": {
+            "template": """\
+kind: assignment_statement
+pattern: {list_name} = $VALUE
+inside:
+  kind: block
+  inside:
+    kind: primary_expression
+    follows:
+      kind: primary_expression
+      has:
+        kind: call_expression
+        has:
+          kind: primary_expression
+          regex: ^"{target}"$
+""",
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # `target`'s own `{ ... }` body, anchored on its opening brace so a
+        # value can be inserted as the block's first statement. One match per
+        # declaration of the target, which is also how the frontend counts
+        # those declarations, and its closing brace is what an inserted
+        # statement takes its indentation from.
+        "gn.find_target_block": {
+            "template": """\
+kind: block
+inside:
+  kind: primary_expression
+  follows:
+    kind: primary_expression
+    has:
+      kind: call_expression
+      has:
+        kind: primary_expression
+        regex: ^"{target}"$
+""",
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # The file's first statement, which an import is inserted above so it
+        # lands at the top of the fil, but below the copyright header, since a
+        # comment is not a statement.
+        #
+        # The `any` is grammar.js's `statement` rule transcribed: its four
+        # named alternatives, plus the three `expression` resolves to (that
+        # supertype being inlined), which is how a target's call statement
+        # appears. `nthChild` needs `ofRule` to repeat the set, since without
+        # it a leading comment counts as the first child and nothing matches.
+        #
+        # The result node is therefore whichever of those kinds opens the file,
+        # which could be an import_statement in a file that already imports
+        # something, or a primary_expression when a target comes first, with the
+        # latter named below as the representative.
+        "gn.find_first_statement": {
+            "template": """\
+any:
+  - kind: import_statement
+  - kind: if_statement
+  - kind: foreach_statement
+  - kind: assignment_statement
+  - kind: primary_expression
+  - kind: binary_expression
+  - kind: unary_expression
+inside:
+  kind: source_file
+nthChild:
+  position: 1
+  ofRule:
+    any:
+      - kind: import_statement
+      - kind: if_statement
+      - kind: foreach_statement
+      - kind: assignment_statement
+      - kind: primary_expression
+      - kind: binary_expression
+      - kind: unary_expression
+""",
+            "result": {
+                "node": "primary_expression",
+            },
+        },
     },
     "ast.rewriter": {
 
@@ -710,6 +824,57 @@ has:
             },
             "result": {
                 "node": "object",
+            },
+        },
+
+        # `target`'s existing `list_name = [...]` with `+= {literal}` appended
+        # as a new statement right after it, at the same indentation. The
+        # zero-width `$` appends without re-emitting the assignment, which may
+        # be a long list; it lands once because a node never ends on the
+        # newline that `$` would otherwise match ahead of.
+        "gn.append_literal_to_list": {
+            "matcher": "gn.find_target_list_assignment",
+            "inputs": ["target", "list_name", "literal", "indent"],
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{indent}{list_name} += {literal}",
+            },
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # `list_name = {literal}` inserted as the first statement of `target`'s
+        # body, for when it declares no `list_name` yet.
+        "gn.assign_literal_to_list": {
+            "matcher": "gn.find_target_block",
+            "inputs": ["target", "list_name", "literal", "indent"],
+            "replace": {
+                "re_pattern": "^\\{",
+                "replace": "{{\\n{indent}{list_name} = {literal}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # An `import("{import}")` statement inserted above the file's first
+        # statement, i.e. at the top of the file but under its copyright
+        # header. The zero-width `^` inserts without re-emitting the statement
+        # itself, which may be a whole `if` block.
+        #
+        # `separator` is the blank line the import needs when the statement
+        # below it is code, and nothing when that statement is another import,
+        # which would otherwise be split off from the one being added.
+        "gn.add_import": {
+            "matcher": "gn.find_first_statement",
+            "inputs": ["import", "separator"],
+            "replace": {
+                "re_pattern": "^",
+                "replace": "import(\"{import}\")\\n{separator}",
+            },
+            "result": {
+                "node": "primary_expression",
             },
         },
     },
