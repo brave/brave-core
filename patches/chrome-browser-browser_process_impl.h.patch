@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index a6961cf629c2deaaeffbcdefe774178f50580459..0c9d6330d81129d3ac220116cd9adddccadbcf4a 100644
+index c128db868840e68713bf0c3e93bb633a0445c13b..249d8ce8eedc372fc0bf5851b27b78504c08e13f 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
 @@ -127,7 +127,7 @@ class BrowserProcessImpl : public BrowserProcess,
@@ -29,8 +29,8 @@ index a6961cf629c2deaaeffbcdefe774178f50580459..0c9d6330d81129d3ac220116cd9adddc
 +  virtual void PostDestroyThreads();
  #endif
  
-   // Sets |metrics_services_manager_| and |metrics_services_manager_client_|
-@@ -263,6 +263,7 @@ class BrowserProcessImpl : public BrowserProcess,
+   // BrowserProcess implementation.
+@@ -257,6 +257,7 @@ class BrowserProcessImpl : public BrowserProcess,
    GlobalFeatures* GetFeatures() override;
  
   private:
