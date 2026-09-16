@@ -124,7 +124,7 @@ void StatusTrayRunner::ConnectVPN() {
         //
         // Passing false to |allow_lan_traffic| is a no-op as this reconnect
         // will use last known good config instead of updating current config.
-        "", "", "", "", /*allow_lan_traffic*/ false, std::nullopt,
+        "", "", "", "", /*allow_lan_traffic=*/false, std::nullopt,
         base::BindOnce(&StatusTrayRunner::OnConnected,
                        weak_factory_.GetWeakPtr()));
   } else {

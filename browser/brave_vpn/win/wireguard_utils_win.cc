@@ -162,26 +162,24 @@ bool EnableBraveVpnWireguardServiceImpl(const std::string& server_public_key,
   // the original interface, which has nowhere to carry |allow_lan_traffic|.
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager2> service2;
   Microsoft::WRL::ComPtr<IBraveVpnWireguardManager> service;
-  if (SUCCEEDED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
-                                 nullptr, CLSCTX_LOCAL_SERVER,
-                                 brave_vpn::GetBraveVpnWireguardServiceIid2(),
-                                 IID_PPV_ARGS_Helper(&service2)))) {
-    service = service2.Get();
-  } else {
+  if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
+                              nullptr, CLSCTX_LOCAL_SERVER,
+                              brave_vpn::GetBraveVpnWireguardServiceIid(),
+                              IID_PPV_ARGS_Helper(&service)))) {
+    VLOG(1) << "Unable to create IBraveVpnWireguardManager instance";
+    return false;
+  }
+
+  if (FAILED(service.As(&service2))) {
     VLOG(1) << "IBraveVpnWireguardManager2 is unavailable, so the installed "
                "service can't honor allow_lan_traffic = "
             << allow_lan_traffic;
-    if (FAILED(CoCreateInstance(brave_vpn::GetBraveVpnWireguardServiceClsid(),
-                                nullptr, CLSCTX_LOCAL_SERVER,
-                                brave_vpn::GetBraveVpnWireguardServiceIid(),
-                                IID_PPV_ARGS_Helper(&service)))) {
-      VLOG(1) << "Unable to create IBraveVpnWireguardManager instance";
-      return false;
-    }
   }
 
+  IUnknown* proxy_to_secure = service2 ? static_cast<IUnknown*>(service2.Get())
+                                       : static_cast<IUnknown*>(service.Get());
   if (FAILED(CoSetProxyBlanket(
-          service.Get(), RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_DEFAULT,
+          proxy_to_secure, RPC_C_AUTHN_DEFAULT, RPC_C_AUTHZ_DEFAULT,
           COLE_DEFAULT_PRINCIPAL, RPC_C_AUTHN_LEVEL_PKT_PRIVACY,
           RPC_C_IMP_LEVEL_IMPERSONATE, nullptr, EOAC_DYNAMIC_CLOAKING))) {
     VLOG(1) << "Unable to call EnableVpn interface";
