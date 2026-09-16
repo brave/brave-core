@@ -205,10 +205,6 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   // Move MigrateHttpsUpgradeSettings from here as well
   MigrateHttpsUpgradeSettings(profile);
 
-#if BUILDFLAG(IS_ANDROID)
-  brave_password_manager::MaybeMigrateAccountPasswordsToProfileStore(profile);
-#endif
-
   ProfileManager::DoFinalInitForServices(profile, go_off_the_record);
   // Mirror the upstream guard so Brave services aren't created for profiles
   // that have keyed services disabled (System Profile).
@@ -236,6 +232,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(profile);
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRServiceFactory::GetForBrowserContext(profile);
+#endif
+#if BUILDFLAG(IS_ANDROID)
+  brave_password_manager::MaybeMigrateAccountPasswordsToProfileStore(profile);
 #endif
 }
 
