@@ -6,43 +6,47 @@
 package org.chromium.chrome.browser.ntp;
 
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.settings.AppearancePreferences;
-import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.components.user_prefs.UserPrefs;
 
+@NullMarked
 public class NtpUtil {
     public static final int TOP_SITES_MODE_SHORTCUTS = 0;
     public static final int TOP_SITES_MODE_FREQUENT = 1;
 
     private static final String PREF_NTP_CUSTOM_LINKS_VISIBLE = "ntp.custom_links_visible";
 
+    // Mirrors of the Settings-screen pref keys of the same name, duplicated (rather than
+    // imported) so this class does not depend on the settings package, which lets it live in its
+    // own build target. Keep in sync with BackgroundImagesPreferences.PREF_SHOW_TOP_SITES /
+    // PREF_SHOW_BRAVE_STATS and AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON.
+    private static final String PREF_SHOW_TOP_SITES = "show_top_sites";
+    private static final String PREF_SHOW_BRAVE_STATS = "show_brave_stats";
+    private static final String PREF_SHOW_BRAVE_REWARDS_ICON = "show_brave_rewards_icon";
+
     public static boolean shouldDisplayTopSites() {
-        return ChromeSharedPreferences.getInstance()
-                .readBoolean(BackgroundImagesPreferences.PREF_SHOW_TOP_SITES, true);
+        return ChromeSharedPreferences.getInstance().readBoolean(PREF_SHOW_TOP_SITES, true);
     }
 
     public static void setDisplayTopSites(boolean shouldDisplayTopSites) {
         ChromeSharedPreferences.getInstance()
-                .writeBoolean(
-                        BackgroundImagesPreferences.PREF_SHOW_TOP_SITES, shouldDisplayTopSites);
+                .writeBoolean(PREF_SHOW_TOP_SITES, shouldDisplayTopSites);
     }
 
     public static boolean shouldDisplayBraveStats() {
-        return ChromeSharedPreferences.getInstance()
-                .readBoolean(BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, true);
+        return ChromeSharedPreferences.getInstance().readBoolean(PREF_SHOW_BRAVE_STATS, true);
     }
 
     public static void setDisplayBraveStats(boolean shouldDisplayBraveStats) {
         ChromeSharedPreferences.getInstance()
-                .writeBoolean(
-                        BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, shouldDisplayBraveStats);
+                .writeBoolean(PREF_SHOW_BRAVE_STATS, shouldDisplayBraveStats);
     }
 
     public static boolean shouldShowRewardsIcon() {
         return ChromeSharedPreferences.getInstance()
-                .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true);
+                .readBoolean(PREF_SHOW_BRAVE_REWARDS_ICON, true);
     }
 
     public static int getTopSitesDisplayMode() {
