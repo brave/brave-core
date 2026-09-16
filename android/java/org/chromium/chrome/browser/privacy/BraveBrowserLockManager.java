@@ -66,6 +66,13 @@ import java.util.Map;
  * <p><b>Multi-instance:</b> {@code ChromeTabbedActivity} supports running as multiple concurrent
  * instances (e.g. desktop-Android multi-window, or {@code FLAG_ACTIVITY_MULTIPLE_TASK}). A lock
  * must therefore be tracked per-activity rather than as a single manager-wide slot.
+ *
+ * <p><b>Accessibility:</b> FLAG_SECURE only blocks screenshots/screen recording — it does nothing
+ * to stop an accessibility service (e.g. TalkBack, or a malicious app abusing the Accessibility
+ * API) from reading the view hierarchy underneath the lock overlay. Whenever a lock or pre-native
+ * overlay is shown for an activity, that activity's content view is excluded from the accessibility
+ * tree ({@link View#IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS}) so only the lock screen itself
+ * is reachable; it is restored once the lock is dismissed.
  */
 @NullMarked
 // Chromium's wrapper doesn't give us a way to register a listener for changes.
@@ -292,6 +299,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
         BraveBrowserLockCoordinator coordinator = createCoordinator(activity, reauthManager);
         mActiveLocks.put(activity, new ActiveLock(coordinator, reauthManager));
         coordinator.show();
+        setContentAccessibilityHidden(activity, true);
         maybeStartNextReauth();
     }
 
@@ -309,11 +317,13 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     }
 
     private void hideAllCoordinators(@DialogDismissalCause int cause) {
-        for (ActiveLock lock : mActiveLocks.values()) {
+        for (var entry : mActiveLocks.entrySet()) {
+            ActiveLock lock = entry.getValue();
             lock.mCoordinator.hide(cause);
             IncognitoReauthManager reauthManager = lock.mReauthManager;
             // Must defer since we could be called from within the scope of a living object.
             ThreadUtils.postOnUiThread(reauthManager::destroy);
+            setContentAccessibilityHidden(entry.getKey(), false);
         }
         mActiveLocks.clear();
     }
@@ -329,6 +339,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
                 overlay,
                 new ViewGroup.LayoutParams(
                         ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        setContentAccessibilityHidden(activity, true);
     }
 
     private void removeAllPreNativeOverlays() {
@@ -337,8 +348,22 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
             View overlay = decor.findViewWithTag(PRE_NATIVE_OVERLAY_TAG);
             if (overlay != null) {
                 decor.removeView(overlay);
+                setContentAccessibilityHidden(activity, false);
             }
         }
+    }
+
+    /**
+     * Excludes (or restores) an activity's content view from the accessibility tree. See the
+     * class-level "Accessibility" doc for why this is needed alongside FLAG_SECURE.
+     */
+    private void setContentAccessibilityHidden(Activity activity, boolean hidden) {
+        View content = activity.findViewById(android.R.id.content);
+        if (content == null) return;
+        content.setImportantForAccessibility(
+                hidden
+                        ? View.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS
+                        : View.IMPORTANT_FOR_ACCESSIBILITY_AUTO);
     }
 
     @VisibleForTesting
