@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/tab_strip_model_adapter_impl.cc b/chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/tab_strip_model_adapter_impl.cc
+index 4f84323baa4e70a6a1545783209aaee18a6ebbc2..21fb736e8af2ea26f0ec9273d5cc293e3a44b22a 100644
+--- a/chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/tab_strip_model_adapter_impl.cc
++++ b/chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/tab_strip_model_adapter_impl.cc
+@@ -146,6 +146,7 @@ TabStripModelAdapterImpl::MoveTab(tabs::TabHandle tab,
+     // should return an error to the client.
+     case tabs::TabCollection::Type::TABSTRIP:
+     case tabs::TabCollection::Type::SPLIT:
++    case tabs::TabCollection::Type::TREE_NODE:
+       NOTIMPLEMENTED();
+       return base::unexpected(mojo_base::mojom::Error::New(
+           mojo_base::mojom::Code::kInvalidArgument, "unsupported move target"));
+@@ -192,6 +193,7 @@ TabStripModelAdapterImpl::MoveCollection(const NodeId& id,
+     case tabs::TabCollection::Type::PINNED:
+     case tabs::TabCollection::Type::UNPINNED:
+     case tabs::TabCollection::Type::TABSTRIP:
++    case tabs::TabCollection::Type::TREE_NODE:
+       NOTIMPLEMENTED();
+       return base::unexpected(
+           mojo_base::mojom::Error::New(mojo_base::mojom::Code::kInvalidArgument,

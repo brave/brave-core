@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add RecentTabsSubMenuModelTest::VerifyModel overloads.
+
+      These adjust the base ::VerifyModel() expectations for Brave's extra
+      "Clear browsing data" menu item and disabled History Clusters entry.
+    add_to_public:
+      class_name: RecentTabsSubMenuModelTest
+      code: |-
+        void VerifyModel(const RecentTabsSubMenuModel& model, base::span<const ModelData> data);
+        void VerifyModel(const ui::MenuModel* model, base::span<const ModelData> data);

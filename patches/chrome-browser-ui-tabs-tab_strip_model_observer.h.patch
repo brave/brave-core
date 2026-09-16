@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/tabs/tab_strip_model_observer.h b/chrome/browser/ui/tabs/tab_strip_model_observer.h
+index 326b695d8e6aaa46f0c261be205456bcd6ec0764..24b2803edf37f36e184512933f06d45c2a1d7710 100644
+--- a/chrome/browser/ui/tabs/tab_strip_model_observer.h
++++ b/chrome/browser/ui/tabs/tab_strip_model_observer.h
+@@ -623,6 +623,10 @@ class TabStripModelObserver {
+   void StoppedObserving(ModelPasskey, TabStripModel* model);
+   void ModelDestroyed(ModelPasskey, TabStripModel* model);
+ 
++  virtual void TabCustomTitleChanged(content::WebContents* contents, const std::optional<std::string>& custom_title) {}
++
++  virtual void OnTreeTabChanged(const TreeTabChange& change);
++
+  protected:
+   TabStripModelObserver();
+   virtual ~TabStripModelObserver();
