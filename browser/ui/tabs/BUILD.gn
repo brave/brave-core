@@ -109,6 +109,7 @@ if (!is_android) {
 
     deps = [
       "//brave/components/tabs",
+      "//chrome/browser/ui:browser_window_header",
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/tabs:tab_strip",
     ]
