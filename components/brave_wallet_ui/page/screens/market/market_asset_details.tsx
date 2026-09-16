@@ -48,7 +48,7 @@ import { WalletPageActions } from '../../actions'
 // Components
 import {
   LineChartControls, //
-} from '../../../components/desktop/line-chart/line-chart-controls/line-chart-controls'
+} from '$wallet/page/components/line_chart_controls/line_chart_controls'
 import { AssetDetailsHeader } from '../../../components/desktop/card-headers/asset-details-header'
 import {
   TokenDetailsModal, //

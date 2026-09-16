@@ -39,7 +39,7 @@ import {
 } from '../../../../../components/shared/create-network-icon'
 import {
   NetworkFilterSelector, //
-} from '../../../../../components/desktop/network-filter-selector'
+} from '$wallet/page/components/network_filter_selector/network_filter_selector'
 import {
   SearchBar, //
 } from '../../../../../components/shared/search-bar/index'

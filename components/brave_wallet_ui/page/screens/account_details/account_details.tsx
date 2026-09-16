@@ -82,8 +82,8 @@ import { NftGrid } from '../nfts/nfts.styles'
 // Components
 import {
   PortfolioAssetItemLoadingSkeleton, //
-} from '../../../components/desktop/portfolio-asset-item/portfolio-asset-item-loading-skeleton'
-import { PortfolioAssetItem } from '../../../components/desktop/portfolio-asset-item/index'
+} from '$wallet/page/components/portfolio_asset_item/portfolio_asset_item_loading_skeleton'
+import { PortfolioAssetItem } from '$wallet/page/components/portfolio_asset_item/portfolio_asset_item'
 import {
   AccountDetailsHeader, //
 } from '../../../components/desktop/card-headers/account-details-header'
@@ -104,7 +104,7 @@ import {
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   EmptyTokenListState, //
-} from '../../../components/desktop/empty_token_list_state/empty_token_list_state'
+} from '$wallet/page/components/empty_token_list_state/empty_token_list_state'
 import {
   ViewOnBlockExplorerModal, //
 } from '../../../components/desktop/popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
@@ -116,7 +116,7 @@ import {
 } from './components/shield_account_alert/shield_account_alert'
 import {
   VirtualizedTransactionList, //
-} from '../../../components/desktop/virtualized_transaction_list/virtualized_transaction_list'
+} from '$wallet/page/components/virtualized_transaction_list/virtualized_transaction_list'
 import {
   ShieldZCashAccountModal, //
 } from '../../../components/desktop/popup-modals/shield_zcash_account/shield_zcash_account'

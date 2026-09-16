@@ -45,7 +45,7 @@ import {
 import { LoadingSkeleton } from '../../../../../components/shared/loading-skeleton/index'
 import {
   VirtualizedTransactionList, //
-} from '../../../../../components/desktop/virtualized_transaction_list/virtualized_transaction_list'
+} from '$wallet/page/components/virtualized_transaction_list/virtualized_transaction_list'
 import {
   TransactionDetailsModal, //
 } from '../../../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'

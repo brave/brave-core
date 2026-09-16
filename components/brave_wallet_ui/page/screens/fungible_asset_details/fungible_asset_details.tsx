@@ -64,7 +64,7 @@ import {
 // Components
 import {
   LineChartControls, //
-} from '../../../components/desktop/line-chart/line-chart-controls/line-chart-controls'
+} from '$wallet/page/components/line_chart_controls/line_chart_controls'
 import {
   AccountsAndTransactionsList, //
 } from './components/accounts_and_transactions_list/accounts_and_transactions_list'
