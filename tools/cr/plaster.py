@@ -4514,6 +4514,11 @@ class GnEditSandbox:
     # The name gn expects of a build file.
     _BUILD_FILE_NAME: Final = 'BUILD.gn'
 
+    # What gn writes into a build file instead of editing it, when the edit is
+    # ambiguous. It opens a comment carrying the command that could not be
+    # applied, e.g. `# TODO(gn edit: remove deps //win): ...`.
+    _AMBIGUITY_NOTE: Final = '# TODO(gn edit:'
+
     def __init__(self, contents: str):
         # The build file text as it arrived, kept to tell afterwards whether
         # gn actually changed anything.
@@ -4550,7 +4555,8 @@ class GnEditSandbox:
 
         Raises `GnEditError` when gn refuses the edit, which covers both a
         malformed command and a pattern matching no target, either way an error
-        in the plaster that named it.
+        in the plaster that named it, and when gn leaves a note in place of the
+        edit (see `_AMBIGUITY_NOTE`).
         """
         assert self._build_file is not None
         root = self._build_file.parent
@@ -4566,6 +4572,16 @@ class GnEditSandbox:
             raise GnEditError('the gn binary is missing') from e
 
         contents = self._build_file.read_text(encoding='utf-8')
+        # An edit gn considers ambiguous, as one against a conditional
+        # attribute is, leaves a note asking for the decision to be made by
+        # hand -- and still reports the file as changed, so the note would
+        # otherwise be committed to the patch as though it were the edit.
+        if (self._AMBIGUITY_NOTE in contents
+                and self._AMBIGUITY_NOTE not in self._contents):
+            raise GnEditError(
+                'gn edit left a note rather than editing, which it does where '
+                'the attribute is conditional; that edit has to be made by '
+                'hand')
         return GnEditOutcome(contents=contents,
                              changed=contents != self._contents)
 
@@ -4666,8 +4682,8 @@ class GnEditRewriter(Rewriter):
         # report: the values are all present already, so the substitution has
         # become redundant and should be removed from the plaster.
         errors = [] if outcome.changed else [
-            f'{self.NAME} changed nothing (in "{description}"); the target '
-            f'already carries every value it would add'
+            f'{self.NAME} changed nothing (in "{description}"); the target is '
+            f'already in the state the entry describes'
         ]
         return engine.content, errors
 
