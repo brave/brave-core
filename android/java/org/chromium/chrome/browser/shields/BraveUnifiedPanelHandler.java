@@ -54,6 +54,8 @@ import androidx.appcompat.widget.AppCompatImageView;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import androidx.appcompat.widget.SwitchCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.textfield.TextInputEditText;
@@ -158,6 +160,17 @@ public class BraveUnifiedPanelHandler {
             Collections.synchronizedMap(new HashMap<>());
 
     private @Nullable Context mContext;
+    private @Nullable LifecycleOwner mLifecycleOwner;
+    private final DefaultLifecycleObserver mLifecycleObserver =
+            new DefaultLifecycleObserver() {
+                @Override
+                public void onPause(LifecycleOwner owner) {
+                    // Closes the panel when the app is backgrounded so it can't be reached via
+                    // the Android recent-apps screen or Brave's private/regular tab switcher
+                    // while the app isn't in the foreground.
+                    hide();
+                }
+            };
     private @Nullable PopupWindow mPopupWindow;
     private @Nullable View mPopupView;
     private @Nullable View mAnchorView;
@@ -240,7 +253,9 @@ public class BraveUnifiedPanelHandler {
                         : null;
 
         if (mContext != null) {
-            mHardwareButtonMenuAnchor = ((Activity) mContext).findViewById(R.id.menu_anchor_stub);
+            Activity activity = (Activity) mContext;
+            mHardwareButtonMenuAnchor = activity.findViewById(R.id.menu_anchor_stub);
+            attachLifecycleObserver(activity);
         }
     }
 
@@ -258,10 +273,26 @@ public class BraveUnifiedPanelHandler {
         if (mHardwareButtonMenuAnchor == null && mContext == null) {
             mContext = BraveActivity.getCustomTabActivity();
             if (mContext != null) {
-                mHardwareButtonMenuAnchor =
-                        ((Activity) mContext).findViewById(R.id.menu_anchor_stub);
+                Activity activity = (Activity) mContext;
+                mHardwareButtonMenuAnchor = activity.findViewById(R.id.menu_anchor_stub);
+                attachLifecycleObserver(activity);
             }
         }
+    }
+
+    /**
+     * Registers {@link #mLifecycleObserver} on {@code activity} so the panel is hidden when the
+     * host Activity backgrounds. Every Activity that reaches this code (BraveActivity,
+     * CustomTabActivity, ...) is required to be a LifecycleOwner, since that's what lets this class
+     * close the panel before it can be reached via the recent-apps or tab switcher after
+     * backgrounding. This throws rather than degrading silently if that's ever not the case, so a
+     * future regression here fails loudly instead of quietly reopening that exposure. {@link
+     * BraveUnifiedPanelHandlerLifecycleTest} asserts the invariant directly on the concrete
+     * production Activity classes.
+     */
+    private void attachLifecycleObserver(Activity activity) {
+        mLifecycleOwner = (LifecycleOwner) activity;
+        mLifecycleOwner.getLifecycle().addObserver(mLifecycleObserver);
     }
 
     /**
@@ -1148,6 +1179,10 @@ public class BraveUnifiedPanelHandler {
 
     public void destroy() {
         hide();
+        if (mLifecycleOwner != null) {
+            mLifecycleOwner.getLifecycle().removeObserver(mLifecycleObserver);
+            mLifecycleOwner = null;
+        }
     }
 
     private void releaseResources() {
