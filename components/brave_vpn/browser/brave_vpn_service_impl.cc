@@ -372,6 +372,32 @@ void BraveVpnServiceImpl::GetSmartProxyRoutingState(
       local_prefs_->GetBoolean(prefs::kBraveVPNSmartProxyRoutingEnabled));
 }
 
+void BraveVpnServiceImpl::AllowLanTraffic(bool allow) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  local_prefs_->SetBoolean(prefs::kBraveVPNWireguardAllowLanTraffic, allow);
+
+  // TODO(https://github.com/brave/brave-browser/issues/58993): Need to
+  // create new config whenever setting is changed because existing config
+  // is used when connected from status tray.
+  if (IsConnected()) {
+    VLOG(2) << __func__ << " : reconnect to apply this change(" << allow
+            << ") to current connection";
+    Connect();
+  }
+#endif
+}
+
+void BraveVpnServiceImpl::GetAllowLanTraffic(
+    GetAllowLanTrafficCallback callback) {
+#if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
+  std::move(callback).Run(
+      brave_vpn::IsBraveVPNWireguardEnabled(local_prefs_),
+      local_prefs_->GetBoolean(prefs::kBraveVPNWireguardAllowLanTraffic));
+#else
+  std::move(callback).Run(/*available*/ false, /*allowed*/ false);
+#endif
+}
+
 // NOTE(bsclifton): Desktop uses API to create a ticket.
 // Android and iOS directly send an email.
 void BraveVpnServiceImpl::OnCreateSupportTicket(
