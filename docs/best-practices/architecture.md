@@ -442,6 +442,13 @@ public methods that delegate to them.
 This rule does not apply to `*ForTesting()` methods, which are an accepted
 Chromium convention for exposing test-only accessors.
 
+**`friend` is the last resort, not the first choice.** Upstream guidance is to
+test the public API first and treat `friend` as the fallback when access can't
+be narrowed. For a test that needs one private member, prefer a
+`*_for_testing()` accessor — see [TI-011](testing-isolation.md#TI-011) for the
+full preference order. Reach for `friend` when an entire helper class needs
+access, or when granting access to an upstream class via `chromium_src` (below).
+
 ```cpp
 // ❌ WRONG - making methods public just for testing
 public:
@@ -1848,5 +1855,44 @@ void FooFeature::DoStuff() { UseKeyedService(bar_service_); }
 // prefer injecting the resolved dependencies above where practical
 FooFeature(Profile& profile) : profile_(profile) {}
 ```
+
+---
+
+<a id="ARCH-074"></a>
+
+## ✅ Structure a Component: Namespace, Per-Process Subdirectories, Strict DEPS
+
+**A component named `xyz` lives in `components/xyz`, and all of its code is
+enclosed in `namespace xyz`.** Per the
+[Chromium componentization cookbook](https://www.chromium.org/developers/design-documents/cookbook/):
+
+- **One directory per process type** when the component is used by more than the
+  browser process: `components/xyz/browser/`, `components/xyz/renderer/`,
+  `components/xyz/common/`. A browser-process-only component keeps its code
+  directly in `components/xyz/`. See [ARCH-071](#ARCH-071) for what may not
+  appear in `common/`.
+- **A strict `components/xyz/DEPS`** enforcing that the component depends only
+  on lower layers ([ARCH-001](#ARCH-001)) and on other components in a
+  tree-shaped graph — no cycles ([ARCH-038](#ARCH-038)).
+- **Depend concretely downward, abstractly upward.** Anything the embedder must
+  supply becomes a client/delegate interface defined by the component and
+  implemented in `brave/browser/` ([ARCH-003](#ARCH-003)).
+- **Own and configure the component from the embedder layer**, not from another
+  component.
+
+```
+components/xyz/
+  DEPS               # no //chrome, no brave/browser, no cycles
+  browser/           # browser-process code, namespace xyz
+  renderer/          # renderer-process code, namespace xyz
+  common/            # shared across processes, namespace xyz
+```
+
+Verify the dependency graph with `tools/checkdeps/checkdeps.py`; pass
+`--verbose` to confirm it actually inspected the directory you targeted (a
+`skip_child_includes` in an ancestor `DEPS` silently skips subdirectories).
+
+Components shared with iOS have additional constraints — see
+[ARCH-036](#ARCH-036) and [ARCH-037](#ARCH-037).
 
 ---

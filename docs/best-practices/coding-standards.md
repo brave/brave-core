@@ -222,6 +222,11 @@ bool HandleRewardsProtocol(const GURL& url) {
 Also: `static` has no meaning for free functions in C++ (it's a C holdover). Use
 anonymous namespaces instead.
 
+**Exception — simple accessors.** Per the
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md),
+simple accessors are generally the only functions that belong inline in a
+header. See [CS-073](#CS-073) for their naming and restrictions.
+
 ---
 
 <a id="CS-014"></a>
@@ -241,6 +246,10 @@ used as pointers or references.** Move the full `#include` to the `.cc` file.
   file before suggesting a forward declaration
 - The `#include` is for a **base class** the current class inherits from — these
   cannot be forward-declared
+- The type would otherwise make sense as a **by-value member**. Per the
+  [Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md):
+  "If it would otherwise make sense to use a type as a member by-value, don't
+  convert it to a pointer just to be able to forward-declare the type."
 
 ```cpp
 // ❌ WRONG - full include in header for pointer-only usage
@@ -529,6 +538,20 @@ returning `std::optional`/`std::nullopt` or a default value.
 flow. The compiler treats code after `NOTREACHED()` as dead code. Do not place
 executable statements after it.
 
+**Prefer an unconditional `CHECK()` over conditionally hitting a
+`NOTREACHED()`** where feasible — `CHECK(cond)` states the invariant directly,
+while `if (!cond) NOTREACHED();` states it twice.
+
+```cpp
+// ❌ WRONG - conditional NOTREACHED
+if (!handle) {
+  NOTREACHED();
+}
+
+// ✅ CORRECT - unconditional CHECK
+CHECK(handle);
+```
+
 **Gradual migration:** When migrating from `DCHECK` to fatal
 `NOTREACHED()`/`CHECK()`, you can use `NOTREACHED(base::NotFatalUntil::M140)` or
 `CHECK(cond, base::NotFatalUntil::M140)` to gather crash diagnostics before
@@ -668,7 +691,8 @@ void RewardsService::SavePendingContribution(...) {
 
 **When a method's implementation is completely different on a platform, split it
 into a separate file** like `my_class_android.cc` rather than filling the main
-file with `#if defined(OS_ANDROID)` blocks.
+file with `#if BUILDFLAG(IS_ANDROID)` blocks. See [CS-072](#CS-072) for which
+platform macros to use.
 
 ---
 
@@ -681,7 +705,7 @@ feature-dependent, not platform-dependent.**
 
 ```cpp
 // ❌ WRONG - platform check for feature behavior
-#if defined(OS_ANDROID)
+#if BUILDFLAG(IS_ANDROID)
   // Don't show notifications
 #endif
 
@@ -1414,5 +1438,218 @@ farbling because the decision was not based on the embedder's origin.
 
 `about:blank` and `about:srcdoc` can themselves be opaque if they were embedded
 in an opaque-origin context.
+
+---
+
+<a id="CS-072"></a>
+
+## ✅ Use `BUILDFLAG(IS_*)` for Platform Checks, Not Compiler Macros
+
+**Use the platform macros from `build/build_config.h`, never compiler-defined
+macros like `WIN32`, `__APPLE__`, or `__linux__`,** and never the long-removed
+`OS_*` spellings. Chromium's macros are consistent across toolchains and
+buildable configurations.
+
+```cpp
+// ❌ WRONG - compiler macro / removed OS_ spelling
+#if defined(WIN32)
+#if defined(OS_ANDROID)
+
+// ✅ CORRECT - build_config.h buildflags
+#include "build/build_config.h"
+
+#if BUILDFLAG(IS_WIN)
+#elif BUILDFLAG(IS_ANDROID)
+#endif
+```
+
+**Put platform-specific `#include`s in their own section** after the standard
+includes, repeating the normal include ordering within that section.
+
+See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+---
+
+<a id="CS-073"></a>
+
+## ✅ Inline Functions: Simple Accessors Only, Never Virtual
+
+**Simple accessors are generally the only functions that should be defined
+inline in a header, and they use `snake_case()` naming.** Never declare a
+virtual function inline — the vtable dispatch defeats inlining and the
+definition belongs in the `.cc` file.
+
+```cpp
+// ❌ WRONG - non-trivial logic inline, CamelCase accessor, inline virtual
+class Session {
+ public:
+  int ComputedScore() const { /* 15 lines of logic */ }
+  inline virtual void OnStart() {}
+};
+
+// ✅ CORRECT - trivial snake_case accessor inline, everything else in the .cc
+class Session {
+ public:
+  int score() const { return score_; }
+  void OnStart() override;
+
+ private:
+  int score_ = 0;
+};
+```
+
+See [CS-013](#CS-013) and
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+---
+
+<a id="CS-074"></a>
+
+## ✅ Group Function Overrides by Parent Class
+
+**Within each access control section, group function overrides together with one
+labeled group per parent class.** This makes it obvious which interface each
+method implements.
+
+```cpp
+// ❌ WRONG - overrides interleaved with no attribution
+class BraveTabHelper : public content::WebContentsObserver,
+                       public PrefObserver {
+ public:
+  void DidFinishNavigation(NavigationHandle* handle) override;
+  void OnPrefChanged(const std::string& path) override;
+  void PrimaryPageChanged(Page& page) override;
+};
+
+// ✅ CORRECT - one labeled group per parent
+class BraveTabHelper : public content::WebContentsObserver,
+                       public PrefObserver {
+ public:
+  // content::WebContentsObserver:
+  void DidFinishNavigation(NavigationHandle* handle) override;
+  void PrimaryPageChanged(Page& page) override;
+
+  // PrefObserver:
+  void OnPrefChanged(const std::string& path) override;
+};
+```
+
+See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+---
+
+<a id="CS-075"></a>
+
+## ✅ Export Symbols with the Component's `<COMPONENT>_EXPORT` Macro
+
+**Symbols that must be visible outside their component need that component's
+export macro** (e.g. `BASE_EXPORT`, `NET_EXPORT`). The macro precedes the class
+name, or the return type for free functions.
+
+```cpp
+// ❌ WRONG - no export macro; link errors in component builds
+class BraveWalletService { ... };
+Profile& GetActiveProfile();
+
+// ✅ CORRECT
+class COMPONENT_EXPORT(BRAVE_WALLET) BraveWalletService { ... };
+COMPONENT_EXPORT(BRAVE_WALLET) Profile& GetActiveProfile();
+```
+
+Do not export `thread_local` variables — see
+[CSM-035](coding-standards-memory.md#CSM-035).
+
+---
+
+<a id="CS-076"></a>
+
+## ✅ Use the Right Crash/Diagnostic Primitive
+
+**Never use `LOG`/`DLOG` to report an invariant failure** — invariants are
+`CHECK()` or `NOTREACHED()` ([CS-025](#CS-025), [CS-026](#CS-026)). For the
+cases that aren't invariant violations, pick the matching primitive:
+
+| Situation                                                                             | Use                                  |
+| ------------------------------------------------------------------------------------- | ------------------------------------ |
+| Must terminate for reasons outside the process's control (not an invariant violation) | `base::ImmediateCrash()`             |
+| Want a crash report but execution can safely continue                                 | `base::debug::DumpWithoutCrashing()` |
+| Production code logging an error that should fail tests                               | `DLOG(FATAL)` or `LOG(DFATAL)`       |
+| Reporting a failure from test code                                                    | `ADD_FAILURE()`                      |
+
+```cpp
+// ❌ WRONG - invariant failure reported as a log line
+if (!profile) {
+  LOG(ERROR) << "profile unexpectedly null";
+  return;
+}
+
+// ✅ CORRECT - invariant is a CHECK
+CHECK(profile);
+
+// ✅ CORRECT - recoverable anomaly worth a crash report
+if (!ParseManifest(data)) {
+  base::debug::DumpWithoutCrashing();
+  return std::nullopt;
+}
+```
+
+See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+---
+
+<a id="CS-077"></a>
+
+## ✅ Follow Chromium's Object Ownership and Calling Conventions
+
+**The parameter and return type of a function is the contract for who owns the
+object.** Per the
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md)
+and the
+[smart pointer guidelines](https://www.chromium.org/developers/smart-pointer-guidelines/),
+use these forms consistently.
+
+Parameters:
+
+| Form                 | Meaning                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------- |
+| `T*` / `T&`          | No ownership transfer. Caller keeps the object alive for the duration of the call.     |
+| `std::unique_ptr<T>` | Callee takes ownership. Caller uses `std::move()` for anything that isn't a temporary. |
+| `scoped_refptr<T>`   | Callee takes a ref. Caller chooses to transfer (`std::move()`) or retain its own ref.  |
+
+**Functions must never take ownership of a parameter passed as `T*`.** A raw
+pointer parameter is a promise that the callee will not delete it.
+
+Return values:
+
+| Form                      | Meaning                                                                                          |
+| ------------------------- | ------------------------------------------------------------------------------------------------ |
+| `T*`                      | Caller does **not** take ownership.                                                              |
+| `std::unique_ptr<T>`      | Caller takes ownership. No `std::move()` needed when returning a local.                          |
+| `scoped_refptr<T>`        | Caller takes a ref.                                                                              |
+| `const scoped_refptr<T>&` | Implementation retains ownership; avoids bumping the refcount for callers that don't need a ref. |
+
+```cpp
+// ❌ WRONG - raw pointer that the callee deletes
+void TakeWidget(Widget* widget);  // caller can't tell ownership moved
+
+// ✅ CORRECT - ownership transfer is explicit in the type
+void TakeWidget(std::unique_ptr<Widget> widget);
+TakeWidget(std::move(widget));           // non-temporary needs std::move
+TakeWidget(std::make_unique<Widget>());  // temporary does not
+
+// ✅ CORRECT - returning a local unique_ptr needs no std::move
+std::unique_ptr<Widget> MakeWidget() {
+  auto widget = std::make_unique<Widget>();
+  return widget;
+}
+```
+
+Much existing Chromium and Brave code predates these rules; migrate call sites
+you touch rather than copying the old pattern. See
+[CSM-031](coding-standards-memory.md#CSM-031) for the related rule on smart
+pointer reference parameters.
 
 ---
