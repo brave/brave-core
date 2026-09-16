@@ -804,6 +804,33 @@ if (value.has_value()) {
 result = base::saturated_cast<uint64_t>(value.value_or(0));
 ```
 
+**Pick the cast by what should happen when the value doesn't fit** (all from
+`base/numerics/safe_conversions.h`):
+
+- `base::checked_cast<T>` — `CHECK`s that the source value is in range. Use when
+  an out-of-range value is a bug.
+- `base::saturated_cast<T>` — clamps to the target's min/max. Use when clamping
+  is the desired behavior.
+- `base::CheckedNumeric<T>` — carries overflow state through a chain of
+  arithmetic, so you validate once at the end instead of at each step.
+
+```cpp
+// ✅ CORRECT - out-of-range is a bug, so CHECK
+size_t index = base::checked_cast<size_t>(signed_index);
+
+// ✅ CORRECT - safe arithmetic without checking each step
+base::CheckedNumeric<size_t> total = header_size;
+total += payload_size;
+total *= entry_count;
+if (!total.IsValid()) {
+  return std::nullopt;
+}
+```
+
+**Arithmetic used in memory management, or passed across process/network
+boundaries, must follow the Chromium integer semantics guide.** See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
 ---
 
 <a id="CSA-042"></a>
@@ -890,6 +917,11 @@ constexpr auto kActionNames = base::MakeFixedFlatMap<ActionType, std::string_vie
     {ActionType::kRewrite, "rewrite"},
 });
 ```
+
+These containers are stack-allocated and sorted at compile time. Duplicate keys
+are a `CHECK`ed precondition — in a `constexpr` context a repeated key is a
+compile error, so the table can't silently shadow an entry. See
+[Chromium container guidelines](https://chromium.googlesource.com/chromium/src/+/HEAD/base/containers/README.md).
 
 ---
 
@@ -1356,6 +1388,21 @@ base::stack<int> history;
 mutations. Use `std::list` if stable iterators with constant-time insert/remove
 are required.
 
+**Don't hold a reference into a `base::stack` across a push** — the underlying
+`circular_deque` moves its elements, so the reference can dangle.
+
+```cpp
+// ❌ WRONG - `current` may reference a moved-from item after push()
+Node& current = stack.top();
+stack.push(child);
+current.Visit();  // dangling
+
+// ✅ CORRECT - copy out, or re-read top() after mutating
+Node current = stack.top();
+stack.push(child);
+current.Visit();
+```
+
 ---
 
 <a id="CSA-067"></a>
@@ -1617,5 +1664,69 @@ Highest safety. Fully decouples from C++ memory on receipt.
 ```rust
 fn ingest_small(items: Vec<String>);
 ```
+
+---
+
+<a id="CSA-071"></a>
+
+## ✅ Use `std::u16string` / `char16_t` for UTF-16, Not `std::wstring`
+
+**Chromium uses UTF-16 extensively — unlike Google style, it is not banned.**
+Use `std::u16string` and `char16_t*` for 16-bit strings and `u"..."` for UTF-16
+literals. `std::wstring`/`wchar_t*` are legal only in Windows-only code: they
+are distinct types and are not reliably 16-bit on other platforms.
+
+```cpp
+// ❌ WRONG - wstring in cross-platform code
+std::wstring title = L"Brave";
+
+// ✅ CORRECT
+std::u16string title = u"Brave";
+```
+
+**Write non-ASCII characters directly, or escape them with `\uXXXX` /
+`\UXXXXXXXX`.** Avoid `\xXX` escapes — they are tied to the byte width of the
+current character type and silently break if the type changes.
+
+```cpp
+// ❌ WRONG - byte escapes break if the string type changes
+const char16_t kBullet[] = u"\xe2\x80\xa2";
+
+// ✅ CORRECT - codepoint escape, or the character itself
+const char16_t kBullet[] = u"•";
+```
+
+See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+---
+
+<a id="CSA-072"></a>
+
+## ✅ Use Explicitly-Sized Integer Types Across Process and Network Boundaries
+
+**Types crossing a process or network boundary must be explicitly sized**
+(`int32_t`, `uint64_t`, …), because `int`, `long`, and `size_t` can compile to
+different widths on the two sides of the boundary. This applies to mojom
+implementations, IPC payloads, and serialized on-disk formats.
+
+```cpp
+// ❌ WRONG - width differs between 32-bit and 64-bit processes
+struct WireHeader {
+  size_t payload_length;
+  long timestamp;
+};
+
+// ✅ CORRECT - fixed widths on both sides
+struct WireHeader {
+  uint32_t payload_length;
+  int64_t timestamp;
+};
+```
+
+Note this is the boundary-crossing exception to [CSA-067](#CSA-067): `size_t`
+remains correct for in-process sizes, counts, and indices. Refer to the Chromium
+Mojo style guide for types passed over Mojo, and see
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
 
 ---
