@@ -48,6 +48,19 @@ base::Time LatestTimestamp(const PasswordForm& form) {
       {form.date_last_used, form.date_password_modified, form.date_created});
 }
 
+// True if the profile-store copy already reflects `account_form`, i.e. it holds
+// the same password or a more recently changed one. This is the condition under
+// which the account copy needs no write, and equally the condition under which
+// it is safe to drop from the account store: a same-key profile copy with an
+// older, different password means the write did not land.
+// Both forms are expected to have equal unique keys; callers establish that
+// with ArePasswordFormUniqueKeysEqual before asking.
+bool ProfileCopyIsUpToDate(const PasswordForm& profile_form,
+                           const PasswordForm& account_form) {
+  return profile_form.password_value == account_form.password_value ||
+         LatestTimestamp(account_form) <= LatestTimestamp(profile_form);
+}
+
 // Converts an account-store form into a StoredCredential for the profile store,
 // clearing the username/password of blocklisted ("never save") entries. The
 // profile store CHECKs that blocklisted credentials have empty username and
@@ -186,8 +199,7 @@ class AccountToProfilePasswordMigrator {
           });
       if (it == profile_forms.end()) {
         to_add.push_back(ToProfileStoreCredential(account_form));
-      } else if (it->password_value != account_form.password_value &&
-                 LatestTimestamp(*it) < LatestTimestamp(account_form)) {
+      } else if (!ProfileCopyIsUpToDate(*it, account_form)) {
         to_update.push_back(ToProfileStoreCredential(account_form));
       }
       // Otherwise the profile copy already wins; it will still be drained from
@@ -227,15 +239,18 @@ class AccountToProfilePasswordMigrator {
 
   void OnProfileLoginsForVerify(std::unique_ptr<PasswordFetchRequest> request) {
     std::vector<PasswordForm> profile_forms = request->TakeResults();
-    // Remove from the account store only the credentials that are now confirmed
-    // present in the profile store.
+    // Remove from the account store only the credentials whose profile-store
+    // copy is confirmed present and up to date. A failed write leaves the
+    // profile copy stale, in which case the account copy is kept for the next
+    // launch to retry.
     for (const PasswordForm& account_form : account_forms_) {
-      const bool present_in_profile = std::ranges::any_of(
+      const bool up_to_date_in_profile = std::ranges::any_of(
           profile_forms, [&account_form](const PasswordForm& profile_form) {
             return password_manager::ArePasswordFormUniqueKeysEqual(
-                profile_form, account_form);
+                       profile_form, account_form) &&
+                   ProfileCopyIsUpToDate(profile_form, account_form);
           });
-      if (present_in_profile) {
+      if (up_to_date_in_profile) {
         account_store_->RemoveLogin(
             FROM_HERE, password_manager::FromPasswordForm(account_form));
       }
