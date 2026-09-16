@@ -1134,6 +1134,78 @@ substitutions:
         },
     },
     "gn_edit": {
+        "gn.set_attribute": {
+            "description": """\
+Sets a target's attribute, creating it if none exists.
+
+The value is written as given, so a `gn` boolean or number goes in bare and a
+string keeps the quotes a `gn` string needs.
+
+```yaml
+substitutions:
+  - description: Let Brave depend on the crate outside tests.
+    set_attribute:
+      target: lib
+      attribute: allow_unsafe
+      value: "true"
+```
+
+```diff
+ rust_static_library("lib") {
+-  allow_unsafe = false
++  allow_unsafe = true
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to edit, e.g. `lib` for `rust_static_library(\"lib\")`.",
+                },
+                {
+                    "name": "attribute",
+                    "description": "The attribute to set, e.g. `allow_unsafe` or `testonly`.",
+                },
+                {
+                    "name": "value",
+                    "description": "The value to set it to, e.g. `true`.",
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "set {attribute} {value}",
+        },
+
+        "gn.remove_attribute": {
+            "description": """\
+Removes an attribute from a target entirely.
+
+```yaml
+substitutions:
+  - description: Let Brave depend on the crate outside tests.
+    remove_attribute:
+      target: lib
+      attribute: testonly
+```
+
+```diff
+ rust_static_library("lib") {
+-  testonly = true
+   crate_name = "hashbrown"
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to edit, e.g. `lib` for `rust_static_library(\"lib\")`.",
+                },
+                {
+                    "name": "attribute",
+                    "description": "The attribute to remove, e.g. `testonly`.",
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "remove {attribute}",
+        },
+
         "gn.insert_into_list": {
             "description": """\
 Inserts value(s) into a list attribute on a GN target.
