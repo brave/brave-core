@@ -65,8 +65,7 @@ StoredCredential ToProfileStoreCredential(const PasswordForm& form) {
 // Reads all logins from a single store and runs `done_callback` when finished.
 // Keeps itself alive by being moved into that callback, and is destroyed once
 // it runs. Mirrors PasswordLocalDataBatchUploader::PasswordFetchRequest. On a
-// read error the results are left empty (the migrator treats that as "nothing
-// to copy / nothing verified", so it never deletes unverified data).
+// read error the results are left empty and succeeded() gives false.
 class PasswordFetchRequest : public password_manager::PasswordStoreConsumer {
  public:
   PasswordFetchRequest() = default;
@@ -80,6 +79,7 @@ class PasswordFetchRequest : public password_manager::PasswordStoreConsumer {
   }
 
   std::vector<PasswordForm> TakeResults() { return std::move(results_); }
+  bool succeeded() const { return succeeded_; }
 
  private:
   // PasswordStoreConsumer:
@@ -89,11 +89,14 @@ class PasswordFetchRequest : public password_manager::PasswordStoreConsumer {
     if (!std::holds_alternative<PasswordStoreBackendError>(results_or_error)) {
       results_ = password_manager::ToPasswordForms(
           std::get<LoginsResult>(std::move(results_or_error)));
+    } else {
+      succeeded_ = false;
     }
     std::move(done_callback_).Run();
     // `this` may be deleted now; do not touch any member below.
   }
 
+  bool succeeded_ = true;
   std::vector<PasswordForm> results_;
   base::OnceClosure done_callback_;
   base::WeakPtrFactory<PasswordFetchRequest> weak_ptr_factory_{this};
@@ -149,7 +152,7 @@ class AccountToProfilePasswordMigrator {
   void OnAccountLogins(std::unique_ptr<PasswordFetchRequest> request) {
     account_forms_ = request->TakeResults();
     if (account_forms_.empty()) {
-      Finish();  // Nothing to migrate.
+      Finish();  // Nothing to migrate, either no records or failed to read.
       return;
     }
     // Step 2: read the profile store before deciding how to merge each
@@ -161,6 +164,14 @@ class AccountToProfilePasswordMigrator {
   }
 
   void OnProfileLoginsForMerge(std::unique_ptr<PasswordFetchRequest> request) {
+    if (!request->succeeded()) {
+      // Abort rather than treat a failed read as an empty profile store, which
+      // would add every account credential and overwrite newer profile-store
+      // copies. The next launch retries.
+      Finish();
+      return;
+    }
+
     std::vector<PasswordForm> profile_forms = request->TakeResults();
 
     // Copy/merge: add credentials missing from the profile store, and overwrite
