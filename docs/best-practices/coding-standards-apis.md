@@ -920,8 +920,9 @@ constexpr auto kActionNames = base::MakeFixedFlatMap<ActionType, std::string_vie
 ```
 
 These containers are stack-allocated and sorted at compile time. Duplicate keys
-are a `CHECK`ed precondition — in a `constexpr` context a repeated key is a
-compile error, so the table can't silently shadow an entry. See
+are rejected at compile time — `MakeFixedFlatMap`/`MakeFixedFlatSet` are
+`consteval`, so a repeated key fails the build and the table can't silently
+shadow an entry. See
 [Chromium container guidelines](https://chromium.googlesource.com/chromium/src/+/HEAD/base/containers/README.md).
 
 ---
