@@ -45,8 +45,8 @@ import {
   WithHideBalancePlaceholder, //
 } from '../with_hide_balance_placeholder/with_hide_balance_placeholder'
 import { NftIcon } from '$wallet/components/shared/nft-icon/nft-icon'
-import { AssetItemMenu } from '$wallet/components/desktop/wallet-menus/asset-item-menu'
-import { RewardsMenu } from '$wallet/components/desktop/wallet-menus/rewards_menu'
+import { AssetItemMenu } from '$wallet/page/components/wallet_menus/asset_item_menu'
+import { RewardsMenu } from '$wallet/page/components/wallet_menus/rewards_menu'
 import {
   BalanceDetailsModal, //
 } from '$wallet/components/desktop/popup-modals/balance_details_modal/balance_details_modal'

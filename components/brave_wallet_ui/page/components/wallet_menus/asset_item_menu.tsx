@@ -9,54 +9,54 @@ import Icon from '@brave/leo/react/icon'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Types
-import { BraveWallet } from '../../../constants/types'
+import { BraveWallet } from '$wallet/constants/types'
 
 // Selectors
 import {
   useSafeWalletSelector,
   useSafeUISelector,
-} from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors, UISelectors } from '../../../common/selectors'
+} from '$wallet/common/hooks/use-safe-selector'
+import { WalletSelectors, UISelectors } from '$wallet/common/selectors'
 
 // Queries
 import {
   useGetAvailableShieldedAccountQuery,
   useUpdateUserAssetVisibleMutation, //
-} from '../../../common/slices/api.slice'
-import { useAccountsQuery } from '../../../common/slices/api.slice.extra'
+} from '$wallet/common/slices/api.slice'
+import { useAccountsQuery } from '$wallet/common/slices/api.slice.extra'
 
 // Hooks
 import {
   useMultiChainSellAssets, //
-} from '../../../common/hooks/use-multi-chain-sell-assets'
+} from '$wallet/common/hooks/use-multi-chain-sell-assets'
 import {
   useFindBuySupportedToken, //
-} from '../../../common/hooks/use-multi-chain-buy-assets'
-import { useRoute } from '../../../common/hooks/use_route'
+} from '$wallet/common/hooks/use-multi-chain-buy-assets'
+import { useRoute } from '$wallet/common/hooks/use_route'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
-import Amount from '../../../utils/amount'
+import { getLocale } from '$web-common/locale'
+import Amount from '$wallet/utils/amount'
 import {
   makeDepositRoute,
   makeBuyRoute,
   makeSendRoute,
   makeSwapOrBridgeRoute,
-} from '../../../utils/routes-utils'
+} from '$wallet/utils/routes-utils'
 import {
   getAssetIdKey,
   getDoesCoinSupportSwap,
   getDoesCoinSupportBridge,
   isShieldedToken,
-} from '../../../utils/asset-utils'
+} from '$wallet/utils/asset-utils'
 
 // Components
 import {
   SellAssetModal, //
-} from '../popup-modals/sell-asset-modal/sell-asset-modal'
+} from '$wallet/components/desktop/popup-modals/sell-asset-modal/sell-asset-modal'
 
 // Styled Components
-import { ButtonMenu } from './wellet-menus.style'
+import { ButtonMenu } from './wallet_menus.style'
 
 interface Props {
   asset: BraveWallet.BlockchainToken

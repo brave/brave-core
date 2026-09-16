@@ -64,8 +64,8 @@ import { AccountButtonOptions } from '$wallet/options/account-list-button-option
 // components
 import {
   AccountActionsMenu, //
-} from '$wallet/components/desktop/wallet-menus/account-actions-menu'
-import { RewardsMenu } from '$wallet/components/desktop/wallet-menus/rewards_menu'
+} from '$wallet/page/components/wallet_menus/account_actions_menu'
+import { RewardsMenu } from '$wallet/page/components/wallet_menus/rewards_menu'
 import {
   CreateAccountIcon, //
 } from '$wallet/components/shared/create-account-icon/create-account-icon'

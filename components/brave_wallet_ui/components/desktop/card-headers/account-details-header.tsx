@@ -61,7 +61,7 @@ import {
   CreateAccountIcon, //
 } from '../../shared/create-account-icon/create-account-icon'
 import CopyTooltip from '../../shared/copy-tooltip/copy-tooltip'
-import { AccountDetailsMenu } from '../wallet-menus/account-details-menu'
+import { AccountDetailsMenu } from '$wallet/page/components/wallet_menus/account_details_menu'
 import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
 
 // Styled Components

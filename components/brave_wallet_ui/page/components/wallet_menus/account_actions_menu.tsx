@@ -8,16 +8,16 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Types
 import {
   AccountModalTypes,
   AccountButtonOptionsObjectType,
-} from '../../../constants/types'
+} from '$wallet/constants/types'
 
 // Styled Components
-import { ButtonMenu } from './wellet-menus.style'
+import { ButtonMenu } from './wallet_menus.style'
 
 export interface Props {
   options: AccountButtonOptionsObjectType[]

@@ -3,39 +3,39 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import './leo-menu-elements'
+import './leo_menu_elements'
 import * as React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
 import Toggle from '@brave/leo/react/toggle'
 import Icon from '@brave/leo/react/icon'
 
 // Page API Proxy
-import getWalletPageApiProxy from '../../../page/wallet_page_api_proxy'
+import getWalletPageApiProxy from '$wallet/page/wallet_page_api_proxy'
 
 // Selectors
-import { UISelectors } from '../../../common/selectors'
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '$wallet/common/selectors'
+import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
 
 // Types
-import { AccountPageTabs, WalletRoutes } from '../../../constants/types'
+import { AccountPageTabs, WalletRoutes } from '$wallet/constants/types'
 
 // Constants
 import {
   LOCAL_STORAGE_KEYS, //
-} from '../../../common/constants/local-storage-keys'
+} from '$wallet/common/constants/local-storage-keys'
 
 // Options
-import { CreateAccountOptions } from '../../../options/nav-options'
+import { CreateAccountOptions } from '$wallet/options/nav-options'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
-import { useLockWalletMutation } from '../../../common/slices/api.slice'
-import { openWalletSettings } from '../../../utils/routes-utils'
-import { useSyncedLocalStorage } from '../../../common/hooks/use_local_storage'
+import { getLocale } from '$web-common/locale'
+import { useLockWalletMutation } from '$wallet/common/slices/api.slice'
+import { openWalletSettings } from '$wallet/utils/routes-utils'
+import { useSyncedLocalStorage } from '$wallet/common/hooks/use_local_storage'
 
 // Styled Components
-import { ButtonMenu } from './wellet-menus.style'
-import { Row } from '../../shared/style'
+import { ButtonMenu } from './wallet_menus.style'
+import { Row } from '$wallet/components/shared/style'
 
 export interface Props {
   children: React.ReactNode

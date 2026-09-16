@@ -10,13 +10,13 @@ import Icon from '@brave/leo/react/icon'
 import {
   AccountButtonOptionsObjectType,
   AccountModalTypes,
-} from '../../../constants/types'
+} from '$wallet/constants/types'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Styled Components
-import { ButtonMenu } from './wellet-menus.style'
+import { ButtonMenu } from './wallet_menus.style'
 
 interface Props {
   children: React.ReactNode

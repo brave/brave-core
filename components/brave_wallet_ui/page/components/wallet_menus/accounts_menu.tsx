@@ -10,18 +10,18 @@ import Icon from '@brave/leo/react/icon'
 // Selectors
 import {
   useSafeUISelector, //
-} from '../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../common/selectors'
+} from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors } from '$wallet/common/selectors'
 
 // Options
-import { CreateAccountOptions } from '../../../options/nav-options'
-import { BraveWallet } from '../../../constants/types'
+import { CreateAccountOptions } from '$wallet/options/nav-options'
+import { BraveWallet } from '$wallet/constants/types'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Styled Components
-import { ButtonMenu } from './wellet-menus.style'
+import { ButtonMenu } from './wallet_menus.style'
 
 interface Props {
   children: React.ReactNode

@@ -56,7 +56,7 @@ import {
 } from '$wallet/components/desktop/popup-modals/zcash_sync_modal/zcash_sync_modal'
 import {
   AddressActionsMenu, //
-} from '$wallet/components/desktop/wallet-menus/address_actions_menu'
+} from '$wallet/page/components/wallet_menus/address_actions_menu'
 
 // Styled Components
 import {

@@ -20,7 +20,7 @@ import { getLocale } from '../../../../common/locale'
 // Hooks
 import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 
-import { AccountsMenu } from '../wallet-menus/accounts-menu'
+import { AccountsMenu } from '$wallet/page/components/wallet_menus/accounts_menu'
 
 // Styled Components
 import {
