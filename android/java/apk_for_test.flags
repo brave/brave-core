@@ -310,6 +310,8 @@
 
 -keep class org.chromium.chrome.browser.ui.messages.snackbar.SnackbarView {
     *** mContainerView;
+    *** mSnackbarSwipeHandler;
+    *** mIsAnimating;
 }
 
 -keep class org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager {
