@@ -59,9 +59,7 @@ protocol SettingsDelegate: AnyObject {
   func settingsCreateFakeHistory()
 }
 
-class SettingsViewController: TableViewController, BraveAccountAuthenticationObserver,
-  BraveAccountDialogOpenerBridge
-{
+class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridge {
   weak var settingsDelegate: SettingsDelegate?
 
   private let profile: LegacyBrowserProfile
@@ -82,25 +80,9 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
   private let ipfsAPI: IpfsAPI
   private let altIconsModel = AltIconsModel()
 
-  private lazy var braveAccountAuthentication: (any BraveAccountAuthentication)? = {
-    guard IsBraveAccountEnabled() else { return nil }
-    return BraveAccount.AuthenticationProvider.authentication(for: braveCore.profile)
-  }()
-
-  private var braveAccountState: BraveAccount.AccountState?
-
-  func onAccountStateChanged(state: BraveAccount.AccountState) {
-    braveAccountState = state
-    setUpSections()
-    tableView.reloadData()
-  }
-
-  private let braveAccountSectionUUID: UUID = .init()
   private let featureSectionUUID: UUID = .init()
   private let displaySectionUUID: UUID = .init()
 
-  private let braveAccountResendConfirmationEmailRowUUID: UUID = .init()
-  private let braveAccountChangePasswordRowUUID: UUID = .init()
   private let walletRowUUID: UUID = .init()
   private let appIconRowUUID: UUID = .init()
 
@@ -197,8 +179,6 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
         self.tableView.reloadData()
       }
       .store(in: &cancellables)
-
-    braveAccountAuthentication?.addObserver(self)
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -258,10 +238,6 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       supportSection,
       aboutSection,
     ]
-
-    if IsBraveAccountEnabled(), let braveAccountSection {
-      list.insert(braveAccountSection, at: 1)
-    }
 
     let shouldShowVPNSection = { () -> Bool in
       if !braveCore.profile.prefs.isBraveVPNAvailable {
@@ -323,12 +299,9 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     if IsBraveAccountEnabled() {
       rows.append(
         Row(
-          text: L10nUtils.string(messageId: .SETTINGS_BRAVE_ACCOUNT_ROW_TITLE),
           selection: { [unowned self] in
             openBraveAccountSettings()
           },
-          image: UIImage(sharedNamed: "brave.logo"),
-          accessory: .disclosureIndicator,
           cellClass: BraveAccountIconCell.self
         )
       )
@@ -405,24 +378,6 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     return Static.Section(rows: rows)
   }()
 
-  private func setCellEnabled(_ enabled: Bool, rowUUID: UUID, sectionUUID: UUID) {
-    if let indexPath = dataSource.indexPath(
-      rowUUID: rowUUID.uuidString,
-      sectionUUID: sectionUUID.uuidString
-    ),
-      let cell = tableView.cellForRow(at: indexPath)
-    {
-      cell.isUserInteractionEnabled = enabled
-
-      if var content = cell.contentConfiguration as? UIListContentConfiguration {
-        let color: UIColor = enabled ? view.tintColor : UIColor(braveSystemName: .textDisabled)
-        content.textProperties.color = color
-        content.imageProperties.tintColor = color
-        cell.contentConfiguration = content
-      }
-    }
-  }
-
   private func openBraveAccountWebUI(
     url: URL,
     dialogMode: BraveAccount.DialogMode? = nil
@@ -475,383 +430,6 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     openBraveAccountWebUI(
       url: components.url!,
       dialogMode: dialogMode
-    )
-  }
-
-  private var braveAccountSection: Static.Section? {
-    guard let braveAccountState, let braveAccountAuthentication else { return nil }
-
-    // Verification-row builders shared by the logged-in (password change) and
-    // logged-out (registration/password reset) flows. They differ only in the
-    // erased `VerificationIntent` passed in, so each branch computes its own
-    // `intent` and reuses these builders.
-    let almostThereRow = { (description: MessageIDTyped) in
-      Row(
-        text: L10nUtils.string(messageId: .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_TITLE),
-        detailText: L10nUtils.string(messageId: description),
-        cellClass: BraveAccountIconCell.self
-      )
-    }
-
-    let openDialogRow = { [self] (text: MessageIDTyped, description: MessageIDTyped?) in
-      Row(
-        text: L10nUtils.string(messageId: text),
-        detailText: description.map { L10nUtils.string(messageId: $0) },
-        selection: { [unowned self] in
-          openBraveAccountDialog()
-        },
-        cellClass: BraveAccountIconCell.self,
-        context: [
-          BraveAccountIconCell.textColor: self.view.tintColor
-            ?? UIColor(braveSystemName: .textInteractive)
-        ]
-      )
-    }
-
-    let resendConfirmationEmailRow = { [self] (intent: BraveAccount.VerificationIntent) in
-      Row(
-        text: L10nUtils.string(
-          messageId: .SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL
-        ),
-        detailText: L10nUtils.string(
-          messageId: .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3_NATIVE
-        ),
-        selection: { [unowned self] in
-          setCellEnabled(
-            false,
-            rowUUID: braveAccountResendConfirmationEmailRowUUID,
-            sectionUUID: braveAccountSectionUUID
-          )
-          braveAccountAuthentication.resendVerificationEmail(
-            intent: intent
-          ) { [weak self] _, failure in
-            guard let self else { return }
-            DispatchQueue.main.async {
-              let alert = UIAlertController(
-                title: self.resendConfirmationEmailAlertTitle(failure: failure),
-                message: failure.map { self.resendConfirmationEmailAlertMessage(failure: $0) }
-                  ?? L10nUtils.string(
-                    messageId: .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS
-                  ),
-                preferredStyle: .alert
-              )
-              alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
-              self.present(alert, animated: true)
-              self.setCellEnabled(
-                true,
-                rowUUID: self.braveAccountResendConfirmationEmailRowUUID,
-                sectionUUID: self.braveAccountSectionUUID
-              )
-            }
-          }
-        },
-        cellClass: BraveAccountIconCell.self,
-        context: [
-          BraveAccountIconCell.textColor: self.view.tintColor
-            ?? UIColor(braveSystemName: .textInteractive)
-        ],
-        uuid: self.braveAccountResendConfirmationEmailRowUUID.uuidString
-      )
-    }
-
-    let cancelRow = { (text: MessageIDTyped, intent: BraveAccount.VerificationIntent) in
-      Row(
-        text: L10nUtils.string(messageId: text),
-        selection: {
-          braveAccountAuthentication.cancelVerification(intent: intent)
-        },
-        cellClass: BraveAccountIconCell.self,
-        context: [
-          BraveAccountIconCell.textColor: UIColor(braveSystemName: .systemfeedbackErrorText)
-        ]
-      )
-    }
-
-    switch braveAccountState.tag {
-    case .loggedIn:
-      guard let verification = braveAccountState.loggedIn!.verification else {
-        return Static.Section(
-          header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
-          rows: [
-            Row(
-              text: braveAccountState.loggedIn!.email,
-              cellClass: BraveAccountIconCell.self,
-              context: [
-                BraveAccountIconCell.textTruncateMiddle: true
-              ]
-            ),
-            Row(
-              text: L10nUtils.string(
-                messageId: .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_BUTTON_LABEL
-              ),
-              selection: { [unowned self] in
-                setCellEnabled(
-                  false,
-                  rowUUID: braveAccountChangePasswordRowUUID,
-                  sectionUUID: braveAccountSectionUUID
-                )
-                braveAccountAuthentication.changePasswordStep1(
-                  email: braveAccountState.loggedIn!.email
-                ) { [weak self] _, failure in
-                  guard let self else { return }
-                  DispatchQueue.main.async {
-                    if let failure {
-                      let alert = UIAlertController(
-                        title: L10nUtils.string(
-                          messageId: .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ERROR_TITLE
-                        ),
-                        message: self.changePasswordAlertMessage(failure: failure),
-                        preferredStyle: .alert
-                      )
-                      alert.addAction(UIAlertAction(title: Strings.OKString, style: .default))
-                      self.present(alert, animated: true)
-                    } else {
-                      self.openBraveAccountDialog()
-                    }
-                    self.setCellEnabled(
-                      true,
-                      rowUUID: self.braveAccountChangePasswordRowUUID,
-                      sectionUUID: self.braveAccountSectionUUID
-                    )
-                  }
-                }
-              },
-              image: UIImage(braveSystemNamed: "leo.lock"),
-              cellClass: BraveAccountIconCell.self,
-              context: [
-                BraveAccountIconCell.textColor: view.tintColor
-                  ?? UIColor(braveSystemName: .textInteractive)
-              ],
-              uuid: braveAccountChangePasswordRowUUID.uuidString
-            ),
-            Row(
-              text: L10nUtils.string(messageId: .SETTINGS_BRAVE_ACCOUNT_LOG_OUT_BUTTON_LABEL),
-              selection: { braveAccountAuthentication.logOut() },
-              image: UIImage(braveSystemNamed: "leo.outside"),
-              cellClass: BraveAccountIconCell.self,
-              context: [
-                BraveAccountIconCell.textColor: view.tintColor
-                  ?? UIColor(braveSystemName: .textInteractive)
-              ]
-            ),
-            Row(
-              text: L10nUtils.string(
-                messageId: .SETTINGS_BRAVE_ACCOUNT_DELETE_ACCOUNT_BUTTON_LABEL
-              ),
-              selection: { [unowned self] in
-                openBraveAccountDialog(dialogMode: .accountDeletion)
-              },
-              image: UIImage(braveSystemNamed: "leo.trash"),
-              cellClass: BraveAccountIconCell.self,
-              context: [
-                BraveAccountIconCell.textColor: UIColor(
-                  braveSystemName: .systemfeedbackErrorText
-                )
-              ]
-            ),
-          ],
-          uuid: braveAccountSectionUUID.uuidString
-        )
-      }
-
-      // logged in with verification (password change)
-      let intent = BraveAccount.VerificationIntent(loggedIn: verification.intent)
-
-      let rows: [Row]
-      switch verification.intent {
-      case .changePassword where verification.verifiedEmail.isEmpty:
-        rows = [
-          almostThereRow(.SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ROW_DESCRIPTION_1),
-          openDialogRow(
-            .SETTINGS_BRAVE_ACCOUNT_ENTER_VERIFICATION_CODE_BUTTON_LABEL,
-            .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2
-          ),
-          resendConfirmationEmailRow(intent),
-          cancelRow(.SETTINGS_BRAVE_ACCOUNT_CANCEL_CHANGE_PASSWORD_BUTTON_LABEL, intent),
-        ]
-      case .changePassword:
-        rows = [
-          almostThereRow(.SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_VERIFIED_ROW_DESCRIPTION),
-          openDialogRow(.SETTINGS_BRAVE_ACCOUNT_SET_NEW_PASSWORD_BUTTON_LABEL, nil),
-          cancelRow(.SETTINGS_BRAVE_ACCOUNT_CANCEL_CHANGE_PASSWORD_BUTTON_LABEL, intent),
-        ]
-      @unknown default:
-        assertionFailure("Unhandled LoggedInVerificationIntent!")
-        return nil
-      }
-
-      return Static.Section(
-        header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
-        rows: rows,
-        uuid: braveAccountSectionUUID.uuidString
-      )
-    case .loggedOut:
-      guard let verification = braveAccountState.loggedOut!.verification else {
-        return Static.Section(
-          header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
-          rows: [
-            Row(
-              text: L10nUtils.string(
-                messageId: .SETTINGS_BRAVE_ACCOUNT_GET_STARTED_BUTTON_LABEL
-              ),
-              selection: { [unowned self] in
-                openBraveAccountDialog()
-              },
-              image: UIImage(sharedNamed: "brave.logo"),
-              accessory: .disclosureIndicator,
-              cellClass: BraveAccountIconCell.self
-            )
-          ]
-        )
-      }
-
-      // logged out with verification
-      let intent = BraveAccount.VerificationIntent(loggedOutIntent: verification.intent)
-
-      let rows: [Row]
-      switch verification.intent {
-      case .registration:
-        rows = [
-          almostThereRow(.SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_1),
-          openDialogRow(
-            .SETTINGS_BRAVE_ACCOUNT_ENTER_VERIFICATION_CODE_BUTTON_LABEL,
-            .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2
-          ),
-          resendConfirmationEmailRow(intent),
-          cancelRow(.SETTINGS_BRAVE_ACCOUNT_CANCEL_REGISTRATION_BUTTON_LABEL, intent),
-        ]
-      case .resetPassword where verification.verifiedEmail.isEmpty:
-        rows = [
-          almostThereRow(.SETTINGS_BRAVE_ACCOUNT_RESET_PASSWORD_ROW_DESCRIPTION_1),
-          openDialogRow(
-            .SETTINGS_BRAVE_ACCOUNT_ENTER_VERIFICATION_CODE_BUTTON_LABEL,
-            .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2
-          ),
-          resendConfirmationEmailRow(intent),
-          cancelRow(.SETTINGS_BRAVE_ACCOUNT_CANCEL_RESET_PASSWORD_BUTTON_LABEL, intent),
-        ]
-      case .resetPassword:
-        rows = [
-          almostThereRow(.SETTINGS_BRAVE_ACCOUNT_RESET_PASSWORD_VERIFIED_ROW_DESCRIPTION),
-          openDialogRow(.SETTINGS_BRAVE_ACCOUNT_SET_NEW_PASSWORD_BUTTON_LABEL, nil),
-          cancelRow(.SETTINGS_BRAVE_ACCOUNT_CANCEL_RESET_PASSWORD_BUTTON_LABEL, intent),
-        ]
-      @unknown default:
-        assertionFailure("Unhandled LoggedOutVerificationIntent!")
-        return nil
-      }
-
-      return Static.Section(
-        header: .title(L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)),
-        rows: rows,
-        uuid: braveAccountSectionUUID.uuidString
-      )
-    case .null:
-      assertionFailure("Unexpected .null BraveAccount state!")
-      return nil
-    @unknown default:
-      assertionFailure("Unexpected unknown BraveAccount state!")
-      return nil
-    }
-  }
-
-  private func resendConfirmationEmailAlertTitle(
-    failure: BraveAccount.ResendVerificationEmailError?
-  ) -> String {
-    return L10nUtils.string(
-      messageId: failure == nil
-        ? .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_SUCCESS_TITLE
-        : .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ERROR_TITLE
-    )
-  }
-
-  private func braveAccountAlertMessage<ClientErrorCode, ServerErrorCode>(
-    clientErrorStrings: [ClientErrorCode: MessageIDTyped],
-    serverErrorStrings: [ServerErrorCode: MessageIDTyped],
-    error: (
-      clientErrorCode: ClientErrorCode?,
-      serverError: (netErrorOrHttpStatus: Int32, errorCode: ServerErrorCode)?
-    )
-  ) -> String
-  where
-    ClientErrorCode: Hashable & RawRepresentable, ClientErrorCode.RawValue == Int,
-    ServerErrorCode: Hashable & RawRepresentable, ServerErrorCode.RawValue == Int
-  {
-    let errorLabel = L10nUtils.string(messageId: .BRAVE_ACCOUNT_ERROR)
-
-    if let clientErrorCode = error.clientErrorCode {
-      if let messageId = clientErrorStrings[clientErrorCode] {
-        return L10nUtils.string(messageId: messageId)
-      }
-
-      return L10nUtils.formatString(
-        messageId: .BRAVE_ACCOUNT_CLIENT_ERROR,
-        argument: " (\(errorLabel)=\(clientErrorCode.rawValue))"
-      )
-    }
-
-    let serverError = error.serverError!
-    if let messageId = serverErrorStrings[serverError.errorCode] {
-      return L10nUtils.string(messageId: messageId)
-    }
-
-    return L10nUtils.formatString(
-      messageId: .BRAVE_ACCOUNT_SERVER_ERROR,
-      argument1:
-        "\(serverError.netErrorOrHttpStatus > 0 ? "HTTP" : "NET")=\(serverError.netErrorOrHttpStatus)",
-      argument2: ", \(errorLabel)=\(serverError.errorCode.rawValue)"
-    )
-  }
-
-  private func resendConfirmationEmailAlertMessage(
-    failure: BraveAccount.ResendVerificationEmailError
-  ) -> String {
-    return braveAccountAlertMessage(
-      clientErrorStrings: [:],
-      serverErrorStrings: [
-        .maximumEmailSendAttemptsExceeded:
-          .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_SEND_ATTEMPTS_EXCEEDED,
-        .emailAlreadyVerified:
-          .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_ALREADY_VERIFIED,
-        .maximumCodeVerificationAttemptsExceeded:
-          .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
-        .tokenHasExpired:
-          .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
-      ],
-      error: (
-        clientErrorCode: failure.clientError?.errorCode,
-        serverError: failure.serverError.map {
-          ($0.netErrorOrHttpStatus, $0.errorCode)
-        }
-      )
-    )
-  }
-
-  private func changePasswordAlertMessage(
-    failure: BraveAccount.ChangePasswordError
-  ) -> String {
-    return braveAccountAlertMessage(
-      clientErrorStrings: [:],
-      serverErrorStrings: [
-        .tooManyVerifications:
-          .BRAVE_ACCOUNT_REGISTER_TOO_MANY_VERIFICATIONS,
-        .dailyVerificationLimitReachedForEmail:
-          .BRAVE_ACCOUNT_DAILY_VERIFICATION_LIMIT_REACHED_FOR_EMAIL,
-        .emailAlreadyVerified:
-          .BRAVE_ACCOUNT_PASSWORD_RESET_EMAIL_ALREADY_VERIFIED,
-        .maximumCodeVerificationAttemptsExceeded:
-          .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_MAXIMUM_CODE_VERIFICATION_ATTEMPTS_EXCEEDED,
-        .invalidVerificationCode:
-          .BRAVE_ACCOUNT_REGISTER_INVALID_VERIFICATION_CODE,
-        .tokenHasExpired:
-          .BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_TOKEN_HAS_EXPIRED,
-      ],
-      error: (
-        clientErrorCode: failure.clientError?.errorCode,
-        serverError: failure.serverError.map {
-          ($0.netErrorOrHttpStatus, $0.errorCode)
-        }
-      )
     )
   }
 
@@ -2222,42 +1800,15 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
 }
 
 private final class BraveAccountIconCell: UITableViewCell, Cell {
-  static let textColor = "textColor"
-  static let textTruncateMiddle = "textTruncateMiddle"
-
   func configure(row: Row) {
     var content = defaultContentConfiguration()
-
-    if let image = row.image {
-      if image.isSymbolImage {
-        content.image = image
-      } else {
-        let scaledValue = UIFontMetrics.default.scaledValue(for: 26)
-        content.image = image.preparingThumbnail(
-          of: .init(width: scaledValue, height: scaledValue)
-        )
-      }
-    }
-
-    content.text = row.text
-    if let truncateMiddle = row.context?[Self.textTruncateMiddle] as? Bool, truncateMiddle {
-      content.textProperties.numberOfLines = 1
-      content.textProperties.lineBreakMode = .byTruncatingMiddle
-    } else {
-      content.textProperties.numberOfLines = 0
-    }
-    if let color = row.context?[Self.textColor] as? UIColor {
-      content.textProperties.color = color
-      content.imageProperties.tintColor = color
-    }
-
-    content.secondaryText = row.detailText
-    content.secondaryTextProperties.numberOfLines = 0
-    content.secondaryTextProperties.color = UIColor.secondaryLabel
-
+    let scaledValue = UIFontMetrics.default.scaledValue(for: 26)
+    content.image = UIImage(sharedNamed: "brave.logo")?.preparingThumbnail(
+      of: .init(width: scaledValue, height: scaledValue)
+    )
+    content.text = L10nUtils.string(messageId: .SETTINGS_BRAVE_ACCOUNT_ROW_TITLE)
     contentConfiguration = content
-    accessoryType = row.accessory.type
-    isUserInteractionEnabled = true
+    accessoryType = .disclosureIndicator
   }
 }
 
