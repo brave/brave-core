@@ -167,7 +167,7 @@ struct UnlockWalletView: View {
 #if DEBUG
 struct UnlockWalletView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       UnlockWalletView(
         keyringStore: .previewStoreWithWalletCreated,
         dismissAction: {}

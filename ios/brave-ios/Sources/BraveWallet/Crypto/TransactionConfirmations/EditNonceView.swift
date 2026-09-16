@@ -81,7 +81,7 @@ struct EditNonceView: View {
 #if DEBUG
 struct EditNonceView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       EditNonceView(
         confirmationStore: .previewStore,
         transaction: .previewConfirmedSend

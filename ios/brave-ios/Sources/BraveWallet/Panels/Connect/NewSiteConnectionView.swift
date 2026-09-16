@@ -91,7 +91,7 @@ public struct NewSiteConnectionView: View {
   }
 
   public var body: some View {
-    NavigationView {
+    NavigationStack {
       List {
         Section {
           headerView
@@ -153,22 +153,16 @@ public struct NewSiteConnectionView: View {
           .disabled(selectedAccounts.isEmpty)
           .animation(.default, value: selectedAccounts.isEmpty)
           .frame(maxWidth: .infinity)
-          .background(
-            NavigationLink(
-              isActive: $isConfirmationViewVisible,
-              destination: {
-                confirmationView
-              },
-              label: {
-                EmptyView()
-              }
-            )
-            .hidden()
-          )
         }
         .listRowBackground(Color.clear)
       }
       .listStyle(InsetGroupedListStyle())
+      .navigationDestination(
+        isPresented: $isConfirmationViewVisible,
+        destination: {
+          confirmationView
+        }
+      )
       .navigationBarTitleDisplayMode(.inline)
       .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)
       .toolbar {
@@ -182,7 +176,6 @@ public struct NewSiteConnectionView: View {
         }
       }
     }
-    .navigationViewStyle(.stack)
     .onAppear {
       if accounts.contains(keyringStore.selectedAccount.address),
         keyringStore.selectedAccount.coin == coin

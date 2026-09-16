@@ -760,7 +760,7 @@ struct NetworkRadioButton: View {
 #if DEBUG
 struct NetworkDetailsView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
+    NavigationStack {
       NetworkDetailsView(
         networkStore: .previewStore,
         model: .init()

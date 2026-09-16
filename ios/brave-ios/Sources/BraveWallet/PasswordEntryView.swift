@@ -161,7 +161,7 @@ struct PasswordEntryView: View {
   }
 
   var body: some View {
-    NavigationView {
+    NavigationStack {
       ScrollView(.vertical) {
         VStack(spacing: 36) {
           Image("graphic-lock", bundle: .module)
@@ -203,7 +203,6 @@ struct PasswordEntryView: View {
         }
       }
     }
-    .navigationViewStyle(.stack)
   }
 }
 
