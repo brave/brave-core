@@ -2809,6 +2809,132 @@ class GnSubtractLiteralFromVariableRewriter(_GnVariableRewriter):
         return super()._apply_literal(engine)
 
 
+class GnAppendToTargetRewriter(_AstGrepRewriter):
+    """Appends free-form code to the end of a GN target's body."""
+
+    NAME: Final = 'append_to_target'
+    OP_ID: Final = 'gn.append_code_to_body'
+    SUMMARY: Final = "Append code to the end of a GN target's body."
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Appends `code` as the last statements of a GN target's body, for the
+        additions no single list append expresses.
+
+        Before resorting to this rewriter, attempt more specific ones, for
+        instance `add_literal_to_list`, only appending raw code to a target when
+        necessary.
+
+        Fields:
+
+        - `target` — the target to append to, e.g. `browser` for
+          `static_library("browser")`.
+        - `code` — the statements to append. Write it flush-left; the whole
+          block is indented to the target's body level for you.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Add the Brave color mixers.
+            append_to_target:
+              target: color
+              code: |-
+                sources += brave_color_sources
+                deps += brave_color_deps
+        ```
+
+        ```diff
+         component("color") {
+           sources = [ "color_mixers.cc" ]
+        +  sources += brave_color_sources
+        +  deps += brave_color_deps
+         }
+        ```
+    """
+
+    # Locates the target's body, one match per declaration of it.
+    _FIND_BODY: Final = 'gn.append_code_to_body'
+
+    # One level of GN body indentation. gn format fixes this at two spaces.
+    _BODY_INDENT: Final = '  '
+
+    def __init__(self, *, target: str, code: str):
+        super().__init__()
+        self._target = target
+        self._code = code
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # The code is appended once, so no other count means anything here.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} appends the code exactly once and '
+                             f'does not accept a count other than 1 '
+                             f'(in "{description}")')
+
+    def apply(
+        self,
+        contents: str,
+        *,
+        count: int,
+        description: str,
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+    ) -> tuple[str, list[str]]:
+        del count  # Rejected by `validate_count`; always applies once.
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
+        error = self._append_code(engine)
+        return engine.content, [f'{error} (in "{description}")'
+                                ] if error else []
+
+    def _append_code(self, engine: AstRewriter) -> str | None:
+        """Append the code to the target's body; a failure, or None."""
+        inputs = {'target': self._target}
+        bodies = engine.matches(Operation(self._FIND_BODY, inputs))
+        if not bodies:
+            return f'{self.NAME} found no body for target {self._target!r}'
+        if len(bodies) > 1:
+            return (f'{self.NAME} found {len(bodies)} declarations of target '
+                    f'{self._target!r} and cannot tell which one the code '
+                    f'belongs in; a target declared once per `if`/`else` '
+                    f'branch has to be appended to by hand')
+        # The brace closing the body has a line of its own to read a column
+        # off, which the code then sits one level in from.
+        indent = _leading_indent(engine.content.encode('utf-8'),
+                                 bodies[0].end - 1)
+        op = Operation(
+            self._FIND_BODY, {
+                **inputs,
+                'code': _indent_code(self._code,
+                                     len(indent) + len(self._BODY_INDENT)),
+                'indent': indent,
+            }, MatchExpectation.exactly(1))
+        return op.expectation.error_for(engine.run(op))
+
+    @classmethod
+    def parse(cls, body: object, *,
+              description: str) -> GnAppendToTargetRewriter:
+        """Validate an `append_to_target:` body of string args."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        required = {'target', 'code'}
+        unknown = sorted(set(body) - required)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(required - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        for key in sorted(required):
+            if not isinstance(body[key], str) or not body[key]:
+                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
+                                 f'string (in "{description}")')
+        return cls(target=body['target'], code=body['code'])
+
+
 class GnAddImportRewriter(_AstGrepRewriter):
     """Adds an `import()` to the top of a gn file.
 
@@ -2912,7 +3038,8 @@ _DECLARED_REWRITERS: Final = (AllRegexRewriter, CxxMakeVirtualRewriter,
                               GnAddLiteralToListRewriter,
                               GnAddLiteralToVariableRewriter,
                               GnSubtractLiteralFromVariableRewriter,
-                              GnAddImportRewriter)
+                              GnAddImportRewriter,
+                              GnAppendToTargetRewriter)
 
 
 class RewriterRegistry:

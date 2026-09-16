@@ -1016,6 +1016,22 @@ nthChild:
             },
         },
 
+        # Free-form `code` closing `target`'s body, for a change no list
+        # append expresses. The caller indents `code` to the body level and
+        # `indent` re-emits the brace at its own column, the same division of
+        # labour `cxx.append_to_public_before_close` uses.
+        "gn.append_code_to_body": {
+            "matcher": "gn.find_target_block",
+            "inputs": ["target", "code", "indent"],
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{code}\\n{indent}}}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
         # `+= {literal}` closing `target`'s body, for an attribute defined
         # somewhere other than this file -- `configs`, say, which
         # `set_defaults` populates, so a target carries it without assigning
