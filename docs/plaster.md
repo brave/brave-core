@@ -151,6 +151,9 @@ introduce more rewriters. These are the ones we have supported for now.
 | `set_feature_flag_default_state`          | `cxx`     | macro | Sets a `BASE_FEATURE`'s default state.                |
 | `insert_into_list`                        | `gn`      | gn    | Inserts value(s) into a target's list attribute.      |
 | `add_literal_to_list`                     | `gn`      | AST   | Adds a literal to a target's list attribute.          |
+| `add_import`                              | `gn`      | AST   | Adds an `import()` to the top of a gn file.           |
+| `add_literal_to_variable`                 | `gn`      | AST   | Appends a literal to a file-scope list variable.      |
+| `subtract_literal_from_variable`          | `gn`      | AST   | Subtracts a literal from a file-scope list variable.  |
 | `set_blink_runtime_enabled_feature_state` | `js`      | AST   | Sets a Blink runtime feature's `base_feature_status`. |
 
 Use `plaster --help` to discover rewriters and read their full docs:

@@ -530,6 +530,41 @@ inside:
             },
         },
 
+        # A file-scope assignment of `variable`, i.e. one the file makes
+        # directly rather than inside a target or a conditional. `.gni` files
+        # are largely these bare list variables, which no target label reaches.
+        "gn.find_toplevel_list_assignment": {
+            "template": """\
+kind: assignment_statement
+pattern: {variable} = $VALUE
+inside:
+  kind: source_file
+""",
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # The file's last `import()`, which a variable arriving through one of
+        # them is appended after. Anchoring here rather than on the first
+        # statement below keeps a comment documenting that statement attached
+        # to it, since a comment is trivia the statement's node excludes.
+        "gn.find_last_import": {
+            "template": """\
+kind: import_statement
+inside:
+  kind: source_file
+nthChild:
+  position: 1
+  reverse: true
+  ofRule:
+    kind: import_statement
+""",
+            "result": {
+                "node": "import_statement",
+            },
+        },
+
         # The file's first statement, which an import is inserted above so it
         # lands at the top of the fil, but below the copyright header, since a
         # comment is not a statement.
@@ -928,6 +963,74 @@ nthChild:
             "replace": {
                 "re_pattern": "^\\{",
                 "replace": "{{\\n{indent}{list_name} = {literal}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # `variable += {literal}` appended after the file's own assignment of
+        # it. A file-scope assignment opens its own line, so the append needs
+        # no indentation of its own.
+        "gn.append_literal_to_variable": {
+            "matcher": "gn.find_toplevel_list_assignment",
+            "inputs": ["variable", "literal"],
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{variable} += {literal}",
+            },
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # The same, subtracting. Kept a separate op rather than an operator
+        # input because the two are not interchangeable: a subtraction only
+        # holds where nothing adds the value back afterwards, which is why the
+        # frontend guards this one and not the append.
+        "gn.subtract_literal_from_variable": {
+            "matcher": "gn.find_toplevel_list_assignment",
+            "inputs": ["variable", "literal"],
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{variable} -= {literal}",
+            },
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # `variable += {literal}` appended after the last import, for a
+        # variable the file never assigns because an `import()` supplies it.
+        # Sound only because appending does not depend on where it happens,
+        # which is why no subtracting counterpart exists.
+        "gn.append_literal_after_imports": {
+            "matcher": "gn.find_last_import",
+            "inputs": ["variable", "literal"],
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{variable} += {literal}",
+            },
+            "result": {
+                "node": "import_statement",
+            },
+        },
+
+        # `+= {literal}` closing `target`'s body, for an attribute defined
+        # somewhere other than this file -- `configs`, say, which
+        # `set_defaults` populates, so a target carries it without assigning
+        # it. Nothing is created, since the attribute exists already.
+        #
+        # `indent` is the column of the brace closing the body, so the two
+        # spaces before `list_name` are the one level of GN body indentation
+        # that `gn format` fixes.
+        "gn.append_literal_to_body": {
+            "matcher": "gn.find_target_block",
+            "inputs": ["target", "list_name", "literal", "indent"],
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{indent}  {list_name} += {literal}"
+                           "\\n{indent}}}",
             },
             "result": {
                 "node": "block",
