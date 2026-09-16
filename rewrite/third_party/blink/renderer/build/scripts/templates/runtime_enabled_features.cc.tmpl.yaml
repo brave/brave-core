@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Define the runtime flag reader declared on the generated class.
+
+      The same lookup `IsFeatureEnabledFromString` runs, without the
+      origin-trial filter that makes it refuse those features: the flag is a
+      real value for every feature.
+    regex:
+      pattern: |2-
+        // static
+        void RuntimeEnabledFeaturesBase::UpdateStatusFromBaseFeatures() {
+      replace: |2-
+        // static
+        bool RuntimeEnabledFeaturesBase::IsFeatureEnabledFromStringForTesting(
+            std::string_view name) {
+          std::optional<uint16_t> flag_index = FindFeatureFlagIndex(name);
+          CHECK(flag_index.has_value())
+              << "RuntimeEnabledFeature not recognized: " << name;
+          return feature_states_[*flag_index];
+        }
+
+        // static
+        void RuntimeEnabledFeaturesBase::UpdateStatusFromBaseFeatures() {

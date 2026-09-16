@@ -2129,27 +2129,40 @@ class CxxAddEnumEntriesRewriter(_AstGrepRewriter):
 
 
 class JsSetBlinkRuntimeEnabledFeatureStateRewriter(_AstGrepRewriter):
-    """Override a value `base::Feature` for a `runtime_enabled_features.json5`.
+    """Force the shipped state of a `runtime_enabled_features.json5` feature.
 
     This rewriter has the same purpose as the one used for C++,
     `CxxSetFeatureFlagDefaultStateRewriter`, which is override the default state
     of a particular flag. It is named for the field it sets rather than after
     that rewriter, since the flag it overrides is one Blink generates from
     this file rather than one declared in C++.
+
+    An entry declares two defaults, and shipping a feature in a given state
+    means stating both. `base_feature_status` fixes the default of the
+    `base::Feature` the entry generates, and `status` fixes the default of the
+    Blink runtime flag of the same name. The two are independent: Blink copies
+    the `base::Feature` value into the runtime flag only when that feature is
+    enabled or has been overridden on the command line or by a field trial, so
+    a `base_feature_status: "disabled"` on its own leaves a `status: "stable"`
+    runtime flag on, and the web-exposed API with it.
     """
 
     NAME: Final = 'set_blink_runtime_enabled_feature_state'
 
-    # Two ops share the work (see `apply`); this names the namespace and a
+    # Several ops share the work (see `apply`); this names the namespace and a
     # representative op for the base's helpers.
     OP_ID: Final = 'js.set_blink_runtime_enabled_feature_state'
 
-    SUMMARY: Final = "Force a runtime feature's `base::Feature` default state."
+    SUMMARY: Final = "Force a runtime feature's shipped default state."
 
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
-        Sets `base_feature_status` on a `runtime_enabled_features.json5`
-        feature entry, overriding it.
+        Sets `base_feature_status` and `status` on a
+        `runtime_enabled_features.json5` feature entry.
+
+        This rewriter disables the feature by rewriting both `status` and
+        `base_feature_status` to `disabled`. At the same time, It enables the
+        feature by rewriting both to `enabled` and `stable`.
 
         Fields:
 
@@ -2160,7 +2173,7 @@ class JsSetBlinkRuntimeEnabledFeatureStateRewriter(_AstGrepRewriter):
 
         ```yaml
         substitutions:
-          - description: Ship MyFeature's base feature disabled.
+          - description: Ship MyFeature disabled.
             set_blink_runtime_enabled_feature_state:
               feature_name: MyFeature
               value: disabled
@@ -2170,7 +2183,7 @@ class JsSetBlinkRuntimeEnabledFeatureStateRewriter(_AstGrepRewriter):
          {
            name: "MyFeature",
         +  base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
-           status: "stable",
+        -  status: "stable",
          },
         ```
     """
@@ -2180,6 +2193,16 @@ class JsSetBlinkRuntimeEnabledFeatureStateRewriter(_AstGrepRewriter):
 
     # Adds the field to an entry that lacks it.
     _ADD_NEW: Final = 'js.add_blink_runtime_enabled_feature_state'
+
+    # Drops the entry's own `status`, whatever shape it takes.
+    _CLEAR_STATUS: Final = 'js.clear_blink_runtime_feature_status'
+
+    # States the `status` an `enabled` value needs, once cleared.
+    _ADD_STATUS: Final = 'js.add_blink_runtime_feature_status'
+
+    # The `status` each value ships the runtime flag with. `disabled` wants no
+    # status at all, so it names none and only the clearing op runs.
+    _STATUS_FOR_VALUE: Final = {'enabled': 'stable'}
 
     @classmethod
     def validate_count(cls, count: int, description: str) -> None:
@@ -2197,24 +2220,41 @@ class JsSetBlinkRuntimeEnabledFeatureStateRewriter(_AstGrepRewriter):
         description: str,
         blank_for_parse: BlankForParseOptions = BlankForParseOptions()
     ) -> tuple[str, list[str]]:
-        # Which op applies turns on whether the entry already declares the
-        # field, so `count` -- already validated as 1 -- says nothing here.
         del count, description
         engine = AstRewriter(RewritersEval.load(),
                              contents,
                              blank_for_parse=blank_for_parse)
-        # Locating the entry first is what tells the two apart. A missing
-        # entry leaves `has_field` False, and the add op then reports the
-        # shortfall through the usual count check.
+
+        # Let's look up for `base_feature_status` first
         entry = engine.first_match(Operation(self.OP_ID, self._inputs))
         source = contents.encode('utf-8')
         has_field = (entry is not None and b'base_feature_status:'
                      in source[entry.start:entry.end])
-        op = Operation(self._SET_EXISTING if has_field else self._ADD_NEW,
-                       self._inputs, MatchExpectation.exactly(1))
-        changes = engine.run(op)
-        error = op.expectation.error_for(changes)
-        return engine.content, [error] if error else []
+
+        operations = [
+            # SET or ADD depending on the result of the previous matcher.
+            Operation(self._SET_EXISTING if has_field else self._ADD_NEW,
+                      self._inputs, MatchExpectation.exactly(1)),
+
+            # Optional: Looks up for where `status` is. For `disable` we do not
+            # need to to do anthing else if nothing is found, as disabling means
+            # deleting `status`.
+            Operation(self._CLEAR_STATUS, self._inputs,
+                      MatchExpectation.optional()),
+        ]
+
+        status = self._STATUS_FOR_VALUE.get(self._inputs['value'])
+        if status:
+            operations.append(
+                Operation(self._ADD_STATUS, self._inputs | {'status': status},
+                          MatchExpectation.exactly(1)))
+
+        errors = []
+        for operation in operations:
+            error = operation.expectation.error_for(engine.run(operation))
+            if error:
+                errors.append(f'{operation.op_id}: {error}')
+        return engine.content, errors
 
 
 # The hand-written rewriters. `_REWRITERS` is assembled from these plus the
