@@ -4935,6 +4935,85 @@ class RewriterFormsTest(unittest.TestCase):
             'does not accept a count other than 1',
             name='validation.gni')
 
+    # -- set_attribute / remove_attribute (real gn binary) ----------------
+
+    _RUST_TARGET = ('rust_static_library("lib") {\n'
+                    '  crate_name = "hashbrown"\n'
+                    '  allow_unsafe = false\n'
+                    '  testonly = true\n}\n')
+
+    def test_set_attribute_overwrites_a_scalar(self):
+        result = self._apply(
+            'set_attr.gn', self._RUST_TARGET, 'substitutions:\n'
+            '  - description: let brave depend on the crate\n'
+            '    set_attribute:\n'
+            '      target: lib\n'
+            '      attribute: allow_unsafe\n'
+            "      value: 'true'\n")
+        self.assertIn('allow_unsafe = true', result)
+        self.assertNotIn('allow_unsafe = false', result)
+
+    def test_set_attribute_creates_one_the_target_lacks(self):
+        result = self._apply(
+            'set_new_attr.gn', 'mojom("bindings") {\n'
+            '  sources = [ "a.mojom" ]\n}\n', 'substitutions:\n'
+            '  - description: generate the legacy bindings\n'
+            '    set_attribute:\n'
+            '      target: bindings\n'
+            '      attribute: generate_legacy_js_bindings\n'
+            "      value: 'true'\n")
+        self.assertIn('generate_legacy_js_bindings = true', result)
+
+    def test_remove_attribute_drops_it(self):
+        result = self._apply(
+            'remove_attr.gn', self._RUST_TARGET, 'substitutions:\n'
+            '  - description: drop testonly\n'
+            '    remove_attribute:\n'
+            '      target: lib\n'
+            '      attribute: testonly\n')
+        self.assertNotIn('testonly', result)
+        self.assertIn('crate_name = "hashbrown"', result)
+
+    def test_remove_attribute_absent_fails(self):
+        # gn edits are idempotent, so nothing changing means the entry has
+        # gone stale rather than succeeded.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'remove_absent.gn',
+                'source_set("lib") {\n  sources = [ "a.cc" ]\n}\n',
+                'substitutions:\n'
+                '  - description: nothing to drop\n'
+                '    remove_attribute:\n'
+                '      target: lib\n'
+                '      attribute: testonly\n')
+        self.assertIn('changed nothing', str(ctx.exception))
+
+    def test_set_attribute_on_a_conditional_is_refused(self):
+        # The note gn leaves in place of the edit must never reach the patch.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'set_conditional.gn', 'source_set("lib") {\n'
+                '  if (is_win) {\n    allow_unsafe = false\n  }\n}\n',
+                'substitutions:\n'
+                '  - description: conditional attribute\n'
+                '    set_attribute:\n'
+                '      target: lib\n'
+                '      attribute: allow_unsafe\n'
+                "      value: 'true'\n")
+        message = str(ctx.exception)
+        self.assertIn('left a note rather than editing', message)
+        self.assertNotIn('TODO(gn edit:', message.replace(
+            'left a note rather than editing', ''))
+
+    def test_remove_attribute_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing attribute\n'
+            '    remove_attribute:\n'
+            '      target: lib\n',
+            'remove_attribute requires arg(s): attribute',
+            name='validation.gn')
+
     # -- validation ---------------------------------------------------------
 
     def test_two_op_keys_rejected(self):
@@ -8289,6 +8368,27 @@ class GnEditSandboxTest(unittest.TestCase):
         # than drawing an error, so this must never regress to an empty file.
         self.assertIn('buildconfig', plaster.GnEditSandbox._DOTFILE_CONTENTS)
 
+    def test_an_ambiguous_edit_is_refused_rather_than_noted(self):
+        # gn does not edit a conditional attribute: it writes a note asking
+        # for the decision to be made by hand, and still reports the file as
+        # changed, so without this the note would land in the patch.
+        conditional = ('source_set("foo") {\n  if (is_win) {\n'
+                       '    testonly = true\n  }\n}\n')
+        with plaster.GnEditSandbox(conditional) as sandbox:
+            with self.assertRaises(plaster.GnEditError) as ctx:
+                sandbox.run(command='remove testonly', pattern='//:foo')
+        self.assertIn('left a note rather than editing', str(ctx.exception))
+
+    def test_a_note_already_in_the_source_is_not_mistaken_for_one(self):
+        # The check is for a note gn added, not one upstream happens to carry.
+        noted = ('source_set("foo") {\n'
+                 '  # TODO(gn edit: something someone left here)\n'
+                 '  deps = [ "//b" ]\n}\n')
+        with plaster.GnEditSandbox(noted) as sandbox:
+            outcome = sandbox.run(command='add deps //brave/x',
+                                  pattern='//:foo')
+        self.assertIn('//brave/x', outcome.contents)
+
     def test_the_root_is_laid_out_for_gn(self):
         with plaster.GnEditSandbox(self._TARGET) as sandbox:
             root = sandbox._build_file.parent
@@ -8638,8 +8738,10 @@ class GnEditSchemaTest(unittest.TestCase):
     def test_the_shipped_ops_validate(self):
         # `load()` validates on construction, so this fails loudly if a
         # shipped op ever drifts from its declared interface.
-        self.assertEqual(sorted(plaster.RewritersEval.load().gn_edits),
-                         ['gn.insert_into_list'])
+        self.assertEqual(
+            sorted(plaster.RewritersEval.load().gn_edits),
+            ['gn.insert_into_list', 'gn.remove_attribute',
+             'gn.set_attribute'])
 
 
 class GnEditRewriterTest(unittest.TestCase):
