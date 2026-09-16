@@ -142,7 +142,12 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       bool is_for_network_service) override;
 
   bool WillInterceptWebSocket(content::RenderFrameHost* frame) override;
-  void CreateWebSocket(
+  // Brave-only CreateWebSocket sibling injected via chromium_src. Unlike
+  // upstream CreateWebSocket, it also receives the initiator renderer's
+  // `process_id` and `initiator_origin` so frameless SharedWorker and
+  // ServiceWorker handshakes (crbug.com/40195467) can still resolve the
+  // BrowserContext and per-site Shields settings.
+  void CreateWebSocketWithFrameId(
       content::RenderFrameHost* frame,
       content::ContentBrowserClient::WebSocketFactory factory,
       const GURL& url,
@@ -151,8 +156,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client,
       content::ContentBrowserClient::WebSocketOptions options,
-      std::optional<int> process_id,
-      std::optional<url::Origin> initiator_origin) override;
+      int process_id,
+      const url::Origin& initiator_origin) override;
 
   void MaybeHideReferrer(content::BrowserContext* browser_context,
                          const GURL& request_url,
@@ -234,8 +239,6 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client,
       content::ContentBrowserClient::WebSocketOptions options,
-      std::optional<int> process_id,
-      std::optional<url::Origin> initiator_origin,
       BraveProxyingWebSocket<T>* proxy);
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>

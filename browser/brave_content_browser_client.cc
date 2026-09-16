@@ -1305,19 +1305,16 @@ void BraveContentBrowserClient::CreateChromeWebSocket(
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
     content::ContentBrowserClient::WebSocketOptions options,
-    std::optional<int> process_id,
-    std::optional<url::Origin> initiator_origin,
     BraveProxyingWebSocket<T>* proxy) {
   if (ChromeContentBrowserClient::WillInterceptWebSocket(frame)) {
     ChromeContentBrowserClient::CreateWebSocket(
         frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
-        user_agent, std::move(handshake_client), std::move(options), process_id,
-        initiator_origin);
+        user_agent, std::move(handshake_client), std::move(options));
   } else {
     proxy->Start(std::move(handshake_client), std::move(options.header_client));
   }
 }
-void BraveContentBrowserClient::CreateWebSocket(
+void BraveContentBrowserClient::CreateWebSocketWithFrameId(
     content::RenderFrameHost* frame,
     content::ContentBrowserClient::WebSocketFactory factory,
     const GURL& url,
@@ -1326,8 +1323,8 @@ void BraveContentBrowserClient::CreateWebSocket(
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
     content::ContentBrowserClient::WebSocketOptions options,
-    std::optional<int> process_id,
-    std::optional<url::Origin> initiator_origin) {
+    int process_id,
+    const url::Origin& initiator_origin) {
   content::BrowserContext* browser_context = nullptr;
   content::GlobalRenderFrameHostToken render_frame_token;
   url::Origin request_initiator;
@@ -1336,9 +1333,9 @@ void BraveContentBrowserClient::CreateWebSocket(
     render_frame_token = frame->GetGlobalFrameToken();
     request_initiator = frame->GetLastCommittedOrigin();
   } else {
-    CHECK(process_id);
-    CHECK(initiator_origin);
-    auto* process = content::RenderProcessHost::FromID(*process_id);
+    // Frameless SharedWorker/ServiceWorker handshake (crbug.com/40195467): use
+    // the initiator renderer's process and origin instead of a RenderFrameHost.
+    auto* process = content::RenderProcessHost::FromID(process_id);
     if (!process) {
       // The initiating renderer is already gone; close the handshake rather
       // than leaving the pipe hanging.
@@ -1348,7 +1345,7 @@ void BraveContentBrowserClient::CreateWebSocket(
       return;
     }
     browser_context = process->GetBrowserContext();
-    request_initiator = *initiator_origin;
+    request_initiator = initiator_origin;
   }
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -1369,7 +1366,7 @@ void BraveContentBrowserClient::CreateWebSocket(
         std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<base::WeakPtr>(
         frame, url, site_for_cookies, user_agent, std::move(handshake_client),
-        std::move(options), process_id, initiator_origin, proxy);
+        std::move(options), proxy);
   } else {
     // Ignore shared_ptr presubmit error, this is old code we are trying to
     // convert to unique_ptr/WeakPtr
@@ -1379,8 +1376,7 @@ void BraveContentBrowserClient::CreateWebSocket(
             std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<std::shared_ptr>(  // nocheck
         frame, url, site_for_cookies,        // nocheck
-        user_agent, std::move(handshake_client), std::move(options), process_id,
-        initiator_origin, proxy);
+        user_agent, std::move(handshake_client), std::move(options), proxy);
   }
 }
 

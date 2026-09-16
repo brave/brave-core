@@ -14,8 +14,8 @@ substitutions:
     regex:
       re_pattern:
         '(void
-        WebSocketConnectorImpl::Connect\b.*?GetContentClient\(\)->browser\(\)->CreateWebSocket\([^;]*?)(\);)'
+        WebSocketConnectorImpl::Connect\b.*?GetContentClient\(\)->browser\(\)->)CreateWebSocket(\([^;]*?)(\);)'
       re_flags: [DOTALL]
       replace: |-
-        \1,
-                frame_id_.child_id.value(), origin_\2
+        \1CreateWebSocketWithFrameId\2,
+                frame_id_.child_id.value(), origin_\3
