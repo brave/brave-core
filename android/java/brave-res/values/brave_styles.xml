@@ -443,11 +443,6 @@
         <item name="android:textColor">@color/systemfeedback_error_text</item>
     </style>
 
-    <style name="TextAppearance.Brave.PreferenceTitle.Tertiary"
-           parent="TextAppearance.TextLarge.Primary">
-        <item name="android:textColor">@color/text_tertiary</item>
-    </style>
-
     <style name="TextAppearance.Brave.PreferenceTitle.TextButton"
            parent="TextAppearance.TextLarge.Primary">
         <item name="android:textColor">?attr/globalTextButtonTextColor</item>
