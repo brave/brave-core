@@ -4252,6 +4252,73 @@ class RewriterFormsTest(unittest.TestCase):
             'add_literal_to_list `conditional` must be a non-empty string',
             name='validation.gn')
 
+    def test_add_literal_to_list_assume_defined_closes_the_body(self):
+        # `configs` is populated by `set_defaults`, so the target carries it
+        # without assigning it; creating it would drop the default compiler
+        # configs, and the flag says to append instead.
+        result = self._apply(
+            'assume_configs.gn', 'static_library("version_info") {\n'
+            '  deps = [\n    "//base",\n  ]\n}\n', 'substitutions:\n'
+            '  - description: add the brave version config\n'
+            '    add_literal_to_list:\n'
+            '      target: version_info\n'
+            '      list_name: configs\n'
+            '      literal: \'[ "//brave/build:version" ]\'\n'
+            '      assume_defined: true\n')
+        self.assertEqual(
+            result, 'static_library("version_info") {\n'
+            '  deps = [\n    "//base",\n  ]\n'
+            '  configs += [ "//brave/build:version" ]\n}\n')
+
+    def test_add_literal_to_list_assume_defined_after_a_conditional(self):
+        # The body ends in an `if`/`else` chain, and the append closes the
+        # body rather than landing inside either branch.
+        result = self._apply(
+            'assume_after_if.gn', 'source_set("channel_info") {\n'
+            '  if (is_win) {\n    sources += [ "w.cc" ]\n'
+            '  } else if (is_posix) {\n    sources += [ "p.cc" ]\n  }\n}\n',
+            'substitutions:\n'
+            '  - description: add the brave channel info\n'
+            '    add_literal_to_list:\n'
+            '      target: channel_info\n'
+            '      list_name: public_deps\n'
+            '      literal: \'[ "//brave/common:channel_info" ]\'\n'
+            '      assume_defined: true\n')
+        self.assertEqual(
+            result, 'source_set("channel_info") {\n'
+            '  if (is_win) {\n    sources += [ "w.cc" ]\n'
+            '  } else if (is_posix) {\n    sources += [ "p.cc" ]\n  }\n'
+            '  public_deps += [ "//brave/common:channel_info" ]\n}\n')
+
+    def test_add_literal_to_list_assume_defined_ignores_the_assignment(self):
+        # The flag anchors on the body's end whether or not the target
+        # assigns the list, so the placement does not depend on the file.
+        result = self._apply(
+            'assume_assigned.gn', 'source_set("b") {\n'
+            '  deps = [ "//base" ]\n  sources = [ "a.cc" ]\n}\n',
+            'substitutions:\n'
+            '  - description: append at the end of the body\n'
+            '    add_literal_to_list:\n'
+            '      target: b\n'
+            '      list_name: deps\n'
+            '      literal: brave_extra_deps\n'
+            '      assume_defined: true\n')
+        self.assertEqual(
+            result, 'source_set("b") {\n  deps = [ "//base" ]\n'
+            '  sources = [ "a.cc" ]\n  deps += brave_extra_deps\n}\n')
+
+    def test_add_literal_to_list_assume_defined_must_be_a_boolean(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: flag as a string\n'
+            '    add_literal_to_list:\n'
+            '      target: browser\n'
+            '      list_name: configs\n'
+            '      literal: brave_configs\n'
+            "      assume_defined: 'yes'\n",
+            'add_literal_to_list `assume_defined` must be a boolean',
+            name='validation.gn')
+
     def test_add_literal_to_list_target_declared_twice_fails(self):
         # GN lets one name be declared once per `if`/`else` branch, and
         # nothing here can tell which branch the literal belongs in -- editing
@@ -4342,6 +4409,263 @@ class RewriterFormsTest(unittest.TestCase):
             '      literal: brave_extra_deps\n',
             'does not accept a count other than 1',
             name='validation.gn')
+
+    # -- add/subtract_literal_from_variable (real ast-grep binary) ----------
+
+    def test_add_literal_to_variable_appends_after_the_assignment(self):
+        result = self._apply(
+            'var_add.gni', 'sync_protocol_sources = [\n'
+            '  "wifi_configuration_specifics.proto",\n]\n',
+            'substitutions:\n'
+            '  - description: add the brave sync sources\n'
+            '    add_literal_to_variable:\n'
+            '      variable: sync_protocol_sources\n'
+            '      literal: brave_sync_protocol_sources\n')
+        self.assertEqual(
+            result, 'sync_protocol_sources = [\n'
+            '  "wifi_configuration_specifics.proto",\n]\n'
+            'sync_protocol_sources += brave_sync_protocol_sources\n')
+
+    def test_add_literal_to_variable_adds_the_import(self):
+        result = self._apply(
+            'var_import.gni', self._GN_HEADER + 'visibility = [ "//a:*" ]\n',
+            'substitutions:\n'
+            '  - description: widen the visibility\n'
+            '    add_literal_to_variable:\n'
+            '      variable: visibility\n'
+            '      literal: brave_visibility\n'
+            '      import: //brave/visibility.gni\n')
+        self.assertEqual(
+            result, self._GN_HEADER + 'import("//brave/visibility.gni")\n\n'
+            'visibility = [ "//a:*" ]\nvisibility += brave_visibility\n')
+
+    def test_add_literal_to_variable_ignores_a_target_scoped_name(self):
+        # An attribute of the same name inside a target is not a file-scope
+        # variable, and is what `add_literal_to_list` is for.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'var_target.gn',
+                'source_set("t") {\n  visibility = [ "//a:*" ]\n}\n',
+                'substitutions:\n'
+                '  - description: not a file-scope variable\n'
+                '    add_literal_to_variable:\n'
+                '      variable: visibility\n'
+                '      literal: brave_visibility\n')
+        self.assertIn('found no file-scope assignment', str(ctx.exception))
+
+    def test_add_literal_to_variable_unassigned_here_fails(self):
+        # The variable arrives through an `import()` and is only appended to,
+        # so there is no assignment to anchor the append after.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'var_imported.gni',
+                'import("//chrome/android/chrome_java_sources.gni")\n\n'
+                'if (enable_arcore) {\n'
+                '  chrome_java_sources += [ "C.java" ]\n}\n',
+                'substitutions:\n'
+                '  - description: no assignment in this file\n'
+                '    add_literal_to_variable:\n'
+                '      variable: chrome_java_sources\n'
+                '      literal: brave_java_sources\n')
+        self.assertIn('found no file-scope assignment', str(ctx.exception))
+
+    def test_add_literal_to_variable_assume_defined(self):
+        # The variable arrives through an `import()`, so the flag names the
+        # import block as the anchor instead of an assignment.
+        result = self._apply(
+            'var_assume_defined.gni',
+            'import("//build/config/android/config.gni")\n'
+            'import("//chrome/android/chrome_java_sources.gni")\n\n'
+            '# Only used for testing.\nif (enable_offline_pages_harness) {\n'
+            '  chrome_java_sources += [ "B.java" ]\n}\n',
+            'substitutions:\n'
+            '  - description: add the brave java sources\n'
+            '    add_literal_to_variable:\n'
+            '      variable: chrome_java_sources\n'
+            '      literal: brave_java_sources\n'
+            '      assume_defined: true\n')
+        self.assertEqual(
+            result, 'import("//build/config/android/config.gni")\n'
+            'import("//chrome/android/chrome_java_sources.gni")\n'
+            'chrome_java_sources += brave_java_sources\n\n'
+            '# Only used for testing.\nif (enable_offline_pages_harness) {\n'
+            '  chrome_java_sources += [ "B.java" ]\n}\n')
+
+    def test_add_literal_to_variable_without_the_flag_names_it(self):
+        # The same file without the flag is refused, and the error says which
+        # flag would place the append.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'var_needs_flag.gni',
+                'import("//chrome/android/chrome_java_sources.gni")\n\n'
+                'if (enable_arcore) {\n'
+                '  chrome_java_sources += [ "C.java" ]\n}\n',
+                'substitutions:\n'
+                '  - description: no assignment and no flag\n'
+                '    add_literal_to_variable:\n'
+                '      variable: chrome_java_sources\n'
+                '      literal: brave_java_sources\n')
+        self.assertIn('needs `assume_defined: true`', str(ctx.exception))
+
+    def test_add_literal_to_variable_assume_defined_without_imports(self):
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'var_no_imports.gni', 'chrome_java_sources = [ "A.java" ]\n',
+                'substitutions:\n'
+                '  - description: flagged but nothing to anchor on\n'
+                '    add_literal_to_variable:\n'
+                '      variable: chrome_java_sources\n'
+                '      literal: brave_java_sources\n'
+                '      assume_defined: true\n')
+        self.assertIn('found no `import()` to append after', str(ctx.exception))
+
+    def test_add_literal_to_variable_assume_defined_must_be_a_boolean(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: flag as a string\n'
+            '    add_literal_to_variable:\n'
+            '      variable: chrome_java_sources\n'
+            '      literal: brave_java_sources\n'
+            "      assume_defined: 'yes'\n",
+            'add_literal_to_variable `assume_defined` must be a boolean',
+            name='validation.gni')
+
+    def test_subtract_literal_from_variable_rejects_assume_defined(self):
+        # Where a subtraction sits changes the result, so it does not offer
+        # the flag.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: flag on the wrong rewriter\n'
+            '    subtract_literal_from_variable:\n'
+            '      variable: chrome_java_sources\n'
+            '      literal: brave_excluded_java_sources\n'
+            '      assume_defined: true\n',
+            "Unrecognised subtract_literal_from_variable arg(s): "
+            "'assume_defined'",
+            name='validation.gni')
+
+    def test_subtract_literal_from_variable_subtracts(self):
+        result = self._apply(
+            'var_sub.gni', 'extended_locales = [\n  "zu",\n]\n',
+            'substitutions:\n'
+            '  - description: drop the locales brave does not ship\n'
+            '    subtract_literal_from_variable:\n'
+            '      variable: extended_locales\n'
+            '      literal: brave_extended_locales_exclusions\n')
+        self.assertEqual(
+            result, 'extended_locales = [\n  "zu",\n]\n'
+            'extended_locales -= brave_extended_locales_exclusions\n')
+
+    def test_subtract_literal_from_variable_later_addition_fails(self):
+        # Anything adding to the list further down would undo a subtraction
+        # placed after the assignment, so the placement is not guessed.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'var_sub_later.gni', 'chrome_java_sources = [\n'
+                '  "A.java",\n]\n\nif (enable_screen_capture) {\n'
+                '  chrome_java_sources += [ "B.java" ]\n}\n',
+                'substitutions:\n'
+                '  - description: subtract with a later addition\n'
+                '    subtract_literal_from_variable:\n'
+                '      variable: chrome_java_sources\n'
+                '      literal: brave_excluded_java_sources\n')
+        self.assertIn('modified again below its assignment',
+                      str(ctx.exception))
+
+    def test_subtract_literal_from_variable_ignores_a_prefix_collision(self):
+        # `chrome_java_sources_extra` is a different variable, so it must not
+        # trip the later-modification guard.
+        result = self._apply(
+            'var_prefix.gni', 'chrome_java_sources = [\n  "A.java",\n]\n'
+            'chrome_java_sources_extra += [ "X.java" ]\n', 'substitutions:\n'
+            '  - description: subtract despite the similarly named variable\n'
+            '    subtract_literal_from_variable:\n'
+            '      variable: chrome_java_sources\n'
+            '      literal: brave_excluded_java_sources\n')
+        self.assertEqual(
+            result, 'chrome_java_sources = [\n  "A.java",\n]\n'
+            'chrome_java_sources -= brave_excluded_java_sources\n'
+            'chrome_java_sources_extra += [ "X.java" ]\n')
+
+    def test_add_literal_to_variable_count_other_than_one_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 2\n'
+            '    add_literal_to_variable:\n'
+            '      variable: visibility\n'
+            '      literal: brave_visibility\n',
+            'does not accept a count other than 1',
+            name='validation.gni')
+
+    def test_add_literal_to_variable_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing literal\n'
+            '    add_literal_to_variable:\n'
+            '      variable: visibility\n',
+            'add_literal_to_variable requires arg(s): literal',
+            name='validation.gni')
+
+    def test_add_literal_to_variable_rejects_a_target_field(self):
+        # `target:` belongs to `add_literal_to_list`; this rewriter is for the
+        # variables that have no target.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: target is not a field here\n'
+            '    add_literal_to_variable:\n'
+            '      target: browser\n'
+            '      variable: visibility\n'
+            '      literal: brave_visibility\n',
+            "Unrecognised add_literal_to_variable arg(s): 'target'",
+            name='validation.gni')
+
+    # -- add_import (real ast-grep binary) --------------------------------
+
+    def test_add_import_adds_below_the_copyright(self):
+        result = self._apply(
+            'bare_import.gni', self._GN_HEADER +
+            'import("//build/config/chrome_build.gni")\n\nfoo = 1\n',
+            'substitutions:\n'
+            "  - description: make Brave's build config available\n"
+            '    add_import:\n'
+            '      import: //brave/build/config/brave_build.gni\n')
+        self.assertEqual(
+            result, self._GN_HEADER +
+            'import("//brave/build/config/brave_build.gni")\n'
+            'import("//build/config/chrome_build.gni")\n\nfoo = 1\n')
+
+    def test_add_import_already_present_fails(self):
+        # Adding the import is the whole substitution, so a file that already
+        # carries it means the entry has nothing left to do.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'import_twice.gni',
+                'import("//brave/build/config/brave_build.gni")\n\nfoo = 1\n',
+                'substitutions:\n'
+                '  - description: already imported\n'
+                '    add_import:\n'
+                '      import: //brave/build/config/brave_build.gni\n')
+        self.assertIn('already imported', str(ctx.exception))
+
+    def test_add_import_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    add_import:\n'
+            '      path: //brave/build/config/brave_build.gni\n',
+            "Unrecognised add_import arg(s): 'path'",
+            name='validation.gni')
+
+    def test_add_import_count_other_than_one_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 0\n'
+            '    add_import:\n'
+            '      import: //brave/build/config/brave_build.gni\n',
+            'does not accept a count other than 1',
+            name='validation.gni')
 
     # -- validation ---------------------------------------------------------
 

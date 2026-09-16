@@ -2248,6 +2248,8 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
           e.g. `is_android`. It is appended inside the target's own
           `if (<condition>)`, or that conditional is added after the list's
           assignment when the target does not have it.
+        - `assume_defined` — optional flag indicating that the attribute has
+          been defined elsewhere, always using `+=` for assignment.
 
         Example:
 
@@ -2287,6 +2289,10 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
     # Adds that conditional, for a target that does not have it yet.
     _ASSIGN_CONDITIONAL: Final = 'gn.assign_conditional_literal_to_list'
 
+    # Appends at the end of the target's body, for an attribute defined
+    # outside the file rather than assigned in it.
+    _APPEND_TO_BODY: Final = 'gn.append_literal_to_body'
+
     # Adds the optional `import()` line at the top of the file.
     _ADD_IMPORT: Final = 'gn.add_import'
 
@@ -2298,15 +2304,20 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
     _ANY_CONDITION: Final = '.'
 
     def __init__(self, *, target: str, list_name: str, literal: str,
-                 import_path: str, conditional: str):
+                 import_path: str, conditional: str, assume_defined: bool):
         super().__init__()
         self._target = target
         self._list_name = list_name
         self._literal = literal
+
         # Empty when the plaster entry gave no `import:`.
         self._import_path = import_path
+
         # Empty when the plaster entry gave no `conditional:`.
         self._conditional = conditional
+
+        # True when the entry vouches for the attribute already existing.
+        self._assume_defined = assume_defined
 
     @classmethod
     def validate_count(cls, count: int, description: str) -> None:
@@ -2363,6 +2374,17 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
     def _add_direct_literal(self, engine: AstRewriter, inputs: dict[str, str],
                             body: AstMatch) -> str | None:
         """Add the literal to the target's body itself; a failure, or None."""
+        if self._assume_defined:
+            # Vouched for as existing, so nothing is created and the append
+            # closes the body, adding to whatever the attribute already holds.
+            op = Operation(
+                self._APPEND_TO_BODY, {
+                    **inputs,
+                    'literal': self._literal,
+                    'indent': self._indent_at(engine, body.end - 1),
+                }, MatchExpectation.exactly(1))
+            return op.expectation.error_for(engine.run(op))
+
         anchor = engine.first_match(Operation(self._APPEND_EXISTING, inputs))
         if anchor is not None:
             # The `+=` opens the line below the assignment, at its column.
@@ -2452,39 +2474,8 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
             assigns.search(source[block.start:block.end]) for block in blocks)
 
     def _add_import(self, engine: AstRewriter) -> str | None:
-        """Add the optional `import()` to the file; a failure, or None.
-
-        A no-op when the entry named no import, or when the file already has
-        that exact line.
-        """
-        if not self._import_path:
-            return None
-        if f'import("{self._import_path}")' in engine.content:
-            return None
-        # The matcher reads no inputs of its own, so the separator this lookup
-        # carries is a placeholder for the one settled on below.
-        anchor = engine.first_match(
-            Operation(self._ADD_IMPORT, {
-                'import': self._import_path,
-                'separator': '',
-            }))
-        if anchor is None:
-            return (f'{self.NAME} found no statement to import '
-                    f'{self._import_path!r} above')
-        # An import joins the file's existing import block rather than being
-        # split off from it by a blank line, so the separator is only for the
-        # case where the statement below is code.
-        source = engine.content.encode('utf-8')
-        first_statement = source[anchor.start:anchor.end]
-        joins_imports = re.match(rb'import\s*\(', first_statement)
-        op = Operation(
-            self._ADD_IMPORT, {
-                'import': self._import_path,
-                'separator': '' if joins_imports else '\n',
-            }, MatchExpectation.exactly(1))
-        error = op.expectation.error_for(engine.run(op))
-        return (f'{self.NAME} could not import {self._import_path!r}: '
-                f'{error}') if error else None
+        """Add the entry's optional `import()`; a failure, or None."""
+        return _add_gn_import(engine, self._import_path, self.NAME)
 
     @staticmethod
     def _indent_at(engine: AstRewriter, position: int) -> str:
@@ -2504,7 +2495,8 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
                 f'"{cls.NAME}" must be a mapping (in "{description}")')
         required = {'target', 'list_name', 'literal'}
         optional = {'import', 'conditional'}
-        unknown = sorted(set(body) - required - optional)
+        flags = {'assume_defined'}
+        unknown = sorted(set(body) - required - optional - flags)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
@@ -2524,12 +2516,387 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
             if not isinstance(value, str) or (key in body and not value):
                 raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
                                  f'string (in "{description}")')
+        assume_defined = body.get('assume_defined', False)
+        # A flag is a flag: a truthy string would read as one in YAML while
+        # meaning nothing here, so only a real boolean is taken.
+        if not isinstance(assume_defined, bool):
+            raise ValueError(f'{cls.NAME} `assume_defined` must be a boolean '
+                             f'(in "{description}")')
         return cls(target=body['target'],
                    list_name=body['list_name'],
                    literal=body['literal'],
                    import_path=body.get('import', ''),
-                   conditional=body.get('conditional', ''))
+                   conditional=body.get('conditional', ''),
+                   assume_defined=assume_defined)
 
+
+def _add_gn_import(engine: AstRewriter, import_path: str,
+                   rewriter_name: str) -> str | None:
+    """Add `import_path` to the top of a gn file; a failure, or None.
+
+    No-op when the import already exists.
+    """
+    if not import_path:
+        return None
+    if f'import("{import_path}")' in engine.content:
+        return None
+    # The matcher reads no inputs of its own, so the separator this lookup
+    # carries is a placeholder for the one settled on below.
+    add_import = 'gn.add_import'
+    anchor = engine.first_match(
+        Operation(add_import, {
+            'import': import_path,
+            'separator': '',
+        }))
+    if anchor is None:
+        return (f'{rewriter_name} found no statement to import '
+                f'{import_path!r} above')
+    # An import joins the file's existing import block rather than being split
+    # off from it by a blank line, so the separator is only for the case where
+    # the statement below is code.
+    source = engine.content.encode('utf-8')
+    first_statement = source[anchor.start:anchor.end]
+    joins_imports = re.match(rb'import\s*\(', first_statement)
+    op = Operation(
+        add_import, {
+            'import': import_path,
+            'separator': '' if joins_imports else '\n',
+        }, MatchExpectation.exactly(1))
+    error = op.expectation.error_for(engine.run(op))
+    return (f'{rewriter_name} could not import {import_path!r}: '
+            f'{error}') if error else None
+
+
+class _GnVariableRewriter(_AstGrepRewriter):
+    """Base for the rewriters editing a file-scope gn list variable.
+
+    Check subclasses for ops that adds or subtracts, and may reject a placement
+    its operator cannot make safely.
+    """
+
+    # The optional string fields every variable rewriter takes.
+    _OPTIONAL_STRINGS: ClassVar[frozenset[str]] = frozenset({'import'})
+
+    # Optional boolean fields, which a subclass declares and reads itself.
+    _OPTIONAL_FLAGS: ClassVar[frozenset[str]] = frozenset()
+
+    def __init__(self, *, variable: str, literal: str, import_path: str):
+        super().__init__()
+        self._variable = variable
+        self._literal = literal
+
+        # Empty when the plaster entry gave no `import:`.
+        self._import_path = import_path
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # The literal is applied exactly once, so no other count means
+        # anything here.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} applies the literal exactly once '
+                             f'and does not accept a count other than 1 '
+                             f'(in "{description}")')
+
+    def apply(
+        self,
+        contents: str,
+        *,
+        count: int,
+        description: str,
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+    ) -> tuple[str, list[str]]:
+        del count  # Rejected by `validate_count`. Always applies once.
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
+        error = (self._apply_literal(engine)
+                 or _add_gn_import(engine, self._import_path, self.NAME))
+        return engine.content, [f'{error} (in "{description}")'
+                                ] if error else []
+
+    def _apply_literal(self, engine: AstRewriter) -> str | None:
+        """Add or subtract the literal."""
+        inputs = {'variable': self._variable}
+        op_id = self._anchor_op()
+        assignments = engine.matches(Operation(op_id, inputs))
+        if not assignments:
+            return self._no_anchor_error()
+        if len(assignments) > 1:
+            return (f'{self.NAME} found {len(assignments)} file-scope '
+                    f'assignments of {self._variable!r} and cannot tell '
+                    f'which one the literal belongs after')
+        # A file-scope assignment opens its own line, so the statement added
+        # after it needs no indentation to match.
+        op = Operation(op_id, {
+            **inputs,
+            'literal': self._literal,
+        }, MatchExpectation.exactly(1))
+        return op.expectation.error_for(engine.run(op))
+
+    def _anchor_op(self) -> str:
+        """The op whose matcher locates what the statement is added after."""
+        return self.OP_ID
+
+    def _no_anchor_error(self) -> str:
+        """The failure for a file offering nothing to anchor on."""
+        return (f'{self.NAME} found no file-scope assignment of '
+                f'{self._variable!r} to follow')
+
+    def _modified_after(self, engine: AstRewriter,
+                        assignment: AstMatch) -> bool:
+        """Whether anything later in the file assigns the variable again.
+
+        Read as text rather than matched, since a later modification counts
+        wherever it sits, commonly inside one of the conditionals a `.gni`
+        collects a list through, which is not a file-scope statement at all.
+        """
+        later = re.compile(r'(?<![A-Za-z0-9_])' + re.escape(self._variable) +
+                           r'(?![A-Za-z0-9_])\s*[-+]?=')
+        return bool(later.search(engine.content[assignment.end:]))
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> _GnVariableRewriter:
+        """Validate the rewriter's body of string args."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        required = {'variable', 'literal'}
+        optional = cls._OPTIONAL_STRINGS
+        unknown = sorted(set(body) - required - optional -
+                         cls._OPTIONAL_FLAGS)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(required - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        for key in sorted(required | optional):
+            value = body.get(key, '')
+            if not isinstance(value, str) or (key in body and not value):
+                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
+                                 f'string (in "{description}")')
+        flags = {}
+        for key in sorted(cls._OPTIONAL_FLAGS):
+            value = body.get(key, False)
+            # A flag is a flag: a truthy string would read as one in YAML
+            # while meaning nothing here, so only a real boolean is taken.
+            if not isinstance(value, bool):
+                raise ValueError(f'{cls.NAME} `{key}` must be a boolean '
+                                 f'(in "{description}")')
+            flags[key] = value
+        return cls(variable=body['variable'],
+                   literal=body['literal'],
+                   import_path=body.get('import', ''),
+                   **flags)
+
+
+class GnAddLiteralToVariableRewriter(_GnVariableRewriter):
+    """Appends a literal to a file-scope gn list variable."""
+
+    NAME: Final = 'add_literal_to_variable'
+    OP_ID: Final = 'gn.append_literal_to_variable'
+    SUMMARY: Final = 'Append a literal to a file-scope gn list variable.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Appends a literal to a file-scope gn list variable.
+
+        Fields:
+
+        - `variable` — the file-scope variable to append to, e.g.
+          `sync_protocol_sources`.
+        - `literal` — the value to append, typically a `.gni` variable name.
+        - `import` — optional path to `import()`, if `literal` comes from a
+          `.gni` the file does not already import. Added at the top of the
+          file if not present.
+
+        - `assume_defined` — optional flag indicating that a variable is asusmed
+          to have been defined elsewhere, always using `+=` for assignment.
+          Without it the variable has to be assigned by the file being patched.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Add the Brave sync protocol sources.
+            add_literal_to_variable:
+              variable: sync_protocol_sources
+              literal: brave_sync_protocol_sources
+              import: //brave/components/sync/protocol/protocol_sources.gni
+        ```
+
+        ```diff
+         sync_protocol_sources = [
+           "wifi_configuration_specifics.proto",
+         ]
+        +sync_protocol_sources += brave_sync_protocol_sources
+        ```
+    """
+
+    # Appends below the imports, for a variable defined outside this file.
+    _BELOW_IMPORTS: Final = 'gn.append_literal_after_imports'
+
+    _OPTIONAL_FLAGS: ClassVar[frozenset[str]] = frozenset({'assume_defined'})
+
+    def __init__(self, *, assume_defined: bool = False, **kwargs):
+        super().__init__(**kwargs)
+        self._assume_defined = assume_defined
+
+    def _anchor_op(self) -> str:
+        return self._BELOW_IMPORTS if self._assume_defined else self.OP_ID
+
+    def _no_anchor_error(self) -> str:
+        if self._assume_defined:
+            return f'{self.NAME} found no `import()` to append after'
+        return (f'{self.NAME} found no file-scope assignment of '
+                f'{self._variable!r} to follow; a variable defined elsewhere, '
+                f'as by an `import()`, needs `assume_defined: true`')
+
+
+class GnSubtractLiteralFromVariableRewriter(_GnVariableRewriter):
+    """Subtracts a literal from a file-scope gn list variable."""
+
+    NAME: Final = 'subtract_literal_from_variable'
+    OP_ID: Final = 'gn.subtract_literal_from_variable'
+    SUMMARY: Final = 'Subtract a literal from a file-scope gn list variable.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Subtracts `variable -= literal` from a gn list.
+
+        Unlike an append, where a subtraction sits matters: anything that adds
+        the value back further down the file would undo it. So a file that
+        modifies the variable again after its assignment is refused rather
+        than subtracted from in the wrong place.
+
+        Fields:
+
+        - `variable` — the file-scope variable to subtract from, e.g.
+          `extended_locales`.
+        - `literal` — the value to subtract, typically a `.gni` variable name.
+        - `import` — optional path to `import()`, if `literal` comes from a
+          `.gni` the file does not already import. Added at the top of the
+          file if not present.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Drop the locales Brave does not ship.
+            subtract_literal_from_variable:
+              variable: extended_locales
+              literal: brave_extended_locales_exclusions
+              import: //brave/build/config/locales.gni
+        ```
+
+        ```diff
+         extended_locales = [
+           "zu",
+         ]
+        +extended_locales -= brave_extended_locales_exclusions
+        ```
+    """
+
+    def _apply_literal(self, engine: AstRewriter) -> str | None:
+        """Subtract the literal, unless something adds it back afterwards."""
+        assignment = engine.first_match(
+            Operation(self.OP_ID, {'variable': self._variable}))
+        if assignment is not None and self._modified_after(engine, assignment):
+            return (f'{self.NAME} found {self._variable!r} modified again '
+                    f'below its assignment, so subtracting there could be '
+                    f'undone by whatever adds to it after; that placement '
+                    f'has to be chosen by hand')
+        return super()._apply_literal(engine)
+
+
+class GnAddImportRewriter(_AstGrepRewriter):
+    """Adds an `import()` to the top of a gn file.
+
+    The same import the other gn rewriters add alongside their own edit, for
+    the cases where making a `.gni` visible is the whole change.
+    """
+
+    NAME: Final = 'add_import'
+    OP_ID: Final = 'gn.add_import'
+    SUMMARY: Final = 'Add an `import()` to the top of a gn file.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Adds an `import()` at the top of a `.gn`/`.gni` file, if needed.
+
+        Fields:
+
+        - `import` — the path to import, e.g.
+          `//brave/build/config/brave_build.gni`.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Make Brave's build config available to Chromium.
+            add_import:
+              import: //brave/build/config/brave_build.gni
+        ```
+
+        ```diff
+         # found in the LICENSE file.
+
+        +import("//brave/build/config/brave_build.gni")
+         import("//build/config/chrome_build.gni")
+        ```
+    """
+
+    def __init__(self, *, import_path: str):
+        super().__init__()
+        self._import_path = import_path
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # The import is added once, so no other count means anything here.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} adds the import exactly once and '
+                             f'does not accept a count other than 1 '
+                             f'(in "{description}")')
+
+    def apply(
+        self,
+        contents: str,
+        *,
+        count: int,
+        description: str,
+        blank_for_parse: BlankForParseOptions = BlankForParseOptions()
+    ) -> tuple[str, list[str]]:
+        del count  # Rejected by `validate_count`; always applies once.
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
+        # Where the other gn rewriters treat an import already present as
+        # nothing to do, here it is the substitution's only job, so a file
+        # that has it means the entry has gone stale.
+        if f'import("{self._import_path}")' in contents:
+            return contents, [
+                f'{self.NAME} found {self._import_path!r} already imported '
+                f'(in "{description}")'
+            ]
+        error = _add_gn_import(engine, self._import_path, self.NAME)
+        return engine.content, [f'{error} (in "{description}")'
+                                ] if error else []
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> GnAddImportRewriter:
+        """Validate an `add_import:` body."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        unknown = sorted(set(body) - {'import'})
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        import_path = body.get('import')
+        if not isinstance(import_path, str) or not import_path:
+            raise ValueError(f'{cls.NAME} `import` must be a non-empty '
+                             f'string (in "{description}")')
+        return cls(import_path=import_path)
 
 # The hand-written rewriters. `_REWRITERS` is assembled from these plus the
 # ones generated from `rewriters.pyl` for `RegexMacro`.
@@ -2542,7 +2909,10 @@ _DECLARED_REWRITERS: Final = (AllRegexRewriter, CxxMakeVirtualRewriter,
                               CxxAddToPublicRewriter,
                               CxxAddEnumEntriesRewriter,
                               JsSetBlinkRuntimeEnabledFeatureStateRewriter,
-                              GnAddLiteralToListRewriter)
+                              GnAddLiteralToListRewriter,
+                              GnAddLiteralToVariableRewriter,
+                              GnSubtractLiteralFromVariableRewriter,
+                              GnAddImportRewriter)
 
 
 class RewriterRegistry:
