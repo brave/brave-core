@@ -11,6 +11,8 @@ source_set("os_crypt") {
     "//brave/browser/os_crypt/dpapi_risk.h",
     "//brave/browser/os_crypt/key_backup.cc",
     "//brave/browser/os_crypt/key_backup.h",
+    "//brave/browser/os_crypt/storage_durability.cc",
+    "//brave/browser/os_crypt/storage_durability.h",
   ]
 
   deps = [
@@ -26,6 +28,7 @@ source_set("unit_tests") {
   sources = [
     "//brave/browser/os_crypt/dpapi_risk_unittest.cc",
     "//brave/browser/os_crypt/key_backup_unittest.cc",
+    "//brave/browser/os_crypt/storage_durability_unittest.cc",
   ]
 
   deps = [

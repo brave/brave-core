@@ -117,6 +117,7 @@
 #if BUILDFLAG(IS_WIN)
 #include "brave/browser/os_crypt/dpapi_risk.h"
 #include "brave/browser/os_crypt/key_backup.h"
+#include "brave/browser/os_crypt/storage_durability.h"
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
 
@@ -299,6 +300,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   windows_recall::RegisterLocalStatePrefs(registry);
   brave::RegisterDPAPIRiskLocalStatePrefs(registry);
   brave::RegisterOSCryptKeyBackupLocalStatePrefs(registry);
+  brave::RegisterStorageDurabilityLocalStatePrefs(registry);
 #endif
 
 #if BUILDFLAG(ENABLE_OMAHA4)

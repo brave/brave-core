@@ -20,6 +20,7 @@
 #include "base/path_service.h"
 #include "brave/browser/os_crypt/dpapi_risk.h"
 #include "brave/browser/os_crypt/key_backup.h"
+#include "brave/browser/os_crypt/storage_durability.h"
 #include "chrome/common/chrome_paths.h"
 #endif
 
@@ -87,12 +88,16 @@ void BraveBrowserMainExtraParts::PostBrowserStart() {
   g_brave_browser_process->StartBraveServices();
 
 #if BUILDFLAG(IS_WIN)
-  // Both of these block, so they run on pool tasks from here rather
-  // than anywhere on the startup path.
+  // These all block, so they run on pool tasks from here rather than
+  // anywhere on the startup path.
   brave::RecordDPAPIRiskSignals(g_browser_process->local_state());
 
   brave::BackUpOSCryptKey(base::PathService::CheckedGet(chrome::DIR_USER_DATA),
                           g_browser_process->local_state());
+
+  brave::RecordStorageDurability(
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA),
+      g_browser_process->local_state());
 #endif  // BUILDFLAG(IS_WIN)
 }
 
