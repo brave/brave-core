@@ -302,8 +302,10 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
   EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.inputs[1].note.amount,
             80000u);
 
+  // Max amount, so there is no change output (asserted above). Actions =
+  // max(0, 1) + (spends(2) + outputs(0)) = 3.
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount,
-            70000u + 80000u - 4 * 5000u);
+            70000u + 80000u - 3 * 5000u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address,
             kTransparentAddress);
 }
@@ -432,8 +434,10 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
   EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.inputs[1].note.amount,
             80000000000u);
 
+  // Max amount, so there is no change output (asserted above). Actions =
+  // max(0, 1) + (spends(2) + outputs(0)) = 3.
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount,
-            70000000000u + 80000000000u - 4 * 5000u);
+            70000000000u + 80000000000u - 3 * 5000u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address,
             kTransparentAddress);
 }

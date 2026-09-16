@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/zcash/zcash_create_transparent_to_ironwood_transaction_task.h"
 
+#include <cstdint>
 #include <memory>
 #include <utility>
 #include <vector>
@@ -185,8 +186,9 @@ TEST_F(ZCashCreateTransparentToIronwoodTransactionTaskTest,
   EXPECT_EQ(tx_result.value().transparent_part().inputs.size(), 1u);
   EXPECT_EQ(tx_result.value().transparent_part().inputs[0].utxo_value, 60000u);
 
-  // fee = CalculateZCashTxFee(1 transparent input, 0 orchard input,
-  // kOrchard) = max(2, max(1,1) + max(2, max(0,1,2))) * 5000 = 15000.
+  // fee: 1 transparent input + 1 transparent change output, and an Ironwood
+  // bundle holding the target output.
+  // max(2, max(1, 1) + max(0, 1, 2)) * 5000 = 15000.
   EXPECT_EQ(tx_result.value().fee(), 15000u);
 
   // change = 60000 - 10000 - 15000 = 35000.
@@ -248,8 +250,9 @@ TEST_F(ZCashCreateTransparentToIronwoodTransactionTaskTest,
   EXPECT_EQ(tx_result.value().transparent_part().inputs.size(), 3u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 0u);
 
-  // fee = CalculateZCashTxFee(3 transparent inputs, 0 orchard input,
-  // kOrchard) = max(2, max(3,1) + max(2, max(0,1,2))) * 5000 = 25000.
+  // fee: 3 transparent inputs, no change output (max amount), and an Ironwood
+  // bundle holding the target output.
+  // max(2, max(3, 0) + max(0, 1, 2)) * 5000 = 25000.
   EXPECT_EQ(tx_result.value().fee(), 25000u);
 
   EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs.size(), 1u);
@@ -257,6 +260,103 @@ TEST_F(ZCashCreateTransparentToIronwoodTransactionTaskTest,
             60000u + 70000u + 80000u - 25000u);
   EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs[0].addr,
             orchard_part.value());
+}
+
+// Fee correctness for transparent to Ironwood shielding. The transparent
+// inputs and change output form one bundle, the Ironwood target output another,
+// so the fee is 5000 * max(2, max(inputs, change) + max(0, 1, 2)) - the
+// Ironwood bundle has no spends and so always costs its 2 action minimum.
+TEST_F(ZCashCreateTransparentToIronwoodTransactionTaskTest, FeeCorrectness) {
+  // UTXOs are picked ascending until they cover amount + fee, so the amount
+  // controls the input count.
+  struct {
+    const char* label;
+    uint64_t amount;
+    size_t expected_inputs;
+    uint64_t expected_fee;
+  } const kCases[] = {
+      // 1 input, 1 change + Ironwood minimum -> max(1, 1) + 2 = 3 actions.
+      {"one utxo", 10000u, 1u, 15000u},
+      // 60000 cannot cover 60000 + fee, so a second UTXO joins.
+      // max(2, 1) + 2 = 4 actions.
+      {"two utxos", 60000u, 2u, 20000u},
+      // max(3, 1) + 2 = 5 actions.
+      {"three utxos", 130000u, 3u, 25000u},
+  };
+
+  auto receiver = GetOrchardRawBytes(
+      "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzua"
+      "p43ya7mq7q3mu2hjafzlwylvystjlc6n294emxww9xm8qn6tcldqkq4k9ccsqzmjeqk9yp"
+      "kss572ut324nmxke666jm8lhkpt85gzq58d50rfnd7wufke8jjhc3lhswxrdr57ah42xck"
+      "h2j",
+      false);
+  ASSERT_TRUE(receiver);
+
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        ZCashWalletService::UtxoMap utxo_map;
+        utxo_map["60000"] = GetZCashUtxo(60000);
+        utxo_map["70000"] = GetZCashUtxo(70000);
+        utxo_map["80000"] = GetZCashUtxo(80000);
+        std::move(callback).Run(std::move(utxo_map));
+      });
+
+  ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
+      .WillByDefault(
+          [&](const mojom::AccountIdPtr& account_id, bool change,
+              ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
+            auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
+            auto addr = keyring_service().GetZCashAddress(account_id, *id);
+            std::move(callback).Run(std::move(addr));
+          });
+
+  ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(1000u, std::vector<uint8_t>({})));
+      });
+
+  for (const auto& test_case : kCases) {
+    SCOPED_TRACE(test_case.label);
+
+    auto task =
+        std::make_unique<ZCashCreateTransparentToIronwoodTransactionTask>(
+            pass_key(), zcash_wallet_service(), action_context(), *receiver,
+            std::nullopt, test_case.amount);
+
+    base::MockCallback<ZCashWalletService::CreateTransactionCallback> callback;
+    base::expected<ZCashTransaction, std::string> tx_result;
+    EXPECT_CALL(callback, Run(_))
+        .WillOnce(::testing::DoAll(
+            SaveArg<0>(&tx_result),
+            base::test::RunOnceClosure(task_environment().QuitClosure())));
+
+    task->Start(callback.Get());
+    task_environment().RunUntilQuit();
+
+    ASSERT_TRUE(tx_result.has_value());
+    EXPECT_EQ(tx_result.value().transparent_part().inputs.size(),
+              test_case.expected_inputs);
+    EXPECT_EQ(tx_result.value().fee(), test_case.expected_fee);
+
+    // The shielded target output carries exactly the requested amount, and
+    // nothing is billed to the legacy Orchard bundle.
+    EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs.size(), 1u);
+    EXPECT_EQ(tx_result.value().v6_part().ironwood.outputs[0].value,
+              test_case.amount);
+    EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.inputs.size(), 0u);
+    EXPECT_EQ(tx_result.value().v6_part().legacy_orchard.outputs.size(), 0u);
+
+    // Value is conserved: transparent inputs = target + change + fee.
+    uint64_t total_outputs = test_case.amount;
+    for (const auto& output : tx_result.value().transparent_part().outputs) {
+      total_outputs += output.amount;
+    }
+    EXPECT_EQ(tx_result.value().TotalInputsAmount().ValueOrDie(),
+              total_outputs + tx_result.value().fee());
+  }
 }
 
 TEST_F(ZCashCreateTransparentToIronwoodTransactionTaskTest, NotEnoughFunds) {
