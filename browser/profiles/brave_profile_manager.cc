@@ -21,6 +21,8 @@
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_constants.h"
 #include "brave/components/constants/pref_names.h"
@@ -35,6 +37,7 @@
 #include "chrome/browser/profiles/profile_attributes_storage.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "chrome/browser/profiles/profiles_state.h"
+#include "chrome/browser/ssl/https_first_mode_settings_tracker.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
 #include "components/bookmarks/common/bookmark_pref_names.h"
@@ -98,13 +101,43 @@ void MigrateHttpsUpgradeSettings(Profile* profile) {
                                                 GURL());
       prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, false);
     }
+    prefs->SetBoolean(brave_shields::prefs::kHttpsUpgradeSettingsMigrated,
+                      false);
   } else {
-    // Migrate backwards from HTTPS Upgrade Strict setting to HTTPS-Only Mode.
-    if (brave_shields::GetHttpsUpgradeControlType(map, GURL()) ==
-        ControlType::BLOCK) {
-      prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
-      brave_shields::SetHttpsUpgradeControlType(
-          map, ControlType::BLOCK_THIRD_PARTY, GURL());
+    if (base::FeatureList::IsEnabled(
+            brave_shields::features::kTransitionToUpstreamHttpsUpgrades)) {
+      if (prefs->GetBoolean(
+              brave_shields::prefs::kHttpsUpgradeSettingsMigrated)) {
+        return;
+      }
+      HttpsFirstModeService* hfm_service =
+          HttpsFirstModeServiceFactory::GetForProfile(profile);
+      if (!hfm_service) {
+        return;
+      }
+      switch (brave_shields::GetHttpsUpgradeControlType(map, GURL())) {
+        case ControlType::ALLOW:
+          hfm_service->UpdatePrefs(HttpsFirstModeSetting::kDisabled);
+          break;
+        case ControlType::BLOCK:
+          hfm_service->UpdatePrefs(HttpsFirstModeSetting::kEnabledFull);
+          break;
+        case ControlType::BLOCK_THIRD_PARTY:
+          hfm_service->UpdatePrefs(HttpsFirstModeSetting::kEnabledBalanced);
+          break;
+        case ControlType::DEFAULT:
+          break;
+      }
+      prefs->SetBoolean(brave_shields::prefs::kHttpsUpgradeSettingsMigrated,
+                        true);
+    } else {
+      // Migrate backwards from HTTPS Upgrade Strict setting to HTTPS-Only Mode.
+      if (brave_shields::GetHttpsUpgradeControlType(map, GURL()) ==
+          ControlType::BLOCK) {
+        prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
+        brave_shields::SetHttpsUpgradeControlType(
+            map, ControlType::BLOCK_THIRD_PARTY, GURL());
+      }
     }
   }
 }
