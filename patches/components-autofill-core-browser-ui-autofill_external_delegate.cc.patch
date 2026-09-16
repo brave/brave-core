@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/browser/ui/autofill_external_delegate.cc b/components/autofill/core/browser/ui/autofill_external_delegate.cc
-index 00818a9141ee5090d6418459b9de2a0929f435ca..290e858bc26e075df893af4dc3c45264bb162205 100644
+index cba943041ec50d2c2c3fbf22fb54ede40cd31828..8bde7a99b340866a3dbd51546f96e7f40e6a5f2c 100644
 --- a/components/autofill/core/browser/ui/autofill_external_delegate.cc
 +++ b/components/autofill/core/browser/ui/autofill_external_delegate.cc
-@@ -518,6 +518,13 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(
+@@ -521,6 +521,13 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(
    // updated to match.
    InsertDataListValues(last_query_.field_datalist_options, suggestions);
  
@@ -16,7 +16,7 @@ index 00818a9141ee5090d6418459b9de2a0929f435ca..290e858bc26e075df893af4dc3c45264
    // TODO(crbug.com/362630793): Try to eliminate this state. The controller
    // should be the one that knows about what suggestions were shown and passes
    // it on, not AED.
-@@ -912,6 +919,10 @@ void AutofillExternalDelegate::DidAcceptSuggestion(
+@@ -918,6 +925,10 @@ void AutofillExternalDelegate::DidAcceptSuggestion(
      const SuggestionMetadata& metadata,
      const FormGlobalId& form_id,
      const FieldGlobalId& field_id) {
@@ -25,5 +25,5 @@ index 00818a9141ee5090d6418459b9de2a0929f435ca..290e858bc26e075df893af4dc3c45264
 +    return;
 +  }
    CHECK(suggestion.IsAcceptable());
-   // TODO(crbug.com/552871965): Extract the logging here to a separate function.
-   base::UmaHistogramEnumeration("Autofill.Suggestions.AcceptedType",
+ 
+   const FormGlobalId& effective_form_id =
