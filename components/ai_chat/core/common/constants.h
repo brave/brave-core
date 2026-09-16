@@ -61,14 +61,36 @@ inline constexpr char kAIChatCodeSandboxUIURL[] =
 // overriding WebUIConfig::ShouldHandleSubdomains().
 inline constexpr char kAIChatLeoWorkspaceUIHost[] = "leo-workspace";
 
-// The suffix every workspace host ends with. For code which only has a host (or
-// an origin) to go on and can't reason about the per-workspace label, such as
-// the WebMCP origin check in blink.
+// The suffix every workspace host ends with, for IsAIChatLeoWorkspaceHost().
 inline constexpr char kAIChatLeoWorkspaceUIHostSuffix[] = ".leo-workspace";
 static_assert(
     std::string_view(kAIChatLeoWorkspaceUIHostSuffix).substr(1) ==
         std::string_view(kAIChatLeoWorkspaceUIHost),
     "The workspace host suffix must be the workspace host, preceded by a dot.");
+
+// Prefixed to a workspace's host to get the host of that workspace's viewer
+// document (chrome-untrusted://view.<uuid>.leo-workspace), which is a separate
+// origin from the workspace that frames it.
+inline constexpr char kAIChatLeoWorkspaceViewUIHostPrefix[] = "view.";
+
+// Whether `host` is a workspace's own host: exactly one label before the
+// suffix, so not a viewer host. Shared with blink, whose WebMCP gate has only
+// an origin to go on.
+constexpr bool IsAIChatLeoWorkspaceHost(std::string_view host) {
+  if (!host.ends_with(kAIChatLeoWorkspaceUIHostSuffix)) {
+    return false;
+  }
+  const std::string_view label = host.substr(
+      0,
+      host.size() - std::string_view(kAIChatLeoWorkspaceUIHostSuffix).size());
+  return !label.empty() && label.find('.') == std::string_view::npos;
+}
+
+constexpr bool IsAIChatLeoWorkspaceViewHost(std::string_view host) {
+  const std::string_view prefix(kAIChatLeoWorkspaceViewUIHostPrefix);
+  return host.starts_with(prefix) &&
+         IsAIChatLeoWorkspaceHost(host.substr(prefix.size()));
+}
 
 }  // namespace ai_chat
 
