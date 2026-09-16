@@ -1876,7 +1876,7 @@ enclosed in `namespace xyz`.** Per the
   tree-shaped graph — no cycles ([ARCH-038](#ARCH-038)).
 - **Depend concretely downward, abstractly upward.** Anything the embedder must
   supply becomes a client/delegate interface defined by the component and
-  implemented in `brave/browser/` ([ARCH-003](#ARCH-003)).
+  implemented in `brave/browser/` ([ARCH-014](#ARCH-014)).
 - **Own and configure the component from the embedder layer**, not from another
   component.
 

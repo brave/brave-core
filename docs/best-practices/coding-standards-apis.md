@@ -804,15 +804,16 @@ if (value.has_value()) {
 result = base::saturated_cast<uint64_t>(value.value_or(0));
 ```
 
-**Pick the cast by what should happen when the value doesn't fit** (all from
-`base/numerics/safe_conversions.h`):
+**Pick the cast by what should happen when the value doesn't fit:**
 
 - `base::checked_cast<T>` — `CHECK`s that the source value is in range. Use when
-  an out-of-range value is a bug.
+  an out-of-range value is a bug. From `base/numerics/safe_conversions.h`.
 - `base::saturated_cast<T>` — clamps to the target's min/max. Use when clamping
-  is the desired behavior.
+  is the desired behavior. From `base/numerics/safe_conversions.h`.
 - `base::CheckedNumeric<T>` — carries overflow state through a chain of
-  arithmetic, so you validate once at the end instead of at each step.
+  arithmetic, so you validate once at the end instead of at each step. From
+  `base/numerics/checked_math.h` (or `base/numerics/safe_math.h`, which includes
+  all three).
 
 ```cpp
 // ✅ CORRECT - out-of-range is a bug, so CHECK
@@ -1717,10 +1718,10 @@ struct WireHeader {
   long timestamp;
 };
 
-// ✅ CORRECT - fixed widths on both sides
+// ✅ CORRECT - fixed widths on both sides, initialized per CSA-063
 struct WireHeader {
-  uint32_t payload_length;
-  int64_t timestamp;
+  uint32_t payload_length = 0;
+  int64_t timestamp = 0;
 };
 ```
 

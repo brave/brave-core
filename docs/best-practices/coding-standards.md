@@ -1595,6 +1595,11 @@ if (!ParseManifest(data)) {
 }
 ```
 
+For the logging cases that are not failure reports at all, see
+[CS-044](#CS-044)/[CS-045](#CS-045) (`LOG(WARNING)`, `VLOG`, and `DLOG(ERROR)`
+in place of `LOG(ERROR)`) and [CS-067](#CS-067) (`DVLOG(1)` for logging that
+must be retained, `ScopedCrashKeyString` for crash diagnostics).
+
 See
 [Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
 
