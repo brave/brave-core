@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import '//resources/cr_components/localized_link/localized_link.js'
 import { assert } from '//resources/js/assert.js'
 import { html } from '//resources/lit/v3_0/lit.rollup.js'
 
@@ -35,19 +34,10 @@ export function getHtml(this: BraveAccountLoggedInRowElement) {
             ${this.state.verification.verifiedEmail
               ? this.i18n(BraveAccountSettingsStrings
                   .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_VERIFIED_ROW_DESCRIPTION)
-              : html`
-                <localized-link
-                    .localizedString=${`${
-                      this.i18n(BraveAccountSettingsStrings
-                        .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ROW_DESCRIPTION_1)} ${
-                      this.i18n(
-                        BraveAccountSettingsStrings
-                             .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2)} ${
-                      this.i18nAdvanced(BraveAccountSettingsStrings
-                        .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3,
-                        {tags: ['a'], attrs: ['href']})}`}
-                    @link-clicked=${this.onResendConfirmationEmailLinkClicked}>
-                </localized-link>`}
+              : html`${this.getVerificationDescription().beforeLink}<leo-link
+                    @click=${this.onResendConfirmationEmailLinkClicked}
+                    >${this.getVerificationDescription().linkLabel}</leo-link>${
+                  this.getVerificationDescription().afterLink}`}
           </div>
         </div>
       </div>
