@@ -1,0 +1,16 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenToast.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenToast.java
+index d8989965fc5945caa27ae617d52de530073bde51..2483bacb9632d36778baeb3158c9022ee7c55cdf 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenToast.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenToast.java
+@@ -92,6 +92,11 @@ interface FullscreenToast {
+         }
+ 
+         private void showNotificationToast() {
++            if (!org.chromium.chrome.browser.preferences.ChromeSharedPreferences.getInstance()
++                    .readBoolean(org.chromium.base.BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES, true)) {
++                hideNotificationToast();
++                return;
++            }
+             hideNotificationToast();
+ 
+             int toastTextId =

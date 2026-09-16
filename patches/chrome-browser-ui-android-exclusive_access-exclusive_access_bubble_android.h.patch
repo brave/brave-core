@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/android/exclusive_access/exclusive_access_bubble_android.h b/chrome/browser/ui/android/exclusive_access/exclusive_access_bubble_android.h
+index 8c64bf951724237d4f2f86e7ee677beb89cbcdf2..cf1a45ba7b3d3f4430a7665e540aa3ca48dc2046 100644
+--- a/chrome/browser/ui/android/exclusive_access/exclusive_access_bubble_android.h
++++ b/chrome/browser/ui/android/exclusive_access/exclusive_access_bubble_android.h
+@@ -19,6 +19,7 @@ class ExclusiveAccessBubbleAndroid : public ExclusiveAccessBubble {
+   // Interface for the Java counterpart of ExclusiveAccessBubbleAndroid.
+   class Bridge {
+    public:
++    virtual bool ShouldShowFullscreenNotice() const;
+     virtual ~Bridge() = default;
+     virtual void Show() = 0;
+     virtual void Hide() = 0;
+@@ -58,6 +59,7 @@ class ExclusiveAccessBubbleAndroid : public ExclusiveAccessBubble {
+   bool IsVisible() const;
+ 
+  private:
++  bool ShouldSuppressFullscreenNotice(ExclusiveAccessBubbleType type) const;
+   // ExclusiveAccessBubble:
+   void Hide() override;
+   void Show() override;

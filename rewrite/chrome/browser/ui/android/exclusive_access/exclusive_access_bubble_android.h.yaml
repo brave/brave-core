@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let the Android bridge supply the notice preference; test bridges retain upstream behavior.
+    regex:
+      re_pattern: '(class Bridge\s*\{\s*public:)'
+      replace: |-
+        \1
+            virtual bool ShouldShowFullscreenNotice() const;
+
+  - description: |-
+      Share the fullscreen notice suppression check between display paths.
+    regex:
+      re_pattern: '(class ExclusiveAccessBubbleAndroid\b.*?\n private:)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          bool ShouldSuppressFullscreenNotice(ExclusiveAccessBubbleType type) const;

@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Expose the current fullscreen notice preference to the native bubble.
+    regex:
+      re_pattern: '(public class ExclusiveAccessBubble\s*\{)'
+      replace: |-
+        \1
+            @CalledByNative
+            public boolean shouldShowFullscreenNotice() {
+                return org.chromium.chrome.browser.preferences.ChromeSharedPreferences.getInstance()
+                        .readBoolean(org.chromium.base.BravePreferenceKeys.BRAVE_SHOW_FULLSCREEN_NOTICES, true);
+            }

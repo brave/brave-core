@@ -1,0 +1,54 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Prevent the text update from showing the fullscreen snackbar before Show.
+    preempt_function_impl:
+      function_name: ExclusiveAccessBubbleAndroid::UpdateBubbleContent
+      code: |-
+        if (ShouldSuppressFullscreenNotice(bubble_type)) {
+          return;
+        }
+  - description: |-
+      Suppress the Android fullscreen instruction snackbar when the user opts out.
+
+      Keep video unobstructed, including when focus returns to the player.
+      Preserve keyboard lock, pointer lock, and download notices.
+    preempt_function_impl:
+      function_name: ExclusiveAccessBubbleAndroid::Show
+      code: |-
+        if (ShouldSuppressFullscreenNotice(params_.type)) {
+          HideImmediately();
+          RunHideCallbackIfNeeded(ExclusiveAccessBubbleHideReason::kNotShown);
+          return;
+        }
+  - description: |-
+      Read the preference through the Java bridge without caching it across settings changes.
+    regex:
+      re_pattern: '(class BridgeImpl : public ExclusiveAccessBubbleAndroid::Bridge\s*\{\s*public:)'
+      replace: |-
+        \1
+          bool ShouldShowFullscreenNotice() const override {
+            return !j_bubble_ ||
+                   Java_ExclusiveAccessBubble_shouldShowFullscreenNotice(
+                       jni_zero::AttachCurrentThread(), j_bubble_);
+          }
+
+  - description: |-
+      Define the shared suppression check and default bridge behavior.
+    regex:
+      re_pattern: '\Z'
+      replace: |
+
+        bool ExclusiveAccessBubbleAndroid::Bridge::ShouldShowFullscreenNotice() const {
+          return true;
+        }
+
+        bool ExclusiveAccessBubbleAndroid::ShouldSuppressFullscreenNotice(
+            ExclusiveAccessBubbleType type) const {
+          return type == EXCLUSIVE_ACCESS_BUBBLE_TYPE_FULLSCREEN_EXIT_INSTRUCTION &&
+                 !params_.has_download && !bridge_->ShouldShowFullscreenNotice();
+        }

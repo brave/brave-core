@@ -1,0 +1,52 @@
+diff --git a/chrome/browser/ui/android/exclusive_access/exclusive_access_bubble_android.cc b/chrome/browser/ui/android/exclusive_access/exclusive_access_bubble_android.cc
+index dccce5e697b12fbe8ac648473b395f8851ebac28..760cded8d744feafa36004186a439f084883ed01 100644
+--- a/chrome/browser/ui/android/exclusive_access/exclusive_access_bubble_android.cc
++++ b/chrome/browser/ui/android/exclusive_access/exclusive_access_bubble_android.cc
+@@ -27,6 +27,11 @@ std::optional<std::u16string> GetOriginString(const url::Origin& origin) {
+ 
+ class BridgeImpl : public ExclusiveAccessBubbleAndroid::Bridge {
+  public:
++  bool ShouldShowFullscreenNotice() const override {
++    return !j_bubble_ ||
++           Java_ExclusiveAccessBubble_shouldShowFullscreenNotice(
++               jni_zero::AttachCurrentThread(), j_bubble_);
++  }
+   explicit BridgeImpl(const jni_zero::JavaRef<jobject>& context) {
+     if (context) {
+       JNIEnv* env = jni_zero::AttachCurrentThread();
+@@ -107,6 +112,11 @@ void ExclusiveAccessBubbleAndroid::Hide() {
+ }
+ 
+ void ExclusiveAccessBubbleAndroid::Show() {
++  if (ShouldSuppressFullscreenNotice(params_.type)) {
++    HideImmediately();
++    RunHideCallbackIfNeeded(ExclusiveAccessBubbleHideReason::kNotShown);
++    return;
++  }
+   was_shown_ = true;
+   bridge_->Show();
+ }
+@@ -159,6 +169,9 @@ void ExclusiveAccessBubbleAndroid::Update(
+ 
+ void ExclusiveAccessBubbleAndroid::UpdateBubbleContent(
+     ExclusiveAccessBubbleType bubble_type) {
++  if (ShouldSuppressFullscreenNotice(bubble_type)) {
++    return;
++  }
+   DCHECK(params_.has_download ||
+          EXCLUSIVE_ACCESS_BUBBLE_TYPE_NONE != bubble_type);
+ 
+@@ -208,3 +221,13 @@ void ExclusiveAccessBubbleAndroid::RunHideCallbackIfNeeded(
+ }
+ 
+ DEFINE_JNI(ExclusiveAccessBubble)
++
++bool ExclusiveAccessBubbleAndroid::Bridge::ShouldShowFullscreenNotice() const {
++  return true;
++}
++
++bool ExclusiveAccessBubbleAndroid::ShouldSuppressFullscreenNotice(
++    ExclusiveAccessBubbleType type) const {
++  return type == EXCLUSIVE_ACCESS_BUBBLE_TYPE_FULLSCREEN_EXIT_INSTRUCTION &&
++         !params_.has_download && !bridge_->ShouldShowFullscreenNotice();
++}
