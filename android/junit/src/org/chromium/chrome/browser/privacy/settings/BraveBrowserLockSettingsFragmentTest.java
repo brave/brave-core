@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.privacy.settings;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -17,7 +16,6 @@ import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -44,6 +42,7 @@ import org.chromium.chrome.browser.device_reauth.ReauthenticatorBridge;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthSettingUtils;
 import org.chromium.chrome.browser.preferences.Pref;
+import org.chromium.chrome.browser.privacy.BraveBrowserLockManager;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.ProfileDependentSetting;
 import org.chromium.components.prefs.PrefService;
@@ -147,22 +146,24 @@ public class BraveBrowserLockSettingsFragmentTest {
 
     @Test
     @SmallTest
-    public void captureSection_hiddenUntilPrivateTabsLocked_thenShown() {
+    public void preventCaptureToggle_onReauthSuccess_worksWithNoLocksEnabled() {
+        // Regression coverage: the "Prevent screenshot/video capture" toggle must not require
+        // "Entire application" or "Private tabs" to already be enabled — it is independently
+        // useful and already gated on its own authentication.
         stubReauthResult(/* success= */ true);
 
         buildFragmentScenario()
                 .onFragment(
                         fragment -> {
-                            View container =
+                            MaterialSwitch switchPreventCapture =
                                     fragment.requireView()
-                                            .findViewById(R.id.prevent_capture_container);
-                            assertEquals(View.GONE, container.getVisibility());
+                                            .findViewById(R.id.switch_prevent_capture);
+                            assertTrue(switchPreventCapture.isEnabled());
 
-                            MaterialSwitch switchPrivateTabs =
-                                    fragment.requireView().findViewById(R.id.switch_private_tabs);
-                            switchPrivateTabs.performClick();
+                            switchPreventCapture.performClick();
 
-                            assertEquals(View.VISIBLE, container.getVisibility());
+                            assertTrue(switchPreventCapture.isChecked());
+                            assertTrue(BraveBrowserLockManager.shouldForceSecureWindow());
                         });
     }
 
