@@ -30,6 +30,20 @@
 
 namespace misc_metrics {
 
+// This holds the various histogram names we will upload to p3a, and, the key of
+// the provider dictionary we write to local state which contains the count.
+struct CaptchaProviderMetricDetails {
+  // This corresponds to the histogram names outlined in captcha_metrics.h.
+  // New histograms must be added here.
+  const char* total_histogram_name;
+  const char* user_activated_histogram_name;
+
+  // This corresponds to the root key for captcha providers which will hold the
+  // dictionary with corresponding counts. See kCaptchaDictValueTotalKey and
+  // kCaptchaDictValueUserActivatedKey.
+  const char* provider_dict_root_key;
+};
+
 namespace {
 // kMiscMetricsCaptchaDictionaryPref "brave.misc_metrics.captcha_dict" is the
 // root dictionary that we write to the local state whose values contains
@@ -55,20 +69,6 @@ inline constexpr char kCaptchaHcaptchaDictKey[] = "hcaptcha";
 // provider.
 inline constexpr char kCaptchaDictValueTotalKey[] = "total";
 inline constexpr char kCaptchaDictValueUserActivatedKey[] = "user_activated";
-
-// This holds the various histogram names we will upload to p3a, and, the key of
-// the provider dictionary we write to local state which contains the count.
-struct CaptchaProviderMetricDetails {
-  // This corresponds to the histogram names outlined in captcha_metrics.h.
-  // New histograms must be added here.
-  const char* total_histogram_name;
-  const char* user_activated_histogram_name;
-
-  // This corresponds to the root key for captcha providers which will hold the
-  // dictionary with corresponding counts. See kCaptchaDictValueTotalKey and
-  // kCaptchaDictValueUserActivatedKey.
-  const char* provider_dict_root_key;
-};
 
 constexpr base::TimeDelta kReportInterval = base::Days(1);
 
@@ -99,33 +99,6 @@ constexpr auto kCaptchaProvidersToReport =
         },
     });
 
-void ReportProviderToP3AIfPossible(
-    PrefService* local_state,
-    const CaptchaProviderMetricDetails& provider_details) {
-  const base::DictValue& counts =
-      local_state->GetDict(kMiscMetricsCaptchaDictionaryPref);
-
-  const base::DictValue* provider =
-      counts.FindDict(provider_details.provider_dict_root_key);
-  if (!provider) {
-    return;
-  }
-
-  const int total = provider->FindInt(kCaptchaDictValueTotalKey).value_or(0);
-  if (total > 0) {
-    p3a_utils::RecordToHistogramBucket(provider_details.total_histogram_name,
-                                       kCaptchaCountBuckets, total);
-  }
-
-  const int user_activated =
-      provider->FindInt(kCaptchaDictValueUserActivatedKey).value_or(0);
-  if (user_activated > 0) {
-    p3a_utils::RecordToHistogramBucket(
-        provider_details.user_activated_histogram_name, kCaptchaCountBuckets,
-        user_activated);
-  }
-}
-
 }  // namespace
 
 class BraveCaptchaPageLoadMetricsObserver
@@ -155,7 +128,8 @@ class BraveCaptchaPageLoadMetricsObserver
   // Full-page captchas loaded in the top level frame.
   ObservePolicy OnCommit(
       content::NavigationHandle* navigation_handle) override {
-    captcha_metrics_->MaybeRecordCaptchaForUrl(navigation_handle->GetURL());
+    captcha_metrics_->MaybeRecordCaptchaForUrl(navigation_handle->GetURL(),
+                                               /*is_user_activated= */ false);
     return CONTINUE_OBSERVING;
   }
 
@@ -175,7 +149,8 @@ class BraveCaptchaPageLoadMetricsObserver
             .has_value()) {
       return;
     }
-    captcha_metrics_->MaybeRecordCaptchaForUrl(navigation_handle->GetURL());
+    captcha_metrics_->MaybeRecordCaptchaForUrl(navigation_handle->GetURL(),
+                                               /*is_user_activated= */ false);
   }
 
   void FrameReceivedUserActivation(
@@ -206,7 +181,7 @@ class BraveCaptchaPageLoadMetricsObserver
 
 CaptchaMetrics::CaptchaMetrics(PrefService* local_state)
     : local_state_(local_state) {
-  ReportToP3AIfPossible();
+  MaybeReport();
 }
 
 CaptchaMetrics::~CaptchaMetrics() = default;
@@ -316,7 +291,7 @@ void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url,
   NOTREACHED();
 }
 
-void CaptchaMetrics::ReportToP3AIfPossible() {
+void CaptchaMetrics::MaybeReport() {
   base::Time now = base::Time::Now();
   base::Time last_recorded_time =
       local_state_->GetTime(kMiscMetricsCaptchaLastRecordTime);
@@ -328,7 +303,7 @@ void CaptchaMetrics::ReportToP3AIfPossible() {
   if (!last_recorded_time.is_null() &&
       now - last_recorded_time < kReportInterval) {
     report_timer_.Start(FROM_HERE, last_recorded_time + kReportInterval, this,
-                        &CaptchaMetrics::ReportToP3AIfPossible);
+                        &CaptchaMetrics::MaybeReport);
     return;
   }
 
@@ -337,7 +312,7 @@ void CaptchaMetrics::ReportToP3AIfPossible() {
   // no captchas were seen.
   if (!last_recorded_time.is_null()) {
     for (const auto& provider : kCaptchaProvidersToReport) {
-      ReportProviderToP3AIfPossible(local_state_, provider);
+      MaybeReportProvider(provider);
     }
 
     // Re-initialize the dict.
@@ -347,7 +322,33 @@ void CaptchaMetrics::ReportToP3AIfPossible() {
   // Update the last recorded time to now, and start the timer.
   local_state_->SetTime(kMiscMetricsCaptchaLastRecordTime, now);
   report_timer_.Start(FROM_HERE, now + kReportInterval, this,
-                      &CaptchaMetrics::ReportToP3AIfPossible);
+                      &CaptchaMetrics::MaybeReport);
+}
+
+void CaptchaMetrics::MaybeReportProvider(
+    const CaptchaProviderMetricDetails& provider_details) {
+  const base::DictValue& counts =
+      local_state_->GetDict(kMiscMetricsCaptchaDictionaryPref);
+
+  const base::DictValue* provider =
+      counts.FindDict(provider_details.provider_dict_root_key);
+  if (!provider) {
+    return;
+  }
+
+  const int total = provider->FindInt(kCaptchaDictValueTotalKey).value_or(0);
+  if (total > 0) {
+    p3a_utils::RecordToHistogramBucket(provider_details.total_histogram_name,
+                                       kCaptchaCountBuckets, total);
+  }
+
+  const int user_activated =
+      provider->FindInt(kCaptchaDictValueUserActivatedKey).value_or(0);
+  if (user_activated > 0) {
+    p3a_utils::RecordToHistogramBucket(
+        provider_details.user_activated_histogram_name, kCaptchaCountBuckets,
+        user_activated);
+  }
 }
 
 }  // namespace misc_metrics

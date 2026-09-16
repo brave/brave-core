@@ -22,6 +22,8 @@ class PageLoadMetricsObserverInterface;
 
 namespace misc_metrics {
 
+struct CaptchaProviderMetricDetails;
+
 // Keep the histogram name consistent with metric_names.h
 inline constexpr char kCaptchaTotalCountHistogramName[] =
     "Brave.CaptchaCount.Total";
@@ -75,13 +77,17 @@ class CaptchaMetrics {
   // PageLoadMetricsObserver.FrameReceivedUserActivation which is true when
   // the user interacted with the frame like click, mouse events etc and false
   // otherwise.
-  void MaybeRecordCaptchaForUrl(const GURL& url,
-                                const bool is_user_activated = false);
+  void MaybeRecordCaptchaForUrl(const GURL& url, const bool is_user_activated);
 
-  // Emits the last 24h counts to P3A and schedules the next report.
-  // Reports a histogram for a corresponding captcha provider iff the count was
-  // non zero.
-  void ReportToP3AIfPossible();
+  // Reports histograms for all supported captcha providers iff their
+  // corresponding captcha count recorded in the last 24h was non zero.
+  // This also schedules the next report.
+  void MaybeReport();
+
+  // Reports a P3A histogram for a corresponding captcha |provider_details| iff
+  // its captcha count recorded in the last 24h was non zero.
+  void MaybeReportProvider(
+      const CaptchaProviderMetricDetails& provider_details);
 
   // The timer to help schedule the next reporting.
   base::WallClockTimer report_timer_;
