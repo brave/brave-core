@@ -33,9 +33,9 @@ export function getHtml(this: BraveAccountLoggedInRowElement) {
             </div>
             <div class="description">
               ${this.state.verification.verifiedEmail
-                ? loadTimeData.getString(
+                ? html`${loadTimeData.getString(
                     BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_VERIFIED_ROW_DESCRIPTION,
-                  )
+                  )}`
                 : html`${this.getVerificationDescription().beforeLink}<leo-link
                       @click=${this.onResendConfirmationEmailLinkClicked}
                       >${this.getVerificationDescription().linkLabel}</leo-link
