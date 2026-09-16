@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/tab_search/BUILD.gn b/chrome/browser/resources/tab_search/BUILD.gn
-index c7e2b6c4141f19b67c76dde642b027d1848d1120..3a7926f83bebab675d1e153c6d83f99537034564 100644
+index 1d85b91424ea75ab0fa126d9b26b8089e0c3b371..cde0069de6bc71ba8fa5b9252eb5a8bb1d259cfa 100644
 --- a/chrome/browser/resources/tab_search/BUILD.gn
 +++ b/chrome/browser/resources/tab_search/BUILD.gn
-@@ -103,4 +103,5 @@ build_webui("build") {
-               "$root_gen_dir/chrome/browser/resources/tab_search/shared/tsc",
+@@ -101,4 +101,5 @@ build_webui("build") {
+               "$root_gen_dir/chrome/browser/resources/tab_group_shared/tsc",
                root_build_dir) ]
    }
 +  import("//brave/browser/resources/tab_search/sources.gni") ts_files += brave_tab_search_ts_files css_files += brave_tab_search_css_files exclude_ts_preprocess_files = brave_tab_search_ts_files exclude_html_css_preprocess_files = brave_tab_search_css_files preprocess_deps = brave_tab_search_preprocess_deps extra_grdp_deps = brave_tab_search_extra_grdp_deps extra_grdp_files = brave_tab_search_extra_grdp_files

@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/browser_window/internal/BUILD.gn b/chrome/browser/ui/browser_window/internal/BUILD.gn
-index ef3ebaa68ad6ea801d151fb0bbf2b17851db44ce..372fece5e80423f67b3dc47f69e374833633d5b4 100644
+index ebd556f9ee3d13c96e163f3db3e40eff6ab72bc3..57f7a044ed96c99cca64d3d88a981b8c565af05d 100644
 --- a/chrome/browser/ui/browser_window/internal/BUILD.gn
 +++ b/chrome/browser/ui/browser_window/internal/BUILD.gn
-@@ -224,6 +224,7 @@ source_set("internal") {
-       "//chrome/browser/ui:browser_select_file_dialog_controller",
+@@ -225,6 +225,7 @@ source_set("internal") {
+       "//chrome/browser/ui:browser_window_header",
      ]
    }
 +  import("//brave/browser/ui/browser_window/internal/sources.gni") deps += brave_browser_window_internal_deps
