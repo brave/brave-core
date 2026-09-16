@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveStrings
 import BraveUI
 import Foundation
@@ -14,7 +15,7 @@ struct NewTabPageSettingsView: View {
 
   @ObservedObject private var backgroundImages = Preferences.NewTabPage.backgroundImages
   @ObservedObject private var showNewTabPrivacyHub = Preferences.NewTabPage.showNewTabPrivacyHub
-  @ObservedObject private var showTopsites = Preferences.NewTabPage.showTopsites
+  @ObservedObject private var showNewTabFavourites = Preferences.NewTabPage.showNewTabFavourites
   @ObservedObject private var topsitesModeSelection = Preferences.NewTabPage.topsitesMode
 
   // This is observed to ensure the view updates correctly, but we instead access
@@ -58,13 +59,15 @@ struct NewTabPageSettingsView: View {
       }
       Section {
         Toggle(Strings.PrivacyHub.privacyReportsTitle, isOn: $showNewTabPrivacyHub.value)
-        Toggle(Strings.NTP.showTopsites, isOn: $showTopsites.value)
-        if showTopsites.value {
+        if FeatureList.kTopsitesEnabled.enabled {
           Picker(
-            Strings.NTP.topsitesType,
+            Strings.NTP.topsites,
             selection: Binding(
               get: { topsitesModeSelection.value ?? .favourite },
-              set: { topsitesModeSelection.value = $0 }
+              set: {
+                topsitesModeSelection.value = $0
+                showNewTabFavourites.value = $0 != .none
+              }
             )
           ) {
             ForEach(TopsitesMode.allCases) { mode in
@@ -72,6 +75,17 @@ struct NewTabPageSettingsView: View {
             }
           }
           .tint(Color(braveSystemName: .textTertiary))
+        } else {
+          Toggle(
+            Strings.Widgets.favoritesWidgetTitle,
+            isOn: Binding(
+              get: { showNewTabFavourites.value },
+              set: {
+                showNewTabFavourites.value = $0
+                topsitesModeSelection.value = $0 ? TopsitesMode.favourite : TopsitesMode.none
+              }
+            )
+          )
         }
       } header: {
         Text(Strings.Widgets.widgetTitle)

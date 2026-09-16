@@ -6,6 +6,7 @@ import BraveWidgetsModels
 import Foundation
 import Preferences
 import Shared
+import Strings
 import UIKit
 import Web
 
@@ -30,13 +31,15 @@ enum BackgroundMediaType: Int, CaseIterable {
 public enum TopsitesMode: Int, CaseIterable, Identifiable {
   case mostVisited
   case favourite
+  case none
 
   public var id: Self { self }
 
   public var title: String {
     switch self {
-    case .mostVisited: return "Frequently Visited"
-    case .favourite: return "Favorites"
+    case .mostVisited: return Strings.NTP.topsitesTypeMostVisited
+    case .favourite: return Strings.NTP.topsitesTypeFavorites
+    case .none: return Strings.NTP.topsitesTypeNone
     }
   }
 }
@@ -351,12 +354,9 @@ extension Preferences {
       default: false
     )
 
-    /// Tells the app whether we should show Favourites/MostVisited in new tab page view controller
+    /// Tells the app whether we should show Favourites in new tab page view controller
     public static let showNewTabFavourites =
       Option<Bool>(key: "newtabpage.show-newtab-favourites", default: true)
-
-    public static let showTopsites =
-      Option<Bool>(key: "newtabpage.show-topsites", default: true)
 
     /// Mode to display NTP tiles in NTP
     public static let topsitesMode = Option<TopsitesMode?>(

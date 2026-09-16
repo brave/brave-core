@@ -26,6 +26,7 @@
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
+#include "brave/ios/browser/most_visited_sites/features.h"
 #include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/commerce/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
@@ -409,6 +410,11 @@
 + (Feature*)kPlaylistCacheFirstEnabled {
   return [[Feature alloc]
       initWithFeature:&playlist::features::kPlaylistCacheFirstEnabled];
+}
+
++ (Feature*)kTopsitesEnabled {
+  return
+      [[Feature alloc] initWithFeature:&topsites::features::kTopsitesEnabled];
 }
 
 @end

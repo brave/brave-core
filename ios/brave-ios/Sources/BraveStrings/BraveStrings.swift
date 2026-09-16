@@ -4206,20 +4206,36 @@ extension Strings {
       comment: "A button title to show more bookmarks, that opens a new menu."
     )
 
-    public static let showTopsites = NSLocalizedString(
-      "ntp.showTopsites",
+    public static let topsites = NSLocalizedString(
+      "ntp.topsites",
       tableName: "BraveShared",
       bundle: .module,
       value: "Top Sites",
-      comment: "The title of a toggle for user to show or hide top sites section in NTP"
+      comment: "The title of a picker for user to pick which type of topsites to show in NTP"
     )
 
-    public static let topsitesType = NSLocalizedString(
-      "ntp.topsitesType",
+    public static let topsitesTypeNone = NSLocalizedString(
+      "ntp.topsitesTypeNone",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Top Sites Type",
-      comment: "The title of a picker for user to pick which type of topsites to show in NTP"
+      value: "None",
+      comment: "None type of topsites. Selection means there won't be any topsites tiles in NTP"
+    )
+
+    public static let topsitesTypeFavorites = NSLocalizedString(
+      "ntp.topsitesTypeFavorites",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Favorites",
+      comment: "Favorites type of topsites. Selection means NTP will display favorites tiles if there is any."
+    )
+
+    public static let topsitesTypeMostVisited = NSLocalizedString(
+      "ntp.topsitesTypeMostVisited",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Frequently Visited",
+      comment: "MostVisited type of topsites. Selection means NTP will display most visited tiles if there is any."
     )
   }
 
