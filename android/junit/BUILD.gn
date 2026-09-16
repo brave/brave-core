@@ -181,7 +181,6 @@ if (is_android) {
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.ntp") {
     resources_package = "org.chromium.chrome.browser.ntp"
     sources = [
-      "src/org/chromium/chrome/browser/ntp/BraveNewTabPageUtilUnitTest.java",
       "src/org/chromium/chrome/browser/ntp/BraveNewTabTakeoverInfobarTest.java",
       "src/org/chromium/chrome/browser/ntp/BraveNtpTopSitesModeUnitTest.java",
       "src/org/chromium/chrome/browser/ntp/NewTabTakeoverSafeAreaReporterTest.java",
