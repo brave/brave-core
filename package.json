@@ -79,7 +79,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "155.0.8059.5",
+        "tag": "156.0.8065.1",
         "repository": {
           "url": "https://chromium.googlesource.com/chromium/src.git"
         },
