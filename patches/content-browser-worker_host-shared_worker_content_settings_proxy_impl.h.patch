@@ -1,10 +1,10 @@
 diff --git a/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h b/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h
-index 5cb6e6a8fe038e4bc354b179364b5d1584c881fb..941d627ade728b7734032bc5f64b62f25b0c248f 100644
+index f456d48cc51b73b11dbe931ae107f940c5dde307..cf5925ac83bc6ad95059e7d0a9a2ffabccd2abaa 100644
 --- a/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h
 +++ b/content/browser/worker_host/shared_worker_content_settings_proxy_impl.h
-@@ -43,6 +43,9 @@ class SharedWorkerContentSettingsProxyImpl
-   void AllowWebLocks(AllowCacheStorageCallback callback) override;
+@@ -44,6 +44,9 @@ class SharedWorkerContentSettingsProxyImpl
    void AllowFileSystem(AllowFileSystemCallback callback) override;
+   void AllowWriteToClipboard(AllowWriteToClipboardCallback callback) override;
  
 +  void GetBraveShieldsSettings(
 +      GetBraveShieldsSettingsCallback callback) override;
