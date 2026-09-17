@@ -120,11 +120,7 @@ struct DefaultShieldsSectionView: View {
   }
 }
 
-extension ShieldLevel: Identifiable {
-  public var id: String {
-    return rawValue
-  }
-
+extension ShieldLevel {
   public var localizedTitle: String {
     switch self {
     case .aggressive: return Strings.Shields.trackersAndAdsBlockingAggressive

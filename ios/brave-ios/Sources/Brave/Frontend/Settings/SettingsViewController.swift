@@ -430,7 +430,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       )
     }
 
-    let openDialogRow = { (text: MessageIDTyped, description: MessageIDTyped?) in
+    let openDialogRow = { [self] (text: MessageIDTyped, description: MessageIDTyped?) in
       Row(
         text: L10nUtils.string(messageId: text),
         detailText: description.map { L10nUtils.string(messageId: $0) },
@@ -445,7 +445,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       )
     }
 
-    let resendConfirmationEmailRow = { (intent: BraveAccount.VerificationIntent) in
+    let resendConfirmationEmailRow = { [self] (intent: BraveAccount.VerificationIntent) in
       Row(
         text: L10nUtils.string(
           messageId: .SETTINGS_BRAVE_ACCOUNT_RESEND_CONFIRMATION_EMAIL_BUTTON_LABEL
@@ -1662,7 +1662,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
       rows: [
         Row(
           text: version,
-          selection: { [unowned self] in
+          selection: { [unowned self, weak tabManager] in
             let device = UIDevice.current
             let actionSheet = UIAlertController(
               title: version,
@@ -1684,7 +1684,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
             let copyTabDebugInfoAction = UIAlertAction(
               title: Strings.copyTabsDebugToClipboard,
               style: .default
-            ) { [weak tabManager] _ in
+            ) { _ in
               guard let tabManager else { return }
               UIPasteboard.general.setSecureString(
                 AppDebugComposer.composeTabDebug(tabManager),
@@ -1911,16 +1911,19 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
               var links: [String]
             }
             Task.detached {
-              let url = URL(
-                string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json"
-              )!
-              let data = try Data(contentsOf: url)
-              let links = try JSONDecoder().decode(Links.self, from: data)
-              let urls = links.links.compactMap(URL.init)
-              await MainActor.run {
-                self.settingsDelegate?.settingsOpenURLs(urls, loadImmediately: false)
-                self.dismiss(animated: true)
-              }
+              do {
+                let url = URL(
+                  string:
+                    "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json"
+                )!
+                let data = try Data(contentsOf: url)
+                let links = try JSONDecoder().decode(Links.self, from: data)
+                let urls = links.links.compactMap(URL.init)
+                await MainActor.run {
+                  self.settingsDelegate?.settingsOpenURLs(urls, loadImmediately: false)
+                  self.dismiss(animated: true)
+                }
+              } catch {}
             }
           },
           cellClass: MultilineButtonCell.self

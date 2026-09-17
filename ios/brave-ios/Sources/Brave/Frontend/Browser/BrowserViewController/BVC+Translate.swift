@@ -41,7 +41,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
     // Ensure url bar is expanded before presenting a popover on it
     toolbarVisibilityViewModel.toolbarState = .expanded
 
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+    DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [self] in
       // Do NOT show the translate onboarding popup if the tab isn't visible
       guard self.canShowTranslateOnboarding(tab: tab)
       else {

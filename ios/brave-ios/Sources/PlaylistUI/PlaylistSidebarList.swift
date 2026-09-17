@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveShared
+import CoreData
 import Data
 import DesignSystem
 import Foundation

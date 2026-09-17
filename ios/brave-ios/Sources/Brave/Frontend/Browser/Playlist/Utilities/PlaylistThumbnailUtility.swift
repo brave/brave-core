@@ -254,7 +254,8 @@ private class HLSThumbnailGenerator {
   }
 
   private func generateThumbnail(at time: TimeInterval) {
-    queue.async {
+    queue.async { [weak self] in
+      guard let self else { return }
       let time = CMTimeMakeWithSeconds(time, preferredTimescale: 1)
       self.player?.seek(to: time) { [weak self] finished in
         guard let self = self else { return }

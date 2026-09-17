@@ -237,7 +237,7 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
 
       if let braveSearchManager = braveSearchManager {
         braveSearchManager.fallbackQueryResultsPending = true
-        braveSearchManager.shouldUseFallback { backupQuery in
+        braveSearchManager.shouldUseFallback { [weak self] backupQuery in
           guard let query = backupQuery else {
             braveSearchManager.fallbackQueryResultsPending = false
             return
@@ -246,10 +246,10 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
           if query.found {
             braveSearchManager.fallbackQueryResultsPending = false
           } else {
-            braveSearchManager.backupSearch(with: query) { [weak self] completion in
+            braveSearchManager.backupSearch(with: query) { completion in
               guard let self, let tab = self.tab else { return }
               braveSearchManager.fallbackQueryResultsPending = false
-              injectResults(into: tab)
+              self.injectResults(into: tab)
             }
           }
         }

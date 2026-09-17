@@ -40,7 +40,7 @@ class FaviconScriptHandler: NSObject, TabContentScript {
   ) {
     defer { replyHandler(nil, nil) }
 
-    Task { @MainActor in
+    Task { @MainActor [tab] in
       // Assign default favicon
       tab.faviconTabHelper?.setFavicon(.default)
 
@@ -125,11 +125,13 @@ class FaviconScriptHandler: NSObject, TabContentScript {
       }
 
       Task { @MainActor in
-        let favicon = try await FaviconFetcher.monogramIcon(url: url, persistent: !isPrivate)
-        await FaviconFetcher.updateCache(favicon, for: url, persistent: true)
+        do {
+          let favicon = try await FaviconFetcher.monogramIcon(url: url, persistent: !isPrivate)
+          await FaviconFetcher.updateCache(favicon, for: url, persistent: true)
 
-        guard let tab = tab else { return }
-        tab.faviconTabHelper?.setFavicon(favicon)
+          guard let tab = tab else { return }
+          tab.faviconTabHelper?.setFavicon(favicon)
+        } catch {}
       }
     }
   }
