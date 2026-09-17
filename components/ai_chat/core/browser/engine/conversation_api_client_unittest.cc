@@ -331,6 +331,20 @@ TEST_F(ConversationAPIClientUnitTest, CreateJSONRequestBody_Capabilities) {
   EXPECT_TRUE(capabilities->contains("math_ml"));
 }
 
+TEST_F(ConversationAPIClientUnitTest, CreateJSONRequestBody_NoCapabilities) {
+  // A conversation that opts in to nothing still sends the field, as an empty
+  // list rather than omitting it.
+  std::string body = client_->CreateJSONRequestBody(
+      {}, std::nullopt /* oai_tool_definitions */,
+      std::nullopt /* preferred_tool_name */, {}, std::nullopt /* model_name */,
+      /*is_sse_enabled=*/true);
+
+  auto dict = base::test::ParseJsonDict(body);
+  const base::ListValue* capabilities = dict.FindList("brave_capability");
+  ASSERT_TRUE(capabilities);
+  EXPECT_TRUE(capabilities->empty());
+}
+
 class ConversationAPIClientUnitTest_ContentBlocks
     : public ConversationAPIClientUnitTest,
       public testing::WithParamInterface<ContentBlockTestParam> {};

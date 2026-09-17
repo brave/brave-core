@@ -68,6 +68,9 @@ constexpr auto kCapabilityToStringMap =
         {mojom::ConversationCapability::MATH_ML, kMathMlCapability},
     });
 
+// ParseCapabilities matches these before kStringToCapabilityMap and skips the
+// rest of the iteration, so a name here can never also be a conversation
+// capability.
 constexpr auto kStringToCategoryMap =
     base::MakeFixedFlatMap<std::string_view, mojom::ModelCategory>({
         {kChatCapability, mojom::ModelCategory::CHAT},
