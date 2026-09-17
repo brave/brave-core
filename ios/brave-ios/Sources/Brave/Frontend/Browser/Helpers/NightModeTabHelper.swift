@@ -60,6 +60,10 @@ class NightModeTabHelper: TabObserver {
   }
 
   static func isNightModeBlockedURL(_ url: URL) -> Bool {
+    if !url.isWebPage() {
+      // Dont apply night mode to WebUI
+      return true
+    }
     // The reason we use `normalizedHost` is because we want to keep the eTLD+1
     // IE: (search.brave.com instead of brave.com)
     guard let urlHost = url.normalizedHost(), let registry = url.publicSuffix else {
