@@ -864,9 +864,11 @@
 <translation id="646023614746251785">સ્વાપ્ર માટે પુષ્ટિ આપો</translation>
 <translation id="6264944956989873014">બ્રિજ માટે પુષ્ટિ આપો</translation>
 <translation id="7067917728851842589">મોકલવા માટે પુષ્ટિ આપો</translation>
+<translation id="2841837950101800123">પ્રદાતા</translation>
 <translation id="1114725160772317155">પ્રદાતા સ્થિતિ</translation>
 <translation id="2351357639951873714">શિલ્ડ માટે પુષ્ટિ આપો</translation>
 <translation id="7480044382160806610">અનશિલ્ડ માટે પુષ્ટિ કરો</translation>
+<translation id="6830542010524256586">સ્થળાંતરની પુષ્ટિ કરો</translation>
 <translation id="8332923694292360653">ખર્ચ કરો</translation>
 <translation id="3735740477244556633">આ પ્રમાણે સૉર્ટ કરો</translation>
 <translation id="6484605214219822434">પુલ સમીક્ષા કરો</translation>
@@ -1405,8 +1407,10 @@
 <translation id="5503843345634715425">ધનવાપસી</translation>
 <translation id="1778601041100951971"><ph name="AMOUNT"/> ને શિલ્ડ કરી રહ્યા છીએ</translation>
 <translation id="6439110433198887239"><ph name="AMOUNT"/> અનશિલ્ડ કરી રહ્યા છીએ</translation>
+<translation id="6022412719565214018"><ph name="AMOUNT"/> સ્થળાંતરિત કરી રહ્યાં છીએ</translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> શિલ્ડ કરવામાં આવ્યું છે</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> અનશિલ્ડ કરવામાં આવ્યું છે</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> સ્થળાંતરિત કરવામાં આવ્યું છે</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
  =1 {{PENDING_TRANSACTIONS} વધુ ટ્રાન્ઝેક્શન પેન્ડિંગ છે.}
  other {{PENDING_TRANSACTIONS} વધુ ટ્રાન્ઝેક્શન પેન્ડિંગ છે.}
@@ -1845,14 +1849,18 @@
 <translation id="9086302186042011942">સિંક્ચ થઈ રહ્યું છે</translation>
 <translation id="99991973626409495">શીલ્ડનું સમીક્ષા કરો</translation>
 <translation id="6779429520470417361">અનશિલ્ડ સમીક્ષા કરો</translation>
+<translation id="7861093868637278059">સ્થળાંતરની સમીક્ષા કરો</translation>
 <translation id="3114681061018999547">શિલ્ડિંગ</translation>
 <translation id="1564172583156967455">અનશિલ્ડ કરી રહ્યા છીએ</translation>
+<translation id="7040674372746105444">સ્થળાંતરિત કરી રહ્યાં છીએ</translation>
 <translation id="8897189056319316783">Shield ZEC</translation>
 <translation id="508249542337194541">ZEC અનશિલ્ડ કરો</translation>
+<translation id="3242332985109374549">ZEC સ્થળાંતરિત કરો</translation>
 <translation id="3382275793825152362">ફંડને શિલ્ડ કરો</translation>
 <translation id="617149752238892649">ફંડને અનશીલ્ડ કરો</translation>
 <translation id="8631765320256788981">તમે તમારા ટ્રાન્સપેરેંટ એકાઉન્ટથી તમારા શિલ્ડ કરેલા એકાઉન્ટ પર ફંડ મોકલી રહ્યા છો.</translation>
 <translation id="3860364671495430495">તમે તમારા શિલ્ડ કરેલા એકાઉન્ટમાંથી તમારા ટ્રાન્સપેરેંટ એકાઉન્ટમાં ફંડ મોકલી રહ્યા છો.</translation>
+<translation id="9664108035970394">તમે તમારા શિલ્ડ કરેલા લેગસી એકાઉન્ટથી તમારા શિલ્ડ કરેલા એકાઉન્ટ પર ફંડ મોકલી રહ્યા છો.</translation>
 <translation id="7144878232160441200">ફરી પ્રયાસ કરો</translation>
 <translation id="4750109510113597688">આ ટ્રાન્ઝેક્શનનો શામેલ થતો ખોટો ખાતા બદલ મંડળ શામેલ છે.</translation>
 <translation id="6201709949885884577">આ ક્રિયામાં આગળ વધવા માટે પાસવર્ડ જરૂરી છે.</translation>
@@ -2209,7 +2217,7 @@
 <translation id="8151638057146502721">રૂપરેખાંકન કરો</translation>
 <translation id="999273441077650169">ટાસ્ક માટે શ્રેષ્ઠનો ઉપયોગ કરવા માટે મોડલ ગતિશીલ રીતે બદલાય છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">હાય, હું Leo છું. હું Brave નો AI સહાયક છું. હું Qwen VL 30B દ્વારા સંચાલિત છું, જે Alibaba Cloud દ્વારા ઉત્તમ પ્રદર્શન અને વિવિધ ઉપયોગ માટે તૈયાર કરવામાં આવ્યું છે. Qwen Brave માં અમારા પોતાના સુરક્ષિત માળખા મારફતે હોસ્ટ થયેલ છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GLM-5.1 દ્વારા સંચાલિત છું, જે Zhipu AI દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ માળખાકીય ઉદ્દેશ્ય માટે બનાવવામાં આવ્યું છે. GLM-5.1 NEAR દ્વારા હોસ્ટ કરવામાં આવે છે તેમના પોતાના ચકાસી શકાય તેવા ખાનગી સુરક્ષિત ઢાંચા દ્વારા.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું GLM-5.3 Flash દ્વારા સંચાલિત છું, જે Zhipu AI દ્વારા ઉત્કૃષ્ટ પ્રદર્શન અને વિવિધ માળખાકીય ઉદ્દેશ્ય માટે બનાવવામાં આવ્યું છે. GLM-5.3 Flash NEAR દ્વારા હોસ્ટ કરવામાં આવે છે તેમના પોતાના ચકાસી શકાય તેવા ખાનગી સુરક્ષિત ઢાંચા દ્વારા.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">હાય, હું લિયો છું. હું Brave તરફથી એક AI સહાયક છું. હું Claude Instant દ્વારા સંચાલિત છું, જે ઉચ્ચારણ અને લખાણ પ્રક્રિયા કરવાના કાર્ય માટે બનાવવામાં આવેલ મોડલ છે અને Brave ની સુરક્ષિત ઇન્ફ્રાસ્ટ્રક્ચર દ્વારા હોસ્ટ કરવામાં આવેલ છે.<ph name="LINK_BEFORE"/>વિશેષ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Claude Haiku દ્વારા સંચાલિત છું, જે Anthropic દ્વારા વાર્તાલાપ અને ટેક્સ્ટ પ્રક્રિયા કાર્યો માટે બનાવવામાં આવ્યું છે. Brave માં અમારાં પોતનાં સુરક્ષિત ઢાંચા દ્વારા Claude Haiku હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">હાય, હું લિયો છું. હું Brave નો AI સહાયક છું. હું Claude Sonnet દ્વારા સંચાલિત છું, જે Anthropic દ્વારા વાર્તાલાપ અને ટેક્સ્ટ પ્રક્રિયા કાર્યો માટે બનાવવામાં આવ્યું છે. Brave માં અમારાં પોતનાં સુરક્ષિત ઢાંચા દ્વારા Claude Sonnet હોસ્ટ કરવામાં આવે છે.<ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
@@ -2331,6 +2339,8 @@
 <translation id="4370698775470316661">આ ગપગસાવાવ કરવાનો છે મોડલ્સ ઉપલબ્ધ હોઈ શકે છે જે લાંબી વાતચીત માટે ચોક્સાઇને જાળવી રાખવામાં સક્ષમ છે.</translation>
 <translation id="4744144453035015075">વેબ શોધી રહ્યું છે</translation>
 <translation id="8548351747582087191"><ph name="SEARCH_TERMS"/> માટે વેબ શોધી રહ્યું છે.</translation>
+<translation id="4395536726196773278">"<ph name="QUERY"/>" માટે તમારા ખુલ્લા ટેબ્સ શોધી રહ્યાં છીએ…</translation>
+<translation id="4724926708866789382">કોઈ ખુલ્લા ટેબ્સ "<ph name="QUERY"/>" સાથે મેળ ખાતા નથી.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> વધુ…</translation>
 <translation id="8103700533980268469">આ નોટીસ બંધ કરો</translation>
 <translation id="3417835166382867856">શોધ ટેબ્સ</translation>
@@ -2378,6 +2388,8 @@
 <translation id="443008484043213881">સાધનો</translation>
 <translation id="4343623396828510727">આ સાઇટ્સ એવા સાધનો ખુલ્લા કરે છે જેનો ઉપયોગ Leo આ સાઇટ પર અને તેમાંથી ડેટા મોકલવા માટે કરી શકે છે. જો આ વાતચીતમાં એવો ડેટા હોય જે તમે નથી ઇચ્છતા કે આ સાઇટ જુએ, તો આ સાધનો જોડશો કે મંજૂર કરશો નહીં.</translation>
 <translation id="5021823940147712387">સાધનો દૂર કરો</translation>
+<translation id="8712279871321308580">ઉપલબ્ધ વેબસાઇટ ટૂલ્સ</translation>
+<translation id="3690996226559605619">ઉપલબ્ધ ટૂલ્સ (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">તમામ સબ્સ્ક્રિપ્શન ઓટો-રિન્યૂ કરવામાં આવે છે પરંતુરિન્યૂઅલ પહેલાં કોઈપણ સમયે કેન્સલ કરી શકાય છે.</translation>
 <translation id="5091223967610958">લીઓને વધુ સારું બનાવવામાં અમારી સહાય કરવા માટે તમે જે પેજ પર છો તેનું હોસ્ટનામ (<ph name="HOST_NAME"/>) શેર કરો.</translation>
 <translation id="8732450785281947197">લિઓ એ આઇ યુંસ</translation>
@@ -2416,6 +2428,7 @@
 <translation id="6397861830483632092">ટૅબ્સ ખોલો…</translation>
 <translation id="802080272588201037">બુકમાર્ક્સ…</translation>
 <translation id="2716127283451902393">ઇતિહાસ…</translation>
+<translation id="8888171900079152025">વર્કસ્પેસ ફોલ્ડર</translation>
 <translation id="49269513399674318">માઇક્રોફોન વાપરો</translation>
 <translation id="3895031624234442305">કસ્ટમ મોડેલો</translation>
 <translation id="4572010449071015143">નવી વાતચીત શરૂ કરો</translation>
@@ -2449,8 +2462,11 @@
 <translation id="3397808797783614750">તમારું બ્રાઉઝિંગ સ્વચાલિત રીતે સાફર કરવા માટે AI ને સક્રિય કરવા છતાં, તે તમારી ખાનગીતા, નાણાકીય બાબતો અને ઑનલાઇન સંચાર માટે હાનિકારક કે અનિચ્છિત પરિણામો આપી શકે છે. <ph name="LINK_BEFORE"/>વધુ જાણો<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">સુરક્ષા ચેતવણી</translation>
 <translation id="6077070599873946984">Brave AI ને તમારી મંજૂરી જોઈએ છે: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>** પર **<ph name="TOOL_NAME"/>** એક્ઝિક્યુટ કરવા માંગે છે</translation>
 <translation id="4163837693685963037">ચાલું ઑપરેશન તમારી વિનંતી સાથે સંભવિત રીતે વિસંગત હોય એવું શોધાયું છે:</translation>
 <translation id="3927932062596804919">નકારો</translation>
+<translation id="4191349941249805855">ટૂલ આર્ગ્યુમેન્ટ્સ બતાવો</translation>
+<translation id="7237059533128264835">ટૂલ આર્ગ્યુમેન્ટ્સ છુપાવો</translation>
 <translation id="4569155249847375786">પ્રમાણિત</translation>
 <translation id="8200772114523450471">ફરી શરૂ કરો</translation>
 <translation id="7607002721634913082">થોભાયેલું</translation>
@@ -2556,7 +2572,7 @@
 <translation id="9173319813356700250">સમાચાર</translation>
 <translation id="6543799171249004861"><ph name="AUTHOR"/> દ્વારા ફોટો</translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="7978582287767542276">પ્રાયોજિત સાઇટ્સ દૂર કરો</translation>
+<translation id="7978582287767542276">નવા ટેબ પેજની જાહેરાતો દૂર કરો</translation>
 <translation id="466214682712474574">તમારા <ph name="PROVIDER"/> ખાતામાં પ્રવેશ કરો અને તમારું બેલેન્સ જુઓ</translation>
 <translation id="8332875111286275890">તમારું બેલેન્સ જોવા માટે લોગ ઇન કરો</translation>
 <translation id="5430001801813715388">પાસાનુંવું</translation>
@@ -2568,11 +2584,11 @@
 <translation id="4844370919312937270">નવી ટૅબમાં Brave સર્ચ વિજેટ બતાવો</translation>
 <translation id="5088374130885640159"><ph name="REWARDS_LINK_BEGIN"/>Brave રિવોર્ડ્સ<ph name="REWARDS_LINK_END"/> સાથે, તમે નવા ટૅબ પેજની જાહેરાતો જોઈને કમાઈ શકો છો. <ph name="LEARN_MORE_LINK_BEGIN"/>વધુ જાણો<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">નવા ટેબ પેજની જાહેરાતો બતાવો</translation>
-<translation id="4983925687993168579">Brave આંકડાઓ</translation>
+<translation id="4983925687993168579">આંકડા</translation>
 <translation id="5009354496127441090">ટૉપ સાઇટ બતાવો</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">પ્રાયોજિત સાઇટ્સ Braveને મફત રાખવામાં મદદ કરે છે. જો તમે <ph name="SITE_NAME"/> નો ઉપયોગ કરો છો, તો તમે Braveના મિશનને સપોર્ટ કરી રહ્યા છો. તેમને કોઈપણ સમયે અક્ષમ કરો. <ph name="LINK_BEGIN"/>વધુ જાણો<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">પ્રાયોજિત સાઇટ્સ Braveને મફત રાખવામાં મદદ કરે છે. જો તમે તેમનો ઉપયોગ કરો છો, તો તમે Braveના મિશનને સપોર્ટ કરી રહ્યા છો. <ph name="LINK_BEGIN"/>વધુ જાણો<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">નવા ટેબ પેજની જાહેરાતો Braveને મફત રાખવામાં મદદ કરે છે. જો તમે <ph name="SITE_NAME"/> નો ઉપયોગ કરો છો, તો તમે Braveના મિશનને સપોર્ટ કરી રહ્યા છો. તેમને કોઈપણ સમયે અક્ષમ કરો. <ph name="LINK_BEGIN"/>વધુ જાણો<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">નવા ટેબ પેજની જાહેરાતો Braveને મફત રાખવામાં મદદ કરે છે. જો તમે તેમનો ઉપયોગ કરો છો, તો તમે Braveના મિશનને સપોર્ટ કરી રહ્યા છો. <ph name="LINK_BEGIN"/>વધુ જાણો<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">આંકડા</translation>
 <translation id="5236080651083907980">Brave Talk સાથે એન્ક્રિપ્ટ કરેલ વીડિયો કૉલ</translation>
 <translation id="2671474274417808910">ગોપનિયતા-પ્રથમ કૉલ્સ</translation>
@@ -2732,6 +2748,7 @@
 <translation id="701087249209337256">તમારા જૂના બ્રાઉઝરની સામગ્રી સાથે લાવો</translation>
 <translation id="142389341645668510">Brave કસ્ટમાઇઝ કરો</translation>
 <translation id="112005628409144325">તમને પસંદ હોય તે ટૅબ લેઆઉટ અને કલર મોડ્સ સાથે તમારા બ્રાઉઝિંગ અનુભવને વ્યક્તિગત બનાવો.</translation>
+<translation id="4428982101636000516">Brave સાથે શોધો અથવા URL ટાઇપ કરો</translation>
 <translation id="7376367936988732808">ટૅબ લેઆઉટ</translation>
 <translation id="4734965478015604180">હૉરિઝોન્ટલ</translation>
 <translation id="490375751687810070">વર્ટિકલ</translation>
@@ -2780,7 +2797,7 @@
 <translation id="745054660363064771">સર્વર સાથે કનેક્ટ કરી શકતા નથી.</translation>
 <translation id="3936826714240735937">બીજુ સર્વર પસંદ કરો.</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/>-<ph name="REGION_NAME"/> સર્વર સાથે કનેક્ટ કરી શકતું નથી. કૃપા કરીને ફરી પ્રયાસ કરો અથવા બીજું દેશ પસંદ કરો.</translation>
-<translation id="1776533911621317363">7-દિવસની મફત અજમાયશ શરૂ કરો</translation>
+<translation id="1776533911621317363">તમારી 7 દિવસની મફત અજમાયશ શરૂ કરો</translation>
 <translation id="3357036723290257445">Brave VPN પહેલાંથી જ ખરીદ્યું છે?</translation>
 <translation id="8652175077544655965">સેટિંગ્સ બંધ કરો.</translation>
 <translation id="5908163815855240493">મુખ્ય મેનુ માં જાઓ.</translation>
@@ -2792,11 +2809,13 @@
 <translation id="8416695199565594645">સામાન્ય રીતે પ્રતિબંધિત સામગ્રી/સાઇટ્સ અથવા તૃતીય પક્ષની સેવાઓ સુધી ઍક્સેસને સક્ષમ બનાવવા માટે ટ્રાફિકને સમર્પિત પ્રોક્સી સર્વર્સ મારફતે રાઉટ કરવામાં આવશે તે સુનિશ્ચિત કરે છે.</translation>
 <translation id="434523916398030617">અડચણનોશો.</translation>
 <translation id="1116694919640316211">વિશે</translation>
-<translation id="8998067240267949220">અતિરિક્ત ગોપનીયતા અને સુરક્ષા ઓનલાઇન</translation>
-<translation id="8666111144393179185">તમારું IP છુપાવો અને તમારું લોકેશન બદલો</translation>
-<translation id="8881997962573369342">વિશ્વભરમાં સેંકડો સર્વરો</translation>
+<translation id="8998067240267949220">કોઈ મર્યાદા વિના તમારી પસંદગીની સામગ્રીને એક્સેસ કરો</translation>
+<translation id="8666111144393179185">વિશ્વભરમાં સેંકડો સર્વરો</translation>
+<translation id="8881997962573369342">સરળતાથી તમારું IP છુપાવો અને તમારું લોકેશન બદલો</translation>
 <translation id="1513801084412881009">તીવ્ર-ગતિની કનેક્શન ઝડપ</translation>
-<translation id="6434859410115379558">એક જ પ્લાન સાથે 10 જેટલા ડિવાઇસ સુરક્ષિત કરો</translation>
+<translation id="6434859410115379558">કોઈ લોગિંગ નહીં, સ્વતંત્ર રીતે ઓડિટ કરાયેલ</translation>
+<translation id="4886431881864826294">એક સબ્સ્ક્રિપ્શન ડેસ્કટોપ, Android અને iOS પર 10 ડિવાઇસને આવરી લે છે</translation>
+<translation id="3649011006120934011">કોઈ પ્રતિબદ્ધતા નહીં, કોઈપણ સમયે રદ કરો</translation>
 <translation id="1693568075761612600">સપોર્ટ ટિકીટ બનાવવા નિષ્ફળ થયા, કૃપા કરીને તમારું કનેક્શન તપાસો.</translation>
 <translation id="1407707415819020643">તમે આ સમયે તેઓ માટે કનેક્ટ કરી શકતા નથી.</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> શહેરો - <ph name="SERVER_COUNT"/> સર્વર્સ.</translation>

@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">Көрінетін аймақ</translation>
 <translation id="2026367923222947564">Толық бет</translation>
 <translation id="4218885227032158909">Таңдалған аймақ</translation>
+<translation id="2586386106930448447">Скриншотты алдын ала қарау</translation>
+<translation id="7514365320538308">Жүктеу</translation>
+<translation id="2743387203779672305">Буферге көшіру</translation>
 <translation id="4928988318462976765">Веб Кеңейтімдер Дүкені</translation>
 <translation id="9181207987584064303">Веб Кеңейтімдер Дүкенінде көру</translation>
 <translation id="3161744659507801211">Ескерту: Brave кеңейтімдердің қарап шығу тарихыңызды жазуынан қорғай алмайды.</translation>
@@ -363,6 +366,7 @@
 <translation id="6847541693235449912">Бару</translation>
 <translation id="2079545284768500474">Әрекетті болдырмау</translation>
 <translation id="1533980864758658574">Жаңа терезе жасалды <ph name="TOPIC"/> үшін</translation>
+<translation id="530437350080973527">Осы тақырыпқа сәйкес келетін қойындылар жоқ. Оны басқаша сипаттап көріңіз.</translation>
 <translation id="7985042437720138349">Бұл функция ашық қойындыларыңыз туралы деректерді Brave AI браузер көмекшісі Леоға жібереді.</translation>
 <translation id="6165508094623778733">Толығырақ білу</translation>
 <translation id="7557539689487606886">Премиумге өту</translation>
@@ -420,6 +424,23 @@
 <translation id="4328541188421002379">Контейнерге жұмыс немесе жеке атау беріңіз</translation>
 <translation id="4976989127264491396">Қате: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Контейнер табылмады</translation>
+<translation id="6055154402239241620">Трафикті басқару</translation>
+<translation id="8134521925475508805">Белгілі бір сайттарды нақты контексте автоматты түрде ашуды теңшеңіз, осылайша шолу сеанстарыңызды бөліп қараңыз. <ph name="BEGIN_LINK"/>Толығырақ<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Трафикті басқаруды қосу</translation>
+<translation id="1358255827354528344">Жаңа ереже қосу</translation>
+<translation id="7183128985801806752">Жаңа трафикті басқару ережесі</translation>
+<translation id="2474694032500407328">Трафикті басқару ережесін өңдеу</translation>
+<translation id="5543417389274097206">Ереже жасау</translation>
+<translation id="6532106788206463496">Өзгерістерді сақтау</translation>
+<translation id="1172800769374812685">Ережені жою</translation>
+<translation id="2389682807835777591">Сіз <ph name="RULE_LABEL"/> ережесін жойғыңыз келетініне сенімдісіз бе?</translation>
+<translation id="4853129331778360252">Басқару және нақты шолу контекстінде әрдайым ашу үшін URL мекенжайларын енгізіңіз.</translation>
+<translation id="1173480005453148926">Басқарылатын URL мекенжайлары</translation>
+<translation id="6217532416180299470">Трафикті басқару арқылы басқарылатын URL мекенжайларын енгізіңіз</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> сайтқа және оның ішкі домендеріне сәйкес келеді; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> дәл сол сайтқа сәйкес келеді; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> барлық сайттарға сәйкес келеді; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> түсініктеме болып табылады.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (және тағы <ph name="COUNT"/> URL мекенжайы)</translation>
+<translation id="3700798663085748181">Ережені қосу</translation>
+<translation id="2967480878853054068">Жарамсыз URL сүзгісі</translation>
 <translation id="2263346047290834619">Ағаш қойындыларын пайдалану</translation>
 <translation id="5860254591544742609">Атаулар жолағын көрсету</translation>
 <translation id="4691131445504068802">Минималды күйге түскен кезде түгелімен жасыру</translation>
@@ -527,7 +548,6 @@
 <translation id="6745592621698551453">Қазір жаңарту</translation>
 <translation id="5334844597069022743">Көзіне қарау</translation>
 <translation id="4720556299488643018">Жазылымнан бас тарту</translation>
-<translation id="6532106788206463496">Өзгерістерді сақтау</translation>
 <translation id="4516904298421534459">Сүзгі тізімдері</translation>
 <translation id="4435215931544457255">Қауымдастық тарапынан қолдау көрсетілетін қосымша танымал тізімдер. Тым көп сүзгілерді қосу шолу жылдамдығын төмендетеді.</translation>
 <translation id="802154636333426148">Жүктеу сәтсіз аяқталды</translation>
@@ -610,6 +630,8 @@
 <translation id="509873765238158442">Microsoft Recall-ды блоктау</translation>
 <translation id="4763421121695677716">Microsoft Windows компьютерлеріндегі Microsoft Recall функциясының Brave қойындыларының кез келген ашық скриншоттарын автоматты түрде алуын болдырмаңыз.</translation>
 <translation id="1968895725257436430">Деректерді жинау</translation>
+<translation id="5668852698659986622">Демеушілік жарнамаларды қосу</translation>
+<translation id="431194936581466649">Демеушілік жарнамалар арқылы тәуелсіз, пайдаланушыға бағытталған интернетті құру бойынша Brave миссиясын қолдауға көмектесіңіз. Біз жарнама тиімділігін сізді анықтамай, құпия түрде өлшейміз.</translation>
 <translation id="1700052872056357670">Шыққан кезде деректерді тазарту.</translation>
 <translation id="216468847346280584">Brave Ads деректерін өшіру...</translation>
 <translation id="96212973142796240">Brave жарнамалары деректері тазаланды</translation>
@@ -989,4 +1011,12 @@
 <translation id="154702742922788359">Ашу режимі</translation>
 <translation id="2249111429176737533">Бетке қойылған терезе ретінде ашу</translation>
 <translation id="7022756207310403729">Браузерде ашу</translation>
+<translation id="1916785651473363467">Реттелетін профиль суреті</translation>
+<translation id="5336092064678832560">Реттелетін сурет жүктеу</translation>
+<translation id="1062407476771304334">Ауыстыру</translation>
+<translation id="1428299461403073820">Реттелетін профиль суретін ауыстыру</translation>
+<translation id="7994453838803296517">Реттелетін профиль суретін алдын ала қарау, таңдалды</translation>
+<translation id="6578040791557152233">Реттелетін профиль суретін жүктеу</translation>
+<translation id="9222124079546967592">Реттелетін профиль суретін жою</translation>
+<translation id="6058660912941570282">Brave бұл файлды пайдалана алмайды. Басқа сурет таңдап, қайталап көріңіз.</translation>
 </translationbundle>

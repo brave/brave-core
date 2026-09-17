@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Desactivat</translation>
 <translation id="59174027418879706">Activat</translation>
 <translation id="6920492760024499150">Les històries més destacades d'avui a un feed privat, només per a tu.</translation>
-<translation id="3803728444598576153">Activa Notícies de Brave, i no et perdis mai una història</translation>
+<translation id="3803728444598576153">Activa Notícies de Brave i no et perdis mai una història</translation>
 <translation id="7627131190984957214">Les Notícies de Brave estan patrocinades amb anuncis privats i anònims que coincidexin amb el dispositiu.</translation>
-<translation id="7897050360583141319">Segueix les teves fonts preferides, en un únic canal. Obre una pestanya a Brave, desplaça't cap avall i… voilà!\nNotícies de Brave és un servei finançat a través de publicitat amb anuncis privats i anonimitzats.</translation>
+<translation id="7897050360583141319">Segueix les teves fonts preferides en un únic canal. Obre una pestanya a Brave, desplaça't cap avall i… voilà!</translation>
 <translation id="1765217911817124376">Activa Notícies de Brave</translation>
 <translation id="8981973962043893066">Cerca per lloc, tema o canal RSS</translation>
 <translation id="3225021799163709119">Popular</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Ajuda a millorar l'estabilitat del producte de Brave\u2019s enviant automàticament informes de diagnòstic quan el Navegador de Brave falla o es congela.</translation>
 <translation id="7977176350719484850">Data estimada\ndesada</translation>
 <translation id="9008534313521214777">Temps estalviat estimat</translation>
+<translation id="5668852698659986622">Activa els anuncis patrocinats</translation>
+<translation id="431194936581466649">Ajuda a donar suport a la missió de Brave de construir una web independent i centrada en l'usuari amb els anuncis patrocinats. Mesurem el rendiment dels anuncis de manera privada, sense identificar-te.</translation>
 <translation id="8347743943525229984">Permetre les enquestes de Brave</translation>
 <translation id="6022939994702081659">Permet que Brave et mostri enllaços a enquestes privades a la pàgina de nova pestanya. Les enquestes ens ajuden a desenvolupar millors característiques i mesurar l'efectivitat de les campanyes publicitàries basades en el navegador.</translation>
 <translation id="7746496306508543965">Més informació sobre les enquestes de Brave</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">Menú principal</translation>
 <translation id="7002271985859760052">Accions de la pàgina</translation>
 <translation id="7104487676473617844">Els elements següents només seran visibles al menú quan la pàgina web oberta actualment els permeti.</translation>
-<translation id="4159764849281393303">Aplicació web</translation>
 <translation id="8038539967102225446">Els anuncis de Brave són aquí!</translation>
 <translation id="222883304157347087">(aquest dispositiu)</translation>
 <translation id="4157741509680155021">DISPOSITIUS A LA CADENA DE SINCRONITZACIÓ</translation>
@@ -720,6 +721,8 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Quantitat + gas</translation>
 <translation id="2186011161688824046">Quantitat + impost</translation>
+<translation id="1118876217803190221">Balanç insuficient</translation>
+<translation id="275990379543116961">Fons insuficients per a gas</translation>
 <translation id="1950052789869821983">Transacció</translation>
 <translation id="2304783958703511257">Configuració avançada</translation>
 <translation id="4220062530885628403">Nonce</translation>

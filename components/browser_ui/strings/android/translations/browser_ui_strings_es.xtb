@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Tema azul</translation>
 <translation id="1070329623210597193">Archivos que este sitio puede ver o editar</translation>
 <translation id="1074758928858737435">Puedes pedir ver la versión para ordenadores de los sitios</translation>
+<translation id="1760197532822135980">Recibe sugerencias de Brave en otras aplicaciones</translation>
 <translation id="1109482864356262001">Las funciones que necesiten sensores de luz o de movimiento no se podrán utilizar</translation>
 <translation id="6670155282615872564">Completa las siguientes acciones sugeridas para sacar el máximo partido a Brave</translation>
 <translation id="113098737392899175">Desplazarse por las páginas con un cursor de texto cuando se conecta un teclado</translation>
@@ -83,6 +84,7 @@
 <translation id="1818308510395330587">Para que <ph name="APP_NAME"/> pueda usar la realidad aumentada, activa la cámara también en los <ph name="BEGIN_LINK"/>ajustes de Android<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Cambia la posición para personalizar tu experiencia de navegación</translation>
 <translation id="1848033246551405023">Fuente Sans Serif</translation>
+<translation id="1861244985839668297">Cuando esta opción está activada, los sitios pueden solicitar permiso para usar dispositivos HID. Si está desactivada, los sitios no pueden usar dispositivos HID.</translation>
 <translation id="1861262398884155592">Esta carpeta está vacía</translation>
 <translation id="1881806992065048905">Hoja inferior de apariencia de la página Nueva pestaña</translation>
 <translation id="1887786770086287077">El acceso a la ubicación está desactivado en este dispositivo. Actívalo en los <ph name="BEGIN_LINK"/>ajustes de Android<ph name="END_LINK"/>.</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271">Para que <ph name="APP_NAME"/> pueda usar el seguimiento de manos, actívalo también en la <ph name="BEGIN_LINK"/>configuración del sistema<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Gestionar las tarjetas</translation>
 <translation id="4722332387043141878">Los sitios suelen usar los sensores de luz y de movimiento del dispositivo en funciones como la realidad virtual o el seguimiento de actividad física</translation>
+<translation id="4748783296226936791">Los sitios se suelen conectar a dispositivos HID para usarlos en funciones que utilizan teclados poco habituales, mandos de juegos y otros dispositivos</translation>
 <translation id="4755971844837804407">Cuando esta opción está activada, los sitios pueden mostrarte cualquier anuncio. Si está desactivada, los sitios no pueden mostrar anuncios invasivos o engañosos.</translation>
 <translation id="4779083564647765204">Zoom</translation>
 <translation id="4807122856660838973">Activar Navegación segura</translation>
@@ -447,14 +450,16 @@
 <translation id="5668404140385795438">Ignora la solicitud de un sitio web para no ampliar la imagen</translation>
 <translation id="5668843533782548925">Los sitios son más lentos, pero más seguros</translation>
 <translation id="5677928146339483299">Bloqueado</translation>
+<translation id="98560749650104566">Ahora Brave puede mostrarte sugerencias en otras aplicaciones basadas en tus datos de navegación, como el historial de navegación reciente. Estos datos se tratan de forma segura en tu dispositivo. Desactiva esta opción en cualquier momento en la configuración de Brave.</translation>
 <translation id="5689516760719285838">Ubicación</translation>
 <translation id="5690795753582697420">La cámara está desactivada en los ajustes de Android</translation>
 <translation id="5700761515355162635">Cookies de terceros permitidas</translation>
 <translation id="5706552988683188916">Esta acción eliminará las cookies y otros datos de sitios de <ph name="WEBSITE"/></translation>
 <translation id="571222594670061844">Los sitios pueden mostrar notificaciones de inicio de sesión de servicios de identidad</translation>
+<translation id="5719854774000914513">Los sitios pueden solicitar permiso para conectarse a dispositivos HID</translation>
 <translation id="5740126560802162366">Los sitios pueden guardar datos en tu dispositivo</translation>
 <translation id="5743425052258407233">Accede a tu historial en todos tus dispositivos para retomar fácilmente lo que estabas haciendo</translation>
-<translation id="5749158352074143502">Continuar con esta pestaña</translation>
+<translation id="5749158352074143502">Continuar en esta pestaña</translation>
 <translation id="5750869797196646528">Seguimiento de manos</translation>
 <translation id="5753570386948603678">Eliminar del historial</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> (bloqueado)</translation>
@@ -500,6 +505,7 @@
 <translation id="6085954183010297841">¿Eliminar autorización para editar archivos? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Cuando esta opción está activada, los sitios pueden activar la función Imagen en imagen automáticamente. Si está desactivada, los sitios no pueden activar la función automáticamente.</translation>
 <translation id="6120483543004435978">Cuando esta opción está activada, los sitios pueden solicitar permiso para saber cuándo usas activamente tu dispositivo. Si está desactivada, los sitios no pueden saber cuándo usas activamente tu dispositivo.</translation>
+<translation id="5773142757282836623">Ocultar sugerencias de Brave en otras aplicaciones</translation>
 <translation id="4852158809106762963">Brave te ofrecerá guardar tu contraseña</translation>
 <translation id="615886654739818377">No permitir que los sitios gestionen las ventanas en ninguna de tus pantallas</translation>
 <translation id="6165508094623778733">Más información</translation>
@@ -571,6 +577,7 @@
 <translation id="6950072572526089586">Un sitio que visites puede guardar información sobre lo que estés haciendo para funcionar como cabría esperar; por ejemplo, para mantener tu sesión iniciada en un sitio o para guardar artículos en tu carrito de la compra. Los sitios suelen guardar esta información en tu dispositivo de forma temporal.</translation>
 <translation id="6964291282260073066">WebGPU está inhabilitado.</translation>
 <translation id="6965382102122355670">Aceptar</translation>
+<translation id="6972629891077993081">Dispositivos HID</translation>
 <translation id="6980507581230208647">Tema rosa</translation>
 <translation id="6980861169612950611">¿Eliminar datos del sitio <ph name="SITE_NAME"/>?</translation>
 <translation id="6981982820502123353">Accesibilidad</translation>
@@ -583,7 +590,6 @@
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="7055552182600664515">Para reproducir contenido protegido por derechos de autor, es posible que los sitios tengan que usar un servicio de protección de contenido. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 seleccionada}other{# seleccionadas}}</translation>
-<translation id="708014373017851679"><ph name="APP_NAME"/> no está actualizada. Actualiza la aplicación.</translation>
 <translation id="7084115944294706056">Elige la posición de la barra</translation>
 <translation id="7087918508125750058">Elementos seleccionados: <ph name="ITEM_COUNT"/>. Hay opciones disponibles en la parte superior de la pantalla</translation>
 <translation id="7141896414559753902">Impide que los sitios muestren ventanas emergentes y redirecciones (recomendado)</translation>
@@ -728,6 +734,7 @@ Protección Avanzada controla estos ajustes de Brave:</translation>
 <translation id="8593422116412089302">Cuando esta opción está activada, los sitios pueden solicitar permiso para usar la información que hayan guardado sobre ti. Si está desactivada, los sitios no pueden solicitar permiso para usar la información que hayan guardado sobre ti.</translation>
 <translation id="8609465669617005112">Subir</translation>
 <translation id="8617611086246832542">Cuando esta opción está activada, se muestra la vista para ordenador de los sitios web. Si está desactivada, se muestra la vista para móvil de los sitios web.</translation>
+<translation id="8625916342247441948">No permitir que los sitios se conecten a dispositivos HID</translation>
 <translation id="8670078035093027626">Hoja inferior del navegador predeterminado abierta a altura completa</translation>
 <translation id="8676316391139423634">Si activas esta opción, los sitios pueden solicitar permiso para monitorizar tus manos. Si está desactivada, los sitios no pueden monitorizar tus manos.</translation>
 <translation id="8676374126336081632">Borrar entrada</translation>

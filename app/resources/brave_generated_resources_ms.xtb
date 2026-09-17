@@ -112,6 +112,9 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3114478090884951591">Kawasan boleh dilihat</translation>
 <translation id="2026367923222947564">Halaman penuh</translation>
 <translation id="4218885227032158909">Kawasan dipilih</translation>
+<translation id="2586386106930448447">Pratonton tangkapan skrin</translation>
+<translation id="7514365320538308">Muat Turun</translation>
+<translation id="2743387203779672305">Salin kepada papan klip</translation>
 <translation id="4928988318462976765">Kedai Sambungan Web</translation>
 <translation id="9181207987584064303">Lihat di Kedai Sambungan Web</translation>
 <translation id="3161744659507801211">Amaran: Brave tidak boleh mengelakkan sambungan daripada merekod sejarah pelayaran anda.</translation>
@@ -364,6 +367,7 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6847541693235449912">Teruskan</translation>
 <translation id="2079545284768500474">Buat asal</translation>
 <translation id="1533980864758658574">Tetingkap baru dicipta untuk <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Tiada tab yang sepadan dengan topik itu. Cuba terangkannya secara berbeza.</translation>
 <translation id="7985042437720138349">Ciri ini menghantar data tentang tab yang anda buka kepada Leo, pembantu pelayar berasaskan AI oleh Brave.</translation>
 <translation id="6165508094623778733">Maklumat lanjut</translation>
 <translation id="7557539689487606886">Sertai Premium</translation>
@@ -421,6 +425,23 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4328541188421002379">Berikan nama kepada kontena anda, contohnya Kerja atau Peribadi</translation>
 <translation id="4976989127264491396">Ralat: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Kontena tidak ditemui</translation>
+<translation id="6055154402239241620">Kawalan Trafik</translation>
+<translation id="8134521925475508805">Konfigurasikan tapak tertentu untuk dibuka secara automatik dalam konteks tertentu, mencipta pengasingan antara sesi pelayaran anda. <ph name="BEGIN_LINK"/>Ketahui lebih lanjut<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Dayakan Kawalan Trafik</translation>
+<translation id="1358255827354528344">Tambah peraturan baharu</translation>
+<translation id="7183128985801806752">Peraturan kawalan trafik baharu</translation>
+<translation id="2474694032500407328">Edit peraturan kawalan trafik</translation>
+<translation id="5543417389274097206">Cipta peraturan</translation>
+<translation id="6532106788206463496">Simpan perubahan</translation>
+<translation id="1172800769374812685">Padamkan peraturan</translation>
+<translation id="2389682807835777591">Anda pasti anda ingin memadamkan peraturan <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Masukkan URL untuk diuruskan dan sentiasa dibuka dalam konteks pelayaran tertentu.</translation>
+<translation id="1173480005453148926">URL untuk diuruskan</translation>
+<translation id="6217532416180299470">Masukkan URL untuk diuruskan dengan kawalan trafik</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> sepadan dengan tapak dan subdomainnya; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> sepadan dengan tapak yang tepat; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> sepadan dengan semua tapak; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> ialah komen.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (dan <ph name="COUNT"/> lagi URL)</translation>
+<translation id="3700798663085748181">Dayakan peraturan</translation>
+<translation id="2967480878853054068">Penapis URL tidak sah</translation>
 <translation id="2263346047290834619">Guna tab pokok</translation>
 <translation id="5860254591544742609">Tunjukkan bar tajuk</translation>
 <translation id="4691131445504068802">Sembunyikan sepenuhnya apabila diminimumkan</translation>
@@ -528,7 +549,6 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6745592621698551453">Kemas kini sekarang</translation>
 <translation id="5334844597069022743">Lihat sumber</translation>
 <translation id="4720556299488643018">Henti langganan</translation>
-<translation id="6532106788206463496">Simpan perubahan</translation>
 <translation id="4516904298421534459">Senarai penapis</translation>
 <translation id="4435215931544457255">Senarai komuniti terkenal tambahan. Ambil perhatian bahawa tindakan mendayakan terlalu banyak penapis akan mengurangkan kelajuan penyemakan imbas.</translation>
 <translation id="802154636333426148">Muat turun gagal</translation>
@@ -611,6 +631,8 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="509873765238158442">Sekat Microsoft Recall</translation>
 <translation id="4763421121695677716">Sekat ciri Recall pada komputer Microsoft Windows daripada mengambil tangkapan skrin secara automatik bagi sebarang tab Brave yang dibuka.</translation>
 <translation id="1968895725257436430">Pengumpulan data</translation>
+<translation id="5668852698659986622">Dayakan Iklan Ditaja</translation>
+<translation id="431194936581466649">Bantu menyokong misi Brave untuk membina Web yang bebas dan mengutamakan pengguna dengan Iklan Ditaja. Kami mengukur prestasi iklan secara peribadi, tanpa mengenal pasti anda.</translation>
 <translation id="1700052872056357670">Kosongkan data apabila keluar</translation>
 <translation id="216468847346280584">Buang data Brave Ads...</translation>
 <translation id="96212973142796240">Data Iklan Brave dikosongkan</translation>
@@ -991,4 +1013,12 @@ Atau ubah kemudian pada <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="154702742922788359">Mod buka</translation>
 <translation id="2249111429176737533">Buka sebagai tetingkap berbilang tab</translation>
 <translation id="7022756207310403729">Buka dalam pelayar</translation>
+<translation id="1916785651473363467">Imej profil tersuai</translation>
+<translation id="5336092064678832560">Muat naik imej tersuai</translation>
+<translation id="1062407476771304334">Ganti</translation>
+<translation id="1428299461403073820">Ganti imej profil tersuai</translation>
+<translation id="7994453838803296517">Pratonton imej profil tersuai, dipilih</translation>
+<translation id="6578040791557152233">Muat naik imej profil tersuai</translation>
+<translation id="9222124079546967592">Alih keluar imej profil tersuai</translation>
+<translation id="6058660912941570282">Brave tidak boleh menggunakan fail ini. Pilih imej lain dan cuba lagi.</translation>
 </translationbundle>

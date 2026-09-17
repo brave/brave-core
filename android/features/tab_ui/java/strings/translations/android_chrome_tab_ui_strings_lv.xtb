@@ -4,6 +4,7 @@
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Izveidota pirms <ph name="NUM_WEEKS_ONE"/> nedēļas}zero{Izveidota pirms <ph name="NUM_WEEKS_MANY"/> nedēļām}one{Izveidota pirms <ph name="NUM_WEEKS_MANY"/> nedēļas}other{Izveidota pirms <ph name="NUM_WEEKS_MANY"/> nedēļām}}</translation>
 <translation id="1063300264396686489">Automātiski atvērt ciļņu grupas no citām ierīcēm</translation>
 <translation id="1075622780330595106">Vairākas cilnes pēdējā laikā nav izmantotas (kopā <ph name="NUMBER_OF_TABS"/>). Vai vēlaties tās aizvērt?</translation>
+<translation id="1760197532822135980">Saņemt Brave ieteikumus citās lietotnēs</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{Izveidota pirms <ph name="NUM_YEARS_ONE"/> gada}zero{Izveidota pirms <ph name="NUM_YEARS_MANY"/> gadiem}one{Izveidota pirms <ph name="NUM_YEARS_MANY"/> gada}other{Izveidota pirms <ph name="NUM_YEARS_MANY"/> gadiem}}</translation>
 <translation id="1137385688780024041">{DAY_COUNT,plural, =1{Neaktīvās cilnes un grupas tiks aizvērtas pēc viena mēneša}zero{Neaktīvās cilnes un grupas tiks aizvērtas pēc <ph name="MONTH_COUNT_MANY"/> mēnešiem}one{Neaktīvās cilnes un grupas tiks aizvērtas pēc <ph name="MONTH_COUNT_MANY"/> mēneša}other{Neaktīvās cilnes un grupas tiks aizvērtas pēc <ph name="MONTH_COUNT_MANY"/> mēnešiem}}</translation>
 <translation id="1173894706177603556">Pārdēvēt</translation>
@@ -21,12 +22,14 @@
 <translation id="1501480321619201731">Dzēst grupu</translation>
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> neaktīvs vienums}zero{<ph name="TABS_COUNT_MANY"/> neaktīvi vienumi}one{<ph name="TABS_COUNT_MANY"/> neaktīvs vienums}other{<ph name="TABS_COUNT_MANY"/> neaktīvi vienumi}}</translation>
 <translation id="1568067597247500137">Nerādīt vietni</translation>
+<translation id="1639330215535800445">{TAB_COUNT,plural, =1{Pārvietot cilni uz leju}zero{Pārvietot cilnes uz leju}one{Pārvietot cilnes uz leju}other{Pārvietot cilnes uz leju}}</translation>
 <translation id="1645759014353344461">Grupētas <ph name="TABS_COUNT_MANY"/> cilnes</translation>
 <translation id="1657719826150349398">Pārvietot cilni uz leju</translation>
 <translation id="1670942869417022142">Izslēgts audio</translation>
 <translation id="1697284962337958118">Pievienot:</translation>
 <translation id="1713541401465507417">Aizvērt visas cilnes un grupas</translation>
 <translation id="1738346536511908887">{TAB_GROUPS_COUNT,plural, =1{<ph name="TAB_GROUPS_COUNT_ONE"/> ciļņu grupa vairs nav pieejama.}zero{<ph name="TAB_GROUPS_COUNT_MANY"/> ciļņu grupas vairs nav pieejamas.}one{<ph name="TAB_GROUPS_COUNT_MANY"/> ciļņu grupa vairs nav pieejama.}other{<ph name="TAB_GROUPS_COUNT_MANY"/> ciļņu grupas vairs nav pieejamas.}}</translation>
+<translation id="1759122978835002237">Pārvietot ciļņu grupu uz augšu</translation>
 <translation id="176485176228926164"><ph name="BEGIN_LINK1"/>Uzzināt vairāk<ph name="END_LINK1"/></translation>
 <translation id="1828808367831369073">Grupēta <ph name="TABS_COUNT_ONE"/> cilne</translation>
 <translation id="1844381456014878100">Pēc septiņām neaktivitātes dienām</translation>
@@ -42,6 +45,7 @@
 <translation id="2118649612461486615">Veikala informācija</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{Rādīt vietni}zero{Rādīt vietnes}one{Rādīt vietnes}other{Rādīt vietnes}}</translation>
 <translation id="2162620598375156287">Tagad cena vietnē <ph name="SOURCE_WEBSITE"/> ir <ph name="CURRENT_PRICE"/></translation>
+<translation id="2164232689984783657">Pārvietot ciļņu grupu uz leju</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Atcelt cilnes grupēšanu}zero{Atcelt ciļņu grupēšanu}one{Atcelt ciļņu grupēšanu}other{Atcelt ciļņu grupēšanu}}</translation>
 <translation id="2271452184061378400">Jūsu ciļņu grupas ir saglabātas šeit</translation>
 <translation id="2277224997687551299">Rediģēt grupas nosaukumu</translation>
@@ -128,7 +132,6 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Pārvietot cilnes uz jaunu logu}zero{Pārvietot cilnes uz citu logu}one{Pārvietot cilnes uz citu logu}other{Pārvietot cilnes uz citu logu}}</translation>
 <translation id="5073204694187207510">Slēpt pilnekrāna režģi</translation>
 <translation id="5076161749301278626">Vai skatīt atsauksmes par veikalu?</translation>
-<translation id="5093447877601682598">Sūtīt atsauksmes par ciļņu joslu</translation>
 <translation id="5161254044473106830">Jānorāda nosaukums</translation>
 <translation id="5204584298075822291">Sakļaut cilnes</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Pārlūkā Brave tiek automātiski aizvērtas neaktīvās cilnes un ciļņu grupas pēc <ph name="AUTO_DELETE_DELAY_ONE"/> mēneša. Varat to mainīt iestatījumos.}zero{Pārlūkā Brave tiek automātiski aizvērtas neaktīvās cilnes un ciļņu grupas pēc <ph name="AUTO_DELETE_DELAY_MANY"/> mēnešiem. Varat to mainīt iestatījumos.}one{Pārlūkā Brave tiek automātiski aizvērtas neaktīvās cilnes un ciļņu grupas pēc <ph name="AUTO_DELETE_DELAY_MANY"/> mēneša. Varat to mainīt iestatījumos.}other{Pārlūkā Brave tiek automātiski aizvērtas neaktīvās cilnes un ciļņu grupas pēc <ph name="AUTO_DELETE_DELAY_MANY"/> mēnešiem. Varat to mainīt iestatījumos.}}</translation>
@@ -192,6 +195,7 @@
 <translation id="7369451074646620503">Ciļņu grupa “<ph name="TAB_GROUP_NAME"/>” vairs nav pieejama.</translation>
 <translation id="7402375256128852434">Pievienojiet nesen atvērtās cilnes</translation>
 <translation id="7452985128687107478">Ciļņu grupas tiek automātiski saglabātas un atjauninātas visās jūsu ierīcēs.</translation>
+<translation id="746137824927359035">{TAB_COUNT,plural, =1{Pārvietot cilni uz augšu}zero{Pārvietot cilnes uz augšu}one{Pārvietot cilnes uz augšu}other{Pārvietot cilnes uz augšu}}</translation>
 <translation id="747459581954555080">Atjaunot visu</translation>
 <translation id="7489558427602531799">Pārvietot ciļņu grupu pa labi</translation>
 <translation id="7501728912575021674">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> vienums}zero{<ph name="TABS_COUNT_MANY"/> vienumu}one{<ph name="TABS_COUNT_MANY"/> vienums}other{<ph name="TABS_COUNT_MANY"/> vienumi}}</translation>
@@ -221,6 +225,7 @@
 <translation id="805809603610022708">{TABS_COUNT,plural, =1{Pievienot cilni grupai}zero{Pievienot cilnes grupai}one{Pievienot cilnes grupai}other{Pievienot cilnes grupai}}</translation>
 <translation id="8138067144082174140">Pēc 14 neaktivitātes dienām</translation>
 <translation id="8153873338998959464">{NUMBER_OF_TABS,plural, =1{Izvērst ciļņu grupu <ph name="TITLE_OF_GROUP"/>, kurā ir <ph name="TABS_COUNT_ONE"/> cilne šādā krāsā: <ph name="COLOR_NAME"/>.}zero{Izvērst ciļņu grupu <ph name="TITLE_OF_GROUP"/>, kurā ir <ph name="TABS_COUNT_MANY"/> cilnes šādā krāsā: <ph name="COLOR_NAME"/>.}one{Izvērst ciļņu grupu <ph name="TITLE_OF_GROUP"/>, kurā ir <ph name="TABS_COUNT_MANY"/> cilne šādā krāsā: <ph name="COLOR_NAME"/>.}other{Izvērst ciļņu grupu <ph name="TITLE_OF_GROUP"/>, kurā ir <ph name="TABS_COUNT_MANY"/> cilnes šādā krāsā: <ph name="COLOR_NAME"/>.}}</translation>
+<translation id="8172214054247281626">Kopīgojiet pārlūkošanas datus, piemēram, neseno pārlūkošanas vēsturi, lai saņemtu ieteikumus par atlasītajām lietotnēm. Šie dati tiek apstrādāti drošā veidā jūsu ierīcē.</translation>
 <translation id="8195186926670288294">{TABS_COUNT,plural, =1{Atspraust cilni}zero{Atspraust cilnes}one{Atspraust cilnes}other{Atspraust cilnes}}</translation>
 <translation id="8205266828577616993">Pārvietot cilni uz augšu</translation>
 <translation id="8207688828622594111">{NUM_MINS,plural, =1{Atjaunināta pirms <ph name="NUM_MINS_ONE"/> minūtes}zero{Atjaunināta pirms <ph name="NUM_MINS_MANY"/> minūtēm}one{Atjaunināta pirms <ph name="NUM_MINS_MANY"/> minūtes}other{Atjaunināta pirms <ph name="NUM_MINS_MANY"/> minūtēm}}</translation>

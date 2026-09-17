@@ -864,9 +864,11 @@
 <translation id="646023614746251785">Thibitisha kubadilisha</translation>
 <translation id="6264944956989873014">Thibitisha daraja</translation>
 <translation id="7067917728851842589">Thibitisha kutuma</translation>
+<translation id="2841837950101800123">Mtoa huduma</translation>
 <translation id="1114725160772317155">Hali ya mtoa huduma</translation>
 <translation id="2351357639951873714">Thibitisha kinga</translation>
 <translation id="7480044382160806610">Thibitisha ondoa kinga</translation>
+<translation id="6830542010524256586">Thibitisha kuhamisha</translation>
 <translation id="8332923694292360653">Tumia</translation>
 <translation id="3735740477244556633">Panga kwa</translation>
 <translation id="6484605214219822434">Kagua kiunganishi</translation>
@@ -1405,8 +1407,10 @@
 <translation id="5503843345634715425">Kurudishwa pesa</translation>
 <translation id="1778601041100951971">Kuficha <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Kuficha <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">Inahamisha <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> imefichwa</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> imefichwa</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> imehamishwa</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {muamala {PENDING_TRANSACTIONS} zaidi unasubiri.}
       other {miamala {PENDING_TRANSACTIONS} zaidi inasubiri.}
@@ -1845,14 +1849,18 @@
 <translation id="9086302186042011942">Inasawazisha</translation>
 <translation id="99991973626409495">Pitia kinga</translation>
 <translation id="6779429520470417361">Pitia kinga</translation>
+<translation id="7861093868637278059">Kagua uhamishaji</translation>
 <translation id="3114681061018999547">Kufunika</translation>
 <translation id="1564172583156967455">Kufunua</translation>
+<translation id="7040674372746105444">Inahamisha</translation>
 <translation id="8897189056319316783">Kinga ZEC</translation>
 <translation id="508249542337194541">Funua ZEC</translation>
+<translation id="3242332985109374549">Hamisha ZEC</translation>
 <translation id="3382275793825152362">Lindavifungashio</translation>
 <translation id="617149752238892649">Fungua fedha za Shields</translation>
 <translation id="8631765320256788981">Unatuma fedha kutoka kwa akaunti yako ya wazi kwenda kwenye akaunti yako iliyolindwa.</translation>
 <translation id="3860364671495430495">Unatuma fedha kutoka kwenye akaunti yako iliyofichwa kwenda kwenye akaunti yako ya wazi.</translation>
+<translation id="9664108035970394">Unatuma fedha kutoka kwa akaunti yako ya zamani iliyolindwa kwenda kwenye akaunti yako iliyolindwa.</translation>
 <translation id="7144878232160441200">Jaribu tena</translation>
 <translation id="4750109510113597688">Muamala huu unaweza kujumuisha ada ya kuunda akaunti</translation>
 <translation id="6201709949885884577">Nenosiri linahitajika ili kuchukua hatua hii.</translation>
@@ -2203,7 +2211,7 @@
 <translation id="8151638057146502721">Sanidi</translation>
 <translation id="999273441077650169">Mfano hubadilika kwa nguvu ili kutumia bora zaidi kwa kazi.<ph name="LINK_BEFORE"/>Jifunze zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Qwen VL 30B, muundo ulioundwa na Alibaba Cloud kufanya kazi na kutumika katika hali nyingi za matumizi. Qwen inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Habari, mimi ni Leo. Mimi ni msaidizi wa AI kutoka Brave. Nimewezeshwa na GLM-5.1, mfano uliotengenezwa na Zhipu AI ili uwe na utendaji wa hali ya juu na uweze kutumika katika matumizi mengi. GLM-5.1 inahifadhiwa kwenye NEAR kupitia miundombinu yao binafsi, salama na inayoweza kuthibitishwa.<ph name="LINK_BEFORE"/>Jifunze zaidi<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na GLM-5.3 Flash, muundo ulioundwa na Zhipu AI kufanya kazi na kutumika katika hali nyingi za matumizi. GLM-5.3 Flash imewekwa na NEAR kupitia miundombinu yao binafsi na salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Habari, mimi ni Leo. Mimi ni msaidizi wa AI kutoka Brave. Ninaendeshwa na Claude Instant, mfano ulioundwa na Anthropic kwa ajili ya kazi za mazungumzo na uchakataji maandishi. Claude Instant unaendesha ndani ya miundombinu salama ya Brave.<ph name="LINK_BEFORE"/>Jifunze zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Claude Haiku, muundo ulioundwa na Anthropic kuwezesha mazungumzo na kazi za kuchakata maandishi. Claude Haiku inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hujambo, mimi ni Leo. Mimi ni msaidizi wa AI na Brave. Naendeshwa na Claude Sonnet, muundo ulioundwa na Anthropic kuwezesha mazungumzo na kazi za kuchakata maandishi. Claude Sonnet inaendeshwa na Brave kupitia miundombinu yetu salama.<ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
@@ -2325,6 +2333,8 @@
 <translation id="4370698775470316661">Mazungumzo haya ni marefu sana na hayawezi kuendelea. Kunaweza kuwa na miundo mingine inayopatikana ambako Leo ana uwezo wa kudumisha usahihi kwa mazungumzo marefu.</translation>
 <translation id="4744144453035015075">Kutafuta mtandaoni</translation>
 <translation id="8548351747582087191">Kutafuta mtandaoni kwa <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4395536726196773278">Inatafuta tabu zako zilizofunguliwa kwa "<ph name="QUERY"/>"…</translation>
+<translation id="4724926708866789382">Hakuna tabu zilizofunguliwa zinazolingana na "<ph name="QUERY"/>".</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> zaidi…</translation>
 <translation id="8103700533980268469">Funga ilani hii</translation>
 <translation id="3417835166382867856">Tafuta vichupo</translation>
@@ -2372,6 +2382,8 @@
 <translation id="443008484043213881">Zana</translation>
 <translation id="4343623396828510727">Tovuti hizi hufichua zana ambazo Leo anaweza kutumia kutuma data kwenda na kutoka kwa tovuti hii. Usiambatanishe au kuidhinisha zana hizi ikiwa mazungumzo haya yana data ambayo hutaki tovuti hii ione.</translation>
 <translation id="5021823940147712387">Ondoa zana</translation>
+<translation id="8712279871321308580">Zana za tovuti zinazopatikana</translation>
+<translation id="3690996226559605619">Zana zinazopatikana (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">Usajili wote husasishwa kiotomatiki lakini unaweza kukatishwa wakati wowote kabla ya kusasishwa.</translation>
 <translation id="5091223967610958">Shiriki jina la mpangishaji la ukurasa uliko (<ph name="HOST_NAME"/>) ili kutusaidia kufanya Leo kuwa bora zaidi.</translation>
 <translation id="8732450785281947197">Zana za AI za Leo</translation>
@@ -2410,6 +2422,7 @@
 <translation id="6397861830483632092">Fungua vichupo…</translation>
 <translation id="802080272588201037">Vialamisho…</translation>
 <translation id="2716127283451902393">Historia…</translation>
+<translation id="8888171900079152025">Folda ya nafasi ya kazi</translation>
 <translation id="49269513399674318">Tumia maikrofoni</translation>
 <translation id="3895031624234442305">Miundo maalum</translation>
 <translation id="4572010449071015143">Anzisha mazungumzo mapya</translation>
@@ -2443,8 +2456,11 @@
 <translation id="3397808797783614750">Kuwezesha AI kufuatilia moja kwa moja kwa niaba yako kunaweza kusababisha madhara, matokeo yasiyotarajiwa kwa faragha yako, fedha zako, na mawasiliano ya mtandaoni. <ph name="LINK_BEFORE"/>Pata maelezo zaidi<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Tahadhari ya usalama</translation>
 <translation id="6077070599873946984">Brave AI inahitaji ruhusa yako kwa: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI ingependa kutekeleza **<ph name="TOOL_NAME"/>** kwenye **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Hatua hii imegunduliwa ikiwa inaweza kuwa si sawa na ombi lako:</translation>
 <translation id="3927932062596804919">Kataa</translation>
+<translation id="4191349941249805855">Onyesha hoja za zana</translation>
+<translation id="7237059533128264835">Ficha hoja za zana</translation>
 <translation id="4569155249847375786">Imethibitishwa</translation>
 <translation id="8200772114523450471">Endelea</translation>
 <translation id="7607002721634913082">Imesitishwa</translation>
@@ -2550,7 +2566,7 @@
 <translation id="9173319813356700250">NEWS</translation>
 <translation id="6543799171249004861">Picha imepigwa na <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="7978582287767542276">Ondoa tovuti zilizodhaminiwa</translation>
+<translation id="7978582287767542276">Ondoa matangazo ya ukurasa mpya wa tab</translation>
 <translation id="466214682712474574">Ingia kwenye <ph name="PROVIDER"/> akaunti yako ili kuona usawa wako</translation>
 <translation id="8332875111286275890">Ingia ili kuona usawa wako</translation>
 <translation id="5430001801813715388">REWARDS</translation>
@@ -2562,11 +2578,11 @@
 <translation id="4844370919312937270">Onyesha widget ya utafutaji katika vichupo vipya</translation>
 <translation id="5088374130885640159">Pamoja na <ph name="REWARDS_LINK_BEGIN"/>Zawadi za Brave<ph name="REWARDS_LINK_END"/>, unaweza kupata kwa kuona matangazo ya Ukurasa Mpya wa Tab. <ph name="LEARN_MORE_LINK_BEGIN"/>Jifunze zaidi<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">Onyesha matangazo ya ukurasa mpya wa tab</translation>
-<translation id="4983925687993168579">Takwimu za Brave</translation>
+<translation id="4983925687993168579">Takwimu</translation>
 <translation id="5009354496127441090">Onyesha tovuti za juu</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">Tovuti zilizodhaminiwa husaidia kuweka Brave bila malipo. Ukitumia <ph name="SITE_NAME"/>, unaunga mkono dhamira ya Brave. Zilemaze wakati wowote. <ph name="LINK_BEGIN"/>Jifunze zaidi<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">Tovuti zilizodhaminiwa husaidia kuweka Brave bila malipo. Ukizitumia, unaunga mkono dhamira ya Brave. <ph name="LINK_BEGIN"/>Jifunze zaidi<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Matangazo ya ukurasa mpya wa tab husaidia kuweka Brave bila malipo. Ukitumia <ph name="SITE_NAME"/>, unaunga mkono dhamira ya Brave. Yalemaze wakati wowote. <ph name="LINK_BEGIN"/>Jifunze zaidi<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Matangazo ya ukurasa mpya wa tab husaidia kuweka Brave bila malipo. Ukiyatumia, unaunga mkono dhamira ya Brave. <ph name="LINK_BEGIN"/>Jifunze zaidi<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">STATS</translation>
 <translation id="5236080651083907980">Mikutano ya video iliyosimbwa kwa siri na Brave Talk</translation>
 <translation id="2671474274417808910">Simu za Kwanza-Zaidi za Faragha</translation>
@@ -2577,7 +2593,7 @@
 <translation id="9125416311275819193">Onyesha vitu zaidi</translation>
 <translation id="8425213833346101688">Badilisha</translation>
 <translation id="755045397420611731">Faragha na usalama wa ziada mtandaoni</translation>
-<translation id="4520128772974831415">Ficha IP yako na ubadilishe eneo lako</translation>
+<translation id="4520128772974831415">Ficha IP yako na ubadilishe mahali ulipo</translation>
 <translation id="6819278685469225453">Linda kila programu kwenye kifaa chako</translation>
 <translation id="8422279921836245017">Tayari umenunua?</translation>
 <translation id="8703188411226330709">Anza kutumia jaribio lisilolipishwa</translation>
@@ -2726,6 +2742,7 @@
 <translation id="701087249209337256">Leta maudhui ya kivinjari chako cha zamani</translation>
 <translation id="142389341645668510">Boresha Brave</translation>
 <translation id="112005628409144325">Binafsisha uzoefu wako wa kuvinjari kwa mpangilio wa tab na modi za rangi unazopendelea.</translation>
+<translation id="4428982101636000516">Tafuta na Brave au andika URL</translation>
 <translation id="7376367936988732808">Mpangilio wa tab</translation>
 <translation id="4734965478015604180">Mlalo</translation>
 <translation id="490375751687810070">Wima</translation>
@@ -2774,7 +2791,7 @@
 <translation id="745054660363064771">Haiwezi kuunganisha kwenye seva</translation>
 <translation id="3936826714240735937">Chagua seva nyingine</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> haikuweza kuunganishwa kwenye seva ya <ph name="REGION_NAME"/>. Tafadhali jaribu tena au uchague nchi nyingine.</translation>
-<translation id="1776533911621317363">Anza jaribio la siku 7 la bila malipo</translation>
+<translation id="1776533911621317363">Anza jaribio lako la siku 7 la bila malipo</translation>
 <translation id="3357036723290257445">Tayari umenunua Brave VPN?</translation>
 <translation id="8652175077544655965">Funga mipangilio</translation>
 <translation id="5908163815855240493">Nenda kwenye kuu</translation>
@@ -2786,11 +2803,13 @@
 <translation id="8416695199565594645">Hakikisha trafiki inapitishwa kupitia seva za wakala maalum ili kuruhusu ufikiaji wa maudhui/tovuti au huduma za wahusika wa tatu ambazo kawaida huzuia.</translation>
 <translation id="434523916398030617">Wasiliana na usaidizi wa kiufundi</translation>
 <translation id="1116694919640316211">Kuhusu</translation>
-<translation id="8998067240267949220">Faragha na usalama wa ziada mtandaoni</translation>
-<translation id="8666111144393179185">Ficha IP yako na ubadilishe eneo lako</translation>
-<translation id="8881997962573369342">Mamia ya seva kote ulimwenguni</translation>
+<translation id="8998067240267949220">Fikia maudhui unayoyapenda bila mipaka</translation>
+<translation id="8666111144393179185">Mamia ya seva kote ulimwenguni</translation>
+<translation id="8881997962573369342">Ficha IP yako kwa urahisi na ubadilishe mahali ulipo</translation>
 <translation id="1513801084412881009">Kasi za muunganisho za upesi mno</translation>
-<translation id="6434859410115379558">Linda hadi vifaa 10 kwa mpango mmoja</translation>
+<translation id="6434859410115379558">Hakuna kuweka kumbukumbu, imekaguliwa kwa uhuru</translation>
+<translation id="4886431881864826294">Usajili mmoja unafunika vifaa 10 katika desktop, Android, na iOS</translation>
+<translation id="3649011006120934011">Hakuna ahadi, ghairi wakati wowote</translation>
 <translation id="1693568075761612600">Imeshindwa kuunda tiketi ya usaidizi, angalia muunganisho wako.</translation>
 <translation id="1407707415819020643">Chagua seva yako</translation>
 <translation id="7406947191797765434">Majiji <ph name="CITY_COUNT"/> - seva <ph name="SERVER_COUNT"/></translation>

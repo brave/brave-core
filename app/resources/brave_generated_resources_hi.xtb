@@ -113,6 +113,9 @@
 <translation id="3114478090884951591">दृश्यमान क्षेत्र</translation>
 <translation id="2026367923222947564">पूरा पेज</translation>
 <translation id="4218885227032158909">चुना गया क्षेत्र</translation>
+<translation id="2586386106930448447">स्क्रीनशॉट पूर्वावलोकन</translation>
+<translation id="7514365320538308">डाउनलोड करें</translation>
+<translation id="2743387203779672305">क्लिपबोर्ड पर कॉपी करें</translation>
 <translation id="4928988318462976765">वेब एक्सटेंशन स्टोर</translation>
 <translation id="9181207987584064303">वेब एक्सटेंशन स्टोर में देखें</translation>
 <translation id="3161744659507801211">ध्यान दें: Brave, एक्सटेंशन को आपके ब्राउज़िंग विवरण को रिकॉर्ड करने से नहीं रोक सकता है।</translation>
@@ -365,6 +368,7 @@
 <translation id="6847541693235449912">जाएँ</translation>
 <translation id="2079545284768500474">अनकिया करें</translation>
 <translation id="1533980864758658574"><ph name="TOPIC"/> के लिए नई विंडो बनाई गई</translation>
+<translation id="530437350080973527">उस विषय से कोई टैब मेल नहीं खाता। इसे अलग तरीके से बताने का प्रयास करें।</translation>
 <translation id="7985042437720138349">यह सुविधा आपके खुले हुए टैब्स के बारे में डेटा Brave के AI की सुविधा वाले ब्राउज़र असिस्टेंट Leo को भेजती है।</translation>
 <translation id="6165508094623778733">और जानें</translation>
 <translation id="7557539689487606886">प्रीमियम सदस्य बनें</translation>
@@ -456,6 +460,23 @@ Binance
 <translation id="4328541188421002379">अपने कंटेनर को 'दफ़्तर' या 'व्यक्तिगत' जैसा कोई नाम दें</translation>
 <translation id="4976989127264491396">गड़बड़ी: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">कंटेनर नहीं मिला</translation>
+<translation id="6055154402239241620">ट्रैफ़िक नियंत्रण</translation>
+<translation id="8134521925475508805">विशिष्ट साइटों को अपने ब्राउज़िंग सत्रों के बीच अलगाव बनाते हुए, किसी विशेष संदर्भ में स्वचालित रूप से खोलने के लिए कॉन्फ़िगर करें। <ph name="BEGIN_LINK"/>अधिक जानें<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">ट्रैफ़िक नियंत्रण चालू करें</translation>
+<translation id="1358255827354528344">नया नियम जोड़ें</translation>
+<translation id="7183128985801806752">नया ट्रैफ़िक नियंत्रण नियम</translation>
+<translation id="2474694032500407328">ट्रैफ़िक नियंत्रण नियम संपादित करें</translation>
+<translation id="5543417389274097206">नियम बनाएँ</translation>
+<translation id="6532106788206463496">बदलाव सेव करें</translation>
+<translation id="1172800769374812685">नियम मिटाएँ</translation>
+<translation id="2389682807835777591">क्या आप वास्तव में नियम <ph name="RULE_LABEL"/> को हटाना चाहते हैं?</translation>
+<translation id="4853129331778360252">प्रबंधित करने और किसी विशिष्ट ब्राउज़िंग संदर्भ में हमेशा खोलने के लिए यूआरएल दर्ज करें।</translation>
+<translation id="1173480005453148926">प्रबंधित करने के लिए यूआरएल</translation>
+<translation id="6217532416180299470">ट्रैफ़िक नियंत्रण के साथ प्रबंधित करने के लिए यूआरएल दर्ज करें</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> साइट और उसके सबडोमेन से मेल खाता है; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> ठीक उसी साइट से मेल खाता है; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> सभी साइटों से मेल खाता है; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> एक टिप्पणी है।</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (और <ph name="COUNT"/> अधिक यूआरएल)</translation>
+<translation id="3700798663085748181">नियम चालू करें</translation>
+<translation id="2967480878853054068">गलत यूआरएल फ़िल्टर</translation>
 <translation id="2263346047290834619">ट्री टैब इस्तेमाल करें</translation>
 <translation id="5860254591544742609">टाइटल बार दिखाएँ</translation>
 <translation id="4691131445504068802">मिनिमाइज़ करने पर पूरी तरह छिपाएँ</translation>
@@ -563,7 +584,6 @@ Binance
 <translation id="6745592621698551453">अभी अपडेट करें</translation>
 <translation id="5334844597069022743">सोर्स देखें</translation>
 <translation id="4720556299488643018">अनसब्स्क्राइब</translation>
-<translation id="6532106788206463496">बदलाव सेव करें</translation>
 <translation id="4516904298421534459">लिस्ट को फ़िल्टर करें</translation>
 <translation id="4435215931544457255">मशहूर समुदायों की अतिरिक्त लिस्ट. ध्यान दें कि बहुत सारे फ़िल्टर लगाने से ब्राउज़िंग की रफ़्तार कम हो जाएगी.</translation>
 <translation id="802154636333426148">डाउनलोड विफल रहा</translation>
@@ -646,6 +666,8 @@ Binance
 <translation id="509873765238158442">Microsoft Recall ब्लॉक करें</translation>
 <translation id="4763421121695677716">Microsoft Windows पर Recall सुविधा को Brave के किसी भी खुले टैब के अपने-आप स्क्रीनशॉट लेने से ब्लॉक करें।</translation>
 <translation id="1968895725257436430">डेटा कनेक्शन</translation>
+<translation id="5668852698659986622">प्रायोजित ऐड चालू करें</translation>
+<translation id="431194936581466649">प्रायोजित ऐड के साथ एक स्वतंत्र, उपयोगकर्ता-प्रथम वेब बनाने के Brave के मिशन का समर्थन करने में मदद करें। हम आपकी पहचान किए बिना, निजी तौर पर विज्ञापन प्रदर्शन को मापते हैं।</translation>
 <translation id="1700052872056357670">बाहर निकलने पर डेटा साफ़ करें</translation>
 <translation id="216468847346280584">Brave Ads डेटा हटाएं...</translation>
 <translation id="96212973142796240">Brave Ads डेटा साफ़ किया गया</translation>
@@ -1026,4 +1048,12 @@ Binance
 <translation id="154702742922788359">ओपन मोड</translation>
 <translation id="2249111429176737533">टैब विंडो के रूप में खोलें</translation>
 <translation id="7022756207310403729">ब्राउज़र में खोलें</translation>
+<translation id="1916785651473363467">कस्टम प्रोफ़ाइल इमेज</translation>
+<translation id="5336092064678832560">कस्टम इमेज अपलोड करें</translation>
+<translation id="1062407476771304334">बदलें</translation>
+<translation id="1428299461403073820">कस्टम प्रोफ़ाइल इमेज बदलें</translation>
+<translation id="7994453838803296517">कस्टम प्रोफ़ाइल इमेज पूर्वावलोकन, चयनित</translation>
+<translation id="6578040791557152233">एक कस्टम प्रोफ़ाइल इमेज अपलोड करें</translation>
+<translation id="9222124079546967592">कस्टम प्रोफ़ाइल इमेज हटाएँ</translation>
+<translation id="6058660912941570282">Brave इस फ़ाइल का उपयोग नहीं कर सकता। कोई दूसरी इमेज चुनें और पुनः प्रयास करें।</translation>
 </translationbundle>

@@ -112,6 +112,9 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="3114478090884951591">Näkyvä alue</translation>
 <translation id="2026367923222947564">Koko sivu</translation>
 <translation id="4218885227032158909">Valittu alue</translation>
+<translation id="2586386106930448447">Kuvakaappauksen esikatselu</translation>
+<translation id="7514365320538308">Lataa</translation>
+<translation id="2743387203779672305">Kopioi leikepöydälle</translation>
 <translation id="4928988318462976765">Verkkolaajennusten myymälä</translation>
 <translation id="9181207987584064303">Näytä verkkolaajennusmyymälässä</translation>
 <translation id="3161744659507801211">Varoitus: Brave ei voi estää laajennusosia tallentamasta selaushistoriaasi.</translation>
@@ -364,6 +367,7 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="6847541693235449912">Siirry</translation>
 <translation id="2079545284768500474">Kumoa</translation>
 <translation id="1533980864758658574">Uusi ikkuna on luotu aihetta <ph name="TOPIC"/> varten.</translation>
+<translation id="530437350080973527">Mikään välilehti ei vastannut kyseistä aihetta. Kokeile kuvailla sitä eri tavalla.</translation>
 <translation id="7985042437720138349">Tämä ominaisuus lähettää tietoja avoimista välilehdistäsi Leolle, Braven tekoälyavusteiselle selainassistentille.</translation>
 <translation id="6165508094623778733">Lisätietoa</translation>
 <translation id="7557539689487606886">Siirry Premiumiin</translation>
@@ -421,6 +425,23 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="4328541188421002379">Anna säilölle nimi, kuten Työ tai Henkilökohtainen</translation>
 <translation id="4976989127264491396">Virhe: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Säilöä ei löydy</translation>
+<translation id="6055154402239241620">Liikenteenhallinta</translation>
+<translation id="8134521925475508805">Määritä tietyt sivustot avautumaan automaattisesti tietyssä kontekstissa, mikä erottaa selausistuntosi toisistaan. <ph name="BEGIN_LINK"/>Lue lisää<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Ota liikenteenhallinta käyttöön</translation>
+<translation id="1358255827354528344">Lisää uusi sääntö</translation>
+<translation id="7183128985801806752">Uusi liikenteenhallintasääntö</translation>
+<translation id="2474694032500407328">Muokkaa liikenteenhallintasääntöä</translation>
+<translation id="5543417389274097206">Luo sääntö</translation>
+<translation id="6532106788206463496">Tallenna muutokset</translation>
+<translation id="1172800769374812685">Poista sääntö</translation>
+<translation id="2389682807835777591">Haluatko varmasti poistaa säännön <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Anna URL-osoitteet, joita hallitaan ja avataan aina tietyssä selauskontekstissa.</translation>
+<translation id="1173480005453148926">Hallittavat URL-osoitteet</translation>
+<translation id="6217532416180299470">Anna URL-osoitteet, joita hallitaan liikenteenhallinnalla</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> vastaa sivustoa ja sen aliverkkotunnuksia; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> vastaa tarkkaa sivustoa; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> vastaa kaikkia sivustoja; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> on kommentti.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (ja <ph name="COUNT"/> URL-osoitetta lisää)</translation>
+<translation id="3700798663085748181">Ota sääntö käyttöön</translation>
+<translation id="2967480878853054068">Virheellinen URL-suodatin</translation>
 <translation id="2263346047290834619">Käytä puun välilehtiä</translation>
 <translation id="5860254591544742609">Näytä otsikkopalkki</translation>
 <translation id="4691131445504068802">Piilota kokonaan, kun minimoitu</translation>
@@ -528,7 +549,6 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="6745592621698551453">Päivitä nyt</translation>
 <translation id="5334844597069022743">Näytä lähde</translation>
 <translation id="4720556299488643018">Peruuta tilaus</translation>
-<translation id="6532106788206463496">Tallenna muutokset</translation>
 <translation id="4516904298421534459">Suodata luettelot</translation>
 <translation id="4435215931544457255">Muita suosittuja yhteisön luetteloita. Huomaa, että liian monen suodattinen ottaminen käyttöön hidastaa selausnopeutta.</translation>
 <translation id="802154636333426148">Lataus epäonnistui.</translation>
@@ -611,6 +631,8 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="509873765238158442">Estä Microsoft Recall</translation>
 <translation id="4763421121695677716">Estä Microsoft Windows -tietokoneiden Recall-ominaisuutta ottamasta automaattisesti kuvakaappauksia kaikista avoimista Brave-välilehdistä.</translation>
 <translation id="1968895725257436430">Tietojen keräys</translation>
+<translation id="5668852698659986622">Ota sponsoroidut mainokset käyttöön</translation>
+<translation id="431194936581466649">Auta tukemaan Braven tehtävää rakentaa itsenäinen, käyttäjää ensisijaisesti palveleva verkko sponsoroiduilla mainoksilla. Mittaamme mainosten tehokkuutta yksityisesti tunnistamatta sinua.</translation>
 <translation id="1700052872056357670">Tyhjennä tiedot poistuttaessa</translation>
 <translation id="216468847346280584">Tyhjennä Brave-palkintojen tiedot...</translation>
 <translation id="96212973142796240">Brave-mainosten tiedot tyhjennetty</translation>
@@ -991,4 +1013,12 @@ Tai muuta myöhemmin kohdassa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="154702742922788359">Avaustapa</translation>
 <translation id="2249111429176737533">Avaa uudessa välilehdessä</translation>
 <translation id="7022756207310403729">Avaa selaimessa</translation>
+<translation id="1916785651473363467">Mukautettu profiilikuva</translation>
+<translation id="5336092064678832560">Lataa mukautettu kuva</translation>
+<translation id="1062407476771304334">Korvaa</translation>
+<translation id="1428299461403073820">Korvaa mukautettu profiilikuva</translation>
+<translation id="7994453838803296517">Mukautetun profiilikuvan esikatselu, valittu</translation>
+<translation id="6578040791557152233">Lataa mukautettu profiilikuva</translation>
+<translation id="9222124079546967592">Poista mukautettu profiilikuva</translation>
+<translation id="6058660912941570282">Brave ei voi käyttää tätä tiedostoa. Valitse toinen kuva ja yritä uudelleen.</translation>
 </translationbundle>

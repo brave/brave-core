@@ -870,9 +870,11 @@
 <translation id="646023614746251785">Подтвердить обмен</translation>
 <translation id="6264944956989873014">Подтвердить мост</translation>
 <translation id="7067917728851842589">Подтвердить отправку</translation>
+<translation id="2841837950101800123">Поставщик</translation>
 <translation id="1114725160772317155">Статус поставщика</translation>
 <translation id="2351357639951873714">Подтвердить защиту</translation>
 <translation id="7480044382160806610">Подтвердить отмену защиты</translation>
+<translation id="6830542010524256586">Подтвердить перенос</translation>
 <translation id="8332923694292360653">Потратить</translation>
 <translation id="3735740477244556633">Сортировать по:</translation>
 <translation id="6484605214219822434">Проверить мост</translation>
@@ -1413,8 +1415,10 @@
 <translation id="5503843345634715425">Возвращено</translation>
 <translation id="1778601041100951971">Защита <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Отмена защиты <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">Перенос <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> замаскировано</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> было выведено из защищенного режима</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> перенесено</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {еще {PENDING_TRANSACTIONS} транзакция в очереди.}
       other {еще транзакций в очереди: {PENDING_TRANSACTIONS}.}
@@ -1853,14 +1857,18 @@
 <translation id="9086302186042011942">Синхронизация</translation>
 <translation id="99991973626409495">Щит рецензии</translation>
 <translation id="6779429520470417361">Просмотреть отмену защиты</translation>
+<translation id="7861093868637278059">Проверить перенос</translation>
 <translation id="3114681061018999547">Щит</translation>
 <translation id="1564172583156967455">Отмена защиты</translation>
+<translation id="7040674372746105444">Перенос</translation>
 <translation id="8897189056319316783">Щит ZEC</translation>
 <translation id="508249542337194541">Отменить защиту ZEC</translation>
+<translation id="3242332985109374549">Перенести ZEC</translation>
 <translation id="3382275793825152362">Щитовые средства</translation>
 <translation id="617149752238892649">Разблокировать средства</translation>
 <translation id="8631765320256788981">Вы переводите средства со своего прозрачного счета на свой защищенный счет.</translation>
 <translation id="3860364671495430495">Вы переводите средства со своего защищенного счета на ваш прозрачный счет.</translation>
+<translation id="9664108035970394">Вы переводите средства со своего защищенного устаревшего счета на свой защищенный счет.</translation>
 <translation id="7144878232160441200">Повторить попытку</translation>
 <translation id="4750109510113597688">Эта транзакция может включать комиссию за создание аккаунта</translation>
 <translation id="6201709949885884577">Для выполнения этого действия нужно ввести пароль.</translation>
@@ -2219,7 +2227,7 @@ other {# источника}
 <translation id="8151638057146502721">Настроить</translation>
 <translation id="999273441077650169">Модель меняется динамически, чтобы использовать лучшую для задачи.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Привет, я Лео. Я — полностью хостируемый ИИ-ассистент от Brave. Я работаю на базе Qwen VL 30B, модели, созданной Alibaba Cloud для высокой производительности и широкого спектра применений. Qwen размещается на хостинге Brave в нашей собственной защищённой инфраструктуре.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Привет, я Лео. Я — ИИ-ассистент от Brave. Я работаю на основе GLM-5.1, модели, созданной Zhipu AI для высокой производительности и широкого спектра применений. GLM-5.1 размещается в NEAR на их собственной проверяемо частной защищённой инфраструктуре.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Привет, я Лео. Я — ИИ-ассистент от Brave. Я работаю на основе GLM-5.3 Flash, модели, созданной Zhipu AI для высокой производительности и широкого спектра применений. GLM-5.3 Flash размещается в NEAR на их собственной проверяемо частной защищённой инфраструктуре.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Привет, я Лео. Я ИИ-помощник от Brave. Я работаю на базе Claude Instant — модели, созданной компанией Anthropic для обработки текста и диалогов. Claude Instant размещён на защищённой инфраструктуре Brave.<ph name="LINK_BEFORE"/>Подробнее<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Привет, я Лео. Я использую прокси-сервер от Brave и работаю на Claude Haiku, модели, созданной Anthropic для решения задач, связанных с общением и обработкой текста. Claude Haiku размещается на хостинге Brave в рамках нашей собственной безопасной инфраструктуры.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Привет, я Лео. Я использую прокси-сервер от Brave и работаю на Claude Sonnet, модели, созданной Anthropic для решения задач, связанных с общением и обработкой текста. Claude Sonnet размещается на хостинге Brave в рамках нашей собственной безопасной инфраструктуры.<ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
@@ -2341,6 +2349,8 @@ other {# источника}
 <translation id="4370698775470316661">Вы превысили лимит сообщений, поэтому не можете продолжить диалог. Чтобы помощник Leo поддерживал более длинные беседы, не упуская информацию, используйте другую модель.</translation>
 <translation id="4744144453035015075">Поиск в интернете</translation>
 <translation id="8548351747582087191">Поиск в интернете по запросу <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4395536726196773278">Поиск по вашим открытым вкладкам по запросу «<ph name="QUERY"/>»…</translation>
+<translation id="4724926708866789382">Ни одна из открытых вкладок не соответствует «<ph name="QUERY"/>».</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> more…</translation>
 <translation id="8103700533980268469">Закрыть это уведомление</translation>
 <translation id="3417835166382867856">Поиск по вкладкам</translation>
@@ -2388,6 +2398,8 @@ other {# источника}
 <translation id="443008484043213881">Инструменты</translation>
 <translation id="4343623396828510727">Эти сайты предоставляют инструменты, которые Лео может использовать для отправки и получения данных с этого сайта. Не прикрепляйте и не одобряйте эти инструменты, если в этом диалоге содержатся данные, которые вы не хотите показывать этому сайту.</translation>
 <translation id="5021823940147712387">Удалить инструменты</translation>
+<translation id="8712279871321308580">Доступные инструменты сайта</translation>
+<translation id="3690996226559605619">Доступные инструменты (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">Все подписки продлеваются автоматически, но их можно отменить в любой момент до даты продления.</translation>
 <translation id="5091223967610958">Чтобы помочь нам улучшить Leo, поделитесь именем хоста текущей страницы, например <ph name="HOST_NAME"/>.</translation>
 <translation id="8732450785281947197">Инструменты Leo</translation>
@@ -2426,6 +2438,7 @@ other {# источника}
 <translation id="6397861830483632092">Открытые вкладки…</translation>
 <translation id="802080272588201037">Закладки…</translation>
 <translation id="2716127283451902393">История…</translation>
+<translation id="8888171900079152025">Папка рабочей области</translation>
 <translation id="49269513399674318">Использовать микрофон</translation>
 <translation id="3895031624234442305">Пользовательские модели</translation>
 <translation id="4572010449071015143">Новый чат</translation>
@@ -2459,8 +2472,11 @@ other {# источника}
 <translation id="3397808797783614750">Автоматический просмотр веб-страниц с помощью ИИ может привести к нежелательным последствиям для вашей конфиденциальности, финансов и онлайн-общения. <ph name="LINK_BEFORE"/>Узнать больше<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Предупреждение безопасности</translation>
 <translation id="6077070599873946984">Искусственному интеллекту Brave требуется ваше разрешение на: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI хочет выполнить **<ph name="TOOL_NAME"/>** на **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Операция была определена как потенциально несоответствующая вашему запросу:</translation>
 <translation id="3927932062596804919">Отклонить</translation>
+<translation id="4191349941249805855">Показать аргументы инструмента</translation>
+<translation id="7237059533128264835">Скрыть аргументы инструмента</translation>
 <translation id="4569155249847375786">Подтверждённая</translation>
 <translation id="8200772114523450471">Продолжить</translation>
 <translation id="7607002721634913082">Пауза</translation>
@@ -2566,7 +2582,7 @@ other {# источника}
 <translation id="9173319813356700250">НОВОСТИ</translation>
 <translation id="6543799171249004861">Фото <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">ИИ-помощник Leo</translation>
-<translation id="7978582287767542276">Убрать спонсорские сайты</translation>
+<translation id="7978582287767542276">Удалить рекламу на странице новой вкладки</translation>
 <translation id="466214682712474574">Чтобы проверить баланс, войдите в аккаунт <ph name="PROVIDER"/></translation>
 <translation id="8332875111286275890">Чтобы посмотреть баланс, войдите в аккаунт.</translation>
 <translation id="5430001801813715388">НАГРАДЫ</translation>
@@ -2578,11 +2594,11 @@ other {# источника}
 <translation id="4844370919312937270">Показывать виджет поиска в новых вкладках</translation>
 <translation id="5088374130885640159">С <ph name="REWARDS_LINK_BEGIN"/>Награды Brave<ph name="REWARDS_LINK_END"/> вы можете зарабатывать, просматривая рекламу на странице новой вкладки. <ph name="LEARN_MORE_LINK_BEGIN"/>Подробнее<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">Показывать рекламу на странице новой вкладки</translation>
-<translation id="4983925687993168579">Статистика Brave</translation>
+<translation id="4983925687993168579">Статистика</translation>
 <translation id="5009354496127441090">Показать топ-сайты</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">Спонсорские сайты помогают сохранять Brave бесплатным. Если вы используете <ph name="SITE_NAME"/>, вы поддерживаете миссию Brave. Отключить их можно в любое время. <ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">Спонсорские сайты помогают сохранять Brave бесплатным. Если вы используете их, вы поддерживаете миссию Brave. <ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Реклама на странице новой вкладки помогает сохранять Brave бесплатным. Если вы используете <ph name="SITE_NAME"/>, вы поддерживаете миссию Brave. Отключить ее можно в любое время. <ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Реклама на странице новой вкладки помогает сохранять Brave бесплатным. Если вы используете ее, вы поддерживаете миссию Brave. <ph name="LINK_BEGIN"/>Подробнее<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">СТАТИСТИКА</translation>
 <translation id="5236080651083907980">Зашифрованные видео звонки с помощью Brave Talk</translation>
 <translation id="2671474274417808910">Звонки, ориентированные на конфиденциальность</translation>
@@ -2743,6 +2759,7 @@ other {# источника}
 <translation id="701087249209337256">Возьмите с собой контент из старого браузера</translation>
 <translation id="142389341645668510">Настроить Brave</translation>
 <translation id="112005628409144325">Персонализируйте работу в браузере с помощью предпочитаемых вами макета вкладок и цветовых режимов.</translation>
+<translation id="4428982101636000516">Ввести запрос в Brave или URL</translation>
 <translation id="7376367936988732808">Макет вкладок</translation>
 <translation id="4734965478015604180">Горизонтальный</translation>
 <translation id="490375751687810070">Вертикальный</translation>
@@ -2803,11 +2820,13 @@ other {# источника}
 <translation id="8416695199565594645">Обеспечивает маршрутизацию трафика через специальные прокси-серверы, чтобы предоставить доступ к обычно ограниченному контенту/сайтам или сторонним сервисам.</translation>
 <translation id="434523916398030617">Связаться с технической поддержкой</translation>
 <translation id="1116694919640316211">О нас</translation>
-<translation id="8998067240267949220">Дополнительная приватность и безопасность</translation>
-<translation id="8666111144393179185">Скрытый IP-адрес и измененное местоположение</translation>
-<translation id="8881997962573369342">Сотни серверов по всему миру</translation>
+<translation id="8998067240267949220">Доступ к любимому контенту без ограничений</translation>
+<translation id="8666111144393179185">Сотни серверов по всему миру</translation>
+<translation id="8881997962573369342">Легко скрывайте свой IP-адрес и меняйте местоположение</translation>
 <translation id="1513801084412881009">Фантастическая скорость соединения</translation>
-<translation id="6434859410115379558">До 10 устройств в одном тарифе</translation>
+<translation id="6434859410115379558">Без ведения логов, независимо проверено</translation>
+<translation id="4886431881864826294">Одна подписка распространяется на 10 устройств на десктопе, Android и iOS</translation>
+<translation id="3649011006120934011">Без обязательств, отмена в любое время</translation>
 <translation id="1693568075761612600">Не удалось создать запрос в службу поддержки. Проверьте подключение.</translation>
 <translation id="1407707415819020643">Выберите сервер</translation>
 <translation id="7406947191797765434">Городов: <ph name="CITY_COUNT"/>. Серверов: <ph name="SERVER_COUNT"/></translation>

@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">ተሰናክሏል</translation>
 <translation id="59174027418879706">ነቅቷል</translation>
 <translation id="6920492760024499150">ለእርስዎ ብቻ በግልዎ የተላኩ የዛሬ ምርጥ ታሪኮች።</translation>
-<translation id="3803728444598576153">Brave News ያብሩት፣ እና ማንኛውም ታሪክ አያምልጥዎ</translation>
+<translation id="3803728444598576153">Brave News ያብሩት እና ማንኛውም ታሪክ አያምልጥዎ</translation>
 <translation id="7627131190984957214">ብሬቭ ኒውስ ከመሳሪያዎ ጋር የሚስማሙ የግል እና ማንነታቸው ያልታወቁ ማስታወቂያዎችን የተደገፈ ነው።</translation>
-<translation id="7897050360583141319">ተወዳጅ ምንጮችዎን በአንድ መረጃ መጋቢ ውስጥ ይከተሉ። በቀላሉ በ Brave ውስጥ ትር ይክፈቱ፣ ወደ ታች ይውረዱ እና… ይኸው!\nየ Brave ዜና ግላዊ እና በማያጋልጡ ማስታወቂያዎች የተደገፈ ነው።</translation>
+<translation id="7897050360583141319">ተወዳጅ ምንጮችዎን በአንድ መረጃ መጋቢ ውስጥ ይከተሉ። በቀላሉ በ Brave ውስጥ ትር ይክፈቱ፣ ወደ ታች ይውረዱ እና… ይኸው!</translation>
 <translation id="1765217911817124376">የ Brave ዜናዎች ን ያንቁ</translation>
 <translation id="8981973962043893066">ጣቢያ፣ ርዕስ ወይም RSS ግብአት ይፈልጉ</translation>
 <translation id="3225021799163709119">ታዋቂ</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">የ Brave አሳሽ ሲበላሽ ወይም ሲቆም የምርመራ ሪፖርቶችን በራስ ሰር በመላክ፣ የ Brave\u2019s ምርት በስርዓት እንዲሰራ ለማስቻል ያግዙ።</translation>
 <translation id="7977176350719484850">Est. ውሂብ\nተቀምጧል</translation>
 <translation id="9008534313521214777">የተቆጠበ\nጊዜ በግምት</translation>
+<translation id="5668852698659986622">የተደገፉ ማስታወቂያዎችን አንቃ</translation>
+<translation id="431194936581466649">Brave ገለልተኛ የሆነ፣ ተጠቃሚን ቅድሚያ የሚሰጥ ድር ለመገንባት ያለውን ተልእኮ በተደገፉ ማስታወቂያዎች ይደግፉ። የማስታወቂያ አፈጻጸምን በግል እንለካለን፣ እርስዎን ሳንለይ።</translation>
 <translation id="8347743943525229984">የBrave ምርመራዎችን ፍቀድ</translation>
 <translation id="6022939994702081659">እንድትረዱ Brave የኢንዱስትሪ መሪነት ሥራ ለየድር ግልጋሎትና ለክፍተት የተቀመጡ መዘምበር ቆጥሮች</translation>
 <translation id="7746496306508543965">ስለ Brave እሴቶች ተጨማሪ ተማሩ</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">ዋና ምናሌ</translation>
 <translation id="7002271985859760052">የገፅ ተግባራት</translation>
 <translation id="7104487676473617844">የሚከተሉት ንጥሎች በአሁኑ ከፍተኛ ዌብጤት ድጋፍ ያገኛሉ ብቻ በምናሌ ላይ የሚታዩ ይሆናሉ።</translation>
-<translation id="4159764849281393303">ዌብአፕ</translation>
 <translation id="8038539967102225446">የ Brave ማስታወቂያዎች እዚህ ናቸው!</translation>
 <translation id="222883304157347087">(ይህ መሳሪያ)</translation>
 <translation id="4157741509680155021">በ አስምር ሰንሰለት ውስጥ ያሉ መሳሪያዎች</translation>
@@ -706,6 +707,8 @@
 <translation id="1634828734222219955">ድምር</translation>
 <translation id="7995708795274219641">የገንዘብ መጠን + ነዳጅ</translation>
 <translation id="2186011161688824046">መጠን + ክፍያ</translation>
+<translation id="1118876217803190221">በቂ ያልሆነ ገንዘብ</translation>
+<translation id="275990379543116961">ለነዳጅ በቂ ገንዘብ የለም</translation>
 <translation id="1950052789869821983">ግብይት</translation>
 <translation id="2304783958703511257">የላቁ ቅንብሮች</translation>
 <translation id="4220062530885628403">የአንድ ጊዜ</translation>

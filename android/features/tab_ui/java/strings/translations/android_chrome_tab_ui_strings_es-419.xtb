@@ -4,6 +4,7 @@
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Se creó hace <ph name="NUM_WEEKS_ONE"/> semana}other{Se creó hace <ph name="NUM_WEEKS_MANY"/> semanas}}</translation>
 <translation id="1063300264396686489">Abrir automáticamente grupos de pestañas de otros dispositivos</translation>
 <translation id="1075622780330595106">Últimamente no usaste <ph name="NUMBER_OF_TABS"/> de tus pestañas. ¿Quieres cerrarlas?</translation>
+<translation id="1760197532822135980">Obtener sugerencias de Brave en otras apps</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{Se creó hace <ph name="NUM_YEARS_ONE"/> año}other{Se creó hace <ph name="NUM_YEARS_MANY"/> años}}</translation>
 <translation id="1137385688780024041">{DAY_COUNT,plural, =1{Las pestañas y los grupos inactivos se cerrarán después de 1 mes}other{Las pestañas y los grupos inactivos se cerrarán después de <ph name="MONTH_COUNT_MANY"/> meses}}</translation>
 <translation id="1173894706177603556">Cambiar nombre</translation>
@@ -21,12 +22,14 @@
 <translation id="1501480321619201731">Borrar grupo</translation>
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> elemento inactivo}other{<ph name="TABS_COUNT_MANY"/> elementos inactivos}}</translation>
 <translation id="1568067597247500137">Silenciar el sitio</translation>
+<translation id="1639330215535800445">{TAB_COUNT,plural, =1{Mover la pestaña hacia abajo}other{Mover las pestañas hacia abajo}}</translation>
 <translation id="1645759014353344461">Se agruparon <ph name="TABS_COUNT_MANY"/> pestañas</translation>
 <translation id="1657719826150349398">Mover la pestaña hacia abajo</translation>
 <translation id="1670942869417022142">Audio silenciado</translation>
 <translation id="1697284962337958118">Agregar a</translation>
 <translation id="1713541401465507417">Cerrar todos los grupos y las pestañas</translation>
 <translation id="1738346536511908887">{TAB_GROUPS_COUNT,plural, =1{<ph name="TAB_GROUPS_COUNT_ONE"/> grupo de pestañas ya no está disponible}other{<ph name="TAB_GROUPS_COUNT_MANY"/> grupos de pestañas ya no están disponibles}}</translation>
+<translation id="1759122978835002237">Mover el grupo de pestañas hacia arriba</translation>
 <translation id="176485176228926164"><ph name="BEGIN_LINK1"/>Más información<ph name="END_LINK1"/></translation>
 <translation id="1828808367831369073">Se agrupó <ph name="TABS_COUNT_ONE"/> pestaña</translation>
 <translation id="1844381456014878100">Después de 7 días de inactividad</translation>
@@ -42,6 +45,7 @@
 <translation id="2118649612461486615">Información sobre la tienda</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{Activar el sonido del sitio}other{Activar el sonido de los sitios}}</translation>
 <translation id="2162620598375156287">Ahora <ph name="CURRENT_PRICE"/> en <ph name="SOURCE_WEBSITE"/></translation>
+<translation id="2164232689984783657">Mover el grupo de pestañas hacia abajo</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Desagrupar pestaña}other{Desagrupar pestañas}}</translation>
 <translation id="2271452184061378400">Tus grupos de pestañas se guardan aquí</translation>
 <translation id="2277224997687551299">Editar nombre del grupo</translation>
@@ -128,7 +132,6 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Mover las pestañas a una ventana nueva}other{Mover las pestañas a otras ventanas}}</translation>
 <translation id="5073204694187207510">Oculta la cuadrícula de pantalla completa</translation>
 <translation id="5076161749301278626">¿Quieres ver las opiniones de la tienda?</translation>
-<translation id="5093447877601682598">Enviar comentarios sobre la barra de pestañas</translation>
 <translation id="5161254044473106830">Se requiere un título</translation>
 <translation id="5204584298075822291">Contraer pestañas</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave cierra automáticamente las pestañas y los grupos de pestañas inactivos después de <ph name="AUTO_DELETE_DELAY_ONE"/> mes. Puedes cambiarlo en la configuración.}other{Brave cierra automáticamente las pestañas y los grupos de pestañas inactivos después de <ph name="AUTO_DELETE_DELAY_MANY"/> meses. Puedes cambiarlo en la configuración.}}</translation>
@@ -192,6 +195,7 @@
 <translation id="7369451074646620503">El grupo "<ph name="TAB_GROUP_NAME"/>" ya no está disponible</translation>
 <translation id="7402375256128852434">Agregar pestañas recientes</translation>
 <translation id="7452985128687107478">Los grupos de pestañas se guardan y actualizan automáticamente en todos tus dispositivos</translation>
+<translation id="746137824927359035">{TAB_COUNT,plural, =1{Mover la pestaña hacia arriba}other{Mover las pestañas hacia arriba}}</translation>
 <translation id="747459581954555080">Restaurar todo</translation>
 <translation id="7489558427602531799">Mover el grupo de pestañas a la derecha</translation>
 <translation id="7501728912575021674">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> elemento}other{<ph name="TABS_COUNT_MANY"/> elementos}}</translation>
@@ -221,6 +225,7 @@
 <translation id="805809603610022708">{TABS_COUNT,plural, =1{Agregar pestaña al grupo}other{Agregar pestañas al grupo}}</translation>
 <translation id="8138067144082174140">Después de 14 días de inactividad</translation>
 <translation id="8153873338998959464">{NUMBER_OF_TABS,plural, =1{Expandir el grupo de pestañas <ph name="TITLE_OF_GROUP"/> con <ph name="TABS_COUNT_ONE"/> pestaña, en color <ph name="COLOR_NAME"/>.}other{Expandir el grupo de pestañas <ph name="TITLE_OF_GROUP"/> con <ph name="TABS_COUNT_MANY"/> pestañas, en color <ph name="COLOR_NAME"/>.}}</translation>
+<translation id="8172214054247281626">Comparte datos de navegación, como tu historial de navegación reciente, para obtener sugerencias en determinadas apps. Estos datos se procesan de forma segura en tu dispositivo.</translation>
 <translation id="8195186926670288294">{TABS_COUNT,plural, =1{No fijar pestaña}other{No fijar pestañas}}</translation>
 <translation id="8205266828577616993">Mover la pestaña hacia arriba</translation>
 <translation id="8207688828622594111">{NUM_MINS,plural, =1{Se actualizó hace <ph name="NUM_MINS_ONE"/> minuto}other{Se actualizó hace <ph name="NUM_MINS_MANY"/> minutos}}</translation>

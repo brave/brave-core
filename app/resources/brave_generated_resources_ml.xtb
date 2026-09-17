@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">ദൃശ്യമായ ഏരിയ</translation>
 <translation id="2026367923222947564">പൂർണ്ണ പേജ്</translation>
 <translation id="4218885227032158909">തിരഞ്ഞെടുത്ത ഏരിയ</translation>
+<translation id="2586386106930448447">സ്ക്രീൻഷോട്ട് പ്രിവ്യൂ</translation>
+<translation id="7514365320538308">ഡൌണ്‍ലോഡ്</translation>
+<translation id="2743387203779672305">ക്ലിപ്പ്ബോർഡിലേക്ക് പകർത്തുക</translation>
 <translation id="4928988318462976765">വെബ് എക്സ്റ്റെൻഷൻസ് സ്റ്റോർ</translation>
 <translation id="9181207987584064303">വെബ് എക്സ്റ്റെൻഷൻസ് സ്റ്റോറിൽ കാണുക</translation>
 <translation id="3161744659507801211">മുന്നറിയിപ്പ്: Brave ബ്രൗസർ നിങ്ങളുടെ ബ്രൗസിംഗ് ചരിത്രം എക്സ്റ്റെൻഷനുകൾ റെക്കോർഡ് ചെയ്യുന്നത് തടയാൻ കഴിയില്ല.</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">പോകൂ</translation>
 <translation id="2079545284768500474">പഴയപടിയാക്കുക</translation>
 <translation id="1533980864758658574"><ph name="TOPIC"/> എന്നതിന് പുതിയ വിൻഡോ സൃഷ്ടിച്ചു</translation>
+<translation id="530437350080973527">ആ വിഷയവുമായി പൊരുത്തപ്പെടുന്ന ടാബുകളൊന്നുമില്ല. അതിനെ വ്യത്യസ്തമായി വിവരിക്കാൻ ശ്രമിക്കുക.</translation>
 <translation id="7985042437720138349">ഈ സവിശേഷത നിങ്ങളുടെ തുറന്ന ടാബുകളുടെ ഡാറ്റ ലിയോയ്ക്കു അയയ്ക്കുന്നു, ബ്രേവ് ന്റെ AI ശക്തിയുള്ള ബ്രൗസർ അസിസ്റ്റന്റ് ആണ്.</translation>
 <translation id="6165508094623778733">കൂടുതലറിയുക</translation>
 <translation id="7557539689487606886">Go Premium</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">താങ്കളുടെ കണ്ടെയ്‌നർക്ക് ഒരു പേര് കൊടുക്കുക, തൊഴില്‍ അല്ലെങ്കിൽ വ്യക്തിപരമായ</translation>
 <translation id="4976989127264491396">പിശക്: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">കണ്ടെയ്‌നർ കണ്ടില്ല</translation>
+<translation id="6055154402239241620">ട്രാഫിക് നിയന്ത്രണം</translation>
+<translation id="8134521925475508805">നിങ്ങളുടെ ബ്രൗസിംഗ് സെഷനുകൾക്കിടയിൽ വേർതിരിവ് സൃഷ്ടിച്ചുകൊണ്ട്, ഒരു പ്രത്യേക സന്ദർഭത്തിൽ യാന്ത്രികമായി തുറക്കാൻ നിർദ്ദിഷ്ട സൈറ്റുകൾ കോൺഫിഗർ ചെയ്യുക. <ph name="BEGIN_LINK"/>കൂടുതലറിയുക<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">ട്രാഫിക് നിയന്ത്രണം പ്രവർത്തനക്ഷമമാക്കുക</translation>
+<translation id="1358255827354528344">പുതിയ നിയമം ചേർക്കുക</translation>
+<translation id="7183128985801806752">പുതിയ ട്രാഫിക് നിയന്ത്രണ നിയമം</translation>
+<translation id="2474694032500407328">ട്രാഫിക് നിയന്ത്രണ നിയമം എഡിറ്റ് ചെയ്യുക</translation>
+<translation id="5543417389274097206">നിയമം സൃഷ്ടിക്കുക</translation>
+<translation id="6532106788206463496">മാറ്റങ്ങൾ സംരക്ഷിക്കുക</translation>
+<translation id="1172800769374812685">നിയമം ഡിലീറ്റ് ചെയ്യുക</translation>
+<translation id="2389682807835777591"><ph name="RULE_LABEL"/> എന്ന നിയമം ഡിലീറ്റ് ചെയ്യണമെന്ന് നിങ്ങൾക്ക് ഉറപ്പാണോ?</translation>
+<translation id="4853129331778360252">ഒരു പ്രത്യേക ബ്രൗസിംഗ് സന്ദർഭത്തിൽ കൈകാര്യം ചെയ്യാനും എപ്പോഴും തുറക്കാനും URL-കൾ നൽകുക.</translation>
+<translation id="1173480005453148926">കൈകാര്യം ചെയ്യേണ്ട URL-കൾ</translation>
+<translation id="6217532416180299470">ട്രാഫിക് നിയന്ത്രണത്തിലൂടെ കൈകാര്യം ചെയ്യേണ്ട URL-കൾ നൽകുക</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> സൈറ്റും അതിന്റെ സബ്ഡൊമെയ്നുകളും പൊരുത്തപ്പെടുത്തുന്നു; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> കൃത്യമായ സൈറ്റ് പൊരുത്തപ്പെടുത്തുന്നു; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> എല്ലാ സൈറ്റുകളും പൊരുത്തപ്പെടുത്തുന്നു; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> ഒരു കമന്റാണ്.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (ഒപ്പം <ph name="COUNT"/> URL-കൾ കൂടി)</translation>
+<translation id="3700798663085748181">നിയമം പ്രവർത്തനക്ഷമമാക്കുക</translation>
+<translation id="2967480878853054068">അസാധുവായ URL ഫിൽട്ടർ</translation>
 <translation id="2263346047290834619">ട്രീ ടാബുകൾ ഉപയോഗിക്കുക</translation>
 <translation id="5860254591544742609">ടൈറ്റിൽ ബാർ കാണിക്കുക</translation>
 <translation id="4691131445504068802">ചുരുക്കിയിരിക്കെ പൂര്‍ണമായി മറയ്ക്കുക</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">ഇപ്പോൾ അപ്‌ഡേറ്റുചെയ്യുക</translation>
 <translation id="5334844597069022743">മൂലഗ്രാഫ് കാണിക്കുക</translation>
 <translation id="4720556299488643018">സബ്സ്ക്രിപ്പ്</translation>
-<translation id="6532106788206463496">മാറ്റങ്ങൾ സംരക്ഷിക്കുക</translation>
 <translation id="4516904298421534459">ഫിൽറ്റർ ലിസ്റ്റുകൾ</translation>
 <translation id="4435215931544457255">ശക്തമായതും വർത്തമാന സമൂഹത്തില്‍ പ്രതിതലത്തിലുള്ള ലിസ്റ്റുകളാണ്. ധാരാളം ഫിൽറ്ററുകൾ എanble് ചെയ്താൽ ബ്രൗസിംഗ് വേഗം കുറഞ്ഞേക്കാം.</translation>
 <translation id="802154636333426148">ഡൗൺലോഡ് പരാജയപ്പെട്ടു</translation>
@@ -611,6 +631,8 @@
 <translation id="509873765238158442">മൈക്രോസോഫ്റ്റ് റികോൾ ബ്ലോക്കൂ</translation>
 <translation id="4763421121695677716">ബ്ലോക്ക് ചെയ്തത് മൈക്രോസോഫ്റ്റ് വിൻഡോസ് കമ്പ്യൂട്ടറുകളിൽ പ്രവർത്തിക്കുന്നതില്‍ നിന്ന് സ്ക്രീൻഷോട്ടുകൾ സ്വമേധയാ എടുക്കുന്നത്.</translation>
 <translation id="1968895725257436430">ഡാറ്റ ശേഖരണം</translation>
+<translation id="5668852698659986622">സ്പോൺസർ ചെയ്ത Ads പ്രവർത്തനക്ഷമമാക്കുക</translation>
+<translation id="431194936581466649">സ്പോൺസർ ചെയ്ത Ads ഉപയോഗിച്ച് ഒരു സ്വതന്ത്രവും ഉപയോക്താവിന് മുൻഗണനയുള്ളതുമായ വെബ് നിർമ്മിക്കാനുള്ള Brave-ന്റെ ദൗത്യത്തെ പിന്തുണയ്ക്കാൻ സഹായിക്കുക. നിങ്ങളെ തിരിച്ചറിയാതെ, ഞങ്ങൾ പരസ്യ പ്രകടനം സ്വകാര്യമായി അളക്കുന്നു.</translation>
 <translation id="1700052872056357670">പുറത്തിരിക്കുന്നപ്പോൾ എല്ലാ ഡാറ്റയും മായ്ക്കുക</translation>
 <translation id="216468847346280584">Brave പരസ്യ ഡാറ്റ മായ്ച്ചുകളയുക...</translation>
 <translation id="96212973142796240">Brave പരസ്യ ഡാറ്റ മായ്‌ച്ചു</translation>
@@ -990,4 +1012,12 @@
 <translation id="154702742922788359">മോഡ് തുറക്കുക</translation>
 <translation id="2249111429176737533">ഇലകളുള്ള വിൻഡോ ആയി തുറക്കുക</translation>
 <translation id="7022756207310403729">ബ്രൗസറിൽ തുറക്കുക</translation>
+<translation id="1916785651473363467">ഇഷ്ടാനുസൃത profile ഇമേജ്</translation>
+<translation id="5336092064678832560">ഇഷ്ടാനുസൃത ഇമേജ് അപ്‌ലോഡ് ചെയ്യുക</translation>
+<translation id="1062407476771304334">മാറ്റിസ്ഥാപിക്കുക</translation>
+<translation id="1428299461403073820">ഇഷ്ടാനുസൃത profile ഇമേജ് മാറ്റിസ്ഥാപിക്കുക</translation>
+<translation id="7994453838803296517">ഇഷ്ടാനുസൃത profile ഇമേജ് പ്രിവ്യൂ, തിരഞ്ഞെടുത്തു</translation>
+<translation id="6578040791557152233">ഒരു ഇഷ്ടാനുസൃത profile ഇമേജ് അപ്‌ലോഡ് ചെയ്യുക</translation>
+<translation id="9222124079546967592">ഇഷ്ടാനുസൃത profile ഇമേജ് നീക്കം ചെയ്യുക</translation>
+<translation id="6058660912941570282">Brave-ന് ഈ ഫയൽ ഉപയോഗിക്കാൻ കഴിയില്ല. മറ്റൊരു ഇമേജ് തിരഞ്ഞെടുത്ത് വീണ്ടും ശ്രമിക്കുക.</translation>
 </translationbundle>

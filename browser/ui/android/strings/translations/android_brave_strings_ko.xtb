@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">사용 중지</translation>
 <translation id="59174027418879706">사용함</translation>
 <translation id="6920492760024499150">오늘의 인기 스토리는 맞춤식으로 제공되는 프라이빗 피드입니다.</translation>
-<translation id="3803728444598576153">Brave News를 켜고 스토리를 놓치지 마세요</translation>
+<translation id="3803728444598576153">Brave 뉴스를 켜고 스토리를 놓치지 마세요</translation>
 <translation id="7627131190984957214">Brave News는 귀하의 기기에 맞는 프라이빗한 익명 광고의 도움으로 제공됩니다.</translation>
-<translation id="7897050360583141319">좋아하는 소스를 피드 한 곳에서 팔로우하세요. Brave에서 탭을 열고 아래로 스크롤하면, 다 보이죠!\nBrave News는 프라이버시를 보호하는 익명 광고의 도움으로 서비스가 유지됩니다.</translation>
+<translation id="7897050360583141319">좋아하는 소스를 피드 한 곳에서 팔로우하세요. Brave에서 탭을 열고 아래로 스크롤하면, 다 보이죠!</translation>
 <translation id="1765217911817124376">Brave News 켜기</translation>
 <translation id="8981973962043893066">사이트, 주제, RSS 피드 검색</translation>
 <translation id="3225021799163709119">인기</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Brave 브라우저가 작동이 멎거나 프리징이 발생하면 진단 보고서를 자동 전송하여 Brave 제품 안정성 향상에 도움을 주세요.</translation>
 <translation id="7977176350719484850">절약 예상\n데이터량</translation>
 <translation id="9008534313521214777">예상\n절약 시간</translation>
+<translation id="5668852698659986622">스폰서 광고 활성화</translation>
+<translation id="431194936581466649">스폰서 광고로 독립적이고 사용자 우선의 웹을 구축하려는 Brave의 미션을 지원하세요. 저희는 광고 성과를 사용자를 식별하지 않고 비공개로 측정합니다.</translation>
 <translation id="8347743943525229984">Brave 설문조사 허용</translation>
 <translation id="6022939994702081659">새 탭 페이지에서 비공개 설문조사 링크를 표시할 수 있도록 허용합니다. 설문조사는 더 나은 기능을 개발하고, 브라우저 기반 광고 캠페인의 효과를 측정하는 데 도움이 됩니다.</translation>
 <translation id="7746496306508543965">Brave 설문조사에 대해 자세히 알아보기</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">기본 메뉴</translation>
 <translation id="7002271985859760052">페이지 작업</translation>
 <translation id="7104487676473617844">다음 항목들은 현재 열린 웹페이지가 지원할 때만 메뉴에 표시됩니다.</translation>
-<translation id="4159764849281393303">웹앱</translation>
 <translation id="8038539967102225446">여기에 Brave 광고가 있습니다!</translation>
 <translation id="222883304157347087">(이 기기)</translation>
 <translation id="4157741509680155021">동기화 체인 장치</translation>
@@ -723,6 +724,8 @@
 <translation id="1634828734222219955">합계</translation>
 <translation id="7995708795274219641">수량 + 가스</translation>
 <translation id="2186011161688824046">금액 + 수수료</translation>
+<translation id="1118876217803190221">잔액 부족</translation>
+<translation id="275990379543116961">가스비 부족</translation>
 <translation id="1950052789869821983">트랜잭션</translation>
 <translation id="2304783958703511257">고급 설정</translation>
 <translation id="4220062530885628403">임시</translation>

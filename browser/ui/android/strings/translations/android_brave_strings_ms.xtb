@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Cerita popular hari ini dalam suapan peribadi, hanya untuk anda.</translation>
 <translation id="3803728444598576153">Hidupkan Berita Brave dan sentiasa ikuti kisah terkini</translation>
 <translation id="7627131190984957214">Berita Brave disokong iklan dengan iklan peribadi dan tanpa nama yang dipadankan pada peranti anda.</translation>
-<translation id="7897050360583141319">Ikuti sumber kegemaran anda dalam suapan tunggal. Hanya buka tab dalam Brave, tatal ke bawah dan… lihatlah!\nBerita Brave disokong iklan dengan iklan peribadi dan tanpa nama.</translation>
+<translation id="7897050360583141319">Ikuti sumber kegemaran anda dalam suapan tunggal. Hanya buka tab dalam Brave, tatal ke bawah dan… lihatlah!</translation>
 <translation id="1765217911817124376">Hidupkan Berita Brave</translation>
 <translation id="8981973962043893066">Cari laman, topik atau suapan RSS</translation>
 <translation id="3225021799163709119">Terkenal</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Bantu dalam meningkatkan kestabilan produk\u2019sBrave dengan menghantar laporan diagnostik secara automatik apabila Penyemak Imbas Brave ranap atau pegun.</translation>
 <translation id="7977176350719484850">Anggaran Data\nDijimatkan</translation>
 <translation id="9008534313521214777">Anggaran Masa\nDijimat</translation>
+<translation id="5668852698659986622">Dayakan Iklan Ditaja</translation>
+<translation id="431194936581466649">Bantu menyokong misi Brave untuk membina Web yang bebas dan mengutamakan pengguna dengan Iklan Ditaja. Kami mengukur prestasi iklan secara peribadi, tanpa mengenal pasti anda.</translation>
 <translation id="8347743943525229984">Benarkan Tinjauan Brave</translation>
 <translation id="6022939994702081659">Benarkan Brave memaparkan pautan ke tinjauan peribadi di halaman tab baharu. Tinjauan membantu kami membina ciri yang lebih baik dan mengukur keberkesanan kempen iklan berasaskan pelayar.</translation>
 <translation id="7746496306508543965">Ketahui lebih lanjut tentang tinjauan Brave</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">Menu utama</translation>
 <translation id="7002271985859760052">Tindakan halaman</translation>
 <translation id="7104487676473617844">Item berikut hanya akan kelihatan dalam menu apabila disokong oleh laman web semasa yang sedang dibuka.</translation>
-<translation id="4159764849281393303">Apl Web</translation>
 <translation id="8038539967102225446">Iklan Brave ada di sini!</translation>
 <translation id="222883304157347087">(peranti ini)</translation>
 <translation id="4157741509680155021">PERANTI PADA RANTAIAN DISELARAS</translation>
@@ -723,6 +724,8 @@ Jika anda tidak menerima permintaan ini, VPN tidak akan bersambung semula dan sa
 <translation id="1634828734222219955">Jumlah</translation>
 <translation id="7995708795274219641">Amaun + Gas</translation>
 <translation id="2186011161688824046">Jumlah + yuran</translation>
+<translation id="1118876217803190221">Baki tidak mencukupi</translation>
+<translation id="275990379543116961">Dana tidak mencukupi untuk gas</translation>
 <translation id="1950052789869821983">Transaksi</translation>
 <translation id="2304783958703511257">Tetapan Lanjutan</translation>
 <translation id="4220062530885628403">Nonce</translation>

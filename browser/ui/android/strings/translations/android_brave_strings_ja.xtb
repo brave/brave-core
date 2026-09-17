@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Brave Newsは、読みたい記事が上がってくるプライベート・ニュースリーダー。</translation>
 <translation id="3803728444598576153">Brave Newsをオンにして、最新情報を見逃さないようにしましょう</translation>
 <translation id="7627131190984957214">Brave Newsは、あなたのデバイスにマッチする匿名化されたプライベート広告でサポートされています。</translation>
-<translation id="7897050360583141319">お気に入りのソースを1つのフィードでフォロー。Braveのタブを開いて、下にスクロールすればすぐに設定できます！\nBrave Newsは、匿名化されたプライベート広告を使用する広告サポート型のツールです。</translation>
+<translation id="7897050360583141319">お気に入りのソースを1つのフィードでフォロー。Braveのタブを開いて、下にスクロールすればすぐに設定できます！</translation>
 <translation id="1765217911817124376">Brave Newsを有効にする</translation>
 <translation id="8981973962043893066">サイト、トピック、RSSフィードを検索</translation>
 <translation id="3225021799163709119">人気</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Braveブラウザのクラッシュやフリーズ時に診断レポートを自動送信し、Brave製品の安定性向上に貢献します。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
 <translation id="9008534313521214777">節約できた\n時間(推定)</translation>
+<translation id="5668852698659986622">スポンサー広告を有効にする</translation>
+<translation id="431194936581466649">スポンサー広告で、独立したユーザーファーストのウェブを構築するというBraveの使命を支援してください。私たちはあなたを特定することなく、プライベートに広告のパフォーマンスを測定します。</translation>
 <translation id="8347743943525229984">Braveアンケートを許可</translation>
 <translation id="6022939994702081659">Braveに対し、新しいタブページに匿名アンケートへのリンクを表示することを許可します。こうした調査は、より良い機能の構築や、ブラウザベースの広告キャンペーンの効果測定などに役立ちます。</translation>
 <translation id="7746496306508543965">Braveアンケートの詳細</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">メインメニュー</translation>
 <translation id="7002271985859760052">ページアクション</translation>
 <translation id="7104487676473617844">次の項目は、現在開いているウェブページが対応している場合のみメニューに表示されます。</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Brave広告はここにあります！</translation>
 <translation id="222883304157347087">（このデバイス）</translation>
 <translation id="4157741509680155021">同期チェーン上のデバイス</translation>
@@ -723,6 +724,8 @@
 <translation id="1634828734222219955">合計</translation>
 <translation id="7995708795274219641">金額 + ガス</translation>
 <translation id="2186011161688824046">金額 + 手数料</translation>
+<translation id="1118876217803190221">残高不足です</translation>
+<translation id="275990379543116961">ガス代のための資金が不足しています</translation>
 <translation id="1950052789869821983">トランザクション</translation>
 <translation id="2304783958703511257">詳細設定</translation>
 <translation id="4220062530885628403">ノンス</translation>

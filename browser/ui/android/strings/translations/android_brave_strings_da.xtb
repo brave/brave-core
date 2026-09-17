@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Deaktiveret</translation>
 <translation id="59174027418879706">Aktiveret</translation>
 <translation id="6920492760024499150">Dagens tophistorier i et privat feed, kun til dig.</translation>
-<translation id="3803728444598576153">Aktiver Brave News, og gå aldrig glip af en historie igen</translation>
+<translation id="3803728444598576153">Aktiver Brave Nyheder, og gå aldrig glip af en historie</translation>
 <translation id="7627131190984957214">Brave News er reklamefinansieret med private og anonymiserede reklamer, der matches på din enhed.</translation>
-<translation id="7897050360583141319">Følg dine yndlingskilder i et enkelt feed. Du skal bare åbne en fane i Brace, scrolle ned og … værsgo!\nBrave News er reklameunderstøttet med helt fortrolige og anonymiserede reklame.</translation>
+<translation id="7897050360583141319">Følg dine yndlingskilder i et enkelt feed. Du skal bare åbne en fane i Brave, scrolle ned og … værsgo!</translation>
 <translation id="1765217911817124376">Aktivér Brave News</translation>
 <translation id="8981973962043893066">Søg efter sider, emner eller RSS-feed</translation>
 <translation id="3225021799163709119">Populær</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Hjælp med at forbedre Braves produktstabilitet ved automatisk at sende diagnostioceringsrapporter, Brave Browser bryder sammen eller fryser.</translation>
 <translation id="7977176350719484850">Est. datamængde\nsparet</translation>
 <translation id="9008534313521214777">Est. tid\nsparet</translation>
+<translation id="5668852698659986622">Aktiver Sponsorerede Ads</translation>
+<translation id="431194936581466649">Hjælp med at støtte Braves mission om at bygge et uafhængigt, brugerfokuseret internet med Sponsorerede Ads. Vi måler annonceydelse privat uden at identificere dig.</translation>
 <translation id="8347743943525229984">Tillad Brave-undersøgelser</translation>
 <translation id="6022939994702081659">Giver Brave mulighed for at vise links til private undersøgelser i den nye fane. Undersøgelser hjælper os med at opbygge bedre funktioner og måle effektiviteten af browserbaserede annoncekampagner.</translation>
 <translation id="7746496306508543965">Få mere at vide om Brave-undersøgelser</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">Hovedmenu</translation>
 <translation id="7002271985859760052">Sidehandlinger</translation>
 <translation id="7104487676473617844">Følgende elementer vil kun være synlige i menuen, når de understøttes af den aktuelt åbne webside.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Brave-Annoncer er her!</translation>
 <translation id="222883304157347087">(denne enhed)</translation>
 <translation id="4157741509680155021">ENHEDER I SYNKRONISERINGSKÆDE</translation>
@@ -720,6 +721,8 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Beløb + Brændstof</translation>
 <translation id="2186011161688824046">Beløb + gebyr</translation>
+<translation id="1118876217803190221">Utilstrækkelig saldo</translation>
+<translation id="275990379543116961">Ikke nok midler til benzin</translation>
 <translation id="1950052789869821983">Transaktion</translation>
 <translation id="2304783958703511257">Avancerede indstillinger</translation>
 <translation id="4220062530885628403">Nonce</translation>

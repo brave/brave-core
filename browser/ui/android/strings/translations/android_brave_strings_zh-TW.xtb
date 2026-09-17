@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Today 的重點消息是不公開的摘要，專屬於您。</translation>
 <translation id="3803728444598576153">開啟 Brave 新聞，絕不錯過每一條消息</translation>
 <translation id="7627131190984957214">Brave 新聞支援廣告功能，能在裝置上提供符合個人喜好的廣告，內容不公開並匿名處理。</translation>
-<translation id="7897050360583141319">透過單一摘要關注您喜愛的來源。只要在 Brave 中開啟分頁、向下捲動，一切搞定！\nBrave News 可支援匿名投放私人廣告。</translation>
+<translation id="7897050360583141319">透過單一摘要關注您喜愛的來源。只要在 Brave 中開啟分頁、向下捲動，一切搞定！</translation>
 <translation id="1765217911817124376">開啟 Brave 新聞</translation>
 <translation id="8981973962043893066">搜尋網站、主題或 RSS 摘要</translation>
 <translation id="3225021799163709119">熱門內容</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">在 Brave 瀏覽器當機或凍結時自動傳送診斷報告，協助改善 Brave 的產品穩定性。</translation>
 <translation id="7977176350719484850">預估節省\n時間</translation>
 <translation id="9008534313521214777">預估節省\n時間</translation>
+<translation id="5668852698659986622">啟用贊助廣告</translation>
+<translation id="431194936581466649">以贊助廣告支持 Brave 打造獨立、以使用者為先的網路使命。我們以隱私方式衡量廣告成效，不會識別您的身分。</translation>
 <translation id="8347743943525229984">允許 Brave 調查</translation>
 <translation id="6022939994702081659">允許 Brave 在新分頁中顯示隱私調查的連結。調查有助於我們建立更好的功能，並衡量基於瀏覽器的廣告活動其有效性。</translation>
 <translation id="7746496306508543965">深入了解 Brave 調查</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">主選單</translation>
 <translation id="7002271985859760052">頁面操作</translation>
 <translation id="7104487676473617844">以下項目僅在目前開啟的網頁支援時才會顯示於選單中。</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Brave 廣告已就緒！</translation>
 <translation id="222883304157347087">（此裝置）</translation>
 <translation id="4157741509680155021">同步鏈上的裝置</translation>
@@ -723,6 +724,8 @@
 <translation id="1634828734222219955">總量</translation>
 <translation id="7995708795274219641">數量 + Gas</translation>
 <translation id="2186011161688824046">金額 + 費用</translation>
+<translation id="1118876217803190221">餘額不足</translation>
+<translation id="275990379543116961">GAS 資金不足</translation>
 <translation id="1950052789869821983">交易</translation>
 <translation id="2304783958703511257">進階設定</translation>
 <translation id="4220062530885628403">Nonce</translation>

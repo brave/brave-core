@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Kikapcsolva</translation>
 <translation id="59174027418879706">Engedélyezve</translation>
 <translation id="6920492760024499150">A mai nap legfontosabb eseményei privát hírfolyamban, csak az Ön számára.</translation>
-<translation id="3803728444598576153">A Brave-hírek bekapcsolásával egyetlen történetről sem marad le</translation>
+<translation id="3803728444598576153">Kapcsolja be a Brave híreket, és soha ne maradjon le egyetlen történetről sem</translation>
 <translation id="7627131190984957214">A Brave Híreket privát és anonimizált hirdetésekkel tartjuk fenn, amelyek illeszkednek az Ön készülékéhez.</translation>
-<translation id="7897050360583141319">Kövesse a kedvenc forrásait, egy csatornán. Csak nyisson meg egy lapot a Brave-ben, görgessen le, és tessék!\nA Brave híreket teljesen privát és anonim hirdetések támogatják.</translation>
+<translation id="7897050360583141319">Kövesse a kedvenc forrásait, egy csatornán. Csak nyisson meg egy lapot a Brave-ben, görgessen le, és tessék!</translation>
 <translation id="1765217911817124376">A Brave News bekapcsolása</translation>
 <translation id="8981973962043893066">Keresés oldalra, témára vagy RSS-csatornára</translation>
 <translation id="3225021799163709119">Népszerű</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Segítsen fejleszteni a Brave termékstabilitását azáltal, hogy engedélyezi a diagnosztikai jelentések automatikus elküldését a Brave böngésző összeomlása vagy lefagyása esetén.</translation>
 <translation id="7977176350719484850">Becs. adatok\nmentve</translation>
 <translation id="9008534313521214777">Becsült megtakarított\nidő</translation>
+<translation id="5668852698659986622">Szponzorált hirdetések engedélyezése</translation>
+<translation id="431194936581466649">Támogassa a Brave küldetését, hogy egy független, felhasználó-központú webet építsen a szponzorált hirdetésekkel. A hirdetések teljesítményét privát módon mérjük, anélkül, hogy azonosítanánk Önt.</translation>
 <translation id="8347743943525229984">Brave felmérések engedélyezése</translation>
 <translation id="6022939994702081659">Engedélyezi, hogy a Brave privát kérdőívekre mutató hivatkozásokat jelenítsen meg az új lap oldalon. A kérdőívek segítenek jobb funkciókat létrehozni, és mérni a böngészőalapú hirdetési kampányok hatékonyságát.</translation>
 <translation id="7746496306508543965">Tudjon meg többet a Brave-felmérésekről</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">Főmenü</translation>
 <translation id="7002271985859760052">Oldalműveletek</translation>
 <translation id="7104487676473617844">A következő elemek csak akkor jelennek meg a menüben, ha az aktuálisan megnyitott weboldal támogatja őket.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Itt vannak a Brave Hirdetések!</translation>
 <translation id="222883304157347087">(ez a készülék)</translation>
 <translation id="4157741509680155021">KÉSZÜLÉKEK A fSZINKRONLÁNCON</translation>
@@ -720,6 +721,8 @@ other {<ph name="CITY_COUNT_MANY"/> város - }
 <translation id="1634828734222219955">Összesen</translation>
 <translation id="7995708795274219641">Összeg + gáz</translation>
 <translation id="2186011161688824046">Összeg + díj</translation>
+<translation id="1118876217803190221">Nincs fedezet</translation>
+<translation id="275990379543116961">Nincs elegendő fedezet a gashez</translation>
 <translation id="1950052789869821983">Tranzakció</translation>
 <translation id="2304783958703511257">Speciális beállítások</translation>
 <translation id="4220062530885628403">Nonce</translation>

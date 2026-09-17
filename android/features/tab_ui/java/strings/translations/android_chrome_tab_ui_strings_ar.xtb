@@ -4,6 +4,7 @@
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{تم إنشاء المجموعة قبل أسبوع واحد (<ph name="NUM_WEEKS_ONE"/>)}zero{تم إنشاء المجموعة قبل <ph name="NUM_WEEKS_MANY"/> أسبوع}two{تم إنشاء المجموعة قبل أسبوعَين (<ph name="NUM_WEEKS_MANY"/>)}few{تم إنشاء المجموعة قبل <ph name="NUM_WEEKS_MANY"/> أسابيع}many{تم إنشاء المجموعة قبل <ph name="NUM_WEEKS_MANY"/> أسبوعًا}other{تم إنشاء المجموعة قبل <ph name="NUM_WEEKS_MANY"/> أسبوع}}</translation>
 <translation id="1063300264396686489">فتح مجموعات علامات التبويب من الأجهزة الأخرى تلقائيًا</translation>
 <translation id="1075622780330595106">لم يتم استخدام <ph name="NUMBER_OF_TABS"/> من علامات التبويب مؤخرًا. هل تريد إغلاقها؟</translation>
+<translation id="1760197532822135980">‏الحصول على اقتراحات Brave في التطبيقات الأخرى</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{تم إنشاء المجموعة قبل سنة واحدة (<ph name="NUM_YEARS_ONE"/>)}zero{تم إنشاء المجموعة قبل <ph name="NUM_YEARS_MANY"/> سنة}two{تم إنشاء المجموعة قبل سنتَين (<ph name="NUM_YEARS_MANY"/>)}few{تم إنشاء المجموعة قبل <ph name="NUM_YEARS_MANY"/> سنوات}many{تم إنشاء المجموعة قبل <ph name="NUM_YEARS_MANY"/> سنة}other{تم إنشاء المجموعة قبل <ph name="NUM_YEARS_MANY"/> سنة}}</translation>
 <translation id="1137385688780024041">{DAY_COUNT,plural, =1{سيتم إغلاق علامات التبويب والمجموعات غير النشطة بعد شهر واحد.}zero{سيتم إغلاق علامات التبويب والمجموعات غير النشطة بعد <ph name="MONTH_COUNT_MANY"/> شهر.}two{سيتم إغلاق علامات التبويب والمجموعات غير النشطة بعد شهرَين.(<ph name="MONTH_COUNT_MANY"/>)}few{سيتم إغلاق علامات التبويب والمجموعات غير النشطة بعد <ph name="MONTH_COUNT_MANY"/> شهور.}many{سيتم إغلاق علامات التبويب والمجموعات غير النشطة بعد <ph name="MONTH_COUNT_MANY"/> شهرًا.}other{سيتم إغلاق علامات التبويب والمجموعات غير النشطة بعد <ph name="MONTH_COUNT_MANY"/> شهر.}}</translation>
 <translation id="1173894706177603556">إعادة تسمية</translation>
@@ -21,12 +22,14 @@
 <translation id="1501480321619201731">حذف مجموعة</translation>
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{علامة تبويب واحدة (<ph name="TABS_COUNT_ONE"/>) غير نشطة}zero{‫<ph name="TABS_COUNT_MANY"/> علامة تبويب غير نشطة}two{علامتا تبويب (<ph name="TABS_COUNT_MANY"/>) غير نشطتَين}few{‫<ph name="TABS_COUNT_MANY"/> علامات تبويب غير نشطة}many{‫<ph name="TABS_COUNT_MANY"/> علامة تبويب غير نشطة}other{‫<ph name="TABS_COUNT_MANY"/> علامة تبويب غير نشطة}}</translation>
 <translation id="1568067597247500137">تجاهل الموقع</translation>
+<translation id="1639330215535800445">{TAB_COUNT,plural, =1{نقل علامة التبويب إلى الأسفل}zero{نقل علامات التبويب إلى الأسفل}two{نقل علامتَي التبويب إلى الأسفل}few{نقل علامات التبويب إلى الأسفل}many{نقل علامات التبويب إلى الأسفل}other{نقل علامات التبويب إلى الأسفل}}</translation>
 <translation id="1645759014353344461">عدد علامات التبويب المجمَّعة: <ph name="TABS_COUNT_MANY"/></translation>
 <translation id="1657719826150349398">نقل علامة التبويب إلى الأسفل</translation>
 <translation id="1670942869417022142">تم كتم الصوت</translation>
 <translation id="1697284962337958118">إضافة إلى</translation>
 <translation id="1713541401465507417">إغلاق جميع علامات التبويب والمجموعات</translation>
 <translation id="1738346536511908887">{TAB_GROUPS_COUNT,plural, =1{لم تعُد مجموعة واحدة (<ph name="TAB_GROUPS_COUNT_ONE"/>) لعلامات التبويب متوفّرة}zero{لم تعُد <ph name="TAB_GROUPS_COUNT_MANY"/> مجموعة لعلامات التبويب متوفّرة}two{لم تعُد مجموعتان (<ph name="TAB_GROUPS_COUNT_MANY"/>) لعلامات التبويب متوفّرة}few{لم تعُد <ph name="TAB_GROUPS_COUNT_MANY"/> مجموعات لعلامات التبويب متوفّرة}many{لم تعُد <ph name="TAB_GROUPS_COUNT_MANY"/> مجموعة لعلامات التبويب متوفّرة}other{لم تعُد <ph name="TAB_GROUPS_COUNT_MANY"/> مجموعة لعلامات التبويب متوفّرة}}</translation>
+<translation id="1759122978835002237">نقل مجموعة علامات التبويب إلى الأعلى</translation>
 <translation id="176485176228926164"><ph name="BEGIN_LINK1"/>مزيد من المعلومات<ph name="END_LINK1"/></translation>
 <translation id="1828808367831369073">تم تجميع علامة تبويب واحدة (<ph name="TABS_COUNT_ONE"/>)</translation>
 <translation id="1844381456014878100">بعد 7 أيام من عدم النشاط</translation>
@@ -42,6 +45,7 @@
 <translation id="2118649612461486615">معلومات المتجر</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{إعادة صوت موقع الويب}zero{إعادة صوت مواقع الويب}two{إعادة صوت موقعَيّ الويب}few{إعادة صوت مواقع الويب}many{إعادة صوت مواقع الويب}other{إعادة صوت مواقع الويب}}</translation>
 <translation id="2162620598375156287">السعر الحالي هو <ph name="CURRENT_PRICE"/> على <ph name="SOURCE_WEBSITE"/></translation>
+<translation id="2164232689984783657">نقل مجموعة علامات التبويب إلى الأسفل</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{إلغاء تجميع علامة التبويب}zero{إلغاء تجميع علامات التبويب}two{إلغاء تجميع علامتَي التبويب}few{إلغاء تجميع علامات التبويب}many{إلغاء تجميع علامات التبويب}other{إلغاء تجميع علامات التبويب}}</translation>
 <translation id="2271452184061378400">يتم حفظ مجموعات علامات التبويب هنا</translation>
 <translation id="2277224997687551299">تعديل اسم المجموعة</translation>
@@ -128,7 +132,6 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{نقل علامة التبويب إلى نافذة جديدة}zero{نقل علامات التبويب إلى نافذة أخرى}two{نقل علامتَي التبويب إلى نافذة أخرى}few{نقل علامات التبويب إلى نافذة أخرى}many{نقل علامات التبويب إلى نافذة أخرى}other{نقل علامات التبويب إلى نافذة أخرى}}</translation>
 <translation id="5073204694187207510">إخفاء شبكة ملء الشاشة</translation>
 <translation id="5076161749301278626">هل تريد الاطّلاع على مراجعات المتجر؟</translation>
-<translation id="5093447877601682598">إرسال ملاحظات حول شريط علامات التبويب</translation>
 <translation id="5161254044473106830">العنوان مطلوب</translation>
 <translation id="5204584298075822291">تصغير علامات التبويب</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{‏يغلق متصفّح Brave تلقائيًا أي علامات تبويب ومجموعاتها بعد شهر واحد (<ph name="AUTO_DELETE_DELAY_ONE"/>) من كونها غير نشطة. ويمكنك تغيير ذلك في الإعدادات.}zero{‏يغلق Brave تلقائيًا أي علامات تبويب ومجموعاتها بعد <ph name="AUTO_DELETE_DELAY_MANY"/> شهر من كونها غير نشطة. ويمكنك تغيير ذلك في الإعدادات.}two{‏يغلق Brave تلقائيًا أي علامات تبويب ومجموعاتها بعد شهرين (<ph name="AUTO_DELETE_DELAY_MANY"/>) من كونها غير نشطة. ويمكنك تغيير ذلك في الإعدادات.}few{‏يغلق Brave تلقائيًا أي علامات تبويب ومجموعاتها بعد <ph name="AUTO_DELETE_DELAY_MANY"/> أشهر من كونها غير نشطة. ويمكنك تغيير ذلك في الإعدادات.}many{‏يغلق Brave تلقائيًا أي علامات تبويب ومجموعاتها بعد <ph name="AUTO_DELETE_DELAY_MANY"/> شهرًا من كونها غير نشطة. ويمكنك تغيير ذلك في الإعدادات.}other{‏يغلق Brave تلقائيًا أي علامات تبويب ومجموعاتها بعد <ph name="AUTO_DELETE_DELAY_MANY"/> شهر من كونها غير نشطة. ويمكنك تغيير ذلك في الإعدادات.}}</translation>
@@ -192,6 +195,7 @@
 <translation id="7369451074646620503">لم تعُد مجموعة علامات التبويب "<ph name="TAB_GROUP_NAME"/>" متوفّرة</translation>
 <translation id="7402375256128852434">إضافة علامات التبويب الأخيرة</translation>
 <translation id="7452985128687107478">يتم حفظ مجموعات علامات التبويب وتعديلها تلقائيًا على جميع أجهزتك</translation>
+<translation id="746137824927359035">{TAB_COUNT,plural, =1{نقل علامة التبويب إلى الأعلى}zero{نقل علامات التبويب إلى الأعلى}two{نقل علامتَي التبويب إلى الأعلى}few{نقل علامات التبويب إلى الأعلى}many{نقل علامات التبويب إلى الأعلى}other{نقل علامات التبويب إلى الأعلى}}</translation>
 <translation id="747459581954555080">استرداد الكل</translation>
 <translation id="7489558427602531799">نقل مجموعة علامات التبويب إلى اليمين</translation>
 <translation id="7501728912575021674">{TABS_COUNT,plural, =1{علامة تبويب واحدة (<ph name="TABS_COUNT_ONE"/>)}zero{‫<ph name="TABS_COUNT_MANY"/> علامة تبويب}two{علامتا تبويب (<ph name="TABS_COUNT_MANY"/>)}few{‫<ph name="TABS_COUNT_MANY"/> علامات تبويب}many{‫<ph name="TABS_COUNT_MANY"/> علامة تبويب}other{‫<ph name="TABS_COUNT_MANY"/> علامة تبويب}}</translation>
@@ -221,6 +225,7 @@
 <translation id="805809603610022708">{TABS_COUNT,plural, =1{إضافة علامة التبويب إلى المجموعة}zero{إضافة علامات التبويب إلى المجموعة}two{إضافة علامتَي التبويب إلى المجموعة}few{إضافة علامات التبويب إلى المجموعة}many{إضافة علامات التبويب إلى المجموعة}other{إضافة علامات التبويب إلى المجموعة}}</translation>
 <translation id="8138067144082174140">بعد 14 يومًا من عدم النشاط</translation>
 <translation id="8153873338998959464">{NUMBER_OF_TABS,plural, =1{توسيع مجموعة علامات التبويب "<ph name="TITLE_OF_GROUP"/>" التي تظهر بلون <ph name="COLOR_NAME"/> وتحتوي على علامة تبويب واحدة (<ph name="TABS_COUNT_ONE"/>)}zero{توسيع مجموعة علامات التبويب "<ph name="TITLE_OF_GROUP"/>" التي تظهر بلون <ph name="COLOR_NAME"/> وتحتوي على <ph name="TABS_COUNT_MANY"/> علامة تبويب}two{توسيع مجموعة علامات التبويب "<ph name="TITLE_OF_GROUP"/>" التي تظهر بلون <ph name="COLOR_NAME"/> وتحتوي على علامتَي تبويب (<ph name="TABS_COUNT_MANY"/>)}few{توسيع مجموعة علامات التبويب "<ph name="TITLE_OF_GROUP"/>" التي تظهر بلون <ph name="COLOR_NAME"/> وتحتوي على <ph name="TABS_COUNT_MANY"/> علامات تبويب}many{توسيع مجموعة علامات التبويب "<ph name="TITLE_OF_GROUP"/>" التي تظهر بلون <ph name="COLOR_NAME"/> وتحتوي على <ph name="TABS_COUNT_MANY"/> علامة تبويب}other{توسيع مجموعة علامات التبويب "<ph name="TITLE_OF_GROUP"/>" التي تظهر بلون <ph name="COLOR_NAME"/> وتحتوي على <ph name="TABS_COUNT_MANY"/> علامة تبويب}}</translation>
+<translation id="8172214054247281626">يمكنك مشاركة بيانات التصفّح، مثل سجلّ التصفّح الأخير، للحصول على اقتراحات في تطبيقات محدّدة. وتتم معالجة هذه البيانات بأمان على جهازك.</translation>
 <translation id="8195186926670288294">{TABS_COUNT,plural, =1{إزالة تثبيت علامة التبويب}zero{إزالة تثبيت علامات التبويب}two{إزالة تثبيت علامتَي التبويب}few{إزالة تثبيت علامات التبويب}many{إزالة تثبيت علامات التبويب}other{إزالة تثبيت علامات التبويب}}</translation>
 <translation id="8205266828577616993">نقل علامة التبويب إلى الأعلى</translation>
 <translation id="8207688828622594111">{NUM_MINS,plural, =1{تم تعديل المجموعة قبل دقيقة واحدة (<ph name="NUM_MINS_ONE"/>)}zero{تم تعديل المجموعة قبل <ph name="NUM_MINS_MANY"/> دقيقة}two{تم تعديل المجموعة قبل دقيقتَين (<ph name="NUM_MINS_MANY"/>)}few{تم تعديل المجموعة قبل <ph name="NUM_MINS_MANY"/> دقائق}many{تم تعديل المجموعة قبل <ph name="NUM_MINS_MANY"/> دقيقةً}other{تم تعديل المجموعة قبل <ph name="NUM_MINS_MANY"/> دقيقة}}</translation>
