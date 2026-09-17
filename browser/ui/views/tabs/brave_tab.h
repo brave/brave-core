@@ -164,6 +164,12 @@ class BraveTab : public Tab
   FRIEND_TEST_ALL_PREFIXES(
       BraveTabTestWithTreeTab,
       TreeToggleButtonVisibleMouseHoveredEvenWhenCloseButtonHiddenByPref);
+  FRIEND_TEST_ALL_PREFIXES(
+      BraveTabTestWithTreeTab,
+      InactiveCollapsedVerticalTreeTabDoesNotShowToggleButton);
+  FRIEND_TEST_ALL_PREFIXES(
+      BraveTabTestWithTreeTab,
+      ExpandedInactiveVerticalTreeTabAtMinWidthDoesNotShowToggleButtonOnHover);
 
   bool IsAtMinWidthForVerticalTabStrip() const;
 
