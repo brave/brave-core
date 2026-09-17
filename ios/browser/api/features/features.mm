@@ -161,12 +161,6 @@
                                               kBraveNTPBrandedWallpaper];
 }
 
-+ (Feature*)kBraveNTPBrandedWallpaperSurveyPanelist {
-  return [[Feature alloc]
-      initWithFeature:&ntp_background_images::features::
-                          kBraveNTPBrandedWallpaperSurveyPanelist];
-}
-
 + (Feature*)kBraveNewsCardPeekFeature {
   return [[Feature alloc]
       initWithFeature:&brave_news::features::kBraveNewsCardPeekFeature];

@@ -11,8 +11,6 @@
 #include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_feature.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -117,58 +115,6 @@ TEST_F(BraveAdsSettingsTest, DefaultMaximumNotificationAdsPerHour) {
 
   // Act & Assert
   EXPECT_EQ(2, GetMaximumNotificationAdsPerHour());
-}
-
-TEST_F(BraveAdsSettingsTest, UserHasOptedInToSurveyPanelist) {
-  // Arrange
-  test::SetProfileBooleanPrefValue(
-      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
-      true);
-
-  // Act & Assert
-  EXPECT_TRUE(UserHasOptedInToSurveyPanelist());
-}
-
-TEST_F(BraveAdsSettingsTest, UserHasNotOptedInToSurveyPanelist) {
-  // Arrange
-  test::SetProfileBooleanPrefValue(
-      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
-      false);
-
-  // Act & Assert
-  EXPECT_FALSE(UserHasOptedInToSurveyPanelist());
-}
-
-TEST_F(
-    BraveAdsSettingsTest,
-    UserHasNotOptedInToSurveyPanelistWhenNewTabPageBackgroundImagesAreDisabled) {
-  // Arrange
-  test::DisableNewTabPageBackgroundImages();
-
-  // Act & Assert
-  EXPECT_FALSE(UserHasOptedInToSurveyPanelist());
-}
-
-TEST_F(BraveAdsSettingsTest,
-       UserHasNotOptedInToSurveyPanelistWhenSponsoredAdsAreDisabled) {
-  // Arrange
-  test::DisableSponsoredAds();
-
-  // Act & Assert
-  EXPECT_FALSE(UserHasOptedInToSurveyPanelist());
-}
-
-TEST_F(BraveAdsSettingsTest,
-       UserHasNotOptedInToSurveyPanelistWhenRewardsDisabledByPolicy) {
-  // Arrange
-  test::SetProfileBooleanPrefValue(
-      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
-      true);
-  test::SetProfileBooleanPrefValue(brave_rewards::prefs::kDisabledByPolicy,
-                                   true);
-
-  // Act & Assert
-  EXPECT_FALSE(UserHasOptedInToSurveyPanelist());
 }
 
 }  // namespace brave_ads

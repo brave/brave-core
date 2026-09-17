@@ -2476,12 +2476,6 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Stuur dagelijkse gebruiksping naar Brave";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Hiermee sta je toe dat Brave links naar privé-enquêtes weergeeft op het nieuwe tabblad. Deze enquêtes helpen ons betere functies te ontwikkelen en de effectiviteit van advertentiecampagnes in de browser te meten. [Meer informatie](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Brave-enquêtes toestaan";
-
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 

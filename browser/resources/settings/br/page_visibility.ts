@@ -36,7 +36,6 @@ declare module '../page_visibility.js' {
     // <if expr="enable_speedreader">
     speedreader?: boolean
     // </if>
-    surveyPanelist?: boolean,
     braveTor?: boolean,
     emailAliases?: boolean
   }
@@ -76,7 +75,6 @@ function getPageVisibility () {
       // <if expr="enable_speedreader">
       speedreader: false,
       // </if>
-      surveyPanelist: false,
       braveTor: false,
       emailAliases: false,
     }
@@ -109,7 +107,6 @@ function getPageVisibility () {
     leoPersonalization: loadTimeData.getBoolean('isLeoAssistantAllowed'),
     leoModels: loadTimeData.getBoolean('isLeoAssistantAllowed'),
     // </if>
-    surveyPanelist: loadTimeData.getBoolean('isSurveyPanelistAllowed'),
     // <if expr="enable_containers">
     containers: loadTimeData.getBoolean('isContainersEnabled'),
     // </if>

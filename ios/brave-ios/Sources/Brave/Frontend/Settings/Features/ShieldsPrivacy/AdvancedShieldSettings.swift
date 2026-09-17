@@ -149,12 +149,6 @@ import os
     }
   }
 
-  @Published var isSurveyPanelistEnabled: Bool = false {
-    didSet {
-      rewards?.ads.isSurveyPanelistEnabled = isSurveyPanelistEnabled
-    }
-  }
-
   /// Hide the Sponsored Ads toggle when Rewards is disabled by policy or in
   /// an unsupported region, because it would have no effect. This matches
   /// `AdsServiceImplIOS` logic when it is not started if Rewards is not
@@ -237,7 +231,6 @@ import os
     self.isDebounceEnabled = debounceService?.isEnabled ?? false
     self.shredHistoryItems = Preferences.Shields.shredHistoryItems.value
     self.webcompatReporterHandler = webcompatReporterHandler
-    self.isSurveyPanelistEnabled = rewards?.ads.isSurveyPanelistEnabled ?? false
 
     blockMobileAnnoyances = FilterListStorage.shared.isEnabled(
       for: AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID

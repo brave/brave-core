@@ -45,10 +45,4 @@ void DisableAllAds() {
   DisableNewTabPageBackgroundImages();
 }
 
-void OptOutOfSurveyPanelist() {
-  SetProfileBooleanPrefValue(
-      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
-      false);
-}
-
 }  // namespace brave_ads::test

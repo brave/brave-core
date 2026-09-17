@@ -467,8 +467,7 @@ void AdEvents::PurgeExpired(ResultCallback callback) const {
   const std::string non_new_tab_page_ad_cutoff = TimeToSqlValueAsString(
       base::Time::Now() - base::Days(non_new_tab_page_ad_days));
 
-  const size_t new_tab_page_ad_days =
-      UserHasJoinedBraveRewards() || UserHasOptedInToSurveyPanelist() ? 90 : 2;
+  const size_t new_tab_page_ad_days = UserHasJoinedBraveRewards() ? 90 : 2;
   const std::string new_tab_page_ad_cutoff = TimeToSqlValueAsString(
       base::Time::Now() - base::Days(new_tab_page_ad_days));
 

@@ -2476,12 +2476,6 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "일일 사용 Ping을 Brave에 자동으로 보내기";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Brave가 새 탭 페이지에서 비공개 설문조사 링크를 표시할 수 있도록 허용합니다. 설문조사는 더 나은 기능을 개발하고, 브라우저 기반 광고 캠페인의 효과를 측정하는 데 도움이 됩니다. [자세히 알아보기]%@";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Brave 설문조사 허용";
-
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 

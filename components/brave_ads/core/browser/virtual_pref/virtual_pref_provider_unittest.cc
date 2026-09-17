@@ -14,9 +14,6 @@
 #include "base/version_info/version_info.h"
 #include "brave/components/brave_ads/core/browser/virtual_pref/test/virtual_pref_provider_delegate_mock.h"
 #include "brave/components/brave_ads/core/internal/common/locale/test/fake_locale.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -30,14 +27,6 @@ namespace brave_ads {
 class BraveAdsVirtualPrefProviderTest : public ::testing::Test {
  public:
   BraveAdsVirtualPrefProviderTest() {
-    prefs_.registry()->RegisterBooleanPref(
-        ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
-        true);
-    prefs_.registry()->RegisterBooleanPref(
-        ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
-    prefs_.registry()->RegisterBooleanPref(prefs::kSponsoredEnabled, true);
-    prefs_.registry()->RegisterBooleanPref(
-        brave_rewards::prefs::kDisabledByPolicy, false);
     local_state_.registry()->RegisterDictionaryPref(skus::prefs::kSkusState);
 
     auto delegate = std::make_unique<VirtualPrefProviderDelegateMock>();
@@ -126,31 +115,6 @@ TEST_F(BraveAdsVirtualPrefProviderTest, OperatingSystemName) {
       virtual_prefs.FindStringByDottedPath("[virtual]:operating_system.name");
   ASSERT_TRUE(name);
   EXPECT_EQ(*name, version_info::GetOSType());
-}
-
-TEST_F(BraveAdsVirtualPrefProviderTest, IsSurveyPanelist) {
-  // Act
-  const base::DictValue virtual_prefs = GetVirtualPrefs();
-
-  // Assert
-  EXPECT_TRUE(
-      virtual_prefs.FindBoolByDottedPath("[virtual]:is_survey_panelist"));
-}
-
-TEST_F(BraveAdsVirtualPrefProviderTest,
-       IsNotSurveyPanelistWhenNewTabPageAdsAreDisabled) {
-  // Arrange
-  prefs_.SetBoolean(
-      ntp_background_images::prefs::kNewTabPageShowBackgroundImage, false);
-  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
-
-  // Act
-  const base::DictValue virtual_prefs = GetVirtualPrefs();
-
-  // Assert
-  EXPECT_THAT(
-      virtual_prefs.FindBoolByDottedPath("[virtual]:is_survey_panelist"),
-      testing::Optional(false));
 }
 
 TEST_F(BraveAdsVirtualPrefProviderTest, SearchEngineDefaultName) {

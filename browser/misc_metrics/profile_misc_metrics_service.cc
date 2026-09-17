@@ -23,8 +23,6 @@
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "brave/components/misc_metrics/pref_names.h"
-#include "brave/components/ntp_background_images/browser/features.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
@@ -65,10 +63,6 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
     pref_change_registrar_.Init(profile_prefs_);
     pref_change_registrar_.Add(
         brave_shields::prefs::kAdBlockDeveloperMode,
-        base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
-                            base::Unretained(this)));
-    pref_change_registrar_.Add(
-        ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
         base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
                             base::Unretained(this)));
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -170,14 +164,6 @@ void ProfileMiscMetricsService::ReportSimpleMetrics() {
   UMA_HISTOGRAM_BOOLEAN(
       kSearchSuggestEnabledHistogramName,
       profile_prefs_->GetBoolean(prefs::kSearchSuggestEnabled));
-  if (base::FeatureList::IsEnabled(
-          ntp_background_images::features::
-              kBraveNTPBrandedWallpaperSurveyPanelist)) {
-    UMA_HISTOGRAM_BOOLEAN(kSurveyPanelistEnabledHistogramName,
-                          profile_prefs_->GetBoolean(
-                              ntp_background_images::prefs::
-                                  kNewTabPageSponsoredImagesSurveyPanelist));
-  }
   bool shields_dev_mode_enabled =
       profile_prefs_->GetBoolean(brave_shields::prefs::kAdBlockDeveloperMode);
   UMA_HISTOGRAM_EXACT_LINEAR(kShieldsDevModeEnabledHistogramName,

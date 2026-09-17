@@ -2476,12 +2476,6 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "自動傳送每日使用 ping 到 Brave";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "允許 Brave 在新分頁中顯示私人調查的連結。調查有助於我們建立更好的功能，並衡量基於瀏覽器的廣告活動其有效性。 [進一步了解](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "允許 Brave 調查";
-
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 

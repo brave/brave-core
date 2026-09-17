@@ -9,9 +9,6 @@
 
 namespace ntp_background_images::features {
 
-BASE_FEATURE(kBraveNTPBrandedWallpaperSurveyPanelist,
-             base::FEATURE_ENABLED_BY_DEFAULT);
-
 BASE_FEATURE(kBraveNTPBrandedWallpaper,
              base::FEATURE_ENABLED_BY_DEFAULT);
 

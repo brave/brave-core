@@ -12,8 +12,6 @@
 
 namespace ntp_background_images::features {
 
-BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaperSurveyPanelist);
-
 BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaper);
 
 BASE_DECLARE_FEATURE(kCenterNttCtaButton);
