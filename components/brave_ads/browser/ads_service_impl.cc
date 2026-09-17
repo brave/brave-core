@@ -788,9 +788,9 @@ void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
     // `pref_change_registrar_` and must not do so re-entrantly from within
     // this pref's own change notification.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(&AdsServiceImpl::ClearData,
-                                  weak_ptr_factory_.GetWeakPtr(),
-                                  /*intentional*/ base::DoNothing()));
+        FROM_HERE,
+        base::BindOnce(&AdsServiceImpl::MaybeClearDataForDisabledSponsoredAds,
+                       weak_ptr_factory_.GetWeakPtr()));
   }
 
   if (!CanStartBatAdsService()) {
@@ -813,6 +813,18 @@ void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
   MaybeStartBatAdsService();
 
   NotifyPrefChanged(path);
+}
+
+void AdsServiceImpl::MaybeClearDataForDisabledSponsoredAds() {
+  if (IsSponsoredAdsEnabled()) {
+    // Sponsored ads were re-enabled before this posted task ran, so the data
+    // is still relevant and the service may already be running again.
+    // Clearing it now would wipe live data and needlessly restart the
+    // service.
+    return;
+  }
+
+  ClearData(base::DoNothing());
 }
 
 void AdsServiceImpl::OnVariationsCountryPrefChanged() {
