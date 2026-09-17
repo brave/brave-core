@@ -9,13 +9,16 @@
 
 namespace brave_vpn::v2 {
 
+FakeAgentLauncher::Record::Record() = default;
+
+FakeAgentLauncher::Record::~Record() = default;
+
 FakeAgentLauncher::FakeAgentLauncher(Record* record) : record_(record) {}
 
 FakeAgentLauncher::~FakeAgentLauncher() = default;
 
 void FakeAgentLauncher::Launch(LaunchFailureCallback failure_callback) {
-  ++record_->launch_count;
-  record_->last_failure_callback = std::move(failure_callback);
+  record_->failure_callbacks.push_back(std::move(failure_callback));
 }
 
 }  // namespace brave_vpn::v2
