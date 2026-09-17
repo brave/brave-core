@@ -25,10 +25,6 @@
 #include "brave/components/brave_vpn/browser/brave_vpn_service_observer.h"
 #endif
 
-#if BUILDFLAG(ENABLE_CONTAINERS)
-#include "brave/components/containers/core/browser/containers_service_observer.h"
-#endif
-
 class BraveAppMenuBrowserTest;
 class BraveAppMenuModelBrowserTest;
 class BraveBrowserCommandControllerTest;
@@ -48,10 +44,7 @@ class BraveBrowserCommandController
     ,
       public brave_vpn::BraveVpnServiceObserver
 #endif
-#if BUILDFLAG(ENABLE_CONTAINERS)
-    ,
-      public containers::ContainersServiceObserver
-#endif
+
 {
  public:
   explicit BraveBrowserCommandController(BrowserWindowInterface* bwi);
@@ -101,11 +94,6 @@ class BraveBrowserCommandController
       const std::optional<std::string>& description) override;
 #endif
 
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  // containers::ContainersServiceObserver overrides:
-  void OnContainersListChanged() override;
-  void UpdateContainerCommands();
-#endif
   void InitBraveCommandState();
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   void UpdateCommandForBraveRewards();
@@ -135,12 +123,6 @@ class BraveBrowserCommandController
 
   PrefChangeRegistrar pref_change_registrar_;
   const raw_ref<Browser> browser_;
-
-#if BUILDFLAG(ENABLE_CONTAINERS)
-  base::ScopedObservation<containers::ContainersService,
-                          containers::ContainersServiceObserver>
-      containers_service_observation_{this};
-#endif
 
   CommandUpdaterImpl brave_command_updater_;
 };
