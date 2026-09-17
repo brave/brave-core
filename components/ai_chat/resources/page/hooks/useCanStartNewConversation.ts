@@ -18,7 +18,7 @@ export default function useCanStartNewConversation() {
   const {
     isPlaceholderData: isConversationLoading,
     getConversationHistoryData: conversationHistory,
-  } = conversationContext.api.useGetConversationHistory()
+  } = conversationContext.api.useGetConversationHistory(null)
 
   const canStartNewConversation =
     aiChatContext.hasAcceptedAgreement

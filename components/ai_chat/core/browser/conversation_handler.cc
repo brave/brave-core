@@ -450,6 +450,7 @@ ConversationHandler::GetConversationHistory() const {
 }
 
 void ConversationHandler::GetConversationHistory(
+    const std::optional<std::string>& thread_uuid,
     GetConversationHistoryCallback callback) {
   std::vector<mojom::ConversationTurnPtr> history;
   for (const auto& turn : chat_history_) {
@@ -461,6 +462,12 @@ void ConversationHandler::GetConversationHistory(
   }
 
   std::move(callback).Run(std::move(history));
+}
+
+void ConversationHandler::GetConversationThreads(
+    GetConversationThreadsCallback callback) {
+  // TODO(https://github.com/brave/brave-browser/issues/57705)
+  std::move(callback).Run({});
 }
 
 void ConversationHandler::GetState(GetStateCallback callback) {
@@ -623,7 +630,8 @@ void ConversationHandler::GetIsRequestInProgress(
 
 void ConversationHandler::SubmitHumanConversationEntry(
     const std::string& input,
-    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files) {
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
+    const std::optional<std::string>& thread_uuid) {
   DCHECK(!is_request_in_progress_)
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
@@ -718,7 +726,8 @@ void ConversationHandler::SubmitHumanConversationEntry(
 
 void ConversationHandler::SubmitHumanConversationEntryWithAction(
     const std::string& input,
-    mojom::ActionType action_type) {
+    mojom::ActionType action_type,
+    const std::optional<std::string>& thread_uuid) {
   DCHECK(!is_request_in_progress_)
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
@@ -729,7 +738,8 @@ void ConversationHandler::SubmitHumanConversationEntryWithAction(
 void ConversationHandler::SubmitHumanConversationEntryWithSkill(
     const std::string& input,
     const std::string& skill_id,
-    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files) {
+    std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
+    const std::optional<std::string>& thread_uuid) {
   DCHECK(!is_request_in_progress_)
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
@@ -1287,6 +1297,13 @@ void ConversationHandler::ProcessPermissionChallenge(
 
   // Continue with tool execution
   MaybeRespondToNextToolUseRequest();
+}
+
+void ConversationHandler::CreateConversationThread(
+    const std::string& origin_entry_uuid,
+    CreateConversationThreadCallback callback) {
+  // TODO(https://github.com/brave/brave-browser/issues/57705)
+  std::move(callback).Run(std::nullopt);
 }
 
 void ConversationHandler::AddToConversationHistory(
@@ -1849,7 +1866,8 @@ void ConversationHandler::CompleteGeneration(bool success) {
     if (engine_->RequiresClientSideTitleGeneration() &&
         chat_history_.size() == 2) {
       engine_->GenerateConversationTitle(
-          associated_content_manager_->GetCachedContentsMap(), chat_history_,
+          associated_content_manager_->GetCachedContentsMap(),
+          EngineConsumer::ToHistoryView(chat_history_),
           base::BindOnce(&ConversationHandler::OnTitleGenerated,
                          weak_ptr_factory_.GetWeakPtr()));
     }
