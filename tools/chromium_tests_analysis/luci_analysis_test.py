@@ -22,6 +22,8 @@ from pathlib import Path
 from typing import Any
 from unittest import mock
 
+from rich.style import Style
+
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 # pylint: disable=wrong-import-position
@@ -119,6 +121,13 @@ class VerdictTest(unittest.TestCase):
             with self.subTest(verdict=verdict):
                 self.assertTrue(verdict.headline.isupper())
                 self.assertTrue(verdict.recommendation.endswith("."))
+
+    def test_every_verdict_has_a_style_rich_understands(self) -> None:
+        for verdict in Verdict:
+            with self.subTest(verdict=verdict):
+                # Parsing rejects nonsense, so a typo fails here rather
+                # than at the first attempt to print a report.
+                self.assertTrue(Style.parse(verdict.style))
 
     def test_the_wire_value_is_the_published_name(self) -> None:
         self.assertEqual(Verdict.KNOWN_FLAKE.value, "known_upstream_flake")

@@ -13,87 +13,142 @@ flakiness statistics for a given test in the Chromium project.
 Usage:
     vpython3 tools/chromium_tests_analysis/check-upstream-flake.py \\
         "TestSuite.TestName" [--days 30] [--json]
+
+The report goes to stdout as tables; progress goes to stderr, so the
+two can be separated. `--json` publishes a machine-readable shape that
+other tooling depends on.
 """
+
+from __future__ import annotations
 
 import argparse
 import json
 import sys
 
-from luci_analysis import Flakiness, LuciAnalysis, LuciAnalysisError, Window
+from rich import box
+from rich.console import Console
+from rich.table import Table
+from rich.text import Text
+
+from luci_analysis import (
+    LUCI_ANALYSIS_HOST,
+    Flakiness,
+    LuciAnalysis,
+    LuciAnalysisError,
+    Window,
+)
 
 # The run's single connection to LUCI Analysis.
 client = LuciAnalysis()
+
+# The report is this tool's product, so it goes to stdout; progress
+# chatter goes to stderr.
+console = Console()
 
 # What a test's history is called throughout this script.
 Match = tuple[str, Flakiness]
 
 
-def format_report_markdown(test_name: str, test_results: list[Match],
-                           days: int) -> str:
-    """Format the analysis results as human-readable markdown.
+def matches_table(test_results: list[Match], days: int) -> Table:
+    """One row per matched test, so they can be read against each other.
+
+    Args:
+        test_results: The (test_id, flakiness) pairs to tabulate.
+        days: Lookback window in days, named in the title.
+    """
+    table = Table(title=f"Upstream flakiness over the past {days} days",
+                  caption=f"Source: Chromium LUCI Analysis "
+                  f"({LUCI_ANALYSIS_HOST})",
+                  box=box.SIMPLE_HEAD,
+                  row_styles=["none", "dim"],
+                  title_style="bold",
+                  caption_justify="right")
+    # Test IDs are long; let the column fold rather than push the
+    # numbers out of alignment.
+    table.add_column("Test", overflow="fold", ratio=1)
+    table.add_column("Verdict", no_wrap=True)
+    table.add_column("Rate", justify="right", no_wrap=True)
+    table.add_column("Pass", justify="right", no_wrap=True)
+    table.add_column("Fail", justify="right", no_wrap=True)
+    table.add_column("Flaky", justify="right", no_wrap=True)
+    table.add_column("Meaningful", justify="right", no_wrap=True)
+
+    for test_id, flakiness in test_results:
+        counts = flakiness.counts
+        table.add_row(
+            test_id,
+            Text(flakiness.verdict.headline, style=flakiness.verdict.style),
+            f"{flakiness.flake_rate:.1%}",
+            f"{counts.passed:,}",
+            f"{counts.failed:,}",
+            f"{counts.flaky:,}",
+            f"{counts.meaningful:,}",
+        )
+    return table
+
+
+def daily_table(flakiness: Flakiness) -> Table:
+    """A test's day-by-day history.
+
+    The test it belongs to is printed above rather than titling the
+    table: an ID is far wider than these columns and would wrap.
+
+    Args:
+        flakiness: The test's history; only `daily` is read.
+    """
+    table = Table(box=box.SIMPLE_HEAD, row_styles=["none", "dim"])
+    table.add_column("Date", no_wrap=True)
+    for heading in ("Total", "Pass", "Fail", "Flaky", "Rate"):
+        table.add_column(heading, justify="right", no_wrap=True)
+
+    for day in flakiness.daily:
+        counts = day.counts
+        table.add_row(
+            day.date,
+            f"{counts.total:,}",
+            f"{counts.passed:,}",
+            f"{counts.failed:,}",
+            f"{counts.flaky:,}",
+            f"{counts.flake_rate:.0%}" if counts.meaningful else "--",
+        )
+    return table
+
+
+def render_report(test_name: str, test_results: list[Match],
+                  days: int) -> None:
+    """Print the human-readable report.
 
     Args:
         test_name: Original search string.
         test_results: List of (test_id, flakiness) pairs.
         days: Lookback window in days.
-
-    Returns:
-        Formatted markdown string.
     """
-    lines: list[str] = []
-    lines.append(f"# Upstream Flake Check: {test_name}")
-    lines.append("")
-    lines.append(f"Lookback period: {days} days")
-    lines.append("Source: Chromium LUCI Analysis (analysis.api.luci.app)")
-    lines.append("")
-
     if not test_results:
-        lines.append("## Result: Not Found")
-        lines.append("")
-        lines.append(
-            "No matching test IDs found in the Chromium LUCI Analysis database."
-        )
-        lines.append(
-            "This test may be Brave-specific or use a different ID format.")
-        return "\n".join(lines)
+        console.print(
+            f"No test matching [bold]{test_name}[/] was found in Chromium"
+            " LUCI Analysis. It may be Brave-specific, or use a different"
+            " ID format.")
+        return
+
+    console.print()
+    console.print(matches_table(test_results, days))
+
+    # One line per verdict present, rather than repeating the same
+    # advice under every test that shares it.
+    console.print()
+    for verdict in sorted({f.verdict
+                           for _, f in test_results},
+                          key=lambda v: v.severity):
+        console.print(
+            Text(verdict.headline,
+                 style=verdict.style).append(f": {verdict.recommendation}",
+                                             style="none"))
 
     for test_id, flakiness in test_results:
-        counts = flakiness.counts
-        lines.append(f"## Test: `{test_id}`")
-        lines.append("")
-        lines.append(f"### Verdict: {flakiness.verdict.headline}")
-        lines.append("")
-        lines.append(f"**Recommendation:** {flakiness.verdict.recommendation}")
-        lines.append("")
-
-        lines.append("### Statistics")
-        lines.append("")
-        lines.append("- Meaningful verdicts (pass+fail+flaky):"
-                     f" {counts.meaningful}")
-        lines.append(f"- Passed: {counts.passed}")
-        lines.append(f"- Failed: {counts.failed}")
-        lines.append(f"- Flaky: {counts.flaky}")
-        if counts.skipped:
-            lines.append(f"- Skipped: {counts.skipped}")
-        if counts.execution_errored:
-            lines.append(f"- Execution errors: {counts.execution_errored}")
-        lines.append(f"- Flake rate: {flakiness.flake_rate:.1%}")
-        lines.append("")
-
         if flakiness.daily:
-            lines.append("### Daily Breakdown")
-            lines.append("")
-            lines.append("| Date | Total | Pass | Fail | Flaky | Rate |")
-            lines.append("|------|-------|------|------|-------|------|")
-            for day in flakiness.daily:
-                rate = (f"{day.counts.flake_rate:.0%}"
-                        if day.counts.meaningful else "N/A")
-                lines.append(f"| {day.date} | {day.counts.total} "
-                             f"| {day.counts.passed} | {day.counts.failed} "
-                             f"| {day.counts.flaky} | {rate} |")
-            lines.append("")
-
-    return "\n".join(lines)
+            console.print()
+            console.print(Text(test_id, style="italic"), overflow="fold")
+            console.print(daily_table(flakiness))
 
 
 def format_report_json(test_name: str, test_results: list[Match],
@@ -155,7 +210,7 @@ def main() -> None:
         "--json",
         action="store_true",
         dest="json_output",
-        help="Output in JSON format instead of markdown",
+        help="Output in JSON format instead of tables",
     )
     args = parser.parse_args()
 
@@ -176,7 +231,7 @@ def main() -> None:
         if args.json_output:
             print(format_report_json(test_name, [], days))
         else:
-            print(format_report_markdown(test_name, [], days))
+            render_report(test_name, [], days)
         sys.exit(2)
 
     print(f"Found {len(test_ids)} matching test ID(s).", file=sys.stderr)
@@ -214,7 +269,7 @@ def main() -> None:
     if args.json_output:
         print(format_report_json(test_name, test_results, days))
     else:
-        print(format_report_markdown(test_name, test_results, days))
+        render_report(test_name, test_results, days)
 
     sys.exit(0)
 
