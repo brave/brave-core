@@ -11,6 +11,7 @@
 #include <functional>
 #include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
@@ -124,6 +125,8 @@ class AIChatService : public KeyedService,
       std::optional<PageContents> maybe_associated_content) override;
   void OnConversationEntryRemoved(ConversationHandler* handler,
                                   const std::string& entry_uuid) override;
+  void OnNewConversationThread(ConversationHandler* handler,
+                               const mojom::Thread& thread) override;
   void OnToolUseEventOutput(ConversationHandler* handler,
                             const std::string& entry_uuid,
                             size_t event_order,
@@ -131,9 +134,11 @@ class AIChatService : public KeyedService,
   void OnClientConnectionChanged(ConversationHandler* handler) override;
   void OnConversationTitleChanged(const std::string& conversation_uuid,
                                   const std::string& title) override;
-  void OnConversationTokenInfoChanged(const std::string& conversation_uuid,
-                                      uint64_t total_tokens,
-                                      uint64_t trimmed_tokens) override;
+  void OnConversationTokenInfoChanged(
+      const std::string& conversation_uuid,
+      std::optional<std::string_view> thread_uuid,
+      uint64_t total_tokens,
+      uint64_t trimmed_tokens) override;
   void OnAssociatedContentUpdated(ConversationHandler* handler) override;
 
   // mojom::TabDataObserver
@@ -148,6 +153,11 @@ class AIChatService : public KeyedService,
   ConversationHandler* GetConversation(std::string_view uuid);
   void GetConversation(std::string_view conversation_uuid,
                        base::OnceCallback<void(ConversationHandler*)>);
+
+  void GetConversationThreadEntries(
+      std::string thread_uuid,
+      base::OnceCallback<void(std::vector<mojom::ConversationTurnPtr>)>
+          callback);
 
   // Creates and owns a ConversationHandler if one hasn't been made for the
   // associated_content_id yet. |associated_content_id| should not be stored. It

@@ -20,6 +20,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/containers/span.h"
 #include "base/containers/to_vector.h"
 #include "base/debug/crash_logging.h"
@@ -171,6 +172,18 @@ ConversationHandler::Suggestion& ConversationHandler::Suggestion::operator=(
     Suggestion&&) = default;
 ConversationHandler::Suggestion::~Suggestion() = default;
 
+ConversationHandler::ThreadContainer::ThreadContainer() = default;
+ConversationHandler::ThreadContainer::~ThreadContainer() = default;
+
+ConversationHandler::ThreadContainer::ThreadContainer(mojom::ThreadPtr thread)
+    : thread(std::move(thread)) {}
+
+ConversationHandler::ThreadContainer::ThreadContainer(ThreadContainer&&) =
+    default;
+
+ConversationHandler::ThreadContainer&
+ConversationHandler::ThreadContainer::operator=(ThreadContainer&&) = default;
+
 void ConversationHandler::BuildCapabilitiesSet() {
   conversation_capabilities_.clear();
   // Set conversation capability based on profile-global state.
@@ -271,6 +284,9 @@ ConversationHandler::ConversationHandler(
              << metadata_->uuid << " with "
              << conversation_data->entries.size();
     chat_history_ = std::move(conversation_data->entries);
+    for (auto& thread : conversation_data->threads) {
+      threads_.try_emplace(thread->uuid, std::move(thread));
+    }
   }
 
   MaybeSeedOrClearSuggestions();
@@ -411,6 +427,7 @@ void ConversationHandler::InitEngine() {
   if (is_request_in_progress_) {
     // Pending requests have been deleted along with the model engine
     is_request_in_progress_ = false;
+    thread_uuid_in_progress_ = std::nullopt;
     OnAPIRequestInProgressChanged();
   }
 
@@ -452,6 +469,22 @@ ConversationHandler::GetConversationHistory() const {
 void ConversationHandler::GetConversationHistory(
     const std::optional<std::string>& thread_uuid,
     GetConversationHistoryCallback callback) {
+  if (thread_uuid) {
+    auto* container = base::FindOrNull(threads_, *thread_uuid);
+    CHECK(container);
+    if (!container->entries.empty()) {
+      std::move(callback).Run(BuildFullThreadHistory(*thread_uuid));
+      return;
+    }
+
+    ai_chat_service_->GetConversationThreadEntries(
+        *thread_uuid,
+        base::BindOnce(
+            &ConversationHandler::OnConversationThreadHistoryReceived,
+            weak_ptr_factory_.GetWeakPtr(), *thread_uuid, std::move(callback)));
+    return;
+  }
+
   std::vector<mojom::ConversationTurnPtr> history;
   for (const auto& turn : chat_history_) {
     history.emplace_back(turn->Clone());
@@ -466,8 +499,46 @@ void ConversationHandler::GetConversationHistory(
 
 void ConversationHandler::GetConversationThreads(
     GetConversationThreadsCallback callback) {
-  // TODO(https://github.com/brave/brave-browser/issues/57705)
-  std::move(callback).Run({});
+  std::vector<mojom::ThreadPtr> threads;
+  threads.reserve(threads_.size());
+  for (const auto& [_uuid, container] : threads_) {
+    threads.emplace_back(container.thread->Clone());
+  }
+  std::move(callback).Run(std::move(threads));
+}
+
+void ConversationHandler::OnConversationThreadHistoryReceived(
+    std::string thread_uuid,
+    GetConversationHistoryCallback callback,
+    std::vector<mojom::ConversationTurnPtr> entries) {
+  threads_[thread_uuid].entries = std::move(entries);
+  std::move(callback).Run(BuildFullThreadHistory(thread_uuid));
+}
+
+std::vector<mojom::ConversationTurnPtr>
+ConversationHandler::BuildFullThreadHistory(const std::string& thread_uuid) {
+  auto* container = base::FindOrNull(threads_, thread_uuid);
+  CHECK(container);
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  history.reserve(container->entries.size() + 1);
+
+  // Prepend the source (origin) entry from the root conversation so the
+  // thread's branching point is included in the result.
+  const std::string& origin_uuid =
+      container->thread->origin_conversation_entry_uuid;
+  for (const auto& entry : chat_history_) {
+    if (entry->uuid == origin_uuid) {
+      history.emplace_back(entry->Clone());
+      break;
+    }
+  }
+
+  // Then append the thread's own entries.
+  for (const auto& entry : container->entries) {
+    history.emplace_back(entry->Clone());
+  }
+  return history;
 }
 
 void ConversationHandler::GetState(GetStateCallback callback) {
@@ -640,12 +711,11 @@ void ConversationHandler::SubmitHumanConversationEntry(
   MaybeSwitchModelForSubmission(uploaded_files);
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      std::nullopt, std::nullopt /* thread_uuid */, CharacterType::HUMAN,
-      mojom::ActionType::QUERY, input, std::nullopt /* prompt */,
-      std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt /* edits */, std::move(uploaded_files),
-      nullptr /* skill */, false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */,
+      std::nullopt, thread_uuid, CharacterType::HUMAN, mojom::ActionType::QUERY,
+      input, std::nullopt /* prompt */, std::nullopt /* selected_text */,
+      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
+      std::move(uploaded_files), nullptr /* skill */, false,
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
       std::vector<std::string>{} /* child_thread_uuids */);
   SubmitHumanConversationEntry(std::move(turn));
 }
@@ -682,6 +752,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
   }
   DCHECK(latest_turn->character_type == mojom::CharacterType::HUMAN);
   is_request_in_progress_ = true;
+  thread_uuid_in_progress_ = turn->thread_uuid;
   OnAPIRequestInProgressChanged();
 
   // Submitting a new human entry takes precedence over any pending tool
@@ -716,12 +787,14 @@ void ConversationHandler::SubmitHumanConversationEntry(
     engine_->SanitizeInput(*latest_turn->selected_text);
   }
 
+  const std::optional<std::string> thread_uuid = turn->thread_uuid;
+
   // Add the human part to the conversation
   AddToConversationHistory(std::move(turn));
   // Give tools a chance to reset their state for the next loop, then generate.
   InitToolsForNewGenerationLoop(base::BindOnce(
       &ConversationHandler::PerformAssistantGenerationWithPossibleContent,
-      weak_ptr_factory_.GetWeakPtr()));
+      weak_ptr_factory_.GetWeakPtr(), thread_uuid));
 }
 
 void ConversationHandler::SubmitHumanConversationEntryWithAction(
@@ -764,12 +837,11 @@ void ConversationHandler::SubmitHumanConversationEntryWithSkill(
   }
 
   mojom::ConversationTurnPtr turn = mojom::ConversationTurn::New(
-      std::nullopt, std::nullopt /* thread_uuid */, CharacterType::HUMAN,
-      mojom::ActionType::QUERY, input, std::nullopt /* prompt */,
-      std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt /* edits */, std::move(uploaded_files),
-      std::move(skill_entry), false, std::nullopt /* model_key */,
-      nullptr /* near_verification_status */,
+      std::nullopt, thread_uuid, CharacterType::HUMAN, mojom::ActionType::QUERY,
+      input, std::nullopt /* prompt */, std::nullopt /* selected_text */,
+      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
+      std::move(uploaded_files), std::move(skill_entry), false,
+      std::nullopt /* model_key */, nullptr /* near_verification_status */,
       std::vector<std::string>{} /* child_thread_uuids */);
 
   SubmitHumanConversationEntry(std::move(turn));
@@ -820,12 +892,12 @@ void ConversationHandler::ModifyConversation(
     }
 
     auto edited_turn = mojom::ConversationTurn::New(
-        base::Uuid::GenerateRandomV4().AsLowercaseString(),
-        std::nullopt /* thread_uuid */, turn->character_type, turn->action_type,
-        trimmed_input, std::nullopt /* prompt */,
-        std::nullopt /* selected_text */, std::move(events), base::Time::Now(),
-        std::nullopt /* edits */, std::nullopt, nullptr /* skill */, false,
-        turn->model_key, nullptr /* near_verification_status */,
+        base::Uuid::GenerateRandomV4().AsLowercaseString(), turn->thread_uuid,
+        turn->character_type, turn->action_type, trimmed_input,
+        std::nullopt /* prompt */, std::nullopt /* selected_text */,
+        std::move(events), base::Time::Now(), std::nullopt /* edits */,
+        std::nullopt, nullptr /* skill */, false, turn->model_key,
+        nullptr /* near_verification_status */,
         std::vector<std::string>{} /* child_thread_uuids */);
     edited_turn->events->at(*completion_event_index)
         ->get_completion_event()
@@ -864,12 +936,11 @@ void ConversationHandler::ModifyConversation(
   // editable human turns in our current implementation, just use std::nullopt
   // here directly to be more explicit and avoid confusion.
   auto edited_turn = mojom::ConversationTurn::New(
-      base::Uuid::GenerateRandomV4().AsLowercaseString(),
-      std::nullopt /* thread_uuid */, turn->character_type, turn->action_type,
-      sanitized_input, std::nullopt /* prompt */,
-      std::nullopt /* selected_text */, std::nullopt /* events */,
-      base::Time::Now(), std::nullopt /* edits */, std::nullopt,
-      std::move(skill_entry), false, turn->model_key,
+      base::Uuid::GenerateRandomV4().AsLowercaseString(), turn->thread_uuid,
+      turn->character_type, turn->action_type, sanitized_input,
+      std::nullopt /* prompt */, std::nullopt /* selected_text */,
+      std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
+      std::nullopt, std::move(skill_entry), false, turn->model_key,
       nullptr /* near_verification_status */,
       std::vector<std::string>{} /* child_thread_uuids */);
   if (!turn->edits) {
@@ -1090,6 +1161,7 @@ void ConversationHandler::StopGenerationAndMaybeGetHumanEntry(
   StopTask();
 
   is_request_in_progress_ = false;
+  thread_uuid_in_progress_ = std::nullopt;
   engine_->ClearAllQueries();
   OnAPIRequestInProgressChanged();
 
@@ -1193,10 +1265,11 @@ void ConversationHandler::RespondToToolUseRequest(
     const std::string& tool_use_id,
     std::vector<mojom::ContentBlockPtr> output,
     std::vector<mojom::ToolArtifactPtr> artifacts) {
-  auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
+  auto [tool_use, thread_uuid] = FindLatestToolUseEvent(tool_use_id);
   if (!tool_use) {
     DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
     is_tool_use_in_progress_ = false;
+    thread_uuid_in_progress_ = std::nullopt;
     OnAPIRequestInProgressChanged();
     return;
   }
@@ -1214,7 +1287,7 @@ void ConversationHandler::RespondToToolUseRequest(
   tool_use->output = std::move(output);
   tool_use->artifacts = std::move(artifacts);
 
-  OnToolUseEventOutput(chat_history_.back().get(), tool_use);
+  OnToolUseEventOutput(GetChatHistory(thread_uuid).back().get(), tool_use);
 
   // Run next tool, or perform generation with all the completed tools outputs.
   // Run as Task to catch any reentrant issues.
@@ -1222,14 +1295,14 @@ void ConversationHandler::RespondToToolUseRequest(
       base::BindOnce(
           base::IgnoreResult(
               &ConversationHandler::MaybeRespondToNextToolUseRequest),
-          weak_ptr_factory_.GetWeakPtr()))
+          weak_ptr_factory_.GetWeakPtr(), thread_uuid))
       .Run();
 }
 
 void ConversationHandler::ProcessPermissionChallenge(
     const std::string& tool_use_id,
     mojom::PermissionChallengeDecision decision) {
-  auto* tool_use = GetToolUseEventForLastResponse(tool_use_id);
+  auto [tool_use, thread_uuid] = FindLatestToolUseEvent(tool_use_id);
   if (!tool_use) {
     DLOG(ERROR) << "Tool use event not found: " << tool_use_id;
     return;
@@ -1252,13 +1325,13 @@ void ConversationHandler::ProcessPermissionChallenge(
 
     // Set output and notify UI
     tool_use->output = std::move(result);
-    OnToolUseEventOutput(chat_history_.back().get(), tool_use);
+    OnToolUseEventOutput(GetChatHistory(thread_uuid).back().get(), tool_use);
 
     // Directly call generation, bypassing the normal tool loop continuation
     // This stops processing of any remaining tools in this turn
     DVLOG(0)
         << "Permission denied, stopping tool loop and performing generation";
-    PerformPostToolAssistantGeneration();
+    PerformPostToolAssistantGeneration(thread_uuid);
     return;
   }
 
@@ -1274,7 +1347,7 @@ void ConversationHandler::ProcessPermissionChallenge(
   tool_use->permission_challenge = nullptr;
 
   // Notify UI of the state change
-  OnToolUseEventOutput(chat_history_.back().get(), tool_use);
+  OnToolUseEventOutput(GetChatHistory(thread_uuid).back().get(), tool_use);
 
   // Find the tool and notify it
   base::WeakPtr<Tool> tool_ptr;
@@ -1296,14 +1369,50 @@ void ConversationHandler::ProcessPermissionChallenge(
   tool_ptr->UserPermissionGranted(tool_use_id);
 
   // Continue with tool execution
-  MaybeRespondToNextToolUseRequest();
+  MaybeRespondToNextToolUseRequest(thread_uuid);
 }
 
 void ConversationHandler::CreateConversationThread(
     const std::string& origin_entry_uuid,
     CreateConversationThreadCallback callback) {
-  // TODO(https://github.com/brave/brave-browser/issues/57705)
-  std::move(callback).Run(std::nullopt);
+  auto entry_it = std::ranges::find(chat_history_, origin_entry_uuid,
+                                    &mojom::ConversationTurn::uuid);
+  if (entry_it == chat_history_.end()) {
+    DLOG(ERROR) << "Cannot create thread for unknown entry: "
+                << origin_entry_uuid;
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  CHECK((*entry_it)->character_type == mojom::CharacterType::ASSISTANT);
+
+  // If this entry already has an empty thread, do nothing rather than creating
+  // another empty one.
+  const auto& child_thread_uuids = (*entry_it)->child_thread_uuids;
+  bool has_empty_thread =
+      std::ranges::any_of(child_thread_uuids, [this](const std::string& uuid) {
+        auto* container = base::FindOrNull(threads_, uuid);
+        return container && container->thread->entry_count == 0;
+      });
+  if (has_empty_thread) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  std::string thread_id = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  mojom::ThreadPtr thread = mojom::Thread::New(
+      thread_id, metadata_->uuid, origin_entry_uuid, 0 /* total_tokens */,
+      0 /* trimmed_tokens */, 0 /* entry_count */);
+  OnConversationThreadUpdate(*thread);
+  (*entry_it)->child_thread_uuids.emplace_back(thread_id);
+
+  threads_.try_emplace(thread_id, std::move(thread));
+
+  // Notify observers that the origin entry changed (it now has a child thread)
+  // so the thread indicator can be rendered.
+  OnHistoryUpdate((*entry_it)->Clone());
+
+  std::move(callback).Run(thread_id);
 }
 
 void ConversationHandler::AddToConversationHistory(
@@ -1316,9 +1425,52 @@ void ConversationHandler::AddToConversationHistory(
     turn->uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
   }
 
-  chat_history_.push_back(std::move(turn));
+  auto& history = GetChatHistory(turn->thread_uuid);
 
-  OnConversationEntryAdded(chat_history_.back());
+  MaybeHandleNewThreadEntry(turn->thread_uuid);
+
+  history.push_back(std::move(turn));
+  OnConversationEntryAdded(history.back());
+}
+
+std::vector<mojom::ConversationTurnPtr>& ConversationHandler::GetChatHistory(
+    std::optional<std::string_view> thread_uuid) {
+  if (thread_uuid.has_value()) {
+    return threads_[thread_uuid.value()].entries;
+  }
+  return chat_history_;
+}
+
+EngineConsumer::ConversationHistoryView
+ConversationHandler::BuildConversationHistoryViewForRequest(
+    const std::optional<std::string>& thread_uuid) {
+  if (!thread_uuid.has_value()) {
+    return EngineConsumer::ToHistoryView(chat_history_);
+  }
+
+  auto* container = base::FindOrNull(threads_, *thread_uuid);
+  CHECK(container);
+
+  std::vector<const mojom::ConversationTurn*> history;
+
+  // Prepend the root conversation entries up to and including the entry this
+  // thread branched off from, so the engine has the context that led to the
+  // branch.
+  const std::string& origin_uuid =
+      container->thread->origin_conversation_entry_uuid;
+  for (const auto& entry : chat_history_) {
+    history.push_back(entry.get());
+    if (entry->uuid == origin_uuid) {
+      break;
+    }
+  }
+
+  // Then append the thread's own entries.
+  for (const auto& entry : container->entries) {
+    history.push_back(entry.get());
+  }
+
+  return history;
 }
 
 void ConversationHandler::InitToolsForNewGenerationLoop(
@@ -1337,12 +1489,13 @@ void ConversationHandler::InitToolsForNewGenerationLoop(
   }
 }
 
-void ConversationHandler::PerformAssistantGenerationWithPossibleContent() {
+void ConversationHandler::PerformAssistantGenerationWithPossibleContent(
+    const std::optional<std::string>& thread_uuid) {
   if (associated_content_manager_->HasAssociatedContent()) {
     // Fetch updated page content before performing generation
     GeneratePageContent(
         base::BindOnce(&ConversationHandler::PerformAssistantGeneration,
-                       weak_ptr_factory_.GetWeakPtr()));
+                       weak_ptr_factory_.GetWeakPtr(), thread_uuid));
   } else {
     // Now the conversation is committed, we can remove some unneccessary data
     // if we're not associated with a page.
@@ -1353,12 +1506,14 @@ void ConversationHandler::PerformAssistantGenerationWithPossibleContent() {
 
     OnSuggestedQuestionsChanged();
     // Perform generation immediately
-    PerformAssistantGeneration();
+    PerformAssistantGeneration(thread_uuid);
   }
 }
 
-void ConversationHandler::PerformAssistantGeneration() {
-  if (chat_history_.empty()) {
+void ConversationHandler::PerformAssistantGeneration(
+    const std::optional<std::string>& thread_uuid) {
+  auto history = BuildConversationHistoryViewForRequest(thread_uuid);
+  if (history.empty()) {
     DLOG(ERROR) << "Cannot generate assistant response without any history";
     return;
   }
@@ -1370,17 +1525,17 @@ void ConversationHandler::PerformAssistantGeneration() {
   needs_new_entry_ = true;
 
   engine_->GenerateAssistantResponse(
-      associated_content_manager_->GetCachedContentsMap(),
-      EngineConsumer::ToHistoryView(chat_history_), IsTemporaryChat(),
-      GetTools(), std::nullopt /* preferred_tool_name */,
+      associated_content_manager_->GetCachedContentsMap(), history,
+      IsTemporaryChat(), GetTools(), std::nullopt /* preferred_tool_name */,
       conversation_capabilities_,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
-                          weak_ptr_factory_.GetWeakPtr()),
+                          weak_ptr_factory_.GetWeakPtr(), thread_uuid),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
-                     weak_ptr_factory_.GetWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr(), thread_uuid));
 }
 
-void ConversationHandler::PerformPostToolAssistantGeneration() {
+void ConversationHandler::PerformPostToolAssistantGeneration(
+    const std::optional<std::string>& thread_uuid) {
   if (tool_use_task_state_ == mojom::TaskState::kPaused ||
       tool_use_task_state_ == mojom::TaskState::kStopped) {
     DVLOG(0) << "Tool loop is paused or stopped by user, skipping generation";
@@ -1388,8 +1543,9 @@ void ConversationHandler::PerformPostToolAssistantGeneration() {
   }
   is_request_in_progress_ = true;
   is_tool_use_in_progress_ = false;
+  thread_uuid_in_progress_ = thread_uuid;
   OnAPIRequestInProgressChanged();
-  PerformAssistantGenerationWithPossibleContent();
+  PerformAssistantGenerationWithPossibleContent(thread_uuid);
 }
 
 void ConversationHandler::SetAPIError(EngineConsumer::Error error) {
@@ -1405,22 +1561,29 @@ void ConversationHandler::SetAPIError(EngineConsumer::Error error) {
 }
 
 void ConversationHandler::UpdateOrCreateLastAssistantEntry(
+    const std::optional<std::string>& thread_uuid,
     EngineConsumer::GenerationResultData result) {
-  if (needs_new_entry_ || chat_history_.empty() ||
-      chat_history_.back()->character_type != CharacterType::ASSISTANT) {
+  auto& history = GetChatHistory(thread_uuid);
+  if (needs_new_entry_ || history.empty() ||
+      history.back()->character_type != CharacterType::ASSISTANT) {
     needs_new_entry_ = false;
     mojom::ConversationTurnPtr entry = mojom::ConversationTurn::New(
-        base::Uuid::GenerateRandomV4().AsLowercaseString(),
-        std::nullopt /* thread_uuid */, CharacterType::ASSISTANT,
-        mojom::ActionType::RESPONSE, "", std::nullopt /* prompt */,
-        std::nullopt, std::vector<mojom::ConversationEntryEventPtr>{},
-        base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
-        false, result.model_key, nullptr /* near_verification_status */,
+        base::Uuid::GenerateRandomV4().AsLowercaseString(), thread_uuid,
+        CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
+        std::nullopt /* prompt */, std::nullopt,
+        std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
+        std::nullopt, std::nullopt, nullptr /* skill */, false,
+        result.model_key, nullptr /* near_verification_status */,
         std::vector<std::string>{} /* child_thread_uuids */);
-    chat_history_.push_back(std::move(entry));
+    history.push_back(std::move(entry));
+
+    // Account for this new assistant entry in the thread's metadata. The human
+    // turn is counted in AddToConversationHistory, but the assistant turn is
+    // appended here, so it must be counted too.
+    MaybeHandleNewThreadEntry(thread_uuid);
   }
 
-  auto& entry = chat_history_.back();
+  auto& entry = history.back();
   auto& event = result.event;
 
   // Only update if verification status is pending, or did not already fail.
@@ -1511,8 +1674,8 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
       if (tool_use_event->tool_name.empty() &&
           tool_use_event->output.has_value() &&
           tool_use_event->is_server_result) {
-        auto* existing_tool_use_event =
-            GetToolUseEventForLastResponse(tool_use_event->id);
+        auto existing_tool_use_event =
+            FindLatestToolUseEvent(tool_use_event->id).first;
         if (!existing_tool_use_event) {
           DVLOG(1) << "Server tool result for unknown id: "
                    << tool_use_event->id;
@@ -1531,7 +1694,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 
       // Drop tool_use events whose id collides with an existing tool_use
       // event in this turn. ToolUseEvents in the engine APIs are keyed on 'id'
-      // (and in this class via GetToolUseEventForLastResponse). Internally, a
+      // (and in this class via FindLatestToolUseEvent). Internally, a
       // duplicate id would route both completions to the same event, leave the
       // second event's output unset, and cause MaybeRespondToNextToolUseRequest
       // to execute the same pending tool indefinitely. And engine APIs will
@@ -1554,7 +1717,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 
     if (event->is_content_receipt_event()) {
       OnConversationTokenInfoChanged(
-          event->get_content_receipt_event()->total_tokens,
+          thread_uuid, event->get_content_receipt_event()->total_tokens,
           event->get_content_receipt_event()->trimmed_tokens);
       // Don't add this event to history
       return;
@@ -1795,11 +1958,13 @@ void ConversationHandler::OnGeneratePageContentComplete(
 }
 
 void ConversationHandler::OnEngineCompletionDataReceived(
+    const std::optional<std::string>& thread_uuid,
     EngineConsumer::GenerationResultData result) {
-  UpdateOrCreateLastAssistantEntry(std::move(result));
+  UpdateOrCreateLastAssistantEntry(thread_uuid, std::move(result));
 }
 
 void ConversationHandler::OnEngineCompletionComplete(
+    const std::optional<std::string>& thread_uuid,
     EngineConsumer::GenerationResult result) {
   // Handle failure
   if (!result.has_value()) {
@@ -1809,14 +1974,14 @@ void ConversationHandler::OnEngineCompletionComplete(
     } else {
       DVLOG(2) << __func__ << ": With no error";
       // No error but check if no content was received
-      auto& last_entry = chat_history_.back();
+      auto& last_entry = GetChatHistory(thread_uuid).back();
       if (last_entry->character_type != mojom::CharacterType::ASSISTANT) {
         SetAPIError(mojom::APIError::ConnectionIssue);
       } else {
         SetAPIError(mojom::APIError::None);
       }
     }
-    CompleteGeneration(false);
+    CompleteGeneration(thread_uuid, false);
     return;
   }
 
@@ -1826,23 +1991,23 @@ void ConversationHandler::OnEngineCompletionComplete(
   if ((result->event && result->event->is_completion_event() &&
        !result->event->get_completion_event()->completion.empty()) ||
       result->is_near_verified.has_value()) {
-    UpdateOrCreateLastAssistantEntry(std::move(*result));
+    UpdateOrCreateLastAssistantEntry(thread_uuid, std::move(*result));
   } else {
     // This is a workaround for any occasions where the engine returns
     // a success but there was no new entry.
     if (needs_new_entry_) {
       // Still create the empty entry so that we know we already sent a
       // generation request and we don't create an infinite loop.
-      UpdateOrCreateLastAssistantEntry(std::move(*result));
+      UpdateOrCreateLastAssistantEntry(thread_uuid, std::move(*result));
       SetAPIError(mojom::APIError::ConnectionIssue);
-      CompleteGeneration(false);
+      CompleteGeneration(thread_uuid, false);
       return;
     }
   }
 
-  OnConversationEntryAdded(chat_history_.back());
+  OnConversationEntryAdded(GetChatHistory(thread_uuid).back());
 
-  CompleteGeneration(true);
+  CompleteGeneration(thread_uuid, true);
 }
 
 void ConversationHandler::OnTitleGenerated(
@@ -1855,8 +2020,11 @@ void ConversationHandler::OnTitleGenerated(
   }
 }
 
-void ConversationHandler::CompleteGeneration(bool success) {
+void ConversationHandler::CompleteGeneration(
+    const std::optional<std::string>& thread_uuid,
+    bool success) {
   is_request_in_progress_ = false;
+  thread_uuid_in_progress_ = std::nullopt;
   OnAPIRequestInProgressChanged();
 
   if (success) {
@@ -1873,7 +2041,7 @@ void ConversationHandler::CompleteGeneration(bool success) {
     }
 
     MaybePopPendingRequests();
-    if (!MaybeRespondToNextToolUseRequest()) {
+    if (!MaybeRespondToNextToolUseRequest(thread_uuid)) {
       // Inform tool providers that there are no more tool use requests to
       // handle, that the loop is complete until a new message is submitted.
       for (auto& tool_provider : tool_providers_) {
@@ -2002,7 +2170,11 @@ void ConversationHandler::ResumeTask() {
     return;
   }
 
-  MaybeRespondToNextToolUseRequest();
+  auto [pending_event, thread_uuid] = FindLatestToolUseEvent();
+  if (!pending_event) {
+    return;
+  }
+  MaybeRespondToNextToolUseRequest(thread_uuid);
 }
 
 void ConversationHandler::StopTask() {
@@ -2079,6 +2251,33 @@ void ConversationHandler::OnHistoryUpdate(mojom::ConversationTurnPtr entry) {
   for (auto& client : untrusted_conversation_ui_handlers_) {
     client->OnConversationHistoryUpdate(entry ? entry.Clone() : nullptr);
   }
+}
+
+void ConversationHandler::OnConversationThreadUpdate(
+    const mojom::Thread& thread) {
+  for (auto& client : untrusted_conversation_ui_handlers_) {
+    client->OnConversationThreadUpdate(thread.Clone());
+  }
+}
+
+void ConversationHandler::MaybeHandleNewThreadEntry(
+    const std::optional<std::string>& thread_uuid) {
+  if (!thread_uuid.has_value()) {
+    return;
+  }
+  auto* container = base::FindOrNull(threads_, thread_uuid.value());
+  if (!container) {
+    return;
+  }
+  mojom::Thread* thread = container->thread.get();
+  thread->entry_count++;
+  if (thread->entry_count == 1) {
+    // This is the thread's first entry. Notify observers of the thread's
+    // metadata before the entry itself, so that the thread is known to exist
+    // (and can be persisted) before any of its entries do.
+    observers_.Notify(&Observer::OnNewConversationThread, this, *thread);
+  }
+  OnConversationThreadUpdate(*thread);
 }
 
 void ConversationHandler::OnToolUseEventOutput(mojom::ConversationTurn* entry,
@@ -2172,6 +2371,7 @@ ConversationHandler::GetStateForConversationEntries() {
 
   entries_state->is_generating = IsRequestInProgress();
   entries_state->is_tool_executing = is_tool_use_in_progress_;
+  entries_state->thread_uuid_in_progress = thread_uuid_in_progress_;
   entries_state->tool_use_task_state = tool_use_task_state_;
   entries_state->is_leo_model = is_leo_model;
   entries_state->all_models = std::move(models_copy);
@@ -2229,11 +2429,20 @@ void ConversationHandler::OnConversationTitleChanged(std::string_view title) {
 }
 
 void ConversationHandler::OnConversationTokenInfoChanged(
+    std::optional<std::string_view> thread_uuid,
     uint64_t total_tokens,
     uint64_t trimmed_tokens) {
+  if (thread_uuid.has_value()) {
+    if (auto* container = base::FindOrNull(threads_, thread_uuid.value())) {
+      mojom::Thread* thread = container->thread.get();
+      thread->total_tokens = total_tokens;
+      thread->trimmed_tokens = trimmed_tokens;
+      OnConversationThreadUpdate(*thread);
+    }
+  }
   for (auto& observer : observers_) {
-    observer.OnConversationTokenInfoChanged(metadata_->uuid, total_tokens,
-                                            trimmed_tokens);
+    observer.OnConversationTokenInfoChanged(metadata_->uuid, thread_uuid,
+                                            total_tokens, trimmed_tokens);
   }
 }
 
@@ -2304,27 +2513,49 @@ std::vector<base::WeakPtr<Tool>> ConversationHandler::GetTools() {
   return tools;
 }
 
-mojom::ToolUseEvent* ConversationHandler::GetToolUseEventForLastResponse(
-    std::string_view tool_id) {
-  if (!chat_history_.empty()) {
-    auto& last_entry = chat_history_.back();
-    if (last_entry->character_type == mojom::CharacterType::ASSISTANT &&
-        last_entry->events->size() > 0) {
-      for (auto& event : *last_entry->events) {
-        if (event->is_tool_use_event()) {
-          auto& tool_use_event = event->get_tool_use_event();
-          if (tool_use_event->id != tool_id) {
-            continue;
-          }
-          return tool_use_event.get();
-        }
-      }
+ConversationHandler::ToolUseEventAndThreadUUID
+ConversationHandler::FindLatestToolUseEvent(
+    std::optional<std::string_view> tool_id) {
+  raw_ptr<mojom::ToolUseEvent> result_event;
+  std::optional<std::string> result_thread_uuid;
+  base::Time latest_time;
+
+  auto consider = [&](std::vector<mojom::ConversationTurnPtr>& history) {
+    if (history.empty()) {
+      return;
     }
+    auto& last_entry = history.back();
+    if (last_entry->character_type != mojom::CharacterType::ASSISTANT) {
+      return;
+    }
+    for (auto& event : *last_entry->events) {
+      if (!event->is_tool_use_event()) {
+        continue;
+      }
+      auto& tool_use_event = event->get_tool_use_event();
+      if (tool_id.has_value() ? tool_use_event->id != *tool_id
+                              : tool_use_event->output.has_value()) {
+        continue;
+      }
+      if (!result_event || last_entry->created_time > latest_time) {
+        result_event = tool_use_event.get();
+        result_thread_uuid = last_entry->thread_uuid;
+        latest_time = last_entry->created_time;
+      }
+      break;
+    }
+  };
+
+  consider(chat_history_);
+  for (auto& entry : threads_) {
+    consider(entry.second.entries);
   }
-  return nullptr;
+
+  return {result_event, result_thread_uuid};
 }
 
-bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
+bool ConversationHandler::MaybeRespondToNextToolUseRequest(
+    const std::optional<std::string>& thread_uuid) {
   // Continue the loop of tool use handling and completion continuing until
   // either:
   // - A response comes back with no tool use requests
@@ -2334,10 +2565,11 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
   is_tool_use_in_progress_ = false;
   OnAPIRequestInProgressChanged();
 
-  if (chat_history_.empty()) {
+  auto& history = GetChatHistory(thread_uuid);
+  if (history.empty()) {
     return false;
   }
-  auto& last_entry = chat_history_.back();
+  auto& last_entry = history.back();
   if (last_entry->character_type != mojom::CharacterType::ASSISTANT ||
       last_entry->events->size() == 0) {
     return false;
@@ -2428,6 +2660,7 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
                  << tool_use_event->tool_name;
 
         is_tool_use_in_progress_ = true;
+        thread_uuid_in_progress_ = thread_uuid;
         OnAPIRequestInProgressChanged();
 
         std::vector<mojom::ContentBlockPtr> result;
@@ -2470,6 +2703,7 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
       // No user interaction needed - execute tool
 
       is_tool_use_in_progress_ = true;
+      thread_uuid_in_progress_ = thread_uuid;
       OnAPIRequestInProgressChanged();
       DVLOG(0) << __func__ << " calling UseTool for tool: " << tool_ptr->Name();
 
@@ -2488,7 +2722,13 @@ bool ConversationHandler::MaybeRespondToNextToolUseRequest() {
   // with the tool result.
   if (has_only_completed_tool_use_events && !is_request_in_progress_ &&
       has_non_server_tool_results) {
-    PerformPostToolAssistantGeneration();
+    PerformPostToolAssistantGeneration(thread_uuid);
+  }
+
+  // If neither generation nor tool execution is now in progress, clear the
+  // in-progress thread uuid.
+  if (!is_request_in_progress_ && !is_tool_use_in_progress_) {
+    thread_uuid_in_progress_ = std::nullopt;
   }
 
   return has_pending_tool_use_request;
