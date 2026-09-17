@@ -17,6 +17,9 @@ enum class FbmdStripResult {
   kFailed,
 };
 
+// Returns true if |jpeg| contains the FBMD iptc metadata, and false otherwise.
+bool ContainsFbmdIptcMetadata(std::vector<uint8_t>& jpeg);
+
 // Removes Facebook FBMD metadata from JPEG bytes in-place when present in the
 // IPTC record (APP13 / Photoshop IRB with resource id 0x0404). See the
 // implementation file for documentation.

@@ -18,6 +18,10 @@ enum class StrippingClient {
   kFileSelect,
 };
 
+// Returns true if the image file in |file_path| contains metadata we
+// support stripping on, false otherwise.
+bool ContainsMetadataToStrip(const base::FilePath& file_path);
+
 // Removes the FBMD metadata from the IPTC Instructions field for an image file
 // in |file_path|. The |client| is needed to log the stripping result code
 // tagged on client.
