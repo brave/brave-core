@@ -2571,6 +2571,10 @@
 # model
 -AppMenuModelTest.ModelHasIcons
 
+# UserMediaElement is disabled, which triggers histogram failure in this test.
+# We don't care about those metrics in general.
+-MiscellaneousElementBrowserTest.CountMetrics
+
 # These tests fail because we disable identity docs and travel pages in
 # autofill settings and hamburger menu.
 -AutofillAiPolicyTest.SettingsNotDisabledByPolicy/*
