@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Schnellsuchmaschinen verwalten";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Wenn ein Absturz oder Einfrieren auftritt, kann Brave automatisch anonyme Diagnoseberichte senden, um das Problem zu beheben. Sie können dies später jederzeit in den Einstellungen deaktivieren.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Automatische Absturzberichte aktivieren";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Aktivieren";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Nicht jetzt";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Pull-to-Refresh aktivieren";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Standardbilder";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Gesponserte Bilder & Videos";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Gesponserte Bilder";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Vielen Dank, dass du Brave und die BAT-Community unterstützt!";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Durch das Zurücksetzen wird Ihr aktuelles Brave Rewards Profil gelöscht und Brave Rewards ist nicht mehr aktiviert.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Brave Rewards zurücksetzen";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Zurücksetzen";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Helfe, Brave und die BAT-Community zu unterstützen, indem du Brave Rewards aktivierst und Brave Anzeigen angezeigt bekommst.";
 
@@ -2469,6 +2487,12 @@
 
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Qualitätseinstellungen";
+
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Senden Sie anonyme Diagnoseberichte, wenn Brave abstürzt oder hängen bleibt.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Absturzberichte senden";
 
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Mit diesem privaten Ping kann Brave die aktiven Nutzer schätzen.";
@@ -2948,7 +2972,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Gerätelimit";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Starte eine neue Synchronisierungskette";
+"sync.newSyncCode" = "Neue Synchronisierungskette";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Bitte überprüfe deine Internetverbindung und versuche es erneut.";
@@ -3118,6 +3142,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Privates Browsen";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Privat";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Private Tabs – Einstellungen";
 
@@ -3142,11 +3169,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Tabs schließen und Daten löschen";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld Tabs";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld Tab";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Verlauf anzeigen";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Verlauf";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Synchronisierte Tabs anzeigen";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Synchronisieren";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Schaltet den privaten Modus ein bzw. aus";

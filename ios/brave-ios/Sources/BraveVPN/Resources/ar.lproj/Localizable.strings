@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld خادم";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "حماية كل تطبيق مع Brave VPN. حماية ما يصل إلى 10 أجهزة بخطة واحدة.";
+"vpn.settingHeaderBody" = "شغّل المحتوى الخاص بك بطريقتك. احمِ كل تطبيق على 10 أجهزة باشتراك واحد.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "الاتصال بالدعم الفني";

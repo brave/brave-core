@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Edit enjin carian pantas";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Jika anda mengalami ranap atau beku, Brave boleh menghantar laporan diagnostik tanpa nama secara automatik untuk membaiki isu tersebut. Anda sentiasa boleh mematikannya dalam Tetapan kemudian.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Dayakan laporan ranap automatik";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Mendayakan";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Bukan Sekarang";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Dayakan Tarik-untuk-segar semula";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Imej Lalai";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Imej & Video Tajaan";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Tajaan Imej";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Terima kasih kerana membantu dalam menyokong Brave dan komuniti BAT!";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Dengan menetapkan semula, profil Ganjaran Brave semasa anda akan dipadam, dan Ganjaran Brave tidak lagi didayakan.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Set Semula Ganjaran Brave";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Tetap semula";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Berikan sokongan kepada Brave dan komuniti BAT dengan mendayakan Ganjaran Brave dan melihat Brave Ads.";
 
@@ -2469,6 +2487,12 @@
 
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Tetapan Kualiti";
+
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Hantar laporan diagnostik tanpa nama jika anda mengalami ranap atau beku.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Hantar laporan ranap";
 
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Ping peribadi ini membolehkan Brave menganggarkan pengguna aktif.";
@@ -2948,7 +2972,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Had peranti";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Mulakan Rantaian Penyegerakan baru";
+"sync.newSyncCode" = "Rantaian Penyegerakan Baharu";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Semak sambungan internet anda dan cuba lagi.";
@@ -3118,6 +3142,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Semakan Lalu Peribadi";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Peribadi";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Tetapan Tab Peribadi";
 
@@ -3142,11 +3169,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Hapus Tab";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld Tabs";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld Tab";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Lihat Sejarah";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Sejarah";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Lihat Tab Disegerakkan";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Segerak";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Menghidupkan atau mematikan mod peribadi";

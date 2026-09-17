@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "تعديل محركات البحث السريع";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "إذا واجهت تعطلاً أو تجمداً، يمكن لـ Brave إرسال تقارير تشخيصية مجهولة تلقائياً لإصلاح المشكلة. يمكنك دائماً إيقاف هذا لاحقاً من الإعدادات.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "تفعيل تقارير التعطل التلقائية";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "تمكين";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "ليس الآن";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "تمكين السحب للتحديث";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "الصور الافتراضية";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "الصور ومقاطع الفيديو المدعومة";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "الصور المدعومة";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "شكرًا لدعمك وتقديمك المساعدة لـ Brave ومجتمع BAT!";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "من خلال إعادة التعيين، سيتم حذف ملفك الشخصي الحالي في Brave مكافآت، ولن يتم تمكين Brave مكافآت بعد الآن.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "إعادة تعيين Brave Rewards";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "إعادة الضبط";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "ساهم في دعم Brave ومجتمع BAT من خلال تفعيل نظام Brave Rewards ومشاهدة إعلانات Brave.";
 
@@ -2469,6 +2487,12 @@
 
 /* Title for the quality settings view */
 "settings.qualitySettings" = "إعدادات الجودة";
+
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "أرسل تقارير التشخيص المجهولة إذا واجهت حالة عطل أو توقف.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "إرسال تقارير الأعطال";
 
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "تتيح أداة البينج الخاصة هذه لمتصفح Brave تقدير المستخدمين النشطين.";
@@ -2948,7 +2972,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "حد الأجهزة";
 
 /* New sync code button title */
-"sync.newSyncCode" = "بدء سلسلة مزامنة جديدة";
+"sync.newSyncCode" = "سلسلة مزامنة جديدة";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "تحقق من اتصالك بالإنترنت وحاول مرةً أخرى.";
@@ -3118,6 +3142,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "التصفح الخاص";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "متخفي";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "إعدادات علامات التبويب الخاصة";
 
@@ -3142,11 +3169,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "تمزيق علامات التبويب";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld علامات التبويب";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld علامة تبويب";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "عرض السجل";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "السجل";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "عرض علامات التبويب المتزامنة";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "مزامنة";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "لتشغيل الوضع الخاص أو إيقاف تشغيله";

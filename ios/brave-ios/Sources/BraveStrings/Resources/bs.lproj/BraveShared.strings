@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Uredi brze tražilice";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Ako dođe do pada ili zamrzavanja, Brave može automatski poslati anonimne dijagnostičke izveštaje za rešavanje problema. Ovo uvek možete kasnije isključiti u Podešavanjima.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Omogući automatske izveštaje o padu";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Omogući";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Ne sada";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Omogući povlačenje za osvježavanje";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Zadane slike";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Sponzorirane slike i videozapisi";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Sponzorirane slike";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Hvala Vam što pomažete u podržavanju preglednika Brave i zajednice BAT!";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Ponovnim postavljanjem, vaš trenutni Brave Rewards profil biće izbrisan, a Brave Rewards više neće biti omogućen.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Ponovo postavi Brave Rewards";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Ponovo postavite";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Pomozite podržati Brave i zajednicu BAT tako što ćete omogućiti značajku Brave Rewards i vidjeti Brave Ads.";
 
@@ -2469,6 +2487,12 @@
 
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Postavke kvalitete";
+
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Šaljite anonimne dijagnostičke izveštaje ako doživite pad ili zamrzavanje.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Pošalji izveštaje o padu";
 
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Ovim privatnim pingom u pregledniku Brave omogućava se procjenjivanje broja aktivnih korisnika.";
@@ -2948,7 +2972,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Ograničenje uređaja";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Započni novi lanac sinkronizacije";
+"sync.newSyncCode" = "Novi lanac sinkronizacije";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Provjerite internetsku vezu i pokušajte ponovno.";
@@ -3118,6 +3142,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Privatno pregledavanje";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Privatno";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Postavke kartice Privatno";
 
@@ -3142,11 +3169,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Uništi kartice";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld kartica";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld kartica";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Pogledajte povijest";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Povijest";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Pogledajte sinkronizirane kartice";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Sinkroniziraj";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Uključuje ili isključuje privatni način rada";
