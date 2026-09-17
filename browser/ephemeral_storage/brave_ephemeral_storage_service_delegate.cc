@@ -18,6 +18,7 @@
 #include "base/logging.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/strings/string_util.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/browsing_history_cleaner.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
@@ -31,6 +32,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/keep_alive_registry/keep_alive_types.h"
+#include "components/keep_alive_registry/scoped_keep_alive.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browsing_data_filter_builder.h"
@@ -95,6 +98,43 @@ bool PrepareTabForFirstPartyStorageCleanup(
   }
   return false;
 }
+
+#if !BUILDFLAG(IS_ANDROID)
+// Self-owned observer: destroys itself once the removal it observes is done.
+class RemovalObserver : public content::BrowsingDataRemover::Observer {
+ public:
+  RemovalObserver(const RemovalObserver&) = delete;
+  RemovalObserver& operator=(const RemovalObserver&) = delete;
+
+  static content::BrowsingDataRemover::Observer* Create(
+      content::BrowserContext* context) {
+    CHECK(context);
+    return new RemovalObserver(context);
+  }
+
+  void OnBrowsingDataRemoverDone(uint64_t failed_data_types) override {
+    LOG(INFO) << "[SHRED] OnBrowsingDataRemoverDone Done";
+    delete this;  // Matches the `new` in Create().
+  }
+
+ private:
+  explicit RemovalObserver(content::BrowserContext* context) {
+    content::BrowsingDataRemover* remover = context->GetBrowsingDataRemover();
+    CHECK(remover);
+    keep_alive_ = std::make_unique<ScopedKeepAlive>(
+          KeepAliveOrigin::BROWSING_DATA_LIFETIME_MANAGER,
+          KeepAliveRestartOption::DISABLED);
+    observation_.Observe(remover);
+  }
+
+  ~RemovalObserver() override = default;
+
+  base::ScopedObservation<content::BrowsingDataRemover,
+                          content::BrowsingDataRemover::Observer>
+      observation_{this};
+  std::unique_ptr<ScopedKeepAlive> keep_alive_;
+};
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace
 
@@ -197,6 +237,16 @@ void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
   filter_builder->SetStoragePartitionConfig(key.second);
 
   content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
+
+#if !BUILDFLAG(IS_ANDROID)
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShredFeature)) {
+    remover->RemoveWithFilterAndReply(
+        base::Time(), base::Time::Max(), data_to_remove, origin_type,
+        std::move(filter_builder), RemovalObserver::Create(context_));
+    return;
+  }
+#endif  // !BUILDFLAG(IS_ANDROID)
   remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
                             origin_type, std::move(filter_builder));
 }
@@ -212,26 +262,31 @@ void BraveEphemeralStorageServiceDelegate::CleanupTLDBrowsingHistory(
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameActive() {
   if (first_window_opened_callback_) {
-    std::move(first_window_opened_callback_).Run();
+    std::move(first_window_opened_callback_).Run(true);
   }
 }
 
 void BraveEphemeralStorageServiceDelegate::RegisterFirstWindowOpenedCallback(
-    base::OnceClosure callback) {
+    FirstWindowOpenedCallback callback) {
   DCHECK(callback);
   first_window_opened_callback_ = std::move(callback);
 }
 
 void BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive() {
-  if (!base::FeatureList::IsEnabled(
+  LOG(INFO)
+      << "[SHRED] "
+         "BraveEphemeralStorageServiceDelegate::OnApplicationBecameInactive";
+  if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShredFeature)) {
-    return;
+    // Collect ephemeral domains from currently open tabs that have the "Shred
+    // on App Close" mode enabled.
+    const auto ephemeral_domains = GetEphemeralDomainsToCleanOnAppClose();
+    PrepareTabsForFirstPartyStorageCleanup(ephemeral_domains, false);
+  } else {
+    if (first_window_opened_callback_) {
+      std::move(first_window_opened_callback_).Run(false);
+    }
   }
-
-  // Collect ephemeral domains from currently open tabs that have the "Shred on
-  // App Close" mode enabled.
-  const auto ephemeral_domains = GetEphemeralDomainsToCleanOnAppClose();
-  PrepareTabsForFirstPartyStorageCleanup(ephemeral_domains, false);
 }
 
 #if BUILDFLAG(IS_ANDROID)
@@ -247,6 +302,8 @@ void BraveEphemeralStorageServiceDelegate::
     PrepareTabsForFirstPartyStorageCleanup(
         const std::vector<std::string>& ephemeral_domains,
         const bool enforced_by_user) {
+LOG(INFO) << "[SHRED] BraveEphemeralStorageServiceDelegate::PrepareTabsForFirstPartyStorageCleanup #100 ephemeral_domains:" << base::JoinString(ephemeral_domains, ", ");
+
   if (enforced_by_user) {
     brave_shields::RecordManualShredP3A(*g_browser_process->local_state());
   }
@@ -272,6 +329,8 @@ void BraveEphemeralStorageServiceDelegate::
       }
       tab_handlers.emplace(tab->GetHandle());
     }
+LOG(INFO) << "[SHRED] BraveEphemeralStorageServiceDelegate::PrepareTabsForFirstPartyStorageCleanup #200";
+
     static_cast<BraveBrowser*>(browser)->SetTabsToIgnoreBeforeUnloadHandlers(
         tab_handlers);
 
@@ -348,11 +407,13 @@ BraveEphemeralStorageServiceDelegate::GetEphemeralDomainsToCleanOnAppClose() {
     }
     auto* tab_strip = browser->GetTabStripModel();
     if (!tab_strip) {
+      LOG(INFO) << "[SHRED] GetEphemeralDomainsToCleanOnAppClose #100";
       continue;
     }
 
     for (auto* tab : *tab_strip) {
       if (!tab || !tab->GetContents()) {
+        LOG(INFO) << "[SHRED] GetEphemeralDomainsToCleanOnAppClose #200";
         continue;
       }
       if (auto auto_shred_mode = shields_settings_service_->GetAutoShredMode(

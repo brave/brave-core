@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_EPHEMERAL_STORAGE_EPHEMERAL_STORAGE_SERVICE_DELEGATE_H_
 
 #include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-data-view.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_types.h"
 #include "url/gurl.h"
@@ -18,6 +19,8 @@ class EphemeralStorageServiceDelegate {
  public:
   virtual ~EphemeralStorageServiceDelegate() = default;
 
+    using FirstWindowOpenedCallback = base::OnceCallback<void(bool is_async)>;
+
   // Cleanups ephemeral storages (local storage, cookies).
   virtual void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) = 0;
   // Cleanups non-ephemeral first party storage areas (cache, dom storage).
@@ -25,7 +28,7 @@ class EphemeralStorageServiceDelegate {
   virtual void CleanupTLDBrowsingHistory(const TLDEphemeralAreaKey& key) = 0;
   // Registers a callback to be called when the first window is opened.
   virtual void RegisterFirstWindowOpenedCallback(
-      base::OnceClosure callback) = 0;
+      FirstWindowOpenedCallback callback) = 0;
   // Finds all tabs related to the ephemeral_domains list, prepares them for
   // first party storage cleanup, and closes them.
   virtual void PrepareTabsForFirstPartyStorageCleanup(

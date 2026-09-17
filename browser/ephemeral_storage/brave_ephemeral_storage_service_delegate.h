@@ -46,7 +46,7 @@ class BraveEphemeralStorageServiceDelegate
   void CleanupTLDEphemeralArea(const TLDEphemeralAreaKey& key) override;
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key) override;
   void CleanupTLDBrowsingHistory(const TLDEphemeralAreaKey& key) override;
-  void RegisterFirstWindowOpenedCallback(base::OnceClosure callback) override;
+  void RegisterFirstWindowOpenedCallback(FirstWindowOpenedCallback callback) override;
   void PrepareTabsForFirstPartyStorageCleanup(
       const std::vector<std::string>& ephemeral_domains,
       const bool enforced_by_user) override;
@@ -68,7 +68,7 @@ class BraveEphemeralStorageServiceDelegate
   raw_ptr<content::BrowserContext> context_ = nullptr;
   raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
-  base::OnceClosure first_window_opened_callback_;
+  FirstWindowOpenedCallback first_window_opened_callback_;
   std::unique_ptr<ApplicationStateObserver> application_state_observer_;
   raw_ptr<brave_shields::BraveShieldsSettingsService>
       shields_settings_service_ = nullptr;

@@ -6,8 +6,8 @@
 #include "brave/browser/ephemeral_storage/application_state_observer.h"
 
 #include "base/functional/bind.h"
-#include "base/functional/callback.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/logging.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/profiles/profile.h"
@@ -52,25 +52,21 @@ void ApplicationStateObserver::TriggerCurrentAppStateNotification() {
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
-void ApplicationStateObserver::OnBrowserCreated(
-    BrowserWindowInterface* browser) {
+void ApplicationStateObserver::OnBrowserClosed(BrowserWindowInterface* browser) {
   if (browser->GetProfile() != Profile::FromBrowserContext(context_)) {
+LOG(INFO) << "[SHRED] ApplicationStateObserver::OnBrowserClosed Wrong profile";
     return;
   }
 
-  if (!has_notified_active_) {
-    has_notified_active_ = true;
-
-    // No need to observe anymore.
-    browser_collection_observation_.Reset();
-
-    // Trigger the callback notifications after a cycle of the main loop to
-    // handle all windows
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE,
-        base::BindOnce(&ApplicationStateObserver::NotifyApplicationBecameActive,
-                       weak_ptr_factory_.GetWeakPtr()));
+  if (!browser_collection_observation_.GetSource()->IsEmpty()) {
+LOG(INFO) << "[SHRED] ApplicationStateObserver::OnBrowserClosed Not the last Browser window";
+    return;
   }
+
+LOG(INFO) << "[SHRED] ApplicationStateObserver::OnBrowserClosed Initiate Cleanup #100";
+  browser_collection_observation_.Reset();
+  NotifyApplicationBecameInactive();
+LOG(INFO) << "[SHRED] ApplicationStateObserver::OnBrowserClosed Initiate Cleanup #200";
 }
 #endif
 

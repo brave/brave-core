@@ -137,11 +137,11 @@ class EphemeralStorageService : public KeyedService {
   // keepalive, we store the origin into a pref to perform a cleanup on browser
   // startup. It's impossible to do a cleanup on shutdown, because the process
   // is asynchronous and cannot block the browser shutdown.
-  void ScheduleFirstPartyStorageAreasCleanupOnStartup();
+  void ScheduleFirstPartyStorageAreasCleanupOnStartup(bool is_async);
   void CleanupOnStartup();
   void CleanupFirstPartyStorageArea(const TLDEphemeralAreaKey& key);
 
-  void RegisterFirstWindowOpenedCallback(base::OnceClosure callback);
+  void RegisterFirstWindowOpenedCallback(EphemeralStorageServiceDelegate::FirstWindowOpenedCallback callback);
 
   size_t FireCleanupTimersForTesting();
 

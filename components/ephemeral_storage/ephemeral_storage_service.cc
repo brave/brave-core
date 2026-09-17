@@ -251,7 +251,7 @@ void EphemeralStorageService::TLDEphemeralLifetimeDestroyed(
                                     shields_disabled_on_one_of_hosts,
                                     auto_shred_mode) ||
       cleanup_mode != StorageCleanupMode::kDefault;
-
+LOG(INFO) << "[SHRED] EphemeralStorageService::TLDEphemeralLifetimeDestroyed cleanup_first_party_storage_area:" << cleanup_first_party_storage_area;
   if (cleanup_mode == StorageCleanupMode::kOnExitShred &&
       cleanup_first_party_storage_area && auto_shred_mode.has_value() &&
       auto_shred_mode.value() ==
@@ -382,6 +382,12 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
     return false;
   }
 
+  LOG(INFO) << "[SHRED] EphemeralStorageService::FirstPartyStorageAreaNotInUse ephemeral_domain:" << ephemeral_domain 
+  << " url:" << url 
+  << " forgetful:" << (host_content_settings_map_->GetContentSetting(
+          url, url, ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE) ==
+          CONTENT_SETTING_BLOCK);
+
   const auto forgetful_browser_enabled =
       !auto_shred_mode.has_value() &&
       host_content_settings_map_->GetContentSetting(
@@ -396,6 +402,7 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
            brave_shields::mojom::AutoShredMode::APP_EXIT);
 
   if (!forgetful_browser_enabled && !auto_shred_mode_enabled) {
+    LOG(INFO) << "[SHRED] EphemeralStorageService::FirstPartyStorageAreaNotInUse forgetful_browser_enabled:" << forgetful_browser_enabled << " auto_shred_mode_enabled:" << auto_shred_mode_enabled;
     return false;
   }
 
@@ -454,22 +461,30 @@ void EphemeralStorageService::CleanupFirstPartyStorageArea(
   }
 }
 
-void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup() {
+void EphemeralStorageService::ScheduleFirstPartyStorageAreasCleanupOnStartup(bool is_async) {
   DVLOG(1) << __func__;
   DCHECK(!context_->IsOffTheRecord());
   first_party_storage_areas_to_cleanup_on_startup_ =
       prefs_->GetList(kFirstPartyStorageOriginsToCleanup).Clone();
 
-  first_party_storage_areas_startup_cleanup_timer_.Start(
-      FROM_HERE,
-      base::Seconds(
-          net::features::
-              kBraveForgetFirstPartyStorageStartupCleanupDelayInSeconds.Get()),
-      base::BindOnce(&EphemeralStorageService::CleanupOnStartup,
-                     weak_ptr_factory_.GetWeakPtr()));
+  if (is_async) {
+    first_party_storage_areas_startup_cleanup_timer_.Start(
+        FROM_HERE,
+        base::Seconds(
+            net::features::
+                kBraveForgetFirstPartyStorageStartupCleanupDelayInSeconds
+                    .Get()),
+        base::BindOnce(&EphemeralStorageService::CleanupOnStartup,
+                       weak_ptr_factory_.GetWeakPtr()));
+  } else {
+    CleanupOnStartup();
+  }
 }
 
 void EphemeralStorageService::CleanupOnStartup() {
+LOG(INFO)
+      << "[SHRED] "
+         "EphemeralStorageService::CleanupOnStartup #100 first_party_storage_areas_to_cleanup_on_startup_:" << first_party_storage_areas_to_cleanup_on_startup_.DebugString();
   DCHECK(!context_->IsOffTheRecord());
   ScopedListPrefUpdate pref_update(prefs_, kFirstPartyStorageOriginsToCleanup);
 
@@ -505,7 +520,7 @@ void EphemeralStorageService::CleanupOnStartup() {
 }
 
 void EphemeralStorageService::RegisterFirstWindowOpenedCallback(
-    base::OnceClosure callback) {
+    EphemeralStorageServiceDelegate::FirstWindowOpenedCallback callback) {
   if (!base::FeatureList::IsEnabled(
           net::features::kBraveForgetFirstPartyStorage) ||
       context_->IsOffTheRecord()) {
