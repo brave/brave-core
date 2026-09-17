@@ -149,3 +149,21 @@ substitutions:
     set_blink_runtime_enabled_feature_state:
       feature_name: UserMediaElement
       value: disabled
+
+  - description: |-
+      Ship XMLRustForNonXslt feature disabled.
+
+      Backports https://crrev.com/c/8399555.
+      Safe to revert starting after cr155.
+    set_blink_runtime_enabled_feature_state:
+      feature_name: XMLRustForNonXslt
+      value: disabled
+
+  - description: |-
+      Ship GenerateXSLTWarningBanner feature disabled.
+
+      Support https://crrev.com/c/8399555.
+      Safe to revert starting after cr155.
+    set_blink_runtime_enabled_feature_state:
+      feature_name: GenerateXSLTWarningBanner
+      value: disabled
