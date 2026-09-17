@@ -1,8 +1,13 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ntp/RecentTabsCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/ntp/RecentTabsCoordinator.java
-index 22ef6fa94d0a3a48e63447fecadd7fca60804708..9be976e58504cf911e8043ce9d7b902b70d6bcc2 100644
+index 22ef6fa94d0a3a48e63447fecadd7fca60804708..f3f4aa60b4635825c522ccd06aa938d29e879a18 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ntp/RecentTabsCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ntp/RecentTabsCoordinator.java
-@@ -78,7 +78,7 @@ public class RecentTabsCoordinator
+@@ -75,10 +75,12 @@ public class RecentTabsCoordinator
+         mRecentTabsManager = recentTabsManager;
+ 
+         mRecentTabsManager.setUpdatedCallback(this::onUpdated);
++        org.chromium.base.task.PostTask.postTask(
++                org.chromium.base.task.TaskTraits.UI_DEFAULT, mRecentTabsManager::syncStateChanged);
          LayoutInflater inflater = LayoutInflater.from(activity);
  
          ContextMenuManager contextMenuManager =

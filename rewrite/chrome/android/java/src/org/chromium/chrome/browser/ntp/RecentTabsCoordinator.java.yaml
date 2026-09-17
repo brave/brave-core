@@ -12,3 +12,16 @@ substitutions:
         new (ContextMenuManager\()
       replace: |-
         new org.chromium.chrome.browser.native_page.Brave\1
+  - description: |-
+      Post nudge for mRecentTabsManager
+
+      Otherwise RecentTabsManager.onUpdateDone is fired when
+      RecentTabsManager.mUpdatedCallback is not yet set and the recent tabs
+      remains empty if launched after the app start
+    regex:
+      re_pattern: |-
+        (mRecentTabsManager\.setUpdatedCallback\(this::onUpdated\);)
+      replace: |-
+        \1
+                org.chromium.base.task.PostTask.postTask(
+                        org.chromium.base.task.TaskTraits.UI_DEFAULT, mRecentTabsManager::syncStateChanged);
