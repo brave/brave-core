@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "components/soda/soda_installer.h"
+#include "build/build_config.h"
 #include "extensions/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -17,19 +17,21 @@
 #define ChromeExtensionsBrowserClient BraveExtensionsBrowserClientImpl
 #endif
 
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
+#include "components/soda/soda_installer.h"
+
 namespace speech {
 
 namespace {
 
-// Brave ships no SODA, so the global installer reports no languages, which
-// keeps the Web Speech `available()` answer unavailable and `install()`
-// refused. Upstream's would report SODA's en-US as downloadable and then park
-// an `install()` reply forever on a download that never arrives. `Init` is a
-// no-op for the same reason, so nothing registers a language pack at startup.
+// Brave ships no SODA, so this replaces upstream's global installer. Reporting
+// no languages keeps Web Speech's `available()` unavailable and `install()`
+// refused, where upstream's reports en-US as downloadable and then parks the
+// `install()` reply on a download that never arrives. `Init` is a no-op so
+// nothing registers a language pack at startup.
 //
-// An installer still has to exist, because
-// `OnDeviceSpeechRecognitionImpl::Available` dereferences
-// `SodaInstaller::GetInstance()` unconditionally.
+// A stub rather than no installer at all, because `Install` dereferences
+// `SodaInstaller::GetInstance()` without a null check.
 class StubSodaInstaller final : public SodaInstaller {
  public:
   // SodaInstaller:
@@ -64,6 +66,7 @@ std::unique_ptr<SodaInstaller> CreateBraveSodaInstaller() {
 }
 
 }  // namespace speech
+#endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
 
 #include <chrome/browser/browser_process_impl.cc>
 #if BUILDFLAG(ENABLE_EXTENSIONS)

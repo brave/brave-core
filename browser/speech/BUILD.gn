@@ -7,8 +7,6 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(!is_android)
 
-# Brave replaces the global SodaInstaller whatever `enable_local_ai` says, so
-# this coverage builds without that buildflag.
 source_set("on_device_speech_browser_tests") {
   testonly = true
 
