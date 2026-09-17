@@ -134,9 +134,9 @@ class RewardsInternalsShareController: UITableViewController {
 
   private let progressIndiciator = UIProgressView(progressViewStyle: .default)
 
-  private func cleanup(callingFromDeinit: Bool = false) {
+  nonisolated private func cleanup(callingFromDeinit: Bool = false) {
     if !callingFromDeinit {
-      DispatchQueue.main.async {
+      Task { @MainActor in
         // Reset
         self.isSharing = false
         self.progressIndiciator.progress = 0
@@ -161,7 +161,8 @@ class RewardsInternalsShareController: UITableViewController {
   private let dropDirectory: URL
   private let zipPath: URL
 
-  @concurrent private func share(_ senderIndexPath: IndexPath) async {
+  @MainActor
+  private func share(_ senderIndexPath: IndexPath) async {
     // create temp folder, zip, share
     guard let selectedIndexPaths = tableView.indexPathsForSelectedRows else { return }
     let sharables = selectedIndexPaths.map { self.sharables[$0.row] }
@@ -174,10 +175,22 @@ class RewardsInternalsShareController: UITableViewController {
       $0.timeStyle = .long
     }
     let builder = RewardsInternalsSharableBuilder(
-      rewardsAPI: self.rewardsAPI,
+      rewardsAPI: rewardsAPI,
       dateFormatter: dateFormatter,
       dateAndTimeFormatter: dateAndTimeFormatter
     )
+    await generateAndShareZip(
+      sharables: sharables,
+      builder: builder,
+      senderIndexPath: senderIndexPath
+    )
+  }
+
+  @concurrent private func generateAndShareZip(
+    sharables: sending [RewardsInternalsSharable],
+    builder: sending RewardsInternalsSharableBuilder,
+    senderIndexPath: IndexPath
+  ) async {
     do {
       if await AsyncFileManager.default.fileExists(atPath: dropDirectory.path) {
         try await AsyncFileManager.default.removeItem(at: dropDirectory)

@@ -171,10 +171,10 @@ import os.log
   private let versions: Preferences.Option<[String: String]>
 
   init(
-    ruleStore: WKContentRuleListStore = .default(),
+    ruleStore: WKContentRuleListStore? = nil,
     container: UserDefaults = Preferences.defaultContainer
   ) {
-    self.ruleStore = ruleStore
+    self.ruleStore = ruleStore ?? .default()
     self.cachedRuleLists = [:]
     self.versions = Preferences.Option(
       key: "content-blocker.versions",

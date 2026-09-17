@@ -13,7 +13,7 @@ import os.log
 /// An object that wraps around an `AdblockEngine` and caches some results
 /// and ensures information is always returned on the correct thread on the engine.
 public actor GroupedAdBlockEngine {
-  public enum Source: Codable, Hashable, CustomDebugStringConvertible {
+  public enum Source: Codable, Hashable, Sendable, CustomDebugStringConvertible {
     case filterList(componentId: String)
     case filterListURL(uuid: String)
     case filterListText
@@ -29,7 +29,7 @@ public actor GroupedAdBlockEngine {
     }
   }
 
-  public enum FileType: Codable, Hashable, CustomDebugStringConvertible {
+  public enum FileType: Codable, Hashable, Sendable, CustomDebugStringConvertible {
     case text, data
 
     public var debugDescription: String {
@@ -43,7 +43,7 @@ public actor GroupedAdBlockEngine {
   /// The type of engine (`standard` or `aggressive`) which determines wether or not 1st party content will be blocked.
   ///
   /// Aggressive engines will block 1st party content whereas the standard engine will not
-  public enum EngineType: Hashable, CaseIterable, CustomDebugStringConvertible {
+  public enum EngineType: Hashable, CaseIterable, Sendable, CustomDebugStringConvertible {
     case standard
     case aggressive
 
@@ -74,7 +74,8 @@ public actor GroupedAdBlockEngine {
     }
   }
 
-  public struct FilterListInfo: Codable, Hashable, Equatable, CustomDebugStringConvertible {
+  public struct FilterListInfo: Codable, Hashable, Equatable, Sendable, CustomDebugStringConvertible
+  {
     let source: GroupedAdBlockEngine.Source
     let version: String
 
@@ -83,7 +84,7 @@ public actor GroupedAdBlockEngine {
     }
   }
 
-  public struct FilterListGroup: Hashable, Equatable {
+  public struct FilterListGroup: Hashable, Equatable, Sendable {
     let infos: [FilterListInfo]
     let localFileURL: URL
     var fileType: GroupedAdBlockEngine.FileType {
@@ -108,7 +109,7 @@ public actor GroupedAdBlockEngine {
     }
   }
 
-  public struct ResourcesInfo: Hashable, Equatable {
+  public struct ResourcesInfo: Hashable, Equatable, Sendable {
     let localFileURL: URL
     let version: String
   }

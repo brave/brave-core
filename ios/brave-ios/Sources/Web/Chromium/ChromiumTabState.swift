@@ -547,7 +547,7 @@ class ChromiumTabState: TabState, TabStateImpl {
   var policyDeciders: OrderedSet<AnyTabPolicyDecider> = []
 }
 
-extension CWVWebView: WebViewProxy {}
+extension CWVWebView: nonisolated WebViewProxy {}
 
 extension CWVUserAgentType {
   init(_ userAgentType: UserAgentType) {

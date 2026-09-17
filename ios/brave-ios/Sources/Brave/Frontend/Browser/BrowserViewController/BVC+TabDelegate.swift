@@ -208,6 +208,7 @@ extension BrowserViewController: TabDelegate {
     tab.loadRequest(URLRequest(url: linkURL))
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
@@ -276,6 +277,7 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     runJavaScriptAlertPanelWithMessage message: String,
@@ -300,6 +302,7 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
@@ -324,6 +327,7 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
