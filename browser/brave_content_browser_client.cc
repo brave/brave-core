@@ -1288,11 +1288,11 @@ void BraveContentBrowserClient::WillCreateURLLoaderFactory(
       is_for_network_service);
 }
 
+// Intercept frame and worker handshakes so they go through Brave's network
+// request handling (e.g. ad blocking). Shared and service workers have no
+// RenderFrameHost; see crbug.com/40195467.
 bool BraveContentBrowserClient::WillInterceptWebSocket(
     content::RenderFrameHost*) {
-  // Intercept frame and worker handshakes so they go through Brave's network
-  // request handling (e.g. ad blocking). Shared and service workers have no
-  // RenderFrameHost; see crbug.com/40195467.
   return base::FeatureList::IsEnabled(
       features::kBraveEnableShieldsForWebSocketsFromWorkers);
 }
