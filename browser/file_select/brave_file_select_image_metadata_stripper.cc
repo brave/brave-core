@@ -58,19 +58,9 @@ struct StripResult {
 // TODO(https://github.com/brave/brave-browser/issues/5238): PNG formats needs
 // more investigation whether FBMD is present or not. So, tackling only jpeg.
 bool IsStrippableImagePath(const base::FilePath& path) {
-  return path.MatchesExtension(FILE_PATH_LITERAL(".jpg")) ||
-         path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"));
-}
-
-// Returns true if any of the items in the |selected_files| could be a candidate
-// for stripping metadata.
-bool HasStrippableImage(
-    const std::vector<blink::mojom::FileChooserFileInfoPtr>& selected_files) {
-  return std::ranges::any_of(
-      selected_files, [](const blink::mojom::FileChooserFileInfoPtr& info) {
-        return info && info->is_native_file() &&
-               IsStrippableImagePath(info->get_native_file()->file_path);
-      });
+  return (path.MatchesExtension(FILE_PATH_LITERAL(".jpg")) ||
+          path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"))) &&
+         image_metadata_stripper::ContainsMetadataToStrip(path);
 }
 
 // Algorithm:
@@ -210,10 +200,6 @@ bool MaybeStripImageMetadataForUpload(
 
   if (!base::FeatureList::IsEnabled(
           image_metadata_stripper::features::kStripImageMetadataV1)) {
-    return false;
-  }
-
-  if (!HasStrippableImage(list)) {
     return false;
   }
 
