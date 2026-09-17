@@ -19,6 +19,11 @@ public actor AppStoreReceipt {
 
   /// Retrieves the AppStore Purchase Receipt stored in the Application Bundle
   /// Returns the receipt as a Base64 encoded string
+  @diagnose(
+    DeprecatedDeclaration,
+    as: ignored,
+    reason: "GuardianConnect SDK still uses legacy receipts"
+  )
   public static var receipt: String {
     get throws {
       guard let receiptUrl = Bundle.main.appStoreReceiptURL else {
@@ -115,6 +120,11 @@ public actor AppStoreReceipt {
   }
 
   /// Forces the AppStore to add receipts to the Application Bundle.
+  @diagnose(
+    DeprecatedDeclaration,
+    as: ignored,
+    reason: "GuardianConnect SDK still uses legacy receipts"
+  )
   private class AppStoreReceiptRefresher: NSObject, SKRequestDelegate {
     private let request = SKReceiptRefreshRequest()
     private var onRefreshComplete: ((Error?) -> Void)?
