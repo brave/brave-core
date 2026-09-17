@@ -10,18 +10,18 @@ substitutions:
       Brave blocks third-party cookies via Shields, so the upstream cookie
       controls page action is redundant. GetCookieControlsIconState has no
       side effects, so skipping it is safe. `status` stays in use here for
-      the OnStatusChanged call just below. Anchoring on the `GetStatus(
-      web_contents)` call (rather than `GetStatus(GetWebContents())`, as in
-      UpdateCookieControlsIcon below) is what makes this substitution unique
-      to Update.
+      the OnStatusChanged call just below. Anchored on the
+      `Update(content::WebContents*, const GURL&)` overload (rather than
+      `UpdateCookieControlsIcon`, below), which is what makes this
+      substitution unique to Update even though both functions now call the
+      same argument-less `GetStatus()`.
     regex:
-      pattern: |-
-        auto status = GetStatus(web_contents);
-          const CookieControlsState icon_state =
-              GetCookieControlsIconState(status.controls_state);
+      re_pattern: |-
+        (::Update\(content::WebContents\* web_contents,\s*const GURL& site_url\) \{.*?)auto status = GetStatus\(\);\n(\s+)const CookieControlsState icon_state =\n\s+GetCookieControlsIconState\(status\.controls_state\);
+      re_flags: [DOTALL]
       replace: |-
-        auto status = GetStatus(web_contents);
-          const CookieControlsState icon_state = CookieControlsState::kHidden;
+        \1auto status = GetStatus();
+        \2const CookieControlsState icon_state = CookieControlsState::kHidden;
 
   - description: |-
       Force the cookie controls icon to stay hidden, in
@@ -32,9 +32,8 @@ substitutions:
       dropped, so the now-unused `auto status = GetStatus(...)` line goes
       with it to avoid an unused-variable build error.
     regex:
-      pattern: |-
-        auto status = GetStatus(GetWebContents());
-          const CookieControlsState icon_state =
-              GetCookieControlsIconState(status.controls_state);
+      re_pattern: |-
+        (::UpdateCookieControlsIcon\(\) \{.*?)auto status = GetStatus\(\);\n\s+const CookieControlsState icon_state =\n\s+GetCookieControlsIconState\(status\.controls_state\);
+      re_flags: [DOTALL]
       replace:
-        'const CookieControlsState icon_state = CookieControlsState::kHidden;'
+        '\1const CookieControlsState icon_state = CookieControlsState::kHidden;'
