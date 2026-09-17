@@ -6,7 +6,7 @@
 import BraveCore
 import SwiftUI
 
-extension BraveStoreKitPurchase: Identifiable {
+extension BraveStoreKitPurchase: @retroactive Identifiable {
   public var id: String {
     return transactionId
   }

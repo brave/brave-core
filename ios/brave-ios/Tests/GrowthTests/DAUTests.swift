@@ -520,7 +520,7 @@ class DAUTests: XCTestCase {
     for (storedValue, fixedValue) in testValues {
       Preferences.DAU.weekOfInstallation.value = storedValue
       // Fetching params will trigger migration
-      let params = dau.paramsAndPrefsSetup(for: Date(), lastPingDate: nil)
+      _ = dau.paramsAndPrefsSetup(for: Date(), lastPingDate: nil)
       XCTAssertEqual(try XCTUnwrap(Preferences.DAU.weekOfInstallation.value), fixedValue)
       Preferences.DAU.weekOfInstallation.reset()
     }

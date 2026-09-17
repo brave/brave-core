@@ -14,7 +14,7 @@ import XCTest
 private let deprecatedLastLaunchInfoPrefKey = "dau.last-launch-info"
 
 private func utcTimestamp(year: Int, month: Int, day: Int) -> Int {
-  var components = DateComponents(
+  let components = DateComponents(
     timeZone: TimeZone(identifier: "UTC")!,
     year: year,
     month: month,
