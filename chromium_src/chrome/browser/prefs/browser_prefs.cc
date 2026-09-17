@@ -222,6 +222,8 @@ void MigrateObsoleteBraveProfilePrefsAfterChromium(
 #if !BUILDFLAG(IS_ANDROID)
   // Added 2024-01
   brave_tabs::MigrateBraveProfilePrefs(profile_prefs);
+  // Dev/QA override for vertical tab migration testing
+  brave_tabs::MaybeApplyVerticalTabMigrationTestingOverride(profile_prefs);
 #endif  // !BUILDFLAG(IS_ANDROID)
 
   // Added 2024-04
