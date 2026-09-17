@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld server";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Beskytt alle apper med Brave VPN. Beskytt 10 enheter med ett abonnement.";
+"vpn.settingHeaderBody" = "Strøm innholdet ditt, på din måte. Beskytt hver app på 10 enheter med 1 abonnement.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Kontakt teknisk kundestøtte";

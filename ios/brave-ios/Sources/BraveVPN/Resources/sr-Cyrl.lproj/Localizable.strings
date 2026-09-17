@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "Сервера: %ld";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Заштитите сваку апликацију помоћу Brave VPN-а. Уз један пакет можете да заштитите до 10 уређаја.";
+"vpn.settingHeaderBody" = "Стримујте свој садржај, на свој начин. Заштитите сваку апликацију на 10 уређаја помоћу 1 претплате.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Обратите се техничкој подршци";
