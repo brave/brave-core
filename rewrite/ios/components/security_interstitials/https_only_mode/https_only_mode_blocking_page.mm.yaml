@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Point the HTTPS-Only mode interstitial's "Learn more" link at Brave
+      support.
+
+      The upstream link goes to Google Chrome support, which is not relevant to
+      Brave users.
+    regex:
+      re_pattern: '(kLearnMoreLink\[\] =)\s*"[^"]*"'
+      replace: |-
+        \1
+            "https://support.brave.app/hc/en-us/articles/15513090104717"
