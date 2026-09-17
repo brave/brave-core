@@ -129,8 +129,13 @@ void ZCashCreateTransparentTransactionTask::WorkOnTask() {
 
 void ZCashCreateTransparentTransactionTask::OnGetChainHeight(
     base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
-  if (!result.has_value() || !result.value()) {
+  if (!result.has_value()) {
     SetError(std::move(result).error());
+    WorkOnTask();
+    return;
+  }
+  if (!result.value()) {
+    SetError(l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     WorkOnTask();
     return;
   }
