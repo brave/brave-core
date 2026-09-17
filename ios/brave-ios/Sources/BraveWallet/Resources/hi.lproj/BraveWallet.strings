@@ -1627,8 +1627,26 @@
 /* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Address index. */
 "wallet.signCardanoTxRequestDetailsAddressLabel" = "पता";
 
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes collateral inputs. */
+"wallet.signCardanoTxRequestDetailsCollateralLabel" = "संपार्श्विक";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a collateral return output. */
+"wallet.signCardanoTxRequestDetailsCollateralReturnLabel" = "संपार्श्विक वापसी";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes mint tokens. */
+"wallet.signCardanoTxRequestDetailsMintLabel" = "मिंट";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a script data hash. */
+"wallet.signCardanoTxRequestDetailsScriptDataHashLabel" = "स्क्रिप्ट डेटा हैश";
+
 /* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Token index. */
 "wallet.signCardanoTxRequestDetailsTokenLabel" = "टोकन";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a total collateral amount. */
+"wallet.signCardanoTxRequestDetailsTotalCollateralLabel" = "कुल संपार्श्विक";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes stake reward withdrawals. */
+"wallet.signCardanoTxRequestDetailsWithdrawalsLabel" = "निकासी";
 
 /* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
 "wallet.signedTransactionDescription" = "ट्रांज़ैक्शन साइन किया जा चुका है और dapps द्वारा नेटवर्क को भेजा जाएगा और पुष्टि का इंतज़ार हो रहा है।";

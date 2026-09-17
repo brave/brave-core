@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld servidor";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Protege todas las aplicaciones con Brave VPN. Protege hasta 10 dispositivos con un solo plan.";
+"vpn.settingHeaderBody" = "Transmite tu contenido a tu manera. Protege todas las apps en 10 dispositivos con 1 suscripción.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Contactar con el soporte técnico";

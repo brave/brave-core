@@ -1627,8 +1627,26 @@
 /* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Address index. */
 "wallet.signCardanoTxRequestDetailsAddressLabel" = "Adresse";
 
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes collateral inputs. */
+"wallet.signCardanoTxRequestDetailsCollateralLabel" = "Garantie";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a collateral return output. */
+"wallet.signCardanoTxRequestDetailsCollateralReturnLabel" = "Retour de garantie";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes mint tokens. */
+"wallet.signCardanoTxRequestDetailsMintLabel" = "Monnayage";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a script data hash. */
+"wallet.signCardanoTxRequestDetailsScriptDataHashLabel" = "Hachage des données du script";
+
 /* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Token index. */
 "wallet.signCardanoTxRequestDetailsTokenLabel" = "Jeton";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a total collateral amount. */
+"wallet.signCardanoTxRequestDetailsTotalCollateralLabel" = "Garantie totale";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes stake reward withdrawals. */
+"wallet.signCardanoTxRequestDetailsWithdrawalsLabel" = "Retraits";
 
 /* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
 "wallet.signedTransactionDescription" = "La transaction a été signée et va être envoyée au réseau par dapps en attendant la confirmation.";
