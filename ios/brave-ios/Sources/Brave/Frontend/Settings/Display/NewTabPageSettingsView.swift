@@ -15,7 +15,6 @@ struct NewTabPageSettingsView: View {
 
   @ObservedObject private var backgroundImages = Preferences.NewTabPage.backgroundImages
   @ObservedObject private var showNewTabPrivacyHub = Preferences.NewTabPage.showNewTabPrivacyHub
-  @ObservedObject private var showNewTabFavourites = Preferences.NewTabPage.showNewTabFavourites
   @ObservedObject private var topsitesModeSelection = Preferences.NewTabPage.topsitesMode
 
   // This is observed to ensure the view updates correctly, but we instead access
@@ -63,10 +62,9 @@ struct NewTabPageSettingsView: View {
           Picker(
             Strings.NTP.topsites,
             selection: Binding(
-              get: { topsitesModeSelection.value ?? .favourite },
+              get: { topsitesModeSelection.value },
               set: {
                 topsitesModeSelection.value = $0
-                showNewTabFavourites.value = $0 != .none
               }
             )
           ) {
@@ -79,9 +77,8 @@ struct NewTabPageSettingsView: View {
           Toggle(
             Strings.Widgets.favoritesWidgetTitle,
             isOn: Binding(
-              get: { showNewTabFavourites.value },
+              get: { topsitesModeSelection.value != TopsitesMode.none },
               set: {
-                showNewTabFavourites.value = $0
                 topsitesModeSelection.value = $0 ? TopsitesMode.favourite : TopsitesMode.none
               }
             )

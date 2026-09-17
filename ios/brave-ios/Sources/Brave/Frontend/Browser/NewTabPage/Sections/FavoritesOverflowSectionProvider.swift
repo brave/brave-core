@@ -64,14 +64,6 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
 
   private var frc: NSFetchedResultsController<Favorite>
 
-  private var isTopsitesHidden: Bool {
-    if FeatureList.kTopsitesEnabled.enabled {
-      return Preferences.NewTabPage.topsitesMode.value == TopsitesMode.none
-    } else {
-      return !Preferences.NewTabPage.showNewTabFavourites.value
-    }
-  }
-
   init(action: @escaping () -> Void) {
     self.action = action
     frc = Favorite.frc()
@@ -94,7 +86,7 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
 
     let isShowShowMoreButtonVisible =
       count > FavoritesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
-      && !isTopsitesHidden
+      && Preferences.NewTabPage.topsitesMode.value != TopsitesMode.none
     return isShowShowMoreButtonVisible ? 1 : 0
   }
 

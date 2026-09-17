@@ -240,15 +240,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       }
     }
 
-    if FeatureList.kTopsitesEnabled.enabled && Preferences.NewTabPage.topsitesMode.value == nil {
-      if Preferences.NewTabPage.showNewTabFavourites.value {
-        Preferences.NewTabPage.topsitesMode.value =
-          Favorite.hasFavorites ? TopsitesMode.favourite : TopsitesMode.mostVisited
-      } else {
-        Preferences.NewTabPage.topsitesMode.value = TopsitesMode.none
-      }
-    }
-
     if isFirstLaunch {
       let currentDate = Date()
       Preferences.DAU.installationDate.value = currentDate

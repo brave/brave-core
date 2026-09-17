@@ -359,9 +359,9 @@ extension Preferences {
       Option<Bool>(key: "newtabpage.show-newtab-favourites", default: true)
 
     /// Mode to display NTP tiles in NTP
-    public static let topsitesMode = Option<TopsitesMode?>(
+    public static let topsitesMode = Option<TopsitesMode>(
       key: "newtabpage.topsites-mode",
-      default: nil
+      default: .mostVisited
     )
   }
 
