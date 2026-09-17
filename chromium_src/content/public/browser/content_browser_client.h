@@ -9,7 +9,6 @@
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
-#include "url/origin.h"
 
 namespace content {
 class StoragePartitionConfig;
@@ -20,6 +19,10 @@ class StoragePartitionConfig;
 namespace local_ai::mojom {
 class AsrSession;
 }  // namespace local_ai::mojom
+
+namespace url {
+class Origin;
+}  // namespace url
 
 // Brave-specific: allows the embedder to modify the referrer string
 // according to user preferences.
