@@ -454,11 +454,11 @@ void AgentClient::ReportError(Error error) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // A run that keeps failing for shifting reasons is still one piece of news;
   // only an escalation to something retrying cannot fix is worth repeating.
-  if (reported_failure_ &&
-      (*reported_failure_ == error || IsRetryableError(error))) {
+  if (reported_error_ &&
+      (*reported_error_ == error || IsRetryableError(error))) {
     return;
   }
-  reported_failure_ = error;
+  reported_error_ = error;
   observers_.Notify(&Observer::OnAgentConnectionFailed, error);
 }
 
@@ -476,7 +476,7 @@ void AgentClient::ClearFailureRun() {
   backoff_.Reset();
   not_running_reported_ = false;
   failure_run_timer_.reset();
-  reported_failure_.reset();
+  reported_error_.reset();
 }
 
 void AgentClient::ResetSession() {

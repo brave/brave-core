@@ -62,7 +62,7 @@ class TestObserver : public AgentClient::Observer {
   }
 
   void OnAgentConnectionFailed(AgentClient::Error error) override {
-    ++connection_error_count_;
+    ++failure_count_;
     last_connection_error_ = error;
     Notify();
   }
@@ -82,7 +82,7 @@ class TestObserver : public AgentClient::Observer {
   int connected_count() const { return connected_count_; }
   int session_stable_count() const { return session_stable_count_; }
   int disconnected_count() const { return disconnected_count_; }
-  int connection_error_count() const { return connection_error_count_; }
+  int failure_count() const { return failure_count_; }
   int not_running_count() const { return not_running_count_; }
   std::optional<AgentClient::Error> last_connection_error() const {
     return last_connection_error_;
@@ -97,7 +97,7 @@ class TestObserver : public AgentClient::Observer {
 
   int connected_count_ = 0;
   int disconnected_count_ = 0;
-  int connection_error_count_ = 0;
+  int failure_count_ = 0;
   int session_stable_count_ = 0;
   int not_running_count_ = 0;
   std::optional<AgentClient::Error> last_connection_error_;
@@ -159,7 +159,7 @@ class AgentClientTest : public testing::Test {
     agent_.set_auth_result(result);
     ConnectAndWait();
 
-    EXPECT_EQ(observer_.connection_error_count(), 1);
+    EXPECT_EQ(observer_.failure_count(), 1);
     EXPECT_EQ(observer_.last_connection_error(), expected_error);
     EXPECT_EQ(observer_.connected_count(), 0);
     EXPECT_EQ(client_->state(), AgentClient::State::kUnavailable);
@@ -193,7 +193,7 @@ TEST_F(AgentClientTest, HandshakeSucceeds) {
 
   EXPECT_EQ(observer_.connected_count(), 1);
   EXPECT_EQ(observer_.not_running_count(), 0);
-  EXPECT_EQ(observer_.connection_error_count(), 0);
+  EXPECT_EQ(observer_.failure_count(), 0);
 
   EXPECT_EQ(client_->state(), AgentClient::State::kConnected);
   EXPECT_TRUE(client_->is_connected());
@@ -258,7 +258,7 @@ TEST_F(AgentClientTest, UnreachableAgentIsRetriedUntilItAppears) {
   EXPECT_EQ(observer_.connected_count(), 1);
 
   // An outage that resolved on its own is not worth telling anyone about.
-  EXPECT_EQ(observer_.connection_error_count(), 0);
+  EXPECT_EQ(observer_.failure_count(), 0);
 }
 
 // The service reacts to this by trying to start the agent, so it has to be one
@@ -280,6 +280,8 @@ TEST_F(AgentClientTest, NotRunningIsNotifiedOncePerRunOfFailures) {
   agent_.set_transport_fails(true);
   agent_.CloseAllConnections();
   task_environment_.FastForwardBy(kTimePastEveryRetry);
+
+  EXPECT_EQ(observer_.session_stable_count(), 1);
   EXPECT_EQ(observer_.not_running_count(), 2);
 }
 
@@ -301,6 +303,7 @@ TEST_F(AgentClientTest, ShortSessionStillAllowsAnotherLaunchRequest) {
   agent_.CloseAllConnections();
   task_environment_.FastForwardBy(kTimePastEveryRetry);
 
+  EXPECT_EQ(observer_.session_stable_count(), 0);
   EXPECT_EQ(observer_.not_running_count(), 2);
 }
 
@@ -422,7 +425,7 @@ TEST_F(AgentClientTest, CrashLoopIsReportedAsUnstable) {
     ASSERT_EQ(client_->state(), AgentClient::State::kWaitingToRetry)
         << "drop " << cycles;
 
-    if (observer_.connection_error_count() > 0) {
+    if (observer_.failure_count() > 0) {
       break;
     }
     RunNextScheduledRetry();
@@ -431,7 +434,7 @@ TEST_F(AgentClientTest, CrashLoopIsReportedAsUnstable) {
   }
   ASSERT_LT(cycles, kShortSessions) << "the run of failures was never reported";
 
-  EXPECT_EQ(observer_.connection_error_count(), 1);
+  EXPECT_EQ(observer_.failure_count(), 1);
   EXPECT_EQ(observer_.last_connection_error(),
             AgentClient::Error::kAgentUnstable);
   // Every session died inside its window, so none of them ever counted.
@@ -476,7 +479,7 @@ TEST_F(AgentClientTest, NoServerNameIsTerminalUntilReset) {
   agent_.set_server_name_available(false);
   ConnectAndWait();
 
-  EXPECT_EQ(observer_.connection_error_count(), 1);
+  EXPECT_EQ(observer_.failure_count(), 1);
   // Not an auth result: there was no agent to hear from.
   EXPECT_EQ(observer_.last_connection_error(), AgentClient::Error::kNoEndpoint);
   EXPECT_EQ(client_->state(), AgentClient::State::kUnavailable);
@@ -503,10 +506,10 @@ TEST_F(AgentClientTest, PersistentFailureIsReportedOncePerRun) {
   // Several failures, but not yet long enough to be a verdict.
   task_environment_.FastForwardBy(kTimeBeforePersistentFailure);
   ASSERT_GT(agent_.connect_attempts(), 1);
-  EXPECT_EQ(observer_.connection_error_count(), 0);
+  EXPECT_EQ(observer_.failure_count(), 0);
 
   task_environment_.FastForwardBy(kTimePastEveryRetry);
-  ASSERT_EQ(observer_.connection_error_count(), 1);
+  ASSERT_EQ(observer_.failure_count(), 1);
   EXPECT_EQ(observer_.last_connection_error(),
             AgentClient::Error::kAgentUnreachable);
   // Reporting is not a state change: the client is still trying.
@@ -514,7 +517,7 @@ TEST_F(AgentClientTest, PersistentFailureIsReportedOncePerRun) {
 
   // However long the run goes on, it is the same news.
   task_environment_.FastForwardBy(kTimePastEveryRetry);
-  EXPECT_EQ(observer_.connection_error_count(), 1);
+  EXPECT_EQ(observer_.failure_count(), 1);
 
   // A success ends the run, so the next one is reportable again.
   agent_.set_transport_fails(false);
@@ -524,7 +527,7 @@ TEST_F(AgentClientTest, PersistentFailureIsReportedOncePerRun) {
   agent_.set_transport_fails(true);
   agent_.CloseAllConnections();
   task_environment_.FastForwardBy(kTimePastEveryRetry);
-  EXPECT_EQ(observer_.connection_error_count(), 2);
+  EXPECT_EQ(observer_.failure_count(), 2);
 }
 
 // The case nothing else reports: a peer holds the endpoint and never answers.
@@ -539,7 +542,7 @@ TEST_F(AgentClientTest, SilentPeerIsReportedWithoutBeingTreatedAsMissing) {
 
   task_environment_.FastForwardBy(kTimePastEveryRetry);
 
-  ASSERT_EQ(observer_.connection_error_count(), 1);
+  ASSERT_EQ(observer_.failure_count(), 1);
   EXPECT_EQ(observer_.last_connection_error(),
             AgentClient::Error::kAgentNotResponding);
   EXPECT_EQ(observer_.not_running_count(), 0);
@@ -555,7 +558,7 @@ TEST_F(AgentClientTest, RepeatedInconclusiveResultsAreReportedAndRetried) {
   ConnectAndWait();
   task_environment_.FastForwardBy(kTimePastEveryRetry);
 
-  ASSERT_EQ(observer_.connection_error_count(), 1);
+  ASSERT_EQ(observer_.failure_count(), 1);
   EXPECT_EQ(observer_.last_connection_error(),
             AgentClient::Error::kBrowserUnverified);
   EXPECT_EQ(client_->state(), AgentClient::State::kWaitingToRetry);
@@ -566,13 +569,13 @@ TEST_F(AgentClientTest, ResetClearsTheReportedError) {
   agent_.set_transport_fails(true);
   ConnectAndWait();
   task_environment_.FastForwardBy(kTimePastEveryRetry);
-  ASSERT_EQ(observer_.connection_error_count(), 1);
+  ASSERT_EQ(observer_.failure_count(), 1);
 
   client_->Reset();
   client_->EnsureConnected();
   task_environment_.FastForwardBy(kTimePastEveryRetry);
 
-  EXPECT_EQ(observer_.connection_error_count(), 2);
+  EXPECT_EQ(observer_.failure_count(), 2);
 }
 
 // Acceptance is not evidence that connecting works; staying connected is.
@@ -610,7 +613,7 @@ TEST_F(AgentClientTest, ShiftingRetryableReasonsAreReportedOnce) {
   agent_.set_transport_fails(true);
   ConnectAndWait();
   task_environment_.FastForwardBy(kTimePastEveryRetry);
-  ASSERT_EQ(observer_.connection_error_count(), 1);
+  ASSERT_EQ(observer_.failure_count(), 1);
   ASSERT_EQ(observer_.last_connection_error(),
             AgentClient::Error::kAgentUnreachable);
 
@@ -621,7 +624,7 @@ TEST_F(AgentClientTest, ShiftingRetryableReasonsAreReportedOnce) {
   task_environment_.FastForwardBy(kTimePastEveryRetry);
 
   ASSERT_EQ(observer_.connected_count(), 0);
-  EXPECT_EQ(observer_.connection_error_count(), 1);
+  EXPECT_EQ(observer_.failure_count(), 1);
   EXPECT_EQ(observer_.last_connection_error(),
             AgentClient::Error::kAgentUnreachable);
 }
@@ -632,7 +635,7 @@ TEST_F(AgentClientTest, EscalationToTerminalReasonIsStillReported) {
   agent_.set_transport_fails(true);
   ConnectAndWait();
   task_environment_.FastForwardBy(kTimePastEveryRetry);
-  ASSERT_EQ(observer_.connection_error_count(), 1);
+  ASSERT_EQ(observer_.failure_count(), 1);
   ASSERT_EQ(observer_.last_connection_error(),
             AgentClient::Error::kAgentUnreachable);
 
@@ -640,7 +643,7 @@ TEST_F(AgentClientTest, EscalationToTerminalReasonIsStillReported) {
   agent_.set_auth_result(mojom::BrowserAuthResult::kRejected);
   task_environment_.FastForwardBy(kTimePastEveryRetry);
 
-  EXPECT_EQ(observer_.connection_error_count(), 2);
+  EXPECT_EQ(observer_.failure_count(), 2);
   EXPECT_EQ(observer_.last_connection_error(),
             AgentClient::Error::kBrowserRejected);
   EXPECT_EQ(client_->state(), AgentClient::State::kUnavailable);
@@ -653,13 +656,13 @@ TEST_F(AgentClientTest, EscalationToTerminalReasonIsStillReported) {
 TEST_F(AgentClientTest, ReplacementAgentRefusingAgainIsReported) {
   agent_.set_auth_result(mojom::BrowserAuthResult::kRejected);
   ConnectAndWait();
-  ASSERT_EQ(observer_.connection_error_count(), 1);
+  ASSERT_EQ(observer_.failure_count(), 1);
 
   agent_.CloseAllConnections();
   task_environment_.FastForwardBy(kTimePastEveryRetry);
 
   ASSERT_GT(agent_.connect_attempts(), 1);
-  EXPECT_EQ(observer_.connection_error_count(), 2);
+  EXPECT_EQ(observer_.failure_count(), 2);
   EXPECT_EQ(observer_.last_connection_error(),
             AgentClient::Error::kBrowserRejected);
   EXPECT_EQ(client_->state(), AgentClient::State::kUnavailable);
@@ -704,7 +707,7 @@ TEST_F(AgentClientTest, RepeatedAcceptanceOnDeadSessionIsReportedAsUnstable) {
     ASSERT_EQ(client_->state(), AgentClient::State::kWaitingToRetry)
         << "race " << races;
 
-    if (observer_.connection_error_count() > 0) {
+    if (observer_.failure_count() > 0) {
       break;
     }
     RunNextScheduledRetry();
@@ -713,7 +716,7 @@ TEST_F(AgentClientTest, RepeatedAcceptanceOnDeadSessionIsReportedAsUnstable) {
   }
   ASSERT_LT(races, kMaxSessions) << "the run of failures was never reported";
 
-  EXPECT_EQ(observer_.connection_error_count(), 1);
+  EXPECT_EQ(observer_.failure_count(), 1);
   EXPECT_EQ(observer_.last_connection_error(),
             AgentClient::Error::kAgentUnstable);
   // No host was ever published, so there was nothing to lose either.

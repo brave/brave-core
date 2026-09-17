@@ -188,6 +188,15 @@ void BraveVpnServiceImpl::OnAgentSessionStable() {
 void BraveVpnServiceImpl::OnAgentDisconnected() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(1) << "Agent session lost";
+
+  // Agent disconnection on its own is not a verdict: the client reconnects, and
+  // an unrecoverable run of failures arrives in another ("connection failed")
+  // notification. But make sure the "connected" VPN state is not reported to
+  // the user if there's no connection to the agent, and hence there is no
+  // explicit knowledge that the VPN tunnel is up.
+  if (connection_state_ == mojom::ConnectionState::CONNECTED) {
+    UpdateConnectionState(mojom::ConnectionState::DISCONNECTED, std::string());
+  }
 }
 
 void BraveVpnServiceImpl::OnAgentNotRunning() {

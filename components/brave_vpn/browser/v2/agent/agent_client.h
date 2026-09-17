@@ -220,7 +220,7 @@ class AgentClient {
   State state_ = State::kDisconnected;
   net::BackoffEntry backoff_;
   std::optional<base::ElapsedTimer> failure_run_timer_;
-  std::optional<Error> reported_failure_;
+  std::optional<Error> reported_error_;
   bool not_running_reported_ = false;
   bool session_pipe_dropped_ = false;
   mojo::Remote<mojom::BrowserHostProvider> provider_;

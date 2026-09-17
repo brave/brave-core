@@ -474,13 +474,33 @@ TEST_F(BraveVpnServiceImplTest, ConnectingAloneDoesNotClearTheError) {
 }
 
 // The real connection state that arrived in the meantime must survive.
-TEST_F(BraveVpnServiceImplTest, StableSessionLeavesANonErrorStateAlone) {
+TEST_F(BraveVpnServiceImplTest, StableSessionLeavesNonErrorStateAlone) {
   CreateService();
   SetConnectionState(mojom::ConnectionState::CONNECTED);
   ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECTED);
 
   NotifyAgentSessionStable();
   EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECTED);
+}
+
+// The "connected" state should be reset if the agent connection gets dropped.
+TEST_F(BraveVpnServiceImplTest, AgentDisconnectionResetsOnlyConnectedState) {
+  CreateService();
+  NotifyAgentConnectionFailed(AgentClient::Error::kAgentUnreachable);
+  SetConnectionState(mojom::ConnectionState::CONNECTING);
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECTING);
+  ASSERT_FALSE(service_->GetLastConnectionError().empty());
+
+  NotifyAgentDisconnected();
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::CONNECTING);
+  EXPECT_FALSE(service_->GetLastConnectionError().empty());
+
+  SetConnectionState(mojom::ConnectionState::CONNECTED);
+  ASSERT_EQ(connection_state(), mojom::ConnectionState::CONNECTED);
+
+  NotifyAgentDisconnected();
+  EXPECT_EQ(connection_state(), mojom::ConnectionState::DISCONNECTED);
+  EXPECT_TRUE(service_->GetLastConnectionError().empty());
 }
 
 // A launch that never happened is terminal in effect: the handler also resets
