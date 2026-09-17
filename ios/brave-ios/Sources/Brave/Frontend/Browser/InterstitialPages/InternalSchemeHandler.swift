@@ -45,7 +45,7 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
   private var activeTasks = NSMapTable<WKURLSchemeTask, TaskHolder>.weakToStrongObjects()
 
   // Unprivileged internal:// urls might be internal resources in the app bundle ( i.e. <link href="errorpage-resource/NetError.css"> )
-  nonisolated func downloadResource(urlSchemeTask: WKURLSchemeTask) async -> Bool {
+  @concurrent nonisolated func downloadResource(urlSchemeTask: WKURLSchemeTask) async -> Bool {
     guard let url = urlSchemeTask.request.url else { return false }
 
     let allowedInternalResources = [

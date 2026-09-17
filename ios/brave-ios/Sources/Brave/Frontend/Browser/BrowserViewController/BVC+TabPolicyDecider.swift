@@ -18,6 +18,7 @@ import UserAgent
 import Web
 
 extension BrowserViewController: TabPolicyDecider {
+  @MainActor
   public func tab(
     _ tab: some TabState,
     shouldAllowResponse response: URLResponse,
@@ -77,6 +78,7 @@ extension BrowserViewController: TabPolicyDecider {
     return .allow
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     shouldAllowRequest request: URLRequest,

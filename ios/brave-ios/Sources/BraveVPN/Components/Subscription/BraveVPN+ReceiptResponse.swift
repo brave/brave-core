@@ -40,7 +40,8 @@ extension BraveVPN {
     var autoRenewEnabled: Bool = false
   }
 
-  public static func loadReceipt() async -> String? {
+  // @concurrent: reads the App Store receipt from disk
+  @concurrent public static func loadReceipt() async -> String? {
     try? AppStoreReceipt.receipt
   }
 

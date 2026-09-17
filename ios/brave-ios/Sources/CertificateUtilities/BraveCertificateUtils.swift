@@ -243,7 +243,12 @@ extension BraveCertificateUtils {
   }
 
   /// Verifies ServerTrust using Brave-Core which verifies only SSL Pinning Status
-  public static func verifyTrust(_ trust: SecTrust, host: String, port: Int) async -> Int {
+  // @concurrent: certificate verification is synchronous
+  @concurrent public static func verifyTrust(
+    _ trust: SecTrust,
+    host: String,
+    port: Int
+  ) async -> Int {
     return Int(BraveCertificateUtility.verifyTrust(trust, host: host, port: port))
   }
 }

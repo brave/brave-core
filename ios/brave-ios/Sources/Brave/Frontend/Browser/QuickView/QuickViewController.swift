@@ -647,7 +647,7 @@ extension QuickViewController: TabDelegate {
     }
     return nil
   }
-
+  @MainActor
   func tab(
     _ tab: some TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
@@ -1013,6 +1013,7 @@ extension QuickViewController: KeyboardHelperDelegate {
 }
 
 extension QuickViewController: TabPolicyDecider {
+  @MainActor
   func tab(
     _ tab: some TabState,
     shouldAllowRequest request: URLRequest,

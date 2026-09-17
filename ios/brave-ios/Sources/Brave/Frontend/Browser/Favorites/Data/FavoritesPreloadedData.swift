@@ -45,7 +45,7 @@ struct FavoritesPreloadedData {
 
   /// Returns a list of websites that should be preloaded for specific region. Currently all users get the same websites.
   // swift-format-ignore
-  static func getList() async -> [FavoriteSite] {
+  @concurrent static func getList() async -> [FavoriteSite] {
     let region = Locale.current.region?.identifier ?? ""
     Logger.module.debug("Preloading favorites, current region: \(region)")
 

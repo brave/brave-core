@@ -13,7 +13,7 @@ extension AdblockEngine {
     case couldNotDeserializeDATFile
   }
 
-  func useResources(fromFileURL fileURL: URL) async throws {
+  @concurrent func useResources(fromFileURL fileURL: URL) async throws {
     // Add scriplets if available
     if let json = try await Self.validateJSON(Data(contentsOf: fileURL)) {
       useResources(json)
@@ -21,7 +21,7 @@ extension AdblockEngine {
   }
 
   /// Return a `JSON` string if this data is valid
-  static func validateJSON(_ data: Data) async throws -> String? {
+  @concurrent static func validateJSON(_ data: Data) async throws -> String? {
     let value = try JSONSerialization.jsonObject(with: data, options: [])
 
     if let value = value as? NSArray {

@@ -358,7 +358,7 @@ public class FeedDataSource: ObservableObject {
   ///
   /// Cache lifetime will be based on the modification date of the cached file. Data downloaded from the web
   /// will only be cached if it is successfully decoded into the given `DataType`.
-  private func loadResource<DataType>(
+  @concurrent private func loadResource<DataType>(
     _ resource: NewsResource,
     localeIdentifier: String? = nil,
     decodedTo: DataType.Type

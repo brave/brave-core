@@ -15,7 +15,7 @@ struct ReaderModeUtils {
     } ?? domain
   }
 
-  static func generateReaderContent(
+  @concurrent static func generateReaderContent(
     _ readabilityResult: ReadabilityResult,
     initialStyle: ReaderModeStyle,
     titleNonce: String
