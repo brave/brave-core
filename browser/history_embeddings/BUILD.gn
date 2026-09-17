@@ -16,7 +16,10 @@ source_set("status") {
   public = [ "brave_history_embeddings_status.h" ]
   sources = [ "brave_history_embeddings_status.cc" ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//components/prefs",
+  ]
 
   deps = [
     "//brave/components/ai_chat/core/common/buildflags",
@@ -24,7 +27,6 @@ source_set("status") {
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
-    "//components/prefs",
   ]
 
   if (enable_ai_chat) {
