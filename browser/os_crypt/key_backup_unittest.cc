@@ -10,6 +10,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave {
@@ -84,6 +85,84 @@ TEST_F(OSCryptKeyBackupTest, OmitsAnAbsentAppBoundKey) {
   ASSERT_EQ(OSCryptKeyBackupState::kCreated,
             WriteOSCryptKeyBackupIfAbsent(path(), "wrapped-key", ""));
   EXPECT_EQ(std::string::npos, Contents().find("app_bound_encrypted_key"));
+}
+
+// --- Restore ---
+
+class OSCryptKeyRestoreTest : public OSCryptKeyBackupTest {
+ public:
+  void SetUp() override {
+    OSCryptKeyBackupTest::SetUp();
+    RegisterOSCryptKeyBackupLocalStatePrefs(local_state_.registry());
+    // Registered by OSCrypt itself in production; stubbed here.
+    local_state_.registry()->RegisterStringPref("os_crypt.encrypted_key", "");
+    local_state_.registry()->RegisterStringPref(
+        "os_crypt.app_bound_encrypted_key", "");
+  }
+
+ protected:
+  std::string LiveKey() {
+    return local_state_.GetString("os_crypt.encrypted_key");
+  }
+
+  // What a later launch, or support, would read back.
+  OSCryptKeyRestoreResult RecordedResult() {
+    return static_cast<OSCryptKeyRestoreResult>(
+        local_state_.GetInteger("brave.os_crypt.key_restore_result"));
+  }
+
+  TestingPrefServiceSimple local_state_;
+};
+
+// The one case restore acts on: the key is gone and a backup has it.
+TEST_F(OSCryptKeyRestoreTest, PutsTheKeyBackWhenItIsMissing) {
+  ASSERT_EQ(OSCryptKeyBackupState::kCreated,
+            WriteOSCryptKeyBackupIfAbsent(path(), "wrapped-key", "app-bound"));
+
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestored,
+            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  EXPECT_EQ("wrapped-key", LiveKey());
+  EXPECT_EQ("app-bound",
+            local_state_.GetString("os_crypt.app_bound_encrypted_key"));
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestored, RecordedResult());
+}
+
+// A key that is present but different cannot be told apart from a key the user
+// legitimately has now, and replacing it would orphan everything encrypted
+// since it arrived.
+TEST_F(OSCryptKeyRestoreTest, LeavesAKeyThatIsAlreadyThereAlone) {
+  ASSERT_EQ(OSCryptKeyBackupState::kCreated,
+            WriteOSCryptKeyBackupIfAbsent(path(), "backed-up-key", ""));
+  local_state_.SetString("os_crypt.encrypted_key", "live-key");
+
+  EXPECT_EQ(OSCryptKeyRestoreResult::kNotAttempted,
+            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  EXPECT_EQ("live-key", LiveKey());
+}
+
+TEST_F(OSCryptKeyRestoreTest, ReportsWhenThereIsNothingToRestoreFrom) {
+  EXPECT_EQ(OSCryptKeyRestoreResult::kNoBackup,
+            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  EXPECT_TRUE(LiveKey().empty());
+}
+
+TEST_F(OSCryptKeyRestoreTest, ReportsAnUnusableBackup) {
+  ASSERT_TRUE(base::WriteFile(path(), "{ this is not json"));
+
+  EXPECT_EQ(OSCryptKeyRestoreResult::kBackupUnusable,
+            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  EXPECT_TRUE(LiveKey().empty());
+}
+
+TEST_F(OSCryptKeyRestoreTest, OmitsAnAppBoundKeyTheBackupDoesNotHave) {
+  ASSERT_EQ(OSCryptKeyBackupState::kCreated,
+            WriteOSCryptKeyBackupIfAbsent(path(), "wrapped-key", ""));
+
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestored,
+            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  EXPECT_EQ("wrapped-key", LiveKey());
+  EXPECT_TRUE(
+      local_state_.GetString("os_crypt.app_bound_encrypted_key").empty());
 }
 
 }  // namespace brave

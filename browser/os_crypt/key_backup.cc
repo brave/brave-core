@@ -28,6 +28,7 @@ namespace brave {
 namespace {
 
 constexpr char kBackupStatePrefName[] = "brave.os_crypt.key_backup_state";
+constexpr char kRestoreResultPrefName[] = "brave.os_crypt.key_restore_result";
 
 // Defined privately in components/os_crypt/async/browser/os_crypt_win.cc and
 // chrome/browser/os_crypt/app_bound_encryption_provider_win.h, and repeated
@@ -46,34 +47,59 @@ constexpr int kCurrentVersion = 1;
 
 constexpr char kHistogramSuffix[] = "OSCryptKeyBackup";
 
-// The wrapped key held in an existing backup, or nullopt if there is no usable
-// backup to compare against.
-std::optional<std::string> ReadBackedUpKey(const base::FilePath& path) {
+enum class BackupReadResult {
+  kOk,
+  // Nothing on disk yet.
+  kAbsent,
+  // Present but not usable, so it protects nothing and may be replaced.
+  kUnreadable,
+  // Written by a newer build. Not understood, but not ours to discard either.
+  kNewerVersion,
+};
+
+struct Backup {
+  BackupReadResult result = BackupReadResult::kAbsent;
+  std::string encrypted_key;
+  std::string app_bound_key;
+};
+
+Backup ReadBackup(const base::FilePath& path) {
+  Backup backup;
+
   std::string contents;
   if (!base::ReadFileToString(path, &contents)) {
-    return std::nullopt;
+    backup.result = BackupReadResult::kAbsent;
+    return backup;
   }
 
   std::optional<base::DictValue> root =
       base::JSONReader::ReadDict(contents, base::JSON_PARSE_RFC);
   if (!root) {
-    // A backup we cannot read protects nothing, so let it be replaced.
-    return std::nullopt;
+    backup.result = BackupReadResult::kUnreadable;
+    return backup;
   }
 
   const std::optional<int> version = root->FindInt(kVersionKey);
   if (!version || *version > kCurrentVersion) {
-    // Written by a newer build. Leave it alone rather than discarding a format
-    // we do not understand.
-    return std::string();
+    backup.result = BackupReadResult::kNewerVersion;
+    return backup;
   }
 
   const base::DictValue* os_crypt = root->FindDict(kOsCryptKey);
-  if (!os_crypt) {
-    return std::nullopt;
+  const std::string* key =
+      os_crypt ? os_crypt->FindString(kEncryptedKeyKey) : nullptr;
+  if (!key || key->empty()) {
+    backup.result = BackupReadResult::kUnreadable;
+    return backup;
   }
-  const std::string* key = os_crypt->FindString(kEncryptedKeyKey);
-  return key ? std::optional<std::string>(*key) : std::nullopt;
+
+  backup.result = BackupReadResult::kOk;
+  backup.encrypted_key = *key;
+  if (const std::string* app_bound =
+          os_crypt->FindString(kAppBoundEncryptedKeyKey)) {
+    backup.app_bound_key = *app_bound;
+  }
+  return backup;
 }
 
 }  // namespace
@@ -81,12 +107,19 @@ std::optional<std::string> ReadBackedUpKey(const base::FilePath& path) {
 OSCryptKeyBackupState WriteOSCryptKeyBackupIfAbsent(const base::FilePath& path,
                                                     std::string encrypted_key,
                                                     std::string app_bound_key) {
-  if (const std::optional<std::string> existing = ReadBackedUpKey(path)) {
-    // Never replace a backup. If the live key has changed, the one already
-    // written is the one worth keeping.
-    return *existing == encrypted_key
-               ? OSCryptKeyBackupState::kMatchesLiveKey
-               : OSCryptKeyBackupState::kDiffersFromLiveKey;
+  const Backup existing = ReadBackup(path);
+  switch (existing.result) {
+    case BackupReadResult::kOk:
+      // Never replace a backup. If the live key has changed, the one already
+      // written is the one worth keeping.
+      return existing.encrypted_key == encrypted_key
+                 ? OSCryptKeyBackupState::kMatchesLiveKey
+                 : OSCryptKeyBackupState::kDiffersFromLiveKey;
+    case BackupReadResult::kNewerVersion:
+      return OSCryptKeyBackupState::kDiffersFromLiveKey;
+    case BackupReadResult::kAbsent:
+    case BackupReadResult::kUnreadable:
+      break;
   }
 
   base::DictValue os_crypt;
@@ -122,9 +155,54 @@ void OnBackupFinished(PrefService* local_state, OSCryptKeyBackupState state) {
 
 }  // namespace
 
+OSCryptKeyRestoreResult MaybeRestoreOSCryptKey(
+    const base::FilePath& user_data_dir,
+    PrefService* local_state) {
+  if (user_data_dir.empty() || !local_state) {
+    return OSCryptKeyRestoreResult::kNotAttempted;
+  }
+
+  // The overwhelming majority of launches stop here, without touching the disk.
+  if (!local_state->GetString(kEncryptedKeyPrefName).empty()) {
+    return OSCryptKeyRestoreResult::kNotAttempted;
+  }
+
+  // Whatever happens from here is worth remembering: it only runs when the key
+  // was genuinely missing, so the pref records the last time recovery mattered.
+  auto record = [local_state](OSCryptKeyRestoreResult result) {
+    local_state->SetInteger(kRestoreResultPrefName, static_cast<int>(result));
+    return result;
+  };
+
+  const Backup backup =
+      ReadBackup(user_data_dir.Append(kOSCryptKeyBackupFileName));
+  switch (backup.result) {
+    case BackupReadResult::kAbsent:
+      return record(OSCryptKeyRestoreResult::kNoBackup);
+    case BackupReadResult::kUnreadable:
+    case BackupReadResult::kNewerVersion:
+      return record(OSCryptKeyRestoreResult::kBackupUnusable);
+    case BackupReadResult::kOk:
+      break;
+  }
+
+  // Whether the restored key still unwraps is not checked here. If DPAPI can no
+  // longer unwrap it, OSCrypt will fail to decrypt it and mint a replacement,
+  // which is exactly what would have happened without this. Restoring can only
+  // improve the outcome.
+  local_state->SetString(kEncryptedKeyPrefName, backup.encrypted_key);
+  if (!backup.app_bound_key.empty()) {
+    local_state->SetString(kAppBoundEncryptedKeyPrefName, backup.app_bound_key);
+  }
+  return record(OSCryptKeyRestoreResult::kRestored);
+}
+
 void RegisterOSCryptKeyBackupLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterIntegerPref(
       kBackupStatePrefName, static_cast<int>(OSCryptKeyBackupState::kUnknown));
+  registry->RegisterIntegerPref(
+      kRestoreResultPrefName,
+      static_cast<int>(OSCryptKeyRestoreResult::kNotAttempted));
 }
 
 void BackUpOSCryptKey(const base::FilePath& user_data_dir,

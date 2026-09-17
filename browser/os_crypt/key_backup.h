@@ -51,6 +51,34 @@ OSCryptKeyBackupState WriteOSCryptKeyBackupIfAbsent(const base::FilePath& path,
                                                     std::string encrypted_key,
                                                     std::string app_bound_key);
 
+// What happened on the restore path.
+enum class OSCryptKeyRestoreResult {
+  // `Local State` already had a key. Nothing was read from disk.
+  kNotAttempted = 0,
+  // The key was missing and there is no backup to put back.
+  kNoBackup = 1,
+  // The key was missing and the backup has been put back.
+  kRestored = 2,
+  // The key was missing and a backup exists but could not be used.
+  kBackupUnusable = 3,
+};
+
+// Puts the backed-up key back when `Local State` has lost it. Must run before
+// OSCrypt initializes, since that is what reads the key and what mints a
+// replacement when it finds none.
+//
+// Only ever acts when the key is *absent*. A key that is present but wrong
+// cannot be told apart from a key the user legitimately has now, and replacing
+// a live key would orphan everything encrypted since it arrived. Absence is the
+// one case that is unambiguous, and it is the case `Local State` corruption
+// produces.
+//
+// Blocking, but only touches the disk on the failure path: when a key is
+// present this reads one in-memory pref and returns.
+OSCryptKeyRestoreResult MaybeRestoreOSCryptKey(
+    const base::FilePath& user_data_dir,
+    PrefService* local_state);
+
 void RegisterOSCryptKeyBackupLocalStatePrefs(PrefRegistrySimple* registry);
 
 // Writes the backup if there isn't one, on a blocking background task. Never

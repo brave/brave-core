@@ -35,6 +35,7 @@ source_set("unit_tests") {
     ":os_crypt",
     "//base",
     "//base/test:test_support",
+    "//components/prefs:test_support",
     "//testing/gtest",
   ]
 }
