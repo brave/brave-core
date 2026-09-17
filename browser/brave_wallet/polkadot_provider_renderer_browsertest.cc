@@ -3,7 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <string>
+
 #include "base/command_line.h"
+#include "base/files/file_path.h"
 #include "base/path_service.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
@@ -23,6 +26,7 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "url/gurl.h"
 
 namespace brave_wallet {
 
@@ -306,8 +310,8 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Iframe3P) {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), c.top_url));
     content::RenderFrameHost* main_frame =
         web_contents(browser())->GetPrimaryMainFrame();
-    EXPECT_TRUE(content::EvalJs(main_frame, c.script).ExtractBool());
-    EXPECT_TRUE(
+    ASSERT_TRUE(content::EvalJs(main_frame, c.script).ExtractBool());
+    ASSERT_TRUE(
         NavigateIframeToURL(web_contents(browser()), "test", c.iframe_url));
     EXPECT_FALSE(content::EvalJs(ChildFrameAt(main_frame, 0),
                                  kCheckPolkadotProviderScript)
@@ -320,8 +324,8 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Iframe3P) {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), c.top_url));
     content::RenderFrameHost* main_frame =
         web_contents(browser())->GetPrimaryMainFrame();
-    EXPECT_TRUE(content::EvalJs(main_frame, c.script).ExtractBool());
-    EXPECT_TRUE(
+    ASSERT_TRUE(content::EvalJs(main_frame, c.script).ExtractBool());
+    ASSERT_TRUE(
         NavigateIframeToURL(web_contents(browser()), "test", c.iframe_url));
     EXPECT_TRUE(content::EvalJs(ChildFrameAt(main_frame, 0),
                                 kCheckPolkadotProviderScript)
@@ -353,7 +357,7 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, SecureContextOnly) {
       content::EvalJs(main_frame, kCheckPolkadotProviderScript).ExtractBool());
 
   // Secure context 127.0.0.1 HTTP.
-  url = embedded_test_server()->GetURL("localhost", "/simple.html");
+  url = embedded_test_server()->GetURL("127.0.0.1", "/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   main_frame = web_contents(browser())->GetPrimaryMainFrame();
   EXPECT_TRUE(
