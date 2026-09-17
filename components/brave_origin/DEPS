@@ -1,6 +1,15 @@
 include_rules = [
+  "+brave/components/api_request_helper",
   "+brave/components/brave_policy",
   "+components/keyed_service/core",
   "+components/prefs",
   "+components/policy",
+  "+services/network/public",
 ]
+
+specific_include_rules = {
+  "origin_activation_limit_impl_unittest\.cc": [
+    "+services/data_decoder/public/cpp/test_support",
+    "+services/network/test",
+  ],
+}
