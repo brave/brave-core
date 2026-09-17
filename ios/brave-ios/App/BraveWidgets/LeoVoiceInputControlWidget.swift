@@ -13,11 +13,10 @@ import WidgetKit
 struct LeoVoiceInputControlWidget: ControlWidget {
   var body: some ControlWidgetConfiguration {
     if #available(iOS 26.0, *) {
+      let shortcut = WidgetShortcut.braveLeoVoiceInput
       return StaticControlConfiguration(kind: "LeoVoiceInputControlWidget") {
-        ControlWidgetButton(
-          action: OpenControlWidgetShortcutIntent(shortcut: .braveLeoVoiceInput)
-        ) {
-          Label(Strings.Widgets.leoVoiceInputWidgetTitle, braveSystemImage: "leo.leo.voice-input")
+        ControlWidgetButton(action: OpenControlWidgetShortcutIntent(shortcut: shortcut)) {
+          Label(shortcut.displayString, braveSystemImage: shortcut.braveSystemImageName ?? "")
         }
       }
       .displayName(LocalizedStringResource(stringLiteral: Strings.Widgets.leoVoiceInputWidgetTitle))

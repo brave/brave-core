@@ -13,9 +13,10 @@ import WidgetKit
 struct AskBraveControlWidget: ControlWidget {
   var body: some ControlWidgetConfiguration {
     if #available(iOS 26.0, *) {
+      let shortcut = WidgetShortcut.askBrave
       return StaticControlConfiguration(kind: "AskBraveControlWidget") {
-        ControlWidgetButton(action: OpenControlWidgetShortcutIntent(shortcut: .askBrave)) {
-          Label(Strings.Widgets.askBrave, braveSystemImage: "leo.brave.ask")
+        ControlWidgetButton(action: OpenControlWidgetShortcutIntent(shortcut: shortcut)) {
+          Label(shortcut.displayString, braveSystemImage: shortcut.braveSystemImageName ?? "")
         }
       }
       .displayName(LocalizedStringResource(stringLiteral: Strings.Widgets.askBraveWidgetTitle))

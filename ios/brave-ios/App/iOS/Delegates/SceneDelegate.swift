@@ -110,7 +110,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
   private static var profileState: ProfileState?
 
   private var cancellables: Set<AnyCancellable> = []
-  private var pendingControlWidgetShortcut: WidgetShortcut?
 
   func scene(
     _ scene: UIScene,
@@ -212,7 +211,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       sendDAUPingIfNeeded()
       refreshSKUsCredentials(in: scene)
       handleQuickActionsIfNeeded(browserViewController: browserViewController)
-      handlePendingControlWidgetShortcutIfNeeded(browserViewController: browserViewController)
     }
   }
 
@@ -477,16 +475,19 @@ extension SceneDelegate {
       handleCustomUserActivityActions(sceneState.windowScene, userActivity: currentActivity)
     }
 
+    if #available(iOS 26.0, *) {
+      handleControlWidgetIntentIfNeeded(
+        sceneState.connectionOptions.appIntent,
+        browserViewController: browserViewController
+      )
+    }
+
     if sceneState.windowScene.activationState == .foregroundActive {
       // Perform any actions that would also execute in sceneDidBecomeActive
       Preferences.AppState.backgroundedCleanly.value = false
       sendDAUPingIfNeeded()
       refreshSKUsCredentials(in: sceneState.windowScene)
       handleQuickActionsIfNeeded(browserViewController: browserViewController)
-      handlePendingControlWidgetShortcutIfNeeded(
-        browserViewController: browserViewController,
-        connectionOptions: sceneState.connectionOptions
-      )
     }
   }
 
@@ -501,20 +502,13 @@ extension SceneDelegate {
     }
   }
 
-  private func handlePendingControlWidgetShortcutIfNeeded(
-    browserViewController: BrowserViewController,
-    connectionOptions: UIScene.ConnectionOptions? = nil
+  @available(iOS 26.0, *)
+  private func handleControlWidgetIntentIfNeeded(
+    _ appIntent: (any UISceneAppIntent)?,
+    browserViewController: BrowserViewController
   ) {
-    if #available(iOS 26.0, *),
-      let intent = connectionOptions?.appIntent as? OpenControlWidgetShortcutIntent
-    {
-      pendingControlWidgetShortcut = nil
-      browserViewController.handleNavigationPath(path: .widgetShortcutURL(intent.shortcut))
-      return
-    }
-    guard let shortcut = pendingControlWidgetShortcut else { return }
-    pendingControlWidgetShortcut = nil
-    browserViewController.handleNavigationPath(path: .widgetShortcutURL(shortcut))
+    guard let intent = appIntent as? OpenControlWidgetShortcutIntent else { return }
+    browserViewController.handleNavigationPath(path: .widgetShortcutURL(intent.shortcut))
   }
 
   private func sendDAUPingIfNeeded() {
@@ -936,15 +930,10 @@ extension SceneDelegate {
 @available(iOS 26.0, *)
 extension SceneDelegate: AppIntentSceneDelegate {
   func scene(_ scene: UIScene, willPerformAppIntent appIntent: any UISceneAppIntent) {
-    guard let intent = appIntent as? OpenControlWidgetShortcutIntent,
-      let windowScene = scene as? UIWindowScene
+    guard let windowScene = scene as? UIWindowScene,
+      let browserViewController = windowScene.browserViewController
     else { return }
-    if let browserViewController = windowScene.browserViewController {
-      pendingControlWidgetShortcut = nil
-      browserViewController.handleNavigationPath(path: .widgetShortcutURL(intent.shortcut))
-    } else {
-      pendingControlWidgetShortcut = intent.shortcut
-    }
+    handleControlWidgetIntentIfNeeded(appIntent, browserViewController: browserViewController)
   }
 }
 

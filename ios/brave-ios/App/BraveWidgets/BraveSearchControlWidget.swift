@@ -13,9 +13,10 @@ import WidgetKit
 struct BraveSearchControlWidget: ControlWidget {
   var body: some ControlWidgetConfiguration {
     if #available(iOS 26.0, *) {
+      let shortcut = WidgetShortcut.search
       return StaticControlConfiguration(kind: "BraveSearchControlWidget") {
-        ControlWidgetButton(action: OpenControlWidgetShortcutIntent(shortcut: .search)) {
-          Label(Strings.Widgets.braveSearch, braveSystemImage: "leo.search")
+        ControlWidgetButton(action: OpenControlWidgetShortcutIntent(shortcut: shortcut)) {
+          Label(shortcut.displayString, braveSystemImage: shortcut.braveSystemImageName ?? "")
         }
       }
       .displayName(LocalizedStringResource(stringLiteral: Strings.Widgets.braveSearchWidgetTitle))
