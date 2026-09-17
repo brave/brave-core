@@ -10,9 +10,7 @@ package*.json @brave/js-deps-reviewers
 # approve changes to this file.
 /package.json @brave/js-deps-reviewers @brave/build-commands-reviewers
 pnpm*.yaml @brave/js-deps-reviewers
-rewrite/ @brave/brave-core-owners
-rewrite/**/*.h.yaml @brave/brave-core-owners @brave/chromium-src-reviewers
-rewrite/**/*.cc.yaml @brave/brave-core-owners @brave/chromium-src-reviewers
+rewrite/ @brave/chromium-src-reviewers
 
 # Views
 # Do not add to BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY
