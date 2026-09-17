@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveStore
 import BraveStrings
 import BraveUI
 // To get cellular carrier name
@@ -195,11 +196,10 @@ struct VPNContactFormView: View {
     }
 
     if includes.receipt,
-      let receiptUrl = Bundle.main.appStoreReceiptURL,
-      let receiptData = try? Data(contentsOf: receiptUrl)
+      let receipt = try? AppStoreReceipt.receipt
     {
       body.append(Strings.VPN.contactFormAppStoreReceipt)
-      body.append("\n\(receiptData.base64EncodedString())\n\n")
+      body.append("\n\(receipt)\n\n")
     }
 
     return body

@@ -26,7 +26,6 @@ import PrivateCDN
 import RuntimeWarnings
 import SDWebImage
 @_spi(AppLaunch) import Shared
-import StoreKit
 import UserAgent
 import UserNotifications
 import os
@@ -126,7 +125,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     // IAPs can trigger on the app as soon as it launches,
     // for example when a previous transaction was not finished and is in pending state.
-    SKPaymentQueue.default().add(BraveVPN.iapObserver)
+    // Initializing the observer starts listening for transaction updates and purchase intents.
+    _ = BraveVPN.iapObserver
     // Editing Product Promotion List
     Task { @MainActor in
       await BraveVPN.updateStorePromotionOrder()
@@ -356,7 +356,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
   }
 
   func applicationWillTerminate(_ application: UIApplication) {
-    SKPaymentQueue.default().remove(BraveVPN.iapObserver)
 
     // Clean up BraveCore
     AppState.shared.braveCore.profileController?.syncAPI.removeAllObservers()

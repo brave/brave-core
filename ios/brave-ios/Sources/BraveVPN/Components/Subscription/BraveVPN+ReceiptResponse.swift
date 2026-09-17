@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStore
 import GuardianConnect
 import Preferences
 
@@ -40,15 +41,12 @@ extension BraveVPN {
   }
 
   public static func loadReceipt() async -> String? {
-    guard let receiptUrl = Bundle.main.appStoreReceiptURL,
-      let receipt = try? Data(contentsOf: receiptUrl).base64EncodedString
-    else { return nil }
-
-    return receipt
+    try? AppStoreReceipt.receipt
   }
 
   /// Connects to Guardian's server to validate locally stored receipt.
   /// Returns ReceiptResponse which hold information about status of receipt expiration etc
+  @MainActor
   public static func validateReceiptData() async throws -> ReceiptResponse? {
     guard let receipt = await loadReceipt(),
       let bundleId = Bundle.main.bundleIdentifier
@@ -62,7 +60,9 @@ extension BraveVPN {
       return nil
     }
 
-    return try await withCheckedThrowingContinuation { continuation in
+    // The verifyReceiptData completion closure is executed off-main,
+    // only hand the raw response back through the continuation
+    let response: [AnyHashable: Any] = try await withCheckedThrowingContinuation { continuation in
       housekeepingApi.verifyReceiptData(receipt, bundleId: bundleId) { response, error in
         if let error = error {
           // Error while fetching receipt response, the variations of error can be listed
@@ -80,39 +80,41 @@ extension BraveVPN {
           return
         }
 
-        let receiptResponseItem = GRDIAPReceiptResponse(withReceiptResponse: response)
-        let processedReceiptDetail = BraveVPN.processReceiptResponse(
-          receiptResponseItem: receiptResponseItem
-        )
-
-        switch processedReceiptDetail.status {
-        case .expired:
-          Preferences.VPN.expirationDate.value = Date(timeIntervalSince1970: 1)
-          Preferences.VPN.originalTransactionId.value = nil
-          logAndStoreError(
-            "VPN Subscription LineItems are empty subscription expired",
-            printToConsole: false
-          )
-        case .active, .retryPeriod:
-          if let expirationDate = processedReceiptDetail.expiryDate {
-            Preferences.VPN.expirationDate.value = expirationDate
-          }
-
-          if let gracePeriodExpirationDate = processedReceiptDetail.graceExpiryDate {
-            Preferences.VPN.gracePeriodExpirationDate.value = gracePeriodExpirationDate
-          }
-
-          Preferences.VPN.freeTrialUsed.value = !processedReceiptDetail.isInTrialPeriod
-
-          populateRegionDataIfNecessary()
-          GRDSubscriptionManager.setIsPayingUser(true)
-        }
-
-        Preferences.VPN.vpnReceiptStatus.value = processedReceiptDetail.status.rawValue
-
-        continuation.resume(returning: processedReceiptDetail)
+        continuation.resume(returning: response)
       }
     }
+
+    let receiptResponseItem = GRDIAPReceiptResponse(withReceiptResponse: response)
+    let processedReceiptDetail = BraveVPN.processReceiptResponse(
+      receiptResponseItem: receiptResponseItem
+    )
+
+    switch processedReceiptDetail.status {
+    case .expired:
+      Preferences.VPN.expirationDate.value = Date(timeIntervalSince1970: 1)
+      Preferences.VPN.originalTransactionId.value = nil
+      logAndStoreError(
+        "VPN Subscription LineItems are empty subscription expired",
+        printToConsole: false
+      )
+    case .active, .retryPeriod:
+      if let expirationDate = processedReceiptDetail.expiryDate {
+        Preferences.VPN.expirationDate.value = expirationDate
+      }
+
+      if let gracePeriodExpirationDate = processedReceiptDetail.graceExpiryDate {
+        Preferences.VPN.gracePeriodExpirationDate.value = gracePeriodExpirationDate
+      }
+
+      Preferences.VPN.freeTrialUsed.value = !processedReceiptDetail.isInTrialPeriod
+
+      populateRegionDataIfNecessary()
+      GRDSubscriptionManager.setIsPayingUser(true)
+    }
+
+    Preferences.VPN.vpnReceiptStatus.value = processedReceiptDetail.status.rawValue
+
+    return processedReceiptDetail
   }
 
   public static func processReceiptResponse(

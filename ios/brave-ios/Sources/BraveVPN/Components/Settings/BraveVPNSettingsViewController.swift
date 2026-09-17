@@ -422,16 +422,18 @@ public struct VPNSettingsView: View {
           }
           .foregroundStyle(Color(braveSystemName: .textInteractive))
           Button {
-            SKPaymentQueue.default().presentCodeRedemptionSheet()
+            Task {
+              await BraveVPN.presentOfferCodeRedeemSheet()
+            }
           } label: {
             Text(Strings.VPN.settingsRedeemOfferCode)
           }
           .foregroundStyle(Color(braveSystemName: .textInteractive))
           Button {
             Task {
-              try await BraveVPNInAppPurchaseObserver.refreshReceipt()
+              try? await AppStoreReceipt.sync()
+              openURL(.brave.braveVPNLinkReceiptProd)
             }
-            openURL(.brave.braveVPNLinkReceiptProd)
           } label: {
             Text(Strings.VPN.settingsLinkReceipt)
           }
@@ -439,18 +441,18 @@ public struct VPNSettingsView: View {
           if viewModel.isDevReceiptLinkingAvailable {
             Button {
               Task {
-                try await BraveVPNInAppPurchaseObserver.refreshReceipt()
+                try? await AppStoreReceipt.sync()
+                openURL(.brave.braveVPNLinkReceiptStaging)
               }
-              openURL(.brave.braveVPNLinkReceiptStaging)
             } label: {
               Text("[Staging] Link Receipt")
             }
             .foregroundStyle(Color(braveSystemName: .textInteractive))
             Button {
               Task {
-                try await BraveVPNInAppPurchaseObserver.refreshReceipt()
+                try? await AppStoreReceipt.sync()
+                openURL(.brave.braveVPNLinkReceiptDev)
               }
-              openURL(.brave.braveVPNLinkReceiptDev)
             } label: {
               Text("[Dev] Link Receipt")
             }
