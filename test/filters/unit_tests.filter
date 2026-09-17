@@ -849,6 +849,16 @@
 -ProfileManagerTest.ProfileAvatarRecordedAtProfileInit
 -ProfileMetricsTest.LogProfileAvatar
 
+# These tests expect a LoadingPredictor, which never exists now that
+# IsLoadingPredictorEnabled() always returns false.
+-All/NoStatePrefetchFallbackToPreconnectTest.LinkRelPrerender/*
+-LcpCriticalPathPredictorPageLoadMetricsObserverTest.*
+-LoadingPredictorConfigTest.PrefDisabled
+-LoadingPredictorConfigTest.PrefEnabled
+-NetworkHintsHandlerImplTest.*
+-RenderViewContextMenuPrefsTest.LensImageSearchIssuesGoogleLensPreconnect
+-RenderViewContextMenuPrefsTest.LensRegionSearchIssuesGoogleLensPreconnect
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
