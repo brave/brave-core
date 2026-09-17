@@ -30,6 +30,7 @@ class SplitViewMetrics;
 class PrivacyHubMetrics;
 class TabMetrics;
 #endif
+class CaptchaMetrics;
 class DefaultBrowserMonitor;
 class DohMetrics;
 class MediaSessionMetricsImpl;
@@ -59,6 +60,7 @@ class ProcessMiscMetrics {
   DefaultBrowserMonitor* default_browser_monitor();
   UptimeMonitorImpl* uptime_monitor();
   MediaSessionMetricsImpl* media_session_metrics();
+  CaptchaMetrics* captcha_metrics();
 
  private:
   void ReportSimpleMetrics();
@@ -78,6 +80,7 @@ class ProcessMiscMetrics {
   std::unique_ptr<TabMetrics> tab_metrics_;
 #endif
   std::unique_ptr<DefaultBrowserMonitor> default_browser_monitor_;
+  std::unique_ptr<CaptchaMetrics> captcha_metrics_;
   std::unique_ptr<DohMetrics> doh_metrics_;
   std::unique_ptr<UptimeMonitorImpl> uptime_monitor_;
   std::unique_ptr<MediaSessionMetricsImpl> media_session_metrics_;
