@@ -459,6 +459,55 @@ TEST_F(ZCashCreateTransparentTransactionTaskTest,
 }
 
 TEST_F(ZCashCreateTransparentTransactionTaskTest,
+       TransactionNotCreated_EmptyLatestBlock) {
+  ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
+      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+                         ZCashWalletService::GetUtxosCallback callback) {
+        ZCashWalletService::UtxoMap utxo_map;
+        utxo_map["60000"] = GetZCashUtxo(60000);
+        utxo_map["70000"] = GetZCashUtxo(70000);
+        utxo_map["80000"] = GetZCashUtxo(80000);
+        std::move(callback).Run(std::move(utxo_map));
+      });
+
+  ON_CALL(zcash_wallet_service(), DiscoverNextUnusedAddress(_, _, _))
+      .WillByDefault(
+          [&](const mojom::AccountIdPtr& account_id, bool change,
+              ZCashWalletService::DiscoverNextUnusedAddressCallback callback) {
+            auto id = mojom::ZCashKeyId::New(account_id->account_index, 1, 0);
+            auto addr = keyring_service().GetZCashAddress(account_id, *id);
+            std::move(callback).Run(std::move(addr));
+          });
+
+  ON_CALL(mock_zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault([](const std::string& chain_id,
+                        ZCashRpc::GetLatestBlockCallback callback) {
+        EXPECT_EQ(chain_id, mojom::kZCashMainnet);
+        std::move(callback).Run(zcash::mojom::BlockIDPtr());
+      });
+
+  base::MockCallback<
+      ZCashCreateTransparentTransactionTask::CreateTransactionCallback>
+      callback;
+
+  auto task = std::make_unique<ZCashCreateTransparentTransactionTask>(
+      pass_key(), zcash_wallet_service(), zcash_action_context(), kAddress1,
+      60);
+
+  base::expected<ZCashTransaction, std::string> tx_result;
+  EXPECT_CALL(callback, Run(_))
+      .WillOnce(::testing::DoAll(
+          SaveArg<0>(&tx_result),
+          base::test::RunOnceClosure(task_environment().QuitClosure())));
+
+  task->Start(callback.Get());
+
+  task_environment().RunUntilQuit();
+
+  EXPECT_FALSE(tx_result.has_value());
+}
+
+TEST_F(ZCashCreateTransparentTransactionTaskTest,
        TransactionNotCreated_NotEnoughFunds) {
   ON_CALL(zcash_wallet_service(), GetUtxos(_, _))
       .WillByDefault([&](const mojom::AccountIdPtr& account_id,

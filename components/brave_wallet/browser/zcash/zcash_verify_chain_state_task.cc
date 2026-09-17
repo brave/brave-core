@@ -205,10 +205,17 @@ void ZCashVerifyChainStateTask::OnGetTreeStateForChainVerification(
   CHECK(account_meta_.has_value());
   CHECK(account_meta_->latest_scanned_block_hash.has_value());
   CHECK(account_meta_->latest_scanned_block_id.has_value());
-  if (!tree_state.has_value() || !tree_state.value()) {
+  if (!tree_state.has_value()) {
     error_ = ZCashShieldSyncService::Error{
         ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState,
         base::StrCat({"Verification tree state failed, ", tree_state.error()})};
+    ScheduleWorkOnTask();
+    return;
+  }
+  if (!tree_state.value()) {
+    error_ = ZCashShieldSyncService::Error{
+        ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState,
+        "Verification tree state failed, empty tree state"};
     ScheduleWorkOnTask();
     return;
   }
@@ -242,11 +249,18 @@ void ZCashVerifyChainStateTask::GetRewindBlockTreeState() {
 
 void ZCashVerifyChainStateTask::OnGetRewindBlockTreeState(
     base::expected<zcash::mojom::TreeStatePtr, std::string> tree_state) {
-  if (!tree_state.has_value() || !tree_state.value() ||
-      rewind_block_heght_.value() != (*tree_state)->height) {
+  if (!tree_state.has_value()) {
     error_ = ZCashShieldSyncService::Error{
         ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState,
         base::StrCat({"Reorg tree state failed, ", tree_state.error()})};
+    ScheduleWorkOnTask();
+    return;
+  }
+  if (!tree_state.value() ||
+      rewind_block_heght_.value() != (*tree_state)->height) {
+    error_ = ZCashShieldSyncService::Error{
+        ZCashShieldSyncService::ErrorCode::kFailedToReceiveTreeState,
+        "Reorg tree state failed, empty or mismatched tree state"};
     ScheduleWorkOnTask();
     return;
   }
