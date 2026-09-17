@@ -1627,8 +1627,26 @@
 /* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Address index. */
 "wallet.signCardanoTxRequestDetailsAddressLabel" = "Naslov";
 
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes collateral inputs. */
+"wallet.signCardanoTxRequestDetailsCollateralLabel" = "Zavarovanje";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a collateral return output. */
+"wallet.signCardanoTxRequestDetailsCollateralReturnLabel" = "Vračilo zavarovanja";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes mint tokens. */
+"wallet.signCardanoTxRequestDetailsMintLabel" = "Kovnica";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a script data hash. */
+"wallet.signCardanoTxRequestDetailsScriptDataHashLabel" = "Zgoščena vrednost skriptnih podatkov";
+
 /* The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Token index. */
 "wallet.signCardanoTxRequestDetailsTokenLabel" = "Žeton";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a total collateral amount. */
+"wallet.signCardanoTxRequestDetailsTotalCollateralLabel" = "Skupno zavarovanje";
+
+/* The section header displayed in details for Sign Cardano Transaction Request when the transaction includes stake reward withdrawals. */
+"wallet.signCardanoTxRequestDetailsWithdrawalsLabel" = "Dvigi";
 
 /* A description explains signed transaction will be sent to network by dapps and awaits confirmation. */
 "wallet.signedTransactionDescription" = "Transakcija je podpisana in jo bo omrežju poslal dapp ter čaka potrditev.";

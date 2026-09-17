@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "แก้ไขเครื่องมือค้นหาด่วน";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "หากคุณพบปัญหาแอปหยุดทำงานหรือค้าง Brave สามารถส่งรายงานการวินิจฉัยแบบไม่ระบุตัวตนโดยอัตโนมัติเพื่อแก้ไขปัญหา คุณสามารถปิดการทำงานนี้ได้ในการตั้งค่าภายหลังเสมอ";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "เปิดใช้งานรายงานการหยุดทำงานอัตโนมัติ";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "เปิดการใช้งาน";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "ไม่ใช่ตอนนี้";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "เปิดใช้การลากเพื่อรีเฟรช";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "ภาพเริ่มต้น";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "ภาพ & วิดีโอที่ได้รับการสนับสนุน";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "ภาพที่ได้รับการสนับสนุน";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "ขอบคุณสำหรับการช่วยสนับสนุน Brave และชุมชน BAT!";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "การรีเซตจะลบโปรไฟล์ Brave Rewards ปัจจุบันของคุณ และ Brave Rewards จะไม่ถูกเปิดใช้งานอีกต่อไป";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "รีเซ็ต Brave Rewards";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "รีเซ็ต";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "ช่วยสนับสนุน Brave และชุมชน BAT โดยเปิดใช้งาน Brave Rewards และดูโฆษณาของ Brave";
 
@@ -2469,6 +2487,12 @@
 
 /* Title for the quality settings view */
 "settings.qualitySettings" = "การตั้งค่าคุณภาพ";
+
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "ส่งรายงานการวินิจฉัยแบบไม่ระบุชื่อหากคุณพบข้อขัดข้องหรืออาการค้าง";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "ส่งรายงานข้อขัดข้อง";
 
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "ปิงส่วนตัวนี้จะช่วยให้ Brave ประเมินผู้ใช้ที่ใช้งานอยู่ได้";
@@ -2954,7 +2978,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "ขีดจำกัดอุปกรณ์";
 
 /* New sync code button title */
-"sync.newSyncCode" = "เริ่มซิงค์เชนใหม่";
+"sync.newSyncCode" = "ซิงค์เชนใหม่";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "ตรวจสอบการเชื่อมต่ออินเทอร์เน็ตของคุณและลองอีกครั้ง";
@@ -3124,6 +3148,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "การท่องเว็บส่วนตัว";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "ส่วนตัว";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "การตั้งค่าแท็บส่วนตัว";
 
@@ -3148,11 +3175,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "ทำลายแท็บ";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld แท็บ";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld แท็บ";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "ดูประวัติการเข้าชม";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "ประวัติการเข้าชม";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "ดูแท็บที่ซิงค์";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "การซิงค์ข้อมูล";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "เปิดหรือปิดโหมดส่วนตัว";
