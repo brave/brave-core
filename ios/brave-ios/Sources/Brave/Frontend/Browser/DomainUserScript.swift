@@ -51,6 +51,8 @@ enum DomainUserScript: CaseIterable {
         "talk.brave.com",
         "talk.bravesoftware.com",
         "talk.brave.software",
+        "dev2.talk.brave.software",
+        "dev3.talk.brave.software",
       ])
     case .braveSkus:
       return Set([
