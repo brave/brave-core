@@ -267,7 +267,6 @@ bool BraveBrowserCommandController::UpdateCommandEnabled(int id, bool state) {
              : BrowserCommandController::UpdateCommandEnabled(id, state);
 }
 
-
 void BraveBrowserCommandController::InitBraveCommandState() {
   // Sync, Rewards, and Wallet pages don't work in tor(guest) sessions.
   // They also don't work in private windows but they are redirected
@@ -419,8 +418,8 @@ void BraveBrowserCommandController::InitBraveCommandState() {
   const size_t container_count =
       containers_service ? containers_service->GetContainers().size() : 0;
 
-  for (int id = IDC_NEW_TAB_IN_CONTAINER_1;
-       id <= IDC_NEW_TAB_IN_CONTAINER_9; ++id) {
+  for (int id = IDC_NEW_TAB_IN_CONTAINER_1; id <= IDC_NEW_TAB_IN_CONTAINER_9;
+       ++id) {
     const int index = id - IDC_NEW_TAB_IN_CONTAINER_1;
     UpdateCommandEnabled(id, index < static_cast<int>(container_count));
   }
