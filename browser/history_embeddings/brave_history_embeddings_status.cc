@@ -29,8 +29,10 @@ constexpr char kBraveHistoryEmbeddingsStatusKey[] =
 
 }  // namespace
 
-BraveHistoryEmbeddingsStatus::BraveHistoryEmbeddingsStatus(Profile* profile,
-                                                           bool enabled)
+BraveHistoryEmbeddingsStatus::BraveHistoryEmbeddingsStatus(
+    Profile* profile,
+    PrefService* local_state,
+    bool enabled)
     : profile_(profile), enabled_(enabled) {
   pref_change_registrar_.Init(profile_->GetPrefs());
   pref_change_registrar_.Add(
@@ -38,7 +40,7 @@ BraveHistoryEmbeddingsStatus::BraveHistoryEmbeddingsStatus(Profile* profile,
       base::BindRepeating(&BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged,
                           base::Unretained(this)));
   // The Local AI master switch is local state, so it needs its own registrar.
-  local_state_pref_change_registrar_.Init(g_browser_process->local_state());
+  local_state_pref_change_registrar_.Init(local_state);
   local_state_pref_change_registrar_.Add(
       local_ai::prefs::kBraveLocalAIEnabled,
       base::BindRepeating(&BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged,
@@ -46,6 +48,35 @@ BraveHistoryEmbeddingsStatus::BraveHistoryEmbeddingsStatus(Profile* profile,
   // The Local AI master switch only takes effect on relaunch, so the profile
   // can start with the index unavailable and no change to observe.
   OnEnabledPrefChanged();
+}
+
+// static
+void BraveHistoryEmbeddingsStatus::CreateForProfile(Profile* profile,
+                                                    PrefService* local_state) {
+  if (profile->GetUserData(kBraveHistoryEmbeddingsStatusKey)) {
+    return;
+  }
+  // Object cleanup is handled by SupportsUserData
+  profile->SetUserData(
+      kBraveHistoryEmbeddingsStatusKey,
+      std::make_unique<BraveHistoryEmbeddingsStatus>(
+          profile, local_state, IsHistoryEmbeddingsEnabledForProfile(profile)));
+}
+
+// static
+BraveHistoryEmbeddingsStatus* BraveHistoryEmbeddingsStatus::GetForProfile(
+    Profile* profile) {
+  CreateForProfile(profile, g_browser_process->local_state());
+  return static_cast<BraveHistoryEmbeddingsStatus*>(
+      profile->GetUserData(kBraveHistoryEmbeddingsStatusKey));
+}
+
+bool BraveHistoryEmbeddingsStatus::IsEnabled() const {
+  return enabled_;
+}
+
+bool BraveHistoryEmbeddingsStatus::NeedsRestart() const {
+  return IsHistoryEmbeddingsEnabledForProfile(profile_) != enabled_;
 }
 
 void BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged() {
@@ -61,34 +92,6 @@ void BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged() {
   profile_->GetPrefs()->ClearPref(
       ai_chat::prefs::kBraveAIChatTabOrganizationSendPageContent);
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-}
-
-// static
-void BraveHistoryEmbeddingsStatus::CreateForProfile(Profile* profile) {
-  if (profile->GetUserData(kBraveHistoryEmbeddingsStatusKey)) {
-    return;
-  }
-  // Object cleanup is handled by SupportsUserData
-  profile->SetUserData(
-      kBraveHistoryEmbeddingsStatusKey,
-      std::make_unique<BraveHistoryEmbeddingsStatus>(
-          profile, IsHistoryEmbeddingsEnabledForProfile(profile)));
-}
-
-// static
-BraveHistoryEmbeddingsStatus* BraveHistoryEmbeddingsStatus::GetForProfile(
-    Profile* profile) {
-  CreateForProfile(profile);
-  return static_cast<BraveHistoryEmbeddingsStatus*>(
-      profile->GetUserData(kBraveHistoryEmbeddingsStatusKey));
-}
-
-bool BraveHistoryEmbeddingsStatus::IsEnabled() const {
-  return enabled_;
-}
-
-bool BraveHistoryEmbeddingsStatus::NeedsRestart() const {
-  return IsHistoryEmbeddingsEnabledForProfile(profile_) != enabled_;
 }
 
 }  // namespace history_embeddings

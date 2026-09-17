@@ -49,7 +49,8 @@ class BraveHistoryEmbeddingsStatusTest : public testing::Test {
 
     // Stands in for BraveProfileManager::InitProfileUserPrefs(), which
     // TestingProfile skips without a TestingProfileManager.
-    BraveHistoryEmbeddingsStatus::CreateForProfile(profile_.get());
+    BraveHistoryEmbeddingsStatus::CreateForProfile(profile_.get(),
+                                                   local_state());
   }
 
   void SetSemanticHistorySearchEnabled(bool enabled) {
@@ -57,9 +58,12 @@ class BraveHistoryEmbeddingsStatusTest : public testing::Test {
         local_ai::prefs::kBraveHistoryEmbeddingsEnabled, enabled);
   }
 
+  PrefService* local_state() {
+    return TestingBrowserProcess::GetGlobal()->GetTestingLocalState();
+  }
+
   void SetLocalAiEnabled(bool enabled) {
-    TestingBrowserProcess::GetGlobal()->GetTestingLocalState()->SetBoolean(
-        local_ai::prefs::kBraveLocalAIEnabled, enabled);
+    local_state()->SetBoolean(local_ai::prefs::kBraveLocalAIEnabled, enabled);
   }
 
   BraveHistoryEmbeddingsStatus* status() {
@@ -146,8 +150,7 @@ TEST_F(BraveHistoryEmbeddingsStatusTest,
 // start with the index unavailable and no pref change to observe.
 TEST_F(BraveHistoryEmbeddingsStatusTest,
        StartingWithTheIndexUnavailableWithdrawsSendPageContent) {
-  TestingBrowserProcess::GetGlobal()->GetTestingLocalState()->SetBoolean(
-      local_ai::prefs::kBraveLocalAIEnabled, false);
+  SetLocalAiEnabled(false);
   seed_send_page_content_ = true;
 
   BuildProfileWithSetting(true);

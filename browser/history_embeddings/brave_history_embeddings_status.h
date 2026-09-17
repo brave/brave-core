@@ -9,6 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/supports_user_data.h"
 #include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_service.h"
 
 class Profile;
 
@@ -20,11 +21,13 @@ namespace history_embeddings {
 // browser relaunches.
 class BraveHistoryEmbeddingsStatus : public base::SupportsUserData::Data {
  public:
-  BraveHistoryEmbeddingsStatus(Profile* profile, bool enabled);
+  BraveHistoryEmbeddingsStatus(Profile* profile,
+                               PrefService* local_state,
+                               bool enabled);
 
   // Captures the setting at profile setup, before anything gated on it is
   // built. Later calls are no-ops.
-  static void CreateForProfile(Profile* profile);
+  static void CreateForProfile(Profile* profile, PrefService* local_state);
 
   // Never null. Profiles that skip profile setup, such as those built directly
   // in tests, capture the setting here instead.
