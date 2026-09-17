@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Blaues Design</translation>
 <translation id="1070329623210597193">Dateien, die von dieser Website aufgerufen oder bearbeitet werden können</translation>
 <translation id="1074758928858737435">Du kannst die Desktopversion von Websites anfordern</translation>
+<translation id="1760197532822135980">Brave-Vorschläge in anderen Apps erhalten</translation>
 <translation id="1109482864356262001">Funktionen, die Bewegungs- oder Lichtsensoren benötigen, funktionieren dann nicht</translation>
 <translation id="6670155282615872564">Mit den unten vorgeschlagenen Aktionen lässt sich das Beste aus Brave herausholen</translation>
 <translation id="113098737392899175">Auf den Seiten mithilfe eines Textcursors bewegen, wenn eine Tastatur angeschlossen ist</translation>
@@ -81,8 +82,9 @@
 <translation id="1796588414813960292">Funktionen, die Ton erfordern, funktionieren dann nicht</translation>
 <translation id="6704867734300244173">Wenn diese Option aktiviert ist, wird Brave schneller ausgeführt und Funktionen, die JavaScript verwenden, sollten wie vorgesehen laufen. Ist sie deaktiviert, wird die Leistung reduziert, V8 ist dafür aber widerstandsfähiger gegen Angriffe.</translation>
 <translation id="1818308510395330587">Damit <ph name="APP_NAME"/> AR verwenden kann, muss die Kameraberechtigung auch in den <ph name="BEGIN_LINK"/>Android-Einstellungen<ph name="END_LINK"/> aktiviert sein.</translation>
-<translation id="1822318649925991542">Du kannst die Position ändern, um den Browser an deine Bedürfnisse anzupassen</translation>
+<translation id="1822318649925991542">Du kannst die Position der Adressleiste an deine Bedürfnisse anpassen</translation>
 <translation id="1848033246551405023">Schriftart Sans Serif</translation>
+<translation id="1861244985839668297">Wenn dieser Schalter aktiviert ist, können Websites anfragen, ob sie HID-Geräte verwenden dürfen. Wenn er deaktiviert ist, können Websites keine HID-Geräte verwenden.</translation>
 <translation id="1861262398884155592">Dieser Ordner ist leer</translation>
 <translation id="1881806992065048905">Ansicht am unteren Rand – Darstellung „Neuer Tab“-Seite</translation>
 <translation id="1887786770086287077">Der Standortzugriff ist für dieses Gerät deaktiviert. Du kannst ihn in den <ph name="BEGIN_LINK"/>Android-Einstellungen<ph name="END_LINK"/> aktivieren.</translation>
@@ -158,7 +160,7 @@
 <translation id="2536779053640817375">Einmalig gewährt • Genau</translation>
 <translation id="2544997614631598250">Designfarbe dunkel</translation>
 <translation id="2546283357679194313">Cookies und Websitedaten</translation>
-<translation id="3127075554145176599">Du erhältst den bestmöglichen Brave-Schutz vor Onlinebedrohungen</translation>
+<translation id="3127075554145176599">Du erhältst den bestmöglichen Schutz von Brave vor Onlinebedrohungen</translation>
 <translation id="2570922361219980984">Der Standortzugriff ist für dieses Gerät ebenfalls deaktiviert. Du kannst ihn in den <ph name="BEGIN_LINK"/>Android-Einstellungen<ph name="END_LINK"/> aktivieren.</translation>
 <translation id="2586657967955657006">Zwischenablage</translation>
 <translation id="2588271083332682494">Überblick dank Tabgruppen</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271">Damit <ph name="APP_NAME"/> Handtracking verwenden kann, musst du die Einstellung auch in den <ph name="BEGIN_LINK"/>Systemeinstellungen<ph name="END_LINK"/> aktivieren.</translation>
 <translation id="4688045258817337666">Karten verwalten</translation>
 <translation id="4722332387043141878">Websites verwenden die Bewegungs- und Lichtsensoren deines Geräts normalerweise für Funktionen wie Virtual Reality oder Fitnesstracking</translation>
+<translation id="4748783296226936791">Websites verbinden sich normalerweise für solche Funktionen mit HID-Geräten, für die ungewöhnliche Tastaturen, Gamecontroller und andere Geräte verwendet werden</translation>
 <translation id="4755971844837804407">Wenn dieser Schalter aktiviert ist, können dir Websites beliebige Werbung anzeigen. Wenn er deaktiviert ist, können dir Websites keine aufdringliche oder irreführende Werbung anzeigen.</translation>
 <translation id="4779083564647765204">Zoomen</translation>
 <translation id="4807122856660838973">Safe Browsing aktivieren</translation>
@@ -447,11 +450,13 @@
 <translation id="5668404140385795438">Website-Anfrage zum Verhindern des Vergrößerns übergehen</translation>
 <translation id="5668843533782548925">Websites sind langsamer, aber sicherer</translation>
 <translation id="5677928146339483299">Blockiert</translation>
+<translation id="98560749650104566">Brave kann dir jetzt auf Grundlage deiner Browserdaten, z. B. deines aktuellen Browserverlaufs, Vorschläge in anderen Apps anzeigen. Diese Daten werden unter Einhaltung aller Sicherheitsvorgaben auf deinem Gerät verarbeitet. Diese Funktion lässt sich jederzeit in den Brave-Einstellungen deaktivieren.</translation>
 <translation id="5689516760719285838">Standort</translation>
 <translation id="5690795753582697420">Die Kamera wurde in den Android-Einstellungen deaktiviert</translation>
 <translation id="5700761515355162635">Drittanbieter-Cookies zugelassen</translation>
 <translation id="5706552988683188916">Dadurch werden Cookies und andere Websitedaten für <ph name="WEBSITE"/> gelöscht</translation>
 <translation id="571222594670061844">Websites dürfen Aufforderungen zur Anmeldung von Identitätsdiensten anzeigen</translation>
+<translation id="5719854774000914513">Websites dürfen nachfragen, wenn sie eine Verbindung mit HID-Geräten herstellen möchten</translation>
 <translation id="5740126560802162366">Websites können Daten auf deinem Gerät speichern</translation>
 <translation id="5743425052258407233">Du kannst deinen Verlauf auf allen deinen Geräten abrufen und dort weitermachen, wo du aufgehört hast</translation>
 <translation id="5749158352074143502">Mit diesem Tab fortfahren</translation>
@@ -500,6 +505,7 @@
 <translation id="6085954183010297841">Berechtigung zur Dateibearbeitung widerrufen? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Wenn diese Option aktiviert ist, können Websites automatisch den Bild-im-Bild-Modus aktivieren. Wenn diese Option deaktiviert ist, können Websites den Bild-im-Bild-Modus nicht automatisch aktivieren.</translation>
 <translation id="6120483543004435978">Wenn dieser Schalter aktiviert ist, können Websites anfragen, ob sie ermitteln dürfen, wann du dein Gerät aktiv nutzt. Wenn er deaktiviert ist, können Websites nicht ermitteln, wann du dein Gerät aktiv nutzt.</translation>
+<translation id="5773142757282836623">„Brave-Vorschläge in anderen Apps erhalten“ ausblenden</translation>
 <translation id="4852158809106762963">Brave bietet an, dein Passwort zu speichern</translation>
 <translation id="615886654739818377">Nicht zulassen, dass Websites Fenster auf allen deinen Bildschirmen verwalten</translation>
 <translation id="6165508094623778733">Weitere Informationen</translation>
@@ -571,6 +577,7 @@
 <translation id="6950072572526089586">Websites, die du besuchst, können Informationen zu deinen Aktivitäten speichern, um erwartungsgemäß zu funktionieren – beispielsweise um dafür zu sorgen, dass du angemeldet bleibst oder um Artikel in deinem Einkaufswagen zu speichern. Oft speichern Websites diese Informationen vorübergehend auf deinem Gerät.</translation>
 <translation id="6964291282260073066">„WebGPU“ ist deaktiviert.</translation>
 <translation id="6965382102122355670">OK</translation>
+<translation id="6972629891077993081">HID-Geräte</translation>
 <translation id="6980507581230208647">Rosafarbenes Design</translation>
 <translation id="6980861169612950611">Websitedaten löschen? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Bedienungshilfen</translation>
@@ -583,8 +590,7 @@
 <translation id="7053983685419859001">Blockieren</translation>
 <translation id="7055552182600664515">Zum Wiedergeben urheberrechtlich geschützter Inhalte müssen Websites eventuell einen Dienst für den Schutz von Inhalten verwenden. <ph name="BEGIN_LINK"/>Weitere Informationen<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 ausgewählt}other{# ausgewählt}}</translation>
-<translation id="708014373017851679"><ph name="APP_NAME"/> ist veraltet. Bitte aktualisiere die App.</translation>
-<translation id="7084115944294706056">Leistenposition auswählen</translation>
+<translation id="7084115944294706056">Position der Adressleiste</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> ausgewählt. Optionen sind oben auf dem Bildschirm verfügbar</translation>
 <translation id="7141896414559753902">Anzeige von Pop-ups und Weiterleitungen für Websites blockieren (empfohlen)</translation>
 <translation id="7176368934862295254"><ph name="KILOBYTES"/> KB</translation>
@@ -728,6 +734,7 @@ Diese Brave-Einstellungen werden durch das erweiterte Sicherheitsprogramm gesteu
 <translation id="8593422116412089302">Wenn dieser Schalter aktiviert ist, können Websites anfragen, ob sie Informationen verwenden dürfen, die sie über dich gespeichert haben. Wenn er deaktiviert ist, können Websites nicht anfragen, ob sie Informationen verwenden dürfen, die sie über dich gespeichert haben.</translation>
 <translation id="8609465669617005112">Nach oben</translation>
 <translation id="8617611086246832542">Wenn dieser Schalter aktiviert ist, wird die Desktop-Ansicht von Websites angezeigt. Wenn er deaktiviert ist, wird die mobile Ansicht von Websites angezeigt.</translation>
+<translation id="8625916342247441948">Websites dürfen keine Verbindung mit HID-Geräten herstellen</translation>
 <translation id="8670078035093027626">Ansicht am unteren Rand des Standardbrowsers vollständig geöffnet</translation>
 <translation id="8676316391139423634">Wenn dieser Schalter aktiviert ist, können Websites anfragen, ob sie deine Handbewegungen verfolgen dürfen. Wenn er deaktiviert ist, können Websites deine Handbewegungen nicht verfolgen.</translation>
 <translation id="8676374126336081632">Eingabe löschen</translation>

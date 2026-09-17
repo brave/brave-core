@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">દૃશ્યમાન વિસ્તાર</translation>
 <translation id="2026367923222947564">સંપૂર્ણ પૃષ્ઠ</translation>
 <translation id="4218885227032158909">પસંદ કરેલ વિસ્તાર</translation>
+<translation id="2586386106930448447">સ્ક્રીનશૉટ પૂર્વાવલોકન</translation>
+<translation id="7514365320538308">ડાઉનલોડ</translation>
+<translation id="2743387203779672305">ક્લિપબોર્ડ પર પ્રતિલિપિ બનાવો</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Web Extensions Storeમાં જુઓ</translation>
 <translation id="3161744659507801211">ચેતવણી: Brave ખાનગી વિંડોમાં એક્સ્ટેંશન્સની ઈતિહાસ રેકોડિંગને રોકી શકતું નથી.</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">જાઓ</translation>
 <translation id="2079545284768500474">છેલ્લો ફેરફાર રદ કરો</translation>
 <translation id="1533980864758658574"><ph name="TOPIC"/> માટે નવી વિન્ડો બનાવવામાં આવી</translation>
+<translation id="530437350080973527">કોઈ ટૅબ એ વિષય સાથે મેળ ખાતી નથી. તેને અલગ રીતે વર્ણવવાનો પ્રયાસ કરો.</translation>
 <translation id="7985042437720138349">આ ફીચર તમારા ખૂલ્લા ટૅબ્સ વિશેનાં ડેટાને Leo, Braveનું AI-થી શક્તિપ્રાપ્ત બ્રાઉઝર સહાયક માટે મોકલે છે.</translation>
 <translation id="6165508094623778733">વધુ જાણો</translation>
 <translation id="7557539689487606886">પ્રીમિયમ સભ્ય બનો</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">તમારા કન્ટેનરને "વર્ક" અથવા "પર્સનલ" જેમ નામ આપો</translation>
 <translation id="4976989127264491396">ભૂલ: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">કન્ટેનર મળ્યું નથી</translation>
+<translation id="6055154402239241620">Traffic Control</translation>
+<translation id="8134521925475508805">તમારા બ્રાઉઝિંગ સત્રો વચ્ચે અલગતા બનાવીને, ચોક્કસ સાઇટ્સને ચોક્કસ સંદર્ભમાં આપમેળે ખોલવા માટે ગોઠવો. <ph name="BEGIN_LINK"/>વધુ જાણો<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Traffic Control સક્ષમ કરો</translation>
+<translation id="1358255827354528344">નવો નિયમ ઉમેરો</translation>
+<translation id="7183128985801806752">નવો traffic control નિયમ</translation>
+<translation id="2474694032500407328">traffic control નિયમ સંપાદિત કરો</translation>
+<translation id="5543417389274097206">નિયમ બનાવો</translation>
+<translation id="6532106788206463496">ફેરફારો સાચવો</translation>
+<translation id="1172800769374812685">નિયમ ડિલીટ કરો</translation>
+<translation id="2389682807835777591">શું તમે ખરેખર નિયમ <ph name="RULE_LABEL"/> ને ડિલીટ કરવા માંગો છો?</translation>
+<translation id="4853129331778360252">મેનેજ કરવા અને હંમેશા ચોક્કસ બ્રાઉઝિંગ સંદર્ભમાં ખોલવા માટે URLs દાખલ કરો.</translation>
+<translation id="1173480005453148926">મેનેજ કરવા માટે URLs</translation>
+<translation id="6217532416180299470">traffic control સાથે મેનેજ કરવા માટે URLs દાખલ કરો</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> સાઇટ અને તેના સબડોમેન્સ સાથે મેળ ખાય છે; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> ચોક્કસ સાઇટ સાથે મેળ ખાય છે; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> બધી સાઇટ્સ સાથે મેળ ખાય છે; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> એ ટિપ્પણી છે.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (અને <ph name="COUNT"/> વધુ URLs)</translation>
+<translation id="3700798663085748181">નિયમ સક્ષમ કરો</translation>
+<translation id="2967480878853054068">અમાન્ય URL ફિલ્ટર</translation>
 <translation id="2263346047290834619">ટ્રી ટેબ્સનો ઉપયોગ કરો</translation>
 <translation id="5860254591544742609">શીર્ષક બાર બતાવો</translation>
 <translation id="4691131445504068802">મિનિમાઇઝ કરેલ હોવા પર સંપૂર્ણ રીતે છુપાવો</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">હવે અપડેટ કરો</translation>
 <translation id="5334844597069022743">સ્ત્રોત જુઓ</translation>
 <translation id="4720556299488643018">અનસબ્સ્ક્રાઇબ કરો</translation>
-<translation id="6532106788206463496">ફેરફારો સાચવો</translation>
 <translation id="4516904298421534459">ફિલ્ટર લિસ્ટ</translation>
 <translation id="4435215931544457255">વધારાની લોકપ્રિય કમ્યૂનિટી લિસ્ટ. નોંધ લો કે ઘણા બધા ફિલ્ટર્સ સક્ષમ કરવાથી બ્રાઉઝિંગની સ્પીડ ઓછી થશે.</translation>
 <translation id="802154636333426148">ડાઉનલોડ નિષ્ફળ થયું</translation>
@@ -611,6 +631,8 @@
 <translation id="509873765238158442">Microsoft Recallને બ્લોક કરો</translation>
 <translation id="4763421121695677716">Microsoft Windows કમ્પ્યુટર પરથી Recall ફીચરને કોઈપણ ખુલ્લી Brave ટૅબના આપમેળે સ્ક્રીનશૉટ લેવાથી બ્લોક કરો.</translation>
 <translation id="1968895725257436430">માહિતી સંગ્રહ</translation>
+<translation id="5668852698659986622">Sponsored Ads સક્ષમ કરો</translation>
+<translation id="431194936581466649">Sponsored Ads સાથે એક સ્વતંત્ર, વપરાશકર્તા-પ્રથમ વેબ બનાવવાના Braveના મિશનને સહાય કરો. અમે તમને ઓળખ્યા વગર, ખાનગી રીતે એડ પ્રદર્શન માપીએ છીએ.</translation>
 <translation id="1700052872056357670">બહાર નીકળતી વખતે ડેટા સાફ કરો</translation>
 <translation id="216468847346280584">Brave આધારનાં ડેટા સાફ કરો...</translation>
 <translation id="96212973142796240">Brave Ads ડેટા સાફ કરાયો</translation>
@@ -990,4 +1012,12 @@
 <translation id="154702742922788359">ઓપન મોડ</translation>
 <translation id="2249111429176737533">ટેબ્ડ વિન્ડો તરીકે ખોલો</translation>
 <translation id="7022756207310403729">બ્રાઉઝરમાં ખોલો</translation>
+<translation id="1916785651473363467">કસ્ટમ profile છબી</translation>
+<translation id="5336092064678832560">કસ્ટમ છબી અપલોડ કરો</translation>
+<translation id="1062407476771304334">બદલો</translation>
+<translation id="1428299461403073820">કસ્ટમ profile છબી બદલો</translation>
+<translation id="7994453838803296517">કસ્ટમ profile છબી પૂર્વાવલોકન, પસંદ કરેલ</translation>
+<translation id="6578040791557152233">કસ્ટમ profile છબી અપલોડ કરો</translation>
+<translation id="9222124079546967592">કસ્ટમ profile છબી દૂર કરો</translation>
+<translation id="6058660912941570282">Brave આ ફાઇલનો ઉપયોગ કરી શકતું નથી. બીજી છબી પસંદ કરો અને ફરી પ્રયાસ કરો.</translation>
 </translationbundle>

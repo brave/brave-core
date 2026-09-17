@@ -4,6 +4,7 @@
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Създадено преди <ph name="NUM_WEEKS_ONE"/> седмица}other{Създадено преди <ph name="NUM_WEEKS_MANY"/> седмици}}</translation>
 <translation id="1063300264396686489">Автоматично отваряне на групи раздели от други устройства</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> от разделите ви не са използвани наскоро. Искате ли да ги затворите?</translation>
+<translation id="1760197532822135980">Получаване на предложения от Brave в други приложения</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{Създадено преди <ph name="NUM_YEARS_ONE"/> година}other{Създадено преди <ph name="NUM_YEARS_MANY"/> години}}</translation>
 <translation id="1137385688780024041">{DAY_COUNT,plural, =1{Неактивните раздели и групи ще бъдат затворени след 1 месец}other{Неактивните раздели и групи ще бъдат затворени след <ph name="MONTH_COUNT_MANY"/> месеца}}</translation>
 <translation id="1173894706177603556">Преименуване</translation>
@@ -21,12 +22,14 @@
 <translation id="1501480321619201731">Изтриване на групата</translation>
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> неактивен елемент}other{<ph name="TABS_COUNT_MANY"/> неактивни елемента}}</translation>
 <translation id="1568067597247500137">Заглушаване на сайта</translation>
+<translation id="1639330215535800445">{TAB_COUNT,plural, =1{Преместване на раздела надолу}other{Преместване на разделите надолу}}</translation>
 <translation id="1645759014353344461"><ph name="TABS_COUNT_MANY"/> раздела са групирани</translation>
 <translation id="1657719826150349398">Преместване на раздела надолу</translation>
 <translation id="1670942869417022142">Спрян звук</translation>
 <translation id="1697284962337958118">Добавяне към</translation>
 <translation id="1713541401465507417">Затваряне на всички раздели и групи</translation>
 <translation id="1738346536511908887">{TAB_GROUPS_COUNT,plural, =1{<ph name="TAB_GROUPS_COUNT_ONE"/> група раздели вече не е налице}other{<ph name="TAB_GROUPS_COUNT_MANY"/> групи раздели вече не са налице}}</translation>
+<translation id="1759122978835002237">Преместване на групата раздели нагоре</translation>
 <translation id="176485176228926164"><ph name="BEGIN_LINK1"/>Научете повече<ph name="END_LINK1"/></translation>
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> раздел е групиран</translation>
 <translation id="1844381456014878100">След 7 дни неактивност</translation>
@@ -42,6 +45,7 @@
 <translation id="2118649612461486615">Информация за магазина</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{Включване отново на звука на сайта}other{Включване отново на звука на сайтовете}}</translation>
 <translation id="2162620598375156287">Сега цената е <ph name="CURRENT_PRICE"/> в(ъв) <ph name="SOURCE_WEBSITE"/></translation>
+<translation id="2164232689984783657">Преместване на групата раздели надолу</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Разгрупиране на раздела}other{Разгрупиране на разделите}}</translation>
 <translation id="2271452184061378400">Групите ви раздели се запазват тук</translation>
 <translation id="2277224997687551299">Редактиране на името на групата</translation>
@@ -128,7 +132,6 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Преместване на разделите в нов прозорец}other{Преместване на разделите в друг прозорец}}</translation>
 <translation id="5073204694187207510">Скриване на решетката на цял екран</translation>
 <translation id="5076161749301278626">Искате ли да видите отзивите за магазина?</translation>
-<translation id="5093447877601682598">Изпращане на отзиви за лентата с раздели</translation>
 <translation id="5161254044473106830">Изисква се заглавие</translation>
 <translation id="5204584298075822291">Свиване на разделите</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave автоматично затваря неактивните раздели и групи раздели след <ph name="AUTO_DELETE_DELAY_ONE"/> месец. Можете да промените това от настройките.}other{Brave автоматично затваря неактивните раздели и групи раздели след <ph name="AUTO_DELETE_DELAY_MANY"/> месеца. Можете да промените това от настройките.}}</translation>
@@ -192,6 +195,7 @@
 <translation id="7369451074646620503">Групата раздели „<ph name="TAB_GROUP_NAME"/>“ вече не е налице</translation>
 <translation id="7402375256128852434">Добавяне на скорошни раздели</translation>
 <translation id="7452985128687107478">Групите раздели се запазват и актуализират автоматично на всичките ви устройства</translation>
+<translation id="746137824927359035">{TAB_COUNT,plural, =1{Преместване на раздела нагоре}other{Преместване на разделите нагоре}}</translation>
 <translation id="747459581954555080">Възстановяване на всички</translation>
 <translation id="7489558427602531799">Преместване на групата раздели надясно</translation>
 <translation id="7501728912575021674">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> елемент}other{<ph name="TABS_COUNT_MANY"/> елемента}}</translation>
@@ -221,6 +225,7 @@
 <translation id="805809603610022708">{TABS_COUNT,plural, =1{Добавяне на раздела към група}other{Добавяне на разделите към група}}</translation>
 <translation id="8138067144082174140">След 14 дни неактивност</translation>
 <translation id="8153873338998959464">{NUMBER_OF_TABS,plural, =1{Разгъване на групата раздели „<ph name="TITLE_OF_GROUP"/>“ с(ъс) <ph name="COLOR_NAME"/> цвят, в която има <ph name="TABS_COUNT_ONE"/> раздел.}other{Разгъване на групата раздели „<ph name="TITLE_OF_GROUP"/>“ с(ъс) <ph name="COLOR_NAME"/> цвят, в която има <ph name="TABS_COUNT_MANY"/> раздела.}}</translation>
+<translation id="8172214054247281626">Споделяйте данни за сърфирането, като например скорошната си история на сърфиране, за да получавате предложения в определени приложения. Тези данни се обработват по сигурен начин на устройството ви.</translation>
 <translation id="8195186926670288294">{TABS_COUNT,plural, =1{Освобождаване на раздела}other{Освобождаване на разделите}}</translation>
 <translation id="8205266828577616993">Преместване на раздела нагоре</translation>
 <translation id="8207688828622594111">{NUM_MINS,plural, =1{Актуализирано преди <ph name="NUM_MINS_ONE"/> минута}other{Актуализирано преди <ph name="NUM_MINS_MANY"/> минути}}</translation>

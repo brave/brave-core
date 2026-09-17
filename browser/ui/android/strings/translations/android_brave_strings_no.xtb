@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Dagens topphistorier i en privat strøm, kun til deg.</translation>
 <translation id="3803728444598576153">Slå på Brave News og gå aldri mer glipp av siste nytt</translation>
 <translation id="7627131190984957214">Brave-nyheter er annonsestøttet med private og anonymiserte annonser som samsvarer med enheten din.</translation>
-<translation id="7897050360583141319">Følg favorittkildene dine i én samlet feed. Bare åpne en fane i Brave, rull ned – og voilà!\nBrave News støttes av private, anonymiserte annonser.</translation>
+<translation id="7897050360583141319">Følg favorittkildene dine i én samlet feed. Bare åpne en fane i Brave, rull ned – og voilà!</translation>
 <translation id="1765217911817124376">Slå på Brave-nyheter</translation>
 <translation id="8981973962043893066">Søk etter nettsted, emne eller RSS-feed</translation>
 <translation id="3225021799163709119">Populært</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Bidra til å forbedre produktstabiliteten for Brave\u2019s ved å automatisk sende diagnoserapporter hvis Brave-nettleseren krasjer eller slutter å fungere.</translation>
 <translation id="7977176350719484850">Est. data\nlagret</translation>
 <translation id="9008534313521214777">Beregnet tid\nspart</translation>
+<translation id="5668852698659986622">Aktiver sponsede annonser</translation>
+<translation id="431194936581466649">Bidra til å støtte Braves mål om å bygge et uavhengig, brukerorientert nett med sponsede annonser. Vi måler annonseytelse privat, uten å identifisere deg.</translation>
 <translation id="8347743943525229984">Tillat undersøkelser fra Brave</translation>
 <translation id="6022939994702081659">Lar Brave vise linker til private spørreundersøkelser i nye faner. Undersøkelsene hjelper oss med å utvikle funksjoner og måle effekten av annonsene i nettleseren.</translation>
 <translation id="7746496306508543965">Finn ut mer om Braves undersøkelser</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">Hovedmeny</translation>
 <translation id="7002271985859760052">Sidehandlinger</translation>
 <translation id="7104487676473617844">Følgende elementer vil kun være synlige i menyen når de støttes av den åpne nettsiden.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Brave Ads er her!</translation>
 <translation id="222883304157347087">(denne enheten)</translation>
 <translation id="4157741509680155021">ENHETER PÅ SYNKRONISERINGSKJEDEN</translation>
@@ -720,6 +721,8 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="1634828734222219955">Totalt</translation>
 <translation id="7995708795274219641">Beløp + Gass</translation>
 <translation id="2186011161688824046">Beløp + avgift</translation>
+<translation id="1118876217803190221">Utilstrekkelig saldo.</translation>
+<translation id="275990379543116961">Ikke nok midler til «gas»</translation>
 <translation id="1950052789869821983">Transaksjon</translation>
 <translation id="2304783958703511257">Avanserte innstillinger</translation>
 <translation id="4220062530885628403">Nonce</translation>

@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Mėlyna tema</translation>
 <translation id="1070329623210597193">Failai, kuriuos ši svetainė gali peržiūrėti arba redaguoti</translation>
 <translation id="1074758928858737435">Galite prašyti peržiūrėti svetainių versiją staliniams kompiuteriams</translation>
+<translation id="1760197532822135980">Gauti „Brave“ pasiūlymų kitose programose</translation>
 <translation id="1109482864356262001">Funkcijos, kurioms reikalingi judesio arba šviesos jutikliai, neveiks</translation>
 <translation id="6670155282615872564">Atlikite toliau nurodytus siūlomus veiksmus, kad išnaudotumėte visas „Brave“ galimybes</translation>
 <translation id="113098737392899175">Naršykite puslapius naudodami teksto žymeklį, kai prijungta klaviatūra</translation>
@@ -83,6 +84,7 @@
 <translation id="1818308510395330587">Norėdami leisti „<ph name="APP_NAME"/>“ naudoti AR, taip pat įjunkite fotoaparatą <ph name="BEGIN_LINK"/>„Android“ nustatymuose<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Pakeiskite adreso juostos poziciją, kad būtų patogiau naršyti</translation>
 <translation id="1848033246551405023">Šriftas: be užraitų</translation>
+<translation id="1861244985839668297">Įjungus svetainėse gali būti prašoma naudoti ŽSĮ įrenginius. Išjungus svetainėse negalima naudoti ŽSĮ įrenginių.</translation>
 <translation id="1861262398884155592">Šis aplankas tuščias</translation>
 <translation id="1881806992065048905">Naujo skirtuko puslapio išvaizdos apatinis lapas</translation>
 <translation id="1887786770086287077">Vietos prieiga išjungta šiame įrenginyje. Įjunkite ją skiltyje <ph name="BEGIN_LINK"/>„Android“ nustatymai“<ph name="END_LINK"/>.</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271">Jei leidžiate „<ph name="APP_NAME"/>“ naudoti rankų stebėjimą, <ph name="BEGIN_LINK"/>sistemos nustatymuose<ph name="END_LINK"/> taip pat įjunkite rankų stebėjimą.</translation>
 <translation id="4688045258817337666">Tvarkykite savo korteles</translation>
 <translation id="4722332387043141878">Paprastai svetainėse naudojami įrenginio judesio ir šviesos jutikliai vykdant tokias funkcijas kaip virtualioji realybė ar kūno rengybos stebėjimas</translation>
+<translation id="4748783296226936791">Paprastai svetainėse prisijungiama prie HID įrenginių vykdant tam tikras funkcijas, kurioms naudojamos neįprastos klaviatūros, žaidimų valdikliai ir kiti įrenginiai</translation>
 <translation id="4755971844837804407">Įjungus svetainėse gali būti rodomas jums bet koks skelbimas. Išjungus svetainėse negalima rodyti nepageidaujamų ar klaidinančių skelbimų.</translation>
 <translation id="4779083564647765204">Keisti mastelį</translation>
 <translation id="4807122856660838973">Įjunkite Saugų naršymą</translation>
@@ -447,11 +450,13 @@
 <translation id="5668404140385795438">Nepaisyti svetainės mastelio keitimo vengimo užklausos</translation>
 <translation id="5668843533782548925">Svetainės lėtesnės, bet saugesnės</translation>
 <translation id="5677928146339483299">Užblokuoti</translation>
+<translation id="98560749650104566">Dabar „Brave“ gali rodyti pasiūlymus kitose programose pagal jūsų naršymo duomenis, pvz., naujausią naršymo istoriją. Šie duomenys saugiai apdorojami jūsų įrenginyje. Galite bet kada išjungti tai „Brave“ nustatymuose.</translation>
 <translation id="5689516760719285838">Vieta</translation>
 <translation id="5690795753582697420">Fotoaparatas išjungtas „Android“ nustatymuose</translation>
 <translation id="5700761515355162635">Trečiųjų šalių slapukai leidžiami</translation>
 <translation id="5706552988683188916">Bus ištrinti <ph name="WEBSITE"/> slapukai ir kiti svetainės duomenys</translation>
 <translation id="571222594670061844">Svetainėse gali būti rodomi raginimai prisijungti iš tapatybės nustatymo paslaugų</translation>
+<translation id="5719854774000914513">Svetainėse gali būti prašoma prisijungti prie HID įrenginių</translation>
 <translation id="5740126560802162366">Svetainės gali išsaugoti duomenis įrenginyje</translation>
 <translation id="5743425052258407233">Gaukite istoriją visuose įrenginiuose, kad galėtumėte lengvai tęsti darbą nuo ten, kur baigėte</translation>
 <translation id="5749158352074143502">Tęsti naudojant šį skirtuką</translation>
@@ -500,6 +505,7 @@
 <translation id="6085954183010297841">Ištrinti failo redagavimo leidimą? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Įjungus svetainėse galima automatiškai įjungti vaizdo vaizde režimą. Išjungus svetainėse negalima automatiškai įjungti vaizdo vaizde režimo.</translation>
 <translation id="6120483543004435978">Įjungus svetainėse gali būti prašoma leisti sužinoti, kada aktyviai naudojate įrenginį. Išjungus svetainės nežino, kada aktyviai naudojate įrenginį.</translation>
+<translation id="5773142757282836623">Slėpti parinktį „Gauti „Brave“ pasiūlymų kitose programose“</translation>
 <translation id="4852158809106762963">„Brave“ pasiūlys išsaugoti slaptažodį</translation>
 <translation id="615886654739818377">Neleisti svetainėms tvarkyti langų visuose ekranuose</translation>
 <translation id="6165508094623778733">Sužinokite daugiau</translation>
@@ -571,6 +577,7 @@
 <translation id="6950072572526089586">Svetainė, kurioje lankotės, gali išsaugoti informaciją apie jūsų atliktus veiksmus, kad galėtų veikti taip, kaip numatyta, pvz., kad liktumėte prisijungę prie svetainės arba galėtumėte išsaugoti prekes pirkinių krepšelyje. Dažnai svetainės laikinai išsaugo šią informaciją įrenginyje.</translation>
 <translation id="6964291282260073066">„WebGPU“ išjungta.</translation>
 <translation id="6965382102122355670">Gerai</translation>
+<translation id="6972629891077993081">HID įrenginiai</translation>
 <translation id="6980507581230208647">Rožinė tema</translation>
 <translation id="6980861169612950611">Ištrinti svetainės duomenis? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Pritaikymas neįgaliesiems</translation>
@@ -583,7 +590,6 @@
 <translation id="7053983685419859001">Blokuoti</translation>
 <translation id="7055552182600664515">Norint leisti autorių teisių apsaugotą turinį, svetainėse gali būti reikalinga turinio apsaugos paslauga. <ph name="BEGIN_LINK"/>Sužinokite daugiau<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Pasirinktas 1 elementas}one{Pasirinktas # elementas}few{Pasirinkti # elementai}many{Pasirinkta # elemento}other{Pasirinkta # elementų}}</translation>
-<translation id="708014373017851679">„<ph name="APP_NAME"/>“ pasenusi. Atnaujinkite programą.</translation>
 <translation id="7084115944294706056">Adreso juostos pozicijos pasirinkimas</translation>
 <translation id="7087918508125750058">Pasirinkta: <ph name="ITEM_COUNT"/>. Parinktys pasiekiamos netoli ekrano viršaus</translation>
 <translation id="7141896414559753902">Blokuoti, kad svetainėse nebūtų rodomi iššokantieji langai ir peradresavimai (rekomenduojama)</translation>
@@ -728,6 +734,7 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.</t
 <translation id="8593422116412089302">Įjungus svetainėse gali būti prašoma naudoti apie jus išsaugotą informaciją. Išjungus svetainėse negali būti prašoma naudoti apie jus išsaugotos informacijos.</translation>
 <translation id="8609465669617005112">Perkelti į viršų</translation>
 <translation id="8617611086246832542">Įjungus rodoma svetainių rodinio versija staliniams kompiuteriams. Išjungus rodoma svetainių rodinio versija mobiliesiems.</translation>
+<translation id="8625916342247441948">Neleisti svetainėms prisijungti prie HID įrenginių</translation>
 <translation id="8670078035093027626">Numatytosios naršyklės apatinis lapas atidarytas per visą ekrano aukštį</translation>
 <translation id="8676316391139423634">Įjungus svetainėse gali būti prašoma stebėti jūsų rankas. Išjungus svetainės negali stebėti jūsų rankų.</translation>
 <translation id="8676374126336081632">Išvalyti įvestą tekstą</translation>

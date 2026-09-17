@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Bugungi asosiy yangiliklar maxfiy tasmada, faqat siz uchun.</translation>
 <translation id="3803728444598576153">Brave Yangiliklarini yoqing va hech bir yangilikni oʻtkazib yubormang</translation>
 <translation id="7627131190984957214">Brave Yangiliklar qurilmangizda moslanadigan maxfiy va anonimlashtirilgan reklamalar bilan dastaklanadi.</translation>
-<translation id="7897050360583141319">Sevimli manbalarni bitta lentada kuzatib boring. Faqat Brave'da yangi varaqqa o‘ting, pastga aylantiring va ... voilá! Brave Yangiliklar shaxsiy, anonimlashtirilgan reklamalari bilan qo‘llab-quvvatlanadi.</translation>
+<translation id="7897050360583141319">Sevimli manbalaringizni bitta lentada kuzatib boring. Faqat Brave’da yangi varaq oching, pastga siljiting va… voila!</translation>
 <translation id="1765217911817124376">Brave Yangiliklarini yoqish</translation>
 <translation id="8981973962043893066">Sayt, mavzu yoki RSS tasmasini qidirish</translation>
 <translation id="3225021799163709119">Ommabop</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Brave Brauzer ishlamay qolganida yoki muzlab qolganida diagnostika xisobotini avtomatik yuborish orqali Brave mahsulotining barqarorligini yaxshilashga yordam bering.</translation>
 <translation id="7977176350719484850">Taxm. tejalgan\ntrafik</translation>
 <translation id="9008534313521214777">Taxm. tejalgan\nvaqt</translation>
+<translation id="5668852698659986622">Homiylik reklamalarini yoqish</translation>
+<translation id="431194936581466649">Homiylik reklamalari bilan Brave'ning mustaqil, foydalanuvchini birinchi o'ringa qo'yuvchi Web qurish missiyasini qo'llab-quvvatlashga yordam bering. Biz reklama samaradorligini sizni aniqlamasdan, maxfiy tarzda o'lchaymiz.</translation>
 <translation id="8347743943525229984">Brave soʻrovnomalariga ruxsat bering</translation>
 <translation id="6022939994702081659">Brave'ga yangi varaq sahifasida shaxsiy soʻrovnomalarga havolalarni koʻrsatishga ruxsat beradi. Soʻrovnomalar bizga yangi funksiyalarni yaxshilash va brauzer orqali amalga oshiriladigan reklama kampaniyalarining samaradorligini baholashga yordam beradi.</translation>
 <translation id="7746496306508543965">Brave soʻrovnomalari haqida batafsil</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">Asosiy menyu</translation>
 <translation id="7002271985859760052">Sahifa amallari</translation>
 <translation id="7104487676473617844">Quyidagi elementlar faqat joriy ochilgan veb-sahifa tomonidan qoʻllab-quvvatlanganda menyuda koʻrinadi.</translation>
-<translation id="4159764849281393303">Veb-ilova</translation>
 <translation id="8038539967102225446">Brave Ads mana bu yerda!</translation>
 <translation id="222883304157347087">(bu qurilma)</translation>
 <translation id="4157741509680155021">SYNC CHAIN'DAGI QURILMALAR</translation>
@@ -735,6 +736,8 @@ Dastlab yanada koʻproq maʼlumot baham koʻrsangiz, bizning yordam xizmatimiz m
 <translation id="1634828734222219955">Jami</translation>
 <translation id="7995708795274219641">Summa + Gaz</translation>
 <translation id="2186011161688824046">Summa + toʻlov</translation>
+<translation id="1118876217803190221">Yetarli balans yo‘q</translation>
+<translation id="275990379543116961">Gaz uchun mablag' yetarli emas</translation>
 <translation id="1950052789869821983">Tranzaksiya</translation>
 <translation id="2304783958703511257">Kengaytirilgan sozlamalar</translation>
 <translation id="4220062530885628403">Nonce</translation>

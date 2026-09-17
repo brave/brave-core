@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">ປິດໃຊ້ົງານ</translation>
 <translation id="59174027418879706">ເປີດໃຊ້ົງານ</translation>
 <translation id="6920492760024499150">ຂ່າວເດັ່ນມື້ນີ້ໃນຟີດສ່ວນຕົວທີ່ຈັດໃຫ້ທ່ານໂດຍສະເພາະ.</translation>
-<translation id="3803728444598576153">ເປີດ Brave News ແລະຫຼີກລຽງບໍ່ໃຫ້ພາດໂອກາດເລື່ອງສຳຄັນ</translation>
+<translation id="3803728444598576153">ເປີດ Brave News ແລະຫຼີກລ່ຽງບໍ່ໃຫ້ພາດໂອກາດເລື່ອງສຳຄັນ</translation>
 <translation id="7627131190984957214">Brave News ສະແດງໂຄສະນາໂດຍບໍ່ລະບຸຕົວຕົນ ແລະ ຈັບຄູ່ຢ່າງເປັນສ່ວນຕົວໃນອຸປະກອນຂອງທ່ານ.</translation>
-<translation id="7897050360583141319">ຕິດຕາມແຫຼ່ງຂໍ້ມູນທີ່ທ່ານມັກໃນ feed ຫນຶ່ງ. ແຄ່ເປີດແທັບຢູ່ Brave, ເລື່ອນຊື່ງ, ແລະ... voila!\nBrave News ເປັນການສະໜອງໂຄສະນາດ້ວຍຄວາມເປັນສ່ວນຕົວ, ໂຄສະນາທີ່ບໍ່ລະບຸຕົວຕົນ.</translation>
+<translation id="7897050360583141319">ຕິດຕາມແຫຼ່ງທີ່ທ່ານມັກໃນຟີດດຽວ. ພຽງແຕ່ເປີດແທັບໃນ Brave, ເລື່ອນລົງ, ແລະ… ວົວລາ!</translation>
 <translation id="1765217911817124376">ເປີດ Brave News</translation>
 <translation id="8981973962043893066">ຄົ້ນຫາເວັບໄຊ, ຫົວຂໍ້, ຫຼື RSS feed</translation>
 <translation id="3225021799163709119">ນິຍົມ</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">ຊ່ວຍປັບປຸງຄວາມສົມບູນຂອງຜົນຕາມຜະລາຍຂອງ Brave ໂດຍການສົ່ງລາຍງານວິນິຈະນາຄົງ຅ໍາ.</translation>
 <translation id="7977176350719484850">ຂໍ້ມູນໂດຍປະມານ\nທີ່ປະຢັດໄດ້</translation>
 <translation id="9008534313521214777">ເວລາໂດຍປະມານ\nທີ່ປະຢັດໄດ້</translation>
+<translation id="5668852698659986622">ເປີດໃຊ້ Sponsored Ads</translation>
+<translation id="431194936581466649">ຊ່ວຍສະໜັບສະໜູນພາລະກິດຂອງ Brave ໃນການສ້າງເວັບທີ່ເປັນອິດສະຫຼະ, ໃຫ້ຄວາມສໍາຄັນກັບຜູ້ໃຊ້ເປັນອັນດັບໜຶ່ງດ້ວຍ Sponsored Ads. ພວກເຮົາວັດແທກປະສິດທິພາບຂອງ ad ຢ່າງເປັນສ່ວນຕົວ, ໂດຍບໍ່ໄດ້ລະບຸຕົວທ່ານ.</translation>
 <translation id="8347743943525229984">ອະນຸຍາດແບບສຳຫຼວດຂອງ Brave</translation>
 <translation id="6022939994702081659">ອະນຸຍາດໃຫ້ Brave ສະແດງລິ້ງໄປສູ່ການສຳຫຼວດສ່ວນຕົວໃນໜ້າກະດານແທັບບໃໝ່.ການສຳຫຼວດຊ່ວຍເຮົາສ້າງຄຸນສົມບັດທີ່ດີຂຶ້ນ ແລະ ວັດຜົນກະທົບຂອງໂຄສະນາໃນເວັບຟຣອມປຸ່ມອາດແດງ</translation>
 <translation id="7746496306508543965">ຮຽນຮູ້ເພິ່ມເຕີມກ່ຽວກັບການສຳຫຼວດຂອງ Brave</translation>
@@ -281,7 +283,6 @@
 <translation id="5582839680698949063">ເມນູຫຼັກ</translation>
 <translation id="7002271985859760052">ການດໍາເນີນການໜ້າເວັບ</translation>
 <translation id="7104487676473617844">ຫົວຂໍ້ຂ້າງລຸ່ມນີ້ຈະມອງເຫັນຢູ່ໃນເມນູພຽງແຕ່ໃນເວັບໄຊທີ່ເປີດຢູ່ສະໜັບສະໜຸນ</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Brave Ads ມາຮອດແລ້ວ!</translation>
 <translation id="222883304157347087">(ອຸປະກອນນີ້)</translation>
 <translation id="4157741509680155021">ອຸປະກອນທີ່ເຊື່ອມໃນກຸ່ມ</translation>
@@ -714,6 +715,8 @@ Enter the sync chain code words shown below.</translation>
 <translation id="1634828734222219955">ລວມ​ທັງ​ໝົດ</translation>
 <translation id="7995708795274219641">ຈຳນວນ + Gas</translation>
 <translation id="2186011161688824046">ຈຳນວນ + ຄ່າທາງ</translation>
+<translation id="1118876217803190221">ຍອດເງິນບໍ່ພຽງພໍ</translation>
+<translation id="275990379543116961">ຍອດເງິນບໍ່ພຽງພໍສຳລັບຄ່າແກັສ</translation>
 <translation id="1950052789869821983">ການສົດທຳນີມ</translation>
 <translation id="2304783958703511257">ການຕັ້ງຄ່າຂັ້ນສູງ</translation>
 <translation id="4220062530885628403">Nonce</translation>

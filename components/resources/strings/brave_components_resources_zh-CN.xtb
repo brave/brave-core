@@ -864,9 +864,11 @@
 <translation id="646023614746251785">确认兑换</translation>
 <translation id="6264944956989873014">确认桥接</translation>
 <translation id="7067917728851842589">确认发送</translation>
+<translation id="2841837950101800123">提供者</translation>
 <translation id="1114725160772317155">提供者状态</translation>
 <translation id="2351357639951873714">确认盾牌保护</translation>
 <translation id="7480044382160806610">确认取消屏蔽</translation>
+<translation id="6830542010524256586">确认迁移</translation>
 <translation id="8332923694292360653">支出</translation>
 <translation id="3735740477244556633">排序依据</translation>
 <translation id="6484605214219822434">审核网桥</translation>
@@ -1405,8 +1407,10 @@
 <translation id="5503843345634715425">已退款</translation>
 <translation id="1778601041100951971">屏蔽 <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">取消屏蔽 <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">正在迁移 <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> 已屏蔽</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> 已取消屏蔽</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> 已迁移</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} 更多待处理交易。}
       other {{PENDING_TRANSACTIONS} 更多待处理交易。}
@@ -1845,14 +1849,18 @@
 <translation id="9086302186042011942">正在同步</translation>
 <translation id="99991973626409495">查看屏蔽</translation>
 <translation id="6779429520470417361">查看取消屏蔽</translation>
+<translation id="7861093868637278059">审核迁移</translation>
 <translation id="3114681061018999547">正在屏蔽</translation>
 <translation id="1564172583156967455">取消屏蔽中</translation>
+<translation id="7040674372746105444">迁移中</translation>
 <translation id="8897189056319316783">屏蔽 ZEC</translation>
 <translation id="508249542337194541">取消屏蔽 ZEC</translation>
+<translation id="3242332985109374549">迁移 ZEC</translation>
 <translation id="3382275793825152362">保护资金</translation>
 <translation id="617149752238892649">取消屏蔽资金</translation>
 <translation id="8631765320256788981">您正在将资金从您的透明账户发送到您的保护账户。</translation>
 <translation id="3860364671495430495">您正在将资金从您的保护账户发送到您的透明账户。</translation>
+<translation id="9664108035970394">您正在将资金从您的受保护旧版账户发送到您的受保护账户。</translation>
 <translation id="7144878232160441200">重试</translation>
 <translation id="4750109510113597688">此交易可能包括帐户创建费</translation>
 <translation id="6201709949885884577">执行此操作需要输入密码。</translation>
@@ -2209,7 +2217,7 @@ other {# 个来源}
 <translation id="8151638057146502721">配置</translation>
 <translation id="999273441077650169">模型会动态变化以使用最适合任务的模型。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Qwen VL 30B 提供支持，这是一个由阿里巴巴云创建的模型，性能卓越，适用于多种用例。Qwen 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">嗨，我是 Leo。我是由 Brave 提供的 AI 助手。我由 GLM-5.1 提供支持，这是一个由 Zhipu AI 创建的模型，性能卓越，适用于多种用例。GLM-5.1 通过他们自己的可验证私密安全基础设施由 NEAR 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">嗨，我是 Leo。我是由 Brave 提供的 AI 助手。我由 GLM-5.3 Flash 提供支持，这是一个由 Zhipu AI 创建的模型，性能卓越，适用于多种用例。GLM-5.3 Flash 通过他们自己的可验证私密安全基础设施由 NEAR 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">您好，我是 Leo。是 Brave 提供的 AI 助手，由 Anthropic 创建的 Claude Instant 模型驱动⸺该模型可处理对话及文本任务。Claude Instant 由 Brave 自有安全基础架构托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Haiku 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Haiku 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">嗨，我是 Leo。我是由 Brave 完全托管的 AI 助手。我由 Claude Sonnet 提供支持，这是一个由 Anthropic 创建的模型，用于支持对话和文本处理任务。Claude Sonnet 通过我们自己的安全基础设施由 Brave 托管。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
@@ -2331,6 +2339,8 @@ other {# 个来源}
 <translation id="4370698775470316661">对话时间太长，无法继续。可能有其他机型，Leo 能够在较长时间的对话中保持准确性。</translation>
 <translation id="4744144453035015075">正在搜索网页</translation>
 <translation id="8548351747582087191">正在网页上搜索 <ph name="SEARCH_TERMS"/>。</translation>
+<translation id="4395536726196773278">正在您打开的标签页中搜索“<ph name="QUERY"/>”…</translation>
+<translation id="4724926708866789382">没有打开的标签页与“<ph name="QUERY"/>”匹配。</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> 更多…</translation>
 <translation id="8103700533980268469">关闭此通知</translation>
 <translation id="3417835166382867856">搜索标签页</translation>
@@ -2378,6 +2388,8 @@ other {# 个来源}
 <translation id="443008484043213881">工具</translation>
 <translation id="4343623396828510727">这些站点公开了 Leo 可用于向本站点发送数据以及从本站点接收数据的工具。如果本对话包含您不希望本站点看到的数据，请勿附加或批准这些工具。</translation>
 <translation id="5021823940147712387">移除工具</translation>
+<translation id="8712279871321308580">可用的网站工具</translation>
+<translation id="3690996226559605619">可用工具 (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">所有订阅都会自动续订，但可在续订之前随时取消。</translation>
 <translation id="5091223967610958">分享你所在页面的主机名 (<ph name="HOST_NAME"/>) 以帮助我们改进 Leo。</translation>
 <translation id="8732450785281947197">Leo AI 工具</translation>
@@ -2416,6 +2428,7 @@ other {# 个来源}
 <translation id="6397861830483632092">打开标签…</translation>
 <translation id="802080272588201037">书签…</translation>
 <translation id="2716127283451902393">历史…</translation>
+<translation id="8888171900079152025">工作区文件夹</translation>
 <translation id="49269513399674318">使用麦克风</translation>
 <translation id="3895031624234442305">自定义型号</translation>
 <translation id="4572010449071015143">开始新会话</translation>
@@ -2449,8 +2462,11 @@ other {# 个来源}
 <translation id="3397808797783614750">启用 AI 为您自动浏览可能会对您的隐私、财务和在线通信造成有害且非预期的影响。<ph name="LINK_BEFORE"/>了解更多<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">安全警告</translation>
 <translation id="6077070599873946984">Brave AI 需要您的权限执行操作：<ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI 希望在 **<ph name="SITE_ORIGIN"/>** 上执行 **<ph name="TOOL_NAME"/>**</translation>
 <translation id="4163837693685963037">该操作被检测为可能与您的请求不一致：</translation>
 <translation id="3927932062596804919">拒绝</translation>
+<translation id="4191349941249805855">显示工具参数</translation>
+<translation id="7237059533128264835">隐藏工具参数</translation>
 <translation id="4569155249847375786">已验证</translation>
 <translation id="8200772114523450471">继续</translation>
 <translation id="7607002721634913082">暂停</translation>
@@ -2556,7 +2572,7 @@ other {# 个来源}
 <translation id="9173319813356700250">新闻</translation>
 <translation id="6543799171249004861">照片提供者：<ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="7978582287767542276">移除赞助站点</translation>
+<translation id="7978582287767542276">移除新标签页广告</translation>
 <translation id="466214682712474574">登录您的<ph name="PROVIDER"/>账户查看余额</translation>
 <translation id="8332875111286275890">登录查看余额</translation>
 <translation id="5430001801813715388">奖励</translation>
@@ -2568,11 +2584,11 @@ other {# 个来源}
 <translation id="4844370919312937270">在新标签页中显示搜索小部件</translation>
 <translation id="5088374130885640159">通过 <ph name="REWARDS_LINK_BEGIN"/>Brave 奖励<ph name="REWARDS_LINK_END"/>，您可以通过查看新标签页广告来赚取收益。<ph name="LEARN_MORE_LINK_BEGIN"/>了解更多<ph name="LEARN_MORE_LINK_END"/>。</translation>
 <translation id="4100520468072294616">显示新标签页广告</translation>
-<translation id="4983925687993168579">Brave 统计数据</translation>
+<translation id="4983925687993168579">统计</translation>
 <translation id="5009354496127441090">显示常用网站</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">赞助站点有助于保持 Brave 免费。如果您使用 <ph name="SITE_NAME"/>，您就是在支持 Brave 的使命。您可以随时禁用它们。<ph name="LINK_BEGIN"/>了解更多<ph name="LINK_END"/>。</translation>
-<translation id="5810241219736298115">赞助站点有助于保持 Brave 免费。如果您使用它们，您就是在支持 Brave 的使命。<ph name="LINK_BEGIN"/>了解更多<ph name="LINK_END"/>。</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">新标签页广告有助于保持 Brave 免费。如果您使用 <ph name="SITE_NAME"/>，您就是在支持 Brave 的使命。您可以随时禁用它们。<ph name="LINK_BEGIN"/>了解更多<ph name="LINK_END"/>。</translation>
+<translation id="5810241219736298115">新标签页广告有助于保持 Brave 免费。如果您使用它们，您就是在支持 Brave 的使命。<ph name="LINK_BEGIN"/>了解更多<ph name="LINK_END"/>。</translation>
 <translation id="4784802981241664605">统计</translation>
 <translation id="5236080651083907980">使用 Brave 视频通话可进行加密视频通话</translation>
 <translation id="2671474274417808910">隐私优先通话</translation>
@@ -2732,6 +2748,7 @@ other {# 个来源}
 <translation id="701087249209337256">带上您的旧浏览器内容</translation>
 <translation id="142389341645668510">自定义 Brave</translation>
 <translation id="112005628409144325">使用您喜欢的标签页布局和颜色模式来个性化您的浏览体验。</translation>
+<translation id="4428982101636000516">使用 Brave 搜索或输入 URL</translation>
 <translation id="7376367936988732808">标签页布局</translation>
 <translation id="4734965478015604180">水平</translation>
 <translation id="490375751687810070">垂直</translation>
@@ -2780,7 +2797,7 @@ other {# 个来源}
 <translation id="745054660363064771">无法连接到服务器</translation>
 <translation id="3936826714240735937">选择另一个服务器</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/>无法连接至<ph name="REGION_NAME"/>服务器。请重试或选择其他国家。</translation>
-<translation id="1776533911621317363">开始 7 天免费试用</translation>
+<translation id="1776533911621317363">开始您的 7 天免费试用</translation>
 <translation id="3357036723290257445">已经购买 Brave VPN?</translation>
 <translation id="8652175077544655965">关闭设置</translation>
 <translation id="5908163815855240493">转到主界面</translation>
@@ -2792,11 +2809,13 @@ other {# 个来源}
 <translation id="8416695199565594645">确保流量通过专用代理服务器进行路由，以允许访问通常受限的内容/网站或第三方服务。</translation>
 <translation id="434523916398030617">联系技术支持</translation>
 <translation id="1116694919640316211">关于</translation>
-<translation id="8998067240267949220">额外的在线隐私和安全</translation>
-<translation id="8666111144393179185">隐藏您的 IP 并变更您的位置</translation>
-<translation id="8881997962573369342">数百台服务器遍布全球</translation>
+<translation id="8998067240267949220">无限制地访问您喜爱的内容</translation>
+<translation id="8666111144393179185">数百台服务器遍布全球</translation>
+<translation id="8881997962573369342">轻松隐藏您的 IP 并变更您的位置</translation>
 <translation id="1513801084412881009">快如闪电的连接速度</translation>
-<translation id="6434859410115379558">一次订阅最多可保护 10 台设备</translation>
+<translation id="6434859410115379558">无日志记录，独立审计</translation>
+<translation id="4886431881864826294">一个订阅涵盖桌面端、Android 和 iOS 上的 10 台设备</translation>
+<translation id="3649011006120934011">无需承诺，随时取消</translation>
 <translation id="1693568075761612600">未能创建支持工单，请检查您的连接。</translation>
 <translation id="1407707415819020643">选择您的服务器</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> 个城市- <ph name="SERVER_COUNT"/> 个服务器</translation>

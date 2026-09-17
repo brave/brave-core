@@ -113,6 +113,9 @@ vindue med Tor</translation>
 <translation id="3114478090884951591">Synligt område</translation>
 <translation id="2026367923222947564">Hele siden</translation>
 <translation id="4218885227032158909">Valgt område</translation>
+<translation id="2586386106930448447">Forhåndsvisning af skærmbillede</translation>
+<translation id="7514365320538308">Download</translation>
+<translation id="2743387203779672305">Kopier til udklipsholder</translation>
 <translation id="4928988318462976765">Internetadresse-Butik</translation>
 <translation id="9181207987584064303">Se i Internetadresse-Butik</translation>
 <translation id="3161744659507801211">Advarsel: Brave kan ikke forhindre udvidelser i at gemme din browserhistorik.</translation>
@@ -365,6 +368,7 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="6847541693235449912">Start</translation>
 <translation id="2079545284768500474">Fortryd</translation>
 <translation id="1533980864758658574">Nyt vindue oprettet til <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Ingen faner matchede det emne. Prøv at beskrive det anderledes.</translation>
 <translation id="7985042437720138349">Denne funktion sender data om dine åbne faner til Leo, Braves AI-drevne browserassistent.</translation>
 <translation id="6165508094623778733">Lær mere</translation>
 <translation id="7557539689487606886">Vælg Premium</translation>
@@ -422,6 +426,23 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="4328541188421002379">Giv din beholder et navn som Arbejde eller Privat</translation>
 <translation id="4976989127264491396">Fejl: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Beholderen blev ikke fundet</translation>
+<translation id="6055154402239241620">Traffic Control</translation>
+<translation id="8134521925475508805">Konfigurer bestemte sites til automatisk at åbne i en bestemt kontekst, hvilket skaber adskillelse mellem dine browsersessioner. <ph name="BEGIN_LINK"/>Læs mere<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Aktiver Traffic Control</translation>
+<translation id="1358255827354528344">Tilføj ny regel</translation>
+<translation id="7183128985801806752">Ny Traffic Control-regel</translation>
+<translation id="2474694032500407328">Rediger Traffic Control-regel</translation>
+<translation id="5543417389274097206">Opret regel</translation>
+<translation id="6532106788206463496">Gem ændringer</translation>
+<translation id="1172800769374812685">Slet regel</translation>
+<translation id="2389682807835777591">Er du sikker på, at du vil slette reglen <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Indtast webadresser, der skal administreres og altid åbnes i en bestemt browserkontekst.</translation>
+<translation id="1173480005453148926">Webadresser, der skal administreres</translation>
+<translation id="6217532416180299470">Indtast webadresser, der skal administreres med Traffic Control</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> matcher sitet og dets underdomæner; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> matcher det præcise site; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> matcher alle sites; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> er en kommentar.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (og <ph name="COUNT"/> flere webadresser)</translation>
+<translation id="3700798663085748181">Aktiver regel</translation>
+<translation id="2967480878853054068">Ugyldigt webadressefilter</translation>
 <translation id="2263346047290834619">Brug faner i træstil</translation>
 <translation id="5860254591544742609">Vis titelpanel</translation>
 <translation id="4691131445504068802">Skjul helt, når minimeret</translation>
@@ -529,7 +550,6 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="6745592621698551453">Opdater nu</translation>
 <translation id="5334844597069022743">Se kilde</translation>
 <translation id="4720556299488643018">Opsig abonnement</translation>
-<translation id="6532106788206463496">Gem ændringer</translation>
 <translation id="4516904298421534459">Filtrer lister</translation>
 <translation id="4435215931544457255">Flere populære fælleskabslister. Vær opmærksom på, at aktiveringen af for mange filtre nedsætter browser-hastigheden.</translation>
 <translation id="802154636333426148">Download mislykkedes</translation>
@@ -612,6 +632,8 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="509873765238158442">Bloker Microsoft Recall-funktionen</translation>
 <translation id="4763421121695677716">Bloker Recall-funktionen på Microsoft Windows-computere fra automatisk at tage skærmbilleder af alle åbne Brave-faner.</translation>
 <translation id="1968895725257436430">Dataindsamling</translation>
+<translation id="5668852698659986622">Aktiver Sponsorerede Ads</translation>
+<translation id="431194936581466649">Hjælp med at støtte Braves mission om at bygge et uafhængigt, brugerfokuseret internet med Sponsorerede Ads. Vi måler annonceydelse privat uden at identificere dig.</translation>
 <translation id="1700052872056357670">Ryd data, når du forlader siden</translation>
 <translation id="216468847346280584">Slet data om Brave-reklamer ...</translation>
 <translation id="96212973142796240">Brave Ads-data ryddet</translation>
@@ -992,4 +1014,12 @@ DU kan læse <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruktioner om hvordan 
 <translation id="154702742922788359">Åben tilstand</translation>
 <translation id="2249111429176737533">Åbn som fanevindue</translation>
 <translation id="7022756207310403729">Åbn i browser</translation>
+<translation id="1916785651473363467">Brugerdefineret profilbillede</translation>
+<translation id="5336092064678832560">Upload brugerdefineret billede</translation>
+<translation id="1062407476771304334">Erstat</translation>
+<translation id="1428299461403073820">Erstat brugerdefineret profilbillede</translation>
+<translation id="7994453838803296517">Forhåndsvisning af brugerdefineret profilbillede, valgt</translation>
+<translation id="6578040791557152233">Upload et brugerdefineret profilbillede</translation>
+<translation id="9222124079546967592">Fjern brugerdefineret profilbillede</translation>
+<translation id="6058660912941570282">Brave kan ikke bruge denne fil. Vælg et andet billede, og prøv igen.</translation>
 </translationbundle>

@@ -114,6 +114,9 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="3114478090884951591">Vidno območje</translation>
 <translation id="2026367923222947564">Celotna stran</translation>
 <translation id="4218885227032158909">Izbrano območje</translation>
+<translation id="2586386106930448447">Predogled posnetka zaslona</translation>
+<translation id="7514365320538308">Prenos</translation>
+<translation id="2743387203779672305">Kopiraj v odložišče</translation>
 <translation id="4928988318462976765">Trgovina s spletnimi razširitvami</translation>
 <translation id="9181207987584064303">Ogled v trgovini s spletnimi razširitvami</translation>
 <translation id="3161744659507801211">Opozorilo: Brave ne more preprečiti, da bi razširitve beležile zgodovino brskanja.</translation>
@@ -367,6 +370,7 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="6847541693235449912">Naprej</translation>
 <translation id="2079545284768500474">Razveljavi</translation>
 <translation id="1533980864758658574">Ustvarjeno je bilo novo okno za <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Nobeni zavihki se ne ujemajo s to temo. Poskusite jo opisati drugače.</translation>
 <translation id="7985042437720138349">Ta funkcija pošilja podatke o odprtih zavihkih Leu, pomočniku brskalnika z umetno inteligenco storitve Brave.</translation>
 <translation id="6165508094623778733">Preberite več</translation>
 <translation id="7557539689487606886">Pojdi na Premium</translation>
@@ -424,6 +428,23 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="4328541188421002379">Poimenujte vsebnik, na primer Delovno ali Osebno</translation>
 <translation id="4976989127264491396">Napaka: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Vsebnik ni bil najden</translation>
+<translation id="6055154402239241620">Nadzor prometa</translation>
+<translation id="8134521925475508805">Nastavite določena spletna mesta, da se samodejno odprejo v določenem kontekstu, in tako ustvarite ločnico med sejami brskanja. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Omogoči nadzor prometa</translation>
+<translation id="1358255827354528344">Dodaj novo pravilo</translation>
+<translation id="7183128985801806752">Novo pravilo nadzora prometa</translation>
+<translation id="2474694032500407328">Uredi pravilo nadzora prometa</translation>
+<translation id="5543417389274097206">Ustvari pravilo</translation>
+<translation id="6532106788206463496">Shrani spremembe</translation>
+<translation id="1172800769374812685">Izbriši pravilo</translation>
+<translation id="2389682807835777591">Ali ste prepričani, da želite izbrisati pravilo <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Vnesite URL-je za upravljanje in vedno odpiranje v določenem kontekstu brskanja.</translation>
+<translation id="1173480005453148926">URL-ji za upravljanje</translation>
+<translation id="6217532416180299470">Vnesite URL-je za upravljanje z nadzorom prometa</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> se ujema s spletnim mestom in njegovimi poddomenami; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> se ujema natančno s spletnim mestom; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> se ujema z vsemi spletnimi mesti; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> je komentar.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (in še <ph name="COUNT"/> URL-jev)</translation>
+<translation id="3700798663085748181">Omogoči pravilo</translation>
+<translation id="2967480878853054068">Neveljaven filter URL-jev</translation>
 <translation id="2263346047290834619">Uporabite zavihke drevesa</translation>
 <translation id="5860254591544742609">Pokaži naslovno vrstico</translation>
 <translation id="4691131445504068802">Popolnoma skrij, ko je minimizirano</translation>
@@ -531,7 +552,6 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="6745592621698551453">Posodobi</translation>
 <translation id="5334844597069022743">Ogled vira</translation>
 <translation id="4720556299488643018">Odjava</translation>
-<translation id="6532106788206463496">Shrani spremembe</translation>
 <translation id="4516904298421534459">Filtriranje seznamov</translation>
 <translation id="4435215931544457255">Dodatni priljubljeni seznami skupnosti. Upoštevajte, da bo vključitev prevelikega števila filtrov zmanjšala hitrost brskanja.</translation>
 <translation id="802154636333426148">Prenos ni uspel</translation>
@@ -614,6 +634,8 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="509873765238158442">Blokiraj Microsoft Recall</translation>
 <translation id="4763421121695677716">Preprečite, da bi funkcija Recall v računalnikih Microsoft Windows samodejno naredila posnetke zaslona vseh odprtih zavihkov brskalnika Brave.</translation>
 <translation id="1968895725257436430">Zbiranje podatkov</translation>
+<translation id="5668852698659986622">Omogoči sponzorirane oglase</translation>
+<translation id="431194936581466649">Pomagajte podpreti poslanstvo Brave pri gradnji neodvisnega spleta, ki daje prednost uporabnikom, s sponzoriranimi oglasi. Uspešnost oglasov merimo zasebno, ne da bi vas identificirali.</translation>
 <translation id="1700052872056357670">Izbriši podatke ob odhodu</translation>
 <translation id="216468847346280584">Počisti podatke oglasov Brave ...</translation>
 <translation id="96212973142796240">Podatki o Brave Oglasih so bili počiščeni</translation>
@@ -994,4 +1016,12 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="154702742922788359">Način odpiranja</translation>
 <translation id="2249111429176737533">Odpri kot okno z zavihki</translation>
 <translation id="7022756207310403729">Odpri v brskalniku</translation>
+<translation id="1916785651473363467">Slika profila po meri</translation>
+<translation id="5336092064678832560">Naloži sliko po meri</translation>
+<translation id="1062407476771304334">Zamenjaj</translation>
+<translation id="1428299461403073820">Zamenjaj sliko profila po meri</translation>
+<translation id="7994453838803296517">Predogled slike profila po meri, izbrano</translation>
+<translation id="6578040791557152233">Naloži sliko profila po meri</translation>
+<translation id="9222124079546967592">Odstrani sliko profila po meri</translation>
+<translation id="6058660912941570282">Brave ne more uporabiti te datoteke. Izberite drugo sliko in poskusite znova.</translation>
 </translationbundle>

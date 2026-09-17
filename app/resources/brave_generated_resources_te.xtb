@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">కనిపించే ప్రాంతం</translation>
 <translation id="2026367923222947564">పూర్తి పేజీ</translation>
 <translation id="4218885227032158909">ఎంచుకున్న ప్రాంతం</translation>
+<translation id="2586386106930448447">స్క్రీన్‌షాట్ ప్రివ్యూ</translation>
+<translation id="7514365320538308">డౌన్లోడ్</translation>
+<translation id="2743387203779672305">క్లిప్‌బోర్డ్ కు కాపీ చేయండి</translation>
 <translation id="4928988318462976765">వెబ్ ఎక్స్టెన్షన్స్ స్టోర్</translation>
 <translation id="9181207987584064303">వెబ్ ఎక్స్టెన్షన్స్ స్టోర్ లో వీక్షించండి</translation>
 <translation id="3161744659507801211">హెచ్చరిక: Brave పొడిగింపులు మీ బ్రౌజింగ్ చరిత్రను రికార్డు చేయడాన్ని నివారించలేరు.</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">వెళ్ళు</translation>
 <translation id="2079545284768500474">చర్య రద్దు</translation>
 <translation id="1533980864758658574"><ph name="TOPIC"/> కొరకు కొత్త విండో సృష్టించబడింది</translation>
+<translation id="530437350080973527">ఆ అంశానికి సరిపోలే ట్యాబ్‌లు లేవు. దీన్ని వేరే విధంగా వివరించడానికి ప్రయత్నించండి.</translation>
 <translation id="7985042437720138349">మీ వద్ద ఉన్న టాబ్‌ల గురించి సమాచారం లోను పంపుతుంది, Brave యొక్క AI-చే ప్రేరేపిత బ్రౌజర్ సహాయకుడు.</translation>
 <translation id="6165508094623778733">మరింత తెలుసుకోండి</translation>
 <translation id="7557539689487606886">ప్రీమియం పొందండి</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">మీ కంటైనర్‌కు పని లేదా వ్యక్తిగత వంటి పేరు ఇవ్వండి</translation>
 <translation id="4976989127264491396">లోపం: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">కంటైనర్ కనుగొనబడలేదు</translation>
+<translation id="6055154402239241620">ట్రాఫిక్ నియంత్రణ</translation>
+<translation id="8134521925475508805">మీ బ్రౌజింగ్ సెషన్‌ల మధ్య వేర్పాటును సృష్టిస్తూ, నిర్దిష్ట సందర్భంలో స్వయంచాలకంగా తెరవడానికి నిర్దిష్ట సైట్‌లను కాన్ఫిగర్ చేయండి. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">ట్రాఫిక్ నియంత్రణను ప్రారంభించండి</translation>
+<translation id="1358255827354528344">కొత్త నియమాన్ని జోడించండి</translation>
+<translation id="7183128985801806752">కొత్త ట్రాఫిక్ నియంత్రణ నియమం</translation>
+<translation id="2474694032500407328">ట్రాఫిక్ నియంత్రణ నియమాన్ని సవరించండి</translation>
+<translation id="5543417389274097206">నియమాన్ని సృష్టించండి</translation>
+<translation id="6532106788206463496">మార్పులను సేవ్ చేయండి</translation>
+<translation id="1172800769374812685">నియమాన్ని తొలగించండి</translation>
+<translation id="2389682807835777591">మీరు ఖచ్చితంగా <ph name="RULE_LABEL"/> నియమాన్ని తొలగించాలనుకుంటున్నారా?</translation>
+<translation id="4853129331778360252">నిర్దిష్ట బ్రౌజింగ్ సందర్భంలో నిర్వహించడానికి మరియు ఎల్లప్పుడూ తెరవడానికి URLలను నమోదు చేయండి.</translation>
+<translation id="1173480005453148926">నిర్వహించాల్సిన URLలు</translation>
+<translation id="6217532416180299470">ట్రాఫిక్ నియంత్రణతో నిర్వహించడానికి URLలను నమోదు చేయండి</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> సైట్ మరియు దాని సబ్‌డొమైన్‌లతో సరిపోలుతుంది; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> ఖచ్చితమైన సైట్‌తో సరిపోలుతుంది; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> అన్ని సైట్‌లతో సరిపోలుతుంది; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> అనేది వ్యాఖ్య.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (మరియు మరో <ph name="COUNT"/> URLలు)</translation>
+<translation id="3700798663085748181">నియమాన్ని ప్రారంభించండి</translation>
+<translation id="2967480878853054068">URL ఫిల్టర్ చెల్లదు</translation>
 <translation id="2263346047290834619">ట్రీ టాబ్లను ఉపయోగించండి</translation>
 <translation id="5860254591544742609">పేరుతిట్టిని చూపించు</translation>
 <translation id="4691131445504068802">చిన్నదిగా మార్చినప్పుడు పూర్తిగా మరచివేయి</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">ఇప్పుడే నవీకరించు</translation>
 <translation id="5334844597069022743">మూలాన్ని వీక్షించండి</translation>
 <translation id="4720556299488643018">Unsubscribe</translation>
-<translation id="6532106788206463496">మార్పులను సేవ్ చేయండి</translation>
 <translation id="4516904298421534459">ఫిల్టర్ జాబితాలు</translation>
 <translation id="4435215931544457255">జాబితాలో చాలా ప్రాచుర్యం పొందిన కమ్యూనిటీ జాబితాలు. చాలా ఫిల్టర్లు ఉపయోగించడం బ్రౌజింగ్ వేగాన్ని తగ్గిస్తుంది.</translation>
 <translation id="802154636333426148">డౌన్‌లోడ్ విఫలమైంది</translation>
@@ -611,6 +631,8 @@
 <translation id="509873765238158442">Microsoft Recall ని నిరోధించండి</translation>
 <translation id="4763421121695677716">Microsoft Windows కంప్యూటర్‌లపై మైక్రోసాఫ్ట్ రీకాల్ ఫీచర్‌ను ఎందుకింత తేలికగా బ్లాకింగ్ చేయవచ్చు.</translation>
 <translation id="1968895725257436430">డేటా సేకరణ</translation>
+<translation id="5668852698659986622">స్పాన్సర్ చేసిన Adsను ప్రారంభించండి</translation>
+<translation id="431194936581466649">స్పాన్సర్ చేసిన Adsతో స్వతంత్ర, వినియోగదారు-మొదటి వెబ్‌ను నిర్మించే Brave లక్ష్యానికి మద్దతు ఇవ్వండి. మిమ్మల్ని గుర్తించకుండా, మేము ప్రకటన పనితీరును ప్రైవేట్‌గా కొలుస్తాము.</translation>
 <translation id="1700052872056357670">బయటకు వెళ్లినప్పుడు డేటాను తొలగించండి</translation>
 <translation id="216468847346280584">Brave Ads డేటాను క్లియర్ చేయండి...</translation>
 <translation id="96212973142796240">Brave యాడ్స్ డేటా క్లియర్ చేయబడింది</translation>
@@ -990,4 +1012,12 @@
 <translation id="154702742922788359">ఓపెన్ మోడ్</translation>
 <translation id="2249111429176737533">ట్యాబ్ ఉపయోగించే విండోగా తెరవండి</translation>
 <translation id="7022756207310403729">బ్రౌజర్‌లో తెరవండి</translation>
+<translation id="1916785651473363467">అనుకూల ప్రొఫైల్ చిత్రం</translation>
+<translation id="5336092064678832560">అనుకూల చిత్రాన్ని అప్‌లోడ్ చేయండి</translation>
+<translation id="1062407476771304334">భర్తీ చేయండి</translation>
+<translation id="1428299461403073820">అనుకూల ప్రొఫైల్ చిత్రాన్ని భర్తీ చేయండి</translation>
+<translation id="7994453838803296517">అనుకూల ప్రొఫైల్ చిత్రం మునుజూపు, ఎంపిక చేయబడింది</translation>
+<translation id="6578040791557152233">అనుకూల ప్రొఫైల్ చిత్రాన్ని అప్‌లోడ్ చేయండి</translation>
+<translation id="9222124079546967592">అనుకూల ప్రొఫైల్ చిత్రాన్ని తీసివేయండి</translation>
+<translation id="6058660912941570282">Brave ఈ ఫైల్‌ను ఉపయోగించలేదు. మరో చిత్రాన్ని ఎంచుకుని మళ్లీ ప్రయత్నించండి.</translation>
 </translationbundle>

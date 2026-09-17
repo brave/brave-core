@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Zils motīvs</translation>
 <translation id="1070329623210597193">Faili, ko šī vietne drīkst skatīt vai rediģēt</translation>
 <translation id="1074758928858737435">Varat pieprasīt skatīt vietņu datora versiju.</translation>
+<translation id="1760197532822135980">Saņemt Brave ieteikumus citās lietotnēs</translation>
 <translation id="1109482864356262001">Funkcijas, kurām nepieciešama piekļuve kustību vai gaismas sensoriem, nedarbosies.</translation>
 <translation id="6670155282615872564">Lai pilnvērtīgi izmantotu pārlūku Brave, veiciet tālāk ieteiktās darbības.</translation>
 <translation id="113098737392899175">Pārvietošanās lapās, izmantojot teksta kursoru, kad ir pievienota tastatūra</translation>
@@ -83,6 +84,7 @@
 <translation id="1818308510395330587">Lai atļautu lietotnei <ph name="APP_NAME"/> izmantot papildināto realitāti, ieslēdziet arī kameru <ph name="BEGIN_LINK"/>Android iestatījumos<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Mainiet pozīciju, lai pielāgotu pārlūkošanas iespējas.</translation>
 <translation id="1848033246551405023">Bezserifa fonts</translation>
+<translation id="1861244985839668297">Kad šis slēdzis ir ieslēgts, vietnes var pieprasīt atļauju izmantot HID ierīces. Kad šis slēdzis ir izslēgts, vietnes nevar izmantot HID ierīces.</translation>
 <translation id="1861262398884155592">Šī mape ir tukša</translation>
 <translation id="1881806992065048905">Jaunas cilnes lapas izskata ekrāna apakšdaļas lapa</translation>
 <translation id="1887786770086287077">Piekļuve šīs ierīces atrašanās vietai ir izslēgta. Ieslēdziet to <ph name="BEGIN_LINK"/>Android iestatījumos<ph name="END_LINK"/>.</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271">Lai ļautu lietotnei <ph name="APP_NAME"/> izmantot roku kustību izsekošanu, ieslēdziet roku kustību izsekošanu arī <ph name="BEGIN_LINK"/>sistēmas iestatījumos<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Karšu pārvaldība</translation>
 <translation id="4722332387043141878">Parasti vietnēs ierīces kustību un gaismas sensori tiek izmantoti, lai nodrošinātu noteiktas funkcijas, piemēram, virtuālo realitāti vai fitnesa aktivitāšu uzskaiti.</translation>
+<translation id="4748783296226936791">Parasti vietnēs savienojums ar HID ierīcēm tiek veidots, lai nodrošinātu funkcijas, kuru darbībai nepieciešamas reti sastopamas tastatūras, spēļu vadāmierīces un citas ierīces.</translation>
 <translation id="4755971844837804407">Kad šis slēdzis ir ieslēgts, vietnēs var tikt rādītas jebkādas reklāmas. Kad šis slēdzis ir izslēgts, vietnēs nevar rādīt traucējošas vai maldinošas reklāmas.</translation>
 <translation id="4779083564647765204">Tālummaiņa</translation>
 <translation id="4807122856660838973">Ieslēdziet drošu pārlūkošanu</translation>
@@ -447,11 +450,13 @@
 <translation id="5668404140385795438">Ignorēt vietnes pieprasījumu, lai novērstu tuvināšanu</translation>
 <translation id="5668843533782548925">Vietnes darbojas lēnāk, taču ir drošākas</translation>
 <translation id="5677928146339483299">Bloķēts</translation>
+<translation id="98560749650104566">Tagad Brave var rādīt ieteikumus citās lietotnēs, pamatojoties uz jūsu pārlūkošanas datiem, piemēram, neseno pārlūkošanas vēsturi. Šie dati tiek apstrādāti drošā veidā jūsu ierīcē. Brave iestatījumos varat jebkurā laikā izslēgt šo funkciju.</translation>
 <translation id="5689516760719285838">Atrašanās vieta</translation>
 <translation id="5690795753582697420">Android iestatījumos ir izslēgta kameras atļauja</translation>
 <translation id="5700761515355162635">Trešo pušu sīkfailu ir atļauti</translation>
 <translation id="5706552988683188916">Tiks dzēsti sīkfaili un citi vietnes <ph name="WEBSITE"/> dati</translation>
 <translation id="571222594670061844">Vietnēs drīkst rādīt pierakstīšanās uzvednes, ko nodrošina identitātes pakalpojumi</translation>
+<translation id="5719854774000914513">Atļaut vietnēm pieprasīt atļauju veidot savienojumu ar HID ierīcēm</translation>
 <translation id="5740126560802162366">Vietnes var saglabāt datus jūsu ierīcē</translation>
 <translation id="5743425052258407233">Iegūstiet savu vēsturi visās savās ierīcēs, lai varētu ērti turpināt iesākto.</translation>
 <translation id="5749158352074143502">Turpiniet pārlūkot šo cilni</translation>
@@ -500,6 +505,7 @@
 <translation id="6085954183010297841">Vai dzēst faila rediģēšanas atļauju? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Kad šis slēdzis ir ieslēgts, vietnēs var automātiski aktivizēt režīmu “Attēls attēlā”. Kad šis slēdzis ir izslēgts, vietnēs nevar automātiski aktivizēt režīmu “Attēls attēlā”.</translation>
 <translation id="6120483543004435978">Kad šis slēdzis ir ieslēgts, vietnes var pieprasīt informāciju par to, kad jūs aktīvi lietojat savu ierīci. Kad šis slēdzis ir izslēgts, vietnes nevar iegūt informāciju par to, kad jūs aktīvi lietojat savu ierīci.</translation>
+<translation id="5773142757282836623">Paslēpt Saņemt Brave ieteikumus citās lietotnēs</translation>
 <translation id="4852158809106762963">Pārlūkā Brave tiks piedāvāts saglabāt jūsu paroli.</translation>
 <translation id="615886654739818377">Neatļaut vietnēm pārvaldīt logus visos jūsu displejos</translation>
 <translation id="6165508094623778733">Uzzināt vairāk</translation>
@@ -571,6 +577,7 @@
 <translation id="6950072572526089586">Apmeklētā vietne var saglabāt informāciju par jūsu veiktajām darbībām, lai nodrošinātu pienācīgu tās darbību, piemēram, pierakstīšanos vietnē vai iepirkumu grozā ievietoto preču saglabāšanu. Bieži vien vietnes šo informāciju jūsu ierīcē saglabā īslaicīgi.</translation>
 <translation id="6964291282260073066">Tiek atspējota saskarne WebGPU.</translation>
 <translation id="6965382102122355670">Labi</translation>
+<translation id="6972629891077993081">HID ierīces</translation>
 <translation id="6980507581230208647">Rozā motīvs</translation>
 <translation id="6980861169612950611">Vai dzēst vietnes datus? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Pieejamība</translation>
@@ -583,7 +590,6 @@
 <translation id="7053983685419859001">Bloķēt</translation>
 <translation id="7055552182600664515">Lai atskaņotu ar autortiesībām aizsargātu saturu, vietnēm var būt nepieciešams satura aizsardzības pakalpojums. <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/>.</translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Atlasīts 1 vienums}zero{Atlasīti # vienumi}one{Atlasīts # vienums}other{Atlasīti # vienumi}}</translation>
-<translation id="708014373017851679">Lietotne <ph name="APP_NAME"/> ir novecojusi. Lūdzu, atjauniniet lietotni.</translation>
 <translation id="7084115944294706056">Adreses joslas pozīcijas izvēle</translation>
 <translation id="7087918508125750058">Atlasīti vienumi: <ph name="ITEM_COUNT"/>. Opcijas ir pieejamas ekrāna augšdaļā.</translation>
 <translation id="7141896414559753902">Neļaut vietnēm novirzīt un rādīt uznirstošos elementus (ieteicams)</translation>
@@ -728,6 +734,7 @@ Papildu aizsardzība pārvalda tālāk norādītos Brave iestatījumus.</transla
 <translation id="8593422116412089302">Kad šis slēdzis ir ieslēgts, vietnes drīkst pieprasīt atļauju izmantot par jums saglabāto informāciju. Kad šis slēdzis ir izslēgts, vietnes nedrīkst pieprasīt atļauju izmantot par jums saglabāto informāciju.</translation>
 <translation id="8609465669617005112">Virziet uz augšu</translation>
 <translation id="8617611086246832542">Kad šis slēdzis ir ieslēgts, tiek rādīts vietņu skats datorā. Kad šis slēdzis ir izslēgts, tiek rādīts vietņu skats mobilajā ierīcē.</translation>
+<translation id="8625916342247441948">Neļaut vietnēm veidot savienojumu ar HID ierīcēm</translation>
 <translation id="8670078035093027626">Noklusējuma pārlūka ekrāna apakšdaļas lapa ir atvērta pilnā augstumā</translation>
 <translation id="8676316391139423634">Kad šis slēdzis ir ieslēgts, vietnes drīkst pieprasīt atļauju izsekot jūsu roku kustības. Kad šis slēdzis ir izslēgts, vietnes nedrīkst izsekot jūsu roku kustības.</translation>
 <translation id="8676374126336081632">Notīrīt ievadi</translation>
