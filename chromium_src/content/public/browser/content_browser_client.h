@@ -20,6 +20,10 @@ namespace local_ai::mojom {
 class AsrSession;
 }  // namespace local_ai::mojom
 
+namespace url {
+class Origin;
+}  // namespace url
+
 // Brave-specific: allows the embedder to modify the referrer string
 // according to user preferences.
 // Allow the embedder to determine the user-agent according to user preferences.
@@ -51,8 +55,29 @@ class AsrSession;
   virtual mojo::PendingRemote<local_ai::mojom::AsrSession> GetAsrSession();  \
   virtual void SetBrowserStartupIsCompleteForTesting
 
+// Brave intercepts SharedWorker and ServiceWorker WebSocket handshakes, which
+// have no RenderFrameHost (crbug.com/40195467). Inject a CreateWebSocket
+// sibling that additionally carries the initiator renderer's process id and
+// origin, so the embedder can resolve the BrowserContext and per-site Shields
+// settings for frameless handshakes. This is injected by hooking the
+// (uniquely named) WillCreateWebTransport declaration rather than the
+// SetBrowserStartupIsCompleteForTesting macro above, because
+// WebSocketFactory/WebSocketOptions are only declared later in the upstream
+// header. Drop this once upstream proxies frameless requests itself.
+#define WillCreateWebTransport                                           \
+  CreateWebSocketWithFrameId(                                            \
+      RenderFrameHost* frame, WebSocketFactory factory, const GURL& url, \
+      const net::SiteForCookies& site_for_cookies,                       \
+      const std::optional<std::string>& user_agent,                      \
+      mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>      \
+          handshake_client,                                              \
+      WebSocketOptions options, int process_id,                          \
+      const url::Origin& initiator_origin);                              \
+  virtual void WillCreateWebTransport
+
 #include <content/public/browser/content_browser_client.h>  // IWYU pragma: export
 
+#undef WillCreateWebTransport
 #undef SetBrowserStartupIsCompleteForTesting
 
 #endif  // BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_CONTENT_BROWSER_CLIENT_H_

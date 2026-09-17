@@ -39,6 +39,24 @@ ContentBrowserClient::WorkerGetBraveShieldSettings(
   return brave_shields::mojom::ShieldsSettingsPtr();
 }
 
+void ContentBrowserClient::CreateWebSocketWithFrameId(
+    RenderFrameHost* frame,
+    WebSocketFactory factory,
+    const GURL& url,
+    const net::SiteForCookies& site_for_cookies,
+    const std::optional<std::string>& user_agent,
+    mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+        handshake_client,
+    WebSocketOptions options,
+    int /*process_id*/,
+    const url::Origin& /*initiator_origin*/) {
+  // The frameless SharedWorker/ServiceWorker context (crbug.com/40195467) is
+  // only consumed by the Brave override; the default path ignores it and
+  // forwards to the regular CreateWebSocket.
+  CreateWebSocket(frame, std::move(factory), url, site_for_cookies, user_agent,
+                  std::move(handshake_client), std::move(options));
+}
+
 std::optional<GURL> ContentBrowserClient::SanitizeURL(content::RenderFrameHost*,
                                                       const GURL& url) {
   return std::nullopt;

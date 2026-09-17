@@ -516,6 +516,11 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
           url::Origin::Create(contents->GetLastCommittedURL()).GetURL());
     }
   }
+  // Shared and service worker WebSockets have no frame, so fall back to the
+  // initiator origin for Shields settings.
+  if (ctx->tab_origin().is_empty() && ctx->request_initiator()) {
+    ctx->set_tab_origin(ctx->request_initiator()->GetURL());
+  }
 
   if (old_ctx) {
     ctx->set_internal_redirect(old_ctx->internal_redirect());
