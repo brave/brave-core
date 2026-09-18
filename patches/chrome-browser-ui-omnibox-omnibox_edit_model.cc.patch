@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_edit_model.cc b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-index 97d8f09eb2e11de684ee008ac59c26f3b987661a..cf165e0b4cb516ba112e9a52852ff5c4d108a5ad 100644
+index cf6e7b9996ea4c915a3331a46bed592cc6201982..02e153c80d3c7465f180b00d1e7babc2bc6a7dc7 100644
 --- a/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-@@ -537,6 +537,10 @@ bool OmniboxEditModel::ShouldShowCurrentPageIcon() const {
+@@ -540,6 +540,10 @@ bool OmniboxEditModel::ShouldShowCurrentPageIcon() const {
  
  ui::ImageModel OmniboxEditModel::GetSuperGIcon(int image_size,
                                                 bool dark_mode) const {
@@ -13,7 +13,7 @@ index 97d8f09eb2e11de684ee008ac59c26f3b987661a..cf165e0b4cb516ba112e9a52852ff5c4
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
    if (dark_mode) {
      return ui::ImageModel::FromVectorIcon(
-@@ -683,6 +687,8 @@ void OmniboxEditModel::Revert() {
+@@ -686,6 +690,8 @@ void OmniboxEditModel::Revert() {
  }
  
  void OmniboxEditModel::StartAutocomplete(bool prevent_inline_autocomplete) {
@@ -22,7 +22,7 @@ index 97d8f09eb2e11de684ee008ac59c26f3b987661a..cf165e0b4cb516ba112e9a52852ff5c4
    const std::u16string input_text = MaybePrependKeyword(user_text_);
  
    size_t cursor_position =
-@@ -729,6 +735,9 @@ void OmniboxEditModel::StartAutocomplete(bool prevent_inline_autocomplete) {
+@@ -732,6 +738,9 @@ void OmniboxEditModel::StartAutocomplete(bool prevent_inline_autocomplete) {
  }
  
  bool OmniboxEditModel::CanPasteAndGo(const std::u16string& text) const {

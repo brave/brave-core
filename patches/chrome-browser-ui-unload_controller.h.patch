@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/unload_controller.h b/chrome/browser/ui/unload_controller.h
-index 1c994941bdeabf521db6042b7e9233120bac6b3c..7e7a901c15a398e31a75d5ff67d070c5508010f2 100644
+index a43976ec4ec7e0da13ffc42ff5935f0ae50da9ea..674de564ba8d84365e213de15272ed01ae659c74 100644
 --- a/chrome/browser/ui/unload_controller.h
 +++ b/chrome/browser/ui/unload_controller.h
-@@ -100,6 +100,9 @@ class UnloadController : public WebContentsCollection::Observer,
+@@ -86,6 +86,9 @@ class UnloadController : public WebContentsCollection::Observer,
  
    ~UnloadController() override;
  
@@ -12,7 +12,7 @@ index 1c994941bdeabf521db6042b7e9233120bac6b3c..7e7a901c15a398e31a75d5ff67d070c5
    // Returns true if |contents| can be cleanly closed. When |browser_| is being
    // closed, this function will return false to indicate |contents| should not
    // be cleanly closed, since the fast shutdown path will just kill its
-@@ -392,6 +395,10 @@ class UnloadController : public WebContentsCollection::Observer,
+@@ -378,6 +381,10 @@ class UnloadController : public WebContentsCollection::Observer,
    // shortly (after a PostTask).
    bool is_delete_scheduled_ = false;
  

@@ -1,5 +1,5 @@
 diff --git a/components/signin/public/base/signin_switches.cc b/components/signin/public/base/signin_switches.cc
-index 7aaef7a684e76b5f51bfe5f9cb715e3552c9582d..dcb01bd45ed9cbef6848342a52f78297f5445822 100644
+index 623262b3752bf7a86ca1c64810351b9fc75092e3..c46e8a9b5ee98f8fde5ef89959f1d6dadc108ef4 100644
 --- a/components/signin/public/base/signin_switches.cc
 +++ b/components/signin/public/base/signin_switches.cc
 @@ -676,9 +676,9 @@ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,

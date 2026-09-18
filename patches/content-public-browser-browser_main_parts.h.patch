@@ -1,5 +1,5 @@
 diff --git a/content/public/browser/browser_main_parts.h b/content/public/browser/browser_main_parts.h
-index d6e247ed846e2ca2eada6bec7b7f9d7e9dfe5a63..118d35153d59946d3b3185ef1eb4f23b366249c5 100644
+index e43bdd1aba4a61d7f8575b484225d61605034636..d51dcad87747dc52f27c8657a37c19f4a65399b3 100644
 --- a/content/public/browser/browser_main_parts.h
 +++ b/content/public/browser/browser_main_parts.h
 @@ -157,6 +157,9 @@ class CONTENT_EXPORT BrowserMainParts {

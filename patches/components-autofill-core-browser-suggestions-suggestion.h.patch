@@ -1,8 +1,8 @@
 diff --git a/components/autofill/core/browser/suggestions/suggestion.h b/components/autofill/core/browser/suggestions/suggestion.h
-index 29904c9b5ad5d2a2a94c9584fc7689a72fec4611..8bed881f9d96700dd59201251ab8e6e72f0e4c2c 100644
+index 51d8210628becef97b5ce838078cfb911d15ae05..ee1ddcd5075c7d785a7e6b8fa5fbaca4c8833fdc 100644
 --- a/components/autofill/core/browser/suggestions/suggestion.h
 +++ b/components/autofill/core/browser/suggestions/suggestion.h
-@@ -696,6 +696,8 @@ struct Suggestion {
+@@ -735,6 +735,8 @@ struct Suggestion {
  
    // Returns whether the user is able to focus or select the suggestion.
    bool IsSelectable() const;

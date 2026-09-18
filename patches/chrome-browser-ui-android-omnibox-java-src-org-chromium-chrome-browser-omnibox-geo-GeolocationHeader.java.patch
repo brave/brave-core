@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java
-index 2801b569d69824ca757d7949b5c526d83fcabc37..b7a8d0ae4a57a1f860a499d83342da3d6b466820 100644
+index c66a5a497b8cfbfda1073838c99c6165f02e8ade..d55dbf5dff8d3803e8bb7f75e9bc8e84e61abbd6 100644
 --- a/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java
 +++ b/chrome/browser/ui/android/omnibox/java/src/org/chromium/chrome/browser/omnibox/geo/GeolocationHeader.java
 @@ -212,6 +212,9 @@ public class GeolocationHeader {

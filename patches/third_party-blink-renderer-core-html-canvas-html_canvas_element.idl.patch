@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-index 1ee80fb4791814d9c30789b3e64e7db52f533ec2..b95136ca1de3724fbf2cf1075ee277e5d8077439 100644
+index c894cc0c30501e7a8313932584e2f3fe420e739f..fa57f938fb7061209e0361f76c2827c1814d5540 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.idl
-@@ -48,7 +48,7 @@
+@@ -49,7 +49,7 @@
      [RuntimeEnabled=CanvasDrawElement, RaisesException] void updateElementGeometry((Element or ElementImage) element, optional UpdateElementGeometryOptions options = {});
      [RuntimeEnabled=CanvasDrawElement] void clearElementGeometry((Element or ElementImage) element);
  

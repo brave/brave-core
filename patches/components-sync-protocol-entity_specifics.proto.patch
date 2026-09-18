@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/entity_specifics.proto b/components/sync/protocol/entity_specifics.proto
-index ae6cf1ae726215081fda4392fa045b372480c0ea..60e7fd7e6c0525678705640be66d6e61beefb598 100644
+index d7a2ac3fc128732607224947c80258f44b953a7a..27c30ab6d5d330126dc4b32a5d8010aec137ab04 100644
 --- a/components/sync/protocol/entity_specifics.proto
 +++ b/components/sync/protocol/entity_specifics.proto
 @@ -13,6 +13,7 @@ package sync_pb;
@@ -10,7 +10,7 @@ index ae6cf1ae726215081fda4392fa045b372480c0ea..60e7fd7e6c0525678705640be66d6e61
  import "components/sync/protocol/ai_thread_specifics.proto";
  import "components/sync/protocol/app_list_specifics.proto";
  import "components/sync/protocol/app_setting_specifics.proto";
-@@ -183,6 +184,7 @@ message EntitySpecifics {
+@@ -181,6 +182,7 @@ message EntitySpecifics {
      NotebookSpecifics notebook = 1670544;
      JourneySpecifics journey = 1670131;
      AutofillEntitySuppressionSpecifics autofill_entity_suppression = 1688594;
