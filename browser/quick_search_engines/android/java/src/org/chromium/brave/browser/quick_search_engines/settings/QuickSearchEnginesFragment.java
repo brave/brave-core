@@ -25,6 +25,9 @@ import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.brave.browser.quick_search_engines.ItemTouchHelperCallback;
 import org.chromium.brave.browser.quick_search_engines.R;
 import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
+import org.chromium.build.annotations.Initializer;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
@@ -34,16 +37,16 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@NullMarked
 public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
         implements QuickSearchEnginesCallback {
     private RecyclerView mRecyclerView;
-    private QuickSearchEnginesAdapter mQuickSearchEnginesAdapter;
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mPageTitle.set(getString(R.string.quick_search_engines));
     }
@@ -51,13 +54,16 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
     // This screen uses a custom layout (R.layout.fragment_quick_search) instead of the preference
     // framework, so there is no PreferenceScreen to build here.
     @Override
-    public void onCreatePreferences(Bundle bundle, String rootKey) {
+    public void onCreatePreferences(@Nullable Bundle bundle, @Nullable String rootKey) {
         /* Not used. */
     }
 
+    @Initializer
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_quick_search, container, false);
 
         LinearLayout quickSearchOptionsLayout = view.findViewById(R.id.quick_search_options_layout);
@@ -93,7 +99,7 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
     }
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         final Profile profile = getProfile();
         TemplateUrlServiceFactory.getForProfile(profile)
@@ -119,10 +125,10 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
     }
 
     private void setRecyclerViewData(List<QuickSearchEnginesModel> searchEngines) {
-        mQuickSearchEnginesAdapter = new QuickSearchEnginesAdapter(searchEngines, this);
-        mRecyclerView.setAdapter(mQuickSearchEnginesAdapter);
-        ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mQuickSearchEnginesAdapter);
-        new ItemTouchHelper(callback).attachToRecyclerView(mRecyclerView);
+        QuickSearchEnginesAdapter adapter = new QuickSearchEnginesAdapter(searchEngines, this);
+        mRecyclerView.setAdapter(adapter);
+        new ItemTouchHelper(new ItemTouchHelperCallback(adapter))
+                .attachToRecyclerView(mRecyclerView);
     }
 
     // QuickSearchCallback
