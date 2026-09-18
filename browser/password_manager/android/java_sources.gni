@@ -26,7 +26,9 @@ brave_browser_password_manager_java_sources = [
   "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/TimedCallbackDelayer.java",
 ]
 
-brave_browser_password_manager_deps =
-    [ "//brave/build/android:android_brave_strings_grd" ]
+brave_browser_password_manager_deps = [
+  "//brave/build/android:android_brave_strings_grd",
+  "//components/device_reauth:device_reauth_java_enums",
+]
 
 brave_browser_password_manager_jni_headers = [ "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/PasswordUiView.java" ]
