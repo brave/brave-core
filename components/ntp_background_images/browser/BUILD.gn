@@ -108,6 +108,7 @@ static_library("browser") {
       "brave_ntp_custom_background_service.h",
       "ntp_custom_images_source.cc",
       "ntp_custom_images_source.h",
+      "wallpapers/ntp_custom_background_delegate.h",
     ]
   }
 }
