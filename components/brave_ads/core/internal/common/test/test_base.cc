@@ -100,9 +100,6 @@ void TestBase::SetUp(bool is_integration_test) {
   brave_rewards::RegisterProfilePrefs(profile_prefs_.registry());
   profile_prefs_.registry()->RegisterBooleanPref(
       ntp_background_images::prefs::kNewTabPageShowBackgroundImage, true);
-  profile_prefs_.registry()->RegisterBooleanPref(
-      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist,
-      true);
   SetProfilePrefServiceForTesting(profile_prefs_);
 
   // Simulate a fully onboarded user (ads enabled, joined Rewards with a

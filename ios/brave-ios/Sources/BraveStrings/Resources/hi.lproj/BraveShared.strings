@@ -2476,12 +2476,6 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "हर दिन के उपयोग पिंग Brave को अपने आप भेजें";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Brave को नए टैब पेज में प्राइवेट सर्वे के लिंक दिखाने की अनुमति दें। सर्वे की मदद से, हम बेहतर सुविधाएँ बना सकते हैं और ब्राउज़र पर आधारित ऐड कैंपेन के असर को माप सकते हैं। [ज़्यादा जानें](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Brave के सर्वे को अनुमति दें";
-
 /* Header for the YouTube settings section */
 "settings.youtube" = "यूट्यूब";
 

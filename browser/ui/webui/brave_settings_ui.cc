@@ -46,7 +46,6 @@
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
-#include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/search_engines/brave_prepopulated_engines.h"
@@ -275,21 +274,13 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #endif
 
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
-  // Sponsored Ads and Survey Panelist are tied to Brave Rewards, which is
-  // compiled out of Brave Origin branded builds, so neither setting is ever
-  // available there.
+  // Sponsored Ads is tied to Brave Rewards, which is compiled out of Brave
+  // Origin branded builds, so the setting is never available there.
   html_source->AddBoolean("isSponsoredAdsAllowed", false);
-  html_source->AddBoolean("isSurveyPanelistAllowed", false);
 #else
   html_source->AddBoolean("isSponsoredAdsAllowed",
                           !profile->GetPrefs()->GetBoolean(
                               brave_rewards::prefs::kDisabledByPolicy));
-  html_source->AddBoolean("isSurveyPanelistAllowed",
-                          base::FeatureList::IsEnabled(
-                              ntp_background_images::features::
-                                  kBraveNTPBrandedWallpaperSurveyPanelist) &&
-                              !profile->GetPrefs()->GetBoolean(
-                                  brave_rewards::prefs::kDisabledByPolicy));
 #endif
 #if BUILDFLAG(ENABLE_PLAYLIST)
   html_source->AddBoolean(

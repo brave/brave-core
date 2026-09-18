@@ -2476,12 +2476,6 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Trimite automat către Brave ping-ul de utilizare zilnică";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Permite Brave să afișeze linkuri către sondaje private în pagina noii file. Sondajele ne ajută să creăm funcții mai bune și să măsurăm eficiența campaniilor publicitare bazate pe browser. [Află mai multe](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Permite sondaje Brave";
-
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 

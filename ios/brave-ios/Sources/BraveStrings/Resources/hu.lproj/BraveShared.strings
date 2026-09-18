@@ -2476,12 +2476,6 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Napi használatról szóló értesítések automatikus küldése a Brave-be";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Engedélyezi, hogy a Brave privát kérdőívekre mutató linkeket jelenítsen meg az új lapon. Ezek segítenek a funkciók fejlesztésében és a hirdetések hatékonyságának mérésében. [Tudjon meg többet](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Brave felmérések engedélyezése";
-
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 

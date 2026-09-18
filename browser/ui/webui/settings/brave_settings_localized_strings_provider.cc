@@ -154,9 +154,6 @@ constexpr char16_t kAdBlockOnlyModeLearnMoreURL[] =
 constexpr char16_t kSponsoredAdsLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/48376231110413";
 
-constexpr char16_t kSurveyPanelistLearnMoreURL[] =
-    u"https://support.brave.app/hc/en-us/articles/36550092449165";
-
 constexpr char16_t kExtensionsV2LearnMoreURL[] =
     u"https://brave.com/blog/brave-shields-manifest-v3/";
 
@@ -828,11 +825,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_OLLAMA_SYNC_LABEL},
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
-      // Survey Panelist Page
-      {"surveyPanelist", IDS_SETTINGS_SURVEY_PANELIST},
-      {"braveSurveyPanelistLabel", IDS_SETTINGS_SURVEY_PANELIST_LABEL},
-      {"braveSurveyPanelistDesc", IDS_SETTINGS_SURVEY_PANELIST_DESC},
-
       // New Tab Page
       {"braveNewTab", IDS_SETTINGS_NEW_TAB},
       {"braveNewTabBraveRewards", IDS_SETTINGS_NEW_TAB_BRAVE_REWARDS},
@@ -1276,13 +1268,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
   html_source->AddString("sponsoredAdsLearnMoreURL", kSponsoredAdsLearnMoreURL);
 
-  html_source->AddString("braveSurveyPanelistLearnMoreURL",
-                         kSurveyPanelistLearnMoreURL);
-
-  html_source->AddString(
-      "braveSurveyPanelistDesc",
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_SURVEY_PANELIST_DESC,
-                                 kSurveyPanelistLearnMoreURL));
   html_source->AddString(
       "extensionsV2Warn",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_MANAGE_EXTENSIONS_V2_WARN,

@@ -2411,23 +2411,6 @@ extension Strings {
         comment: "Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized."
       )
 
-    public static let surveyPanelistTitle =
-      NSLocalizedString(
-        "settings.surveyPanelistTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Allow Brave surveys",
-        comment: "Title to explain the survey panelist toggle"
-      )
-
-    public static let surveyPanelistDescription =
-      NSLocalizedString(
-        "settings.surveyPanelistDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Allows Brave to show links to private surveys in the new tab page. Surveys help us build better features and measure the effectiveness of browser-based ad campaigns. [Learn more](%@)",
-        comment: "Description to explain the survey panelist toggle"
-      )
   }
 }
 

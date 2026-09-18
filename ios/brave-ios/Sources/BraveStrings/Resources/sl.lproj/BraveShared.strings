@@ -2476,12 +2476,6 @@
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Samodejno pošlji ping o dnevni uporabi Braveu";
 
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Brave je omogočil prikaz povezav do zasebnih anket na novi strani zavihka. Ankete nam pomagajo pri ustvarjanju boljših funkcij in merjenju učinkovitosti oglaševalskih kampanj v brskalniku. [Več informacij](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Omogočite ankete Brave";
-
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
 
