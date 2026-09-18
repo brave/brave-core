@@ -34,6 +34,7 @@
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
 #include "components/translate/core/browser/translate_pref_names.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "net/base/features.h"
 #include "third_party/blink/public/common/peerconnection/webrtc_ip_handling_policy.h"
