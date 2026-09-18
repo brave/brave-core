@@ -13,7 +13,7 @@ import { getLocale } from '$web-common/locale'
 import { ButtonMenu } from './wallet_menus.style'
 
 interface Props {
-  onClickDeposit: () => void
+  onClickDeposit?: () => void
   onClickViewOnExplorer?: () => void
   onClickSell?: () => void
 }
@@ -43,10 +43,12 @@ export const PortfolioAccountMenu = (props: Props) => {
           {getLocale(S.BRAVE_WALLET_PORTFOLIO_VIEW_ON_EXPLORER_MENU_LABEL)}
         </leo-menu-item>
       )}
-      <leo-menu-item onClick={onClickDeposit}>
-        <Icon name='money-bag-coins' />
-        {getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
-      </leo-menu-item>
+      {onClickDeposit && (
+        <leo-menu-item onClick={onClickDeposit}>
+          <Icon name='money-bag-coins' />
+          {getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
+        </leo-menu-item>
+      )}
     </ButtonMenu>
   )
 }

@@ -25,6 +25,7 @@ import { makeNetworkAsset } from '../../../options/asset-options'
 import {
   dedupeAssetsByIdKey,
   getAssetIdKey,
+  isLegacyShieldedToken,
   sortNativeAndAndBatAssetsToTop,
   tokenNameToNftCollectionName,
 } from '../../../utils/asset-utils'
@@ -255,7 +256,9 @@ function AssetSelection() {
     )
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const selectedAsset = combinedTokensList.find(
-    (token) => getAssetIdKey(token) === selectedDepositAssetId,
+    (token) =>
+      getAssetIdKey(token) === selectedDepositAssetId
+      && !isLegacyShieldedToken(token),
   )
 
   const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
@@ -355,7 +358,7 @@ function AssetSelection() {
         testnetAssetsList,
         nftCollectionAssets,
       ),
-    )
+    ).filter((token) => !isLegacyShieldedToken(token))
   }, [
     mainnetNetworkAssetsList,
     tokensList,
@@ -534,7 +537,9 @@ function DepositAccount() {
   const { accounts } = useAccountsQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
   const selectedAsset = combinedTokensList.find(
-    (token) => getAssetIdKey(token) === selectedDepositAssetId,
+    (token) =>
+      getAssetIdKey(token) === selectedDepositAssetId
+      && !isLegacyShieldedToken(token),
   )
   const { data: selectedAssetNetwork } = useGetNetworkQuery(
     selectedAsset ?? skipToken,

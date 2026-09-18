@@ -40,8 +40,9 @@ import {
 import { networkSupportsAccount } from '../../../utils/network-utils'
 import {
   getAssetIdKey,
-  getDoesCoinSupportSwap,
-  getDoesCoinSupportBridge,
+  getDoesTokenSupportSwap,
+  getDoesTokenSupportBridge,
+  getDoesTokenSupportDeposit,
 } from '../../../utils/asset-utils'
 import { getLocale } from '../../../../common/locale'
 import { isRewardsAssetId } from '../../../utils/rewards_utils'
@@ -290,11 +291,12 @@ export const FungibleAssetDetails = () => {
     querySubscriptionOptions60s,
   )
 
-  const selectedCoin = selectedAssetFromParams?.coin
   const isSwapSupported =
-    selectedCoin !== undefined && getDoesCoinSupportSwap(selectedCoin)
+    selectedAssetFromParams !== undefined
+    && getDoesTokenSupportSwap(selectedAssetFromParams)
   const isBridgeSupported =
-    selectedCoin !== undefined && getDoesCoinSupportBridge(selectedCoin)
+    selectedAssetFromParams !== undefined
+    && getDoesTokenSupportBridge(selectedAssetFromParams)
 
   const selectedAssetTransactions = React.useMemo(() => {
     if (selectedAssetFromParams && tokensList && networksRegistry) {
@@ -368,7 +370,9 @@ export const FungibleAssetDetails = () => {
   )
 
   const isSelectedAssetDepositSupported =
-    !isRewardsToken && Boolean(selectedAssetFromParams)
+    selectedAssetFromParams !== undefined
+    && !isRewardsToken
+    && getDoesTokenSupportDeposit(selectedAssetFromParams)
 
   const goBack = React.useCallback(() => {
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
