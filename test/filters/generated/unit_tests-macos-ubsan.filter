@@ -5,23 +5,38 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
--FileHandlingSubManagerConfigureAndExecuteTest.PartialExtensionMatch
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
+-All/WebAppUninstallCommandSourceTest.RunTestForUninstallSource/5
 
-# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
--FileHandlingSubManagerConfigureAndExecuteTest.Uninstall
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
+-FetchManifestAndInstallCommandTest.SuccessWithFallbackInstallNoManifest
 
-# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
+-FetchManifestAndInstallCommandTest.SuccessWithoutReparent
+
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
+-FetchManifestAndInstallCommandTest.WriteDataToDisk
+
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
 -RunOnOsLoginCommandTest.SetRunOnOsLoginModes
 
-# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
 -RunOnOsLoginSubManagerExecuteTest.InstallAndExecuteWindowedRunOnOsLogin
 
-# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAbsent_FaviconAbsent_StartUrlAbsent_ManifestIdSpecified_DisplayModekStandalone_ManifestIconsicon
+
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
 -UniversalInstallComboTest.InstallStateValid/AppNameAbsent_FaviconSK_ColorBLUE_StartUrlAbsent_ManifestIdSpecified_DisplayModeAbsent_ManifestIconsnot_found_icon
 
-# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
+-UniversalInstallComboTest.InstallStateValid/AppNameAppName_FaviconIconPathSpecified_StartUrlSpecified_ManifestIdAbsent_DisplayModekStandalone_ManifestIconsicon
+
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
 -UniversalInstallComboTest.InstallStateValid/AppNameAppName_FaviconSK_ColorBLUE_StartUrlAbsent_ManifestIdAbsent_DisplayModekStandalone_ManifestIconsnot_found_icon
 
-# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
 -UniversalInstallComboTest.InstallStateValid/AppNameAppName_FaviconSK_ColorBLUE_StartUrlSpecified_ManifestIdSpecified_DisplayModekStandalone_ManifestIconsnot_found_icon
+
+# 4.0% flake rate over 30 days per LUCI Analysis (24 passed, 0 failed, 1 flaky).
+-WebAppPolicyForceUnregistrationTest.ManifestWildcardDoNotAffectOsIntegration

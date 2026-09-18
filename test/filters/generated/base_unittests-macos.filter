@@ -5,35 +5,56 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 43.8% flake rate over 30 days per LUCI Analysis (271 passed, 0 failed, 211 flaky).
+# 42.9% flake rate over 30 days per LUCI Analysis (266 passed, 0 failed, 200 flaky).
 -DeviceUtilTest.CheckDeviceMigration
 
-# 32.4% flake rate over 30 days per LUCI Analysis (326 passed, 0 failed, 156 flaky).
+# 32.0% flake rate over 30 days per LUCI Analysis (317 passed, 0 failed, 149 flaky).
 -DeviceUtilTest.CheckMigration
 
-# 45.4% flake rate over 30 days per LUCI Analysis (263 passed, 0 failed, 219 flaky).
+# 44.2% flake rate over 30 days per LUCI Analysis (260 passed, 0 failed, 206 flaky).
 -DeviceUtilTest.CheckMigrationFromZero
 
-# 7.1% flake rate over 30 days per LUCI Analysis (17744 passed, 2 failed, 1353 flaky).
+# 8.2% flake rate over 30 days per LUCI Analysis (16596 passed, 2 failed, 1487 flaky).
 -FilePathWatcherTest.DirAttributesChanged
 
-# 1.8% flake rate over 30 days per LUCI Analysis (18760 passed, 2 failed, 337 flaky).
+# 2.0% flake rate over 30 days per LUCI Analysis (17719 passed, 3 failed, 363 flaky).
 -MemoryDumpSchedulerTest.StopAndStartOnAnotherThread
 
-# 28.3% flake rate over 30 days per LUCI Analysis (13354 passed, 2 failed, 5261 flaky).
+# 31.4% flake rate over 30 days per LUCI Analysis (12084 passed, 3 failed, 5532 flaky).
 -MessagePumpAppleTest.QuitWithModalWindow
 
-# 2.3% flake rate over 30 days per LUCI Analysis (18667 passed, 1 failed, 431 flaky).
+# 2.4% flake rate over 30 days per LUCI Analysis (17656 passed, 2 failed, 427 flaky).
 -PartitionAddressSpaceTest.ZeroSegment
 
-# 2.0% flake rate over 30 days per LUCI Analysis (18240 passed, 1 failed, 376 flaky).
+# 2.1% flake rate over 30 days per LUCI Analysis (17244 passed, 1 failed, 375 flaky).
 -ProcessMetricsTest.GetChildOpenFdCount
 
-# 11.0% flake rate over 30 days per LUCI Analysis (16560 passed, 17 failed, 2040 flaky).
+# 11.6% flake rate over 30 days per LUCI Analysis (15580 passed, 19 failed, 2021 flaky).
 -ProcessTest.SetProcessPriority
 
-# 63.2% flake rate over 30 days per LUCI Analysis (6846 passed, 1 failed, 11770 flaky).
+# 59.9% flake rate over 30 days per LUCI Analysis (7065 passed, 1 failed, 10554 flaky).
 -ScopedSendingEventTest.NestedSetHandlingSendEvent
 
-# 90.1% flake rate over 30 days per LUCI Analysis (1895 passed, 2 failed, 17203 flaky).
+# 26.4% flake rate over 30 days per LUCI Analysis (13315 passed, 2 failed, 4772 flaky).
+-ThreadControllerWithMessagePumpTest.EarlyQuit
+
+# 27.5% flake rate over 30 days per LUCI Analysis (13113 passed, 2 failed, 4974 flaky).
+-ThreadControllerWithMessagePumpTest.MessagePumpPhasesWithQueuingTime
+
+# 22.2% flake rate over 30 days per LUCI Analysis (14067 passed, 2 failed, 4020 flaky).
+-ThreadControllerWithMessagePumpTest.NativeNestedMessageLoop
+
+# 17.6% flake rate over 30 days per LUCI Analysis (14903 passed, 2 failed, 3184 flaky).
+-ThreadControllerWithMessagePumpTest.ScheduleDelayedWorkWithPowerSuspend
+
+# 4.7% flake rate over 30 days per LUCI Analysis (17246 passed, 2 failed, 841 flaky).
+-ThreadControllerWithMessagePumpTest.ThreadControllerActiveMultipleApplicationTasks
+
+# 7.2% flake rate over 30 days per LUCI Analysis (16781 passed, 2 failed, 1306 flaky).
+-ThreadControllerWithMessagePumpTest.ThreadControllerActiveSingleApplicationTask
+
+# 24.2% flake rate over 30 days per LUCI Analysis (13705 passed, 2 failed, 4382 flaky).
+-ThreadControllerWithMessagePumpTest.WorkIdIncrementedForEveryWorkItemInBatches
+
+# 87.2% flake rate over 30 days per LUCI Analysis (2319 passed, 3 failed, 15768 flaky).
 -TraceSessionObserverListTest.CompileTimeDetection
