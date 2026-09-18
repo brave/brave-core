@@ -32,8 +32,15 @@ BraveAccountUIAndroid::~BraveAccountUIAndroid() = default;
 void BraveAccountUIAndroid::BindInterface(
     mojo::PendingReceiver<brave_account::mojom::DialogController>
         pending_receiver) {
-  receiver_.reset();
-  receiver_.Bind(std::move(pending_receiver));
+  dialog_controller_receiver_.reset();
+  dialog_controller_receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveAccountUIAndroid::BindInterface(
+  mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+      pending_receiver) {
+dialog_opener_receiver_.reset();
+dialog_opener_receiver_.Bind(std::move(pending_receiver));
 }
 
 void BraveAccountUIAndroid::OpenDialog(

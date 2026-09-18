@@ -46,7 +46,7 @@ export class BraveAccountRowElement extends CrLitElement {
   protected onOpenBraveAccountDialog(
     e: CustomEvent<{ initiatingServiceName: string; dialogMode: DialogMode }>,
   ) {
-    this.browserProxy.dialogController.openDialog(
+    this.browserProxy.dialogOpener.openDialog(
       e.detail.initiatingServiceName,
       e.detail.dialogMode,
     )
