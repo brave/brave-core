@@ -863,6 +863,11 @@ source_set("ui") {
         "views/frame/brave_browser_frame_view_linux_native.cc",
         "views/frame/brave_browser_frame_view_linux_native.h",
       ]
+
+      deps += [ "//chrome/browser/ui/views/frame:browser_frame_view_layout_linux_native" ]
+
+      public_deps +=
+          [ "//chrome/browser/ui/views/frame:browser_frame_view_linux_native" ]
     }
 
     if (is_mac) {
