@@ -750,8 +750,14 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_BROWSER_LOCK_SCREEN_CAPTURE" desc="Section header on the Browser Lock settings screen, above the screenshot/video capture toggle.">
         Screen capture
       </message>
-      <message name="IDS_BRAVE_BROWSER_LOCK_PREVENT_CAPTURE" desc="Toggle label: block screenshots and screen recording of the browser.">
-        Prevent screenshot/video capture
+      <message name="IDS_BRAVE_BROWSER_LOCK_SCREENSHOT_ALLOW" desc="Radio option label: do not block screenshots or screen recording anywhere in the browser.">
+        Just allow screenshots
+      </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_SCREENSHOT_PRIVATE_TABS_ONLY" desc="Radio option label: block screenshots and screen recording only while a private tab is showing.">
+        Only block screenshots for private tabs
+      </message>
+      <message name="IDS_BRAVE_BROWSER_LOCK_SCREENSHOT_EVERYTHING" desc="Radio option label: block screenshots and screen recording everywhere in the browser.">
+        Prevent screenshotting everything
       </message>
       <message name="IDS_SEND_P3A_ANALYTICS_TITLE" desc="Title for checkbox of send p3a analytics.">
         Allow privacy-preserving product analytics (P3A)
