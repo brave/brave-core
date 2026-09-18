@@ -15,6 +15,7 @@
 #include <variant>
 #include <vector>
 
+#include "base/containers/map_util.h"
 #include "base/dcheck_is_on.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
@@ -1072,6 +1073,91 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent,
   EXPECT_EQ(cached_content.size(), 2u);
   EXPECT_EQ(cached_content[0].get().content, "The content of one");
   EXPECT_EQ(cached_content[1].get().content, "The content of two");
+}
+
+TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kAIChatThreads);
+
+  // Build initial state with three root entries, where the middle one has a
+  // child thread.
+  auto archive = mojom::ConversationArchive::New();
+  auto root_entry_1 = mojom::ConversationTurn::New(
+      "root-turn-1", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "hello", std::nullopt, std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+  auto root_entry_2 = root_entry_1->Clone();
+  root_entry_2->uuid = "root-turn-2";
+  root_entry_2->character_type = mojom::CharacterType::ASSISTANT;
+  root_entry_2->action_type = mojom::ActionType::RESPONSE;
+  root_entry_2->text = "response";
+  root_entry_2->child_thread_uuids.emplace_back("thread-1");
+  auto root_entry_3 = root_entry_1->Clone();
+  root_entry_3->uuid = "root-turn-3";
+  root_entry_3->text = "third";
+  auto thread = mojom::Thread::New("thread-1", "uuid", "root-turn-2", 0, 0, 2);
+  archive->threads.emplace_back(std::move(thread));
+  archive->entries.emplace_back(std::move(root_entry_1));
+  archive->entries.emplace_back(std::move(root_entry_2));
+  archive->entries.emplace_back(std::move(root_entry_3));
+
+  auto conversation = mojom::Conversation::New(
+      "uuid", "title", base::Time::Now(), true, std::nullopt, 0, 0, false,
+      std::vector<mojom::AssociatedContentPtr>());
+
+  std::vector<std::unique_ptr<ToolProvider>> tool_providers;
+  tool_providers.push_back(std::make_unique<NiceMock<MockToolProvider>>());
+
+  auto handler = std::make_unique<ConversationHandler>(
+      conversation.get(), ai_chat_service_.get(), model_service_.get(),
+      ai_chat_service_->GetCredentialManagerForTesting(),
+      mock_feedback_api_.get(), &prefs_, shared_url_loader_factory_,
+      std::move(tool_providers), std::make_optional(std::move(archive)));
+
+  const auto& history = handler->GetConversationHistory();
+  ASSERT_EQ(history.size(), 3u);
+  ASSERT_EQ(history[1]->child_thread_uuids.size(), 1u);
+  ASSERT_EQ(history[1]->child_thread_uuids[0], "thread-1");
+
+  // Thread metadata should be populated immediately.
+  base::test::TestFuture<std::vector<mojom::ThreadPtr>> threads_future;
+  handler->GetConversationThreads(threads_future.GetCallback());
+  auto threads = threads_future.Take();
+  ASSERT_EQ(threads.size(), 1u);
+  EXPECT_EQ(threads[0]->uuid, "thread-1");
+  EXPECT_EQ(threads[0]->conversation_uuid, "uuid");
+  EXPECT_EQ(threads[0]->origin_conversation_entry_uuid, "root-turn-2");
+  // Thread entries should NOT be loaded yet (lazy).
+  auto* container = base::FindOrNull(handler->threads_, "thread-1");
+  ASSERT_TRUE(container);
+  EXPECT_TRUE(container->entries.empty());
+
+  // Populate the thread cache and verify GetConversationHistory with a
+  // thread_uuid returns the cached entries without delegating to the service.
+  container->entries.emplace_back(mojom::ConversationTurn::New(
+      "thread-entry-1", std::make_optional<std::string>("thread-1"),
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "thread query",
+      std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr, false, std::nullopt, nullptr,
+      std::vector<std::string>{}));
+  container->entries.emplace_back(mojom::ConversationTurn::New(
+      "thread-entry-2", std::make_optional<std::string>("thread-1"),
+      mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
+      "thread response", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr, false,
+      std::nullopt, nullptr, std::vector<std::string>{}));
+
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> future;
+  handler->GetConversationHistory("thread-1", future.GetCallback());
+  auto entries = future.Take();
+  ASSERT_EQ(entries.size(), 3u);
+  EXPECT_EQ(entries[0]->uuid, "root-turn-2");
+  EXPECT_EQ(entries[1]->uuid, "thread-entry-1");
+  EXPECT_EQ(entries[1]->text, "thread query");
+  EXPECT_EQ(entries[2]->uuid, "thread-entry-2");
+  EXPECT_EQ(entries[2]->text, "thread response");
 }
 
 TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
