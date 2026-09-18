@@ -142,79 +142,6 @@ public final class Domain: NSManagedObject, CRUD {
     return Domain.all(where: shredLevelPredicate, context: context)
   }
 
-  /// Get all URLs from Domain objects with the given Shred Level.
-  /// NOTE: This method is performed on background context, so only the URL's
-  /// are returned for thread-safety.
-  public class func allURLsWithShredLevel(
-    rawShredLevel: String,
-    isGlobalShredLevel: Bool
-  ) async -> [URL] {
-    let context = DataController.newBackgroundContext()
-    return await context.perform {
-      let mapToURL: (Domain) -> URL? = { domain -> URL? in
-        guard let urlString = domain.url,
-          let url = URL(string: urlString),
-          !url.isNewTabURL,
-          !InternalURL.isValid(url: url)
-        else {
-          return nil
-        }
-        return url
-      }
-      let domainsWithExplicitRequestedShredLevel =
-        Domain.allDomainsWithAutoShredLevel(rawShredLevel, context: context) ?? []
-      guard isGlobalShredLevel else {
-        return domainsWithExplicitRequestedShredLevel.compactMap(mapToURL)
-      }
-      // Default value is requested shred level, so fetch Domain's using default value
-      let domainsUsingDefaultShredLevel =
-        Domain.allDomainsWithAutoShredLevel(nil, context: context) ?? []
-
-      // A Domain may be created with non-secure scheme, then a separate Domain
-      // may be created with the secure scheme after https upgrade.
-      // WKWebsiteDataStore stores data without a scheme, so we should remove
-      // duplicate Domain's from the domainsWithDefaultShredLevel if the user explicitly
-      // assigned a shred level on it's baseDomain.
-      guard
-        let domainsWithCustomShredLevel = Domain.all(
-          where: NSPredicate(format: "shield_shredLevel != nil"),
-          context: context
-        ),
-        !domainsWithCustomShredLevel.isEmpty
-      else {
-        // no domains with custom assigned shred level assigned,
-        // so we can return all without shred level assigned
-        return (domainsWithExplicitRequestedShredLevel + domainsUsingDefaultShredLevel).compactMap(
-          mapToURL
-        )
-      }
-      let baseDomainsToExclude: Set<String> = Set(
-        domainsWithCustomShredLevel.compactMap({
-          guard let urlString = $0.url, let url = URL(string: urlString) else {
-            // if no url, not usable for shred
-            return nil
-          }
-          return url.baseDomain
-        })
-      )
-      let domainsUsingDefaultShredLevelFiltered =
-        domainsUsingDefaultShredLevel
-        .filter { domain in
-          guard let urlString = domain.url, let url = URL(string: urlString),
-            let baseDomain = url.baseDomain
-          else {
-            // if no url, not usable for shred
-            return false
-          }
-          // exclude domain if on exclusion list
-          return !baseDomainsToExclude.contains(baseDomain)
-        }
-
-      return (domainsWithExplicitRequestedShredLevel + domainsUsingDefaultShredLevelFiltered)
-        .compactMap(mapToURL)
-    }
-  }
-
   public static func clearInMemoryDomains() {
     Domain.deleteAll(predicate: nil, context: .new(inMemory: true))
   }
@@ -225,22 +152,6 @@ public final class Domain: NSManagedObject, CRUD {
         format: "shield_adblockAndTp != nil AND shield_blockAdsAndTrackingLevel == nil"
       )
     )
-  }
-
-  public class func totalDomainsWithFingerprintingProtectionLoweredFromGlobal() -> Int {
-    guard let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil"))
-    else {
-      return 0  // Can't be lower than off
-    }
-    return domains.filter({ $0.shield_fpProtection?.boolValue == false }).count
-  }
-
-  public class func totalDomainsWithFingerprintingProtectionIncreasedFromGlobal() -> Int {
-    guard let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil"))
-    else {
-      return 0  // Can't be higher than on
-    }
-    return domains.filter({ $0.shield_fpProtection?.boolValue == true }).count
   }
 
   // MARK: Wallet

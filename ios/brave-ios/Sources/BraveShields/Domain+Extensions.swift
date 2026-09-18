@@ -48,13 +48,6 @@ extension Domain {
     domainBlockAdsAndTrackingLevel = isEnabled ? .standard : .disabled
   }
 
-  /// Return the shield level for this domain, taking into account if all
-  /// shields are disabled for this domain.
-  @MainActor var globalBlockAdsAndTrackingLevel: ShieldLevel {
-    guard !areAllShieldsOff else { return .disabled }
-    return domainBlockAdsAndTrackingLevel
-  }
-
   /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
   @MainActor func isShieldExpected(
     _ shield: BraveShield,
@@ -74,30 +67,5 @@ extension Domain {
     let isAllShieldsOff = self.shield_allOff?.boolValue ?? false
     let isSpecificShieldOn = isShieldOn
     return considerAllShieldsOption ? !isAllShieldsOff && isSpecificShieldOn : isSpecificShieldOn
-  }
-
-  @MainActor public class func totalDomainsWithAdblockShieldsLoweredFromGlobal() -> Int {
-    guard Preferences.Shields.blockAdsAndTrackingLevel.isEnabled,
-      let domains = Domain.allDomainsWithExplicitShieldLevel()
-    else {
-      return 0  // Can't be lower than disabled
-    }
-
-    return domains.filter({
-      $0.domainBlockAdsAndTrackingLevel.strength
-        < Preferences.Shields.blockAdsAndTrackingLevel.strength
-    }).count
-  }
-
-  @MainActor public class func totalDomainsWithAdblockShieldsIncreasedFromGlobal() -> Int {
-    guard Preferences.Shields.blockAdsAndTrackingLevel != .aggressive,
-      let domains = Domain.allDomainsWithExplicitShieldLevel()
-    else {
-      return 0  // Can't be higher than aggressive
-    }
-    return domains.filter({
-      $0.domainBlockAdsAndTrackingLevel.strength
-        > Preferences.Shields.blockAdsAndTrackingLevel.strength
-    }).count
   }
 }

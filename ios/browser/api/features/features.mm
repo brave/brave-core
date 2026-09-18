@@ -194,11 +194,6 @@
       initWithFeature:&brave_shields::features::kBraveShredCacheData];
 }
 
-+ (Feature*)kBraveShieldsContentSettings {
-  return [[Feature alloc] initWithFeature:&brave_shields::features::
-                                              kBraveShieldsContentSettingsIOS];
-}
-
 + (Feature*)kShowUpdatedShieldsPanel {
   return [[Feature alloc]
       initWithFeature:&brave_shields::features::kShowUpdatedShieldsPanel];
