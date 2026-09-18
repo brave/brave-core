@@ -139,6 +139,7 @@ static_library("ai_chat") {
     ]
 
     deps += [
+      "//chrome/browser/actor/ui",
       "//components/actor/core:task_id",
       "//components/optimization_guide/content/browser",
       "//components/optimization_guide/proto:optimization_guide_proto",
@@ -476,6 +477,7 @@ source_set("browser_tests") {
         "//brave/components/ai_chat/core/common:test_support",
         "//brave/components/brave_origin",
         "//chrome/browser/actor",
+        "//chrome/browser/actor/ui",
         "//chrome/browser/ui",
         "//chrome/browser/ui:browser_window_header",
         "//components/optimization_guide/content/browser",
