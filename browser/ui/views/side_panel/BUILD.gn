@@ -42,6 +42,7 @@ source_set("side_panel_impl") {
     "//brave/components/vector_icons",
     "//chrome/app:generated_resources",
     "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui:singleton_tabs",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
