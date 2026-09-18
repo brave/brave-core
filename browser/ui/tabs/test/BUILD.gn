@@ -52,6 +52,7 @@ source_set("browser_tests") {
 
   if (is_mac) {
     sources += [ "shared_pinned_tab_service_browsertest_mac.mm" ]
+    deps += [ "//chrome/browser/ui/views/frame:browser_native_widget_mac" ]
   }
 }
 

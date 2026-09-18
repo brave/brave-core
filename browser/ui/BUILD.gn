@@ -128,6 +128,7 @@ source_set("ui") {
     deps += [
       "//chrome/browser:global_keyboard_shortcuts_mac",
       "//chrome/browser/ui:fullscreen_util_mac",
+      "//chrome/browser/ui/views/frame:browser_native_widget_mac",
     ]
   }
 
