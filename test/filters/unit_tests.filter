@@ -844,12 +844,10 @@
 -SSLConfigServiceManagerTest.PrefsPreservedAfterTrustAnchorIDsUpdated
 -SSLConfigServiceManagerTest.TrustAnchorIDsAfterPrefChange
 
-# These tests crash because they call LogProfileAvatar which calls NOTREACHED()
-# if it encounters an unknown icon index (like those that Brave uses).
--DiceSignedInProfileCreatorTest.*
+# These tests fail because we stub out the metrics in LogProfileAvatar as it
+# calls NOTREACHED() if it encounters an unknown icon index.
 -ProfileManagerTest.ProfileAvatarRecordedAtProfileInit
 -ProfileMetricsTest.LogProfileAvatar
--TurnSyncOnHelperTest.*
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

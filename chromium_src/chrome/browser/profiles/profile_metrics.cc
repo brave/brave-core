@@ -6,12 +6,15 @@
 #include "chrome/browser/profiles/profile_metrics.h"
 
 #define LogProfileAvatarSelection LogProfileAvatarSelection_ChromiumImpl
+#define LogProfileAvatarOnLoad LogProfileAvatarOnLoad_ChromiumImpl
 #include <chrome/browser/profiles/profile_metrics.cc>
 #undef LogProfileAvatarSelection
+#undef LogProfileAvatarOnLoad
 
-// Chromium attempts to log profile icons which do not include
-// Brave's additions in profile_avatar_icon_util.cc
-// Brave does not need this histogram, so we don't do anything here.
-// If we do want this histogram in the future then we can handle if the index
-// is greater than chromium's max.
+// Chromium attempts to log profile icons which do not include Brave's additions
+// in profile_avatar_icon_util.cc, so the upstream implementations hit
+// NOTREACHED() for Brave's avatar indices. Brave does not need these
+// histograms, so we don't do anything here. If we do want these histograms in
+// the future then we can handle if the index is greater than chromium's max.
 void ProfileMetrics::LogProfileAvatarSelection(size_t icon_index) { }
+void ProfileMetrics::LogProfileAvatarOnLoad(size_t icon_index) { }
