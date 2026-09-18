@@ -56,3 +56,15 @@ substitutions:
       literal: '[ ":v8_snapshot" ]'
       conditional: '!use_v8_context_snapshot || include_both_v8_snapshots'
       import: //tools/v8_context_snapshot/v8_context_snapshot.gni
+
+  - description: |
+      Order Metagen after Brave's generated v8 header deps
+
+      Metagen parses v8 headers that reach Brave's generated page graph
+      buildflags header, so it must be generated before the harvest runs.
+    add_literal_to_list:
+      target: run_metagen
+      type: action
+      list_name: deps
+      literal: brave_v8_headers_public_deps
+      import: //brave/v8/sources.gni
