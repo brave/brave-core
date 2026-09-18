@@ -5,53 +5,56 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 94.2% flake rate over 30 days per LUCI Analysis (713 passed, 1 failed, 11587 flaky).
+# 95.2% flake rate over 30 days per LUCI Analysis (772 passed, 1 failed, 15271 flaky).
 -BrowserMainLoopTest.PostCreateThreadsResultAbortsStartup
 
-# 1.4% flake rate over 30 days per LUCI Analysis (29558 passed, 0 failed, 425 flaky).
+# 1.3% flake rate over 30 days per LUCI Analysis (30005 passed, 0 failed, 400 flaky).
 -ChildProcessTaskPortProviderTest.ChildLifecycle
 
-# 49.1% flake rate over 30 days per LUCI Analysis (15257 passed, 0 failed, 14727 flaky).
+# 48.8% flake rate over 30 days per LUCI Analysis (15577 passed, 0 failed, 14828 flaky).
 -FilePathWatcherTest.DeleteAndRecreate
 
-# 18.4% flake rate over 30 days per LUCI Analysis (24480 passed, 3756 failed, 1747 flaky).
+# 16.9% flake rate over 30 days per LUCI Analysis (25258 passed, 3401 failed, 1746 flaky).
 -FilePathWatcherTest.DirAttributesChanged
 
-# 50.6% flake rate over 30 days per LUCI Analysis (14809 passed, 1 failed, 15174 flaky).
+# 51.0% flake rate over 30 days per LUCI Analysis (14913 passed, 2 failed, 15490 flaky).
 -FilePathWatcherTest.DirectoryChain
 
-# 52.7% flake rate over 30 days per LUCI Analysis (14169 passed, 1 failed, 15814 flaky).
+# 51.8% flake rate over 30 days per LUCI Analysis (14641 passed, 1 failed, 15763 flaky).
 -FilePathWatcherTest.ModifiedFile
 
-# 16.4% flake rate over 30 days per LUCI Analysis (25080 passed, 2811 failed, 2093 flaky).
+# 16.4% flake rate over 30 days per LUCI Analysis (25406 passed, 2840 failed, 2159 flaky).
 -FilePathWatcherTest.MoveChild
 
-# 48.6% flake rate over 30 days per LUCI Analysis (15408 passed, 0 failed, 14576 flaky).
+# 49.1% flake rate over 30 days per LUCI Analysis (15473 passed, 0 failed, 14932 flaky).
 -FilePathWatcherTest.MoveParent
 
-# 37.5% flake rate over 30 days per LUCI Analysis (18737 passed, 0 failed, 11247 flaky).
+# 37.7% flake rate over 30 days per LUCI Analysis (18954 passed, 0 failed, 11451 flaky).
 -FilePathWatcherTest.MovedToFile
 
-# 52.1% flake rate over 30 days per LUCI Analysis (14365 passed, 0 failed, 15619 flaky).
+# 51.5% flake rate over 30 days per LUCI Analysis (14751 passed, 0 failed, 15654 flaky).
 -FilePathWatcherTest.MultipleWatchersSingleFile
 
-# 44.7% flake rate over 30 days per LUCI Analysis (16574 passed, 1 failed, 13409 flaky).
+# 45.0% flake rate over 30 days per LUCI Analysis (16731 passed, 1 failed, 13673 flaky).
 -FilePathWatcherTest.NewFile
 
-# 48.7% flake rate over 30 days per LUCI Analysis (15393 passed, 0 failed, 14591 flaky).
+# 48.4% flake rate over 30 days per LUCI Analysis (15704 passed, 0 failed, 14701 flaky).
 -FilePathWatcherTest.NonExistentDirectory
 
-# 52.2% flake rate over 30 days per LUCI Analysis (14568 passed, 0 failed, 15892 flaky).
+# 46.9% flake rate over 30 days per LUCI Analysis (16397 passed, 0 failed, 14468 flaky).
 -LevelDbBackingStoreTest.CompactionTaskTiming
 
-# 64.0% flake rate over 30 days per LUCI Analysis (10964 passed, 0 failed, 19496 flaky).
+# 59.2% flake rate over 30 days per LUCI Analysis (12595 passed, 0 failed, 18270 flaky).
 -LevelDbBackingStoreTest.TombstoneSweeperTiming
 
-# 1.7% flake rate over 30 days per LUCI Analysis (29950 passed, 237 failed, 272 flaky).
+# 1.7% flake rate over 30 days per LUCI Analysis (30331 passed, 254 failed, 278 flaky).
 -NavigationURLLoaderImplTest.ForceAsyncParseHeaders
 
-# 1.0% flake rate over 30 days per LUCI Analysis (30150 passed, 3 failed, 312 flaky).
+# 1.1% flake rate over 30 days per LUCI Analysis (30539 passed, 8 failed, 319 flaky).
 -PrerenderHostRegistryTest.OneTaskToDeleteAllHosts
 
-# 6.2% flake rate over 30 days per LUCI Analysis (30898 passed, 1 failed, 2039 flaky).
--WebRtcInternalsMessageHandlerTest.DontRunJSBeforeNavigationCommitted
+# 36.8% flake rate over 30 days per LUCI Analysis (12 passed, 5 failed, 2 flaky).
+-SandboxMacTest.GpuDarwinUserDirsRestricted
+
+# 10.5% flake rate over 30 days per LUCI Analysis (17 passed, 0 failed, 2 flaky).
+-SandboxMacTest.GpuDarwinUserDirsUnrestricted

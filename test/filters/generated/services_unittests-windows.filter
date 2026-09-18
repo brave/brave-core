@@ -5,29 +5,26 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 41.7% flake rate over 30 days per LUCI Analysis (14 passed, 10 failed, 0 flaky).
+# 54.2% flake rate over 30 days per LUCI Analysis (11 passed, 13 failed, 0 flaky).
 -BackgroundTracingManagerTest.SavedCountPreventsStart
 
-# 83.3% flake rate over 30 days per LUCI Analysis (4 passed, 0 failed, 20 flaky).
+# 95.8% flake rate over 30 days per LUCI Analysis (1 passed, 0 failed, 23 flaky).
 -CoordinatorImplTest.DumpsAreAddedToTraceWhenRequested
 
-# 93.4% flake rate over 30 days per LUCI Analysis (1135 passed, 30 failed, 16113 flaky).
+# 87.7% flake rate over 30 days per LUCI Analysis (2385 passed, 37 failed, 16982 flaky).
 -HeapProfilingDataSourceTest.EmitSamples
 
-# 9.3% flake rate over 30 days per LUCI Analysis (17272 passed, 1 failed, 1776 flaky).
--HistogramSamplesDataSourceTest.RecordAllHistogramsWithoutTrackEvent
-
-# 4.2% flake rate over 30 days per LUCI Analysis (18247 passed, 1 failed, 801 flaky).
+# 3.8% flake rate over 30 days per LUCI Analysis (18657 passed, 1 failed, 745 flaky).
 -NetworkContextTest.PreconnectMax
 
-# 1.1% flake rate over 30 days per LUCI Analysis (18830 passed, 1 failed, 218 flaky).
+# 2.1% flake rate over 30 days per LUCI Analysis (18994 passed, 1 failed, 408 flaky).
+-NetworkContextTest.PreconnectTwo
+
+# 1.2% flake rate over 30 days per LUCI Analysis (19176 passed, 1 failed, 226 flaky).
 -PlatformSensorProviderTestWinrt.SensorCreationReturnCheck
 
-# 5.3% flake rate over 30 days per LUCI Analysis (108 passed, 6 failed, 0 flaky).
--SharedHttpCacheCorsURLLoaderFactoryTest.RedirectNotCached
-
-# 23.2% flake rate over 30 days per LUCI Analysis (14629 passed, 0 failed, 4423 flaky).
+# 18.0% flake rate over 30 days per LUCI Analysis (15902 passed, 0 failed, 3502 flaky).
 -TracingServiceTest.PerfettoClientConsumer
 
-# 2.2% flake rate over 30 days per LUCI Analysis (18633 passed, 0 failed, 419 flaky).
+# 2.3% flake rate over 30 days per LUCI Analysis (18966 passed, 0 failed, 438 flaky).
 -TracingServiceTest.TracingServiceInstantiate

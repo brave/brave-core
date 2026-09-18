@@ -32,6 +32,9 @@
 # 3.4% flake rate over 30 days per LUCI Analysis (86 passed, 1 failed, 2 flaky).
 -AlternateBucketDistributionAndPartitionFreeList/PartitionAllocThreadCacheTest.PeriodicPurgeSumsOverAllThreads/0
 
+# 2.2% flake rate over 30 days per LUCI Analysis (87 passed, 0 failed, 2 flaky).
+-AlternateBucketDistributionAndPartitionFreeList/PartitionAllocThreadCacheTest.PeriodicPurgeSumsOverAllThreads/1
+
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -AlternateTestParams/PartitionAllocDeathTest.RepeatedAllocReturnNull/0
 
@@ -43,12 +46,6 @@
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -AlternateTestParams/PartitionAllocDeathTest.RepeatedReallocReturnNull/1
-
-# 66.7% flake rate over 30 days per LUCI Analysis (17 passed, 0 failed, 34 flaky).
--AlternateTestParams/PartitionAllocTest.Bookkeeping/2
-
-# 64.7% flake rate over 30 days per LUCI Analysis (18 passed, 0 failed, 33 flaky).
--AlternateTestParams/PartitionAllocTest.ReallocDirectMapAligned/2
 
 # 2.2% flake rate over 30 days per LUCI Analysis (87 passed, 0 failed, 2 flaky).
 -FileTest.TouchGetInfo
@@ -182,5 +179,5 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 89 failed, 0 flaky).
 -ToolsSanityTest.AddressSanitizerNullDerefCrashTest
 
-# 86.3% flake rate over 30 days per LUCI Analysis (2277 passed, 0 failed, 14307 flaky).
+# 83.9% flake rate over 30 days per LUCI Analysis (2377 passed, 1 failed, 12351 flaky).
 -TraceSessionObserverListTest.CompileTimeDetection
