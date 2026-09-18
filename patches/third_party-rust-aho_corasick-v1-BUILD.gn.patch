@@ -1,11 +1,12 @@
 diff --git a/third_party/rust/aho_corasick/v1/BUILD.gn b/third_party/rust/aho_corasick/v1/BUILD.gn
-index d8f7028e7b166b2218dc2677a26516e4f3ef469c..18cf4146f79013fa422a57ae4c19fdbdf4649545 100644
+index d8f7028e7b166b2218dc2677a26516e4f3ef469c..8eccdba2f4a3d703b10b9aa03ffcaaeb571156be 100644
 --- a/third_party/rust/aho_corasick/v1/BUILD.gn
 +++ b/third_party/rust/aho_corasick/v1/BUILD.gn
-@@ -58,7 +58,7 @@ cargo_crate("lib") {
+@@ -57,8 +57,7 @@ cargo_crate("lib") {
+   cargo_pkg_description = "Fast multiple substring searching."
    cargo_pkg_repository = "https://github.com/BurntSushi/aho-corasick"
    cargo_pkg_version = "1.1.5"
- 
+-
 -  allow_unsafe = false
 +  allow_unsafe = true
  
