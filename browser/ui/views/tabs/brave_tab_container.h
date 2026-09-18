@@ -163,6 +163,8 @@ class BraveTabContainer : public TabContainerImpl,
                            ScrollBarVisibilityWithManyTabs);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
                            RichAnimationIsDisabled);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           ScrollFastPathMatchesFullLayout);
 
   class DropArrow {
    public:
@@ -231,6 +233,12 @@ class BraveTabContainer : public TabContainerImpl,
   // Sets the scroll offset for unpinned tabs. If the offset changes, triggers
   // a layout.
   void SetScrollOffset(int offset);
+
+  // Applies a scroll of |delta| to a settled vertical strip by shifting the
+  // existing ideal bounds and re-snapping the slot views, instead of running
+  // the full layout pipeline. Returns false when the strip is not in a state
+  // where that is safe; the caller then runs the full layout.
+  bool ScrollByDelta(int delta);
 
   // Returns the maximum scroll offset for unpinned tabs.
   int GetMaxScrollOffset() const;
