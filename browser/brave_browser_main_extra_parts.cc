@@ -15,6 +15,12 @@
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
+#if BUILDFLAG(IS_WIN)
+#include "base/path_service.h"
+#include "brave/browser/os_crypt/os_crypt_key_backup.h"
+#include "chrome/common/chrome_paths.h"
+#endif
+
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/importer/brave_importer_p3a.h"
 #include "brave/browser/p3a/p3a_core_metrics.h"
@@ -77,6 +83,14 @@ void BraveBrowserMainExtraParts::PreProfileInit() {
 
 void BraveBrowserMainExtraParts::PostBrowserStart() {
   g_brave_browser_process->StartBraveServices();
+
+#if BUILDFLAG(IS_WIN)
+  // Windows specific OSCrypt logic.
+  // Brave's key (which is encrypted with OSCrypt) is stored in LocalState which
+  // can get lost when corrupt. This will store a backup in a safe location.
+  brave::BackUpOSCryptKey(base::PathService::CheckedGet(chrome::DIR_USER_DATA),
+                          g_browser_process->local_state());
+#endif  // BUILDFLAG(IS_WIN)
 }
 
 void BraveBrowserMainExtraParts::PreMainMessageLoopRun() {
