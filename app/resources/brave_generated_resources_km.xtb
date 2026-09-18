@@ -112,6 +112,9 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3114478090884951591">តំបន់ដែលមើលឃើញ</translation>
 <translation id="2026367923222947564">ទំព័រពេញ</translation>
 <translation id="4218885227032158909">តំបន់ដែលបានជ្រើស</translation>
+<translation id="2586386106930448447">ការមើលរូបថតអេក្រង់ជាមុន</translation>
+<translation id="7514365320538308">ទាញយក</translation>
+<translation id="2743387203779672305">ចម្លងទៅផ្ទាំងឃ្លីបបត</translation>
 <translation id="4928988318462976765">ហាងសម្ព័ន្ធស៊ុមឯកទេសអ៊ីនធើណែតទីកន្លែងមួយ</translation>
 <translation id="9181207987584064303">មើលនៅ ហាងសម្ព័ន្ធស៊ុមឯកទេសអ៊ីនធើណែតទីកន្លែងមួយ</translation>
 <translation id="3161744659507801211">ដោយសូមប្រកាស៖ Brave មិនអាចរារាំងការផ្ដើមការសម្រុងសែហ្វអុររបស់អ្នកពីការកំណត់ប្រវត្តិចំនាយរបស់អ្នកបានទេ។</translation>
@@ -363,6 +366,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6847541693235449912">ចូល​ចិត្ត</translation>
 <translation id="2079545284768500474">បកក្រោយ</translation>
 <translation id="1533980864758658574">បានបង្កើតវីនដូថ្មីសម្រាប់ <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">គ្មានផ្ទាំងណាដែលត្រូវនឹងប្រធានបទនោះទេ។ សាកល្បងពិពណ៌នាវាតាមរបៀបផ្សេង។</translation>
 <translation id="7985042437720138349">មុខងារនេះផ្ញើទិន្នន័យអំពីផ្ទាំងដែលបានបើករបស់អ្នកទៅសន្ទរ Log, សន្ទរមានការងារស្វែងរករួមជាមួយរម្លង់ផ្កាយ។</translation>
 <translation id="6165508094623778733">ស្វែងយល់​បន្ថែម</translation>
 <translation id="7557539689487606886">ដំឡើងទៅ Premium</translation>
@@ -420,6 +424,23 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4328541188421002379">ផ្តល់​ឈ្មោះ​សម្រាប់​កុងតឺន័រ​របស់​អ្នក​ដូចជា ការងារ ឬ​ផ្ទាល់ខ្លួន</translation>
 <translation id="4976989127264491396">កំហុស៖ <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">រក​មិន​ឃើញ​កុងតឺន័រ​ទេ</translation>
+<translation id="6055154402239241620">ការគ្រប់គ្រងចរាចរ</translation>
+<translation id="8134521925475508805">កំណត់រចនាសម្ព័ន្ធ site ជាក់លាក់ ដើម្បីបើកដោយស្វ័យប្រវត្តិក្នុងបរិបទជាក់លាក់ បង្កើតការបំបែករវាងវគ្គរុករករបស់អ្នក។ <ph name="BEGIN_LINK"/>ស្វែងយល់បន្ថែម<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">បើកការគ្រប់គ្រងចរាចរ</translation>
+<translation id="1358255827354528344">បញ្ចូលច្បាប់ថ្មី</translation>
+<translation id="7183128985801806752">ច្បាប់គ្រប់គ្រងចរាចរថ្មី</translation>
+<translation id="2474694032500407328">កែសម្រួលច្បាប់គ្រប់គ្រងចរាចរ</translation>
+<translation id="5543417389274097206">បង្កើតច្បាប់</translation>
+<translation id="6532106788206463496">រក្សាទុកការផ្លាស់ប្តូរ</translation>
+<translation id="1172800769374812685">លុបច្បាប់</translation>
+<translation id="2389682807835777591">តើអ្នកប្រាកដថាអ្នកចង់លុបច្បាប់ <ph name="RULE_LABEL"/> ឬ?</translation>
+<translation id="4853129331778360252">បញ្ចូល URL ដើម្បីគ្រប់គ្រង និងបើកជានិច្ចក្នុងបរិបទរុករកជាក់លាក់។</translation>
+<translation id="1173480005453148926">URL ត្រូវគ្រប់គ្រង</translation>
+<translation id="6217532416180299470">បញ្ចូល URL ដើម្បីគ្រប់គ្រងជាមួយការគ្រប់គ្រងចរាចរ</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> ត្រូវនឹង site និងដែនរងរបស់វា; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> ត្រូវនឹង site ជាក់លាក់; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> ត្រូវនឹង site ទាំងអស់; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> គឺជាមតិយោបល់។</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (និង URL ច្រើនទៀត <ph name="COUNT"/>)</translation>
+<translation id="3700798663085748181">បើកច្បាប់</translation>
+<translation id="2967480878853054068">តម្រង URL មិនត្រឹមត្រូវ</translation>
 <translation id="2263346047290834619">ប្រើ​ផ្ទាំង​ឈើ</translation>
 <translation id="5860254591544742609">បង្ហាញប៉ារាយពុម្ភ</translation>
 <translation id="4691131445504068802">លាក់ទាំងស្រុងនៅពេលបង្រួមទំហំ</translation>
@@ -527,7 +548,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6745592621698551453">ធ្វើបច្ចុប្បន្នភាពឥឡូវនេះ</translation>
 <translation id="5334844597069022743">មើលប្រភព</translation>
 <translation id="4720556299488643018">ឈប់ជាវ</translation>
-<translation id="6532106788206463496">រក្សាទុកការផ្លាស់ប្តូរ</translation>
 <translation id="4516904298421534459">តម្រងបញ្ជី</translation>
 <translation id="4435215931544457255">បញ្ជីសហគមន៍ពេញនិយមបន្ថែម។ សូមកត់សម្គាល់ថាការបើកកម្រិតពុំច្រើនពេកអាចបន្ថយល្បឿនណាវីង។</translation>
 <translation id="802154636333426148">បានបរាជ័យក្នុងការទាញយក</translation>
@@ -610,6 +630,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="509873765238158442">ទប់ស្កាត់មុខងាររំលឹកឡើងវិញ Microsoft</translation>
 <translation id="4763421121695677716">ទប់ស្កាត់មុខងាររំលឹកឡើងវិញនៅលើកុំព្យូទ័រ Microsoft Windows ពីការថតអេក្រង់ដោយស្វ័យប្រវត្តិនៃផ្ទាំង Brave ដែលបើកណាមួយ។</translation>
 <translation id="1968895725257436430">ការប្រមូលទិន្នន័យ</translation>
+<translation id="5668852698659986622">បើកការផ្សាយពាណិជ្ជកម្មដែលបានឧបត្ថម្ភ</translation>
+<translation id="431194936581466649">ជួយគាំទ្របេសកកម្មរបស់ Brave ក្នុងការកសាងបណ្ដាញឯករាជ្យដែលផ្ដល់អាទិភាពដល់អ្នកប្រើ ជាមួយការផ្សាយពាណិជ្ជកម្មដែលបានឧបត្ថម្ភ។ យើងវាស់ស្ទង់ដំណើរការនៃការផ្សាយពាណិជ្ជកម្មដោយឯកជន ដោយមិនកំណត់អត្តសញ្ញាណអ្នក។</translation>
 <translation id="1700052872056357670">ជម្រះទិន្នន័យនៅពេល​ចាកចេញ​</translation>
 <translation id="216468847346280584">ជម្រះទិន្នន័យការផ្សាយពាណិជ្ជកម្ម Brave...</translation>
 <translation id="96212973142796240">បានសម្អាតទិន្នន័យការផ្សាយពាណិជ្ជកម្ម Brave</translation>
@@ -987,4 +1009,12 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="154702742922788359">របៀបបើក</translation>
 <translation id="2249111429176737533">បើក​ជា​ផ្ទាំងវីនដូ</translation>
 <translation id="7022756207310403729">បើកនៅក្នុងកម្មវិធីរុករក</translation>
+<translation id="1916785651473363467">រូបភាព profile ផ្ទាល់ខ្លួន</translation>
+<translation id="5336092064678832560">ផ្ទុករូបភាពផ្ទាល់ខ្លួនឡើង</translation>
+<translation id="1062407476771304334">ជំនួស</translation>
+<translation id="1428299461403073820">ជំនួសរូបភាព profile ផ្ទាល់ខ្លួន</translation>
+<translation id="7994453838803296517">ការមើលរូបភាព profile ផ្ទាល់ខ្លួនជាមុន បានជ្រើសរើស</translation>
+<translation id="6578040791557152233">ផ្ទុករូបភាព profile ផ្ទាល់ខ្លួនឡើង</translation>
+<translation id="9222124079546967592">លុបរូបភាព profile ផ្ទាល់ខ្លួន</translation>
+<translation id="6058660912941570282">Brave មិនអាចប្រើឯកសារនេះបានទេ។ ជ្រើសរើសរូបភាពផ្សេង ហើយសាកល្បងម្ដងទៀត។</translation>
 </translationbundle>

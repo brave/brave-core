@@ -10,6 +10,7 @@
 Some features may be unavailable and changes to preferences won't be saved.</translation>
 <translation id="7577672138294294152">Your parent has turned off 'Permissions for sites, apps and extensions' for Brave.</translation>
 <translation id="4408482856437790071">To search a specific Brave feature or extension, type its shortcut in the address bar, followed by your selected keyboard key</translation>
+<translation id="3257316091303113323">Show search with Brave in system tray and turn on keyboard shortcut</translation>
 <translation id="5918095577778020936">Brave wants to export your passwords. Type your Windows password to allow this.</translation>
 <translation id="112640046208448578">Identify things or places and copy or translate text. When you use image search, a screenshot of the page is sent to the server. <ph name="LEARN_MORE"/></translation>
 <translation id="5468853758063275923">Brave is your default browser</translation>
@@ -40,7 +41,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="1356661055722410047">New! You can translate both text and images on your screen</translation>
 <translation id="1383876407941801731">Search</translation>
 <translation id="3535301204632475895">Use the Brave app to keep browsing on the go</translation>
-<translation id="7009295044271335553">&amp;Manage Brave profiles</translation>
 <translation id="141901961143729572">Share your thoughts</translation>
 <translation id="3880714039086599943">To share your window, allow screen recording for Brave in System Settings.</translation>
 <translation id="1586284627848250203">Get help with Brave for testing</translation>
@@ -150,7 +150,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2620436844016719705">System</translation>
 <translation id="7931230852267968641">Your organisation can see and manage browsing data, such as your bookmarks, history and passwords. It can't see browsing data in other Brave profiles</translation>
 <translation id="2257221826278123061">Verify that it's you to use and save Brave data in your account, <ph name="ACCOUNT_EMAIL"/></translation>
-<translation id="7048234400304379082">To leave or return to Gemini in Brave, use keyboard shortcut.</translation>
 <translation id="5655607968417451974">Start Brave</translation>
 <translation id="7387051847644272380">An operating system error occurred during installation. Please download Brave again.</translation>
 <translation id="2648689842065142443">If you share a device, friends and family can browse separately and set up Brave just the way they want</translation>
@@ -225,6 +224,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="2645435784669275700">Chrome OS</translation>
 <translation id="2297290224191497273">Switch to existing Brave profile?</translation>
 <translation id="3412460710772753638">In Password Manager on this device</translation>
+<translation id="3438772217992559640">Search this tab with image search</translation>
 <translation id="2491221873705777076">Extend Enhanced Safe Browsing with Brave on your phone</translation>
 <translation id="7304389940068374923">Making Brave yours…</translation>
 <translation id="5853262807109651878">This will delete <ph name="ITEMS_COUNT"/> items from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
@@ -260,7 +260,6 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="7130675370997202556">Click your name to open Brave and start browsing.</translation>
 <translation id="3892148308691398805">Copy text</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/> is already signed in to this Brave profile. To keep your browsing separate, Brave can create your own profile for you.</translation>
-<translation id="8744239658215739511">Customise your Brave</translation>
 <translation id="3941890832296813527">Install error: The installer filename is invalid or unsupported.</translation>
 <translation id="8090497651549769448">Brave is trying to copy passwords. Type your Windows password to allow this.</translation>
 <translation id="4256965182800026277">Your passwords, payment methods and addresses that you saved in your Brave sync chain will be removed from this device. To use them again in Brave, sign back in.</translation>
@@ -299,6 +298,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="6368144843345980623">Export passwords from Brave</translation>
 <translation id="4304713468139749426">Password Manager</translation>
 <translation id="4334241893986177674">Search this screenshot</translation>
+<translation id="3985621805803699376">Search and ask questions from anywhere, even if Brave is minimised</translation>
 <translation id="242356249838681145">Launch Brave when Windows starts</translation>
 <translation id="4400772909124543403">No update is available</translation>
 <translation id="9183662282810237335">Exit Brave anyway?</translation>
@@ -328,6 +328,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="4970880042055371251">Chrome OS version</translation>
 <translation id="2182657378556811785">Nearly up to date! Relaunch Brave to finish updating.</translation>
 <translation id="6311668361877328515">Speeds up sites with Brave's V8 engine but makes Brave slightly less resistant to attacks</translation>
+<translation id="7960968658810899127">Open Search with Brave</translation>
 <translation id="7402642357351265733">If you also share Brave usage reports, those reports include the URLs that you visit</translation>
 <translation id="4673710618874938871">Signed in as <ph name="USER_NAME"/>, membership. Open the account menu</translation>
 <translation id="8142245354207161805">The profile appears to be in use by another Brave process (<ph name="PROCESS_ID"/>) on another computer (<ph name="HOST_NAME"/>). Brave has locked the profile so that it doesn't get corrupted. If you are sure that no other processes are using this profile, you can unlock the profile and relaunch Brave.</translation>
@@ -366,6 +367,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="8586264863973514035">To apply your changes, relaunch Brave</translation>
 <translation id="5286907366254680517">Detected</translation>
 <translation id="7264453786974905915">Get the Brave app</translation>
+<translation id="7230006500876504868">Search with Brave</translation>
 <translation id="6944930779012811739">Brave updater internal service</translation>
 <translation id="6214255602211289863">Use them alongside other Gemini features in Brave</translation>
 <translation id="5346389065299425353">Deepen your search by adding multiple tabs, files and tools</translation>
@@ -376,6 +378,7 @@ Some features may be unavailable and changes to preferences won't be saved.</tra
 <translation id="7708394612738038097">You are signing in with a managed account and giving its administrator control over your Brave profile. Your Brave data, such as your apps, bookmarks, history, passwords and other settings will become permanently tied to <ph name="USER_NAME"/>. You will be able to delete this data via the Brave sync chains Dashboard, but you will not be able to associate this data with another account. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Extra code: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="2487133103111559902">To get personalisation, include Brave in Web &amp; App Activity</translation>
+<translation id="3311284381627742014">Open search with Brave</translation>
 <translation id="5154625106151193600">Learn why Brave blocks some files</translation>
 <translation id="1786715389543715322">Updating Brave (<ph name="PROGRESS_PERCENT"/>)</translation>
 <translation id="7021823858304886493">Allow Brave sign-in</translation>
@@ -432,6 +435,7 @@ If this page isn't working as expected, try allowing optimisation.</translation>
 <translation id="5977420883993828287">Pinned! Use contextual tasks again from the toolbar</translation>
 <translation id="4357808717322635817">{COUNT,plural, =1{Your organisation closes Brave automatically when it isn't used for one minute.}other{Your organisation closes Brave automatically when it isn't used for # minutes.}}</translation>
 <translation id="3598551856834560515">Update Brave to start sync</translation>
+<translation id="5990360079535151574">From the 'Contextual tasks' button on the toolbar, you can reopen Contextual tasks to ask questions while you browse</translation>
 <translation id="6003112304606738118">Downloading… <ph name="HOURS"/> hour(s) remaining</translation>
 <translation id="6009821354356307391">Ask a follow-up</translation>
 <translation id="6040143037577758943">Close</translation>
@@ -494,6 +498,7 @@ If this page isn't working as expected, try allowing optimisation.</translation>
 <translation id="7185585387858242335">Shortcuts open in Brave</translation>
 <translation id="3617744907966785605">Your organisation closes Brave when it isn't used for <ph name="TIMEOUT_DURATION"/>. Browsing data was deleted. This could include history, autofill and downloads.</translation>
 <translation id="8646609321956191980">Each profile holds its own Brave info, like bookmarks, history, passwords and more</translation>
+<translation id="6556755379298048869">Search with a keyboard shortcut.</translation>
 <translation id="6756656512757374876">Learn more about <ph name="BEGIN_LINK"/>how Brave keeps your data private<ph name="END_LINK"/></translation>
 <translation id="3556601443414636547">Changes to this setting will be applied once Brave restarts.</translation>
 <translation id="3396870972301571614">Manage your extensions by clicking Extensions in the Brave main menu.</translation>
@@ -528,6 +533,7 @@ Some features may be unavailable. Please specify a different profile directory o
 <translation id="7830723774663008396">Brave - <ph name="PAGE_TITLE"/></translation>
 <translation id="6859580922007887573">Tab to continue</translation>
 <translation id="6862030660799253820">Search this image with image search</translation>
+<translation id="6869568587896659271">Easy access to websites below the address bar</translation>
 <translation id="3028928628792374067">Brave found that '<ph name="EXTENSION_NAME"/>' contains malware</translation>
 <translation id="6877155553248388166">bottom-right corner of search area: right <ph name="RIGHT"/>%, bottom <ph name="BOTTOM"/>%</translation>
 <translation id="6896758677409633944">Copy</translation>
@@ -580,6 +586,7 @@ New bookmarks can't be saved in your account until you delete some. If you sign 
 <translation id="3403365884036456766">Your preferences file is corrupt or invalid.
 
 Brave is unable to recover your settings.</translation>
+<translation id="7324051657739063017">You can reopen Contextual tasks to ask questions while you browse</translation>
 <translation id="3511996232906761537">Your web, bookmarks and other Brave stuff live here.</translation>
 <translation id="1754899895078387289">Only someone with your passphrase can read your encrypted data. The passphrase is not sent to or stored by Brave. If you forget your passphrase or want to change this setting, you'll need to <ph name="BEGIN_LINK"/>delete the Brave data in your account<ph name="END_LINK"/>.</translation>
 <translation id="5380963249588143069">Your system administrator has configured Brave to open <ph name="ALTERNATIVE_BROWSER_NAME"/> to access <ph name="TARGET_URL_HOSTNAME"/>.</translation>
@@ -587,6 +594,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="6085660187823915017">To get future Brave updates, you'll need macOS 13 or later. This computer is using macOS 12.</translation>
 <translation id="2865744782251083875">You haven't visited recently. Brave removed <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/>.</translation>
 <translation id="3871306442916198768">Show Gemini in Brave in system tray</translation>
+<translation id="7401687852903179959">Search this video with image search</translation>
 <translation id="4104934885375476361">Brave is now your default browser</translation>
 <translation id="7951152294775418909">Continue where you left off: Brave restores your tabs every time you restart. To turn this off, go to</translation>
 <translation id="3191314862567596053">Import passwords to Brave</translation>
@@ -620,6 +628,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="77283119132245232">Provides system tracing services for <ph name="BROWSER_NAME"/>. If this service is disabled, performance traces created by the browser will not include system-wide events, such as context switch and ready thread events.</translation>
 <translation id="4784414698887946907">This will delete your browsing data from this device. To retrieve your data later, sign in to Brave as <ph name="USER_EMAIL"/>.</translation>
 <translation id="7747138024166251722">The installer couldn't create a temporary directory. Please check for free disk space and permission to install software.</translation>
+<translation id="644418935605751729">Search in Brave</translation>
 <translation id="8543787950557226450">Reset to default Brave</translation>
 <translation id="4859382825808018797">To secure your work on Brave, your organisation will be able to view or manage certain information when you're signed in to Brave.</translation>
 <translation id="4976450819672499783">Set Brave as default and pin it to taskbar</translation>
@@ -627,6 +636,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> – Brave Canary</translation>
 <translation id="2684504034454188774">Make it harder for people with access to your Internet traffic to see which sites you visit. Brave uses a secure connection to look up a site's IP address in the DNS (Domain Name System).</translation>
 <translation id="7810005234485217901">You can pin image search for easy access</translation>
+<translation id="4191642852677143100">Choose what to share with Brave</translation>
 <translation id="1652855885539187849">A Brave profile with this account already exists on this device</translation>
 <translation id="7845233973568007926">Thanks for installing. You must restart your computer before using <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="7397737266068428588">Your search engine was changed from outside of Brave. To protect you, Brave reset it to its original default. <ph name="LEARN_MORE_LINK"/></translation>
@@ -664,6 +674,7 @@ Brave is unable to recover your settings.</translation>
 <translation id="9067428552314418522">This file is dangerous, so Brave has blocked it.</translation>
 <translation id="8177472873527554730">Can't find content in page</translation>
 <translation id="6219250889396046657">Enter your passphrase to use and save Brave data in your account, <ph name="USER_EMAIL"/></translation>
+<translation id="820759916613250543">Search this image with image search</translation>
 <translation id="8221491193165283816">You usually block notifications. To let this site notify you, click here.</translation>
 <translation id="8377926237617998195">To use your camera, give Brave access in <ph name="BEGIN_LINK"/>system settings<ph name="END_LINK"/></translation>
 <translation id="1755067029031059271">Brave can't verify where this extension comes from, and it might be unsafe. Remove it from Brave so that it can no longer see and change your data on sites that you visit, including personal info.</translation>
@@ -742,12 +753,15 @@ Brave is unable to recover your settings.</translation>
             • Delete cookies and other temporary site data
             <ph name="LINE_BREAKS"/>
             Bookmarks, history and saved passwords won't be affected.</translation>
+<translation id="6034174407583692244">Show Brave site shortcuts</translation>
 <translation id="7731184591599776500">Brave Enterprise logo</translation>
 <translation id="2001474182910589370">Take the safety of Brave on the go with the Brave app on your <ph name="DEVICE_TYPE"/></translation>
 <translation id="6500340165622970282">Cannot start Brave because something went wrong when opening your profile. Try to restart Brave.</translation>
 <translation id="3424657754843264466">Manage Brave profiles</translation>
+<translation id="1454821212628854849">Use your keyboard to navigate between Gemini in Brave and your open tab.</translation>
 <translation id="9018218886431812662">Installation complete</translation>
 <translation id="82609232232243542">Sign in to Brave</translation>
+<translation id="7428750281620987416">Show search with Brave in Mac menu bar and turn on keyboard shortcut</translation>
 <translation id="7055223246119657449">Brave blocked this download because the archive file includes other files that may hide malware</translation>
 <translation id="8341362078156319636">Keep your passwords, bookmarks and history perfectly synced across devices. Easily access the features that you know and love by updating your default browser to Brave. Brave will be pinned to your taskbar for quick access.</translation>
 <translation id="8965179855019347124">Use Brave's best AI tools with the Brave app on your phone</translation>

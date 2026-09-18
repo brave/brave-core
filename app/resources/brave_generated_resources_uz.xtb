@@ -112,6 +112,9 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="3114478090884951591">Koʻrinadigan hudud</translation>
 <translation id="2026367923222947564">Toʻliq sahifa</translation>
 <translation id="4218885227032158909">Tanlangan hudud</translation>
+<translation id="2586386106930448447">Skrinshot ko'rinishi</translation>
+<translation id="7514365320538308">Yuklab olish</translation>
+<translation id="2743387203779672305">Vaqtincha xotiraga nusxalash</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Web Extensions Store'da ochish</translation>
 <translation id="3161744659507801211">Ogohlantirish: Brave kengaytmalarning sizning ko'rish tarixingizni yozib qo'yishini oldini ololmaydi.</translation>
@@ -364,6 +367,7 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="6847541693235449912">Boshlash</translation>
 <translation id="2079545284768500474">Qaytarish</translation>
 <translation id="1533980864758658574">Yangi oyna <ph name="TOPIC"/> mavzusi uchun yaratildi</translation>
+<translation id="530437350080973527">Bu mavzuga mos vkladkalar topilmadi. Uni boshqacha ta'riflashga harakat qiling.</translation>
 <translation id="7985042437720138349">Bu funksiya ochilgan yorliqlaringiz haqidagi ma'lumotlarni Leo, Brave'ning AI kuchli brauzer yordamchisiga yuboradi.</translation>
 <translation id="6165508094623778733">Batafsil</translation>
 <translation id="7557539689487606886">Premium obuna qilish</translation>
@@ -421,6 +425,23 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="4328541188421002379">Konteyneringizga ish yoki shaxsiy tarzda nom bering</translation>
 <translation id="4976989127264491396">Xato: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Konteyner topilmadi</translation>
+<translation id="6055154402239241620">Trafik nazorati</translation>
+<translation id="8134521925475508805">Muayyan saytlarni ma'lum bir kontekstda avtomatik ochilishga sozlang va shu tariqa brauzer seanslaringiz orasida ajratma yarating. <ph name="BEGIN_LINK"/>Batafsil<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Trafik nazoratini yoqish</translation>
+<translation id="1358255827354528344">Yangi qoida qo'shish</translation>
+<translation id="7183128985801806752">Yangi trafik nazorati qoidasi</translation>
+<translation id="2474694032500407328">Trafik nazorati qoidasini tahrirlash</translation>
+<translation id="5543417389274097206">Qoida yaratish</translation>
+<translation id="6532106788206463496">Oʻzgarishlarni saqlash</translation>
+<translation id="1172800769374812685">Qoidani o'chirish</translation>
+<translation id="2389682807835777591">Siz haqiqatan ham <ph name="RULE_LABEL"/> qoidasini o'chirmoqchimisiz?</translation>
+<translation id="4853129331778360252">Boshqarish va doim muayyan brauzer kontekstida ochish uchun URL manzillarni kiriting.</translation>
+<translation id="1173480005453148926">Boshqariladigan URL manzillar</translation>
+<translation id="6217532416180299470">Trafik nazorati bilan boshqariladigan URL manzillarni kiriting</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> saytga va uning subdomenlariga mos keladi; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> aynan shu saytga mos keladi; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> barcha saytlarga mos keladi; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> izohdir.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (va yana <ph name="COUNT"/> ta URL)</translation>
+<translation id="3700798663085748181">Qoidani yoqish</translation>
+<translation id="2967480878853054068">Notoʻgʻri URL filtri</translation>
 <translation id="2263346047290834619">Daraxt tablarini foydalaning</translation>
 <translation id="5860254591544742609">Sarlavha satrini ko'rsatish</translation>
 <translation id="4691131445504068802">Minimallashtirilganda butunlay yashirish</translation>
@@ -528,7 +549,6 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="6745592621698551453">Hozir yangilash</translation>
 <translation id="5334844597069022743">Manbani koʻrish</translation>
 <translation id="4720556299488643018">Obunani bekor qilish</translation>
-<translation id="6532106788206463496">Oʻzgarishlarni saqlash</translation>
 <translation id="4516904298421534459">Filtr roʻyxatlari</translation>
 <translation id="4435215931544457255">Qoʻshimcha mashhur hamjamiyat roʻyxatlari. Eʼtibor bering, haddan tashqari koʻp filtrlarni yoqish saytlarni koʻrish tezligini pasaytiradi.</translation>
 <translation id="802154636333426148">Yuklab olinmadi</translation>
@@ -611,6 +631,8 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="509873765238158442">Microsoft Recall'ni bloklash</translation>
 <translation id="4763421121695677716">Microsoft Windows kompyuterlarida Recall funksiyasining Brave'dagi ochiq varaqlarning skrinshotlarini avtomatik tarzda olishini bloklang.</translation>
 <translation id="1968895725257436430">Ma'lumot yig'ish</translation>
+<translation id="5668852698659986622">Homiylik reklamalarini yoqish</translation>
+<translation id="431194936581466649">Homiylik reklamalari bilan Brave'ning mustaqil, foydalanuvchini birinchi o'ringa qo'yuvchi Web qurish missiyasini qo'llab-quvvatlashga yordam bering. Biz reklama samaradorligini sizni aniqlamasdan, maxfiy tarzda o'lchaymiz.</translation>
 <translation id="1700052872056357670">Chiqishda ma'lumotlarni o'chirish</translation>
 <translation id="216468847346280584">Brave Ads ma'lumotlarini tozalash...</translation>
 <translation id="96212973142796240">Brave Ads ma'lumotlari tozalandi</translation>
@@ -990,4 +1012,12 @@ Buni amalga oshirishni xohlaysizmi?</translation>
 <translation id="154702742922788359">Ochiq rejim</translation>
 <translation id="2249111429176737533">Varaqli oyna sifatida ochish</translation>
 <translation id="7022756207310403729">Brauzerda ochish</translation>
+<translation id="1916785651473363467">Maxsus profil rasmi</translation>
+<translation id="5336092064678832560">Maxsus rasm yuklash</translation>
+<translation id="1062407476771304334">Almashtirish</translation>
+<translation id="1428299461403073820">Maxsus profil rasmini almashtirish</translation>
+<translation id="7994453838803296517">Maxsus profil rasmi ko'rinishi, tanlandi</translation>
+<translation id="6578040791557152233">Maxsus profil rasmini yuklash</translation>
+<translation id="9222124079546967592">Maxsus profil rasmini olib tashlash</translation>
+<translation id="6058660912941570282">Brave bu fayldan foydalana olmaydi. Boshqa rasm tanlab, qayta urinib ko'ring.</translation>
 </translationbundle>

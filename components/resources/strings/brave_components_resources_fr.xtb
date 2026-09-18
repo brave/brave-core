@@ -864,9 +864,11 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="646023614746251785">Confirmer l'échange</translation>
 <translation id="6264944956989873014">Confirmer le pont</translation>
 <translation id="7067917728851842589">Confirmer l'envoi</translation>
+<translation id="2841837950101800123">Fournisseur</translation>
 <translation id="1114725160772317155">Statut du fournisseur</translation>
 <translation id="2351357639951873714">Confirmer l'anonymisation</translation>
 <translation id="7480044382160806610">Confirmer la désanonymisation</translation>
+<translation id="6830542010524256586">Confirmer la migration</translation>
 <translation id="8332923694292360653">Dépenser</translation>
 <translation id="3735740477244556633">Trier par</translation>
 <translation id="6484605214219822434">Vérifier le pont</translation>
@@ -1405,8 +1407,10 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="5503843345634715425">Remboursé</translation>
 <translation id="1778601041100951971">Anonymisation de <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Désactiver les protections <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">Migration de <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936">Le montant de <ph name="AMOUNT"/> a été transféré vers un compte anonymisé</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> n’est plus protégé</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> a été migré</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} autre transaction en attente.}
       other {{PENDING_TRANSACTIONS} autres transactions en attente.}
@@ -1845,14 +1849,18 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="9086302186042011942">Synchronisation en cours…</translation>
 <translation id="99991973626409495">Vérifier la transaction</translation>
 <translation id="6779429520470417361">Vérifier la désactivation des protections</translation>
+<translation id="7861093868637278059">Vérifier la migration</translation>
 <translation id="3114681061018999547">Anonymisation de</translation>
 <translation id="1564172583156967455">Désactiver les protections</translation>
+<translation id="7040674372746105444">Migration en cours</translation>
 <translation id="8897189056319316783">Anonymiser</translation>
 <translation id="508249542337194541">Désactiver les protections pour ZEC</translation>
+<translation id="3242332985109374549">Migrer ZEC</translation>
 <translation id="3382275793825152362">Anonymiser les fonds</translation>
 <translation id="617149752238892649">Désactiver les protections des fonds</translation>
 <translation id="8631765320256788981">Vous envoyez des fonds de votre compte public vers votre compte anonymisé.</translation>
 <translation id="3860364671495430495">Vous envoyez des fonds depuis votre compte protégé vers votre compte transparent.</translation>
+<translation id="9664108035970394">Vous envoyez des fonds de votre compte anonymisé hérité vers votre compte anonymisé.</translation>
 <translation id="7144878232160441200">Réessayer</translation>
 <translation id="4750109510113597688">Cette transaction peut entraîner des frais de création de compte</translation>
 <translation id="6201709949885884577">Un mot de passe est requis pour effectuer cette action.</translation>
@@ -2209,7 +2217,7 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="8151638057146502721">Configurer</translation>
 <translation id="999273441077650169">Le modèle utilisé peut varier selon la tâche à effectuer.<ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Bonjour, je suis Leo. Je suis un assistant IA de Brave. Je fonctionne grâce à Qwen VL 30B, un modèle créé par Alibaba Cloud, conçu pour être performant et adapté à de nombreux usages. Qwen est hébergé par Brave sur notre propre infrastructure sécurisée.<ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Bonjour, je suis Leo. Je suis un assistant IA de Brave. Je fonctionne grâce à GLM-5.1, un modèle créé par Zhipu AI, conçu pour être performant et adapté à de nombreux usages. GLM-5.1 est hébergé par NEAR sur sa propre infrastructure sécurisée, dont la confidentialité est vérifiable.<ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
+<translation id="8659225822055186905">Bonjour, je suis Leo. Je suis un assistant IA de Brave. Je fonctionne grâce à GLM-5.3 Flash, un modèle créé par Zhipu AI, conçu pour être performant et adapté à de nombreux usages. GLM-5.3 Flash est hébergé par NEAR sur sa propre infrastructure sécurisée, dont la confidentialité est vérifiable.<ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte basé sur Claude Instant, un modèle développé par Anthropic. Le modèle Claude Instant est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte basé sur Claude Haiku, un modèle développé par Anthropic. Le modèle Claude Haiku est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Bonjour, je m'appelle Leo. Je suis un assistant de discussion et de traitement de texte basé sur Claude Sonnet, un modèle développé par Anthropic. Le modèle Claude Sonnet est hébergé par Brave sur une infrastructure interne et sécurisée. <ph name="LINK_BEFORE"/>En savoir plus.<ph name="LINK_AFTER"/></translation>
@@ -2331,6 +2339,8 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="4370698775470316661">Cette conversation est trop longue et ne peut pas se poursuivre. Il est possible qu'il existe d'autres modèles avec lesquels Leo peut maintenir l'exactitude pendant des conversations plus longues.</translation>
 <translation id="4744144453035015075">Recherche sur le Web</translation>
 <translation id="8548351747582087191">Recherche de <ph name="SEARCH_TERMS"/> sur le Web.</translation>
+<translation id="4395536726196773278">Recherche de « <ph name="QUERY"/> » dans vos onglets ouverts…</translation>
+<translation id="4724926708866789382">Aucun onglet ouvert ne correspond à « <ph name="QUERY"/> ».</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> de plus…</translation>
 <translation id="8103700533980268469">Fermer ce message</translation>
 <translation id="3417835166382867856">Rechercher dans les onglets</translation>
@@ -2378,6 +2388,8 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="443008484043213881">Outils</translation>
 <translation id="4343623396828510727">Ces sites exposent des outils que Leo peut utiliser pour envoyer et recevoir des données depuis ce site. N'ajoutez ni n'approuvez ces outils si cette conversation contient des données que vous ne souhaitez pas partager avec ce site.</translation>
 <translation id="5021823940147712387">Supprimer les outils</translation>
+<translation id="8712279871321308580">Outils de site web disponibles</translation>
+<translation id="3690996226559605619">Outils disponibles (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">Tous les abonnements sont à renouvellement automatique, mais il est possible d'annuler à tout moment avant le renouvellement.</translation>
 <translation id="5091223967610958">Partager le nom d'hôte de la page que vous consultez (<ph name="HOST_NAME"/>) pour nous aider à améliorer Leo.</translation>
 <translation id="8732450785281947197">Outils Leo AI</translation>
@@ -2416,6 +2428,7 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="6397861830483632092">Onglets ouverts…</translation>
 <translation id="802080272588201037">Favoris…</translation>
 <translation id="2716127283451902393">Historique…</translation>
+<translation id="8888171900079152025">Dossier d'espace de travail</translation>
 <translation id="49269513399674318">Utiliser le micro</translation>
 <translation id="3895031624234442305">Modèles personnalisés</translation>
 <translation id="4572010449071015143">Démarrer une nouvelle conversation</translation>
@@ -2449,8 +2462,12 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="3397808797783614750">Utiliser la navigation automatique par l’IA peut présenter des risques pour votre vie privée, vos finances et vos communications en ligne. <ph name="LINK_BEFORE"/>En savoir plus<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Avertissement de sécurité</translation>
 <translation id="6077070599873946984">Brave IA a besoin de votre autorisation pour : <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI souhaite exécuter **<ph name="TOOL_NAME"/>** sur **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">L’opération a été détectée comme potentiellement non conforme à votre demande :</translation>
+<translation id="5137568953923142260">Autoriser</translation>
 <translation id="3927932062596804919">Refuser</translation>
+<translation id="4191349941249805855">Afficher les arguments de l'outil</translation>
+<translation id="7237059533128264835">Masquer les arguments de l'outil</translation>
 <translation id="4569155249847375786">Vérifié</translation>
 <translation id="8200772114523450471">Reprendre</translation>
 <translation id="7607002721634913082">En pause</translation>
@@ -2559,7 +2576,7 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="9173319813356700250">ACTUALITÉS</translation>
 <translation id="6543799171249004861">Photo de <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="7978582287767542276">Supprimer les sites sponsorisés</translation>
+<translation id="7978582287767542276">Supprimer les annonces de la page de nouvel onglet</translation>
 <translation id="466214682712474574">Connectez-vous à <ph name="PROVIDER"/> pour voir votre solde</translation>
 <translation id="8332875111286275890">Connectez-vous pour voir votre solde</translation>
 <translation id="5430001801813715388">RÉCOMPENSES</translation>
@@ -2571,11 +2588,11 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="4844370919312937270">Afficher le widget du moteur de recherche dans les nouveaux onglets</translation>
 <translation id="5088374130885640159">Gagnez des BAT lorsque vous voyez des annonces sur la page de nouvel onglet grâce au <ph name="REWARDS_LINK_BEGIN"/>programme de récompenses Brave<ph name="REWARDS_LINK_END"/>. <ph name="LEARN_MORE_LINK_BEGIN"/>En savoir plus<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">Afficher les annonces sur la page de nouvel onglet</translation>
-<translation id="4983925687993168579">Statistiques de Brave</translation>
+<translation id="4983925687993168579">Statistiques</translation>
 <translation id="5009354496127441090">Afficher mes sites</translation>
-<translation id="7705524343798198388">VPN Brave</translation>
-<translation id="2910653812138226931">Les sites sponsorisés contribuent à maintenir Brave gratuit. Si vous utilisez <ph name="SITE_NAME"/>, vous soutenez la mission de Brave. Désactivez-les à tout moment. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">Les sites sponsorisés contribuent à maintenir Brave gratuit. Si vous les utilisez, vous soutenez la mission de Brave. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Les annonces sur la page de nouvel onglet permettent de garder Brave gratuit. Si vous utilisez <ph name="SITE_NAME"/>, vous soutenez la mission de Brave. Désactivez-les à tout moment. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Les annonces sur la page de nouvel onglet permettent de garder Brave gratuit. Si vous les utilisez, vous soutenez la mission de Brave. <ph name="LINK_BEGIN"/>En savoir plus<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">Statistiques</translation>
 <translation id="5236080651083907980">Passez des appels vidéo en toute confidentialité</translation>
 <translation id="2671474274417808910">Appels privés</translation>
@@ -2735,6 +2752,7 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="701087249209337256">Apportez le contenu de votre ancien navigateur</translation>
 <translation id="142389341645668510">Personnaliser Brave</translation>
 <translation id="112005628409144325">Personnalisez votre expérience de navigation avec la disposition des onglets et les modes de couleur que vous préférez.</translation>
+<translation id="4428982101636000516">Rechercher avec Brave ou saisir une URL</translation>
 <translation id="7376367936988732808">Disposition des onglets</translation>
 <translation id="4734965478015604180">Horizontale</translation>
 <translation id="490375751687810070">Verticale</translation>
@@ -2783,7 +2801,7 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="745054660363064771">Impossible de se connecter au serveur</translation>
 <translation id="3936826714240735937">Sélectionner un autre serveur</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> n'a pas pu se connecter au serveur <ph name="REGION_NAME"/>. Veuillez réessayer ou choisir un autre pays.</translation>
-<translation id="1776533911621317363">Démarrer l'essai gratuit de 7 jours</translation>
+<translation id="1776533911621317363">Démarrer votre essai gratuit de 7 jours</translation>
 <translation id="3357036723290257445">Vous avez déjà acheté le VPN Brave ?</translation>
 <translation id="8652175077544655965">Fermer les paramètres</translation>
 <translation id="5908163815855240493">Accéder à la page principale</translation>
@@ -2795,11 +2813,13 @@ other {Ce mois-ci, vous avez visité # créateurs soutenus par Brave Rewards}
 <translation id="8416695199565594645">Garantit que le trafic est acheminé via des serveurs proxy dédiés pour permettre l'accès à des contenus/sites ou services tiers généralement restreints.</translation>
 <translation id="434523916398030617">Contacter l'assistance technique</translation>
 <translation id="1116694919640316211">À propos</translation>
-<translation id="8998067240267949220">Confidentialité et sécurité en ligne renforcées</translation>
-<translation id="8666111144393179185">Masquez votre IP et changez votre géolocalisation</translation>
-<translation id="8881997962573369342">Des centaines de serveurs dans le monde entier</translation>
+<translation id="8998067240267949220">Accédez à vos contenus favoris sans limites</translation>
+<translation id="8666111144393179185">Des centaines de serveurs dans le monde entier</translation>
+<translation id="8881997962573369342">Masquez facilement votre IP et changez votre géolocalisation</translation>
 <translation id="1513801084412881009">Vitesses de connexion ultra-rapides</translation>
-<translation id="6434859410115379558">Protégez jusqu'à 10 appareils avec un seul abonnement</translation>
+<translation id="6434859410115379558">Aucune journalisation, audité indépendamment</translation>
+<translation id="4886431881864826294">Un seul abonnement couvre 10 appareils sur desktop, Android et iOS</translation>
+<translation id="3649011006120934011">Sans engagement, annulez à tout moment</translation>
 <translation id="1693568075761612600">La création du ticket d'assistance a échoué. Vérifiez votre connexion.</translation>
 <translation id="1407707415819020643">Sélectionnez votre serveur</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> villes - <ph name="SERVER_COUNT"/> serveurs</translation>

@@ -111,6 +111,9 @@
 <translation id="3114478090884951591">可见区域</translation>
 <translation id="2026367923222947564">整个页面</translation>
 <translation id="4218885227032158909">选定区域</translation>
+<translation id="2586386106930448447">截图预览</translation>
+<translation id="7514365320538308">下载</translation>
+<translation id="2743387203779672305">复制到剪贴簿</translation>
 <translation id="4928988318462976765">网络扩展程序商店</translation>
 <translation id="9181207987584064303">在网络扩展程序商店中查看</translation>
 <translation id="3161744659507801211">警告：Brave 无法阻止扩展程序记录您的浏览活动。</translation>
@@ -363,6 +366,7 @@
 <translation id="6847541693235449912">开始</translation>
 <translation id="2079545284768500474">撤消</translation>
 <translation id="1533980864758658574">已创建“<ph name="TOPIC"/>”的新窗口</translation>
+<translation id="530437350080973527">没有与该主题匹配的标签页。请尝试用不同的方式描述。</translation>
 <translation id="7985042437720138349">此功能会将已打开的标签页的数据发送给 Leo，即 Brave 的 AI 驱动浏览器助手。</translation>
 <translation id="6165508094623778733">了解更多</translation>
 <translation id="7557539689487606886">订阅 Premium</translation>
@@ -420,6 +424,23 @@
 <translation id="4328541188421002379">给您的容器命名，如“工作”或“个人”</translation>
 <translation id="4976989127264491396">错误：<ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">未找到容器</translation>
+<translation id="6055154402239241620">流量控制</translation>
+<translation id="8134521925475508805">配置特定网站自动在特定上下文中打开，从而在您的浏览会话之间创建隔离。<ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">启用流量控制</translation>
+<translation id="1358255827354528344">添加新规则</translation>
+<translation id="7183128985801806752">新的流量控制规则</translation>
+<translation id="2474694032500407328">编辑流量控制规则</translation>
+<translation id="5543417389274097206">创建规则</translation>
+<translation id="6532106788206463496">保存更改</translation>
+<translation id="1172800769374812685">删除规则</translation>
+<translation id="2389682807835777591">确定要删除规则 <ph name="RULE_LABEL"/> 吗？</translation>
+<translation id="4853129331778360252">输入要管理的网址，并始终在特定的浏览上下文中打开。</translation>
+<translation id="1173480005453148926">要管理的网址</translation>
+<translation id="6217532416180299470">输入要通过流量控制管理的网址</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> 匹配该网站及其子域名；<ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> 匹配确切的网站；<ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> 匹配所有网站；<ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> 是注释。</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/>（以及另外 <ph name="COUNT"/> 个网址）</translation>
+<translation id="3700798663085748181">启用规则</translation>
+<translation id="2967480878853054068">无效的网址筛选器</translation>
 <translation id="2263346047290834619">使用树形标签页</translation>
 <translation id="5860254591544742609">显示标题栏</translation>
 <translation id="4691131445504068802">最小化时完全隐藏</translation>
@@ -527,7 +548,6 @@
 <translation id="6745592621698551453">立即更新</translation>
 <translation id="5334844597069022743">查看源</translation>
 <translation id="4720556299488643018">退订</translation>
-<translation id="6532106788206463496">保存更改</translation>
 <translation id="4516904298421534459">过滤列表</translation>
 <translation id="4435215931544457255">其他热门社群清单。请注意，启用太多过滤器可能会导致浏览速度变慢。</translation>
 <translation id="802154636333426148">下载失败</translation>
@@ -610,6 +630,8 @@
 <translation id="509873765238158442">阻止  Microsoft Recall</translation>
 <translation id="4763421121695677716">在 Microsoft Windows 电脑上阻止 Recall 功能，停止自动截取任何打开的 Brave 标签页的屏幕截图。</translation>
 <translation id="1968895725257436430">资料合集</translation>
+<translation id="5668852698659986622">启用赞助广告</translation>
+<translation id="431194936581466649">通过赞助广告帮助支持 Brave 构建独立、以用户为先的网络的使命。我们以私密方式衡量广告效果，不会识别您的身份。</translation>
 <translation id="1700052872056357670">退出时删除数据</translation>
 <translation id="216468847346280584">清除 Brave 广告数据…</translation>
 <translation id="96212973142796240">Brave 广告数据已清除</translation>
@@ -990,4 +1012,12 @@
 <translation id="154702742922788359">打开模式</translation>
 <translation id="2249111429176737533">作为标签页窗口打开</translation>
 <translation id="7022756207310403729">在浏览器中打开</translation>
+<translation id="1916785651473363467">自定义个人资料图片</translation>
+<translation id="5336092064678832560">上传自定义图片</translation>
+<translation id="1062407476771304334">替换</translation>
+<translation id="1428299461403073820">替换自定义个人资料图片</translation>
+<translation id="7994453838803296517">自定义个人资料图片预览，已选择</translation>
+<translation id="6578040791557152233">上传自定义个人资料图片</translation>
+<translation id="9222124079546967592">移除自定义个人资料图片</translation>
+<translation id="6058660912941570282">Brave 无法使用此文件。请选择其他图片并重试。</translation>
 </translationbundle>

@@ -112,6 +112,9 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3114478090884951591">Zonă vizibilă</translation>
 <translation id="2026367923222947564">Pagină întreagă</translation>
 <translation id="4218885227032158909">Zonă selectată</translation>
+<translation id="2586386106930448447">Previzualizare captură de ecran</translation>
+<translation id="7514365320538308">Descarcă</translation>
+<translation id="2743387203779672305">Copiază în clipboard</translation>
 <translation id="4928988318462976765">Magazin Extensii Web</translation>
 <translation id="9181207987584064303">Vizualizare în Magazinul Extensii Web</translation>
 <translation id="3161744659507801211">Atenție: Brave nu poate împiedica extensiile să îți înregistreze istoricul de navigare.</translation>
@@ -364,6 +367,7 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="6847541693235449912">Deschide</translation>
 <translation id="2079545284768500474">Anulare acțiune</translation>
 <translation id="1533980864758658574">Fereastră nouă creată pentru <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Nicio filă nu corespunde acelui subiect. Încercați să îl descrieți diferit.</translation>
 <translation id="7985042437720138349">Această caracteristică trimite date despre filele deschise către Leo, asistentul de browser IA al lui Brave.</translation>
 <translation id="6165508094623778733">Aflați mai multe</translation>
 <translation id="7557539689487606886">Alege Premium</translation>
@@ -421,6 +425,23 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4328541188421002379">Denumește containerul, spre exemplu Muncă sau Personal</translation>
 <translation id="4976989127264491396">Eroare: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Containerul nu a fost găsit</translation>
+<translation id="6055154402239241620">Control trafic</translation>
+<translation id="8134521925475508805">Configurați anumite site-uri pentru a se deschide automat într-un context specific, creând o separare între sesiunile de navigare. <ph name="BEGIN_LINK"/>Aflați mai multe<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Activează Control trafic</translation>
+<translation id="1358255827354528344">Adaugă o regulă nouă</translation>
+<translation id="7183128985801806752">Regulă nouă de control trafic</translation>
+<translation id="2474694032500407328">Editează regula de control trafic</translation>
+<translation id="5543417389274097206">Crează regulă</translation>
+<translation id="6532106788206463496">Salvează modificările</translation>
+<translation id="1172800769374812685">Șterge regula</translation>
+<translation id="2389682807835777591">Sunteți sigur că vreți să ștergeți regula <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Introduceți adresele URL de gestionat și deschideți-le întotdeauna într-un context de navigare specific.</translation>
+<translation id="1173480005453148926">Adrese URL de gestionat</translation>
+<translation id="6217532416180299470">Introduceți adresele URL de gestionat cu control trafic</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> corespunde site-ului și subdomeniilor sale; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> corespunde exact site-ului; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> corespunde tuturor site-urilor; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> este un comentariu.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (și încă <ph name="COUNT"/> adrese URL)</translation>
+<translation id="3700798663085748181">Activează regula</translation>
+<translation id="2967480878853054068">Filtru URL nevalid</translation>
 <translation id="2263346047290834619">Folosește file arbore</translation>
 <translation id="5860254591544742609">Afișați bara de titlu</translation>
 <translation id="4691131445504068802">Ascunde complet când este minimizat</translation>
@@ -528,7 +549,6 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="6745592621698551453">Actualizați acum</translation>
 <translation id="5334844597069022743">Vizualizați sursa</translation>
 <translation id="4720556299488643018">Dezabonați-vă</translation>
-<translation id="6532106788206463496">Salvează modificările</translation>
 <translation id="4516904298421534459">Liste de filtre</translation>
 <translation id="4435215931544457255">Liste suplimentare de comunități populare. Rețineți că activarea a prea multe filtre va reduce viteza de navigare.</translation>
 <translation id="802154636333426148">Descărcarea nu a reușit</translation>
@@ -611,6 +631,8 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="509873765238158442">Blochează Microsoft Recall</translation>
 <translation id="4763421121695677716">Blochează funcția Recall pe computerele Microsoft Windows să facă capturi de ecran ale oricăror file deschise de Brave.</translation>
 <translation id="1968895725257436430">Colectare date</translation>
+<translation id="5668852698659986622">Activează Reclame sponsorizate</translation>
+<translation id="431194936581466649">Ajutați la susținerea misiunii Brave de a construi un Web independent, centrat pe utilizator, cu Reclame sponsorizate. Măsurăm performanța reclamelor în mod privat, fără a vă identifica.</translation>
 <translation id="1700052872056357670">Ștergeți datele la ieșire</translation>
 <translation id="216468847346280584">Ștergeți datele Brave Ads...</translation>
 <translation id="96212973142796240">Datele Brave Ads au fost șterse</translation>
@@ -991,4 +1013,12 @@ Sau modificați permisinile ulterior în <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="154702742922788359">Mod deschidere</translation>
 <translation id="2249111429176737533">Deschide ca fereastră cu file</translation>
 <translation id="7022756207310403729">Deschide în browser</translation>
+<translation id="1916785651473363467">Imagine de profil personalizată</translation>
+<translation id="5336092064678832560">Încarcă imagine personalizată</translation>
+<translation id="1062407476771304334">Înlocuiește</translation>
+<translation id="1428299461403073820">Înlocuiește imaginea de profil personalizată</translation>
+<translation id="7994453838803296517">Previzualizarea imaginii de profil personalizate, selectată</translation>
+<translation id="6578040791557152233">Încarcă o imagine de profil personalizată</translation>
+<translation id="9222124079546967592">Elimină imaginea de profil personalizată</translation>
+<translation id="6058660912941570282">Brave nu poate utiliza acest fișier. Alegeți o altă imagine și încercați din nou.</translation>
 </translationbundle>

@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">দৃশ্যমান এলাকা</translation>
 <translation id="2026367923222947564">সম্পূর্ণ পৃষ্ঠা</translation>
 <translation id="4218885227032158909">নির্বাচিত অংশ</translation>
+<translation id="2586386106930448447">স্ক্রিনশট প্রিভিউ</translation>
+<translation id="7514365320538308">ডাউনলোড</translation>
+<translation id="2743387203779672305">ক্লিপবোর্ডে অনুলিপি করুন</translation>
 <translation id="4928988318462976765">ওয়েব এক্সটেনশন স্টোর</translation>
 <translation id="9181207987584064303">ওয়েব এক্সটেনশন স্টোরে দেখুন</translation>
 <translation id="3161744659507801211">সতর্কতা: Brave আপনার ব্রাউজিং ইতিহাস রেকর্ডিং থেকে এক্সটেনশনগুলিকে আটকাতে পারে না।</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">যান</translation>
 <translation id="2079545284768500474">পূর্বাবস্থায় ফেরান</translation>
 <translation id="1533980864758658574"><ph name="TOPIC"/> এর জন্য নতুন উইন্ডো তৈরি করা হয়েছে</translation>
+<translation id="530437350080973527">সেই বিষয়ের সাথে কোনো ট্যাব মেলেনি। এটি ভিন্নভাবে বর্ণনা করার চেষ্টা করুন।</translation>
 <translation id="7985042437720138349">এই ফিচারটি Leo, Brave's AI-চালিত ব্রাউজার সহায়কের কাছে আপনার খোলা ট্যাবগুলি সম্পর্কে ডেটা পাঠায়।</translation>
 <translation id="6165508094623778733">আরও জানুন</translation>
 <translation id="7557539689487606886">প্রিমিয়াম-এ যান</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">আপনার কন্টেরারের একটি নাম দিন, যেমন, কর্মক্ষেত্র বা ব্যক্তিগত</translation>
 <translation id="4976989127264491396">ত্রুটি: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">কন্টেনার খুঁজে পাওয়া যায়নি</translation>
+<translation id="6055154402239241620">ট্রাফিক নিয়ন্ত্রণ</translation>
+<translation id="8134521925475508805">নির্দিষ্ট সাইটগুলিকে একটি নির্দিষ্ট প্রসঙ্গে স্বয়ংক্রিয়ভাবে খোলার জন্য কনফিগার করুন, আপনার ব্রাউজিং সেশনগুলির মধ্যে বিভাজন তৈরি করুন। <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">ট্রাফিক নিয়ন্ত্রণ সক্ষম করুন</translation>
+<translation id="1358255827354528344">নতুন নিয়ম যোগ করুন</translation>
+<translation id="7183128985801806752">নতুন ট্রাফিক নিয়ন্ত্রণ নিয়ম</translation>
+<translation id="2474694032500407328">ট্রাফিক নিয়ন্ত্রণ নিয়ম সম্পাদনা করুন</translation>
+<translation id="5543417389274097206">নিয়ম তৈরি করুন</translation>
+<translation id="6532106788206463496">পরিবর্তনগুলো সেভ করুন</translation>
+<translation id="1172800769374812685">নিয়ম মুছুন</translation>
+<translation id="2389682807835777591">আপনি কি <ph name="RULE_LABEL"/> নিয়মটি মুছে ফেলার ব্যাপারে নিশ্চিত?</translation>
+<translation id="4853129331778360252">একটি নির্দিষ্ট ব্রাউজিং প্রসঙ্গে পরিচালনা এবং সর্বদা খোলার জন্য URL লিখুন।</translation>
+<translation id="1173480005453148926">পরিচালনা করার জন্য URL</translation>
+<translation id="6217532416180299470">ট্রাফিক নিয়ন্ত্রণের সাথে পরিচালনা করার জন্য URL লিখুন</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> সাইট এবং এর সাবডোমেনগুলির সাথে মেলে; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> সঠিক সাইটের সাথে মেলে; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> সমস্ত সাইটের সাথে মেলে; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> একটি মন্তব্য।</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (এবং আরও <ph name="COUNT"/>টি URL)</translation>
+<translation id="3700798663085748181">নিয়ম সক্ষম করুন</translation>
+<translation id="2967480878853054068">অবৈধ URL ফিল্টার</translation>
 <translation id="2263346047290834619">ট্রী ট্যাবগুলি ব্যবহার করুন</translation>
 <translation id="5860254591544742609">টাইটেল বার দেখান</translation>
 <translation id="4691131445504068802">সঙ্কুচিত হলে সম্পূর্ণরূপে লুকান</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">এখনই আপডেট করুন</translation>
 <translation id="5334844597069022743">সূত্র দেখান</translation>
 <translation id="4720556299488643018">আনসাবস্ক্রাইব করুন</translation>
-<translation id="6532106788206463496">পরিবর্তনগুলো সেভ করুন</translation>
 <translation id="4516904298421534459">তালিকাগুলি ফিল্টার করুন</translation>
 <translation id="4435215931544457255">আরও জনপ্রিয় কমিউনিটি লিস্ট। মনে রাখবেন আরও অনেক ফিল্টার চালু করলে তা ব্রাউজিংয়ের গতি কমাবে।</translation>
 <translation id="802154636333426148">ডাউনলোড করা যায়নি</translation>
@@ -611,6 +631,8 @@
 <translation id="509873765238158442">Microsoft Recall ব্লক করুন</translation>
 <translation id="4763421121695677716">Microsoft Windows কম্পিউটারগুলিতে যে কোনো খোলা Brave ট্যাব থেকে স্বয়ংক্রিয় ভাবে স্ক্রিনশটগুলি নেওয়া থেকে Recall ফিচারটিকে ব্লক করুন।</translation>
 <translation id="1968895725257436430">ডেটা সংগ্রহ</translation>
+<translation id="5668852698659986622">স্পনসর করা বিজ্ঞাপন সক্ষম করুন</translation>
+<translation id="431194936581466649">স্পনসর করা বিজ্ঞাপনের মাধ্যমে একটি স্বাধীন, ব্যবহারকারী-প্রথম ওয়েব তৈরি করার Brave-এর লক্ষ্যকে সমর্থন করতে সাহায্য করুন। আমরা আপনাকে সনাক্ত না করে, ব্যক্তিগতভাবে বিজ্ঞাপনের কর্মক্ষমতা পরিমাপ করি।</translation>
 <translation id="1700052872056357670">প্রস্থানের সময় ডেটা সাফ করুন</translation>
 <translation id="216468847346280584">Brave বিজ্ঞাপনের ডেটা সাফ করুন...</translation>
 <translation id="96212973142796240">Brave বিজ্ঞাপন ডেটা মুছে ফেলা হয়েছে</translation>
@@ -992,4 +1014,12 @@ Leo AI বেছে নিতে হবে এবং সেইসাথে আ�
 <translation id="154702742922788359">খোলার মোড</translation>
 <translation id="2249111429176737533">ট্যাবযুক্ত উইন্ডো হিসাবে খুলুন</translation>
 <translation id="7022756207310403729">ব্রাউজারে খুলুন</translation>
+<translation id="1916785651473363467">কাস্টম প্রোফাইল চিত্র</translation>
+<translation id="5336092064678832560">কাস্টম চিত্র আপলোড করুন</translation>
+<translation id="1062407476771304334">প্রতিস্থাপন করুন</translation>
+<translation id="1428299461403073820">কাস্টম প্রোফাইল চিত্র প্রতিস্থাপন করুন</translation>
+<translation id="7994453838803296517">কাস্টম প্রোফাইল চিত্রের প্রাকদর্শন, নির্বাচিত</translation>
+<translation id="6578040791557152233">একটি কাস্টম প্রোফাইল চিত্র আপলোড করুন</translation>
+<translation id="9222124079546967592">কাস্টম প্রোফাইল চিত্র সরান</translation>
+<translation id="6058660912941570282">Brave এই ফাইলটি ব্যবহার করতে পারছে না। অন্য একটি চিত্র বেছে নিন এবং আবার চেষ্টা করুন।</translation>
 </translationbundle>

@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Výber dnešných najlepších príbehov v súkromnom informačnom kanáli – iba pre vás.</translation>
 <translation id="3803728444598576153">Zapnite si Brave News, aby vám nikdy nič neuniklo</translation>
 <translation id="7627131190984957214">Novinky Brave sú podporované súkromnými a anonymizovanými reklamami zhodných s vaším zariadením.</translation>
-<translation id="7897050360583141319">Sledujte svoje obľúbené zdroje v jednom kanáli. Stačí otvoriť kartu v prehliadači Brave, posunúť zobrazenie nadol a… hotovo!\nSlužba Brave News je podporovaná pomocou súkromných anonymných reklám.</translation>
+<translation id="7897050360583141319">Sledujte svoje obľúbené zdroje v jednom kanáli. Stačí otvoriť kartu v prehliadači Brave, posunúť zobrazenie nadol a… hotovo!</translation>
 <translation id="1765217911817124376">Zapnúť novinky Brave</translation>
 <translation id="8981973962043893066">Vyhľadávanie stránok, tém alebo kanálov RSS</translation>
 <translation id="3225021799163709119">Populárne</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Pomôžte zlepšiť stabilitu produktu Brave automatickým odosielaním diagnostických správ, keď prehliadač Brave spadne alebo zamrzne.</translation>
 <translation id="7977176350719484850">Odhad. dáta\nUšetrené</translation>
 <translation id="9008534313521214777">Približný ušetrený\nčas</translation>
+<translation id="5668852698659986622">Povoliť sponzorované reklamy</translation>
+<translation id="431194936581466649">Pomôžte podporiť misiu Brave vybudovať nezávislý web zameraný na používateľa pomocou sponzorovaných reklám. Výkonnosť reklám meriame súkromne, bez toho, aby sme vás identifikovali.</translation>
 <translation id="8347743943525229984">Povoliť prieskumy od Brave</translation>
 <translation id="6022939994702081659">Umožňuje spoločnosti Brave zobrazovať odkazy na súkromné prieskumy na stránke novej karty. Prieskumy nám pomáhajú vytvárať lepšie funkcie a merať účinnosť reklamných kampaní v prehliadači.</translation>
 <translation id="7746496306508543965">Viac informácií o prieskumoch Brave</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Mám 12-slovnú frázu obnovenia</translation>
 <translation id="4225265925807365011">Mám 24-slovnú frázu obnovenia</translation>
 <translation id="3570367516044491911">Nastaviť ako predvolený prehliadač</translation>
-<translation id="6800338374677644736">Nastaviť ako predvolený prehliadač</translation>
 <translation id="1545749641540134597">Skenovať QR kód</translation>
 <translation id="5317781812114905957">Pokyny</translation>
 <translation id="8515319483805157233">Ak chcete vyhľadávať podľa kódu QR, zarovnajte kód QR do stredu rámika.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Hlavná ponuka</translation>
 <translation id="7002271985859760052">Akcie stránky</translation>
 <translation id="7104487676473617844">Nasledujúce položky sa zobrazia v ponuke len vtedy, ak ich podporuje aktuálne otvorená webová stránka.</translation>
-<translation id="4159764849281393303">Webová aplikácia</translation>
 <translation id="8038539967102225446">Brave reklamy sú tu!</translation>
 <translation id="222883304157347087">(toto zariadenie)</translation>
 <translation id="4157741509680155021">ZARIADENIA V REŤAZCI SYNC</translation>
@@ -723,6 +723,8 @@ Ak túto žiadosť neprijmete, VPN sa znova nepripojí a vaše pripojenie na int
 <translation id="1634828734222219955">Celkem</translation>
 <translation id="7995708795274219641">Částka + palivo</translation>
 <translation id="2186011161688824046">Čiastka + poplatok</translation>
+<translation id="1118876217803190221">Nedostatočný zostatok</translation>
+<translation id="275990379543116961">Nedostatočné prostriedky na palivo</translation>
 <translation id="1950052789869821983">Transakcia</translation>
 <translation id="2304783958703511257">Rozšírené nastavenia</translation>
 <translation id="4220062530885628403">Nonce</translation>
