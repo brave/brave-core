@@ -103,6 +103,12 @@ void NewTabTakeoverUI::SetSafeArea(const gfx::RectF& safe_area) {
   }
 }
 
+void NewTabTakeoverUI::SetAutocompleteControllerForTesting(
+    std::unique_ptr<AutocompleteController> autocomplete_controller) {
+  autocomplete_controller_ = std::move(autocomplete_controller);
+  autocomplete_controller_->AddObserver(this);
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 void NewTabTakeoverUI::SetPage(

@@ -57,6 +57,9 @@ class NewTabTakeoverUI : public ui::MojoWebUIController,
 
   void SetSafeArea(const gfx::RectF& safe_area);
 
+  void SetAutocompleteControllerForTesting(
+      std::unique_ptr<AutocompleteController> autocomplete_controller);
+
  private:
   // new_tab_takeover::mojom::NewTabTakeover:
   void SetPage(mojo::PendingRemote<new_tab_takeover::mojom::NewTabTakeoverPage>

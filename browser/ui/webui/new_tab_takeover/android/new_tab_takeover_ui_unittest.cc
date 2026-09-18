@@ -7,6 +7,7 @@
 
 #include <memory>
 #include <optional>
+#include <string>
 #include <utility>
 #include <vector>
 
@@ -18,9 +19,16 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
+#include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "chrome/test/base/search_test_utils.h"
+#include "components/omnibox/browser/autocomplete_controller.h"
+#include "components/omnibox/browser/autocomplete_controller_config.h"
+#include "components/omnibox/browser/autocomplete_input.h"
 #include "components/search_engines/template_url.h"
+#include "components/search_engines/template_url_data.h"
 #include "components/search_engines/template_url_service.h"
 #include "content/public/test/test_web_ui.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -64,6 +72,18 @@ class FakeNewTabTakeoverPage final
   mojo::Receiver<new_tab_takeover::mojom::NewTabTakeoverPage> receiver_{this};
 };
 
+class NeverFinishingAutocompleteController final
+    : public AutocompleteController {
+ public:
+  explicit NeverFinishingAutocompleteController(Profile* profile)
+      : AutocompleteController(
+            std::make_unique<ChromeAutocompleteProviderClient>(profile),
+            AutocompleteControllerConfig{}) {}
+
+  // AutocompleteController:
+  void Start(const AutocompleteInput& input) override {}
+};
+
 // The mojom reply callback contract requires that a callback always run
 // exactly once, even if the operation it was waiting on never completes.
 // This fixture also exercises the two ways `QueryAutocomplete()` can resolve
@@ -77,6 +97,7 @@ class NewTabTakeoverUITest : public ChromeRenderViewHostTestHarness {
     TemplateURLServiceFactory::GetInstance()->SetTestingFactoryAndUse(
         profile(),
         base::BindRepeating(&TemplateURLServiceFactory::BuildInstanceFor));
+    search_test_utils::WaitForTemplateURLServiceToLoad(template_url_service());
 
     ntp_background_images_service_ =
         std::make_unique<ntp_background_images::FakeNTPBackgroundImagesService>(
@@ -126,8 +147,45 @@ class NewTabTakeoverUITest : public ChromeRenderViewHostTestHarness {
   // destructor's pending-callback contract.
   void DestroyNewTabTakeoverUI() { new_tab_takeover_ui_.reset(); }
 
+  void UseNeverFinishingAutocompleteController() {
+    new_tab_takeover_ui_->SetAutocompleteControllerForTesting(
+        std::make_unique<NeverFinishingAutocompleteController>(profile()));
+  }
+
   TemplateURLService* template_url_service() {
     return TemplateURLServiceFactory::GetForProfile(profile());
+  }
+
+  std::string GetHost(const TemplateURL& template_url) {
+    return template_url.url_ref().GetHost(
+        template_url_service()->search_terms_data());
+  }
+
+  std::string GetDefaultSearchEngineHost() {
+    const TemplateURL* const default_search_provider =
+        template_url_service()->GetDefaultSearchProvider();
+    return default_search_provider ? GetHost(*default_search_provider)
+                                   : std::string();
+  }
+
+  void SetNonBraveSearchEngineAsDefault() {
+    TemplateURLData template_url_data;
+    template_url_data.SetShortName(u"Not Brave Search");
+    template_url_data.SetKeyword(u"example.com");
+    template_url_data.SetURL("https://example.com/search?q={searchTerms}");
+    template_url_service()->SetUserSelectedDefaultSearchProvider(
+        template_url_service()->Add(
+            std::make_unique<TemplateURL>(template_url_data)));
+    ASSERT_EQ("example.com", GetDefaultSearchEngineHost());
+  }
+
+  void RemoveBraveSearchEngines() {
+    for (TemplateURL* const template_url :
+         template_url_service()->GetTemplateURLs()) {
+      if (GetHost(*template_url) == kBraveSearchHost) {
+        template_url_service()->Remove(template_url);
+      }
+    }
   }
 
  private:
@@ -195,6 +253,8 @@ TEST_F(NewTabTakeoverUITest, AppliesSafeAreaWhenAnotherPageBinds) {
 // A second `QueryAutocomplete()` call must resolve the still-pending first
 // callback with an empty result rather than dropping it.
 TEST_F(NewTabTakeoverUITest, SupersedingQueryResolvesPendingCallbackEmpty) {
+  UseNeverFinishingAutocompleteController();
+
   std::optional<std::vector<new_tab_takeover::mojom::AutocompleteMatchPtr>>
       first_result;
   new_tab_takeover_ui().QueryAutocomplete(
@@ -215,6 +275,8 @@ TEST_F(NewTabTakeoverUITest, SupersedingQueryResolvesPendingCallbackEmpty) {
 // Destroying `NewTabTakeoverUI` with a query still in flight must still run
 // the pending callback, per the mojom reply callback contract.
 TEST_F(NewTabTakeoverUITest, DestructorResolvesPendingCallbackEmpty) {
+  UseNeverFinishingAutocompleteController();
+
   std::optional<std::vector<new_tab_takeover::mojom::AutocompleteMatchPtr>>
       result;
   new_tab_takeover_ui().QueryAutocomplete(
@@ -235,16 +297,14 @@ TEST_F(NewTabTakeoverUITest, DestructorResolvesPendingCallbackEmpty) {
 // Brave Search is present in the user's search engine choice list: it should
 // become the default and the callback should report success.
 TEST_F(NewTabTakeoverUITest, SetDefaultSearchEngineAsBraveSearchSucceeds) {
+  ASSERT_NO_FATAL_FAILURE(SetNonBraveSearchEngineAsDefault());
+
   base::test::TestFuture<bool> success_future;
   new_tab_takeover_ui().SetDefaultSearchEngineAsBraveSearch(
       success_future.GetCallback());
 
   EXPECT_TRUE(success_future.Get());
-  const TemplateURL* const default_search_provider =
-      template_url_service()->GetDefaultSearchProvider();
-  ASSERT_TRUE(default_search_provider);
-  EXPECT_EQ(kBraveSearchHost, default_search_provider->url_ref().GetHost(
-                                  template_url_service()->search_terms_data()));
+  EXPECT_EQ(kBraveSearchHost, GetDefaultSearchEngineHost());
 }
 
 // Brave Search is absent from the user's search engine choice list (e.g. not
@@ -252,17 +312,13 @@ TEST_F(NewTabTakeoverUITest, SetDefaultSearchEngineAsBraveSearchSucceeds) {
 // crashing or silently doing nothing.
 TEST_F(NewTabTakeoverUITest,
        SetDefaultSearchEngineAsBraveSearchFailsWhenAbsent) {
-  for (TemplateURL* const template_url :
-       template_url_service()->GetTemplateURLs()) {
-    if (template_url->url_ref().GetHost(
-            template_url_service()->search_terms_data()) == kBraveSearchHost) {
-      template_url_service()->Remove(template_url);
-    }
-  }
+  ASSERT_NO_FATAL_FAILURE(SetNonBraveSearchEngineAsDefault());
+  RemoveBraveSearchEngines();
 
   base::test::TestFuture<bool> success_future;
   new_tab_takeover_ui().SetDefaultSearchEngineAsBraveSearch(
       success_future.GetCallback());
 
   EXPECT_FALSE(success_future.Get());
+  EXPECT_EQ("example.com", GetDefaultSearchEngineHost());
 }
