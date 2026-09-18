@@ -188,9 +188,11 @@ public class BraveStatsUtil {
 
             Intent sendIntent = new Intent();
             sendIntent.setAction(Intent.ACTION_SEND);
-            sendIntent.putExtra(Intent.EXTRA_TEXT,
+            sendIntent.putExtra(
+                    Intent.EXTRA_TEXT,
                     context.getResources().getString(R.string.brave_stats_share_text));
             sendIntent.putExtra(Intent.EXTRA_STREAM, uri);
+            sendIntent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             sendIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             sendIntent.setType("image/text");
 
