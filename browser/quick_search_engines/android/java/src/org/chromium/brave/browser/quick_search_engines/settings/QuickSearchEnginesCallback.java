@@ -10,12 +10,12 @@ import android.widget.ImageView;
 import java.util.List;
 
 public interface QuickSearchEnginesCallback {
-    public default void onSearchEngineClick(
+    default void onSearchEngineClick(
             int position, QuickSearchEnginesModel quickSearchEnginesModel) {}
 
-    public default void onSearchEnginesReordered(
+    default void onSearchEnginesReordered(
             List<QuickSearchEnginesModel> quickSearchEngines) {}
 
-    public default void loadSearchEngineLogo(
+    default void loadSearchEngineLogo(
             ImageView logoView, QuickSearchEnginesModel quickSearchEnginesModel) {}
 }
