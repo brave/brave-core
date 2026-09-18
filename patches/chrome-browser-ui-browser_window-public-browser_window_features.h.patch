@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_window/public/browser_window_features.h b/chrome/browser/ui/browser_window/public/browser_window_features.h
-index 309eced7f092e28c5c9f7119696860068d626ed9..6e955df0e95fad7c4cb582d662e15a7cffa6ebab 100644
+index 85428d38864217c506492176cf6020ca8baafac0..bbd71e9bae62a252c84d3b1e194a8996488ea9f3 100644
 --- a/chrome/browser/ui/browser_window/public/browser_window_features.h
 +++ b/chrome/browser/ui/browser_window/public/browser_window_features.h
-@@ -278,29 +278,29 @@ class AppBrowserController;
+@@ -279,29 +279,29 @@ class AppBrowserController;
  // Do not add more public accessors. Instead use the UnownedUserData design
  // pattern, see ui/base/unowned_user_data/README.md.
  // TODO(crbug.com/481268779a): Remove existing public accessors.
@@ -41,7 +41,7 @@ index 309eced7f092e28c5c9f7119696860068d626ed9..6e955df0e95fad7c4cb582d662e15a7c
  
    // Get the FindBarController for this browser window, creating it if it does
    // not yet exist.
-@@ -334,6 +334,7 @@ class BrowserWindowFeatures {
+@@ -335,6 +335,7 @@ class BrowserWindowFeatures {
    GetUserDataFactoryForTesting();
  
   private:

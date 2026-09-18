@@ -1,8 +1,8 @@
 diff --git a/components/ntp_tiles/features.cc b/components/ntp_tiles/features.cc
-index 5885dde354d76e56db14ccbb49e7a55029e54f84..780b68504de05433b65eb1011889f451defe8115 100644
+index 8b7090b758230ec8eb85a520cb53e07e74ce65e0..d58f67b99ad03fc29089375822d7fb34de86acff 100644
 --- a/components/ntp_tiles/features.cc
 +++ b/components/ntp_tiles/features.cc
-@@ -13,13 +13,13 @@ namespace ntp_tiles {
+@@ -29,13 +29,13 @@ AimButtonRefactorArm GetAimButtonRefactorArm() {
  
  const char kPopularSitesFieldTrialName[] = "NTPPopularSites";
  

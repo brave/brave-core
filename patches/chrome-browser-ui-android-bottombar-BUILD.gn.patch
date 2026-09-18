@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/bottombar/BUILD.gn b/chrome/browser/ui/android/bottombar/BUILD.gn
-index 62fd9ae8d090a6b45f8c2558bf82c7a307fcd7fe..812c8f449bbf2ac243b23ea32ab8c222f6262889 100644
+index 1068fb1c5dcb8f181ab3a63609afd4045d08b765..46e1b93e24f2c84d2054627100095604ca6d785e 100644
 --- a/chrome/browser/ui/android/bottombar/BUILD.gn
 +++ b/chrome/browser/ui/android/bottombar/BUILD.gn
 @@ -58,6 +58,7 @@ android_library("metrics_java") {

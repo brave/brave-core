@@ -1,8 +1,8 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridDialogMediator.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridDialogMediator.java
-index 1504183860dbe2eb81205e151b9aecce1ab32af3..7b4fedb427428436d9b0d28bfd41c76c3b09b9d1 100644
+index 47b23a21acb311b9cce37dcde0bbca87b7abae61..0d308b1af50f3de9e2a1abff41308db81c92fe50 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridDialogMediator.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridDialogMediator.java
-@@ -594,7 +594,7 @@ public class TabGridDialogMediator
+@@ -597,7 +597,7 @@ public class TabGridDialogMediator
                                  Set.of(TabListEditorItemSelectionId.createTabId(tabId)));
                      };
              mTabGridContextMenuCoordinator =

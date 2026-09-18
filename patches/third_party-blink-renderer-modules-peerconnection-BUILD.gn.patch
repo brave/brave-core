@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/peerconnection/BUILD.gn b/third_party/blink/renderer/modules/peerconnection/BUILD.gn
-index d3b5f5b924bfd94c9e4f5b9daabb9ef64de03823..a83be2ca2782b24406c2aa5f68aa7635825f6911 100644
+index 4b02882b7fa7357d8ae93187ebd15487f5ac5d99..b82f8081fb246a1dddfad983803f1eeea9b5f5a7 100644
 --- a/third_party/blink/renderer/modules/peerconnection/BUILD.gn
 +++ b/third_party/blink/renderer/modules/peerconnection/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index d3b5f5b924bfd94c9e4f5b9daabb9ef64de03823..a83be2ca2782b24406c2aa5f68aa7635
  import("//third_party/blink/renderer/modules/modules.gni")
  
  blink_modules_sources("peerconnection") {
-@@ -193,6 +194,7 @@ blink_modules_sources("peerconnection") {
+@@ -195,6 +196,7 @@ blink_modules_sources("peerconnection") {
      "//third_party/blink/renderer/modules/permissions",
      "//third_party/blink/renderer/modules/webrtc",
    ]

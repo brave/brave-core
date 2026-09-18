@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/shell_util.cc b/chrome/installer/util/shell_util.cc
-index fabd1fbc1e162d20081d896d26b339179f5e302c..63f59b18c26f6ef873bf16b1923240b1fd734a80 100644
+index b79f9981d79b4826d89ca5fa43877d125437d507..b1c0883a520ea4f100bc7c6c6c1813c2805608d6 100644
 --- a/chrome/installer/util/shell_util.cc
 +++ b/chrome/installer/util/shell_util.cc
 @@ -302,6 +302,7 @@ void GetChromeProgIdEntries(
@@ -18,7 +18,7 @@ index fabd1fbc1e162d20081d896d26b339179f5e302c..63f59b18c26f6ef873bf16b1923240b1
      entries->push_back(std::make_unique<RegistryEntry>(
          capabilities + L"\\FileAssociations", std::wstring(association),
          html_prog_id));
-@@ -431,6 +433,7 @@ void GetAppExtRegistrationEntries(
+@@ -428,6 +430,7 @@ void GetAppExtRegistrationEntries(
    std::wstring key_name =
        base::StrCat({ShellUtil::kRegClasses, kFilePathSeparator, ext,
                      kFilePathSeparator, ShellUtil::kRegOpenWithProgids});

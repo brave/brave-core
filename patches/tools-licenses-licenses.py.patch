@@ -1,5 +1,5 @@
 diff --git a/tools/licenses/licenses.py b/tools/licenses/licenses.py
-index 6b2eae031956dd3c69b2daf69ac6890078c701d4..4f1d1da7a868607ae2b35cd0ed2793adc5f82b58 100755
+index 07ad95387a8fe01f8a7b9a747f4de2911b506527..de7d68389b1b71f77ca89cfa8b57e12d9fcf3fd0 100755
 --- a/tools/licenses/licenses.py
 +++ b/tools/licenses/licenses.py
 @@ -34,6 +34,7 @@ import find_depot_tools
@@ -18,7 +18,7 @@ index 6b2eae031956dd3c69b2daf69ac6890078c701d4..4f1d1da7a868607ae2b35cd0ed2793ad
  
  # These buildtools/third_party directories only contain
  # chromium build files. The actual third_party source files and their
-@@ -877,7 +879,8 @@ def FindThirdPartyDirs(
+@@ -883,7 +885,8 @@ def FindThirdPartyDirs(
          if skip in dirs:
            dirs.remove(skip)
  
@@ -28,7 +28,7 @@ index 6b2eae031956dd3c69b2daf69ac6890078c701d4..4f1d1da7a868607ae2b35cd0ed2793ad
        # Add all subdirectories that are not marked for skipping.
        for d in dirs:
          dirpath = os.path.join(path, d)
-@@ -1081,6 +1084,7 @@ def _DiscoverMetadatas(args):
+@@ -1087,6 +1090,7 @@ def _DiscoverMetadatas(args):
          m['dir'] = d
          metadatas.append(m)
      except LicenseError as lic_exp:

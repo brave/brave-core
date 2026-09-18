@@ -1,8 +1,8 @@
 diff --git a/net/http/transport_security_state.cc b/net/http/transport_security_state.cc
-index 9c502d0581ae5e1f1867561a884adce05e449699..061f43775b2375ff35973c1fd828d41c35e0749f 100644
+index 76a67501a4c144a59a66de33975a1937d3e456f1..3cfd902c2bc46df1c354a8e3b45db1431a3237f7 100644
 --- a/net/http/transport_security_state.cc
 +++ b/net/http/transport_security_state.cc
-@@ -228,6 +228,7 @@ TransportSecurityState::TransportSecurityState(
+@@ -241,6 +241,7 @@ TransportSecurityState::TransportSecurityState(
  // others don't end up with pins that cannot be easily updated.
  #if !BUILDFLAG(GOOGLE_CHROME_BRANDING) || BUILDFLAG(IS_IOS)
    enable_static_pins_ = false;

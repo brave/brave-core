@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/public/common/BUILD.gn b/third_party/blink/public/common/BUILD.gn
-index 5a5d9a64a4b70f09447022021d03f95f69f2fbb2..1f82f641754776fdd26b1c061ed26b98442f498e 100644
+index 4d7fbfa778338a65fb058567b19c2734981efb8f..f02487fcedbddc93fc6a04b774bdbaf90c5ad34b 100644
 --- a/third_party/blink/public/common/BUILD.gn
 +++ b/third_party/blink/public/common/BUILD.gn
-@@ -381,6 +381,7 @@ source_set("headers") {
+@@ -380,6 +380,7 @@ source_set("headers") {
    if (is_mac) {
      sources += [ "sandbox_support/sandbox_support_mac.h" ]
    }

@@ -1,5 +1,5 @@
 diff --git a/components/search/ntp_features.cc b/components/search/ntp_features.cc
-index 4ba2341e85d7045ea1736e86bea287695f85a7d3..3e615a15df3ee8ff7da70cfa423a01e64ae06924 100644
+index cc0d6a0220344ecf38ce8f8063100fb23aebd2c1..335b2d704219b49b0dded24e69a735490628aa0c 100644
 --- a/components/search/ntp_features.cc
 +++ b/components/search/ntp_features.cc
 @@ -18,17 +18,13 @@ namespace ntp_features {
@@ -81,7 +81,7 @@ index 4ba2341e85d7045ea1736e86bea287695f85a7d3..3e615a15df3ee8ff7da70cfa423a01e6
  
  // If enabled, segmentation data will be collected to decide whether or not to
  // show the Drive module.
-@@ -155,7 +139,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -151,7 +135,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Dummy feature to set param "NtpModulesMaxColumnCountParam".
  // This is used for an emergency Finch param. Keep indefinitely.

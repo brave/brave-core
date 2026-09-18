@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/ui_features.cc b/chrome/browser/ui/ui_features.cc
-index 07a71006afc58e526ba0fcb00d3f0a4a704c2afc..fc44438ed2232e7e9bd2a534154e34af71a979ae 100644
+index eaa15b273b6a279405e8098a9b66074c9de8f8d4..5c2ef10cc63f9523c0a3678cbe030a88543dbb4f 100644
 --- a/chrome/browser/ui/ui_features.cc
 +++ b/chrome/browser/ui/ui_features.cc
 @@ -129,7 +129,7 @@ bool ShouldUseActionsForBrowserCommands() {
@@ -20,7 +20,7 @@ index 07a71006afc58e526ba0fcb00d3f0a4a704c2afc..fc44438ed2232e7e9bd2a534154e34af
  
  BASE_FEATURE(kSeparateDefaultAndPinPrompt,
  #if BUILDFLAG(IS_WIN)
-@@ -264,13 +264,8 @@ bool IsTabGroupHoverCardsEnabled() {
+@@ -262,13 +262,8 @@ bool IsTabGroupHoverCardsEnabled() {
  
  // Enables preview images in tab-hover cards.
  // https://crbug.com/41439486

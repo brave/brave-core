@@ -1,8 +1,8 @@
 diff --git a/services/network/public/cpp/BUILD.gn b/services/network/public/cpp/BUILD.gn
-index 1a96b81d4e53c7cedaa5bfcb1bd27cec99c2a440..f00f1d447bc0c6e160ca3a19ccbfc6fbcba2b6d0 100644
+index 843f68b88a9e77de936b013ade220d334eabd68d..bd825d6fe68185daacae763726f31ddf006d5f80 100644
 --- a/services/network/public/cpp/BUILD.gn
 +++ b/services/network/public/cpp/BUILD.gn
-@@ -227,6 +227,7 @@ component("cpp") {
+@@ -229,6 +229,7 @@ component("cpp") {
      sources += [ "shared_http_cache_client_stub.cc" ]
    }
  

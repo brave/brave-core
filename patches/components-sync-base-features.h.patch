@@ -1,5 +1,5 @@
 diff --git a/components/sync/base/features.h b/components/sync/base/features.h
-index a7c5cb7fc372df771d4178812af8c5ddbad34dac..7995b13e7e50a5f29ce35bcf29e6f846fd4cf45d 100644
+index db8a212966289e23a12997f35ea7577f7ebccc80..514420887c000cca496d985047ab48bf43b5fb6e 100644
 --- a/components/sync/base/features.h
 +++ b/components/sync/base/features.h
 @@ -117,7 +117,7 @@ DECLARE_SYNC_AUTOFILL_AI_FEATURE(kSyncAutofillValuable);

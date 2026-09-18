@@ -1,8 +1,8 @@
 diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
-index ee7411d364aa78a61f53a21d9dc37160e91ddba1..f94fd08ea0d6ec54570ae7f0ea20ea80f36a67a7 100644
+index 280faf7cf6f965e49ed2a302a825a250e2a28c6d..cabaa01dbd2e107f40e784a077e7b1f7bc8dd3aa 100644
 --- a/chrome/common/chrome_features.cc
 +++ b/chrome/common/chrome_features.cc
-@@ -193,7 +193,7 @@ bool RemoteActorCredentialSharingEnabled() {
+@@ -180,7 +180,7 @@ bool RemoteActorCredentialSharingEnabled() {
  }
  
  // Controls the enablement of structured metrics on Windows, Linux, and Mac.
@@ -11,7 +11,7 @@ index ee7411d364aa78a61f53a21d9dc37160e91ddba1..f94fd08ea0d6ec54570ae7f0ea20ea80
  
  BASE_FEATURE(kDeferSpellcheckInitialization, base::FEATURE_DISABLED_BY_DEFAULT);
  
-@@ -217,7 +217,7 @@ BASE_FEATURE(kDesktopPWAsPreventClose,
+@@ -204,7 +204,7 @@ BASE_FEATURE(kDesktopPWAsPreventClose,
  );
  
  // Adds a user settings that allows PWAs to be opened with a tab strip.
@@ -20,7 +20,7 @@ index ee7411d364aa78a61f53a21d9dc37160e91ddba1..f94fd08ea0d6ec54570ae7f0ea20ea80
  
  // Removes the Window Controls Overlay toggle button from the PWA toolbar
  // and auto-enables WCO when the app developer specifies it in the manifest.
-@@ -392,7 +392,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";
+@@ -379,7 +379,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";
  
  // Controls whether the task icon in the actor ui is enabled.
  const base::FeatureParam<bool> kGlicActorUiTaskIcon{
@@ -29,7 +29,7 @@ index ee7411d364aa78a61f53a21d9dc37160e91ddba1..f94fd08ea0d6ec54570ae7f0ea20ea80
  // Controls whether the Actor Overlay in the actor ui is enabled.
  const base::FeatureParam<bool> kGlicActorUiOverlay{
      &kGlicActorUi, kGlicActorUiOverlayName, true};
-@@ -1284,7 +1284,7 @@ const base::FeatureParam<bool>
+@@ -1236,7 +1236,7 @@ const base::FeatureParam<bool>
  
  // Enables HTTPS-First Mode in a balanced configuration that doesn't warn on
  // HTTP when HTTPS can't be reasonably expected.
@@ -38,7 +38,7 @@ index ee7411d364aa78a61f53a21d9dc37160e91ddba1..f94fd08ea0d6ec54570ae7f0ea20ea80
  
  // Automatically enables HTTPS-First Mode in a balanced configuration when
  // possible.
-@@ -1341,7 +1341,7 @@ BASE_FEATURE(kIncomingCallNotifications,
+@@ -1293,7 +1293,7 @@ BASE_FEATURE(kIncomingCallNotifications,
  #endif  // BUILDFLAG(IS_WIN)
  
  // Experimental image replacement feature. b/482792874
@@ -47,7 +47,7 @@ index ee7411d364aa78a61f53a21d9dc37160e91ddba1..f94fd08ea0d6ec54570ae7f0ea20ea80
  BASE_FEATURE(kIndigoContextualCueingV2, base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kIndigoWatermark, base::FEATURE_ENABLED_BY_DEFAULT);
  
-@@ -1671,7 +1671,7 @@ BASE_FEATURE(kSafetyHubTrustSafetySentimentSurvey,
+@@ -1633,7 +1633,7 @@ BASE_FEATURE(kSafetyHubTrustSafetySentimentSurvey,
  // Safe Browsing Reporting to perform a k-anonymous query to see if Google knows
  // about an SCT seen in the wild. If it hasn't been seen, then it is considered
  // a security incident and uploaded to Google.
@@ -56,7 +56,7 @@ index ee7411d364aa78a61f53a21d9dc37160e91ddba1..f94fd08ea0d6ec54570ae7f0ea20ea80
  
  // An estimated high bound for the time it takes Google to ingest updates to an
  // SCT log. Chrome will wait for at least this time plus the Log's Maximum Merge
-@@ -1758,7 +1758,7 @@ BASE_FEATURE(kTreatUnsafeDownloadsAsActive, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -1720,7 +1720,7 @@ BASE_FEATURE(kTreatUnsafeDownloadsAsActive, base::FEATURE_ENABLED_BY_DEFAULT);
  // TrustSafetySentimentSurvey
  #if !BUILDFLAG(IS_ANDROID)
  // Enables surveying of users of Trust & Safety features with HaTS.
@@ -65,7 +65,7 @@ index ee7411d364aa78a61f53a21d9dc37160e91ddba1..f94fd08ea0d6ec54570ae7f0ea20ea80
  // The minimum and maximum time after a user has interacted with a Trust and
  // Safety they are eligible to be surveyed.
  const base::FeatureParam<base::TimeDelta>
-@@ -1821,7 +1821,7 @@ const base::FeatureParam<base::TimeDelta>
+@@ -1783,7 +1783,7 @@ const base::FeatureParam<base::TimeDelta>
  #if !BUILDFLAG(IS_ANDROID)
  // Enables the second version of the sentiment survey for users of Trust &
  // Safety features, using HaTS.

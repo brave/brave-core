@@ -1,5 +1,5 @@
 diff --git a/build/config/android/internal_rules.gni b/build/config/android/internal_rules.gni
-index 72c9c992e8b542bf24390b15c9a48f9d8340e830..0abde5d60a75dd33b01b67dc2a216cc39f247ff3 100644
+index 8cb1a5f72ad3e23d71a9d832a7379970c38ce9c1..3d589e8b7ecdaa78184fd380bae51e6a12d672b3 100644
 --- a/build/config/android/internal_rules.gni
 +++ b/build/config/android/internal_rules.gni
 @@ -3668,6 +3668,7 @@ if (enable_java_templates) {
@@ -18,7 +18,7 @@ index 72c9c992e8b542bf24390b15c9a48f9d8340e830..0abde5d60a75dd33b01b67dc2a216cc3
  
        # Specifically avoid passing in invoker.base_module_target as one of the
        # possible_config_deps.
-@@ -4279,6 +4281,7 @@ if (enable_java_templates) {
+@@ -4353,6 +4355,7 @@ if (enable_java_templates) {
        } else {
          not_needed(invoker, [ "missing_classes_allowlist" ])
        }
