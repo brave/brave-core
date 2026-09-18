@@ -5,6 +5,8 @@
 
 package org.chromium.brave.browser.quick_search_engines;
 
+import android.view.HapticFeedbackConstants;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.ItemTouchHelper;
@@ -57,6 +59,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
                 && viewHolder != null
                 && mStartPosition == NO_POSITION) {
             mStartPosition = viewHolder.getBindingAdapterPosition();
+            viewHolder.itemView.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
         }
     }
 
