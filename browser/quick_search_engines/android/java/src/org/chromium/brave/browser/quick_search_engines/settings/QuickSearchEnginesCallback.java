@@ -7,11 +7,14 @@ package org.chromium.brave.browser.quick_search_engines.settings;
 
 import android.widget.ImageView;
 
+import java.util.List;
+
 public interface QuickSearchEnginesCallback {
     public default void onSearchEngineClick(
             int position, QuickSearchEnginesModel quickSearchEnginesModel) {}
 
-    public default void onSearchEngineLongClick() {}
+    public default void onSearchEnginesReordered(
+            List<QuickSearchEnginesModel> quickSearchEngines) {}
 
     public default void loadSearchEngineLogo(
             ImageView logoView, QuickSearchEnginesModel quickSearchEnginesModel) {}

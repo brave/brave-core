@@ -5,39 +5,30 @@
 
 package org.chromium.brave.browser.quick_search_engines.settings;
 
-import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.chromium.brave.browser.quick_search_engines.ItemTouchHelperCallback;
 import org.chromium.brave.browser.quick_search_engines.R;
 import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
 
-import java.util.Collections;
 import java.util.List;
 
 public class QuickSearchEnginesAdapter
         extends RecyclerView.Adapter<QuickSearchEnginesSettingsViewHolder> {
     private final List<QuickSearchEnginesModel> mSearchEngines;
     private final QuickSearchEnginesCallback mQuickSearchEnginesCallback;
-    private final ItemTouchHelperCallback.OnStartDragListener mDragStartListener;
-    private boolean mIsEditMode;
 
     public QuickSearchEnginesAdapter(
             List<QuickSearchEnginesModel> searchEngines,
-            QuickSearchEnginesCallback quickSearchEnginesCallback,
-            ItemTouchHelperCallback.OnStartDragListener dragStartListener) {
+            QuickSearchEnginesCallback quickSearchEnginesCallback) {
         mSearchEngines = searchEngines;
         mQuickSearchEnginesCallback = quickSearchEnginesCallback;
-        mDragStartListener = dragStartListener;
     }
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(
             @NonNull QuickSearchEnginesSettingsViewHolder quickSearchEnginesSettingsViewHolder,
@@ -70,40 +61,18 @@ public class QuickSearchEnginesAdapter
             case QuickSearchEnginesUtil.BRAVE_SEARCH_ENGINE_KEYWORD ->
                     quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
                             R.drawable.ic_social_brave_release_favicon_fullheight_color);
-            case null, default -> mQuickSearchEnginesCallback.loadSearchEngineLogo(
-                    quickSearchEnginesSettingsViewHolder.mSearchEngineLogo,
-                    quickSearchEnginesModel);
+            case null, default ->
+                    mQuickSearchEnginesCallback.loadSearchEngineLogo(
+                            quickSearchEnginesSettingsViewHolder.mSearchEngineLogo,
+                            quickSearchEnginesModel);
         }
 
         quickSearchEnginesSettingsViewHolder.mView.setOnClickListener(
                 v -> {
                     boolean isChecked =
-                            quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch
-                                    .isChecked();
-                    quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch.setChecked(
-                            !isChecked);
+                            quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch.isChecked();
+                    quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch.setChecked(!isChecked);
                 });
-
-        quickSearchEnginesSettingsViewHolder.mView.setOnLongClickListener(
-                v -> {
-                    if (!mIsEditMode) {
-                        setEditMode(true);
-                        mQuickSearchEnginesCallback.onSearchEngineLongClick();
-                    }
-                    return true;
-                });
-        quickSearchEnginesSettingsViewHolder.mDragIcon.setOnTouchListener(
-                (v, event) -> {
-                    if (event.getAction() == MotionEvent.ACTION_DOWN) {
-                        mDragStartListener.onStartDrag(quickSearchEnginesSettingsViewHolder);
-                    }
-                    return false;
-                });
-
-        quickSearchEnginesSettingsViewHolder.mDragIcon.setVisibility(
-                mIsEditMode ? View.VISIBLE : View.GONE);
-        quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch.setVisibility(
-                mIsEditMode ? View.GONE : View.VISIBLE);
     }
 
     private void onSearchEngineClick(
@@ -111,9 +80,15 @@ public class QuickSearchEnginesAdapter
         mQuickSearchEnginesCallback.onSearchEngineClick(position, quickSearchEnginesModel);
     }
 
-    public void swapItems(int fromPosition, int toPosition) {
-        Collections.swap(mSearchEngines, fromPosition, toPosition);
+    /** Moves an engine within the list while a drag is in progress. */
+    public void moveItem(int fromPosition, int toPosition) {
+        mSearchEngines.add(toPosition, mSearchEngines.remove(fromPosition));
         notifyItemMoved(fromPosition, toPosition);
+    }
+
+    /** Called once the dragged engine has been dropped in its new position. */
+    public void onOrderChanged() {
+        mQuickSearchEnginesCallback.onSearchEnginesReordered(mSearchEngines);
     }
 
     @NonNull
@@ -128,22 +103,5 @@ public class QuickSearchEnginesAdapter
     @Override
     public int getItemCount() {
         return mSearchEngines.size();
-    }
-
-    public List<QuickSearchEnginesModel> getSearchEngines() {
-        return mSearchEngines;
-    }
-
-    public void setEditMode(boolean isEditMode) {
-        this.mIsEditMode = isEditMode;
-        notifyItemRangeChanged(0, getItemCount());
-    }
-
-    public boolean isEditMode() {
-        return this.mIsEditMode;
-    }
-
-    public List<QuickSearchEnginesModel> getQuickSearchEngines() {
-        return this.mSearchEngines;
     }
 }

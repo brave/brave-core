@@ -7,17 +7,12 @@ package org.chromium.brave.browser.quick_search_engines.settings;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.core.view.MenuProvider;
-import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,7 +25,6 @@ import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.brave.browser.quick_search_engines.ItemTouchHelperCallback;
 import org.chromium.brave.browser.quick_search_engines.R;
 import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
-import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
@@ -41,47 +35,12 @@ import java.util.List;
 import java.util.Map;
 
 public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
-        implements QuickSearchEnginesCallback, ItemTouchHelperCallback.OnStartDragListener {
+        implements QuickSearchEnginesCallback {
     private RecyclerView mRecyclerView;
     private QuickSearchEnginesAdapter mQuickSearchEnginesAdapter;
-    private ItemTouchHelper mItemTouchHelper;
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
-
-    // The close item belongs to the hosting settings activity, so the menu is shared and must not
-    // be cleared here.
-    private final MenuProvider mMenuProvider =
-            new MenuProvider() {
-                @Override
-                public void onCreateMenu(Menu menu, MenuInflater inflater) {
-                    inflater.inflate(R.menu.quick_search_engines_menu, menu);
-                }
-
-                @Override
-                public void onPrepareMenu(Menu menu) {
-                    boolean isEditMode =
-                            mQuickSearchEnginesAdapter != null
-                                    && mQuickSearchEnginesAdapter.isEditMode();
-                    MenuItem closeItem = menu.findItem(R.id.close_menu_id);
-                    if (closeItem != null) {
-                        closeItem.setVisible(!isEditMode);
-                    }
-                    MenuItem saveItem = menu.findItem(R.id.action_save);
-                    if (saveItem != null) {
-                        saveItem.setVisible(isEditMode);
-                    }
-                }
-
-                @Override
-                public boolean onMenuItemSelected(MenuItem item) {
-                    if (item.getItemId() != R.id.action_save) {
-                        return false;
-                    }
-                    saveSearchEngines();
-                    return true;
-                }
-            };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -133,46 +92,20 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
         return view;
     }
 
-    private void saveSearchEngines() {
-        final List<QuickSearchEnginesModel> quickSearchEngines = getQuickSearchEngines();
-        if (quickSearchEngines == null) {
-            return;
-        }
-        Map<String, QuickSearchEnginesModel> searchEnginesMap = new LinkedHashMap<>();
-        for (QuickSearchEnginesModel quickSearchEnginesModel : quickSearchEngines) {
-            searchEnginesMap.put(quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
-        }
-        QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
-        mQuickSearchEnginesAdapter.setEditMode(false);
-        requireActivity().invalidateMenu();
-    }
-
-    @Nullable
-    private List<QuickSearchEnginesModel> getQuickSearchEngines() {
-        if (mQuickSearchEnginesAdapter != null) {
-            final List<QuickSearchEnginesModel> quickSearchEngines =
-                    mQuickSearchEnginesAdapter.getQuickSearchEngines();
-            if (quickSearchEngines != null && !quickSearchEngines.isEmpty()) {
-                return quickSearchEngines;
-            }
-        }
-        return null;
-    }
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        requireActivity()
-                .addMenuProvider(mMenuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
         final Profile profile = getProfile();
         TemplateUrlServiceFactory.getForProfile(profile)
-                .runWhenLoaded(() -> {
-                    if (isRemoving() || isDetached()) return;
+                .runWhenLoaded(
+                        () -> {
+                            if (isRemoving() || isDetached()) return;
 
-                    List<QuickSearchEnginesModel> quickSearchEngines =
-                            QuickSearchEnginesUtil.getQuickSearchEnginesForSettings(profile);
-                    setRecyclerViewData(quickSearchEngines);
-                });
+                            List<QuickSearchEnginesModel> quickSearchEngines =
+                                    QuickSearchEnginesUtil.getQuickSearchEnginesForSettings(
+                                            profile);
+                            setRecyclerViewData(quickSearchEngines);
+                        });
     }
 
     @Override
@@ -186,11 +119,10 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
     }
 
     private void setRecyclerViewData(List<QuickSearchEnginesModel> searchEngines) {
-        mQuickSearchEnginesAdapter = new QuickSearchEnginesAdapter(searchEngines, this, this);
+        mQuickSearchEnginesAdapter = new QuickSearchEnginesAdapter(searchEngines, this);
         mRecyclerView.setAdapter(mQuickSearchEnginesAdapter);
         ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mQuickSearchEnginesAdapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(mRecyclerView);
+        new ItemTouchHelper(callback).attachToRecyclerView(mRecyclerView);
     }
 
     // QuickSearchCallback
@@ -206,14 +138,14 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
         QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
     }
 
+    // Persist the new order as soon as the dragged engine is dropped.
     @Override
-    public void onSearchEngineLongClick() {
-        requireActivity().invalidateMenu();
-    }
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
+    public void onSearchEnginesReordered(List<QuickSearchEnginesModel> quickSearchEngines) {
+        Map<String, QuickSearchEnginesModel> searchEnginesMap = new LinkedHashMap<>();
+        for (QuickSearchEnginesModel quickSearchEnginesModel : quickSearchEngines) {
+            searchEnginesMap.put(quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
+        }
+        QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
     }
 
     @Override
