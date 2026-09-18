@@ -39,6 +39,7 @@ Commit categories formalised here (see `EntryType`):
     - [cr*] Bump resource_ids.
     - [cr*] Update Lit mangler snapshot.
     - [cr*] Disable failing upstream tests.
+    - [cr*] Update lists for upstream flake tests.
 
 * RECYCLABLE -- commits we can always drop and regenerate with tooling.
   They're discarded by `brockit.py rebase --discard-regen-changes`.
@@ -136,7 +137,8 @@ def _match(subject: str, pattern: re.Pattern) -> bool:
 # squash priority order: when multiple pinned groups are present in the
 # same rebase plan, they're emitted top-to-bottom in this order
 # (version → plaster_reruns → conflict → gnrt → IWYU →
-# resource_ids → lit_mangler → disable_tests). The regexes are
+# resource_ids → lit_mangler → disable_tests →
+# dead_upstream_tests → flake_tests). The regexes are
 # anchored fullmatches applied to the `[crNNN]`-stripped subject, so each
 # pattern matches both the tagged and the untagged form of the same commit.
 PINNED_GROUPS = [
@@ -158,6 +160,7 @@ PINNED_GROUPS = [
                 r'Filter upstream tests as needed\.?')),
     ('dead_upstream_tests',
      re.compile(r'Remove dead upstream tests from filters\.?')),
+    ('flake_tests', re.compile(r'Update lists for upstream flake tests\.?')),
 ]
 
 # Subjects produced by `pnpm run update_patches` and string generation --
