@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc b/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
+index 244a1b4b9ce54320af21fbdd0cfc8434de735b18..2b5c668af55aa115d23536604082fd0eac1b8583 100644
+--- a/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
++++ b/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
+@@ -141,7 +141,7 @@ constexpr int kSeparatorPadding = 8;
+ constexpr int kDialogWidth = 240;
+ // The maximum number of times we will show the footer section with the learn
+ // more link.
+-constexpr int kFooterDisplayLimit = 5;
++constexpr int kFooterDisplayLimit = 0;
+ 
+ int GetHorizontalSpacing() {
+   return ChromeLayoutProvider::Get()->GetDistanceMetric(
