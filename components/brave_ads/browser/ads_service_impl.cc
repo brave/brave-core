@@ -221,6 +221,29 @@ AdsServiceImpl::AdsServiceImpl(
 
 AdsServiceImpl::~AdsServiceImpl() = default;
 
+base::WeakPtr<AdsService> AdsServiceImpl::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
+bool AdsServiceImpl::IsIneligibleToStart() const {
+  return is_ineligible_to_start_;
+}
+
+bool AdsServiceImpl::IsInitialized() const {
+  return is_bat_ads_initialized_;
+}
+
+void AdsServiceImpl::Shutdown() {
+  // The profile is being destroyed and the service must never start again, so
+  // this is never reset to false.
+  is_shutting_down_ = true;
+
+  // Detach from PolicyService eagerly rather than waiting for the destructor.
+  policy_initialization_waiter_.reset();
+
+  ShutdownAdsService();
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 
 
@@ -485,18 +508,6 @@ void AdsServiceImpl::InitializeBatAdsCallback(bool success) {
   CheckIdleStateAfterDelay();
 
   NotifyDidInitializeAdsService();
-}
-
-base::WeakPtr<AdsService> AdsServiceImpl::GetWeakPtr() {
-  return weak_ptr_factory_.GetWeakPtr();
-}
-
-bool AdsServiceImpl::IsIneligibleToStart() const {
-  return is_ineligible_to_start_;
-}
-
-bool AdsServiceImpl::IsInitialized() const {
-  return is_bat_ads_initialized_;
 }
 
 void AdsServiceImpl::NotifyAdsServiceIneligibleToStart() {
@@ -1024,6 +1035,11 @@ void AdsServiceImpl::OpenNewTabWithAdCallback(
   OpenNewTabWithUrl(notification_ad->target_url);
 }
 
+void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& placement_id) {
+  VLOG(2) << "Retry opening new tab for ad with placement id " << placement_id;
+  retry_opening_new_tab_for_ad_with_placement_id_ = placement_id;
+}
+
 void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
   if (is_shutting_down_) {
     return;
@@ -1035,11 +1051,6 @@ void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
   }
 
   delegate_->OpenNewTabWithUrl(url);
-}
-
-void AdsServiceImpl::RetryOpeningNewTabWithAd(const std::string& placement_id) {
-  VLOG(2) << "Retry opening new tab for ad with placement id " << placement_id;
-  retry_opening_new_tab_for_ad_with_placement_id_ = placement_id;
 }
 
 void AdsServiceImpl::ShowScheduledCaptchaCallback(
@@ -1120,17 +1131,6 @@ void AdsServiceImpl::ShutdownAdsService() {
   }
 
   is_bat_ads_initialized_ = false;
-}
-
-void AdsServiceImpl::Shutdown() {
-  // The profile is being destroyed and the service must never start again, so
-  // this is never reset to false.
-  is_shutting_down_ = true;
-
-  // Detach from PolicyService eagerly rather than waiting for the destructor.
-  policy_initialization_waiter_.reset();
-
-  ShutdownAdsService();
 }
 
 void AdsServiceImpl::AddBatAdsObserver(

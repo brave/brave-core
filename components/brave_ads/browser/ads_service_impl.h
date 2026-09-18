@@ -183,8 +183,6 @@ class AdsServiceImpl : public AdsService,
   void ClearAdsServiceDataAndMaybeRestartCallback(ResultCallback callback,
                                                   bool success);
 
-  void OnExternalWalletConnectedCallback(bool success);
-
   void SetSysInfo();
   void SetBuildChannel();
   void SetCommandLineSwitches();
