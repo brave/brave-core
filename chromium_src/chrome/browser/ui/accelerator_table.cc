@@ -17,6 +17,8 @@ constexpr AcceleratorMapping kBraveAcceleratorMap[] = {
     {ui::VKEY_S, ui::EF_PLATFORM_ACCELERATOR | ui::EF_SHIFT_DOWN,
      IDC_SHARING_HUB_SCREENSHOT},
     {ui::VKEY_M, ui::EF_CONTROL_DOWN, IDC_TOGGLE_TAB_MUTE},
+    // Alt+P (Option+P on Mac)
+    {ui::VKEY_P, ui::EF_ALT_DOWN, IDC_TOGGLE_PICTURE_IN_PICTURE},
     // Ctrl+B(or Cmd+B)
     {ui::VKEY_B, ui::EF_PLATFORM_ACCELERATOR, IDC_TOGGLE_SIDEBAR},
     // Ctrl+Alt+T (Cmd+Alt+T on Mac)
