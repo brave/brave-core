@@ -37,8 +37,6 @@ class SnapsService : public mojom::SnapsService {
   void RequestInstallSnap(const std::string& snap_id,
                           const std::string& version,
                           RequestInstallSnapCallback callback) override;
-  void GetSnapBundle(const std::string& snap_id,
-                     GetSnapBundleCallback callback) override;
   void SetSnapBridge(mojo::PendingRemote<mojom::SnapBridge> bridge) override;
 
   // Test seams.

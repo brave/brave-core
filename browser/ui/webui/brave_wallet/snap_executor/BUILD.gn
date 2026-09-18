@@ -14,6 +14,7 @@ source_set("snap_executor") {
     "snap_executor_ui.h",
   ]
   deps = [
+    "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet_ui:resources",
     "//brave/components/brave_wallet_ui/snap_executor:snap_executor_generated",
@@ -38,6 +39,7 @@ source_set("browser_tests") {
     "//brave/components/brave_wallet/common:common_constants",
     "//chrome/test:test_support",
     "//chrome/test:test_support_ui",
+    "//content/public/browser",
     "//content/test:test_support",
     "//net:test_support",
     "//testing/gtest",

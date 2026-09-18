@@ -13,7 +13,6 @@ class SnapBridgeRegistry {
     if (!this.bridge) {
       const service = BraveWallet.SnapsService.getRemote()
       const bridge = new SnapBridge()
-      bridge.setSnapsService(service)
       service.setSnapBridge(bridge.bindNewPipeAndPassRemote())
       this.bridge = bridge
     }

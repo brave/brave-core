@@ -497,16 +497,6 @@ void BraveWalletService::Bind(
   ipfs_service()->Bind(std::move(receiver));
 }
 
-#if BUILDFLAG(ENABLE_SNAPS)
-template <>
-void BraveWalletService::Bind(
-    mojo::PendingReceiver<mojom::SnapsService> receiver) {
-  if (snaps_service()) {
-    snaps_service()->Bind(std::move(receiver));
-  }
-}
-#endif
-
 void BraveWalletService::GetUserAssets(const std::string& chain_id,
                                        mojom::CoinType coin,
                                        GetUserAssetsCallback callback) {

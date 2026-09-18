@@ -19,8 +19,6 @@ namespace brave_wallet {
 // and routing snap load operations to the wallet page.
 class SnapBridgeController {
  public:
-  using DisconnectCallback = base::RepeatingClosure;
-
   using LoadSnapCallback =
       base::OnceCallback<void(bool,
                               const std::optional<std::string>&,
@@ -31,16 +29,17 @@ class SnapBridgeController {
   SnapBridgeController(const SnapBridgeController&) = delete;
   SnapBridgeController& operator=(const SnapBridgeController&) = delete;
 
-  // Called by the wallet page to bind the bridge.
+  // Called by the wallet page to bind the bridge. Last-wins across the
+  // profile: a second wallet tab replaces the first tab's bridge.
   virtual void SetBridge(mojo::PendingRemote<mojom::SnapBridge> bridge) = 0;
 
   virtual bool IsBound() const = 0;
 
-  // Registers a callback fired on every bridge disconnect.
-  virtual void SetDisconnectCallback(DisconnectCallback cb) = 0;
-
   // mojom::SnapBridge passthroughs — bridge must be bound when called.
-  virtual void LoadSnap(const std::string& snap_id, LoadSnapCallback cb) = 0;
+  virtual void LoadSnap(const std::string& snap_id,
+                        const std::string& source_code,
+                        LoadSnapCallback cb) = 0;
+  virtual void UnloadSnap(const std::string& snap_id) = 0;
 
  protected:
   SnapBridgeController() = default;

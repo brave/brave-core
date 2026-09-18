@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/notimplemented.h"
 #include "brave/components/brave_wallet/browser/snap/execution_environment/wallet_page_snap_bridge_controller.h"
 
 namespace brave_wallet {
@@ -34,8 +35,15 @@ void SnapsService::LoadSnap(const std::string& snap_id,
     std::move(callback).Run(false, "Wallet page is not running", std::nullopt);
     return;
   }
+
+  auto it = snap_bundles_.find(snap_id);
+  if (it == snap_bundles_.end()) {
+    std::move(callback).Run(false, "Bundle not found", std::nullopt);
+    return;
+  }
+
   bridge_controller_->LoadSnap(
-      snap_id,
+      snap_id, it->second,
       base::BindOnce(&SnapsService::OnLoadSnapResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -55,22 +63,10 @@ void SnapsService::OnLoadSnapResult(LoadSnapCallback callback,
 void SnapsService::RequestInstallSnap(const std::string& snap_id,
                                       const std::string& version,
                                       RequestInstallSnapCallback callback) {
-  // Minimal extraction: install simply stores a trivial bundle in memory.
-  // A full implementation would download, verify, decompress and persist the
-  // snap package.
-  snap_bundles_[snap_id] =
-      "// Minimal snap bundle for " + snap_id + "@" + version + "\n";
-  std::move(callback).Run(true, std::nullopt);
-}
-
-void SnapsService::GetSnapBundle(const std::string& snap_id,
-                                 GetSnapBundleCallback callback) {
-  auto it = snap_bundles_.find(snap_id);
-  if (it == snap_bundles_.end()) {
-    std::move(callback).Run(std::nullopt, "Bundle not found");
-    return;
-  }
-  std::move(callback).Run(it->second, std::nullopt);
+  // Install (download, verify, decompress, persist) is not implemented yet.
+  // Do not write a placeholder that would clobber a real bundle.
+  NOTIMPLEMENTED();
+  std::move(callback).Run(false, "RequestInstallSnap is not implemented");
 }
 
 void SnapsService::SetSnapBundleForTesting(const std::string& snap_id,
