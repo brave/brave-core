@@ -59,7 +59,7 @@ class AgentClient {
     kDisconnected,
     // Transport connect or handshake in flight.
     kConnecting,
-    // The agent accepted the connection; browser host is valid.
+    // The agent accepted the connection; browser host is bound and valid.
     kConnected,
     // Transient failure; a retry is on the timer.
     kWaitingToRetry,
@@ -90,19 +90,19 @@ class AgentClient {
     // Sessions keep being established and then lost again almost immediately,
     // likely an agent crashes on startup. Retryable.
     kAgentUnstable,
-    // The agent repeatedly could not determine whether this browser is Brave.
-    // Could be a legitimate transient issue - an image replaced mid-update, a
-    // rotated signing cert - so only a run of them is worth reporting.
-    // Retryable.
+    // The agent repeatedly could not determine whether this browser is Brave,
+    // or had no usable capture of this process. Could be transient - an image
+    // replaced mid-update, a rotated signing cert, an expired capture - so only
+    // a run of them is worth reporting. Retryable.
     kBrowserUnverified,
     // The agent ran its check on this browser and explicitly refused it. The
     // verdict is about this binary, which does not change while it runs. Could
     // also be a protocol version mismatch which means the binary is
     // incompatible. Non-retryable.
     kBrowserRejected,
-    // The peer answered in a way the agent would not have: it claims this
-    // connection is already authenticated when it has only just been opened.
-    // Either a bug or the peer is not the agent. Non-retryable.
+    // The peer answered in a way the agent would not have: it reports a host
+    // already bound, or refuses to bind one on a connection it has just
+    // accepted. Either a bug or the peer is not the agent. Non-retryable.
     kUnexpectedBehavior,
   };
 
@@ -200,7 +200,8 @@ class AgentClient {
 
   void StartConnect();
   void OnConnectBlockingCompleted(ConnectResult result);
-  void OnAuthResult(mojom::BrowserAuthResult result);
+  void OnInitializeResult(mojom::InitializeResult result);
+  void OnBindBrowserHostResult(mojom::BindBrowserHostResult result);
   void OnHandshakeTimeout();
   void OnSessionBecameStable();
   void OnSessionPipeDisconnected(std::string_view reason);
