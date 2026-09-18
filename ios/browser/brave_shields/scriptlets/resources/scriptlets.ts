@@ -15,6 +15,12 @@ const scriptlets: string[] | null = sendTokenizedWebKitMessageSynchronously(
 
 if (scriptlets) {
   for (const scriptlet of scriptlets) {
-    new Function(scriptlet)()
+    // Isolate failures so that one scriptlet cannot prevent the rest from
+    // running.
+    try {
+      new Function(scriptlet)()
+    } catch (error) {
+      console.error('Brave failed to inject a scriptlet', error)
+    }
   }
 }
