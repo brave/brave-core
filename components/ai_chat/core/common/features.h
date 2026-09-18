@@ -181,6 +181,12 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatDeepResearchEnabled();
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kBraveSyncAIChat);
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsBraveSyncAIChatEnabled();
 
+// Enables conversation threads, which allow new conversations to be branched
+// off from an existing conversation entry.
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatThreads);
+
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatThreadsEnabled();
+
 // Enables sharing a conversation from the conversation header.
 // https://github.com/brave/brave-browser/issues/56444
 COMPONENT_EXPORT(AI_CHAT_COMMON)
