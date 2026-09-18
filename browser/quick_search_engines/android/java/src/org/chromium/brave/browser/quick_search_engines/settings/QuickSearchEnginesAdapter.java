@@ -9,14 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.brave.browser.quick_search_engines.R;
 import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
+import org.chromium.build.annotations.NullMarked;
 
 import java.util.List;
 
+@NullMarked
 public class QuickSearchEnginesAdapter
         extends RecyclerView.Adapter<QuickSearchEnginesSettingsViewHolder> {
     private final List<QuickSearchEnginesModel> mSearchEngines;
@@ -31,7 +32,7 @@ public class QuickSearchEnginesAdapter
 
     @Override
     public void onBindViewHolder(
-            @NonNull QuickSearchEnginesSettingsViewHolder quickSearchEnginesSettingsViewHolder,
+            QuickSearchEnginesSettingsViewHolder quickSearchEnginesSettingsViewHolder,
             int position) {
         QuickSearchEnginesModel quickSearchEnginesModel = mSearchEngines.get(position);
         quickSearchEnginesSettingsViewHolder.mSearchEngineText.setText(
@@ -91,7 +92,6 @@ public class QuickSearchEnginesAdapter
         mQuickSearchEnginesCallback.onSearchEnginesReordered(mSearchEngines);
     }
 
-    @NonNull
     @Override
     public QuickSearchEnginesSettingsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view =
