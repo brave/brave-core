@@ -6,10 +6,10 @@
 module brave_vpn.mojom;
 
 // Newest version of the browser to agent contract below, sent by browsers in
-// BindBrowserHost(). The agent accepts a range of versions rather than an
-// exact match, so a browser and agent from different updates can still talk;
-// it answers anything outside that range with kVersionMismatch. Bump on an
-// incompatible change, and prefer [MinVersion] for additive ones.
+// Initialize(). The agent accepts a range of versions rather than an exact
+// match, so a browser and agent from different updates can still talk; it
+// answers anything outside that range with BrowserInitResult::kVersionMismatch.
+// Bump on an incompatible change, and prefer [MinVersion] for additive ones.
 //
 // Note that on official desktop builds message ID scrambling already stops
 // binaries from different Brave versions exchanging messages at all, so this
@@ -21,12 +21,19 @@ const uint32 kProtocolVersion = 1;
 interface BrowserEndpoint {
 };
 
+enum BrowserInitResult {
+  kInitialized,
+  kVersionMismatch,
+  kNotIdentified,
+  kInvalidRequest,
+};
+
 enum BrowserAuthResult {
   kAccepted,
   kRejected,
-  kVersionMismatch,
   kHostAlreadyRequested,
   kInconclusive,
+  kInvalidRequest,
 };
 
 // The browser's connection to the agent, and the only interface reachable on
@@ -35,8 +42,20 @@ enum BrowserAuthResult {
 // to this receiver, so dropping it tears down the whole connection,
 // BrowserHost included.
 interface BrowserHostProvider {
-  BindBrowserHost(uint32 protocol_version,
-                  pending_remote<BrowserEndpoint> browser_endpoint,
+  // First call on a connection. Settles the protocol version, and hands over
+  // the optional channel the agent identifies itself on where the platform
+  // requires the agent to speak before it can be identified at all. May succeed
+  // only once; calling anything else before it has succeeded, or calling it
+  // again after, is answered with kInvalidRequest. A refused Initialize()
+  // leaves no state behind, so retrying it on the same connection is allowed.
+  Initialize(uint32 protocol_version, handle<platform>? identity_channel)
+      => (BrowserInitResult result);
+
+  // Asks for a BrowserHost for this connection. A browser that drops its host
+  // may ask again, but a second request while one is bound or in flight is
+  // answered with kHostAlreadyRequested. Calling it without prior successful
+  // initialization results in kInvalidRequest.
+  BindBrowserHost(pending_remote<BrowserEndpoint> browser_endpoint,
                   pending_receiver<BrowserHost> host)
                     => (BrowserAuthResult result);
 };

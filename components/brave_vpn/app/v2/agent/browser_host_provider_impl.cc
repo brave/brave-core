@@ -16,15 +16,24 @@ BrowserHostProviderImpl::BrowserHostProviderImpl(Delegate* delegate)
 
 BrowserHostProviderImpl::~BrowserHostProviderImpl() = default;
 
+void BrowserHostProviderImpl::Initialize(uint32_t protocol_version,
+                                         mojo::PlatformHandle identity_channel,
+                                         InitializeCallback callback) {
+  // The delegate owns the policy and rejects the connection if needed; this
+  // surface only forwards and relays the result back to the browser.
+  delegate_->InitializeBrowser(protocol_version, std::move(identity_channel),
+                               std::move(callback));
+}
+
 void BrowserHostProviderImpl::BindBrowserHost(
-    uint32_t protocol_version,
     mojo::PendingRemote<mojom::BrowserEndpoint> browser_endpoint,
     mojo::PendingReceiver<mojom::BrowserHost> host,
     BindBrowserHostCallback callback) {
-  // The delegate owns the policy and binds |host| itself on success; this
-  // surface only forwards and relays the result back to the browser.
-  delegate_->Authenticate(protocol_version, std::move(browser_endpoint),
-                          std::move(host), std::move(callback));
+  // The delegate owns the policy, rejects the connection if needed, and binds
+  // |host| itself on success; this surface only forwards and relays the result
+  // back to the browser.
+  delegate_->AuthenticateBrowser(std::move(browser_endpoint), std::move(host),
+                                 std::move(callback));
 }
 
 }  // namespace brave_vpn::v2

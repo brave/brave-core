@@ -90,10 +90,10 @@ class AgentClient {
     // Sessions keep being established and then lost again almost immediately,
     // likely an agent crashes on startup. Retryable.
     kAgentUnstable,
-    // The agent repeatedly could not determine whether this browser is Brave.
-    // Could be a legitimate transient issue - an image replaced mid-update, a
-    // rotated signing cert - so only a run of them is worth reporting.
-    // Retryable.
+    // The agent repeatedly could not determine whether this browser is Brave,
+    // or had no usable capture of this process. Could be transient - an image
+    // replaced mid-update, a rotated signing cert, an expired capture - so only
+    // a run of them is worth reporting. Retryable.
     kBrowserUnverified,
     // The agent ran its check on this browser and explicitly refused it. The
     // verdict is about this binary, which does not change while it runs. Could
@@ -101,8 +101,9 @@ class AgentClient {
     // incompatible. Non-retryable.
     kBrowserRejected,
     // The peer answered in a way the agent would not have: it claims this
-    // connection is already authenticated when it has only just been opened.
-    // Either a bug or the peer is not the agent. Non-retryable.
+    // connection is already authenticated, or calls the request invalid, when
+    // the connection has only just been opened. Either a bug or the peer is not
+    // the agent. Non-retryable.
     kUnexpectedBehavior,
   };
 
@@ -200,6 +201,7 @@ class AgentClient {
 
   void StartConnect();
   void OnConnectBlockingCompleted(ConnectResult result);
+  void OnInitResult(mojom::BrowserInitResult result);
   void OnAuthResult(mojom::BrowserAuthResult result);
   void OnHandshakeTimeout();
   void OnSessionBecameStable();

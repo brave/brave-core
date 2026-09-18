@@ -153,10 +153,21 @@ class AgentClientTest : public testing::Test {
     task_environment_.FastForwardBy(delay + kTimeBriefly);
   }
 
-  // Every refusal is terminal in the same way, whatever the agent's reason.
+  // Every refusal is terminal in the same way, whatever the agent's reason and
+  // whichever call it came from.
+  void ExpectRefusalIsTerminal(mojom::BrowserInitResult result,
+                               AgentClient::Error expected_error) {
+    agent_.set_init_result(result);
+    ExpectTerminalRefusalAfterConnect(expected_error);
+  }
+
   void ExpectRefusalIsTerminal(mojom::BrowserAuthResult result,
                                AgentClient::Error expected_error) {
     agent_.set_auth_result(result);
+    ExpectTerminalRefusalAfterConnect(expected_error);
+  }
+
+  void ExpectTerminalRefusalAfterConnect(AgentClient::Error expected_error) {
     ConnectAndWait();
 
     EXPECT_EQ(observer_.failure_count(), 1);
@@ -200,8 +211,11 @@ TEST_F(AgentClientTest, HandshakeSucceeds) {
   EXPECT_TRUE(client_->browser_host());
 
   EXPECT_EQ(agent_.connect_attempts(), 1);
-  EXPECT_EQ(agent_.bind_browser_host_calls(), 1);
+  EXPECT_EQ(agent_.initialize_calls(), 1);
   EXPECT_EQ(agent_.last_protocol_version(), mojom::kProtocolVersion);
+  // The browser does not ask to verify the agent yet.
+  EXPECT_FALSE(agent_.last_init_had_identity_channel());
+  EXPECT_EQ(agent_.bind_browser_host_calls(), 1);
   EXPECT_TRUE(agent_.has_browser_endpoint());
 }
 
@@ -213,6 +227,7 @@ TEST_F(AgentClientTest, EnsureConnectedIsIdempotent) {
 
   EXPECT_EQ(observer_.connected_count(), 1);
   EXPECT_EQ(agent_.connect_attempts(), 1);
+  EXPECT_EQ(agent_.initialize_calls(), 1);
   EXPECT_EQ(agent_.bind_browser_host_calls(), 1);
 }
 
@@ -234,7 +249,7 @@ TEST_F(AgentClientTest, HostIsNotPublishedBeforeAcceptance) {
   client_->EnsureConnected();
   task_environment_.FastForwardBy(kTimeBriefly);
 
-  ASSERT_TRUE(agent_.has_held_request());
+  ASSERT_TRUE(agent_.has_held_auth_request());
   EXPECT_EQ(client_->state(), AgentClient::State::kConnecting);
   EXPECT_FALSE(client_->browser_host());
   EXPECT_EQ(observer_.connected_count(), 0);
@@ -441,13 +456,18 @@ TEST_F(AgentClientTest, CrashLoopIsReportedAsUnstable) {
   EXPECT_EQ(observer_.session_stable_count(), 0);
 }
 
-TEST_F(AgentClientTest, RejectionIsTerminal) {
-  ExpectRefusalIsTerminal(mojom::BrowserAuthResult::kRejected,
+TEST_F(AgentClientTest, VersionMismatchIsTerminal) {
+  ExpectRefusalIsTerminal(mojom::BrowserInitResult::kVersionMismatch,
                           AgentClient::Error::kBrowserRejected);
 }
 
-TEST_F(AgentClientTest, VersionMismatchIsTerminal) {
-  ExpectRefusalIsTerminal(mojom::BrowserAuthResult::kVersionMismatch,
+TEST_F(AgentClientTest, InitInvalidRequestIsTerminal) {
+  ExpectRefusalIsTerminal(mojom::BrowserInitResult::kInvalidRequest,
+                          AgentClient::Error::kUnexpectedBehavior);
+}
+
+TEST_F(AgentClientTest, RejectionIsTerminal) {
+  ExpectRefusalIsTerminal(mojom::BrowserAuthResult::kRejected,
                           AgentClient::Error::kBrowserRejected);
 }
 
@@ -456,17 +476,22 @@ TEST_F(AgentClientTest, HostAlreadyRequestedIsTerminal) {
                           AgentClient::Error::kUnexpectedBehavior);
 }
 
+TEST_F(AgentClientTest, InvalidRequestIsTerminal) {
+  ExpectRefusalIsTerminal(mojom::BrowserAuthResult::kInvalidRequest,
+                          AgentClient::Error::kUnexpectedBehavior);
+}
+
 // The reason the provider pipe is held open in the terminal state: the verdict
 // belongs to that agent binary, so its replacement gets a fresh answer. This is
 // how a browser that updated ahead of a running agent recovers without being
 // restarted.
 TEST_F(AgentClientTest, RefusedClientReconnectsWhenAgentIsReplaced) {
-  agent_.set_auth_result(mojom::BrowserAuthResult::kVersionMismatch);
+  agent_.set_init_result(mojom::BrowserInitResult::kVersionMismatch);
   ConnectAndWait();
   ASSERT_EQ(client_->state(), AgentClient::State::kUnavailable);
 
   // The refusing agent exits and a newer one takes its place.
-  agent_.set_auth_result(mojom::BrowserAuthResult::kAccepted);
+  agent_.set_init_result(mojom::BrowserInitResult::kInitialized);
   agent_.CloseAllConnections();
   WaitForNotification();
 
@@ -562,6 +587,55 @@ TEST_F(AgentClientTest, RepeatedInconclusiveResultsAreReportedAndRetried) {
   EXPECT_EQ(observer_.last_connection_error(),
             AgentClient::Error::kBrowserUnverified);
   EXPECT_EQ(client_->state(), AgentClient::State::kWaitingToRetry);
+  EXPECT_GT(agent_.connect_attempts(), 1);
+}
+
+// A refused Initialize() has to stop the handshake, not merely colour its
+// result: asking for a host afterwards is what the agent answers with
+// kInvalidRequest.
+TEST_F(AgentClientTest, HostIsNotRequestedWhenInitializeIsRefused) {
+  agent_.set_init_result(mojom::BrowserInitResult::kVersionMismatch);
+  ConnectAndWait();
+  ASSERT_EQ(client_->state(), AgentClient::State::kUnavailable);
+
+  EXPECT_EQ(agent_.initialize_calls(), 1);
+  EXPECT_EQ(agent_.bind_browser_host_calls(), 0);
+  EXPECT_EQ(agent_.session_count(), 0u);
+}
+
+// Being unable to identify the connection is not a verdict about this binary,
+// and only a new connection can produce a fresh capture, so it is retried
+// rather than treated as a refusal. A run of them still has to surface.
+TEST_F(AgentClientTest, RepeatedNotIdentifiedResultsAreReportedAndRetried) {
+  agent_.set_init_result(mojom::BrowserInitResult::kNotIdentified);
+  ConnectAndWait();
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+
+  ASSERT_EQ(observer_.failure_count(), 1);
+  EXPECT_EQ(observer_.last_connection_error(),
+            AgentClient::Error::kBrowserUnverified);
+  EXPECT_EQ(client_->state(), AgentClient::State::kWaitingToRetry);
+  EXPECT_GT(agent_.connect_attempts(), 1);
+}
+
+// The handshake timeout covers Initialize() too, so a peer that takes the
+// connection and never answers the first call is treated the same as one that
+// goes quiet on the second.
+TEST_F(AgentClientTest, SilentInitializeIsReportedAsNotResponding) {
+  agent_.set_init_result(std::nullopt);
+  client_->EnsureConnected();
+  task_environment_.FastForwardBy(kTimeBriefly);
+  ASSERT_TRUE(agent_.has_held_init_request());
+  ASSERT_EQ(client_->state(), AgentClient::State::kConnecting);
+  EXPECT_EQ(agent_.bind_browser_host_calls(), 0);
+
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+
+  ASSERT_EQ(observer_.failure_count(), 1);
+  EXPECT_EQ(observer_.last_connection_error(),
+            AgentClient::Error::kAgentNotResponding);
+  EXPECT_EQ(observer_.not_running_count(), 0);
+  EXPECT_EQ(observer_.connected_count(), 0);
   EXPECT_GT(agent_.connect_attempts(), 1);
 }
 
@@ -675,12 +749,12 @@ TEST_F(AgentClientTest, AcceptanceOnDeadSessionIsNotPublished) {
   agent_.set_auth_result(std::nullopt);
   client_->EnsureConnected();
   task_environment_.FastForwardBy(kTimeBriefly);
-  ASSERT_TRUE(agent_.has_held_request());
+  ASSERT_TRUE(agent_.has_held_auth_request());
 
   // The client sees the pipes close first.
   agent_.DropSessionHandles();
   task_environment_.FastForwardBy(kTimeBriefly);
-  agent_.AnswerHeldRequest(mojom::BrowserAuthResult::kAccepted);
+  agent_.AnswerHeldAuthRequest(mojom::BrowserAuthResult::kAccepted);
   task_environment_.FastForwardBy(kTimeBriefly);
 
   EXPECT_EQ(observer_.connected_count(), 0);
@@ -699,10 +773,10 @@ TEST_F(AgentClientTest, RepeatedAcceptanceOnDeadSessionIsReportedAsUnstable) {
   constexpr int kMaxSessions = 30;
   int races = 0;
   for (; races < kMaxSessions; ++races) {
-    ASSERT_TRUE(agent_.has_held_request()) << "race " << races;
+    ASSERT_TRUE(agent_.has_held_auth_request()) << "race " << races;
     agent_.DropSessionHandles();
     task_environment_.FastForwardBy(kTimeBriefly);
-    agent_.AnswerHeldRequest(mojom::BrowserAuthResult::kAccepted);
+    agent_.AnswerHeldAuthRequest(mojom::BrowserAuthResult::kAccepted);
     task_environment_.FastForwardBy(kTimeBriefly);
     ASSERT_EQ(client_->state(), AgentClient::State::kWaitingToRetry)
         << "race " << races;

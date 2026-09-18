@@ -24,6 +24,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/platform/platform_channel_endpoint.h"
+#include "mojo/public/cpp/platform/platform_handle.h"
 #include "mojo/public/cpp/system/invitation.h"
 #include "mojo/public/cpp/system/message_pipe.h"
 
@@ -45,8 +46,8 @@ constexpr net::BackoffEntry::Policy kBackoffPolicy = {
     .always_use_initial_delay = false,
 };
 
-// How long the agent gets to answer BindBrowserHost() before the connection is
-// treated as failed.
+// How long the agent gets to finish the handshake, Initialize() through
+// BindBrowserHost(), before the connection is treated as failed.
 constexpr base::TimeDelta kHandshakeTimeout = base::Seconds(10);
 
 // How long connecting may keep failing before a customer is told, for failures
@@ -271,6 +272,59 @@ void AgentClient::OnConnectBlockingCompleted(ConnectResult result) {
   provider_.set_disconnect_handler(base::BindOnce(
       &AgentClient::OnProviderDisconnected, weak_factory_.GetWeakPtr()));
 
+  handshake_timer_.Start(FROM_HERE, kHandshakeTimeout,
+                         base::BindOnce(&AgentClient::OnHandshakeTimeout,
+                                        weak_factory_.GetWeakPtr()));
+
+  // TODO(https://github.com/brave/brave-browser/issues/54608)
+  // No identity channel yet: an invalid handle is how the optional argument is
+  // sent as null, and it tells the agent this browser is not asking to verify
+  // it. Agent verification comes in a follow-up.
+  provider_->Initialize(
+      mojom::kProtocolVersion, mojo::PlatformHandle(),
+      base::BindOnce(&AgentClient::OnInitResult, weak_factory_.GetWeakPtr()));
+}
+
+void AgentClient::OnInitResult(mojom::BrowserInitResult result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(state_ == State::kConnecting);
+  // The handshake timer deliberately keeps running: one budget covers both
+  // Initialize() and BindBrowserHost(), and a handshake assumes that both
+  // happen sequentially. The refusal paths stop the timer through a session
+  // reset call.
+
+  // |result| comes off the wire from an unverified peer, so the branches below
+  // decide policy and never assert: no CHECKs on the value.
+  switch (result) {
+    case mojom::BrowserInitResult::kInitialized:
+      break;
+
+    case mojom::BrowserInitResult::kVersionMismatch:
+      // The agent accepts a range ending at the version it was built with, so
+      // this is usually a browser that updated ahead of the agent it is talking
+      // to. Retrying against this agent cannot help; a replacement can.
+      VLOG(1) << "Protocol version outside the agent's accepted range";
+      EnterUnavailable(Error::kBrowserRejected);
+      return;
+
+    case mojom::BrowserInitResult::kNotIdentified:
+      // The agent has no usable capture of this process: the accept-time one
+      // expired, or its pid resolved to another process. Not a verdict about
+      // this binary, and only a new connection can produce a fresh capture, so
+      // retry rather than re-asking on this one.
+      VLOG(1) << "Agent could not identify the connection";
+      TeardownAndRetry(Error::kBrowserUnverified);
+      return;
+
+    case mojom::BrowserInitResult::kInvalidRequest:
+      // The agent scopes this to one Initialize() per connection, and this is a
+      // connection we have just opened and called once, so either this is a bug
+      // or the peer is not the agent.
+      VLOG(1) << "Agent reports an invalid initialization request";
+      EnterUnavailable(Error::kUnexpectedBehavior);
+      return;
+  }
+
   browser_endpoint_ = std::make_unique<BrowserEndpointImpl>(
       base::BindOnce(&AgentClient::OnSessionPipeDisconnected,
                      weak_factory_.GetWeakPtr(), "endpoint pipe closed"));
@@ -282,14 +336,8 @@ void AgentClient::OnConnectBlockingCompleted(ConnectResult result) {
   host_.set_disconnect_handler(
       base::BindOnce(&AgentClient::OnSessionPipeDisconnected,
                      weak_factory_.GetWeakPtr(), "host pipe closed"));
-
-  handshake_timer_.Start(FROM_HERE, kHandshakeTimeout,
-                         base::BindOnce(&AgentClient::OnHandshakeTimeout,
-                                        weak_factory_.GetWeakPtr()));
-
   provider_->BindBrowserHost(
-      mojom::kProtocolVersion, std::move(endpoint_remote),
-      std::move(host_receiver),
+      std::move(endpoint_remote), std::move(host_receiver),
       base::BindOnce(&AgentClient::OnAuthResult, weak_factory_.GetWeakPtr()));
 }
 
@@ -320,18 +368,9 @@ void AgentClient::OnAuthResult(mojom::BrowserAuthResult result) {
 
     case mojom::BrowserAuthResult::kInconclusive:
       // The agent couldn't determine whether this browser is Brave: its image
-      // was replaced mid-update, a signing cert rotated, the accept-time
-      // capture expired. None is a verdict about this binary, and a fresh
-      // connection may well succeed.
+      // was replaced mid-update, a signing cert rotated. Neither is a verdict
+      // about this binary, and a fresh connection may well succeed.
       TeardownAndRetry(Error::kBrowserUnverified);
-      return;
-
-    case mojom::BrowserAuthResult::kVersionMismatch:
-      // The agent accepts a range ending at the version it was built with, so
-      // this is usually a browser that updated ahead of the agent it is talking
-      // to. Retrying against this agent cannot help; a replacement can.
-      VLOG(1) << "Protocol version outside the agent's accepted range";
-      EnterUnavailable(Error::kBrowserRejected);
       return;
 
     case mojom::BrowserAuthResult::kRejected:
@@ -348,11 +387,22 @@ void AgentClient::OnAuthResult(mojom::BrowserAuthResult result) {
       VLOG(1) << "Agent reports the connection is already authenticated";
       EnterUnavailable(Error::kUnexpectedBehavior);
       return;
+
+    case mojom::BrowserAuthResult::kInvalidRequest:
+      // The agent received a request it could not understand. This is likely
+      // a bug in the browser or a misbehaving peer.
+      VLOG(1) << "Agent reports an invalid request";
+      EnterUnavailable(Error::kUnexpectedBehavior);
+      return;
   }
 }
 
 void AgentClient::OnHandshakeTimeout() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Every path that leaves kConnecting stops this timer through ResetSession(),
+  // so a firing timer means the handshake is still in flight.
+  CHECK(state_ == State::kConnecting);
+
   VLOG(1) << "Agent did not answer the handshake";
   TeardownAndRetry(Error::kAgentNotResponding);
 }
