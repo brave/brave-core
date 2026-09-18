@@ -22,7 +22,7 @@
       =1 {Check your task}
       other {Check your tasks}}
   </message>
-  <message name="IDS_ACTOR_TASK_NUDGE_TASK_COMPLETE_LABEL" desc="Text shown in a tab strip nudge informing the user that their task is done." formatter_data="android_java">
+  <message name="IDS_ACTOR_TASK_NUDGE_TASK_COMPLETE_LABEL" desc="Text shown in a tab strip nudge informing the user that their task is done.">
     {NUM_TASKS, plural,
       =1 {Task done}
       other {Tasks done}}
@@ -106,6 +106,9 @@
   <message name="IDS_ACTOR_NOTIFICATION_TITLE_WORKING_ON_TASK" desc="Notification title when the actor is actively working on a task." formatter_data="android_java">
    Working on your task
   </message>
+  <message name="IDS_ACTOR_EXPERIMENTAL_TRIGGERING_NOTIFICATION_TITLE" desc="Notification title when the actor is working on an experimental triggering task.">
+   Working on your task
+  </message>
   <message name="IDS_ACTOR_NOTIFICATION_TITLE_PREPARING_TO_START_TASK" desc="Notification title when the actor is preparing to start a task." formatter_data="android_java">
     Preparing to start your task…
   </message>
@@ -126,6 +129,12 @@
   </message>
   <message name="IDS_ACTOR_NOTIFICATION_BODY_WORKING" desc="Notification body text when the actor is working on a task." formatter_data="android_java">
     <ph name="TASK_TITLE">%s<ex>My Task</ex></ph>: Gemini is working on your task and will let you know if more action is needed
+  </message>
+  <message name="IDS_ACTOR_EXPERIMENTAL_TRIGGERING_NOTIFICATION_BODY" desc="Notification body text when the actor is working on an experimental triggering task.">
+    <ph name="TASK_TITLE">$1<ex>My Task</ex></ph>: Working on your Gemini App task in Brave. Check Brave for more updates
+  </message>
+  <message name="IDS_ACTOR_EXPERIMENTAL_TRIGGERING_NOTIFICATION_BODY_FALLBACK" desc="Fallback notification body text when the actor is working on an experimental triggering task without a task title.">
+    Working on your Gemini App task in Brave. Check Brave for more updates
   </message>
   <message name="IDS_ACTOR_NOTIFICATION_BODY_WORKING_WITH_STEP_INFO" desc="Notification body text when the actor is working on a task with step progress." formatter_data="android_java">
     <ph name="TASK_TITLE">%1$s<ex>My Task</ex></ph>: <ph name="STEP_PROGRESS">%2$s<ex>Searching flights</ex></ph>
@@ -151,13 +160,6 @@
   </message>
   <message name="IDS_ACTOR_NOTIFICATION_BODY_WILL_STOP_TASK_NO_RESPONSE" desc="Notification body text when the actor will stop the task because the user has not responded." formatter_data="android_java">
     <ph name="TASK_TITLE">%s<ex>My Task</ex></ph>: If you don't respond soon, Gemini will stop working on this task to conserve battery
-  </message>
-  <!-- TODO(crbug.com/533082119): Enable translation when UX is finalized. -->
-  <message name="IDS_ACTOR_NOTIFICATION_TITLE_TASK_STARTS_SOON" desc="Notification title when the actor task will start soon." formatter_data="android_java" translateable="false">
-    Task will start soon.
-  </message>
-  <message name="IDS_ACTOR_NOTIFICATION_BODY_TASK_STARTS_SOON" desc="Notification body text when the actor task will start soon." formatter_data="android_java" translateable="false">
-    Your task will start soon.
   </message>
   <message name="IDS_ACTOR_NOTIFICATION_LIVE_STATUS_REVIEW" desc="Status chip text displayed when an actor task requires user review or approval." formatter_data="android_java">
     Review
