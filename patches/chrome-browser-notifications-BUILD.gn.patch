@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/notifications/BUILD.gn b/chrome/browser/notifications/BUILD.gn
-index b8ec96d8b8bf74852b521ef0c34b650c61010599..5704c9796001c2c5935fc378867446227a7952d6 100644
+index b8ec96d8b8bf74852b521ef0c34b650c61010599..909a972981e639e104db11dadad7b2ca04f41294 100644
 --- a/chrome/browser/notifications/BUILD.gn
 +++ b/chrome/browser/notifications/BUILD.gn
-@@ -682,6 +682,7 @@ if (is_android) {
-       "//third_party/jni_zero:jni_zero_java",
-       "//ui/android:ui_no_recycler_view_java",
-     ]
-+    deps += [ "//brave/browser/notifications/android:brave_java", ]
- 
-     srcjar_deps = [
-       ":jni_headers",
+@@ -660,6 +660,7 @@ if (is_android) {
+     deps = [
+       ":java_resources",
+       "//base:base_java",
++      "//brave/browser/notifications/android:brave_java",
+       "//build/android:build_java",
+       "//chrome/android:base_module_java",
+       "//chrome/browser/flags:java",
