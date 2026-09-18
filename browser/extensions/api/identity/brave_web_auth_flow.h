@@ -16,6 +16,7 @@
 #include "chrome/browser/extensions/api/identity/identity_get_auth_token_error.h"
 #include "chrome/browser/extensions/api/identity/web_auth_flow.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 class Profile;
 
@@ -47,7 +48,8 @@ class BraveWebAuthFlow : public WebAuthFlow::Delegate {
       const std::string& oauth2_client_id,
       ExtensionTokenKey token_key,
       bool interactive,
-      bool user_gesture);
+      bool user_gesture,
+      std::optional<url::Origin> initiator_origin);
 
  private:
   static std::optional<std::string> token_for_testing_;
