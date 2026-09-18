@@ -1161,7 +1161,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -          label="$i18n{searchEnginesManageSiteSearch}"
 -          @click="\${this.onManageSearchEnginesClick_}"
 -          role-description="$i18n{subpageArrowRoleDescription}"></cr-link-row>
-+      \${this.bravePrefs_ ? html\`<settings-brave-search-page .prefs="\${this.bravePrefs_}"></settings-brave-search-page>\` : ''}<cr-link-row class="hr" id="enginesSubpageTrigger" label="$i18n{searchEnginesManageSiteSearch}" @click="\${this.onManageSearchEnginesClick_}" role-description="$i18n{subpageArrowRoleDescription}"></cr-link-row>
++      \${this.bravePrefs_ ? html\`<settings-brave-search-page .prefs="\${this.bravePrefs_}" @prefs-changed="\${this.onBravePrefsChanged_}"></settings-brave-search-page>\` : ''}<cr-link-row class="hr" id="enginesSubpageTrigger" label="$i18n{searchEnginesManageSiteSearch}" @click="\${this.onManageSearchEnginesClick_}" role-description="$i18n{subpageArrowRoleDescription}"></cr-link-row>
      \` : ''}
    </div>
  </settings-section>
