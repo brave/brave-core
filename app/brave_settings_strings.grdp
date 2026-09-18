@@ -829,6 +829,13 @@
   <message name="IDS_SETTINGS_PUSH_MESSAGING" desc="Select value">
     Use Google services for push messaging
   </message>
+  <!-- Semantic history search -->
+  <message name="IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_LABEL" desc="Label for the setting that turns on indexing of visited pages so they can be found by meaning">
+    Semantic history search
+  </message>
+  <message name="IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_SUB_LABEL" desc="Description for the setting that turns on indexing of visited pages so they can be found by meaning">
+    Index pages you visit so you can find them easily in history, open tabs and Leo.
+  </message>
   <!-- History retention -->
   <message name="IDS_SETTINGS_HISTORY_RETENTION_LABEL" desc="Label for the setting that controls how long browsing history is retained">
     Local history retention

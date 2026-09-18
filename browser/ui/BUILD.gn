@@ -47,6 +47,7 @@ group("ui_public_dependencies") {
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/containers/buildflags",
+    "//brave/components/local_ai/buildflags",
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
     "//brave/components/traffic_control/buildflags",
@@ -131,7 +132,10 @@ source_set("ui") {
   }
 
   if (enable_local_ai) {
-    deps += [ "//brave/browser/ui/webui/local_ai" ]
+    deps += [
+      "//brave/browser/history_embeddings:status",
+      "//brave/browser/ui/webui/local_ai",
+    ]
   }
 
   allow_circular_includes_from = brave_ui_allow_circular_includes_from

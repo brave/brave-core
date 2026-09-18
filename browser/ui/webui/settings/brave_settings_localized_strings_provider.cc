@@ -31,6 +31,7 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
@@ -68,6 +69,11 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/model_validator.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
+#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -149,6 +155,11 @@ constexpr char16_t kLeoMemoryLearnMoreURL[] =
 
 constexpr char16_t kLeoPrivacyPolicyURL[] =
     u"https://brave.com/privacy/browser/#brave-leo";
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+constexpr char kSemanticHistorySearchLearnMoreURL[] =
+    "https://support.brave.app/hc/en-us/articles/49008428284301";
 #endif
 
 constexpr char16_t kAdBlockOnlyModeLearnMoreURL[] =
@@ -485,6 +496,12 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"webRTCPolicySubLabel", IDS_SETTINGS_WEBRTC_POLICY_SUB_LABEL},
       {"webRTCDefault", IDS_SETTINGS_WEBRTC_POLICY_DEFAULT},
       {"pushMessagingLabel", IDS_SETTINGS_PUSH_MESSAGING},
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+      {"semanticHistorySearchLabel",
+       IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_LABEL},
+      {"semanticHistorySearchSubLabel",
+       IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_SUB_LABEL},
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
       {"historyRetentionLabel", IDS_SETTINGS_HISTORY_RETENTION_LABEL},
       {"historyRetentionSubLabel", IDS_SETTINGS_HISTORY_RETENTION_SUB_LABEL},
       {"historyRetentionOneDay", IDS_SETTINGS_HISTORY_RETENTION_ONE_DAY},
@@ -1195,6 +1212,22 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddBoolean("isBraveSyncAIChatEnabled",
                           ai_chat::features::IsBraveSyncAIChatEnabled());
 #endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  html_source->AddString("semanticHistorySearchLearnMoreURL",
+                         kSemanticHistorySearchLearnMoreURL);
+
+  html_source->AddBoolean(
+      "isSemanticHistorySearchAvailable",
+      history_embeddings::IsHistoryEmbeddingsFeatureEnabled());
+
+  // The value the embedding services were built with, so the page can tell
+  // whether the toggle is waiting on a relaunch.
+  html_source->AddBoolean(
+      "semanticHistorySearchEnabledAtStartup",
+      history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(profile)
+          ->IsEnabled());
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #if BUILDFLAG(ENABLE_WEB_DISCOVERY)
   html_source->AddString("webDiscoveryLearnMoreURL", kWebDiscoveryLearnMoreUrl);

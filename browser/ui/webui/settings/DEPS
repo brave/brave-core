@@ -1,4 +1,5 @@
 include_rules = [
+  "+brave/browser/history_embeddings",
   "+brave/components/brave_adblock/resources",
   "+brave/components/brave_shields/core/browser",
   "+brave/components/ntp_background_images/common",
