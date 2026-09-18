@@ -155,6 +155,12 @@ import os
     }
   }
 
+  @Published var isSponsoredAdsEnabled: Bool {
+    didSet {
+      prefs.set(isSponsoredAdsEnabled, forPath: kBraveAdsSponsoredEnabledPrefName)
+    }
+  }
+
   /// Hide the Sponsored Ads toggle when Rewards is disabled by policy or in
   /// an unsupported region, because it would have no effect. This matches
   /// `AdsServiceImplIOS` logic when it is not started if Rewards is not
@@ -238,6 +244,9 @@ import os
     self.shredHistoryItems = Preferences.Shields.shredHistoryItems.value
     self.webcompatReporterHandler = webcompatReporterHandler
     self.isSurveyPanelistEnabled = rewards?.ads.isSurveyPanelistEnabled ?? false
+    self.isSponsoredAdsEnabled = prefs.boolean(
+      forPath: kBraveAdsSponsoredEnabledPrefName
+    )
 
     blockMobileAnnoyances = FilterListStorage.shared.isEnabled(
       for: AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID

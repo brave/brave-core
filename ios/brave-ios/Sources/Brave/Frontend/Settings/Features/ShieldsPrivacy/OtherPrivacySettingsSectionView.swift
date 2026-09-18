@@ -189,12 +189,7 @@ struct OtherPrivacySettingsSectionView: View {
             Strings.Settings.sponsoredAdsEnabledDescription,
             URL.brave.sponsoredAdsLearnMoreLinkUrl.absoluteString
           ),
-          toggle: Binding(
-            get: { Preferences.NewTabPage.backgroundMediaType.isSponsored },
-            set: {
-              Preferences.NewTabPage.backgroundMediaType = $0 ? .sponsoredImages : .defaultImages
-            }
-          )
+          toggle: $settings.isSponsoredAdsEnabled
         )
       }
       if FeatureList.kBraveNTPBrandedWallpaperSurveyPanelist.enabled {

@@ -1396,7 +1396,8 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
                   isPrivate: false
                 )
                 self.dismiss(animated: true)
-              }
+              },
+              prefs: braveCore.profile.prefs
             ),
             animated: true
           )

@@ -5,21 +5,40 @@
 
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
 
+#include <string>
+
+#include "base/scoped_observation.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_waiter.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "components/prefs/testing_pref_service.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "testing/platform_test.h"
 
 namespace brave_ads {
+
+namespace {
+
+class AdsClientNotifierObserverMock : public AdsClientNotifierObserver {
+ public:
+  MOCK_METHOD(void, OnNotifyPrefDidChange, (const std::string&), (override));
+};
+
+}  // namespace
 
 class AdsServiceImplIOSTest : public PlatformTest {
  public:
   AdsServiceImplIOSTest() {
     RegisterProfilePrefs(prefs_.registry());
     ads_service_ = std::make_unique<AdsServiceImplIOS>(prefs_);
+
+    // This stops queueing notifications so they are delivered to
+    // observers immediately.
+    ads_service_->GetAdsClientNotifier()->NotifyPendingObservers();
   }
 
  protected:
@@ -66,6 +85,22 @@ TEST_F(AdsServiceImplIOSTest, DoesNotClearAdsDataWhenSponsoredAdsAreEnabled) {
 
   // Assert
   EXPECT_EQ("foo", prefs_.GetString(prefs::kDiagnosticId));
+}
+
+TEST_F(AdsServiceImplIOSTest,
+       NotifiesAdsClientObserversWhenSponsoredAdsPrefChanges) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+
+  AdsClientNotifierObserverMock observer;
+  base::ScopedObservation<AdsClientNotifier, AdsClientNotifierObserver>
+      observation{&observer};
+  observation.Observe(ads_service_->GetAdsClientNotifier());
+
+  // Act & Assert
+  EXPECT_CALL(observer,
+              OnNotifyPrefDidChange(std::string(prefs::kSponsoredEnabled)));
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
 }
 
 }  // namespace brave_ads

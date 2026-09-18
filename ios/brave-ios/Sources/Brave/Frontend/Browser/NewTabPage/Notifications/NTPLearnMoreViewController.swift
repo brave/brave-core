@@ -21,13 +21,15 @@ class NTPLearnMoreViewController: BottomSheetViewController {
 
   private let state: BrandedImageCalloutState
   private let rewards: BraveRewards
+  private let prefs: any PrefService
 
   private let termsOfServiceUrl = "https://www.brave.com/terms_of_use"
   private let learnMoreAboutBraveRewardsUrl = "https://brave.com/brave-rewards/"
 
-  init(state: BrandedImageCalloutState, rewards: BraveRewards) {
+  init(state: BrandedImageCalloutState, rewards: BraveRewards, prefs: any PrefService) {
     self.state = state
     self.rewards = rewards
+    self.prefs = prefs
     super.init()
   }
 
@@ -84,7 +86,7 @@ extension NTPLearnMoreViewController: NTPLearnMoreViewDelegate {
   }
 
   func hideSponsoredImagesTapped() {
-    Preferences.NewTabPage.backgroundMediaType = .defaultImages
+    prefs.set(false, forPath: kBraveAdsSponsoredEnabledPrefName)
     self.close()
   }
 

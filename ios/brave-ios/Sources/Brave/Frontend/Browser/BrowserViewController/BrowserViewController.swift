@@ -323,6 +323,7 @@ public class BrowserViewController: UIViewController {
       service: profileController.backgroundImagesService,
       rewards: BraveRewards.isSupported(prefService: profileController.profile.prefs)
         ? rewards : nil,
+      prefs: profileController.profile.prefs,
       privateBrowsingManager: privateBrowsingManager
     )
 
@@ -486,7 +487,6 @@ public class BrowserViewController: UIViewController {
     Preferences.Rewards.hideRewardsIcon.observe(from: self)
     Preferences.Rewards.rewardsToggledOnce.observe(from: self)
     Preferences.Playlist.enablePlaylistURLBarButton.observe(from: self)
-    Preferences.NewTabPage.backgroundMediaTypeRaw.observe(from: self)
     Preferences.Shields.blockAdsAndTrackingLevelRaw.observe(from: self)
     Preferences.Privacy.screenTimeEnabled.observe(from: self)
     Preferences.Translate.translateEnabled.observe(from: self)
@@ -498,6 +498,9 @@ public class BrowserViewController: UIViewController {
     }
     prefsChangeRegistrar.addObserver(forPath: kManagedBraveVPNDisabledPrefName) { [weak self] _ in
       self?.disconnectVPNIfDisabledByPolicy()
+    }
+    prefsChangeRegistrar.addObserver(forPath: kBraveAdsSponsoredEnabledPrefName) { [weak self] _ in
+      self?.recordAdsUsageType()
     }
     prefsChangeRegistrar.addObserver(forPath: kMediaBackgroundingEnabled) { [weak self] _ in
       guard let self else { return }
@@ -2952,7 +2955,11 @@ extension BrowserViewController: NewTabPageDelegate {
   func brandedImageCalloutActioned(_ state: BrandedImageCalloutState) {
     guard state.hasDetailViewController else { return }
 
-    let vc = NTPLearnMoreViewController(state: state, rewards: rewards)
+    let vc = NTPLearnMoreViewController(
+      state: state,
+      rewards: rewards,
+      prefs: profileController.profile.prefs
+    )
 
     vc.linkHandler = { [weak self] url in
       self?.tabManager.selectedTab?.loadRequest(PrivilegedRequest(url: url) as URLRequest)
@@ -2966,6 +2973,10 @@ extension BrowserViewController: NewTabPageDelegate {
   }
 
   func showNewTabTakeoverInfoBarIfNeeded() {
+    guard
+      profileController.profile.prefs.boolean(forPath: kBraveAdsSponsoredEnabledPrefName)
+    else { return }
+
     // do not show if NTP is occluded by search
     guard !isSearchContainerVisible,
       rewards.ads.shouldDisplayNewTabTakeoverInfobar()
@@ -3051,8 +3062,6 @@ extension BrowserViewController: PreferencesObserver {
       }
     case Preferences.PrivacyReports.captureVPNAlerts.key:
       PrivacyReportsManager.scheduleVPNAlertsTask()
-    case Preferences.NewTabPage.backgroundMediaTypeRaw.key:
-      recordAdsUsageType()
     case Preferences.Privacy.screenTimeEnabled.key:
       if Preferences.Privacy.screenTimeEnabled.value, !ProcessInfo.processInfo.isiOSAppOnVisionOS {
         // Accessing `STWebpageController` on Vision OS results in a crash

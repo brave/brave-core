@@ -560,6 +560,8 @@ void AdsServiceImplIOS::ClearAdsDataCallback(ResultCallback callback,
 }
 
 void AdsServiceImplIOS::OnSponsoredAdsPrefChanged() {
+  ads_client_notifier_->NotifyPrefDidChange(prefs::kSponsoredEnabled);
+
   if (prefs_->GetBoolean(prefs::kSponsoredEnabled)) {
     return;
   }
