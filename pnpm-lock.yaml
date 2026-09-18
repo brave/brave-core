@@ -35,8 +35,8 @@ importers:
         specifier: 0.40.6
         version: 0.40.6(react@19.2.7)(styled-components@6.4.3(react-dom@19.2.7(react@19.2.7))(react@19.2.7))
       '@brave/leo':
-        specifier: github:brave/leo#2703d99eb79a19b67f44f83034585917236af269
-        version: https://codeload.github.com/brave/leo/tar.gz/2703d99eb79a19b67f44f83034585917236af269(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.65.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.102.0)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)
+        specifier: github:brave/leo#ff620e4e53b70dc9868c2215c5cb56e8145e92df
+        version: https://codeload.github.com/brave/leo/tar.gz/ff620e4e53b70dc9868c2215c5cb56e8145e92df(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.65.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.102.0)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)
       '@brave/leo-sf-symbols':
         specifier: github:brave/leo-sf-symbols#b5a6139df7ebd3f7d55aa8d6af60a524edab87b0
         version: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0
@@ -695,8 +695,8 @@ packages:
     resolution: {gitHosted: true, tarball: https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0}
     version: 1.0.103
 
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/2703d99eb79a19b67f44f83034585917236af269':
-    resolution: {gitHosted: true, tarball: https://codeload.github.com/brave/leo/tar.gz/2703d99eb79a19b67f44f83034585917236af269}
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/ff620e4e53b70dc9868c2215c5cb56e8145e92df':
+    resolution: {gitHosted: true, integrity: sha512-tccekQOl3UNR5fFoOLRWYatdWiWZUU0d7w4OAHM4i/EH7XOMBuayr4Eo8ABhY2YDRo/n8OIqGFEjwb0rP6hNSA==, tarball: https://codeload.github.com/brave/leo/tar.gz/ff620e4e53b70dc9868c2215c5cb56e8145e92df}
     version: 0.0.1
     hasBin: true
     peerDependencies:
@@ -8341,7 +8341,7 @@ snapshots:
 
   '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0': {}
 
-  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/2703d99eb79a19b67f44f83034585917236af269(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.65.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.102.0)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)':
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/ff620e4e53b70dc9868c2215c5cb56e8145e92df(@babel/core@7.29.7(supports-color@8.1.1))(@typescript-eslint/types@8.65.0)(less@3.13.1)(postcss-load-config@6.0.1(jiti@1.21.7)(postcss@8.5.23)(tsx@4.19.2))(postcss@8.5.23)(react@19.2.7)(sass@1.102.0)(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))(stylus@0.62.0(supports-color@8.1.1))(tsx@4.19.2)(typescript@5.9.3)':
     dependencies:
       '@storybook/test': 8.6.15(storybook@8.6.17(bufferutil@4.1.0)(prettier@3.5.3)(supports-color@8.1.1)(utf-8-validate@6.0.6))
       svelte: 5.55.7(@typescript-eslint/types@8.65.0)
