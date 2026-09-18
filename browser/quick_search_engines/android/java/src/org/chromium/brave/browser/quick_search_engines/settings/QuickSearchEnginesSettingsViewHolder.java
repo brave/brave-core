@@ -24,8 +24,8 @@ public class QuickSearchEnginesSettingsViewHolder extends RecyclerView.ViewHolde
     QuickSearchEnginesSettingsViewHolder(View itemView) {
         super(itemView);
         mView = itemView;
-        mSearchEngineLogo = (ImageView) itemView.findViewById(R.id.search_engine_logo);
-        mSearchEngineText = (TextView) itemView.findViewById(R.id.search_engine_text);
-        mSearchEngineSwitch = (MaterialSwitch) itemView.findViewById(R.id.search_engine_switch);
+        mSearchEngineLogo = itemView.findViewById(R.id.search_engine_logo);
+        mSearchEngineText = itemView.findViewById(R.id.search_engine_text);
+        mSearchEngineSwitch = itemView.findViewById(R.id.search_engine_switch);
     }
 }
