@@ -91,7 +91,7 @@ HRESULT BraveWireguardManager::EnableVpn2(const BSTR public_key,
 
   auto config = brave_vpn::wireguard::CreateWireguardConfig(
       validated_private_key.value(), validated_public_key.value(),
-      validated_endpoint.value(), validated_address.value());
+      validated_endpoint.value(), validated_address.value(), allow_lan_traffic);
   if (!config.has_value()) {
     VLOG(1) << __func__ << " : failed to get correct credentials";
     return E_INVALIDARG;

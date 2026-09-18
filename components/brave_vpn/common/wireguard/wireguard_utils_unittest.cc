@@ -7,13 +7,11 @@
 
 #include <optional>
 #include <string>
-#include <string_view>
 #include <vector>
 
 #include "base/base64.h"
 #include "base/check.h"
 #include "base/json/json_reader.h"
-#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/test/scoped_feature_list.h"
@@ -34,24 +32,12 @@ constexpr char kTestPublicKey[] =
 constexpr char kTestHostname[] = "toronto-ipsec-8.guardianapp.com";
 constexpr char kTestAddress[] = "10.146.91.135";
 
-std::string CreateTestConfig() {
+std::string CreateTestConfig(bool allow_lan_traffic = true) {
   auto config = brave_vpn::wireguard::CreateWireguardConfig(
-      kTestPrivateKey, kTestPublicKey, kTestHostname, kTestAddress);
+      kTestPrivateKey, kTestPublicKey, kTestHostname, kTestAddress,
+      allow_lan_traffic);
   CHECK(config.has_value());
   return *config;
-}
-
-std::vector<std::string> GetAllowedIPs(const std::string& config) {
-  constexpr std::string_view kPrefix = "AllowedIPs = ";
-  auto start = config.find(kPrefix);
-  if (start == std::string::npos) {
-    return {};
-  }
-  std::string_view value(config);
-  value.remove_prefix(start + kPrefix.size());
-  value = value.substr(0, value.find('\n'));
-  return base::SplitString(value, ",", base::TRIM_WHITESPACE,
-                           base::SPLIT_WANT_NONEMPTY);
 }
 
 // True when `address` is covered by one of the peer's AllowedIPs, meaning it is
@@ -195,16 +181,16 @@ TEST(BraveVPNWireGuardUtilsUnitTest, EncodeBase64) {
 TEST(BraveVPNWireGuardUtilsUnitTest, CreateWireguardConfig) {
   // Every field is required.
   EXPECT_FALSE(brave_vpn::wireguard::CreateWireguardConfig(
-                   "", kTestPublicKey, kTestHostname, kTestAddress)
+                   "", kTestPublicKey, kTestHostname, kTestAddress, true)
                    .has_value());
   EXPECT_FALSE(brave_vpn::wireguard::CreateWireguardConfig(
-                   kTestPrivateKey, "", kTestHostname, kTestAddress)
+                   kTestPrivateKey, "", kTestHostname, kTestAddress, true)
                    .has_value());
   EXPECT_FALSE(brave_vpn::wireguard::CreateWireguardConfig(
-                   kTestPrivateKey, kTestPublicKey, "", kTestAddress)
+                   kTestPrivateKey, kTestPublicKey, "", kTestAddress, true)
                    .has_value());
   EXPECT_FALSE(brave_vpn::wireguard::CreateWireguardConfig(
-                   kTestPrivateKey, kTestPublicKey, kTestHostname, "")
+                   kTestPrivateKey, kTestPublicKey, kTestHostname, "", true)
                    .has_value());
 
   auto config = CreateTestConfig();
@@ -223,7 +209,7 @@ TEST(BraveVPNWireGuardUtilsUnitTest, CreateWireguardConfig) {
 }
 
 TEST(BraveVPNWireGuardUtilsUnitTest, WireguardConfigHasNoDefaultRoute) {
-  auto allowed_ips = GetAllowedIPs(CreateTestConfig());
+  auto allowed_ips = brave_vpn::wireguard::ParseAllowedIPs(CreateTestConfig());
   EXPECT_THAT(allowed_ips, testing::ElementsAre("0.0.0.0/1", "128.0.0.0/1",
                                                 "::/1", "8000::/1"));
 
@@ -249,4 +235,10 @@ TEST(BraveVPNWireGuardUtilsUnitTest, WireguardConfigHasNoDefaultRoute) {
   for (const auto* address : kTunneledAddresses) {
     EXPECT_TRUE(IsRoutedIntoTunnel(allowed_ips, address)) << address;
   }
+}
+
+TEST(BraveVPNWireGuardUtilsUnitTest, WireguardConfigNoLanTraffic) {
+  auto allowed_ips = brave_vpn::wireguard::ParseAllowedIPs(
+      CreateTestConfig(/*allow_lan_traffic=*/false));
+  EXPECT_THAT(allowed_ips, testing::ElementsAre("0.0.0.0/0", "::/0"));
 }
