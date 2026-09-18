@@ -127,12 +127,12 @@ GENERATED_FILTERS_DIR = BRAVE_CORE_ROOT / "test" / "filters" / "generated"
 
 # Platforms Brave runs upstream test suites on, mapped to the "os"
 # prefixes of the corresponding upstream bots. Bots for other platforms
-# (e.g. ChromeOS) are ignored. The platform names must match those used by
+# (e.g. ChromeOS, and Mac -- Brave doesn't run upstream tests on Mac) are
+# ignored. The platform names must match those used by
 # getApplicableFilters in build/commands/lib/testUtils.ts, which has no
 # Android filters yet.
 PLATFORM_OS_PREFIXES = {
     "linux": ("Ubuntu", "Linux"),
-    "macos": ("Mac", ),
     "windows": ("Windows", ),
 }
 

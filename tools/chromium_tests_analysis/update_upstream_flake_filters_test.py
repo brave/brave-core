@@ -179,7 +179,6 @@ class GetDiscoveryFiltersTest(unittest.TestCase):
             'test_id:":unit_tests!gtest" variant.builder:"ubsan"',
             'test_id:":unit_tests!gtest" variant.os:"Ubuntu"',
             'test_id:":unit_tests!gtest" variant.os:"Linux"',
-            'test_id:":unit_tests!gtest" variant.os:"Mac"',
             'test_id:":unit_tests!gtest" variant.os:"Windows"',
         ])
 
@@ -248,10 +247,6 @@ class GetAllConfigsTest(unittest.TestCase):
             "linux-asan",
             "linux-msan",
             "linux-ubsan",
-            "macos",
-            "macos-asan",
-            "macos-msan",
-            "macos-ubsan",
             "windows",
             "windows-asan",
             "windows-msan",
@@ -268,9 +263,6 @@ class GetConfigForVariantTest(unittest.TestCase):
         self.assertEqual(
             ufm.get_config_for_variant(variant("h", "Linux", "linux-rel")),
             "linux")
-        self.assertEqual(
-            ufm.get_config_for_variant(variant("h", "Mac-15", "mac-rel")),
-            "macos")
         self.assertEqual(
             ufm.get_config_for_variant(variant("h", "Windows-10",
                                                "win10-rel")), "windows")
@@ -299,7 +291,8 @@ class GetConfigForVariantTest(unittest.TestCase):
     def test_builder_names_are_matched_case_insensitively(self) -> None:
         self.assertEqual(
             ufm.get_config_for_variant(
-                variant("h", "Mac-15", "Mac ASan 64 Tests")), "macos-asan")
+                variant("h", "Windows-10", "Windows ASan 64 Tests")),
+            "windows-asan")
 
     def test_platforms_brave_does_not_build_are_dropped(self) -> None:
         for builder in ("android-x86-rel", "chromeos-amd64-generic-rel",
@@ -340,7 +333,7 @@ class AnalyzePerConfigTest(unittest.TestCase):
 
         self.assertAlmostEqual(analyses["linux"].flake_rate, 0.1)
         self.assertAlmostEqual(analyses["linux-asan"].flake_rate, 0.5)
-        self.assertEqual(analyses["macos"].counts.meaningful, 0)
+        self.assertEqual(analyses["windows"].counts.meaningful, 0)
 
     def test_covers_every_config(self) -> None:
         analyses = ufm.analyze_per_config([], {})
@@ -831,7 +824,7 @@ class RunTest(SuiteUpdaterTestCase):
     CONFIG_BY_HASH = {
         "h-linux": "linux",
         "h-asan": "linux-asan",
-        "h-mac": "macos",
+        "h-windows": "windows",
     }
 
     def setUp(self) -> None:
@@ -872,7 +865,6 @@ class RunTest(SuiteUpdaterTestCase):
 
         self.assertEqual(self.written_files(), [
             "unit_tests-linux.filter",
-            "unit_tests-macos.filter",
             "unit_tests-windows.filter",
         ])
 
@@ -880,7 +872,7 @@ class RunTest(SuiteUpdaterTestCase):
         self.stats_by_test_id = {
             UNIT_TESTS_TARGET + "S#Flaky": [
                 stats_group("h-linux", passed=90, failed=10),
-                stats_group("h-mac", passed=100),
+                stats_group("h-windows", passed=100),
             ]
         }
 
@@ -888,7 +880,7 @@ class RunTest(SuiteUpdaterTestCase):
 
         self.assertEqual(self.excluded_tests("unit_tests-linux.filter"),
                          ["S.Flaky"])
-        self.assertEqual(self.excluded_tests("unit_tests-macos.filter"), [])
+        self.assertEqual(self.excluded_tests("unit_tests-windows.filter"), [])
 
     def test_a_test_below_the_threshold_stays_enabled(self) -> None:
         self.stats_by_test_id = {
