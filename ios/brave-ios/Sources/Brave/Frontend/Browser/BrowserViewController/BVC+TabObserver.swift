@@ -197,14 +197,6 @@ extension BrowserViewController: TabObserver {
     }
   }
 
-  public func tabRenderProcessDidTerminate(_ tab: some TabState) {
-    guard let url = tab.lastCommittedURL else { return }
-    if url.isWebPage(includeDataURIs: false) {
-      // For now just reload the page when the process crashes
-      tab.reload()
-    }
-  }
-
   public func tabDidUpdateURL(_ tab: some TabState) {
     if tab.isDisplayingBasicAuthPrompt == true {
       tab.setVirtualURL(
