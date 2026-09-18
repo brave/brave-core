@@ -36,6 +36,7 @@ public class BraveFragmentDependencyProvider extends FragmentDependencyProvider 
 
     public BraveFragmentDependencyProvider(
             Activity activity,
+            boolean shownInTab,
             Profile profile,
             OneshotSupplier<WindowAndroid> windowAndroidSupplier,
             ActivityResultTracker activityResultTracker,
@@ -45,6 +46,7 @@ public class BraveFragmentDependencyProvider extends FragmentDependencyProvider 
             Supplier<@Nullable SettingsSearchCoordinator> searchCoordinatorSupplier) {
         super(
                 activity,
+                shownInTab,
                 profile,
                 windowAndroidSupplier,
                 activityResultTracker,
