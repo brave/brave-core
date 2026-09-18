@@ -112,6 +112,9 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3114478090884951591">Synlig område</translation>
 <translation id="2026367923222947564">Hele siden</translation>
 <translation id="4218885227032158909">Valgt område</translation>
+<translation id="2586386106930448447">Forhåndsvisning av skjermbilde</translation>
+<translation id="7514365320538308">Last ned</translation>
+<translation id="2743387203779672305">Kopier til utklippstavlen</translation>
 <translation id="4928988318462976765">Butikken for nettutvidelser</translation>
 <translation id="9181207987584064303">Vis i butikken for nettutvidelser</translation>
 <translation id="3161744659507801211">Advarsel: Brave kan ikke hindre programutvidelser i å registrere nettleserhistorikken din.</translation>
@@ -364,6 +367,7 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6847541693235449912">Start</translation>
 <translation id="2079545284768500474">Angre</translation>
 <translation id="1533980864758658574">Nytt vindu opprettet for <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Ingen faner samsvarte med det emnet. Prøv å beskrive det på en annen måte.</translation>
 <translation id="7985042437720138349">Denne funksjonen sender data om de åpne fanene dine til Leo, som er Braves KI-drevne assistent.</translation>
 <translation id="6165508094623778733">Finn ut mer</translation>
 <translation id="7557539689487606886">Oppgrader til Premium</translation>
@@ -421,6 +425,23 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4328541188421002379">Gi beholderen et navn, f. eks. «jobb» eller «privat»</translation>
 <translation id="4976989127264491396">Feil: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Beholderen ble ikke funnet</translation>
+<translation id="6055154402239241620">Trafikkontroll</translation>
+<translation id="8134521925475508805">Konfigurer bestemte nettsteder til automatisk å åpnes i en bestemt kontekst, slik at du skiller mellom nettleserøktene dine. <ph name="BEGIN_LINK"/>Finn ut mer<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Aktiver trafikkontroll</translation>
+<translation id="1358255827354528344">Legg til ny regel</translation>
+<translation id="7183128985801806752">Ny trafikkontrollregel</translation>
+<translation id="2474694032500407328">Rediger trafikkontrollregel</translation>
+<translation id="5543417389274097206">Opprett regel</translation>
+<translation id="6532106788206463496">Lagre endringene</translation>
+<translation id="1172800769374812685">Slett regel</translation>
+<translation id="2389682807835777591">Er du sikker på at du vil slette regelen <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Skriv inn nettadresser som skal administreres og alltid åpnes i en bestemt nettleserkontekst.</translation>
+<translation id="1173480005453148926">Nettadresser som skal administreres</translation>
+<translation id="6217532416180299470">Skriv inn nettadresser som skal administreres med trafikkontroll</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> samsvarer med nettstedet og underdomenene; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> samsvarer med det eksakte nettstedet; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> samsvarer med alle nettsteder; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> er en kommentar.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (og <ph name="COUNT"/> flere nettadresser)</translation>
+<translation id="3700798663085748181">Aktiver regel</translation>
+<translation id="2967480878853054068">Ugyldig nettadressefilter</translation>
 <translation id="2263346047290834619">Bruk tre-faner</translation>
 <translation id="5860254591544742609">Vis tittelfelt</translation>
 <translation id="4691131445504068802">Skjul helt når minimert</translation>
@@ -528,7 +549,6 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6745592621698551453">Oppdater nå</translation>
 <translation id="5334844597069022743">Vis kilde</translation>
 <translation id="4720556299488643018">Avslutt abonnement</translation>
-<translation id="6532106788206463496">Lagre endringene</translation>
 <translation id="4516904298421534459">Filtrer lister</translation>
 <translation id="4435215931544457255">Andre populære lister i brukerfellesskapet. Merk at hvis du slår på for mange filtre, kan det gå ut over nettleserhastigheten.</translation>
 <translation id="802154636333426148">Nedlastingen mislyktes</translation>
@@ -611,6 +631,8 @@ Eller endre dette senere på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="509873765238158442">Blokkér Microsoft Recall</translation>
 <translation id="4763421121695677716">Hindrer Recall-funksjonen i å ta skjermbilder av åpne Brave-faner på PC-er med Microsoft Windows.</translation>
 <translation id="1968895725257436430">Datainnsamling</translation>
+<translation id="5668852698659986622">Aktiver sponsede annonser</translation>
+<translation id="431194936581466649">Bidra til å støtte Braves mål om å bygge et uavhengig, brukerorientert nett med sponsede annonser. Vi måler annonseytelse privat, uten å identifisere deg.</translation>
 <translation id="1700052872056357670">Fjern data ved lukking</translation>
 <translation id="216468847346280584">Tøm Brave Ads-data ...</translation>
 <translation id="96212973142796240">Brave Ads-data slettet</translation>
@@ -992,4 +1014,12 @@ Leo AI i fremtiden. Samtaleloggen, tilpasningene og minnene dine blir også slet
 <translation id="154702742922788359">Åpningsmodus</translation>
 <translation id="2249111429176737533">Åpne som vindu med faner</translation>
 <translation id="7022756207310403729">Åpne i nettleser</translation>
+<translation id="1916785651473363467">Tilpasset profilbilde</translation>
+<translation id="5336092064678832560">Last opp tilpasset bilde</translation>
+<translation id="1062407476771304334">Erstatt</translation>
+<translation id="1428299461403073820">Erstatt tilpasset profilbilde</translation>
+<translation id="7994453838803296517">Forhåndsvisning av tilpasset profilbilde, valgt</translation>
+<translation id="6578040791557152233">Last opp et tilpasset profilbilde</translation>
+<translation id="9222124079546967592">Fjern tilpasset profilbilde</translation>
+<translation id="6058660912941570282">Brave kan ikke bruke denne filen. Velg et annet bilde og prøv på nytt.</translation>
 </translationbundle>

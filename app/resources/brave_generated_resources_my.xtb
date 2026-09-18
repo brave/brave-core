@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">ပေါ်နေသည့် နေရာ</translation>
 <translation id="2026367923222947564">စာမျက်နှာ အပြည့်</translation>
 <translation id="4218885227032158909">ရွေးချယ်ထားသည့် နေရာ</translation>
+<translation id="2586386106930448447">ဖန်သားပြင်ဓာတ်ပုံ အစမ်းကြည့်ရှုခြင်း</translation>
+<translation id="7514365320538308">ဒေါင်းလုဒ်</translation>
+<translation id="2743387203779672305">Clipboard သို့ ကူးပါ</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">View in Web Extensions Store</translation>
 <translation id="3161744659507801211">သတိပေးချက် - Brave သည် သင်သည် private mode နှင့် Tor mode တွင်ဘရိုက်ဇာသည်သင်၏ရှာဖွေရေးမှတ်တမ်းများကိုမှတ်ယူနေသည့် extensions များကိုတား၍မရပါ။</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">သွားရမည်</translation>
 <translation id="2079545284768500474">ပြန်ရုပ်သိမ်းရန်</translation>
 <translation id="1533980864758658574">သစ်ခ Window တစ်ခု ဖန်တီးပြီး <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">အဲဒီ ခေါင်းစဉ်နဲ့ ကိုက်ညီတဲ့ တက်ဘ် မရှိပါ။ တခြားနည်းနဲ့ ဖော်ပြကြည့်ပါ။</translation>
 <translation id="7985042437720138349">ဤလုပ်ဆောင်ချက်သည် သင့်မာဖွိုရ်အသုံးပြုသူချင်းများအား Leo, Brave ရဲ့ AI-powered ဘရောက်ဆာိနဲ့ဝန်ဆောင်မှုပေးသူဆီသို့ ပို့လွှတ်သည်။</translation>
 <translation id="6165508094623778733">ပိုမိုလေ့လာရန်</translation>
 <translation id="7557539689487606886">ပရီမီယံ သုံးရန်</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">သင်၏ container အမည်ကို ပေးသောလိုအပ်ပဲ</translation>
 <translation id="4976989127264491396">အမှား: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">container ကိုရှာ မတွေ့</translation>
+<translation id="6055154402239241620">Traffic Control</translation>
+<translation id="8134521925475508805">သီးခြား site များကို သီးခြား စာဖတ်ခြင်း context တစ်ခုတွင် အလိုအလျောက်ဖွင့်ရန် သတ်မှတ်ပါ၊ သင့် ဘရောက်ဆာ session များအကြား ခွဲခြားမှုကို ဖန်တီးပါ။ <ph name="BEGIN_LINK"/>ပိုမိုလေ့လာရန်<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Traffic Control ကို ဖွင့်ပါ</translation>
+<translation id="1358255827354528344">စည်းမျဉ်းအသစ် ထည့်ပါ</translation>
+<translation id="7183128985801806752">Traffic control စည်းမျဉ်းအသစ်</translation>
+<translation id="2474694032500407328">Traffic control စည်းမျဉ်းကို တည်းဖြတ်ပါ</translation>
+<translation id="5543417389274097206">စည်းမျဉ်း ဖန်တီးပါ</translation>
+<translation id="6532106788206463496">ပြောင်းလဲမှုများကို သိမ်းဆည်းပါ</translation>
+<translation id="1172800769374812685">စည်းမျဉ်း ဖျက်ပါ</translation>
+<translation id="2389682807835777591">စည်းမျဉ်း <ph name="RULE_LABEL"/> ကို ဖျက်ချင်တာ သေချာပါသလား?</translation>
+<translation id="4853129331778360252">စီမံခန့်ခွဲရန်နှင့် သီးခြား စာဖတ်ခြင်း context တစ်ခုတွင် အမြဲဖွင့်ရန် URL များ ရိုက်ထည့်ပါ။</translation>
+<translation id="1173480005453148926">စီမံခန့်ခွဲရန် URL များ</translation>
+<translation id="6217532416180299470">Traffic control ဖြင့် စီမံခန့်ခွဲရန် URL များ ရိုက်ထည့်ပါ</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> သည် site နှင့် ၎င်း၏ subdomain များနှင့် ကိုက်ညီသည်; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> သည် တိကျသော site နှင့် ကိုက်ညီသည်; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> သည် site အားလုံးနှင့် ကိုက်ညီသည်; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> သည် မှတ်ချက်ဖြစ်သည်။</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (နှင့် နောက်ထပ် URL <ph name="COUNT"/> ခု)</translation>
+<translation id="3700798663085748181">စည်းမျဉ်းကို ဖွင့်ပါ</translation>
+<translation id="2967480878853054068">မမှန်ကန်သော URL filter</translation>
 <translation id="2263346047290834619">tree tab များကို အသုံးပြု</translation>
 <translation id="5860254591544742609">ခေါင်းစဉ်ကို ပြပါ</translation>
 <translation id="4691131445504068802">ချုံ့ထားသောအခါ တတ်နိုင်သမျှဖျောက်ထားရန်</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">အခု Update လုပ်ရန်</translation>
 <translation id="5334844597069022743">အရပ်ကို ကြည့်ရန်</translation>
 <translation id="4720556299488643018">မင်းမှ စာရင်းထဲကနေ တင်မည်</translation>
-<translation id="6532106788206463496">ပြောင်းလဲမှုများကို သိမ်းဆည်းပါ</translation>
 <translation id="4516904298421534459">ပလင်စာရင်း များ</translation>
 <translation id="4435215931544457255">အဓိက လူကြိုက်များသော အဖွဲ့ဝင် များ</translation>
 <translation id="802154636333426148">ဒေါင်းလုပ်လုပ်မရလေ်</translation>
@@ -611,6 +631,8 @@
 <translation id="509873765238158442">Microsoft Recall ကိုပိတ်ရန်</translation>
 <translation id="4763421121695677716">Microsoft Windows ကွန်ပျူတာများတွင်ထားရှိထားသော Brave tab များ၏ screenshot များကို အလိုအလျောက်ယူမှီ မည်ဆိုသော Recall လုပ်ဆောင်ချက်ကိုပိတ်ရန်။</translation>
 <translation id="1968895725257436430">အချက်အလက် စုဆောင်းခြင်း</translation>
+<translation id="5668852698659986622">Sponsored ကြော်ငြာများကို ဖွင့်ပါ</translation>
+<translation id="431194936581466649">Sponsored ကြော်ငြာများဖြင့် လွတ်လပ်၍ အသုံးပြုသူ-ဦးစားပေး Web တစ်ခု တည်ဆောက်ရေး Brave ၏ မစ်ရှင်ကို ကူညီထောက်ပံ့ပါ။ ကျွန်ုပ်တို့သည် သင့်ကို မဖော်ထုတ်ဘဲ ကြော်ငြာ စွမ်းဆောင်ရည်ကို လျှို့ဝှက်စွာ တိုင်းတာပါသည်။</translation>
 <translation id="1700052872056357670">ပိတ်ပြီးနောက်ဒေတာအားလုံးရှင်းပစ်ရန်</translation>
 <translation id="216468847346280584">Brave ကြော်ငြာများ အချက်အလက်ကို ရှင်းပစ်ပါ...</translation>
 <translation id="96212973142796240">Brave ကြော်ငြာ ဒေတာ ရှင်းလင်းပြီးပြီ</translation>
@@ -986,4 +1008,12 @@
 <translation id="154702742922788359">ဖွင့်ရန်နည်းလမ်း</translation>
 <translation id="2249111429176737533">Tabbed window အနေဖြင့် ဖွင့်ပါ</translation>
 <translation id="7022756207310403729">Browser ထဲတွင် ဖွင့်ပါ</translation>
+<translation id="1916785651473363467">စိတ်ကြိုက် profile ပုံ</translation>
+<translation id="5336092064678832560">စိတ်ကြိုက်ပုံ တင်ပါ</translation>
+<translation id="1062407476771304334">အစားထိုးပါ</translation>
+<translation id="1428299461403073820">စိတ်ကြိုက် profile ပုံကို အစားထိုးပါ</translation>
+<translation id="7994453838803296517">စိတ်ကြိုက် profile ပုံ အစမ်းကြည့်ရှုမှု၊ ရွေးချယ်ထားသည်</translation>
+<translation id="6578040791557152233">စိတ်ကြိုက် profile ပုံ တစ်ခု တင်ပါ</translation>
+<translation id="9222124079546967592">စိတ်ကြိုက် profile ပုံကို ဖယ်ရှားပါ</translation>
+<translation id="6058660912941570282">Brave သည် ဤဖိုင်ကို အသုံးမပြုနိုင်ပါ။ အခြားပုံတစ်ခု ရွေးချယ်ပြီး ထပ်စမ်းကြည့်ပါ။</translation>
 </translationbundle>

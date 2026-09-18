@@ -113,7 +113,7 @@
 <translation id="6920492760024499150">Sveže novice z današnjega dne v zasebnem viru, samo za vas.</translation>
 <translation id="3803728444598576153">Vklopite novice Brave in nikoli ne zamudite zgodbe</translation>
 <translation id="7627131190984957214">Brave novice podpirajo oglasi z zasebnimi in anonimiziranimi oglasi, ki se ujemajo v vaši napravi.</translation>
-<translation id="7897050360583141319">Sledite svojim priljubljenim virom v enem samem viru. Preprosto odprite zavihek v Brave, se pomaknite navzdol in … tukaj je!\nNovice Brave podpirajo oglasi s popolnoma zasebnimi in anonimiziranimi oglasi.</translation>
+<translation id="7897050360583141319">Sledite svojim priljubljenim virom v enem samem viru. Preprosto odprite zavihek v Brave, se pomaknite navzdol in… tukaj je!</translation>
 <translation id="1765217911817124376">Vklopite Brave novice</translation>
 <translation id="8981973962043893066">Poiščite spletno mesto, temo ali vir RSS</translation>
 <translation id="3225021799163709119">Priljubljeno</translation>
@@ -191,6 +191,8 @@
 <translation id="5987838417172370108">Pomagajte izboljšati stabilnost izdelka Brave s samodejnim pošiljanjem diagnostičnih poročil, ko se brskalnik Brave zruši ali zamrzne.</translation>
 <translation id="7977176350719484850">Pribl. podatkov\nShranjeno</translation>
 <translation id="9008534313521214777">Pribl. čas\nSaved</translation>
+<translation id="5668852698659986622">Omogoči sponzorirane oglase</translation>
+<translation id="431194936581466649">Pomagajte podpreti poslanstvo Brave pri gradnji neodvisnega spleta, ki daje prednost uporabnikom, s sponzoriranimi oglasi. Uspešnost oglasov merimo zasebno, ne da bi vas identificirali.</translation>
 <translation id="8347743943525229984">Omogočite ankete Brave</translation>
 <translation id="6022939994702081659">Brave lahko na strani z novim zavihkom prikaže povezave do zasebnih raziskav. Ankete nam pomagajo pri ustvarjanju boljših funkcij in merjenju učinkovitosti oglaševalskih kampanj v brskalniku.</translation>
 <translation id="7746496306508543965">Preberite več o anketah Brave</translation>
@@ -251,7 +253,6 @@
 <translation id="6213254277250932867">Imam 12-besedno besedno zvezo za obnovitev</translation>
 <translation id="4225265925807365011">Imam 24-besedno frazo za obnovitev</translation>
 <translation id="3570367516044491911">Nastavite kot privzeti brskalnik</translation>
-<translation id="6800338374677644736">Nastavi kot privzeti brskalnik</translation>
 <translation id="1545749641540134597">Skeniraj QR kodo</translation>
 <translation id="5317781812114905957">Navodila</translation>
 <translation id="8515319483805157233">Če želite iskati po kodi QR, postavite kodo QR na sredino okvirja.</translation>
@@ -283,7 +284,6 @@
 <translation id="5582839680698949063">Glavni meni</translation>
 <translation id="7002271985859760052">Dejanja na strani</translation>
 <translation id="7104487676473617844">Naslednji elementi bodo prikazani v meniju samo, če jih podpira trenutno odprta spletna stran.</translation>
-<translation id="4159764849281393303">Spletna aplikacija</translation>
 <translation id="8038539967102225446">Reklame Brave so tukaj!</translation>
 <translation id="222883304157347087">(ta naprava)</translation>
 <translation id="4157741509680155021">NAPRAVE NA SINHRONIZACIJSKI VERIGI</translation>
@@ -721,6 +721,8 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="1634828734222219955">Skupno</translation>
 <translation id="7995708795274219641">Znesek + Gas</translation>
 <translation id="2186011161688824046">Znesek + provizija</translation>
+<translation id="1118876217803190221">Ni dovolj sredstev</translation>
+<translation id="275990379543116961">Ni dovolj sredstev za plin</translation>
 <translation id="1950052789869821983">Transakcija</translation>
 <translation id="2304783958703511257">Napredne nastavitve</translation>
 <translation id="4220062530885628403">Žeton</translation>

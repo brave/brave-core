@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">दिसणारे क्षेत्र</translation>
 <translation id="2026367923222947564">संपूर्ण पेज</translation>
 <translation id="4218885227032158909">निवडलेले क्षेत्र</translation>
+<translation id="2586386106930448447">स्क्रीनशॉट पूर्वावलोकन</translation>
+<translation id="7514365320538308">डाउनलोड करा</translation>
+<translation id="2743387203779672305">क्लिपबोर्डवर कॉपी करा</translation>
 <translation id="4928988318462976765">वेब विस्तार स्टोअर</translation>
 <translation id="9181207987584064303">वेब विस्तार स्टोअर मध्‍ये पहा</translation>
 <translation id="3161744659507801211">चेतावणी: Brave एक्सटेंशन तुमच्या ब्राउझिंग इतिहासाची नोंद घेऊ शकत नाहीत.</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">जा</translation>
 <translation id="2079545284768500474">पहिल्यासारखे करा</translation>
 <translation id="1533980864758658574">नवीन विंडो तयार केली गेली <ph name="TOPIC"/> साठी</translation>
+<translation id="530437350080973527">त्या विषयाशी जुळणारे कोणतेही टॅब नाहीत. ते वेगळ्या पद्धतीने वर्णन करून पहा.</translation>
 <translation id="7985042437720138349">ही सुविधा तुमच्या उघड्या टॅब्सची माहिती Leo कडे, Brave च्या AI-संचालित ब्राउझर सहाय्यकाकडे पाठवते.</translation>
 <translation id="6165508094623778733">अधिक जाणून घ्या</translation>
 <translation id="7557539689487606886">प्रीमियम घ्या</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">तुमच्या कंटेनरला वर्क किंवा पर्सनल सारखे नाव द्या</translation>
 <translation id="4976989127264491396">त्रुटी: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">कंटेनर सापडला नाही</translation>
+<translation id="6055154402239241620">ट्रॅफिक कंट्रोल</translation>
+<translation id="8134521925475508805">विशिष्ट साइट्स एका विशिष्ट संदर्भात आपोआप उघडण्यासाठी कॉन्फिगर करा, ज्यामुळे तुमच्या ब्राउझिंग सत्रांमध्ये विभागणी तयार होते. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">ट्रॅफिक कंट्रोल सक्षम करा</translation>
+<translation id="1358255827354528344">नवीन नियम जोडा</translation>
+<translation id="7183128985801806752">नवीन ट्रॅफिक कंट्रोल नियम</translation>
+<translation id="2474694032500407328">ट्रॅफिक कंट्रोल नियम संपादित करा</translation>
+<translation id="5543417389274097206">नियम तयार करा</translation>
+<translation id="6532106788206463496">बदल साठवा</translation>
+<translation id="1172800769374812685">नियम हटवा</translation>
+<translation id="2389682807835777591">तुम्हाला नियम <ph name="RULE_LABEL"/> हटवायचे आहे का ते निश्चित आहे का?</translation>
+<translation id="4853129331778360252">व्यवस्थापित करण्यासाठी आणि नेहमी विशिष्ट ब्राउझिंग संदर्भात उघडण्यासाठी URLs एंटर करा.</translation>
+<translation id="1173480005453148926">व्यवस्थापित करण्यासाठी URLs</translation>
+<translation id="6217532416180299470">ट्रॅफिक कंट्रोलसह व्यवस्थापित करण्यासाठी URLs एंटर करा</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> साइट आणि तिच्या सबडोमेनशी जुळते; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> अचूक साइटशी जुळते; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> सर्व साइट्सशी जुळते; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> ही टिप्पणी आहे.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (आणि आणखी <ph name="COUNT"/> URLs)</translation>
+<translation id="3700798663085748181">नियम सक्षम करा</translation>
+<translation id="2967480878853054068">अवैध URL फिल्टर</translation>
 <translation id="2263346047290834619">ट्री टॅब्स वापरा</translation>
 <translation id="5860254591544742609">टायटल बार दाखवा</translation>
 <translation id="4691131445504068802">किमान केल्यावर पूर्णपणे लपवा</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">आता अपडेट करा</translation>
 <translation id="5334844597069022743">स्रोत पाहा</translation>
 <translation id="4720556299488643018">अनसबस्क्राइब</translation>
-<translation id="6532106788206463496">बदल साठवा</translation>
 <translation id="4516904298421534459">फिल्टर लिस्ट्स</translation>
 <translation id="4435215931544457255">अधिक लोकप्रिय समुदाय सूची. खूप जास्त फिल्टर्स चालू केल्यास ब्राउझिंग गती कमी होईल.</translation>
 <translation id="802154636333426148">डाउनलोड अयशस्वी झाले</translation>
@@ -611,6 +631,8 @@
 <translation id="509873765238158442">Microsoft रीकॉल ब्लॉक करा</translation>
 <translation id="4763421121695677716">कोणत्याही चालू Brave टॅब्सचे आपोआप स्क्रीनशॉट घेणाऱ्या Microsoft Windows कंप्युटर्स वरील रीकॉल फीचर ब्लॉक करा.</translation>
 <translation id="1968895725257436430">डेटा संकलन</translation>
+<translation id="5668852698659986622">प्रायोजित ॲड्स सक्षम करा</translation>
+<translation id="431194936581466649">प्रायोजित ॲड्ससह स्वतंत्र, वापरकर्ता-प्रथम वेब तयार करण्याच्या Brave च्या ध्येयाला समर्थन देण्यास मदत करा. तुमची ओळख न पटवता आम्ही ॲडच्या कामगिरीचे मोजमाप खासगीरित्या करतो.</translation>
 <translation id="1700052872056357670">बाहेर पडल्यानंतर सर्व डेटा क्लियर करा</translation>
 <translation id="216468847346280584">Brave ॲड्स डेटा क्लियर करा...</translation>
 <translation id="96212973142796240">Brave ॲड्स डेटा साफ केला</translation>
@@ -990,4 +1012,12 @@
 <translation id="154702742922788359">उघडा मोड</translation>
 <translation id="2249111429176737533">टॅब केलेल्या विंडोत उघडा</translation>
 <translation id="7022756207310403729">ब्राउझरमध्ये उघडा</translation>
+<translation id="1916785651473363467">कस्टम profile इमेज</translation>
+<translation id="5336092064678832560">कस्टम इमेज अपलोड करा</translation>
+<translation id="1062407476771304334">पुनर्स्थित करा</translation>
+<translation id="1428299461403073820">कस्टम profile इमेज बदला</translation>
+<translation id="7994453838803296517">कस्टम profile इमेज पूर्वावलोकन, निवडलेले</translation>
+<translation id="6578040791557152233">कस्टम profile इमेज अपलोड करा</translation>
+<translation id="9222124079546967592">कस्टम profile इमेज काढा</translation>
+<translation id="6058660912941570282">Brave ही फाईल वापरू शकत नाही. दुसरी इमेज निवडा आणि पुन्हा प्रयत्न करा.</translation>
 </translationbundle>

@@ -864,9 +864,11 @@
 <translation id="646023614746251785">Bekräfta byte</translation>
 <translation id="6264944956989873014">Bekräfta brygga</translation>
 <translation id="7067917728851842589">Bekräfta sändning</translation>
+<translation id="2841837950101800123">Leverantör</translation>
 <translation id="1114725160772317155">Status för leverantör</translation>
 <translation id="2351357639951873714">Bekräfta skydd</translation>
 <translation id="7480044382160806610">Bekräfta avskärmning</translation>
+<translation id="6830542010524256586">Bekräfta migrering</translation>
 <translation id="8332923694292360653">Spendera</translation>
 <translation id="3735740477244556633">Sortera efter</translation>
 <translation id="6484605214219822434">Granska bro</translation>
@@ -1405,8 +1407,10 @@
 <translation id="5503843345634715425">Återbetald</translation>
 <translation id="1778601041100951971">Skyddar <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Avskärmar <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">Migrerar <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> har skyddats</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> har avskärmats</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> har migrerats</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} transaktion till väntar.}
       other {{PENDING_TRANSACTIONS} fler transaktioner väntar.}
@@ -1845,14 +1849,18 @@
 <translation id="9086302186042011942">Synkroniserar</translation>
 <translation id="99991973626409495">Granskningsskydd</translation>
 <translation id="6779429520470417361">Granska avskärmning</translation>
+<translation id="7861093868637278059">Granska migrering</translation>
 <translation id="3114681061018999547">Skyddar</translation>
 <translation id="1564172583156967455">Avskärmar</translation>
+<translation id="7040674372746105444">Migrerar</translation>
 <translation id="8897189056319316783">Skydd-ZEC</translation>
 <translation id="508249542337194541">Avskärma ZEC</translation>
+<translation id="3242332985109374549">Migrera ZEC</translation>
 <translation id="3382275793825152362">Skydda medel</translation>
 <translation id="617149752238892649">Skydda medel</translation>
 <translation id="8631765320256788981">Du skickar pengar från ditt transparenta konto till ditt skyddade konto.</translation>
 <translation id="3860364671495430495">Du skickar pengar från ditt skyddade konto till ditt transparenta konto.</translation>
+<translation id="9664108035970394">Du skickar pengar från ditt äldre skyddade konto till ditt skyddade konto.</translation>
 <translation id="7144878232160441200">Försök igen</translation>
 <translation id="4750109510113597688">Denna transaktion kan inkludera en avgift för att skapa ett konto</translation>
 <translation id="6201709949885884577">Lösenord krävs för att vidta denna åtgärd.</translation>
@@ -2209,7 +2217,7 @@
 <translation id="8151638057146502721">Konfigurera</translation>
 <translation id="999273441077650169">Modellen ändras dynamiskt för att använda den bästa för uppgiften.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Qwen VL 30B, en modell skapad av Alibaba Cloud för att vara effektiv och mångsidig. Qwen arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Hej, jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av GLM-5.1, en modell som skapats av Zhipu AI för att vara prestandastark och lämplig för många användningsområden. GLM-5.1 drivs av NEAR via deras egen verifierbart privata och säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="8659225822055186905">Hej, jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av GLM-5.3 Flash, en modell skapad av Zhipu AI för att vara effektiv och mångsidig. GLM-5.3 Flash är värdhostat av NEAR genom deras egen verifierbar privat säker infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hej, jag är Leo. Jag är en AI-assistent från Brave. Jag drivs av Claude Instant, en modell skapad av Anthropic för att hantera konversationer och textbehandling. Claude Instant hostas av Brave via vår egen säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Haiku, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. Claude Haiku arrangeras av Brave genom vår egna säkra infrastruktur. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Sonnet, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. Claude Sonnet arrangeras av Brave genom vår egna säkra infrastruktur. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
@@ -2331,6 +2339,8 @@
 <translation id="4370698775470316661">Den här konversationen är för lång och kan inte fortsätta. Det kan finnas andra modeller som Leo kan använda för att klara längre konversationer.</translation>
 <translation id="4744144453035015075">Söka på webben</translation>
 <translation id="8548351747582087191">Söker på webben efter <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4395536726196773278">Söker i dina öppna flikar efter ”<ph name="QUERY"/>”…</translation>
+<translation id="4724926708866789382">Inga öppna flikar matchar ”<ph name="QUERY"/>”.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> mer …</translation>
 <translation id="8103700533980268469">Stäng denna notis</translation>
 <translation id="3417835166382867856">Sök flikar</translation>
@@ -2378,6 +2388,8 @@
 <translation id="443008484043213881">Verktyg</translation>
 <translation id="4343623396828510727">Dessa webbplatser exponerar verktyg som Leo kan använda för att skicka data till och från denna webbplats. Bifoga eller godkänn inte dessa verktyg om denna konversation innehåller data som du inte vill att denna webbplats ska se.</translation>
 <translation id="5021823940147712387">Ta bort verktyg</translation>
+<translation id="8712279871321308580">Tillgängliga webbplatsverktyg</translation>
+<translation id="3690996226559605619">Tillgängliga verktyg (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">Alla prenumerationer förnyas automatiskt men kan avbrytas när som helst före förnyelsen.</translation>
 <translation id="5091223967610958">Dela värdnamnet för sidan du är på (<ph name="HOST_NAME"/>) och hjälp oss att göra Leo bättre.</translation>
 <translation id="8732450785281947197">Leo AI-verktyg</translation>
@@ -2416,6 +2428,7 @@
 <translation id="6397861830483632092">Öppna flikar…</translation>
 <translation id="802080272588201037">Bokmärken…</translation>
 <translation id="2716127283451902393">Historia…</translation>
+<translation id="8888171900079152025">Arbetsytemapp</translation>
 <translation id="49269513399674318">Använd mikrofonen</translation>
 <translation id="3895031624234442305">Anpassade modeller</translation>
 <translation id="4572010449071015143">Starta ny konversation</translation>
@@ -2449,8 +2462,12 @@
 <translation id="3397808797783614750">Att låta AI surfa automatiskt åt dig kan leda till skadliga, oavsiktliga konsekvenser för din integritet, ekonomi och onlinekommunikation. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Säkerhetsvarning</translation>
 <translation id="6077070599873946984">Brave AI behöver din tillåtelse för: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI vill köra **<ph name="TOOL_NAME"/>** på **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Åtgärden upptäcktes som potentiellt oförenlig med din begäran:</translation>
+<translation id="5137568953923142260">Tillåt</translation>
 <translation id="3927932062596804919">Neka</translation>
+<translation id="4191349941249805855">Visa verktygsargument</translation>
+<translation id="7237059533128264835">Dölj verktygsargument</translation>
 <translation id="4569155249847375786">Verifierad</translation>
 <translation id="8200772114523450471">Återuppta nedladdning</translation>
 <translation id="7607002721634913082">Pausad</translation>
@@ -2556,7 +2573,7 @@
 <translation id="9173319813356700250">NYHETER</translation>
 <translation id="6543799171249004861">Foto: <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="7978582287767542276">Ta bort sponsrade webbplatser</translation>
+<translation id="7978582287767542276">Ta bort annonser på nya fliksidan</translation>
 <translation id="466214682712474574">Logga in på ditt <ph name="PROVIDER"/>-konto för att se ditt saldo</translation>
 <translation id="8332875111286275890">Logga in för att se ditt saldo</translation>
 <translation id="5430001801813715388">BELÖNINGAR</translation>
@@ -2568,11 +2585,11 @@
 <translation id="4844370919312937270">Visa sökwidgeten i nya flikar</translation>
 <translation id="5088374130885640159">Med <ph name="REWARDS_LINK_BEGIN"/>Brave Rewards<ph name="REWARDS_LINK_END"/> kan du tjäna pengar på att se annonser på ny fliksidan. <ph name="LEARN_MORE_LINK_BEGIN"/>Läs mer<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">Visa annonser på nya fliksidan</translation>
-<translation id="4983925687993168579">Brave-statistik</translation>
+<translation id="4983925687993168579">Statistik</translation>
 <translation id="5009354496127441090">Visa toppsajter</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">Sponsrade webbplatser hjälper till att hålla Brave gratis. Om du använder <ph name="SITE_NAME"/> stöder du Braves uppdrag. Inaktivera dem när som helst. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">Sponsrade webbplatser hjälper till att hålla Brave gratis. Om du använder dem stöder du Braves uppdrag. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Annonser på nya fliksidan hjälper till att hålla Brave gratis. Om du använder <ph name="SITE_NAME"/> stöder du Braves uppdrag. Inaktivera dem när som helst. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Annonser på nya fliksidan hjälper till att hålla Brave gratis. Om du använder dem stöder du Braves uppdrag. <ph name="LINK_BEGIN"/>Läs mer<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">STATISTIK</translation>
 <translation id="5236080651083907980">Krypterade videosamtal med Brave Samtal</translation>
 <translation id="2671474274417808910">Samtal med integritet först</translation>
@@ -2732,6 +2749,7 @@
 <translation id="701087249209337256">Ta med dig ditt gamla webbläsarinnehåll</translation>
 <translation id="142389341645668510">Anpassa Brave</translation>
 <translation id="112005628409144325">Anpassa din surfupplevelse med den fliklayout och de färglägen du föredrar.</translation>
+<translation id="4428982101636000516">Sök med Brave eller skriv in en webbadress</translation>
 <translation id="7376367936988732808">Fliklayout</translation>
 <translation id="4734965478015604180">Horisontell</translation>
 <translation id="490375751687810070">Vertikal</translation>
@@ -2780,7 +2798,7 @@
 <translation id="745054660363064771">Kan inte ansluta till servern</translation>
 <translation id="3936826714240735937">Välj en annan server</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> kunde inte ansluta till <ph name="REGION_NAME"/>-server. Försök igen eller välj ett annat land.</translation>
-<translation id="1776533911621317363">Starta gratis 7-dagars provperiod</translation>
+<translation id="1776533911621317363">Starta din gratis 7-dagars provperiod</translation>
 <translation id="3357036723290257445">Har du redan köpt Brave VPN?</translation>
 <translation id="8652175077544655965">Stäng inställningar</translation>
 <translation id="5908163815855240493">Gå till startsidan</translation>
@@ -2792,11 +2810,13 @@
 <translation id="8416695199565594645">Säkerställer att trafiken dirigeras via dedikerade proxyservrar för att ge tillgång till allmänt begränsat innehåll/webbplatser eller tjänster från tredje part.</translation>
 <translation id="434523916398030617">Kontakta teknisk support</translation>
 <translation id="1116694919640316211">Om</translation>
-<translation id="8998067240267949220">Extra integritet och säkerhet online</translation>
-<translation id="8666111144393179185">Dölj din IP-adress och ändra din plats</translation>
-<translation id="8881997962573369342">Hundratals servrar runt om i världen</translation>
+<translation id="8998067240267949220">Få tillgång till ditt favoritinnehåll utan begränsningar</translation>
+<translation id="8666111144393179185">Hundratals servrar runt om i världen</translation>
+<translation id="8881997962573369342">Dölj enkelt din IP-adress och ändra din plats</translation>
 <translation id="1513801084412881009">Blixtsnabba anslutningshastigheter</translation>
-<translation id="6434859410115379558">Skydda upp till 10 enheter med ett abonnemang</translation>
+<translation id="6434859410115379558">Ingen loggning, oberoende reviderad</translation>
+<translation id="4886431881864826294">En prenumeration täcker 10 enheter på desktop, Android och iOS</translation>
+<translation id="3649011006120934011">Ingen bindningstid, avbryt när som helst</translation>
 <translation id="1693568075761612600">Supportärende kunde inte skapas. Kontrollera din anslutning.</translation>
 <translation id="1407707415819020643">Välj din server</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> städer – <ph name="SERVER_COUNT"/> servrar</translation>

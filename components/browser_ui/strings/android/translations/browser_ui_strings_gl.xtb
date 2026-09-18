@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Tema azul</translation>
 <translation id="1070329623210597193">Ficheiros que pode ver ou editar este sitio</translation>
 <translation id="1074758928858737435">Podes solicitar que se mostre a versión para ordenadores dos sitios</translation>
+<translation id="1760197532822135980">Recibir suxestións de Brave noutras aplicacións</translation>
 <translation id="1109482864356262001">As funcións que requiran sensores de movemento ou de luz non estarán dispoñibles</translation>
 <translation id="6670155282615872564">Completa as accións suxeridas máis abaixo para sacarlle o máximo partido a Brave</translation>
 <translation id="113098737392899175">Navega polas páxinas cun cursor de texto cando se conecta un teclado</translation>
@@ -83,6 +84,7 @@
 <translation id="1818308510395330587">Para permitir que <ph name="APP_NAME"/> utilice a realidade aumentada, tamén debes activar a cámara en <ph name="BEGIN_LINK"/>Configuración de Android<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Cambia a posición para personalizar a túa experiencia de navegación</translation>
 <translation id="1848033246551405023">Tipo de letra sen serifas</translation>
+<translation id="1861244985839668297">Cando esta opción está activada, os sitios poden pedirche permiso para utilizar dispositivos de interface humana. Cando esta opción está desactivada, os sitios non poden utilizar dispositivos de interface humana.</translation>
 <translation id="1861262398884155592">Este cartafol está baleiro</translation>
 <translation id="1881806992065048905">Panel inferior do aspecto da páxina Nova pestana</translation>
 <translation id="1887786770086287077">O acceso á localización está desactivado neste dispositivo. Actívao na <ph name="BEGIN_LINK"/>configuración de Android<ph name="END_LINK"/>.</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271">Para permitir que <ph name="APP_NAME"/> use o seguimento das mans, tamén tes que activar a opción correspondente na <ph name="BEGIN_LINK"/>configuración do sistema<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Xestionar as túas tarxetas</translation>
 <translation id="4722332387043141878">Os sitios adoitan usar os sensores de movemento e de luz do dispositivo para ofrecerche determinadas funcións (por exemplo, as relacionadas coa realidade virtual ou co seguimento da forma física)</translation>
+<translation id="4748783296226936791">Os sitios adoitan conectarse a dispositivos de interface humana para ofrecerche determinadas funcións que utilizan mandos de videoxogos ou teclados pouco comúns, entre outros dispositivos</translation>
 <translation id="4755971844837804407">Cando esta opción está activada, os sitios poden mostrarche todo tipo de anuncios. Cando esta opción está desactivada, os sitios non poden mostrarche anuncios enganosos nin intrusivos.</translation>
 <translation id="4779083564647765204">Zoom</translation>
 <translation id="4807122856660838973">Activar Navegación segura</translation>
@@ -447,11 +450,13 @@
 <translation id="5668404140385795438">Anular a solicitude dun sitio web para evitar ampliar a imaxe</translation>
 <translation id="5668843533782548925">Os sitios son máis lentos, pero máis seguros</translation>
 <translation id="5677928146339483299">Bloqueada</translation>
+<translation id="98560749650104566">Agora Brave pode mostrarche suxestións noutras aplicacións en función dos datos de navegación, como o historial de navegación recente. Os datos procésanse de forma segura no teu dispositivo. Desactiva esta opción cando queiras na configuración de Brave.</translation>
 <translation id="5689516760719285838">Localización</translation>
 <translation id="5690795753582697420">A cámara está desactivada na sección Configuración de Android</translation>
 <translation id="5700761515355162635">Cookies de terceiros permitidas</translation>
 <translation id="5706552988683188916">Esta acción eliminará as cookies e outros datos dos sitios de <ph name="WEBSITE"/></translation>
 <translation id="571222594670061844">Os sitios poden mostrar solicitudes de inicio de sesión dos servizos de identidade</translation>
+<translation id="5719854774000914513">Os sitios poden pedirche permiso para conectarse a dispositivos de interface humana</translation>
 <translation id="5740126560802162366">Os sitios poden gardar datos no teu dispositivo</translation>
 <translation id="5743425052258407233">Accede ao teu historial en todos os teus dispositivos para que poidas continuar onde o deixaches</translation>
 <translation id="5749158352074143502">Continuar con esta pestana</translation>
@@ -500,6 +505,7 @@
 <translation id="6085954183010297841">Queres eliminar a autorización para editar ficheiros? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Cando esta opción está activada, os sitios poden acceder ao modo de pantalla superposta automaticamente. Cando está desactivada, non poden acceder a ese modo automaticamente.</translation>
 <translation id="6120483543004435978">Cando esta opción está activada, os sitios poden pedirche permiso para saber se estás utilizando o dispositivo de maneira activa. Cando esta opción está desactivada, os sitios non poden saber se estás utilizando o dispositivo de maneira activa.</translation>
+<translation id="5773142757282836623">Ocultar Recibir suxestións de Brave noutras aplicacións</translation>
 <translation id="4852158809106762963">Brave ofrecerache gardar o teu contrasinal</translation>
 <translation id="615886654739818377">Non permitir que os sitios xestionen ventás en todas as pantallas</translation>
 <translation id="6165508094623778733">Máis información</translation>
@@ -571,6 +577,7 @@
 <translation id="6950072572526089586">Os sitios que visitas poden gardar información sobre o que fas para poder funcionar segundo o esperado (por exemplo, para manter a túa sesión iniciada ou gardar artigos que teñas no carro da compra). Os sitios adoitan almacenar esta información no teu dispositivo de forma temporal.</translation>
 <translation id="6964291282260073066">WebGPU está desactivado.</translation>
 <translation id="6965382102122355670">Aceptar</translation>
+<translation id="6972629891077993081">Dispositivos de interface humana</translation>
 <translation id="6980507581230208647">Tema rosa</translation>
 <translation id="6980861169612950611">Queres eliminar datos do sitio? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Accesibilidade</translation>
@@ -583,7 +590,6 @@
 <translation id="7053983685419859001">Bloquear</translation>
 <translation id="7055552182600664515">Para reproducir contido protexido con copyright, é posible que algúns sitios necesiten usar un servizo de protección de contido. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 elemento seleccionado}other{# elementos seleccionados}}</translation>
-<translation id="708014373017851679">A aplicación <ph name="APP_NAME"/> está desactualizada. Actualízaa.</translation>
 <translation id="7084115944294706056">Escolle a posición da barra de enderezos</translation>
 <translation id="7087918508125750058">Elementos seleccionados: <ph name="ITEM_COUNT"/>. Hai opcións dispoñibles na parte superior da pantalla</translation>
 <translation id="7141896414559753902">Non permite que os sitios mostren ventás emerxentes nin redireccións (recomendado)</translation>
@@ -728,6 +734,7 @@ A Protección avanzada controla estas opcións de Brave:</translation>
 <translation id="8593422116412089302">Cando esta opción está activada, os sitios poden pedirche permiso para utilizar a información que gardasen sobre ti. Cando esta opción está desactivada, os sitios non poden pedirche permiso para utilizar a información que garden sobre ti.</translation>
 <translation id="8609465669617005112">Mover cara arriba</translation>
 <translation id="8617611086246832542">Cando esta opción está activada, móstrase a vista para ordenadores dos sitios web. Cando esta opción está desactivada, móstrase a vista para dispositivos móbiles dos sitios web.</translation>
+<translation id="8625916342247441948">Non permitir que os sitios se conecten a dispositivos de interface humana</translation>
 <translation id="8670078035093027626">Panel inferior do navegador predeterminado aberto a altura completa</translation>
 <translation id="8676316391139423634">Cando esta opción está activada, os sitios poden pedir permiso para seguir as túas mans. Se está desactivada, os sitios non poderán facer ese seguimento.</translation>
 <translation id="8676374126336081632">Borrar texto</translation>
@@ -782,7 +789,7 @@ A Protección avanzada controla estas opcións de Brave:</translation>
 <translation id="927148002081263046">Compartir un contacto</translation>
 <translation id="947156494302904893">Os sitios que visites poden verificar que es unha persoa real e non un bot</translation>
 <translation id="959682366969460160">Organízate</translation>
-<translation id="960590623979248167">Mostrar as hiperligazóns</translation>
+<translation id="960590623979248167">Mostrar as ligazóns</translation>
 <translation id="961930410699694996">Permítese o uso da localización esta vez</translation>
 <translation id="967624055006145463">Datos almacenados</translation>
 <translation id="969975166333045662">Impide que un sitio use o optimizador de V8.</translation>

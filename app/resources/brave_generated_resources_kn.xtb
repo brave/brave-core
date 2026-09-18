@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">ಗೋಚರಿಸುವ ಪ್ರದೇಶ</translation>
 <translation id="2026367923222947564">ಸಂಪೂರ್ಣ ಪುಟ</translation>
 <translation id="4218885227032158909">ಆಯ್ಕೆಮಾಡಲಾದ ಪ್ರದೇಶ</translation>
+<translation id="2586386106930448447">ಸ್ಕ್ರೀನ್‌ಶಾಟ್ ಮುನ್ನೋಟ</translation>
+<translation id="7514365320538308">ಡೌನ್‌ಲೋಡ್</translation>
+<translation id="2743387203779672305">ಕ್ಲಿಪ್‌ಬೋರ್ಡ್‌ಗೆ ಕಾಪಿ ಮಾಡಿ</translation>
 <translation id="4928988318462976765">ವೆಬ್ ವಿಸ್ತರಣೆಗಳು ಸ್ಟೋರ್</translation>
 <translation id="9181207987584064303">ವೆಬ್ ವಿಸ್ತರಣೆಗಳು ಸ್ಟೋರ್‌ನಲ್ಲಿ ವೀಕ್ಷಿಸಿ</translation>
 <translation id="3161744659507801211">ಎಚ್ಚರಿಕೆ: ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್‌ ಇತಿಹಾಸದಲ್ಲಿ ರೆಕಾರ್ಡಿಂಗ್‌ನಿಂದ ವಿಸ್ತರಣೆಗಳನ್ನು ಪಡೆಯುವುದನ್ನು ತಡೆಯಲು Brave ಗೆ ಸಾಧ್ಯವಿಲ್ಲ.</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">ಹೋಗು</translation>
 <translation id="2079545284768500474">ರದ್ದುಮಾಡು</translation>
 <translation id="1533980864758658574"><ph name="TOPIC"/> ಗಾಗಿ ಹೊಸ ವಿಂಡೋ ರಚಿಸಲಾಗಿದೆ;</translation>
+<translation id="530437350080973527">ಆ ವಿಷಯಕ್ಕೆ ಯಾವ ಟ್ಯಾಬ್‌ಗಳೂ ಹೊಂದಿಕೆಯಾಗಲಿಲ್ಲ. ಅದನ್ನು ವಿಭಿನ್ನವಾಗಿ ವಿವರಿಸಲು ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="7985042437720138349">ಈ ಫೀಚರ್‌ ನಿಮ್ಮ ತೆರೆದ ಟ್ಯಾಬ್‌ಗಳ ಡೇಟಾವನ್ನು ಬ್ರೇವ್‌ನ AI-ಚಾಲಿತ ಬ್ರೌಸರ್ ಅಸಿಸ್ಟೆಂಟ್‌ LEOಗೆ ಕಳುಹಿಸುತ್ತದೆ.</translation>
 <translation id="6165508094623778733">ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ</translation>
 <translation id="7557539689487606886">ಪ್ರೀಮಿಯಂಗೆ ಹೋಗಿ</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">ನಿಮ್ಮ ಕಂಟೇನರ್‌ಗೆ ಕೆಲಸ ಅಥವಾ ವೈಯಕ್ತಿಕ ಎಂಬ ಹೆಸರು ನೀಡಿ</translation>
 <translation id="4976989127264491396">ದೋಷ: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">ಕಂಟೇನರ್ ಕಾಣಿಸುತ್ತಿಲ್ಲ</translation>
+<translation id="6055154402239241620">ಟ್ರಾಫಿಕ್ ಕಂಟ್ರೋಲ್</translation>
+<translation id="8134521925475508805">ನಿರ್ದಿಷ್ಟ site ಗಳನ್ನು ನಿರ್ದಿಷ್ಟ ಸಂದರ್ಭದಲ್ಲಿ ಸ್ವಯಂಚಾಲಿತವಾಗಿ ತೆರೆಯುವಂತೆ ಕಾನ್ಫಿಗರ್ ಮಾಡಿ, ನಿಮ್ಮ ಬ್ರೌಸಿಂಗ್ ಸೆಷನ್‌ಗಳ ನಡುವೆ ಪ್ರತ್ಯೇಕತೆಯನ್ನು ರಚಿಸಿ. <ph name="BEGIN_LINK"/>ಇನ್ನಷ್ಟು ತಿಳಿಯಿರಿ<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">ಟ್ರಾಫಿಕ್ ಕಂಟ್ರೋಲ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
+<translation id="1358255827354528344">ಹೊಸ ನಿಯಮ ಸೇರಿಸಿ</translation>
+<translation id="7183128985801806752">ಹೊಸ ಟ್ರಾಫಿಕ್ ಕಂಟ್ರೋಲ್ ನಿಯಮ</translation>
+<translation id="2474694032500407328">ಟ್ರಾಫಿಕ್ ಕಂಟ್ರೋಲ್ ನಿಯಮ ಎಡಿಟ್ ಮಾಡಿ</translation>
+<translation id="5543417389274097206">ನಿಯಮ ರಚಿಸಿ</translation>
+<translation id="6532106788206463496">ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಿ</translation>
+<translation id="1172800769374812685">ನಿಯಮ ಅಳಿಸಿ</translation>
+<translation id="2389682807835777591">ನೀವು ನಿಜವಾಗಿಯೂ <ph name="RULE_LABEL"/> ನಿಯಮವನ್ನು ಅಳಿಸಲು ಬಯಸುವಿರಾ?</translation>
+<translation id="4853129331778360252">ನಿರ್ವಹಿಸಲು ಮತ್ತು ಯಾವಾಗಲೂ ನಿರ್ದಿಷ್ಟ ಬ್ರೌಸಿಂಗ್ ಸಂದರ್ಭದಲ್ಲಿ ತೆರೆಯಲು URL ಗಳನ್ನು ನಮೂದಿಸಿ.</translation>
+<translation id="1173480005453148926">ನಿರ್ವಹಿಸಬೇಕಾದ URL ಗಳು</translation>
+<translation id="6217532416180299470">ಟ್ರಾಫಿಕ್ ಕಂಟ್ರೋಲ್ ಮೂಲಕ ನಿರ್ವಹಿಸಲು URL ಗಳನ್ನು ನಮೂದಿಸಿ</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> site ಮತ್ತು ಅದರ ಸಬ್‌ಡೊಮೇನ್‌ಗಳಿಗೆ ಹೊಂದಿಕೆಯಾಗುತ್ತದೆ; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> ನಿಖರವಾದ site ಗೆ ಹೊಂದಿಕೆಯಾಗುತ್ತದೆ; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> ಎಲ್ಲಾ site ಗಳಿಗೆ ಹೊಂದಿಕೆಯಾಗುತ್ತದೆ; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> ಒಂದು ಕಾಮೆಂಟ್.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (ಮತ್ತು <ph name="COUNT"/> ಹೆಚ್ಚಿನ URL ಗಳು)</translation>
+<translation id="3700798663085748181">ನಿಯಮ ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
+<translation id="2967480878853054068">ಅಮಾನ್ಯ URL ಫಿಲ್ಟರ್</translation>
 <translation id="2263346047290834619">ಟ್ರೀ ಲ್ಯಾಬ್ಸ್‌ ಬಳಸಿ</translation>
 <translation id="5860254591544742609">ಶೀರ್ಷಿಕೆ ಪಟ್ಟಿ ತೋರಿಸಿ</translation>
 <translation id="4691131445504068802">ಕಡಿಮೆಯಾದಾಗ ಸಂಪೂರ್ಣವಾಗಿ ಅಡಗಿಸಿ</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">ಈಗ ಅಪ್‌ಡೇಟ್‌ ಮಾಡು</translation>
 <translation id="5334844597069022743">ಮೂಲ ವೀಕ್ಷಿಸಿ</translation>
 <translation id="4720556299488643018">ಅನ್‌ಸಬ್‌ಸ್ಕ್ರೈಬ್ ಮಾಡಿ</translation>
-<translation id="6532106788206463496">ಬದಲಾವಣೆಗಳನ್ನು ಉಳಿಸಿ</translation>
 <translation id="4516904298421534459">ಪಟ್ಟಿಗಳನ್ನು ಫಿಲ್ಟರ್ ಮಾಡಿ</translation>
 <translation id="4435215931544457255">ಹೆಚ್ಚುವರಿ ಜನಪ್ರಿಯ ಸಮುದಾಯ ಪಟ್ಟಿಗಳು. ತೀರಾ ಹೆಚ್ಚು ಫಿಲ್ಟರ್‌ಗಳ ಸಕ್ರಿಯಗೊಳಿಸುವಿಕೆಯು ಬ್ರೌಸಿಂಗ್ ವೇಗವನ್ನು ತಗ್ಗಿಸಬಹುದು ಎಂಬುದನ್ನು ಗಮನಿಸಿ.</translation>
 <translation id="802154636333426148">ಡೌನ್‌ಲೋಡ್‌ ವಿಫಲಗೊಂಡಿದೆ</translation>
@@ -612,6 +632,8 @@
 <translation id="4763421121695677716">ಯಾವುದೇ ತೆರೆದ ಬ್ರೇವ್ ಟ್ಯಾಬ್‌ಗಳು 
  ಸ್ಕ್ರೀನ್‌ಶಾಟ್‌ಗಳನ್ನು ಸ್ವಯಂಚಾಲಿತವಾಗಿ ತೆಗೆದುಕೊಳ್ಳುವುದರಿಂದ ಮೈಕ್ರೋಸಾಫ್ಟ್‌ ವಿಂಡೋಸ್‌ ಕಂಪ್ಯೂಟರ್‌ಗಳಲ್ಲಿ ರೀಕಾಲ್‌ ಫೀಚರ್‌ ಬ್ಲಾಕ್‌ ಮಾಡಿ.</translation>
 <translation id="1968895725257436430">ಡೇಟಾ ಸಂಗ್ರಹಣೆ</translation>
+<translation id="5668852698659986622">ಸ್ಪಾನ್ಸರ್ಡ್ ಜಾಹೀರಾತುಗಳನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
+<translation id="431194936581466649">ಸ್ಪಾನ್ಸರ್ಡ್ ಜಾಹೀರಾತುಗಳ ಮೂಲಕ ಸ್ವತಂತ್ರ, ಬಳಕೆದಾರ-ಮೊದಲ ವೆಬ್ ಅನ್ನು ನಿರ್ಮಿಸುವ Brave ನ ಧ್ಯೇಯವನ್ನು ಬೆಂಬಲಿಸಲು ಸಹಾಯ ಮಾಡಿ. ನಿಮ್ಮನ್ನು ಗುರುತಿಸದೆ, ನಾವು ಜಾಹೀರಾತು ಕಾರ್ಯಕ್ಷಮತೆಯನ್ನು ಖಾಸಗಿಯಾಗಿ ಅಳೆಯುತ್ತೇವೆ.</translation>
 <translation id="1700052872056357670">ನಿರ್ಗಮಿಸುವಲ್ಲಿ ತೆರವುಗೊಳಿಸಿ</translation>
 <translation id="216468847346280584">Brave ಜಾಹೀರಾತುಗಳ ಡೇಟಾ ಕ್ಲಿಯರ್ ಮಾಡಿ...</translation>
 <translation id="96212973142796240">Brave ಜಾಹೀರಾತು ಡೇಟಾ ತೆರವುಗೊಳಿಸಲಾಗಿದೆ</translation>
@@ -994,4 +1016,12 @@
 <translation id="154702742922788359">ಓಪನ್ ಕೋಡ್</translation>
 <translation id="2249111429176737533">ಟ್ಯಾಬ್‌ ವಿಂಡೊ ತೆರೆಯಿರಿ</translation>
 <translation id="7022756207310403729">ಬ್ರೌಸರ್‌ನಲ್ಲಿ ತೆರೆಯಿರಿ</translation>
+<translation id="1916785651473363467">ಕಸ್ಟಮ್ profile ಚಿತ್ರ</translation>
+<translation id="5336092064678832560">ಕಸ್ಟಮ್ ಚಿತ್ರ ಅಪ್‌ಲೋಡ್ ಮಾಡಿ</translation>
+<translation id="1062407476771304334">ಬದಲಾಯಿಸಿ</translation>
+<translation id="1428299461403073820">ಕಸ್ಟಮ್ profile ಚಿತ್ರವನ್ನು ಬದಲಾಯಿಸಿ</translation>
+<translation id="7994453838803296517">ಕಸ್ಟಮ್ profile ಚಿತ್ರ ಮುನ್ನೋಟ, ಆಯ್ಕೆಮಾಡಲಾಗಿದೆ</translation>
+<translation id="6578040791557152233">ಕಸ್ಟಮ್ profile ಚಿತ್ರವನ್ನು ಅಪ್‌ಲೋಡ್ ಮಾಡಿ</translation>
+<translation id="9222124079546967592">ಕಸ್ಟಮ್ profile ಚಿತ್ರವನ್ನು ತೆಗೆದುಹಾಕಿ</translation>
+<translation id="6058660912941570282">Brave ಈ ಫೈಲ್ ಅನ್ನು ಬಳಸಲಾಗುವುದಿಲ್ಲ. ಬೇರೊಂದು ಚಿತ್ರವನ್ನು ಆಯ್ಕೆಮಾಡಿ ಮತ್ತು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 </translationbundle>

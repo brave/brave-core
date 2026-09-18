@@ -864,9 +864,11 @@
 <translation id="646023614746251785">Apstiprināt mijmaiņu</translation>
 <translation id="6264944956989873014">Apstiprināt tiltu</translation>
 <translation id="7067917728851842589">Apstiprināt sūtīšanu</translation>
+<translation id="2841837950101800123">Nodrošinātājs</translation>
 <translation id="1114725160772317155">Piegādes statuss</translation>
 <translation id="2351357639951873714">Apstiprināt aizsardzību</translation>
 <translation id="7480044382160806610">Apstiprināt aizsega noņemšanu</translation>
+<translation id="6830542010524256586">Apstiprināt migrāciju</translation>
 <translation id="8332923694292360653">Tērēt</translation>
 <translation id="3735740477244556633">Kārtot pēc</translation>
 <translation id="6484605214219822434">Pārskatīt tiltu</translation>
@@ -1405,8 +1407,10 @@
 <translation id="5503843345634715425">Atmaksāts</translation>
 <translation id="1778601041100951971">Šifrē <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Noņem aizsegu no <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">Migrē <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> tika šifrēti</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> tika noņemts aizsegs</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> tika migrēti</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} darījums gaida.}
       other {{PENDING_TRANSACTIONS} darījumi gaida.}
@@ -1845,14 +1849,18 @@
 <translation id="9086302186042011942">Notiek sinhronizācija</translation>
 <translation id="99991973626409495">Pārskatīt šifrēšanu</translation>
 <translation id="6779429520470417361">Pārskatīt aizsega noņemšanu</translation>
+<translation id="7861093868637278059">Pārskatīt migrāciju</translation>
 <translation id="3114681061018999547">Šifrē</translation>
 <translation id="1564172583156967455">Noņem aizsegu</translation>
+<translation id="7040674372746105444">Migrē</translation>
 <translation id="8897189056319316783">Šifrējiet ZEC</translation>
 <translation id="508249542337194541">Noņem aizsegu no ZEC</translation>
+<translation id="3242332985109374549">Migrēt ZEC</translation>
 <translation id="3382275793825152362">Aizsargāt līdzekļus</translation>
 <translation id="617149752238892649">Atšķirt līdzekļus</translation>
 <translation id="8631765320256788981">Jūs sūtāt līdzekļus no sava atklātā konta uz savu aizsargāto kontu.</translation>
 <translation id="3860364671495430495">Jūs sūtāt līdzekļus no sava aizsargātā konta uz savu caurspīdīgo kontu.</translation>
+<translation id="9664108035970394">Jūs sūtāt līdzekļus no sava aizsargātā mantotā konta uz savu aizsargāto kontu.</translation>
 <translation id="7144878232160441200">Mēģināt vēlreiz</translation>
 <translation id="4750109510113597688">Šajā darījumā var tikt iekļauta samaksa par konta izveidi</translation>
 <translation id="6201709949885884577">Šīs darbības veikšanai ir nepieciešama parole.</translation>
@@ -2209,7 +2217,7 @@
 <translation id="8151638057146502721">Konfigurēt</translation>
 <translation id="999273441077650169">Modelis dinamiski mainās, lai izmantotu labāko modeli uzdevumam.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Qwen VL 30B – Alibaba Cloud izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina Qwen savā drošajā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina GLM-5.1 – Zhipu AI izstrādāts modelis dažādu uzdevumu risināšanai. Brave mitina GLM-5.1 modeli NEAR serveros caur viņu pārbaudāmo privāto drošo infrastruktūru.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
+<translation id="8659225822055186905">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina GLM-5.3 Flash – Zhipu AI izstrādāts modelis dažādu uzdevumu risināšanai. GLM-5.3 Flash modelis tiek mitināts NEAR serveros caur viņu pārbaudāmo privāto drošo infrastruktūru.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Sveiki, esmu Leo. Esmu Brave mākslīgā intelekta palīgs. Mani darbina Claude Instant — Anthropic radīts modelis, kas paredzēts sarunu un teksta apstrādes uzdevumiem. Claude Instant darbojas Brave infrastruktūrā, kas ir droša un pārvaldīta pašu spēkiem.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Anthropic izstrādātais modelis "Claude Haiku" sarunu un teksta apstrādes uzdevumu risināšanai. Brave mitina modeli "Claude Haiku" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Sveiki! Mani sauc Leo. Es esmu pilnībā mitināts Brave mākslīgā intelekta asistents. Mani darbina Anthropic izstrādātais modelis "Claude Sonnet" sarunu un teksta apstrādes uzdevumu risināšanai. Brave mitina modeli "Claude Sonnet" savā, drošā infrastruktūrā.<ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
@@ -2331,6 +2339,8 @@
 <translation id="4370698775470316661">Šī saruna ir pārāk gara, un tā nevar turpināties. Iespējams, ir citi modeļi, kuros Leo spēj nodrošināt precizitāti garākās sarunās.</translation>
 <translation id="4744144453035015075">Meklē tīmeklī</translation>
 <translation id="8548351747582087191">Meklē tīmeklī <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4395536726196773278">Meklē jūsu atvērtajās cilnēs “<ph name="QUERY"/>”…</translation>
+<translation id="4724926708866789382">Nevienā atvērtajā cilnē nav atbilstības “<ph name="QUERY"/>”.</translation>
 <translation id="7307396647043599949">Atlikums: <ph name="COUNT"/></translation>
 <translation id="8103700533980268469">Aizvērt šo paziņojumu</translation>
 <translation id="3417835166382867856">Meklēšana cilnēs</translation>
@@ -2378,6 +2388,8 @@
 <translation id="443008484043213881">Rīki</translation>
 <translation id="4343623396828510727">Šīs vietnes piedāvā rīkus, kurus Leo var izmantot, lai sūtītu datus uz šo vietni un no tās. Nepievienojiet un neapstipriniet šos rīkus, ja šī saruna satur datus, kurus nevēlaties rādīt šai vietnei.</translation>
 <translation id="5021823940147712387">Noņemt rīkus</translation>
+<translation id="8712279871321308580">Pieejamie vietnes rīki</translation>
+<translation id="3690996226559605619">Pieejamie rīki (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">Visi abonementi tiek automātiski atjaunināti, bet tos jebkurā laikā var atcelt pirms atjaunošanas.</translation>
 <translation id="5091223967610958">Atklājiet jūsu apmeklētās lapas (<ph name="HOST_NAME"/>) resursdatora nosaukumu, lai mēs varētu uzlabot Leo.</translation>
 <translation id="8732450785281947197">Leo MI rīki</translation>
@@ -2416,6 +2428,7 @@
 <translation id="6397861830483632092">Atvērt cilnes…</translation>
 <translation id="802080272588201037">Grāmatzīmes…</translation>
 <translation id="2716127283451902393">Vēsture…</translation>
+<translation id="8888171900079152025">Darbvietas mape</translation>
 <translation id="49269513399674318">Izmantot mikrofonu</translation>
 <translation id="3895031624234442305">Pielāgoti modeļi</translation>
 <translation id="4572010449071015143">Sākt jaunu sarunu</translation>
@@ -2449,8 +2462,12 @@
 <translation id="3397808797783614750">Automātiska pārlūkošana ar AI var radīt neparedzētas un kaitīgas sekas jūsu privātumam, finanšu drošībai un tiešsaistes saziņai. <ph name="LINK_BEFORE"/>Uzzināt vairāk<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Drošības brīdinājums</translation>
 <translation id="6077070599873946984">Brave AI nepieciešama jūsu atļauja darbībai: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI vēlas izpildīt **<ph name="TOOL_NAME"/>** vietnē **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Šī darbība tika atzīta kā iespējami neatbilstoša jūsu pieprasījumam:</translation>
+<translation id="5137568953923142260">Atļaut</translation>
 <translation id="3927932062596804919">Noraidīt</translation>
+<translation id="4191349941249805855">Rādīt rīka argumentus</translation>
+<translation id="7237059533128264835">Slēpt rīka argumentus</translation>
 <translation id="4569155249847375786">Pārbaudīts</translation>
 <translation id="8200772114523450471">Atsākt</translation>
 <translation id="7607002721634913082">Pauzēts</translation>
@@ -2556,7 +2573,7 @@
 <translation id="9173319813356700250">ZIŅAS</translation>
 <translation id="6543799171249004861">Attēla autors: <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo MI</translation>
-<translation id="7978582287767542276">Noņemt sponsorētās vietnes</translation>
+<translation id="7978582287767542276">Noņemt reklāmas Jaunas cilnes lapā</translation>
 <translation id="466214682712474574">Piesakieties savā <ph name="PROVIDER"/> kontā, lai redzētu savu bilanci</translation>
 <translation id="8332875111286275890">Piesakieties, lai redzētu savu bilanci</translation>
 <translation id="5430001801813715388">ATLĪDZĪBAS</translation>
@@ -2568,11 +2585,11 @@
 <translation id="4844370919312937270">Rādīt meklēšanas logrīku jaunās cilnēs</translation>
 <translation id="5088374130885640159">Iespējojot <ph name="REWARDS_LINK_BEGIN"/>Brave atlīdzības<ph name="REWARDS_LINK_END"/>, jūs varat pelnīt par reklāmu skatīšanu Jaunas cilnes lapā. <ph name="LEARN_MORE_LINK_BEGIN"/>Uzzināt vairāk<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">Rādīt reklāmas Jaunas cilnes lapā</translation>
-<translation id="4983925687993168579">Brave statistika</translation>
+<translation id="4983925687993168579">Statistika</translation>
 <translation id="5009354496127441090">Rādīt populārākās vietnes</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">Sponsorētās vietnes palīdz Brave saglabāt bezmaksas. Ja izmantojat <ph name="SITE_NAME"/>, jūs atbalstāt Brave misiju. Atspējojiet tās jebkurā laikā. <ph name="LINK_BEGIN"/>Uzzināt vairāk<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">Sponsorētās vietnes palīdz Brave saglabāt bezmaksas. Ja tās izmantojat, jūs atbalstāt Brave misiju. <ph name="LINK_BEGIN"/>Uzzināt vairāk<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Reklāmas Jaunas cilnes lapā palīdz Brave saglabāt bezmaksas. Ja izmantojat <ph name="SITE_NAME"/>, jūs atbalstāt Brave misiju. Atspējojiet tās jebkurā laikā. <ph name="LINK_BEGIN"/>Uzzināt vairāk<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Reklāmas Jaunas cilnes lapā palīdz Brave saglabāt bezmaksas. Ja tās izmantojat, jūs atbalstāt Brave misiju. <ph name="LINK_BEGIN"/>Uzzināt vairāk<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">STATISTIKA</translation>
 <translation id="5236080651083907980">Šifrēti videozvani ar Brave Talk</translation>
 <translation id="2671474274417808910">Privāti un droši zvani</translation>
@@ -2732,6 +2749,7 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="701087249209337256">Paņemiet līdzi sava vecā pārlūka saturu</translation>
 <translation id="142389341645668510">Pielāgot Brave</translation>
 <translation id="112005628409144325">Personalizējiet savu pārlūkošanas pieredzi ar sev vēlamo ciļņu izkārtojumu un krāsu režīmiem.</translation>
+<translation id="4428982101636000516">Meklējiet ar Brave vai ievadiet URL</translation>
 <translation id="7376367936988732808">Ciļņu izkārtojums</translation>
 <translation id="4734965478015604180">Horizontāls</translation>
 <translation id="490375751687810070">Vertikāls</translation>
@@ -2780,7 +2798,7 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="745054660363064771">Nevar savienoties ar serveri</translation>
 <translation id="3936826714240735937">Izvēlēties citu serveri</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> nevarēja izveidot savienojumu ar <ph name="REGION_NAME"/> serveri. Mēģiniet vēlreiz vai izvēlieties citu valsti.</translation>
-<translation id="1776533911621317363">Sākt 7 dienu bezmaksas izmēģinājumu</translation>
+<translation id="1776533911621317363">Sāciet 7 dienu bezmaksas izmēģinājumu</translation>
 <translation id="3357036723290257445">Jums jau ir Brave VPN?</translation>
 <translation id="8652175077544655965">Aizvērt iestatījumus</translation>
 <translation id="5908163815855240493">Atvērt galveno izvēlni</translation>
@@ -2792,11 +2810,13 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="8416695199565594645">Nodrošina datplūsmas maršrutēšanu caur īpašiem starpniekserveriem, lai ļautu piekļūt bieži ierobežotam saturam/vietnēm vai trešo pušu pakalpojumiem.</translation>
 <translation id="434523916398030617">Sazināties ar tehnisko atbalstu</translation>
 <translation id="1116694919640316211">Par</translation>
-<translation id="8998067240267949220">Lielāka konfidencialitāte un drošība tiešsaistē</translation>
-<translation id="8666111144393179185">Noslēpiet savu IP adresi un mainiet savu atrašanās vietu</translation>
-<translation id="8881997962573369342">Simtiem serveru visā pasaulē</translation>
+<translation id="8998067240267949220">Piekļūstiet saviem iecienītākajiem saturiem bez ierobežojumiem</translation>
+<translation id="8666111144393179185">Simtiem serveru visā pasaulē</translation>
+<translation id="8881997962573369342">Vienkārši noslēpiet savu IP adresi un mainiet savu atrašanās vietu</translation>
 <translation id="1513801084412881009">Zibenīgs savienojuma ātrums</translation>
-<translation id="6434859410115379558">Aizsargājiet līdz 10 ierīcēm, izmantojot tikai vienu plānu</translation>
+<translation id="6434859410115379558">Bez reģistrēšanas, neatkarīgi auditēts</translation>
+<translation id="4886431881864826294">Viens abonements aptver 10 ierīces datoros, Android un iOS</translation>
+<translation id="3649011006120934011">Bez saistībām, atceliet jebkurā laikā</translation>
 <translation id="1693568075761612600">Neizdevās izveidot atbalsta ziņojumu; pārbaudiet savu savienojumu.</translation>
 <translation id="1407707415819020643">Izvēlieties savu serveri</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> pilsētas - <ph name="SERVER_COUNT"/> serveri</translation>

@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Mavi tema</translation>
 <translation id="1070329623210597193">Bu sitenin görüntüleyebileceği veya düzenleyebileceği dosyalar</translation>
 <translation id="1074758928858737435">Sitelerin masaüstü sürümünü görüntülemeyi talep edebilirsiniz</translation>
+<translation id="1760197532822135980">Diğer uygulamalarda Brave'dan öneriler al</translation>
 <translation id="1109482864356262001">Hareket veya ışık sensörlerinin kullanılmasını gerektiren özellikler çalışmaz</translation>
 <translation id="6670155282615872564">Brave'dan en iyi şekilde yararlanmak için aşağıdaki önerilen işlemleri tamamlayın</translation>
 <translation id="113098737392899175">Klavye bağlıyken sayfalarda metin imleciyle gezin</translation>
@@ -83,6 +84,7 @@
 <translation id="1818308510395330587"><ph name="APP_NAME"/> uygulamasının artırılmış gerçekliği (AR) kullanması için <ph name="BEGIN_LINK"/>Android Ayarlarında<ph name="END_LINK"/> kamerayı da açın.</translation>
 <translation id="1822318649925991542">Göz atma deneyiminizi özelleştirmek için konumu değiştirin</translation>
 <translation id="1848033246551405023">Sans Serif yazı tipi</translation>
+<translation id="1861244985839668297">Bu işlev etkinken siteler HID cihazları kullanmak için izin isteyebilir. Kapalıyken siteler HID cihazları kullanamaz.</translation>
 <translation id="1861262398884155592">Bu klasör boş</translation>
 <translation id="1881806992065048905">Yeni sekme sayfası görünümü alt sayfası</translation>
 <translation id="1887786770086287077">Konum erişimi bu cihaz için kapalı. Konum erişimini <ph name="BEGIN_LINK"/>Android Ayarları<ph name="END_LINK"/>'ndan açın.</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271"><ph name="APP_NAME"/> uygulamasının, el takibi özelliğini kullanmasına izin vermek için <ph name="BEGIN_LINK"/>sistem ayarlarında<ph name="END_LINK"/> el takibini de etkinleştirin.</translation>
 <translation id="4688045258817337666">Kartlarınızı yönetme</translation>
 <translation id="4722332387043141878">Sanal gerçeklik veya fitness takibi gibi özelliklerin kullanılması için siteler genellikle cihazınızın hareket ve ışık sensörlerini kullanır</translation>
+<translation id="4748783296226936791">Yaygın olmayan klavye, oyun kumandası ve başka cihazları kullanan özellikler için siteler genellikle HID cihazlara bağlanır</translation>
 <translation id="4755971844837804407">Bu düğme açıkken siteler size tüm reklamları gösterebilir. Düğme kapalıyken siteler size araya giren veya yanıltıcı reklamlar gösteremez.</translation>
 <translation id="4779083564647765204">Yakınlaştır</translation>
 <translation id="4807122856660838973">Güvenli Tarama'yı açın</translation>
@@ -447,14 +450,16 @@
 <translation id="5668404140385795438">Web sitesinin yakınlaştırmayı önleme isteğini geçersiz kılın</translation>
 <translation id="5668843533782548925">Siteler daha yavaş ancak daha güvenli olur</translation>
 <translation id="5677928146339483299">Engelleniyor</translation>
+<translation id="98560749650104566">Brave artık son tarama geçmişi gibi tarama verilerinize dayalı olarak diğer uygulamalarda öneriler gösterebilir. Bu veriler, cihazınızda güvenli bir şekilde işlenir. Bu özelliği Brave ayarlarından istediğiniz zaman kapatabilirsiniz.</translation>
 <translation id="5689516760719285838">Konum</translation>
 <translation id="5690795753582697420">Kamera, Android ayarlarında kapatıldı</translation>
 <translation id="5700761515355162635">Üçüncü taraf çerezlerine izin verildi</translation>
 <translation id="5706552988683188916">Bu işlem, <ph name="WEBSITE"/> için çerezleri ve diğer site verilerini siler</translation>
 <translation id="571222594670061844">Siteler, kimlik hizmetlerinden gelen oturum açma istemlerini gösterebilir</translation>
+<translation id="5719854774000914513">Siteler, HID cihazlarına bağlanmak isteyebilir</translation>
 <translation id="5740126560802162366">Siteler, cihazınıza veri kaydedebilir</translation>
 <translation id="5743425052258407233">Tüm cihazlarınızda geçmişinizi görüntüleyin, böylece kaldığınız yerden kolayca devam edebilirsiniz</translation>
-<translation id="5749158352074143502">Bu sekmeyle devam et</translation>
+<translation id="5749158352074143502">Bu sekmeyle devam edin</translation>
 <translation id="5750869797196646528">El takibi</translation>
 <translation id="5753570386948603678">Geçmişten sil</translation>
 <translation id="5771720122942595109"><ph name="PERMISSION_1"/> engellendi</translation>
@@ -500,6 +505,7 @@
 <translation id="6085954183010297841">Dosya düzenleme izni silinsin mi? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Bu ayar açıkken siteler pencere içinde pencere moduna otomatik olarak geçebilir. Bu ayar kapalıyken siteler pencere içinde pencere moduna otomatik olarak geçemez.</translation>
 <translation id="6120483543004435978">Bu düğme açıkken siteler cihazınızı etkin olarak kullandığınız zamanı bilmek isteyebilir. Düğme kapalıyken siteler cihazınızı etkin olarak kullandığınız zamanı bilemez.</translation>
+<translation id="5773142757282836623">Diğer uygulamalarda Brave'dan öneriler al seçeneğini gizle</translation>
 <translation id="4852158809106762963">Brave, şifrenizi kaydetmeyi önerir</translation>
 <translation id="615886654739818377">Sitelerin tüm ekranlarımda pencereleri yönetmesine izin verme</translation>
 <translation id="6165508094623778733">Daha fazla bilgi</translation>
@@ -571,6 +577,7 @@
 <translation id="6950072572526089586">Ziyaret ettiğiniz bir site, yaptığınız işlemlerle ilgili bilgileri kaydedebilir. Bu bilgileri, beklendiği gibi çalışmak, örneğin bir sitede oturumunuzu açık tutmak veya alışveriş sepetinizdeki öğeleri kaydetmek için kullanabilir. Genellikle siteler bu bilgileri geçici olarak cihazınıza kaydeder.</translation>
 <translation id="6964291282260073066">"WebGPU" devre dışıdır.</translation>
 <translation id="6965382102122355670">Tamam</translation>
+<translation id="6972629891077993081">HID cihazlar</translation>
 <translation id="6980507581230208647">Gül rengi tema</translation>
 <translation id="6980861169612950611">Site verileri silinsin mi? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Erişilebilirlik</translation>
@@ -583,7 +590,6 @@
 <translation id="7053983685419859001">Engelle</translation>
 <translation id="7055552182600664515">Telif hakkıyla korunan içerikleri oynatmak için sitelerin içerik koruma hizmeti kullanmaları gerekebilir. <ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 öğe seçildi}other{# öğe seçildi}}</translation>
-<translation id="708014373017851679">'<ph name="APP_NAME"/>' güncel değil. Lütfen uygulamayı güncelleyin.</translation>
 <translation id="7084115944294706056">Adres çubuğu konumunu seçin</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> öğe seçildi. Seçenekler, ekranın üst kısmına yakın bir yerde bulunur</translation>
 <translation id="7141896414559753902">Sitelerin pop-up göstermesini ve yönlendirme yapmasını engelle (önerilir)</translation>
@@ -598,7 +604,7 @@
 <translation id="7250468141469952378"><ph name="ITEM_COUNT"/> öğe seçildi</translation>
 <translation id="7260727271532453612"><ph name="PERMISSION_1"/> ve <ph name="PERMISSION_2"/> için izin verildi</translation>
 <translation id="7276071417425470385">Bu düğme açıkken siteler sanal gerçeklik cihazlarını kullanmak isteyebilir. Düğme kapalıyken siteler sanal gerçeklik cihazlarını kullanamaz.</translation>
-<translation id="7279851812866769760">Kişi bilgilerini paylaş</translation>
+<translation id="7279851812866769760">Kişilerin bilgilerini paylaşın</translation>
 <translation id="7282197670900591579">Limon sarısı tema</translation>
 <translation id="728412880473384942">Siteler daha hızlı ancak daha az güvenli olur</translation>
 <translation id="5843014938239239453"><ph name="BEGIN_LINK1"/>Android ayarları<ph name="END_LINK1"/> bölümünde yönetin.
@@ -728,6 +734,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:</translation>
 <translation id="8593422116412089302">Bu düğme açıkken siteler hakkınızda kaydettikleri bilgileri kullanmak isteyebilir. Düğme kapalıyken siteler hakkınızda kaydettikleri bilgileri kullanmak isteyemez.</translation>
 <translation id="8609465669617005112">Yukarı taşı</translation>
 <translation id="8617611086246832542">Bu düğme açıkken web sitelerinin masaüstü görünümü gösterilir. Düğme kapalıyken web sitelerinin mobil cihaz görünümü gösterilir.</translation>
+<translation id="8625916342247441948">Sitelerin HID cihazlara bağlanmasına izin verme</translation>
 <translation id="8670078035093027626">Varsayılan tarayıcı alt sayfası tam ekran olarak açıldı</translation>
 <translation id="8676316391139423634">Düğme açıkken siteler ellerinizi izlemek için izin isteyebilir. Düğme kapalıyken siteler ellerinizi izleyemez.</translation>
 <translation id="8676374126336081632">Girişi temizle</translation>
@@ -779,7 +786,7 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:</translation>
 <translation id="7359422048569205930">Brave'un son sekmelerinizi cihazınızın uygulama listesinde ve arama sonuçlarında göstermesine izin verin. Bu özelliği Brave ayarlarından istediğiniz zaman kapatabilirsiniz.</translation>
 <translation id="9162462602695099906">Bu sayfa tehlikeli</translation>
 <translation id="9182556968660520230">Sitelerin korumalı içeriği oynatmasına izin verme</translation>
-<translation id="927148002081263046">Kişi bilgisini paylaş</translation>
+<translation id="927148002081263046">Kişi bilgilerini paylaşın</translation>
 <translation id="947156494302904893">Ziyaret ettiğiniz siteler, bot olmadığınızı ve gerçek bir kişi olduğunuzu doğrulayabilir</translation>
 <translation id="959682366969460160">Organize çalışın</translation>
 <translation id="960590623979248167">Köprüleri göster</translation>

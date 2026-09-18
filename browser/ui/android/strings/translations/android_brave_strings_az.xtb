@@ -112,9 +112,9 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="4176463684765177261">Deaktivdir</translation>
 <translation id="59174027418879706">Aktivdir</translation>
 <translation id="6920492760024499150">Bu günün ən populyar hekayələri məxfi lentdə və sadəcə sizin üçün.</translation>
-<translation id="3803728444598576153">Brave News-u aktiv edin və heç bir xəbəri qaçırmayın</translation>
+<translation id="3803728444598576153">Brave Xəbərlər-i aktiv edin və heç bir xəbəri qaçırmayın</translation>
 <translation id="7627131190984957214">Brave Xəbərlər cihazınızla uyğunlaşan məxfi və anonimləşdirilmiş reklam dəstəkli məzmunlardır.</translation>
-<translation id="7897050360583141319">Sevdiyiniz mənbələri tək bir lentdə izləyin. Sadəcə Brave-də bir nişan açın, aşağıya fırladın və... voila!\nBrave Xəbərlər şəxsi və anonim reklamlarla dəstəklənir.</translation>
+<translation id="7897050360583141319">Sevimli mənbələrinizi bir yerdə izləyin. Sadəcə olaraq Brave-də tab açın, aşağı fırladın və… voila!</translation>
 <translation id="1765217911817124376">Brave News-u aktiv et</translation>
 <translation id="8981973962043893066">Sayt, mövzu və ya RSS lentinə görə axtarın</translation>
 <translation id="3225021799163709119">Populyar</translation>
@@ -192,6 +192,8 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="5987838417172370108">Brave brauzeri çökəndə və ya donanda avtomatik olaraq diaqnostika hesabatları göndərərək Brave-nin məhsul sabitliyinə kömək edin.</translation>
 <translation id="7977176350719484850">Qənaət edilmiş\ntəxmini verilənlər</translation>
 <translation id="9008534313521214777">Qənaət edilmiş\ntəxmini vaxt</translation>
+<translation id="5668852698659986622">Sponsorlu Reklamları aktivləşdir</translation>
+<translation id="431194936581466649">Sponsorlu Reklamlar ilə Brave-in müstəqil, istifadəçi-birinci Veb qurma missiyasını dəstəkləyin. Biz reklamların performansını sizi tanımadan, məxfi şəkildə ölçürük.</translation>
 <translation id="8347743943525229984">Brave sorğularına icazə ver</translation>
 <translation id="6022939994702081659">Brave-ə keçidləri yeni tab-vərəqə səhifəsində məxfi sorğulara göstərməyə icazə verir. Sorğular daha yaxşı xüsusiyyətlər yaratmağımıza və brauzer əsaslı reklam kampaniyalarının effektivliyini ölçməyimizə kömək edir.</translation>
 <translation id="7746496306508543965">Brave sorğuları haqqında ətraflı məlumat</translation>
@@ -252,7 +254,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="6213254277250932867">12 sözlü bərpa ifadəm var</translation>
 <translation id="4225265925807365011">24 sözlü bərpa ifadəm var</translation>
 <translation id="3570367516044491911">Standart brauzer kimi təyin et</translation>
-<translation id="6800338374677644736">Əsas Brauzer olaraq təyin edin</translation>
 <translation id="1545749641540134597">QR Kodu skan edin</translation>
 <translation id="5317781812114905957">Təlimatlar</translation>
 <translation id="8515319483805157233">QR Kod ilə axtarış üçün, QR Kodu çərçivənin ortasına yerləşdirin.</translation>
@@ -284,7 +285,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="5582839680698949063">Əsas menyu</translation>
 <translation id="7002271985859760052">Səhifə əməliyyatları</translation>
 <translation id="7104487676473617844">Aşağıdakı elementlər yalnız cari açıq veb səhifə tərəfindən dəstəklənərsə menyuda görünəcək.</translation>
-<translation id="4159764849281393303">VebTətbiq</translation>
 <translation id="8038539967102225446">Brave Reklamlar burada!</translation>
 <translation id="222883304157347087">(bu cihaz)</translation>
 <translation id="4157741509680155021">SYNC ZƏNCİRİNDƏKI CİHAZLAR</translation>
@@ -722,6 +722,8 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="1634828734222219955">Ümumi</translation>
 <translation id="7995708795274219641">Məbləğ + Qazanc</translation>
 <translation id="2186011161688824046">Məbləğ + komissiya</translation>
+<translation id="1118876217803190221">Balans kifayət deyil</translation>
+<translation id="275990379543116961">Gas üçün kifayət qədər vəsait yoxdur</translation>
 <translation id="1950052789869821983">Əməliyyat</translation>
 <translation id="2304783958703511257">Təkmil parametrlər</translation>
 <translation id="4220062530885628403">Nonce</translation>

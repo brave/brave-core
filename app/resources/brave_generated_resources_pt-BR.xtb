@@ -112,6 +112,9 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3114478090884951591">Área visível</translation>
 <translation id="2026367923222947564">Página inteira</translation>
 <translation id="4218885227032158909">Área selecionada</translation>
+<translation id="2586386106930448447">Visualização da captura de tela</translation>
+<translation id="7514365320538308">Baixar</translation>
+<translation id="2743387203779672305">Copiar para a área de transferência</translation>
 <translation id="4928988318462976765">Loja Virtual de Extensões</translation>
 <translation id="9181207987584064303">Visualizar na Loja Virtual de Extensões</translation>
 <translation id="3161744659507801211">Aviso: o Brave não pode impedir que as extensões registrem seu histórico de navegação.</translation>
@@ -364,6 +367,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6847541693235449912">Abrir</translation>
 <translation id="2079545284768500474">Desfazer</translation>
 <translation id="1533980864758658574">Nova janela criada para <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Nenhuma aba corresponde a esse tópico. Tente descrevê-lo de forma diferente.</translation>
 <translation id="7985042437720138349">Este recurso envia dados sobre suas guias abertas para o Leo, o assistente de navegação com tecnologia de IA do Brave.</translation>
 <translation id="6165508094623778733">Saber mais</translation>
 <translation id="7557539689487606886">Assinar o Premium</translation>
@@ -421,6 +425,23 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4328541188421002379">Dê um nome ao seu contêiner, como por exemplo "Trabalho" ou "Pessoal"</translation>
 <translation id="4976989127264491396">Erro: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">O contêiner não foi encontrado</translation>
+<translation id="6055154402239241620">Controle de tráfego</translation>
+<translation id="8134521925475508805">Configure sites específicos para abrir automaticamente em um contexto específico, criando separação entre suas sessões de navegação. <ph name="BEGIN_LINK"/>Saiba mais<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Ativar o Controle de tráfego</translation>
+<translation id="1358255827354528344">Adicionar nova regra</translation>
+<translation id="7183128985801806752">Nova regra de controle de tráfego</translation>
+<translation id="2474694032500407328">Editar regra de controle de tráfego</translation>
+<translation id="5543417389274097206">Criar regra</translation>
+<translation id="6532106788206463496">Salvar alterações</translation>
+<translation id="1172800769374812685">Excluir regra</translation>
+<translation id="2389682807835777591">Tem certeza de que deseja excluir a regra <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Insira URLs para gerenciar e sempre abrir em um contexto de navegação específico.</translation>
+<translation id="1173480005453148926">URLs para gerenciar</translation>
+<translation id="6217532416180299470">Insira URLs para gerenciar com o controle de tráfego</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> corresponde ao site e seus subdomínios; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> corresponde ao site exato; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> corresponde a todos os sites; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> é um comentário.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (e mais <ph name="COUNT"/> URLs)</translation>
+<translation id="3700798663085748181">Ativar regra</translation>
+<translation id="2967480878853054068">Filtro de URL inválido</translation>
 <translation id="2263346047290834619">Usar guias em estilo de árvore</translation>
 <translation id="5860254591544742609">Mostrar barra de título</translation>
 <translation id="4691131445504068802">Ocultar completamente quando minimizado</translation>
@@ -528,7 +549,6 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6745592621698551453">Atualizar agora</translation>
 <translation id="5334844597069022743">Ver fonte</translation>
 <translation id="4720556299488643018">Cancelar inscrição</translation>
-<translation id="6532106788206463496">Salvar alterações</translation>
 <translation id="4516904298421534459">Listas de filtros</translation>
 <translation id="4435215931544457255">Outras listas populares da comunidade. Tenha em mente que a ativação de um número excessivo de filtros prejudicará a velocidade de navegação.</translation>
 <translation id="802154636333426148">Falha no download</translation>
@@ -611,6 +631,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="509873765238158442">Bloquear o recall da Microsoft</translation>
 <translation id="4763421121695677716">Bloqueia o recurso de recall nos computadores Microsoft Windows o impedindo de tirar capturas de tela automaticamente de qualquer guia aberta do Brave.</translation>
 <translation id="1968895725257436430">Coleta de dados</translation>
+<translation id="5668852698659986622">Ativar Anúncios Patrocinados</translation>
+<translation id="431194936581466649">Ajude a apoiar a missão da Brave de criar uma Web independente e centrada no usuário com os Anúncios Patrocinados. Medimos o desempenho dos anúncios de forma privada, sem identificar você.</translation>
 <translation id="1700052872056357670">Limpar dados ao sair</translation>
 <translation id="216468847346280584">Limpar dados dos Anúncios Brave...</translation>
 <translation id="96212973142796240">Dados dos Anúncios Brave apagados</translation>
@@ -991,4 +1013,12 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="154702742922788359">Modo de abertura</translation>
 <translation id="2249111429176737533">Abrir como janela com guias</translation>
 <translation id="7022756207310403729">Abrir no navegador</translation>
+<translation id="1916785651473363467">Imagem de perfil personalizada</translation>
+<translation id="5336092064678832560">Enviar imagem personalizada</translation>
+<translation id="1062407476771304334">Substituir</translation>
+<translation id="1428299461403073820">Substituir imagem de perfil personalizada</translation>
+<translation id="7994453838803296517">Visualização da imagem de perfil personalizada, selecionada</translation>
+<translation id="6578040791557152233">Enviar uma imagem de perfil personalizada</translation>
+<translation id="9222124079546967592">Remover imagem de perfil personalizada</translation>
+<translation id="6058660912941570282">A Brave não pode usar este arquivo. Escolha outra imagem e tente novamente.</translation>
 </translationbundle>

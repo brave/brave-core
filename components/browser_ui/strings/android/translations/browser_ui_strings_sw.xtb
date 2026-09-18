@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Mandhari ya buluu</translation>
 <translation id="1070329623210597193">Faili ambazo tovuti hii inaweza kuona au kubadilisha</translation>
 <translation id="1074758928858737435">Unaweza kuomba kuona toleo la eneokazi la tovuti</translation>
+<translation id="1760197532822135980">Pata mapendekezo ya Brave kwenye programu nyingine</translation>
 <translation id="1109482864356262001">Vipengele vinavyohitaji vitambuzi vya mwendo au mwangaza havitafanya kazi</translation>
 <translation id="6670155282615872564">Kamilisha vitendo hivi vilivyopendekezwa hapa chini ili unufaike zaidi na Brave</translation>
 <translation id="113098737392899175">Sogeza kwenye kurasa ukitumia kiteuzi cha maandishi wakati umeunganisha kibodi</translation>
@@ -83,6 +84,7 @@
 <translation id="1818308510395330587">Ili uruhusu <ph name="APP_NAME"/> itumie Uhalisia Ulioboreshwa, washa pia kamera katika <ph name="BEGIN_LINK"/>Mipangilio ya Android<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Badilisha nafasi ili uweke mapendeleo ya hali yako ya kuvinjari</translation>
 <translation id="1848033246551405023">Fonti ya Sans Serif</translation>
+<translation id="1861244985839668297">Kikiwashwa, tovuti zinaweza kuomba ruhusa ya kutumia vifaa vya HID. Kikizimwa, tovuti haziwezi kutumia vifaa vya HID.</translation>
 <translation id="1861262398884155592">Folda hii haina chochote</translation>
 <translation id="1881806992065048905">Safu ya chini ya mwonekano wa ukurasa wa kichupo kipya</translation>
 <translation id="1887786770086287077">Kipengele cha mahali kimezimwa kwenye kifaa hiki. Kiwashe katika <ph name="BEGIN_LINK"/>Mipangilio ya Android<ph name="END_LINK"/>.</translation>
@@ -216,7 +218,7 @@
 <translation id="3115898365077584848">Onyesha Maelezo</translation>
 <translation id="3120204271988747891">Tovuti zinaweza kuomba idhini ya kufikia vifaa vingine kwenye mtandao wako wa karibu</translation>
 <translation id="3123473560110926937">Yamezuiwa kwenye baadhi ya tovuti</translation>
-<translation id="3132996321662585180">Onyesha upya kila siku</translation>
+<translation id="3132996321662585180">Badilisha kila siku</translation>
 <translation id="3134859781443140237">Mtandao wa karibu</translation>
 <translation id="3143754809889689516">Cheza kuanzia mwanzo</translation>
 <translation id="3164169438034704658">Unaweza kuwasha mipangilio ya eneo mahususi katika <ph name="BEGIN_LINK"/>Mipangilio ya Android<ph name="END_LINK"/>.</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271">Ili uruhusu <ph name="APP_NAME"/> itumie ufuatiliaji wa mijongeo ya mikono, washa pia mipangilio ya ufuatiliaji wa mijongeo ya mikono kwenye <ph name="BEGIN_LINK"/>mipangilio ya mfumo<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Kudhibiti kadi zako</translation>
 <translation id="4722332387043141878">Tovuti hutumia vitambuzi vya mwendo na mwangaza vya kifaa chako kwa vipengele kama vile uhalisia pepe au ufuatiliaji wa siha</translation>
+<translation id="4748783296226936791">Tovuti huunganisha kwenye vifaa vya HID kwa ajili ya vipengele vinavyotumia kibodi, vidhibiti vya michezo na vifaa vingine visivyo vya kawaida</translation>
 <translation id="4755971844837804407">Kikiwashwa, tovuti zinaweza kukuonyesha tangazo lolote. Kikizimwa, tovuti haziwezi kuonyesha matangazo ya kupotosha au yanayokatiza matumizi.</translation>
 <translation id="4779083564647765204">Kuza</translation>
 <translation id="4807122856660838973">Washa kipengele cha Kuvinjari kwa Usalama</translation>
@@ -447,11 +450,13 @@
 <translation id="5668404140385795438">Batilisha ombi la tovuti ili kuzuia kuvuta karibu</translation>
 <translation id="5668843533782548925">Tovuti zinapakia kwa kasi ya chini lakini ni salama sana</translation>
 <translation id="5677928146339483299">Kumezuiwa</translation>
+<translation id="98560749650104566">Brave sasa inaweza kukuonyesha mapendekezo katika programu nyingine kulingana na data yako ya kuvinjari, kama vile historia ya kuvinjari ya hivi majuzi. Data hii huchakatwa kwa njia salama kwenye kifaa chako. Unaweza kuzima hali hii wakati wowote kwenye mipangilio ya Brave.</translation>
 <translation id="5689516760719285838">Mahali</translation>
 <translation id="5690795753582697420">Kamera imezimwa katika mipangilio ya Android</translation>
 <translation id="5700761515355162635">Vidakuzi vya mshirika mwingine vimeruhusiwa</translation>
 <translation id="5706552988683188916">Hatua hii hufuta vidakuzi na data nyingine ya tovuti katika <ph name="WEBSITE"/></translation>
 <translation id="571222594670061844">Tovuti zinaweza kuonyesha vidokezo vya kuingia katika akaunti kutoka kwenye huduma za utambulisho</translation>
+<translation id="5719854774000914513">Tovuti zinaweza kuomba ruhusa ya kuunganisha kwenye vifaa vya HID</translation>
 <translation id="5740126560802162366">Tovuti zinaweza kuhifadhi data kwenye kifaa chako</translation>
 <translation id="5743425052258407233">Pata historia kwenye vifaa vyako vyote ili uendelee ulipoachia kwa urahisi</translation>
 <translation id="5749158352074143502">Endelea ukitumia kichupo hiki</translation>
@@ -500,6 +505,7 @@
 <translation id="6085954183010297841">Ungependa kufuta ruhusa ya kubadilisha faili? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Ukiwa umewasha, tovuti zitaweza kutumia kipengele cha kupachika picha ndani ya picha nyingine kiotomatiki. Ukiwa umezima, tovuti hazitaweza kutumia kipengele cha kupachika picha ndani ya picha nyingine kiotomatiki.</translation>
 <translation id="6120483543004435978">Kikiwashwa, tovuti zinaweza kuomba ruhusa ya kujua unapotumia kifaa chako sana. Kikizimwa, tovuti haziwezi kujua unapotumia kifaa chako sana.</translation>
+<translation id="5773142757282836623">Ficha kipengele cha Pata mapendekezo ya Brave katika programu nyingine</translation>
 <translation id="4852158809106762963">Brave itakuomba kuhifadhi nenosiri lako</translation>
 <translation id="615886654739818377">Usiruhusu tovuti zidhibiti madirisha kwenye skrini zako zote</translation>
 <translation id="6165508094623778733">Pata maelezo zaidi</translation>
@@ -571,6 +577,7 @@
 <translation id="6950072572526089586">Tovuti unayoitembelea inaweza kuhifadhi taarifa kuhusu shughuli unazofanya ili itekeleze kama unavyotarajia, kwa mfano, ili kukufanya usalie ukiwa umeingia katika akaunti kwenye tovuti au kuhifadhi bidhaa katika kikapu chako cha ununuzi. Mara nyingi tovuti huhifadhi taarifa hizi kwa muda mfupi katika kifaa chako.</translation>
 <translation id="6964291282260073066">"WebGPU" imezimwa.</translation>
 <translation id="6965382102122355670">Sawa</translation>
+<translation id="6972629891077993081">Vifaa vya HID</translation>
 <translation id="6980507581230208647">Mandhari ya rangi ya waridi</translation>
 <translation id="6980861169612950611">Je, ungependa kufuta data ya tovuti? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Ufikivu</translation>
@@ -583,7 +590,6 @@
 <translation id="7053983685419859001">Zuia</translation>
 <translation id="7055552182600664515">Ili ucheze maudhui yanayolindwa kwa hakimiliki, huenda tovuti zikahitaji kutumia huduma ya kulinda maudhui. <ph name="BEGIN_LINK"/>Pata maelezo zaidi<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Umechagua 1}other{Umechagua #}}</translation>
-<translation id="708014373017851679">'<ph name="APP_NAME"/>' imepitwa na wakati. Tafadhali sasisha programu.</translation>
 <translation id="7084115944294706056">Kuchagua mahali pa kuweka sehemu ya anwani</translation>
 <translation id="7087918508125750058">Imechagua <ph name="ITEM_COUNT"/>. Chaguo zinapatikana karibu na sehemu ya juu ya skrini</translation>
 <translation id="7141896414559753902">Zuia tovuti zisionyeshe madirisha ibukizi na kuelekeza kwingine (inapendekezwa)</translation>
@@ -728,6 +734,7 @@ Ulinzi wa Hali ya Juu hudhibiti mipangilio hii ya Brave:</translation>
 <translation id="8593422116412089302">Ukiwasha, tovuti zinaweza kuomba ruhusa zitumie taarifa ambazo zimehifadhi kukuhusu. Ukizima, tovuti haziwezi kukuomba ruhusa ya kutumia taarifa ambazo zimehifadhi kukuhusu.</translation>
 <translation id="8609465669617005112">Songa juu</translation>
 <translation id="8617611086246832542">Kikiwashwa, mwonekano wa kompyuta wa tovuti utaonyeshwa. Kikizimwa, mwonekano wa kifaa cha mkononi wa tovuti utaonyeshwa.</translation>
+<translation id="8625916342247441948">Usiruhusu tovuti ziunganishe kwenye vifaa vya HID</translation>
 <translation id="8670078035093027626">Safu ya chini ya kivinjari chaguomsingi imefunguliwa katika hali ya skrini nzima</translation>
 <translation id="8676316391139423634">Ukiwasha, tovuti zinaweza kuomba kufuatilia mijongeo ya mikono yako. Ukizima, tovuti haziwezi kufuatilia mijongeo ya mikono yako.</translation>
 <translation id="8676374126336081632">Futa uingizaji wa maandishi</translation>

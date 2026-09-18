@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Atspējots</translation>
 <translation id="59174027418879706">Iespējots</translation>
 <translation id="6920492760024499150">Šodienas populārākie stāsti privātā plūsmā tieši jums.</translation>
-<translation id="3803728444598576153">Ieslēdziet Brave ziņas un nekad nepalaidiet neko garām.</translation>
+<translation id="3803728444598576153">Ieslēdziet Brave ziņas un nekad nepalaidiet neko garām</translation>
 <translation id="7627131190984957214">Brave ziņu darbību nodrošina pilnīgi privātas un anonimizētas reklāmas, kas tiek pielāgotas jūsu ierīcē.</translation>
-<translation id="7897050360583141319">Seko saviem mīļākajiem avotiem vienā plūsmā. Vienkārši atver cilni Brave pārlūkā, ritini lejup un… paskat!\nBrave News tiek atbalstīts no privātu, anonimizētu reklāmu ieņēmumiem.</translation>
+<translation id="7897050360583141319">Seko saviem mīļākajiem avotiem vienā plūsmā. Vienkārši atver cilni Brave pārlūkā, ritini lejup un… paskat!</translation>
 <translation id="1765217911817124376">Ieslēgt Brave News</translation>
 <translation id="8981973962043893066">Meklē vietni, tēmu vai RSS plūsmu</translation>
 <translation id="3225021799163709119">Populārs</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Palīdziet uzlabot Brave\u2019s produktu stabilitāti, automātiski nosūtot diagnostikas ziņojumus, kad Brave pārlūks avarē vai pārstāj darboties.</translation>
 <translation id="7977176350719484850">Apr. ietaupītie\ndati</translation>
 <translation id="9008534313521214777">Apr. ietaupītais\nlaiks</translation>
+<translation id="5668852698659986622">Iespējot sponsorētās reklāmas</translation>
+<translation id="431194936581466649">Palīdziet atbalstīt Brave misiju veidot neatkarīgu, lietotājam pirmajā vietā liktu tīmekli ar sponsorētajām reklāmām. Mēs mērām reklāmu veiktspēju privāti, jūs neidentificējot.</translation>
 <translation id="8347743943525229984">Atļaut Brave aptaujas</translation>
 <translation id="6022939994702081659">Ļauj Brave rādīt saites uz privātām aptaujām jaunas cilnes lapā. Aptaujas palīdz mums veidot labākas funkcijas un izvērtēt pārlūkprogrammā balstītu reklāmas kampaņu efektivitāti.</translation>
 <translation id="7746496306508543965">Uzzināt vairāk par Brave aptaujām</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Man ir 12 vārdu atkopšanas frāze</translation>
 <translation id="4225265925807365011">Man ir 24 vārdu atkopšanas frāze</translation>
 <translation id="3570367516044491911">Iestatīt kā noklusējuma pārlūku</translation>
-<translation id="6800338374677644736">Iestatīt kā noklusējuma pārlūku</translation>
 <translation id="1545749641540134597">Ieskenēt QR kodu</translation>
 <translation id="5317781812114905957">Instrukcijas</translation>
 <translation id="8515319483805157233">Lai meklētu pēc kvadrātkoda, ietilpiniet kvadrātkodu rāmja centrā.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Galvenā izvēlne</translation>
 <translation id="7002271985859760052">Lapas darbības</translation>
 <translation id="7104487676473617844">Tālāk norādītie vienumi būs redzami izvēlnē tikai tad, ja to atbalsta pašlaik atvērtā tīmekļa lapa.</translation>
-<translation id="4159764849281393303">Tīmekļa lietotne</translation>
 <translation id="8038539967102225446">Brave reklāmas ir klāt!</translation>
 <translation id="222883304157347087">(šī ierīce)</translation>
 <translation id="4157741509680155021">SINHRONIZĀCIJAS ĶĒDĒ ESOŠAS IERĪCES</translation>
@@ -724,6 +724,8 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1634828734222219955">Kopā</translation>
 <translation id="7995708795274219641">Daudzums + Gas</translation>
 <translation id="2186011161688824046">Summa + komisijas maksa</translation>
+<translation id="1118876217803190221">Nepietiekama bilance</translation>
+<translation id="275990379543116961">Nepietiek līdzekļu Gas segšanai</translation>
 <translation id="1950052789869821983">Darījums</translation>
 <translation id="2304783958703511257">Papildu iestatījumi</translation>
 <translation id="4220062530885628403">Šī brīža</translation>

@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Tämän päivän suosituimmat tarinat yksityisessä syötteessä, juuri sinulle.</translation>
 <translation id="3803728444598576153">Ota Brave-uutiset käyttöön, niin yksikään tarina ei mene ohi</translation>
 <translation id="7627131190984957214">Brave-uutiset on mainostuettu. Mainokset ovat täysin yksityisiä ja anonymisoituja laitteeseesi perustuen.</translation>
-<translation id="7897050360583141319">Seuraa suosikkilähteitäsi, yhdessä syötteessä. Avaa välilehti Bravessa, vieritä alas ja… voila!\nBrave-uutiset on mainoksilla tuettu palvelu, jossa on yksityisiä ja anonymisoituja mainoksia.</translation>
+<translation id="7897050360583141319">Seuraa suosikkilähteitäsi, yhdessä syötteessä. Avaa välilehti Bravessa, vieritä alas ja… voila!</translation>
 <translation id="1765217911817124376">Ota Brave News käyttöön</translation>
 <translation id="8981973962043893066">Hae sivustoja, aiheita tai RSS-syötteitä</translation>
 <translation id="3225021799163709119">Suositut</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Auta parantamaan Braven tuotteen stabiilisuutta lähettämällä diagnostiikkaraportit automaattisesti, kun Brave-selain kaatuu tai jäätyy.</translation>
 <translation id="7977176350719484850">Tallennettuja\ntietoja keskimäärin</translation>
 <translation id="9008534313521214777">Arvioitu säästetty aika</translation>
+<translation id="5668852698659986622">Ota sponsoroidut mainokset käyttöön</translation>
+<translation id="431194936581466649">Auta tukemaan Braven tehtävää rakentaa itsenäinen, käyttäjää ensisijaisesti palveleva verkko sponsoroiduilla mainoksilla. Mittaamme mainosten tehokkuutta yksityisesti tunnistamatta sinua.</translation>
 <translation id="8347743943525229984">Salli Braven kyselyt</translation>
 <translation id="6022939994702081659">Sallii Braven näyttää linkkejä yksityisiin kyselyihin uudella välilehdellä. Kyselyt auttavat meitä rakentamaan parempia ominaisuuksia ja mittaamaan selainpohjaisten mainoskampanjoiden tehokkuutta.</translation>
 <translation id="7746496306508543965">Lue lisää Braven kyselyistä</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Minulla on 12-sanainen palautuslause</translation>
 <translation id="4225265925807365011">Minulla on 24-sanainen palautuslause</translation>
 <translation id="3570367516044491911">Aseta oletusselaimeksi</translation>
-<translation id="6800338374677644736">Aseta oletusselaimeksi</translation>
 <translation id="1545749641540134597">Lue QR-koodi</translation>
 <translation id="5317781812114905957">Ohjeet</translation>
 <translation id="8515319483805157233">Hae QR-koodilla kohdistamalla QR-koodi kehyksen keskiosaan.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Päävalikko</translation>
 <translation id="7002271985859760052">Sivutoiminnot</translation>
 <translation id="7104487676473617844">Seuraavat kohteet näkyvät valikossa vain, kun avattu verkkosivu tukee niitä.</translation>
-<translation id="4159764849281393303">Web-sovellus</translation>
 <translation id="8038539967102225446">Brave-mainokset ovat täällä!</translation>
 <translation id="222883304157347087">(tämä laite)</translation>
 <translation id="4157741509680155021">LAITTEET SYNKRONOINTIKETJUSSA</translation>
@@ -720,6 +720,8 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="1634828734222219955">Yhteensä</translation>
 <translation id="7995708795274219641">Määrä + gas</translation>
 <translation id="2186011161688824046">Summa + maksu</translation>
+<translation id="1118876217803190221">Riittämätön saldo</translation>
+<translation id="275990379543116961">Riittämättömät varat Gas-tokeniin</translation>
 <translation id="1950052789869821983">Maksutapahtuma</translation>
 <translation id="2304783958703511257">Lisäasetukset</translation>
 <translation id="4220062530885628403">Nonce</translation>
