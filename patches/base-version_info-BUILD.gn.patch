@@ -1,12 +1,20 @@
 diff --git a/base/version_info/BUILD.gn b/base/version_info/BUILD.gn
-index 96937eddc05602917e3e9988959f1feee46b831c..ba8dc02f709a4936d5f16a9a5ff3335efc5a6bbc 100644
+index 96937eddc05602917e3e9988959f1feee46b831c..a7dec39ba5343189ea44888a8a2b5c00ebcfa2d0 100644
 --- a/base/version_info/BUILD.gn
 +++ b/base/version_info/BUILD.gn
-@@ -22,6 +22,7 @@ static_library("version_info") {
+@@ -15,6 +15,7 @@ static_library("version_info") {
+ 
+   deps = [
+     "//base:sanitizer_buildflags",
++    "//brave/components/version_info",
+     "//build:branding_buildflags",
+   ]
+ 
+@@ -22,6 +23,7 @@ static_library("version_info") {
      ":generate_version_info",
      "//base",
    ]
-+  configs += [ "//brave/build:version" ] deps += [ "//brave/components/version_info" ]
++  configs += [ "//brave/build:version" ]
  }
  
  static_library("version_string") {

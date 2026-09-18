@@ -1,12 +1,20 @@
 diff --git a/chrome/browser/prefs/BUILD.gn b/chrome/browser/prefs/BUILD.gn
-index 2122b050eddef482f820dc1c8b2fd8ffc2e84aef..12f196373b58248fef0cad4a4a40ae1124044aa3 100644
+index 2122b050eddef482f820dc1c8b2fd8ffc2e84aef..43a3d4d291e2ef5c7e60420a8323344bebe991d0 100644
 --- a/chrome/browser/prefs/BUILD.gn
 +++ b/chrome/browser/prefs/BUILD.gn
-@@ -207,6 +207,7 @@ source_set("impl") {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/browser/sources.gni")
+ import("//chrome/common/features.gni")
+ import("//components/enterprise/buildflags/buildflags.gni")
+ import("//components/on_device_translation/buildflags/features.gni")
+@@ -207,6 +208,7 @@ source_set("impl") {
      "//services/preferences/tracked:features",
      "//ui/webui:buildflags",
    ]
-+  import("//brave/browser/sources.gni") deps += brave_chrome_browser_prefs_impl_deps
++  deps += brave_chrome_browser_prefs_impl_deps
  
    if (enable_print_preview) {
      deps += [
