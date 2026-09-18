@@ -33,16 +33,4 @@ void MaybeRemoveFooter(TabGroupEditorBubbleView* bubble_view,
 
 }  // namespace
 
-#define CreateBubble(bubble_view)                                           \
-  CreateBubble(bubble_view);                                                \
-  MaybeRemoveFooter(bubble_view, bubble_view->footer_.ExtractAsDangling()); \
-  bubble_view->footer_ = nullptr
-
-#define kUngroupRefreshOldIcon \
-  kUngroupRefreshOldIcon, ui::kColorMenuIcon, kDefaultIconSize
-
 #include <chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc>
-
-#undef kUngroupRefreshOldIcon
-
-#undef CreateBubble
