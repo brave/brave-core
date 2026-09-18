@@ -9,6 +9,11 @@ import BraveUI
 import GuardianConnect
 import SwiftUI
 
+@diagnose(
+  DeprecatedDeclaration,
+  as: ignored,
+  reason: "This view is embedded in a UINavigationController view hierarchy"
+)
 public struct BraveVPNRegionListView: View {
 
   @State
