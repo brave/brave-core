@@ -49,6 +49,7 @@
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/dns/mock_host_resolver.h"
 #include "testing/gmock/include/gmock/gmock.h"
+#include "ui/views/controls/scroll_view.h"
 #include "ui/views/view_utils.h"
 
 namespace playlist {
