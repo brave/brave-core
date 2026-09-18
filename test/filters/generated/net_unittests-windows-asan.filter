@@ -5,8 +5,5 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 3.0% flake rate over 30 days per LUCI Analysis (259 passed, 0 failed, 8 flaky).
+# 3.1% flake rate over 30 days per LUCI Analysis (252 passed, 0 failed, 8 flaky).
 -URLFetcherTest.FollowRedirect
-
-# 1.5% flake rate over 30 days per LUCI Analysis (263 passed, 0 failed, 4 flaky).
--URLFetcherTest.RedirectSecureSpecCompliantMetadataSynchronization

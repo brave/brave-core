@@ -5,23 +5,23 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 42.7% flake rate over 30 days per LUCI Analysis (51 passed, 38 failed, 0 flaky).
+# 52.8% flake rate over 30 days per LUCI Analysis (42 passed, 47 failed, 0 flaky).
 -BackgroundTracingManagerTest.SavedCountPreventsStart
 
 # 92.1% flake rate over 30 days per LUCI Analysis (7 passed, 0 failed, 82 flaky).
 -CoordinatorImplTest.DumpsAreAddedToTraceWhenRequested
 
-# 92.4% flake rate over 30 days per LUCI Analysis (1582 passed, 0 failed, 19311 flaky).
+# 86.3% flake rate over 30 days per LUCI Analysis (3189 passed, 0 failed, 20012 flaky).
 -HeapProfilingDataSourceTest.EmitSamples
 
-# 10.4% flake rate over 30 days per LUCI Analysis (20577 passed, 2 failed, 2398 flaky).
+# 1.4% flake rate over 30 days per LUCI Analysis (22873 passed, 2 failed, 326 flaky).
 -HistogramSamplesDataSourceTest.RecordAllHistogramsWithoutTrackEvent
 
-# 68.2% flake rate over 30 days per LUCI Analysis (7303 passed, 0 failed, 15679 flaky).
+# 73.9% flake rate over 30 days per LUCI Analysis (6067 passed, 0 failed, 17134 flaky).
 -NetworkServiceBoostIOThreadTest.DoesNotBoostIOThreadWhenFeatureIsOff
 
-# 40.8% flake rate over 30 days per LUCI Analysis (13606 passed, 0 failed, 9380 flaky).
+# 41.2% flake rate over 30 days per LUCI Analysis (13633 passed, 0 failed, 9570 flaky).
 -TracingServiceTest.PerfettoClientConsumer
 
-# 3.3% flake rate over 30 days per LUCI Analysis (22225 passed, 0 failed, 758 flaky).
+# 3.2% flake rate over 30 days per LUCI Analysis (22462 passed, 0 failed, 741 flaky).
 -TracingServiceTest.TracingServiceInstantiate

@@ -5,14 +5,20 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 92.0% flake rate over 30 days per LUCI Analysis (73 passed, 0 failed, 838 flaky).
+# 91.5% flake rate over 30 days per LUCI Analysis (78 passed, 0 failed, 835 flaky).
 -HangWatcherTest.HistogramsLoggedWithShutdownFlag
 
-# 6.6% flake rate over 30 days per LUCI Analysis (309 passed, 0 failed, 22 flaky).
+# 6.6% flake rate over 30 days per LUCI Analysis (310 passed, 0 failed, 22 flaky).
 -LoggingTest.DuplicateLogFile
 
-# 2.0% flake rate over 30 days per LUCI Analysis (893 passed, 0 failed, 18 flaky).
+# 2.1% flake rate over 30 days per LUCI Analysis (894 passed, 0 failed, 19 flaky).
 -RunUntilTestWithMockTime.ConditionOnlyObservedIfWorkIsDone
 
-# 95.3% flake rate over 30 days per LUCI Analysis (43 passed, 0 failed, 868 flaky).
+# 96.5% flake rate over 30 days per LUCI Analysis (32 passed, 0 failed, 881 flaky).
 -ThreadControllerWithMessagePumpTest.EnsureWorkScheduled
+
+# 10.1% flake rate over 30 days per LUCI Analysis (821 passed, 0 failed, 92 flaky).
+-ThreadControllerWithMessagePumpTest.MessagePumpPhasesWithQueuingTime
+
+# 7.7% flake rate over 30 days per LUCI Analysis (843 passed, 0 failed, 70 flaky).
+-ThreadControllerWithMessagePumpTest.WorkIdIncrementedForEveryWorkItemInBatches
