@@ -81,10 +81,6 @@ TEST(BraveTabPrefsTest,
   brave_tabs::RegisterBraveProfilePrefs(prefs.registry());
   prefs.registry()->RegisterBooleanPref(prefs::kVerticalTabsEnabled, false);
 
-  // Set to false initially
-  prefs.SetBoolean(prefs::kVerticalTabsEnabled, false);
-  EXPECT_FALSE(prefs.GetBoolean(prefs::kVerticalTabsEnabled));
-
   // Set up the switch
   base::test::ScopedCommandLine cmd_line;
   cmd_line.GetProcessCommandLine()->AppendSwitchASCII(

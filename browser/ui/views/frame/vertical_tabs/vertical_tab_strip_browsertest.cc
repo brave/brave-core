@@ -1938,6 +1938,34 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripSwitchTest, DisableSwitch) {
                    ->ShouldShowBraveVerticalTabs());
 }
 
+class VerticalTabStripMigrationSwitchTest : public VerticalTabStripBrowserTest {
+ public:
+  using VerticalTabStripBrowserTest::VerticalTabStripBrowserTest;
+  ~VerticalTabStripMigrationSwitchTest() override = default;
+
+  // VerticalTabStripBrowserTest:
+  void SetUp() override {
+    base::CommandLine::ForCurrentProcess()->AppendSwitchASCII(
+        tabs::switches::kVerticalTabMigrationSwitch,
+        tabs::switches::kVerticalTabMigrationForceUpstreamValue);
+    VerticalTabStripBrowserTest::SetUp();
+  }
+};
+
+// Regression/smoke test for the `--vertical-tab-migration=force-upstream`
+// dev/QA switch (see docs/chrome/browser/ui/tabs/vertical_tab_migration.md
+// §8): verifies startup doesn't crash when the switch forces
+// prefs::kVerticalTabsEnabled on before the browser window is created, and
+// that Brave's vertical tabs correctly yield to upstream as a result.
+IN_PROC_BROWSER_TEST_F(VerticalTabStripMigrationSwitchTest,
+                       ForceUpstreamNoCrashOnStartup) {
+  ASSERT_TRUE(browser());
+  EXPECT_TRUE(browser()->GetProfile()->GetPrefs()->GetBoolean(
+      prefs::kVerticalTabsEnabled));
+  EXPECT_FALSE(VerticalTabController::FromBrowser(browser())
+                   ->SupportsBraveVerticalTabs());
+}
+
 class VerticalTabStripScrollBarFlagTest : public VerticalTabStripBrowserTest {
  public:
   VerticalTabStripScrollBarFlagTest()
