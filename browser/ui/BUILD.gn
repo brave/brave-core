@@ -126,6 +126,7 @@ source_set("ui") {
     deps += [
       "//chrome/browser:global_keyboard_shortcuts_mac",
       "//chrome/browser/ui:fullscreen_util_mac",
+      "//chrome/browser/ui/views/frame:browser_native_widget_mac",
     ]
   }
 
@@ -136,10 +137,7 @@ source_set("ui") {
   allow_circular_includes_from = brave_ui_allow_circular_includes_from
   deps += brave_ui_allow_circular_includes_from
 
-  public_deps = [
-    ":ui_public_dependencies",
-    "//chrome/browser/ui/views/frame:browser_native_widget_mac",
-  ]
+  public_deps = [ ":ui_public_dependencies" ]
 
   if (toolkit_views) {
     public_deps += [
