@@ -1061,7 +1061,6 @@ test("brave_browser_tests") {
     "//brave/components/email_aliases/buildflags",
     "//chrome/browser/new_tab_page/prefs",
     "//chrome/browser/profiles/keep_alive:test_support",
-    "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui:incognito_allowed_url",
     "//chrome/browser/ui/views/translate",
   ]
@@ -1259,6 +1258,7 @@ test("brave_browser_tests") {
     deps += [
       "//brave/browser/workspaces",
       "//chrome/browser/profile_resetter:profile_resetter_test_base",
+      "//chrome/browser/ui:browser_window_header",
       "//chrome/browser/ui/frame",
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
