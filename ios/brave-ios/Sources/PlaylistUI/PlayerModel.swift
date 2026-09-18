@@ -302,29 +302,24 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  private var sleepTimer: Timer?
+  private var sleepTimer: Task<Void, Never>?
   enum SleepTimerCondition {
     case date(Date)
     case itemPlaybackCompletion
   }
   @MainActor @Published var sleepTimerCondition: SleepTimerCondition? {
     didSet {
-      sleepTimer?.invalidate()
+      sleepTimer?.cancel()
       guard let sleepTimerCondition else {
         return
       }
       if case .date(let date) = sleepTimerCondition {
-        let timer = Timer(
-          fire: date,
-          interval: 0,
-          repeats: false,
-          block: { [weak self] _ in
-            self?.pause()
-            self?.sleepTimerCondition = nil
-          }
-        )
-        RunLoop.main.add(timer, forMode: .default)
-        self.sleepTimer = timer
+        sleepTimer = Task { @MainActor [weak self] in
+          try? await Task.sleep(for: .seconds(max(0, date.timeIntervalSinceNow)))
+          guard !Task.isCancelled else { return }
+          self?.pause()
+          self?.sleepTimerCondition = nil
+        }
       }
     }
   }

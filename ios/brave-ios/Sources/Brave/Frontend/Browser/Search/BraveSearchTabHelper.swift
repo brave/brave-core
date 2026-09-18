@@ -395,6 +395,7 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
     }
   }
 
+  @MainActor
   private func shouldOpenInQuickView(
     requestURL: URL,
     isMainFrame: Bool,

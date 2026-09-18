@@ -222,7 +222,7 @@ extension CosmeticFilteringTabHelper: @MainActor CosmeticFilteringTabHelperBridg
           return nil
         }
 
-        return await (selectors, cachedEngine.type.isAlwaysAggressive)
+        return (selectors, cachedEngine.type.isAlwaysAggressive)
       } catch {
         Logger.module.error("\(error.localizedDescription)")
         return nil

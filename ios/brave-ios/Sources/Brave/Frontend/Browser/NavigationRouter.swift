@@ -77,6 +77,7 @@ public enum NavigationPath: Equatable {
     }
   }
 
+  @MainActor
   static func handle(nav: NavigationPath, with bvc: BrowserViewController) {
     switch nav {
     case .deepLink(let link): NavigationPath.handleDeepLink(link, with: bvc)
@@ -147,6 +148,7 @@ public enum NavigationPath: Equatable {
     )
   }
 
+  @MainActor
   static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController) {
     switch path {
     case .unknown, .search:

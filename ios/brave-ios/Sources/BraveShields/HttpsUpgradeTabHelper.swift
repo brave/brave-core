@@ -184,11 +184,13 @@ extension HttpsUpgradeTabHelper: TabPolicyDecider {
       withTimeInterval: Self.upgradeTimeout,
       repeats: false,
       block: { [weak self, weak tab] _ in
-        guard let self, let tab,
-          let fallbackRequest = self.handleInvalidHTTPSUpgrade(responseURL: upgradedURL)
-        else { return }
-        tab.stopLoading()
-        tab.loadRequest(fallbackRequest)
+        Task { @MainActor [weak self, weak tab] in
+          guard let self, let tab,
+            let fallbackRequest = self.handleInvalidHTTPSUpgrade(responseURL: upgradedURL)
+          else { return }
+          tab.stopLoading()
+          tab.loadRequest(fallbackRequest)
+        }
       }
     )
 
