@@ -8,11 +8,14 @@
 
 #include <v8/src/builtins/builtins-utils.h>  // IWYU pragma: export
 
+#ifndef V8_METAGEN_GENERATION_PASS
 #include "brave/components/brave_page_graph/common/buildflags.h"
+#endif  // !V8_METAGEN_GENERATION_PASS
 
 namespace v8 {
 namespace internal {
 
+#ifndef V8_METAGEN_GENERATION_PASS
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
 
 consteval bool IsBuiltinTrackedInPageGraph(std::string_view name) {
@@ -57,6 +60,7 @@ static_assert(false, "BUILTIN macro is expected to be defined");
       BuiltinArguments args, Isolate* isolate)
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES)
+#endif  // !V8_METAGEN_GENERATION_PASS
 
 }  // namespace internal
 }  // namespace v8
