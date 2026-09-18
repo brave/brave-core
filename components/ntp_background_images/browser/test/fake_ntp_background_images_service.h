@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_TEST_FAKE_NTP_BACKGROUND_IMAGES_SERVICE_H_
 
 #include <cstddef>
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -24,6 +25,7 @@ class VariationsService;
 
 namespace ntp_background_images {
 
+struct NTPBackgroundImagesData;
 struct NTPSponsoredSitesData;
 
 class FakeNTPBackgroundImagesService final : public NTPBackgroundImagesService {
@@ -50,6 +52,11 @@ class FakeNTPBackgroundImagesService final : public NTPBackgroundImagesService {
   // Test-only entry point: injects `sites_data` as if the sponsored sites
   // manifest had just been loaded, notifying observers.
   void OnGetSponsoredSitesData(std::optional<NTPSponsoredSitesData> sites_data);
+
+  // Test-only entry point: injects `data` as the current background images
+  // data, as if the component had just been loaded.
+  void SetBackgroundImagesData(
+      std::unique_ptr<NTPBackgroundImagesData> data);
 
   size_t register_sponsored_images_component_call_count() const {
     return register_sponsored_images_component_call_count_;
