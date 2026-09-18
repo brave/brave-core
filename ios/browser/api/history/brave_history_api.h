@@ -60,9 +60,9 @@ OBJC_EXPORT
 /// the most recent first, so older results may not be returned if there is not
 /// enough room. When 0, this will return everything.
 @property(nonatomic) NSUInteger maxCount;
-/// Whether the history query should only search through hostnames.
-/// When this is true, the matching_algorithm field is ignored.
-@property(nonatomic) BOOL hostOnly;
+/// When set, restricts results to history items whose hostname ends with
+/// this suffix. Can be combined with a text query.
+@property(nonatomic, nullable, copy) NSString* hostnameSuffix;
 /// Allows the caller to specify how duplicate URLs in the result set should
 /// be handled.
 @property(nonatomic) HistoryDuplicateHandlingIOS duplicateHandling;
@@ -98,12 +98,12 @@ OBJC_EXPORT
 
 /// History Search Options Constructor used with HistoryAPI
 /// @param maxCount - Maximum number of items requested
-/// @param hostOnly - Use the host only for the search
+/// @param hostnameSuffix - Restrict results to this hostname suffix
 /// @param duplicateHandling - Specifies how duplicates should be handled
 /// @param beginDate - Query only items added after this date
 /// @param endDate - Query only items added before this date
 - (instancetype)initWithMaxCount:(NSUInteger)maxCount
-                        hostOnly:(BOOL)hostOnly
+                  hostnameSuffix:(nullable NSString*)hostnameSuffix
                duplicateHandling:(HistoryDuplicateHandlingIOS)duplicateHandling
                        beginDate:(nullable NSDate*)beginDate
                          endDate:(nullable NSDate*)endDate;
