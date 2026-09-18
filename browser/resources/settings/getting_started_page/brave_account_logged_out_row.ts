@@ -37,7 +37,7 @@ export class BraveAccountLoggedOutRowElement extends
 
   protected override get verificationIntentDescription() {
     assert(this.state.verification)
-    return this.i18n(
+    return loadTimeData.getString(
       this.state.verification.intent
           === LoggedOutVerificationIntent.kResetPassword
         ? BraveAccountSettingsStrings

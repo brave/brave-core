@@ -10,7 +10,7 @@ import {
   BraveAccountBrowserProxy,
   BraveAccountBrowserProxyImpl
 } from './brave_account_browser_proxy.js'
-import { AccountState } from '../brave_account.mojom-webui.js'
+import { AccountState, DialogMode } from '../brave_account.mojom-webui.js'
 import { getHtml } from './brave_account_row.html.js'
 
 export class SettingsBraveAccountRowElement extends CrLitElement {
@@ -34,6 +34,15 @@ export class SettingsBraveAccountRowElement extends CrLitElement {
     new BraveAccountBrowserProxyImpl()
   protected accessor initiatingServiceName = ''
   protected accessor state: AccountState | undefined = undefined
+
+  // The rows live here in brave://settings rather than in the Brave Account
+  // WebUI, so this asks the browser to open the flows over the page.
+  protected onOpenBraveAccountDialog(
+        e: CustomEvent<{ initiatingServiceName: string,
+                         dialogMode: DialogMode }>) {
+    this.browserProxy.rowHandler.openDialog(e.detail.initiatingServiceName,
+                                            e.detail.dialogMode)
+  }
 
   private accountStateListenerId: number | null = null
 

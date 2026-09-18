@@ -20,12 +20,14 @@ export function getHtml(this: SettingsBraveAccountRowElement) {
         <brave-account-logged-in-row
             .browserProxy=${this.browserProxy}
             .initiatingServiceName=${this.initiatingServiceName}
-            .state=${this.state.loggedIn}>
+            .state=${this.state.loggedIn}
+            @open-brave-account-dialog=${this.onOpenBraveAccountDialog}>
         </brave-account-logged-in-row>`
       : html`
         <brave-account-logged-out-row
             .browserProxy=${this.browserProxy}
             .initiatingServiceName=${this.initiatingServiceName}
-            .state=${this.state.loggedOut}>
+            .state=${this.state.loggedOut}
+            @open-brave-account-dialog=${this.onOpenBraveAccountDialog}>
         </brave-account-logged-out-row>`
 }
