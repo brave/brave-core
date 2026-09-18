@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Open Brave's NTP top-sites widget menu on long-press of the "Add new"
+      custom-links button, matching the long-press menu on regular tiles.
+      Part of NTP improvements in PR#39092
+    regex:
+      re_pattern: '(TileUtils\.isCustomTileSwapKeyCombo\(keyCode, event\)\);)(\s*return tileView;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+                tileView.setOnLongClickListener(
+                        (View v) -> {
+                            org.chromium.chrome.browser.ntp.BraveNtpWidgetMenu.show(v);
+                            return true;
+                        });\2

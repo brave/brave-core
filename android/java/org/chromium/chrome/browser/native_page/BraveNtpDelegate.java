@@ -15,13 +15,13 @@ import org.chromium.build.annotations.NullMarked;
  */
 @NullMarked
 public interface BraveNtpDelegate extends ContextMenuManager.Delegate {
-    // Menu item IDs for the Brave-specific NTP entries. Values must be
-    // >= ContextMenuItemId.NUM_ENTRIES (18) so they don't collide with any current or future
-    // Chromium item.
-    int BRAVE_ADD_SITE = 18;
-    int BRAVE_SHOW_FREQUENT = 19;
-    int BRAVE_SHOW_SHORTCUTS = 20;
-    int BRAVE_HIDE_WIDGET = 21;
+    // Menu item IDs for the Brave-specific NTP entries, defined relative to
+    // ContextMenuItemId.NUM_ENTRIES so they can never collide with a current or future Chromium
+    // item, even if Chromium adds more entries.
+    int BRAVE_ADD_SITE = ContextMenuManager.ContextMenuItemId.NUM_ENTRIES;
+    int BRAVE_SHOW_FREQUENT = BRAVE_ADD_SITE + 1;
+    int BRAVE_SHOW_SHORTCUTS = BRAVE_SHOW_FREQUENT + 1;
+    int BRAVE_HIDE_WIDGET = BRAVE_SHOW_SHORTCUTS + 1;
 
     /**
      * Returns whether the given Brave-specific menu item should be shown.

@@ -18,6 +18,7 @@ import org.robolectric.annotation.Config;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.native_page.BraveNtpDelegate;
+import org.chromium.chrome.browser.native_page.ContextMenuManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 /**
@@ -65,9 +66,7 @@ public class BraveNtpTopSitesModeUnitTest {
      */
     @Test
     public void testBraveItemIds_doNotCollideWithChromiumRange() {
-        // ContextMenuItemId.NUM_ENTRIES = 18 — hardcoded here so this test
-        // catches if the Brave IDs are ever accidentally lowered.
-        final int chromiumNumEntries = 18;
+        int chromiumNumEntries = ContextMenuManager.ContextMenuItemId.NUM_ENTRIES;
         assertTrue(BraveNtpDelegate.BRAVE_ADD_SITE >= chromiumNumEntries);
         assertTrue(BraveNtpDelegate.BRAVE_SHOW_FREQUENT >= chromiumNumEntries);
         assertTrue(BraveNtpDelegate.BRAVE_SHOW_SHORTCUTS >= chromiumNumEntries);

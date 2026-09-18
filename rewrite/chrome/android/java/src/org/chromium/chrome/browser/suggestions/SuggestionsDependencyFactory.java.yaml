@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Wrap the most-visited-sites bridge with Brave's filter, which separates
+      "frequently visited" tiles from custom-link "shortcuts" tiles. Part of
+      NTP improvements in PR#39092
+    regex:
+      re_pattern: |-
+        new MostVisitedSitesBridge\(profile\)
+      replace: |-
+        new org.chromium.chrome.browser.suggestions.mostvisited.BraveMostVisitedSites(
+                        profile)
