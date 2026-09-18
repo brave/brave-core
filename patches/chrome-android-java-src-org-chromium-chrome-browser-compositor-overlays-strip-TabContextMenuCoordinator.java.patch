@@ -1,17 +1,17 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/compositor/overlays/strip/TabContextMenuCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/compositor/overlays/strip/TabContextMenuCoordinator.java
-index 6b88a06e3f0e66147d2a3ddf13fa6c0a9ee58f2c..b501307875d03179be4c3c313ab2a62837d07a96 100644
+index 62ecc4fa6da988873c322f3809442ee22a264b3a..da5a5800688d06445797586ec0111af2d4ac4e0a 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/compositor/overlays/strip/TabContextMenuCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/compositor/overlays/strip/TabContextMenuCoordinator.java
-@@ -187,7 +187,7 @@ public class TabContextMenuCoordinator extends TabStripReorderingHelper<AnchorIn
-     private final @TabStripLayoutType int mTabStripLayout;
+@@ -184,7 +184,7 @@ public class TabContextMenuCoordinator extends TabStripReorderingHelper<AnchorIn
      private final @Nullable BooleanSupplier mCanActivateTabLayoutToggleMenuSupplier;
+     private @Nullable ExtensionTabContextMenuBridge mExtensionTabContextMenuBridge;
  
 -    private TabContextMenuCoordinator(
 +    protected TabContextMenuCoordinator(
              Supplier<TabModel> tabModelSupplier,
              @Nullable TabGroupListBottomSheetCoordinator tabGroupListBottomSheetCoordinator,
              TabGroupCreationCallback tabGroupCreationCallback,
-@@ -285,7 +285,7 @@ public class TabContextMenuCoordinator extends TabStripReorderingHelper<AnchorIn
+@@ -286,7 +286,7 @@ public class TabContextMenuCoordinator extends TabStripReorderingHelper<AnchorIn
          CollaborationService collaborationService =
                  CollaborationServiceFactory.getForProfile(profile);
  

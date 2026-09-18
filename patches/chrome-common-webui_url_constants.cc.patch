@@ -1,5 +1,5 @@
 diff --git a/chrome/common/webui_url_constants.cc b/chrome/common/webui_url_constants.cc
-index 17100eb74d54ccb2b0a69ead43667b901cca9c76..554c141e4523fac8228720842b4dfe297c613369 100644
+index 275e297e51031999f3196f2bdf65cc3497c0e771..6139554f7d11c578cd67ad2a997a7613636baa0c 100644
 --- a/chrome/common/webui_url_constants.cc
 +++ b/chrome/common/webui_url_constants.cc
 @@ -290,6 +290,18 @@ base::span<const base::cstring_view> ChromeURLHosts() {

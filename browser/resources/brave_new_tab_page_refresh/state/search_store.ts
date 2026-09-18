@@ -43,6 +43,7 @@ export interface SearchState {
   searchSuggestionsPromptDismissed: boolean
   activeSearchInputKey: string
   searchMatches: AutocompleteMatch[]
+  searchResultSequenceId: number
   searchBoxSuppressed: boolean
   actions: SearchActions
 }
@@ -63,6 +64,7 @@ export function defaultSearchStore(): SearchStore {
     searchSuggestionsPromptDismissed: false,
     activeSearchInputKey: '',
     searchMatches: [],
+    searchResultSequenceId: 0,
     searchBoxSuppressed: false,
     actions: {
       setShowSearchBox(showSearchBox) {},

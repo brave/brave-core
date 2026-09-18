@@ -1,5 +1,5 @@
 diff --git a/extensions/common/extension_features.cc b/extensions/common/extension_features.cc
-index 30847f1420f2454a7160b609503a5c69039b0a8b..d334edb977b54ef6412bd1cfb54e4845265cdab7 100644
+index 0aa262591d6f288b6b1e7707a7fc70f833ac852b..459a27ca778a8d8513e9d430441b5bbf7d7d97d6 100644
 --- a/extensions/common/extension_features.cc
 +++ b/extensions/common/extension_features.cc
 @@ -28,7 +28,7 @@ BASE_FEATURE(kApiOdfsConfigPrivate, base::FEATURE_ENABLED_BY_DEFAULT);

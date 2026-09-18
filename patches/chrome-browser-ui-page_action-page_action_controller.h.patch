@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_action/page_action_controller.h b/chrome/browser/ui/page_action/page_action_controller.h
-index bf85386bf0873ef571eec7c4bb3d4901d4d2f35d..fd8eb845271e595ab29864689fae3396c55b2442 100644
+index 6380476d8e448df4f0a541fd49caef6ef308d1e4..c88c4e2c1fb720263ef1f723c2b8606f1548f79e 100644
 --- a/chrome/browser/ui/page_action/page_action_controller.h
 +++ b/chrome/browser/ui/page_action/page_action_controller.h
 @@ -388,10 +388,10 @@ class PageActionController {
@@ -45,7 +45,7 @@ index bf85386bf0873ef571eec7c4bb3d4901d4d2f35d..fd8eb845271e595ab29864689fae3396
        actions::ActionId action_id,
        bool is_ephemeral);
  
-@@ -567,7 +568,7 @@ class PageActionControllerImpl : public PageActionController,
+@@ -570,7 +571,7 @@ class PageActionControllerImpl : public PageActionController,
  
    ui::ScopedUnownedUserData<PageActionController> scoped_unowned_user_data_;
  

@@ -14,48 +14,49 @@ import './brave_account_sign_in_dialog.js'
 import { BraveAccountDialogsElement } from './brave_account_dialogs.js'
 
 export function getHtml(this: BraveAccountDialogsElement) {
-  return html`${this.dialog?.type === undefined
-    ? nothing
-    : this.dialog.type === 'ENTRY'
-      ? html`
-          <brave-account-entry-dialog
-            @create-button-clicked=${() =>
-              (this.dialog = { type: 'CREDENTIALS' })}
-            @sign-in-button-clicked=${() => (this.dialog = { type: 'SIGN_IN' })}
-          >
-          </brave-account-entry-dialog>
-        `
-      : this.dialog.type === 'SIGN_IN'
+  return html`${this.dialog?.type !== undefined
+    ? html`${this.dialog.type === 'ENTRY'
         ? html`
-            <brave-account-sign-in-dialog
-              .isCapsLockOn=${this.isCapsLockOn}
-              @forgot-password-button-clicked=${() =>
-                (this.dialog = { type: 'PASSWORD_RESET' })}
+            <brave-account-entry-dialog
+              @create-button-clicked=${() =>
+                (this.dialog = { type: 'CREDENTIALS' })}
+              @sign-in-button-clicked=${() =>
+                (this.dialog = { type: 'SIGN_IN' })}
             >
-            </brave-account-sign-in-dialog>
+            </brave-account-entry-dialog>
           `
-        : this.dialog.type === 'PASSWORD_RESET'
-          ? html`
-              <brave-account-password-reset-dialog>
-              </brave-account-password-reset-dialog>
-            `
-          : this.dialog.type === 'OTP'
+        : html`${this.dialog.type === 'SIGN_IN'
             ? html`
-                <brave-account-otp-dialog .intent=${this.dialog.intent}>
-                </brave-account-otp-dialog>
+                <brave-account-sign-in-dialog
+                  .isCapsLockOn=${this.isCapsLockOn}
+                  @forgot-password-button-clicked=${() =>
+                    (this.dialog = { type: 'PASSWORD_RESET' })}
+                >
+                </brave-account-sign-in-dialog>
               `
-            : this.dialog.type === 'CREDENTIALS'
-              ? html`
-                  <brave-account-credentials-dialog
-                    .isCapsLockOn=${this.isCapsLockOn}
-                    .verification=${this.dialog.verification}
-                  >
-                  </brave-account-credentials-dialog>
-                `
-              : this.dialog.type === 'ACCOUNT_DELETION'
+            : html`${this.dialog.type === 'PASSWORD_RESET'
                 ? html`
-                    <brave-account-deletion-dialog>
-                    </brave-account-deletion-dialog>
+                    <brave-account-password-reset-dialog>
+                    </brave-account-password-reset-dialog>
                   `
-                : nothing}`
+                : html`${this.dialog.type === 'OTP'
+                    ? html`
+                        <brave-account-otp-dialog .intent=${this.dialog.intent}>
+                        </brave-account-otp-dialog>
+                      `
+                    : html`${this.dialog.type === 'CREDENTIALS'
+                        ? html`
+                            <brave-account-credentials-dialog
+                              .isCapsLockOn=${this.isCapsLockOn}
+                              .verification=${this.dialog.verification}
+                            >
+                            </brave-account-credentials-dialog>
+                          `
+                        : html`${this.dialog.type === 'ACCOUNT_DELETION'
+                            ? html`
+                                <brave-account-deletion-dialog>
+                                </brave-account-deletion-dialog>
+                              `
+                            : nothing}`}`}`}`}`}`
+    : nothing}`
 }

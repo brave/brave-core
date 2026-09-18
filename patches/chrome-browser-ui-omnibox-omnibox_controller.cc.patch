@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_controller.cc b/chrome/browser/ui/omnibox/omnibox_controller.cc
-index 0dc07878e6857f24e761eb53d1c7aa312cf1f484..8f76c3be8fd6ba35258618f1bdb437c3b2bbba68 100644
+index 9387a024cedc7bc036a0007956a5a91d0f37b1e2..1e94730cf7cc217541c4f7d1cfb198cc67763445 100644
 --- a/chrome/browser/ui/omnibox/omnibox_controller.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_controller.cc
 @@ -72,6 +72,10 @@ OmniboxController::~OmniboxController() = default;
@@ -13,7 +13,7 @@ index 0dc07878e6857f24e761eb53d1c7aa312cf1f484..8f76c3be8fd6ba35258618f1bdb437c3
    TRACE_EVENT0("omnibox", "OmniboxController::StartAutocomplete");
    ClearPopupKeywordMode();
  
-@@ -88,6 +92,7 @@ void OmniboxController::StopAutocomplete(bool clear_result) const {
+@@ -89,6 +93,7 @@ void OmniboxController::StopAutocomplete(bool clear_result) const {
  }
  
  void OmniboxController::StartZeroSuggestPrefetch() {

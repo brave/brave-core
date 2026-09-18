@@ -1,5 +1,5 @@
 diff --git a/chrome/common/scoped_chrome_extensions_client.cc b/chrome/common/scoped_chrome_extensions_client.cc
-index bf55ba3d757daf2c917a24b5be0e06e5b8353d51..efee8a2a34f33bb02d7b67149d5ab08dc3c51212 100644
+index 0c056abf9e88b7221abae524e840f200369dbe63..c61d296ed3d8fd47d33c44a9a809d57ee4295e40 100644
 --- a/chrome/common/scoped_chrome_extensions_client.cc
 +++ b/chrome/common/scoped_chrome_extensions_client.cc
 @@ -61,7 +61,12 @@ CombineAllAvailabilityCheckMaps() {

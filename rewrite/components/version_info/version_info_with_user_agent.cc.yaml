@@ -4,8 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |-
-      Fully qualify kReadAnythingTranslateEntryPoint as ::features.
+  - description: |
+      Report Brave's Chromium version in the User-Agent product string by
+      swapping Chromium's GetVersionNumber() for our BRAVE_CHROMIUM_VERSION.
+
     regex:
-      re_pattern: '\bfeatures::kReadAnythingTranslateEntryPoint\b'
-      replace: '::features::kReadAnythingTranslateEntryPoint'
+      pattern: 'GetVersionNumber()'
+      replace: 'BRAVE_CHROMIUM_VERSION'

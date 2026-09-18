@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/web_applications/BUILD.gn b/chrome/browser/ui/web_applications/BUILD.gn
-index 67fdbc4ecccc85b1d12a26bdb26e04fbd1f1bd49..a50e40593cc5ba3417e0be4b7bbf88d4169c98dc 100644
+index ff94f3ae6893969d4c87c5e35f00e73a6b703746..0eba8d502b072be8c2d6fd9c838f3aea308a998c 100644
 --- a/chrome/browser/ui/web_applications/BUILD.gn
 +++ b/chrome/browser/ui/web_applications/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 67fdbc4ecccc85b1d12a26bdb26e04fbd1f1bd49..a50e40593cc5ba3417e0be4b7bbf88d4
  import("//build/config/ui.gni")
  import("//extensions/buildflags/buildflags.gni")
  
-@@ -105,6 +106,7 @@ source_set("impl") {
+@@ -106,6 +107,7 @@ source_set("impl") {
      "//chrome/browser/ui:browser_window_state",
      "//chrome/browser/ui/browser_window:create_browser_window",
    ]

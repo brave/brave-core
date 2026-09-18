@@ -49,7 +49,8 @@ void BraveWebAuthFlow::StartWebAuthFlow(
     const std::string& oauth2_client_id,
     ExtensionTokenKey token_key,
     bool interactive,
-    bool user_gesture) {
+    bool user_gesture,
+    std::optional<url::Origin> initiator_origin) {
   profile_ = profile;
   complete_with_error_callback_ = std::move(complete_with_error_callback);
   complete_with_result_callback_ = std::move(complete_with_result_callback);
@@ -85,7 +86,7 @@ void BraveWebAuthFlow::StartWebAuthFlow(
   web_auth_flow_ = std::make_unique<WebAuthFlow>(
       this, profile_, google_oauth_url,
       interactive ? WebAuthFlow::INTERACTIVE : WebAuthFlow::SILENT,
-      user_gesture);
+      user_gesture, std::move(initiator_origin));
   web_auth_flow_->Start();
 }
 
@@ -165,7 +166,7 @@ void BraveWebAuthFlow::OnAuthFlowURLChange(const GURL& redirect_url) {
   // the last used token will be cached.
   IdentityTokenCacheValue token = IdentityTokenCacheValue::CreateToken(
       access_token, token_key_.scopes, base::Seconds(time_to_live_seconds));
-  IdentityAPI::GetFactoryInstance()->Get(profile_)->token_cache()->SetToken(
+  IdentityAPI::GetFactoryInstance()->Get(profile_)->token_cache().SetToken(
       token_key_, token);
 
   std::move(complete_with_result_callback_)

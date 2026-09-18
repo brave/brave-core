@@ -1,5 +1,5 @@
 diff --git a/components/sync/base/features.cc b/components/sync/base/features.cc
-index bfec2bebf2d2b6e8b4e470d5644490d602208917..ec9d3dbe6975e810f7908c6c22910977e09782a8 100644
+index 5d3dba7116225163a7f6678e745a7655b19fb055..473634e8f4a6f2ef9cd49d28e4dc724309d16497 100644
 --- a/components/sync/base/features.cc
 +++ b/components/sync/base/features.cc
 @@ -91,6 +91,7 @@ BASE_FEATURE(kReplaceSyncPromosWithSigninPromosNewSignin,

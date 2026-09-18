@@ -1,10 +1,10 @@
 diff --git a/components/sync_device_info/device_info.cc b/components/sync_device_info/device_info.cc
-index f6862160e285740ea4cc2084a5d7d86856a33015..579cdc815abc4cf81eafc82087073294a621d745 100644
+index 4e4915487029e7f0de71a1dbad531fd3f3103f25..69954ca6495de8aea02e42ea09a96484432d1060 100644
 --- a/components/sync_device_info/device_info.cc
 +++ b/components/sync_device_info/device_info.cc
-@@ -88,7 +88,8 @@ DeviceInfo::DeviceInfo(
-     GlicExperimentalTriggeringState glic_experimental_triggering_state,
+@@ -89,7 +89,8 @@ DeviceInfo::DeviceInfo(
      std::optional<int> glic_experimental_triggering_version,
+     base::flat_set<std::string> glic_experimental_triggering_capabilities,
      std::optional<std::string> android_os_build_fingerprint_prefix,
 -    std::optional<PersonalContextInfo> personal_context_info)
 +    std::optional<PersonalContextInfo> personal_context_info,
@@ -12,10 +12,10 @@ index f6862160e285740ea4cc2084a5d7d86856a33015..579cdc815abc4cf81eafc82087073294
      : guid_(guid),
        client_name_(client_name),
        chrome_version_(chrome_version),
-@@ -119,7 +120,8 @@ DeviceInfo::DeviceInfo(
-       glic_experimental_triggering_state_(glic_experimental_triggering_state),
-       glic_experimental_triggering_version_(
+@@ -122,7 +123,8 @@ DeviceInfo::DeviceInfo(
            glic_experimental_triggering_version),
+       glic_experimental_triggering_capabilities_(
+           std::move(glic_experimental_triggering_capabilities)),
 -      personal_context_info_(std::move(personal_context_info)) {}
 +      personal_context_info_(std::move(personal_context_info)),
 +      self_delete_support_(self_delete_support) {}

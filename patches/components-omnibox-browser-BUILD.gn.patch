@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 1ac038e394ec8146a61f720bc15e63fe47a975ab..faf9ac34aac78f2eb92039a776bcf47b009c0724 100644
+index 84631962e6b2ef0a6dfda544dcc614c86dee1e03..961e5dc73bb3845577a7a56cd7d0ecf50415c8af 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -376,6 +376,7 @@ static_library("browser") {
@@ -26,7 +26,7 @@ index 1ac038e394ec8146a61f720bc15e63fe47a975ab..faf9ac34aac78f2eb92039a776bcf47b
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
  
-@@ -1142,6 +1145,7 @@ mojom("mojo_bindings") {
+@@ -1148,6 +1151,7 @@ mojom("mojo_bindings") {
      sources += [ "searchbox.mojom" ]
      public_deps += [ ":fusebox_action_mojo_bindings" ]
    }
@@ -34,7 +34,7 @@ index 1ac038e394ec8146a61f720bc15e63fe47a975ab..faf9ac34aac78f2eb92039a776bcf47b
  }
  
  if (!is_ios) {
-@@ -1162,6 +1166,7 @@ if (!is_ios) {
+@@ -1168,6 +1172,7 @@ if (!is_ios) {
          traits_deps = [ "//third_party/omnibox_proto" ]
        },
      ]

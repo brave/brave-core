@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index 50897db71742d60af5be85d2a91cdd798a7c8134..1606b7b85203351429b1839865e15dd370150e4c 100644
+index d0dc85a33426788b4d5fc42bb554a1780e3f6453..b8ac8c8ed2fcfc595e65bd66fa1c103c0da3fd85 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
-@@ -212,6 +212,7 @@ static_library("with_no_strings") {
+@@ -208,6 +208,7 @@ static_library("with_no_strings") {
  
      deps += [ "//components/crash/core/app" ]
    }
@@ -10,7 +10,7 @@ index 50897db71742d60af5be85d2a91cdd798a7c8134..1606b7b85203351429b1839865e15dd3
  }
  
  # Use this version of installer_util to link to the generated strings in .rc
-@@ -244,6 +245,7 @@ generate_embedded_i18n("generate_strings") {
+@@ -240,6 +241,7 @@ generate_embedded_i18n("generate_strings") {
    output_file_name_base = "installer_util_strings"
  
    branding = branding_path_product
