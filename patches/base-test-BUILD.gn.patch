@@ -1,12 +1,20 @@
 diff --git a/base/test/BUILD.gn b/base/test/BUILD.gn
-index bd2e9da070de2e65e15629f1c7349cbdfb4d77d5..c92dd9c5c84ef8e9265e51890b25152384daa144 100644
+index bd2e9da070de2e65e15629f1c7349cbdfb4d77d5..c341224aa29a77d49741ad9cd70869b12b335d2c 100644
 --- a/base/test/BUILD.gn
 +++ b/base/test/BUILD.gn
-@@ -428,6 +428,7 @@ static_library("test_support") {
-   # TODO(crbug.com/40031409): Fix code that adds exit-time destructors and
-   # enable the diagnostic by removing this line.
-   configs += [ "//build/config/compiler:no_exit_time_destructors" ]
-+  import("//brave/base/sources.gni") sources += brave_base_test_support_sources
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- component("proto_test_support") {
++import("//brave/base/sources.gni")
+ import("//build/compiled_action.gni")
+ import("//build/config/features.gni")
+ import("//build/config/ui.gni")
+@@ -243,6 +244,7 @@ static_library("test_support") {
+     "with_feature_override.cc",
+     "with_feature_override.h",
+   ]
++  sources += brave_base_test_support_sources
+ 
+   configs += [ "//build/config:precompiled_headers" ]
+ 
