@@ -45,7 +45,7 @@
 #include "brave/components/brave_rewards/core/pref_registry.h"
 #include "brave/components/brave_rewards/core/rewards_flags.h"
 #include "brave/components/l10n/common/prefs.h"
-#include "brave/components/ntp_background_images/browser/new_tab_takeover_infobar_util.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/new_tab_takeover_infobar_util.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
 #import "brave/ios/browser/api/ads/ads_client_ios.h"

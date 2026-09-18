@@ -7,7 +7,7 @@
 
 #include "base/files/file_path.h"
 #include "base/strings/sys_string_conversions.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_sponsored_image+private.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
