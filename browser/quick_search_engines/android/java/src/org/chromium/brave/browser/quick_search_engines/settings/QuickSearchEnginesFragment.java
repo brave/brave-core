@@ -16,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.core.view.MenuProvider;
+import androidx.lifecycle.Lifecycle;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +31,7 @@ import org.chromium.brave.browser.quick_search_engines.ItemTouchHelperCallback;
 import org.chromium.brave.browser.quick_search_engines.R;
 import org.chromium.brave.browser.quick_search_engines.utils.QuickSearchEnginesUtil;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
@@ -43,11 +46,42 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
     private QuickSearchEnginesAdapter mQuickSearchEnginesAdapter;
     private ItemTouchHelper mItemTouchHelper;
 
-    private MenuItem mCloseItem;
-    private MenuItem mSaveItem;
-
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
+
+    // The close item belongs to the hosting settings activity, so the menu is shared and must not
+    // be cleared here.
+    private final MenuProvider mMenuProvider =
+            new MenuProvider() {
+                @Override
+                public void onCreateMenu(Menu menu, MenuInflater inflater) {
+                    inflater.inflate(R.menu.quick_search_engines_menu, menu);
+                }
+
+                @Override
+                public void onPrepareMenu(Menu menu) {
+                    boolean isEditMode =
+                            mQuickSearchEnginesAdapter != null
+                                    && mQuickSearchEnginesAdapter.isEditMode();
+                    MenuItem closeItem = menu.findItem(R.id.close_menu_id);
+                    if (closeItem != null) {
+                        closeItem.setVisible(!isEditMode);
+                    }
+                    MenuItem saveItem = menu.findItem(R.id.action_save);
+                    if (saveItem != null) {
+                        saveItem.setVisible(isEditMode);
+                    }
+                }
+
+                @Override
+                public boolean onMenuItemSelected(MenuItem item) {
+                    if (item.getItemId() != R.id.action_save) {
+                        return false;
+                    }
+                    saveSearchEngines();
+                    return true;
+                }
+            };
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,40 +130,28 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
         LinearLayoutManager linearLayoutManager =
                 new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
         mRecyclerView.setLayoutManager(linearLayoutManager);
-        setHasOptionsMenu(true);
         return view;
     }
 
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.quick_search_engines_menu, menu);
-        mCloseItem = menu.findItem(R.id.close_menu_id);
-        mSaveItem = menu.findItem(R.id.action_save);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_save) {
-            final  List<QuickSearchEnginesModel> quickSearchEngines = getQuickSearchEngines();
-            if (quickSearchEngines != null) {
-                Map<String, QuickSearchEnginesModel> searchEnginesMap = new LinkedHashMap<>();
-                for (QuickSearchEnginesModel quickSearchEnginesModel : quickSearchEngines) {
-                    searchEnginesMap.put(
-                            quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
-                }
-                QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
-                mQuickSearchEnginesAdapter.setEditMode(false);
-                editModeUiVisibility();
-            }
+    private void saveSearchEngines() {
+        final List<QuickSearchEnginesModel> quickSearchEngines = getQuickSearchEngines();
+        if (quickSearchEngines == null) {
+            return;
         }
-        return super.onOptionsItemSelected(item);
+        Map<String, QuickSearchEnginesModel> searchEnginesMap = new LinkedHashMap<>();
+        for (QuickSearchEnginesModel quickSearchEnginesModel : quickSearchEngines) {
+            searchEnginesMap.put(quickSearchEnginesModel.getKeyword(), quickSearchEnginesModel);
+        }
+        QuickSearchEnginesUtil.saveSearchEnginesIntoPref(searchEnginesMap);
+        mQuickSearchEnginesAdapter.setEditMode(false);
+        requireActivity().invalidateMenu();
     }
 
     @Nullable
-    private  List<QuickSearchEnginesModel> getQuickSearchEngines() {
+    private List<QuickSearchEnginesModel> getQuickSearchEngines() {
         if (mQuickSearchEnginesAdapter != null) {
-            final List<QuickSearchEnginesModel> quickSearchEngines = mQuickSearchEnginesAdapter
-                    .getQuickSearchEngines();
+            final List<QuickSearchEnginesModel> quickSearchEngines =
+                    mQuickSearchEnginesAdapter.getQuickSearchEngines();
             if (quickSearchEngines != null && !quickSearchEngines.isEmpty()) {
                 return quickSearchEngines;
             }
@@ -140,16 +162,17 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        Runnable onQuickSearchEnginesReady =
-                () -> {
+        requireActivity()
+                .addMenuProvider(mMenuProvider, getViewLifecycleOwner(), Lifecycle.State.RESUMED);
+        final Profile profile = getProfile();
+        TemplateUrlServiceFactory.getForProfile(profile)
+                .runWhenLoaded(() -> {
                     if (isRemoving() || isDetached()) return;
 
                     List<QuickSearchEnginesModel> quickSearchEngines =
-                            QuickSearchEnginesUtil.getQuickSearchEnginesForSettings(getProfile());
+                            QuickSearchEnginesUtil.getQuickSearchEnginesForSettings(profile);
                     setRecyclerViewData(quickSearchEngines);
-                };
-        TemplateUrlServiceFactory.getForProfile(getProfile())
-                .runWhenLoaded(onQuickSearchEnginesReady);
+                });
     }
 
     @Override
@@ -163,8 +186,7 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
     }
 
     private void setRecyclerViewData(List<QuickSearchEnginesModel> searchEngines) {
-        mQuickSearchEnginesAdapter =
-                new QuickSearchEnginesAdapter(searchEngines, this, this);
+        mQuickSearchEnginesAdapter = new QuickSearchEnginesAdapter(searchEngines, this, this);
         mRecyclerView.setAdapter(mQuickSearchEnginesAdapter);
         ItemTouchHelper.Callback callback = new ItemTouchHelperCallback(mQuickSearchEnginesAdapter);
         mItemTouchHelper = new ItemTouchHelper(callback);
@@ -186,24 +208,12 @@ public class QuickSearchEnginesFragment extends ChromeBaseSettingsFragment
 
     @Override
     public void onSearchEngineLongClick() {
-        editModeUiVisibility();
+        requireActivity().invalidateMenu();
     }
 
     @Override
     public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
         mItemTouchHelper.startDrag(viewHolder);
-    }
-
-    private void editModeUiVisibility() {
-        if (mQuickSearchEnginesAdapter != null) {
-            boolean isEditMode = mQuickSearchEnginesAdapter.isEditMode();
-            if (mCloseItem != null) {
-                mCloseItem.setVisible(!isEditMode);
-            }
-            if (mSaveItem != null) {
-                mSaveItem.setVisible(isEditMode);
-            }
-        }
     }
 
     @Override
