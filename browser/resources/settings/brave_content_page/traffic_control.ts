@@ -115,7 +115,7 @@ export class SettingsBraveContentTrafficControlElement extends SettingsBraveCont
     this.browserProxy.handler
       .reorderRules(orderedIds)
       .then(({ error }) => {
-        if (error != null) {
+        if (!error) {
           this.onReorderableItemsUpdated_()
         }
       })

@@ -124,7 +124,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
     this.browserProxy.handler
       .reorderContainers(orderedIds)
       .then(({ error }) => {
-        if (error != null) {
+        if (!error) {
           this.onReorderableItemsUpdated_()
         }
       })
