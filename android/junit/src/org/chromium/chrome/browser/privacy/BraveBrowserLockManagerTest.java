@@ -28,8 +28,10 @@ import org.robolectric.annotation.Config;
 
 import org.chromium.base.ActivityState;
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.FeatureOverrides;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.device_reauth.ReauthenticatorBridge;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.incognito.reauth.BraveBrowserLockCoordinator;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthSettingUtils;
@@ -392,5 +394,81 @@ public class BraveBrowserLockManagerTest {
         assertEquals(0, manager.getActiveLockCountForTesting());
         verify(mCoordinatorsByActivity.get(mActivity)).hide(anyInt());
         verify(mCoordinatorsByActivity.get(secondActivity)).hide(anyInt());
+    }
+
+    // --- getScreenshotMode / shouldForceSecureWindow ---
+
+    @Test
+    public void getScreenshotMode_prefUnset_incognitoScreenshotFeatureEnabled_migratesToAllow() {
+        FeatureOverrides.enable(ChromeFeatureList.INCOGNITO_SCREENSHOT);
+
+        assertEquals(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_ALLOW,
+                BraveBrowserLockManager.getScreenshotMode());
+    }
+
+    @Test
+    public void getScreenshotMode_prefUnset_incognitoScreenshotFeatureDisabled_migratesToPrivateTabsOnly() {
+        FeatureOverrides.disable(ChromeFeatureList.INCOGNITO_SCREENSHOT);
+
+        assertEquals(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_PRIVATE_TABS_ONLY,
+                BraveBrowserLockManager.getScreenshotMode());
+    }
+
+    @Test
+    public void getScreenshotMode_neverMigratesToEverything() {
+        // EVERYTHING has no pre-existing equivalent — it must never be auto-selected regardless
+        // of the old feature's state.
+        FeatureOverrides.enable(ChromeFeatureList.INCOGNITO_SCREENSHOT);
+        assertFalse(
+                BraveBrowserLockManager.getScreenshotMode()
+                        == BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING);
+
+        FeatureOverrides.disable(ChromeFeatureList.INCOGNITO_SCREENSHOT);
+        assertFalse(
+                BraveBrowserLockManager.getScreenshotMode()
+                        == BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING);
+    }
+
+    @Test
+    public void getScreenshotMode_prefAlreadySet_ignoresFeatureState() {
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING);
+        // If the persisted value were ignored in favor of re-deriving from the feature, this would
+        // come back as ALLOW instead.
+        FeatureOverrides.enable(ChromeFeatureList.INCOGNITO_SCREENSHOT);
+
+        assertEquals(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING,
+                BraveBrowserLockManager.getScreenshotMode());
+    }
+
+    @Test
+    public void shouldForceSecureWindow_trueOnlyForEverythingMode() {
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_ALLOW);
+        assertFalse(BraveBrowserLockManager.shouldForceSecureWindow());
+
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_PRIVATE_TABS_ONLY);
+        assertFalse(BraveBrowserLockManager.shouldForceSecureWindow());
+
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING);
+        assertTrue(BraveBrowserLockManager.shouldForceSecureWindow());
+    }
+
+    @Test
+    public void shouldForceSecureWindow_independentOfBrowserLockState() {
+        // Screenshot protection must work even with no browser lock enabled at all — changing it
+        // already requires authentication, so gating it behind a separate lock is unnecessary.
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, false);
+        BraveBrowserLockManager.setScreenshotMode(
+                BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING);
+
+        assertFalse(BraveBrowserLockManager.isBrowserLockEnabled());
+        assertTrue(BraveBrowserLockManager.shouldForceSecureWindow());
     }
 }

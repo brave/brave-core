@@ -21,9 +21,12 @@ import org.chromium.base.ApplicationState;
 import org.chromium.base.ApplicationStatus;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.FeatureList;
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.shared_preferences.SharedPreferencesManager;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.incognito.reauth.BraveBrowserLockCoordinator;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
 import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthSettingUtils;
@@ -71,8 +74,8 @@ import java.util.Map;
  * to stop an accessibility service (e.g. TalkBack, or a malicious app abusing the Accessibility
  * API) from reading the view hierarchy underneath the lock overlay. Whenever a lock or pre-native
  * overlay is shown for an activity, that activity's content view is excluded from the accessibility
- * tree ({@link View#IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS}) so only the lock screen itself
- * is reachable; it is restored once the lock is dismissed.
+ * tree ({@link View#IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS}) so only the lock screen
+ * itself is reachable; it is restored once the lock is dismissed.
  */
 @NullMarked
 // Chromium's wrapper doesn't give us a way to register a listener for changes.
@@ -169,7 +172,7 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     private final SharedPreferences.OnSharedPreferenceChangeListener mPrefChangeListener =
             (sharedPreferences, key) -> {
                 if (BravePreferenceKeys.BRAVE_BROWSER_LOCK.equals(key)
-                        || BravePreferenceKeys.BRAVE_BROWSER_LOCK_PREVENT_CAPTURE.equals(key)) {
+                        || BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE.equals(key)) {
                     applySecureFlagToAllActivities();
                     if (!isBrowserLockEnabled()) {
                         removeAllPreNativeOverlays();
@@ -260,9 +263,40 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
                         .readBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, false);
     }
 
-    public static boolean isPreventCaptureEnabled() {
-        return ChromeSharedPreferences.getInstance()
-                .readBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK_PREVENT_CAPTURE, true);
+    /**
+     * Returns the current screenshot-protection mode: {@link
+     * BravePreferenceKeys#BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_ALLOW}, {@link
+     * BravePreferenceKeys#BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_PRIVATE_TABS_ONLY}, or {@link
+     * BravePreferenceKeys#BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING}.
+     *
+     * <p>The first time this is read (pref key absent — i.e. an upgrade from before this tri-state
+     * setting existed, or a fresh install), the value is migrated from the pre-existing {@link
+     * ChromeFeatureList#sIncognitoScreenshot} feature so an upgrading user's prior choice carries
+     * over: feature enabled ("allow incognito screenshots") maps to {@code ALLOW}; disabled (the
+     * upstream default, and what every fresh install already has) maps to {@code
+     * PRIVATE_TABS_ONLY}. {@code EVERYTHING} has no pre-existing equivalent, so it is never
+     * auto-selected — it is purely opt-in. The migrated value is only persisted once native is
+     * initialized, since the feature flag's Java wrapper cannot report the real value before then;
+     * otherwise a pre-native caller would permanently lock in an unreliable guess.
+     */
+    public static int getScreenshotMode() {
+        SharedPreferencesManager prefs = ChromeSharedPreferences.getInstance();
+        if (prefs.contains(BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE)) {
+            return prefs.readInt(BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE);
+        }
+        int migrated =
+                ChromeFeatureList.sIncognitoScreenshot.isEnabled()
+                        ? BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_ALLOW
+                        : BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_PRIVATE_TABS_ONLY;
+        if (FeatureList.isNativeInitialized()) {
+            prefs.writeInt(BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE, migrated);
+        }
+        return migrated;
+    }
+
+    public static void setScreenshotMode(int mode) {
+        ChromeSharedPreferences.getInstance()
+                .writeInt(BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE, mode);
     }
 
     /**
@@ -278,7 +312,8 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
      * the biometric lock screen at all.
      */
     public static boolean shouldForceSecureWindow() {
-        return isPreventCaptureEnabled();
+        return getScreenshotMode()
+                == BravePreferenceKeys.BRAVE_BROWSER_LOCK_SCREENSHOT_MODE_EVERYTHING;
     }
 
     private void applySecureFlagToAllActivities() {
