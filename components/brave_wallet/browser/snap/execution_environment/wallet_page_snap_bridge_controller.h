@@ -19,6 +19,9 @@ namespace brave_wallet {
 // SnapBridgeController implementation that uses an already-open wallet page
 // as the snap isolation environment. Does not open a page; IsBound() is true
 // only while a wallet page has connected the bridge.
+//
+// SetBridge is last-wins across the profile: a second wallet tab replaces
+// the first tab's bridge remote.
 class WalletPageSnapBridgeController : public SnapBridgeController {
  public:
   WalletPageSnapBridgeController();
@@ -32,13 +35,13 @@ class WalletPageSnapBridgeController : public SnapBridgeController {
   // SnapBridgeController:
   void SetBridge(mojo::PendingRemote<mojom::SnapBridge> bridge) override;
   bool IsBound() const override;
-  void SetDisconnectCallback(DisconnectCallback cb) override;
-  void LoadSnap(const std::string& snap_id, LoadSnapCallback cb) override;
+  void LoadSnap(const std::string& snap_id,
+                const std::string& source_code,
+                LoadSnapCallback cb) override;
+  void UnloadSnap(const std::string& snap_id) override;
 
  private:
   void OnDisconnect();
-
-  DisconnectCallback disconnect_callback_;
 
   mojo::Remote<mojom::SnapBridge> snap_bridge_;
 

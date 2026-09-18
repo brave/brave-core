@@ -3,18 +3,25 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// Minimal SnapBridge implementation for the wallet page.
-// It embeds snap iframes pointing at chrome-untrusted://snap-executor/ and
-// loads snap source into them. This extraction omits MetaMask's
-// post-message-stream / object-multiplex integration and SES lockdown.
+// SnapBridge for the wallet page. Embeds snap iframes at
+// chrome-untrusted://snap-executor/ and loads snap source into them via
+// postMessage. Mojo (mojom::SnapBridge) stays on this trusted page; the
+// untrusted frame has no Mojo pipe.
 
 import { BraveWallet } from '../../constants/types'
+import {
+  ExecuteSnapResult,
+  isExecuteSnapResult,
+  isExecutorReady,
+  SNAP_EXECUTOR_ORIGIN,
+  SnapCommand,
+} from './snap_messages'
 
-const SNAP_EXECUTOR_ORIGIN = 'chrome-untrusted://snap-executor'
-// The executor's HTML is served via SetDefaultResource at the root path only
-// -- kSnapExecutorGenerated maps snap_executor.bundle.js, not
-// snap_executor.html -- so the iframe must load the origin root.
+// The executor's HTML is served via SetDefaultResource at the origin root.
 const SNAP_EXECUTOR_URL = `${SNAP_EXECUTOR_ORIGIN}/`
+
+const HANDSHAKE_TIMEOUT_MS = 30000
+const COMMAND_TIMEOUT_MS = 60000
 
 interface SnapConnection {
   iframe: HTMLIFrameElement
@@ -23,16 +30,15 @@ interface SnapConnection {
 
 export class SnapBridge {
   private readonly connections = new Map<string, SnapConnection>()
-  private snapsService: BraveWallet.SnapsServiceRemote | null = null
+  private readonly pendingConnections = new Map<
+    string,
+    Promise<SnapConnection>
+  >()
   private readonly container: HTMLElement
   private nextCommandId = 0
 
   constructor(container?: HTMLElement) {
     this.container = container ?? document.body
-  }
-
-  setSnapsService(svc: BraveWallet.SnapsServiceRemote): void {
-    this.snapsService = svc
   }
 
   bindNewPipeAndPassRemote() {
@@ -44,7 +50,10 @@ export class SnapBridge {
   // SnapBridge Mojo interface — called by C++ SnapsService
   // ---------------------------------------------------------------------------
 
-  async loadSnap(snapId: string): Promise<{
+  async loadSnap(
+    snapId: string,
+    sourceCode: string,
+  ): Promise<{
     success: boolean
     error: string | null
     result: string | null
@@ -55,28 +64,14 @@ export class SnapBridge {
         conn = await this.createConnection(snapId)
       }
 
-      if (!this.snapsService) {
-        return {
-          success: false,
-          error: 'SnapsService not available',
-          result: null,
-        }
-      }
-      const { sourceCode: code, error } =
-        await this.snapsService.getSnapBundle(snapId)
-      if (error || !code) {
-        return {
-          success: false,
-          error: error ?? 'Bundle not found',
-          result: null,
-        }
-      }
-
-      const executeResult = await this.sendCommand(conn, 'executeSnap', {
-        snapId,
-        sourceCode: code,
-        endowments: [],
+      const executeResult = await this.sendCommand(conn, {
+        type: SnapCommand.ExecuteSnap,
+        payload: { snapId, sourceCode },
       })
+
+      if (!executeResult.success) {
+        this.unloadSnap(snapId)
+      }
 
       return {
         success: executeResult.success === true,
@@ -87,6 +82,7 @@ export class SnapBridge {
             : null,
       }
     } catch (err) {
+      this.unloadSnap(snapId)
       const msg = err instanceof Error ? err.message : String(err)
       return { success: false, error: msg, result: null }
     }
@@ -98,6 +94,7 @@ export class SnapBridge {
       conn.iframe.remove()
       this.connections.delete(snapId)
     }
+    this.pendingConnections.delete(snapId)
   }
 
   // ---------------------------------------------------------------------------
@@ -105,7 +102,12 @@ export class SnapBridge {
   // ---------------------------------------------------------------------------
 
   private createConnection(snapId: string): Promise<SnapConnection> {
-    return new Promise((resolve, reject) => {
+    const pending = this.pendingConnections.get(snapId)
+    if (pending) {
+      return pending
+    }
+
+    const promise = new Promise<SnapConnection>((resolve, reject) => {
       const iframe = document.createElement('iframe')
       // Cross-scheme chrome:// -> chrome-untrusted:// keeps isolation; without
       // allow-same-origin the frame gets an opaque origin and its postMessage
@@ -114,31 +116,52 @@ export class SnapBridge {
       iframe.style.display = 'none'
       iframe.src = SNAP_EXECUTOR_URL
 
+      const cleanup = () => {
+        window.removeEventListener('message', onMessage)
+        window.clearTimeout(timer)
+        this.pendingConnections.delete(snapId)
+      }
+
+      const fail = (error: Error) => {
+        cleanup()
+        iframe.remove()
+        reject(error)
+      }
+
       const onMessage = (event: MessageEvent) => {
-        if (event.origin !== SNAP_EXECUTOR_ORIGIN) {
+        if (
+          event.origin !== SNAP_EXECUTOR_ORIGIN
+          || event.source !== iframe.contentWindow
+        ) {
           return
         }
-        const data = event.data as { type: string }
-        if (data?.type === 'executorReady') {
-          window.removeEventListener('message', onMessage)
+        if (isExecutorReady(event.data)) {
+          cleanup()
           const conn: SnapConnection = { iframe, ready: true }
           this.connections.set(snapId, conn)
           resolve(conn)
         }
       }
 
-      window.addEventListener('message', onMessage)
-      iframe.onerror = () => reject(new Error('Failed to load snap executor'))
+      const timer = window.setTimeout(() => {
+        fail(new Error('Snap executor handshake timed out'))
+      }, HANDSHAKE_TIMEOUT_MS)
 
+      window.addEventListener('message', onMessage)
       this.container.appendChild(iframe)
     })
+
+    this.pendingConnections.set(snapId, promise)
+    return promise
   }
 
   private sendCommand(
     conn: SnapConnection,
-    type: string,
-    payload: unknown,
-  ): Promise<any> {
+    command: {
+      type: SnapCommand.ExecuteSnap
+      payload: { snapId: string; sourceCode: string }
+    },
+  ): Promise<ExecuteSnapResult> {
     return new Promise((resolve, reject) => {
       if (!conn.ready || !conn.iframe.contentWindow) {
         reject(new Error('Snap connection not ready'))
@@ -146,30 +169,48 @@ export class SnapBridge {
       }
 
       const requestId = ++this.nextCommandId
+      let settled = false
 
-      const handler = (event: MessageEvent) => {
-        if (event.origin !== SNAP_EXECUTOR_ORIGIN) {
+      const settle = (fn: () => void) => {
+        if (settled) {
           return
         }
-        const data = event.data as { type: string; requestId: number }
-        if (data?.type === `${type}Result` && data.requestId === requestId) {
-          window.removeEventListener('message', handler)
-          window.clearTimeout(timer)
-          resolve(data)
+        settled = true
+        window.removeEventListener('message', handler)
+        window.clearTimeout(timer)
+        fn()
+      }
+
+      const handler = (event: MessageEvent) => {
+        if (
+          event.origin !== SNAP_EXECUTOR_ORIGIN
+          || event.source !== conn.iframe.contentWindow
+        ) {
+          return
+        }
+        if (
+          isExecuteSnapResult(event.data)
+          && event.data.requestId === requestId
+        ) {
+          settle(() => resolve(event.data))
         }
       }
 
       window.addEventListener('message', handler)
       conn.iframe.contentWindow.postMessage(
-        { type, requestId, payload },
+        {
+          type: command.type,
+          requestId,
+          payload: command.payload,
+        },
         SNAP_EXECUTOR_ORIGIN,
       )
 
-      // Timeout to avoid leaking the listener.
       const timer = window.setTimeout(() => {
-        window.removeEventListener('message', handler)
-        reject(new Error(`Snap command '${type}' timed out`))
-      }, 60000)
+        settle(() =>
+          reject(new Error(`Snap command '${command.type}' timed out`)),
+        )
+      }, COMMAND_TIMEOUT_MS)
     })
   }
 }

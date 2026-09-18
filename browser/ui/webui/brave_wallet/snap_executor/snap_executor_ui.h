@@ -15,6 +15,11 @@
 
 namespace snap_executor {
 
+// Untrusted WebUI (`chrome-untrusted://snap-executor`) that evaluates snap
+// bundles. Deliberately not an `ui::EnableMojoWebUI` — unlike
+// `UntrustedLedgerUI`, no Mojo pipe may exist in a frame that evaluates
+// downloaded code. The trusted wallet page owns `mojom::SnapBridge` and
+// talks to this frame only via postMessage.
 class UntrustedSnapExecutorUI : public ui::UntrustedWebUIController {
  public:
   explicit UntrustedSnapExecutorUI(content::WebUI* web_ui);
@@ -27,6 +32,8 @@ class UntrustedSnapExecutorUIConfig : public content::WebUIConfig {
  public:
   UntrustedSnapExecutorUIConfig();
   ~UntrustedSnapExecutorUIConfig() override = default;
+
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
 
   std::unique_ptr<content::WebUIController> CreateWebUIController(
       content::WebUI* web_ui,

@@ -7,11 +7,13 @@
 
 #include <memory>
 
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/components/snap_executor/resources/grit/snap_executor_generated_map.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
+#include "services/network/public/mojom/content_security_policy.mojom.h"
 #include "url/gurl.h"
 
 namespace snap_executor {
@@ -29,21 +31,32 @@ UntrustedSnapExecutorUI::UntrustedSnapExecutorUI(content::WebUI* web_ui)
   // snap_executor.ts hardcodes PARENT_ORIGIN = 'chrome://wallet' anyway.
   untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
 
-  // 'unsafe-eval' is required because snap code may be evaluated in an isolated
-  // scope inside the untrusted frame.
+  // 'unsafe-eval' is required for new Function() evaluation of snap bundles.
+  // 'unsafe-inline' is intentionally omitted — snap_executor.html loads one
+  // external script, and allowing inline scripts would let evaluated snap
+  // code inject <script> elements.
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
-      "script-src 'self' 'unsafe-eval' 'unsafe-inline';");
-  untrusted_source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::RequireTrustedTypesFor, "");
-  // 'self' for snap bundle fetch(); '*' for snap endowment:network-access.
-  untrusted_source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'self' *;");
+      "script-src 'self' 'unsafe-eval';");
+  // new Function(string) throws under require-trusted-types-for regardless of
+  // 'unsafe-eval'; clear both that directive and the default trusted-types;.
+  untrusted_source->DisableTrustedTypesCSP();
+  // TODO(snaps): reintroduce connect-src * when endowment:network-access is
+  // enforced. Until then, fall back to default-src 'self'.
   untrusted_source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc, "frame-src 'none';");
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::WorkerSrc, "worker-src 'none';");
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FormAction, "form-action 'none';");
 }
 
 UntrustedSnapExecutorUI::~UntrustedSnapExecutorUI() = default;
+
+bool UntrustedSnapExecutorUIConfig::IsWebUIEnabled(
+    content::BrowserContext* browser_context) {
+  return brave_wallet::IsSnapsFeatureEnabled();
+}
 
 std::unique_ptr<content::WebUIController>
 UntrustedSnapExecutorUIConfig::CreateWebUIController(content::WebUI* web_ui,

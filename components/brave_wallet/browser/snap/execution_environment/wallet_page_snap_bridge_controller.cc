@@ -5,9 +5,11 @@
 
 #include "brave/components/brave_wallet/browser/snap/execution_environment/wallet_page_snap_bridge_controller.h"
 
+#include <optional>
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 
 namespace brave_wallet {
 
@@ -28,21 +30,30 @@ bool WalletPageSnapBridgeController::IsBound() const {
   return snap_bridge_.is_bound();
 }
 
-void WalletPageSnapBridgeController::SetDisconnectCallback(
-    DisconnectCallback cb) {
-  disconnect_callback_ = std::move(cb);
-}
-
 void WalletPageSnapBridgeController::OnDisconnect() {
   snap_bridge_.reset();
-  if (disconnect_callback_) {
-    disconnect_callback_.Run();
-  }
 }
 
 void WalletPageSnapBridgeController::LoadSnap(const std::string& snap_id,
+                                              const std::string& source_code,
                                               LoadSnapCallback cb) {
-  snap_bridge_->LoadSnap(snap_id, std::move(cb));
+  if (!IsBound()) {
+    std::move(cb).Run(false, "Snap bridge disconnected", std::nullopt);
+    return;
+  }
+  snap_bridge_->LoadSnap(
+      snap_id, source_code,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          std::move(cb), false,
+          std::optional<std::string>("Snap bridge disconnected"),
+          std::nullopt));
+}
+
+void WalletPageSnapBridgeController::UnloadSnap(const std::string& snap_id) {
+  if (!IsBound()) {
+    return;
+  }
+  snap_bridge_->UnloadSnap(snap_id);
 }
 
 }  // namespace brave_wallet

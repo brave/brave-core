@@ -20,15 +20,18 @@
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
 
 namespace {
 constexpr char kTestSnapId[] = "npm:test-snap";
+constexpr char kHangSnapId[] = "npm:hang-snap";
 }  // namespace
 
 class SnapsServiceBrowserTest : public InProcessBrowserTest {
@@ -112,6 +115,55 @@ IN_PROC_BROWSER_TEST_F(SnapsServiceBrowserTest, BridgeDisconnectOnPageClose) {
   ASSERT_TRUE(error.has_value());
   EXPECT_EQ("Wallet page is not running", *error);
   EXPECT_FALSE(result.has_value());
+}
+
+// Navigating away while LoadSnap is in flight must still deliver a reply
+// (WrapCallbackWithDefaultInvokeIfNotRun), not hang forever.
+IN_PROC_BROWSER_TEST_F(SnapsServiceBrowserTest, LoadSnapReplyOnNavigationAway) {
+  OpenWalletPage();
+
+  // Infinite loop so the mojo call stays pending until the bridge disconnects.
+  service()->SetSnapBundleForTesting(kHangSnapId, "while (true) {}");
+
+  base::test::TestFuture<bool, const std::optional<std::string>&,
+                         const std::optional<std::string>&>
+      future;
+  service()->LoadSnap(kHangSnapId, future.GetCallback());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab")));
+
+  auto [success, error, result] = future.Take();
+  EXPECT_FALSE(success);
+  ASSERT_TRUE(error.has_value());
+  EXPECT_FALSE(result.has_value());
+}
+
+// SetBridge is last-wins: a second wallet tab replaces the first tab's bridge.
+// Closing the second tab disconnects; the first tab's orphaned bridge is not
+// restored.
+IN_PROC_BROWSER_TEST_F(SnapsServiceBrowserTest, SetBridgeLastWinsAcrossTabs) {
+  OpenWalletPage();
+  ASSERT_TRUE(service()->IsBridgeBoundForTesting());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL(kBraveUIWalletURL),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return service()->IsBridgeBoundForTesting(); }));
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+
+  // Close the second (active) tab — its bridge was the last SetBridge.
+  browser()->tab_strip_model()->CloseWebContentsAt(1,
+                                                   TabCloseTypes::CLOSE_NONE);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return !service()->IsBridgeBoundForTesting(); }));
+
+  // First tab is still open but its bridge was replaced and is orphaned.
+  auto [success, error, result] = LoadSnap(kTestSnapId);
+  EXPECT_FALSE(success);
+  ASSERT_TRUE(error.has_value());
+  EXPECT_EQ("Wallet page is not running", *error);
 }
 
 }  // namespace brave_wallet

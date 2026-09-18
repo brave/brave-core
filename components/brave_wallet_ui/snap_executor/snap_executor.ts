@@ -3,24 +3,27 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// Minimal snap executor running inside chrome-untrusted://snap-executor/.
-// It receives snap source code from the parent wallet page via postMessage
-// and evaluates it in a lightweight sandbox. No runtime messaging is
-// exposed to the loaded snap.
+// Snap executor running inside chrome-untrusted://snap-executor/.
+// Receives snap source from the parent wallet page via postMessage and
+// evaluates it with new Function().
+//
+// All snaps share one realm and one origin (allow-same-origin sandbox) with
+// no SES lockdown and no inter-snap isolation. Evaluated code has the frame's
+// full globals (window.parent, postMessage, fetch, indexedDB, etc.).
+// TODO(snaps): adopt MetaMask SES compartments per snaps_wiki.md.
 
-interface ExecuteSnapMessage {
-  snapId: string
-  sourceCode: string
-  endowments: string[]
-}
-
-const PARENT_ORIGIN = 'chrome://wallet'
+import {
+  ExecuteSnapPayload,
+  isExecuteSnapCommand,
+  SnapMessageType,
+  WALLET_PAGE_ORIGIN,
+} from '../common/snap/snap_messages'
 
 function sendToParent(message: unknown) {
-  window.parent.postMessage(message, PARENT_ORIGIN)
+  window.parent.postMessage(message, WALLET_PAGE_ORIGIN)
 }
 
-function handleExecuteSnap(requestId: number, payload: ExecuteSnapMessage) {
+function handleExecuteSnap(requestId: number, payload: ExecuteSnapPayload) {
   // Snap bundles are CommonJS, so provide `module`/`exports` and prefer an
   // explicit return value if the bundle produces one.
   const mod: { exports: unknown } = { exports: {} }
@@ -32,7 +35,7 @@ function handleExecuteSnap(requestId: number, payload: ExecuteSnapMessage) {
     )
     const exported = factory(mod, mod.exports)
     sendToParent({
-      type: 'executeSnapResult',
+      type: SnapMessageType.ExecuteSnapResult,
       requestId,
       success: true,
       error: null,
@@ -41,7 +44,7 @@ function handleExecuteSnap(requestId: number, payload: ExecuteSnapMessage) {
   } catch (err) {
     const error = err instanceof Error ? err.message : String(err)
     sendToParent({
-      type: 'executeSnapResult',
+      type: SnapMessageType.ExecuteSnapResult,
       requestId,
       success: false,
       error,
@@ -51,22 +54,15 @@ function handleExecuteSnap(requestId: number, payload: ExecuteSnapMessage) {
 }
 
 window.addEventListener('message', (event) => {
-  if (event.origin !== PARENT_ORIGIN) {
+  if (event.origin !== WALLET_PAGE_ORIGIN || event.source !== window.parent) {
     return
   }
-  const command = event.data as {
-    type: string
-    requestId: number
-    payload: ExecuteSnapMessage
-  }
-  if (!command || typeof command !== 'object') {
+  if (!isExecuteSnapCommand(event.data)) {
     return
   }
 
-  if (command.type === 'executeSnap') {
-    handleExecuteSnap(command.requestId, command.payload)
-  }
+  handleExecuteSnap(event.data.requestId, event.data.payload)
 })
 
 // Notify the parent that the executor is ready.
-sendToParent({ type: 'executorReady' })
+sendToParent({ type: SnapMessageType.ExecutorReady })
