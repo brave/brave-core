@@ -1,24 +1,44 @@
 diff --git a/ui/color/BUILD.gn b/ui/color/BUILD.gn
-index 51bead4a5c3aab3496782b24b3853cc0342f0cd3..5008828c7b50d6e287691b30abfacf8bebd8551b 100644
+index 51bead4a5c3aab3496782b24b3853cc0342f0cd3..f30949c2ab15f29c2a70431862e7bcc870134166 100644
 --- a/ui/color/BUILD.gn
 +++ b/ui/color/BUILD.gn
-@@ -96,6 +96,9 @@ component("color") {
-     ]
-     deps += [ ":ui_color_jni_headers" ]
-   }
-+  import("//brave/ui/color/sources.gni")
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/ui/color/sources.gni")
+ import("//build/buildflag_header.gni")
+ import("//mojo/public/tools/bindings/mojom.gni")
+ import("//testing/test.gni")
+@@ -64,6 +65,7 @@ component("color") {
+     "color_transform.h",
+     "color_variant.cc",
+   ]
 +  sources += brave_ui_color_sources
+ 
+   configs += [ "//build/config/compiler:prevent_unsafe_narrowing" ]
+ 
+@@ -76,6 +78,7 @@ component("color") {
+     "//ui/base:features",
+     "//ui/gfx:color_utils",
+   ]
 +  public_deps += brave_ui_color_public_deps
- }
  
- source_set("test_support") {
-@@ -214,6 +217,9 @@ component("mixers") {
-       "android/sys_color_mixer_android.h",
-     ]
-   }
-+  import("//brave/ui/color/sources.gni")
+   deps = [ "//third_party/abseil-cpp:absl" ]
+ 
+@@ -175,6 +178,7 @@ component("mixers") {
+     "ui_color_mixer.cc",
+     "ui_color_mixer.h",
+   ]
 +  sources += brave_ui_color_mixer_sources
-+  public_deps += brave_ui_color_mixer_public_deps
- }
  
- if (is_android) {
+   defines = [ "IS_COLOR_IMPL" ]
+ 
+@@ -192,6 +196,7 @@ component("mixers") {
+   ]
+ 
+   public_deps = [ "//base" ]
++  public_deps += brave_ui_color_mixer_public_deps
+ 
+   if (is_chromeos) {
+     sources += [ "chromeos/native_color_mixers_chromeos.cc" ]

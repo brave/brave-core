@@ -5,18 +5,11 @@
 
 substitutions:
   - description: |
-      Pull in the variable list for the Brave additions to
-      `source_set("extensions")`.
+      Append the Brave additions to `source_set("extensions")`.
 
-      Inserted at the top of the file.
-    regex:
-      re_pattern: '(# found in the LICENSE file\.\n\n)'
-      replace: |
-        \1import("//brave/browser/extensions/resources.gni")
-
-  - description: |
-      Append Brave deps to `source_set("extensions")`.
-    regex:
-      re_pattern: '(source_set\("extensions"\).*?\bdeps\s*=\s*\[.*?\])'
-      re_flags: [DOTALL]
-      replace: '\1\n  deps += brave_extensions_resources'
+      The deps are a variable list, imported from the `.gni` defining it.
+    add_literal_to_list:
+      target: extensions
+      list_name: deps
+      literal: brave_extensions_resources
+      import: //brave/browser/extensions/resources.gni

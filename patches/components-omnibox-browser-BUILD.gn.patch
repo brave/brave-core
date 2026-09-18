@@ -1,30 +1,44 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 1fe7f40cfccf93526e2133e2e87eaa8d16ad5935..98afc50d7e2f9d0d82cd70f921bc56d3fefc07c5 100644
+index 1fe7f40cfccf93526e2133e2e87eaa8d16ad5935..b3da14fa765e82b9ba19a478162dbbfb896f6029 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
-@@ -523,6 +523,9 @@ static_library("browser") {
-     ]
-     deps += [ "//content/public/common" ]
-   }
+@@ -376,6 +376,7 @@ static_library("browser") {
+     "zero_suggest_verbatim_match_provider.cc",
+     "zero_suggest_verbatim_match_provider.h",
+   ]
 +  sources += brave_components_omnibox_browser_sources
+ 
+   public_deps = [
+     ":aim_eligibility_service_features",
+@@ -403,6 +404,7 @@ static_library("browser") {
+     "//third_party/tflite_support:tflite_support_proto",
+     "//url",
+   ]
 +  public_deps += brave_components_omnibox_browser_public_deps
+ 
+   deps = [
+     "//build:android_buildflags",
+@@ -450,6 +452,7 @@ static_library("browser") {
+     "//ui/base",
+     "//ui/gfx",
+   ]
 +  deps += brave_components_omnibox_browser_deps
- }
  
- source_set("pref_names") {
-@@ -1122,6 +1125,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
- }
+   configs += [ "//build/config/compiler:wexit_time_destructors" ]
  
- mojom("mojo_bindings") {
+@@ -1139,6 +1142,7 @@ mojom("mojo_bindings") {
+     sources += [ "searchbox.mojom" ]
+     public_deps += [ ":fusebox_action_mojo_bindings" ]
+   }
 +  generate_legacy_js_bindings = true
-   sources = [ "omnibox.mojom" ]
-   webui_module_path = "chrome://resources/mojo/components/omnibox/browser"
- 
-@@ -1143,6 +1147,7 @@ mojom("mojo_bindings") {
+ }
  
  if (!is_ios) {
-   mojom("fusebox_action_mojo_bindings") {
-+  generate_legacy_js_bindings = true
-     sources = [ "fusebox_action.mojom" ]
-     webui_module_path = "chrome://resources/mojo/components/omnibox/browser"
-     public_deps = [ "//components/omnibox/composebox:mojo_bindings" ]
+@@ -1159,6 +1163,7 @@ if (!is_ios) {
+         traits_deps = [ "//third_party/omnibox_proto" ]
+       },
+     ]
++    generate_legacy_js_bindings = true
+   }
+ 
+   source_set("fusebox_action_mojo_utils") {

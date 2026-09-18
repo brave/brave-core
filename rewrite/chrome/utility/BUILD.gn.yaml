@@ -4,11 +4,23 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Add brave/utility sources'
-    regex:
-      re_pattern: '(static_library\("utility"\) {[\s\S]*?)(^})'
-      re_flags: [MULTILINE]
-      replace:
-        '\1  import("//brave/utility/sources.gni") sources +=
-        brave_utility_sources deps += brave_utility_deps public_deps +=
-        brave_utility_public_deps\n\2'
+  - description: Add the brave/utility sources to `static_library("utility")`.
+    add_literal_to_list:
+      target: utility
+      list_name: sources
+      literal: brave_utility_sources
+      import: //brave/utility/sources.gni
+
+  - description: Add the brave/utility deps to `static_library("utility")`.
+    add_literal_to_list:
+      target: utility
+      list_name: deps
+      literal: brave_utility_deps
+      import: //brave/utility/sources.gni
+
+  - description: Add the brave/utility public_deps to `static_library("utility")`.
+    add_literal_to_list:
+      target: utility
+      list_name: public_deps
+      literal: brave_utility_public_deps
+      import: //brave/utility/sources.gni

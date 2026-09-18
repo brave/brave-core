@@ -7,35 +7,36 @@ substitutions:
   - description: |
       Enable legacy JS bindings generation for `mojo_bindings`.
 
-      These bindings are used by `brave_new_tab_ui`. This plaster always adds
-      the line at the beginning of the target.
-    regex:
-      re_pattern: '(mojom\("mojo_bindings"\)\s*\{)'
-      re_flags: [DOTALL]
-      replace: '\1\n  generate_legacy_js_bindings = true'
+      These bindings are used by `brave_new_tab_ui`.
+    set_attribute:
+      target: mojo_bindings
+      attribute: generate_legacy_js_bindings
+      value: 'true'
 
   - description: |
       Enable legacy JS bindings generation for `fusebox_action_mojo_bindings`.
 
       `mojo_bindings` depends on these bindings and we enabled legacy bindings
-      generation in `mojo_bindings`, so we also have to enable them in these
-      bindings. This plaster always adds the line at the beginning of the
-      target.
-    regex:
-      re_pattern: '(mojom\("fusebox_action_mojo_bindings"\)\s*\{)'
-      re_flags: [DOTALL]
-      replace: '\1\n  generate_legacy_js_bindings = true'
+      generation there, so they have to be enabled here too.
+    set_attribute:
+      target: fusebox_action_mojo_bindings
+      attribute: generate_legacy_js_bindings
+      value: 'true'
 
-  - description: |
-      Brave additions to `static_library("browser")`.
+  - description: Add the Brave sources to `static_library("browser")`.
+    add_literal_to_list:
+      target: browser
+      list_name: sources
+      literal: brave_components_omnibox_browser_sources
 
-      The Brave sources and deps are grouped together at the end of the target.
-    regex:
-      re_pattern: '(static_library\("browser"\).*?)\n\}'
-      re_flags: [DOTALL]
-      replace: |-
-        \1
-          sources += brave_components_omnibox_browser_sources
-          public_deps += brave_components_omnibox_browser_public_deps
-          deps += brave_components_omnibox_browser_deps
-        }
+  - description: Add the Brave public_deps to `static_library("browser")`.
+    add_literal_to_list:
+      target: browser
+      list_name: public_deps
+      literal: brave_components_omnibox_browser_public_deps
+
+  - description: Add the Brave deps to `static_library("browser")`.
+    add_literal_to_list:
+      target: browser
+      list_name: deps
+      literal: brave_components_omnibox_browser_deps
