@@ -1,12 +1,20 @@
 diff --git a/chrome/browser/updater/BUILD.gn b/chrome/browser/updater/BUILD.gn
-index b9c442efe4805721eeb732eed905d4e4a668a7aa..335b5f97de72ffb3a65ec5d82bdac9163b85d79c 100644
+index b9c442efe4805721eeb732eed905d4e4a668a7aa..441b3d417093ec1dac90978db7c5e5ecfb34c1f2 100644
 --- a/chrome/browser/updater/BUILD.gn
 +++ b/chrome/browser/updater/BUILD.gn
-@@ -40,6 +40,7 @@ source_set("updater") {
-       "//chrome/updater:browser_sources",
-     ]
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-+    import("//brave/browser/updater/sources.gni") deps += brave_chrome_updater_scheduler_deps
-     if (is_win) {
-       sources += [
-         "browser_updater_client_util_win.cc",
++import("//brave/browser/updater/sources.gni")
+ import("//build/config/chrome_build.gni")
+ import("//chrome/browser/buildflags.gni")
+ 
+@@ -76,6 +77,7 @@ source_set("updater") {
+       ]
+       frameworks = [ "OpenDirectory.framework" ]
+     }
++    deps += brave_chrome_updater_scheduler_deps
+   } else if (enable_updater && is_linux) {
+     # Chromium Updater is only partially supported on Linux. Linux support in
+     # the browser exists to facilitate the implementation of cross-platform
