@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.toolbar;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewStub;
@@ -441,6 +442,10 @@ public class BraveToolbarManager extends ToolbarManager
         BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate =
                 mBrowserControlsSizer.getBrowserVisibilityDelegate();
         assert controlsVisibilityDelegate != null;
+
+        Resources res = mBottomControls.getResources();
+        int bottomToolbarHeight = res.getDimensionPixelOffset(R.dimen.brave_bottom_toolbar_height);
+
         var bottomControlsCoordinator =
                 new BraveBottomControlsCoordinator(
                         mLayoutStateProviderSupplier,
@@ -468,7 +473,7 @@ public class BraveToolbarManager extends ToolbarManager
                         mActivityTabProvider.asObservable(),
                         mBottomControls,
                         LayerType.TABSTRIP_TOOLBAR,
-                        R.dimen.brave_bottom_toolbar_height,
+                        bottomToolbarHeight,
                         bottomControlsContentDelegateSupplier,
                         mTabObscuringHandler,
                         mLayoutManager.getOverlayPanelManager().getPanelStateSupplier(),
