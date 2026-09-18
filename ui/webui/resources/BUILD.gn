@@ -272,6 +272,7 @@ leo_icons_sources = [
   "dot.svg",
   "download-off.svg",
   "download.svg",
+  "drag.svg",
   "duckduckgo-color.svg",
   "ecosia-color.svg",
   "edge-color.svg",

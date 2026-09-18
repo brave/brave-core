@@ -280,6 +280,7 @@ if (enable_containers) {
     "brave_content_page/containers_icon.ts",
     "brave_content_page/containers.html.ts",
     "brave_content_page/containers.ts",
+    "brave_content_page/drag_reorder_mixin.ts",
   ]
   brave_settings_local_css_files += [
     "brave_content_page/containers_background_chip.css",

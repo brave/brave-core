@@ -354,6 +354,48 @@ TEST_F(ContainersSettingsHandlerTest, RemoveInvalidContainer) {
   EXPECT_EQ(mojom::ContainerOperationError::kNotFound, error_future.Take());
 }
 
+TEST_F(ContainersSettingsHandlerTest, ReorderContainers) {
+  base::test::TestFuture<std::optional<mojom::ContainerOperationError>>
+      error_future;
+  for (const char* name : {"First", "Second", "Third"}) {
+    handler_->AddContainer(
+        mojom::Container::New("", name, mojom::Icon::kPersonal, SK_ColorWHITE),
+        error_future.GetCallback());
+    EXPECT_EQ(std::nullopt, error_future.Take());
+  }
+
+  base::test::TestFuture<std::vector<mojom::ContainerPtr>> future;
+  handler_->GetContainers(future.GetCallback());
+  std::vector<mojom::ContainerPtr> containers = future.Take();
+  ASSERT_EQ(3u, containers.size());
+  std::vector<std::string> ids = {containers[0]->id, containers[1]->id,
+                                  containers[2]->id};
+
+  // Move the last container to the front.
+  handler_->ReorderContainers({ids[2], ids[0], ids[1]},
+                              error_future.GetCallback());
+  EXPECT_EQ(std::nullopt, error_future.Take());
+
+  handler_->GetContainers(future.GetCallback());
+  containers = future.Take();
+  ASSERT_EQ(3u, containers.size());
+  EXPECT_EQ(ids[2], containers[0]->id);
+  EXPECT_EQ(ids[0], containers[1]->id);
+  EXPECT_EQ(ids[1], containers[2]->id);
+
+  // Mismatched set of ids is rejected.
+  handler_->ReorderContainers({ids[0], ids[1]}, error_future.GetCallback());
+  EXPECT_EQ(mojom::ContainerOperationError::kNotFound, error_future.Take());
+
+  handler_->ReorderContainers({ids[0], ids[1], "non-existing-id"},
+                              error_future.GetCallback());
+  EXPECT_EQ(mojom::ContainerOperationError::kNotFound, error_future.Take());
+
+  handler_->ReorderContainers({ids[0], ids[0], ids[1]},
+                              error_future.GetCallback());
+  EXPECT_EQ(mojom::ContainerOperationError::kNotFound, error_future.Take());
+}
+
 TEST_F(ContainersSettingsHandlerTest, ExternalContainerChanges) {
   // Simulate external change to container list
   std::vector<mojom::ContainerPtr> containers;
