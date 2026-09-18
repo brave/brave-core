@@ -289,7 +289,7 @@ base::FilePath AdBlockServiceTest::MakeTestDataCopy(
   EXPECT_TRUE(dir->CreateUniqueTempDir());
   auto temp_path = dir->GetPath();
 
-  EXPECT_TRUE(base::CopyDirectoryExcl(source_location, temp_path, true));
+  EXPECT_TRUE(base::CopyDirectory(source_location, temp_path, true));
 
   temp_dirs_.push_back(std::move(dir));
 
