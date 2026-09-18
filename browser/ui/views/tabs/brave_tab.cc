@@ -435,9 +435,7 @@ void BraveTab::UpdateIconVisibility() {
 
     const bool is_active = IsActive();
     const bool can_enter_floating_mode = vtc->IsFloatingVerticalTabsEnabled();
-    const bool should_show_tree_toggle_button =
-        tree_toggle_button_ && IsTreeNodeCollapsed() &&
-        HasTreeTabNodeDescendants() && is_active;
+    const bool should_show_tree_toggle_button = CanShowTreeTabToggle();
 
     // When floating mode enabled, we don't show close button as the tab strip
     // will be expanded as soon as mouse hovers onto the tab.
@@ -464,6 +462,21 @@ bool BraveTab::HasTreeTabNodeDescendants() const {
   return false;
 }
 
+bool BraveTab::CanShowTreeTabToggle() const {
+  if (!tree_toggle_button_ || !HasTreeTabNodeDescendants()) {
+    return false;
+  }
+
+  // At minimum width, the toggle button covers the tab's entire clickable
+  // area, so an inactive tab must remain selectable regardless of whether
+  // its tree is collapsed or expanded (issue #58992).
+  if (IsAtMinWidthForVerticalTabStrip() && !IsActive()) {
+    return false;
+  }
+
+  return IsTreeNodeCollapsed() || mouse_hovered_;
+}
+
 void BraveTab::LayoutTreeToggleButton() {
   if (!tree_toggle_button_) {
     return;
@@ -476,14 +489,7 @@ void BraveTab::LayoutTreeToggleButton() {
   }
 
   const bool has_descendants = HasTreeTabNodeDescendants();
-  // At minimum width, the toggle button covers the tab's entire clickable
-  // area, so an inactive tab must remain selectable regardless of whether
-  // its tree is collapsed or expanded (issue #58992).
-  const bool can_show_toggle_at_current_width =
-      !IsAtMinWidthForVerticalTabStrip() || IsActive();
-  const bool should_show_tree_toggle = has_descendants &&
-                                       can_show_toggle_at_current_width &&
-                                       (node->collapsed() || mouse_hovered_);
+  const bool should_show_tree_toggle = CanShowTreeTabToggle();
   if (showing_close_button_ && has_descendants) {
     // In case of tree tab node has descendants, we show tree toggle button
     // instead of close button.

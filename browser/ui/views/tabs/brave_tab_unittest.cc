@@ -548,8 +548,17 @@ TEST_F(BraveTabTestWithTreeTab,
   EXPECT_TRUE(tab.tree_toggle_button_->GetVisible());
 }
 
-TEST_F(BraveTabTestWithTreeTab,
-       InactiveCollapsedVerticalTreeTabDoesNotShowToggleButton) {
+// Parameterized on whether the tree tab node starts out collapsed or
+// expanded; the toggle-visibility expectations are the same in both cases
+// once the tab is at minimum width and inactive.
+class BraveTabTestWithTreeTabToggleVisibility
+    : public BraveTabTestWithTreeTab,
+      public testing::WithParamInterface<bool> {};
+
+TEST_P(BraveTabTestWithTreeTabToggleVisibility,
+       InactiveVerticalTreeTabAtMinWidthDoesNotShowToggleButton) {
+  const bool collapsed = GetParam();
+
   TestingProfile profile;
   profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
 
@@ -573,7 +582,7 @@ TEST_F(BraveTabTestWithTreeTab,
       node_id, std::move(split_collection), base::DoNothing(),
       base::DoNothing(), base::DoNothing());
   collection.node().set_height_for_test(100);
-  collection.node().set_collapsed(true);
+  collection.node().set_collapsed(collapsed);
   EXPECT_CALL(tab_slot_controller, GetTreeTabNode(testing::_))
       .WillRepeatedly(testing::Return(&collection.node()));
 
@@ -585,86 +594,35 @@ TEST_F(BraveTabTestWithTreeTab,
   tab->set_tree_tab_node(node_id);
   tab->SetBoundsRect({0, 0, tabs::kVerticalTabMinWidth, 50});
   views::test::RunScheduledLayout(tab);
-  tab->UpdateIconVisibility();
-  tab->LayoutTreeToggleButton();
-
-  EXPECT_FALSE(tab->tree_toggle_button_->GetVisible());
-  EXPECT_TRUE(tab->showing_icon());
-
-  tab->MaybeUpdateHoverStatus(ui::MouseEvent(ui::EventType::kMouseMoved,
-                                             gfx::Point(16, 25), gfx::Point(),
-                                             base::TimeTicks(), 0, 0));
-  EXPECT_FALSE(tab->tree_toggle_button_->GetVisible());
-  EXPECT_TRUE(tab->showing_icon());
-
-  tab_slot_controller.set_active_tab(tab);
-  tab->UpdateIconVisibility();
-  tab->LayoutTreeToggleButton();
-
-  EXPECT_TRUE(tab->tree_toggle_button_->GetVisible());
-}
-
-TEST_F(
-    BraveTabTestWithTreeTab,
-    ExpandedInactiveVerticalTreeTabAtMinWidthDoesNotShowToggleButtonOnHover) {
-  TestingProfile profile;
-  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
-
-  testing::NiceMock<MockBrowserWindowInterfaceWithVerticalTabController>
-      mock_browser_window(profile.GetPrefs());
-  EXPECT_CALL(mock_browser_window, GetProfile())
-      .WillRepeatedly(testing::Return(&profile));
-  EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())
-      .WillRepeatedly(testing::Return(&profile));
-  EXPECT_CALL(mock_browser_window, GetType())
-      .WillRepeatedly(testing::Return(BrowserWindowInterface::TYPE_NORMAL));
-
-  testing::NiceMock<MockTabSlotController> tab_slot_controller;
-  EXPECT_CALL(tab_slot_controller, GetBrowserWindowInterface())
-      .WillRepeatedly(testing::Return(&mock_browser_window));
-
-  const auto node_id = tree_tab::TreeTabNodeId::GenerateNew();
-  auto split_collection = std::make_unique<tabs::SplitTabCollection>(
-      split_tabs::SplitTabId::GenerateNew(), split_tabs::SplitTabVisualData());
-  tabs::TreeTabNodeTabCollection collection(
-      node_id, std::move(split_collection), base::DoNothing(),
-      base::DoNothing(), base::DoNothing());
-  collection.node().set_height_for_test(100);
-  collection.node().set_collapsed(false);  // tree is already expanded
-  EXPECT_CALL(tab_slot_controller, GetTreeTabNode(testing::_))
-      .WillRepeatedly(testing::Return(&collection.node()));
-
-  auto widget = CreateTestWidget(views::Widget::InitParams::CLIENT_OWNS_WIDGET);
-  auto tab_ptr =
-      std::make_unique<BraveTab>(tabs::TabHandle(1), &tab_slot_controller);
-  widget->SetContentsView(std::move(tab_ptr));
-  auto* tab = static_cast<BraveTab*>(widget->GetContentsView());
-  tab->set_tree_tab_node(node_id);
-  tab->SetBoundsRect({0, 0, tabs::kVerticalTabMinWidth, 50});
-  views::test::RunScheduledLayout(tab);
-  tab->UpdateIconVisibility();
-  tab->LayoutTreeToggleButton();
 
   // Not hovered yet: toggle hidden, favicon shown.
   EXPECT_FALSE(tab->tree_toggle_button_->GetVisible());
   EXPECT_TRUE(tab->showing_icon());
 
-  // Regression check: hovering an inactive, min-width, *expanded* parent tab
-  // must NOT reveal the toggle button (it would cover the click-to-select
-  // area and collapse on click instead of selecting the tab).
+  // Regression check: hovering an inactive, min-width parent tab must NOT
+  // reveal the toggle button (it would cover the click-to-select area and
+  // toggle the tree on click instead of selecting the tab), regardless of
+  // whether the tree is collapsed or already expanded.
   tab->MaybeUpdateHoverStatus(ui::MouseEvent(ui::EventType::kMouseMoved,
                                              gfx::Point(16, 25), gfx::Point(),
                                              base::TimeTicks(), 0, 0));
   EXPECT_FALSE(tab->tree_toggle_button_->GetVisible());
   EXPECT_TRUE(tab->showing_icon());
 
-  // Once active, the toggle should reappear (matches existing collapsed-case
-  // behavior and upstream `mouse_hovered_`/`collapsed()` semantics).
+  // Once active, the toggle should reappear.
   tab_slot_controller.set_active_tab(tab);
   tab->UpdateIconVisibility();
   tab->LayoutTreeToggleButton();
+
   EXPECT_TRUE(tab->tree_toggle_button_->GetVisible());
 }
+
+INSTANTIATE_TEST_SUITE_P(,
+                         BraveTabTestWithTreeTabToggleVisibility,
+                         testing::Bool(),
+                         [](const testing::TestParamInfo<bool>& info) {
+                           return info.param ? "Collapsed" : "Expanded";
+                         });
 
 TEST_F(BraveTabTestWithTreeTab,
        TreeToggleButtonVisibleMouseHoveredEvenWhenCloseButtonHiddenByPref) {

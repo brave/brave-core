@@ -165,11 +165,8 @@ class BraveTab : public Tab
       BraveTabTestWithTreeTab,
       TreeToggleButtonVisibleMouseHoveredEvenWhenCloseButtonHiddenByPref);
   FRIEND_TEST_ALL_PREFIXES(
-      BraveTabTestWithTreeTab,
-      InactiveCollapsedVerticalTreeTabDoesNotShowToggleButton);
-  FRIEND_TEST_ALL_PREFIXES(
-      BraveTabTestWithTreeTab,
-      ExpandedInactiveVerticalTreeTabAtMinWidthDoesNotShowToggleButtonOnHover);
+      BraveTabTestWithTreeTabToggleVisibility,
+      InactiveVerticalTreeTabAtMinWidthDoesNotShowToggleButton);
 
   bool IsAtMinWidthForVerticalTabStrip() const;
 
@@ -188,6 +185,12 @@ class BraveTab : public Tab
 
   // Returns whether the tree tab node is collapsed.
   bool IsTreeNodeCollapsed() const;
+
+  // Returns whether the tree toggle button should currently be shown. At
+  // minimum width, the toggle button covers the tab's entire clickable area,
+  // so an inactive tab must remain selectable regardless of whether its tree
+  // is collapsed or expanded (issue #58992).
+  bool CanShowTreeTabToggle() const;
 
   raw_ptr<views::ImageButton> tree_toggle_button_ = nullptr;
 
