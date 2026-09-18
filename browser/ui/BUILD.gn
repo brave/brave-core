@@ -854,8 +854,8 @@ source_set("ui") {
       ]
 
       deps += [
-        "//chrome/browser:titlebar_config",
         "//chrome/browser/ui/views/frame:browser_caption_button_container_win",
+        "//chrome/browser/win",
       ]
     }
 
