@@ -106,7 +106,17 @@ export function cssRules({
           },
         },
         // First, convert SASS to CSS.
-        { loader: 'sass-loader' },
+        {
+          loader: 'sass-loader',
+          options: {
+            sassOptions: {
+              // sass-loader 10 always calls Dart Sass's legacy render() API;
+              // silence its deprecation warning until the loader is upgraded
+              // to a version that supports the modern compileString() API.
+              silenceDeprecations: ['legacy-js-api'],
+            },
+          },
+        },
       ],
     },
   ]
