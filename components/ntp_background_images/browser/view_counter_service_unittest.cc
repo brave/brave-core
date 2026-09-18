@@ -43,6 +43,7 @@
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
+#include "brave/components/ntp_background_images/browser/wallpapers/ntp_custom_background_delegate.h"
 #endif  // BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 
 namespace ntp_background_images {
@@ -147,7 +148,7 @@ int GetInitialCountToBrandedWallpaper() {
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 class BraveNTPCustomBackgroundServiceDelegateMock
-    : public BraveNTPCustomBackgroundService::Delegate {
+    : public NTPCustomBackgroundDelegate {
  public:
   BraveNTPCustomBackgroundServiceDelegateMock() = default;
 

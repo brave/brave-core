@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_BRAVE_NTP_CUSTOM_BACKGROUND_SERVICE_H_
 
 #include <memory>
-#include <string>
 
 #include "base/values.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -20,26 +19,13 @@ class GURL;
 
 namespace ntp_background_images {
 
+// Defined in ntp_custom_background_delegate.h.
+class NTPCustomBackgroundDelegate;
+
 class BraveNTPCustomBackgroundService : public KeyedService {
  public:
-  class Delegate {
-   public:
-    virtual bool IsCustomImageBackgroundEnabled() const = 0;
-    virtual base::FilePath GetCustomBackgroundImageLocalFilePath(
-        const GURL& url) const = 0;
-    virtual GURL GetCustomBackgroundImageURL() const = 0;
-
-    virtual bool IsColorBackgroundEnabled() const = 0;
-    virtual std::string GetColor() const = 0;
-    virtual bool ShouldUseRandomValue() const = 0;
-
-    virtual bool HasPreferredBraveBackground() const = 0;
-    virtual base::DictValue GetPreferredBraveBackground() const = 0;
-
-    virtual ~Delegate() = default;
-  };
-
-  explicit BraveNTPCustomBackgroundService(std::unique_ptr<Delegate> delegate);
+  explicit BraveNTPCustomBackgroundService(
+      std::unique_ptr<NTPCustomBackgroundDelegate> delegate);
   ~BraveNTPCustomBackgroundService() override;
 
   BraveNTPCustomBackgroundService(const BraveNTPCustomBackgroundService&) =
@@ -55,7 +41,7 @@ class BraveNTPCustomBackgroundService : public KeyedService {
   // KeyedService overrides:
   void Shutdown() override;
 
-  std::unique_ptr<Delegate> delegate_;
+  std::unique_ptr<NTPCustomBackgroundDelegate> delegate_;
 };
 
 }  // namespace ntp_background_images
