@@ -86,6 +86,7 @@ source_set("browser_tests") {
     "//chrome/browser/sessions",
     "//chrome/browser/ui",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_utils",
     "//components/prefs",
     "//components/prefs:test_support",
     "//content/public/browser",

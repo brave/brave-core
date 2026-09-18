@@ -1063,6 +1063,7 @@ test("brave_browser_tests") {
     "//chrome/browser/profiles/keep_alive:test_support",
     "//chrome/browser/ui:incognito_allowed_url",
     "//chrome/browser/ui/views/translate",
+    "//chrome/test/base:chrome_test_utils",
   ]
 
   if (toolkit_views) {

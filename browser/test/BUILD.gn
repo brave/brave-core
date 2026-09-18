@@ -59,6 +59,7 @@ source_set("platform_browser_tests") {
   deps = [
     "//base",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_utils",
     "//content/public/browser",
     "//content/test:test_support",
     "//net:test_support",

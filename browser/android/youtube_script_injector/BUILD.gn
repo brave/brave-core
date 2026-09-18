@@ -54,6 +54,7 @@ source_set("browser_tests") {
     "//base",
     "//brave/components/constants",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_utils",
     "//net:test_support",
     "//testing/gmock",
     "//testing/gtest",
