@@ -6,12 +6,10 @@
 package org.chromium.brave.browser.quick_search_engines.settings;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,7 +29,6 @@ public class QuickSearchEnginesAdapter
     private boolean mIsEditMode;
 
     public QuickSearchEnginesAdapter(
-            Context context,
             List<QuickSearchEnginesModel> searchEngines,
             QuickSearchEnginesCallback quickSearchEnginesCallback,
             ItemTouchHelperCallback.OnStartDragListener dragStartListener) {
@@ -51,62 +48,49 @@ public class QuickSearchEnginesAdapter
         quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch.setChecked(
                 quickSearchEnginesModel.isEnabled());
         quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                        // Update enabled state of search engine at current adapter position
-                        int position = quickSearchEnginesSettingsViewHolder.getAdapterPosition();
-                        QuickSearchEnginesModel searchEngine = mSearchEngines.get(position);
-                        searchEngine.setEnabled(isChecked);
-                        onSearchEngineClick(
-                                quickSearchEnginesSettingsViewHolder.getAdapterPosition(),
-                                quickSearchEnginesModel);
-                    }
+                (buttonView, isChecked) -> {
+                    // Update enabled state of search engine at current adapter position
+                    int position1 = quickSearchEnginesSettingsViewHolder.getAdapterPosition();
+                    QuickSearchEnginesModel searchEngine = mSearchEngines.get(position1);
+                    searchEngine.setEnabled(isChecked);
+                    onSearchEngineClick(
+                            quickSearchEnginesSettingsViewHolder.getAdapterPosition(),
+                            quickSearchEnginesModel);
                 });
-        if (QuickSearchEnginesUtil.YOUTUBE_SEARCH_ENGINE_KEYWORD.equals(
-                quickSearchEnginesModel.getKeyword())) {
-            quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
-                    R.drawable.ic_social_youtube);
-        } else if (QuickSearchEnginesUtil.BING_SEARCH_ENGINE_KEYWORD.equals(
-                quickSearchEnginesModel.getKeyword())) {
-            quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
-                    R.drawable.ic_microsoft_color);
-        } else if (QuickSearchEnginesUtil.STARTPAGE_SEARCH_ENGINE_KEYWORD.equals(
-                quickSearchEnginesModel.getKeyword())) {
-            quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
-                    R.drawable.ic_startpage_color);
-        } else if (QuickSearchEnginesUtil.BRAVE_SEARCH_ENGINE_KEYWORD.equals(
-                quickSearchEnginesModel.getKeyword())) {
-            quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
-                    R.drawable.ic_social_brave_release_favicon_fullheight_color);
-        } else {
-            mQuickSearchEnginesCallback.loadSearchEngineLogo(
+        switch (quickSearchEnginesModel.getKeyword()) {
+            case QuickSearchEnginesUtil.YOUTUBE_SEARCH_ENGINE_KEYWORD ->
+                    quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
+                            R.drawable.ic_social_youtube);
+            case QuickSearchEnginesUtil.BING_SEARCH_ENGINE_KEYWORD ->
+                    quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
+                            R.drawable.ic_microsoft_color);
+            case QuickSearchEnginesUtil.STARTPAGE_SEARCH_ENGINE_KEYWORD ->
+                    quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
+                            R.drawable.ic_startpage_color);
+            case QuickSearchEnginesUtil.BRAVE_SEARCH_ENGINE_KEYWORD ->
+                    quickSearchEnginesSettingsViewHolder.mSearchEngineLogo.setImageResource(
+                            R.drawable.ic_social_brave_release_favicon_fullheight_color);
+            case null, default -> mQuickSearchEnginesCallback.loadSearchEngineLogo(
                     quickSearchEnginesSettingsViewHolder.mSearchEngineLogo,
                     quickSearchEnginesModel);
         }
 
         quickSearchEnginesSettingsViewHolder.mView.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        boolean isChecked =
-                                quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch
-                                        .isChecked();
-                        quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch.setChecked(
-                                !isChecked);
-                    }
+                v -> {
+                    boolean isChecked =
+                            quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch
+                                    .isChecked();
+                    quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch.setChecked(
+                            !isChecked);
                 });
 
         quickSearchEnginesSettingsViewHolder.mView.setOnLongClickListener(
-                new View.OnLongClickListener() {
-                    @Override
-                    public boolean onLongClick(View v) {
-                        if (!mIsEditMode) {
-                            setEditMode(true);
-                            mQuickSearchEnginesCallback.onSearchEngineLongClick();
-                        }
-                        return true;
+                v -> {
+                    if (!mIsEditMode) {
+                        setEditMode(true);
+                        mQuickSearchEnginesCallback.onSearchEngineLongClick();
                     }
+                    return true;
                 });
         quickSearchEnginesSettingsViewHolder.mDragIcon.setOnTouchListener(
                 (v, event) -> {
