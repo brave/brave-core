@@ -5,11 +5,8 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 1.8% flake rate over 30 days per LUCI Analysis (14392 passed, 0 failed, 265 flaky).
+# 1.9% flake rate over 30 days per LUCI Analysis (13145 passed, 0 failed, 252 flaky).
 -ElevationUtil.RunDeElevated
-
-# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
--FilePathWatcherTest.MoveParent
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -MockUnitTests.CrashTest
@@ -26,20 +23,35 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 0 failed, 24 flaky).
 -SamplingHeapProfilerTest.SequentialLargeSmallStats
 
-# 17.1% flake rate over 30 days per LUCI Analysis (12157 passed, 0 failed, 2500 flaky).
+# 15.8% flake rate over 30 days per LUCI Analysis (11287 passed, 0 failed, 2111 flaky).
 -ScopedHandleTest.MultiProcess
 
-# 1.1% flake rate over 30 days per LUCI Analysis (2161 passed, 24 failed, 0 flaky).
+# 1.6% flake rate over 30 days per LUCI Analysis (1494 passed, 24 failed, 0 flaky).
 -SecurityTest.NewOverflow
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -SingleThreadTaskExecutorTest.UnwindingMultipleSubPumpsDoesntStarveApplicationTasks
 
-# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 0 failed, 24 flaky).
+# 95.8% flake rate over 30 days per LUCI Analysis (1 passed, 0 failed, 23 flaky).
 -StreamingUtf8ValidatorThoroughTest.TestEverything
 
-# 14.7% flake rate over 30 days per LUCI Analysis (12505 passed, 1 failed, 2151 flaky).
+# 15.6% flake rate over 30 days per LUCI Analysis (11308 passed, 1 failed, 2089 flaky).
 -SystemMetricsTest.TestNoNegativeCpuUsage
+
+# 33.3% flake rate over 30 days per LUCI Analysis (8940 passed, 0 failed, 4458 flaky).
+-ThreadControllerWithMessagePumpTest.EarlyQuit
+
+# 21.3% flake rate over 30 days per LUCI Analysis (10540 passed, 0 failed, 2858 flaky).
+-ThreadControllerWithMessagePumpTest.MessagePumpPhasesWithQueuingTime
+
+# 22.1% flake rate over 30 days per LUCI Analysis (10434 passed, 0 failed, 2964 flaky).
+-ThreadControllerWithMessagePumpTest.NativeNestedMessageLoop
+
+# 1.1% flake rate over 30 days per LUCI Analysis (13247 passed, 0 failed, 151 flaky).
+-ThreadControllerWithMessagePumpTest.ScheduleDelayedWorkWithPowerSuspend
+
+# 19.2% flake rate over 30 days per LUCI Analysis (10827 passed, 0 failed, 2571 flaky).
+-ThreadControllerWithMessagePumpTest.WorkIdIncrementedForEveryWorkItemInBatches
 
 # 95.8% flake rate over 30 days per LUCI Analysis (1 passed, 23 failed, 0 flaky).
 -ThreadTest.DestroyWhileRunningNonJoinableIsSafe
@@ -50,5 +62,5 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -ToolsSanityTest.AddressSanitizerNullDerefCrashTest
 
-# 90.4% flake rate over 30 days per LUCI Analysis (1408 passed, 0 failed, 13249 flaky).
+# 86.2% flake rate over 30 days per LUCI Analysis (1850 passed, 0 failed, 11549 flaky).
 -TraceSessionObserverListTest.CompileTimeDetection

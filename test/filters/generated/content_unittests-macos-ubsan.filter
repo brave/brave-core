@@ -13,3 +13,6 @@
 
 # 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
 -FilePathWatcherWithChangeInfoTest.DirectoryInDirectory/2
+
+# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
+-FilePathWatcherWithChangeInfoTest.MultipleWatchersSingleFile/3
