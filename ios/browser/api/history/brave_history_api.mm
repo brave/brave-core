@@ -13,6 +13,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/strings/utf_string_conversions.h"
 #include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"
 #include "brave/ios/browser/api/history/history_driver_ios.h"
@@ -351,7 +352,12 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
     // Creating fetch options for querying history
     history::QueryOptions options;
     options.max_count = static_cast<int>(searchOptions.maxCount);
-    options.host_only = searchOptions.hostOnly;
+    if (searchOptions.hostOnly) {
+      // `hostname_suffix` replaced the old `host_only` bool: the query text
+      // becomes the hostname to match instead of a free-text search term.
+      options.hostname_suffix = base::UTF16ToUTF8(queryString);
+      queryString.clear();
+    }
 
     if (searchOptions.beginDate) {
       options.begin_time = base::Time::FromNSDate(searchOptions.beginDate);
