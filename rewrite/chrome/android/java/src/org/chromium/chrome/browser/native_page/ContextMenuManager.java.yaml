@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let subclasses customize the built menu model before showListContextMenu
+      checks whether it ended up empty.
+    regex:
+      re_pattern: '(?<=\n)( +)if \(menuModel\.isEmpty\(\)\) \{'
+      replace: |-
+        \1customizeMenuModel(menuModel, delegate);
+        \1if (menuModel.isEmpty()) {
+
+  - description: |-
+      Hook for subclasses to customize the built menu model, e.g. adding extra
+      items or altering existing ones, after the standard items are added but
+      before the menu is shown. Default is a no-op.
+    regex:
+      re_pattern: 'getResourceIdForMenuItem\(.+?assert false;\s*return 0;\s*\}\n\n'
+      re_flags: [DOTALL]
+      replace: |
+        \g<0>    protected void customizeMenuModel(MVCListAdapter.ModelList menuModel, Delegate delegate) {}
+
