@@ -30,6 +30,7 @@
 #include "chrome/browser/actor/actor_keyed_service_factory.h"
 #include "chrome/browser/actor/actor_proto_conversion.h"
 #include "chrome/browser/actor/tab_observation_strategy.h"
+#include "chrome/browser/actor/ui/actor_ui_state_manager.h"
 #include "chrome/browser/glic/actor/glic_actor_policy_checker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -163,7 +164,8 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
 
     // Create the tool provider
     tool_provider_ = std::make_unique<ContentAgentToolProvider>(
-        GetProfile(), actor_service, *actor_service->GetActorUiStateManager());
+        GetProfile(), actor_service,
+        *actor::ui::ActorUiStateManager::Get(GetProfile()));
     ASSERT_NE(tool_provider_, nullptr);
   }
 
