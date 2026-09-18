@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_tabrestore.cc b/chrome/browser/ui/browser_tabrestore.cc
-index fa43dd782cdb8c9f01e4c8f448e51f99e3e24d35..1d2665b1d5dee95e4e04925a3ae03c798591111e 100644
+index 6aca93a450796c9e6f45b615f7255da0ed2220cf..a71bbcc9e8a9e3801fe553b337214dc74a0744e7 100644
 --- a/chrome/browser/ui/browser_tabrestore.cc
 +++ b/chrome/browser/ui/browser_tabrestore.cc
 @@ -71,6 +71,10 @@ std::unique_ptr<WebContents> CreateRestoredTab(

@@ -1,8 +1,8 @@
 diff --git a/components/sync/base/data_type.h b/components/sync/base/data_type.h
-index 95eb11fd40ced293b89b1476366b9477d163c8f4..ab11583c0aa99b2c4c828b4e5e9d56b915d89c4d 100644
+index afa594ef9a352e4ecc7cd3abff959218facdd810..cdad45ae50b8b89b26268e1480236d5f901fb852 100644
 --- a/components/sync/base/data_type.h
 +++ b/components/sync/base/data_type.h
-@@ -207,7 +207,8 @@ enum DataType {
+@@ -205,7 +205,8 @@ enum DataType {
    // User entity suppression records for Autofill AI.
    AUTOFILL_ENTITY_SUPPRESSION,
  
@@ -12,7 +12,7 @@ index 95eb11fd40ced293b89b1476366b9477d163c8f4..ab11583c0aa99b2c4c828b4e5e9d56b9
  
    // ---- Control Types ----
    // An object representing a set of Nigori keys.
-@@ -322,7 +323,8 @@ enum class DataTypeForHistograms {
+@@ -320,7 +321,8 @@ enum class DataTypeForHistograms {
    kNotebook = 83,
    kJourney = 84,
    kAutofillEntitySuppression = 85,

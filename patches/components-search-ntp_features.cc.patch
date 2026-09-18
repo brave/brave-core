@@ -1,8 +1,8 @@
 diff --git a/components/search/ntp_features.cc b/components/search/ntp_features.cc
-index 82dbe3e790416ee93d7dc58a9dedf8de25e14f5b..4235bfaf189627086165b1a6eba2fa71440e4819 100644
+index 4ba2341e85d7045ea1736e86bea287695f85a7d3..3e615a15df3ee8ff7da70cfa423a01e64ae06924 100644
 --- a/components/search/ntp_features.cc
 +++ b/components/search/ntp_features.cc
-@@ -24,17 +24,13 @@ BASE_FEATURE(kConfirmSuggestionRemovals,
+@@ -18,17 +18,13 @@ namespace ntp_features {
  
  // If enabled, shows an extension card within the Customize Chrome Side
  // Panel for access to the Chrome Web Store extensions.
@@ -23,7 +23,7 @@ index 82dbe3e790416ee93d7dc58a9dedf8de25e14f5b..4235bfaf189627086165b1a6eba2fa71
  
  // If enabled, shows entry point on Customize Chrome Side Panel's Appearance
  // page for Wallpaper Search.";
-@@ -75,28 +71,20 @@ BASE_FEATURE(kRealboxCr23Theming,
+@@ -68,28 +64,20 @@ BASE_FEATURE(kRealboxCr23Theming,
  
  // If enabled, alpha NTP backgrounds will show in Customize Chrome.
  // This is a development switch. Keep indefinitely.
@@ -58,7 +58,7 @@ index 82dbe3e790416ee93d7dc58a9dedf8de25e14f5b..4235bfaf189627086165b1a6eba2fa71
  
  // If enabled, customization of Chrome will be promoted on the NTP.
  BASE_FEATURE(kNtpCustomizeChromeAutoOpen, base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -118,19 +106,15 @@ BASE_FEATURE(kNtpDummyModules, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -111,19 +99,15 @@ BASE_FEATURE(kNtpDummyModules, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, Google Drive module will be shown.
  // This is a kill switch. Keep indefinitely.
@@ -81,7 +81,7 @@ index 82dbe3e790416ee93d7dc58a9dedf8de25e14f5b..4235bfaf189627086165b1a6eba2fa71
  
  // If enabled, segmentation data will be collected to decide whether or not to
  // show the Drive module.
-@@ -162,7 +146,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -155,7 +139,7 @@ BASE_FEATURE(kNtpModulesOrder, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // Dummy feature to set param "NtpModulesMaxColumnCountParam".
  // This is used for an emergency Finch param. Keep indefinitely.

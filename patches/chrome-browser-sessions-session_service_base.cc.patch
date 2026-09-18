@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sessions/session_service_base.cc b/chrome/browser/sessions/session_service_base.cc
-index 4c9da930154c2894f28b93cd47a9bd62209051a8..3f0cb2991fc517fd17e9b5ea719ce4ddf5c6ec5d 100644
+index 0fdde07d4d0715fc9ca92b16386f34c336f095e2..743939062639cd9814ea4add9318ebd5482d7eb3 100644
 --- a/chrome/browser/sessions/session_service_base.cc
 +++ b/chrome/browser/sessions/session_service_base.cc
-@@ -682,6 +682,7 @@ void SessionServiceBase::BuildCommandsForBrowser(
+@@ -683,6 +683,7 @@ void SessionServiceBase::BuildCommandsForBrowser(
      BrowserWindowInterface* browser,
      IdToRange* tab_to_available_range,
      std::set<SessionID>* windows_to_track) {

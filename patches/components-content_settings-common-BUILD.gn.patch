@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/common/BUILD.gn b/components/content_settings/common/BUILD.gn
-index 04c77e73d6817ad6f1d77cc3f89630d273535574..9ad65d0e080caabe40becf9385052363b94f449a 100644
+index f4e43fbbe30ac81e56af1314f354917a02d7550b..55a61591ae9372f5be1853fd1fe01f69f01368a0 100644
 --- a/components/content_settings/common/BUILD.gn
 +++ b/components/content_settings/common/BUILD.gn
-@@ -19,4 +19,5 @@ mojom("mojom") {
+@@ -17,4 +17,5 @@ mojom("mojom") {
      "//url/mojom:url_mojom_gurl",
      "//url/mojom:url_mojom_origin",
    ]
