@@ -784,6 +784,7 @@ source_set("ui") {
       "//chrome/browser/ui/javascript_dialogs",
       "//chrome/browser/ui/tabs/alert:tab_alert",
       "//chrome/browser/ui/thumbnails",
+      "//chrome/browser/ui/views:tab_search_bubble_host",
       "//chrome/browser/ui/views/bubble",
       "//chrome/browser/ui/views/controls",
       "//chrome/browser/ui/views/download",
@@ -889,7 +890,11 @@ source_set("ui") {
       "views/profiles/brave_profile_menu_view.h",
     ]
 
-    deps += [ "//brave/components/tor/buildflags" ]
+    deps += [
+      "//brave/components/tor/buildflags",
+      "//chrome/browser/ui/views/profiles:incognito_menu_view",
+      "//chrome/browser/ui/views/profiles:profile_menu_view",
+    ]
 
     if (enable_tor) {
       deps += [ "//brave/browser/tor" ]
