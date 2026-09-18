@@ -5,5 +5,6 @@
 
 #include "brave/browser/extensions/api/brave_extensions_api_client.h"
 #include "brave/browser/extensions/updater/brave_update_client_config.h"
+#include "extensions/common/extension_features.h"
 
 #include <chrome/browser/extensions/chrome_extensions_browser_client.cc>
