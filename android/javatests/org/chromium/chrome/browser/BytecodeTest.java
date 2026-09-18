@@ -218,6 +218,7 @@ import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogDelegate;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.search_engines.TemplateUrl;
+import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.components.signin.base.AccountInfo;
 import org.chromium.components.variations.firstrun.VariationsSeedFetcher;
 import org.chromium.content_public.browser.BrowserContextHandle;
@@ -1712,7 +1713,8 @@ public class BytecodeTest {
                         Supplier.class,
                         OneshotSupplier.class,
                         HomeSurfaceTracker.class,
-                        BackPressManager.class));
+                        BackPressManager.class,
+                        TemplateUrlService.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/ntp/IncognitoNewTabPage",
