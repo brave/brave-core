@@ -691,28 +691,35 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
 
         self.assertEqual(self.discover(), [UNIT_TESTS_TARGET + "S#Tracked"])
 
-    def test_only_the_worst_failures_of_a_huge_cluster_are_checked(
-            self) -> None:
-        self.enter_patch(mock.patch.object(ufm, "MAX_VARIANTS_PER_CLUSTER", 2))
+    def test_every_test_a_cluster_names_is_checked(self) -> None:
+        # Nothing of our own is dropped any more; only upstream limits.
         self.summaries = [self.summary("rules", "r1", "crbug.com/1234567")]
         self.failures_by_cluster[("rules", "r1")] = [
             ClusterFailure(UNIT_TESTS_TARGET + f"S#Case/All.{index}", index)
             for index in range(4)
         ]
 
-        candidates = self.discover()
+        self.assertEqual(
+            self.discover(),
+            [UNIT_TESTS_TARGET + f"S#Case/All.{index}" for index in range(4)])
+        self.assertNotIn("limit", self.logged())
 
-        self.assertEqual(candidates, [
-            UNIT_TESTS_TARGET + "S#Case/All.2",
-            UNIT_TESTS_TARGET + "S#Case/All.3",
-        ])
-        self.assertIn("1 clusters were over the 2-variant cap", self.logged())
-        self.assertIn("checked 2 of their 4", self.logged())
+    def test_a_cluster_at_the_server_limit_is_reported(self) -> None:
+        self.enter_patch(mock.patch.object(ufm, "MAX_CLUSTER_FAILURES", 3))
+        self.summaries = [self.summary("rules", "r1", "crbug.com/1234567")]
+        self.failures_by_cluster[("rules", "r1")] = [
+            ClusterFailure(UNIT_TESTS_TARGET + f"S#Case/All.{index}", 1)
+            for index in range(3)
+        ]
 
-    def test_the_cap_is_reported_once_for_the_whole_suite(self) -> None:
-        # Hitting the cap is the norm for a big suite; one line per
-        # cluster would bury everything else the run has to say.
-        self.enter_patch(mock.patch.object(ufm, "MAX_VARIANTS_PER_CLUSTER", 1))
+        self.discover()
+
+        self.assertIn("1 clusters hit the server's 3-failure limit",
+                      self.logged())
+
+    def test_truncated_clusters_are_reported_once_for_the_suite(self) -> None:
+        # One line per cluster would bury everything else the run says.
+        self.enter_patch(mock.patch.object(ufm, "MAX_CLUSTER_FAILURES", 2))
         self.summaries = [
             self.summary("rules", f"r{cluster}", f"crbug.com/{cluster}")
             for cluster in range(5)
@@ -720,18 +727,18 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
         for cluster in range(5):
             self.failures_by_cluster[("rules", f"r{cluster}")] = [
                 ClusterFailure(
-                    UNIT_TESTS_TARGET + f"S#Case{cluster}/All.{index}",
-                    index + 1) for index in range(3)
+                    UNIT_TESTS_TARGET + f"S#Case{cluster}/All.{index}", 1)
+                for index in range(2)
             ]
 
         self.discover()
 
         logged = self.logged()
-        self.assertEqual(logged.count("cap"), 1)
-        self.assertIn("5 clusters were over the 1-variant cap", logged)
-        self.assertIn("checked 5 of their 15", logged)
+        self.assertEqual(logged.count("limit"), 1)
+        self.assertIn("5 clusters hit the server's 2-failure limit", logged)
 
-    def test_a_cluster_within_the_cap_is_not_reported(self) -> None:
+    def test_a_cluster_under_the_server_limit_is_not_reported(self) -> None:
+        self.enter_patch(mock.patch.object(ufm, "MAX_CLUSTER_FAILURES", 10))
         self.summaries = [self.summary("rules", "r1", "crbug.com/1234567")]
         self.failures_by_cluster[("rules", "r1")] = [
             ClusterFailure(UNIT_TESTS_TARGET + "S#Case/All.0", 1)
@@ -739,7 +746,7 @@ class DiscoverCandidatesTest(SuiteUpdaterTestCase):
 
         self.discover()
 
-        self.assertNotIn("cap", self.logged())
+        self.assertNotIn("limit", self.logged())
 
     def test_the_same_cluster_seen_in_several_windows_is_queried_once(
             self) -> None:

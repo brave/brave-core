@@ -18,6 +18,8 @@ from types import ModuleType
 from typing import Any
 from unittest import mock
 
+from rich.console import Console
+
 SCRIPT_DIR = Path(__file__).resolve().parent
 sys.path.insert(0, str(SCRIPT_DIR))
 
@@ -62,71 +64,76 @@ def reading(verdict: Verdict = Verdict.STABLE, **counts: int) -> Flakiness:
     return Flakiness(COUNTS_FOR[verdict])
 
 
-class FormatReportMarkdownTest(unittest.TestCase):
+class RenderReportTest(unittest.TestCase):
+    """The tables, rendered to a fixed-width console and read back."""
 
-    def test_reports_the_lookback_window_and_source(self) -> None:
-        report = check_upstream_flake.format_report_markdown(
-            "Suite.Test", [("id", reading())], 45)
+    def setUp(self) -> None:
+        self.output = io.StringIO()
+        patcher = mock.patch.object(
+            check_upstream_flake, "console",
+            Console(file=self.output, width=200, no_color=True))
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
-        self.assertIn("# Upstream Flake Check: Suite.Test", report)
-        self.assertIn("Lookback period: 45 days", report)
-        self.assertIn("Source: Chromium LUCI Analysis", report)
+    def render(self,
+               test_results: list[Any],
+               days: int = 30,
+               test_name: str = "Suite.Test") -> str:
+        check_upstream_flake.render_report(test_name, test_results, days)
+        return self.output.getvalue()
 
-    def test_reports_when_nothing_matched(self) -> None:
-        report = check_upstream_flake.format_report_markdown(
-            "Suite.Test", [], 30)
+    def test_titles_the_table_with_the_lookback_window(self) -> None:
+        report = self.render([("id", reading())], days=45)
 
-        self.assertIn("## Result: Not Found", report)
-        self.assertIn("No matching test IDs found", report)
-        self.assertNotIn("### Statistics", report)
+        self.assertIn("Upstream flakiness over the past 45 days", report)
 
-    def test_renders_each_matched_test(self) -> None:
-        report = check_upstream_flake.format_report_markdown(
-            "Suite.Test", [("id-one", reading()), ("id-two", reading())], 30)
+    def test_names_its_source(self) -> None:
+        report = self.render([("id", reading())])
 
-        self.assertIn("## Test: `id-one`", report)
-        self.assertIn("## Test: `id-two`", report)
+        self.assertIn("analysis.api.luci.app", report)
 
-    def test_spells_out_the_verdict_and_recommendation(self) -> None:
-        report = check_upstream_flake.format_report_markdown(
-            "Suite.Test", [("id", reading(Verdict.KNOWN_FLAKE))], 30)
+    def test_says_so_when_nothing_matched(self) -> None:
+        report = self.render([], test_name="Suite.Test")
 
-        self.assertIn("### Verdict: KNOWN UPSTREAM FLAKE", report)
-        self.assertIn(
-            f"**Recommendation:** {Verdict.KNOWN_FLAKE.recommendation}",
-            report)
+        self.assertIn("No test matching", report)
+        self.assertIn("Suite.Test", report)
 
-    def test_every_verdict_has_a_heading_of_its_own(self) -> None:
-        for verdict in Verdict:
-            with self.subTest(verdict=verdict):
-                report = check_upstream_flake.format_report_markdown(
-                    "Suite.Test", [("id", reading(verdict))], 30)
-                self.assertIn(f"### Verdict: {verdict.headline}", report)
+    def test_gives_every_match_a_row(self) -> None:
+        report = self.render([("id-one", reading()), ("id-two", reading())])
 
-    def test_reports_the_verdict_counts(self) -> None:
-        report = check_upstream_flake.format_report_markdown(
-            "Suite.Test", [("id", reading(passed=90, failed=5, flaky=5))], 30)
+        self.assertIn("id-one", report)
+        self.assertIn("id-two", report)
 
-        self.assertIn("- Meaningful verdicts (pass+fail+flaky): 100", report)
-        self.assertIn("- Passed: 90", report)
-        self.assertIn("- Failed: 5", report)
-        self.assertIn("- Flaky: 5", report)
-        self.assertIn("- Flake rate: 10.0%", report)
+    def test_shows_the_verdict_and_its_advice(self) -> None:
+        report = self.render([("id", reading(Verdict.KNOWN_FLAKE))])
 
-    def test_omits_skips_and_execution_errors_when_absent(self) -> None:
-        report = check_upstream_flake.format_report_markdown(
-            "Suite.Test", [("id", reading())], 30)
+        self.assertIn("KNOWN UPSTREAM FLAKE", report)
+        self.assertIn(Verdict.KNOWN_FLAKE.recommendation, report)
 
-        self.assertNotIn("- Skipped:", report)
-        self.assertNotIn("- Execution errors:", report)
+    def test_advice_is_given_once_per_verdict_not_per_test(self) -> None:
+        report = self.render([
+            ("a", reading(Verdict.KNOWN_FLAKE)),
+            ("b", reading(Verdict.KNOWN_FLAKE)),
+            ("c", reading(Verdict.KNOWN_FLAKE)),
+        ])
 
-    def test_reports_skips_and_execution_errors_when_present(self) -> None:
-        report = check_upstream_flake.format_report_markdown(
-            "Suite.Test",
-            [("id", reading(passed=10, skipped=4, execution_errored=2))], 30)
+        self.assertEqual(report.count(Verdict.KNOWN_FLAKE.recommendation), 1)
 
-        self.assertIn("- Skipped: 4", report)
-        self.assertIn("- Execution errors: 2", report)
+    def test_advice_is_ordered_worst_first(self) -> None:
+        report = self.render([
+            ("stable", reading(Verdict.STABLE)),
+            ("flaky", reading(Verdict.KNOWN_FLAKE)),
+        ])
+
+        self.assertLess(report.index(Verdict.KNOWN_FLAKE.recommendation),
+                        report.index(Verdict.STABLE.recommendation))
+
+    def test_tabulates_the_counts(self) -> None:
+        report = self.render([("id", reading(passed=9000, failed=5, flaky=5))])
+
+        # Thousands are grouped so long columns stay readable.
+        self.assertIn("9,000", report)
+        self.assertIn("0.1%", report)
 
     def test_renders_the_daily_breakdown(self) -> None:
         flakiness = Flakiness.of_groups([
@@ -134,28 +141,37 @@ class FormatReportMarkdownTest(unittest.TestCase):
                        VerdictCounts(passed=8, failed=1, flaky=1))
         ])
 
-        report = check_upstream_flake.format_report_markdown(
-            "Suite.Test", [("id", flakiness)], 30)
+        report = self.render([("id", flakiness)])
 
-        self.assertIn("### Daily Breakdown", report)
-        self.assertIn("| Date | Total | Pass | Fail | Flaky | Rate |", report)
-        self.assertIn("| 2026-02-07 | 10 | 8 | 1 | 1 | 20% |", report)
+        self.assertIn("Date", report)
+        self.assertIn("2026-02-07", report)
+        self.assertIn("20%", report)
 
     def test_a_day_without_meaningful_verdicts_has_no_rate(self) -> None:
         flakiness = Flakiness(counts=VerdictCounts(skipped=5),
                               daily=(DailyCounts("2026-02-07",
                                                  VerdictCounts(skipped=5)), ))
 
-        report = check_upstream_flake.format_report_markdown(
-            "Suite.Test", [("id", flakiness)], 30)
+        report = self.render([("id", flakiness)])
 
-        self.assertIn("| 2026-02-07 | 5 | 0 | 0 | 0 | N/A |", report)
+        self.assertIn("2026-02-07", report)
+        self.assertIn("--", report)
 
-    def test_omits_the_breakdown_when_empty(self) -> None:
-        report = check_upstream_flake.format_report_markdown(
-            "Suite.Test", [("id", reading())], 30)
+    def test_omits_the_breakdown_when_there_is_none(self) -> None:
+        report = self.render([("id", reading())])
 
-        self.assertNotIn("### Daily Breakdown", report)
+        # The matches table is still there; only the daily one is gone.
+        self.assertIn("Upstream flakiness", report)
+        self.assertNotIn("Date", report)
+
+    def test_the_daily_table_is_labelled_with_its_test(self) -> None:
+        flakiness = Flakiness.of_groups(
+            [StatsGroup("2026-02-07", "h", VerdictCounts(passed=10))])
+
+        report = self.render([("a-very-distinctive-test-id", flakiness)])
+
+        # Once in the matches table, once labelling the daily table.
+        self.assertEqual(report.count("a-very-distinctive-test-id"), 2)
 
 
 class FormatReportJsonTest(unittest.TestCase):
@@ -255,7 +271,7 @@ class MainTest(unittest.TestCase):
         code, stdout = self.run_main("Suite.Test")
 
         self.assertEqual(code, 2)
-        self.assertIn("## Result: Not Found", stdout)
+        self.assertIn("No test matching", stdout)
 
     def test_reports_stats_for_a_match(self) -> None:
         self.client.tests_matching.return_value = ["://t!gtest::Suite#Test"]
@@ -332,12 +348,12 @@ class MainTest(unittest.TestCase):
         self.assertEqual([test["test_id"] for test in report["matched_tests"]],
                          ["some/Bar", "prefixBar", "zzz_unrelated"])
 
-    def test_writes_markdown_by_default(self) -> None:
+    def test_writes_tables_by_default(self) -> None:
         self.client.tests_matching.return_value = ["id"]
 
         _, stdout = self.run_main("Suite.Test")
 
-        self.assertIn("# Upstream Flake Check: Suite.Test", stdout)
+        self.assertIn("Upstream flakiness over the past", stdout)
 
 
 if __name__ == "__main__":
