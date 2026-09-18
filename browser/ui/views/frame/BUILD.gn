@@ -70,10 +70,6 @@ source_set("unit_tests") {
     "layout/brave_browser_view_tabbed_layout_impl_unittest.cc",
   ]
 
-  if (is_linux) {
-    sources += [ "browser_frame_view_layout_linux_unittest.cc" ]
-  }
-
   deps = [
     ":frame",
     ":frame_impl",
@@ -94,6 +90,14 @@ source_set("unit_tests") {
     "//ui/views:test_support",
     "//url",
   ]
+
+  if (is_linux) {
+    sources += [ "browser_frame_view_layout_linux_unittest.cc" ]
+
+    deps += [
+      "//chrome/browser/ui/views/frame:browser_frame_view_layout_linux_native",
+    ]
+  }
 }
 
 source_set("browser_tests") {
