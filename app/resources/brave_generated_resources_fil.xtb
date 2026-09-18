@@ -112,6 +112,9 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3114478090884951591">Nakikitang lugar</translation>
 <translation id="2026367923222947564">Buong pahina</translation>
 <translation id="4218885227032158909">Napiling lugar</translation>
+<translation id="2586386106930448447">Preview ng screenshot</translation>
+<translation id="7514365320538308">I-download</translation>
+<translation id="2743387203779672305">Kopyahin sa clipboard</translation>
 <translation id="4928988318462976765">Store ng Mga Web Extension</translation>
 <translation id="9181207987584064303">Tingnan sa Store ng Mga Web Extension</translation>
 <translation id="3161744659507801211">Babala: Hindi mapipigilan ng Brave ang mga extension sa pag-record ng iyong history ng pag-browse.</translation>
@@ -364,6 +367,7 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6847541693235449912">Go</translation>
 <translation id="2079545284768500474">I-undo</translation>
 <translation id="1533980864758658574">Gumawa ng bagong window para sa <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Walang tab na tumugma sa paksang iyon. Subukang ilarawan ito nang iba.</translation>
 <translation id="7985042437720138349">Nagpapadala ng data tungkol sa mga nakabukas mong tab ang feature na ito sa Leo, ang AI-powered na browser assistant ng Brave.</translation>
 <translation id="6165508094623778733">Matuto pa</translation>
 <translation id="7557539689487606886">Mag-Premium</translation>
@@ -421,6 +425,23 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4328541188421002379">Pangalanan ang container mo tulad ng Trabaho o Personal</translation>
 <translation id="4976989127264491396">Error: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Hindi nakita ang container</translation>
+<translation id="6055154402239241620">Traffic Control</translation>
+<translation id="8134521925475508805">I-configure ang mga partikular na site upang awtomatikong buksan sa isang partikular na konteksto, na lumilikha ng paghihiwalay sa pagitan ng iyong mga session ng pag-browse. <ph name="BEGIN_LINK"/>Matuto pa<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">I-enable ang Traffic Control</translation>
+<translation id="1358255827354528344">Magdagdag ng bagong panuntunan</translation>
+<translation id="7183128985801806752">Bagong panuntunan sa traffic control</translation>
+<translation id="2474694032500407328">I-edit ang panuntunan sa traffic control</translation>
+<translation id="5543417389274097206">Gumawa ng panuntunan</translation>
+<translation id="6532106788206463496">I-save ang mga pagbabago</translation>
+<translation id="1172800769374812685">I-delete ang panuntunan</translation>
+<translation id="2389682807835777591">Sigurado ka bang gusto mong i-delete ang panuntunang <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Maglagay ng mga URL upang pamahalaan at palaging buksan sa isang partikular na konteksto ng pag-browse.</translation>
+<translation id="1173480005453148926">Mga URL na papamahalaan</translation>
+<translation id="6217532416180299470">Maglagay ng mga URL na papamahalaan gamit ang traffic control</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> ay tumutugma sa site at mga subdomain nito; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> ay tumutugma sa eksaktong site; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> ay tumutugma sa lahat ng site; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> ay isang komento.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (at <ph name="COUNT"/> pang mga URL)</translation>
+<translation id="3700798663085748181">I-enable ang panuntunan</translation>
+<translation id="2967480878853054068">Di-wastong filter ng URL</translation>
 <translation id="2263346047290834619">Gamitin ang mga tree tab</translation>
 <translation id="5860254591544742609">Ipakita ang title bar</translation>
 <translation id="4691131445504068802">Itago nang lubusan kapag na-minimize</translation>
@@ -528,7 +549,6 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6745592621698551453">Mag-update ngayon</translation>
 <translation id="5334844597069022743">Tingnan ang source</translation>
 <translation id="4720556299488643018">Mag-unsubscribe</translation>
-<translation id="6532106788206463496">I-save ang mga pagbabago</translation>
 <translation id="4516904298421534459">Mga listahan ng filter</translation>
 <translation id="4435215931544457255">Mga karagdagang sikat na community list. Tandaang maaaring bumagal ang pagba-browse kapag nag-enable ng masyadong maraming filter.</translation>
 <translation id="802154636333426148">Hindi na-download</translation>
@@ -611,6 +631,8 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="509873765238158442">I-block ang Microsoft Recall</translation>
 <translation id="4763421121695677716">I-block ang feature ng Recall sa awtomatikong pagkuha ng mga screenshot ng anumang nakabukas na mga tab ng Brave sa mga computer ng Microsoft Windows.</translation>
 <translation id="1968895725257436430">Koleksyon ng data</translation>
+<translation id="5668852698659986622">I-enable ang Sponsored Ads</translation>
+<translation id="431194936581466649">Tumulong na suportahan ang misyon ng Brave na bumuo ng isang independiyente, user-first na Web sa pamamagitan ng Sponsored Ads. Sinusukat namin ang performance ng ad nang pribado, nang hindi kinikilala ka.</translation>
 <translation id="1700052872056357670">I-delete ang data kapag nag-exit</translation>
 <translation id="216468847346280584">I-clear ang data ng Mga Barave Ad...</translation>
 <translation id="96212973142796240">Na-clear ang data ng Brave Ads</translation>
@@ -991,4 +1013,12 @@ O baguhin mamaya sa <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="154702742922788359">Open mode</translation>
 <translation id="2249111429176737533">Buksan bilang naka-tab na window</translation>
 <translation id="7022756207310403729">Buksan sa browser</translation>
+<translation id="1916785651473363467">Custom na profile image</translation>
+<translation id="5336092064678832560">Mag-upload ng custom na image</translation>
+<translation id="1062407476771304334">Palitan</translation>
+<translation id="1428299461403073820">Palitan ang custom na profile image</translation>
+<translation id="7994453838803296517">Preview ng custom na profile image, napili</translation>
+<translation id="6578040791557152233">Mag-upload ng custom na profile image</translation>
+<translation id="9222124079546967592">Alisin ang custom na profile image</translation>
+<translation id="6058660912941570282">Hindi magagamit ng Brave ang file na ito. Pumili ng ibang image at subukang muli.</translation>
 </translationbundle>

@@ -854,9 +854,11 @@
 <translation id="646023614746251785">Потврди размена</translation>
 <translation id="6264944956989873014">Потврди мост</translation>
 <translation id="7067917728851842589">Потврди испраќање</translation>
+<translation id="2841837950101800123">Обезбедувач</translation>
 <translation id="1114725160772317155">Статус на обезбедување</translation>
 <translation id="2351357639951873714">Потврди заштита</translation>
 <translation id="7480044382160806610">Потврди незаштитување</translation>
+<translation id="6830542010524256586">Потврди миграција</translation>
 <translation id="8332923694292360653">Троши</translation>
 <translation id="3735740477244556633">Подреди по</translation>
 <translation id="6484605214219822434">Прегледај мост</translation>
@@ -1395,8 +1397,10 @@
 <translation id="5503843345634715425">Вратено</translation>
 <translation id="1778601041100951971">Заштитување на <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Незаштитување на <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">Мигрирање на <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> се заштитени</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> се незаштитени</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> се мигрирани</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} преостаната трансакција на чекање.}
       other {{PENDING_TRANSACTIONS} преостанати трансакции на чекање.}
@@ -1835,14 +1839,18 @@
 <translation id="9086302186042011942">Синхронизирање</translation>
 <translation id="99991973626409495">Преглед на заштитата</translation>
 <translation id="6779429520470417361">Прегледај незаштитување</translation>
+<translation id="7861093868637278059">Прегледај миграција</translation>
 <translation id="3114681061018999547">Заштита</translation>
 <translation id="1564172583156967455">Незаштитување</translation>
+<translation id="7040674372746105444">Мигрирање</translation>
 <translation id="8897189056319316783">Заштити ZEC</translation>
 <translation id="508249542337194541">Незаштити ZEC</translation>
+<translation id="3242332985109374549">Мигрирај ZEC</translation>
 <translation id="3382275793825152362">Заштити ги средствата</translation>
 <translation id="617149752238892649">Откажи ги средствата</translation>
 <translation id="8631765320256788981">Испраќате средства од вашата транспарентна сметка на вашата заштитена сметка.</translation>
 <translation id="3860364671495430495">Испраќате средства од вашата заштитена сметка на вашата транспарентна сметка.</translation>
+<translation id="9664108035970394">Испраќате средства од вашата заштитена наследена сметка на вашата заштитена сметка.</translation>
 <translation id="7144878232160441200">Обиди се повторно</translation>
 <translation id="4750109510113597688">Оваа трансакција може да вклучува такса за креирање на сметка</translation>
 <translation id="6201709949885884577">Потребна е лозинка за да се превземе оваа акција.</translation>
@@ -2199,7 +2207,7 @@
 <translation id="8151638057146502721">Конфигурирај</translation>
 <translation id="999273441077650169">Моделот се менува динамички за да го користи најдобриот за задачата.<ph name="LINK_BEFORE"/>Дознајте повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Qwen VL 30B, модел создаден од Alibaba Cloud да биде ефикасен и применлив за многу случаи. Qwen е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GLM-5.1, модел создаден од Zhipu AI да биде ефикасен и применлив за многу случаи. GLM-5.1 е хостиран од NEAR преку нивна потврдена приватна сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
+<translation id="8659225822055186905">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува GLM-5.3 Flash, модел создаден од Zhipu AI да биде ефикасен и применлив за многу случаи. GLM-5.3 Flash е хостиран од NEAR преку нивна потврдена приватна сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Здраво, јас сум Лео. Јас сум AI асистент од Brave. Работам со Claude Instant, модел создаден од Anthropic за разговори и обработка на текст. Claude Instant е хостиран од Brave преку нашата сопствена безбедна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Claude Haiku, модел создаден од Anthropic за поддршка на разговорни и задачи за обработка на текст. Claude Haiku е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Здраво, јас сум Лео. Јас сум AI асистент на Brave. Ме напојува Claude Sonnet, модел создаден од Anthropic за поддршка на разговорни и задачи за обработка на текст. Claude Sonnet е хостиран од Brave преку нашата сопствена сигурна инфраструктура.<ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
@@ -2321,6 +2329,8 @@
 <translation id="4370698775470316661">Овој разговор е предолг и не може да продолжи. Може да има други модели достапни со кои Leo е способен да одржува точност за подолги разговори.</translation>
 <translation id="4744144453035015075">Се пребарува интернет</translation>
 <translation id="8548351747582087191">Се пребарува интернет за <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4395536726196773278">Пребарување на вашите отворени картички за „<ph name="QUERY"/>“…</translation>
+<translation id="4724926708866789382">Ниту една отворена картичка не одговара на „<ph name="QUERY"/>“.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> повеќе…</translation>
 <translation id="8103700533980268469">Затвори го ова известување</translation>
 <translation id="3417835166382867856">Пребарај картички</translation>
@@ -2368,6 +2378,8 @@
 <translation id="443008484043213881">Алатки</translation>
 <translation id="4343623396828510727">Овие страници изложуваат алатки што Лео може да ги користи за да испраќа податоци до и од оваа страница. Не приложувајте или одобрувајте ги овие алатки ако овој разговор содржи податоци што не сакате оваа страница да ги види.</translation>
 <translation id="5021823940147712387">Отстрани ги алатките</translation>
+<translation id="8712279871321308580">Достапни алатки на веб-страницата</translation>
+<translation id="3690996226559605619">Достапни алатки (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">Сите претплати се обновуваат автоматски, но можеда се откажат во секое време пред да се обноват.</translation>
 <translation id="5091223967610958">Споделете го името на страницата на која се наоѓате (<ph name="HOST_NAME"/>) за да ни помогнете да го подобриме Лео.</translation>
 <translation id="8732450785281947197">Лео AI алатки</translation>
@@ -2406,6 +2418,7 @@
 <translation id="6397861830483632092">Отворени картички…</translation>
 <translation id="802080272588201037">Обележувачи…</translation>
 <translation id="2716127283451902393">Историја…</translation>
+<translation id="8888171900079152025">Работна папка</translation>
 <translation id="49269513399674318">Користи микрофон</translation>
 <translation id="3895031624234442305">Прилагодени модели</translation>
 <translation id="4572010449071015143">Започни нов разговор</translation>
@@ -2439,8 +2452,12 @@
 <translation id="3397808797783614750">Овозможување на AI автоматски да прелистува за вас може да предизвика штетни, непосакувани последици за вашата приватност, финансии и онлајн комуникации. <ph name="LINK_BEFORE"/>Дознај повеќе<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Безбедносно предупредување</translation>
 <translation id="6077070599873946984">Brave AI има потреба од ваша дозвола за: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI би сакал да изврши **<ph name="TOOL_NAME"/>** на **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Операцијата е детектирана како потенцијално несоодветна со вашето барање:</translation>
+<translation id="5137568953923142260">Дозволи</translation>
 <translation id="3927932062596804919">Одбиј</translation>
+<translation id="4191349941249805855">Прикажи аргументи на алатката</translation>
+<translation id="7237059533128264835">Сокриј аргументи на алатката</translation>
 <translation id="4569155249847375786">Потврдено</translation>
 <translation id="8200772114523450471">Продолжи</translation>
 <translation id="7607002721634913082">Паузирано</translation>
@@ -2546,7 +2563,7 @@
 <translation id="9173319813356700250">ВЕСТИ</translation>
 <translation id="6543799171249004861">Фотографија од <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Лео ВИ</translation>
-<translation id="7978582287767542276">Отстрани спонзорирани страници</translation>
+<translation id="7978582287767542276">Отстрани реклами на нова картичка</translation>
 <translation id="466214682712474574">Најавете се на вашата <ph name="PROVIDER"/> сметка за да го видите вашето салдо</translation>
 <translation id="8332875111286275890">Најавете се за да го видите вашето салдо</translation>
 <translation id="5430001801813715388">НАГРАДИ</translation>
@@ -2558,11 +2575,11 @@
 <translation id="4844370919312937270">Прикажи го Brave пребарувањето во новите табови</translation>
 <translation id="5088374130885640159">Со <ph name="REWARDS_LINK_BEGIN"/>Brave награди<ph name="REWARDS_LINK_END"/>, може да заработите од гледање реклами на новите картички. <ph name="LEARN_MORE_LINK_BEGIN"/>Дознајте повеќе<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">Прикажувај реклами на нова картичка</translation>
-<translation id="4983925687993168579">Brave статистика</translation>
+<translation id="4983925687993168579">Статистика</translation>
 <translation id="5009354496127441090">Прикажи ги топ сајтовите</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">Спонзорираните страници помагаат Brave да остане бесплатен. Ако користите <ph name="SITE_NAME"/>, ја поддржувате мисијата на Brave. Оневозможете ги во било кое време. <ph name="LINK_BEGIN"/>Дознајте повеќе<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">Спонзорираните страници помагаат Brave да остане бесплатен. Ако ги користите, ја поддржувате мисијата на Brave. <ph name="LINK_BEGIN"/>Дознајте повеќе<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Рекламите на нова картичка помагаат Brave да остане бесплатен. Ако користите <ph name="SITE_NAME"/>, ја поддржувате мисијата на Brave. Оневозможете ги во било кое време. <ph name="LINK_BEGIN"/>Дознајте повеќе<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Рекламите на нова картичка помагаат Brave да остане бесплатен. Ако ги користите, ја поддржувате мисијата на Brave. <ph name="LINK_BEGIN"/>Дознајте повеќе<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">СТАТИСТИКИ</translation>
 <translation id="5236080651083907980">Шифрирани видео повици со Brave Talk</translation>
 <translation id="2671474274417808910">Разговори со првоприватност</translation>
@@ -2722,6 +2739,7 @@
 <translation id="701087249209337256">Понесете ја содржината од вашиот стар прелистувач</translation>
 <translation id="142389341645668510">Прилагоди Brave</translation>
 <translation id="112005628409144325">Персонализирајте го вашето прелистувачко искуство со распоредот на картички и режимите на боја што ги преферирате.</translation>
+<translation id="4428982101636000516">Пребарувај со Brave или напиши URL</translation>
 <translation id="7376367936988732808">Распоред на картички</translation>
 <translation id="4734965478015604180">Хоризонтален</translation>
 <translation id="490375751687810070">Вертикален</translation>
@@ -2782,11 +2800,13 @@
 <translation id="8416695199565594645">Обезбедува дека сообраќајот се води преку посебни прокси сервери за да овозможи пристап до често ограничена содржина/сајтови или услуги од трети страни.</translation>
 <translation id="434523916398030617">Контактирајте со техничка поддршка</translation>
 <translation id="1116694919640316211">За Brave</translation>
-<translation id="8998067240267949220">Дополнителна приватност и безбедност на интернет</translation>
-<translation id="8666111144393179185">Сокријте ја вашата ИП-адреса и променете ја вашата локација</translation>
-<translation id="8881997962573369342">Стотици сервери низ целиот свет</translation>
-<translation id="1513801084412881009">Молневити брзини</translation>
-<translation id="6434859410115379558">Заштитете до 10 уреди со една претплата</translation>
+<translation id="8998067240267949220">Пристапувајте до вашата омилена содржина без ограничувања</translation>
+<translation id="8666111144393179185">Стотици сервери низ целиот свет</translation>
+<translation id="8881997962573369342">Лесно сокријте ја вашата IP и променете ја вашата локација</translation>
+<translation id="1513801084412881009">Молневити брзини на поврзување</translation>
+<translation id="6434859410115379558">Без евиденција, независно ревидирано</translation>
+<translation id="4886431881864826294">Една претплата покрива 10 уреди на desktop, Android и iOS</translation>
+<translation id="3649011006120934011">Без обврска, откажи во било кое време</translation>
 <translation id="1693568075761612600">Не успеа да се креира поддршка за билет, проверете ја вашата врска.</translation>
 <translation id="1407707415819020643">Изберете го вашиот сервер</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> градови - <ph name="SERVER_COUNT"/> сервери</translation>

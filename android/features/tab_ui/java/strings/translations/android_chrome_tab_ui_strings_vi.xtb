@@ -4,6 +4,7 @@
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Tạo <ph name="NUM_WEEKS_ONE"/> tuần trước}other{Tạo <ph name="NUM_WEEKS_MANY"/> tuần trước}}</translation>
 <translation id="1063300264396686489">Tự động mở nhóm thẻ từ các thiết bị khác</translation>
 <translation id="1075622780330595106">Gần đây, bạn không sử dụng <ph name="NUMBER_OF_TABS"/> trong tổng số các thẻ của mình. Bạn có muốn đóng các thẻ này không?</translation>
+<translation id="1760197532822135980">Nhận đề xuất trong Brave trên các ứng dụng khác</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{Tạo <ph name="NUM_YEARS_ONE"/> năm trước}other{Tạo <ph name="NUM_YEARS_MANY"/> năm trước}}</translation>
 <translation id="1137385688780024041">{DAY_COUNT,plural, =1{Các thẻ và nhóm không hoạt động sẽ bị đóng sau 1 tháng}other{Các thẻ và nhóm không hoạt động sẽ bị đóng sau <ph name="MONTH_COUNT_MANY"/> tháng}}</translation>
 <translation id="1173894706177603556">Đổi tên</translation>
@@ -18,15 +19,17 @@
 <translation id="1403729629346559879">{NUMBER_OF_TABS,plural, =1{Mở rộng nhóm thẻ <ph name="TITLE_OF_GROUP"/> được chia sẻ có <ph name="TABS_COUNT_ONE"/> thẻ, màu <ph name="COLOR_NAME"/>, có nhãn <ph name="CARD_LABEL"/>.}other{Mở rộng nhóm thẻ <ph name="TITLE_OF_GROUP"/> được chia sẻ có <ph name="TABS_COUNT_MANY"/> thẻ, màu <ph name="COLOR_NAME"/>, có nhãn <ph name="CARD_LABEL"/>.}}</translation>
 <translation id="1486715732399361704">Bạn có thể tìm thấy tất cả nhóm thẻ của mình tại đây</translation>
 <translation id="149054111719651807">{NUM_MINS,plural, =1{Tạo <ph name="NUM_MINS_ONE"/> phút trước}other{Tạo <ph name="NUM_MINS_MANY"/> phút trước}}</translation>
-<translation id="1501480321619201731">Xóa nhóm</translation>
+<translation id="1501480321619201731">Xoá nhóm</translation>
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> mục không hoạt động}other{<ph name="TABS_COUNT_MANY"/> mục không hoạt động}}</translation>
 <translation id="1568067597247500137">Tắt tiếng trang web</translation>
+<translation id="1639330215535800445">{TAB_COUNT,plural, =1{Chuyển thẻ xuống dưới}other{Chuyển các thẻ xuống dưới}}</translation>
 <translation id="1645759014353344461">Đã nhóm <ph name="TABS_COUNT_MANY"/> thẻ</translation>
 <translation id="1657719826150349398">Chuyển thẻ xuống dưới</translation>
 <translation id="1670942869417022142">Đã tắt tiếng âm thanh</translation>
 <translation id="1697284962337958118">Thêm vào</translation>
 <translation id="1713541401465507417">Đóng mọi thẻ và nhóm</translation>
 <translation id="1738346536511908887">{TAB_GROUPS_COUNT,plural, =1{<ph name="TAB_GROUPS_COUNT_ONE"/> nhóm thẻ không còn hoạt động.}other{<ph name="TAB_GROUPS_COUNT_MANY"/> nhóm thẻ không còn hoạt động}}</translation>
+<translation id="1759122978835002237">Chuyển nhóm thẻ lên trên</translation>
 <translation id="176485176228926164"><ph name="BEGIN_LINK1"/>Tìm hiểu thêm<ph name="END_LINK1"/></translation>
 <translation id="1828808367831369073">Đã nhóm <ph name="TABS_COUNT_ONE"/> thẻ</translation>
 <translation id="1844381456014878100">Sau 7 ngày không hoạt động</translation>
@@ -42,6 +45,7 @@
 <translation id="2118649612461486615">Thông tin cửa hàng</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{Bật tiếng trang web}other{Bật tiếng các trang web}}</translation>
 <translation id="2162620598375156287">Hiện có giá <ph name="CURRENT_PRICE"/> trên <ph name="SOURCE_WEBSITE"/></translation>
+<translation id="2164232689984783657">Chuyển nhóm thẻ xuống dưới</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Bỏ thẻ khỏi nhóm}other{Bỏ thẻ khỏi nhóm}}</translation>
 <translation id="2271452184061378400">Các nhóm thẻ của bạn được lưu tại đây</translation>
 <translation id="2277224997687551299">Chỉnh sửa tên nhóm</translation>
@@ -128,7 +132,6 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Di chuyển các thẻ sang cửa sổ mới}other{Di chuyển các thẻ sang một cửa sổ khác}}</translation>
 <translation id="5073204694187207510">Ẩn lưới toàn màn hình</translation>
 <translation id="5076161749301278626">Xem đánh giá về cửa hàng?</translation>
-<translation id="5093447877601682598">Gửi ý kiến phản hồi về dải thẻ</translation>
 <translation id="5161254044473106830">Cần có tiêu đề</translation>
 <translation id="5204584298075822291">Thu gọn thẻ</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave tự động đóng các thẻ và nhóm thẻ không hoạt động sau <ph name="AUTO_DELETE_DELAY_ONE"/> tháng. Bạn có thể thay đổi tuỳ chọn này trong phần cài đặt.}other{Brave tự động đóng các thẻ và nhóm thẻ không hoạt động sau <ph name="AUTO_DELETE_DELAY_MANY"/> tháng. Bạn có thể thay đổi tuỳ chọn này trong phần cài đặt.}}</translation>
@@ -192,6 +195,7 @@
 <translation id="7369451074646620503">Nhóm thẻ "<ph name="TAB_GROUP_NAME"/>" không còn hoạt động</translation>
 <translation id="7402375256128852434">Thêm các thẻ gần đây</translation>
 <translation id="7452985128687107478">Các nhóm thẻ tự động lưu và cập nhật trên mọi thiết bị của bạn</translation>
+<translation id="746137824927359035">{TAB_COUNT,plural, =1{Chuyển thẻ lên trên}other{Chuyển các thẻ lên trên}}</translation>
 <translation id="747459581954555080">Khôi phục tất cả</translation>
 <translation id="7489558427602531799">Di chuyển nhóm thẻ sang phải</translation>
 <translation id="7501728912575021674">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> mục}other{<ph name="TABS_COUNT_MANY"/> mục}}</translation>
@@ -221,6 +225,7 @@
 <translation id="805809603610022708">{TABS_COUNT,plural, =1{Thêm thẻ vào nhóm}other{Thêm các thẻ vào nhóm}}</translation>
 <translation id="8138067144082174140">Sau 14 ngày không hoạt động</translation>
 <translation id="8153873338998959464">{NUMBER_OF_TABS,plural, =1{Mở rộng nhóm thẻ <ph name="TITLE_OF_GROUP"/> có <ph name="TABS_COUNT_ONE"/> thẻ, màu <ph name="COLOR_NAME"/>.}other{Mở rộng nhóm thẻ <ph name="TITLE_OF_GROUP"/> có <ph name="TABS_COUNT_MANY"/> thẻ, màu <ph name="COLOR_NAME"/>.}}</translation>
+<translation id="8172214054247281626">Chia sẻ dữ liệu duyệt web, chẳng hạn như nhật ký duyệt web gần đây, để nhận đề xuất trên các ứng dụng đã chọn. Dữ liệu này sẽ được xử lý một cách an toàn trên thiết bị của bạn.</translation>
 <translation id="8195186926670288294">{TABS_COUNT,plural, =1{Bỏ ghim thẻ}other{Bỏ ghim các thẻ}}</translation>
 <translation id="8205266828577616993">Chuyển thẻ lên trên</translation>
 <translation id="8207688828622594111">{NUM_MINS,plural, =1{Cập nhật <ph name="NUM_MINS_ONE"/> phút trước}other{Cập nhật <ph name="NUM_MINS_MANY"/> phút trước}}</translation>

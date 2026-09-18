@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Blauw thema</translation>
 <translation id="1070329623210597193">Bestanden die deze site mag bekijken of bewerken</translation>
 <translation id="1074758928858737435">Je kunt vragen om de desktopversie van sites te bekijken</translation>
+<translation id="1760197532822135980">Suggesties van Brave krijgen in andere apps</translation>
 <translation id="1109482864356262001">Functies waarvoor bewegings- of lichtsensoren nodig zijn, werken niet</translation>
 <translation id="6670155282615872564">Voer de voorgestelde acties hieronder uit om het maximale uit Brave te halen</translation>
 <translation id="113098737392899175">Navigeren op pagina's met een tekstcursor als er een toetsenbord is aangesloten</translation>
@@ -83,6 +84,7 @@
 <translation id="1818308510395330587">Als je <ph name="APP_NAME"/> AR wilt laten gebruiken, moet je ook de camera aanzetten via de <ph name="BEGIN_LINK"/>Android-instellingen<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Wijzig de positie om de browsefunctionaliteit aan te passen</translation>
 <translation id="1848033246551405023">Lettertype Sans Serif</translation>
+<translation id="1861244985839668297">Als deze optie aanstaat, kunnen sites vragen of ze HID-apparaten mogen gebruiken. Staat de optie uit, dan kunnen sites geen HID-apparaten gebruiken.</translation>
 <translation id="1861262398884155592">Deze map is leeg</translation>
 <translation id="1881806992065048905">Blad onderaan voor het uiterlijk van de pagina Nieuw tabblad</translation>
 <translation id="1887786770086287077">Locatietoegang staat uit voor dit apparaat. Zet deze aan via de <ph name="BEGIN_LINK"/>Android-instellingen<ph name="END_LINK"/>.</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271">Als je <ph name="APP_NAME"/> handen volgen wilt laten gebruiken, zet je handen volgen ook aan via de <ph name="BEGIN_LINK"/>systeeminstellingen<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Je kaarten beheren</translation>
 <translation id="4722332387043141878">Sites gebruiken de bewegings- en lichtsensoren van je apparaat meestal voor functies zoals virtual reality of fitnesstracking</translation>
+<translation id="4748783296226936791">Sites maken meestal verbinding met HID-apparaten voor functies die ongebruikelijke toetsenborden, gamecontrollers en andere apparaten gebruiken</translation>
 <translation id="4755971844837804407">Als deze optie aanstaat, kunnen sites elke advertentie aan je tonen. Staat de optie uit, dan kunnen sites geen opdringerige of misleidende advertenties tonen.</translation>
 <translation id="4779083564647765204">Zoom</translation>
 <translation id="4807122856660838973">Safe Browsing aanzetten</translation>
@@ -447,11 +450,13 @@
 <translation id="5668404140385795438">Negeer verzoek van website om inzoomen te voorkomen</translation>
 <translation id="5668843533782548925">Sites zijn langzamer, maar beter beveiligd</translation>
 <translation id="5677928146339483299">Geblokkeerd</translation>
+<translation id="98560749650104566">Brave kan je nu suggesties in andere apps tonen op basis van je browsegegevens, zoals je recente browsegeschiedenis. Deze gegevens worden beveiligd verwerkt op je apparaat. Je kunt dit altijd uitzetten in de Brave-instellingen.</translation>
 <translation id="5689516760719285838">Locatie</translation>
 <translation id="5690795753582697420">Camera staat uit in de Android-instellingen</translation>
 <translation id="5700761515355162635">Cookies van derden toegestaan</translation>
 <translation id="5706552988683188916">Hiermee worden cookies en andere sitegegevens voor <ph name="WEBSITE"/> verwijderd</translation>
 <translation id="571222594670061844">Sites kunnen inlogprompts van identiteitsservices tonen</translation>
+<translation id="5719854774000914513">Sites kunnen vragen of ze verbinding mogen maken met HID-apparaten</translation>
 <translation id="5740126560802162366">Sites kunnen gegevens opslaan op je apparaat</translation>
 <translation id="5743425052258407233">Krijg toegang tot je geschiedenis op al je apparaten, zodat je makkelijk verder kunt gaan waar je gebleven was</translation>
 <translation id="5749158352074143502">Doorgaan met dit tabblad</translation>
@@ -500,6 +505,7 @@
 <translation id="6085954183010297841">Toestemming voor bewerken van bestanden verwijderen? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Als deze optie aanstaat, kunnen sites automatisch scherm-in-scherm openen. Als deze optie uitstaat, kunnen sites niet automatisch scherm-in-scherm openen.</translation>
 <translation id="6120483543004435978">Als deze optie aanstaat, kunnen sites vragen om ze mogen weten wanneer je je apparaat actief gebruikt. Staat de optie uit, dan mogen sites niet weten wanneer je je apparaat actief gebruikt.</translation>
+<translation id="5773142757282836623">Suggesties van Brave downloaden in andere apps verbergen</translation>
 <translation id="4852158809106762963">Brave biedt aan om je wachtwoord op te slaan</translation>
 <translation id="615886654739818377">Niet toestaan dat sites vensters beheren op al je schermen</translation>
 <translation id="6165508094623778733">Meer informatie</translation>
@@ -571,6 +577,7 @@
 <translation id="6950072572526089586">Een site die je bezoekt, kan informatie over je activiteiten opslaan zodat deze werkt zoals verwacht, bijvoorbeeld om je ingelogd te houden op een site of artikelen in je winkelwagen op te slaan. Sites slaan deze informatie vaak tijdelijk op je apparaat op.</translation>
 <translation id="6964291282260073066">WebGPU staat uit.</translation>
 <translation id="6965382102122355670">OK</translation>
+<translation id="6972629891077993081">HID-apparaten</translation>
 <translation id="6980507581230208647">Rooskleurig thema</translation>
 <translation id="6980861169612950611">Sitegegevens verwijderen? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Toegankelijkheid</translation>
@@ -583,7 +590,6 @@
 <translation id="7053983685419859001">Blokkeren</translation>
 <translation id="7055552182600664515">Als je content wilt afspelen die auteursrechtelijk beschermd is, moet je misschien een contentbeveiligingsservice gebruiken. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 geselecteerd}other{# geselecteerd}}</translation>
-<translation id="708014373017851679"><ph name="APP_NAME"/> is verouderd. Update de app.</translation>
 <translation id="7084115944294706056">Positie van adresbalk kiezen</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> geselecteerd. Opties beschikbaar bovenaan het scherm.</translation>
 <translation id="7141896414559753902">Sites niet toestaan pop-ups te bekijken en omleidingen uit te voeren (aanbevolen)</translation>
@@ -728,6 +734,7 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:</translation>
 <translation id="8593422116412089302">Als deze optie aanstaat, kunnen sites vragen of ze informatie mogen gebruiken die ze over je hebben opgeslagen. Staat de optie uit, dan kunnen sites je niet vragen of ze informatie mogen gebruiken die ze over jou hebben opgeslagen.</translation>
 <translation id="8609465669617005112">Omhoog</translation>
 <translation id="8617611086246832542">Als deze optie aanstaat, wordt de desktopweergave van websites getoond. Staat de optie uit, dan wordt de mobiele weergave van websites getoond.</translation>
+<translation id="8625916342247441948">Niet toestaan dat sites verbinding maken met HID-apparaten</translation>
 <translation id="8670078035093027626">Blad onderaan voor standaardbrowser is op volledige hoogte geopend</translation>
 <translation id="8676316391139423634">Als deze optie aanstaat, kunnen sites vragen of ze je handen mogen volgen. Staat de optie uit, dan kunnen sites je handen niet volgen.</translation>
 <translation id="8676374126336081632">Invoer wissen</translation>

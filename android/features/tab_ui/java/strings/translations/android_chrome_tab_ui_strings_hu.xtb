@@ -4,6 +4,7 @@
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> hete létrehozva}other{<ph name="NUM_WEEKS_MANY"/> hete létrehozva}}</translation>
 <translation id="1063300264396686489">Más eszközökről származó lapcsoportok automatikus megnyitása</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> lapot nem használt mostanában. Szeretné bezárni őket?</translation>
+<translation id="1760197532822135980">Brave-javaslatok fogadása más alkalmazásokban</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{<ph name="NUM_YEARS_ONE"/> éve létrehozva}other{<ph name="NUM_YEARS_MANY"/> éve létrehozva}}</translation>
 <translation id="1137385688780024041">{DAY_COUNT,plural, =1{Az inaktív lapok és csoportok 1 hónap után bezáródnak}other{Az inaktív lapok és csoportok <ph name="MONTH_COUNT_MANY"/> hónap után bezáródnak}}</translation>
 <translation id="1173894706177603556">Átnevezés</translation>
@@ -21,12 +22,14 @@
 <translation id="1501480321619201731">Csoport törlése</translation>
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> inaktív elem}other{<ph name="TABS_COUNT_MANY"/> inaktív elem}}</translation>
 <translation id="1568067597247500137">Webhely némítása</translation>
+<translation id="1639330215535800445">{TAB_COUNT,plural, =1{Lap mozgatása lefelé}other{Lapok mozgatása lefelé}}</translation>
 <translation id="1645759014353344461"><ph name="TABS_COUNT_MANY"/> lap csoportosítva</translation>
 <translation id="1657719826150349398">Lap mozgatása lefelé</translation>
 <translation id="1670942869417022142">Némítva van a hang</translation>
 <translation id="1697284962337958118">Hozzáadás</translation>
 <translation id="1713541401465507417">Az összes lap és csoport bezárása</translation>
 <translation id="1738346536511908887">{TAB_GROUPS_COUNT,plural, =1{<ph name="TAB_GROUPS_COUNT_ONE"/> lapcsoport már nem áll rendelkezésre}other{<ph name="TAB_GROUPS_COUNT_MANY"/> lapcsoport már nem áll rendelkezésre}}</translation>
+<translation id="1759122978835002237">Lapcsoport mozgatása felfelé</translation>
 <translation id="176485176228926164"><ph name="BEGIN_LINK1"/>További információ<ph name="END_LINK1"/>.</translation>
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> lap csoportosítva</translation>
 <translation id="1844381456014878100">7 nap inaktivitás után</translation>
@@ -42,6 +45,7 @@
 <translation id="2118649612461486615">Üzletadatok</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{Webhely némításának feloldása}other{Webhelyek némításának feloldása}}</translation>
 <translation id="2162620598375156287">Most <ph name="CURRENT_PRICE"/> áron a következő webhelyen: <ph name="SOURCE_WEBSITE"/></translation>
+<translation id="2164232689984783657">Lapcsoport mozgatása lefelé</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Lap kivétele a csoportból}other{Lapok kivétele a csoportból}}</translation>
 <translation id="2271452184061378400">Ide menti a rendszer a lapcsoportokat</translation>
 <translation id="2277224997687551299">Csoportnév szerkesztése</translation>
@@ -128,7 +132,6 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Lapok áthelyezése új ablakba}other{Lapok áthelyezése másik ablakba}}</translation>
 <translation id="5073204694187207510">Teljes képernyős rács elrejtése</translation>
 <translation id="5076161749301278626">Lát véleményeket az üzletről?</translation>
-<translation id="5093447877601682598">Visszajelzés küldése a lapsorról</translation>
 <translation id="5161254044473106830">Cím megadása kötelező</translation>
 <translation id="5204584298075822291">Lapok összecsukása</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{<ph name="AUTO_DELETE_DELAY_ONE"/> hónap elteltével a Brave automatikusan bezárja az inaktív lapokat és lapcsoportokat. Ezt a beállításokban módosíthatja.}other{<ph name="AUTO_DELETE_DELAY_MANY"/> hónap elteltével a Brave automatikusan bezárja az inaktív lapokat és lapcsoportokat. Ezt a beállításokban módosíthatja.}}</translation>
@@ -192,6 +195,7 @@
 <translation id="7369451074646620503">A(z) „<ph name="TAB_GROUP_NAME"/>” lapcsoport már nem áll rendelkezésre</translation>
 <translation id="7402375256128852434">Legutóbbi lapok hozzáadása</translation>
 <translation id="7452985128687107478">A rendszer automatikusan menti a lapcsoportokat, és frissíti őket az összes eszközén</translation>
+<translation id="746137824927359035">{TAB_COUNT,plural, =1{Lap mozgatása felfelé}other{Lapok mozgatása felfelé}}</translation>
 <translation id="747459581954555080">Összes visszaállítása</translation>
 <translation id="7489558427602531799">Lapcsoport mozgatása jobbra</translation>
 <translation id="7501728912575021674">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> elem}other{<ph name="TABS_COUNT_MANY"/> elem}}</translation>
@@ -221,6 +225,7 @@
 <translation id="805809603610022708">{TABS_COUNT,plural, =1{Lap hozzáadása csoporthoz}other{Lapok hozzáadása csoporthoz}}</translation>
 <translation id="8138067144082174140">14 nap inaktivitás után</translation>
 <translation id="8153873338998959464">{NUMBER_OF_TABS,plural, =1{A következő, <ph name="TABS_COUNT_ONE"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű lapcsoport kibontása: <ph name="TITLE_OF_GROUP"/>.}other{A következő, <ph name="TABS_COUNT_MANY"/> lapot tartalmazó, <ph name="COLOR_NAME"/> színű lapcsoport kibontása: <ph name="TITLE_OF_GROUP"/>.}}</translation>
+<translation id="8172214054247281626">Megoszthatja böngészési adatait (például a legutóbbi böngészési előzményeit), hogy javaslatokat kaphasson a kiválasztott alkalmazásokban. Az adatok feldolgozása biztonságos módon, az eszközön történik.</translation>
 <translation id="8195186926670288294">{TABS_COUNT,plural, =1{Lap rögzítésének feloldása}other{Lapok rögzítésének feloldása}}</translation>
 <translation id="8205266828577616993">Lap mozgatása felfelé</translation>
 <translation id="8207688828622594111">{NUM_MINS,plural, =1{Frissítve: <ph name="NUM_MINS_ONE"/> perccel ezelőtt}other{Frissítve: <ph name="NUM_MINS_MANY"/> perccel ezelőtt}}</translation>

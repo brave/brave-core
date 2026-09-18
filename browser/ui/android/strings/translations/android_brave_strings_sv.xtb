@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Inaktiverad</translation>
 <translation id="59174027418879706">Aktiverat</translation>
 <translation id="6920492760024499150">Dagens toppnyheter i ett privat flöde, bara för dig.</translation>
-<translation id="3803728444598576153">Aktivera Brave News så missar du inga nyheter</translation>
+<translation id="3803728444598576153">Aktivera Brave Nyheter så missar du inga nyheter</translation>
 <translation id="7627131190984957214">Brave Nyheter visar annonser som är helt privata och anonymt matchade på din enhet.</translation>
-<translation id="7897050360583141319">Följ dina favoritkällor i ett enda flöde. Öppna bara en flik i Brave, bläddra ner och … voila!\nBrave News stöds av annonser med helt privata och anonymiserade annonser.</translation>
+<translation id="7897050360583141319">Följ dina favoritkällor i ett enda flöde. Öppna bara en flik i Brave, bläddra ner och … voila!</translation>
 <translation id="1765217911817124376">Aktivera Brave News</translation>
 <translation id="8981973962043893066">Sök efter webbplats, ämne eller RSS-feed</translation>
 <translation id="3225021799163709119">Populära</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Hjälp till att förbättra Braves produktstabilitet genom att automatiskt skicka diagnostikrapporter när Brave Browser kraschar eller fryser.</translation>
 <translation id="7977176350719484850">Uppsk. data\nsparade</translation>
 <translation id="9008534313521214777">Ber. tid\nsparad</translation>
+<translation id="5668852698659986622">Aktivera Sponsrade annonser</translation>
+<translation id="431194936581466649">Hjälp till att stödja Braves uppdrag att bygga en oberoende, användarfokuserad webb med Sponsrade annonser. Vi mäter annonsprestanda privat, utan att identifiera dig.</translation>
 <translation id="8347743943525229984">Tillåt Brave-undersökningar</translation>
 <translation id="6022939994702081659">Tillåter Brave att visa länkar till privata undersökningar i den nya fliken. Undersökningar hjälper oss att bygga bättre funktioner och mäta effektiviteten i webbläsarbaserade annonskampanjer.</translation>
 <translation id="7746496306508543965">Läs mer om Brave-undersökningar</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Jag har en återställningsfras med 12 ord</translation>
 <translation id="4225265925807365011">Jag har en återställningsfras med 24 ord</translation>
 <translation id="3570367516044491911">Ställ in som standardwebbläsare</translation>
-<translation id="6800338374677644736">Ställ in som standardwebbläsare</translation>
 <translation id="1545749641540134597">Skanna QR-koden</translation>
 <translation id="5317781812114905957">Instruktioner</translation>
 <translation id="8515319483805157233">Om du vill söka med en QR-kod ska du placera QR-koden inom ramen.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Huvudmeny</translation>
 <translation id="7002271985859760052">Sidåtgärder</translation>
 <translation id="7104487676473617844">Följande objekt visas endast i menyn när de stöds av den aktuella öppna webbsidan.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Brave Ads är här!</translation>
 <translation id="222883304157347087">(denna enhet)</translation>
 <translation id="4157741509680155021">ENHETER PÅ SYNKRONISERINGSKEDJAN</translation>
@@ -720,6 +720,8 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Belopp + bränsle</translation>
 <translation id="2186011161688824046">Belopp + avgift</translation>
+<translation id="1118876217803190221">Otillräcklig balans</translation>
+<translation id="275990379543116961">Otillräckliga medel för gas</translation>
 <translation id="1950052789869821983">Transaktion</translation>
 <translation id="2304783958703511257">Avancerade inställningar</translation>
 <translation id="4220062530885628403">Nonce</translation>

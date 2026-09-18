@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Dinonaktifkan</translation>
 <translation id="59174027418879706">Diaktifkan</translation>
 <translation id="6920492760024499150">Kisah terpopuler hari ini dalam umpan privat, hanya untuk Anda.</translation>
-<translation id="3803728444598576153">Aktifkan Berita Brave, dan jangan lewatkan cerita apa pun</translation>
+<translation id="3803728444598576153">Aktifkan Brave Berita dan jangan lewatkan cerita apa pun</translation>
 <translation id="7627131190984957214">Berita Brave didukung iklan dengan iklan privat dan anonim yang disesuaikan pada perangkat Anda.</translation>
-<translation id="7897050360583141319">Ikuti sumber favorit Anda, dalam umpan tunggal. Cukup buka tab di Brave, gulir turun, dan… tara!\nBerita Brave didukung iklan dengan iklan privat dan anonim.</translation>
+<translation id="7897050360583141319">Ikuti sumber favorit Anda dalam umpan tunggal. Cukup buka tab di Brave, gulir turun, dan… tara!</translation>
 <translation id="1765217911817124376">Aktifkan Brave News</translation>
 <translation id="8981973962043893066">Cari situs, topik, atau umpan RSS</translation>
 <translation id="3225021799163709119">Populer</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Membantu meningkatkan stabilitas produk Brave\u2019s dengan secara otomatis mengirim laporan diagnostik ketika Peramban Brave gagal atau macet.</translation>
 <translation id="7977176350719484850">Perkiraan Data\nDihemat</translation>
 <translation id="9008534313521214777">Est. Penghematan Waktu</translation>
+<translation id="5668852698659986622">Aktifkan Iklan Bersponsor</translation>
+<translation id="431194936581466649">Bantu dukung misi Brave untuk membangun Web yang independen dan mengutamakan pengguna dengan Iklan Bersponsor. Kami mengukur performa iklan secara privat, tanpa mengidentifikasi Anda.</translation>
 <translation id="8347743943525229984">Izinkan survei Brave</translation>
 <translation id="6022939994702081659">Izinkan Brave menampilkan tautan ke survei privat di halaman tab baru. Survei membantu kami membangun fitur yang lebih baik dan mengukur keefektifan kampanye iklan berbasis browser.</translation>
 <translation id="7746496306508543965">Pelajari selengkapnya tentang survei Brave</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Saya memiliki frasa pemulihan 12 kata</translation>
 <translation id="4225265925807365011">Saya memiliki frasa pemulihan 24 kata</translation>
 <translation id="3570367516044491911">Jadikan peramban baku</translation>
-<translation id="6800338374677644736">Tetapkan sebagai Peramban Bawaan</translation>
 <translation id="1545749641540134597">Pindai Kode QR</translation>
 <translation id="5317781812114905957">Instruksi</translation>
 <translation id="8515319483805157233">Untuk mencari berdasarkan Kode QR, posisikan Kode QR di tengah bingkai.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Menu utama</translation>
 <translation id="7002271985859760052">Tindakan halaman</translation>
 <translation id="7104487676473617844">Item berikut hanya akan terlihat di menu saat didukung oleh halaman web yang sedang dibuka.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Iklan Brave sudah tiba!</translation>
 <translation id="222883304157347087">(perangkat ini)</translation>
 <translation id="4157741509680155021">PERANGKAT PADA RANTAI SINKRONISASI</translation>
@@ -720,6 +720,8 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Nominal + Bensin</translation>
 <translation id="2186011161688824046">Jumlah + biaya</translation>
+<translation id="1118876217803190221">Saldo tidak mencukupi</translation>
+<translation id="275990379543116961">Dana tidak mencukupi untuk membeli gas</translation>
 <translation id="1950052789869821983">Transaksi</translation>
 <translation id="2304783958703511257">Pengaturan Lanjutan</translation>
 <translation id="4220062530885628403">Saat ini</translation>

@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">ພື້ນທີ່ທີ່ມອງເຫັນໄດ້</translation>
 <translation id="2026367923222947564">ໜ້າເຕັມ</translation>
 <translation id="4218885227032158909">ພື້ນທີ່ທີ່ເລືອກ</translation>
+<translation id="2586386106930448447">ຕົວຢ່າງພາບໜ້າຈໍ</translation>
+<translation id="7514365320538308">ດາວໂຫຼດ</translation>
+<translation id="2743387203779672305">ສໍາເນົາໄປ clipboard</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">ເບິ່ງໃນ Web Extensions Store</translation>
 <translation id="3161744659507801211">ຄໍ່າເຕືອນ: Brave ບໍ່່າສາມາດປ້ອງກັນ Extension ຈາກການບັນທຶກປະຫວັດແມ່ນໄດ້ທ່າພິເສດ.</translation>
@@ -363,6 +366,7 @@
 <translation id="6847541693235449912">ໄປ</translation>
 <translation id="2079545284768500474">ຍົກເລີກ</translation>
 <translation id="1533980864758658574">ສ້າງຫ້ອງໃໝ່ສໍາລັບ <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">ບໍ່ມີແທັບໃດກົງກັບຫົວຂໍ້ນັ້ນ. ລອງອະທິບາຍໃໝ່ດ້ວຍວິທີອື່ນ.</translation>
 <translation id="7985042437720138349">ເລືອກນີ້ຈະສົ່ງຂໍ້ມູນເກັຒມາກດຸນໝິດຟ້າຖ້າທ່ານເປີດແນ້ວຫາທັດແພ</translation>
 <translation id="6165508094623778733">ຮຽນຮູ້ເພີ່ມເຕີມ</translation>
 <translation id="7557539689487606886">ອັບເກຣດເປັນ Premium</translation>
@@ -420,6 +424,23 @@
 <translation id="4328541188421002379">ໃຫ້ເອີ້ນຊື່ຊອກເດິນຄ້າດການເປີດໂຊໂບງເເລະບແບບບຸກຕົງ</translation>
 <translation id="4976989127264491396">ຜົງຄ້າ: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">ບໍ່ພົບຄອນເທນເນີ</translation>
+<translation id="6055154402239241620">ການຄວບຄຸມ Traffic</translation>
+<translation id="8134521925475508805">ຕັ້ງຄ່າ site ສະເພາະໃຫ້ເປີດອັດຕະໂນມັດໃນ context ໃດໜຶ່ງ, ສ້າງການແຍກລະຫວ່າງ session ການທ່ອງເວັບຂອງທ່ານ. <ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">ເປີດໃຊ້ການຄວບຄຸມ Traffic</translation>
+<translation id="1358255827354528344">ເພີ່ມກົດໃໝ່</translation>
+<translation id="7183128985801806752">ກົດການຄວບຄຸມ traffic ໃໝ່</translation>
+<translation id="2474694032500407328">ແກ້ໄຂກົດການຄວບຄຸມ traffic</translation>
+<translation id="5543417389274097206">ສ້າງກົດ</translation>
+<translation id="6532106788206463496">ບັນທຶກການປ່ຽນແປງ</translation>
+<translation id="1172800769374812685">ລຶບກົດ</translation>
+<translation id="2389682807835777591">ທ່ານແມ່ນແນ່ໃຈວ່າທ່ານຢາກລຶບກົດ <ph name="RULE_LABEL"/> ບໍ?</translation>
+<translation id="4853129331778360252">ໃສ່ URLs ເພື່ອຈັດການ ແລະ ເປີດໃນ context ການທ່ອງເວັບສະເພາະສະເໝີ.</translation>
+<translation id="1173480005453148926">URLs ທີ່ຈະຈັດການ</translation>
+<translation id="6217532416180299470">ໃສ່ URLs ເພື່ອຈັດການດ້ວຍການຄວບຄຸມ traffic</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> ກົງກັບ site ແລະ subdomains ຂອງມັນ; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> ກົງກັບ site ທີ່ແນ່ນອນ; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> ກົງກັບ site ທັງໝົດ; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> ແມ່ນຄໍາເຫັນ.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (ແລະ <ph name="COUNT"/> URLs ເພີ່ມເຕີມ)</translation>
+<translation id="3700798663085748181">ເປີດໃຊ້ກົດ</translation>
+<translation id="2967480878853054068">ຕົວກັ່ນຕອງ URL ບໍ່ຖືກຕ້ອງ</translation>
 <translation id="2263346047290834619">ໃຊ້ແທັບຂຶ້ນັ້ນໆ</translation>
 <translation id="5860254591544742609">ສະແດງແຖບชื่อໜ້າ</translation>
 <translation id="4691131445504068802">ເຊື່ອມບັງໂຕໃຫ້ມິດເມື່ອຫົວແຖບຕັ້ງຖືກຂະໝອດ</translation>
@@ -527,7 +548,6 @@
 <translation id="6745592621698551453">ອັບເດດໃນປັດຈ ຸບັນ</translation>
 <translation id="5334844597069022743">ເບິ່ງແຫລ່ງຂໍ້ມູນ</translation>
 <translation id="4720556299488643018">ຍົກເລີກການຮັບຮອງ</translation>
-<translation id="6532106788206463496">ບັນທຶກການປ່ຽນແປງ</translation>
 <translation id="4516904298421534459">ບັກອກຄອງລາຍການຄັດກອງ</translation>
 <translation id="4435215931544457255">ຕີນພົວພັນທາງຫຼັກຄົ້ນຫາຜ່ານຊຸມຊົນທີ່ມີຜົນໃຫຍ່. ເຈົ້າບໍ່ຄວນກອງໃສ່ລາຍຊື່ທີ່ມາດວ້າສົນໃຈ</translation>
 <translation id="802154636333426148">ດາວໂຫລດບໍ່ສຳເລັດ</translation>
@@ -610,6 +630,8 @@
 <translation id="509873765238158442">ບລັອກ Microsoft Recall</translation>
 <translation id="4763421121695677716">ບລັອກຄຸນສົມບັດ Recall ບນຄອມພິວເຕີ Microsoft Windows ຕໍ່າບັບເຊັນເລີຂ້າມຫາບາບີ</translation>
 <translation id="1968895725257436430">ການເກັບຂໍ້ມູນ</translation>
+<translation id="5668852698659986622">ເປີດໃຊ້ Sponsored Ads</translation>
+<translation id="431194936581466649">ຊ່ວຍສະໜັບສະໜູນພາລະກິດຂອງ Brave ໃນການສ້າງເວັບທີ່ເປັນອິດສະຫຼະ, ໃຫ້ຄວາມສໍາຄັນກັບຜູ້ໃຊ້ເປັນອັນດັບໜຶ່ງດ້ວຍ Sponsored Ads. ພວກເຮົາວັດແທກປະສິດທິພາບຂອງ ad ຢ່າງເປັນສ່ວນຕົວ, ໂດຍບໍ່ໄດ້ລະບຸຕົວທ່ານ.</translation>
 <translation id="1700052872056357670">ລຶບຂໍ້ມູນເມື່ອອອກ</translation>
 <translation id="216468847346280584">ລ້າງຂໍ້ມູນຂອງ Brave Ads...</translation>
 <translation id="96212973142796240">ລ້າງຂໍ້ມູນ Brave Ads ແລ້ວ</translation>
@@ -985,4 +1007,12 @@
 <translation id="154702742922788359">ໂໝດເປີດ</translation>
 <translation id="2249111429176737533">ເປີດໃນຫນ້າຕ່າງແບບແທບ</translation>
 <translation id="7022756207310403729">ເປີດໃນ browser</translation>
+<translation id="1916785651473363467">ຮູບພາບ profile ແບບກໍານົດເອງ</translation>
+<translation id="5336092064678832560">ອັບໂຫຼດຮູບພາບແບບກໍານົດເອງ</translation>
+<translation id="1062407476771304334">ແທນທີ່</translation>
+<translation id="1428299461403073820">ແທນທີ່ຮູບພາບ profile ແບບກໍານົດເອງ</translation>
+<translation id="7994453838803296517">ຕົວຢ່າງຮູບພາບ profile ແບບກໍານົດເອງ, ເລືອກແລ້ວ</translation>
+<translation id="6578040791557152233">ອັບໂຫຼດຮູບພາບ profile ແບບກໍານົດເອງ</translation>
+<translation id="9222124079546967592">ລຶບຮູບພາບ profile ແບບກໍານົດເອງ</translation>
+<translation id="6058660912941570282">Brave ບໍ່ສາມາດໃຊ້ໄຟລ໌ນີ້ໄດ້. ເລືອກຮູບພາບອື່ນ ແລ້ວລອງໃໝ່ອີກຄັ້ງ.</translation>
 </translationbundle>

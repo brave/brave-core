@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Die wichtigsten Themen des Tages in einem privaten Feed, nur für Sie zusammengestellt.</translation>
 <translation id="3803728444598576153">Aktiviere Brave News, um nichts mehr zu verpassen</translation>
 <translation id="7627131190984957214">Brave News ist werbeunterstützt durch private und anonymisierte Anzeigen, die auf dein Gerät abgestimmt sind.</translation>
-<translation id="7897050360583141319">Folge deinen bevorzugten Nachrichtenquellen in einem einzigen Feed. Öffne einfach einen Tab in Brave, scrolle nach unten scrollen und los geht's!\nBrave News ist werbeunterstützt durch private und anonymisierte Anzeigen.</translation>
+<translation id="7897050360583141319">Folgen Sie Ihren Lieblingsquellen in einem einzigen Feed. Öffnen Sie einfach einen Tab in Brave, scrollen Sie nach unten und … voilà!</translation>
 <translation id="1765217911817124376">Brave News aktivieren</translation>
 <translation id="8981973962043893066">Website, Thema oder RSS-Feed suchen</translation>
 <translation id="3225021799163709119">Beliebt</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Helfen Sie mit, die Produktstabilität von Brave zu verbessern, indem Sie automatisch Diagnoseberichte senden, wenn der Brave-Browser abstürzt oder einfriert.</translation>
 <translation id="7977176350719484850">Geschätzte nicht heruntergeladene\nDatenmenge</translation>
 <translation id="9008534313521214777">Ca. Zeit\ngespart</translation>
+<translation id="5668852698659986622">Gesponserte Ads aktivieren</translation>
+<translation id="431194936581466649">Unterstützen Sie Braves Mission, ein unabhängiges, nutzerorientiertes Web mit gesponserten Ads aufzubauen. Wir messen die Anzeigenleistung privat, ohne Sie zu identifizieren.</translation>
 <translation id="8347743943525229984">Brave Umfragen erlauben</translation>
 <translation id="6022939994702081659">Erlaube Brave, Links zu privaten Umfragen auf der neuen Tab-Seite anzuzeigen. Umfragen helfen uns, bessere Funktionen zu entwickeln und die Wirksamkeit von browserbasierten Werbekampagnen zu messen.</translation>
 <translation id="7746496306508543965">Mehr über Brave Umfragen erfahren</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Ich habe eine 12-Wörter-Wiederherstellungsphrase</translation>
 <translation id="4225265925807365011">Ich habe eine 24-Wörter-Wiederherstellungsphrase</translation>
 <translation id="3570367516044491911">Als Standardbrowser setzen</translation>
-<translation id="6800338374677644736">Als Standardbrowser festlegen</translation>
 <translation id="1545749641540134597">QR-Code scannen</translation>
 <translation id="5317781812114905957">Anleitungen</translation>
 <translation id="8515319483805157233">Um mit einem QR-Code zu suchen, richten Sie den QR-Code in der Mitte des Rahmens aus.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Hauptmenü</translation>
 <translation id="7002271985859760052">Seitenaktionen</translation>
 <translation id="7104487676473617844">Die folgenden Elemente sind im Menü nur sichtbar, wenn sie von der aktuell geöffneten Website unterstützt werden.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Brave Ads sind da!</translation>
 <translation id="222883304157347087">(dieses Gerät)</translation>
 <translation id="4157741509680155021">GERÄTE IN DER SYNC-KETTE</translation>
@@ -723,6 +723,8 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="1634828734222219955">Gesamt</translation>
 <translation id="7995708795274219641">Betrag + Gas</translation>
 <translation id="2186011161688824046">Betrag + Gebühren</translation>
+<translation id="1118876217803190221">Guthaben reicht nicht aus.</translation>
+<translation id="275990379543116961">Unzureichende Mittel für Gebühr</translation>
 <translation id="1950052789869821983">Transaktion</translation>
 <translation id="2304783958703511257">Erweiterte Einstellungen</translation>
 <translation id="4220062530885628403">Nonce</translation>

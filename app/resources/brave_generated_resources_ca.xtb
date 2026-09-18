@@ -112,6 +112,9 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3114478090884951591">Àrea visible</translation>
 <translation id="2026367923222947564">Pàgina completa</translation>
 <translation id="4218885227032158909">Àrea seleccionada</translation>
+<translation id="2586386106930448447">Vista prèvia de la captura de pantalla</translation>
+<translation id="7514365320538308">Descarrega</translation>
+<translation id="2743387203779672305">Copia al porta-retalls</translation>
 <translation id="4928988318462976765">Botiga d'extensions web</translation>
 <translation id="9181207987584064303">Veure a la botiga d'extensions web</translation>
 <translation id="3161744659507801211">Atenció: Brave no pot evitar que les extensions gravin el teu historial de navegació.</translation>
@@ -364,6 +367,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="6847541693235449912">Anar</translation>
 <translation id="2079545284768500474">Desfés</translation>
 <translation id="1533980864758658574">Nova finestra creada per <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Cap pestanya coincideix amb aquest tema. Prova de descriure'l d'una altra manera.</translation>
 <translation id="7985042437720138349">Aquesta funció envia informació sobre les pestanyes que tens obertes a Leo, l'assistent de navegació Impulsat per IA de Brave.</translation>
 <translation id="6165508094623778733">Saber més</translation>
 <translation id="7557539689487606886">Canvia a Premium</translation>
@@ -421,6 +425,23 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="4328541188421002379">Dona-li al teu espai de treball un nom com ara Feina o Personal</translation>
 <translation id="4976989127264491396">Error: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">No s'ha trobat l'espai de treball</translation>
+<translation id="6055154402239241620">Control del trànsit</translation>
+<translation id="8134521925475508805">Configura llocs específics perquè s'obrin automàticament en un context concret, creant separació entre les teves sessions de navegació. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Activa el control del trànsit</translation>
+<translation id="1358255827354528344">Afegeix una nova regla</translation>
+<translation id="7183128985801806752">Nova regla de control del trànsit</translation>
+<translation id="2474694032500407328">Edita la regla de control del trànsit</translation>
+<translation id="5543417389274097206">Crea la regla</translation>
+<translation id="6532106788206463496">Desa els canvis</translation>
+<translation id="1172800769374812685">Esborra la regla</translation>
+<translation id="2389682807835777591">Estàs segur que vols esborrar la regla <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Introdueix els URL per gestionar i obrir sempre en un context de navegació específic.</translation>
+<translation id="1173480005453148926">URL per gestionar</translation>
+<translation id="6217532416180299470">Introdueix els URL per gestionar amb el control del trànsit</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> coincideix amb el lloc i els seus subdominis; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> coincideix amb el lloc exacte; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> coincideix amb tots els llocs; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> és un comentari.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (i <ph name="COUNT"/> URL més)</translation>
+<translation id="3700798663085748181">Activa la regla</translation>
+<translation id="2967480878853054068">Filtre d'URL no vàlid</translation>
 <translation id="2263346047290834619">Utilitzar pestanyes d'arbre</translation>
 <translation id="5860254591544742609">Mostra la barra de títol</translation>
 <translation id="4691131445504068802">Amaga completament quan estigui minimitzat</translation>
@@ -528,7 +549,6 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="6745592621698551453">Actualitza ara</translation>
 <translation id="5334844597069022743">Veure la font</translation>
 <translation id="4720556299488643018">Cancel·la la subscripció</translation>
-<translation id="6532106788206463496">Desa els canvis</translation>
 <translation id="4516904298421534459">Filtra les llistes</translation>
 <translation id="4435215931544457255">Llistes comunitàries populars addicionals. Tingues en compte que habilitar massa filtres reduirà la velocitat de navegació.</translation>
 <translation id="802154636333426148">Error de baixada</translation>
@@ -611,6 +631,8 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="509873765238158442">Bloquejar Microsoft Recall</translation>
 <translation id="4763421121695677716">Bloqueja la funció de recuperació als ordinadors amb Microsoft Windows perquè no es facin captures de pantalla automàtiques de cap de les pestanyes obertes de Brave.</translation>
 <translation id="1968895725257436430">Recopilació de dades</translation>
+<translation id="5668852698659986622">Activa els anuncis patrocinats</translation>
+<translation id="431194936581466649">Ajuda a donar suport a la missió de Brave de construir una web independent i centrada en l'usuari amb els anuncis patrocinats. Mesurem el rendiment dels anuncis de manera privada, sense identificar-te.</translation>
 <translation id="1700052872056357670">Esborra les dades en sortir</translation>
 <translation id="216468847346280584">Esborra les dades d'anuncis de Brave...</translation>
 <translation id="96212973142796240">S'han esborrat les dades dels anuncis de Brave</translation>
@@ -991,4 +1013,12 @@ Segur que vols continuar?</translation>
 <translation id="154702742922788359">Mode d'obertura</translation>
 <translation id="2249111429176737533">Obrir com a finestra amb pestanyes</translation>
 <translation id="7022756207310403729">Obrir al navegador</translation>
+<translation id="1916785651473363467">Imatge de perfil personalitzada</translation>
+<translation id="5336092064678832560">Puja una imatge personalitzada</translation>
+<translation id="1062407476771304334">Substitueix</translation>
+<translation id="1428299461403073820">Substitueix la imatge de perfil personalitzada</translation>
+<translation id="7994453838803296517">Previsualització de la imatge de perfil personalitzada, seleccionada</translation>
+<translation id="6578040791557152233">Puja una imatge de perfil personalitzada</translation>
+<translation id="9222124079546967592">Elimina la imatge de perfil personalitzada</translation>
+<translation id="6058660912941570282">Brave no pot utilitzar aquest fitxer. Tria una altra imatge i torna-ho a provar.</translation>
 </translationbundle>

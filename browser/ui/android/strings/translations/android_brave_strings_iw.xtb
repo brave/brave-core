@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">מושבת</translation>
 <translation id="59174027418879706">מאופשר</translation>
 <translation id="6920492760024499150">הסיפורים המוצלחים ביותר להיום בפיד פרטי, במיוחד עבורכם.</translation>
-<translation id="3803728444598576153">הפעל Brave News, ולא תפספס אף סיפור לעולם</translation>
+<translation id="3803728444598576153">הפעל/י את Brave News כדי לא לפספס אף סיפור</translation>
 <translation id="7627131190984957214">Brave חדשות נתמכות על ידי מודעות עם מודעות פרטיות ואנונימיות שהותאמו עבור המכשיר שלכם.</translation>
-<translation id="7897050360583141319">עקבו אחר המקורות המועדפים עליכם, בפיד יחיד. פשוט פותחים כרטיסייה ב-Brave, גוללים למטה ו… הנה!\nBrave News ממומנת באמצעות מודעות פרטיות ואנונימיות.</translation>
+<translation id="7897050360583141319">עקבו אחר המקורות המועדפים עליכם, בפיד יחיד. פשוט פותחים כרטיסייה ב-Brave, גוללים למטה ו… הנה!</translation>
 <translation id="1765217911817124376">הפעל את חדשות Brave</translation>
 <translation id="8981973962043893066">חפשו אתר, נושא או הזנת RSS</translation>
 <translation id="3225021799163709119">פופולאריים</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">עזור לשפר את יציבות המוצר של Brave על ידי שליחת דוחות אבחון אוטומטית כאשר הדפדפן האמיץ קורס או קופא.</translation>
 <translation id="7977176350719484850">הערכת נתונים/n שנשמרו</translation>
 <translation id="9008534313521214777">זמן מוערך\n שנשמר</translation>
+<translation id="5668852698659986622">הפעלת מודעות ממומנות</translation>
+<translation id="431194936581466649">עזרו לתמוך במשימה של Brave לבנות רשת עצמאית שממקמת את המשתמש במקום הראשון, באמצעות מודעות ממומנות. אנחנו מודדים את ביצועי המודעות באופן פרטי, מבלי לזהות אתכם.</translation>
 <translation id="8347743943525229984">הפעלת סקרי Brave</translation>
 <translation id="6022939994702081659">מאפשר ל-Brave להציג לינקים לסקרים פרטיים בדף הכרטיסייה החדשה. סקרים עוזרים לנו לבנות פיצ׳רים טובים יותר ולמדוד את היעילות של קמפיינים פרסומיים בדפדפן.</translation>
 <translation id="7746496306508543965">למידע נוסף על סקרי Brave</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">יש ברשותי ביטוי שחזור בן 12 מילים</translation>
 <translation id="4225265925807365011">יש ברשותי ביטוי שחזור בן 24 מילים</translation>
 <translation id="3570367516044491911">הגדר כדפדפן ברירת המחדל</translation>
-<translation id="6800338374677644736">הגדר כדפדפן ברירת המחדל</translation>
 <translation id="1545749641540134597">סריקת קוד QR</translation>
 <translation id="5317781812114905957">הוראות</translation>
 <translation id="8515319483805157233">כדי לחפש לפי קוד QR, מקם את קוד ה-QR במרכז המסגרת.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">תפריט ראשי</translation>
 <translation id="7002271985859760052">פעולות על דפים</translation>
 <translation id="7104487676473617844">הפריטים הבאים יוצגו בתפריט רק כאשר הם נתמכים בדף האינטרנט הפתוח הנוכחי.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Brave Ads כבר כאן!</translation>
 <translation id="222883304157347087">(מכשיר זה)</translation>
 <translation id="4157741509680155021">מכשירים בשרשרת הסנכרון</translation>
@@ -724,6 +724,8 @@
 <translation id="1634828734222219955">סך הכל</translation>
 <translation id="7995708795274219641">סכום + גז</translation>
 <translation id="2186011161688824046">סכום + עמלה</translation>
+<translation id="1118876217803190221">אין מספיק בעובר ושב</translation>
+<translation id="275990379543116961">אין מספיק כסף לגז</translation>
 <translation id="1950052789869821983">עסקה</translation>
 <translation id="2304783958703511257">הגדרות מתקדמות</translation>
 <translation id="4220062530885628403">חוסר</translation>

@@ -4,6 +4,7 @@
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{สร้างเมื่อ <ph name="NUM_WEEKS_ONE"/> สัปดาห์ที่ผ่านมา}other{สร้างเมื่อ <ph name="NUM_WEEKS_MANY"/> สัปดาห์ที่ผ่านมา}}</translation>
 <translation id="1063300264396686489">เปิดกลุ่มแท็บจากอุปกรณ์อื่นๆ โดยอัตโนมัติ</translation>
 <translation id="1075622780330595106">คุณไม่ได้ใช้แท็บ <ph name="NUMBER_OF_TABS"/> แท็บมาระยะหนึ่งแล้ว ปิดแท็บเหล่านั้นไหม</translation>
+<translation id="1760197532822135980">รับคำแนะนำจาก Brave ในแอปอื่นๆ</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{สร้างเมื่อ <ph name="NUM_YEARS_ONE"/> ปีที่ผ่านมา}other{สร้างเมื่อ <ph name="NUM_YEARS_MANY"/> ปีที่ผ่านมา}}</translation>
 <translation id="1137385688780024041">{DAY_COUNT,plural, =1{แท็บและกลุ่มที่ไม่ได้ใช้งานจะปิดหลังจากผ่านไป 1 เดือน}other{แท็บและกลุ่มที่ไม่ได้ใช้งานจะปิดหลังจากผ่านไป <ph name="MONTH_COUNT_MANY"/> เดือน}}</translation>
 <translation id="1173894706177603556">เปลี่ยนชื่อ</translation>
@@ -21,12 +22,14 @@
 <translation id="1501480321619201731">ลบกลุ่ม</translation>
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{รายการที่ไม่ได้ใช้งาน <ph name="TABS_COUNT_ONE"/> รายการ}other{รายการที่ไม่ได้ใช้งาน <ph name="TABS_COUNT_MANY"/> รายการ}}</translation>
 <translation id="1568067597247500137">ปิดเสียงเว็บไซต์</translation>
+<translation id="1639330215535800445">{TAB_COUNT,plural, =1{ย้ายแท็บลง}other{ย้ายแท็บลง}}</translation>
 <translation id="1645759014353344461">จัดกลุ่มไว้ <ph name="TABS_COUNT_MANY"/> แท็บ</translation>
 <translation id="1657719826150349398">ย้ายแท็บลงล่าง</translation>
 <translation id="1670942869417022142">เสียงปิดอยู่</translation>
 <translation id="1697284962337958118">เพิ่มลงใน</translation>
 <translation id="1713541401465507417">ปิดแท็บและกลุ่มทั้งหมด</translation>
 <translation id="1738346536511908887">{TAB_GROUPS_COUNT,plural, =1{กลุ่มแท็บ <ph name="TAB_GROUPS_COUNT_ONE"/> กลุ่มใช้งานไม่ได้อีกต่อไป}other{กลุ่มแท็บ <ph name="TAB_GROUPS_COUNT_MANY"/> กลุ่มใช้งานไม่ได้อีกต่อไป}}</translation>
+<translation id="1759122978835002237">ย้ายกลุ่มแท็บขึ้น</translation>
 <translation id="176485176228926164"><ph name="BEGIN_LINK1"/>ดูข้อมูลเพิ่มเติม<ph name="END_LINK1"/></translation>
 <translation id="1828808367831369073">จัดกลุ่มไว้ <ph name="TABS_COUNT_ONE"/> แท็บ</translation>
 <translation id="1844381456014878100">หลังจากไม่มีการใช้งาน 7 วัน</translation>
@@ -42,6 +45,7 @@
 <translation id="2118649612461486615">ข้อมูลร้านค้า</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{เลิกซ่อนเว็บไซต์}other{เลิกซ่อนเว็บไซต์}}</translation>
 <translation id="2162620598375156287">ตอนนี้ราคา <ph name="CURRENT_PRICE"/> ใน <ph name="SOURCE_WEBSITE"/></translation>
+<translation id="2164232689984783657">ย้ายกลุ่มแท็บลง</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{เลิกจัดกลุ่มแท็บ}other{เลิกจัดกลุ่มแท็บ}}</translation>
 <translation id="2271452184061378400">กลุ่มแท็บจะบันทึกไว้ที่นี่</translation>
 <translation id="2277224997687551299">แก้ไขชื่อกลุ่ม</translation>
@@ -128,7 +132,6 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{ย้ายแท็บไปยังหน้าต่างใหม่}other{ย้ายหลายแท็บไปยังหน้าต่างใหม่}}</translation>
 <translation id="5073204694187207510">ซ่อนตารางกริดแบบเต็มหน้าจอ</translation>
 <translation id="5076161749301278626">ดูรีวิวร้านค้าไหม</translation>
-<translation id="5093447877601682598">ส่งความคิดเห็นเกี่ยวกับแนวแท็บ</translation>
 <translation id="5161254044473106830">ต้องระบุชื่อ</translation>
 <translation id="5204584298075822291">ยุบแท็บ</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave จะปิดแท็บและกลุ่มแท็บที่ไม่ได้ใช้งานโดยอัตโนมัติหลังจากผ่านไป <ph name="AUTO_DELETE_DELAY_ONE"/> เดือน คุณเปลี่ยนค่านี้ได้ในการตั้งค่า}other{Brave จะปิดแท็บและกลุ่มแท็บที่ไม่ได้ใช้งานโดยอัตโนมัติหลังจากผ่านไป <ph name="AUTO_DELETE_DELAY_MANY"/> เดือน คุณเปลี่ยนค่านี้ได้ในการตั้งค่า}}</translation>
@@ -192,6 +195,7 @@
 <translation id="7369451074646620503">กลุ่มแท็บ "<ph name="TAB_GROUP_NAME"/>" ใช้งานไม่ได้อีกต่อไป</translation>
 <translation id="7402375256128852434">เพิ่มแท็บล่าสุด</translation>
 <translation id="7452985128687107478">กลุ่มแท็บจะบันทึกและอัปเดตโดยอัตโนมัติในอุปกรณ์ทั้งหมด</translation>
+<translation id="746137824927359035">{TAB_COUNT,plural, =1{ย้ายแท็บขึ้น}other{ย้ายแท็บขึ้น}}</translation>
 <translation id="747459581954555080">คืนค่าทั้งหมด</translation>
 <translation id="7489558427602531799">ย้ายกลุ่มแท็บไปทางขวา</translation>
 <translation id="7501728912575021674">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> รายการ}other{<ph name="TABS_COUNT_MANY"/> รายการ}}</translation>
@@ -221,6 +225,7 @@
 <translation id="805809603610022708">{TABS_COUNT,plural, =1{เพิ่มแท็บไปยังกลุ่ม}other{เพิ่มแท็บไปยังกลุ่ม}}</translation>
 <translation id="8138067144082174140">หลังจากไม่มีการใช้งาน 14 วัน</translation>
 <translation id="8153873338998959464">{NUMBER_OF_TABS,plural, =1{ขยายกลุ่มแท็บ<ph name="TITLE_OF_GROUP"/>ที่มี <ph name="TABS_COUNT_ONE"/> แท็บ สี<ph name="COLOR_NAME"/>}other{ขยายกลุ่มแท็บ<ph name="TITLE_OF_GROUP"/>ที่มี <ph name="TABS_COUNT_MANY"/> แท็บ สี<ph name="COLOR_NAME"/>}}</translation>
+<translation id="8172214054247281626">แชร์ข้อมูลการท่องเว็บ เช่น ประวัติการท่องเว็บล่าสุด เพื่อรับคำแนะนำในแอปที่เลือก ข้อมูลนี้จะได้รับการประมวลผลอย่างปลอดภัยในอุปกรณ์ของคุณ</translation>
 <translation id="8195186926670288294">{TABS_COUNT,plural, =1{เลิกปักหมุดแท็บ}other{เลิกปักหมุดแท็บ}}</translation>
 <translation id="8205266828577616993">เลื่อนแท็บขึ้น</translation>
 <translation id="8207688828622594111">{NUM_MINS,plural, =1{อัปเดตเมื่อ <ph name="NUM_MINS_ONE"/> นาทีที่ผ่านมา}other{อัปเดตเมื่อ <ph name="NUM_MINS_MANY"/> นาทีที่ผ่านมา}}</translation>
