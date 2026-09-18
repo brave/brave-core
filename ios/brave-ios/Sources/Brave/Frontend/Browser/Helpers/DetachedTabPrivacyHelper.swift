@@ -69,6 +69,7 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
 
   // MARK: - TabPolicyDecider
 
+  @MainActor
   func tab(
     _ tab: some TabState,
     shouldAllowRequest request: URLRequest,
@@ -143,6 +144,7 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
     return .allow
   }
 
+  @MainActor
   func tab(
     _ tab: some TabState,
     shouldAllowResponse response: URLResponse,

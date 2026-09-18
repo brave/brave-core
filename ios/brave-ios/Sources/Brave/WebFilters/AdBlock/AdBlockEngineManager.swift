@@ -654,7 +654,7 @@ import os
   }
 
   /// Loads & decode the `FilterListGroup` from the cache for this engine.
-  nonisolated private func loadCachedInfo(
+  @concurrent nonisolated private func loadCachedInfo(
     cacheFolderURL: URL,
     cachedEngineURL: URL
   ) async -> GroupedAdBlockEngine.FilterListGroup? {
@@ -724,7 +724,9 @@ extension Array where Element == GroupedAdBlockEngine.FilterListInfo {
 }
 
 extension AdBlockEngineManager.FileInfo {
-  fileprivate func getRulesData(engineType: GroupedAdBlockEngine.EngineType) async throws -> Data? {
+  @concurrent fileprivate func getRulesData(
+    engineType: GroupedAdBlockEngine.EngineType
+  ) async throws -> Data? {
     guard let data = await AsyncFileManager.default.contents(atPath: localFileURL.path) else {
       return nil
     }

@@ -161,7 +161,7 @@ class RewardsInternalsShareController: UITableViewController {
   private let dropDirectory: URL
   private let zipPath: URL
 
-  private func share(_ senderIndexPath: IndexPath) async {
+  @concurrent private func share(_ senderIndexPath: IndexPath) async {
     // create temp folder, zip, share
     guard let selectedIndexPaths = tableView.indexPathsForSelectedRows else { return }
     let sharables = selectedIndexPaths.map { self.sharables[$0.row] }

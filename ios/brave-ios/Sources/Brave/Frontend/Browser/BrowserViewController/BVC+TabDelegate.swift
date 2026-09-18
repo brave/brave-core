@@ -26,6 +26,7 @@ extension BrowserViewController: TabDelegate {
     tabManager.removeTab(tab)
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?

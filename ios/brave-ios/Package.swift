@@ -642,9 +642,9 @@ let isStripAbsolutePathsFromDebugSymbolsEnabled = {
   }
 }()
 
-if isStripAbsolutePathsFromDebugSymbolsEnabled {
-  for target in package.targets where target.type == .regular || target.type == .test {
-    var settings = target.swiftSettings ?? []
+for target in package.targets where target.type == .regular || target.type == .test {
+  var settings = target.swiftSettings ?? []
+  if isStripAbsolutePathsFromDebugSymbolsEnabled {
     settings.append(
       .unsafeFlags(
         [
@@ -653,6 +653,14 @@ if isStripAbsolutePathsFromDebugSymbolsEnabled {
         .when(configuration: .debug)
       )
     )
-    target.swiftSettings = settings
   }
+  // Approchable Concurrency feature flags
+  settings.append(contentsOf: [
+    .enableUpcomingFeature("DisableOutwardActorInference"),
+    .enableUpcomingFeature("GlobalActorIsolatedTypesUsability"),
+    .enableUpcomingFeature("InferIsolatedConformances"),
+    .enableUpcomingFeature("InferSendableFromCaptures"),
+    .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
+  ])
+  target.swiftSettings = settings
 }

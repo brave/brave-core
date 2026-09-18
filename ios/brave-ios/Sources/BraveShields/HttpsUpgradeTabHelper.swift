@@ -127,6 +127,7 @@ public class HttpsUpgradeTabHelper {
 
 // MARK: - TabPolicyDecider
 extension HttpsUpgradeTabHelper: TabPolicyDecider {
+  @MainActor
   public func tab(
     _ tab: some TabState,
     shouldAllowRequest request: URLRequest,

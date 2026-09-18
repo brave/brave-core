@@ -393,12 +393,19 @@ private class MockAIChatSettingsHelper: AIChatSettingsHelper {
 
   var customModels: [AiChat.Model] = []
 
-  func addCustomModel(_ model: AiChat.Model) async -> AiChat.OperationResult {
-    mockResult(for: model)
+  func addCustomModel(
+    _ model: AiChat.Model,
+    completionHandler handler: @escaping (AiChat.OperationResult) -> Void
+  ) {
+    handler(mockResult(for: model))
   }
 
-  func updateCustomModel(at index: Int, model: AiChat.Model) async -> AiChat.OperationResult {
-    mockResult(for: model)
+  func updateCustomModel(
+    at index: Int,
+    model: AiChat.Model,
+    completionHandler handler: @escaping (AiChat.OperationResult) -> Void
+  ) {
+    handler(mockResult(for: model))
   }
 
   func mockResult(for model: AiChat.Model) -> AiChat.OperationResult {
