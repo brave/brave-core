@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Giao diện màu xanh dương</translation>
 <translation id="1070329623210597193">Các tệp mà trang web này có thể xem hoặc chỉnh sửa</translation>
 <translation id="1074758928858737435">Bạn có thể yêu cầu xem phiên bản trang web dành cho máy tính</translation>
+<translation id="1760197532822135980">Nhận đề xuất trong Brave trên các ứng dụng khác</translation>
 <translation id="1109482864356262001">Các tính năng cần dùng cảm biến chuyển động hoặc cảm biến ánh sáng sẽ không hoạt động</translation>
 <translation id="6670155282615872564">Làm theo các đề xuất dưới đây để sử dụng Brave hiệu quả nhất</translation>
 <translation id="113098737392899175">Di chuyển giữa các trang bằng con trỏ văn bản khi kết nối bàn phím</translation>
@@ -83,6 +84,7 @@
 <translation id="1818308510395330587">Để cho phép <ph name="APP_NAME"/> sử dụng công nghệ thực tế tăng cường (AR), hãy bật cả máy ảnh trong phần <ph name="BEGIN_LINK"/>Cài đặt Android<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Di chuyển để tuỳ chỉnh trải nghiệm duyệt web của bạn</translation>
 <translation id="1848033246551405023">Phông chữ Sans Serif</translation>
+<translation id="1861244985839668297">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu sử dụng thiết bị HID. Khi bạn tắt tuỳ chọn này, các trang web không thể sử dụng thiết bị HID.</translation>
 <translation id="1861262398884155592">Thư mục này trống</translation>
 <translation id="1881806992065048905">Bảng giao diện trang thẻ mới ở dưới cùng</translation>
 <translation id="1887786770086287077">Đã tắt quyền truy cập vị trí đối với thiết bị này. Hãy bật trong <ph name="BEGIN_LINK"/>Cài đặt Android<ph name="END_LINK"/>.</translation>
@@ -144,7 +146,7 @@
 <translation id="2404857459073803936">Quyền truy cập thông tin vị trí cho trang web này</translation>
 <translation id="2410940059315936967">Trang web bạn truy cập có thể nhúng nội dung từ các trang web khác, chẳng hạn như hình ảnh, quảng cáo và văn bản. Cookie do các trang web khác đặt được gọi là cookie của bên thứ ba.</translation>
 <translation id="2411116727035790889">Bật lối tắt</translation>
-<translation id="2433507940547922241">Hình thức</translation>
+<translation id="2433507940547922241">Giao diện</translation>
 <translation id="2434158240863470628">Quá trình tải xuống hoàn tất <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
 <translation id="2442870161001914531">Luôn yêu cầu trang web dành cho máy tính</translation>
 <translation id="1736696984974511795">Brave hiện chia sẻ các thẻ gần đây với thiết bị của bạn. Bạn sẽ thấy các thẻ này trong danh sách ứng dụng và kết quả tìm kiếm trên thiết bị. Bạn có thể tắt tính năng này bất cứ lúc nào trong phần cài đặt của Brave.</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271">Để cho phép <ph name="APP_NAME"/> dùng tính năng theo dõi cử chỉ tay, hãy bật cả tính năng này trong phần <ph name="BEGIN_LINK"/>cài đặt hệ thống<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Quản lý thẻ</translation>
 <translation id="4722332387043141878">Các trang web thường sử dụng cảm biến chuyển động và cảm biến ánh sáng trên thiết bị của bạn để cung cấp các tính năng như thực tế ảo hoặc theo dõi hoạt động thể dục</translation>
+<translation id="4748783296226936791">Các trang web thường kết nối với thiết bị HID cho những tính năng sử dụng bàn phím không phổ biến, tay điều khiển trò chơi và các thiết bị khác</translation>
 <translation id="4755971844837804407">Khi bạn bật tuỳ chọn này, các trang web có thể hiển thị bất kỳ quảng cáo nào cho bạn. Khi bạn tắt tuỳ chọn này, các trang web không thể hiển thị quảng cáo xâm nhập hoặc quảng cáo gây hiểu lầm.</translation>
 <translation id="4779083564647765204">Thu phóng</translation>
 <translation id="4807122856660838973">Bật tính năng Duyệt web an toàn</translation>
@@ -409,7 +412,7 @@
 <translation id="5139253256813381453">{PRICE_DROP_COUNT,plural, =1{Ưu đãi giảm giá trên các thẻ đang mở}other{Ưu đãi giảm giá trên các thẻ đang mở}}</translation>
 <translation id="5150048675001754041">Đăng nhập nhanh chóng và dễ dàng vào các trang web và ứng dụng</translation>
 <translation id="5186036860380548585">Tùy chọn này ở gần đầu màn hình</translation>
-<translation id="5197729504361054390">Những người liên hệ bạn chọn sẽ được chia sẻ với <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
+<translation id="5197729504361054390">Những thông tin liên hệ bạn chọn sẽ được chia sẻ với <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/>.</translation>
 <translation id="5198930230016462977">Bảng tuỳ chỉnh trang thẻ mới của bạn ở dưới cùng đã đóng</translation>
 <translation id="5216942107514965959">Lần truy cập gần đây nhất: hôm nay</translation>
 <translation id="5225463052809312700">Bật máy ảnh</translation>
@@ -447,11 +450,13 @@
 <translation id="5668404140385795438">Ghi đè yêu cầu chặn phóng to của trang web</translation>
 <translation id="5668843533782548925">Các trang web tải chậm hơn nhưng an toàn hơn</translation>
 <translation id="5677928146339483299">Bị chặn</translation>
+<translation id="98560749650104566">Giờ đây, Brave có thể hiển thị đề xuất cho bạn trên những ứng dụng khác dựa trên dữ liệu duyệt web, chẳng hạn như nhật ký duyệt web gần đây. Dữ liệu này sẽ được xử lý một cách an toàn trên thiết bị của bạn. Bạn có thể tắt tính năng này bất cứ lúc nào trong phần cài đặt của Brave.</translation>
 <translation id="5689516760719285838">Vị trí</translation>
 <translation id="5690795753582697420">Bạn đã tắt máy ảnh trong phần cài đặt của Android</translation>
 <translation id="5700761515355162635">Đã cho phép cookie của bên thứ ba</translation>
 <translation id="5706552988683188916">Thao tác này sẽ xoá cookie và dữ liệu khác của trang web <ph name="WEBSITE"/></translation>
 <translation id="571222594670061844">Các trang web có thể đưa ra lời nhắc đăng nhập qua các dịch vụ định danh.</translation>
+<translation id="5719854774000914513">Trang web có thể yêu cầu kết nối với thiết bị HID</translation>
 <translation id="5740126560802162366">Các trang web có thể lưu dữ liệu trên thiết bị của bạn</translation>
 <translation id="5743425052258407233">Đồng bộ hoá nhật ký trên mọi thiết bị để dễ dàng xem tiếp nội dung bạn đang xem dở</translation>
 <translation id="5749158352074143502">Tiếp tục duyệt xem thẻ này</translation>
@@ -500,6 +505,7 @@
 <translation id="6085954183010297841">Xoá quyền chỉnh sửa tệp? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Khi bạn bật lựa chọn này, các trang web có thể tự động chuyển sang chế độ hình trong hình. Khi bạn tắt lựa chọn này, các trang web không thể tự động chuyển sang chế độ hình trong hình.</translation>
 <translation id="6120483543004435978">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu được biết khi nào bạn đang sử dụng thiết bị. Khi bạn tắt tuỳ chọn này, các trang web sẽ không được biết khi nào bạn đang sử dụng thiết bị.</translation>
+<translation id="5773142757282836623">Ẩn thẻ Nhận đề xuất trong Brave trên các ứng dụng khác</translation>
 <translation id="4852158809106762963">Brave sẽ đề xuất lưu mật khẩu của bạn</translation>
 <translation id="615886654739818377">Không cho phép các trang web quản lý các cửa sổ trên tất cả màn hình của bạn</translation>
 <translation id="6165508094623778733">Tìm hiểu thêm</translation>
@@ -549,7 +555,7 @@
 <translation id="6678072580827808850">Xem lại kết quả Kiểm tra an toàn</translation>
 <translation id="6682057173375416470">Xem các bài viết được đề xuất trên trang Thẻ mới</translation>
 <translation id="6683865262523156564">Trang web này nằm trong một nhóm có thể xem hoạt động của bạn. Nhóm này do <ph name="RWS_OWNER"/> xác định</translation>
-<translation id="6689172468748959065">Ảnh tiểu sử</translation>
+<translation id="6689172468748959065">Ảnh hồ sơ</translation>
 <translation id="6697925417670533197">Hiện đang tải xuống</translation>
 <translation id="6709432001666529933">Hỏi trước khi cho phép các trang web theo dõi tay bạn (khuyên dùng)</translation>
 <translation id="6722828510648505498">Chặn lời nhắc đăng nhập qua dịch vụ định danh</translation>
@@ -571,6 +577,7 @@
 <translation id="6950072572526089586">Trang web bạn truy cập có thể lưu thông tin về những việc bạn đang làm để có thể vận hành như dự kiến, ví dụ: để duy trì trạng thái đăng nhập vào một trang web hoặc lưu các mặt hàng vào giỏ hàng. Thông thường, các trang web lưu thông tin này tạm thời trên thiết bị của bạn.</translation>
 <translation id="6964291282260073066">"WebGPU" đang tắt.</translation>
 <translation id="6965382102122355670">OK</translation>
+<translation id="6972629891077993081">Thiết bị HID</translation>
 <translation id="6980507581230208647">Giao diện màu hoa hồng</translation>
 <translation id="6980861169612950611">Xoá dữ liệu trang web? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Hỗ trợ tiếp cận</translation>
@@ -583,7 +590,6 @@
 <translation id="7053983685419859001">Chặn</translation>
 <translation id="7055552182600664515">Để phát nội dung được bảo vệ bản quyền, các trang web có thể cần dùng một dịch vụ bảo vệ nội dung <ph name="BEGIN_LINK"/>Tìm hiểu thêm<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{Đã chọn 1 mục}other{Đã chọn # mục}}</translation>
-<translation id="708014373017851679">"<ph name="APP_NAME"/>" đã lỗi thời. Vui lòng cập nhật ứng dụng.</translation>
 <translation id="7084115944294706056">Chọn vị trí thanh địa chỉ</translation>
 <translation id="7087918508125750058">Đã chọn <ph name="ITEM_COUNT"/> mục. Bạn có thể sử dụng các tùy chọn ở gần đầu màn hình</translation>
 <translation id="7141896414559753902">Chặn trang web hiển thị cửa sổ bật lên và liên kết chuyển hướng (khuyên dùng)</translation>
@@ -728,6 +734,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="8593422116412089302">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu sử dụng thông tin mà trang web đã lưu về bạn. Khi bạn tắt tuỳ chọn này, các trang web không thể yêu cầu sử dụng thông tin mà trang web đã lưu về bạn.</translation>
 <translation id="8609465669617005112">Di chuyển lên</translation>
 <translation id="8617611086246832542">Khi bạn bật tuỳ chọn này, các trang web sẽ hiển thị ở chế độ xem trên máy tính để bàn. Khi bạn tắt tuỳ chọn này, các trang web sẽ hiển thị ở chế độ xem trên thiết bị di động.</translation>
+<translation id="8625916342247441948">Không cho phép trang web kết nối với các thiết bị HID</translation>
 <translation id="8670078035093027626">Bảng dưới cùng của trình duyệt mặc định đã mở trên toàn màn hình</translation>
 <translation id="8676316391139423634">Khi bạn bật tuỳ chọn này, các trang web có thể yêu cầu theo dõi tay bạn. Khi bạn tắt tuỳ chọn này, các trang web không thể theo dõi tay bạn.</translation>
 <translation id="8676374126336081632">Xóa văn bản nhập</translation>
@@ -779,7 +786,7 @@ Chương trình Bảo vệ nâng cao kiểm soát các chế độ cài đặt s
 <translation id="7359422048569205930">Cho phép Brave hiển thị các thẻ gần đây trong danh sách ứng dụng và kết quả tìm kiếm trên thiết bị. Bạn có thể tắt tính năng này bất cứ lúc nào trong phần cài đặt của Brave.</translation>
 <translation id="9162462602695099906">Đây là trang nguy hiểm</translation>
 <translation id="9182556968660520230">Không cho phép trang web phát nội dung được bảo vệ</translation>
-<translation id="927148002081263046">Chia sẻ địa chỉ liên hệ</translation>
+<translation id="927148002081263046">Chia sẻ thông tin liên hệ</translation>
 <translation id="947156494302904893">Các trang web bạn truy cập có thể xác minh rằng bạn là người thực chứ không phải bot</translation>
 <translation id="959682366969460160">Sắp xếp gọn gàng</translation>
 <translation id="960590623979248167">Hiển thị siêu liên kết</translation>

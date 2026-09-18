@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">As historias principais do día nun feed privado, só para ti.</translation>
 <translation id="3803728444598576153">Activa Brave News e non perdas nunca unha noticia</translation>
 <translation id="7627131190984957214">Brave News permite anuncios privados, anónimos e personalizados no teu dispositivo.</translation>
-<translation id="7897050360583141319">Sigue as túas fontes favoritas nun único feed. Só tes que abrir un separador en Brave, desprazarte cara a abaixo… ¡e nada máis!\nNoticias de Brave mantense por medio da publicidade e amosa anuncios completamente privados e anónimos.</translation>
+<translation id="7897050360583141319">Sigue as túas fontes favoritas nun único feed. Só tes que abrir un separador en Brave, desprazarte cara a abaixo… ¡e nada máis!</translation>
 <translation id="1765217911817124376">Activar Brave News</translation>
 <translation id="8981973962043893066">Busca sitios, temas ou feeds de RSS</translation>
 <translation id="3225021799163709119">Populares</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Envía informes de diagnóstico automaticamente cando falle ou se bloquee o navegador de Brave para que poidamos mellorar a estabilidade dos produtos de Brave.</translation>
 <translation id="7977176350719484850">Est. de datos\naforrados</translation>
 <translation id="9008534313521214777">Est. de tempo\naforrado</translation>
+<translation id="5668852698659986622">Activar anuncios patrocinados</translation>
+<translation id="431194936581466649">Axuda a apoiar a misión de Brave de construír unha web independente e centrada no usuario cos anuncios patrocinados. Medimos o rendemento dos anuncios de forma privada, sen identificarte.</translation>
 <translation id="8347743943525229984">Permitir as enquisas de Brave</translation>
 <translation id="6022939994702081659">Permite que Brave amose ligazóns a enquisas privadas na páxina de novo separador. As enquisas axúdannos a crear mellores funcións e a medir a eficacia das campañas publicitarias baseadas no navegador.</translation>
 <translation id="7746496306508543965">Máis información sobre as enquisas de Brave</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Teño unha frase de recuperación de 12 palabras</translation>
 <translation id="4225265925807365011">Teño unha frase de recuperación de 24 palabras</translation>
 <translation id="3570367516044491911">Establecer como nvegador predeterminado</translation>
-<translation id="6800338374677644736">Establecer como navegador predeterminado</translation>
 <translation id="1545749641540134597">Escanear código QR</translation>
 <translation id="5317781812114905957">Instrucións</translation>
 <translation id="8515319483805157233">Para buscar por código QR, aliña o código QR no centro do marco.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Menú principal</translation>
 <translation id="7002271985859760052">Accións da páxina</translation>
 <translation id="7104487676473617844">Os seguintes elementos só serán visibles no menú cando sexan compatibles coa páxina web aberta.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Os anuncios de Brave están aquí!</translation>
 <translation id="222883304157347087">(este dispositivo)</translation>
 <translation id="4157741509680155021">DISPOSITIVOS DA CADEA DE SINCRONIZACIÓN</translation>
@@ -719,6 +719,8 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Cantidade + Gas</translation>
 <translation id="2186011161688824046">Cantidade + tarifa</translation>
+<translation id="1118876217803190221">Saldo insuficiente</translation>
+<translation id="275990379543116961">Non tes fondos suficientes para gas</translation>
 <translation id="1950052789869821983">Transacción</translation>
 <translation id="2304783958703511257">Configuración avanzada</translation>
 <translation id="4220062530885628403">Nonce</translation>

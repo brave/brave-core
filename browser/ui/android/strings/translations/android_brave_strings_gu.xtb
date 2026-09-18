@@ -110,10 +110,9 @@
 <translation id="4176463684765177261">અક્ષમ કરેલું</translation>
 <translation id="59174027418879706">સક્ષમ</translation>
 <translation id="6920492760024499150">આજની ટોપ સ્ટોરીઝ ખાનગી ફીડમાં, ફક્ત તમારા માટે.</translation>
-<translation id="3803728444598576153">Brave ન્યૂઝ ચાલુ કરો, અને ક્યારેક કોઈ સ્ટોરી ન ચૂકો</translation>
+<translation id="3803728444598576153">Brave ન્યૂઝ ચાલુ કરો અને ક્યારેય કોઈ સ્ટોરી ન ચૂકો</translation>
 <translation id="7627131190984957214">Brave News તમારા ડિવાઇસ પર ખાનગી અને અનામી કરેલ જાહેરાતો દ્વારા જાહેરાત-સમર્થિત છે.</translation>
-<translation id="7897050360583141319">તમારા પ્રિય સ્રોતોને અનુસરો, એક જ ફીડમાં. માત્ર Braveમાં એક ટેબ ખોલો, નીચે સ્ક્રોલ કરો, અને voila!
-Brave News ખાનગી, અનાન્ય મુદાવળો સાથે પોતાને સહાય કરે છે.</translation>
+<translation id="7897050360583141319">તમારા મનપસંદ સ્ત્રોતોનું અનુસરણ કરો, એક જ ફીડમાં. ફક્ત Brave માં ટૅબ ખોલો, સ્ક્રોલ કરો, અને… voila!</translation>
 <translation id="1765217911817124376">Brave ન્યૂઝ ચાલુ કરો</translation>
 <translation id="8981973962043893066">સાઇટ, વિષય, અથવા RSS ફીડ શોધો</translation>
 <translation id="3225021799163709119">લોકપ્રિય</translation>
@@ -191,6 +190,8 @@ Brave News ખાનગી, અનાન્ય મુદાવળો સાથ�
 <translation id="5987838417172370108">Brave બ્રાઉઝર ક્રેશ થાય અથવા જામ થાય ત્યારે Braveની ઉત્પાદન સ્થિરતા સુધારવામાં મદદ કરો.</translation>
 <translation id="7977176350719484850">અંદાજિત બચાવેલ\nડેટા</translation>
 <translation id="9008534313521214777">અંદાજિત બચાવેલ\nસમય</translation>
+<translation id="5668852698659986622">Sponsored Ads સક્ષમ કરો</translation>
+<translation id="431194936581466649">Sponsored Ads સાથે એક સ્વતંત્ર, વપરાશકર્તા-પ્રથમ વેબ બનાવવાના Braveના મિશનને સહાય કરો. અમે તમને ઓળખ્યા વગર, ખાનગી રીતે એડ પ્રદર્શન માપીએ છીએ.</translation>
 <translation id="8347743943525229984">Brave સર્વેને મંજૂરી આપો</translation>
 <translation id="6022939994702081659">Brave સર્વેને નવા ટૅબ પેજમાં પ્રાઇવેટ સર્વેની લિંક દર્શાવવાની મંજૂરી આપો. સર્વે અમને બહેતર ફીચર બનાવવા અને બ્રાઇઝર-આધારિત જાહેરાત પ્રચારોની અસરકારકતા માપવામાં મદદ કરે છે.</translation>
 <translation id="7746496306508543965">Brave સર્વે વિશે વધુ જાણો</translation>
@@ -251,7 +252,6 @@ Brave News ખાનગી, અનાન્ય મુદાવળો સાથ�
 <translation id="6213254277250932867">મારી પાસે 12 શબ્દ Recovery Phrase છે</translation>
 <translation id="4225265925807365011">મારી પાસે 24 શબ્દ Recovery Phrase છે</translation>
 <translation id="3570367516044491911">ડિફૉલ્ટ બ્રાઉઝર તરીકે સેટ કરો</translation>
-<translation id="6800338374677644736">મૂળભૂત browser તરીકે સેટ કરો</translation>
 <translation id="1545749641540134597">QR કોડ સ્કેન કરો</translation>
 <translation id="5317781812114905957">સૂચનાઓ</translation>
 <translation id="8515319483805157233">QR કોડ દ્વારા શોધ માટે, ફ્રેમના કેન્દ્રમાં QR કોડને ઑલાઇન કરો.</translation>
@@ -283,7 +283,6 @@ Brave News ખાનગી, અનાન્ય મુદાવળો સાથ�
 <translation id="5582839680698949063">મુખ્ય મેનુ</translation>
 <translation id="7002271985859760052">પૃષ્ઠ ક્રિયાઓ</translation>
 <translation id="7104487676473617844">નીચેના વસ્તુઓ માત્ર ત્યારે જ મેનુમાં જોવા મળશે જ્યારે હાલની ખુલેલી વેબપૃષ્ઠ વડે તેને સપોર્ટ કરવામાં આવતી હોય.</translation>
-<translation id="4159764849281393303">વેબએપ</translation>
 <translation id="8038539967102225446">Brave જાહેરાતો અહીં છે!</translation>
 <translation id="222883304157347087">(આ ઉપકરણ)</translation>
 <translation id="4157741509680155021">સિંક ચેઈન પર ઉપકરણો</translation>
@@ -726,6 +725,8 @@ Brave News ખાનગી, અનાન્ય મુદાવળો સાથ�
 <translation id="1634828734222219955">કુલ</translation>
 <translation id="7995708795274219641">રકમ + ગેસ</translation>
 <translation id="2186011161688824046">રકમ + ફી</translation>
+<translation id="1118876217803190221">અપર્યાપ્ત બેલેન્સ</translation>
+<translation id="275990379543116961">ગેસ માટે અપર્યાપ્ત ભંડોળ</translation>
 <translation id="1950052789869821983">લેણદેણ</translation>
 <translation id="2304783958703511257">ઉન્નત સેટિંગ્સ</translation>
 <translation id="4220062530885628403">નૉન્સ</translation>

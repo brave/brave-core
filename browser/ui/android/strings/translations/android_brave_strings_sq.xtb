@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">E çaktivizuar</translation>
 <translation id="59174027418879706">E aktivizuar</translation>
 <translation id="6920492760024499150">Historitë kryesore të ditës privatisht, vetëm për ty.</translation>
-<translation id="3803728444598576153">Ndez Lajmet Brave, dhe mos humb asnjë histori</translation>
+<translation id="3803728444598576153">Ndez Lajmet Brave dhe mos humb asnjë histori</translation>
 <translation id="7627131190984957214">Lajmet Brave mundësohen nga reklamat, ku ka private dhe anonime që përputhen me pajisjen tënde.</translation>
-<translation id="7897050360583141319">Ndjek burimet e tua të preferuara në një ushqim të vetëm. Vetëm hap një skedë në Brave, zbrit poshtë dhe... voila!\nLajmet Brave mbështeten me reklama private dhe anonimize.</translation>
+<translation id="7897050360583141319">Ndiq burimet e tua të preferuara në një ushqim të vetëm. Vetëm hap një skedë në Brave, lëviz poshtë, dhe… voila!</translation>
 <translation id="1765217911817124376">Ndez Lajmet Brave</translation>
 <translation id="8981973962043893066">Kërko për sajt, temë, ose ushqim RSS</translation>
 <translation id="3225021799163709119">Popullore</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Ndihmoni në përmirësimin e stabilitetit të produktit Brave duke dërguar automatikisht raporte diagnostike kur Shfletuesi Brave bie ose ngrihet.</translation>
 <translation id="7977176350719484850">Rreth Internet\nI kursyer</translation>
 <translation id="9008534313521214777">Rreth Koh\nE kursyer</translation>
+<translation id="5668852698659986622">Aktivizo Reklamat e Sponsorizuara</translation>
+<translation id="431194936581466649">Ndihmo në mbështetjen e misionit të Brave për ndërtimin e një Ueb-i të pavarur, që i vë përdoruesit të parët, me Reklama të Sponsorizuara. Ne matim performancën e reklamave në mënyrë private, pa të identifikuar ty.</translation>
 <translation id="8347743943525229984">Lejo ankeset e Brave</translation>
 <translation id="6022939994702081659">Lejon Brave të tregojë lidhje për anketa private në faqen e skedës së re. Anketat na ndihmojnë të ndërtojmë funksione më të mira dhe të matim efektivitetin e fushatave reklamuese të bazuara në shfletues.</translation>
 <translation id="7746496306508543965">Mëso më shumë rreth anketave Brave</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Kam një frazë rikuperimi me 12 fjalë</translation>
 <translation id="4225265925807365011">Kam një frazë rikuperimi me 24 fjalë</translation>
 <translation id="3570367516044491911">Vendose shfletues parësor</translation>
-<translation id="6800338374677644736">Vendos si shfletues parësor</translation>
 <translation id="1545749641540134597">Skanoni Kodin QR</translation>
 <translation id="5317781812114905957">Udhëzime</translation>
 <translation id="8515319483805157233">Për të kërkuar me Kodin QR, vendosni Kodin QR në qendër të kornizës.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Menuja kryesore</translation>
 <translation id="7002271985859760052">Veprimet e faqes</translation>
 <translation id="7104487676473617844">Elementet në vijim do të duken në menu vetëm kur mbështeten nga faqja aktuale e hapur.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Reklamat Brave Mbërritën!</translation>
 <translation id="222883304157347087">(kjo pajisje)</translation>
 <translation id="4157741509680155021">PAJISJET NË ZINXHIRIN SINKRON</translation>
@@ -716,6 +716,8 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="1634828734222219955">Gjithsej</translation>
 <translation id="7995708795274219641">Shuma + Gaz</translation>
 <translation id="2186011161688824046">Sasi + tarifë</translation>
+<translation id="1118876217803190221">Balanca e pamjaftueshme</translation>
+<translation id="275990379543116961">Fonde të pamjaftueshme për gaz</translation>
 <translation id="1950052789869821983">Transaksioni</translation>
 <translation id="2304783958703511257">Parametra të përparuara</translation>
 <translation id="4220062530885628403">Nonce</translation>

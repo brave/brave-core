@@ -870,9 +870,11 @@
 <translation id="646023614746251785">Potwierdź zamianę</translation>
 <translation id="6264944956989873014">Potwierdź most</translation>
 <translation id="7067917728851842589">Potwierdź wysyłkę</translation>
+<translation id="2841837950101800123">Dostawca</translation>
 <translation id="1114725160772317155">Status dostawcy</translation>
 <translation id="2351357639951873714">Potwierdź tarczę</translation>
 <translation id="7480044382160806610">Potwierdź usunięcie ochrony</translation>
+<translation id="6830542010524256586">Potwierdź migrację</translation>
 <translation id="8332923694292360653">Wydaj</translation>
 <translation id="3735740477244556633">Sortuj według</translation>
 <translation id="6484605214219822434">Sprawdź przesłanie na inny łańcuch</translation>
@@ -1413,8 +1415,10 @@
 <translation id="5503843345634715425">Zwrócono</translation>
 <translation id="1778601041100951971">Ochrona kwoty <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Ochrona kwoty <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">Migrowanie <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936">Kwota <ph name="AMOUNT"/> została ochroniona</translation>
 <translation id="3860973324426281816">Kwota <ph name="AMOUNT"/> została ochroniona</translation>
+<translation id="7338153249873692854">Kwota <ph name="AMOUNT"/> została zmigrowana</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} oczekująca transakcja.}
       other {{PENDING_TRANSACTIONS} oczekujące transakcje.}
@@ -1853,14 +1857,18 @@
 <translation id="9086302186042011942">Synchronizacja…</translation>
 <translation id="99991973626409495">Sprawdź tarczę</translation>
 <translation id="6779429520470417361">Sprawdź usunięcie ochrony</translation>
+<translation id="7861093868637278059">Przejrzyj migrację</translation>
 <translation id="3114681061018999547">Chronione</translation>
 <translation id="1564172583156967455">Usuwanie ochrony</translation>
+<translation id="7040674372746105444">Migrowanie</translation>
 <translation id="8897189056319316783">Tarcza ZEC</translation>
 <translation id="508249542337194541">Usuń ochronę ZEC</translation>
+<translation id="3242332985109374549">Migruj ZEC</translation>
 <translation id="3382275793825152362">Chroń środki</translation>
 <translation id="617149752238892649">Odłącz środki</translation>
 <translation id="8631765320256788981">Wysyłasz środki z transparentnego konta na swoje chronione konto.</translation>
 <translation id="3860364671495430495">Wysyłasz środki ze swojego chronionego konta na transparentne konto.</translation>
+<translation id="9664108035970394">Wysyłasz środki z chronionego konta typu legacy na swoje chronione konto.</translation>
 <translation id="7144878232160441200">Ponów próbę</translation>
 <translation id="4750109510113597688">Ta transakcja może spowodować naliczenie opłaty za utworzenie konta</translation>
 <translation id="6201709949885884577">Aby ta operacja została wykonana, trzeba podać hasło.</translation>
@@ -2219,7 +2227,7 @@
 <translation id="8151638057146502721">Skonfiguruj</translation>
 <translation id="999273441077650169">Model dynamicznie zmienia się, aby użyć najlepszego do zadania.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Qwen VL 30B opracowanym przez firmę Alibaba Cloud z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. Qwen jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu GLM-5.1 opracowanym przez firmę Zhipu AI z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. GLM-5.1 jest hostowany przez NEAR na podstawie ich własnej, zweryfikowanej infrastruktury prywatności.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
+<translation id="8659225822055186905">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu GLM-5.3 Flash opracowanym przez firmę Zhipu AI z myślą o wydajności i zastosowaniu w wielu różnych przypadkach. GLM-5.3 Flash jest hostowany przez NEAR na podstawie ich własnej, zweryfikowanej infrastruktury prywatności.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Cześć, jestem Leo. Jestem asystentem AI przeglądarki Brave. Działam dzięki modelowi Claude Instant, opracowanemu przez firmę Anthropic do prowadzenia rozmów i przetwarzania tekstu. Claude Instant działa na infrastrukturze Brave i jest przez nas hostowany.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Claude Haiku opracowanym przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Claude Haiku jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Cześć, jestem Leo. Jestem asystentem AI firmy Brave. Opieram się na modelu Claude Sonnet opracowanym przez firmę Anthropic do obsługi zadań konwersacyjnych i przetwarzania tekstu. Claude Sonnet jest hostowany przez Brave za pośrednictwem naszej własnej, bezpiecznej infrastruktury.<ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
@@ -2341,6 +2349,8 @@
 <translation id="4370698775470316661">Ta rozmowa jest za długa i nie może być kontynuowana. Mogą być dostępne inne modele, z którymi Leo jest w stanie zapewnić dokładność przy dłuższych rozmowach.</translation>
 <translation id="4744144453035015075">Wyszukiwanie w Internecie</translation>
 <translation id="8548351747582087191">Wyszukiwanie w Internecie hasła <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4395536726196773278">Wyszukiwanie w otwartych kartach dla „<ph name="QUERY"/>”…</translation>
+<translation id="4724926708866789382">Żadna z otwartych kart nie pasuje do „<ph name="QUERY"/>”.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> więcej…</translation>
 <translation id="8103700533980268469">Zamknij to powiadomienie</translation>
 <translation id="3417835166382867856">Wyszukaj w kartach</translation>
@@ -2388,6 +2398,8 @@
 <translation id="443008484043213881">Narzędzia</translation>
 <translation id="4343623396828510727">Te witryny udostępniają narzędzia, których Leo może użyć do wysyłania danych do i z tej witryny. Nie dołączaj ani nie zatwierdzaj tych narzędzi, jeśli ta rozmowa zawiera dane, których nie chcesz udostępniać tej witrynie.</translation>
 <translation id="5021823940147712387">Usuń narzędzia</translation>
+<translation id="8712279871321308580">Dostępne narzędzia witryny</translation>
+<translation id="3690996226559605619">Dostępne narzędzia (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">Wszystkie subskrypcje są odnawiane automatycznie, ale można je anulować przed odnowieniem.</translation>
 <translation id="5091223967610958">Podziel się z nami nazwą hosta witryny, którą odwiedzasz (<ph name="HOST_NAME"/>), aby pomóc nam ulepszyć Leo.</translation>
 <translation id="8732450785281947197">Narzędzia SI Leo</translation>
@@ -2426,6 +2438,7 @@
 <translation id="6397861830483632092">Otwarte karty…</translation>
 <translation id="802080272588201037">Zakładki…</translation>
 <translation id="2716127283451902393">Historia…</translation>
+<translation id="8888171900079152025">Folder obszaru roboczego</translation>
 <translation id="49269513399674318">Skorzystaj z mikrofonu</translation>
 <translation id="3895031624234442305">Modele niestandardowe</translation>
 <translation id="4572010449071015143">Rozpocznij nową rozmowę</translation>
@@ -2459,8 +2472,12 @@
 <translation id="3397808797783614750">Włączenie AI, która automatycznie przegląda strony w twoim imieniu, może prowadzić do szkodliwych, niezamierzonych konsekwencji dla twojej prywatności, finansów i komunikacji online. <ph name="LINK_BEFORE"/>Dowiedz się więcej<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Ostrzeżenie o bezpieczeństwie</translation>
 <translation id="6077070599873946984">Brave AI potrzebuje twojej zgody na: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI chce wykonać **<ph name="TOOL_NAME"/>** na **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Operacja została zidentyfikowana jako potencjalnie niezgodna z twoim żądaniem:</translation>
+<translation id="5137568953923142260">Zezwalaj</translation>
 <translation id="3927932062596804919">Odmów</translation>
+<translation id="4191349941249805855">Pokaż argumenty narzędzia</translation>
+<translation id="7237059533128264835">Ukryj argumenty narzędzia</translation>
 <translation id="4569155249847375786">Zweryfikowano</translation>
 <translation id="8200772114523450471">Wznów</translation>
 <translation id="7607002721634913082">Wstrzymano</translation>
@@ -2566,7 +2583,7 @@
 <translation id="9173319813356700250">AKTUALNOŚCI</translation>
 <translation id="6543799171249004861">Zdjęcie autorstwa <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Sztuczna inteligencja Leo</translation>
-<translation id="7978582287767542276">Usuń witryny sponsorowane</translation>
+<translation id="7978582287767542276">Usuń reklamy na stronie nowej karty</translation>
 <translation id="466214682712474574">Zaloguj się na swoje konto <ph name="PROVIDER"/>, by wyświetlić saldo</translation>
 <translation id="8332875111286275890">Zaloguj się, by wyświetlić saldo</translation>
 <translation id="5430001801813715388">NAGRODY</translation>
@@ -2578,11 +2595,11 @@
 <translation id="4844370919312937270">Wyświetl widżet wyszukiwania w nowych kartach</translation>
 <translation id="5088374130885640159">Dzięki <ph name="REWARDS_LINK_BEGIN"/>Brave Rewards<ph name="REWARDS_LINK_END"/> możesz zarabiać za oglądanie reklam na stronie nowej karty. <ph name="LEARN_MORE_LINK_BEGIN"/>Dowiedz się więcej<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">Pokaż reklamy na stronie nowej karty</translation>
-<translation id="4983925687993168579">Statystyki Brave</translation>
+<translation id="4983925687993168579">Statystyki</translation>
 <translation id="5009354496127441090">Pokaż popularne strony</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">Witryny sponsorowane pomagają utrzymać Brave za darmo. Jeśli korzystasz z <ph name="SITE_NAME"/>, wspierasz misję Brave. Możesz je wyłączyć w dowolnym momencie. <ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">Witryny sponsorowane pomagają utrzymać Brave za darmo. Jeśli z nich korzystasz, wspierasz misję Brave. <ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Reklamy na stronie nowej karty pomagają utrzymać Brave za darmo. Jeśli korzystasz z <ph name="SITE_NAME"/>, wspierasz misję Brave. Możesz je wyłączyć w dowolnym momencie. <ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Reklamy na stronie nowej karty pomagają utrzymać Brave za darmo. Jeśli z nich korzystasz, wspierasz misję Brave. <ph name="LINK_BEGIN"/>Dowiedz się więcej<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">STATYSTYKI</translation>
 <translation id="5236080651083907980">Szyfrowane połączenia wideo z Brave Talk</translation>
 <translation id="2671474274417808910">Połączenia stawiające na prywatność</translation>
@@ -2742,6 +2759,7 @@
 <translation id="701087249209337256">Zabierz ze sobą zawartość starej przeglądarki</translation>
 <translation id="142389341645668510">Dostosuj Brave</translation>
 <translation id="112005628409144325">Spersonalizuj swoje doświadczenie przeglądania dzięki preferowanemu układowi kart i trybom kolorów.</translation>
+<translation id="4428982101636000516">Wyszukaj w Brave lub wpisz adres URL</translation>
 <translation id="7376367936988732808">Układ kart</translation>
 <translation id="4734965478015604180">Poziomy</translation>
 <translation id="490375751687810070">Pionowy</translation>
@@ -2802,11 +2820,13 @@
 <translation id="8416695199565594645">Zapewnia, że ruch jest kierowany przez dedykowane serwery proxy, aby umożliwić dostęp do powszechnie ograniczonych treści/witryn lub usług stron trzecich.</translation>
 <translation id="434523916398030617">Skontaktuj się z pomocą techniczną</translation>
 <translation id="1116694919640316211">Informacje</translation>
-<translation id="8998067240267949220">Dodatkowa prywatność i bezpieczeństwo w Internecie</translation>
-<translation id="8666111144393179185">Ukrywanie adresu IP i zmiana lokalizacji</translation>
-<translation id="8881997962573369342">Setki serwerów na całym świecie</translation>
+<translation id="8998067240267949220">Uzyskaj dostęp do ulubionych treści bez ograniczeń</translation>
+<translation id="8666111144393179185">Setki serwerów na całym świecie</translation>
+<translation id="8881997962573369342">Łatwo ukryj swój adres IP i zmień lokalizację</translation>
 <translation id="1513801084412881009">Superszybkie połączenia</translation>
-<translation id="6434859410115379558">Ochrona nawet 10 urządzeń w jednym planie</translation>
+<translation id="6434859410115379558">Brak rejestrowania, niezależnie audytowane</translation>
+<translation id="4886431881864826294">Jedna subskrypcja obejmuje 10 urządzeń na komputerach, Androidzie i iOS</translation>
+<translation id="3649011006120934011">Bez zobowiązań, możliwość anulowania w dowolnym momencie</translation>
 <translation id="1693568075761612600">Nie udało się utworzyć zgłoszenia do działu wsparcia. Sprawdź swoje połączenie.</translation>
 <translation id="1407707415819020643">Wybierz serwer</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> miast(-a) - <ph name="SERVER_COUNT"/> serwery(-ów)</translation>

@@ -867,9 +867,11 @@
 <translation id="646023614746251785">スワップを確認</translation>
 <translation id="6264944956989873014">ブリッジを確認</translation>
 <translation id="7067917728851842589">送信を確認</translation>
+<translation id="2841837950101800123">提供元</translation>
 <translation id="1114725160772317155">提供元ステータス</translation>
 <translation id="2351357639951873714">Shields を確認</translation>
 <translation id="7480044382160806610">シールド解除を確認</translation>
+<translation id="6830542010524256586">移行を確認</translation>
 <translation id="8332923694292360653">支払う</translation>
 <translation id="3735740477244556633">並べ替え</translation>
 <translation id="6484605214219822434">ブリッジをレビュー</translation>
@@ -1408,8 +1410,10 @@
 <translation id="5503843345634715425">払い戻し済み</translation>
 <translation id="1778601041100951971"><ph name="AMOUNT"/> をシールド中</translation>
 <translation id="6439110433198887239"><ph name="AMOUNT"/> をシールド解除中</translation>
+<translation id="6022412719565214018"><ph name="AMOUNT"/> を移行中</translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> がシールドされました</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> がシールド解除されました</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> が移行されました</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} 件以上のトランザクションが保留中です。}
       other {{PENDING_TRANSACTIONS} 件のトランザクションが保留中です。}
@@ -1848,14 +1852,18 @@
 <translation id="9086302186042011942">同期中</translation>
 <translation id="99991973626409495">シールドをレビュー</translation>
 <translation id="6779429520470417361">シールド解除をレビュー</translation>
+<translation id="7861093868637278059">移行を確認</translation>
 <translation id="3114681061018999547">シールド中</translation>
 <translation id="1564172583156967455">シールド解除中</translation>
+<translation id="7040674372746105444">移行中</translation>
 <translation id="8897189056319316783">ZECをシールド</translation>
 <translation id="508249542337194541">ZECをシールド解除</translation>
+<translation id="3242332985109374549">ZEC を移行</translation>
 <translation id="3382275793825152362">資金をシールド</translation>
 <translation id="617149752238892649">資金をシールド解除</translation>
 <translation id="8631765320256788981">透明なアカウントからシールドされたアカウントに資金を送金します。</translation>
 <translation id="3860364671495430495">シールドされたアカウントから透明なアカウントへ送金しています。</translation>
+<translation id="9664108035970394">シールドされたレガシーアカウントからシールドされたアカウントに資金を送金します。</translation>
 <translation id="7144878232160441200">再試行</translation>
 <translation id="4750109510113597688">この取引には口座開設手数料が含まれる場合があります</translation>
 <translation id="6201709949885884577">このアクションを実行するにはパスワードが必要です。</translation>
@@ -2212,7 +2220,7 @@
 <translation id="8151638057146502721">設定</translation>
 <translation id="999273441077650169">モデルはタスクに最適なものを動的に変更します。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Qwen VL 30Bを搭載しています。このモデルはAlibaba Cloudによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。QwenはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、GLM-5.1を搭載しています。このモデルはZhipu AIによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。GLM-5.1はNEARの検証可能なプライベートインフラストラクチャを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
+<translation id="8659225822055186905">こんにちは、Leoです。私はBraveのAIアシスタントで、GLM-5.3 Flashを搭載しています。このモデルはZhipu AIによって作成されたもので、パフォーマンスが高く、多くのユースケースに適用可能です。GLM-5.3 FlashはNEARの検証可能なプライベートインフラストラクチャを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Instantを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude InstantはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Haikuを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude HaikuはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">こんにちは、Leoです。私はBraveにホストされているAIアシスタントで、Claude Sonnetを搭載しています。このモデルはAnthropicによって作成されたもので、会話・テキスト処理タスクをパワーアップさせます。Claude SonnetはBrave独自の安全なインフラを通じてホストされています。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
@@ -2334,6 +2342,8 @@
 <translation id="4370698775470316661">この会話は長すぎるため、続行できません。Leoがより長い会話の精度を維持できるよう、他のモデルをご利用いただくことをおすすめします。</translation>
 <translation id="4744144453035015075">Webを検索しています</translation>
 <translation id="8548351747582087191"><ph name="SEARCH_TERMS"/>についてWebを検索しています。</translation>
+<translation id="4395536726196773278">「<ph name="QUERY"/>」で開いているタブを検索中…</translation>
+<translation id="4724926708866789382">「<ph name="QUERY"/>」に一致する開いているタブはありません。</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/>もっと見る</translation>
 <translation id="8103700533980268469">この通知を閉じる</translation>
 <translation id="3417835166382867856">検索タブ</translation>
@@ -2381,6 +2391,8 @@
 <translation id="443008484043213881">ツール</translation>
 <translation id="4343623396828510727">これらのサイトは、Leoがこのサイトとの間でデータを送受信するために使用できるツールを公開しています。この会話に、このサイトに見られたくないデータが含まれている場合は、これらのツールを添付または承認しないでください。</translation>
 <translation id="5021823940147712387">ツールを削除</translation>
+<translation id="8712279871321308580">利用可能なウェブサイトツール</translation>
+<translation id="3690996226559605619">利用可能なツール（<ph name="TOOL_COUNT"/>）</translation>
 <translation id="318819763888864209">すべてのサブスクリプションは自動更新されますが、更新前にいつでもキャンセルすることができます。</translation>
 <translation id="5091223967610958">開いているページのホスト名 (<ph name="HOST_NAME"/>) をシェアして、Leoの改善にご協力ください。</translation>
 <translation id="8732450785281947197">LeoのAIツール</translation>
@@ -2419,6 +2431,7 @@
 <translation id="6397861830483632092">開いているタブ…</translation>
 <translation id="802080272588201037">ブックマーク…</translation>
 <translation id="2716127283451902393">履歴…</translation>
+<translation id="8888171900079152025">ワークスペースフォルダ</translation>
 <translation id="49269513399674318">マイクを使用</translation>
 <translation id="3895031624234442305">カスタムモデル</translation>
 <translation id="4572010449071015143">新しい会話を開始</translation>
@@ -2452,8 +2465,12 @@
 <translation id="3397808797783614750">AIによる自動ブラウジングを有効にすると、プライバシー、財務、またはオンライン通信に対して有害な意図しない影響を及ぼす可能性があります。<ph name="LINK_BEFORE"/>詳細はこちら<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">セキュリティ警告</translation>
 <translation id="6077070599873946984">Brave AIは、次の操作について許可を求めています: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AIが **<ph name="SITE_ORIGIN"/>** で **<ph name="TOOL_NAME"/>** を実行しようとしています</translation>
 <translation id="4163837693685963037">この操作は、リクエストと一致していない可能性があると検出されました:</translation>
+<translation id="5137568953923142260">許可</translation>
 <translation id="3927932062596804919">拒否</translation>
+<translation id="4191349941249805855">ツールの引数を表示</translation>
+<translation id="7237059533128264835">ツールの引数を非表示</translation>
 <translation id="4569155249847375786">認証済み</translation>
 <translation id="8200772114523450471">再開</translation>
 <translation id="7607002721634913082">一時停止</translation>
@@ -2559,7 +2576,7 @@
 <translation id="9173319813356700250">ニュース</translation>
 <translation id="6543799171249004861">Photo by <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="7978582287767542276">スポンサー付きサイトを削除</translation>
+<translation id="7978582287767542276">新しいタブページの広告を削除</translation>
 <translation id="466214682712474574"><ph name="PROVIDER"/>アカウントにログインして残高を確認</translation>
 <translation id="8332875111286275890">残高を確認するにはログインしてください</translation>
 <translation id="5430001801813715388">リワード</translation>
@@ -2571,11 +2588,11 @@
 <translation id="4844370919312937270">新しいタブページに検索ウィジェットを表示</translation>
 <translation id="5088374130885640159"><ph name="REWARDS_LINK_BEGIN"/>Brave Rewards<ph name="REWARDS_LINK_END"/> を使用すると、新しいタブページの広告を表示して収益を得ることができます。<ph name="LEARN_MORE_LINK_BEGIN"/>詳細はこちら<ph name="LEARN_MORE_LINK_END"/>。</translation>
 <translation id="4100520468072294616">新しいタブページの広告を表示</translation>
-<translation id="4983925687993168579">Brave統計データ</translation>
+<translation id="4983925687993168579">統計</translation>
 <translation id="5009354496127441090">トップサイトを表示</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">スポンサー付きサイトはBraveを無料に保つのに役立ちます。<ph name="SITE_NAME"/>を使用すると、Braveのミッションをサポートすることになります。いつでも無効にできます。<ph name="LINK_BEGIN"/>詳細はこちら<ph name="LINK_END"/>。</translation>
-<translation id="5810241219736298115">スポンサー付きサイトはBraveを無料に保つのに役立ちます。それらを使用すると、Braveのミッションをサポートすることになります。<ph name="LINK_BEGIN"/>詳細はこちら<ph name="LINK_END"/>。</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">新しいタブページの広告はBraveを無料に保つのに役立ちます。<ph name="SITE_NAME"/>を使用すると、Braveのミッションをサポートすることになります。いつでも無効にできます。<ph name="LINK_BEGIN"/>詳細はこちら<ph name="LINK_END"/>。</translation>
+<translation id="5810241219736298115">新しいタブページの広告はBraveを無料に保つのに役立ちます。それらを使用すると、Braveのミッションをサポートすることになります。<ph name="LINK_BEGIN"/>詳細はこちら<ph name="LINK_END"/>。</translation>
 <translation id="4784802981241664605">STATS</translation>
 <translation id="5236080651083907980">Brave Talkで暗号化されたビデオ通話ができます</translation>
 <translation id="2671474274417808910">プライバシーファーストの通話</translation>
@@ -2735,6 +2752,7 @@
 <translation id="701087249209337256">古いブラウザのコンテンツを引き継ぐ</translation>
 <translation id="142389341645668510">Braveをカスタマイズする</translation>
 <translation id="112005628409144325">お好みのタブレイアウトとカラーモードで、ブラウジング体験をパーソナライズしましょう。</translation>
+<translation id="4428982101636000516">Braveで検索するか、URLを入力</translation>
 <translation id="7376367936988732808">タブレイアウト</translation>
 <translation id="4734965478015604180">水平</translation>
 <translation id="490375751687810070">垂直</translation>
@@ -2795,11 +2813,13 @@
 <translation id="8416695199565594645">トラフィックを専用のプロキシサーバーを中継して送信することで、一般に制限のかかっているコンテンツやサイト、サードパーティサービスへのアクセスを可能にします。</translation>
 <translation id="434523916398030617">テクニカルサポートに連絡する</translation>
 <translation id="1116694919640316211">企業情報</translation>
-<translation id="8998067240267949220">高度なプライバシーとオンラインセキュリティ</translation>
-<translation id="8666111144393179185">IPの非表示・位置情報の変更</translation>
-<translation id="8881997962573369342">世界中に数百台のサーバーを配置</translation>
+<translation id="8998067240267949220">お気に入りのコンテンツに制限なくアクセス</translation>
+<translation id="8666111144393179185">世界中に数百台のサーバーを配置</translation>
+<translation id="8881997962573369342">IPを簡単に非表示にし、位置情報を変更</translation>
 <translation id="1513801084412881009">超高速の接続スピード</translation>
-<translation id="6434859410115379558">1つのプランで最大10台のデバイスを保護</translation>
+<translation id="6434859410115379558">ログなし、独立した監査済み</translation>
+<translation id="4886431881864826294">1つのサブスクリプションでデスクトップ、Android、iOSの10台のデバイスに対応</translation>
+<translation id="3649011006120934011">契約の縛りなし、いつでもキャンセル可能</translation>
 <translation id="1693568075761612600">サポートチケットを作成できませんでした。接続をご確認ください。</translation>
 <translation id="1407707415819020643">サーバーの選択</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/>都市 - サーバー<ph name="SERVER_COUNT"/>台</translation>

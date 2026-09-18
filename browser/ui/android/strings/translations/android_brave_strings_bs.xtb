@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Današnje najpopularnije priče u potpuno privatnom sažetku sadržaja samo za vas.</translation>
 <translation id="3803728444598576153">Uključi značajku Novosti Brave i nikada ne propusti priču</translation>
 <translation id="7627131190984957214">Uslugom Novosti Brave podržavaju se oglasi s privatnim i anonimiziranim oglasima prilagođenih vašem uređaju.</translation>
-<translation id="7897050360583141319">Pratite svoje omiljene izvore, u jednom sažetku sadržaja. Samo otvorite karticu u pregledniku Brave, pomaknite prema dolje i…voila!\nUsluga Brave News podržava se oglasima s privatnim, anonimnim oglasima.</translation>
+<translation id="7897050360583141319">Pratite svoje omiljene izvore, u jednom sažetku sadržaja. Samo otvorite karticu u pregledniku Brave, pomaknite prema dolje i… voila!</translation>
 <translation id="1765217911817124376">Uključi Novosti Brave</translation>
 <translation id="8981973962043893066">Pretraži mrežna mjesta, teme ili sažetke RSS sadržaja</translation>
 <translation id="3225021799163709119">Popularno</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Pomozite unaprijediti\u2019s stabilnost proizvoda marke Brave automatskim slanjem dijagnostičkih izvješća kada se preglednik Brave sruši ili zamrzne.</translation>
 <translation id="7977176350719484850">Procjena smanjenog broja\npodataka</translation>
 <translation id="9008534313521214777">Procjena ušteđenog\nvremena</translation>
+<translation id="5668852698659986622">Omogući sponzorirane oglase</translation>
+<translation id="431194936581466649">Pomozite podržati Braveovu misiju izgradnje nezavisnog interneta koji stavlja korisnika na prvo mjesto pomoću sponzoriranih oglasa. Uspješnost oglasa mjerimo privatno, bez identificiranja vas.</translation>
 <translation id="8347743943525229984">Omogući Braveove ankete</translation>
 <translation id="6022939994702081659">Omogućuje Braveu da pokaže poveznice na anonimne ankete u novoj kartici. Ankete nam pomažu da izgradimo bolje funkcionalnosti i mjerimo učinkovitost oglašivačkih kampanja u pregledniku.</translation>
 <translation id="7746496306508543965">Doznajte više o Braveovim anketama</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Imam rečenicu za oporavak od 12 riječi</translation>
 <translation id="4225265925807365011">Imam rečenicu za oporavak od 24 riječi</translation>
 <translation id="3570367516044491911">Postavi kao zadani preglednik</translation>
-<translation id="6800338374677644736">Postavi kao zadani preglednik</translation>
 <translation id="1545749641540134597">Skeniraj kôd QR</translation>
 <translation id="5317781812114905957">Upute</translation>
 <translation id="8515319483805157233">Za pretraživanje po kôdu QR postavite kôd QR u središte okvira.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Glavni izbornik</translation>
 <translation id="7002271985859760052">Radnje stranice</translation>
 <translation id="7104487676473617844">Sljedeće stavke bit će vidljive u izborniku samo kada ih podržava trenutno otvorena web-stranica.</translation>
-<translation id="4159764849281393303">Web-aplikacija</translation>
 <translation id="8038539967102225446">Oglasi su Brave ovdje!</translation>
 <translation id="222883304157347087">(ovaj uređaj)</translation>
 <translation id="4157741509680155021">UREĐAJI U LANCU ZA SINKRONIZIRANJE</translation>
@@ -725,6 +725,8 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="1634828734222219955">Ukupno</translation>
 <translation id="7995708795274219641">Iznos i gorivo</translation>
 <translation id="2186011161688824046">Iznos + naknada</translation>
+<translation id="1118876217803190221">Nedovoljno raspoloživo stanje</translation>
+<translation id="275990379543116961">Nedovoljno sredstava za gorivo</translation>
 <translation id="1950052789869821983">Transakcija</translation>
 <translation id="2304783958703511257">Napredne postavke</translation>
 <translation id="4220062530885628403">Broj transakcija s iste adrese</translation>

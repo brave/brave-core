@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Dezactivat</translation>
 <translation id="59174027418879706">Activat</translation>
 <translation id="6920492760024499150">Principalele informații ale zilei într-un flux privat pentru dvs.</translation>
-<translation id="3803728444598576153">Activați Știrile Brave și nu ratați noutățile</translation>
+<translation id="3803728444598576153">Activează Brave News și nu rata noutățile</translation>
 <translation id="7627131190984957214">Știrile Brave sunt susținute prin anunțuri furnizate în mod confidențial și anonim pe dispozitivul dvs.</translation>
-<translation id="7897050360583141319">Urmăriți-vă sursele preferate, într-un singur flux. Deschideți o filă în Brave, derulați în jos și… voila!\nȘtirile Brave este susținut de reclame private, anonime.</translation>
+<translation id="7897050360583141319">Urmăriți-vă sursele preferate, într-un singur flux. Deschideți o filă în Brave, derulați în jos și… voila!</translation>
 <translation id="1765217911817124376">Activați știrile Brave</translation>
 <translation id="8981973962043893066">Căutați un site, un subiect sau un flux RSS</translation>
 <translation id="3225021799163709119">Popular</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Contribuiți la îmbunătățirea stabilității Brave prin trimiterea automată de rapoarte de diagnosticare când apar erori ale browserului Brave sau când acesta se blochează.</translation>
 <translation id="7977176350719484850">Date est.\neconomisite</translation>
 <translation id="9008534313521214777">Timp\neconomisit estimat</translation>
+<translation id="5668852698659986622">Activează Reclame sponsorizate</translation>
+<translation id="431194936581466649">Ajutați la susținerea misiunii Brave de a construi un Web independent, centrat pe utilizator, cu Reclame sponsorizate. Măsurăm performanța reclamelor în mod privat, fără a vă identifica.</translation>
 <translation id="8347743943525229984">Permite sondaje Brave</translation>
 <translation id="6022939994702081659">Permite Brave să afișeze linkuri către sondaje private în pagina noii file. Sondajele ne ajută să creăm funcții mai bune și să măsurăm eficiența campaniilor publicitare bazate pe browser.</translation>
 <translation id="7746496306508543965">Află mai multe despre Brave Rewards</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Am o frază de recuperare din 12 cuvinte</translation>
 <translation id="4225265925807365011">Am o frază de recuperare de 24 de cuvinte</translation>
 <translation id="3570367516044491911">Setați ca browser implicit</translation>
-<translation id="6800338374677644736">Setat ca browser implicit</translation>
 <translation id="1545749641540134597">Scanați codul QR</translation>
 <translation id="5317781812114905957">Instrucțiuni</translation>
 <translation id="8515319483805157233">Pentru a căuta cu ajutorul Codului QR, poziționați codul QR în centrul cadrului.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Meniul principal</translation>
 <translation id="7002271985859760052">Acțiuni pentru pagină</translation>
 <translation id="7104487676473617844">Următoarele elemente vor fi vizibile în meniu doar când sunt acceptate de pagina web deschisă.</translation>
-<translation id="4159764849281393303">Aplicație web</translation>
 <translation id="8038539967102225446">Reclamele Brave sunt aici!</translation>
 <translation id="222883304157347087">(acest dispozitiv)</translation>
 <translation id="4157741509680155021">DISPOZITIVE PE LANȚUL DE SINCRONIZARE</translation>
@@ -723,6 +723,8 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Suma + Gas</translation>
 <translation id="2186011161688824046">Sumă + tarif</translation>
+<translation id="1118876217803190221">Sold insuficient</translation>
+<translation id="275990379543116961">Fonduri insuficiente pentru gas</translation>
 <translation id="1950052789869821983">Tranzacție</translation>
 <translation id="2304783958703511257">Setări avansate</translation>
 <translation id="4220062530885628403">Nonce</translation>

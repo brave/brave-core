@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Imezimwa</translation>
 <translation id="59174027418879706">Imewezeshwa</translation>
 <translation id="6920492760024499150">Matukio makuu ya leo katika shughuli za faragha, kwa ajili yako tu.</translation>
-<translation id="3803728444598576153">Washa Habari za Brave, na usiwahi kukosa tukio</translation>
+<translation id="3803728444598576153">Washa Habari za Brave na usiwahi kukosa tukio</translation>
 <translation id="7627131190984957214">Huduma ya Taarifa za Brave hufadhiliwa na matangazo kwa matangazo ya faragha na yasiyokutambulisha yanayolinganishwa na kifaa chako.</translation>
-<translation id="7897050360583141319">Fuata vyanzo unavyovipenda, kwa mlisho mmoja. Fungua tu kichupo kwenye Brave, telezesha chini, na… umefika!\nHabari za Brave hufadhiliwa na matangazo kwa matangazo ya faragha, ambayo hayabainishi utambulisho.</translation>
+<translation id="7897050360583141319">Fuata vyanzo unavyovipenda kwa mlisho mmoja. Fungua tu kichupo kwenye Brave, telezesha chini, na… umefika!</translation>
 <translation id="1765217911817124376">Washa Taarifa za Brave</translation>
 <translation id="8981973962043893066">Tafuta tovuti, mada, au mpasho wa RSS</translation>
 <translation id="3225021799163709119">Maarufu</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Saidia kuimarisha uthabiti wa bidhaa ya Brave\u2019s kwa kutuma ripoti za uchunguzi kiotomatiki Kivinjari cha Brave kinapoacha kufanya kazi au kukwama.</translation>
 <translation id="7977176350719484850">Data\nIliyookolewa</translation>
 <translation id="9008534313521214777">Saa za Mashariki\nImehifadhiwa</translation>
+<translation id="5668852698659986622">Washa Matangazo Yaliyofadhiliwa</translation>
+<translation id="431194936581466649">Saidia dhamira ya Brave ya kujenga Wavuti huru inayoweka mtumiaji kwanza kwa Matangazo Yaliyofadhiliwa. Tunapima utendaji wa matangazo kwa faragha, bila kukutambua.</translation>
 <translation id="8347743943525229984">Ruhusu tafiti za Brave</translation>
 <translation id="6022939994702081659">Inaruhusu Brave kuonyesha viungo vya tafiti za faragha kwenye ukurasa mpya wa kichupo. Tafiti zinatusaidia kujenga vipengele bora na kupima ufanisi wa kampeni za matangazo kwenye kivinjari.</translation>
 <translation id="7746496306508543965">Jifunze zaidi kuhusu tafiti za Brave</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Nina kaulisiri ya maneno 12 ya kurejesha ufikiaji</translation>
 <translation id="4225265925807365011">Nina kaulisiri ya maneno 24 ya kurejesha ufikiaji</translation>
 <translation id="3570367516044491911">Weka kiwe kivinjari chaguo msingi</translation>
-<translation id="6800338374677644736">Weka kuwa Kivinjari Chaguo Msingi</translation>
 <translation id="1545749641540134597">Kagua Msimbo wa QR</translation>
 <translation id="5317781812114905957">Maagizo</translation>
 <translation id="8515319483805157233">Ili kutafuta kwa Msimbo wa QR, weka Msimbo wa QR katikati ya fremu.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Menyu kuu</translation>
 <translation id="7002271985859760052">Vitendo vya ukurasa</translation>
 <translation id="7104487676473617844">Vipengele vifuatavyo vitaonekana kwenye menyu tu pale vinapowezeshwa na ukurasa wa wavuti uliopo.</translation>
-<translation id="4159764849281393303">Programu ya Wavuti</translation>
 <translation id="8038539967102225446">Matangazo ya Brave sasa yanatumika!</translation>
 <translation id="222883304157347087">(kifaa hiki)</translation>
 <translation id="4157741509680155021">VIFAA KWENYE MFUMO WA USAWAZISHAJI</translation>
@@ -720,6 +720,8 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="1634828734222219955">Jumla</translation>
 <translation id="7995708795274219641">Kiwango + Gesi</translation>
 <translation id="2186011161688824046">Kiasi + ada</translation>
+<translation id="1118876217803190221">Salio halitoshi</translation>
+<translation id="275990379543116961">Fedha za gesi hazitoshi</translation>
 <translation id="1950052789869821983">Muamala</translation>
 <translation id="2304783958703511257">Mipangilio Mahiri</translation>
 <translation id="4220062530885628403">Nonsi</translation>
