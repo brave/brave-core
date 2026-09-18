@@ -106,7 +106,8 @@ BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
       std::make_unique<DirectFeedFetcherDelegateImpl>(
           host_content_settings_map),
       std::move(delegate),
-      brave_stats::IsFirstRun(g_browser_process->local_state()));
+      brave_stats::IsFirstRun(g_browser_process->local_state()),
+      brave_stats::GetFirstRunTime(g_browser_process->local_state()));
 }
 
 bool BraveNewsControllerFactory::ServiceIsNULLWhileTesting() const {
