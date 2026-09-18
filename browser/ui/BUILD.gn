@@ -171,6 +171,10 @@ source_set("ui") {
     "webui/untrusted_sanitized_image_source.h",
   ]
 
+  if (!is_android) {
+    deps += [ "//chrome/browser/ui:singleton_tabs" ]
+  }
+
   if (enable_brave_wallet) {
     deps += [
       "//brave/browser/ui/webui/brave_wallet/line_chart",
@@ -513,6 +517,7 @@ source_set("ui") {
       "//chrome/browser/ui:chrome_pages",
       "//chrome/browser/ui:layout_constants",
       "//chrome/browser/ui:session_crashed_bubble",
+      "//chrome/browser/ui:singleton_tabs",
       "//chrome/browser/ui:tab_modal_confirm_dialog",
       "//chrome/browser/ui:url_identity",
       "//chrome/browser/ui/browser_web_contents_delegate",
@@ -1242,6 +1247,7 @@ source_set("ui") {
       "//brave/components/sidebar/browser",
       "//chrome/app:generated_resources",
       "//chrome/browser/ui:browser_window_header",
+      "//chrome/browser/ui:singleton_tabs",
       "//chrome/browser/ui/views",
       "//components/favicon_base",
     ]
@@ -1502,6 +1508,7 @@ source_set("ui") {
       "//brave/components/playlist/content/browser",
       "//brave/components/playlist/content/browser/resources:generated_resources",
       "//chrome/browser/picture_in_picture",
+      "//chrome/browser/ui:singleton_tabs",
       "//chrome/browser/ui/actions",
       "//chrome/browser/ui/exclusive_access",
       "//chrome/browser/ui/page_action",
