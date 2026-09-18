@@ -5,23 +5,23 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 3.0% flake rate over 30 days per LUCI Analysis (649 passed, 0 failed, 20 flaky).
+# 2.9% flake rate over 30 days per LUCI Analysis (608 passed, 0 failed, 18 flaky).
 -CastMediaNotificationItemTest.MediaPositionUpdate
 
-# 1.2% flake rate over 30 days per LUCI Analysis (661 passed, 0 failed, 8 flaky).
+# 2.8% flake rate over 30 days per LUCI Analysis (171 passed, 5 failed, 0 flaky).
+-ChromeWebUIDialogTest.AutoResizeCapsRendererMaxToWorkArea
+
+# 1.3% flake rate over 30 days per LUCI Analysis (619 passed, 0 failed, 8 flaky).
 -IndigoServiceTest.LoadConfig
 
-# 1.2% flake rate over 30 days per LUCI Analysis (661 passed, 0 failed, 8 flaky).
+# 1.1% flake rate over 30 days per LUCI Analysis (620 passed, 0 failed, 7 flaky).
 -IndigoServiceTest.LoadConfigFromCommandLine
 
-# 11.1% flake rate over 30 days per LUCI Analysis (595 passed, 0 failed, 74 flaky).
+# 10.8% flake rate over 30 days per LUCI Analysis (559 passed, 0 failed, 68 flaky).
 -PasswordChangePageStabilityWaiterTest.DisconnectDuringNavigation
 
-# 2.4% flake rate over 30 days per LUCI Analysis (653 passed, 0 failed, 16 flaky).
--SafetyHubServiceTest.UpdateOnBackgroundThread
-
-# 2.8% flake rate over 30 days per LUCI Analysis (616 passed, 0 failed, 18 flaky).
+# 2.7% flake rate over 30 days per LUCI Analysis (610 passed, 0 failed, 17 flaky).
 -ShortcutsVersioningMacTest.RebuildShortcutsOnOsVersionChange
 
-# 1.3% flake rate over 30 days per LUCI Analysis (660 passed, 0 failed, 9 flaky).
+# 1.3% flake rate over 30 days per LUCI Analysis (619 passed, 0 failed, 8 flaky).
 -ShortcutsVersioningMacTest.RebuildShortcutsOnVersionChange
