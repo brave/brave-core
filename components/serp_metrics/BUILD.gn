@@ -19,6 +19,7 @@ static_library("serp_metrics") {
     "serp_metrics_migration.cc",
     "serp_metrics_migration.h",
     "serp_metrics_service.cc",
+    "shared_tab_helper/shared_tab_helper.cc",
   ]
 
   public_deps = [
