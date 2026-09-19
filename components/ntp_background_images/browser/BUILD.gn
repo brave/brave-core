@@ -123,6 +123,8 @@ static_library("browser") {
       "wallpapers/ntp_solid_color_wallpaper_provider.h",
       "wallpapers/ntp_use_your_own_wallpaper_provider.cc",
       "wallpapers/ntp_use_your_own_wallpaper_provider.h",
+      "wallpapers/ntp_wallpaper_provider_factory.cc",
+      "wallpapers/ntp_wallpaper_provider_factory.h",
     ]
   }
 }
@@ -185,6 +187,7 @@ source_set("unit_tests") {
       "wallpapers/ntp_gradient_wallpaper_provider_unittest.cc",
       "wallpapers/ntp_solid_color_wallpaper_provider_unittest.cc",
       "wallpapers/ntp_use_your_own_wallpaper_provider_unittest.cc",
+      "wallpapers/ntp_wallpaper_provider_factory_unittest.cc",
     ]
   }
 
