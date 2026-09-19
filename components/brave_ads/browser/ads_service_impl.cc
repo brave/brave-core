@@ -734,9 +734,8 @@ void AdsServiceImpl::InitializeBraveRewardsPrefChangeRegistrar() {
 
   pref_change_registrar_.Add(
       brave_rewards::prefs::kEnabled,
-      base::BindRepeating(&AdsServiceImpl::NotifyPrefChanged,
-                          base::Unretained(this),
-                          brave_rewards::prefs::kEnabled));
+      base::BindRepeating(&AdsServiceImpl::OnAdsPrefChanged,
+                          base::Unretained(this)));
 }
 
 void AdsServiceImpl::InitializeSubdivisionTargetingPrefChangeRegistrar() {
@@ -782,11 +781,18 @@ void AdsServiceImpl::InitializeSponsoredAdsPrefChangeRegistrar() {
 }
 
 void AdsServiceImpl::OnAdsPrefChanged(const std::string& path) {
-  if (path == prefs::kSponsoredEnabled && !IsSponsoredAdsEnabled()) {
-    // Clear ads data now that sponsored ads are disabled. Posted because
-    // `ClearData` can synchronously reach `ClearAdsPrefs`, which mutates
-    // `pref_change_registrar_` and must not do so re-entrantly from within
-    // this pref's own change notification.
+  // Preserve ads data for Brave Rewards users when Sponsored Ads is disabled;
+  // only clear it when Sponsored Ads is disabled for users who have not
+  // joined Brave Rewards, or when the user disables Brave Rewards.
+  const bool should_clear_ads_data =
+      (path == prefs::kSponsoredEnabled && !IsSponsoredAdsEnabled() &&
+       !UserHasJoinedBraveRewards()) ||
+      (path == brave_rewards::prefs::kEnabled && !UserHasJoinedBraveRewards());
+
+  if (should_clear_ads_data) {
+    // Clear ads data now. Posted because `ClearData` can synchronously reach
+    // `ClearAdsPrefs`, which mutates `pref_change_registrar_` and must not do
+    // so re-entrantly from within this pref's own change notification.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
         base::BindOnce(&AdsServiceImpl::MaybeClearDataForDisabledSponsoredAds,
