@@ -6,7 +6,9 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_PAGE_ACTION_WAYBACK_MACHINE_BUBBLE_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_PAGE_ACTION_WAYBACK_MACHINE_BUBBLE_VIEW_H_
 
+#include "base/callback_list.h"
 #include "base/memory/raw_ptr.h"
+#include "brave/components/brave_wayback_machine/wayback_state.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_bubble_delegate_view.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/views/bubble/bubble_anchor.h"
@@ -18,6 +20,11 @@ class ActionItem;
 namespace content {
 class WebContents;
 }  // namespace content
+
+namespace views {
+class Label;
+class View;
+}  // namespace views
 
 // Offers to look up the current page in the Internet Archive after a failed
 // navigation. Derives from LocationBarBubbleDelegateView so that it can be
@@ -33,10 +40,14 @@ class WaybackMachineBubbleView : public LocationBarBubbleDelegateView {
   ~WaybackMachineBubbleView() override;
 
  private:
-  void OnAccepted();
+  bool OnAccepted();
   void OnDontAskAgain();
+  void UpdateFromState(WaybackState state);
 
   raw_ptr<actions::ActionItem> item_;
+  raw_ptr<views::Label> body_ = nullptr;
+  raw_ptr<views::View> dont_ask_again_ = nullptr;
+  base::CallbackListSubscription wayback_state_changed_subscription_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_PAGE_ACTION_WAYBACK_MACHINE_BUBBLE_VIEW_H_

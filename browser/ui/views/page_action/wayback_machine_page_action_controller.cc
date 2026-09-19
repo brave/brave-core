@@ -10,7 +10,6 @@
 
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
@@ -109,7 +108,7 @@ WaybackMachinePageActionController::~WaybackMachinePageActionController() {
     bubble_tracker_.view()->GetWidget()->CloseWithReason(
         views::Widget::ClosedReason::kUnspecified);
   }
-  DetachFromTabHelper(tab_->GetContents());
+  DetachFromTabHelper();
 }
 
 void WaybackMachinePageActionController::Init() {
@@ -124,11 +123,7 @@ void WaybackMachinePageActionController::Init() {
           [](WaybackMachinePageActionController* self, tabs::TabInterface*,
              content::WebContents* old_contents,
              content::WebContents* new_contents) {
-            // TabInterface::GetContents() still returns |old_contents| at
-            // this point, so both sides of the swap have to be driven by the
-            // arguments. Detaching matters: the helper holds a single callback
-            // and CHECKs that it was cleared before it's destroyed.
-            self->DetachFromTabHelper(old_contents);
+            self->DetachFromTabHelper();
             self->AttachToTabHelper(new_contents);
             self->UpdatePageAction(new_contents);
           },
@@ -220,20 +215,14 @@ void WaybackMachinePageActionController::AttachToTabHelper(
   if (!tab_helper) {
     return;
   }
-  tab_helper->SetWaybackStateChangedCallback(base::BindRepeating(
-      &WaybackMachinePageActionController::OnWaybackStateChanged,
-      weak_factory_.GetWeakPtr()));
+  wayback_state_changed_subscription_ =
+      tab_helper->RegisterWaybackStateChangedCallback(base::BindRepeating(
+          &WaybackMachinePageActionController::OnWaybackStateChanged,
+          base::Unretained(this)));
 }
 
-void WaybackMachinePageActionController::DetachFromTabHelper(
-    content::WebContents* contents) {
-  if (!contents) {
-    return;
-  }
-  if (auto* tab_helper =
-          BraveWaybackMachineTabHelper::FromWebContents(contents)) {
-    tab_helper->SetWaybackStateChangedCallback(base::NullCallback());
-  }
+void WaybackMachinePageActionController::DetachFromTabHelper() {
+  wayback_state_changed_subscription_ = {};
 }
 
 void WaybackMachinePageActionController::UpdatePageAction(
