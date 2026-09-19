@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "编辑快速搜索引擎";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "如果您遇到崩溃或死机，Brave 可以自动发送匿名诊断报告以修复该问题。您随时可以稍后在设置中关闭此功能。";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "启用自动崩溃报告";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "启用";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "现在不";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "启用下拉刷新";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "預設圖片";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "赞助图片 & 视频";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "贊助圖片";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "感谢您为 Brave 和 BAT 社区提供支持！";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "重置后，您当前的 Brave 奖励个人资料将被删除，Brave 奖励也将不再启用。";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "重设 Brave 奖励";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "重置";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "启用 Brave Rewards，观看 Brave 广告，支持 Brave 和 BAT 社区。";
 
@@ -2469,6 +2487,12 @@
 
 /* Title for the quality settings view */
 "settings.qualitySettings" = "质量设置";
+
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "如果遇到系统崩溃或冻结，请发送匿名诊断报告。";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "发送崩溃报告";
 
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "这种私人 ping 可以让 Brave 估算活跃用户数量。";
@@ -2948,7 +2972,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "裝置上限";
 
 /* New sync code button title */
-"sync.newSyncCode" = "啟動新的同步鏈接";
+"sync.newSyncCode" = "新建同步链";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "請檢查您的網絡連接並重試。";
@@ -3118,6 +3142,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "私人浏览";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "隐私";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "无痕标签页设置";
 
@@ -3142,11 +3169,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "粉碎标签页";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld 个标签";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld 个标签";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "查看历史记录";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "历史记录";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "查看同步标签页";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "同步";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "开启或关闭隐私模式";

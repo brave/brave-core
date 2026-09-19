@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld Palvelin";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Suojaa jokainen sovellus Brave VPN:llä. Suojaa jopa 10 laitetta yhdellä paketilla.";
+"vpn.settingHeaderBody" = "Suoratoista sisältöäsi omalla tavallasi. Suojaa jokainen sovellus 10 laitteella yhdellä tilauksella.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Ota yhteyttä tekniseen tukeen";

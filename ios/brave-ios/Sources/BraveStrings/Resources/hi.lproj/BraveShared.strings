@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "क्विक-सर्च इंजन में बदलाव करें";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "अगर आपको क्रैश या फ्रीज़ का अनुभव होता है, तो Brave समस्या को ठीक करने के लिए स्वचालित रूप से अनाम डायग्नोस्टिक रिपोर्ट भेज सकता है। आप बाद में सेटिंग में इसे कभी भी बंद कर सकते हैं।";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "स्वचालित क्रैश रिपोर्ट सक्षम करें";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "सक्षम करें";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "अभी नहीं";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "रिफ़्रेश करने के लिए खींचने की सुविधा चालू करें";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "डिफ़ॉल्ट इमेज";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "स्पॉन्सर की गईं इमेज & वीडियो";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "स्पॉन्सर की गईं इमेज";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Brave और BAT कम्युनिटी को सहायता देने के लिए शुक्रिया!";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "रीसेट करने पर, आपकी वर्तमान Brave Rewards प्रोफ़ाइल हटा दी जाएगी, और Brave Rewards अब सक्षम नहीं होगा।";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Brave रिवार्ड्स को रीसेट करें";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "रीसेट करें";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Brave Rewards चालू करके और Brave Ads देखकर, Brave और BAT कम्युनिटी की सहायता करें।";
 
@@ -2469,6 +2487,12 @@
 
 /* Title for the quality settings view */
 "settings.qualitySettings" = "क्वॉलिटी की सेटिंग";
+
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "अचानक बंद होने या अटकने पर अनाम डायग्नोस्टिक रिपोर्ट भेजें।";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "क्रैश रिपोर्ट भेजें";
 
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "यह प्राइवेट पिंग, Brave को सक्रिय उपयोगकर्ताओं का अनुमान लगाने देता है।";
@@ -2948,7 +2972,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "डिवाइस की सीमा";
 
 /* New sync code button title */
-"sync.newSyncCode" = "नयी सिंक चेन की शुरुआत करें";
+"sync.newSyncCode" = "नई सिंक चेन";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "अपने इंटरनेट कनेक्शन की जाँच करके फिर से कोशिश करें।";
@@ -3118,6 +3142,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "प्राइवेट ब्राउज़िंग";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "निजी";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "प्राइवेट टैब की सेटिंग";
 
@@ -3142,11 +3169,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "टैब्स श्रेड करें";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld टैब्स";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld टैब्स";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "हिस्ट्री देखें";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "इतिहास";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "सिंक किए गए टैब्स देखें";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "सिंक";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "प्राइवेट मोड को चालू या बंद करें";

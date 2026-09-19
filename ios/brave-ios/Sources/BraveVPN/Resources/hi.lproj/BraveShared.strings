@@ -67,6 +67,9 @@
 /* It is used in context: 'Powered by BRAND_NAME' */
 "vpn.poweredBy" = "द्वारा संचालित";
 
+/* A VoiceOver label that describes the Guardian VPN image. Guardian is a company name */
+"vpn.poweredByGuardianAccessibilityLabel" = "Guardian द्वारा संचालित";
+
 /* Name of automatic vpn region selector */
 "vpn.regionPickerAutomaticModeCellText" = "स्वचालित";
 

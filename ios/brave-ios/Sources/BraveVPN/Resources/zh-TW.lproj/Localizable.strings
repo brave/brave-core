@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld 部伺服器";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "使用 Brave VPN 保護每個應用程式。單一計畫可保護多達 10 部裝置。";
+"vpn.settingHeaderBody" = "以您的方式串流您的內容。使用 1 個訂閱在 10 部裝置上保護每個應用程式。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "與技術支援人員聯絡";

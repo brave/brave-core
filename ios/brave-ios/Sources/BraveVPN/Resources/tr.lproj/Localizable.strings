@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld Sunucu";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "Brave VPN ile tüm uygulamaları koruyun. Tek bir planla 10 cihaza kadar koruma.";
+"vpn.settingHeaderBody" = "İçeriğinizi kendi tarzınızda yayınlayın. 1 abonelikle 10 cihazdaki her uygulamayı koruyun.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "Teknik Desteğe Başvurun";
