@@ -145,6 +145,12 @@ def update_pnpm_allow_builds(*package_refs):
         f.write(content)
 
 
+def allow_builds_entry(repo_id, sha):
+    """Returns the allowBuilds line for a git-hosted package revision."""
+    return (f"  '@{repo_id}@https://codeload.github.com/{repo_id}"
+            f"/tar.gz/{sha}': true\n")
+
+
 def install_dependencies(package_manager, new_sha, new_sf_symbols_sha):
     """Installs bumped Nala dependencies with npm or pnpm."""
     cmd = get_package_manager_cmd(package_manager)
@@ -152,8 +158,29 @@ def install_dependencies(package_manager, new_sha, new_sf_symbols_sha):
                     (SF_SYMBOLS_REPO_ID, new_sf_symbols_sha)]
     packages = to_npm_packages(*package_refs)
     if package_manager == 'pnpm':
+        outgoing_refs = [(REPO_ID, get_nala_current_sha()),
+                         (SF_SYMBOLS_REPO_ID, get_sf_symbols_current_sha())]
         update_pnpm_allow_builds(*package_refs)
+        with open(PNPM_WORKSPACE, 'r', encoding='utf-8') as f:
+            bumped = f.read()
+
+        # pnpm rebuilds the revisions being replaced as well as the incoming
+        # ones, so both have to be allowlisted while it installs. Listing only
+        # the incoming ones fails the install with
+        # ERR_PNPM_GIT_DEP_PREPARE_NOT_ALLOWED for the outgoing revision.
+        outgoing_entries = ''.join(
+            allow_builds_entry(repo_id, sha) for repo_id, sha in outgoing_refs
+            if (repo_id, sha) not in package_refs)
+        with open(PNPM_WORKSPACE, 'w', encoding='utf-8', newline='\n') as f:
+            f.write(
+                bumped.replace('allowBuilds:\n',
+                               'allowBuilds:\n' + outgoing_entries))
+
         subprocess.run([cmd, 'add', *packages], check=True)
+
+        # Drop the outgoing entries now that nothing needs them.
+        with open(PNPM_WORKSPACE, 'w', encoding='utf-8', newline='\n') as f:
+            f.write(bumped)
     else:
         subprocess.run([cmd, 'install', *packages], check=True)
 
