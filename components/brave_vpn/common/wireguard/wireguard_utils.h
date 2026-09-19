@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 #include <tuple>
+#include <vector>
 
 #include "base/functional/callback.h"
 
@@ -25,9 +26,12 @@ std::optional<std::string> CreateWireguardConfig(
     const std::string& client_private_key,
     const std::string& server_public_key,
     const std::string& vpn_server_hostname,
-    const std::string& mapped_ipv4_address);
+    const std::string& mapped_ipv4_address,
+    bool allow_lan_traffic);
 
 WireguardKeyPair GenerateNewX25519Keypair();
+
+std::vector<std::string> ParseAllowedIPs(const std::string& config);
 
 std::optional<std::string> ValidateKey(const std::string& key,
                                        const std::string& field_name);
