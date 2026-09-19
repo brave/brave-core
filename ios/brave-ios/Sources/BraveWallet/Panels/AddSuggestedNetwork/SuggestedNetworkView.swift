@@ -26,7 +26,6 @@ struct SuggestedNetworkView: View {
     }
   }
   var cryptoStore: CryptoStore
-  @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
 
   @State private var isPresentingNetworkDetails: NetworkModel?
@@ -46,13 +45,11 @@ struct SuggestedNetworkView: View {
   init(
     mode: Mode,
     cryptoStore: CryptoStore,
-    keyringStore: KeyringStore,
     networkStore: NetworkStore,
     onDismiss: @escaping () -> Void
   ) {
     self.mode = mode
     self.cryptoStore = cryptoStore
-    self.keyringStore = keyringStore
     self.networkStore = networkStore
     self.onDismiss = onDismiss
   }
@@ -123,33 +120,6 @@ struct SuggestedNetworkView: View {
 
   private var headerView: some View {
     VStack {
-      Menu {
-        Text(keyringStore.selectedAccount.address.zwspOutput)
-        Button {
-          UIPasteboard.general.string = keyringStore.selectedAccount.address
-        } label: {
-          Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "leo.copy.plain-text")
-            .font(.body)
-        }
-      } label: {
-        HStack(spacing: 8) {
-          Spacer()
-          if !keyringStore.selectedAccount.address.isEmpty {
-            Text(keyringStore.selectedAccount.address.truncatedAddress)
-              .fontWeight(.semibold)
-          }
-          Blockie(address: keyringStore.selectedAccount.blockieSeed)
-            .frame(
-              width: min(blockieSize, maxBlockieSize),
-              height: min(blockieSize, maxBlockieSize)
-            )
-            .aspectRatio(1, contentMode: .fit)
-        }
-      }
-      .accessibilityLabel(Strings.Wallet.selectedAccountAccessibilityLabel)
-      .accessibilityValue(
-        "\(keyringStore.selectedAccount.name), \(keyringStore.selectedAccount.address.truncatedAddress)"
-      )
       VStack(spacing: 8) {
         faviconAndOrigin
         Text(headerTitle)
@@ -375,7 +345,6 @@ struct SuggestedNetworkView_Previews: PreviewProvider {
           )
         ),
         cryptoStore: .previewStore,
-        keyringStore: .previewStoreWithWalletCreated,
         networkStore: .previewStore,
         onDismiss: {}
       )
@@ -391,7 +360,6 @@ struct SuggestedNetworkView_Previews: PreviewProvider {
           )
         ),
         cryptoStore: .previewStore,
-        keyringStore: .previewStoreWithWalletCreated,
         networkStore: .previewStore,
         onDismiss: {}
       )
