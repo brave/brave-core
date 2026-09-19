@@ -387,6 +387,16 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/download/DownloadMessageUiControllerImpl"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/autofill/AutofillClientProviderUtils"));
+        Assert.assertTrue(classExists("org/chromium/components/webauthn/GmsCoreUtils"));
+        Assert.assertTrue(classExists("org/chromium/components/webauthn/BraveGmsCoreUtils"));
+        Assert.assertTrue(
+                classExists("org/chromium/components/webauthn/cred_man/CredManSupportProvider"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/components/webauthn/cred_man/BraveCredManSupportProvider"));
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/components/webauthn/cred_man/BraveCredManSupportProviderDummySuper")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/autofill/settings/options/AutofillOptionsFragment")); // presubmit: ignore-long-line
@@ -744,6 +754,18 @@ public class BytecodeTest {
                         MethodModifier.STATIC,
                         int.class,
                         PrefService.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/webauthn/GmsCoreUtils",
+                        "isWebauthnSupported",
+                        MethodModifier.STATIC,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/components/webauthn/cred_man/CredManSupportProvider",
+                        "hasOldGmsVersion",
+                        MethodModifier.STATIC,
+                        boolean.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/autofill/settings/options/AutofillOptionsFragment", // presubmit: ignore-long-line
