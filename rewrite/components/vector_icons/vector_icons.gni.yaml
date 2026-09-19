@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Feed the Brave Leo icon overrides to the aggregate_vector_icons action.
+
+      The template declares its target through `target_name`, so the action
+      is named by what declares it rather than by a literal name.
+    add_literal_to_list:
+      target: target_name
+      type: action
+      list_name: inputs
+      literal: '["//brave/components/vector_icons/leo_overrides.json"]'

@@ -1,10 +1,29 @@
 diff --git a/components/sync/service/BUILD.gn b/components/sync/service/BUILD.gn
-index 60d8dc0f7d68a33f78fe9b4045a083021c485eec..86cc52c08638dc3234713491352b0ba79a7053ae 100644
+index 60d8dc0f7d68a33f78fe9b4045a083021c485eec..e58939b95caeadd2022a725d9ac1878f54e0f868 100644
 --- a/components/sync/service/BUILD.gn
 +++ b/components/sync/service/BUILD.gn
-@@ -143,4 +143,5 @@ static_library("service") {
-   }
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-   configs += [ "//build/config/compiler:wexit_time_destructors" ]
-+  import("//brave/components/sync/service/sources.gni") sources += brave_components_sync_driver_sources deps += brave_components_sync_driver_deps
- }
++import("//brave/components/sync/service/sources.gni")
++
+ static_library("service") {
+   sources = [
+     "active_devices_provider.h",
+@@ -94,6 +96,7 @@ static_library("service") {
+     "trusted_vault_synthetic_field_trial.h",
+     "type_status_map_for_debugging.h",
+   ]
++  sources += brave_components_sync_driver_sources
+ 
+   public_deps = [
+     "//base",
+@@ -129,6 +132,7 @@ static_library("service") {
+     "//services/network/public/cpp",
+     "//ui/base",
+   ]
++  deps += brave_components_sync_driver_deps
+ 
+   if (is_android) {
+     sources += [
