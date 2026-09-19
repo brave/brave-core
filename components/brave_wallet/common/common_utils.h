@@ -29,6 +29,7 @@ bool IsBitcoinLedgerEnabled();
 bool IsZCashEnabled();
 bool IsPolkadotEnabled();
 bool IsPolkadotAssetDiscoveryEnabled();
+bool IsPolkadotDAppSupportEnabled();
 bool IsCardanoEnabled();
 bool IsCardanoDAppSupportEnabled();
 bool IsZCashShieldedTransactionsEnabled();
