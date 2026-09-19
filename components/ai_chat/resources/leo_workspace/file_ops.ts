@@ -85,12 +85,20 @@ export async function isDirectory(
   }
 }
 
+// Returns the file itself (a Blob) rather than decoded text, so that callers
+// can handle arbitrary binary content.
+export async function readFile(
+  root: FileSystemDirectoryHandle,
+  rel: string,
+): Promise<File> {
+  return (await getFile(root, rel)).getFile()
+}
+
 async function readText(
   root: FileSystemDirectoryHandle,
   rel: string,
 ): Promise<string> {
-  const fh = await getFile(root, rel)
-  return (await fh.getFile()).text()
+  return (await readFile(root, rel)).text()
 }
 
 async function writeText(
