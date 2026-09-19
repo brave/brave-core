@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Sửa công cụ tìm kiếm nhanh";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Nếu bạn gặp sự cố hoặc treo máy, Brave có thể tự động gửi các báo cáo chẩn đoán ẩn danh để khắc phục vấn đề. Bạn luôn có thể tắt tính năng này trong Cài đặt sau này.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Bật báo cáo sự cố tự động";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Bật";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Không phải Bây giờ";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Bật kéo để làm mới";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Ảnh mặc định";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Hình ảnh & Video được tài trợ";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Hình ảnh được tài trợ";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Cảm ơn bạn vì đã góp phần hỗ trợ Brave và cộng đồng BAT!";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Bằng cách đặt lại, hồ sơ Phần thưởng Brave hiện tại của bạn sẽ bị xóa và Phần thưởng Brave sẽ không còn được bật nữa.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Đặt lại Phần thưởng Brave";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Đặt lại";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Góp phần hỗ trợ Brave và cộng đồng BAT bằng cách bật Phần thưởng Brave và xem Quảng cáo Brave.";
 
@@ -2469,6 +2487,12 @@
 
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Cài đặt chất lượng";
+
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Gửi báo cáo chẩn đoán ẩn danh nếu bạn gặp sự cố hoặc đóng băng.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Gửi báo cáo sự cố";
 
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Ping riêng tư này cho phép Brave ước tính người dùng đang hoạt động.";
@@ -2954,7 +2978,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Giới hạn số thiết bị";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Bắt đầu Chuỗi đồng bộ hóa mới";
+"sync.newSyncCode" = "Chuỗi đồng bộ mới";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Kiểm tra kết nối internet của bạn và thử lại.";
@@ -3124,6 +3148,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Duyệt riêng tư";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Riêng tư";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Cài đặt thẻ riêng tư";
 
@@ -3148,11 +3175,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Xóa dữ liệu thẻ";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld thẻ";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld thẻ";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Xem lịch sử";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Lịch sử";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Xem thẻ được đồng bộ";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Đồng bộ hóa";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Bật hoặc tắt chế độ riêng tư";

@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "שרת %@";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "להגן על כל אפליקציה עם Brave VPN. הגנה על עד 10 מכשירים עם תכנית אחת.";
+"vpn.settingHeaderBody" = "שדרו את התוכן שלכם, בדרך שלכם. הגנו על כל אפליקציה ב-10 מכשירים באמצעות מנוי אחד.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "צור קשר עם התמיכה הטכנית";
