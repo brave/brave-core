@@ -20,6 +20,22 @@ export const style = scoped.css`
     flex-direction: column;
   }
 
+  .label .subtext {
+    font: ${font.small.regular};
+    color: ${color.text.secondary};
+
+    a {
+      color: inherit;
+    }
+  }
+
+  .brave-backgrounds-description {
+    margin: 0;
+    padding: ${spacing['2Xl']} ${spacing['2Xl']} 0;
+    font: ${font.small.regular};
+    color: ${color.text.secondary};
+  }
+
   .background-options {
     padding: ${spacing['2Xl']};
     display: grid;
@@ -38,9 +54,20 @@ export const style = scoped.css`
     width: 100%;
     height: auto;
     aspect-ratio: 4 / 3;
+    opacity: 1;
+    filter: grayscale(0);
+    transition:
+      opacity 0.2s ease,
+      filter 0.2s ease,
+      box-shadow 0.2s ease;
 
     &.selected {
       box-shadow: ${effect.elevation['01']};
+    }
+
+    &.inactive {
+      opacity: 0.5;
+      filter: grayscale(1);
     }
   }
 
@@ -57,14 +84,15 @@ export const style = scoped.css`
     }
 
     &:hover,
-    &:focus-within {
-      .remove-image {
+    &:focus-within,
+    &.disabled {
+      .overlay-button {
         visibility: visible;
       }
     }
   }
 
-  .remove-image {
+  .overlay-button {
     --leo-icon-color: ${color.icon.default};
     --leo-icon-size: ${icon.m};
 
@@ -79,6 +107,10 @@ export const style = scoped.css`
     background-color: ${color.white};
     border-radius: ${radius.full};
     visibility: hidden;
+
+    &:disabled {
+      opacity: 0.5;
+    }
   }
 
   .upload {

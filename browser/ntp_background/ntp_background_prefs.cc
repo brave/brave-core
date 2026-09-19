@@ -67,6 +67,7 @@ void NTPBackgroundPrefs::RegisterPref(
   registry->RegisterDictionaryPref(kPrefName, std::move(dict));
 
   registry->RegisterListPref(kCustomImageListPrefName);
+  registry->RegisterListPref(kDisabledBraveImageListPrefName);
 }
 
 void NTPBackgroundPrefs::MigrateOldPref() {
@@ -151,6 +152,36 @@ void NTPBackgroundPrefs::RemoveCustomImageFromList(
 
 std::vector<std::string> NTPBackgroundPrefs::GetCustomImageList() const {
   const auto& list = service_->GetList(kCustomImageListPrefName);
+  std::vector<std::string> result;
+  for (const auto& item : list) {
+    result.push_back(item.GetString());
+  }
+
+  return result;
+}
+
+void NTPBackgroundPrefs::AddDisabledBraveImage(const std::string& file_name) {
+  ScopedListPrefUpdate update(service_, kDisabledBraveImageListPrefName);
+  for (const auto& item : update.Get()) {
+    if (item.is_string() && item.GetString() == file_name) {
+      return;
+    }
+  }
+  update->Append(file_name);
+}
+
+void NTPBackgroundPrefs::RemoveDisabledBraveImage(
+    const std::string& file_name) {
+  ScopedListPrefUpdate update(service_, kDisabledBraveImageListPrefName);
+  auto to_remove = std::ranges::remove_if(
+      update.Get(), [&file_name](const base::Value& value) {
+        return value.is_string() && value.GetString() == file_name;
+      });
+  update->erase(to_remove.begin(), to_remove.end());
+}
+
+std::vector<std::string> NTPBackgroundPrefs::GetDisabledBraveImageList() const {
+  const auto& list = service_->GetList(kDisabledBraveImageListPrefName);
   std::vector<std::string> result;
   for (const auto& item : list) {
     result.push_back(item.GetString());
