@@ -21,10 +21,10 @@
 #include "brave/components/sidebar/common/features.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
@@ -55,8 +55,9 @@ std::vector<int> GetAllExistingTabIndexForHost(TabStripModel* tab_strip_model,
 
 }  // namespace
 
-SidebarController::SidebarController(Browser* browser, Profile* profile)
-    : tab_strip_model_(browser->tab_strip_model()),
+SidebarController::SidebarController(BrowserWindowInterface* browser,
+                                     Profile* profile)
+    : tab_strip_model_(browser->GetTabStripModel()),
       profile_(profile),
       browser_(browser),
       sidebar_model_(new SidebarModel(profile_)) {

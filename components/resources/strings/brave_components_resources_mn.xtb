@@ -864,9 +864,11 @@
 <translation id="646023614746251785">Солилцоог баталгаажуулах</translation>
 <translation id="6264944956989873014">Хоёр сүлжээг холбохыг баталгаажуулах</translation>
 <translation id="7067917728851842589">Илгээхийг баталгаажуулах</translation>
+<translation id="2841837950101800123">Нийлүүлэгч</translation>
 <translation id="1114725160772317155">Нийлүүлэгчийн статус</translation>
 <translation id="2351357639951873714">Хамгаалалтыг баталгаажуулах</translation>
 <translation id="7480044382160806610">Бамбай хамгаалалт болиулахыг баталгаажуулах</translation>
+<translation id="6830542010524256586">Шилжүүлэлт баталгаажуулах</translation>
 <translation id="8332923694292360653">Зарцуулах</translation>
 <translation id="3735740477244556633">Эрэмбэлэх</translation>
 <translation id="6484605214219822434">Гүүрийг хянах</translation>
@@ -1405,8 +1407,10 @@
 <translation id="5503843345634715425">Буцаан өгөгдсөн</translation>
 <translation id="1778601041100951971"><ph name="AMOUNT"/>-г хамгаалж байна</translation>
 <translation id="6439110433198887239"><ph name="AMOUNT"/>-г хамгаалагдаагүй болгох гэж байна</translation>
+<translation id="6022412719565214018"><ph name="AMOUNT"/> шилжүүлж байна</translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> хамгаалагдсан</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> хамгаалагдаагүй болсон</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> шилжүүлэгдсэн</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} гүйлгээ хүлээгдэж байна.}
       other {{PENDING_TRANSACTIONS} гүйлгээ хүлээгдэж байна.}
@@ -1845,14 +1849,18 @@
 <translation id="9086302186042011942">Синк хийж байна</translation>
 <translation id="99991973626409495">Хамгаалалтын тойм</translation>
 <translation id="6779429520470417361">Бамбай хамгаалалт болиулахыг хянана уу</translation>
+<translation id="7861093868637278059">Шилжүүлэлтийг хянах</translation>
 <translation id="3114681061018999547">Хамгаалж байна</translation>
 <translation id="1564172583156967455">Бамбай хамгаалалт цуцлагдаж байна</translation>
+<translation id="7040674372746105444">Шилжүүлж байна</translation>
 <translation id="8897189056319316783">ZEC-н хамгаалалт</translation>
 <translation id="508249542337194541">ZEC-г хамгаалагдаагүй болгох</translation>
+<translation id="3242332985109374549">ZEC шилжүүлэх</translation>
 <translation id="3382275793825152362">Санхүүг хамгаалах</translation>
 <translation id="617149752238892649">Санхүүгээ шалгалтгүй болгох</translation>
 <translation id="8631765320256788981">Таны ил тод данснаас хамгаалагдсан данс руу санхүү шилжүүлж байна.</translation>
 <translation id="3860364671495430495">Та хамгаалагдсан бүртгэлээс ил тод бүртгэл рүү санхүү шилжүүлж байна.</translation>
+<translation id="9664108035970394">Та хамгаалагдсан хуучин данснаасаа хамгаалагдсан данс руу санхүү шилжүүлж байна.</translation>
 <translation id="7144878232160441200">Дахин оролдох</translation>
 <translation id="4750109510113597688">Энэ гүйлгээ нь бүртгэл үүсгэх хураамжийг агуулж болно.</translation>
 <translation id="6201709949885884577">Энэ үйлдлийг гүйцэтгэхийн тулд нууц үг шаардлагатай.</translation>
@@ -2209,7 +2217,7 @@
 <translation id="8151638057146502721">Тохируулах</translation>
 <translation id="999273441077650169">Ажлын даалгаварт хамгийн сайныг ашиглах зорилгоор загвар хурдацтай өөрчлөгдөнө.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Сайн байна уу, би Leo. Би Brave-ийх нэгэн хиймэл оюун ухааны туслах. Намайг Alibaba Cloud-оор боловсруулсан, олон хэрэглээнд тохиромжтой, өндөр гүйцэтгэлийн Qwen VL 30B загвар ажиллуулдаг. Qwen нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Сайн байна уу, би Leo. Би Brave-ийх нэгэн хиймэл оюун ухааны туслах. Намайг GLM-5.1-аар боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй GLM-5.1 загвар ажиллуулдаг. GLM-5.1 нь NEAR-ийн баталгаат, хувийн дэд бүтцэд байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Сайн байна уу, би Leo. Би Brave-ийх нэгэн хиймэл оюун ухааны туслах. Намайг GLM-5.3 Flash-аар боловсруулсан, олон төрлийн хэрэглээнд тохиромжтой, өндөр гүйцэтгэлтэй GLM-5.3 Flash загвар ажиллуулдаг. GLM-5.3 Flash нь NEAR-ийн баталгаат, хувийн дэд бүтцэд байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Сайн байна уу, би Лео. Би Brave-ийн хиймэл оюун ухаанд суурилсан туслах. Намайг Anthropic компаниас бүтээсэн Claude Instant загвар дэмждэг бөгөөд энэ загварыг Brave өөрийн тохирсон аюулгүй дэд бүтцээр хост хийдэг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй мэдээлэл<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Anthropic-оор боловсруулсан, харилцан ярилцах болон текст боловсруулалтын үүргийг гүйцэтгэх Claude Haiku загвар ажиллуулдаг. Claude Haiku нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Сайн байна уу, би Leo байна. Би Brave-ийх нэгэн хиймэл оюун ухаан туслах. Намайг Anthropic-оор боловсруулсан, харилцан ярилцах болон текст боловсруулалтын үүргийг гүйцэтгэх Claude Sonnet загвар ажиллуулдаг. Claude Sonnet нь бидний өөрийн баталгаат дэд бүтцээр Brave-д байрлуулсан байдаг.<ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
@@ -2331,6 +2339,8 @@
 <translation id="4370698775470316661">Энэ чат хэт урт байгаа тул үргэлжлүүлэх боломжгүй. Удаан хугацааны ярианд Leo-н нарийвчлалыг хадгалах боломжтой бусад загварууд байж болно.</translation>
 <translation id="4744144453035015075">Интернэтээс хайж байна</translation>
 <translation id="8548351747582087191">Интернэтээс <ph name="SEARCH_TERMS"/>-г хайж байна.</translation>
+<translation id="4395536726196773278">Таны нээлттэй табуудаас "<ph name="QUERY"/>"-г хайж байна…</translation>
+<translation id="4724926708866789382">"<ph name="QUERY"/>"-д тохирох нээлттэй таб алга.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> илүү...</translation>
 <translation id="8103700533980268469">Энэ мэдэгдлийг хаах</translation>
 <translation id="3417835166382867856">Табуудыг хайх</translation>
@@ -2378,6 +2388,8 @@
 <translation id="443008484043213881">Хэрэгслүүд</translation>
 <translation id="4343623396828510727">Эдгээр сайтууд нь Leo-д энэ сайт руу болон энэ сайтаас өгөгдөл илгээхэд ашиглаж болох хэрэгслүүдийг задалдаг. Хэрэв энэ яриа нь энэ сайтад харагдахыг хүсэхгүй байгаа өгөгдөл агуулж байвал эдгээр хэрэгслүүдийг хавсаргаж эсвэл зөвшөөрч болохгүй.</translation>
 <translation id="5021823940147712387">Хэрэгслүүдийг устгах</translation>
+<translation id="8712279871321308580">Боломжит вэбсайтын хэрэгслүүд</translation>
+<translation id="3690996226559605619">Боломжит хэрэгслүүд (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">Бүх захиалга автоматаар сунгагддаг ч  сунгагдахаас өмнө хэзээ ч цуцлах боломжтой.</translation>
 <translation id="5091223967610958">Та үзэж буй хуудсынхаа нэрийг (<ph name="HOST_NAME"/>) хуваалцаж, Леог илүү сайжруулахад тусал.</translation>
 <translation id="8732450785281947197">Лео AI хэрэгслүүд</translation>
@@ -2416,6 +2428,7 @@
 <translation id="6397861830483632092">Нээлттэй табуудыг нээх…</translation>
 <translation id="802080272588201037">Хадгалсан хуудсууд…</translation>
 <translation id="2716127283451902393">Түүх…</translation>
+<translation id="8888171900079152025">Ажлын талбарын хавтас</translation>
 <translation id="49269513399674318">Микрофон ашиглах</translation>
 <translation id="3895031624234442305">Тохируулсан загварууд</translation>
 <translation id="4572010449071015143">Шинэ яриа эхлүүлэх</translation>
@@ -2449,8 +2462,11 @@
 <translation id="3397808797783614750">AI-г таны өмнөөс автоматаар вэб үзэх боломжийг идэвхжүүлэх нь таны хувийн нууц, санхүү, онлайн харилцаанд аюултай, хүсээгүй үр дагавар авчрах магадлалтай. <ph name="LINK_BEFORE"/>Дэлгэрэнгүй<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Аюулгүйн анхааруулга</translation>
 <translation id="6077070599873946984">Brave AI дараах зүйлд танд зөвшөөрөл хэрэгтэй байна: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI **<ph name="SITE_ORIGIN"/>** дээр **<ph name="TOOL_NAME"/>**-г ажиллуулахыг хүсэж байна</translation>
 <translation id="4163837693685963037">Энэ үйлдэл нь таны хүсэлттэй тохирохгүй байж болзошгүй гэж илэрсэн:</translation>
 <translation id="3927932062596804919">Татгалзах</translation>
+<translation id="4191349941249805855">Хэрэгслийн аргументуудыг харуулах</translation>
+<translation id="7237059533128264835">Хэрэгслийн аргументуудыг нуух</translation>
 <translation id="4569155249847375786">Баталгаажсан</translation>
 <translation id="8200772114523450471">Үргэлжлүүлэх</translation>
 <translation id="7607002721634913082">Түр зогссон</translation>
@@ -2556,7 +2572,7 @@
 <translation id="9173319813356700250">МЭДЭЭ</translation>
 <translation id="6543799171249004861"><ph name="AUTHOR"/>-ийн зураг</translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="7978582287767542276">Спонсорлосон сайтуудыг устгах</translation>
+<translation id="7978582287767542276">Шинэ таб хуудсан дээрх зар сурталчилгааг арилгах</translation>
 <translation id="466214682712474574">Балансаа харахын тулд <ph name="PROVIDER"/> дансандаа нэвтэрнэ үү</translation>
 <translation id="8332875111286275890">Балансаа харахын тулд нэвтэрнэ үү</translation>
 <translation id="5430001801813715388">ШАГНАЛУУД</translation>
@@ -2568,11 +2584,11 @@
 <translation id="4844370919312937270">Шинэ таб хирүүс дээрх хайлтын виджетийг харуулах</translation>
 <translation id="5088374130885640159"><ph name="REWARDS_LINK_BEGIN"/>Brave Rewards<ph name="REWARDS_LINK_END"/> ашиглан та Шинэ Таб Хуудасны заруудыг харж орлого олох боломжтой. <ph name="LEARN_MORE_LINK_BEGIN"/>Дэлгэрэнгүй<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">Шинэ таб хуудсан дээрх суртчилгааг харуулах</translation>
-<translation id="4983925687993168579">Brave тоон үзүүлэлт</translation>
+<translation id="4983925687993168579">Статистик</translation>
 <translation id="5009354496127441090">Эрэмбэлэгдсэн сайтуудыг харуулах</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">Спонсорлосон сайтууд нь Brave-г үнэгүй байлгахад тусалдаг. Хэрэв та <ph name="SITE_NAME"/> ашигладаг бол Brave-ийн эрхэм зорилгыг дэмжиж байна. Тэдгээрийг ямар ч үед унтраах боломжтой. <ph name="LINK_BEGIN"/>Дэлгэрэнгүй<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">Спонсорлосон сайтууд нь Brave-г үнэгүй байлгахад тусалдаг. Хэрэв та тэдгээрийг ашигладаг бол Brave-ийн эрхэм зорилгыг дэмжиж байна. <ph name="LINK_BEGIN"/>Дэлгэрэнгүй<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Шинэ таб хуудсан дээрх зар сурталчилгаа нь Brave-г үнэгүй байлгахад тусалдаг. Хэрэв та <ph name="SITE_NAME"/> ашигладаг бол Brave-ийн эрхэм зорилгыг дэмжиж байна. Тэдгээрийг ямар ч үед унтраах боломжтой. <ph name="LINK_BEGIN"/>Дэлгэрэнгүй<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Шинэ таб хуудсан дээрх зар сурталчилгаа нь Brave-г үнэгүй байлгахад тусалдаг. Хэрэв та тэдгээрийг ашигладаг бол Brave-ийн эрхэм зорилгыг дэмжиж байна. <ph name="LINK_BEGIN"/>Дэлгэрэнгүй<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">СТАТИСТИК</translation>
 <translation id="5236080651083907980">Brave Talk-тай шифрлэгдсэн видео дуудлага</translation>
 <translation id="2671474274417808910">Нууцлал-Эхний Дуудлага</translation>
@@ -2732,6 +2748,7 @@
 <translation id="701087249209337256">Хуучин browser-ийнхээ агуулгыг авчрах</translation>
 <translation id="142389341645668510">Brave-г тохируулах</translation>
 <translation id="112005628409144325">Өөрийн илүүд үздэг табын байрлал болон өнгөний горимоор хайлтын туршлагаа хувийн болгоорой.</translation>
+<translation id="4428982101636000516">Brave-ээр хайх эсвэл URL бичих</translation>
 <translation id="7376367936988732808">Табын байрлал</translation>
 <translation id="4734965478015604180">Хэвтээ</translation>
 <translation id="490375751687810070">Босоо</translation>
@@ -2780,7 +2797,7 @@
 <translation id="745054660363064771">Сервертэй холбогдож чадсангүй</translation>
 <translation id="3936826714240735937">Өөр сервер сонгох</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/>-д <ph name="REGION_NAME"/> сервертэй холбогдож чадсангүй. Дахин оролдох эсвэл өөр улс сонгоно уу.</translation>
-<translation id="1776533911621317363">7-хоногийн үнэгүй туршилт эхлүүлэх</translation>
+<translation id="1776533911621317363">7 хоногийн үнэгүй туршилтаа эхлүүлэх</translation>
 <translation id="3357036723290257445">Brave VPN-н худалдан авалтаа хийчихсэн үү?</translation>
 <translation id="8652175077544655965">Тохиргоо хаах</translation>
 <translation id="5908163815855240493">Үндсэн рүү очих</translation>
@@ -2792,11 +2809,13 @@
 <translation id="8416695199565594645">Энгийн хязгаарлагдсан контент/сайтууд эсвэл гуравдагч талаас үйлчилгээнүүд рүү нэвтрэх боломжийг олгохын тулд хөдөлгөөнөө зориулалтын прокси серверүүдээр дамжуулж байна.</translation>
 <translation id="434523916398030617">Техникийн дэмжлэгийн багтай холбогдох</translation>
 <translation id="1116694919640316211">Мэдээлэл</translation>
-<translation id="8998067240267949220">Нэмэлт нууцлал &amp; цахим аюулгүй байдал</translation>
-<translation id="8666111144393179185">IP &amp; нуух; байршлаа өөрчлөх</translation>
-<translation id="8881997962573369342">Дэлхийг тойрсон зуу зуун серверүүд</translation>
+<translation id="8998067240267949220">Дуртай контентдоо хязгааргүй хандах</translation>
+<translation id="8666111144393179185">Дэлхийг тойрсон зуу зуун серверүүд</translation>
+<translation id="8881997962573369342">IP-ээ хялбар нуух &amp; байршлаа өөрчлөх</translation>
 <translation id="1513801084412881009">Гэрлийн хурдны холболт</translation>
-<translation id="6434859410115379558">Нэг төлөвлөгөөгөөр 10 хүртэлх төхөөрөмж хамгаалах</translation>
+<translation id="6434859410115379558">Лог хөтөлдөггүй, бие даан аудит хийгдсэн</translation>
+<translation id="4886431881864826294">Нэг захиалга нь desktop, Android, &amp; iOS дээрх 10 төхөөрөмжийг хамардаг</translation>
+<translation id="3649011006120934011">Үүрэг хариуцлагагүй, ямар ч үед цуцлах боломжтой</translation>
 <translation id="1693568075761612600">Тусламжийн хүсэлт үүсгэхэд амжилтгүй боллоо, холболтоо шалгана уу.</translation>
 <translation id="1407707415819020643">Серверээ сонгоно уу</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> хотууд - <ph name="SERVER_COUNT"/> серверүүд</translation>

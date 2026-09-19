@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Keelatud</translation>
 <translation id="59174027418879706">Lubatud</translation>
 <translation id="6920492760024499150">Tänased tipplood privaatses voogedastuses, ainult teile.</translation>
-<translation id="3803728444598576153">Lülitage sisse Brave'i uudised ja ükski lugu ei jää nägemata</translation>
+<translation id="3803728444598576153">Lülitage sisse Brave Uudised ja ükski lugu ei jää nägemata</translation>
 <translation id="7627131190984957214">Brave'i uudiseid edastatakse reklaamide toel. Selleks kasutatakse teie seadme jaoks kohandatud täiesti privaatseid ja anonüümseid reklaame.</translation>
-<translation id="7897050360583141319">Jälgige oma lemmikallikaid ühesainsas kanalis. Lihtsalt avage Brave'is vaheleht, kerige alla ja… ennäe!\nBrave'i uudised toimivad täiesti privaatsete ja anonüümitud reklaamide toel.</translation>
+<translation id="7897050360583141319">Jälgige oma lemmikallikaid ühesainsas kanalis. Lihtsalt avage Brave'is vaheleht, kerige alla ja… ennäe!</translation>
 <translation id="1765217911817124376">Lülita Brave'i uudised sisse</translation>
 <translation id="8981973962043893066">Veebisaidi, teema või RSS-kanali otsimine</translation>
 <translation id="3225021799163709119">Populaarsed</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Aidake parandada Brave'i toote stabiilsust, saates automaatselt diagnostikaaruandeid, kui Brave'i brauser läheb krahhi või hangub.</translation>
 <translation id="7977176350719484850">Hin. andmed\nSalvestatud</translation>
 <translation id="9008534313521214777">Eeldatav\nsäästetud aeg</translation>
+<translation id="5668852698659986622">Luba sponsoreeritud reklaamid</translation>
+<translation id="431194936581466649">Aita toetada Brave'i missiooni luua sõltumatu, kasutajakeskne veeb sponsoreeritud reklaamidega. Me mõõdame reklaamide toimivust privaatselt, sind tuvastamata.</translation>
 <translation id="8347743943525229984">Lubage Brave'i uuringud</translation>
 <translation id="6022939994702081659">Võimaldab Brave'il näidata uuel vahelehel linke privaatsetele küsitlustele. Küsitlused aitavad meil luua paremaid funktsioone ja mõõta brauseripõhiste reklaamikampaaniate tõhusust.</translation>
 <translation id="7746496306508543965">Lisateave Brave'i uuringute kohta</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">Peamenüü</translation>
 <translation id="7002271985859760052">Lehe toimingud</translation>
 <translation id="7104487676473617844">Järgmised üksused kuvatakse menüüs ainult siis, kui avatud veebileht neid toetab.</translation>
-<translation id="4159764849281393303">Veebirakendus</translation>
 <translation id="8038539967102225446">Brave’i reklaamid on siin!</translation>
 <translation id="222883304157347087">(see seade)</translation>
 <translation id="4157741509680155021">SEADMED SÜNKIMISAHELAS</translation>
@@ -721,6 +722,8 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="1634828734222219955">Kokku</translation>
 <translation id="7995708795274219641">Kogus + gaas</translation>
 <translation id="2186011161688824046">Summa + tasu</translation>
+<translation id="1118876217803190221">Ebapiisav saldo</translation>
+<translation id="275990379543116961">Gaasi jaoks ei ole piisavalt rahalisi vahendeid</translation>
 <translation id="1950052789869821983">Tehing</translation>
 <translation id="2304783958703511257">Täpsemad seaded</translation>
 <translation id="4220062530885628403">Nonss</translation>

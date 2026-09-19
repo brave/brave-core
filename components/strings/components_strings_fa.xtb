@@ -9,6 +9,7 @@
 <translation id="1011206368273183593">درحال آماده‌سازی فایل‌ها</translation>
 <translation id="1014509239502131234">درحال واگرداندن نتیجه</translation>
 <translation id="1015730422737071372">جزئیات اضافی ارائه دهید</translation>
+<translation id="1016671033299705843">افزودن امن گواهینامه رانندگی</translation>
 <translation id="1019413721762100891">خاموش</translation>
 <translation id="1024111578869940408">گاهی‌اوقات مهاجمان با ایجاد تغییراتی بسیار جزئی در نشانی وب، سایت‌ها را جعل می‌کنند.</translation>
 <translation id="102916930470544692">گذرکلید</translation>
@@ -193,6 +194,7 @@
 <translation id="1319245136674974084">دیگر برای این برنامه نپرسیدن</translation>
 <translation id="132301787627749051">جستجوی تصویر بریده‌دان</translation>
 <translation id="1323433172918577554">بیشتر نشان دادن</translation>
+<translation id="1326962902431997202">خط‌خورده</translation>
 <translation id="1330449323196174374">سمت چپ تاخوردگی دروازه‌ای</translation>
 <translation id="2753620827734134329">‏ذخیره کردن ‹شناسه جبران خطای تطبیق› در «کیف پول Brave»</translation>
 <translation id="133173645041092770">بستن وب‌سایت</translation>
@@ -234,8 +236,8 @@
 <translation id="1392813880755413602">‏ارائه OpenDocument</translation>
 <translation id="139305205187523129"><ph name="HOST_NAME"/> داده‌ای ارسال نکرد.</translation>
 <translation id="3057197202055415269">‏مهاجمان ممکن است در سایتی که می‌خواستید بازدید کنید شما را فریب دهند تا نرم‌افزاری نصب کنید یا مواردی مثل گذرواژه، شماره تلفن، یا شماره کارت اعتباری‌تان را افشا کنید. ‫Brave اکیداً توصیه می‌کند به ایمنی بازگردید. <ph name="BEGIN_LEARN_MORE_LINK"/>درباره این هشدار بیشتر بدانید<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="6113998327720481921">‏افزودن امن کارت شناسایی به «کیف پول Brave»</translation>
 <translation id="1398743098754840707">سایت‌هایی که در اینجا اضافه می‌کنید برای پاسخ‌ها ارجاع داده نخواهند شد، حتی اگر زبانه باز باشد. اگر سایتی که اضافه می‌کنید درحال‌حاضر در رشته‌ای استفاده می‌شود، ممکن است تا ۳۰ دقیقه طول بکشد تا ارجاع رشته به آن متوقف شود.</translation>
-<translation id="1402151528875251561">نمایش سابقه در پانل کناری</translation>
 <translation id="1405567553485452995">سبز روشن</translation>
 <translation id="1406370515365284486">روش‌های پرداختتان همچنان ذخیره خواهند ماند</translation>
 <translation id="1406500794671479665">در حال تأیید...</translation>
@@ -462,6 +464,7 @@
 <translation id="1757773103848038814">قلم تک‌فاصله</translation>
 <translation id="3727704638090640904">‏دکمه تغییر گذرواژه Brave؛ برای تغییر گذرواژه «حساب Brave»، آن را فعال کنید</translation>
 <translation id="593191007871547182">‏تکمیل خودکار کدهای درستی‌سنجی‌ای که سایت‌ها برای بهبود امنیت شما استفاده می‌کنند. Brave می‌تواند این کدها را از Gmail شما دریافت کند. <ph name="BEGIN_LINK"/>درباره این ویژگی بیشتر بدانید<ph name="LINK_END"/></translation>
+<translation id="353492317551888534">‏برای کنترل <ph name="BEGIN_LINK1"/>اولویت‌های حریم خصوصی و داده‌ها<ph name="END_LINK1"/> یا مدیریت <ph name="BEGIN_LINK2"/>روش‌های پرداخت<ph name="END_LINK2"/> و <ph name="BEGIN_LINK3"/>مجوزها<ph name="END_LINK3"/> مثل کارت‌های وفاداری و مدارک شناسایی، از «کیف پول Brave» بازدید کنید.</translation>
 <translation id="1763864636252898013">این سرور نتوانست اثبات کند که این <ph name="DOMAIN"/> است؛ گواهی امنیتی آن مورداعتماد سیستم‌عامل دستگاه شما نیست. ممکن است علت این موضوع پیکربندی اشتباه باشد یا مهاجی اتصال شما را قطع کرده است.</translation>
 <translation id="1768211456781949159">‏<ph name="BEGIN_LINK"/>Windows Network Diagnostics را اجرا کنید<ph name="END_LINK"/>.</translation>
 <translation id="1777422078676229054">عکس (آرشیوی)</translation>
@@ -627,6 +630,7 @@
 <translation id="2090451897496479509">برای اطلاعات بیشتر با ارائه‌دهنده تماس بگیرید</translation>
 <translation id="2090686487550343086">IBAN</translation>
 <translation id="2091887806945687916">صدا</translation>
+<translation id="2092361763640578821">اطلاعات بیشتر درباره</translation>
 <translation id="2093184051799735948">جستجو در <ph name="ENGINE_NAME"/> یا تایپ کردن نشانی وب</translation>
 <translation id="4871965986998315786">‏Brave می‌خواهد Windows Hello را برای درج گذرواژه‌ها خاموش کند.</translation>
 <translation id="2094505752054353250">عدم تطابق دامنه</translation>
@@ -743,7 +747,7 @@
 <translation id="2256115617011615191">راه‌اندازی مجدد در این لحظه</translation>
 <translation id="2258928405015593961">تاریخی را در آینده به‌عنوان تاریخ انقضا وارد کنید و دوباره امتحان کنید</translation>
 <translation id="225943865679747347">کد خطا: <ph name="ERROR_CODE"/></translation>
-<translation id="2262183267184054286">درستی‌سنجی با روش دیگر.</translation>
+<translation id="2262183267184054286">درستی‌سنجی به روشی دیگر.</translation>
 <translation id="2262243747453050782">‏خطای HTTP</translation>
 <translation id="2265356434276802347">این خط‌مشی نباید بیشتر از <ph name="MAX_ITEMS_LIMIT"/> ورودی ویژه داشته باشد.</translation>
 <translation id="2266175583972138136">شرایط بر مزایای کارت اعمال می‌شود</translation>
@@ -765,6 +769,7 @@
 <translation id="2288422996159078444">هرچه تایپ می‌کنید، هر صفحه‌ای که می‌ببینید، یا هر فعالیتی که در وب تماشا می‌شود. محتوای سایت‌ها ممکن است بدون اطلاع شما تغییر کند.</translation>
 <translation id="2289385804009217824">برش دادن</translation>
 <translation id="2292556288342944218">دسترسی شما به اینترنت مسدود است</translation>
+<translation id="2294150501457238325">افزودن امن گذرنامه</translation>
 <translation id="2295831393422400053">برای استفاده از «کمک به نوشتن»، تنظیم «بهبود جستجوها و مرور» را روشن کنید</translation>
 <translation id="2296244067976588032">‏گذرکلید • iCloud Keychain</translation>
 <translation id="2296331629987861142">با اقساط آسان پرداخت کنید (مشروط به واجدشرایط بودن، کارمزد اعمال می‌شود)</translation>
@@ -782,6 +787,7 @@
 <translation id="2318594867107319532">آخرین مُهر زمان خط‌مشی:</translation>
 <translation id="2321291402658100099">مدیریت اطلاعات</translation>
 <translation id="2322254345061973671">{COUNT,plural, =1{‫۱ پنجره}one{‫# پنجره}other{‫# پنجره}}</translation>
+<translation id="2325722389016720813">پیکان بالا یا پایین را برای تکمیل خودکار فشار دهید. برای تکمیل خودکار، تایپ کنید.</translation>
 <translation id="4848600035394410348">‏اکنون می‌توانید اطلاعات بیشتری را از «کیف پول Brave» به‌طور خودکار تکمیل کنید</translation>
 <translation id="2326747055382936979">مدیریت «تکمیل خودکار بهبودیافته»</translation>
 <translation id="2328651992442742497">مجاز است (پیش‌فرض)</translation>
@@ -985,7 +991,6 @@
 <translation id="2677748264148917807">ترک کردن</translation>
 <translation id="2679216653373462289">استفاده از حسگرهای حرکتی و نوری</translation>
 <translation id="2679659833697380">اطلاعات شما در دستگاهتان ذخیره می‌شود</translation>
-<translation id="2489045475086745601">‏به Brave در <ph name="DEVICE_NAME"/> شما ارسال شد.</translation>
 <translation id="2683195745483370038">نتایج دیگری پیدا شد</translation>
 <translation id="2686919536310834199">درباره «کمک به نوشتن» بازخورد ارسال کنید.</translation>
 <translation id="2687555958734450033">بهترین اندازه</translation>
@@ -1105,6 +1110,7 @@
 <translation id="2931453528659195355">مدیریت اطلاعات خرید</translation>
 <translation id="2933624813161016821">فویل حکاکی</translation>
 <translation id="2935726091208500473">درحال هم‌رسانی زبانه‌ها</translation>
+<translation id="503249467791680577">‏فیلد کد ترویجی را انتخاب کنید تا پیشنهادهای ویژه از «کیف پول Brave» به‌طور خودکار تکمیل شود</translation>
 <translation id="293796669683825859">نظرها</translation>
 <translation id="2938225289965773019">باز کردن پیوندهای <ph name="PROTOCOL"/></translation>
 <translation id="2938370569652058706">‫<ph name="ORIGIN"/> – برای نمایش مکان‌نما، بین برنامه‌ها جابه‌جا شوید، صفحه را مجدد بار کنید، یا برگردید</translation>
@@ -1253,6 +1259,7 @@
 <translation id="3190736958609431397">لغو پیگیری</translation>
 <translation id="3194737229810486521"><ph name="URL"/> می‌خواهد داده‌ها را برای همیشه در دستگاهتان ذخیره کند</translation>
 <translation id="3194765668709099364">Klarna</translation>
+<translation id="2277495157469546105">‏افزودن گواهینامه رانندگی به «کیف پول Brave»</translation>
 <translation id="3195213714973468956"><ph name="PRINTER_NAME"/> در <ph name="SERVER_NAME"/></translation>
 <translation id="3196374699162453920">کد رزرو</translation>
 <translation id="3196902089458890316">همیشه زبانه‌های مرتبط برای دریافت پاسخ‌های بهتر هم‌رسانی شوند؟</translation>
@@ -1357,6 +1364,7 @@
 <translation id="3380864720620200369">شناسه سرویس‌گیرنده:</translation>
 <translation id="3383566085871012386">ترتیب اولویت کنونی</translation>
 <translation id="3383713837163550889">فایل‌های محلی شما تا ۱ دقیقه دیگر حذف خواهد شد</translation>
+<translation id="6707404155107941120">‏افزودن «شناسه مسافر شناخته‌شده» به «کیف پول Brave»</translation>
 <translation id="3384522979010096022">سازمانتان اجازه مشاهده این سایت را به شما نمی‌دهد</translation>
 <translation id="3391030046425686457">نشانی تحویل کالا</translation>
 <translation id="3391482648489541560">ویرایش فایل</translation>
@@ -1415,6 +1423,7 @@
 <translation id="3495081129428749620">یافتن در صفحه
 <ph name="PAGE_TITLE"/></translation>
 <translation id="3495818359064790343">حقوق</translation>
+<translation id="3496531230994554300">اعلان «کیف پول» به‌صورت کامل باز شده است.</translation>
 <translation id="3497627066518778351">مرور فهرست داده‌های سایت درون دستگاه در پنجره‌ای جدید</translation>
 <translation id="3498215018399854026">در حال حاضر نمی‌توانیم با والدینتان تماس برقرار کنیم. لطفاً دوباره امتحان کنید.</translation>
 <translation id="350069200438440499">نام فایل:</translation>
@@ -1427,6 +1436,7 @@
 <translation id="3517264445792388751">سرپرستتان سیستم فایل را غیرفعال کرده است</translation>
 <translation id="3518941727116570328">کار با چند شیء</translation>
 <translation id="3519670528214225835">پرسیدن از <ph name="KEYWORD_SUFFIX"/></translation>
+<translation id="3138333648486601120">‏افزودن وسیله نقلیه به «کیف پول Brave»</translation>
 <translation id="3525130752944427905">۱۴ × ۱۰ اینچ</translation>
 <translation id="3525435918300186947">‏دستگاه‌های MIDI کنترل و مجدداً برنامه‌ریزی شود؟</translation>
 <translation id="3527624163937328588">برداشتن پیوست</translation>
@@ -1507,6 +1517,7 @@
 <translation id="3642638418806704195">برنامه:</translation>
 <translation id="3647286794400715637">هر ورودی رشته نشانی وب باید بین ۱ تا ۲ نشانی وب داشته باشد.</translation>
 <translation id="5085151248144746413">‏دکمه «بستن نکته Brave»، برای بستن، کلید «ورود» را فشار دهید، <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
+<translation id="3647730822767756911">نظارت داشتن بر فعالیت</translation>
 <translation id="3648667207586409316">چه کارهایی می‌توانم برای کاهش استرس انجام دهم؟</translation>
 <translation id="3650584904733503804">ارزیابی موفق بود</translation>
 <translation id="3650594806107685466">‏برای کمک به حفظ ایمنی کارتتان، کد تأیید کارت (CVC) را از <ph name="SIDE_OF_CARD"/> وارد کنید</translation>
@@ -1572,7 +1583,6 @@
 <translation id="3752181611900535304">نشانی در حساب ذخیره شود؟</translation>
 <translation id="3752543821772132562">نادیده گرفته می‌شود زیرا <ph name="POLICY_NAME"/> تنظیم نشده است.</translation>
 <translation id="3754210790023674521">خروج از تصویردرتصویر</translation>
-<translation id="3754664361823138853">&amp;باز کردن صفحه سابقه</translation>
 <translation id="3757511311058373406">فیلترهای مرور خودکار</translation>
 <translation id="3759461132968374835">شما اخیراً گزارش خرابی ارسال نکرده‌اید. مشکلاتی که در هنگام غیرفعال بودن ویژگی ارائه گزارش خرابی ایجاد شده است، در اینجا نمایش داده نمی‌شود.</translation>
 <translation id="3760561303380396507">‏به‌جای CVC از Windows Hello استفاده شود؟</translation>
@@ -1776,6 +1786,7 @@
 <translation id="4103249731201008433">شماره سریال دستگاه نامعتبر است</translation>
 <translation id="4103592298805904008">مقوا (تک‌جداره)</translation>
 <translation id="4104702906064390950">‏درحال ذخیره کردن اطلاعات IBAN</translation>
+<translation id="4104995898379951162">افزودن امن «شناسه مسافر شناخته‌شده»</translation>
 <translation id="4106101218644797743">تنظیمات همگام‌سازی</translation>
 <translation id="4106887816571530227">محتوای جاسازی‌شده مجاز نیست</translation>
 <translation id="4107047499377819067">نصب سرویس‌های پس‌زمینه‌ای وی‌پی‌ان شروع شد و ممکن است چند دقیقه طول بکشد.</translation>
@@ -1833,6 +1844,7 @@
 <translation id="9150836098508392713">‏دکمه نکته‌های Brave؛ برای اطلاع از ویژگی‌های جدید Brave، آن را فعال کنید</translation>
 <translation id="4195643157523330669">باز کردن در زبانه جدید</translation>
 <translation id="4196861286325780578">&amp;انجام مجدد انتقال</translation>
+<translation id="1390806521042945654">‏افزودن گذرنامه به «کیف پول Brave»</translation>
 <translation id="4202554117186904723">رول پنجم</translation>
 <translation id="4203769790323223880">دوربین مجاز نیست</translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK"/>بررسی پیکربندی آنتی‌ویروس و دیوار آتش<ph name="END_LINK"/></translation>
@@ -1947,6 +1959,7 @@
 <translation id="4377869186417956230">تغییر به همه کارت‌های وفاداری در این گزینه منو.</translation>
 <translation id="4378154925671717803">تلفن</translation>
 <translation id="4378221908737133050">بازبینه نظافت عمیق برای خانه من بسازید</translation>
+<translation id="4379357028567121852">از <ph name="APP_NAME"/></translation>
 <translation id="4381997246130185847">می‌توانید از جایی که رها کرده‌اید ادامه دهید یا درحال حرکت گروه‌های زبانه جدید ایجاد کنید</translation>
 <translation id="4382484599443659549">PDF</translation>
 <translation id="4382833368532556056">ازاین‌پس فایل‌هایتان را در فضای ذخیره‌سازی ابری ذخیره کنید</translation>
@@ -1995,7 +2008,6 @@
 <translation id="8294153737034342992">‏برای دریافت بالاترین سطح امنیتی Brave، <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>محافظت بهبودیافته را روشن کنید<ph name="END_ENHANCED_PROTECTION_LINK"/></translation>
 <translation id="4475299370877036544">این اقدام ممکن است خط‌مشی‌های سازمانتان را نقض کند</translation>
 <translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>. <ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="4476953670630786061">این فرم ایمن نیست. تکمیل خودکار خاموش شده است.</translation>
 <translation id="4477350412780666475">آهنگ بعدی</translation>
 <translation id="4480760608050410381">‏ویدیو MP4</translation>
 <translation id="4489023393592172404">پاکت کاکو ۴</translation>
@@ -2112,6 +2124,7 @@
 <translation id="4711628883879888561">مشارکت کردن در گروه زبانه</translation>
 <translation id="4712404868219726379">Windows Hello</translation>
 <translation id="4714279348049646935">معدل من را با وزن‌دهی به ساعات اعتباری، سطوح دوره، و مقادیر نمره محاسبه کنید</translation>
+<translation id="4717533164160330041">‏روشن کردن «ویژگی‌های هوشمند» در Gmail در ابتدا، برای استفاده از این ویژگی</translation>
 <translation id="471880041731876836">برای بازدید کردن از این سایت، مجوز لازم ندارید</translation>
 <translation id="4718897478554657123">۹۰۰ × ۶۰۰ میلی‌متر</translation>
 <translation id="4722547256916164131">‏<ph name="BEGIN_LINK"/>اجرای Windows Network Diagnostics<ph name="END_LINK"/></translation>
@@ -2172,6 +2185,7 @@
 <translation id="4803924862070940586"><ph name="CURRENCY_CODE"/> <ph name="FORMATTED_TOTAL_AMOUNT"/></translation>
 <translation id="4805128460707321168">به‌روز کردن «کارت شناسایی» به‌طور امن</translation>
 <translation id="4807098396393229769">نام روی کارت</translation>
+<translation id="5108824058672523034">‏افزودن امن «شناسه مسافر شناخته‌شده» به «کیف پول Brave»</translation>
 <translation id="4809079943450490359">دستورالعمل‌ها از سرپرست دستگاهتان:</translation>
 <translation id="4811450222531576619">آشنا شدن با منبع و موضوع آن</translation>
 <translation id="1177020771645812087">‏ذخیره کردن اطلاعات خودرو به‌طور امن در «کیف پول Brave»</translation>
@@ -2201,6 +2215,7 @@
 <translation id="4855395119669662878">‏سرپرستتان بارگذاری فایل‌ها در <ph name="CLOUD_PROVIDER"/> را در ‎<ph name="DATE_TIME"/> شروع خواهد کرد. تا زمانی‌که بارگذاری فایل کامل نشده است، اتصال دستگاه را قطع نکنید. درطول فرایند بارگذاری، فقط می‌توانید فایل‌های محلی را بخوانید.</translation>
 <translation id="485902285759009870">درحال تأیید کد…</translation>
 <translation id="4860260582253463350">‏برای رفتن به YouTube باید مطمئن شویم این فرد واقعاً شما هستید. تنظیماتی را که ولی یا سرپرستتان در Family Link تنظیم کرده است دریافت خواهید کرد.</translation>
+<translation id="4861514638281352187">افزودن امن «شناسه جبران خطای تطبیق»</translation>
 <translation id="4862642413395066333">‏امضا کردن پاسخ‌های OCSP</translation>
 <translation id="4864406669374375262">رشته نسخه در بریده‌دان کپی شد</translation>
 <translation id="486459320933704969">ولی یا سرپرست باید بازدید شما از این وب‌سایت را تأیید کند</translation>
@@ -2330,6 +2345,7 @@
 <translation id="5061227663725596739">منظورتان <ph name="LOOKALIKE_DOMAIN"/> بود؟</translation>
 <translation id="5066056036849835175">سابقه چاپ</translation>
 <translation id="5068524481479508725">A10</translation>
+<translation id="5068915318814087203">‏ممکن است برخی از فعالیت‌های مرور شما برای جلوگیری از فقدان داده ها توسط سازمانتان نظارت شود؛ برای جزئیات بیشتر به <ph name="BEGIN_LINK"/>chrome://management<ph name="END_LINK"/> بروید</translation>
 <translation id="5070335125961472645"><ph name="BEGIN_LINK"/>بررسی آدرس پروکسی<ph name="END_LINK"/></translation>
 <translation id="5070838744279127212">رول دهم</translation>
 <translation id="507130231501693183">صندوق پست ۴</translation>
@@ -2589,6 +2605,7 @@
 <translation id="5499229993630251170">این رشته را ادامه می‌دهید؟</translation>
 <translation id="5506286895894263601">این فهرست فاقد میان‌بر معتبر است.</translation>
 <translation id="5507756662695126555">انکارناپذیری</translation>
+<translation id="5508515366054931524">پیام‌واره درستی‌سنجی ایمیل به‌صورت کامل باز شده است</translation>
 <translation id="5509762909502811065">B0</translation>
 <translation id="5509780412636533143">نشانک‌های مدیریت شده</translation>
 <translation id="5510766032865166053">ممکن است جابه‌جا یا حذف شده باشد.</translation>
@@ -2627,6 +2644,7 @@
 <translation id="5561747310506483298">کارت‌های شناسایی</translation>
 <translation id="55635442646131152">طرح کلی سند</translation>
 <translation id="1702142849385752335">‏برای استفاده از مکان، در <ph name="LINK"/> به Brave دسترسی دهید.</translation>
+<translation id="4508945603260486778">‏افزودن کارت شناسایی به «کیف پول Brave»</translation>
 <translation id="5565735124758917034">فعال</translation>
 <translation id="5570825185877910964">محافظت از حساب</translation>
 <translation id="5571083550517324815">تحویل گرفتن از این نشانی ممکن نیست. نشانی دیگری را انتخاب کنید.</translation>
@@ -2689,6 +2707,7 @@
 <translation id="5659593005791499971">ایمیل</translation>
 <translation id="5660122698869360728">پوشه هوشمند جدیدی که به شما کمک می‌کند همه صفحه‌های خریدتان را در یک مکان ذخیره کنید، و به‌طور خودکار قیمت‌ها را پیگیری کنید، اطلاعات آماری قیمت را دریافت کنید، و کارهای دیگری انجام دهید.</translation>
 <translation id="5663955426505430495">سرپرست این دستگاه، افزونه‌هایی را برای عملکردهای اضافی نصب کرده است. افزونه‌ها به برخی از داده‌های شما دسترسی دارند.</translation>
+<translation id="5664075349639500330">اطلاعات بیشتر درباره مرور در حالت مجزا</translation>
 <translation id="5675650730144413517">این صفحه کار نمی‌کند</translation>
 <translation id="5675959228867414813">نمایش براساس تاریخ</translation>
 <translation id="567604591393105935">برگ زیرین تجارت به‌صورت نیمه باز شده است</translation>
@@ -2760,6 +2779,7 @@
 <translation id="5789643057113097023">.</translation>
 <translation id="5793317771769868848">این روش پرداخت از این دستگاه حذف خواهد شد</translation>
 <translation id="5794065675298686371">روشن کردن اعلان‌های پیگیری قیمت</translation>
+<translation id="7504725958983465699">‏روشن کردن «<ph name="BEGIN_LINK"/>ویژگی‌های هوشمند در سایر محصولات Brave<ph name="LINK_END"/>»</translation>
 <translation id="5797984091151707075">توسط خط‌مشی سرپرست مسدود شده است</translation>
 <translation id="5804241973901381774">اجازه‌ها</translation>
 <translation id="5806871454498484178">پیمایش و بزرگ‌نمایی مسدود شده است</translation>
@@ -2811,6 +2831,7 @@
 <translation id="3476147989326158506">‏‫Brave می‌خواهد اطلاعات حساس را نشان دهد</translation>
 <translation id="5898767305816764989">‏دکمه رأی موافق. برای ارسال بازخورد درباره دلیل پسندیدن، کلید Enter را فشار دهید، <ph name="THUMBS_UP_SUGGESTION_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="5901630391730855834">زرد</translation>
+<translation id="9017337151040864889">‏افزودن امن گواهینامه رانندگی به «کیف پول Brave»</translation>
 <translation id="5903264686717710770">عنوان:</translation>
 <translation id="3704860399319731107">‏نشانی محل کار می‌تواند در انجام کارها در سراسر سرویس‌های Brave به شما کمک کند، مانند نتایج «جستجو» و مسیرهای مربوط‌تر در Brave Maps. می‌توانید در<ph name="BEGIN_LINK"/>در «حساب Brave» خود (<ph name="ACCOUNT"/>)<ph name="END_LINK"/> نشانی‌تان را ویرایش یا حذف کنید.</translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/> (همگام‌سازی‌شده)</translation>
@@ -3067,6 +3088,7 @@
 <translation id="2992154309947281535">‏برای تکمیل خودکار اطلاعات، «استفاده از مجوزها در سراسر Brave» را در تنظیمات «کیف پول» روشن کنید</translation>
 <translation id="6329815962353376655">&lt;سؤالی تایپ کنید&gt;</translation>
 <translation id="633348045801643466">نمایش گزینه‌های <ph name="PAY_LATER_OPTIONS_HELP_LINK_BEGIN"/>بعداً پرداخت شود<ph name="PAY_LATER_OPTIONS_HELP_LINK_END"/> هنگام تسویه‌حساب</translation>
+<translation id="6335364777769284858">‏«ویژگی‌های هوشمند» را در <ph name="BEGIN_LINK"/>تنظیمات Gmail<ph name="LINK_END"/> روشن کنید</translation>
 <translation id="6336948221660696475">«واقعیت مجازی» مجاز نشد</translation>
 <translation id="6337534724793800597">فیلتر کردن خط‌مشی‌ها براساس نام</translation>
 <translation id="633770708279464947">مقدار <ph name="SECURE_DNS_SALT"/> نامعتبر است و استفاده نخواهد شد.</translation>
@@ -3198,6 +3220,7 @@
 <translation id="6547208576736763147">دو سوراخ در چپ</translation>
 <translation id="6550245281449521513">قفل موشواره مجاز نیست</translation>
 <translation id="6551737294564628267"><ph name="ATTRIBUTE_NAME"/>، جدید</translation>
+<translation id="6552244083450538912">فعالیت شما ممکن است برای موارد زیر قابل‌رؤیت باشد: وب‌سایت‌هایی که بازدید می‌کنید، کارفرما یا مدرسه‌تان، فراهم‌ساز خدمات اینترنتی شما</translation>
 <translation id="6552566579578780089">پرداخت</translation>
 <translation id="6553777254569586547">‫<ph name="SUGGESTION_TITLE"/>‏. <ph name="SUGGESTION_TYPE"/>. ‫<ph name="MATCH_POSITION"/> از <ph name="NUM_MATCHES_IN_GROUP"/> در گروه <ph name="GROUP_HEADER"/>.</translation>
 <translation id="6554732001434021288">آخرین بازدید: <ph name="NUM_DAYS"/> روز پیش</translation>
@@ -3225,6 +3248,7 @@
 <translation id="5887670611153282204">‏درباره موتور جستجویتان در Brave بیشتر بدانید</translation>
 <translation id="6615297766614333076">پشته‌ساز ۲</translation>
 <translation id="6619496928666593220">‏IBAN تکمیل نشده است</translation>
+<translation id="7974914674103704697">‏افزودن امن خودرو به «کیف پول Brave»</translation>
 <translation id="6624427990725312378">اطلاعات تماس</translation>
 <translation id="6625629379283886932">به من آموزش بدهید چطور کدنویسی کنم</translation>
 <translation id="6628463337424475685">جستجوی <ph name="ENGINE"/></translation>
@@ -3300,6 +3324,7 @@
 <translation id="6743841972744298686">تنظیمات همگام‌سازی</translation>
 <translation id="3792994947670632937">‏نام و نشانی ایمیلتان را از «حساب Brave» خود به‌طور خودکار تکمیل کنید</translation>
 <translation id="674580074662200768">به‌روز کردن گذرنامه به‌طور امن</translation>
+<translation id="6749473226660745022">Photos</translation>
 <translation id="6751487147225428522">ROC 8K</translation>
 <translation id="6753269504797312559">مقدار خط‌‌مشی</translation>
 <translation id="6753434778807740853">حذف ورودی <ph name="ENTRY_VOICEOVER"/></translation>
@@ -3355,6 +3380,7 @@
 <translation id="6860888819347870819">می‌تواند برای ورود به حالت تصویر در تصویر درخواست دهد</translation>
 <translation id="6864189428899665393">۳۸۹ × ۲۶۷ میلی‌متر</translation>
 <translation id="6865412394715372076">درحال‌حاضر نمی‌توان این کارت را به تأیید رساند</translation>
+<translation id="6871073333584947219">اعلان «کیف پول» بسته شد.</translation>
 <translation id="6871813064737840684">سابقه قیمت در سراسر وب برای این گزینه</translation>
 <translation id="6873456682041376666">سینی بالا</translation>
 <translation id="6874604403660855544">&amp;انجام مجدد افزودن</translation>
@@ -3429,6 +3455,7 @@
 <translation id="4008528679917598915">‏برای استفاده از بریده‌دان، در <ph name="LINK"/> به Brave دسترسی دهید.</translation>
 <translation id="6973656660372572881">‏هم سرورهای پروکسی ثابت و هم آدرس اسکریپت pac. مشخص شده‌اند.</translation>
 <translation id="6973988895180423160">۵ × ۳٫۵ اینچ</translation>
+<translation id="6976229914347655621">‏افزونه‌های موردنیاز سازمانتان روشن باقی خواهد ماند؛ برای جزئیات بیشتر به <ph name="BEGIN_LINK"/>chrome://extensions<ph name="END_LINK"/> بروید</translation>
 <translation id="6978236010531171013">به‌هرحال هم‌رسانی شود</translation>
 <translation id="6979158407327259162">Google Drive</translation>
 <translation id="6979440798594660689">صامت (پیش‌فرض)</translation>
@@ -3442,7 +3469,6 @@
 <translation id="6998512609912910179">فرم‌ها را سریع‌تر تکمیل کنید</translation>
 <translation id="7000094925113284872">چرخه زندگی یک ستاره را ترسیم کنید</translation>
 <translation id="7002897669829306463">نشانی خانه، <ph name="ADDRESS"/></translation>
-<translation id="7004499039102548441">زبانه‌های جدید</translation>
 <translation id="7004562620237466965">فقط کشف رمز</translation>
 <translation id="7006930604109697472">در هر حال فرستاده شود</translation>
 <translation id="7009364359744329733">این کارت درحال‌حاضر دردسترس نیست. لطفاً بعداً دوباره امتحان کنید.</translation>
@@ -3587,9 +3613,11 @@
 <translation id="7261463765917514051">با تکمیل خودکار، ایمن تصفیه حساب کنید</translation>
 <translation id="7265608370113700582">نشانی فقط در این دستگاه دردسترس است</translation>
 <translation id="7266094331715305887">برنامه‌های موجود در دستگاه.</translation>
+<translation id="3320731678580031767">‏افزودن امن گذرنامه به «کیف پول Brave»</translation>
 <translation id="7269151392155523061">میان‌بر نباید با کلیدواژه جمع‌کننده جستجو که <ph name="SEARCH_AGGREGATOR_SETTINGS_POLICY"/> تعریف کرده است یکسان باشد: <ph name="SHORTCUT_NAME"/></translation>
 <translation id="7273111226200291353">‏فایل‌هایی که بارگیری می‌کنید برای تجزیه‌وتحلیل به Google Cloud یا اشخاص ثالث ارسال می‌شود. مثلاً ممکن است این فایل‌ها ازنظر وجود داده‌های حساس یا بدافزار اسکن شود و براساس خط‌مشی‌های شرکت ذخیره شود و برای سرپرست شما قابل‌مشاهده باشد.</translation>
 <translation id="7275334191706090484">نشانک‌های مدیریت شده</translation>
+<translation id="7278933725460302617">اکنون در حالت «ایزوله‌شده» هستید</translation>
 <translation id="2837210582972105306">‏<ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>؛ برای تغییر گذرواژه «حساب Brave»، کلید «جهش» و سپس «ورود» را فشار دهید</translation>
 <translation id="7286908876112207905">جای‌گذاری کردن این محتوا در این سایت مجاز نیست</translation>
 <translation id="7291578327729322058">افزودن گواهینامه رانندگی</translation>
@@ -3607,6 +3635,7 @@
 <translation id="7308436126008021607">همگام‌سازی پس‌زمینه</translation>
 <translation id="7310392214323165548">دستگاه به‌زودی بازراه‌اندازی خواهد شد</translation>
 <translation id="7311244614769792472">نتیجه‌ای پیدا نشد</translation>
+<translation id="7311565174465466858">‏<ph name="TAB_KEY"/> برای پرسیدن از <ph name="AI_ENGINE_NAME"/>، کلید Tab و سپس کلید Enter را فشار دهید</translation>
 <translation id="7313107491291103073">سازمانتان این سایت را پرچم‌گذاری کرده است، زیرا ممکن است یکی از خط‌مشی‌ها را نقض کند.</translation>
 <translation id="7315372670898739748">پیوند دادن انجام نشد، بعداً دوباره امتحان کنید</translation>
 <translation id="7316521168101843192">‏درحال ذخیره کردن فایل در Microsoft OneDrive</translation>
@@ -3631,6 +3660,7 @@
 <translation id="7366117520888504990">۲۷۵ × ۱۹۸ میلی‌متر</translation>
 <translation id="7366362069757178916">کنترل‌کننده‌های پرداخت</translation>
 <translation id="4662831882520898447">‏با نحوه محافظت Brave از گذرواژه‌هایتان آشنا شوید</translation>
+<translation id="7366909168761621528">داده‌های مرور</translation>
 <translation id="7370751048350026847">جای‌گذاری کردن این محتوا در این سایت توصیه نمی‌شود</translation>
 <translation id="7372526636730851647">عکس (براق)</translation>
 <translation id="7372973238305370288">نتیجه جستجو</translation>
@@ -3758,6 +3788,7 @@
 <translation id="7554791636758816595">زبانه جدید</translation>
 <translation id="7556328470713619625">استفاده از گذرکلید</translation>
 <translation id="7559278538486662777">اندازه این برنامه را نمی‌توان تغییر داد.</translation>
+<translation id="7561202748196702434">مرور در حالت «مجزا»</translation>
 <translation id="7561784249784255101">لوح چندمنظوره دیجیتال</translation>
 <translation id="7567204685887185387">این سرور نتوانست اثبات کند که این <ph name="DOMAIN"/> است؛ ممکن است گواهی امنیتی آن به صورت تقلبی صادر شده باشد. ممکن است علت این موضوع پیکربندی اشتباه باشد یا مهاجمی اتصال شما را قطع کرده است.</translation>
 <translation id="8661288256654172117">‏Brave می‌خواهد گذرواژه‌تان را در <ph name="APP_NAME"/> پر کند.</translation>
@@ -3859,6 +3890,7 @@
 <translation id="7705085181312584869">کمک به نوشتن</translation>
 <translation id="7705992072972338699">لوح نوری (خیلی براق)</translation>
 <translation id="7706689436519265630">‏فایل‌هایی که کپی یا منتقل می‌کنید برای تجزیه‌وتحلیل به Google Cloud یا اشخاص ثالث ارسال می‌شود. مثلاً ممکن است این فایل‌ها ازنظر وجود داده‌های حساس یا بدافزار اسکن شود و براساس خط‌مشی‌های شرکت ذخیره شود.</translation>
+<translation id="7709934467582922028">پیام‌واره درستی‌سنجی ایمیل بسته شد</translation>
 <translation id="7714351089363296478">به‌تازگی بازدید کردید</translation>
 <translation id="7714404809393719981">عکس (نیمه‌براق)</translation>
 <translation id="7714464543167945231">گواهی</translation>
@@ -4144,6 +4176,7 @@
 <translation id="8241707690549784388">صفحه‌ای که جستجو می‌کنید از اطلاعاتی استفاده می‌کند که شما وارد کرده‌اید. بازگشت به آن صفحه ممکن است باعث شود اقدامی را که قبلاً انجام دادید دوباره تکرار کنید. آیا می‌خواهید ادامه دهید؟</translation>
 <translation id="8242426110754782860">ادامه دادن</translation>
 <translation id="824620968958405573">تکلیف مرور خودکار</translation>
+<translation id="8247824837030847066">افزودن امن کارت شناسایی</translation>
 <translation id="8248406213705193919">کارت به‌طور ایمن ذخیره شود؟</translation>
 <translation id="8249296373107784235">لغو</translation>
 <translation id="8996951854370742934">‏این نشانی درحال‌حاضر در این دستگاه ذخیره شده است. برای استفاده از این نشانی در محصولات Brave، آن را در «حساب Brave» خود (<ph name="ACCOUNT"/>) ذخیره کنید.</translation>
@@ -4250,6 +4283,7 @@
 <translation id="8410956920192583322">ماهانه یا در ۴ قسط</translation>
 <translation id="8412145213513410671">خرابی‌ها (<ph name="CRASH_COUNT"/>)</translation>
 <translation id="8412392972487953978">شما باید همان گذرعبارت را دوبار وارد کنید.</translation>
+<translation id="8413126021676339697">نمایش کل سابقه</translation>
 <translation id="8414322570408428950">رویداد افزونه اتفاق می‌افتد</translation>
 <translation id="8416694386774425977">پیکربندی شبکه نامعتبر است و نمی‌توان آن را وارد کرد.
 توضیحات بیشتر:
@@ -4288,6 +4322,7 @@
 <translation id="8473626140772740486">۴۵۰ × ۳۰۰ میلی‌متر</translation>
 <translation id="8473863474539038330">نشانی‌ها و غیره</translation>
 <translation id="8474910779563686872">نمایش جزئیات برنامه‌نویس</translation>
+<translation id="84764251640219124">استفاده سایت‌ها از کوکی‌های طرف سوم مسدود شده است. اگر سایتی که به این کوکی‌ها متکی است کار نمی‌کند، می‌توانید <ph name="BEGIN_LINK"/>به آن سایت اجازه دهید موقتاً به کوکی‌های طرف سوم دسترسی داشته باشد<ph name="END_LINK"/>.</translation>
 <translation id="8479754468255770962">منگنه در پایین سمت چپ</translation>
 <translation id="8714154125294613524">‏این نشانی از «حساب Brave» شما (<ph name="ACCOUNT"/>) حذف خواهد شد</translation>
 <translation id="8488350697529856933">اعمال برای</translation>
@@ -4353,6 +4388,7 @@
 <translation id="8619130384334725124">برنامه پیش‌فرض فعلی</translation>
 <translation id="8620276786115098679">پاکت کاکو ۷</translation>
 <translation id="8622864575115813231">درحال برقراری ارتباط با مؤسسه مالی شما…</translation>
+<translation id="8632584659860846053">با بستن تمامی پنجره‌های «مجزا»، سابقه مرور، کوکی‌ها و داده‌های سایت، حافظه نهان، و اطلاعات واردشده در فرم‌ها حذف خواهند شد</translation>
 <translation id="8634957317623797170">۸۶ × ۵۴ میلی‌متر</translation>
 <translation id="1669370144926680379">‏‫Brave دارای ویژگی‌های ایمنی داخلی است که از شما درحین مرور محافظت می‌کند — مثل «مرور ایمن Brave»، که اخیراً در سایتی که می‌خواستید بازدید کنید <ph name="BEGIN_LINK"/>رمزگیری پیدا کرده است<ph name="END_LINK"/>. سایت‌های رمزگیری وانمود می‌کنند که سایت‌های دیگری هستند تا شما را فریب دهند.<ph name="NEW_LINE"/>حتی سایت‌هایی که معمولاً امن هستند گاهی اوقات توسط مهاجمان درمعرض خطر قرار می‌گیرند. اگر فکر می‌کنید اشتباهی روی داده است و این سایت خطری ندارد، <ph name="BEGIN_ERROR_LINK"/>به ما اطلاع دهید<ph name="END_ERROR_LINK"/>.</translation>
 <translation id="8294734273090232456">‏برای هم‌رسانی زبانه‌ها و مشارکت کردن با دیگران، باید بتوانید به سیستم Brave وارد شوید</translation>
@@ -4549,13 +4585,13 @@
 <translation id="8988966534058783995">از حسگرهای حرکتی استفاده شود؟</translation>
 <translation id="899688752321268742"><ph name="URL"/> می‌خواهد بداند چه زمانی به‌صورت فعال از این دستگاه استفاده می‌کنید</translation>
 <translation id="8997023839087525404">سرور گواهی‌ای را ارائه کرده است که با استفاده از خط‌مشی شفافیت گواهینامه به‌صورت عمومی نشان داده نشده است. برای برخی گواهی‌ها این یک مسئله ضروری است تا از قابل اعتماد بودن آن‌ها و محافظت دربرابر مهاجمین اطمینان حاصل شود.</translation>
-<translation id="9000145382638074673">دستگاه‌های شما</translation>
 <translation id="9001074447101275817">پروکسی <ph name="DOMAIN"/> به نام کاربری و گذرواژه نیاز دارد.</translation>
 <translation id="9001963517402879850">پرش!</translation>
 <translation id="9003263770394939629">‏پیشنهادشده توسط Gemini. مدیریت کردن تکمیل خودکار بهبودیافته در تنظیمات</translation>
 <translation id="9003639428623471314">پاکت کاهو</translation>
 <translation id="9004367719664099443">‏جلسه VR درحال انجام است</translation>
 <translation id="9005998258318286617">‏سند PDF بارگیری نشد.</translation>
+<translation id="900686221526305417">افزودن امن وسیله نقلیه</translation>
 <translation id="9008201768610948239">نادیده گرفتن</translation>
 <translation id="9010187979699879769">برنامه درسی برای من بسازید</translation>
 <translation id="9011281744469077577">{COUNT,plural, =0{هیچ‌کدام}=1{از ۱ سایت}one{از # سایت}other{از # سایت}}</translation>
@@ -4568,6 +4604,7 @@
 <translation id="5979301400168151411">Brave Sites</translation>
 <translation id="8309858808266687860">‏امتحان کردن Brave Enterprise Core</translation>
 <translation id="9027531288681624875">برای خروج از تمام‌صفحه، |<ph name="ACCELERATOR"/>| را فشار دهید و نگه دارید</translation>
+<translation id="9030785788945687215">Gmail</translation>
 <translation id="9035022520814077154">خطای امنیتی</translation>
 <translation id="9035699147763101514">‏پشتیبانی شده توسط «هوش شخصی‌سازی‌شده» با Gemini. انتخاب‌هایتان را در تنظیمات مدیریت کنید.</translation>
 <translation id="9035824888276246493">ذخیره کردن کدهای امنیتی</translation>
@@ -4709,6 +4746,7 @@
 <translation id="1283739678317676574">‏<ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/>؛ برای ایجاد سریع سایت جدید در Brave Sites، کلید «جهش» و سپس «ورود» را فشار دهید</translation>
 <translation id="949026252328034572">‫<ph name="MEMBER_COUNT"/> عضو به گروه زبانه «<ph name="GROUP_NAME"/>» پیوستند</translation>
 <translation id="949314938206378263">‏درخواست کرده‌اید از این سایت بازدید کنید. ولی‌تان می‌تواند در Family Link پاسخ دهد.</translation>
+<translation id="6543976614537748698">‏افزودن «شناسه جبران خطای تطبیق» به «کیف پول Brave»</translation>
 <translation id="950736567201356821">سه سوراخ در بالا</translation>
 <translation id="1762533279914543867">‏گذرکلید • مدیر گذرواژه Brave</translation>
 <translation id="952165179818196872">برای پرداخت بدون عوض کردن برنامه، <ph name="PROVIDER"/> اضافه شود</translation>
@@ -4723,6 +4761,7 @@
 <translation id="962484866189421427">این محتوا ممکن است برنامه‌های فریب‌دهنده‌ای نصب کند که وانمود می‌کنند برنامه دیگری هستند یا اینکه داده‌هایی برای ردیابی شما جمع‌آوری می‌کنند. <ph name="BEGIN_LINK"/>درهرصورت نشان داده شود<ph name="END_LINK"/></translation>
 <translation id="776356972507701422">‏طبق قانونی در منطقه‌تان، Brave از شما می‌خواهد موتور جستجوی پیش‌فرضتان را انتخاب کنید. این موتورهای جستجو در منطقه شما پرطرفدار هستند و ترتیب نمایش آن‌ها تصادفی است.</translation>
 <translation id="963837307749850257">همه کاربران</translation>
+<translation id="1548867141525863761">‏افزودن امن «شناسه جبران خطای تطبیق» به «کیف پول Brave»</translation>
 <translation id="964050462028070434">مدیریت گذرواژه‌ها و گذرکلیدها…</translation>
 <translation id="964681140808832181">بله، می‌خواهم لغو کنم</translation>
 <translation id="969892804517981540">ساخت رسمی</translation>
@@ -4742,6 +4781,7 @@
 <translation id="988159990683914416">ساخت برنامه‌نویس</translation>
 <translation id="989988560359834682">ویرایش نشانی</translation>
 <translation id="990164307229195234"><ph name="DEVICE_NAME"/> (<ph name="DISAMBIGUATION_LABEL"/>)</translation>
+<translation id="990812705189376036">گواه درخت مرکل</translation>
 <translation id="992110854164447044">کارت مجازی با پنهان کردن کارت واقعی‌تان، از شما دربرابر کلاهبرداری‌های احتمالی محافظت می‌کند. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="992115559265932548"><ph name="MICROSOFT_ACTIVE_DIRECTORY"/></translation>
 <translation id="992256792861109788">صورتی</translation>

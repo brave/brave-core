@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">ხილული არეალი</translation>
 <translation id="2026367923222947564">სრული გვერდი</translation>
 <translation id="4218885227032158909">არჩეული არე</translation>
+<translation id="2586386106930448447">სქრინშოტის გადახედვა</translation>
+<translation id="7514365320538308">გადმოწერა</translation>
+<translation id="2743387203779672305">ბუფერში კოპირება</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">ნახვა Web Extensions Store-ში</translation>
 <translation id="3161744659507801211">გაფრთხილება: Brave ვერ უშლის ხელს გაფართოებებს თქვენს ბრაუზინგ ისტორიის ცვლასა.</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">დაწყება</translation>
 <translation id="2079545284768500474">გაუქმება</translation>
 <translation id="1533980864758658574">ახალი ფანჯარა შეიქმნა <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">ამ თემას ჩანართები არ ემთხვევა. სცადეთ სხვაგვარად აღწერა.</translation>
 <translation id="7985042437720138349">ეს ფუნქცია აგზავნის თქვენს ღია ტაბების მონაცემებს Leo-ში, Brave-ის AI-ს მხარდაჭერით ბრაუზერის ასისტენტი.</translation>
 <translation id="6165508094623778733">გაიგეთ მეტი</translation>
 <translation id="7557539689487606886">პრემიუმის გააქტიურება</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">დაასახელეთ კონტეინერი, როგორიცაა სამუშაო ან პერსონალური</translation>
 <translation id="4976989127264491396">შეცდომა: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">კონტეინერი არ მოიძებნა</translation>
+<translation id="6055154402239241620">ტრაფიკის კონტროლი</translation>
+<translation id="8134521925475508805">დააკონფიგურირეთ კონკრეტული საიტები კონკრეტულ კონტექსტში ავტომატურად გასახსნელად, რაც გამიჯნავს თქვენს ბრაუზინგის სესიებს. <ph name="BEGIN_LINK"/>გაიგეთ მეტი<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">ტრაფიკის კონტროლის ჩართვა</translation>
+<translation id="1358255827354528344">ახალი წესის დამატება</translation>
+<translation id="7183128985801806752">ტრაფიკის კონტროლის ახალი წესი</translation>
+<translation id="2474694032500407328">ტრაფიკის კონტროლის წესის ჩასწორება</translation>
+<translation id="5543417389274097206">წესის შექმნა</translation>
+<translation id="6532106788206463496">ცვლილებების შენახვა</translation>
+<translation id="1172800769374812685">წესის წაშლა</translation>
+<translation id="2389682807835777591">დარწმუნებული ხართ, რომ გსურთ წესის <ph name="RULE_LABEL"/> წაშლა?</translation>
+<translation id="4853129331778360252">შეიყვანეთ URL-ები სამართავად, რომ ყოველთვის კონკრეტულ ბრაუზინგის კონტექსტში გაიხსნას.</translation>
+<translation id="1173480005453148926">სამართავი URL-ები</translation>
+<translation id="6217532416180299470">შეიყვანეთ URL-ები ტრაფიკის კონტროლით სამართავად</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> ემთხვევა საიტს და მის ქვედომენებს; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> ემთხვევა ზუსტ საიტს; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> ემთხვევა ყველა საიტს; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> არის კომენტარი.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (და კიდევ <ph name="COUNT"/> URL)</translation>
+<translation id="3700798663085748181">წესის ჩართვა</translation>
+<translation id="2967480878853054068">არავალიდური URL ფილტრი</translation>
 <translation id="2263346047290834619">გამოიყენეთ ხის ჩანართები</translation>
 <translation id="5860254591544742609">ტიტულის ზოლის ჩვენება</translation>
 <translation id="4691131445504068802">დამალე სრულად, როდესაც მინიმიზებულია</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">განახლება</translation>
 <translation id="5334844597069022743">წყაროს ნახვა</translation>
 <translation id="4720556299488643018">გამოწერის გაუქმება</translation>
-<translation id="6532106788206463496">ცვლილებების შენახვა</translation>
 <translation id="4516904298421534459">ფილტრის სიები</translation>
 <translation id="4435215931544457255">დამატებითი პოპულარული ქომიუნითის სიები. გაითვალისწინეთ, რომ ძალიან ბევრი ფილტრის ჩართვა დააზიანებს ბრაუზერის მუშაობის სიჩქარეს.</translation>
 <translation id="802154636333426148">ჩამოტვირთვა ვერ მოხერხდა</translation>
@@ -611,6 +631,8 @@
 <translation id="509873765238158442">Microsoft Recall-ის დაბლოკვა</translation>
 <translation id="4763421121695677716">არ დაუშვათ Microsoft Windows-ის Recall ფუნქციამ ავტომატურად გადაიღოს ეკრანის სურათები Brave-ის გახსნილი ტაბებიდან.</translation>
 <translation id="1968895725257436430">მონაცემთა შეგროვება</translation>
+<translation id="5668852698659986622">სპონსორული რეკლამების ჩართვა</translation>
+<translation id="431194936581466649">დაეხმარეთ Brave-ს დამოუკიდებელი, მომხმარებელზე ორიენტირებული ვების შექმნის მისიაში სპონსორული რეკლამებით. რეკლამის ეფექტურობას კონფიდენციალურად ვზომავთ, თქვენი იდენტიფიცირების გარეშე.</translation>
 <translation id="1700052872056357670">წაშალეთ მონაცემები გასვლისას</translation>
 <translation id="216468847346280584">Brave რეკლამების მონაცემების წაშლა...</translation>
 <translation id="96212973142796240">Brave რეკლამების მონაცემები გასუფთავდა</translation>
@@ -986,4 +1008,12 @@
 <translation id="154702742922788359">ღია რეჟიმი</translation>
 <translation id="2249111429176737533">ჩანართების ფანჯარაში გახსნა</translation>
 <translation id="7022756207310403729">ბრაუზერში გახსნა</translation>
+<translation id="1916785651473363467">მორგებული პროფილის გამოსახულება</translation>
+<translation id="5336092064678832560">მორგებული გამოსახულების ატვირთვა</translation>
+<translation id="1062407476771304334">ჩანაცვლება</translation>
+<translation id="1428299461403073820">მორგებული პროფილის გამოსახულების ჩანაცვლება</translation>
+<translation id="7994453838803296517">მორგებული პროფილის გამოსახულების გადახედვა, არჩეული</translation>
+<translation id="6578040791557152233">მორგებული პროფილის გამოსახულების ატვირთვა</translation>
+<translation id="9222124079546967592">მორგებული პროფილის გამოსახულების წაშლა</translation>
+<translation id="6058660912941570282">Brave ვერ იყენებს ამ ფაილს. აირჩიეთ სხვა გამოსახულება და სცადეთ ხელახლა.</translation>
 </translationbundle>

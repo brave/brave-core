@@ -856,9 +856,11 @@
 <translation id="646023614746251785">បញ្ជាក់ទម្លោះ</translation>
 <translation id="6264944956989873014">បញ្ជាក់ការ​តភ្ជាប់</translation>
 <translation id="7067917728851842589">បញ្ជាក់ការផ្ញើ</translation>
+<translation id="2841837950101800123">ក្រុមហ៊ុនផ្តល់សេវាកម្ម</translation>
 <translation id="1114725160772317155">ស្ថានភាពក្រុមហ៊ុនផ្តល់សេវាកម្ម</translation>
 <translation id="2351357639951873714">បញ្ជាក់ការការពារ</translation>
 <translation id="7480044382160806610">បញ្ជាក់ការលែងការពារ</translation>
+<translation id="6830542010524256586">អះអាងការផ្លាស់ប្តូរ</translation>
 <translation id="8332923694292360653">ចំណាយ</translation>
 <translation id="3735740477244556633">តម្រៀបតាម</translation>
 <translation id="6484605214219822434">ពិនិត្យជំពូត</translation>
@@ -1397,8 +1399,10 @@
 <translation id="5503843345634715425">ប្រាក់ឆ្លងវិញ</translation>
 <translation id="1778601041100951971">ការការពារ <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">កំពុងដកការពារ <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">កំពុងផ្លាស់ប្តូរ <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> ត្រូវបានការពារ</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> ត្រូវបានដកការពារ</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> ត្រូវបានផ្លាស់ប្តូរ</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} more transaction pending.}
       other {{PENDING_TRANSACTIONS} more transactions pending.}
@@ -1837,14 +1841,18 @@
 <translation id="9086302186042011942">កំពុងធ្វើសមកម្ម</translation>
 <translation id="99991973626409495">ពិនិត្យផ្ទាល់</translation>
 <translation id="6779429520470417361">ពិនិត្យការដកការពារ</translation>
+<translation id="7861093868637278059">ពិនិត្យការផ្លាស់ប្តូរ</translation>
 <translation id="3114681061018999547">ការពារ</translation>
 <translation id="1564172583156967455">កំពុងដកការពារ</translation>
+<translation id="7040674372746105444">កំពុងផ្លាស់ប្តូរ</translation>
 <translation id="8897189056319316783">ការពារអ្នកជាន់ថ្នាក់</translation>
 <translation id="508249542337194541">ដកការពារ ZEC</translation>
+<translation id="3242332985109374549">ផ្លាស់ប្តូរ ZEC</translation>
 <translation id="3382275793825152362">មូលនិធិការពារ</translation>
 <translation id="617149752238892649">ដោះលែងមូលនិធិ</translation>
 <translation id="8631765320256788981">អ្នកកំពុងផ្ញើប្រាក់ពីគណនីថ្លារបស់អ្នកទៅគណនីការពាររបស់អ្នក។</translation>
 <translation id="3860364671495430495">អ្នកកំពុងផ្ញើប្រាក់ពីគណនីការពាររបស់អ្នក ទៅគណនីថ្លារបស់អ្នក។</translation>
+<translation id="9664108035970394">អ្នកកំពុងផ្ញើប្រាក់ពីគណនីមរតកការពាររបស់អ្នកទៅគណនីការពាររបស់អ្នក។</translation>
 <translation id="7144878232160441200">ព្យាយាមម្តងទៀត</translation>
 <translation id="4750109510113597688">ប្រតិបត្តិការនេះអាចបញ្ចូលនូវថ្លៃបង្កើតគណនី។</translation>
 <translation id="6201709949885884577">ចាំបាច់ត្រូវការពាក្យសម្ងាត់ដើម្បីធ្វើសកម្មភាពនេះ។</translation>
@@ -2198,7 +2206,7 @@
 <translation id="8151638057146502721">កំណត់រចនាសម្ព័ន្ធ</translation>
 <translation id="999273441077650169">ពណ៌គំរូមានលក្ខណៈតម្រូវឪ្យប្រើប្រាស់ល្អសម្រាប់ការងារ;<ph name="LINK_BEFORE"/>ស្វែងយល់បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Qwen VL 30B ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Alibaba Cloud ដើម្បី​ធ្វើការ​ដោយ​ប្រសិទ្ធភាព និង​អាច​អនុវត្ត​ក្នុង​ករណី​ផ្សេងៗជា​ច្រើន។ Qwen ត្រូវ​បាន​ដាក់​បញ្ចូល​ដោយ Brave តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាពផ្ទាល់​របស់​យើង។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល GLM-5.1 ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Zhipu AI ដើម្បី​ធ្វើការ​ដោយប្រសិទ្ធភាព និង​អាច​អនុវត្ត​ក្នុង​ករណី​ផ្សេងៗ​ជា​ច្រើន។ GLM-5.1 ត្រូវ​បាន​ដាក់បញ្ចូល​ដោយ NEAR តាមរយៈ​យ៉ាង​ទី​សុវត្ថិភាព​របស់​ពួកគេ។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល GLM-5.3 Flash ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Zhipu AI ដើម្បី​ធ្វើការ​ដោយប្រសិទ្ធភាព និង​អាច​អនុវត្ត​ក្នុង​ករណី​ផ្សេងៗ​ជា​ច្រើន។ GLM-5.3 Flash ត្រូវ​បាន​ដាក់បញ្ចូល​ដោយ NEAR តាមរយៈ​យ៉ាង​ទី​សុវត្ថិភាព​របស់​ពួកគេ។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">សួស្តី ខ្ញុំឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នកជួយប្រើប្រាស់បច្ចេកវិទ្យា AI របស់ Brave។ ខ្ញុំ​ដំណើរការដោយ Claude Instant ដែលជារ៉ូបូតបង្កើតដោយ Anthropic សម្រាប់ជជែកនិងដំណើរការអត្ថបទ។ Claude Instant ត្រូវបានដាក់ឲ្យដំណើរការដោយ Brave តាមរយៈហេដ្ឋារចនាសម្ព័ន្ធសុវត្ថិភាពផ្ទាល់ខ្លួន។<ph name="LINK_BEFORE"/>ស្វែងយល់បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់​បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Claude Haiku ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Anthropic ដើម្បី​បំពេញ​និង​ការ​បំពេញ​តាម​តម្រូវការ​ប្រារព្ធពិធី​និងកិច្ចការ​ការ​ប្រើប្រាស់​ត្រាំ​ដែល​ខ្ញុំ​មាន។ Claude Haiku ត្រូវ​បាន​ដាក់​បញ្ចូល​ដោយ Brave តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាព​ផ្ទាល់​របស់​យើង។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Claude Sonnet ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Anthropic ដើម្បី​បំពេញ​និង​ការ​បំពេញ​តាម​តម្រូវការ​ប្រារព្ធពិធី​និង​កិច្ចការ​ការ​ប្រើប្រាស់​ត្រាំ​ដែល​ខ្ញុំ​មាន។ Claude Sonnet ត្រូវ​បាន​ដាក់បញ្ចូល​ដោយ Brave តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាព​ផ្ទាល់​របស់​យើង។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
@@ -2320,6 +2328,8 @@
 <translation id="4370698775470316661">ការសន្ទនានេះវែងពេកហើយមិនអាចបន្ដបាននិងការកែប្រែជាអូនិតញឹងពបករណូដែលផ្ដល់ភាពម៉ានិតសម្រាប់ការសន្ទនាវែងល្អថ្លៃត្រសេញ។</translation>
 <translation id="4744144453035015075">កំពុងស្វែងរកតាមអ៊ីនធឺណិត</translation>
 <translation id="8548351747582087191">កំពុងស្វែងរកតាមអ៊ីនធឺណិតសម្រាប់ <ph name="SEARCH_TERMS"/>។</translation>
+<translation id="4395536726196773278">កំពុងស្វែងរកផ្ទាំងបើករបស់អ្នកសម្រាប់ "<ph name="QUERY"/>"…</translation>
+<translation id="4724926708866789382">គ្មានផ្ទាំងបើកណាដែលត្រូវនឹង "<ph name="QUERY"/>" ទេ។</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> បន្ថែម...</translation>
 <translation id="8103700533980268469">បិទសេចក្តីជូនដំណឹងនេះ</translation>
 <translation id="3417835166382867856">ស្វែងរកផ្ទាំង</translation>
@@ -2367,6 +2377,8 @@
 <translation id="443008484043213881">ឧបករណ៍</translation>
 <translation id="4343623396828510727">គេហទំព័រទាំងនេះបង្ហាញឧបករណ៍ដែល Leo អាចប្រើដើម្បីផ្ញើទិន្នន័យទៅ និងពីគេហទំព័រនេះ។ សូមកុំភ្ជាប់ ឬអនុម័តឧបករណ៍ទាំងនេះ ប្រសិនបើការសន្ទនានេះមានទិន្នន័យដែលអ្នកមិនចង់ឱ្យគេហទំព័រនេះឃើញ។</translation>
 <translation id="5021823940147712387">ដកឧបករណ៍ចេញ</translation>
+<translation id="8712279871321308580">ឧបករណ៍គេហទំព័រដែលមាន</translation>
+<translation id="3690996226559605619">ឧបករណ៍ដែលមាន (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">ការជាវទាំងអស់ត្រូវបានបន្តដោយស្វ័យប្រវត្តិ ប៉ុន្តែអាចត្រូវបានបោះបង់គ្រប់ពេលមុនពេលបន្ត។</translation>
 <translation id="5091223967610958">ចែករំលែក hostname នៃទំព័រដែលអ្នកកំពុងលើ (<ph name="HOST_NAME"/>) ដើម្បីជួយយើងឱ្យធ្វើឱ្យ Leo ឡើងតិចជាង។</translation>
 <translation id="8732450785281947197">ប្រើប្រាស់ឧបករណ៍ Leo AI</translation>
@@ -2405,6 +2417,7 @@
 <translation id="6397861830483632092">បើកផ្ទាំង…</translation>
 <translation id="802080272588201037">របាចំណាំ…</translation>
 <translation id="2716127283451902393">ប្រវត្តិ…</translation>
+<translation id="8888171900079152025">ថតឯកសារកន្លែងធ្វើការ</translation>
 <translation id="49269513399674318">ប្រើម៉ៃក្រូហ្វូន</translation>
 <translation id="3895031624234442305">តូមាត្រពិសេស</translation>
 <translation id="4572010449071015143">ចាប់ផ្តើមការសន្ទនាថ្មី</translation>
@@ -2438,8 +2451,11 @@
 <translation id="3397808797783614750">បើអ្នកអនុញ្ញាតឲ្យ AI រុករកដោយស្វ័យប្រវត្តិសម្រាប់អ្នក វាអាចបង្កជាផលវិបាកដល់ឯកជនភាព រូបិយបណ្ឌិត និងការប្រាស្រ័យតាមអ៊ីនធឺណិតរបស់អ្នក។ <ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">ការព្រមានសុវត្ថិភាព</translation>
 <translation id="6077070599873946984">Brave AI ត្រូវការការអនុញ្ញាតរបស់អ្នកសម្រាប់៖ <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI ចង់ប្រតិបត្តិ **<ph name="TOOL_NAME"/>** នៅលើ **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">ប្រតិបត្តិការបានរកឃើញថាអាចយ៉ាងមិនស្របជាមួយសំណើរបស់អ្នក៖</translation>
 <translation id="3927932062596804919">បដិសេធ</translation>
+<translation id="4191349941249805855">បង្ហាញអាគុយម៉ង់ឧបករណ៍</translation>
+<translation id="7237059533128264835">លាក់អាគុយម៉ង់ឧបករណ៍</translation>
 <translation id="4569155249847375786">បានផ្ទៀងផ្ទាត់</translation>
 <translation id="8200772114523450471">បន្ត</translation>
 <translation id="7607002721634913082">បាន​ផ្អាក</translation>
@@ -2545,7 +2561,7 @@
 <translation id="9173319813356700250">ដំណឹង</translation>
 <translation id="6543799171249004861">រូបថតដោយ <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="7978582287767542276">លុបគេហទំព័រដែលនេះនាំ</translation>
+<translation id="7978582287767542276">លុបផ្ទាំងផ្សាយពាណិជ្ជកម្មទំព័រថ្មី</translation>
 <translation id="466214682712474574">ចូលទៅក្នុងគណនី <ph name="PROVIDER"/> របស់អ្នកដើម្បីមើលសមតុល្យ</translation>
 <translation id="8332875111286275890">ចូលទៅមើលសមតុល្យ</translation>
 <translation id="5430001801813715388">រង្វាន់</translation>
@@ -2557,11 +2573,11 @@
 <translation id="4844370919312937270">បង្ហាញប្រអប់ស្វែងរកនៅក្នុងផ្ទាំងថ្មី</translation>
 <translation id="5088374130885640159">ជាមួយ <ph name="REWARDS_LINK_BEGIN"/>រង្វាន់ Brave<ph name="REWARDS_LINK_END"/>, អ្នកអាចរកប្រាក់បានសម្រាប់ការមើលការផ្សាយពាណិជ្ជកម្មទំព័រផ្ទាំងថ្មី។ <ph name="LEARN_MORE_LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LEARN_MORE_LINK_END"/>។</translation>
 <translation id="4100520468072294616">បង្ហាញផ្ទាំងផ្សាយពាណិជ្ជកម្មទំព័រថ្មី</translation>
-<translation id="4983925687993168579">ស្ថិតិ Brave</translation>
+<translation id="4983925687993168579">ស្ថិតិ</translation>
 <translation id="5009354496127441090">បង្ហាញគេហទំព័រដែលពេញនិយម</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">គេហទំព័រដែលនេះនាំជួយឱ្យ Brave នៅតែឥតគិតថ្លៃ។ ប្រសិនបើអ្នកប្រើ <ph name="SITE_NAME"/> អ្នកកំពុងគាំទ្របេសកកម្មរបស់ Brave។ បិទពួកវានៅពេលណាក៏បាន។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/>។</translation>
-<translation id="5810241219736298115">គេហទំព័រដែលនេះនាំជួយឱ្យ Brave នៅតែឥតគិតថ្លៃ។ ប្រសិនបើអ្នកប្រើពួកវា អ្នកកំពុងគាំទ្របេសកកម្មរបស់ Brave។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/>។</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">ផ្ទាំងផ្សាយពាណិជ្ជកម្មទំព័រថ្មីជួយឱ្យ Brave នៅតែឥតគិតថ្លៃ។ ប្រសិនបើអ្នកប្រើ <ph name="SITE_NAME"/> អ្នកកំពុងគាំទ្របេសកកម្មរបស់ Brave។ បិទវាបានគ្រប់ពេល។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/>។</translation>
+<translation id="5810241219736298115">ផ្ទាំងផ្សាយពាណិជ្ជកម្មទំព័រថ្មីជួយឱ្យ Brave នៅតែឥតគិតថ្លៃ។ ប្រសិនបើអ្នកប្រើវា អ្នកកំពុងគាំទ្របេសកកម្មរបស់ Brave។ <ph name="LINK_BEGIN"/>ស្វែងយល់បន្ថែម<ph name="LINK_END"/>។</translation>
 <translation id="4784802981241664605">ស្ថិតិ</translation>
 <translation id="5236080651083907980">ការហៅជាវីដេអូដែលបានអ៊ិនគ្រីបជាមួយ Brave ពិភាក្សា</translation>
 <translation id="2671474274417808910">ការហៅប្រកបដោយឯកជនភាពជាមុន</translation>
@@ -2720,6 +2736,7 @@
 <translation id="701087249209337256">នាំយកមាតិកាកម្មវិធីរុករករបស់អ្នកចាស់មកជាមួយ</translation>
 <translation id="142389341645668510">ប្ដូរ Brave តាមបំណង</translation>
 <translation id="112005628409144325">ធ្វើឱ្យបទពិសោធន៍រុករករបស់អ្នកមានលក្ខណៈផ្ទាល់ខ្លួន ជាមួយប្លង់ផ្ទាំង និងម៉ូដពណ៌ដែលអ្នកចូលចិត្ត។</translation>
+<translation id="4428982101636000516">ស្វែងរកជាមួយ Brave ឬវាយបញ្ចូល URL</translation>
 <translation id="7376367936988732808">ប្លង់ផ្ទាំង</translation>
 <translation id="4734965478015604180">ផ្ដេក</translation>
 <translation id="490375751687810070">បញ្ឈរ</translation>
@@ -2768,7 +2785,7 @@
 <translation id="745054660363064771">មិនអាច​ភ្ជាប់ទៅ​ទ្វេទីតាំងបានទេ</translation>
 <translation id="3936826714240735937">ជ្រើសរើសម៉ាស៊ីនបម្រើផ្សេង</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> មិនអាចភ្ជាប់ទៅម៉ាស៊ីនបម្រើ <ph name="REGION_NAME"/> បានទេ។ សូមព្យាយាមម្តងទៀត ឬជ្រើសរើសប្រទេសផ្សេងទៀត។</translation>
-<translation id="1776533911621317363">ចាប់ផ្តើមការសាកល្បងឥតគិតថ្លៃរយៈពេល 7 ថ្ងៃ</translation>
+<translation id="1776533911621317363">ចាប់ផ្តើមការសាកល្បងឥតគិតថ្លៃរយៈពេល 7 ថ្ងៃរបស់អ្នក</translation>
 <translation id="3357036723290257445">បានទិញ Brave VPN រួចហើយ?</translation>
 <translation id="8652175077544655965">បិទការកំណត់</translation>
 <translation id="5908163815855240493">ទៅកាន់ទីផ្សារសំខាន់</translation>
@@ -2780,11 +2797,13 @@
 <translation id="8416695199565594645">សូមធានាថាគណនីលើបណ្តាញ តាមរយៈ server proxy ដែលឲ្យភ្ជាប់និងមាតិកាដែល ត្រូវបានអនុញ្ញាត។</translation>
 <translation id="434523916398030617">ទាក់ទងអ្នកបច្ចេកទេសគាំទ្រ</translation>
 <translation id="1116694919640316211">អំពី</translation>
-<translation id="8998067240267949220">ភាពឯកជនបន្ថែម &amp; សុវត្ថិភាពតាមអនឡាញ</translation>
-<translation id="8666111144393179185">លាក់ពិធីការអ៊ីនធឺណិត (IP) របស់អ្នក &amp; ផ្លាស់ប្តូរទីតាំងរបស់អ្នក</translation>
-<translation id="8881997962573369342">ម៉ាស៊ីនមេរាប់រយនៅជុំវិញពិភពលោក</translation>
+<translation id="8998067240267949220">ចូលប្រើមាតិកាដែលអ្នកចូលចិត្តដោយគ្មានដែនកំណត់</translation>
+<translation id="8666111144393179185">ម៉ាស៊ីនមេរាប់រយនៅជុំវិញពិភពលោក</translation>
+<translation id="8881997962573369342">លាក់ IP របស់អ្នក &amp; ផ្លាស់ប្តូរទីតាំងរបស់អ្នកបានយ៉ាងងាយស្រួល</translation>
 <translation id="1513801084412881009">ល្បឿននៃការតភ្ជាប់យ៉ាងរហ័ស</translation>
-<translation id="6434859410115379558">ការពារឧបករណ៍រហូតដល់ 10 ដោយប្រើគម្រោងតែមួយ</translation>
+<translation id="6434859410115379558">គ្មានការកត់ត្រា ត្រួតពិនិត្យដោយឯករាជ្យ</translation>
+<translation id="4886431881864826294">ការជាវមួយគ្របដណ្តប់លើឧបករណ៍ 10 លើ desktop, Android, &amp; iOS</translation>
+<translation id="3649011006120934011">គ្មានការប្តេជ្ញាចិត្ត បោះបង់បានគ្រប់ពេល</translation>
 <translation id="1693568075761612600">បរាជ័យក្នុងការបង្កើតសំបុត្រគាំទ្រ សូមពិនិត្យការភ្ជាប់របស់អ្នក។</translation>
 <translation id="1407707415819020643">ជ្រើសម៉ាស៊ីនបម្រើរបស់អ្នក</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> ទីក្រុង - <ph name="SERVER_COUNT"/> ម៉ាស៊ីនបម្រើ</translation>

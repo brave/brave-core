@@ -66,6 +66,7 @@
 #include "ui/events/keycodes/keyboard_codes.h"
 #include "ui/gfx/geometry/point.h"
 #include "ui/views/controls/button/button.h"
+#include "ui/views/controls/button/md_text_button.h"
 #include "ui/views/controls/menu/menu_controller.h"
 #include "ui/views/controls/menu/menu_item_view.h"
 #include "ui/views/test/button_test_api.h"
@@ -644,7 +645,7 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // Returns the PSST location bar page action icon view for `target_browser`,
   // or nullptr if it can't be resolved.
   IconLabelBubbleView* GetPsstPageActionViewForBrowser(
-      Browser* target_browser) {
+      BrowserWindowInterface* target_browser) {
     BrowserView* const browser_view =
         BrowserView::GetBrowserViewForBrowser(target_browser);
     if (!browser_view || !browser_view->toolbar_button_provider()) {
@@ -659,7 +660,8 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // Navigates `otr_browser`'s active tab to a PSST-matching URL and verifies
   // that PSST is entirely absent: no tab helper, no infobar and no location bar
   // page action.
-  void ExpectPsstUnavailableInOffTheRecordBrowser(Browser* otr_browser) {
+  void ExpectPsstUnavailableInOffTheRecordBrowser(
+      BrowserWindowInterface* otr_browser) {
     ASSERT_TRUE(otr_browser);
     ASSERT_TRUE(otr_browser->GetProfile()->IsOffTheRecord());
 
@@ -1206,7 +1208,7 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 // show any PSST UI nor crash while setting up the tab's features.
 IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        NotAvailableInGuestProfile) {
-  Browser* const guest_browser = CreateGuestBrowser();
+  BrowserWindowInterface* const guest_browser = CreateGuestBrowser();
   ASSERT_TRUE(guest_browser);
   // The pref is on by default even where the feature can't run, so the profile
   // type is what has to be checked.

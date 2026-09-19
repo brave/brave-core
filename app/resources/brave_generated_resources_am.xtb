@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">የሚታይ ቦታ</translation>
 <translation id="2026367923222947564">ሙሉ ገጽ</translation>
 <translation id="4218885227032158909">የተመረጠ ቦታ</translation>
+<translation id="2586386106930448447">የስክሪንሾት ቅድመ እይታ</translation>
+<translation id="7514365320538308">አውርድ</translation>
+<translation id="2743387203779672305">ወደ ቅንጥብ ሰሌዳ ገልብጥ</translation>
 <translation id="4928988318462976765">የድረገጽ ተቀጥላ ማከማቻ</translation>
 <translation id="9181207987584064303">የድር ቅጥያዎችን መደብር ውስጥ ይመልከቱ።</translation>
 <translation id="3161744659507801211">ማስጠንቀቂያ፡ Brave ቅጥያዎች የእርስዎን የአሰሳ ታሪክ እንዳይመዘግቡ ሊያግድ አይችልም።</translation>
@@ -367,6 +370,7 @@
 <translation id="6847541693235449912">ሂሳብ</translation>
 <translation id="2079545284768500474">ቀልብስ</translation>
 <translation id="1533980864758658574">አዲስ መስኮት ወደ <ph name="TOPIC"/> ይዘጋል</translation>
+<translation id="530437350080973527">ከዚያ ርዕስ ጋር የተዛመደ ትር የለም። በተለየ መንገድ ለመግለጽ ይሞክሩ።</translation>
 <translation id="7985042437720138349">ይህ ባህሪ ስለሆኖች ዝርዝሮች ያስረክሳል፣ ሽኝጣው በ Leo ፣ የመሳሪያ ባህሪ።</translation>
 <translation id="6165508094623778733">በተጨማሪ ይወቁ</translation>
 <translation id="7557539689487606886">ፕሪሚየም አባል ይሁኑ</translation>
@@ -424,6 +428,23 @@
 <translation id="4328541188421002379">ስም ይሰጡ እንደ ሥራ ወይም የግል</translation>
 <translation id="4976989127264491396">ስህተት: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">መያዣ አልተገኘም</translation>
+<translation id="6055154402239241620">የትራፊክ ቁጥጥር</translation>
+<translation id="8134521925475508805">በእርስዎ የአሰሳ ክፍለ ጊዜዎች መካከል ልዩነት በመፍጠር በተወሰነ አውድ ውስጥ በራስ ሰር እንዲከፈቱ የተወሰኑ ጣቢያዎችን ያዋቅሩ። <ph name="BEGIN_LINK"/>የበለጠ ይወቁ<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">የትራፊክ ቁጥጥርን አንቃ</translation>
+<translation id="1358255827354528344">አዲስ ደንብ አክል</translation>
+<translation id="7183128985801806752">አዲስ የትራፊክ ቁጥጥር ደንብ</translation>
+<translation id="2474694032500407328">የትራፊክ ቁጥጥር ደንብን አርትዕ</translation>
+<translation id="5543417389274097206">ደንብ ፍጠር</translation>
+<translation id="6532106788206463496">ለውጦችን ያስቀምጡ</translation>
+<translation id="1172800769374812685">ደንብ ሰርዝ</translation>
+<translation id="2389682807835777591"><ph name="RULE_LABEL"/> የሚለውን ደንብ ለመሰረዝ እርግጠኛ ነዎት?</translation>
+<translation id="4853129331778360252">ለማስተዳደር እና ሁልጊዜ በተወሰነ የአሰሳ አውድ ውስጥ ለመክፈት ዩአርኤሎችን ያስገቡ።</translation>
+<translation id="1173480005453148926">ለማስተዳደር ዩአርኤሎች</translation>
+<translation id="6217532416180299470">በትራፊክ ቁጥጥር ለማስተዳደር ዩአርኤሎችን ያስገቡ</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> ጣቢያውን እና ንዑስ ጎራዎቹን ያዛምዳል፤ <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> ትክክለኛውን ጣቢያ ያዛምዳል፤ <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> ሁሉንም ጣቢያዎች ያዛምዳል፤ <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> አስተያየት ነው።</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (እና ተጨማሪ <ph name="COUNT"/> ዩአርኤሎች)</translation>
+<translation id="3700798663085748181">ደንብ አንቃ</translation>
+<translation id="2967480878853054068">ልክ ያልሆነ የዩአርኤል ማጣሪያ</translation>
 <translation id="2263346047290834619">የእንጋፋ ትሮችን ተጠቃሚ ያድርጉ</translation>
 <translation id="5860254591544742609">የርዕስ አሞሌ አሳይ</translation>
 <translation id="4691131445504068802">ሲቀነስ ሙሉ በሙሉ ደብቅ</translation>
@@ -531,7 +552,6 @@
 <translation id="6745592621698551453">አሁን አዘምን</translation>
 <translation id="5334844597069022743">የእይታ ምንጭ</translation>
 <translation id="4720556299488643018">ከደንበኝነት ምዝገባ መውጣት</translation>
-<translation id="6532106788206463496">ለውጦችን ያስቀምጡ</translation>
 <translation id="4516904298421534459">የማጣሪያ ዝርዝሮች</translation>
 <translation id="4435215931544457255">ተጨማሪ የታዋቂ ማህበረሰብ ዝርዝሮች። በጣም ብዙ ማጣሪያዎችን ማንቃት የአሰሳ ፍጥነትን እንደሚቀንስ ልብ ይበሉ።</translation>
 <translation id="802154636333426148">ማውረድ አልተሳካም</translation>
@@ -614,6 +634,8 @@
 <translation id="509873765238158442">የMicrosoft Recallን አግድ</translation>
 <translation id="4763421121695677716">የMicrosoft Windows ኮምፒዩተሮች ላይ ባሉ ሆም ትሮቷችን የእይታ እቃዎች ቶሎ ያጠናቀቃል</translation>
 <translation id="1968895725257436430">ውሂብ ማከማቸት</translation>
+<translation id="5668852698659986622">የተደገፉ ማስታወቂያዎችን አንቃ</translation>
+<translation id="431194936581466649">Brave ገለልተኛ የሆነ፣ ተጠቃሚን ቅድሚያ የሚሰጥ ድር ለመገንባት ያለውን ተልእኮ በተደገፉ ማስታወቂያዎች ይደግፉ። የማስታወቂያ አፈጻጸምን በግል እንለካለን፣ እርስዎን ሳንለይ።</translation>
 <translation id="1700052872056357670">ሲወጡ ውሂብን ያጽዱ</translation>
 <translation id="216468847346280584">የ Brave Ads ውሂብ አጽዳ...</translation>
 <translation id="96212973142796240">የ Brave ማስታወቂያዎች ውሂብ ጸድቷል</translation>
@@ -991,4 +1013,12 @@
 <translation id="154702742922788359">የክፈት አሰራር</translation>
 <translation id="2249111429176737533">በትር መፎቅ ውስጥ ክፈት</translation>
 <translation id="7022756207310403729">በአሳሽ ውስጥ ክፈት</translation>
+<translation id="1916785651473363467">ብጁ የፕሮፋይል ምስል</translation>
+<translation id="5336092064678832560">ብጁ ምስል ስቀል</translation>
+<translation id="1062407476771304334">ተካ</translation>
+<translation id="1428299461403073820">ብጁ የፕሮፋይል ምስል ተካ</translation>
+<translation id="7994453838803296517">ብጁ የፕሮፋይል ምስል ቅድመ እይታ፣ ተመርጧል</translation>
+<translation id="6578040791557152233">ብጁ የፕሮፋይል ምስል ስቀል</translation>
+<translation id="9222124079546967592">ብጁ የፕሮፋይል ምስል አስወግድ</translation>
+<translation id="6058660912941570282">Brave ይህን ፋይል መጠቀም አይችልም። ሌላ ምስል ይምረጡ እና እንደገና ይሞክሩ።</translation>
 </translationbundle>

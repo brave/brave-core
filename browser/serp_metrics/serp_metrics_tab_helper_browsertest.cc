@@ -794,7 +794,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
 #if !BUILDFLAG(IS_ANDROID)
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
                        DoNotCreateTabHelperForIncognitoProfile) {
-  Browser* incognito_browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser();
   ASSERT_TRUE(incognito_browser);
 
   SerpMetricsService* serp_metrics_service =
@@ -809,7 +809,7 @@ IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
 
 IN_PROC_BROWSER_TEST_F(SerpMetricsTabHelperTest,
                        DoNotCreateTabHelperForGuestProfile) {
-  Browser* guest_browser = CreateGuestBrowser();
+  BrowserWindowInterface* guest_browser = CreateGuestBrowser();
   ASSERT_TRUE(guest_browser);
 
   SerpMetricsService* serp_metrics_service =

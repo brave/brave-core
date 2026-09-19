@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_actions.h b/chrome/browser/ui/browser_actions.h
-index cda6bf3dfdcbc428d43d7e0cea6d2cab48798e05..45a78cf776c533e6dfca64d6fd6a7f92188bd093 100644
+index 5a490b4af2d90bebcc5c41a4ea23b8bc55e6d105..67d975685dc385ae577303e565a6c74162a1c956 100644
 --- a/chrome/browser/ui/browser_actions.h
 +++ b/chrome/browser/ui/browser_actions.h
-@@ -31,14 +31,14 @@ class BrowserActions {
+@@ -33,14 +33,14 @@ class BrowserActions {
    explicit BrowserActions(BrowserWindowInterface* bwi);
    BrowserActions(const BrowserActions&) = delete;
    BrowserActions& operator=(const BrowserActions&) = delete;
@@ -19,7 +19,7 @@ index cda6bf3dfdcbc428d43d7e0cea6d2cab48798e05..45a78cf776c533e6dfca64d6fd6a7f92
  
    // Registers a window-scoped action item.
    actions::ActionItem* RegisterAction(
-@@ -49,6 +49,7 @@ class BrowserActions {
+@@ -51,6 +51,7 @@ class BrowserActions {
    }
  
   private:

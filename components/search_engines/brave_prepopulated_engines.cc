@@ -89,7 +89,10 @@ PrepopulatedEngine ModifyEngineParams(const PrepopulatedEngine& engine,
           engine.type,
           engine.preconnect_to_search_url,
           engine.prefetch_likely_navigations,
-          id > 0 ? id : engine.id};
+          id > 0 ? id : engine.id,
+          engine.migrate_to_id,
+          engine.send_x_geo_header,
+          engine.regulatory_extensions};
 }
 
 }  // namespace

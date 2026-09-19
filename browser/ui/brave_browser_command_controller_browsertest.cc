@@ -157,7 +157,8 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
               value);
   }
 
-  void SetPurchasedUserForBraveVPN(Browser* browser, bool purchased) {
+  void SetPurchasedUserForBraveVPN(BrowserWindowInterface* browser,
+                                   bool purchased) {
     auto* service =
         brave_vpn::BraveVpnServiceFactory::GetForProfile(browser->GetProfile());
     ASSERT_TRUE(!!service);
@@ -173,7 +174,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
         ->OnPurchasedStateChanged(target_state, std::nullopt);
   }
 
-  void CheckBraveVPNCommands(Browser* browser) {
+  void CheckBraveVPNCommands(BrowserWindowInterface* browser) {
     // Only IDC_BRAVE_VPN_MENU command is changed based on purchased state.
     auto* command_controller = chrome::BrowserCommandController::From(browser);
     SetPurchasedUserForBraveVPN(browser, false);
@@ -203,7 +204,7 @@ class BraveBrowserCommandControllerTest : public InProcessBrowserTest {
     EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_BRAVE_VPN));
   }
 
-  void CheckBraveVPNCommandsDisabledByPolicy(Browser* browser) {
+  void CheckBraveVPNCommandsDisabledByPolicy(BrowserWindowInterface* browser) {
     auto* command_controller = chrome::BrowserCommandController::From(browser);
     SetPurchasedUserForBraveVPN(browser, false);
     EXPECT_FALSE(
@@ -340,7 +341,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   ui_test_utils::BrowserCreatedObserver browser_creation_observer;
   profiles::SwitchToGuestProfile(base::DoNothing());
 
-  Browser* guest_browser = browser_creation_observer.Wait();
+  BrowserWindowInterface* guest_browser = browser_creation_observer.Wait();
   DCHECK(guest_browser);
   EXPECT_TRUE(guest_browser->GetProfile()->IsGuestSession());
   auto* command_controller =
@@ -374,7 +375,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsEnableTestPrivateTorWindow) {
   ui_test_utils::BrowserCreatedObserver tor_browser_creation_observer;
   brave::NewOffTheRecordWindowTor(browser());
-  Browser* tor_browser = tor_browser_creation_observer.Wait();
+  BrowserWindowInterface* tor_browser = tor_browser_creation_observer.Wait();
   DCHECK(tor_browser);
   EXPECT_TRUE(tor_browser->GetProfile()->IsTor());
   auto* command_controller =

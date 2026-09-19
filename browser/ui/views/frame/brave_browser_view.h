@@ -92,7 +92,7 @@ class BraveBrowserView : public BrowserView,
                          public FocusModeController::Observer {
   METADATA_HEADER(BraveBrowserView, BrowserView)
  public:
-  explicit BraveBrowserView(Browser* browser);
+  explicit BraveBrowserView(BrowserWindowInterface* browser);
   BraveBrowserView(const BraveBrowserView&) = delete;
   BraveBrowserView& operator=(const BraveBrowserView&) = delete;
   ~BraveBrowserView() override;

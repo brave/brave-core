@@ -1,8 +1,8 @@
 diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs_strip/PinnedTabStripItemContextMenuCoordinator.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs_strip/PinnedTabStripItemContextMenuCoordinator.java
-index a15adb2ed5aeab5eae7bf157b45dd054ae1fef30..a8ce5df50f4a5092986fca14df248b40b67c6f96 100644
+index b9e1462a4e4c87845b39e8cc14f4f4aeb7b02808..ba055005757b97cf6dd68100c777ab9c2ec5b426 100644
 --- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs_strip/PinnedTabStripItemContextMenuCoordinator.java
 +++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs_strip/PinnedTabStripItemContextMenuCoordinator.java
-@@ -263,7 +263,7 @@ public class PinnedTabStripItemContextMenuCoordinator
+@@ -262,7 +262,7 @@ public class PinnedTabStripItemContextMenuCoordinator
                  profile.isOffTheRecord() ? null : TabGroupSyncServiceFactory.getForProfile(profile);
          CollaborationService collaborationService =
                  CollaborationServiceFactory.getForProfile(profile);

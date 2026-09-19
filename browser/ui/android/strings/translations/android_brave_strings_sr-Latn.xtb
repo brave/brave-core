@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Isključeno</translation>
 <translation id="59174027418879706">Uključeno</translation>
 <translation id="6920492760024499150">Današnje najbolje vesti u privatnom fidu, samo za vas.</translation>
-<translation id="3803728444598576153">Uključite Brave vesti i nikada ne propustite najnovije informacije</translation>
+<translation id="3803728444598576153">Uključite Brave vesti i nikada ne propustite najnoviju informaciju</translation>
 <translation id="7627131190984957214">Brave vesti su sponzorisane oglasima i sadrže privatne i anonimizovane oglase koji se poklapaju sa vašim uređajem.</translation>
-<translation id="7897050360583141319">Pratite omiljene izvore u jednom fidu. Samo otvorite karticu u Brave-u, skrolujte nadole i to je to! Brave vesti sadrže potpuno privatne i anonimizovane oglase.</translation>
+<translation id="7897050360583141319">Pratite omiljene izvore u jednom fidu. Samo otvorite karticu u Brave-u, skrolujte nadole i to je to!</translation>
 <translation id="1765217911817124376">Uključi Brave vesti</translation>
 <translation id="8981973962043893066">Pretražujte sajtove, teme ili RSS fidove</translation>
 <translation id="3225021799163709119">Popularno</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Doprinesite poboljšanju stabilnosti Brave-ovog proizvoda automatskim slanjem dijagnostičkih izveštaja kada Brave pregledač prekine sa radom ili se zamrzne.</translation>
 <translation id="7977176350719484850">Procenjeni sačuvani podaci</translation>
 <translation id="9008534313521214777">Procenjeno ušteđeno vreme</translation>
+<translation id="5668852698659986622">Omogući sponzorisane oglase</translation>
+<translation id="431194936581466649">Pomozite u podršci Brave-ove misije za izgradnju nezavisnog Veba usmerenog na korisnika pomoću sponzorisanih oglasa. Merimo učinak oglasa privatno, bez identifikovanja vas.</translation>
 <translation id="8347743943525229984">Aktiviraj Brave ankete</translation>
 <translation id="6022939994702081659">Omogućava Brave-u da prikazuje linkove za privatne ankete na stranici nove kartice. Ankete nam omogućavaju da kreiramo bolje funkcije i merimo efikasnost oglasnih kampanja zasnovanih na pregledaču.</translation>
 <translation id="7746496306508543965">Saznajte više o Brave anketama</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">Glavni meni</translation>
 <translation id="7002271985859760052">Akcije stranice</translation>
 <translation id="7104487676473617844">Sledeće stavke će biti prikazane u meniju samo kada ih trenutna otvorena stranica podržava.</translation>
-<translation id="4159764849281393303">Web aplikacija</translation>
 <translation id="8038539967102225446">Brave oglasi su stigli!</translation>
 <translation id="222883304157347087">(ovaj uređaj)</translation>
 <translation id="4157741509680155021">UREĐAJI U LANCU SINHRONIZACIJE</translation>
@@ -724,6 +725,8 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="1634828734222219955">Ukupno</translation>
 <translation id="7995708795274219641">Iznos + gas</translation>
 <translation id="2186011161688824046">Iznos + naknada</translation>
+<translation id="1118876217803190221">Nedovoljno sredstava</translation>
+<translation id="275990379543116961">Nedovoljno sredstava za gas</translation>
 <translation id="1950052789869821983">Transakcija</translation>
 <translation id="2304783958703511257">Napredna podešavanja</translation>
 <translation id="4220062530885628403">Jednokratni ključ</translation>

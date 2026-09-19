@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Uitgeschakeld</translation>
 <translation id="59174027418879706">Ingeschakeld</translation>
 <translation id="6920492760024499150">Het hoofdnieuws van vandaag in een persoonlijke feed, speciaal voor jou.</translation>
-<translation id="3803728444598576153">Schakel Brave Nieuws in en mis nooit een verhaal</translation>
+<translation id="3803728444598576153">Zet Brave News aan en blijf altijd op de hoogte</translation>
 <translation id="7627131190984957214">Brave News wordt mogelijk gemaakt door privé- en geanonimiseerde advertenties die aan je apparaat zijn aangepast.</translation>
-<translation id="7897050360583141319">Volg uw favoriete bronnen in één feed. Open een tabblad in Brave, scrol omlaag en… voilà!\nBrave News maakt gebruik van privé- en geanonimiseerde advertenties.</translation>
+<translation id="7897050360583141319">Volg uw favoriete bronnen in één feed. Open een tabblad in Brave, scrol omlaag en... voilà!</translation>
 <translation id="1765217911817124376">Brave-nieuws inschakelen</translation>
 <translation id="8981973962043893066">Zoek naar sites, onderwerpen of RSS-feeds</translation>
 <translation id="3225021799163709119">Populair</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Help de productstabiliteit van Brave te verbeteren door automatisch diagnostische rapporten te verzenden wanneer de Brave-browser crasht of vastloopt.</translation>
 <translation id="7977176350719484850">Geschatte hoeveelheid\ndata bespaard</translation>
 <translation id="9008534313521214777">Gem. bespaarde\ntijd</translation>
+<translation id="5668852698659986622">Schakel gesponsorde Ads in</translation>
+<translation id="431194936581466649">Help Brave's missie ondersteunen om een onafhankelijk, gebruikersgericht web te bouwen met gesponsorde Ads. We meten advertentieprestaties privé, zonder je te identificeren.</translation>
 <translation id="8347743943525229984">Brave-enquêtes toestaan</translation>
 <translation id="6022939994702081659">Hiermee sta je toe dat Brave links naar privé-enquêtes weergeeft op het nieuwe tabblad. Deze enquêtes helpen ons betere functies te ontwikkelen en de effectiviteit van advertentiecampagnes in de browser te meten.</translation>
 <translation id="7746496306508543965">Meer informatie over Brave-enquêtes</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">Hoofdmenu</translation>
 <translation id="7002271985859760052">Paginahandelingen</translation>
 <translation id="7104487676473617844">De volgende items zijn alleen zichtbaar in het menu als ze worden ondersteund door de momenteel geopende webpagina.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Brave Ads zijn hier!</translation>
 <translation id="222883304157347087">(dit apparaat)</translation>
 <translation id="4157741509680155021">APPARATEN IN SYNCHRONISATIEKETEN</translation>
@@ -720,6 +721,8 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1634828734222219955">Totaal</translation>
 <translation id="7995708795274219641">Bedrag + gas</translation>
 <translation id="2186011161688824046">Bedrag + vergoeding</translation>
+<translation id="1118876217803190221">Onvoldoende saldo</translation>
+<translation id="275990379543116961">Onvoldoende saldo voor gas</translation>
 <translation id="1950052789869821983">Transactie</translation>
 <translation id="2304783958703511257">Geavanceerde instellingen</translation>
 <translation id="4220062530885628403">Nonce</translation>

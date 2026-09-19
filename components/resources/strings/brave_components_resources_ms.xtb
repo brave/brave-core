@@ -864,9 +864,11 @@
 <translation id="646023614746251785">Sahkan pertukaran</translation>
 <translation id="6264944956989873014">Sahkan jambatan</translation>
 <translation id="7067917728851842589">Sahkan penghantaran</translation>
+<translation id="2841837950101800123">Pembekal</translation>
 <translation id="1114725160772317155">Status pembekal</translation>
 <translation id="2351357639951873714">Sahkan pelindungan</translation>
 <translation id="7480044382160806610">Sahkan nyahpelindungan</translation>
+<translation id="6830542010524256586">Sahkan migrasi</translation>
 <translation id="8332923694292360653">Belanja</translation>
 <translation id="3735740477244556633">Isih mengikut</translation>
 <translation id="6484605214219822434">Semak penyambung</translation>
@@ -1405,8 +1407,10 @@
 <translation id="5503843345634715425">Dikembalikan</translation>
 <translation id="1778601041100951971">Melindungi <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Sedang nyahpelindungan <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">Memigrasikan <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> telah dilindungi</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> telah dinyahpelindung</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> telah dimigrasikan</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} lagi transaksi belum selesai.}
       other {{PENDING_TRANSACTIONS} lagi transaksi belum selesai.}
@@ -1845,14 +1849,18 @@
 <translation id="9086302186042011942">Sedang disegerak</translation>
 <translation id="99991973626409495">Semak pelindung</translation>
 <translation id="6779429520470417361">Semak nyahpelindung</translation>
+<translation id="7861093868637278059">Semak migrasi</translation>
 <translation id="3114681061018999547">Sedang melindung</translation>
 <translation id="1564172583156967455">Sedang dinyahpelindung</translation>
+<translation id="7040674372746105444">Memigrasikan</translation>
 <translation id="8897189056319316783">Lindung ZEC</translation>
 <translation id="508249542337194541">Nyahpelindung ZEC</translation>
+<translation id="3242332985109374549">Migrasikan ZEC</translation>
 <translation id="3382275793825152362">Lindungi dana</translation>
 <translation id="617149752238892649">Lindungi dana</translation>
 <translation id="8631765320256788981">Anda sedang menghantar dana dari akaun telus ke akaun terlindung anda.</translation>
 <translation id="3860364671495430495">Anda sedang menghantar dana dari akaun terlindung ke akaun telus anda.</translation>
+<translation id="9664108035970394">Anda sedang menghantar dana dari akaun warisan terlindung ke akaun terlindung anda.</translation>
 <translation id="7144878232160441200">Cuba semula</translation>
 <translation id="4750109510113597688">Transaksi ini mungkin merangkumi yuran penciptaan akaun</translation>
 <translation id="6201709949885884577">Kata laluan diperlukan untuk mengambil tindakan ini.</translation>
@@ -2209,7 +2217,7 @@
 <translation id="8151638057146502721">Konfigurasi</translation>
 <translation id="999273441077650169">Model berubah secara dinamik untuk menggunakan yang terbaik bagi tugasan tersebut.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Qwen VL 30B, model ciptaan Alibaba Cloud yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. Qwen dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh GLM-5.1, model ciptaan Zhipu AI yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. GLM-5.1 dihoskan secara selamat oleh NEAR melalui infrastruktur peribadi yang boleh disahkan.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh GLM-5.3 Flash, model ciptaan Zhipu AI yang berprestasi tinggi dan sesuai untuk pelbagai kegunaan. GLM-5.3 Flash dihoskan secara selamat oleh NEAR melalui infrastruktur peribadi yang boleh disahkan.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hai, saya Leo. Saya pembantu AI oleh Brave. Saya dikuasakan oleh Claude Instant, model yang dicipta oleh Anthropic untuk tugas perbualan dan pemprosesan teks. Claude Instant dihoskan oleh Brave melalui infrastruktur selamat kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Haiku, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Haiku dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hai, saya Leo. Saya pembantu AI yang dihoskan sepenuhnya oleh Brave. Saya dikuasakan oleh Claude Sonnet, model ciptaan Anthropic untuk menjalankan tugasan perbualan dan pemprosesan teks. Claude Sonnet dihoskan secara selamat oleh Brave melalui infrastruktur kami sendiri.<ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
@@ -2331,6 +2339,8 @@
 <translation id="4370698775470316661">Perbualan ini terlalu panjang dan tidak boleh diteruskan. Mungkin terdapat model lain yang tersedia dengan ciri Leo yang mampu mengekalkan ketepatan untuk perbualan yang lebih panjang.</translation>
 <translation id="4744144453035015075">Membuat carian di web</translation>
 <translation id="8548351747582087191">Membuat carian di web untuk <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4395536726196773278">Membuat carian dalam tab terbuka anda untuk "<ph name="QUERY"/>"…</translation>
+<translation id="4724926708866789382">Tiada tab terbuka yang sepadan dengan "<ph name="QUERY"/>".</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> banyak lagi…</translation>
 <translation id="8103700533980268469">Tutup notis</translation>
 <translation id="3417835166382867856">Tab carian</translation>
@@ -2378,6 +2388,8 @@
 <translation id="443008484043213881">Alat</translation>
 <translation id="4343623396828510727">Tapak ini mendedahkan alat yang boleh digunakan oleh Leo untuk menghantar data ke dan dari tapak ini. Jangan lampirkan atau luluskan alat ini jika perbualan ini mengandungi data yang anda tidak mahu tapak ini lihat.</translation>
 <translation id="5021823940147712387">Alih keluar alat</translation>
+<translation id="8712279871321308580">Alat tapak web tersedia</translation>
+<translation id="3690996226559605619">Alat tersedia (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">Semua langganan dibaharui secara automatik tetapi boleh dibatalkan pada bila-bila masa sebelum dibaharui.</translation>
 <translation id="5091223967610958">Kongsi nama hos laman yang anda berada (<ph name="HOST_NAME"/>) untuk membantu kami menjadikan Leo lebih baik.</translation>
 <translation id="8732450785281947197">Alatan Leo AI</translation>
@@ -2416,6 +2428,7 @@
 <translation id="6397861830483632092">Buka tab…</translation>
 <translation id="802080272588201037">Penanda Buku…</translation>
 <translation id="2716127283451902393">Sejarah…</translation>
+<translation id="8888171900079152025">Folder ruang kerja</translation>
 <translation id="49269513399674318">Gunakan mikrofon</translation>
 <translation id="3895031624234442305">Model tersuai</translation>
 <translation id="4572010449071015143">Mulakan perbualan baharu</translation>
@@ -2449,8 +2462,11 @@
 <translation id="3397808797783614750">Membenarkan AI melayari secara automatik untuk anda boleh menyebabkan akibat berbahaya dan tidak diingini terhadap privasi anda, kewangan anda dan komunikasi dalam talian anda. <ph name="LINK_BEFORE"/>Ketahui lebih lanjut<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Amaran keselamatan</translation>
 <translation id="6077070599873946984">Brave AI memerlukan kebenaran anda untuk: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI ingin melaksanakan **<ph name="TOOL_NAME"/>** pada **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Operasi ini dikesan berkemungkinan tidak sejajar dengan permintaan anda:</translation>
 <translation id="3927932062596804919">Tolak</translation>
+<translation id="4191349941249805855">Paparkan argumen alat</translation>
+<translation id="7237059533128264835">Sembunyikan argumen alat</translation>
 <translation id="4569155249847375786">Disahkan</translation>
 <translation id="8200772114523450471">Pulih</translation>
 <translation id="7607002721634913082">Dijeda</translation>
@@ -2556,7 +2572,7 @@
 <translation id="9173319813356700250">BERITA</translation>
 <translation id="6543799171249004861">Gambar oleh <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">AI Leo</translation>
-<translation id="7978582287767542276">Buang tapak yang ditaja</translation>
+<translation id="7978582287767542276">Alih keluar iklan halaman tab baharu</translation>
 <translation id="466214682712474574">Log masuk ke akaun <ph name="PROVIDER"/> anda untuk melihat baki</translation>
 <translation id="8332875111286275890">Log masuk untuk melihat baki</translation>
 <translation id="5430001801813715388">GANJARAN</translation>
@@ -2568,11 +2584,11 @@
 <translation id="4844370919312937270">Tunjukkan widget carian dalam tab baru</translation>
 <translation id="5088374130885640159">Dengan <ph name="REWARDS_LINK_BEGIN"/>Ganjaran Brave<ph name="REWARDS_LINK_END"/>, anda boleh memperoleh ganjaran dengan melihat iklan Halaman Tab Baharu. <ph name="LEARN_MORE_LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">Paparkan iklan halaman tab baharu</translation>
-<translation id="4983925687993168579">Statistik Brave</translation>
+<translation id="4983925687993168579">Statistik</translation>
 <translation id="5009354496127441090">Tunjukkan laman utama</translation>
-<translation id="7705524343798198388">VPN Brave</translation>
-<translation id="2910653812138226931">Tapak yang ditaja membantu memastikan Brave kekal percuma. Jika anda menggunakan <ph name="SITE_NAME"/>, anda menyokong misi Brave. Nyahdayakannya pada bila-bila masa. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">Tapak yang ditaja membantu memastikan Brave kekal percuma. Jika anda menggunakannya, anda menyokong misi Brave. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Iklan halaman tab baharu membantu memastikan Brave kekal percuma. Jika anda menggunakan <ph name="SITE_NAME"/>, anda menyokong misi Brave. Nyahdayakannya pada bila-bila masa. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Iklan halaman tab baharu membantu memastikan Brave kekal percuma. Jika anda menggunakannya, anda menyokong misi Brave. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">STATS</translation>
 <translation id="5236080651083907980">Panggilan video yang disulitkan dengan Brave Talk</translation>
 <translation id="2671474274417808910">Panggilan Privasi Diutamakan</translation>
@@ -2732,6 +2748,7 @@
 <translation id="701087249209337256">Bawa bersama kandungan browser lama anda</translation>
 <translation id="142389341645668510">Sesuaikan Brave</translation>
 <translation id="112005628409144325">Peribadikan pengalaman melayari anda dengan susun atur tab dan mod warna yang anda gemari.</translation>
+<translation id="4428982101636000516">Cari dengan Brave atau taip URL</translation>
 <translation id="7376367936988732808">Susun atur tab</translation>
 <translation id="4734965478015604180">Mendatar</translation>
 <translation id="490375751687810070">Menegak</translation>
@@ -2780,7 +2797,7 @@
 <translation id="745054660363064771">Tidak dapat menyambung ke pelayan</translation>
 <translation id="3936826714240735937">Pilih pelayan lain</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> tidak dapat bersambung dengan pelayan <ph name="REGION_NAME"/>. Sila cuba semula atau pilih negara lain.</translation>
-<translation id="1776533911621317363">Mulakan percubaan percuma selama 7 hari</translation>
+<translation id="1776533911621317363">Mulakan percubaan percuma 7 hari anda</translation>
 <translation id="3357036723290257445">Sudah membeli Brave VPN?</translation>
 <translation id="8652175077544655965">Tutup tetapan</translation>
 <translation id="5908163815855240493">Pergi ke utama</translation>
@@ -2792,11 +2809,13 @@
 <translation id="8416695199565594645">Memastikan trafik dihalakan melalui pelayan proksi khusus untuk membolehkan akses kepada kandungan/laman yang biasanya disekat atau perkhidmatan pihak ketiga.</translation>
 <translation id="434523916398030617">Hubungi sokongan teknikal</translation>
 <translation id="1116694919640316211">Mengenai</translation>
-<translation id="8998067240267949220">Privasi &amp; keselamatan dalam talian tambahan</translation>
-<translation id="8666111144393179185">Sembunyikan IP anda &amp; ubah lokasi anda</translation>
-<translation id="8881997962573369342">Ratusan pelayan di seluruh dunia</translation>
+<translation id="8998067240267949220">Akses kandungan kegemaran anda tanpa had</translation>
+<translation id="8666111144393179185">Ratusan pelayan di seluruh dunia</translation>
+<translation id="8881997962573369342">Mudah sembunyikan IP anda &amp; ubah lokasi anda</translation>
 <translation id="1513801084412881009">Kelajuan sambungan sepantas kilat</translation>
-<translation id="6434859410115379558">Lindungi hingga 10 peranti dengan satu pelan</translation>
+<translation id="6434859410115379558">Tiada pengelogan, diaudit secara independen</translation>
+<translation id="4886431881864826294">Satu langganan meliputi 10 peranti merentasi desktop, Android, &amp; iOS</translation>
+<translation id="3649011006120934011">Tiada komitmen, batal pada bila-bila masa</translation>
 <translation id="1693568075761612600">Gagal mencipta tiket sokongan, semak sambungan anda.</translation>
 <translation id="1407707415819020643">Pilih pelayan anda</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> bandar - <ph name="SERVER_COUNT"/> pelayan</translation>

@@ -112,6 +112,9 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="3114478090884951591">Nähtav ala</translation>
 <translation id="2026367923222947564">Terve leht</translation>
 <translation id="4218885227032158909">Valitud ala</translation>
+<translation id="2586386106930448447">Ekraanipildi eelvaade</translation>
+<translation id="7514365320538308">Allalaadimine</translation>
+<translation id="2743387203779672305">Kopeeri lõikelauale</translation>
 <translation id="4928988318462976765">Veebilaienduste pood</translation>
 <translation id="9181207987584064303">Kuva veebilaienduste poes</translation>
 <translation id="3161744659507801211">Hoiatus. Brave ei saa takistada laiendustel teie sirvimisajalugu salvestada.</translation>
@@ -364,6 +367,7 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="6847541693235449912">Mine</translation>
 <translation id="2079545284768500474">Võta tagasi</translation>
 <translation id="1533980864758658574">Uus aken on loodud <ph name="TOPIC"/>jaoks</translation>
+<translation id="530437350080973527">Ükski vaheleht ei vastanud sellele teemale. Proovi seda teisiti kirjeldada.</translation>
 <translation id="7985042437720138349">See funktsioon saadab andmed teie avatud vahekaartide kohta Brave'i tehisintellektipõhisele brauseri assistendile Leo.</translation>
 <translation id="6165508094623778733">Loe lisaks</translation>
 <translation id="7557539689487606886">Telli Premium</translation>
@@ -421,6 +425,23 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="4328541188421002379">Andke ümbrisele nimi, näiteks Töö või Isiklik</translation>
 <translation id="4976989127264491396">Tõrge: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Ümbrist ei leitud</translation>
+<translation id="6055154402239241620">Liikluse juhtimine</translation>
+<translation id="8134521925475508805">Seadista konkreetsed saidid avanema automaatselt kindlas kontekstis, eraldades sellega sirvimisseansid. <ph name="BEGIN_LINK"/>Loe lähemalt<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Luba liikluse juhtimine</translation>
+<translation id="1358255827354528344">Lisa uus reegel</translation>
+<translation id="7183128985801806752">Uus liikluse juhtimise reegel</translation>
+<translation id="2474694032500407328">Muuda liikluse juhtimise reeglit</translation>
+<translation id="5543417389274097206">Loo reegel</translation>
+<translation id="6532106788206463496">Salvesta muudatused</translation>
+<translation id="1172800769374812685">Kustuta reegel</translation>
+<translation id="2389682807835777591">Oled kindel, et soovid reegli <ph name="RULE_LABEL"/> kustutada?</translation>
+<translation id="4853129331778360252">Sisesta URL-id, mida hallata ja alati avada kindlas sirvimiskontekstis.</translation>
+<translation id="1173480005453148926">Hallatavad URL-id</translation>
+<translation id="6217532416180299470">Sisesta URL-id, mida hallata liikluse juhtimisega</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> sobitab saidi ja selle alamdomeenid; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> sobitab täpse saidi; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> sobitab kõik saidid; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> on kommentaar.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (ja veel <ph name="COUNT"/> URL-i)</translation>
+<translation id="3700798663085748181">Luba reegel</translation>
+<translation id="2967480878853054068">Sobimatu URL-i filter</translation>
 <translation id="2263346047290834619">Kasuta puustiilis vahelehti</translation>
 <translation id="5860254591544742609">Kuva pealkirja riba</translation>
 <translation id="4691131445504068802">Peida täielikult, kui on minimeeritud</translation>
@@ -528,7 +549,6 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="6745592621698551453">Värskenda kohe</translation>
 <translation id="5334844597069022743">Kuva allikas</translation>
 <translation id="4720556299488643018">Tühista tellimus</translation>
-<translation id="6532106788206463496">Salvesta muudatused</translation>
 <translation id="4516904298421534459">Filtriloendid</translation>
 <translation id="4435215931544457255">Kogukonnas populaarsed lisaloendid. Arvestage, et liiga paljude filtrite lubamine vähendab sirvimiskiirust.</translation>
 <translation id="802154636333426148">Allalaadimine ebaõnnestus</translation>
@@ -611,6 +631,8 @@ Saate muuta ka hiljem veebilehel <ph name="SETTINGS_EXTENIONS_LINK"/>.</translat
 <translation id="509873765238158442">Blokeeri Microsofti tagasikutsumine</translation>
 <translation id="4763421121695677716">Blokeerige Microsoft Windowsi arvutite Recall-funktsiooni luba teha automaatselt ekraanipilte avatud Brave'i vahelehtedest.</translation>
 <translation id="1968895725257436430">Andmete kogumine</translation>
+<translation id="5668852698659986622">Luba sponsoreeritud reklaamid</translation>
+<translation id="431194936581466649">Aita toetada Brave'i missiooni luua sõltumatu, kasutajakeskne veeb sponsoreeritud reklaamidega. Me mõõdame reklaamide toimivust privaatselt, sind tuvastamata.</translation>
 <translation id="1700052872056357670">Kustuta väljumisel andmed</translation>
 <translation id="216468847346280584">Kustuta Brave Adsi andmed...</translation>
 <translation id="96212973142796240">Brave reklaamide andmed on kustutatud</translation>
@@ -992,4 +1014,12 @@ Loe Brave'i plaane Manifest V2 jaoks <ph name="BEGIN_LINK"/>siit<ph name="END_LI
 <translation id="154702742922788359">Ava režiim</translation>
 <translation id="2249111429176737533">Ava vahelehtedega aknas</translation>
 <translation id="7022756207310403729">Ava brauseris</translation>
+<translation id="1916785651473363467">Kohandatud profiilipilt</translation>
+<translation id="5336092064678832560">Laadi üles kohandatud pilt</translation>
+<translation id="1062407476771304334">Asenda</translation>
+<translation id="1428299461403073820">Asenda kohandatud profiilipilt</translation>
+<translation id="7994453838803296517">Kohandatud profiilipildi eelvaade, valitud</translation>
+<translation id="6578040791557152233">Laadi üles kohandatud profiilipilt</translation>
+<translation id="9222124079546967592">Eemalda kohandatud profiilipilt</translation>
+<translation id="6058660912941570282">Brave ei saa seda faili kasutada. Vali teine pilt ja proovi uuesti.</translation>
 </translationbundle>

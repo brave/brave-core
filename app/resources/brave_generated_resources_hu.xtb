@@ -112,6 +112,9 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="3114478090884951591">Látható terület</translation>
 <translation id="2026367923222947564">Teljes oldal</translation>
 <translation id="4218885227032158909">Kiválasztott terület</translation>
+<translation id="2586386106930448447">Képernyőkép előnézete</translation>
+<translation id="7514365320538308">Letöltés</translation>
+<translation id="2743387203779672305">Másolás vágólapra</translation>
 <translation id="4928988318462976765">Webes Kiterjesztések Áruháza</translation>
 <translation id="9181207987584064303">Megtekintés a Webes Kiterjesztések Áruházában</translation>
 <translation id="3161744659507801211">Figyelem: a Brave nem tudja megelőzni, hogy a bővítmények rögzítsék böngészési előzményeidet.</translation>
@@ -364,6 +367,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="6847541693235449912">Ugrás</translation>
 <translation id="2079545284768500474">Visszavonás</translation>
 <translation id="1533980864758658574">Új ablak létrehozása a <ph name="TOPIC"/>számára.</translation>
+<translation id="530437350080973527">Egyetlen lap sem felelt meg annak a témának. Próbálja meg másképp megfogalmazni.</translation>
 <translation id="7985042437720138349">Ez a funkció adatokat küld a megnyitott lapokról a Leónak, a Brave mesterséges intelligenciával rendelkező böngészőasszisztensének.</translation>
 <translation id="6165508094623778733">Tudj meg többet</translation>
 <translation id="7557539689487606886">Prémium előfizetés</translation>
@@ -421,6 +425,23 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="4328541188421002379">Adjon a konténerlapnak egy nevet, például Munka vagy Személyes</translation>
 <translation id="4976989127264491396">Hiba: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">A konténerlap nem található</translation>
+<translation id="6055154402239241620">Forgalomvezérlés</translation>
+<translation id="8134521925475508805">Beállíthatja, hogy bizonyos oldalak automatikusan egy adott kontextusban nyíljanak meg, elkülönítve ezzel a böngészési munkameneteit. <ph name="BEGIN_LINK"/>További információ<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Forgalomvezérlés engedélyezése</translation>
+<translation id="1358255827354528344">Új szabály hozzáadása</translation>
+<translation id="7183128985801806752">Új forgalomvezérlési szabály</translation>
+<translation id="2474694032500407328">Forgalomvezérlési szabály szerkesztése</translation>
+<translation id="5543417389274097206">Szabály létrehozása</translation>
+<translation id="6532106788206463496">Módosítások mentése</translation>
+<translation id="1172800769374812685">Szabály törlése</translation>
+<translation id="2389682807835777591">Biztosan törölni szeretné a következő szabályt: <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Adjon meg URL-eket, amelyeket kezelni szeretne és mindig egy adott böngészési kontextusban nyíljanak meg.</translation>
+<translation id="1173480005453148926">Kezelendő URL-ek</translation>
+<translation id="6217532416180299470">Adjon meg URL-eket a forgalomvezérléssel való kezeléshez</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> megfelel az oldalnak és az aldomainjeinek; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> pontosan az oldalnak felel meg; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> minden oldalnak megfelel; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> egy megjegyzés.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (és további <ph name="COUNT"/> URL)</translation>
+<translation id="3700798663085748181">Szabály engedélyezése</translation>
+<translation id="2967480878853054068">Érvénytelen URL-szűrő</translation>
 <translation id="2263346047290834619">Fastruktúrás lapok használata</translation>
 <translation id="5860254591544742609">Címsor mutatása</translation>
 <translation id="4691131445504068802">Teljes elrejtés minimalizáláskor</translation>
@@ -528,7 +549,6 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="6745592621698551453">Frissítés most</translation>
 <translation id="5334844597069022743">Forrás megtekintése</translation>
 <translation id="4720556299488643018">Leiratkozás</translation>
-<translation id="6532106788206463496">Módosítások mentése</translation>
 <translation id="4516904298421534459">Szűrőlisták</translation>
 <translation id="4435215931544457255">További népszerű közösségi listák. Vegye figyelembe, hogyha túl sok szűrőt engedélyez, az lassíthatja a böngészőt.</translation>
 <translation id="802154636333426148">Nem sikerült a letöltés</translation>
@@ -611,6 +631,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="509873765238158442">A Microsoft Recall blokkolása</translation>
 <translation id="4763421121695677716">Megakadályozza, hogy a Microsoft Windows Recall funkció automatikusan képernyőképeket készítsen a megnyitott Brave lapokról.</translation>
 <translation id="1968895725257436430">Adatgyűjtés</translation>
+<translation id="5668852698659986622">Szponzorált hirdetések engedélyezése</translation>
+<translation id="431194936581466649">Támogassa a Brave küldetését, hogy egy független, felhasználó-központú webet építsen a szponzorált hirdetésekkel. A hirdetések teljesítményét privát módon mérjük, anélkül, hogy azonosítanánk Önt.</translation>
 <translation id="1700052872056357670">Adatok törlése kilépéskor</translation>
 <translation id="216468847346280584">A Brave hirdetési adatok törlése...</translation>
 <translation id="96212973142796240">Brave hirdetések adatai törölve</translation>
@@ -993,4 +1015,12 @@ Valamennyi kérés egy anonim proxy szerveren keresztül kerül továbbításra,
 <translation id="154702742922788359">Megnyitási mód</translation>
 <translation id="2249111429176737533">Megnyitás lapozható ablakban</translation>
 <translation id="7022756207310403729">Megnyitás böngészőben</translation>
+<translation id="1916785651473363467">Egyéni profilkép</translation>
+<translation id="5336092064678832560">Egyéni kép feltöltése</translation>
+<translation id="1062407476771304334">Csere</translation>
+<translation id="1428299461403073820">Egyéni profilkép cseréje</translation>
+<translation id="7994453838803296517">Egyéni profilkép előnézete, kiválasztva</translation>
+<translation id="6578040791557152233">Egyéni profilkép feltöltése</translation>
+<translation id="9222124079546967592">Egyéni profilkép eltávolítása</translation>
+<translation id="6058660912941570282">A Brave nem tudja használni ezt a fájlt. Válasszon másik képet, és próbálja újra.</translation>
 </translationbundle>

@@ -4,6 +4,7 @@
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{<ph name="NUM_WEEKS_ONE"/> 星期前建立}other{<ph name="NUM_WEEKS_MANY"/> 星期前建立}}</translation>
 <translation id="1063300264396686489">自動開啟其他裝置建立的分頁群組</translation>
 <translation id="1075622780330595106">您有 <ph name="NUMBER_OF_TABS"/> 個分頁最近沒有使用過。要關閉這些分頁嗎？</translation>
+<translation id="1760197532822135980">在其他應用程式中取得 Brave 建議</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{<ph name="NUM_YEARS_ONE"/> 年前建立}other{<ph name="NUM_YEARS_MANY"/> 年前建立}}</translation>
 <translation id="1137385688780024041">{DAY_COUNT,plural, =1{閒置的分頁和群組將於 1 個月後關閉}other{閒置的分頁和群組將於 <ph name="MONTH_COUNT_MANY"/> 個月後關閉}}</translation>
 <translation id="1173894706177603556">重新命名</translation>
@@ -22,12 +23,14 @@
 <translation id="1501480321619201731">刪除群組</translation>
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> 個閒置項目}other{<ph name="TABS_COUNT_MANY"/> 個閒置項目}}</translation>
 <translation id="1568067597247500137">將單一網站靜音</translation>
+<translation id="1639330215535800445">{TAB_COUNT,plural, =1{將分頁向下移}other{將分頁向下移}}</translation>
 <translation id="1645759014353344461">已將 <ph name="TABS_COUNT_MANY"/> 個分頁加入群組</translation>
 <translation id="1657719826150349398">下移分頁</translation>
 <translation id="1670942869417022142">靜咗音</translation>
 <translation id="1697284962337958118">新增至</translation>
 <translation id="1713541401465507417">關閉所有分頁和群組</translation>
 <translation id="1738346536511908887">{TAB_GROUPS_COUNT,plural, =1{<ph name="TAB_GROUPS_COUNT_ONE"/> 個分頁群組已無法使用}other{<ph name="TAB_GROUPS_COUNT_MANY"/> 個分頁群組已無法使用}}</translation>
+<translation id="1759122978835002237">將分頁群組向上移</translation>
 <translation id="176485176228926164"><ph name="BEGIN_LINK1"/>瞭解詳情<ph name="END_LINK1"/></translation>
 <translation id="1828808367831369073">已將 <ph name="TABS_COUNT_ONE"/> 個分頁分組</translation>
 <translation id="1844381456014878100">閒置 7 天後</translation>
@@ -44,6 +47,7 @@
 <translation id="6086127758480584723">{INCOGNITO_TABS_COUNT,plural, =1{你可以在「最近開啟的分頁」和「分頁群組」部分重新開啟已關閉的分頁和群組。你將無法查看無痕式分頁。}other{你可以在「最近開啟的分頁」和「分頁群組」部分重新開啟已關閉的分頁和群組。你將無法查看 # 個無痕式分頁。}}</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{將單一網站取消靜音}other{將多個網站取消靜音}}</translation>
 <translation id="2162620598375156287">在 <ph name="SOURCE_WEBSITE"/> 上現售 <ph name="CURRENT_PRICE"/></translation>
+<translation id="2164232689984783657">將分頁群組向下移</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{將分頁移出群組}other{將分頁移出群組}}</translation>
 <translation id="2271452184061378400">分頁群組會儲存在這裡</translation>
 <translation id="2277224997687551299">編輯群組名稱</translation>
@@ -130,7 +134,6 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{將分頁移至新視窗}other{將分頁移至其他視窗}}</translation>
 <translation id="5073204694187207510">隱藏全螢幕網格</translation>
 <translation id="5076161749301278626">要查看商店評論嗎？</translation>
-<translation id="5093447877601682598">傳送有關分頁列的意見</translation>
 <translation id="5161254044473106830">必須提供標題</translation>
 <translation id="5204584298075822291">收合分頁</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave 會在 <ph name="AUTO_DELETE_DELAY_ONE"/> 個月後自動關閉閒置的分頁和分頁群組。你可在設定中變更這項設定。}other{Brave 會在 <ph name="AUTO_DELETE_DELAY_MANY"/> 個月後自動關閉閒置的分頁和分頁群組。你可在設定中變更這項設定。}}</translation>
@@ -194,6 +197,7 @@
 <translation id="7369451074646620503">「<ph name="TAB_GROUP_NAME"/>」分頁群組已無法使用</translation>
 <translation id="7402375256128852434">新增最近開啟的分頁</translation>
 <translation id="7452985128687107478">分頁群組會自動儲存並同步至所有裝置</translation>
+<translation id="746137824927359035">{TAB_COUNT,plural, =1{將分頁向上移}other{將分頁向上移}}</translation>
 <translation id="747459581954555080">全部還原</translation>
 <translation id="7489558427602531799">將分頁群組向右移</translation>
 <translation id="7501728912575021674">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> 個項目}other{<ph name="TABS_COUNT_MANY"/> 個項目}}</translation>
@@ -223,6 +227,7 @@
 <translation id="805809603610022708">{TABS_COUNT,plural, =1{將分頁加入群組}other{將分頁加入群組}}</translation>
 <translation id="8138067144082174140">閒置 14 天後</translation>
 <translation id="8153873338998959464">{NUMBER_OF_TABS,plural, =1{展開有 <ph name="TABS_COUNT_ONE"/> 個分頁嘅「<ph name="TITLE_OF_GROUP"/>」分頁群組，顏色係<ph name="COLOR_NAME"/>。}other{展開有 <ph name="TABS_COUNT_MANY"/> 個分頁嘅「<ph name="TITLE_OF_GROUP"/>」分頁群組，顏色係<ph name="COLOR_NAME"/>。}}</translation>
+<translation id="8172214054247281626">分享瀏覽資料 (例如最近的瀏覽記錄)，以取得所選應用程式的建議。有關資料會在裝置上安全處理。</translation>
 <translation id="8195186926670288294">{TABS_COUNT,plural, =1{取消固定單一分頁}other{取消固定多個分頁}}</translation>
 <translation id="8205266828577616993">將分頁上移</translation>
 <translation id="8207688828622594111">{NUM_MINS,plural, =1{<ph name="NUM_MINS_ONE"/> 分鐘前更新}other{<ph name="NUM_MINS_MANY"/> 分鐘前更新}}</translation>

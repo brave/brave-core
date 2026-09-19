@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">已停用</translation>
 <translation id="59174027418879706">已启用</translation>
 <translation id="6920492760024499150">私密的今日热门新闻，专为您打造。</translation>
-<translation id="3803728444598576153">打开 Brave News，别错过任何一个故事</translation>
+<translation id="3803728444598576153">打开 Brave 新闻，别错过任何一个故事</translation>
 <translation id="7627131190984957214">Brave 新闻有广告支持，为您的设备匹配私密的匿名广告。</translation>
-<translation id="7897050360583141319">在单个提要中跟踪您最喜欢的来源。在 Brave 中打开一个标签，向下滚动，然后……就可以了！\nBrave News 支持私人匿名投放广告。</translation>
+<translation id="7897050360583141319">在单个提要中跟踪您最喜欢的来源。在 Brave 中打开一个标签，向下滚动，然后……就可以了！</translation>
 <translation id="1765217911817124376">开启 Brave 新闻</translation>
 <translation id="8981973962043893066">搜索网站、主题或 RSS 源</translation>
 <translation id="3225021799163709119">热门</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Brave 浏览器崩溃或无响应时自动发送诊断报告，帮助提高 Brave\u2019s 产品稳定性。</translation>
 <translation id="7977176350719484850">预计\n节省的数据</translation>
 <translation id="9008534313521214777">预计节省的\n时间</translation>
+<translation id="5668852698659986622">启用赞助广告</translation>
+<translation id="431194936581466649">通过赞助广告帮助支持 Brave 构建独立、以用户为先的网络的使命。我们以私密方式衡量广告效果，不会识别您的身份。</translation>
 <translation id="8347743943525229984">允许 Brave 进行调查</translation>
 <translation id="6022939994702081659">允许 Brave 在新标签页中显示隐私调查链接。这些调查可以帮助我们开发更好的功能，以及衡量浏览器广告活动的有效性。</translation>
 <translation id="7746496306508543965">了解有关 Brave 调查的更多信息</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">主菜单</translation>
 <translation id="7002271985859760052">页面操作</translation>
 <translation id="7104487676473617844">以下项目仅在当前打开的网页支持时才会在菜单中显示。</translation>
-<translation id="4159764849281393303">网页应用</translation>
 <translation id="8038539967102225446">Brave 的广告在这里！</translation>
 <translation id="222883304157347087">（此设备）</translation>
 <translation id="4157741509680155021">同步链上的设备</translation>
@@ -723,6 +724,8 @@
 <translation id="1634828734222219955">总量</translation>
 <translation id="7995708795274219641">数量 + Gas</translation>
 <translation id="2186011161688824046">金额 + 费用</translation>
+<translation id="1118876217803190221">余额不足</translation>
+<translation id="275990379543116961">gas 资金不足</translation>
 <translation id="1950052789869821983">交易</translation>
 <translation id="2304783958703511257">高级设置</translation>
 <translation id="4220062530885628403">随机数</translation>

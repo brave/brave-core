@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Sininen teema</translation>
 <translation id="1070329623210597193">Tiedostot, jotka sivusto voi katsella tai muokata</translation>
 <translation id="1074758928858737435">Voit pyytää sivustojen tietokoneversiota</translation>
+<translation id="1760197532822135980">Saa Brave-ehdotuksia muissa sovelluksissa</translation>
 <translation id="1109482864356262001">Liike- tai valoantureita edellyttävät ominaisuudet eivät toimi</translation>
 <translation id="6670155282615872564">Näillä ehdotuksilla saat Bravesta mahdollisimman paljon irti</translation>
 <translation id="113098737392899175">Siirry sivuilla tekstikohdistimen avulla, kun näppäimistö on yhdistetty</translation>
@@ -83,6 +84,7 @@
 <translation id="1818308510395330587">Laita kamera päälle myös <ph name="BEGIN_LINK"/>Androidin asetuksista<ph name="END_LINK"/>, jotta <ph name="APP_NAME"/> voi käyttää AR:ää.</translation>
 <translation id="1822318649925991542">Personoi selauskokemusta vaihtamalla osoitepalkin paikkaa</translation>
 <translation id="1848033246551405023">Sans Serif ‑fontti</translation>
+<translation id="1861244985839668297">Kun tämä on päällä, sivustot voivat pyytää lupaa käyttää HID-laitteita. Kun tämä on pois päältä, sivustot eivät voi käyttää HID-laitteita.</translation>
 <translation id="1861262398884155592">Tämä kansio on tyhjä</translation>
 <translation id="1881806992065048905">Uusi välilehti ‐sivun ulkoasun alapaneeli</translation>
 <translation id="1887786770086287077">Sijainti on pois päältä tällä laitteella. Voit laittaa sen päälle <ph name="BEGIN_LINK"/>Android-asetuksista<ph name="END_LINK"/>.</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271">Salli, että <ph name="APP_NAME"/> voi seurata käsien liikettä, laittamalla käsien liikkeen seuranta päälle myös <ph name="BEGIN_LINK"/>järjestelmäasetuksista<ph name="END_LINK"/>.</translation>
 <translation id="4688045258817337666">Korttien ylläpito</translation>
 <translation id="4722332387043141878">Sivustot käyttävät yleensä laitteen liike- ja valoantureita esim. virtuaalitodellisuuteen tai aktiivisuuden seurantaan</translation>
+<translation id="4748783296226936791">Sivustot yhdistävät yleensä HID-laitteisiin esim. käyttääkseen epätavallisia näppäimistöjä, peliohjaimia tai muita laitteita</translation>
 <translation id="4755971844837804407">Kun tämä on päällä, sivustot voivat näyttää sinulle mitä tahansa mainoksia. Kun tämä on pois päältä, sivustoilla ei voi näkyä häiritseviä tai harhaanjohtavia mainoksia.</translation>
 <translation id="4779083564647765204">Lähennä</translation>
 <translation id="4807122856660838973">Laita Selaussuoja päälle</translation>
@@ -447,11 +450,13 @@
 <translation id="5668404140385795438">Ohita sivuston zoomauksen estämispyyntö</translation>
 <translation id="5668843533782548925">Sivustot ovat hitaampia mutta turvallisempia</translation>
 <translation id="5677928146339483299">Estetty</translation>
+<translation id="98560749650104566">Brave voi nyt näyttää sinulle ehdotuksia muissa sovelluksissa selausdatasi, esimerkiksi viimeaikaisen selaushistoriasi, perusteella. Data käsitellään turvallisesti laitteellasi. Voit laittaa tämän pois päältä milloin tahansa Braven asetuksista.</translation>
 <translation id="5689516760719285838">Sijainti</translation>
 <translation id="5690795753582697420">Kamera laitettiin pois päältä Androidin asetuksista</translation>
 <translation id="5700761515355162635">Kolmannen osapuolen evästeet sallittu</translation>
 <translation id="5706552988683188916">Tämä poistaa evästeet ja muun sivustodatan täällä: <ph name="WEBSITE"/></translation>
 <translation id="571222594670061844">Sivustot voivat näyttää identiteettipalveluiden sisäänkirjautumiskehotteita</translation>
+<translation id="5719854774000914513">Sivustot saavat pyytää lupaa yhdistää HID-laitteisiin</translation>
 <translation id="5740126560802162366">Sivustot voivat tallentaa dataa laitteellesi</translation>
 <translation id="5743425052258407233">Historia löytyy kaikilta laitteilta, joten voit helposti jatkaa siitä, mihin jäit</translation>
 <translation id="5749158352074143502">Jatka tällä välilehdellä</translation>
@@ -500,6 +505,7 @@
 <translation id="6085954183010297841">Poistetaanko tiedoston muokkauslupa? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Kun asetus on päällä, sivustot voivat siirtyä automaattisesti pikkuruututilaan. Kun asetus on pois päältä, sivustot eivät voi siirtyä automaattisesti pikkuruututilaan.</translation>
 <translation id="6120483543004435978">Kun tämä on päällä, sivustot voivat pyytää lupaa nähdä, milloin käytät laitetta aktiivisesti. Kun tämä on pois päältä, sivustot eivät saa tietää, milloin käytät laitetta aktiivisesti.</translation>
+<translation id="5773142757282836623">Piilota "Saa Brave-ehdotuksia muissa sovelluksissa"</translation>
 <translation id="4852158809106762963">Brave tarjoutuu tallentamaan salasanasi</translation>
 <translation id="615886654739818377">Älä salli sivustojen hallinnoida ikkunoita kaikilla näytöillä</translation>
 <translation id="6165508094623778733">Lisätietoja</translation>
@@ -571,6 +577,7 @@
 <translation id="6950072572526089586">Avaamasi sivusto voi tallentaa tietoja toiminnastasi, jotta se toimii odotetulla tavalla – esimerkiksi pitääksesi sinut kirjautuneena sivustolle tai tallentaaksesi tuotteita ostoskoriin. Sivustot tallentavat usein nämä tiedot väliaikaisesti laitteellesi.</translation>
 <translation id="6964291282260073066">"WebGPU" on poistettu käytöstä.</translation>
 <translation id="6965382102122355670">OK</translation>
+<translation id="6972629891077993081">HID-laitteet</translation>
 <translation id="6980507581230208647">Ruusunpunainen teema</translation>
 <translation id="6980861169612950611">Poistetaanko sivustodata? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Saavutettavuus</translation>
@@ -583,7 +590,6 @@
 <translation id="7053983685419859001">Estä</translation>
 <translation id="7055552182600664515">Sivustojen on ehkä käytettävä sisällönsuojauspalvelua, jotta ne voivat toistaa tekijänoikeudella suojattua sisältöä. <ph name="BEGIN_LINK"/>Lue lisää<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 valittu}other{# valittu}}</translation>
-<translation id="708014373017851679"><ph name="APP_NAME"/> on vanhentunut. Päivitä sovellus.</translation>
 <translation id="7084115944294706056">Valitse osoitepalkin sijainti</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> valittu. Toimintoja on käytettävissä näytön yläosassa.</translation>
 <translation id="7141896414559753902">Estä ponnahdusikkunoiden näyttäminen sivustoilla (suositus)</translation>
@@ -728,6 +734,7 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:</translation>
 <translation id="8593422116412089302">Kun tämä on päällä, sivustot voivat pyytää lupaa käyttää tietoja, jotka ne ovat tallentaneet sinusta. Kun tämä on pois päältä, sivustot eivät voi pyytää sinua käyttämään tietoja, jotka ne ovat tallentaneet sinusta.</translation>
 <translation id="8609465669617005112">Siirrä ylös</translation>
 <translation id="8617611086246832542">Kun tämä on päällä, näet verkkosivustojen tietokonenäkymän. Kun tämä on pois päältä, näet sivustojen mobiilinäkymän.</translation>
+<translation id="8625916342247441948">Älä salli sivustojen yhdistää HID-laitteisiin</translation>
 <translation id="8670078035093027626">Oletusselaimen alapaneeli avattu koko näytön kokoisena</translation>
 <translation id="8676316391139423634">Kun tämä on päällä, sivustot voivat pyytää lupaa seurata käsiäsi. Kun tämä on pois päältä, sivustot eivät voi seurata käsiäsi.</translation>
 <translation id="8676374126336081632">Tyhjennä teksti</translation>

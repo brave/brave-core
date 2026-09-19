@@ -216,6 +216,7 @@ export function createSearchStore() {
       }
       searchProxy.handler.queryAutocomplete(
         activeQueryId++,
+        null,
         query,
         false,
         query.length,

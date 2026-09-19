@@ -22,7 +22,7 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
@@ -94,7 +94,7 @@ GURL GetUrl(net::EmbeddedTestServer* https_server,
   return https_server->GetURL(publisher_key, new_path);
 }
 
-void ActivateTabAtIndex(Browser* browser, const int32_t index) {
+void ActivateTabAtIndex(BrowserWindowInterface* browser, const int32_t index) {
   DCHECK(browser);
   browser->tab_strip_model()->ActivateTabAt(
       index, TabStripUserGestureDetails(
@@ -109,7 +109,7 @@ std::string GetUpholdExternalAddress() {
   return "abe5f454-fedd-4ea9-9203-470ae7315bb3";
 }
 
-void NavigateToPublisherPage(Browser* browser,
+void NavigateToPublisherPage(BrowserWindowInterface* browser,
                              net::EmbeddedTestServer* https_server,
                              const std::string& publisher_key,
                              const std::string& path) {
@@ -120,7 +120,7 @@ void NavigateToPublisherPage(Browser* browser,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
 }
 
-void NavigateToPublisherAndWaitForUpdate(Browser* browser,
+void NavigateToPublisherAndWaitForUpdate(BrowserWindowInterface* browser,
                                          net::EmbeddedTestServer* https_server,
                                          const std::string& publisher_key) {
   DCHECK(browser);
@@ -168,7 +168,7 @@ void CreateRewardsWallet(RewardsServiceImpl* rewards_service,
   ASSERT_TRUE(success);
 }
 
-void SetOnboardingBypassed(Browser* browser, bool bypassed) {
+void SetOnboardingBypassed(BrowserWindowInterface* browser, bool bypassed) {
   DCHECK(browser);
   // Rewards onboarding will be skipped if the rewards enabled flag is set
   PrefService* prefs = browser->GetProfile()->GetPrefs();

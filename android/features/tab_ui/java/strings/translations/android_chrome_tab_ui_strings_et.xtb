@@ -4,6 +4,7 @@
 <translation id="1049697408958544531">{NUM_WEEKS,plural, =1{Loodud <ph name="NUM_WEEKS_ONE"/> nädal tagasi}other{Loodud <ph name="NUM_WEEKS_MANY"/> nädalat tagasi}}</translation>
 <translation id="1063300264396686489">Vahelehegrupi automaatne avamine teisest seadmest</translation>
 <translation id="1075622780330595106"><ph name="NUMBER_OF_TABS"/> teie vahelehte pole hiljuti kasutatud. Kas sulgeda need?</translation>
+<translation id="1760197532822135980">Brave'i soovituste hankimine muudes rakendustes</translation>
 <translation id="1092908249939127748">{NUM_MONTHS,plural, =1{Loodud <ph name="NUM_YEARS_ONE"/> aasta tagasi}other{Loodud <ph name="NUM_YEARS_MANY"/> aastat tagasi}}</translation>
 <translation id="1137385688780024041">{DAY_COUNT,plural, =1{Mitteaktiivsed vahelehed ja rühmad suletakse 1 kuu pärast}other{Mitteaktiivsed vahelehed ja rühmad suletakse <ph name="MONTH_COUNT_MANY"/> kuu pärast}}</translation>
 <translation id="1173894706177603556">Muuda nime</translation>
@@ -21,12 +22,14 @@
 <translation id="1501480321619201731">Kustuta grupp</translation>
 <translation id="1553638665176794706">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> passiivne üksus}other{<ph name="TABS_COUNT_MANY"/> passiivset üksust}}</translation>
 <translation id="1568067597247500137">Vaigista sait</translation>
+<translation id="1639330215535800445">{TAB_COUNT,plural, =1{Teisalda vaheleht alla}other{Teisalda vahelehed alla}}</translation>
 <translation id="1645759014353344461"><ph name="TABS_COUNT_MANY"/> vahelehte grupeeriti</translation>
 <translation id="1657719826150349398">Teisalda vaheleht alla</translation>
 <translation id="1670942869417022142">Vaigistatud heli</translation>
 <translation id="1697284962337958118">Lisa kogusse</translation>
 <translation id="1713541401465507417">Sulgege kõik vahelehed ja grupid</translation>
 <translation id="1738346536511908887">{TAB_GROUPS_COUNT,plural, =1{<ph name="TAB_GROUPS_COUNT_ONE"/> vahelehegrupp ei ole enam saadaval}other{<ph name="TAB_GROUPS_COUNT_MANY"/> vahelehegruppi ei ole enam saadaval}}</translation>
+<translation id="1759122978835002237">Teisalda vahelehegrupp üles</translation>
 <translation id="176485176228926164"><ph name="BEGIN_LINK1"/>Lisateave<ph name="END_LINK1"/></translation>
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> vaheleht grupeeriti</translation>
 <translation id="1844381456014878100">7 passiivse päeva järel</translation>
@@ -42,6 +45,7 @@
 <translation id="2118649612461486615">Poe teave</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{Saidi vaigistuse tühistamine}other{Saitide vaigistuse tühistamine}}</translation>
 <translation id="2162620598375156287">Nüüd <ph name="CURRENT_PRICE"/> veebisaidil <ph name="SOURCE_WEBSITE"/></translation>
+<translation id="2164232689984783657">Teisalda vahelehegrupp alla</translation>
 <translation id="22623456902492423">{TABS_COUNT,plural, =1{Tühista vahelehe grupeerimine}other{Tühista vahelehtede grupeerimine}}</translation>
 <translation id="2271452184061378400">Teie vahelehegrupid on salvestatud siia</translation>
 <translation id="2277224997687551299">Grupi nime muutmine</translation>
@@ -128,7 +132,6 @@
 <translation id="5042769431350623987">{WINDOW_COUNT,plural, =1{Teisaldage vahelehed uude aknasse}other{Teisaldage vahelehed teise aknasse}}</translation>
 <translation id="5073204694187207510">Peida täisekraani ruudustik</translation>
 <translation id="5076161749301278626">Kas kuvada poe arvustused?</translation>
-<translation id="5093447877601682598">Tagasiside saatmine vahelehtede riba kohta</translation>
 <translation id="5161254044473106830">Pealkiri on kohustuslik</translation>
 <translation id="5204584298075822291">Vahelehtede ahendamine</translation>
 <translation id="1600515547518251664">{AUTO_DELETE_DELAY,plural, =1{Brave sulgeb inaktiivsed vahelehed ja vahelehegrupid <ph name="AUTO_DELETE_DELAY_ONE"/> kuu pärast automaatselt. Saate seda seadetes muuta.}other{Brave sulgeb inaktiivsed vahelehed ja vahelehegrupid <ph name="AUTO_DELETE_DELAY_MANY"/> kuu pärast automaatselt. Saate seda seadetes muuta.}}</translation>
@@ -192,6 +195,7 @@
 <translation id="7369451074646620503">Vahelehegrupp „<ph name="TAB_GROUP_NAME"/>“ ei ole enam saadaval</translation>
 <translation id="7402375256128852434">Hiljutiste vahelehtede lisamine</translation>
 <translation id="7452985128687107478">Vahelehegrupid salvestuvad automaatselt ja värskendatakse kõikides teie seadmetes</translation>
+<translation id="746137824927359035">{TAB_COUNT,plural, =1{Teisalda vaheleht üles}other{Teisalda vahelehed üles}}</translation>
 <translation id="747459581954555080">Taasta kõik</translation>
 <translation id="7489558427602531799">Teisalda vahelehegrupp paremale</translation>
 <translation id="7501728912575021674">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> üksus}other{<ph name="TABS_COUNT_MANY"/> üksust}}</translation>
@@ -221,6 +225,7 @@
 <translation id="805809603610022708">{TABS_COUNT,plural, =1{Lisa vaheleht gruppi}other{Lisa vahelehed gruppi}}</translation>
 <translation id="8138067144082174140">14 passiivse päeva järel</translation>
 <translation id="8153873338998959464">{NUMBER_OF_TABS,plural, =1{Laienda <ph name="TABS_COUNT_ONE"/> vahelehega vahelehegruppi <ph name="TITLE_OF_GROUP"/>, värv on <ph name="COLOR_NAME"/>.}other{Laienda <ph name="TABS_COUNT_MANY"/> vahelehega vahelehegruppi <ph name="TITLE_OF_GROUP"/>, värv on <ph name="COLOR_NAME"/>.}}</translation>
+<translation id="8172214054247281626">Jagage sirvimisandmeid, näiteks oma hiljutist sirvimisajalugu, et saada valitud rakendustes soovitusi. Neid andmeid töödeldakse turvaliselt teie seadmes.</translation>
 <translation id="8195186926670288294">{TABS_COUNT,plural, =1{Vabasta vaheleht}other{Vabasta vahelehed}}</translation>
 <translation id="8205266828577616993">Teisalda vaheleht üles</translation>
 <translation id="8207688828622594111">{NUM_MINS,plural, =1{Värskendati <ph name="NUM_MINS_ONE"/> minut tagasi}other{Värskendati <ph name="NUM_MINS_MANY"/> minutit tagasi}}</translation>

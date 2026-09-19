@@ -170,7 +170,7 @@ content::WebContents* AIChatSidePanelWebView::AddNewContents(
 
   // Rather than opening a new tab from the side panel we navigate the active
   // tab next to the sidepanel.
-  auto* active_tab = browser->tab_strip_model()->GetActiveWebContents();
+  auto* active_tab = browser->GetTabStripModel()->GetActiveWebContents();
   NavigateParams params(browser, target_url, ui::PAGE_TRANSITION_LINK);
 
   // If the global side panel is enabled, open the url in the current active
