@@ -20,9 +20,9 @@
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
-#include "chrome/browser/defaults.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/split_tab_util.h"
@@ -138,15 +138,16 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
     return;
   }
 
-  if (command_id == TabStripModel::CommandBookmarkAllTabs) {
-    chrome::BookmarkAllTabs(GetBrowserWindowInterface());
-    return;
-  }
-
-  if (command_id == TabStripModel::CommandShowVerticalTabs) {
-    brave::ToggleVerticalTabStrip(GetBrowserWindowInterface());
-    BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())
-        ->InvalidateLayout();
+  if (command_id == TabStripModel::CommandBookmarkTab) {
+    auto* model = static_cast<BraveTabStripModel*>(model_.get());
+    auto indices = model->GetTabIndicesForCommandAt(index);
+    std::vector<content::WebContents*> contentses;
+    contentses.reserve(indices.size());
+    for (int tab_index : indices) {
+      contentses.push_back(model->GetWebContentsAt(tab_index));
+    }
+    brave::BookmarkTabs(static_cast<Browser*>(GetBrowserWindowInterface()),
+                        contentses);
     return;
   }
 
@@ -154,15 +155,23 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
     auto* model = static_cast<BraveTabStripModel*>(model_.get());
     auto indices = model->GetTabIndicesForCommandAt(index);
     std::vector<content::WebContents*> contentses;
-    std::transform(
-        indices.begin(), indices.end(), std::back_inserter(contentses),
-        [&model](int index) { return model->GetWebContentsAt(index); });
+    contentses.reserve(indices.size());
+    for (int tab_index : indices) {
+      contentses.push_back(model->GetWebContentsAt(tab_index));
+    }
 
     const auto all_muted = model->GetAllTabsMuted(indices);
     for (auto* contents : contentses) {
       SetTabAudioMuted(contents, !all_muted, TabMutedReason::kAudioIndicator,
                        /*extension_id=*/std::string());
     }
+    return;
+  }
+
+  if (command_id == TabStripModel::CommandShowVerticalTabs) {
+    brave::ToggleVerticalTabStrip(GetBrowserWindowInterface());
+    BrowserView::GetBrowserViewForBrowser(GetBrowserWindowInterface())
+        ->InvalidateLayout();
     return;
   }
 
@@ -206,9 +215,8 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
                                !restore_service->entries().empty());
   }
 
-  if (command_id == TabStripModel::CommandBookmarkAllTabs) {
-    return browser_defaults::bookmarks_enabled &&
-           chrome::CanBookmarkAllTabs(GetBrowserWindowInterface());
+  if (command_id == TabStripModel::CommandBookmarkTab) {
+    return chrome::CanBookmarkCurrentTab(GetBrowserWindowInterface());
   }
 
   if (command_id == TabStripModel::CommandToggleTabMuted) {

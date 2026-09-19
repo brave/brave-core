@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Prefer an explicit window_title_id when set.
+
+      Lets "Bookmark selected tabs..." use its own dialog title instead of
+      Chromium's NEW_FOLDER-with-children title ("Bookmark all tabs").
+    preempt_function_impl:
+      function_name: BookmarkEditor::EditDetails::GetWindowTitleId
+      code: |-
+        if (window_title_id.has_value()) {
+          return *window_title_id;
+        }
