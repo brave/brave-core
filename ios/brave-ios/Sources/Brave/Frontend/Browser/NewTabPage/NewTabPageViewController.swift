@@ -194,7 +194,7 @@ class NewTabPageViewController: UIViewController {
     super.init(nibName: nil, bundle: nil)
 
     Preferences.NewTabPage.showNewTabPrivacyHub.observe(from: self)
-    Preferences.NewTabPage.showNewTabFavourites.observe(from: self)
+    Preferences.NewTabPage.topsitesMode.observe(from: self)
 
     sections = [
       StatsSectionProvider(
@@ -1066,7 +1066,7 @@ class NewTabPageViewController: UIViewController {
 extension NewTabPageViewController: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     if key == Preferences.NewTabPage.showNewTabPrivacyHub.key
-      || key == Preferences.NewTabPage.showNewTabFavourites.key
+      || key == Preferences.NewTabPage.topsitesMode.key
     {
       collectionView.reloadData()
       return

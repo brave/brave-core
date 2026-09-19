@@ -31,6 +31,7 @@ public class BraveProfileMigrations {
     migrateMediaBackgroundingPreference()
     migrateBlockAllCookiesPreference()
     migrateDefaultWalletPreferences()
+    migrateShowNewFavoritesPreference()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -158,6 +159,17 @@ public class BraveProfileMigrations {
         defaultWallet(from: value).rawValue,
         forPath: kDefaultCardanoWallet
       )
+    }
+  }
+
+  private func migrateShowNewFavoritesPreference() {
+    Preferences.NewTabPage.showNewTabFavourites.migrate { value in
+      if value {
+        Preferences.NewTabPage.topsitesMode.value =
+          Favorite.hasFavorites ? TopsitesMode.favourite : TopsitesMode.mostVisited
+      } else {
+        Preferences.NewTabPage.topsitesMode.value = TopsitesMode.none
+      }
     }
   }
 }

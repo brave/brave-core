@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveUI
 import CoreData
 import Data
@@ -85,7 +86,7 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
 
     let isShowShowMoreButtonVisible =
       count > FavoritesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
-      && Preferences.NewTabPage.showNewTabFavourites.value
+      && Preferences.NewTabPage.topsitesMode.value != TopsitesMode.none
     return isShowShowMoreButtonVisible ? 1 : 0
   }
 

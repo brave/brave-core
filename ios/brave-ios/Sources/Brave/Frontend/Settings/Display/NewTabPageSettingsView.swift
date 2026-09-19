@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveStrings
 import BraveUI
 import Foundation
@@ -14,7 +15,7 @@ struct NewTabPageSettingsView: View {
 
   @ObservedObject private var backgroundImages = Preferences.NewTabPage.backgroundImages
   @ObservedObject private var showNewTabPrivacyHub = Preferences.NewTabPage.showNewTabPrivacyHub
-  @ObservedObject private var showNewTabFavourites = Preferences.NewTabPage.showNewTabFavourites
+  @ObservedObject private var topsitesModeSelection = Preferences.NewTabPage.topsitesMode
 
   // This is observed to ensure the view updates correctly, but we instead access
   // Preferences.NewTabPage.backgroundMediaType which accesses backgroundMediaTypeRaw
@@ -57,7 +58,32 @@ struct NewTabPageSettingsView: View {
       }
       Section {
         Toggle(Strings.PrivacyHub.privacyReportsTitle, isOn: $showNewTabPrivacyHub.value)
-        Toggle(Strings.Widgets.favoritesWidgetTitle, isOn: $showNewTabFavourites.value)
+        if FeatureList.kTopsitesEnabled.enabled {
+          Picker(
+            Strings.NTP.topsites,
+            selection: Binding(
+              get: { topsitesModeSelection.value },
+              set: {
+                topsitesModeSelection.value = $0
+              }
+            )
+          ) {
+            ForEach(TopsitesMode.allCases) { mode in
+              Text(mode.title)
+            }
+          }
+          .tint(Color(braveSystemName: .textTertiary))
+        } else {
+          Toggle(
+            Strings.Widgets.favoritesWidgetTitle,
+            isOn: Binding(
+              get: { topsitesModeSelection.value != TopsitesMode.none },
+              set: {
+                topsitesModeSelection.value = $0 ? TopsitesMode.favourite : TopsitesMode.none
+              }
+            )
+          )
+        }
       } header: {
         Text(Strings.Widgets.widgetTitle)
       }
