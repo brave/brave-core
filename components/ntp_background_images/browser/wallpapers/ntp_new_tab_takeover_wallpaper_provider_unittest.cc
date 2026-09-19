@@ -127,7 +127,7 @@ class NTPNewTabTakeoverWallpaperProviderTest : public testing::Test {
         kSponsoredImageCampaignsJson);
     prefs_.SetBoolean(brave_ads::prefs::kSponsoredEnabled, true);
     prefs_.SetBoolean(prefs::kNewTabPageShowBackgroundImage, true);
-    view_counter_model_->SetCampaignsTotalBrandedImageCount({1});
+    view_counter_model_->SetCampaignsTotalNewTabTakeoverCreativeCount({1});
     view_counter_model_->RegisterPageView();
   }
 

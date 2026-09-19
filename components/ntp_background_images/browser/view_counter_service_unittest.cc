@@ -463,13 +463,13 @@ TEST_F(ViewCounterServiceTest, IsActiveOptedIn) {
 }
 
 TEST_F(ViewCounterServiceTest, PrefsWithModelTest) {
-  EXPECT_EQ(view_counter_service_->model_.show_branded_wallpaper_,
+  EXPECT_EQ(view_counter_service_->model_.show_new_tab_takeover_wallpaper_,
             features::kInitialCountToBrandedWallpaper.Get() - 1);
   EXPECT_TRUE(view_counter_service_->model_.show_wallpaper_);
-  EXPECT_TRUE(view_counter_service_->model_.show_branded_wallpaper_);
+  EXPECT_TRUE(view_counter_service_->model_.show_new_tab_takeover_wallpaper_);
 
   SetSponsoredImagesVisibility(false);
-  EXPECT_FALSE(view_counter_service_->model_.show_branded_wallpaper_);
+  EXPECT_FALSE(view_counter_service_->model_.show_new_tab_takeover_wallpaper_);
 
   SetBackgroundImagesVisibility(false);
   EXPECT_FALSE(view_counter_service_->model_.show_wallpaper_);

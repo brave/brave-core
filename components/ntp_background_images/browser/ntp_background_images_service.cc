@@ -285,9 +285,10 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
           &NTPBackgroundImagesService::OnSponsoredComponentReady,
           sponsored_images_weak_factory_.GetWeakPtr()));
 
-  // SI component checks update more frequently than other components.
-  // By default, browser check update status every 5 hours.
-  // However, this background interval is too long for SI. Use 15mins interval.
+  // The sponsored content component checks for updates more frequently than
+  // other components. By default, the browser checks update status every 5
+  // hours. However, this interval is too long for sponsored content, so use
+  // a 15 minute interval instead.
   sponsored_images_update_check_callback_ = base::BindRepeating(
       &NTPBackgroundImagesService::CheckSponsoredImagesComponentUpdate,
       sponsored_images_weak_factory_.GetWeakPtr(),

@@ -612,9 +612,10 @@ class NTPBackgroundImagesServiceTest : public testing::Test {
 
 TEST_F(NTPBackgroundImagesServiceTest, BasicTest) {
   Init();
-  // NTP SI Component is registered after ads is initialized.
+  // The sponsored content component is registered after ads is initialized.
   EXPECT_FALSE(service_->sponsored_images_component_started);
-  // If ENABLE_NTP_BACKGROUND_IMAGES then BI shall be registered
+  // If ENABLE_NTP_BACKGROUND_IMAGES then the sponsored backgrounds component
+  // shall be registered.
   EXPECT_TRUE(service_->background_images_component_started);
 }
 
@@ -684,7 +685,7 @@ TEST_F(NTPBackgroundImagesServiceTest, InternalDataTest) {
             *images_data->MaybeGetBackgroundAt(0, 0)->FindStringByDottedPath(
                 kLogoImagePath));
 
-  // Test BI data loading
+  // Test sponsored backgrounds data loading.
   observer_.background_images_data = nullptr;
   service_->background_images_data_.reset();
   observer_.on_background_images_updated = false;
