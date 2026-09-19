@@ -76,6 +76,9 @@ OBJC_EXPORT
 + (bool)initializeICUForTesting;
 
 + (void)initializeResourceBundleForTesting;
+
+- (void)shutDown;
+
 @end
 
 NS_ASSUME_NONNULL_END
