@@ -20,19 +20,19 @@ class ComponentUpdateService;
 
 namespace ntp_background_images {
 
-using OnComponentReadyCallback =
+using ComponentReadyCallback =
       base::RepeatingCallback<void(const base::FilePath& install_path)>;
 
 void RegisterNTPBackgroundImagesComponent(
     component_updater::ComponentUpdateService* component_update_service,
-    OnComponentReadyCallback callback);
+    ComponentReadyCallback callback);
 
 void RegisterNTPSponsoredImagesComponent(
     component_updater::ComponentUpdateService* component_update_service,
     const std::string& component_public_key,
     const std::string& component_id,
     const std::string& component_name,
-    OnComponentReadyCallback callback);
+    ComponentReadyCallback callback);
 
 }  // namespace ntp_background_images
 
