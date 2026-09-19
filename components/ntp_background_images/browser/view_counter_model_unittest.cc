@@ -81,9 +81,8 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesTest) {
       kTestCampaignsTotalImageCount);
 
   // Check randomly picked campaign index.
-  EXPECT_TRUE(model.current_campaign_index_ >= 0 &&
-              model.current_campaign_index_ <
-                  kTestCampaignsTotalImageCount.size());
+  EXPECT_TRUE(model.current_campaign_index_ <
+              kTestCampaignsTotalImageCount.size());
 
   // Set current campaign index explicitely to test easily.
   model.current_campaign_index_ = 1;
@@ -122,9 +121,8 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountToNewTabTakeoverTest) {
       kTestCampaignsTotalImageCount);
 
   // Check randomly picked campaign index.
-  EXPECT_TRUE(model.current_campaign_index_ >= 0 &&
-              model.current_campaign_index_ <
-                  kTestCampaignsTotalImageCount.size());
+  EXPECT_TRUE(model.current_campaign_index_ <
+              kTestCampaignsTotalImageCount.size());
 
   // Set current campaign index explicitely to test easily.
   model.current_campaign_index_ = 1;
