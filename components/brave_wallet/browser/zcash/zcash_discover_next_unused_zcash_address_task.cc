@@ -102,8 +102,13 @@ void ZCashDiscoverNextUnusedZCashAddressTask::WorkOnTask() {
 
 void ZCashDiscoverNextUnusedZCashAddressTask::OnGetLastBlock(
     base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
-  if (!result.has_value() || !result.value()) {
+  if (!result.has_value()) {
     error_ = result.error();
+    WorkOnTask();
+    return;
+  }
+  if (!result.value()) {
+    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     WorkOnTask();
     return;
   }
