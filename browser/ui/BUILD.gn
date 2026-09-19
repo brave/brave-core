@@ -1550,7 +1550,11 @@ source_set("brave_tab_prefs") {
     "tabs/brave_tab_prefs.cc",
     "tabs/brave_tab_prefs.h",
   ]
-  deps = [ "//components/prefs" ]
+  deps = [
+    "//brave/browser/ui/tabs:tabs_public",
+    "//chrome/common:constants",
+    "//components/prefs",
+  ]
 
   if (!is_android) {
     deps += [ "//chrome/browser/ui/tabs:features" ]
@@ -1571,6 +1575,7 @@ source_set("unit_tests") {
     deps = [
       ":brave_tab_prefs",
       "//base/test:test_support",
+      "//brave/browser/ui/tabs:tabs_public",
       "//brave/components/l10n/common:test_support",
       "//chrome/browser/ui",
       "//chrome/browser/ui/tabs:features",
