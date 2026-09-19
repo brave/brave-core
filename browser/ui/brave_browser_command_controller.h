@@ -43,6 +43,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
     ,
                                       public brave_vpn::BraveVpnServiceObserver
 #endif
+
 {
  public:
   explicit BraveBrowserCommandController(BrowserWindowInterface* bwi);
