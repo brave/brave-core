@@ -22,6 +22,9 @@ class BraveLeoScriptHandler: NSObject, TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
+    // Distinct `includeOnce` key from `AdsTextContentDistillerScriptHandler`'s, since both
+    // handlers share this script's source but each defines their own `$<getTextContent>` under it.
+    script = script.replacingOccurrences(of: "$<include_once_key>", with: scriptName)
 
     return WKUserScript(
       source: secureScript(

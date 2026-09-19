@@ -346,6 +346,10 @@ extension BrowserViewController {
       RequestBlockingContentScriptHandler(),
     ]
 
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled && !tab.isPrivate {
+      injectedScripts.append(AdsTextContentDistillerScriptHandler())
+    }
+
     if let contentBlocker = tab.contentBlocker {
       injectedScripts.append(contentBlocker)
     }

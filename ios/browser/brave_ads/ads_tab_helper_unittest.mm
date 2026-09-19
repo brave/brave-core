@@ -10,18 +10,23 @@
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/task/single_thread_task_runner.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/ios/browser/ui/web_view/features.h"
+#include "brave/ios/browser/web/text_content_distiller/text_content_distiller_javascript_feature.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/profile/test/test_profile_ios.h"
+#include "ios/web/public/browser_state.h"
 #include "ios/web/public/test/fakes/fake_navigation_context.h"
 #include "ios/web/public/test/fakes/fake_navigation_manager.h"
 #include "ios/web/public/test/fakes/fake_web_frame.h"
 #include "ios/web/public/test/fakes/fake_web_frames_manager.h"
 #include "ios/web/public/test/fakes/fake_web_state.h"
+#include "ios/web/public/test/js_test_util.h"
 #include "ios/web/public/test/web_task_environment.h"
 #include "ios/web/public/web_state_observer.h"
 #include "net/http/http_response_headers.h"
@@ -102,6 +107,9 @@ class FakeNavigationManagerWithRestore final
 class AdsTabHelperTest : public PlatformTest {
  public:
   AdsTabHelperTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        brave::features::kUseProfileWebViewConfiguration);
+
     profile_ = TestProfileIOS::Builder().Build();
 
     profile_->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
@@ -115,8 +123,12 @@ class AdsTabHelperTest : public PlatformTest {
     web_state_->SetWebFramesManager(web::ContentWorld::kIsolatedWorld,
                                     std::move(web_frames_manager));
 
+    web::test::OverrideJavaScriptFeatures(
+        profile_.get(), {TextContentDistillerJavaScriptFeature::GetInstance()});
+
     auto main_web_frame = web::FakeWebFrame::CreateMainWebFrame();
     main_web_frame_ = main_web_frame.get();
+    main_web_frame_->set_browser_state(profile_.get());
     web_frames_manager_->AddWebFrame(std::move(main_web_frame));
 
     auto navigation_manager =
@@ -147,8 +159,13 @@ class AdsTabHelperTest : public PlatformTest {
   // Waits for the frame's already-posted callback to run first.
   void SimulatePageLoad(const std::string& inner_text) {
     page_load_js_result_ = base::Value(inner_text);
-    main_web_frame_->AddResultForExecutedJs(&page_load_js_result_,
-                                            u"document?.body?.innerText");
+    main_web_frame_->AddJsResultForFunctionCall(
+        &page_load_js_result_, "textContentDistiller.getTextContent");
+    SimulatePageLoadWithoutMainFrameResult();
+  }
+
+  // Waits for the frame's already-posted callback to run first.
+  void SimulatePageLoadWithoutMainFrameResult() {
     web_state_->OnPageLoaded(web::PageLoadCompletionStatus::SUCCESS);
 
     base::test::TestFuture<void> test_future;
@@ -178,7 +195,18 @@ class AdsTabHelperTest : public PlatformTest {
     return *navigation_manager_;
   }
 
+  web::FakeWebFramesManager& web_frames_manager() {
+    CHECK(web_frames_manager_);
+    return *web_frames_manager_;
+  }
+
+  web::FakeWebFrame& main_web_frame() {
+    CHECK(main_web_frame_);
+    return *main_web_frame_;
+  }
+
  private:
+  base::test::ScopedFeatureList scoped_feature_list_;
   web::WebTaskEnvironment task_environment_;
   std::unique_ptr<TestProfileIOS> profile_;
   // Declared before `web_state_` so it outlives it: destroying `web_state_`,
@@ -316,6 +344,13 @@ TEST_F(AdsTabHelperTest,
   SimulatePageLoad(kInnerText);
 }
 
+TEST_F(AdsTabHelperTest,
+       DoNotNotifyTabTextContentDidChangeWhenDistilledTextIsEmpty) {
+  Navigation(GURL("https://brave.com")).Simulate();
+  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
+  SimulatePageLoad(/*inner_text=*/"");
+}
+
 TEST_F(AdsTabHelperTest, DoNotNotifyTabTextContentDidChangeForNonRewardsUser) {
   DisableBraveRewards();
   Navigation(GURL("https://brave.com")).Simulate();
@@ -391,6 +426,14 @@ TEST_F(AdsTabHelperTest,
           "HTTP/1.1 404 Not Found\r\n\r\n"))
       .Simulate();
   SimulatePageLoad(kInnerText);
+}
+
+TEST_F(AdsTabHelperTest,
+       DoNotNotifyTabTextContentDidChangeWhenMainFrameMissing) {
+  Navigation(GURL("https://brave.com")).Simulate();
+  web_frames_manager().RemoveWebFrame(main_web_frame().GetFrameId());
+  EXPECT_CALL(ads_service_mock(), NotifyTabTextContentDidChange).Times(0);
+  SimulatePageLoadWithoutMainFrameResult();
 }
 
 TEST_F(AdsTabHelperTest,
