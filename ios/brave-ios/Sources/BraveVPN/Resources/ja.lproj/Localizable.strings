@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "サーバー %ld 台";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "ブレイブVPNであらゆるアプリを保護。1つのプランで最大10台のデバイスで使用可能です。";
+"vpn.settingHeaderBody" = "あなたのコンテンツを、あなたの方法でストリーミング。1つのサブスクリプションで10台のデバイスのすべてのアプリを保護します。";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "テクニカルサポートへのお問い合わせ";

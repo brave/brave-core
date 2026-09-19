@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Редагувати систему швидкого пошуку";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Якщо ви зіткнетеся зі збоєм або зависанням, Brave може автоматично надсилати анонімні діагностичні звіти для усунення проблеми. Ви завжди можете вимкнути це в Налаштуваннях пізніше.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Увімкнути автоматичні звіти про збої";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Увімкнено";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Не зараз";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Увімкнути функцію «Потягнути, щоб оновити»";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Стандартні зображення";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Зображення та відео від спонсорів";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Рекламні зображення";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Дякуємо за допомогу в підтримці Brave і спільноти BAT!";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Після скидання ваш поточний профіль Винагород Brave буде видалено, і Винагороди Brave більше не будуть увімкнені.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Скинути нагороди Brave";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Скинути";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Допоможіть у підтримці Brave і спільноти BAT, застосовуючи Винагороди Brave і переглядаючи Рекламу Brave.";
 
@@ -2469,6 +2487,12 @@
 
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Налаштування якості";
+
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Надсилайте діагностичні звіти після збоїв чи зависань.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Надсилати звіти про збої";
 
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Це приватне повідомлення дає можливість Brave оцінити активних користувачів.";
@@ -2954,7 +2978,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Обмеження пристроїв";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Створити новий ланцюжок синхронізації";
+"sync.newSyncCode" = "Новий ланцюжок синхронізації";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Перевірте з'єднання з інтернетом і спробуйте знову.";
@@ -3124,6 +3148,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Перегляд у приватному режимі";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Приватний";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Налаштування приватних вкладок";
 
@@ -3148,11 +3175,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Стерти вкладки";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld вкладок";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld вкладку";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Переглянути історію";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Історія";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Перегляд синхронізованих вкладок";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Синхронізація";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Увімкнення/вимкнення приватного режиму";
