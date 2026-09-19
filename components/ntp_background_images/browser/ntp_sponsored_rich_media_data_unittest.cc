@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/dcheck_is_on.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -70,43 +72,60 @@ class NTPSponsoredRichMediaImagesDataTest : public testing::Test {
 TEST_F(NTPSponsoredRichMediaImagesDataTest, ParseSponsoredRichMediaCampaign) {
   base::DictValue dict =
       base::test::ParseJsonDict(kTestSponsoredRichMediaCampaign);
-  NTPSponsoredImagesData data(dict, installed_dir());
-  EXPECT_THAT(data.IsValid(), testing::IsTrue());
+  NTPSponsoredImagesData sponsored_images_data(dict, installed_dir());
+  EXPECT_TRUE(sponsored_images_data.IsValid());
 
-  ASSERT_EQ(data.campaigns.size(), 1U);
-  const auto& campaign = data.campaigns[0];
-  EXPECT_EQ(campaign.campaign_id, "c27a3fae-ee9e-48a2-b3a7-f4675744e6ec");
-  ASSERT_EQ(campaign.creatives.size(), 1U);
-  const auto& creative = campaign.creatives[0];
-  EXPECT_EQ(creative.wallpaper_type, WallpaperType::kRichMedia);
-  EXPECT_EQ(creative.creative_instance_id, kRichMediaCreativeInstanceId);
-  EXPECT_EQ(creative.url,
-            GURL("chrome-untrusted://new-tab-takeover/"
-                 "39d78863-327d-4b64-9952-cd0e5e330eb6/index.html"));
-  EXPECT_EQ(creative.file_path, installed_dir()
-                                    .AppendASCII(kRichMediaCreativeInstanceId)
-                                    .AppendASCII("index.html"));
-  EXPECT_EQ(creative.focal_point, gfx::Point(0, 0));
-
-  EXPECT_EQ(creative.logo.company_name, "Another Rich Media NTT Creative");
-  EXPECT_EQ(creative.logo.alt_text, "Some more rich content");
-  EXPECT_EQ(creative.logo.destination_url, "https://basicattentiontoken.org");
-  EXPECT_THAT(creative.logo.image_file.empty(), testing::IsTrue());
-  EXPECT_THAT(creative.logo.image_url, testing::IsEmpty());
+  EXPECT_THAT(
+      sponsored_images_data.campaigns,
+      testing::ElementsAre(testing::FieldsAre(
+          /*campaign_id=*/"c27a3fae-ee9e-48a2-b3a7-f4675744e6ec",
+          /*creatives=*/
+          testing::ElementsAre(testing::FieldsAre(
+              WallpaperType::kRichMedia,
+              GURL("chrome-untrusted://new-tab-takeover/"
+                   "39d78863-327d-4b64-9952-cd0e5e330eb6/index.html"),
+              /*file_path=*/
+              installed_dir()
+                  .AppendASCII(kRichMediaCreativeInstanceId)
+                  .AppendASCII("index.html"),
+              gfx::Point(), kRichMediaCreativeInstanceId,
+              brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
+              /*logo=*/
+              testing::FieldsAre(base::FilePath(),
+                                  /*image_url=*/testing::IsEmpty(),
+                                  /*alt_text=*/"Some more rich content",
+                                  /*destination_url=*/
+                                  "https://basicattentiontoken.org",
+                                  /*company_name=*/
+                                  "Another Rich Media NTT Creative"))))));
 }
 
 TEST_F(NTPSponsoredRichMediaImagesDataTest,
-       GetCreativeByInstanceIdFromSponsoredRichMediaCampaign) {
+       GetCreativeByInstanceIdReturnsCreativeForKnownInstanceId) {
   base::DictValue dict =
       base::test::ParseJsonDict(kTestSponsoredRichMediaCampaign);
-  NTPSponsoredImagesData data(dict, installed_dir());
-  EXPECT_THAT(data.IsValid(), testing::IsTrue());
+  NTPSponsoredImagesData sponsored_images_data(dict, installed_dir());
+  EXPECT_TRUE(sponsored_images_data.IsValid());
 
-  EXPECT_EQ(data.GetCreativeByInstanceId(kRichMediaCreativeInstanceId),
-            &data.campaigns[0].creatives[0]);
-  EXPECT_EQ(
-      data.GetCreativeByInstanceId("xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"),
-      nullptr);
+  const Creative* const creative =
+      sponsored_images_data.GetCreativeByInstanceId(
+          kRichMediaCreativeInstanceId);
+  ASSERT_TRUE(creative);
+  EXPECT_EQ(creative->creative_instance_id, kRichMediaCreativeInstanceId);
 }
+
+// `DUMP_WILL_BE_NOTREACHED` aborts the process in non-official `DCHECK` builds.
+#if defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
+TEST_F(NTPSponsoredRichMediaImagesDataTest,
+       GetCreativeByInstanceIdReturnsNullForUnknownInstanceId) {
+  base::DictValue dict =
+      base::test::ParseJsonDict(kTestSponsoredRichMediaCampaign);
+  NTPSponsoredImagesData sponsored_images_data(dict, installed_dir());
+  EXPECT_TRUE(sponsored_images_data.IsValid());
+
+  EXPECT_FALSE(sponsored_images_data.GetCreativeByInstanceId(
+      "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"));
+}
+#endif  // defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
 
 }  // namespace ntp_background_images
