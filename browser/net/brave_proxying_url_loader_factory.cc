@@ -23,6 +23,7 @@
 #include "brave/browser/net/url_context.h"
 #include "brave/components/brave_shields/content/browser/adblock_stub_response.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"  // IWYU pragma: keep
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -43,6 +44,10 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/loader/throttling_url_loader.h"
 #include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/content/browser/playlist_network_observer.h"
+#endif
 
 namespace {
 
@@ -638,6 +643,13 @@ void BraveProxyingURLLoaderFactory<
     ContinueToBeforeRedirect(redirect_info, net::OK);
     return;
   }
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  // Headers only - the response body is forwarded untouched below.
+  playlist::MaybeNotifyMediaResponse(
+      browser_context_, render_frame_token_, request_.url,
+      current_response_head_->mime_type, request_.destination);
+#endif
 
   proxied_client_receiver_.Resume();
   target_client_->OnReceiveResponse(std::move(current_response_head_),
