@@ -144,7 +144,7 @@ class CaptchaMetricsBrowserTest : public CaptchaMetricsBrowserTestBase {
         kMiscMetricsCaptchaLastRecordTime, base::Time::Now() - base::Days(1));
     g_brave_browser_process->process_misc_metrics()
         ->captcha_metrics()
-        ->ReportToP3AIfPossible();
+        ->MaybeReport();
   }
 
  protected:
@@ -206,6 +206,58 @@ IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, RecordsMainFrameGoogle) {
   histogram_tester_.ExpectUniqueSample(kCaptchaGoogleCountHistogramName, 1, 1);
   histogram_tester_.ExpectTotalCount(kCaptchaCloudflareCountHistogramName, 0);
   histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
+}
+
+IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, RecordsUserActivatedGoogle) {
+  NavigateAndWaitForLoad(GoogleCaptchaUrl());
+
+  // ExecJs runs with a user gesture by default, which drives the captcha
+  // frame's FrameReceivedUserActivation and records a user-activated captcha.
+  ASSERT_TRUE(content::ExecJs(web_contents(), "true"));
+
+  ReportPendingCounts();
+
+  histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(kCaptchaGoogleCountHistogramName, 1, 1);
+
+  // User activation is recorded once. count=1 → bucket 1.
+  histogram_tester_.ExpectUniqueSample(
+      kCaptchaTotalCountUserActivatedHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(
+      kCaptchaGoogleCountUserActivatedHistogramName, 1, 1);
+}
+
+IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest,
+                       RecordsUserActivatedAcrossProvidersInSameTab) {
+  // Load a Cloudflare captcha and interact with it in the current tab.
+  NavigateAndWaitForLoad(CloudflareCaptchaUrl());
+  ASSERT_TRUE(content::ExecJs(web_contents(), "true"));
+
+  // Navigate the same tab to a Google captcha and interact with it. Each
+  // navigation gets its own page-load observer, so the user activation is
+  // attributed to the respective provider.
+  NavigateAndWaitForLoad(GoogleCaptchaUrl());
+  ASSERT_TRUE(content::ExecJs(web_contents(), "true"));
+
+  ReportPendingCounts();
+
+  // Two captchas total, one of each provider. total=2 → bucket 2.
+  histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 2, 1);
+  histogram_tester_.ExpectUniqueSample(kCaptchaGoogleCountHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(kCaptchaCloudflareCountHistogramName, 1,
+                                       1);
+  histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
+
+  // Both captchas were user-activated. total=2 → bucket 2, each provider
+  // count=1 → bucket 1.
+  histogram_tester_.ExpectUniqueSample(
+      kCaptchaTotalCountUserActivatedHistogramName, 2, 1);
+  histogram_tester_.ExpectUniqueSample(
+      kCaptchaGoogleCountUserActivatedHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(
+      kCaptchaCloudflareCountUserActivatedHistogramName, 1, 1);
+  histogram_tester_.ExpectTotalCount(
+      kCaptchaHCaptchaCountUserActivatedHistogramName, 0);
 }
 
 IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest, DoesNotRecordNonCaptcha) {
