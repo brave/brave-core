@@ -7,23 +7,19 @@
 #include "base/path_service.h"
 #include "brave/browser/themes/brave_dark_mode_utils.h"
 #include "brave/browser/themes/pref_names.h"
-#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/buildflags/buildflags.h"
-#include "brave/ui/color/nala/nala_color_id.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_test_util.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/themes/test/theme_service_changed_waiter.h"
 #include "chrome/browser/themes/theme_service.h"
 #include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -31,8 +27,6 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "extensions/buildflags/buildflags.h"
-#include "testing/gmock/include/gmock/gmock.h"
-#include "testing/gtest/include/gtest/gtest-spi.h"
 #include "ui/color/color_provider.h"
 #include "ui/color/color_provider_key.h"
 
@@ -43,12 +37,9 @@
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/extension_install_prompt.h"
 #include "chrome/browser/extensions/extension_service.h"
-#include "chrome/common/extensions/extension_constants.h"
 #include "components/crx_file/crx_verifier.h"
 #include "extensions/browser/crx_file_info.h"
 #include "extensions/browser/crx_installer.h"
-#include "extensions/browser/extension_dialog_auto_confirm.h"
-#include "extensions/browser/extension_system.h"
 #include "extensions/browser/test_extension_registry_observer.h"
 #endif
 
@@ -80,7 +71,6 @@ class BraveThemeServiceTest : public InProcessBrowserTest {
     auto installer =
         extensions::CrxInstaller::CreateSilent(browser()->GetProfile());
     installer->set_allow_silent_install(true);
-    installer->set_was_triggered_by_user_download();
     installer->set_creation_flags(extensions::Extension::FROM_WEBSTORE);
 
     installer->InstallCrxFile(
