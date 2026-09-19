@@ -7,10 +7,10 @@ import { assert } from '//resources/js/assert.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
-import { BraveAccountBrowserProxy } from './brave_account_browser_proxy.js'
-import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
-import { DialogMode, VerificationIntent } from '../brave_account.mojom-webui.js'
-import { showError, showSuccess } from '../brave_account_shared.js'
+import { BraveAccountRowBrowserProxy } from './brave_account_row_browser_proxy.js'
+import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js'
+import { DialogMode, VerificationIntent } from './brave_account.mojom-webui.js'
+import { showError, showSuccess } from './brave_account_shared.js'
 
 // Shared by the logged-out and logged-in rows, which differ only in their
 // verification intent type (`Intent`) and how it is tagged into a
@@ -28,7 +28,7 @@ export abstract class BraveAccountRowBaseElement<
     }
   }
 
-  accessor browserProxy!: BraveAccountBrowserProxy
+  accessor browserProxy!: BraveAccountRowBrowserProxy
   protected accessor initiatingServiceName = ''
   // `& object` is only here to satisfy the @webui-eslint/lit-property-accessor
   // lint rule, which expects Object reactive properties to be typed as objects.
@@ -49,9 +49,10 @@ export abstract class BraveAccountRowBaseElement<
   // context rather than as a standalone message. The tags are only used to
   // locate the link text - they are never parsed as HTML.
   protected getVerificationDescription() {
-    const [beforeLink, linkLabel, afterLink] = loadTimeData.getString(
-      BraveAccountSettingsStrings
-        .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3)
+    const [beforeLink, linkLabel, afterLink] = loadTimeData
+      .getString(
+        BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_3,
+      )
       .split(/<a>|<\/a>/)
 
     return {
@@ -73,7 +74,8 @@ export abstract class BraveAccountRowBaseElement<
     assert(this.state.verification)
     try {
       await this.browserProxy.authentication.resendVerificationEmail(
-        this.makeVerificationIntent(this.state.verification.intent))
+        this.makeVerificationIntent(this.state.verification.intent),
+      )
       showSuccess('resendVerificationEmail', { durationMs: 30000 })
     } catch (e) {
       showError('resendVerificationEmail', e, { durationMs: 30000 })
@@ -85,7 +87,8 @@ export abstract class BraveAccountRowBaseElement<
   protected onCancelVerificationButtonClicked() {
     assert(this.state.verification)
     this.browserProxy.authentication.cancelVerification(
-      this.makeVerificationIntent(this.state.verification.intent))
+      this.makeVerificationIntent(this.state.verification.intent),
+    )
   }
 
   protected openDialogInDefaultMode() {

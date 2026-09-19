@@ -17,8 +17,10 @@ import("//brave/components/traffic_control/buildflags/buildflags.gni")
 # start in a different path, we'll do the first step (move them to the generated
 # preprocessed path via preprocess_if_expr, but let chromium handle the rest of
 # the webui build pipeline.
-brave_settings_preprocess_deps =
-    [ "//brave/browser/resources/settings:preprocess" ]
+brave_settings_preprocess_deps = [
+  "//brave/browser/resources/settings:preprocess",
+  "//brave/browser/resources/settings:preprocess_brave_account",
+]
 
 # Preprocessor defines passed to build_webui() so that Chromium-patched
 # TypeScript files can use <if expr="..."> with Brave buildflags.
@@ -127,20 +129,30 @@ brave_settings_ts_files = [
   "brave_window.ts",
   "default_brave_shields_page/brave_adblock_browser_proxy.ts",
   "default_brave_shields_page/default_brave_shields_browser_proxy.ts",
-  "getting_started_page/brave_account_browser_proxy.ts",
-  "getting_started_page/brave_account_logged_in_row.html.ts",
-  "getting_started_page/brave_account_logged_in_row.ts",
-  "getting_started_page/brave_account_logged_out_row.html.ts",
-  "getting_started_page/brave_account_logged_out_row.ts",
   "getting_started_page/brave_account_row.html.ts",
   "getting_started_page/brave_account_row.ts",
-  "getting_started_page/brave_account_row_base.ts",
   "shortcuts_page/shortcuts_page.ts",
 ]
 
-brave_settings_local_css_files = [
-  "getting_started_page/brave_account_logged_in_row.css",
-  "getting_started_page/brave_account_row_common.css",
+brave_settings_local_css_files = []
+
+# Shared with the Brave Account UI, so these are preprocessed by
+# :preprocess_brave_account out of //brave/components/brave_account/resources,
+# not out of this directory like the brave_settings_local_* lists. They land
+# flat in the same preprocessed/ folder, hence no directory prefix.
+brave_account_settings_ts_files = [
+  "brave_account_logged_in_row.html.ts",
+  "brave_account_logged_in_row.ts",
+  "brave_account_logged_out_row.html.ts",
+  "brave_account_logged_out_row.ts",
+  "brave_account_row_base.ts",
+  "brave_account_row_browser_proxy.ts",
+  "brave_account_shared.ts",
+]
+
+brave_account_settings_css_files = [
+  "brave_account_logged_in_row.css",
+  "brave_account_row_common.css",
 ]
 
 if (enable_brave_vpn_wireguard) {
@@ -207,8 +219,10 @@ if (enable_ai_chat) {
 brave_settings_ts_definitions =
     [ "//brave/components/definitions/chrome_brave_theme.d.ts" ]
 
-brave_settings_ts_extra_deps =
-    [ "//brave/browser/resources/settings:preprocess" ]
+brave_settings_ts_extra_deps = [
+  "//brave/browser/resources/settings:preprocess",
+  "//brave/browser/resources/settings:preprocess_brave_account",
+]
 
 brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom-webui.ts",
@@ -220,10 +234,6 @@ brave_settings_mojo_files = [
   "$root_gen_dir/brave/components/brave_account/mojom/resend_verification_email.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_account/mojom/reset_password.mojom-webui.ts",
   "$root_gen_dir/brave/components/brave_origin/mojom/brave_origin_settings.mojom-webui.ts",
-
-  # Shared with the Brave Account UI; lands at preprocessed/
-  # brave_account_shared.ts.
-  "//brave/components/brave_account/resources/brave_account_shared.ts",
 
   # Add generated strings as mojo files. Currently, this is the only way to
   # include them in build_webui() target.
@@ -318,8 +328,9 @@ if (enable_email_aliases) {
       [ "email_aliases_page/email_aliases_page.ts" ]
 }
 
-# Generate the list for inclusion via preprocess and exclusion for chromium's
-# preprocess
+# Files preprocessed by :preprocess into Chromium's preprocessed/ folder.
+# The Brave Account rows live in a different directory
+# and are preprocessed by :preprocess_brave_account instead.
 brave_settings_local_ts_files =
     brave_settings_web_component_files + brave_settings_ts_files
 
@@ -328,3 +339,16 @@ foreach(component_file, brave_settings_web_component_files) {
   brave_settings_local_html_files +=
       [ string_replace(component_file, ".ts", ".html") ]
 }
+
+brave_settings_ts_files += brave_account_settings_ts_files
+
+brave_settings_css_files =
+    brave_settings_local_css_files + brave_account_settings_css_files
+
+# Everything Chromium's build_webui() must skip preprocessing for,
+# because :preprocess or :preprocess_brave_account has already done it.
+brave_settings_exclude_ts_preprocess_files =
+    brave_settings_local_ts_files + brave_account_settings_ts_files
+
+brave_settings_exclude_html_css_preprocess_files =
+    brave_settings_local_html_files + brave_settings_css_files
