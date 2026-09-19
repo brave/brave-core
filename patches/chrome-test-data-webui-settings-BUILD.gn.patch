@@ -1,12 +1,20 @@
 diff --git a/chrome/test/data/webui/settings/BUILD.gn b/chrome/test/data/webui/settings/BUILD.gn
-index bdafff6e985955b8fc1a876e7402e1322368b0f0..738e34fbe2275c6f582c20b5ce224602334a01ab 100644
+index bdafff6e985955b8fc1a876e7402e1322368b0f0..fef7c2072cb3272d337481e89143da925a8844d8 100644
 --- a/chrome/test/data/webui/settings/BUILD.gn
 +++ b/chrome/test/data/webui/settings/BUILD.gn
-@@ -308,6 +308,7 @@ build_webui_tests("build") {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/browser/resources/settings/sources.gni")
+ import("../build_webui_tests.gni")
+ 
+ build_webui_tests("build") {
+@@ -304,6 +305,7 @@ build_webui_tests("build") {
+     "//tools/typescript/definitions/pending.d.ts",
+     "//tools/typescript/definitions/settings_private.d.ts",
+   ]
++  ts_definitions += brave_settings_ts_definitions
+   if (is_chromeos) {
      ts_definitions +=
          [ "//tools/typescript/definitions/quick_unlock_private.d.ts" ]
-   }
-+  import("//brave/browser/resources/settings/sources.gni") ts_definitions += brave_settings_ts_definitions
- 
-   ts_deps = [
-     "//chrome/browser/resources/settings:build_ts",
