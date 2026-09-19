@@ -79,4 +79,54 @@ extension BraveWalletBraveWalletService {
       }
     )
   }
+
+  @MainActor func pendingSignSolTransactionsRequests(
+    allAccounts: [BraveWallet.AccountInfo]
+  ) async -> [SignTransactionRequestItem] {
+    let requests = await pendingSignSolTransactionsRequests()
+    return requests.compactMap { request in
+      allAccounts.first(where: { $0.accountId == request.fromAccountId })
+        .map { SignTransactionRequestItem(request: .solana(request), account: $0) }
+    }
+  }
+
+  @MainActor func pendingSignCardanoTransactionRequests(
+    allAccounts: [BraveWallet.AccountInfo]
+  ) async -> [SignTransactionRequestItem] {
+    let requests = await pendingSignCardanoTransactionRequests()
+    return requests.compactMap { request in
+      allAccounts.first(where: { $0.accountId == request.accountId })
+        .map { SignTransactionRequestItem(request: .cardano(request), account: $0) }
+    }
+  }
+
+  @MainActor func pendingSignMessageRequests(
+    allAccounts: [BraveWallet.AccountInfo]
+  ) async -> [SignMessageRequestItem] {
+    let requests = await pendingSignMessageRequests()
+    return requests.compactMap { request in
+      allAccounts.first(where: { $0.accountId == request.accountId })
+        .map { SignMessageRequestItem(request: request, account: $0) }
+    }
+  }
+
+  @MainActor func pendingGetEncryptionPublicKeyRequests(
+    allAccounts: [BraveWallet.AccountInfo]
+  ) async -> GetEncryptionPublicKeyRequestItem? {
+    guard let request = await pendingGetEncryptionPublicKeyRequests().first else { return nil }
+    guard let account = allAccounts.first(where: { $0.accountId == request.accountId }) else {
+      return nil
+    }
+    return GetEncryptionPublicKeyRequestItem(request: request, account: account)
+  }
+
+  @MainActor func pendingDecryptRequests(
+    allAccounts: [BraveWallet.AccountInfo]
+  ) async -> DecryptRequestItem? {
+    guard let request = await pendingDecryptRequests().first else { return nil }
+    guard let account = allAccounts.first(where: { $0.accountId == request.accountId }) else {
+      return nil
+    }
+    return DecryptRequestItem(request: request, account: account)
+  }
 }
