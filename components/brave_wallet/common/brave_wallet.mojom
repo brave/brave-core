@@ -3922,3 +3922,29 @@ interface SimulationService {
           string error_response,
           string error_string);
 };
+
+// Browser-side service exposing snap load to the wallet UI.
+interface SnapsService {
+  // Create an iframe for the snap and load its bundle.
+  // |result| is the string value exported by the snap bundle on success.
+  LoadSnap(string snap_id) => (bool success, string? error, string? result);
+
+  // Initiates a user-approved snap install from the wallet UI.
+  RequestInstallSnap(string snap_id, string version)
+      => (bool success, string? error);
+
+  // Called by the wallet page to hand up its SnapBridge implementation.
+  SetSnapBridge(pending_remote<SnapBridge> bridge);
+};
+
+// Implemented by the wallet page TypeScript (SnapBridge).
+// Called from the browser to manage snap iframes.
+interface SnapBridge {
+  // Create an iframe for the snap and load |source_code| into it.
+  // |result| is the string value exported by the snap bundle on success.
+  LoadSnap(string snap_id, string source_code)
+      => (bool success, string? error, string? result);
+
+  // Tear down the iframe for |snap_id|.
+  UnloadSnap(string snap_id);
+};

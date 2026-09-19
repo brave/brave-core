@@ -32,6 +32,9 @@
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/simulation_service.h"
+#if BUILDFLAG(ENABLE_SNAPS)
+#include "brave/components/brave_wallet/browser/snaps_service.h"
+#endif
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/browser/tx_storage.h"
@@ -291,6 +294,12 @@ BraveWalletService::BraveWalletService(
         *keyring_service(), *network_manager(), *profile_prefs,
         url_loader_factory);
   }
+
+#if BUILDFLAG(ENABLE_SNAPS)
+  if (IsSnapsFeatureEnabled()) {
+    snaps_service_ = std::make_unique<SnapsService>();
+  }
+#endif
 
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),
