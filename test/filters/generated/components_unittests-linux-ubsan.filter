@@ -5,11 +5,11 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 2.1% flake rate over 30 days per LUCI Analysis (189 passed, 4 failed, 0 flaky).
+# 1.7% flake rate over 30 days per LUCI Analysis (231 passed, 4 failed, 0 flaky).
 -AddressDataManagerTest.IsAutofillProfileEnabled_EnterprisePolicy
 
-# 8.9% flake rate over 30 days per LUCI Analysis (388 passed, 0 failed, 38 flaky).
+# 10.7% flake rate over 30 days per LUCI Analysis (376 passed, 0 failed, 45 flaky).
 -MemoryPressureLevelReporterTest.Customization
 
-# 91.1% flake rate over 30 days per LUCI Analysis (38 passed, 0 failed, 388 flaky).
+# 89.3% flake rate over 30 days per LUCI Analysis (45 passed, 0 failed, 376 flaky).
 -MemoryPressureLevelReporterTest.IntegerOverflowFixWithSaturatedCast

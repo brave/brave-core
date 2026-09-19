@@ -60,6 +60,7 @@ source_set("legacy_unit_tests") {
     "//brave/ios/browser/api/net",
     "//net",
     "//net/http:generate_transport_security_state",
+    "//net/http:generate_transport_security_state_pins",
     "//testing/gtest",
   ]
 

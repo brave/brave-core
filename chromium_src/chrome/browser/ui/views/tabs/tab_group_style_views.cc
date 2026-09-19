@@ -1,0 +1,71 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "chrome/browser/ui/views/tabs/tab_group_style_views.h"
+
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "brave/browser/ui/views/tabs/brave_tab_group_underline.h"
+#include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/features.h"
+#include "third_party/skia/include/core/SkPathBuilder.h"
+
+#define TabGroupUnderline BraveTabGroupUnderline
+#define TabGroupStyleViews TabGroupStyleViews_ChromiumImpl
+
+#include <chrome/browser/ui/views/tabs/tab_group_style_views.cc>
+
+#undef TabGroupStyleViews
+#undef TabGroupUnderline
+
+bool TabGroupStyleViews::TabGroupUnderlineShouldBeHidden() const {
+  return false;
+}
+
+// Upstream currently hides the tab group underline in certain scenarios,
+// whereas we always show the underline.
+bool TabGroupStyleViews::TabGroupUnderlineShouldBeHidden(
+    const views::View* leading_view,
+    const views::View* trailing_view) const {
+  return false;
+}
+
+SkPath TabGroupStyleViews::GetUnderlinePath(gfx::Rect local_bounds) const {
+  if (!ShouldShowBraveVerticalTabs()) {
+    return TabGroupStyleViews_ChromiumImpl::GetUnderlinePath(local_bounds);
+  }
+
+  // In vertical tabs, underline is not actually "underline'. It's vertical line
+  // at the left side of the tab group. And it has half rounded corners.
+  //
+  // +   group header   | '+' is the underline.
+  // ++  tab 1          | Drawing starts from top-right and goes
+  // ++  tab 2          | counter-clockwise
+  // +   tab 3          |
+  //
+  return SkPathBuilder()
+      .arcTo({/* rx = */ kStrokeThicknessForVerticalTabs,
+              /* ry = */ kStrokeThicknessForVerticalTabs},
+             /* angle = */ 180.f, SkPathBuilder::kSmall_ArcSize,
+             SkPathDirection::kCW,
+             {/* x = */ kStrokeThicknessForVerticalTabs,
+              /* y = */ kStrokeThicknessForVerticalTabs})
+      .lineTo(kStrokeThicknessForVerticalTabs,
+              local_bounds.height() - kStrokeThicknessForVerticalTabs)
+      .arcTo({/* rx = */ kStrokeThicknessForVerticalTabs,
+              /* ry = */ kStrokeThicknessForVerticalTabs},
+             /* angle = */ 180.f, SkPathBuilder::kSmall_ArcSize,
+             SkPathDirection::kCW,
+             {/* x = */ 0,
+              /* y = */ static_cast<float>(local_bounds.height())})
+      .close()
+      .detach();
+}
+
+bool TabGroupStyleViews::ShouldShowBraveVerticalTabs() const {
+  auto* vertical_tab_controller = VerticalTabController::FromBrowser(
+      tab_group_views_->GetBrowserWindowInterface());
+  return vertical_tab_controller &&
+         vertical_tab_controller->ShouldShowBraveVerticalTabs();
+}

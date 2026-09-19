@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/device_chooser_content_view.h b/chrome/browser/ui/views/device_chooser_content_view.h
-index 62fd0b50941775fcd933a443622c6bd22cac29c8..1c1d01ad6622ea5ce7ff0cb61dbdd2b125b06104 100644
+index dd4da705683546f15322e725e279f4c688ae0651..19b3a1d16277480c68f6771c52d9ba1148762d38 100644
 --- a/chrome/browser/ui/views/device_chooser_content_view.h
 +++ b/chrome/browser/ui/views/device_chooser_content_view.h
 @@ -82,6 +82,9 @@ class DeviceChooserContentView : public views::View,

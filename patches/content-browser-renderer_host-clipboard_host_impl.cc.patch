@@ -1,12 +1,25 @@
 diff --git a/content/browser/renderer_host/clipboard_host_impl.cc b/content/browser/renderer_host/clipboard_host_impl.cc
-index bf6f3a80e7edfad1d65692ba17a8f143e85a9a8d..389ff99507bd75bed9aed7442738ea90717b4894 100644
+index f7358fd6e8b84a87942520719eca706ebbda137c..951161f12976fe1e61399084de7311c3016fe311 100644
 --- a/content/browser/renderer_host/clipboard_host_impl.cc
 +++ b/content/browser/renderer_host/clipboard_host_impl.cc
-@@ -614,6 +614,7 @@ void ClipboardHostImpl::WriteText(const std::u16string& text) {
+@@ -170,6 +170,10 @@ class ClipboardHostDocumentHelper
+   }
+ #endif
+ 
++  void SanitizeOnNextWriteText() override {
++    impl_->SanitizeOnNextWriteText();
++  }
++
+  private:
+   std::unique_ptr<ClipboardHostImpl> impl_;
+ };
+@@ -703,6 +707,9 @@ void ClipboardHostImpl::WriteText(const std::u16string& text) {
    ClipboardPasteData data;
    data.text = text;
    ++pending_writes_;
-+  BRAVE_CLIPBOARD_HOST_IMPL_SANITIZE
++  MaybeSanitizeClipboardText(
++      &sanitize_on_next_write_text_, GetContentClient()->browser(),
++      render_frame_host_->GetMainFrame(), &data.text);
    GetContentClient()->browser()->IsClipboardCopyAllowedByPolicy(
-       CreateClipboardEndpoint(render_frame_host()),
+       CreateClipboardEndpoint(),
        {

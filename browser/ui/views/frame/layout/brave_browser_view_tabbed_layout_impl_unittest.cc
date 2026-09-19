@@ -28,8 +28,7 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   FakeBrowserViewLayoutDelegate() = default;
   ~FakeBrowserViewLayoutDelegate() override = default;
 
-  bool ShouldDrawTabStrip() const override { return false; }
-  bool ShouldDrawVerticalTabStrip() const override { return false; }
+  TabStripType GetTabStripType() const override { return TabStripType::kNone; }
   bool IsVerticalTabStripCollapsed() const override { return false; }
   bool ShouldDrawWebAppFrameToolbar() const override { return false; }
   bool GetUnframedModeEnabled() const override { return false; }
@@ -68,7 +67,6 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   void UpdateWindowControlsOverlay(const gfx::Rect&) override {}
   bool ShouldLayoutTabStrip() const override { return false; }
   int GetExtraInfobarOffset() const override { return 0; }
-  bool IsOrganizerPanelVisible() const override { return false; }
   base::CallbackListSubscription AddOnGlassModeChangedCallback(
       base::RepeatingCallback<void(bool)> callback,
       bool* current_state_out) override {

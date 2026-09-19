@@ -5,11 +5,11 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 4.5% flake rate over 30 days per LUCI Analysis (742 passed, 0 failed, 35 flaky).
+# 4.1% flake rate over 30 days per LUCI Analysis (741 passed, 0 failed, 32 flaky).
 -All/HeapProfilerControllerProcessTest.ChildProcess/10
 
-# 1.2% flake rate over 30 days per LUCI Analysis (768 passed, 0 failed, 9 flaky).
+# 1.0% flake rate over 30 days per LUCI Analysis (765 passed, 0 failed, 8 flaky).
 -GaiaCookieManagerServiceTest.GaiaCookieLastListAccountsDataSaved
 
-# 5.7% flake rate over 30 days per LUCI Analysis (734 passed, 0 failed, 44 flaky).
+# 6.1% flake rate over 30 days per LUCI Analysis (726 passed, 0 failed, 47 flaky).
 -PredictionServiceTest.ResponsesAreCorrect

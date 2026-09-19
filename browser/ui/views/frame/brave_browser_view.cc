@@ -501,7 +501,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
 }
 
 void BraveBrowserView::ToggleSidebar() {
-  browser_->GetFeatures().side_panel_ui()->Toggle();
+  SidePanelUI::From(browser_)->Toggle();
 }
 
 void BraveBrowserView::ShowBraveVPNBubble(bool show_select) {
@@ -1304,7 +1304,7 @@ bool BraveBrowserView::IsInTabDragging() const {
 }
 
 void BraveBrowserView::ReadyToListenFullscreenChanges() {
-  CHECK(browser_->GetFeatures().exclusive_access_manager());
+  CHECK(ExclusiveAccessManager::From(browser_));
 
   if (vertical_tab_strip_container_view_) {
     vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
@@ -1313,7 +1313,7 @@ void BraveBrowserView::ReadyToListenFullscreenChanges() {
 }
 
 void BraveBrowserView::StopListeningFullscreenChanges() {
-  CHECK(browser_->GetFeatures().exclusive_access_manager());
+  CHECK(ExclusiveAccessManager::From(browser_));
 
   if (vertical_tab_strip_container_view_) {
     vertical_tab_strip_container_view_->vertical_tab_strip_region_view()

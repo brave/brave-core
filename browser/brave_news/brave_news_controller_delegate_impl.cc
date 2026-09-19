@@ -9,7 +9,6 @@
 #include "base/strings/strcat.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
@@ -49,7 +48,7 @@ void BraveNewsControllerDelegateImpl::CloseUI() {
   if (!browser) {
     return;
   }
-  if (SidePanelUI* ui = browser->GetFeatures().side_panel_ui()) {
+  if (SidePanelUI* ui = SidePanelUI::From(browser)) {
     ui->Close();
   }
 }

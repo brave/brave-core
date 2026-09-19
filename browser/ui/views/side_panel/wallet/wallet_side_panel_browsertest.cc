@@ -9,7 +9,6 @@
 #include "brave/components/brave_wallet/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
@@ -48,7 +47,7 @@ IN_PROC_BROWSER_TEST_F(WalletSidePanelBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(WalletSidePanelBrowserTest, ShowsWalletSidePanel) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   ASSERT_TRUE(panel_ui);
 
   panel_ui->Show(SidePanelEntryId::kWallet);

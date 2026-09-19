@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/startup/startup_features.cc b/chrome/browser/startup/startup_features.cc
-index a2bfc75e840e2b98b8363d7d0353dfbc9f98adbd..f33dc4717488618d1d5115e233b1d8cc881fd53a 100644
+index 9164e5408a1fa4c3ef64539d4b40d3210d34d100..63bba69b185bc088f6866dee9d016fcc76c113b1 100644
 --- a/chrome/browser/startup/startup_features.cc
 +++ b/chrome/browser/startup/startup_features.cc
 @@ -9,7 +9,7 @@

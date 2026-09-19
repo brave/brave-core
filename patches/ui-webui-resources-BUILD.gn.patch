@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index e395a144cbeefaa22902d3fc041ea5de8a7b76fe..0b748c22a20781126b6e348acfc176a316141dd3 100644
+index 44b39cda6816b726d1414fb0c5490956f7a78909..253422304fe7c9cc082e2b8a0b38f535f5ebd0c1 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
-@@ -126,6 +126,7 @@ generate_grd("build_grd") {
+@@ -128,6 +128,7 @@ generate_grd("build_grd") {
      public_deps += [ "cr_components/signin:build_grdp" ]
      grdp_files += [ "$target_gen_dir/cr_components/signin/resources.grdp" ]
    }

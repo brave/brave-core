@@ -19,11 +19,10 @@ TEST_F(PageInfoCookiesContentViewBaseTestClassBraveOverrides,
 }
 
 TEST_F(PageInfoCookiesContentViewBaseTestClassBraveOverrides,
-       ThirdPartyCoookiesInfoIsHiddenInIncognitoMode) {
+       ThirdPartyCoookiesInfoIsHiddenWhenAllowed) {
   PageInfoCookiesContentView::CookiesInfo cookie_info =
       DefaultCookieInfoForTests();
   cookie_info.controls_state = CookieControlsState::kAllowed3pc;
-  cookie_info.is_incognito = true;
   content_view()->SetCookieInfo(cookie_info);
   EXPECT_FALSE(third_party_cookies_container()->GetVisible());
   EXPECT_FALSE(third_party_cookies_description_wrapper()->GetVisible());

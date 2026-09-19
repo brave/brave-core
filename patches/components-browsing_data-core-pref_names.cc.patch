@@ -1,8 +1,8 @@
 diff --git a/components/browsing_data/core/pref_names.cc b/components/browsing_data/core/pref_names.cc
-index 1a60539892412447eb2a3ec51b357f253e5cb8db..6eb6c7232c1d9955d99e79c38868416d42d2dca3 100644
+index d69d20b9747bbfe02b25b99183ec1a2acf98232e..6a5825e6690da6c65fcea23c904b2cc7ea8d524a 100644
 --- a/components/browsing_data/core/pref_names.cc
 +++ b/components/browsing_data/core/pref_names.cc
-@@ -38,6 +38,7 @@ bool AreAllSelectionPrefsDefaultValue(PrefService* pref_service) {
+@@ -12,6 +12,7 @@
  namespace browsing_data::prefs {
  
  void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -10,7 +10,7 @@ index 1a60539892412447eb2a3ec51b357f253e5cb8db..6eb6c7232c1d9955d99e79c38868416d
    registry->RegisterListPref(kBrowsingDataLifetime);
    registry->RegisterBooleanPref(kClearBrowsingDataOnExitDeletionPending, false);
    registry->RegisterListPref(kClearBrowsingDataOnExitList);
-@@ -73,6 +74,8 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -48,6 +49,8 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {
  #endif  // BUILDFLAG(IS_IOS)
  
    registry->RegisterBooleanPref(kQuickDeleteEverUsed, false);
@@ -18,4 +18,4 @@ index 1a60539892412447eb2a3ec51b357f253e5cb8db..6eb6c7232c1d9955d99e79c38868416d
 +  RegisterBraveUserPrefs(registry);
  }
  
- #if BUILDFLAG(IS_IOS)
+ }  // namespace browsing_data::prefs

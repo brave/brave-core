@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
-index 4f9ae229d847fcc0f024927e7de5de43b18f8f35..a384c8a0577e23aa91ddad44a38aff9388a09407 100644
+index 650e90a8ce901f6ae441615c6b23004946439e26..b4595ad5f0304b5e043517d2b4ead6941bfcbdcd 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/tabbed_mode/TabbedRootUiCoordinator.java
-@@ -200,7 +200,7 @@ import org.chromium.chrome.browser.tab_bottom_sheet.TabBottomSheetManagerImpl;
+@@ -204,7 +204,7 @@ import org.chromium.chrome.browser.tab_bottom_sheet.TabBottomSheetManagerImpl;
  import org.chromium.chrome.browser.tab_bottom_sheet.TabBottomSheetUtils;
  import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonController;
  import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonControllerFactory;
@@ -11,7 +11,7 @@ index 4f9ae229d847fcc0f024927e7de5de43b18f8f35..a384c8a0577e23aa91ddad44a38aff93
  import org.chromium.chrome.browser.tab_group_sync.TabGroupSyncFeatures;
  import org.chromium.chrome.browser.tab_group_sync.TabGroupSyncServiceFactory;
  import org.chromium.chrome.browser.tab_ui.TabContentManager;
-@@ -1500,7 +1500,7 @@ public class TabbedRootUiCoordinator extends RootUiCoordinator {
+@@ -1521,7 +1521,7 @@ public class TabbedRootUiCoordinator extends RootUiCoordinator {
              var tabGroupSyncService = TabGroupSyncServiceFactory.getForProfile(originalProfile);
              assert tabGroupSyncService != null;
              mTabGroupSyncController =

@@ -507,6 +507,7 @@ source_set("ui") {
       "//chrome/browser/sync",
       "//chrome/browser/themes",
       "//chrome/browser/ui:browser_actions",
+      "//chrome/browser/ui:browser_content_setting_bubble_model_delegate",
       "//chrome/browser/ui:chrome_pages",
       "//chrome/browser/ui:layout_constants",
       "//chrome/browser/ui:session_crashed_bubble",
@@ -779,12 +780,14 @@ source_set("ui") {
       "//chrome/browser/ui/views/download",
       "//chrome/browser/ui/views/extensions:extensions_menu_main_page_view",
       "//chrome/browser/ui/views/frame:contents_web_view",
+      "//chrome/browser/ui/views/frame:system_menu_model_builder",
       "//chrome/browser/ui/views/infobars",
       "//chrome/browser/ui/views/interaction",
       "//chrome/browser/ui/views/overlay",
       "//chrome/browser/ui/views/tabs:tab",
       "//chrome/browser/ui/views/tabs:tab_strip",
       "//chrome/browser/ui/views/tabs:tab_strip_button",
+      "//chrome/browser/ui/views/tabs/common",
       "//chrome/browser/ui/views/tabs/dragging",
       "//chrome/browser/ui/views/tabs/shared",
       "//chrome/browser/ui/views/tabs/tab",
@@ -840,7 +843,10 @@ source_set("ui") {
         "views/frame/brave_browser_frame_view_win.h",
       ]
 
-      deps += [ "//chrome/browser:titlebar_config" ]
+      deps += [
+        "//chrome/browser:titlebar_config",
+        "//chrome/browser/ui/views/frame:browser_caption_button_container_win",
+      ]
     }
 
     if (is_linux) {

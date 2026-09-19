@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/modules/webaudio/analyser_handler.cc b/third_party/blink/renderer/modules/webaudio/analyser_handler.cc
-index 0c878ac85f1a5082c62eb9f4177665ea2a9f537b..285979a07c4e8aff8a363244cee468e119e273a5 100644
+index aab6c1b6c7a4b36b9cec2021291d7e469da8eb05..2aae6face73843ee007339a5c742f3fe5efea75e 100644
 --- a/third_party/blink/renderer/modules/webaudio/analyser_handler.cc
 +++ b/third_party/blink/renderer/modules/webaudio/analyser_handler.cc
-@@ -22,6 +22,7 @@ constexpr unsigned kDefaultNumberOfOutputChannels = 1;
+@@ -24,6 +24,7 @@ constexpr unsigned kDefaultNumberOfOutputChannels = 1;
  
  AnalyserHandler::AnalyserHandler(AudioNode& node, float sample_rate)
      : AudioHandler(NodeType::kNodeTypeAnalyser, node, sample_rate) {

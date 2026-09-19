@@ -8,6 +8,7 @@ import("//mojo/public/tools/bindings/mojom.gni")
 mojom("brave_geolocation_permission") {
   sources = [ "brave_geolocation_permission.mojom" ]
 
+  generate_blink = true
   export_class_attribute_blink = "CORE_EXPORT"
   export_define_blink = "BLINK_CORE_IMPLEMENTATION=1"
   export_header_blink = "third_party/blink/renderer/core/core_export.h"
