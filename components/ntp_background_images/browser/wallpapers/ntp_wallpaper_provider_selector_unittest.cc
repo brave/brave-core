@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_background_images/browser/wallpapers/ntp_wallpaper_provider_factory.h"
+#include "brave/components/ntp_background_images/browser/wallpapers/ntp_wallpaper_provider_selector.h"
 
 #include <memory>
 #include <utility>
@@ -23,9 +23,9 @@
 
 namespace ntp_background_images {
 
-class NTPWallpaperProviderFactoryTest : public testing::Test {
+class NTPWallpaperProviderSelectorTest : public testing::Test {
  public:
-  NTPWallpaperProviderFactoryTest() = default;
+  NTPWallpaperProviderSelectorTest() = default;
 
   void SetUp() override {
     RegisterProfilePrefs(prefs_.registry());
@@ -49,7 +49,7 @@ class NTPWallpaperProviderFactoryTest : public testing::Test {
             custom_background_delegate_, *background_images_service_,
             *view_counter_model_);
 
-    factory_ = std::make_unique<NTPWallpaperProviderFactory>(
+    selector_ = std::make_unique<NTPWallpaperProviderSelector>(
         *use_your_own_wallpaper_provider_, *gradient_wallpaper_provider_,
         *solid_color_wallpaper_provider_,
         *brave_background_wallpaper_provider_);
@@ -68,61 +68,61 @@ class NTPWallpaperProviderFactoryTest : public testing::Test {
       solid_color_wallpaper_provider_;
   std::unique_ptr<NTPBraveBackgroundWallpaperProvider>
       brave_background_wallpaper_provider_;
-  std::unique_ptr<NTPWallpaperProviderFactory> factory_;
+  std::unique_ptr<NTPWallpaperProviderSelector> selector_;
 };
 
-TEST_F(NTPWallpaperProviderFactoryTest, ReturnsBraveBackgroundByDefault) {
-  EXPECT_EQ(&factory_->GetWallpaperProvider(),
+TEST_F(NTPWallpaperProviderSelectorTest, ReturnsBraveBackgroundByDefault) {
+  EXPECT_EQ(&selector_->GetWallpaperProvider(),
             static_cast<NTPWallpaperProvider*>(
                 brave_background_wallpaper_provider_.get()));
 }
 
-TEST_F(NTPWallpaperProviderFactoryTest, ReturnsUseYourOwnWhenSet) {
+TEST_F(NTPWallpaperProviderSelectorTest, ReturnsUseYourOwnWhenSet) {
   custom_background_delegate_.set_is_custom_image_background_enabled(true);
 
-  EXPECT_EQ(&factory_->GetWallpaperProvider(),
+  EXPECT_EQ(&selector_->GetWallpaperProvider(),
             static_cast<NTPWallpaperProvider*>(
                 use_your_own_wallpaper_provider_.get()));
 }
 
-TEST_F(NTPWallpaperProviderFactoryTest, ReturnsGradientWhenSet) {
+TEST_F(NTPWallpaperProviderSelectorTest, ReturnsGradientWhenSet) {
   custom_background_delegate_.set_is_color_background_enabled(true);
   custom_background_delegate_.set_color(
       "linear-gradient(0deg, #ff0000, #0000ff)");
 
   EXPECT_EQ(
-      &factory_->GetWallpaperProvider(),
+      &selector_->GetWallpaperProvider(),
       static_cast<NTPWallpaperProvider*>(gradient_wallpaper_provider_.get()));
 }
 
-TEST_F(NTPWallpaperProviderFactoryTest, ReturnsSolidColorWhenSet) {
+TEST_F(NTPWallpaperProviderSelectorTest, ReturnsSolidColorWhenSet) {
   custom_background_delegate_.set_is_color_background_enabled(true);
   custom_background_delegate_.set_color("#ff0000");
 
-  EXPECT_EQ(&factory_->GetWallpaperProvider(),
+  EXPECT_EQ(&selector_->GetWallpaperProvider(),
             static_cast<NTPWallpaperProvider*>(
                 solid_color_wallpaper_provider_.get()));
 }
 
-TEST_F(NTPWallpaperProviderFactoryTest,
+TEST_F(NTPWallpaperProviderSelectorTest,
        ReturnsUseYourOwnOverGradientWhenBothEligible) {
   custom_background_delegate_.set_is_custom_image_background_enabled(true);
   custom_background_delegate_.set_is_color_background_enabled(true);
   custom_background_delegate_.set_color(
       "linear-gradient(0deg, #ff0000, #0000ff)");
 
-  EXPECT_EQ(&factory_->GetWallpaperProvider(),
+  EXPECT_EQ(&selector_->GetWallpaperProvider(),
             static_cast<NTPWallpaperProvider*>(
                 use_your_own_wallpaper_provider_.get()));
 }
 
-TEST_F(NTPWallpaperProviderFactoryTest,
+TEST_F(NTPWallpaperProviderSelectorTest,
        ReturnsUseYourOwnOverSolidColorWhenBothEligible) {
   custom_background_delegate_.set_is_custom_image_background_enabled(true);
   custom_background_delegate_.set_is_color_background_enabled(true);
   custom_background_delegate_.set_color("#ff0000");
 
-  EXPECT_EQ(&factory_->GetWallpaperProvider(),
+  EXPECT_EQ(&selector_->GetWallpaperProvider(),
             static_cast<NTPWallpaperProvider*>(
                 use_your_own_wallpaper_provider_.get()));
 }
