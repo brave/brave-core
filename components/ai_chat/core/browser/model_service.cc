@@ -120,11 +120,9 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->supports_tools = features::kAutomaticModelSupportsTools.Get();
       model->supported_capabilities =
           model->supports_tools
-              ? std::vector{mojom::ConversationCapability::CHAT,
-                            mojom::ConversationCapability::CONTENT_AGENT,
+              ? std::vector{mojom::ConversationCapability::CONTENT_AGENT,
                             mojom::ConversationCapability::DEEP_RESEARCH}
-              : std::vector{mojom::ConversationCapability::CHAT,
-                            mojom::ConversationCapability::DEEP_RESEARCH};
+              : std::vector{mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = true;
       model->is_near_model = false;
       model->options =
@@ -147,7 +145,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = true;
       model->supports_tools = true;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::CONTENT_AGENT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
@@ -173,7 +170,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = true;
       model->supports_tools = true;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::CONTENT_AGENT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = true;
@@ -201,7 +197,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = true;
       model->is_near_model = false;
@@ -229,7 +224,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -257,7 +251,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = false;
       model->supports_tools = false;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -283,7 +276,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -309,7 +301,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -335,7 +326,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -361,7 +351,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = false;
       model->supports_tools = false;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -387,7 +376,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -413,7 +401,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = false;
       model->supports_tools = false;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -439,7 +426,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -467,7 +453,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
@@ -496,7 +481,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       options->name = "near-glm-5-1";
       model->key = "chat-near-glm-5-1";
       model->display_name = "GLM 5.3 Flash";
-      model->supported_capabilities = {mojom::ConversationCapability::CHAT};
+      model->supported_capabilities = {};
       model->supports_private_inference = true;
 
       model->options =
@@ -1237,7 +1222,7 @@ const std::vector<mojom::ModelPtr> ModelService::GetCustomModels() {
         model_pref.FindBool(kCustomModelVisionSupport).value_or(false);
     model->supports_tools =
         model_pref.FindBool(kCustomModelSupportsTools).value_or(false);
-    model->supported_capabilities = {mojom::ConversationCapability::CHAT};
+    model->supported_capabilities = {};
     model->options = mojom::ModelOptions::NewCustomModelOptions(
         std::move(custom_model_opts));
 

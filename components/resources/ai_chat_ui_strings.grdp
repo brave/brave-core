@@ -171,12 +171,6 @@
   <message name="IDS_CHAT_UI_SHOW_ALL_MODELS_BUTTON" desc="Button label to show all models" formatter_data="webui=AiChat">
     Show all models
   </message>
-  <message name="IDS_CHAT_UI_MODEL_CATEGORY_CHAT" desc="Category name for Chat" formatter_data="webui=AiChat">
-    Chat
-  </message>
-  <message name="IDS_CHAT_UI_MODEL_CATEGORY_SUMMARY" desc="Category name for Summary" formatter_data="webui=AiChat">
-    Summary
-  </message>
   <message name="IDS_CHAT_UI_LABEL_OPEN_FULL_PAGE" desc="Menu item to expand a sidebar conversation to a the full page experience" formatter_data="webui=AiChat">
     Open full page
   </message>

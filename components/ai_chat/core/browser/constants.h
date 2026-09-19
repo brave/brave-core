@@ -26,11 +26,9 @@ std::vector<mojom::ActionGroupPtr> GetActionMenuList();
 
 // Serialized into the `brave_capability` request field. Any capability a
 // conversation can enable needs an entry, or CreateJSONRequestBody CHECKs.
-// FILES and SUMMARY are absent as they're only ever model capabilities.
 inline constexpr auto kCapabilityStringMap =
     base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>(
-        {{mojom::ConversationCapability::CHAT, "chat"},
-         {mojom::ConversationCapability::CONTENT_AGENT, "content_agent"},
+        {{mojom::ConversationCapability::CONTENT_AGENT, "content_agent"},
          {mojom::ConversationCapability::DEEP_RESEARCH, "deep_research"},
          {mojom::ConversationCapability::MATH_ML, "math_ml"}});
 

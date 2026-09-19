@@ -48,34 +48,31 @@ mojom::ModelPtr CreateModel(
 TEST(ToolTest, IsSupportedByModel_RequiresToolSupport) {
   TestTool tool;
   auto model = CreateModel(/*supports_tools=*/false,
-                           {mojom::ConversationCapability::CHAT});
-  EXPECT_FALSE(
-      tool.IsSupportedByModel(*model, {mojom::ConversationCapability::CHAT}));
+                           {mojom::ConversationCapability::DEEP_RESEARCH});
+  EXPECT_FALSE(tool.IsSupportedByModel(
+      *model, {mojom::ConversationCapability::DEEP_RESEARCH}));
 }
 
 TEST(ToolTest, IsSupportedByModel_RequiresModelToDeclareCapability) {
   TestTool tool;
   auto model = CreateModel(/*supports_tools=*/true,
-                           {mojom::ConversationCapability::CHAT});
+                           {mojom::ConversationCapability::DEEP_RESEARCH});
 
-  EXPECT_TRUE(
-      tool.IsSupportedByModel(*model, {mojom::ConversationCapability::CHAT}));
+  EXPECT_TRUE(tool.IsSupportedByModel(
+      *model, {mojom::ConversationCapability::DEEP_RESEARCH}));
 
   // Model doesn't declare CONTENT_AGENT, so it gets no tools.
   EXPECT_FALSE(tool.IsSupportedByModel(
-      *model, {mojom::ConversationCapability::CHAT,
-               mojom::ConversationCapability::CONTENT_AGENT}));
+      *model, {mojom::ConversationCapability::CONTENT_AGENT}));
 }
 
 TEST(ToolTest, IsSupportedByModel_ServerHintsDoNotGate) {
   TestTool tool;
   // No model declares MATH_ML, so requiring it would filter out every tool.
-  auto model = CreateModel(/*supports_tools=*/true,
-                           {mojom::ConversationCapability::CHAT});
+  auto model = CreateModel(/*supports_tools=*/true, {});
 
   EXPECT_TRUE(tool.IsSupportedByModel(
-      *model, {mojom::ConversationCapability::CHAT,
-               mojom::ConversationCapability::MATH_ML}));
+      *model, {mojom::ConversationCapability::MATH_ML}));
 }
 
 }  // namespace ai_chat

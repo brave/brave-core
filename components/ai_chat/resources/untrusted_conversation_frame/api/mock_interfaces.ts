@@ -35,7 +35,7 @@ export const defaultConversationEntriesState: Mojom.ConversationEntriesState = {
   trimmedTokens: BigInt(0),
   totalTokens: BigInt(0),
   canSubmitUserEntries: false,
-  conversationCapabilities: [Mojom.ConversationCapability.CHAT],
+  conversationCapabilities: [],
   suggestedQuestions: [],
   suggestionStatus: Mojom.SuggestionGenerationStatus.None,
   currentError: Mojom.APIError.None,

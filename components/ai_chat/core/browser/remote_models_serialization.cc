@@ -27,12 +27,13 @@ constexpr char kBasicAccess[] = "basic";
 constexpr char kPremiumAccess[] = "premium";
 constexpr char kBasicAndPremiumAccess[] = "basic_and_premium";
 
-constexpr char kChatCapability[] = "chat";
 constexpr char kContentAgentCapability[] = "content_agent";
 constexpr char kDeepResearchCapability[] = "deep_research";
-constexpr char kFilesCapability[] = "files";
-constexpr char kSummaryCapability[] = "summary";
 constexpr char kMathMlCapability[] = "math_ml";
+
+// The server expresses the model's category as a capability.
+constexpr char kChatCapability[] = "chat";
+constexpr char kSummaryCapability[] = "summary";
 
 constexpr auto kStringToAccessMap =
     base::MakeFixedFlatMap<std::string_view, mojom::ModelAccess>({
@@ -48,24 +49,35 @@ constexpr auto kAccessToStringMap =
         {mojom::ModelAccess::BASIC_AND_PREMIUM, kBasicAndPremiumAccess},
     });
 
+// Only conversation options belong here. Capabilities describing what a model
+// can do (e.g. "files") are ignored.
+// TODO(https://github.com/brave/brave-browser/issues/59074): Give model
+// functionality its own `supports_x` boolean fields on mojom::Model and parse
+// those capabilities into them.
 constexpr auto kStringToCapabilityMap =
     base::MakeFixedFlatMap<std::string_view, mojom::ConversationCapability>({
-        {kChatCapability, mojom::ConversationCapability::CHAT},
         {kContentAgentCapability, mojom::ConversationCapability::CONTENT_AGENT},
         {kDeepResearchCapability, mojom::ConversationCapability::DEEP_RESEARCH},
-        {kFilesCapability, mojom::ConversationCapability::FILES},
-        {kSummaryCapability, mojom::ConversationCapability::SUMMARY},
         {kMathMlCapability, mojom::ConversationCapability::MATH_ML},
     });
 
 constexpr auto kCapabilityToStringMap =
     base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>({
-        {mojom::ConversationCapability::CHAT, kChatCapability},
         {mojom::ConversationCapability::CONTENT_AGENT, kContentAgentCapability},
         {mojom::ConversationCapability::DEEP_RESEARCH, kDeepResearchCapability},
-        {mojom::ConversationCapability::FILES, kFilesCapability},
-        {mojom::ConversationCapability::SUMMARY, kSummaryCapability},
         {mojom::ConversationCapability::MATH_ML, kMathMlCapability},
+    });
+
+constexpr auto kStringToCategoryMap =
+    base::MakeFixedFlatMap<std::string_view, mojom::ModelCategory>({
+        {kChatCapability, mojom::ModelCategory::CHAT},
+        {kSummaryCapability, mojom::ModelCategory::SUMMARY},
+    });
+
+constexpr auto kCategoryToStringMap =
+    base::MakeFixedFlatMap<mojom::ModelCategory, std::string_view>({
+        {mojom::ModelCategory::CHAT, kChatCapability},
+        {mojom::ModelCategory::SUMMARY, kSummaryCapability},
     });
 
 struct ParsedCapabilities {
@@ -73,10 +85,10 @@ struct ParsedCapabilities {
   mojom::ModelCategory category;
 };
 
-// Parses the model's capability list and derives its category from the first
-// CHAT or SUMMARY capability in list order. Returns std::nullopt if the list
-// is missing or declares neither category capability, in which case the model
-// is rejected.
+// Parses the model's capability list into the conversation options it supports
+// and derives its category from the first category capability in list order.
+// Returns std::nullopt if the list is missing or declares neither category
+// capability, in which case the model is rejected.
 std::optional<ParsedCapabilities> ParseCapabilities(
     const base::DictValue& model_dict) {
   const base::ListValue* capabilities_list =
@@ -85,28 +97,28 @@ std::optional<ParsedCapabilities> ParseCapabilities(
     return std::nullopt;
   }
 
+  std::optional<mojom::ModelCategory> category;
   std::vector<mojom::ConversationCapability> capabilities;
   for (const auto& capability_value : *capabilities_list) {
     if (!capability_value.is_string()) {
       continue;
     }
-    if (const auto* capability = base::FindOrNull(
-            kStringToCapabilityMap, capability_value.GetString())) {
+    const std::string& capability_name = capability_value.GetString();
+    if (const auto* parsed_category =
+            base::FindOrNull(kStringToCategoryMap, capability_name)) {
+      category = category.value_or(*parsed_category);
+      continue;
+    }
+    if (const auto* capability =
+            base::FindOrNull(kStringToCapabilityMap, capability_name)) {
       capabilities.push_back(*capability);
     }
   }
 
-  for (auto capability : capabilities) {
-    if (capability == mojom::ConversationCapability::CHAT) {
-      return ParsedCapabilities{std::move(capabilities),
-                                mojom::ModelCategory::CHAT};
-    }
-    if (capability == mojom::ConversationCapability::SUMMARY) {
-      return ParsedCapabilities{std::move(capabilities),
-                                mojom::ModelCategory::SUMMARY};
-    }
+  if (!category) {
+    return std::nullopt;
   }
-  return std::nullopt;
+  return ParsedCapabilities{std::move(capabilities), *category};
 }
 
 mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
@@ -199,7 +211,16 @@ std::string_view CapabilityToString(mojom::ConversationCapability capability) {
   return it->second;
 }
 
+std::string_view CategoryToString(mojom::ModelCategory category) {
+  auto it = kCategoryToStringMap.find(category);
+  CHECK(it != kCategoryToStringMap.end());
+  return it->second;
+}
+
 base::DictValue ModelToDict(const mojom::Model& model) {
+  CHECK(model.options && model.options->is_leo_model_options());
+  const auto& leo_opts = model.options->get_leo_model_options();
+
   base::DictValue dict;
   dict.Set(kKeyField, model.key);
   dict.Set(kDisplayNameField, model.display_name);
@@ -207,13 +228,14 @@ base::DictValue ModelToDict(const mojom::Model& model) {
   dict.Set(kIsNearModelField, model.is_near_model);
 
   base::ListValue capabilities;
+  // The category is only expressed as a capability, so re-emit it to keep the
+  // serialized form parseable.
+  capabilities.Append(CategoryToString(leo_opts->category));
   for (auto capability : model.supported_capabilities) {
     capabilities.Append(CapabilityToString(capability));
   }
   dict.Set(kCapabilitiesField, std::move(capabilities));
 
-  CHECK(model.options && model.options->is_leo_model_options());
-  const auto& leo_opts = model.options->get_leo_model_options();
   base::DictValue options;
   options.Set(kNameField, leo_opts->name);
   if (!leo_opts->display_maker.empty()) {
