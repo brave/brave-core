@@ -235,6 +235,12 @@ bool IsBraveSyncAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveSyncAIChat);
 }
 
+BASE_FEATURE(kAIChatThreads, base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatThreadsEnabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatThreads);
+}
+
 BASE_FEATURE(kAIChatConversationShare, base::FEATURE_ENABLED_BY_DEFAULT);
 
 const base::FeatureParam<std::string> kAIChatConversationShareBaseUrl{

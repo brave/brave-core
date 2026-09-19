@@ -42,6 +42,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 class AIChatUIBrowserTest;
@@ -394,6 +395,20 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(
       ConversationHandlerUnitTest,
       GetTools_MemoryToolFilteredForTemporaryConversations);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, ThreadHistory);
+
+  struct ThreadContainer {
+    explicit ThreadContainer(mojom::ThreadPtr thread);
+    ThreadContainer(ThreadContainer&&);
+    ThreadContainer& operator=(ThreadContainer&&);
+    ThreadContainer(const ThreadContainer&) = delete;
+    ThreadContainer& operator=(const ThreadContainer&) = delete;
+    ~ThreadContainer();
+
+    mojom::ThreadPtr thread;
+    std::vector<mojom::ConversationTurnPtr> entries;
+  };
+
   void InitEngine();
 
   void BuildCapabilitiesSet();
@@ -407,6 +422,11 @@ class ConversationHandler : public mojom::ConversationHandler,
   void PerformAssistantGenerationWithPossibleContent();
 
   void PerformAssistantGeneration();
+  // Returns the entry list that entries for the given thread (or the root
+  // conversation, if |thread_uuid| is nullopt) should be read from/appended
+  // to.
+  std::vector<mojom::ConversationTurnPtr>& GetChatHistory(
+      std::optional<std::string_view> thread_uuid);
 
   // When the current batch of tool use requests has been completed, we can
   // send the results to the engine and wait for the next response for the loop.
@@ -438,6 +458,14 @@ class ConversationHandler : public mojom::ConversationHandler,
   void CompleteGeneration(bool success);
   void OnSuggestedQuestionsResponse(
       EngineConsumer::SuggestedQuestionResult result);
+  void OnConversationThreadHistoryReceived(
+      std::string thread_uuid,
+      GetConversationHistoryCallback callback,
+      std::vector<mojom::ConversationTurnPtr> entries);
+  // Builds thread history by prepending the source entry the thread branched
+  // off from in the root conversation.
+  std::vector<mojom::ConversationTurnPtr> BuildFullThreadHistoryForUI(
+      const std::string& thread_uuid);
 
   void OnModelDataChanged();
   void OnConversationDeleted();
@@ -486,6 +514,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Chat conversation entries
   std::vector<mojom::ConversationTurnPtr> chat_history_;
   mojom::ConversationTurnPtr pending_conversation_entry_;
+
+  // Thread metadata map. Entries within each container are lazily loaded
+  // by GetConversationHistory when a |thread_uuid| is provided.
+  absl::flat_hash_map<std::string, ThreadContainer> threads_;
   // Any previously-generated suggested questions
   std::vector<Suggestion> suggestions_;
 
