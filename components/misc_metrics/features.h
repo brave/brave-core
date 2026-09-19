@@ -16,6 +16,9 @@ namespace misc_metrics::features {
 // stability metrics.
 BASE_DECLARE_FEATURE(kFingerprintInputMetrics);
 
+// Enables daily collection of captcha related metrics.
+BASE_DECLARE_FEATURE(kCaptchaMetricsCollection);
+
 // The interval between executions of the fingerprint stability script in the
 // renderer.
 extern const base::FeatureParam<base::TimeDelta>
