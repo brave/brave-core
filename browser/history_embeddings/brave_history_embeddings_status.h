@@ -8,6 +8,8 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/supports_user_data.h"
+#include "components/prefs/pref_change_registrar.h"
+#include "components/prefs/pref_service.h"
 
 class Profile;
 
@@ -19,11 +21,13 @@ namespace history_embeddings {
 // browser relaunches.
 class BraveHistoryEmbeddingsStatus : public base::SupportsUserData::Data {
  public:
-  BraveHistoryEmbeddingsStatus(Profile* profile, bool enabled);
+  BraveHistoryEmbeddingsStatus(Profile* profile,
+                               PrefService* local_state,
+                               bool enabled);
 
   // Captures the setting at profile setup, before anything gated on it is
   // built. Later calls are no-ops.
-  static void CreateForProfile(Profile* profile);
+  static void CreateForProfile(Profile* profile, PrefService* local_state);
 
   // Never null. Profiles that skip profile setup, such as those built directly
   // in tests, capture the setting here instead.
@@ -36,8 +40,18 @@ class BraveHistoryEmbeddingsStatus : public base::SupportsUserData::Data {
   bool NeedsRestart() const;
 
  private:
+  // Withdraws the Tab Focus page-content opt-in whenever the passage index is
+  // unavailable, so turning it back on needs a fresh opt-in rather than
+  // silently resuming on consent the user believes they withdrew. Runs at
+  // startup as well as on change, because the Local AI master switch only
+  // takes effect on relaunch. Lives here rather than on the settings toggle
+  // because the prefs have other writers.
+  void OnEnabledPrefChanged();
+
   const raw_ptr<Profile> profile_;
   const bool enabled_;
+  PrefChangeRegistrar pref_change_registrar_;
+  PrefChangeRegistrar local_state_pref_change_registrar_;
 };
 
 }  // namespace history_embeddings

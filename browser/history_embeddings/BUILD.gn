@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_local_ai)
@@ -15,13 +16,22 @@ source_set("status") {
   public = [ "brave_history_embeddings_status.h" ]
   sources = [ "brave_history_embeddings_status.cc" ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//components/prefs",
+  ]
 
   deps = [
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/local_ai/core",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
 }
 
 # Resolves open-tab URLs to URLIDs via HistoryService and ranks them with
@@ -61,6 +71,7 @@ source_set("unit_tests") {
     ":status",
     "//base",
     "//base/test:test_support",
+    "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/local_ai/core",
     "//chrome/browser/prefs",
     "//chrome/test:test_support",
@@ -73,6 +84,10 @@ source_set("unit_tests") {
     "//content/test:test_support",
     "//testing/gtest",
   ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
 }
 
 source_set("browser_tests") {
