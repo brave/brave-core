@@ -175,7 +175,9 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
-  void GetConversationHistory(GetConversationHistoryCallback callback) override;
+  void GetConversationHistory(const std::optional<std::string>& thread_uuid,
+                              GetConversationHistoryCallback callback) override;
+  void GetConversationThreads(GetConversationThreadsCallback callback) override;
   void SetTemporary(bool temporary) override;
   void PauseTask() override;
   void ResumeTask() override;
@@ -201,17 +203,18 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetIsRequestInProgress(GetIsRequestInProgressCallback callback) override;
   void SubmitHumanConversationEntry(
       const std::string& input,
-      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files)
-      override;
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
+      const std::optional<std::string>& thread_uuid = std::nullopt) override;
   void SubmitHumanConversationEntry(mojom::ConversationTurnPtr turn);
   void SubmitHumanConversationEntryWithAction(
       const std::string& input,
-      mojom::ActionType action_type) override;
+      mojom::ActionType action_type,
+      const std::optional<std::string>& thread_uuid = std::nullopt) override;
   void SubmitHumanConversationEntryWithSkill(
       const std::string& input,
       const std::string& skill_id,
-      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files)
-      override;
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
+      const std::optional<std::string>& thread_uuid = std::nullopt) override;
   void ModifyConversation(
       const std::string& entry_uuid,
       const std::string& new_text,
@@ -258,6 +261,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   void ProcessPermissionChallenge(
       const std::string& tool_use_id,
       mojom::PermissionChallengeDecision decision) override;
+  void CreateConversationThread(
+      const std::string& origin_entry_uuid,
+      CreateConversationThreadCallback callback) override;
 
   // Some associated content may provide some conversation that the user wants
   // to continue, e.g. Brave Search.
