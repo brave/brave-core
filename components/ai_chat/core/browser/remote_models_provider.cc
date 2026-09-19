@@ -11,6 +11,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/location.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
@@ -28,6 +29,19 @@ RemoteModelsProvider::~RemoteModelsProvider() = default;
 void RemoteModelsProvider::GetModels(GetModelsCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   DCHECK(!pending_callback_) << "GetModels called while a request is in flight";
+
+  if (last_fetch_time_.has_value() &&
+      base::Time::Now() - *last_fetch_time_ <
+          features::kRemoteModelsCacheTTL.Get()) {
+    std::vector<mojom::ModelPtr> clone;
+    clone.reserve(last_fetched_models_.size());
+    for (const auto& model : last_fetched_models_) {
+      clone.push_back(model.Clone());
+    }
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback), std::move(clone)));
+    return;
+  }
 
   pending_callback_ = std::move(callback);
 
@@ -55,9 +69,13 @@ void RemoteModelsProvider::OnFetchComplete(
   if (!models.empty()) {
     std::vector<mojom::ModelPtr> to_cache;
     to_cache.reserve(models.size());
+    last_fetched_models_.clear();
+    last_fetched_models_.reserve(models.size());
     for (const auto& m : models) {
       to_cache.push_back(m.Clone());
+      last_fetched_models_.push_back(m.Clone());
     }
+    last_fetch_time_ = base::Time::Now();
     cache_.Save(std::move(to_cache), base::DoNothing());
   }
 

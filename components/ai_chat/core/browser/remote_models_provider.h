@@ -14,6 +14,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/remote_models_disk_cache.h"
 #include "brave/components/ai_chat/core/browser/remote_models_fetcher.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
@@ -44,10 +45,11 @@ class RemoteModelsProvider {
   RemoteModelsProvider(const RemoteModelsProvider&) = delete;
   RemoteModelsProvider& operator=(const RemoteModelsProvider&) = delete;
 
-  // Returns models from the disk cache if available and within TTL, otherwise
-  // fetches from the remote endpoint and caches the result. On fetch failure
-  // the callback is invoked with an empty vector. The callback is always
-  // invoked asynchronously.
+  // Returns models from an in-memory copy of the last successful fetch if
+  // still within TTL, otherwise from the disk cache if available and within
+  // TTL, otherwise fetches from the remote endpoint and caches the result. On
+  // fetch failure the callback is invoked with an empty vector. The callback
+  // is always invoked asynchronously.
   void GetModels(GetModelsCallback callback);
 
   RemoteModelsFetcher& GetFetcherForTesting() { return fetcher_; }
@@ -59,6 +61,13 @@ class RemoteModelsProvider {
   RemoteModelsDiskCache cache_;
   RemoteModelsFetcher fetcher_;
   GetModelsCallback pending_callback_;
+
+  // Set the instant a fetch completes, rather than after `cache_.Save()`'s
+  // async disk write finishes: a `GetModels()` call arriving before that
+  // write lands would otherwise see the disk cache as not-yet-fresh and
+  // re-fetch needlessly.
+  std::optional<base::Time> last_fetch_time_;
+  std::vector<mojom::ModelPtr> last_fetched_models_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<RemoteModelsProvider> weak_ptr_factory_{this};

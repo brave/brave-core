@@ -153,6 +153,20 @@ TEST_F(RemoteModelsDiskCacheTest, ExpiredCacheReturnsNullopt) {
   EXPECT_FALSE(RunLoad(cache).has_value());
 }
 
+TEST_F(RemoteModelsDiskCacheTest, CacheAtExactTTLBoundaryIsExpired) {
+  auto cache = MakeCache();
+
+  std::vector<mojom::ModelPtr> models;
+  models.push_back(MakeTestModel("model-key-1", "model-name-1"));
+  SaveAndWait(cache, std::move(models));
+
+  // Advance to exactly the TTL, matching ModelService's own
+  // `elapsed < ttl` freshness check in ScheduleNextRemoteModelsRefresh().
+  task_environment_.AdvanceClock(kDefaultTTL);
+
+  EXPECT_FALSE(RunLoad(cache).has_value());
+}
+
 TEST_F(RemoteModelsDiskCacheTest, RespectsOverriddenTTL) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
