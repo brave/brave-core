@@ -52,6 +52,8 @@ public class HistoryTabHelper: TabObserver {
   public func tabDidUpdateURL(_ tab: some TabState) {
     if tab.visibleURL?.origin == tab.previousCommittedURL?.origin {
       recordHistoryIfNeeded(for: tab)
+    } else if tab.visibleURL?.displayURL?.scheme == "about", !tab.isLoading {
+      recordHistoryIfNeeded(for: tab)
     }
   }
 
