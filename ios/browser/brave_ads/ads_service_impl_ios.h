@@ -36,12 +36,12 @@ class AdsServiceImplIOS : public AdsService {
  public:
   explicit AdsServiceImplIOS(PrefService& prefs);
 
-  AdsClientNotifier* GetAdsClientNotifier();
-
   AdsServiceImplIOS(const AdsServiceImplIOS&) = delete;
   AdsServiceImplIOS& operator=(const AdsServiceImplIOS&) = delete;
 
   ~AdsServiceImplIOS() override;
+
+  AdsClientNotifier* GetAdsClientNotifier();
 
   void InitializeAds(const std::string& storage_path,
                      std::unique_ptr<AdsClient> ads_client,
@@ -157,8 +157,8 @@ class AdsServiceImplIOS : public AdsService {
   void Shutdown() override;
 
   bool CanStartBatAdsService() const;
-  void InitializeAds(ResultCallback callback);
-  void InitializeAdsCallback(ResultCallback callback, bool success);
+  void InitializeBatAds(ResultCallback callback);
+  void InitializeBatAdsCallback(ResultCallback callback, bool success);
 
   void ShutdownAdsCallback(ResultCallback callback, bool success);
 
