@@ -1,12 +1,20 @@
 diff --git a/chrome/browser/ui/color/BUILD.gn b/chrome/browser/ui/color/BUILD.gn
-index f3f7ea8c06809a546c7c59a268bd68a75d9ad6a2..9a88ebbcd31bf118c3b68beb192e4167dc62dac4 100644
+index f3f7ea8c06809a546c7c59a268bd68a75d9ad6a2..2a481e0b389158c5d39db0d02ea46167f517b6c5 100644
 --- a/chrome/browser/ui/color/BUILD.gn
 +++ b/chrome/browser/ui/color/BUILD.gn
-@@ -63,6 +63,7 @@ source_set("mixers") {
+@@ -46,6 +46,7 @@ source_set("mixers") {
+     "tab_strip_color_mixer.cc",
+     "tab_strip_color_mixer.h",
+   ]
++  sources += brave_browser_ui_color_mixers_sources
+ 
+   configs += [ "//build/config/compiler:wexit_time_destructors" ]
+ 
+@@ -63,6 +64,7 @@ source_set("mixers") {
      "//ui/color",
      "//ui/color:mixers",
    ]
-+  sources += brave_browser_ui_color_mixers_sources deps += brave_browser_ui_color_mixers_deps
++  deps += brave_browser_ui_color_mixers_deps
  
    if (is_chromeos) {
      sources += [ "chromeos/native_chrome_color_mixer_chromeos.cc" ]

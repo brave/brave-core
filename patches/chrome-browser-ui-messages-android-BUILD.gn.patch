@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/messages/android/BUILD.gn b/chrome/browser/ui/messages/android/BUILD.gn
-index 8784617eb55c8a0db2f87c3b0401d678c04bf67c..0c6b76c17707fe3d1e10fedbcbbf11363e9f931c 100644
+index 8784617eb55c8a0db2f87c3b0401d678c04bf67c..65689a8be279a7e081b1d1d23c9628298b5e0f8b 100644
 --- a/chrome/browser/ui/messages/android/BUILD.gn
 +++ b/chrome/browser/ui/messages/android/BUILD.gn
-@@ -31,6 +31,7 @@ android_library("java") {
+@@ -30,6 +30,7 @@ android_library("java") {
+     "java/src/org/chromium/chrome/browser/ui/messages/snackbar/SnackbarSwipeHandler.java",
      "java/src/org/chromium/chrome/browser/ui/messages/snackbar/SnackbarView.java",
    ]
- 
 +  sources += brave_browser_ui_messages_java_sources
+ 
    deps = [
      ":java_resources",
-     "//base:base_java",
