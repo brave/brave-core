@@ -40,8 +40,8 @@ export class SettingsBraveAccountRowElement extends CrLitElement {
   protected onOpenBraveAccountDialog(
         e: CustomEvent<{ initiatingServiceName: string,
                          dialogMode: DialogMode }>) {
-    this.browserProxy.rowHandler.openDialog(e.detail.initiatingServiceName,
-                                            e.detail.dialogMode)
+    this.browserProxy.dialogController.openDialog(
+        e.detail.initiatingServiceName, e.detail.dialogMode)
   }
 
   private accountStateListenerId: number | null = null
