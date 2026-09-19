@@ -6,6 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_NET_COOKIES_COOKIE_MONSTER_H_
 #define BRAVE_CHROMIUM_SRC_NET_COOKIES_COOKIE_MONSTER_H_
 
+#include <map>
+#include <memory>
+#include <string>
+
+#include "net/cookies/cookie_change_dispatcher.h"
+
 #include <net/cookies/cookie_monster.h>  // IWYU pragma: export
 
 namespace net {
@@ -52,9 +58,18 @@ class NET_EXPORT CookieMonster : public CookieMonster_ChromiumImpl {
       GetCookieListCallback callback) override;
 
  private:
+  // Inner store plus the subscription that surfaces its changes on the outer
+  // dispatcher. `store` is declared first so the subscription is destroyed
+  // first.
+  struct EphemeralStore {
+    std::unique_ptr<CookieMonster_ChromiumImpl> store;
+    std::unique_ptr<CookieChangeSubscription> forwarding_subscription;
+  };
+
+  void ForwardEphemeralChange(const CookieChangeInfo& change);
+
   NetLogWithSource net_log_;
-  std::map<std::string, std::unique_ptr<CookieMonster_ChromiumImpl>>
-      ephemeral_cookie_stores_;
+  std::map<std::string, EphemeralStore> ephemeral_cookie_stores_;
   CookieMonster_ChromiumImpl* GetOrCreateEphemeralCookieStoreForTopFrameURL(
       const GURL& top_frame_url);
 };
