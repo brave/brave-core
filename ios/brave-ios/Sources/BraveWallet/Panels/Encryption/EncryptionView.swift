@@ -7,20 +7,21 @@ import BraveCore
 import DesignSystem
 import SwiftUI
 
+struct GetEncryptionPublicKeyRequestItem: Equatable {
+  let request: BraveWallet.GetEncryptionPublicKeyRequest
+  let account: BraveWallet.AccountInfo
+}
+
+struct DecryptRequestItem: Equatable {
+  let request: BraveWallet.DecryptRequest
+  let account: BraveWallet.AccountInfo
+}
+
 struct EncryptionView: View {
 
   enum EncryptionType: Hashable {
     case getEncryptionPublicKey(BraveWallet.GetEncryptionPublicKeyRequest)
     case decrypt(BraveWallet.DecryptRequest)
-
-    var address: String {
-      switch self {
-      case .getEncryptionPublicKey(let request):
-        return request.accountId.address
-      case .decrypt(let request):
-        return request.accountId.address
-      }
-    }
 
     var originInfo: BraveWallet.OriginInfo {
       switch self {
@@ -33,8 +34,8 @@ struct EncryptionView: View {
   }
 
   var request: EncryptionType
+  var account: BraveWallet.AccountInfo
   @ObservedObject var cryptoStore: CryptoStore
-  @ObservedObject var keyringStore: KeyringStore
   var onDismiss: () -> Void
 
   @State private var isShowingDecryptMessage = false
@@ -42,12 +43,6 @@ struct EncryptionView: View {
   @ScaledMetric private var blockieSize = 54
   private let maxBlockieSize: CGFloat = 108
   @Environment(\.sizeCategory) private var sizeCategory
-
-  private var account: BraveWallet.AccountInfo {
-    keyringStore.allAccounts.first(where: {
-      $0.address.caseInsensitiveCompare(request.address) == .orderedSame
-    }) ?? keyringStore.selectedAccount
-  }
 
   private var navigationTitle: String {
     switch request {
@@ -71,7 +66,7 @@ struct EncryptionView: View {
     ScrollView(.vertical) {
       VStack(spacing: 12) {
         VStack(spacing: 8) {
-          Blockie(address: request.address)
+          Blockie(address: account.address)
             .frame(
               width: min(blockieSize, maxBlockieSize),
               height: min(blockieSize, maxBlockieSize)
@@ -275,8 +270,8 @@ struct EncryptionView_Previews: PreviewProvider {
       ForEach(requests, id: \.self) { request in
         EncryptionView(
           request: request,
+          account: account,
           cryptoStore: .previewStore,
-          keyringStore: .previewStoreWithWalletCreated,
           onDismiss: {}
         )
       }

@@ -41,7 +41,6 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
             SuggestedNetworkView(
               mode: .switchNetworks(request),
               cryptoStore: cryptoStore,
-              keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
               onDismiss: onDismiss
             )
@@ -49,7 +48,6 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
             SuggestedNetworkView(
               mode: .addNetwork(request),
               cryptoStore: cryptoStore,
-              keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
               onDismiss: onDismiss
             )
@@ -66,23 +64,22 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               signMessageErrors: signMessageErrors,
               cryptoStore: cryptoStore
             )
-          case .getEncryptionPublicKey(let request):
+          case .getEncryptionPublicKey(let item):
             EncryptionView(
-              request: .getEncryptionPublicKey(request),
+              request: .getEncryptionPublicKey(item.request),
+              account: item.account,
               cryptoStore: cryptoStore,
-              keyringStore: keyringStore,
               onDismiss: onDismiss
             )
-          case .decrypt(let request):
+          case .decrypt(let item):
             EncryptionView(
-              request: .decrypt(request),
+              request: .decrypt(item.request),
+              account: item.account,
               cryptoStore: cryptoStore,
-              keyringStore: keyringStore,
               onDismiss: onDismiss
             )
           case .signTransactions(let requests):
             SignTransactionView(
-              keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
               requests: requests,
               cryptoStore: cryptoStore,
