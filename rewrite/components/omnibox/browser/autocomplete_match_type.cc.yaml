@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Build the accessibility label for history embeddings matches.
+
+      Cherry-pick of crrev.com/c/8431532, to be dropped once it lands: the
+      insertion then duplicates the upstream case and the build fails on the
+      duplicate label.
+    regex:
+      re_pattern: '(case IDS_ACC_AUTOCOMPLETE_HISTORY:)'
+      replace: |-
+        \1
+            case IDS_ACC_AUTOCOMPLETE_HISTORY_EMBEDDINGS:
