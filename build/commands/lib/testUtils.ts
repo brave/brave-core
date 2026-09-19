@@ -59,6 +59,19 @@ export function getTestsToRun(config: Config, suite: string) {
   return testsToRun
 }
 
+// Translates the platform name our own filters use into the one upstream uses
+// for its filters in testing/buildbot/filters/.
+function toUpstreamPlatform(targetPlatform: string) {
+  switch (targetPlatform) {
+    case 'windows':
+      return 'win'
+    case 'macos':
+      return 'mac'
+    default:
+      return targetPlatform
+  }
+}
+
 // Returns a list of paths to files containing all the filters that would apply
 // to the current test suite. Include missing paths when detecting changes to
 // deleted filters.
@@ -92,6 +105,12 @@ export function getApplicableFilters(
     [suite, targetPlatform, config.targetArch].join('-'),
   ]
 
+  // Upstream names its filters after the mode they apply to rather than after
+  // a build config, so they get names of their own (see the README in
+  // testing/buildbot/filters/).
+  let possibleUpstreamFilters: string[] = []
+  const upstreamPlatform = toUpstreamPlatform(targetPlatform)
+
   // If you make changes to the list of *san variants here, also update
   // update-upstream-flake-filters.py.
   if (config.is_ubsan) {
@@ -100,6 +119,7 @@ export function getApplicableFilters(
 
   if (config.is_asan) {
     possibleFilters.push([suite, targetPlatform, 'asan'].join('-'))
+    possibleUpstreamFilters.push([upstreamPlatform, 'asan', suite].join('.'))
   }
 
   if (config.is_msan) {
@@ -116,6 +136,19 @@ export function getApplicableFilters(
       if (includeMissing || fs.existsSync(filterFilePath)) {
         filterFilePaths.push(filterFilePath)
       }
+    }
+  })
+
+  const upstreamFilterDir = path.join(
+    config.srcDir,
+    'testing',
+    'buildbot',
+    'filters',
+  )
+  possibleUpstreamFilters.forEach((filterName) => {
+    let filterFilePath = path.join(upstreamFilterDir, `${filterName}.filter`)
+    if (includeMissing || fs.existsSync(filterFilePath)) {
+      filterFilePaths.push(filterFilePath)
     }
   })
 
