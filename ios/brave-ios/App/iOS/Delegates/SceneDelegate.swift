@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import AppIntents
 import Brave
 import BraveCore
 import BraveNews
@@ -474,6 +475,13 @@ extension SceneDelegate {
       handleCustomUserActivityActions(sceneState.windowScene, userActivity: currentActivity)
     }
 
+    if #available(iOS 26.0, *) {
+      handleControlWidgetIntentIfNeeded(
+        sceneState.connectionOptions.appIntent,
+        browserViewController: browserViewController
+      )
+    }
+
     if sceneState.windowScene.activationState == .foregroundActive {
       // Perform any actions that would also execute in sceneDidBecomeActive
       Preferences.AppState.backgroundedCleanly.value = false
@@ -492,6 +500,15 @@ extension SceneDelegate {
       quickActions.handleShortCutItem(shortcut, withBrowserViewController: browserViewController)
       quickActions.launchedShortcutItem = nil
     }
+  }
+
+  @available(iOS 26.0, *)
+  private func handleControlWidgetIntentIfNeeded(
+    _ appIntent: (any UISceneAppIntent)?,
+    browserViewController: BrowserViewController
+  ) {
+    guard let intent = appIntent as? OpenControlWidgetShortcutIntent else { return }
+    browserViewController.handleNavigationPath(path: .widgetShortcutURL(intent.shortcut))
   }
 
   private func sendDAUPingIfNeeded() {
@@ -907,6 +924,16 @@ extension SceneDelegate {
     let onlyPrivateTabs = privateTabs.count == windowTabs.count
 
     return selectedTabIsPrivate || onlyPrivateTabs
+  }
+}
+
+@available(iOS 26.0, *)
+extension SceneDelegate: AppIntentSceneDelegate {
+  func scene(_ scene: UIScene, willPerformAppIntent appIntent: any UISceneAppIntent) {
+    guard let windowScene = scene as? UIWindowScene,
+      let browserViewController = windowScene.browserViewController
+    else { return }
+    handleControlWidgetIntentIfNeeded(appIntent, browserViewController: browserViewController)
   }
 }
 

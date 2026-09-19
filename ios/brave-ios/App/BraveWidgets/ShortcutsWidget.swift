@@ -166,39 +166,47 @@ extension WidgetShortcut {
     }
   }
 
-  var image: Image {
+  var braveSystemImageName: String? {
     switch self {
     case .unknown:
-      assertionFailure()
-      return Image(systemName: "xmark.octagon")
+      return nil
     case .newTab:
-      return Image(braveSystemName: "leo.browser.mobile-tab-new")
+      return "leo.browser.mobile-tab-new"
     case .newPrivateTab:
-      return Image(braveSystemName: "leo.product.private-window")
+      return "leo.product.private-window"
     case .bookmarks:
-      return Image(braveSystemName: "leo.product.bookmarks")
+      return "leo.product.bookmarks"
     case .history:
-      return Image(braveSystemName: "leo.history")
+      return "leo.history"
     case .downloads:
-      return Image(braveSystemName: "leo.download")
+      return "leo.download"
     case .playlist:
-      return Image(braveSystemName: "leo.product.playlist")
+      return "leo.product.playlist"
     case .search:
-      return Image(braveSystemName: "leo.search")
+      return "leo.search"
     case .wallet:
-      return Image(braveSystemName: "leo.product.brave-wallet")
+      return "leo.product.brave-wallet"
     case .scanQRCode:
-      return Image(braveSystemName: "leo.qr.code")
+      return "leo.qr.code"
     case .braveNews:
-      return Image(braveSystemName: "leo.product.brave-news")
-    case .braveLeo, .askBrave:
-      return Image(braveSystemName: "leo.product.brave-leo")
+      return "leo.product.brave-news"
+    case .braveLeo:
+      return "leo.product.brave-leo"
+    case .askBrave:
+      return "leo.brave.ask"
     case .braveLeoVoiceInput:
-      return Image(braveSystemName: "leo.leo.voice-input")
+      return "leo.leo.voice-input"
     @unknown default:
+      return nil
+    }
+  }
+
+  var image: Image {
+    guard let braveSystemImageName else {
       assertionFailure()
       return Image(systemName: "xmark.octagon")
     }
+    return Image(braveSystemName: braveSystemImageName)
   }
 }
 
