@@ -31,6 +31,7 @@ source_set("frame") {
     "//chrome/browser/ui/views/bookmarks",
     "//chrome/browser/ui/views/frame:browser_view_layout_delegate",
     "//chrome/browser/ui/views/infobars",
+    "//ui/base:features",
     "//ui/compositor",
   ]
 }
