@@ -1,22 +1,9 @@
 # This file contains supported CI features in the current checkout to
 # conditionally enable them on CI. Use lower_snake_case naming.
 
-generate_about_credits
-
-presubmit_all_files
-
-brave_interactive_ui_tests
 brave_network_tests
 
-cache_dir
-
-# Supports passing extra GN args to the build via .env file.
-env_gn_args
-
-# Supports passing a build config to the storybook commands.
-storybook_build_config
-
 # Supports upstream's interactive ui tests building. It might cause OOM in
-# Release Builder when building `brave:all` target, so add 
+# Release Builder when building `brave:all` target, so add
 # `brave_interactive_ui_tests` as a ci feature
 interactive_ui_tests
