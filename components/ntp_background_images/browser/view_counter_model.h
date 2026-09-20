@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_MODEL_H_
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_VIEW_COUNTER_MODEL_H_
 
-#include <tuple>
 #include <vector>
 
 #include "base/functional/callback.h"
@@ -28,9 +27,6 @@ class ViewCounterModel {
 
   void SetCampaignsTotalNewTabTakeoverCreativeCount(
       const std::vector<size_t>& campaigns_total_creative_count);
-
-  std::tuple<size_t, size_t> GetCurrentNewTabTakeoverCampaignAndCreativeIndex()
-      const;
 
   int current_wallpaper_image_index() const {
     return current_wallpaper_image_index_;
@@ -88,10 +84,7 @@ class ViewCounterModel {
   raw_ptr<PrefService> prefs_ = nullptr;
   int count_to_new_tab_takeover_wallpaper_ = 0;
   bool show_new_tab_takeover_wallpaper_ = true;
-  size_t current_campaign_index_ = 0;
   size_t total_campaign_count_ = 0;
-  std::vector<size_t> campaigns_total_new_tab_takeover_creative_count_;
-  std::vector<size_t> campaigns_current_new_tab_takeover_creative_index_;
   base::WallClockTimer counts_reset_timer_;
 
   // For sponsored backgrounds.

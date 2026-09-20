@@ -234,14 +234,6 @@ void ViewCounterService::GetCurrentBrandedWallpaperFromAdsService(
       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-std::optional<base::DictValue>
-ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {
-  const auto [campaign_index, creative_index] =
-      model_.GetCurrentNewTabTakeoverCampaignAndCreativeIndex();
-  return GetSponsoredImagesData()->MaybeGetBackgroundAt(campaign_index,
-                                                        creative_index);
-}
-
 void ViewCounterService::Shutdown() {
   ads_service_observation_.Reset();
   host_content_settings_map_observation_.Reset();
