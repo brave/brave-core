@@ -1,0 +1,13 @@
+diff --git a/front_end/models/ai_assistance/BUILD.gn b/front_end/models/ai_assistance/BUILD.gn
+index c49c747cb6120045dca1f51e2e829ba43e308d90..ec0c2e046fb01c8e989fd79073c59e574847ad91 100644
+--- a/front_end/models/ai_assistance/BUILD.gn
++++ b/front_end/models/ai_assistance/BUILD.gn
+@@ -115,6 +115,8 @@ devtools_entrypoint("bundle") {
+   split_compilation = true
+   entrypoint = "ai_assistance.ts"
+ 
++  deps = [ "skills:generate_skills" ]
++
+   ts_deps = [ ":ai_assistance" ]
+ 
+   visibility = [
