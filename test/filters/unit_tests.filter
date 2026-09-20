@@ -32,6 +32,7 @@
 -GlicMetricsTest.*
 -GlicMetricsTrustFirstOnboardingTest.*
 -GlicEnablingProfileReadyStateTestBase.*
+-GlicSplitButtonControllerTest.*
 -MultistepFilterServiceFactoryTest.*
 -ProfilePickerTest.ComputeFirstRunSkipReasonPrecedence
 -ProfilePickerTest.ComputeFirstRunSkipReasonProfileAlreadySetUp
@@ -180,6 +181,9 @@
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportNotificationAsSafe
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportUnwarnedNotificationAsSpam
 -PersistentNotificationHandlerWithNotificationContentDetectionAndLoggingTest.ReportWarnedNotificationAsSpam
+-TtcMesClientTest.DiscardsAudioChunkWithPartialTrailingSample
+-TtcMesClientTest.ForwardsEmptyAudioChunk
+-TtcMesClientTest.ForwardsWellFormedAudioChunkAsSamples
 -WallpaperSearchHandlerTest.*
 
 # These tests fail because we don't use upstream's material colors.
@@ -314,11 +318,13 @@
 -ActorTaskListBubbleTest.*
 -All/DiceResponseHandlerParamTest.Signin*/*
 -All/SigninUtilHistorySyncOptinForManagedSettingsTest.*
+-AppMenuChipViewTest.GetSigninStatusChipString_SignedIn
 -AvatarButtonPromoManagerTest.SigninPromoHasLastExternalEventTimeCheck
 -AvatarButtonPromoManagerTest.SigninPromoSupportIndependantProfileAndAccount*
 -BrowserSigninDetectorServiceTest.LateObservation
 -ChromePaymentsAutofillClientTest.ShowPaymentsChurnedUsersUI_WithAccountInfo
 -ComputeProfileMenuAvatarButtonPromoInfoParamTest.*
+-ComputeProfileMenuAvatarButtonPromoInfoSignInPromoTest.*
 -ConnectorsServiceRealTimeURLIdentifierTest.ReturnsCorrectIdentifier/*
 -ContextualSearchboxHandlerSignedInTestTabsTest.GetRecentTabs_SetsShowInRecentTabChip
 -ContextualTasksEligibilityManagerTest.*
@@ -344,10 +350,8 @@
 -NotebooksEligibilityServiceFactoryTest.FeatureEnabledCreatesService
 -NotebooksServiceFactoryTest.FeatureEnabledUsesRealService
 -OpportunisticKeyRetrievalEnclaveManagerTest.StoringOpportunisticallyRetrievedKeyAfterSignInOfMatchingAccount
--PeopleHandlerDiceTest.RecordSigninOffered
--PeopleHandlerDiceTest.StoredAccountsList
--PeopleHandlerSignoutTest.SignoutNotAllowedSyncOn
--PeopleHandlerSignoutTest.SignoutWithSyncOn
+-PeopleHandlerDiceTest.*
+-PeopleHandlerSignoutTest.*
 -PeopleHandlerTest.*
 -PeopleHandlerWebOnlySigninTest.ChromeSigninUserAvailableOnWebSignin
 -ProfileDynamicMenuTest.BuildSyncSection_SignedInProfile
@@ -771,9 +775,12 @@
 -OmniboxEditModelPopupTest.AimPopup*
 -OmniboxPopupHandlerTest.*
 -SmartTabSharingTest.QueryAutocomplete_*
+-WebuiOmniboxHandlerTabScopingTest.AddTabContext_ContextMenuDoesNotSetInvocationSource
+-WebuiOmniboxHandlerTabScopingTest.AddTabContext_CurrentTabChipSetsInvocationSource
 -WebuiOmniboxHandlerTabScopingTest.QueryAutocomplete_*
 -WebuiOmniboxHandlerTest.OnActiveTabChanged_SavesAndRestoresState
 -WebuiOmniboxHandlerTest.OpenLensSearch
+-WebuiOmniboxHandlerTest.OpenPopupSelection_CtrlEnterWithNoMatch
 
 # These tests crash because the tests initialize profile first and then reset
 # the global features. The ephemeral_storage::ApplicationStateObserver created
@@ -883,6 +890,23 @@
 -NetworkHintsHandlerImplTest.*
 -RenderViewContextMenuPrefsTest.LensImageSearchIssuesGoogleLensPreconnect
 -RenderViewContextMenuPrefsTest.LensRegionSearchIssuesGoogleLensPreconnect
+
+# These tests check the checked state of upstream's IDC_BOOKMARK_BAR_SUBMENU_*
+# items (Always Show/Hide, Only on NTP), but
+# BraveBookmarkContextMenuController::AddBraveBookmarksSubmenu() removes that
+# submenu and its items, replacing them with our own bookmark bar visibility
+# submenu (IDC_BRAVE_BOOKMARK_BAR_*), so the items no longer exist to be found.
+# Equivalent coverage exists in
+# brave_bookmark_context_menu_controller_unittest.cc.
+-All/BookmarkContextMenuUpdateSubMenuStateTest.UpdateSubMenuState/*
+
+# These tests fail because they hardcode "Incognito" in the expected window
+# title whereas we use "Private"
+-ActionAppMenuManagerTest.BlockActionsIncognitoNewTabTextOverride
+
+# This test fails because it expects "Google Password Manager" to appear in the
+# subtitle, but instead "Brave Password Manager" appears there
+-RemoteActorSelectionDialogControllerTest.Properties
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
