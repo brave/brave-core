@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TAB_PREFS_H_
 #define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_PREFS_H_
 
+#include "build/build_config.h"
+
 class PrefRegistrySimple;
 class PrefService;
 
@@ -83,6 +85,7 @@ enum class TabMinWidthMode {
 void RegisterBraveProfilePrefs(PrefRegistrySimple* registry);
 void MigrateBraveProfilePrefs(PrefService* prefs);
 
+#if !BUILDFLAG(IS_ANDROID)
 // Dev/QA-only: applies a forced override of Chromium's native
 // `prefs::kVerticalTabsEnabled` pref based on the
 // `tabs::switches::kVerticalTabMigrationSwitch` command-line switch, to force
@@ -92,6 +95,7 @@ void MigrateBraveProfilePrefs(PrefService* prefs);
 // one-time/default-guarded migration semantics must stay uncontaminated by
 // this unconditional, every-launch dev override.
 void MaybeApplyVerticalTabMigrationTestingOverride(PrefService* prefs);
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 

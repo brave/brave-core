@@ -64,6 +64,7 @@ void MigrateBraveProfilePrefs(PrefService* prefs) {
   }
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 void MaybeApplyVerticalTabMigrationTestingOverride(PrefService* prefs) {
   auto* command_line = base::CommandLine::ForCurrentProcess();
   if (!command_line->HasSwitch(tabs::switches::kVerticalTabMigrationSwitch)) {
@@ -79,6 +80,7 @@ void MaybeApplyVerticalTabMigrationTestingOverride(PrefService* prefs) {
     prefs->ClearPref(prefs::kVerticalTabsEnabled);
   }
 }
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(kCompactHorizontalTabs, false);
