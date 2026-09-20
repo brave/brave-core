@@ -9,7 +9,6 @@
 #include <vector>
 
 #include "base/functional/callback.h"
-#include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
 
@@ -52,27 +51,18 @@ class ViewCounterModel {
     rand_int_inclusive_callback_ = std::move(callback);
   }
 
- private:
-  friend class ViewCounterServiceTest;
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPSponsoredImagesTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPSponsoredImagesCountResetTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPSponsoredImagesCountResetMinTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPSponsoredImagesCountResetTimerTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPSponsoredImagesCountToNewTabTakeoverTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPBackgroundImagesWithSIDisabledTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPBackgroundImagesWithEmptyCampaignTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
-                           NTPFailedToLoadSponsoredImagesTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ModelTest);
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, PrefsWithModelTest);
+  int count_to_new_tab_takeover_wallpaper_for_testing() const {
+    return count_to_new_tab_takeover_wallpaper_;
+  }
+  void set_count_to_new_tab_takeover_wallpaper_for_testing(int count) {
+    count_to_new_tab_takeover_wallpaper_ = count;
+  }
+  bool show_wallpaper_for_testing() const { return show_wallpaper_; }
+  bool show_new_tab_takeover_wallpaper_for_testing() const {
+    return show_new_tab_takeover_wallpaper_;
+  }
 
+ private:
   void RegisterPageViewForNewTabTakeoverCreatives();
 
   void RegisterPageViewForBackgroundImages();
