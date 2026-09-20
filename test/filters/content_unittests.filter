@@ -24,6 +24,12 @@
 -FileSystemAccessFileHandleImplRenameOnlyInHomedirTest.OutsideHomedirDoesNotRequireParentWrite
 -FileSystemAccessFileHandleImplRenameTest.HasWriteAccess
 
+# This test fails because we ship
+# kFileSystemAccessDirectoryIterationBlocklistCheck disabled by default, so
+# ConfirmSensitiveEntryAccess isn't called when the write blocklist check is
+# also disabled.
+-All/FileSystemAccessManagerImplSerializeHandleInsideDirectoryTest.SerializeHandle_Native_FileInsideDirectory/WriteBlocklistCheckDisabled
+
 # These tests fail because we disable the client hints that the tests check.
 -ClientHintsTest.AddNavigationRequestClientHintsHeaders_MainFrame
 -ClientHintsTest.AddNavigationRequestClientHintsHeaders_Subframe
@@ -76,6 +82,7 @@
 -FencedFrameReporterTest.SendFledgeReportsBeforeMapsReceivedWithErrors
 -FencedFrameReporterTest.SendFledgeReportsNoMapReceived
 -FileBackedBlobFactoryFrameImplTest.Register_FencedFrameWithScopedFileAccessDelegate
+-PictureInPictureServiceImplTest.Bind_BlockedForFencedFrame
 -RequestTest.DisconnectFromFencedFrame
 
 # Flaky upstream and on CI (passes locally)

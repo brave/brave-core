@@ -30,7 +30,9 @@
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/0
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/2
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/5
+-All/DictationSessionUiImplBrowserTest.OverlayButtonStaysWithinTargetInputField/*
 -AutomationApiTest.*
+-CrossDeviceSigninQrBubbleUIPixelTest.InvokeUi_default/Rtl
 -DownloadExtensionBubbleEnabledTest.SetUiOptionsBeforeDownloadStart
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
 
