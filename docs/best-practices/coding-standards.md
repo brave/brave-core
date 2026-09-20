@@ -1509,28 +1509,32 @@ uppercased with `/` and `.` replaced by `_`, plus a trailing `_`. See
 ## ✅ Use Braces on All Conditionals and Loops
 
 **Always brace the body of an `if`/`else`/`for`/`while`, even a single
-statement.** `clang-format` will not add these for you, so it has to be caught
-in review. Braces keep a later added statement from silently falling outside the
-conditional. See
+statement.** Braces keep a later added statement from silently falling outside
+the conditional. Chromium's `clang-format` configuration inserts them for the
+cases below, so writing them yourself leaves the formatter with nothing to do.
+See
 [Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
 
 ```cpp
-// ❌ WRONG - unbraced body
+// ❌ WRONG - unbraced body; clang-format rewrites this
 if (!service)
   return;
 
-for (auto& observer : observers_)
-  observer.OnStateChanged();
+for (const auto& url : urls)
+  Prefetch(url);
 
 // ✅ CORRECT
 if (!service) {
   return;
 }
 
-for (auto& observer : observers_) {
-  observer.OnStateChanged();
+for (const auto& url : urls) {
+  Prefetch(url);
 }
 ```
+
+**Do NOT flag missing braces in review** — like include order
+([CS-010](#CS-010)), it is handled by tooling.
 
 Also prefer `(foo == 0)` over `(0 == foo)`.
 

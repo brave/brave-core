@@ -919,6 +919,14 @@ so callers don't have to read the implementation to learn who frees what.
 | `std::unique_ptr<T>` | The function takes ownership                                                          |
 | `scoped_refptr<T>`   | The function may take a ref; the caller chooses `std::move(t)` or keeping its own ref |
 
+**A smart pointer is not the default way to move a value.** When the type is
+moveable, take it by value — `void Consume(T value)`, called as
+`Consume(std::move(t))` — and reach for `std::unique_ptr<T>` only when the type
+is not moveable, which is typically the case for polymorphic types held by base
+pointer. Much of the `std::unique_ptr<T>` in existing code is historical: before
+move semantics it was the only way to hand an object around, and before
+`std::optional<T>` it doubled as the way to express "maybe a value".
+
 **Return values:**
 
 | Return                                             | Meaning                                                                     |
@@ -926,6 +934,9 @@ so callers don't have to read the implementation to learn who frees what.
 | `T*`                                               | If and only if the caller does _not_ take ownership                         |
 | `std::unique_ptr<T>` / `scoped_refptr<T>` by value | The implementation is handing off ownership                                 |
 | `const scoped_refptr<T>&`                          | The implementation retains ownership; the caller isn't forced to take a ref |
+
+The same caveat applies to returns: for a moveable type, return a plain `T` by
+value rather than wrapping it in a smart pointer to hand it back.
 
 **A function must never take ownership of a parameter passed as `T*`.** That is
 the single most common violation, and it's invisible at the call site.
@@ -942,10 +953,12 @@ void UseDelegate(Delegate* delegate);
 ```
 
 Callers must `std::move()` a non-temporary `std::unique_ptr<T>` into such a
-parameter; no `std::move()` is needed when returning a temporary or local (see
-[CSA-010](coding-standards-apis.md#CSA-010),
-[CSA-047](coding-standards-apis.md#CSA-047)). For passing smart pointers by
-const reference, see [CSM-031](#CSM-031); for class fields, use
+parameter (see [CSA-010](coding-standards-apis.md#CSA-010),
+[CSA-047](coding-standards-apis.md#CSA-047)). Do **not** `std::move()` a
+temporary or a local on the way out of a function: `return std::move(foo);`
+suppresses copy elision, so it produces a move the compiler would otherwise have
+elided entirely. Write `return foo;`. For passing smart pointers by const
+reference, see [CSM-031](#CSM-031); for class fields, use
 `const raw_ref<T>`/`raw_ptr<T>` ([CSM-036](#CSM-036)).
 
 ---
@@ -954,7 +967,7 @@ const reference, see [CSM-031](#CSM-031); for class fields, use
 
 ## ✅ Use Platform Scoper Types for Platform Handles
 
-**Don't manage OS handles and Core Foundation objects by hand — use the
+**Don't manage OS handles and Core Foundation objects by hand, rather use the
 platform-specific scopers**, which release on destruction like any other smart
 pointer.
 

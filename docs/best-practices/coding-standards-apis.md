@@ -814,18 +814,30 @@ result = base::saturated_cast<uint64_t>(value.value_or(0));
 For arithmetic that could overflow before the cast, compute with
 `base::CheckedNumeric<T>` (or `base::MakeCheckedNum`) and read the result via
 `.AssignIfValid()` / `.ValueOrDie()` rather than casting after the fact. All are
-in `base/numerics/`. See
+in `base/numerics/`. See the
+[`//base/numerics` README](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/base/numerics/README.md)
+and the
 [Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+**Use the non-member helpers (`base::CheckAdd`, `base::CheckSub`,
+`base::CheckMul`, …) instead of `CheckedNumeric`'s operator overloads.** With
+the operators it is easy to write one term of the expression outside the safe
+construct without noticing, so the overflow the type was meant to catch happens
+before `CheckedNumeric` ever sees it. The helpers name every checked operation
+explicitly. See
+[non-member helper functions](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/base/numerics/README.md#checkednumeric_in-checked_math_h-non_member-helper-functions).
 
 ```cpp
 // ❌ WRONG - overflow happens before the cast can help
 size_t total = base::saturated_cast<size_t>(count * item_size);
 
-// ✅ CORRECT - overflow is detected in the arithmetic itself
-base::CheckedNumeric<size_t> checked_total =
-    base::CheckedNumeric<size_t>(count) * item_size;
+// ❌ WRONG - `count * item_size` is a naked multiplication; it overflows
+// before the CheckedNumeric is constructed
+base::CheckedNumeric<size_t> checked_total = count * item_size;
+
+// ✅ CORRECT - the checked operation is named, so nothing is computed naked
 size_t total = 0;
-if (!checked_total.AssignIfValid(&total)) {
+if (!base::CheckMul(count, item_size).AssignIfValid(&total)) {
   return std::nullopt;
 }
 
