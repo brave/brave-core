@@ -104,13 +104,14 @@
 # This test fails because we use different search engine keywords.
 -SearchEngineChoiceEligibilityTest.ChoiceScreenConditions_SkipFor3p_Waffle
 
-# This test assumes Google is the default search engine for the JP test fixture,
-# but Brave overrides the per-country default DSE (see
+# These tests assume Google is the default search engine for the JP test
+# fixture, but Brave overrides the per-country default DSE (see
 # regional_capabilities_utils.cc's JP entry in the default-engine map and
 # template_url_prepopulate_data_resolver.cc's GetPrepopulatedFallbackSearch
 # override), so JP resolves to a Yahoo JP engine instead. That engine also
 # carries our own prepopulate_id, not upstream's yahoo_jp/yahoo_jp_next id, so
 # it can't classify as kLegacy/kNew and always records kUnknown.
+-SearchEngineSettingsDataProviderSplitRegionTest.RecordsEngineStateForEachSplitEngine
 -SearchEngineSplitTemplateURLServiceSplitRegionTest.SearchEngineSplitProfileLoadMetrics_SplitRegion
 
 # These tests fail because upstream doesn't expect passwords to be syncable
@@ -306,11 +307,20 @@
 -SyncToSigninMigrationUndoTest.*
 -UnifiedConsentServiceTest.ReplaceSync_*
 
-
-# This test fails because we override VariationsIdsProvider's method
-# GetClientDataHeaders to return nullptr, so the X-Client-Data header the test
-# expects to find is never added.
+# These tests fail because we override VariationsIdsProvider's method
+# GetClientDataHeaders to return nullptr, so the X-Client-Data header the tests
+# expect to find is never added.
+-ContextualSearchDelegateImplTest.DiscourseContextHeaderRemovedOnCrossOriginRedirect_GoogleDSE
 -LogoServiceImplTest.IncludesVariationsHeaderWhenDSEIsGoogle
+
+# brave/build/config/locales.gni re-enables desktop UI support for az, bs, ka,
+# kk, km, lo, mk, mn, my, si, sq, uz (upstream's `extended_locales` excludes
+# them from desktop). Upstream never exercises these locales in this test on
+# desktop as a result. But third_party/icu/filters/common.json (unmodified by
+# us) still strips full calendar/date data for exactly these locales to
+# save binary size, since upstream assumes desktop never needs it. So ICU falls
+# back to the root pattern ("M12 7") for these 12 locales only.
+-DateInfo.GetIcuDate_LocalizedPattern_AllPlatformLocales
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
