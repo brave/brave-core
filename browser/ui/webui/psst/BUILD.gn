@@ -37,3 +37,18 @@ static_library("psst") {
     "//ui/web_dialogs",
   ]
 }
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "brave_psst_dialog_ui_browsertest.cc" ]
+
+  deps = [
+    "//brave/components/psst/core/common",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//url",
+  ]
+}

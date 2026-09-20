@@ -9,7 +9,6 @@
 #include <memory>
 #include <utility>
 
-#include "base/check.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/psst/brave_psst_dialog_handler.h"
 #include "brave/components/psst/resources/grit/brave_psst_dialog_generated_map.h"
@@ -24,6 +23,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "services/network/public/mojom/content_security_policy.mojom.h"
+#include "base/functional/callback.h"
 
 using content::WebUIMessageHandler;
 
@@ -63,18 +63,35 @@ void BravePsstDialogUI::CreatePsstConsentHandler(
   desktop_dialog_delegate_ =
       PsstUiDesktopPresenter::PsstUiDesktopDelegate::GetDelegateFromWebContents(
           web_ui()->GetWebContents());
-  CHECK(desktop_dialog_delegate_);
+  if (!desktop_dialog_delegate_) {
+    std::move(callback).Run(psst::mojom::SettingCardData::New());
+    return;
+  }
   auto* initiator_contents =
       desktop_dialog_delegate_->GetInitiatorWebContents();
-  CHECK(initiator_contents);
+  if (!initiator_contents) {
+    std::move(callback).Run(psst::mojom::SettingCardData::New());
+    return;
+  }
 
   auto* tab_interface =
       tabs::TabInterface::MaybeGetFromContents(initiator_contents);
-  CHECK(tab_interface);
+  if (!tab_interface) {
+    std::move(callback).Run(psst::mojom::SettingCardData::New());
+    return;
+  }
 
-  TabStripModel* tab_strip_model =
-      tab_interface->GetBrowserWindowInterface()->GetTabStripModel();
-  CHECK(tab_strip_model);
+  auto* bwi = tab_interface->GetBrowserWindowInterface();
+  if (!bwi) {
+    std::move(callback).Run(psst::mojom::SettingCardData::New());
+    return;
+  }
+
+  TabStripModel* tab_strip_model = bwi->GetTabStripModel();
+  if (!tab_strip_model) {
+    std::move(callback).Run(psst::mojom::SettingCardData::New());
+    return;
+  }
 
   psst_consent_handler_ = std::make_unique<BravePsstDialogHandler>(
       tab_strip_model, this, std::move(psst_consent_helper),

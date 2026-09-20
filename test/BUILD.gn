@@ -1629,6 +1629,7 @@ test("brave_browser_tests") {
       # Skip tests on MAC, See crbug.com/363677523
       deps += [ "//brave/browser/psst:browser_tests" ]
     }
+    deps += [ "//brave/browser/ui/webui/psst:browser_tests" ]
   }
 }
 
