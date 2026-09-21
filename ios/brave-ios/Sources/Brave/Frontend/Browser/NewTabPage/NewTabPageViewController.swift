@@ -107,7 +107,7 @@ protocol NTPObservableSectionProvider: NTPSectionProvider {
 protocol NewTabPageDelegate: AnyObject {
   func focusURLBar()
   func navigateToInput(_ input: String, inNewTab: Bool, switchingToPrivateMode: Bool)
-  func handleFavoriteAction(favorite: Favorite, action: BookmarksAction)
+  func handleTopsiteAction(action: TopsiteAction)
   func brandedImageCalloutActioned(_ state: BrandedImageCalloutState)
   func showNTPOnboarding()
   func showNewTabTakeoverInfoBarIfNeeded()
@@ -196,6 +196,8 @@ class NewTabPageViewController: UIViewController {
     Preferences.NewTabPage.showNewTabPrivacyHub.observe(from: self)
     Preferences.NewTabPage.topsitesMode.observe(from: self)
 
+    let mostVisitedSites: MostVisitedSites? =
+      privateBrowsingManager.isPrivateBrowsing ? nil : MostVisitedSitesFactory.get(for: tab.profile)
     sections = [
       StatsSectionProvider(
         isPrivateBrowsing: tab.isPrivate,
@@ -238,18 +240,23 @@ class NewTabPageViewController: UIViewController {
           self?.hidePrivacyHub()
         }
       ),
-      FavoritesSectionProvider(
-        action: { [weak self] bookmark, action in
-          self?.handleFavoriteAction(favorite: bookmark, action: action)
+      TopsitesSectionProvider(
+        action: { [weak self] action in
+          self?.handleTopsiteAction(action: action)
         },
         legacyLongPressAction: { [weak self] alertController in
           self?.present(alertController, animated: true)
         },
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
+        mostVisitedSites: mostVisitedSites
+      ),
+      TopsitesOverflowSectionProvider(
+        action: { [weak self] in
+          self?.delegate?.focusURLBar()
+        },
+        mostVisitedSites: mostVisitedSites,
         isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
       ),
-      FavoritesOverflowSectionProvider(action: { [weak self] in
-        self?.delegate?.focusURLBar()
-      }),
     ]
 
     var isBackgroundNTPSI = false
@@ -431,25 +438,25 @@ class NewTabPageViewController: UIViewController {
   ) {
     super.viewWillTransition(to: size, with: coordinator)
     guard
-      let favoriteSection = sections.firstIndex(where: { $0 is FavoritesSectionProvider }),
-      let provider = sections[favoriteSection] as? FavoritesSectionProvider
+      let topsitesSection = sections.firstIndex(where: { $0 is TopsitesSectionProvider }),
+      let provider = sections[topsitesSection] as? TopsitesSectionProvider
     else {
       return
     }
-    // Only reload the favorites section (and its overflow section) when the
-    // number of favorites actually displayed would change, otherwise favorites
+    // Only reload the topsites section (and its overflow section) when the
+    // number of favorites/mostVisited actually displayed would change, otherwise favorites
     // may wrap onto a second row. The available width isn't known until the
     // collection view's bounds & insets update, so compute the new displayed
     // count in the transition completion handler.
-    let currentCount = collectionView.numberOfItems(inSection: favoriteSection)
+    let currentCount = collectionView.numberOfItems(inSection: topsitesSection)
     coordinator.animate(alongsideTransition: nil) { [weak self] _ in
       guard let self else { return }
       let updatedCount = provider.displayedItemCount(
         in: self.collectionView,
-        section: favoriteSection
+        section: topsitesSection
       )
       if currentCount != updatedCount {
-        self.collectionView.reloadSections(IndexSet([favoriteSection, favoriteSection + 1]))
+        self.collectionView.reloadSections(IndexSet([topsitesSection, topsitesSection + 1]))
       }
     }
   }
@@ -1014,8 +1021,8 @@ class NewTabPageViewController: UIViewController {
     }
   }
 
-  private func handleFavoriteAction(favorite: Favorite, action: BookmarksAction) {
-    delegate?.handleFavoriteAction(favorite: favorite, action: action)
+  private func handleTopsiteAction(action: TopsiteAction) {
+    delegate?.handleTopsiteAction(action: action)
   }
 
   private func presentImageCredit(_ button: UIControl) {
@@ -1472,7 +1479,7 @@ extension NewTabPageViewController: UICollectionViewDragDelegate, UICollectionVi
     at indexPath: IndexPath
   ) -> [UIDragItem] {
     // Check If the item that is dragged is a favourite item
-    guard sections[indexPath.section] is FavoritesSectionProvider else {
+    guard sections[indexPath.section] is TopsitesSectionProvider else {
       return []
     }
 
@@ -1510,7 +1517,7 @@ extension NewTabPageViewController: UICollectionViewDragDelegate, UICollectionVi
       guard let item = coordinator.items.first else { return }
       _ = coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
 
-      guard let favouritesSection = sections.firstIndex(where: { $0 is FavoritesSectionProvider })
+      guard let favouritesSection = sections.firstIndex(where: { $0 is TopsitesSectionProvider })
       else {
         return
       }
@@ -1534,8 +1541,8 @@ extension NewTabPageViewController: UICollectionViewDragDelegate, UICollectionVi
     withDestinationIndexPath destinationIndexPath: IndexPath?
   ) -> UICollectionViewDropProposal {
     guard let destinationIndexSection = destinationIndexPath?.section,
-      let favouriteSection = sections[destinationIndexSection] as? FavoritesSectionProvider,
-      favouriteSection.hasMoreThanOneFavouriteItems
+      let topsitesSection = sections[destinationIndexSection] as? TopsitesSectionProvider,
+      topsitesSection.isReorderingEnabled
     else {
       return .init(operation: .cancel)
     }
