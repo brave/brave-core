@@ -191,8 +191,6 @@ import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.settings.BraveWalletPreferences;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
-import org.chromium.chrome.browser.share.ShareDelegate;
-import org.chromium.chrome.browser.share.ShareDelegate.ShareOrigin;
 import org.chromium.chrome.browser.shields.ContentFilteringFragment;
 import org.chromium.chrome.browser.shields.CreateCustomFiltersFragment;
 import org.chromium.chrome.browser.site_settings.BraveWalletEthereumConnectedSites;
@@ -479,11 +477,7 @@ public abstract class BraveActivity extends ChromeActivity
             @Nullable MotionEventInfo triggeringMotion) {
         final Tab currentTab = getActivityTab();
         // Handle items replaced by Brave.
-        if (id == R.id.info_menu_id && currentTab != null) {
-            ShareDelegate shareDelegate = (ShareDelegate) getShareDelegateSupplier().get();
-            shareDelegate.share(currentTab, false, ShareOrigin.OVERFLOW_MENU);
-            return true;
-        } else if (id == R.id.reload_menu_id) {
+        if (id == R.id.reload_menu_id) {
             setComesFromNewTab(true);
         } else if (id == R.id.preferences_id) {
             final AppMenuPropertiesDelegate delegate = createAppMenuPropertiesDelegate();
