@@ -24,3 +24,10 @@ a[href] {
 .settings-box :first-child {
   border-top: none !important;
 }
+
+/* Match toggle/link row label padding on dropdown rows. */
+.cr-row #labelWrapper,
+.settings-box #labelWrapper {
+  padding-block-end: var(--cr-section-vertical-padding);
+  padding-block-start: var(--cr-section-vertical-padding);
+}
