@@ -97,26 +97,6 @@ hooks = [
                'src/brave/third_party/updater/mac']
   },
   {
-    'name': 'update_pip',
-    'pattern': '.',
-    # Required for download_cryptography below. Specifically, newer versions of
-    # pip are required for obtaining binary wheels on Arm64 macOS.
-    'action': ['python3', '-m', 'ensurepip', '--upgrade'],
-  },
-  {
-    'name': 'download_cryptography',
-    'pattern': '.',
-    # We don't include cryptography as a DEP because building it from source is
-    # difficult. We pin to a version >=37.0.2 and <38.0.0 to avoid an
-    # incompatibility with our pyOpenSSL version on Android. See:
-    # https://github.com/pyca/cryptography/issues/7126.
-    # We use python3 instead of vpython3 for two reasons: First, our GN actions
-    # are run with python3, so this environment mirrors the one in which
-    # cryptography will be used. Second, we cannot update pip in vpython3 on at
-    # least macOS due to permission issues.
-    'action': ['python3', '-m', 'pip', '-q', '--disable-pip-version-check', 'install', '-U', '-t', 'third_party/cryptography', '--only-binary', 'cryptography', 'cryptography==37.0.4'],
-  },
-  {
     'name': 'wireguard_nt',
     'pattern': '.',
     'condition': 'checkout_win',

@@ -6,13 +6,17 @@
 from os.path import dirname, realpath, join, exists
 
 import os
-import sys
 
 from lib.util import execute
 
 SIGNATURE_GENERATOR_PY = \
     realpath(join(dirname(dirname(dirname(dirname(__file__)))), 'third_party',
              'widevine', 'scripts', 'signature_generator.py'))
+
+# signature_generator.py needs `cryptography`, but lives outside our source
+# tree (in a separately-fetched, private repo), so it can't carry its own
+# .vpython3 manifest. Point vpython3 at one we control instead.
+VPYTHON_SPEC = realpath(join(dirname(__file__), 'widevine.vpython3'))
 
 SIGN_WIDEVINE_CERT = os.getenv('SIGN_WIDEVINE_CERT')
 SIGN_WIDEVINE_KEY = os.getenv('SIGN_WIDEVINE_KEY')
@@ -26,9 +30,10 @@ def can_generate_sig_file():
 
 def generate_sig_file(input_file, output_file, flags):
     execute([
-        sys.executable, SIGNATURE_GENERATOR_PY, '--input_file', input_file,
-        '--output_file', output_file, '--flags', flags, '--certificate',
-        SIGN_WIDEVINE_CERT, '--private_key', SIGN_WIDEVINE_KEY,
-        '--private_key_passphrase', SIGN_WIDEVINE_PASSPHRASE
+        'vpython3', '-vpython-spec', VPYTHON_SPEC, SIGNATURE_GENERATOR_PY,
+        '--input_file', input_file, '--output_file', output_file, '--flags',
+        flags, '--certificate', SIGN_WIDEVINE_CERT, '--private_key',
+        SIGN_WIDEVINE_KEY, '--private_key_passphrase',
+        SIGN_WIDEVINE_PASSPHRASE
     ])
     assert exists(output_file)
