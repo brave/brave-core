@@ -118,8 +118,10 @@ extension WidgetShortcut {
       return "leo.qr.code"
     case .braveNews:
       return "leo.product.brave-news"
-    case .braveLeo, .askBrave:
+    case .braveLeo:
       return "leo.product.brave-leo"
+    case .askBrave:
+      return "leo.brave.ask"
     case .braveLeoVoiceInput:
       return "leo.microphone"
     @unknown default:
