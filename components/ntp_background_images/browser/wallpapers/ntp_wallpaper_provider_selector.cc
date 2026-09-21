@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_background_images/browser/wallpapers/ntp_wallpaper_provider_factory.h"
+#include "brave/components/ntp_background_images/browser/wallpapers/ntp_wallpaper_provider_selector.h"
 
 #include "brave/components/ntp_background_images/browser/wallpapers/ntp_brave_background_wallpaper_provider.h"
 #include "brave/components/ntp_background_images/browser/wallpapers/ntp_gradient_wallpaper_provider.h"
@@ -12,7 +12,7 @@
 
 namespace ntp_background_images {
 
-NTPWallpaperProviderFactory::NTPWallpaperProviderFactory(
+NTPWallpaperProviderSelector::NTPWallpaperProviderSelector(
     NTPUseYourOwnWallpaperProvider& use_your_own_wallpaper_provider,
     NTPGradientWallpaperProvider& gradient_wallpaper_provider,
     NTPSolidColorWallpaperProvider& solid_color_wallpaper_provider,
@@ -23,10 +23,10 @@ NTPWallpaperProviderFactory::NTPWallpaperProviderFactory(
       brave_background_wallpaper_provider_(
           brave_background_wallpaper_provider) {}
 
-NTPWallpaperProviderFactory::~NTPWallpaperProviderFactory() = default;
+NTPWallpaperProviderSelector::~NTPWallpaperProviderSelector() = default;
 
 NTPWallpaperProvider&
-NTPWallpaperProviderFactory::GetWallpaperProvider() const {
+NTPWallpaperProviderSelector::GetWallpaperProvider() const {
   if (use_your_own_wallpaper_provider_->IsEligible()) {
     return *use_your_own_wallpaper_provider_;
   }
