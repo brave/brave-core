@@ -46,13 +46,7 @@ inline constexpr char kWalletBaseDirectory[] = "BraveWallet";
 inline constexpr char kImageSourceHost[] = "erc-token-images";
 inline constexpr char kRampBaseUrl[] = "https://app.ramp.network";
 inline constexpr char kOffRampEnabledFlows[] = "OFFRAMP";
-inline constexpr char kOnRampEnabledFlows[] = "ONRAMP";
-inline constexpr char kOnRampID[] = "8yxja8782as5essk2myz3bmh4az6gpq4nte9n2gf";
 inline constexpr char kOffRampID[] = "y57zqta99ohs7o2paf4ak6vpfb7wf8ubj9krwtwe";
-inline constexpr char kTransakURL[] = "https://global.transak.com/";
-inline constexpr char kTransakApiKey[] = "985d14f0-4cf5-4a4c-8917-78107620d3b7";
-inline constexpr char kCoinbaseURL[] = "https://pay.coinbase.com";
-inline constexpr char kCoinbaseAppId[] = "8072ff71-8469-4fef-9404-7c905e2359c9";
 inline constexpr size_t kSimpleHashMaxBatchSize = 50;
 
 // 0x swap constants

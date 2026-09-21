@@ -1344,14 +1344,6 @@ interface KeyringService {
 
 // Used for cryptocurrency prices over time.
 interface AssetRatioService {
-  // Obtains the URL for buying assets specifying currency
-  GetBuyUrlV1(OnRampProvider provider,
-              string chain_id,
-              string address,
-              string symbol,
-              string amount,
-              string currencyCode) => (string url, string? error);
-
   // Obtains the URL for selling assets specifying currency
   GetSellUrl(OffRampProvider provider,
              string chain_id,
