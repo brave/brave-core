@@ -9,14 +9,16 @@ assert(enable_traffic_control)
 
 source_set("traffic_control") {
   sources = [
-    "traffic_control_apply.cc",
-    "traffic_control_apply.h",
+    "traffic_control_applier.cc",
+    "traffic_control_applier.h",
     "traffic_control_navigation_throttle.cc",
     "traffic_control_navigation_throttle.h",
     "traffic_control_service_factory.cc",
     "traffic_control_service_factory.h",
     "traffic_control_tab_utils.cc",
     "traffic_control_tab_utils.h",
+    "traffic_control_types.cc",
+    "traffic_control_types.h",
   ]
 
   deps = [
@@ -38,6 +40,7 @@ source_set("traffic_control") {
     "//components/tabs:public",
     "//content/public/browser",
     "//net",
+    "//services/network/public/cpp:flags_and_switches",
     "//ui/base",
     "//url",
   ]
