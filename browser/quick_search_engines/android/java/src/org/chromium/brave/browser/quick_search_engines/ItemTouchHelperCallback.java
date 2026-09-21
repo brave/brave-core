@@ -38,8 +38,8 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
             @NonNull RecyclerView recyclerView,
             @NonNull RecyclerView.ViewHolder viewHolder,
             @NonNull RecyclerView.ViewHolder target) {
-        int fromPosition = viewHolder.getBindingAdapterPosition();
-        int toPosition = target.getBindingAdapterPosition();
+        final int fromPosition = viewHolder.getBindingAdapterPosition();
+        final int toPosition = target.getBindingAdapterPosition();
         if (fromPosition == NO_POSITION || toPosition == NO_POSITION) {
             return false;
         }
