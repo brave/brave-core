@@ -125,15 +125,11 @@ DEFAULT_SUITES = [
 
 GENERATED_FILTERS_DIR = BRAVE_CORE_ROOT / "test" / "filters" / "generated"
 
-# Platforms Brave runs upstream test suites on, mapped to the "os"
-# prefixes of the corresponding upstream bots. Bots for other platforms
-# (e.g. ChromeOS) are ignored. The platform names must match those used by
-# getApplicableFilters in build/commands/lib/testUtils.ts, which has no
-# Android filters yet.
+# The platform maps matching the `gn` value for `target_os`.
 PLATFORM_OS_PREFIXES = {
     "linux": ("Ubuntu", "Linux"),
-    "macos": ("Mac", ),
-    "windows": ("Windows", ),
+    "mac": ("Mac", ),
+    "win": ("Windows", ),
 }
 
 # Sanitizers Brave runs upstream test suites with, identified by

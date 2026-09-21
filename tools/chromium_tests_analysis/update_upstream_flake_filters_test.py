@@ -108,6 +108,11 @@ class SuiteUpdaterTestCase(QuietConsoleTestCase):
         super().setUp()
         self.filters_dir = Path(
             self.enter_context(tempfile.TemporaryDirectory()))
+        # The written files are logged relative to the checkout. Stand in
+        # for it, or there is no relative path to them at all: on Windows
+        # the temporary directory is usually on another drive.
+        self.enter_patch(
+            mock.patch.object(ufm, "BRAVE_CORE_ROOT", self.filters_dir))
         self.client = mock.Mock()
         self.client.cluster_summaries.return_value = []
         self.client.cluster_failures.return_value = []
@@ -248,14 +253,14 @@ class GetAllConfigsTest(unittest.TestCase):
             "linux-asan",
             "linux-msan",
             "linux-ubsan",
-            "macos",
-            "macos-asan",
-            "macos-msan",
-            "macos-ubsan",
-            "windows",
-            "windows-asan",
-            "windows-msan",
-            "windows-ubsan",
+            "mac",
+            "mac-asan",
+            "mac-msan",
+            "mac-ubsan",
+            "win",
+            "win-asan",
+            "win-msan",
+            "win-ubsan",
         ])
 
 
@@ -270,10 +275,10 @@ class GetConfigForVariantTest(unittest.TestCase):
             "linux")
         self.assertEqual(
             ufm.get_config_for_variant(variant("h", "Mac-15", "mac-rel")),
-            "macos")
+            "mac")
         self.assertEqual(
             ufm.get_config_for_variant(variant("h", "Windows-10",
-                                               "win10-rel")), "windows")
+                                               "win10-rel")), "win")
 
     def test_an_unknown_os_has_no_config(self) -> None:
         self.assertIsNone(
@@ -299,7 +304,7 @@ class GetConfigForVariantTest(unittest.TestCase):
     def test_builder_names_are_matched_case_insensitively(self) -> None:
         self.assertEqual(
             ufm.get_config_for_variant(
-                variant("h", "Mac-15", "Mac ASan 64 Tests")), "macos-asan")
+                variant("h", "Mac-15", "Mac ASan 64 Tests")), "mac-asan")
 
     def test_platforms_brave_does_not_build_are_dropped(self) -> None:
         for builder in ("android-x86-rel", "chromeos-amd64-generic-rel",
@@ -340,7 +345,7 @@ class AnalyzePerConfigTest(unittest.TestCase):
 
         self.assertAlmostEqual(analyses["linux"].flake_rate, 0.1)
         self.assertAlmostEqual(analyses["linux-asan"].flake_rate, 0.5)
-        self.assertEqual(analyses["macos"].counts.meaningful, 0)
+        self.assertEqual(analyses["mac"].counts.meaningful, 0)
 
     def test_covers_every_config(self) -> None:
         analyses = ufm.analyze_per_config([], {})
@@ -831,7 +836,7 @@ class RunTest(SuiteUpdaterTestCase):
     CONFIG_BY_HASH = {
         "h-linux": "linux",
         "h-asan": "linux-asan",
-        "h-mac": "macos",
+        "h-mac": "mac",
     }
 
     def setUp(self) -> None:
@@ -872,9 +877,15 @@ class RunTest(SuiteUpdaterTestCase):
 
         self.assertEqual(self.written_files(), [
             "unit_tests-linux.filter",
-            "unit_tests-macos.filter",
-            "unit_tests-windows.filter",
+            "unit_tests-mac.filter",
+            "unit_tests-win.filter",
         ])
+
+    def test_a_written_file_is_logged_by_its_path_in_the_checkout(self) -> None:
+        self.update()
+
+        self.assertIn("wrote 0 entries to unit_tests-linux.filter",
+                      self.output.getvalue())
 
     def test_a_flaky_test_is_excluded_on_the_config_it_flakes_on(self) -> None:
         self.stats_by_test_id = {
@@ -888,7 +899,7 @@ class RunTest(SuiteUpdaterTestCase):
 
         self.assertEqual(self.excluded_tests("unit_tests-linux.filter"),
                          ["S.Flaky"])
-        self.assertEqual(self.excluded_tests("unit_tests-macos.filter"), [])
+        self.assertEqual(self.excluded_tests("unit_tests-mac.filter"), [])
 
     def test_a_test_below_the_threshold_stays_enabled(self) -> None:
         self.stats_by_test_id = {

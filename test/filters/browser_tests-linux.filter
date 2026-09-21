@@ -162,7 +162,7 @@
 # only ASAN would leave the non-sanitizer Linux builds exposed. And not the
 # all-platform browser_tests.filter: macOS shows no evidence of the failure, so
 # there is no reason to drop coverage there, and Windows is already covered in
-# browser_tests-windows.filter.
+# browser_tests-win.filter.
 #
 # Fixing this requires reordering the callback and the queue pop in upstream
 # test or production code. A previous attempt, brave/brave-core#34786, patched

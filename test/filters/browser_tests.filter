@@ -1348,7 +1348,7 @@
 # Windows x64 nightly ASan builder.
 # Stable upstream per LUCI Analysis (0.3% over 30 days: 229 failed + 150 flaky),
 # but an unsynchronized posted task is not sanitizer-specific, so this goes in
-# the all-platform filter rather than browser_tests-windows-asan.filter.
+# the all-platforms filter rather than browser_tests-win-asan.filter.
 # Upstream Chromium test. There is no Brave override or patch for
 # chrome/browser/picture_in_picture/ or picture_in_picture_browser_frame_view.*,
 # and Brave's other picture-in-picture overrides and patches touch only the
@@ -2623,10 +2623,10 @@
 # that aggregate is diluted by high-volume CQ trybots: the CI waterfall shows
 # 15.0% (Linux Tests), 15.3% (Mac13 Tests) and 53.8% (win11-arm64-rel-tests),
 # while the Windows x64 bots stay at or below 0.2%. Per config, the averages
-# update-upstream-flake-filters.py computes are ~10% on macos -- the only
+# update-upstream-flake-filters.py computes are ~10% on mac -- the only
 # config its generated filters pick the test up on, see
-# generated/browser_tests-macos.filter -- but 0.87% on linux and 0.73% on
-# windows, just under its 1% threshold, so this all-platform file covers the
+# generated/browser_tests-mac.filter -- but 0.87% on linux and 0.73% on
+# win, just under its 1% threshold, so this all-platforms file covers the
 # rest. Upstream's guard is Windows-only and the failures filed against Brave
 # are Linux x64, so the roll past crrev a9b6e70460ff will not retire this
 # entry. No Brave chromium_src override or patch touches the base background
