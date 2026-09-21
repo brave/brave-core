@@ -1,12 +1,28 @@
 diff --git a/components/minidump_uploader/BUILD.gn b/components/minidump_uploader/BUILD.gn
-index d51e0d1146a4a192b542068a3f4b39cd1c59642d..ac7265711e18aa981a90221643c704ff74546332 100644
+index d51e0d1146a4a192b542068a3f4b39cd1c59642d..0241df7ab5c322d4e570128531b4ae494e4e5fb5 100644
 --- a/components/minidump_uploader/BUILD.gn
 +++ b/components/minidump_uploader/BUILD.gn
-@@ -75,6 +75,7 @@ android_library("minidump_uploader_java") {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/components/minidump_uploader/sources.gni")
+ import("//build/config/android/rules.gni")
+ import("//testing/test.gni")
+ import("//third_party/jni_zero/jni_zero.gni")
+@@ -59,6 +60,7 @@ android_library("minidump_uploader_java") {
+     "//third_party/androidx:androidx_annotation_annotation_java",
+     "//third_party/jni_zero:jni_zero_java",
+   ]
++  deps += brave_components_minidump_uploader_util_java_deps
+ 
+   srcjar_deps = [ ":minidump_uploader_jni_headers" ]
+   sources = [
+@@ -75,6 +77,7 @@ android_library("minidump_uploader_java") {
      "android/java/src/org/chromium/components/minidump_uploader/util/HttpURLConnectionFactoryImpl.java",
      "android/java/src/org/chromium/components/minidump_uploader/util/NetworkPermissionUtil.java",
    ]
-+  import("//brave/components/minidump_uploader/sources.gni") sources += brave_components_minidump_uploader_util_java_sources deps += brave_components_minidump_uploader_util_java_deps
++  sources += brave_components_minidump_uploader_util_java_sources
  }
  
  android_library("minidump_uploader_java_test_support") {
