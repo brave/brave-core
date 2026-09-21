@@ -16,6 +16,7 @@ import * as GitPatcherLog from './gitPatcherLog.ts'
 import assert from 'node:assert'
 import ActionGuard from './actionGuard.js'
 import { GitPatcher } from './gitPatcher.js'
+import { getPatchedRepositories, joinSourcePath } from './repositories.ts'
 import { getBuildArgs } from './buildArgs.ts'
 import { isCI, isTeamcity } from './ciDetect.ts'
 import * as buildDiagnostics from './buildDiagnostics.ts'
@@ -36,90 +37,22 @@ async function applyPatches(printPatchFailuresInJson) {
   Log.progressStart('apply patches')
   // Always detect if we need to apply patches, since user may have modified
   // either chromium source files, or .patch files manually
-  const coreRepoPath = config.braveCoreDir
-  const patchesPath = path.join(coreRepoPath, 'patches')
-  const v8PatchesPath = path.join(patchesPath, 'v8')
-  const catapultPatchesPath = path.join(patchesPath, 'third_party', 'catapult')
-  const devtoolsFrontendPatchesPath = path.join(
-    patchesPath,
-    'third_party',
-    'devtools-frontend',
-    'src',
-  )
-  const searchEngineDataPatchesPath = path.join(
-    patchesPath,
-    'third_party',
-    'search_engines_data',
-    'resources',
-  )
-  const ffmpegPatchesPath = path.join(patchesPath, 'third_party', 'ffmpeg')
-
-  const chromiumRepoPath = config.srcDir
-  const v8RepoPath = path.join(chromiumRepoPath, 'v8')
-  const catapultRepoPath = path.join(
-    chromiumRepoPath,
-    'third_party',
-    'catapult',
-  )
-  const devtoolsFrontendRepoPath = path.join(
-    chromiumRepoPath,
-    'third_party',
-    'devtools-frontend',
-    'src',
-  )
-  const searchEngineDataRepoPath = path.join(
-    chromiumRepoPath,
-    'third_party',
-    'search_engines_data',
-    'resources',
-  )
-  const ffmpegRepoPath = path.join(chromiumRepoPath, 'third_party', 'ffmpeg')
-
-  const chromiumPatcher = new GitPatcher(patchesPath, chromiumRepoPath)
-  const v8Patcher = new GitPatcher(v8PatchesPath, v8RepoPath)
-  const catapultPatcher = new GitPatcher(catapultPatchesPath, catapultRepoPath)
-  const devtoolsFrontendPatcher = new GitPatcher(
-    devtoolsFrontendPatchesPath,
-    devtoolsFrontendRepoPath,
-  )
-  const searchEngineDataPatcher = new GitPatcher(
-    searchEngineDataPatchesPath,
-    searchEngineDataRepoPath,
-  )
-  const ffmpegPatcher = new GitPatcher(ffmpegPatchesPath, ffmpegRepoPath)
-
-  const chromiumPatchStatus = await chromiumPatcher.applyPatches()
-  const v8PatchStatus = await v8Patcher.applyPatches()
-  const catapultPatchStatus = await catapultPatcher.applyPatches()
-  const devtoolsFrontendPatchStatus =
-    await devtoolsFrontendPatcher.applyPatches()
-  const searchEngineDataPatchStatus =
-    await searchEngineDataPatcher.applyPatches()
-  const ffmpegPatchStatus = await ffmpegPatcher.applyPatches()
-
-  // Log status for all patches
-  // Differentiate entries for logging
-  v8PatchStatus.forEach((s) => (s.path = path.join('v8', s.path)))
-  catapultPatchStatus.forEach(
-    (s) => (s.path = path.join('third_party', 'catapult', s.path)),
-  )
-  devtoolsFrontendPatchStatus.forEach(
-    (s) =>
-      (s.path = path.join('third_party', 'devtools-frontend', 'src', s.path)),
-  )
-  ffmpegPatchStatus.forEach((s) => {
-    if (s.path) {
-      s.path = path.join('third_party', 'ffmpeg', s.path)
-    }
-  })
-  const allPatchStatus = [
-    ...chromiumPatchStatus,
-    ...v8PatchStatus,
-    ...catapultPatchStatus,
-    ...devtoolsFrontendPatchStatus,
-    ...searchEngineDataPatchStatus,
-    ...ffmpegPatchStatus,
-  ]
+  // Which repositories are patched, and where their patches and sources live,
+  // comes from `patches/.repositories.cfg`, the same file plaster reads.
+  const allPatchStatus = []
+  for (const repo of getPatchedRepositories()) {
+    const patcher = new GitPatcher(repo.patchDir, repo.path)
+    const patchStatus = await patcher.applyPatches()
+    // Log status for all patches. Entries are differentiated for logging by
+    // naming each source the way the whole checkout sees it, rather than the
+    // way the repository holding it does.
+    patchStatus.forEach((s) => {
+      if (s.path) {
+        s.path = joinSourcePath(repo, s.path)
+      }
+    })
+    allPatchStatus.push(...patchStatus)
+  }
   if (printPatchFailuresInJson) {
     GitPatcherLog.printFailedPatchesInJsonFormat(
       allPatchStatus,
