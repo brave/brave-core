@@ -15,10 +15,6 @@
 
 namespace brave {
 
-// Prefix passed to CreateUniqueTempDir for stripped upload copies.
-inline constexpr base::FilePath::CharType kUploadStripTempDirPrefix[] =
-    FILE_PATH_LITERAL("brave_upload_strip");
-
 // A method which is called when the browser is about to hand over the selected
 // files via `NotifyListenerAndEnd`. This method is responsible for stripping
 // out the flagged metadata from the uploaded jpeg image.
@@ -52,8 +48,8 @@ bool MaybeStripImageMetadataForUpload(
         notify);
 
 // Recursively deletes the upload-strip temp directory (basename contains
-// `kUploadStripTempDirPrefix`) which holds the stripped copies. No-ops if
-// |paths| has no matching directory.
+// `image_metadata_stripper::kStripTempDirPrefix`) which holds the stripped
+// copies. No-ops if |paths| has no matching directory.
 void MaybeDeleteImageMetadataStripperTemporaryDir(
     std::vector<base::FilePath>& paths);
 

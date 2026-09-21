@@ -119,6 +119,11 @@ StrippingResultCode RemoveIptcMetadataInternal(
 
 }  // namespace
 
+bool IsSupportedImagePath(const base::FilePath& file_path) {
+  return file_path.MatchesExtension(FILE_PATH_LITERAL(".jpg")) ||
+         file_path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"));
+}
+
 bool ContainsMetadataToStrip(const base::FilePath& file_path) {
   if (!base::PathExists(file_path)) {
     DVLOG(1) << "IPTC strip skipped; file missing: " << file_path;

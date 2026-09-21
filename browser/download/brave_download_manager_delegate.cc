@@ -6,7 +6,6 @@
 #include "brave/browser/download/brave_download_manager_delegate.h"
 
 #include <memory>
-#include <string>
 #include <utility>
 
 #include "base/feature_list.h"
@@ -46,13 +45,8 @@ bool BraveDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
 
-  // IPTC metadata stripping only available for jpeg.
-  // TODO(https://github.com/brave/brave-browser/issues/5238): PNG needs
-  // more investigation whether FBMD is present or not.
-  const base::FilePath path = item->GetTargetFilePath();
-  const bool is_jpeg_ext = path.MatchesExtension(FILE_PATH_LITERAL(".jpg")) ||
-                           path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"));
-  if (!is_jpeg_ext) {
+  if (!image_metadata_stripper::IsSupportedImagePath(
+          item->GetTargetFilePath())) {
     return ChromeDownloadManagerDelegate::IsDownloadReadyForCompletion(
         item, std::move(internal_complete_callback));
   }
