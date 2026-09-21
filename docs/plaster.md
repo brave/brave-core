@@ -30,16 +30,12 @@ well as audited as patch files.
 ## How does it work
 
 _Plaster_ files are placed under `rewrite/`, using a `.yaml` extension, and they
-are supposed to match the path for the file being plastered. A deprecated
-`.toml` form is also accepted while existing plasters are being migrated — see
-[Legacy TOML format (deprecated)](#legacy-toml-format-deprecated) at the end of
-this document.
+are supposed to match the path for the file being plastered.
 
-> [!WARNING]
+> [!NOTE]
 >
-> At the moment, Chromium's `src` repo can be patched with plaster. Support for
-> more repos may be considered in the future, but it is not a priority at the
-> moment.
+> Repositories other than Chromium's `src` are supported if they are listed in
+> `patches/.repositories.cfg`.
 
 Each plaster file will be used to apply changes into a given source, and then
 generate a patch for the effected changes.

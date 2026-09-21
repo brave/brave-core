@@ -55,11 +55,11 @@ source of truth and may be updated:
 
 ## Mental model
 
-| Artifact        | Location                                      | Role                                   |
-| --------------- | --------------------------------------------- | -------------------------------------- |
-| Upstream source | `../<path>` (e.g. `../components/foo/foo.cc`) | The pristine Chromium file, from `git` |
-| Patch           | `./patches/<path-with-/-as->.patch`           | Encodes upstream → modified            |
-| Plaster         | `./rewrite/<path>.yaml`                       | The regex config you author            |
+| Artifact        | Location                                             | Role                                   |
+| --------------- | ---------------------------------------------------- | -------------------------------------- |
+| Upstream source | `../<path>` (e.g. `../components/foo/foo.cc`)        | The pristine Chromium file, from `git` |
+| Patch           | `./patches/[<repo>/]<in-repo-path-with-/-as->.patch` | Encodes upstream → modified            |
+| Plaster         | `./rewrite/<path>.yaml`                              | The regex config you author            |
 
 Key facts that drive the match:
 
@@ -69,6 +69,12 @@ Key facts that drive the match:
 - The patch stem replaces `/` with `-`: `components/foo/foo.cc` →
   `patches/components-foo-foo.cc.patch`. The plaster keeps the real path:
   `rewrite/components/foo/foo.cc.yaml`.
+- **Sources outside `src`.** Plaster also patches the repositories listed in
+  `patches/.repositories.cfg`. Their `<path>` carries the repository as a
+  prefix, and only the part within the repository is flattened into the patch
+  name: `v8/src/codegen/compiler.cc` is authored at
+  `rewrite/v8/src/codegen/compiler.cc.yaml` and patches to
+  `patches/v8/src-codegen-compiler.cc.patch`.
 
 ## Step 1 — Resolve the input and read the change
 
@@ -98,8 +104,8 @@ For each pair, obtain three things:
    switch, or gn target) to anchor on intent, not coincidence.
 3. **The intended modified text** — the `b/` side, or the working-tree file.
 
-If the source is not in Chromium's `src` repo (only `src` is supported), say so
-and stop: Plaster cannot patch it.
+If the source is in a repository `patches/.repositories.cfg` does not list, say
+so and stop: Plaster cannot patch it.
 
 If a hunk is a pure file-scope addition (a new `#include`, an
 anonymous-namespace helper) that the dos and don'ts say is better hosted in a

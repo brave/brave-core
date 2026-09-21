@@ -7,10 +7,22 @@
 import unittest
 from pathlib import Path
 from patchfile import Patchfile
+import plaster
 import repository
 from repository import Repository
 
 from test.fake_chromium_repo import FakeChromiumRepo
+
+
+def _forget_loaded_repositories(test: unittest.TestCase) -> None:
+    """Clear the repositories `load` memoised, for the test and after it.
+
+    `Repositories.load` reads `.repositories.cfg` once, since a run only ever
+    has the one. Tests write a different file per case, so each has to start
+    and finish with nothing cached.
+    """
+    plaster.Repositories._instance = None
+    test.addCleanup(setattr, plaster.Repositories, '_instance', None)
 
 
 class PatchfileTest(unittest.TestCase):
@@ -24,6 +36,7 @@ class PatchfileTest(unittest.TestCase):
         self.fake_chromium_src.add_dep('third_party/test1')
         self.fake_chromium_src.add_dep('third_party/devtools-frontend/src')
         self.addCleanup(self.fake_chromium_src.cleanup)
+        _forget_loaded_repositories(self)
 
     def test_get_repository_from_patch_name(self):
         """Test the result of get_repository_from_patch_name"""
@@ -675,8 +688,8 @@ class PatchfileTest(unittest.TestCase):
                 self.fake_chromium_src.chromium, test_file))
         self.assertIsNone(patchfile.plaster)
 
-    def test_plaster_none_for_non_chromium_repo(self):
-        """Plaster is None for patches targeting a sub-repository."""
+    def test_plaster_none_for_unlisted_repo(self):
+        """Plaster is None for a repository `.repositories.cfg` omits."""
         test_file = Path('src/foo.cc')
         v8 = self.fake_chromium_src.chromium / 'v8'
         self.fake_chromium_src.write_and_stage_file(test_file, 'original\n',
@@ -685,8 +698,10 @@ class PatchfileTest(unittest.TestCase):
         (v8 / test_file).write_text('original\nbrave_change\n')
         self.fake_chromium_src.run_update_patches()
 
-        # Create a yaml file that would match if the repo check were absent.
-        plaster_path = self.fake_chromium_src.brave / 'rewrite/src/foo.cc.yaml'
+        # A yaml that would match if the repository were listed. The fixture
+        # lists `src` alone, so this patch is nobody's plaster.
+        plaster_path = (self.fake_chromium_src.brave /
+                        'rewrite/v8/src/foo.cc.yaml')
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('')
 
@@ -695,11 +710,82 @@ class PatchfileTest(unittest.TestCase):
                 v8, test_file))
         self.assertIsNone(patchfile.plaster)
 
+    def test_plaster_set_for_listed_repo(self):
+        """Plaster is found for a repository `.repositories.cfg` lists."""
+        self.fake_chromium_src.set_patched_repositories('v8')
+        test_file = Path('src/foo.cc')
+        v8 = self.fake_chromium_src.chromium / 'v8'
+        self.fake_chromium_src.write_and_stage_file(test_file, 'original\n',
+                                                    v8)
+        self.fake_chromium_src.commit('Add foo.cc', v8)
+        (v8 / test_file).write_text('original\nbrave_change\n')
+        self.fake_chromium_src.run_update_patches()
+
+        plaster_path = (self.fake_chromium_src.brave /
+                        'rewrite/v8/src/foo.cc.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('')
+
+        patchfile = Patchfile(
+            path=self.fake_chromium_src.get_patchfile_path_for_source(
+                v8, test_file))
+        self.assertEqual(patchfile.plaster.resolve(), plaster_path.resolve())
+
+    def test_repository_agrees_with_plaster_for_a_subrepo_patch(self):
+        """The repository a patch names is the one its plaster resolves to.
+
+        `Patchfile` reads the repository off the patch's own directory, while
+        plaster reads it from `.repositories.cfg`. A patch plaster owns is
+        handled by both, so the two have to land on the same repository and
+        the same source within it.
+        """
+        self.fake_chromium_src.set_patched_repositories('v8')
+        test_file = Path('src/foo.cc')
+        v8 = self.fake_chromium_src.chromium / 'v8'
+        self.fake_chromium_src.write_and_stage_file(test_file, 'original\n',
+                                                    v8)
+        self.fake_chromium_src.commit('Add foo.cc', v8)
+        (v8 / test_file).write_text('original\nbrave_change\n')
+        self.fake_chromium_src.run_update_patches()
+
+        plaster_path = (self.fake_chromium_src.brave /
+                        'rewrite/v8/src/foo.cc.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('')
+
+        patchfile = Patchfile(
+            path=self.fake_chromium_src.get_patchfile_path_for_source(
+                v8, test_file))
+        target = plaster.PlasterTarget.resolve(patchfile.plaster)
+        self.assertEqual(patchfile.repository, target.repository)
+        self.assertEqual(patchfile.source, Path(target.source))
+        # And the patch plaster would write is the patch that was read.
+        self.assertEqual(target.patch.resolve(),
+                         (self.fake_chromium_src.brave /
+                          patchfile.path).resolve())
+
 
 class PatchfilePlasterApplyTest(unittest.TestCase):
-    """Tests for Patchfile.apply() when a plaster file is associated."""
+    """Tests for `Patchfile.apply()` when a plaster file is associated.
 
+    This is the path brockit drives during a lift: `apply_patches` reports a
+    failed patch, and a plaster-managed one is re-applied from its plaster
+    file rather than left conflicted.
+
+    The scenarios are the same whichever repository holds the source, so they
+    are written once here against chromium's own `src` and inherited by
+    `SubrepositoryPlasterApplyTest` for a repository outside it. What differs
+    is only which repository the git commands run in, and where the plaster
+    and patch sit.
+    """
+
+    # The repository the patch lives in, relative to `src/`. Empty for
+    # chromium's own `src`, whose patches sit at the root of `patches/`.
+    _REPOSITORY = ''
+
+    # The source patched, relative to that repository.
     _SOURCE_FILE = Path('chrome/browser/foo.cc')
+
     _BASE_CONTENT = 'void old_func() {}\nstatic int x = 0;\n'
     _BRAVE_CONTENT = 'void old_func() {}\nstatic int x = 1;\n'
     _UPSTREAM_CONTENT = 'void old_func() {}\nstatic int x = 2;\n'
@@ -712,86 +798,103 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
                      '      replace: new_func\n'
                      '    count: 0\n')
 
-    # No substitutions key → missing required key → PLASTER_BROKEN.
+    # No substitutions key -> missing required key -> PLASTER_BROKEN.
     _BROKEN_YAML = '# no substitution\n'
 
     def setUp(self):
         self.fake_chromium_src = FakeChromiumRepo()
         self.fake_chromium_src.setup()
         self.addCleanup(self.fake_chromium_src.cleanup)
+        _forget_loaded_repositories(self)
+        self.repo_path = (self.fake_chromium_src.chromium / self._REPOSITORY)
+        # `src` is there already and always listed; anything else has to be
+        # created and named before plaster will patch it.
+        if self._REPOSITORY:
+            self.fake_chromium_src.add_repo(self._REPOSITORY)
+            self.fake_chromium_src.set_patched_repositories(self._REPOSITORY)
 
     def _write_plaster_yaml(self, content: str) -> None:
+        """Writes the plaster under its repository's prefix in `rewrite/`."""
         yaml_path = (self.fake_chromium_src.brave / 'rewrite' /
-                     self._SOURCE_FILE.parent /
+                     self._REPOSITORY / self._SOURCE_FILE.parent /
                      (self._SOURCE_FILE.name + '.yaml'))
         yaml_path.parent.mkdir(parents=True, exist_ok=True)
         yaml_path.write_text(content)
 
+    def _commit_base_and_generate_patch(self) -> None:
+        """Commits BASE_CONTENT and generates a brave patch (x=0 -> 1)."""
+        self.fake_chromium_src.write_and_stage_file(self._SOURCE_FILE,
+                                                    self._BASE_CONTENT,
+                                                    self.repo_path)
+        self.fake_chromium_src.commit(f'Add {self._SOURCE_FILE.name}',
+                                      self.repo_path)
+
+        (self.repo_path / self._SOURCE_FILE).write_text(self._BRAVE_CONTENT)
+        self.fake_chromium_src.run_update_patches()
+        self.fake_chromium_src._run_git_command(['checkout', '.'],
+                                                self.repo_path)
+
+    def _patchfile(self) -> Patchfile:
+        """The `Patchfile` for the generated patch."""
+        return Patchfile(
+            path=self.fake_chromium_src.get_patchfile_path_for_source(
+                self.repo_path, self._SOURCE_FILE))
+
     def _setup_conflict_and_patchfile(self) -> Patchfile:
-        """Commits BASE_CONTENT, generates a brave patch (x=0→1), then commits
-        UPSTREAM_CONTENT (x=0→2) so that applying the patch hits the conflict
-        path in apply().
+        """Generates a brave patch, then commits UPSTREAM_CONTENT (x=0 -> 2)
+        so that applying the patch hits the conflict path in apply().
 
         Must be called after _write_plaster_yaml so the Patchfile constructor
         finds the YAML and sets the plaster field.
         """
-        chromium = self.fake_chromium_src.chromium
-        self.fake_chromium_src.write_and_stage_file(self._SOURCE_FILE,
-                                                    self._BASE_CONTENT,
-                                                    chromium)
-        self.fake_chromium_src.commit('Add foo.cc', chromium)
-
-        (chromium / self._SOURCE_FILE).write_text(self._BRAVE_CONTENT)
-        self.fake_chromium_src.run_update_patches()
-        self.fake_chromium_src._run_git_command(['checkout', '.'], chromium)
-
+        self._commit_base_and_generate_patch()
         self.fake_chromium_src.write_and_stage_file(self._SOURCE_FILE,
                                                     self._UPSTREAM_CONTENT,
-                                                    chromium)
-        self.fake_chromium_src.commit('Upstream change', chromium)
-
-        return Patchfile(
-            path=self.fake_chromium_src.get_patchfile_path_for_source(
-                chromium, self._SOURCE_FILE))
+                                                    self.repo_path)
+        self.fake_chromium_src.commit('Upstream change', self.repo_path)
+        return self._patchfile()
 
     def _setup_broken_and_patchfile(self) -> tuple[Patchfile, Path]:
-        """Commits BASE_CONTENT and generates a valid brave patch.  Returns the
-        Patchfile and the absolute path to the patch file on disk.
+        """Generates a valid brave patch.  Returns the Patchfile and the
+        absolute path to the patch file on disk.
 
         Strip the patch file after this call to trigger the broken-patch path
         in apply().  Must be called after _write_plaster_yaml.
         """
-        chromium = self.fake_chromium_src.chromium
-        self.fake_chromium_src.write_and_stage_file(self._SOURCE_FILE,
-                                                    self._BASE_CONTENT,
-                                                    chromium)
-        self.fake_chromium_src.commit('Add foo.cc', chromium)
+        self._commit_base_and_generate_patch()
+        patchfile = self._patchfile()
+        return patchfile, self.fake_chromium_src.brave / patchfile.path
 
-        (chromium / self._SOURCE_FILE).write_text(self._BRAVE_CONTENT)
-        self.fake_chromium_src.run_update_patches()
-        self.fake_chromium_src._run_git_command(['checkout', '.'], chromium)
-
-        patch_rel = self.fake_chromium_src.get_patchfile_path_for_source(
-            chromium, self._SOURCE_FILE)
-        return (Patchfile(path=patch_rel),
-                self.fake_chromium_src.brave / patch_rel)
+    def test_the_patch_is_recognised_as_plaster_managed(self):
+        """The patch finds its plaster under its repository's prefix."""
+        self._write_plaster_yaml(self._WORKING_YAML)
+        patchfile = self._setup_conflict_and_patchfile()
+        self.assertTrue(patchfile.has_plaster)
+        self.assertEqual(patchfile.repository.relative_to_chromium,
+                         Path(self._REPOSITORY))
 
     def test_apply_conflict_plaster_fixed(self):
-        """Conflict path + working plaster → PLASTER_FIXED."""
+        """Conflict path + working plaster -> PLASTER_FIXED."""
         self._write_plaster_yaml(self._WORKING_YAML)
         patchfile = self._setup_conflict_and_patchfile()
         self.assertEqual(patchfile.apply(),
                          Patchfile.ApplyStatus.PLASTER_FIXED)
+        # The rewrite ran against the upstream content in the repository
+        # holding it, so the source carries the substitution and not the
+        # stale patch.
+        self.assertEqual(
+            (self.repo_path / self._SOURCE_FILE).read_text(),
+            self._UPSTREAM_CONTENT.replace('old_func', 'new_func'))
 
     def test_apply_conflict_plaster_broken(self):
-        """Conflict path + broken plaster → PLASTER_BROKEN."""
+        """Conflict path + broken plaster -> PLASTER_BROKEN."""
         self._write_plaster_yaml(self._BROKEN_YAML)
         patchfile = self._setup_conflict_and_patchfile()
         self.assertEqual(patchfile.apply(),
                          Patchfile.ApplyStatus.PLASTER_BROKEN)
 
     def test_apply_broken_patch_plaster_fixed(self):
-        """Broken patch path + working plaster → PLASTER_FIXED."""
+        """Broken patch path + working plaster -> PLASTER_FIXED."""
         self._write_plaster_yaml(self._WORKING_YAML)
         patchfile, patch_path = self._setup_broken_and_patchfile()
         patch_path.write_text(patch_path.read_text().strip())
@@ -799,12 +902,44 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
                          Patchfile.ApplyStatus.PLASTER_FIXED)
 
     def test_apply_broken_patch_plaster_broken(self):
-        """Broken patch path + broken plaster → PLASTER_BROKEN."""
+        """Broken patch path + broken plaster -> PLASTER_BROKEN."""
         self._write_plaster_yaml(self._BROKEN_YAML)
         patchfile, patch_path = self._setup_broken_and_patchfile()
         patch_path.write_text(patch_path.read_text().strip())
         self.assertEqual(patchfile.apply(),
                          Patchfile.ApplyStatus.PLASTER_BROKEN)
+
+    def test_apply_regenerates_the_patch_in_the_repository_directory(self):
+        """The re-applied patch is rewritten where `apply_patches` reads it."""
+        self._write_plaster_yaml(self._WORKING_YAML)
+        patchfile = self._setup_conflict_and_patchfile()
+        self.assertEqual(patchfile.apply(),
+                         Patchfile.ApplyStatus.PLASTER_FIXED)
+        patch_path = self.fake_chromium_src.brave / patchfile.path
+        self.assertTrue(patch_path.exists())
+        # Taken in the repository holding the source, so it names the source
+        # the way that repository does, carrying no prefix of its own.
+        self.assertIn(f'a/{self._SOURCE_FILE.as_posix()}',
+                      patch_path.read_text())
+
+    def test_source_from_brave_points_into_the_repository(self):
+        """The path brockit reports for conflicts reaches the real source."""
+        self._write_plaster_yaml(self._WORKING_YAML)
+        patchfile = self._setup_conflict_and_patchfile()
+        self.assertEqual(patchfile.source_from_brave().resolve(),
+                         self.repo_path / self._SOURCE_FILE)
+
+
+class SubrepositoryPlasterApplyTest(PatchfilePlasterApplyTest):
+    """`PatchfilePlasterApplyTest` against a repository outside `src`.
+
+    Every scenario is inherited; only the repository and the source within it
+    change. Re-applying a plaster there means resetting the source and running
+    the rewrite in that repository rather than in `src`.
+    """
+
+    _REPOSITORY = 'v8'
+    _SOURCE_FILE = Path('src/codegen/compiler.cc')
 
 
 if __name__ == "__main__":
