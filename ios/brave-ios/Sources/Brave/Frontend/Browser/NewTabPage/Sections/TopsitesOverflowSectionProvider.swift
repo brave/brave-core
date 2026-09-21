@@ -54,7 +54,7 @@ class FavoritesOverflowButton: SpringButton {
   }
 }
 
-class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
+class TopsitesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   let action: () -> Void
   var sectionDidChange: (() -> Void)?
 
@@ -63,14 +63,41 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   >
 
   private var frc: NSFetchedResultsController<Favorite>
+  private let mostVisitedSites: MostVisitedSites?
+  private var mostVisitedObservation: MostVisitedSitesScopedObservation?
+  private var mostVisitedTiles: [NTPTile] = []
+  private let isPrivateBrowsing: Bool
 
-  init(action: @escaping () -> Void) {
+  var numberOfTiles: Int {
+    switch Preferences.NewTabPage.topsitesMode.value {
+    case TopsitesMode.none:
+      return 0
+    case .favourite:
+      return frc.fetchedObjects?.count ?? 0
+    case .mostVisited:
+      return isPrivateBrowsing ? 0 : mostVisitedTiles.count
+    }
+  }
+
+  init(
+    action: @escaping () -> Void,
+    mostVisitedSites: MostVisitedSites?,
+    isPrivateBrowsing: Bool
+  ) {
     self.action = action
+    self.mostVisitedSites = mostVisitedSites
+    self.isPrivateBrowsing = isPrivateBrowsing
     frc = Favorite.frc()
     frc.fetchRequest.fetchLimit = 20
     super.init()
     try? frc.performFetch()
     frc.delegate = self
+    Preferences.NewTabPage.topsitesMode.observe(from: self)
+    updateMostVisitedObservation()
+  }
+
+  deinit {
+    mostVisitedObservation?.invalidate()
   }
 
   @objc private func tappedButton() {
@@ -82,11 +109,10 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     numberOfItemsInSection section: Int
   ) -> Int {
     let width = fittingSizeForCollectionView(collectionView, section: section).width
-    let count = frc.fetchedObjects?.count ?? 0
 
     let isShowShowMoreButtonVisible =
-      count > FavoritesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
-      && Preferences.NewTabPage.topsitesMode.value != TopsitesMode.none
+      numberOfTiles
+      > TopsitesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
     return isShowShowMoreButtonVisible ? 1 : 0
   }
 
@@ -120,18 +146,48 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   ) -> UIEdgeInsets {
     let insets = horizontalInsets(
       for: collectionView,
-      maxWidth: FavoritesSectionProvider.maxWidth,
+      maxWidth: TopsitesSectionProvider.maxWidth,
       minimumInset: 16
     )
     return UIEdgeInsets(top: 0, left: insets.left, bottom: 0, right: insets.right)
   }
+
+  private func updateMostVisitedObservation() {
+    if Preferences.NewTabPage.topsitesMode.value == .mostVisited, !isPrivateBrowsing {
+      guard mostVisitedObservation == nil else { return }
+      mostVisitedObservation = mostVisitedSites?.addMostVisitedURLsObserver(self, maxNumSites: 20)
+      mostVisitedSites?.enableTopSitesOnlyTileTypes()
+    } else {
+      mostVisitedObservation?.invalidate()
+      mostVisitedObservation = nil
+      mostVisitedTiles = []
+    }
+  }
 }
 
-extension FavoritesOverflowSectionProvider: NSFetchedResultsControllerDelegate {
+extension TopsitesOverflowSectionProvider: NSFetchedResultsControllerDelegate {
   func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
     try? frc.performFetch()
     DispatchQueue.main.async {
       self.sectionDidChange?()
     }
+  }
+}
+
+extension TopsitesOverflowSectionProvider: MostVisitedSitesObserver {
+  func mostVisitedSitesDidUpdateTiles(_ tiles: [NTPTile]) {
+    mostVisitedTiles = tiles
+    sectionDidChange?()
+  }
+
+  func mostVisitedSitesDidUpdateFavicon(for url: URL?) {
+    // no-op. only the number of tiles matter in this provider
+  }
+}
+
+extension TopsitesOverflowSectionProvider: PreferencesObserver {
+  func preferencesDidChange(for key: String) {
+    guard key == Preferences.NewTabPage.topsitesMode.key else { return }
+    updateMostVisitedObservation()
   }
 }

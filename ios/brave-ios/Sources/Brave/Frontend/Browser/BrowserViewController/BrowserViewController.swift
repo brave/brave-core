@@ -2883,30 +2883,30 @@ extension BrowserViewController: NewTabPageDelegate {
     )
   }
 
-  func handleFavoriteAction(favorite: Favorite, action: BookmarksAction) {
-    guard let url = favorite.url else { return }
+  func handleTopsiteAction(action: TopsiteAction) {
     switch action {
-    case .opened(let inNewTab, let switchingToPrivateMode):
+    case .opened(let viewModel, let inNewTab, let switchingToPrivateMode):
+      guard let url = viewModel.url else { return }
       if switchingToPrivateMode, Preferences.Privacy.privateBrowsingLock.value {
         self.askForLocalAuthentication { [weak self] success, error in
           if success {
             self?.handleURLInput(
-              url,
+              url.absoluteString,
               inNewTab: inNewTab,
               switchingToPrivateMode: switchingToPrivateMode,
-              isFavourite: true
+              isFavourite: viewModel.isFavorite
             )
           }
         }
       } else {
         handleURLInput(
-          url,
+          url.absoluteString,
           inNewTab: inNewTab,
           switchingToPrivateMode: switchingToPrivateMode,
-          isFavourite: true
+          isFavourite: viewModel.isFavorite
         )
       }
-    case .edited:
+    case .edited(let favorite):
       guard let title = favorite.displayTitle, let urlString = favorite.url else { return }
       let editPopup =
         UIAlertController
@@ -2925,6 +2925,19 @@ extension BrowserViewController: NewTabPageDelegate {
           }
         }
       self.present(editPopup, animated: true)
+    case .excluded(let onConfirm):
+      let alert = UIAlertController(
+        title: Strings.excludeMostVisitedSiteAlertTitle,
+        message: Strings.excludeMostVisitedSiteAlertMessage,
+        preferredStyle: .alert
+      )
+      alert.addAction(
+        UIAlertAction(title: Strings.excludeMostVisitedSite, style: .destructive) { _ in
+          onConfirm()
+        }
+      )
+      alert.addAction(UIAlertAction(title: Strings.CancelString, style: .default))
+      self.present(alert, animated: true)
     }
   }
 
