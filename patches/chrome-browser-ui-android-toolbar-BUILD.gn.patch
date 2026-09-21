@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/toolbar/BUILD.gn b/chrome/browser/ui/android/toolbar/BUILD.gn
-index 1fb5f286f17044c38c428b198daf32311d89a7d4..60b82133bc4ca63d0757817c0c85e7cd9b0d668c 100644
+index 1fb5f286f17044c38c428b198daf32311d89a7d4..24cbc01abcebfcf4ec4e4c3ba92b332960dcd86b 100644
 --- a/chrome/browser/ui/android/toolbar/BUILD.gn
 +++ b/chrome/browser/ui/android/toolbar/BUILD.gn
 @@ -226,6 +226,7 @@ android_library("core_java") {
@@ -10,11 +10,11 @@ index 1fb5f286f17044c38c428b198daf32311d89a7d4..60b82133bc4ca63d0757817c0c85e7cd
  
    deps = [
      ":adaptive_features_java",
-@@ -449,6 +450,7 @@ android_resources("java_resources") {
-     "//components/browser_ui/styles/android:java_resources",
-     "//ui/android:ui_java_resources",
+@@ -442,6 +443,7 @@ android_resources("java_resources") {
    ]
-+  deps += [ "//brave/browser/ui/android/toolbar:java_resources" ]
- }
  
- robolectric_library("junit") {
+   deps = [
++    "//brave/browser/ui/android/toolbar:java_resources",
+     "//chrome/app:java_strings_grd",
+     "//chrome/browser/ui/android/bars_common:java_resources",
+     "//chrome/browser/ui/android/strings:ui_strings_grd",

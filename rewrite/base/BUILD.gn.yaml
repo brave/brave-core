@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave base java sources.
+    add_literal_to_list:
+      target: base_java
+      list_name: sources
+      literal: brave_java_base_sources
+
+  - description: Add the Brave shared preferences java sources.
+    add_literal_to_list:
+      target: base_shared_preferences_java
+      list_name: sources
+      literal: brave_base_shared_preferences_java_sources
