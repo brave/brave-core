@@ -21,6 +21,7 @@
 #include "brave/ios/browser/api/translate/features.h"
 #include "brave/ios/browser/most_visited_sites/features.h"
 #include "brave/ios/browser/playlist/features.h"
+#include "brave/ios/browser/toolbar/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "build/build_config.h"
@@ -409,6 +410,13 @@ const flags_ui::FeatureEntry::FeatureVariation
           "Enable QuickView feature",                                          \
           flags_ui::kOsIos,                                                    \
           FEATURE_VALUE_TYPE(brave::features::kQuickViewEnabled),              \
+      },                                                                       \
+      {                                                                        \
+          "brave-browser-toolbar-refactor",                                    \
+          "Enable browser toolbar refactor",                                   \
+          "Enables the refactored browser toolbar hierarchy",                  \
+          flags_ui::kOsIos,                                                    \
+          FEATURE_VALUE_TYPE(brave::features::kBrowserToolbarRefactorEnabled), \
       },                                                                       \
       {                                                                        \
           "brave-origin",                                                      \
