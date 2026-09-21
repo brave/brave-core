@@ -3331,20 +3331,7 @@ class TsDropCustomElementRegistrationRewriter(_AstGrepRewriter):
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
         Removes the `customElements.define(...)` call registering `class_name`,
-        freeing the tag name it claimed.
-
-        A custom element tag can only be registered once, so a Brave subclass
-        in `chromium_src/` cannot take over an element while upstream still
-        registers its own class under the same tag. Dropping the upstream
-        registration is what lets the shadow file register the subclass
-        instead — which is where the replacement `customElements.define`
-        belongs, next to the subclass, rather than in a plaster.
-
-        The whole statement goes, along with the line it occupied, so nothing
-        is left behind where it stood. The blank line above it is kept, as
-        context separating the code that remains. The call is found by the
-        class it registers, so the tag may be spelled either `class_name.is`
-        or a string literal.
+        so a Brave subclass in `chromium_src/` can register the tag instead.
 
         Fields:
 
@@ -3360,10 +3347,11 @@ class TsDropCustomElementRegistrationRewriter(_AstGrepRewriter):
               class_name: SettingsSearchPageElement
         ```
 
-        The statement is removed whole, its own line included:
-
         ```diff
-        -customElements.define(SearchPageElement.is, SearchPageElement);
+          }
+         }
+        -
+        -customElements.define(SettingsSearchPageElement.is, SettingsSearchPageElement);
         ```
     """
 
