@@ -19,6 +19,8 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/memory/raw_ref.h"
 #include "base/path_service.h"
@@ -42,7 +44,6 @@
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
-#include "net/base/ip_address.h"
 
 namespace brave_vpn {
 
@@ -351,22 +352,38 @@ bool WaitForServiceStopped(SC_HANDLE service,
   return false;
 }
 
-// Returns true when AllowedIPs uses literal /0 prefixes (full tunnel routing),
-// meaning tunnel.dll will install its own blockAll/blockDNS WFP filters.
-bool ConfigUsesFullTunnelRoutes(const base::FilePath& config_path) {
+bool ConfigFileUsesFullTunnelRoutes(const base::FilePath& config_path) {
   std::string content;
   if (!base::ReadFileToString(config_path, &content)) {
+    VLOG(1) << "Failed to read config file:" << config_path;
     return false;
   }
-  for (const auto& ip : wireguard::ParseAllowedIPs(content)) {
-    net::IPAddress prefix;
-    size_t prefix_length = 0;
-    if (net::ParseCIDRBlock(ip, &prefix, &prefix_length) &&
-        prefix_length == 0) {
-      return true;
-    }
+  return wireguard::ConfigUsesFullTunnelRoutes(content);
+}
+
+using WireGuardTunnelServiceProc = bool (*)(const LPCWSTR settings);
+
+// Runs the tunnel to completion and reports the outcome. `on_stopped` runs
+// immediately after the tunnel call returns, before the result is
+// inspected, so callers can settle a watchdog/firewall first (e.g.
+// FirewallWatchdog::Stop()).
+int RunTunnelAndNotify(WireGuardTunnelServiceProc tunnel_proc,
+                       const base::FilePath& config_path,
+                       base::ScopedNativeLibrary& tunnel_lib,
+                       base::OnceClosure on_stopped = base::DoNothing()) {
+  auto result = tunnel_proc(config_path.value().c_str());
+  VLOG(1) << "Tunnel stopped, result: " << result;
+  std::move(on_stopped).Run();
+  if (result) {
+    ResetWireguardTunnelUsageFlag();
+    return S_OK;
   }
-  return false;
+  VLOG(1) << "Failed to activate tunnel service ("
+          << tunnel_lib.GetError()->code
+          << "): " << tunnel_lib.GetError()->ToString();
+  brave_vpn::RunWireGuardCommandForUsers(
+      brave_vpn::kBraveVpnWireguardServiceNotifyDisconnectedSwitchName);
+  return S_FALSE;
 }
 
 }  // namespace
@@ -523,34 +540,23 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
     if (!base::PathService::Get(base::DIR_EXE, &directory)) {
       return S_FALSE;
     }
-    typedef bool WireGuardTunnelService(const LPCWSTR settings);
     base::ScopedNativeLibrary tunnel_lib(directory.Append(L"tunnel.dll"));
 
-    WireGuardTunnelService* tunnel_proc =
-        reinterpret_cast<WireGuardTunnelService*>(
+    WireGuardTunnelServiceProc tunnel_proc =
+        reinterpret_cast<WireGuardTunnelServiceProc>(
             tunnel_lib.GetFunctionPointer("WireGuardTunnelService"));
     if (!tunnel_proc) {
       VLOG(1) << __func__ << ": WireGuardTunnelService not found error: "
               << tunnel_lib.GetError()->ToString();
       return S_FALSE;
     }
-    if (ConfigUsesFullTunnelRoutes(config_path)) {
+    if (ConfigFileUsesFullTunnelRoutes(config_path)) {
       // AllowedIPs is a literal /0: tunnel.dll installs its own
       // blockAll/blockDNS WFP filters, which also block LAN traffic.
       // Skip our custom firewall.
       brave_vpn::RunWireGuardCommandForUsers(
           brave_vpn::kBraveVpnWireguardServiceNotifyConnectedSwitchName);
-      auto result = tunnel_proc(config_path.value().c_str());
-      VLOG(1) << "Tunnel stopped, result: " << result;
-      if (result) {
-        ResetWireguardTunnelUsageFlag();
-        return S_OK;
-      }
-      VLOG(1) << "Failed to activate tunnel service ("
-              << tunnel_lib.GetError()->code
-              << "): " << tunnel_lib.GetError()->ToString();
-      brave_vpn::RunWireGuardCommandForUsers(
-          brave_vpn::kBraveVpnWireguardServiceNotifyDisconnectedSwitchName);
+      return RunTunnelAndNotify(tunnel_proc, config_path, tunnel_lib);
     } else {
       // Our config routes no default route, so tunnel.dll installs none of its
       // own WFP filters (see wireguard_utils.cc). Put the global half of ours
@@ -604,18 +610,9 @@ int RunWireguardTunnelService(const base::FilePath& config_file_path) {
       // InitiateTeardown() and its TeardownWatchdog guarantee that the process
       // is terminated within 15 seconds. This ensures the dynamic WFP session
       // is destroyed and the user's connectivity is restored.
-      auto result = tunnel_proc(config_path.value().c_str());
-      VLOG(1) << "Tunnel stopped, result: " << result;
-      watchdog.Stop();
-      if (result) {
-        ResetWireguardTunnelUsageFlag();
-        return S_OK;
-      }
-      VLOG(1) << "Failed to activate tunnel service ("
-              << tunnel_lib.GetError()->code
-              << "): " << tunnel_lib.GetError()->ToString();
-      brave_vpn::RunWireGuardCommandForUsers(
-          brave_vpn::kBraveVpnWireguardServiceNotifyDisconnectedSwitchName);
+      return RunTunnelAndNotify(
+          tunnel_proc, config_path, tunnel_lib,
+          base::BindOnce(&FirewallWatchdog::Stop, base::Unretained(&watchdog)));
     }
   }
   return S_FALSE;

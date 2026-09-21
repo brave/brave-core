@@ -28,7 +28,6 @@ source_set("service") {
     "//chrome/common:channel_info",
     "//chrome/installer/util:with_no_strings",
     "//components/version_info:channel",
-    "//net",
   ]
   libs = [
     "fwpuclnt.lib",

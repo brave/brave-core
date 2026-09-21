@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 #include <optional>
+#include <string_view>
 #include <vector>
 
 #include "base/base64.h"
@@ -46,8 +47,8 @@ constexpr char kCloudflareIPv4[] = "1.1.1.1";
 // tunnel.dll installs its own blockAll/blockDNS WFP filters only when a peer
 // routes a literal /0, and those filters block the local network. We install an
 // equivalent filter set ourselves, plus permits for the LAN, in
-// brave_vpn_wireguard_service. See
-// https://git.zx2c4.com/wireguard-windows/about/docs/netquirk.md
+// brave_vpn_wireguard_service. Used when allow_lan_traffic is true.
+// See https://git.zx2c4.com/wireguard-windows/about/docs/netquirk.md
 constexpr char kAllowedIPsLan[] = "0.0.0.0/1, 128.0.0.0/1, ::/1, 8000::/1";
 
 // Literal default routes: tunnel.dll installs its own blockAll/blockDNS WFP
@@ -108,6 +109,18 @@ std::vector<std::string> ParseAllowedIPs(const std::string& config) {
   value = value.substr(0, value.find('\n'));
   return base::SplitString(value, ",", base::TRIM_WHITESPACE,
                            base::SPLIT_WANT_NONEMPTY);
+}
+
+bool ConfigUsesFullTunnelRoutes(const std::string& config) {
+  for (const auto& ip : ParseAllowedIPs(config)) {
+    net::IPAddress prefix;
+    size_t prefix_length = 0;
+    if (net::ParseCIDRBlock(ip, &prefix, &prefix_length) &&
+        prefix_length == 0) {
+      return true;
+    }
+  }
+  return false;
 }
 
 WireguardKeyPair GenerateNewX25519Keypair() {

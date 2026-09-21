@@ -242,3 +242,13 @@ TEST(BraveVPNWireGuardUtilsUnitTest, WireguardConfigNoLanTraffic) {
       CreateTestConfig(/*allow_lan_traffic=*/false));
   EXPECT_THAT(allowed_ips, testing::ElementsAre("0.0.0.0/0", "::/0"));
 }
+
+TEST(BraveVPNWireGuardUtilsUnitTest, ConfigUsesFullTunnelRoutes) {
+  EXPECT_FALSE(brave_vpn::wireguard::ConfigUsesFullTunnelRoutes(
+      CreateTestConfig(/*allow_lan_traffic=*/true)));
+  EXPECT_TRUE(brave_vpn::wireguard::ConfigUsesFullTunnelRoutes(
+      CreateTestConfig(/*allow_lan_traffic=*/false)));
+
+  // No AllowedIPs line at all.
+  EXPECT_FALSE(brave_vpn::wireguard::ConfigUsesFullTunnelRoutes(""));
+}

@@ -33,6 +33,11 @@ WireguardKeyPair GenerateNewX25519Keypair();
 
 std::vector<std::string> ParseAllowedIPs(const std::string& config);
 
+// Returns true when AllowedIPs uses literal /0 prefixes (full tunnel
+// routing), meaning tunnel.dll will install its own blockAll/blockDNS WFP
+// filters.
+bool ConfigUsesFullTunnelRoutes(const std::string& config);
+
 std::optional<std::string> ValidateKey(const std::string& key,
                                        const std::string& field_name);
 std::optional<std::string> ValidateAddress(const std::string& address);
