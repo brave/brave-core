@@ -134,7 +134,7 @@ base::OnceCallback<void(RenderViewContextMenu*)>* BraveGetMenuShownCallback() {
 // SchemeIs(kBraveUIScheme) check is kept anyway as a defensive measure, in
 // case that assumption ever stops holding.
 std::u16string BraveMaybeReplaceChromeToBraveScheme(std::u16string text,
-                                                     const GURL& current_url) {
+                                                    const GURL& current_url) {
   if (current_url.SchemeIs(content::kChromeUIScheme) ||
       current_url.SchemeIs(content::kBraveUIScheme)) {
     brave_utils::ReplaceChromeToBraveScheme(text);
