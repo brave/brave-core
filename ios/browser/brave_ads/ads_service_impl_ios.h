@@ -43,12 +43,12 @@ class AdsServiceImplIOS : public AdsService {
 
   ~AdsServiceImplIOS() override;
 
-  void InitializeAds(const std::string& storage_path,
-                     std::unique_ptr<AdsClient> ads_client,
-                     mojom::SysInfoPtr mojom_sys_info,
-                     mojom::BuildChannelInfoPtr mojom_build_channel,
-                     mojom::WalletInfoPtr mojom_wallet,
-                     ResultCallback callback);
+  void Init(const std::string& storage_path,
+            std::unique_ptr<AdsClient> ads_client,
+            mojom::SysInfoPtr mojom_sys_info,
+            mojom::BuildChannelInfoPtr mojom_build_channel,
+            mojom::WalletInfoPtr mojom_wallet,
+            ResultCallback callback);
   void ShutdownAds(ResultCallback callback);
 
   void MaybeGetNotificationAd(const std::string& placement_id,
@@ -58,7 +58,8 @@ class AdsServiceImplIOS : public AdsService {
       mojom::NotificationAdEventType mojom_ad_event_type,
       ResultCallback callback);
 
-  void NotifyDidInitializeAdsService() const;
+  void NotifyAdsServiceIneligibleToStart();
+  void NotifyDidInitializeAdsService();
   void NotifyDidShutdownAdsService() const;
   void NotifyDidClearAdsServiceData() const;
 
@@ -156,18 +157,23 @@ class AdsServiceImplIOS : public AdsService {
   // KeyedService:
   void Shutdown() override;
 
+  bool UserHasJoinedBraveRewards() const;
+  bool IsSponsoredAdsEnabled() const;
   bool CanStartBatAdsService() const;
-  void InitializeAds(ResultCallback callback);
-  void InitializeAdsCallback(ResultCallback callback, bool success);
+
+  void MaybeInitializeAds(ResultCallback callback);
+  void MaybeInitializeAdsCallback(ResultCallback callback, bool success);
 
   void ShutdownAdsCallback(ResultCallback callback, bool success);
 
-  void ClearAdsData(ResultCallback callback, bool was_running, bool success);
+  void ClearAdsData(ResultCallback callback, bool success);
   void ClearAdsPrefs();
-  void ClearAdsDataCallback(ResultCallback callback, bool was_running);
 
   void InitializePrefChangeRegistrar();
-  void OnSponsoredAdsPrefChanged();
+
+  void ClearAdsDataCallback(ResultCallback callback);
+
+  void OnAdsPrefChanged(const std::string& path);
 
   const raw_ref<PrefService> prefs_;
 
@@ -186,6 +192,8 @@ class AdsServiceImplIOS : public AdsService {
   mojom::WalletInfoPtr mojom_wallet_;
 
   std::unique_ptr<Ads> ads_;
+
+  bool is_ineligible_to_start_ = false;
 
   base::WeakPtrFactory<AdsServiceImplIOS> weak_ptr_factory_{this};
 };
