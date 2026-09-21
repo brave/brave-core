@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Never use kMicOldIcon; always use kMicFilledIcon instead.
+
+      kMicOldIcon has no CANVAS_DIMENSIONS, which DCHECK-crashes
+      ui::ImageModel::FromVectorIcon() wherever it's used without an explicit
+      icon size, as ChromeMenuAction() does for the Ttc toolbar action. Brave
+      doesn't support kRoundedIcons/kDesktopGlowUp or kTtc, so which icon
+      gets picked doesn't matter to us either way.
+    count: 2
+    regex:
+      pattern: 'vector_icons::kMicOldIcon'
+      replace: 'vector_icons::kMicFilledIcon'

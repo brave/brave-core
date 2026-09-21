@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/browser_actions.cc b/chrome/browser/ui/browser_actions.cc
+index 4fb3fb1a30abfb52356e49e0f46fb9dc9bd1c52b..669d59e5cbc73bd6845e485fe437996739e7e210 100644
+--- a/chrome/browser/ui/browser_actions.cc
++++ b/chrome/browser/ui/browser_actions.cc
+@@ -2288,7 +2288,7 @@ void BrowserActions::InitializeToolbarAndMiscActions() {
+             .SetTooltipText(l10n_util::GetStringUTF16(IDS_APPMENU_TOOLTIP))
+             .SetImage(ui::ImageModel::FromVectorIcon(
+                 features::IsRoundedIconsEnabled() ? vector_icons::kMicFilledIcon
+-                                                  : vector_icons::kMicOldIcon,
++                                                  : vector_icons::kMicFilledIcon,
+                 ui::kColorIcon, ui::SimpleMenuModel::kDefaultIconSize))
+             .SetProperty(
+                 actions::kActionItemPinnableKey,
+@@ -4897,7 +4897,7 @@ void BrowserActions::InitializeToolbarAndMiscActions() {
+             vector_icons::kAudioSparkIcon,
+ #else
+             features::IsRoundedIconsEnabled() ? vector_icons::kMicFilledIcon
+-                                              : vector_icons::kMicOldIcon,
++                                              : vector_icons::kMicFilledIcon,
+ #endif  // BUILDFLAG(GOOGLE_CHROME_BRANDING)
+             /*is_pinnable=*/true)
+             .Build());
