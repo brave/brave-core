@@ -46,7 +46,10 @@ mangle((root) => {
 // link row. `.prefs` is forwarded from the settings-prefs singleton by the
 // companion search_page.ts override, since this Lit page has no `prefs`
 // property of its own to bind. Gated on bravePrefs_ being loaded so the element
-// never connects with an empty/placeholder `prefs`.
+// never connects with an empty/placeholder `prefs`. `.prefs` is a one-way Lit
+// binding, so the `prefs-changed` handler stands in for the two-way Polymer
+// binding this element expects -- without it, pref writes never reach the pref
+// store.
 mangle((root) => {
   const enginesSubpageTrigger = root.getElementById('enginesSubpageTrigger')
   if (!enginesSubpageTrigger) {
@@ -56,7 +59,8 @@ mangle((root) => {
   enginesSubpageTrigger.insertAdjacentHTML(
     'beforebegin',
     '${this.bravePrefs_ ? html`' +
-    '<settings-brave-search-page .prefs="${this.bravePrefs_}">' +
+    '<settings-brave-search-page .prefs="${this.bravePrefs_}"' +
+    ' @prefs-changed="${this.onBravePrefsChanged_}">' +
     '</settings-brave-search-page>' +
     '` : \'\'}')
 }, (t) => t.text.includes('enginesSubpageTrigger'))
