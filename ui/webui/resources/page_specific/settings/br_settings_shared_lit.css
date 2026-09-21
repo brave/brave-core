@@ -25,9 +25,11 @@ a[href] {
   border-top: none !important;
 }
 
-/* Match toggle/link row label padding on dropdown rows. */
-.cr-row #labelWrapper,
-.settings-box #labelWrapper {
+/* Default label padding for every dropdown row, matching toggle/link rows. */
+:has(> :is(settings-dropdown-menu, select.md-select)):not(
+    settings-section, settings-subpage, .field-section, cr-dialog)
+    > :first-child:not(settings-dropdown-menu, select, .cr-padded-text),
+:has(> :is(settings-dropdown-menu, select.md-select)) #labelWrapper:not(.cr-padded-text) {
   padding-block-end: var(--cr-section-vertical-padding);
   padding-block-start: var(--cr-section-vertical-padding);
 }
