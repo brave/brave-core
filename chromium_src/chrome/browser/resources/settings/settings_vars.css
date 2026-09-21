@@ -4,23 +4,15 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 /* #css_wrapper_metadata_start
- * #type=style-lit
+ * #type=vars
+ * #import=./settings_vars-chromium.css.js
+ * #scheme=relative
  * #css_wrapper_metadata_end */
 
-:host {
+/* Settings row and inline icons should follow the selected Leo color theme
+ * instead of Chromium's hardcoded Google greys. */
+html {
   --cr-icon-color: var(--leo-color-icon-default);
   --cr-link-row-start-icon-color: var(--leo-color-icon-default);
   --iron-icon-fill-color: var(--leo-color-icon-default);
-}
-
-a[href] {
-  text-decoration: none !important;
-}
-
-.content-settings-header {
-  padding-top: var(--leo-spacing-2xl) !important;
-}
-
-.settings-box :first-child {
-  border-top: none !important;
 }
