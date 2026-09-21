@@ -16,6 +16,8 @@ enum class StrippingClient {
   kDownloadManager,
   // Upload flow.
   kFileSelect,
+  // Files dropped onto a page.
+  kDragDrop,
 };
 
 // Returns true if |file_path| names an image format we support stripping

@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Strip tracking metadata from images dropped onto a page.
+
+      HandleOnPerformingDrop owns the completion callback that hands the dropped
+      paths back to the view, which is the last browser-side hook before
+      DragTargetDrop grants the renderer access to them. Wrapping the callback
+      rather than preempting the body leaves the enterprise content analysis.
+    preempt_function_impl:
+      function_name: HandleOnPerformingDrop
+      code: |-
+        callback = brave::MaybeStripImageMetadataForDrop(web_contents,
+                                                         std::move(callback));

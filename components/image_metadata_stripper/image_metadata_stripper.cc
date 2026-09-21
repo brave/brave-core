@@ -41,6 +41,8 @@ constexpr std::string_view GetStrippingClient(StrippingClient client) {
       return "Download manager";
     case StrippingClient::kFileSelect:
       return "File selector";
+    case StrippingClient::kDragDrop:
+      return "Drag and drop";
   }
   NOTREACHED();
 }

@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("drag_drop") {
+  sources = [
+    "brave_drag_drop_image_metadata_stripper.cc",
+    "brave_drag_drop_image_metadata_stripper.h",
+  ]
+
+  public_deps = [ "//content/public/browser" ]
+
+  deps = [
+    "//base",
+    "//brave/components/image_metadata_stripper",
+    "//brave/components/image_metadata_stripper/common",
+    "//content/public/common",
+    "//ui/base/clipboard:file_info",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_drag_drop_image_metadata_stripper_unittest.cc" ]
+
+  deps = [
+    ":drag_drop",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/image_metadata_stripper/common",
+    "//content/public/browser",
+    "//content/public/common",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//ui/base/clipboard:file_info",
+  ]
+
+  data = [ "//brave/test/data/image_metadata_stripper/" ]
+}
