@@ -443,7 +443,7 @@ public class BraveToolbarManager extends ToolbarManager
                         mLayoutStateProviderSupplier,
                         BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
                                 id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null),
-                                mProfileSupplier.get(),
+                                mProfileSupplier,
                                 mTabModelSelectorSupplier,
                                 TabWindowManagerSingleton.getInstance()),
                         mActivityTabProvider,
