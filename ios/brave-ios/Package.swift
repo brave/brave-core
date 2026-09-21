@@ -659,5 +659,89 @@ for target in package.targets where target.type == .regular || target.type == .t
     .enableUpcomingFeature("InferSendableFromCaptures"),
     .enableUpcomingFeature("NonisolatedNonsendingByDefault"),
   ])
+  // We cannot use `treatAllWarnings` to enable warnings-as-errors here because it turns warnings
+  // that we cannot opt-out of (such as third-party dependency Obj-C header warnings in
+  // GuardianConnect–into errors) so the alternative is to explicitly treat Swift specific
+  // diagnostic groups as errors instead.
+  //
+  // These source of truth for these groups are in Swift, found here:
+  // https://github.com/swiftlang/swift/blob/swift-6.4.0-RELEASE/include/swift/AST/DiagnosticGroups.def
+  //
+  // - Update this link and list with major Swift releases
+  // - Diagnostic groups marked as `DefaultIgnoreWarnings` are not included in this list.
+  // - Ignore linked groups (`GROUP_LINK`), instead opting into each individual diagnostic group.
+  // - Keep this list alpha-sorted.
+  let diagnosticGroups: Set<String> = [
+    "ActorIsolatedCall",
+    "ActorIsolatedMutatingAsync",
+    "AddPreconcurrencyImport",
+    "AlwaysAvailableDomain",
+    "AvailabilityUnrecognizedName",
+    "ClangDeclarationImport",
+    "CompilationCaching",
+    "ConformanceIsolation",
+    "ConversionFromIsolatedAnyToSynchronous",
+    "DeprecatedDeclaration",
+    "DynamicCallable",
+    "ErrorInFutureSwiftVersion",
+    "ExclusivityViolation",
+    "ExistentialAny",
+    "ExistentialMemberAccess",
+    "ForeignReferenceType",
+    "ImplementationOnlyDeprecated",
+    "ImplicitStrongCapture",
+    "InconsistentImportAccess",
+    "IsolatedConformances",
+    "MemberImportVisibility",
+    "MissingModuleOnKnownPaths",
+    "ModuleNotTestable",
+    "ModuleSelfImport",
+    "ModuleVersionMissing",
+    "MultipleInheritance",
+    "MutableGlobalVariable",
+    "NominalTypes",
+    "NonisolatedNonsendingByDefault",
+    "NonSendableExitingActor",
+    "NonSendableInAsyncConformanceOrOverride",
+    "NonSendableObjCInterop",
+    "NonSendableSuperclass",
+    "NoUsage",
+    "NoUseUnstructuredThrowingTask",
+    "OldSuppressedAssociatedTypes",
+    "OpaqueTypeInference",
+    "OptionObsoletedByModuleSelectors",
+    "OSLog",
+    "PackageModuleLoadedFromSDK",
+    "PropertyWrappers",
+    "ProtocolTypeNonConformance",
+    "ResultBuilderMethods",
+    "SendableClosureCaptures",
+    "SendableMetatypes",
+    "SendingClosureRisksDataRace",
+    "SendingRisksDataRace",
+    "SPIImportIgnored",
+    "StrictMemorySafety",
+    "StringInterpolationConformance",
+    "TemporaryPointers",
+    "TrailingClosureMatching",
+    "UnavailableSendableConformance",
+    "UnknownWarningGroup",
+    "UnsupportedScopedImport",
+    "UnusedImportAccess",
+    "UselessAvailabilityCheck",
+    "UselessConditionalStatement",
+    "WeakMutability",
+  ]
+  // Diagnostics to opt-out of errors from the list above
+  let excludedDiagnostics: Set<String> = [
+    // Deprecation warnings are common when new SDKs release and shouldn't block a build before
+    // being fixed.
+    "DeprecatedDeclaration"
+  ]
+  settings.append(
+    contentsOf: diagnosticGroups.subtracting(excludedDiagnostics).map({
+      .treatWarning($0, as: .error)
+    })
+  )
   target.swiftSettings = settings
 }
