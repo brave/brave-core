@@ -48,6 +48,7 @@ constexpr int kChatHistoryUsageBuckets[] = {0, 1, 4, 10, 25, 50, 75};
 constexpr int kMaxChatDurationBuckets[] = {1, 2, 5, 15, 30, 60};
 constexpr int kRateLimitsBuckets[] = {0, 1, 3, 5};
 constexpr int kContextLimitsBuckets[] = {0, 2, 5, 10};
+constexpr int kConversationCountBuckets[] = {0, 1, 10, 20, 30, 40, 50};
 
 constexpr base::TimeDelta kPremiumCheckInterval = base::Days(1);
 
@@ -415,6 +416,19 @@ void AIChatMetrics::RecordConversationUnload(
 void AIChatMetrics::RecordConversationsCleared() {
   conversation_start_times_.clear();
   MaybeReportFirstChatPrompts(false);
+}
+
+void AIChatMetrics::ReportConversationCount(size_t conversation_count) {
+  base::Time last_usage_time =
+      local_state_->GetTime(prefs::kBraveChatP3ALastUsageTime);
+  if (last_usage_time.is_null() ||
+      base::Time::Now() - last_usage_time >= base::Days(7)) {
+    // Do not report if AI chat was not used within the past week.
+    return;
+  }
+  p3a_utils::RecordToHistogramBucket(kConversationCountHistogramName,
+                                     kConversationCountBuckets,
+                                     static_cast<int>(conversation_count));
 }
 
 void AIChatMetrics::OnSendingPromptWithFullPage() {
