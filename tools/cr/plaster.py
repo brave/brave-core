@@ -3379,21 +3379,15 @@ class TsDropCustomElementRegistrationRewriter(_AstGrepRewriter):
 
 # The hand-written rewriters. `_REWRITERS` is assembled from these plus the
 # ones generated from `rewriters.pyl` for `RegexMacro`.
-_DECLARED_REWRITERS: Final = (AllRegexRewriter, CxxMakeVirtualRewriter,
-                              CxxAddFriendRewriter, CxxDropFinalRewriter,
-                              CxxPreemptFunctionImplRewriter,
-                              CxxAfterFunctionImplRewriter,
-                              CxxRenameClassRewriter,
-                              CxxAddToProtectedRewriter,
-                              CxxAddToPublicRewriter,
-                              CxxAddEnumEntriesRewriter,
-                              JsSetBlinkRuntimeEnabledFeatureStateRewriter,
-                              GnAddLiteralToListRewriter,
-                              GnAddLiteralToVariableRewriter,
-                              GnSubtractLiteralFromVariableRewriter,
-                              GnAddImportRewriter,
-                              GnAppendToTargetRewriter,
-                              TsDropCustomElementRegistrationRewriter)
+_DECLARED_REWRITERS: Final = (
+    AllRegexRewriter, CxxMakeVirtualRewriter, CxxAddFriendRewriter,
+    CxxDropFinalRewriter, CxxPreemptFunctionImplRewriter,
+    CxxAfterFunctionImplRewriter, CxxRenameClassRewriter,
+    CxxAddToProtectedRewriter, CxxAddToPublicRewriter,
+    CxxAddEnumEntriesRewriter, JsSetBlinkRuntimeEnabledFeatureStateRewriter,
+    GnAddLiteralToListRewriter, GnAddLiteralToVariableRewriter,
+    GnSubtractLiteralFromVariableRewriter, GnAddImportRewriter,
+    GnAppendToTargetRewriter, TsDropCustomElementRegistrationRewriter)
 
 
 class RewriterRegistry:
