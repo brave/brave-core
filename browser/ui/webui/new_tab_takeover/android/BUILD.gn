@@ -65,6 +65,7 @@ source_set("unit_tests") {
     "//chrome/browser/profiles:profile",
     "//chrome/browser/search_engines",
     "//chrome/test:test_support",
+    "//chrome/test/base:browser_test_waiters",
     "//components/omnibox/browser",
     "//components/search_engines",
     "//content/test:test_support",
