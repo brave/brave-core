@@ -79,8 +79,6 @@ void AIChatButton::ButtonPressed() {
     chrome::ExecuteCommand(&browser_.get(), IDC_TOGGLE_AI_CHAT);
   }
 
-  UpdateButtonHighlight();
-
   auto* profile_metrics =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
           browser_->GetProfile());
