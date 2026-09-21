@@ -291,10 +291,9 @@ class ToolchainBuilder:
     3. **Package** (`_build_archive`): runs depot_tools'
        `win_toolchain/package_from_installed.py` to produce a content-hash-named
        `<toolchain_hash>.zip`.
-    4. **Index** (`_precheck_publishable` / `_write_index`): refuses (early) to
-       clobber an already-published toolchain, then writes Brave's sibling
-       YAML index, named after the upstream `TOOLCHAIN_HASH` pin so it is
-       queryable by what `build/vs_toolchain.py` pins.
+    4. **Index** (`_write_index`): writes Brave's sibling YAML index, named
+       after the upstream `TOOLCHAIN_HASH` pin so it is queryable by what
+       `build/vs_toolchain.py` pins.
     """
 
     def __init__(self, chromium_tag: str, out_dir: Path):
@@ -560,17 +559,6 @@ class ToolchainBuilder:
                         'json',
                         capture_output=True).stdout)[0]
 
-    def _precheck_publishable(self) -> None:
-        """Fail fast if an index for this upstream toolchain hash is published.
-        """
-        assert self._upstream_sdk_info is not None
-        index_url = PACKAGE_DOWNLOAD_URL_BASE + self._index_path.name
-        if toolchain_publish.remote_url_exists(index_url):
-            raise RuntimeError(
-                f'{index_url} already exists; a toolchain for upstream hash '
-                f'{self._upstream_sdk_info.toolchain_hash} is already '
-                'published.')
-
     def _write_index(self, archive: Path) -> None:
         """Write Brave's sibling `<toolchain_hash>.yaml` bucket index.
         """
@@ -616,9 +604,8 @@ class ToolchainBuilder:
 
         Raises:
             RuntimeError: If not running elevated, if `depot_tools` is not on
-                PATH, if a published index already exists for this toolchain,
-                if the installed Windows SDK doesn't match the upstream pin
-                (see `_verify_installed_sdk`), or if
+                PATH, if the installed Windows SDK doesn't match the upstream
+                pin (see `_verify_installed_sdk`), or if
                 `package_from_installed.py` did not produce exactly one
                 `.zip`.
             urllib.error.HTTPError: If a gitiles fetch fails (typically a bad
@@ -642,7 +629,6 @@ class ToolchainBuilder:
 
         self._depot_tools_dir()
         self._load_upstream_sdk_info()
-        self._precheck_publishable()
         self._install_visual_studio()
         self._install_windows_sdk()
         self._verify_installed_sdk()
