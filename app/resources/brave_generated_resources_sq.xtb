@@ -112,6 +112,9 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="3114478090884951591">Zona e dukshme</translation>
 <translation id="2026367923222947564">Faqja e plotë</translation>
 <translation id="4218885227032158909">Zona e zgjedhur</translation>
+<translation id="2586386106930448447">Pamja paraprake e pamjes së ekranit</translation>
+<translation id="7514365320538308">Shkarko</translation>
+<translation id="2743387203779672305">Kopjo te kujtesa e fragmenteve</translation>
 <translation id="4928988318462976765">Shitore Zgjerimesh Web</translation>
 <translation id="9181207987584064303">Shiheni te Shitorja e Zgjerimeve Web</translation>
 <translation id="3161744659507801211">Paralajmërim: Brave nuk mund të parandalojë zgjerimet të regjistrojnë historikun tuaj të shfletimit.</translation>
@@ -364,6 +367,7 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6847541693235449912">Shko</translation>
 <translation id="2079545284768500474">Zhbëje</translation>
 <translation id="1533980864758658574">Dritare e re krijuar për <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Asnjë skedë nuk përputhet me atë temë. Provo ta përshkruash ndryshe.</translation>
 <translation id="7985042437720138349">Kjo veçori dërgon të dhëna për skedat tuaja të hapura te Leo, asistenti i shfletuesit me AI i Brave.</translation>
 <translation id="6165508094623778733">Mësoni më tepër</translation>
 <translation id="7557539689487606886">Bëhu Premium</translation>
@@ -421,6 +425,23 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4328541188421002379">Jepi emër kontejnerit tënd si Puna ose Personale</translation>
 <translation id="4976989127264491396">Gabim: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Kontejneri nuk u gjet</translation>
+<translation id="6055154402239241620">Kontrolli i Trafikut</translation>
+<translation id="8134521925475508805">Konfiguro faqe specifike që të hapen automatikisht në një kontekst të caktuar, duke krijuar ndarje midis sesioneve të tua të shfletimit. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Aktivizo Kontrollin e Trafikut</translation>
+<translation id="1358255827354528344">Shto rregull të ri</translation>
+<translation id="7183128985801806752">Rregull i ri i kontrollit të trafikut</translation>
+<translation id="2474694032500407328">Redakto rregullin e kontrollit të trafikut</translation>
+<translation id="5543417389274097206">Krijo rregull</translation>
+<translation id="6532106788206463496">Ruaj ndryshimet</translation>
+<translation id="1172800769374812685">Fshij rregullin</translation>
+<translation id="2389682807835777591">Je i sigurt që do të fshish rregullin <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Fut URL-të që do të menaxhosh dhe të hapen gjithmonë në një kontekst specifik shfletimi.</translation>
+<translation id="1173480005453148926">URL-të për t'u menaxhuar</translation>
+<translation id="6217532416180299470">Fut URL-të që do të menaxhosh me kontrollin e trafikut</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> përputhet me faqen dhe nëndomenet e saj; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> përputhet me faqen e saktë; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> përputhet me të gjitha faqet; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> është një koment.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (dhe <ph name="COUNT"/> URL të tjera)</translation>
+<translation id="3700798663085748181">Aktivizo rregullin</translation>
+<translation id="2967480878853054068">Filtër URL i pavlefshëm</translation>
 <translation id="2263346047290834619">Përdorni skedat e pemës</translation>
 <translation id="5860254591544742609">Shfaq shiritin e titullit</translation>
 <translation id="4691131445504068802">Fshi krejtësisht kur minimizohet</translation>
@@ -528,7 +549,6 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6745592621698551453">Përditëso tani</translation>
 <translation id="5334844597069022743">Shiko burimin</translation>
 <translation id="4720556299488643018">Ç'abonohu</translation>
-<translation id="6532106788206463496">Ruaj ndryshimet</translation>
 <translation id="4516904298421534459">Listat e filtrave</translation>
 <translation id="4435215931544457255">Lista të tjera të njohura nga komuniteti. Kini parasysh se aktivizimi i shumë filtrave do të ngadalësojë shpejtësinë e shfletimit.</translation>
 <translation id="802154636333426148">Shkarkimi dështoi</translation>
@@ -611,6 +631,8 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="509873765238158442">Blloko Microsoft Recall</translation>
 <translation id="4763421121695677716">Blloko funksionin Recall në kompjuterët me Microsoft Windows nga marrja automatikisht e fotografive të ndonjë skede të hapur Brave.</translation>
 <translation id="1968895725257436430">Mbledhja e të dhënave</translation>
+<translation id="5668852698659986622">Aktivizo Reklamat e Sponsorizuara</translation>
+<translation id="431194936581466649">Ndihmo në mbështetjen e misionit të Brave për ndërtimin e një Ueb-i të pavarur, që i vë përdoruesit të parët, me Reklama të Sponsorizuara. Ne matim performancën e reklamave në mënyrë private, pa të identifikuar ty.</translation>
 <translation id="1700052872056357670">Fshi të dhënat me daljen</translation>
 <translation id="216468847346280584">Pastro të dhënat e Reklamave Brave...</translation>
 <translation id="96212973142796240">Të dhënat e Reklamave Brave u spastruan</translation>
@@ -990,4 +1012,12 @@ A jeni i sigurt që doni ta bëni këtë?</translation>
 <translation id="154702742922788359">Hapni modalitetin</translation>
 <translation id="2249111429176737533">Hap si dritare me skeda</translation>
 <translation id="7022756207310403729">Hape në shfletues</translation>
+<translation id="1916785651473363467">Imazh i personalizuar profili</translation>
+<translation id="5336092064678832560">Ngarko imazh të personalizuar</translation>
+<translation id="1062407476771304334">Zëvendëso</translation>
+<translation id="1428299461403073820">Zëvendëso imazhin e personalizuar të profilit</translation>
+<translation id="7994453838803296517">Pamja paraprake e imazhit të personalizuar të profilit, e zgjedhur</translation>
+<translation id="6578040791557152233">Ngarko një imazh të personalizuar profili</translation>
+<translation id="9222124079546967592">Hiq imazhin e personalizuar të profilit</translation>
+<translation id="6058660912941570282">Brave nuk mund ta përdorë këtë skedar. Zgjidh një imazh tjetër dhe provo përsëri.</translation>
 </translationbundle>

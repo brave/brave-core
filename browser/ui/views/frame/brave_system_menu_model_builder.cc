@@ -29,6 +29,24 @@ void BraveSystemMenuModelBuilder::InsertBraveSystemMenuForBrowserWindow(
 
   if (auto* vtc = VerticalTabController::FromBrowser(browser());
       vtc && vtc->SupportsBraveVerticalTabs()) {
+    // Upstream unconditionally adds its own vertical-tabs toggle plus a "Send
+    // feedback about the tab strip" item (preceded by a separator) to the menu
+    // built by the base class above. Remove them here so they don't duplicate
+    // the vertical tabs item we insert below.
+    if (auto feedback_index =
+            model->GetIndexOfCommandId(IDC_VERTICAL_TABS_SEND_FEEDBACK)) {
+      model->RemoveItemAt(*feedback_index);
+    }
+    if (auto toggle_index =
+            model->GetIndexOfCommandId(IDC_TOGGLE_VERTICAL_TABS)) {
+      size_t index = *toggle_index;
+      model->RemoveItemAt(index);
+      if (index > 0 &&
+          model->GetTypeAt(index - 1) == ui::MenuModel::TYPE_SEPARATOR) {
+        model->RemoveItemAt(index - 1);
+      }
+    }
+
     if (auto pos = get_next_position()) {
       model->InsertCheckItemWithStringIdAt(pos.value(),
                                            IDC_TOGGLE_VERTICAL_TABS,

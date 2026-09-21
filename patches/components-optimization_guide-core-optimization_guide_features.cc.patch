@@ -1,5 +1,5 @@
 diff --git a/components/optimization_guide/core/optimization_guide_features.cc b/components/optimization_guide/core/optimization_guide_features.cc
-index 389050b1f655b01349751f86199258c6ebb1fec8..df7d5c22956ae824a5916feb1091cd5135542a0c 100644
+index 075524a7d03d72e63c2101456af9b4871d2d6158..177a5ec2b1b0e12123203bfaa727ceba0e98b210 100644
 --- a/components/optimization_guide/core/optimization_guide_features.cc
 +++ b/components/optimization_guide/core/optimization_guide_features.cc
 @@ -57,7 +57,7 @@ constexpr auto enabled_by_default_mobile_only =
@@ -32,5 +32,5 @@ index 389050b1f655b01349751f86199258c6ebb1fec8..df7d5c22956ae824a5916feb1091cd51
 +BASE_OVERRIDDEN_FEATURE(kOptimizationGuideModelExecution,
 +             base::FEATURE_DISABLED_BY_DEFAULT);
  
- // Whether to use the on device model service in optimization guide.
- BASE_FEATURE(kOptimizationGuideOnDeviceModel,
+ // Whether the on device service is launched after a delay on startup to log
+ // metrics.

@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Entérese de las tendencias del momento a través de un canal privado y exclusivo para usted.</translation>
 <translation id="3803728444598576153">Activa Noticias de Brave para no quedarte fuera de onda</translation>
 <translation id="7627131190984957214">Noticias de Brave contiene anuncios privados, anonimizados y optimizados para su dispositivo.</translation>
-<translation id="7897050360583141319">Sigue tus fuentes favoritas en un solo canal. Solo tienes que abrir una pestaña en Brave, desplazarte hacia abajo… ¡y listo!\nNoticias de Brave se mantiene con publicidad y muestra anuncios completamente privados y anónimos.</translation>
+<translation id="7897050360583141319">Sigue tus fuentes favoritas en un solo canal. Solo tienes que abrir una pestaña en Brave, desplazarte hacia abajo… ¡y listo!</translation>
 <translation id="1765217911817124376">Activar Noticias de Brave</translation>
 <translation id="8981973962043893066">Busca sitios web, temas o canales de RSS</translation>
 <translation id="3225021799163709119">Populares</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Envía informes de diagnóstico automáticamente cuando el navegador de Brave falle o se bloquee para ayudarnos a mejorar la estabilidad de los productos de Brave.</translation>
 <translation id="7977176350719484850">Est. de datos\nahorrados</translation>
 <translation id="9008534313521214777">Estimación de tiempo ahorrado</translation>
+<translation id="5668852698659986622">Habilitar Anuncios Patrocinados</translation>
+<translation id="431194936581466649">Ayuda a apoyar la misión de Brave de construir una Web independiente y centrada en el usuario con Anuncios Patrocinados. Medimos el rendimiento de los anuncios de forma privada, sin identificarte.</translation>
 <translation id="8347743943525229984">Permitir encuestas Brave</translation>
 <translation id="6022939994702081659">Permite a Brave mostrar enlaces a encuestas privadas en la página de nueva pestaña. Las encuestas nos ayudan a crear mejores funciones y a medir la eficacia de las campañas publicitarias basadas en el navegador.</translation>
 <translation id="7746496306508543965">Más información sobre las encuestas de Brave</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">Menú principal</translation>
 <translation id="7002271985859760052">Acciones de página</translation>
 <translation id="7104487676473617844">Los siguientes elementos solo serán visibles en el menú cuando la página web abierta actualmente los admita.</translation>
-<translation id="4159764849281393303">Aplicación web</translation>
 <translation id="8038539967102225446">¡Brave Ads está aquí!</translation>
 <translation id="222883304157347087">(este dispositivo)</translation>
 <translation id="4157741509680155021">DISPOSITIVOS EN LA CADENA DE SINCRONIZACIÓN</translation>
@@ -720,6 +721,8 @@ Si no la aceptas, la VPN no se volverá a conectar y tu conexión a Internet no 
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Cantidad + Gas</translation>
 <translation id="2186011161688824046">Cantidad + comisión</translation>
+<translation id="1118876217803190221">Saldo insuficiente</translation>
+<translation id="275990379543116961">Insufficient funds for gas</translation>
 <translation id="1950052789869821983">Transacción</translation>
 <translation id="2304783958703511257">Configuración avanzada</translation>
 <translation id="4220062530885628403">Nonce</translation>

@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/navigation_controller_impl.cc b/content/browser/renderer_host/navigation_controller_impl.cc
-index b02d351c569ca1b361019de5b5975296e5cf15ee..c88dbb2157736a54084aa4e9cba9ad33444478ff 100644
+index fb322aad4dd203cfb6773ef891ab09416195ebdb..2c3585c680dfae608760c88b729bd70e1b2954df 100644
 --- a/content/browser/renderer_host/navigation_controller_impl.cc
 +++ b/content/browser/renderer_host/navigation_controller_impl.cc
 @@ -459,6 +459,7 @@ void RewriteUrlForNavigation(const GURL& original_url,

@@ -854,9 +854,11 @@
 <translation id="646023614746251785">ဖလှယ်မှုကိုအတည်ပြုပါ</translation>
 <translation id="6264944956989873014">တံတားချမှုကိုအတည်ပြုပါ</translation>
 <translation id="7067917728851842589">ပေးပို့မှုကိုအတည်ပြုပါ</translation>
+<translation id="2841837950101800123">ပေးဆောင်သူ</translation>
 <translation id="1114725160772317155">ပေးဆောင်သူအခြေအတည်</translation>
 <translation id="2351357639951873714">ကာကွယ်မှုကိုအတည်ပြုပါ</translation>
 <translation id="7480044382160806610">Unshield ကိုအတည်ပြုပါ</translation>
+<translation id="6830542010524256586">Migrate ကို အတည်ပြုပါ</translation>
 <translation id="8332923694292360653">အသုံးပြုရန်</translation>
 <translation id="3735740477244556633">အစီစဉ်</translation>
 <translation id="6484605214219822434">ကိုက်ညီမှုကိုပြန်လည်သုံးသပ်ပါ</translation>
@@ -1396,8 +1398,10 @@
 <translation id="5503843345634715425">ပြန်အခြန်းပေးခဲ့သည်</translation>
 <translation id="1778601041100951971"><ph name="AMOUNT"/> ကို shielding နေပြီ</translation>
 <translation id="6439110433198887239"><ph name="AMOUNT"/> ကို unshielding နေသည်</translation>
+<translation id="6022412719565214018"><ph name="AMOUNT"/> ကို ပြောင်းရွှေ့နေသည်</translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> ကို shielded</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> ကို unshield ပြီးပါပြီ</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> ကို ပြောင်းရွှေ့ပြီးဖြစ်သည်</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} more transaction pending.}
       other {{PENDING_TRANSACTIONS} more transactions pending.}
@@ -1836,14 +1840,18 @@
 <translation id="9086302186042011942">အတည်ပြုနေဆဲ</translation>
 <translation id="99991973626409495">စိစစ်ထားသော ဒိုင်ကာ</translation>
 <translation id="6779429520470417361">unshield ပြုပြင်မှု ပြန်လည်စစ်ဆေးပါ</translation>
+<translation id="7861093868637278059">Migrate ကို ပြန်လည်သုံးသပ်ပါ</translation>
 <translation id="3114681061018999547">မျက်နှာဖုံးများ</translation>
 <translation id="1564172583156967455">Unshielding</translation>
+<translation id="7040674372746105444">ပြောင်းရွှေ့နေသည်</translation>
 <translation id="8897189056319316783">ZEC ကို ကာကွယ်ပါ</translation>
 <translation id="508249542337194541">ZEC ကို Unshield လုပ်ပါ</translation>
+<translation id="3242332985109374549">ZEC ကို Migrate လုပ်ပါ</translation>
 <translation id="3382275793825152362">ငွေကြေးများအတွက် လုံခြုံမှု ထောက်ပံ့ပါ</translation>
 <translation id="617149752238892649">ZEC ကို Unshield လုပ်ပါ</translation>
 <translation id="8631765320256788981">သင့် ငွေကြေးကို ဖန်တီးမြန်ခြင်း စနစ်တအထားမှ Transparent ဝင်မှာ Shielded ဝင်မှာကို ခွဲခြားပေးနေပါသည်။</translation>
 <translation id="3860364671495430495">သင်သည်သင်၏ shielded account မှ transparent account သို့ ရန်ပုံငွေများပို့နေသည်။</translation>
+<translation id="9664108035970394">သင်သည်သင်၏ shielded legacy account မှ shielded account သို့ ရန်ပုံငွေများပို့နေသည်။</translation>
 <translation id="7144878232160441200">ထပ်စ်ရိုက်ပါ</translation>
 <translation id="4750109510113597688">ဤငွေပေးချေမှုတွင် အကောင့် ဖန်တီးမှု ကျသင့်မှုဖြစ်သော ငွေပေးငွေယူကြေး ပါဝင်နိုင်သည်</translation>
 <translation id="6201709949885884577">ဤ လုပ်ဆောင်ချက်ကိုဆောင်ရွက်ရန် စကားဝှက်လိုအပ်ပါသည်။</translation>
@@ -2194,7 +2202,7 @@
 <translation id="8151638057146502721">ပြင်ဆင်ပါ</translation>
 <translation id="999273441077650169">မော်ဒယ်သည် အလုပ်ကိုလုပ်ဖို့အတွက် အကောင်းဆုံးနည်းဖြင့် မပေါင်းအောင်းမှုများနှင့် ပြောင်းလဲသည်။<ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Qwen VL 30B သည် Alibaba Cloud မှဖန်တီးသည့် မော်ဒယ်ဖြစ်၍ စွမ်းဆောင်ရည်မြင့်ပြီး အသုံးပြုမှုအများအပြားအတွက် အလွယ်တကူအသုံးပြုနိုင်သည်။ Qwen သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ပိုမိုသိရှိရန်<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က AI အထောက်အကူပြုသူပင်ဖြစ်သည်။ ငါ GLM-5.1 တွင် အားကောင်းသော စွမ်းဆောင်ရည်ဖြင့်ဖန်တီးထားသည့် မော်ဒယ်ဖြစ်ပြီး Zhipu AI မှ ဖန်တီးထားပြီး အသုံးပြုမှုအမျိုးမျိုးအတွက်သင့်လျော်သည်။ GLM-5.1 သည်သူတို့၏ လုံခြုံရေးအဆောက်အုံကို မှန်ကန်စွာအတည်ပြုနိုင်သောပုံစံဖြင့် NEAR မှ ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ပိုမိုသိရှိရန်<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က AI အထောက်အကူပြုသူပင်ဖြစ်သည်။ ငါ GLM-5.3 Flash တွင် အားကောင်းသော စွမ်းဆောင်ရည်ဖြင့်ဖန်တီးထားသည့် မော်ဒယ်ဖြစ်ပြီး Zhipu AI မှ ဖန်တီးထားပြီး အသုံးပြုမှုအမျိုးမျိုးအတွက်သင့်လျော်သည်။ GLM-5.3 Flash သည်သူတို့၏ လုံခြုံရေးအဆောက်အုံကို မှန်ကန်စွာအတည်ပြုနိုင်သောပုံစံဖြင့် NEAR မှ ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ပိုမိုသိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">မင်္ဂလာပါ။ ကျွန်ုပ်မှာ Leo ဖြစ်ပြီး Brave မှဖန်တီးထားသော AI အင်္ဂင်ဖြစ်ပါသည်။ ဤကိရိယာသည် Anthropic မှထုတ်လွှင့်သော Claude Instant စံနမူနာဖြစ်ပြီး စကားပြောခြင်းနှင့်စာသားအုပ်စုများကဲ့သို့သော တုံ့ပြန်မှု လုပ်ငန်းများတွင်အသုံးပြုပါသည်။ Claude Instant ကို Brave ဝန်ဆောင်မှုမှတဆင့် လုံခြုံစွာအိမ်ရှေ့မှတ်ထားထားသည်။<ph name="LINK_BEFORE"/>ပိုမိုသိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Claude Haiku သည် Anthropic မှဖန်တီးသည့် မော်ဒယ်ဖြစ်ပြီး စကားပြောနှင့် စာဖတ်ခြင်း အလုပ်များကို အင်အားပေးသည်။ Claude Haiku သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">ဟိုင်း, ငါက လီယို က။ ငါ့မှာ Brave က အိုင်အေ အရာရှိ AI။ ငါ Claude Sonnet သည် Anthropic မှ ဖန်တီးသည့် မော်ဒယ်ဖြစ်ပြီး စကားပြောနှင့် စာဖတ်ခြင်း အလုပ်များကို အင်အားပေးသည်။ Claude Sonnet သည် Brave ၏ကိုယ်ပိုင်လုံခြုံရေးအဆောက်အအုံတွင် ဟော့စ်ထားသည်။<ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
@@ -2316,6 +2324,8 @@
 <translation id="4370698775470316661">ဤစကားဝိုင်းမှာ အသေးစိတ်များနေပြီး ဆက်လက်စကားပြောသွားမရဘူး။ Leo သည် အထွေအထူး အချောမြရေးအတွက် စိမ်းနီမလို့ ဖြစ်နိုင်ပါတယ်။ အခြား Model များစွာ ရှိလို့ Leo ၏ စကားဝိုင်းကို ထိန်းရှိရေးအတွက် မိမိတို့သည် ဆက်လက်စွမ်းဆောင်နိုင်ဖြစ်ပါတယ်။</translation>
 <translation id="4744144453035015075">အင်တာနက်ကို ရှာဖွေနေသည်</translation>
 <translation id="8548351747582087191"><ph name="SEARCH_TERMS"/> အတွက် အင်တာနက်ကို ရှာဖွေနေသည်။</translation>
+<translation id="4395536726196773278">သင့်ဖွင့်ထားသော tab များတွင် "<ph name="QUERY"/>" ကို ရှာဖွေနေသည်…</translation>
+<translation id="4724926708866789382">ဖွင့်ထားသော tab များတွင် "<ph name="QUERY"/>" နှင့် ကိုက်ညီသည့်အရာ မရှိပါ။</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> ထပ်မံ...</translation>
 <translation id="8103700533980268469">ဤစာရင်းကိုပိတ်ပါ</translation>
 <translation id="3417835166382867856">တက်ဘ်များကို ရှာပါ</translation>
@@ -2363,6 +2373,8 @@
 <translation id="443008484043213881">ကိရိယာများ</translation>
 <translation id="4343623396828510727">ဤဆိုက်များသည် ဤဆိုက်သို့နှင့်ဆိုက်မှ ဒေတာပေးပို့ရန် Leo အသုံးပြုနိုင်သည့် ကိရိယာများကို ဖော်ပြပါသည်။ ဤစကားဝိုင်းတွင် ဤဆိုက်ကို မမြင်စေလိုသည့် ဒေတာပါဝင်ပါက ဤကိရိယာများကို ပူးတွဲခြင်း သို့မဟုတ် ခွင့်ပြုခြင်း မပြုပါနှင့်။</translation>
 <translation id="5021823940147712387">ကိရိယာများကို ဖယ်ရှားပါ</translation>
+<translation id="8712279871321308580">ရရှိနိုင်သော website tool များ</translation>
+<translation id="3690996226559605619">ရရှိနိုင်သော tool များ (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">ဝန်ဆောင်မှု ပုံမှန်ရယူမှုများကို အော်တိုသက်တမ်းတိုးပေးသွားမည်ဖြစ်သော်လည်း ပြန်လည်သက်တမ်းတိုးချိန်မတိုင်မီ ကြိုက်သည့်အချိန်တွင် ပယ်ဖျက်နိုင်ပါသည်။</translation>
 <translation id="5091223967610958">Leo ကို ပိုမိုကောင်းမြင်ကူညီပေးပါရန် ရှင် IM မှာ သင့်ဖြင့်ရှိနေသောစာမျက်နှာ၏နှာကပ်နာမည် (<ph name="HOST_NAME"/>) ကို မျှဝေပေးပါ။</translation>
 <translation id="8732450785281947197">Leo AI tools</translation>
@@ -2401,6 +2413,7 @@
 <translation id="6397861830483632092">ဖွင့်ထားသော တက်ဘ်များ...</translation>
 <translation id="802080272588201037">စာမှတ်...</translation>
 <translation id="2716127283451902393">မှတ်တမ်း...</translation>
+<translation id="8888171900079152025">Workspace folder</translation>
 <translation id="49269513399674318">မိုက်ခရိုဖုန်း</translation>
 <translation id="3895031624234442305">စိတ်ကြိုက်လုပ်အပ်သည့် model များ</translation>
 <translation id="4572010449071015143">စကားပြောစတင်ရန်</translation>
@@ -2434,8 +2447,11 @@
 <translation id="3397808797783614750">သင်အတွက်သိမ်းထားသော AI ကို အလိုအလျှောက် ရှာဖွေခြင်းကို ဖွင့်ထားခြင်းသည် သင့်ပုဂ္ဂလိကရေးကိစ္စများ၊ ငွေကြေး၊ နှင့် အွန်လိုင်းဆက်သွယ်မှုများအတွက် အန္တရာယ်ဖြစ်စေနိုင်သော မျှော်လင့်ခြင်းမဲ့ရလဒ်များ ဖြစ်လာနိုင်သည်။ <ph name="LINK_BEFORE"/>ဆက်လက်သိရှိရန်<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">လုံခြုံရေးအချက်အချာပေးချက်</translation>
 <translation id="6077070599873946984">Brave AI သည် သင်၏ ခွင့်ပြုချက်လိုအပ်သည် - <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">Brave AI သည် **<ph name="SITE_ORIGIN"/>** တွင် **<ph name="TOOL_NAME"/>** ကို လုပ်ဆောင်လိုပါသည်</translation>
 <translation id="4163837693685963037">လုပ်ဆောင်ချက်သည် သင်၏တောင်းဆိုချက်နှင့် မကိုက်ညီနိုင်ခြင်းရှိနိုင်သည်။</translation>
 <translation id="3927932062596804919">ငြင်းလိုက်သည်</translation>
+<translation id="4191349941249805855">tool arguments များ ပြပါ</translation>
+<translation id="7237059533128264835">tool arguments များ ဖွက်ပါ</translation>
 <translation id="4569155249847375786">အတည်ပြုလုပ်ပြီး</translation>
 <translation id="8200772114523450471">ဆက်လုပ်မည်</translation>
 <translation id="7607002721634913082">ရပ်ဆိုင်းထားသည်</translation>
@@ -2541,7 +2557,7 @@
 <translation id="9173319813356700250">သတင်း</translation>
 <translation id="6543799171249004861"><ph name="AUTHOR"/> မှဓာတ်ပုံ</translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="7978582287767542276">ပံ့ပိုးထားသော ဆိုက်များကို ဖယ်ရှားရန်</translation>
+<translation id="7978582287767542276">New Tab စာမျက်နှာ အကြော်ငြာများ ဖယ်ရှားပါ</translation>
 <translation id="466214682712474574">သင့် balance ကိုကြည့်ရန် သင်၏ <ph name="PROVIDER"/> account တွင် log in လုပ်ပါ</translation>
 <translation id="8332875111286275890">သင်၏လက်ကျန်ငွေကိုကြည့်ရန် log in ဝင်သည်။</translation>
 <translation id="5430001801813715388">ဆု</translation>
@@ -2553,11 +2569,11 @@
 <translation id="4844370919312937270">ရက်စွဲခွင်ခုစုသစ်တွင်ရှာဖွေမှု widget ကိုပြပါ</translation>
 <translation id="5088374130885640159"><ph name="REWARDS_LINK_BEGIN"/>Brave ဆုလက်ဆောင်<ph name="REWARDS_LINK_END"/> ဖြင့် New Tab စာမျက်နှာ ကြော်ငြာများကို ကြည့်ပြီး ပိုက်ဆံရှာနိုင်ပါသည်။ <ph name="LEARN_MORE_LINK_BEGIN"/>ပိုမိုလေ့လာရန်<ph name="LEARN_MORE_LINK_END"/>။</translation>
 <translation id="4100520468072294616">New Tab စာမျက်နှာ အကြော်အနွင်းတွေ ပြပါ။</translation>
-<translation id="4983925687993168579">Brave တွင် စာရင်းများ</translation>
+<translation id="4983925687993168579">စာရင်းအင်းများ</translation>
 <translation id="5009354496127441090">Top sites ကိုပြပါ</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">ပံ့ပိုးထားသော ဆိုက်များသည် Brave ကို အခမဲ့ဖြစ်နေစေရန် ကူညီပေးပါသည်။ <ph name="SITE_NAME"/> ကို သင်အသုံးပြုပါက Brave ၏ ရည်မှန်းချက်ကို သင်ပံ့ပိုးနေခြင်းဖြစ်ပါသည်။ ၎င်းတို့ကို အချိန်မရွေး ပိတ်နိုင်ပါသည်။ <ph name="LINK_BEGIN"/>ပိုမိုလေ့လာရန်<ph name="LINK_END"/>။</translation>
-<translation id="5810241219736298115">ပံ့ပိုးထားသော ဆိုက်များသည် Brave ကို အခမဲ့ဖြစ်နေစေရန် ကူညီပေးပါသည်။ ၎င်းတို့ကို သင်အသုံးပြုပါက Brave ၏ ရည်မှန်းချက်ကို သင်ပံ့ပိုးနေခြင်းဖြစ်ပါသည်။ <ph name="LINK_BEGIN"/>ပိုမိုလေ့လာရန်<ph name="LINK_END"/>။</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">New Tab စာမျက်နှာ အကြော်ငြာများသည် Brave ကို အခမဲ့ဖြစ်နေစေရန် ကူညီပေးပါသည်။ <ph name="SITE_NAME"/> ကို သင်အသုံးပြုပါက Brave ၏ ရည်မှန်းချက်ကို သင်ပံ့ပိုးနေခြင်းဖြစ်ပါသည်။ ၎င်းတို့ကို အချိန်မရွေး ပိတ်နိုင်ပါသည်။ <ph name="LINK_BEGIN"/>ပိုမိုလေ့လာရန်<ph name="LINK_END"/>။</translation>
+<translation id="5810241219736298115">New Tab စာမျက်နှာ အကြော်ငြာများသည် Brave ကို အခမဲ့ဖြစ်နေစေရန် ကူညီပေးပါသည်။ ၎င်းတို့ကို သင်အသုံးပြုပါက Brave ၏ ရည်မှန်းချက်ကို သင်ပံ့ပိုးနေခြင်းဖြစ်ပါသည်။ <ph name="LINK_BEGIN"/>ပိုမိုလေ့လာရန်<ph name="LINK_END"/>။</translation>
 <translation id="4784802981241664605">စာရင်းများ</translation>
 <translation id="5236080651083907980">Brave Talk ဖြင့် စကားဝိုင်း ဖို့အတွက် လုံခြုံစေပါသည်</translation>
 <translation id="2671474274417808910">ပုန်ငန်းတိုင်း</translation>
@@ -2718,6 +2734,7 @@
 <translation id="701087249209337256">သင်၏ ဟောင်းသော ဘရောက်ဆာ အကြောင်းအရာကို ယူဆောင်လာပါ</translation>
 <translation id="142389341645668510">Brave ကို စိတ်ကြိုက်ပြင်ဆင်ရန်</translation>
 <translation id="112005628409144325">သင်နှစ်သက်သော တက်ဘ်အပြင်အဆင်နှင့် အရောင်မုဒ်များဖြင့် သင်၏ ဘရောက်ဆာသုံးစွဲမှုအတွေ့အကြုံကို ကိုယ်ပိုင်ပုံစံဖန်တီးပါ။</translation>
+<translation id="4428982101636000516">Brave ဖြင့် ရှာဖွေပါ သို့မဟုတ် URL ကို ရိုက်ထည့်ပါ</translation>
 <translation id="7376367936988732808">တက်ဘ်အပြင်အဆင်</translation>
 <translation id="4734965478015604180">အလျားလိုက်</translation>
 <translation id="490375751687810070">ဒေါင်လိုက်</translation>
@@ -2766,7 +2783,7 @@
 <translation id="745054660363064771">ဆာဗာသို့ ချိတ်ဆက်၍မရပါ</translation>
 <translation id="3936826714240735937">ဆာဗာတစ်ခုသို့ရွေးပါ</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> သည် <ph name="REGION_NAME"/> ဆာဗာသို့ ချိတ်ဆက်မရဖြစ်လျက်ရှိပါသည်။ ကျေးဇူးပြု၍ ထပ်မံကြိုးစားလိုက်ပါ သို့မဟုတ်တစ်နိုင်ငံကိုရွေးချယ်ပါ။</translation>
-<translation id="1776533911621317363">7 ရက် အခမဲ့ စမ်းသုံးရန်</translation>
+<translation id="1776533911621317363">7 ရက် အခမဲ့ စမ်းသုံးမှုကို စတင်ပါ</translation>
 <translation id="3357036723290257445">Brave VPN ကို ဝယ်ပြီးပြီလား။</translation>
 <translation id="8652175077544655965">ဆက်တင်များကို ပိတ်ရန်</translation>
 <translation id="5908163815855240493">ပင်မသို့သွားရန်</translation>
@@ -2778,12 +2795,13 @@
 <translation id="8416695199565594645">အများအားဖြင့် အချိုးအစားမရှိသောလမ်းခင်းများသို့ လမ်းခင်းအထည့်၍ သင့်ရဲ့သတ်မှတ်ချက်ကို ဝင်ချိန်မှတ်တမ်းပြသည်။</translation>
 <translation id="434523916398030617">နည်းပညာပိုင်းဆိုင်ရာ ပံ့ပိုးမှုကို ဆက်သွယ်ပါ</translation>
 <translation id="1116694919640316211">အကြောင်း</translation>
-<translation id="8998067240267949220">ကိုယ်ရေးအချက်အလက် ပိုလုံခြုံခြင်း&amp; အွန်လိုင်းလုံခြုံရေး ပိုကောင်းမွန်ခြင်း</translation>
-<translation id="8666111144393179185">IP ကို ဝှက်ပေးခြင်း
-&amp; တည်နေရာပြောင်းလဲနိုင်ခြင်း</translation>
-<translation id="8881997962573369342">ကမ္ဘာတစ်ဝန်း ဆာဗာပေါင်း ရာချီရှိခြင်း</translation>
+<translation id="8998067240267949220">သင်နှစ်သက်ရာ အကြောင်းအရာများကို ကန့်သတ်မှုမရှိဘဲ အသုံးပြုနိုင်ခြင်း</translation>
+<translation id="8666111144393179185">ကမ္ဘာတစ်ဝန်း ဆာဗာပေါင်း ရာချီ</translation>
+<translation id="8881997962573369342">သင်၏ IP ကို လွယ်ကူစွာ ဝှက်ခြင်း &amp; တည်နေရာ ပြောင်းလဲခြင်း</translation>
 <translation id="1513801084412881009">လျှပ်စီးအလား လျှင်မြန်သော ဆယ်သွယ်ရေးမြန်နှုန်း</translation>
-<translation id="6434859410115379558">ပလန်တစ်ခု ဝယ်ယူရုံဖြင့် စက် 10 လုံးအထိ ကာကွယ်ပေးနိုင်ခြင်း</translation>
+<translation id="6434859410115379558">မှတ်တမ်းမထားခြင်း၊ လွတ်လပ်စွာ စစ်ဆေးထားခြင်း</translation>
+<translation id="4886431881864826294">စာရင်းသွင်းမှုတစ်ခုတည်းဖြင့် desktop, Android နှင့် iOS တစ်လျှောက် device 10 ခုကို လွှမ်းခြုံသည်</translation>
+<translation id="3649011006120934011">ကတိကဝတ်မရှိ၊ အချိန်မရွေး ရပ်စဲနိုင်သည်</translation>
 <translation id="1693568075761612600">ပံ့ပိုးမှုလက်မှတ်ဖန်တီး၍မရပါ၊ သင့်ချိတ်ဆက်မှုကိုစစ်ဆေးပါ။</translation>
 <translation id="1407707415819020643">သင်၏ဆာဗာကို ရွေးချယ်ပါ</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> မြို့များ - <ph name="SERVER_COUNT"/> ဆာဗာများ</translation>

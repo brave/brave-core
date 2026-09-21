@@ -70,7 +70,7 @@ constexpr net::NetworkTrafficAnnotationTag kTorBridgesMoatAnnotation =
       cookies_allowed: NO
     })");
 
-constexpr base::ByteSize kMaxBodySize = base::KiBU(256);
+constexpr base::ByteSize kMaxBodySize = base::KiB(256);
 
 base::Value FetchCaptchaData() {
   base::DictValue data;

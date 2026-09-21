@@ -293,7 +293,7 @@ IN_PROC_BROWSER_TEST_F(WindowClosingConfirmBrowserTest,
   GURL url = embedded_test_server()->GetURL("/large_file");
 
   content::TestDownloadHttpResponse::Parameters parameters;
-  parameters.size = base::MiBU(32).InBytes(); /* 32MB file. */
+  parameters.size = base::MiB(32).InBytes(); /* 32MB file. */
   content::TestDownloadHttpResponse::StartServing(parameters, url);
 
   // Ensure that we have enough disk space to download the large file.

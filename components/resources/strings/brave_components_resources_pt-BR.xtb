@@ -864,9 +864,11 @@
 <translation id="646023614746251785">Confirmar troca</translation>
 <translation id="6264944956989873014">Confirmar ponte</translation>
 <translation id="7067917728851842589">Confirmar envio</translation>
+<translation id="2841837950101800123">Provedor</translation>
 <translation id="1114725160772317155">Status do provedor</translation>
 <translation id="2351357639951873714">Confirmar blindagem</translation>
 <translation id="7480044382160806610">Confirmar desproteção</translation>
+<translation id="6830542010524256586">Confirmar migração</translation>
 <translation id="8332923694292360653">Gastar</translation>
 <translation id="3735740477244556633">Classificar por</translation>
 <translation id="6484605214219822434">Revisar ponte</translation>
@@ -1404,8 +1406,10 @@
 <translation id="5503843345634715425">Reembolsado</translation>
 <translation id="1778601041100951971">Protegendo <ph name="AMOUNT"/></translation>
 <translation id="6439110433198887239">Desprotegendo <ph name="AMOUNT"/></translation>
+<translation id="6022412719565214018">Migrando <ph name="AMOUNT"/></translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> foi protegido</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> foi desprotegido</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> foi migrado</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {mais {PENDING_TRANSACTIONS} transações pendentes.}
       other {mais {PENDING_TRANSACTIONS} transações pendentes.}
@@ -1844,14 +1848,18 @@
 <translation id="9086302186042011942">Sincronizando</translation>
 <translation id="99991973626409495">Proteção de revisão</translation>
 <translation id="6779429520470417361">Revisar desproteção</translation>
+<translation id="7861093868637278059">Revisar migração</translation>
 <translation id="3114681061018999547">Protegendo</translation>
 <translation id="1564172583156967455">Desprotegendo</translation>
+<translation id="7040674372746105444">Migrando</translation>
 <translation id="8897189056319316783">Proteção ZEC</translation>
 <translation id="508249542337194541">Desproteger ZEC</translation>
+<translation id="3242332985109374549">Migrar ZEC</translation>
 <translation id="3382275793825152362">Fundos protegidos</translation>
 <translation id="617149752238892649">Desproteger fundos</translation>
 <translation id="8631765320256788981">Você está enviando fundos de sua conta transparente para a sua conta protegida.</translation>
 <translation id="3860364671495430495">Você está enviando fundos de sua conta protegida para sua conta transparente.</translation>
+<translation id="9664108035970394">Você está enviando fundos de sua conta protegida legada para a sua conta protegida.</translation>
 <translation id="7144878232160441200">Tentar novamente</translation>
 <translation id="4750109510113597688">Esta transação pode incluir uma taxa de criação de conta</translation>
 <translation id="6201709949885884577">É necessária uma senha para executar esta ação.</translation>
@@ -2208,7 +2216,7 @@
 <translation id="8151638057146502721">Configurar</translation>
 <translation id="999273441077650169">O modelo muda dinamicamente para usar o melhor para a tarefa.<ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Olá, eu sou o Leo. Sou um assistente de IA integralmente alojado no Brave. Uso tecnologia Qwen VL 30B, um modelo criado pela Alibaba Cloud para ter um bom desempenho e ser aplicável a muitos casos de uso. O Qwen é alojado no Brave por meio de nossa própria infraestrutura de segurança.<ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Olá, eu sou o Leo. Sou um assistente de IA integralmente alojado no Brave. Uso tecnologia GLM-5.1, um modelo criado pela Zhipu AI para ter um bom desempenho e ser aplicável a muitos casos de uso. A GLM-5.1 é alojada no NEAR através de sua própria infraestrutura segura verificavelmente privada.<ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Olá, eu sou o Leo. Sou um assistente de IA integralmente alojado no Brave. Uso tecnologia GLM-5.3 Flash, um modelo criado pela Zhipu AI para ter um bom desempenho e ser aplicável a muitos casos de uso. A GLM-5.3 Flash é alojada no NEAR através de sua própria infraestrutura segura verificavelmente privada.<ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Oi, sou o Leo. Sou um assistente de IA do Brave. Sou alimentado pelo Claude Instant, um modelo criado pela Anthropic para tarefas de conversação e processamento de texto. O Claude Instant é hospedado pelo Brave por meio de nossa própria infraestrutura segura.<ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Olá, eu sou o Léo. Sou representado pelo Brave e desenvolvido por Claude Haiku, um modelo criado pela Anthropic para potencializar tarefas de conversação e processamento de texto. O Claude Haiku é alojado no Brave por meio de nossa própria infraestrutura de segurança. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Olá, eu sou o Léo. Sou representado pelo Brave e desenvolvido por Claude Sonnet, um modelo criado pela Anthropic para potencializar tarefas de conversação e processamento de texto. O Claude Sonnet é alojado no Brave por meio de nossa própria infraestrutura de segurança. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
@@ -2330,6 +2338,8 @@
 <translation id="4370698775470316661">Esta conversa é muito longa e não pode continuar. Pode haver outros modelos disponíveis com os quais Leo seja capaz de manter a precisão em conversas mais longas.</translation>
 <translation id="4744144453035015075">Pesquisando na web</translation>
 <translation id="8548351747582087191">Pesquisando na web por <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4395536726196773278">Pesquisando suas guias abertas por "<ph name="QUERY"/>"…</translation>
+<translation id="4724926708866789382">Nenhuma guia aberta corresponde a "<ph name="QUERY"/>".</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> mais…</translation>
 <translation id="8103700533980268469">Fechar esta notificação</translation>
 <translation id="3417835166382867856">Pesquisar guias</translation>
@@ -2377,6 +2387,8 @@
 <translation id="443008484043213881">Ferramentas</translation>
 <translation id="4343623396828510727">Esses sites expõem ferramentas que o Leo pode usar para enviar dados de e para este site. Não anexe nem aprove essas ferramentas se esta conversa contiver dados que você não deseja que este site veja.</translation>
 <translation id="5021823940147712387">Remover ferramentas</translation>
+<translation id="8712279871321308580">Ferramentas de site disponíveis</translation>
+<translation id="3690996226559605619">Ferramentas disponíveis (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">Todas as assinaturas são renovadas automaticamente, mas podem ser canceladas a qualquer momento antes da renovação.</translation>
 <translation id="5091223967610958">Compartilhe o nome do host da página em que você está (<ph name="HOST_NAME"/>) para nos ajudar a tornar o Leo melhor.</translation>
 <translation id="8732450785281947197">Ferramentas de IA do Leo</translation>
@@ -2415,6 +2427,7 @@
 <translation id="6397861830483632092">Abrir guias…</translation>
 <translation id="802080272588201037">Favoritos…</translation>
 <translation id="2716127283451902393">História…</translation>
+<translation id="8888171900079152025">Pasta do espaço de trabalho</translation>
 <translation id="49269513399674318">Usar microfone</translation>
 <translation id="3895031624234442305">Modelos personalizados</translation>
 <translation id="4572010449071015143">Iniciar nova conversa</translation>
@@ -2448,8 +2461,11 @@
 <translation id="3397808797783614750">Permitir que a IA navegue automaticamente por você pode causar consequências prejudiciais e não intencionais para sua privacidade, finanças e comunicações on-line. <ph name="LINK_BEFORE"/>Saiba mais<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Aviso de segurança</translation>
 <translation id="6077070599873946984">O Brave IA precisa da sua permissão para: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">A Brave AI gostaria de executar **<ph name="TOOL_NAME"/>** em **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">A operação foi detectada como potencialmente desalinhada com sua solicitação:</translation>
 <translation id="3927932062596804919">Negar</translation>
+<translation id="4191349941249805855">Mostrar argumentos da ferramenta</translation>
+<translation id="7237059533128264835">Ocultar argumentos da ferramenta</translation>
 <translation id="4569155249847375786">Verificado</translation>
 <translation id="8200772114523450471">Retomar</translation>
 <translation id="7607002721634913082">Pausado</translation>
@@ -2555,7 +2571,7 @@
 <translation id="9173319813356700250">NOVIDADES</translation>
 <translation id="6543799171249004861">Foto de <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo AI</translation>
-<translation id="7978582287767542276">Remover sites patrocinados</translation>
+<translation id="7978582287767542276">Remover anúncios na página nova guia</translation>
 <translation id="466214682712474574">Faça login na sua conta <ph name="PROVIDER"/> para ver seu saldo</translation>
 <translation id="8332875111286275890">Faça login para ver seu saldo</translation>
 <translation id="5430001801813715388">RECOMPENSAS</translation>
@@ -2567,11 +2583,11 @@
 <translation id="4844370919312937270">Mostrar widget de pesquisa nas novas guias</translation>
 <translation id="5088374130885640159">Com as <ph name="REWARDS_LINK_BEGIN"/>Recompensas Brave<ph name="REWARDS_LINK_END"/>, você pode ganhar por ver anúncios na página Nova Guia. <ph name="LEARN_MORE_LINK_BEGIN"/>Saiba mais<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">Mostrar anúncios na página nova guia</translation>
-<translation id="4983925687993168579">Estatísticas do Brave</translation>
+<translation id="4983925687993168579">Estatísticas</translation>
 <translation id="5009354496127441090">Mostrar os principais sites</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">Os sites patrocinados ajudam a manter o Brave gratuito. Se você usa o <ph name="SITE_NAME"/>, você está apoiando a missão do Brave. Desative-os a qualquer momento. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">Os sites patrocinados ajudam a manter o Brave gratuito. Se você os usa, você está apoiando a missão do Brave. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Os anúncios na página nova guia ajudam a manter o Brave gratuito. Se você usa o <ph name="SITE_NAME"/>, você está apoiando a missão do Brave. Desative-os a qualquer momento. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Os anúncios na página nova guia ajudam a manter o Brave gratuito. Se você os usa, você está apoiando a missão do Brave. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">ESTATÍSTICAS</translation>
 <translation id="5236080651083907980">Chamadas de vídeo criptografadas com o Brave Talk</translation>
 <translation id="2671474274417808910">Chamadas com privacidade em primeiro lugar</translation>
@@ -2731,6 +2747,7 @@
 <translation id="701087249209337256">Traga o conteúdo do seu antigo navegador</translation>
 <translation id="142389341645668510">Personalizar o Brave</translation>
 <translation id="112005628409144325">Personalize sua experiência de navegação com o layout de abas e os modos de cores que você preferir.</translation>
+<translation id="4428982101636000516">Pesquise com o Brave ou digite um URL</translation>
 <translation id="7376367936988732808">Layout de abas</translation>
 <translation id="4734965478015604180">Horizontal</translation>
 <translation id="490375751687810070">Vertical</translation>
@@ -2779,7 +2796,7 @@
 <translation id="745054660363064771">Não foi possível estabelecer conexão com o servidor</translation>
 <translation id="3936826714240735937">Escolher outro servidor</translation>
 <translation id="2606728814652041300"><ph name="PRODUCT_NAME"/> não conseguiu se conectar ao servidor <ph name="REGION_NAME"/>. Tente novamente ou escolha outro país.</translation>
-<translation id="1776533911621317363">Comece uma avaliação gratuita de 7 dias</translation>
+<translation id="1776533911621317363">Comece sua avaliação gratuita de 7 dias</translation>
 <translation id="3357036723290257445">Já comprou o Brave VPN?</translation>
 <translation id="8652175077544655965">Fechar configurações</translation>
 <translation id="5908163815855240493">Ir para a página principal</translation>
@@ -2791,11 +2808,13 @@
 <translation id="8416695199565594645">Garante que o tráfego seja encaminhado através de servidores proxy dedicados para permitir o acesso a conteúdo/sites ou serviços de terceiros normalmente restritos.</translation>
 <translation id="434523916398030617">Entrar em contato com o suporte técnico</translation>
 <translation id="1116694919640316211">Sobre</translation>
-<translation id="8998067240267949220">Privacidade e segurança extra on-line</translation>
-<translation id="8666111144393179185">Oculte seu IP e altere sua localização</translation>
-<translation id="8881997962573369342">Centenas de servidores ao redor do mundo</translation>
+<translation id="8998067240267949220">Acesse seu conteúdo favorito sem limites</translation>
+<translation id="8666111144393179185">Centenas de servidores ao redor do mundo</translation>
+<translation id="8881997962573369342">Oculte facilmente seu IP e altere sua localização</translation>
 <translation id="1513801084412881009">Velocidades de conexão extremamente rápidas</translation>
-<translation id="6434859410115379558">Proteja até 10 dispositivos com um plano</translation>
+<translation id="6434859410115379558">Sem registro de atividades, auditado independentemente</translation>
+<translation id="4886431881864826294">Uma assinatura cobre 10 dispositivos em PC, Android e iOS</translation>
+<translation id="3649011006120934011">Sem compromisso, cancele a qualquer momento</translation>
 <translation id="1693568075761612600">Houve uma falha ao criar o tíquete de suporte. Verifique sua conexão.</translation>
 <translation id="1407707415819020643">Selecione seu servidor</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> cidades - <ph name="SERVER_COUNT"/> servidores</translation>

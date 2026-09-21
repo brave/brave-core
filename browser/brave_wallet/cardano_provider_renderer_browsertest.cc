@@ -242,11 +242,11 @@ class CardanoProviderRendererTest : public InProcessBrowserTest {
     ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   }
 
-  content::WebContents* web_contents(Browser* browser) const {
+  content::WebContents* web_contents(BrowserWindowInterface* browser) const {
     return browser->tab_strip_model()->GetActiveWebContents();
   }
 
-  void ReloadAndWaitForLoadStop(Browser* browser) {
+  void ReloadAndWaitForLoadStop(BrowserWindowInterface* browser) {
     chrome::Reload(browser, WindowOpenDisposition::CURRENT_TAB);
     ASSERT_TRUE(content::WaitForLoadStop(web_contents(browser)));
   }
@@ -290,7 +290,7 @@ IN_PROC_BROWSER_TEST_F(CardanoProviderDisabledRendererTest,
 }
 
 IN_PROC_BROWSER_TEST_F(CardanoProviderRendererTest, Incognito) {
-  Browser* private_browser = CreateIncognitoBrowser(nullptr);
+  BrowserWindowInterface* private_browser = CreateIncognitoBrowser(nullptr);
   GURL url = embedded_test_server()->GetURL("/empty.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(private_browser, url));
 

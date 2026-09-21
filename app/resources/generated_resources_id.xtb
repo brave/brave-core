@@ -130,6 +130,7 @@
 Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translation>
 <translation id="1084824384139382525">Salin ala&amp;mat link</translation>
 <translation id="1085064499066015002">Selalu di semua situs</translation>
+<translation id="1085340215550339505">Agar dapat memberikan saran perubahan sandi secara tepat waktu, konten dan URL halaman yang Anda kunjungi dapat diproses di ruang privasi di cloud</translation>
 <translation id="1085558727130096638">Gabung ke Grup Tab dengan <ph name="OWNER_FIRST_NAME"/> dan <ph name="NUM_OTHER_MEMBERS"/> Anggota Lainnya</translation>
 <translation id="1085618740036066768"><ph name="ITEM"/> tidak dipilih. <ph name="INDEX"/> dari <ph name="COUNT"/>. Tekan tombol Penelusuran dan Spasi untuk memilih.</translation>
 <translation id="1086486568852410168">Telusuri dengan Google Lens</translation>
@@ -164,7 +165,6 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1116639326869298217">Identitas Anda tidak dapat diverifikasi</translation>
 <translation id="1116694919640316211">Tentang</translation>
 <translation id="1116779635164066733">Setelan ini diterapkan oleh ekstensi "<ph name="NAME"/>".</translation>
-<translation id="1118428905044642028">Sandi dan &amp;Isi Otomatis</translation>
 <translation id="111897705806685148">Gunakan Kunci Sandi dari Perangkat Lain</translation>
 <translation id="1119447706177454957">Kesalahan internal</translation>
 <translation id="1122068467107743258">Kantor</translation>
@@ -182,11 +182,13 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1128591060186966949">Edit mesin telusur</translation>
 <translation id="1129348283834595293">Cyberpunk</translation>
 <translation id="1129420403709586868">Lihat foto dan media ponsel</translation>
+<translation id="3124093716955985063">Tanya Brave Info Tentang Gambar Ini</translation>
 <translation id="1129850422003387628">Kelola aplikasi</translation>
 <translation id="1130116586186908674">Buat tampilan terpisah</translation>
 <translation id="1130589222747246278"><ph name="WINDOW_TITLE"/> - Bagian dari grup <ph name="GROUP_NAME"/></translation>
 <translation id="1130676589211693127">Tingkat daya baterai kanan <ph name="PERCENTAGE"/>%.</translation>
 <translation id="1412403201555978627">Saat tab dibagikan, konten halaman, media, serta URL di dalamnya akan dikirim ke Brave dan mungkin ditinjau demi keamanan.</translation>
+<translation id="1131227874850108863">Tutup menu aksen</translation>
 <translation id="1133418583142946603">Tambahkan tab saat ini</translation>
 <translation id="1133751489735776037">Klik tiga kali mouse</translation>
 <translation id="1136712381129578788">Kunci keamanan dikunci karena Anda terlalu sering memasukkan PIN yang salah. Untuk membukanya, lepaskan kunci keamanan dan pasang kembali.</translation>
@@ -331,6 +333,7 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1235458158152011030">Jaringan yang dikenal</translation>
 <translation id="123578888592755962">Disk penuh</translation>
 <translation id="1235924639474699896">{COUNT,plural, =1{teks}other{# teks}}</translation>
+<translation id="1236564420496412501">Klik kanan tab yang berisi link yang ingin Anda kirim</translation>
 <translation id="1237950098253310325">Urutkan ulang <ph name="BUTTON_NAME"/> menggunakan ctrl dan panah atas atau panah bawah</translation>
 <translation id="1238293488628890871">Ganti Profil?</translation>
 <translation id="1239841552505950173">Luncurkan aplikasi</translation>
@@ -351,6 +354,7 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="3679628535720241807">{BOOKMARK_COUNT,plural, =1{1 bookmark dan item lainnya hanya disimpan ke perangkat ini. Untuk menggunakannya di perangkat lain, simpan bookmark dan item lainnya di Akun Brave Anda. Tindakan ini juga akan menghapus duplikat.}other{{BOOKMARK_COUNT} bookmark dan item lainnya hanya disimpan ke perangkat ini. Untuk menggunakannya di perangkat lain, simpan bookmark dan item lainnya di Akun Brave Anda. Tindakan ini juga akan menghapus duplikat.}}</translation>
 <translation id="125220115284141797">Default</translation>
 <translation id="1252219782845132919">Sembunyikan grup</translation>
+<translation id="1252597096488926946">Lepas sematan tombol scroll</translation>
 <translation id="1252987234827889034">Terjadi error profil</translation>
 <translation id="1254034280040157728">Grand Canyon</translation>
 <translation id="1254593899333212300">Koneksi internet langsung</translation>
@@ -491,7 +495,6 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1374844444528092021">Sertifikat yang dibutuhkan oleh jaringan "<ph name="NETWORK_NAME"/>" belum dipasang ataupun tidak lagi valid. Dapatkan sertifikat baru dan cobalah menyambung lagi.</translation>
 <translation id="1374948751106271187">Tambahkan lapisan perlindungan ekstra kapan saja di mana saja</translation>
 <translation id="137651782282853227">Alamat yang disimpan akan muncul di sini</translation>
-<translation id="1376771218494401509">Namai Jendela ...</translation>
 <translation id="7377055577309465332">Jika salah satu sandi Anda ditemukan dalam pelanggaran data, Pengelola Sandi Brave akan menanyakan apakah Anda ingin mengubahnya menjadi sandi kuat</translation>
 <translation id="1378613616312864539"><ph name="NAME"/> mengontrol setelan ini</translation>
 <translation id="1378715594598306389">Lihat tab lainnya</translation>
@@ -590,7 +593,6 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1461041542809785877">Performa</translation>
 <translation id="1461177659295855031">Pindahkan ke folder Kolom Bookmark</translation>
 <translation id="1461288887896722288">Anda baru saja login ke akun terkelola. Membuat profil terkelola baru akan membuat Anda dapat mengakses beberapa resource yang ditautkan ke akun tersebut.</translation>
-<translation id="1461718860884899524">Laporkan Situs yang Tidak Aman...</translation>
 <translation id="146219525117638703">Status ONC</translation>
 <translation id="146220085323579959">Internet terputus. Periksa koneksi internet Anda dan coba lagi.</translation>
 <translation id="1462480037563370607">Tambahkan situs secara manual</translation>
@@ -621,6 +623,7 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1482626744466814421">Bookmark Tab Ini...</translation>
 <translation id="1482772681918035149">mengedit sandi</translation>
 <translation id="1483137792530497944">Sungai</translation>
+<translation id="1483151333977672176">Terkirim!</translation>
 <translation id="1483431819520123112">Nama tampilan disalin ke papan klip</translation>
 <translation id="1483493594462132177">Kirim</translation>
 <translation id="1484102317210609525"><ph name="DEVICE_NAME"/> (HDMI/DP)</translation>
@@ -640,6 +643,7 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1496514951988037011">nama pengguna</translation>
 <translation id="1498498210836053409">Nonaktifkan mode lekat saat mengedit teks (Mode Lekat Smart)</translation>
 <translation id="1499041187027566160">mengeraskan volume</translation>
+<translation id="1499948601784722399">Permintaan situs</translation>
 <translation id="1500297251995790841">Perangkat tidak dikenal [<ph name="VENDOR_ID"/>:<ph name="PRODUCT_ID"/>]</translation>
 <translation id="6440894523770886280">Pelajari lebih lanjut aplikasi Brave yang tidak didukung</translation>
 <translation id="1501480321619201731">Hapus grup</translation>
@@ -654,7 +658,6 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1508931164824684991">Situs dapat menggunakan JavaScript</translation>
 <translation id="1509163368529404530">&amp;Pulihkan grup</translation>
 <translation id="1509281256533087115">Akses <ph name="DEVICE_NAME_AND_VENDOR"/> apa pun via USB</translation>
-<translation id="2825615584808054779">Percakapan Anda dengan Gemini serta data Brave Workspace tidak akan ditinjau atau digunakan untuk meningkatkan kualitas model AI generatif. Gemini adalah AI dan dapat melakukan kesalahan.</translation>
 <translation id="1510238584712386396">Peluncur</translation>
 <translation id="1510341833810331442">Situs tidak diizinkan menyimpan data di perangkat Anda</translation>
 <translation id="1510882959204224895">Buka di jendela</translation>
@@ -688,7 +691,6 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1539248305642687917">Jangan izinkan situs mengganti input keyboard Anda</translation>
 <translation id="1539727654733007771">Tidak ada jaringan seluler yang disiapkan. Download <ph name="BEGIN_LINK"/>profil<ph name="END_LINK"/> baru.</translation>
 <translation id="1540265419569299117">Layanan Aplikasi ChromeOS</translation>
-<translation id="1540543470504988112">Kelola sertifikat yang diimpor dari MacOS</translation>
 <translation id="1541346352678737112">Jaringan tidak ditemukan</translation>
 <translation id="154198613844929213">{0,plural, =0{Menghapus sekarang.}=1{Menghapus dalam: 1 detik}other{Menghapus dalam: # detik}}</translation>
 <translation id="1542137295869176367">Data login Anda tidak dapat diperbarui</translation>
@@ -800,11 +802,11 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1617765145568323981">{NUM_FILES,plural, =0{Memeriksa data ini dengan kebijakan keamanan organisasi Anda ...}=1{Memeriksa file ini dengan kebijakan keamanan organisasi Anda ...}other{Memeriksa file ini dengan kebijakan keamanan organisasi Anda ...}}</translation>
 <translation id="1618102204889321535"><ph name="CURRENT_CHARACTER_COUNT"/>/<ph name="MAX_CHARACTER_COUNT"/></translation>
 <translation id="1618142905422922351">Saat ini Anda memiliki <ph name="NUMBERED_ITEM"/>, dan lainnya. Organisasi Anda, <ph name="ACCOUNT_MANAGER"/>, akan dapat melihat dan mengelola data ini.</translation>
-<translation id="1618268899808219593">Pusat Bantuan</translation>
 <translation id="1619829618836636922">Sertifikat klien dari platform</translation>
 <translation id="1620307519959413822">Sandi salah. Coba lagi atau klik Lupa sandi untuk mereset sandi.</translation>
 <translation id="1620510694547887537">Kamera</translation>
 <translation id="1620760691416124482">Buka dalam &amp;tampilan terpisah</translation>
+<translation id="2380574999275845178">Sandi Anda ditemukan dalam pelanggaran data publik. Pengelola Sandi Brave dapat mengubah dan menyimpannya di <ph name="EMAIL"/>. <ph name="LINK"/></translation>
 <translation id="1621729191093924223">Fitur yang memerlukan mikrofon tidak akan berfungsi</translation>
 <translation id="1621984899599015181">Opsi untuk berbagi dikelola oleh organisasi Anda. Beberapa item mungkin tersembunyi.</translation>
 <translation id="1622054403950683339">Lupakan jaringan Wi-Fi</translation>
@@ -977,13 +979,13 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1753905327828125965">Sering Dibuka</translation>
 <translation id="1755601632425835748">Ukuran teks</translation>
 <translation id="1756963401828337401">Pilih layar untuk diambil gambarnya</translation>
+<translation id="353492317551888534">Buka Brave Wallet untuk mengontrol <ph name="BEGIN_LINK1"/>preferensi data dan privasi<ph name="END_LINK1"/> atau mengelola <ph name="BEGIN_LINK2"/>metode pembayaran<ph name="END_LINK2"/> serta <ph name="BEGIN_LINK3"/>kartu pas<ph name="END_LINK3"/> seperti kartu loyalitas dan tanda pengenal</translation>
 <translation id="1761402971842586829"><ph name="BUTTON_NAME"/> dipetakan ulang menjadi <ph name="REMAPPING_OPTION"/>.</translation>
 <translation id="1761845175367251960">Akun <ph name="NAME"/></translation>
 <translation id="176272781006230109">saran belanja</translation>
 <translation id="1763046204212875858">Buat pintasan aplikasi</translation>
 <translation id="1763808908432309942">Membuka di tab baru</translation>
 <translation id="1764226536771329714">beta</translation>
-<translation id="176587472219019965">Je&amp;ndela Baru</translation>
 <translation id="1766575458646819543">Layar penuh ditutup</translation>
 <translation id="2780099046045177382">Simpan sandi dengan aman di Akun Brave Anda, dan Anda tidak perlu lagi mengetikkannya</translation>
 <translation id="1767043563165955993">Gunakan dengan aplikasi Android</translation>
@@ -1006,7 +1008,6 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1779468444204342338">Minimum</translation>
 <translation id="1779766957982586368">Tutup jendela</translation>
 <translation id="177989070088644880">Apl (<ph name="ANDROID_PACKAGE_NAME"/>)</translation>
-<translation id="1780152987505130652">Tutup Grup</translation>
 <translation id="1780273119488802839">Mengimpor bookmark...</translation>
 <translation id="1780572199786401845">Laporkan konten menyinggung/tidak aman.</translation>
 <translation id="178092663238929451">Siapkan Berbagi Langsung untuk menerima dan mengirim file kepada orang di sekitar Anda</translation>
@@ -1065,8 +1066,6 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1822635184853104396">Tampilkan histori download lengkap di tab baru</translation>
 <translation id="1823768272150895732">Font</translation>
 <translation id="1823781806707127806">Tambahkan data penjelajahan yang sudah ada ke profil terkelola</translation>
-<translation id="1824499847634940868">Tinjau Update Aplikasi</translation>
-<translation id="1824870205483790748">Sematkan Grup ke Kolom Bookmark</translation>
 <translation id="1825073796163165618">Aktifkan link</translation>
 <translation id="1825565032302550710">Port harus antara 1024 dan 65535</translation>
 <translation id="18260074040409954">Anda dapat menggunakan sandi tersimpan di semua perangkat. Sandi disimpan ke <ph name="GOOGLE_PASSWORD_MANAGER"/> untuk <ph name="EMAIL"/>.</translation>
@@ -1129,10 +1128,12 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1871131409931646355">Histori Download Lengkap</translation>
 <translation id="187145082678092583">Lebih sedikit aplikasi</translation>
 <translation id="1871615898038944731"><ph name="DEVICE_TYPE"/> Anda adalah versi terbaru</translation>
+<translation id="5369933703006241908">Selama proses perubahan sandi, konten dari halaman sandi serta info terkait akan dikirim ke Brave dan mungkin ditinjau secara manual untuk meningkatkan kualitas fitur ini</translation>
 <translation id="1873513359268939357">Kalender Outlook</translation>
 <translation id="1873920700418191231">Berikan izin lagi untuk <ph name="WEBSITE"/></translation>
 <translation id="1874248162548993294">Diizinkan menampilkan iklan apa pun</translation>
 <translation id="1874972853365565008">{NUM_TABS,plural, =1{Pindahkan tab ke jendela lain}other{Pindahkan beberapa tab ke jendela lain}}</translation>
+<translation id="1875939313868351773">Cookie pihak ketiga &amp; data situs</translation>
 <translation id="1877377290348678128">Label (opsional)</translation>
 <translation id="1877860345998737529">Penetapan tindakan tombol</translation>
 <translation id="1878477879455105085">Dibuka</translation>
@@ -1260,6 +1261,7 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1969011864782743497"><ph name="DEVICE_NAME"/> (USB)</translation>
 <translation id="1969550816138571473">Bersiap</translation>
 <translation id="1969654639948595766">Log teks WebRTC (<ph name="WEBRTC_TEXT_LOG_COUNT"/>)</translation>
+<translation id="1970398335244262442">{COUNT,plural, =0{Buka Semua di &amp;Jendela Terisolasi}=1{Buka di &amp;Jendela Terisolasi}other{Buka Semua ({COUNT}) di &amp;Jendela Terisolasi}}</translation>
 <translation id="1971710400942610577">{NUM_EXTENSIONS,plural, =1{Tinjau 1 ekstensi yang mungkin tidak aman}other{Tinjau {NUM_EXTENSIONS} ekstensi yang mungkin tidak aman}}</translation>
 <translation id="1972313920920745320">Situs yang Anda tambahkan akan selalu aktif dan memori tidak akan dikosongkan dari situs tersebut. <ph name="BEGIN_LINK"/>Pelajari lebih lanjut cara membuat situs tertentu tetap aktif<ph name="END_LINK"/></translation>
 <translation id="1972325230031091483">Anda akan menjelajah lebih cepat karena konten dimuat secara proaktif berdasarkan halaman web yang sedang Anda buka</translation>
@@ -1302,6 +1304,7 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="1998715278591719161">Diizinkan melacak tangan Anda</translation>
 <translation id="1999115740519098545">Saat memulai</translation>
 <translation id="1999763610967697511">Menarik lalu melepaskan</translation>
+<translation id="2000031673781037314">Buka semua (<ph name="URL_COUNT"/>) di jendela Terisolasi</translation>
 <translation id="2002109485265116295">Real-time</translation>
 <translation id="2003130567827682533">Untuk mengaktifkan kuota '<ph name="NAME"/>', sambungan ke jaringan Wi-Fi terlebih dahulu</translation>
 <translation id="2003596238737586336">Jadwal saat ini disetel ke <ph name="SUNRISE"/> - <ph name="SUNSET"/>. Setelan ini dikelola oleh administrator Anda.</translation>
@@ -1334,7 +1337,6 @@ Periksa sandi Anda kapan saja di <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translat
 <translation id="2026367923222947564">Halaman penuh</translation>
 <translation id="2026377162111110983">Suara sekitar</translation>
 <translation id="2028449514182362831">Fitur yang memerlukan sensor gerakan tidak akan berfungsi</translation>
-<translation id="2028479214883337535">Diimpor dari MacOS</translation>
 <translation id="202918510990975568">Masukkan sandi Anda untuk mengonfigurasi keamanan dan login</translation>
 <translation id="2030455719695904263">Trackpad</translation>
 <translation id="2030803782168502207">Hapus langganan dari perangkat</translation>
@@ -1424,6 +1426,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="2111670510994270194">Tab baru di sebelah kanan</translation>
 <translation id="2111778868023567359">Anda tidak akan melihat Grup Tab di halaman ini lagi</translation>
 <translation id="2112554630428445878">Selamat datang, <ph name="USERNAME"/></translation>
+<translation id="2113314491145966441">Lihat sertifikat yang diimpor dari macOS</translation>
 <translation id="21133533946938348">Sematkan Tab</translation>
 <translation id="2113479184312716848">Buka &amp;Berkas...</translation>
 <translation id="2114326799768592691">Muat ulang &amp;Frame</translation>
@@ -1737,7 +1740,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="235028206512346451">Jika Anda beranjak dari perangkat, layar akan otomatis dikunci. Jika Anda di depan perangkat, layar akan tetap aktif lebih lama. Jika Anda tidak menggunakan layar kunci, perangkat akan masuk mode tidur dan tidak dikunci.</translation>
 <translation id="2351923523007389195">Diizinkan – <ph name="PERMISSION_DETAILS"/>. Aktifkan <ph name="LINK_BEGIN"/>akses lokasi sistem<ph name="LINK_END"/>.</translation>
 <translation id="2352662711729498748">&lt; 1 MB</translation>
-<translation id="2353168619378866466">Buka Grup</translation>
 <translation id="2353297238722298836">Kamera dan mikrofon diizinkan</translation>
 <translation id="2353682139907904963">Sematkan ekstensi baru ke Toolbar</translation>
 <translation id="2353910600995338714">Ekspor berhasil</translation>
@@ -1766,7 +1768,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="2373499590298659902">Gunakan “0” untuk menekan lama tombol mouse</translation>
 <translation id="2373666622366160481">Paskan dengan kertas</translation>
 <translation id="2375406435414127095">Hubungkan ke ponsel Anda</translation>
-<translation id="6612559367203670996">Brave menggunakan konten dan URL tab yang dibagikan. Tab Anda saat ini dibagikan di percakapan baru. Anda dapat mengubah setelan ini kapan saja.</translation>
 <translation id="2376056713414548745">Bacakan lisan</translation>
 <translation id="2376122016044804363">Konfirmasi disalin ke papan klip</translation>
 <translation id="2377667304966270281">Hard Fault</translation>
@@ -1812,7 +1813,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="2412753904894530585">Kerberos</translation>
 <translation id="2414159296888870200">Lanjutkan menjelajah untuk <ph name="MODULE_TITLE"/></translation>
 <translation id="2414886740292270097">Gelap</translation>
-<translation id="852699978771434627">Anda akan logout dari sebagian besar situs. Anda akan tetap login ke Akun Brave Anda.</translation>
 <translation id="2416435988630956212">Tombol fungsi keyboard</translation>
 <translation id="2419131370336513030">Lihat aplikasi terinstal</translation>
 <translation id="2419706071571366386">Untuk keamanan, logout jika komputer tidak digunakan.</translation>
@@ -1956,6 +1956,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="2508747373511408451">Aplikasi <ph name="APPLICATION_NAME"/> mengharuskan Google Drive tersedia.</translation>
 <translation id="2509495747794740764">Jumlah skala harus berupa angka antara 10 dan 200.</translation>
 <translation id="2509566264613697683">8x</translation>
+<translation id="2509918030571808322"><ph name="TASK_TITLE"/>: <ph name="STEP_PROGRESS"/></translation>
 <translation id="2512065992892294946"><ph name="LANGUAGE"/> (dipilih)</translation>
 <translation id="2513904627589542105">Uji Mandiri</translation>
 <translation id="2853929249020379065">Anda melihat halaman yang telah dikunjungi dan penelusuran yang disarankan untuk membantu Anda kembali ke aktivitas terbaru Anda dengan mudah.
@@ -1963,7 +1964,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
         <ph name="BREAK"/>
         Anda dapat mengelola setelan dari menu kartu atau melihat opsi lainnya di Sesuaikan Brave.</translation>
 <translation id="2514465118223423406">Saat mouse terhubung</translation>
-<translation id="2514938842036917377">Tindakan ini akan menghapus <ph name="TOTAL_USAGE"/> data yang disimpan oleh <ph name="SITE_NAME"/>, situs terkait, dan aplikasi yang terinstal di dalamnya</translation>
 <translation id="2515586267016047495">Alt</translation>
 <translation id="251722524540674480">Konfirmasi nama pengguna Anda</translation>
 <translation id="2517472476991765520">Pindai</translation>
@@ -2094,6 +2094,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="262373406453641243">Colemak</translation>
 <translation id="2624045385113367716">Mengontrol dan memprogram ulang perangkat MIDI diizinkan</translation>
 <translation id="2624142942574147739">Halaman ini mengakses kamera dan mikrofon Anda.</translation>
+<translation id="2485390081857818912">Situs, termasuk Brave, menggunakan pertimbangannya sendiri saat merespons permintaan ini</translation>
 <translation id="2626799779920242286">Coba lagi nanti.</translation>
 <translation id="2627424346328942291">Tidak dapat berbagi</translation>
 <translation id="2627970398976286795">Tinjau risiko Gemini Spark</translation>
@@ -2112,6 +2113,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="2634199532920451708">Histori cetak</translation>
 <translation id="2635094637295383009">Twitter</translation>
 <translation id="2635164452434513092">Tidak memperingatkan Anda untuk situs pribadi, seperti intranet perusahaan Anda</translation>
+<translation id="2635891694752432559">Anda juga dapat menyimpan frame video kapan saja dengan mengklik kanan video dan memilih "Simpan Frame Video Sebagai..."</translation>
 <translation id="2636266464805306348">Judul Jendela</translation>
 <translation id="2637313651144986786">Telusuri Tab ...</translation>
 <translation id="2637400434494156704">PIN salah. Anda memiliki satu kesempatan lagi.</translation>
@@ -2358,7 +2360,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="2809346626032021864">Membaca</translation>
 <translation id="2811205483104563968">Akun</translation>
 <translation id="2813094189969465044">Kontrol orang tua</translation>
-<translation id="2813765525536183456">&amp;Tambahkan Profil Baru</translation>
 <translation id="2814489978934728345">Berhenti membuka halaman ini</translation>
 <translation id="2576226373705473566">Untuk menyimpan sandi ke Akun Brave Anda, aktifkan sinkronisasi.</translation>
 <translation id="2817435998497102771">Setel wallpaper &amp; gaya Anda</translation>
@@ -2452,6 +2453,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="7145068271494881186">Ngobrol dengan Gemini di Brave untuk mendapatkan jawaban, poin-poin penting, dan lainnya saat Anda menjelajah</translation>
 <translation id="2889043468805635730">Tidak ditemukan masalah</translation>
 <translation id="2889064240420137087">Buka link dengan...</translation>
+<translation id="2889937141553641427">{0,plural, =1{Mode Terisolasi}other{# jendela Mode Terisolasi terbuka}}</translation>
 <translation id="2891464434568738544">Tidak ada situs yang tersedia saat ini. Kunjungi situs untuk menambahkannya ke daftar ini.</translation>
 <translation id="2891922230654533301">Gunakan perangkat Anda untuk login ke <ph name="APP_NAME"/>?</translation>
 <translation id="2893168226686371498">Browser default</translation>
@@ -2499,6 +2501,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="2926708162326352948">Tema diperbarui menjadi gambar yang diupload</translation>
 <translation id="2927017729816812676">Penyimpanan Cache</translation>
 <translation id="7099134950659097846">Pilihan disimpan. Pilihan Anda akan berlaku saat Anda login ke layanan Brave lainnya.</translation>
+<translation id="2928361271496576301">Terima tombol cepat</translation>
 <translation id="2928795416630981206">Diizinkan melacak posisi kamera Anda</translation>
 <translation id="8154235090364237757">{NUM_SITES,plural, =1{Brave menghapus izin dari 1 situs}other{Brave menghapus izin dari {NUM_SITES} situs}}</translation>
 <translation id="2931157624143513983">Paskan ke area yang dapat dicetak</translation>
@@ -2588,6 +2591,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="2992754757708650257">Keluar dari situs dan akhiri tugas?</translation>
 <translation id="2992931425024192067">Tampilkan semua konten notifikasi</translation>
 <translation id="2993517869960930405">Info Aplikasi</translation>
+<translation id="814864682411040365">Untuk memberikan jawaban yang lebih relevan, Brave menggunakan konten dan URL tab yang dibagikan. Tab Anda saat ini dibagikan di percakapan baru. Anda dapat mengubah setelan ini kapan saja.</translation>
 <translation id="2994804273850542871">Tingkat 4: ULTRA</translation>
 <translation id="2995472388018163047">{NUM_GROUPS,plural, =1{Simpan grup ini untuk menambahkan tab nanti, atau keluar dari grup jika Anda tidak ingin lagi mengaksesnya}other{Simpan grup ini untuk menambahkan tab nanti, atau keluar dari grup jika Anda tidak ingin lagi mengaksesnya}}</translation>
 <translation id="895607917803377515">Pelajari lebih lanjut cara AI membentuk pengalaman Anda serta kontrol yang disediakan oleh Brave</translation>
@@ -2653,6 +2657,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3031417829280473749">Agen X</translation>
 <translation id="3031532026314193077">Gunakan touchpad dan keyboard untuk mengklik kanan</translation>
 <translation id="3031557471081358569">Pilih item yang akan diimpor:</translation>
+<translation id="3032115590613559078">Kelola sertifikat yang diimpor dari macOS</translation>
 <translation id="3032204772252313646">Teks otomatis</translation>
 <translation id="3032272345862007156">Tema AI terbaru <ph name="INDEX"/></translation>
 <translation id="3033167916029856961">Mode Jangan Ganggu diaktifkan</translation>
@@ -2694,6 +2699,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="501178722143848696">Teks akan dikirim ke Brave untuk diproses.</translation>
 <translation id="306166624240243643">Tinjau pembaruan nama dan URL</translation>
 <translation id="3062037978804523418"><ph name="TASK_TITLE"/>: Jika Anda tidak segera merespons, Gemini akan berhenti mengerjakan tugas ini untuk menghemat baterai</translation>
+<translation id="3062655045399308513">Hapus Data Penjelajahan...</translation>
 <translation id="3064871050034234884">Situs dapat memutar suara</translation>
 <translation id="3065041951436100775">Masukan tab yang ditutup.</translation>
 <translation id="3065522099314259755">Latensi pengulangan keyboard</translation>
@@ -2724,7 +2730,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3088052000289932193">Situs menggunakan MIDI</translation>
 <translation id="3088325635286126843">&amp;Ubah nama...</translation>
 <translation id="3089137131053189723">Penelusuran dihapus</translation>
-<translation id="3089941350495701096">&amp;Daftar Bacaan</translation>
 <translation id="3090227230165225418">Umumkan notifikasi download</translation>
 <translation id="3093714882666365141">Jangan izinkan situs menginstal pengendali pembayaran</translation>
 <translation id="3094080575472025333">Blokir aplikasi</translation>
@@ -2841,8 +2846,10 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3184536091884214176">Siapkan atau kelola printer CUPS. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="3184591616546256659">Gunakan PIN ini untuk mengubah setelan kontrol orang tua.
     Jika Anda lupa PIN, powerwash perangkat ini dan siapkan lagi.</translation>
+<translation id="3184916134413175521">Beri rating</translation>
 <translation id="3185014249447200271">{NUM_APPS,plural, =1{Aplikasi ini diblokir}other{Beberapa aplikasi diblokir}}</translation>
 <translation id="3185454065699440434">Izinkan ekstensi di <ph name="SITE_NAME"/></translation>
+<translation id="3186266269323401475">Aktifkan notifikasi untuk mendapatkan info terbaru saat Anda menjelajah atau tidak di tempat</translation>
 <translation id="7586329819243474001">Bisakah Anda melihat perangkat transmisi Anda di
     <ph name="BEGIN_LINK"/>
     aplikasi Brave Home<ph name="END_LINK"/>?</translation>
@@ -2885,6 +2892,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3222779980972075989">Hubungkan ke <ph name="USB_VM_NAME"/></translation>
 <translation id="3223109931751684474">Hapus akses ke kunci sandi Anda di perangkat ini</translation>
 <translation id="3223531857777746191">Tombol Reset</translation>
+<translation id="8378133444807140108">Brave hanya akan melihat apa yang terlihat oleh Anda</translation>
 <translation id="3225084153129302039">Avatar ungu default</translation>
 <translation id="3226249862705569834">Sensor yang sedang digunakan</translation>
 <translation id="3226487301970807183">Aktifkan panel samping rata kiri</translation>
@@ -2908,8 +2916,10 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3241680850019875542">Pilih direktori akar ekstensi untuk dipaket. Untuk memperbarui ekstensi, pilih juga file kunci pribadi untuk dipakai ulang.</translation>
 <translation id="3241810535741601486">Perubahan ini bersifat permanen dan tidak dapat dibatalkan. Update yang diperpanjang berlaku untuk semua pengguna perangkat ini. <ph name="LINK_START"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="324205398936770726">Avatar Anda</translation>
+<translation id="3242764115495920926">Tawarkan untuk otomatis mengubah sandi</translation>
 <translation id="3243017971870859287">Membaca nomor seri perangkat dan komponen ChromeOS Flex</translation>
 <translation id="324366796737464147">Peredam bising</translation>
+<translation id="3243680258677029936">{0,plural, =1{Terisolasi}other{Terisolasi (#)}}</translation>
 <translation id="3244271242291266297">MM</translation>
 <translation id="3244294424315804309">Lanjutkan mematikan suara</translation>
 <translation id="3247649647204519958">Dari sini, Anda dapat melihat dan mengelola izin ekstensi untuk situs yang Anda buka</translation>
@@ -2928,6 +2938,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3254451942070605467">Mendownload <ph name="FILE_NAME"/>, <ph name="PERCENT_REMAINING"/>% lagi</translation>
 <translation id="3254506277019076812">Tambahkan keahlian</translation>
 <translation id="3254516606912442756">Deteksi zona waktu otomatis dinonaktifkan</translation>
+<translation id="3255488448140650626">Cara kerja berbagi screenshot</translation>
 <translation id="3257733480216378006">Izinkan <ph name="EXTENSIONS_REQUESTING_ACCESS_COUNT"/>?</translation>
 <translation id="325797067711573598">Download yang mencurigakan diblokir</translation>
 <translation id="3261090393424563833">Tingkatkan kecepatan</translation>
@@ -2959,7 +2970,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3282210178675490297">Membagikan tab ke <ph name="APP_NAME"/></translation>
 <translation id="3284050785966252943">Pratinjau Metadata Isi Otomatis</translation>
 <translation id="3285218179623157680"><ph name="WINDOW_TITLE"/> - Tampilan bawah</translation>
-<translation id="3285322247471302225">&amp;Tab Baru</translation>
 <translation id="3285329711156774325">Telusuri keahlian</translation>
 <translation id="3285500645985761267">Izinkan situs terkait melihat aktivitas Anda di grup</translation>
 <translation id="328571385944182268">Simpan sandi Anda?</translation>
@@ -3102,6 +3112,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3394850431319394743">Diizinkan menggunakan ID untuk memutar konten yang dilindungi</translation>
 <translation id="339722927132407568">Berhenti berputar</translation>
 <translation id="3399432415385675819">Notifikasi akan dinonaktifkan</translation>
+<translation id="3400036602686830681">Sandi Anda terekspos dalam sebuah pelanggaran data. Ubah sandi sekarang atau tinjau semua masalah di <ph name="BEGIN_LINK"/>Pemeriksaan Sandi<ph name="END_LINK"/>.</translation>
 <translation id="3400390787768057815"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (<ph name="REFRESH_RATE"/> Hertz) - saling bertautan</translation>
 <translation id="3401484564516348917">Membaca informasi tentang browser, OS, perangkat, software terinstal, nilai registry, dan file</translation>
 <translation id="3402255108239926910">Pilih avatar</translation>
@@ -3228,6 +3239,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3491171603443463516">Data lokal dapat dipulihkan jika Anda lupa PIN atau sandi</translation>
 <translation id="3491616972057195633">Tombol pantul</translation>
 <translation id="3491678231052507920">Situs biasanya menggunakan perangkat dan data virtual reality Anda agar Anda dapat masuk ke sesi VR</translation>
+<translation id="3493069561299219311">Buka di &amp;jendela Terisolasi</translation>
 <translation id="3493486281776271508">Diperlukan sambungan Internet</translation>
 <translation id="3494893110166252544"><ph name="PERCENTAGE"/>% - Pengisian daya dihentikan sementara</translation>
 <translation id="3495496470825196617">Tidak ada aktivitas saat mengisi daya</translation>
@@ -3314,6 +3326,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3559079791149580653">Hentikan transmisi layar ke <ph name="DEVICE_NAME"/></translation>
 <translation id="3560034655160545939">&amp;Periksa ejaan</translation>
 <translation id="3561201631376780358">Buka Panel Samping untuk melihat Semua Bookmark</translation>
+<translation id="356178838783806371">Telusuri “<ph name="SEARCH_TERMS"/>”</translation>
 <translation id="8111951508601102818">Lihat tab Brave terbaru dari ponsel</translation>
 <translation id="356268274299520831">Ubah di Situs</translation>
 <translation id="3563392617245068355">Suasana</translation>
@@ -3379,6 +3392,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3605156246402033687">{COUNT,plural, =1{{COUNT} akun menggunakan sandi yang sama}other{{COUNT} akun menggunakan sandi yang sama}}</translation>
 <translation id="3605515937536882518">Nilai formulir diperbarui</translation>
 <translation id="3605780360466892872">Pria Berdasi</translation>
+<translation id="3605907346217095465">Diimpor dari macOS</translation>
 <translation id="3607799000129481474"><ph name="SITE"/> ingin memverifikasi diri Anda</translation>
 <translation id="3608460311600621471">Masukkan alasan untuk mencetak data ini:</translation>
 <translation id="3608730769702025110">Langkah 3 dari 4: Tinjau informasi identitas pribadi</translation>
@@ -3527,6 +3541,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3711945201266135623">Menemukan <ph name="NUM_PRINTERS"/> printer dari server cetak</translation>
 <translation id="3712143870407382523">Pilih jendela untuk sisi ini</translation>
 <translation id="3712897371525859903">Simp&amp;an halaman sebagai...</translation>
+<translation id="3712966523643024813">Yang baru</translation>
 <translation id="371300529209814631">Sebelumnya/Selanjutnya</translation>
 <translation id="371302509916403935">Garis bawah</translation>
 <translation id="3713047097299026954">Kunci keamanan ini tidak memiliki data login apa pun</translation>
@@ -3600,7 +3615,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3757567010566591880">Lepaskan sematan dari Toolbar</translation>
 <translation id="3757645900890881944">Alat penelusuran</translation>
 <translation id="3757733214359997190">Tidak ada situs yang ditemukan</translation>
-<translation id="3757825964096339958">Fokuskan Grup</translation>
 <translation id="375841316537350618">Mendownload skrip proxy...</translation>
 <translation id="375962596908891207"><ph name="DROPDOWN_NAME"/> bulan</translation>
 <translation id="2624625863458105774">Untuk menghapus data penjelajahan dari semua perangkat yang disinkronkan dan dari Akun Brave Anda, <ph name="BEGIN_LINK"/>masukkan frasa sandi<ph name="END_LINK"/>.</translation>
@@ -3627,7 +3641,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3775432569830822555">Sertifikat Server SSL</translation>
 <translation id="3776508619697147021">Situs dapat meminta untuk otomatis mendownload beberapa file</translation>
 <translation id="3777483481409781352">Tidak dapat mengaktifkan perangkat seluler</translation>
-<translation id="3777796259512476958">Membuat Anda logout dari sebagian besar situs</translation>
 <translation id="3778208826288864398">Kunci keamanan dikunci karena Anda terlalu sering memasukkan PIN yang salah. Anda harus menyetel ulang kunci keamanan.</translation>
 <translation id="3778740492972734840">Alat &amp;pengembang</translation>
 <translation id="3779221255357533293">{BROWSING_HISTORY_COUNT,plural, =1{histori penjelajahan Anda untuk # situs}other{histori penjelajahan Anda untuk # situs}}</translation>
@@ -3690,6 +3703,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3812525830114410218">Sertifikat buruk</translation>
 <translation id="883304095704384301">Buka <ph name="BEGIN_LINK_CHROMIUM"/>bantuan Brave<ph name="END_LINK_CHROMIUM"/> jika tidak dapat menemukan yang Anda cari</translation>
 <translation id="3813358687923336574">Bahasa yang digunakan untuk menerjemahkan halaman dan Jawaban Instan</translation>
+<translation id="381485723922188688">Opsi</translation>
 <translation id="3815668647912194650">Simpan grup ini untuk menambahkan tab nanti, atau keluar dari grup jika Anda tidak ingin lagi mengaksesnya.</translation>
 <translation id="8338457030135232378">Warna Brave</translation>
 <translation id="3817524650114746564">Buka setelan proxy komputer Anda</translation>
@@ -3754,7 +3768,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="386009056910366930">Kelola Grup Tab “<ph name="GROUP_NAME"/>”</translation>
 <translation id="2888509400300796817">Saat ini menggunakan sandi Akun Brave. Anda dapat menyiapkan sandi <ph name="DEVICE_TYPE"/> untuk memudahkan proses login.</translation>
 <translation id="3861977424605124250">Tampilkan saat memulai</translation>
-<translation id="386239283124269513">&amp;Pulihkan Grup</translation>
 <translation id="3863215163880213672">Impor dan Ikat ke <ph name="CERT_GROUP"/></translation>
 <translation id="3864481028928394786">Anda pernah mengunjungi situs ini, dan situs tersebut meminta dijadikan pintasan. Anda dapat mengaktifkannya.</translation>
 <translation id="3865414814144988605">Resolusi</translation>
@@ -3785,6 +3798,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3877209288227498506">Pilih untuk menampilkan penggunaan memori dan gambar di pratinjau kartu informasi tab</translation>
 <translation id="3879748587602334249">Pengelola download</translation>
 <translation id="3880513902716032002">Beberapa halaman yang Anda buka akan dipramuat</translation>
+<translation id="6655425225434903659">Telusuri Halaman Ini dengan Brave</translation>
 <translation id="3884152383786131369">Konten web yang tersedia dalam beberapa bahasa akan menggunakan bahasa pertama yang didukung dari daftar ini. Preferensi ini akan disinkronkan dengan setelan browser Anda. <ph name="BEGIN_LINK_LEARN_MORE"/>Pelajari lebih lanjut<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="3885112598747515383">Update dikelola oleh administrator Anda</translation>
 <translation id="3888501106166145415">Jaringan Wi-Fi terkait</translation>
@@ -3846,7 +3860,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="3928570707778085600">Simpan perubahan ke <ph name="FILE_OR_FOLDER_NAME"/>?</translation>
 <translation id="3928659086758780856">Tinta hampir habis</translation>
 <translation id="3929426037718431833">Ekstensi ini dapat melihat dan mengubah informasi pada situs ini.</translation>
-<translation id="3930155420525972941">Pindahkan Grup ke Jendela Baru</translation>
 <translation id="3930737994424905957">Mencari perangkat</translation>
 <translation id="3930968231047618417">Warna latar belakang</translation>
 <translation id="3932356525934356570">Sematkan <ph name="EXTENSION_NAME"/></translation>
@@ -4007,7 +4020,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="4051505866566398331">Jalur Penginstalan:</translation>
 <translation id="405181879009056822">Setelan ChromeOS</translation>
 <translation id="4052120076834320548">Mungil</translation>
-<translation id="4052913941260326985">Buat &amp;Kode QR</translation>
 <translation id="4053028343167125998">Buka kunci <ph name="TOKEN_NAME"/> untuk mengimpor sertifikat klien.</translation>
 <translation id="4053833479432165765">&amp;Instal halaman sebagai aplikasi...</translation>
 <translation id="4054070260844648638">Terlihat oleh semua orang</translation>
@@ -4039,6 +4051,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="4085298594534903246">JavaScript diblokir di halaman ini.</translation>
 <translation id="4085620044235559093">Pilih aplikasi untuk membuka file <ph name="FILE_TYPE"/></translation>
 <translation id="4086565736678483233">Anda dapat mengaksesnya di Metode Pembayaran</translation>
+<translation id="4086790464420017258">Bersiap memulai tugas Anda…</translation>
 <translation id="4087089424473531098">Membuat ekstensi:
 
 <ph name="EXTENSION_FILE"/></translation>
@@ -4129,6 +4142,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="4167924027691268367">Tindakan lainnya untuk pintasan <ph name="SHORTCUT_TITLE"/></translation>
 <translation id="4168015872538332605">Beberapa setelan milik <ph name="PRIMARY_EMAIL"/> digunakan bersama dengan Anda. Setelan ini akan memengaruhi akun Anda hanya jika memakai fitur masuk banyak akun.</translation>
 <translation id="4168651806173792090"><ph name="NETWORK_NAME"/> diakhiri dengan <ph name="LAST_FOUR_DIGITS"/></translation>
+<translation id="4169275505426201952">Beri rating...</translation>
 <translation id="4169535189173047238">Jangan izinkan</translation>
 <translation id="4170314459383239649">Hapus Saat Keluar</translation>
 <translation id="4170685671197375581">Aktifkan pintasan</translation>
@@ -4180,7 +4194,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="4210380525132844778">Alasan: <ph name="RULE"/> ditemukan dalam daftar "<ph name="LIST_NAME"/>".</translation>
 <translation id="4210428686880035809">Buka Link di Tampilan Kiri</translation>
 <translation id="4211362364312260125">Mengidentifikasi penanda utama di halaman web untuk teknologi pendukung</translation>
-<translation id="421182450098841253">&amp;Tampilkan Bilah Bookmark</translation>
 <translation id="4211904048067111541">Hentikan penggunaan dengan aplikasi Android</translation>
 <translation id="42126664696688958">Ekspor</translation>
 <translation id="4213540068152645535">Terjadi error saat mengubah sandi Anda</translation>
@@ -4290,7 +4303,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="429312253194641664">Sebuah situs sedang memutar media</translation>
 <translation id="4293154608148215505">ponsel Anda</translation>
 <translation id="4293219510510666933">Gunakan bahasa sehari-hari untuk menelusuri histori penjelajahan dan menemukan situs yang pernah Anda buka. Anda juga dapat mengajukan pertanyaan dan mendapatkan jawaban berdasarkan histori penjelajahan Anda. Setelan ini aktif.</translation>
-<translation id="429344752071832554">Jangan Fokuskan Grup</translation>
 <translation id="4294392694389031609"><ph name="FILE_NAME"/> dihapus dari histori download, tetapi masih ada di perangkat Anda</translation>
 <translation id="429530814437327574">Tampilkan bertumpuk</translation>
 <translation id="4295979599050707005">Harap login lagi untuk mengonfirmasi bahwa akun <ph name="USER_EMAIL"/> dapat digunakan dengan situs, aplikasi, dan ekstensi di Brave serta Google Play. Anda juga dapat menghapus akun ini. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
@@ -4398,6 +4410,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="4378363201814870400">Kelola info isi otomatis Anda untuk penjelajahan yang lebih cepat—info seperti sandi, metode pembayaran, alamat, dan kartu tanda pengenal</translation>
 <translation id="4378551569595875038">Menghubungkan...</translation>
 <translation id="4378589147979399051">Mengontrol kursor mouse dengan keyboard utama</translation>
+<translation id="30088850081141729">Tanya Brave Tentang “<ph name="SEARCH_TERMS"/>”</translation>
 <translation id="4379097572583973456">Situs juga dapat menyematkan konten dari situs lain, misalnya gambar, iklan, dan teks. Situs lain tersebut juga dapat menyimpan data.</translation>
 <translation id="4379281552162875326">Uninstal "<ph name="APP_NAME"/>"?</translation>
 <translation id="4379623957571212011">Pilih gambar untuk langsung menerapkan tema</translation>
@@ -4410,6 +4423,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="4384886290276344300">Ubah setelan keyboard</translation>
 <translation id="438503109373656455">Sembrani</translation>
 <translation id="4385146930797718821">Screenshot disalin ke papan klip</translation>
+<translation id="4385519085989220359">Tanyakan Tentang “<ph name="SEARCH_TERMS"/>”</translation>
 <translation id="4385985255515673508">{NUM_EXTENSIONS,plural, =1{Ekstensi ini dinonaktifkan karena tidak lagi didukung}other{Ekstensi ini dinonaktifkan karena tidak lagi didukung}}</translation>
 <translation id="4386435410933281983">Tidak dapat menyimpan. Coba lagi</translation>
 <translation id="4386604394450371010">ringkasan</translation>
@@ -4478,13 +4492,13 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="4428518847683570286">{NUM_TASKS,plural, =1{Tugas selesai}other{Tugas selesai}}</translation>
 <translation id="4429163740524851942">Tata letak keyboard fisik</translation>
 <translation id="4430019312045809116">Volume</translation>
+<translation id="443008484043213881">Alat</translation>
 <translation id="4430369329743628066">Bookmark ditambahkan</translation>
 <translation id="4430422687972614133">Aktifkan kartu virtual</translation>
 <translation id="4431962107539413562">Dapatkan sandi Anda di semua perangkat Anda</translation>
 <translation id="4432621511648257259">Sandi salah</translation>
 <translation id="4434611816075088065">Tidak ada yang perlu Anda perhatikan untuk saat ini</translation>
 <translation id="4435020454241191356">Tambahkan nama atau label untuk profil Anda</translation>
-<translation id="8811654838370811218">Membuat Anda logout dari sebagian besar situs. Anda akan tetap login di Akun Brave Anda sehingga data yang disinkronkan dapat dihapus.</translation>
 <translation id="4436201444922652535">Link</translation>
 <translation id="443719869834432257">Jenis Peristiwa: <ph name="EVENT_TYPES"/></translation>
 <translation id="4437879751057074691">Tawarkan penyimpanan sandi dan kunci sandi</translation>
@@ -4539,7 +4553,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="4493167769966437077">Hapus <ph name="LANGUAGE_NAME"/> dari daftar bahasa yang tidak menawarkan terjemahan</translation>
 <translation id="4495002167047709180">Izinkan ekstensi ini di <ph name="SITE"/>?</translation>
 <translation id="4495419450179050807">Jangan tampilkan pada halaman ini</translation>
-<translation id="4497360513077910151">Sembunyikan Grup</translation>
 <translation id="4500055235123625757">Gemini dapat menjawab pertanyaan tentang video atau audio yang telah Anda putar di <ph name="LINK_BEGIN"/>beberapa situs<ph name="LINK_END"/>.</translation>
 <translation id="4500114933761911433"><ph name="PLUGIN_NAME"/> telah error</translation>
 <translation id="4500647907053779331">&amp;Terjemahkan pilihan ke <ph name="LANGUAGE"/></translation>
@@ -4561,7 +4574,6 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="4509421746503122514">Luncurkan kembali untuk mengupdate</translation>
 <translation id="4510195992002502722">Gagal mengirim masukan. Mencoba lagi ...</translation>
 <translation id="4511344327646819192">Untuk mencegah orang lain menggunakan sandi Anda, ubah sandi di <ph name="WEBSITE"/></translation>
-<translation id="4513072860957814107">&amp;Hapus Data Penjelajahan...</translation>
 <translation id="4513872120116766993">Penulisan prediktif</translation>
 <translation id="4513946894732546136">Masukan</translation>
 <translation id="4515942088136451195">Organisasi Membatasi Apa Saja yang Dapat Anda Simpan</translation>
@@ -4663,6 +4675,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="4589197033939192905"><ph name="PASSWORD_DOMAIN"/> dan <ph name="DOMAIN"/> tampaknya berkaitan. Pastikan Anda memercayai <ph name="DOMAIN"/> sebelum menggunakan sandi Anda.</translation>
 <translation id="4589713469967853491">Log berhasil ditulis ke direktori Download.</translation>
 <translation id="459204634473266369">Tidak ada perangkat yang disimpan ke <ph name="PRIMARY_EMAIL"/></translation>
+<translation id="1653778465074725875">Tanya Brave info tentang gambar ini</translation>
 <translation id="4592891116925567110">Aplikasi menggambar dengan stilus</translation>
 <translation id="4593021220803146968">&amp;Buka <ph name="URL"/></translation>
 <translation id="4593962599442730215">Ubah preferensi Anda</translation>
@@ -4684,6 +4697,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="4608500690299898628">&amp;Temukan...</translation>
 <translation id="4609164937357979319">Pemilihan akun</translation>
 <translation id="4610022258080608778">Edit pintasan pilihan</translation>
+<translation id="5734301252738777383">Telusuri halaman ini dengan Brave</translation>
 <translation id="4610493438923139095">Tidak tepercaya</translation>
 <translation id="4610637590575890427">Apakah maksud Anda ingin mengunjungi <ph name="SITE"/>?</translation>
 <translation id="4611619000650855880">Jika tombol kiri mouse dipilih, gunakan “/” untuk mengklik dua kali</translation>
@@ -4808,6 +4822,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 <translation id="4699172675775169585">Gambar dan file dalam cache</translation>
 <translation id="4699357559218762027">(diluncurkan otomatis)</translation>
 <translation id="4699473989647132421">Garis pantai</translation>
+<translation id="4700734033170984447">Ringkas Halaman Ini dengan Gemini</translation>
 <translation id="4701335814944566468">Dilihat kemarin</translation>
 <translation id="4705082603944362042">{MIN_PIN_LENGTH,plural, =1{Masukkan PIN baru. PIN harus minimal satu karakter dan dapat berisi huruf, angka, dan karakter lain.}other{Masukkan PIN baru. PIN harus minimal # karakter dan dapat berisi huruf, angka, dan karakter lainnya.}}</translation>
 <translation id="470644585772471629">Inversi warna</translation>
@@ -4838,6 +4853,7 @@ Anda dapat mengelola setelan akun ini dengan menginstal aplikasi Family Link di 
 Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="4726710629007580002">Ada peringatan saat mencoba untuk menginstal ekstensi ini:</translation>
 <translation id="4728558894243024398">Platform</translation>
+<translation id="4729379213940929490">Dapatkan info terbaru tentang tugas Anda</translation>
 <translation id="4870553660139015263">Jika diaktifkan, data akan disimpan di Akun Brave Anda dan dapat digunakan di semua perangkat Anda. Jika dinonaktifkan, data hanya disimpan di perangkat ini. Untuk opsi sinkronisasi ChromeOS, buka <ph name="LINK_BEGIN"/>setelan ChromeOS<ph name="LINK_END"/>.</translation>
 <translation id="4730888769809690665">Notifikasi diizinkan untuk <ph name="SITE"/></translation>
 <translation id="4732799736617504962">Mikrofon yang terhubung hanya dapat mendukung peredam bising</translation>
@@ -4884,6 +4900,7 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="4765053150631027076">{COUNT,plural, =1{{COUNT} sandi untuk "<ph name="URL"/>" hanya disimpan di perangkat ini. Untuk menggunakannya di perangkat lain, simpan sandi di akun Anda.}other{{COUNT} sandi untuk "<ph name="URL"/>" hanya disimpan di perangkat ini. Untuk menggunakannya di perangkat lain, simpan sandi di akun Anda.}}</translation>
 <translation id="4765524037138975789">{MONTHS,plural, =1{Perangkat ini akan disimpan selama 1 bulan dan Anda dapat terhubung pada waktu berikutnya tanpa kode. Ini disetel oleh administrator Anda.}other{Perangkat ini akan disimpan selama {MONTHS} bulan dan Anda dapat terhubung pada waktu berikutnya tanpa kode. Ini disetel oleh administrator Anda.}}</translation>
 <translation id="476563889641554689">Pilih area untuk ditelusuri dengan Lens</translation>
+<translation id="4765852155188807219">{COUNT,plural, =0{Buka semua di &amp;jendela Terisolasi}=1{Buka di &amp;jendela Terisolasi}other{Buka semua ({COUNT}) di &amp;jendela Terisolasi}}</translation>
 <translation id="4766551476047591055">{MINUTES,plural, =0{Memeriksa kunci publik dan blok integritas... Kurang dari 1 menit lagi}=1{Memeriksa kunci publik dan blok integritas... 1 menit lagi}other{Memeriksa kunci publik dan blok integritas... # menit lagi}}</translation>
 <translation id="4766598565665644999">Semua ekstensi dapat membaca &amp; mengubah <ph name="HOST"/></translation>
 <translation id="4767427586072640478">Pelajari lebih lanjut ekstensi yang dinonaktifkan.</translation>
@@ -4891,6 +4908,7 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="4770119228883592393">Izin diminta, tekan ⌘ + Option + Panah bawah untuk merespons</translation>
 <translation id="4772914216048388646">Teratur</translation>
 <translation id="4773122030389014189">Bagikan grup tab “<ph name="GROUP_NAME"/>”</translation>
+<translation id="4773299976671772492">Dihentikan</translation>
 <translation id="477548766361111120">Izinkan ekstensi membaca dan mengubah situs ini</translation>
 <translation id="4775646243557794597"><ph name="TIME_PERIOD"/> dihapus</translation>
 <translation id="4776311127346151860"><ph name="DEVICE_NAME"/> telah terhubung</translation>
@@ -4916,7 +4934,6 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="4791037424585594169">(UDP)</translation>
 <translation id="4791793693640849493">Simpan item di akun</translation>
 <translation id="4792290259143007505">Aktifkan akselerasi TrackPoint</translation>
-<translation id="4792711294155034829">Lapo&amp;rkan Masalah...</translation>
 <translation id="4794910597689955457">Pindahkan <ph name="NUM_OF_FILES"/> file ke <ph name="CLOUD_PROVIDER"/> untuk dibuka?</translation>
 <translation id="479536056609751218">Halaman Web, HTML Saja</translation>
 <translation id="4795670271446126525">Deburan ombak</translation>
@@ -4985,8 +5002,8 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="4839303808932127586">Sim&amp;pan video sebagai...</translation>
 <translation id="4841475798258477260">Perangkat ini hanya dapat terhubung ke jaringan seluler tertentu. <ph name="BEGIN_LINK_LEARN_MORE"/>Pelajari lebih lanjut<ph name="END_LINK_LEARN_MORE"/></translation>
 <translation id="4842976633412754305">Halaman ini mencoba memuat skrip dari sumber yang tidak diautentikasi.</translation>
-<translation id="4843037705239202082">Pemahaman Media</translation>
 <translation id="484462545196658690">Otomatis</translation>
+<translation id="4846273627924459555">Tanyakan tentang “<ph name="SEARCH_TERMS"/>”</translation>
 <translation id="4846628405149428620">Pilih tempat situs ini dapat menyimpan perubahan</translation>
 <translation id="4846680374085650406">Anda mengikuti saran administrator untuk setelan ini.</translation>
 <translation id="4846897209694249040">Tidak diizinkan merekam dan menggunakan input mouse Anda</translation>
@@ -5051,7 +5068,6 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="4882848900607400156">Jika Anda membagikan lokasi presisi, Gemini dapat menjawab pertanyaan Anda dengan lebih akurat. Data Anda tidak digunakan untuk meningkatkan kualitas model AI generatif.</translation>
 <translation id="4882919381756638075">Situs biasanya menggunakan mikrofon Anda untuk fitur komunikasi seperti video chat</translation>
 <translation id="4883436287898674711">Semua situs <ph name="WEBSITE_1"/></translation>
-<translation id="48838266408104654">Pengelola &amp;Tugas</translation>
 <translation id="4884937942297374058">Perlindungan yang ditingkatkan nonaktif</translation>
 <translation id="4884987973312178454">6x</translation>
 <translation id="4885692421645694729">Ekstensi ini tidak memiliki akses situs tambahan</translation>
@@ -5226,7 +5242,6 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="5017250179386090956">Mendownload file anotasi node utama</translation>
 <translation id="5017529052065664584">15 menit terakhir</translation>
 <translation id="5018207570537526145">Buka situs ekstensi</translation>
-<translation id="5019487038187875030">Lihat sertifikat yang diimpor dari MacOS</translation>
 <translation id="5020008942039547742">Pilih jendela lain</translation>
 <translation id="5020146655450187658">Anda offline. Periksa koneksi internet Anda untuk mengelola situs yang dapat digunakan Gemini untuk login dengan akun Anda.</translation>
 <translation id="5020651427400641814">Aktifkan penyimpanan log ucapan</translation>
@@ -5301,7 +5316,6 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="5079010647467150187">Tambahkan VPN bawaan ...</translation>
 <translation id="5079950360618752063">Gunakan sandi yang disarankan</translation>
 <translation id="508059534790499809">Perbarui tiket Kerberos</translation>
-<translation id="5081124414979006563">&amp;Buka Profil Tamu</translation>
 <translation id="5081974595802103358">Gagal menyalin link</translation>
 <translation id="5083035541015925118">ctrl + alt + panah atas</translation>
 <translation id="5084622689760736648">Situs biasanya berfungsi seperti yang Anda harapkan</translation>
@@ -5344,7 +5358,6 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="511147239888121455">Cadangkan data Anda?</translation>
 <translation id="5111474831474629851">Organisasi Anda tidak mengizinkan Anda login dengan akun ini</translation>
 <translation id="5111794652433847656">Tidak ada kunci sandi untuk <ph name="APP_NAME"/> di perangkat ini</translation>
-<translation id="5112577000029535889">Alat &amp;Pengembang</translation>
 <translation id="5112686815928391420">{NUM_OF_FILES,plural, =1{1 file dipindahkan}other{{NUM_OF_FILES} file dipindahkan}}</translation>
 <translation id="511313294362309725">Nyalakan Sambungan Cepat</translation>
 <translation id="6409962091529734959">Pelajari lebih lanjut penjelajahan otomatis Brave</translation>
@@ -5374,6 +5387,7 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="5133035646508467110">Jika Anda berbagi perangkat ini dengan orang lain, Anda dapat menggunakan sidik jari untuk memverifikasi diri Anda setiap kali Anda menggunakan sandi tersimpan</translation>
 <translation id="5135533361271311778">Tidak dapat membuat item bookmark.</translation>
 <translation id="513555878193063507">Tambahkan APN baru</translation>
+<translation id="3013375958255760305">Telusuri gambar ini dengan Brave</translation>
 <translation id="5136343472380336530">Pastikan kedua perangkat tidak terkunci, berdekatan, serta mengaktifkan Bluetooth. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="5136529877787728692">F7</translation>
 <translation id="5138227688689900538">Tampilkan lebih sedikit</translation>
@@ -5442,7 +5456,6 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="3075701570150269201">Anda dapat menggunakan kunci sandi ini untuk login lebih cepat di seluruh perangkat Anda. Sandi akan disimpan ke Pengelola Sandi Brave untuk <ph name="ACCOUNT_NAME"/>.</translation>
 <translation id="5186792064936776005">Gunakan default jika tersedia</translation>
 <translation id="5186931074173692059">Sandi Anda disimpan ke <ph name="GOOGLE_PASSWORD_MANAGER"/> untuk <ph name="EMAIL"/>.</translation>
-<translation id="5187641678926990264">&amp;Instal Halaman sebagai Aplikasi...</translation>
 <translation id="5187826826541650604"><ph name="KEY_NAME"/> (<ph name="DEVICE"/>)</translation>
 <translation id="5188242000716462162">Dibagikan oleh <ph name="USER_NAME"/></translation>
 <translation id="5189244881767082992">Baris</translation>
@@ -5513,6 +5526,7 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="5238301240406177137">Simpan di Akun</translation>
 <translation id="523862956770478816">Izin situs</translation>
 <translation id="5240247138804326767">Atur Tampilan Terpisah</translation>
+<translation id="5241361816687301119">Buka di &amp;Jendela Terisolasi</translation>
 <translation id="5244234799035360187">OneDrive kini akan muncul di aplikasi File</translation>
 <translation id="5244474230056479698">Menyinkronkan dengan <ph name="EMAIL"/></translation>
 <translation id="5246282308050205996"><ph name="APP_NAME"/> ngadat. Klik balon ini untuk menyalakan kembali apl.</translation>
@@ -5544,7 +5558,6 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="5269977353971873915">Gagal Mencetak</translation>
 <translation id="5271124474068841290">Membagikan tab saat ini kepada Gemini, bahkan saat Anda beralih tab. Data Anda tidak digunakan untuk meningkatkan kualitas model AI generatif.</translation>
 <translation id="5271578170655641944">Hapus akses Google Drive?</translation>
-<translation id="5272198173084686007">Tidak Ada Tab dari Perangkat Lain</translation>
 <translation id="527335345740023523">Saat ini Anda memiliki <ph name="NUMBERED_ITEM_1"/>, <ph name="NUMBERED_ITEM_2"/>, <ph name="NUMBERED_ITEM_3"/>, dan lainnya. Organisasi Anda, <ph name="ACCOUNT_MANAGER"/>, akan dapat melihat dan mengelola data ini.</translation>
 <translation id="5273806377963980154">Edit URL situs</translation>
 <translation id="5275084684151588738">Kamus Pengguna</translation>
@@ -5562,11 +5575,11 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="5280426389926346830">Buat pintasan?</translation>
 <translation id="5280966903879030278">Gunakan bahasa sehari-hari untuk menelusuri histori penjelajahan dan menemukan situs yang pernah Anda buka. Setelan ini nonaktif.</translation>
 <translation id="5281013262333731149">Buka di: <ph name="OPEN_BROWSER"/></translation>
+<translation id="5880831677103988141">Selama perubahan sandi, konten halaman dan info terkait dikirim ke Brave dan dapat ditinjau secara manual untuk meningkatkan kualitas fitur ini. Sandi Anda dienkripsi dan tidak akan dilihat oleh siapa pun.</translation>
 <translation id="5284445933715251131">Lanjutkan Mendownload</translation>
 <translation id="5285635972691565180">Layar <ph name="DISPLAY_ID"/></translation>
 <translation id="5286194356314741248">Memindai</translation>
 <translation id="5288106344236929384">Tindakan lainnya, opsi kunci sandi untuk <ph name="USERNAME"/> di <ph name="DOMAIN"/></translation>
-<translation id="5288678174502918605">Buka K&amp;embali Tab yang Tertutup</translation>
 <translation id="5290020561438336792">PC dan perangkat transmisi di jaringan Wi-Fi yang berbeda (misalnya 2,4 GHz
     vs. 5 GHz)</translation>
 <translation id="5290322819358431297">Isikan otomatis sandi Anda</translation>
@@ -5588,6 +5601,7 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="5298315677001348398">Ingin melanjutkan dan mengizinkan software ini melakukan perubahan pada perangkat Anda?</translation>
 <translation id="5299109548848736476">Jangan Lacak</translation>
 <translation id="5299558715747014286">Melihat dan mengelola grup tab Anda</translation>
+<translation id="8412911915618156816">Percakapan Anda dengan Gemini serta <ph name="BEGIN_LINK_WORKSPACE_DATA_PRIVACY"/>data Brave Workspace<ph name="END_LINK_WORKSPACE_DATA_PRIVACY"/> tidak akan ditinjau atau digunakan untuk meningkatkan kualitas model AI generatif. Gemini adalah AI dan dapat membuat kesalahan.</translation>
 <translation id="5301398529256275325">Coba ajukan permintaan seperti “ringkas halaman ini” atau pertanyaan Anda sendiri.</translation>
 <translation id="5301954838959518834">Oke, mengerti</translation>
 <translation id="5302032366299160685">Tunggu file terbuka sebelum mencoba lagi</translation>
@@ -5669,7 +5683,6 @@ Gunakan Ctrl + Alt + Kurangi kecerahan untuk memperkecil.</translation>
 <translation id="538822246583124912">Kebijakan perusahaan diubah. Tombol eksperimen ditambahkan ke toolbar. Klik tombol untuk membuka dialog guna mengaktifkan eksperimen.</translation>
 <translation id="5388436023007579456">Aplikasi dan situs yang memiliki izin kamera, serta layanan sistem, dapat menggunakan kamera Anda. Untuk menggunakan kamera, Anda mungkin perlu memulai ulang aplikasi atau memuat ulang halaman.</translation>
 <translation id="5388719243178419614">Tidak dapat mengupload. Gagal memproses file gambar.</translation>
-<translation id="5388834241575213051">Tampilkan Tab dari Perangkat Lain di Panel Samping</translation>
 <translation id="5388885445722491159">Disandingkan</translation>
 <translation id="5389224261615877010">Pelangi</translation>
 <translation id="5389794555912875905">Berikan peringatan sebelum membuka situs yang tidak aman (direkomendasikan)</translation>
@@ -5715,12 +5728,10 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="541822678830750798">Meminta untuk membaca &amp; mengubah situs ini</translation>
 <translation id="5420438158931847627">Menentukan ketajaman teks dan gambar</translation>
 <translation id="542073632571549028"><ph name="MEMBER_FULL_NAME"/> (<ph name="EMAIL"/>) akan segera kehilangan akses ke grup tab “<ph name="GROUP_NAME"/>”</translation>
-<translation id="5420935737933866496">Salin &amp;Link</translation>
 <translation id="5421048291985386320">&amp;Login Lagi</translation>
 <translation id="8151667033756518944">Jika diaktifkan, data akan disimpan di Akun Brave Anda dan dapat digunakan di semua perangkat Anda. Jika dinonaktifkan, data hanya disimpan di perangkat ini.</translation>
 <translation id="5423505005476604112">Crostini</translation>
 <translation id="5423600335480706727">Saat Anda berkunjung lagi, <ph name="SITE"/> akan menggunakan izin default</translation>
-<translation id="5423753908060469325">Buat &amp;Pintasan...</translation>
 <translation id="5423829801105537712">Fitur periksa ejaan standar</translation>
 <translation id="5425042808445046667">Lanjutkan mendownload</translation>
 <translation id="542570217857307910">Anda kini dapat meluaskan tab dengan mengarahkan kursor ke tab tersebut. Untuk menonaktifkannya, klik kanan di sini.</translation>
@@ -5841,6 +5852,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="5501809658163361512">{COUNT,plural, =1{Gagal menerima <ph name="ATTACHMENTS"/> dari <ph name="DEVICE_NAME"/>}other{Gagal menerima <ph name="ATTACHMENTS"/> dari <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="5501979953419946416">Tulis sesuatu yang baru</translation>
 <translation id="5502500733115278303">Diimpor dari Firefox</translation>
+<translation id="8276179085852351028">Telusuri Gambar Ini dengan Brave</translation>
 <translation id="5503910407200952415">{NUM_PROFILES,plural, =1{&amp;Tutup profil ini}other{&amp;Tutup profil ini (# windows)}}</translation>
 <translation id="5503982651688210506">Terus izinkan <ph name="HOST"/> untuk menggunakan dan menggerakkan kamera, serta menggunakan mikrofon Anda</translation>
 <translation id="5505307013568720083">Kehabisan tinta</translation>
@@ -5913,6 +5925,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="5563460629751333413">Kami mengalami masalah saat menghubungkan ke server. Coba lagi nanti.</translation>
 <translation id="5563698194918415761">Update diblokir oleh kebijakan jaringan atau server proxy.</translation>
 <translation id="5563824734298958390">Keluar dari Grup Tab?</translation>
+<translation id="5565606467367006469">Kirim link dengan cepat ke ponsel atau perangkat lain yang Anda gunakan untuk login</translation>
 <translation id="5565735124758917034">Aktif</translation>
 <translation id="5568069709869097550">Tidak dapat sign in</translation>
 <translation id="5568525251731145240">Hapus data situs dan izin untuk <ph name="SITE_NAME"/>, semua situs di bawahnya, dan aplikasi terinstal?</translation>
@@ -5985,6 +5998,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="5625225435499354052">Edit di Google Pay</translation>
 <translation id="5627832140542566187">Orientasi tampilan</translation>
 <translation id="5628434207686266338">Setel sandi perangkat</translation>
+<translation id="5628652442614339066">Buka dengan mudah menggunakan</translation>
 <translation id="562935524653278697">Administrator Anda telah menonaktifkan sinkronisasi bookmark, histori, sandi, dan setelan yang lain.</translation>
 <translation id="5631017369956619646">Penggunaan CPU</translation>
 <translation id="5631272057151918206">Tindakan ini akan menghapus ruang penyimpanan sebesar <ph name="OFFLINE_STORAGE_SIZE"/> yang digunakan oleh file offline. Beberapa file akan tetap tersedia secara offline. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
@@ -6011,6 +6025,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="5643321261065707929">Jaringan berbayar</translation>
 <translation id="5646376287012673985">Lokasi</translation>
 <translation id="5646558797914161501">Pengusaha</translation>
+<translation id="3783963471691739258">Telusuri “<ph name="SEARCH_TERMS"/>” di Brave</translation>
 <translation id="5647989922796038257">Bagikan juga semua output audio</translation>
 <translation id="5648021990716966815">Colokan mikrofon</translation>
 <translation id="5648166631817621825">7 hari terakhir</translation>
@@ -6030,7 +6045,6 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="566956875537427204">Buka Percakapan</translation>
 <translation id="5669863904928111203">ChromeOS perlu diupdate</translation>
 <translation id="5671641761787789573">Gambar diblokir</translation>
-<translation id="567210741546439261">&amp;Bookmark dan Daftar</translation>
 <translation id="5672475067418064339">Di kolom URL, gunakan tombol ini dengan semua pintasan Anda</translation>
 <translation id="567587836466137939">Perangkat ini akan otomatis mendapatkan update software dan keamanan hingga <ph name="MONTH_AND_YEAR"/>. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="567740581294087470">Jenis masukan apa yang Anda berikan?</translation>
@@ -6078,7 +6092,6 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="5713158217420111469">Terhubung ke <ph name="DEVICE"/></translation>
 <translation id="5713988532993992900">Inversi</translation>
 <translation id="5714100381896040477">Batasi gerakan di layar</translation>
-<translation id="8277434106940718633">Percakapan Anda dengan Gemini serta data Brave Workspace tidak akan ditinjau atau digunakan untuk meningkatkan kualitas model AI generatif. Gemini adalah AI dan dapat melakukan kesalahan. Beberapa konten mungkin tidak sesuai untuk sebagian orang.</translation>
 <translation id="5719854774000914513">Situs dapat meminta untuk terhubung ke perangkat HID</translation>
 <translation id="5720729194423017301">Pintasan untuk situs dan mesin telusur</translation>
 <translation id="572155275267014074">Setelan Android</translation>
@@ -6215,7 +6228,6 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="5829214552954466783">Bagikan <ph name="CREDENTIAL_TYPE"/> untuk nama pengguna: <ph name="USER_EMAIL"/></translation>
 <translation id="4505167298598179061">Metode pembayaran Anda di Brave Wallet</translation>
 <translation id="5830512293931520102">Sandi Anda dienkripsi dan tidak akan dilihat oleh siapa pun</translation>
-<translation id="5830720307094128296">Simp&amp;an Halaman Sebagai...</translation>
 <translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="583179300286794292">Login sebagai <ph name="SPAN_START"/><ph name="DRIVE_ACCOUNT_EMAIL"/><ph name="SPAN_END"/></translation>
 <translation id="5831950941058843834">Hapus data situs dan izin untuk <ph name="SITE_NAME"/>, semua situs di bawahnya, dan aplikasi terinstalnya?</translation>
@@ -6230,6 +6242,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="5836999627049108525">Bahasa Sumber</translation>
 <translation id="583756221537636748">Casing</translation>
 <translation id="5840656138956959276">Ditingkatkan: ketat</translation>
+<translation id="7230006500876504868">Telusuri dengan Brave</translation>
 <translation id="5840680448799937675">File akan selalu dibagikan secara offline</translation>
 <translation id="5841270259333717135">Konfigurasi Ethernet</translation>
 <translation id="5841338463993781099">Simpan di akun?</translation>
@@ -6283,6 +6296,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="5869522115854928033">Sandi tersimpan</translation>
 <translation id="5870155679953074650">Hard fault</translation>
 <translation id="587234395549708302">Bersihkan Bookmark?</translation>
+<translation id="587502357434914765">Pilih dari layar</translation>
 <translation id="5875534259258494936">Berbagi layar telah berakhir</translation>
 <translation id="5087908853264608754">Aplikasi Brave &gt; <ph name="APP_NAME"/></translation>
 <translation id="5876851302954717356">Tab Baru di Sebelah Kanan</translation>
@@ -6345,6 +6359,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="5926936390113611560">Buka semua profil</translation>
 <translation id="539658326146969381">Download file PDF tanpa otomatis membukanya di Brave</translation>
 <translation id="5930567261594625340">Langit malam</translation>
+<translation id="5931292892421325763">&amp;Buka pengelola bookmark</translation>
 <translation id="5932224571077948991">Situs menampilkan iklan yang mengganggu atau menyesatkan</translation>
 <translation id="59324397759951282">Perangkat USB dari <ph name="MANUFACTURER_NAME"/></translation>
 <translation id="5932881020239635062">Nomor Seri</translation>
@@ -6435,6 +6450,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="5992652489368666106">Tidak ada batas</translation>
 <translation id="5996490984199062729">Profil Anda belum disiapkan</translation>
 <translation id="5997337190805127100">Pelajari Akses Situs Lebih Lanjut</translation>
+<translation id="1113417784664180765">Saat Anda login ke Brave dengan akun yang sama, Anda dapat dengan cepat mengirim link antar-perangkat</translation>
 <translation id="5998458948782718639">Bantu tingkatkan isi otomatis</translation>
 <translation id="5998976983953384016">Konfirmasi &amp; aktifkan</translation>
 <translation id="5999630716831179808">Suara</translation>
@@ -6445,6 +6461,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="6003143259071779217">Hapus jaringan Seluler eSIM</translation>
 <translation id="6003479444341796444">Panel judul sekarang ditampilkan</translation>
 <translation id="6003582434972667631">Tema disetel oleh Organisasi Anda</translation>
+<translation id="6005010326905893430">edit milik sendiri</translation>
 <translation id="6005045517426700202">Bangunan bata</translation>
 <translation id="6006484371116297560">Klasik</translation>
 <translation id="6007053304250788613">Hanya satu layar yang dapat dikecualikan dalam mode cermin</translation>
@@ -6541,6 +6558,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="609174145569509836">Kosongkan ruang penyimpanan</translation>
 <translation id="6091761513005122595">URL berbagi berhasil dipasang.</translation>
 <translation id="6093803049406781019">Hapus profil</translation>
+<translation id="1887722603486893934">Anda dapat membagikan screenshot ke Brave untuk menjadikan kontennya sebagai referensi dalam penelusuran. Jika Anda membagikan screenshot seluruh layar, Brave hanya akan melihat konten yang terlihat oleh Anda.</translation>
 <translation id="6095696531220637741">Makaron</translation>
 <translation id="6095984072944024315">−</translation>
 <translation id="6096047740730590436">Buka yang dimaksimalkan</translation>
@@ -6553,6 +6571,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="6099766472403716061">Selalu izinkan <ph name="HOST"/> mengontrol dan memprogram ulang perangkat MIDI Anda</translation>
 <translation id="6100736666660498114">Menu mulai</translation>
 <translation id="6100737823178787570">Perbesar ukuran jendela untuk melanjutkan tugas</translation>
+<translation id="4012048950158900308">Jika Brave menemukan salah satu sandi Anda dalam pelanggaran data publik, Pengelola Sandi Brave dapat menawarkan untuk mengubahnya jika Anda sedang login.</translation>
 <translation id="6101226222197207147">Aplikasi baru ditambahkan (<ph name="EXTENSION_NAME"/>)</translation>
 <translation id="6102043788063419338">File ini diblokir oleh Perlindungan Lanjutan.</translation>
 <translation id="6103681770816982672">Perhatian: Anda beralih ke saluran pengembang</translation>
@@ -6566,6 +6585,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="611041979451429698">&amp;Cetak “<ph name="SELECTION"/>”</translation>
 <translation id="6110794992500777605">Pintasan dan situs saya</translation>
 <translation id="6111718295497931251">Hapus akses Google Drive</translation>
+<translation id="934027498329250030">Tanya Brave tentang “<ph name="SEARCH_TERMS"/>”</translation>
 <translation id="6112727384379533756">Tambahkan tiket</translation>
 <translation id="8589850327914845460">Setel mesin telusur default untuk browser Brave dan Peluncur <ph name="DEVICE_TYPE"/></translation>
 <translation id="6113832060210023016">peluncur + klik</translation>
@@ -6758,6 +6778,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="6254892857036829079">Sempurna</translation>
 <translation id="6257602895346497974">Aktifkan sinkronisasi...</translation>
 <translation id="625827534921607067">Jaringan ini akan dipilih jika tersedia lebih dari satu jaringan yang sebelumnya terhubung atau dikonfigurasi</translation>
+<translation id="6258818697161346451">Gunakan kunci sandi Anda di perangkat ini</translation>
 <translation id="6259776178973198997">Muat Ulang Info Pemilik Wi-Fi Langsung</translation>
 <translation id="6261688934280090835">Log Aplikasi Kios ChromeOS</translation>
 <translation id="6263082573641595914">Microsoft CA Version</translation>
@@ -6782,7 +6803,6 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="6273677812470008672">Kualitas</translation>
 <translation id="6274089201566806618">Menghubungkan ke <ph name="HOST_DEVICE_NAME"/></translation>
 <translation id="6274202259872570803">Screencast</translation>
-<translation id="627581157848786026">Lihat Tab dari Perangkat Lain</translation>
 <translation id="6277105963844135994">Waktu tunggu jaringan habis</translation>
 <translation id="6277518330158259200">Ambil Screenshot</translation>
 <translation id="6278428485366576908">Tema</translation>
@@ -6820,6 +6840,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="6305627295927385295">Hapus item berikut:</translation>
 <translation id="6305702903308659374">Putar dengan volume normal meskipun ChromeVox sedang berbicara</translation>
 <translation id="6307268917612054609">Aplikasi dan situs yang memiliki izin kamera, serta layanan sistem, dapat menggunakan kamera Anda</translation>
+<translation id="6307884029666635765">Buat &amp;kode QR</translation>
 <translation id="6307990684951724544">Sistem sibuk</translation>
 <translation id="6308778163698400658">Tambahkan ke toolbar</translation>
 <translation id="6308937455967653460">Simpan tau&amp;tan sebagai...</translation>
@@ -6847,6 +6868,7 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="6334267141726449402">Salin dan kirim link ini kepada pengguna untuk mengumpulkan log.</translation>
 <translation id="6334414747317381822">Anda akan menemukan keahlian Anda di sini</translation>
 <translation id="6336194758029258346">Bahasa aplikasi</translation>
+<translation id="6336496072159969591">Klik ikon ini, lalu simpan ke komputer Anda</translation>
 <translation id="6337543438445391085">Beberapa informasi pribadi mungkin masih disertakan dalam data. Pastikan untuk meninjau file yang diekspor.</translation>
 <translation id="6338968693068997776">Tambahkan perangkat USB</translation>
 <translation id="6339668969738228384">Buat profil baru untuk <ph name="USER_EMAIL_ADDRESS"/></translation>
@@ -7138,7 +7160,6 @@ Anda dapat menetapkan beberapa tombol akses untuk tindakan ini.</translation>
 <translation id="6565899972286925956">Buat apa saja</translation>
 <translation id="6566648465417201421">Buka Kembali Tampilan Terpisah yang Ditutup</translation>
 <translation id="656679903990115526">Pindai kode ini dengan ponsel untuk menyimpan dan mengisikan sandi secara otomatis agar login ke situs dan aplikasi menjadi mudah</translation>
-<translation id="6568283005472142698">Penelusuran Tab</translation>
 <translation id="6569931898053264308">Penghematan Sedang</translation>
 <translation id="6570622975915850879">Gunakan perangkat lain</translation>
 <translation id="65711204837946324">Memerlukan izin untuk mendownload</translation>
@@ -7272,7 +7293,6 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="6662931079349804328">Kebijakan perusahaan diubah. Tombol eksperimen dihapus dari toolbar.</translation>
 <translation id="6664774537677393800">Terjadi error saat membuka profil Anda. Harap keluar, lalu masuk lagi.</translation>
 <translation id="6665874326033183068">Liar</translation>
-<translation id="6666560794795912543">Tampilkan Bookmark di Panel Samping</translation>
 <translation id="6667086124612170548">File terlalu besar untuk perangkat ini</translation>
 <translation id="4653111393922644171">Untuk saat ini, Anda hanya dapat berbagi sandi dengan anggota keluarga. <ph name="BEGIN_LINK"/>Buat grup keluarga<ph name="END_LINK"/> yang berisi hingga 6 anggota dan dapatkan lebih banyak manfaat dari produk dan langganan Anda di berbagai layanan Brave.</translation>
 <translation id="666731172850799929">Buka di <ph name="APP_NAME"/></translation>
@@ -7353,6 +7373,7 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="6723839937902243910">Daya</translation>
 <translation id="6723946439672043591">Pilih profil lain</translation>
 <translation id="6725206449694821596">Protokol Pencetakan Internet (IPP)</translation>
+<translation id="6725250112230872513">Pemahaman media</translation>
 <translation id="6725970970008349185">Jumlah calon yang akan ditampilkan per halaman</translation>
 <translation id="672609503628871915">Lihat apa saja yang baru</translation>
 <translation id="6728528977475057549">IBAN yang diakhiri dengan <ph name="LAST_FOUR_DIGITS"/></translation>
@@ -7373,6 +7394,7 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="6740234557573873150"><ph name="FILE_NAME"/> dijeda</translation>
 <translation id="6743841972744298686">Setelan sinkronisasi</translation>
 <translation id="6744397361782514824">Tukar dengan Tampilan Kiri</translation>
+<translation id="6745569635660688171">Screenshot area</translation>
 <translation id="6746124502594467657">Berpindah ke bawah</translation>
 <translation id="67465227497040338">Tampilkan sandi untuk <ph name="DOMAIN"/></translation>
 <translation id="6746834324024491643">Untuk mendapatkan sandi dan info Anda yang lain di semua perangkat Anda, login sebagai <ph name="EMAIL"/></translation>
@@ -7402,6 +7424,7 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="6772974422346500939">Buka dan edit</translation>
 <translation id="574857039466693275">Brave Root Store</translation>
 <translation id="6774710250118040929">Tambahkan sandi baru</translation>
+<translation id="6774766462964447244">Agar dapat memberikan saran perubahan sandi secara tepat waktu, konten dan URL halaman yang Anda kunjungi dapat diproses di ruang privasi di cloud. <ph name="LINK"/></translation>
 <translation id="6775163072363532304">Perangkat yang tersedia akan muncul di sini.</translation>
 <translation id="677646486571529447">Tambahkan Catatan</translation>
 <translation id="6776589734354015877">Dapatkan fitur tambahan</translation>
@@ -7448,6 +7471,7 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="6801435275744557998">Sesuaikan layar sentuh</translation>
 <translation id="6801920212017470190">Jangan sampai ketinggalan info penurunan harga kapan saja di mana saja</translation>
 <translation id="6802031077390104172"><ph name="USAGE"/> (<ph name="OID"/>)</translation>
+<translation id="6802825994120702390">Tambahkan konteks ke pertanyaan Anda dengan memilih area tertentu atau seluruh layar Anda</translation>
 <translation id="6803766346203101854">Situs ini diizinkan menyimpan data di perangkat Anda.</translation>
 <translation id="6805236548654699520">Menghapus pop-up yang tidak diinginkan, memperbaiki masalah jaringan, dan lainnya dengan memulihkan setelan Anda ke setelan default yang aman.</translation>
 <translation id="6805478749741295868">Fitur ini adalah fitur AI eksperimental dan tidak selalu memberikan hasil yang tepat.</translation>
@@ -7455,6 +7479,7 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="6806089545527108739">Jangan izinkan tetapi tanyakan nanti</translation>
 <translation id="6806123901116522137">Buka Inovasi AI</translation>
 <translation id="505292327770836846">Hanya kontak Anda yang memiliki Akun Brave. <ph name="LINK_BEGIN"/>Lihat kontak<ph name="LINK_END"/></translation>
+<translation id="6807225474325352189">Klik Kontrol Media</translation>
 <translation id="6808039367995747522">Untuk melanjutkan, masukkan dan sentuh kunci keamanan</translation>
 <translation id="6808166974213191158">Penulis Image Sistem ChromeOS Flex</translation>
 <translation id="6808193438228982088">Rubah</translation>
@@ -7649,6 +7674,7 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="6944854424004126054">Pulihkan jendela</translation>
 <translation id="6945221475159498467">Pilih</translation>
 <translation id="694592694773692225">Pengalihan diblokir di halaman ini.</translation>
+<translation id="6946083836254858787">Pilih “Kirim ke perangkat Anda”, lalu pilih tempat Anda ingin mendapatkan link</translation>
 <translation id="6949089178006131285">Membaca informasi jaringan ChromeOS Flex</translation>
 <translation id="6949434160682548041">Sandi (opsional)</translation>
 <translation id="6950143189069683062">Detail Memori</translation>
@@ -7726,7 +7752,6 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="7003723821785740825">Menyiapkan cara tercepat untuk membuka kunci perangkat</translation>
 <translation id="7003844668372540529">Produk <ph name="PRODUCT_ID"/> tak dikenal dari <ph name="VENDOR_NAME"/></translation>
 <translation id="7004402701596653846">Situs dapat menggunakan MIDI</translation>
-<translation id="7004499039102548441">Tab Terbaru</translation>
 <translation id="7004791323196577460">Atur tampilan terpisah - tampilan kanan aktif</translation>
 <translation id="7004923218520748660">Sematkan Penelusuran Tab</translation>
 <translation id="7004969808832734860">Diskon hingga <ph name="DISCOUNT_UP_TO_AMOUNT"/></translation>
@@ -7804,7 +7829,6 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="706626672220389329">Error saat memasang URL berbagi. URL berbagi yang ditentukan sudah dipasang.</translation>
 <translation id="7067396782363924830">Warna sekitar</translation>
 <translation id="7067725467529581407">Jangan tampilkan ini lagi.</translation>
-<translation id="7068279399556423026">Login untuk Melihat Tab dari Perangkat Lain</translation>
 <translation id="8332021337957914073">Anda kini dapat memberikan tampilan baru ke browser kapan saja dari menu Sesuaikan Brave</translation>
 <translation id="7068591156533195518"><ph name="APP_NAME"/> dan beberapa aplikasi lainnya diblokir di <ph name="DEVICE_TYPE"/> Anda</translation>
 <translation id="706949303827219454">Membuka halaman setelan keamanan di tab baru</translation>
@@ -7883,6 +7907,7 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="7131896909366247105"><ph name="APP_NAME"/>, menunggu</translation>
 <translation id="5639710699305791127">Gunakan AI Brave untuk mendapatkan bantuan membaca, menulis, dan berkreasi</translation>
 <translation id="7134098520442464001">Perkecil Teks</translation>
+<translation id="7134227297966612037">Tanyakan Info Tentang Halaman Ini</translation>
 <translation id="7134951043985383439">File berbahaya didownload</translation>
 <translation id="7135729336746831607">Aktifkan Bluetooth?</translation>
 <translation id="7136694880210472378">Jadikan default</translation>
@@ -7959,6 +7984,7 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="2348760106555630118">Anggota keluarga Anda kini dapat menggunakan nama pengguna dan sandi Anda saat mereka menggunakan Pengelola Sandi Brave. Minta mereka membuka <ph name="WEBSITE"/> untuk login.</translation>
 <translation id="7193051357671784796">Aplikasi ini ditambahkan oleh organisasi Anda. Mulai ulang aplikasi untuk menyelesaikan penginstalannya.</translation>
 <translation id="7193374945610105795">Tidak ada sandi yang tersimpan untuk <ph name="ORIGIN"/></translation>
+<translation id="7193887851827841439">Simpan gambar frame video dari Kontrol Media</translation>
 <translation id="7194343495483122559">Luaskan tab</translation>
 <translation id="7194873994243265344">Organisasi Anda memblokir file ini karena file dienkripsi. Minta pemiliknya untuk mendekripsi.</translation>
 <translation id="7196107899576756066">{COUNT,plural, =1{1 download sedang berlangsung}other{# download sedang berlangsung}}</translation>
@@ -7999,9 +8025,7 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="7223952304612664117">Hal ini memungkinkan layanan sistem menggunakan Akurasi Lokasi untuk menentukan lokasi Anda. Akurasi Lokasi menggunakan informasi tentang sinyal dan sensor nirkabel untuk memperkirakan lokasi perangkat.</translation>
 <translation id="7225082563376899794">Gunakan Windows Hello saat mengisi sandi</translation>
 <translation id="7226163413959353072">Asisten AI yang memberikan poin-poin penting, menjelaskan konsep, menemukan jawaban, dan banyak lagi</translation>
-<translation id="7227235818314667565">Kelola Berbagi</translation>
 <translation id="7227458944009118910">Aplikasi yang tercantum di bawah ini juga dapat menangani link protokol. Aplikasi lainnya akan meminta izin.</translation>
-<translation id="7230222852462421043">&amp;Pulihkan Jendela</translation>
 <translation id="7231260028442989757">Lihat, tutup, dan balas notifikasi dari ponsel Anda</translation>
 <translation id="7231347196745816203">Gunakan ponsel Anda untuk membuka kunci <ph name="DEVICE_TYPE"/>.</translation>
 <translation id="601744829232873458">{BOOKMARK_COUNT,plural, =1{1 bookmark dan item lainnya hanya disimpan ke perangkat ini. Untuk menggunakannya di perangkat lain, simpan sandi di Akun Brave Anda.}other{{BOOKMARK_COUNT} bookmark dan item lainnya hanya disimpan ke perangkat ini. Untuk menggunakannya di perangkat lain, simpan sandi di Akun Brave Anda.}}</translation>
@@ -8017,6 +8041,7 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="7240339475467890413">Sambungkan ke hotspot baru?</translation>
 <translation id="7241763419756062043">Pilih kualitas penelusuran dan penjelajahan Anda</translation>
 <translation id="7243092385765551741">Hapus kunci sandi?</translation>
+<translation id="7244073364744269583">Ubah aksen suara</translation>
 <translation id="7245628041916450754"><ph name="WIDTH"/> x <ph name="HEIGHT"/> (Terbaik)</translation>
 <translation id="7246230585855757313">Masukkan kembali kunci keamanan, lalu coba lagi</translation>
 <translation id="7248671827512403053">Aplikasi</translation>
@@ -8037,8 +8062,6 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="7258192266780953209">Transformasi</translation>
 <translation id="7260206782629605806">Jika Anda menurunkan batas, Anda dapat menggunakan gerakan ringan. Jika Anda meningkatkan batas, Anda mungkin perlu melakukan gerakan yang lebih keras.</translation>
 <translation id="7260802376010589729">Gunakan “c” untuk melepaskan tombol mouse</translation>
-<translation id="7261217796641151584">Bagikan Grup</translation>
-<translation id="7261249528606034119">Sembunyikan Tombol Scroll</translation>
 <translation id="7261612856573623172">Suara Text-to-Speech sistem</translation>
 <translation id="7262004276116528033">Layanan masuk ini dihosting oleh <ph name="SAML_DOMAIN"/></translation>
 <translation id="7262162806583378242">Pilih apa pun di layar saat Anda menjelajah untuk berbelanja, menerjemahkan, dan menelusuri menggunakan AI</translation>
@@ -8164,6 +8187,7 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="7357271391997763660">Jalankan pemeriksaan sandi?</translation>
 <translation id="735745346212279324">VPN terputus</translation>
 <translation id="7359680654975233185">Tidak dapat mentransmisikan tab</translation>
+<translation id="1157542461575402889">Situs yang Anda kunjungi, termasuk Brave, bertanggung jawab untuk menentukan cara mereka merespons permintaan ini. Bergantung pada hukum di wilayah Anda, situs dapat merespons dengan membatasi penjualan dan pembagian data Anda atau penggunaannya untuk iklan yang dipersonalisasi.</translation>
 <translation id="7360257054721917104">Melihat desktop dan template tersimpan. Tekan tab untuk memilih.</translation>
 <translation id="7360333718677093875">pemilih emoji</translation>
 <translation id="7360460316021916328">Pilih jendela</translation>
@@ -8208,7 +8232,6 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="7387107590792462040">Harap tunggu, proses penginstalan sedang berlangsung</translation>
 <translation id="7387273928653486359">Dapat diterima</translation>
 <translation id="7387951778417998929">Untuk menggunakan mesin telusur selain mesin telusur default, ketik pintasannya di kolom URL, lalu tekan pintasan keyboard yang diinginkan. Anda juga dapat mengubah mesin telusur default di sini.</translation>
-<translation id="738903649531469042">Tambahkan Tab ke Daftar Bacaan</translation>
 <translation id="7389615853658756494">Ubah di situs</translation>
 <translation id="7392118418926456391">Pemindaian virus gagal</translation>
 <translation id="7392915005464253525">Buka kembali jendela yang tertutup</translation>
@@ -8295,7 +8318,6 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="744366959743242014">Sedang memuat data, proses ini memerlukan waktu beberapa detik.</translation>
 <translation id="6470635120107893736">Akses sandi kapan pun Anda login ke Akun Brave Anda</translation>
 <translation id="7444176988908839653">{COUNT,plural, =0{Cookie akan diblokir lagi hari ini}=1{Cookie akan diblokir lagi besok}other{# hari sebelum cookie diblokir lagi}}</translation>
-<translation id="7446716846072322308">Tindakan ini akan menghapus <ph name="TOTAL_USAGE"/> data yang disimpan oleh <ph name="SITE_NAME"/> dan situs terkait</translation>
 <translation id="7448430327655618736">Otomatis menginstal aplikasi</translation>
 <translation id="7448664748118305024">Hapus data yang telah disimpan oleh situs ke perangkat saat Anda menutup semua jendela</translation>
 <translation id="7449806939046594699">Organisasi Anda memblokir penyalinan konten ini</translation>
@@ -8313,7 +8335,6 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="7460045493116006516">Tema saat ini yang telah diinstal</translation>
 <translation id="7461924472993315131">Sematkan</translation>
 <translation id="7462644385455960321">Keluar dari layar penuh untuk menampilkan tab secara horizontal</translation>
-<translation id="746329643760972486">MacOS</translation>
 <translation id="7463985990119325874">Organisasi Anda mengelola cara penggunaan data yang dikumpulkan oleh fitur ini.</translation>
 <translation id="7464645554245611385">Pembaruan terakhir untuk tab ini</translation>
 <translation id="7465777686629334728">Hapus Lingkungan Pengembangan Terkelola (<ph name="SPECIFIC_NAME"/>)</translation>
@@ -8424,7 +8445,6 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="7550830279652415241">bookmarks_<ph name="DATESTAMP"/>.html</translation>
 <translation id="7550885994112799211">Penyimpanan, daya, bahasa</translation>
 <translation id="7551059576287086432">Gagal mendownload <ph name="FILE_NAME"/></translation>
-<translation id="7551303452605464331">P&amp;ulihkan Tampilan Terpisah</translation>
 <translation id="7551643184018910560">Sematkan ke rak</translation>
 <translation id="7552191410769096467">Untuk berbagi atau bergabung ke grup tab, Anda harus login dan mengaktifkan sinkronisasi</translation>
 <translation id="7552196109089297786">Logout dari Microsoft</translation>
@@ -8481,7 +8501,6 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="7605163396341021431">Memberikan kontrol aplikasi Android atas perangkat USB di Chromebook ini</translation>
 <translation id="7605594153474022051">Sinkronisasi tidak berfungsi</translation>
 <translation id="7606560865764296217">Jeda animasi</translation>
-<translation id="7606639338662398635">Grup Tab</translation>
 <translation id="7606802863538485839">Putar efek</translation>
 <translation id="7607002721634913082">Dijeda</translation>
 <translation id="7608810328871051088">Preferensi Android</translation>
@@ -8544,6 +8563,7 @@ Anda memiliki # sandi lainnya yang telah dibobol. Pengelola Sandi Brave merekome
 <translation id="7651754152638505879">Tugas Dijeda</translation>
 <translation id="7651784568388208829">Kelanjutan tugas Phone Hub</translation>
 <translation id="7652954539215530680">Buat PIN</translation>
+<translation id="7653354650639364202">{0,plural, =1{Tutup Jendela Terisolasi}other{Tutup Jendela Terisolasi (# jendela)}}</translation>
 <translation id="7654941827281939388">Akun ini sudah digunakan di komputer ini.</translation>
 <translation id="7655411746932645568">Situs dapat meminta untuk terhubung ke port serial</translation>
 <translation id="7657090467145778067">Penghematan kecil</translation>
@@ -8616,6 +8636,7 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="7700873336634517379">Tidak, terus gunakan profil ini untuk sekolah</translation>
 <translation id="7701040980221191251">Tidak ada</translation>
 <translation id="7701869757853594372">Penangan PENGGUNA</translation>
+<translation id="770231223935918661">Tanya Info Tentang Gambar Ini</translation>
 <translation id="7702463352133825032">Hentikan transmisi ke <ph name="DEVICE_NAME"/></translation>
 <translation id="7704305437604973648">Tugas</translation>
 <translation id="7705085181312584869">Bantu Tulis</translation>
@@ -8689,8 +8710,6 @@ Tekan tombol akses atau tombol keyboard yang telah ditetapkan untuk menghapus pe
 <translation id="7763851799685371158">Aplikasi: <ph name="APPS"/></translation>
 <translation id="7764225426217299476">Tambahkan alamat</translation>
 <translation id="7764256770584298012"><ph name="DOWNLOAD_RECEIVED"/> dari <ph name="DOWNLOAD_DOMAIN"/></translation>
-<translation id="7764527477537408401">Buka Grup di Jendela Baru</translation>
-<translation id="1596512064151476426">Kelola Akun &amp;Brave Anda</translation>
 <translation id="7765158879357617694">Pindahkan</translation>
 <translation id="7765507180157272835">Perlu Bluetooth dan Wi-Fi</translation>
 <translation id="7766082757934713382">Membantu mengurangi penggunaan data jaringan dengan menjeda aplikasi otomatis dan update sistem</translation>
@@ -8721,6 +8740,8 @@ Tekan tombol akses atau tombol keyboard yang telah ditetapkan untuk menghapus pe
 <translation id="7777624210360383048">Pintasan <ph name="SHORTCUT"/> untuk <ph name="EXTENSION_NAME"/></translation>
 <translation id="777852709704682967">&amp;Buka Pengelola Bookmark</translation>
 <translation id="7779840061887151693">layar</translation>
+<translation id="8986657556866941558">Percakapan Anda dengan Gemini serta <ph name="BEGIN_LINK_WORKSPACE_DATA_PRIVACY"/>data Brave Workspace<ph name="END_LINK_WORKSPACE_DATA_PRIVACY"/> tidak akan ditinjau atau digunakan untuk meningkatkan kualitas model AI generatif. Gemini adalah AI dan dapat membuat kesalahan. Beberapa konten mungkin tidak sesuai untuk sebagian orang.</translation>
+<translation id="7780992949171378848">Kirim permintaan tidak bersedia ke situs terkait penggunaan data Anda</translation>
 <translation id="6191804255817539692">Tidak ada lagi saran dari Brave</translation>
 <translation id="7782717250816686129">Simpan data persisten di layar login dan masukkan kredensial ke sesi.</translation>
 <translation id="7784020347632229094">Pelajari lebih lanjut pintasan keyboard</translation>
@@ -8784,6 +8805,7 @@ Tekan tombol akses atau tombol keyboard yang telah ditetapkan untuk menghapus pe
 <translation id="7833720883933317473">Kata khusus yang disimpan akan muncul di sini</translation>
 <translation id="7834832693620032149">Untuk berbagi audio, bagikan tab atau jendela</translation>
 <translation id="7836850009646241041">Coba sentuh lagi kunci keamanan Anda</translation>
+<translation id="7837994938322273689">Beri Nama Jendela...</translation>
 <translation id="7838838951812478896">Tidak dapat menyimpan '<ph name="NETWORK_NAME"/>' dari <ph name="DEVICE_NAME"/></translation>
 <translation id="7838971600045234625">{COUNT,plural, =1{<ph name="ATTACHMENTS"/> dikirim ke <ph name="DEVICE_NAME"/>}other{<ph name="ATTACHMENTS"/> dikirim ke <ph name="DEVICE_NAME"/>}}</translation>
 <translation id="7839696104613959439">Render Pilihan Jaringan</translation>
@@ -8803,7 +8825,6 @@ Tekan tombol akses atau tombol keyboard yang telah ditetapkan untuk menghapus pe
 <translation id="7851303446278533774">Buat, rencanakan, ringkas</translation>
 <translation id="7851716364080026749">Selalu blokir akses mikrofon dan kamera</translation>
 <translation id="1037569431519018426">Penambahan lebih banyak Akun Brave dinonaktifkan</translation>
-<translation id="7853747251428735">Alat Lain&amp;nya</translation>
 <translation id="7855258394151767387">Gunakan “w” untuk menekan tombol mouse</translation>
 <translation id="7855678561139483478">Pindahkan tab ke jendela baru</translation>
 <translation id="7858120906780498731">Perangkat Input Terhubung ChromeOS</translation>
@@ -8920,6 +8941,7 @@ Tekan tombol akses atau tombol keyboard yang telah ditetapkan untuk menghapus pe
 <translation id="7943837619101191061">Tambahkan Lokasi...</translation>
 <translation id="79446453817422139">File ini mungkin berbahaya</translation>
 <translation id="7944772052836377867">Sinkronisasi perlu memverifikasi diri Anda</translation>
+<translation id="794567586469801724">macOS</translation>
 <translation id="7945703887991230167">Suara pilihan</translation>
 <translation id="7946243258100028201"><ph name="ORIGIN"/> akan dapat melihat dan membuat salinan file-nya sendiri di <ph name="FOLDERNAME"/> hingga Anda menutup semua tab untuk situs ini</translation>
 <translation id="7946586320617670168">Nama domain harus aman</translation>
@@ -8932,6 +8954,7 @@ Tekan tombol akses atau tombol keyboard yang telah ditetapkan untuk menghapus pe
 <translation id="7949038991703929816">Gagal memuat histori. Pastikan file berisi log pengupdate yang valid.</translation>
 <translation id="7950629216186736592">Alasan: LBS hanya mendukung URL http://, https://, dan file://.</translation>
 <translation id="7950814699499457511">Aktif • Ekstensi ini belum memublikasikan praktik privasi, seperti cara ekstensi mengumpulkan dan menggunakan data</translation>
+<translation id="7951159420392892566">Lepas Sematan Tombol Scroll</translation>
 <translation id="795130320946928025">Nonaktifkan kartu virtual</translation>
 <translation id="7952708427581814389">Situs dapat meminta untuk melihat teks dan gambar di papan klip Anda</translation>
 <translation id="7953236668995583915">Muat ulang halaman ini untuk menerapkan setelan yang diperbarui di situs ini</translation>
@@ -9025,6 +9048,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8018192911041116887">Bagikan tab</translation>
 <translation id="8018298733481692628">Hapus profil ini?</translation>
 <translation id="8018313076035239964">Kontrol informasi yang dapat digunakan situs dan konten yang dapat ditampilkan kepada Anda</translation>
+<translation id="801927266093816478">Kelola cara situs menggunakan cookie dan data Anda</translation>
 <translation id="802154636333426148">Download gagal</translation>
 <translation id="8023133589013344428">Kelola bahasa di setelan ChromeOS Flex</translation>
 <translation id="8023801379949507775">Perbarui ekstensi sekarang</translation>
@@ -9047,6 +9071,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8034697324150621782">Tukar dengan Tampilan Atas</translation>
 <translation id="8036143516314698610">Tampilkan tombol grup tab tersimpan</translation>
 <translation id="8036193484521570992">Bantu Tingkatkan Isi Otomatis</translation>
+<translation id="803639495237134713">Sesuaikan Pintasan Keyboard</translation>
 <translation id="8036504271468642248">Kalimat sebelumnya</translation>
 <translation id="8037117027592400564">Membaca semua teks yang diucapkan menggunakan ucapan yang disintesis</translation>
 <translation id="8037357227543935929">Tanyakan (default)</translation>
@@ -9095,7 +9120,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8062844841289846053">{COUNT,plural, =1{1 lembar kertas}other{{COUNT} lembar kertas}}</translation>
 <translation id="8063235345342641131">Avatar hijau default</translation>
 <translation id="8064015586118426197">ChromeOS Flex</translation>
-<translation id="8065556469005366939">Dapatkan jawaban yang lebih relevan dengan membagikan tab Anda</translation>
 <translation id="8066444921260601116">Dialog Koneksi</translation>
 <translation id="8068904756674285749">Gunakan bahasa sehari-hari untuk menelusuri histori penjelajahan dan menemukan situs yang pernah Anda buka. Anda juga dapat mengajukan pertanyaan dan mendapatkan jawaban berdasarkan histori penjelajahan Anda. Setelan ini nonaktif.</translation>
 <translation id="8070572887926783747">Izin akses lokasi <ph name="APP_NAME"/></translation>
@@ -9149,6 +9173,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8106114112474206597">Gunakan “i” untuk menekan tombol mouse</translation>
 <translation id="810728361871746125">Resolusi layar</translation>
 <translation id="8108161424633979910"><ph name="NUM"/> anggota</translation>
+<translation id="8108853197309181986">Anda menggunakan Jendela Terisolasi</translation>
 <translation id="8109109153262930486">Avatar default</translation>
 <translation id="8109991406044913868">Tema buatan AI</translation>
 <translation id="8110393529211831722">Langganan hanya diinstal di perangkat ini dan tidak disinkronkan dengan perangkat lain pada akun Anda. <ph name="LINK_BEGIN"/>Pelajari lebih lanjut<ph name="LINK_END"/></translation>
@@ -9342,7 +9367,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8261506727792406068">Hapus</translation>
 <translation id="8263149565724023141">Aplikasi terkait</translation>
 <translation id="8263228331881858381">Kunci sandi disimpan</translation>
-<translation id="8263336784344783289">Beri Nama Grup Ini</translation>
 <translation id="8264024885325823677">Setelan ini dikelola oleh administrator Anda.</translation>
 <translation id="8264195025773092348">Hanya menampilkan perangkat yang didukung. Perangkat USB tidak akan tersedia lagi untuk aplikasi native hingga koneksi terputus.</translation>
 <translation id="8265018477030547118">Hanya di perangkat ini</translation>
@@ -9454,7 +9478,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8345099007452202761">Versi baru (<ph name="VERSION"/>) <ph name="APP_NAME"/> telah tersedia. Ingin menerapkannya sekarang?</translation>
 <translation id="8345848587667658367">Anda kini dapat melihat foto, media, notifikasi, dan aplikasi terbaru ponsel Anda</translation>
 <translation id="8347227221149377169">Pencetakan</translation>
-<translation id="8347728744337089388">Kirim ke &amp;Perangkat Anda</translation>
 <translation id="8348430946834215779">Gunakan HTTPS jika memungkinkan dan dapatkan peringatan sebelum memuat situs yang tidak mendukungnya</translation>
 <translation id="8348896480272971199">Periksa internet Anda dan coba lagi.</translation>
 <translation id="8349305172487531364">Bilah bookmark</translation>
@@ -9464,7 +9487,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8351316842353540018">Selalu tampilkan opsi a11y</translation>
 <translation id="8351419472474436977">Ekstensi ini telah mengambil alih kontrol setelan proxy Anda, yang berarti ekstensi dapat mengubah, merusak, atau menyadap apa pun yang Anda lakukan secara online. Jika Anda tidak yakin mengapa perubahan ini terjadi, mungkin Anda tidak menginginkannya.</translation>
 <translation id="8352287103893778223">Judul grup tab</translation>
-<translation id="8353420862507374944">Transmisikan, Simpan, dan Bagikan</translation>
 <translation id="8353683614194668312">Aplikasi/ekstensi dapat:</translation>
 <translation id="8354125743472063725">Izin yang Anda berikan untuk <ph name="APP_NAME"/> juga akan diberikan untuk aplikasi ini. <ph name="BEGIN_LINK"/>Kelola izin untuk aplikasi induk<ph name="END_LINK"/></translation>
 <translation id="8356197132883132838"><ph name="TITLE"/> - <ph name="COUNT"/></translation>
@@ -9495,7 +9517,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="2790916299775928255">Panel samping Brave Penelusuran</translation>
 <translation id="837790003026572432">Mentransmisikan audio tab tidak didukung di perangkat ini</translation>
 <translation id="8378714024927312812">Dikelola oleh organisasi</translation>
-<translation id="8378855320830505539">Kawasan</translation>
 <translation id="8379988659465232385">Nama wajib diisi</translation>
 <translation id="8379991678458444070">Kembali ke halaman secara cepat dengan mem-bookmark tab ini</translation>
 <translation id="8380266723152870797">Nama jendela</translation>
@@ -9505,6 +9526,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8383614331548401927">Selamat Datang Kembali</translation>
 <translation id="8387157483437834731">Sandi berhasil diubah</translation>
 <translation id="8387361103813440603">Tidak diizinkan melihat lokasi Anda</translation>
+<translation id="8387617938027387193">Verifikasi diri Anda</translation>
 <translation id="8389492867173948260">Mengizinkan ekstensi ini membaca dan mengubah semua data Anda di situs yang dibuka:</translation>
 <translation id="8390449457866780408">Server tidak tersedia.</translation>
 <translation id="8391172837960094276">Untuk melihat dan mengelola sandi, <ph name="BEGIN_LINK"/>verifikasi diri Anda<ph name="END_LINK"/>.</translation>
@@ -9552,6 +9574,7 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8428634594422941299">Mengerti</translation>
 <translation id="84297032718407999">Anda akan logout dalam <ph name="LOGOUT_TIME_LEFT"/></translation>
 <translation id="8429928917752180743">Opsi lainnya untuk <ph name="EXTENSION_NAME"/></translation>
+<translation id="8430438016498244645">Sesi terisolasi</translation>
 <translation id="8431977087510901105">Setelan kursor direset</translation>
 <translation id="8434109185104929038">Sudut baca</translation>
 <translation id="8434837876193928924">Detail grup tab</translation>
@@ -9683,7 +9706,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8533670235862049797">Safe Browsing aktif</translation>
 <translation id="853377257670044988">{GROUP_COUNT,plural, =1{Tab akan tetap terbuka di perangkat ini, tetapi grup akan dihapus dari semua perangkat yang digunakan untuk login ke <ph name="EMAIL"/>}other{Tab akan tetap terbuka di perangkat ini, tetapi grup akan dihapus dari semua perangkat yang digunakan untuk login ke <ph name="EMAIL"/>}}</translation>
 <translation id="8535005006684281994">Netscape Certificate Renewal URL</translation>
-<translation id="2432941819722210118">Anda akan logout dari sebagian besar situs. Anda akan tetap login ke Akun Brave Anda sehingga setelan Family Link untuk Brave diterapkan.</translation>
 <translation id="8536956381488731905">Suara saat tombol ditekan</translation>
 <translation id="8539727552378197395">Tidak (HttpOnly)</translation>
 <translation id="8540136935098276800">Masukkan URL dengan format yang benar</translation>
@@ -9719,7 +9741,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8561206103590473338">Gajah</translation>
 <translation id="8561565784790166472">Lanjutkan dengan hati-hati</translation>
 <translation id="8561853412914299728"><ph name="TAB_TITLE"/> <ph name="EMOJI_PLAYING"/></translation>
-<translation id="8562115322675481339">Buat Grup Tab Baru</translation>
 <translation id="8563043098557365232">Hanya diizinkan untuk layanan sistem</translation>
 <translation id="8564220755011656606">Tidak dapat mengakses mikrofon</translation>
 <translation id="8565021320663436446">Hapus <ph name="MEMBER_FULL_NAME"/>?</translation>
@@ -9781,7 +9802,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8616441548384109662">Tambahkan <ph name="CONTACT_NAME"/> ke kontak Anda</translation>
 <translation id="8617601976406256334">Hapus data situs dan izin untuk <ph name="SITE_NAME"/>?</translation>
 <translation id="8617748779076050570">ID koneksi aman: <ph name="CONNECTION_ID"/></translation>
-<translation id="8618586951885164886">&amp;Info Kontak</translation>
 <translation id="8619000641825875669">OneDrive</translation>
 <translation id="8619369551122276044">Tidak diizinkan untuk menginstal aplikasi web di perangkat Anda</translation>
 <translation id="8619803522055190423">Drop shadow</translation>
@@ -9817,7 +9837,6 @@ Simpan file kunci Anda di tempat yang aman. Anda akan membutuhkannya untuk membu
 <translation id="8642577642520207435">Izin kamera <ph name="APP_NAME"/></translation>
 <translation id="8642900771896232685">2 detik</translation>
 <translation id="8642947597466641025">Perbesar Teks</translation>
-<translation id="8643403533759285912">Hapus Grup</translation>
 <translation id="6529597483902964581"><ph name="FILE_NAME"/> mungkin berbahaya. Kirim file ke Perlindungan Lanjutan Brave untuk dipindai?</translation>
 <translation id="864423554496711319">Perangkat yang disimpan ke akun Anda</translation>
 <translation id="8644655801811752511">Tidak dapat menyetel ulang kunci keamanan. Coba reset kunci setelah memasukkannya.</translation>
@@ -10076,7 +10095,6 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="8837573527470979311">Tukar dengan Tampilan Bawah</translation>
 <translation id="8838601485495657486">Buram</translation>
 <translation id="8838770651474809439">Hamburger</translation>
-<translation id="8838841425230629509">Lepaskan Pin Grup dari Kolom Bookmark</translation>
 <translation id="883924185304953854">Telusuri pakai gambar</translation>
 <translation id="953282908048086335">{ITEM_COUNT,plural, =1{1 item hanya disimpan ke perangkat ini. Untuk menggunakannya di perangkat lain, simpan item di Akun Brave Anda. Tindakan ini juga akan menghapus duplikat.}other{{ITEM_COUNT} item hanya disimpan ke perangkat ini. Untuk menggunakannya di perangkat lain, simpan item di Akun Brave Anda. Tindakan ini juga akan menghapus duplikat.}}</translation>
 <translation id="8841843049738266382">Membaca dan mengubah pengguna yang diizinkan</translation>
@@ -10299,6 +10317,7 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="9003185744423389627">Koneksi ke Server Pengelolaan Perangkat gagal dengan status '<ph name="STATUS_TEXT"/>' pada <ph name="FAILURE_TIME"/></translation>
 <translation id="90033698482696970">Pindai profil eSIM yang tersedia secara otomatis?</translation>
 <translation id="9003647077635673607">Izinkan di semua situs web</translation>
+<translation id="9004279470320280717">Beri Rating...</translation>
 <translation id="9005774573776346118">Untuk mendapatkan sandi, bookmark, dan info Anda yang lain di semua perangkat Anda, login sebagai <ph name="EMAIL"/></translation>
 <translation id="9006511997799670136">Organisasi Anda</translation>
 <translation id="900733896273558337">Edit keahlian</translation>
@@ -10394,6 +10413,7 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="9071664234353284876">Tidak ada autentikasi</translation>
 <translation id="9072220108592671115">Versi terinstal <ph name="VERSION"/></translation>
 <translation id="9072918088200875065">Anda memberi Gemini izin untuk login ke situs ini guna menyelesaikan tugas untuk Anda</translation>
+<translation id="9074190188883314952">Gunakan tombol Lens untuk membagikan konten di layar Anda</translation>
 <translation id="9074618195273027322">{CORE_COUNT,plural, =1{1 core}other{{CORE_COUNT} core}}</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
 <translation id="9075413375877487220">Ekstensi ini tidak dipercaya oleh Safe Browsing yang Disempurnakan.</translation>
@@ -10403,6 +10423,7 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="9078193189520575214">Menerapkan perubahan ...</translation>
 <translation id="9078316009970372699">Nonaktifkan Tethering Instan</translation>
 <translation id="9078546160009814724">Nama pengguna: <ph name="USERNAME"/></translation>
+<translation id="907972398081911688">Ubah sandi Anda yang telah dibobol secara otomatis</translation>
 <translation id="9082750838489080452">Aplikasi: <ph name="APP_NAME"/></translation>
 <translation id="9084064520949870008">Buka sebagai Jendela</translation>
 <translation id="9084383457260170045">Aplikasi web terisolasi dapat meminta untuk mengontrol pembaca kartu smart</translation>
@@ -10492,6 +10513,7 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="9148058034647219655">Keluar</translation>
 <translation id="9148126808321036104">Login sekali lagi</translation>
 <translation id="9148963623915467028">Situs ini dapat mengakses lokasi Anda</translation>
+<translation id="8612843065211540810">Tanya Brave Info Tentang Halaman Ini</translation>
 <translation id="9149866541089851383">Edit...</translation>
 <translation id="9150045010208374699">Menggunakan kamera Anda</translation>
 <translation id="9150079578948279438">Profil tidak dapat dihapus. Coba lagi atau hubungi operator Anda untuk meminta dukungan teknis.</translation>
@@ -10505,7 +10527,6 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="9157096865782046368">0,8 detik</translation>
 <translation id="9157697743260533322">Gagal menyiapkan pembaruan otomatis untuk semua pengguna (terjadi kesalahan saat peluncuran preflight: <ph name="ERROR_NUMBER"/>)</translation>
 <translation id="9157915340203975005">Tutup printer terbuka</translation>
-<translation id="9159458465299853289">&amp;Sinkronisasi Aktif</translation>
 <translation id="9159643062839240276">Coba:
     <ph name="BEGIN_LIST"/>
       <ph name="LIST_ITEM"/>Periksa kabel jaringan, modem, dan router
@@ -10515,18 +10536,17 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="9161172953291434881">Apakah Anda memercayai situs ini untuk menggunakan data Anda?</translation>
 <translation id="9165856803582999927">Pindai kode QR ini dengan kamera di perangkat tempat Anda ingin membuat dan menyimpan kunci sandi untuk <ph name="APP_NAME"/></translation>
 <translation id="916607977885256133">Picture-in-Picture</translation>
-<translation id="9167063903968449027">Tampilkan Daftar Bacaan</translation>
 <translation id="9167813284871066981"><ph name="NUM_ACCOUNTS"/> akun</translation>
 <translation id="9169093579080634183">Pelajari lebih lanjut tab</translation>
 <translation id="9169496697824289689">Lihat pintasan keyboard</translation>
 <translation id="916964310188958970">Mengapa saran ini muncul?</translation>
+<translation id="9169801888716695212">Buka semua di jendela Terisolasi</translation>
 <translation id="9170048603158555829">Thunderbolt</translation>
 <translation id="9170061643796692986">Visibilitas saat ini disetel ke semua kontak</translation>
 <translation id="9170766151357647548">EID perangkat Anda adalah <ph name="EID_NUMBER"/>. Nomor ini dapat digunakan untuk membantu mengaktifkan layanan.</translation>
 <translation id="9170848237812810038">&amp;Urung</translation>
 <translation id="2060128809251156338">Program lain di komputer Anda menambahkan tema yang dapat mengubah cara kerja Brave.</translation>
 <translation id="9172270007201309670">Ukuran font diperbesar</translation>
-<translation id="9173063514323762371">&amp;Sembunyikan Kolom Bookmark</translation>
 <translation id="917350715406657904">Kamu sudah mencapai batas waktu yang ditetapkan orang tuamu untuk <ph name="APP_NAME"/>. Kamu bisa menggunakannya besok selama <ph name="TIME_LIMIT"/>.</translation>
 <translation id="9174854240439014335">Izinkan tarik lalu lepas tampilan terpisah di tepi kiri atau kanan jendela</translation>
 <translation id="9174870712400134574">Hanya tampilkan di halaman Tab Baru</translation>
@@ -10546,6 +10566,7 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="6436745840109002184">Jika organisasi membatasi penyimpanan ke Akun Brave, Anda tidak dapat berbagi atau bergabung ke grup tab</translation>
 <translation id="9197456336762295195">Pindai kode QR ini dengan kamera di perangkat yang menyimpan kunci sandi google.com Anda</translation>
 <translation id="919840898042157087">Gerakan statis</translation>
+<translation id="5475623029588353226">Tanya Brave dari mana saja</translation>
 <translation id="9199503643457729322">Klik untuk keluar dari Panduan Privasi.</translation>
 <translation id="9199695835892108985">Reset semua izin Port serial?</translation>
 <translation id="9200339982498053969"><ph name="ORIGIN"/> akan dapat mengedit file di <ph name="FOLDERNAME"/></translation>
@@ -10599,7 +10620,6 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="936801553271523408">Data diagnosis sistem</translation>
 <translation id="939598580284253335">Masukkan frasa sandi</translation>
 <translation id="939736085109172342">Folder baru</translation>
-<translation id="940212040923880623">&amp;Cari dan Edit</translation>
 <translation id="942296794412775122">Mikrofon aktif/nonaktif</translation>
 <translation id="942488123151518958">Jeda (k)</translation>
 <translation id="5770515304879261338"><ph name="APP_NAME"/> membagikan audio dan tab Brave.</translation>
@@ -10630,7 +10650,6 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="1959581454088301212">Tanya Brave tentang tab sebelumnya: <ph name="TAB_TITLE"/></translation>
 <translation id="8302628777674731869">Laporkan masalah terkait Brave Cast</translation>
 <translation id="966588271015727539">Pilih penampil braille bluetooth</translation>
-<translation id="966624321292940409">{NUM_PROFILES,plural, =1{&amp;Tutup Profil Ini}other{&amp;Tutup Profil Ini (# Windows)}}</translation>
 <translation id="96756691973639907">Tindakan lainnya untuk <ph name="MODULE_NAME"/></translation>
 <translation id="967624055006145463">Data disimpan</translation>
 <translation id="96774243435178359">Printer terkelola</translation>
@@ -10646,6 +10665,8 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="97381968209917373">Hapus sertifikat <ph name="CERT_NAME"/>?</translation>
 <translation id="975893173032473675">Bahasa Target Terjemahan</translation>
 <translation id="976572010712028687">Verifikasi bahwa Anda adalah orang tua</translation>
+<translation id="977175416263153310">Buka di jendela Terisolasi</translation>
+<translation id="977397313716343603">Kelola di setelan</translation>
 <translation id="978146274692397928">Lebar tanda baca awal Penuh</translation>
 <translation id="978978324795544535">Ketuk dua kali item, tahan pada ketukan kedua, lalu tarik item untuk memindahkannya</translation>
 <translation id="981121421437150478">Offline</translation>
@@ -10670,13 +10691,12 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
 <translation id="998347228911661591">Sinkronkan grup tab Anda</translation>
 <translation id="998747458861718449">I&amp;nspeksi</translation>
 <translation id="998852291477823323">Tindakan tidak diizinkan oleh kebijakan yang dikonfigurasi.</translation>
+<translation id="5786139852593193364">Jendela Baru &amp;Privat</translation>
+<translation id="5186185447130319458">Pribadi</translation>
 <translation id="658539216370629794">Buka tautan di &amp;jendela pribadi</translation>
 <translation id="7074309040324179036">Buka tautan di jendela pribadi &amp;</translation>
 <translation id="1432267168815937878">Buka Tautan di &amp;Jendela Pribadi</translation>
 <translation id="7035919852657206332">Tab &amp; Privat baru</translation>
-<translation id="5786139852593193364">Jendela Baru &amp;Privat</translation>
-<translation id="8929921524852843330">Tab &amp; Privat Baru</translation>
-<translation id="7973394300052703468">Jendela &amp;Pribadi Baru</translation>
 <translation id="8428257636009471988">Kunjungi Web Store</translation>
 <translation id="6395403722585816044">Diunduh di Mode Pribadi</translation>
 <translation id="6216189820029634282">Tetap keluar dari mode Privat?</translation>
@@ -10707,7 +10727,6 @@ Informasi ini dapat mencakup informasi tentang software yang diinstal, file, bro
           other {# Jendela Privat Anda tidak akan terbuka.}}</translation>
 <translation id="5298187053819934487">Data daftar masuk akan disimpan di perangkat ini setelah Anda keluar dari moda Privat. Ini akan memungkinkan Anda untuk masuk kembali ke situs web ini dengan perangkat Anda nanti.</translation>
 <translation id="7660227077779094198">Kunci sandi ini hanya akan disimpan di perangkat ini. Ini akan tetap berada di perangkat hingga Anda menutup semua jendela Privat.</translation>
-<translation id="5186185447130319458">Pribadi</translation>
 <translation id="2579188629646253712">Keluar dari Mode Pribadi</translation>
 <translation id="2080854978086439640">Untuk menghapus data, tutuplah semua jendela Privat</translation>
 <translation id="3610571162330520499">Ini hanya akan memengaruhi jendela Privat</translation>

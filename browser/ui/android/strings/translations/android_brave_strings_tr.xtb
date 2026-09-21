@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Devre dışı</translation>
 <translation id="59174027418879706">Etkin</translation>
 <translation id="6920492760024499150">Bugünün en çok okunan hikayeleri özel bir akışta, yalnızca sizin için.</translation>
-<translation id="3803728444598576153">Brave News'i açın ve hiçbir haberi kaçırmayın</translation>
+<translation id="3803728444598576153">Brave Haberler'i açın ve hiçbir haberi kaçırmayın</translation>
 <translation id="7627131190984957214">Brave Haberleri cihazınızda eşleştirilen gizli ve anonim reklamlarla desteklenir.</translation>
-<translation id="7897050360583141319">Favori kaynaklarınızı tek akıştan takip edin. Sadece Brave'de bir sekme açın, aşağı kaydırın ve… işte oldu!\nBrave News, gizli ve anonimleştirilmiş reklamlarla desteklenir.</translation>
+<translation id="7897050360583141319">Favori kaynaklarınızı tek akıştan takip edin. Sadece Brave'de bir sekme açın, aşağı kaydırın ve… işte oldu!</translation>
 <translation id="1765217911817124376">Brave Haberleri'ni aç</translation>
 <translation id="8981973962043893066">Site, konu veya RSS akışı için arama yapın</translation>
 <translation id="3225021799163709119">Popüler</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Brave Tarayıcı çöktüğünde veya donduğunda tanı raporlarını otomatik olarak göndererek, Brave'in ürün stabilitesini iyileştirmeye yardımcı olun.</translation>
 <translation id="7977176350719484850">Tahmini Veri\nTasarrufu</translation>
 <translation id="9008534313521214777">Tahmini Zaman\nTasarruf edildi</translation>
+<translation id="5668852698659986622">Sponsorlu Reklamları Etkinleştir</translation>
+<translation id="431194936581466649">Brave'in bağımsız, kullanıcı öncelikli bir Web oluşturma misyonunu Sponsorlu Reklamlarla destekleyin. Reklam performansını sizi tanımlamadan, gizli bir şekilde ölçüyoruz.</translation>
 <translation id="8347743943525229984">Brave anketlerine izin ver</translation>
 <translation id="6022939994702081659">Brave'in yeni sekme sayfasında özel anketlere bağlantılar göstermesine izin verir. Anketler, daha iyi özellikler oluşturmamıza ve tarayıcı tabanlı reklam kampanyalarının etkinliğini ölçmemize yardımcı olur.</translation>
 <translation id="7746496306508543965">Brave anketleri hakkında daha fazla bilgi edinin</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">Ana menü</translation>
 <translation id="7002271985859760052">Sayfa eylemleri</translation>
 <translation id="7104487676473617844">Aşağıdaki öğeler yalnızca açık olan web sayfası tarafından destekleniyorsa menüde görünür.</translation>
-<translation id="4159764849281393303">WebUygulaması</translation>
 <translation id="8038539967102225446">Brave Reklamları burada!</translation>
 <translation id="222883304157347087">(bu cihaz)</translation>
 <translation id="4157741509680155021">EŞİTLEME ZİNCİRİNDEKİ CİHAZLAR</translation>
@@ -721,6 +722,8 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="1634828734222219955">Toplam</translation>
 <translation id="7995708795274219641">Tutar + Gas</translation>
 <translation id="2186011161688824046">Tutar + ücret</translation>
+<translation id="1118876217803190221">Yetersiz bakiye</translation>
+<translation id="275990379543116961">GAS için yetersiz bakiye</translation>
 <translation id="1950052789869821983">İşlem</translation>
 <translation id="2304783958703511257">Gelişmiş Ayarlar</translation>
 <translation id="4220062530885628403">Tek seferlik anahtar</translation>

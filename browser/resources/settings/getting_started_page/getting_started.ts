@@ -43,7 +43,7 @@ export class BraveSettingsGettingStarted extends SettingsViewMixin(PolymerElemen
   override getAssociatedControlFor(childViewId: string): HTMLElement {
     switch (childViewId) {
       case 'manageProfile':
-        return this.shadowRoot!.querySelector('settings-people-page')!.shadowRoot!.querySelector('#edit-profile')!;
+        return this.shadowRoot!.querySelector('settings-people-page')!.shadowRoot.querySelector('#edit-profile')!;
       default:
         throw new Error(`Unknown child view id: ${childViewId}`)
     }

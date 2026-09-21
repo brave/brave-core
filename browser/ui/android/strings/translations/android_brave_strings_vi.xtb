@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Đã bị vô hiệu</translation>
 <translation id="59174027418879706">Đã bật</translation>
 <translation id="6920492760024499150">Những tin tức hàng đầu hôm nay trên bảng tin riêng tư, chỉ dành cho bạn.</translation>
-<translation id="3803728444598576153">Bật Brave Tin tức để không bỏ lỡ câu chuyện nào</translation>
+<translation id="3803728444598576153">Bật Tin tức Brave để không bỏ lỡ câu chuyện nào</translation>
 <translation id="7627131190984957214">Brave Tin tức được hỗ trợ quảng cáo với các quảng cáo riêng tư và ẩn danh phù hợp với thiết bị của bạn.</translation>
-<translation id="7897050360583141319">Theo dõi các nguồn yêu thích của bạn, trong một nguồn cấp dữ liệu duy nhất. Chỉ cần mở một tab trong Brave, cuộn xuống và… đây rồi!\nBrave Tin tức được hỗ trợ quảng cáo với các quảng cáo riêng tư, ẩn danh.</translation>
+<translation id="7897050360583141319">Theo dõi các nguồn yêu thích của bạn, trong một nguồn cấp dữ liệu duy nhất. Chỉ cần mở một tab trong Brave, cuộn xuống và… đây rồi!</translation>
 <translation id="1765217911817124376">Bật Tin tức Brave</translation>
 <translation id="8981973962043893066">Tìm kiếm trang web, chủ đề hoặc nguồn cấp dữ liệu RSS</translation>
 <translation id="3225021799163709119">Phổ biến</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Giúp cải thiện độ ổn định của sản phẩm Brave bằng cách tự động gửi báo cáo chẩn đoán khi Trình duyệt Brave gặp sự cố hoặc đóng băng.</translation>
 <translation id="7977176350719484850">Dữ liệu ước tính\ntiết kiệm được</translation>
 <translation id="9008534313521214777">Thời gian tiết kiệm được\nước tính</translation>
+<translation id="5668852698659986622">Bật Quảng cáo được tài trợ</translation>
+<translation id="431194936581466649">Hãy giúp hỗ trợ sứ mệnh của Brave trong việc xây dựng một Web độc lập, ưu tiên người dùng bằng Quảng cáo được tài trợ. Chúng tôi đo lường hiệu suất quảng cáo một cách riêng tư, không nhận dạng bạn.</translation>
 <translation id="8347743943525229984">Cho phép Brave thực hiện khảo sát</translation>
 <translation id="6022939994702081659">Cho phép Brave hiển thị liên kết đến các khảo sát riêng tư trên trang thẻ mới của bạn. Khảo sát giúp chúng tôi phát triển các tính năng tốt hơn và đo lường hiệu quả của các chiến dịch quảng cáo trên trình duyệt.</translation>
 <translation id="7746496306508543965">Tìm hiểu thêm về khảo sát của Brave</translation>
@@ -282,7 +284,6 @@
 <translation id="5582839680698949063">Menu chính</translation>
 <translation id="7002271985859760052">Hành động trên trang</translation>
 <translation id="7104487676473617844">Các mục sau sẽ chỉ hiển thị trong menu khi được trang web đang mở hiện tại hỗ trợ.</translation>
-<translation id="4159764849281393303">Ứng dụng Web</translation>
 <translation id="8038539967102225446">Đây là Quảng cáo Brave!</translation>
 <translation id="222883304157347087">(thiết bị này)</translation>
 <translation id="4157741509680155021">THIẾT BỊ TRÊN CHUỖI ĐỒNG BỘ</translation>
@@ -723,6 +724,8 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="1634828734222219955">Tổng cộng</translation>
 <translation id="7995708795274219641">Số lượng + Gas</translation>
 <translation id="2186011161688824046">Số tiền + phí</translation>
+<translation id="1118876217803190221">Số dư không đủ</translation>
+<translation id="275990379543116961">Không đủ tiền mua xăng</translation>
 <translation id="1950052789869821983">Giao dịch</translation>
 <translation id="2304783958703511257">Cài đặt nâng cao</translation>
 <translation id="4220062530885628403">Số giao dịch</translation>

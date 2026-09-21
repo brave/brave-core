@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">Видлива област</translation>
 <translation id="2026367923222947564">Цела страница</translation>
 <translation id="4218885227032158909">Избрана област</translation>
+<translation id="2586386106930448447">Преглед на слика од екран</translation>
+<translation id="7514365320538308">Преземи</translation>
+<translation id="2743387203779672305">Копирај во таблата со исечоци</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Прегледај во Web Extensions Store</translation>
 <translation id="3161744659507801211">Предупредување: Brave не може да спречи екстензии да го снимаат вашиот историјат на прелистување.</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">Оди</translation>
 <translation id="2079545284768500474">Врати</translation>
 <translation id="1533980864758658574">Креиран нов прозорец за <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Ниту еден таб не се совпадна со таа тема. Обидете се да ја опишете поинаку.</translation>
 <translation id="7985042437720138349">Оваа функција испраќа податоци за вашите отворени картички до Лео, AI-асистентот на Brave.</translation>
 <translation id="6165508094623778733">Дознајте повеќе</translation>
 <translation id="7557539689487606886">Вклучи Premium</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">Доделете име на вашиот контејнер, како Работа или Лично</translation>
 <translation id="4976989127264491396">Грешка: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Контејнерот не е пронајден</translation>
+<translation id="6055154402239241620">Контрола на сообраќај</translation>
+<translation id="8134521925475508805">Конфигурирајте одредени страници автоматски да се отвораат во одреден контекст, создавајќи одвојување помеѓу вашите сесии на прелистување. <ph name="BEGIN_LINK"/>Дознајте повеќе<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Овозможи контрола на сообраќај</translation>
+<translation id="1358255827354528344">Додај ново правило</translation>
+<translation id="7183128985801806752">Ново правило за контрола на сообраќај</translation>
+<translation id="2474694032500407328">Уреди правило за контрола на сообраќај</translation>
+<translation id="5543417389274097206">Создади правило</translation>
+<translation id="6532106788206463496">Зачувај промени</translation>
+<translation id="1172800769374812685">Избриши правило</translation>
+<translation id="2389682807835777591">Дали сте сигурни дека сакате да го избришете правилото <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Внесете веб-адреси за управување и секогаш отворајте ги во одреден контекст на прелистување.</translation>
+<translation id="1173480005453148926">Веб-адреси за управување</translation>
+<translation id="6217532416180299470">Внесете веб-адреси за управување со контрола на сообраќај</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> се совпаѓа со страницата и нејзините поддомени; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> се совпаѓа со точната страница; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> се совпаѓа со сите страници; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> е коментар.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (и уште <ph name="COUNT"/> веб-адреси)</translation>
+<translation id="3700798663085748181">Овозможи правило</translation>
+<translation id="2967480878853054068">Невалиден филтер за веб-адреса</translation>
 <translation id="2263346047290834619">Користете дрвени картички</translation>
 <translation id="5860254591544742609">Прикажи ја лентата на насловот</translation>
 <translation id="4691131445504068802">Целосно сокриј кога е минимизирана</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">Ажурирај сега</translation>
 <translation id="5334844597069022743">Прегледај извор</translation>
 <translation id="4720556299488643018">Отстрани претплата</translation>
-<translation id="6532106788206463496">Зачувај промени</translation>
 <translation id="4516904298421534459">Листи на филтри</translation>
 <translation id="4435215931544457255">Дополнителни популарни листи на заедницата. Имајте предвид дека при овозможување премногу филтри ќе се намали брзината на прелистување.</translation>
 <translation id="802154636333426148">Преземањето не успеа</translation>
@@ -611,6 +631,8 @@
 <translation id="509873765238158442">Блокирај Microsoft Recall</translation>
 <translation id="4763421121695677716">Блокирајте ја функцијата Recall на компјутерите со Microsoft Windows за да не прават автоматски снимки на екранот на која било отворена картичка на Brave.</translation>
 <translation id="1968895725257436430">Собирање на податоци</translation>
+<translation id="5668852698659986622">Овозможи спонзорирани реклами</translation>
+<translation id="431194936581466649">Помогнете да ја поддржите мисијата на Brave да изгради независен, кориснички ориентиран веб со спонзорирани реклами. Ја мериме успешноста на рекламите приватно, без да ве идентификуваме.</translation>
 <translation id="1700052872056357670">Исчисти податоци при излез</translation>
 <translation id="216468847346280584">Исчистете ги податоците за Brave реклами...</translation>
 <translation id="96212973142796240">Податоците за Brave реклами се исчистени</translation>
@@ -990,4 +1012,12 @@
 <translation id="154702742922788359">Режим на отворање</translation>
 <translation id="2249111429176737533">Отвори како прозорец со картичка</translation>
 <translation id="7022756207310403729">Отвори во прелистувач</translation>
+<translation id="1916785651473363467">Прилагодена слика на профил</translation>
+<translation id="5336092064678832560">Прикачи прилагодена слика</translation>
+<translation id="1062407476771304334">Замени</translation>
+<translation id="1428299461403073820">Замени ја прилагодената слика на профил</translation>
+<translation id="7994453838803296517">Преглед на прилагодена слика на профил, избрана</translation>
+<translation id="6578040791557152233">Прикачи прилагодена слика на профил</translation>
+<translation id="9222124079546967592">Отстрани ја прилагодената слика на профил</translation>
+<translation id="6058660912941570282">Brave не може да ја користи оваа датотека. Изберете друга слика и обидете се повторно.</translation>
 </translationbundle>

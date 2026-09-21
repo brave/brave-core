@@ -110,6 +110,9 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="3114478090884951591">Vidljiva oblast</translation>
 <translation id="2026367923222947564">Cela stranica</translation>
 <translation id="4218885227032158909">Odabrana oblast</translation>
+<translation id="2586386106930448447">Pregled snimka ekrana</translation>
+<translation id="7514365320538308">Preuzmi</translation>
+<translation id="2743387203779672305">Kopiraj u privremenu memoriju</translation>
 <translation id="4928988318462976765">Veb-prodavnica dodataka</translation>
 <translation id="9181207987584064303">Prikaži u veb-prodavnici dodataka</translation>
 <translation id="3161744659507801211">Upozorenje: Brave ne može da spreči dodatke da snimaju vašu istoriju pregledanja veba.</translation>
@@ -362,6 +365,7 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="6847541693235449912">Idemo</translation>
 <translation id="2079545284768500474">Poništi</translation>
 <translation id="1533980864758658574">Novi prozor kreiran za: <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Nijedna kartica ne odgovara toj temi. Pokušajte da je drugačije opišete.</translation>
 <translation id="7985042437720138349">Ova funkcija šalje podatke o vašim otvorenim karticama Brave-ovom asistentu Leo kojeg pokreće veštačka inteligencija.</translation>
 <translation id="6165508094623778733">Saznajte više</translation>
 <translation id="7557539689487606886">Pređite na Premium</translation>
@@ -419,6 +423,23 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="4328541188421002379">Dajte svom kontejneru naziv poput „Posao“ ili „Privatno“</translation>
 <translation id="4976989127264491396">Greška: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Kontejner nije pronađen</translation>
+<translation id="6055154402239241620">Kontrola saobraćaja</translation>
+<translation id="8134521925475508805">Podesite određene sajtove da se automatski otvaraju u određenom kontekstu, stvarajući razdvajanje između vaših sesija pregledanja. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Omogući kontrolu saobraćaja</translation>
+<translation id="1358255827354528344">Dodaj novo pravilo</translation>
+<translation id="7183128985801806752">Novo pravilo kontrole saobraćaja</translation>
+<translation id="2474694032500407328">Uredi pravilo kontrole saobraćaja</translation>
+<translation id="5543417389274097206">Napravi pravilo</translation>
+<translation id="6532106788206463496">Sačuvaj promene</translation>
+<translation id="1172800769374812685">Izbriši pravilo</translation>
+<translation id="2389682807835777591">Želite li sigurno da izbrišete pravilo <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Unesite URL-ove za upravljanje koji će se uvek otvarati u određenom kontekstu pregledanja.</translation>
+<translation id="1173480005453148926">URL-ovi za upravljanje</translation>
+<translation id="6217532416180299470">Unesite URL-ove za upravljanje pomoću kontrole saobraćaja</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> odgovara sajtu i njegovim poddomenima; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> odgovara tačnom sajtu; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> odgovara svim sajtovima; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> je komentar.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (i još <ph name="COUNT"/> URL-ova)</translation>
+<translation id="3700798663085748181">Omogući pravilo</translation>
+<translation id="2967480878853054068">Nevažeći URL filter</translation>
 <translation id="2263346047290834619">Koristi razgranate kartice</translation>
 <translation id="5860254591544742609">Prikaži naslovnu traku</translation>
 <translation id="4691131445504068802">Potpuno sakrij kada je minimizovano</translation>
@@ -526,7 +547,6 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="6745592621698551453">Ažuriraj sada</translation>
 <translation id="5334844597069022743">Prikaži izvor</translation>
 <translation id="4720556299488643018">Odjava</translation>
-<translation id="6532106788206463496">Sačuvaj promene</translation>
 <translation id="4516904298421534459">Liste filtera</translation>
 <translation id="4435215931544457255">Dodatne liste popularne u zajednici. Imajte u vidu da će aktiviranje prevelikog broja filtera smanjiti brzinu pregledača.</translation>
 <translation id="802154636333426148">Preuzimanje nije uspelo</translation>
@@ -609,6 +629,8 @@ Ili kasnije idite u <ph name="SETTINGS_EXTENIONS_LINK"/> da to promenite.</trans
 <translation id="509873765238158442">Blokiraj Microsoft Recall</translation>
 <translation id="4763421121695677716">Blokirajte funkciju „Recall“ na Microsoft Windows računarima da ne bi automatski uzimala snimke ekrana otvorenih Brave kartica.</translation>
 <translation id="1968895725257436430">Prikupljanje podataka</translation>
+<translation id="5668852698659986622">Omogući sponzorisane oglase</translation>
+<translation id="431194936581466649">Pomozite u podršci Brave-ove misije za izgradnju nezavisnog Veba usmerenog na korisnika pomoću sponzorisanih oglasa. Merimo učinak oglasa privatno, bez identifikovanja vas.</translation>
 <translation id="1700052872056357670">Izbriši podatke prilikom izlaska</translation>
 <translation id="216468847346280584">Izbriši podatke iz Brave oglasa…</translation>
 <translation id="96212973142796240">Brave oglasni podaci obrisani</translation>
@@ -988,4 +1010,12 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="154702742922788359">Način otvaranja</translation>
 <translation id="2249111429176737533">Otvori kao prozor u kartici</translation>
 <translation id="7022756207310403729">Otvori u pregledaču</translation>
+<translation id="1916785651473363467">Prilagođena slika profila</translation>
+<translation id="5336092064678832560">Otpremi prilagođenu sliku</translation>
+<translation id="1062407476771304334">Zameni</translation>
+<translation id="1428299461403073820">Zameni prilagođenu sliku profila</translation>
+<translation id="7994453838803296517">Pregled prilagođene slike profila, izabrano</translation>
+<translation id="6578040791557152233">Otpremi prilagođenu sliku profila</translation>
+<translation id="9222124079546967592">Ukloni prilagođenu sliku profila</translation>
+<translation id="6058660912941570282">Brave ne može da koristi ovu datoteku. Izaberite drugu sliku i pokušajte ponovo.</translation>
 </translationbundle>

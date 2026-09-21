@@ -471,15 +471,6 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       kOsAndroid,                                                             \
       FEATURE_VALUE_TYPE(safe_browsing::features::kBraveAndroidSafeBrowsing), \
   })
-#define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                        \
-  EXPAND_FEATURE_ENTRIES({                                              \
-      "adaptive-button-in-toolbar",                                     \
-      "Adaptive Button In Toolbar (quick shortcut)",                    \
-      "Show quick shortcut button in toolbar. ",                        \
-      kOsAndroid,                                                       \
-      FEATURE_VALUE_TYPE(                                               \
-          chrome::android::kAdaptiveButtonInTopToolbarCustomizationV2), \
-  })
 #define BRAVE_CUSTOM_SEARCH_ENGINES                                        \
   EXPAND_FEATURE_ENTRIES({                                                 \
       "brave-custom-search-engines",                                       \
@@ -500,7 +491,6 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
-#define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID
 #define BRAVE_CUSTOM_SEARCH_ENGINES
 #define BRAVE_ANDROID_TAB_GROUPS_SETTINGS
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -1576,7 +1566,6 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   TRAFFIC_CONTROL_FEATURE_ENTRIES                                              \
   BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID                                      \
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
-  BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
   BRAVE_ANDROID_TAB_GROUPS_SETTINGS                                            \
   BRAVE_CUSTOM_PROFILE_IMAGE_FEATURE_ENTRY                                     \
   BRAVE_CUSTOM_SEARCH_ENGINES                                                  \

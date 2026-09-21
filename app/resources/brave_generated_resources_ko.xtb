@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">가시 영역</translation>
 <translation id="2026367923222947564">전체 페이지</translation>
 <translation id="4218885227032158909">선택한 영역</translation>
+<translation id="2586386106930448447">스크린샷 미리보기</translation>
+<translation id="7514365320538308">다운로드</translation>
+<translation id="2743387203779672305">클립보드에 복사</translation>
 <translation id="4928988318462976765">웹 익스텐션 스토어</translation>
 <translation id="9181207987584064303">웹 익스텐션 스토어에서 보기</translation>
 <translation id="3161744659507801211">경고: Brave는 확장 기능이 여러분의 브라우징 기록을 기록하는 것을 막을 수 없습니다.</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">이동</translation>
 <translation id="2079545284768500474">원상태로 돌리기</translation>
 <translation id="1533980864758658574"><ph name="TOPIC"/>에 대한 새 창을 만들었습니다</translation>
+<translation id="530437350080973527">해당 주제와 일치하는 탭이 없습니다. 다르게 설명해 보세요.</translation>
 <translation id="7985042437720138349">이 기능은 열려 있는 탭에 관한 데이터를 Brave의 AI 기반 브라우저 어시스턴트인 레오로 전송합니다.</translation>
 <translation id="6165508094623778733">더 알아보기</translation>
 <translation id="7557539689487606886">프리미엄 가입</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">컨테이너에 ‘업무용’, ‘개인용’ 같은 이름을 붙여주세요</translation>
 <translation id="4976989127264491396">오류: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">컨테이너가 없습니다</translation>
+<translation id="6055154402239241620">트래픽 제어</translation>
+<translation id="8134521925475508805">특정 사이트가 특정 컨텍스트에서 자동으로 열리도록 구성하여 브라우징 세션 간에 분리를 만듭니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">트래픽 제어 활성화</translation>
+<translation id="1358255827354528344">새 규칙 추가</translation>
+<translation id="7183128985801806752">새 트래픽 제어 규칙</translation>
+<translation id="2474694032500407328">트래픽 제어 규칙 편집</translation>
+<translation id="5543417389274097206">규칙 만들기</translation>
+<translation id="6532106788206463496">변경사항 저장</translation>
+<translation id="1172800769374812685">규칙 삭제</translation>
+<translation id="2389682807835777591">정말 <ph name="RULE_LABEL"/> 규칙을 삭제하시겠습니까?</translation>
+<translation id="4853129331778360252">관리하고 항상 특정 브라우징 컨텍스트에서 열 URL을 입력하세요.</translation>
+<translation id="1173480005453148926">관리할 URL</translation>
+<translation id="6217532416180299470">트래픽 제어로 관리할 URL 입력</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/>은(는) 사이트와 그 하위 도메인을 일치시킵니다. <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/>은(는) 정확한 사이트를 일치시킵니다. <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/>은(는) 모든 사이트를 일치시킵니다. <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/>은(는) 주석입니다.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (및 URL <ph name="COUNT"/>개 더)</translation>
+<translation id="3700798663085748181">규칙 활성화</translation>
+<translation id="2967480878853054068">URL 필터가 올바르지 않습니다</translation>
 <translation id="2263346047290834619">트리 탭 사용</translation>
 <translation id="5860254591544742609">제목 바 표시</translation>
 <translation id="4691131445504068802">최소화될 때 완전히 숨기기</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">지금 업데이트</translation>
 <translation id="5334844597069022743">소스 보기</translation>
 <translation id="4720556299488643018">구독 취소</translation>
-<translation id="6532106788206463496">변경사항 저장</translation>
 <translation id="4516904298421534459">필터 목록</translation>
 <translation id="4435215931544457255">추가적인 인기 커뮤니티 목록입니다. 너무 많은 필터를 활성화하면 브라우징 속도가 느려집니다.</translation>
 <translation id="802154636333426148">다운로드 실패</translation>
@@ -611,6 +631,8 @@
 <translation id="509873765238158442">마이크로소프트 리콜 차단</translation>
 <translation id="4763421121695677716">마이크로소프트 윈도우 컴퓨터의 리콜 기능이 열려 있는 Brave 탭의 스크린샷을 자동으로 찍지 못하도록 차단합니다.</translation>
 <translation id="1968895725257436430">데이터 수집</translation>
+<translation id="5668852698659986622">스폰서 광고 활성화</translation>
+<translation id="431194936581466649">스폰서 광고로 독립적이고 사용자 우선의 웹을 구축하려는 Brave의 미션을 지원하세요. 저희는 광고 성과를 사용자를 식별하지 않고 비공개로 측정합니다.</translation>
 <translation id="1700052872056357670">종료 시 데이터 지우기</translation>
 <translation id="216468847346280584">Brave Ads 데이터 지우기...</translation>
 <translation id="96212973142796240">Brave 광고 데이터가 삭제됨</translation>
@@ -991,4 +1013,12 @@
 <translation id="154702742922788359">열기 모드</translation>
 <translation id="2249111429176737533">탭 창으로 열기</translation>
 <translation id="7022756207310403729">브라우저에서 열기</translation>
+<translation id="1916785651473363467">맞춤 프로필 이미지</translation>
+<translation id="5336092064678832560">맞춤 이미지 업로드</translation>
+<translation id="1062407476771304334">교체</translation>
+<translation id="1428299461403073820">맞춤 프로필 이미지 교체</translation>
+<translation id="7994453838803296517">맞춤 프로필 이미지 미리보기, 선택됨</translation>
+<translation id="6578040791557152233">맞춤 프로필 이미지 업로드</translation>
+<translation id="9222124079546967592">맞춤 프로필 이미지 제거</translation>
+<translation id="6058660912941570282">Brave가 이 파일을 사용할 수 없습니다. 다른 이미지를 선택하고 다시 시도하세요.</translation>
 </translationbundle>

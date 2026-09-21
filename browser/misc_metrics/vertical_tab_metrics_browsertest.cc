@@ -49,7 +49,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabMetricsTest, OpenTabs) {
   histogram_tester_.ExpectBucketCount(kVerticalOpenTabsHistogramName, 2, 1);
 
   // Test combined counts between two windows
-  Browser* second_browser = CreateBrowser(browser()->GetProfile());
+  BrowserWindowInterface* second_browser =
+      CreateBrowser(browser()->GetProfile());
   for (size_t i = 0; i < 4; i++) {
     chrome::AddTabAt(second_browser, {}, -1, true);
   }

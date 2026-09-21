@@ -102,9 +102,9 @@ android_aar_prebuilt("com_brave_playlist_java") {
     ":com_google_code_gson_gson_java",
     "//third_party/android_deps:material_design_java",
     "//third_party/androidx:androidx_media3_media3_common_java",
-    "//third_party/androidx:androidx_media3_media3_exoplayer_java",
     "//third_party/androidx:androidx_media3_media3_session_java",
     "//third_party/androidx:androidx_media3_media3_ui_java",
+    "//third_party/androidx:exoplayer_java",
   ]
   resource_overlay = true
   ignore_manifest = true

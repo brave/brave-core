@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">表示領域</translation>
 <translation id="2026367923222947564">ページ全体</translation>
 <translation id="4218885227032158909">選択された範囲</translation>
+<translation id="2586386106930448447">スクリーンショットのプレビュー</translation>
+<translation id="7514365320538308">ダウンロード</translation>
+<translation id="2743387203779672305">クリップボードにコピー</translation>
 <translation id="4928988318462976765">ウェブ拡張機能ストア</translation>
 <translation id="9181207987584064303">ウェブ拡張ストアを見る</translation>
 <translation id="3161744659507801211">警告：Braveは拡張機能が閲覧履歴を記録するのを防ぐことはできません。</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">開く</translation>
 <translation id="2079545284768500474">取り消す</translation>
 <translation id="1533980864758658574"><ph name="TOPIC"/>の新しいウィンドウが作成されました。</translation>
+<translation id="530437350080973527">そのトピックに一致するタブはありませんでした。別の表現で説明してみてください。</translation>
 <translation id="7985042437720138349">この機能は、開いているタブに関するデータをBraveのブラウザAIアシスタント、Leoに送信します。</translation>
 <translation id="6165508094623778733">詳しく見る</translation>
 <translation id="7557539689487606886">プレミアムプランへ</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">「仕事」「個人」など、コンテナに名前を付けてください</translation>
 <translation id="4976989127264491396">エラー: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">コンテナが見つかりません</translation>
+<translation id="6055154402239241620">トラフィックコントロール</translation>
+<translation id="8134521925475508805">特定のサイトを特定のコンテキストで自動的に開くよう設定し、ブラウジングセッション間を分離します。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">トラフィックコントロールを有効にする</translation>
+<translation id="1358255827354528344">新しいルールを追加</translation>
+<translation id="7183128985801806752">新しいトラフィックコントロールルール</translation>
+<translation id="2474694032500407328">トラフィックコントロールルールを編集</translation>
+<translation id="5543417389274097206">ルールを作成</translation>
+<translation id="6532106788206463496">変更を保存</translation>
+<translation id="1172800769374812685">ルールを削除</translation>
+<translation id="2389682807835777591">本当にルール <ph name="RULE_LABEL"/> を削除してもよろしいですか？</translation>
+<translation id="4853129331778360252">管理し、特定のブラウジングコンテキストで常に開くURLを入力してください。</translation>
+<translation id="1173480005453148926">管理するURL</translation>
+<translation id="6217532416180299470">トラフィックコントロールで管理するURLを入力</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> はサイトとそのサブドメインに一致します。<ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> は正確なサイトに一致します。<ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> はすべてのサイトに一致します。<ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> はコメントです。</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/>（およびさらに <ph name="COUNT"/> 件のURL）</translation>
+<translation id="3700798663085748181">ルールを有効にする</translation>
+<translation id="2967480878853054068">無効なURLフィルター</translation>
 <translation id="2263346047290834619">ツリータブを使用</translation>
 <translation id="5860254591544742609">タイトルバーを表示</translation>
 <translation id="4691131445504068802">最小化時に完全に非表示にする</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">今すぐ更新</translation>
 <translation id="5334844597069022743">ソースを表示</translation>
 <translation id="4720556299488643018">登録を解除</translation>
-<translation id="6532106788206463496">変更を保存</translation>
 <translation id="4516904298421534459">フィルターリスト</translation>
 <translation id="4435215931544457255">その他の人気コミュニティリスト。フィルターが多すぎると、ブラウジング速度が遅くなる場合があります。</translation>
 <translation id="802154636333426148">ダウンロード エラー</translation>
@@ -611,6 +631,8 @@
 <translation id="509873765238158442">Microsoft Recallをブロック</translation>
 <translation id="4763421121695677716">Microsoft Windowsコンピュータのリコール機能をブロックして、開いているBraveタブのスクリーンショットを自動的に撮影できないようにします。</translation>
 <translation id="1968895725257436430">データコレクション</translation>
+<translation id="5668852698659986622">スポンサー広告を有効にする</translation>
+<translation id="431194936581466649">スポンサー広告で、独立したユーザーファーストのウェブを構築するというBraveの使命を支援してください。私たちはあなたを特定することなく、プライベートに広告のパフォーマンスを測定します。</translation>
 <translation id="1700052872056357670">終了時にデータをクリア</translation>
 <translation id="216468847346280584">Brave広告のデータをクリア</translation>
 <translation id="96212973142796240">Brave Adsのデータを消去しました</translation>
@@ -992,4 +1014,12 @@
 <translation id="154702742922788359">オープンモード</translation>
 <translation id="2249111429176737533">タブ付きウィンドウとして開く</translation>
 <translation id="7022756207310403729">ブラウザで開く</translation>
+<translation id="1916785651473363467">カスタムプロフィール画像</translation>
+<translation id="5336092064678832560">カスタム画像をアップロード</translation>
+<translation id="1062407476771304334">置き換える</translation>
+<translation id="1428299461403073820">カスタムプロフィール画像を置き換える</translation>
+<translation id="7994453838803296517">カスタムプロフィール画像のプレビュー、選択済み</translation>
+<translation id="6578040791557152233">カスタムプロフィール画像をアップロード</translation>
+<translation id="9222124079546967592">カスタムプロフィール画像を削除</translation>
+<translation id="6058660912941570282">Braveはこのファイルを使用できません。別の画像を選択して再度お試しください。</translation>
 </translationbundle>

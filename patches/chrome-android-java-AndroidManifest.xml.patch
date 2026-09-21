@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/AndroidManifest.xml b/chrome/android/java/AndroidManifest.xml
-index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1a1508c5f 100644
+index bb740340ea1694bf6fcb6beb6712d6bfca45d2fe..eadff9ecd013500f15913efe9f8dd5e540d12a91 100644
 --- a/chrome/android/java/AndroidManifest.xml
 +++ b/chrome/android/java/AndroidManifest.xml
 @@ -62,7 +62,9 @@ by a child template that "extends" this file.
@@ -12,7 +12,7 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
      <uses-permission-sdk-23 android:name="android.permission.REORDER_TASKS"/>
  
      <!--  Needed for allowing downloaded APKs to be installed. -->
-@@ -72,28 +74,38 @@ by a child template that "extends" this file.
+@@ -72,22 +74,32 @@ by a child template that "extends" this file.
      <uses-permission android:name="android.permission.CAPTURE_KEYBOARD" />
      <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
      <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -43,16 +43,18 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
      <uses-permission android:name="android.permission.NFC"/>
 +-->
      <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
- 
+     <!-- Permission to request promoted ongoing status (Live Updates) for Actor task notifications on Android 16+. -->
+     <uses-permission android:name="android.permission.POST_PROMOTED_NOTIFICATIONS" />
+@@ -95,7 +107,7 @@ by a child template that "extends" this file.
      <!-- Needed to determine whether an app installed on the device should handle a web navigation.  -->
      <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />
  
 -    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
-+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"  android:maxSdkVersion="32"/>
++    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32"/>
  
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.RECORD_AUDIO"/>
-@@ -103,12 +115,14 @@ by a child template that "extends" this file.
+@@ -105,12 +117,14 @@ by a child template that "extends" this file.
        resizeTo, moveBy}|).
      -->
      <uses-permission android:name="android.permission.REPOSITION_SELF_WINDOWS"/>
@@ -68,17 +70,22 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
  
      <!-- Permission for using Android 14's credential management framework. -->
      <uses-permission android:name="android.permission.CREDENTIAL_MANAGER_QUERY_CANDIDATE_CREDENTIALS"/>
-@@ -161,7 +175,9 @@ by a child template that "extends" this file.
+@@ -172,11 +186,14 @@ by a child template that "extends" this file.
      <uses-permission android:name="com.google.android.c2dm.permission.RECEIVE" />
      <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
  
 +<!--
      <uses-permission android:name="com.google.android.apps.now.CURRENT_ACCOUNT_ACCESS" />
-+--> <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
++-->
  
      <!-- Permission for using pinned windowing layer for document picture-in-picture. -->
      <uses-permission android:name="android.permission.USE_PINNED_WINDOWING_LAYER" />
-@@ -375,6 +391,7 @@ by a child template that "extends" this file.
+ 
++    <uses-permission android:name="com.google.android.finsky.permission.BIND_GET_INSTALL_REFERRER_SERVICE"/>
+     {% block extra_uses_permissions %}
+     {% endblock %}
+ 
+@@ -396,6 +413,7 @@ by a child template that "extends" this file.
              <intent-filter>
                  <action android:name="com.sec.android.airview.HOVER" />
              </intent-filter>
@@ -86,7 +93,7 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
              <meta-data android:name="android.app.searchable"
                  android:resource="@xml/searchable" />
          </activity-alias>
-@@ -975,6 +992,7 @@ by a child template that "extends" this file.
+@@ -997,6 +1015,7 @@ by a child template that "extends" this file.
          </service>
  
          <!-- Quick Action Search widget -->
@@ -94,15 +101,15 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
          <receiver
              android:name="org.chromium.chrome.browser.quickactionsearchwidget.QuickActionSearchWidgetProvider$QuickActionSearchWidgetProviderSearch"
              android:label="@string/quick_action_search_widget_title"
-@@ -1004,6 +1022,7 @@ by a child template that "extends" this file.
-                 android:name="android.appwidget.provider"
+@@ -1027,6 +1046,7 @@ by a child template that "extends" this file.
                  android:resource="@xml/quick_action_search_widget_dino_info" />
          </receiver>
-+        -->
  
++        -->
          <!-- Bookmarks widget -->
          <receiver android:name="com.google.android.apps.chrome.appwidget.bookmarks.BookmarkThumbnailWidgetProvider"
-@@ -1223,7 +1242,7 @@ by a child template that "extends" this file.
+             android:label="@string/bookmark_widget_title"
+@@ -1245,7 +1265,7 @@ by a child template that "extends" this file.
  
          <service android:name="org.chromium.chrome.browser.media.MediaCaptureNotificationService"
              {% if enable_screen_capture == "true" %}
@@ -111,7 +118,7 @@ index c6de5399c556a091a289f8480b094706dbce0f7e..88ea38a10b8388eb68f037f2c33190b1
              {% else %}
              android:foregroundServiceType="camera|microphone"
              {% endif %}
-@@ -1306,6 +1325,7 @@ by a child template that "extends" this file.
+@@ -1338,6 +1358,7 @@ by a child template that "extends" this file.
            </activity>
          {% endif %}
  

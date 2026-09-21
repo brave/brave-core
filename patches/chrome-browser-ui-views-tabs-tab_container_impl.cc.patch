@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_container_impl.cc b/chrome/browser/ui/views/tabs/tab_container_impl.cc
-index ef58d06ec4c87700bc12d83a0593248315951472..79f17749c3f81d7bf52205078e883d4d60bbe49f 100644
+index 4271b94a693f767d2c6f47037b2577e43a5b1488..8e56553b720ef6996775661c0426b756fa136e30 100644
 --- a/chrome/browser/ui/views/tabs/tab_container_impl.cc
 +++ b/chrome/browser/ui/views/tabs/tab_container_impl.cc
 @@ -570,7 +570,7 @@ bool TabContainerImpl::IsRectInContentArea(const gfx::Rect& rect) {

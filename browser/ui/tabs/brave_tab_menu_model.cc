@@ -118,9 +118,7 @@ void BraveTabMenuModel::Build(BrowserWindowInterface* browser_window,
   AddItemWithStringId(TabStripModel::CommandBookmarkAllTabs,
                       IDS_TAB_CXMENU_BOOKMARK_ALL_TABS);
 
-  // TODO(https://github.com/brave/brave-browser/issues/54241): Update
-  // brave::CanBringAllTabs() to accept BrowserWindowInterface*.
-  if (brave::CanBringAllTabs(browser_window->GetBrowserForMigrationOnly())) {
+  if (brave::CanBringAllTabs(browser_window)) {
     AddItemWithStringId(TabStripModel::CommandBringAllTabsToThisWindow,
                         IDS_TAB_CXMENU_BRING_ALL_TABS_TO_THIS_WINDOW);
   }
@@ -128,6 +126,20 @@ void BraveTabMenuModel::Build(BrowserWindowInterface* browser_window,
   AddSeparator(ui::NORMAL_SEPARATOR);
 
   if (vertical_tab_controller_->SupportsBraveVerticalTabs()) {
+    // Upstream unconditionally adds its own "Show/Switch to Vertical Tab" item
+    // (TabStripModel::CommandToggleVertical) to the menu built by the base
+    // class constructor above. Remove it here (and the separator before it) so
+    // it doesn't duplicate the CommandShowVerticalTabs item we add below.
+    if (auto toggle_vertical_index =
+            GetIndexOfCommandId(TabStripModel::CommandToggleVertical)) {
+      size_t index = *toggle_vertical_index;
+      RemoveItemAt(index);
+      if (index > 0 &&
+          GetTypeAt(index - 1) == ui::MenuModel::TYPE_SEPARATOR) {
+        RemoveItemAt(index - 1);
+      }
+    }
+
     AddCheckItemWithStringId(TabStripModel::CommandShowVerticalTabs,
                              IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
   }

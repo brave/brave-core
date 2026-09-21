@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/tabs/public/tab_interface.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkRect.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -60,8 +61,9 @@ SharedPinnedTabDummyViewViews::SharedPinnedTabDummyViewViews(
     content::WebContents* shared_contents,
     content::WebContents* dummy_contents)
     : SharedPinnedTabDummyView(shared_contents, dummy_contents),
-      thumbnail_(
-          ThumbnailTabHelper::FromWebContents(shared_contents)->thumbnail()),
+      thumbnail_(ThumbnailTabHelper::From(
+                     tabs::TabInterface::GetFromContents(dummy_contents))
+                     ->thumbnail()),
       subscription_(thumbnail_->Subscribe()) {
   SetPaintToLayer();
   SetLayoutManager(std::make_unique<views::FlexLayout>())

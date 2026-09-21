@@ -113,6 +113,9 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="3114478090884951591">Görünür alan</translation>
 <translation id="2026367923222947564">Tam sayfa</translation>
 <translation id="4218885227032158909">Seçilen alan</translation>
+<translation id="2586386106930448447">Ekran görüntüsü önizlemesi</translation>
+<translation id="7514365320538308">indir</translation>
+<translation id="2743387203779672305">Panoya kopyala</translation>
 <translation id="4928988318462976765">Web Uzantıları Mağazası</translation>
 <translation id="9181207987584064303">Web Uzantıları Mağazası'nda görüntüle</translation>
 <translation id="3161744659507801211">Uyarı: Brave uzantıların tarama geçmişinizi kaydetmesini engelleyemez.</translation>
@@ -365,6 +368,7 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="6847541693235449912">Başla</translation>
 <translation id="2079545284768500474">Geri al</translation>
 <translation id="1533980864758658574"><ph name="TOPIC"/> için yeni pencere oluşturuldu</translation>
+<translation id="530437350080973527">Bu konuyla eşleşen sekme yok. Farklı bir şekilde tanımlamayı deneyin.</translation>
 <translation id="7985042437720138349">Bu özellik, açık sekmelerinizle ilgili verileri Brave'in yapay zeka destekli tarayıcı asistanı Leo'ya gönderir.</translation>
 <translation id="6165508094623778733">Daha fazla bilgi edin</translation>
 <translation id="7557539689487606886">Premium olun</translation>
@@ -422,6 +426,23 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="4328541188421002379">Konteynerinize İş veya Kişisel gibi bir isim verin</translation>
 <translation id="4976989127264491396">Hata: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Konteyner bulunamadı</translation>
+<translation id="6055154402239241620">Trafik Denetimi</translation>
+<translation id="8134521925475508805">Belirli siteleri belirli bir bağlamda otomatik olarak açılacak şekilde yapılandırarak tarama oturumlarınız arasında ayrım oluşturun. <ph name="BEGIN_LINK"/>Daha fazla bilgi<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Trafik Denetimini Etkinleştir</translation>
+<translation id="1358255827354528344">Yeni kural ekle</translation>
+<translation id="7183128985801806752">Yeni trafik denetimi kuralı</translation>
+<translation id="2474694032500407328">Trafik denetimi kuralını düzenle</translation>
+<translation id="5543417389274097206">Kural oluştur</translation>
+<translation id="6532106788206463496">Değişiklikleri kaydet</translation>
+<translation id="1172800769374812685">Kuralı sil</translation>
+<translation id="2389682807835777591"><ph name="RULE_LABEL"/> kuralını silmek istediğinizden emin misiniz?</translation>
+<translation id="4853129331778360252">Yönetilecek ve her zaman belirli bir tarama bağlamında açılacak URL'leri girin.</translation>
+<translation id="1173480005453148926">Yönetilecek URL'ler</translation>
+<translation id="6217532416180299470">Trafik denetimiyle yönetilecek URL'leri girin</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> siteyle ve alt alan adlarıyla eşleşir; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> tam olarak siteyle eşleşir; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> tüm sitelerle eşleşir; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> bir yorumdur.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (ve <ph name="COUNT"/> URL daha)</translation>
+<translation id="3700798663085748181">Kuralı etkinleştir</translation>
+<translation id="2967480878853054068">Geçersiz URL filtresi</translation>
 <translation id="2263346047290834619">Ağaç sekmelerini kullan</translation>
 <translation id="5860254591544742609">Başlık çubuğunu göster</translation>
 <translation id="4691131445504068802">Simge durumuna küçültüldüğünde tamamen gizle</translation>
@@ -529,7 +550,6 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="6745592621698551453">Şimdi güncelle</translation>
 <translation id="5334844597069022743">Kaynağı görüntüle</translation>
 <translation id="4720556299488643018">Abonelikten çık</translation>
-<translation id="6532106788206463496">Değişiklikleri kaydet</translation>
 <translation id="4516904298421534459">Listeleri filtrele</translation>
 <translation id="4435215931544457255">Ek popüler topluluklar listeleri. Çok fazla filtre etkinleştirmenin tarama hızını düşürebileceğini unutmayın.</translation>
 <translation id="802154636333426148">İndirilemedi</translation>
@@ -612,6 +632,8 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="509873765238158442">Microsoft Recall'u Engelle</translation>
 <translation id="4763421121695677716">Microsoft Windows bilgisayarlardaki Recall özelliğinin açık Brave sekmelerinin ekran görüntülerini otomatik olarak almasını engelleyin.</translation>
 <translation id="1968895725257436430">Veri toplama</translation>
+<translation id="5668852698659986622">Sponsorlu Reklamları Etkinleştir</translation>
+<translation id="431194936581466649">Brave'in bağımsız, kullanıcı öncelikli bir Web oluşturma misyonunu Sponsorlu Reklamlarla destekleyin. Reklam performansını sizi tanımlamadan, gizli bir şekilde ölçüyoruz.</translation>
 <translation id="1700052872056357670">Çıkışta verileri temizle</translation>
 <translation id="216468847346280584">Brave Reklamları verilerini temizle...</translation>
 <translation id="96212973142796240">Brave Reklamlar verileri temizlendi</translation>
@@ -992,4 +1014,12 @@ Veya şu adresten daha sonra değiştirin: <ph name="SETTINGS_EXTENIONS_LINK"/>.
 <translation id="154702742922788359">Açma modu</translation>
 <translation id="2249111429176737533">Sekmeli pencere olarak aç</translation>
 <translation id="7022756207310403729">Tarayıcıda aç</translation>
+<translation id="1916785651473363467">Özel profil resmi</translation>
+<translation id="5336092064678832560">Özel resim yükle</translation>
+<translation id="1062407476771304334">Değiştir</translation>
+<translation id="1428299461403073820">Özel profil resmini değiştir</translation>
+<translation id="7994453838803296517">Özel profil resmi önizlemesi, seçili</translation>
+<translation id="6578040791557152233">Özel bir profil resmi yükle</translation>
+<translation id="9222124079546967592">Özel profil resmini kaldır</translation>
+<translation id="6058660912941570282">Brave bu dosyayı kullanamıyor. Başka bir resim seçip tekrar deneyin.</translation>
 </translationbundle>

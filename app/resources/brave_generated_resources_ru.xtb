@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">Видимая область</translation>
 <translation id="2026367923222947564">Вся страница</translation>
 <translation id="4218885227032158909">Выбранная область</translation>
+<translation id="2586386106930448447">Предпросмотр скриншота</translation>
+<translation id="7514365320538308">Скачать</translation>
+<translation id="2743387203779672305">Скопировать в буфер обмена</translation>
 <translation id="4928988318462976765">Магазин расширений</translation>
 <translation id="9181207987584064303">Открыть в магазине расширений</translation>
 <translation id="3161744659507801211">Внимание: Brave не может запретить расширениям сохранять историю просмотров.</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">Перейти</translation>
 <translation id="2079545284768500474">Отменить</translation>
 <translation id="1533980864758658574">Добавлено новое окно для <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Ни одна вкладка не соответствует этой теме. Попробуйте описать её иначе.</translation>
 <translation id="7985042437720138349">Эта функция отправляет данные о ваших открытых вкладках Лео, браузерному помощнику Brave, работающему на основе искусственного интеллекта.</translation>
 <translation id="6165508094623778733">Узнать больше</translation>
 <translation id="7557539689487606886">Премиум-подписка</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">Дайте контейнеру имя, например, "Рабочий" или "Личный".</translation>
 <translation id="4976989127264491396">Ошибка: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Контейнер не найден</translation>
+<translation id="6055154402239241620">Управление трафиком</translation>
+<translation id="8134521925475508805">Настройте определённые сайты для автоматического открытия в определённом контексте, разделяя ваши сеансы просмотра. <ph name="BEGIN_LINK"/>Подробнее<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Включить управление трафиком</translation>
+<translation id="1358255827354528344">Добавить новое правило</translation>
+<translation id="7183128985801806752">Новое правило управления трафиком</translation>
+<translation id="2474694032500407328">Изменить правило управления трафиком</translation>
+<translation id="5543417389274097206">Создать правило</translation>
+<translation id="6532106788206463496">Сохранить изменения</translation>
+<translation id="1172800769374812685">Удалить правило</translation>
+<translation id="2389682807835777591">Вы уверены, что хотите удалить правило <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Введите URL-адреса для управления и всегда открывайте их в определённом контексте просмотра.</translation>
+<translation id="1173480005453148926">URL-адреса для управления</translation>
+<translation id="6217532416180299470">Введите URL-адреса для управления с помощью управления трафиком</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> соответствует сайту и его поддоменам; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> соответствует точному сайту; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> соответствует всем сайтам; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> — это комментарий.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (и ещё <ph name="COUNT"/> URL-адресов)</translation>
+<translation id="3700798663085748181">Включить правило</translation>
+<translation id="2967480878853054068">Недействительный фильтр URL</translation>
 <translation id="2263346047290834619">Используйте древовидные вкладки</translation>
 <translation id="5860254591544742609">Показывать заголовок окна</translation>
 <translation id="4691131445504068802">Полностью скрывать при сворачивании</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">Обновить сейчас</translation>
 <translation id="5334844597069022743">Открыть источник</translation>
 <translation id="4720556299488643018">Отказаться от подписки</translation>
-<translation id="6532106788206463496">Сохранить изменения</translation>
 <translation id="4516904298421534459">Списки фильтров</translation>
 <translation id="4435215931544457255">Дополнительные популярные списки сообщества. Если включить слишком много фильтров, браузер будет работать медленнее.</translation>
 <translation id="802154636333426148">Ошибка скачивания</translation>
@@ -611,6 +631,8 @@
 <translation id="509873765238158442">Блокировать Microsoft Recall</translation>
 <translation id="4763421121695677716">Блокируйте функцию Recall на компьютерах Microsoft Windows от автоматического снятия скриншотов любых открытых вкладок Brave.</translation>
 <translation id="1968895725257436430">Сбор данных</translation>
+<translation id="5668852698659986622">Включить спонсируемую рекламу</translation>
+<translation id="431194936581466649">Помогите поддержать миссию Brave по созданию независимого, ориентированного на пользователя интернета с помощью спонсируемой рекламы. Мы измеряем эффективность рекламы конфиденциально, не идентифицируя вас.</translation>
 <translation id="1700052872056357670">Удалять данные при выходе</translation>
 <translation id="216468847346280584">Удалить данные Brave Рекламы</translation>
 <translation id="96212973142796240">Данные Рекламы Brave очищены</translation>
@@ -989,4 +1011,12 @@
 <translation id="154702742922788359">Открытый режим</translation>
 <translation id="2249111429176737533">Открыть как окно с вкладками</translation>
 <translation id="7022756207310403729">Открыть в браузере</translation>
+<translation id="1916785651473363467">Пользовательское изображение профиля</translation>
+<translation id="5336092064678832560">Загрузить пользовательское изображение</translation>
+<translation id="1062407476771304334">Заменить</translation>
+<translation id="1428299461403073820">Заменить пользовательское изображение профиля</translation>
+<translation id="7994453838803296517">Предпросмотр пользовательского изображения профиля, выбрано</translation>
+<translation id="6578040791557152233">Загрузить пользовательское изображение профиля</translation>
+<translation id="9222124079546967592">Удалить пользовательское изображение профиля</translation>
+<translation id="6058660912941570282">Brave не может использовать этот файл. Выберите другое изображение и повторите попытку.</translation>
 </translationbundle>

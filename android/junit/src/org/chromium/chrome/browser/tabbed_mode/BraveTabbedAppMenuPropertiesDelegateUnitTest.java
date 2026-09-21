@@ -38,6 +38,7 @@ import org.robolectric.shadows.ShadowPackageManager;
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
+import org.chromium.base.TriState;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
@@ -241,7 +242,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         when(mIdentityManager.hasPrimaryAccount()).thenReturn(true);
 
         GlicEnabling.setEnabledForTesting(false);
-        PageZoomUtils.setShouldShowMenuItemForTesting(false);
+        PageZoomUtils.setShouldShowMenuItemForTesting(TriState.FALSE);
         FeedFeatures.setFakePrefsForTest(mPrefService);
         AppBannerManagerJni.setInstanceForTesting(mAppBannerManagerJniMock);
         Mockito.when(mAppBannerManagerJniMock.getInstallableWebAppManifestId(any()))

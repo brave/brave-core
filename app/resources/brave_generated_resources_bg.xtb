@@ -112,6 +112,9 @@
 <translation id="3114478090884951591">Видима област</translation>
 <translation id="2026367923222947564">Цялата страница</translation>
 <translation id="4218885227032158909">Избрана област</translation>
+<translation id="2586386106930448447">Преглед на снимка на екрана</translation>
+<translation id="7514365320538308">Изтегляне</translation>
+<translation id="2743387203779672305">Копиране в клипборда</translation>
 <translation id="4928988318462976765">Магазин за уеб разширения</translation>
 <translation id="9181207987584064303">Вижте в Магазина за уеб разширения</translation>
 <translation id="3161744659507801211">Внимание: Brave не може да попречи на разширенията да записват историята ви на сърфиране.</translation>
@@ -364,6 +367,7 @@
 <translation id="6847541693235449912">Давай</translation>
 <translation id="2079545284768500474">Отмяна</translation>
 <translation id="1533980864758658574">Създаден е нов прозорец за <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Никой раздел не съвпада с тази тема. Опитайте да я опишете по друг начин.</translation>
 <translation id="7985042437720138349">Тази функция изпраща данни за твоите отворени раздели на Лио – задвижвания с AI браузър асистент на Brave.</translation>
 <translation id="6165508094623778733">Научете повече</translation>
 <translation id="7557539689487606886">Абонирайте се за Premium</translation>
@@ -421,6 +425,23 @@
 <translation id="4328541188421002379">Дай име на контейнера, като например „Работни“ или „Лични“</translation>
 <translation id="4976989127264491396">Грешка: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Контейнерът не е намерен</translation>
+<translation id="6055154402239241620">Контрол на трафика</translation>
+<translation id="8134521925475508805">Конфигурирайте определени сайтове да се отварят автоматично в конкретен контекст, като създавате разделение между сесиите ви на сърфиране. <ph name="BEGIN_LINK"/>Научете повече<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Активиране на контрола на трафика</translation>
+<translation id="1358255827354528344">Добавяне на ново правило</translation>
+<translation id="7183128985801806752">Ново правило за контрол на трафика</translation>
+<translation id="2474694032500407328">Редактиране на правило за контрол на трафика</translation>
+<translation id="5543417389274097206">Създаване на правило</translation>
+<translation id="6532106788206463496">Запазване на промените</translation>
+<translation id="1172800769374812685">Изтриване на правило</translation>
+<translation id="2389682807835777591">Сигурни ли сте, че искате да изтриете правилото <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Въведете URL адреси, които да управлявате и винаги да отваряте в конкретен контекст на сърфиране.</translation>
+<translation id="1173480005453148926">URL адреси за управление</translation>
+<translation id="6217532416180299470">Въведете URL адреси за управление с контрол на трафика</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> съвпада със сайта и неговите поддомейни; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> съвпада с точния сайт; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> съвпада с всички сайтове; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> е коментар.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (и още <ph name="COUNT"/> URL адреса)</translation>
+<translation id="3700798663085748181">Активиране на правило</translation>
+<translation id="2967480878853054068">Невалиден URL филтър</translation>
 <translation id="2263346047290834619">Използвай дървовидни раздели</translation>
 <translation id="5860254591544742609">Показване на заглавната лента</translation>
 <translation id="4691131445504068802">Скрий напълно, когато е минимизирано</translation>
@@ -528,7 +549,6 @@
 <translation id="6745592621698551453">Актуализиране сега</translation>
 <translation id="5334844597069022743">Преглед на източника</translation>
 <translation id="4720556299488643018">Отказ от следване</translation>
-<translation id="6532106788206463496">Запазване на промените</translation>
 <translation id="4516904298421534459">Списъци с филтри</translation>
 <translation id="4435215931544457255">Допълнителни популярни списъци в общността. Обърнете внимание, че активирането на твърде много филтри ще влоши скоростта на сърфиране.</translation>
 <translation id="802154636333426148">Изтеглянето не бе успешно</translation>
@@ -611,6 +631,8 @@
 <translation id="509873765238158442">Блокиране на Microsoft Recall</translation>
 <translation id="4763421121695677716">Блокиране на функцията Recall в компютрите с Microsoft Windows, за да не прави автоматични снимки на екрана на отворени раздели в Brave.</translation>
 <translation id="1968895725257436430">Събиране на данни</translation>
+<translation id="5668852698659986622">Активиране на спонсорираните реклами</translation>
+<translation id="431194936581466649">Помогнете за подкрепата на мисията на Brave да изгради независим, ориентиран към потребителя интернет със спонсорирани реклами. Измерваме ефективността на рекламите поверително, без да ви идентифицираме.</translation>
 <translation id="1700052872056357670">Изчистване на данните при излизане</translation>
 <translation id="216468847346280584">Изчистване на данни за Brave Ads...</translation>
 <translation id="96212973142796240">Данните за Brave реклами са изчистени</translation>
@@ -991,4 +1013,12 @@
 <translation id="154702742922788359">Режим на отваряне</translation>
 <translation id="2249111429176737533">Отваряне като прозорец с раздели</translation>
 <translation id="7022756207310403729">Отваряне в браузър</translation>
+<translation id="1916785651473363467">Персонализирано изображение на профила</translation>
+<translation id="5336092064678832560">Качване на персонализирано изображение</translation>
+<translation id="1062407476771304334">Замяна</translation>
+<translation id="1428299461403073820">Замяна на персонализираното изображение на профила</translation>
+<translation id="7994453838803296517">Преглед на персонализирано изображение на профила, избрано</translation>
+<translation id="6578040791557152233">Качване на персонализирано изображение на профила</translation>
+<translation id="9222124079546967592">Премахване на персонализираното изображение на профила</translation>
+<translation id="6058660912941570282">Brave не може да използва този файл. Изберете друго изображение и опитайте отново.</translation>
 </translationbundle>

@@ -860,9 +860,11 @@
 <translation id="646023614746251785">Csere megerősítése</translation>
 <translation id="6264944956989873014">Híd megerősítése</translation>
 <translation id="7067917728851842589">Küldés megerősítése</translation>
+<translation id="2841837950101800123">Szolgáltató</translation>
 <translation id="1114725160772317155">Szolgáltató állapota</translation>
 <translation id="2351357639951873714">Védelem megerősítése</translation>
 <translation id="7480044382160806610">Védtelenítés megerősítése</translation>
+<translation id="6830542010524256586">Áttelepítés megerősítése</translation>
 <translation id="8332923694292360653">Fizetés</translation>
 <translation id="3735740477244556633">Rendezés</translation>
 <translation id="6484605214219822434">Híd áttekintése</translation>
@@ -1401,8 +1403,10 @@
 <translation id="5503843345634715425">Visszatérített</translation>
 <translation id="1778601041100951971"><ph name="AMOUNT"/> árnyékolása</translation>
 <translation id="6439110433198887239"><ph name="AMOUNT"/> árnyékolása</translation>
+<translation id="6022412719565214018"><ph name="AMOUNT"/> áttelepítése</translation>
 <translation id="5549369333299694936"><ph name="AMOUNT"/> árnyékolva van</translation>
 <translation id="3860973324426281816"><ph name="AMOUNT"/> árnyékolva van</translation>
+<translation id="7338153249873692854"><ph name="AMOUNT"/> át lett telepítve</translation>
 <translation id="6622332794280225311">{PENDING_TRANSACTIONS, plural,
       =1 {{PENDING_TRANSACTIONS} további tranzakció folyamatban.}
       other {{PENDING_TRANSACTIONS} további tranzakció folyamatban.}
@@ -1841,14 +1845,18 @@
 <translation id="9086302186042011942">Szinkronizálás</translation>
 <translation id="99991973626409495">Védelem ellenőrzése</translation>
 <translation id="6779429520470417361">Védelem ellenőrzése</translation>
+<translation id="7861093868637278059">Áttelepítés áttekintése</translation>
 <translation id="3114681061018999547">Védelem</translation>
 <translation id="1564172583156967455">Árnyékolás</translation>
+<translation id="7040674372746105444">Áttelepítés</translation>
 <translation id="8897189056319316783">ZEC védelem</translation>
 <translation id="508249542337194541">ZEC árnyékolása</translation>
+<translation id="3242332985109374549">ZEC áttelepítése</translation>
 <translation id="3382275793825152362">Pénzeszközök védelme</translation>
 <translation id="617149752238892649">Pénzeszközök feloldása</translation>
 <translation id="8631765320256788981">Pénzt küld az átlátható számlájáról egy biztonságos számlára.</translation>
 <translation id="3860364671495430495">Pénzt küld biztonságos fiókjáról az átlátható fiókjára.</translation>
+<translation id="9664108035970394">Pénzt küld az örökölt biztonságos számlájáról egy biztonságos számlára.</translation>
 <translation id="7144878232160441200">Újra</translation>
 <translation id="4750109510113597688">Ez a tranzakció fióklétrehozási díj kiszabásával járhat</translation>
 <translation id="6201709949885884577">Ehhez a művelethez jelszó megadása szükséges.</translation>
@@ -2205,7 +2213,7 @@
 <translation id="8151638057146502721">Konfiguráció</translation>
 <translation id="999273441077650169">A modell dinamikusan változik a legjobb feladatellátás érdekében.<ph name="LINK_BEFORE"/>Tudj meg többet<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Üdv, Leo vagyok, a Brave AI-asszisztense. a működésem pedig a Qwen VL 30B modellen alapul, amelyet az Alibaba Cloud fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A Qwen a Brave saját, biztonságos infrastruktúráján keresztül működik.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
-<translation id="784931275560506522">Üdv, Leo vagyok, a Brave AI-asszisztense. A működésem pedig a GLM-5.1 modellen alapul, amelyet a Zhipu AI fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A GLM-5.1 modellt a NEAR egy ellenőrizhetően privát, biztonságos infrastruktúráján keresztül üzemelteti.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Üdv, Leo vagyok, a Brave AI-asszisztense. A működésem a GLM-5.3 Flash modellen alapul, amelyet a Zhipu AI fejlesztett ki annak érdekében, hogy teljesítményorientált és sokféle felhasználási területre alkalmas legyen. A GLM-5.3 Flash modellt a NEAR egy ellenőrizhetően privát, biztonságos infrastruktúráján keresztül üzemelteti.<ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Szia, Leo vagyok. Én vagyok a Brave által működtetett AI-asszisztens. Az Anthropoc által létrehozott Claude Instant modell hajt végre beszélgetési és szövegfeldolgozási feladatokat. A Claude Instant a Brave biztonságos infrastruktúráján fut.<ph name="LINK_BEFORE"/>További információ<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Haiku modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Haiku a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Üdv, Leo vagyok. A Brave proxyval üzemeltetnek, a működésem a Claude Sonnet modellen alapul, amelyet az Anthropic fejlesztett ki beszélgetésre és szövegfeldolgozási feladatok elvégzésére. A Claude Sonnet a Brave által biztosított, saját biztonságos infrastruktúrán fut.<ph name="LINK_BEFORE"/>Tudjon meg többet<ph name="LINK_AFTER"/></translation>
@@ -2327,6 +2335,8 @@
 <translation id="4370698775470316661">Ez a beszélgetés túl hosszúra nyúlt, és nem folytatható. Más modellek alkalmazásával a Leo képes lehet megőrizni a pontosságát a hosszabb beszélgetések esetében.</translation>
 <translation id="4744144453035015075">Keresés a weben</translation>
 <translation id="8548351747582087191">Keresés a weben a következőre: <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4395536726196773278">Keresés a megnyitott lapok között a következőre: „<ph name="QUERY"/>”…</translation>
+<translation id="4724926708866789382">Egyetlen megnyitott lap sem felel meg ennek: „<ph name="QUERY"/>”.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> és sok minden más…</translation>
 <translation id="8103700533980268469">Üzenet bezárása</translation>
 <translation id="3417835166382867856">Lapok közötti keresés</translation>
@@ -2374,6 +2384,8 @@
 <translation id="443008484043213881">Eszközök</translation>
 <translation id="4343623396828510727">Ezek a webhelyek olyan eszközöket tesznek elérhetővé, amelyeket a Leo felhasználhat adatok küldésére erre a webhelyre és onnan. Ne csatolja vagy hagyja jóvá ezeket az eszközöket, ha ez a beszélgetés olyan adatokat tartalmaz, amelyeket nem szeretne, hogy ez a webhely lásson.</translation>
 <translation id="5021823940147712387">Eszközök eltávolítása</translation>
+<translation id="8712279871321308580">Elérhető webhelyeszközök</translation>
+<translation id="3690996226559605619">Elérhető eszközök (<ph name="TOOL_COUNT"/>)</translation>
 <translation id="318819763888864209">Minden előfizetés automatikus megújul, de a megújulás előtt bármikor lemondható.</translation>
 <translation id="5091223967610958">Az éppen felkeresett oldal kiszolgálónevének megosztása (<ph name="HOST_NAME"/>) a Leo továbbfejlesztéséhez.</translation>
 <translation id="8732450785281947197">Leo MI-eszközök</translation>
@@ -2412,6 +2424,7 @@
 <translation id="6397861830483632092">Megnyílt lapok…</translation>
 <translation id="802080272588201037">Könyvjelzők…</translation>
 <translation id="2716127283451902393">Történelem…</translation>
+<translation id="8888171900079152025">Munkaterület mappa</translation>
 <translation id="49269513399674318">Mikrofon használata</translation>
 <translation id="3895031624234442305">Egyedi modellek</translation>
 <translation id="4572010449071015143">Új beszélgetés indítása</translation>
@@ -2445,8 +2458,11 @@
 <translation id="3397808797783614750">Ha engedélyezi az AI számára, hogy automatikusan böngésszen az Ön nevében, az veszélyeztetheti az Ön adatvédelmét, pénzügyeit és online kommunikációját. <ph name="LINK_BEFORE"/>További tudnivalók<ph name="LINK_AFTER"/></translation>
 <translation id="4522025297473237294">Biztonsági figyelmeztetés</translation>
 <translation id="6077070599873946984">A Brave AI engedélyt kér a következőre: <ph name="TOOL_LABEL"/></translation>
+<translation id="908175046303050847">A Brave AI szeretné végrehajtani a következőt: **<ph name="TOOL_NAME"/>** ezen: **<ph name="SITE_ORIGIN"/>**</translation>
 <translation id="4163837693685963037">Megállapítottuk, hogy ez a művelet esetleg eltérhet a kérésétől:</translation>
 <translation id="3927932062596804919">Elutasít</translation>
+<translation id="4191349941249805855">Eszközargumentumok megjelenítése</translation>
+<translation id="7237059533128264835">Eszközargumentumok elrejtése</translation>
 <translation id="4569155249847375786">Ellenőrzött</translation>
 <translation id="8200772114523450471">Folytatás</translation>
 <translation id="7607002721634913082">Szüneteltetve</translation>
@@ -2552,7 +2568,7 @@
 <translation id="9173319813356700250">ÚJDONSÁG</translation>
 <translation id="6543799171249004861">A fénykép készítője: <ph name="AUTHOR"/></translation>
 <translation id="2361906291514218784">Leo MI</translation>
-<translation id="7978582287767542276">Szponzorált webhelyek eltávolítása</translation>
+<translation id="7978582287767542276">Új füloldali hirdetések eltávolítása</translation>
 <translation id="466214682712474574">Lépjen be ide:<ph name="PROVIDER"/> az egyenlege megtekintéséhez</translation>
 <translation id="8332875111286275890">Lépjen be az egyenlege megtekintéséhez</translation>
 <translation id="5430001801813715388">JUTALMAK</translation>
@@ -2564,11 +2580,11 @@
 <translation id="4844370919312937270">A keresőmotor widget megjelenítése új lapokon</translation>
 <translation id="5088374130885640159">A <ph name="REWARDS_LINK_BEGIN"/>Brave jutalmak<ph name="REWARDS_LINK_END"/> segítségével jutalmakat szerezhetsz az új füloldali hirdetések megtekintésével. <ph name="LEARN_MORE_LINK_BEGIN"/>További információ<ph name="LEARN_MORE_LINK_END"/>.</translation>
 <translation id="4100520468072294616">Új füloldali hirdetések megjelenítése</translation>
-<translation id="4983925687993168579">Brave statisztikák</translation>
+<translation id="4983925687993168579">Statisztikák</translation>
 <translation id="5009354496127441090">A legnépszerűbb oldalak mutatása</translation>
-<translation id="7705524343798198388">Brave VPN</translation>
-<translation id="2910653812138226931">A szponzorált webhelyek segítenek abban, hogy a Brave ingyenes maradjon. Ha használod a(z) <ph name="SITE_NAME"/> webhelyet, akkor a Brave küldetését támogatod. Bármikor letilthatod őket. <ph name="LINK_BEGIN"/>További információ<ph name="LINK_END"/>.</translation>
-<translation id="5810241219736298115">A szponzorált webhelyek segítenek abban, hogy a Brave ingyenes maradjon. Ha használod őket, akkor a Brave küldetését támogatod. <ph name="LINK_BEGIN"/>További információ<ph name="LINK_END"/>.</translation>
+<translation id="7705524343798198388">VPN</translation>
+<translation id="2910653812138226931">Az új füloldali hirdetések segítenek abban, hogy a Brave ingyenes maradjon. Ha használod a(z) <ph name="SITE_NAME"/> webhelyet, akkor a Brave küldetését támogatod. Bármikor letilthatod őket. <ph name="LINK_BEGIN"/>További információ<ph name="LINK_END"/>.</translation>
+<translation id="5810241219736298115">Az új füloldali hirdetések segítenek abban, hogy a Brave ingyenes maradjon. Ha használod őket, akkor a Brave küldetését támogatod. <ph name="LINK_BEGIN"/>További információ<ph name="LINK_END"/>.</translation>
 <translation id="4784802981241664605">STATISZTIKÁK</translation>
 <translation id="5236080651083907980">Titkosított videohívások a Brave Beszélgetés segítségével</translation>
 <translation id="2671474274417808910">Adatvédelem-központú hívások</translation>
@@ -2578,7 +2594,7 @@
 <translation id="1849266032237224734">Kevesebb elem megjelenítése</translation>
 <translation id="9125416311275819193">További elemek megjelenítése</translation>
 <translation id="8425213833346101688">Módosítás</translation>
-<translation id="755045397420611731">Fejlettebb online adavédelem és biztonság</translation>
+<translation id="755045397420611731">Fejlettebb online adatvédelem és biztonság</translation>
 <translation id="4520128772974831415">Az IP-cím elrejtése és a tartózkodási hely módosítása</translation>
 <translation id="6819278685469225453">Védje meg az összes alkalmazását</translation>
 <translation id="8422279921836245017">Már vásárolta?</translation>
@@ -2728,6 +2744,7 @@ other {A Brave Pajzsok {BLOCKED_COUNT} követőt blokkolt itt: <ph name="SITE_UR
 <translation id="701087249209337256">Hozza magával a régi böngészőjének tartalmát</translation>
 <translation id="142389341645668510">A Brave testreszabása</translation>
 <translation id="112005628409144325">Szabd testre a böngészési élményedet az általad kedvelt lapelrendezéssel és színmódokkal.</translation>
+<translation id="4428982101636000516">Keressen a Brave-vel vagy írjon be egy URL-t</translation>
 <translation id="7376367936988732808">Lapelrendezés</translation>
 <translation id="4734965478015604180">Vízszintes</translation>
 <translation id="490375751687810070">Függőleges</translation>
@@ -2788,11 +2805,13 @@ other {A Brave Pajzsok {BLOCKED_COUNT} követőt blokkolt itt: <ph name="SITE_UR
 <translation id="8416695199565594645">A forgalmat dedikált proxy szervereken keresztül irányítja, hogy elérhetővé váljanak a korlátozott oldalak és szolgáltatások.</translation>
 <translation id="434523916398030617">Lépjen kapcsolatba az ügyfélszolgálattal</translation>
 <translation id="1116694919640316211">Névjegy</translation>
-<translation id="8998067240267949220">Fejlettebb online adavédelem és biztonság</translation>
-<translation id="8666111144393179185">Az IP-cím elrejtése és a tartózkodási hely módosítása</translation>
-<translation id="8881997962573369342">Világszerte több száz szerver</translation>
+<translation id="8998067240267949220">A kedvenc tartalmaid elérése korlátok nélkül</translation>
+<translation id="8666111144393179185">Világszerte több száz szerver</translation>
+<translation id="8881997962573369342">Az IP-cím egyszerű elrejtése és a tartózkodási hely módosítása</translation>
 <translation id="1513801084412881009">Villámgyors kapcsolati sebesség</translation>
-<translation id="6434859410115379558">Több mint 10 eszköz védelme egyetlen csomagban</translation>
+<translation id="6434859410115379558">Naplózás nélkül, függetlenül auditált</translation>
+<translation id="4886431881864826294">Egy előfizetés 10 eszközre vonatkozik asztali gépeken, Androidon és iOS-en</translation>
+<translation id="3649011006120934011">Nincs kötelezettségvállalás, bármikor lemondható</translation>
 <translation id="1693568075761612600">Hibajegy létrehozása sikertelen, ellenőrizze a kapcsolatát.</translation>
 <translation id="1407707415819020643">Szerver kiválasztása</translation>
 <translation id="7406947191797765434"><ph name="CITY_COUNT"/> város - <ph name="SERVER_COUNT"/> szerver</translation>
