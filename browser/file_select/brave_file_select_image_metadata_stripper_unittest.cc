@@ -11,6 +11,7 @@
 #include "base/files/file_util.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
+#include "brave/components/image_metadata_stripper/image_metadata_stripper_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave {
@@ -31,8 +32,8 @@ class BraveFileSelectImageMetadataStripperUnitTest : public testing::Test {
   // Same CreateNewTempDirectory prefix as production `temp_root_dir`.
   base::FilePath CreateTempRootDir() {
     base::FilePath temp_root_dir;
-    EXPECT_TRUE(base::CreateNewTempDirectory(kUploadStripTempDirPrefix,
-                                             &temp_root_dir));
+    EXPECT_TRUE(base::CreateNewTempDirectory(
+        image_metadata_stripper::kStripTempDirPrefix, &temp_root_dir));
     cleanup_.push_back(temp_root_dir);
     return temp_root_dir;
   }
@@ -105,7 +106,7 @@ TEST_F(BraveFileSelectImageMetadataStripperUnitTest,
   // The token in the basename is not enough; the path must be a directory.
   const base::FilePath leftover = CreateUnrelatedTempFile();
   const base::FilePath prefixed_file = leftover.DirName().Append(
-      base::FilePath::StringType(kUploadStripTempDirPrefix) +
+      base::FilePath::StringType(image_metadata_stripper::kStripTempDirPrefix) +
       FILE_PATH_LITERAL("_not_a_dir"));
   ASSERT_TRUE(base::CopyFile(leftover, prefixed_file));
   cleanup_.push_back(prefixed_file);
