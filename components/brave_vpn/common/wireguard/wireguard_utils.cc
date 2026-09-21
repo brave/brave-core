@@ -8,6 +8,7 @@
 #include <stdint.h>
 
 #include <optional>
+#include <string_view>
 #include <vector>
 
 #include "base/base64.h"
@@ -15,6 +16,7 @@
 #include "base/check_op.h"
 #include "base/compiler_specific.h"
 #include "base/logging.h"
+#include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
 #include "base/strings/string_view_util.h"
 #include "crypto/openssl_util.h"
@@ -41,13 +43,17 @@ std::string EncodeBase64(base::span<const uint8_t> in) {
 namespace {
 constexpr char kCloudflareIPv4[] = "1.1.1.1";
 
-// Covers the whole address space, but split in half so that no prefix is a
-// default route. tunnel.dll installs its own blockAll/blockDNS WFP filters only
-// when a peer routes a literal /0, and those filters block the local network.
-// We install an equivalent filter set ourselves, plus permits for the LAN, in
-// brave_vpn_wireguard_service. See
-// https://git.zx2c4.com/wireguard-windows/about/docs/netquirk.md
-constexpr char kAllowedIPs[] = "0.0.0.0/1, 128.0.0.0/1, ::/1, 8000::/1";
+// Covers the whole address space split in half so no prefix is a default route.
+// tunnel.dll installs its own blockAll/blockDNS WFP filters only when a peer
+// routes a literal /0, and those filters block the local network. We install an
+// equivalent filter set ourselves, plus permits for the LAN, in
+// brave_vpn_wireguard_service. Used when allow_lan_traffic is true.
+// See https://git.zx2c4.com/wireguard-windows/about/docs/netquirk.md
+constexpr char kAllowedIPsLan[] = "0.0.0.0/1, 128.0.0.0/1, ::/1, 8000::/1";
+
+// Literal default routes: tunnel.dll installs its own blockAll/blockDNS WFP
+// filters, which also block LAN traffic. Used when allow_lan_traffic is false.
+constexpr char kAllowedIPsNoLan[] = "0.0.0.0/0, ::/0";
 
 // Template for wireguard config generation.
 // For a quick reference on the keys/values, please see:
@@ -69,7 +75,8 @@ std::optional<std::string> CreateWireguardConfig(
     const std::string& client_private_key,
     const std::string& server_public_key,
     const std::string& vpn_server_hostname,
-    const std::string& mapped_ipv4_address) {
+    const std::string& mapped_ipv4_address,
+    bool allow_lan_traffic) {
   if (client_private_key.empty() || server_public_key.empty() ||
       vpn_server_hostname.empty() || mapped_ipv4_address.empty()) {
     return std::nullopt;
@@ -85,8 +92,35 @@ std::optional<std::string> CreateWireguardConfig(
                                      mapped_ipv4_address);
   base::ReplaceSubstringsAfterOffset(&config, 0, "{dns_servers}",
                                      kCloudflareIPv4);
-  base::ReplaceSubstringsAfterOffset(&config, 0, "{allowed_ips}", kAllowedIPs);
+  base::ReplaceSubstringsAfterOffset(
+      &config, 0, "{allowed_ips}",
+      allow_lan_traffic ? kAllowedIPsLan : kAllowedIPsNoLan);
   return config;
+}
+
+std::vector<std::string> ParseAllowedIPs(const std::string& config) {
+  constexpr std::string_view kPrefix = "AllowedIPs = ";
+  auto start = config.find(kPrefix);
+  if (start == std::string::npos) {
+    return {};
+  }
+  std::string_view value(config);
+  value.remove_prefix(start + kPrefix.size());
+  value = value.substr(0, value.find('\n'));
+  return base::SplitString(value, ",", base::TRIM_WHITESPACE,
+                           base::SPLIT_WANT_NONEMPTY);
+}
+
+bool ConfigUsesFullTunnelRoutes(const std::string& config) {
+  for (const auto& ip : ParseAllowedIPs(config)) {
+    net::IPAddress prefix;
+    size_t prefix_length = 0;
+    if (net::ParseCIDRBlock(ip, &prefix, &prefix_length) &&
+        prefix_length == 0) {
+      return true;
+    }
+  }
+  return false;
 }
 
 WireguardKeyPair GenerateNewX25519Keypair() {
