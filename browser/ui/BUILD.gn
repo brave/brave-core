@@ -210,8 +210,8 @@ source_set("ui") {
         "//chrome/browser/picture_in_picture",
       ]
 
-      if (enable_snaps) {
-        deps += [ "//brave/browser/ui/webui/brave_wallet/snap_executor" ]
+      if (enable_snap) {
+        deps += [ "//brave/browser/ui/webui/brave_wallet/snap_host" ]
       }
     }
   }

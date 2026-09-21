@@ -87,7 +87,7 @@ base::FilePath BraveWalletComponentsTestDataFolder() {
 std::string ReadTestSnapBundle() {
   base::ScopedAllowBlockingForTesting allow_blocking;
   base::FilePath path = BraveWalletTestDataFolder()
-                            .AppendASCII("snaps")
+                            .AppendASCII("snap")
                             .AppendASCII("test_snap")
                             .AppendASCII("bundle.js");
   std::string contents;

@@ -60,9 +60,7 @@ class SwapService;
 class MeldIntegrationService;
 class SimulationService;
 class BraveWalletIpfsService;
-#if BUILDFLAG(ENABLE_SNAPS)
-class SnapsService;
-#endif
+class SnapService;
 template <typename Request, typename Callback>
 struct PendingRequest;
 struct PendingDecryptRequest;
@@ -399,9 +397,9 @@ class BraveWalletService : public KeyedService,
   ZCashWalletService* GetZcashWalletService();
   // Might return nullptr.
   CardanoWalletService* GetCardanoWalletService();
-#if BUILDFLAG(ENABLE_SNAPS)
+#if BUILDFLAG(ENABLE_SNAP)
   // Might return nullptr.
-  SnapsService* snaps_service() { return snaps_service_.get(); }
+  SnapService* snap_service() { return snap_service_.get(); }
 #endif
 
  protected:
@@ -546,8 +544,8 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<MeldIntegrationService> meld_integration_service_;
   std::unique_ptr<SimulationService> simulation_service_;
   std::unique_ptr<BraveWalletIpfsService> ipfs_service_;
-#if BUILDFLAG(ENABLE_SNAPS)
-  std::unique_ptr<SnapsService> snaps_service_;
+#if BUILDFLAG(ENABLE_SNAP)
+  std::unique_ptr<SnapService> snap_service_;
 #endif
   mojo::ReceiverSet<mojom::BraveWalletService> receivers_;
   mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>

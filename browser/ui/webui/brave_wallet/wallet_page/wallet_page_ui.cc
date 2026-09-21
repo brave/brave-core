@@ -36,8 +36,8 @@
 #include "ui/base/webui/web_ui_util.h"
 #include "ui/webui/webui_util.h"
 
-#if BUILDFLAG(ENABLE_SNAPS)
-#include "brave/components/brave_wallet/browser/snaps_service.h"
+#if BUILDFLAG(ENABLE_SNAP)
+#include "brave/components/brave_wallet/browser/snap_service.h"
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -112,8 +112,10 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
                           " " + kUntrustedLedgerURL + " " + kUntrustedNftURL +
                           " " + kUntrustedLineChartURL + " " +
                           kUntrustedMarketURL;
-#if BUILDFLAG(ENABLE_SNAPS)
-  frame_src += std::string(" ") + kUntrustedSnapExecutorURL;
+#if BUILDFLAG(ENABLE_SNAP)
+  if (IsSnapFeatureEnabled()) {
+    frame_src += std::string(" ") + kUntrustedSnapURL;
+  }
 #endif
   frame_src += ";";
   source->OverrideContentSecurityPolicy(
@@ -128,7 +130,7 @@ WalletPageUI::WalletPageUI(content::WebUI* web_ui)
   source->AddBoolean("rewardsFeatureEnabled", IsRewardsFeatureEnabled(profile));
   source->AddBoolean("isLedgerMojoBridgeEnabled", IsMojoForLedgerEnabled());
   source->AddBoolean("walletDebug", IsWalletDebugEnabled());
-  source->AddBoolean("isSnapsEnabled", IsSnapsFeatureEnabled());
+  source->AddBoolean("isSnapEnabled", IsSnapFeatureEnabled());
 
 #if !BUILDFLAG(IS_ANDROID)
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
@@ -170,18 +172,21 @@ void WalletPageUI::BindInterface(
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
-#if BUILDFLAG(ENABLE_SNAPS)
+#if BUILDFLAG(ENABLE_SNAP)
 void WalletPageUI::BindInterface(
-    mojo::PendingReceiver<mojom::SnapsService> receiver) {
+    mojo::PendingReceiver<mojom::SnapService> receiver) {
+  if (!IsSnapFeatureEnabled()) {
+    return;
+  }
   auto* profile = Profile::FromWebUI(web_ui());
   if (auto* wallet_service =
           BraveWalletServiceFactory::GetServiceForContext(profile)) {
-    if (auto* snaps_service = wallet_service->snaps_service()) {
-      snaps_service->Bind(std::move(receiver));
+    if (auto* snap_service = wallet_service->snap_service()) {
+      snap_service->Bind(std::move(receiver));
     }
   }
 }
-#endif  // BUILDFLAG(ENABLE_SNAPS)
+#endif  // BUILDFLAG(ENABLE_SNAP)
 
 void WalletPageUI::CreatePageHandler(
     mojo::PendingReceiver<mojom::PageHandler> page_receiver,

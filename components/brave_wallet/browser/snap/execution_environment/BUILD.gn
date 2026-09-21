@@ -5,13 +5,13 @@
 
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
-assert(enable_snaps)
+assert(enable_snap)
 
 source_set("execution_environment") {
   sources = [
-    "snap_bridge_controller.h",
-    "wallet_page_snap_bridge_controller.cc",
-    "wallet_page_snap_bridge_controller.h",
+    "snap_host_bridge_controller.h",
+    "wallet_page_snap_host_bridge_controller.cc",
+    "wallet_page_snap_host_bridge_controller.h",
   ]
 
   deps = [

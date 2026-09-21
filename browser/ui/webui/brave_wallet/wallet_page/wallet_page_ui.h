@@ -50,8 +50,8 @@ class WalletPageUI : public ui::MojoWebUIController,
       mojo::PendingReceiver<brave_rewards::mojom::RewardsPageHandler> receiver);
 #endif
 
-#if BUILDFLAG(ENABLE_SNAPS)
-  void BindInterface(mojo::PendingReceiver<mojom::SnapsService> receiver);
+#if BUILDFLAG(ENABLE_SNAP)
+  void BindInterface(mojo::PendingReceiver<mojom::SnapService> receiver);
 #endif
 
   // Called with `LedgerBridge` coming from untrusted subframe.

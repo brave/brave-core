@@ -6,21 +6,21 @@
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 assert(enable_brave_wallet)
-assert(enable_snaps)
+assert(enable_snap)
 
 import("//brave/components/common/typescript.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/grit/repack.gni")
 
-transpile_web_ui("snap_executor_ui") {
+transpile_web_ui("snap_host_ui") {
   output_module = false
   entry_points = [ [
-        "snap_executor",
-        rebase_path("snap_executor.ts"),
+        "snap_host",
+        rebase_path("snap_host.ts"),
       ] ]
   webpack_aliases = [ "browser" ]
-  resource_name = "snap_executor"
+  resource_name = "snap_host"
 
   imports_from = [ "//brave/components/brave_wallet_ui/" ]
 
@@ -30,8 +30,8 @@ transpile_web_ui("snap_executor_ui") {
   ]
 }
 
-pack_web_resources("snap_executor_generated") {
-  resource_name = "snap_executor"
-  output_dir = "$root_gen_dir/brave/components/snap_executor/resources"
-  deps = [ ":snap_executor_ui" ]
+pack_web_resources("snap_host_generated") {
+  resource_name = "snap_host"
+  output_dir = "$root_gen_dir/brave/components/snap_host/resources"
+  deps = [ ":snap_host_ui" ]
 }

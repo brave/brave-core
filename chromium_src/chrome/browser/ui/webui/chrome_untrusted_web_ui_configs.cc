@@ -21,9 +21,10 @@
 #include "brave/browser/ui/webui/brave_wallet/market/market_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/nft/nft_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/trezor/trezor_ui.h"
-#if BUILDFLAG(ENABLE_SNAPS)
-#include "brave/browser/ui/webui/brave_wallet/snap_executor/snap_executor_ui.h"
-#endif  // BUILDFLAG(ENABLE_SNAPS)
+#include "brave/components/brave_wallet/common/common_utils.h"
+#if BUILDFLAG(ENABLE_SNAP)
+#include "brave/browser/ui/webui/brave_wallet/snap_host/snap_host_ui.h"
+#endif  // BUILDFLAG(ENABLE_SNAP)
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -77,10 +78,12 @@ void RegisterChromeUntrustedWebUIConfigs() {
       std::make_unique<ledger::UntrustedLedgerUIConfig>());
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<trezor::UntrustedTrezorUIConfig>());
-#if BUILDFLAG(ENABLE_SNAPS)
-  content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
-      std::make_unique<snap_executor::UntrustedSnapExecutorUIConfig>());
-#endif  // BUILDFLAG(ENABLE_SNAPS)
+#if BUILDFLAG(ENABLE_SNAP)
+  if (brave_wallet::IsSnapFeatureEnabled()) {
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<snap_host::UntrustedSnapHostUIConfig>());
+  }
+#endif  // BUILDFLAG(ENABLE_SNAP)
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 #if BUILDFLAG(ENABLE_LOCAL_AI)

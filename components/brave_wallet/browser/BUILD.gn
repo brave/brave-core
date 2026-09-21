@@ -417,10 +417,10 @@ static_library("browser") {
     "//sql",
   ]
 
-  if (enable_snaps) {
+  if (enable_snap) {
     sources += [
-      "snaps_service.cc",
-      "snaps_service.h",
+      "snap_service.cc",
+      "snap_service.h",
     ]
 
     deps +=

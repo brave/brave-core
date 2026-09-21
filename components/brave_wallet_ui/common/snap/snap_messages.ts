@@ -3,16 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// postMessage protocol between the trusted wallet page (SnapBridge) and
-// chrome-untrusted://snap-executor iframes.
-//
-// WALLET_PAGE_ORIGIN must track kBraveUIWalletPageURL in
-// components/brave_wallet/common/web_ui_constants.h. When the panel is added
-// as a frame ancestor this becomes a list. Deliberately not sourced via
-// loadTimeData — that would require UseStringsJs() inside the frame that
-// evaluates snap code.
+// postMessage protocol between the trusted wallet page (SnapHostBridge) and
+// chrome-untrusted://snap-host iframes.
 
-export const SNAP_EXECUTOR_ORIGIN = 'chrome-untrusted://snap-executor'
+export const SNAP_HOST_ORIGIN = 'chrome-untrusted://snap-host'
 export const WALLET_PAGE_ORIGIN = 'chrome://wallet'
 
 export const enum SnapCommand {
@@ -69,11 +63,20 @@ export function isExecuteSnapResult(data: unknown): data is ExecuteSnapResult {
 export function isExecuteSnapCommand(
   data: unknown,
 ): data is ExecuteSnapCommand {
+  if (
+    typeof data !== 'object'
+    || data === null
+    || (data as ExecuteSnapCommand).type !== SnapCommand.ExecuteSnap
+    || typeof (data as ExecuteSnapCommand).requestId !== 'number'
+  ) {
+    return false
+  }
+  // Validate the command shape because sourceCode is passed to new Function().
+  const payload = (data as { payload?: unknown }).payload
   return (
-    typeof data === 'object'
-    && data !== null
-    && (data as ExecuteSnapCommand).type === SnapCommand.ExecuteSnap
-    && typeof (data as ExecuteSnapCommand).requestId === 'number'
-    && typeof (data as ExecuteSnapCommand).payload === 'object'
+    typeof payload === 'object'
+    && payload !== null
+    && typeof (payload as ExecuteSnapPayload).snapId === 'string'
+    && typeof (payload as ExecuteSnapPayload).sourceCode === 'string'
   )
 }

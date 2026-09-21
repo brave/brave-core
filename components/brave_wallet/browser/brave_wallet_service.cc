@@ -32,9 +32,6 @@
 #include "brave/components/brave_wallet/browser/permission_utils.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/simulation_service.h"
-#if BUILDFLAG(ENABLE_SNAPS)
-#include "brave/components/brave_wallet/browser/snaps_service.h"
-#endif
 #include "brave/components/brave_wallet/browser/swap_service.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/browser/tx_storage.h"
@@ -62,6 +59,10 @@
 #include "url/gurl.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
+
+#if BUILDFLAG(ENABLE_SNAP)
+#include "brave/components/brave_wallet/browser/snap_service.h"
+#endif
 
 namespace brave_wallet {
 
@@ -295,9 +296,9 @@ BraveWalletService::BraveWalletService(
         url_loader_factory);
   }
 
-#if BUILDFLAG(ENABLE_SNAPS)
-  if (IsSnapsFeatureEnabled()) {
-    snaps_service_ = std::make_unique<SnapsService>();
+#if BUILDFLAG(ENABLE_SNAP)
+  if (IsSnapFeatureEnabled()) {
+    snap_service_ = std::make_unique<SnapService>();
   }
 #endif
 

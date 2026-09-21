@@ -392,9 +392,9 @@ if (enable_brave_wallet) {
       "//brave/browser/ui/webui/brave_wallet/wallet_panel",
     ]
   }
-  if (enable_snaps) {
+  if (enable_snap) {
     brave_chrome_browser_deps +=
-        [ "//brave/browser/ui/webui/brave_wallet/snap_executor" ]
+        [ "//brave/browser/ui/webui/brave_wallet/snap_host" ]
   }
 }
 

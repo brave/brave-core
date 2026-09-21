@@ -55,7 +55,7 @@ class TxStorage;
 base::FilePath BraveWalletComponentsTestDataFolder();
 base::FilePath BraveWalletTestDataFolder();
 
-// Reads test/data/brave_wallet/snaps/test_snap/bundle.js.
+// Reads test/data/brave_wallet/snap/test_snap/bundle.js.
 std::string ReadTestSnapBundle();
 
 class AccountResolverDelegateForTest : public AccountResolverDelegate {

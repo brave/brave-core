@@ -24,7 +24,7 @@ import {
 // redux
 import * as WalletActions from '../common/actions/wallet_actions'
 import { store } from './store'
-import { snapBridgeRegistry } from '../common/snap/snap_bridge_registry'
+import { snapHostBridgeRegistry } from '../common/snap/snap_host_bridge_registry'
 
 // components
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
@@ -78,8 +78,8 @@ function initialize() {
   )
   store.dispatch(WalletActions.initialize())
 
-  if (loadTimeData.getBoolean('isSnapsEnabled')) {
-    snapBridgeRegistry.ensureBridge()
+  if (loadTimeData.getBoolean('isSnapEnabled')) {
+    snapHostBridgeRegistry.ensureBridge()
   }
 }
 

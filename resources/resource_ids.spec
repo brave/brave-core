@@ -257,7 +257,7 @@
   "brave/browser/resources/tab_strip/tab_strip_resources.grd": {
     "structures": [54170],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-snap_executor/snap_executor.grd": {
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-snap_host/snap_host.grd": {
     "META": {"sizes": {"includes": [10]}},
     "includes": [54180],
   },

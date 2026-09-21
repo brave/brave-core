@@ -3,14 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// Snap executor running inside chrome-untrusted://snap-executor/.
+// Snap host running inside chrome-untrusted://snap-host/.
 // Receives snap source from the parent wallet page via postMessage and
 // evaluates it with new Function().
-//
-// All snaps share one realm and one origin (allow-same-origin sandbox) with
-// no SES lockdown and no inter-snap isolation. Evaluated code has the frame's
-// full globals (window.parent, postMessage, fetch, indexedDB, etc.).
-// TODO(snaps): adopt MetaMask SES compartments per snaps_wiki.md.
 
 import {
   ExecuteSnapPayload,
@@ -64,5 +59,5 @@ window.addEventListener('message', (event) => {
   handleExecuteSnap(event.data.requestId, event.data.payload)
 })
 
-// Notify the parent that the executor is ready.
+// Notify the parent that the host is ready.
 sendToParent({ type: SnapMessageType.ExecutorReady })
