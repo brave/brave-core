@@ -114,7 +114,7 @@ constexpr auto kCommandIcons =
         {IDC_SHOW_APPS_PAGE, &kLeoGrid04Icon},
         {IDC_PERFORMANCE, &kLeoNetworkSpeedFastIcon},
         {IDC_DEV_TOOLS, &kLeoCodeIcon},
-        {IDC_TASK_MANAGER_APP_MENU, &kLeoWindowBinaryCodeIcon},
+        {IDC_TASK_MANAGER_APP_MENU, &kLeoWindowTaskManagerIcon},
         {IDC_SHOW_BRAVE_SYNC, &kLeoProductSyncIcon},
         {IDC_ROUTE_MEDIA, &kLeoChromeCastIcon},
         {IDC_SIDEBAR_SHOW_OPTION_MENU, &kLeoBrowserSidebarRightIcon},
