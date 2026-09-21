@@ -10,9 +10,19 @@
  * #css_wrapper_metadata_end */
 
 /* Settings row and inline icons should follow the selected Leo color theme
- * instead of Chromium's hardcoded Google greys. */
+ * instead of Chromium's hardcoded Google greys. The dark block has to repeat
+ * the same tokens: upstream sets --iron-icon-fill-color inside
+ * @media (prefers-color-scheme: dark), which would otherwise win. */
 html {
   --cr-icon-color: var(--leo-color-icon-default);
   --cr-link-row-start-icon-color: var(--leo-color-icon-default);
   --iron-icon-fill-color: var(--leo-color-icon-default);
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --cr-icon-color: var(--leo-color-icon-default);
+    --cr-link-row-start-icon-color: var(--leo-color-icon-default);
+    --iron-icon-fill-color: var(--leo-color-icon-default);
+  }
 }

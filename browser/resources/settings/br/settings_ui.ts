@@ -59,9 +59,6 @@ RegisterStyleOverride(
         --brave-settings-content-max-width: 708px;
         --brave-settings-menu-width: var(--settings-menu-width);
         --brave-settings-menu-margin: 12px;
-        --cr-icon-color: var(--leo-color-icon-default);
-        --cr-link-row-start-icon-color: var(--leo-color-icon-default);
-        --iron-icon-fill-color: var(--leo-color-icon-default);
         background-color: var(--leo-color-container-background);
       }
 
