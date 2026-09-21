@@ -77,27 +77,39 @@ source_set("unit_tests") {
 
 source_set("browser_tests") {
   testonly = true
-  sources = [ "open_tab_search_browsertest.cc" ]
+  sources = [
+    "history_embeddings_omnibox_browsertest.cc",
+    "open_tab_search_browsertest.cc",
+  ]
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   deps = [
     ":open_tab_search",
     "//base",
+    "//base/test:test_support",
     "//brave/components/constants",
     "//brave/components/history_embeddings:test_support",
+    "//brave/components/local_ai/core",
+    "//chrome/browser/autocomplete",
     "//chrome/browser/history",
+    "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles",
     "//chrome/browser/ui",
     "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/test:test_support",
     "//components/history/core/browser",
+    "//components/history_embeddings/core",
     "//components/keyed_service/core",
+    "//components/omnibox/browser",
+    "//components/omnibox/browser:test_support",
+    "//components/prefs",
     "//content/public/browser",
     "//content/test:test_support",
     "//net:test_support",
     "//testing/gmock",
     "//testing/gtest",
+    "//third_party/metrics_proto",
     "//ui/base",
     "//url",
   ]

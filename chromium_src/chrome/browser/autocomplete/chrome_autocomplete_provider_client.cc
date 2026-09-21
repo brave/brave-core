@@ -39,7 +39,21 @@
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #endif  // BUILDFLAG(ENABLE_COMMANDER)
 
+// Must precede the macro below, which would otherwise rewrite these
+// declarations.
+#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
+#include "chrome/browser/history_embeddings/history_embeddings_utils.h"
+
+// The setting is live, but the service is built from it once at profile setup,
+// so the two can disagree. `HistoryEmbeddingsProvider::Start()` CHECKs on the
+// service.
+#define IsHistoryEmbeddingsEnabledForProfile(profile)                    \
+  IsHistoryEmbeddingsEnabledForProfile(profile) &&                       \
+      HistoryEmbeddingsServiceFactory::GetForProfile(profile) != nullptr
+
 #include <chrome/browser/autocomplete/chrome_autocomplete_provider_client.cc>
+
+#undef IsHistoryEmbeddingsEnabledForProfile
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 commander::CommanderFrontendDelegate*
