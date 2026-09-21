@@ -3116,7 +3116,7 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         QuickSearchEnginesViewAdapter adapter =
-                new QuickSearchEnginesViewAdapter(BraveActivity.this, searchEngines, this);
+                new QuickSearchEnginesViewAdapter(searchEngines, this);
         recyclerView.setAdapter(adapter);
         if (mQuickSearchEnginesView.getParent() == null) {
             WindowManager.LayoutParams params =
