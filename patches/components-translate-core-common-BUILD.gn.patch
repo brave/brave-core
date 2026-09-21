@@ -1,13 +1,23 @@
 diff --git a/components/translate/core/common/BUILD.gn b/components/translate/core/common/BUILD.gn
-index a5ff6bb9f0e16fc4d6f746203c17d519ced0df0e..4d782f761d2672d738f7cba5150a7fb8274dac62 100644
+index a5ff6bb9f0e16fc4d6f746203c17d519ced0df0e..7b95d2ee35b6714f5dd6b88201a82d6471d9a693 100644
 --- a/components/translate/core/common/BUILD.gn
 +++ b/components/translate/core/common/BUILD.gn
-@@ -36,6 +36,8 @@ static_library("common") {
-     "//third_party/metrics_proto",
-     "//url",
-   ]
-+
-+  import("//brave/components/translate/core/common/sources.gni") sources += brave_components_translate_core_common_sources public_deps += brave_components_translate_core_common_public_deps
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- source_set("unit_tests") {
++import("//brave/components/translate/core/common/sources.gni")
+ import("//testing/test.gni")
+ 
+ if (is_android) {
+@@ -26,8 +27,10 @@ static_library("common") {
+     "translate_util.cc",
+     "translate_util.h",
+   ]
++  sources += brave_components_translate_core_common_sources
+ 
+   public_deps = [ "//base:i18n" ]
++  public_deps += brave_components_translate_core_common_public_deps
+ 
+   deps = [
+     "//base",
