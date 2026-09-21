@@ -65,7 +65,11 @@ export function createBackgroundStore() {
 
   newTabProxy.addListeners({
     onBackgroundsUpdated: debounce(async () => {
-      await Promise.all([updateCustomBackgrounds(), updateSelectedBackground()])
+      await Promise.all([
+        updateSponsoredImagesEnabled(),
+        updateCustomBackgrounds(),
+        updateSelectedBackground(),
+      ])
     }, 10),
   })
 
