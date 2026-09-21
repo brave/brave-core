@@ -67,17 +67,14 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
     public void clearView(
             @NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
         super.clearView(recyclerView, viewHolder);
-        int currentPosition = viewHolder.getBindingAdapterPosition();
-        boolean hasMoved =
+        final int currentPosition = viewHolder.getBindingAdapterPosition();
+        final boolean hasMoved =
                 mStartPosition != NO_POSITION
                         && currentPosition != NO_POSITION
                         && currentPosition != mStartPosition;
         mStartPosition = NO_POSITION;
-        if (!hasMoved || !recyclerView.isAttachedToWindow()) {
-            return;
+        if (hasMoved) {
+            mQuickSearchAdapter.onOrderChanged();
         }
-        // Save the new order once the drop animation is done and RecyclerView has finished
-        // laying out, the same way DragTouchHandler commits its swaps.
-        recyclerView.post(mQuickSearchAdapter::onOrderChanged);
     }
 }
