@@ -32,21 +32,21 @@ public class QuickSearchEnginesAdapter
 
     @Override
     public void onBindViewHolder(
-            QuickSearchEnginesSettingsViewHolder quickSearchEnginesSettingsViewHolder,
-            int position) {
+            final QuickSearchEnginesSettingsViewHolder quickSearchEnginesSettingsViewHolder,
+            final int position) {
         QuickSearchEnginesModel quickSearchEnginesModel = mSearchEngines.get(position);
         quickSearchEnginesSettingsViewHolder.mSearchEngineText.setText(
                 quickSearchEnginesModel.getShortName());
+        // Detach the recycled holder's listener first, so setChecked() below doesn't report a
+        // change for the engine this row used to show.
+        quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch.setOnCheckedChangeListener(null);
         quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch.setChecked(
                 quickSearchEnginesModel.isEnabled());
         quickSearchEnginesSettingsViewHolder.mSearchEngineSwitch.setOnCheckedChangeListener(
                 (buttonView, isChecked) -> {
-                    // Update enabled state of search engine at current adapter position
-                    int position1 = quickSearchEnginesSettingsViewHolder.getAdapterPosition();
-                    QuickSearchEnginesModel searchEngine = mSearchEngines.get(position1);
-                    searchEngine.setEnabled(isChecked);
+                    quickSearchEnginesModel.setEnabled(isChecked);
                     onSearchEngineClick(
-                            quickSearchEnginesSettingsViewHolder.getAdapterPosition(),
+                            quickSearchEnginesSettingsViewHolder.getBindingAdapterPosition(),
                             quickSearchEnginesModel);
                 });
         switch (quickSearchEnginesModel.getKeyword()) {
