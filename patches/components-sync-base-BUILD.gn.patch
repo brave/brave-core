@@ -1,12 +1,20 @@
 diff --git a/components/sync/base/BUILD.gn b/components/sync/base/BUILD.gn
-index 3dcc8f723e2b5225f4ec5ebf7743772e30c517cf..04c5be0b12d0985ad30edd80a9c810428427658a 100644
+index 3dcc8f723e2b5225f4ec5ebf7743772e30c517cf..240d5b9004525f528c877b81f47fb72c10fda2ca 100644
 --- a/components/sync/base/BUILD.gn
 +++ b/components/sync/base/BUILD.gn
-@@ -90,6 +90,7 @@ static_library("base") {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/components/sync/base/sources.gni")
+ import("//testing/libfuzzer/fuzzer_test.gni")
+ 
+ declare_args() {
+@@ -74,6 +75,7 @@ static_library("base") {
+     "//components/sync/protocol",
+     "//url",
    ]
- 
-   defines = [ "SYNC_USER_AGENT_PRODUCT=$sync_user_agent_product" ]
-+  import("//brave/components/sync/base/sources.gni") public_deps += brave_components_sync_base_public_deps
- }
- 
- fuzzer_test("unique_position_fuzzer") {
++  public_deps += brave_components_sync_base_public_deps
+   deps = [
+     "//base",
+     "//base:i18n",
