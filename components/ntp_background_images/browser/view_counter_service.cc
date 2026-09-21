@@ -237,7 +237,7 @@ void ViewCounterService::GetCurrentBrandedWallpaperFromAdsService(
 std::optional<base::DictValue>
 ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {
   const auto [campaign_index, creative_index] =
-      model_.GetCurrentBrandedImageIndex();
+      model_.GetCurrentNewTabTakeoverCampaignAndCreativeIndex();
   return GetSponsoredImagesData()->MaybeGetBackgroundAt(campaign_index,
                                                         creative_index);
 }
@@ -251,7 +251,7 @@ void ViewCounterService::Shutdown() {
 void ViewCounterService::OnBackgroundImagesDataDidUpdate(
     NTPBackgroundImagesData* data) {
   if (data) {
-    DVLOG(2) << __func__ << ": NTP BI component is updated.";
+    DVLOG(2) << __func__ << ": The sponsored backgrounds component is updated.";
     ResetModel();
   }
 }
@@ -259,7 +259,7 @@ void ViewCounterService::OnBackgroundImagesDataDidUpdate(
 void ViewCounterService::OnSponsoredImagesDataDidUpdate(
     NTPSponsoredImagesData* data) {
   if (data) {
-    DVLOG(2) << __func__ << ": NTP SI component is updated.";
+    DVLOG(2) << __func__ << ": The sponsored content component is updated.";
     ResetModel();
   }
 }
@@ -287,18 +287,21 @@ void ViewCounterService::ParseAndSaveNewTabPageAdsCallback(bool success) {
 void ViewCounterService::ResetModel() {
   model_.Reset();
 
-  model_.set_show_branded_wallpaper(IsSponsoredImagesWallpaperOptedIn());
+  model_.set_show_new_tab_takeover_wallpaper(
+      IsSponsoredImagesWallpaperOptedIn());
   model_.set_show_wallpaper(IsShowBackgroundImageOptedIn());
 
   if (const NTPSponsoredImagesData* const images_data =
           GetSponsoredImagesData()) {
-    std::vector<size_t> campaigns_total_branded_images_count;
-    campaigns_total_branded_images_count.reserve(images_data->campaigns.size());
+    std::vector<size_t> campaigns_total_new_tab_takeover_creative_count;
+    campaigns_total_new_tab_takeover_creative_count.reserve(
+        images_data->campaigns.size());
     for (const auto& campaign : images_data->campaigns) {
-      campaigns_total_branded_images_count.push_back(campaign.creatives.size());
+      campaigns_total_new_tab_takeover_creative_count.push_back(
+          campaign.creatives.size());
     }
-    model_.SetCampaignsTotalBrandedImageCount(
-        campaigns_total_branded_images_count);
+    model_.SetCampaignsTotalNewTabTakeoverCreativeCount(
+        campaigns_total_new_tab_takeover_creative_count);
   }
 
   if (const NTPBackgroundImagesData* const images_data =
