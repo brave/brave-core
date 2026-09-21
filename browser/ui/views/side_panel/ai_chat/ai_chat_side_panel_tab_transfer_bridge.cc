@@ -61,6 +61,21 @@ AIChatUI* GetAIChatUIWebUI(content::WebContents* web_contents) {
   return controller->GetAs<AIChatUI>();
 }
 
+// The page handler is created only when the frontend binds. A transfer can
+// happen before that (e.g. tests, or a very fast open-full-page), and a later
+// bind will pick up the correct standalone/side-panel mode from the new host.
+void NotifyDisplayModeChanged(content::WebContents* web_contents,
+                              bool is_standalone) {
+  AIChatUI* ai_chat_ui = GetAIChatUIWebUI(web_contents);
+  if (!ai_chat_ui) {
+    DVLOG(1) << "No AIChatUI found for the transferred WebContents";
+    return;
+  }
+  if (ai_chat::AIChatUIPageHandler* page_handler = ai_chat_ui->page_handler()) {
+    page_handler->SetDisplayMode(is_standalone);
+  }
+}
+
 }  // namespace
 
 AIChatSidePanelTabTransferBridge::AIChatSidePanelTabTransferBridge(
@@ -103,12 +118,8 @@ void AIChatSidePanelTabTransferBridge::TransferFullPageContentsToSidePanel(
   ClearChatEntryCache();
 
   // Notify the page that it's now in a Side Panel
-  AIChatUI* ai_chat_ui = GetAIChatUIWebUI(pending_web_contents_.get());
-  if (ai_chat_ui) {
-    ai_chat_ui->page_handler()->SetDisplayMode(false);
-  } else {
-    DVLOG(1) << "No AIChatUI found for the transferred WebContents";
-  }
+  NotifyDisplayModeChanged(pending_web_contents_.get(),
+                           /*is_standalone=*/false);
 
   // Animate the conversation into the panel from where the full page currently
   // sits (flash-free). When the caller could not capture a starting rect (e.g.
@@ -214,12 +225,7 @@ bool AIChatSidePanelTabTransferBridge::MoveSidePanelContentsToTab(
   Navigate(&params);
 
   // Notify the page that it's now in a full-page tab
-  AIChatUI* ai_chat_ui = GetAIChatUIWebUI(side_panel_contents);
-  if (ai_chat_ui) {
-    ai_chat_ui->page_handler()->SetDisplayMode(true);
-  } else {
-    DVLOG(1) << "No AIChatUI found for the transferred WebContents";
-  }
+  NotifyDisplayModeChanged(side_panel_contents, /*is_standalone=*/true);
   // The conversation now lives in a tab; close the (now-empty) panel. Its view
   // is torn down on close, but its owned contents was already released.
   side_panel_ui->Close();
