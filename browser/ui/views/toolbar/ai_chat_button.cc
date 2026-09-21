@@ -38,11 +38,6 @@ AIChatButton::AIChatButton(BrowserWindowInterface* browser)
                                         base::Unretained(this))),
       browser_(*browser),
       prefs_(*browser_->GetProfile()->GetOriginalProfile()->GetPrefs()) {
-  opens_full_page_.Init(
-      ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage, &prefs_.get(),
-      base::BindRepeating(&AIChatButton::UpdateButtonHighlight,
-                          base::Unretained(this)));
-
   SetMenuModel(CreateMenuModel());
 
   SetVectorIcon(kLeoProductBraveLeoIcon);
@@ -154,10 +149,6 @@ bool AIChatButton::IsCommandIdChecked(int command_id) const {
 }
 
 bool AIChatButton::ShouldHighlight() const {
-  if (opens_full_page_.GetValue()) {
-    return false;
-  }
-
   auto* sidebar_controller = browser_->GetFeatures().sidebar_controller();
   if (!sidebar_controller) {
     return false;

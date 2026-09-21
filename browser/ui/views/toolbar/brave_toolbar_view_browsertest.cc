@@ -66,6 +66,7 @@
 #include "components/policy/core/common/policy_map.h"
 #include "components/policy/policy_constants.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -77,6 +78,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/views/toolbar/ai_chat_button.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -367,27 +369,29 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_AIChatEnabled,
   EXPECT_FALSE(is_highlighted());
 
   // Opening Leo from the side panel (not the toolbar button) should still
-  // highlight the button while it is configured to open in the sidebar.
+  // highlight the button.
   side_panel_coordinator->Show(ai_chat_key);
   wait_for_entry(ai_chat_key, true);
   EXPECT_TRUE(is_highlighted());
 
+  // The toolbar open-target pref is only consulted on click. Changing it does
+  // not open, close, or convert the current Leo panel, so highlight stays.
   prefs->SetBoolean(ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage,
                     true);
   EXPECT_TRUE(side_panel_coordinator->IsSidePanelEntryShowing(ai_chat_key));
-  EXPECT_FALSE(is_highlighted());
-
-  prefs->SetBoolean(ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage,
-                    false);
   EXPECT_TRUE(is_highlighted());
 
-  side_panel_coordinator->Close();
+  // OpenConversationFullPage() moves the live panel into a tab and closes it.
+  content::WebContents* panel_contents = nullptr;
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    panel_contents = ai_chat::GetSidePanelWebContents(browser());
+    return panel_contents != nullptr;
+  }));
+  ASSERT_TRUE(ai_chat::MaybeMoveSidePanelChatToTab(panel_contents));
   wait_for_entry(ai_chat_key, false);
   EXPECT_FALSE(is_highlighted());
 
   // Full-page mode should not highlight when the toolbar button is pressed.
-  prefs->SetBoolean(ai_chat::prefs::kBraveAIChatToolbarButtonOpensFullPage,
-                    true);
   button->ButtonPressed();
   EXPECT_EQ(
       GURL(kAIChatUIURL),

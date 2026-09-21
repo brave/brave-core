@@ -14,7 +14,6 @@
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
-#include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/menus/simple_menu_model.h"
 
@@ -63,7 +62,6 @@ class AIChatButton : public ToolbarButton,
 
   const raw_ref<BrowserWindowInterface> browser_;
   raw_ref<PrefService> prefs_;
-  BooleanPrefMember opens_full_page_;
   base::ScopedObservation<sidebar::SidebarModel,
                           sidebar::SidebarModel::Observer>
       sidebar_model_observation_{this};
