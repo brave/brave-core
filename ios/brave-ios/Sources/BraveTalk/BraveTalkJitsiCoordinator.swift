@@ -41,7 +41,7 @@ import Shared
     let application = UIApplication.shared
     // Warning: Grabbing this shared instance automatically creates a React Native bridge
     let meet = JitsiMeet.sharedInstance()
-    meet.destroyReactNativeBridge()
+    meet.destroyReactNative()
     // --
     switch event {
     case .continueUserActivity(let activity, let restorationHandler):
@@ -106,7 +106,7 @@ import Shared
       self.pipViewCoordinator = nil
       self.isCallActive = false
       // Destroy the bridge after they're done
-      JitsiMeet.sharedInstance().destroyReactNativeBridge()
+      JitsiMeet.sharedInstance().destroyReactNative()
       completion()
     }
   }
@@ -121,7 +121,7 @@ import Shared
     guard isIntegrationEnabled else { return }
 
     // Only create the RN bridge when the user joins a call
-    JitsiMeet.sharedInstance().instantiateReactNativeBridge()
+    JitsiMeet.sharedInstance().instantiateReactNative()
 
     // Call this right away instead of waiting for the conference to join so that we can stop the page load
     // faster.
