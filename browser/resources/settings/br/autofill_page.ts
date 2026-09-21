@@ -11,11 +11,9 @@ import {
 } from 'chrome://resources/brave/polymer_overriding.js'
 import { html as polymerHtml } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import { loadTimeData } from '../i18n_setup.js'
-import { YourSavedInfoDataChip } from '../metrics_browser_proxy.js'
 import { routes } from '../route.js'
 import { Router } from '../router.js'
 import type { Route } from '../router.js'
-import type { DataChip } from '../autofill_page/autofill_page.js'
 
 // <if expr="enable_email_aliases">
 import '../email_aliases_page/email_aliases_page.js'
@@ -23,7 +21,10 @@ import { EmailAliasesStrings } from '../brave_components_webui_strings.js'
 // </if>
 
 // Make this page's section-header title style the same as the
-// settings-section's '#header .title' style.
+// settings-section's '#header .title' style, and stack the category cards into
+// a single card of plain rows, as the page looked before the "Your saved info"
+// redesign. These rules are included *before* upstream's, so any property
+// upstream also declares needs `!important` to win.
 RegisterStyleOverride(
   'settings-autofill-page',
   polymerHtml`
@@ -37,6 +38,34 @@ RegisterStyleOverride(
         padding-bottom: var(--leo-spacing-xl) !important;
         margin-bottom: 0 !important;
         letter-spacing: 0 !important;
+      }
+
+      /* Carry the card chrome here instead of on each child, so the whole
+         stack reads as one card. These are the Leo tokens br/settings_section
+         gives a <settings-section> #card, so this matches every other settings
+         card rather than upstream's unthemed --cr-card-* values. Hiding the
+         overflow keeps row hover from bleeding past the rounded corners. */
+      .card-container {
+        background-color: var(--leo-color-container-background);
+        border-radius: var(--leo-radius-m);
+        box-shadow: var(--leo-effect-elevation-01);
+        margin-bottom: var(--leo-spacing-xl);
+        overflow: hidden;
+        gap: 0 !important;
+      }
+
+      .card-container > category-reference-card {
+        background-color: transparent;
+        border-radius: 0;
+        box-shadow: none;
+      }
+
+      /* Same separator rule the page used before the redesign. The general
+         sibling combinator keeps this correct wherever the hidden identity
+         docs and travel cards sit in the order. */
+      .card-container > category-reference-card:not([hidden]) ~
+          :is(category-reference-card, settings-toggle-button):not([hidden]) {
+        border-top: var(--cr-separator-line);
       }
     </style>
   `
@@ -93,9 +122,17 @@ RegisterPolymerTemplateModifications({
     }
     relatedServicesSection.style.display = 'none'
 
+    // Everything Brave adds becomes a row of the single category card.
+    const cardContainer = templateContent.querySelector('.card-container')
+    if (!cardContainer) {
+      throw new Error(
+        '[Settings] Unable to find .card-container on autofill-page')
+    }
+
     // The only row of the "Autofill settings" section is the collapsible card
-    // holding the Autofill AI settings, so hide it. Brave supports autofill in
-    // private windows though, so the section keeps a toggle for that instead.
+    // holding the Autofill AI settings, so hide the whole section the same way
+    // as the related services one. The card stays in the DOM in case upstream
+    // resolves it as an associated control.
     const autofillSettingsCard =
       templateContent.querySelector('collapsible-autofill-settings-card')
     if (!autofillSettingsCard) {
@@ -103,33 +140,23 @@ RegisterPolymerTemplateModifications({
         'collapsible-autofill-settings-card on autofill-page')
     }
     autofillSettingsCard.hidden = true
-    // No `class="hr"`: with the Autofill AI card hidden, this is the first row
-    // of the section's card and needs no separator above it.
-    autofillSettingsCard.parentElement.appendChild(html`
-      <settings-toggle-button
-        id="autofillPrivateWindowsToggle"
-        label="${loadTimeData.getString('autofillInPrivateSettingLabel')}"
-        sub-label="${loadTimeData.getString('autofillInPrivateSettingDesc')}"
-        pref="{{prefs.brave.autofill_private_windows}}">
-      </settings-toggle-button>
-    `)
+    const autofillSettingsSection =
+      autofillSettingsCard.closest('settings-section')
+    if (!autofillSettingsSection) {
+      throw new Error('[Settings] Unable to find the autofill settings ' +
+        'section on autofill-page')
+    }
+    autofillSettingsSection.style.display = 'none'
 
     // <if expr="enable_email_aliases">
     // Give Email Aliases its own category card, alongside Payment methods and
-    // Contact info. It carries no chips, since aliases have no saved-data
-    // breakdown to show.
+    // Contact info.
     if (loadTimeData.getBoolean('isEmailAliasesEnabled')) {
-      const cardContainer = templateContent.querySelector('.card-container')
-      if (!cardContainer) {
-        throw new Error(
-          '[Settings] Unable to find .card-container on autofill-page')
-      }
       // A null reference node appends, so this lands just before Payment
       // methods, or last if upstream ever drops that card.
       cardContainer.insertBefore(html`
         <category-reference-card
           id="emailAliasesCard"
-          no-chips
           card-title="${loadTimeData.getString(
             EmailAliasesStrings.SETTINGS_EMAIL_ALIASES_LABEL,
           )}"
@@ -138,20 +165,33 @@ RegisterPolymerTemplateModifications({
       `, cardContainer.querySelector('#paymentManagerButton'))
     }
     // </if>
+
+    // Brave supports autofill in private windows, so that toggle becomes the
+    // last row of the card rather than sitting under a header of its own.
+    // Appended after the Email Aliases card so it always ends up last.
+    cardContainer.appendChild(html`
+      <settings-toggle-button
+        id="autofillPrivateWindowsToggle"
+        label="${loadTimeData.getString('autofillInPrivateSettingLabel')}"
+        sub-label="${loadTimeData.getString('autofillInPrivateSettingDesc')}"
+        pref="{{prefs.brave.autofill_private_windows}}">
+      </settings-toggle-button>
+    `)
   },
-  // <if expr="enable_email_aliases">
   'category-reference-card': (templateContent) => {
-    // A card with no chips should not show the separator and the (empty) chip
-    // grid that a populated category card does.
+    // Each entry should act purely as a link, as it did before the "Your saved
+    // info" redesign, so drop the chip grid and the separator above it. This
+    // style is appended after upstream's, so it wins without `!important`.
     templateContent.appendChild(html`
       <style>
-        :host([no-chips]) hr,
-        :host([no-chips]) .chips-container {
+        hr,
+        .chips-container {
           display: none;
         }
       </style>
     `)
   },
+  // <if expr="enable_email_aliases">
   'settings-autofill-page-index': (templateContent) => {
     if (!loadTimeData.getBoolean('isEmailAliasesEnabled')) {
       return
@@ -168,21 +208,6 @@ RegisterPolymerTemplateModifications({
     `)
   }
   // </if>
-})
-
-RegisterPolymerPrototypeModification({
-  'settings-autofill-page': (prototype) => {
-    // Loyalty cards are stored in Google Wallet, so drop that chip from the
-    // Payment methods card. Filtering the chips as they are rendered, rather
-    // than removing the chip from the data type hierarchy, keeps the chip
-    // count bookkeeping upstream does for it working.
-    const originalGetVisibleChips: (chips: DataChip[]) => DataChip[] =
-      prototype.getVisibleChips_
-    prototype.getVisibleChips_ = function (chips: DataChip[]): DataChip[] {
-      return originalGetVisibleChips.call(this, chips).filter(
-        (chip: DataChip) => chip.id !== YourSavedInfoDataChip.LOYALTY_CARDS)
-    }
-  }
 })
 
 // <if expr="enable_email_aliases">
