@@ -1,12 +1,21 @@
 diff --git a/services/preferences/tracked/BUILD.gn b/services/preferences/tracked/BUILD.gn
-index aae16eebf1285d7a11b887f538dfcbb3ed29cd15..815b4b496a90a6b32804bf4f23d2eba7382ee10a 100644
+index aae16eebf1285d7a11b887f538dfcbb3ed29cd15..971fb5c3ac1d86c6a5199c39a5271fe26a30d131 100644
 --- a/services/preferences/tracked/BUILD.gn
 +++ b/services/preferences/tracked/BUILD.gn
-@@ -70,6 +70,7 @@ source_set("tracked") {
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/services/preferences/tracked/sources.gni")
++
+ source_set("tracked") {
+   sources = [
+     "device_id.h",
+@@ -66,6 +68,7 @@ source_set("tracked") {
+     "//components/safe_browsing/core/common:features",
+     "//crypto",
+   ]
++  deps += brave_services_preferences_tracked_deps
+ 
    if (is_mac) {
      frameworks = [ "IOKit.framework" ]
-   }
-+  import("//brave/services/preferences/tracked/sources.gni") deps += brave_services_preferences_tracked_deps
- }
- 
- source_set("unit_tests") {

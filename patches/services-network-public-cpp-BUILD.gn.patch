@@ -1,12 +1,12 @@
 diff --git a/services/network/public/cpp/BUILD.gn b/services/network/public/cpp/BUILD.gn
-index 362705504b39a67031e6baa45a5165d79a1cfcab..e64fe03ff0f61a136081737dee2344162b0a8dfe 100644
+index 362705504b39a67031e6baa45a5165d79a1cfcab..ebd3046b296e0d6506c323598c8fedae59e70476 100644
 --- a/services/network/public/cpp/BUILD.gn
 +++ b/services/network/public/cpp/BUILD.gn
-@@ -205,6 +205,7 @@ component("cpp") {
-     "//services/proxy_resolver/public/mojom",
-   ]
- 
-+  public_deps += [ "//brave/services/network/public/cpp" ]
-   defines = [ "IS_NETWORK_CPP_IMPL" ]
- }
- 
+@@ -186,6 +186,7 @@ component("cpp") {
+     ":cpp_base",
+     ":flags_and_switches",
+     ":is_potentially_trustworthy",
++    "//brave/services/network/public/cpp",
+     "//net",
+     "//services/network/public/mojom",
+     "//services/network/public/mojom:url_loader_base",
