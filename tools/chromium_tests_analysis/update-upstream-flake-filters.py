@@ -322,6 +322,18 @@ def log(message: str) -> None:
     console.log(message)
 
 
+def display_path(path: Path) -> str:
+    """The path as written for a human, relative to the repo when it can be.
+
+    A filters dir outside the checkout -- a temporary one under a test,
+    say -- can sit on another Windows drive, which relpath refuses.
+    """
+    try:
+        return os.path.relpath(path, BRAVE_CORE_ROOT)
+    except ValueError:
+        return str(path)
+
+
 @contextmanager
 def worker_pool(size: int = REQUEST_CONCURRENCY) -> Iterator[Pool]:
     """A greenlet pool that gives up promptly when the work is abandoned.
@@ -721,7 +733,7 @@ class SuiteUpdater:
                             newline="")
             written.add(filename)
             self._log(f"wrote {len(entries)} entries to"
-                      f" {os.path.relpath(path, BRAVE_CORE_ROOT)}")
+                      f" {display_path(path)}")
         self._remove_stale_filters(written)
 
     def _remove_stale_filters(self, written: set[str]) -> None:
