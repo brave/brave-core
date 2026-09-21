@@ -35,8 +35,6 @@ patches/**/*.patchinfo
 /third_party/playlist_component/src
 /third_party/reclient_configs/src
 /third_party/rust/futures_retry/v0_5/crate
-/third_party/cryptography
-/third_party/macholib
 /third_party/libdmg-hfsplus/
 /third_party/node/node-*/
 /third_party/node/node_modules/
