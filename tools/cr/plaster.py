@@ -9,7 +9,7 @@ from __future__ import annotations
 import abc
 import argparse
 import ast
-from collections.abc import KeysView, Mapping
+from collections.abc import Iterator, KeysView, Mapping
 from dataclasses import dataclass, field
 import hashlib
 import itertools
@@ -32,6 +32,7 @@ from rich.markdown import Markdown
 import yaml
 
 from terminal import IncendiaryErrorHandler, console, is_verbose, terminal
+from repository import Repository
 import repository
 
 # A round-about import for https://github.com/keleshev/schema, vendored under
@@ -53,6 +54,9 @@ PATCHES_PATH = repository.brave.root / 'patches'
 # The plaster file extension.
 PLASTER_EXTENSION = '.yaml'
 
+# The file listing every repository brave-core patches.
+REPOSITORIES_FILE = PATCHES_PATH / '.repositories.cfg'
+
 # A particular gitattributes file that is used to ensure we get deterministic
 # patch output across platforms and git versions.
 PLASTER_GITATTRIBUTES_PATH = Path(__file__).parent / 'plaster_gitattributes'
@@ -60,6 +64,266 @@ PLASTER_GITATTRIBUTES_PATH = Path(__file__).parent / 'plaster_gitattributes'
 # The declarative ast-grep rewriters spec, loaded and validated by
 # `RewritersEval`.
 REWRITERS_FILE = Path(__file__).parent / 'rewriters.pyl'
+
+
+class PlasterError(Exception):
+    """Base class for errors reported by the plaster tool."""
+
+
+class PlasterFileNeedsRegen(PlasterError):
+    pass
+
+
+class OrphanedPlasterError(PlasterError):
+    """Raised when a plaster's target source cannot be read from git.
+
+    Typically this means the upstream file was moved or deleted, so the plaster
+    now points at a path that no longer exists in HEAD.
+    """
+
+
+class PlasterApplyError(PlasterError):
+    """Raised when applying a plaster file produces substitution errors."""
+
+    def __init__(self, errors: list[str]):
+        self.errors = errors
+        super().__init__(
+            'There were errors attempting to apply the patches:\n' +
+            '\n'.join(errors))
+
+
+class RewritersSchemaError(PlasterError):
+    """Raised when `rewriters.pyl` does not conform to the expected schema."""
+
+
+class RepositoriesFileError(PlasterError):
+    """Raised when `patches/.repositories.cfg` is missing or malformed."""
+
+
+class Repositories:
+    """The repositories brave-core patches, from `patches/.repositories.cfg`.
+    """
+
+    # The gn source-root prefix every entry carries, `//` being chromium's
+    # `src/`, exactly as a gn label spells it.
+    SOURCE_ROOT_PREFIX: ClassVar[str] = '//'
+
+    # Process-wide instance, loaded once from REPOSITORIES_FILE by `load`.
+    _instance: ClassVar[Repositories | None] = None
+
+    def __init__(self, content: bytes):
+        """Parse and validate `content` (the bytes of a repositories file).
+
+        Raises RepositoriesFileError when an entry is malformed or duplicated,
+        or when chromium's own `src` is not listed.
+        """
+        # Every repository the file lists, longest path first, with chromium's
+        # own `src` last.
+        self._repositories: tuple[Repository, ...] = self._parse(content)
+
+    @classmethod
+    def load(cls) -> Repositories:
+        """Return the process-wide Repositories, reading the file once."""
+        if cls._instance is None:
+            try:
+                content = REPOSITORIES_FILE.read_bytes()
+            except OSError as e:
+                raise RepositoriesFileError(
+                    f'Failed to read {REPOSITORIES_FILE}: {e}') from e
+            cls._instance = cls(content)
+        return cls._instance
+
+    # -- access -------------------------------------------------------------
+
+    def __iter__(self) -> Iterator[Repository]:
+        """Every repository, longest path first."""
+        return iter(self._repositories)
+
+    def __len__(self) -> int:
+        return len(self._repositories)
+
+    @property
+    def chromium(self) -> Repository:
+        """Chromium's own `src`, which the file always lists."""
+        return repository.chromium
+
+    def find(self, path: PurePath) -> Repository | None:
+        """The repository rooted exactly at `path`, relative to `src/`.
+
+        None where no repository is rooted there, which is how a patch
+        directory plaster does not manage is told apart from one it does.
+        """
+        return next((repo for repo in self._repositories
+                     if repo.relative_to_chromium == path), None)
+
+    def split(self, source: PurePath) -> tuple[Repository, PurePath]:
+        """The repository holding `source`, and the path of it within.
+
+        `source` is relative to `src/`. The most specific repository claims
+        it, and anything carrying no repository's prefix falls to chromium's
+        own `src`.
+        """
+        for repo in self._repositories:
+            try:
+                return repo, PurePath(
+                    source.relative_to(repo.relative_to_chromium))
+            except ValueError:
+                continue  # A different repository's prefix, or none.
+        # `src` is relative to every path and the file is required to list it,
+        # so a validated instance never reaches this.
+        raise RepositoriesFileError(
+            f'{REPOSITORIES_FILE}: no repository holds {str(source)!r}')
+
+    # -- parsing ------------------------------------------------------------
+
+    def _parse(self, content: bytes) -> tuple[Repository, ...]:
+        """Parse and validate the repositories file's bytes.
+
+        One repository per line, `#` opening a comment, as the other `.cfg`
+        files in the tree are written. Each is a gn-style source-absolute
+        path, `//` being the source root, `src/`, so `//v8` is `src/v8` and
+        `//` on its own is `src` itself.
+        """
+        prefix = self.SOURCE_ROOT_PREFIX
+        paths: list[PurePath] = []
+        for line_number, raw_line in enumerate(
+                content.decode('utf-8').splitlines(), 1):
+            line = raw_line.split('#', 1)[0].strip()
+            if not line:
+                continue
+            # The prefix each RepositoriesFileError carries, naming the line it
+            # was read from, as the other `.cfg` readers in the tree do.
+            at_line = f'{REPOSITORIES_FILE}:{line_number}: repository path'
+            if not line.startswith(prefix):
+                raise RepositoriesFileError(
+                    f'{at_line} {line!r} must be source-absolute, i.e. start '
+                    f'with `{prefix}`, which is `src/`')
+            candidate = PurePath(line[len(prefix):].strip('/'))
+            # A path is a prefix of both a `rewrite/` and a `patches/` path,
+            # so anything that does not stay inside those trees cannot be
+            # resolved against them.
+            if candidate.is_absolute() or '..' in candidate.parts:
+                raise RepositoriesFileError(
+                    f'{at_line} {line!r} must stay under `{prefix}` and '
+                    f'cannot traverse upwards')
+            if candidate in paths:
+                raise RepositoriesFileError(
+                    f'{at_line} {line!r} is listed more than once')
+            paths.append(candidate)
+
+        # The empty path is `src` itself, which every patch outside another
+        # repository belongs to, so nothing resolves without it.
+        if PurePath() not in paths:
+            raise RepositoriesFileError(
+                f'{REPOSITORIES_FILE}: does not list chromium\'s own `src`; '
+                f'add a `{prefix}` line for it')
+
+        # Longest first, so the most specific repository claims a path,
+        # leaving `src` last as the fallback for everything unprefixed.
+        return tuple(
+            self._repository_at(path) for path in sorted(
+                paths, key=lambda p: len(p.parts), reverse=True))
+
+    @staticmethod
+    def _repository_at(path: PurePath) -> Repository:
+        """The `Repository` rooted at `path`, relative to `src/`."""
+        # `src` is named directly rather than joined as an empty path, so the
+        # instance compares equal to `repository.chromium` and keeps reporting
+        # `is_chromium`.
+        if not path.parts:
+            return repository.chromium
+        return Repository(repository.chromium.root / path)
+
+
+@dataclass(frozen=True)
+class PlasterTarget:
+    """What a plaster file targets: a source in a repository, and its patch.
+
+    A plaster lives at `rewrite/<path>.yaml`, where `<path>` is its target
+    source relative to chromium's `src/`. That path alone says which
+    repository holds the source, since a repository plaster supports occupies
+    its own prefix of the `rewrite/` tree (see `Repositories`).
+
+    Splitting it back out is what the rest of the tool needs: git commands run
+    in the owning repository and take a path relative to it, and a `.patchinfo`
+    records its `appliesTo` path the same way.
+    """
+
+    # The repository holding the source.
+    repository: Repository
+
+    # The source, relative to `repository`'s root. This is the path git
+    # commands take, and the one a `.patchinfo` records under `appliesTo`.
+    source: PurePath
+
+    # The patch file, relative to cwd like every other path in the tool.
+    patch: Path
+
+    @property
+    def patchinfo(self) -> Path:
+        """The patch's `.patchinfo` metadata file."""
+        return self.patch.with_suffix('.patchinfo')
+
+    @property
+    def source_path(self) -> Path:
+        """The source as a path from cwd, for reading it off disk."""
+        return Path(self.repository.from_brave(self.source))
+
+    @staticmethod
+    def resolve(plaster_file: Path) -> PlasterTarget:
+        """The target of the plaster file at `plaster_file`.
+
+        Raises:
+            PlasterError: if the path is not under `rewrite/`, or names a
+                repository prefix with no source after it.
+        """
+        try:
+            relative = PurePath(
+                Path(plaster_file).relative_to(PLASTER_FILES_PATH))
+        except ValueError:
+            raise PlasterError(
+                f'Plaster file is not under {PLASTER_FILES_PATH}: '
+                f'{plaster_file}') from None
+        # `rewrite/base/foo.cc.yaml` -> `base/foo.cc`, the source relative to
+        # `src/`, which is what carries the repository prefix.
+        repo, source = Repositories.load().split(relative.with_suffix(''))
+        if not source.parts:
+            raise PlasterError(
+                f'Plaster file names repository '
+                f'{str(repo.relative_to_chromium)!r} but no source within it: '
+                f'{plaster_file}')
+        return PlasterTarget(
+            repository=repo,
+            source=source,
+            # A patch sits in its repository's directory under `patches/`,
+            # named after the source with its separators flattened.
+            patch=(PATCHES_PATH / repo.relative_to_chromium /
+                   f'{source.as_posix().replace("/", "-")}.patch'))
+
+
+def plaster_for_patch(patch_path: PurePath) -> Path | None:
+    """The plaster file that would generate `patch_path`, or None.
+
+    `patch_path` is brave-relative, i.e. `patches/[<repository>/]<name>.patch`.
+    The result is the path a plaster file for it would occupy, which is not
+    necessarily a file that exists.
+
+    None means the patch is not one plaster could own: a repository plaster
+    does not support is left to be patched by hand, rather than reported as an
+    error, so passing a whole directory of changed patches stays harmless.
+    """
+    if patch_path.suffix != '.patch':
+        return None
+    parts = patch_path.parts
+    if len(parts) < 2 or parts[0] != 'patches':
+        return None
+    prefix = PurePath(*parts[1:-1])
+    if Repositories.load().find(prefix) is None:
+        return None
+    # Only the file name is flattened; the directories above it are the
+    # repository's own path and are already separated.
+    source = patch_path.name[:-len('.patch')].replace('-', '/')
+    return PLASTER_FILES_PATH / prefix / f'{source}{PLASTER_EXTENSION}'
 
 
 @dataclass
@@ -280,10 +544,14 @@ class PatchinfoBuilder:
     # SHA-256 checksum of the plaster file contents.
     plaster_checksum: str | None = field(init=False)
 
-    # The relative path to the source file that the plaster file applies to.
-    # This field is kept separate to allow the use in git commands to the
-    # repository.
-    source: Path = field(init=False)
+    # The repository the plaster patches, and the source and patch paths
+    # within it.
+    target: PlasterTarget = field(init=False)
+
+    # The path to the source file that the plaster file applies to, relative
+    # to the repository holding it. This field is kept separate to allow the
+    # use in git commands to the repository.
+    source: PurePath = field(init=False)
 
     # PathChecksumPair object representing the target source file.
     source_with_checksum: PathChecksumPair = field(init=False)
@@ -300,21 +568,13 @@ class PatchinfoBuilder:
         self.plaster_checksum = hashlib.sha256(
             self.plaster_contents.encode()).hexdigest()
 
-        # Setup source file (path derived from plaster file, no extension).
-        self.source = self.plaster_file.relative_to(
-            PLASTER_FILES_PATH).with_suffix('')
-        self.source_with_checksum = PathChecksumPair(
-            Path(repository.chromium.from_brave(self.source)))
-
-        # Setup patch file (named based on source path, with dashes).
-        self.patch = PathChecksumPair(
-            PATCHES_PATH /
-            f'{str(PurePath(self.source).as_posix()).replace("/", "-")}.patch')
-
-        # Setup patchinfo metadata file (same as the patch .patchinfo
-        # extension).
-        self.patchinfo = PathChecksumPair(
-            self.patch.path.with_suffix('.patchinfo'))
+        # The plaster path says which repository it patches and where its
+        # source and patch sit within it.
+        self.target = PlasterTarget.resolve(self.plaster_file)
+        self.source = self.target.source
+        self.source_with_checksum = PathChecksumPair(self.target.source_path)
+        self.patch = PathChecksumPair(self.target.patch)
+        self.patchinfo = PathChecksumPair(self.target.patchinfo)
 
         # This is set relative, so it gets validated to be under the
         # brave-core root.
@@ -363,7 +623,7 @@ class PatchinfoBuilder:
         # `GIT_CONFIG_GLOBAL` is repointed at an empty file instead of
         # `~/.gitconfig`, and `GIT_CONFIG_NOSYSTEM` drops `/etc/gitconfig`. This
         # is done to prevent certain user tools from mangling the diff.
-        content = repository.chromium.run_git(
+        content = self.target.repository.run_git(
             '-c',
             f'core.attributesFile={PLASTER_GITATTRIBUTES_PATH}',
             '-c',
@@ -3054,6 +3314,7 @@ class GnAddImportRewriter(_AstGrepRewriter):
                              f'string (in "{description}")')
         return cls(import_path=import_path)
 
+
 # The hand-written rewriters. `_REWRITERS` is assembled from these plus the
 # ones generated from `rewriters.pyl` for `RegexMacro`.
 _DECLARED_REWRITERS: Final = (AllRegexRewriter, CxxMakeVirtualRewriter,
@@ -3173,12 +3434,10 @@ class PlasterFile:
         tooling, which warrent checksum checks for all of them, and at that
         point if any of the checksum values don't match, we do return True.
         """
-        source_relative = self.path.relative_to(
-            PLASTER_FILES_PATH).with_suffix('')
-        source_path = Path(repository.chromium.from_brave(source_relative))
-        patch_stem = source_relative.as_posix().replace('/', '-')
-        patch_path = PATCHES_PATH / f'{patch_stem}.patch'
-        patchinfo_path = PATCHES_PATH / f'{patch_stem}.patchinfo'
+        target = PlasterTarget.resolve(self.path)
+        source_path = target.source_path
+        patch_path = target.patch
+        patchinfo_path = target.patchinfo
 
         # Only the plaster file itself is guaranteed to exist here; any
         # of the other files may be missing and that is by itself a
@@ -3238,7 +3497,7 @@ class PlasterFile:
         else:
             raise ValueError(f'Unsupported plaster file extension: {suffix}')
         try:
-            contents = repository.chromium.read_file(info.source)
+            contents = info.target.repository.read_file(info.source)
         except subprocess.CalledProcessError as e:
             raise OrphanedPlasterError(
                 f'Failed to read the source targeted by {self.path} from '
@@ -3276,36 +3535,6 @@ class PlasterFile:
                     f"Plaster file needs to be reapplied: {self.path}")
         else:
             info.save_patchinfo_if_changed()
-
-
-class PlasterError(Exception):
-    """Base class for errors reported by the plaster tool."""
-
-
-class PlasterFileNeedsRegen(PlasterError):
-    pass
-
-
-class OrphanedPlasterError(PlasterError):
-    """Raised when a plaster's target source cannot be read from git.
-
-    Typically this means the upstream file was moved or deleted, so the plaster
-    now points at a path that no longer exists in HEAD.
-    """
-
-
-class PlasterApplyError(PlasterError):
-    """Raised when applying a plaster file produces substitution errors."""
-
-    def __init__(self, errors: list[str]):
-        self.errors = errors
-        super().__init__(
-            'There were errors attempting to apply the patches:\n' +
-            '\n'.join(errors))
-
-
-class RewritersSchemaError(PlasterError):
-    """Raised when `rewriters.pyl` does not conform to the expected schema."""
 
 
 def _is_regex(pattern: str) -> bool:
@@ -4801,21 +5030,36 @@ _REWRITERS: Final = RewriterRegistry(
 def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
     """Returns plaster files matching the provided file paths.
 
+    A path may be a plaster file under `rewrite/`, or the patch one generates
+    under `patches/`. Passing `.repositories.cfg`, which decides the repository
+    every plaster targets, returns all of them.
+
     If no file paths are provided, all plaster files are returned.
     """
     if not filepaths:
         return PlasterFile.find_all()
 
+    # The repositories file decides which repository every plaster targets, so
+    # a change to it puts every plaster file in question rather than any
+    # particular one.
+    repositories_path = REPOSITORIES_FILE.relative_to(
+        repository.brave.root).as_posix()
+
     expected_plaster_files = set()
     for filepath in filepaths:
         filepath = PurePath(filepath).as_posix()
+        if filepath == repositories_path:
+            return PlasterFile.find_all()
         if filepath.startswith('patches/') and filepath.endswith('.patch'):
-            base = filepath[len('patches/'):-len('.patch')]
-            stem = f'rewrite/{base.replace("-", "/")}'
-            expected_plaster_files.add(f'{stem}{PLASTER_EXTENSION}')
+            # A patch in a repository plaster does not support has no plaster
+            # file to check, and is skipped rather than refused.
+            plaster_file = plaster_for_patch(PurePath(filepath))
+            if plaster_file is not None:
+                expected_plaster_files.add(plaster_file)
         elif (filepath.startswith('rewrite/')
               and filepath.endswith(PLASTER_EXTENSION)):
-            expected_plaster_files.add(filepath)
+            expected_plaster_files.add(
+                Path(PLASTER_FILES_PATH.parent) / filepath)
         else:
             hint = ''
             # Control characters mean the shell interpreted unquoted
@@ -4827,11 +5071,8 @@ def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
                         'the shell. Quote the path or use forward slashes.')
             raise PlasterError(f'Unexpected file path: {filepath!r}{hint}')
 
-    plaster_parent = Path(PLASTER_FILES_PATH).parent
-
     # A set of candidate plaster files.
-    candidate_paths = sorted(plaster_parent / Path(path)
-                             for path in expected_plaster_files)
+    candidate_paths = sorted(expected_plaster_files)
 
     # TODO(https://github.com/brave/brave-browser/issues/46880): For now we
     # discard any plaster file passed in that does not exist. At some point
