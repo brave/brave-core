@@ -680,7 +680,7 @@ extension Strings {
     public static let tryForFreeButton = NSLocalizedString(
       "vpn.learnMore",
       bundle: .module,
-      value: "Start 7-Day Free Trial",
+      value: "Start 7 Day Free Trial",
       comment: "Button text to try free Brave VPN"
     )
 
