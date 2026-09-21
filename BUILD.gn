@@ -121,6 +121,7 @@ group("all") {
   testonly = true
   deps = [
     ":brave_all_unit_tests",
+    ":brave_network_tests",
     ":chromium_unit_tests",
     "//brave",
   ]
