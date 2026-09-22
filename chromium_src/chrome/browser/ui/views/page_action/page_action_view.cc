@@ -36,6 +36,17 @@ std::optional<SkColor> GetBraveBackgroundColor(
   return SK_ColorTRANSPARENT;
 }
 
+// Honour the model's SkColor override for the chip foreground color, falling
+// through to Chromium's own logic (including internal callers such as
+// UpdateIconImage()) otherwise.
+std::optional<SkColor> GetBraveForegroundColor(
+    const page_actions::PageActionModelInterface* source) {
+  if (source && source->GetOverrideForegroundColor()) {
+    return *source->GetOverrideForegroundColor();
+  }
+  return std::nullopt;
+}
+
 }  // namespace
 
 #define GetMinimumSize GetMinimumSize_Chromium
@@ -133,15 +144,6 @@ bool PageActionView::ShouldAlwaysShowLabel() const {
   }
 
   return IconLabelBubbleView::ShouldAlwaysShowLabel();
-}
-
-SkColor PageActionView::GetForegroundColor() const {
-  const PageActionModelInterface* source = observation_.GetSource();
-  if (source && source->GetOverrideForegroundColor()) {
-    return *source->GetOverrideForegroundColor();
-  }
-
-  return IconLabelBubbleView::GetForegroundColor();
 }
 
 std::optional<int> PageActionView::GetOverrideHeight() const {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 8b1af6fc04522a81fd72398202dcc59d97038eec..a1ed6aba1d700874b742bd26c1421e9d81cd9e79 100644
+index 9fc6fb3d16d419903a58619c9f43ea5b1de8df44..6dafd1ae2c54d8ffaa9d726bcc84998af4c886b0 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
 @@ -262,7 +262,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
@@ -38,4 +38,14 @@ index 8b1af6fc04522a81fd72398202dcc59d97038eec..a1ed6aba1d700874b742bd26c1421e9d
 +  }
    if (observation_.IsObserving() &&
        observation_.GetSource()->GetOverrideBackgroundColorId().has_value() &&
+       GetColorProvider()) {
+@@ -722,6 +729,9 @@ SkColor PageActionView::GetBackgroundColor() const {
+ }
+ 
+ SkColor PageActionView::GetForegroundColor() const {
++  if (auto color = GetBraveForegroundColor(observation_.GetSource())) {
++    return *color;
++  }
+   if (observation_.IsObserving() &&
+       observation_.GetSource()->GetOverrideForegroundColorId().has_value() &&
        GetColorProvider()) {
