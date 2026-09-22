@@ -65,6 +65,18 @@ enum ItemCredentialsResponse {
     },
 }
 
+/// Reports whether any stored credential was blinded with the pre-RFC
+/// derivation (`rfc: false`) and so needs to be re-signed.
+fn has_legacy_creds(creds: &TimeLimitedV2Credentials) -> bool {
+    creds
+        .unblinded_creds
+        .iter()
+        .flatten()
+        .filter_map(|chunk| chunk.unblinded_creds.as_ref())
+        .flatten()
+        .any(|cred| !cred.rfc)
+}
+
 impl<U> SDK<U>
 where
     U: HTTPClient + StorageClient,
@@ -335,24 +347,20 @@ where
             if !order.has_expired(Utc::now().naive_utc()) {
                 for item in &order.items {
                     if item.credential_type == CredentialType::TimeLimitedV2 {
-                        let has_legacy_creds = self
-                            .client
-                            .get_time_limited_v2_creds(&item.id)
-                            .await?
-                            .and_then(|creds| creds.unblinded_creds)
-                            .into_iter()
-                            .flatten()
-                            .filter_map(|chunk| chunk.unblinded_creds)
-                            .flatten()
-                            .any(|cred| !cred.rfc);
-                        if has_legacy_creds {
-                            self.delete_order_credentials(order_id).await?;
+                        let item_creds = self.client.get_time_limited_v2_creds(&item.id).await?;
+
+                        // Legacy creds have to be cleared before they can be re-signed: the
+                        // fetch path skips intervals already in the store, and creds that are
+                        // still active short-circuit submission. Scoped to this item so a
+                        // failed refetch cannot take down the rest of the order; anything left
+                        // empty is repaired on the next refresh.
+                        if item_creds.as_ref().is_some_and(has_legacy_creds) {
+                            self.client.delete_item_creds(&item.id).await?;
                             return self.fetch_order_credentials(order_id).await;
                         }
 
-                        match self
-                            .last_matching_time_limited_v2_credential(&item.id)
-                            .await?
+                        match item_creds
+                            .and_then(|creds| creds.unblinded_creds.into_iter().flatten().last())
                             .map(|cred| cred.valid_to)
                         {
                             Some(valid_to) if Utc::now().naive_utc() > valid_to => {
@@ -581,5 +589,78 @@ where
         }
 
         Ok(())
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn unblinded_token() -> UnblindedToken {
+        let preimage = TokenPreimage::from_bytes(&[1u8; TOKEN_PREIMAGE_LENGTH]).unwrap();
+        SigningKey::random(&mut OsRng).rederive_unblinded_token(&preimage)
+    }
+
+    fn cred(rfc: bool) -> SingleUseCredential {
+        SingleUseCredential { unblinded_cred: unblinded_token(), spent: false, rfc }
+    }
+
+    fn chunk(unblinded_creds: Option<Vec<SingleUseCredential>>) -> TimeLimitedV2Credential {
+        let valid_from = NaiveDate::from_ymd_opt(2026, 1, 1).unwrap().and_hms_opt(0, 0, 0).unwrap();
+        TimeLimitedV2Credential {
+            unblinded_creds,
+            issuer_id: None,
+            valid_from,
+            valid_to: valid_from + chrono::Duration::days(1),
+        }
+    }
+
+    fn item_creds(
+        unblinded_creds: Option<Vec<TimeLimitedV2Credential>>,
+    ) -> TimeLimitedV2Credentials {
+        TimeLimitedV2Credentials {
+            item_id: "item-id".to_string(),
+            creds: vec![],
+            unblinded_creds,
+            state: CredentialState::ActiveCredentials,
+            request_id: None,
+        }
+    }
+
+    #[test]
+    fn no_unblinded_creds_is_not_legacy() {
+        assert!(!has_legacy_creds(&item_creds(None)));
+        assert!(!has_legacy_creds(&item_creds(Some(vec![]))));
+    }
+
+    #[test]
+    fn chunk_without_unblinded_creds_is_not_legacy() {
+        assert!(!has_legacy_creds(&item_creds(Some(vec![chunk(None)]))));
+        assert!(!has_legacy_creds(&item_creds(Some(vec![chunk(Some(vec![]))]))));
+    }
+
+    #[test]
+    fn all_rfc_creds_are_not_legacy() {
+        let creds = item_creds(Some(vec![
+            chunk(Some(vec![cred(true), cred(true)])),
+            chunk(Some(vec![cred(true)])),
+        ]));
+        assert!(!has_legacy_creds(&creds));
+    }
+
+    #[test]
+    fn any_non_rfc_cred_is_legacy() {
+        let creds = item_creds(Some(vec![chunk(Some(vec![cred(true), cred(false)]))]));
+        assert!(has_legacy_creds(&creds));
+    }
+
+    #[test]
+    fn non_rfc_cred_in_a_later_chunk_is_legacy() {
+        let creds = item_creds(Some(vec![
+            chunk(Some(vec![cred(true)])),
+            chunk(None),
+            chunk(Some(vec![cred(false)])),
+        ]));
+        assert!(has_legacy_creds(&creds));
     }
 }
