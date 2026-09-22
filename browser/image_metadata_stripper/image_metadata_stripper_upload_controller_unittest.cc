@@ -21,8 +21,9 @@
 #include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
-#include "content/public/test/test_renderer_host.h"
+#include "chrome/test/base/chrome_render_view_host_test_harness.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
 
 namespace brave {
 
@@ -34,10 +35,10 @@ constexpr std::string_view kFbmdMarker = "FBMD";
 }  // namespace
 
 class ImageMetadataStripperDirControllerTest
-    : public content::RenderViewHostTestHarness {
+    : public ChromeRenderViewHostTestHarness {
  public:
   void SetUp() override {
-    content::RenderViewHostTestHarness::SetUp();
+    ChromeRenderViewHostTestHarness::SetUp();
 
     base::ScopedAllowBlockingForTesting allow_blocking;
     ASSERT_TRUE(source_dir_.CreateUniqueTempDir());
@@ -47,7 +48,7 @@ class ImageMetadataStripperDirControllerTest
 
   void TearDown() override {
     controller_.reset();
-    content::RenderViewHostTestHarness::TearDown();
+    ChromeRenderViewHostTestHarness::TearDown();
   }
 
  protected:
@@ -171,6 +172,26 @@ TEST_F(ImageMetadataStripperDirControllerTest, DeletesRootOnDestruction) {
 
   controller_.reset();
   EXPECT_TRUE(base::test::RunUntil([&]() { return !PathExists(root); }));
+}
+
+TEST_F(ImageMetadataStripperDirControllerTest,
+       DeletesRootWhenPrimaryPageIsDestroyed) {
+  const auto first = Strip({CreateFbmdImage()});
+  ASSERT_EQ(1u, first.size());
+  ASSERT_TRUE(first[0]);
+  const base::FilePath root = controller_->GetTempRootDirForTesting();
+  ASSERT_TRUE(PathExists(root));
+
+  NavigateAndCommit(GURL("https://example.com/"));
+  EXPECT_TRUE(base::test::RunUntil([&]() { return !PathExists(root); }));
+  EXPECT_TRUE(controller_->GetTempRootDirForTesting().empty());
+
+  const auto second = Strip({CreateFbmdImage()});
+  ASSERT_EQ(1u, second.size());
+  ASSERT_TRUE(second[0]);
+  const base::FilePath new_root = controller_->GetTempRootDirForTesting();
+  ASSERT_FALSE(new_root.empty());
+  EXPECT_NE(root, new_root);
 }
 
 }  // namespace brave

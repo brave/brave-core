@@ -13,15 +13,10 @@ source_set("image_metadata_stripper") {
     "//base",
     "//brave/components/image_metadata_stripper",
     "//content/public/browser",
+    "//ui/base/unowned_user_data",
   ]
 
   deps = [ "//components/tabs:public" ]
-
-  if (is_android) {
-    deps += [ "//brave/browser/android:tabs_public" ]
-  } else {
-    deps += [ "//brave/browser/ui/tabs:tabs_public" ]
-  }
 }
 
 source_set("unit_tests") {
@@ -34,6 +29,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/image_metadata_stripper",
+    "//chrome/test:test_support",
     "//content/public/browser",
     "//content/test:test_support",
     "//testing/gtest",

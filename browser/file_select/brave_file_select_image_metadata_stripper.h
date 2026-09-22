@@ -31,8 +31,8 @@ namespace brave {
 // The method does not strip metadata from the original file. It copies each
 // strippable JPEG into a unique subdirectory of the tab's temporary root
 // (so the original basename is preserved) and that copy is what gets uploaded.
-// The root is owned by `ImageMetadataStripperDirController` until the tab
-// closes.
+// The root is owned by `ImageMetadataStripperUploadController` until the
+// page that received the copies is destroyed, or the tab closes.
 //
 // |already_processed| helps to avoid looping between `NotifyListenerAndEnd`
 // and `MaybeStripImageMetadataForUpload` by letting `NotifyListenerAndEnd` know
