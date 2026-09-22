@@ -10,6 +10,8 @@
 #include "base/metrics/field_trial_params.h"
 #include "base/time/time.h"
 
+class PrefService;
+
 namespace brave_search {
 namespace features {
 
@@ -94,7 +96,11 @@ extern const base::FeatureParam<std::string> kBackupResultsRendererLanguages;
 extern const base::FeatureParam<std::string> kBackupResultsLanguagesHeader;
 
 BASE_DECLARE_FEATURE(kSearchNewTabV1Source);
-bool IsSearchNewTabV1SourceEnabled();
+// Returns true only if the feature was enabled at first run. Sets
+// `kNewTabV1SourceEnabledAtFirstRun` when enabled so that the source stays
+// enabled for subsequent runs.
+bool IsSearchNewTabV1SourceEnabled(PrefService* local_state,
+                                   bool is_first_run);
 
 }  // namespace features
 }  // namespace brave_search
