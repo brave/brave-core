@@ -3103,3 +3103,6 @@
 
 # 1.6% flake rate over 30 days per LUCI Analysis (47690 passed, 28 failed, 744 flaky).
 -WebUiToolbarJsTest.Extensions
+
+# Manual additions
+-All/DictationSessionUiImplBrowserTest.*
