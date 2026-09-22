@@ -1,5 +1,5 @@
 diff --git a/components/search/ntp_features.cc b/components/search/ntp_features.cc
-index 82dbe3e790416ee93d7dc58a9dedf8de25e14f5b..4235bfaf189627086165b1a6eba2fa71440e4819 100644
+index 82dbe3e790416ee93d7dc58a9dedf8de25e14f5b..a95be4b5841efec52b209d8cb6bbd7b51322e44c 100644
 --- a/components/search/ntp_features.cc
 +++ b/components/search/ntp_features.cc
 @@ -24,17 +24,13 @@ BASE_FEATURE(kConfirmSuggestionRemovals,
@@ -90,3 +90,12 @@ index 82dbe3e790416ee93d7dc58a9dedf8de25e14f5b..4235bfaf189627086165b1a6eba2fa71
  
  // Dummy feature to set param "NtpModulesLoadedWithOtherModulesMaxInstanceCount"
  // This is used for an emergency Finch param. Keep indefinitely.
+@@ -335,7 +319,7 @@ BASE_FEATURE(kNtpShortcutsRedesign, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // If enabled, the bookmark bar may be auto-removed on the NTP and new
+ // visibility settings are added.
+-BASE_FEATURE(kNtpSimplificationBookmarkBar, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kNtpSimplificationBookmarkBar, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ // If enabled, the bookmark bar time interval and number of times it's shown on
+ // the NTP before auto-hiding is decreased for testing.
