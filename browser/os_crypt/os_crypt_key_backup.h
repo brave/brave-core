@@ -75,7 +75,8 @@ BASE_DECLARE_FEATURE(kBraveOSCryptKeyRestore);
 // Action is only taken when the key is missing (value is missing or file is
 // missing). No action taken when there's a key but it's wrong (we don't have a
 // way to tell). That situation would go down existing code path where new key
-// is issued.
+// is issued. Each key is checked on its own, since the DPAPI key and the
+// app-bound key belong to separate providers that replace them independently.
 //
 // Blocking, but only touches the disk on the failure path: when a key is
 // present this reads one in-memory pref and returns.

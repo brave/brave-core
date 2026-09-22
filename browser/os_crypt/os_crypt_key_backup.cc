@@ -168,7 +168,7 @@ OSCryptKeyRestoreResult MaybeRestoreOSCryptKey(
     return OSCryptKeyRestoreResult::kNotAttempted;
   }
 
-  // This is the case hit most of the time.
+  // Exit out if the key is present. This is the case hit most of the time.
   if (!local_state->GetString(kEncryptedKeyPrefName).empty()) {
     return OSCryptKeyRestoreResult::kNotAttempted;
   }
@@ -193,12 +193,20 @@ OSCryptKeyRestoreResult MaybeRestoreOSCryptKey(
       break;
   }
 
-  // Whether the restored key still unwraps is not checked here. If DPAPI can no
-  // longer unwrap the Brave key, OSCrypt will fail to decrypt it and we'll
-  // create a new Brave key. This extra step at least gives us a chance to try
-  // the key before going down that road.
+  // Restore the key. Whether the restored key still unwraps is not checked
+  // here. If DPAPI can no longer unwrap the Brave key, OSCrypt will fail to
+  // decrypt it and we'll create a new Brave key. This extra step at least gives
+  // us a chance to try the key before going down that road.
   local_state->SetString(kEncryptedKeyPrefName, backup.encrypted_key);
-  if (!backup.app_bound_key.empty()) {
+
+  // Possibly restore the app-bound key. This is used for system-level installs
+  // and works with the elevation service to encrypt/decrypt. While both keys
+  // are stored in `Local State` and realistically would be lost at the same
+  // time if `Local State` became corrupt, we don't want to assume and overwrite
+  // this if it has a value.
+  if (!backup.app_bound_key.empty() &&
+      local_state->GetString(os_crypt_async::kAppBoundEncryptedKeyPrefName)
+          .empty()) {
     local_state->SetString(os_crypt_async::kAppBoundEncryptedKeyPrefName,
                            backup.app_bound_key);
   }

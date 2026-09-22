@@ -175,6 +175,21 @@ TEST_F(OSCryptKeyRestoreTest, DoesNothingWhenTheFeatureIsOff) {
   EXPECT_EQ(OSCryptKeyRestoreResult::kNotAttempted, RecordedResult());
 }
 
+// The app-bound provider re-mints its own key whenever the stored one stops
+// working, so a live app-bound key can be newer than the backed-up one. Putting
+// the stale one back would orphan whatever the live one encrypted.
+TEST_F(OSCryptKeyRestoreTest, LeavesALiveAppBoundKeyAlone) {
+  ASSERT_EQ(OSCryptKeyBackupState::kCreated,
+            WriteOSCryptKeyBackupIfAbsent(path(), "wrapped-key", "stale-v20"));
+  local_state_.SetString(os_crypt_async::kAppBoundEncryptedKeyPrefName,
+                         "live-v20");
+
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestored,
+            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  EXPECT_EQ("wrapped-key", LiveKey());
+  EXPECT_EQ("live-v20", AppBoundKey());
+}
+
 TEST_F(OSCryptKeyRestoreTest, OmitsAnAppBoundKeyTheBackupDoesNotHave) {
   ASSERT_EQ(OSCryptKeyBackupState::kCreated,
             WriteOSCryptKeyBackupIfAbsent(path(), "wrapped-key", ""));
