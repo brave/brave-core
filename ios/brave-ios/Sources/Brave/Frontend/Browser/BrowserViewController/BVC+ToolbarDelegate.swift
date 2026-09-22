@@ -1154,7 +1154,7 @@ extension BrowserViewController: UIContextMenuInteractionDelegate {
   /// - Note: "Copy Clean Link" will be included even if no cleaning is done to the url.
   private func makeCopyMenu() -> UIMenu? {
     let tab = tabManager.selectedTab
-    guard let url = self.topToolbar.currentURL else { return nil }
+    guard let url = tab?.visibleURL?.displayURL else { return nil }
 
     let children: [UIAction] = [
       UIAction(
