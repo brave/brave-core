@@ -771,18 +771,6 @@ class ToolchainBuilder:
                                     self._upstream_stem(),
                                     self._brave_subrevision)
 
-    def _precheck_publishable(self) -> None:
-        """Fail fast if this exact build's sibling index is already published.
-
-        Guards against clobbering a toolchain already in use in the wild.
-        Bump `--brave-subrevision` to publish a new respin instead.
-        """
-        index_url = f'{TOOLCHAIN_BUCKET_URL}/{self._index_name()}'
-        if toolchain_publish.remote_url_exists(index_url):
-            raise RuntimeError(
-                f'{index_url} already exists; a toolchain for this exact '
-                '--brave-subrevision is already published.')
-
     def _write_index(self, archive_path: Path) -> None:
         """Write the sibling YAML index describing the just-built archive.
 
@@ -800,9 +788,6 @@ class ToolchainBuilder:
           * `command_line`     — shell-quoted command line this script was
                                  invoked with (from `sys.argv`).
           * `brave_core_commit` — brave-core HEAD commit this builder ran from.
-
-        The "already published" guard lives in `_precheck_publishable`, which
-        `run()` calls early.
         """
         index_path = self._out_dir / self._index_name()
 
@@ -1041,10 +1026,7 @@ class ToolchainBuilder:
 
         Coordinates the phases in order:
 
-        1. `_precheck_publishable` — fail fast if this exact
-           `--brave-subrevision` is already published, before any of the
-           (expensive) build steps below run.
-        2. Within `cherry_picks` (which applies `CLANG_CHERRY_PICK_COMMITS`
+        1. Within `cherry_picks` (which applies `CLANG_CHERRY_PICK_COMMITS`
            so both builds cherry-pick to identical hashes):
            a. `_package_full_rust` (only when `full_toolchain`) — build and
               package the complete Rust toolchain via `package_rust.py`.
@@ -1053,17 +1035,17 @@ class ToolchainBuilder:
               - `_run_xpy` — compile the wasm32 stdlib via x.py, either building
                 a stage-1 `rustc` or reusing the prebuilt one (see
                 `--use-prebuilt-rustc`).
-        3. Resolve the wasm32 sysroot, using `_assemble_stage0_wasm_sysroot` for
+        2. Resolve the wasm32 sysroot, using `_assemble_stage0_wasm_sysroot` for
            the prebuilt path, `_stage1_wasm_stdlib_dir` otherwise, and assemble
            the output .tar.xz:
            * `_create_full_archive` when `full_toolchain` — overlay the wasm32
              sysroot onto the full-toolchain archive from step 1.
            * `_create_archive` otherwise — the minimal rust-lld + wasm32 subset.
-        4. `_smoke_test_wasm` — compile a wasm32 crate against the packaged
+        3. `_smoke_test_wasm` — compile a wasm32 crate against the packaged
            toolchain so a rustc/std mismatch fails before publishing.
-        5. `_write_index` — write the sibling YAML index for the just-built
+        4. `_write_index` — write the sibling YAML index for the just-built
            archive.
-        6. `_upload` (only with `--upload`) — publish the archive and its
+        5. `_upload` (only with `--upload`) — publish the archive and its
            sibling index to `TOOLCHAIN_BUCKET_URL`.
 
         `config.toml.template` is returned to its original state always.
@@ -1087,8 +1069,6 @@ class ToolchainBuilder:
             RuntimeError: If --chromium-src does not point at a valid Chromium
             checkout.
             RuntimeError: If tools_rust directory is not found.
-            RuntimeError: If a toolchain for this exact `--brave-subrevision`
-                is already published.
             RuntimeError: On Windows, if Git sh.exe is not in path and no
             installation for it can be found with Git.
             subprocess.CalledProcessError: If any subprocess command fails
@@ -1119,10 +1099,6 @@ class ToolchainBuilder:
         if not self._package_rust_module:
             self._package_rust_module: ModuleType = importlib.import_module(
                 'package_rust')
-
-        # Fail fast, before any of the expensive build steps below, if this
-        # exact respin is already published.
-        self._precheck_publishable()
 
         # Build process
         if sys.platform == 'win32' and shutil.which('sh') is None:
