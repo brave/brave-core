@@ -25,7 +25,6 @@
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #include "components/grit/brave_components_resources.h"
-#include "components/omnibox/browser/autocomplete_classifier.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider_client.h"
@@ -191,8 +190,7 @@ void NewTabTakeoverUI::QueryAutocomplete(const std::string& input,
     autocomplete_controller_ = std::make_unique<AutocompleteController>(
         std::move(autocomplete_provider_client),
         AutocompleteControllerConfig{
-            .provider_types =
-                AutocompleteClassifier::DefaultOmniboxProviders()});
+            .provider_types = AutocompleteProvider::TYPE_SEARCH});
     autocomplete_controller_->AddObserver(this);
   }
 
