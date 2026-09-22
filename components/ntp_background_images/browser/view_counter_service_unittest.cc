@@ -463,8 +463,8 @@ TEST_F(ViewCounterServiceTest, IsActiveOptedIn) {
 }
 
 TEST_F(ViewCounterServiceTest, PrefsWithModelTest) {
-  EXPECT_EQ(view_counter_service_->model_.show_new_tab_takeover_wallpaper_,
-            features::kInitialCountToBrandedWallpaper.Get() - 1);
+  EXPECT_EQ(features::kInitialCountToBrandedWallpaper.Get() - 1,
+            view_counter_service_->model_.count_to_new_tab_takeover_wallpaper_);
   EXPECT_TRUE(view_counter_service_->model_.show_wallpaper_);
   EXPECT_TRUE(view_counter_service_->model_.show_new_tab_takeover_wallpaper_);
 
