@@ -5,12 +5,10 @@
 
 #include "chrome/browser/ui/views/page_action/page_action_view.h"
 
-#include <algorithm>
 #include <optional>
 
 #include "chrome/browser/ui/page_action/page_action_model.h"
 #include "third_party/skia/include/core/SkColor.h"
-#include "ui/events/event_constants.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/views/layout/layout_types.h"
 #include "ui/views/layout/proposed_layout.h"
@@ -49,18 +47,7 @@ std::optional<SkColor> GetBraveForegroundColor(
 
 }  // namespace
 
-#define GetMinimumSize GetMinimumSize_Chromium
-#define OnNewActiveController OnNewActiveController_Chromium
-#define OnPageActionModelChanged OnPageActionModelChanged_Chromium
-
-// Want to use default color even it's expanded.
-#define SetUseTonalColorsWhenExpanded(...) SetUseTonalColorsWhenExpanded(false)
 #include <chrome/browser/ui/views/page_action/page_action_view.cc>
-
-#undef SetUseTonalColorsWhenExpanded
-#undef OnPageActionModelChanged
-#undef OnNewActiveController
-#undef GetMinimumSize
 
 namespace page_actions {
 
@@ -117,19 +104,6 @@ gfx::Size PageActionView::GetSizeForLabelWidth(int label_width) const {
   return size;
 }
 
-gfx::Size PageActionView::GetMinimumSize() const {
-  auto size = GetMinimumSize_Chromium();
-  if (auto override_height = GetOverrideHeight()) {
-    size.set_height(*override_height);
-  }
-
-  if (ShouldAlwaysShowLabel()) {
-    size.set_width(
-        GetSizeForLabelWidth(label()->GetPreferredSize().width()).width());
-  }
-  return size;
-}
-
 bool PageActionView::ShouldShowLabel() const {
   if (ShouldAlwaysShowLabel()) {
     return true;
@@ -152,25 +126,6 @@ std::optional<int> PageActionView::GetOverrideHeight() const {
     return *source->GetOverrideHeight();
   }
   return std::nullopt;
-}
-
-void PageActionView::OnNewActiveController(PageActionController* controller) {
-  OnNewActiveController_Chromium(controller);
-  OnPageActionModelVisualRefresh(observation_.GetSource());
-}
-
-void PageActionView::OnPageActionModelChanged(
-    const PageActionModelInterface& model) {
-  PageActionView::OnPageActionModelChanged_Chromium(model);
-
-  const PageActionModelInterface* source = observation_.GetSource();
-  if (source) {
-    // ui::EF_LEFT_MOUSE_BUTTON is the default triggerable event flags of Button
-    // class.
-    SetTriggerableEventFlags(source->GetOverrideTriggerableEvent().value_or(
-        ui::EF_LEFT_MOUSE_BUTTON));
-  }
-  UpdateBorder();
 }
 
 }  // namespace page_actions
