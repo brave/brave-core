@@ -240,7 +240,7 @@ export const PsstProgressModal = () => {
           <PsstDlgButton
             kind='outline'
             size='medium'
-            isDisabled={isInProgress}
+            isDisabled={!isInProgress}
             onClick={api.closeDialog}
           >
             {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_CANCEL)}

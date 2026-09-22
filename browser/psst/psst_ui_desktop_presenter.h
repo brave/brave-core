@@ -49,6 +49,8 @@ class PsstUiDesktopPresenter
     void CloseDialog();
 
    private:
+    void CancelInFlightFlow();
+
     base::WeakPtr<content::WebContents> initiator_web_contents_;  // unowned
     raw_ptr<ConstrainedWebDialogDelegate> web_dialog_delegate_ =
         nullptr;  // unowned

@@ -89,6 +89,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
 
   PsstUiDelegate* GetPsstUiDelegate() const;
   base::WeakPtr<PsstTabWebContentsObserver> AsWeakPtr();
+  void CancelInFlightFlow();
 
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
@@ -122,7 +123,6 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
   void SetInjectScriptCallback(InjectScriptCallback inject_script_callback);
   void SetInjectAsyncScriptCallback(
       InjectScriptAsyncCallback inject_async_script_callback);
-  void CancelInFlightFlow();
 
   // PsstSettingsService::Observer
   void OnPsstEnableChange(bool new_value) override;

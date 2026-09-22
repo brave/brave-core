@@ -203,6 +203,12 @@ PsstTabWebContentsObserver::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
+void PsstTabWebContentsObserver::CancelInFlightFlow() {
+  script_injector_remote_.reset();
+  page_weak_factory_.InvalidateWeakPtrs();
+  should_process_current_page_ = false;
+}
+
 void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
   CancelInFlightFlow();
 }
@@ -388,12 +394,6 @@ void PsstTabWebContentsObserver::SetInjectAsyncScriptCallback(
     InjectScriptAsyncCallback inject_async_script_callback) {
   CHECK(!inject_async_script_callback.is_null());
   inject_async_script_callback_ = std::move(inject_async_script_callback);
-}
-
-void PsstTabWebContentsObserver::CancelInFlightFlow() {
-  script_injector_remote_.reset();
-  page_weak_factory_.InvalidateWeakPtrs();
-  should_process_current_page_ = false;
 }
 
 void PsstTabWebContentsObserver::OnPsstEnableChange(bool new_value) {
