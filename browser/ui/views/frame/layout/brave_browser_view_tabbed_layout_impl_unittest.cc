@@ -56,6 +56,9 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   ExclusiveAccessBubbleViews* GetExclusiveAccessBubble() const override {
     return nullptr;
   }
+  OrganizerPanelController* GetOrganizerPanelController() const override {
+    return nullptr;
+  }
   bool IsTopControlsSlideBehaviorEnabled() const override { return false; }
   float GetTopControlsSlideBehaviorShownRatio() const override { return 0.0f; }
   gfx::NativeView GetHostViewForAnchoring() const override {
