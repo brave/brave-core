@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/ui/views/page_action/page_action_view.h b/chrome/browser/ui/views/page_action/page_action_view.h
+index 856d5f1ebe94782b758de917272bb3d2e2fb433b..eb5f85fe072708202b7c097ae0f4ce9c6214ac93 100644
+--- a/chrome/browser/ui/views/page_action/page_action_view.h
++++ b/chrome/browser/ui/views/page_action/page_action_view.h
+@@ -154,6 +154,21 @@ class PageActionView : public IconLabelBubbleView,
+ 
+   static PageActionPassKey PassKeyForTesting() { return PageActionPassKey(); }
+ 
++  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
++                           AlwaysShowsLabelEnsuresLabelWidth);
++  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest, UseTonalColorsWhenExpanded);
++  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
++                           DefaultBackgroundColorIsTransparent);
++  FRIEND_TEST_ALL_PREFIXES(PageActionViewTest,
++                           OverrideBackgroundColorReturnsModelValue);
++  views::ProposedLayout CalculateProposedLayout(
++      const views::SizeBounds& size_bounds) const override;
++  gfx::Size GetSizeForLabelWidth(int label_width) const override;
++  bool ShouldShowLabel() const override;
++  std::optional<int> GetOverrideHeight() const;
++  void OnPageActionModelVisualRefresh(PageActionModelInterface* model);
++  bool ShouldAlwaysShowLabel() const override;
++
+  protected:
+   static PageActionPassKey PassKey() { return PageActionPassKey(); }
+ 

@@ -71,3 +71,52 @@ substitutions:
         if (auto color = GetBraveForegroundColor(observation_.GetSource())) {
           return *color;
         }
+
+  - description: |
+      Use default (non-tonal) colors for page action chips even when
+      expanded.
+    regex:
+      pattern: 'SetUseTonalColorsWhenExpanded(true)'
+      replace: 'SetUseTonalColorsWhenExpanded(false)'
+
+  - description: |
+      Let Brave override the page action's minimum size and label width.
+
+      GetOverrideHeight()/ShouldAlwaysShowLabel() (declared in
+      page_action_view.h.yaml) are driven by the model's height override and
+      always-show-label flag.
+    after_function_impl:
+      function_name: PageActionView::GetMinimumSize
+      result_var: size
+      code: |-
+        if (auto override_height = GetOverrideHeight()) {
+          size.set_height(*override_height);
+        }
+        if (ShouldAlwaysShowLabel()) {
+          size.set_width(
+              GetSizeForLabelWidth(label()->GetPreferredSize().width()).width());
+        }
+        return size;
+
+  - description: |
+      Refresh Brave's model-driven visual state after activating a
+      controller.
+    after_function_impl:
+      function_name: PageActionView::OnNewActiveController
+      code: |-
+        OnPageActionModelVisualRefresh(observation_.GetSource());
+
+  - description: |
+      Propagate the model's triggerable event flags and border after every
+      model change.
+    after_function_impl:
+      function_name: PageActionView::OnPageActionModelChanged
+      code: |-
+        const PageActionModelInterface* source = observation_.GetSource();
+        if (source) {
+          // ui::EF_LEFT_MOUSE_BUTTON is the default triggerable event flags of
+          // Button class.
+          SetTriggerableEventFlags(source->GetOverrideTriggerableEvent().value_or(
+              ui::EF_LEFT_MOUSE_BUTTON));
+        }
+        UpdateBorder();
