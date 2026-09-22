@@ -169,7 +169,8 @@ class BraveNewsControllerTest : public testing::Test {
   // task environment flushes the thread pool, which is what lets the history
   // backend finish shutting down and release the files in here.
   base::ScopedTempDir temp_dir_;
-  content::BrowserTaskEnvironment task_environment_;
+  content::BrowserTaskEnvironment task_environment_{
+      base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   network::TestURLLoaderFactory test_url_loader_factory_;
   sync_preferences::TestingPrefServiceSyncable pref_service_;
   std::unique_ptr<history::HistoryService> history_service_;
@@ -290,6 +291,57 @@ TEST_F(BraveNewsControllerTest, AutoOptInDoesNotRevertBeforeRevertDelay) {
 
   EXPECT_TRUE(pref_service_.GetBoolean(prefs::kBraveNewsOptedIn));
   EXPECT_TRUE(pref_service_.GetBoolean(prefs::kBraveNewsOptInTrial));
+}
+
+TEST_F(BraveNewsControllerTest, AutoOptInRevertsWhenFirstRunTimeUnknown) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitWithFeatures(
+      {features::kBraveNewsFeedUpdate, features::kBraveNewsNewUserOptIn}, {});
+
+  controller_.reset();
+  pref_service_.SetBoolean(prefs::kBraveNewsOptedIn, true);
+  pref_service_.SetBoolean(prefs::kBraveNewsOptInTrial, true);
+
+  CreateNewsController(/*is_first_run=*/false, base::Time());
+
+  EXPECT_FALSE(pref_service_.GetBoolean(prefs::kBraveNewsOptedIn));
+  EXPECT_FALSE(pref_service_.GetBoolean(prefs::kBraveNewsOptInTrial));
+}
+
+TEST_F(BraveNewsControllerTest, RepeatedStartsBeforeRevertDelayKeepOptIn) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitWithFeatures(
+      {features::kBraveNewsFeedUpdate, features::kBraveNewsNewUserOptIn}, {});
+
+  controller_.reset();
+  const base::Time first_run_time = base::Time::Now();
+  CreateNewsController(/*is_first_run=*/true, first_run_time);
+  ASSERT_TRUE(pref_service_.GetBoolean(prefs::kBraveNewsOptedIn));
+  ASSERT_TRUE(pref_service_.GetBoolean(prefs::kBraveNewsOptInTrial));
+
+  for (int i = 0; i < 5; ++i) {
+    controller_.reset();
+    task_environment_.AdvanceClock(base::Days(5));
+    CreateNewsController(/*is_first_run=*/false, first_run_time);
+
+    EXPECT_TRUE(pref_service_.GetBoolean(prefs::kBraveNewsOptedIn));
+    EXPECT_TRUE(pref_service_.GetBoolean(prefs::kBraveNewsOptInTrial));
+  }
+
+  controller_.reset();
+  task_environment_.AdvanceClock(base::Days(6));
+  CreateNewsController(/*is_first_run=*/false, first_run_time);
+
+  EXPECT_FALSE(pref_service_.GetBoolean(prefs::kBraveNewsOptedIn));
+  EXPECT_FALSE(pref_service_.GetBoolean(prefs::kBraveNewsOptInTrial));
+
+  // Once reverted, further starts must not change anything.
+  controller_.reset();
+  task_environment_.AdvanceClock(base::Days(5));
+  CreateNewsController(/*is_first_run=*/false, first_run_time);
+
+  EXPECT_FALSE(pref_service_.GetBoolean(prefs::kBraveNewsOptedIn));
+  EXPECT_FALSE(pref_service_.GetBoolean(prefs::kBraveNewsOptInTrial));
 }
 
 TEST_F(BraveNewsControllerTest, ManualOptInIsNotReverted) {

@@ -100,8 +100,9 @@ void MaybeUpdateNewUserOptIn(PrefService* prefs,
     return;
   }
 
-  if (first_run_time.is_null() ||
-      base::Time::Now() - first_run_time < kNewUserOptInRevertDelay) {
+  // A null |first_run_time| (e.g. missing first run sentinel) is treated as
+  // past the revert delay, so the user doesn't stay in the trial forever.
+  if (base::Time::Now() - first_run_time < kNewUserOptInRevertDelay) {
     return;
   }
 
