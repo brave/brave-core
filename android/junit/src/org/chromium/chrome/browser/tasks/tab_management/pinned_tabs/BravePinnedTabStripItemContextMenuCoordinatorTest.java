@@ -40,6 +40,9 @@ import org.chromium.chrome.browser.tasks.tab_management.TabGroupCreationDialogMa
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupListBottomSheetCoordinator;
 import org.chromium.chrome.tab_ui.R;
 import org.chromium.components.collaboration.CollaborationService;
+import org.chromium.components.tab_group_sync.LocalTabGroupId;
+import org.chromium.components.tab_group_sync.SavedTabGroup;
+import org.chromium.components.tab_group_sync.SavedTabGroupTab;
 import org.chromium.components.tab_group_sync.TabGroupSyncService;
 import org.chromium.ui.base.TestActivity;
 import org.chromium.ui.listmenu.ListMenuItemProperties;
@@ -57,6 +60,7 @@ import java.util.function.Supplier;
 public class BravePinnedTabStripItemContextMenuCoordinatorTest {
     private static @TabId final int TAB_ID = 1;
     private static final String LOCALHOST_URL = "localhost://";
+    private static final String SYNC_GROUP_ID = "sync_group_id";
 
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
 
@@ -89,6 +93,15 @@ public class BravePinnedTabStripItemContextMenuCoordinatorTest {
         when(mTabBookmarkerSupplier.get()).thenReturn(mTabBookmarker);
 
         when(mTabModel.getTabGroupCount()).thenReturn(1);
+        // GroupWindowChecker walks the sync service, so an unstubbed getAllGroupIds() would
+        // return null and NPE before any menu item is built.
+        when(mTabModel.tabGroupExists(mTabGroupId)).thenReturn(true);
+        SavedTabGroup savedGroup = new SavedTabGroup();
+        savedGroup.syncId = SYNC_GROUP_ID;
+        savedGroup.localId = new LocalTabGroupId(mTabGroupId);
+        savedGroup.savedTabs.add(new SavedTabGroupTab());
+        when(mTabGroupSyncService.getAllGroupIds()).thenReturn(new String[] {SYNC_GROUP_ID});
+        when(mTabGroupSyncService.getGroup(SYNC_GROUP_ID)).thenReturn(savedGroup);
         when(mTabModel.getTabRemover()).thenReturn(mTabRemover);
         when(mTabModel.getProfile()).thenReturn(mProfile);
         when(mTab.getTabGroupId()).thenReturn(mTabGroupId);
