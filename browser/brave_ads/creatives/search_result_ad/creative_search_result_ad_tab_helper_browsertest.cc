@@ -27,6 +27,8 @@
 #include "components/infobars/core/infobar.h"
 #include "components/infobars/core/infobar_delegate.h"
 #include "components/prefs/pref_service.h"
+#include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
@@ -64,7 +66,8 @@ constexpr auto kCreativeAdPlacementIdToIndex =
 
 CreativeSearchResultAdTabHelper* GetCreativeSearchResultAdTabHelper(
     BrowserWindowInterface* browser) {
-  auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
+  content::WebContents* web_contents =
+      browser->GetActiveTabInterface()->GetContents();
   return CreativeSearchResultAdTabHelper::FromWebContents(web_contents);
 }
 
@@ -282,7 +285,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(incognito_browser, url));
   content::WebContents* web_contents =
-      incognito_browser->tab_strip_model()->GetActiveWebContents();
+      incognito_browser->GetActiveTabInterface()->GetContents();
   EXPECT_EQ(url, web_contents->GetVisibleURL());
 
   content::CreateAndLoadWebContentsObserver observer;

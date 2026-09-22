@@ -51,6 +51,7 @@
 #include "components/prefs/pref_service.h"
 #include "components/sessions/content/session_tab_helper.h"
 #include "components/sessions/core/session_id.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/media_player_id.h"
 #include "content/public/browser/navigation_controller.h"
@@ -903,10 +904,10 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        DoNotCreativeAdsServiceForIncognitoBrowser) {
-  const BrowserWindowInterface* const browser = CreateIncognitoBrowser();
+  BrowserWindowInterface* const browser = CreateIncognitoBrowser();
 
   content::WebContents* const web_contents =
-      browser->tab_strip_model()->GetActiveWebContents();
+      browser->GetActiveTabInterface()->GetContents();
   ASSERT_TRUE(web_contents);
 
   AdsTabHelper* const ads_tab_helper =
@@ -918,10 +919,10 @@ IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
 
 IN_PROC_BROWSER_TEST_F(BraveAdsTabHelperTest,
                        DoNotCreativeAdsServiceForGuestBrowser) {
-  const BrowserWindowInterface* const browser = CreateGuestBrowser();
+  BrowserWindowInterface* const browser = CreateGuestBrowser();
 
   content::WebContents* const web_contents =
-      browser->tab_strip_model()->GetActiveWebContents();
+      browser->GetActiveTabInterface()->GetContents();
   ASSERT_TRUE(web_contents);
 
   AdsTabHelper* const ads_tab_helper =
