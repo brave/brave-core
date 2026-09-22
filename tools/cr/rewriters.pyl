@@ -816,6 +816,7 @@ has:
         "cxx.after_function_impl": {
             "matcher": "cxx.find_function_body",
             "inputs": ["function_name", "result_var", "epilogue"],
+            "capture_overrides": ["return_type"],
             "when_set": {
                 "result_var": "{return_type} {result_var} = ",
             },

@@ -3168,6 +3168,59 @@ class RewriterFormsTest(unittest.TestCase):
             result, 'C::C() : x_(1) {\n  [&]() -> void {\n  Init();\n  }();\n'
             '  BraveInit();\n}\n')
 
+    def test_after_function_impl_lambda_return_type_overrides_capture(self):
+        # The body only ever returns the derived type, so naming it binds
+        # `result_var` to that instead of the declared base -- the appended
+        # code reaches the derived API without casting, and the final return
+        # still converts to what the function declares.
+        result = self._apply(
+            'append_override.cc', 'std::unique_ptr<Base> Build() {\n'
+            '  return std::make_unique<Derived>();\n}\n', 'substitutions:\n'
+            '  - description: initialise the Brave bits on the built object\n'
+            '    after_function_impl:\n'
+            '      function_name: Build\n'
+            '      result_var: built\n'
+            '      lambda_return_type: std::unique_ptr<Derived>\n'
+            '      code: |-\n'
+            '        built->InitBrave();\n'
+            '        return built;\n')
+        self.assertEqual(
+            result, 'std::unique_ptr<Base> Build() {\n'
+            '  std::unique_ptr<Derived> built = [&]()'
+            ' -> std::unique_ptr<Derived> {\n'
+            '  return std::make_unique<Derived>();\n  }();\n'
+            '  built->InitBrave();\n  return built;\n}\n')
+
+    def test_after_function_impl_lambda_return_type_without_result_var(self):
+        # The override types the lambda even with nothing bound to its value.
+        result = self._apply(
+            'append_override_void.cc',
+            'const Base& C::Get() const {\n  return derived_;\n}\n',
+            'substitutions:\n'
+            '  - description: narrow the wrapped return\n'
+            '    after_function_impl:\n'
+            '      function_name: C::Get\n'
+            '      lambda_return_type: const Derived&\n'
+            '      code: |-\n'
+            '        BraveNote();\n')
+        self.assertEqual(
+            result, 'const Base& C::Get() const {\n'
+            '  [&]() -> const Derived& {\n  return derived_;\n  }();\n'
+            '  BraveNote();\n}\n')
+
+    def test_after_function_impl_empty_lambda_return_type_rejected(self):
+        # An empty override states nothing; omit the field to deduce instead.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: an empty override states nothing\n'
+            '    after_function_impl:\n'
+            '      function_name: C::Compute\n'
+            "      lambda_return_type: ''\n"
+            '      code: |-\n'
+            '        Brave();\n',
+            'after_function_impl `lambda_return_type` must be a non-empty '
+            'string')
+
     def test_after_function_impl_wraps_early_returns(self):
         # Every `return` in the upstream body only returns from the lambda, so
         # the appended code still runs. The body's own lines are untouched.
@@ -6236,6 +6289,43 @@ class RewritersEvalTest(unittest.TestCase):
             rewriter['replace']['replace'] = 'virtual {return_type} '
 
         self._assert_invalid(mutate, 'shadow')
+
+    # -- capture overrides --------------------------------------------------
+
+    def test_rewriter_may_override_a_capture(self):
+        # An override is how a caller supplies a capture's value itself. The
+        # name stays out of `inputs`, which may not shadow a capture, so
+        # listing it here is the whole declaration.
+        spec = self._with_capture(self._valid_spec())
+        rewriter = spec['ast.rewriter']['cxx.make_virtual']
+        rewriter['capture_overrides'] = ['return_type']
+        rewriter['replace']['replace'] = 'virtual {return_type} '
+        rewriters = plaster.RewritersEval(repr(spec))
+        self.assertEqual(
+            rewriters.rewriter('cxx.make_virtual')['capture_overrides'],
+            ['return_type'])
+
+    def test_rewriter_capture_override_must_name_a_capture(self):
+        # Overriding anything the matcher does not produce is a value no
+        # caller could ever supply.
+        def mutate(spec):
+            self._with_capture(spec)
+            rewriter = spec['ast.rewriter']['cxx.make_virtual']
+            rewriter['capture_overrides'] = ['nope']
+            rewriter['replace']['replace'] = 'virtual {return_type} '
+
+        self._assert_invalid(mutate, 'does not produce')
+
+    def test_rewriter_capture_override_must_be_used(self):
+        # No template renders `{return_type}`, so an override for it could
+        # never reach the output.
+        def mutate(spec):
+            self._with_capture(spec)
+            spec['ast.rewriter']['cxx.make_virtual']['capture_overrides'] = [
+                'return_type'
+            ]
+
+        self._assert_invalid(mutate, 'never used')
 
     # -- optional inputs (`when_set`) ---------------------------------------
 
