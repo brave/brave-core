@@ -51,12 +51,23 @@ substitutions:
       Early-return from GetBackgroundColor() via the GetBraveBackgroundColor()
       hook (defined in the chromium_src override), which honours the model's
       SkColor override and otherwise keeps chips transparent.
-    regex:
-      re_pattern: |-
-        (PageActionView::GetBackgroundColor\(\).*?\{)
-      re_flags: [DOTALL]
-      replace: |-
-        \1
-          if (auto color = GetBraveBackgroundColor(observation_.GetSource())) {
-            return *color;
-          }
+    preempt_function_impl:
+      function_name: PageActionView::GetBackgroundColor
+      code: |-
+        if (auto color = GetBraveBackgroundColor(observation_.GetSource())) {
+          return *color;
+        }
+
+  - description: |
+      Give page action chips a Brave-controlled foreground color.
+
+      Early-return from GetForegroundColor() via the GetBraveForegroundColor()
+      hook (defined in the chromium_src override), which honours the model's
+      SkColor override and otherwise falls through to Chromium's own logic
+      (including internal callers such as UpdateIconImage()).
+    preempt_function_impl:
+      function_name: PageActionView::GetForegroundColor
+      code: |-
+        if (auto color = GetBraveForegroundColor(observation_.GetSource())) {
+          return *color;
+        }
