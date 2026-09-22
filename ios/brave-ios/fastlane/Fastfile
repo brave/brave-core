@@ -179,6 +179,7 @@ platform :ios do
       output_files: "junit.xml",
       derived_data_path: "../../../out/DerivedData",
       buildlog_path: "../../../out/fastlane_logs/scan",
+      xcargs: "-collect-test-diagnostics never",
       number_of_retries: 1,
       output_remove_retry_attempts: true
     }
