@@ -1761,14 +1761,16 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
           bound to the wrapped body's return value (`T <result_var> = [&]() ->
           T { ... }();`) so the appended `code` can use it. When set, the
           appended `code` owns the function's final `return`.
+        - `lambda_return_type` — optional. Used to specify a particular return
+          type for the lambda.
 
         Each overload sharing the name is one match, so an overloaded method
         needs a matching `count`.
 
         The return type is taken from the definition as upstream spells it,
-        including a trailing `-> T`. A constructor or destructor has none, so
-        the lambda there returns `void`; pair one with `result_var` and the
-        generated code will not compile.
+        including a trailing `-> T`, while for constructors and destructors the
+        return type is `void`. `lambda_return_type` is provided to permit users
+        to specify a particular return type for the lambda if needed.
 
         This rewriter is not supported with macros (`NOINLINE bool Foo::Bar()`).
         See `blank_macros_for_ast_parsing` for more details.
@@ -1811,18 +1813,24 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
         ```
     """
 
-    def __init__(self, *, function_name: str, result_var: str, epilogue: str):
+    def __init__(self, *, function_name: str, result_var: str, epilogue: str,
+                 lambda_return_type: str):
         super().__init__()
         self._function_name = function_name
         self._result_var = result_var
         self._epilogue = epilogue
+        self._lambda_return_type = lambda_return_type
 
     def operations(self, count: int) -> list[Operation]:
         # Escape backslashes last, since the text is spliced into a `re.sub`
         # replacement where a backslash is special. `result_var` is empty for a
         # void wrap, which the op's `when_set` renders as no declaration at
-        # all. The lambda's return type is not passed here: it is a capture the
-        # engine reads off each match.
+        # all. The lambda's return type goes in as `return_type`, the name of
+        # the capture the op lists in `capture_overrides`: empty leaves the
+        # engine to read the function's own type off each match, and the
+        # entry's `lambda_return_type` spelling keeps the two apart for the
+        # caller, who is stating what the lambda returns, not what the
+        # function does.
         epilogue = _indent_yaml(self._epilogue).replace('\\', '\\\\')
         return [
             Operation(
@@ -1830,6 +1838,7 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
                     'function_name': self._function_name,
                     'result_var': self._result_var,
                     'epilogue': epilogue,
+                    'return_type': self._lambda_return_type,
                 }, MatchExpectation.from_count(count))
         ]
 
@@ -1840,11 +1849,13 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
 
         Requires `function_name` and `code`. `result_var` is optional and, when
         given, binds the wrapped body's value to `auto <result_var>`.
+        `lambda_return_type` is optional and, when given, is what the lambda
+        returns instead of the type read off the definition.
         """
         if not isinstance(body, dict):
             raise ValueError(
                 f'"{cls.NAME}" must be a mapping (in "{description}")')
-        allowed = {'function_name', 'code', 'result_var'}
+        allowed = {'function_name', 'code', 'result_var', 'lambda_return_type'}
         unknown = sorted(set(body) - allowed)
         if unknown:
             raise ValueError(
@@ -1859,20 +1870,26 @@ class CxxAfterFunctionImplRewriter(_AstGrepRewriter):
             raise ValueError(f'{cls.NAME} `code` must be a non-empty string '
                              f'(in "{description}")')
         return cls(function_name=body['function_name'],
-                   result_var=cls._resolve_result_var(body, description),
-                   epilogue=code)
+                   result_var=cls._optional_arg(body, 'result_var',
+                                                description),
+                   epilogue=code,
+                   lambda_return_type=cls._optional_arg(
+                       body, 'lambda_return_type', description))
 
     @classmethod
-    def _resolve_result_var(cls, body: dict, description: str) -> str:
-        """The name to bind the wrapped body's value to, or '' for a void wrap.
+    def _optional_arg(cls, body: dict, key: str, description: str) -> str:
+        """An optional arg's value, or '' when the entry omits it.
+
+        Empty means "leave it to the engine": no result variable to declare,
+        or a return type read off each match instead of stated here.
         """
-        if 'result_var' not in body:
+        if key not in body:
             return ''
-        result_var = body['result_var']
-        if not isinstance(result_var, str) or not result_var:
-            raise ValueError(f'{cls.NAME} `result_var` must be a non-empty '
+        value = body[key]
+        if not isinstance(value, str) or not value:
+            raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
                              f'string (in "{description}")')
-        return result_var
+        return value
 
 
 class CxxRenameClassRewriter(_AstGrepRewriter):
@@ -3701,10 +3718,15 @@ _MATCHER_SCHEMA = {
 # templates it feeds in `_check_cross_references`); `replace` may name adjacent
 # tokens to fold into each rewritten span, which are `{input}`-formatted like
 # `replace` itself. `first_match`, when true, rewrites only the first match (in
-# source order) and ignores any later ones.
+# source order) and ignores any later ones. `capture_overrides` names matcher
+# captures the caller may supply directly, as an input of the same name: a set
+# one wins and the match is not read for it, an unset one leaves the capture to
+# resolve as usual. An input may not otherwise share a capture's name, so
+# listing it here is what makes that precedence visible at the spec.
 _REWRITER_SCHEMA = {
     'matcher': _NON_EMPTY_STR,
     'inputs': [str],
+    schema.Optional('capture_overrides'): [_CAPTURE_NAME],
     schema.Optional('first_match'): bool,
     schema.Optional('when_set'): {
         _NON_EMPTY_STR: _NON_EMPTY_STR
@@ -3952,7 +3974,8 @@ class RewritersEval:
                     f'{", ".join("$" + m for m in unbound)}')
 
     def _check_rewriter_interface(self, op_id: str, spec: dict) -> None:
-        """A rewriter's matcher, result node and `inputs` must all line up."""
+        """A rewriter's matcher, result node, `inputs` and `capture_overrides`
+        must all line up."""
         ref = spec['matcher']
         if ref not in self._matchers:
             raise RewritersSchemaError(
@@ -3968,12 +3991,14 @@ class RewritersEval:
 
         declared = set(spec['inputs'])
         captures = set(matcher['result'].get('captures', {}))
+        overrides = set(spec.get('capture_overrides', []))
         shadowed = sorted(declared & captures)
         if shadowed:
             raise RewritersSchemaError(
                 f'{self._source}: rewriter {op_id!r} declares input(s) '
                 f'that shadow matcher {ref!r} capture(s): '
-                f'{", ".join(shadowed)}')
+                f'{", ".join(shadowed)}; list them in `capture_overrides` to '
+                f'let a caller-supplied value win instead')
 
         when_set = spec.get('when_set', {})
         undeclared_optional = sorted(set(when_set) - declared)
@@ -4000,6 +4025,21 @@ class RewritersEval:
             raise RewritersSchemaError(
                 f'{self._source}: rewriter {op_id!r} declares input(s) '
                 f'never used in its templates: {", ".join(unused)}')
+
+        # An override stands in for a capture the templates render, so one
+        # naming anything else is a value no caller could ever supply.
+        unknown_overrides = sorted(overrides - captures)
+        if unknown_overrides:
+            raise RewritersSchemaError(
+                f'{self._source}: rewriter {op_id!r} overrides capture(s) '
+                f'matcher {ref!r} does not produce: '
+                f'{", ".join(unknown_overrides)}')
+        unused_overrides = sorted(overrides - used)
+        if unused_overrides:
+            raise RewritersSchemaError(
+                f'{self._source}: rewriter {op_id!r} overrides capture(s) '
+                f'never used in its templates: '
+                f'{", ".join(unused_overrides)}')
 
     def _check_regex_macro_interface(self, op_id: str, spec: dict) -> None:
         """A regex macro's `pattern`/`replace` fields and declared `inputs`
@@ -4499,8 +4539,12 @@ class AstRewriter:
         """Which of the matcher's captures `op`'s templates actually read.
 
         An unset optional input's `when_set` template never renders, so nothing
-        it reads is needed. Inputs are fixed for the whole op, so which
-        templates render is settled once rather than per match.
+        it reads is needed. A capture the op lists in `capture_overrides` is
+        not needed either once the op supplies a value for it: the input fills
+        the placeholder, so there is nothing left to read off the match (and no
+        way for a match that cannot resolve it to fail). Inputs are fixed for
+        the whole op, so which templates render is settled once rather than per
+        match.
         """
         replace = rewriter['replace']
         when_set = rewriter.get('when_set', {})
@@ -4512,7 +4556,13 @@ class AstRewriter:
               for name, template in when_set.items() if op.inputs.get(name)),
         ]
         used = set().union(*map(_placeholders, rendered))
-        return used & matcher['result'].get('captures', {}).keys()
+        overridden = {
+            name
+            for name in rewriter.get('capture_overrides', [])
+            if op.inputs.get(name)
+        }
+        needed = used & matcher['result'].get('captures', {}).keys()
+        return needed - overridden
 
     def _values_for(self, rewriter: dict, matcher: dict, match: AstMatch,
                     op: Operation, needed: set[str]) -> dict[str, str]:
@@ -4521,6 +4571,10 @@ class AstRewriter:
         An optional input renders through its `when_set` template, or as
         nothing when unset. Every such template sees the same unexpanded
         values, so one optional input cannot depend on another's expansion.
+
+        A capture resolved off the match wins over a same-named input, which
+        is what makes `capture_overrides` work: `needed` already drops a
+        capture the op overrode, so the input's value is the one left standing.
         """
         values = op.inputs | self._resolve_captures(matcher, match, needed,
                                                     op.op_id)
