@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/renderer/js_polkadot_provider.h"
 
+#include <tuple>
+
 #include "base/check.h"
 #include "brave/components/brave_wallet/renderer/v8_helper.h"
 #include "content/public/common/isolated_world_ids.h"
@@ -14,15 +16,36 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 #include "v8/include/cppgc/allocation.h"
 #include "v8/include/v8-cppgc.h"
+#include "v8/include/v8-exception.h"
+#include "v8/include/v8-function.h"
+#include "v8/include/v8-isolate.h"
 #include "v8/include/v8-microtask-queue.h"
 #include "v8/include/v8-object.h"
 
 namespace brave_wallet {
 
 namespace {
+
 constexpr char kInjectedWeb3[] = "injectedWeb3";
 constexpr char kBraveWallet[] = "brave-wallet";
 constexpr char kVersion[] = "1.0.0";
+
+void InjectedWeb3Getter(const v8::FunctionCallbackInfo<v8::Value>& info) {
+  info.GetReturnValue().Set(info.Data());
+}
+
+// Throw if any script attempts to replace the `injectedWeb3` object itself,
+// aside from self-assignment via `injectedWeb3 = injectedWeb3 || {}`.
+// This is so no script will be able to swap out the wallet registry.
+void InjectedWeb3Setter(const v8::FunctionCallbackInfo<v8::Value>& info) {
+  if (info[0]->StrictEquals(info.Data())) {
+    return;
+  }
+
+  v8::Isolate* isolate = info.GetIsolate();
+  isolate->ThrowException(v8::Exception::TypeError(
+      gin::StringToV8(isolate, "window.injectedWeb3 cannot be replaced.")));
+}
 
 }  // namespace
 
@@ -69,25 +92,38 @@ void JSPolkadotProvider::Install(content::RenderFrame* render_frame) {
     return;
   }
 
-  // Set window.injectedWeb3. Unlike the other provider roots this one stays
-  // writable and configurable: it is a registry shared with every other
-  // Polkadot wallet, and @polkadot/extension-inject reassigns the property
-  // itself (`win.injectedWeb3 = win.injectedWeb3 || {}`) before adding its
-  // own key, which would throw against a read-only property.
-  if (!injected_web3->IsObject()) {
-    injected_web3 = v8::Object::New(isolate);
-    if (!global
-             ->CreateDataProperty(context,
-                                  gin::StringToV8(isolate, kInjectedWeb3),
-                                  injected_web3)
-             .FromMaybe(false)) {
-      return;
-    }
+  // The registry is shared with every other Polkadot wallet, so append
+  // ourselves if the registry exists otherwise create it now.
+  v8::Local<v8::Object> injected_web3_object =
+      injected_web3->IsObject() ? injected_web3.As<v8::Object>()
+                                : v8::Object::New(isolate);
+
+  v8::Local<v8::Function> getter;
+  v8::Local<v8::Function> setter;
+  if (!v8::Function::New(context, InjectedWeb3Getter, injected_web3_object,
+                         /*length=*/0, v8::ConstructorBehavior::kThrow,
+                         v8::SideEffectType::kHasNoSideEffect)
+           .ToLocal(&getter) ||
+      !v8::Function::New(context, InjectedWeb3Setter, injected_web3_object,
+                         /*length=*/1, v8::ConstructorBehavior::kThrow)
+           .ToLocal(&setter)) {
+    return;
   }
 
-  v8::Local<v8::Object> injected_web3_object;
-  if (!injected_web3->ToObject(context).ToLocal(&injected_web3_object)) {
-    return;
+  v8::PropertyDescriptor injected_web3_desc(getter, setter);
+  injected_web3_desc.set_enumerable(true);
+  injected_web3_desc.set_configurable(false);
+
+  {
+    // Update the injectedWeb3 registry to be non-assignable, throwing if a
+    // malicious script attempts `window.injectedWeb3 = {...}` instead of
+    // `window.injectedWeb3 = window.injectedWeb3 || {}`, which is permitted.
+    // Another wallet may've already done something similar to what we're
+    // attempting, so DefineProperty is a best-effort attempt and can't be
+    // guaranteed.
+    v8::TryCatch try_catch(isolate);
+    std::ignore = global->DefineProperty(
+        context, gin::StringToV8(isolate, kInjectedWeb3), injected_web3_desc);
   }
 
   JSPolkadotProvider* polkadot_provider =

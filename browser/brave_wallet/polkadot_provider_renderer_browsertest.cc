@@ -187,6 +187,62 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, OtherWalletCanInject) {
   EXPECT_EQ(base::Value(true), result);
 }
 
+IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, RegistryNotReplaceable) {
+  // We only permit self-assignment how the polkadot/extension repo does it:
+  // https://github.com/polkadot-js/extension/blob/d7c9ce214557e8bd359fac29c4bc38d0e329c1d4/packages/extension-inject/src/bundle.ts#L25
+  // This is because basically all the dApps just use this package and it
+  // prevents any malcious script from overriding what we've set.
+
+  auto result = content::EvalJs(web_contents(browser()),
+                                R"(
+    (function() {
+      'use strict';
+      const registry = window.injectedWeb3;
+
+      let threw = false;
+      try {
+        window.injectedWeb3 = { 'brave-wallet': { version: 'evil' } };
+      } catch (e) {
+        threw = true;
+      }
+
+      return threw && window.injectedWeb3 === registry &&
+          window.injectedWeb3['brave-wallet'].version === '1.0.0';
+    })()
+)");
+  EXPECT_EQ(base::Value(true), result);
+}
+
+IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest,
+                       RegistryNotDeletableOrRedefinable) {
+  // The accessor is non-configurable, otherwise a script could delete or
+  // redefine the property to get around the setter.
+
+  auto result = content::EvalJs(web_contents(browser()),
+                                R"(
+    (function() {
+      'use strict';
+      let deleteThrew = false;
+      try {
+        delete window.injectedWeb3;
+      } catch (e) {
+        deleteThrew = true;
+      }
+
+      let defineThrew = false;
+      try {
+        Object.defineProperty(window, 'injectedWeb3', { value: {} });
+      } catch (e) {
+        defineThrew = true;
+      }
+
+      return deleteThrew && defineThrew &&
+          !!window.injectedWeb3['brave-wallet'];
+    })()
+)");
+  EXPECT_EQ(base::Value(true), result);
+}
+
 IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, Iframe3P) {
   GURL secure_top_url(https_server_.GetURL("a.com", "/iframe.html"));
   GURL insecure_top_url =
