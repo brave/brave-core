@@ -16,6 +16,6 @@ namespace content_settings {
 // Chromium implementation which makes INHERIT_IF_LESS_PERMISSIVE inherit
 // blocked permissions in incognito profile.
 BASE_FEATURE(kAllowIncognitoPermissionInheritance,
-             base::FEATURE_DISABLED_BY_DEFAULT);
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace content_settings
