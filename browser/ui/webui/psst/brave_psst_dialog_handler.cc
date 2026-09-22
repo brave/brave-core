@@ -77,11 +77,13 @@ BravePsstDialogHandler::BravePsstDialogHandler(
   CHECK(initiator_web_contents);
   psst_tab_helper_ = GetPsstTabHelperForContents(initiator_web_contents);
   if (!psst_tab_helper_) {
+    std::move(callback).Run(psst::mojom::SettingCardData::New());
     return;
   }
 
   psst_dialog_delegate_ = GetPsstUIDelegate(psst_tab_helper_);
   if (!psst_dialog_delegate_) {
+    std::move(callback).Run(psst::mojom::SettingCardData::New());
     return;
   }
 

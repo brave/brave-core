@@ -1345,16 +1345,16 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
   // dialogs remain open, then accept each dialog while the *other* tab is
   // active. If a dialog's handler followed the active tab instead of its own
   // initiator tab, this would apply the wrong site's consent to the wrong tab.
-  browser()->tab_strip_model()->ActivateTabAt(0);
-  ASSERT_EQ(tab_a_contents, web_contents());
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  ASSERT_EQ(tab_b_contents, web_contents());
 
   const std::vector<std::string> perform_uids_a = {"1", "2"};
   ASSERT_TRUE(AcceptModalDialog(
       dialog_wc_a, url::Origin::Create(url_a).GetURL().spec(),
       perform_uids_a));
 
-  browser()->tab_strip_model()->ActivateTabAt(1);
-  ASSERT_EQ(tab_b_contents, web_contents());
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  ASSERT_EQ(tab_a_contents, web_contents());
 
   const std::vector<std::string> perform_uids_b = {"1"};
   ASSERT_TRUE(AcceptModalDialog(
