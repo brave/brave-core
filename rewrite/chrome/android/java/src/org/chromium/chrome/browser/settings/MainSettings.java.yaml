@@ -15,6 +15,5 @@ substitutions:
       re_pattern: |-
         (private static boolean shouldShowAddressBarPref\(Context context\) \{)
       replace: |-
-        @SuppressWarnings("UnnecessaryParentheses")
-            \1
+        \1
                 if ((true)) return false;

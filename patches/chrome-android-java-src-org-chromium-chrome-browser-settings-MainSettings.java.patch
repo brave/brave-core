@@ -1,12 +1,10 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
-index 2fdc6b850c6addc362d04c0212a3f4e5b7e4bb73..bb1ee547df0f392e8c4c13dbda5e726befb9f18c 100644
+index 2fdc6b850c6addc362d04c0212a3f4e5b7e4bb73..16df3224a3b87e2a76499d84880bae66b5f1a9a4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/MainSettings.java
-@@ -826,7 +826,9 @@ public class MainSettings extends ChromeBaseSettingsFragment
-         }
+@@ -827,6 +827,7 @@ public class MainSettings extends ChromeBaseSettingsFragment
      }
  
-+    @SuppressWarnings("UnnecessaryParentheses")
      private static boolean shouldShowAddressBarPref(Context context) {
 +        if ((true)) return false;
          // Similar to ToolbarPositionController#isToolbarPositionCustomizationEnabled(), except
