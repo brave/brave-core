@@ -764,7 +764,6 @@ export class Config {
       ['brave', 'script'],
       ['tools', 'grit', 'grit', 'extern'],
       ['brave', 'vendor', 'requests'],
-      ['brave', 'third_party', 'macholib'],
       ['build'],
       ['third_party', 'depot_tools'],
     ]
