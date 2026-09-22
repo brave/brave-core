@@ -779,7 +779,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             Profile profile,
             String key,
             Bundle extras,
-            ModalDialogManager modalDialogManager) {
+            ModalDialogManager modalDialogManager,
+            boolean shownInTab) {
         if (PREF_HOME_SCREEN_WIDGET.equals(key)) {
             // The Home screen widget entry has no sub-screen to open; it triggers a system
             // "pin widget" request. Keep the search state as is, like the other external-activity
@@ -787,7 +788,8 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             BraveSearchWidgetUtils.requestPinAppWidget();
             return false;
         }
-        return MainSettings.openSearchResult(context, profile, key, extras, modalDialogManager);
+        return MainSettings.openSearchResult(
+                context, profile, key, extras, modalDialogManager, shownInTab);
     }
 
     // Wraps MainSettings.SEARCH_INDEX_DATA_PROVIDER and additionally removes upstream preferences

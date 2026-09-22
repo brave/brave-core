@@ -617,7 +617,8 @@ public class BytecodeTest {
                         Profile.class,
                         String.class,
                         Bundle.class,
-                        ModalDialogManager.class));
+                        ModalDialogManager.class,
+                        boolean.class));
 
         Assert.assertTrue(
                 methodExists(
