@@ -1013,6 +1013,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         if (!mIsTablet) {
             maybeRemoveMenuItems(modelList, R.id.share_menu_id);
         }
+        putShareIconIntoIconRow(modelList);
 
         // Shred
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
@@ -1059,6 +1060,41 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         // if policy disables them
         modelList.add(buildCustomMenuItem());
         modelList.add(buildExitItem());
+    }
+
+    /**
+     * Puts Brave's share icon into the app menu icon row, in place of the forward icon.
+     *
+     * <p>The row renders five icons at most, and forward stays reachable from the menu footer, so
+     * it is the one that gives way. The page info icon is dropped as well, as Brave keeps page info
+     * in the menu list instead.
+     */
+    private void putShareIconIntoIconRow(MVCListAdapter.ModelList modelList) {
+        for (int i = 0; i < modelList.size(); ++i) {
+            Integer itemId = modelList.get(i).model.get(AppMenuItemProperties.MENU_ITEM_ID);
+            if (itemId == null || itemId != R.id.icon_row_menu_id) continue;
+
+            MVCListAdapter.ModelList icons =
+                    modelList.get(i).model.get(AppMenuItemProperties.ADDITIONAL_ICONS);
+            maybeRemoveMenuItems(icons, R.id.forward_menu_id, R.id.info_menu_id);
+
+            PropertyModel shareIcon =
+                    AppMenuItemUtils.buildModelForIcon(
+                            mContext,
+                            R.id.share_menu_id,
+                            R.string.share,
+                            R.string.share,
+                            R.drawable.ic_share_white_24dp);
+            Tab currentTab = mActivityTabProvider.get();
+            shareIcon.set(
+                    AppMenuItemProperties.ENABLED,
+                    currentTab != null && !UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec()));
+            // Keep reload last, as upstream does.
+            icons.add(icons.size() - 1, new MVCListAdapter.ListItem(0, shareIcon));
+            return;
+        }
+
+        assert !shouldShowIconRow() : "No icon row found in the app menu.";
     }
 
     private void maybeRemoveMenuItems(MVCListAdapter.ModelList modelList, int... itemIds) {
@@ -1282,22 +1318,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                         BraveVpnPrefUtils.getRegionIsoCode(),
                         regionName));
         return new MVCListAdapter.ListItem(AppMenuItemType.TITLE_BUTTON, model);
-    }
-
-    @Override
-    protected PropertyModel buildPageInfoModel(@Nullable Tab currentTab) {
-        // Instead of the info button, we show the share button in Brave.
-        PropertyModel shareButton =
-                AppMenuItemUtils.buildModelForIcon(
-                        mContext,
-                        R.id.info_menu_id,
-                        R.string.share,
-                        R.string.share,
-                        R.drawable.ic_share_white_24dp);
-        shareButton.set(
-                AppMenuItemProperties.ENABLED,
-                (currentTab != null && !UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())));
-        return shareButton;
     }
 
     /**
