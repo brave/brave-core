@@ -6,10 +6,14 @@
 import AppIntents
 import UIKit
 
+// WidgetShortcut is generated as an `@objc` enum, so a checked `Sendable` conformance
+// cannot be added outside that file. The cases are a trivial `Int`.
+extension WidgetShortcut: @unchecked Sendable {}
+
 @available(iOS 26.0, *)
 public struct OpenControlWidgetShortcutIntent: UISceneAppIntent {
-  public static var title: LocalizedStringResource = "Open Brave"
-  public static var openAppWhenRun: Bool = true
+  public static let title: LocalizedStringResource = "Open Brave"
+  public static let openAppWhenRun: Bool = true
 
   public var shortcut: WidgetShortcut
 
