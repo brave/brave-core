@@ -28,8 +28,6 @@ inline constexpr auto kAllowedContentSchemes =
 
 // Model key for the automatic model.
 inline constexpr char kChatAutomaticModelKey[] = "chat-automatic";
-// Model key for Claude Haiku model.
-inline constexpr char kClaudeHaikuModelKey[] = "chat-claude-haiku";
 // Model key for Claude Sonnet model.
 inline constexpr char kClaudeSonnetModelKey[] = "chat-claude-sonnet";
 

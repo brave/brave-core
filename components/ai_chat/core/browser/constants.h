@@ -88,8 +88,6 @@ inline constexpr uint32_t kMaxTitleLength = 100u;
 // operations (GetSuggestedTopics, GetFocusTabs).
 inline constexpr size_t kTabListChunkSize = 75;
 
-// Model name to send to the server for Claude Haiku model.
-inline constexpr char kClaudeHaikuModelName[] = "claude-3-haiku";
 // Model name to send to the server for Claude Sonnet model.
 inline constexpr char kClaudeSonnetModelName[] = "claude-3-sonnet";
 
