@@ -1233,6 +1233,10 @@ static_library("internal") {
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_ads/core/public:headers",
   ]
+
+  if (is_android) {
+    deps += [ "//base:i18n" ]
+  }
 }
 
 source_set("test_support") {

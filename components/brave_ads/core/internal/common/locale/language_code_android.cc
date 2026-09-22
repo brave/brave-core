@@ -9,7 +9,7 @@
 #include <string>
 #include <string_view>
 
-#include "base/android/locale_utils.h"
+#include "base/i18n/android_locale.h"
 
 namespace brave_ads {
 
@@ -18,7 +18,7 @@ constexpr std::string_view kDelimiters = "-_";
 }  // namespace
 
 std::optional<std::string> MaybeGetLanguageCodeString() {
-  std::string locale = base::android::GetDefaultLocaleString();
+  std::string locale(base::i18n::GetAndroidDefaultLocale().tag_string());
   if (locale.empty()) {
     // Locale is not set.
     return std::nullopt;
