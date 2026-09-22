@@ -1578,36 +1578,11 @@
 
 # These tests fail because we provide our own override of the side panel which
 # does not enable this feature
--All/LensOverlayControllerBrowserPDFContextualizationTest.CurrentPageIncludedInRequest/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.Histograms/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.LargePdfNotIncludedInRequest/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.PageUrlIncludedInRequest/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.PartialPdfIncludedInRequest/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.PdfBytesInFollowUpRequest/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.PdfBytesIncludedInRequest/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.QueryFlowRestartsOnSearchboxFocus/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.RecordSearchboxFocusedInSessionNavigationHistograms/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.SidePanel_SameTabCrossOriginLinkClick_PdfWithFragment/*
--All/LensOverlayControllerBrowserPDFIncreaseLimitTest.PartialPdfCharacterLimitReached_IncludedInRequest/*
--All/LensOverlayControllerBrowserPDFTest.ContextMenuOpensOverlay/*
--All/LensOverlayControllerBrowserPDFUpdatedContentFieldsTest.PartialPdfIncludedInRequest/*
+-All/LensOverlayController*.*/*
 -ContextualTasksNoMockBrowserTest.InitSidePanelWithGhostLoader_WaitUntilPanelOpen
 -LensComposeboxControllerBrowserTest.*
--LensOverlayControllerApcOnlyTest.*
--LensOverlayControllerBrowserFullscreenDisabled.*
--LensOverlayControllerBrowserTest.*
--LensOverlayControllerBrowserWithPixelsTest.*
--LensOverlayControllerContextualFeaturesDisabledTest.*
--LensOverlayControllerContextualTasksBrowserTest.*
--LensOverlayControllerEntrypointsBrowserTest.OverlayHidesEntrypoints
--LensOverlayControllerInnerTextAndApc.*
--LensOverlayControllerInnerTextEnabledSmallByteLimitTest.*
--LensOverlayControllerNonBlockingPrivacyNoticeForImageSearchBrowserTest.*
--LensOverlayControllerOverlaySearchbox.OverlaySearchboxPageClassificationAndState
--LensOverlayControllerReinvocationBrowserTest.*
--LensOverlayControllerSideBySideBrowserTest.SidePanelRoundedCornerSplitTab
--LensSearchControllerUnificationBrowserTest.*
--LensSearchControllerUnificationSignOutDisabledTest.*
+-LensOverlayController*.*
+-LensSearchController*.*
 -SidePanelCoordinatorLensOverlayTest.*
 
 # These tests fail since upstream transitioned to ChromeRefresh2023 by default;
@@ -2068,7 +2043,7 @@
 
 # These tests fail because we disable kAimEnabled.
 -AimEligibilityExtensionBrowserTest.UiParity
--AimUserAgentTabHelperBrowserTest.PreserveExistingUserAgentOverride
+-AimUserAgentTabHelperBrowserTest.*
 -All/OmniboxContextMenuControllerBrowserTestWithCommand.ExecuteCommand_AiModeOpen_ReopensOnCancel/*
 -ChromeAimEligibilityService*.*
 -OmniboxContextMenuControllerBrowserTest.AddRecentTabsToMenu
