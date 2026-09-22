@@ -5,13 +5,10 @@
 
 import BraveCore
 import BraveUI
-import CoreData
 import Data
 import Foundation
-import Preferences
 import Shared
 import UIKit
-import os.log
 
 enum TopsiteAction {
   case opened(
@@ -57,44 +54,26 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
   var legacyLongPressAction: (UIAlertController) -> Void
 
   private let isPrivateBrowsing: Bool
+  private let tileSource: TopsitesTileSource
 
   var isReorderingEnabled: Bool {
-    Preferences.NewTabPage.topsitesMode.value == .favourite && (frc.fetchedObjects?.count ?? 0) > 1
+    tileSource.isReorderingEnabled
   }
-
-  private var frc: NSFetchedResultsController<Favorite>
-  private let mostVisitedSites: MostVisitedSites?
-  private var mostVisitedObservation: MostVisitedSitesScopedObservation?
-  private var mostVisitedTiles: [NTPTile] = []
 
   init(
     action: @escaping (TopsiteAction) -> Void,
     legacyLongPressAction: @escaping (UIAlertController) -> Void,
     isPrivateBrowsing: Bool,
-    mostVisitedSites: MostVisitedSites?
+    tileSource: TopsitesTileSource
   ) {
     self.action = action
     self.legacyLongPressAction = legacyLongPressAction
     self.isPrivateBrowsing = isPrivateBrowsing
-    self.mostVisitedSites = mostVisitedSites
+    self.tileSource = tileSource
 
-    frc = Favorite.frc()
     super.init()
-    frc.fetchRequest.fetchLimit = 20
-    frc.delegate = self
 
-    do {
-      try frc.performFetch()
-    } catch {
-      Logger.module.error("Favorites fetch error")
-    }
-
-    Preferences.NewTabPage.topsitesMode.observe(from: self)
-    self.updateMostVisitedObservation()
-  }
-
-  deinit {
-    mostVisitedObservation?.invalidate()
+    tileSource.addObserver(self)
   }
 
   static var defaultIconSize = CGSize(width: 64, height: FavoritesCell.height(forWidth: 64))
@@ -115,23 +94,12 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
     )
   }
 
-  var numberOfTiles: Int {
-    switch Preferences.NewTabPage.topsitesMode.value {
-    case TopsitesMode.none:
-      return 0
-    case .favourite:
-      return frc.fetchedObjects?.count ?? 0
-    case .mostVisited:
-      return isPrivateBrowsing ? 0 : mostVisitedTiles.count
-    }
-  }
-
   /// The actual number of favorites that will be displayed in a single row
   /// given the available width, which is the lesser of the number of fetched
   /// favorites and the maximum number of items that fit in the row.
   func displayedItemCount(in collectionView: UICollectionView, section: Int) -> Int {
     return min(
-      numberOfTiles,
+      tileSource.count,
       Self.numberOfItems(
         in: collectionView,
         availableWidth: fittingSizeForCollectionView(collectionView, section: section).width
@@ -140,7 +108,7 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    guard let item = item(at: indexPath.item) else { return }
+    guard let item = tileSource[indexPath.item] else { return }
     action(.opened(topsiteViewModel: item))
   }
 
@@ -168,7 +136,7 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
   ) {
 
     guard let cell = cell as? FavoritesCell,
-      let item = item(at: indexPath.item)
+      let item = tileSource[indexPath.item]
     else {
       return
     }
@@ -196,19 +164,6 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
       )
     }
     return size
-  }
-
-  private func item(at index: Int) -> TopsiteViewModel? {
-    switch Preferences.NewTabPage.topsitesMode.value {
-    case .none:
-      return nil
-    case .favourite:
-      guard let favorite = frc.fetchedObjects?[safe: index] else { return nil }
-      return TopsiteViewModel(source: .favorite(favorite))
-    case .mostVisited:
-      guard let tile = mostVisitedTiles[safe: index] else { return nil }
-      return TopsiteViewModel(source: .mostVisited(tile))
-    }
   }
 
   func collectionView(
@@ -250,7 +205,7 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
     point: CGPoint
   ) -> UIContextMenuConfiguration? {
     guard let indexPath = indexPaths.first,
-      let item = item(at: indexPath.item)
+      let item = tileSource[indexPath.item]
     else { return nil }
 
     return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
@@ -312,7 +267,7 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
               self.action(
                 .excluded(
                   onConfirm: { [weak self] in
-                    self?.mostVisitedSites?.setBlocked(true, for: ntpTile.url)
+                    self?.tileSource.exclude(ntpTile)
                   })
               )
             }
@@ -365,44 +320,12 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
     )
     return preview
   }
-
-  private func updateMostVisitedObservation() {
-    if Preferences.NewTabPage.topsitesMode.value == .mostVisited && !isPrivateBrowsing {
-      guard mostVisitedObservation == nil else { return }
-      mostVisitedObservation = mostVisitedSites?.addMostVisitedURLsObserver(self, maxNumSites: 20)
-      mostVisitedSites?.enableTopSitesOnlyTileTypes()
-    } else {
-      mostVisitedObservation?.invalidate()
-      mostVisitedObservation = nil
-      mostVisitedTiles = []
-    }
-  }
 }
 
-extension TopsitesSectionProvider: NSFetchedResultsControllerDelegate {
-  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    try? frc.performFetch()
-    DispatchQueue.main.async {
-      self.sectionDidChange?()
-    }
-  }
-}
-
-extension TopsitesSectionProvider: MostVisitedSitesObserver {
-  func mostVisitedSitesDidUpdateTiles(_ tiles: [NTPTile]) {
-    mostVisitedTiles = tiles
+extension TopsitesSectionProvider: TopsitesTileSourceObserver {
+  func topsitesTileSourceDidChangeTiles(_ source: TopsitesTileSource) {
     sectionDidChange?()
   }
 
-  func mostVisitedSitesDidUpdateFavicon(for url: URL?) {
-    // no-op. only the number of tiles matter in this provider
-    // favicon will be handled in cell's loadFavicon
-  }
-}
-
-extension TopsitesSectionProvider: PreferencesObserver {
-  func preferencesDidChange(for key: String) {
-    guard key == Preferences.NewTabPage.topsitesMode.key else { return }
-    updateMostVisitedObservation()
-  }
+  // Favicons are loaded by the cell itself, so favicon updates are ignored here.
 }
