@@ -826,6 +826,36 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     }
   }
 
+  // Right-clicks the already-visible PSST location bar icon to open its
+  // context menu, without performing any navigation, and waits for the menu
+  // to appear. Returns the context menu's root MenuItemView, or nullptr on
+  // failure.
+  views::MenuItemView* RightClickPsstLocationBarIconAndWaitForMenu() {
+    actions::ActionItem* const action =
+        actions::ActionManager::Get().FindAction(kActionShowPsstIcon);
+    if (!action) {
+      return nullptr;
+    }
+
+    IconLabelBubbleView* const psst_view = GetPsstPageActionView();
+    if (!psst_view) {
+      return nullptr;
+    }
+
+    const gfx::Point click_location = psst_view->GetLocalBounds().CenterPoint();
+    const ui::MouseEvent click_event(
+        ui::EventType::kMousePressed, click_location, click_location,
+        ui::EventTimeForNow(), ui::EF_RIGHT_MOUSE_BUTTON,
+        ui::EF_RIGHT_MOUSE_BUTTON);
+    views::test::ButtonTestApi(views::Button::AsButton(psst_view))
+        .NotifyClick(click_event);
+    if (!base::test::RunUntil([&]() { return action->GetIsShowingBubble(); })) {
+      return nullptr;
+    }
+
+    return GetActiveContextMenuRoot();
+  }
+
   // Waits for the PSST context menu to close.
   void WaitForPsstContextMenuClosed() {
     actions::ActionItem* const action =
@@ -1247,6 +1277,105 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
 
   // The flow was cancelled before the tab could navigate to any task page.
   EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59223:
+// selecting "Don't show for this site" from the context menu after starting
+// the PSST flow must stop the flow and close the consent dialog, instead of
+// leaving the flow running and letting it navigate to a task page.
+IN_PROC_BROWSER_TEST_F(
+    PsstTabWebContentsObserverBrowserTest,
+    LocationBarIconContextMenuDontShowForThisSiteDuringFlowStopsFlow) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  content::WebContents* dialog_wc = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+  ASSERT_TRUE(dialog_wc);
+
+  DialogCloseObserver dialog_close_observer(dialog_wc);
+
+  // Open the context menu before starting the flow, so the item can be
+  // selected synchronously as soon as the flow starts.
+  views::MenuItemView* const root =
+      RightClickPsstLocationBarIconAndWaitForMenu();
+  ASSERT_TRUE(root);
+  views::MenuItemView* const dont_show_item =
+      root->GetMenuItemByID(IDC_PSST_DONT_SHOW_FOR_THIS_SITE);
+  ASSERT_TRUE(dont_show_item);
+
+  // Click Apply to start the flow, then immediately select the context menu
+  // item, before pumping the message loop again, so the cancellation is
+  // guaranteed to run ahead of any in-flight policy script response that
+  // could otherwise navigate the tab to the next task page.
+  const std::vector<std::string> perform_uids = {"1", "2"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
+  ASSERT_NO_FATAL_FAILURE(AcceptContextMenuItem(dont_show_item));
+
+  // The dialog closes and the location bar icon hides as part of the same
+  // cancellation.
+  dialog_close_observer.Wait();
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
+
+  // The flow was cancelled before the tab could navigate to any task page.
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
+
+  // PSST is blocked for this origin.
+  auto psst_website_settings = GetPsstSettingsService()->GetPsstWebsiteSettings(
+      url::Origin::Create(url), kASiteSignedInUserId);
+  ASSERT_TRUE(psst_website_settings);
+  EXPECT_EQ(psst_website_settings->consent_status, ConsentStatus::kBlock);
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59223:
+// selecting "Disable privacy settings tuning" from the context menu after
+// starting the PSST flow must stop the flow and close the consent dialog,
+// instead of leaving the flow running and letting it navigate to a task page.
+IN_PROC_BROWSER_TEST_F(
+    PsstTabWebContentsObserverBrowserTest,
+    LocationBarIconContextMenuDisablePrivacySettingsTuningDuringFlowStopsFlow) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  content::WebContents* dialog_wc = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+  ASSERT_TRUE(dialog_wc);
+
+  DialogCloseObserver dialog_close_observer(dialog_wc);
+
+  // Open the context menu before starting the flow, so the item can be
+  // selected synchronously as soon as the flow starts.
+  views::MenuItemView* const root =
+      RightClickPsstLocationBarIconAndWaitForMenu();
+  ASSERT_TRUE(root);
+  views::MenuItemView* const disable_item =
+      root->GetMenuItemByID(IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING);
+  ASSERT_TRUE(disable_item);
+
+  // Click Apply to start the flow, then immediately select the context menu
+  // item, before pumping the message loop again, so the cancellation is
+  // guaranteed to run ahead of any in-flight policy script response that
+  // could otherwise navigate the tab to the next task page.
+  const std::vector<std::string> perform_uids = {"1", "2"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
+  ASSERT_NO_FATAL_FAILURE(AcceptContextMenuItem(disable_item));
+
+  // The dialog closes and the location bar icon hides as part of the same
+  // cancellation.
+  dialog_close_observer.Wait();
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
+
+  // The flow was cancelled before the tab could navigate to any task page.
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
+
+  // PSST is disabled globally.
+  EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 }
 
 // Regression test for https://github.com/brave/brave-browser/issues/58296:
