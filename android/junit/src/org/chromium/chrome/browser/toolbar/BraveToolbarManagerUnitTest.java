@@ -11,8 +11,6 @@ import static org.mockito.Mockito.lenient;
 
 import android.content.res.Configuration;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -45,7 +43,6 @@ public final class BraveToolbarManagerUnitTest {
      * "Move address bar to the bottom/top" reachable from Brave's new tab page.
      */
     @Test
-    @SmallTest
     public void testNotSuppressedOnNewTabPage() {
         setTabUrl(JUnitTestGURLs.NTP_NATIVE_URL);
         assertFalse(
@@ -55,7 +52,6 @@ public final class BraveToolbarManagerUnitTest {
 
     /** The WebUI flavour of the NTP url must be treated the same as the native one. */
     @Test
-    @SmallTest
     public void testNotSuppressedOnWebUiNewTabPage() {
         setTabUrl(JUnitTestGURLs.NTP_URL);
         assertFalse(
@@ -65,7 +61,6 @@ public final class BraveToolbarManagerUnitTest {
 
     /** Off the NTP the upstream decision must be left untouched. */
     @Test
-    @SmallTest
     public void testUpstreamSuppressionKeptOnRegularPage() {
         setTabUrl(JUnitTestGURLs.EXAMPLE_URL);
         assertTrue(
@@ -75,7 +70,6 @@ public final class BraveToolbarManagerUnitTest {
 
     /** Being on the NTP must never turn a non-suppressed state into a suppressed one. */
     @Test
-    @SmallTest
     public void testNotSuppressedStaysNotSuppressedOnNewTabPage() {
         setTabUrl(JUnitTestGURLs.NTP_NATIVE_URL);
         assertFalse(
@@ -88,7 +82,6 @@ public final class BraveToolbarManagerUnitTest {
      * as well.
      */
     @Test
-    @SmallTest
     public void testUpstreamSuppressionKeptOnFocusedAddressBar() {
         setTabUrl(JUnitTestGURLs.NTP_NATIVE_URL);
         assertTrue(
@@ -97,7 +90,6 @@ public final class BraveToolbarManagerUnitTest {
     }
 
     @Test
-    @SmallTest
     public void testUpstreamSuppressionKeptWithoutTab() {
         assertTrue(
                 BraveToolbarManager.shouldSuppressToolbarLongPressForTab(
@@ -105,7 +97,6 @@ public final class BraveToolbarManagerUnitTest {
     }
 
     @Test
-    @SmallTest
     public void testUpstreamSuppressionKeptWithoutTabUrl() {
         setTabUrl(null);
         assertTrue(
@@ -114,7 +105,6 @@ public final class BraveToolbarManagerUnitTest {
     }
 
     @Test
-    @SmallTest
     public void testBottomControlsVisibleOnlyForUnfocusedPortraitOmnibox() {
         assertTrue(
                 BraveToolbarManager.shouldShowBraveBottomControls(
