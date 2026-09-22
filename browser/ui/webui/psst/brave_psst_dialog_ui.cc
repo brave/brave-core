@@ -15,7 +15,6 @@
 #include "brave/components/psst/resources/grit/brave_psst_resources.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "components/favicon_base/favicon_url_parser.h"
 #include "components/grit/brave_components_webui_strings.h"
@@ -74,27 +73,8 @@ void BravePsstDialogUI::CreatePsstConsentHandler(
     return;
   }
 
-  auto* tab_interface =
-      tabs::TabInterface::MaybeGetFromContents(initiator_contents);
-  if (!tab_interface) {
-    std::move(callback).Run(psst::mojom::SettingCardData::New());
-    return;
-  }
-
-  auto* bwi = tab_interface->GetBrowserWindowInterface();
-  if (!bwi) {
-    std::move(callback).Run(psst::mojom::SettingCardData::New());
-    return;
-  }
-
-  TabStripModel* tab_strip_model = bwi->GetTabStripModel();
-  if (!tab_strip_model) {
-    std::move(callback).Run(psst::mojom::SettingCardData::New());
-    return;
-  }
-
   psst_consent_handler_ = std::make_unique<BravePsstDialogHandler>(
-      tab_strip_model, this, std::move(psst_consent_helper),
+      initiator_contents, this, std::move(psst_consent_helper),
       std::move(psst_consent_dialog), std::move(callback));
 }
 
