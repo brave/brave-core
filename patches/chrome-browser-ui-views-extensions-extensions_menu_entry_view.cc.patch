@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/extensions/extensions_menu_entry_view.cc b/chrome/browser/ui/views/extensions/extensions_menu_entry_view.cc
+index a6856ce740303e8d987c9a44d466abe8a5a5a800..2a593428639f4e8ec9d59af3df6d9d09030be896 100644
+--- a/chrome/browser/ui/views/extensions/extensions_menu_entry_view.cc
++++ b/chrome/browser/ui/views/extensions/extensions_menu_entry_view.cc
+@@ -428,7 +428,7 @@ void ExtensionsMenuEntryView::UpdateContextMenuButton(
+       DISTANCE_EXTENSIONS_MENU_BUTTON_ICON_SIZE);
+   auto three_dot_icon = ui::ImageModel::FromVectorIcon(
+       features::IsRoundedIconsEnabled() ? kMoreVertIcon
+-                                        : kBrowserToolsChromeRefreshOldIcon,
++                                        : kLeoMoreVerticalIcon,
+       kColorExtensionMenuIcon, icon_size);
+ 
+   // Show a pin button for the context menu normal state icon when the action is
