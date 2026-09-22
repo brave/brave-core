@@ -28,7 +28,8 @@ using ResultCallback = base::OnceCallback<void(bool success)>;
 using LoadCallback =
     base::OnceCallback<void(const std::optional<std::string>& value)>;
 
-using LoadFileCallback = base::OnceCallback<void(base::File file)>;
+using LoadResourceComponentCallback =
+    base::OnceCallback<void(base::File file, bool exists)>;
 
 using UrlRequestCallback =
     base::OnceCallback<void(const mojom::UrlResponseInfo& mojom_url_response)>;

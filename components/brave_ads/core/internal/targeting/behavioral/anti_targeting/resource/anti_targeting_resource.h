@@ -11,6 +11,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource_info.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
 
@@ -27,7 +28,7 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
 
   ~AntiTargetingResource() override;
 
-  bool IsLoaded() const { return !!resource_; }
+  ResourceLoadStateType GetLoadState() const { return load_state_; }
 
   std::optional<std::string> GetManifestVersion() const {
     return manifest_version_;
@@ -40,7 +41,8 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
   void MaybeLoadOrUnload();
 
   void Load();
-  void LoadCallback(std::optional<AntiTargetingResourceInfo> resource);
+  void LoadCallback(std::optional<AntiTargetingResourceInfo> resource,
+                    bool exists);
 
   void MaybeUnload();
   void Unload();
@@ -54,6 +56,8 @@ class AntiTargetingResource final : public AdsClientNotifierObserver {
   std::optional<std::string> manifest_version_;
 
   std::optional<AntiTargetingResourceInfo> resource_;
+
+  ResourceLoadStateType load_state_ = ResourceLoadStateType::kNotLoaded;
 
   base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
       ads_client_observation_{this};

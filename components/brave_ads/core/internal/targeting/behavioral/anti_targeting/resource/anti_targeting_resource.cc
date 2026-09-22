@@ -62,13 +62,18 @@ AntiTargetingSiteList AntiTargetingResource::GetSites(
 ///////////////////////////////////////////////////////////////////////////////
 
 void AntiTargetingResource::MaybeLoad() {
-  if (manifest_version_ && DoesRequireResource()) {
-    Load();
+  if (!manifest_version_ || !DoesRequireResource()) {
+    // No longer required, so a previous failure to load is no longer
+    // relevant.
+    load_state_ = ResourceLoadStateType::kNotLoaded;
+    return;
   }
+
+  Load();
 }
 
 void AntiTargetingResource::MaybeLoadOrUnload() {
-  IsLoaded() ? MaybeUnload() : MaybeLoad();
+  GetLoadState() == ResourceLoadStateType::kLoaded ? MaybeUnload() : MaybeLoad();
 }
 
 void AntiTargetingResource::Load() {
@@ -79,17 +84,28 @@ void AntiTargetingResource::Load() {
 }
 
 void AntiTargetingResource::LoadCallback(
-    std::optional<AntiTargetingResourceInfo> resource) {
-  if (!resource) {
-    return BLOG(0, "Failed to load and parse " << kAntiTargetingResourceId
-                                               << " anti-targeting resource");
-  }
-
-  if (!resource->version) {
+    std::optional<AntiTargetingResourceInfo> resource,
+    bool exists) {
+  if (!exists) {
+    load_state_ = ResourceLoadStateType::kNotLoaded;
     return BLOG(1, kAntiTargetingResourceId
                        << " anti-targeting resource is unavailable");
   }
 
+  if (!resource) {
+    load_state_ = ResourceLoadStateType::kFailedToLoad;
+    return BLOG(0, "Failed to load and parse " << kAntiTargetingResourceId
+                                               << " anti-targeting resource");
+  }
+
+  if (!resource->version ||
+      *resource->version != kAntiTargetingResourceVersion.Get()) {
+    load_state_ = ResourceLoadStateType::kNotLoaded;
+    return BLOG(1, kAntiTargetingResourceId
+                       << " anti-targeting resource is unavailable");
+  }
+
+  load_state_ = ResourceLoadStateType::kLoaded;
   resource_ = std::move(resource);
 
   BLOG(1, "Successfully loaded and parsed "
@@ -108,6 +124,7 @@ void AntiTargetingResource::Unload() {
        "Unloaded " << kAntiTargetingResourceId << " anti-targeting resource");
 
   resource_.reset();
+  load_state_ = ResourceLoadStateType::kNotLoaded;
 }
 
 void AntiTargetingResource::OnNotifyPrefDidChange(const std::string& path) {

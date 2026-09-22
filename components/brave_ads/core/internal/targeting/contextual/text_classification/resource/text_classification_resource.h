@@ -15,6 +15,7 @@
 #include "base/threading/sequence_bound.h"
 #include "base/types/expected.h"
 #include "base/types/optional_ref.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/ml/pipeline/text_processing/text_processing.h"
 #include "brave/components/brave_ads/core/internal/ml/transformation/ml_types.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
@@ -36,7 +37,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   ~TextClassificationResource() override;
 
-  bool IsLoaded() const { return !!text_processing_pipeline_; }
+  ResourceLoadStateType GetLoadState() const { return load_state_; }
 
   std::optional<std::string> GetManifestVersion() const {
     return manifest_version_;
@@ -49,7 +50,7 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
   void MaybeLoadOrUnload();
 
   void Load();
-  void LoadResourceComponentCallback(base::File file);
+  void LoadResourceComponentCallback(base::File file, bool exists);
   void LoadCallback(base::expected<bool, std::string> result);
 
   void MaybeUnload();
@@ -65,6 +66,8 @@ class TextClassificationResource final : public AdsClientNotifierObserver {
 
   std::optional<base::SequenceBound<ml::pipeline::TextProcessing>>
       text_processing_pipeline_;
+
+  ResourceLoadStateType load_state_ = ResourceLoadStateType::kNotLoaded;
 
   base::ScopedObservation<AdsClient, AdsClientNotifierObserver>
       ads_client_observation_{this};

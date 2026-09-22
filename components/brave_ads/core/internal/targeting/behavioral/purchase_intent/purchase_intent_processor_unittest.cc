@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/test/run_until.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
@@ -50,7 +51,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   PurchaseIntentProcessor processor(*resource_);
 
@@ -67,7 +68,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, DoNotProcessForInvalidUrl) {
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   PurchaseIntentProcessor processor(*resource_);
 
@@ -84,7 +85,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, NeverProcessed) {
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   // Act & Assert
   const PurchaseIntentSignalHistoryMap& purchase_intent_signal_history =
@@ -96,7 +97,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest, ProcessSignalForUrl) {
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   PurchaseIntentProcessor processor(*resource_);
 
@@ -122,7 +123,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   const GURL url = GURL("https://www.brave.com/test?foo=bar");
 
@@ -153,7 +154,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   const base::Time at_before_advancing_clock = test::Now();
 
@@ -188,7 +189,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(
@@ -223,7 +224,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(
@@ -256,7 +257,7 @@ TEST_F(BraveAdsPurchaseIntentProcessorTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   PurchaseIntentProcessor processor(*resource_);
 

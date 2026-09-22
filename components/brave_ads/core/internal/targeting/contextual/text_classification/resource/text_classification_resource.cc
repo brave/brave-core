@@ -39,7 +39,7 @@ TextClassificationResource::~TextClassificationResource() = default;
 
 void TextClassificationResource::ClassifyPage(const std::string& text,
                                               ClassifyPageCallback callback) {
-  if (!IsLoaded()) {
+  if (GetLoadState() != ResourceLoadStateType::kLoaded) {
     BLOG(0, "Failed to process text classification as resource not loaded");
     return std::move(callback).Run(/*probabilities=*/{});
   }
@@ -53,13 +53,18 @@ void TextClassificationResource::ClassifyPage(const std::string& text,
 ///////////////////////////////////////////////////////////////////////////////
 
 void TextClassificationResource::MaybeLoad() {
-  if (manifest_version_ && DoesRequireResource()) {
-    Load();
+  if (!manifest_version_ || !DoesRequireResource()) {
+    // No longer required, so a previous failure to load is no longer
+    // relevant.
+    load_state_ = ResourceLoadStateType::kNotLoaded;
+    return;
   }
+
+  Load();
 }
 
 void TextClassificationResource::MaybeLoadOrUnload() {
-  IsLoaded() ? MaybeUnload() : MaybeLoad();
+  GetLoadState() == ResourceLoadStateType::kLoaded ? MaybeUnload() : MaybeLoad();
 }
 
 void TextClassificationResource::Load() {
@@ -70,8 +75,16 @@ void TextClassificationResource::Load() {
 }
 
 void TextClassificationResource::LoadResourceComponentCallback(
-    base::File file) {
+    base::File file,
+    bool exists) {
+  if (!exists) {
+    load_state_ = ResourceLoadStateType::kNotLoaded;
+    return BLOG(1, kTextClassificationResourceId
+                       << " text classification resource is unavailable");
+  }
+
   if (!file.IsValid()) {
+    load_state_ = ResourceLoadStateType::kFailedToLoad;
     return BLOG(0, "Failed to load " << kTextClassificationResourceId
                                      << " text classification resource");
   }
@@ -89,11 +102,14 @@ void TextClassificationResource::LoadCallback(
     base::expected<bool, std::string> result) {
   if (!result.has_value()) {
     text_processing_pipeline_.reset();
+    load_state_ = ResourceLoadStateType::kFailedToLoad;
 
     return BLOG(0, "Failed to load " << kTextClassificationResourceId
                                      << " text classification resource ("
                                      << result.error() << ")");
   }
+
+  load_state_ = ResourceLoadStateType::kLoaded;
 
   BLOG(1, "Successfully loaded " << kTextClassificationResourceId << " "
                                  << (result.value() ? "neural" : "linear")
@@ -112,6 +128,7 @@ void TextClassificationResource::Unload() {
                       << " text classification resource");
 
   text_processing_pipeline_.reset();
+  load_state_ = ResourceLoadStateType::kNotLoaded;
 }
 
 void TextClassificationResource::OnNotifyPrefDidChange(

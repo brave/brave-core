@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_handler.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
@@ -93,24 +94,24 @@ std::optional<bool> AreIssuersValid() {
   return IsIssuersValid(*issuers);
 }
 
-bool IsTextClassificationResourceLoaded() {
-  return GetAdHandler().GetTextClassificationResource().IsLoaded();
+ResourceLoadStateType GetTextClassificationResourceState() {
+  return GetAdHandler().GetTextClassificationResource().GetLoadState();
 }
 
 std::optional<std::string> GetTextClassificationResourceManifestVersion() {
   return GetAdHandler().GetTextClassificationResource().GetManifestVersion();
 }
 
-bool IsPurchaseIntentResourceLoaded() {
-  return GetAdHandler().GetPurchaseIntentResource().IsLoaded();
+ResourceLoadStateType GetPurchaseIntentResourceState() {
+  return GetAdHandler().GetPurchaseIntentResource().GetLoadState();
 }
 
 std::optional<std::string> GetPurchaseIntentResourceManifestVersion() {
   return GetAdHandler().GetPurchaseIntentResource().GetManifestVersion();
 }
 
-bool IsAntiTargetingResourceLoaded() {
-  return GetAdHandler().GetAntiTargetingResource().IsLoaded();
+ResourceLoadStateType GetAntiTargetingResourceState() {
+  return GetAdHandler().GetAntiTargetingResource().GetLoadState();
 }
 
 std::optional<std::string> GetAntiTargetingResourceManifestVersion() {
@@ -120,19 +121,20 @@ std::optional<std::string> GetAntiTargetingResourceManifestVersion() {
 struct ResourceTableEntry final {
   DiagnosticEntryType type;
   const char* name;
-  bool (*is_loaded)();
+  ResourceLoadStateType (*get_resource_state)();
   std::optional<std::string> (*get_manifest_version)();
 };
 
 constexpr ResourceTableEntry kResourceTable[] = {
     {DiagnosticEntryType::kTextClassificationResource,
-     "Text classification resource", &IsTextClassificationResourceLoaded,
+     "Text classification resource", &GetTextClassificationResourceState,
      &GetTextClassificationResourceManifestVersion},
     {DiagnosticEntryType::kPurchaseIntentResource, "Purchase intent resource",
-     &IsPurchaseIntentResourceLoaded,
+     &GetPurchaseIntentResourceState,
      &GetPurchaseIntentResourceManifestVersion},
     {DiagnosticEntryType::kAntiTargetingResource, "Anti targeting resource",
-     &IsAntiTargetingResourceLoaded, &GetAntiTargetingResourceManifestVersion}};
+     &GetAntiTargetingResourceState,
+     &GetAntiTargetingResourceManifestVersion}};
 
 struct PermissionRuleTableEntry final {
   DiagnosticEntryType type;
@@ -256,7 +258,7 @@ DiagnosticManager::DiagnosticManager() {
   SetEntry(std::make_unique<NewTabPageAdsShownDiagnosticEntry>());
   for (const auto& entry : kResourceTable) {
     SetEntry(std::make_unique<ResourceDiagnosticEntry>(
-        entry.type, entry.name, base::BindRepeating(entry.is_loaded),
+        entry.type, entry.name, base::BindRepeating(entry.get_resource_state),
         base::BindRepeating(entry.get_manifest_version)));
   }
   for (const auto& entry : kPermissionRuleTable) {

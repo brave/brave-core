@@ -578,6 +578,11 @@ style.passthrough.css`
     --leo-icon-color: ${color.systemfeedback.errorIcon};
   }
 
+  /* Sized to match the check/close icons it stands in for while loading. */
+  .match-icon-loading {
+    --leo-progressring-size: 16px;
+  }
+
   tr.confirmation-stuck-orange td {
     color: ${color.systemfeedback.warningText};
   }

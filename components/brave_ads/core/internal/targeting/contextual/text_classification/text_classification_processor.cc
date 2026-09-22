@@ -13,6 +13,7 @@
 #include "base/trace_event/trace_event.h"
 #include "base/trace_event/trace_id_helper.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_util.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
@@ -48,7 +49,7 @@ TextClassificationProcessor::TextClassificationProcessor(
 TextClassificationProcessor::~TextClassificationProcessor() = default;
 
 void TextClassificationProcessor::Process(const std::string& text) {
-  if (resource_->IsLoaded()) {
+  if (resource_->GetLoadState() == ResourceLoadStateType::kLoaded) {
     const uint64_t trace_id = base::trace_event::GetNextGlobalTraceId();
     TRACE_EVENT_NESTABLE_ASYNC_BEGIN0(
         kTraceEventCategory, "TextClassificationProcessor::Process",

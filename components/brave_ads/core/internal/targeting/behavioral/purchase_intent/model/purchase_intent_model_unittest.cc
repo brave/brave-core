@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/test/run_until.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/purchase_intent_processor.h"
@@ -46,7 +47,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsForExpiredSignals) {
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
@@ -66,7 +67,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   // Act
   const SegmentList purchase_intent_segments = GetPurchaseIntentSegments();
@@ -80,7 +81,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://duckduckgo.com/?q=segment+keyword+1"));
@@ -96,7 +97,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest, GetSegmentsForPreviouslyMatchedSite) {
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(GURL("https://www.brave.com/test?foo=bar"));
@@ -117,7 +118,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   const GURL url = GURL("https://duckduckgo.com/?q=segment+keyword+1&foo=bar");
 
@@ -139,7 +140,7 @@ TEST_F(BraveAdsPurchaseIntentModelTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   PurchaseIntentProcessor processor(*resource_);
   processor.Process(

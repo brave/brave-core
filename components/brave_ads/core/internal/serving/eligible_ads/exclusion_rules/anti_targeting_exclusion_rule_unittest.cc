@@ -10,6 +10,7 @@
 
 #include "base/test/run_until.h"
 #include "brave/components/brave_ads/core/internal/ad_units/test/ad_test_constants.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
@@ -53,7 +54,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   const AntiTargetingExclusionRule exclusion_rule(
       *resource_, /*site_history=*/{GURL(kAntiTargetedSite)});
@@ -70,7 +71,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   const AntiTargetingExclusionRule exclusion_rule(
       *resource_, /*site_history=*/{GURL("https://www.foo.com")});
@@ -87,7 +88,7 @@ TEST_F(BraveAdsAntiTargetingExclusionRuleTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   const AntiTargetingExclusionRule exclusion_rule(
       *resource_, /*site_history=*/{GURL(kAntiTargetedSite)});

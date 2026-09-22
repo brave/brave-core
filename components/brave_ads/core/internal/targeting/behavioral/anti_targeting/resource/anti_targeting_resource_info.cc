@@ -8,7 +8,6 @@
 #include <optional>
 #include <string_view>
 
-#include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/anti_targeting_feature.h"
 #include "url/gurl.h"
 
 namespace brave_ads {
@@ -35,13 +34,10 @@ std::optional<AntiTargetingResourceInfo>
 AntiTargetingResourceInfo::MaybeFromDict(const base::DictValue dict) {
   AntiTargetingResourceInfo anti_targeting;
 
-  if (std::optional<int> version = dict.FindInt(kVersionKey)) {
-    if (version != kAntiTargetingResourceVersion.Get()) {
-      return std::nullopt;
-    }
-
-    anti_targeting.version = version;
-  }
+  // An unsupported version is not malformed content, so it's left for the
+  // caller to decide (see `AntiTargetingResource::LoadCallback`) rather than
+  // treated as a parse failure here.
+  anti_targeting.version = dict.FindInt(kVersionKey);
 
   const auto* const sites_dict = dict.FindDict(kSitesKey);
   if (!sites_dict) {

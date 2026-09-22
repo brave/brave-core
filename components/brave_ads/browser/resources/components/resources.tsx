@@ -11,6 +11,7 @@ import { Campaign, DiagnosticEntry } from '../lib/app_store'
 import { CopyableSpan, renderCopyableText } from '../lib/copyable_text'
 import { splitTrailingParenthetical } from '../lib/format_time'
 import { useCopyToClipboard } from './copy_toast'
+import { MatchIcon } from './match_icon'
 import { TabHeader } from './tab_header'
 
 // brave://components doesn't exist on iOS.
@@ -28,20 +29,17 @@ const RESOURCES: Array<{ entryName: string, title: string }> = [
   { entryName: 'Anti targeting resource', title: 'Anti targeting' },
 ]
 
-function ResourceCard({ title, value, componentId }: {
+function ResourceCard({ title, value, componentId, isLoading }: {
   title: string
   value: string
   componentId: string
+  isLoading: boolean
 }) {
-  // An empty `componentId` means `GetComponent()` found no component-updater
-  // component registered for the current country/language at all. A
-  // non-empty `componentId` with a `value` of "Not loaded" means the
-  // component is registered but the resource itself hasn't parsed for this
-  // specific country/language; both cases are effectively unavailable for
-  // the current region/language, which the enclosing group heading already
-  // names.
-  const isUnavailable = !componentId || value === 'Not loaded'
-  const status = isUnavailable ? 'Unavailable' : value
+  // Not having a component, or not loading yet, is normal for some regions,
+  // same as loading fine. Only "Failed to load" is a real problem.
+  const didFailToLoad = value === 'Failed to load'
+  const { parenthetical } = splitTrailingParenthetical(value)
+  const version = parenthetical ? parenthetical.slice(1, -1) : ''
   const copy = useCopyToClipboard()
 
   return (
@@ -53,18 +51,20 @@ function ResourceCard({ title, value, componentId }: {
       <section className='key-value-list'>
         <div>
           <span>Status</span>
-          <span className={isUnavailable ? 'diagnostic-muted' : ''}>
-            {status}
-          </span>
+          <MatchIcon isMatch={!didFailToLoad} isLoading={isLoading} />
         </div>
-        <div>
-          <span>ID</span>
-          <span>
-            {componentId
-              ? renderCopyableText(componentId, componentId, copy)
-              : 'N/A'}
-          </span>
-        </div>
+        {version && (
+          <div>
+            <span>Version</span>
+            <span>{version}</span>
+          </div>
+        )}
+        {componentId && (
+          <div>
+            <span>ID</span>
+            <span>{renderCopyableText(componentId, componentId, copy)}</span>
+          </div>
+        )}
       </section>
     </div>
   )
@@ -106,11 +106,13 @@ function CatalogCard({
   fallbackCountryCode,
   diagnosticEntries,
   resourcesDiagnosticEntries,
+  isLoading,
 }: {
   geoTargets: string[]
   fallbackCountryCode: string
   diagnosticEntries: DiagnosticEntry[]
   resourcesDiagnosticEntries: DiagnosticEntry[]
+  isLoading: boolean
 }) {
   const copy = useCopyToClipboard()
   const catalogId =
@@ -141,47 +143,55 @@ function CatalogCard({
       </h4>
       <section className='key-value-list'>
         <div>
-          <span>ID</span>
-          <span>
-            {catalogId
-              ? (
-                <CopyableSpan
-                  value={catalogId}
-                  className='copyable-text'
-                  onCopy={copy}
-                />
-              )
-              : 'N/A'}
-          </span>
+          <span>Status</span>
+          <MatchIcon isMatch={!isOverdue} isLoading={isLoading} />
         </div>
-        <div>
-          <span>Schema version</span>
-          <span>{catalogVersion}</span>
-        </div>
-        <div>
-          <span>Last updated</span>
-          <span>
-            <span className={isOverdue ? 'diagnostic-problem' : ''}>
-              {lastUpdatedSplit.main}
-            </span>{' '}
-            {lastUpdatedSplit.parenthetical && (
-              <span className='diagnostic-muted'>
-                {lastUpdatedSplit.parenthetical}
-              </span>
-            )}
-          </span>
-        </div>
-        <div>
-          <span>Next update</span>
-          <span>
-            {nextUpdateSplit.main}{' '}
-            {nextUpdateSplit.parenthetical && (
-              <span className='diagnostic-muted'>
-                {nextUpdateSplit.parenthetical}
-              </span>
-            )}
-          </span>
-        </div>
+        {catalogId && (
+          <div>
+            <span>ID</span>
+            <span>
+              <CopyableSpan
+                value={catalogId}
+                className='copyable-text'
+                onCopy={copy}
+              />
+            </span>
+          </div>
+        )}
+        {catalogVersion !== 'N/A' && (
+          <div>
+            <span>Schema version</span>
+            <span>{catalogVersion}</span>
+          </div>
+        )}
+        {lastUpdated !== 'N/A' && (
+          <div>
+            <span>Last updated</span>
+            <span>
+              <span className={isOverdue ? 'diagnostic-problem' : ''}>
+                {lastUpdatedSplit.main}
+              </span>{' '}
+              {lastUpdatedSplit.parenthetical && (
+                <span className='diagnostic-muted'>
+                  {lastUpdatedSplit.parenthetical}
+                </span>
+              )}
+            </span>
+          </div>
+        )}
+        {nextUpdate !== 'N/A' && (
+          <div>
+            <span>Next update</span>
+            <span>
+              {nextUpdateSplit.main}{' '}
+              {nextUpdateSplit.parenthetical && (
+                <span className='diagnostic-muted'>
+                  {nextUpdateSplit.parenthetical}
+                </span>
+              )}
+            </span>
+          </div>
+        )}
       </section>
     </div>
   )
@@ -190,6 +200,7 @@ function CatalogCard({
 export function Resources() {
   const actions = useAppActions()
   const copy = useCopyToClipboard()
+  const diagnosticsLoaded = useAppState((state) => state.diagnosticsLoaded)
   const diagnosticEntries = useAppState((state) => state.diagnosticEntries)
   const resourcesDiagnosticEntries =
     useAppState((state) => state.resourcesDiagnosticEntries)
@@ -288,6 +299,7 @@ export function Resources() {
               )?.value ?? 'Not loaded'
             }
             componentId={languageResourceComponentId}
+            isLoading={!diagnosticsLoaded}
           />
         </div>
       )}
@@ -308,30 +320,35 @@ export function Resources() {
           <section className='key-value-list'>
             <div>
               <span>Status</span>
-              <span
-                className={ntpSponsoredImagesLoaded ? '' : 'diagnostic-muted'}
-              >
-                {ntpSponsoredImagesLoaded
-                  ? `Loaded (${ntpSponsoredImagesManifestVersion || 'unknown version'})`
-                  : 'Not loaded'}
-              </span>
+              <MatchIcon
+                isMatch={ntpSponsoredImagesLoaded}
+                isLoading={!diagnosticsLoaded}
+              />
             </div>
-            <div>
-              <span>ID</span>
-              <span>
-                {ntpSponsoredImagesComponentId
-                  ? renderCopyableText(
-                      ntpSponsoredImagesComponentId,
-                      ntpSponsoredImagesComponentId,
-                      copy,
-                    )
-                  : 'N/A'}
-              </span>
-            </div>
-            <div>
-              <span>Schema version</span>
-              <span>{newTabPageAdsSchemaVersion}</span>
-            </div>
+            {ntpSponsoredImagesManifestVersion && (
+              <div>
+                <span>Version</span>
+                <span>{ntpSponsoredImagesManifestVersion}</span>
+              </div>
+            )}
+            {ntpSponsoredImagesComponentId && (
+              <div>
+                <span>ID</span>
+                <span>
+                  {renderCopyableText(
+                    ntpSponsoredImagesComponentId,
+                    ntpSponsoredImagesComponentId,
+                    copy,
+                  )}
+                </span>
+              </div>
+            )}
+            {newTabPageAdsSchemaVersion !== 'N/A' && (
+              <div>
+                <span>Schema version</span>
+                <span>{newTabPageAdsSchemaVersion}</span>
+              </div>
+            )}
           </section>
         </div>
         {notificationAdsEnabled && RESOURCES.map(({ entryName, title }) => (
@@ -344,6 +361,7 @@ export function Resources() {
               )?.value ?? 'Not loaded'
             }
             componentId={countryResourceComponentId}
+            isLoading={!diagnosticsLoaded}
           />
         ))}
       </div>
@@ -355,6 +373,7 @@ export function Resources() {
             fallbackCountryCode={countryCode}
             diagnosticEntries={diagnosticEntries}
             resourcesDiagnosticEntries={resourcesDiagnosticEntries}
+            isLoading={!diagnosticsLoaded}
           />
         </div>
       )}

@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/types/optional_ref.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/common/search_engine/search_engine_results_page_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
@@ -37,7 +38,7 @@ PurchaseIntentProcessor::PurchaseIntentProcessor(
 PurchaseIntentProcessor::~PurchaseIntentProcessor() = default;
 
 void PurchaseIntentProcessor::Process(const GURL& url) {
-  if (!resource_->IsLoaded()) {
+  if (resource_->GetLoadState() != ResourceLoadStateType::kLoaded) {
     return;
   }
 

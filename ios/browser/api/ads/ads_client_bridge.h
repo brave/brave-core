@@ -29,7 +29,7 @@
 - (bool)canShowNotificationAds;
 - (void)loadResourceComponent:(const std::string&)id
                       version:(int)version
-                     callback:(brave_ads::LoadFileCallback)callback;
+                     callback:(brave_ads::LoadResourceComponentCallback)callback;
 - (void)showScheduledCaptcha:(const std::string&)payment_id
                    captchaId:(const std::string&)captcha_id;
 - (void)getSiteHistory:(int)max_count
