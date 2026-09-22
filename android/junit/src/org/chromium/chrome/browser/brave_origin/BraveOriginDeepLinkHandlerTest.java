@@ -13,8 +13,6 @@ import static org.junit.Assert.assertTrue;
 import android.content.Intent;
 import android.net.Uri;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -38,7 +36,6 @@ public class BraveOriginDeepLinkHandlerTest {
     // consumeFromIntent — happy path
 
     @Test
-    @SmallTest
     public void consumeFromIntent_canonicalUrl_returnsTrueAndNeutralizesIntent() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(CANONICAL_URL));
 
@@ -50,7 +47,6 @@ public class BraveOriginDeepLinkHandlerTest {
     }
 
     @Test
-    @SmallTest
     public void consumeFromIntent_uppercasePath_returnsTrue() {
         // Path matching is case-insensitive per the implementation.
         Intent intent =
@@ -62,7 +58,6 @@ public class BraveOriginDeepLinkHandlerTest {
     }
 
     @Test
-    @SmallTest
     public void consumeFromIntent_canonicalUrlWithQuery_returnsTrue() {
         // Query parameters don't affect last path segment.
         Intent intent =
@@ -74,13 +69,11 @@ public class BraveOriginDeepLinkHandlerTest {
     // consumeFromIntent — rejection paths
 
     @Test
-    @SmallTest
     public void consumeFromIntent_nullIntent_returnsFalse() {
         assertFalse(BraveOriginDeepLinkHandler.consumeFromIntent(null));
     }
 
     @Test
-    @SmallTest
     public void consumeFromIntent_wrongAction_returnsFalse() {
         Intent intent = new Intent(Intent.ACTION_SEND, Uri.parse(CANONICAL_URL));
 
@@ -91,7 +84,6 @@ public class BraveOriginDeepLinkHandlerTest {
     }
 
     @Test
-    @SmallTest
     public void consumeFromIntent_nullData_returnsFalse() {
         Intent intent = new Intent(Intent.ACTION_VIEW);
 
@@ -99,7 +91,6 @@ public class BraveOriginDeepLinkHandlerTest {
     }
 
     @Test
-    @SmallTest
     public void consumeFromIntent_unrelatedPath_returnsFalse() {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://brave.com/blog"));
 
@@ -107,7 +98,6 @@ public class BraveOriginDeepLinkHandlerTest {
     }
 
     @Test
-    @SmallTest
     public void consumeFromIntent_partialMatch_returnsFalse() {
         // Last segment must be an exact (case-insensitive) match — substring matches don't count.
         Intent intent =
@@ -119,7 +109,6 @@ public class BraveOriginDeepLinkHandlerTest {
     }
 
     @Test
-    @SmallTest
     public void consumeFromIntent_arbitraryHost_returnsFalseAndDoesNotMutate() {
         // An attacker-controlled host ending with the expected path segment must not trigger the
         // first-party Origin flow, even though the last path segment matches.
@@ -133,7 +122,6 @@ public class BraveOriginDeepLinkHandlerTest {
     }
 
     @Test
-    @SmallTest
     public void consumeFromIntent_nonHttpsScheme_returnsFalse() {
         // Only the verified https scheme is accepted; http (or any other scheme) is rejected.
         Intent intent =
@@ -145,7 +133,6 @@ public class BraveOriginDeepLinkHandlerTest {
     }
 
     @Test
-    @SmallTest
     public void consumeFromIntent_subdomainHost_returnsFalse() {
         // Host must match exactly; subdomains and look-alikes are rejected.
         Intent intent =
@@ -161,7 +148,6 @@ public class BraveOriginDeepLinkHandlerTest {
     // consumeDeferred
 
     @Test
-    @SmallTest
     public void consumeDeferred_prefUnset_returnsFalse() {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_ORIGIN_PROMO, false);
@@ -170,7 +156,6 @@ public class BraveOriginDeepLinkHandlerTest {
     }
 
     @Test
-    @SmallTest
     public void consumeDeferred_prefSet_returnsTrueAndClearsPref() {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_ORIGIN_PROMO, true);
@@ -184,7 +169,6 @@ public class BraveOriginDeepLinkHandlerTest {
     }
 
     @Test
-    @SmallTest
     public void consumeDeferred_calledTwice_secondCallReturnsFalse() {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_DEFERRED_DEEPLINK_ORIGIN_PROMO, true);
