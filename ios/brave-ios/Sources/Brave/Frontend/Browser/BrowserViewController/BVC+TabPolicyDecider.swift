@@ -147,11 +147,9 @@ extension BrowserViewController: TabPolicyDecider {
     if let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: requestURL),
       requestInfo.isMainFrame
     {
-      topToolbar.locationView.loading = true
       let result = await decentralizedDNSHelper.lookup(
         domain: requestURL.schemelessAbsoluteDisplayString
       )
-      topToolbar.locationView.loading = tabManager.selectedTab?.isLoading == true
       guard !Task.isCancelled else {  // user pressed stop, or typed new url
         return .cancel
       }
