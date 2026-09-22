@@ -37,7 +37,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
@@ -197,8 +196,10 @@ void CommanderService::UpdateTextFromCurrentBrowserOmnibox() {
     return;
   }
 
-  auto text =
-      browser->GetFeatures().location_bar()->GetOmniboxView()->GetText();
+  auto text = BrowserWindow::FromBrowser(browser)
+                  ->GetLocationBar()
+                  ->GetOmniboxView()
+                  ->GetText();
   UpdateText(text, /*force=*/true);
 }
 
@@ -247,7 +248,9 @@ OmniboxView* CommanderService::GetOmnibox() const {
     return nullptr;
   }
 
-  return browser->GetFeatures().location_bar()->GetOmniboxView();
+  return BrowserWindow::FromBrowser(browser)
+      ->GetLocationBar()
+      ->GetOmniboxView();
 }
 
 bool CommanderService::IsShowing() const {
