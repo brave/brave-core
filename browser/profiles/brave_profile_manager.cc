@@ -219,7 +219,8 @@ void BraveProfileManager::InitProfileUserPrefs(Profile* profile) {
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   // Capture the Semantic History Search setting before the embedding services
   // are built on it.
-  history_embeddings::BraveHistoryEmbeddingsStatus::CreateForProfile(profile);
+  history_embeddings::BraveHistoryEmbeddingsStatus::CreateForProfile(
+      profile, g_browser_process->local_state());
 #endif
 }
 

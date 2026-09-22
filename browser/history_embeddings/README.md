@@ -41,6 +41,11 @@ Two prefs gate the feature, via the `IsHistoryEmbeddings*` overrides in
 - **`kBraveHistoryEmbeddingsEnabled`** — per-profile brave://history toggle;
   gates `IsHistoryEmbeddingsEnabledForProfile()`.
 
+Whenever either pref leaves the feature unavailable, the Tab Focus page-content
+opt-in (`kBraveAIChatTabOrganizationSendPageContent`) is cleared, so turning
+Semantic History Search back on needs a fresh opt-in rather than silently
+resuming on withdrawn consent.
+
 The embedder is built only when an embedding service feeds the controller. Both
 such services (`PageEmbeddingsService`, `HistoryEmbeddingsService`) refuse to
 build without `PassageEmbedderModelObserverFactory`, so
@@ -84,7 +89,8 @@ stored history rather than mix vector spaces. The file is generated in
   Semantic History Search setting the embedding services were built with. The
   passage embedder gate reads through it, so `NeedsRestart()` answers whether
   the brave://history toggle is waiting on a relaunch (see "Enabling / the
-  brave://history toggle" above).
+  brave://history toggle" above). Also clears the Tab Focus page-content opt-in
+  whenever the feature becomes unavailable.
 
 - **`brave_passage_embeddings_service_controller.{h,cc}`** — Singleton subclass
   of `PassageEmbeddingsServiceController`. Provides `LitertServiceLauncher`,
