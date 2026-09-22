@@ -99,7 +99,9 @@ class TabBrowserData: NSObject, TabObserver {
 
   var lastTitle: String?
 
-  var isDisplayingBasicAuthPrompt = false
+  /// Whether or not an HTTP authentication prompt is being presented for an origin other than the
+  /// one currently visible
+  var isDisplayingCrossOriginBasicAuthPrompt = false
 
   // This variable is used to keep track of current page. It is used to detect
   // and report same document navigations to Brave Rewards library.

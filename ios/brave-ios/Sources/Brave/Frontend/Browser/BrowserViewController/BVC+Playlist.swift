@@ -91,15 +91,13 @@ extension BrowserViewController: PlaylistTabHelperDelegate {
 
         switch state {
         case .none:
-          browser.topToolbar.updatePlaylistButtonState(.none)
+          browser.toolbarState.playlistButtonState = .none
         case .newItem:
-          browser.topToolbar.updatePlaylistButtonState(
+          browser.toolbarState.playlistButtonState =
             shouldShowPlaylistURLBarButton ? .addToPlaylist : .none
-          )
         case .existingItem:
-          browser.topToolbar.updatePlaylistButtonState(
+          browser.toolbarState.playlistButtonState =
             shouldShowPlaylistURLBarButton ? .addedToPlaylist(item) : .none
-          )
         }
       }
     }

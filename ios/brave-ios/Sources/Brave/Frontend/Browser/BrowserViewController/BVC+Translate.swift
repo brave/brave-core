@@ -15,7 +15,7 @@ import Web
 extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
   func updateTranslateURLBar(tab: some TabState, state: TranslationState) {
     if tab === tabManager.selectedTab {
-      topToolbar.updateTranslateButtonState(state)
+      toolbarState.translationState = state
     }
   }
 
