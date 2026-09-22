@@ -154,6 +154,7 @@ introduce more rewriters. These are the ones we have supported for now.
 | `add_literal_to_variable`                 | `gn`      | AST   | Appends a literal to a file-scope list variable.      |
 | `subtract_literal_from_variable`          | `gn`      | AST   | Subtracts a literal from a file-scope list variable.  |
 | `set_blink_runtime_enabled_feature_state` | `js`      | AST   | Sets a Blink runtime feature's `base_feature_status`. |
+| `add_import`                              | `ts`      | AST   | Adds an import to the top of a .ts file.              |
 | `drop_custom_element_registration`        | `ts`      | AST   | Removes a WebUI element's `customElements.define`.    |
 
 Use `plaster --help` to discover rewriters and read their full docs:

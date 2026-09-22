@@ -5033,6 +5033,94 @@ class RewriterFormsTest(unittest.TestCase):
             'remove_attribute requires arg(s): attribute',
             name='validation.gn')
 
+    # -- ts.add_import op (real ast-grep binary) ----------------------------
+
+    # The copyright header a real WebUI source opens with, which an added
+    # import has to land below rather than above.
+    _TS_HEADER = ('// Copyright 2026 The Chromium Authors\n'
+                  '// Use of this source code is governed by a BSD-style '
+                  'license that can be\n'
+                  '// found in the LICENSE file.\n\n')
+
+    _TS_IMPORT_YAML = ('substitutions:\n'
+                       '  - description: load Brave overrides first\n'
+                       '    add_import:\n'
+                       "      import: import 'chrome://resources/brave/"
+                       "polymer_overriding.js';\n")
+
+    def test_ts_add_import_adds_below_the_copyright(self):
+        # With imports already there, the new one joins that block rather than
+        # being split off from it by a blank line.
+        result = self._apply(
+            'app.ts', self._TS_HEADER +
+            "import './settings_ui/settings_ui.js';\n\nexport const x = 1\n",
+            self._TS_IMPORT_YAML)
+        self.assertEqual(
+            result, self._TS_HEADER +
+            "import 'chrome://resources/brave/polymer_overriding.js';\n"
+            "import './settings_ui/settings_ui.js';\n\nexport const x = 1\n")
+
+    def test_ts_add_import_joins_an_export_block(self):
+        # Files that open with exports get the import right above them, like
+        # `profile_picker.ts` upstream does.
+        result = self._apply(
+            'exports.ts', self._TS_HEADER + "export {loadTimeData} from "
+            "'chrome://resources/js/load_time_data.js';\n",
+            self._TS_IMPORT_YAML)
+        self.assertEqual(
+            result, self._TS_HEADER +
+            "import 'chrome://resources/brave/polymer_overriding.js';\n"
+            "export {loadTimeData} from "
+            "'chrome://resources/js/load_time_data.js';\n")
+
+    def test_ts_add_import_separated_from_code(self):
+        # The statement below is code, so a blank line separates the import
+        # from it.
+        result = self._apply('code_first.ts',
+                             self._TS_HEADER + 'const x = 1\n',
+                             self._TS_IMPORT_YAML)
+        self.assertEqual(
+            result, self._TS_HEADER +
+            "import 'chrome://resources/brave/polymer_overriding.js';\n\n"
+            'const x = 1\n')
+
+    def test_ts_add_import_already_present_fails(self):
+        # Adding the import is the whole substitution, so a file that already
+        # carries it means the entry has nothing left to do.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'imported.ts',
+                "import 'chrome://resources/brave/polymer_overriding.js';\n",
+                self._TS_IMPORT_YAML)
+        self.assertIn('already imported', str(ctx.exception))
+
+    def test_ts_add_import_empty_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: no statement\n'
+            '    add_import: {}\n',
+            'must be a non-empty string',
+            name='validation.ts')
+
+    def test_ts_add_import_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    add_import:\n'
+            "      module: './br/index.js'\n",
+            "Unrecognised add_import arg(s): 'module'",
+            name='validation.ts')
+
+    def test_ts_add_import_count_other_than_one_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 2\n'
+            '    add_import:\n'
+            "      import: import './br/index.js';\n",
+            'does not accept a count other than 1',
+            name='validation.ts')
+
     # -- ts.drop_custom_element_registration op (real ast-grep) --------------
     #
     # Targets WebUI `.ts` sources, parsed with ast-grep's `ts` grammar. The

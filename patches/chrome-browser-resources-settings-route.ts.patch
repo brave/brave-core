@@ -1,15 +1,15 @@
 diff --git a/chrome/browser/resources/settings/route.ts b/chrome/browser/resources/settings/route.ts
-index 2aaa938c7e14a03b6528aa087ff6109f8ac335eb..6b25dea8a76ede7f639046c65600a2f7a2e3a4e5 100644
+index 2aaa938c7e14a03b6528aa087ff6109f8ac335eb..fe05954a7da4de3ed329a7b88d1c4ad66550fe7d 100644
 --- a/chrome/browser/resources/settings/route.ts
 +++ b/chrome/browser/resources/settings/route.ts
-@@ -9,6 +9,7 @@ import {pageVisibility} from './page_visibility.js';
- import type {SettingsRoutes} from './router.js';
- import {Route, Router} from './router.js';
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
  
 +import addBraveRoutes from './brave_routes.js'
- /**
-  * Add all of the child routes that originate from the privacy route,
-  * regardless of whether the privacy section under basic or advanced.
+ import {assert} from 'chrome://resources/js/assert.js';
+ 
+ import {loadTimeData} from './i18n_setup.js';
 @@ -306,6 +307,7 @@ function createRoutes(): SettingsRoutes {
          loadTimeData.getString('performancePageTitle'));
    }
