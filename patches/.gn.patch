@@ -1,0 +1,17 @@
+diff --git a/.gn b/.gn
+index 87345c4f72574d80e15601f6c77905cc7323378b..422e7a3903543dc7d8b47bda3a9036e015879612 100644
+--- a/.gn
++++ b/.gn
+@@ -2,6 +2,7 @@
+ # tree and to set startup options. For documentation on the values set in this
+ # file, run "gn help dotfile" at the command line.
+ 
++import("//brave/build/circular_includes_brave.gni")
+ import("//build/circular_includes_bedrock.gni")
+ import("//build/circular_includes_untriaged.gni")
+ import("//build/dotfile_settings.gni")
+@@ -477,3 +478,4 @@ expand_directory_allowlist =
+ allow_circular_includes_from_allowlist =
+     allow_circular_includes_from_untriaged + project_bedrock_circular_includes +
+     []
++allow_circular_includes_from_allowlist += allow_circular_includes_from_brave
