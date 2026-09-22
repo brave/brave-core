@@ -89,7 +89,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
 
   PsstUiDelegate* GetPsstUiDelegate() const;
   base::WeakPtr<PsstTabWebContentsObserver> AsWeakPtr();
-  void CancelInFlightFlow();
+  void CancelInFlightFlow(bool reset_current_page_processing);
 
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;

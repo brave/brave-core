@@ -163,6 +163,13 @@ void PsstUiDelegateImpl::SubmitPsstErrorsReport() {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
+void PsstUiDelegateImpl::OnDialogClose() {
+  ui_presenter_->HideInfoBar();
+  ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
+                                        base::NullCallback(),
+                                        base::NullCallback());
+}
+
 void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
   // Handle the user's response to the infobar
   if (is_accepted) {
@@ -192,6 +199,7 @@ void PsstUiDelegateImpl::OnDontShowForThisSite() {
   ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
                                           base::NullCallback(),
                                           base::NullCallback());
+  ui_presenter_->HideConsentDialog();
 }
 
 void PsstUiDelegateImpl::OnDisablePrivacySettingsTuning() {
@@ -200,6 +208,7 @@ void PsstUiDelegateImpl::OnDisablePrivacySettingsTuning() {
   ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
                                           base::NullCallback(),
                                           base::NullCallback());
+  ui_presenter_->HideConsentDialog();
 }
 
 void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {

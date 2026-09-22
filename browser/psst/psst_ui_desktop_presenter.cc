@@ -119,7 +119,6 @@ void PsstUiDesktopPresenter::PsstUiDesktopDelegate::OnDialogClosed(
     return;
   }
   dialog_web_contents->RemoveUserData(kUiDesktopDelegateUserDataKey);
-
   initiator_web_contents_ = nullptr;
   web_dialog_delegate_ = nullptr;
 }
@@ -164,7 +163,7 @@ void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CancelInFlightFlow() {
     return;
   }
 
-  observer->CancelInFlightFlow();  // needs to become public/accessible
+  observer->CancelInFlightFlow(false);
 }
 
 PsstUiDesktopPresenter::PsstUiDesktopPresenter(

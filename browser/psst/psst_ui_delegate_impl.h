@@ -66,6 +66,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
 
   void SubmitPsstErrorsReport();
 
+  void OnDialogClose();
+
  private:
   void OnUserAcceptedInfobar(const bool is_accepted);
   void OnDontShowForThisSite();
