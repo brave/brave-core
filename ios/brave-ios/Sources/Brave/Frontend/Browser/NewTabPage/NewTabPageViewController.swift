@@ -196,8 +196,11 @@ class NewTabPageViewController: UIViewController {
     Preferences.NewTabPage.showNewTabPrivacyHub.observe(from: self)
     Preferences.NewTabPage.topsitesMode.observe(from: self)
 
-    let mostVisitedSites: MostVisitedSites? =
-      privateBrowsingManager.isPrivateBrowsing ? nil : MostVisitedSitesFactory.get(for: tab.profile)
+    let topsitesTileSource = TopsitesTileSource(
+      mostVisitedSites: privateBrowsingManager.isPrivateBrowsing
+        ? nil : MostVisitedSitesFactory.get(for: tab.profile),
+      isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+    )
     sections = [
       StatsSectionProvider(
         isPrivateBrowsing: tab.isPrivate,
@@ -248,14 +251,13 @@ class NewTabPageViewController: UIViewController {
           self?.present(alertController, animated: true)
         },
         isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
-        mostVisitedSites: mostVisitedSites
+        tileSource: topsitesTileSource
       ),
       TopsitesOverflowSectionProvider(
         action: { [weak self] in
           self?.delegate?.focusURLBar()
         },
-        mostVisitedSites: mostVisitedSites,
-        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+        tileSource: topsitesTileSource
       ),
     ]
 
