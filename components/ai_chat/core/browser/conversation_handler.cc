@@ -1411,7 +1411,12 @@ void ConversationHandler::CreateConversationThread(
     return;
   }
 
-  CHECK((*entry_it)->character_type == mojom::CharacterType::ASSISTANT);
+  if ((*entry_it)->character_type != mojom::CharacterType::ASSISTANT) {
+    DLOG(ERROR) << "Cannot create thread for non-assistant entry: "
+                << origin_entry_uuid;
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
 
   // Ignore the request if the entry already has the maximum number of
   // threads.
