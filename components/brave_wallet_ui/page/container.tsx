@@ -122,6 +122,11 @@ export const Container = () => {
       ? WalletRoutes.Unlock
       : sessionRoute || WalletRoutes.PortfolioAssets
 
+  const isSendSwapOrBridgePage =
+    pathname.includes(WalletRoutes.Send)
+    || pathname.includes(WalletRoutes.Swap)
+    || pathname.includes(WalletRoutes.Bridge)
+
   // Methods
   const handleAcceptPartnerConsent = () => {
     setAcceptedPartnerConsentTerms(true)
@@ -341,7 +346,9 @@ export const Container = () => {
         onClose={handleDeclinePartnerConsent}
         onContinue={handleAcceptPartnerConsent}
       />
-      {!isWalletLocked && !isMobile && <DesktopTransactionConfirmation />}
+      {!isWalletLocked && !isMobile && isSendSwapOrBridgePage && (
+        <DesktopTransactionConfirmation />
+      )}
     </>
   )
 }
