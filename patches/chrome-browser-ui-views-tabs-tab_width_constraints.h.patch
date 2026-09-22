@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_width_constraints.h b/chrome/browser/ui/views/tabs/tab_width_constraints.h
+index 627fd935e521132492952da048bcc96491e61d58..cb2054dbf83c64540f3fd6797e83b3d2e3808aea 100644
+--- a/chrome/browser/ui/views/tabs/tab_width_constraints.h
++++ b/chrome/browser/ui/views/tabs/tab_width_constraints.h
+@@ -28,9 +28,18 @@ class TabWidthConstraints {
+ 
+   const TabLayoutState get_state() const { return state_; }
+ 
++  void set_is_tab_in_group(bool in_group);
++  bool is_tab_in_group() const;
++  const TabLayoutState& state() const;
++  TabLayoutState& state();
++  const TabSizeInfo& size_info() const;
++
++ protected:
++  bool is_tab_in_group_ = false;
++
+  private:
+   // All widths are affected by pinnedness and activeness in the same way.
+-  float TransformForPinnednessAndOpenness(float width) const;
++  virtual float TransformForPinnednessAndOpenness(float width) const;
+ 
+   TabLayoutState state_;
+   TabSizeInfo size_info_;

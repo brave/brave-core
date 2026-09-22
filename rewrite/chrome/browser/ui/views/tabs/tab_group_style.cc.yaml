@@ -1,0 +1,46 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Always show tab group underline.
+
+      Upstream hides the underline in focus mode or when leading/trailing
+      views belong to the same group. Brave always shows it.
+    regex:
+      pattern: 'return true;'
+      replace: 'return false;'
+    count: 3
+
+  - description: |-
+      Draw vertical tab group underline as a vertical line on the left side.
+
+      Uses half-rounded corners and draws counter-clockwise from top-right.
+    regex:
+      pattern: 'return SkPath::RRect('
+      replace: |
+        if (!ShouldShowBraveVerticalTabs()) {
+          return TabGroupStyle_ChromiumImpl::GetUnderlinePath(local_bounds);
+        }
+
+        return SkPathBuilder()
+            .arcTo(
+                {/* rx = */ kStrokeThicknessForVerticalTabs,
+                 /* ry = */ kStrokeThicknessForVerticalTabs},
+                /* angle = */ 180.f, SkPathBuilder::kSmall_ArcSize,
+                SkPathDirection::kCW,
+                {/* x = */ kStrokeThicknessForVerticalTabs,
+                 /* y = */ kStrokeThicknessForVerticalTabs})
+            .lineTo(kStrokeThicknessForVerticalTabs,
+                    local_bounds.height() - kStrokeThicknessForVerticalTabs)
+            .arcTo(
+                {/* rx = */ kStrokeThicknessForVerticalTabs,
+                 /* ry = */ kStrokeThicknessForVerticalTabs},
+                /* angle = */ 180.f, SkPathBuilder::kSmall_ArcSize,
+                SkPathDirection::kCW,
+                {/* x = */ 0,
+                 /* y = */ static_cast<float>(local_bounds.height())})
+            .close()
+            .detach();

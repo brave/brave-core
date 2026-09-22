@@ -1,0 +1,16 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Pass through the model_index unchanged instead of updating from
+      split_tabs::GetIndexOfLastActiveTab(). We want to activate clicked tab.
+
+      Upstream activates the most recently focused tab in the split when
+      selecting a split tab. The PassThrough helper ensures we use the
+      original clicked tab's model_index.
+    regex:
+      pattern: 'split_tabs::GetIndexOfLastActiveTab(model_, split_id.value())'
+      replace: 'GetIndexOfLastActiveTab(model_index)'

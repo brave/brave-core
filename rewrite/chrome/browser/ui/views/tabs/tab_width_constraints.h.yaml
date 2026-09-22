@@ -1,0 +1,25 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Make TransformForPinnednessAndOpenness virtual'
+    make_virtual:
+      class_name: TabWidthConstraints
+      method_name: TransformForPinnednessAndOpenness
+
+  - description: 'Add is_tab_in_group member and accessors'
+    add_to_public:
+      class_name: TabWidthConstraints
+      code: |
+        void set_is_tab_in_group(bool in_group);
+        bool is_tab_in_group() const;
+        const TabLayoutState& state() const;
+        TabLayoutState& state();
+        const TabSizeInfo& size_info() const;
+
+  - description: 'Add is_tab_in_group_ member to protected section'
+    add_to_protected:
+      class_name: TabWidthConstraints
+      code: bool is_tab_in_group_ = false;

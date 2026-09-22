@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
+index b09b1a08844dee94016d737ead5c8f0c54dd9eba..c3918ebb259e0b364bf7e50cf78b2041091702d7 100644
+--- a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
++++ b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.cc
+@@ -251,7 +251,7 @@ void BrowserTabStripController::SelectTab(int model_index,
+   std::optional<split_tabs::SplitTabId> split_id =
+       tabstrip_->tab_at(model_index)->split();
+   if (split_id.has_value()) {
+-    model_index = split_tabs::GetIndexOfLastActiveTab(model_, split_id.value());
++    model_index = GetIndexOfLastActiveTab(model_index);
+   }
+ 
+   std::unique_ptr<viz::PeakGpuMemoryTracker> tracker =

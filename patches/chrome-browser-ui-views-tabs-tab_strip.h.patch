@@ -1,0 +1,79 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip.h b/chrome/browser/ui/views/tabs/tab_strip.h
+index 8437785556716f154d899687a13d9f2792476c9f..d79dcf72f0ee0df7d3fd15522127a112373619bc 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip.h
++++ b/chrome/browser/ui/views/tabs/tab_strip.h
+@@ -76,7 +76,7 @@ class TabStrip : public views::View,
+ 
+  public:
+   TabStrip(std::unique_ptr<TabStripController> tab_strip_controller,
+-           std::unique_ptr<TabHoverCardController> hover_card_controller);
++           std::unique_ptr<BraveTabHoverCardController> hover_card_controller);
+ 
+   TabStrip(const TabStrip&) = delete;
+   TabStrip& operator=(const TabStrip&) = delete;
+@@ -136,7 +136,7 @@ class TabStrip : public views::View,
+   void AddTabsAt(const std::vector<AddTabData>& tabs_data);
+ 
+   // Moves a tab.
+-  void MoveTab(int from_model_index, int to_model_index);
++  virtual void MoveTab(int from_model_index, int to_model_index);
+ 
+   // Removes a tab at the specified index. If the tab with `contents` is being
+   // dragged then the drag is completed.
+@@ -146,7 +146,7 @@ class TabStrip : public views::View,
+ 
+   void OnTabWillBeRemoved(content::WebContents* contents, int model_index);
+ 
+-  void OnTabPinnedStateChanged(int model_index, bool is_pinned);
++  virtual void OnTabPinnedStateChanged(int model_index, bool is_pinned);
+ 
+   // Sets the tab group at the specified model index.
+   void AddTabToGroup(std::optional<tab_groups::TabGroupId> group,
+@@ -293,6 +293,12 @@ class TabStrip : public views::View,
+                          const ui::MouseEvent& event) override;
+   void OnGroupContentsChanged(const tab_groups::TabGroupId& group) override;
+   void UpdateHoverCard(HoverCardAnchorTarget* anchor_target,
++                     HoverCardUpdateType update_type) override;
++friend class BraveTabDragContext;
++friend class BraveTabHoverTest;
++friend class BraveTabStrip;
++friend class BraveVerticalTabStripRegionView;
++
+                        HoverCardUpdateType update_type) override;
+   bool HoverCardIsShowing(HoverCardAnchorTarget* anchor_target) override;
+   void ShowHover(Tab* tab, TabStyle::ShowHoverStyle style) override;
+@@ -339,6 +345,25 @@ class TabStrip : public views::View,
+     return hover_card_controller_.get();
+   }
+ 
++  bool ShouldAlwaysHideCloseButton() const override;
++  bool CanCloseTabViaMiddleButtonClick() const override;
++  bool IsVerticalTabsFloating() const override;
++  bool IsVerticalTabsAnimatingButNotFinalState() const override;
++  bool ShouldPaintTabAccent(const Tab* tab) const override;
++  std::optional<TabAccentColors> GetTabAccentColors(const Tab* tab)
++      const override;
++  ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
++  bool ShouldAlwaysShowMiniTabAccent() const override;
++  int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
++  const tabs::TreeTabNode* GetTreeTabNode(
++      const tree_tab::TreeTabNodeId& id) const override;
++  void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
++                               bool collapsed) override;
++  bool IsInCollapsedTreeTabNode(
++      const tree_tab::TreeTabNodeId& id) const override;
++  brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;
++  bool IsHorizontalScrollingEnabled() const override;
++
+  private:
+   class TabDragContextImpl;
+ 
+@@ -414,7 +439,7 @@ class TabStrip : public views::View,
+ 
+   std::unique_ptr<TabStripController> controller_;
+ 
+-  std::unique_ptr<TabHoverCardController> hover_card_controller_;
++  std::unique_ptr<BraveTabHoverCardController> hover_card_controller_;
+ 
+   raw_ref<TabDragContextImpl, AcrossTasksDanglingUntriaged> drag_context_;
+ 

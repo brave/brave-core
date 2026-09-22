@@ -1,0 +1,19 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add Brave test and implementation friends to
+      OnDiscardRingTreatmentEnabledChanged().
+
+      Prevents overriding TabStripModel::ExecuteContextMenuCommand and adds
+      friends for Brave browser tests and implementation.
+    regex:
+      pattern: 'void OnDiscardRingTreatmentEnabledChanged();'
+      replace: |
+        void OnDiscardRingTreatmentEnabledChanged();
+        friend class BraveTabMenuBrowserTest;
+        friend class VerticalTabStripStringBrowserTest;
+        friend class BraveBrowserTabStripController;

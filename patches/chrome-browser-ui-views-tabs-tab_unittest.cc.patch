@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_unittest.cc b/chrome/browser/ui/views/tabs/tab_unittest.cc
+index 5c2ffa8689e312beb026ce163ea6e6ec9670a3cb..9d3b51ec4f466864fe96bf8a5710d918afaffb64 100644
+--- a/chrome/browser/ui/views/tabs/tab_unittest.cc
++++ b/chrome/browser/ui/views/tabs/tab_unittest.cc
+@@ -283,7 +283,7 @@ class TabContentsTest : public ChromeViewsTestBase {
+     controller_ = new FakeBaseTabStripController;
+     tab_strip_ =
+         new TabStrip(std::unique_ptr<TabStripController>(controller_),
+-                     std::unique_ptr<NiceMock<TabHoverCardController>>());
++                     std::unique_ptr<NiceMock<BraveTabHoverCardController>>());
+     tab_strip_->Initialize();
+     controller_->set_tab_strip(tab_strip_);
+ 

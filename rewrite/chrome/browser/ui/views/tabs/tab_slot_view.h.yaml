@@ -1,0 +1,25 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Add tree_tab_node_id member and accessor to TabSlotView'
+    regex:
+      re_pattern: '(virtual void SetGroup\(std::optional<tab_groups::TabGroupId> group\);)'
+      replace: |
+        void set_tree_tab_node(const std::optional<tree_tab::TreeTabNodeId>& id);
+        const std::optional<tree_tab::TreeTabNodeId>& tree_tab_node() const;
+        \1
+
+  - description: 'Add GetTabNestingInfo and IsInCollapsedTreeTabNode virtual methods'
+    add_to_public:
+      class_name: TabSlotView
+      code: |
+        virtual TabNestingInfo GetTabNestingInfo() const;
+        virtual bool IsInCollapsedTreeTabNode() const;
+
+  - description: 'Add tree_tab_node_id member variable to protected section'
+    add_to_protected:
+      class_name: TabSlotView
+      code: std::optional<tree_tab::TreeTabNodeId> tree_tab_node_id_;

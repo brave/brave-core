@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_slot_view.h b/chrome/browser/ui/views/tabs/tab_slot_view.h
+index a984dcf2515d9d9956eed14744c823ae7e17f982..65e2f495b100b008f611f504a329b17c6ba27e2f 100644
+--- a/chrome/browser/ui/views/tabs/tab_slot_view.h
++++ b/chrome/browser/ui/views/tabs/tab_slot_view.h
+@@ -35,7 +35,10 @@ class TabSlotView : public views::View {
+   virtual TabSizeInfo GetTabSizeInfo() const = 0;
+ 
+   // Used to set the tab group that this view belongs to.
+-  virtual void SetGroup(std::optional<tab_groups::TabGroupId> group);
++  void set_tree_tab_node(const std::optional<tree_tab::TreeTabNodeId>& id);
++const std::optional<tree_tab::TreeTabNodeId>& tree_tab_node() const;
++virtual void SetGroup(std::optional<tab_groups::TabGroupId> group);
++
+ 
+   std::optional<tab_groups::TabGroupId> group() const { return group_; }
+ 
+@@ -58,6 +61,12 @@ class TabSlotView : public views::View {
+   // views::View:
+   gfx::Rect GetAnchorBoundsInScreen() const override;
+ 
++  virtual TabNestingInfo GetTabNestingInfo() const;
++  virtual bool IsInCollapsedTreeTabNode() const;
++
++ protected:
++  std::optional<tree_tab::TreeTabNodeId> tree_tab_node_id_;
++
+  private:
+   std::optional<tab_groups::TabGroupId> group_;
+ 

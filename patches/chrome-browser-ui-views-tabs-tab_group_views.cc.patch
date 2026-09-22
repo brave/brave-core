@@ -1,12 +1,24 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_group_views.cc b/chrome/browser/ui/views/tabs/tab_group_views.cc
-index 409cdae2d439cfc35ac2f1cba76a59574e0dc39f..c12100f9433c84c3097de2d760e781b4e5f9a9d8 100644
+index 409cdae2d439cfc35ac2f1cba76a59574e0dc39f..8b03170e6f7189d30c2ce07dc8f6cc8826a7ce2d 100644
 --- a/chrome/browser/ui/views/tabs/tab_group_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_group_views.cc
-@@ -165,6 +165,7 @@ TabGroupViews::GetLeadingTrailingGroupViews(
-   views::View* trailing_child = nullptr;
-   gfx::Rect trailing_child_widget_bounds;
+@@ -31,15 +31,15 @@ TabGroupViews::TabGroupViews(views::View* container_view,
+   const TabGroupStyle* style = style_.get();
  
-+  BRAVE_TAB_GROUP_VIEWS_GET_LEADING_TRAILING_GROUP_VIEWS
-   for (views::View* child : children) {
-     TabSlotView* tab_slot_view = views::AsViewClass<TabSlotView>(child);
-     if (!tab_slot_view || tab_slot_view->group() != group_ ||
+   auto header =
+-      std::make_unique<TabGroupHeader>(*tab_slot_controller_, group_, *style);
++      std::make_unique<BraveTabGroupHeader>(*tab_slot_controller_, group_, *style);
+   header->Init(group_);
+   header_ = container_view->AddChildView(std::move(header));
+   underline_ = container_view->AddChildView(
+-      std::make_unique<TabGroupUnderline>(this, group_, *style));
++      std::make_unique<BraveTabGroupUnderline>(this, group_, *style));
+   drag_underline_ = drag_container_view->AddChildView(
+-      std::make_unique<TabGroupUnderline>(this, group_, *style));
++      std::make_unique<BraveTabGroupUnderline>(this, group_, *style));
+   highlight_ = drag_container_view->AddChildView(
+-      std::make_unique<TabGroupHighlight>(this, group_, *style));
++      std::make_unique<BraveTabGroupHighlight>(this, group_, *style));
+   highlight_->SetVisible(false);
+ }
+ 

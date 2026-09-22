@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip_control_button.h b/chrome/browser/ui/views/tabs/tab_strip_control_button.h
+index 4abaa5e49abbb5ba419e7d08b168902eb14d0b81..40d6dcca50c65edef3a6a4bc7b22ab1a34a7715b 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip_control_button.h
++++ b/chrome/browser/ui/views/tabs/tab_strip_control_button.h
+@@ -75,7 +75,7 @@ class TabStripControlButton : public views::LabelButton,
+   // change.
+   virtual void UpdateIcon();
+ 
+-  virtual int GetCornerRadius() const;
++  virtual virtual int GetCornerRadius() const;
+   virtual int GetFlatCornerRadius() const;
+   float GetScaledCornerRadius(float initial_radius, Edge edge) const;
+ 
+@@ -139,6 +139,7 @@ class TabStripControlButton : public views::LabelButton,
+   virtual void UpdateBackground();
+ 
+  private:
++  friend class BraveTabStripControlButton;
+   void UpdateInkDrop();
+ 
+   bool IsWidgetAlive() const;

@@ -1,0 +1,63 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_group_style.cc b/chrome/browser/ui/views/tabs/tab_group_style.cc
+index bb48bb930353e5cb7fb8324be8e90441c89511c8..981734250accebf584e7196888d6e05420ca14af 100644
+--- a/chrome/browser/ui/views/tabs/tab_group_style.cc
++++ b/chrome/browser/ui/views/tabs/tab_group_style.cc
+@@ -47,7 +47,7 @@ TabGroupStyle::~TabGroupStyle() = default;
+ 
+ bool TabGroupStyle::TabGroupUnderlineShouldBeHidden() const {
+   if (tab_group_views_->IsFocusModeActive()) {
+-    return true;
++    return false;
+   }
+ 
+   const auto [leading_group_view, trailing_group_view] =
+@@ -61,7 +61,7 @@ bool TabGroupStyle::TabGroupUnderlineShouldBeHidden(
+     const views::View* const leading_view,
+     const views::View* const trailing_view) const {
+   if (tab_group_views_->IsFocusModeActive()) {
+-    return true;
++    return false;
+   }
+ 
+   const TabGroupHeader* const leading_view_group_header =
+@@ -71,7 +71,7 @@ bool TabGroupStyle::TabGroupUnderlineShouldBeHidden(
+ 
+   if (leading_view_group_header && trailing_view_group_header &&
+       leading_view_group_header == trailing_view_group_header) {
+-    return true;
++    return false;
+   }
+ 
+   return false;
+@@ -79,7 +79,30 @@ bool TabGroupStyle::TabGroupUnderlineShouldBeHidden(
+ 
+ // The path is a rounded rect.
+ SkPath TabGroupStyle::GetUnderlinePath(const gfx::Rect local_bounds) const {
+-  return SkPath::RRect(
++  if (!ShouldShowBraveVerticalTabs()) {
++  return TabGroupStyle_ChromiumImpl::GetUnderlinePath(local_bounds);
++}
++
++return SkPathBuilder()
++    .arcTo(
++        {/* rx = */ kStrokeThicknessForVerticalTabs,
++         /* ry = */ kStrokeThicknessForVerticalTabs},
++        /* angle = */ 180.f, SkPathBuilder::kSmall_ArcSize,
++        SkPathDirection::kCW,
++        {/* x = */ kStrokeThicknessForVerticalTabs,
++         /* y = */ kStrokeThicknessForVerticalTabs})
++    .lineTo(kStrokeThicknessForVerticalTabs,
++            local_bounds.height() - kStrokeThicknessForVerticalTabs)
++    .arcTo(
++        {/* rx = */ kStrokeThicknessForVerticalTabs,
++         /* ry = */ kStrokeThicknessForVerticalTabs},
++        /* angle = */ 180.f, SkPathBuilder::kSmall_ArcSize,
++        SkPathDirection::kCW,
++        {/* x = */ 0,
++         /* y = */ static_cast<float>(local_bounds.height())})
++    .close()
++    .detach();
++
+       SkRRect::MakeRectXY(gfx::RectToSkRect(local_bounds),
+                           TabGroupUnderline::kStrokeThickness / 2,
+                           TabGroupUnderline::kStrokeThickness / 2));

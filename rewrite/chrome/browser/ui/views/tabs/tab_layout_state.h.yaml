@@ -1,0 +1,15 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Add nesting_info accessor methods'
+    regex:
+      re_pattern: '(  bool IsClosed\(\) const;)'
+      replace: '\n        const TabNestingInfo& nesting_info() const;\n        void set_nesting_info(const TabNestingInfo& info);\n\1'
+
+  - description: 'Add nesting_info member variable'
+    add_to_protected:
+      class_name: TabLayoutState
+      code: TabNestingInfo nesting_info_;

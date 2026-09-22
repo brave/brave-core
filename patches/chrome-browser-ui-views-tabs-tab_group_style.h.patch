@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_group_style.h b/chrome/browser/ui/views/tabs/tab_group_style.h
+index bf304678a59ac3b3562dd340f4fdc879fb56b940..4131f5bbf95fac869ce8347e907aa672a70ada46 100644
+--- a/chrome/browser/ui/views/tabs/tab_group_style.h
++++ b/chrome/browser/ui/views/tabs/tab_group_style.h
+@@ -72,6 +72,7 @@ class TabGroupStyle {
+ 
+  protected:
+   const raw_ref<const TabGroupViews> tab_group_views_;
++  friend class BraveTabGroupStyle;
+ };
+ 
+ #endif  // CHROME_BROWSER_UI_VIEWS_TABS_TAB_GROUP_STYLE_H_

@@ -1,0 +1,55 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Add Brave friends after UpdateHoverCard'
+    regex:
+      pattern: 'void UpdateHoverCard(HoverCardAnchorTarget* anchor_target,'
+      replace: |
+        void UpdateHoverCard(HoverCardAnchorTarget* anchor_target,
+                             HoverCardUpdateType update_type) override;
+        friend class BraveTabDragContext;
+        friend class BraveTabHoverTest;
+        friend class BraveTabStrip;
+        friend class BraveVerticalTabStripRegionView;
+
+  - description: 'Add Brave overrides to TabStrip'
+    add_to_public:
+      class_name: TabStrip
+      code: |
+        bool ShouldAlwaysHideCloseButton() const override;
+        bool CanCloseTabViaMiddleButtonClick() const override;
+        bool IsVerticalTabsFloating() const override;
+        bool IsVerticalTabsAnimatingButNotFinalState() const override;
+        bool ShouldPaintTabAccent(const Tab* tab) const override;
+        std::optional<TabAccentColors> GetTabAccentColors(const Tab* tab)
+            const override;
+        ui::ImageModel GetTabAccentIcon(const Tab* tab) const override;
+        bool ShouldAlwaysShowMiniTabAccent() const override;
+        int GetTreeHeight(const tree_tab::TreeTabNodeId& id) const override;
+        const tabs::TreeTabNode* GetTreeTabNode(
+            const tree_tab::TreeTabNodeId& id) const override;
+        void SetTreeTabNodeCollapsed(const tree_tab::TreeTabNodeId& id,
+                                     bool collapsed) override;
+        bool IsInCollapsedTreeTabNode(
+            const tree_tab::TreeTabNodeId& id) const override;
+        brave_tabs::TabMinWidthMode GetTabMinWidthMode() const override;
+        bool IsHorizontalScrollingEnabled() const override;
+
+  - description: 'Make MoveTab virtual'
+    make_virtual:
+      class_name: TabStrip
+      method_name: MoveTab
+
+  - description: 'Make OnTabPinnedStateChanged virtual'
+    make_virtual:
+      class_name: TabStrip
+      method_name: OnTabPinnedStateChanged
+
+  - description: 'Use BraveTabHoverCardController instead of TabHoverCardController'
+    regex:
+      pattern: 'std::unique_ptr<TabHoverCardController>'
+      replace: 'std::unique_ptr<BraveTabHoverCardController>'
+    count: 2

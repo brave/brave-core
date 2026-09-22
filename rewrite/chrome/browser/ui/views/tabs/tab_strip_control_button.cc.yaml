@@ -1,0 +1,29 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use CR foreground token for default active icon color.
+
+      Apply ultra-dark postprocessing of kColorNewTabButtonCRForegroundFrameActive
+      to horizontal new-tab, workspaces, and scroll buttons.
+    regex:
+      pattern: 'kColorTabForegroundInactiveFrameActive'
+      replace: 'kColorNewTabButtonCRForegroundFrameActive'
+
+  - description: |-
+      Use CR background tokens for tab strip control buttons.
+
+      Makes idle tab-strip control buttons (workspaces and scroll chevrons)
+      not paint a solid frame-colored chip. Matches TabStripComboButton /
+      TabStripFlatEdgeButton.
+    regex:
+      pattern: 'kColorNewTabButtonBackgroundFrameActive'
+      replace: 'kColorNewTabButtonCRBackgroundFrameActive'
+
+  - description: 'Use CR inactive background token for idle tab-strip buttons'
+    regex:
+      pattern: 'kColorNewTabButtonBackgroundFrameInactive'
+      replace: 'kColorNewTabButtonCRBackgroundFrameInactive'

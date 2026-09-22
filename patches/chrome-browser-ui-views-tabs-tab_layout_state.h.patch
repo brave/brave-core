@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_layout_state.h b/chrome/browser/ui/views/tabs/tab_layout_state.h
+index 8a00ff0081052e3e55f711db889d5b619d8724a3..2495b8bc7f995ae7a6f2cc028d628ecc84e453da 100644
+--- a/chrome/browser/ui/views/tabs/tab_layout_state.h
++++ b/chrome/browser/ui/views/tabs/tab_layout_state.h
+@@ -34,8 +34,14 @@ class TabLayoutState {
+   void set_pinned(TabPinned pinned) { this->pinnedness_ = pinned; }
+   void set_active(TabActive active) { this->activeness_ = active; }
+ 
++
++        const TabNestingInfo& nesting_info() const;
++        void set_nesting_info(const TabNestingInfo& info);
+   bool IsClosed() const;
+ 
++ protected:
++  TabNestingInfo nesting_info_;
++
+  private:
+   // Whether this tab is open or closed.
+   TabOpen openness_ = TabOpen::kOpen;

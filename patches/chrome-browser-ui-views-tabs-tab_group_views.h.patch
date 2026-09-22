@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_group_views.h b/chrome/browser/ui/views/tabs/tab_group_views.h
+index 37bd32b68cf26c8591eb2026b0d5d56cbaed7cf8..eb316c56acdc12720613fa32580f1323eebe8d94 100644
+--- a/chrome/browser/ui/views/tabs/tab_group_views.h
++++ b/chrome/browser/ui/views/tabs/tab_group_views.h
+@@ -65,6 +65,8 @@ class TabGroupViews {
+   std::tuple<const views::View*, const views::View*>
+   GetLeadingTrailingGroupViews() const;
+ 
++  const BrowserWindowInterface* GetBrowserWindowInterface() const;
++
+  private:
+   const raw_ref<TabSlotController> tab_slot_controller_;
+   const tab_groups::TabGroupId group_;

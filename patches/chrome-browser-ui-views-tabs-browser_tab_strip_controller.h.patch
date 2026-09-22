@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h
+index d18341e497e4cad805602b266d649750c653838c..f13b9500de910d81e5a806dad9069bf86729d0d3 100644
+--- a/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h
++++ b/chrome/browser/ui/views/tabs/browser_tab_strip_controller.h
+@@ -151,6 +151,10 @@ class BrowserTabStripController : public TabStripController,
+   void AddTabs(const std::vector<TabStrip::AddTabData>& tabs_data);
+ 
+   void OnDiscardRingTreatmentEnabledChanged();
++friend class BraveTabMenuBrowserTest;
++friend class VerticalTabStripStringBrowserTest;
++friend class BraveBrowserTabStripController;
++
+   void OnGlassFrameEligibilityChanged(bool is_eligible);
+ 
+   // TabContextMenuController::Delegate:

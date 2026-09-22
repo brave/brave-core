@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_strip_control_button.cc b/chrome/browser/ui/views/tabs/tab_strip_control_button.cc
+index 5fe159795bab6aba42cb039c5b7ea02572e1bb07..458b5d6cd6b077a3d1da49dcc0ccafcea9cb6e4a 100644
+--- a/chrome/browser/ui/views/tabs/tab_strip_control_button.cc
++++ b/chrome/browser/ui/views/tabs/tab_strip_control_button.cc
+@@ -103,12 +103,12 @@ TabStripControlButton::TabStripControlButton(
+   SetImageCentered(true);
+   SetEventTargeter(std::make_unique<views::ViewTargeter>(this));
+ 
+-  foreground_frame_active_color_id_ = kColorTabForegroundInactiveFrameActive;
++  foreground_frame_active_color_id_ = kColorNewTabButtonCRForegroundFrameActive;
+   foreground_frame_inactive_color_id_ =
+       kColorNewTabButtonCRForegroundFrameInactive;
+-  background_frame_active_color_id_ = kColorNewTabButtonBackgroundFrameActive;
++  background_frame_active_color_id_ = kColorNewTabButtonCRBackgroundFrameActive;
+   background_frame_inactive_color_id_ =
+-      kColorNewTabButtonBackgroundFrameInactive;
++      kColorNewTabButtonCRBackgroundFrameInactive;
+ 
+   inkdrop_hover_color_id_ = kColorTabStripControlButtonInkDrop;
+   inkdrop_ripple_color_id_ = kColorTabStripControlButtonInkDropRipple;
