@@ -66,7 +66,6 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.AIChat.UsageWeekly", MetricConfig{.ephemeral = true}},
     {"Brave.AIChat.UsedConversationStarter", {}},
     {"Brave.Ads.ClearData", MetricConfig{.ephemeral = true}},
-    {"Brave.Ads.SponsoredEnabled", {}},
     {"Brave.Core.BookmarkCount", {}},
     {"Brave.Core.CrashReportsEnabled", {}},
     {"Brave.Core.DomainsLoaded.Default", {}},
@@ -276,6 +275,7 @@ inline constexpr auto kCollectedSlowHistograms =
 
 inline constexpr auto kCollectedExpressHistograms =
   base::MakeFixedFlatMap<std::string_view, std::optional<MetricConfig>>({
+    {"Brave.Ads.SponsoredEnabled", {}},
     {"Brave.Ads.SurveyPanelistEnabled", {}},
     {"Brave.AIChat.UsageDaily.2", MetricConfig{
       .ephemeral = true,
