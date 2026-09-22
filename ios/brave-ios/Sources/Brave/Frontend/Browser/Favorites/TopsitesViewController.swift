@@ -12,7 +12,7 @@ import Shared
 import UIKit
 import os.log
 
-class FavoritesCompositionalLayout: UICollectionViewCompositionalLayout {
+class TopsitesCompositionalLayout: UICollectionViewCompositionalLayout {
   let browserColors: BrowserColors
 
   init(
@@ -61,13 +61,13 @@ class FavoritesCompositionalLayout: UICollectionViewCompositionalLayout {
   }
 }
 
-class FavoritesViewController: UIViewController {
+class TopsitesViewController: UIViewController {
 
   // UI Properties
   private let layoutConfig = UICollectionViewCompositionalLayoutConfiguration().then {
     $0.interSectionSpacing = 8.0
   }
-  private lazy var compositionLayout = FavoritesCompositionalLayout(
+  private lazy var compositionLayout = TopsitesCompositionalLayout(
     browserColors: privateBrowsingManager.browserColors,
     sectionProvider: { [weak self] sectionIndex, environment in
       guard let self else { return nil }
@@ -427,7 +427,7 @@ class FavoritesViewController: UIViewController {
 
 // MARK: - UICollectionViewDataSource & UICollectionViewDelegateFlowLayout
 
-extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
+extension TopsitesViewController: UICollectionViewDelegateFlowLayout {
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     guard let section = availableSections[safe: indexPath.section] else {
@@ -462,7 +462,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
 
 // MARK: - Action
 
-extension FavoritesViewController {
+extension TopsitesViewController {
   func onOpenRecentSearch(_ recentSearch: RecentSearch) {
     recentSearchAction(recentSearch, false)
   }
@@ -514,7 +514,7 @@ extension FavoritesViewController {
 
 // MARK: - Preference Observer
 
-extension FavoritesViewController: PreferencesObserver {
+extension TopsitesViewController: PreferencesObserver {
   func preferencesDidChange(for key: String) {
     preferenceBeingObserved = true
     updateUIWithSnapshot()
@@ -523,7 +523,7 @@ extension FavoritesViewController: PreferencesObserver {
 
 // MARK: -  NSFetchedResultsControllerDelegate + Diffable DataSource
 
-extension FavoritesViewController: NSFetchedResultsControllerDelegate {
+extension TopsitesViewController: NSFetchedResultsControllerDelegate {
   private var favoritesSectionExists: Bool {
     availableSections.contains(.favorites)
   }

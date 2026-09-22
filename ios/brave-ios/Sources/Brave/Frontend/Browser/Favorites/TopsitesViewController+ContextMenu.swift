@@ -9,7 +9,7 @@ import UIKit
 
 // MARK: - ContextMenu
 
-extension FavoritesViewController {
+extension TopsitesViewController {
   func collectionView(
     _ collectionView: UICollectionView,
     contextMenuConfigurationForItemsAt indexPaths: [IndexPath],

@@ -10,7 +10,7 @@ import UIKit
 
 // MARK: - UICollectionViewDragDelegate & UICollectionViewDropDelegate
 
-extension FavoritesViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
+extension TopsitesViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
   func collectionView(
     _ collectionView: UICollectionView,
     itemsForBeginning session: UIDragSession,
