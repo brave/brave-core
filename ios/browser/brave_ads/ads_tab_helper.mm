@@ -14,12 +14,11 @@
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
+#include "brave/ios/browser/ui/web_view/features.h"
+#include "brave/ios/browser/web/text_content_distiller/text_content_distiller_javascript_feature.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/chrome/browser/shared/model/profile/profile_keyed_service_factory_ios.h"
-#include "ios/web/public/js_messaging/content_world.h"
-#include "ios/web/public/js_messaging/web_frame.h"
-#include "ios/web/public/js_messaging/web_frames_manager.h"
 #include "ios/web/public/navigation/navigation_context.h"
 #include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/web_state.h"
@@ -34,9 +33,6 @@ namespace {
 
 constexpr int kHttpClientErrorResponseStatusCodeClass = 4;
 constexpr int kHttpServerErrorResponseStatusCodeClass = 5;
-
-constexpr char16_t kDocumentBodyInnerTextJavaScript[] =
-    u"document?.body?.innerText";
 
 // Returns 'false' if the navigation was a back/forward navigation or a reload,
 // otherwise 'true'.
@@ -277,24 +273,27 @@ void AdsTabHelper::MaybeNotifyTabTextContentDidChange() {
     // joined Brave Rewards and notification ads to be enabled.
     return;
   }
-  web::WebFrame* main_web_frame =
-      web_state_->GetWebFramesManager(web::ContentWorld::kIsolatedWorld)
-          ->GetMainWebFrame();
-  if (!main_web_frame) {
+  if (!base::FeatureList::IsEnabled(
+          brave::features::kUseProfileWebViewConfiguration)) {
+    // `TextContentDistillerJavaScriptFeature` is only registered with the
+    // browser state's `JavaScriptFeatureManager` when this feature is
+    // enabled (see `BraveWebClient::GetJavaScriptFeatures`); calling it on
+    // the legacy `WKWebView` path would hit `DCHECK(content_world)` in
+    // `web::JavaScriptFeature::CallJavaScriptFunction`. The legacy path is
+    // instead handled by `AdsTextContentTabHelper` in Swift.
     return;
   }
-  main_web_frame->ExecuteJavaScript(
-      kDocumentBodyInnerTextJavaScript,
+  ::TextContentDistillerJavaScriptFeature::GetInstance()->GetTextContent(
+      web_state_,
       base::BindOnce(&AdsTabHelper::OnMaybeNotifyTabTextContentDidChange,
                      weak_factory_.GetWeakPtr(), redirect_chain_));
 }
 
 void AdsTabHelper::OnMaybeNotifyTabTextContentDidChange(
     const std::vector<GURL>& redirect_chain,
-    const base::Value* value) {
-  if (value && value->is_string()) {
-    ads_service_->NotifyTabTextContentDidChange(tab_id_, redirect_chain,
-                                                value->GetString());
+    std::string text) {
+  if (!text.empty()) {
+    ads_service_->NotifyTabTextContentDidChange(tab_id_, redirect_chain, text);
   }
 }
 
