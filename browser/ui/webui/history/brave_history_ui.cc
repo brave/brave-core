@@ -15,7 +15,6 @@
 #include "content/public/browser/web_ui_data_source.h"
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-#include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
 #include "brave/browser/ui/webui/history/brave_history_embeddings_page_handler.h"
 #endif
 
@@ -33,17 +32,19 @@ BraveHistoryUIConfig::CreateWebUIController(content::WebUI* web_ui,
 BraveHistoryUI::BraveHistoryUI(content::WebUI* web_ui) : HistoryUI(web_ui) {
   Profile* profile = Profile::FromWebUI(web_ui);
 
-  // The Semantic History Search toggle only takes effect on relaunch, so a
-  // change made in an earlier page load is still pending.
-  bool needs_restart = false;
-#if BUILDFLAG(ENABLE_LOCAL_AI)
-  needs_restart =
-      history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(profile)
-          ->NeedsRestart();
-#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
-
   base::DictValue update;
-  update.Set("braveHistoryEmbeddingsNeedsRestart", needs_restart);
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Matches what the page handler pushes on a pref change, so a page loading
+  // after the toggle moved agrees with one already open.
+  auto state = BraveHistoryEmbeddingsPageHandler::GetState(profile);
+  update.Set("braveHistoryEmbeddingsEnabled", state.enabled);
+  // Upstream gates its calls into the embeddings service on this.
+  update.Set("enableHistoryEmbeddings", state.search_enabled());
+  update.Set("braveHistoryEmbeddingsNeedsRestart", state.needs_restart);
+#else
+  update.Set("braveHistoryEmbeddingsEnabled", false);
+  update.Set("braveHistoryEmbeddingsNeedsRestart", false);
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
   content::WebUIDataSource::Update(profile, chrome::kChromeUIHistoryHost,
                                    std::move(update));
 }
