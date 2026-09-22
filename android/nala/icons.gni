@@ -214,7 +214,7 @@ nala_chrome_app_icon_overrides = [
   },
   {
     # Override Chromium's Find in page (app menu).
-    source = "ic_search.xml"
+    source = "ic_file_search.xml"
     dest = "ic_find_in_page.xml"
   },
   {
