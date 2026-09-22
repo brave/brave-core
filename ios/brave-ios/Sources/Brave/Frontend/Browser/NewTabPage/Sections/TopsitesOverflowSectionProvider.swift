@@ -3,12 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import BraveCore
 import BraveUI
-import CoreData
-import Data
 import Foundation
-import Preferences
 import Shared
 import UIKit
 
@@ -62,42 +58,18 @@ class TopsitesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     FavoritesOverflowButton
   >
 
-  private var frc: NSFetchedResultsController<Favorite>
-  private let mostVisitedSites: MostVisitedSites?
-  private var mostVisitedObservation: MostVisitedSitesScopedObservation?
-  private var mostVisitedTiles: [NTPTile] = []
-  private let isPrivateBrowsing: Bool
-
-  var numberOfTiles: Int {
-    switch Preferences.NewTabPage.topsitesMode.value {
-    case TopsitesMode.none:
-      return 0
-    case .favourite:
-      return frc.fetchedObjects?.count ?? 0
-    case .mostVisited:
-      return isPrivateBrowsing ? 0 : mostVisitedTiles.count
-    }
-  }
+  private let tileSource: TopsitesTileSource
 
   init(
     action: @escaping () -> Void,
-    mostVisitedSites: MostVisitedSites?,
-    isPrivateBrowsing: Bool
+    tileSource: TopsitesTileSource
   ) {
     self.action = action
-    self.mostVisitedSites = mostVisitedSites
-    self.isPrivateBrowsing = isPrivateBrowsing
-    frc = Favorite.frc()
-    frc.fetchRequest.fetchLimit = 20
-    super.init()
-    try? frc.performFetch()
-    frc.delegate = self
-    Preferences.NewTabPage.topsitesMode.observe(from: self)
-    updateMostVisitedObservation()
-  }
+    self.tileSource = tileSource
 
-  deinit {
-    mostVisitedObservation?.invalidate()
+    super.init()
+
+    tileSource.addObserver(self)
   }
 
   @objc private func tappedButton() {
@@ -111,7 +83,7 @@ class TopsitesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     let width = fittingSizeForCollectionView(collectionView, section: section).width
 
     let isShowShowMoreButtonVisible =
-      numberOfTiles
+      tileSource.count
       > TopsitesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
     return isShowShowMoreButtonVisible ? 1 : 0
   }
@@ -174,20 +146,8 @@ extension TopsitesOverflowSectionProvider: NSFetchedResultsControllerDelegate {
   }
 }
 
-extension TopsitesOverflowSectionProvider: MostVisitedSitesObserver {
-  func mostVisitedSitesDidUpdateTiles(_ tiles: [NTPTile]) {
-    mostVisitedTiles = tiles
+extension TopsitesOverflowSectionProvider: TopsitesTileSourceObserver {
+  func topsitesTileSourceDidChangeTiles(_ source: TopsitesTileSource) {
     sectionDidChange?()
-  }
-
-  func mostVisitedSitesDidUpdateFavicon(for url: URL?) {
-    // no-op. only the number of tiles matter in this provider
-  }
-}
-
-extension TopsitesOverflowSectionProvider: PreferencesObserver {
-  func preferencesDidChange(for key: String) {
-    guard key == Preferences.NewTabPage.topsitesMode.key else { return }
-    updateMostVisitedObservation()
   }
 }
