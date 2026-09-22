@@ -157,38 +157,40 @@ void OnBackupFinished(PrefService* local_state, OSCryptKeyBackupState state) {
 
 BASE_FEATURE(kBraveOSCryptKeyRestore, base::FEATURE_ENABLED_BY_DEFAULT);
 
-OSCryptKeyRestoreResult MaybeRestoreOSCryptKey(
-    const base::FilePath& user_data_dir,
-    PrefService* local_state) {
+void MaybeRestoreOSCryptKey(const base::FilePath& user_data_dir,
+                            PrefService* local_state) {
   if (!base::FeatureList::IsEnabled(kBraveOSCryptKeyRestore)) {
-    return OSCryptKeyRestoreResult::kNotAttempted;
+    return;
   }
 
   if (user_data_dir.empty() || !local_state) {
-    return OSCryptKeyRestoreResult::kNotAttempted;
+    return;
   }
 
   // Exit out if the key is present. This is the case hit most of the time.
   if (!local_state->GetString(kEncryptedKeyPrefName).empty()) {
-    return OSCryptKeyRestoreResult::kNotAttempted;
+    return;
   }
 
   // Simple lambda for recording how the restore went in `Local State`.
   // This is something we'd have to ask folks to examine manually - we don't
-  // show the result anywhere.
+  // show the result anywhere. Only the paths below record: the early exits
+  // above leave the pref alone, so it keeps the outcome of the launch that last
+  // had something to say.
   auto record = [local_state](OSCryptKeyRestoreResult result) {
     local_state->SetInteger(kRestoreResultPrefName, static_cast<int>(result));
-    return result;
   };
 
   const Backup backup =
       ReadBackup(user_data_dir.Append(kOSCryptKeyBackupFileName));
   switch (backup.result) {
     case BackupReadResult::kAbsent:
-      return record(OSCryptKeyRestoreResult::kNoBackup);
+      record(OSCryptKeyRestoreResult::kNoBackup);
+      return;
     case BackupReadResult::kUnreadable:
     case BackupReadResult::kNewerVersion:
-      return record(OSCryptKeyRestoreResult::kBackupUnusable);
+      record(OSCryptKeyRestoreResult::kBackupUnusable);
+      return;
     case BackupReadResult::kOk:
       break;
   }
@@ -210,7 +212,7 @@ OSCryptKeyRestoreResult MaybeRestoreOSCryptKey(
     local_state->SetString(os_crypt_async::kAppBoundEncryptedKeyPrefName,
                            backup.app_bound_key);
   }
-  return record(OSCryptKeyRestoreResult::kRestored);
+  record(OSCryptKeyRestoreResult::kRestored);
 }
 
 void RegisterOSCryptKeyBackupLocalStatePrefs(PrefRegistrySimple* registry) {

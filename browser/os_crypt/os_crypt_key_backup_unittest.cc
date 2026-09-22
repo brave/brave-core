@@ -127,8 +127,8 @@ TEST_F(OSCryptKeyRestoreTest, PutsTheKeyBackWhenItIsMissing) {
   ASSERT_EQ(OSCryptKeyBackupState::kCreated,
             WriteOSCryptKeyBackupIfAbsent(path(), "wrapped-key", "app-bound"));
 
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestored,
-            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
+
   EXPECT_EQ("wrapped-key", LiveKey());
   EXPECT_EQ("app-bound", AppBoundKey());
   EXPECT_EQ(OSCryptKeyRestoreResult::kRestored, RecordedResult());
@@ -142,23 +142,26 @@ TEST_F(OSCryptKeyRestoreTest, LeavesAKeyThatIsAlreadyThereAlone) {
             WriteOSCryptKeyBackupIfAbsent(path(), "backed-up-key", ""));
   local_state_.SetString("os_crypt.encrypted_key", "live-key");
 
-  EXPECT_EQ(OSCryptKeyRestoreResult::kNotAttempted,
-            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
+
   EXPECT_EQ("live-key", LiveKey());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kNotAttempted, RecordedResult());
 }
 
 TEST_F(OSCryptKeyRestoreTest, ReportsWhenThereIsNothingToRestoreFrom) {
-  EXPECT_EQ(OSCryptKeyRestoreResult::kNoBackup,
-            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
+
   EXPECT_TRUE(LiveKey().empty());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kNoBackup, RecordedResult());
 }
 
 TEST_F(OSCryptKeyRestoreTest, ReportsAnUnusableBackup) {
   ASSERT_TRUE(base::WriteFile(path(), "{ this is not json"));
 
-  EXPECT_EQ(OSCryptKeyRestoreResult::kBackupUnusable,
-            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
+
   EXPECT_TRUE(LiveKey().empty());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kBackupUnusable, RecordedResult());
 }
 
 // The kill switch: with the feature off, a lost key is left lost.
@@ -168,8 +171,8 @@ TEST_F(OSCryptKeyRestoreTest, DoesNothingWhenTheFeatureIsOff) {
   ASSERT_EQ(OSCryptKeyBackupState::kCreated,
             WriteOSCryptKeyBackupIfAbsent(path(), "wrapped-key", "app-bound"));
 
-  EXPECT_EQ(OSCryptKeyRestoreResult::kNotAttempted,
-            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
+
   EXPECT_TRUE(LiveKey().empty());
   EXPECT_TRUE(AppBoundKey().empty());
   EXPECT_EQ(OSCryptKeyRestoreResult::kNotAttempted, RecordedResult());
@@ -184,20 +187,22 @@ TEST_F(OSCryptKeyRestoreTest, LeavesALiveAppBoundKeyAlone) {
   local_state_.SetString(os_crypt_async::kAppBoundEncryptedKeyPrefName,
                          "live-v20");
 
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestored,
-            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
+
   EXPECT_EQ("wrapped-key", LiveKey());
   EXPECT_EQ("live-v20", AppBoundKey());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestored, RecordedResult());
 }
 
 TEST_F(OSCryptKeyRestoreTest, OmitsAnAppBoundKeyTheBackupDoesNotHave) {
   ASSERT_EQ(OSCryptKeyBackupState::kCreated,
             WriteOSCryptKeyBackupIfAbsent(path(), "wrapped-key", ""));
 
-  EXPECT_EQ(OSCryptKeyRestoreResult::kRestored,
-            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_);
+
   EXPECT_EQ("wrapped-key", LiveKey());
   EXPECT_TRUE(AppBoundKey().empty());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kRestored, RecordedResult());
 }
 
 }  // namespace brave

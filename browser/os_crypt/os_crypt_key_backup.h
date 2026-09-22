@@ -52,7 +52,8 @@ OSCryptKeyBackupState WriteOSCryptKeyBackupIfAbsent(const base::FilePath& path,
                                                     std::string encrypted_key,
                                                     std::string app_bound_key);
 
-// What happened on the restore path.
+// What happened on the restore path. Recorded in `Local State` under
+// `brave.os_crypt.key_restore_result`; nothing is returned to the caller.
 enum class OSCryptKeyRestoreResult {
   // `Local State` already had a key. Nothing was read from disk.
   kNotAttempted = 0,
@@ -80,9 +81,8 @@ BASE_DECLARE_FEATURE(kBraveOSCryptKeyRestore);
 //
 // Blocking, but only touches the disk on the failure path: when a key is
 // present this reads one in-memory pref and returns.
-OSCryptKeyRestoreResult MaybeRestoreOSCryptKey(
-    const base::FilePath& user_data_dir,
-    PrefService* local_state);
+void MaybeRestoreOSCryptKey(const base::FilePath& user_data_dir,
+                            PrefService* local_state);
 
 void RegisterOSCryptKeyBackupLocalStatePrefs(PrefRegistrySimple* registry);
 
