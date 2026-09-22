@@ -679,6 +679,27 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     return true;
   }
 
+  // Simulates clicking the Cancel button in the consent/progress dialog by
+  // invoking the same mojo call the WebUI's `api.closeDialog` triggers.
+  bool CancelModalDialog(content::WebContents* dialog_wc) {
+    if (!dialog_wc) {
+      return false;
+    }
+
+    auto* dialog_ui =
+        dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
+    if (!dialog_ui) {
+      return false;
+    }
+
+    if (dialog_ui->psst_consent_handler_) {
+      dialog_ui->psst_consent_handler_->CloseDialog();
+      return true;
+    }
+
+    return false;
+  }
+
   // Returns the PSST location bar page action icon view for the active browser
   // window, or nullptr if it can't be resolved.
   IconLabelBubbleView* GetPsstPageActionView() {
@@ -1191,6 +1212,41 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(psst_website_settings->uids_to_perform, perform_uids);
 
   ASSERT_TRUE(CloseModalDialog(dialog_wc));
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59223:
+// clicking Cancel after starting the PSST flow must stop the flow and close
+// the consent dialog, instead of leaving the flow running.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       LocationBarIconLeftClickCancelDuringFlowStopsFlow) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  content::WebContents* dialog_wc = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+  ASSERT_TRUE(dialog_wc);
+
+  DialogCloseObserver dialog_close_observer(dialog_wc);
+
+  // Click Apply to start the flow, then immediately click Cancel, before
+  // pumping the message loop again, so the cancellation is guaranteed to run
+  // ahead of any in-flight script response that could otherwise navigate the
+  // tab to the next task page.
+  const std::vector<std::string> perform_uids = {"1", "2"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
+  ASSERT_TRUE(CancelModalDialog(dialog_wc));
+
+  // The dialog closes and the location bar icon hides as part of the same
+  // cancellation.
+  dialog_close_observer.Wait();
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
+
+  // The flow was cancelled before the tab could navigate to any task page.
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
 }
 
 // Regression test for https://github.com/brave/brave-browser/issues/58296:

@@ -310,6 +310,10 @@ class PsstTabWebContentsObserverUnitTestBase
     return variations_service_.get();
   }
 
+  PsstTabWebContentsObserver* observer() {
+    return psst_web_contents_observer_.get();
+  }
+
  protected:
   base::test::ScopedFeatureList feature_list_;
 
@@ -1270,6 +1274,90 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_EQ(script_params, user_script_insert_future.Take());
   EXPECT_TRUE(user_accept_psst_settings_future.Wait());
   EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
+}
+
+// Clicking Cancel while the flow is running calls CancelInFlightFlow(false)
+// (see PsstUiDesktopPresenter::PsstUiDesktopDelegate::CancelInFlightFlow).
+// Once called, a policy script result that arrives afterwards - simulating a
+// script that was already in flight when the user cancelled - must be
+// dropped: no UI update and no navigation to the URL it reports.
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       CancelInFlightFlowDropsPendingPolicyScriptResult) {
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script_, policy_script_)));
+
+  base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<void> user_accept_psst_settings_future;
+
+  EXPECT_CALL(ui_delegate(),
+              GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_));
+
+  auto script_params = base::Value(
+      base::DictValue()
+          .Set("initial_execution", true)
+          .Set("user_id", user_id_)
+          .Set("site_name", "example")
+          .Set("tasks",
+               base::ListValue().Append(base::DictValue()
+                                            .Set("uid", "1")
+                                            .Set("url", "https://example1.com")
+                                            .Set("description", "settings"))));
+
+  ExpectUserScriptInjected(user_script_)
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           script_params.Clone()));
+
+  const std::vector<std::string> expected_uids_to_perform = {"1"};
+  EXPECT_CALL(ui_delegate(),
+              Show(url::Origin::Create(url_),
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
+                                         std::vector<std::string>()),
+                   1, _, _))
+      .WillOnce(ShowCallback(&user_accept_psst_settings_future,
+                             expected_uids_to_perform));
+
+  // Hold the policy script's result callback instead of running it, so the
+  // test controls exactly when - if ever - it is invoked.
+  PsstTabWebContentsObserver::InsertScriptInPageCallback
+      held_policy_script_callback;
+  EXPECT_CALL(inject_async_script_callback(), Run)
+      .WillOnce(HoldInsertScriptInPageCallback(&held_policy_script_callback));
+
+  DocumentOnLoadObserver load_observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url_);
+  load_observer.Wait();
+
+  check_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
+  // The consent dialog was accepted, which starts the policy script.
+  EXPECT_TRUE(user_accept_psst_settings_future.Wait());
+  ASSERT_FALSE(held_policy_script_callback.is_null());
+
+  // The user clicks Cancel while the policy script is still in flight.
+  observer()->CancelInFlightFlow(/*reset_current_page_processing=*/false);
+
+  // A result that would otherwise report completion and navigate the tab to
+  // `next_url` must be dropped instead, since the flow was cancelled.
+  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(0);
+  const GURL next_url("https://example2.com");
+  std::move(held_policy_script_callback)
+      .Run(base::Value(
+          base::DictValue()
+              .Set("next_url", next_url.spec())
+              .Set("psst",
+                   base::DictValue()
+                       .Set("progress", 100)
+                       .Set("applied_tasks",
+                            base::ListValue().Append(
+                                base::DictValue()
+                                    .Set("uid", "1")
+                                    .Set("url", url_.spec())
+                                    .Set("description", "settings"))))));
+
+  EXPECT_EQ(url_, web_contents()->GetLastCommittedURL());
 }
 
 class PsstTabWebContentsObserverFeatureDisabledUnitTest
