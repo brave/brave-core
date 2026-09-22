@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_OS_CRYPT_KEY_BACKUP_H_
-#define BRAVE_BROWSER_OS_CRYPT_KEY_BACKUP_H_
+#ifndef BRAVE_BROWSER_OS_CRYPT_OS_CRYPT_KEY_BACKUP_H_
+#define BRAVE_BROWSER_OS_CRYPT_OS_CRYPT_KEY_BACKUP_H_
 
 #include <string>
 
@@ -88,4 +88,4 @@ void BackUpOSCryptKey(const base::FilePath& user_data_dir,
 
 }  // namespace brave
 
-#endif  // BRAVE_BROWSER_OS_CRYPT_KEY_BACKUP_H_
+#endif  // BRAVE_BROWSER_OS_CRYPT_OS_CRYPT_KEY_BACKUP_H_

@@ -17,7 +17,7 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "base/path_service.h"
-#include "brave/browser/os_crypt/key_backup.h"
+#include "brave/browser/os_crypt/os_crypt_key_backup.h"
 #include "chrome/common/chrome_paths.h"
 #endif
 

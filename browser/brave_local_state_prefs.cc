@@ -116,7 +116,7 @@
 #endif
 
 #if BUILDFLAG(IS_WIN)
-#include "brave/browser/os_crypt/key_backup.h"
+#include "brave/browser/os_crypt/os_crypt_key_backup.h"
 #include "brave/components/windows_recall/windows_recall.h"
 #endif
 

@@ -7,8 +7,8 @@ assert(is_win)
 
 source_set("os_crypt") {
   sources = [
-    "//brave/browser/os_crypt/key_backup.cc",
-    "//brave/browser/os_crypt/key_backup.h",
+    "os_crypt_key_backup.cc",
+    "os_crypt_key_backup.h",
   ]
 
   deps = [
@@ -22,7 +22,7 @@ source_set("os_crypt") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "//brave/browser/os_crypt/key_backup_unittest.cc" ]
+  sources = [ "//brave/browser/os_crypt/os_crypt_key_backup_unittest.cc" ]
 
   deps = [
     ":os_crypt",
