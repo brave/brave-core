@@ -15,9 +15,9 @@
 
 namespace brave_ads {
 
-class AdsServiceImplIOSTest : public PlatformTest {
+class BraveAdsServiceImplIOSTest : public PlatformTest {
  public:
-  AdsServiceImplIOSTest() {
+  BraveAdsServiceImplIOSTest() {
     RegisterProfilePrefs(prefs_.registry());
     ads_service_ = std::make_unique<AdsServiceImplIOS>(prefs_);
   }
@@ -28,7 +28,8 @@ class AdsServiceImplIOSTest : public PlatformTest {
   std::unique_ptr<AdsServiceImplIOS> ads_service_;
 };
 
-TEST_F(AdsServiceImplIOSTest, ClearsAdsDataWhenSponsoredAdsBecomeDisabled) {
+TEST_F(BraveAdsServiceImplIOSTest,
+       ClearsAdsDataWhenSponsoredAdsBecomeDisabled) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
   // A proxy for the `brave.brave_ads.*` prefs cleared alongside it.
@@ -44,7 +45,8 @@ TEST_F(AdsServiceImplIOSTest, ClearsAdsDataWhenSponsoredAdsBecomeDisabled) {
   EXPECT_FALSE(prefs_.GetBoolean(prefs::kSponsoredEnabled));
 }
 
-TEST_F(AdsServiceImplIOSTest, DoesNotClearAdsDataWhenUnrelatedPrefChanges) {
+TEST_F(BraveAdsServiceImplIOSTest,
+       DoesNotClearAdsDataWhenUnrelatedPrefChanges) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
   prefs_.SetString(prefs::kDiagnosticId, "foo");
@@ -56,7 +58,8 @@ TEST_F(AdsServiceImplIOSTest, DoesNotClearAdsDataWhenUnrelatedPrefChanges) {
   EXPECT_EQ("foo", prefs_.GetString(prefs::kDiagnosticId));
 }
 
-TEST_F(AdsServiceImplIOSTest, DoesNotClearAdsDataWhenSponsoredAdsAreEnabled) {
+TEST_F(BraveAdsServiceImplIOSTest,
+       DoesNotClearAdsDataWhenSponsoredAdsAreEnabled) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
   prefs_.SetString(prefs::kDiagnosticId, "foo");

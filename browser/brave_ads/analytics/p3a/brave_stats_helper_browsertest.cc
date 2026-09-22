@@ -21,9 +21,9 @@
 
 namespace brave_ads {
 
-class BraveStatsHelperBrowserTest : public PlatformBrowserTest {
+class BraveAdsStatsHelperBrowserTest : public PlatformBrowserTest {
  public:
-  BraveStatsHelperBrowserTest() = default;
+  BraveAdsStatsHelperBrowserTest() = default;
 
  protected:
   Profile& CreateProfile(base::FilePath& profile_path) {
@@ -45,7 +45,7 @@ class BraveStatsHelperBrowserTest : public PlatformBrowserTest {
   base::HistogramTester histogram_tester_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveAdsStatsHelperBrowserTest,
                        PrimaryProfileEnabledUpdate) {
   Profile* primary_profile = profile_manager()->GetLastUsedProfile();
 
@@ -59,7 +59,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest,
 }
 
 #if !BUILDFLAG(IS_ANDROID)
-IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest, ProfileSwitch) {
+IN_PROC_BROWSER_TEST_F(BraveAdsStatsHelperBrowserTest, ProfileSwitch) {
   base::FilePath profile_one_path;
   Profile& profile_one = CreateProfile(profile_one_path);
   profile_one.GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, true);
@@ -76,7 +76,8 @@ IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest, ProfileSwitch) {
   EXPECT_EQ(local_state()->GetBoolean(prefs::kEnabledForLastProfile), true);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest, MultiProfileEnabledUpdate) {
+IN_PROC_BROWSER_TEST_F(BraveAdsStatsHelperBrowserTest,
+                       MultiProfileEnabledUpdate) {
   base::FilePath profile_one_path;
   Profile& profile_one = CreateProfile(profile_one_path);
   profile_one.GetPrefs()->SetBoolean(prefs::kNotificationsEnabled, true);
@@ -97,7 +98,7 @@ IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest, MultiProfileEnabledUpdate) {
 }
 #endif
 
-IN_PROC_BROWSER_TEST_F(BraveStatsHelperBrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveAdsStatsHelperBrowserTest,
                        AdsEnabledInstallationTime) {
   brave_stats_helper()->SetFirstRunTimeForTesting(base::Time::Now() -
                                                   base::Minutes(45));
