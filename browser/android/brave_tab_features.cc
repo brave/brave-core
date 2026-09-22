@@ -33,7 +33,7 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
           misc_metrics::features::kCaptchaMetricsCollection)) {
     cloudflare_js_detection_tab_helper_ =
         misc_metrics::CaptchaMetrics::CloudflareJsDetectionTabHelper::
-            MaybeCreate(*TabAndroid::FromWebContents(web_contents));
+            MaybeCreate(*TabInterface::GetFromContents(web_contents));
   }
 }
 

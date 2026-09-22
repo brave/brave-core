@@ -81,6 +81,7 @@ source_set("tabs_impl") {
     "//base",
     "//brave/browser/ai_chat",
     "//brave/browser/misc_metrics:misc_metrics_impl",
+    "//brave/components/misc_metrics",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
   ]
