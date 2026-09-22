@@ -9,10 +9,13 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
+#include "brave/browser/image_metadata_stripper/image_metadata_stripper_upload_controller.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/image_metadata_stripper/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/page_action/action_ids.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
@@ -69,6 +72,13 @@ BraveTabFeatures::~BraveTabFeatures() = default;
 
 void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   TabFeatures::Init(tab, profile);
+
+  if (base::FeatureList::IsEnabled(
+          image_metadata_stripper::features::kStripImageMetadataV1)) {
+    image_metadata_stripper_dir_controller_ =
+        std::make_unique<brave::ImageMetadataStripperUploadController>(
+            tab.GetContents());
+  }
 
   // Expect upstream's Init to create the registry.
   auto* side_panel_registry = SidePanelRegistry::From(&tab);

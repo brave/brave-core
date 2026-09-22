@@ -80,6 +80,8 @@ source_set("tabs_impl") {
     ":tabs_public",
     "//base",
     "//brave/browser/ai_chat",
+    "//brave/browser/image_metadata_stripper",
+    "//brave/components/image_metadata_stripper/common",
     "//chrome/browser/profiles:profile",
     "//content/public/browser",
   ]

@@ -15,11 +15,15 @@ class Profile;
 namespace ai_chat {
 class TabDataWebContentsObserver;
 class WebMcpInjector;
-}
+}  // namespace ai_chat
 
 namespace content {
 class WebContents;
 }  // namespace content
+
+namespace brave {
+class ImageMetadataStripperUploadController;
+}  // namespace brave
 
 namespace tabs {
 
@@ -31,7 +35,14 @@ class BraveTabFeatures : public TabFeatures_Chromium {
   ~BraveTabFeatures();
   static BraveTabFeatures* FromTabFeatures(TabFeatures* tab_features);
 
+  brave::ImageMetadataStripperUploadController*
+  image_metadata_stripper_dir_controller() {
+    return image_metadata_stripper_dir_controller_.get();
+  }
+
  private:
+  std::unique_ptr<brave::ImageMetadataStripperUploadController>
+      image_metadata_stripper_dir_controller_;
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;
 };

@@ -24,7 +24,7 @@ class Profile;
 namespace ai_chat {
 class TabDataWebContentsObserver;
 class WebMcpInjector;
-}
+}  // namespace ai_chat
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -63,6 +63,10 @@ class PsstTabWebContentsObserver;
 #include "brave/browser/ui/views/page_action/brave_news_page_action_controller.h"
 #endif
 
+namespace brave {
+class ImageMetadataStripperUploadController;
+}  // namespace brave
+
 namespace tabs {
 
 class TabInterface;
@@ -74,6 +78,11 @@ class BraveTabFeatures : public TabFeatures {
   ~BraveTabFeatures() override;
 
   void Init(TabInterface& tab, Profile* profile) override;
+
+  brave::ImageMetadataStripperUploadController*
+  image_metadata_stripper_dir_controller() {
+    return image_metadata_stripper_dir_controller_.get();
+  }
 
 #if BUILDFLAG(ENABLE_PSST)
   psst::PsstTabWebContentsObserver* psst_web_contents_observer() {
@@ -127,6 +136,8 @@ class BraveTabFeatures : public TabFeatures {
 #endif
 
  private:
+  std::unique_ptr<brave::ImageMetadataStripperUploadController>
+      image_metadata_stripper_dir_controller_;
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;
