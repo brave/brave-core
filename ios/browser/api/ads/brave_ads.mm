@@ -16,10 +16,12 @@
 #include "base/containers/flat_map.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/sys_string_conversions.h"
+#include "base/task/bind_post_task.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/sequence_bound.h"
@@ -1324,19 +1326,24 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 - (void)loadResourceComponent:(const std::string&)id
                       version:(int)version
-                     callback:(brave_ads::LoadFileCallback)callback {
+                     callback:(brave_ads::LoadResourceComponentCallback)callback {
   NSString* bridgedId = base::SysUTF8ToNSString(id);
   NSString* nsFilePath = [self.commonOps dataPathForFilename:bridgedId];
 
   BLOG(1, @"Loading %@ ads resource descriptor", nsFilePath);
 
   base::FilePath file_path(base::SysNSStringToUTF8(nsFilePath));
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()}, base::BindOnce(^base::File {
-        return base::File(file_path,
-                          base::File::FLAG_OPEN | base::File::FLAG_READ);
-      }),
-      base::BindOnce(std::move(callback)));
+  base::ThreadPool::PostTask(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(
+          [](base::FilePath file_path,
+             brave_ads::LoadResourceComponentCallback callback) {
+            const bool exists = base::PathExists(file_path);
+            base::File file(file_path, base::File::FLAG_OPEN |
+                                            base::File::FLAG_READ);
+            std::move(callback).Run(std::move(file), exists);
+          },
+          file_path, base::BindPostTaskToCurrentDefault(std::move(callback))));
 }
 
 - (void)showScheduledCaptcha:(const std::string&)payment_id

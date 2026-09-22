@@ -11,6 +11,7 @@
 #include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/test/run_until.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/country_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/resource_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
@@ -19,6 +20,7 @@
 #include "brave/components/brave_ads/core/internal/settings/test/settings_test_util.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/purchase_intent/resource/purchase_intent_resource_constants.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -39,7 +41,8 @@ class BraveAdsPurchaseIntentResourceTest : public test::TestBase {
 TEST_F(BraveAdsPurchaseIntentResourceTest, IsResourceNotLoaded) {
   // Act & Assert
   EXPECT_FALSE(resource_->GetManifestVersion());
-  EXPECT_FALSE(resource_->IsLoaded());
+  EXPECT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
+  EXPECT_NE(ResourceLoadStateType::kFailedToLoad, resource_->GetLoadState());
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, LoadResource) {
@@ -48,7 +51,8 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, LoadResource) {
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
 
   // Act & Assert
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
+  EXPECT_NE(ResourceLoadStateType::kFailedToLoad, resource_->GetLoadState());
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMalformedResource) {
@@ -62,7 +66,36 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMalformedResource) {
   ASSERT_TRUE(resource_->GetManifestVersion());
 
   // Act & Assert
-  EXPECT_FALSE(resource_->IsLoaded());
+  ASSERT_TRUE(
+      base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kFailedToLoad; }));
+  EXPECT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
+}
+
+TEST_F(BraveAdsPurchaseIntentResourceTest,
+       DoNotFlagFailureForUnsupportedVersion) {
+  // Arrange: cause a genuine failure first so `GetLoadState()` starts at
+  // `kFailedToLoad`, giving the assertion below an actual transition to wait
+  // for.
+  ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
+      /*from_path=*/test::kMalformedResourceId,
+      /*to_path=*/kPurchaseIntentResourceId));
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
+  ASSERT_TRUE(
+      base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kFailedToLoad; }));
+
+  // Act
+  ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
+      /*from_path=*/test::kUnsupportedVersionPurchaseIntentResourceId,
+      /*to_path=*/kPurchaseIntentResourceId));
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersionUpdate, test::kCountryComponentId);
+
+  // Assert
+  ASSERT_TRUE(base::test::RunUntil([this] {
+    return resource_->GetLoadState() != ResourceLoadStateType::kFailedToLoad;
+  }));
+  EXPECT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
@@ -71,21 +104,61 @@ TEST_F(BraveAdsPurchaseIntentResourceTest, DoNotLoadMissingResource) {
                                                   /*version=*/::testing::_,
                                                   /*callback=*/::testing::_))
       .WillByDefault([](const std::string& /*id*/, int /*version*/,
-                        LoadFileCallback callback) {
+                        LoadResourceComponentCallback callback) {
         const base::FilePath path =
             test::ResourceComponentsDataPath().AppendASCII(
                 test::kMissingResourceId);
 
         base::File file(
             path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
-        std::move(callback).Run(std::move(file));
+        std::move(callback).Run(std::move(file), /*exists=*/true);
       });
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
 
   // Act & Assert
-  EXPECT_FALSE(resource_->IsLoaded());
+  ASSERT_TRUE(
+      base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kFailedToLoad; }));
+  EXPECT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
+}
+
+TEST_F(BraveAdsPurchaseIntentResourceTest,
+       DoNotFlagFailureForUnregisteredResource) {
+  // Arrange
+  ON_CALL(ads_client_mock_, LoadResourceComponent(kPurchaseIntentResourceId,
+                                                  /*version=*/::testing::_,
+                                                  /*callback=*/::testing::_))
+      .WillByDefault([](const std::string& /*id*/, int /*version*/,
+                        LoadResourceComponentCallback callback) {
+        std::move(callback).Run(/*file=*/{}, /*exists=*/false);
+      });
+
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
+
+  // Act & Assert
+  EXPECT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
+  EXPECT_NE(ResourceLoadStateType::kFailedToLoad, resource_->GetLoadState());
+}
+
+TEST_F(BraveAdsPurchaseIntentResourceTest,
+       ResetFailureToLoadWhenNoLongerRequired) {
+  // Arrange
+  ASSERT_TRUE(CopyFileFromTestDataPathToProfilePath(
+      /*from_path=*/test::kMalformedResourceId,
+      /*to_path=*/kPurchaseIntentResourceId));
+
+  ads_client_notifier_.NotifyResourceComponentDidChange(
+      test::kCountryComponentManifestVersion, test::kCountryComponentId);
+  ASSERT_TRUE(
+      base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kFailedToLoad; }));
+
+  // Act
+  SetProfileBooleanPref(brave_rewards::prefs::kEnabled, false);
+
+  // Assert
+  EXPECT_NE(ResourceLoadStateType::kFailedToLoad, resource_->GetLoadState());
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
@@ -94,7 +167,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
       test::kCountryComponentManifestVersion, test::kInvalidCountryComponentId);
 
   // Act & Assert
-  EXPECT_FALSE(resource_->IsLoaded());
+  EXPECT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
@@ -106,7 +179,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
 
   // Act & Assert
-  EXPECT_FALSE(resource_->IsLoaded());
+  EXPECT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
@@ -116,7 +189,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_FALSE(resource_->IsLoaded());
+  ASSERT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 
   // Act
   SetProfileBooleanPref(
@@ -124,7 +197,7 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
   SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 
   // Assert
-  EXPECT_FALSE(resource_->IsLoaded());
+  EXPECT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
@@ -134,13 +207,13 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_FALSE(resource_->IsLoaded());
+  ASSERT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 
   // Act
   SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 
   // Assert
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 }
 
 TEST_F(BraveAdsPurchaseIntentResourceTest,
@@ -150,13 +223,13 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   // Act
   SetProfileBooleanPref(prefs::kNotificationsEnabled, true);
 
   // Assert
-  EXPECT_TRUE(resource_->IsLoaded());
+  EXPECT_EQ(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 }
 
 TEST_F(
@@ -167,13 +240,13 @@ TEST_F(
 
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_FALSE(resource_->IsLoaded());
+  ASSERT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 
   // Act
   SetProfileBooleanPref(prefs::kSponsoredEnabled, true);
 
   // Assert
-  EXPECT_FALSE(resource_->IsLoaded());
+  EXPECT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 }
 
 TEST_F(
@@ -182,14 +255,14 @@ TEST_F(
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   // Act
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kInvalidCountryComponentId);
 
   // Assert
-  EXPECT_TRUE(resource_->IsLoaded());
+  EXPECT_EQ(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 }
 
 TEST_F(
@@ -198,14 +271,14 @@ TEST_F(
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   // Act
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
 
   // Assert
-  EXPECT_TRUE(resource_->IsLoaded());
+  EXPECT_EQ(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 }
 
 TEST_F(
@@ -214,7 +287,7 @@ TEST_F(
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
   ASSERT_EQ(test::kCountryComponentManifestVersion,
             resource_->GetManifestVersion());
 
@@ -223,7 +296,7 @@ TEST_F(
       test::kCountryComponentManifestVersionUpdate, test::kCountryComponentId);
 
   // Assert
-  EXPECT_TRUE(resource_->IsLoaded());
+  EXPECT_EQ(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
   EXPECT_EQ(test::kCountryComponentManifestVersionUpdate,
             resource_->GetManifestVersion());
 }
@@ -233,14 +306,14 @@ TEST_F(BraveAdsPurchaseIntentResourceTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   // Act
   ads_client_notifier_.NotifyDidUnregisterResourceComponent(
       test::kCountryComponentId);
 
   // Assert
-  EXPECT_FALSE(resource_->IsLoaded());
+  EXPECT_NE(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 }
 
 TEST_F(
@@ -249,14 +322,14 @@ TEST_F(
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kCountryComponentManifestVersion, test::kCountryComponentId);
-  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->IsLoaded(); }));
+  ASSERT_TRUE(base::test::RunUntil([this] { return resource_->GetLoadState() == ResourceLoadStateType::kLoaded; }));
 
   // Act
   ads_client_notifier_.NotifyDidUnregisterResourceComponent(
       test::kInvalidCountryComponentId);
 
   // Assert
-  EXPECT_TRUE(resource_->IsLoaded());
+  EXPECT_EQ(ResourceLoadStateType::kLoaded, resource_->GetLoadState());
 }
 
 }  // namespace brave_ads

@@ -174,6 +174,10 @@ export interface AppState {
   adHistoryRetentionPeriodDays: number
   diagnosticId: string
   isInitialized: boolean
+  // False until the first `loadDiagnostics()` response arrives, so the UI
+  // can show a loading indicator instead of treating the empty defaults
+  // below as a confirmed "not loaded"/"failed" result.
+  diagnosticsLoaded: boolean
   diagnosticEntries: DiagnosticEntry[]
   // Comes from the browser process's VariationsService, not
   // `DiagnosticManager`, so it is tracked separately from `diagnosticEntries`
@@ -245,6 +249,7 @@ export function defaultAppStore() {
     adHistoryRetentionPeriodDays: 30,
     diagnosticId: '',
     isInitialized: false,
+    diagnosticsLoaded: false,
     diagnosticEntries: [],
     variationsCountryCode: '',
     rewardsDiagnosticEntries: [],

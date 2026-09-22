@@ -8,6 +8,7 @@
 #include <vector>
 
 #include "base/test/run_until.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "url/gurl.h"
 
 namespace brave_ads::test {
@@ -17,7 +18,9 @@ PurchaseIntentHelper::PurchaseIntentHelper() : processor_(resource_) {}
 PurchaseIntentHelper::~PurchaseIntentHelper() = default;
 
 void PurchaseIntentHelper::Simulate() {
-  CHECK(base::test::RunUntil([this] { return resource_.IsLoaded(); }));
+  CHECK(base::test::RunUntil([this] {
+    return resource_.GetLoadState() == ResourceLoadStateType::kLoaded;
+  }));
 
   const std::vector<GURL> urls = {
       GURL("https://www.brave.com/test?foo=bar"),

@@ -140,6 +140,7 @@ export function createAppStore(): AppStore {
       store.update({
         diagnosticId,
         isInitialized,
+        diagnosticsLoaded: true,
         diagnosticEntries: entries,
         variationsCountryCode,
         rewardsDiagnosticEntries: rewardsEntries,

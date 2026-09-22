@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/test/run_until.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
@@ -49,7 +50,9 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsForEmptyText) {
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ASSERT_TRUE(base::test::RunUntil([this] {
+    return resource_->GetLoadState() == ResourceLoadStateType::kLoaded;
+  }));
 
   TextClassificationProcessor processor(*resource_);
   processor.Process(/*text=*/"");
@@ -67,7 +70,9 @@ TEST_F(BraveAdsTextClassificationModelTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ASSERT_TRUE(base::test::RunUntil([this] {
+    return resource_->GetLoadState() == ResourceLoadStateType::kLoaded;
+  }));
 
   TextClassificationProcessor processor(*resource_);
   processor.Process(/*text=*/"Some content about technology & computing");
@@ -148,7 +153,9 @@ TEST_F(BraveAdsTextClassificationModelTest,
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ASSERT_TRUE(base::test::RunUntil([this] {
+    return resource_->GetLoadState() == ResourceLoadStateType::kLoaded;
+  }));
 
   const std::vector<std::string> texts = {
       "Some content about cooking food", "Some content about finance & banking",
@@ -275,7 +282,9 @@ TEST_F(BraveAdsTextClassificationModelTest, DoNotGetSegmentsIfNeverProcessed) {
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ASSERT_TRUE(base::test::RunUntil([this] {
+    return resource_->GetLoadState() == ResourceLoadStateType::kLoaded;
+  }));
 
   // Act
   const SegmentList text_classification_segments =

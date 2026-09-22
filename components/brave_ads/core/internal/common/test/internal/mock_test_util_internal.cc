@@ -111,18 +111,20 @@ void MockLoadResourceComponent(AdsClientMock& ads_client_mock,
                                const base::FilePath& profile_path) {
   ON_CALL(ads_client_mock, LoadResourceComponent)
       .WillByDefault([&profile_path](const std::string& id, int /*version*/,
-                                     LoadFileCallback callback) {
+                                     LoadResourceComponentCallback callback) {
         base::FilePath path = profile_path.AppendASCII(id);
 
-        if (!base::PathExists(path)) {
+        bool exists = base::PathExists(path);
+        if (!exists) {
           // If path does not exist attempt to load the file from the test
           // resource components data path.
           path = ResourceComponentsDataPath().AppendASCII(id);
+          exists = base::PathExists(path);
         }
 
         base::File file(
             path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
-        std::move(callback).Run(std::move(file));
+        std::move(callback).Run(std::move(file), exists);
       });
 }
 

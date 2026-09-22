@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/test/run_until.h"
+#include "brave/components/brave_ads/core/internal/common/resources/resource_load_state_types.h"
 #include "brave/components/brave_ads/core/internal/common/resources/test/language_components_test_constants.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/deprecated/client/client_state_manager.h"
@@ -48,7 +49,9 @@ TEST_F(BraveAdsTextClassificationProcessorTest, DoNotProcessForEmptyText) {
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ASSERT_TRUE(base::test::RunUntil([this] {
+    return resource_->GetLoadState() == ResourceLoadStateType::kLoaded;
+  }));
 
   TextClassificationProcessor processor(*resource_);
 
@@ -66,7 +69,9 @@ TEST_F(BraveAdsTextClassificationProcessorTest, NeverProcessed) {
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ASSERT_TRUE(base::test::RunUntil([this] {
+    return resource_->GetLoadState() == ResourceLoadStateType::kLoaded;
+  }));
 
   // Act & Assert
   const TextClassificationProbabilityList& text_classification_probabilities =
@@ -79,7 +84,9 @@ TEST_F(BraveAdsTextClassificationProcessorTest, ProcessText) {
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ASSERT_TRUE(base::test::RunUntil([this] {
+    return resource_->GetLoadState() == ResourceLoadStateType::kLoaded;
+  }));
 
   TextClassificationProcessor processor(*resource_);
 
@@ -102,7 +109,9 @@ TEST_F(BraveAdsTextClassificationProcessorTest, ProcessMultipleText) {
   // Arrange
   ads_client_notifier_.NotifyResourceComponentDidChange(
       test::kLanguageComponentManifestVersion, test::kLanguageComponentId);
-  ASSERT_TRUE(resource_->IsLoaded());
+  ASSERT_TRUE(base::test::RunUntil([this] {
+    return resource_->GetLoadState() == ResourceLoadStateType::kLoaded;
+  }));
 
   TextClassificationProcessor processor(*resource_);
 
