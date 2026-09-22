@@ -10,8 +10,10 @@
 
 #include "base/strings/string_util.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/misc_metrics/features.h"
@@ -312,6 +314,43 @@ IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest,
   histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 1, 1);
   histogram_tester_.ExpectUniqueSample(kCaptchaCloudflareCountHistogramName, 1,
                                        1);
+}
+
+IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest,
+                       RecordsCloudflareJavascriptDetectionOnce) {
+  // example.com is not a captcha provider, so the page-load observer records
+  // nothing. The detection scripts are same-origin subresources.
+  NavigateAndWaitForLoad(GetURL("example.com", "/simple.html"));
+
+  ASSERT_TRUE(content::EvalJs(
+                  web_contents(),
+                  "Promise.all(["
+                  "fetch('/cdn-cgi/challenge-platform/scripts/jsd/main.js'),"
+                  "fetch('/cdn-cgi/challenge-platform/h/g/jsd/oneshot/1')"
+                  "]).then(() => true)")
+                  .ExtractBool());
+
+  // ResourceLoadComplete can land after the fetch promise resolves.
+  ASSERT_TRUE(base::test::RunUntil([] {
+    const base::DictValue* cloudflare =
+        g_browser_process->local_state()
+            ->GetDict(kMiscMetricsCaptchaDictionaryPref)
+            .FindDict("cloudflare");
+    return cloudflare && cloudflare->FindInt("total").value_or(0) == 1;
+  }));
+
+  ReportPendingCounts();
+
+  // Two script loads, one captcha. count=1 → bucket 1. Not user-activated.
+  histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(kCaptchaCloudflareCountHistogramName, 1,
+                                       1);
+  histogram_tester_.ExpectTotalCount(kCaptchaGoogleCountHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(
+      kCaptchaTotalCountUserActivatedHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(
+      kCaptchaCloudflareCountUserActivatedHistogramName, 0);
 }
 
 }  // namespace misc_metrics

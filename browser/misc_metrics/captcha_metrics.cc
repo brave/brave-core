@@ -7,12 +7,10 @@
 
 #include <array>
 #include <optional>
-#include <string>
 #include <string_view>
-#include <utility>
 
 #include "base/check.h"
-#include "base/memory/weak_ptr.h"
+#include "base/memory/ptr_util.h"
 #include "base/notreached.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -26,13 +24,12 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/global_request_id.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
 
 namespace misc_metrics {
@@ -110,58 +107,6 @@ constexpr auto kCaptchaProvidersToReport =
     });
 
 }  // namespace
-
-// Observer for Cloudflare javascript-detection scripts. It works by checking
-// if the loaded same-origin resource paths contains references to
-// "/cdn-cgi/challenge-platform/". Note, this may return some false positive
-// hits on resource loads which was not for cloudflare but co-incidentally
-// shared the same path.
-class CloudflareJsDetectionTabHelper
-    : public content::WebContentsObserver,
-      public content::WebContentsUserData<CloudflareJsDetectionTabHelper> {
- public:
-  ~CloudflareJsDetectionTabHelper() override = default;
-
-  CloudflareJsDetectionTabHelper(const CloudflareJsDetectionTabHelper&) =
-      delete;
-  CloudflareJsDetectionTabHelper& operator=(
-      const CloudflareJsDetectionTabHelper&) = delete;
-
- private:
-  friend class content::WebContentsUserData<CloudflareJsDetectionTabHelper>;
-
-  CloudflareJsDetectionTabHelper(content::WebContents* web_contents,
-                                 base::WeakPtr<CaptchaMetrics> captcha_metrics)
-      : content::WebContentsObserver(web_contents),
-        content::WebContentsUserData<CloudflareJsDetectionTabHelper>(
-            *web_contents),
-        captcha_metrics_(std::move(captcha_metrics)) {}
-
-  void ResourceLoadComplete(content::RenderFrameHost*,
-                            const content::GlobalRequestID&,
-                            const GURL& original_url,
-                            const blink::mojom::ResourceLoadInfo&) override {
-    if (!captcha_metrics_ ||
-        !original_url.path().contains(kCloudflareJavascriptDetectionPath) ||
-        recorded_javascript_detection_) {
-      return;
-    }
-
-    // These are resource loads, including challenges.cloudflare.com
-    // subresources. The page-load observer only sees committed frame URLs, so
-    // it does not record them.
-    recorded_javascript_detection_ = true;
-    captcha_metrics_->MaybeRecordCaptchaForUrl(original_url,
-                                               /*is_user_activated=*/false);
-  }
-
-  bool recorded_javascript_detection_ = false;
-  base::WeakPtr<CaptchaMetrics> captcha_metrics_;
-
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
-};
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(CloudflareJsDetectionTabHelper);
 
 class BraveCaptchaPageLoadMetricsObserver
     : public page_load_metrics::PageLoadMetricsObserver {
@@ -241,13 +186,80 @@ class BraveCaptchaPageLoadMetricsObserver
   raw_ptr<CaptchaMetrics> captcha_metrics_;
 };
 
+CaptchaMetrics::CloudflareJsDetectionTabHelper::CloudflareJsDetectionTabHelper(
+    tabs::TabInterface& tab,
+    CaptchaMetrics* captcha_metrics)
+    : tabs::ContentsObservingTabFeature(tab),
+      captcha_metrics_(captcha_metrics) {}
+
+CaptchaMetrics::CloudflareJsDetectionTabHelper::
+    ~CloudflareJsDetectionTabHelper() = default;
+
+// static
+std::unique_ptr<CaptchaMetrics::CloudflareJsDetectionTabHelper>
+CaptchaMetrics::CloudflareJsDetectionTabHelper::MaybeCreate(
+    tabs::TabInterface& tab) {
+  content::WebContents* web_contents = tab.GetContents();
+  CHECK(web_contents);
+
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  if (!profile || !profile->IsRegularProfile()) {
+    return nullptr;
+  }
+
+  if (!g_brave_browser_process ||
+      !g_brave_browser_process->process_misc_metrics()) {
+    return nullptr;
+  }
+
+  CaptchaMetrics* captcha_metrics =
+      g_brave_browser_process->process_misc_metrics()->captcha_metrics();
+  if (!captcha_metrics) {
+    return nullptr;
+  }
+
+  return base::WrapUnique(
+      new CloudflareJsDetectionTabHelper(tab, captcha_metrics));
+}
+
+void CaptchaMetrics::CloudflareJsDetectionTabHelper::ResourceLoadComplete(
+    content::RenderFrameHost*,
+    const content::GlobalRequestID&,
+    const GURL& original_url,
+    const blink::mojom::ResourceLoadInfo&) {
+  if (!original_url.path().contains(kCloudflareJavascriptDetectionPath) ||
+      recorded_javascript_detection_) {
+    return;
+  }
+
+  // A committed frame whose URL matches a provider is already recorded by
+  // BraveCaptchaPageLoadMetricsObserver, and this callback also sees that
+  // document request. Same-origin javascript-detection scripts do not match a
+  // provider.
+  if (page_load_metrics::CaptchaProviderManager::GetInstance()
+          ->GetCaptchaProviderForUrl(original_url)
+          .has_value()) {
+    return;
+  }
+
+  recorded_javascript_detection_ = true;
+  captcha_metrics_->MaybeRecordCaptchaForUrl(original_url,
+                                             /*is_user_activated=*/false);
+}
+
+void CaptchaMetrics::CloudflareJsDetectionTabHelper::OnDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  recorded_javascript_detection_ = false;
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+}
+
 CaptchaMetrics::CaptchaMetrics(PrefService* local_state)
     : local_state_(local_state) {
   MaybeReport();
-}
-
-base::WeakPtr<CaptchaMetrics> CaptchaMetrics::GetWeakPtr() {
-  return weak_factory_.GetWeakPtr();
 }
 
 CaptchaMetrics::~CaptchaMetrics() = default;
@@ -274,25 +286,6 @@ CaptchaMetrics::CreatePageLoadMetricsObserver(Profile* profile) {
   EnsureDefaultCaptchaProviders();
   return std::make_unique<BraveCaptchaPageLoadMetricsObserver>(
       g_brave_browser_process->process_misc_metrics()->captcha_metrics());
-}
-
-// static
-void CaptchaMetrics::MaybeCreateForWebContents(
-    content::WebContents* web_contents) {
-  if (!web_contents) {
-    return;
-  }
-
-  if (!g_brave_browser_process ||
-      !g_brave_browser_process->process_misc_metrics() ||
-      !g_brave_browser_process->process_misc_metrics()->captcha_metrics()) {
-    return;
-  }
-
-  CaptchaMetrics* captcha_metrics =
-      g_brave_browser_process->process_misc_metrics()->captcha_metrics();
-  CloudflareJsDetectionTabHelper::CreateForWebContents(
-      web_contents, captcha_metrics->GetWeakPtr());
 }
 
 // static

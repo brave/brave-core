@@ -9,8 +9,8 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
-#include "base/memory/weak_ptr.h"
 #include "base/timer/wall_clock_timer.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
 
 class GURL;
 class PrefRegistrySimple;
@@ -18,16 +18,25 @@ class PrefService;
 class Profile;
 
 namespace content {
+class RenderFrameHost;
 class WebContents;
+struct GlobalRequestID;
 }  // namespace content
+
+namespace blink::mojom {
+class ResourceLoadInfo;
+}  // namespace blink::mojom
 
 namespace page_load_metrics {
 class PageLoadMetricsObserverInterface;
 }  // namespace page_load_metrics
 
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
+
 namespace misc_metrics {
 
-class CloudflareJsDetectionTabHelper;
 struct CaptchaProviderMetricDetails;
 
 // Keep the histogram name consistent with metric_names.h
@@ -55,6 +64,52 @@ inline constexpr char kCaptchaHCaptchaCountUserActivatedHistogramName[] =
 // once the captcha was detected by the BraveCaptchaPageLoadMetricsObserver.
 class CaptchaMetrics {
  public:
+  // Observes Cloudflare javascript-detection script loads. A same-origin
+  // resource whose path contains "/cdn-cgi/challenge-platform/" is recorded
+  // once per WebContents. Unrelated resources that happen to use that path
+  // can be counted as well.
+  //
+  // Owned by tab features, like CommerceUiTabHelper, so the observer follows
+  // the tab's WebContents across discards.
+  class CloudflareJsDetectionTabHelper
+      : public tabs::ContentsObservingTabFeature {
+   public:
+    ~CloudflareJsDetectionTabHelper() override;
+
+    CloudflareJsDetectionTabHelper(const CloudflareJsDetectionTabHelper&) =
+        delete;
+    CloudflareJsDetectionTabHelper& operator=(
+        const CloudflareJsDetectionTabHelper&) = delete;
+
+    // Returns nullptr unless captcha metrics are enabled for a regular
+    // profile.
+    static std::unique_ptr<CloudflareJsDetectionTabHelper> MaybeCreate(
+        tabs::TabInterface& tab);
+
+   private:
+    CloudflareJsDetectionTabHelper(tabs::TabInterface& tab,
+                                   CaptchaMetrics* captcha_metrics);
+
+    // content::WebContentsObserver:
+    void ResourceLoadComplete(
+        content::RenderFrameHost* render_frame_host,
+        const content::GlobalRequestID& request_id,
+        const GURL& original_url,
+        const blink::mojom::ResourceLoadInfo& resource_load_info) override;
+
+    // tabs::ContentsObservingTabFeature:
+    void OnDiscardContents(tabs::TabInterface* tab,
+                           content::WebContents* old_contents,
+                           content::WebContents* new_contents) override;
+
+    // At most one javascript-detection hit per WebContents. Reset when the
+    // tab discards its contents, because this feature outlives that
+    // WebContents.
+    bool recorded_javascript_detection_ = false;
+    // This is needed to trigger calls to record events to local state.
+    raw_ptr<CaptchaMetrics> captcha_metrics_;
+  };
+
   // Schedules the first P3A report. Does not emit on a first-ever registration.
   explicit CaptchaMetrics(PrefService* local_state);
   ~CaptchaMetrics();
@@ -70,17 +125,10 @@ class CaptchaMetrics {
   static std::unique_ptr<page_load_metrics::PageLoadMetricsObserverInterface>
   CreatePageLoadMetricsObserver(Profile* profile);
 
-  // Attaches an observer for Cloudflare javascript-detection script loads.
-  // No-op unless captcha metrics are enabled for a regular profile.
-  static void MaybeCreateForWebContents(content::WebContents* web_contents);
-
  private:
   friend class BraveCaptchaPageLoadMetricsObserver;
-  friend class CloudflareJsDetectionTabHelper;
   friend class CaptchaMetricsBrowserTest;
   friend class CaptchaMetricsTest;
-
-  base::WeakPtr<CaptchaMetrics> GetWeakPtr();
 
   // Seeds CaptchaProviderManager with Chromium's URL patterns when empty.
   static void EnsureDefaultCaptchaProviders();
@@ -106,8 +154,6 @@ class CaptchaMetrics {
   // The timer to help schedule the next reporting.
   base::WallClockTimer report_timer_;
   raw_ptr<PrefService> local_state_;
-
-  base::WeakPtrFactory<CaptchaMetrics> weak_factory_{this};
 };
 
 }  // namespace misc_metrics

@@ -13,9 +13,11 @@
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
 #include "brave/browser/drag_drop/brave_drag_drop_image_metadata_stripper.h"
+#include "brave/browser/misc_metrics/captcha_metrics.h"
 #include "brave/browser/ui/side_panel/brave_side_panel_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
+#include "brave/components/misc_metrics/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/page_action/action_ids.h"
 #include "chrome/browser/ui/page_action/page_action_controller.h"
@@ -193,6 +195,12 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
           image_metadata_stripper::features::kStripImageMetadataV1)) {
     drop_strip_temp_dirs_ =
         GetUserDataFactory().CreateInstance<brave::DropStripTempDirs>(tab, tab);
+  }
+
+  if (base::FeatureList::IsEnabled(
+          misc_metrics::features::kCaptchaMetricsCollection)) {
+    cloudflare_js_detection_tab_helper_ = misc_metrics::CaptchaMetrics::
+        CloudflareJsDetectionTabHelper::MaybeCreate(tab);
   }
 }
 

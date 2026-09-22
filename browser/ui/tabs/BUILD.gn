@@ -55,6 +55,8 @@ if (!is_android) {
       "//brave/browser/ui/side_panel",
       "//brave/browser/ui/views/page_action",
       "//brave/components/image_metadata_stripper/common",
+      "//brave/browser/misc_metrics:misc_metrics_impl",
+      "//brave/components/misc_metrics",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
       "//chrome/browser/ui:ui_features",
