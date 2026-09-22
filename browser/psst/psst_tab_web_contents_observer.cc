@@ -203,7 +203,8 @@ PsstTabWebContentsObserver::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
-void PsstTabWebContentsObserver::CancelInFlightFlow(bool reset_current_page_processing) {
+void PsstTabWebContentsObserver::CancelInFlightFlow(
+    bool reset_current_page_processing) {
   script_injector_remote_.reset();
   page_weak_factory_.InvalidateWeakPtrs();
 
