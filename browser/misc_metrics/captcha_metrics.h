@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/timer/wall_clock_timer.h"
 
 class GURL;
@@ -16,12 +17,17 @@ class PrefRegistrySimple;
 class PrefService;
 class Profile;
 
+namespace content {
+class WebContents;
+}  // namespace content
+
 namespace page_load_metrics {
 class PageLoadMetricsObserverInterface;
 }  // namespace page_load_metrics
 
 namespace misc_metrics {
 
+class CloudflareJsDetectionTabHelper;
 struct CaptchaProviderMetricDetails;
 
 // Keep the histogram name consistent with metric_names.h
@@ -64,15 +70,23 @@ class CaptchaMetrics {
   static std::unique_ptr<page_load_metrics::PageLoadMetricsObserverInterface>
   CreatePageLoadMetricsObserver(Profile* profile);
 
+  // Attaches an observer for Cloudflare javascript-detection script loads.
+  // No-op unless captcha metrics are enabled for a regular profile.
+  static void MaybeCreateForWebContents(content::WebContents* web_contents);
+
  private:
   friend class BraveCaptchaPageLoadMetricsObserver;
+  friend class CloudflareJsDetectionTabHelper;
   friend class CaptchaMetricsBrowserTest;
   friend class CaptchaMetricsTest;
+
+  base::WeakPtr<CaptchaMetrics> GetWeakPtr();
 
   // Seeds CaptchaProviderManager with Chromium's URL patterns when empty.
   static void EnsureDefaultCaptchaProviders();
 
-  // Records a captcha if |url| matches a known provider. Does not emit P3A.
+  // Records a captcha if |url| matches a known provider, or a Cloudflare
+  // javascript-detection script. Does not emit P3A.
   // |is_user_activated| is a signal fired by
   // PageLoadMetricsObserver.FrameReceivedUserActivation which is true when
   // the user interacted with the frame like click, mouse events etc and false
@@ -92,6 +106,8 @@ class CaptchaMetrics {
   // The timer to help schedule the next reporting.
   base::WallClockTimer report_timer_;
   raw_ptr<PrefService> local_state_;
+
+  base::WeakPtrFactory<CaptchaMetrics> weak_factory_{this};
 };
 
 }  // namespace misc_metrics

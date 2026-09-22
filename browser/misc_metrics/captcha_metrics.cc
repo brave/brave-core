@@ -7,9 +7,12 @@
 
 #include <array>
 #include <optional>
+#include <string>
 #include <string_view>
+#include <utility>
 
 #include "base/check.h"
+#include "base/memory/weak_ptr.h"
 #include "base/notreached.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -24,8 +27,12 @@
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/global_request_id.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
+#include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
 
 namespace misc_metrics {
@@ -70,6 +77,9 @@ inline constexpr char kCaptchaHcaptchaDictKey[] = "hcaptcha";
 inline constexpr char kCaptchaDictValueTotalKey[] = "total";
 inline constexpr char kCaptchaDictValueUserActivatedKey[] = "user_activated";
 
+constexpr char kCloudflareJavascriptDetectionPath[] =
+    "/cdn-cgi/challenge-platform/";
+
 constexpr base::TimeDelta kReportInterval = base::Days(1);
 
 // 0, 1, 2, 3-5, 6-10, 11+
@@ -100,6 +110,58 @@ constexpr auto kCaptchaProvidersToReport =
     });
 
 }  // namespace
+
+// Observer for Cloudflare javascript-detection scripts. It works by checking
+// if the loaded same-origin resource paths contains references to
+// "/cdn-cgi/challenge-platform/". Note, this may return some false positive
+// hits on resource loads which was not for cloudflare but co-incidentally
+// shared the same path.
+class CloudflareJsDetectionTabHelper
+    : public content::WebContentsObserver,
+      public content::WebContentsUserData<CloudflareJsDetectionTabHelper> {
+ public:
+  ~CloudflareJsDetectionTabHelper() override = default;
+
+  CloudflareJsDetectionTabHelper(const CloudflareJsDetectionTabHelper&) =
+      delete;
+  CloudflareJsDetectionTabHelper& operator=(
+      const CloudflareJsDetectionTabHelper&) = delete;
+
+ private:
+  friend class content::WebContentsUserData<CloudflareJsDetectionTabHelper>;
+
+  CloudflareJsDetectionTabHelper(content::WebContents* web_contents,
+                                 base::WeakPtr<CaptchaMetrics> captcha_metrics)
+      : content::WebContentsObserver(web_contents),
+        content::WebContentsUserData<CloudflareJsDetectionTabHelper>(
+            *web_contents),
+        captcha_metrics_(std::move(captcha_metrics)) {}
+
+  void ResourceLoadComplete(content::RenderFrameHost*,
+                            const content::GlobalRequestID&,
+                            const GURL& original_url,
+                            const blink::mojom::ResourceLoadInfo&) override {
+    if (!captcha_metrics_ ||
+        !original_url.path().contains(kCloudflareJavascriptDetectionPath) ||
+        recorded_javascript_detection_) {
+      return;
+    }
+
+    // These are resource loads, including challenges.cloudflare.com
+    // subresources. The page-load observer only sees committed frame URLs, so
+    // it does not record them.
+    recorded_javascript_detection_ = true;
+    captcha_metrics_->MaybeRecordCaptchaForUrl(original_url,
+                                               /*is_user_activated=*/false);
+  }
+
+  bool recorded_javascript_detection_ = false;
+  base::WeakPtr<CaptchaMetrics> captcha_metrics_;
+
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
+};
+
+WEB_CONTENTS_USER_DATA_KEY_IMPL(CloudflareJsDetectionTabHelper);
 
 class BraveCaptchaPageLoadMetricsObserver
     : public page_load_metrics::PageLoadMetricsObserver {
@@ -184,6 +246,10 @@ CaptchaMetrics::CaptchaMetrics(PrefService* local_state)
   MaybeReport();
 }
 
+base::WeakPtr<CaptchaMetrics> CaptchaMetrics::GetWeakPtr() {
+  return weak_factory_.GetWeakPtr();
+}
+
 CaptchaMetrics::~CaptchaMetrics() = default;
 
 // static
@@ -208,6 +274,25 @@ CaptchaMetrics::CreatePageLoadMetricsObserver(Profile* profile) {
   EnsureDefaultCaptchaProviders();
   return std::make_unique<BraveCaptchaPageLoadMetricsObserver>(
       g_brave_browser_process->process_misc_metrics()->captcha_metrics());
+}
+
+// static
+void CaptchaMetrics::MaybeCreateForWebContents(
+    content::WebContents* web_contents) {
+  if (!web_contents) {
+    return;
+  }
+
+  if (!g_brave_browser_process ||
+      !g_brave_browser_process->process_misc_metrics() ||
+      !g_brave_browser_process->process_misc_metrics()->captcha_metrics()) {
+    return;
+  }
+
+  CaptchaMetrics* captcha_metrics =
+      g_brave_browser_process->process_misc_metrics()->captcha_metrics();
+  CloudflareJsDetectionTabHelper::CreateForWebContents(
+      web_contents, captcha_metrics->GetWeakPtr());
 }
 
 // static
@@ -244,23 +329,13 @@ void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url,
       page_load_metrics::CaptchaProviderManager::GetInstance()
           ->GetCaptchaProviderForUrl(url);
 
-  // TODO(https://github.com/brave/brave-browser/issues/59024): Add support for
-  // javascript detections.
-  //
-  // For Cloudflare the captcha providers only matches if a frame
-  // document was navigated to a URL matching "*challenges.cloudflare.com/*"
-  // which is the complete turnstile check.
-  // However, Cloudflare also provides a lightweight technique for security
-  // checks via their javascript detections solution which are scripts embedded
-  // directly in the same origin and is located in
-  // "<origin>/cdn-cgi/challenge-platform/...". To observe that, we need to
-  // hook into WebContentsObserver and observe the resource load events.
-  //
-  // See
-  // https://developers.cloudflare.com/cloudflare-challenges/challenge-types/javascript-detections/
-  // for more details.
+  // Provider patterns only match challenges.cloudflare.com frame URLs.
+  // Javascript detections are same-origin scripts under this path.
   if (!captcha_provider.has_value()) {
-    return;
+    if (!url.path().contains(kCloudflareJavascriptDetectionPath)) {
+      return;
+    }
+    captcha_provider = page_load_metrics::CaptchaProvider::kCloudflareTurnstile;
   }
 
   ScopedDictPrefUpdate update(local_state_, kMiscMetricsCaptchaDictionaryPref);
