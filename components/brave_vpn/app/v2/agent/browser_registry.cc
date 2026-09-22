@@ -25,6 +25,7 @@
 #include "base/timer/elapsed_timer.h"
 #include "brave/components/brave_vpn/app/v2/agent/browser_host_impl.h"
 #include "brave/components/brave_vpn/app/v2/agent/browser_identity.h"
+#include "brave/components/brave_vpn/common/v2/identity_channel.h"
 #include "build/build_config.h"
 #include "components/named_mojo_ipc_server/named_mojo_ipc_server.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
@@ -229,9 +230,12 @@ void BrowserRegistry::InitializeBrowser(
     return;
   }
 
-  // TODO(https://github.com/brave/brave-browser/issues/54608)
-  // Send agent identity message on |identity_channel| on platforms that require
-  // it (Mac). For now, |identity_channel| is unused and silently dropped.
+#if BUILDFLAG(IS_MAC)
+  // On Mac, answer the identity channel before replying: the browser starts
+  // receiving once the reply lands, and it usually finds the message already
+  // queued rather than depending on this process still being scheduled.
+  SendIdentityMessage(std::move(identity_channel));
+#endif  // BUILDFLAG(IS_MAC)
 
   // A connection is created and gets the captured identity from here on.
   auto connection = std::make_unique<Connection>();

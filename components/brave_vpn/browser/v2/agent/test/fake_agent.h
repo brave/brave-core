@@ -18,6 +18,7 @@
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
 #include "brave/components/brave_vpn/browser/v2/agent/agent_client.h"
+#include "brave/components/brave_vpn/browser/v2/agent/agent_identity.h"
 #include "brave/components/brave_vpn/common/mojom/browser_agent.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -39,7 +40,7 @@ namespace brave_vpn::v2 {
 // pipe - the handshake, refusals, retries, teardown - runs the real code on
 // real mojo pipes; the transport itself is the part this does not cover. The
 // caller should construct this on the sequence the client will live on and call
-// everything from there, except the two knobs marked as read off-sequence.
+// everything from there, except the three knobs marked as read off-sequence.
 class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
  public:
   FakeAgent();
@@ -62,6 +63,14 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
   // Whether the transport can be established; "false" models an agent that is
   // not running, which the client retries. Read off-sequence.
   void set_transport_fails(bool fails) { transport_fails_.store(fails); }
+
+  // What the client's verification of this agent answers, or null to model a
+  // transport that comes up with no identity to verify against. Read
+  // off-sequence.
+  void set_identity_result(
+      std::optional<AgentIdentity::VerificationResult> result) {
+    identity_result_.store(result);
+  }
 
   // The reply to Initialize(), or nullopt to withhold it: an agent that takes
   // the connection and goes quiet before the handshake gets anywhere. Defaults
@@ -94,10 +103,6 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
   // Calls to Initialize() across all connections.
   int initialize_calls() const;
 
-  // Whether the last Initialize() carried an identity channel. False today:
-  // the browser sends a null handle until agent verification lands.
-  bool last_init_had_identity_channel() const;
-
   // Calls to BindBrowserHost() across all connections.
   int bind_browser_host_calls() const;
 
@@ -126,7 +131,7 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
   // Both of these run on a blocking sequence, like their production
   // counterparts, so they touch only the atomics and what they create.
   std::optional<mojo::NamedPlatformChannel::ServerName> GetServerName();
-  mojo::ScopedMessagePipeHandle Connect(
+  std::optional<AgentClient::Transport> Connect(
       scoped_refptr<base::SequencedTaskRunner> agent_task_runner,
       const mojo::NamedPlatformChannel::ServerName& server_name);
 
@@ -151,6 +156,8 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
 
   std::atomic<bool> server_name_available_{true};
   std::atomic<bool> transport_fails_{false};
+  std::atomic<std::optional<AgentIdentity::VerificationResult>>
+      identity_result_{AgentIdentity::VerificationResult::kAccepted};
   std::atomic<int> connect_attempts_{0};
 
   // Receiver ids that completed a successful Initialize(). The real agent
@@ -166,8 +173,6 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
       sequence_checker_) = mojom::BrowserAuthResult::kAccepted;
   std::optional<uint32_t> last_protocol_version_
       GUARDED_BY_CONTEXT(sequence_checker_);
-  bool last_init_had_identity_channel_ GUARDED_BY_CONTEXT(sequence_checker_) =
-      false;
   // Counts of how many times the corresponding methods have been called.
   int initialize_calls_ GUARDED_BY_CONTEXT(sequence_checker_) = 0;
   int bind_browser_host_calls_ GUARDED_BY_CONTEXT(sequence_checker_) = 0;

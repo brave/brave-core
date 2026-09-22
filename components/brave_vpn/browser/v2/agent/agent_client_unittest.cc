@@ -167,6 +167,12 @@ class AgentClientTest : public testing::Test {
     ExpectTerminalRefusalAfterConnect(expected_error);
   }
 
+  void ExpectRefusalIsTerminal(AgentIdentity::VerificationResult result,
+                               AgentClient::Error expected_error) {
+    agent_.set_identity_result(result);
+    ExpectTerminalRefusalAfterConnect(expected_error);
+  }
+
   void ExpectTerminalRefusalAfterConnect(AgentClient::Error expected_error) {
     ConnectAndWait();
 
@@ -213,8 +219,6 @@ TEST_F(AgentClientTest, HandshakeSucceeds) {
   EXPECT_EQ(agent_.connect_attempts(), 1);
   EXPECT_EQ(agent_.initialize_calls(), 1);
   EXPECT_EQ(agent_.last_protocol_version(), mojom::kProtocolVersion);
-  // The browser does not ask to verify the agent yet.
-  EXPECT_FALSE(agent_.last_init_had_identity_channel());
   EXPECT_EQ(agent_.bind_browser_host_calls(), 1);
   EXPECT_TRUE(agent_.has_browser_endpoint());
 }
@@ -481,6 +485,11 @@ TEST_F(AgentClientTest, InvalidRequestIsTerminal) {
                           AgentClient::Error::kUnexpectedBehavior);
 }
 
+TEST_F(AgentClientTest, AgentRejectedIsTerminal) {
+  ExpectRefusalIsTerminal(AgentIdentity::VerificationResult::kRejected,
+                          AgentClient::Error::kUnexpectedBehavior);
+}
+
 // The reason the provider pipe is held open in the terminal state: the verdict
 // belongs to that agent binary, so its replacement gets a fresh answer. This is
 // how a browser that updated ahead of a running agent recovers without being
@@ -603,6 +612,18 @@ TEST_F(AgentClientTest, HostIsNotRequestedWhenInitializeIsRefused) {
   EXPECT_EQ(agent_.session_count(), 0u);
 }
 
+// Verification runs between the two handshake calls, and an agent that fails it
+// is never handed a BrowserEndpoint.
+TEST_F(AgentClientTest, HostIsNotRequestedWhenAgentVerificationFails) {
+  agent_.set_identity_result(AgentIdentity::VerificationResult::kRejected);
+  ConnectAndWait();
+  ASSERT_EQ(client_->state(), AgentClient::State::kUnavailable);
+
+  EXPECT_EQ(agent_.initialize_calls(), 1);
+  EXPECT_EQ(agent_.bind_browser_host_calls(), 0);
+  EXPECT_EQ(agent_.session_count(), 0u);
+}
+
 // Being unable to identify the connection is not a verdict about this binary,
 // and only a new connection can produce a fresh capture, so it is retried
 // rather than treated as a refusal. A run of them still has to surface.
@@ -616,6 +637,40 @@ TEST_F(AgentClientTest, RepeatedNotIdentifiedResultsAreReportedAndRetried) {
             AgentClient::Error::kBrowserUnverified);
   EXPECT_EQ(client_->state(), AgentClient::State::kWaitingToRetry);
   EXPECT_GT(agent_.connect_attempts(), 1);
+}
+
+// No identity message, an image replaced mid-update, a rotated cert: not a
+// verdict, so it is retried. A run of them still has to surface.
+TEST_F(AgentClientTest, RepeatedInconclusiveAgentVerificationIsRetried) {
+  agent_.set_identity_result(AgentIdentity::VerificationResult::kInconclusive);
+  ConnectAndWait();
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+
+  ASSERT_EQ(observer_.failure_count(), 1);
+  EXPECT_EQ(observer_.last_connection_error(),
+            AgentClient::Error::kAgentNotResponding);
+  EXPECT_EQ(client_->state(), AgentClient::State::kWaitingToRetry);
+  EXPECT_GT(agent_.connect_attempts(), 1);
+}
+
+// The transport comes up but the peer cannot be pinned, so there is nothing to
+// verify against and the handshake never starts. Local and likely transient,
+// so it is retried, and it recovers on its own once capture works again.
+TEST_F(AgentClientTest, IdentityCaptureFailureIsRetried) {
+  agent_.set_identity_result(std::nullopt);
+  ConnectAndWait();
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+
+  ASSERT_EQ(observer_.failure_count(), 1);
+  EXPECT_EQ(observer_.last_connection_error(),
+            AgentClient::Error::kAgentNotResponding);
+  EXPECT_GT(agent_.connect_attempts(), 1);
+  // The distinguishing assertion: this path fails before Initialize() is sent.
+  EXPECT_EQ(agent_.initialize_calls(), 0);
+
+  agent_.set_identity_result(AgentIdentity::VerificationResult::kAccepted);
+  task_environment_.FastForwardBy(kTimePastEveryRetry);
+  EXPECT_EQ(client_->state(), AgentClient::State::kConnected);
 }
 
 // The handshake timeout covers Initialize() too, so a peer that takes the

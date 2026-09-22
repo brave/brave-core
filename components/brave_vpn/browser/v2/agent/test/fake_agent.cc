@@ -5,12 +5,14 @@
 
 #include "brave/components/brave_vpn/browser/v2/agent/test/fake_agent.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/task/sequenced_task_runner.h"
+#include "brave/components/brave_vpn/browser/v2/agent/test/fake_agent_identity.h"
 #include "build/build_config.h"
 
 namespace brave_vpn::v2 {
@@ -82,11 +84,6 @@ int FakeAgent::initialize_calls() const {
   return initialize_calls_;
 }
 
-bool FakeAgent::last_init_had_identity_channel() const {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return last_init_had_identity_channel_;
-}
-
 int FakeAgent::bind_browser_host_calls() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return bind_browser_host_calls_;
@@ -133,14 +130,21 @@ FakeAgent::GetServerName() {
   return mojo::NamedPlatformChannel::ServerName(kFakeServerName);
 }
 
-mojo::ScopedMessagePipeHandle FakeAgent::Connect(
+std::optional<AgentClient::Transport> FakeAgent::Connect(
     scoped_refptr<base::SequencedTaskRunner> agent_task_runner,
     const mojo::NamedPlatformChannel::ServerName& server_name) {
   // Deliberately no sequence check: this runs on the thread pool, like the
-  // production connector, and touches only the atomics.
+  // production connector. Touches only the atomics and the fake identity it
+  // builds from them.
   connect_attempts_.fetch_add(1);
   if (transport_fails_.load()) {
-    return mojo::ScopedMessagePipeHandle();
+    return std::nullopt;
+  }
+
+  AgentClient::Transport transport;
+  if (const std::optional<AgentIdentity::VerificationResult> result =
+          identity_result_.load()) {
+    transport.identity = std::make_unique<FakeAgentIdentity>(*result);
   }
 
   // Stands in for a connected channel plus an accepted invitation. Created here
@@ -152,7 +156,8 @@ mojo::ScopedMessagePipeHandle FakeAgent::Connect(
       FROM_HERE,
       base::BindOnce(&FakeAgent::BindProvider, base::Unretained(this),
                      std::move(pipe.handle0)));
-  return std::move(pipe.handle1);
+  transport.pipe = std::move(pipe.handle1);
+  return transport;
 }
 
 void FakeAgent::BindProvider(mojo::ScopedMessagePipeHandle pipe) {
@@ -162,12 +167,11 @@ void FakeAgent::BindProvider(mojo::ScopedMessagePipeHandle pipe) {
 }
 
 void FakeAgent::Initialize(uint32_t protocol_version,
-                           mojo::PlatformHandle identity_channel,
+                           mojo::PlatformHandle /*identity_channel*/,
                            InitializeCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ++initialize_calls_;
   last_protocol_version_ = protocol_version;
-  last_init_had_identity_channel_ = identity_channel.is_valid();
 
   const mojo::ReceiverId receiver_id = provider_receivers_.current_receiver();
   if (initialized_.contains(receiver_id)) {
