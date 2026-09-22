@@ -7,8 +7,6 @@ package org.chromium.components.minidump_uploader;
 
 import android.net.Uri;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -26,7 +24,6 @@ import java.net.HttpURLConnection;
 @Config(manifest = Config.NONE)
 public class BraveHttpURLConnectionFactoryImplTest {
     @Test
-    @SmallTest
     public void testUploadUrlHasProductVersionGuid() {
         HttpURLConnectionFactory httpURLConnectionFactory = new BraveHttpURLConnectionFactoryImpl();
         HttpURLConnection connection = httpURLConnectionFactory.createHttpURLConnection("");

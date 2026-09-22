@@ -13,8 +13,6 @@ import static org.mockito.Mockito.when;
 import android.content.Intent;
 import android.net.Uri;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -43,7 +41,6 @@ public class BraveReturnToChromeUtilUnitTest {
     @Mock private ChromeInactivityTracker mInactivityTracker;
 
     @Test
-    @SmallTest
     public void testShouldNotShowNtpWithExternalViewIntent() {
         // Simulate an ACTION_VIEW intent from an external app (e.g., clicking a link in Gmail).
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://example.com"));
@@ -60,7 +57,6 @@ public class BraveReturnToChromeUtilUnitTest {
     }
 
     @Test
-    @SmallTest
     public void testShouldNotShowNtpWithSendIntent() {
         // Simulate an ACTION_SEND intent (e.g., sharing a link to Brave).
         Intent intent = new Intent(Intent.ACTION_SEND);
@@ -73,7 +69,6 @@ public class BraveReturnToChromeUtilUnitTest {
     }
 
     @Test
-    @SmallTest
     public void testMainLauncherIntentIsRecognized() {
         // Verify that a proper main launcher intent passes the intent check.
         Intent intent = createMainIntentFromLauncher();
@@ -81,7 +76,6 @@ public class BraveReturnToChromeUtilUnitTest {
     }
 
     @Test
-    @SmallTest
     @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT)
     public void testShouldShowNtpAfterInactivityWhenNoMediaPlaying() {
         setUpInactivityVariant();
@@ -97,7 +91,6 @@ public class BraveReturnToChromeUtilUnitTest {
     }
 
     @Test
-    @SmallTest
     @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT)
     public void testShouldNotShowNtpAfterInactivityWhenMediaPlaying() {
         setUpInactivityVariant();
@@ -117,7 +110,6 @@ public class BraveReturnToChromeUtilUnitTest {
     }
 
     @Test
-    @SmallTest
     @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT)
     public void testShouldShowNtpAfterInactivityWhenMediaPaused() {
         setUpInactivityVariant();

@@ -8,8 +8,6 @@ package org.chromium.chrome.browser.referrer;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
@@ -20,7 +18,6 @@ import org.chromium.base.test.BaseRobolectricTestRunner;
 @Config(manifest = Config.NONE)
 public class BraveReferrerTest {
     @Test
-    @SmallTest
     public void returnsExactUrpc() {
         String result =
                 BraveReferrer.getReferralCodeForTesting(
@@ -30,7 +27,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void returnsPlayStoreGclidCode() {
         String result =
                 BraveReferrer.getReferralCodeForTesting("utm_source=TESTSOURCE&gclid=GCLIDTEST");
@@ -39,7 +35,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void returnsPlayStoreGbraidCode() {
         String result =
                 BraveReferrer.getReferralCodeForTesting("utm_source=TESTSOURCE&gbraid=GBRAIDTEST");
@@ -48,7 +43,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void returnsPlayStoreGclidAndGbraidCode() {
         String result =
                 BraveReferrer.getReferralCodeForTesting(
@@ -58,7 +52,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void returnsGoogleSearchCode() {
         String result =
                 BraveReferrer.getReferralCodeForTesting(
@@ -68,7 +61,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void returnsSearchChoiceScreenCode() {
         String result =
                 BraveReferrer.getReferralCodeForTesting(
@@ -78,7 +70,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void returnsBrowserChoiceScreenCode() {
         String result = BraveReferrer.getReferralCodeForTesting("utm_source=eea-browser-choice");
 
@@ -86,7 +77,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void returnsNullWhenNothingMatches() {
         String result = BraveReferrer.getReferralCodeForTesting("utm_source=TESTSOURCE");
 
@@ -94,7 +84,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void capturesGbraid() {
         String result =
                 BraveReferrer.getGbraidForTesting("utm_source=TESTSOURCE&gbraid=GBRAIDTEST");
@@ -103,7 +92,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void capturesGbraidAlongsideGclid() {
         String result =
                 BraveReferrer.getGbraidForTesting(
@@ -113,7 +101,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void capturesNoGbraidWhenAbsent() {
         String result = BraveReferrer.getGbraidForTesting("utm_source=TESTSOURCE&gclid=GCLIDTEST");
 
@@ -121,7 +108,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void capturesGbraidEvenWhenUrpcWinsTheReferralCode() {
         String referrer = "utm_source=TESTSOURCE&gbraid=GBRAIDTEST&urpc=URPCTEST";
 
@@ -130,7 +116,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void capturesGbraidEvenWhenChoiceScreenWinsTheReferralCode() {
         String referrer = "utm_source=eea-search-choice&gbraid=GBRAIDTEST";
 
@@ -139,7 +124,6 @@ public class BraveReferrerTest {
     }
 
     @Test
-    @SmallTest
     public void capturesNoGbraidWhenReferrerIsEmpty() {
         String result = BraveReferrer.getGbraidForTesting("");
 
