@@ -5,7 +5,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import unittest
-from pathlib import Path
+from pathlib import Path, PurePath
 from unittest import mock
 import argparse
 import contextlib
@@ -21,7 +21,18 @@ import plaster
 import repository
 import terminal
 
-from test.fake_chromium_repo import FakeChromiumRepo
+from test.fake_chromium_repo import BRAVE_ROOT_FROM_FILE, FakeChromiumRepo
+
+
+def _forget_loaded_repositories(test: unittest.TestCase) -> None:
+    """Clear the repositories `load` memoised, for the test and after it.
+
+    `Repositories.load` reads `.repositories.cfg` once, since a run only ever
+    has the one. Tests write a different file per case, so each has to start
+    and finish with nothing cached.
+    """
+    plaster.Repositories._instance = None
+    test.addCleanup(setattr, plaster.Repositories, '_instance', None)
 
 
 class PlasterTest(unittest.TestCase):
@@ -4448,8 +4459,7 @@ class RewriterFormsTest(unittest.TestCase):
     def test_add_literal_to_variable_appends_after_the_assignment(self):
         result = self._apply(
             'var_add.gni', 'sync_protocol_sources = [\n'
-            '  "wifi_configuration_specifics.proto",\n]\n',
-            'substitutions:\n'
+            '  "wifi_configuration_specifics.proto",\n]\n', 'substitutions:\n'
             '  - description: add the brave sync sources\n'
             '    add_literal_to_variable:\n'
             '      variable: sync_protocol_sources\n'
@@ -4510,8 +4520,7 @@ class RewriterFormsTest(unittest.TestCase):
             'import("//build/config/android/config.gni")\n'
             'import("//chrome/android/chrome_java_sources.gni")\n\n'
             '# Only used for testing.\nif (enable_offline_pages_harness) {\n'
-            '  chrome_java_sources += [ "B.java" ]\n}\n',
-            'substitutions:\n'
+            '  chrome_java_sources += [ "B.java" ]\n}\n', 'substitutions:\n'
             '  - description: add the brave java sources\n'
             '    add_literal_to_variable:\n'
             '      variable: chrome_java_sources\n'
@@ -4550,7 +4559,8 @@ class RewriterFormsTest(unittest.TestCase):
                 '      variable: chrome_java_sources\n'
                 '      literal: brave_java_sources\n'
                 '      assume_defined: true\n')
-        self.assertIn('found no `import()` to append after', str(ctx.exception))
+        self.assertIn('found no `import()` to append after',
+                      str(ctx.exception))
 
     def test_add_literal_to_variable_assume_defined_must_be_a_boolean(self):
         self._expect_value_error(
@@ -4784,7 +4794,8 @@ class RewriterFormsTest(unittest.TestCase):
         # `code` is free-form, so a conditional of its own is indented as a
         # block rather than flattened.
         result = self._apply(
-            'append_block.gn', 'source_set("b") {\n  sources = [ "a.cc" ]\n}\n',
+            'append_block.gn',
+            'source_set("b") {\n  sources = [ "a.cc" ]\n}\n',
             'substitutions:\n'
             '  - description: append a conditional\n'
             '    append_to_target:\n'
@@ -4825,8 +4836,8 @@ class RewriterFormsTest(unittest.TestCase):
             '      target: utility\n'
             '      code: sources += brave_utility_sources\n')
         self.assertEqual(
-            result, self._GN_HEADER +
-            'import("//brave/utility/sources.gni")\n\n'
+            result,
+            self._GN_HEADER + 'import("//brave/utility/sources.gni")\n\n'
             'source_set("utility") {\n  sources = [ "u.cc" ]\n'
             '  sources += brave_utility_sources\n}\n')
 
@@ -4986,7 +4997,14 @@ class RewriterFormsTest(unittest.TestCase):
                 '    remove_attribute:\n'
                 '      target: lib\n'
                 '      attribute: testonly\n')
-        self.assertIn('changed nothing', str(ctx.exception))
+        # gn renders the warning for the absent attribute from a build file it
+        # has already freed, so it sometimes dies instead of printing it,
+        # leaving plaster with gn's exit status rather than a diagnosis of the
+        # no-op. Both failures count until a gn carrying the fix is pinned.
+        message = str(ctx.exception)
+        self.assertTrue(
+            'changed nothing' in message or 'gn edit failed' in message,
+            message)
 
     def test_set_attribute_on_a_conditional_is_refused(self):
         # The note gn leaves in place of the edit must never reach the patch.
@@ -5002,8 +5020,9 @@ class RewriterFormsTest(unittest.TestCase):
                 "      value: 'true'\n")
         message = str(ctx.exception)
         self.assertIn('left a note rather than editing', message)
-        self.assertNotIn('TODO(gn edit:', message.replace(
-            'left a note rather than editing', ''))
+        self.assertNotIn(
+            'TODO(gn edit:',
+            message.replace('left a note rather than editing', ''))
 
     def test_remove_attribute_missing_arg_rejected(self):
         self._expect_value_error(
@@ -5013,6 +5032,158 @@ class RewriterFormsTest(unittest.TestCase):
             '      target: lib\n',
             'remove_attribute requires arg(s): attribute',
             name='validation.gn')
+
+    # -- ts.drop_custom_element_registration op (real ast-grep) --------------
+    #
+    # Targets WebUI `.ts` sources, parsed with ast-grep's `ts` grammar. The
+    # statement's own line goes with it; the blank line above stays, being
+    # context for the code that remains.
+
+    _REGISTRATION_YAML = (
+        'substitutions:\n'
+        '  - description: Free the tag for the Brave subclass.\n'
+        '    drop_custom_element_registration:\n'
+        '      class_name: FooElement\n')
+
+    def test_drop_custom_element_registration_removes_the_whole_line(self):
+        # The shape every upstream WebUI source has: the registration closes
+        # the file, separated from the code above by a blank line.
+        result = self._apply(
+            'element.ts', 'declare global {\n'
+            '  interface HTMLElementTagNameMap {\n'
+            "    'x-foo': FooElement;\n"
+            '  }\n'
+            '}\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n',
+            self._REGISTRATION_YAML)
+        self.assertEqual(
+            result, 'declare global {\n'
+            '  interface HTMLElementTagNameMap {\n'
+            "    'x-foo': FooElement;\n"
+            '  }\n'
+            '}\n'
+            '\n')
+
+    def test_drop_custom_element_registration_keeps_the_blank_line_above(self):
+        # Removing it too would make the generated patch drop an empty line at
+        # a hunk boundary, which `patches/PRESUBMIT.py` warns about.
+        result = self._apply(
+            'blank.ts', '}\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n',
+            self._REGISTRATION_YAML)
+        self.assertEqual(result, '}\n\n')
+
+    def test_drop_custom_element_registration_handles_a_wrapped_call(self):
+        # A long class name puts the arguments on their own line; the match is
+        # the whole statement, so both lines go.
+        result = self._apply(
+            'wrapped.ts', 'const x = 1;\n'
+            '\n'
+            'customElements.define(\n'
+            '    FooElement.is, FooElement);\n', self._REGISTRATION_YAML)
+        self.assertEqual(result, 'const x = 1;\n\n')
+
+    def test_drop_custom_element_registration_keeps_following_code(self):
+        # Not the last statement, so only the statement's own line goes and
+        # everything around it is left as it stands.
+        result = self._apply(
+            'midfile.ts', 'const x = 1;\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n'
+            'export {};\n', self._REGISTRATION_YAML)
+        self.assertEqual(result, 'const x = 1;\n'
+                         '\n'
+                         'export {};\n')
+
+    def test_drop_custom_element_registration_accepts_a_string_tag(self):
+        # The class is what a plaster knows, so the tag may be a literal
+        # rather than the `.is` getter.
+        result = self._apply(
+            'literal_tag.ts', 'const x = 1;\n'
+            '\n'
+            "customElements.define('x-foo', FooElement);\n",
+            self._REGISTRATION_YAML)
+        self.assertEqual(result, 'const x = 1;\n\n')
+
+    def test_drop_custom_element_registration_parses_type_syntax(self):
+        # The `js` grammar cannot parse this, which is why `.ts` has a
+        # namespace of its own.
+        result = self._apply(
+            'typed.ts', 'export class FooElement extends CrLitElement {\n'
+            '  private value_: string = getValue() as string;\n'
+            '}\n'
+            '\n'
+            'customElements.define(FooElement.is, FooElement);\n',
+            self._REGISTRATION_YAML)
+        self.assertEqual(
+            result, 'export class FooElement extends CrLitElement {\n'
+            '  private value_: string = getValue() as string;\n'
+            '}\n'
+            '\n')
+
+    def test_drop_custom_element_registration_leaves_other_classes_alone(self):
+        result = self._apply(
+            'sibling.ts', 'customElements.define(BarElement.is, BarElement);\n'
+            'customElements.define(FooElement.is, FooElement);\n',
+            self._REGISTRATION_YAML)
+        self.assertEqual(
+            result, 'customElements.define(BarElement.is, BarElement);\n')
+
+    def test_drop_custom_element_registration_missing_call_fails(self):
+        # Upstream dropping the registration itself is a breakage worth
+        # reporting: the shadow file's own `customElements.define` may now be
+        # the second one, or redundant.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply('absent.ts', 'const x = 1;\n', self._REGISTRATION_YAML)
+
+    def test_drop_custom_element_registration_other_define_fails(self):
+        # A `define` on something that is not `customElements` is not a
+        # registration, however the class is named.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'other_define.ts', 'const x = 1;\n'
+                '\n'
+                'Object.define(FooElement.is, FooElement);\n',
+                self._REGISTRATION_YAML)
+
+    def test_drop_custom_element_registration_is_not_available_for_cxx(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: wrong kind of target\n'
+            '    drop_custom_element_registration:\n'
+            '      class_name: FooElement\n',
+            'is not available for this source')
+
+    def test_drop_custom_element_registration_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing arg\n'
+            '    drop_custom_element_registration: {}\n',
+            'drop_custom_element_registration requires arg(s): class_name',
+            name='validation.ts')
+
+    def test_drop_custom_element_registration_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: stray arg\n'
+            '    drop_custom_element_registration:\n'
+            '      class_name: FooElement\n'
+            '      tag_name: x-foo\n',
+            'Unrecognised drop_custom_element_registration arg',
+            name='validation.ts')
+
+    def test_drop_custom_element_registration_count_other_than_one_rejected(
+            self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 2\n'
+            '    drop_custom_element_registration:\n'
+            '      class_name: FooElement\n',
+            'does not accept a count other than 1',
+            name='validation.ts')
 
     # -- validation ---------------------------------------------------------
 
@@ -5366,6 +5537,14 @@ class RewriterNamespaceTest(unittest.TestCase):
             self.assertEqual(
                 plaster._namespace_of_source(Path('rewrite/dir') / name),
                 'cxx', name)
+
+    def test_ts_targets_resolve_to_the_ts_namespace(self):
+        # A generated `.html.ts` template is still TypeScript: only the suffix
+        # right before `.yaml` decides.
+        for name in ('foo.ts.yaml', 'foo.html.ts.yaml'):
+            self.assertEqual(
+                plaster._namespace_of_source(Path('rewrite/dir') / name), 'ts',
+                name)
 
     def test_unclaimed_suffix_resolves_to_no_namespace(self):
         self.assertIsNone(
@@ -8740,8 +8919,7 @@ class GnEditSchemaTest(unittest.TestCase):
         # shipped op ever drifts from its declared interface.
         self.assertEqual(
             sorted(plaster.RewritersEval.load().gn_edits),
-            ['gn.insert_into_list', 'gn.remove_attribute',
-             'gn.set_attribute'])
+            ['gn.insert_into_list', 'gn.remove_attribute', 'gn.set_attribute'])
 
 
 class GnEditRewriterTest(unittest.TestCase):
@@ -9281,6 +9459,407 @@ class GnNamespaceTest(unittest.TestCase):
         self.assertFalse(plaster._is_cxx_source(Path('rewrite/BUILD.gn.yaml')))
         self.assertFalse(
             plaster._is_cxx_source(Path('rewrite/sources.gni.yaml')))
+
+
+class RepositoriesTest(unittest.TestCase):
+    """Tests for loading and validating `patches/.repositories.cfg`."""
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+        _forget_loaded_repositories(self)
+
+    def _write_repositories(self, content: str) -> None:
+        """Writes the repositories file, and drops what `load` has cached.
+
+        A run only ever reads one repositories file, so `load` never re-reads
+        it; a test writing a different one has to say so.
+        """
+        plaster.REPOSITORIES_FILE.write_text(content)
+        plaster.Repositories._instance = None
+
+    @staticmethod
+    def _paths() -> list[Path]:
+        """Every loaded repository's path, relative to `src/`, in order."""
+        return [
+            repo.relative_to_chromium for repo in plaster.Repositories.load()
+        ]
+
+    def test_the_fixture_lists_chromium_only(self):
+        """The fake repo mirrors a brave-core patching `src` alone."""
+        self.assertEqual(list(plaster.Repositories.load()),
+                         [repository.chromium])
+
+    def test_entries_are_ordered_longest_first(self):
+        """The most specific repository comes first, with `src` last."""
+        self._write_repositories('''
+            # Chromium's own src.
+            //
+
+            //v8
+            //third_party/devtools-frontend/src
+        ''')
+        self.assertEqual(self._paths(), [
+            PurePath('third_party/devtools-frontend/src'),
+            PurePath('v8'),
+            PurePath(),
+        ])
+
+    def test_comments_and_blank_lines_are_ignored(self):
+        """`#` opens a comment, as in the other `.cfg` files in the tree."""
+        self._write_repositories('# a leading comment\n'
+                                 '\n'
+                                 '//  # chromium\n'
+                                 '//v8\n'
+                                 '#//third_party/ffmpeg\n')
+        self.assertEqual(self._paths(), [PurePath('v8'), PurePath()])
+
+    def test_a_trailing_slash_is_tolerated(self):
+        """`//v8/` names the same repository as `//v8`, as a gn label would."""
+        self._write_repositories('//\n//v8/\n')
+        self.assertEqual(self._paths(), [PurePath('v8'), PurePath()])
+
+    def test_chromium_entry_is_the_chromium_repository(self):
+        """The `//` entry is chromium's own `Repository` instance."""
+        repositories = plaster.Repositories.load()
+        self.assertEqual(repositories.chromium, repository.chromium)
+        self.assertTrue(repositories.chromium.is_chromium)
+        # And it is the instance the file's `//` line parses to.
+        self.assertIs(list(repositories)[-1], repository.chromium)
+
+    def test_entry_resolves_to_a_repository_under_src(self):
+        """A listed path resolves to the repository at that path in `src`."""
+        self._write_repositories('//\n//v8\n')
+        entry = plaster.Repositories.load().find(PurePath('v8'))
+        self.assertIsNotNone(entry)
+        self.assertFalse(entry.is_chromium)
+        self.assertEqual(entry.relative_to_chromium, Path('v8'))
+        self.assertEqual(entry.from_brave().resolve(),
+                         self.fake_chromium_src.chromium / 'v8')
+
+    def test_find_returns_none_for_an_unlisted_path(self):
+        """A path no repository is rooted at is not one plaster manages."""
+        self._write_repositories('//\n//v8\n')
+        repositories = plaster.Repositories.load()
+        self.assertIsNone(repositories.find(PurePath('third_party/ffmpeg')))
+        self.assertIsNone(repositories.find(PurePath('v8/src')))
+
+    def test_split_finds_the_repository_holding_a_source(self):
+        """The most specific repository claims a source; `src` takes the rest.
+        """
+        self._write_repositories(
+            '//\n//v8\n//third_party/devtools-frontend/src\n')
+        repositories = plaster.Repositories.load()
+        cases: list[tuple[str, str, str]] = [
+            ('a chromium source', 'base/memory/foo.h', ''),
+            ('a source in a listed repository', 'v8/src/codegen/a.cc', 'v8'),
+            ('a source in a nested repository',
+             'third_party/devtools-frontend/src/front_end/Foo.ts',
+             'third_party/devtools-frontend/src'),
+            ('a source under an unlisted directory',
+             'third_party/blink/renderer/bar.cc', ''),
+            ('a path that merely starts like a repository', 'v8_extras/foo.cc',
+             ''),
+        ]
+        for name, source, expected in cases:
+            with self.subTest(name=name):
+                repo, within = repositories.split(PurePath(source))
+                self.assertEqual(repo.relative_to_chromium, PurePath(expected))
+                # The split round-trips back to the source it came from.
+                self.assertEqual(repo.relative_to_chromium / within,
+                                 PurePath(source))
+
+    def test_load_reads_the_file_once(self):
+        """The file is read on the first `load` and memoised after it."""
+        first = plaster.Repositories.load()
+        self.assertIs(plaster.Repositories.load(), first)
+
+        # A run only ever reads one repositories file, so rewriting it does
+        # not change what `load` returns until the memo is dropped.
+        plaster.REPOSITORIES_FILE.write_text('//\n//v8\n')
+        self.assertIs(plaster.Repositories.load(), first)
+        self.assertEqual(self._paths(), [PurePath()])
+
+        plaster.Repositories._instance = None
+        self.assertEqual(self._paths(), [PurePath('v8'), PurePath()])
+
+    def test_rejects_an_invalid_file(self):
+        """Every malformed repositories file is refused with an explanation."""
+        cases: list[tuple[str, str, str]] = [
+            ('no source-root prefix', '//\nv8\n', 'must be source-absolute'),
+            ('relative dot path', '//\n./v8\n', 'must be source-absolute'),
+            ('single slash', '//\n/v8\n', 'must be source-absolute'),
+            ('upward path', '//\n//../v8\n', 'cannot traverse upwards'),
+            ('duplicate path', '//\n//v8\n//v8\n', 'listed more than once'),
+            ('duplicate chromium', '//\n//v8\n//\n', 'listed more than once'),
+            ('chromium missing', '//v8\n', 'does not list chromium'),
+            ('empty file', '', 'does not list chromium'),
+            ('comments only', '# nothing here yet\n',
+             'does not list chromium'),
+        ]
+        for name, content, expected in cases:
+            with self.subTest(name=name):
+                self._write_repositories(content)
+                with self.assertRaises(
+                        plaster.RepositoriesFileError) as context:
+                    plaster.Repositories.load()
+                self.assertIn(expected, str(context.exception))
+
+    def test_reports_the_line_of_a_bad_entry(self):
+        """A failure names the line it was read from, as a `.cfg` reader does.
+        """
+        self._write_repositories('//\n//v8\n//../elsewhere\n')
+        with self.assertRaises(plaster.RepositoriesFileError) as context:
+            plaster.Repositories.load()
+        self.assertIn(':3:', str(context.exception))
+
+    def test_a_missing_file_is_refused(self):
+        """The file is the source of truth, so its absence is an error."""
+        plaster.REPOSITORIES_FILE.unlink()
+        with self.assertRaises(plaster.RepositoriesFileError) as context:
+            plaster.Repositories.load()
+        self.assertIn('Failed to read', str(context.exception))
+
+    def test_the_real_file_lists_chromium_and_parses(self):
+        """brave-core's own repositories file is valid and names `src`.
+
+        Read through `BRAVE_ROOT_FROM_FILE` rather than `repository.brave`,
+        which the fixture has pointed at the fake repo by this point.
+        """
+        real = BRAVE_ROOT_FROM_FILE / 'patches' / '.repositories.cfg'
+        entries = list(plaster.Repositories(real.read_bytes()))
+        self.assertIn(repository.chromium, entries)
+        # `src` is the fallback, so it has to sort last.
+        self.assertEqual(entries[-1], repository.chromium)
+
+
+class PlasterTargetTest(unittest.TestCase):
+    """Tests for resolving a plaster file to the repository it patches."""
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+        _forget_loaded_repositories(self)
+        self.fake_chromium_src.set_patched_repositories(
+            'v8', 'third_party/devtools-frontend/src')
+
+    def _target(self, plaster_relative: str) -> plaster.PlasterTarget:
+        return plaster.PlasterTarget.resolve(plaster.PLASTER_FILES_PATH /
+                                             plaster_relative)
+
+    def test_a_chromium_source_targets_src(self):
+        """An unprefixed plaster keeps targeting `src`, as it always has."""
+        target = self._target('base/memory/foo.h.yaml')
+        self.assertTrue(target.repository.is_chromium)
+        self.assertEqual(target.source, PurePath('base/memory/foo.h'))
+        self.assertEqual(target.patch,
+                         plaster.PATCHES_PATH / 'base-memory-foo.h.patch')
+        self.assertEqual(target.patchinfo,
+                         plaster.PATCHES_PATH / 'base-memory-foo.h.patchinfo')
+
+    def test_a_subrepository_source_targets_that_repository(self):
+        """A prefixed plaster targets the repository its prefix names."""
+        target = self._target('v8/src/codegen/compiler.cc.yaml')
+        self.assertFalse(target.repository.is_chromium)
+        self.assertEqual(target.repository.relative_to_chromium, Path('v8'))
+        # The source drops the prefix: it is what git, and the patchinfo's
+        # `appliesTo`, express relative to the repository.
+        self.assertEqual(target.source, PurePath('src/codegen/compiler.cc'))
+        self.assertEqual(
+            target.patch,
+            plaster.PATCHES_PATH / 'v8' / 'src-codegen-compiler.cc.patch')
+
+    def test_a_nested_repository_claims_its_own_sources(self):
+        """The longest matching prefix wins over a shorter one."""
+        target = self._target(
+            'third_party/devtools-frontend/src/front_end/core/Foo.ts.yaml')
+        self.assertEqual(target.repository.relative_to_chromium,
+                         Path('third_party/devtools-frontend/src'))
+        self.assertEqual(target.source, PurePath('front_end/core/Foo.ts'))
+        self.assertEqual(
+            target.patch, plaster.PATCHES_PATH / 'third_party' /
+            'devtools-frontend' / 'src' / 'front_end-core-Foo.ts.patch')
+
+    def test_a_path_under_an_undeclared_directory_targets_src(self):
+        """A prefix no repository claims is just part of a chromium path."""
+        target = self._target('third_party/blink/renderer/foo.cc.yaml')
+        self.assertTrue(target.repository.is_chromium)
+        self.assertEqual(target.source,
+                         PurePath('third_party/blink/renderer/foo.cc'))
+
+    def test_a_repository_prefix_with_no_source_is_refused(self):
+        """A plaster naming only a repository has no source to patch."""
+        with self.assertRaises(plaster.PlasterError) as context:
+            self._target('v8.yaml')
+        self.assertIn('no source within it', str(context.exception))
+
+    def test_a_plaster_outside_the_rewrite_tree_is_refused(self):
+        """A path that is not under `rewrite/` cannot name a source."""
+        with self.assertRaises(plaster.PlasterError) as context:
+            plaster.PlasterTarget.resolve(repository.brave.root / 'patches' /
+                                          'foo.yaml')
+        self.assertIn('is not under', str(context.exception))
+
+
+class PlasterForPatchTest(unittest.TestCase):
+    """Tests mapping a patch file back to the plaster file that owns it."""
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+        _forget_loaded_repositories(self)
+        self.fake_chromium_src.set_patched_repositories('v8')
+
+    def test_maps_a_chromium_patch(self):
+        self.assertEqual(
+            plaster.plaster_for_patch(
+                PurePath('patches/base-memory-foo.h.patch')),
+            plaster.PLASTER_FILES_PATH / 'base/memory/foo.h.yaml')
+
+    def test_maps_a_subrepository_patch(self):
+        """Only the file name is unflattened; the directories name the repo."""
+        self.assertEqual(
+            plaster.plaster_for_patch(
+                PurePath('patches/v8/src-codegen-compiler.cc.patch')),
+            plaster.PLASTER_FILES_PATH / 'v8/src/codegen/compiler.cc.yaml')
+
+    def test_ignores_a_patch_in_an_undeclared_repository(self):
+        """A repository plaster does not support is left to be patched by hand.
+        """
+        self.assertIsNone(
+            plaster.plaster_for_patch(
+                PurePath('patches/third_party/tflite/src/foo.cc.patch')))
+
+    def test_ignores_paths_that_are_not_patches(self):
+        for path in ('patches/foo.patchinfo', 'rewrite/foo.cc.yaml',
+                     'foo.patch', 'patches'):
+            with self.subTest(path=path):
+                self.assertIsNone(plaster.plaster_for_patch(PurePath(path)))
+
+
+class SubrepositoryPlasterTest(unittest.TestCase):
+    """End-to-end tests for a plaster targeting a source outside `src`."""
+
+    # The source patched in the fake v8 repository, relative to it.
+    SOURCE = Path('src/codegen/compiler.cc')
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+        _forget_loaded_repositories(self)
+        self.fake_chromium_src.add_repo('v8')
+        self.v8 = self.fake_chromium_src.chromium / 'v8'
+        self.fake_chromium_src.set_patched_repositories('v8')
+
+        self.fake_chromium_src.write_and_stage_file(self.SOURCE,
+                                                    'Compiled by Chromium.\n',
+                                                    self.v8)
+        self.fake_chromium_src.commit('Add compiler.cc', self.v8)
+
+        self.plaster_path = (plaster.PLASTER_FILES_PATH / 'v8' /
+                             f'{self.SOURCE}.yaml')
+        self.plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        self.plaster_path.write_text('''
+          substitutions:
+            - description: Replace Chromium with Brave
+              regex:
+                re_pattern: 'Chromium'
+                replace: 'Brave'
+        ''')
+
+    def test_apply_patches_the_source_in_the_subrepository(self):
+        """The source is rewritten in the repository that holds it."""
+        plaster.PlasterFile(self.plaster_path).apply()
+        self.assertEqual((self.v8 / self.SOURCE).read_text(),
+                         'Compiled by Brave.\n')
+
+    def test_apply_writes_the_patch_under_the_repository_directory(self):
+        """The patch lands where `apply_patches` looks for it."""
+        plaster.PlasterFile(self.plaster_path).apply()
+        patch = (self.fake_chromium_src.brave_patches / 'v8' /
+                 'src-codegen-compiler.cc.patch')
+        self.assertTrue(patch.exists())
+        # The diff is taken in the subrepository, so it names the source the
+        # way that repository does, with no `v8/` prefix.
+        self.assertIn('a/src/codegen/compiler.cc', patch.read_text())
+
+    def test_apply_records_a_repository_relative_patchinfo(self):
+        """`appliesTo` is relative to the repository, as apply_patches reads
+        it."""
+        plaster.PlasterFile(self.plaster_path).apply()
+        patchinfo_path = (self.fake_chromium_src.brave_patches / 'v8' /
+                          'src-codegen-compiler.cc.patchinfo')
+        info = plaster.Patchinfo.from_json(patchinfo_path.read_text())
+        self.assertIsNotNone(info)
+        self.assertEqual(info.applies_to.path, str(self.SOURCE))
+        self.assertEqual(
+            info.applies_to.checksum,
+            hashlib.sha256((self.v8 / self.SOURCE).read_bytes()).hexdigest())
+        self.assertEqual(info.plaster.path,
+                         str(Path('rewrite/v8') / f'{self.SOURCE}.yaml'))
+
+    def test_needs_apply_tracks_the_subrepository_source(self):
+        """The up-to-date check reads the source from the right repository."""
+        plaster_file = plaster.PlasterFile(self.plaster_path)
+        self.assertTrue(plaster_file.needs_apply())
+        plaster_file.apply()
+        self.assertFalse(plaster_file.needs_apply())
+
+        # `needs_apply` short-circuits on mtimes before it reaches the
+        # checksums, so the edit is dated past the patchinfo `apply` just
+        # wrote. Without that they can share a tick on a fast machine, and the
+        # source would read as up to date.
+        source_path = self.v8 / self.SOURCE
+        later = source_path.stat().st_mtime + 10
+        source_path.write_text('Compiled by someone else.\n')
+        os.utime(source_path, (later, later))
+        self.assertTrue(plaster_file.needs_apply())
+
+    def test_apply_is_idempotent(self):
+        """Re-applying rewrites nothing, so the patch keeps its checksum."""
+        plaster_file = plaster.PlasterFile(self.plaster_path)
+        plaster_file.apply()
+        patch = (self.fake_chromium_src.brave_patches / 'v8' /
+                 'src-codegen-compiler.cc.patch')
+        first = patch.read_bytes()
+        plaster_file.apply()
+        self.assertEqual(patch.read_bytes(), first)
+        self.assertFalse(plaster_file.needs_apply())
+
+    def test_an_orphaned_subrepository_source_is_reported(self):
+        """A source missing from the repository names the plaster that wants
+        it."""
+        self.fake_chromium_src.delete_file(self.SOURCE, self.v8)
+        self.fake_chromium_src.commit('Delete compiler.cc', self.v8)
+        with self.assertRaises(plaster.OrphanedPlasterError) as context:
+            plaster.PlasterFile(self.plaster_path).apply()
+        self.assertIn(str(self.SOURCE), str(context.exception))
+
+    def test_find_all_ignores_the_settings_file(self):
+        """The repositories file is not a plaster file."""
+        found = {file.path for file in plaster.PlasterFile.find_all()}
+        self.assertEqual(found, {self.plaster_path})
+
+    def test_get_plaster_files_resolves_a_subrepository_patch(self):
+        """Passing the patch finds the plaster file that generates it."""
+        found = plaster.get_plaster_files(
+            ['patches/v8/src-codegen-compiler.cc.patch'])
+        self.assertEqual([file.path for file in found], [self.plaster_path])
+
+    def test_get_plaster_files_skips_an_undeclared_repository(self):
+        """A patch plaster cannot own is not an error, just nothing to do."""
+        self.assertEqual(
+            plaster.get_plaster_files(
+                ['patches/third_party/tflite/src/foo.cc.patch']), [])
+
+    def test_get_plaster_files_returns_everything_for_the_settings_file(self):
+        """Changing which repository a prefix names affects every plaster."""
+        found = plaster.get_plaster_files(['patches/.repositories.cfg'])
+        self.assertEqual([file.path for file in found], [self.plaster_path])
 
 
 if __name__ == '__main__':

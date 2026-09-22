@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import { loadTimeData } from '//resources/js/load_time_data.js'
 import { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
 
 import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
@@ -48,7 +49,7 @@ export class BraveAccountLoggedInRowElement extends
   }
 
   protected override get verificationIntentDescription() {
-    return this.i18n(
+    return loadTimeData.getString(
       BraveAccountSettingsStrings
         .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ROW_DESCRIPTION_1)
   }
@@ -81,7 +82,7 @@ export class BraveAccountLoggedInRowElement extends
       this.openDialogInDefaultMode()
     } catch (e) {
       showError('changePassword', e, {
-        title: this.i18n(
+        title: loadTimeData.getString(
           BraveAccountSettingsStrings
             .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ERROR_TITLE),
         durationMs: 30000,

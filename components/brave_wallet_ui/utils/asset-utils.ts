@@ -163,6 +163,11 @@ export const isShieldedToken = (
   token.zcashTokenType === BraveWallet.ZCashTokenType.kOrchard
   || token.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
 
+// Orchard (NU5) shielded ZEC is being migrated to Ironwood (NU6.3).
+export const isLegacyShieldedToken = (
+  token: Pick<BraveWallet.BlockchainToken, 'zcashTokenType'>,
+) => token.zcashTokenType === BraveWallet.ZCashTokenType.kOrchard
+
 export type GetBlockchainTokenIdArg = Pick<
   BraveWallet.BlockchainToken,
   | 'coin'
@@ -593,4 +598,22 @@ export const getDoesCoinSupportSwap = (coin: BraveWallet.CoinType) => {
 
 export const getDoesCoinSupportBridge = (coin: BraveWallet.CoinType) => {
   return SupportedBridgeCoinTypes.includes(coin)
+}
+
+export const getDoesTokenSupportSwap = (
+  token: Pick<BraveWallet.BlockchainToken, 'coin' | 'zcashTokenType'>,
+) => {
+  return getDoesCoinSupportSwap(token.coin) && !isLegacyShieldedToken(token)
+}
+
+export const getDoesTokenSupportBridge = (
+  token: Pick<BraveWallet.BlockchainToken, 'coin' | 'zcashTokenType'>,
+) => {
+  return getDoesCoinSupportBridge(token.coin) && !isLegacyShieldedToken(token)
+}
+
+export const getDoesTokenSupportDeposit = (
+  token: Pick<BraveWallet.BlockchainToken, 'zcashTokenType'>,
+) => {
+  return !isLegacyShieldedToken(token)
 }

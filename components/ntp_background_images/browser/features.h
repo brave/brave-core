@@ -12,8 +12,6 @@
 
 namespace ntp_background_images::features {
 
-BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaperSurveyPanelist);
-
 BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaper);
 
 BASE_DECLARE_FEATURE(kCenterNttCtaButton);
@@ -29,7 +27,8 @@ inline constexpr base::FeatureParam<int> kCountToBrandedWallpaper{
     &kBraveNTPBrandedWallpaper, "count_to_branded_wallpaper", 3};
 
 // The counter that tracks the display of the branded wallpaper on nth tabs will
-// be reset after the specified duration has elapsed in SI mode.
+// be reset after the specified duration has elapsed while sponsored content
+// is enabled.
 inline constexpr base::FeatureParam<base::TimeDelta> kResetCounterAfter{
     &kBraveNTPBrandedWallpaper, "reset_counter_after", base::Days(1)};
 

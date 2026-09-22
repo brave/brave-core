@@ -216,9 +216,7 @@ class ToolchainBuilder:
        `self._staged_xcode` into the output `.tar.gz` with
        `_normalize_tar_entry` applied so the bytes are reproducible
        across hosts.
-    5. **Index** (`_precheck_publishable` / `_write_index`): Refuses early
-       (right after reading the upstream SDK, before any heavy work) if an index
-       is already published, then writes a sibling YAML index recording the
+    5. **Index** (`_write_index`): Writes a sibling YAML index recording the
        archive URL, its SHA-256, and the Xcode provenance.
     6. **Upload** (`_upload`): With `--upload`, publishes the archive and its
        sibling index to `TOOLCHAIN_BUCKET`.
@@ -456,26 +454,6 @@ class ToolchainBuilder:
                           format=tarfile.PAX_FORMAT) as tar:
             self._pack(tar)
 
-    def _precheck_publishable(self) -> None:
-        """Fail fast if this toolchain's index is already published.
-
-        This function check for the existence of an index already in place, and
-        if any is found, it throws an error.
-
-        At the moment, the index can only refer to a single toolchain per SDK
-        version/build pair, so checking for the file existence in the bucket is
-        enough.
-
-        This check is important to avoid accidentally overwriting a toolchain
-        that is already in use by Brave in the wild, as it can become incredibly
-        difficult to recover from such a mistake.
-        """
-        index_url = PACKAGE_DOWNLOAD_URL_BASE + self._index_path.name
-        if toolchain_publish.remote_url_exists(index_url):
-            raise RuntimeError(
-                f'An index already exists at {index_url}; this toolchain has '
-                'already been published.')
-
     def _write_index(self) -> None:
         """Write the sibling YAML index describing the just-built toolchain.
 
@@ -494,9 +472,6 @@ class ToolchainBuilder:
                                  if it could not be determined).
           * `chromium_tag`     — `--chromium-tag` the SDK pin was read from.
           * `brave_core_commit` — brave-core HEAD commit this script ran from.
-
-        The "already published" guard lives in `_precheck_publishable`, which
-        `run()` calls early.
 
         After writing, the index file is read back and printed in the console.
         """
@@ -550,9 +525,8 @@ class ToolchainBuilder:
                 `Xcode.app`, if the selected Xcode build does not match the
                 resolved one, if `xcode-select` does not point at an
                 Xcode.app, if `xcodebuild` does not report all of Xcode /
-                Build version / SDKVersion / ProductBuildVersion, if
-                `xcrun --find metal` does not resolve to a `Metal.xctoolchain`,
-                or if a published index already exists for this toolchain.
+                Build version / SDKVersion / ProductBuildVersion, or if
+                `xcrun --find metal` does not resolve to a `Metal.xctoolchain`.
             urllib.error.HTTPError: If a gitiles fetch fails (typically a
                 bad `--chromium-tag`).
             subprocess.CalledProcessError: If any invoked tool
@@ -564,7 +538,6 @@ class ToolchainBuilder:
             shutil.rmtree(self._out_dir, ignore_errors=True)
         self._out_dir.mkdir(parents=True, exist_ok=True)
         self._load_upstream_mac_sdk_info()
-        self._precheck_publishable()
         assert self._upstream_mac_sdk_info is not None
         # The deployed Xcode is the active one only inside this block; on exit
         # `deploy()` always reverts the selection with `xcode-select --reset`.

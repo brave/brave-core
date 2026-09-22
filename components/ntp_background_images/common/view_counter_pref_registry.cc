@@ -42,6 +42,10 @@ constexpr char kObsoleteNewTabPageShowSponsoredImages[] =
 constexpr char kObsoleteNewTabPageShowSponsoredSites[] =
     "brave.new_tab_page.show_sponsored_sites";
 
+// Added 09/2026.
+constexpr char kObsoleteNewTabPageSponsoredImagesSurveyPanelist[] =
+    "brave.new_tab_page.sponsored_images.survey_panelist";
+
 }  // namespace
 
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
@@ -50,8 +54,6 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(prefs::kNewTabPageSponsoredImagesSurveyPanelist,
-                                false);
   registry->RegisterBooleanPref(prefs::kBrandedWallpaperNotificationDismissed,
                                 false);
   registry->RegisterBooleanPref(prefs::kNewTabPageShowBackgroundImage, true);
@@ -75,6 +77,10 @@ void RegisterProfilePrefsForMigration(
   // Added 08/2026.
   registry->RegisterBooleanPref(kObsoleteNewTabPageShowSponsoredImages, true);
   registry->RegisterBooleanPref(kObsoleteNewTabPageShowSponsoredSites, true);
+
+  // Added 09/2026.
+  registry->RegisterBooleanPref(
+      kObsoleteNewTabPageSponsoredImagesSurveyPanelist, false);
 }
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
@@ -99,6 +105,9 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   prefs->ClearPref(kObsoleteNewTabPageShowSponsoredImages);
   prefs->ClearPref(kObsoleteNewTabPageShowSponsoredSites);
+
+  // Added 09/2026.
+  prefs->ClearPref(kObsoleteNewTabPageSponsoredImagesSurveyPanelist);
 }
 
 }  // namespace ntp_background_images

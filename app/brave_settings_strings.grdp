@@ -137,6 +137,9 @@
     <message name="IDS_SETTINGS_CONTAINERS_ERROR_NOT_FOUND" desc="The error if container is not found" formatter_data="webui=Containers">
       Container is not found
     </message>
+    <message name="IDS_SETTINGS_DRAG_TO_REORDER_LABEL" desc="Accessible label for a list item reorder handle that supports arrow-key movement" formatter_data="webui=Containers">
+      Reorder item. Use arrow keys to move.
+    </message>
   </if>
   <if expr="enable_traffic_control">
     <message name="IDS_SETTINGS_TRAFFIC_CONTROL_SECTION_LABEL" desc="The label for section containing Traffic Control settings" formatter_data="webui=TrafficControl">
@@ -2014,17 +2017,6 @@
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_OLLAMA_SYNC_LABEL" desc="The label for the Ollama sync toggle button">
     Sync your Ollama local models
-  </message>
-
-  <!-- Settings / Survey Panelist -->
-  <message name="IDS_SETTINGS_SURVEY_PANELIST" desc="Title for an item in the 'Survey Panelist' section of Brave Settings">
-    Survey Panelist
-  </message>
-  <message name="IDS_SETTINGS_SURVEY_PANELIST_LABEL" desc="The text for settings option to enable survey panelist">
-    Allow Brave surveys
-  </message>
-  <message name="IDS_SETTINGS_SURVEY_PANELIST_DESC" desc="The description for settings option to enable survey panelist">
-    Allows Brave to show links to private surveys in the new tab page. Surveys help us build better features and measure the effectiveness of browser-based ad campaigns. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>Learn more<ph name="END_LINK">&lt;/a&gt;</ph>
   </message>
 
   <!-- Settings / Playlist -->

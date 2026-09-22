@@ -1476,6 +1476,9 @@ void AIChatService::OnUserOptedIn() {
 }
 
 void AIChatService::OnConversationListChanged() {
+  if (ai_chat_metrics_ != nullptr) {
+    ai_chat_metrics_->ReportConversationCount(conversations_.size());
+  }
   auto conversations = GetConversationsSortedByUpdatedTime(conversations_);
   for (auto& remote : observer_remotes_) {
     std::vector<mojom::ConversationPtr> client_conversations;

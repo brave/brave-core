@@ -1,12 +1,28 @@
 diff --git a/chrome/services/printing/BUILD.gn b/chrome/services/printing/BUILD.gn
-index 82332e39b6df3e460e007ffcf54250c0315b4f4c..8c429f30d6b98e433c036afcb5e6cb29530e432a 100644
+index 82332e39b6df3e460e007ffcf54250c0315b4f4c..6944f8941a2a359bd3bf843ae3817cc56aea262b 100644
 --- a/chrome/services/printing/BUILD.gn
 +++ b/chrome/services/printing/BUILD.gn
-@@ -28,6 +28,7 @@ source_set("lib") {
-     "//mojo/public/cpp/bindings",
-     "//printing/buildflags",
-   ]
-+  import("//brave/services/printing/sources.gni") sources += brave_services_printing_sources deps += brave_services_printing_deps
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-   if (is_chromeos) {
-     sources += [
++import("//brave/services/printing/sources.gni")
+ import("//printing/buildflags/buildflags.gni")
+ import("//testing/test.gni")
+ 
+@@ -12,6 +13,7 @@ source_set("lib") {
+     "printing_service.cc",
+     "printing_service.h",
+   ]
++  sources += brave_services_printing_sources
+ 
+   configs += [ "//build/config/compiler:wexit_time_destructors" ]
+ 
+@@ -21,6 +23,7 @@ source_set("lib") {
+     "//content/public/utility",
+     "//printing",
+   ]
++  deps += brave_services_printing_deps
+ 
+   public_deps = [
+     "//base",

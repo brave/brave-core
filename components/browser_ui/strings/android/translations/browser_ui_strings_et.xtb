@@ -7,6 +7,7 @@
 <translation id="1046742265332833834">Sinine teema</translation>
 <translation id="1070329623210597193">Failid, mida see sait saab vaadata või muuta</translation>
 <translation id="1074758928858737435">Saate paluda saitide lauaarvuti versiooni nägemist</translation>
+<translation id="1760197532822135980">Brave'i soovituste hankimine muudes rakendustes</translation>
 <translation id="1109482864356262001">Liikumis- või valgusandureid vajavad funktsioonid ei tööta.</translation>
 <translation id="6670155282615872564">Viige lõpule allolevad soovitatavad toimingud, et Brave'i parimal moel kasutada.</translation>
 <translation id="113098737392899175">Lehtedel navigeerimine tekstikursoriga, kui klaviatuur on ühendatud</translation>
@@ -83,6 +84,7 @@
 <translation id="1818308510395330587">Selleks et rakendus <ph name="APP_NAME"/> saaks AR-i kasutada, lülitage sisse kaamera ka <ph name="BEGIN_LINK"/>Androidi seadetes<ph name="END_LINK"/>.</translation>
 <translation id="1822318649925991542">Sirvimiskogemuse kohandamiseks vahetage asukohta.</translation>
 <translation id="1848033246551405023">Sans Serifi font</translation>
+<translation id="1861244985839668297">Kui see on sisse lülitatud, võivad saidid küsida luba HID-seadmete kasutamiseks. Kui see on välja lülitatud, ei saa saidid HID-seadmeid kasutada.</translation>
 <translation id="1861262398884155592">See kaust on tühi</translation>
 <translation id="1881806992065048905">Uue vahelehe välimuse alumine leht</translation>
 <translation id="1887786770086287077">Juurdepääs asukohale on selle seadme puhul välja lülitatud. Lülitage see sisse <ph name="BEGIN_LINK"/>Androidi seadetes<ph name="END_LINK"/>.</translation>
@@ -370,6 +372,7 @@
 <translation id="4676059169848868271">Kui soovite lubada rakendusel <ph name="APP_NAME"/> kasutada käeliigutuste jälgimist, lülitage <ph name="BEGIN_LINK"/>süsteemiseadetes<ph name="END_LINK"/> sisse ka käeliigutuste jälgimine.</translation>
 <translation id="4688045258817337666">Kaartide haldamine</translation>
 <translation id="4722332387043141878">Saidid kasutavad teie seadme liikumis- ja valgusandureid tavaliselt näiteks VR-kogemuse pakkumiseks või treeningu jälgimiseks.</translation>
+<translation id="4748783296226936791">Saidid loovad HID-seadmetega ühenduse tavaliselt funktsioonide jaoks, mis kasutavad tavapäratuid klaviatuure, mängupulte ja muid seadmeid.</translation>
 <translation id="4755971844837804407">Kui see on sisse lülitatud, saavad saidid teile kuvada mis tahes reklaame. Kui see on välja lülitatud, ei saa saidid kuvada sekkuvaid ega eksitavaid reklaame.</translation>
 <translation id="4779083564647765204">Suumi</translation>
 <translation id="4807122856660838973">Brave’i ohutu sirvimise sisselülitamine</translation>
@@ -447,11 +450,13 @@
 <translation id="5668404140385795438">Sissesuumimise takistamiseks veebisaidi taotluse alistamine</translation>
 <translation id="5668843533782548925">Saidid on aeglasemad, aga turvalisemad</translation>
 <translation id="5677928146339483299">Blokeeritud</translation>
+<translation id="98560749650104566">Brave saab nüüd teie sirvimisandmete (nt hiljutise sirvimisajaloo) põhjal kuvada teile soovitusi teistes rakendustes. Neid andmeid töödeldakse turvaliselt teie seadmes. Saate selle Brave’i seadetes igal ajal välja lülitada.</translation>
 <translation id="5689516760719285838">Asukoht</translation>
 <translation id="5690795753582697420">Kaamera on Androidi seadetes välja lülitatud</translation>
 <translation id="5700761515355162635">Kolmanda osapoole küpsisefailid on lubatud</translation>
 <translation id="5706552988683188916">See kustutab saidi <ph name="WEBSITE"/> puhul küpsisefailid ja muud saidiandmed</translation>
 <translation id="571222594670061844">Saidid saavad kuvada identiteedihaldusteenuste sisselogimisviipasid</translation>
+<translation id="5719854774000914513">Saidid saavad küsida luba HID-seadmetega ühenduse loomiseks</translation>
 <translation id="5740126560802162366">Saidid võivad teie seadmesse andmeid salvestada</translation>
 <translation id="5743425052258407233">Hankige oma ajalugu kõikides seadmetes, et saaksite lihtsalt jätkata sealt, kus pooleli jäite</translation>
 <translation id="5749158352074143502">Jätka selle vahekaardiga</translation>
@@ -500,6 +505,7 @@
 <translation id="6085954183010297841">Kas kustutada faili muutmise luba? <ph name="FILE"/></translation>
 <translation id="6104860901391833523">Kui see on sisse lülitatud, saavad saidid automaatselt režiimi Pilt pildis aktiveerida. Kui see on välja lülitatud, ei saa saidid automaatselt režiimi Pilt pildis aktiveerida.</translation>
 <translation id="6120483543004435978">Kui see on sisse lülitatud, võivad saidid küsida luba selle teadmiseks, millal seadet aktiivselt kasutate. Kui see on välja lülitatud, ei saa saidid teada, millal seadet aktiivselt kasutate.</translation>
+<translation id="5773142757282836623">Peida kaart „Brave'i soovituste hankimine muudes rakendustes“</translation>
 <translation id="4852158809106762963">Brave pakub võimalust parool salvestada</translation>
 <translation id="615886654739818377">Saitidel pole lubatud aknaid kõikidel teie ekraanidel hallata</translation>
 <translation id="6165508094623778733">Lisateave</translation>
@@ -571,6 +577,7 @@
 <translation id="6950072572526089586">Külastatav sait saab salvestada teavet teie tegevuste kohta, et sait toimiks ootuspäraselt – näiteks selleks, et hoida teid saidile sisselogituna või salvestada teie ostukorvis olevad üksused. Saidid salvestavad selle teabe teie seadmesse sageli ajutiselt.</translation>
 <translation id="6964291282260073066">„WebGPU“ on keelatud.</translation>
 <translation id="6965382102122355670">OK</translation>
+<translation id="6972629891077993081">HID-seadmed</translation>
 <translation id="6980507581230208647">Roosiroosa teema</translation>
 <translation id="6980861169612950611">Kas kustutada saidi andmed? <ph name="SITE_NAME"/></translation>
 <translation id="6981982820502123353">Juurdepääsetavus</translation>
@@ -583,7 +590,6 @@
 <translation id="7053983685419859001">Blokeeri</translation>
 <translation id="7055552182600664515">Autoriõigustega kaitstud sisu esitamiseks peavad saidid võib-olla kasutama sisukaitseteenust. <ph name="BEGIN_LINK"/>Lisateave<ph name="END_LINK"/></translation>
 <translation id="7066151586745993502">{NUM_SELECTED,plural, =1{1 on valitud}other{# on valitud}}</translation>
-<translation id="708014373017851679"><ph name="APP_NAME"/> on aegunud. Värskendage rakendust.</translation>
 <translation id="7084115944294706056">Aadressiriba asukoha valimine</translation>
 <translation id="7087918508125750058"><ph name="ITEM_COUNT"/> on valitud.  Valikud on saadaval ekraanikuva ülaosas</translation>
 <translation id="7141896414559753902">Blokeeri saitidel hüpikakende ja ümbersuunamiste kuvamine (soovitatav)</translation>
@@ -728,6 +734,7 @@ Täiustatud kaitse reguleerib neid Brave’i seadeid:</translation>
 <translation id="8593422116412089302">Kui see on sisse lülitatud, võivad saidid küsida luba teabe kasutamiseks, mille nad on teie kohta salvestanud. Kui see on välja lülitatud, ei saa saidid küsida luba teabe kasutamiseks, mille nad on teie kohta salvestanud.</translation>
 <translation id="8609465669617005112">Liiguta üles</translation>
 <translation id="8617611086246832542">Kui see on sisse lülitatud, kuvatakse veebisaitide arvutivaade. Kui see on välja lülitatud, kuvatakse veebisaitide mobiilivaade.</translation>
+<translation id="8625916342247441948">Ära luba saitidel HID-seadmetega ühendust luua</translation>
 <translation id="8670078035093027626">Vaikebrauseri alumine leht on avatud täiskõrgusel</translation>
 <translation id="8676316391139423634">Kui see on sisse lülitatud, saavad saidid küsida teie käeliigutuste jälgimiseks luba. Kui see on välja lülitatud, ei saa saidid teie käeliigutusi jälgida.</translation>
 <translation id="8676374126336081632">Tühjenda sisestus</translation>

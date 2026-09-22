@@ -18,6 +18,17 @@ enum class StrippingClient {
   kFileSelect,
 };
 
+// Returns true if |file_path| names an image format we support stripping
+// metadata from. Only the file extension is looked at.
+//
+// TODO(https://github.com/brave/brave-browser/issues/5238): PNG formats needs
+// more investigation whether FBMD is present or not. So, tackling only jpeg.
+bool IsSupportedImagePath(const base::FilePath& file_path);
+
+// Returns true if the image file in |file_path| contains metadata we
+// support stripping on, false otherwise.
+bool ContainsMetadataToStrip(const base::FilePath& file_path);
+
 // Removes the FBMD metadata from the IPTC Instructions field for an image file
 // in |file_path|. The |client| is needed to log the stripping result code
 // tagged on client.

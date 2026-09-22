@@ -30,16 +30,12 @@ well as audited as patch files.
 ## How does it work
 
 _Plaster_ files are placed under `rewrite/`, using a `.yaml` extension, and they
-are supposed to match the path for the file being plastered. A deprecated
-`.toml` form is also accepted while existing plasters are being migrated — see
-[Legacy TOML format (deprecated)](#legacy-toml-format-deprecated) at the end of
-this document.
+are supposed to match the path for the file being plastered.
 
-> [!WARNING]
+> [!NOTE]
 >
-> At the moment, Chromium's `src` repo can be patched with plaster. Support for
-> more repos may be considered in the future, but it is not a priority at the
-> moment.
+> Repositories other than Chromium's `src` are supported if they are listed in
+> `patches/.repositories.cfg`.
 
 Each plaster file will be used to apply changes into a given source, and then
 generate a patch for the effected changes.
@@ -158,6 +154,7 @@ introduce more rewriters. These are the ones we have supported for now.
 | `add_literal_to_variable`                 | `gn`      | AST   | Appends a literal to a file-scope list variable.      |
 | `subtract_literal_from_variable`          | `gn`      | AST   | Subtracts a literal from a file-scope list variable.  |
 | `set_blink_runtime_enabled_feature_state` | `js`      | AST   | Sets a Blink runtime feature's `base_feature_status`. |
+| `drop_custom_element_registration`        | `ts`      | AST   | Removes a WebUI element's `customElements.define`.    |
 
 Use `plaster --help` to discover rewriters and read their full docs:
 

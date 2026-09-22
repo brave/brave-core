@@ -154,9 +154,6 @@ constexpr char16_t kAdBlockOnlyModeLearnMoreURL[] =
 constexpr char16_t kSponsoredAdsLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/48376231110413";
 
-constexpr char16_t kSurveyPanelistLearnMoreURL[] =
-    u"https://support.brave.app/hc/en-us/articles/36550092449165";
-
 constexpr char16_t kExtensionsV2LearnMoreURL[] =
     u"https://brave.com/blog/brave-shields-manifest-v3/";
 
@@ -660,8 +657,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_CUSTOMIZATION_LINK_LABEL},
       {"braveLeoModelSubtitle-chat-claude-instant",
        IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE},
-      {"braveLeoModelSubtitle-chat-claude-haiku",
-       IDS_CHAT_UI_CHAT_CLAUDE_HAIKU_SUBTITLE},
       {"braveLeoModelSubtitle-chat-claude-sonnet",
        IDS_CHAT_UI_CHAT_CLAUDE_SONNET_SUBTITLE},
       {"braveLeoModelSubtitle-chat-qwen", IDS_CHAT_UI_CHAT_QWEN_SUBTITLE},
@@ -669,18 +664,20 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_CHAT_UI_CHAT_NEAR_GLM_5_1_SUBTITLE},
       {"braveLeoModelSubtitle-chat-glm-4-7-flash",
        IDS_CHAT_UI_CHAT_GLM_4_7_FLASH_SUBTITLE},
-      {"braveLeoModelSubtitle-chat-gpt-5-4-bedrock",
-       IDS_CHAT_UI_CHAT_GPT_5_4_BEDROCK_SUBTITLE},
-      {"braveLeoModelSubtitle-chat-grok-4-3-bedrock",
-       IDS_CHAT_UI_CHAT_GROK_4_3_BEDROCK_SUBTITLE},
+      {"braveLeoModelSubtitle-chat-gpt-5-6-luna-bedrock",
+       IDS_CHAT_UI_CHAT_GPT_5_6_LUNA_BEDROCK_SUBTITLE},
+      {"braveLeoModelSubtitle-chat-gpt-5-6-terra-bedrock",
+       IDS_CHAT_UI_CHAT_GPT_5_6_TERRA_BEDROCK_SUBTITLE},
+      {"braveLeoModelSubtitle-chat-grok-4-6-bedrock",
+       IDS_CHAT_UI_CHAT_GROK_4_6_BEDROCK_SUBTITLE},
       {"braveLeoModelSubtitle-chat-nemotron-nano-3-30b",
        IDS_CHAT_UI_CHAT_NEMOTRON_NANO_3_30B_SUBTITLE},
       {"braveLeoModelSubtitle-chat-mistral-large",
        IDS_CHAT_UI_CHAT_MISTRAL_LARGE_SUBTITLE},
       {"braveLeoModelSubtitle-chat-kimi-k2-5",
        IDS_CHAT_UI_CHAT_KIMI_K2_5_SUBTITLE},
-      {"braveLeoModelSubtitle-chat-qwen-3-235b",
-       IDS_CHAT_UI_CHAT_QWEN_3_235B_SUBTITLE},
+      {"braveLeoModelSubtitle-chat-qwen-3-8-flash-next",
+       IDS_CHAT_UI_CHAT_QWEN_3_8_FLASH_NEXT_SUBTITLE},
       {"braveLeoModelSubtitle-chat-deepseek-v3-2",
        IDS_CHAT_UI_CHAT_DEEPSEEK_V3_2_SUBTITLE},
       {"braveLeoModelSubtitle-chat-claude-opus",
@@ -827,11 +824,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveLeoAssistantOllamaSyncLabel",
        IDS_SETTINGS_LEO_ASSISTANT_OLLAMA_SYNC_LABEL},
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-
-      // Survey Panelist Page
-      {"surveyPanelist", IDS_SETTINGS_SURVEY_PANELIST},
-      {"braveSurveyPanelistLabel", IDS_SETTINGS_SURVEY_PANELIST_LABEL},
-      {"braveSurveyPanelistDesc", IDS_SETTINGS_SURVEY_PANELIST_DESC},
 
       // New Tab Page
       {"braveNewTab", IDS_SETTINGS_NEW_TAB},
@@ -1276,13 +1268,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 
   html_source->AddString("sponsoredAdsLearnMoreURL", kSponsoredAdsLearnMoreURL);
 
-  html_source->AddString("braveSurveyPanelistLearnMoreURL",
-                         kSurveyPanelistLearnMoreURL);
-
-  html_source->AddString(
-      "braveSurveyPanelistDesc",
-      l10n_util::GetStringFUTF16(IDS_SETTINGS_SURVEY_PANELIST_DESC,
-                                 kSurveyPanelistLearnMoreURL));
   html_source->AddString(
       "extensionsV2Warn",
       l10n_util::GetStringFUTF16(IDS_SETTINGS_MANAGE_EXTENSIONS_V2_WARN,

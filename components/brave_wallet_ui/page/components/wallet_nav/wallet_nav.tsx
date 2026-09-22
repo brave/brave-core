@@ -71,7 +71,8 @@ export const WalletNav = () => {
   const { openOrPushRoute } = useRoute()
 
   // computed
-  const navigationOptions = isPanel ? PanelNavOptions : NavOptions
+  const navigationOptions =
+    isPanel && !isSidePanel ? PanelNavOptions : NavOptions
 
   const walletActionOptions = isIOS
     ? BuySendSwapDepositIOSOptions

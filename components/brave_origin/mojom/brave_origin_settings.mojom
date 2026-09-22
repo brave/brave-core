@@ -41,3 +41,37 @@ interface OriginIAPSubscription {
   GetPurchaseTokenOrderId() => (string token, string order_id);
   SetLinkStatus(int32 status);
 };
+
+// The payment service's answer to "is this order out of device activations,
+// and can that budget be raised?".
+[EnableIf=is_android]
+struct ExtendEligibility {
+  // False when the credential fetch failed for some reason other than the
+  // activation limit, in which case extending would not help.
+  bool at_limit;
+  bool can_extend;
+};
+
+// Raising an order's device activation limit. A subscription can only be
+// activated on a limited number of devices; once that budget is spent,
+// fetching order credentials fails even though the subscription is still paid
+// for, locking the user out of what they bought.
+//
+// Mobile only - desktop recovers from the activation limit through the
+// account website instead.
+[EnableIf=is_android]
+interface OriginActivationLimit {
+  // `receipt_payload` is the complete request body both endpoints take,
+  // already serialized: {type, raw_receipt, package, subscription_id}, the
+  // same payload `/v1/orders/receipt` is given. Null eligibility means the
+  // service could not be reached, which is distinct from it answering that
+  // the budget cannot grow.
+  CanExtend(string order_id, string receipt_payload) =>
+      (ExtendEligibility? eligibility);
+
+  // Raises the activation budget for `order_id`. On failure `error_code`
+  // carries the service's application error code (e.g. "not_at_limit"), which
+  // is empty when the request never produced a response.
+  Extend(string order_id, string receipt_payload) =>
+      (bool succeeded, string error_code);
+};

@@ -296,7 +296,11 @@ class OpenSearchParser {
     self.pluginMode = pluginMode
   }
 
-  func parse(_ file: String, engineID: String, referenceURL: String?) async -> OpenSearchEngine? {
+  @concurrent func parse(
+    _ file: String,
+    engineID: String,
+    referenceURL: String?
+  ) async -> OpenSearchEngine? {
     guard let data = try? Data(contentsOf: URL(fileURLWithPath: file)) else {
       print("Invalid search file")
       return nil
@@ -305,7 +309,7 @@ class OpenSearchParser {
     return await parse(data, engineID: engineID, referenceURL: referenceURL)
   }
 
-  func parse(
+  @concurrent func parse(
     _ data: Data,
     engineID: String = "",
     referenceURL: String? = nil,

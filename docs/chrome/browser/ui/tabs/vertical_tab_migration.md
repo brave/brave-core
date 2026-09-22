@@ -637,6 +637,13 @@ there is no pref or feature to hide it.
 
 ## 8. Dev/QA testing mechanism: force/reset the upstream backend
 
+**Status: Implemented.** The switch, `chrome://flags` entry, and pref-override
+function described below are landed as specified (`kVerticalTabMigrationSwitch`
+in `browser/ui/tabs/public/switches.h`, `brave-vertical-tab-migration` in
+`browser/about_flags.cc`, `MaybeApplyVerticalTabMigrationTestingOverride()` in
+`browser/ui/tabs/brave_tab_prefs.h/.cc`, wired up in
+`chromium_src/chrome/browser/prefs/browser_prefs.cc`).
+
 Building the real, production-grade backend-selection mechanism (step 0 below) —
 with automatic per-capability fallback for real users — is non-trivial and
 depends on §2-§7 being far enough along to be worth it. But engineers need a way

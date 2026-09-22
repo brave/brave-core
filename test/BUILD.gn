@@ -1503,6 +1503,7 @@ test("brave_browser_tests") {
       "//brave/browser/file_select:browser_tests",
       "//brave/browser/password_manager:browser_tests",
       "//brave/browser/sharing_hub:browser_tests",
+      "//brave/browser/speech:on_device_speech_browser_tests",
       "//brave/browser/sync:browser_tests",
       "//brave/browser/ui/geolocation:browser_tests",
       "//brave/browser/ui/page_info",
@@ -1628,6 +1629,7 @@ test("brave_browser_tests") {
       # Skip tests on MAC, See crbug.com/363677523
       deps += [ "//brave/browser/psst:browser_tests" ]
     }
+    deps += [ "//brave/browser/ui/webui/psst:browser_tests" ]
   }
 }
 

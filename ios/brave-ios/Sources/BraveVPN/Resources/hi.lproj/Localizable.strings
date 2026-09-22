@@ -227,7 +227,7 @@
 "vpn.serverTitle" = "%ld सर्वर";
 
 /* VPN Banner Description */
-"vpn.settingHeaderBody" = "हर ऐप को Brave VPN से सुरक्षित करें। एक प्लान से अधिकतम 10 डिवाइसों को सुरक्षित रखें।";
+"vpn.settingHeaderBody" = "अपनी सामग्री को अपने तरीके से स्ट्रीम करें. 1 सब्सक्रिप्शन के साथ 10 डिवाइस पर हर ऐप को सुरक्षित रखें.";
 
 /* Button to contact tech support */
 "vpn.settingsContactSupport" = "टेक्निकल सपोर्ट से संपर्क करें";

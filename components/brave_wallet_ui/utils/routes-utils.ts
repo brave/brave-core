@@ -110,10 +110,10 @@ export function isPersistableSessionRoute(
      */
     || route.includes(WalletRoutes.Market + '/')
     /**
-     * Connections is panel-only. Persist only when opened from a panel so the
-     * page does not restore/redirect back to this route.
+     * Connections is popup-panel-only. Persist only when opened from the
+     * popup panel so the page and side panel do not restore/redirect here.
      */
-    || (isPanel && routePath === WalletRoutes.Connections)
+    || (isPanel && !isSidePanel && routePath === WalletRoutes.Connections)
     /**
      * NFT Collections route uses a query param to determine the
      * collectionName and can not be exact matched.

@@ -47,8 +47,6 @@ public class BravePrivacySettingsTest {
     private static final String PREF_INCOGNITO_LOCK = "incognito_lock";
     private static final String PREF_SPONSORED_ADS_ENABLED = "sponsored_ads_enabled";
     private static final String PREF_SPONSORED_ADS_LEARN_MORE = "sponsored_ads_learn_more";
-    private static final String PREF_SURVEY_PANELIST = "survey_panelist";
-    private static final String PREF_SURVEY_PANELIST_LEARN_MORE = "survey_panelist_learn_more";
     private static final String PREF_PASSWORD_LEAK_DETECTION = "password_leak_detection";
     private static final String PREF_ADVANCED_PROTECTION_INFO = "advanced_protection_info";
     private static final String PREF_OTHER_PRIVACY_SETTINGS_SECTION =
@@ -91,8 +89,6 @@ public class BravePrivacySettingsTest {
         checkPreferenceExists(PREF_INCOGNITO_LOCK);
         checkPreferenceExists(PREF_SPONSORED_ADS_ENABLED);
         checkPreferenceExists(PREF_SPONSORED_ADS_LEARN_MORE);
-        checkPreferenceExists(PREF_SURVEY_PANELIST);
-        checkPreferenceExists(PREF_SURVEY_PANELIST_LEARN_MORE);
         checkPreferenceExists(PREF_USE_CUSTOM_TABS);
         checkPreferenceExists(PREF_ALLOW_ELEMENTS_BLOCKING_ON_PRIVATE_TABS);
 

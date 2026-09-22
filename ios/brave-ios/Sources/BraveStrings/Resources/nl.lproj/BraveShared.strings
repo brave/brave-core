@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Wijzig snelzoekmachines";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Als je een crash of bevriezing ervaart, kan Brave automatisch anonieme diagnostische rapporten versturen om het probleem op te lossen. Je kunt dit later altijd uitschakelen in Instellingen.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Automatische crashrapporten inschakelen";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Schakel in";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Niet nu";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Schakel 'Trek omlaag om te vernieuwen' in";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Standaardafbeeldingen";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Gesponsorde afbeeldingen en video's";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Gesponsorde afbeeldingen";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Bedankt voor het steunen van Brave en de BAT Community!";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Door opnieuw in te stellen wordt uw huidige Brave Rewards-profiel verwijderd en Brave Rewards wordt niet langer ingeschakeld.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Brave Rewards opnieuw instellen";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Stel opnieuw in";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Steun Brave en de BAT Community door Brave Rewards in te schakelen en advertenties in Brave te zien.";
 
@@ -2470,17 +2488,17 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Kwaliteitsinstellingen";
 
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Verzend anonieme diagnostische rapporten als uw systeem crasht of vastloopt.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Crashrapporten verzenden";
+
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Met deze privéping kan Brave het aantal actieve gebruikers inschatten.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Stuur dagelijkse gebruiksping naar Brave";
-
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Hiermee sta je toe dat Brave links naar privé-enquêtes weergeeft op het nieuwe tabblad. Deze enquêtes helpen ons betere functies te ontwikkelen en de effectiviteit van advertentiecampagnes in de browser te meten. [Meer informatie](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Brave-enquêtes toestaan";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -3124,6 +3142,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Privémodus";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Privé";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Instellingen Privétabbladen";
 
@@ -3148,11 +3169,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Tabbladen vernietigen";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld Tabbladen";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld Tab";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Bekijk geschiedenis";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Geschiedenis";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Bekijk gesynchroniseerde tabbladen";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Synchronisatie";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Zet de privémodus aan of uit";

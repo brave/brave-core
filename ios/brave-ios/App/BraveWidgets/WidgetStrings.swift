@@ -210,5 +210,40 @@ extension Strings {
       value: "Turned off by your organization's policy",
       comment: "Displayed on a news widget wont load due to admin policies"
     )
+    public static let braveSearch = NSLocalizedString(
+      "widgets.braveSearch",
+      bundle: widgetBundle,
+      value: "Brave Search",
+      comment:
+        "Title for the Brave Search control. Brave is the company name and should not be translated"
+    )
+    public static let braveSearchWidgetTitle = NSLocalizedString(
+      "widgets.braveSearchWidgetTitle",
+      bundle: widgetBundle,
+      value: "Brave Search",
+      comment:
+        "Title for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated"
+    )
+    public static let braveSearchWidgetDescription = NSLocalizedString(
+      "widgets.braveSearchWidgetDescription",
+      bundle: widgetBundle,
+      value: "Search the web with Brave.",
+      comment:
+        "Description for the Brave Search widget on 'add custom control' screen. Brave is the company name and should not be translated"
+    )
+    public static let askBraveWidgetTitle = NSLocalizedString(
+      "widgets.askBraveWidgetTitle",
+      bundle: widgetBundle,
+      value: "Ask Brave",
+      comment:
+        "Title for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated"
+    )
+    public static let askBraveWidgetDescription = NSLocalizedString(
+      "widgets.askBraveWidgetDescription",
+      bundle: widgetBundle,
+      value: "Ask Brave a question.",
+      comment:
+        "Description for the Ask Brave widget on 'add custom control' screen. Brave is the company name and should not be translated"
+    )
   }
 }

@@ -1289,4 +1289,9 @@
   <message name="IDS_BRAVE_WALLET_GO_TO_PORTFOLIO" desc="Go to portfolio button text" formatter_data="webui=Wallet">Go to Portfolio</message>
   <message name="IDS_BRAVE_WALLET_ADD_TOKEN" desc="Add token button text" formatter_data="webui=Wallet">Add token</message>
   <message name="IDS_BRAVE_WALLET_UTILITY_PROCESS_WALLET_UTILS_NAME" desc="The display name (in the system task manager, etc) of the service process used for running wallet utils">Brave Wallet Utility Service</message>
+  <message name="IDS_BRAVE_WALLET_CRYPTO" desc="Title for the crypto card in the wallet card hub" formatter_data="webui=Wallet">Crypto</message>
+  <message name="IDS_BRAVE_WALLET_GET_YOUR_CARD" desc="Title on the wallet card hub card prompting the user to get a Brave card" formatter_data="webui=Wallet">Get your card</message>
+  <message name="IDS_BRAVE_WALLET_GET_YOUR_CARD_DESCRIPTION" desc="Description on the wallet card hub card explaining identity verification is required to use the Brave card" formatter_data="webui=Wallet">Verify your identity to see card numbers and start spending.</message>
+  <message name="IDS_BRAVE_WALLET_TAP_TO_VERIFY" desc="Action label on the wallet card hub card to start identity verification" formatter_data="webui=Wallet">Tap to verify</message>
+  <message name="IDS_BRAVE_WALLET_ENABLE_REWARDS" desc="Action label on the wallet card hub rewards card to enable Brave Rewards" formatter_data="webui=Wallet">Enable Rewards</message>
 </grit-part>

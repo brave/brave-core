@@ -204,4 +204,41 @@ TEST_F(TrafficControlSettingsHandlerTest, RejectsTemporaryWithContainerId) {
   EXPECT_EQ(mojom::RuleOperationError::kInvalidTarget, error_future.Take());
 }
 
+TEST_F(TrafficControlSettingsHandlerTest, ReorderRules) {
+  base::test::TestFuture<std::optional<mojom::RuleOperationError>> error_future;
+  for (const char* url : {"a.com", "b.com", "c.com"}) {
+    handler_->AddRule(MakeRule("", true, url, "c1"),
+                      error_future.GetCallback());
+    EXPECT_EQ(std::nullopt, error_future.Take());
+  }
+
+  base::test::TestFuture<std::vector<mojom::TrafficRulePtr>> future;
+  handler_->GetRules(future.GetCallback());
+  auto rules = future.Take();
+  ASSERT_EQ(3u, rules.size());
+  std::vector<std::string> ids = {rules[0]->id, rules[1]->id, rules[2]->id};
+
+  // Move the last rule to the front.
+  handler_->ReorderRules({ids[2], ids[0], ids[1]}, error_future.GetCallback());
+  EXPECT_EQ(std::nullopt, error_future.Take());
+
+  handler_->GetRules(future.GetCallback());
+  rules = future.Take();
+  ASSERT_EQ(3u, rules.size());
+  EXPECT_EQ(ids[2], rules[0]->id);
+  EXPECT_EQ(ids[0], rules[1]->id);
+  EXPECT_EQ(ids[1], rules[2]->id);
+
+  // Mismatched set of ids is rejected.
+  handler_->ReorderRules({ids[0], ids[1]}, error_future.GetCallback());
+  EXPECT_EQ(mojom::RuleOperationError::kNotFound, error_future.Take());
+
+  handler_->ReorderRules({ids[0], ids[1], "non-existing-id"},
+                         error_future.GetCallback());
+  EXPECT_EQ(mojom::RuleOperationError::kNotFound, error_future.Take());
+
+  handler_->ReorderRules({ids[0], ids[0], ids[1]}, error_future.GetCallback());
+  EXPECT_EQ(mojom::RuleOperationError::kNotFound, error_future.Take());
+}
+
 }  // namespace traffic_control

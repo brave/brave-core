@@ -9,6 +9,7 @@
 <translation id="1011206368273183593">Фајлови се припремају</translation>
 <translation id="1014509239502131234">Резултат се опозива</translation>
 <translation id="1015730422737071372">Наведите додатне детаље</translation>
+<translation id="1016671033299705843">Безбедно додајте возачку дозволу</translation>
 <translation id="1019413721762100891">Искључено</translation>
 <translation id="1024111578869940408">Нападачи понекад имитирају сајтове тако што скоро неприметно измене веб-адресу.</translation>
 <translation id="102916930470544692">Приступни кључ</translation>
@@ -193,6 +194,7 @@
 <translation id="1319245136674974084">Не питај поново за ову апликацију</translation>
 <translation id="132301787627749051">Потражите слику у привременој меморији</translation>
 <translation id="1323433172918577554">Прикажи више</translation>
+<translation id="1326962902431997202">Прецртано</translation>
 <translation id="1330449323196174374">Пресавијање на левој страни у облику прозора</translation>
 <translation id="2753620827734134329">Безбедно сачувајте број обештећења у Brave новчанику</translation>
 <translation id="133173645041092770">Затвори веб-сајт</translation>
@@ -235,8 +237,8 @@
 <translation id="1392813880755413602">OpenDocument презентација</translation>
 <translation id="139305205187523129">Хост <ph name="HOST_NAME"/> није послао никакве податке.</translation>
 <translation id="3057197202055415269">Нападачи на сајту који сте пробали да посетите могу да вас преваре да инсталирате софтвер или откријете ствари попут лозинки, телефона или бројева кредитних картица. Brave топло препоручује да се вратите на безбедно место. <ph name="BEGIN_LEARN_MORE_LINK"/>Сазнајте више о овом упозорењу<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="6113998327720481921">Безбедно додајте личну карту у Brave новчаник</translation>
 <translation id="1398743098754840707">Сајтови које додате овде неће се користити за одговоре, чак и ако је картица отворена. Ако се сајт који додате тренутно користи у конверзацији, може да прође до 30 минута док конверзација не престане да га наводи.</translation>
-<translation id="1402151528875251561">Прикажи историју на бочној табли</translation>
 <translation id="1405567553485452995">Светлозелена</translation>
 <translation id="1406370515365284486">Начини плаћања ће и даље бити сачувани</translation>
 <translation id="1406500794671479665">Верификовање...</translation>
@@ -463,6 +465,7 @@
 <translation id="1757773103848038814">Фонт фиксне ширине</translation>
 <translation id="3727704638090640904">Дугме Промени Brave лозинку, активирајте га да бисте променили лозинку за Brave налог</translation>
 <translation id="593191007871547182">Аутоматски попуњавај верификационе кодове које сајтови користе ради побољшања безбедности. Brave може да добија те кодове из Gmail-а. <ph name="BEGIN_LINK"/>Сазнајте више о овој функцији<ph name="LINK_END"/></translation>
+<translation id="353492317551888534">Отворите Brave новчаник да бисте контролисали <ph name="BEGIN_LINK1"/>подешавања података и приватности<ph name="END_LINK1"/> или управљали <ph name="BEGIN_LINK2"/>начинима плаћања<ph name="END_LINK2"/> и <ph name="BEGIN_LINK3"/>картама<ph name="END_LINK3"/> као што су картице лојалности и лични документи</translation>
 <translation id="1763864636252898013">Овај сервер не може да докаже да је <ph name="DOMAIN"/>; оперативни систем уређаја нема поверења у његов безбедносни сертификат. Узрок томе је можда погрешна конфигурација или нападач који је прекинуо везу.</translation>
 <translation id="1768211456781949159"><ph name="BEGIN_LINK"/>Покушајте да покренете Windows дијагностику мреже<ph name="END_LINK"/>.</translation>
 <translation id="1777422078676229054">Слика (архивска)</translation>
@@ -628,6 +631,7 @@
 <translation id="2090451897496479509">Више информација потражите од добављача</translation>
 <translation id="2090686487550343086">IBAN-ови</translation>
 <translation id="2091887806945687916">Звук</translation>
+<translation id="2092361763640578821">Сазнајте више о</translation>
 <translation id="2093184051799735948">Претражите <ph name="ENGINE_NAME"/> или унесите URL</translation>
 <translation id="4871965986998315786">Brave покушава да искључи Windows Hello за попуњавање лозинки.</translation>
 <translation id="2094505752054353250">Домени се не подударају</translation>
@@ -765,6 +769,7 @@
 <translation id="2288422996159078444">Све што унесете, све странице које прегледате или све друге активности на вебу се прате. Садржај на сајтовима може да се мења без вашег знања.</translation>
 <translation id="2289385804009217824">Скраћивање</translation>
 <translation id="2292556288342944218">Приступ интернету је блокиран</translation>
+<translation id="2294150501457238325">Безбедно додајте пасош</translation>
 <translation id="2295831393422400053">Укључите подешавање Побољшај претраге и прегледање да бисте користили Помоћ при писању</translation>
 <translation id="2296244067976588032">Приступни кључ • iCloud Keychain</translation>
 <translation id="2296331629987861142">Плаћајте у малим ратама (ако испуњавате услове, наплаћују се накнаде)</translation>
@@ -783,6 +788,7 @@
 <translation id="2318594867107319532">Последња временска ознака смерница:</translation>
 <translation id="2321291402658100099">Управљај информацијама</translation>
 <translation id="2322254345061973671">{COUNT,plural, =1{1 прозор}one{# прозор}few{# прозора}other{# прозора}}</translation>
+<translation id="2325722389016720813">За аутоматско довршавање притисните стрелицу нагоре или надоле. Почните да куцате за аутоматско довршавање.</translation>
 <translation id="4848600035394410348">Сада можете да аутоматски попуњавате више информација из Brave новчаника</translation>
 <translation id="2326747055382936979">Управљај побољшаним аутоматским попуњавањем</translation>
 <translation id="2328651992442742497">Дозвољено (подразумевано)</translation>
@@ -989,7 +995,6 @@
 <translation id="2677748264148917807">Затвори</translation>
 <translation id="2679216653373462289">Користи сензоре покрета и светлости</translation>
 <translation id="2679659833697380">Информације се чувају на уређају</translation>
-<translation id="2489045475086745601">Послато у Brave на уређају <ph name="DEVICE_NAME"/>.</translation>
 <translation id="2683195745483370038">Пронађени су други резултати</translation>
 <translation id="2686919536310834199">Шаљите повратне информације за Помоћ при писању.</translation>
 <translation id="2687555958734450033">Најбоља величина</translation>
@@ -1110,6 +1115,7 @@
 <translation id="2931453528659195355">Управљај информацијама о куповини</translation>
 <translation id="2933624813161016821">Рељефна фолија</translation>
 <translation id="2935726091208500473">дељење картица</translation>
+<translation id="503249467791680577">Изаберите поље за промотивни кôд да бисте аутоматски попуњавали понуде из Brave новчаника</translation>
 <translation id="293796669683825859">Коментари</translation>
 <translation id="2938225289965773019">отвори линкове за <ph name="PROTOCOL"/></translation>
 <translation id="2938370569652058706"><ph name="ORIGIN"/> – Да би се приказао курсор, промените апликацију, поново учитајте страницу или се вратите</translation>
@@ -1260,6 +1266,7 @@
 <translation id="3190736958609431397">Опозови праћење</translation>
 <translation id="3194737229810486521"><ph name="URL"/> жели да трајно складишти податке на уређају</translation>
 <translation id="3194765668709099364">Klarna</translation>
+<translation id="2277495157469546105">Додајте возачку дозволу у Brave новчаник</translation>
 <translation id="3195213714973468956"><ph name="PRINTER_NAME"/> на: <ph name="SERVER_NAME"/></translation>
 <translation id="3196374699162453920">Кôд резервације</translation>
 <translation id="3196902089458890316">Желите увек да делите релевантне картице да бисте добијали боље одговоре?</translation>
@@ -1365,6 +1372,7 @@
 <translation id="3380864720620200369">ИД клијента:</translation>
 <translation id="3383566085871012386">Актуелни редослед приоритета</translation>
 <translation id="3383713837163550889">Локални фајлови ће се избрисати за 1 минут</translation>
+<translation id="6707404155107941120">Додајте број регистрованог путника у Brave новчаник</translation>
 <translation id="3384522979010096022">Организација вам не дозвољава да прегледате овај сајт</translation>
 <translation id="3391030046425686457">Адреса испоруке</translation>
 <translation id="3391482648489541560">измена датотека</translation>
@@ -1424,6 +1432,7 @@
 <translation id="3495081129428749620">Пронађите на страници
     <ph name="PAGE_TITLE"/></translation>
 <translation id="3495818359064790343">Плата</translation>
+<translation id="3496531230994554300">Обавештење Новчаника отворено је у пуној висини.</translation>
 <translation id="3497627066518778351">Прегледајте листу података о сајтовима на уређају у новом прозору</translation>
 <translation id="3498215018399854026">Тренутно не можемо да контактирамо родитеља. Пробај поново.</translation>
 <translation id="350069200438440499">Име датотеке:</translation>
@@ -1436,6 +1445,7 @@
 <translation id="3517264445792388751">Администратор је онемогућио систем фајлова</translation>
 <translation id="3518941727116570328">Обрада више предмета</translation>
 <translation id="3519670528214225835">Питајте <ph name="KEYWORD_SUFFIX"/></translation>
+<translation id="3138333648486601120">Додајте возило у Brave новчаник</translation>
 <translation id="3525130752944427905">10×14 in</translation>
 <translation id="3525435918300186947">Жели да контролише и репрограмира MIDI уређаје?</translation>
 <translation id="3527624163937328588">Уклони прилог</translation>
@@ -1516,6 +1526,7 @@
 <translation id="3642638418806704195">Апликација:</translation>
 <translation id="3647286794400715637">Унос сваког стринга URL-а мора да садржи између 1 и 2 URL-а.</translation>
 <translation id="5085151248144746413">Дугме Одбаци савет за Brave, притисните Enter да бисте одбацили, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
+<translation id="3647730822767756911">Праћење активности</translation>
 <translation id="3648667207586409316">Шта могу да урадим да бих смањио/ла стрес?</translation>
 <translation id="3650584904733503804">Потврда ваљаности је успела</translation>
 <translation id="3650594806107685466">Да бисте заштитили картицу, унесите CVC (<ph name="SIDE_OF_CARD"/>)</translation>
@@ -1582,7 +1593,6 @@
 <translation id="3752181611900535304">Желите да сачувате адресу на налогу?</translation>
 <translation id="3752543821772132562">Занемарује се јер смернице <ph name="POLICY_NAME"/> нису подешене.</translation>
 <translation id="3754210790023674521">Изађи из режима слике у слици</translation>
-<translation id="3754664361823138853">&amp;Отвори страницу историје</translation>
 <translation id="3757511311058373406">Филтери за аутоматско прегледање</translation>
 <translation id="3759461132968374835">Немате ниједно недавно пријављено отказивање. Отказивања која су се десила док је пријављивање отказивања било онемогућено неће се овде приказати.</translation>
 <translation id="3760561303380396507">Желите ли да користите Windows Hello уместо CVC-а?</translation>
@@ -1786,6 +1796,7 @@
 <translation id="4103249731201008433">Серијски број уређаја је неважећи</translation>
 <translation id="4103592298805904008">Картон (један слој)</translation>
 <translation id="4104702906064390950">IBAN информације се чувају</translation>
+<translation id="4104995898379951162">Безбедно додајте број регистрованог путника</translation>
 <translation id="4106101218644797743">подешавањима синхронизације</translation>
 <translation id="4106887816571530227">Уграђен садржај није дозвољен</translation>
 <translation id="4107047499377819067">Инсталирање VPN услуга у позадини је почело. Ово може да потраје неколико минута.</translation>
@@ -1843,6 +1854,7 @@
 <translation id="9150836098508392713">Дугме Прикажи Brave савете, активирајте га да бисте сазнали више о Brave функцијама</translation>
 <translation id="4195643157523330669">Отвори на новој картици</translation>
 <translation id="4196861286325780578">&amp;Понови премештање</translation>
+<translation id="1390806521042945654">Додајте пасош у Brave новчаник</translation>
 <translation id="4202554117186904723">Пети котур</translation>
 <translation id="4203769790323223880">Камера није дозвољена</translation>
 <translation id="4203896806696719780"><ph name="BEGIN_LINK"/>да проверите конфигурацију заштитног зида и антивируса<ph name="END_LINK"/></translation>
@@ -1975,6 +1987,7 @@
 <translation id="4377869186417956230">Пређите на све картице лојалности у оквиру ове ставке менија.</translation>
 <translation id="4378154925671717803">Телефон</translation>
 <translation id="4378221908737133050">Направи ми списак за генерално спремање куће</translation>
+<translation id="4379357028567121852">Извор: <ph name="APP_NAME"/></translation>
 <translation id="4381997246130185847">Можете да наставите тамо где сте стали или да у покрету правите нове групе картица</translation>
 <translation id="4382484599443659549">PDF</translation>
 <translation id="4382833368532556056">Од сада чувајте фајлове у простору у клауду</translation>
@@ -2023,7 +2036,6 @@
 <translation id="8294153737034342992"><ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>Укључите Побољшану заштиту<ph name="END_ENHANCED_PROTECTION_LINK"/> да бисте добили највиши ниво безбедности у Brave-у</translation>
 <translation id="4475299370877036544">Ова радња можда крши смернице организације</translation>
 <translation id="447665707681730621"><ph name="BUBBLE_MESSAGE"/>. <ph name="LEARN_MORE_TEXT"/></translation>
-<translation id="4476953670630786061">Овај образац није безбедан. Аутоматско попуњавање је искључено.</translation>
 <translation id="4477350412780666475">Следећа песма</translation>
 <translation id="4480760608050410381">MP4 видео</translation>
 <translation id="4489023393592172404">Коверта Kaku 4</translation>
@@ -2141,6 +2153,7 @@
 <translation id="4711628883879888561">Сарађујте на групи картица</translation>
 <translation id="4712404868219726379">Windows Hello</translation>
 <translation id="4714279348049646935">Израчунај ми просек (GPA) пондерисањем броја ЕСПБ бодова, нивоа предмета и вредности оцене у поенима</translation>
+<translation id="4717533164160330041">Да бисте користили ову функцију, најпре укључите паметне функције у Gmail-у</translation>
 <translation id="471880041731876836">Немате дозволу да посетите овај сајт</translation>
 <translation id="4718897478554657123">600×900 mm</translation>
 <translation id="4722547256916164131"><ph name="BEGIN_LINK"/>да покренете Windows дијагностику мреже<ph name="END_LINK"/></translation>
@@ -2202,6 +2215,7 @@
 <translation id="4803924862070940586"><ph name="FORMATTED_TOTAL_AMOUNT"/> <ph name="CURRENCY_CODE"/></translation>
 <translation id="4805128460707321168">Безбедно ажурирајте личну карту</translation>
 <translation id="4807098396393229769">Име и презиме на картици</translation>
+<translation id="5108824058672523034">Безбедно додајте број регистрованог путника у Brave новчаник</translation>
 <translation id="4809079943450490359">Упутства администратора уређаја:</translation>
 <translation id="4811450222531576619">Сазнајте више о њеном извору и теми</translation>
 <translation id="1177020771645812087">Безбедно сачувајте возило у Brave новчанику</translation>
@@ -2231,6 +2245,7 @@
 <translation id="4855395119669662878">Администратор ће почети да отпрема фајлове у <ph name="CLOUD_PROVIDER"/> <ph name="DATE_TIME"/>. Нека уређај буде повезан док се отпремање фајла не заврши. Током отпремања моћи ћете да читате само локалне фајлове.</translation>
 <translation id="485902285759009870">Кôд се верификује...</translation>
 <translation id="4860260582253463350">Ако желиш да наставиш на YouTube, морамо да се уверимо да си то стварно ти. Добићеш подешавања која је родитељ или старатељ подесио у Family Link-у.</translation>
+<translation id="4861514638281352187">Безбедно додајте број обештећења</translation>
 <translation id="4862642413395066333">Потписивање OCSP одговора</translation>
 <translation id="4864406669374375262">Стринг верзије је копиран у привремену меморију</translation>
 <translation id="486459320933704969">Родитељ или старатељ мора да каже да је у реду да посетите овај веб-сајт</translation>
@@ -2360,6 +2375,7 @@
 <translation id="5061227663725596739">Да ли сте мислили <ph name="LOOKALIKE_DOMAIN"/>?</translation>
 <translation id="5066056036849835175">Историја штампања</translation>
 <translation id="5068524481479508725">A10</translation>
+<translation id="5068915318814087203">Организација може да надгледа одређене активности прегледања да би спречила губитак података. За више детаља идите на <ph name="BEGIN_LINK"/>chrome://management<ph name="END_LINK"/></translation>
 <translation id="5070335125961472645"><ph name="BEGIN_LINK"/>да проверите адресу проксија<ph name="END_LINK"/></translation>
 <translation id="5070838744279127212">Десети котур</translation>
 <translation id="507130231501693183">4. поштанско сандуче</translation>
@@ -2620,6 +2636,7 @@
 <translation id="5499229993630251170">Желите да наставите ову конверзацију?</translation>
 <translation id="5506286895894263601">Листа не садржи важеће пречице.</translation>
 <translation id="5507756662695126555">Немогућност порицања</translation>
+<translation id="5508515366054931524">Упит за верификацију имејла отворен је у пуној висини</translation>
 <translation id="5509762909502811065">B0</translation>
 <translation id="5509780412636533143">Обележивачи којим се управља</translation>
 <translation id="5510766032865166053">Можда је премештен или избрисан.</translation>
@@ -2659,6 +2676,7 @@
 <translation id="55635442646131152">Структура документа</translation>
 <translation id="1702142849385752335">Да бисте користили микрофон, одобрите Brave-у приступ у: <ph name="LINK"/>.</translation>
 <translation id="5395368798429603306">Отвори картицу без архивирања</translation>
+<translation id="4508945603260486778">Додајте личну карту у Brave новчаник</translation>
 <translation id="5565735124758917034">Активно</translation>
 <translation id="5570825185877910964">Заштити налог</translation>
 <translation id="5571083550517324815">Преузимање са ове адресе није могуће. Изаберите другу адресу.</translation>
@@ -2722,6 +2740,7 @@
 <translation id="5659593005791499971">Имејл</translation>
 <translation id="5660122698869360728">Нов паметни фолдер који вам помаже да сачувате све странице за куповину на једном месту и аутоматски пратите цене, добијате увид у цене и друго.</translation>
 <translation id="5663955426505430495">Администратор овог уређаја је инсталирао додатке за додатне функције. Додаци имају приступ некима од података.</translation>
+<translation id="5664075349639500330">Сазнајте више о прегледању у изолованом режиму.</translation>
 <translation id="5675650730144413517">Ова страница не функционише</translation>
 <translation id="5675959228867414813">Прикажи према датуму</translation>
 <translation id="567604591393105935">Доња табела за трговину је отворена до половине екрана</translation>
@@ -2739,7 +2758,7 @@
 <translation id="5707154300732650394">Наставите пут</translation>
 <translation id="57094364128775171">Предложи јаку лозинку…</translation>
 <translation id="570953204696852961">Црвена 3</translation>
-<translation id="5072319759819261375">Уместо тога упитајте Gemini у Brave-у</translation>
+<translation id="5072319759819261375">Уместо тога питајте Gemini у Brave-у</translation>
 <translation id="571403275720188526">(arm64)</translation>
 <translation id="5715150588940290235">Желите да избришете сачуване безбедносне кодове?</translation>
 <translation id="5715918316982363436"><ph name="TAB_COUNT"/> из <ph name="WINDOW_COUNT"/> на овом уређају</translation>
@@ -2793,6 +2812,7 @@
 <translation id="5789643057113097023">,</translation>
 <translation id="5793317771769868848">Овај начин плаћања ће бити избрисан са овог уређаја</translation>
 <translation id="5794065675298686371">Укључите обавештења о праћењу цена</translation>
+<translation id="7504725958983465699">Укључите <ph name="BEGIN_LINK"/>Паметне функције у другим Brave производима<ph name="LINK_END"/></translation>
 <translation id="5797984091151707075">Блокирају смернице администратора</translation>
 <translation id="5804241973901381774">Дозволе</translation>
 <translation id="5806871454498484178">Скроловање и зумирање је блокирано</translation>
@@ -2844,6 +2864,7 @@
 <translation id="3476147989326158506">Brave покушава да прикаже осетљиве информације</translation>
 <translation id="5898767305816764989">Дугме Свиђа ми се, притисните Enter да бисте послали повратне информације да вам се нешто свиђа, <ph name="THUMBS_UP_SUGGESTION_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="5901630391730855834">Жута</translation>
+<translation id="9017337151040864889">Безбедно додајте возачку дозволу у Brave новчаник</translation>
 <translation id="5903264686717710770">Наслов:</translation>
 <translation id="3704860399319731107">Адреса на послу може да вам помогне да обављате ствари у Brave услугама, попут релевантнијих резултата Претраге и путање у Brave мапама. Можете да измените или избришете адресу на <ph name="BEGIN_LINK"/>Brave налогу <ph name="ACCOUNT"/><ph name="END_LINK"/>.</translation>
 <translation id="5908541034548427511"><ph name="TYPE_1"/> (синхронизовано)</translation>
@@ -3099,6 +3120,7 @@
 <translation id="2992154309947281535">Да бисте аутоматски попуњавали информације, у подешавањима Новчаника укључите опцију Користи карте свуда на Brave-у</translation>
 <translation id="6329815962353376655">&lt;Унесите питање&gt;</translation>
 <translation id="633348045801643466">Прикажи <ph name="PAY_LATER_OPTIONS_HELP_LINK_BEGIN"/>опције за касније плаћање<ph name="PAY_LATER_OPTIONS_HELP_LINK_END"/> приликом плаћања</translation>
+<translation id="6335364777769284858">Укључите Паметне функције у <ph name="BEGIN_LINK"/>подешавањима Gmail-а<ph name="LINK_END"/></translation>
 <translation id="6336948221660696475">ВР није дозвољен</translation>
 <translation id="6337534724793800597">Филтрирај смернице према називу</translation>
 <translation id="633770708279464947">Вредност <ph name="SECURE_DNS_SALT"/> је неважећа и неће се користити.</translation>
@@ -3231,6 +3253,7 @@
 <translation id="6547208576736763147">Двоструко бушење на левој страни</translation>
 <translation id="6550245281449521513">Закључавање миша није дозвољено</translation>
 <translation id="6551737294564628267"><ph name="ATTRIBUTE_NAME"/>, ново</translation>
+<translation id="6552244083450538912">Ваше активности могу да виде: веб-сајтови које посећујете, послодавац или школа, интернет провајдер</translation>
 <translation id="6552566579578780089">Плаћања</translation>
 <translation id="6553777254569586547"><ph name="SUGGESTION_TITLE"/>. <ph name="SUGGESTION_TYPE"/>. <ph name="MATCH_POSITION"/>. од <ph name="NUM_MATCHES_IN_GROUP"/> у групи <ph name="GROUP_HEADER"/>.</translation>
 <translation id="6554732001434021288">Последња посета: пре <ph name="NUM_DAYS"/> дана</translation>
@@ -3258,6 +3281,7 @@
 <translation id="5887670611153282204">Сазнајте више о претраживачу у Brave-у</translation>
 <translation id="6615297766614333076">2. преграда за слагање</translation>
 <translation id="6619496928666593220">IBAN није унет</translation>
+<translation id="7974914674103704697">Безбедно додајте возило у Brave новчаник</translation>
 <translation id="6624427990725312378">Контакт информације</translation>
 <translation id="6625629379283886932">Научи ме како да програмирам</translation>
 <translation id="6628463337424475685"><ph name="ENGINE"/> претрага</translation>
@@ -3333,6 +3357,7 @@
 <translation id="6743841972744298686">Подешавања синхронизације</translation>
 <translation id="3792994947670632937">Аутоматски попуните именом и имејл адресом са Brave налога</translation>
 <translation id="674580074662200768">Безбедно ажурирајте пасош</translation>
+<translation id="6749473226660745022">Слике</translation>
 <translation id="6751487147225428522">ROC 8K</translation>
 <translation id="6753269504797312559">Вредност смерница</translation>
 <translation id="6753434778807740853">Избришите унос <ph name="ENTRY_VOICEOVER"/></translation>
@@ -3388,6 +3413,7 @@
 <translation id="6860888819347870819">Може да затражи да унесе слику у слици</translation>
 <translation id="6864189428899665393">267×389 mm</translation>
 <translation id="6865412394715372076">Тренутно не можемо да верификујемо ову картицу</translation>
+<translation id="6871073333584947219">Обавештење Новчаника је затворено.</translation>
 <translation id="6871813064737840684">Историја цена широм веба за ову опцију</translation>
 <translation id="6873456682041376666">Горња фиока</translation>
 <translation id="6874604403660855544">&amp;Понови додавање</translation>
@@ -3462,6 +3488,7 @@
 <translation id="4008528679917598915">Да бисте користили привремену меморију, одобрите Brave-у приступ у: <ph name="LINK"/>.</translation>
 <translation id="6973656660372572881">Наведени су и фиксни прокси сервери и URL адреса .pac скрипте.</translation>
 <translation id="6973988895180423160">3,5×5 in</translation>
+<translation id="6976229914347655621">Додаци које захтева организација остају укључени. За више детаља идите на <ph name="BEGIN_LINK"/>chrome://extensions<ph name="END_LINK"/></translation>
 <translation id="6978236010531171013">Ипак дели</translation>
 <translation id="6979158407327259162">Brave диск</translation>
 <translation id="6979440798594660689">Искључен (подразумевано)</translation>
@@ -3475,7 +3502,6 @@
 <translation id="6998512609912910179">Брже попуњавајте обрасце</translation>
 <translation id="7000094925113284872">Представи животни циклус звезде</translation>
 <translation id="7002897669829306463">Кућна адреса, <ph name="ADDRESS"/></translation>
-<translation id="7004499039102548441">Недавне картице</translation>
 <translation id="7004562620237466965">Само дешифровање</translation>
 <translation id="7006930604109697472">Ипак пошаљи</translation>
 <translation id="7009364359744329733">Ова картица тренутно није доступна. Пробајте поново касније.</translation>
@@ -3624,9 +3650,11 @@
 <translation id="7261463765917514051">Плаћајте безбедно помоћу аутоматског попуњавања</translation>
 <translation id="7265608370113700582">Адреса је доступна само на овом уређају</translation>
 <translation id="7266094331715305887">апликације на уређају</translation>
+<translation id="3320731678580031767">Безбедно додајте пасош у Brave новчаник</translation>
 <translation id="7269151392155523061">Пречица не може да буде иста као кључна реч агрегатора претраге коју дефинише <ph name="SEARCH_AGGREGATOR_SETTINGS_POLICY"/>: <ph name="SHORTCUT_NAME"/></translation>
 <translation id="7273111226200291353">Фајлови које преузмете се шаљу у Google Cloud или трећим странама на анализу. На пример, можда ће бити скенирани у потрази за осетљивим подацима или малвером и могу да буду сачувани на основу смерница предузећа и видљиви су администратору.</translation>
 <translation id="7275334191706090484">Обележивачи којим се управља</translation>
+<translation id="7278933725460302617">Сада сте у изолованом режиму</translation>
 <translation id="676689908809408009">Не можете да посетите ову страницу у режиму без архивирања</translation>
 <translation id="2837210582972105306"><ph name="CHANGE_GOOGLE_PASSWORD_FOCUSED_FRIENDLY_MATCH_TEXT"/>, притисните Tab, па Enter да бисте променили лозинку за Brave налог</translation>
 <translation id="7286908876112207905">Налепљивање овог садржаја на овај сајт није дозвољено</translation>
@@ -3645,6 +3673,7 @@
 <translation id="7308436126008021607">синхронизација у позадини</translation>
 <translation id="7310392214323165548">Уређај ће се рестартовати веома брзо</translation>
 <translation id="7311244614769792472">Није пронађен ниједан резултат</translation>
+<translation id="7311565174465466858"><ph name="TAB_KEY"/> Притисните Tab, па Enter да бисте упитали <ph name="AI_ENGINE_NAME"/></translation>
 <translation id="7313107491291103073">Ваша организација је означила овај сајт јер можда крши смернице.</translation>
 <translation id="7315372670898739748">Повезивање није успело. Пробајте поново касније</translation>
 <translation id="7316521168101843192">Фајл се чува на Microsoft OneDrive-у</translation>
@@ -3670,6 +3699,7 @@
 <translation id="7366117520888504990">198×275 mm</translation>
 <translation id="7366362069757178916">Обрађивачи плаћања</translation>
 <translation id="4662831882520898447">Сазнајте више о томе како Brave штити лозинке</translation>
+<translation id="7366909168761621528">Подаци прегледања</translation>
 <translation id="7370751048350026847">Налепљивање овог садржаја на овај сајт није препоручено</translation>
 <translation id="7372526636730851647">Слика (сјајна)</translation>
 <translation id="7372973238305370288">резултат претраге</translation>
@@ -3797,6 +3827,7 @@
 <translation id="7554791636758816595">Нова картица</translation>
 <translation id="7556328470713619625">Користите приступни кључ</translation>
 <translation id="7559278538486662777">Величина ове апликације не може да се промени.</translation>
+<translation id="7561202748196702434">прегледање у изолованом режиму</translation>
 <translation id="7561784249784255101">Дигиталан разноврсни диск</translation>
 <translation id="7567204685887185387">Овај сервер не може да докаже да је <ph name="DOMAIN"/>; његов безбедносни сертификат је можда лажно издат. Узрок томе је можда погрешна конфигурација или нападач који је прекинуо везу.</translation>
 <translation id="8661288256654172117">Brave покушава да унесе лозинку на <ph name="APP_NAME"/>.</translation>
@@ -3899,6 +3930,7 @@
 <translation id="7705085181312584869">Помоћ при писању</translation>
 <translation id="7705992072972338699">Оптички диск (висок сјај)</translation>
 <translation id="7706689436519265630">Фајлови које копирате или преместите се шаљу у Google Cloud или трећим странама на анализу. На пример, можда ће бити скенирани у потрази за осетљивим подацима или малвером и могу да се чувају на основу смерница предузећа.</translation>
+<translation id="7709934467582922028">Упит за верификацију имејла је затворен</translation>
 <translation id="7714351089363296478">Управо сте посетили</translation>
 <translation id="7714404809393719981">Слика (полусјајна)</translation>
 <translation id="7714464543167945231">Сертификат</translation>
@@ -4185,6 +4217,7 @@
 <translation id="8241707690549784388">Страница коју тражите користила је информације које сте унели. Повратак на ту страницу може да проузрокује потребну понављања радњи које сте извршили. Желите ли да наставите?</translation>
 <translation id="8242426110754782860">Настави</translation>
 <translation id="824620968958405573">Задатак аутоматског прегледања</translation>
+<translation id="8247824837030847066">Безбедно додајте личну карту</translation>
 <translation id="8248406213705193919">Желите безбедно да сачувате картицу?</translation>
 <translation id="8249296373107784235">Откажи</translation>
 <translation id="8996951854370742934">Ова адреса је тренутно сачувана на овом уређају. Да бисте је користили у свим Brave производима, сачувајте је на Brave налогу, <ph name="ACCOUNT"/>.</translation>
@@ -4291,6 +4324,7 @@
 <translation id="8410956920192583322">Месечно или у 4 рате</translation>
 <translation id="8412145213513410671">Отказивања (<ph name="CRASH_COUNT"/>)</translation>
 <translation id="8412392972487953978">Потребно је да двапут унесете исту приступну фразу.</translation>
+<translation id="8413126021676339697">Прикажи сву историју</translation>
 <translation id="8414322570408428950">Откривен је догађај додатка</translation>
 <translation id="8416694386774425977">Конфигурација мреже је неважећа и не може да се увезе.
 Додатни детаљи:
@@ -4329,6 +4363,7 @@
 <translation id="8473626140772740486">300×450 mm</translation>
 <translation id="8473863474539038330">Адресе и друго</translation>
 <translation id="8474910779563686872">Прикажи детаље о програмеру</translation>
+<translation id="84764251640219124">Сајтовима је блокирано коришћење колачића треће стране. Ако сајт који се ослања на те колачиће не ради, можете да <ph name="BEGIN_LINK"/>пробате да дате том сајту привремени приступ колачићима трећих страна<ph name="END_LINK"/>.</translation>
 <translation id="8479754468255770962">Спајање у доњем левом углу</translation>
 <translation id="8714154125294613524">Ова адреса ће бити избрисана са Brave налога, <ph name="ACCOUNT"/></translation>
 <translation id="8488350697529856933">Односе се на</translation>
@@ -4395,6 +4430,7 @@
 <translation id="8619130384334725124">Тренутно подразумевани</translation>
 <translation id="8620276786115098679">Коверта Kaku 7</translation>
 <translation id="8622864575115813231">Обраћамо се финансијској институцији…</translation>
+<translation id="8632584659860846053">Историја прегледања, колачићи и подаци о сајтовима, кеш и информације унете у обрасце биће избрисани пошто затворите све изоловане прозоре</translation>
 <translation id="8634957317623797170">54×86 mm</translation>
 <translation id="1669370144926680379">Brave има уграђене безбедносне функције које вас штите током прегледања – као што је Brave безбедно прегледање, које је <ph name="BEGIN_LINK"/>недавно пронашло „пецање“<ph name="END_LINK"/> на сајту који сте пробали да посетите. Сајтови са „пецањем“ се претварају да су други сајтови да би вас преварили.<ph name="NEW_LINE"/>Нападачи понекад угрожавају чак и сајтове који су обично безбедни. <ph name="BEGIN_ERROR_LINK"/>Обавестите нас<ph name="END_ERROR_LINK"/> ако мислите да је дошло до грешке и да овај сајт не представља опасност.</translation>
 <translation id="8294734273090232456">Да бисте делили картице и сарађивали са другима, неопходно је да имате могућност да се пријавите у Brave</translation>
@@ -4595,13 +4631,13 @@
 <translation id="8988966534058783995">Желите да користите сензоре покрета?</translation>
 <translation id="899688752321268742"><ph name="URL"/> жели да зна када активно користите овај уређај</translation>
 <translation id="8997023839087525404">Сервер је приказао сертификат који није јавно откривен помоћу смерница Транспарентност сертификата. То је обавезно за неке сертификате да бисмо се уверили да су поуздани и да штите од нападача.</translation>
-<translation id="9000145382638074673">Ваши уређаји</translation>
 <translation id="9001074447101275817">Прокси <ph name="DOMAIN"/> захтева корисничко име и лозинку.</translation>
 <translation id="9001963517402879850">Скочите!</translation>
 <translation id="9003263770394939629">Предлаже Gemini. Управљајте побољшаним аутоматским попуњавањем у подешавањима.</translation>
 <translation id="9003639428623471314">Коверта Kahu</translation>
 <translation id="9004367719664099443">ВР сесија је у току</translation>
 <translation id="9005998258318286617">Учитавање PDF документа није успело.</translation>
+<translation id="900686221526305417">Безбедно додајте возило</translation>
 <translation id="9008201768610948239">Игнориши</translation>
 <translation id="9010187979699879769">Направи ми распоред учења</translation>
 <translation id="9011281744469077577">{COUNT,plural, =0{Ниједан}=1{Са 1 сајта}one{Са # сајта}few{Са # сајта}other{Са # сајтова}}</translation>
@@ -4614,6 +4650,7 @@
 <translation id="5979301400168151411">Brave сајтови</translation>
 <translation id="8309858808266687860">Пробај Brave Enterprise Core</translation>
 <translation id="9027531288681624875">Да бисте изашли из режима целог екрана, притисните и задржите |<ph name="ACCELERATOR"/>|</translation>
+<translation id="9030785788945687215">Gmail</translation>
 <translation id="9035022520814077154">Безбедносна грешка</translation>
 <translation id="9035699147763101514">Омогућава Персонализована интелигенција помоћу Gemini-ја. Управљајте изборима у подешавањима.</translation>
 <translation id="9035824888276246493">Сачувај безбедносне кодове</translation>
@@ -4755,6 +4792,7 @@
 <translation id="1283739678317676574"><ph name="CREATE_GOOGLE_SITE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, притисните Tab, па Enter да бисте брзо направили нов сајт у Brave сајтовима</translation>
 <translation id="949026252328034572">Чланови (<ph name="MEMBER_COUNT"/>) су се придружили групи картица <ph name="GROUP_NAME"/></translation>
 <translation id="949314938206378263">Затражили сте да посетите овај сајт. Родитељ може да одговори у Family Link-у.</translation>
+<translation id="6543976614537748698">Додајте број обештећења у Brave новчаник</translation>
 <translation id="950736567201356821">Троструко бушење на врху</translation>
 <translation id="1762533279914543867">Приступни кључ • Brave менаџер лозинки</translation>
 <translation id="952165179818196872">Додајте <ph name="PROVIDER"/> да бисте плаћали без мењања апликације</translation>
@@ -4769,6 +4807,7 @@
 <translation id="962484866189421427">Овај садржај можда покушава да инсталира обмањујуће апликације које се претварају да су нешто друго или да прикупљају податке који могу да се користе за праћење. <ph name="BEGIN_LINK"/>Прикажи<ph name="END_LINK"/></translation>
 <translation id="776356972507701422">На основу закона у вашем региону Brave тражи да одаберете подразумевани претраживач. Ови претраживачи су популарни у вашем региону и приказују се насумичним редоследом.</translation>
 <translation id="963837307749850257">Сви корисници</translation>
+<translation id="1548867141525863761">Безбедно додајте број обештећења у Brave новчаник</translation>
 <translation id="964050462028070434">Управљајте лозинкама и приступним кодовима…</translation>
 <translation id="964681140808832181">Да, желим да откажем</translation>
 <translation id="969892804517981540">Званична верзија</translation>
@@ -4788,6 +4827,7 @@
 <translation id="988159990683914416">Верзија за програмере</translation>
 <translation id="989988560359834682">Измена адресе</translation>
 <translation id="990164307229195234"><ph name="DEVICE_NAME"/> (<ph name="DISAMBIGUATION_LABEL"/>)</translation>
+<translation id="990812705189376036">Доказ хеш стабла</translation>
 <translation id="992110854164447044">Виртуелна картица крије вашу стварну картицу да би вас заштитила од потенцијалне преваре. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL"/></translation>
 <translation id="992115559265932548"><ph name="MICROSOFT_ACTIVE_DIRECTORY"/></translation>
 <translation id="992256792861109788">Ружичаста</translation>

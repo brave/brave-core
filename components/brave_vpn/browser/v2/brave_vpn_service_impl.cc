@@ -8,7 +8,6 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -23,33 +22,16 @@
 #include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-namespace brave_vpn::v2 {
-namespace {
+// The agent apps build only on desktop, so the related code assumes desktop
+// only APIs are available; asserted once rather than guarded at call sites.
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
-
-std::string_view BrowserAuthResultToString(
-    std::optional<mojom::BrowserAuthResult> result) {
-  if (!result.has_value()) {
-    return "unknown";
-  }
-  switch (result.value()) {
-    case mojom::BrowserAuthResult::kAccepted:
-      return "accepted";
-    case mojom::BrowserAuthResult::kRejected:
-      return "rejected";
-    case mojom::BrowserAuthResult::kVersionMismatch:
-      return "version mismatch";
-    case mojom::BrowserAuthResult::kHostAlreadyRequested:
-      return "host already requested";
-    case mojom::BrowserAuthResult::kInconclusive:
-      return "inconclusive";
-  }
-}
-
+static_assert(!BUILDFLAG(IS_ANDROID));
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
-}  // namespace
+
+namespace brave_vpn::v2 {
 
 BraveVpnServiceImpl::BraveVpnServiceImpl(
     PrefService* local_prefs,
@@ -60,8 +42,7 @@ BraveVpnServiceImpl::BraveVpnServiceImpl(
       api_client_(
           std::make_unique<BraveVpnApiClient>(std::move(url_loader_factory))),
       skus_client_(
-          std::make_unique<SkusServiceClient>(std::move(skus_service_getter))),
-      connection_state_(mojom::ConnectionState::DISCONNECTED) {
+          std::make_unique<SkusServiceClient>(std::move(skus_service_getter))) {
   DCHECK(IsBraveVPNFeatureEnabled());
 #if BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)
   agent_client_ = std::make_unique<AgentClient>();
@@ -172,6 +153,9 @@ void BraveVpnServiceImpl::UpdateAgentConnection(mojom::PurchasedState state) {
       // alive for this profile. Reset() also clears any refusal verdict, so a
       // later purchase starts from a clean attempt.
       agent_client_->Reset();
+      // Clear leftover connection state if any.
+      UpdateConnectionState(mojom::ConnectionState::DISCONNECTED,
+                            std::string());
       return;
     case mojom::PurchasedState::LOADING:
     case mojom::PurchasedState::SESSION_EXPIRED:
@@ -189,16 +173,30 @@ void BraveVpnServiceImpl::OnAgentConnected() {
   VLOG(1) << "Agent session established";
 }
 
+void BraveVpnServiceImpl::OnAgentSessionStable() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  VLOG(1) << "Agent session is now stable";
+
+  // Clears any leftover connection error.
+  // TODO(https://github.com/brave/brave-browser/issues/59013)
+  // Replace with a new agent-specific connection state.
+  if (connection_state_ == mojom::ConnectionState::CONNECT_NOT_ALLOWED) {
+    UpdateConnectionState(mojom::ConnectionState::DISCONNECTED, std::string());
+  }
+}
+
 void BraveVpnServiceImpl::OnAgentDisconnected() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   VLOG(1) << "Agent session lost";
-}
 
-void BraveVpnServiceImpl::OnAgentUnavailable(
-    std::optional<mojom::BrowserAuthResult> result) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  LOG(ERROR) << "Agent refused this browser, reason: "
-             << BrowserAuthResultToString(result);
+  // Agent disconnection on its own is not a verdict: the client reconnects, and
+  // an unrecoverable run of failures arrives in another ("connection failed")
+  // notification. But make sure the "connected" VPN state is not reported to
+  // the user if there's no connection to the agent, and hence there is no
+  // explicit knowledge that the VPN tunnel is up.
+  if (connection_state_ == mojom::ConnectionState::CONNECTED) {
+    UpdateConnectionState(mojom::ConnectionState::DISCONNECTED, std::string());
+  }
 }
 
 void BraveVpnServiceImpl::OnAgentNotRunning() {
@@ -214,11 +212,23 @@ void BraveVpnServiceImpl::OnAgentNotRunning() {
   }
 }
 
+void BraveVpnServiceImpl::OnAgentConnectionFailed(AgentClient::Error error) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  std::string connection_error_message{AgentClient::ErrorToString(error)};
+  LOG(ERROR) << "Agent connection failed: " << connection_error_message;
+
+  // TODO(https://github.com/brave/brave-browser/issues/59013)
+  // Replace with a new agent-specific connection state.
+  UpdateConnectionState(mojom::ConnectionState::CONNECT_NOT_ALLOWED,
+                        std::move(connection_error_message));
+}
+
 void BraveVpnServiceImpl::OnAgentLaunchFailed(
     AgentLauncher::LaunchError error) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  LOG(ERROR) << "Failed to launch agent: "
-             << AgentLauncher::ErrorToString(error);
+  std::string connection_error_message{AgentLauncher::ErrorToString(error)};
+  LOG(ERROR) << "Failed to launch agent: " << connection_error_message;
+
   // Ignore launch errors if the service has already shut down.
   if (!agent_client_) {
     return;
@@ -233,9 +243,14 @@ void BraveVpnServiceImpl::OnAgentLaunchFailed(
   }
 
   // Purchased state is untouched - the subscription is valid and the UI stays
-  // fully enabled. Just stop the retry loop; the next user-initiated connect
-  // starts a fresh sequence.
+  // mostly enabled though in an error state. Just stop the retry loop; the next
+  // user-initiated connect starts a fresh sequence.
   agent_client_->Reset();
+
+  // TODO(https://github.com/brave/brave-browser/issues/59013)
+  // Replace with a new agent-specific connection state.
+  UpdateConnectionState(mojom::ConnectionState::CONNECT_NOT_ALLOWED,
+                        std::move(connection_error_message));
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2_APPS)

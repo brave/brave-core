@@ -30,9 +30,10 @@ import { getHtml } from './containers.html.js'
 import type { ColorSelectedEvent } from './containers_background_chip.js'
 import { ContainersSettingsHandlerBrowserProxy } from './containers_browser_proxy.js'
 import type { IconSelectedEvent } from './containers_icon.js'
+import { DragReorderMixin, getDragReorderCss } from './drag_reorder_mixin.js'
 
-const SettingsBraveContentContainersElementBase = PrefServiceObserverMixinLit(
-  I18nMixinLit(CrLitElement),
+const SettingsBraveContentContainersElementBase = DragReorderMixin(
+  PrefServiceObserverMixinLit(I18nMixinLit(CrLitElement)),
 )
 
 /**
@@ -44,7 +45,7 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
   }
 
   static override get styles() {
-    return getCss()
+    return [getCss(), getDragReorderCss()]
   }
 
   override render() {
@@ -112,6 +113,22 @@ export class SettingsBraveContentContainersElement extends SettingsBraveContentC
 
   onContainersListUpdated_(containers: Container[]) {
     this.containersList_ = containers
+    this.onReorderableItemsUpdated_()
+  }
+
+  override getReorderableIds_(): string[] {
+    return this.containersList_.map((c) => c.id)
+  }
+
+  override onItemsReordered_(orderedIds: string[]) {
+    this.browserProxy.handler
+      .reorderContainers(orderedIds)
+      .then(({ error }) => {
+        if (!error) {
+          this.onReorderableItemsUpdated_()
+        }
+      })
+      .catch(() => this.onReorderableItemsUpdated_())
   }
 
   onAddContainerClick_() {

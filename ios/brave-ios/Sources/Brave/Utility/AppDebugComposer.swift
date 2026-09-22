@@ -24,7 +24,7 @@ struct AppDebugComposer {
   }
 
   /// This function prepares data to help us identify any app storage problems users may have.
-  static func composeAppSize() async -> String {
+  @concurrent static func composeAppSize() async -> String {
     let fm = FileManager.default
     guard
       let enumerator = fm.enumerator(

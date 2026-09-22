@@ -26,6 +26,7 @@ extension BrowserViewController: TabDelegate {
     tabManager.removeTab(tab)
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     contextMenuConfigurationForLinkURL linkURL: URL?
@@ -207,6 +208,7 @@ extension BrowserViewController: TabDelegate {
     tab.loadRequest(URLRequest(url: linkURL))
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     requestMediaCapturePermissionsFor type: WebMediaCaptureType
@@ -275,6 +277,7 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     runJavaScriptAlertPanelWithMessage message: String,
@@ -299,6 +302,7 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithMessage message: String,
@@ -323,6 +327,7 @@ extension BrowserViewController: TabDelegate {
     }
   }
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     runJavaScriptConfirmPanelWithPrompt prompt: String,
@@ -373,13 +378,13 @@ extension BrowserViewController: TabDelegate {
   }
 
   private class LookupMenuReplacement: UIMenu {
-    convenience init(lookupMenu: UIMenu, searchWebAction: UIAction) {
+    convenience init(lookupMenu: UIMenu, searchWebAction: UIAction? = nil) {
       self.init(
         title: lookupMenu.title,
         image: lookupMenu.image,
         identifier: lookupMenu.identifier,
         options: lookupMenu.options,
-        children: lookupMenu.children + [searchWebAction]
+        children: lookupMenu.children + [searchWebAction].compactMap { $0 }
       )
     }
 
@@ -411,18 +416,23 @@ extension BrowserViewController: TabDelegate {
         }
       }
     }
-    let searchWithBrave = UIAction(title: Strings.searchWithBrave) { [weak tab, weak self] _ in
-      tab?.evaluateJavaScript(
-        functionName: "getSelection().toString",
-        contentWorld: .defaultClient
-      ) {
-        result,
-        _ in
-        guard let tab, let selectedText = result as? String else { return }
-        self?.didSelectSearchWithBrave(selectedText, tab: tab)
-      }
-    }
     if let lookupMenu = builder.menu(for: .lookup) {
+      // JavaScript selection does not work when WKWebView renders a PDF directly.
+      // Exclude the entire lookup menu to since we are not adding "Search with Brave".
+      let searchWithBrave: UIAction? =
+        tab.contentsMimeType == MIMEType.pdf
+        ? nil
+        : UIAction(title: Strings.searchWithBrave) { [weak tab, weak self] _ in
+          tab?.evaluateJavaScript(
+            functionName: "getSelection().toString",
+            contentWorld: .defaultClient
+          ) {
+            result,
+            _ in
+            guard let tab, let selectedText = result as? String else { return }
+            self?.didSelectSearchWithBrave(selectedText, tab: tab)
+          }
+        }
       builder.replace(
         menu: .lookup,
         with: LookupMenuReplacement(

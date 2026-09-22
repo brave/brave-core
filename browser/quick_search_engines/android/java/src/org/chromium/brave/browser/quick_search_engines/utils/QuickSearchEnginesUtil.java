@@ -5,6 +5,7 @@
 
 package org.chromium.brave.browser.quick_search_engines.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.widget.ImageView;
 
@@ -161,6 +162,7 @@ public class QuickSearchEnginesUtil {
     }
 
     /** Gets sorted and filtered list of template URLs */
+    @SuppressLint("VisibleForTests")
     private static List<TemplateUrl> getSortedTemplateUrls(
             TemplateUrlService service,
             TemplateUrl defaultSearchEngine,
@@ -262,8 +264,7 @@ public class QuickSearchEnginesUtil {
             addYtQuickSearchEnginesModel(searchEnginesMap);
         } else {
             // Create new map to preserve ordering while adding YouTube after Google
-            Map<String, QuickSearchEnginesModel> ytSearchEnginesMap =
-                    new LinkedHashMap<String, QuickSearchEnginesModel>();
+            Map<String, QuickSearchEnginesModel> ytSearchEnginesMap = new LinkedHashMap<>();
 
             // Iterate through existing engines, keeping each entry under the key it already
             // has. Re-keying by the model's own keyword instead would let an entry whose

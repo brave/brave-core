@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Today’s top stories in a private feed, just for you.</translation>
 <translation id="3803728444598576153">Turn on Brave News and never miss a story</translation>
 <translation id="7627131190984957214">Brave News is ad-supported with private and anonymised ads matched on your device.</translation>
-<translation id="7897050360583141319">Follow your favourite sources, in a single feed. Just open a tab in Brave, scroll down, and … voila!\nBrave News is ad-supported with private, anonymised ads.</translation>
+<translation id="7897050360583141319">Follow your favourite sources, in a single feed. Just open a tab in Brave, scroll down, and … voila!</translation>
 <translation id="1765217911817124376">Turn on Brave News</translation>
 <translation id="8981973962043893066">Search for site, topic or RSS feed</translation>
 <translation id="3225021799163709119">Popular</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Help improve Brave\u2019s product stability by automatically sending diagnostic reports when the Brave Browser crashes or freezes.</translation>
 <translation id="7977176350719484850">Est. Data\nSaved</translation>
 <translation id="9008534313521214777">Est. Time\nSaved</translation>
+<translation id="5668852698659986622">Enable Sponsored Ads</translation>
+<translation id="431194936581466649">Help support Brave's mission to build an independent, user-first Web with Sponsored Ads. We measure ad performance privately, without identifying you.</translation>
 <translation id="8347743943525229984">Allow Brave surveys</translation>
 <translation id="6022939994702081659">Allows Brave to show links to private surveys in the new tab page. Surveys help us build better features and measure the effectiveness of browser-based ad campaigns.</translation>
 <translation id="7746496306508543965">Learn more about Brave surveys</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">I have a 12-word recovery phrase</translation>
 <translation id="4225265925807365011">I have a 24-word recovery phrase</translation>
 <translation id="3570367516044491911">Set as default browser</translation>
-<translation id="6800338374677644736">Set as default browser</translation>
 <translation id="1545749641540134597">Scan QR Code</translation>
 <translation id="5317781812114905957">Instructions</translation>
 <translation id="8515319483805157233">To search by QR code, align the QR code in the centre of frame.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Main menu</translation>
 <translation id="7002271985859760052">Page actions</translation>
 <translation id="7104487676473617844">The following items will only appear in the menu when supported by the currently open webpage.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Brave Ads are here!</translation>
 <translation id="222883304157347087">(this device)</translation>
 <translation id="4157741509680155021">DEVICES ON SYNC CHAIN</translation>
@@ -723,6 +723,8 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Amount + Gas</translation>
 <translation id="2186011161688824046">Amount + fee</translation>
+<translation id="1118876217803190221">Insufficient balance</translation>
+<translation id="275990379543116961">Insufficient funds for gas</translation>
 <translation id="1950052789869821983">Transaction</translation>
 <translation id="2304783958703511257">Advanced settings</translation>
 <translation id="4220062530885628403">Nonce</translation>

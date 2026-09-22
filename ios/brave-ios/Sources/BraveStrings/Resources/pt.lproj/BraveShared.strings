@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Editar motores de pesquisa rápida";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Se você tiver uma falha ou congelamento, o Brave pode enviar automaticamente relatórios de diagnóstico anônimos para corrigir o problema. Você sempre pode desativar isso nas Configurações mais tarde.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Ativar relatórios de falhas automáticos";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Ativar";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Não agora";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Ativar o recurso \"puxar para atualizar\"";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Imagens padrão";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Imagens Patrocinadas e Vídeos";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Imagens patrocinadas";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Obrigado por apoiar o Brave e a comunidade BAT.";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Ao repor, o seu perfil atual das Recompensas Brave será eliminado e as Recompensas Brave deixarão de estar ativadas.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Reiniciar Brave - Recompensas";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Repor";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Contribua para apoiar o Brave e a comunidade BAT ativando as Brave Rewards e vendo Anúncios Brave.";
 
@@ -2470,17 +2488,17 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Definições de qualidade";
 
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Envie relatórios de diagnóstico anónimos em caso de falha ou congelamento.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Enviar relatórios de falha";
+
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Este ping privado permite à Brave estimar os utilizadores ativos.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Enviar automaticamente ping de utilização diária para a Brave";
-
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Permite que o Brave mostre links para inquéritos privados na página do novo separador. Os inquéritos ajudam-nos a criar melhores funcionalidades e a medir a eficácia das campanhas publicitárias do navegador. [Learn more](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Permitir inquéritos do Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "Youtube";
@@ -2954,7 +2972,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Limite de dispositivos";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Inicie uma nova Cadeia de Sincronização";
+"sync.newSyncCode" = "Nova Cadeia de Sincronização";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Verifique sua conexão com a internet e tente novamente.";
@@ -3124,6 +3142,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Navegação privada";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Privado";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Configurações da guia privada";
 
@@ -3148,11 +3169,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Fragmentar abas";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld Abas";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld Aba";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Visualizar Histórico";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Histórico";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Visualizar Abas Sincronizadas";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Sincronização";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Ativa ou desativa o modo privado";

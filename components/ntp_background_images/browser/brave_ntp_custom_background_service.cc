@@ -10,12 +10,13 @@
 #include "base/check.h"
 #include "base/files/file_path.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
+#include "brave/components/ntp_background_images/browser/wallpapers/ntp_custom_background_delegate.h"
 #include "url/gurl.h"
 
 namespace ntp_background_images {
 
 BraveNTPCustomBackgroundService::BraveNTPCustomBackgroundService(
-    std::unique_ptr<Delegate> delegate)
+    std::unique_ptr<NTPCustomBackgroundDelegate> delegate)
     : delegate_(std::move(delegate)) {
   DCHECK(delegate_);
 }

@@ -44,7 +44,7 @@ class NTPBackgroundImagesComponentInstallerPolicy
       const std::string& component_public_key,
       const std::string& component_id,
       const std::string& component_name,
-      OnComponentReadyCallback callback);
+      ComponentReadyCallback callback);
   ~NTPBackgroundImagesComponentInstallerPolicy() override;
 
   NTPBackgroundImagesComponentInstallerPolicy(
@@ -73,7 +73,7 @@ class NTPBackgroundImagesComponentInstallerPolicy
  private:
   const std::string component_id_;
   const std::string component_name_;
-  OnComponentReadyCallback ready_callback_;
+  ComponentReadyCallback ready_callback_;
   std::array<uint8_t, crypto::kSHA256Length> component_hash_;
 };
 
@@ -82,7 +82,7 @@ NTPBackgroundImagesComponentInstallerPolicy::
         const std::string& component_public_key,
         const std::string& component_id,
         const std::string& component_name,
-        OnComponentReadyCallback callback)
+        ComponentReadyCallback callback)
     : component_id_(component_id),
       component_name_(component_name),
       ready_callback_(std::move(callback)) {
@@ -166,7 +166,7 @@ void RegisterNTPSponsoredImagesComponentCallback(
 
 void RegisterNTPBackgroundImagesComponent(
     component_updater::ComponentUpdateService* component_update_service,
-    OnComponentReadyCallback callback) {
+    ComponentReadyCallback callback) {
   if (!component_update_service ||
       BraveOnDemandUpdater::GetInstance()->is_component_update_disabled()) {
     // In test, `component_update_service` could be nullptr.
@@ -188,7 +188,7 @@ void RegisterNTPSponsoredImagesComponent(
     const std::string& component_public_key,
     const std::string& component_id,
     const std::string& component_name,
-    OnComponentReadyCallback callback) {
+    ComponentReadyCallback callback) {
   if (!component_update_service ||
       BraveOnDemandUpdater::GetInstance()->is_component_update_disabled()) {
     // In test, `component_update_service` could be nullptr.

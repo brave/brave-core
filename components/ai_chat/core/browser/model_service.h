@@ -169,7 +169,6 @@ class ModelService : public KeyedService {
   network::NetworkContextGetter network_context_getter_;
   scoped_refptr<os_crypt_async::Encryptor> encryptor_;
   std::unique_ptr<RemoteModelsProvider> remote_models_provider_;
-  bool is_migrating_claude_instant_ = false;
 
   base::WeakPtrFactory<ModelService> weak_ptr_factory_{this};
 };

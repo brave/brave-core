@@ -9,6 +9,7 @@ import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
 import org.chromium.brave_origin.mojom.BraveOriginSettingsHandler;
+import org.chromium.brave_origin.mojom.OriginActivationLimit;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.Profile;
@@ -50,6 +51,24 @@ public class BraveOriginServiceFactory {
         return braveOriginHandler;
     }
 
+    public @Nullable OriginActivationLimit getOriginActivationLimit(
+            Profile profile, @Nullable ConnectionErrorHandler connectionErrorHandler) {
+        long nativeHandle =
+                BraveOriginServiceFactoryJni.get().getInterfaceToOriginActivationLimit(profile);
+        MessagePipeHandle handle = wrapNativeHandle(nativeHandle);
+        if (!handle.isValid()) {
+            return null;
+        }
+        OriginActivationLimit activationLimit =
+                OriginActivationLimit.MANAGER.attachProxy(handle, 0);
+        if (connectionErrorHandler != null && activationLimit != null) {
+            Handler handler = ((Interface.Proxy) activationLimit).getProxyHandler();
+            handler.setErrorHandler(connectionErrorHandler);
+        }
+
+        return activationLimit;
+    }
+
     private MessagePipeHandle wrapNativeHandle(long nativeHandle) {
         return CoreImpl.getInstance().acquireNativeHandle(nativeHandle).toMessagePipeHandle();
     }
@@ -57,5 +76,7 @@ public class BraveOriginServiceFactory {
     @NativeMethods
     interface Natives {
         long getInterfaceToBraveOriginSettingsHandler(Profile profile);
+
+        long getInterfaceToOriginActivationLimit(Profile profile);
     }
 }

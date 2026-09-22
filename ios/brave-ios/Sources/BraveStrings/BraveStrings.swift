@@ -2411,23 +2411,6 @@ extension Strings {
         comment: "Markdown formatted description under the settings toggle that enables Sponsored Ads. %@ is replaced by a URL and should not be localized."
       )
 
-    public static let surveyPanelistTitle =
-      NSLocalizedString(
-        "settings.surveyPanelistTitle",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Allow Brave surveys",
-        comment: "Title to explain the survey panelist toggle"
-      )
-
-    public static let surveyPanelistDescription =
-      NSLocalizedString(
-        "settings.surveyPanelistDescription",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Allows Brave to show links to private surveys in the new tab page. Surveys help us build better features and measure the effectiveness of browser-based ad campaigns. [Learn more](%@)",
-        comment: "Description to explain the survey panelist toggle"
-      )
   }
 }
 
@@ -4206,6 +4189,37 @@ extension Strings {
       comment: "A button title to show more bookmarks, that opens a new menu."
     )
 
+    public static let topsites = NSLocalizedString(
+      "ntp.topsites",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Top Sites",
+      comment: "The title of a picker for user to pick which type of topsites to show in NTP"
+    )
+
+    public static let topsitesTypeNone = NSLocalizedString(
+      "ntp.topsitesTypeNone",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "None",
+      comment: "None type of topsites. Selection means there won't be any topsites tiles in NTP"
+    )
+
+    public static let topsitesTypeFavorites = NSLocalizedString(
+      "ntp.topsitesTypeFavorites",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Favorites",
+      comment: "Favorites type of topsites. Selection means NTP will display favorites tiles if there is any."
+    )
+
+    public static let topsitesTypeMostVisited = NSLocalizedString(
+      "ntp.topsitesTypeMostVisited",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Frequently Visited",
+      comment: "MostVisited type of topsites. Selection means NTP will display most visited tiles if there is any."
+    )
   }
 
 }

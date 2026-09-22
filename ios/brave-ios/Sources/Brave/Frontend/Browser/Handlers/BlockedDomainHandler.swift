@@ -15,6 +15,7 @@ public class BlockedDomainHandler: InternalSchemeResponse {
 
   public init() {}
 
+  @MainActor
   public func response(forRequest request: URLRequest) async -> (URLResponse, Data)? {
     guard let url = request.url, let internalURL = InternalURL(url),
       let originalURL = internalURL.extractedUrlParam

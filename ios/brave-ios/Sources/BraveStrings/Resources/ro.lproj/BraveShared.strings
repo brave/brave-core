@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Editare motoare de căutare rapidă";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Dacă întâmpinați o blocare sau o înghețare, Brave poate trimite automat rapoarte de diagnostic anonime pentru a remedia problema. Puteți dezactiva oricând această funcție ulterior în Setări.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Activați rapoartele de crash automate";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Activează";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Nu acum";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Activează Trage-pentru-actualizare";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Imagini implicite";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Imagini si clipuri video sponsorizate";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Imagini sponsorizate";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Îți mulțumim pentru susținerea Brave și a comunității BAT!";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Prin resetare, profilul dvs. Brave Rewards actual va fi șters, iar Brave Rewards nu va mai fi activat.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Resetați recompensele Brave";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Resetează";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Susține Brave și comunitatea BAT prin activarea Brave Rewards și afișarea reclamelor Brave Ads.";
 
@@ -2470,17 +2488,17 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Setări calitate";
 
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Trimiteți rapoarte de diagnostic anonime în caz că întâmpinați erori sau blocaje.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Trimiteți rapoarte de crash";
+
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Acest ping confidențial permite lui Brave să estimeze numărul de utilizatori activi.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Trimite automat către Brave ping-ul de utilizare zilnică";
-
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Permite Brave să afișeze linkuri către sondaje private în pagina noii file. Sondajele ne ajută să creăm funcții mai bune și să măsurăm eficiența campaniilor publicitare bazate pe browser. [Află mai multe](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Permite sondaje Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -2954,7 +2972,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Limită dispozitive";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Inițiază un lanț nou de sincronizare";
+"sync.newSyncCode" = "Lanț de sincronizare nou";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Verifică conexiunea la internet și încearcă din nou.";
@@ -3124,6 +3142,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Navigare privată";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Privat";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Setări file private";
 
@@ -3148,11 +3169,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Șterge filele";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld File";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld Fila";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Afișează istoric";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Istoric";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Afișează file sincronizate";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Sincronizare";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Activează sau dezactivează modul privat";

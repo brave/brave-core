@@ -210,8 +210,9 @@ def _repair_plaster_files(old_chromium: Path,
     else:
         terminal.run_git('mv', str(old_plaster), str(new_plaster))
 
-    patch_file = (repository.brave.root / 'patches' /
-                  patch_name_for(old_chromium))
+    # `resolve` reads the path, not the file, so the plaster just moved away
+    # still names the patch it generated.
+    patch_file = plaster.PlasterTarget.resolve(old_plaster).patch
     if not patch_file.exists():
         logging.warning(
             'Expected patch file not found: %s; skipping deletion.',
@@ -229,8 +230,7 @@ def _repair_plaster_files(old_chromium: Path,
         try:
             PlasterFile(new_plaster).apply()
             if not no_git:
-                new_patch = (repository.brave.root / 'patches' /
-                             patch_name_for(new_chromium))
+                new_patch = plaster.PlasterTarget.resolve(new_plaster).patch
                 if new_patch.exists():
                     terminal.run_git('add', str(new_patch))
         # TODO(https://github.com/brave/brave-browser/issues/55370): Eventually

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveUI
 import CoreData
 import Data
@@ -77,7 +78,7 @@ class FavoritesSectionProvider: NSObject, NTPObservableSectionProvider {
   /// given the available width, which is the lesser of the number of fetched
   /// favorites and the maximum number of items that fit in the row.
   func displayedItemCount(in collectionView: UICollectionView, section: Int) -> Int {
-    guard Preferences.NewTabPage.showNewTabFavourites.value else { return 0 }
+    guard Preferences.NewTabPage.topsitesMode.value != TopsitesMode.none else { return 0 }
     return min(
       numberOfFavorites,
       Self.numberOfItems(

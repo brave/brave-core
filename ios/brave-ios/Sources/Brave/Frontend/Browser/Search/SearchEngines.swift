@@ -376,7 +376,7 @@ public class SearchEngines {
 
   fileprivate var customEngines: [OpenSearchEngine] = []
 
-  private func loadCustomEngines() async {
+  @concurrent private func loadCustomEngines() async {
     do {
       let data = try Data(contentsOf: URL(fileURLWithPath: customEngineFilePath()))
       let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
@@ -393,7 +393,7 @@ public class SearchEngines {
     }
   }
 
-  fileprivate func saveCustomEngines() async throws {
+  @concurrent fileprivate func saveCustomEngines() async throws {
     do {
       let data = try NSKeyedArchiver.archivedData(
         withRootObject: customEngines,
@@ -430,7 +430,7 @@ public class SearchEngines {
 
   /// Get all bundled (not custom) search engines, with the default search engine first,
   /// but the others in no particular order.
-  class func getUnorderedBundledEngines(
+  @concurrent class func getUnorderedBundledEngines(
     for selectedEngines: [String] = [],
     isOnboarding: Bool,
     locale: Locale

@@ -76,10 +76,6 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
     }
     r.FONTS = r.BRAVE_CONTENT.createChild('/fonts')
   }
-  if (pageVisibility.surveyPanelist && r.PRIVACY) {
-    r.BRAVE_SURVEY_PANELIST =
-      r.PRIVACY.createChild('/surveyPanelist')
-  }
   if (r.SEARCH) {
     r.DEFAULT_SEARCH = r.SEARCH.createChild('defaultSearch')
     r.DEFAULT_SEARCH.isNavigableDialog = true

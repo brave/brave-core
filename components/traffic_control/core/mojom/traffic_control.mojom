@@ -78,6 +78,10 @@ interface TrafficControlSettingsHandler {
 
   // Removes a rule by its ID.
   RemoveRule(string id) => (RuleOperationError? error);
+
+  // Reorders rules to match the order of `ordered_ids`. `ordered_ids` must
+  // contain exactly the same set of ids as the current rules list.
+  ReorderRules(array<string> ordered_ids) => (RuleOperationError? error);
 };
 
 // Interface for browser -> settings UI communication. This interface allows the

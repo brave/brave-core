@@ -119,6 +119,27 @@ StrippingResultCode RemoveIptcMetadataInternal(
 
 }  // namespace
 
+bool IsSupportedImagePath(const base::FilePath& file_path) {
+  return file_path.MatchesExtension(FILE_PATH_LITERAL(".jpg")) ||
+         file_path.MatchesExtension(FILE_PATH_LITERAL(".jpeg"));
+}
+
+bool ContainsMetadataToStrip(const base::FilePath& file_path) {
+  if (!base::PathExists(file_path)) {
+    DVLOG(1) << "IPTC strip skipped; file missing: " << file_path;
+    return false;
+  }
+
+  std::optional<std::vector<uint8_t>> file_bytes =
+      base::ReadFileToBytes(file_path);
+  if (!file_bytes.has_value()) {
+    DVLOG(1) << "IPTC strip check failed; could not read: " << file_path;
+    return false;
+  }
+
+  return jpeg::ContainsFbmdIptcMetadata(file_bytes.value());
+}
+
 bool RemoveIptcMetadata(const StrippingClient client,
                         const base::FilePath& file_path) {
   const StrippingResultCode result = RemoveIptcMetadataInternal(file_path);

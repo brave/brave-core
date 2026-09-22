@@ -40,6 +40,11 @@ TLS_CONTEXT = ssl.create_default_context()
 # analysis/proto/v1 documents "values above 1000 will be coerced to 1000".
 MAX_PAGE_SIZE = 1000
 
+# The most failure groups `cluster_failures` will return, according to
+# analysis/internal/analysis/cluster_failures.go. A cluster that comes
+# back with exactly this many was very likely cut short upstream.
+MAX_CLUSTER_FAILURES = 2000
+
 # Flake rate thresholds used to classify upstream flakiness. See
 # docs/best-practices/testing-upstream-failures.md.
 KNOWN_FLAKE_RATE = 0.05
@@ -125,6 +130,11 @@ class Verdict(Enum):
         """What a reader should do about this verdict."""
         return _VERDICT_RECOMMENDATION[self]
 
+    @property
+    def style(self) -> str:
+        """How to colour the verdict in a terminal."""
+        return _VERDICT_STYLE[self]
+
 
 # Declared outside the enum body, where a plain assignment would become
 # another member rather than a class attribute.
@@ -140,6 +150,13 @@ _VERDICT_HEADLINE = {
     Verdict.OCCASIONAL: "OCCASIONAL UPSTREAM FAILURES",
     Verdict.INSUFFICIENT_DATA: "INSUFFICIENT DATA",
     Verdict.STABLE: "STABLE UPSTREAM",
+}
+
+_VERDICT_STYLE = {
+    Verdict.KNOWN_FLAKE: "bold red",
+    Verdict.OCCASIONAL: "yellow",
+    Verdict.INSUFFICIENT_DATA: "dim",
+    Verdict.STABLE: "green",
 }
 
 _VERDICT_RECOMMENDATION = {

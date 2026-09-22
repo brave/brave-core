@@ -95,7 +95,7 @@ ViewCounterService::ViewCounterService(
       std::make_unique<WeeklyStorage>(local_state, prefs::kNewTabsCreated);
   new_tab_count_daily_state_ =
       std::make_unique<DailyStorage>(prefs, prefs::kNewTabsCreatedDaily);
-  branded_new_tab_count_state_ = std::make_unique<WeeklyStorage>(
+  new_tab_takeover_count_state_ = std::make_unique<WeeklyStorage>(
       local_state, prefs::kSponsoredNewTabsCreated);
 
   ResetModel();
@@ -146,7 +146,7 @@ void ViewCounterService::RecordViewedAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
-  branded_new_tab_count_state_->AddDelta(1);
+  new_tab_takeover_count_state_->AddDelta(1);
   UpdateP3AValues();
 
   MaybeTriggerNewTabPageAdEvent(
@@ -237,7 +237,7 @@ void ViewCounterService::GetCurrentBrandedWallpaperFromAdsService(
 std::optional<base::DictValue>
 ViewCounterService::GetCurrentBrandedWallpaperFromModel() const {
   const auto [campaign_index, creative_index] =
-      model_.GetCurrentBrandedImageIndex();
+      model_.GetCurrentNewTabTakeoverCampaignAndCreativeIndex();
   return GetSponsoredImagesData()->MaybeGetBackgroundAt(campaign_index,
                                                         creative_index);
 }
@@ -251,7 +251,7 @@ void ViewCounterService::Shutdown() {
 void ViewCounterService::OnBackgroundImagesDataDidUpdate(
     NTPBackgroundImagesData* data) {
   if (data) {
-    DVLOG(2) << __func__ << ": NTP BI component is updated.";
+    DVLOG(2) << __func__ << ": The sponsored backgrounds component is updated.";
     ResetModel();
   }
 }
@@ -259,7 +259,7 @@ void ViewCounterService::OnBackgroundImagesDataDidUpdate(
 void ViewCounterService::OnSponsoredImagesDataDidUpdate(
     NTPSponsoredImagesData* data) {
   if (data) {
-    DVLOG(2) << __func__ << ": NTP SI component is updated.";
+    DVLOG(2) << __func__ << ": The sponsored content component is updated.";
     ResetModel();
   }
 }
@@ -287,18 +287,21 @@ void ViewCounterService::ParseAndSaveNewTabPageAdsCallback(bool success) {
 void ViewCounterService::ResetModel() {
   model_.Reset();
 
-  model_.set_show_branded_wallpaper(IsSponsoredImagesWallpaperOptedIn());
+  model_.set_show_new_tab_takeover_wallpaper(
+      IsSponsoredImagesWallpaperOptedIn());
   model_.set_show_wallpaper(IsShowBackgroundImageOptedIn());
 
   if (const NTPSponsoredImagesData* const images_data =
           GetSponsoredImagesData()) {
-    std::vector<size_t> campaigns_total_branded_images_count;
-    campaigns_total_branded_images_count.reserve(images_data->campaigns.size());
+    std::vector<size_t> campaigns_total_new_tab_takeover_creative_count;
+    campaigns_total_new_tab_takeover_creative_count.reserve(
+        images_data->campaigns.size());
     for (const auto& campaign : images_data->campaigns) {
-      campaigns_total_branded_images_count.push_back(campaign.creatives.size());
+      campaigns_total_new_tab_takeover_creative_count.push_back(
+          campaign.creatives.size());
     }
-    model_.SetCampaignsTotalBrandedImageCount(
-        campaigns_total_branded_images_count);
+    model_.SetCampaignsTotalNewTabTakeoverCreativeCount(
+        campaigns_total_new_tab_takeover_creative_count);
   }
 
   if (const NTPBackgroundImagesData* const images_data =
@@ -505,13 +508,13 @@ void ViewCounterService::UpdateP3AValues() {
                                      kNewTabsCreatedMetricBuckets,
                                      static_cast<int>(new_tab_daily_count));
 
-  uint64_t branded_new_tab_count =
-      branded_new_tab_count_state_->GetHighestValueInWeek();
-  if (branded_new_tab_count == 0 || new_tab_count == 0) {
+  uint64_t new_tab_takeover_count =
+      new_tab_takeover_count_state_->GetHighestValueInWeek();
+  if (new_tab_takeover_count == 0 || new_tab_count == 0) {
     UMA_HISTOGRAM_EXACT_LINEAR(kSponsoredNewTabsHistogramName, 0,
                                std::size(kSponsoredNewTabsBuckets) + 1);
   } else {
-    double ratio = (static_cast<double>(branded_new_tab_count) /
+    double ratio = (static_cast<double>(new_tab_takeover_count) /
                     static_cast<double>(new_tab_count)) *
                    100;
     p3a_utils::RecordToHistogramBucket(kSponsoredNewTabsHistogramName,

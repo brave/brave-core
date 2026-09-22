@@ -43,6 +43,7 @@
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 #include "brave/components/ntp_background_images/browser/brave_ntp_custom_background_service.h"
+#include "brave/components/ntp_background_images/browser/wallpapers/ntp_custom_background_delegate.h"
 #endif  // BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 
 namespace ntp_background_images {
@@ -147,7 +148,7 @@ int GetInitialCountToBrandedWallpaper() {
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
 class BraveNTPCustomBackgroundServiceDelegateMock
-    : public BraveNTPCustomBackgroundService::Delegate {
+    : public NTPCustomBackgroundDelegate {
  public:
   BraveNTPCustomBackgroundServiceDelegateMock() = default;
 
@@ -462,13 +463,13 @@ TEST_F(ViewCounterServiceTest, IsActiveOptedIn) {
 }
 
 TEST_F(ViewCounterServiceTest, PrefsWithModelTest) {
-  EXPECT_EQ(view_counter_service_->model_.show_branded_wallpaper_,
-            features::kInitialCountToBrandedWallpaper.Get() - 1);
+  EXPECT_EQ(features::kInitialCountToBrandedWallpaper.Get() - 1,
+            view_counter_service_->model_.count_to_new_tab_takeover_wallpaper_);
   EXPECT_TRUE(view_counter_service_->model_.show_wallpaper_);
-  EXPECT_TRUE(view_counter_service_->model_.show_branded_wallpaper_);
+  EXPECT_TRUE(view_counter_service_->model_.show_new_tab_takeover_wallpaper_);
 
   SetSponsoredImagesVisibility(false);
-  EXPECT_FALSE(view_counter_service_->model_.show_branded_wallpaper_);
+  EXPECT_FALSE(view_counter_service_->model_.show_new_tab_takeover_wallpaper_);
 
   SetBackgroundImagesVisibility(false);
   EXPECT_FALSE(view_counter_service_->model_.show_wallpaper_);

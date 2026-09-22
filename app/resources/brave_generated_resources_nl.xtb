@@ -112,6 +112,9 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="3114478090884951591">Zichtbaar gebied</translation>
 <translation id="2026367923222947564">Volledige pagina</translation>
 <translation id="4218885227032158909">Geselecteerd gebied</translation>
+<translation id="2586386106930448447">Voorbeeld van schermafbeelding</translation>
+<translation id="7514365320538308">Download</translation>
+<translation id="2743387203779672305">Kopieer naar klembord</translation>
 <translation id="4928988318462976765">Web Extensions Store</translation>
 <translation id="9181207987584064303">Bekijken in Web Extensions Store</translation>
 <translation id="3161744659507801211">Waarschuwing: Brave kan niet voorkomen dat extensies uw browsergeschiedenis opslaan.</translation>
@@ -364,6 +367,7 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="6847541693235449912">Ga</translation>
 <translation id="2079545284768500474">Ongedaan maken</translation>
 <translation id="1533980864758658574">Nieuw venster gemaakt voor <ph name="TOPIC"/></translation>
+<translation id="530437350080973527">Geen tabbladen kwamen overeen met dat onderwerp. Probeer het anders te omschrijven.</translation>
 <translation id="7985042437720138349">Deze functie stuurt gegevens over open tabbladen naar Leo, de AI-assistent van Brave Browser.</translation>
 <translation id="6165508094623778733">Meer Leren</translation>
 <translation id="7557539689487606886">Koop Premium</translation>
@@ -421,6 +425,23 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="4328541188421002379">Geef je container een naam zoals Werk of Persoonlijk</translation>
 <translation id="4976989127264491396">Fout: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Container kon niet worden gevonden</translation>
+<translation id="6055154402239241620">Verkeersbeheer</translation>
+<translation id="8134521925475508805">Configureer specifieke sites om automatisch in een bepaalde context te openen, zodat er scheiding ontstaat tussen je browsesessies. <ph name="BEGIN_LINK"/>Meer informatie<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Schakel Verkeersbeheer in</translation>
+<translation id="1358255827354528344">Nieuwe regel toevoegen</translation>
+<translation id="7183128985801806752">Nieuwe verkeersbeheerregel</translation>
+<translation id="2474694032500407328">Verkeersbeheerregel bewerken</translation>
+<translation id="5543417389274097206">Regel maken</translation>
+<translation id="6532106788206463496">Wijzigingen opslaan</translation>
+<translation id="1172800769374812685">Regel verwijderen</translation>
+<translation id="2389682807835777591">Weet je zeker dat je de regel <ph name="RULE_LABEL"/> wilt verwijderen?</translation>
+<translation id="4853129331778360252">Voer URL's in om te beheren en altijd in een specifieke browsecontext te openen.</translation>
+<translation id="1173480005453148926">URL's om te beheren</translation>
+<translation id="6217532416180299470">Voer URL's in om te beheren met verkeersbeheer</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> komt overeen met de site en de subdomeinen ervan; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> komt exact overeen met de site; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> komt overeen met alle sites; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> is een opmerking.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (en <ph name="COUNT"/> meer URL's)</translation>
+<translation id="3700798663085748181">Regel inschakelen</translation>
+<translation id="2967480878853054068">Ongeldig URL-filter</translation>
 <translation id="2263346047290834619">Structuurtabbladen gebruiken</translation>
 <translation id="5860254591544742609">Titelbalk weergeven</translation>
 <translation id="4691131445504068802">Volledig verbergen wanneer geminimaliseerd</translation>
@@ -528,7 +549,6 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="6745592621698551453">Nu updaten</translation>
 <translation id="5334844597069022743">Bron bekijken</translation>
 <translation id="4720556299488643018">Afmelden</translation>
-<translation id="6532106788206463496">Wijzigingen opslaan</translation>
 <translation id="4516904298421534459">Lijsten filteren</translation>
 <translation id="4435215931544457255">Aanvullende veelgebruikte community-lijsten. Houd er rekening mee dat als u te veel filters inschakelt, dit invloed heeft op de snelheid van de browser.</translation>
 <translation id="802154636333426148">Downloaden mislukt</translation>
@@ -611,6 +631,8 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="509873765238158442">Microsoft Recall blokkeren</translation>
 <translation id="4763421121695677716">Blokkeer de Recall-functie op Microsoft Windows-computers en belet dat er automatisch screenshots van geopende Brave-tabbladen worden gemaakt.</translation>
 <translation id="1968895725257436430">Gegevensverzameling</translation>
+<translation id="5668852698659986622">Schakel gesponsorde Ads in</translation>
+<translation id="431194936581466649">Help Brave's missie ondersteunen om een onafhankelijk, gebruikersgericht web te bouwen met gesponsorde Ads. We meten advertentieprestaties privé, zonder je te identificeren.</translation>
 <translation id="1700052872056357670">Gegevens wissen bij het verlaten</translation>
 <translation id="216468847346280584">Brave Ads-gegevens wissen...</translation>
 <translation id="96212973142796240">Brave Ads-gegevens gewist</translation>
@@ -991,4 +1013,12 @@ Of voer later wijzigingen door via <ph name="SETTINGS_EXTENIONS_LINK"/>.</transl
 <translation id="154702742922788359">Openmodus</translation>
 <translation id="2249111429176737533">Openen als venster met tabbladen</translation>
 <translation id="7022756207310403729">Openen in browser</translation>
+<translation id="1916785651473363467">Aangepaste profielafbeelding</translation>
+<translation id="5336092064678832560">Aangepaste afbeelding uploaden</translation>
+<translation id="1062407476771304334">Vervangen</translation>
+<translation id="1428299461403073820">Aangepaste profielafbeelding vervangen</translation>
+<translation id="7994453838803296517">Voorbeeld van aangepaste profielafbeelding, geselecteerd</translation>
+<translation id="6578040791557152233">Een aangepaste profielafbeelding uploaden</translation>
+<translation id="9222124079546967592">Aangepaste profielafbeelding verwijderen</translation>
+<translation id="6058660912941570282">Brave kan dit bestand niet gebruiken. Kies een andere afbeelding en probeer het opnieuw.</translation>
 </translationbundle>

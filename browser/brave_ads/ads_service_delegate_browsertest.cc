@@ -29,7 +29,7 @@
 
 namespace brave_ads {
 
-class AdsServiceDelegateBrowserTest : public InProcessBrowserTest {
+class BraveAdsServiceDelegateBrowserTest : public InProcessBrowserTest {
  public:
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
@@ -63,7 +63,7 @@ class AdsServiceDelegateBrowserTest : public InProcessBrowserTest {
   std::unique_ptr<AdsServiceDelegate> delegate_;
 };
 
-IN_PROC_BROWSER_TEST_F(AdsServiceDelegateBrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveAdsServiceDelegateBrowserTest,
                        OpenNewTabWithUrlNavigatesToUrl) {
   const GURL url = embedded_test_server()->GetURL("/title1.html");
 
@@ -76,7 +76,7 @@ IN_PROC_BROWSER_TEST_F(AdsServiceDelegateBrowserTest,
   EXPECT_EQ(url, web_contents->GetLastCommittedURL());
 }
 
-IN_PROC_BROWSER_TEST_F(AdsServiceDelegateBrowserTest,
+IN_PROC_BROWSER_TEST_F(BraveAdsServiceDelegateBrowserTest,
                        OpenNewTabWithUrlDoesNotNavigateAfterShutdownStarted) {
   const GURL url = embedded_test_server()->GetURL("/title1.html");
   content::WebContents* const web_contents_before =

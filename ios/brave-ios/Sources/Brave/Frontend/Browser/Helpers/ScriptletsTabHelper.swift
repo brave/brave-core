@@ -55,8 +55,8 @@ public class ScriptletsTabHelper: TabObserver, TabPolicyDecider {
   }
 }
 
-@MainActor extension ScriptletsTabHelper: ScriptletsTabHelperBridge {
-
+extension ScriptletsTabHelper: ScriptletsTabHelperBridge {
+  @MainActor
   public func scriptlets(frameURL: URL) async -> [String] {
     guard let tab = tab,
       let mainFrameURL,

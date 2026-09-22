@@ -112,6 +112,9 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="3114478090884951591">Viditeľná oblasť</translation>
 <translation id="2026367923222947564">Celá stránka</translation>
 <translation id="4218885227032158909">Vybraná oblasť</translation>
+<translation id="2586386106930448447">Náhľad snímky obrazovky</translation>
+<translation id="7514365320538308">Stiahnuť</translation>
+<translation id="2743387203779672305">Vložiť do schránky</translation>
 <translation id="4928988318462976765">Obchod s webovými rozšíreniami</translation>
 <translation id="9181207987584064303">Zobraziť v Obchode webových rozšírení</translation>
 <translation id="3161744659507801211">Varovanie: Brave nemôže zabrániť rozšíreniam v zaznamenávaní vašej histórie prehliadania.</translation>
@@ -364,6 +367,7 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="6847541693235449912">Prejsť</translation>
 <translation id="2079545284768500474">Otvoriť</translation>
 <translation id="1533980864758658574">Pre <ph name="TOPIC"/> bolo vytvorené nové okno</translation>
+<translation id="530437350080973527">Žiadne karty nezodpovedali tejto téme. Skúste ju opísať inak.</translation>
 <translation id="7985042437720138349">Táto funkcia odosiela údaje o vašich otvorených kartách Leovi, AI asistentovi v prehliadači Brave.</translation>
 <translation id="6165508094623778733">Dozvedieť sa viac</translation>
 <translation id="7557539689487606886">Prejsť na Premium</translation>
@@ -421,6 +425,23 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="4328541188421002379">Dajte kontajneru názov, napríklad Práca alebo Osobné</translation>
 <translation id="4976989127264491396">Chyba: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Kontajner sa nenašiel</translation>
+<translation id="6055154402239241620">Kontrola prevádzky</translation>
+<translation id="8134521925475508805">Nakonfigurujte konkrétne lokality tak, aby sa automaticky otvárali v konkrétnom kontexte, čím oddelíte svoje relácie prehliadania. <ph name="BEGIN_LINK"/>Ďalšie informácie<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Povoliť kontrolu prevádzky</translation>
+<translation id="1358255827354528344">Pridať nové pravidlo</translation>
+<translation id="7183128985801806752">Nové pravidlo kontroly prevádzky</translation>
+<translation id="2474694032500407328">Upraviť pravidlo kontroly prevádzky</translation>
+<translation id="5543417389274097206">Vytvoriť pravidlo</translation>
+<translation id="6532106788206463496">Uložiť zmeny</translation>
+<translation id="1172800769374812685">Odstrániť pravidlo</translation>
+<translation id="2389682807835777591">Naozaj chcete odstrániť pravidlo <ph name="RULE_LABEL"/>?</translation>
+<translation id="4853129331778360252">Zadajte webové adresy, ktoré chcete spravovať a vždy otvárať v konkrétnom kontexte prehliadania.</translation>
+<translation id="1173480005453148926">Webové adresy na správu</translation>
+<translation id="6217532416180299470">Zadajte webové adresy na správu pomocou kontroly prevádzky</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> zodpovedá lokalite a jej subdoménam; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> zodpovedá presnej lokalite; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> zodpovedá všetkým lokalitám; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> je komentár.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (a <ph name="COUNT"/> ďalších webových adries)</translation>
+<translation id="3700798663085748181">Povoliť pravidlo</translation>
+<translation id="2967480878853054068">Neplatný filter webovej adresy</translation>
 <translation id="2263346047290834619">Používať vetvené karty</translation>
 <translation id="5860254591544742609">Zobraziť panel s nadpisom</translation>
 <translation id="4691131445504068802">Úplne skryť pri minimalizácii</translation>
@@ -528,7 +549,6 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="6745592621698551453">Aktualizovať</translation>
 <translation id="5334844597069022743">Zobraziť zdroj</translation>
 <translation id="4720556299488643018">Zrušiť odber</translation>
-<translation id="6532106788206463496">Uložiť zmeny</translation>
 <translation id="4516904298421534459">Filtrovať zoznamy</translation>
 <translation id="4435215931544457255">Ďalšie populárne zoznamy komunity. Upozorňujeme, že zapnutie príliš veľkého počtu filtrov zníži rýchlosť prehliadania.</translation>
 <translation id="802154636333426148">Stiahnutie zlyhalo</translation>
@@ -611,6 +631,8 @@ Alebo môžete zmeny vykonať neskôr na <ph name="SETTINGS_EXTENIONS_LINK"/>.</
 <translation id="509873765238158442">Blokovať Microsoft Recall</translation>
 <translation id="4763421121695677716">Zabráni funkcii Recall v počítačoch so systémom Microsoft Windows, aby automaticky robila snímky obrazovky akýchkoľvek otvorených kariet v Brave.</translation>
 <translation id="1968895725257436430">Zbieranie údajov</translation>
+<translation id="5668852698659986622">Povoliť sponzorované reklamy</translation>
+<translation id="431194936581466649">Pomôžte podporiť misiu Brave vybudovať nezávislý web zameraný na používateľa pomocou sponzorovaných reklám. Výkonnosť reklám meriame súkromne, bez toho, aby sme vás identifikovali.</translation>
 <translation id="1700052872056357670">Vymazať údaje pri ukončení</translation>
 <translation id="216468847346280584">Vymazať údaje o reklamách Brave...</translation>
 <translation id="96212973142796240">Údaje Brave Ads vymazané</translation>
@@ -993,4 +1015,12 @@ Leo AI. Túto akciu nie je možné vrátiť späť.</translation>
 <translation id="154702742922788359">Režim otvorenia</translation>
 <translation id="2249111429176737533">Otvoriť ako okno s kartami</translation>
 <translation id="7022756207310403729">Otvoriť v prehliadači</translation>
+<translation id="1916785651473363467">Vlastný obrázok profilu</translation>
+<translation id="5336092064678832560">Nahrať vlastný obrázok</translation>
+<translation id="1062407476771304334">Nahradiť</translation>
+<translation id="1428299461403073820">Nahradiť vlastný obrázok profilu</translation>
+<translation id="7994453838803296517">Náhľad vlastného obrázka profilu, vybraté</translation>
+<translation id="6578040791557152233">Nahrať vlastný obrázok profilu</translation>
+<translation id="9222124079546967592">Odstrániť vlastný obrázok profilu</translation>
+<translation id="6058660912941570282">Brave nemôže použiť tento súbor. Vyberte iný obrázok a skúste to znova.</translation>
 </translationbundle>

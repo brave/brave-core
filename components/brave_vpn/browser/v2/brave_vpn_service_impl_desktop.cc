@@ -41,7 +41,6 @@ void RunCreateSupportTicketCallback(
 }  // namespace
 
 bool BraveVpnServiceImpl::IsConnected() const {
-  NOTIMPLEMENTED();
   return connection_state_ == mojom::ConnectionState::CONNECTED &&
          IsPurchased();
 }
@@ -51,13 +50,11 @@ void BraveVpnServiceImpl::ToggleConnection() {
 }
 
 mojom::ConnectionState BraveVpnServiceImpl::GetConnectionState() const {
-  NOTIMPLEMENTED();
   return connection_state_;
 }
 
 std::string BraveVpnServiceImpl::GetLastConnectionError() const {
-  NOTIMPLEMENTED();
-  return std::string();
+  return last_connection_error_;
 }
 
 void BraveVpnServiceImpl::RecordWidgetUsageMetrics(bool new_usage) {
@@ -156,10 +153,25 @@ void BraveVpnServiceImpl::GetAllowLanTraffic(
   std::move(callback).Run(false, false);
 }
 
+void BraveVpnServiceImpl::UpdateConnectionState(
+    mojom::ConnectionState state,
+    std::optional<std::string> connection_error) {
+  const bool connection_error_changed =
+      connection_error.has_value() &&
+      *connection_error != last_connection_error_;
+  if (connection_state_ == state && !connection_error_changed) {
+    return;
+  }
+  connection_state_ = state;
+  if (connection_error) {
+    last_connection_error_ = std::move(*connection_error);
+  }
+  NotifyConnectionStateChanged(state);
+}
+
 void BraveVpnServiceImpl::SetConnectionStateForTesting(  // IN-TEST
     mojom::ConnectionState state) {
-  connection_state_ = state;
-  NotifyConnectionStateChanged(state);
+  UpdateConnectionState(state);
 }
 
 void BraveVpnServiceImpl::SetPurchasedStateForTesting(  // IN-TEST

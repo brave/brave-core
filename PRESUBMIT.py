@@ -134,6 +134,7 @@ def CheckTypeScriptSuppressionsHaveReasons(input_api, output_api):
 
     return results
 
+
 # Check and fix formatting issues (supports --fix).
 def CheckPatchFormatted(input_api, output_api):
     cmd = [
@@ -177,7 +178,6 @@ def CheckESLint(input_api, output_api):
                     f'ESLint issues found. '
                     f'Run pnpm run eslint (--fix) to reproduce.\n\n{err}')
             ]
-
 
     files_to_check = (
         r'.+\.js$',
@@ -626,12 +626,18 @@ def CheckPlasterFiles(input_api, output_api):
     have a Plaster file.
     """
 
+    # The repositories file names the repository every plaster targets, so a
+    # change to it is a change to all of them.
+    repositories_file = "patches/.repositories.cfg"
+
     affected_files = []
     for f in input_api.AffectedFiles(include_deletes=True):
-        local_path = f.LocalPath()
-        if (local_path.startswith("patches/") and local_path.endswith(".patch")
-            ) or (local_path.startswith("rewrite/")
-                  and local_path.endswith(".toml")):
+        local_path = f.LocalPath().replace(os.sep, "/")
+        if ((local_path.startswith("patches/")
+             and local_path.endswith(".patch"))
+                or (local_path.startswith("rewrite/")
+                    and local_path.endswith(".yaml"))
+                or local_path == repositories_file):
             affected_files.append(local_path)
 
     if not affected_files:

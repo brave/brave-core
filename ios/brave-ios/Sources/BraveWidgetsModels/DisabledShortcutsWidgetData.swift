@@ -23,7 +23,7 @@ public class DisabledShortcutsWidgetData {
 
   /// The set of shortcuts that are currently unavailable. An empty set (the
   /// common case, including a missing file) means every feature is available.
-  public static func loadDisabledShortcuts() async -> Set<WidgetShortcut> {
+  @concurrent public static func loadDisabledShortcuts() async -> Set<WidgetShortcut> {
     guard let dataPath = widgetDataPath,
       FileManager.default.fileExists(atPath: dataPath.path)
     else {
@@ -44,7 +44,7 @@ public class DisabledShortcutsWidgetData {
   /// Writes the set of unavailable shortcuts and reloads the affected widgets.
   /// When the set is empty the backing file is removed to keep the common case
   /// clean.
-  public static func updateDisabledShortcuts(_ shortcuts: Set<WidgetShortcut>) async {
+  @concurrent public static func updateDisabledShortcuts(_ shortcuts: Set<WidgetShortcut>) async {
     guard let rootPath = widgetDataRoot, let dataPath = widgetDataPath else { return }
     do {
       let rawValues = shortcuts.filter { $0 != .unknown }.map(\.rawValue).sorted()

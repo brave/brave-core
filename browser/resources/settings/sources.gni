@@ -54,7 +54,6 @@ brave_settings_web_component_files = [
   "brave_sync_page/brave_sync_setup.ts",
   "brave_sync_page/brave_sync_subpage.ts",
   "brave_system_page/brave_system_page_index.ts",
-  "brave_survey_panelist_page/brave_survey_panelist_page.ts",
   "brave_default_extensions_page/brave_extensions_page_index.ts",
   "default_brave_shields_page/brave_adblock_subpage.ts",
   "default_brave_shields_page/components/brave_adblock_editor.ts",
@@ -87,7 +86,6 @@ brave_settings_ts_files = [
   "br/edit_dictionary_page.ts",
   "br/import_data_dialog.ts",
   "br/index.ts",
-  "br/memory_page.ts",
   "br/page_visibility.ts",
   "br/passwords_section.ts",
   "br/payments_page.ts",
@@ -280,6 +278,7 @@ if (enable_containers) {
     "brave_content_page/containers_icon.ts",
     "brave_content_page/containers.html.ts",
     "brave_content_page/containers.ts",
+    "brave_content_page/drag_reorder_mixin.ts",
   ]
   brave_settings_local_css_files += [
     "brave_content_page/containers_background_chip.css",

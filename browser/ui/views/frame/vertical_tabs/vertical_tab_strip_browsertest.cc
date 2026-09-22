@@ -4,9 +4,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <vector>
 
 #include "base/i18n/rtl.h"
 #include "base/i18n/test/scoped_rtl_for_testing.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
@@ -25,12 +27,14 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_new_tab_button.h"
+#include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "build/build_config.h"
+#include "cc/paint/display_item_list.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -49,15 +53,19 @@
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_context_menu_controller.h"
+#include "chrome/browser/ui/views/tabs/tab_group_header.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/interactive_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
+#include "components/tab_groups/tab_group_id.h"
 #include "content/public/test/browser_test.h"
+#include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "ui/base/test/ui_controls.h"
+#include "ui/compositor/paint_context.h"
 #include "ui/display/screen.h"
 #include "ui/display/test/test_screen.h"
 #include "ui/events/event.h"
@@ -65,6 +73,7 @@
 #include "ui/gfx/geometry/skia_conversions.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
+#include "ui/views/paint_info.h"
 #include "ui/views/test/views_test_utils.h"
 
 #if BUILDFLAG(IS_WIN)
@@ -1532,6 +1541,142 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   EXPECT_TRUE(GetTabAt(browser(), model->count() - 1)->GetVisible());
 }
 
+// BraveTabContainer::PaintChildren() paints slot views from the z-order cache
+// owned by TabContainerImpl. The cache must be refreshed by the paint when it
+// is dirty, so an activation change has to be reflected in the paint order of
+// the very next paint: the active tab is painted last, on top of the others.
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       PaintOrderFollowsActiveTab) {
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
+          ->GetTabContainerForTesting());
+  ASSERT_TRUE(brave_tab_container);
+
+  auto* tab_strip = browser_view()->horizontal_tab_strip_for_testing();
+  auto* model = browser()->tab_strip_model();
+  AppendTab(browser());
+  AppendTab(browser());
+  tab_strip->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  ASSERT_EQ(3, model->count());
+
+  // Paints the container into a throwaway display list. This goes through
+  // BraveTabContainer::PaintChildren() without waiting for a compositor frame.
+  // The empty invalidation rect makes View::Paint() paint every view
+  // unconditionally and skips its paint-root consistency DCHECKs, which would
+  // fire because the container is not the root of this paint walk.
+  auto paint = [&]() {
+    auto list = base::MakeRefCounted<cc::DisplayItemList>();
+    brave_tab_container->Paint(views::PaintInfo::CreateRootPaintInfo(
+        ui::PaintContext(list.get(), 1.f, gfx::Rect(), false),
+        brave_tab_container->size()));
+  };
+  auto topmost = [&]() -> views::View* {
+    const auto& cache = brave_tab_container->GetZOrderCacheForTesting();
+    return cache.empty() ? nullptr : cache.back().view();
+  };
+
+  model->ActivateTabAt(0);
+  tab_strip->StopAnimating();
+  paint();
+  EXPECT_EQ(3u, brave_tab_container->GetZOrderCacheForTesting().size());
+  EXPECT_EQ(static_cast<views::View*>(GetTabAt(browser(), 0)), topmost());
+
+  // Activating another tab marks the cache dirty. The next paint must rebuild
+  // it so the new active tab is painted on top.
+  model->ActivateTabAt(2);
+  tab_strip->StopAnimating();
+  paint();
+  EXPECT_EQ(static_cast<views::View*>(GetTabAt(browser(), 2)), topmost());
+}
+
+// A scroll of a settled strip takes a fast path (BraveTabContainer::
+// ScrollByDelta) that shifts the existing ideal bounds instead of running the
+// full layout. Its result must be indistinguishable from a full layout at the
+// same offset: bounds, visibility and clip paths of every slot view.
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       ScrollFastPathMatchesFullLayout) {
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
+          ->GetTabContainerForTesting());
+  ASSERT_TRUE(brave_tab_container);
+
+  auto* tab_strip = browser_view()->horizontal_tab_strip_for_testing();
+  auto* model = browser()->tab_strip_model();
+
+  // A pinned tab gives the unpinned tabs a clip path that depends on their
+  // position, and a group adds header views that scroll along with the tabs.
+  model->SetTabPinned(0, true);
+  tab_strip->StopAnimating();
+  while (brave_tab_container->GetMaxScrollOffsetForTesting() <
+         4 * tabs::kVerticalTabHeight) {
+    AppendTab(browser());
+    tab_strip->StopAnimating();
+    InvalidateAndRunLayoutForVerticalTabStrip();
+  }
+  const tab_groups::TabGroupId group = AddTabToNewGroup(browser(), 2);
+  AddTabToExistingGroup(browser(), 3, group);
+  tab_strip->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  TabGroupHeader* header = tab_strip->group_header(group);
+  ASSERT_TRUE(header);
+
+  struct SlotState {
+    gfx::Rect bounds;
+    bool visible = false;
+    SkPath clip_path;
+  };
+  auto capture = [&]() {
+    std::vector<SlotState> states;
+    for (int i = 0; i < model->count(); ++i) {
+      Tab* tab = GetTabAt(browser(), i);
+      states.push_back({tab->bounds(), tab->GetVisible(), tab->clip_path()});
+    }
+    states.push_back(
+        {header->bounds(), header->GetVisible(), header->clip_path()});
+    return states;
+  };
+
+  // Settle the strip so that the first scroll below takes the fast path.
+  brave_tab_container->CompleteAnimationAndLayout();
+
+  const int max_offset = brave_tab_container->GetMaxScrollOffsetForTesting();
+  ASSERT_GT(max_offset, 0);
+  for (int offset : {max_offset / 2, max_offset, 0}) {
+    SCOPED_TRACE(testing::Message() << "offset " << offset);
+
+    // Preconditions of ScrollByDelta(): without them the scroll would fall
+    // back to the full layout and this test would compare it with itself.
+    ASSERT_TRUE(brave_tab_container->last_layout_size_ ==
+                brave_tab_container->size());
+    ASSERT_FALSE(brave_tab_container->IsAnimating());
+
+    brave_tab_container->SetScrollOffsetForTesting(offset);
+    const std::vector<SlotState> fast = capture();
+
+    // Run the full layout at the same offset, which is exactly what
+    // SetScrollOffset() did before the fast path existed, and compare.
+    brave_tab_container->InvalidateIdealBounds();
+    brave_tab_container->CompleteAnimationAndLayout();
+    ASSERT_EQ(offset, brave_tab_container->GetScrollOffsetForTesting());
+    const std::vector<SlotState> full = capture();
+
+    ASSERT_EQ(fast.size(), full.size());
+    for (size_t i = 0; i < fast.size(); ++i) {
+      SCOPED_TRACE(testing::Message() << "slot " << i);
+      EXPECT_EQ(fast[i].bounds, full[i].bounds);
+      EXPECT_EQ(fast[i].visible, full[i].visible);
+      EXPECT_TRUE(fast[i].clip_path == full[i].clip_path);
+    }
+  }
+}
+
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
   ToggleVerticalTabStrip();
 
@@ -1936,6 +2081,34 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripSwitchTest, DisableSwitch) {
   ToggleVerticalTabStrip();
   EXPECT_FALSE(VerticalTabController::FromBrowser(browser())
                    ->ShouldShowBraveVerticalTabs());
+}
+
+class VerticalTabStripMigrationSwitchTest : public VerticalTabStripBrowserTest {
+ public:
+  using VerticalTabStripBrowserTest::VerticalTabStripBrowserTest;
+  ~VerticalTabStripMigrationSwitchTest() override = default;
+
+  // VerticalTabStripBrowserTest:
+  void SetUp() override {
+    base::CommandLine::ForCurrentProcess()->AppendSwitchASCII(
+        tabs::switches::kVerticalTabMigrationSwitch,
+        tabs::switches::kVerticalTabMigrationForceUpstreamValue);
+    VerticalTabStripBrowserTest::SetUp();
+  }
+};
+
+// Regression/smoke test for the `--vertical-tab-migration=force-upstream`
+// dev/QA switch (see docs/chrome/browser/ui/tabs/vertical_tab_migration.md
+// §8): verifies startup doesn't crash when the switch forces
+// prefs::kVerticalTabsEnabled on before the browser window is created, and
+// that Brave's vertical tabs correctly yield to upstream as a result.
+IN_PROC_BROWSER_TEST_F(VerticalTabStripMigrationSwitchTest,
+                       ForceUpstreamNoCrashOnStartup) {
+  ASSERT_TRUE(browser());
+  EXPECT_TRUE(browser()->GetProfile()->GetPrefs()->GetBoolean(
+      prefs::kVerticalTabsEnabled));
+  EXPECT_FALSE(VerticalTabController::FromBrowser(browser())
+                   ->SupportsBraveVerticalTabs());
 }
 
 class VerticalTabStripScrollBarFlagTest : public VerticalTabStripBrowserTest {

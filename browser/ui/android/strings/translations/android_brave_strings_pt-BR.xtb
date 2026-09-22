@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">As principais notícias de hoje em um feed privado, só para você.</translation>
 <translation id="3803728444598576153">Ative o Notícias Brave e nunca fique por fora das notícias</translation>
 <translation id="7627131190984957214">O Notícias Brave tem suporte de anúncios privados e anônimos correspondentes ao seu dispositivo.</translation>
-<translation id="7897050360583141319">Siga suas fontes favoritas em um único feed. Basta abrir uma guia no Brave, rolar a tela para baixo e pronto!\nO Notícias Brave exibe anúncios totalmente privados e anonimizados.</translation>
+<translation id="7897050360583141319">Siga suas fontes favoritas em um único feed. Basta abrir uma guia no Brave, rolar a tela para baixo e pronto!</translation>
 <translation id="1765217911817124376">Ativar Notícias Brave</translation>
 <translation id="8981973962043893066">Pesquisar site, tópico ou feed RSS</translation>
 <translation id="3225021799163709119">Populares</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Ajude a melhorar a estabilidade do Brave enviando automaticamente relatórios de diagnóstico quando o navegador Brave apresentar falha ou congelar.</translation>
 <translation id="7977176350719484850">Est. de dados\neconomizados</translation>
 <translation id="9008534313521214777">Est. tempo\neconomizado</translation>
+<translation id="5668852698659986622">Ativar Anúncios Patrocinados</translation>
+<translation id="431194936581466649">Ajude a apoiar a missão da Brave de criar uma Web independente e centrada no usuário com os Anúncios Patrocinados. Medimos o desempenho dos anúncios de forma privada, sem identificar você.</translation>
 <translation id="8347743943525229984">Autorizar pesquisas Brave</translation>
 <translation id="6022939994702081659">Permite que o Brave mostre links para pesquisas privadas na página da nova guia. As pesquisas nos ajudam a criar recursos melhores e a medir a eficácia das campanhas publicitárias baseadas no navegador.</translation>
 <translation id="7746496306508543965">Saiba mais sobre as Pesquisas Brave</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Eu tenho uma frase de recuperação de 12 palavras</translation>
 <translation id="4225265925807365011">Eu tenho uma frase de recuperação de 24 palavras</translation>
 <translation id="3570367516044491911">Definir como navegador padrão</translation>
-<translation id="6800338374677644736">Definir como navegador padrão</translation>
 <translation id="1545749641540134597">Capturar Código QR</translation>
 <translation id="5317781812114905957">Instruções</translation>
 <translation id="8515319483805157233">Para pesquisar por código QR, alinhe o código QR no centro do quadro.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Menu principal</translation>
 <translation id="7002271985859760052">Ações da página</translation>
 <translation id="7104487676473617844">Os itens a seguir só ficarão visíveis no menu quando forem compatíveis com a página da web atualmente aberta.</translation>
-<translation id="4159764849281393303">WebApp</translation>
 <translation id="8038539967102225446">Os Anúncios Brave Chegaram!</translation>
 <translation id="222883304157347087">(esse dispositivo)</translation>
 <translation id="4157741509680155021">DISPOSITIVOS NA CADEIA DE SINCRONIZAÇÃO</translation>
@@ -720,6 +720,8 @@ Se você não aceitar essa solicitação, a VPN não se reconectará, e sua cone
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Quantidade + Gás</translation>
 <translation id="2186011161688824046">Valor + taxa</translation>
+<translation id="1118876217803190221">Saldo insuficiente</translation>
+<translation id="275990379543116961">Fundos insuficientes para gás</translation>
 <translation id="1950052789869821983">Transação</translation>
 <translation id="2304783958703511257">Configurações avançadas</translation>
 <translation id="4220062530885628403">Nonce</translation>

@@ -478,6 +478,19 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
   }
 }
 
+IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest,
+                       UpstreamVerticalTabsToggleIsNotDuplicated) {
+  auto menu = CreateMenuControllerAt(0);
+  auto* menu_model = CreateMenuModelAt(menu.get(), 0);
+
+  EXPECT_TRUE(
+      menu_model->GetIndexOfCommandId(TabStripModel::CommandShowVerticalTabs)
+          .has_value());
+  EXPECT_FALSE(
+      menu_model->GetIndexOfCommandId(TabStripModel::CommandToggleVertical)
+          .has_value());
+}
+
 #if BUILDFLAG(ENABLE_CONTAINERS)
 class BraveTabMenuWithContainersBrowserTest : public BraveTabMenuBrowserTest {
  public:

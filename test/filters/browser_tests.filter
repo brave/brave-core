@@ -152,6 +152,20 @@
 -OnDeviceModelExecutionEnabledBrowserTest.GetOnDeviceModelEligibility
 -OnDeviceModelExecutionDisabledBrowserTest.GetOnDeviceModelEligibilityExecutionDisabled
 -OnDeviceModelExecutionDisabledBrowserTest.PerformanceClassNotComputed
+# Brave's global SodaInstaller reports no languages, so these lose the
+# downloadable en-US model they expect. The rest of the fixture still runs,
+# including both of its security regression tests, which expect the unavailable
+# answer Brave gives.
+-OnDeviceSpeechRecognitionImplBrowserTest.AlternateLocales
+-OnDeviceSpeechRecognitionImplBrowserTest.Available
+-OnDeviceSpeechRecognitionImplBrowserTest.AvailableWithAcceptLanguageButNoMicPermission
+-OnDeviceSpeechRecognitionImplBrowserTest.AvailableWithMicAndAcceptLanguage
+-OnDeviceSpeechRecognitionImplBrowserTest.AvailableWithMicAndAcceptLanguageNotInstalled
+-OnDeviceSpeechRecognitionImplBrowserTest.FileSchemeUrl
+-OnDeviceSpeechRecognitionImplBrowserTest.Install
+-OnDeviceSpeechRecognitionImplBrowserTest.InstallWhenLanguagePackAlreadyInstalledButBinaryIsNot
+-OnDeviceSpeechRecognitionImplBrowserTest.MultipleLanguages
+-OnDeviceSpeechRecognitionImplPreemptiveBrowserTest.PreemptiveDownloadUnmasksAvailability
 -OnDeviceSpeechRecognitionImplGeminiNanoBrowserTest.AvailableAndInstall
 -OptimizationGuideKeyedServiceBrowserTest.*
 -OptimizationGuideKeyedServicePermissionsCheckDisabledTest.*
@@ -1564,36 +1578,11 @@
 
 # These tests fail because we provide our own override of the side panel which
 # does not enable this feature
--All/LensOverlayControllerBrowserPDFContextualizationTest.CurrentPageIncludedInRequest/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.Histograms/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.LargePdfNotIncludedInRequest/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.PageUrlIncludedInRequest/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.PartialPdfIncludedInRequest/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.PdfBytesInFollowUpRequest/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.PdfBytesIncludedInRequest/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.QueryFlowRestartsOnSearchboxFocus/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.RecordSearchboxFocusedInSessionNavigationHistograms/*
--All/LensOverlayControllerBrowserPDFContextualizationTest.SidePanel_SameTabCrossOriginLinkClick_PdfWithFragment/*
--All/LensOverlayControllerBrowserPDFIncreaseLimitTest.PartialPdfCharacterLimitReached_IncludedInRequest/*
--All/LensOverlayControllerBrowserPDFTest.ContextMenuOpensOverlay/*
--All/LensOverlayControllerBrowserPDFUpdatedContentFieldsTest.PartialPdfIncludedInRequest/*
+-All/LensOverlayController*.*/*
 -ContextualTasksNoMockBrowserTest.InitSidePanelWithGhostLoader_WaitUntilPanelOpen
 -LensComposeboxControllerBrowserTest.*
--LensOverlayControllerApcOnlyTest.*
--LensOverlayControllerBrowserFullscreenDisabled.*
--LensOverlayControllerBrowserTest.*
--LensOverlayControllerBrowserWithPixelsTest.*
--LensOverlayControllerContextualFeaturesDisabledTest.*
--LensOverlayControllerContextualTasksBrowserTest.*
--LensOverlayControllerEntrypointsBrowserTest.OverlayHidesEntrypoints
--LensOverlayControllerInnerTextAndApc.*
--LensOverlayControllerInnerTextEnabledSmallByteLimitTest.*
--LensOverlayControllerNonBlockingPrivacyNoticeForImageSearchBrowserTest.*
--LensOverlayControllerOverlaySearchbox.OverlaySearchboxPageClassificationAndState
--LensOverlayControllerReinvocationBrowserTest.*
--LensOverlayControllerSideBySideBrowserTest.SidePanelRoundedCornerSplitTab
--LensSearchControllerUnificationBrowserTest.*
--LensSearchControllerUnificationSignOutDisabledTest.*
+-LensOverlayController*.*
+-LensSearchController*.*
 -SidePanelCoordinatorLensOverlayTest.*
 
 # These tests fail since upstream transitioned to ChromeRefresh2023 by default;
@@ -2054,7 +2043,7 @@
 
 # These tests fail because we disable kAimEnabled.
 -AimEligibilityExtensionBrowserTest.UiParity
--AimUserAgentTabHelperBrowserTest.PreserveExistingUserAgentOverride
+-AimUserAgentTabHelperBrowserTest.*
 -All/OmniboxContextMenuControllerBrowserTestWithCommand.ExecuteCommand_AiModeOpen_ReopensOnCancel/*
 -ChromeAimEligibilityService*.*
 -OmniboxContextMenuControllerBrowserTest.AddRecentTabsToMenu
@@ -2587,6 +2576,10 @@
 # This test fails because we insert our own bookmarks submenu into the app menu
 # model
 -AppMenuModelTest.ModelHasIcons
+
+# UserMediaElement is disabled, which triggers histogram failure in this test.
+# We don't care about those metrics in general.
+-MiscellaneousElementBrowserTest.CountMetrics
 
 # These tests fail because we disable identity docs and travel pages in
 # autofill settings and hamburger menu.

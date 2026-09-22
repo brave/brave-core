@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This is necessary because of the use of `CONTENT_EXPORT` in the class
+# declaration.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Declare `ContentBrowserClient::CreateWebSocketWithFrameId()`.
+
+      Brave intercepts SharedWorker and ServiceWorker WebSocket handshakes,
+      which have no `RenderFrameHost` (crbug.com/40195467), so `CreateWebSocket`
+      alone gives the embedder no way to resolve the `BrowserContext` or the
+      per-site Shields settings. This sibling also carries the initiator
+      renderer's process id and origin. The default implementation in
+      `brave/chromium_src/content/public/browser/content_browser_client.cc`
+      drops both and forwards to `CreateWebSocket`, so embedders that don't
+      care are unaffected. Drop this once upstream proxies frameless requests
+      itself.
+    add_to_public:
+      class_name: ContentBrowserClient
+      code: |-
+
+        // Same as `CreateWebSocket`, but also carries the initiator renderer's
+        // process id and origin, for handshakes that have no `RenderFrameHost`.
+        virtual void CreateWebSocketWithFrameId(
+            RenderFrameHost* frame,
+            WebSocketFactory factory,
+            const GURL& url,
+            const net::SiteForCookies& site_for_cookies,
+            const std::optional<std::string>& user_agent,
+            mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
+                handshake_client,
+            WebSocketOptions options,
+            int process_id,
+            const url::Origin& initiator_origin);

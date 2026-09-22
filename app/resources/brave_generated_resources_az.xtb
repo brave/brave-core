@@ -112,6 +112,9 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="3114478090884951591">Görünən sahə</translation>
 <translation id="2026367923222947564">Tam səhifə</translation>
 <translation id="4218885227032158909">Seçilmiş sahə</translation>
+<translation id="2586386106930448447">Ekran görüntüsünün ilkin baxışı</translation>
+<translation id="7514365320538308">Yüklə</translation>
+<translation id="2743387203779672305">Panoya kopyala</translation>
 <translation id="4928988318462976765">Veb Əlavələr Mağazası</translation>
 <translation id="9181207987584064303">Veb Əlavələr Mağazasına bax</translation>
 <translation id="3161744659507801211">Xəbərdarlıq: Brave, əlavə proqramların brauzer tarixçənizi qeyd etməsinin qarşısını ala bilmir.</translation>
@@ -364,6 +367,7 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="6847541693235449912">Get</translation>
 <translation id="2079545284768500474">Ləğv et</translation>
 <translation id="1533980864758658574">Yeni pəncərə <ph name="TOPIC"/> üçün yaradıldı</translation>
+<translation id="530437350080973527">Bu mövzuya uyğun heç bir tab tapılmadı. Onu fərqli şəkildə təsvir etməyə çalışın.</translation>
 <translation id="7985042437720138349">Bu xüsusiyyət açıq olan tablarınız haqqında məlumatları Brave'nin AI tərəfindən idarə olunan brauzer köməkçisi Leo ilə paylaşır.</translation>
 <translation id="6165508094623778733">Ətraflı məlumat</translation>
 <translation id="7557539689487606886">Premiuma keç</translation>
@@ -421,6 +425,23 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="4328541188421002379">Containerinizə İş və ya Şəxsi kimi bir ad verin</translation>
 <translation id="4976989127264491396">Xəta: <ph name="ERROR_MESSAGE"/></translation>
 <translation id="5436069931267876389">Container tapılmadı</translation>
+<translation id="6055154402239241620">Trafik Nəzarəti</translation>
+<translation id="8134521925475508805">Xüsusi saytları müəyyən kontekstdə avtomatik açılacaq şəkildə konfiqurasiya edin və brauzer sessiyalarınız arasında ayrılıq yaradın. <ph name="BEGIN_LINK"/>Ətraflı öyrənin<ph name="END_LINK"/></translation>
+<translation id="6944848312867106540">Trafik Nəzarətini aktivləşdir</translation>
+<translation id="1358255827354528344">Yeni qayda əlavə et</translation>
+<translation id="7183128985801806752">Yeni trafik nəzarəti qaydası</translation>
+<translation id="2474694032500407328">Trafik nəzarəti qaydasını redaktə et</translation>
+<translation id="5543417389274097206">Qayda yarat</translation>
+<translation id="6532106788206463496">Dəyişiklikləri yadda saxla</translation>
+<translation id="1172800769374812685">Qaydanı sil</translation>
+<translation id="2389682807835777591"><ph name="RULE_LABEL"/> qaydasını silmək istədiyinizə əminsiniz?</translation>
+<translation id="4853129331778360252">İdarə etmək və həmişə xüsusi brauzer kontekstində açmaq üçün URL-ləri daxil edin.</translation>
+<translation id="1173480005453148926">İdarə ediləcək URL-lər</translation>
+<translation id="6217532416180299470">Trafik nəzarəti ilə idarə ediləcək URL-ləri daxil edin</translation>
+<translation id="4285483487802779797"><ph name="BEGIN_FILTER_EXAMPLE"/>example.com<ph name="END_FILTER_EXAMPLE"/> saytı və onun subdomenlərini uyğunlaşdırır; <ph name="BEGIN_FILTER_EXAMPLE2"/>.example.com<ph name="END_FILTER_EXAMPLE2"/> dəqiq saytı uyğunlaşdırır; <ph name="BEGIN_FILTER_EXAMPLE3"/>*<ph name="END_FILTER_EXAMPLE3"/> bütün saytları uyğunlaşdırır; <ph name="BEGIN_FILTER_EXAMPLE4"/>#<ph name="END_FILTER_EXAMPLE4"/> şərhdir.</translation>
+<translation id="8469274046717871838"><ph name="FIRST_URL"/> (və <ph name="COUNT"/> daha çox URL)</translation>
+<translation id="3700798663085748181">Qaydanı aktivləşdir</translation>
+<translation id="2967480878853054068">Yanlış URL filtri</translation>
 <translation id="2263346047290834619">Ağac tablarını istifadə et</translation>
 <translation id="5860254591544742609">Başlıq çubuğunu göstər</translation>
 <translation id="4691131445504068802">Minimizə edildikdə tamamilə gizlət</translation>
@@ -528,7 +549,6 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="6745592621698551453">İndi yeniləyin</translation>
 <translation id="5334844597069022743">Mənbəyə bax</translation>
 <translation id="4720556299488643018">Abunəlikdən çıx</translation>
-<translation id="6532106788206463496">Dəyişiklikləri yadda saxla</translation>
 <translation id="4516904298421534459">Filtr siyahıları</translation>
 <translation id="4435215931544457255">Əlavə populyar cəmiyyət siyahıları. Qeyd edək ki, çoxlu filtrlərin aktivləşdirilməsi brauzer sürətini azaldacaq.</translation>
 <translation id="802154636333426148">Yükləmə uğursuz oldu</translation>
@@ -611,6 +631,8 @@ Və ya bunu sonra <ph name="SETTINGS_EXTENIONS_LINK"/>-də dəyişdirin.</transl
 <translation id="509873765238158442">Microsoft Recall-u blokla</translation>
 <translation id="4763421121695677716">Microsoft Windows kompüterlərindəki Recall xüsusiyyətinin hər hansı açıq Brave tab-vərəqələrinin ekran şəklini avtomatik çəkməməsi üçün onu bloklayın.</translation>
 <translation id="1968895725257436430">Məlumatların toplanması</translation>
+<translation id="5668852698659986622">Sponsorlu Reklamları aktivləşdir</translation>
+<translation id="431194936581466649">Sponsorlu Reklamlar ilə Brave-in müstəqil, istifadəçi-birinci Veb qurma missiyasını dəstəkləyin. Biz reklamların performansını sizi tanımadan, məxfi şəkildə ölçürük.</translation>
 <translation id="1700052872056357670">Çıxış zamanı bütün məlumatları təmizlə</translation>
 <translation id="216468847346280584">Brave Reklamları məlumatlarını təmizlə...</translation>
 <translation id="96212973142796240">Brave Reklamlar məlumatları təmizləndi</translation>
@@ -990,4 +1012,12 @@ Bunu etmək istədiyinizə əminsiniz?</translation>
 <translation id="154702742922788359">Açılış rejimi</translation>
 <translation id="2249111429176737533">Tabbed pəncərə kimi aç</translation>
 <translation id="7022756207310403729">Browserdə aç</translation>
+<translation id="1916785651473363467">Xüsusi profil şəkli</translation>
+<translation id="5336092064678832560">Xüsusi şəkil yüklə</translation>
+<translation id="1062407476771304334">Əvəz et</translation>
+<translation id="1428299461403073820">Xüsusi profil şəklini əvəz et</translation>
+<translation id="7994453838803296517">Xüsusi profil şəkli önizləməsi, seçilib</translation>
+<translation id="6578040791557152233">Xüsusi profil şəkli yükləyin</translation>
+<translation id="9222124079546967592">Xüsusi profil şəklini sil</translation>
+<translation id="6058660912941570282">Brave bu faylı istifadə edə bilmir. Başqa şəkil seçin və yenidən cəhd edin.</translation>
 </translationbundle>

@@ -50,6 +50,7 @@ public class CosmeticFilteringTabHelper: TabObserver, TabPolicyDecider {
 
   // MARK: - TabPolicyDecider
 
+  @MainActor
   public func tab(
     _ tab: some TabState,
     shouldAllowRequest request: URLRequest,
@@ -221,7 +222,7 @@ extension CosmeticFilteringTabHelper: @MainActor CosmeticFilteringTabHelperBridg
           return nil
         }
 
-        return await (selectors, cachedEngine.type.isAlwaysAggressive)
+        return (selectors, cachedEngine.type.isAlwaysAggressive)
       } catch {
         Logger.module.error("\(error.localizedDescription)")
         return nil

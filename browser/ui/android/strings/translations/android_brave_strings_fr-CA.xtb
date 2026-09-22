@@ -112,7 +112,7 @@
 <translation id="6920492760024499150">Les gros titres du jour dans un fil privé, rien que pour vous.</translation>
 <translation id="3803728444598576153">Activez Actualités Brave et ne ratez aucune actualité</translation>
 <translation id="7627131190984957214">Les actualités Brave sont financées par des publicités privées et anonymes adaptées à votre appareil.</translation>
-<translation id="7897050360583141319">Suivez vos sources préférées au sein d'un seul et même fil. Il vous suffit d'ouvrir un onglet dans Brave, de faire défiler la page vers le bas, et le tour est joué !\nActualités Brave affiche des annonces privées et anonymes.</translation>
+<translation id="7897050360583141319">Suivez vos sources préférées au sein d'un seul et même fil. Il vous suffit d'ouvrir un onglet dans Brave, de faire défiler la page vers le bas, et le tour est joué !</translation>
 <translation id="1765217911817124376">Activer Brave News</translation>
 <translation id="8981973962043893066">Rechercher un site, un sujet ou un flux RSS</translation>
 <translation id="3225021799163709119">Populaires</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Contribuez à améliorer la stabilité des produits de Brave en envoyant automatiquement des rapports de diagnostic lorsque le navigateur Brave plante ou se bloque.</translation>
 <translation id="7977176350719484850">Données\néconomisées</translation>
 <translation id="9008534313521214777">Temps gagné\nestimé</translation>
+<translation id="5668852698659986622">Activer les Ads commanditées</translation>
+<translation id="431194936581466649">Aidez à soutenir la mission de Brave qui consiste à bâtir un Web indépendant et axé sur l'utilisateur grâce aux Ads commanditées. Nous mesurons la performance des annonces de façon privée, sans vous identifier.</translation>
 <translation id="8347743943525229984">Autoriser les sondages Brave</translation>
 <translation id="6022939994702081659">Autorise Brave à afficher des liens vers des sondages privés sur la page du nouvel onglet. Ces sondages nous aident à développer de meilleures fonctionnalités et à mesurer l’efficacité des campagnes publicitaires dans le navigateur.</translation>
 <translation id="7746496306508543965">En savoir plus sur les sondages Brave</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">J'ai une phrase de récupération de 12 mots</translation>
 <translation id="4225265925807365011">J'ai une phrase de récupération de 24 mots</translation>
 <translation id="3570367516044491911">Définir comme navigateur par défaut</translation>
-<translation id="6800338374677644736">Définir comme navigateur par défaut</translation>
 <translation id="1545749641540134597">Scanner le code QR</translation>
 <translation id="5317781812114905957">Instructions</translation>
 <translation id="8515319483805157233">Pour effectuer une recherche par code QR, alignez ce dernier sur le centre du cadre.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Menu principal</translation>
 <translation id="7002271985859760052">Actions de page</translation>
 <translation id="7104487676473617844">Les éléments suivants ne s’afficheront dans le menu que si la page Web ouverte les prend en charge.</translation>
-<translation id="4159764849281393303">Application Web</translation>
 <translation id="8038539967102225446">Les publicités de Brave sont là!</translation>
 <translation id="222883304157347087">(cet appareil)</translation>
 <translation id="4157741509680155021">APPAREILS SUR LA CHAÎNE DE SYNCHRONISATION</translation>
@@ -720,6 +720,8 @@ Si vous n'acceptez pas cette demande, le VPN ne se reconnectera pas et votre con
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Montant + Gas</translation>
 <translation id="2186011161688824046">Montant + frais</translation>
+<translation id="1118876217803190221">Solde insuffisant</translation>
+<translation id="275990379543116961">Fonds insuffisants pour le gaz</translation>
 <translation id="1950052789869821983">Transaction</translation>
 <translation id="2304783958703511257">Paramètres avancés</translation>
 <translation id="4220062530885628403">Nonce</translation>

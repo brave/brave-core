@@ -89,4 +89,22 @@ extension String {
       .union(CharacterSet(charactersIn: "._-"))
     return stripped.addingPercentEncoding(withAllowedCharacters: allowed) ?? ""
   }
+
+  /// Returns a new string in which all occurrences of a target keyed string are replaced by its
+  /// value.
+  ///
+  /// Unlike `replaceOccurances(of:with:options:range)`, this can replace a set of placeholders in
+  /// a single pass.
+  public func replacingOccurances(_ replacements: [String: String]) -> String? {
+    let keys = replacements.keys.sorted()
+    let pattern = keys.map { NSRegularExpression.escapedPattern(for: $0) }
+      .joined(separator: "|")
+    do {
+      return replacing(try Regex(pattern)) { match in
+        replacements[String(match.0), default: String(match.0)]
+      }
+    } catch {
+      return nil
+    }
+  }
 }

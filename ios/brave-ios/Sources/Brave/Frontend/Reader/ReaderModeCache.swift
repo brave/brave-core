@@ -96,7 +96,7 @@ class DiskReaderModeCache: ReaderModeCache {
     await AsyncFileManager.default.createUTF8File(atPath: contentFilePath, contents: string)
   }
 
-  func get(_ url: URL) async throws -> ReadabilityResult {
+  @concurrent func get(_ url: URL) async throws -> ReadabilityResult {
     guard let (_, contentFilePath) = cachePathsForURL(url),
       await AsyncFileManager.default.fileExists(atPath: contentFilePath),
       let string = await AsyncFileManager.default.utf8Contents(at: URL(filePath: contentFilePath)),

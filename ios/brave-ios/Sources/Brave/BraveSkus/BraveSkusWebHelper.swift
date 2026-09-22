@@ -46,7 +46,8 @@ class BraveSkusWebHelper {
     }
   }
 
-  fileprivate func fetchReceipt() async -> String? {
+  // @concurrent: reads the App Store receipt from disk
+  @concurrent fileprivate func fetchReceipt() async -> String? {
     do {
       return try AppStoreReceipt.receipt
     } catch {
@@ -56,7 +57,7 @@ class BraveSkusWebHelper {
   }
 
   /// Returns app's receipt and few other properties as a base64 encoded JSON.
-  func fetchReceiptData() async -> (key: String, value: String)? {
+  @concurrent func fetchReceiptData() async -> (key: String, value: String)? {
     guard let receipt = await fetchReceipt(), let bundleId = Bundle.main.bundleIdentifier else {
       return nil
     }

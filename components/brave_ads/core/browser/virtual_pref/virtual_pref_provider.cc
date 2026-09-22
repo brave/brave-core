@@ -13,9 +13,6 @@
 #include "base/values.h"
 #include "base/version_info/version_info.h"
 #include "brave/components/brave_ads/core/public/common/locale/locale_util.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#include "brave/components/brave_rewards/core/pref_names.h"
-#include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/skus/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
 
@@ -122,21 +119,6 @@ base::DictValue GetSkus(const PrefService& local_state) {
   return skus;
 }
 
-bool IsSurveyPanelist(const PrefService& prefs) {
-  if (prefs.GetBoolean(brave_rewards::prefs::kDisabledByPolicy)) {
-    return false;
-  }
-
-  if (!prefs.GetBoolean(
-          ntp_background_images::prefs::kNewTabPageShowBackgroundImage) ||
-      !prefs.GetBoolean(brave_ads::prefs::kSponsoredEnabled)) {
-    return false;
-  }
-
-  return prefs.GetBoolean(
-      ntp_background_images::prefs::kNewTabPageSponsoredImagesSurveyPanelist);
-}
-
 }  // namespace
 
 VirtualPrefProvider::VirtualPrefProvider(PrefService& prefs,
@@ -160,7 +142,6 @@ base::DictValue VirtualPrefProvider::GetPrefs() const {
                                   .Set("language", CurrentLanguageCode())
                                   .Set("region", CurrentCountryCode()))
                .Set("name", version_info::GetOSType()))
-      .Set("[virtual]:is_survey_panelist", IsSurveyPanelist(*prefs_))
       .Set("[virtual]:search_engine",
            base::DictValue().Set("default_name",
                                  delegate_->GetDefaultSearchEngineName()))

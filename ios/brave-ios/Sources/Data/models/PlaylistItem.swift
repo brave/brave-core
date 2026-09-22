@@ -25,7 +25,7 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   @NSManaged public var uuid: String?
   @NSManaged public var playlistFolder: PlaylistFolder?
 
-  static public func resolvingCachedData(_ cachedData: Data) async -> URL? {
+  @concurrent static public func resolvingCachedData(_ cachedData: Data) async -> URL? {
     do {
       var isStale: Bool = false
       let url = try URL(resolvingBookmarkData: cachedData, bookmarkDataIsStale: &isStale)
@@ -402,16 +402,6 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
   /// only if fetch and save both succeeded (including the no-op case where nothing needed updating).
   public static func migrateLastPlayedDate(completion: ((Bool) -> Void)? = nil) {
     DataController.perform(context: .new(inMemory: false), save: false) { context in
-      var success = false
-
-      defer {
-        if let completion {
-          Task { @MainActor in
-            completion(success)
-          }
-        }
-      }
-
       do {
         let request = NSFetchRequest<PlaylistItem>(entityName: "PlaylistItem")
         request.predicate = NSPredicate(format: "lastPlayedDate == nil")
@@ -426,11 +416,12 @@ final public class PlaylistItem: NSManagedObject, CRUD, Identifiable {
           try context.save()
         }
 
-        success = true
+        completion?(true)
       } catch {
         Logger.module.error(
           "PlaylistItem migrateLastPlayedDate failed: \(error.localizedDescription)"
         )
+        completion?(false)
       }
     }
   }

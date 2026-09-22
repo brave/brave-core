@@ -110,9 +110,9 @@
 <translation id="4176463684765177261">Deshabilitado</translation>
 <translation id="59174027418879706">Activado</translation>
 <translation id="6920492760024499150">Conozca las tendencias del momento a través de un canal privado y exclusivo para usted.</translation>
-<translation id="3803728444598576153">Activa Noticias de Brave para no perderte nada</translation>
+<translation id="3803728444598576153">Activa Noticias de Brave para no quedarte fuera de onda</translation>
 <translation id="7627131190984957214">Noticias de Brave contiene anuncios privados, anonimizados y optimizados para su dispositivo.</translation>
-<translation id="7897050360583141319">Sigue tus fuentes favoritas en un solo canal. Basta con abrir una pestaña en Brave, desplazarte hacia abajo… ¡y listo!\nNoticias de Brave se mantiene con publicidad y muestra anuncios completamente privados y anónimos.</translation>
+<translation id="7897050360583141319">Sigue tus fuentes favoritas en un solo canal. Basta con abrir una pestaña en Brave, desplazarte hacia abajo… ¡y listo!</translation>
 <translation id="1765217911817124376">Activar las Noticias de Brave</translation>
 <translation id="8981973962043893066">Busca canales de sitios web, temas o RSS</translation>
 <translation id="3225021799163709119">Populares</translation>
@@ -190,6 +190,8 @@
 <translation id="5987838417172370108">Ayuda a mejorar la estabilidad de Brave enviando automáticamente informes de diagnóstico cuando el navegador falle o se bloquee.</translation>
 <translation id="7977176350719484850">Datos\nahorrados est.</translation>
 <translation id="9008534313521214777">Tiempo ahorrado estimado</translation>
+<translation id="5668852698659986622">Habilitar anuncios patrocinados</translation>
+<translation id="431194936581466649">Ayuda a respaldar la misión de Brave de construir una Web independiente y centrada en el usuario con anuncios patrocinados. Medimos el rendimiento de los anuncios de forma privada, sin identificarte.</translation>
 <translation id="8347743943525229984">Permitir las encuestas de Brave</translation>
 <translation id="6022939994702081659">Permite a Brave mostrar enlaces a encuestas privadas en la página de nueva pestaña. Las encuestas nos ayudan a desarrollar mejores características y medir la efectividad de las campañas publicitarias basadas en el navegador.</translation>
 <translation id="7746496306508543965">Más información sobre las encuestas de Brave</translation>
@@ -250,7 +252,6 @@
 <translation id="6213254277250932867">Tengo una frase de recuperación de 12 palabras</translation>
 <translation id="4225265925807365011">Tengo una frase de recuperación de 24 palabras</translation>
 <translation id="3570367516044491911">Establecer como navegador predeterminado</translation>
-<translation id="6800338374677644736">Establecer como navegador predeterminado</translation>
 <translation id="1545749641540134597">Escanear Código QR</translation>
 <translation id="5317781812114905957">Instrucciones</translation>
 <translation id="8515319483805157233">Para buscar por código QR, debes situar el código QR en el centro del marco.</translation>
@@ -282,7 +283,6 @@
 <translation id="5582839680698949063">Menú principal</translation>
 <translation id="7002271985859760052">Acciones de página</translation>
 <translation id="7104487676473617844">Los siguientes elementos solo serán visibles en el menú cuando la página web abierta los admita.</translation>
-<translation id="4159764849281393303">Aplicación web</translation>
 <translation id="8038539967102225446">Los anuncios de Brave ya están aquí</translation>
 <translation id="222883304157347087">(este dispositivo)</translation>
 <translation id="4157741509680155021">DISPOSITIVOS EN LA CADENA DE SINCRONIZACIÓN</translation>
@@ -720,6 +720,8 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="1634828734222219955">Total</translation>
 <translation id="7995708795274219641">Monto + gas</translation>
 <translation id="2186011161688824046">Cantidad + comisión</translation>
+<translation id="1118876217803190221">Saldo insuficiente</translation>
+<translation id="275990379543116961">Fondos insuficientes para gas</translation>
 <translation id="1950052789869821983">Transacción</translation>
 <translation id="2304783958703511257">Configuración avanzada</translation>
 <translation id="4220062530885628403">Nonce</translation>

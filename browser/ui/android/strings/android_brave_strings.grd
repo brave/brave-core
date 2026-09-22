@@ -750,15 +750,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_SPONSORED_ADS_LEARN_MORE" desc="Title of learn more link for the sponsored ads toggle.">
         Learn more about Sponsored Ads
       </message>
-      <message name="IDS_SURVEY_PANELIST_TITLE" desc="Title for enable/disable brave survey panelist toggle.">
-        Allow Brave surveys
-      </message>
-      <message name="IDS_SURVEY_PANELIST_SUMMARY" desc="Summary for enable/disable brave survey panelist toggle.">
-        Allows Brave to show links to private surveys in the new tab page. Surveys help us build better features and measure the effectiveness of browser-based ad campaigns.
-      </message>
-      <message name="IDS_SURVEY_PANELIST_LEARN_MORE" desc="Title of learn more about survey panelist.">
-        Learn more about Brave surveys
-      </message>
       <!-- AUTOPLAY SITE SETTING-->
       <message name="IDS_AUTOPLAY_TITLE" desc="Title for the Autoplay settings screen [CHAR-LIMIT=32]">
         Autoplay
@@ -3329,6 +3320,27 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_ORIGIN_RESET_DIALOG_BUTTON" desc="Button text for the reset confirmation dialog in Brave Origin settings">
       Reset
+    </message>
+    <message name="IDS_ORIGIN_ACTIVATION_LIMIT_TITLE" desc="Title of the message shown when a Brave Origin subscription has been set up on as many devices as it allows">
+      Activation limit reached
+    </message>
+    <message name="IDS_ORIGIN_ACTIVATION_LIMIT_MESSAGE" desc="Message shown when a Brave Origin subscription has been set up on as many devices as it allows. The placeholder is the text of a link to Brave support.">
+      To prevent fraud, Origin activations are rate limited. But you can always request more activations to use your Origin license on more devices. Just click the Request more activations option, or <ph name="CONTACT_SUPPORT">%1$s<ex>contact support</ex></ph> for help.
+    </message>
+    <message name="IDS_ORIGIN_CONTACT_SUPPORT" desc="Text of the link to Brave support, shown inside the Brave Origin activation limit message">
+      contact support
+    </message>
+    <message name="IDS_ORIGIN_REQUEST_MORE_ACTIVATIONS" desc="Action button text that asks Brave for more activations of a Brave Origin subscription">
+      Request more activations
+    </message>
+    <message name="IDS_ORIGIN_PROCESSING" desc="Shown next to a spinner while Brave is granting more activations for a Brave Origin subscription">
+      Processing…
+    </message>
+    <message name="IDS_ORIGIN_READY_TO_ACTIVATE_TITLE" desc="Title shown after Brave granted more device activations for a Brave Origin subscription and a restart is needed">
+      Ready to activate
+    </message>
+    <message name="IDS_ORIGIN_READY_TO_ACTIVATE_MESSAGE" desc="Message shown after Brave granted more device activations for a Brave Origin subscription, asking the user to restart">
+      Brave Origin is now active on this device. In order to start using the feature, you need to restart the browser. Would you like to restart now?
     </message>
     <message name="IDS_ORIGIN_PURCHASE_SECTION_TITLE" desc="Brave Origin purchase section title">
       Purchase

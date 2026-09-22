@@ -92,6 +92,7 @@ from rich.table import Column
 from rich.text import Text
 
 from luci_analysis import (
+    MAX_CLUSTER_FAILURES,
     MIN_MEANINGFUL_VERDICTS,
     ClusterSummary,
     Flakiness,
@@ -147,21 +148,6 @@ SANITIZERS = ("asan", "msan", "ubsan")
 # the Linux host "os" and iOS bots a Mac "os".
 EXCLUDED_BUILDER_KEYWORDS = ("android", "chromeos", "chromium os", "fuchsia",
                              "ios", "tsan")
-
-# For clusters spanning many tests (parameterized families, bug rules), how many
-# of their test IDs to check individually, worst first by failure count.
-#
-# The ranking is by absolute failures while the threshold is a rate, so the two
-# disagree: a test that runs rarely and fails most times it runs sinks in the
-# ranking. At 100, a quarter of what was discarded from browser_tests' largest
-# clusters would in fact have been filtered.
-#
-# Each surviving candidate costs one QueryStats query, so the cap buys coverage
-# with wall time. Across all nine suites at 30 days the fetch phase takes 10.1m
-# at 100, 14.4m at 1000 and 15.2m at 2000, where it stops changing, because
-# upstream serves at most 2000 failure groups per cluster and no cap above that
-# can reach further.
-MAX_VARIANTS_PER_CLUSTER = 1000
 
 # Requests in flight across the whole run. Every batch of work shares one
 # pool.
@@ -599,38 +585,40 @@ class SuiteUpdater:
         listed to find out what is in them.
         """
         test_ids: set[str] = set()
-        # Big clusters are the norm rather than the exception, so report
-        # what the cap left out once, not once per cluster.
-        capped_clusters = 0
-        variants_seen = 0
-        variants_checked = 0
+        # Every test a cluster names is checked. What is still missed is
+        # upstream's doing, so report that instead.
+        truncated_clusters = 0
 
         with self._phase("enumerating clusters", len(clusters)) as task:
-            for failure_counts in run_in_parallel(self._failures_by_test,
-                                                  clusters):
-                top = failure_counts.most_common(MAX_VARIANTS_PER_CLUSTER)
-                if len(failure_counts) > len(top):
-                    capped_clusters += 1
-                    variants_seen += len(failure_counts)
-                    variants_checked += len(top)
-                test_ids.update(test_id for test_id, _ in top)
+            for failure_counts, truncated in run_in_parallel(
+                    self._failures_by_test, clusters):
+                truncated_clusters += truncated
+                test_ids.update(failure_counts)
                 task.advance()
 
-        if capped_clusters:
-            self._log(f"{capped_clusters} clusters were over the"
-                      f" {MAX_VARIANTS_PER_CLUSTER}-variant cap: checked"
-                      f" {variants_checked} of their {variants_seen} recently"
-                      " failing variants, the worst by failure count.")
+        if truncated_clusters:
+            self._log(f"{truncated_clusters} clusters hit the server's"
+                      f" {MAX_CLUSTER_FAILURES}-failure limit, which does not"
+                      " paginate: whatever else they hold cannot be reached"
+                      " through this API.")
         return test_ids
 
-    def _failures_by_test(self, cluster: ClusterSummary) -> Counter[str]:
-        """How often each of this suite's tests failed inside a cluster."""
+    def _failures_by_test(
+            self, cluster: ClusterSummary) -> tuple[Counter[str], bool]:
+        """How often each of this suite's tests failed inside a cluster.
+
+        Returns:
+            The per-test failure counts, and whether the server returned
+            its maximum -- in which case the cluster holds more than it
+            was willing to say.
+        """
+        failures = self._client.cluster_failures(cluster)
         failure_counts: Counter[str] = Counter()
-        for failure in self._client.cluster_failures(cluster):
+        for failure in failures:
             if self._suite_marker in failure.test_id:
                 failure_counts[normalize_test_id(
                     failure.test_id)] += failure.count
-        return failure_counts
+        return failure_counts, len(failures) >= MAX_CLUSTER_FAILURES
 
     def read_history(self, test_ids: list[str]) -> dict[str, list[StatsGroup]]:
         """Fetch the per-day, per-variant history of each candidate."""

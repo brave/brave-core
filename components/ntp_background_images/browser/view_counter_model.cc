@@ -23,25 +23,31 @@ ViewCounterModel::ViewCounterModel(PrefService* prefs)
 
   // When browser is restarted we reset to "initial" count. This will also get
   // set again in the Reset() function, called e.g. when component is updated.
-  count_to_branded_wallpaper_ =
+  count_to_new_tab_takeover_wallpaper_ =
       features::kInitialCountToBrandedWallpaper.Get() - 1;
 
-  // We also reset when a specific amount of time is elapsed when in SI mode
-  ScheduleNextBrandedWallpaperCountReset();
+  // We also reset when a specific amount of time is elapsed while sponsored
+  // content is enabled.
+  ScheduleNextNewTabTakeoverCountReset();
 }
 
 ViewCounterModel::~ViewCounterModel() = default;
 
-void ViewCounterModel::SetCampaignsTotalBrandedImageCount(
-    const std::vector<size_t>& campaigns_total_image_count) {
-  campaigns_total_branded_image_count_ = campaigns_total_image_count;
-  total_campaign_count_ = campaigns_total_branded_image_count_.size();
+void ViewCounterModel::SetCampaignsTotalNewTabTakeoverCreativeCount(
+    const std::vector<size_t>& campaigns_total_creative_count) {
+  campaigns_total_new_tab_takeover_creative_count_ =
+      campaigns_total_creative_count;
+  total_campaign_count_ =
+      campaigns_total_new_tab_takeover_creative_count_.size();
 
-  // Pick the first image index for each campaign randomly for SI
+  // Pick the first creative index for each campaign randomly for sponsored
+  // content.
   for (size_t i = 0; i < total_campaign_count_; ++i) {
     const int index = base::RandIntInclusive(
-        0, static_cast<int>(campaigns_total_branded_image_count_[i]) - 1);
-    campaigns_current_branded_image_index_.push_back(index);
+        0,
+        static_cast<int>(campaigns_total_new_tab_takeover_creative_count_[i]) -
+            1);
+    campaigns_current_new_tab_takeover_creative_index_.push_back(index);
   }
 
   // Pick the first campaign index randomly.
@@ -49,55 +55,59 @@ void ViewCounterModel::SetCampaignsTotalBrandedImageCount(
       base::RandIntInclusive(0, static_cast<int>(total_campaign_count_) - 1);
 }
 
-std::tuple<size_t, size_t> ViewCounterModel::GetCurrentBrandedImageIndex()
-    const {
+std::tuple<size_t, size_t>
+ViewCounterModel::GetCurrentNewTabTakeoverCampaignAndCreativeIndex() const {
   return {current_campaign_index_,
-          campaigns_current_branded_image_index_[current_campaign_index_]};
+          campaigns_current_new_tab_takeover_creative_index_
+              [current_campaign_index_]};
 }
 
 bool ViewCounterModel::ShouldShowSponsoredImages() const {
-  if (!show_branded_wallpaper_) {
+  if (!show_new_tab_takeover_wallpaper_) {
     return false;
   }
 
-  return count_to_branded_wallpaper_ == 0;
+  return count_to_new_tab_takeover_wallpaper_ == 0;
 }
 
 void ViewCounterModel::RegisterPageView() {
   // Call BG images first to know this calling is after showing
-  // branded image or not. If this calling is from branded image
-  // showing, background image index should not be changed.
+  // a New Tab Takeover creative or not. If this calling is from a New Tab
+  // Takeover creative showing, background image index should not be changed.
   RegisterPageViewForBackgroundImages();
-  RegisterPageViewForBrandedImages();
+  RegisterPageViewForNewTabTakeoverCreatives();
 }
 
-void ViewCounterModel::RegisterPageViewForBrandedImages() {
-  // NTP SI component is not ready.
+void ViewCounterModel::RegisterPageViewForNewTabTakeoverCreatives() {
+  // The sponsored content component is not ready.
   if (total_campaign_count_ == 0) {
     return;
   }
 
   // User turned off "Show Sponsored Images" option.
-  if (!show_branded_wallpaper_) {
+  if (!show_new_tab_takeover_wallpaper_) {
     return;
   }
 
   // When count is `0` then UI is free to show
-  // the branded wallpaper, until the next time `RegisterPageView`
+  // the New Tab Takeover wallpaper, until the next time `RegisterPageView`
   // is called.
-  // We select the appropriate image index for the scheduled
-  // view of the branded wallpaper.
-  count_to_branded_wallpaper_--;
-  if (count_to_branded_wallpaper_ < 0) {
-    // Reset count and randomize image index for next time.
-    count_to_branded_wallpaper_ = features::kCountToBrandedWallpaper.Get() - 1;
+  // We select the appropriate creative index for the scheduled
+  // view of the New Tab Takeover wallpaper.
+  count_to_new_tab_takeover_wallpaper_--;
+  if (count_to_new_tab_takeover_wallpaper_ < 0) {
+    // Reset count and randomize creative index for next time.
+    count_to_new_tab_takeover_wallpaper_ =
+        features::kCountToBrandedWallpaper.Get() - 1;
 
-    // Randomize SI campaign branded image index for next time.
-    campaigns_current_branded_image_index_[current_campaign_index_] =
-        base::RandIntInclusive(
+    // Randomize the sponsored content campaign's creative index for next
+    // time.
+    campaigns_current_new_tab_takeover_creative_index_
+        [current_campaign_index_] = base::RandIntInclusive(
             0,
             static_cast<int>(
-                campaigns_total_branded_image_count_[current_campaign_index_]) -
+                campaigns_total_new_tab_takeover_creative_count_
+                    [current_campaign_index_]) -
                 1);
 
     // Randomize campaign index for next time.
@@ -107,9 +117,9 @@ void ViewCounterModel::RegisterPageViewForBrandedImages() {
 }
 
 void ViewCounterModel::RegisterPageViewForBackgroundImages() {
-  // Don't count when SI will be visible.
-  if (show_branded_wallpaper_ && total_campaign_count_ != 0 &&
-      count_to_branded_wallpaper_ == 0) {
+  // Don't count when sponsored content will be visible.
+  if (show_new_tab_takeover_wallpaper_ && total_campaign_count_ != 0 &&
+      count_to_new_tab_takeover_wallpaper_ == 0) {
     return;
   }
 
@@ -117,7 +127,7 @@ void ViewCounterModel::RegisterPageViewForBackgroundImages() {
 }
 
 void ViewCounterModel::RotateBackgroundWallpaperImageIndex() {
-  // NTP BI component is not ready.
+  // The sponsored backgrounds component is not ready.
   if (total_image_count_ == 0) {
     return;
   }
@@ -131,26 +141,12 @@ void ViewCounterModel::RotateBackgroundWallpaperImageIndex() {
       rand_int_inclusive_callback_.Run(0, total_image_count_ - 1);
 }
 
-void ViewCounterModel::NextBrandedImage() {
-  campaigns_current_branded_image_index_[current_campaign_index_]++;
-  if (campaigns_current_branded_image_index_[current_campaign_index_] >=
-      campaigns_total_branded_image_count_[current_campaign_index_]) {
-    campaigns_current_branded_image_index_[current_campaign_index_] = 0;
-
-    current_campaign_index_++;
-    if (current_campaign_index_ >= total_campaign_count_) {
-      current_campaign_index_ = 0;
-      campaigns_current_branded_image_index_[current_campaign_index_] = 0;
-    }
-  }
-}
-
-void ViewCounterModel::MaybeResetBrandedWallpaperCount() {
-  // Set count so that user is more likely to see new branded data at least once
-  // Only reset count for SI images
-  if (show_branded_wallpaper_) {
-    count_to_branded_wallpaper_ =
-        std::min(count_to_branded_wallpaper_,
+void ViewCounterModel::MaybeResetNewTabTakeoverCount() {
+  // Set count so that user is more likely to see new New Tab Takeover data at
+  // least once. Only reset count for sponsored content.
+  if (show_new_tab_takeover_wallpaper_) {
+    count_to_new_tab_takeover_wallpaper_ =
+        std::min(count_to_new_tab_takeover_wallpaper_,
                  features::kInitialCountToBrandedWallpaper.Get() - 1);
   }
 }
@@ -160,25 +156,25 @@ void ViewCounterModel::Reset() {
   total_image_count_ = 0;
   current_campaign_index_ = 0;
   total_campaign_count_ = 0;
-  campaigns_total_branded_image_count_.clear();
-  campaigns_current_branded_image_index_.clear();
-  MaybeResetBrandedWallpaperCount();
-  ScheduleNextBrandedWallpaperCountReset();
+  campaigns_total_new_tab_takeover_creative_count_.clear();
+  campaigns_current_new_tab_takeover_creative_index_.clear();
+  MaybeResetNewTabTakeoverCount();
+  ScheduleNextNewTabTakeoverCountReset();
 }
 
-void ViewCounterModel::ScheduleNextBrandedWallpaperCountReset() {
+void ViewCounterModel::ScheduleNextNewTabTakeoverCountReset() {
   const base::Time next_counts_reset_time =
       base::Time::Now() + features::kResetCounterAfter.Get();
   counts_reset_timer_.Start(
       FROM_HERE, next_counts_reset_time,
       base::BindOnce(&ViewCounterModel::
-                         ResetBrandedWallpaperCountAndScheduleNextCountReset,
+                         ResetNewTabTakeoverCountAndScheduleNextCountReset,
                      base::Unretained(this)));
 }
 
-void ViewCounterModel::ResetBrandedWallpaperCountAndScheduleNextCountReset() {
-  MaybeResetBrandedWallpaperCount();
-  ScheduleNextBrandedWallpaperCountReset();
+void ViewCounterModel::ResetNewTabTakeoverCountAndScheduleNextCountReset() {
+  MaybeResetNewTabTakeoverCount();
+  ScheduleNextNewTabTakeoverCountReset();
 }
 
 }  // namespace ntp_background_images

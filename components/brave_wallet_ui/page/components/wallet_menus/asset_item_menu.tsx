@@ -45,8 +45,9 @@ import {
 } from '$wallet/utils/routes-utils'
 import {
   getAssetIdKey,
-  getDoesCoinSupportSwap,
-  getDoesCoinSupportBridge,
+  getDoesTokenSupportSwap,
+  getDoesTokenSupportBridge,
+  getDoesTokenSupportDeposit,
   isShieldedToken,
 } from '$wallet/utils/asset-utils'
 
@@ -134,8 +135,9 @@ export const AssetItemMenu = (props: Props) => {
     && isShieldedToken(asset)
     && !isAssetsBalanceZero
 
-  const isSwapSupported = getDoesCoinSupportSwap(asset.coin)
-  const isBridgeSupported = getDoesCoinSupportBridge(asset.coin)
+  const isSwapSupported = getDoesTokenSupportSwap(asset)
+  const isBridgeSupported = getDoesTokenSupportBridge(asset)
+  const isDepositSupported = getDoesTokenSupportDeposit(asset)
 
   const isSellSupported = React.useMemo(() => {
     return account !== undefined && checkIsAssetSellSupported(asset)
@@ -260,10 +262,12 @@ export const AssetItemMenu = (props: Props) => {
             {getLocale(S.BRAVE_WALLET_BRIDGE)}
           </leo-menu-item>
         )}
-        <leo-menu-item onClick={onClickDeposit}>
-          <Icon name='money-bag-coins' />
-          {getLocale(S.BRAVE_WALLET_ACCOUNTS_DEPOSIT)}
-        </leo-menu-item>
+        {isDepositSupported && (
+          <leo-menu-item onClick={onClickDeposit}>
+            <Icon name='money-bag-coins' />
+            {getLocale(S.BRAVE_WALLET_ACCOUNTS_DEPOSIT)}
+          </leo-menu-item>
+        )}
         {isSellSupported && (
           <leo-menu-item onClick={onClickSell}>
             <Icon name='usd-circle' />

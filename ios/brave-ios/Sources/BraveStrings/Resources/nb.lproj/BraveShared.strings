@@ -736,6 +736,18 @@
 /* Accessibility Title for the button that edits the quick-search engines list. */
 "EditQuickSearchEnginesAccessibilityTitle" = "Rediger søkemotorer";
 
+/* The message on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertMessage" = "Hvis du opplever en krasj eller frysing, kan Brave automatisk sende anonyme diagnoserapporter for å løse problemet. Du kan alltid slå av dette i Innstillinger senere.";
+
+/* The title on an alert presented to the user after the app crashes */
+"EnableCrashReporterAlertTitle" = "Aktiver automatiske krasjrapporter";
+
+/* The confirmation button title on an alert presented to the user after the app crashes which will enable crash reporting */
+"EnableCrashReporterConfirmButtonTitle" = "Aktiver";
+
+/* The button title on an alert presented to the user after the app crashes that ignores the alert */
+"EnableCrashReporterDenyButtonTitle" = "Ikke nå";
+
 /* Describes whether or not the feature that allows the user to pull down from the top of a web page a certain amount before it triggers a page refresh */
 "enablePullToRefresh" = "Aktiver Dra-for-oppdatering";
 
@@ -1104,9 +1116,6 @@
 
 /* A selection to let the users only see a set of predefined, default images on the background of the app. */
 "ntp.settingsDefaultImagesOnly" = "Standardbilder";
-
-/* A selection to let the users see sponsored image and video backgrounds when opening a new tab. */
-"ntp.settingsSponsoredImagesAndVideosSelection" = "Sponsede bilder og videoer";
 
 /* A selection to let the users see sponsored image backgrounds when opening a new tab. */
 "ntp.settingsSponsoredImagesSelection" = "Sponsede bilder";
@@ -2089,6 +2098,15 @@
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Takk for at du støtter Brave og BAT-fellesskapet!";
 
+/* Message of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationMessage" = "Ved å tilbakestille vil den nåværende Brave Rewards-profilen din slettes, og Brave Rewards vil ikke lenger være aktivert.";
+
+/* Title of a confirmation dialog shown before resetting Brave Rewards */
+"rewards.settingsResetConfirmationTitle" = "Tilbakestill Brave Rewards";
+
+/* Title of a button that resets the user's Brave Rewards profile */
+"rewards.settingsResetTitle" = "Tilbakestill";
+
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Bidra til å støtte Brave og BAT-fellesskapet ved å slå på Brave Rewards og tillate Brave-annonser.";
 
@@ -2470,17 +2488,17 @@
 /* Title for the quality settings view */
 "settings.qualitySettings" = "Innstillinger for kvalitet";
 
+/* Description to explain the send crash reports toggle */
+"settings.sendCrashReportsDescription" = "Send anonym diagnoserapporter hvis du opplever at systemet krasjer eller henger seg opp.";
+
+/* Title to explain the send crash reports toggle */
+"settings.sendCrashReportsTitle" = "Send krasjrapporter";
+
 /* Description to explain the daily usage ping toggle */
 "settings.sendUsagePingDescription" = "Denne private pingen lar Brave anslå aktive brukere.";
 
 /* Title to explain the daily usage ping toggle */
 "settings.sendUsagePingTitle" = "Send automatisk ping om daglig bruk til Brave";
-
-/* Description to explain the survey panelist toggle */
-"settings.surveyPanelistDescription" = "Lar Brave vise linker til private spørreundersøkelser i nye faner. Undersøkelsene hjelper oss med å utvikle funksjoner og måle effekten av annonsene i nettleseren. [Les mer](%@)";
-
-/* Title to explain the survey panelist toggle */
-"settings.surveyPanelistTitle" = "Tillat undersøkelser fra Brave";
 
 /* Header for the YouTube settings section */
 "settings.youtube" = "YouTube";
@@ -2954,7 +2972,7 @@
 "sync.maximumDeviceReachedErrorTitle" = "Enhetsgrense";
 
 /* New sync code button title */
-"sync.newSyncCode" = "Start en ny synkkjede";
+"sync.newSyncCode" = "Ny synkroniseringskjede";
 
 /* No internet connection alert body. */
 "sync.noConnectionBody" = "Sjekk nettforbindelsen, og prøv igjen.";
@@ -3124,6 +3142,9 @@
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Privat surfing";
 
+/* A label in the tab tray mode switcher for private browsing mode */
+"tabGrid.privateBrowsingModeTitle" = "Privat";
+
 /* A button title which when tapped will present settings for private tabs */
 "tabGrid.privateTabsSettingsTitle" = "Innstillinger for private faner";
 
@@ -3148,11 +3169,23 @@
 /* Accessibility label for a button that allows users to shred their tabs (erase them & associated data) */
 "tabGrid.shredTabsAccessibilityLabel" = "Makulér faner";
 
+/* A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs' */
+"tabGrid.tabsCountFormatPlural" = "%lld Faner";
+
+/* A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab' */
+"tabGrid.tabsCountFormatSingular" = "%lld Faneblad";
+
 /* Accessibility label for a button that when tapped presents the users history & recently closed tabs */
 "tabGrid.viewHistoryAccessibilityLabel" = "Vis logg";
 
+/* Label for history menu item button that when tapped presents the users history & recently closed tabs */
+"tabGrid.viewHistoryMenuItemLabel" = "Logg";
+
 /* Accessibility label for a button that when tapped presents the users synced tabs */
 "tabGrid.viewSyncedTabsAccessibilityLabel" = "Vis synkroniserte faner";
+
+/* Label for synced tabs menu item that when tapped presents the users synced tabs */
+"tabGrid.viewSyncedTabsMenuItemLabel" = "Synkroniser";
 
 /* Accessiblity hint for toggling on/off private mode */
 "TabPrivateModeToggleAccessibilityHint" = "Slår privat modus på/av";

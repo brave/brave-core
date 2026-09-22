@@ -1,12 +1,20 @@
 diff --git a/build/config/android/BUILD.gn b/build/config/android/BUILD.gn
-index 5ba1536435d46bfad31cb75b0a1bbdfc57765232..8e09ac96ee13d2d0d2f54e9ec8e65dcea83ca0d3 100644
+index 5ba1536435d46bfad31cb75b0a1bbdfc57765232..914942c1dbf78377c0190e819ac8220b067ff20c 100644
 --- a/build/config/android/BUILD.gn
 +++ b/build/config/android/BUILD.gn
-@@ -64,6 +64,7 @@ config("compiler") {
-       rustflags = [ "-Zbranch-protection=pac-ret" ]
-     }
-   }
-+  import("//brave/build/config/android/brave_compiler_ldflags.gni") ldflags += brave_build_config_android_compiler_ldflags
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-   # Disable TLSDESC for riscv64 until the Android NDK supports it. While
-   # Chromium's clang turns it on by default for Android RISC-V devices, NDK r27
++import("//brave/build/config/android/brave_compiler_ldflags.gni")
+ import("//build/config/android/rules.gni")
+ import("//build/config/c++/c++.gni")
+ import("//build/config/compiler/compiler.gni")
+@@ -54,6 +55,7 @@ config("compiler") {
+     # segments to be mapped adjacently, which breakpad relies on.
+     "-Wl,-z,max-page-size=$_max_page_size",
+   ]
++  ldflags += brave_build_config_android_compiler_ldflags
+ 
+   if (current_cpu == "arm64") {
+     if (arm_control_flow_integrity == "standard") {

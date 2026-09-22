@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave content settings deps.
+    add_literal_to_list:
+      target: impl
+      list_name: deps
+      literal: brave_browser_content_settings_deps
+      import: //brave/browser/content_settings/sources.gni
+
+  - description: |
+      Add the Brave content settings unit test deps.
+
+      Upstream only pulls these tests in on Android, so the addition is made
+      under the same condition.
+    add_literal_to_list:
+      target: unit_tests
+      list_name: deps
+      literal: brave_browser_content_settings_unit_tests_deps
+      conditional: is_android
+      import: //brave/browser/content_settings/sources.gni

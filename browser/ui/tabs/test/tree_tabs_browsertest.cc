@@ -2366,6 +2366,205 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, MoveTab_FromGroupAToGroupB) {
                     .length());
 }
 
+// Regression test: right-clicking a tab that is already in a group and
+// choosing "Add to new group" used to crash with bad_optional_access, because
+// BraveTreeTabStripCollectionDelegate::MoveTabsIntoGroup() forwarded a
+// destination index computed against the pre-move layout to upstream
+// MoveTabsRecursive(), which could no longer resolve to a valid position once
+// the new group had already been attached and the tabs moved into it.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       AddToNewGroup_TabAlreadyInGroup_DoesNotCrash) {
+  EnsureTabGroupSyncServiceInitialized();
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // tab0, GroupA(tab1, tab2), tab3
+  tab_groups::TabGroupId group_a = tab_strip_model().AddToNewGroup({1, 2});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_a));
+
+  tabs::TabInterface* tab0 = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* tab_to_regroup = tab_strip_model().GetTabAtIndex(1);
+  tabs::TabInterface* tab_remaining_in_a = tab_strip_model().GetTabAtIndex(2);
+  tabs::TabInterface* tab3 = tab_strip_model().GetTabAtIndex(3);
+
+  // This used to crash.
+  tab_groups::TabGroupId group_b = tab_strip_model().AddToNewGroup(
+      {tab_strip_model().GetIndexOfTab(tab_to_regroup)});
+  ASSERT_NE(group_a, group_b);
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_b));
+
+  // The new group should be placed right after the old one:
+  // tab0, GroupA(tab_remaining_in_a), GroupB(tab_to_regroup), tab3.
+  EXPECT_EQ(0, tab_strip_model().GetIndexOfTab(tab0));
+  EXPECT_EQ(1, tab_strip_model().GetIndexOfTab(tab_remaining_in_a));
+  EXPECT_EQ(2, tab_strip_model().GetIndexOfTab(tab_to_regroup));
+  EXPECT_EQ(3, tab_strip_model().GetIndexOfTab(tab3));
+
+  EXPECT_FALSE(tab_strip_model()
+                   .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(tab0))
+                   .has_value());
+  EXPECT_EQ(group_a, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab_remaining_in_a)));
+  EXPECT_EQ(group_b, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab_to_regroup)));
+  EXPECT_FALSE(tab_strip_model()
+                   .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(tab3))
+                   .has_value());
+
+  ExpectGroupModelTabListCount(group_a, 1u);
+  ExpectGroupModelTabListCount(group_b, 1u);
+
+  // GroupB's tree-node wrapper should be the sibling right after GroupA's,
+  // whatever their common parent collection turns out to be (it may itself
+  // be nested under an ancestor tab's tree node rather than the top-level
+  // unpinned collection, depending on tree shape).
+  tabs::TabCollection* group_a_wrapper =
+      tab_remaining_in_a->GetParentCollection()->GetParentCollection();
+  ASSERT_EQ(group_a_wrapper->type(), tabs::TabCollection::Type::TREE_NODE);
+  tabs::TabCollection* group_b_wrapper =
+      tab_to_regroup->GetParentCollection()->GetParentCollection();
+  ASSERT_EQ(group_b_wrapper->type(), tabs::TabCollection::Type::TREE_NODE);
+  tabs::TabCollection* common_parent = group_a_wrapper->GetParentCollection();
+  ASSERT_TRUE(common_parent);
+  ASSERT_EQ(group_b_wrapper->GetParentCollection(), common_parent);
+  EXPECT_EQ(*common_parent->GetIndexOfCollection(group_b_wrapper),
+            *common_parent->GetIndexOfCollection(group_a_wrapper) + 1);
+}
+
+// Multiple tabs already in the same group, moved together into a new group -
+// the relative order of the moved tabs must be preserved.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       AddToNewGroup_MultipleTabsAlreadyInGroup) {
+  EnsureTabGroupSyncServiceInitialized();
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 3; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // tab0, GroupA(tab1, tab2, tab3)
+  tab_groups::TabGroupId group_a = tab_strip_model().AddToNewGroup({1, 2, 3});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_a));
+
+  tabs::TabInterface* tab0 = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* tab1 = tab_strip_model().GetTabAtIndex(1);
+  tabs::TabInterface* tab2 = tab_strip_model().GetTabAtIndex(2);
+  tabs::TabInterface* tab3 = tab_strip_model().GetTabAtIndex(3);
+
+  tab_groups::TabGroupId group_b =
+      tab_strip_model().AddToNewGroup({tab_strip_model().GetIndexOfTab(tab1),
+                                       tab_strip_model().GetIndexOfTab(tab2)});
+  ASSERT_NE(group_a, group_b);
+
+  // tab0, GroupA(tab3), GroupB(tab1, tab2)
+  EXPECT_EQ(0, tab_strip_model().GetIndexOfTab(tab0));
+  EXPECT_EQ(1, tab_strip_model().GetIndexOfTab(tab3));
+  EXPECT_EQ(2, tab_strip_model().GetIndexOfTab(tab1));
+  EXPECT_EQ(3, tab_strip_model().GetIndexOfTab(tab2));
+
+  EXPECT_EQ(group_a, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab3)));
+  EXPECT_EQ(group_b, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab1)));
+  EXPECT_EQ(group_b, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab2)));
+
+  ExpectGroupModelTabListCount(group_a, 1u);
+  ExpectGroupModelTabListCount(group_b, 2u);
+}
+
+// Regression guard: moving the sole tab of a group into a new group already
+// worked before this fix (the old group is fully removed by OnGroupEmpty(),
+// and the indices happened to still line up); make sure it keeps working.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest, AddToNewGroup_LastTabInGroup) {
+  EnsureTabGroupSyncServiceInitialized();
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 2; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  // tab0, GroupA(tab1), tab2
+  tab_groups::TabGroupId group_a = tab_strip_model().AddToNewGroup({1});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_a));
+
+  tabs::TabInterface* tab0 = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* tab1 = tab_strip_model().GetTabAtIndex(1);
+  tabs::TabInterface* tab2 = tab_strip_model().GetTabAtIndex(2);
+
+  tab_groups::TabGroupId group_b =
+      tab_strip_model().AddToNewGroup({tab_strip_model().GetIndexOfTab(tab1)});
+  ASSERT_NE(group_a, group_b);
+
+  // GroupA had only one tab, so it is removed entirely.
+  EXPECT_FALSE(tab_strip_model().group_model()->ContainsTabGroup(group_a));
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_b));
+
+  EXPECT_EQ(0, tab_strip_model().GetIndexOfTab(tab0));
+  EXPECT_EQ(1, tab_strip_model().GetIndexOfTab(tab1));
+  EXPECT_EQ(2, tab_strip_model().GetIndexOfTab(tab2));
+
+  EXPECT_EQ(group_b, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab1)));
+  EXPECT_FALSE(tab_strip_model()
+                   .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(tab0))
+                   .has_value());
+  EXPECT_FALSE(tab_strip_model()
+                   .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(tab2))
+                   .has_value());
+  ExpectGroupModelTabListCount(group_b, 1u);
+}
+
+// Tabs from two different single-tab groups, moved together into a brand new
+// group: both source groups are emptied (and removed) within the same call.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       AddToNewGroup_TabsFromTwoDifferentGroups) {
+  EnsureTabGroupSyncServiceInitialized();
+  SetTreeTabsEnabled(true);
+  for (int i = 0; i < 2; ++i) {
+    AddTab();
+  }
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  tab_groups::TabGroupId group_a = tab_strip_model().AddToNewGroup({0});
+  tabs::TabInterface* tab0 = tab_strip_model().GetTabAtIndex(0);
+  tabs::TabInterface* tab1 = tab_strip_model().GetTabAtIndex(1);
+  tabs::TabInterface* tab2 = tab_strip_model().GetTabAtIndex(2);
+  tab_groups::TabGroupId group_b =
+      tab_strip_model().AddToNewGroup({tab_strip_model().GetIndexOfTab(tab2)});
+  ASSERT_NE(group_a, group_b);
+
+  // GroupA(tab0), tab1, GroupB(tab2)
+  ASSERT_EQ(group_a, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab0)));
+  ASSERT_EQ(group_b, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab2)));
+
+  tab_groups::TabGroupId group_c =
+      tab_strip_model().AddToNewGroup({tab_strip_model().GetIndexOfTab(tab0),
+                                       tab_strip_model().GetIndexOfTab(tab2)});
+  ASSERT_NE(group_c, group_a);
+  ASSERT_NE(group_c, group_b);
+
+  // Both source groups are emptied and removed; tab0 and tab2 land together
+  // in the new group, tab1 is untouched.
+  EXPECT_FALSE(tab_strip_model().group_model()->ContainsTabGroup(group_a));
+  EXPECT_FALSE(tab_strip_model().group_model()->ContainsTabGroup(group_b));
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_c));
+
+  EXPECT_EQ(group_c, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab0)));
+  EXPECT_EQ(group_c, tab_strip_model().GetTabGroupForTab(
+                         tab_strip_model().GetIndexOfTab(tab2)));
+  EXPECT_FALSE(tab_strip_model()
+                   .GetTabGroupForTab(tab_strip_model().GetIndexOfTab(tab1))
+                   .has_value());
+  ExpectGroupModelTabListCount(group_c, 2u);
+}
+
 // Make a tab group with a nested tree hierarchy (parent and child in group).
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        MakeTabGroup_WithNestedTreeHierarchy) {

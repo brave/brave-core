@@ -10,6 +10,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/strcat.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/ad_block_browser_test_helper.h"
@@ -27,6 +28,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
+#include "components/content_settings/core/common/features.h"
 #include "components/permissions/permission_request_manager.h"
 #include "components/permissions/request_type.h"
 #include "components/permissions/test/mock_permission_prompt_factory.h"
@@ -55,11 +57,11 @@ constexpr char kSimplePage[] = "/simple.html";
 
 }  // namespace
 
-class LocalhostAccessBrowserTest
-    : public InProcessBrowserTest,
-      public testing::WithParamInterface<network::mojom::IPAddressSpace> {
+class LocalhostAccessBaseFixture : public InProcessBrowserTest {
  public:
-  LocalhostAccessBrowserTest() {
+  explicit LocalhostAccessBaseFixture(
+      network::mojom::IPAddressSpace ip_address_space)
+      : ip_address_space_(ip_address_space) {
     feature_list_.InitWithFeaturesAndParameters(
         {{network::features::kLocalNetworkAccessChecksWebSockets, {}},
          {network::features::kLocalNetworkAccessChecks,
@@ -114,7 +116,7 @@ class LocalhostAccessBrowserTest
     network::AddIpAddressSpaceOverridesToCommandLine(
         {network::GenerateIpAddressSpaceOverride(*https_server_),
          network::GenerateIpAddressSpaceOverride(*localhost_server_,
-                                                 GetParam())},
+                                                 ip_address_space_)},
         *command_line);
   }
 
@@ -189,13 +191,13 @@ class LocalhostAccessBrowserTest
   }
 
   ContentSettingsType GetContentSettingsType() {
-    return GetParam() == network::mojom::IPAddressSpace::kLocal
+    return ip_address_space_ == network::mojom::IPAddressSpace::kLocal
                ? ContentSettingsType::LOCAL_NETWORK
                : ContentSettingsType::LOOPBACK_NETWORK;
   }
 
   permissions::RequestType GetRequestType() {
-    return GetParam() == network::mojom::IPAddressSpace::kLocal
+    return ip_address_space_ == network::mojom::IPAddressSpace::kLocal
                ? permissions::RequestType::kLocalNetwork
                : permissions::RequestType::kLoopbackNetwork;
   }
@@ -309,6 +311,7 @@ class LocalhostAccessBrowserTest
   }
 
  protected:
+  const network::mojom::IPAddressSpace ip_address_space_;
   GURL embedding_url_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
@@ -321,6 +324,13 @@ class LocalhostAccessBrowserTest
   std::unique_ptr<brave_shields::AdBlockBrowserTestHelper>
       ad_block_test_helper_;
   std::unique_ptr<permissions::MockPermissionPromptFactory> prompt_factory_;
+};
+
+class LocalhostAccessBrowserTest
+    : public LocalhostAccessBaseFixture,
+      public testing::WithParamInterface<network::mojom::IPAddressSpace> {
+ public:
+  LocalhostAccessBrowserTest() : LocalhostAccessBaseFixture(GetParam()) {}
 };
 
 IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, Localhost) {
@@ -363,51 +373,6 @@ IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, OneTwoSeven) {
   // Reset content setting.
   SetCurrentStatus(ContentSetting::CONTENT_SETTING_ASK);
   CheckAskAndDismissFlow(target_url);
-}
-
-IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, IncognitoModeInheritAllow) {
-  // Allowed permission for a website is ASK in incognito.
-  std::string test_domain = "localhost";
-  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url =
-      localhost_server_->GetURL(test_domain, kTestTargetPath);
-  CheckAskAndAcceptFlow(target_url);
-  // Check incognito mode.
-  Profile* profile = browser()->GetProfile();
-  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser(profile);
-  SetBrowser(incognito_browser);
-  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
-}
-
-IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, IncognitoModeInheritBlock) {
-  // Blocked permission for a website is ASK in incognito.
-  std::string test_domain = "localhost";
-  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url =
-      localhost_server_->GetURL(test_domain, kTestTargetPath);
-  CheckAskAndDenyFlow(target_url);
-  // Check Incognito mode.
-  Profile* profile = browser()->GetProfile();
-  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser(profile);
-  SetBrowser(incognito_browser);
-  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
-}
-
-IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, IncognitoModeDoesNotLeak) {
-  // Permission set in Incognito does not leak back to normal mode.
-  BrowserWindowInterface* original_browser = browser();
-  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser();
-  SetBrowser(incognito_browser);
-  SetPromptFactory(GetPermissionRequestManager());
-  std::string test_domain = "localhost";
-  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
-  const auto& target_url =
-      localhost_server_->GetURL(test_domain, kTestTargetPath);
-  CheckAskAndAcceptFlow(target_url);
-  // Check permission did not leak.
-  SetBrowser(original_browser);
-  SetPromptFactory(GetPermissionRequestManager());
-  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
 }
 
 IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, NoPermissionPrompt) {
@@ -571,3 +536,103 @@ INSTANTIATE_TEST_SUITE_P(
     LocalhostAccessBrowserTestFeatureDisabled,
     testing::Values(network::mojom::IPAddressSpace::kLocal,
                     network::mojom::IPAddressSpace::kLoopback));
+
+// Incognito specific tests.
+struct LocalhostAccessIncognitoTestParam {
+  network::mojom::IPAddressSpace ip_address_space;
+  bool allow_incognito_permission_inheritance;
+};
+
+class LocalhostAccessIncognitoBrowserTest
+    : public LocalhostAccessBaseFixture,
+      public testing::WithParamInterface<LocalhostAccessIncognitoTestParam> {
+ public:
+  LocalhostAccessIncognitoBrowserTest()
+      : LocalhostAccessBaseFixture(GetParam().ip_address_space) {
+    inheritance_feature_list_.InitWithFeatureState(
+        content_settings::kAllowIncognitoPermissionInheritance,
+        AllowIncognitoPermissionInheritance());
+  }
+
+  bool AllowIncognitoPermissionInheritance() const {
+    return GetParam().allow_incognito_permission_inheritance;
+  }
+
+ private:
+  base::test::ScopedFeatureList inheritance_feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_P(LocalhostAccessIncognitoBrowserTest,
+                       IncognitoModeInheritAllow) {
+  // Allowed permission for a website is ASK in incognito.
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  CheckAskAndAcceptFlow(target_url);
+  // Check incognito mode.
+  Profile* profile = browser()->GetProfile();
+  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser(profile);
+  SetBrowser(incognito_browser);
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+}
+
+IN_PROC_BROWSER_TEST_P(LocalhostAccessIncognitoBrowserTest,
+                       IncognitoModeInheritBlock) {
+  // BLOCK is inherited only when kAllowIncognitoPermissionInheritance is on.
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  CheckAskAndDenyFlow(target_url);
+  // Check Incognito mode.
+  Profile* profile = browser()->GetProfile();
+  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser(profile);
+  SetBrowser(incognito_browser);
+  CheckCurrentStatusIs(AllowIncognitoPermissionInheritance()
+                           ? ContentSetting::CONTENT_SETTING_BLOCK
+                           : ContentSetting::CONTENT_SETTING_ASK);
+}
+
+IN_PROC_BROWSER_TEST_P(LocalhostAccessIncognitoBrowserTest,
+                       IncognitoModeDoesNotLeak) {
+  // Permission set in Incognito does not leak back to normal mode.
+  BrowserWindowInterface* original_browser = browser();
+  BrowserWindowInterface* incognito_browser = CreateIncognitoBrowser();
+  SetBrowser(incognito_browser);
+  SetPromptFactory(GetPermissionRequestManager());
+  std::string test_domain = "localhost";
+  embedding_url_ = https_server_->GetURL(kTestEmbeddingDomain, kSimplePage);
+  const auto& target_url =
+      localhost_server_->GetURL(test_domain, kTestTargetPath);
+  CheckAskAndAcceptFlow(target_url);
+  // Check permission did not leak.
+  SetBrowser(original_browser);
+  SetPromptFactory(GetPermissionRequestManager());
+  CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    LocalhostAccessIncognitoBrowserTest,
+    testing::Values(LocalhostAccessIncognitoTestParam(
+                        network::mojom::IPAddressSpace::kLocal,
+                        true),
+                    LocalhostAccessIncognitoTestParam(
+                        network::mojom::IPAddressSpace::kLocal,
+                        false),
+                    LocalhostAccessIncognitoTestParam(
+                        network::mojom::IPAddressSpace::kLoopback,
+                        true),
+                    LocalhostAccessIncognitoTestParam(
+                        network::mojom::IPAddressSpace::kLoopback,
+                        false)),
+    [](const testing::TestParamInfo<LocalhostAccessIncognitoTestParam>& info) {
+      return base::StrCat(
+          {info.param.ip_address_space == network::mojom::IPAddressSpace::kLocal
+               ? "Local"
+               : "Loopback",
+           info.param.allow_incognito_permission_inheritance
+               ? "_InheritanceEnabled"
+               : "_InheritanceDisabled"});
+    });

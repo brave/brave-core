@@ -38,7 +38,7 @@ public struct AIChatPaywallView: View {
   private var availableTierTypes: [AIChatSubscriptionTier] = [.monthly, .yearly]
 
   @ObservedObject
-  private(set) var storeSDK = BraveStoreSDK.shared
+  private(set) var storeSDK: BraveStoreSDK
 
   @State
   private var paymentStatus: AIChatPaymentStatus = .success
@@ -65,10 +65,12 @@ public struct AIChatPaywallView: View {
   var openDirectCheckout: (() -> Void)?
 
   public init(
+    storeSDK: BraveStoreSDK,
     premiumUpgrageSuccessful: ((AIChatSubscriptionTier) -> Void)? = nil,
     refreshCredentials: (() -> Void)? = nil,
     openDirectCheckout: (() -> Void)? = nil
   ) {
+    self.storeSDK = storeSDK
     self.premiumUpgrageSuccessful = premiumUpgrageSuccessful
     self.refreshCredentials = refreshCredentials
     self.openDirectCheckout = openDirectCheckout
@@ -547,11 +549,11 @@ private struct AIChatActionButton: View {
 
 #if DEBUG
 #Preview("External Purchase") {
-  AIChatPaywallView()
+  AIChatPaywallView(storeSDK: .init(skusService: nil))
     .environment(\.allowExternalPurchaseLinks, true)
 }
 #Preview("Standard Purchase") {
-  AIChatPaywallView()
+  AIChatPaywallView(storeSDK: .init(skusService: nil))
     .environment(\.allowExternalPurchaseLinks, false)
 }
 

@@ -308,7 +308,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_coinbase.xml",
     "java/brave-res/drawable/ic_disabled.xml",
     "java/brave-res/drawable/ic_discount.xml",
-    "java/brave-res/drawable/ic_drag.xml",
     "java/brave-res/drawable/ic_eth.xml",
     "java/brave-res/drawable/ic_eth_24.xml",
     "java/brave-res/drawable/ic_eth_color.xml",

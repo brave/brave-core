@@ -46,7 +46,7 @@ class ProtectionStatsTabHelper: TabObserver, @preconcurrency ProtectionStatsTabH
     tab.addObserver(self)
   }
 
-  deinit {
+  isolated deinit {
     tab?.removeObserver(self)
   }
 
