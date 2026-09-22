@@ -13,10 +13,8 @@ substitutions:
       end of the license header puts the import ahead of every other one in the
       module; a chromium_src shadow file cannot do this, since importing the
       upstream module is what runs its imports.
-    regex:
-      re_pattern: '(// found in the LICENSE file\.\n\n)'
-      replace: |
-        \1import 'chrome://resources/brave/polymer_overriding.js';
+    add_import:
+      import: import 'chrome://resources/brave/polymer_overriding.js';
 
   - description: >-
       Free `profile-customization-app` for the Brave subclass to register.

@@ -724,6 +724,60 @@ has:
                 "node": "expression_statement",
             },
         },
+
+        # The file's first statement, which an import is inserted above so it
+        # lands at the top of the file, but below the copyright header, since
+        # a comment is not a statement.
+        #
+        # The `any` is the `statement` supertype transcribed: the declaration
+        # kinds WebUI sources open with, plus `import_statement` and the
+        # `expression_statement` a bare call is. `nthChild` needs `ofRule` to
+        # repeat the set, since without it a leading copyright comment counts
+        # as the first child and nothing matches.
+        #
+        # The result node is therefore whichever of those kinds opens the
+        # file, which could be an import_statement in a file that already
+        # imports something, named below as the representative.
+        "ts.find_first_statement": {
+            "template": """\
+any:
+  - kind: import_statement
+  - kind: export_statement
+  - kind: expression_statement
+  - kind: lexical_declaration
+  - kind: variable_declaration
+  - kind: class_declaration
+  - kind: abstract_class_declaration
+  - kind: function_declaration
+  - kind: interface_declaration
+  - kind: enum_declaration
+  - kind: type_alias_declaration
+  - kind: ambient_declaration
+  - kind: debugger_statement
+inside:
+  kind: program
+nthChild:
+  position: 1
+  ofRule:
+    any:
+      - kind: import_statement
+      - kind: export_statement
+      - kind: expression_statement
+      - kind: lexical_declaration
+      - kind: variable_declaration
+      - kind: class_declaration
+      - kind: abstract_class_declaration
+      - kind: function_declaration
+      - kind: interface_declaration
+      - kind: enum_declaration
+      - kind: type_alias_declaration
+      - kind: ambient_declaration
+      - kind: debugger_statement
+""",
+            "result": {
+                "node": "import_statement",
+            },
+        },
     },
     "ast.rewriter": {
 
@@ -1215,6 +1269,29 @@ has:
             },
             "result": {
                 "node": "expression_statement",
+            },
+        },
+
+        # The full `import` statement inserted above the file's first
+        # statement, i.e. at the top of the file but under its copyright
+        # header. The zero-width `^` inserts without re-emitting the statement
+        # itself, which may be a whole class declaration.
+        #
+        # The caller passes the statement in full (rather than just the module
+        # specifier) so it controls the spelling: imports upstream carries
+        # both with and without a trailing semicolon. `separator` is the blank
+        # line the import needs when the statement below it is code, and
+        # nothing when that statement is another import or an export, which
+        # would otherwise be split off from the block it belongs to.
+        "ts.add_import": {
+            "matcher": "ts.find_first_statement",
+            "inputs": ["import", "separator"],
+            "replace": {
+                "re_pattern": "^",
+                "replace": "{import}\\n{separator}",
+            },
+            "result": {
+                "node": "import_statement",
             },
         },
     },
