@@ -16,3 +16,15 @@ substitutions:
       list_name: deps
       values:
         - //brave/browser/ui/android/toolbar:java_resources
+
+  - description: |-
+      Depend on Brave's bottom bar user settings.
+
+      isToolbarUiRefactorEnabled() answers to the "Enable bottom bar" setting.
+      The dependency is kept to Brave's leaf target rather than the bottom bar
+      component, which this one deliberately does not depend on.
+    insert_into_list:
+      target: variation_utils_java
+      list_name: deps
+      values:
+        - //brave/browser/ui/android/bottombar:prefs_java

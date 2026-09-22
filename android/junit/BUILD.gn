@@ -224,6 +224,22 @@ if (is_android) {
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
 
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.ui.bottombar") {
+    sources = [ "src/org/chromium/chrome/browser/ui/bottombar/BraveBottomBarUserPrefsTest.java" ]
+
+    deps = [
+      "//base:base_java",
+      "//base:base_junit_test_support",
+      "//brave/browser/ui/android/bottombar:prefs_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/flags:java",
+      "//chrome/browser/preferences:java",
+      "//chrome/browser/ui/android/bottombar:config_java",
+      "//chrome/browser/ui/android/toolbar:variation_utils_java",
+    ]
+  }
+
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.omnibox") {
     sources = [ "src/org/chromium/chrome/browser/omnibox/BraveLocationBarFocusScrimHandlerUnitTest.java" ]
 
