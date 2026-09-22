@@ -21,11 +21,16 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ssl/cert_verifier_browser_test.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/infobar.h"
+#include "components/infobars/core/infobar_delegate.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
+#include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/http/http_status_code.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -33,8 +38,7 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-// npm run test -- brave_browser_tests
-// --filter=BraveAdsCreativeSearchResultAdTabHelperTest*
+// npm run test -- brave_browser_tests --filter=BraveAds*
 
 namespace brave_ads {
 
@@ -62,6 +66,22 @@ CreativeSearchResultAdTabHelper* GetCreativeSearchResultAdTabHelper(
     BrowserWindowInterface* browser) {
   auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
   return CreativeSearchResultAdTabHelper::FromWebContents(web_contents);
+}
+
+bool HasSearchResultAdClickedInfoBar(content::WebContents* web_contents) {
+  infobars::ContentInfoBarManager* info_bar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents);
+  if (!info_bar_manager) {
+    return false;
+  }
+
+  for (infobars::InfoBar* info_bar : info_bar_manager->infobars()) {
+    if (info_bar->delegate()->GetIdentifier() ==
+        infobars::InfoBarDelegate::SEARCH_RESULT_AD_CLICKED_INFOBAR_DELEGATE) {
+      return true;
+    }
+  }
+  return false;
 }
 
 class ScopedTestingAdsServiceSetter {
@@ -167,6 +187,53 @@ class BraveAdsCreativeSearchResultAdTabHelperTest
     return http_response;
   }
 
+  GURL GetSearchResultUrl() const {
+    return GetURL(kAllowedDomain, kSearchResultUrlPath);
+  }
+
+  content::WebContents* LoadAndCheckSampleSearchResultAdWebPage(
+      const GURL& url) {
+    base::RunLoop run_loop_1;
+    base::RunLoop run_loop_2;
+    EXPECT_CALL(
+        ads_service(),
+        TriggerSearchResultAdEvent(
+            ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
+            ::testing::_))
+        .Times(2)
+        .WillRepeatedly(
+            [&run_loop_1, &run_loop_2](
+                mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
+                mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
+                ResultCallback /*callback*/) {
+              ASSERT_TRUE(mojom_creative_ad);
+
+              EXPECT_EQ(mojom_creative_ad,
+                        GenerateCreativeSearchResultAd(
+                            mojom_creative_ad->placement_id));
+
+              const std::optional<size_t> ad_index =
+                  GetIndexByPlacementId(mojom_creative_ad->placement_id);
+
+              if (ad_index == 1) {
+                run_loop_1.Quit();
+              } else if (ad_index == 2) {
+                run_loop_2.Quit();
+              }
+            });
+
+    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+
+    content::WebContents* web_contents =
+        chrome_test_utils::GetActiveWebContents(this);
+    EXPECT_EQ(url, web_contents->GetVisibleURL());
+
+    run_loop_1.Run();
+    run_loop_2.Run();
+
+    return web_contents;
+  }
+
   net::EmbeddedTestServer& https_server() { return https_server_; }
 
   PrefService* GetPrefs() { return browser()->GetProfile()->GetPrefs(); }
@@ -188,7 +255,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
   const GURL url = GetURL(kNotAllowedDomain, kSearchResultUrlPath);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
+      chrome_test_utils::GetActiveWebContents(this);
   EXPECT_EQ(url, web_contents->GetVisibleURL());
 }
 
@@ -202,7 +269,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
       GetURL(kAllowedDomain, "/brave_ads/invalid_creative_search_result_ad");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   content::WebContents* web_contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
+      chrome_test_utils::GetActiveWebContents(this);
   EXPECT_EQ(url, web_contents->GetVisibleURL());
 }
 
@@ -224,58 +291,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
   observer.Wait();
 }
 
-class SampleBraveAdsCreativeSearchResultAdTabHelperTest
-    : public BraveAdsCreativeSearchResultAdTabHelperTest {
- public:
-  GURL GetSearchResultUrl() const {
-    return GetURL(kAllowedDomain, kSearchResultUrlPath);
-  }
-
-  content::WebContents* LoadAndCheckSampleSearchResultAdWebPage(
-      const GURL& url) {
-    auto run_loop1 = std::make_unique<base::RunLoop>();
-    auto run_loop2 = std::make_unique<base::RunLoop>();
-    EXPECT_CALL(
-        ads_service(),
-        TriggerSearchResultAdEvent(
-            ::testing::_, mojom::SearchResultAdEventType::kViewedImpression,
-            ::testing::_))
-        .Times(2)
-        .WillRepeatedly(
-            [&run_loop1, &run_loop2](
-                mojom::CreativeSearchResultAdInfoPtr mojom_creative_ad,
-                mojom::SearchResultAdEventType /*mojom_ad_event_type*/,
-                ResultCallback /*callback*/) {
-              ASSERT_TRUE(mojom_creative_ad);
-
-              EXPECT_EQ(mojom_creative_ad,
-                        GenerateCreativeSearchResultAd(
-                            mojom_creative_ad->placement_id));
-
-              const auto ad_index =
-                  GetIndexByPlacementId(mojom_creative_ad->placement_id);
-
-              if (ad_index == 1) {
-                run_loop1->Quit();
-              } else if (ad_index == 2) {
-                run_loop2->Quit();
-              }
-            });
-
-    EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-
-    content::WebContents* web_contents =
-        browser()->tab_strip_model()->GetActiveWebContents();
-    EXPECT_EQ(url, web_contents->GetVisibleURL());
-
-    run_loop1->Run();
-    run_loop2->Run();
-
-    return web_contents;
-  }
-};
-
-IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
+IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
                        SearchResultAdOpenedInSameTab) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
@@ -310,7 +326,7 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
+IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
                        SearchResultAdOpenedInNewTab) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
@@ -347,7 +363,7 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
+IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
                        SearchResultAdOpenedInNewTabByRightClick) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
@@ -387,7 +403,7 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
   run_loop.Run();
 }
 
-IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
+IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
                        SearchResultAdOpenedInNewWindow) {
   ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
 
@@ -425,6 +441,159 @@ IN_PROC_BROWSER_TEST_F(SampleBraveAdsCreativeSearchResultAdTabHelperTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
 
   run_loop.Run();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
+                       SearchResultAdClickedInfoBarShown) {
+  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
+
+  content::WebContents* web_contents =
+      LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
+
+  EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
+      .WillOnce([](const std::string& placement_id,
+                   MaybeGetSearchResultAdCallback callback) {
+        std::move(callback).Run(GenerateCreativeSearchResultAd(placement_id));
+      });
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
+      .WillOnce([&run_loop](mojom::CreativeSearchResultAdInfoPtr,
+                            mojom::SearchResultAdEventType mojom_ad_event_type,
+                            ResultCallback callback) {
+        EXPECT_EQ(mojom_ad_event_type,
+                  mojom::SearchResultAdEventType::kClicked);
+        std::move(callback).Run(true);
+        run_loop.Quit();
+      });
+
+  EXPECT_TRUE(content::ExecJs(web_contents,
+                              "document.getElementById('ad_link_1').click();"));
+  run_loop.Run();
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+
+  EXPECT_TRUE(HasSearchResultAdClickedInfoBar(web_contents));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
+                       SearchResultAdClickedInfoBarSurvivesClientRedirect) {
+  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
+
+  content::WebContents* web_contents =
+      LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
+
+  EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
+      .WillOnce([](const std::string& placement_id,
+                   MaybeGetSearchResultAdCallback callback) {
+        std::move(callback).Run(GenerateCreativeSearchResultAd(placement_id));
+      });
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
+      .WillOnce([&run_loop](mojom::CreativeSearchResultAdInfoPtr,
+                            mojom::SearchResultAdEventType mojom_ad_event_type,
+                            ResultCallback callback) {
+        EXPECT_EQ(mojom_ad_event_type,
+                  mojom::SearchResultAdEventType::kClicked);
+        std::move(callback).Run(true);
+        run_loop.Quit();
+      });
+
+  EXPECT_TRUE(content::ExecJs(web_contents,
+                              "document.getElementById('ad_link_1').click();"));
+  run_loop.Run();
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+
+  EXPECT_TRUE(HasSearchResultAdClickedInfoBar(web_contents));
+
+  content::TestNavigationObserver client_redirect_observer(web_contents);
+  ASSERT_TRUE(content::ExecJs(
+      web_contents,
+      base::StrCat({"window.location.replace('",
+                    GetURL(kTargetDomain, "/simple_link.html").spec(), "');"}),
+      content::EXECUTE_SCRIPT_NO_USER_GESTURE));
+  client_redirect_observer.Wait();
+  ASSERT_TRUE(client_redirect_observer.last_navigation_succeeded());
+
+  EXPECT_TRUE(HasSearchResultAdClickedInfoBar(web_contents));
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveAdsCreativeSearchResultAdTabHelperTest,
+    SearchResultAdClickedInfoBarSurvivesSameDocumentNavigation) {
+  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
+
+  content::WebContents* web_contents =
+      LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
+
+  EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
+      .WillOnce([](const std::string& placement_id,
+                   MaybeGetSearchResultAdCallback callback) {
+        std::move(callback).Run(GenerateCreativeSearchResultAd(placement_id));
+      });
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
+      .WillOnce([&run_loop](mojom::CreativeSearchResultAdInfoPtr,
+                            mojom::SearchResultAdEventType mojom_ad_event_type,
+                            ResultCallback callback) {
+        EXPECT_EQ(mojom_ad_event_type,
+                  mojom::SearchResultAdEventType::kClicked);
+        std::move(callback).Run(true);
+        run_loop.Quit();
+      });
+
+  EXPECT_TRUE(content::ExecJs(web_contents,
+                              "document.getElementById('ad_link_1').click();"));
+  run_loop.Run();
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+
+  EXPECT_TRUE(HasSearchResultAdClickedInfoBar(web_contents));
+
+  content::TestNavigationObserver same_document_observer(web_contents);
+  ASSERT_TRUE(
+      content::ExecJs(web_contents, "history.pushState(null, '', '#foo');"));
+  same_document_observer.Wait();
+  ASSERT_TRUE(same_document_observer.last_navigation_succeeded());
+
+  EXPECT_TRUE(HasSearchResultAdClickedInfoBar(web_contents));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveAdsCreativeSearchResultAdTabHelperTest,
+                       SearchResultAdClickedInfoBarDismissedOnNavigatingAway) {
+  ScopedTestingAdsServiceSetter scoped_setter(&ads_service());
+
+  content::WebContents* web_contents =
+      LoadAndCheckSampleSearchResultAdWebPage(GetSearchResultUrl());
+
+  EXPECT_CALL(ads_service(), MaybeGetSearchResultAd)
+      .WillOnce([](const std::string& placement_id,
+                   MaybeGetSearchResultAdCallback callback) {
+        std::move(callback).Run(GenerateCreativeSearchResultAd(placement_id));
+      });
+
+  base::RunLoop run_loop;
+  EXPECT_CALL(ads_service(), TriggerSearchResultAdEvent)
+      .WillOnce([&run_loop](mojom::CreativeSearchResultAdInfoPtr,
+                            mojom::SearchResultAdEventType mojom_ad_event_type,
+                            ResultCallback callback) {
+        EXPECT_EQ(mojom_ad_event_type,
+                  mojom::SearchResultAdEventType::kClicked);
+        std::move(callback).Run(true);
+        run_loop.Quit();
+      });
+
+  EXPECT_TRUE(content::ExecJs(web_contents,
+                              "document.getElementById('ad_link_1').click();"));
+  run_loop.Run();
+  EXPECT_TRUE(content::WaitForLoadStop(web_contents));
+
+  EXPECT_TRUE(HasSearchResultAdClickedInfoBar(web_contents));
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), GetURL(kTargetDomain, "/simple_link.html")));
+
+  EXPECT_FALSE(HasSearchResultAdClickedInfoBar(web_contents));
 }
 
 }  // namespace brave_ads
