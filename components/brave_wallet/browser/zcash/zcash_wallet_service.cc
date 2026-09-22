@@ -677,8 +677,13 @@ void ZCashWalletService::OnGetUtxos(
   DCHECK(context->addresses.contains(address));
   DCHECK(!context->utxos.contains(address));
 
-  if (!result.has_value() || !result.value()) {
+  if (!result.has_value()) {
     context->SetError(result.error());
+    WorkOnGetUtxos(std::move(context));
+    return;
+  }
+  if (!result.value()) {
+    context->SetError(WalletParsingErrorMessage());
     WorkOnGetUtxos(std::move(context));
     return;
   }
