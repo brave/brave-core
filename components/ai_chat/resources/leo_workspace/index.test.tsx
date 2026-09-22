@@ -27,6 +27,17 @@ function flush() {
   return new Promise((resolve) => setTimeout(resolve, 0))
 }
 
+/**
+ * Errors logged by the launch, ignoring the notice that the viewer message
+ * handler emits because jsdom serves the tests from http://localhost instead of
+ * the page's chrome-untrusted origin.
+ */
+function launchErrors() {
+  return (console.error as jest.Mock).mock.calls.filter(
+    ([message]) => !String(message).includes('no viewer origin'),
+  )
+}
+
 beforeEach(() => {
   consumer = null
   setConsumer = jest.fn((c: (params: LaunchParams) => void) => {
@@ -62,7 +73,7 @@ describe('leo workspace entry point', () => {
   it('consumes the launch queue once the document is ready', () => {
     load()
     expect(setConsumer).toHaveBeenCalledTimes(1)
-    expect(console.error).not.toHaveBeenCalled()
+    expect(launchErrors()).toEqual([])
   })
 
   it('registers the file tools for the delivered directory handle', async () => {
@@ -75,7 +86,7 @@ describe('leo workspace entry point', () => {
       'glob',
       'append_file',
     ])
-    expect(console.error).not.toHaveBeenCalled()
+    expect(launchErrors()).toEqual([])
   })
 
   it('ignores a launch that delivers a file instead of a directory', async () => {
