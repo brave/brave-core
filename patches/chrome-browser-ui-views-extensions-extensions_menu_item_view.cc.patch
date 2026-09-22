@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/extensions/extensions_menu_item_view.cc b/chrome/browser/ui/views/extensions/extensions_menu_item_view.cc
+index 1a2736bc3f4a824ee4fbb7c2bcf1f557d6ffac93..b40a08b454f1fce087c103a1a4be89fdd41a5a43 100644
+--- a/chrome/browser/ui/views/extensions/extensions_menu_item_view.cc
++++ b/chrome/browser/ui/views/extensions/extensions_menu_item_view.cc
+@@ -151,14 +151,14 @@ ExtensionMenuItemView::ExtensionMenuItemView(
+                                  ui::ImageModel::FromVectorIcon(
+                                      features::IsRoundedIconsEnabled()
+                                          ? kMoreVertIcon
+-                                         : kBrowserToolsChromeRefreshOldIcon,
++                                         : kLeoMoreVerticalIcon,
+                                      kColorExtensionMenuIcon, icon_size))
+                   .SetImageModel(
+                       views::Button::STATE_DISABLED,
+                       ui::ImageModel::FromVectorIcon(
+                           features::IsRoundedIconsEnabled()
+                               ? kMoreVertIcon
+-                              : kBrowserToolsChromeRefreshOldIcon,
++                              : kLeoMoreVerticalIcon,
+                           kColorExtensionMenuIconDisabled, icon_size)));
+ 
+   if (allow_pinning) {
