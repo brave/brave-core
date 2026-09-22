@@ -61,9 +61,12 @@ TEST(ToolTest, IsSupportedByModel_RequiresModelToDeclareCapability) {
   EXPECT_TRUE(tool.IsSupportedByModel(
       *model, {mojom::ConversationCapability::DEEP_RESEARCH}));
 
-  // Model doesn't declare CONTENT_AGENT, so it gets no tools.
+  // Model doesn't declare CONTENT_AGENT, so it gets no tools. The conversation
+  // also requires a capability the model does declare, so every capability has
+  // to match, not just one.
   EXPECT_FALSE(tool.IsSupportedByModel(
-      *model, {mojom::ConversationCapability::CONTENT_AGENT}));
+      *model, {mojom::ConversationCapability::DEEP_RESEARCH,
+               mojom::ConversationCapability::CONTENT_AGENT}));
 }
 
 TEST(ToolTest, IsSupportedByModel_ServerHintsDoNotGate) {

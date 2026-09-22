@@ -253,7 +253,6 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->vision_support = true;
       model->supports_tools = false;
       model->supported_capabilities = {
-          mojom::ConversationCapability::CHAT,
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
