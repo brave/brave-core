@@ -450,8 +450,14 @@ ConversationHandler::GetConversationHistory() const {
 }
 
 void ConversationHandler::GetConversationHistory(
+    mojom::ConversationHandler::GetConversationHistoryCallback callback) {
+  GetConversationHistory(std::nullopt, std::move(callback));
+}
+
+void ConversationHandler::GetConversationHistory(
     const std::optional<std::string>& thread_uuid,
-    GetConversationHistoryCallback callback) {
+    mojom::UntrustedConversationHandler::GetConversationHistoryCallback
+        callback) {
   std::vector<mojom::ConversationTurnPtr> history;
   for (const auto& turn : chat_history_) {
     history.emplace_back(turn->Clone());

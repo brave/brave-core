@@ -175,8 +175,9 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
-  void GetConversationHistory(const std::optional<std::string>& thread_uuid,
-                              GetConversationHistoryCallback callback) override;
+  void GetConversationHistory(
+      mojom::ConversationHandler::GetConversationHistoryCallback callback)
+      override;
   void GetConversationThreads(GetConversationThreadsCallback callback) override;
   void SetTemporary(bool temporary) override;
   void PauseTask() override;
@@ -253,6 +254,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetScreenshots(GetScreenshotsCallback callback) override;
 
   // mojom::UntrustedConversationHandler
+  void GetConversationHistory(
+      const std::optional<std::string>& thread_uuid,
+      mojom::UntrustedConversationHandler::GetConversationHistoryCallback
+          callback) override;
   void SwitchToNonPremiumModel() override;
   void RespondToToolUseRequest(
       const std::string& tool_id,

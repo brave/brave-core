@@ -97,7 +97,8 @@ interface UntrustedConversationHandler {
   // Creates a new thread originating from the conversation entry with the
   // given uuid, and returns its uuid. Does not persist anything until a turn is
   // submitted to the thread. Returns null (a no-op) if the entry already has an
-  // empty thread, so duplicate empty threads aren't created.
+  // empty thread, so duplicate empty threads aren't created, or if the origin entry
+  // is not an assistant response.
   CreateConversationThread(string origin_entry_uuid) => (string? thread_uuid);
 };
 

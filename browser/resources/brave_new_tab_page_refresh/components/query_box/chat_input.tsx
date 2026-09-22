@@ -30,7 +30,7 @@ export function ChatInput(props: Props) {
   const conversationContext = useConversation()
   const { conversationUuid } = conversationContext.api.useGetStateData()
   const conversationHistory =
-    conversationContext.api.useGetConversationHistoryData(null)
+    conversationContext.api.useGetConversationHistoryData()
 
   const extractedQuery = useExtractedQuery(
     stringifyContent(conversationContext.inputText),
