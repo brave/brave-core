@@ -95,7 +95,7 @@ ViewCounterService::ViewCounterService(
       std::make_unique<WeeklyStorage>(local_state, prefs::kNewTabsCreated);
   new_tab_count_daily_state_ =
       std::make_unique<DailyStorage>(prefs, prefs::kNewTabsCreatedDaily);
-  branded_new_tab_count_state_ = std::make_unique<WeeklyStorage>(
+  new_tab_takeover_count_state_ = std::make_unique<WeeklyStorage>(
       local_state, prefs::kSponsoredNewTabsCreated);
 
   ResetModel();
@@ -146,7 +146,7 @@ void ViewCounterService::RecordViewedAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type) {
-  branded_new_tab_count_state_->AddDelta(1);
+  new_tab_takeover_count_state_->AddDelta(1);
   UpdateP3AValues();
 
   MaybeTriggerNewTabPageAdEvent(
@@ -508,13 +508,13 @@ void ViewCounterService::UpdateP3AValues() {
                                      kNewTabsCreatedMetricBuckets,
                                      static_cast<int>(new_tab_daily_count));
 
-  uint64_t branded_new_tab_count =
-      branded_new_tab_count_state_->GetHighestValueInWeek();
-  if (branded_new_tab_count == 0 || new_tab_count == 0) {
+  uint64_t new_tab_takeover_count =
+      new_tab_takeover_count_state_->GetHighestValueInWeek();
+  if (new_tab_takeover_count == 0 || new_tab_count == 0) {
     UMA_HISTOGRAM_EXACT_LINEAR(kSponsoredNewTabsHistogramName, 0,
                                std::size(kSponsoredNewTabsBuckets) + 1);
   } else {
-    double ratio = (static_cast<double>(branded_new_tab_count) /
+    double ratio = (static_cast<double>(new_tab_takeover_count) /
                     static_cast<double>(new_tab_count)) *
                    100;
     p3a_utils::RecordToHistogramBucket(kSponsoredNewTabsHistogramName,

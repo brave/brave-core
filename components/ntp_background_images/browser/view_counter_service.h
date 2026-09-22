@@ -202,10 +202,10 @@ class ViewCounterService : public KeyedService,
       nullptr;
 
   // If P3A is enabled, these will track number of tabs created
-  // and the ratio of those which are branded images.
+  // and the ratio of those which are New Tab Takeover ads.
   std::unique_ptr<WeeklyStorage> new_tab_count_state_;
   std::unique_ptr<DailyStorage> new_tab_count_daily_state_;
-  std::unique_ptr<WeeklyStorage> branded_new_tab_count_state_;
+  std::unique_ptr<WeeklyStorage> new_tab_takeover_count_state_;
 
   base::ScopedObservation<brave_ads::AdsService, brave_ads::AdsServiceObserver>
       ads_service_observation_{this};
