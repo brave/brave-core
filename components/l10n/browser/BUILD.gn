@@ -10,8 +10,11 @@ static_library("browser") {
 
   sources = [ "default_locale_util.h" ]
 
+  deps = [ "//base" ]
+
   if (is_android) {
     sources += [ "default_locale_util_android.cc" ]
+    deps += [ "//base:i18n" ]
   }
 
   if (is_ios) {
@@ -29,6 +32,4 @@ static_library("browser") {
   if (is_win) {
     sources += [ "default_locale_util_win.cc" ]
   }
-
-  deps = [ "//base" ]
 }

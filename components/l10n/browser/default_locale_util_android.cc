@@ -7,12 +7,12 @@
 
 #include <optional>
 
-#include "base/android/locale_utils.h"
+#include "base/i18n/android_locale.h"
 
 namespace brave_l10n {
 
 std::optional<std::string> MaybeGetDefaultLocaleString() {
-  return base::android::GetDefaultLocaleString();
+  return std::string(base::i18n::GetAndroidDefaultLocale().tag_string());
 }
 
 }  // namespace brave_l10n
