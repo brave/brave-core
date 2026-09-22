@@ -23,14 +23,25 @@ function SettingsPanel(props: Props) {
     enabled: false
   })
 
+  const [allowLanTraffic, setAllowLanTraffic] = React.useState({
+    available: false,
+    allowed: true
+  })
+
   const smartProxyRoutingEnabled = useSelector((state) => state.smartProxyRoutingEnabled)
 
   React.useEffect(() => {
     getPanelBrowserAPI().serviceHandler.getOnDemandState().then(setOnDemand)
+    getPanelBrowserAPI().serviceHandler.getAllowLanTraffic().then(setAllowLanTraffic)
   }, [])
 
   const handleClick = (entry: ManageURLType) => {
     getPanelBrowserAPI().panelHandler.openVpnUI(entry)
+  }
+
+  const handleAllowLanTrafficChange = ({ checked }: { checked: boolean }) => {
+    setAllowLanTraffic({ ...allowLanTraffic, allowed: checked })
+    getPanelBrowserAPI().serviceHandler.allowLanTraffic(checked)
   }
 
   function handleKeyDown(
@@ -86,6 +97,30 @@ function SettingsPanel(props: Props) {
                   onChange={handleToggleChange}
                   size='small'
                   aria-label='Reconnect automatically'
+                />
+              </Styles.Setting>
+            </>
+          )}
+          {allowLanTraffic.available && (
+            <>
+              <Styles.Setting
+                onClick={
+                  e => handleAllowLanTrafficChange({
+                    checked: !allowLanTraffic.allowed
+                  })
+                }
+              >
+                <Styles.StyledIcon name='refresh'></Styles.StyledIcon>
+                <Styles.SettingLabelBox>
+                  <Styles.SettingLabel>
+                    {getLocale(S.BRAVE_VPN_ALLOW_LAN_TRAFFIC)}
+                  </Styles.SettingLabel>
+                </Styles.SettingLabelBox>
+                <Toggle
+                  checked={allowLanTraffic.allowed}
+                  onChange={handleAllowLanTrafficChange}
+                  size='small'
+                  aria-label={getLocale(S.BRAVE_VPN_ALLOW_LAN_TRAFFIC)}
                 />
               </Styles.Setting>
             </>
