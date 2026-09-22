@@ -468,6 +468,10 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         assertEquals(MenuGroup.PAGE_MENU, mTabbedAppMenuPropertiesDelegate.getMenuGroup());
         MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
 
+        // AndroidPageInfoAsAppMenuItem feature is disabled for the whole class:
+        // info_menu_id and page_info_divider_line_id are not displayed.
+        assertFalse(ChromeFeatureList.sAndroidPageInfoAsAppMenuItem.isEnabled());
+
         List<Integer> expectedItems = new ArrayList<>();
 
         expectedItems.add(R.id.new_tab_menu_id);
@@ -475,12 +479,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.add_to_group_menu_id);
         expectedItems.add(R.id.divider_line_id);
         expectedItems.add(R.id.open_history_menu_id);
-        // Page info items only appear when ANDROID_PAGE_INFO_AS_APP_MENU_ITEM or
-        // THREE_DOT_MENU_BACK_BUTTON is enabled; both are disabled at class level.
-        if (ChromeFeatureList.sThreeDotMenuBackButton.isEnabled()) {
-            expectedItems.add(R.id.info_menu_id);
-            expectedItems.add(R.id.page_info_divider_line_id);
-        }
         expectedItems.add(R.id.downloads_menu_id);
         expectedItems.add(R.id.all_bookmarks_menu_id);
         expectedItems.add(R.id.brave_wallet_id);
@@ -502,6 +500,25 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.exit_id);
 
         assertMenuItemsAreEqual(modelList, expectedItems.toArray(new Integer[0]));
+    }
+
+    @Test
+    @Config(qualifiers = "sw320dp")
+    @EnableFeatures(ChromeFeatureList.ANDROID_PAGE_INFO_AS_APP_MENU_ITEM)
+    public void testBravePageMenuItems_RegularPage_EnabledAndroidPageInfoAsAppMenuItem() {
+        setUpMocksForPageMenu();
+        setMenuOptions(
+                new MenuOptions()
+                        .withShowTranslate()
+                        .withShowAddToHomeScreen()
+                        .withAutoDarkEnabled());
+
+        assertEquals(MenuGroup.PAGE_MENU, mTabbedAppMenuPropertiesDelegate.getMenuGroup());
+        MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
+
+        // The page info button is gone from the address bar, so the menu carries site controls.
+        assertTrue(menuContainsId(modelList, R.id.info_menu_id));
+        assertTrue(menuContainsId(modelList, R.id.page_info_divider_line_id));
     }
 
     @Test
