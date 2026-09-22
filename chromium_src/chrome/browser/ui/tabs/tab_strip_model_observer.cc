@@ -88,5 +88,3 @@ const TreeTabChange::ReparentedChange& TreeTabChange::GetReparentedChange()
   CHECK_EQ(type, Type::kNodeReparented);
   return *static_cast<ReparentedChange*>(delta.get());
 }
-
-void TabStripModelObserver::OnTreeTabChanged(const TreeTabChange& change) {}

@@ -5,20 +5,13 @@
 
 substitutions:
   - description: |
-      Add TabCustomTitleChanged() callback to TabStripModelObserver.
+      Add Brave-specific callbacks to TabStripModelObserver.
 
-      BraveBrowser stores the custom title in the session service so it can
-      be restored even after browser restarts.
+      * TabCustomTitleChanged(): BraveBrowser stores the custom title in the
+        session service so it can be restored even after browser restarts.
+      * OnTreeTabChanged(): Notifies observers of tree-tab structure changes.
     add_to_public:
       class_name: TabStripModelObserver
       code: |-
         virtual void TabCustomTitleChanged(content::WebContents* contents, const std::optional<std::string>& custom_title) {}
-
-  - description: |
-      Add OnTreeTabChanged() callback to TabStripModelObserver.
-
-      Notifies observers of tree-tab structure changes.
-    add_to_public:
-      class_name: TabStripModelObserver
-      code: |-
-        virtual void OnTreeTabChanged(const TreeTabChange& change);
+        virtual void OnTreeTabChanged(const TreeTabChange& change) {}
