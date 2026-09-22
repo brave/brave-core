@@ -29,7 +29,7 @@ public class BraveSettingsIntentUtil {
                 fragmentArgs,
                 addToBackStack,
                 /* tag= */ null,
-                SettingsInTab.isEnabled());
+                SettingsInTab.shouldOpenSettingsInTab());
     }
 
     public static Intent createIntent(
