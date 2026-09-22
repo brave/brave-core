@@ -5,6 +5,7 @@
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/notreached.h"
+#include "base/test/scoped_feature_list.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -14,6 +15,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/content_settings/core/common/features.h"
 #include "content/public/test/browser_test.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
@@ -21,10 +23,14 @@
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "url/gurl.h"
 
-class BraveContentSettingsBrowserTest : public InProcessBrowserTest {
+class BraveContentSettingsBrowserTest
+    : public InProcessBrowserTest,
+      public testing::WithParamInterface<bool> {
  public:
   BraveContentSettingsBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    feature_list_.InitWithFeatureState(
+        content_settings::kAllowIncognitoPermissionInheritance, GetParam());
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
     https_server_.ServeFilesFromSourceDirectory(GetChromeTestDataDir());
     EXPECT_TRUE(https_server_.Start());
@@ -61,11 +67,14 @@ class BraveContentSettingsBrowserTest : public InProcessBrowserTest {
     return incognito_default_setting;
   }
 
+  bool AllowIncognitoPermissionInheritance() const { return GetParam(); }
+
  protected:
   net::test_server::EmbeddedTestServer https_server_;
+  base::test::ScopedFeatureList feature_list_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveContentSettingsBrowserTest,
+IN_PROC_BROWSER_TEST_P(BraveContentSettingsBrowserTest,
                        ContentSettingsInheritanceInIncognito) {
   const GURL url("https://a.test/");
 
@@ -146,10 +155,15 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsBrowserTest,
         url, url, type, CONTENT_SETTING_BLOCK);
     EXPECT_EQ(normal_host_content_settings->GetContentSetting(url, url, type),
               CONTENT_SETTING_BLOCK);
-    // Make sure the incognito value is still default.
+    // BLOCK is less permissive than ASK, so INHERIT_IF_LESS_PERMISSIVE inherits
+    // it when kAllowIncognitoPermissionInheritance is enabled.
+    const bool inherit_less_permissive_block =
+        info->incognito_behavior() ==
+            content_settings::ContentSettingsInfo::INHERIT_IF_LESS_PERMISSIVE &&
+        AllowIncognitoPermissionInheritance();
     EXPECT_EQ(
         incognito_host_content_settings->GetContentSetting(url, url, type),
-        unchecked_inherit_in_incognito
+        unchecked_inherit_in_incognito || inherit_less_permissive_block
             ? CONTENT_SETTING_BLOCK
             : GetIncognitoAwareDefaultSetting(type, CONTENT_SETTING_BLOCK,
                                               incognito_default_setting));
@@ -167,3 +181,11 @@ IN_PROC_BROWSER_TEST_F(BraveContentSettingsBrowserTest,
   EXPECT_TRUE(ui_test_utils::NavigateToURL(browser(), url_to_navigate));
   EXPECT_TRUE(ui_test_utils::NavigateToURL(incognito_browser, url_to_navigate));
 }
+
+INSTANTIATE_TEST_SUITE_P(,
+                         BraveContentSettingsBrowserTest,
+                         testing::Bool(),
+                         [](const testing::TestParamInfo<bool>& info) {
+                           return info.param ? "InheritanceEnabled"
+                                             : "InheritanceDisabled";
+                         });
