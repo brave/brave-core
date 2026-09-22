@@ -390,6 +390,24 @@ int RunTunnelAndNotify(WireGuardTunnelServiceProc tunnel_proc,
 
 namespace wireguard {
 
+std::optional<std::string> GetLastUsedConfigIfLanTrafficChanged(
+    bool allow_lan_traffic) {
+  auto config_path = GetLastUsedConfigPath();
+  if (!config_path.has_value()) {
+    return std::nullopt;
+  }
+  std::string config;
+  if (!base::ReadFileToString(config_path.value(), &config)) {
+    VLOG(1) << "Failed to read last used config:" << config_path.value();
+    return std::nullopt;
+  }
+  auto updated = UpdateAllowedIPs(config, allow_lan_traffic);
+  if (!updated.has_value() || updated.value() == config) {
+    return std::nullopt;
+  }
+  return updated;
+}
+
 // Creates and launches a new Wireguard Windows service using passed config.
 // Before to start a new service it checks and removes existing if exists.
 bool LaunchWireguardService(const std::wstring& config) {
