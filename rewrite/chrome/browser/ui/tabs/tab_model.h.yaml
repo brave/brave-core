@@ -11,12 +11,10 @@ substitutions:
         }
 
   - description: |
-      Add bool opener_was_set_for_empty_new_tab_ private member.
+      Add bool opener_was_set_for_empty_new_tab_ member.
 
       Used for tree tabs to track whether the opener was set for an empty
       new tab in TabStripModel::AddTab().
-    regex:
-      re_pattern: (bool reset_opener_on_active_tab_change_ = false;)
-      replace: |-
-        \1
-          bool opener_was_set_for_empty_new_tab_ = false;
+    add_to_protected:
+      class_name: TabModel
+      code: bool opener_was_set_for_empty_new_tab_ = false;

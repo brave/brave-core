@@ -7,7 +7,7 @@ substitutions:
   - description: |
       Add RecentTabsSubMenuModelTest::VerifyModel overloads.
 
-      These adjust the base ::VerifyModel() expectations for Brave's extra
+      These adjust the base::VerifyModel() expectations for Brave's extra
       "Clear browsing data" menu item and disabled History Clusters entry.
     add_to_public:
       class_name: RecentTabsSubMenuModelTest

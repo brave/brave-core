@@ -13,13 +13,10 @@ substitutions:
       friend_type: class BraveRecentTabsSubMenuModel
 
   - description: |-
-      Add stub_tab_ member to RecentTabsSubMenuModel as private member
-    regex:
-      re_pattern: |-
-        (base::CancelableTaskTracker local_tab_cancelable_task_tracker_;)
-      replace: |-
-        \1
-          std::unique_ptr<sessions::SessionTab> stub_tab_;
+      Add stub_tab_ member to RecentTabsSubMenuModel as member
+    add_to_protected:
+      class_name: RecentTabsSubMenuModel
+      code: std::unique_ptr<sessions::SessionTab> stub_tab_;
 
   - description: |-
       Add MaybeAppendOverflowStubTab()  to RecentTabsSubMenuModel as private
@@ -29,7 +26,7 @@ substitutions:
       of RecentTabsSubMenuModel, it should be added as a private member itself.
     regex:
       re_pattern: |-
-        (base::CancelableTaskTracker local_tab_cancelable_task_tracker_;)
+        (private:)
       replace: |-
         \1
           void MaybeAppendOverflowStubTab(
