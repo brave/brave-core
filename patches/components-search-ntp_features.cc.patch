@@ -1,5 +1,5 @@
 diff --git a/components/search/ntp_features.cc b/components/search/ntp_features.cc
-index 0f87f2cc8845c3b428f65545f4efe1bfeb524471..3017ecce63e3dec5510fe7b329d2195e4851f7cc 100644
+index e99162a24c6786ec53202d1a6dc09eb713bb8459..910405c21ac0620e1020294a9cccbf933340f725 100644
 --- a/components/search/ntp_features.cc
 +++ b/components/search/ntp_features.cc
 @@ -18,17 +18,13 @@ namespace ntp_features {
@@ -90,11 +90,11 @@ index 0f87f2cc8845c3b428f65545f4efe1bfeb524471..3017ecce63e3dec5510fe7b329d2195e
  
  // Dummy feature to set param "NtpModulesLoadedWithOtherModulesMaxInstanceCount"
  // This is used for an emergency Finch param. Keep indefinitely.
-@@ -324,7 +308,7 @@ BASE_FEATURE(kNtpShortcutsRedesign, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -320,7 +304,7 @@ BASE_FEATURE(kNtpShortcutsRedesign, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // If enabled, the bookmark bar may be auto-removed on the NTP and new
  // visibility settings are added.
--BASE_FEATURE(kNtpSimplificationBookmarkBar, base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kNtpSimplificationBookmarkBar, base::FEATURE_ENABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kNtpSimplificationBookmarkBar, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // If enabled, the bookmark bar time interval and number of times it's shown on
