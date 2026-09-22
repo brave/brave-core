@@ -26,6 +26,9 @@ void EnableVPNTrayIcon(bool value);
 void SetWireguardActive(bool value);
 bool IsWireguardActive();
 
+void SetAllowLanTraffic(bool value);
+bool IsLanTrafficAllowed();
+
 bool ShouldFallbackToIKEv2();
 void IncrementWireguardTunnelUsageFlag();
 void ResetWireguardTunnelUsageFlag();

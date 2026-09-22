@@ -43,6 +43,8 @@ std::string EncodeBase64(base::span<const uint8_t> in) {
 namespace {
 constexpr char kCloudflareIPv4[] = "1.1.1.1";
 
+constexpr std::string_view kAllowedIPsPrefix = "AllowedIPs = ";
+
 // Covers the whole address space split in half so no prefix is a default route.
 // tunnel.dll installs its own blockAll/blockDNS WFP filters only when a peer
 // routes a literal /0, and those filters block the local network. We install an
@@ -99,16 +101,32 @@ std::optional<std::string> CreateWireguardConfig(
 }
 
 std::vector<std::string> ParseAllowedIPs(const std::string& config) {
-  constexpr std::string_view kPrefix = "AllowedIPs = ";
-  auto start = config.find(kPrefix);
+  auto start = config.find(kAllowedIPsPrefix);
   if (start == std::string::npos) {
     return {};
   }
   std::string_view value(config);
-  value.remove_prefix(start + kPrefix.size());
+  value.remove_prefix(start + kAllowedIPsPrefix.size());
   value = value.substr(0, value.find('\n'));
   return base::SplitString(value, ",", base::TRIM_WHITESPACE,
                            base::SPLIT_WANT_NONEMPTY);
+}
+
+std::optional<std::string> UpdateAllowedIPs(const std::string& config,
+                                            bool allow_lan_traffic) {
+  auto start = config.find(kAllowedIPsPrefix);
+  if (start == std::string::npos) {
+    return std::nullopt;
+  }
+  auto value_start = start + kAllowedIPsPrefix.size();
+  auto value_end = config.find('\n', value_start);
+  if (value_end == std::string::npos) {
+    value_end = config.size();
+  }
+  std::string updated = config;
+  updated.replace(value_start, value_end - value_start,
+                  allow_lan_traffic ? kAllowedIPsLan : kAllowedIPsNoLan);
+  return updated;
 }
 
 bool ConfigUsesFullTunnelRoutes(const std::string& config) {
