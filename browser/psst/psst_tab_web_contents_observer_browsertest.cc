@@ -80,16 +80,30 @@ constexpr char kExpectedSchema[] = "chrome";
 constexpr char kExpectedHost[] = "psst";
 
 constexpr char kASiteSignedInUserId[] = "a_test_user";
+constexpr char kBSiteSignedInUserId[] = "b_test_user";
 
 constexpr char16_t kUserScriptLogPrefix[] = u"[PSST USER SCRIPT] Current URL: ";
 constexpr char16_t kPolicyScriptLogPrefix[] =
     u"[PSST POLICY SCRIPT] Current URL: ";
 
+// Two independent rules (sites "a" and "b") so tests can exercise PSST flows
+// running in separate tabs at the same time.
 constexpr char kPsstJson[] = R"([
     {
         "name": "a",
         "include": [
             "https://a.test/*"
+        ],
+        "exclude": [
+        ],
+        "version": 1,
+        "user_script": "user.js",
+        "policy_script": "policy.js"
+    },
+    {
+        "name": "b",
+        "include": [
+            "https://b.test/*"
         ],
         "exclude": [
         ],
@@ -114,6 +128,9 @@ constexpr char kPsstCrxManifest[] = R"(
   "version": "1.0.0"
 })";
 
+// Placeholders: $1 = server port, $2 = host (e.g. "a.test"), $3 = test data
+// file prefix (e.g. "a_test"), so the same template can be instantiated for
+// multiple independent PSST-supported sites.
 constexpr char kPsstCrxUserScriptTemplate[] = R"(
 (() => {
   const getUserId = () => {
@@ -123,20 +140,20 @@ constexpr char kPsstCrxUserScriptTemplate[] = R"(
   console.log("[PSST USER SCRIPT] Current URL: " + curUrl);
   return {
     user_id: getUserId(),
-    share_experience_link: "https://a.test:$1/",
-    site_name: 'a.test',
+    share_experience_link: "https://$2:$1/",
+    site_name: '$2',
     tasks: [
       {
         uid: '1',
-        url: 'https://a.test:$1/a_test_1.html',
-        description: 'a_test_1.html',
+        url: 'https://$2:$1/$3_1.html',
+        description: '$3_1.html',
         selector: '#test1Checkbox',
         turn_off: false,
       },
       {
         uid: '2',
-        url: 'https://a.test:$1/a_test_2.html',
-        description: 'a_test_2.html',
+        url: 'https://$2:$1/$3_2.html',
+        description: '$3_2.html',
         selector: '#test2Checkbox',
         turn_off: false,
       }
@@ -458,8 +475,14 @@ class DialogCloseObserver : public content::WebContentsObserver {
 };
 
 std::string CreateTestURL(net::EmbeddedTestServer& https_server,
+                          const std::string_view host,
                           const std::string_view path) {
-  return https_server.GetURL("a.test", path).spec();
+  return https_server.GetURL(host, path).spec();
+}
+
+std::string CreateTestURL(net::EmbeddedTestServer& https_server,
+                          const std::string_view path) {
+  return CreateTestURL(https_server, "a.test", path);
 }
 
 // Returns the consent dialog's rendered `document.body` background color, as
@@ -472,6 +495,12 @@ SkColor GetDialogBodyBackgroundColor(content::WebContents* dialog_wc) {
   const base::ListValue& channels = result.ExtractList();
   return SkColorSetRGB(channels[0].GetInt(), channels[1].GetInt(),
                        channels[2].GetInt());
+}
+
+std::u16string CreateTestUtf16URL(net::EmbeddedTestServer& https_server,
+                                  const std::string_view host,
+                                  const std::string_view path) {
+  return base::UTF8ToUTF16(CreateTestURL(https_server, host, path));
 }
 
 std::u16string CreateTestUtf16URL(net::EmbeddedTestServer& https_server,
@@ -542,18 +571,10 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     ASSERT_TRUE(base::WriteFile(
         crx_path.Append(FILE_PATH_LITERAL("manifest.json")), kPsstCrxManifest));
 
-    const base::FilePath script_path =
-        crx_path.Append(FILE_PATH_LITERAL("scripts"))
-            .Append(FILE_PATH_LITERAL("a"));
-    ASSERT_TRUE(base::CreateDirectory(script_path));
-    ASSERT_TRUE(base::WriteFile(
-        script_path.Append(FILE_PATH_LITERAL("user.js")),
-        base::ReplaceStringPlaceholders(
-            kPsstCrxUserScriptTemplate,
-            {base::NumberToString(https_server_.port())}, nullptr)));
-    ASSERT_TRUE(
-        base::WriteFile(script_path.Append(FILE_PATH_LITERAL("policy.js")),
-                        kPsstCrxPolicyScriptTemplate));
+    ASSERT_NO_FATAL_FAILURE(
+        WritePsstSiteScripts(crx_path, "a", "a.test", "a_test"));
+    ASSERT_NO_FATAL_FAILURE(
+        WritePsstSiteScripts(crx_path, "b", "b.test", "b_test"));
 
     base::RunLoop run_loop;
     PsstRuleRegistry::GetInstance()->LoadRules(
@@ -563,6 +584,28 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
                         run_loop.Quit();
                       }));
     run_loop.Run();
+  }
+
+  // Writes the user/policy scripts for a PSST rule named `site_name` (e.g.
+  // "a"), matching pages on `host` (e.g. "a.test") whose test data files are
+  // named "`file_prefix`_0.html", "`file_prefix`_1.html", etc.
+  void WritePsstSiteScripts(const base::FilePath& crx_path,
+                            const std::string& site_name,
+                            const std::string& host,
+                            const std::string& file_prefix) {
+    const base::FilePath script_path =
+        crx_path.Append(FILE_PATH_LITERAL("scripts"))
+            .AppendASCII(site_name);
+    ASSERT_TRUE(base::CreateDirectory(script_path));
+    ASSERT_TRUE(base::WriteFile(
+        script_path.Append(FILE_PATH_LITERAL("user.js")),
+        base::ReplaceStringPlaceholders(
+            kPsstCrxUserScriptTemplate,
+            {base::NumberToString(https_server_.port()), host, file_prefix},
+            nullptr)));
+    ASSERT_TRUE(
+        base::WriteFile(script_path.Append(FILE_PATH_LITERAL("policy.js")),
+                        kPsstCrxPolicyScriptTemplate));
   }
 
   void TearDownOnMainThread() override {
@@ -1225,6 +1268,129 @@ IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
                        NotAvailableInIncognitoProfile) {
   ASSERT_NO_FATAL_FAILURE(
       ExpectPsstUnavailableInOffTheRecordBrowser(CreateIncognitoBrowser()));
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59233
+// (multi-tab PSST execution fix): the consent dialog's Mojo handler must stay
+// bound to the tab that opened it (its initiator WebContents) rather than to
+// whichever tab happens to be active in the browser.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       ParallelPsstFlowsAcrossTabsRunIndependently) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url_a = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+  const GURL url_b = GetEmbeddedTestServer().GetURL("b.test", "/b_test_0.html");
+
+  PsstWebContentsConsoleObserver console_observer_a(
+      web_contents(),
+      {base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "a.test",
+                                        "/a_test_0.html")}),
+       base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "a.test",
+                                        "/a_test_1.html")}),
+       base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "a.test",
+                                        "/a_test_2.html")})},
+      {base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "a.test",
+                                        "/a_test_0.html")}),
+       base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "a.test",
+                                        "/a_test_1.html")}),
+       base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "a.test",
+                                        "/a_test_2.html")})});
+
+  // Tab 1: navigate to site a and open its consent dialog, but don't accept
+  // it yet.
+  content::WebContents* dialog_wc_a = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url_a, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc_a));
+  ASSERT_TRUE(dialog_wc_a);
+  content::WebContents* const tab_a_contents = web_contents();
+
+  // Tab 2: while tab 1's dialog is still open and unaccepted, open a second
+  // tab on a different PSST-supported site and open its consent dialog too.
+  content::WebContents& tab_b_contents_ref =
+      chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  content::WebContents* const tab_b_contents = &tab_b_contents_ref;
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+
+  // Only uid "1" is accepted for site b below, so task "2" is filtered out
+  // entirely and b_test_2.html is never visited (see
+  // StartScriptHandlerBothScriptsExecuted_SkipOneTarget for the same
+  // behavior on site a).
+  PsstWebContentsConsoleObserver console_observer_b(
+      tab_b_contents,
+      {base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "b.test",
+                                        "/b_test_0.html")}),
+       base::StrCat({kUserScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "b.test",
+                                        "/b_test_1.html")})},
+      {base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "b.test",
+                                        "/b_test_0.html")}),
+       base::StrCat({kPolicyScriptLogPrefix,
+                     CreateTestUtf16URL(https_server_, "b.test",
+                                        "/b_test_1.html")})});
+
+  content::WebContents* dialog_wc_b = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url_b, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc_b));
+  ASSERT_TRUE(dialog_wc_b);
+
+  // Switch the active tab back and forth between the two tabs while both
+  // dialogs remain open, then accept each dialog while the *other* tab is
+  // active. If a dialog's handler followed the active tab instead of its own
+  // initiator tab, this would apply the wrong site's consent to the wrong tab.
+  browser()->tab_strip_model()->ActivateTabAt(0);
+  ASSERT_EQ(tab_a_contents, web_contents());
+
+  const std::vector<std::string> perform_uids_a = {"1", "2"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc_a, url::Origin::Create(url_a).GetURL().spec(),
+      perform_uids_a));
+
+  browser()->tab_strip_model()->ActivateTabAt(1);
+  ASSERT_EQ(tab_b_contents, web_contents());
+
+  const std::vector<std::string> perform_uids_b = {"1"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc_b, url::Origin::Create(url_b).GetURL().spec(),
+      perform_uids_b));
+
+  // Both flows should run to completion in parallel without interfering with
+  // each other.
+  ASSERT_TRUE(console_observer_a.Wait());
+  EXPECT_TRUE(console_observer_a.CheckMessages());
+  ASSERT_TRUE(console_observer_b.Wait());
+  EXPECT_TRUE(console_observer_b.CheckMessages());
+
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return tab_a_contents->GetLastCommittedURL() == url_a; }));
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return tab_b_contents->GetLastCommittedURL() == url_b; }));
+
+  // Each site's PSST settings must reflect what was accepted for that site,
+  // not the other tab's choice.
+  auto psst_settings_a = GetPsstSettingsService()->GetPsstWebsiteSettings(
+      url::Origin::Create(url_a), kASiteSignedInUserId);
+  ASSERT_TRUE(psst_settings_a);
+  EXPECT_EQ(psst_settings_a->consent_status, ConsentStatus::kAllow);
+  EXPECT_EQ(psst_settings_a->user_id, kASiteSignedInUserId);
+  EXPECT_EQ(psst_settings_a->uids_to_perform, perform_uids_a);
+
+  auto psst_settings_b = GetPsstSettingsService()->GetPsstWebsiteSettings(
+      url::Origin::Create(url_b), kBSiteSignedInUserId);
+  ASSERT_TRUE(psst_settings_b);
+  EXPECT_EQ(psst_settings_b->consent_status, ConsentStatus::kAllow);
+  EXPECT_EQ(psst_settings_b->user_id, kBSiteSignedInUserId);
+  EXPECT_EQ(psst_settings_b->uids_to_perform, perform_uids_b);
+
+  ASSERT_TRUE(CloseModalDialog(dialog_wc_a));
+  ASSERT_TRUE(CloseModalDialog(dialog_wc_b));
 }
 
 }  // namespace psst
