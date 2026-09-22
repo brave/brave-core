@@ -10,7 +10,6 @@ import static org.mockito.Mockito.when;
 import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle.State;
 import androidx.test.core.app.ActivityScenario;
-import androidx.test.filters.SmallTest;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -120,7 +119,6 @@ public class BraveHomepageSettingsUnitTest {
     }
 
     @Test
-    @SmallTest
     @Feature({"Homepage"})
     public void testMobileBookmarksClick() throws Exception {
         launchBraveHomepageSettings();

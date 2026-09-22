@@ -11,8 +11,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import androidx.test.filters.SmallTest;
-
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -57,7 +55,6 @@ public class CustomSearchEnginesManagerTest {
     }
 
     @Test
-    @SmallTest
     public void testAdd_success_returnsTrueAndSavesKeyword() {
         when(mTemplateUrlService.addSearchEngine(TITLE, KEYWORD, URL_WITH_SEARCH_TERMS))
                 .thenReturn(true);
@@ -69,7 +66,6 @@ public class CustomSearchEnginesManagerTest {
     }
 
     @Test
-    @SmallTest
     public void testAdd_failure_returnsFalseAndDoesNotSave() {
         when(mTemplateUrlService.addSearchEngine(TITLE, KEYWORD, URL_WITH_SEARCH_TERMS))
                 .thenReturn(false);
@@ -81,7 +77,6 @@ public class CustomSearchEnginesManagerTest {
     }
 
     @Test
-    @SmallTest
     public void testAdd_convertsPercentSToSearchTermsPlaceholder() {
         when(mTemplateUrlService.addSearchEngine(any(), any(), any())).thenReturn(true);
 
@@ -91,13 +86,11 @@ public class CustomSearchEnginesManagerTest {
     }
 
     @Test
-    @SmallTest
     public void testIsCustom_returnsFalseWhenPrefsEmpty() {
         assertFalse(mManager.isCustomSearchEngine(KEYWORD));
     }
 
     @Test
-    @SmallTest
     public void testIsCustom_returnsTrueForSavedKeyword() {
         when(mTemplateUrlService.addSearchEngine(any(), any(), any())).thenReturn(true);
         mManager.addCustomSearchEngine(mTemplateUrlService, TITLE, KEYWORD, URL);
@@ -106,7 +99,6 @@ public class CustomSearchEnginesManagerTest {
     }
 
     @Test
-    @SmallTest
     public void testIsCustom_returnsFalseForUnknownKeyword() {
         when(mTemplateUrlService.addSearchEngine(any(), any(), any())).thenReturn(true);
         mManager.addCustomSearchEngine(mTemplateUrlService, TITLE, KEYWORD, URL);
@@ -115,7 +107,6 @@ public class CustomSearchEnginesManagerTest {
     }
 
     @Test
-    @SmallTest
     public void testRemove_success_returnsTrueAndRemovesKeyword() {
         when(mTemplateUrlService.addSearchEngine(any(), any(), any())).thenReturn(true);
         mManager.addCustomSearchEngine(mTemplateUrlService, TITLE, KEYWORD, URL);
@@ -129,7 +120,6 @@ public class CustomSearchEnginesManagerTest {
     }
 
     @Test
-    @SmallTest
     public void testRemove_failure_returnsFalseAndKeepsKeyword() {
         when(mTemplateUrlService.addSearchEngine(any(), any(), any())).thenReturn(true);
         mManager.addCustomSearchEngine(mTemplateUrlService, TITLE, KEYWORD, URL);
@@ -143,7 +133,6 @@ public class CustomSearchEnginesManagerTest {
     }
 
     @Test
-    @SmallTest
     public void testUpdate_success_replacesOldKeywordWithNew() {
         when(mTemplateUrlService.addSearchEngine(any(), any(), any())).thenReturn(true);
         mManager.addCustomSearchEngine(mTemplateUrlService, TITLE, KEYWORD, URL);
@@ -166,7 +155,6 @@ public class CustomSearchEnginesManagerTest {
     }
 
     @Test
-    @SmallTest
     public void testUpdate_failure_returnsFalseAndKeepsOldKeyword() {
         when(mTemplateUrlService.addSearchEngine(any(), any(), any())).thenReturn(true);
         mManager.addCustomSearchEngine(mTemplateUrlService, TITLE, KEYWORD, URL);
@@ -183,7 +171,6 @@ public class CustomSearchEnginesManagerTest {
     }
 
     @Test
-    @SmallTest
     public void testUpdate_convertsPercentSToSearchTermsPlaceholder() {
         when(mTemplateUrlService.addSearchEngine(any(), any(), any())).thenReturn(true);
         mManager.addCustomSearchEngine(mTemplateUrlService, TITLE, KEYWORD, URL);
