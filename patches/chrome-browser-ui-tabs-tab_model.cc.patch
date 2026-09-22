@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/tabs/tab_model.cc b/chrome/browser/ui/tabs/tab_model.cc
-index 414b4418a6d14ae1c607e809dac5b4ec015f8ffc..63846421d462183524c84699dae03a22f5845049 100644
+index fcd62b3d8edec2064a935a0fbbadfb180be74158..ac59d9b8ec2056223b2beb71f4abdf87aeb8626b 100644
 --- a/chrome/browser/ui/tabs/tab_model.cc
 +++ b/chrome/browser/ui/tabs/tab_model.cc
 @@ -59,7 +59,7 @@ TabModel::TabModel(std::unique_ptr<content::WebContents> contents,
@@ -11,7 +11,7 @@ index 414b4418a6d14ae1c607e809dac5b4ec015f8ffc..63846421d462183524c84699dae03a22
    const SessionID session_id = sessions::SessionTabHelper::IdForTab(contents_);
    CHECK(session_id.is_valid());
    SetSessionId(session_id.id());
-@@ -402,6 +402,7 @@ void TabModel::UpdateProperties() {
+@@ -404,6 +404,7 @@ void TabModel::UpdateProperties() {
          break;
        case TabCollection::Type::TABSTRIP:
        case TabCollection::Type::UNPINNED:
