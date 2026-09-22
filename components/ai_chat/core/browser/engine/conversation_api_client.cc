@@ -49,6 +49,10 @@ namespace {
 // https://github.com/brave/aichat/blob/8fc09e023e8674e1069b7c1c30f848c74c4c1154/aichat/serve/open_ai_api.py#L47
 constexpr char kRemotePath[] = "v1/chat/completions";
 
+// Error type returned with a 429 when the premium rate limit for the specific
+// model has been reached.
+constexpr char kModelRateLimitErrorType[] = "42904";
+
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("ai_chat", R"(
       semantics {
@@ -484,9 +488,12 @@ void ConversationAPIClient::OnQueryCompleted(
 
   // Handle error
   mojom::APIError error;
+  std::string error_type = ParseErrorCode(result.value_body());
 
   if (net::HTTP_TOO_MANY_REQUESTS == result.response_code()) {
-    error = mojom::APIError::RateLimitReached;
+    error = error_type == kModelRateLimitErrorType
+                ? mojom::APIError::ModelRateLimitReached
+                : mojom::APIError::RateLimitReached;
   } else if (net::HTTP_REQUEST_ENTITY_TOO_LARGE == result.response_code()) {
     error = mojom::APIError::ContextLimitReached;
   } else {
@@ -494,8 +501,8 @@ void ConversationAPIClient::OnQueryCompleted(
   }
 
   auto details = mojom::APIErrorDetails::New(
-      static_cast<int32_t>(result.response_code()),
-      ParseErrorCode(result.value_body()), /*inner_status_code=*/0);
+      static_cast<int32_t>(result.response_code()), std::move(error_type),
+      /*inner_status_code=*/0);
 
   std::move(callback).Run(
       base::unexpected(EngineConsumer::Error(error, std::move(details))));
