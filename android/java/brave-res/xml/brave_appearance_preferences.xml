@@ -38,7 +38,7 @@
          on, which is when the bottom bar implements the bottom navigation
          toolbar instead of Brave's own bottom controls. -->
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="org.chromium.chrome.browser.Brave_Enable_Bottom_Bar"
+        android:key="brave_enable_bottom_bar"
         android:persistent="false"
         android:icon="@drawable/ic_browser_mobile_bottom_toolbar"
         android:title="@string/enable_bottom_bar_title"
