@@ -10,6 +10,7 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/test/scoped_feature_list.h"
 #include "chrome/browser/os_crypt/app_bound_encryption_provider_win.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/testing_pref_service.h"
@@ -158,6 +159,20 @@ TEST_F(OSCryptKeyRestoreTest, ReportsAnUnusableBackup) {
   EXPECT_EQ(OSCryptKeyRestoreResult::kBackupUnusable,
             MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
   EXPECT_TRUE(LiveKey().empty());
+}
+
+// The kill switch: with the feature off, a lost key is left lost.
+TEST_F(OSCryptKeyRestoreTest, DoesNothingWhenTheFeatureIsOff) {
+  base::test::ScopedFeatureList features;
+  features.InitAndDisableFeature(kBraveOSCryptKeyRestore);
+  ASSERT_EQ(OSCryptKeyBackupState::kCreated,
+            WriteOSCryptKeyBackupIfAbsent(path(), "wrapped-key", "app-bound"));
+
+  EXPECT_EQ(OSCryptKeyRestoreResult::kNotAttempted,
+            MaybeRestoreOSCryptKey(temp_dir_.GetPath(), &local_state_));
+  EXPECT_TRUE(LiveKey().empty());
+  EXPECT_TRUE(AppBoundKey().empty());
+  EXPECT_EQ(OSCryptKeyRestoreResult::kNotAttempted, RecordedResult());
 }
 
 TEST_F(OSCryptKeyRestoreTest, OmitsAnAppBoundKeyTheBackupDoesNotHave) {

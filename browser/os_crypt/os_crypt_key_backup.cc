@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/files/file_util.h"
 #include "base/files/important_file_writer.h"
 #include "base/functional/bind.h"
@@ -154,9 +155,15 @@ void OnBackupFinished(PrefService* local_state, OSCryptKeyBackupState state) {
 
 }  // namespace
 
+BASE_FEATURE(kBraveOSCryptKeyRestore, base::FEATURE_ENABLED_BY_DEFAULT);
+
 OSCryptKeyRestoreResult MaybeRestoreOSCryptKey(
     const base::FilePath& user_data_dir,
     PrefService* local_state) {
+  if (!base::FeatureList::IsEnabled(kBraveOSCryptKeyRestore)) {
+    return OSCryptKeyRestoreResult::kNotAttempted;
+  }
+
   if (user_data_dir.empty() || !local_state) {
     return OSCryptKeyRestoreResult::kNotAttempted;
   }

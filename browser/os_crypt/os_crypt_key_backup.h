@@ -8,6 +8,7 @@
 
 #include <string>
 
+#include "base/feature.h"
 #include "base/files/file_path.h"
 
 class PrefRegistrySimple;
@@ -63,15 +64,18 @@ enum class OSCryptKeyRestoreResult {
   kBackupUnusable = 3,
 };
 
+// Guarding this feature so we can control w/ Griffin. Enabled by default.
+// It's worth noting that the variations seed is also stored in `Local State`.
+BASE_DECLARE_FEATURE(kBraveOSCryptKeyRestore);
+
 // Puts the backed-up key back when `Local State` has lost it. Must run before
 // OSCrypt initializes, since that is what reads the key and what mints a
 // replacement when it finds none.
 //
-// Only ever acts when the key is *absent*. A key that is present but wrong
-// cannot be told apart from a key the user legitimately has now, and replacing
-// a live key would orphan everything encrypted since it arrived. Absence is the
-// one case that is unambiguous, and it is the case `Local State` corruption
-// produces.
+// Action is only taken when the key is missing (value is missing or file is
+// missing). No action taken when there's a key but it's wrong (we don't have a
+// way to tell). That situation would go down existing code path where new key
+// is issued.
 //
 // Blocking, but only touches the disk on the failure path: when a key is
 // present this reads one in-memory pref and returns.
