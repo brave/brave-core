@@ -132,13 +132,13 @@ OSCryptKeyBackupState WriteOSCryptKeyBackupIfAbsent(const base::FilePath& path,
   root.Set(kCreatedKey, base::TimeToValue(base::Time::Now()));
   root.Set(kOsCryptKey, std::move(os_crypt));
 
-  std::string json;
-  if (!base::JSONWriter::WriteWithOptions(
-          root, base::JSONWriter::OPTIONS_PRETTY_PRINT, &json)) {
+  const std::optional<std::string> json =
+      base::WriteJsonWithOptions(root, base::OPTIONS_PRETTY_PRINT);
+  if (!json) {
     return OSCryptKeyBackupState::kUnknown;
   }
 
-  if (!base::ImportantFileWriter::WriteFileAtomically(path, json,
+  if (!base::ImportantFileWriter::WriteFileAtomically(path, *json,
                                                       kHistogramSuffix)) {
     return OSCryptKeyBackupState::kUnknown;
   }
