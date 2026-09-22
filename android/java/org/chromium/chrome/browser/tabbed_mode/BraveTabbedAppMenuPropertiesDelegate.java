@@ -67,6 +67,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
 import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.side_ui.SideUiStateProvider;
+import org.chromium.chrome.browser.util.BrowserUiUtils;
 import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
@@ -507,6 +508,17 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     protected boolean shouldShowMoveToOtherWindow() {
         return BraveMultiWindowUtils.shouldEnableMultiWindows()
                 && super.shouldShowMoveToOtherWindow();
+    }
+
+    @Override
+    protected boolean shouldShowPageInfoItem() {
+        if (!super.shouldShowPageInfoItem()) {
+            return false;
+        }
+
+        // Show the page info item only when the address bar has no
+        // page info button.
+        return BrowserUiUtils.isPageInfoMovedToAppMenu(mContext);
     }
 
     /**
