@@ -102,9 +102,6 @@ publicHoistPattern:
   - '@eslint/*'
   # Storybook sub-packages are required by Storybook to work.
   - '@storybook/*'
-  # decode-named-character-reference can't be found correctly by some packages
-  # in isolated mode.
-  - 'decode-named-character-reference'
 
 # Store exact versions.
 savePrefix: ''
