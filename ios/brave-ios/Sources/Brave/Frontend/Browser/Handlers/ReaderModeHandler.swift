@@ -163,28 +163,15 @@ public class ReaderModeHandler: InternalSchemeResponse {
     var additionalImageSources: [String] = []
     if let originalCSP {
       for originalPolicy in originalCSP.components(separatedBy: ",") {
-        let directives = originalPolicy.components(separatedBy: ";")
-          .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
-        for directive in directives {
-          // Directive tokens may be separated by any whitespace, not just spaces
-          let components = directive.components(separatedBy: .whitespacesAndNewlines).filter({
-            !$0.isEmpty
-          })
-          guard components.first?.lowercased() == "img-src" else { continue }
-          // Strip newline characters so the value cannot break header serialization
-          // An empty source list (a bare `img-src`) is valid and blocks all image loads
-          let value = components.dropFirst().joined(separator: " ").filter({ !$0.isNewline })
-          if !adoptedBaseImageSource {
-            policies.removeAll(where: { key, _ in key == "img-src" })
-            policies.append(("img-src", value))
-            adoptedBaseImageSource = true
-          } else {
-            // The base policy already adopted an `img-src`, so retain this one as its own
-            // policy to preserve the intersection semantics of the original policies
-            additionalImageSources.append(value)
-          }
-          // CSP uses the first occurrence of a directive and ignores later duplicates
-          break
+        guard let value = imageSourceFromPolicy(originalPolicy) else { continue }
+        if !adoptedBaseImageSource {
+          policies.removeAll(where: { key, _ in key == "img-src" })
+          policies.append(("img-src", value))
+          adoptedBaseImageSource = true
+        } else {
+          // The base policy already adopted an `img-src`, so retain this one as its own
+          // policy to preserve the intersection semantics of the original policies
+          additionalImageSources.append(value)
         }
       }
     }
@@ -196,5 +183,33 @@ public class ReaderModeHandler: InternalSchemeResponse {
       serialized += source.isEmpty ? ", img-src" : ", img-src \(source)"
     }
     return serialized
+  }
+
+  /// Adopts only `img-src` from original-page CSP meta tag values for insertion into reader HTML.
+  static func adoptedImageSourcePolicyContents(from originalCSP: String) -> [String] {
+    originalCSP.components(separatedBy: ",").compactMap { originalPolicy in
+      imageSourceFromPolicy(originalPolicy).map { value in
+        value.isEmpty ? "img-src" : "img-src \(value)"
+      }
+    }
+  }
+
+  /// Returns the adopted `img-src` source list from a single CSP policy, if present.
+  ///
+  /// CSP uses the first occurrence of a directive and ignores later duplicates within the policy.
+  static func imageSourceFromPolicy(_ originalPolicy: String) -> String? {
+    let directives = originalPolicy.components(separatedBy: ";")
+      .map { $0.trimmingCharacters(in: .whitespacesAndNewlines) }
+    for directive in directives {
+      // Directive tokens may be separated by any whitespace, not just spaces
+      let components = directive.components(separatedBy: .whitespacesAndNewlines).filter({
+        !$0.isEmpty
+      })
+      guard components.first?.lowercased() == "img-src" else { continue }
+      // Strip newline characters so the value cannot break header serialization
+      // An empty source list (a bare `img-src`) is valid and blocks all image loads
+      return components.dropFirst().joined(separator: " ").filter({ !$0.isNewline })
+    }
+    return nil
   }
 }
