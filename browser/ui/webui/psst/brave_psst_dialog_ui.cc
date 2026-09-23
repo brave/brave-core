@@ -82,7 +82,7 @@ void BravePsstDialogUI::Close() {
   if (!desktop_dialog_delegate_) {
     return;
   }
-  desktop_dialog_delegate_->CancelInFlightFlow();
+
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(

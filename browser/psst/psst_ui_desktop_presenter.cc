@@ -136,6 +136,7 @@ void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CloseDialog() {
     return;
   }
 
+  CancelInFlightFlow();
   web_dialog_delegate_->OnDialogCloseFromWebUI();
   web_dialog_delegate_->GetWebDialogDelegate()->OnDialogClosed({});
 }
