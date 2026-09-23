@@ -7,8 +7,8 @@ assert(!is_android)
 
 source_set("brave_account") {
   sources = [
-    "brave_account_row_handler.cc",
-    "brave_account_row_handler.h",
+    "brave_account_dialog_controller.cc",
+    "brave_account_dialog_controller.h",
   ]
 
   deps = [
