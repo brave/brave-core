@@ -144,10 +144,10 @@ void SidebarItemsContentsView::OnThemeChanged() {
 }
 
 void SidebarItemsContentsView::Update() {
-  UpdateAllBuiltInItemsViewState();
+  UpdateAllItemsViewState();
 }
 
-void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
+void SidebarItemsContentsView::UpdateAllItemsViewState() {
   const auto& items = sidebar_model_->GetAllSidebarItems();
   // It's not initialized yet if child view count and items size are different.
   if (children().size() != items.size()) {
@@ -158,7 +158,9 @@ void SidebarItemsContentsView::UpdateAllBuiltInItemsViewState() {
   const size_t items_num = items.size();
   for (size_t item_index = 0; item_index < items_num; ++item_index) {
     const auto item = items[item_index];
-    if (!item.is_built_in_type()) {
+    // Web panel items can be the active item too. Other web items are
+    // shortcuts with no active state.
+    if (!item.is_built_in_type() && !item.is_web_panel_type()) {
       continue;
     }
 
@@ -527,17 +529,19 @@ void SidebarItemsContentsView::OnItemPressed(const views::View* item,
                                              const ui::Event& event) {
   auto* controller = browser_->GetFeatures().sidebar_controller();
   auto index = GetIndexOf(item);
-  if (controller->IsActiveIndex(index)) {
-    controller->DeactivateCurrentPanel();
-    return;
-  }
-
   const auto& item_model = controller->model()->GetAllSidebarItems()[*index];
 
   // web panel is not a side panel that's handled by SidePanelCoordinator.
   // It'll be loaded into another contents view in MultiContentsView.
+  // ToggleWebPanel() handles deactivation, so this must come before the
+  // IsActiveIndex() check below, which closes the side panel instead.
   if (sidebar::IsWebPanelFeatureEnabled() && item_model.is_web_panel_type()) {
     controller->ActivateItemAt(index);
+    return;
+  }
+
+  if (controller->IsActiveIndex(index)) {
+    controller->DeactivateCurrentPanel();
     return;
   }
 

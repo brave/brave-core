@@ -788,6 +788,130 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
   EXPECT_EQ(2, tab_strip_model->count());
 }
 
+// A web panel item is the active sidebar item while its panel is open, and
+// active state is mutually exclusive with the side panel's.
+// See https://github.com/brave/brave-browser/issues/33533.
+IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest,
+                       WebPanelItemActiveStateTest) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  auto* prefs = browser()->GetProfile()->GetPrefs();
+  auto items_contents_view = GetSidebarItemsContentsView(controller());
+  auto* sidebar = GetSidebarContainerView();
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  GetSidePanel()->DisableAnimationsForTesting();
+
+  // To prevent item added bubble launching.
+  prefs->SetInteger(sidebar::kSidebarItemAddedFeedbackBubbleShowCount, 3);
+
+  auto ink_drop_state_at = [&](size_t index) {
+    auto* item_view = views::AsViewClass<SidebarItemView>(
+        items_contents_view->children()[index].get());
+    CHECK(item_view);
+    return views::InkDrop::Get(item_view)
+        ->GetInkDrop()
+        ->GetTargetInkDropState();
+  };
+
+  // Add two web panel type items. AddItemWithCurrentTab() only marks them as
+  // web panel type when the feature is on, so add them explicitly to get the
+  // same persisted items in both parameterizations.
+  const GURL url_a("https://brave.com/");
+  const GURL url_b("https://basicattentiontoken.com/");
+  for (const auto& url : {url_a, url_b}) {
+    service->AddItem(SidebarItem::Create(url, u"title",
+                                         SidebarItem::Type::kTypeWeb,
+                                         SidebarItem::BuiltInItemType::kNone,
+                                         /*open_in_panel*/ true));
+  }
+  const size_t index_b = model()->GetAllSidebarItems().size() - 1;
+  const size_t index_a = index_b - 1;
+  RunScheduledLayouts();
+
+  ASSERT_TRUE(sidebar->IsSidebarVisible());
+
+  if (!IsWebPanelEnabled()) {
+    // Without the feature, a web panel type item degrades to a shortcut - it
+    // loads in a tab and never becomes the active item.
+    EXPECT_FALSE(model()->GetAllSidebarItems()[index_a].is_web_panel_type());
+    controller()->ActivateItemAt(index_a);
+    EXPECT_EQ(tab_model()->GetActiveWebContents()->GetVisibleURL(), url_a);
+    EXPECT_FALSE(model()->active_index());
+    EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop_state_at(index_a));
+    return;
+  }
+
+  // Activating a web panel item highlights it.
+  SimulateSidebarItemClickAt(index_a);
+  EXPECT_EQ(model()->active_index(), index_a);
+  EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_a));
+  EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
+
+  // Switching panels moves the highlight.
+  SimulateSidebarItemClickAt(index_b);
+  EXPECT_EQ(model()->active_index(), index_b);
+  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop_state_at(index_a));
+  EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
+
+  // Clicking the active web panel item toggles it off.
+  SimulateSidebarItemClickAt(index_b);
+  EXPECT_FALSE(model()->active_index());
+  EXPECT_FALSE(web_panel_controller()->panel_contents());
+  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop_state_at(index_b));
+
+  // Closing the panel's pinned tab clears the highlight.
+  SimulateSidebarItemClickAt(index_b);
+  ASSERT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
+  tab_model()->GetTabAtIndex(0)->Close();
+  EXPECT_FALSE(model()->active_index());
+  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop_state_at(index_b));
+
+  // Showing a side panel closes the web panel and takes over the active state.
+  SimulateSidebarItemClickAt(index_b);
+  ASSERT_EQ(model()->active_index(), index_b);
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
+  EXPECT_FALSE(web_panel_controller()->panel_contents());
+  EXPECT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop_state_at(index_b));
+  const auto side_panel_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  ASSERT_TRUE(side_panel_item_index);
+  EXPECT_EQ(model()->active_index(), side_panel_item_index);
+
+  // And the other way around.
+  SimulateSidebarItemClickAt(index_b);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !panel_ui->IsSidePanelShowing(); }));
+  EXPECT_EQ(model()->active_index(), index_b);
+  EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
+  EXPECT_EQ(views::InkDropState::HIDDEN,
+            ink_drop_state_at(*side_panel_item_index));
+
+  // The highlight survives hiding and re-showing the sidebar.
+  service->SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowNever);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !sidebar->IsSidebarVisible(); }));
+  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop_state_at(index_b));
+  controller()->ToggleSidebarPinning();
+  ASSERT_TRUE(sidebar->IsSidebarVisible());
+  EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
+
+  // Editing the open panel item's url closes the panel, as the panel would
+  // otherwise keep showing a url no item points at anymore.
+  service->UpdateItem(url_b, GURL("https://updated.com/"), u"title", u"title");
+  EXPECT_FALSE(web_panel_controller()->panel_contents());
+  EXPECT_FALSE(model()->active_index());
+  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop_state_at(index_b));
+
+  // Removing the open panel's item closes the panel.
+  SimulateSidebarItemClickAt(index_b);
+  ASSERT_TRUE(web_panel_controller()->panel_contents());
+  service->RemoveItemAt(static_cast<int>(index_b));
+  EXPECT_FALSE(web_panel_controller()->panel_contents());
+  EXPECT_FALSE(model()->active_index());
+}
+
 INSTANTIATE_TEST_SUITE_P(
     /* no prefix */,
     SidebarBrowserWithWebPanelTest,

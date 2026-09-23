@@ -5,11 +5,13 @@
 
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 
+#include <algorithm>
 #include <optional>
 #include <vector>
 
 #include "base/check.h"
 #include "base/check_op.h"
+#include "base/functional/bind.h"
 #include "brave/browser/ui/sidebar/sidebar.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -110,9 +112,13 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
   const auto& item = sidebar_model_->GetAllSidebarItems()[*index];
 
   if (sidebar::IsWebPanelFeatureEnabled() && item.is_web_panel_type()) {
-    // TODO(https://github.com/brave/brave-browser/issues/33533): web panel item
-    // also should be activated.
-    GetWebPanelController()->ToggleWebPanel(item);
+    auto* web_panel_controller = GetWebPanelController();
+    // Only one sidebar item can be active, so a new panel replaces the side
+    // panel. Model update arrives via OnWebPanelStateChanged().
+    if (!web_panel_controller->IsShowingItem(item)) {
+      DeactivateCurrentPanel();
+    }
+    web_panel_controller->ToggleWebPanel(item);
     return;
   }
 
@@ -164,7 +170,9 @@ void SidebarController::ActivatePanelItem(
   // Suppress opening animation when we have active item.
   // When opening another panel while other panel is visible,
   // we don't need to open new panel with animation.
-  const bool suppress_animations = sidebar_model_->active_index().has_value();
+  // A web panel can be the active item, but it's not a side panel.
+  const bool suppress_animations =
+      sidebar_model_->active_index().has_value() && !IsWebPanelOpen();
   side_panel_ui->Show(sidebar::SidePanelIdFromSideBarItemType(panel_item),
                       /*open_trigger*/ std::nullopt, suppress_animations);
 }
@@ -250,6 +258,28 @@ void SidebarController::OnShowSidebarOptionChanged(
   sidebar_->SetSidebarShowOption(option);
 }
 
+void SidebarController::OnWillRemoveItem(const SidebarItem& item,
+                                         size_t index) {
+  // Don't leave the panel open for an item that no longer exists.
+  if (web_panel_controller_ && web_panel_controller_->IsShowingItem(item)) {
+    web_panel_controller_->ClosePanel();
+  }
+}
+
+void SidebarController::OnItemUpdated(const SidebarItem& item,
+                                      const SidebarItemUpdate& update) {
+  if (!update.url_updated || !IsWebPanelOpen()) {
+    return;
+  }
+
+  // Panel identity is its url, so a url edit orphans the open panel.
+  if (!std::ranges::contains(GetSidebarService()->items(),
+                             web_panel_controller_->panel_item().url,
+                             &SidebarItem::url)) {
+    web_panel_controller_->ClosePanel();
+  }
+}
+
 void SidebarController::AddItemWithCurrentTab() {
   if (!sidebar::CanAddCurrentActiveTabToSidebar(browser_)) {
     return;
@@ -267,13 +297,47 @@ void SidebarController::AddItemWithCurrentTab() {
 void SidebarController::UpdateActiveItemState(
     std::optional<SidebarItem::BuiltInItemType> active_panel_item) {
   if (!active_panel_item) {
+    // A side panel close says nothing about an open web panel, so don't drop
+    // its active state.
+    if (IsWebPanelOpen()) {
+      return;
+    }
     ActivateItemAt(std::nullopt);
     return;
+  }
+
+  // Only one sidebar item can be active.
+  if (web_panel_controller_) {
+    web_panel_controller_->ClosePanel();
   }
 
   if (auto index = sidebar_model_->GetIndexOf(*active_panel_item)) {
     ActivateItemAt(*index);
   }
+}
+
+void SidebarController::OnWebPanelStateChanged() {
+  if (!sidebar_) {
+    return;
+  }
+
+  const auto& panel_item = web_panel_controller_->panel_item();
+  if (panel_item.IsValidItem()) {
+    sidebar_model_->SetActiveIndex(sidebar_model_->GetIndexOf(panel_item));
+    return;
+  }
+
+  // Panel closed. Only clear if the active item is still the panel's - a side
+  // panel may already have taken over the active state.
+  const auto index = sidebar_model_->active_index();
+  if (index &&
+      sidebar_model_->GetAllSidebarItems()[*index].is_web_panel_type()) {
+    sidebar_model_->SetActiveIndex(std::nullopt);
+  }
+}
+
+bool SidebarController::IsWebPanelOpen() const {
+  return web_panel_controller_ && web_panel_controller_->HasOpenPanel();
 }
 
 void SidebarController::SetSidebar(Sidebar* sidebar) {
@@ -297,7 +361,9 @@ SidebarWebPanelController* SidebarController::GetWebPanelController() {
 
   if (!web_panel_controller_) {
     web_panel_controller_ = std::make_unique<SidebarWebPanelController>(
-        *BrowserView::GetBrowserViewForBrowser(browser_));
+        *BrowserView::GetBrowserViewForBrowser(browser_),
+        base::BindRepeating(&SidebarController::OnWebPanelStateChanged,
+                            base::Unretained(this)));
   }
 
   return web_panel_controller_.get();

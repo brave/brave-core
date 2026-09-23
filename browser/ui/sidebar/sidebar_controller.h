@@ -85,6 +85,10 @@ class SidebarController : public SidebarService::Observer {
   bool IsActiveIndex(std::optional<size_t> index) const;
   bool DoesBrowserHaveOpenedTabForItem(const SidebarItem& item) const;
 
+  // True when this window has an open web panel. Always false when the web
+  // panel feature is disabled.
+  bool IsWebPanelOpen() const;
+
   void TearDownPreBrowserWindowDestruction();
 
   void SetSidebar(Sidebar* sidebar);
@@ -97,9 +101,15 @@ class SidebarController : public SidebarService::Observer {
   // SidebarService::Observer overrides:
   void OnShowSidebarOptionChanged(
       SidebarService::ShowSidebarOption option) override;
+  void OnWillRemoveItem(const SidebarItem& item, size_t index) override;
+  void OnItemUpdated(const SidebarItem& item,
+                     const SidebarItemUpdate& update) override;
 
  private:
   void OnPreferenceChanged(const std::string& pref_name);
+
+  // Pushes the web panel's open/closed state into the model's active index.
+  void OnWebPanelStateChanged();
 
   // Iterate tabs by host (if tabs with host of URL exist).
   // Otherwise, load URL in the active tab.
