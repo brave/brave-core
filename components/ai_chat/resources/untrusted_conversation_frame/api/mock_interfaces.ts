@@ -25,6 +25,7 @@ import * as Mojom from '../../common/mojom'
 export const defaultConversationEntriesState: Mojom.ConversationEntriesState = {
   isGenerating: false,
   isToolExecuting: false,
+  threadUuidInProgress: undefined,
   toolUseTaskState: Mojom.TaskState.kNone,
   isLeoModel: true,
   allModels: [],
@@ -61,7 +62,9 @@ export function createMockUntrustedConversationHandler(
 ): Closable<Mojom.UntrustedConversationHandlerInterface> {
   return makeCloseable({
     // Query methods - return empty/default results
-    getConversationHistory: () => Promise.resolve({ conversationHistory: [] }),
+    getConversationHistory: (_threadUuid: string | null) =>
+      Promise.resolve({ conversationHistory: [] }),
+    getConversationThreads: () => Promise.resolve({ threads: [] }),
     bindUntrustedConversationUI: () =>
       Promise.resolve({
         conversationEntriesState: defaultConversationEntriesState,
@@ -75,8 +78,8 @@ export function createMockUntrustedConversationHandler(
     submitSuggestion: () => {},
     generateQuestions: () => {},
     retryAPIRequest: () => {},
+    createConversationThread: (_originEntryUuid: string) => Promise.resolve({ threadUuid: null }),
     switchToNonPremiumModel() {},
-    switchToTab: () => {},
 
     // Apply overrides
     ...overrides,

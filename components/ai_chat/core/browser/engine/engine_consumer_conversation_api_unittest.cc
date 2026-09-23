@@ -3314,7 +3314,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::nullopt)));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -3344,7 +3345,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 
   EXPECT_CALL(*mock_api_client, PerformRequest).Times(0);
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -3371,7 +3373,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             base::unexpected(mojom::APIError::RateLimitReached));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -3400,7 +3403,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::nullopt)));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();
@@ -3430,7 +3434,8 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
             std::nullopt)));
       });
 
-  engine_->GenerateConversationTitle(page_contents, history,
+  engine_->GenerateConversationTitle(page_contents,
+                                     EngineConsumer::ToHistoryView(history),
                                      future.GetCallback());
 
   auto result = future.Take();

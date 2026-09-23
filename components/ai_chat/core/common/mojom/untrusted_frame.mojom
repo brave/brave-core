@@ -58,8 +58,12 @@ interface UntrustedConversationHandler {
       pending_remote<UntrustedConversationUI> untrusted_ui)
           => (ConversationEntriesState conversation_entries_state);
 
-  // Get all visible history entries, including in-progress responses
-  GetConversationHistory() => (array<ConversationTurn> conversation_history);
+  // Get all visible history entries, including in-progress responses.
+  GetConversationHistory(string? thread_uuid) =>
+      (array<ConversationTurn> conversation_history);
+
+  // Returns thread metadata for this conversation. Entries are not loaded.
+  GetConversationThreads() => (array<Thread> threads);
 
   // If the current model is premium or freemium, switch to a free model to
   // e.g. reduce rate limiting.
@@ -89,6 +93,13 @@ interface UntrustedConversationHandler {
 
   // Retry the last failed API request.
   RetryAPIRequest();
+
+  // Creates a new thread originating from the conversation entry with the
+  // given uuid, and returns its uuid. Does not persist anything until a turn is
+  // submitted to the thread. Returns null (a no-op) if the entry already has an
+  // empty thread, so duplicate empty threads aren't created, or if the origin entry
+  // is not an assistant response.
+  CreateConversationThread(string origin_entry_uuid) => (string? thread_uuid);
 };
 
 // Untrusted-UI-side handler for a Conversation, responsible for displaying
@@ -97,6 +108,9 @@ interface UntrustedConversationUI {
   OnConversationHistoryUpdate(ConversationTurn? entry);
   OnToolUseEventOutput(string entry_uuid, ToolUseEvent tool_use);
   OnEntriesUIStateChanged(ConversationEntriesState state);
+
+  // Called when a thread's metadata is created or updated.
+  OnConversationThreadUpdate(Thread thread);
 
   // Called when the associated content is changed - called when the untrusted
   // conversation frame is attached and when the content is changed.
