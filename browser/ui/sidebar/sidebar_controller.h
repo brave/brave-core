@@ -99,6 +99,9 @@ class SidebarController : public SidebarService::Observer {
 
   SidePanelUI* GetSidePanelUI();
 
+  // Pushes the web panel's open/closed state into the model's active index.
+  void OnWebPanelStateChanged();
+
   // Iterate tabs by host (if tabs with host of URL exist).
   // Otherwise, load URL in the active tab.
   void IterateOrLoadAtActiveTab(const GURL& url);
