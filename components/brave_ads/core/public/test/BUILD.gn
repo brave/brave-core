@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+
+assert(enable_brave_ads)
+
+source_set("test_support") {
+  testonly = true
+
+  public_deps = [
+    "//brave/components/brave_ads/core/public:headers",
+    "//testing/gmock",
+  ]
+
+  sources = [
+    "ads_mock.cc",
+    "ads_mock.h",
+  ]
+}

@@ -31,6 +31,7 @@
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
+#include "brave/ios/browser/brave_ads/ads_factory.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
 #include "ui/base/page_transition_types.h"
@@ -45,13 +46,17 @@ constexpr char kAdsDatabaseFilename[] = "Ads.db";
 
 }  // namespace
 
-AdsServiceImplIOS::AdsServiceImplIOS(PrefService& prefs)
+AdsServiceImplIOS::AdsServiceImplIOS(PrefService& prefs,
+                                     std::unique_ptr<AdsFactory> ads_factory)
     : AdsService(/*delegate=*/nullptr),
       prefs_(prefs),
+      ads_factory_(std::move(ads_factory)),
       file_task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
            base::TaskShutdownBehavior::BLOCK_SHUTDOWN})),
       ads_client_notifier_(std::make_unique<AdsClientNotifier>()) {
+  CHECK(ads_factory_);
+
   InitializePrefChangeRegistrar();
 }
 
@@ -461,8 +466,8 @@ bool AdsServiceImplIOS::UserHasJoinedBraveRewards() const {
 void AdsServiceImplIOS::InitializeBatAds(ResultCallback callback) {
   CHECK(!IsInitialized());
 
-  ads_ = Ads::CreateInstance(*ads_client_,
-                             storage_path_.AppendASCII(kAdsDatabaseFilename));
+  ads_ = ads_factory_->CreateAds(
+      *ads_client_, storage_path_.AppendASCII(kAdsDatabaseFilename));
 
   ads_->SetSysInfo(mojom_sys_info_.Clone());
   ads_->SetBuildChannel(mojom_build_channel_.Clone());

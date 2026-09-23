@@ -7,6 +7,9 @@ import("//ios/web/public/js_messaging/optimize_ts.gni")
 
 source_set("brave_ads") {
   sources = [
+    "ads_factory.h",
+    "ads_factory_impl.h",
+    "ads_factory_impl.mm",
     "ads_media_reporting_javascript_feature.h",
     "ads_media_reporting_javascript_feature.mm",
     "ads_service_factory_ios.h",
@@ -58,13 +61,17 @@ source_set("unit_tests") {
   sources = [
     "ads_service_impl_ios_unittest.mm",
     "ads_tab_helper_unittest.mm",
+    "test/fake_ads_client.h",
+    "test/fake_ads_client.mm",
+    "test/fake_ads_factory.h",
+    "test/fake_ads_factory.mm",
   ]
 
   deps = [
     ":brave_ads",
     "//base/test:test_support",
     "//brave/components/brave_ads/core/browser/service:test_support",
-    "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_ads/core/public/test:test_support",
     "//brave/components/brave_rewards/core",
     "//components/prefs:test_support",
     "//ios/chrome/browser/shared/model/profile/test",
