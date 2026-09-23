@@ -34,28 +34,28 @@ bool IsSingleProcessBrowserTest() {
 bool UseGlobalExtensionsClientForSingleProcessTests(
     const ScopedChromeExtensionsClient* instance) {
   if (!IsSingleProcessBrowserTest()) {
-    return true;
+    return false;
   }
   CHECK_IS_TEST();
   if (g_process_wide_client_owner) {
-    return false;
+    return true;
   }
   g_process_wide_client_owner = instance;
-  return true;
+  return false;
 }
 
 // Returns true if `instance` should unregister the process-wide client.
 bool ReleaseGlobalExtensionsClientForSingleProcessTests(
     const ScopedChromeExtensionsClient* instance) {
   if (!IsSingleProcessBrowserTest()) {
-    return true;
+    return false;
   }
   CHECK_IS_TEST();
   if (g_process_wide_client_owner != instance) {
-    return false;
+    return true;
   }
   g_process_wide_client_owner = nullptr;
-  return true;
+  return false;
 }
 
 }  // namespace
