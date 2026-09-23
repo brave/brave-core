@@ -158,11 +158,13 @@ export function createFakeWorkspace(
 /**
  * Makes reading `path` fail, standing in for a file the picked folder lists but
  * the renderer cannot read (e.g. a permission or I/O error). The file still
- * shows up in directory listings.
+ * shows up in directory listings. Pass `error` to reproduce a particular
+ * failure, such as the DOMException the platform raises.
  */
 export function makeFileUnreadable(
   root: FileSystemDirectoryHandle,
   path: string,
+  error?: Error,
 ) {
   const parts = path.split('/').filter((p) => p !== '')
   const name = parts.pop()
@@ -179,7 +181,7 @@ export function makeFileUnreadable(
     throw new Error(`no such file: ${path}`)
   }
   file.getFile = async () => {
-    throw new Error(`NotAllowedError: ${path}`)
+    throw error ?? new Error(`NotAllowedError: ${path}`)
   }
 }
 

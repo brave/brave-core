@@ -14,6 +14,7 @@
 #include "base/uuid.h"
 #include "brave/components/ai_chat/content/browser/content_tool.h"
 #include "brave/components/ai_chat/core/common/constants.h"
+#include "brave/components/ai_chat/core/common/leo_workspace_util.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -22,6 +23,7 @@
 #include "content/public/browser/file_system_access_entry_factory.h"
 #include "content/public/browser/file_system_access_permission_context.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/storage_partition.h"
@@ -133,6 +135,65 @@ void WorkspaceAssociatedContent::DocumentOnLoadCompletedInPrimaryMainFrame() {
   // the next generation loop harvests the tools it registers via WebMCP.
   page_ready_ = true;
   set_tools_attached(true);
+}
+
+void WorkspaceAssociatedContent::DidFinishNavigation(
+    content::NavigationHandle* handle) {
+  // The viewer document this page frames to show a file. Only the viewer page
+  // itself is given a handle: the file it goes on to show is served from the
+  // same origin, and has no business being handed the folder.
+  if (!handle->HasCommitted() || handle->IsSameDocument() ||
+      handle->IsInPrimaryMainFrame() ||
+      !IsAIChatLeoWorkspaceViewHost(handle->GetURL().host()) ||
+      handle->GetURL().path() != "/") {
+    return;
+  }
+  content::RenderFrameHost* rfh = handle->GetRenderFrameHost();
+  if (rfh && rfh->IsRenderFrameLive()) {
+    DeliverViewerDirectoryHandle(rfh);
+  }
+}
+
+void WorkspaceAssociatedContent::DeliverViewerDirectoryHandle(
+    content::RenderFrameHost* rfh) {
+  const GURL origin_url = rfh->GetLastCommittedOrigin().GetURL();
+  const GURL committed_url = rfh->GetLastCommittedURL();
+  DVLOG(2) << __func__ << " delivering read-only handle for " << folder_path_
+           << " to " << committed_url.spec();
+
+  // Read, and only read: the viewer shows files, and the write guard is left
+  // alone so that anything on that origin asking to write has to be prompted
+  // for. The grant is origin-scoped, and the origin is this workspace's own
+  // viewer subdomain, so it reaches no other workspace.
+  auto* map = permissions::PermissionsClient::Get()->GetSettingsMap(
+      web_contents_->GetBrowserContext());
+  map->SetContentSettingDefaultScope(
+      origin_url, origin_url, ContentSettingsType::FILE_SYSTEM_READ_GUARD,
+      CONTENT_SETTING_ALLOW);
+
+  auto* factory = rfh->GetProcess()
+                      ->GetStoragePartition()
+                      ->GetFileSystemAccessEntryFactory();
+  if (!factory) {
+    return;
+  }
+  blink::mojom::FileSystemAccessEntryPtr entry =
+      factory->CreateDirectoryEntryFromPath(
+          content::FileSystemAccessEntryFactory::BindingContext(
+              rfh->GetStorageKey(), committed_url, rfh->GetGlobalId()),
+          content::PathInfo(folder_path_),
+          content::FileSystemAccessEntryFactory::UserAction::kOpen);
+  if (!entry) {
+    return;
+  }
+
+  std::vector<blink::mojom::FileSystemAccessEntryPtr> entries;
+  entries.push_back(std::move(entry));
+  mojo::AssociatedRemote<blink::mojom::WebLaunchService> launch_service;
+  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&launch_service);
+  launch_service->EnqueueLaunchParams(committed_url, base::TimeTicks(),
+                                      /*navigation_started=*/false,
+                                      std::move(entries));
 }
 
 void WorkspaceAssociatedContent::DeliverDirectoryHandle(

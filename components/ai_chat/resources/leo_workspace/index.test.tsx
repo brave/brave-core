@@ -7,7 +7,11 @@ import { createFakeWorkspace } from './test_file_system'
 
 // Importing the entry point installs its DOMContentLoaded listener. jsdom has
 // already finished loading by then, so the tests dispatch the event by hand.
-import './index'
+import { showViewerFrame } from './index'
+
+// The page's own origin, and the viewer it is allowed to frame.
+const kWorkspaceOrigin = 'chrome-untrusted://a-uuid.leo-workspace'
+const kViewerOrigin = 'chrome-untrusted://view.a-uuid.leo-workspace'
 
 interface LaunchParams {
   files: FileSystemHandle[]
@@ -16,6 +20,7 @@ interface LaunchParams {
 let consumer: ((params: LaunchParams) => void) | null
 let setConsumer: jest.Mock<void, [(params: LaunchParams) => void]>
 let registeredToolNames: string[]
+let root: HTMLElement
 
 /** Runs the module's DOMContentLoaded handler. */
 function load() {
@@ -60,11 +65,19 @@ beforeEach(() => {
     },
   })
 
+  root = document.createElement('div')
+  root.id = 'root'
+  document.body.appendChild(root)
+
   jest.spyOn(console, 'log').mockImplementation(() => {})
   jest.spyOn(console, 'error').mockImplementation(() => {})
 })
 
 afterEach(() => {
+  // The framed viewer is module state, so drop it before the next test.
+  window.location.hash = ''
+  showViewerFrame(root)
+  root.remove()
   delete document.modelContext
   delete window.launchQueue
 })
@@ -116,6 +129,78 @@ describe('leo workspace entry point', () => {
     load()
     expect(console.error).toHaveBeenCalledWith(
       expect.stringContaining('window.launchQueue is unavailable'),
+    )
+  })
+})
+
+describe('viewer frame', () => {
+  it('frames the viewer, full page, for the file in the fragment', () => {
+    window.location.hash = '#file=notes.txt'
+
+    showViewerFrame(root, kWorkspaceOrigin)
+
+    const frame = root.querySelector('iframe')!
+    expect(frame.src).toBe(`${kViewerOrigin}/#file=notes.txt`)
+    expect(frame.style.position).toBe('fixed')
+    expect(frame.style.width).toBe('100%')
+    expect(frame.style.height).toBe('100%')
+    expect(launchErrors()).toEqual([])
+  })
+
+  it('frames nothing when the fragment names no file', () => {
+    showViewerFrame(root, kWorkspaceOrigin)
+    expect(root.querySelector('iframe')).toBeNull()
+  })
+
+  it('retargets the frame it already has, rather than replacing it', () => {
+    window.location.hash = '#file=first.txt'
+    showViewerFrame(root, kWorkspaceOrigin)
+    const frame = root.querySelector('iframe')
+
+    window.location.hash = '#file=second.txt'
+    showViewerFrame(root, kWorkspaceOrigin)
+
+    // The same element, so the framed document - and the worker controlling
+    // it - survives a retarget.
+    expect(root.querySelector('iframe')).toBe(frame)
+    expect(frame!.src).toBe(`${kViewerOrigin}/#file=second.txt`)
+    expect(root.childElementCount).toBe(1)
+  })
+
+  it('removes the frame when the fragment stops naming a file', () => {
+    window.location.hash = '#file=notes.txt'
+    showViewerFrame(root, kWorkspaceOrigin)
+
+    window.location.hash = ''
+    showViewerFrame(root, kWorkspaceOrigin)
+
+    expect(root.querySelector('iframe')).toBeNull()
+  })
+
+  it('frames nothing for an origin that has no viewer', () => {
+    window.location.hash = '#file=notes.txt'
+
+    showViewerFrame(root, 'null')
+
+    expect(root.querySelector('iframe')).toBeNull()
+    expect(console.error).toHaveBeenCalledWith(
+      expect.stringContaining('no viewer origin to frame'),
+    )
+  })
+
+  it('frames on load, and again when the fragment changes', () => {
+    // jsdom serves the tests from http://localhost, which has no viewer
+    // sibling, so the attempt is what is observable here.
+    window.location.hash = '#file=notes.txt'
+    load()
+    expect(console.error).toHaveBeenCalledWith(
+      expect.stringContaining('no viewer origin to frame'),
+    )
+    ;(console.error as jest.Mock).mockClear()
+    window.location.hash = '#file=other.txt'
+    window.dispatchEvent(new Event('hashchange'))
+    expect(console.error).toHaveBeenCalledWith(
+      expect.stringContaining('no viewer origin to frame'),
     )
   })
 })

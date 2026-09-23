@@ -8,9 +8,9 @@
 #include <string>
 #include <string_view>
 
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "base/check.h"
 #include "base/feature_list.h"
+#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
@@ -20,17 +20,28 @@
 #include "components/grit/brave_components_resources.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
+#include "content/public/browser/service_worker_context.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/blink/public/common/service_worker/service_worker_status_code.h"
+#include "third_party/blink/public/common/storage_key/storage_key.h"
+#include "third_party/blink/public/mojom/service_worker/service_worker_registration_options.mojom.h"
 #include "ui/webui/webui_util.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 #include "url/url_constants.h"
 
 namespace ai_chat {
 
 namespace {
+
+// The viewer origin's service worker script (see leo_workspace/sw.ts), served
+// from the viewer's own data source bundle.
+constexpr char kServiceWorkerScriptPath[] = "leo_workspace_sw.bundle.js";
 
 std::string UntrustedOrigin(std::string_view host) {
   return base::StrCat(
@@ -98,6 +109,15 @@ bool LeoWorkspaceUIConfig::ShouldHandleURL(const GURL& url) {
          IsAIChatLeoWorkspaceViewHost(url.host());
 }
 
+// Lets the viewer's service worker (registered for each viewer origin in
+// LeoWorkspaceViewUI) serve the /files/<path> the viewer page navigates to, and
+// control the document it serves there - which is what makes that document's
+// own requests servable too. Workspace documents stay uncontrolled: no worker
+// is registered for a workspace origin.
+bool LeoWorkspaceUIConfig::ShouldInterceptNavigationsWithServiceWorker() {
+  return true;
+}
+
 std::unique_ptr<content::WebUIController>
 LeoWorkspaceUIConfig::CreateWebUIController(content::WebUI* web_ui,
                                             const GURL& url) {
@@ -139,8 +159,40 @@ LeoWorkspaceViewUI::LeoWorkspaceViewUI(content::WebUI* web_ui, const GURL& url)
   AddViewerDataSource(web_ui, url, IDR_AI_CHAT_LEO_WORKSPACE_VIEW_HTML,
                       /*frame_src=*/"'none'",
                       /*frame_ancestors=*/UntrustedOrigin(workspace_host));
+  // The page reads no files itself: it navigates to them, and its service
+  // worker serves them from /files/<path>.
+  RegisterServiceWorker(web_ui, url);
 }
 
 LeoWorkspaceViewUI::~LeoWorkspaceViewUI() = default;
+
+// Registers the viewer origin's service worker (see sw.ts). chrome-untrusted
+// origins cannot register workers from JavaScript (navigator.serviceWorker is
+// unavailable there), so this is the only way to give the viewer one, and it
+// keeps the registration a browser-side decision. Re-registering on every
+// viewer creation picks up worker updates; a worker that is already up-to-date
+// is a no-op. The worker starts serving once it activates, which is what the
+// viewer page waits for before navigating to a file.
+void LeoWorkspaceViewUI::RegisterServiceWorker(content::WebUI* web_ui,
+                                               const GURL& url) {
+  content::BrowserContext* browser_context =
+      web_ui->GetWebContents()->GetBrowserContext();
+  content::ServiceWorkerContext* service_worker_context =
+      browser_context->GetDefaultStoragePartition()->GetServiceWorkerContext();
+  const url::Origin origin = url::Origin::Create(url);
+  const GURL scope = origin.GetURL();
+  blink::mojom::ServiceWorkerRegistrationOptions options;
+  options.scope = scope;
+  options.type = blink::mojom::ScriptType::kModule;
+  service_worker_context->RegisterServiceWorker(
+      scope.Resolve(kServiceWorkerScriptPath),
+      blink::StorageKey::CreateFirstParty(origin), options,
+      web_ui->GetWebContents()->GetPrimaryMainFrame()->GetGlobalId(),
+      base::BindOnce([](blink::ServiceWorkerStatusCode status_code) {
+        LOG_IF(ERROR, status_code != blink::ServiceWorkerStatusCode::kOk)
+            << "Failed to register the Leo workspace viewer service worker: "
+            << blink::ServiceWorkerStatusToString(status_code);
+      }));
+}
 
 }  // namespace ai_chat
