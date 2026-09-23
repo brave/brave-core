@@ -7,7 +7,10 @@
 
 #include <string>
 
+#include "base/check.h"
 #include "base/feature_list.h"
+#include "brave/components/brave_search/common/pref_names.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_search::features {
 
@@ -100,8 +103,19 @@ const base::FeatureParam<std::string> kBackupResultsLanguagesHeader{
 
 BASE_FEATURE(kSearchNewTabV1Source, base::FEATURE_DISABLED_BY_DEFAULT);
 
-bool IsSearchNewTabV1SourceEnabled() {
-  return base::FeatureList::IsEnabled(kSearchNewTabV1Source);
+bool IsSearchNewTabV1SourceEnabled(PrefService* local_state,
+                                   bool is_first_run) {
+  CHECK(local_state);
+  // If the feature was enabled at install time, leave it enabled forever.
+  if (local_state->GetBoolean(prefs::kNewTabV1SourceEnabledAtFirstRun)) {
+    return true;
+  }
+  if (!base::FeatureList::IsEnabled(kSearchNewTabV1Source) || !is_first_run) {
+    // Existing users are not included in the study.
+    return false;
+  }
+  local_state->SetBoolean(prefs::kNewTabV1SourceEnabledAtFirstRun, true);
+  return true;
 }
 
 }  // namespace brave_search::features
