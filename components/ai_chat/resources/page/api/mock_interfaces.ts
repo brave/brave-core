@@ -107,8 +107,7 @@ export function createMockConversationHandler(
           ...initialState,
         },
       }),
-    getConversationHistory: () =>
-      Promise.resolve({ conversationHistory: [] }),
+    getConversationHistory: () => Promise.resolve({ conversationHistory: [] }),
     getConversationUuid: () => Promise.resolve({ conversationUuid: '' }),
     getModels: () =>
       Promise.resolve({
