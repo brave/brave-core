@@ -8,10 +8,12 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_local_ai)
 
-# Holds the setting the embedding services were built with, so the
-# brave://history toggle can prompt for a relaunch once it diverges. Separate
-# from ":history_embeddings" because //chrome/browser/passage_embeddings reads
-# it, and that is what ":history_embeddings" is built on top of.
+# Holds the setting the embedding services were built with, so the Semantic
+# history search toggle can prompt for a relaunch once it diverges, and owns the
+# BraveHistoryEmbeddingsEnabledAtStartup() hook the chromium_src overrides
+# forward declare. Separate from ":history_embeddings" because
+# //chrome/browser/passage_embeddings reads it, and that is what
+# ":history_embeddings" is built on top of.
 source_set("status") {
   public = [ "brave_history_embeddings_status.h" ]
   sources = [ "brave_history_embeddings_status.cc" ]

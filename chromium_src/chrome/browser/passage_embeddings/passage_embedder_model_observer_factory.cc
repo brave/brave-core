@@ -14,9 +14,10 @@
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 
-// Implemented in //brave/browser/passage_embeddings:chromium_impl. Returns the
-// setting the profile's embedding services were built with.
-bool BraveIsHistoryEmbeddingsEnabled(Profile* profile);
+// Implemented in //brave/browser/history_embeddings:status. Returns the setting
+// the profile's embedding services were built with. Forward declared to keep
+// this override free of a compile-time dependency on //brave.
+bool BraveHistoryEmbeddingsEnabledAtStartup(Profile* profile);
 
 namespace history_embeddings {
 
@@ -25,7 +26,7 @@ namespace history_embeddings {
 bool IsHistoryEmbeddingsFeatureEnabled(content::BrowserContext* context) {
   Profile* profile = Profile::FromBrowserContext(context);
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-  return BraveIsHistoryEmbeddingsEnabled(profile);
+  return BraveHistoryEmbeddingsEnabledAtStartup(profile);
 #else
   return IsHistoryEmbeddingsEnabledForProfile(profile);
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)

@@ -28,9 +28,12 @@ namespace history_embeddings {
 
 // The Semantic history search setting is live, but the embeddings service is
 // built from it once at profile setup, so the two can disagree until the
-// browser relaunches. These tests assert what brave://history ends up running
-// on, because the page gates its calls into the embeddings service on
-// `enableHistoryEmbeddings` and that service can be null.
+// browser relaunches. brave://history carries no toggle, so the only value it
+// runs on is the session-captured one that
+// `chromium_src/chrome/browser/ui/webui/history/history_ui.cc` substitutes for
+// upstream's `enableHistoryEmbeddings`. These tests assert the page never runs
+// a search against a service that was never built, because the `Search()` it
+// would reach CHECKs that service is non-null.
 class BraveHistoryUIEmbeddingsBrowserTest : public InProcessBrowserTest {
  public:
   BraveHistoryUIEmbeddingsBrowserTest() {
@@ -188,22 +191,41 @@ IN_PROC_BROWSER_TEST_F(BraveHistoryUIEmbeddingsBrowserTest,
 
 // Leaves the setting on for the run below.
 IN_PROC_BROWSER_TEST_F(BraveHistoryUIEmbeddingsBrowserTest,
-                       PRE_NoSearchOnceTurnedOff) {
+                       PRE_SearchSurvivesTurningTheSettingOffMidSession) {
   SetSemanticHistorySearchEnabled(true);
 }
 
-// Turning the setting off takes the search away, even though the service built
-// at profile setup outlives it — the gate is the setting, not the service.
+// Turning the setting off mid-session leaves the search running, because the
+// service built at profile setup is still there and the page runs on the value
+// it was built with. The setting takes effect on the next relaunch, the same
+// way turning it on does.
 IN_PROC_BROWSER_TEST_F(BraveHistoryUIEmbeddingsBrowserTest,
-                       NoSearchOnceTurnedOff) {
+                       SearchSurvivesTurningTheSettingOffMidSession) {
   NavigateToHistory();
   ASSERT_TRUE(SearchEnabled());
 
   SetSemanticHistorySearchEnabled(false);
   NavigateToHistory();
 
-  EXPECT_FALSE(SearchEnabled());
+  EXPECT_TRUE(SearchEnabled());
   EXPECT_TRUE(ServiceExists());
+}
+
+// Leaves the setting off for the run below, after a session that had it on.
+IN_PROC_BROWSER_TEST_F(BraveHistoryUIEmbeddingsBrowserTest,
+                       PRE_NoSearchAfterRelaunchOnceTurnedOff) {
+  SetSemanticHistorySearchEnabled(false);
+}
+
+// Once the relaunch happens, the setting is off at profile setup, so no service
+// is built and the page runs no search.
+IN_PROC_BROWSER_TEST_F(BraveHistoryUIEmbeddingsBrowserTest,
+                       NoSearchAfterRelaunchOnceTurnedOff) {
+  ASSERT_FALSE(browser()->GetProfile()->GetPrefs()->GetBoolean(
+      local_ai::prefs::kBraveHistoryEmbeddingsEnabled));
+  NavigateToHistory();
+
+  EXPECT_FALSE(SearchEnabled());
 }
 
 }  // namespace history_embeddings

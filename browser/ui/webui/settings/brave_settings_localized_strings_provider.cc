@@ -150,6 +150,10 @@ constexpr char16_t kTabOrganizationLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/"
     u"35200007195917-How-to-use-Tab-Focus-Mode";
 
+// The Semantic history search toggle lives in brave://settings/privacy.
+constexpr char16_t kSemanticHistorySearchSettingURL[] =
+    u"chrome://settings/privacy";
+
 constexpr char16_t kLeoMemoryLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/38441287509261";
 
@@ -1183,9 +1187,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       "braveLeoAssistantTabOrganizationSendPageContentDesc",
       l10n_util::GetStringFUTF16(
           IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_SEND_PAGE_CONTENT_DESC,
-          base::ASCIIToUTF16(std::string_view(chrome::kChromeUIHistoryURL)),
+          kSemanticHistorySearchSettingURL,
           l10n_util::GetStringUTF16(
-              IDS_BRAVE_HISTORY_EMBEDDINGS_TOGGLE_LABEL)));
+              IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_LABEL)));
 
   // The Local AI master switch lives in local state and only takes effect on
   // relaunch, so the page reads it once here rather than binding a pref.

@@ -149,7 +149,7 @@ class BraveLeoAssistantPageElement extends BraveLeoAssistantPageBase {
     }
 
     openHistorySettings_() {
-      window.open('chrome://history', '_blank')
+      Router.getInstance().navigateTo(routes.PRIVACY)
     }
 
     openTabOrganizationLearnMore_() {

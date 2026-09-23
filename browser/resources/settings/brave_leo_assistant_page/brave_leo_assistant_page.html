@@ -53,10 +53,11 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
     <if expr="enable_local_ai">
       <template is="dom-if"
         if="[[prefs.brave.ai_chat.tab_organization_enabled.value]]">
-        <!-- Requires Semantic History Search (chrome://history), which is what
-             builds the passage index, so there is nothing to send without it.
-             Hidden outright when history embeddings is unavailable, since
-             nothing in settings can turn it on. -->
+        <!-- Requires Semantic history search
+             (brave://settings/privacy), which is what builds the passage
+             index, so there is nothing to send without it. Hidden outright
+             when history embeddings is unavailable, since the Local AI master
+             switch is the only thing that can turn it on. -->
         <template is="dom-if" if="[[isHistoryEmbeddingsFeatureEnabled_]]">
           <settings-toggle-button class="cr-row continuation list-frame"
             pref="{{prefs.brave.ai_chat.tab_organization_send_page_content}}"
