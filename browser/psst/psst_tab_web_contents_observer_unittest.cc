@@ -1337,7 +1337,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   ASSERT_FALSE(held_policy_script_callback.is_null());
 
   // The user clicks Cancel while the policy script is still in flight.
-  observer()->CancelInFlightFlow();
+  observer()->CancelLogicalFlow();
 
   // A result that would otherwise report completion and navigate the tab to
   // `next_url` must be dropped instead, since the flow was cancelled.
