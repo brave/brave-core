@@ -32,14 +32,13 @@ SerpMetricsNavigationTracker::~SerpMetricsNavigationTracker() = default;
 void SerpMetricsNavigationTracker::OnNavigationFinished(
     const GURL& url,
     bool is_new_navigation) {
-  if (!is_new_navigation) {
-    // Reloads, back/forward navigations and session restores are not new
-    // navigations.
-    return;
-  }
-
   if (!IsSameSerpAsLastRecorded(url)) {
     last_recorded_serp_url_.reset();
+  } else if (is_new_navigation) {
+    // Only consecutive new navigations to the same SERP are deduplicated.
+    // Reloads, back/forward navigations and session restores are recorded
+    // again.
+    return;
   }
 
   MaybeClassifyAndRecordSearchEngineForUrl(url);
@@ -53,10 +52,6 @@ bool SerpMetricsNavigationTracker::IsSameSerpAsLastRecorded(
 
 void SerpMetricsNavigationTracker::MaybeClassifyAndRecordSearchEngineForUrl(
     const GURL& url) {
-  if (IsSameSerpAsLastRecorded(url)) {
-    return;
-  }
-
   std::optional<SearchEngineType> search_engine_type =
       MaybeClassifySearchEngine(url);
   if (search_engine_type &&
