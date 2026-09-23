@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Mark `ECDSA_SHA384` as an unsupported algorithm.
+
+      The software provider does not support `ECDSA_SHA384` key generation, so
+      it must fall through to the `continue;  // Not supported` arm in each
+      `switch (algo)`. This adds the missing `case` to all three switches
+      (`SelectAlgorithm`, `GenerateSigningKeySlowly` and
+      `GenerateAttestationKeySlowly`), grouping it with `RSA_PSS_SHA256` which
+      already takes that path.
+    regex:
+      re_pattern: '(switch\s*\(algo\).*?)(\n\s*continue;\s*// Not supported)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+                case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:\2
+
+    count: 3

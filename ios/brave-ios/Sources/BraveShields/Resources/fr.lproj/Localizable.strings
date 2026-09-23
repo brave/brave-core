@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "Traqueurs et publicités bloqués";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "Publicités \nbloquées";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Données économisées \nestimées";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Temps gagné \nestimé";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "j";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "h";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "min.";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "s";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "Traqueurs \nbloqués";
+

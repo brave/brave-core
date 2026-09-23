@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:content="http://purl.org/rss/1.0/modules/content/"
+     xmlns:atom="http://www.w3.org/2005/Atom" version="2.0" xmlns:media="http://search.yahoo.com/mrss/">
+    <channel>
+        <title><![CDATA[Changelog]]></title>
+        <description><![CDATA[Changelog]]></description>
+        <link>https://ghost.org/changelog/</link>
+        <image>
+            <url>https://ghost.org/changelog/favicon.png</url>
+            <title>Changelog</title>
+            <link>https://ghost.org/changelog/</link>
+        </image>
+        <generator>Ghost 4.18</generator>
+        <lastBuildDate>Fri, 15 Oct 2021 03:26:36 GMT</lastBuildDate>
+        <atom:link href="https://ghost.org/changelog/rss/" rel="self" type="application/rss+xml"/>
+        <ttl>60</ttl>
+        <item>
+            <title><![CDATA[Send emails without publishing]]></title>
+            <description>
+                <![CDATA[<p>You can now choose whether or not to publish a post on your website, when sending an email newsletter to members.</p><figure class="kg-card kg-image-card"><img src="https://ghost.org/changelog/content/images/2021/10/email-without-publishing.png" class="kg-image" alt loading="lazy" width="2000" height="1498" srcset="https://ghost.org/changelog/content/images/size/w600/2021/10/email-without-publishing.png 600w, https://ghost.org/changelog/content/images/size/w1000/2021/10/email-without-publishing.png 1000w, https://ghost.org/changelog/content/images/size/w1600/2021/10/email-without-publishing.png 1600w, https://ghost.org/changelog/content/images/size/w2400/2021/10/email-without-publishing.png 2400w" sizes="(min-width: 720px) 720px"></figure><p>Now you can send emails to your audience with private content that won&apos;t appear anywhere else, for example:</p><ul><li>A special offer to incentivize free members to upgrade</li></ul>]]></description>
+            <link>https://ghost.org/changelog/email-without-publishing/</link>
+            <guid isPermaLink="false">615376bf10e1d9004af82a8c</guid>
+            <category><![CDATA[New]]></category>
+            <dc:creator><![CDATA[Team Ghost]]></dc:creator>
+            <pubDate>Mon, 11 Oct 2021 18:11:15 GMT</pubDate>
+            <content:encoded>
+                <![CDATA[<p>You can now choose whether or not to publish a post on your website, when sending an email newsletter to members.</p><figure class="kg-card kg-image-card"><img src="https://ghost.org/changelog/content/images/2021/10/email-without-publishing.png" class="kg-image" alt loading="lazy" width="2000" height="1498" srcset="https://ghost.org/changelog/content/images/size/w600/2021/10/email-without-publishing.png 600w, https://ghost.org/changelog/content/images/size/w1000/2021/10/email-without-publishing.png 1000w, https://ghost.org/changelog/content/images/size/w1600/2021/10/email-without-publishing.png 1600w, https://ghost.org/changelog/content/images/size/w2400/2021/10/email-without-publishing.png 2400w" sizes="(min-width: 720px) 720px"></figure><p>Now you can send emails to your audience with private content that won&apos;t appear anywhere else, for example:</p><ul><li>A special offer to incentivize free members to upgrade to a paid account</li><li>A weekly roundup of trending stories published previously</li><li>A survey to inform your upcoming content roadmap</li></ul>]]></content:encoded>
+        </item>
+    </channel>
+</rss>

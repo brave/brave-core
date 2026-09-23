@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 2,
+  "campaigns": [
+    {
+      "version": 1,
+      "campaignId": "65933e82-6b21-440b-9956-c0f675ca7435",
+      "advertiserId": "496b045a-195e-441f-b439-07bac083450f",
+      "geoTargets": [
+        "US",
+        "GB"
+      ],
+      "creativeSets": [
+        {
+          "creativeSetId": "34ab06be-c9ed-4104-9ce0-9e639f4ad272",
+          "creatives": [
+            {
+              "creativeInstanceId": "aa0b561e-9eed-4aaa-8999-5627bc6b14fd",
+              "alt": "Some rich content",
+              "companyName": "Rich Media NTT Creative",
+              "targetUrl": "https://brave.com",
+              "wallpaper": {
+                "type": "richMedia",
+                "relativeUrl": "aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html"
+              }
+            },
+            {
+              "creativeInstanceId": "3b36d1b7-5c9b-4625-9227-7c8e9fe6e0b4",
+              "alt": "Some image content",
+              "companyName": "Image NTT Creative",
+              "targetUrl": "https://brave.com",
+              "wallpaper": {
+                "type": "image",
+                "relativeUrl": "3b36d1b7-5c9b-4625-9227-7c8e9fe6e0b4/background.jpg",
+                "button": {
+                  "image": {
+                    "relativeUrl": "3b36d1b7-5c9b-4625-9227-7c8e9fe6e0b4/button.png"
+                  }
+                },
+                "focalPoint": {
+                  "x": 1280,
+                  "y": 720
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

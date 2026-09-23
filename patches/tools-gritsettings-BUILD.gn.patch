@@ -1,0 +1,12 @@
+diff --git a/tools/gritsettings/BUILD.gn b/tools/gritsettings/BUILD.gn
+index 33f20b3044c0176a7784f1fcead7b1e008ad9457..19b81d5cb62b464866336dd9289f354404dd0309 100644
+--- a/tools/gritsettings/BUILD.gn
++++ b/tools/gritsettings/BUILD.gn
+@@ -13,6 +13,7 @@ action_with_pydeps("default_resource_ids") {
+   deps = [ "//tools/grit:grit_sources" ]
+   depfile = "$target_gen_dir/$target_name.d"
+   _rebased_input = rebase_path(inputs[0], root_build_dir)
++  import("//brave/tools/gritsettings/filter_resource_ids.gni") deps += brave_tools_gritsettings_deps _rebased_input = filtered_resource_id_file_path
+   args = [
+     "update_resource_ids",
+     "-o",

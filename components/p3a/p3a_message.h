@@ -1,0 +1,107 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_P3A_P3A_MESSAGE_H_
+#define BRAVE_COMPONENTS_P3A_P3A_MESSAGE_H_
+
+#include <cstdint>
+#include <optional>
+#include <string>
+#include <string_view>
+
+#include "base/memory/raw_ptr.h"
+#include "base/time/time.h"
+#include "base/values.h"
+#include "brave/components/p3a/metric_config.h"
+#include "brave/components/p3a/metric_log_type.h"
+#include "brave/components/p3a/region.h"
+
+class PrefService;
+
+namespace p3a {
+
+inline constexpr char kP3AMessageNebulaNameValueSeparator[] = "=";
+inline constexpr char kP3AMessageConstellationKeyValueSeparator[] = "|";
+inline constexpr char kP3AMessageConstellationLayerSeparator[] = ";";
+
+class MessageMetainfo {
+ public:
+  MessageMetainfo();
+  ~MessageMetainfo();
+
+  void Init(PrefService* local_state,
+            std::string brave_channel,
+            base::Time first_run_time);
+
+  void Update();
+
+  const std::string& GetCountryCodeForNormalMetrics(bool raw,
+                                                    bool is_locale) const;
+
+  std::optional<base::Time> GetActivationDate(
+      std::string_view histogram_name) const;
+
+  std::optional<std::string> GetCustomAttribute(
+      std::string_view attribute_name) const;
+
+  const std::string& platform() const { return platform_; }
+  const std::string& general_platform() const { return general_platform_; }
+  const std::string& channel() const { return channel_; }
+  const std::string& version() const { return version_; }
+  const std::string& country_code_from_locale_raw() const {
+    return country_code_from_locale_raw_;
+  }
+  const std::string& ref() const { return ref_; }
+  const RegionIdentifiers& region_identifiers() const {
+    return region_identifiers_;
+  }
+  base::Time date_of_install() const { return date_of_install_; }
+  base::Time date_of_survey() const { return date_of_survey_; }
+  int woi() const { return woi_; }
+
+  void SetIsBrowserDefault(bool is_default);
+  std::optional<bool> is_browser_default() const { return is_browser_default_; }
+
+ private:
+  // Used to report major/minor version numbers to reduce amount of
+  // Constellation tags
+  void InitVersion();
+
+  void InitRef();
+
+  // Ensures that country represent the big enough cohort to
+  // maximize STAR recovery rate for the country code & week of install
+  // attributes.
+  void MaybeStripCountry();
+
+  std::string platform_;
+  std::string general_platform_;
+  std::string version_;
+  std::string channel_;
+  base::Time date_of_install_;
+  base::Time date_of_survey_;
+  int woi_;  // Week of install. Remove this occasionally and extract from
+             // above.
+  std::string country_code_from_timezone_;
+  std::string country_code_from_timezone_raw_;
+  std::string country_code_from_locale_;
+  std::string country_code_from_locale_raw_;
+  RegionIdentifiers region_identifiers_;
+  // May contain 'none', a 'BRV'-prefixed refcode, or 'other'.
+  std::string ref_;
+  std::optional<bool> is_browser_default_;
+
+  raw_ptr<PrefService, DanglingUntriaged> local_state_ = nullptr;
+};
+
+std::string GenerateP3AConstellationMessage(std::string_view metric_name,
+                                            uint64_t metric_value,
+                                            const MessageMetainfo& meta,
+                                            const std::string& upload_type,
+                                            const MetricConfig* metric_config);
+
+}  // namespace p3a
+
+#endif  // BRAVE_COMPONENTS_P3A_P3A_MESSAGE_H_

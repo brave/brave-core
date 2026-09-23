@@ -1,0 +1,10 @@
+static_library("ethash") {
+  configs -= [ "//build/config/compiler:chromium_code" ]
+  configs += [ "//build/config/compiler:no_chromium_code" ]
+  include_dirs = [ "src/include" ]
+  sources = [
+    "src/include/ethash/hash_types.h",
+    "src/include/ethash/keccak.h",
+    "src/lib/keccak/keccak.c",
+  ]
+}

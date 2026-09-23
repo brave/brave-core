@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/side_panel/side_panel.cc b/chrome/browser/ui/views/side_panel/side_panel.cc
+index a58147d1997a9353b6b8f2164147a99723ed2146..31faa4db27be6c855b44fbf81db36b445a760f13 100644
+--- a/chrome/browser/ui/views/side_panel/side_panel.cc
++++ b/chrome/browser/ui/views/side_panel/side_panel.cc
+@@ -224,6 +224,7 @@ class ContentParentView : public views::View, public views::ViewObserver {
+   }
+ 
+   gfx::RoundedCornersF GetRoundedCorners() {
++    return brave::GetPanelContentsRoundedCorners(browser_view_);
+     ChromeDistanceMetric corner_radius =
+         ChromeDistanceMetric::DISTANCE_SIDE_PANEL_CONTENT_RADIUS;
+     return GetLayoutProvider()

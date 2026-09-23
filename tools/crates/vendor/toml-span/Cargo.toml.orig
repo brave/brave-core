@@ -1,0 +1,24 @@
+[package]
+name = "toml-span"
+version = "0.6.0"
+description = "Toml parser and deserializer that preserves span information"
+license.workspace = true
+edition.workspace = true
+homepage.workspace = true
+repository.workspace = true
+documentation = "https://docs.rs/toml-span"
+readme = "README.md"
+categories = ["parser-implementations", "config"]
+
+[features]
+serde = ["dep:serde"]
+reporting = ["dep:codespan-reporting"]
+
+[dependencies]
+codespan-reporting = { workspace = true, optional = true }
+serde = { version = "1.0", optional = true }
+smallvec = "1.13"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

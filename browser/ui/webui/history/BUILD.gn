@@ -1,0 +1,54 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+assert(!is_android)
+
+source_set("history") {
+  sources = [
+    "brave_history_ui.cc",
+    "brave_history_ui.h",
+  ]
+
+  public_deps = [
+    ":mojom",
+    "//chrome/browser:browser_public_dependencies",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/webui/history",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//ui/webui/resources/cr_components/help_bubble:mojo_bindings",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/local_ai/buildflags",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/webui/page_not_available_for_guest",
+    "//chrome/common:constants",
+    "//content/public/common",
+  ]
+
+  if (enable_local_ai) {
+    sources += [
+      "brave_history_embeddings_page_handler.cc",
+      "brave_history_embeddings_page_handler.h",
+    ]
+
+    deps += [
+      "//brave/browser/history_embeddings:status",
+      "//brave/components/local_ai/core",
+      "//chrome/browser/history_embeddings",
+      "//components/prefs",
+    ]
+  }
+}
+
+mojom("mojom") {
+  sources = [ "brave_history_embeddings.mojom" ]
+  webui_module_path = "/"
+}

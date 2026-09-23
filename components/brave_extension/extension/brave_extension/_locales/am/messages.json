@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "የ Brave የቀጠለ ",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "መከላከያዎች",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "ላይ",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "ወደታች",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "ለዚህ ገፅ",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "ገፁ ተሰብሮ ከሆነ መከላከያዎችን በማውረድ ይሞክሩ ",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "ይህን ገፅ ያለ Brave ግላዊነት እና ደህንነት ጥበቃዎች እያሰሱ ነው። ጋሻዎቹ ወደላይ ቢሆኑ በትክክል አይሰራም?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "የተሰበረ ገጽን ሪፖርት ያድርጉ",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "ንጥሎች ታግደዋል",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "ንጥል ታግዷል",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "እና",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "ግንኙነቶች ተሻሽሏል",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "ግንኙነት ተሻሽሏል",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "ድረ ገጽ ተሻጋሪ ተከታታዮች ታግደዋል",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "ተከታታዮች እና ማስታወቂያዎች ታግደዋል",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "ተከታታዮች እና ማስታወቂያዎች ታግደዋል (ሃይል የሚጠቀም)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "ተከታታዮች እና ማስታወቂያዎች ታግደዋል (ስታንዳርድ)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "ሁሉንም ተከታታዮች እና ማስታወቂያዎች ፍቀድ",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "ግንኙነቶች ወደ HTTPS ተሻሽለዋል",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "ግንኙነት ወደ HTTPS ተሻሽሏል",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "ስክሪፕቱ ታግዷል",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "ድረ ገጽ ተሻጋሪ ኩኪዎች ታግደዋል",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "ኩኪዎች ታግደዋል ",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "ሁሉም ኩኪዎች ተፈቅደዋል ",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "የጣት አሻራ ታግዷል",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "የጣት አሻራ ታግ (ል (መደበኛ)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "የጣት አሻራ ታግ (ል (ጥብቅ ፣ ጣቢያዎችን ሊሰብር ይችላል)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "ሁሉም የጣት አሻራ መውሰድን ፍቀድ",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "የጣት አሻራ የመውሰድ ሙከራዎች",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "በዚህ ገፅ ላይ ያሉ ስክሪፕቶች",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": " የታገዱ ስክሪፕቶች",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "የተፈቀደላቸው ስክሪፕቶች",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "ሁሉንም አግድ",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "ሁሉንም ፍቀድ",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "አግድ",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "ፍቀድ",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "አንዴ የታገደ ",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "አንዴ የተፈቀደ ",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "ስክሪፕቶችን አንዴ ፍቀድ ",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "አቋርጥ",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "ወደ ኋላ ተመለስ",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "አንድ ግዜ ብቻ ተግብር",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "አለም አቀፍ የራስ ሰር መከላከያዎችን ለውጥ",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "ብጁ ማጣሪያዎችን ያቀናብሩ",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "ንጥል ንዑስ ክፍል አግድ",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "የላቀ እይታ",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "ቀላል እይታ",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "ድረ ገጾች አብዛኛውን ጊዜ ኩኪዎችና ስክሪፕቶች የሚጠቀሙ ሲሆን እንርሱ ደግሞ የእርስዎንና የመሳሪያዎን ማንነት ለማወቅ ይሞክራሉ (አብዛኛውን ጊዜ ከማስታወቂያ ጋር የተጣመሩ ናቸው)። እርስዎ ማን እንደሆኑ ለማወቅና በድረ ገጹ ባጠቃላይ የእርስዎን እንቅስቃሴ ይከታተላሉ። Brave እነዚህን ነገሮች በማገድ ማንም ሳይከተልዎት ማሰስ አንዲችሉ ያደርግዎታል።",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "ድረ ገጽ ተሻጋሪ ዱካ ተከታታዮችና ሌሎች አዋኪ ነገሮች ታግደዋል",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "በዚህ እይታ ውስጥ የጋሻ ቅንብሮችን መቀየር በዚህ ድረ ገጽ ላይ የድር ተስማሚነትን ሊጎዳ ይችላል።",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "ገባኝ",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "የበለጠ ይወቁ",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "ወደ Brave ያክሉ",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "&#4776;Brave &#4768;&#4661;&#4808;&#4877;&#4853;",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Add to Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Remove from Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

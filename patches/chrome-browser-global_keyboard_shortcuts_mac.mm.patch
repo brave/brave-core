@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/global_keyboard_shortcuts_mac.mm b/chrome/browser/global_keyboard_shortcuts_mac.mm
+index 1bbe4c5fab65668acadce3f60c0e6d181f83036e..44f2cfee1431c3c8c0a3d9187d00b39163b7bd82 100644
+--- a/chrome/browser/global_keyboard_shortcuts_mac.mm
++++ b/chrome/browser/global_keyboard_shortcuts_mac.mm
+@@ -151,6 +151,7 @@ const std::vector<KeyboardShortcutData>& GetShortcutsNotPresentInMainMenu() {
+       {true,  false, false, true,  kVK_UpArrow,           IDC_FOCUS_PREVIOUS_PANE},
+       {true,  true,  false, true,  kVK_ANSI_A,            IDC_FOCUS_INACTIVE_POPUP_FOR_ACCESSIBILITY},
+       {true,  false, false, true,  kVK_ANSI_R,            IDC_SHOW_READING_MODE_KEYBOARD},
++      {true,  false, false, true,  kVK_ANSI_N,            IDC_NEW_OFFTHERECORD_WINDOW_TOR},
+     });
+     // clang-format on
+ 
+@@ -204,6 +205,7 @@ const std::vector<NSMenuItem*>& GetMenuItemsNotPresentInMainMenu() {
+ }
+ 
+ CommandForKeyEventResult CommandForKeyEvent(NSEvent* event) {
++  CommandForKeyEventResult result = [&]() -> CommandForKeyEventResult {
+   DCHECK(event);
+   if ([event type] != NSEventTypeKeyDown)
+     return NoCommand();
+@@ -220,6 +222,11 @@ CommandForKeyEventResult CommandForKeyEvent(NSEvent* event) {
+   }
+ 
+   return NoCommand();
++  }();
++  if (ShouldSuppressStaticTableCommand(result)) {
++    return NoCommand();
++  }
++  return result;
+ }
+ 
+ int DelayedWebContentsCommandForKeyEvent(NSEvent* event) {

@@ -1,0 +1,14 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("brave_geolocation_permission") {
+  sources = [ "brave_geolocation_permission.mojom" ]
+
+  export_class_attribute_blink = "CORE_EXPORT"
+  export_define_blink = "BLINK_CORE_IMPLEMENTATION=1"
+  export_header_blink = "third_party/blink/renderer/core/core_export.h"
+}

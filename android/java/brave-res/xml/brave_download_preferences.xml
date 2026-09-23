@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2020 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="automatically_open_when_possible"
+        android:title="@string/automatically_open_when_possible_title"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="download_progress_notification_bubble"
+        android:title="@string/download_progress_notification_title"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="enable_parallel_downloading"
+        android:title="@string/enable_parallel_downloading_title"
+        android:summary="@string/enable_parallel_downloading_text" />
+
+</PreferenceScreen>

@@ -1,0 +1,18 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.questionButton {
+  --leo-button-color: var(--leo-color-divider-subtle);
+}
+
+.questionButtonText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+}
+
+.generateButtonText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+}

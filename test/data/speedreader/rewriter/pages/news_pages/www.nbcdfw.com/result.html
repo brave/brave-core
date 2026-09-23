@@ -1,0 +1,4057 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title><![CDATA[News – NBC 5 Dallas-Fort Worth]]></title><body id="article"><h1 class="title metadata">&lt;![CDATA[News – NBC 5 Dallas-Fort Worth]]&gt;</h1><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+		<language>en_US</language>
+		<pubdate>Tue, 16 Aug 2022 07:15:38 -0500</pubdate>
+		<lastbuilddate>Tue, 16 Aug 2022 07:15:38 -0500</lastbuilddate>
+		<generator>NBC Owned Television Stations</generator>
+		<item>
+	
+	https://www.nbcdfw.com/news/local/dallas-police-help-provide-more-than-500-kids-with-new-shoes/3049160/
+
+	
+	<guid ispermalink="false">3049160</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/IMG_2987.jpg?quality=85&amp;strip=all&amp;fit=6000,4000">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="200" url="https://media.nbcdfw.com/2022/08/IMG_2987.jpg?quality=85&amp;strip=all&amp;fit=6000,4000" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/IMG_2987.jpg?quality=85&amp;strip=all&amp;fit=300,200</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>The Northwest Division Neighborhood Police Officer Unit did something they have done for the last six years, and it was something good for hundreds of kids.
+
+
+
+<p>“Over the years, many of these kids have gotten to know and recognize us through this initiative.&nbsp; It’s about creating positive relationships with police officers and learning that we are here to help,” Corporal Jose Gamez said. “When we’re out on patrol, we often run into families in difficult financial situations, and we want to be able to help. Partnering up with Energy Transfer over the past six years with “Share the shoes” campaign has helped thousands of families relieve some of that financial stress.”</p>
+
+
+
+<p>The department made it happen this year through partnering with Energy Transfer and Sunoco LP to collect and distribute new athletic shoes in under-resourced communities. </p>
+
+
+
+<p>More than 520 children received the shoes. It was a donation totaling more than $10,000. </p>
+
+
+
+<p>“Building relationships within our community is a very important aspect of our job. Over the past six years, the Share the Shoes campaign has enabled us to bridge the gap and make a tighter bond and connection with the communities we serve,” Officer Mike Villanueva with the Northwest Division Neighborhood Police Officer Unit said.</p>
+
+
+
+<p>In 2017, the division hosted the first “Share the Shoes” event led by Officer Brian Nolff. Officers said they noticed many children in the areas they patrolled didn’t have proper footwear.</p>
+
+
+
+<p>“It’s very meaningful to hear the first-hand stories from these officers who witness the disparities that exist in our Dallas neighborhoods and are inspired to make a difference,” Chris Curia, Executive Vice President &amp; Chief Human Resources Officer, Energy Transfer said. “Energy Transfer is proud to be a Dallas-based company and support initiatives that help strengthen our local community-especially programs like this that help support the safety of our officers and children by building positive relationships within the communities they serve. We are very grateful for the selfless and often dangerous work that our police officers do, and we’re proud to continue our relationship with the Dallas Police Department.”</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Tue, Aug 16 2022 06:33:43 AM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/as-housing-market-cools-realtors-see-more-buyer-friendly-trends-emerge/3049079/
+
+	
+	<guid ispermalink="false">3049079</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/housing-market-for-sale-sign.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/housing-market-for-sale-sign.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/housing-market-for-sale-sign.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>As housing demand continues to decline following the uptick in mortgage rates, realtors and lenders are seeing signs of hope for people who have struggled in the competitive homebuying market.
+
+
+
+<p>“We’ve never seen a market like this in Collin County over the last 18 months,” said Amy Zambrano, a realtor with The Daniel Team at Keller Williams Realty.</p>
+
+
+
+<p>Zambrano helps families find their dream home in Collin County, which is the hottest housing market in North Texas and the least affordable according to<a data-id="https://www.recenter.tamu.edu/articles/technical-report/Texas-Housing-Affordability-2336" data-type="URL" href="https://www.recenter.tamu.edu/articles/technical-report/Texas-Housing-Affordability-2336"> a recent report</a> from the Texas Real Estate Research Center. She says, after interest rates jumped roughly three points at the beginning of 2022, demand dropped and realtors started to feel the shift.</p>
+
+
+
+<p>“It is a little bit more friendly so to speak,” said Zambrano.</p>
+
+
+
+<p>Zambrano isn’t ready to call it a buyers market yet. Instead, she’s describing the market’s current climate as “buyer-friendly.”</p>
+
+
+
+<p>Crystal Parkinson, Area Manager for Cardinal Financial, said explained several emerging trends that are more favorable for families searching for a home.</p>
+
+
+
+<p>“It is nice to be able to make a call to somebody and tell them the market is softening, hold on you’re going to have a chance. One thing we are seeing now is more contingent offers are accepted. So, if a buyer has to sell their home before they can close those, are finally getting accepted,” said Parkinson.</p>
+
+
+
+<p>Parkinson also says homes are also staying on the market longer, going from an average of four to 18 days and more sellers are dropping prices.</p>
+
+
+
+<p>Zambrano says builder incentives are making a comeback.</p>
+
+
+
+<p>“A year ago a lot of them wouldn’t return phone calls because they were just too busy and they didn’t need the business,” said Zambrano.</p>
+
+
+
+<p>But things are changing.</p>
+
+
+
+<p>“They are offering savings and cost concessions for buyers to come back,” said Zambrano.</p>
+
+
+
+<p>Parkinson says another buyer-friendly strategy that’s gaining popularity is for sellers to buy down the buyer’s mortgage rate.</p>
+
+
+
+<p>“Instead of reducing the price, the seller would give that money as a seller credit to the buyer so they could buy the rate down. It actually makes more of an impact with the buyer’s payment and it will also open up a pool of more buyers to qualify for that house at the list price,” said Parkinson.</p>
+
+
+
+<p>Parkinson says the practice of buying down rates could become popular as we watch for more potential rate hikes.</p>
+
+
+
+<p>“We expect them to keep going, so the average of what’s predicted is 8%,” she said.</p>
+
+
+
+<p>But both Parkinson and Zambrano say that shouldn’t deter people from searching for a home.</p>
+
+
+
+<p>“We can always change the rate, if the rates go down you can always refinance again but at this time they’re predicting house prices are still going to go up,” said Parkinson.</p>
+
+
+
+<p>“Inventory is definitely increasing and it is not a hopeless cause,” said Zambrano.</p>
+
+
+
+<p>The mortgage rate hikes have had the biggest impact on many first-time home buyers. There are several programs designed to help prospective buyers with down payments and other resources.</p>
+
+
+
+<p>Find information about grants and other forms of assistance available in the Dallas-Fort Worth Metroplex from the Texas State Affordable Housing Cooperation, <a data-id="https://www.tsahc.org/homebuyers-renters/dallas-fort-worth-down-payment-assistance" data-type="URL" href="https://www.tsahc.org/homebuyers-renters/dallas-fort-worth-down-payment-assistance" rel="noreferrer noopener" target="_blank">here</a>.</p>
+
+
+
+<p>C<a data-id="https://www.fortworthtexas.gov/departments/neighborhoods/services/hap#:~:text=The%20city%E2%80%99s%20Homebuyer%20Assistance%20Program%20%28HAP%29%20can%20provide,new%20construction%20is%20%24252%2C000%20as%20of%20June%202022." data-type="URL" href="https://www.fortworthtexas.gov/departments/neighborhoods/services/hap#:~:text=The%20city%E2%80%99s%20Homebuyer%20Assistance%20Program%20%28HAP%29%20can%20provide,new%20construction%20is%20%24252%2C000%20as%20of%20June%202022." rel="noreferrer noopener" target="_blank">lick here </a>to learn more about Fort Worth’s program designed to help first-time homebuyers.</p>
+
+
+
+<p>To learn more about the Upfront Cost Assistance Program(UPCAP) in Dallas County, check out this <a data-id="https://www.nbcdfw.com/news/local/dallas-county-program-helps-first-time-homebuyers-through-the-process-for-free/3014688/" data-type="URL" href="https://www.nbcdfw.com/news/local/dallas-county-program-helps-first-time-homebuyers-through-the-process-for-free/3014688/">story</a>.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 09:38:52 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/i-hope-they-see-themselves-artist-painting-mckinney-silos-says-mural-could-be-done-by-end-of-month/3048983/
+
+	
+	<guid ispermalink="false">3048983</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/mkinneysilo-art.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/mkinneysilo-art.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/mkinneysilo-art.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>One of the largest works of art in North Texas is being painted right now in McKinney.
+
+
+
+<p>For weeks, people have watched a mural come to life on the city’s historic silos. On Friday night, a crowd gathered to grub, play guitar and gaze.</p>
+
+
+
+<p>“I hope they see themselves. That’s kind of the general vibe of the mural,” said<a href="https://www.guidovanhelten.com/" rel="noreferrer noopener" target="_blank"> Australian artist Guido van Helten</a>.</p>
+
+
+
+<p>Van Helton says he began working in McKinney in March by taking photos of the people and places. He’s painting a culmination of the photos on a 100-foot tall concrete silo and grain elevator on East Virginia and Main Streets.</p>
+
+
+
+<p>“I take a lot of photographs. I have a style that you’d call documentary, I guess,” said van Helton.</p>
+
+
+
+<p>Known worldwide for his oversized photorealism murals, McKinney’s will contribute to van Helten’s U.S. silo series in Minnesota, Iowa, Kansas and Arkansas.</p>
+
+
+
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-7331220" data-recalc-dims="1" height="1080" loading="lazy" sizes="(max-width: 1000px) 100vw, 1000px" src="https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=1920&amp;strip=all&amp;resize=1920%2C1080" srcset="https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=1920&amp;strip=all&amp;resize=1920%2C1080 1920w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=218&amp;strip=all 218w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=300&amp;strip=all 300w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=768&amp;strip=all 768w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=1536&amp;strip=all 1536w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=1200&amp;strip=all 1200w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=850&amp;strip=all 850w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=600&amp;strip=all 600w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=500&amp;strip=all 500w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=400&amp;strip=all 400w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=320&amp;strip=all 320w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=200&amp;strip=all 200w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=100&amp;strip=all 100w, https://media.nbcdfw.com/2022/08/mkinney-silo-artist.jpg?quality=85&amp;strip=all&amp;w=800&amp;strip=all 800w" width="1920"></figure>
+
+
+
+<p>“We saw Guido’s work but more importantly we were impressed with his process and his process is a way where he entrenches himself in the community and uses his art to tell the story of a soul of community,” said McKinney Assistant Manager Kim Flom.</p>
+
+
+
+<p>Flom says van Helten and his partner took more than 5,000 photos in McKinney to craft the mural’s image.</p>
+
+
+
+<p>It will serve as the backdrop for a public plaza at a new city hall that should break ground in the fall.</p>
+
+
+
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-7331233" data-recalc-dims="1" height="1080" loading="lazy" sizes="(max-width: 1000px) 100vw, 1000px" src="https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=1920&amp;strip=all&amp;resize=1920%2C1080" srcset="https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=1920&amp;strip=all&amp;resize=1920%2C1080 1920w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=218&amp;strip=all 218w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=300&amp;strip=all 300w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=768&amp;strip=all 768w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=1536&amp;strip=all 1536w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=1200&amp;strip=all 1200w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=850&amp;strip=all 850w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=600&amp;strip=all 600w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=500&amp;strip=all 500w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=400&amp;strip=all 400w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=320&amp;strip=all 320w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=200&amp;strip=all 200w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=100&amp;strip=all 100w, https://media.nbcdfw.com/2022/08/vlcsnap-2022-08-15-19h34m49s771.jpg?quality=85&amp;strip=all&amp;w=800&amp;strip=all 800w" width="1920"></figure>
+
+
+
+<p>“What better way to preserve the culture of the community than through a beautiful piece of art on a historic structure,” said Flom.</p>
+
+
+
+<p>The mural, van Helten says, could be done by the end of the month but it’s already connecting the community.</p>
+
+
+
+<p>The silo project is funded through grants, private donations, the McKinney Public Art Fund and the city’s hotel occupancy tax.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 07:54:27 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/dallas-looks-to-crack-down-on-overflowing-donation-boxes/3048999/
+
+	
+	<guid ispermalink="false">3048999</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/dallas-donation-box-trash.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/dallas-donation-box-trash.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/dallas-donation-box-trash.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Donation boxes in Dallas parking lots that sometimes overflow into a trashy mess may soon get regulation or even get banned.
+
+
+
+<p>The Dallas City Council Quality of Life Committee Monday discussed the options and asked city staff to return to them with a plan to put regulations in place by the end of the year in time to take effect early next year.</p>
+
+
+
+<p>Donated stuff was piled up outside one box on Fort Worth Avenue near Westmoreland Road in Oak Cliff was a possible treasure to resident Lisa Johnson.</p>
+
+
+
+<p>She sorted through the stuff Monday hoping to find gems before someone else did.</p>
+
+
+
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-7331100" data-recalc-dims="1" height="361" loading="lazy" sizes="(max-width: 499px) 100vw, 499px" src="https://media.nbcdfw.com/2022/08/DonationBox.png?w=499&amp;resize=499%2C361&amp;quality=85&amp;strip=all" srcset="https://media.nbcdfw.com/2022/08/DonationBox.png?w=499&amp;resize=499%2C361&amp;quality=85&amp;strip=all&amp;quality=85&amp;strip=all 499w, https://media.nbcdfw.com/2022/08/DonationBox.png?w=300&amp;quality=85&amp;strip=all 300w, https://media.nbcdfw.com/2022/08/DonationBox.png?w=400&amp;quality=85&amp;strip=all 400w" width="499"></figure>
+
+
+
+<p>“It will be picked up in a couple hours. Somebody will come and get it,” she said.</p>
+
+
+
+<p>Dallas City Council members see the overflow as a nuisance.</p>
+
+
+
+<p>Councilman Chad West who represents that section of Fort Worth Avenue is pushing new regulations.</p>
+
+
+
+<p>“There are just complaints literally every week about clothes thrown on the ground, items blowing out into the street,” West said.</p>
+
+
+
+<p>The committee briefing Monday said Arlington, Frisco, Houston and San Antonio are other Texas cities that regulate the boxes, but Dallas has no rules.</p>
+
+
+
+<p>Dallas officials count 160 of the boxes around the city, but there’s no way to be sure how many there are because Dallas has no registration requirement.</p>
+
+
+
+<p>So, when there is a mess to be cleaned up, Dallas has no way to contact owners except for numbers that might be on the box. And then there is no penalty for failing to clean things up</p>
+
+
+
+<p>“We want development. The key to development is clean and safe,” said Councilman Casey Thomas.</p>
+
+
+
+<p>He supports restrictions but does not want to unfairly punish good non-profits that act responsibly.</p>
+
+
+
+<p>Regulation could include fines or could limit the boxes to city-owned parking lots for better oversight.</p>
+
+
+
+<p>Or they could be banned to save the city expense of registration and enforcement.</p>
+
+
+
+<p>“It’s a hard call but I think the easiest thing to do is just speak in terms of dollars and cents, and the good sense would be just to remove them,” Councilmember Carolyn King Arnold said.</p>
+
+
+
+<p>West wants to try regulation first before a ban.</p>
+
+
+
+<p>“I think some of my neighbors would support the outright ban but I’m a little bit cautious when you have good operators,” West said.</p>
+
+
+
+<p>Lisa Johnson said the city officials should try life on the street before they complain about the nuisance.</p>
+
+
+
+<p>“Live out here for a week or two, a year. See if they like the mess then,” Johnson said.</p>
+
+
+
+<p>She will have more time to visit the collection boxes because it will be next year before any new Dallas collection box restrictions are in place.</p>
+
+
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 06:40:47 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/person-fatally-shot-following-minor-car-crash-in-fort-worth/3048845/
+
+	
+	<guid ispermalink="false">3048845</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2019/09/fort-worth-police-generic-tape.jpg?quality=85&amp;strip=all&amp;fit=1200,675">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2019/09/fort-worth-police-generic-tape.jpg?quality=85&amp;strip=all&amp;fit=1200,675" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2019/09/fort-worth-police-generic-tape.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Fort Worth Police are investigating after a man was found fatally shot following a minor car crash early Monday morning.
+
+
+
+<p>At about 2:45 a.m., officers were called to a crash along University near the Interstate 30 overpass adjacent to Trinity Park. </p>
+
+
+
+<p>When officials arrived, they confirmed there had been an argument after a crash and that a man had been shot. First responders said the man died at the scene. </p>
+
+
+
+<p>The man’s identity has not yet been confirmed. </p>
+
+
+
+<p>Police detained several people but so far no arrests have been announced.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 06:26:28 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/national-international/texas-child-protective-services-worker-fired-after-telling-14-year-old-girl-in-foster-care-to-enter-sex-work/3048958/
+
+	
+	<guid ispermalink="false">3048958</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/08152022-Texas-CPS-NATL.jpg?quality=85&amp;strip=all&amp;fit=1200,675">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit>AVP</media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/08152022-Texas-CPS-NATL.jpg?quality=85&amp;strip=all&amp;fit=1200,675" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/08152022-Texas-CPS-NATL.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>A Texas child protective services worker&nbsp;<a href="https://www.click2houston.com/news/texas/2022/08/14/texas-child-welfare-agency-fires-employee-for-encouraging-a-foster-child-to-consider-sex-work/" rel="noreferrer noopener" target="_blank">was fired this month</a>&nbsp;after she was caught on video telling a 14-year-old girl she should consider sex work, state officials said Sunday.
+
+
+
+<p>The unidentified Texas Department of Family and Protective Services employee was dismissed after her conversation with the girl, who recorded the discussion while she was in foster care.</p>
+
+
+
+<p>The video was first aired by&nbsp;<a href="https://www.fox26houston.com/news/cps-employee-14-year-old-girl-prostitute" rel="noreferrer noopener" target="_blank">KRIV-TV of Houston</a>. The girl was being housed in a hotel before a foster family could be found. The video shows the girl asking the employee for food, then being encouraged by the employee to become a prostitute.</p>
+
+
+
+<p>“The person in the video — who was employed as [child protective services] support staff — was dismissed from her position August 10,” agency spokeswoman Marissa Gonzales said in a statement.</p>
+
+
+
+<p><strong><em><a href="https://www.nbcnews.com/news/us-news/texas-child-protective-services-worker-fired-telling-14-year-old-girl-rcna43140">Read the full story at NBCNews.com.</a></em></strong></p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 05:52:06 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/home-explosion-and-fire-kills-one-and-injures-5-others-in-garland/3048870/
+
+	
+	<guid ispermalink="false">3048870</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2022/08/Garland-Home-Explosion-1.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/Garland-Home-Explosion-1.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/Garland-Home-Explosion-1.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>A home explosion in Garland led to a fire and sent a family of six to the hospital with serious injuries, according to the Garland Fire Department. Family members said the mother died Sunday night from her injuries. 
+
+
+
+<p>Firefighters said the call came in around 10:47 a.m. on Sunday for a house in the 600 block of East Ridgewood Drive, that partially exploded and was on fire. </p>
+
+
+
+<p>“It sounded like a bomb. It was, it was like ‘boom’ it was very hard,” said Jose “Ramiro” Rodriguez who was outside doing yard work when he witnessed the side of the home explode and burst into flames. </p>
+
+
+
+<p>“There was a boy, about 15 years old, and he asked for help (in Spanish), ‘ayuda, ayuda, ayuda.’ I ran there to the room and I found the two little kids on fire, [their] shirts and everything. I took off the shirts, I burned my fingers,” explained Rodriguez who also had to receive treatment for his burned hands. “There was another lady on the other side, and there was fire on her clothes and everything.” </p>
+
+
+
+<p>“The young man ran out asking for help, torched, started rolling in the grass even the grass caught on fire,” said Jose Rodriguez, who lives across the street with his wife Dalilah and their two kids under two. “It was horrible, something you see out of a movie, they were lit up on fire.”</p>
+
+
+
+<p>“We just heard a loud bang, like an explosion, and we ran out to see what was going on, and he ran and said, ‘Call 911,” said Dalilah Carrillo, wife of Jose and niece of Ramiro. “My uncle was the first one to the scene, I went out to help, I walked a few of the victims to the ambulance, looking back to their injuries, it’s hard.”</p>
+
+
+
+<p>Gloria Godinez told NBC-5 that her mother, 54-year-old Paula Reyes, died from her injuries Sunday night.</p>
+
+
+
+<p>“Everybody loved her,” Godinez said. “She loved kids.”</p>
+
+
+
+<p>Godinez said her 15-year-old brother was taken to Medical City Plano and is in critical condition with burn injuries.</p>
+
+
+
+<p>She added her two adult sisters are stable in the burn unit at Parkland Hospital in Dallas. Her two nephews, ages 5 and 2, are also in critical condition with severe burns.</p>
+
+
+
+<p>Godinez tonight is grieving the loss of her mother, hoping the rest of her family survives while holding gratitude for those who rushed to save them.</p>
+
+
+
+<p>“I just want to say thank you to those brave men that pulled my family out of the house and God bless them,” Godinez said. “Me and my brother are very grateful for them.”</p>
+
+
+
+<p>The family set up a <a href="https://www.gofundme.com/f/ftz7yv-reyes-family?qid=a078b80fccf3295aa82f74aedabb8b60" rel="noreferrer noopener" target="_blank">GoFundMe Account </a>to help with expenses. The traumatic incident comes several months after their father passed away. </p>
+
+
+
+<p>“I’m just hoping and praying for that family and for the recovery for those who are still fighting for their lives right now,” said Carrillo.</p>
+
+
+
+<p>All day on Monday investigators with the Garland Fire Department, ATF, and Fire Marshal’s Office combed through the home to determine what caused the explosion. </p>
+
+
+
+<p>Atmos Energy was also there and said in a statement that based on their preliminary investigation, they don’t believe their system was involved.</p>
+
+
+
+<p>“<em>Atmos Energy’s highly trained technicians responded to a call on E. Ridgewood Dr. in Garland at the request of the Garland Fire Department. We worked closely with emergency responders and shut off gas to the home. We completed a preliminary investigation and believe that our system is operating as expected. We found no indications that our system was involved. We continue to work closely with first responders including the Garland Fire and Police Departments, the City of Garland, and all officials who responded to the event to confirm the area is safe. If you suspect a natural gas leak, leave the area immediately! From a safe distance call 911 and Atmos Energy’s 24-hour toll-free emergency number at&nbsp;<a href="tel:8663228667" rel="noreferrer noopener" target="_blank">866.322.8667</a>.</em>“</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 05:49:50 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/carter-in-the-classroom/school-accountability-scores-released-monday-in-texas-see-your-schools-score/3048913/
+
+	
+	<guid ispermalink="false">3048913</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/tea-report-card.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/tea-report-card.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/tea-report-card.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>North Texas schools <a href="https://txschools.gov/index.html" rel="noreferrer noopener" target="_blank">received their annual report cards</a> from the state on Monday.
+
+
+
+<p>Students at Beck Elementary in Garland got their report card hand-delivered Monday by the state’s education commissioner.&nbsp; </p>
+
+
+
+<p>Beck received a solid A grade after coming in barely a C a few years ago.</p>
+
+
+
+<p>“It is amazing what you accomplished. Let me do what everyone should do to educators for what you’ve been able to deliver to our kids,” said Education Commissioner Mike Morath as he bowed before teachers.</p>
+
+
+
+<p>Similar bows are deserved all around North Texas.&nbsp;The Hurst-Euless-Bedford, Sunnyvale and Frisco ISDs some of several districts scoring an A on&nbsp;<a href="https://txschools.gov/index.html" rel="noreferrer noopener" target="_blank">the state’s score card, which relies heavily on STAAR to measure key metrics</a> of&nbsp;“achievement, growth and closing the gaps.”</p>
+
+
+
+<p>“The state accountability ratings show what we already know — We provide a high-quality education for our students here in Frisco ISD,” said Wes Cunningham, associate deputy superintendent of Frisco ISD.</p>
+
+
+
+<p>The three biggest districts, Dallas,&nbsp;Fort Worth and Arlington, are all B districts.&nbsp;</p>
+
+
+
+<p>“We are very very pleased with a B, an 86 districtwide, that’s where we were pre-pandemic. That indicates we have collectively worked to make sure our students are where they were pre-pandemic,” said Stephanie Elizalde, superintendent of the Dallas ISD.</p>
+
+
+
+<p>“It’s one indicator of how schools and students are doing. It doesn’t tell you the whole picture of a school, but it’s an important indicator,” added Marcelo Cavazos, superintendent of the Arlington ISD.</p>
+
+
+
+<p>Fort Worth ISD’s B grade is an improvement from the C they scored on the last ranking, but they still have several campuses that need improvement.&nbsp;</p>
+
+
+
+<p>Birdville and Cedar Hill were the only two C districts in the immediate area and Lake Worth ISD was not rated.&nbsp;That means they scored lower than a C.</p>
+
+
+
+<p>“We are disappointed in the results. However, we will continue to work diligently with our educators to ensure that the proper tools, resources and supports are available to them so that our students can achieve academic success. I am<br>confident that we will demonstrate student performance improvement during the 2022-2023 school year,” said Rose Mary Neshyba, superintendent of the Lake Worth ISD.</p>
+
+
+
+<p>Morath broke down the data and said the low scores aren’t to shame any district.&nbsp;</p>
+
+
+
+<p>“The idea that this is some kind of rating of poverty is false,” said Morath. “We know that doing this, providing clear performance information about schools, helps students and has a positive impact on students at risk.”</p>
+
+
+
+<p>You can review rankings at your child’s district and school <a data-type="URL" href="https://txschools.gov/index.html" rel="noreferrer noopener" target="_blank">here</a>. </p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 05:48:34 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/health/helping-north-texas-most-vulnerable-beat-the-heat/3048893/
+
+	
+	<guid ispermalink="false">3048893</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2022/08/elderly-heat-1.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/elderly-heat-1.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/elderly-heat-1.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>UT Southwestern Medical Center is hosting a clinical trial to better understand the best way older adults can handle extreme heat waves, in particular, when they don’t have access to air conditioning.
+
+
+
+<p>Participants spend three hours in a chamber that simulates a heat wave, mostly sitting but also cycling for five minutes every 20 minutes to simulate heat generation during activities of daily living.</p>
+
+
+
+<p>During the 3-hour period, researchers monitor the participants’ hearts, lungs and brain blood flow.</p>
+
+
+
+<p>The goal of the trial is to determine whether the struggle of the elderly to regulate their body heat during extremely hot temps leads to more stress on the heart.</p>
+
+
+
+<p>They also hope to learn whether skin wetting is an effective way of lowering heart stress and body temperatures.</p>
+
+
+
+<p>Using a fan may have negative consequences.</p>
+
+
+
+<p>“Just the same way that if you put a turkey in an oven and turn on a fan, it’s called a convection oven, the turkey cooks faster. The concept would be the same that if we have an older individual and it’s 117 degrees, we put a fan on and we’re wondering if perhaps they can actually get hotter, faster,” said UT Southwestern Internal Medicine Professor Dr. Craig Crandall, who runs a lab at the Institute for Exercise and Environmental Medicine, a collaboration between UT Southwestern and Texas Health Presbyterian Hospital Dallas.</p>
+
+
+
+<p>Participant Everett Spaeth, 74, said he was willing to break a sweat to help researchers.</p>
+
+
+
+<p>“I saw it either through an email or online and I thought it’d be interesting just to help out the researchers in the study. Then, I thought there might be something of a good health check for me, to make sure all my vitals were good,” Spaeth said.</p>
+
+
+
+<p>Here is the contact information for anyone interested in participating in the research:</p>
+
+
+
+<p>Email: <a href="mailto:IEEMthermoregulationTHD@texashealth.org" rel="noreferrer noopener" target="_blank">IEEMthermoregulationTHD@texashealth.org</a><br>Phone: 214-345-6502</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 05:25:39 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/dfw-restaurant-week-fundraiser-benefits-2-north-texas-charities/3048849/
+
+	
+	<guid ispermalink="false">3048849</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/dfw-restaurant-week-one.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/dfw-restaurant-week-one.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/dfw-restaurant-week-one.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>DFW Restaurant Week is marking a 25-year milestone this year. 
+
+
+
+<p>It’s <a href="https://www.nbcdfw.com/entertainment/the-scene/reservations-open-now-for-dfw-restaurant-week-2022/3011143/">North Texas’ largest culinary event of the year</a> and the second longest-running restaurant week in the country. It is also a major fundraiser for charitable partners; the North Texas Food Bank in Dallas and Collin counties, and Lena Pope in Tarrant County.</p>
+
+
+
+<p>“If you look over those 25 years, DFW Restaurant Week has raised, just for the North Texas Food Bank, over $8.5 million,” NTFB President and CEO Trisha Cunningham said. That translates to about 25 million meals over the last quarter of a century.</p>
+
+
+
+<p>“We are serving needs higher than ever because of inflation,” Cunningham said. “People can go and try new restaurants. They can enjoy their favorites at a time of the year when they have a fixed price menu and know that they can also eat for good.”</p>
+
+
+
+<p>Eating for good in Tarrant County benefits Lena Pope, which helps provide mental health counseling, education, and supportive services for children and families. Since the pandemic, referrals for help have doubled.</p>
+
+
+
+<p>“We’re not out of this yet,” said Keegan Hand, Lena Pope director of development. “Mental health is certainly something that needs to be taken seriously, and it’s something that there’s not enough services.”</p>
+
+
+
+<p>DFW Restaurant Week is one of Lena Pope’s largest annual fundraisers, providing more than $2.3 million over the last 24 years.</p>
+
+
+
+<p>“So, it really does make a huge impact for us, for our agency,” Hand said. “And ultimately the kids and families that we serve.”</p>
+
+
+
+<p>Most venues extend DFW Restaurant Week offerings through Sept. 4. </p>
+
+
+
+<p>For information about participating restaurants <a data-id="https://www.audacy.com/dfwrestaurantweek/latest/celebrating-25-years-of-dining-printable-dfwrw-list" data-type="URL" href="https://www.audacy.com/dfwrestaurantweek/latest/celebrating-25-years-of-dining-printable-dfwrw-list" rel="noreferrer noopener" target="_blank">click here</a>. </p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 05:13:23 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/politics/lone-star-politics/in-texas-ag-race-garza-nearly-tied-with-paxton-latest-poll-shows/3048827/
+
+	
+	<guid ispermalink="false">3048827</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2021/03/texas-capitol-2.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2021/03/texas-capitol-2.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2021/03/texas-capitol-2.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>In the final months of the race for Texas attorney general, Democratic candidate Rochelle Garza is making inroads against Republican incumbent Ken Paxton.
+
+
+
+<p>“He’s been under criminal indictment for more than seven years and has been engaging in culture wars instead of addressing the things that Texans really care about and standing up for Texas families. That is what I am here to do.&nbsp; That’s what I want to do with the Office of Attorney General is to fight for Texas families,” said Garza.</p>
+
+
+
+<p>Garza, a civil rights attorney, says she believes the focus of the office she seeks should include protecting civil rights and the rights of consumers.</p>
+
+
+
+<p>A new poll by The Dallas Morning News and the University of Texas at Tyler shows Paxton with 34% of the vote and Garza with 32%. Libertarian Mark Ash has 8% and 18% of voters are undecided.</p>
+
+
+
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-7330709" data-recalc-dims="1" height="1080" loading="lazy" sizes="(max-width: 1000px) 100vw, 1000px" src="https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=1920&amp;strip=all&amp;resize=1920%2C1080" srcset="https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=1920&amp;strip=all&amp;resize=1920%2C1080 1920w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=218&amp;strip=all 218w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=300&amp;strip=all 300w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=768&amp;strip=all 768w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=1536&amp;strip=all 1536w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=1200&amp;strip=all 1200w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=850&amp;strip=all 850w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=600&amp;strip=all 600w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=500&amp;strip=all 500w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=400&amp;strip=all 400w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=320&amp;strip=all 320w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=200&amp;strip=all 200w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=100&amp;strip=all 100w, https://media.nbcdfw.com/2022/08/TXAGRACE6PPKG-08-15-2022-04.15.04-PM_2022-08-15-16-33-16.jpg?quality=85&amp;strip=all&amp;w=800&amp;strip=all 800w" width="1920"></figure>
+
+
+
+<p>Paxton has the fundraising edge. Though Garza outsides him in the last fundraising period, he has about $3,500,000.&nbsp; Garza has about $445,000.</p>
+
+
+
+<p>“This is essentially the queen on the chess board.&nbsp;This would be a game changer for Texans and that is what I’m focused on, and that is what we are telling donors and making sure that they understand that,” added Garza.</p>
+
+
+
+<p>NBC 5 asked for and did not receive a comment from Paxton or his campaign. Texas Republican Party Chairman Matt Rinaldi did send a statement saying, “Rochelle who? Ken Paxton is one of the most successful attorney generals in the country. <span>We look forward to re-electing Gen. Paxton in November and continuing Republicans’ 28-year streak of winning every statewide office in Texas.”</span></p>
+
+
+
+<p>Paxton was indicted on securities fraud charges about seven years ago and he maintains he did nothing wrong. SMU political science professor Matthew Wilson thinks that may play in a role in the race, but adds it’s still an uphill climb for democrats.</p>
+
+
+
+<p>“We know that Ken Paxton has a lot of baggage, and in fact, his primary opponents said as much. They cautioned that if republicans nominated Paxton, it would make this a competitive race when it would otherwise likely not be.&nbsp;And I think that is in fact what’s playing out with him only up two or three points,” said Wilson.</p>
+
+
+
+<p>Wilson says a key to this poll is the high number of undecided voters.</p>
+
+
+
+
+<p><i>This story uses functionality that may not work in our app. <a href="https://www.nbcdfw.com/news/politics/lone-star-politics/in-texas-ag-race-garza-nearly-tied-with-paxton-latest-poll-shows/3048827/">Click here</a> to open the story in your web browser.</i></p>]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 04:42:04 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/back-to-school/tarrant-area-food-bank-increases-food-distribution-schedule-through-aug-31/3048571/
+
+	
+	<guid ispermalink="false">3048571</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2021/12/Talk-St-698-D-Tarrant-Area-Food-Bank.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2021/12/Talk-St-698-D-Tarrant-Area-Food-Bank.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2021/12/Talk-St-698-D-Tarrant-Area-Food-Bank.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>With many parents feeling the financial burden of back-to-school expenses, the Tarrant Area Food Bank is taking some of the stress off families by increasing their food distribution schedules through the end of August. This includes their large-scale Back-to-School Mega Mobile events at the Dickies Arena on August 19.
+
+
+
+<p>Here is a list of Tarrant Area Food Bank events.</p>
+
+
+
+<ul><li><strong>6 a.m. to 8:30 p.m., Wednesday, Aug. 17 &amp; 31:</strong> The two remaining Mobile Market events will be held at Herman Clark Stadiums.</li></ul>
+
+
+
+<ul><li><strong>8 a.m. to 10 a.m., Friday, Aug. 19:</strong> The Back-to-School Mega Mobile Market will be held at Dickies Arena-Yellow Lot at 3434 Trail Drive in Fort Worth. Families can expect to receive some kid-friendly nutritious meals as a part of the 50lbs of food each family will receive.</li></ul>
+
+
+
+<ul><li><strong>8 a.m. to 10 a.m., every Saturday: </strong>The recently introduced Saturday mobile event will be held at The Met Church at 11301 Old Denton Road in Fort Worth, 76244.</li></ul>
+
+
+
+<ul><li><strong>6:30 p.m. to 8:30 p.m., Wednesday, Aug. 24:</strong> The new Tarrant Area Food Bank mobile event in Mansfield, sponsored by Harvesting in Mansfield (H.I.M.) will be held at the Mansfield ISD Center for the Performing Arts 1110 W. Debbie Ln, Mansfield, 76063.</li></ul>
+
+
+
+<p>Each family will receive a 50 pound box of food with an assortment of dairy, produce and protein.</p>
+
+
+
+<p>Due to the increase in mobile events, TAFB is also seeking <a href="http://www.tafb.org/volunteer">volunteer help</a>. For more information on events, visit <a href="https://tafb.org/">TAFB</a>.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 03:41:40 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/back-to-school/garland-irving-isd-report-bus-delays-due-to-driver-shortage/3048642/
+
+	
+	<guid ispermalink="false">3048642</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2019/09/AP431163967789_SchoolBus_Stock.jpg?quality=85&amp;strip=all&amp;fit=1200,675">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit>AP</media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2019/09/AP431163967789_SchoolBus_Stock.jpg?quality=85&amp;strip=all&amp;fit=1200,675" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2019/09/AP431163967789_SchoolBus_Stock.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Students in the Garland and Irving ISD are being subjected to delays due to a shortage of bus drivers.
+
+
+
+<p>The Garland ISD said they were facing major staffing shortages Monday morning and that some students were two hours late to school. They expect to deal with the same issue in the afternoon as well. </p>
+
+
+
+<p>Irving ISD is going through a similar problem. They do not have enough drivers for all of the bus routes. To help minimize the shortage, they are offering sign-on bonuses to potential drivers. For the time being, the district asks for parents to have patience with the delays. Irving ISD parents can check the <a href="https://www.irvingisd.net/Page/2621" rel="noreferrer noopener" target="_blank">district website</a> to see if the delays impact their child’s route. </p>
+
+
+
+<p>Fort Worth ISD had similar struggles during the 2021-2022 school year, <a href="https://www.nbcdfw.com/news/back-to-school/once-short-staffed-fort-worth-isd-overcomes-bus-driver-shortage/3048556/">but after revamping the routes and hiring more staff the said they’ve overcome last year’s obstacles</a>. Fort Worth still hopes to hire more than two dozen additional drivers to help cover field trips, vacations and sick calls.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 03:29:54 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/back-to-school/once-short-staffed-fort-worth-isd-overcomes-bus-driver-shortage/3048556/
+
+	
+	<guid ispermalink="false">3048556</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/IMG-3083.jpg?quality=85&amp;strip=all&amp;fit=4032,3024">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="225" url="https://media.nbcdfw.com/2022/08/IMG-3083.jpg?quality=85&amp;strip=all&amp;fit=4032,3024" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/IMG-3083.jpg?quality=85&amp;strip=all&amp;fit=300,225</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Finding drivers has been one of the biggest challenges for school districts. <a href="https://www.nbcdfw.com/news/local/ongoing-bus-driver-shortage-presents-challenges-for-local-school-districts/3045743/">Many have already felt the burn of staffing shortages</a> in the first week of school.
+
+
+
+<p>Last school year, the ongoing bus driver shortage that is plaguing the country hit Fort Worth ISD hard.</p>
+
+
+
+<p><a href="https://www.nbcdfw.com/news/local/fort-worth-isd-desperately-searching-for-bus-drivers/2954065/">Just months ago in April, they were looking to fill 100 positions</a>. They were so short-staffed that as many as 40 routes didn’t even have a driver.</p>
+
+
+
+<p>But the district said this year they’re in much better shape.</p>
+
+
+
+<p>“We’re in a much better position than we were a year ago, in that we have enough people to be able to keep things covered,” said Dr. Joseph Coburn, chief of district operations for the Fort Worth ISD.</p>
+
+
+
+
+
+
+<p>Coburn said his team has spent the summer hiring new drivers and completely revamping their bus routes. He said they’re in such good shape, that buses should run on time this week for the first few days of school.</p>
+
+
+
+<p>“Our drivers have been amazing. They are the first people kids see every day and they’re the last people students see every day when they get off of the bus. And what we’ve asked them to do, they just keep stepping up, they just keep doing great work,” he said. “So we were pleased – we were able to increase their compensation this year. We increased their compensation last year. They earn every penny, they’re still valuable. And so they’re doing a lot and they get all the credit for the improvements that we have.”</p>
+
+
+
+<p>Currently, they are looking to hire about 30 bus drivers for a “reserve force” to help out with field trips and ease the strain on the schedule if drivers get sick, call out, or take time off.</p>
+
+
+
+<p>“More importantly, we knew that we had to change the way we did business. And so we’ve made some changes to allow ourselves to be more efficient, and be able to do more with the fleet that we have,” he said. “We absolutely still need more drivers to keep our fleet strong and to make sure we can remain as reliable as we want to be.”</p>
+
+
+
+<p>In the last two years of the pandemic, the district lost about a quarter of its drivers. They’ve been trying to build that back ever since.</p>
+
+
+
+<p>It reached a point where students were waiting for long periods before and after school, with not enough drivers to cover sick calls and absences.</p>
+
+
+
+<p>“The challenges a year ago – in our best case scenario, we were going to have uncovered bus routes every day. Which meant no matter what we did, no matter how hard we tried, there were going to be students whose buses were going to be very late every day,” said Coburn.</p>
+
+
+
+<p>In addition to hiring more drivers, Coburn said the biggest part of fixing the issues they saw last year was making their bus routes more efficient than they ever were.</p>
+
+
+
+<p>“We literally stripped it down to the studs and said, how can we redo this entire thing to make sure what people need more than anything is reliable transportation? They need to know that a bus is going to be there every day,” he said. “Students want to know that they’re going to see the same driver every day, just like they want to see the same teacher every day. We spent a lot of time and energy looking for those efficiencies.”</p>
+
+
+
+<p>He explained that every district – especially large ones like FWISD – is pulling off a gargantuan effort to get students to school by bus.</p>
+
+
+
+<p>“When you’re running over 250 buses every day and transporting over 70,000 students every day, the margins are very small to keep the trains running on time,” he said. “And traffic is unpredictable. There are so many things – weather is unpredictable. So we have a team of people here, it’s like a symphony in place every single day. How are we identifying a problem? How are we getting in front of it?”</p>
+
+
+
+<p>It takes more than just drivers. There are dispatchers and route supervisors in the operations center who build the routes, keep them staffed, communicate with drivers, and handle where hundreds of drivers and attendants will be throughout the school year.</p>
+
+
+
+<p>Coburn said like so many other industries, schools are competing for talent in the workforce — whether it be teachers or drivers.</p>
+
+
+
+<p>“Labor markets have just changed. I think school districts, every industry, we’re just trying to adapt. We’re trying to stay ahead of change,” he said. “We’re trying to make sure that we’re as desirable a place for anyone to come work as we possibly can be. And we’re working really hard to do that every single day.”</p>
+
+
+
+<p>Latisha Williams said it takes a certain type of person like herself to handle her job.</p>
+
+
+
+<p>“It’s a tough job. But somebody’s got to do it,” she said.</p>
+
+
+
+<p>She’s been working on a bus — either as an attendant or a driver — for the past six years for FWISD. Currently, she works specifically with special needs children.</p>
+
+
+
+<p>&nbsp;“Actually, I feel like all kids have a special need, even if they’re not a special needs student. So that’s why I love working here because I get to work with kids,” she said.</p>
+
+
+
+<p>Williams said her job is like family. In fact, her own mother is a bus driver.</p>
+
+
+
+<p>Over the last two years, Williams has leaned on that family. And despite the driver shortages and overtime hours, she said everything she does is for the kids.</p>
+
+
+
+<p>“These buses may look hard to drive but that’s the easy part,” she said. “I get my motivation from our veterans that have been here more than 47 years, we have quite a few of them.”</p>
+
+
+
+<p>While bus driver shortages are continuing to put a strain on districts across north Texas, <a href="https://www.nbcdfw.com/news/local/north-texas-school-districts-compete-for-qualified-bus-drivers/2813975/">some are offering big bucks to bring on more drivers.</a></p>
+
+
+
+<p>Fort Worth ISD has taken things up a notch to get bus drivers, becoming one of the highest-paying districts in DFW.</p>
+
+
+
+<p>Starting pay for bus drivers increased from $18.40 to $22 per hour, with opportunities to make up to $26.97 an hour. New hires are eligible for a $1,000 sign-on bonus.</p>
+
+
+
+<p>There’s also a ‘Welcome Home’ bonus of $500 if you’re a former Fort Worth ISD graduate.</p>
+
+
+
+<p>Bus attendants now get $13 an hour and are eligible for all the same bonuses.</p>
+
+
+
+<ul><li><a href="https://www.applitrack.com/fortworth/onlineapp/default.aspx?Category=Supporting+District+Operations&amp;subcategory=Bus+Drivers">Click here to apply to be a bus driver in Fort Worth ISD</a></li><li><a href="https://www.fwisd.org/careers">Here’s a link to the district’s careers site</a></li></ul>
+
+
+
+<p>“I think the challenge is, in a market where people can do so many things, how do we help them understand the experience of driving a bus?” said Coburn. “The connections you get to make with students every day and the difference that you get to make is hopefully what will drive them to want to come here and drive a bus for Fort Worth ISD.”</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 03:21:22 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/new-bus-operators-eligible-to-receive-3500-sign-on-bonus-to-dart-through-sept-30/3048496/
+
+	
+	<guid ispermalink="false">3048496</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2019/09/DART-Bus-3.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2019/09/DART-Bus-3.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2019/09/DART-Bus-3.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description> DART is offering new drivers up to $3,500 in sign-on bonuses through Sept. 30. 
+
+
+
+<p>The breakdown for CDL drivers includes $1,000 awarded after successful completion of training, $1,000 awarded after successfully completing a six-month probationary period and $1,500 awarded after 12 months after probation ends (18 months). </p>
+
+
+
+<p>Drivers without a CDL, but with an active Commercial Learner Permit (CLP), can earn up to a $1,800 bonus. They will receive $400 after successful completion of training, $400 after successfully completing a 6-month probationary period and $1,000 after twelve months after the probation period ends (18 months).</p>
+
+
+
+<p>New drivers who live outside of the Dallas/Fort Worth region, 150 miles or more, will be eligible for a relocation stipend of $1,500. </p>
+
+
+
+<p>DART offers starting pay at $21.13 per hour along with traditional medical and retirement benefits. They also offer free rides on DART, TRE and DCTA systems for the employee and a designated dependent.</p>
+
+
+
+<p>For more on the position and benefits, <a href="https://www.dart.org/hr/humanresources.asp?zeon=transportation" rel="noreferrer noopener" target="_blank">click here</a>. </p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 02:27:39 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/health/monkeypox-vaccine-available-for-eligible-denton-county-residents-limited-supply/3048460/
+
+	
+	<guid ispermalink="false">3048460</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/Monkeypox-Vaccination-Efforts-in-MiamiDade.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/Monkeypox-Vaccination-Efforts-in-MiamiDade.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/Monkeypox-Vaccination-Efforts-in-MiamiDade.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Denton County Public Health is accepting registrations for people seeking monkeypox vaccinations. 
+
+
+
+<p>The  Center for Disease Control and Prevention (CDC) recommends vaccination for people that have been exposed to monkeypox and people who may be more likely to get monkeypox. </p>
+
+
+
+<p><strong>Current eligibility for the vaccination through Denton County Public Health is as follows:  </strong></p>
+
+
+
+<ul><li>Individuals who had known contact with someone who tested positive for monkeypox within the previous 14 days</li><li>A man who has had sex with men and has had multiple anonymous sexual partners in the previous 14 days</li><li>Individuals who had a sexual partner in the previous 14 days who was showing symptoms of monkeypox at the time of intimate contact, such as rash or sores</li><li>Individuals with a diagnosis of HIV, chlamydia, gonorrhea, or early syphilis within the previous 12 months, and </li><li>Individuals who are on HIV pre-exposure prophylaxis </li></ul>
+
+
+
+<p>The vaccine is currently in limited supply. The DCPH is only offering the vaccination to Denton County residents at this time. If you reside outside of Denton County, it is recommended you contact your local or regional health department in regard to vaccine eligibility and availability. </p>
+
+
+
+<p>Monkeypox vaccination is recommended to prevent infection in people exposed to the virus. Vaccinated persons should take steps in protecting themselves from infection by avoiding close, skin-to-skin contact, with someone who has monkeypox or monkeypox symptoms. </p>
+
+
+
+<h2 class="wp-block-nbc-section-heading">MORE ABOUT MONKEYPOX</h2>
+
+
+
+<p>Anyone can contract monkeypox, regardless of gender identity or sexual orientation said DCPH. The virus’ transmission happens through close physical contact with a person who has monkeypox, mainly through contact with infectious sores, scabs, or bodily fluids. </p>
+
+
+
+<p>Anyone with a rash that looks like it could be monkeypox is urged to call their healthcare provider and avoid gatherings, sex, or being intimate with anyone until they consult their healthcare provider. </p>
+
+
+
+<p>To learn more or register, if eligible, please <a href="https://storymaps.arcgis.com/stories/312127f7ae6246878c13687e6ddb33ee" rel="noreferrer noopener" target="_blank">click here</a>. </p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 02:00:00 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/1-75-million-texas-two-step-prize-claimed-by-arlington-resident/3048427/
+
+	
+	<guid ispermalink="false">3048427</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2019/09/texas-lottery-papers.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2019/09/texas-lottery-papers.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2019/09/texas-lottery-papers.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>An Arlington resident hit a $1.75 million Two Step jackpot earlier this month.
+
+
+
+<p>The winning ticket was purchased at a Quiktrip gas station on Industrial Boulevard in Euless for the Aug. 8 drawing.</p>
+
+
+
+<p>The winner chose to remain anonymous. </p>
+
+
+
+<p>The winning Quick Pick ticket matched all four white ball numbers ( 4-11-17-33) and the Bonus Ball (9).  The jackpot rolled for nearly a month before the winning numbers were drawn.</p>
+
+
+
+<p>The advertised Two Step jackpot for Aug. 15 is $200,000.</p>
+
+
+
+<h2 class="wp-block-nbc-section-heading">ABOUT TEXAS TWO STEP</h2>
+
+
+
+<p>Texas Two Step prize money begins at $200,000 and increases for the next drawing until a winner is crowned. To win, players must match all four of the white ball numbers, ranging from 1-35, as well as the Bonus Ball number, numbers 1-135. </p>
+
+
+
+<p>Drawings for the Texas Two Step happen on Mondays and Thursdays at 10:12 p.m. CT and tickets must be purchased by 10:02 p.m. CT.</p>
+
+
+
+<p>For more information visit the <a href="https://www.texaslottery.com/export/sites/lottery/index.html" rel="noreferrer noopener" target="_blank">Texas Lottery website</a>.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 01:33:08 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/sports/wings-take-41-point-lead-in-second-quarter-against-sparks/3048415/
+
+	
+	<guid ispermalink="false">3048415</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/GettyImages-1242525319.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit>NBAE via Getty Images</media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/GettyImages-1242525319.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/GettyImages-1242525319.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Marina Mabrey scored 27 points, Teaira McCowan added 24, and playoff-bound Dallas rode a 41-point second quarter to a 116-88 victory over Los Angeles in a regular-season finale on Sunday.
+
+
+
+<p>The second-quarter blitz included an 18-0 run and the Wings finished the first half with a 66-29 lead on 74% shooting from the field, making 7 of 11 3-pointers and 13 of 17 free throws. Dallas finished at 66% from the field, making 11 of 22 3-pointers and 21 of 27 free throws.</p>
+
+
+
+<p>Tyasha Harris had her first career double-double for Dallas (18-18), combining 18 points with a career-high 11 assists. Kayla Thornton added 15 points and Allisha Gray scored 14.</p>
+
+
+
+<p>Brittney Sykes scored 35 points, the only starter in double figures for Los Angeles. She passed 2,000 career points and her three steals pushed her past 200 for her career. Chennedy Carter had 13 points and Kianna Smith 10 for the Sparks.</p>
+
+
+
+<p>Dallas set a franchise record for points in a regular-season game but came up well short of the WNBA regular-season records for points and points by a visitor. Both marks were established in Phoenix’s 127-124 victory at Minnesota in 2010. The 2022 season high was the 118 points scored by Minnestoa in a home win over Phoenix last month.</p>
+
+
+
+<p>The Sparks (13-23) finished the regular season with nine losses in their final 10 games.</p>
+
+
+
+<p>Dallas was locked in as the No. 6 seed in the playoffs against No. 3 Connecticut. The series begins on Thursday in Connecticut.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 01:16:53 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/21-residents-displaced-in-fort-worth-apartment-fire-fort-worth-fire-dept/3048436/
+
+	
+	<guid ispermalink="false">3048436</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2019/09/BOS-GENERIC-Fire-Truck-Day-11.jpeg?quality=85&amp;strip=all&amp;fit=3888,2592">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit>Peter Kim - stock.adobe.com</media:credit>
+			<media:thumbnail height="200" url="https://media.nbcdfw.com/2019/09/BOS-GENERIC-Fire-Truck-Day-11.jpeg?quality=85&amp;strip=all&amp;fit=3888,2592" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2019/09/BOS-GENERIC-Fire-Truck-Day-11.jpeg?quality=85&amp;strip=all&amp;fit=300,200</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Two people suffered minor injuries in a 2-alarm fire that damaged a Fort Worth apartment building Sunday morning.
+
+
+
+<p>According to the Fort Worth Fire Department, for two hours more than 40 firefighters battled an apartment fire at The Hills apartments on the 5400 block of Boca Agua Drive.</p>
+
+
+
+<p>Upon arrival, firefighters reported heavy fire coming from the roof of the apartment building and within 10 minutes, the incident commander requested a second alarm, according to Fort Worth Fire Department. </p>
+
+
+
+<p>Two residents were injured in the fire but were released at the scene.  Nearly two dozen others were able to safely evacuate their homes. The fire department said the American Red Cross was assisting 21 residents displaced by the fire.</p>
+
+
+
+
+
+
+
+<p>Fort Worth firefighters were also able to rescue two kittens and reunite them with their owners. </p>
+
+
+
+<p>The cause of the fire is not known and the investigation into what started the fire is ongoing.</p>
+
+
+
+
+<p><i>This story uses functionality that may not work in our app. <a href="https://www.nbcdfw.com/news/local/21-residents-displaced-in-fort-worth-apartment-fire-fort-worth-fire-dept/3048436/">Click here</a> to open the story in your web browser.</i></p>]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 01:11:50 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/man-arrested-for-shooting-girlfriends-son-in-fort-worth-police/3048499/
+
+	
+	<guid ispermalink="false">3048499</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2019/09/Fort-Worth-police-1.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2019/09/Fort-Worth-police-1.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2019/09/Fort-Worth-police-1.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>A man is in custody after allegedly shooting his girlfriend’s son during a dispute, police say.
+
+
+
+<p>At about 6 p.m. Sunday, Fort Worth police were called to a shooting at the Fairview Apartments on Lackland Road.</p>
+
+
+
+<p>Upon arrival, officers found 24-year-old Talon Connery had been shot in his back. Connery was transported to John Peter Smith Hospital in Fort Worth for medical treatment and is reportedly in stable condition.</p>
+
+
+
+<p>According to police, Connery was arguing with his mother’s boyfriend, identified by police as 76-year-old Murphy Ward, in the parking lot of the apartment complex when Ward allegedly pulled out a gun and shot Connery one time.</p>
+
+
+
+<p>After the shooting Ward remained at the scene and was taken into custody after police arrived.</p>
+
+
+
+<p>Ward is facing a charge of aggravated assault with a deadly weapon. As of this writing, a bond had not yet been set. It’s not clear if Ward has obtained an attorney.</p>
+
+
+
+<p>Fort Worth Police said detectives from both the Gun Violence Unit and Family Violence Unit were notified of the incident.</p>
+
+
+
+
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 01:08:46 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/sports/texas-rangers-fire-manager-chris-woodward-in-midst-of-fourth-straight-losing-season/3048542/
+
+	
+	<guid ispermalink="false">3048542</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/GettyImages-1410563815.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit>Getty Images</media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/GettyImages-1410563815.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/GettyImages-1410563815.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>The Texas Rangers fired manager Chris Woodward Monday, two games shy of his 500th with the club and with a season remaining on his contract.
+
+
+
+<p><a href="https://www.dallasnews.com/sports/rangers/2022/08/15/rangers-fire-manager-chris-woodward-in-midst-of-fourth-straight-losing-season/" rel="noreferrer noopener" target="_blank">The news of Woodward’s dismissal was shared first by our partners at The Dallas Morning News.</a></p>
+
+
+
+<p>Third base coach Tony Beasley has been named as the team’s interim manager effective immediately through the end of the season.</p>
+
+
+
+<p>“Chris Young and I had the very difficult task of informing Chris Woodward of our decision today,” said Rangers President of Baseball Operations Jon Daniels in a prepared statement. “In his tenure as Rangers’ manager, Chris worked tirelessly under what was at times some difficult circumstances. He has been dedicated and passionate in his efforts to improve the on-field performance of the Texas Rangers, and it is greatly appreciated. He has represented the organization with class and dignity.”</p>
+
+
+
+<p>Daniels went on to say that while the team’s current performance was part of the decision they also felt a change in leadership was necessary to position the team for the future.</p>
+
+
+
+<p>“On behalf of the entire Texas Rangers organization, we thank Chris and wish him and his family the very best,” Daniels said. </p>
+
+
+
+<p>Texas was 51-63 after finishing a series win at home over the Seattle Mariners on Sunday, and won back-to-back games for only the third time since the start of July. After peaking at 24-24 at the end of May, Texas lost its next three games and five of six. The Rangers are 6-24 in one-run games.</p>
+
+
+
+<p>Woodward, the fourth big league manager to be fired this season, was two games shy of managing his 500th game for the Rangers. He finished with a 211-287 record, which came during the extended rebuilding process that also included the pandemic-shortened 2020 season and the MLB lockout last winter after the Rangers had signed Seager and Semien.</p>
+
+
+
+
+
+
+
+<p>Philadelphia’s Joe Girardi was replaced by Rob Thomson on June 3, the Los Angeles Angels’ Joe Maddon by Phil Nevin four days later and Toronto’s Charlie Montoyo by John Schneider on July 13.</p>
+
+
+
+<p>Third base coach Tony Beasley was named the interim manager of the Rangers, starting with Monday night’s game against the Oakland A’s.</p>
+
+
+
+<p>Daniels, who was the general manager when Woodward was hired, and current GM Chris Young both spoke about making the managerial change now to start addressing items such as how the team prepares and its style of play.</p>
+
+
+
+<p>“I think it’s just the overall structure, the environment. It’s not necessarily the content of the preparation, but the way it’s utilized,” Young said. “The way we utilize meetings, the way we utilize different resources throughout the day, creating a structure that’s really tailored towards winning a game every single day when we come in, and we felt like at times that got a little loose.”</p>
+
+
+
+<p>Woodward, who was the third base coach for the Los Angeles Dodgers before landing his first managerial job, was under contract through next season. The team held an option for 2024.</p>
+
+
+
+<p>Seager spent his first seven big league seasons with the Dodgers, and was the National League rookie of the year in 2016, the first of Woodward’s three seasons as the third base and infield coach in Los Angeles. Seager was reunited with Woodward after signing a $325 million, 10-year contract last December.</p>
+
+
+
+<p>“Obviously, he was a really important person in my career and in my life. He was around me at a really pivotal point in my career. And I don’t have anything bad to say. I have the utmost respect for him,” Seager said on the field before Monday’s game. “It’s one of those things I just wish we could have played a little better and maybe outcomes would be different. ”</p>
+
+
+
+<p>Along with Seager and Semien ($175 million, seven years), the Rangers also last winter signed right-hander Jon Gray (four-year, $56 million) to be at the top of their rotation. Gray was in his best stretch of the season before a left oblique injury earlier this month that could potentially sideline him the rest of the year.</p>
+
+
+
+<p>Beasley is in his eighth season with the Rangers, and is the longest-tenured member of their big-league coaching staff. He previously was on the major league staffs with Washington (2006) and Pittsburgh (2008-10), and had a 590-472 record in eight seasons as a minor league manager in those organizations.</p>
+
+
+
+<p>“He has all the attributes that we’re looking for. He has the respect of the staff, the respect of the players,” Daniels said. “He’s an intelligent baseball veteran, who’s won at the minor league level, performed in a variety of roles, both here and elsewhere. … He’s the right person for us as we move forward.”</p>
+<p><i>This story uses functionality that may not work in our app. <a href="https://www.nbcdfw.com/news/sports/texas-rangers-fire-manager-chris-woodward-in-midst-of-fourth-straight-losing-season/3048542/">Click here</a> to open the story in your web browser.</i></p>]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 12:47:45 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/man-accused-of-fatally-shooting-lancaster-coach-surrenders-monday/3048521/
+
+	
+	<guid ispermalink="false">3048521</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/lancaster-community-park-football-field.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/lancaster-community-park-football-field.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/lancaster-community-park-football-field.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>The brother of a retired NFL player wanted in connection with a fatal shooting that <a href="https://www.nbcdfw.com/news/local/lancaster-coach-killed-during-shooting-at-sporting-event/3047970/">took the life of a youth football coach</a> during a game on Saturday surrendered to police Monday morning.
+
+
+
+<p>Lancaster Police said 39-year-old Yaqub Salik Talib was identified as a suspect in the murder of 43-year-old Michael Hickmon and surrendered at the Dallas County Jail on an outstanding warrant for first-degree murder. </p>
+
+
+
+<p>Investigators said the shooting took place shortly before 9 p.m. during a youth football game at Lancaster Community Park after opposing coaches got into a physical altercation that escalated when someone pulled out a gun and fired a shot. </p>
+
+
+
+<p>That shot, police said, struck Hickmon.</p>
+
+
+
+<figure class="wp-block-image size-large"><img alt="" class="wp-image-7330821" data-recalc-dims="1" height="675" loading="lazy" sizes="(max-width: 1000px) 100vw, 1000px" src="https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=1200&amp;strip=all&amp;resize=1200%2C675" srcset="https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=1200&amp;strip=all&amp;resize=1200%2C675 1200w, https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=218&amp;strip=all 218w, https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=300&amp;strip=all 300w, https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=768&amp;strip=all 768w, https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=850&amp;strip=all 850w, https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=600&amp;strip=all 600w, https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=500&amp;strip=all 500w, https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=400&amp;strip=all 400w, https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=320&amp;strip=all 320w, https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=200&amp;strip=all 200w, https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=100&amp;strip=all 100w, https://media.nbcdfw.com/2022/08/yaqub-talib-booking-photo-081522.jpg?quality=85&amp;strip=all&amp;w=800&amp;strip=all 800w" width="1200"><figcaption>Yaqub Talib, booking photo, Aug. 15, 2022.</figcaption></figure>
+
+
+
+<p>Hickmon was transported to Methodist Central Hospital for treatment and later died.  The suspected gunman, later identified as Yaqub Talib, left the park after the shooting and was wanted by police until he surrendered Monday morning.</p>
+
+
+
+<p>The investigation into the shooting is ongoing. Lancaster Police said several witnesses, including children, were present during the incident and are being interviewed as part of the ongoing investigation. No other injuries were reported.</p>
+
+
+
+<p>Talib, who is being held on a $1 million bond, is being represented by attorney Clark Birdsall who issued a statement Monday afternoon on behalf of his client.</p>
+
+
+
+<p>“Mr. Talib regrets the tragic loss of life and so he turned himself in today so that he would be able to say his side of the story,” said Birdsall said.</p>
+
+
+
+
+
+
+<p>According to records obtained by NBC 5, Talib has a criminal past in Dallas and Collin counties that includes charges of drug possession, unlawful possession of a weapon by a felon, abandoning a child/negligence, aggravated assault with a deadly weapon and assault.</p>
+
+
+
+<p>Talib is the brother of Aqib Talib, a former NFL cornerback and five-time Pro Bowler who announced his retirement in 2020 and is expected to be a contributor on Prime Video’s “Thursday Night Football” broadcast beginning Sept. 15.</p>
+
+
+
+<p>Anyone with information about the shooting is asked to contact Detective Senad Deranjic at&nbsp;<a href="tel:9722182756" rel="noreferrer noopener" target="_blank">972-218-2756</a> or Crime Stoppers at&nbsp;<a href="tel:18773738477" rel="noreferrer noopener" target="_blank">1-877-373-8477</a>.</p>
+
+
+
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 12:30:34 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/fort-worth-isd-welcomes-students-back-to-class-monday/3048414/
+
+	
+	<guid ispermalink="false">3048414</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/fwisd.jpg?quality=85&amp;strip=all&amp;fit=1200,682">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="171" url="https://media.nbcdfw.com/2022/08/fwisd.jpg?quality=85&amp;strip=all&amp;fit=1200,682" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/fwisd.jpg?quality=85&amp;strip=all&amp;fit=300,171</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description><br>Fort Worth ISD, the second largest district in North Texas, welcomed over 70,000 students back into 140 schools on Monday.
+
+
+
+<p>Superintendent Kent Scribner paid a special visit to one of his district’s most unique campuses, <a href="https://www.fwisd.org/southcollegiate">FWISD Early Collegiate High School </a>at Tarrant County College South Campus.</p>
+
+
+
+<p>The students at were treated to an all-star welcome from Scribner, Fort Worth Mayor Mattie Parker, and Fort Worth Chief of Police Neil Noakes on the first day of school.</p>
+
+
+
+<p>This particular high school helps prepare students for college or the workforce by helping them earn dual credits for both high school and college at the same time.</p>
+
+
+
+<p>‘Our early college high schools — we have 15 — are among the top schools in the state of Texas,” Scribner said. “We understand that our mission is not only to prepare students for college, but also for career and community leadership. Many of these students go on to four year institutions. Others enter the workforce. We’re coordinating with our business partners. And some of these students are earning a family sustaining wage right out of high school. It’s very, very exciting for them and their family.”</p>
+
+
+
+<p>The students will have an associate’s degree by graduation, including Emma Amos, who wants to become a teacher one day soon.</p>
+
+
+
+<p>“It feels very exciting and scary at the same because it’s my last year – I’m gonna miss everybody. But it is exciting because I get to move on and see what the real world is like,” the upcoming senior said.</p>
+
+
+
+<p>These moments with students will also be some of the last for Scribner, as he prepares to step down at the end of this month. Click the video below to watch his live interview with NBC 5 Today.</p>
+
+
+
+
+
+
+<p>“This is my last first day of school. I will be finishing my seventh year as superintendent, 20 years in total as a superintendent. My wife and I have decided that 20 is plenty,” he said. “My job moving forward will be to prepare and help the new leader take Fort Worth ISD from good to great.”</p>
+
+
+
+<p>Scribner said addressing learning loss from the pandemic and improving district grades will be something he hopes the next leader can continue to build on.</p>
+
+
+
+<p>“The pandemic really shook all of us here in public education as well as society in general. Our students did experience the loss of opportunity to learn. We are focused on making that time up with Saturday school, with an extended school day, with focus on the basics like reading and writing and math,” he said. “We’ve seen a great increase in our academic achievement — we’re up three letter grades since that time.”</p>
+
+
+
+<p>When it comes to safety, Scribner added that they’ve spent all summer long conducting exterior door sweeps on campuses to make sure there’s no easy access to schools. The district has also made sure that cameras are operational.</p>
+
+
+
+<p>The school district has also been focused on hiring more teachers and bus drivers.</p>
+
+
+
+<p>The operations chief said the district revamped its entire bus route system to fix the delays and other issues they had last year. No major bus delays are expected this week.</p>
+
+
+
+<p>And just an extra reminder for parents — the school days have been extended by 15 minutes. The measure to extend the school day was approved last year to help students catch up from learning loss during the pandemic.</p>
+
+
+
+<p>Pre-K and elementary students are staying later into the afternoon while middle school and high school students are starting earlier in the day.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 12:21:10 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/hundreds-of-doses-of-monkeypox-vaccine-available-for-eligible-adults-at-south-dallas-clinic/3048159/
+
+	
+	<guid ispermalink="false">3048159</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/07/monkeypox-vax-2.jpg?quality=85&amp;strip=all&amp;fit=960,540">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/07/monkeypox-vax-2.jpg?quality=85&amp;strip=all&amp;fit=960,540" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/07/monkeypox-vax-2.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>More than 300 doses of the monkeypox vaccine are available for eligible adults at a clinic in South Dallas.
+
+
+
+<p>Abounding Prosperity Inc. and its HOPE Health and Wellness Center are hosting a vaccine clinic for individuals at high risk and those in underserved communities in North Texas.</p>
+
+
+
+<p>According to Abounding Prosperity Inc., the clinic is now open to eligible individuals by appointment only at HOPE Health and Wellness Center, located at 1619 Martin Luther King Jr. Boulevard. Clinic hours are from 8 a.m. to 8 p.m. every Thursday and Friday and from 9 a.m. to 1 p.m. CT every Saturday while supplies last.</p>
+
+
+
+<p>According to the Centers for Disease Control and Prevention, monkeypox is a rare disease that can spread from person to person through respiratory secretions or direct contact with an infectious rash, scabs, or body fluids. </p>
+
+
+
+<p>JYNNEOS is the only FDA-licensed vaccine in the U.S. that is approved for prevention of the monkeypox disease,  Abounding Prosperity Inc. said.</p>
+
+
+
+<p>Currently, there are more than 800 cases of monkeypox in Texas, according to the CDC. </p>
+
+
+
+<p>Abounding Prosperity Inc. is a nonprofit organization founded to respond to social and health disparities affecting communities of color and LGBTQ+ communities in Dallas County. The nonprofit said it initially received 300 doses of the monkeypox vaccine from Dallas County Health and Human Services, and the doses will be administered at the clinic until they’re depleted, the nonprofit said.</p>
+
+
+
+<p>“The limited supply of monkeypox vaccines is concerning for medically underserved communities and individuals at highest risk, as they are less likely to have access to care or the vaccine,” said Kirk Myers-Hill, founder and chief executive officer at Abounding Prosperity Inc. “Hosting this clinic in South Dallas makes it easy for individuals to obtain the vaccine in their neighborhood. It is imperative for as many people as possible to take the vaccine to reach immunity.”</p>
+
+
+
+<p>Taking precautions like avoiding skin-to-skin contact with people who have symptoms, avoiding contact with objects and materials that a person with monkeypox has used, and washing your hands often can lessen your chances of contracting the disease, Abounding Prosperity Inc. said.</p>
+
+
+
+<p>To determine eligibility and make an appointment to receive the vaccine at Abounding Prosperity Inc.’s HOPE Health and Wellness Center, visit the <a href="https://hipaa.jotform.com/222196963425159">Monkeypox Vaccine Eligibility Pre-Screener</a>.</p>
+
+
+
+<p>Due to high demand that currently outweighs the available supply, only those who meet eligibility requirements will receive the vaccine, the nonprofit said.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 05:47:39 AM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/dallas-police-ask-for-publics-help-in-search-for-9-year-old-critical-missing-child/3048160/
+
+	
+	<guid ispermalink="false">3048160</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2021/01/Dallas-police-generic.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2021/01/Dallas-police-generic.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2021/01/Dallas-police-generic.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>A 9-year-old child who was reported missing on Sunday has been found.
+
+
+
+<p>According to Dallas police, Khalio Warren was last seen on foot in the 2800 block of Prichard Lane in Dallas on August 14 at approximately 10:41 p.m. </p>
+
+
+
+<p>Police said Warren is described as a brown-haired, brown-eyed, 9-year-old male who is approximately 4’10” tall and weighs about 80 lbs.</p>
+
+
+
+<p>He was wearing a blue shirt, blue shorts, and red, white, and blue slides, police said. He was also wearing a black wave cap on his head. </p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Mon, Aug 15 2022 04:44:01 AM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/final-set-of-dallas-isd-students-prepare-for-back-to-school/3047910/
+
+	
+	<guid ispermalink="false">3047910</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/DISDBTS3.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/DISDBTS3.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/DISDBTS3.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Excitement is building&nbsp;for the largest group of Dallas ISD students that are set to return to the classroom Monday.&nbsp;&nbsp;
+
+
+
+<p>The district operated on three different calendars this year, hoping more school days will help some students with the learning loss they faced during the pandemic.&nbsp;</p>
+
+
+
+<p>It’s been a busy final weekend for pre-k teacher, Carmen Marcelino who is also a mother of two.</p>
+
+
+
+<p>“There are a lot of expectations. They are going to see their friends again, and they miss them. That is what they talk about,” said Marcelino.&nbsp;</p>
+
+
+
+
+
+
+<p>Lynetta Marsh’s 12-year-old son, Hunter Garrett, starts seventh grade Monday.&nbsp;</p>
+
+
+
+<p>“When I was small, I was always told, your first teachers are your parents,” said parent Lynette Marsh. “So that’s what I try to practice with my son, and hope that all of the families and parents are speaking to their children as well.”</p>
+
+
+
+<p>New Dallas ISD Superintendent, Dr. Stephanie Elizalde, attended a dedication ceremony Saturday for the renovated <a href="https://www.nbcdfw.com/news/local/dallas-isds-franklin-d-roosevelt-high-school-unveils-new-renovations/3047673/" rel="noreferrer noopener" target="_blank">Franklin D. Roosevelt High School of Innovation</a>.&nbsp;&nbsp;</p>
+
+
+
+<p>“I’m as excited as everybody else. I keep telling everyone I have butterflies in my stomach, just like kids do on the first day of school,” said Dr. Elizalde.&nbsp;&nbsp;</p>
+
+
+
+<p>Eight hundred students will fill the halls of the 58-year-old Oak Cliff campus that’s been transformed into a modern learning complex.&nbsp;&nbsp;Additionally, the school districts of Arlington and Fort Worth will begin classes tomorrow.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sun, Aug 14 2022 09:10:17 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/sports/texas-rangers-lead-past-mariners-5-3/3048032/
+
+	
+	<guid ispermalink="false">3048032</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2022/01/Texas-Rangers-logo-2022.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/01/Texas-Rangers-logo-2022.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/01/Texas-Rangers-logo-2022.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Corey Seager doubled twice and scored twice, including the tiebreaking run in the seventh inning, as the Texas Rangers beat the Seattle Mariners 5-3 on Sunday to win the three-game series.
+
+
+
+<p>Josh Sborz (1-0) struck out five of the seven batters he faced in the seventh and eighth innings, including all three in the eighth, and allowed only one walk. The five strikeouts were a career-high, and the two innings matched his career-long outing through four seasons.</p>
+
+
+
+<p>“He’s got closer stuff,” Texas manager Chris Woodward said. “That second inning was about as good as you can execute.”</p>
+
+
+
+<p>The Rangers won two straight over the Mariners after losing nine consecutive games to Seattle.</p>
+
+
+
+<p>It was the first series loss for the Mariners to an opponent other than Houston since mid-June. They remain in the second wild-card position in the American League.</p>
+
+
+
+<p>Sborz’s outing following his first big league start on Friday night against Seattle as an opener, during which he took a liner off his right biceps in his only inning.</p>
+
+
+
+<p>“I was fortunate it didn’t hit any lower, on any bone,” Sborz said. “Today it felt a lot better.”</p>
+
+
+
+<p>Jose Leclerc pitched a perfect ninth inning for his first save since the delayed opening day in July 2020. After pitching one more game then, Leclerc missed the rest of the season and all of 2021 with multiple arm injuries.</p>
+
+
+
+<p>Seager doubled to left field with two outs in the seventh, reached third on a wild pitch by Matt Brash (3-4) and scored on Adolis Garcia’s single. Nathaniel Lowe followed with his second double of the game, a ground-rule version to left, off Erik Swanson to score Seager.</p>
+
+
+
+<p>The Mariners pulled even 3-all in the sixth when Julio Rodriguez reached on a throwing error by Seager at shortstop, allowing J.P. Crawford to score.</p>
+
+
+
+<p>Texas regained the lead 3-2 in the fifth when Seager doubled, advanced to third on a groundout and scored on a wild pitch that bounced in front of the plate.</p>
+
+
+
+<p>Mitch Haniger’s fifth-inning single that scored Dylan Moore to tie the score at 2 and extend his hitting streak to 11 games. That’s three games in late April before he was sidelined 88 games by an ankle injury and eight games since his return on Aug. 6.</p>
+
+
+
+<p>Bubba Thompson gave the Rangers a 2-1 lead with a single that scored Lowe and Meibrys Viloria.</p>
+
+
+
+<p>Seattle scored first on Sam Haggarty’s single through the hole on the left side to bring home Crawford.</p>
+
+
+
+<p>Rangers starter Martin Perez allowed three runs — one earned — in six innings while throwing 105 pitches. He struck out seven and walked a season-high five.</p>
+
+
+
+<p>Mariners starter Logan Gilbert gave up three runs on five hits in six innings, striking out four and walking four.</p>
+
+
+
+<p>Gilbert went into play with a 1.02 ERA against Texas this season in 17 2/3 innings over three previous starts.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sun, Aug 14 2022 07:39:54 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/politics/lone-star-politics/abbott-maintains-lead-over-orourke-in-latest-dallas-morning-news-poll/3047972/
+
+	
+	<guid ispermalink="false">3047972</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2021/03/GregAbbottAndBetoORourke.jpeg?quality=85&amp;strip=all&amp;fit=1660,934">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2021/03/GregAbbottAndBetoORourke.jpeg?quality=85&amp;strip=all&amp;fit=1660,934" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2021/03/GregAbbottAndBetoORourke.jpeg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>New polling from the <a href="https://www.dallasnews.com/news/politics/2022/08/14/texas-gov-greg-abbott-still-leads-beto-orourke-new-poll-shows/" rel="noreferrer noopener" target="_blank">Dallas Morning News</a> and UT Tyler shows Gov. Greg Abbott (R) holding a steady lead over his Democratic opponent, former congressman Beto O’Rourke.
+
+
+
+<p>The same poll finds that a majority of respondents believe the State of Texas is headed in the wrong direction.</p>
+
+
+
+<p>Even as the race for governor heats up with less than three months to Election Day, the gap between Abbott and O’Rourke is unchanged.</p>
+
+
+
+<p>In the latest <a href="https://www.uttyler.edu/politicalscience/files/dmn-uttyler-aug2022.pdf" rel="noreferrer noopener" target="_blank">DMN/UT-Tyler poll</a>, conducted in the first week of August, respondents favor Abbott 46% to O’Rourke’s 39%.</p>
+
+
+
+<p>Thar seven-point margin has not changed in three months.</p>
+
+
+
+<p>O’Rourke has spent much of that time <a href="https://www.nbcdfw.com/news/local/governor-abbott-and-beto-orourke-campaign-in-north-texas/3046395/" rel="noreferrer noopener" target="_blank">campaigning on restoring abortion rights in Texas</a> and has called for increased gun safety laws, like raising the minimum age from 18 to 21 to purchase semi-automatic weapons.</p>
+
+
+
+<p>Matthew Wilson, professor of political science at SMU, said issues like the Dobbs Decision at the U.S. Supreme Court, which led to overturning Roe V. Wade, and guns likely will not move enough disaffected Abbott voters to O’Rourke.</p>
+
+
+
+<p>“If we’re at the same place post-Dobbs that we were pre-Dobbs, it suggests that Abbott is weathering that potential storm,” Wilson said.</p>
+
+
+
+<p>The same polling finds a majority of Texans unhappy with the direction the state is headed with 56% saying Texas is headed in the wrong direction under the two-term leadership of Abbott.</p>
+
+
+
+
+
+
+<p>Respondents also said they trust Abbott over O’Rourke on issues like the economy, reducing crime and securing the border.</p>
+
+
+
+<p>As the November election approaches, it remains to be seen what will motivate voters – support for their candidate or concern about what happens if the other option wins.</p>
+
+
+
+<p>“I think there is a lot of concern across the political spectrum about the direction that the nation and the state are heading,” Wilson said.</p>
+
+
+
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sun, Aug 14 2022 05:30:21 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/lancaster-coach-killed-during-shooting-at-sporting-event/3047970/
+
+	
+	<guid ispermalink="false">3047970</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/LancasterCoachMikeHickmon.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/LancasterCoachMikeHickmon.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/LancasterCoachMikeHickmon.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Lancaster police are looking for a man who they say shot a football coach after a disagreement between coaching staff Saturday evening.
+
+
+
+<p>According to police, at approximately 8:50 p.m., officers were dispatched to multiple calls for service at 1749 Jefferson St. in Lancaster, commonly known as Lancaster Community Park. During the disagreement, the opposing coaching staff was involved in a physical altercation, and one of the individuals involved discharged a firearm, striking an adult male, Lancaster police said. </p>
+
+
+
+<p>Officers have identified a suspect involved in the altercation as Yaqub Salik Talib. Talib is the brother of Aqib Talib, a former NFL cornerback and five-time Pro Bowler who announced his retirement in 2020. There is an active warrant for his arrest.&nbsp;</p>
+
+
+
+<figure class="wp-block-image size-full"><img alt="" class="wp-image-7328459" data-recalc-dims="1" height="1080" loading="lazy" sizes="(max-width: 1000px) 100vw, 1000px" src="https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;strip=all&amp;resize=1920%2C1080" srcset="https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=1920&amp;strip=all 1920w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=218&amp;strip=all 218w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=300&amp;strip=all 300w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=768&amp;strip=all 768w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=1536&amp;strip=all 1536w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=1200&amp;strip=all 1200w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=850&amp;strip=all 850w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=600&amp;strip=all 600w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=500&amp;strip=all 500w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=400&amp;strip=all 400w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=320&amp;strip=all 320w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=200&amp;strip=all 200w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=100&amp;strip=all 100w, https://media.nbcdfw.com/2022/08/Yaqub-Salik-Talib.jpg?quality=85&amp;strip=all&amp;w=800&amp;strip=all 800w" width="1920"></figure>
+
+
+
+<p>Police said the victim, identified as Coach Mike Hickmon, was transported to a local hospital for treatment where he was later pronounced dead.</p>
+
+
+
+<p>TexaSports, a youth athletic league, posted the group’s condolences to the family on <a href="https://www.facebook.com/100063467893609/posts/pfbid0YDGJseAVasViHLzm6WNsqsQSN5zgQh5ZJRjUepLQ2iPcuu4zUQkvxr54v6o5V8h4l/?d=n" rel="noreferrer noopener" target="_blank">Facebook</a> Sunday.</p>
+
+
+
+<p>“Tonight we lost a great father, son, husband and coach. He was coaching his son and team today at a sporting event somewhere in Dallas when his life was taken by a coward,” <a href="https://www.facebook.com/100063467893609/posts/pfbid0YDGJseAVasViHLzm6WNsqsQSN5zgQh5ZJRjUepLQ2iPcuu4zUQkvxr54v6o5V8h4l/?d=n" rel="noreferrer noopener" target="_blank">the post said</a>. “We pray for the Family and our community at this crazy time in youth sports.”</p>
+
+
+
+<p>A spokesperson with TexaSports tells NBC 5 Hickmon had been coaching in the league for years. However, we’re told Saturday’s event was not hosted my their league, but a different organization.</p>
+
+
+
+
+
+
+
+<p>Recalling Saturday’s events, Pastor Keith Hall answered a call from someone telling him that one of his members, Mike Hickmon, was hurt. He immediately called Hickmon but didn’t get an answer. Hall then called Hickmon’s wife, who broke the news.</p>
+
+
+
+<p>“And when I called her and she said, ‘Pastor he didn’t make it. He didn’t make it.’ And she was just heartbroken, and all the air was sucked out of us,” Hall said,</p>
+
+
+
+<p>Hall said Hickmon was active in their church, Grace Temple Fellowship, and passionate about coaching youth football.</p>
+
+
+
+<p>“People gravitated to him. They loved him and they called him coach. He took time with them,” Hall said. “That’s just the type of person he was.”</p>
+
+
+
+<p>Parents who attended the youth game said the yelling, the screaming, and the shooting happened in front of the children.</p>
+
+
+
+<p>“I just imagine all the kids saw that, and they’re going to have to relive that,” said Hall.</p>
+
+
+
+<p>Hall said the loss is devastating.</p>
+
+
+
+<p>“We have two lovely children who don’t have their father in their life now,” he said. “We have a wife that is heartbroken and a family that is going through, and it’s very difficult, and we all need to be praying for them.”</p>
+
+
+
+<p>Pastor Keith Hall tells us Jennifer Hickmon, a teacher murdered in 2020 was coach Mike Hickmon’s sister.</p>
+
+
+
+
+
+
+<p>Anyone with information containing the whereabouts of Talib should contact Detective Senad Deranjic at&nbsp;<a href="tel:9722182756" rel="noreferrer noopener" target="_blank">972-218-2756</a>. </p>
+
+
+
+<p><em>Check back and refresh for updates. This story is developing and the elements may change. </em></p>
+
+
+
+
+<p><i>This story uses functionality that may not work in our app. <a href="https://www.nbcdfw.com/news/local/lancaster-coach-killed-during-shooting-at-sporting-event/3047970/">Click here</a> to open the story in your web browser.</i></p>]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sun, Aug 14 2022 05:01:20 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/texas-news/back-to-school-tips-for-four-legged-friends/3047960/
+
+	
+	<guid ispermalink="false">3047960</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2019/09/Pet-Adoption-Cat-Generic-Cat-Cage.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2019/09/Pet-Adoption-Cat-Generic-Cat-Cage.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2019/09/Pet-Adoption-Cat-Generic-Cat-Cage.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Back-to-school activities are beginning once again, and that means lots of preparation for children and pets alike.
+
+
+
+<p>In addition to picking up a few school supplies and packing lunches, the SPCA of Texas urges families to remember a few back-to-school tips for pets too.</p>
+
+
+
+<p>According to the SPCA, pet owners shouldn’t forget to keep pets happy and healthy by making sure they are up-to-date on vaccinations, microchipped, and spayed or neutered. </p>
+
+
+
+<p>Pets need a little extra attention during back-to-school season, so make sure they have plenty of toys and games while they are left to entertain themselves at home. </p>
+
+
+
+<p>The SPCA said separation anxiety can affect pets during periods of change to the family schedule.</p>
+
+
+
+<p>Parents who accompany children to school or the bus stop can take the dog on a leashed walk for a little family bonding, the SPCA said. Make sure pets are safely kept inside the home or a fenced in back yard while leaving and entering the house to ensure they don’t follow and wander out to the street.</p>
+
+
+
+<p>According to the SPCA, pet owners can also plan fun, family activities like going to the dog park, early morning and late afternoon walks and play dates with doggie friends.</p>
+
+
+
+<p>Give your pets plenty of fresh water, food and shelter if they’re outside, and bring them inside when the temperature soars.</p>
+
+
+
+<p>Always make sure pets have a collar with rabies and license tags with the correct contact information in case a pet is lost, SPCA said. Microchip pets in the event that a pet loses his or her collar. </p>
+
+
+
+<p>For more information, visit <a href="http://www.spca.org">www.spca.org</a> or call the SPCA of Texas at 214-742-7722.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sun, Aug 14 2022 04:00:12 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/sports/blue-star/johnson-leads-broncos-backups-past-cowboys-17-7-on-saturday/3047935/
+
+	
+	<guid ispermalink="false">3047935</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2022/01/Dallas-Cowboys-Logo.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/01/Dallas-Cowboys-Logo.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/01/Dallas-Cowboys-Logo.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>The new Denver Broncos quarterback who wowed the crowd at Empower Field wasn’t Russell Wilson but&nbsp;<a class="" href="https://apnews.com/article/denver-broncos-nfl-sports-russell-wilson-2d676ae00df602a0a1f891d54d146eb2">jourrneyman Josh Johnson.</a>
+
+
+
+<p>Johnson, who’s 36 years old and playing for his 14th NFL team, threw a pair of first-half touchdown passes and the Broncos beat the penalty-prone Dallas Cowboys 17-7 on a starless and rainy Saturday night.</p>
+
+
+
+<p>“I’m just enjoying the ride, honestly,” Johnson said. “… I like to say for us backups, the preseason is the season.”</p>
+
+
+
+<p>Johnson was signed in the offseason to compete with Brett Rypien for the job backing up Wilson, who sat this one out along with Cowboys QB Dak Prescott.</p>
+
+
+
+<p>Rypien was 8 of 18 for 113 yards, including a 42-yard strike to Jalen Virgil from his own 1. Both Johnson and Rypien drew praise from new Broncos coach Nathaniel Hackett, who won his NFL head coaching debut, albeit in a preseason game that won’t really count.</p>
+
+
+
+<p>Cooper Rush got the start for Dallas and was 12 of 20 for 84 yards and an interception. Ben DiNucci (9 of 16 for 112 yards) finally got the Cowboys on the board with a 12-yard TD toss to Simi Fehoko with just under five minutes remaining, capping a 16-play, 95-yard drive.</p>
+
+
+
+<p>The Cowboys committed a whopping 17 penalties for 129 yards 48 hours after Denver’s front-line defense got the better of Dallas’ first-string offense in a chippy joint practice that featured a half-dozen skirmishes.</p>
+
+
+
+<p>“The penalties clearly were way too much,” Cowboys coach Mike McCarthy said. “We’ll look at those … as far as the ones that were combative versus discipline. That’s clearly the biggest negative, but I’m actually excited to watch the tape. I want to see these young linemen, our run blocking unit. I think they stepped up and did some good things.”</p>
+
+
+
+<p>Minus Ezekiel Elliott and most of the other starters, the Cowboys ran for 141 yards on 28 carries, a 5-yard average.</p>
+
+
+
+<p>After yielding 17 second-quarter points, the Cowboys turned away Denver with a goal line stand on the Broncos’ first drive after halftime when cornerback Kyron Brown broke up Rypien’s pass to Darrius Shepherd on fourth-and-goal from the 3.</p>
+
+
+
+<p>Only a handful of regulars started for each team, including Broncos inside linebacker Jonas Griffith, who injured his left elbow on the game’s second snap and didn’t return. Hackett had no update after the game.</p>
+
+
+
+<p><a class="" href="https://apnews.com/article/denver-broncos-nfl-sports-russell-wilson-2d676ae00df602a0a1f891d54d146eb2">Johnson</a>&nbsp;overcame a slow start to throw for 172 yards and two touchdowns on 16-of-23 passing. He hit Seth Williams from a yard out and added a 24-yarder to Kendall Hinton. Williams’ grab followed a 40-yard reception by rookie Brandon Johnson, son of former Colorado Rockies catcher Charles Johnson.</p>
+
+
+
+<p>Brandon McManus sent the Broncos into halftime with a 17-0 lead by nailing a 52-yarder at the end of the first half.</p>
+
+
+
+<p>The game also marked the introduction of the Broncos’ new&nbsp;<a class="" href="https://apnews.com/article/denver-broncos-nfl-sports-pat-bowlen-rob-walton-8852a003be606e308be12ec9884f9350">Walton-Penner ownership group</a>, which purchased the team from the Pat Bowlen Trust for a record $4.65 billion, and new team president&nbsp;<a class="" href="https://apnews.com/article/denver-broncos-nfl-sports-football-6fc72aaefdc0412b935819661c62e912">Damani Leech</a>.</p>
+
+
+
+<p>Even though Wilson didn’t play, the crowd was relatively large for a preseason game — 64,541.</p>
+
+
+
+<h2 class="wp-block-nbc-section-heading">FLAG FOOTBALL</h2>
+
+
+
+<p>Here was the stat line for Dallas at the start of the fourth quarter:</p>
+
+
+
+<p>Rushing yards — 106</p>
+
+
+
+<p>Passing yards — 118</p>
+
+
+
+<p>Penalty yards — 119</p>
+
+
+
+<h2 class="wp-block-nbc-section-heading">TRAINERS ROOM</h2>
+
+
+
+<p>Cowboys: TE Ian Bunting (neck) sat out. He was injured in practice Thursday.</p>
+
+
+
+<p>Broncos: CB Michael Ojemudia was evaluated for a concussion late in the first quarter.</p>
+
+
+
+<h2 class="wp-block-nbc-section-heading">COSTLY FLAG</h2>
+
+
+
+<p>McManus was wide right on a 57-yard attempt as the first half expired, but Dallas cornerback Kelvin Johnson was offside, setting up an untimed play, and McManus nailed it from 52 yards out.</p>
+
+
+
+<p>Dallas K Lirim Hajrullahu was wide right on a 56-yard try early in the fourth quarter.</p>
+
+
+
+<h2 class="wp-block-nbc-section-heading">GROUNDED GAME</h2>
+
+
+
+<p>The Broncos didn’t play running backs Javonte Williams and Melvin Gordon, and their backups were held to just 39 yards and a 1.8-yard average.</p>
+
+
+
+<p>“Yes, it’s always great to win, but in the end we’ve got a lot of work to do,” Hackett said. “That run game was not good enough. … We’re not going to be able to consistently win without getting that run game going.”</p>
+
+
+
+<h2 class="wp-block-nbc-section-heading">BROWNING BRILLIANT</h2>
+
+
+
+<p>Baron Browning moved from inside linebacker to outside linebacker this offseason and had a solid camp. On Saturday night, he had a sack, a pass breakup, three tackles and a quarterback hit.</p>
+
+
+
+<p>“He was around the quarterback quite a bit,” gloated Hackett.</p>
+
+
+
+<h2 class="wp-block-nbc-section-heading">UP NEXT</h2>
+
+
+
+<p>Cowboys: Visit the Los Angeles Chargers on Saturday night.</p>
+
+
+
+<p>Broncos: Visit the Buffalo Bills on Saturday.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sun, Aug 14 2022 02:57:05 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/sports/fc-dallas-gains-victory-over-san-jose-4-1/3047798/
+
+	
+	<guid ispermalink="false">3047798</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2022/01/Logo-MLS-FC-Dallas.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/01/Logo-MLS-FC-Dallas.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/01/Logo-MLS-FC-Dallas.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Jesús Ferreira scored twice in the first half and FC Dallas breezed to a 4-1 victory over the San Jose Earthquakes on Saturday.
+
+
+
+<p>Ferreira took a pass from Alan Velasco just three minutes into the match and scored to give Dallas (10-7-9) the early lead.</p>
+
+
+
+<p>Marco Farfan notched his first goal of the season, scoring in the 20th minute, and Ferreira polished off a brace in the 41st with his 14th goal to give Dallas a 3-0 halftime lead.</p>
+
+
+
+<p>Velasco found the net in the 57th minute with his fourth goal of the campaign to stretch the lead to 4-0 before Jeremy Ebobisse put San Jose (5-11-9) on the scoreboard with a goal — his 14th — three minutes later.</p>
+
+
+
+<p>Maarten Paes finished with one save for Dallas. JT Marcinkowski had two saves for the Earthquakes.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sat, Aug 13 2022 10:34:15 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/sports/texas-rangers-overcome-early-deficit-beat-seattle-mariners-7-4/3047795/
+
+	
+	<guid ispermalink="false">3047795</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2022/01/Texas-Rangers-logo-2022.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/01/Texas-Rangers-logo-2022.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/01/Texas-Rangers-logo-2022.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Corey Seager matched a career-high with his 26th homer and rookie Bubba Thompson drove in a run with a sacrifice squeeze bunt as the Texas Rangers overcame an early deficit to beat the Seattle Mariners 7-4 on Saturday night.
+
+
+
+<p>Texas trailed 3-0 before a four-run outburst in the fourth inning against Marco Gonzalez (7-12). That was capped by Thompson’s bunt pushed to the right side as Charlie Culberson crossed home plate.</p>
+
+
+
+<p>Eugenio Suárez homered and had a sac fly for the Mariners, who had won nine games in a row against the Rangers. Seattle, which has lost only 14 of its last 47 games overall since mid-June, dropped a half-game behind Toronto for the American League’s top wild card.</p>
+
+
+
+<p>Seager, in the first season of his $325 million, 10-year contract with Texas,&nbsp;went deep in the fifth with a solo shot&nbsp;pulled down the right-field line that made it 5-3. He had 26 homers for the Los Angeles Dodgers in 2016, when he was the National League rookie of the year in his first full season.</p>
+
+
+
+<p>Brett Martin (1-7) got the win after facing only one batter. The left-hander got an inning-ending double play grounder in the fifth after replacing Dane Dunning. Hard-throwing right-hander Jonathan Hernandez worked a perfect ninth for his third save in three chances.</p>
+
+
+
+<p>Seattle opened the game with consecutive singles off Dunning and&nbsp;<a class="" href="https://www.mlb.com/video/dane-dunning-ball-to-eugenio-suarez-mso43a" rel="noreferrer noopener" target="_blank">led 2-0 after a wild pitch</a>&nbsp;and a sac fly by Suárez. Cal Raleigh had a leadoff double in the second and scored on a sac fly by Sam Haggerty.</p>
+
+
+
+<p>Gonzales gave up five runs and nine hits over five innings. The lefty struck out two and walked two in his fifth start against Texas this season.</p>
+
+
+
+<p>Adolis Garcia stretched his hitting streak to 10 games with a double in the Texas fourth and scored when Jonah Heim followed with a double. Culberson and&nbsp;<a class="" href="https://www.mlb.com/video/ezequiel-duran-s-rbi-single-x7150" rel="noreferrer noopener" target="_blank">Ezequiel Durán had back-to-back RBI singles</a>&nbsp;before Thompson’s bunt.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sat, Aug 13 2022 10:19:36 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/police-looking-for-driver-who-struck-fort-worth-grandfather/3047785/
+
+	
+	<guid ispermalink="false">3047785</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/GarciaFamily.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/GarciaFamily.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/GarciaFamily.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Fort Worth Police are asking the community for help after they say a driver hit and killed a 75-year-old man crossing a residential street Friday night before driving off.
+
+
+
+<p>It was around 9:50 Friday night when 75-year-old Juan Garcia crossed the intersection of Avenue H and Vaughn Boulevard. Police said he had the right-of-way when a driver struck Garcia before driving off, heading north on Vaughn. Garcia was pronounced dead at the scene.</p>
+
+
+
+<p>“We hope that some of these neighbors might have video or any type of evidence that is going to help us know who the driver was,” said spokesperson Daniel Segura.</p>
+
+
+
+<p>Garcia’s walk Friday night was one his family said he took often, a route through his own neighborhood they never imagined would end in tragedy.</p>
+
+
+
+<p>“It’s not right. He was a good person who didn’t deserve to just be mowed down on the side of a street,” said his son Andres Garcia.</p>
+
+
+
+<p>On Sunday Garcia and his wife, Alma Garcia, would have celebrated 51 years of marriage.</p>
+
+
+
+<p>Together, Garcia and her husband raised five boys.</p>
+
+
+
+<p>“He was like the best dad you can think of. He took us places. He taught us things,” said Andres.</p>
+
+
+
+<p>Now a father himself, Andres said he’s heartbroken to know his dad won’t be here to watch his 10 grandchildren grow up.</p>
+
+
+
+<p>“I really would love justice. I really would love some kind of closure, something. It wasn’t his time. Everyone has their time, but I don’t think this was his,” he said.</p>
+
+
+
+<p>Anyone with information is asked to call Fort Worth Police.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sat, Aug 13 2022 10:13:16 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/woman-arrested-in-white-settlement-motel-stabbing-police/3047111/
+
+	
+	<guid ispermalink="false">3047111</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2021/05/WHITE-SETTLEMENT-POLICE.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2021/05/WHITE-SETTLEMENT-POLICE.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2021/05/WHITE-SETTLEMENT-POLICE.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>A woman is now in jail following a stabbing at a Motel 6 in White Settlement on Thursday night, according to police.
+
+
+
+<p>White Settlement Police Chief Christopher Cook was leaving a back-to-school event at Brewer High School, and Assistant Chief Denison was leaving a recruit testing even when they heard a stabbing call dispatched at Motel 6 with the suspect fleeing on foot. They both responded to the call to assist officers.</p>
+
+
+
+<p>They caught the female suspect hiding in a vehicle and she still had the knife in her pocket! </p>
+
+
+
+<p>As she was fleeing, she jumped into another citizen’s car and attempted to hide from officers while the citizen summoned more help from officers.</p>
+
+
+
+<p>“I love jumping calls with my team and responding in whatever capacity I can,” said Chief Cook. “Bottom line, the team did a phenomenal job in apprehending a first-degree felony suspect.”</p>
+
+
+
+
+
+
+
+<p>The suspect will be charged with Aggravated Assault with a Deadly Weapon. The victim was transported to a local hospital and is expected to be okay.</p>
+<p><i>This story uses functionality that may not work in our app. <a href="https://www.nbcdfw.com/news/local/woman-arrested-in-white-settlement-motel-stabbing-police/3047111/">Click here</a> to open the story in your web browser.</i></p>]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sat, Aug 13 2022 08:45:55 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/parker-county-da-recovers-18k-in-stolen-church-money/3047349/
+
+	
+	<guid ispermalink="false">3047349</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2019/09/money_handcuffs_generic_nbc.jpg?quality=85&amp;strip=all&amp;fit=1200,675">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2019/09/money_handcuffs_generic_nbc.jpg?quality=85&amp;strip=all&amp;fit=1200,675" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2019/09/money_handcuffs_generic_nbc.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>More than $18,000 have been returned to a Parker County church after a former church employee embezzled funds.
+
+
+
+<p>According to the Parker County District Attorney’s Office, Janet Shelly Walker, 63, a former secretary at the church, was convicted on June 14 of theft from a nonprofit organization.</p>
+
+
+
+<p>Jeff Swain, Parker County District Attorney, gave the church a check for $18,061 for the embezzled funds that he recovered using asset forfeiture from the former church employee’s bank account, the district attorney’s office said.</p>
+
+
+
+<p>The district attorney’s office said the findings came to light when the new pastor of the church saw irregularities in the church’s checking account. </p>
+
+
+
+<p>When the pastor looked into the history, he found that Walker had written checks from the church to pay for her personal bills for years. </p>
+
+
+
+<p>“In the investigation, it was revealed that Ms. Walker was in charge of paying the church’s bills and had been also paying her own bills, including her mortgage, for quite some time,” Swain said. “During the investigation, she sold the home she was paying for with church funds and we traced those funds to a bank in Hillsboro. I decided to use asset forfeiture law to seize the assets in her bank accounts so we could get the church their money back.”</p>
+
+
+
+<p>Swain had not yet been elected and was still a Parker County Assistant District Attorney at the time.</p>
+
+
+
+<p>“I had to call the District Attorney in Hill County and ask if he could swear me in down there as a Special Assistant District Attorney so that I could prosecute the forfeiture case and get the church their money back,” Swain said. “As far as I know, that was a first for anyone in our office. We have previously been sworn in to prosecute criminal cases in other counties when their prosecutors have had conflicts, but we haven’t ever done it to get restitution for a victim.”</p>
+
+
+
+<p>Asset forfeiture proceedings are more commonly used to seize assets from drug dealers, Swain said. “However, under Texas law, they can also be used for felony cases involving theft, burglary, robbery, kidnapping, sexual assault, and several other offenses and can result in the seizure of the implements of those crimes and the financial proceeds gained from them.”</p>
+
+
+
+<p>Swain credited an investigation by his office and the Parker County Sheriff’s Office in tracking all the funds that Walker stole. “Between the grand jury subpoenas and search warrants that we issued, we obtained the bank records and business records we needed to prove both our criminal case and the asset forfeiture case.”</p>
+
+
+
+<p>“We were proud to be able to help one of our local churches who was victimized,” said Parker County Sheriff Russ Authier. “It’s unfortunate that some people are willing to steal from churches.”</p>
+
+
+
+<p>“The church that was our victim, in this case, fell into a trap that is all too common for non-profits, which is the belief that no one would steal from such an organization,” Swain said. </p>
+
+
+
+<p>“There are several things that other non-profits could learn from this case to help them avoid similar problems,” Swain said. “Running a background check on all employees when they are first hired is essential. Ideally, that would be updated from time to time. At least annually, organizations should have their financial records audited or reviewed by someone other the person who usually handles the finances. A small group may not be able to afford to have a full audit by a CPA, but they can at least get a second set of eyes on the books.”</p>
+
+
+
+<p>Swain encourages organizations who have dual-signature checks to never pre-sign checks. “That’s almost an invitation to theft. If the dual-signature function is important to your group, if you pre-sign checks, you have completely undone the security that you were trying to achieve.”</p>
+
+
+
+<p>The church has requested not to be named.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sat, Aug 13 2022 08:20:08 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/dallas-lgbtq-health-organization-to-host-transgender-pride-event/3047702/
+
+	
+	<guid ispermalink="false">3047702</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/06/GettyImages-1368855764.jpg?quality=85&amp;strip=all&amp;fit=2121,1414">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit>Getty Images/iStockphoto</media:credit>
+			<media:thumbnail height="200" url="https://media.nbcdfw.com/2022/06/GettyImages-1368855764.jpg?quality=85&amp;strip=all&amp;fit=2121,1414" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/06/GettyImages-1368855764.jpg?quality=85&amp;strip=all&amp;fit=300,200</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Prism Health North Texas, an LGBTQ-focused health facility and community center, is set to host its first annual Texas Trans Pride event on Sept. 30.
+
+
+
+<p>The event is promised to be a celebration of transgender identity and an opportunity for transgender and gender non-conforming persons to come out and express themselves as they see fit, organizer Shalissa said.</p>
+
+
+
+<p>“I feel like anytime we have trans holidays or trans events, [it’s] always in remembrance or awareness but never a full-out celebration,” they added. “We’re trying to create an event that is an opportunity to uplift and celebrate the trans community here in Dallas and across Texas.”</p>
+
+
+
+<p>Major celebrations in the LGBTQ community of transgender folks are in the form of Trans Day of Remembrance or Trans Awareness Day. For Shalissa, who uses gender-neutral pronouns, they want this upcoming event to be joyous, especially at a time when transgender people, <a href="https://www.nbcdfw.com/news/local/this-health-care-is-not-optional-parent-of-transgender-teen-on-dissolved-genecis-clinic/2937693/" rel="noreferrer noopener" target="_blank">particularly in Dallas</a>, face <a href="https://www.nbcdfw.com/news/local/family-of-transgender-woman-who-died-in-dallas-police-custody-speak-out/2991447/" rel="noreferrer noopener" target="_blank">consistent attacks.</a></p>
+
+
+
+<p>“People want to uplift us and talk about how great we are, but we’re not getting it while we’re alive,” they said. “So this is an opportunity for us as a community to come together and celebrate the trans community and help lift the folks in our area.”</p>
+
+
+
+
+
+
+<p>The event will be held at Station 4 in Dallas in the city’s <a href="https://www.nbcdfw.com/news/local/rainbow-crosswalks-being-installed-in-oak-lawn/2318824/" rel="noreferrer noopener" target="_blank">historic Oak Lawn neighborhood</a>. Recognized by the Texas Historical Commission for its significance, Oak Lawn is also known as “The Crossroads”&nbsp; or the “Gayborhood” and is a safe space for the LGBTQ community in North Texas.</p>
+
+
+
+<p>Trans performers from across Texas and the country will perform live beginning at 7 p.m. Additionally, Kerri Colby, drag artist and contestant from RuPaul’s Drag Race will also perform and host a meet and greet. The show is free though Shalissa encourages attendees to bring tips for the performers.</p>
+
+
+
+
+
+
+
+<p>Texas Trans Pride will also host a resource fair from 7 p.m. to midnight which will have a variety of free items and information including gender-affirming clothes and garments for trans and gender non-conforming folks. The event will also have STD testing on-site.</p>
+
+
+
+<p>After the evening’s performances, the evening will conclude with a dance party. Food trucks will also be on site.</p>
+
+
+
+<p>For Shalissa, organizing this event and having it accessible to everyone is important to them.</p>
+
+
+
+<p>“We’re trying to make this as accessible as possible to as many people as possible,” they said. “We want this to be an event where anyone feels welcome to celebrate and welcome to attend. And then on top of that, we just want to create a space that’s affirming for anyone.”</p>
+
+
+
+<p>For more information on the event or to donate, visit Prism’s page for the event at <a href="https://txtranspride.org/" rel="noreferrer noopener" target="_blank">TXTransPride.org</a>.</p>
+
+
+
+
+<p><i>This story uses functionality that may not work in our app. <a href="https://www.nbcdfw.com/news/local/dallas-lgbtq-health-organization-to-host-transgender-pride-event/3047702/">Click here</a> to open the story in your web browser.</i></p>]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sat, Aug 13 2022 05:24:09 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/dallas-isds-franklin-d-roosevelt-high-school-unveils-new-renovations/3047673/
+
+	
+	<guid ispermalink="false">3047673</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/RooseveltHigh.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/RooseveltHigh.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/RooseveltHigh.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>It is back to school Monday for the third and final wave of Dallas ISD students.&nbsp;&nbsp;
+
+
+
+<p>800 of those learners are set to step foot into the newly renovated Franklin D. Roosevelt High School of Innovation. The campus received a nearly <a href="https://www.dallasisd.org/Page/62029" rel="noreferrer noopener" target="_blank">64 million dollar facelift under a 2015 bond.</a>&nbsp;&nbsp;</p>
+
+
+
+<p>Excitement is building inside the new Franklin D. Roosevelt High School of Innovation from students present and past.&nbsp;&nbsp;</p>
+
+
+
+<p>Yvonne Silver graduated from Roosevelt High in 1972.&nbsp;&nbsp;</p>
+
+
+
+<p>“Hopefully with the changes being made, it’ll bring more people back in and back into the school, and be as excited as we were back in our days,” said alumna Silver.&nbsp;&nbsp;</p>
+
+
+
+<p>The original campus was 75% demolished to make room for interior and exterior renovations. These additions include a new library and media room, a restaurant and storage space to support the culinary arts program and a new main secured entrance.</p>
+
+
+
+<p>“It says something to the scholars when they come in and see the renovations. Because when we tell them we do what’s best for kids, they can walk into this building and see we truly do what’s best for kids,” said LaKisha Thomas, Principal of Franklin D. Roosevelt High School of Innovation.&nbsp;</p>
+
+
+
+<p>Alumni from years past were recognized inside the auditorium during the ceremony.&nbsp;Former Dallas ISD Superintendent Dr. Michael Hinojosa grew up and taught nearby. He championed the project that transformed the 58-year-old Oak Cliff campus into a modern learning complex.&nbsp;</p>
+
+
+
+<p>“I’m really excited where the school district is going and I’m really proud of everyone for making this happen,” said Dr. Hinojosa.&nbsp;</p>
+
+
+
+<p>There will be stepped-up security this school year and all employees have all gone through extra training in case of an emergency.&nbsp;</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sat, Aug 13 2022 03:56:19 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/texas-news/judge-denies-release-of-dps-records-regarding-police-response-in-uvalde-school-shooting/3047203/
+
+	
+	<guid ispermalink="false">3047203</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/06/robb-elementary-school-uvalde.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/06/robb-elementary-school-uvalde.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/06/robb-elementary-school-uvalde.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>The legal fight over records regarding the law enforcement response to the <a href="https://www.nbcdfw.com/tag/uvalde-school-shooting/">Uvalde school shooting</a> in May 2022 is growing.
+
+
+
+<p>A district judge in Travis County denied a state senator’s request to order the Department of Public Safety to release records  that include information about the police response to the shooting at Robb Elementary School that killed 19 children and two teachers.&nbsp;</p>
+
+
+
+<p>Senator Roland Gutierrez of San Antonio requested those records under public information laws on May 31.</p>
+
+
+
+<p>Gutierrez said the Department of Public Safety never provided the records, so <a data-id="https://www.nbcdfw.com/news/local/texas-news/texas-state-senator-sues-dps-over-uvalde-shooting-records/2998022/" data-type="URL" href="https://www.nbcdfw.com/news/local/texas-news/texas-state-senator-sues-dps-over-uvalde-shooting-records/2998022/">he filed a lawsuit against the department in June 2022.</a> </p>
+
+
+
+<p>According to court documents, Judge Catherine Mauzy said Gutierrez’s office did not submit the paperwork correctly.</p>
+
+
+
+<p>Gutierrez says he plans to appeal and re-submit his request.</p>
+
+
+
+<p>More than a dozen media outlets are also suing the department for withholding records related to the police response to the shooting.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sat, Aug 13 2022 12:33:51 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/texas-news/man-charged-in-largest-fentanyl-bust-in-tulsa-police-department-history-officials/3047168/
+
+	
+	<guid ispermalink="false">3047168</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2021/11/fentanyl-DEA.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2021/11/fentanyl-DEA.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2021/11/fentanyl-DEA.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>An Oklahoma man faces drug trafficking charges after being found in possession of various drugs including fentanyl, methamphetamine, and heroin earlier this month, police in Oklahoma said.
+
+
+
+<p>Tulsa police said this marks the largest fentanyl bust in the department’s history. </p>
+
+
+
+<p>According to police, the Mingo Valley Division Street Crimes Unit served a warrant at an apartment in Tulsa on Aug. 2.</p>
+
+
+
+<p>Police said officers recovered 11 pounds of fentanyl, multiple pounds of methamphetamine, more than 140 grams of heroin, $7,000 in cash, and several firearms. </p>
+
+
+
+<p>Officers recovered more than 5,200 grams of fentanyl in the form of powder and pills, which is enough for approximately   2.5 million lethal doses, police said.</p>
+
+
+
+<p>According to police, the suspect, who informed officers he was from the town of Tepic in Mexico, was identified as Raul Plata-Cibrian.</p>
+
+
+
+<p>Police said he was taken into custody and charged with aggravated trafficking of controlled drugs and possession of a firearm.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sat, Aug 13 2022 12:00:07 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/fort-worth-man-stabbed-during-argument-with-wife-police/3047619/
+
+	
+	<guid ispermalink="false">3047619</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2019/09/Metro-07-28-19-City-of-Dall-07-28-2019-15.18.37_2019-07-29-10-38-20-1.jpg?quality=85&amp;strip=all&amp;fit=1920,1080">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2019/09/Metro-07-28-19-City-of-Dall-07-28-2019-15.18.37_2019-07-29-10-38-20-1.jpg?quality=85&amp;strip=all&amp;fit=1920,1080" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2019/09/Metro-07-28-19-City-of-Dall-07-28-2019-15.18.37_2019-07-29-10-38-20-1.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Fort Worth police are investigating a stabbing incident on Saturday night that left a man in critical condition.
+
+
+
+<p>According to the Fort Worth Police Department, Northwest Division officers were dispatched to a residence in the 700 block of River Hill Lane shortly before 4:30 a.m. in reference to a stabbing. </p>
+
+
+
+<p>Police said when officers arrived, they located an adult male victim with a single stab wound to the abdomen. </p>
+
+
+
+<p>The victim told officers that he had been arguing with his common-law spouse prior to the stabbing, police said. </p>
+
+
+
+<p>According to police, the argument escalated into a physical altercation during which suspect then produced a knife and stabbed the victim once in the abdomen.</p>
+
+
+
+<p>Police said the victim was transported to John Peter Smith Hospital in an critical condition.</p>
+
+
+
+<p>The suspect, identified as Halle Nyhus, was taken into custody, police said.</p>
+
+
+
+<p><em>Check back and refresh this page for the latest update. As this story is developing, elements may change.</em></p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sat, Aug 13 2022 10:40:21 AM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/sports/phoenix-mercury-beat-dallas-wings-move-into-7th-place-tie-with-new-york/3047611/
+
+	
+	<guid ispermalink="false">3047611</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2022/01/Dallas-Wings-Logo.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/01/Dallas-Wings-Logo.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/01/Dallas-Wings-Logo.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Diamond DeShields scored 24 points, Shey Peddy had 18 points and a career-high eight assists, and the Phoenix Mercury beat the Dallas Wings 86-74 on Friday night.
+
+
+
+<p>Phoenix (15-20) is tied with New York for seventh in the WNBA standings with one game remaining. The Mercury, who haven’t missed the playoffs since 2012, play at Chicago on Sunday, while the Liberty host Atlanta. Dallas (17-18) is locked into the No. 6 seed and plays Los Angeles on Sunday,</p>
+
+
+
+<p>Phoenix started the second half on a 16-5 run, capped by Jennie Simms’ three-point play for a 55-48 lead. DeShields scored 16 of Phoenix’s 23 points through the opening eight minutes of the third quarter and Dallas was 3-of-14 shooting during the same stretch, scoring just 10 points.</p>
+
+
+
+<p>Sophie Cunningham made four 3-pointers and scored 16 points for Phoenix, which was without Skylar Diggins-Smith and Diana Taurasi. Simms scored a career-high 14 points.</p>
+
+
+
+<p>Dallas was also short-handed without Arike Ogunbowale due to a recent surgery.</p>
+
+
+
+<p>Kayla Thornton scored 14 points for Dallas. Allisha Gray added 13 points and Marina Mabrey had 10.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Sat, Aug 13 2022 09:30:21 AM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/sports/red-fever/julio-rodriguez-returns-to-lineup-mariners-beat-rangers/3047537/
+
+	
+	<guid ispermalink="false">3047537</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/AP22225057146809.jpg?quality=85&amp;strip=all&amp;fit=4889,3260">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit>AP</media:credit>
+			<media:thumbnail height="200" url="https://media.nbcdfw.com/2022/08/AP22225057146809.jpg?quality=85&amp;strip=all&amp;fit=4889,3260" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/AP22225057146809.jpg?quality=85&amp;strip=all&amp;fit=300,200</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Star rookie Julio Rodriguez got two hits in his return to the Seattle lineup and the Mariners took over the first wild-card position in the American League by beating the Texas Rangers 6-2 on Friday night.
+
+
+
+<p>The 21-year-old Rodriguez, who put on an impressive show in the All-Star Home Run Derby, had missed the Mariners’ previous 11 games with a wrist injury.</p>
+
+
+
+<p>Rodriguez hit a tiebreaking, opposite-field single to shallow right with the bases loaded in the fourth inning. He was the first batter to face Jose Leclerc, who relieved Taylor Hearn (5-7).</p>
+
+
+
+<p>George Kirby (4-3) allowed two runs in 5 2/3 innings on seven hits with five strikeouts and one walk. It was the rookie’s second straight win.</p>
+
+
+
+<p>The victory, combined with Toronto’s loss to Cleveland, gave the Mariners a half-game lead over the Blue Jays.</p>
+
+
+
+<p>The Mariners are 12-2 with nine consecutive wins this season against the Rangers, who dropped to a season-low 14 games under .500.</p>
+
+
+
+<p>Seattle took a 4-2 lead into the ninth inning and Eugenio Suarez added a two-run double.</p>
+
+
+
+<p>The Rangers scored on Marcus Semien’s groundout in the third and Jonah Heim’s single in the sixth.</p>
+
+
+
+<p>Texas used a bullpen game with Josh Sborz making his first start in 88 big league appearances.</p>
+
+
+
+<p>Sborz took a liner off his upper right arm during the game’s third batter, Mitch Haniger. Sborz finished the inning with one more pitch and was replaced in the second by Hearn, the first of five Texas relievers.</p>
+
+
+
+<p>The Rangers’ first hit was Nathaniel Lowe’s infield single leading off the second, but he was doubled off first to end the inning following a running, leaping catch by Haniger at the wall in right field on a ball hit by Leody Taveras.</p>
+
+
+
+<p>Texas manager Chris Woodward was ejected by Jerry Meals, the plate umpire and crew chief, in the bottom of the fourth inning during Adolis Garcia’s leadoff at-bat.</p>
+
+
+
+<p><strong>SHORT HOPS</strong></p>
+
+
+
+<p>Seattle was 3 for 12 with runners in scoring position, Texas 1 for 6. . Lowe has an 18-game on-base streak, the longest by a Ranger this season. . Haniger had three singles and has hit safely in all six games since returning from an ankle sprain that sidelined him since late April. . The Mariners designated RHP Ken Giles for assignment.</p>
+
+
+
+<p><strong>TRAINER’S ROOM</strong></p>
+
+
+
+<p>Mariners: C Curt Casali (oblique) returned from the 10-day injured list Thursday. Casali was acquired from San Francisco on Aug. 2 and hasn’t appeared for Seattle.<br>Rangers: OF Kole Calhoun (right heel irritation) is feeling better, but manager Chris Woodward isn’t sure when he can return.</p>
+
+
+
+<p><strong>UP NEXT</strong></p>
+
+
+
+<p>Mariners: LHP Marco Gonzales (7-11, 3.98 ERA) will make his fifth start vs. Texas this season on Saturday. He’s 1-1 with a 4.38 ERA in those games, which the M’s and Rangers split.<br>Rangers: RHP Dane Dunning (2-6, 4.04) won last Saturday for the first time since April 30, shutting out the Chicago White Sox over seven innings on one hit and one walk.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Fri, Aug 12 2022 11:38:48 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/dallas-county-grand-jury-declines-to-indict-former-paramedic-for-kicking-hitting-man/3047535/
+
+	
+	<guid ispermalink="false">3047535</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2022/08/dmn-1.jpg?quality=85&amp;strip=all&amp;fit=1539,859">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="167" url="https://media.nbcdfw.com/2022/08/dmn-1.jpg?quality=85&amp;strip=all&amp;fit=1539,859" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/dmn-1.jpg?quality=85&amp;strip=all&amp;fit=300,167</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>A former Dallas Fire-Rescue paramedic who kicked a downed, unarmed man won’t face charges after a Dallas County grand jury declined to indict.
+
+
+
+<p>The grand jury considered a felony charge of injury to a disabled person against Brad Alan Cox, 46, this week and returned a no-bill.</p>
+
+
+
+<p>Read more from media partners at <a href="https://www.dallasnews.com/news/courts/2022/08/12/dallas-county-grand-jury-declines-to-indict-former-paramedic-for-kicking-hitting-man/" rel="noreferrer noopener" target="_blank">The Dallas Morning News here.</a></p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Fri, Aug 12 2022 11:11:58 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/north-texas-mother-to-host-fentanyl-awareness-event-after-teen-sons-death/3047498/
+
+	
+	<guid ispermalink="false">3047498</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2022/08/Denton-Family-Fentanyl-1.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/Denton-Family-Fentanyl-1.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/Denton-Family-Fentanyl-1.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Nearly every evening, Victoria Ketter and her family gather in the only place where they can still be with her son.
+
+
+
+<p>It’s been almost two months since she got the call that her oldest, Johnathan Helmke, was found dead after taking what he thought was Percocet.</p>
+
+
+
+<p>“It’s a day I relive every day. I relive it every day in my head, in my dreams. It’s just kind of on replay,” said Ketter.</p>
+
+
+
+<p>In the days to come, she learned the pill Johnathan took was actually laced with fentanyl, the synthetic opioid that’s become the leading cause of death for Americans ages 18 to 45.</p>
+
+
+
+<p>According to the DEA, it’s 50 to 100 times stronger than morphine.</p>
+
+
+
+<p>And like in Johnathan’s case, often disguised as something else.</p>
+
+
+
+<p>“Johnathan wasn’t a drug addict. It wasn’t like he was a heroin addict and he got a bad batch that had fentanyl in it. Johnathan took one pill and within minutes it claimed his life, and he had no idea what he was consuming,” she said.</p>
+
+
+
+<p>Denton Police recently arrested Bryson Towers and Joshua Adams and charged both with a felony for allegedly supplying the fentanyl that killed Johnathan.</p>
+
+
+
+<p>Still, Ketter worries for others.</p>
+
+
+
+<p>“I don’t want to see another parent suffer like we are,” said Ketter.</p>
+
+
+
+<p>In the weeks following her son’s death, Ketter has channeled her grief into a mission.</p>
+
+
+
+<p>On Aug. 21, she’ll host the first annual Fentanyl Prevention and Awareness Event in Johnathan’s memory at 1 p.m. at Pavillion three in North Lakes Park.</p>
+
+
+
+
+
+
+
+<p>The event will include fun for kids, including bounce houses, snow cones and Spiderman, and education for teens and adults, including a chance to talk with a narcotics officer and hear from other mothers who’ve buried their children.</p>
+
+
+
+<p>“We’ve got banners stretching 40-50 feet long with all the babies we’ve lost from this,” she said.</p>
+
+
+
+<p>That includes her Johnathan, whose memory she is determined to keep alive.</p>
+
+
+
+<p>“Even if one life is saved, I’ve done my job. I’ve done something,” said Ketter.</p>
+<p><i>This story uses functionality that may not work in our app. <a href="https://www.nbcdfw.com/news/local/north-texas-mother-to-host-fentanyl-awareness-event-after-teen-sons-death/3047498/">Click here</a> to open the story in your web browser.</i></p>]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Fri, Aug 12 2022 10:35:39 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/the-shop-unassuming-dallas-warehouse-home-to-high-dollar-classic-cars/3047411/
+
+	
+	<guid ispermalink="false">3047411</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2022/08/the-shop-1.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/the-shop-1.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/the-shop-1.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Drivers on the John Carpenter Freeway zip right past the unassuming old warehouse near Regal Row without knowing it stores hundreds of classic cars dating to the 1930s.
+
+
+
+<p>The big sign out front says only “The Shop.”</p>
+
+
+
+<p>Almost all of the cars are high-dollar classics.</p>
+
+
+
+<p>“We describe this place as a social club for gearheads,” manager Kesha Walker said. “We’re essentially a vehicle storage facility that we’ve turned into a social club.”</p>
+
+
+
+<p>The Shop Club also includes a restaurant and bar open to the public, an upstairs work area for members only and a secret cigar room located behind some movable bookshelves.</p>
+
+
+
+<p>But it’s the cars — and even a few motorcycles — that are the real surprise.</p>
+
+
+
+<p>“Everybody’s reaction is what did I walk into? Like, what is this?” Walker said.</p>
+
+
+
+<p>Glenn Maxwell visited for the first time recently.</p>
+
+
+
+<p>“I’ve driven by here a bunch of times but I never knew about it,” Maxwell said. “I work a little down the road. We came here for a social hour. It was a happy little discovery.”</p>
+
+
+
+<p>Commercial real estate broker Stephen Hemphill stores a number of vehicles here, including a 1969 Camaro.</p>
+
+
+
+<p>“There’s nothing like this that is a common theme which is cars or motorcycles and people who have a story about them,” Hemphill said.</p>
+
+
+
+<p>The most expensive car is a 2020 Ford GT Heritage, made largely of carbon fiber, and valued at $1.6 million.</p>
+
+
+
+<p>The oldest is a 1932 Ford.</p>
+
+
+
+<p>But every car has its own history.</p>
+
+
+
+<p>A 1959 El Camino was passed from a man to his daughter, and then to her son.</p>
+
+
+
+<p>The shop is owned by a Seattle man who plans to open a similar facility in Houston soon.</p>
+
+
+
+<p>The public can view the cars six days a week from two viewing areas.</p>
+
+
+
+<p>In-depth tours are offered on weekends.</p>
+
+
+
+<p><em>The original article incorrectly reported the year of the El Camino. It was 1959.</em></p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Fri, Aug 12 2022 09:51:02 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/texas-news/family-of-slain-texas-soldier-seeking-35-million-in-damages/3047494/
+
+	
+	<guid ispermalink="false">3047494</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/jpeg" url="https://media.nbcdfw.com/2019/09/guillen-vanessa-foto-militar-1.jpg?quality=85&amp;strip=all&amp;fit=1250,703">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2019/09/guillen-vanessa-foto-militar-1.jpg?quality=85&amp;strip=all&amp;fit=1250,703" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2019/09/guillen-vanessa-foto-militar-1.jpg?quality=85&amp;strip=all&amp;fit=300,169</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>The family of a Texas soldier who was sexually harassed and killed at a military base near Killeen in 2020 filed a lawsuit Friday seeking $35 million in damages from the U.S. government.
+
+
+
+<p>The family of 20-year-old Vanessa Guillen is seeking damages on the basis of sexual harassment, abuse, assault, rape, sodomy and wrongful death.</p>
+
+
+
+<p>An investigation by military officials into the death of Guillen, who was killed by a fellow soldier at U.S. Army base Fort Hood, found that she was also sexually harassed and that leaders failed to take appropriate action. The lawsuit describes two instances in which Guillen was harassed during her time as a soldier and Guillen’s suicidal thoughts as a result of coping with the harassment, which she told family that she did not report for fear of retaliation.</p>
+
+
+
+<p>“This will be an opportunity for every victim to feel not only like they have a voice but that they can be made whole,” said Natalie Khawam, who filed the lawsuit on behalf of the Guillen family.</p>
+
+
+
+<p>The lawsuit follows a decision Thursday by a three-judge panel from the 9th U.S. Circuit Court of Appeals in San Francisco stating that an Army colonel could proceed with a lawsuit against a former Air Force General over a sexual assault allegation. The court found that a law baring service members from seeking damages over injuries during service did not apply.</p>
+
+
+
+<p>Guillen was declared missing in April 2020. Her remains were found that July when the soldier accused of killing Guillen died by suicide following a confrontation with officers. A civilian faced charges for allegedly helping Robinson dispose of Guillen’s remains.</p>
+
+
+
+<p>Guillen’s death and claims by her family that she was harassed and assaulted at the Texas base sparked a social media movement of former and active service members who came forward about their own experiences in the military with the hashtag #IAmVaessaGuillen. State and federal lawmakers have since passed legislation in honor of Guillen that removed some authority from commanders and gave survivors more options to report.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Fri, Aug 12 2022 09:42:48 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/waxahachie-elementary-school-student-won-contest-to-publish-childrens-book/3047366/
+
+	
+	<guid ispermalink="false">3047366</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2022/08/Brek-Bradshaw.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/Brek-Bradshaw.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/Brek-Bradshaw.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Brek Bradshaw is a 5th grader at Shackelford Elementary School in Waxahachie, but he’s more than a student.
+
+
+
+<p>“I have a job,” Bradshaw said smiling. “It’s an author.”</p>
+
+
+
+<p>Bradshaw won a book writing contest last year to have his book ‘Chicken Bot and the Golden Egg’ published.</p>
+
+
+
+<p>“His story was just catchy. The title was catchy,” David Flores said. </p>
+
+
+
+<p>Flores came up with the contest idea and published the book under his bilingual <a data-id="https://www.browniebooks.com/" data-type="URL" href="https://www.browniebooks.com/" rel="noreferrer noopener" target="_blank">Brownie Books</a> company, which he started after seeing a cultural hole in the book market.</p>
+
+
+
+<p>“I just knew that…there were stories that need to be told,” Flores said. “Even if an agent doesn’t pick up my book, or if a publishing house doesn’t pick up my book, I just wanted to tell a story.”</p>
+
+
+
+<p>Flores helped make Bradshaw’s book bilingual, with tests in English and Spanish.</p>
+
+
+
+<p>“Well, I think that’s pretty cool some people in different cultures can read my book,” Bradshaw said. </p>
+
+
+
+<p>Bradshaw’s original book draft came with his own sketches of the characters, which were made into digital illustrations.</p>
+
+
+
+<p>“Well the chicken was ok, it was the chicken bot,” Bradshaw said. “They made it green and I kinda wanted it orange.”</p>
+
+
+
+<p>So in the final book draft, it’s orange. The book is being <a data-id="https://www.amazon.com/Chicken-Golden-Pollobot-Huevo-Dorado/dp/9996125920" data-type="URL" href="https://www.amazon.com/Chicken-Golden-Pollobot-Huevo-Dorado/dp/9996125920" rel="noreferrer noopener" target="_blank">sold in some stores and online.</a></p>
+
+
+
+<p>“I thought it would be, like, awesome and stuff,” Bradshaw said. “Which it pretty much was.”</p>
+
+
+
+<p>“We are teaching him a life lesson that his creativity can be compensated,” Flores said. “So you can do something that you love and it can be your livelihood.”</p>
+
+
+
+<p>Flores would like to hold the contest again this year, and maybe expand beyond Shackelford Elementary. They are looking for a donor to help with publishing expenses. </p>
+
+
+
+<p>“You don’t have to be an adult to do something big,” Bradshaw said. </p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Fri, Aug 12 2022 07:51:15 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/local/former-smu-football-player-plans-southern-dallas-housing/3047404/
+
+	
+	<guid ispermalink="false">3047404</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2022/08/South-Dallas-development.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/South-Dallas-development.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/South-Dallas-development.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>A former Southern Methodist University football player wants to give back to Dallas with development in a part of town that needs it.
+
+
+
+<p>Another former SMU player who represents the neighborhood on the Dallas City Council Friday said he is especially pleased with one feature of the plan.</p>
+
+
+
+<p>Mikial Onu, a player from 2016 to 2018, has the land, design, zoning and financing in place for a 252-unit residential project with adjacent retail space on Bonnie View Road north of I-20.</p>
+
+
+
+<p>Friday, Onu met the neighborhood’s City Councilman Tennell Atkins who was also an SMU player in the 1970s.</p>
+
+
+
+<p>“It’s great to have alumni, who went to SMU who want to give back,” Atkins said.</p>
+
+
+
+<p>Bonnie View Road at I-20 is crowded with trucks from all the commerce that is booming in the area.</p>
+
+
+
+<p>The Dallas Inland Port is a rail hub, with lots of new warehouses and lots of new jobs. But most of the workers drive far to go home.</p>
+
+
+
+<p>“They should be able to live nearby in an affordable place that has quality that they can enjoy with their families,” Onu said.</p>
+
+
+
+<p>He became familiar with the area while attending SMU, also studying finance.</p>
+
+
+
+<p>“At that time, I didn’t have the resources or the ability or the knowledge to come here and make an impact that I believe we’re going to have here. Now that I’ve graduated, I’ve gotten some projects under my belt and gotten some knowledge, I’m intensely focused on what I can do to help out this area and the city as a whole,” Onu said.</p>
+
+
+
+<p>The site for the project is right across from the Tommie Allen Recreation Center and Park on Bonnie View Road.</p>
+
+
+
+<p>Onu said the finished product will be like Uptown Dallas developments, without Uptown prices.</p>
+
+
+
+<p>“I want to create that affordable version of that here where you can live, eat, work and play all in one area,” he said.</p>
+
+
+
+<p>Unlike many other southern Dallas developments, Onu is seeking no city subsidies for his project.</p>
+
+
+
+<p>Visiting the neighborhood Friday, Onu met the councilman at Atkins’ neighborhood office on Simpson Stuart Road near Bonnie View, which is very close to Onu’s project.</p>
+
+
+
+<p>Atkins said he is encouraged that Onu has arranged financing and is not asking the city for help after many city investments in southern Dallas.</p>
+
+
+
+<p>“I think we set the table for people to come and we’ve been marketing,” Atkins said. “Now it’s opportunity time to invest. It’s opportunity time that we’ve got market rate type of development who said, I don’t need any incentive from the city of Dallas. I love that word. He said ‘I don’t need anything,’” Atkins said.</p>
+
+
+
+<p>The southern side of Dallas still has land available for development.&nbsp;It is the part of the city where Dallas needs to grow.</p>
+
+
+
+<p>Onu said he is making a calculated bet on the area with the soaring job growth supporting his wager.</p>
+
+
+
+<p>“I am taking a bet and I believe in this area. I believe in this city. Dallas has some of the most migration of any city and it’s only a matter of time before that migration reaches more and more south,” Onu said.</p>
+
+
+
+<p>Groundbreaking on his Bonnie View Road development is due in the spring.</p>
+
+
+
+<p>Onu said he also has a single-family home development in the works nearby in Lancaster.</p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Fri, Aug 12 2022 07:25:44 PM</pubdate>
+
+	</item>
+<item>
+	
+	https://www.nbcdfw.com/news/nbc-5-responds/residential-service-contracts-what-they-are-and-what-they-cover/3047067/
+
+	
+	<guid ispermalink="false">3047067</guid>
+	<dc:creator></dc:creator>
+	<category>post</category>
+
+	
+			<media:content medium="image" type="image/png" url="https://media.nbcdfw.com/2022/08/service-contracts.png?fit=1920,1080&amp;quality=85&amp;strip=all">
+
+							<media:title type="html"></media:title>
+			
+			<media:description type="html"></media:description>
+			<media:credit></media:credit>
+			<media:thumbnail height="169" url="https://media.nbcdfw.com/2022/08/service-contracts.png?fit=1920,1080&amp;quality=85&amp;strip=all" width="300">
+			<photo:thumbnail>https://media.nbcdfw.com/2022/08/service-contracts.png?fit=300,169&amp;quality=85&amp;strip=all</photo:thumbnail>
+		</media:thumbnail></media:content>
+	
+	<description>Todd Fields of McKinney experienced an HVAC outage last summer, causing him to be without air conditioning. He had coverage with Home Warranty of America, also known as HWA, but, his claim was denied for repair or replacement.
+
+
+
+<p>Not understanding why he was denied, Fields reached out to<strong> NBC 5 Responds</strong> for help. We contacted HWA and they offered a buy-back that pays out the cash value of the system and prohibits any future claims. </p>
+
+
+
+<p><strong>NBC 5 Responds</strong> gets lots of questions about home warranties. We contacted the regulating agency, the Texas Department of Licensing and Regulation, <a data-id="https://www.tdlr.texas.gov/" data-type="URL" href="https://www.tdlr.texas.gov/" rel="noreferrer noopener" target="_blank">TDLR</a>, to answer how to choose one and what they cover. </p>
+
+
+
+<p>In Texas, these home warranties are actually residential service contracts. “What that means is residential service contracts cover the cost of repair or replacement for large appliances in a home or for certain systems that are in the home, like the plumbing, the air conditioning and the heating systems, under certain circumstances,” said assistant general counsel for TDLR Elizabeth Salinas-Strittmatter.</p>
+
+
+
+<p>Salinas-Strittmatter advises doing two things before signing a contract, saying, “Number one, they should make sure that the provider or the administrator of the residential service contract is licensed by the Texas Department of Licensing and Regulations, and they can <a data-id="https://www.tdlr.texas.gov/LicenseSearch/?program=SCP" data-type="URL" href="https://www.tdlr.texas.gov/LicenseSearch/?program=SCP" rel="noreferrer noopener" target="_blank">check for licensure through our website</a>. The second most important thing is they need to read their contract. Understand exactly what is covered and understand the circumstances under which their coverage will kick in.”</p>
+
+
+
+<p>You should do your research on the company’s reputation. You can check the <a data-id="https://www.bbb.org/" data-type="URL" href="https://www.bbb.org/" rel="noreferrer noopener" target="_blank">Better Business Bureau website</a> for complaints against the company. But, you should know, these contracts are not required for a home purchase. Salinas-Strittmatter says, “These are completely optional contracts, and the companies that you choose are completely optional as well.” </p>
+
+
+
+<p>If you have an issue with a licensed company, TDLR has an <a data-id="https://www.tdlr.texas.gov/scp/scp.htm" data-type="URL" href="https://www.tdlr.texas.gov/scp/scp.htm" rel="noreferrer noopener" target="_blank">ombudsman</a> that may be able to help. </p>
+
+
+
+<p>You can also let us know. <strong>NBC 5 Responds</strong> is committed to researching your concerns and recovering your money. Our goal is to get you answers and, if possible, solutions and a resolution. Call us at 844-5RESPND (844-573-7763) or&nbsp;<strong><a href="https://www.nbcdfw.com/consumer-form">fill out our customer complaint form</a>.</strong></p>
+]]&gt;</description>
+	<excerpt></excerpt>
+	<pubdate>Fri, Aug 12 2022 06:05:53 PM</pubdate>
+
+	</item>
+	</body>

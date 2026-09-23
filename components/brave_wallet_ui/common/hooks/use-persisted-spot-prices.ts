@@ -1,0 +1,51 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import { skipToken } from '@reduxjs/toolkit/query/react'
+
+import { BraveWallet } from '../../constants/types'
+import { useGetTokenSpotPricesQuery } from '../slices/api.slice'
+
+// Utils
+import {
+  getPersistedSpotPrices, //
+} from '../../utils/local-storage-utils'
+
+type SpotPricesQueryArgs = Parameters<typeof useGetTokenSpotPricesQuery>
+
+// Module-level empty array so selectFromResult returns a stable reference
+// when there is no query data and no persisted fallback.
+const EMPTY_SPOT_PRICES: BraveWallet.AssetPrice[] = []
+
+/**
+ * Wraps useGetTokenSpotPricesQuery with a localStorage fallback so that
+ * last-known prices are returned immediately while fresh data loads.
+ */
+export const usePersistedTokenSpotPricesQuery = (
+  arg: SpotPricesQueryArgs[0],
+  options?: SpotPricesQueryArgs[1],
+) => {
+  return useGetTokenSpotPricesQuery(arg, {
+    ...options,
+    selectFromResult: (res) => {
+      const queryActive = arg !== skipToken
+      // Only read from localStorage when the query has no data yet
+      // (skipped, loading, or uninitialized).
+      const persisted = res.data ? undefined : getPersistedSpotPrices()
+      const data = res.data ?? persisted ?? EMPTY_SPOT_PRICES
+      // Suppress loading state when we have persisted prices to show,
+      // so consumers render stale prices instead of skeletons.
+      const hasFallbackData = !!persisted?.length
+      return {
+        data,
+        isLoading: Boolean(
+          (res.isLoading && !hasFallbackData)
+            || (queryActive && res.isUninitialized),
+        ),
+        isFetching: res.isFetching,
+      }
+    },
+  })
+}

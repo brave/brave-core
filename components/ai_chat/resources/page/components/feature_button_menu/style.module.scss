@@ -1,0 +1,59 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.buttonMenu {
+  line-height: 0;
+  leo-menu-item {
+    padding: var(--leo-spacing-m);
+    min-width: 260px;
+    max-width: 280px;
+    margin-bottom: 0;
+    gap: var(--leo-spacing-m);
+  }
+  leo-menu-item:first-of-type {
+    margin-top: var(--leo-spacing-s);
+  }
+  leo-menu-item:last-of-type {
+    margin-bottom: var(--leo-spacing-s);
+  }
+}
+
+.menuSeparator {
+  padding: 0;
+  height: 1px;
+  background-color: var(--leo-color-divider-subtle);
+}
+
+.menuItemWithIcon {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-color-icon-default);
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px;
+
+  & > leo-icon {
+    margin-left: 8px;
+  }
+}
+
+.menuItemMainItem {
+  margin-left: -6px;
+  margin-right: -6px;
+}
+
+.menuText {
+  flex-grow: 1;
+  font: var(--leo-font-default-regular);
+}
+
+leo-toggle {
+  margin-right: var(--leo-spacing-m);
+}
+
+.lockOpen {
+  --leo-icon-color: var(--leo-color-systemfeedback-success-icon);
+}

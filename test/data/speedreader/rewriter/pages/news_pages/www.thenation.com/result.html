@@ -1,0 +1,523 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Recent Migrant Deaths Highlight the Danger of Deterrence</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Recent Migrant Deaths Highlight the Danger of Deterrence</h1><p class="subhead metadata">Deterrence is a failed strategy for reducing migration—while driving up the number of migrants who die trying to come to the United States.</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+
+ 
+
+
+
+
+
+
+
+ <p>Earlier this month, 15 Haitian migrants boarded a small boat in hopes of making it to the United States. Only half of them are known to have survived the journey. The boat, described by the Coast Guard as a “rustic vessel,” <a href="https://www.theguardian.com/us-news/2022/aug/07/migrant-boat-capsizes-florida-keys">capsized off the coast</a> of the Florida Keys. Two of the passengers drowned; five others are still missing. Two days later, a boat carrying more than 300 people <a href="https://www.wfla.com/news/florida/smuggling-boat-carrying-over-300-haitian-migrants-makes-landfall-in-florida-keys/">made landfall</a> at a resort in Key Largo. Just over 100 passengers were taken into Border Patrol custody, while the rest were sent back to Haiti. Two days after that, a boat carrying 123 people <a href="https://www.miamiherald.com/news/local/community/florida-keys/article264312026.html">landed elsewhere in the Keys</a>. </p>
+<p>“All of the events involved makeshift, overloaded vessels,” Walter Slosar, chief of Border Patrol’s Miami Sector, told reporters. “We urge migrants to avoid these dangerous voyages that can potentially result in loss of life.”
+</p><p>But warnings of the dangers and reports of past deaths haven’t stopped people from coming. All three boats set sail just a few weeks after a boat <a href="https://www.npr.org/2022/07/24/1113275090/bahamas-boat-capsizes">carrying between 50 and 60 people</a> capsized off the coast of the Bahamas. At least 17 people on board died; the youngest was just 4 or 5 years old. The migrants who embark on these journeys know there are risks involved. Their decisions are the result of a tragic risk calculus that putting their life in danger is worth a shot at a better future elsewhere. The poet Warsan Shire <a href="https://www.globalcitizen.org/en/content/no-one-puts-their-children-in-a-boat-unless-the-wa/">put it best</a>: No one puts their child in a boat unless the water is safer than the land.</p>
+<p>Each year, hundreds of people <a href="https://www.cnn.com/2021/12/09/politics/migrants-dying-crossing-us-mexico-border/index.html">die trying to cross the US-Mexico border</a>. Migrant fatalities in the desert are so common that they make headlines only under <a href="https://www.texastribune.org/2022/07/02/mexico-texas-honduras-migrants-san-antonio/">the most gruesome of circumstances</a>. Deaths at sea are more rare—but the number of people attempting to reach the United States by boat is on the rise. The Coast Guard has <a href="https://ht.usembassy.gov/u-s-coast-guard-repatriates-98-people-to-haiti/">reportedly interdicted</a> at more than 6,100 migrants during this fiscal year, compared to 1,527 the year prior. These aren’t inevitable tragedies. These deaths—and the difficult journeys survivors have to endure—are the result of a decades-long deterrence regime that persists despite its ineffectiveness.
+</p><p>This deterrence strategy was first pursued against Haitian migrants. The Coast Guard, the Department of Justice, and the National Security Council started <a href="https://www.ucpress.edu/book/9780520287976/boats-borders-and-bases">working on a policy</a> that would grant the United States the “legal authority to interdict Haitian refugee boats outside US waters for the purpose of returning the passengers to Haiti” in 1980. The Reagan administration started interdicting Haitian vessels the following year. Though there were technically exceptions for refugees, after migrants were intercepted immigration officials conducted cursory interviews at best, if they did so at all. Of the 24,600 Haitians intercepted at sea between 1981 and 1991, just 28 were allowed to enter the country to apply for asylum, according to David FitzGerald’s <a href="https://global.oup.com/academic/product/refuge-beyond-reach-9780190874155?cc=us&amp;lang=en&amp;"><em>Refuge Beyond Reach</em></a>.</p>
+<p>The Border Patrol rolled out a similar strategy in the desert a few years later. In 1993, the Border Patrol’s El Paso sector started stationing agents in urban crossing areas. The expectation was that the presence of law enforcement would stop migrants from crossing the border altogether. It was called Operation Blockade. Instead of reducing crossings, Operation Blockade just shifted them elsewhere. Still, by 1994, the policy was in place in each Border Patrol sector—the agency called it prevention through deterrence. “The prediction is that with traditional entry and smuggling routes disrupted, illegal traffic will be deterred, or forced over more hostile terrain,” the Border Patrol’s <a href="https://www.hsdl.org/?abstract&amp;did=721845">1994 strategic plan</a> read.</p>
+<p>If we analyze deterrence strategies as tools for reducing migration, it’s clear that they’ve failed. The Border Patrol logged 1,263,490 apprehensions during the 1993 fiscal year. Ten years later, Customs and Border Protection <a href="https://www.cbp.gov/newsroom/stats/southwest-border-unaccompanied-children/fy-2016">apprehended just over 400,000 people</a>; in <a href="https://www.cbp.gov/newsroom/stats/cbp-enforcement-statistics">fiscal year 2019</a>, the agency arrested more than 1.1 million people. Under previous administrations, CBP has admitted that “border security alone cannot overcome the powerful push factors of poverty and violence” that drive people out of their countries, and “walls alone cannot prevent illegal migration.” But year after year, Congress has primarily funded deterrence policies that only succeed in two respects: encouraging migrants to hire smugglers to get them to the United States, and contributing to a significant rise in deaths. </p>
+
+<p>An estimated <a href="https://www.latimes.com/archives/la-xpm-1997-aug-12-mn-21800-story.html">1,185 people</a> died crossing the US-Mexico border between 1993 and 1996; at least 728 migrants died along both sides of the border last year alone, according to <a href="https://missingmigrants.iom.int/sites/g/files/tmzbdl601/files/publication/file/MMP%20annual%20regional%20overview%202021%20LAC_Executive%20Summary-ENG_0.pdf">a recent report</a> by the United Nations’ International Organization for Migration. Studies have shown that deterrence policies <a href="https://www.propublica.org/article/why-do-border-deaths-persist-when-the-number-of-border-crossings-is-falling">have contributed to a steady increase</a> in deaths, even in years where the number of people crossing the border has decreased. Maritime fatalities are also on the rise. The Coast Guard received <a href="https://www.unhcr.org/en-us/news/briefing/2022/5/629090844/unhcr-urges-caribbean-governments-protect-refugees-amid-surge-risky-sea.html">at least 175 reports</a> of missing or dead Haitian migrants between October and May. In 2021, there were 132 reported deaths or disappearances of migrants on routes from the Caribbean to the mainland US and Puerto Rico.
+</p><p>People aren’t just dying at the border—they’re dying on the way there as well. More than 50 people died last year while <a href="https://www.aljazeera.com/news/2021/10/7/more-than-50-migrants-have-died-this-year-in-panamas-darien-gap">trying to cross the Darién Gap</a>, a dangerous stretch of rain forest in Panama that has become a key route for US-bound migrants. Those who can afford to avoid trekking through the desert may opt to sail to Panama via Colombia’s Pacific coast. That journey, while faster, is often dangerous as well: In 2019, a boat carrying 27 migrants <a href="https://thebogotapost.com/boat-carrying-migrants-sinks-in-golfo-de-uraba/34738/">capsized in the Gulf of Urabá</a>, killing 17 people.
+</p><p><span class="wpsdc-drop-cap">T</span>hese are journeys of necessity, not desire. People will always choose the safest option available to them. Middle-class Venezuelans, for example, were largely <a href="https://www.wsj.com/articles/middle-class-migrants-fly-to-mexico-and-then-cross-u-s-border-illegally-11634117401">flying to Mexico</a> in order to cross the US border until relatively recently. It wasn’t until Mexico <a href="https://www.reuters.com/world/americas/exclusive-mexico-considers-tighter-entry-rules-venezuelans-after-us-requests-2021-11-12/">implemented new visa requirements for Venezuelan travelers</a>—at the behest of the Biden administration—that Venezuelans began <a href="https://www.hrw.org/news/2022/07/05/mexico/central-america-new-visa-restrictions-harm-venezuelans">crossing the Darién Gap</a> and <a href="https://www.nytimes.com/2022/06/11/world/americas/mexico-migrant-caravan-photos.html">joining migrant caravans</a> in large numbers. Mexico also started requiring visas from Brazilian and Ecuadorian travelers after an unprecedented number of migrants from both countries started arriving at the southern US border.
+</p><p>In 2020, I <a href="https://www.theverge.com/21408606/ice-immigrant-detention-centers-video-chats-deportation-refugees-asylum">interviewed a Cameroonian asylum seeker</a> who traveled through a dozen countries to get to the United States. He flew to Brazil, one of the only countries in the Americas he could get to without a visa. From Brazil he went to Peru, then to Ecuador, then Colombia and Panama, where he crossed the Darién Gap before traveling all the way up Central America. It would have been safer and cheaper for him to fly to the US or Mexico directly; if he had the option, he would have taken it. </p>
+
+<p>FitzGerald calls this hidden regime of visa requirements “remote controls.” It’s a way of affecting migration that extends far beyond national borders. The goal isn’t to stop migration—it’s to stop people from arriving in a place where they can seek asylum. “The catch-22 for refugees,” FitzGerald writes, “is that rich democracies are essentially telling them, ‘We will not kick you out if you come here. But we will not let you come here.’” When she visited Guatemala last year, Vice President Kamala Harris had a succinct message for prospective migrants: “Do not come,” she said, repeating herself a second time for emphasis. “The United States will continue to enforce our laws and secure our border.”
+</p><p>Over the past 10 years, the US has also encouraged Mexico to militarize its own borders to catch northbound migrants as quickly as possible. In <a href="https://wikileaks.org/plusd/cables/10MEXICO69_a.html">a classified State Department memo</a> from 2010, officials referred to Mexico’s “porous border” with Guatemala as its “vulnerable underbelly.” Under Obama, the US helped train Mexican immigration agents and funded technology for Mexican migration controls as part of Programa Frontera Sur—the southern border program. During Trump’s final years in office, Mexico agreed to <a href="https://mexiconewsdaily.com/news/mexico-pledged-to-send-6000-troops/">send its own National Guard troops</a> to the Guatemalan border to help curb migration.
+</p><p>The first major wave of Haitian migration to the United States occurred in the 1950s; they were primarily wealthy professionals, followed by middle-class people in the 1960s. In 1972, the number of visas issued to Haitian travelers decreased. It was only then that people started taking to the sea en masse.
+</p><p><span class="wpsdc-drop-cap">I</span>t doesn’t have to be this way. For nearly 50 years, all Cuban migrants who set foot on American soil were put on a path to US citizenship. (Those whose boats were intercepted at sea, however, were turned back.) After the Vietnam War, Congress passed the Indochina Migration and Refugee Assistance Act, which allowed <a href="https://slate.com/news-and-politics/2021/08/afghanistan-refugees-siv-vietnam.html">hundreds of thousands</a> of Vietnamese, Cambodian, and Laotian refugees to resettle in the US. Given Republicans’ constant fearmongering over immigration, similar legislation designed to help Haitian or Central American asylum seekers is unlikely to pass, but there are other options. The United States <a href="https://www.cbsnews.com/news/us-admits-100000-ukrainians-in-5-months-fulfilling-biden-pledge/">took in more than 100,000 Ukrainian refugees</a> during a five-month period this year, about one-third of whom arrived through a private sponsorship program. No such process exists for refugees from other countries. And unlike people who go through the traditional refugee resettlement process, asylum seekers have to be in the US before they can apply for protection.
+</p><p>There are plenty of people who would gladly sponsor refugees if given the chance—but immigration authorities are often hostile to attempts to do so. Members of humanitarian aid groups in Arizona <a href="https://www.nytimes.com/2020/02/05/us/tucson-border-activists-conviction-reversed.html">have been arrested</a> for leaving gallons of water on migrant trails. Instead of criminalizing aid workers’ efforts to keep migrants alive, the government could avoid these deaths altogether by letting people sponsor Haitian and Central American refugees. People will try to come to the United States regardless; they’ll always take the safest option available to them. Right now, for many, that option comes with significant risk.
+</p></body>

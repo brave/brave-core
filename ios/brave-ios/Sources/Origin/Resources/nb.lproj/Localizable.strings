@@ -1,0 +1,99 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Ads";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "har du allerede kjøpt på Brave.com?";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Analyse";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Kjøp nå";
+
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Aktivering eller deaktivering av en Brave-funksjon krever en omstart av nettleseren for å bruke endringene. Vennligst lukk (sveip opp i appbytteren) og åpne Brave på nytt.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Endrer Brave-funksjoner";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "**Tilpass nettleseren din samtidig som du støtter Brave**\n\nBrave Origin er en betalt versjon av nettleseren for brukere som ikke trenger alle funksjonene som støtter Brave som en bedrift, men som fortsatt ønsker personvernet som bare Brave tilbyr. Origin-brukere vil fortsette å dra nytte av vår bransjeledende personvern, annonseblokkering og hastighet (via Shields), samt regelmessige programvareoppdateringer, Chromium-oppdateringer og sikkerhet og personvernforbedringer. Origin vil fjerne de fleste andre funksjonene fra nettleseren.";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Funksjoner";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Bekreft Brave Origin-kjøp";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo AI";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Koble kjøpet til Brave-kontoen din";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Nyheter";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Engangskjøp";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Spilleliste";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Personvernbevarende analyse";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Har du en kampanjekode?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Velg hvilken betalingsmåte som passer deg:";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Kan ikke fullføre kjøpet. Vennligst prøv igjen, eller sjekk betalingsinformasjonen din på Apple og prøv igjen.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Koble App Store-kjøpet til Brave-kontoen din for å bruke Brave Origin på andre enheter";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Kjøp";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Bruk kampanjekode";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Tilbakestill til standardoppsettet";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Gjenopprett";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Rewards";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Statistikrapportering";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Prat";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Behold grunnleggende annonseblokkering, personvern og hastighet";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Minimalistisk nettlesergrensesnitt med fokus på Brave Shields";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Engangskjøp kan aktiveres flere ganger på tvers av alle enhetene dine";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Støtt vårt oppdrag og arbeid med åpen kildekode";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "Se App Store-kvittering";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Lommebok";
+

@@ -1,0 +1,10 @@
+Name: getrandom_or_panic
+URL: https://crates.io/crates/getrandom_or_panic
+Version: 0.0.3
+Revision: 9e98ca8a174c4bfde79ce1fe00d89144092ab2b5
+License: BSD-3-Clause
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description:  Implements a RngCore which panics unless getrandom exists 

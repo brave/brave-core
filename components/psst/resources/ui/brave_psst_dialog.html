@@ -1,0 +1,33 @@
+<!doctype html>
+<html dir="$i18n{textdirection}" lang="$i18n{language}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>$i18n{PSST_CONSENT_DIALOG_TITLE}</title>
+  <link rel="stylesheet" href="chrome://resources/brave/css/reset.css" blocking="render" >
+  <link rel="stylesheet" href="chrome://resources/brave/css/nala.css" blocking="render" >
+  <script src="chrome://resources/js/load_time_data_deprecated.js"></script>
+  <script src="/strings.js"></script>
+  <script type="module" src="/brave_psst_dialog.bundle.js"></script>
+  <style>
+    html,
+    body {
+      margin: 0;
+      background: var(--leo-color-container-background);
+      color: var(--leo-color-text-primary);
+    }
+    :host, body, #root {
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+    html {
+      overflow-x: hidden;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+</body>
+</html>

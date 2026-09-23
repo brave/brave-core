@@ -1,0 +1,32 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+static_library("browser") {
+  sources = [
+    "https_upgrade_exceptions_service.cc",
+    "https_upgrade_exceptions_service.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//net",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "https_upgrade_exceptions_service_unittest.cc" ]
+
+  deps = [
+    ":browser",
+    "//base/test:test_support",
+    "//net:net_features",
+    "//testing/gtest",
+  ]
+}

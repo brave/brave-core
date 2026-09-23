@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Show the toolbar button while a download is in progress.
+
+      After the upstream UpdateToolbarButtonState runs, Brave also shows the
+      toolbar button when there's at least one in-progress download item. The
+      decision is computed by ShouldShowToolbarButtonForInProgressDownload,
+      defined in the chromium_src override.
+    after_function_impl:
+      function_name: DownloadDisplayController::UpdateToolbarButtonState
+      code: |-
+        if (ShouldShowToolbarButtonForInProgressDownload(
+                info, display_, bubble_controller_, browser_)) {
+          ShowToolbarButton();
+        }

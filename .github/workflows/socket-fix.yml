@@ -1,0 +1,132 @@
+name: Socket Fix by GHSA
+
+on:
+  workflow_dispatch:
+    inputs:
+      ghsa_ids:
+        description: 'Comma-separated list of GHSA IDs (e.g. GHSA-442j-39wm-28r2,GHSA-7rx3-28cr-v5wh)'
+        required: true
+        type: string
+      issue_link:
+        description: 'Comma-separated links to related security issues (e.g. https://github.com/brave/brave-browser/issues/54048,https://github.com/brave/brave-browser/issues/54049)'
+        required: true
+        type: string
+      wdp_ref:
+        description: 'Commit hash for web-discovery-project DEPS update (optional)'
+        required: false
+        type: string
+      leo_ref:
+        description: 'Commit hash for @brave/leo package.json update (optional)'
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  socket-fix:
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - uses: actions/setup-node@53b83947a5a98c8d113130e565377fae1a50d02f # v6.3.0
+        with:
+          node-version: '24'
+
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
+        with:
+          version: 11.25.0
+
+      - name: Update WDP in DEPS
+        if: inputs.wdp_ref != ''
+        env:
+          WDP_REF: ${{ inputs.wdp_ref }}
+        run: |
+          [[ "$WDP_REF" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::Invalid wdp_ref: must be a 40-char hex SHA"; exit 1; }
+          sed -i -E "s|(\"vendor/web-discovery-project\"[^@]*@)[0-9a-f]{40}|\1${WDP_REF}|" DEPS
+          grep -q "$WDP_REF" DEPS || { echo "::error::Failed to update WDP hash in DEPS"; exit 1; }
+
+      - name: Update Leo in package.json
+        if: inputs.leo_ref != ''
+        env:
+          LEO_REF: ${{ inputs.leo_ref }}
+        run: |
+          [[ "$LEO_REF" =~ ^[0-9a-f]{40}$ ]] || { echo "::error::Invalid leo_ref: must be a 40-char hex SHA"; exit 1; }
+          sed -i -E "s|(\"@brave/leo\"[^#]*#)[0-9a-f]{40}|\1${LEO_REF}|" package.json
+          grep -q "$LEO_REF" package.json || { echo "::error::Failed to update Leo hash in package.json"; exit 1; }
+
+      - name: Install Socket CLI
+        run: pnpm add -g @socketsecurity/cli@1.1.156
+
+      - name: Configure GPG
+        uses: crazy-max/ghaction-import-gpg@e89d40939c28e39f97cf32126055eeae86ba74ec # v6.3.0
+        with:
+          gpg_private_key: ${{ secrets.BRAVE_SUPPORT_ADMIN_GPG_KEY }}
+          passphrase: ${{ secrets.BRAVE_SUPPORT_ADMIN_COMMIT_SIGNING_KEY_PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: Run Socket Fix
+        env:
+          GHSA_IDS: ${{ inputs.ghsa_ids }}
+          SOCKET_SECURITY_API_KEY: ${{ secrets.SOCKET_SECURITY_API_KEY }}
+        run: |
+          if ! [[ "$GHSA_IDS" =~ ^GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4}(,[[:space:]]?GHSA-[0-9a-z]{4}-[0-9a-z]{4}-[0-9a-z]{4})*$ ]]; then
+            echo "::error::GHSA_IDS contains invalid entries. Expected format: GHSA-xxxx-xxxx-xxxx (comma or comma-space separated)"
+            exit 1
+          fi
+          IFS=',' read -ra IDS <<< "$GHSA_IDS"
+          for id in "${IDS[@]}"; do FLAGS+=(--id "${id// /}"); done
+          socket config set defaultOrg "brave"
+          socket fix . "${FLAGS[@]}"
+
+      - name: Compute branch name
+        id: branch
+        env:
+          GHSA_IDS: ${{ inputs.ghsa_ids }}
+        run: |
+          echo "name=socket-fix/$(echo "$GHSA_IDS" | tr ', ' '-' | tr -s '-' | cut -c1-60)" >> "$GITHUB_OUTPUT"
+
+      - name: Compute PR body
+        id: body
+        env:
+          GH_TOKEN: ${{ secrets.SOCKET_FIX_PAT }}
+          GHSA_IDS: ${{ inputs.ghsa_ids }}
+          ISSUE_LINK: ${{ inputs.issue_link }}
+          WDP_REF: ${{ inputs.wdp_ref }}
+          LEO_REF: ${{ inputs.leo_ref }}
+        run: |
+          BODY="Addresses: $GHSA_IDS"
+          IFS=',' read -ra LINKS <<< "$ISSUE_LINK"
+          for link in "${LINKS[@]}"; do
+            BODY="$BODY"$'\n\n'"closes ${link// /}"
+          done
+          if [[ -n "$WDP_REF" ]]; then
+            WDP_PR=$(gh api "repos/brave/web-discovery-project/commits/$WDP_REF/pulls" -q '.[0].html_url' 2>/dev/null || true)
+            [[ -n "$WDP_PR" ]] && BODY="$BODY"$'\n\n'"WDP: $WDP_PR"
+          fi
+          if [[ -n "$LEO_REF" ]]; then
+            LEO_PR=$(gh api "repos/brave/leo/commits/$LEO_REF/pulls" -q '.[0].html_url' 2>/dev/null || true)
+            [[ -n "$LEO_PR" ]] && BODY="$BODY"$'\n\n'"Leo: $LEO_PR"
+          fi
+          {
+            echo "body<<EOF"
+            echo "$BODY"
+            echo "EOF"
+          } >> "$GITHUB_OUTPUT"
+
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@84ae59a2cdc2258d6fa0732dd66352dddae2a412 # v7.0.9
+        with:
+          commit-message: 'fix: address security advisories'
+          author: brave-support-admin <138038132+brave-support-admin@users.noreply.github.com>
+          committer: brave-support-admin <138038132+brave-support-admin@users.noreply.github.com>
+          branch: ${{ steps.branch.outputs.name }}
+          delete-branch: true
+          base: master
+          title: 'fix: address security advisories'
+          body: ${{ steps.body.outputs.body }}
+          labels: CI/skip,security
+          token: ${{ secrets.SOCKET_FIX_PAT }}

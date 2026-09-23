@@ -1,0 +1,13 @@
+diff --git a/tools/clang/scripts/update.py b/tools/clang/scripts/update.py
+index be169e40f0b5894c3959da4e4f4cc8994e9a29c8..f4040d098cf59b78870194c3ce75d0b4c23b9051 100755
+--- a/tools/clang/scripts/update.py
++++ b/tools/clang/scripts/update.py
+@@ -217,6 +217,8 @@ def DownloadAndUnpack(url, output_dir, path_prefixes=None, is_known_zip=False):
+       # The nicest way to do this would be by passing a filter to extractall,
+       # but that functionality is not available in macOS system Python (3.9.6).
+       for m in members:
++        if sys.platform == 'win32':
++          continue
+         # Confusingly, this checks if you're allowed to _not_ follow symlinks.
+         if os.utime in os.supports_follow_symlinks:
+           os.utime(os.path.join(output_dir, m.name), follow_symlinks=False)

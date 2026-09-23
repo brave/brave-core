@@ -1,0 +1,240 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import {
+  AccountState,
+  AccountStateFieldTags,
+  DialogMode,
+  VerificationIntent,
+  whichAccountState,
+} from './brave_account.mojom-webui.js'
+import { assert } from '//resources/js/assert.js'
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+import { EventTracker } from '//resources/js/event_tracker.js'
+// <if expr="not is_android and not is_ios">
+import { getDeepActiveElement, hasKeyModifiers } from '//resources/js/util.js'
+// </if>
+
+import {
+  BraveAccountBrowserProxy,
+  BraveAccountBrowserProxyImpl,
+} from './brave_account_browser_proxy.js'
+import { getHtml } from './brave_account_dialogs.html.js'
+
+// The pending verification, threaded into the CREDENTIALS dialog.
+// `intent` is the tagged `VerificationIntent`, not a raw enum, because
+// `LoggedOutVerificationIntent` and `LoggedInVerificationIntent` are distinct
+// enums that share the same value space - the tag is what tells password reset
+// (logged-out) from password change (logged-in).
+// `verifiedEmail` is the email persisted once the OTP step completes.
+//
+// `verification` is absent for registration, present for password reset/change:
+// the flows set the password at opposite ends of OTP.
+// Registration sets it in CREDENTIALS *before* OTP, reached from ENTRY with
+// no verification yet; password reset/change reach CREDENTIALS *after* OTP,
+// always with one. So don't synthesize a registration intent here -
+// at that point none exists.
+export interface CredentialsVerification {
+  intent: VerificationIntent
+  verifiedEmail: string
+}
+
+export type Dialog =
+  | { type: 'ENTRY' | 'PASSWORD_RESET' | 'SIGN_IN' }
+  | { type: 'OTP'; intent: VerificationIntent }
+  | { type: 'CREDENTIALS'; verification?: CredentialsVerification }
+  | { type: 'ACCOUNT_DELETION' }
+
+export class BraveAccountDialogsElement extends CrLitElement {
+  static get is() {
+    return 'brave-account-dialogs'
+  }
+
+  override render() {
+    return getHtml.bind(this)()
+  }
+
+  static override get properties() {
+    return {
+      dialog: { type: Object },
+      isCapsLockOn: { type: Boolean, state: true },
+    }
+  }
+
+  protected onBackButtonClicked() {
+    assert(this.dialog)
+    this.dialog = {
+      type: this.dialog.type === 'PASSWORD_RESET' ? 'SIGN_IN' : 'ENTRY',
+    }
+  }
+
+  protected onCloseDialog() {
+    this.browserProxy.closeDialog()
+  }
+
+  private browserProxy: BraveAccountBrowserProxy =
+    BraveAccountBrowserProxyImpl.getInstance()
+
+  protected accessor dialog: Dialog | undefined = undefined
+  protected accessor isCapsLockOn: boolean = false
+
+  private accountStateListenerId: number | null = null
+  private eventTracker = new EventTracker()
+
+  override connectedCallback() {
+    super.connectedCallback()
+
+    this.eventTracker.add(this, 'back-button-clicked', this.onBackButtonClicked)
+    this.eventTracker.add(this, 'close-dialog', this.onCloseDialog)
+    // <if expr="not is_android and not is_ios">
+    this.eventTracker.add(document, 'keydown', this.onKeyDown)
+    this.eventTracker.add(document, 'keyup', this.onKeyUp)
+    // </if>
+
+    // Handle account state changes.
+    // LOGGED_OUT (no verification): show the ENTRY dialog
+    // LOGGED_OUT (with verification, email not yet verified): show OTP
+    // LOGGED_OUT (with verification, email verified): show CREDENTIALS
+    // LOGGED_IN (no verification): close the native dialog
+    // LOGGED_IN (with verification, email not yet verified): show OTP
+    // LOGGED_IN (with verification, email verified): show CREDENTIALS
+    //
+    // Since account state is profile-wide, this automatically updates dialogs
+    // across all tabs.
+    this.accountStateListenerId =
+      this.browserProxy.authenticationObserverCallbackRouter.onAccountStateChanged.addListener(
+        async (state: AccountState) => {
+          // Handled on its own, ahead of the state mapping: such a page only
+          // ever shows the deletion dialog, so the mapping never has to know
+          // the mode exists.
+          if (
+            (await this.browserProxy.getDialogMode())
+            === DialogMode.kAccountDeletion
+          ) {
+            if (
+              whichAccountState(state) === AccountStateFieldTags.LOGGED_IN
+              && !state.loggedIn!.verification
+            ) {
+              this.dialog = { type: 'ACCOUNT_DELETION' }
+            } else {
+              this.onCloseDialog()
+            }
+            return
+          }
+
+          switch (whichAccountState(state)) {
+            case AccountStateFieldTags.LOGGED_OUT: {
+              const verification = state.loggedOut!.verification
+              if (verification) {
+                const intent: VerificationIntent = {
+                  loggedOutIntent: verification.intent,
+                }
+                this.dialog = verification.verifiedEmail
+                  ? {
+                      type: 'CREDENTIALS',
+                      verification: {
+                        intent,
+                        verifiedEmail: verification.verifiedEmail,
+                      },
+                    }
+                  : { type: 'OTP', intent }
+              } else {
+                this.dialog = { type: 'ENTRY' }
+              }
+              break
+            }
+            case AccountStateFieldTags.LOGGED_IN: {
+              const verification = state.loggedIn!.verification
+              if (verification) {
+                const intent: VerificationIntent = {
+                  loggedInIntent: verification.intent,
+                }
+                this.dialog = verification.verifiedEmail
+                  ? {
+                      type: 'CREDENTIALS',
+                      verification: {
+                        intent,
+                        verifiedEmail: verification.verifiedEmail,
+                      },
+                    }
+                  : { type: 'OTP', intent }
+              } else {
+                this.onCloseDialog()
+              }
+              break
+            }
+          }
+        },
+      )
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+
+    assert(this.accountStateListenerId)
+    this.browserProxy.authenticationObserverCallbackRouter.removeListener(
+      this.accountStateListenerId,
+    )
+
+    this.eventTracker.removeAll()
+  }
+
+  // <if expr="not is_android and not is_ios">
+  private onKeyDown = (e: KeyboardEvent) => {
+    this.isCapsLockOn = e.getModifierState('CapsLock')
+
+    // Ignore keys pressed with modifiers (Ctrl, Shift, etc.).
+    if (hasKeyModifiers(e)) {
+      return
+    }
+
+    switch (e.key) {
+      // Clicks the dialog's action button.
+      case 'Enter': {
+        // Only clicks it when a text field is focused: any other focused
+        // element (e.g. the "Forgot your password?" link) keeps its own Enter
+        // behavior.
+        if (!getDeepActiveElement()?.closest('input')) {
+          break
+        }
+
+        const dialog = [...(this.shadowRoot?.children ?? [])].find(
+          (el) => el instanceof HTMLElement && el.shadowRoot,
+        )
+
+        // The action button is the first one slotted; anything after it is
+        // secondary (cancel, resend, ...) and must never be triggered by
+        // Enter, however the action's own disabled state leaves them.
+        const actionButton = dialog?.shadowRoot?.querySelector<HTMLElement>(
+          'leo-button[slot="buttons"]',
+        )
+
+        if (actionButton?.matches(':not([isDisabled])')) {
+          actionButton.click()
+          e.preventDefault()
+        }
+        break
+      }
+      // Closes the dialog.
+      case 'Escape':
+        this.onCloseDialog()
+        e.preventDefault()
+        break
+    }
+  }
+
+  private onKeyUp = (e: KeyboardEvent) => {
+    this.isCapsLockOn = e.getModifierState('CapsLock')
+  }
+  // </if>
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'brave-account-dialogs': BraveAccountDialogsElement
+  }
+}
+
+customElements.define(BraveAccountDialogsElement.is, BraveAccountDialogsElement)

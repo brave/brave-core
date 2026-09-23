@@ -1,0 +1,22 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiInstanceOrchestratorImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiInstanceOrchestratorImpl.java
+index bb8d31da07c2ce063358e6e06a1f07267e3608c7..c3565b4b74b264bc7620e9dfd0a3590d919ca079 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiInstanceOrchestratorImpl.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/multiwindow/MultiInstanceOrchestratorImpl.java
+@@ -52,7 +52,7 @@ import java.util.Set;
+ 
+ /** Implements {@link MultiInstanceOrchestrator} as a singleton. */
+ @NullMarked
+-/* package */ final class MultiInstanceOrchestratorImpl implements MultiInstanceOrchestrator {
++/* package */ class MultiInstanceOrchestratorImpl implements MultiInstanceOrchestrator {
+     private static @Nullable MultiInstanceOrchestrator sInstance;
+     private static @Nullable TabReparentingDelegate sTabReparentingDelegateForTesting;
+ 
+@@ -74,7 +74,7 @@ import java.util.Set;
+         return sInstance;
+     }
+ 
+-    private MultiInstanceOrchestratorImpl(TabReparentingDelegate tabReparentingDelegate) {
++    MultiInstanceOrchestratorImpl(TabReparentingDelegate tabReparentingDelegate) {
+         mTabReparentingDelegate = tabReparentingDelegate;
+         ApplicationStatus.registerStateListenerForAllActivities(this::onActivityStateChange);
+ 

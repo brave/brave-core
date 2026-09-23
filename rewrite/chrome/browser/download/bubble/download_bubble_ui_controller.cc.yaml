@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Skip the processed-command histogram.
+
+      Brave-specific DownloadCommands values fall outside the enum range the
+      histogram expects and would crash, so record nothing.
+    regex:
+      pattern: |-
+        base::UmaHistogramEnumeration("Download.Bubble.ProcessedCommand2", command)
+      replace: |-
+        base::DoNothing()
+
+  - description: |
+      Handle the Brave kDeleteLocalFile command in ExecuteCommand.
+
+      Grouped with OPEN_SAFE_BROWSING_SETTING so it falls through to
+      DownloadCommands::ExecuteCommand().
+    regex:
+      re_pattern: |-
+        (\n *)(case DownloadCommands::OPEN_SAFE_BROWSING_SETTING:)
+      replace: |-
+        \1\2\1case DownloadCommands::DELETE_LOCAL_FILE:

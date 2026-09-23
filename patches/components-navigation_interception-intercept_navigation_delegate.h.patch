@@ -1,0 +1,13 @@
+diff --git a/components/navigation_interception/intercept_navigation_delegate.h b/components/navigation_interception/intercept_navigation_delegate.h
+index a3534ab2c5301169e4ea20a211fe157e13f908c5..1b2d1b4e23d962cf936df9151f95723e89e996fb 100644
+--- a/components/navigation_interception/intercept_navigation_delegate.h
++++ b/components/navigation_interception/intercept_navigation_delegate.h
+@@ -82,7 +82,7 @@ class InterceptNavigationDelegate : public base::SupportsUserData::Data {
+   static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
+                                 navigation_interception::SynchronyMode mode);
+ 
+-  void ShouldIgnoreNavigation(
++  virtual void ShouldIgnoreNavigation(
+       content::NavigationHandle* navigation_handle,
+       bool should_run_async,
+       InterceptNavigationThrottle::ResultCallback result_callback);

@@ -1,0 +1,20 @@
+diff --git a/components/skills/features.cc b/components/skills/features.cc
+index f68667c4d9c17c583c838a69076849ac69a59172..169f197c5a98eb2266b5ea4be61b66e30adca3b9 100644
+--- a/components/skills/features.cc
++++ b/components/skills/features.cc
+@@ -7,13 +7,8 @@
+ 
+ namespace features {
+ 
+-BASE_FEATURE(kSkillsEnabled,
+-#if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_CHROMEOS)
+-             base::FEATURE_ENABLED_BY_DEFAULT
+-#else
+-             base::FEATURE_DISABLED_BY_DEFAULT
+-#endif
+-);
++BASE_OVERRIDDEN_FEATURE(kSkillsEnabled,
++base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kSkillsMetricsProviderEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
+ BASE_FEATURE(kSkillsRefinementEnabled, base::FEATURE_ENABLED_BY_DEFAULT);
+ BASE_FEATURE(kSkillsAutocomplete, base::FEATURE_DISABLED_BY_DEFAULT);

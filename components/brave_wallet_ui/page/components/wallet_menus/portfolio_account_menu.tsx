@@ -1,0 +1,54 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+
+import { getLocale } from '$web-common/locale'
+
+// Styled Components
+import { ButtonMenu } from './wallet_menus.style'
+
+interface Props {
+  onClickDeposit?: () => void
+  onClickViewOnExplorer?: () => void
+  onClickSell?: () => void
+}
+
+export const PortfolioAccountMenu = (props: Props) => {
+  const { onClickSell, onClickViewOnExplorer, onClickDeposit } = props
+
+  return (
+    <ButtonMenu placement='bottom-end'>
+      <Button
+        fab
+        slot='anchor-content'
+        kind='plain-faint'
+        size='large'
+      >
+        <Icon name='more-vertical' />
+      </Button>
+      {onClickSell && (
+        <leo-menu-item onClick={onClickSell}>
+          <Icon name='usd-circle' />
+          {getLocale(S.BRAVE_WALLET_SELL)}
+        </leo-menu-item>
+      )}
+      {onClickViewOnExplorer && (
+        <leo-menu-item onClick={onClickViewOnExplorer}>
+          <Icon name='launch' />
+          {getLocale(S.BRAVE_WALLET_PORTFOLIO_VIEW_ON_EXPLORER_MENU_LABEL)}
+        </leo-menu-item>
+      )}
+      {onClickDeposit && (
+        <leo-menu-item onClick={onClickDeposit}>
+          <Icon name='money-bag-coins' />
+          {getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
+        </leo-menu-item>
+      )}
+    </ButtonMenu>
+  )
+}

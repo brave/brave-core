@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Hide the referrer on redirect in `NavigationRequest::OnRequestRedirected`
+    regex:
+      re_pattern:
+        '(common_params_->referrer->url = GURL\(redirect_info\.new_referrer\);)'
+      replace: |-
+        \1
+          GetContentClient()->browser()->MaybeHideReferrer(
+              browser_context, common_params_->url,
+              GetTopDocumentGURL(frame_tree_node_), &common_params_->referrer);
+
+  - description: |
+      Hide the referrer in `NavigationRequest::OnStartChecksComplete`
+
+      The referrer must be hidden before it is captured into the request
+      passed to `NavigationURLLoader::Create`, so the substitution anchors on
+      that call.
+    regex:
+      re_pattern: '(loader_ = NavigationURLLoader::Create\()'
+      replace: |-
+        GetContentClient()->browser()->MaybeHideReferrer(
+            browser_context, common_params_->url,
+            GetTopDocumentGURL(frame_tree_node_), &common_params_->referrer);
+        \1

@@ -1,0 +1,31 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add Brave's WebUI hosts to ChromeURLHosts
+
+      Anchored at the end of the host list rather than on a specific existing
+      entry, since the list has no meaningful ordering of its own and any
+      given neighboring entry could be renamed or removed later.
+    regex:
+      re_pattern:
+        '(kChromeURLHosts =
+        std::to_array<base::cstring_view>\(\{.*?\n)(\s*\}\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1      kAdblockHost,
+              kAdblockInternalsHost,
+              kRewardsPageHost,
+              kRewardsInternalsHost,
+              kWelcomeHost,
+        #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+              kWalletPageHost,
+        #endif
+              kTorInternalsHost,
+              kSkusInternalsHost,
+              kAdsInternalsHost,
+              kNewTabTakeoverHost,
+        \2

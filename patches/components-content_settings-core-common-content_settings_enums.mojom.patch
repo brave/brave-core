@@ -1,0 +1,12 @@
+diff --git a/components/content_settings/core/common/content_settings_enums.mojom b/components/content_settings/core/common/content_settings_enums.mojom
+index a89fcd8ffa3c02cdc9ffe2fcbf9ecaa65956c9dc..dedf4af5241a226f9ce2b9a24d2f07744aabb791 100644
+--- a/components/content_settings/core/common/content_settings_enums.mojom
++++ b/components/content_settings/core/common/content_settings_enums.mojom
+@@ -78,6 +78,7 @@ enum ProviderType {
+   kPrefProvider,
+   kJavascriptOptimizerAndroidProvider,
+   kExtensionInstallTimePermissionProvider,
++  kRemoteListProvider,
+ 
+   // The following providers are for tests only. The priority is intentionally
+   // higher than kDefaultProvider.

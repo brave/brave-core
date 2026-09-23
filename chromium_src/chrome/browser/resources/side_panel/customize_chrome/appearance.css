@@ -1,0 +1,17 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./appearance-chromium.css.js
+ * #scheme=relative
+ * #include=appearance-chromium
+ * #css_wrapper_metadata_end */
+
+/* As we've removed a color chip, we need to adjust the left of hue slider
+   so that it can stay in viewport */
+:host {
+  --hue-slider-margin: 0 0 0 76px;
+}

@@ -1,0 +1,48 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Stub out enumerate-devices label caching in the WebView.
+
+      Brave never records whether an origin can read enumerate-devices audio
+      labels, so the setter is a no-op.
+    preempt_function_impl:
+      function_name: AwPermissionManager::SetOriginCanReadEnumerateDevicesAudioLabels
+      code: |-
+        if ((true)) {
+          return;
+        }
+
+  - description: 'Stub out enumerate-devices video labels setter.'
+    preempt_function_impl:
+      function_name: AwPermissionManager::SetOriginCanReadEnumerateDevicesVideoLabels
+      code: |-
+        if ((true)) {
+          return;
+        }
+
+  - description: |
+      Handle Brave-specific PermissionType values alongside PermissionType::NUM
+    count: 3
+    regex:
+      re_pattern: '(\n)( *)(case (?:blink::)?PermissionType::NUM:)'
+      replace: |-
+        \1\2case PermissionType::BRAVE_ADS:
+        \2case PermissionType::BRAVE_TRACKERS:
+        \2case PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
+        \2case PermissionType::BRAVE_FINGERPRINTING_V2:
+        \2case PermissionType::BRAVE_SHIELDS:
+        \2case PermissionType::BRAVE_REFERRERS:
+        \2case PermissionType::BRAVE_COOKIES:
+        \2case PermissionType::BRAVE_SPEEDREADER:
+        #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+        \2case PermissionType::BRAVE_ETHEREUM:
+        \2case PermissionType::BRAVE_SOLANA:
+        \2case PermissionType::BRAVE_CARDANO:
+        #endif
+        \2case PermissionType::BRAVE_GOOGLE_SIGN_IN:
+        \2case PermissionType::BRAVE_OPEN_AI_CHAT:
+        \2\3

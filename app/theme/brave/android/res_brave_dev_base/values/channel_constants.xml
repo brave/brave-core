@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at http://mozilla.org/MPL/2.0/.
+-->
+
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- The application name displayed to the user. -->
+    <string name="app_name" translatable="false">Brave - Dev</string>
+    <string name="bookmark_widget_title" translatable="false">Brave bookmarks</string>
+    <string name="search_widget_title" translatable="false">Brave search</string>
+    <string name="quick_action_search_widget_title" translatable="false">Brave quick action search</string>
+</resources>

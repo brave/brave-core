@@ -1,0 +1,99 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import("//brave/components/containers/buildflags/buildflags.gni")
+
+assert(enable_containers)
+
+source_set("containers") {
+  sources = [
+    "container_specifier_utils.cc",
+    "container_specifier_utils.h",
+    "container_tab_tracker.cc",
+    "container_tab_tracker.h",
+    "containers_service_delegate.cc",
+    "containers_service_delegate.h",
+    "containers_service_factory.cc",
+    "containers_service_factory.h",
+    "used_container_storage_partitions.cc",
+    "used_container_storage_partitions.h",
+  ]
+
+  deps = [
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/common",
+    "//chrome/browser/profiles:profile",
+    "//chrome/browser/ui/tab_contents",
+    "//chrome/browser/ui/tabs",
+    "//chrome/common",
+    "//chrome/common:buildflags",
+    "//components/sessions",
+    "//content/public/browser",
+    "//crypto",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "containers_browsertest.cc" ]
+
+  deps = [
+    ":containers",
+    "//brave/app:brave_generated_resources_grit_grit",
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/browser:test_support",
+    "//brave/components/containers/core/common:features",
+    "//brave/components/containers/core/common:switches",
+    "//brave/components/containers/core/mojom",
+    "//chrome/browser",
+    "//chrome/browser/browsing_data:constants",
+    "//chrome/browser/prefs:util",
+    "//chrome/browser/renderer_context_menu:test_support",
+    "//chrome/browser/ui/views/page_action:page_action_test_support",
+    "//chrome/browser/ui/views/tabs/hovercard",
+    "//chrome/browser/ui/views/tabs/hovercard:test_support",
+    "//chrome/browser/ui/zoom",
+    "//chrome/browser/web_applications",
+    "//chrome/browser/web_applications:web_applications_test_support",
+    "//chrome/test:test_support",
+    "//components/permissions",
+    "//components/permissions:test_support",
+    "//components/services/app_service/public/cpp:app_types",
+    "//components/webapps/common",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//third_party/blink/public:blink_headers",
+  ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "containers_service_delegate_unittest.cc",
+    "permission_util_containers_unittest.cc",
+  ]
+
+  deps = [
+    ":containers",
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/browser",
+    "//brave/components/containers/core/browser:test_support",
+    "//brave/components/containers/core/common:features",
+    "//brave/components/containers/core/mojom",
+    "//chrome/browser",
+    "//chrome/test:test_support",
+    "//components/permissions",
+    "//components/sessions:test_support",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

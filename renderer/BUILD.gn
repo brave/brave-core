@@ -1,0 +1,43 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+import("//build/config/features.gni")
+
+source_set("renderer") {
+  visibility = [
+    "//brave:child_dependencies",
+    "//brave/renderer/*",
+    "//brave/test:*",
+    "//chrome/renderer/*",
+  ]
+
+  public_deps = [ "//chrome/renderer" ]
+
+  deps = [
+    "//brave/components/brave_search/common",
+    "//brave/components/brave_search/renderer",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/cosmetic_filters/renderer",
+    "//v8",
+  ]
+
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/renderer",
+      "//brave/renderer/brave_wallet/",
+    ]
+  }
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader/renderer" ]
+  }
+
+  if (is_android) {
+    deps += [ "//brave/components/brave_mobile_subscription/renderer/android" ]
+  }
+}

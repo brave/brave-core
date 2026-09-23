@@ -1,0 +1,99 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_wallet/common/features.h"
+
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "build/build_config.h"
+
+namespace brave_wallet::features {
+
+BASE_FEATURE(kBraveWalletBitcoinFeature,
+             "BraveWalletBitcoin",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+const base::FeatureParam<int> kBitcoinRpcThrottle{&kBraveWalletBitcoinFeature,
+                                                  "rpc_throttle", 1};
+const base::FeatureParam<bool> kBitcoinTestnetDiscovery{
+    &kBraveWalletBitcoinFeature, "testnet_discovery", false};
+
+BASE_FEATURE(kBraveWalletBitcoinImportFeature,
+             "BraveWalletBitcoinImport",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveWalletBitcoinLedgerFeature,
+             "BraveWalletBitcoinLedger",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveWalletZCashFeature,
+             "BraveWalletZCash",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveWalletPolkadotFeature,
+             "BraveWalletPolkadot",
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+             base::FEATURE_ENABLED_BY_DEFAULT
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT
+#endif
+);
+
+const base::FeatureParam<bool> kPolkadotAssetDiscovery{
+    &kBraveWalletPolkadotFeature, "polkadot_asset_discovery", false};
+
+#if !defined(OFFICIAL_BUILD)
+BASE_FEATURE(kBraveWalletDebugFeature,
+             "BraveWalletDebug",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
+
+BASE_FEATURE(kBraveWalletCardanoFeature,
+             "BraveWalletCardano",
+#if !BUILDFLAG(IS_ANDROID)
+             base::FEATURE_ENABLED_BY_DEFAULT
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT
+
+#endif
+);
+const base::FeatureParam<int> kCardanoRpcThrottle{&kBraveWalletCardanoFeature,
+                                                  "rpc_throttle", 1};
+const base::FeatureParam<bool> kCardanoDAppSupport{
+    &kBraveWalletCardanoFeature, "cardano_dapp_support", true};
+
+const base::FeatureParam<bool> kZCashShieldedTransactionsEnabled{
+    &kBraveWalletZCashFeature, "zcash_shielded_transactions_enabled", true};
+
+const base::FeatureParam<bool> kZCashIronwoodEnabled{
+    &kBraveWalletZCashFeature, "zcash_ironwood_enabled", false};
+
+BASE_FEATURE(kBraveWalletAnkrBalancesFeature,
+             "BraveWalletAnkrBalances",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveWalletTransactionSimulationsFeature,
+             "BraveWalletTransactionSimulations",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveWalletMojoForLedgerFeature,
+             base::FEATURE_ENABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveWalletAccountHidingFeature,
+             "BraveWalletAccountHiding",
+#if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+             base::FEATURE_ENABLED_BY_DEFAULT
+#else
+             base::FEATURE_DISABLED_BY_DEFAULT
+#endif
+);
+
+BASE_FEATURE(kBraveWalletSnapsFeature,
+             "BraveWalletSnaps",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveWalletSidePanel, base::FEATURE_DISABLED_BY_DEFAULT);
+
+BASE_FEATURE(kBraveWalletFilecoinLedger, base::FEATURE_ENABLED_BY_DEFAULT);
+
+}  // namespace brave_wallet::features

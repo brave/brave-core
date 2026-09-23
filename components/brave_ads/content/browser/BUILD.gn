@@ -1,0 +1,63 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+
+assert(enable_brave_ads)
+
+static_library("browser") {
+  sources = [
+    "creatives/search_result_ad/creative_search_result_ad_constants.h",
+    "creatives/search_result_ad/creative_search_result_ad_handler.cc",
+    "creatives/search_result_ad/creative_search_result_ad_handler.h",
+    "creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.cc",
+    "creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h",
+    "creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor.cc",
+    "creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_ads/browser",
+    "//brave/components/brave_ads/core",
+    "//brave/components/brave_search/common",
+    "//components/schema_org/common:mojom",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//services/service_manager/public/cpp",
+    "//third_party/blink/public/common",
+  ]
+
+  public_deps = [
+    "//brave/components/brave_ads/core/mojom",
+    "//third_party/blink/public/mojom:mojom_platform_headers",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "creatives/search_result_ad/creative_search_result_ad_handler_unittest.cc",
+    "creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor_unittest.cc",
+    "creatives/search_result_ad/creative_search_result_ad_test_constants.h",
+    "creatives/search_result_ad/creative_search_result_ad_url_placement_id_extractor_unittest.cc",
+    "creatives/search_result_ad/test/creative_search_result_ad_mojom_test_util.cc",
+    "creatives/search_result_ad/test/creative_search_result_ad_mojom_test_util.h",
+    "creatives/search_result_ad/test/creative_search_result_ad_mojom_web_page_entities_test_util.cc",
+    "creatives/search_result_ad/test/creative_search_result_ad_mojom_web_page_entities_test_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_ads/content/browser",
+    "//brave/components/brave_ads/core",
+    "//brave/components/brave_ads/core/browser/service:test_support",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

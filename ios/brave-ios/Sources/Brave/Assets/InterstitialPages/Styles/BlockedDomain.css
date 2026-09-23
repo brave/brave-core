@@ -1,0 +1,181 @@
+/*
+ Copyright (c) 2023 The Brave Authors. All rights reserved.
+ This Source Code Form is subject to the terms of the Mozilla Public
+ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ You can obtain one at https://mozilla.org/MPL/2.0/.
+ */
+
+html {
+  overscroll-behavior: none;
+}
+
+.post {
+  padding-top: max(25px, env(safe-area-inset-top));
+  padding-bottom: max(25px, env(safe-area-inset-bottom));
+  padding-left: max(25px, env(safe-area-inset-left));
+  padding-right: max(25px, env(safe-area-inset-right));
+}
+
+.background {
+  background-color: #FFFFFF;
+}
+
+.icon {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 1em;
+}
+
+h1 {
+  font-family: SFProDisplay-Medium, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 28px;
+  letter-spacing: 0.35px;
+  text-align: left;
+  color: #0D0F14;
+  margin-bottom: 0px;
+}
+
+h2 {
+  font-family: SFProDisplay-Medium, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 22px;
+  letter-spacing: -0.2px;
+  text-align: left;
+  color: #0D0F14;
+  margin-bottom: 0px;
+}
+
+.description {
+  font-family: SFProText-Regular, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: -0.2px;
+  text-align: left;
+  color: #3F4855;
+  margin-bottom: 0px;
+}
+
+.domain {
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0em;
+  text-align: left;
+  color: #3F4855;
+  margin-bottom: 0px;
+}
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: flex-start;
+}
+
+.actions {
+  margin-top: 48px;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  align-content: flex-start;
+  justify-content: space-between;
+}
+
+button {
+  font-family: SFProDisplay-Medium, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  letter-spacing: -0.2px;
+  text-align: center;
+  padding: 12px 16px 12px 16px;
+  border-radius: 12px;
+  margin: 4px 0;
+  width: 100%;
+}
+
+.main-action {
+  color: white;
+  background: #3F39E8;
+  border: 1px solid #3F39E8;
+}
+
+.secondary-action {
+  color: #3F39E8;
+  background: #545FF800;
+  border: 1px solid #545FF866;
+}
+
+/** Center the content for iPads **/
+@media (min-width: 600px) and (min-height: 600px) {
+  .icon {
+    width: 64px;
+    height: 64px;
+  }
+
+  h1 {
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 36px;
+    letter-spacing: 0em;
+  }
+
+  h2 {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  .description {
+    font-size: 14px;
+    line-height: 22px;
+    letter-spacing: -0.1px;
+  }
+
+  .domain {
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 22px;
+    letter-spacing: 0em;
+  }
+
+  .content {
+    margin: 0;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    max-width: 650px;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+  }
+
+  .actions {
+    flex-direction: row-reverse;
+  }
+
+  button {
+    width: auto;
+  }
+}
+
+
+@media (prefers-color-scheme: dark) {
+  .background {
+    background-color: #0D0F14;
+  }
+
+  h1, h2 {
+    color: #F6F7F8;
+  }
+
+  .description, .domain {
+    color: #DBDEE2;
+  }
+
+  .secondary-action {
+    color: #7C91FF;
+  }
+}

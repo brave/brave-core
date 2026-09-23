@@ -1,0 +1,1696 @@
+<!DOCTYPE html>
+<html class='v2' dir='ltr' xmlns='http://www.w3.org/1999/xhtml' xmlns:b='http://www.google.com/2005/gml/b' xmlns:data='http://www.google.com/2005/gml/data' xmlns:expr='http://www.google.com/2005/gml/expr'>
+<head>
+<link href='https://www.blogger.com/static/v1/widgets/2975350028-css_bundle_v2.css' rel='stylesheet' type='text/css'/>
+<meta content='width=1100' name='viewport'/>
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'/>
+<meta content='blogger' name='generator'/>
+<link href='https://blog.evjang.com/favicon.ico' rel='icon' type='image/x-icon'/>
+<link href='https://blog.evjang.com/2019/02/maml-jax.html' rel='canonical'/>
+<link rel="alternate" type="application/atom+xml" title="Eric Jang - Atom" href="https://blog.evjang.com/feeds/posts/default" />
+<link rel="alternate" type="application/rss+xml" title="Eric Jang - RSS" href="https://blog.evjang.com/feeds/posts/default?alt=rss" />
+<link rel="service.post" type="application/atom+xml" title="Eric Jang - Atom" href="https://www.blogger.com/feeds/842965756326639856/posts/default" />
+
+<link rel="alternate" type="application/atom+xml" title="Eric Jang - Atom" href="https://blog.evjang.com/feeds/2948758183907914605/comments/default" />
+<!--Can't find substitution for tag [blog.ieCssRetrofitLinks]-->
+<link href='https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s400/download.png' rel='image_src'/>
+<meta content='https://blog.evjang.com/2019/02/maml-jax.html' property='og:url'/>
+<meta content='Meta-Learning in 50 Lines of JAX' property='og:title'/>
+<meta content='Github repo here:  https://github.com/ericjang/maml-jax   Adaptive behavior in humans and animals occurs at many time scales: when I use a n...' property='og:description'/>
+<meta content='https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/w1200-h630-p-k-no-nu/download.png' property='og:image'/>
+<title>Eric Jang: Meta-Learning in 50 Lines of JAX</title>
+<style type='text/css'>@font-face{font-family:'PT Sans Narrow';font-style:normal;font-weight:400;src:url(//fonts.gstatic.com/s/ptsansnarrow/v17/BngRUXNadjH0qYEzV7ab-oWlsbCLwR26eg.woff2)format('woff2');unicode-range:U+0460-052F,U+1C80-1C88,U+20B4,U+2DE0-2DFF,U+A640-A69F,U+FE2E-FE2F;}@font-face{font-family:'PT Sans Narrow';font-style:normal;font-weight:400;src:url(//fonts.gstatic.com/s/ptsansnarrow/v17/BngRUXNadjH0qYEzV7ab-oWlsbCCwR26eg.woff2)format('woff2');unicode-range:U+0301,U+0400-045F,U+0490-0491,U+04B0-04B1,U+2116;}@font-face{font-family:'PT Sans Narrow';font-style:normal;font-weight:400;src:url(//fonts.gstatic.com/s/ptsansnarrow/v17/BngRUXNadjH0qYEzV7ab-oWlsbCIwR26eg.woff2)format('woff2');unicode-range:U+0100-024F,U+0259,U+1E00-1EFF,U+2020,U+20A0-20AB,U+20AD-20CF,U+2113,U+2C60-2C7F,U+A720-A7FF;}@font-face{font-family:'PT Sans Narrow';font-style:normal;font-weight:400;src:url(//fonts.gstatic.com/s/ptsansnarrow/v17/BngRUXNadjH0qYEzV7ab-oWlsbCGwR0.woff2)format('woff2');unicode-range:U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+2000-206F,U+2074,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;}</style>
+<style id='page-skin-1' type='text/css'><!--
+/*
+-----------------------------------------------
+Blogger Template Style
+Name:     Simple
+Designer: Blogger
+URL:      www.blogger.com
+----------------------------------------------- */
+/* Content
+----------------------------------------------- */
+body {
+font: normal normal 14px 'Trebuchet MS', Trebuchet, Verdana, sans-serif;
+color: #666666;
+background: #ffffff none repeat scroll top left;
+padding: 0 0 0 0;
+}
+html body .region-inner {
+min-width: 0;
+max-width: 100%;
+width: auto;
+}
+h2 {
+font-size: 22px;
+}
+a:link {
+text-decoration:none;
+color: #2288bb;
+}
+a:visited {
+text-decoration:none;
+color: #007cbb;
+}
+a:hover {
+text-decoration:underline;
+color: #33aaff;
+}
+.body-fauxcolumn-outer .fauxcolumn-inner {
+background: transparent none repeat scroll top left;
+_background-image: none;
+}
+.body-fauxcolumn-outer .cap-top {
+position: absolute;
+z-index: 1;
+height: 400px;
+width: 100%;
+}
+.body-fauxcolumn-outer .cap-top .cap-left {
+width: 100%;
+background: transparent none repeat-x scroll top left;
+_background-image: none;
+}
+.content-outer {
+-moz-box-shadow: 0 0 0 rgba(0, 0, 0, .15);
+-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, .15);
+-goog-ms-box-shadow: 0 0 0 #333333;
+box-shadow: 0 0 0 rgba(0, 0, 0, .15);
+margin-bottom: 1px;
+}
+.content-inner {
+padding: 10px 40px;
+}
+.content-inner {
+background-color: #ffffff;
+}
+/* Header
+----------------------------------------------- */
+.header-outer {
+background: transparent none repeat-x scroll 0 -400px;
+_background-image: none;
+}
+.Header h1 {
+font: normal normal 50px PT Sans Narrow;
+color: #444444;
+text-shadow: 0 0 0 rgba(0, 0, 0, .2);
+}
+.Header h1 a {
+color: #444444;
+}
+.Header .description {
+font-size: 18px;
+color: #888888;
+}
+.header-inner .Header .titlewrapper {
+padding: 22px 0;
+}
+.header-inner .Header .descriptionwrapper {
+padding: 0 0;
+}
+/* Tabs
+----------------------------------------------- */
+.tabs-inner .section:first-child {
+border-top: 0 solid #dddddd;
+}
+.tabs-inner .section:first-child ul {
+margin-top: -1px;
+border-top: 1px solid #dddddd;
+border-left: 1px solid #dddddd;
+border-right: 1px solid #dddddd;
+}
+.tabs-inner .widget ul {
+background: transparent none repeat-x scroll 0 -800px;
+_background-image: none;
+border-bottom: 1px solid #dddddd;
+margin-top: 0;
+margin-left: -30px;
+margin-right: -30px;
+}
+.tabs-inner .widget li a {
+display: inline-block;
+padding: .6em 1em;
+font: normal normal 12px 'Trebuchet MS', Trebuchet, Verdana, sans-serif;
+color: #000000;
+border-left: 1px solid #ffffff;
+border-right: 1px solid #dddddd;
+}
+.tabs-inner .widget li:first-child a {
+border-left: none;
+}
+.tabs-inner .widget li.selected a, .tabs-inner .widget li a:hover {
+color: #000000;
+background-color: #eeeeee;
+text-decoration: none;
+}
+/* Columns
+----------------------------------------------- */
+.main-outer {
+border-top: 0 solid transparent;
+}
+.fauxcolumn-left-outer .fauxcolumn-inner {
+border-right: 1px solid transparent;
+}
+.fauxcolumn-right-outer .fauxcolumn-inner {
+border-left: 1px solid transparent;
+}
+/* Headings
+----------------------------------------------- */
+div.widget > h2,
+div.widget h2.title {
+margin: 0 0 1em 0;
+font: normal bold 11px 'Trebuchet MS',Trebuchet,Verdana,sans-serif;
+color: #000000;
+}
+/* Widgets
+----------------------------------------------- */
+.widget .zippy {
+color: #999999;
+text-shadow: 2px 2px 1px rgba(0, 0, 0, .1);
+}
+.widget .popular-posts ul {
+list-style: none;
+}
+/* Posts
+----------------------------------------------- */
+h2.date-header {
+font: normal bold 11px Arial, Tahoma, Helvetica, FreeSans, sans-serif;
+}
+.date-header span {
+background-color: #bbbbbb;
+color: #ffffff;
+padding: 0.4em;
+letter-spacing: 3px;
+margin: inherit;
+}
+.main-inner {
+padding-top: 35px;
+padding-bottom: 65px;
+}
+.main-inner .column-center-inner {
+padding: 0 0;
+}
+.main-inner .column-center-inner .section {
+margin: 0 1em;
+}
+.post {
+margin: 0 0 45px 0;
+}
+h3.post-title, .comments h4 {
+font: normal normal 24px 'Trebuchet MS',Trebuchet,Verdana,sans-serif;
+margin: .75em 0 0;
+}
+.post-body {
+font-size: 110%;
+line-height: 1.4;
+position: relative;
+}
+.post-body img, .post-body .tr-caption-container, .Profile img, .Image img,
+.BlogList .item-thumbnail img {
+padding: 2px;
+background: #ffffff;
+border: 1px solid #eeeeee;
+-moz-box-shadow: 1px 1px 5px rgba(0, 0, 0, .1);
+-webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, .1);
+box-shadow: 1px 1px 5px rgba(0, 0, 0, .1);
+}
+.post-body img, .post-body .tr-caption-container {
+padding: 5px;
+}
+.post-body .tr-caption-container {
+color: #666666;
+}
+.post-body .tr-caption-container img {
+padding: 0;
+background: transparent;
+border: none;
+-moz-box-shadow: 0 0 0 rgba(0, 0, 0, .1);
+-webkit-box-shadow: 0 0 0 rgba(0, 0, 0, .1);
+box-shadow: 0 0 0 rgba(0, 0, 0, .1);
+}
+.post-header {
+margin: 0 0 1.5em;
+line-height: 1.6;
+font-size: 90%;
+}
+.post-footer {
+margin: 20px -2px 0;
+padding: 5px 10px;
+color: #666666;
+background-color: #eeeeee;
+border-bottom: 1px solid #eeeeee;
+line-height: 1.6;
+font-size: 90%;
+}
+#comments .comment-author {
+padding-top: 1.5em;
+border-top: 1px solid transparent;
+background-position: 0 1.5em;
+}
+#comments .comment-author:first-child {
+padding-top: 0;
+border-top: none;
+}
+.avatar-image-container {
+margin: .2em 0 0;
+}
+#comments .avatar-image-container img {
+border: 1px solid #eeeeee;
+}
+/* Comments
+----------------------------------------------- */
+.comments .comments-content .icon.blog-author {
+background-repeat: no-repeat;
+background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABIAAAASCAYAAABWzo5XAAAAAXNSR0IArs4c6QAAAAZiS0dEAP8A/wD/oL2nkwAAAAlwSFlzAAALEgAACxIB0t1+/AAAAAd0SU1FB9sLFwMeCjjhcOMAAAD+SURBVDjLtZSvTgNBEIe/WRRnm3U8RC1neQdsm1zSBIU9VVF1FkUguQQsD9ITmD7ECZIJSE4OZo9stoVjC/zc7ky+zH9hXwVwDpTAWWLrgS3QAe8AZgaAJI5zYAmc8r0G4AHYHQKVwII8PZrZFsBFkeRCABYiMh9BRUhnSkPTNCtVXYXURi1FpBDgArj8QU1eVXUzfnjv7yP7kwu1mYrkWlU33vs1QNu2qU8pwN0UpKoqokjWwCztrMuBhEhmh8bD5UDqur75asbcX0BGUB9/HAMB+r32hznJgXy2v0sGLBcyAJ1EK3LFcbo1s91JeLwAbwGYu7TP/3ZGfnXYPgAVNngtqatUNgAAAABJRU5ErkJggg==);
+}
+.comments .comments-content .loadmore a {
+border-top: 1px solid #999999;
+border-bottom: 1px solid #999999;
+}
+.comments .comment-thread.inline-thread {
+background-color: #eeeeee;
+}
+.comments .continue {
+border-top: 2px solid #999999;
+}
+/* Accents
+---------------------------------------------- */
+.section-columns td.columns-cell {
+border-left: 1px solid transparent;
+}
+.blog-pager {
+background: transparent url(//www.blogblog.com/1kt/simple/paging_dot.png) repeat-x scroll top center;
+}
+.blog-pager-older-link, .home-link,
+.blog-pager-newer-link {
+background-color: #ffffff;
+padding: 5px;
+}
+.footer-outer {
+border-top: 1px dashed #bbbbbb;
+}
+/* Mobile
+----------------------------------------------- */
+body.mobile  {
+background-size: auto;
+}
+.mobile .body-fauxcolumn-outer {
+background: transparent none repeat scroll top left;
+}
+.mobile .body-fauxcolumn-outer .cap-top {
+background-size: 100% auto;
+}
+.mobile .content-outer {
+-webkit-box-shadow: 0 0 3px rgba(0, 0, 0, .15);
+box-shadow: 0 0 3px rgba(0, 0, 0, .15);
+}
+.mobile .tabs-inner .widget ul {
+margin-left: 0;
+margin-right: 0;
+}
+.mobile .post {
+margin: 0;
+}
+.mobile .main-inner .column-center-inner .section {
+margin: 0;
+}
+.mobile .date-header span {
+padding: 0.1em 10px;
+margin: 0 -10px;
+}
+.mobile h3.post-title {
+margin: 0;
+}
+.mobile .blog-pager {
+background: transparent none no-repeat scroll top center;
+}
+.mobile .footer-outer {
+border-top: none;
+}
+.mobile .main-inner, .mobile .footer-inner {
+background-color: #ffffff;
+}
+.mobile-index-contents {
+color: #666666;
+}
+.mobile-link-button {
+background-color: #2288bb;
+}
+.mobile-link-button a:link, .mobile-link-button a:visited {
+color: #ffffff;
+}
+.mobile .tabs-inner .section:first-child {
+border-top: none;
+}
+.mobile .tabs-inner .PageList .widget-content {
+background-color: #eeeeee;
+color: #000000;
+border-top: 1px solid #dddddd;
+border-bottom: 1px solid #dddddd;
+}
+.mobile .tabs-inner .PageList .widget-content .pagelist-arrow {
+border-left: 1px solid #dddddd;
+}
+
+--></style>
+<style id='template-skin-1' type='text/css'><!--
+body {
+min-width: 1150px;
+}
+.content-outer, .content-fauxcolumn-outer, .region-inner {
+min-width: 1150px;
+max-width: 1150px;
+_width: 1150px;
+}
+.main-inner .columns {
+padding-left: 0;
+padding-right: 310px;
+}
+.main-inner .fauxcolumn-center-outer {
+left: 0;
+right: 310px;
+/* IE6 does not respect left and right together */
+_width: expression(this.parentNode.offsetWidth -
+parseInt("0") -
+parseInt("310px") + 'px');
+}
+.main-inner .fauxcolumn-left-outer {
+width: 0;
+}
+.main-inner .fauxcolumn-right-outer {
+width: 310px;
+}
+.main-inner .column-left-outer {
+width: 0;
+right: 100%;
+margin-left: -0;
+}
+.main-inner .column-right-outer {
+width: 310px;
+margin-right: -310px;
+}
+#layout {
+min-width: 0;
+}
+#layout .content-outer {
+min-width: 0;
+width: 800px;
+}
+#layout .region-inner {
+min-width: 0;
+width: auto;
+}
+--></style>
+<script type='text/javascript'>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+      ga('create', 'UA-58407005-1', 'auto', 'blogger');
+      ga('blogger.send', 'pageview');
+    </script>
+<!-- MathJax -->
+<script src="//cdn.mathjax.org/mathjax/latest/MathJax.js" type="text/javascript">
+MathJax.Hub.Config({
+ extensions: ["tex2jax.js","TeX/AMSmath.js","TeX/AMSsymbols.js"],
+ jax: ["input/TeX", "output/HTML-CSS"],
+ tex2jax: {
+     inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+     displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+ },
+                    "HTML-CSS": { availableFonts: ["TeX"], scale:100 }
+});
+</script>
+<!-- Syntax Highlighter 3-->
+<link href='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/styles/shThemeDefault.css' rel='stylesheet' type='text/css'/>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shCore.min.js' type='text/javascript'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/SyntaxHighlighter/3.0.83/scripts/shAutoloader.min.js' type='text/javascript'></script>
+<script language='javascript'> 
+SyntaxHighlighter.config.bloggerMode = true;
+SyntaxHighlighter.config.clipboardSwf = 'http://alexgorbatchev.com/pub/sh/current/scripts/clipboard.swf';
+SyntaxHighlighter.all();
+</script>
+<link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=842965756326639856&amp;zx=88ac18fd-18e1-430a-b50e-8542a39ba363' media='none' onload='if(media!=&#39;all&#39;)media=&#39;all&#39;' rel='stylesheet'/><noscript><link href='https://www.blogger.com/dyn-css/authorization.css?targetBlogID=842965756326639856&amp;zx=88ac18fd-18e1-430a-b50e-8542a39ba363' rel='stylesheet'/></noscript>
+<meta name='google-adsense-platform-account' content='ca-host-pub-1556223355139109'/>
+<meta name='google-adsense-platform-domain' content='blogspot.com'/>
+
+<!-- data-ad-client=ca-pub-3607144777547824 -->
+
+</head>
+<body class='loading variant-simplysimple'>
+<div class='navbar no-items section' id='navbar' name='Navbar'>
+</div>
+<div class='body-fauxcolumns'>
+<div class='fauxcolumn-outer body-fauxcolumn-outer'>
+<div class='cap-top'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+<div class='fauxborder-left'>
+<div class='fauxborder-right'></div>
+<div class='fauxcolumn-inner'>
+</div>
+</div>
+<div class='cap-bottom'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+</div>
+</div>
+<div class='content'>
+<div class='content-fauxcolumns'>
+<div class='fauxcolumn-outer content-fauxcolumn-outer'>
+<div class='cap-top'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+<div class='fauxborder-left'>
+<div class='fauxborder-right'></div>
+<div class='fauxcolumn-inner'>
+</div>
+</div>
+<div class='cap-bottom'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+</div>
+</div>
+<div class='content-outer'>
+<div class='content-cap-top cap-top'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+<div class='fauxborder-left content-fauxborder-left'>
+<div class='fauxborder-right content-fauxborder-right'></div>
+<div class='content-inner'>
+<header>
+<div class='header-outer'>
+<div class='header-cap-top cap-top'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+<div class='fauxborder-left header-fauxborder-left'>
+<div class='fauxborder-right header-fauxborder-right'></div>
+<div class='region-inner header-inner'>
+<div class='header section' id='header' name='Header'><div class='widget Header' data-version='1' id='Header1'>
+<div id='header-inner'>
+<div class='titlewrapper'>
+<h1 class='title'>
+<a href='https://blog.evjang.com/'>
+Eric Jang
+</a>
+</h1>
+</div>
+<div class='descriptionwrapper'>
+<p class='description'><span>Technology, A.I., Careers</span></p>
+</div>
+</div>
+</div></div>
+</div>
+</div>
+<div class='header-cap-bottom cap-bottom'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+</div>
+</header>
+<div class='tabs-outer'>
+<div class='tabs-cap-top cap-top'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+<div class='fauxborder-left tabs-fauxborder-left'>
+<div class='fauxborder-right tabs-fauxborder-right'></div>
+<div class='region-inner tabs-inner'>
+<div class='tabs no-items section' id='crosscol' name='Cross-Column'></div>
+<div class='tabs no-items section' id='crosscol-overflow' name='Cross-Column 2'></div>
+</div>
+</div>
+<div class='tabs-cap-bottom cap-bottom'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+</div>
+<div class='main-outer'>
+<div class='main-cap-top cap-top'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+<div class='fauxborder-left main-fauxborder-left'>
+<div class='fauxborder-right main-fauxborder-right'></div>
+<div class='region-inner main-inner'>
+<div class='columns fauxcolumns'>
+<div class='fauxcolumn-outer fauxcolumn-center-outer'>
+<div class='cap-top'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+<div class='fauxborder-left'>
+<div class='fauxborder-right'></div>
+<div class='fauxcolumn-inner'>
+</div>
+</div>
+<div class='cap-bottom'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+</div>
+<div class='fauxcolumn-outer fauxcolumn-left-outer'>
+<div class='cap-top'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+<div class='fauxborder-left'>
+<div class='fauxborder-right'></div>
+<div class='fauxcolumn-inner'>
+</div>
+</div>
+<div class='cap-bottom'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+</div>
+<div class='fauxcolumn-outer fauxcolumn-right-outer'>
+<div class='cap-top'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+<div class='fauxborder-left'>
+<div class='fauxborder-right'></div>
+<div class='fauxcolumn-inner'>
+</div>
+</div>
+<div class='cap-bottom'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+</div>
+<!-- corrects IE6 width calculation -->
+<div class='columns-inner'>
+<div class='column-center-outer'>
+<div class='column-center-inner'>
+<div class='main section' id='main' name='Main'><div class='widget Blog' data-version='1' id='Blog1'>
+<div class='blog-posts hfeed'>
+
+          <div class="date-outer">
+        
+<h2 class='date-header'><span>Thursday, February 21, 2019</span></h2>
+
+          <div class="date-posts">
+        
+<div class='post-outer'>
+<div class='post hentry uncustomized-post-template' itemprop='blogPost' itemscope='itemscope' itemtype='http://schema.org/BlogPosting'>
+<meta content='https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s400/download.png' itemprop='image_url'/>
+<meta content='842965756326639856' itemprop='blogId'/>
+<meta content='2948758183907914605' itemprop='postId'/>
+<a name='2948758183907914605'></a>
+<h3 class='post-title entry-title' itemprop='name'>
+Meta-Learning in 50 Lines of JAX
+</h3>
+<div class='post-header'>
+<div class='post-header-line-1'></div>
+</div>
+<div class='post-body entry-content' id='post-body-2948758183907914605' itemprop='description articleBody'>
+Github repo here:&nbsp;<a href="https://github.com/ericjang/maml-jax">https://github.com/ericjang/maml-jax</a><br />
+<br />
+Adaptive behavior in humans and animals occurs at many time scales: when I use a new shower handle for the first time, it takes me a few seconds to figure out how to adjust the water temperature to my liking. Upon reading a news article, I obtain new information that I didn't have before. More difficult skills, such as mastering a musical instrument, are acquired over a lifetime of deliberate practice.<br />
+<br />
+Learning is hardly restricted to animal-level intelligence; it can be found in every living creature. Multi-cellular developmental programs are highly plastic and can even <a href="https://www.youtube.com/watch?v=RjD1aLm4Thg">store epigenetic &#8220;memories'&#8221; between generations</a>. At the longest time-scales, evolution itself can be thought of as &#8220;learning&#8221; on the genomic level, whereby favorable genetic codes are discovered and remembered over the course of many generations. At the shortest of timescales, a single ion channel activating in response to a stimulus can also be thought of as &#8220;learning&#8221;, as it is an adaptive, stateful response to the environment. Biological intelligence blurs the boundaries between &#8220;<b>behavior</b>&#8221; (responding to the environment), &#8220;<b>learning</b>&#8221; (acquiring information about the world in order to improve fitness), and &#8220;optimization&#8221; (<b>improving fitness</b>). <br />
+<br />
+The focus of Machine Learning (ML) is to imbue computers with the ability to learn from data, so that they may accomplish tasks that humans have difficulty expressing in pure code. However, what most ML researchers call &#8220;learning&#8221; right now is but a very small subset of the vast range of behavioral adaptability encountered in biological life! Deep Learning models are powerful, but require a large amount of data and many iterations of stochastic gradient descent (SGD). This learning procedure is time-consuming and once a deep model is trained, its behavior is fairly rigid; at deployment time, one cannot really change the behavior of the system (e.g. correcting mistakes) without an expensive retraining process. Can we build systems that can learn faster, and with less data?<br />
+<br />
+&#8220;Meta-learning'', one of the most exciting ML research topics right now, addresses this problem by optimizing a model not just for the ability to &#8220;predict well'', but also the ability to &#8220;learn well''. Although Meta-Learning has attracted a lot of research attention in recent years, related ideas and algorithms have been around for some time (see Hugo Larochelle's <a href="https://t.co/Wjp8BvSBfp">slides</a> and Lilian Weng&#8217;s <a href="https://lilianweng.github.io/lil-log/2018/11/30/meta-learning.html">blog post</a> for an excellent overview of related concepts). <br />
+<br />
+This blog post won&#8217;t cover all the possible ways in which one can build a meta-learning system; instead, this is a practical tutorial on how to get your feet wet in meta-learning research. Specifically, I'll show you how to implement the <a href="https://arxiv.org/abs/1703.03400">MAML</a> meta-learning algorithm in about 50 lines of Python code, using Google's awesome JAX library.<br />
+<div>
+<br /></div>
+<div>
+You can find a self-contained Jupyter notebook <a href="https://github.com/ericjang/maml-jax/blob/master/maml.ipynb">here</a>&nbsp;reproducing this tutorial.</div>
+<div>
+<br /></div>
+<h3>
+An Operator Perspective on Learning and Meta-Learning</h3>
+<div>
+<br /></div>
+&#8220;Meta-learning&#8221; is used in so many different research contexts nowadays that it's difficult to communicate to other researchers what I&#8217;m exactly working on when I say &#8220;Meta-Learning&#8221;. A source of this confusion stems from the blurred semantics between &#8220;optimization&#8221;, &#8220;learning&#8221;, &#8220;adaptation&#8221;, &#8220;memory&#8221;, and how these terms can be employed in wildly different applications.<br />
+<br />
+This section is my attempt to make the definition of &#8220;learning&#8221; and &#8220;meta-learning&#8221; more mathematically precise, and explain why seemingly different algorithms are all branded as &#8220;meta-learning&#8221; these days. Feel free to skip to the next section if you want to dive straight into the MAML+JAX coding tutorial.<br />
+<br />
+We define a <b>learning operator</b> $f : F_\theta \to F_\theta$ as a function that improves a model function $f_\theta$ with respect to some task. A common learning operator used in deep learning and reinforcement learning literature is the stochastic gradient descent algorithm, with respect to a loss function. In standard DL contexts, learning occurs over hundreds of thousands or even millions of gradient steps, but generally, &#8220;learning'' can also occur on shorter (conditioning) or longer timescales (hyperparameter search). In addition to explicit optimization, learning can also be implemented implicitly via a dynamical system (recurrent neural networks conditioning on the past) or probabilistic inference.<br />
+<br />
+A <b>meta-learning operator</b> $f_o(f_i(f_\theta))$ is a composite operator of two learning operators: an &#8220;inner loop'' $f_i \in F_i$ and an &#8220;outer loop'' $f_o \in F_o$. Furthermore, $f_i$ is a model itself, and $f_o : F_i \to F_i$ is an operator over the inner learning rule $f_i$. In other words, $f_o$ learns the learning rule $f_i$, and $f_i$ learns a model for a given task, where we define &#8220;task'' to be a self-contained family of problems for which $f_i$ can adequately update $f_\theta$ to solve. At <b>meta-training time</b>, $f_o$ is applied to select for $f_i$ across a variety of training tasks. At <b>meta-test time</b>, we evaluate the generalization properties of $f_i$ and $f_\theta$ to holdout tasks.<br />
+<br />
+The choice of $f_o$ and $f_i$ depends largely on the problem domain. In architecture search literature (also called &#8220;<b>learning to learn</b>''), $f_i$ is a relatively slow training procedure of a neural network from scratch, while $f_o$ can be a neural controller, random search algorithm, or a Gaussian Process Bandit.<br />
+<br />
+A wide variety of machine learning problems can be formulated in terms meta-learning operators. In <b>(meta) imitation learning</b> (or <b>goal-conditioned reinforcement learning</b>), $f_i$ is used to relay instructions to the RL agent, such as conditioning on a task embedding or human demonstrations. In <b>meta-reinforcement learning</b> (MRL), $f_i$ instead implements a &#8220;fast reinforcement learning'' algorithm by which an agent improves itself after trying the task a couple times. It&#8217;s worth re-iterating here that I don&#8217;t see a distinction between &#8220;learning&#8221; and &#8220;conditioning&#8221;, because they both rely on inputs that are supplied at test time (i.e. &#8220;new information provided by the environment&#8221;). <br />
+<br />
+MAML is a meta-learning algorithm that implements $f_i$ via SGD, i.e. $\theta := \theta - \alpha \nabla_{\theta}(\mathcal{L}(\theta))$. This SGD update is differentiable with respect to $\theta$, allowing $f_o$ to effectively optimize $f_i$ via backpropagation without requiring many additional parameters to express $f_i$.<br />
+<br />
+<div>
+<div>
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada">
+</span>
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<h3>
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada">
+Exploring JAX: Gradients</span></h3>
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada"><br /></span>
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada">We begin the tutorial by importing JAX&#8217;s numpy drop-in and the gradient operator, grad. </span><br />
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada"><span id="docs-internal-guid-472840e5-7fff-942b-aad2-c8770ec17df1"><br /></span>
+</span><br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">import</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> jax.numpy </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">as</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> np</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">from</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> jax </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">import</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> grad</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada"><span id="docs-internal-guid-472840e5-7fff-942b-aad2-c8770ec17df1">
+</span></span></div>
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada">
+</span>
+<div dir="ltr" style="margin-left: 0pt;">
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada"><br /></span>
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada">The gradient operator grad transforms a python function into another function that computes the gradients. Here, we compute first, second, and third order derivatives of $e^x$ and $x^2$:</span></div>
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada">
+<div dir="ltr" style="margin-left: 0pt;">
+<br /></div>
+<div dir="ltr" style="margin-left: 0pt;">
+<span id="docs-internal-guid-7f2bf7c0-7fff-c722-584d-a8d03da74443"><br /></span>
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">f = </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">lambda</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> x : np.exp(x)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">g = </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">lambda</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> x : np.square(x)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">print(grad(f)(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)) </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># = e^{1}</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">print(grad(grad(f))(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">))</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">print(grad(grad(grad(f)))(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">))</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">print(grad(g)(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">2.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)) </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># 2x = 4</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">print(grad(grad(g))(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">2.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)) </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># x = 2</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">print(grad(grad(grad(g)))(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">2.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)) </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># x = 0</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<span id="docs-internal-guid-7f2bf7c0-7fff-c722-584d-a8d03da74443">
+</span></div>
+<div dir="ltr" style="margin-left: 0pt;">
+<br /></div>
+</span></div>
+<h3>
+<span id="docs-internal-guid-b0d8c8b5-7fff-e35e-5b1d-ce6ab8cff1d3">Exploring JAX: Auto-Vectorization with <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">vmap</span></span></h3>
+<div>
+<br /></div>
+<div>
+Now let&#8217;s consider a toy regression problem in which we try to learn the function $f_\theta(x) = sin(x)$ with a neural network. The goal here is to get familiar with defining and training models. JAX provides some lightweight helper functions to make it easy to set up a neural network.</div>
+<div>
+<br /></div>
+<div>
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">from</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> jax </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">import</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> vmap </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># for auto-vectorizing functions</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">from</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> functools </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">import</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> partial </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># for use with vmap</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">from</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> jax </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">import</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> jit </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># for compiling functions for speedup</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">from</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> jax.experimental </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">import</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> stax </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># neural network library</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">from</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> jax.experimental.stax </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">import</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> Conv, Dense, MaxPool, Relu, Flatten, LogSoftmax </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># neural network layers</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">import</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> matplotlib.pyplot </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">as</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> plt </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># visualization</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<br />
+<br />
+We&#8217;ll define a simple neural network with 2 hidden layers. We&#8217;ve specified an in_shape of (-1, 1), which means that the model takes in a variable-size batch dimension, and has a feature dimension of 1 scalar (since this is a 1-D regression task). JAX&#8217;s helper libraries all take on a functional API (unlike TensorFlow, which maintains a graph state), so we get back a function that initializes parameters and a function that applies the forward pass of the network. These callables return lists and tuples of numpy arrays - a simple and flat data structure for storing network parameters.</div>
+<div>
+<br /></div>
+<div>
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># Use stax to set up network initialization and evaluation functions</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">net_init, net_apply = stax.serial(</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;Dense(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">40</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">), Relu,</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;Dense(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">40</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">), Relu,</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;Dense(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">in_shape = (</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">-1</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, </span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">,)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">out_shape, net_params = net_init(in_shape)</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<br />
+Next, we define the model loss to be Mean-Squared Error (MSE) across a batch of inputs.</div>
+<div>
+<br />
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">def</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: #ffffaa; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">loss</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">(params, inputs, targets):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># Computes average loss for the batch</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;predictions = net_apply(params, inputs)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">return</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> np.mean((targets - predictions)**</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">2</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<br />
+We evaluate the uninitialized network across a range of inputs:</div>
+<div>
+<br />
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># batch the inference across K=100</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">xrange_inputs = np.linspace(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">-5</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">,</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">5</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">,</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">100</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">).reshape((</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">100</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, </span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)) </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># (k, 1)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">targets = np.sin(xrange_inputs)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">predictions = vmap(partial(net_apply, net_params))(xrange_inputs)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">losses = vmap(partial(loss, net_params))(xrange_inputs, targets) </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># per-input loss</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">plt.plot(xrange_inputs, predictions, label=</span><span style="color: #a2fca2; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">'prediction'</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">plt.plot(xrange_inputs, losses, label=</span><span style="color: #a2fca2; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">'loss'</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">plt.plot(xrange_inputs, targets, label=</span><span style="color: #a2fca2; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">'target'</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">plt.legend()</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<br />
+As expected, at random initialization, the model&#8217;s predictions (blue) are totally off the target function (green).</div>
+<div>
+<br /></div>
+</div>
+<div>
+<br /></div>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s1600/download.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="252" data-original-width="374" height="268" src="https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s400/download.png" width="400" /></a></div>
+<div class="separator" style="clear: both; text-align: center;">
+<br /></div>
+<div class="separator" style="clear: both; text-align: center;">
+<br /></div>
+Let&#8217;s train the network via gradient descent. JAX&#8217;s random number generator is set up differently than Numpy&#8217;s, so to initialize network parameters we&#8217;ll use the original Numpy library (onp) to generate random numbers. We&#8217;ll also import the tree_multimap utility to easily manipulate collections of per-parameter gradients (for TensorFlow users, this is analogous to nest.map_structure for Tensors).<br />
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="background-color: #333333; color: #fcc28c; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">import</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> numpy </span><span style="background-color: #333333; color: #fcc28c; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">as</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> onp</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: #fcc28c; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">from</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> jax.experimental </span><span style="background-color: #333333; color: #fcc28c; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">import</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> optimizers</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: #fcc28c; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">from</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> jax.tree_util </span><span style="background-color: #333333; color: #fcc28c; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">import</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> tree_multimap &nbsp;</span><span style="background-color: #333333; color: #888888; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"># Element-wise manipulation of collections of numpy arrays </span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+<b style="font-weight: normal;"><br /></b></div>
+<br />
+We initialize the parameters and optimizer, and run the curve fitting for 100 steps. Note that adding the @jit decorator to the &#8220;step&#8221; function uses XLA to compile the entire training step into machine code, along with optimizations like fused accelerator kernels, memory and layout optimization.&nbsp;TensorFlow itself also uses XLA for <a href="https://developers.googleblog.com/2017/03/xla-tensorflow-compiled.html">accelerating statically defined graphs</a>. XLA makes the computation very fast and amenable to hardware acceleration because the entire thing can be executed without returning to a Python interpreter (or Graph interpreter in the case of TensorFlow sans XLA). The code in this tutorial will&nbsp;<i>just work</i>&nbsp;on CPU/GPU/TPU.<br />
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">opt_init, opt_update = optimizers.adam(step_size=</span><span style="background-color: #333333; color: #d36363; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">1e-2</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">)</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">opt_state = opt_init(net_params)</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: #888888; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"># Define a compiled update step</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: #fc9b9b; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">@jit</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: #fcc28c; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">def</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> </span><span style="background-color: #333333; color: #ffffaa; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">step</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">(i, opt_state, x1, y1):</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;p = optimizers.get_params(opt_state)</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;g = grad(loss)(p, x1, y1)</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="background-color: #333333; color: #fcc28c; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">return</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> opt_update(i, g, opt_state)</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: #fcc28c; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">for</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> i </span><span style="background-color: #333333; color: #fcc28c; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">in</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> range(</span><span style="background-color: #333333; color: #d36363; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">100</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">):</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;opt_state = step(i, opt_state, xrange_inputs, targets)</span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="background-color: #333333; color: white; font-size: 11pt; font-style: normal; font-variant: normal; font-weight: 400; text-decoration: none; vertical-align: baseline; white-space: pre-wrap;">net_params = optimizers.get_params(opt_state)</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<div class="separator" style="clear: both; text-align: left;">
+<br /></div>
+<br />
+Evaluating our network again, we see that the sinusoid curve has been correctly approximated.<br />
+<div>
+<br /></div>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://4.bp.blogspot.com/-NuCVncO9wmI/XG7FjVOAetI/AAAAAAAAOes/G6hN1eRupnEAxrfgdeccjvrOz0G9oyCKgCEwYBhgL/s1600/download%2B%25281%2529.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="252" data-original-width="383" height="262" src="https://4.bp.blogspot.com/-NuCVncO9wmI/XG7FjVOAetI/AAAAAAAAOes/G6hN1eRupnEAxrfgdeccjvrOz0G9oyCKgCEwYBhgL/s400/download%2B%25281%2529.png" width="400" /></a></div>
+<br />
+<br />
+This result is nothing to write home about, but in just a moment we&#8217;ll re-use a lot of these functions to implement MAML.<br />
+<div>
+<br /></div>
+<div>
+<h3>
+Exploring JAX: Checking MAML Numerics</h3>
+<br />
+<br />
+When implementing ML algorithms, it&#8217;s important to unit-testing implementations against test cases where the true values can be computed analytically. The following example does this for MAML on a toy objective $g$. Note that by default JAX computes gradients with respect to the first argument of the function.</div>
+<div>
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># gradients of gradients test for MAML</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># check numerics</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">g = </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">lambda</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> x, y : np.square(x) + y</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">x0 = </span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">2.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">y0 = </span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">print(</span><span style="color: #a2fca2; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">'grad(g)(x0) = {}'</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">.format(grad(g)(x0, y0))) </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># 2x = 4</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">print(</span><span style="color: #a2fca2; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">'x0 - grad(g)(x0) = {}'</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">.format(x0 - grad(g)(x0, y0))) </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># x - 2x = -2</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">def</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: #ffffaa; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">maml_objective</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">(x, y):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">return</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> g(x - grad(g)(x, y), y)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">print(</span><span style="color: #a2fca2; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">'maml_objective(x,y)={}'</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">.format(maml_objective(x0, y0))) </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># x**2 + 1 = 5</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">print(</span><span style="color: #a2fca2; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">'x0 - maml_objective(x,y) = {}'</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">.format(x0 - grad(maml_objective)(x0, y0))) </span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># x - (2x) = -2.</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<br />
+<h3>
+<br />Implementing MAML with JAX</h3>
+<br />
+Now let&#8217;s extend our sinusoid regression task to a multi-task problem, in which the sinusoid function can have varying phases and amplitudes. This task was proposed in the MAML paper as a way to illustrate how MAML works on a toy problem. Below are some points sampled from two different tasks, divided into &#8220;train&#8221; (used to compute the inner loss) and &#8220;validation&#8221; splits (sampled from the same task, used to compute the outer loss).</div>
+<div>
+<br /></div>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://3.bp.blogspot.com/-_juVWfK0Uj0/XG7FjZzbFnI/AAAAAAAAOe4/LG9MdTEaincGPjlS4p6lqdqP-AWmiihsACEwYBhgL/s1600/download%2B%25282%2529.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="252" data-original-width="383" height="262" src="https://3.bp.blogspot.com/-_juVWfK0Uj0/XG7FjZzbFnI/AAAAAAAAOe4/LG9MdTEaincGPjlS4p6lqdqP-AWmiihsACEwYBhgL/s400/download%2B%25282%2529.png" width="400" /></a></div>
+<div class="separator" style="clear: both; text-align: center;">
+<br /></div>
+<div class="separator" style="clear: both; text-align: left;">
+<br /></div>
+<div>
+<span id="docs-internal-guid-313a0369-7fff-b1c4-535d-2c17f57be320"><br />Suppose a task loss function $\mathcal{L}$ is defined with respect to model parameters $\theta$, input features $X$, output labels $Y$. Let $x_1, y_1$ and $x_2, y_2$ be identically distributed task instance data sampled from $X, Y$. Then MAML optimizes the following:<br /><br /><br />$\mathcal{L}(\theta - \nabla \mathcal{L}(\theta, x_1, y_1), x_2, y_2)$<br /><br /><br />MAML&#8217;s inner update operator is just gradient descent on the regression loss. The outer loss, <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">maml_loss</span>, is simply the original loss applied <i>after</i> the inner_update operator has been applied. One interpretation of the MAML objective is that it is a differentiable estimate of a cross-validation loss with respect to a learner. Meta-training results in an <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">inner_update</span> that minimizes the cross-validation loss.</span></div>
+<div>
+<br />
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">def</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: #ffffaa; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">inner_update</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">(p, x1, y1, alpha=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">.1</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;grads = grad(loss)(p, x1, y1)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;inner_sgd_fn = </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">lambda</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> g, state: (state - alpha*g)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">return</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> tree_multimap(inner_sgd_fn, grads, p)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">def</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: #ffffaa; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">maml_loss</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">(p, x1, y1, x2, y2):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;p2 = inner_update(p, x1, y1)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">return</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> loss(p2, x2, y2)</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<br />
+<br />
+In each iteration of optimizing the MAML objective, we sample a single new task, sample a different set of input features and input labels for both the training and validation splits.</div>
+<div>
+<br />
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">opt_init, opt_update = optimizers.adam(step_size=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1e-3</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">) &nbsp;</span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># this LR seems to be better than 1e-2 and 1e-4</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">out_shape, net_params = net_init(in_shape)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">opt_state = opt_init(net_params)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fc9b9b; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">@jit</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">def</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: #ffffaa; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">step</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">(i, opt_state, x1, y1, x2, y2):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;p = optimizers.get_params(opt_state)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;g = grad(maml_loss)(p, x1, y1, x2, y2)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;l = maml_loss(p, x1, y1, x2, y2)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">return</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> opt_update(i, g, opt_state), l</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">K=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">20</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">np_maml_loss = []</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># Adam optimization</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">for</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> i </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">in</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> range(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">20000</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># define the task</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;A = onp.random.uniform(low=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">0.1</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, high=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">.5</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;phase = onp.random.uniform(low=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">0.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, high=np.pi)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># meta-training inner split (K examples)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;x1 = onp.random.uniform(low=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">-5.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, high=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">5.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, size=(K,</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">))</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;y1 = A * onp.sin(x1 + phase)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># meta-training outer split (1 example). Like cross-validating with respect to one example.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;x2 = onp.random.uniform(low=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">-5.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, high=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">5.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;y2 = A * onp.sin(x2 + phase)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;opt_state, l = step(i, opt_state, x1, y1, x2, y2)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;np_maml_loss.append(l)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">if</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> i % </span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1000</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> == </span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">0</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">:</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(i)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">net_params = optimizers.get_params(opt_state)</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<div class="separator" style="clear: both; text-align: center;">
+<a href="https://3.bp.blogspot.com/-_B1gjozIcYk/XG7FjFCW-wI/AAAAAAAAOe8/MifBFI8wAtIKsoxOYUv6Lt23zk6rFyGbACEwYBhgL/s1600/download%2B%25283%2529.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="252" data-original-width="384" height="262" src="https://3.bp.blogspot.com/-_B1gjozIcYk/XG7FjFCW-wI/AAAAAAAAOe8/MifBFI8wAtIKsoxOYUv6Lt23zk6rFyGbACEwYBhgL/s400/download%2B%25283%2529.png" width="400" /></a></div>
+<div>
+<br /></div>
+<br />
+At meta-training time, the network learns to &#8220;quickly adapt&#8221; to x1, y1 in order to minimize cross-validation error on a new set of points x2. At deployment time (shown in the plot above), when we have a <i>new</i> task (new amplitude and phase not seen at training time), the model can apply the <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">inner_update</span> operator to fit the target sinusoid much faster and with fewer data samples than simply re-training the parameters with SGD.<br />
+<br />
+Why is <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">inner_update</span> a more effective learning rule than retraining with SGD on a new dataset? The magic here is that by training in a multi-task setting, the <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">inner_update</span> operator has <i>generalized</i> across tasks into a learning rule that is specially adapted for sinusoid regression tasks. In the standard data regime of deep learning, generalization is obtained from many examples of a single task (e.g. RL, image classification). In meta-learning, generalization is obtained from a few examples each from many tasks, and a shared learning rule is learned for the task distribution.<br />
+<br /></div>
+<div>
+<span id="docs-internal-guid-27909428-7fff-4416-96ea-1572559d1674"><br /></span>
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># batch the inference across K=100</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">targets = np.sin(xrange_inputs)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">predictions = vmap(partial(net_apply, net_params))(xrange_inputs)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">plt.plot(xrange_inputs, predictions, label=</span><span style="color: #a2fca2; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">'pre-update predictions'</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">plt.plot(xrange_inputs, targets, label=</span><span style="color: #a2fca2; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">'target'</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">x1 = onp.random.uniform(low=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">-5.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, high=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">5.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, size=(K,</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">))</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">y1 = </span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> * onp.sin(x1 + </span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">0.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">for</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> i </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">in</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> range(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">,</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">5</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;net_params = inner_update(net_params, x1, y1)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;predictions = vmap(partial(net_apply, net_params))(xrange_inputs)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;plt.plot(xrange_inputs, predictions, label=</span><span style="color: #a2fca2; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">'{}-shot predictions'</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">.format(i))</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">plt.legend()</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<span id="docs-internal-guid-27909428-7fff-4416-96ea-1572559d1674">
+</span></div>
+<div>
+<h3>
+<span id="docs-internal-guid-69eed823-7fff-6a28-8986-809fe526b254"><br /></span><span id="docs-internal-guid-69eed823-7fff-6a28-8986-809fe526b254">Batching MAML Gradients Across Tasks with <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">vmap</span></span></h3>
+<span id="docs-internal-guid-69eed823-7fff-6a28-8986-809fe526b254">
+We can compute the MAML gradients across multiple tasks at once to reduce the variance of gradients of the learning operator. This was proposed in the MAML paper, and is analogous to how increasing minibatch size of standard SGD reduces variance of the parameter gradients (leading to more efficient learning).<br /><br />Thanks to the <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">vmap</span> operator, we can automatically transform our single-task MAML implementation into a &#8220;batched version&#8221; that operates across tasks. From a software engineering &amp; testing perspective, <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">vmap</span> is extremely nice because the "task-batched" MAML implementation simply re-uses code from the non-task batched MAML algorithm, without losing any vectorization benefits. This means that when unit-testing code, we can test the single-task MAML algorithm for numerical correctness, then scale up to a more advanced batched version (e.g. for handling harder tasks such as robotic learning) for efficiency.&nbsp;</span></div>
+<div>
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># vmapped version of maml loss.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># returns scalar for all tasks.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">def</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: #ffffaa; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">batch_maml_loss</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">(p, x1_b, y1_b, x2_b, y2_b):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;task_losses = vmap(partial(maml_loss, p))(x1_b, y1_b, x2_b, y2_b)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">return</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> np.mean(task_losses)</span></span><span style="color: white; font-family: &quot;consolas&quot;; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<br />
+Below is a function that samples a batch of tasks, where outer_batch_size is the number of tasks we meta-train on in each step, and inner_batch_size is the number of data points per-task.&nbsp;</div>
+<div>
+<br />
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">def</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: #ffffaa; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">sample_tasks</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">(outer_batch_size, inner_batch_size):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># Select amplitude and phase for the task</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;As = []</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;phases = []</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">for</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> _ </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">in</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> range(outer_batch_size): &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As.append(onp.random.uniform(low=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">0.1</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, high=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">.5</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">))</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phases.append(onp.random.uniform(low=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">0.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, high=np.pi))</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">def</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: #ffffaa; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">get_batch</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">():</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs, ys = [], []</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">for</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> A, phase </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">in</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> zip(As, phases):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = onp.random.uniform(low=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">-5.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, high=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">5.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, size=(inner_batch_size, </span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">))</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y = A * onp.sin(x + phase)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs.append(x)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ys.append(y)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">return</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> np.stack(xs), np.stack(ys)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;x1, y1 = get_batch()</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;x2, y2 = get_batch()</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">return</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> x1, y1, x2, y2</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<div>
+<br /></div>
+<div>
+Now for the training loop, which strongly resembles the previous single-task one.&nbsp;As you can see, gradient-based meta-learning requires treating two kinds of variance: those of&nbsp;<i>intra-task</i> gradients for the inner loss, and those of&nbsp;<i>inter-task</i> gradients for the outer loss.</div>
+<br />
+<div dir="ltr" style="margin-left: 0pt;">
+<table style="border-collapse: collapse; border: none;"><colgroup></colgroup><tbody>
+<tr style="height: 0pt;"><td style="background-color: #333333; padding: 5pt 5pt 5pt 5pt; vertical-align: top;"><div dir="ltr" style="line-height: 1.38; margin-bottom: 0pt; margin-top: 0pt;">
+<span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;"><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">opt_init, opt_update = optimizers.adam(step_size=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1e-3</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">out_shape, net_params = net_init(in_shape)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">opt_state = opt_init(net_params)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># vmapped version of maml loss.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #888888; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"># returns scalar for all tasks.</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">def</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: #ffffaa; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">batch_maml_loss</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">(p, x1_b, y1_b, x2_b, y2_b):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;task_losses = vmap(partial(maml_loss, p))(x1_b, y1_b, x2_b, y2_b)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">return</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> np.mean(task_losses)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fc9b9b; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">@jit</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">def</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> </span><span style="color: #ffffaa; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">step</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">(i, opt_state, x1, y1, x2, y2):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;p = optimizers.get_params(opt_state)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;g = grad(batch_maml_loss)(p, x1, y1, x2, y2)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;l = batch_maml_loss(p, x1, y1, x2, y2)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">return</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> opt_update(i, g, opt_state), l</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">np_batched_maml_loss = []</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">K=</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">20</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">for</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> i </span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">in</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> range(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">20000</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">):</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;x1_b, y1_b, x2_b, y2_b = sample_tasks(</span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">4</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">, K)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;opt_state, l = step(i, opt_state, x1_b, y1_b, x2_b, y2_b)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;np_batched_maml_loss.append(l)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;</span><span style="color: #fcc28c; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">if</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> i % </span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">1000</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> == </span><span style="color: #d36363; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">0</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">:</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(i)</span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;"><br /></span><span style="color: white; font-size: 11pt; vertical-align: baseline; white-space: pre-wrap;">net_params = optimizers.get_params(opt_state)</span></span></div>
+</td></tr>
+</tbody></table>
+</div>
+<br />
+When we plot the MAML objective as a function of training step, we see that the batched MAML trains much faster (as a function of gradient steps) and also has lower variance during training.</div>
+<div>
+<br />
+<div class="separator" style="clear: both;">
+<a href="https://2.bp.blogspot.com/-B_XbZrb3x-Y/XG7Fj-YtcNI/AAAAAAAAOe8/u8TtEfoZFF0kIa--Zlm23kFrtbjZWQOKwCEwYBhgL/s1600/download%2B%25284%2529.png" imageanchor="1" style="margin-left: 1em; margin-right: 1em;"><img border="0" data-original-height="252" data-original-width="381" height="263" src="https://2.bp.blogspot.com/-B_XbZrb3x-Y/XG7Fj-YtcNI/AAAAAAAAOe8/u8TtEfoZFF0kIa--Zlm23kFrtbjZWQOKwCEwYBhgL/s400/download%2B%25284%2529.png" width="400" /></a></div>
+<div class="separator" style="clear: both; text-align: left;">
+<br /></div>
+<br />
+<h3>
+Conclusions</h3>
+<br />
+In this tutorial we explored the MAML algorithm and reproduced the Sinusoid regression task from the paper in about 50 lines of Python code. I was very pleasantly surprised to find how easy <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">grad</span>, <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">vmap</span>, and <span style="font-family: &quot;courier new&quot; , &quot;courier&quot; , monospace;">jit</span> made it to implement MAML, and I am excited to continue using it for my own meta-learning research.<br />
+<br />
+So, what are the distinctions between &#8220;optimization&#8221;, &#8220;learning&#8221;, &#8220;adaptation&#8221;, and &#8220;memory&#8221;? I believe they are all equivalent, because it is possible to implement memory capabilities with optimization techniques (MAML) and vice versa (e.g. RNN-based meta reinforcement learning). In reinforcement learning, imitating a teacher or conditioning on user-specified goal or recovering from a failure can all use the same machinery.<br />
+<br />
+Thinking about precise definitions of &#8220;learning&#8221; and &#8220;meta-learning&#8221;, and attempting to reconcile them with the capabilities of biological intelligence have led me to realize that every process in Life itself, spanning molecular reaction to behavioral adaptation to genetic evolution, is nothing more than learning happening at many time scales. I&#8217;ll have much more to say on the topic of Artificial Life and Machine Learning in the future, but for now, thank you for reading this humble tutorial on fitting sinusoidal functions!<br />
+<br />
+<h3>
+Acknowledgements</h3>
+Thanks to Matthew Johnson for helping to proofread this post and helping me to resolve JAX questions.</div>
+<div style='clear: both;'></div>
+</div>
+<div class='post-footer'>
+<div class='post-footer-line post-footer-line-1'>
+<span class='post-author vcard'>
+Posted by
+<span class='fn' itemprop='author' itemscope='itemscope' itemtype='http://schema.org/Person'>
+<span itemprop='name'>Eric</span>
+</span>
+</span>
+<span class='post-timestamp'>
+at
+<meta content='https://blog.evjang.com/2019/02/maml-jax.html' itemprop='url'/>
+<a class='timestamp-link' href='https://blog.evjang.com/2019/02/maml-jax.html' rel='bookmark' title='permanent link'><abbr class='published' itemprop='datePublished' title='2019-02-21T08:06:00-08:00'>8:06 AM</abbr></a>
+</span>
+<span class='post-comment-link'>
+</span>
+<span class='post-icons'>
+<span class='item-control blog-admin pid-690748826'>
+<a href='https://www.blogger.com/post-edit.g?blogID=842965756326639856&postID=2948758183907914605&from=pencil' title='Edit Post'>
+<img alt='' class='icon-action' height='18' src='https://resources.blogblog.com/img/icon18_edit_allbkg.gif' width='18'/>
+</a>
+</span>
+</span>
+<div class='post-share-buttons goog-inline-block'>
+<a class='goog-inline-block share-button sb-email' href='https://www.blogger.com/share-post.g?blogID=842965756326639856&postID=2948758183907914605&target=email' target='_blank' title='Email This'><span class='share-button-link-text'>Email This</span></a><a class='goog-inline-block share-button sb-blog' href='https://www.blogger.com/share-post.g?blogID=842965756326639856&postID=2948758183907914605&target=blog' onclick='window.open(this.href, "_blank", "height=270,width=475"); return false;' target='_blank' title='BlogThis!'><span class='share-button-link-text'>BlogThis!</span></a><a class='goog-inline-block share-button sb-twitter' href='https://www.blogger.com/share-post.g?blogID=842965756326639856&postID=2948758183907914605&target=twitter' target='_blank' title='Share to Twitter'><span class='share-button-link-text'>Share to Twitter</span></a><a class='goog-inline-block share-button sb-facebook' href='https://www.blogger.com/share-post.g?blogID=842965756326639856&postID=2948758183907914605&target=facebook' onclick='window.open(this.href, "_blank", "height=430,width=640"); return false;' target='_blank' title='Share to Facebook'><span class='share-button-link-text'>Share to Facebook</span></a><a class='goog-inline-block share-button sb-pinterest' href='https://www.blogger.com/share-post.g?blogID=842965756326639856&postID=2948758183907914605&target=pinterest' target='_blank' title='Share to Pinterest'><span class='share-button-link-text'>Share to Pinterest</span></a>
+</div>
+</div>
+<div class='post-footer-line post-footer-line-2'>
+<span class='post-labels'>
+Labels:
+<a href='https://blog.evjang.com/search/label/AI' rel='tag'>AI</a>,
+<a href='https://blog.evjang.com/search/label/Deep%20Learning' rel='tag'>Deep Learning</a>,
+<a href='https://blog.evjang.com/search/label/generalization' rel='tag'>generalization</a>,
+<a href='https://blog.evjang.com/search/label/Machine%20Learning' rel='tag'>Machine Learning</a>,
+<a href='https://blog.evjang.com/search/label/Reinforcement%20Learning' rel='tag'>Reinforcement Learning</a>
+</span>
+</div>
+<div class='post-footer-line post-footer-line-3'>
+<span class='post-location'>
+</span>
+</div>
+</div>
+</div>
+<div class='comments' id='comments'>
+<a name='comments'></a>
+<h4>No comments:</h4>
+<div id='Blog1_comments-block-wrapper'>
+<dl class='avatar-comment-indent' id='comments-block'>
+</dl>
+</div>
+<p class='comment-footer'>
+<div class='comment-form'>
+<a name='comment-form'></a>
+<h4 id='comment-post-message'>Post a Comment</h4>
+<p>Comments will be reviewed by administrator (to filter for spam and irrelevant content).</p>
+<a href='https://www.blogger.com/comment/frame/842965756326639856?po=2948758183907914605&hl=en' id='comment-editor-src'></a>
+<iframe allowtransparency='true' class='blogger-iframe-colorize blogger-comment-from-post' frameborder='0' height='410px' id='comment-editor' name='comment-editor' src='' width='100%'></iframe>
+<script src='https://www.blogger.com/static/v1/jsbin/3262169375-comment_from_post_iframe.js' type='text/javascript'></script>
+<script type='text/javascript'>
+      BLOG_CMT_createIframe('https://www.blogger.com/rpc_relay.html');
+    </script>
+</div>
+</p>
+</div>
+</div>
+
+        </div></div>
+      
+</div>
+<div class='blog-pager' id='blog-pager'>
+<span id='blog-pager-newer-link'>
+<a class='blog-pager-newer-link' href='https://blog.evjang.com/2019/03/causal-rl.html' id='Blog1_blog-pager-newer-link' title='Newer Post'>Newer Post</a>
+</span>
+<span id='blog-pager-older-link'>
+<a class='blog-pager-older-link' href='https://blog.evjang.com/2019/02/bagnet.html' id='Blog1_blog-pager-older-link' title='Older Post'>Older Post</a>
+</span>
+<a class='home-link' href='https://blog.evjang.com/'>Home</a>
+</div>
+<div class='clear'></div>
+<div class='post-feeds'>
+<div class='feed-links'>
+Subscribe to:
+<a class='feed-link' href='https://blog.evjang.com/feeds/2948758183907914605/comments/default' target='_blank' type='application/atom+xml'>Post Comments (Atom)</a>
+</div>
+</div>
+</div></div>
+</div>
+</div>
+<div class='column-left-outer'>
+<div class='column-left-inner'>
+<aside>
+</aside>
+</div>
+</div>
+<div class='column-right-outer'>
+<div class='column-right-inner'>
+<aside>
+<div class='sidebar section' id='sidebar-right-1'><div class='widget HTML' data-version='1' id='HTML1'>
+<div class='widget-content'>
+<a href="https://feedburner.google.com/fb/a/mailverify?uri=EricJang&amp;loc=en_US">Subscribe by Email</a>
+<br/>
+<a href="https://blog.evjang.com/feeds/posts/default">Subscribe via RSS</a>
+</div>
+<div class='clear'></div>
+</div><div class='widget BlogArchive' data-version='1' id='BlogArchive1'>
+<h2>Blog Archive</h2>
+<div class='widget-content'>
+<div id='ArchiveList'>
+<div id='BlogArchive1_ArchiveList'>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2021/'>
+2021
+</a>
+<span class='post-count' dir='ltr'>(7)</span>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2021/09/'>
+September
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2021/07/'>
+July
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2021/06/'>
+June
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2021/05/'>
+May
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2021/03/'>
+March
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2021/02/'>
+February
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2021/01/'>
+January
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2020/'>
+2020
+</a>
+<span class='post-count' dir='ltr'>(5)</span>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2020/11/'>
+November
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2020/09/'>
+September
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2020/06/'>
+June
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2020/04/'>
+April
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate expanded'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy toggle-open'>
+
+        &#9660;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2019/'>
+2019
+</a>
+<span class='post-count' dir='ltr'>(10)</span>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2019/12/'>
+December
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2019/11/'>
+November
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2019/07/'>
+July
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2019/05/'>
+May
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2019/03/'>
+March
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate expanded'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy toggle-open'>
+
+        &#9660;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2019/02/'>
+February
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+<ul class='posts'>
+<li><a href='https://blog.evjang.com/2019/02/maml-jax.html'>Meta-Learning in 50 Lines of JAX</a></li>
+<li><a href='https://blog.evjang.com/2019/02/bagnet.html'>Thoughts on the BagNet Paper</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2018/'>
+2018
+</a>
+<span class='post-count' dir='ltr'>(11)</span>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2018/12/'>
+December
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2018/11/'>
+November
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2018/08/'>
+August
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2018/06/'>
+June
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2018/04/'>
+April
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2018/02/'>
+February
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2018/01/'>
+January
+</a>
+<span class='post-count' dir='ltr'>(5)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2017/'>
+2017
+</a>
+<span class='post-count' dir='ltr'>(3)</span>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2017/12/'>
+December
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2017/11/'>
+November
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2017/01/'>
+January
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2016/'>
+2016
+</a>
+<span class='post-count' dir='ltr'>(11)</span>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2016/11/'>
+November
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2016/09/'>
+September
+</a>
+<span class='post-count' dir='ltr'>(2)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2016/08/'>
+August
+</a>
+<span class='post-count' dir='ltr'>(1)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2016/07/'>
+July
+</a>
+<span class='post-count' dir='ltr'>(3)</span>
+</li>
+</ul>
+<ul class='hierarchy'>
+<li class='archivedate collapsed'>
+<a class='toggle' href='javascript:void(0)'>
+<span class='zippy'>
+
+        &#9658;&#160;
+      
+</span>
+</a>
+<a class='post-count-link' href='https://blog.evjang.com/2016/06/'>
+June
+</a>
+<span class='post-count' dir='ltr'>(4)</span>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class='clear'></div>
+</div>
+</div></div>
+</aside>
+</div>
+</div>
+</div>
+<div style='clear: both'></div>
+<!-- columns -->
+</div>
+<!-- main -->
+</div>
+</div>
+<div class='main-cap-bottom cap-bottom'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+</div>
+<footer>
+<div class='footer-outer'>
+<div class='footer-cap-top cap-top'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+<div class='fauxborder-left footer-fauxborder-left'>
+<div class='fauxborder-right footer-fauxborder-right'></div>
+<div class='region-inner footer-inner'>
+<div class='foot no-items section' id='footer-1'></div>
+<table border='0' cellpadding='0' cellspacing='0' class='section-columns columns-2'>
+<tbody>
+<tr>
+<td class='first columns-cell'>
+<div class='foot no-items section' id='footer-2-1'></div>
+</td>
+<td class='columns-cell'>
+<div class='foot no-items section' id='footer-2-2'></div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- outside of the include in order to lock Attribution widget -->
+<div class='foot section' id='footer-3' name='Footer'><div class='widget Attribution' data-version='1' id='Attribution1'>
+<div class='widget-content' style='text-align: center;'>
+Not for reproduction. Simple theme. Powered by <a href='https://www.blogger.com' target='_blank'>Blogger</a>.
+</div>
+<div class='clear'></div>
+</div></div>
+</div>
+</div>
+<div class='footer-cap-bottom cap-bottom'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+</div>
+</footer>
+<!-- content -->
+</div>
+</div>
+<div class='content-cap-bottom cap-bottom'>
+<div class='cap-left'></div>
+<div class='cap-right'></div>
+</div>
+</div>
+</div>
+<script type='text/javascript'>
+    window.setTimeout(function() {
+        document.body.className = document.body.className.replace('loading', '');
+      }, 10);
+  </script>
+
+<script type="text/javascript" src="https://www.blogger.com/static/v1/widgets/2783068010-widgets.js"></script>
+<script type='text/javascript'>
+window['__wavt'] = 'AOuZoY5oyMzYSw6Ra9QSXVtJxDZgUh7sgw:1660721182992';_WidgetManager._Init('//www.blogger.com/rearrange?blogID\x3d842965756326639856','//blog.evjang.com/2019/02/maml-jax.html','842965756326639856');
+_WidgetManager._SetDataContext([{'name': 'blog', 'data': {'blogId': '842965756326639856', 'title': 'Eric Jang', 'url': 'https://blog.evjang.com/2019/02/maml-jax.html', 'canonicalUrl': 'https://blog.evjang.com/2019/02/maml-jax.html', 'homepageUrl': 'https://blog.evjang.com/', 'searchUrl': 'https://blog.evjang.com/search', 'canonicalHomepageUrl': 'https://blog.evjang.com/', 'blogspotFaviconUrl': 'https://blog.evjang.com/favicon.ico', 'bloggerUrl': 'https://www.blogger.com', 'hasCustomDomain': true, 'httpsEnabled': true, 'enabledCommentProfileImages': true, 'gPlusViewType': 'FILTERED_POSTMOD', 'adultContent': false, 'analyticsAccountNumber': 'UA-58407005-1', 'encoding': 'UTF-8', 'locale': 'en', 'localeUnderscoreDelimited': 'en', 'languageDirection': 'ltr', 'isPrivate': false, 'isMobile': false, 'isMobileRequest': false, 'mobileClass': '', 'isPrivateBlog': false, 'isDynamicViewsAvailable': true, 'feedLinks': '\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Eric Jang - Atom\x22 href\x3d\x22https://blog.evjang.com/feeds/posts/default\x22 /\x3e\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/rss+xml\x22 title\x3d\x22Eric Jang - RSS\x22 href\x3d\x22https://blog.evjang.com/feeds/posts/default?alt\x3drss\x22 /\x3e\n\x3clink rel\x3d\x22service.post\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Eric Jang - Atom\x22 href\x3d\x22https://www.blogger.com/feeds/842965756326639856/posts/default\x22 /\x3e\n\n\x3clink rel\x3d\x22alternate\x22 type\x3d\x22application/atom+xml\x22 title\x3d\x22Eric Jang - Atom\x22 href\x3d\x22https://blog.evjang.com/feeds/2948758183907914605/comments/default\x22 /\x3e\n', 'meTag': '', 'adsenseClientId': 'ca-pub-3607144777547824', 'adsenseHostId': 'ca-host-pub-1556223355139109', 'adsenseHasAds': false, 'adsenseAutoAds': false, 'boqCommentIframeForm': true, 'loginRedirectParam': '', 'view': '', 'dynamicViewsCommentsSrc': '//www.blogblog.com/dynamicviews/4224c15c4e7c9321/js/comments.js', 'dynamicViewsScriptSrc': '//www.blogblog.com/dynamicviews/06c487c1eebe744e', 'plusOneApiSrc': 'https://apis.google.com/js/plusone.js', 'disableGComments': true, 'sharing': {'platforms': [{'name': 'Get link', 'key': 'link', 'shareMessage': 'Get link', 'target': ''}, {'name': 'Facebook', 'key': 'facebook', 'shareMessage': 'Share to Facebook', 'target': 'facebook'}, {'name': 'BlogThis!', 'key': 'blogThis', 'shareMessage': 'BlogThis!', 'target': 'blog'}, {'name': 'Twitter', 'key': 'twitter', 'shareMessage': 'Share to Twitter', 'target': 'twitter'}, {'name': 'Pinterest', 'key': 'pinterest', 'shareMessage': 'Share to Pinterest', 'target': 'pinterest'}, {'name': 'Email', 'key': 'email', 'shareMessage': 'Email', 'target': 'email'}], 'disableGooglePlus': true, 'googlePlusShareButtonWidth': 0, 'googlePlusBootstrap': '\x3cscript type\x3d\x22text/javascript\x22\x3ewindow.___gcfg \x3d {\x27lang\x27: \x27en\x27};\x3c/script\x3e'}, 'hasCustomJumpLinkMessage': false, 'jumpLinkMessage': 'Read more', 'pageType': 'item', 'postId': '2948758183907914605', 'postImageThumbnailUrl': 'https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s72-c/download.png', 'postImageUrl': 'https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s400/download.png', 'pageName': 'Meta-Learning in 50 Lines of JAX', 'pageTitle': 'Eric Jang: Meta-Learning in 50 Lines of JAX'}}, {'name': 'features', 'data': {'sharing_get_link_dialog': 'true', 'sharing_native': 'false'}}, {'name': 'messages', 'data': {'edit': 'Edit', 'linkCopiedToClipboard': 'Link copied to clipboard!', 'ok': 'Ok', 'postLink': 'Post Link'}}, {'name': 'template', 'data': {'name': 'custom', 'localizedName': 'Custom', 'isResponsive': false, 'isAlternateRendering': false, 'isCustom': true, 'variant': 'simplysimple', 'variantId': 'simplysimple'}}, {'name': 'view', 'data': {'classic': {'name': 'classic', 'url': '?view\x3dclassic'}, 'flipcard': {'name': 'flipcard', 'url': '?view\x3dflipcard'}, 'magazine': {'name': 'magazine', 'url': '?view\x3dmagazine'}, 'mosaic': {'name': 'mosaic', 'url': '?view\x3dmosaic'}, 'sidebar': {'name': 'sidebar', 'url': '?view\x3dsidebar'}, 'snapshot': {'name': 'snapshot', 'url': '?view\x3dsnapshot'}, 'timeslide': {'name': 'timeslide', 'url': '?view\x3dtimeslide'}, 'isMobile': false, 'title': 'Meta-Learning in 50 Lines of JAX', 'description': 'Github repo here:\xa0 https://github.com/ericjang/maml-jax   Adaptive behavior in humans and animals occurs at many time scales: when I use a n...', 'featuredImage': 'https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s400/download.png', 'url': 'https://blog.evjang.com/2019/02/maml-jax.html', 'type': 'item', 'isSingleItem': true, 'isMultipleItems': false, 'isError': false, 'isPage': false, 'isPost': true, 'isHomepage': false, 'isArchive': false, 'isLabelSearch': false, 'postId': 2948758183907914605}}]);
+_WidgetManager._RegisterWidget('_HeaderView', new _WidgetInfo('Header1', 'header', document.getElementById('Header1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogView', new _WidgetInfo('Blog1', 'main', document.getElementById('Blog1'), {'cmtInteractionsEnabled': false, 'lightboxEnabled': true, 'lightboxModuleUrl': 'https://www.blogger.com/static/v1/jsbin/2952166632-lbx.js', 'lightboxCssUrl': 'https://www.blogger.com/static/v1/v-css/3523451998-lightbox_bundle.css'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_HTMLView', new _WidgetInfo('HTML1', 'sidebar-right-1', document.getElementById('HTML1'), {}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_BlogArchiveView', new _WidgetInfo('BlogArchive1', 'sidebar-right-1', document.getElementById('BlogArchive1'), {'languageDirection': 'ltr', 'loadingMessage': 'Loading\x26hellip;'}, 'displayModeFull'));
+_WidgetManager._RegisterWidget('_AttributionView', new _WidgetInfo('Attribution1', 'footer-3', document.getElementById('Attribution1'), {}, 'displayModeFull'));
+</script>
+</body>
+</html>

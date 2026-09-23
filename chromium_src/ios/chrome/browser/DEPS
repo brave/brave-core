@@ -1,0 +1,34 @@
+include_rules = [
+  "+ios/public/provider/chrome/browser/app_distribution/app_distribution_api.h",
+  "+brave/common",
+  "+brave/components/ai_chat",
+  "+brave/components/constants",
+  "+brave/components/https_upgrade_exceptions/browser",
+  "+brave/components/static_redirect_helper",
+  "+brave/ios/browser/application_context",
+  "+components/component_updater",
+  "+components/gcm_driver/gcm_driver.h",
+  "+components/history/core/browser",
+  "+components/keyed_service/core",
+  "+components/keyed_service/ios",
+  "+components/metrics",
+  "+components/metrics_services_manager",
+  "+components/net_log",
+  "+components/network_time",
+  "+components/prefs",
+  "+components/pref_registry",
+  "+components/sessions/core",
+  "+components/signin/core/browser",
+  "+components/ukm",
+  "+components/version_info",
+  "+extensions/common",
+  "+mojo/public/cpp",
+  "+services/metrics/public/cpp",
+  "+services/network/network_change_manager.h",
+]
+
+specific_include_rules = {
+  "application_context_impl\.mm": [
+    "+brave/ios/browser/metrics/ios_brave_metrics_services_manager_client.h",
+  ]
+}

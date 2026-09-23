@@ -1,0 +1,111 @@
+/* Error message shown when importing bookmarks failed */
+"failedToImportBookmarks" = "S'ha produït un error en importar les adreces d'interès.";
+
+/* Error message shown when importing history failed */
+"failedToImportHistory" = "S'ha produït un error en importar l'historial.";
+
+/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
+"failedToImportPasswordsDueToConflictError" = "S'ha produït un error en importar les contrasenyes. Algunes contrasenyes no s'han pogut importar a causa de conflictes.";
+
+/* Error message shown when importing passwords failed */
+"failedToImportPasswordsError" = "S'ha produït un error en importar les contrasenyes.";
+
+/* Error message shown when unzipping a zip file failed */
+"failedToUnzipError" = "S'ha produït un error en descomprimir el fitxer.";
+
+/* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
+"importDataFileSelectorButtonTitle" = "Tria un fitxer...";
+
+/* The message of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorMessage" = "Emporta't les teves adreces d'interès, historial i altres dades del navegador a Brave.";
+
+/* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
+"importDataFileSelectorNavigationTitle" = "Importar dades de navegació";
+
+/* The title of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorTitle" = "Importar adreces d'interès i més";
+
+/* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
+"importDataViewTutorialButtonTitle" = "Com exportar des de Safari";
+
+/* The message shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureMessage" = "S'ha produït un error en importar les teves dades.\nSi us plau, torna-ho a provar.\nSi el problema persisteix, posa't en contacte amb el servei d'assistència.";
+
+/* The title shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureTitle" = "La importació ha fallat";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "Mantenir contrasenyes de Brave";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "Utilitzar contrasenyes de Safari";
+
+/* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
+"importStatePasswordConflictMessage" = "S'han trobat %d conflictes de contrasenyes.\nTria què vols importar.";
+
+/* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
+"importStatePasswordConflictTitle" = "Conflictes de contrasenya";
+
+/* The title of the button on the import success screen to let the user continue using the app as before. */
+"importStateSuccessContinueTitle" = "Continua";
+
+/* The message shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessMessage" = "Les teves dades s'han importat correctament.\nJa pots començar a navegar amb Brave.";
+
+/* The title shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessTitle" = "Fet!";
+
+/* The title of the button on the import error screen that lets the user try to import the data again */
+"importStateTryAgainTitle" = "Torna-ho a provar";
+
+/* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessMessage" = "Obre la pàgina d'ajuda de Safari";
+
+/* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessTitle" = "Vols un procés d'exportació detallat?";
+
+/* The title of the tutorial page that shows in the Navigation Bar. */
+"importTutorialScreenTitle" = "Com exportar des de Safari";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFiveTitle" = "Guarda el fitxer a **Fitxers**, triant una ubicació que pots trobar fàcilment més tard.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFourTitle" = "**Selecciona** les dades que vols exportar (adreces d'interès, historial, targetes de crèdit, contrasenyes).";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepOneTitle" = "Obre **Configuració**, desplaça't cap avall i toca **Aplicacions**.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepThreeTitle" = "Desplaça't cap avall i toca **Exportar**.";
+
+/* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
+"importTutorialStepTitle" = "Pas %d";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepTwoTitle" = "A la llista d'aplicacions (ordenades alfabèticament), troba i toca Safari.";
+
+/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
+"invalidZipFileDataError" = "El fitxer zip no conté dades d'importació.";
+
+/* The message shown on the import data screen when the data is being loaded or imported. */
+"loadingMessage" = "Espera mentre transferim les teves dades de forma segura.\nAixò pot trigar uns minuts.";
+
+/* The title shown on the import data screen when the data is being loaded or imported. */
+"loadingTitle" = "Important les teves dades...";
+
+/* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
+"multipleProfilesMessage" = "Tria el perfil del qual vols importar les dades";
+
+/* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
+"multipleProfilesTitle" = "S'han detectat múltiples perfils";
+
+/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
+"personalImportTitle" = "Personal";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Adreces d'interès importades";
+
+/* An unknown error occurred during data importing. */
+"unknownError" = "El fitxer zip no conté dades d'importació.";
+

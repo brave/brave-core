@@ -1,0 +1,13 @@
+diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridItemTouchHelperCallback.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridItemTouchHelperCallback.java
+index f8dffa7d776ca6b8f47843280bb408c6aa1e16ad..57587b306da5df20f437ae57539e8e6348522672 100644
+--- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridItemTouchHelperCallback.java
++++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridItemTouchHelperCallback.java
+@@ -72,7 +72,7 @@ public class TabGridItemTouchHelperCallback extends TabListItemTouchHelperCallba
+     private final @Nullable TabGridDialogHandler mTabGridDialogHandler;
+     private final int mLongPressDpThresholdSquared;
+     private final TabGroupCreationDialogManager mTabGroupCreationDialogManager;
+-    private final @TabListLayoutType int mLayoutType;
++    protected @TabListLayoutType int mLayoutType;
+     private float mSwipeToDismissThreshold;
+     private float mMergeThreshold;
+     private float mUngroupThreshold;

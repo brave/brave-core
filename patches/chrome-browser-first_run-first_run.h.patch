@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/first_run/first_run.h b/chrome/browser/first_run/first_run.h
+index 4992cc0b93e034594915170d854e4e1e1a197a3e..843f8659c1fa741ae22b472a6d463d71c651b4ab 100644
+--- a/chrome/browser/first_run/first_run.h
++++ b/chrome/browser/first_run/first_run.h
+@@ -74,7 +74,7 @@ struct MasterPrefs {
+   bool confirm_to_quit;
+ #endif
+ #if BUILDFLAG(IS_LINUX)
+-  bool eula_required = true;
++  bool eula_required = false;
+ #endif
+ };
+ 

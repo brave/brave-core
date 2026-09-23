@@ -1,0 +1,211 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/v2/branding.gni")
+
+if (is_mac) {
+  import("//build/config/mac/rules.gni")
+  import("//build/util/process_version.gni")
+}
+if (is_win) {
+  import("//chrome/process_version_rc_template.gni")
+}
+
+assert(enable_brave_vpn_v2_apps)
+
+source_set("core") {
+  sources = [
+    "agent_app.cc",
+    "agent_app.h",
+    "browser_host_impl.cc",
+    "browser_host_impl.h",
+    "browser_host_provider_impl.cc",
+    "browser_host_provider_impl.h",
+    "browser_identity.cc",
+    "browser_identity.h",
+    "browser_registry.cc",
+    "browser_registry.h",
+    "shutdown_handlers.cc",
+    "shutdown_handlers.h",
+    "single_instance.h",
+  ]
+
+  if (is_win) {
+    sources += [
+      "win/browser_identity_win.cc",
+      "win/shutdown_handlers_win.cc",
+      "win/single_instance_win.cc",
+    ]
+  }
+
+  if (is_posix) {
+    sources += [
+      "posix/shutdown_handlers_posix.cc",
+      "posix/single_instance_posix.cc",
+    ]
+  }
+
+  if (is_linux) {
+    sources += [ "linux/browser_identity_linux.cc" ]
+  }
+
+  if (is_mac) {
+    sources += [ "mac/browser_identity_mac.cc" ]
+    libs = [ "bsm" ]
+  }
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_vpn/common/mojom:agent",
+    "//components/named_mojo_ipc_server",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/platform",
+  ]
+
+  deps = [
+    "//brave/components/brave_vpn/common/v2:common",
+    "//mojo/core/embedder",
+  ]
+}
+
+if (is_win) {
+  process_version_rc_template("version_resources") {
+    sources = [ "win/agent.ver" ]
+    output = "$target_gen_dir/$vpn_agent_executable_name.rc"
+  }
+}
+
+executable("agent") {
+  output_name = vpn_agent_executable_name
+
+  configs += [ "//build/config/compiler:wexit_time_destructors" ]
+  sources = [ "main.cc" ]
+  deps = [
+    ":core",
+    "//base",
+    "//base:base_static",
+    "//brave/components/brave_vpn/app/v2/shared",
+    "//brave/components/brave_vpn/app/v2/shared:crashrpt",
+  ]
+
+  if (is_mac) {
+    deps += [ "//base/allocator:early_zone_registration_apple" ]
+    frameworks = [ "AppKit.framework" ]
+  }
+
+  if (is_win) {
+    deps += [
+      ":version_resources",
+      "//build/win:default_exe_manifest",
+    ]
+
+    public_configs = [ "//build/config/win:windowed" ]
+  }
+}
+
+if (is_mac) {
+  # Assembles the agent executable and Info.plist into an app bundle.
+  mac_app_bundle("brave_vpn_agent_bundle") {
+    info_plist = "mac/Info.plist"
+    output_name = vpn_agent_product_full_name
+    extra_substitutions = [ "MAC_BUNDLE_IDENTIFIER=$vpn_agent_bundle_id" ]
+
+    configs += [ "//build/config/compiler:wexit_time_destructors" ]
+    sources = [ "main.cc" ]
+    frameworks = [ "AppKit.framework" ]
+
+    deps = [
+      ":core",
+      "//base",
+      "//base:base_static",
+      "//brave/components/brave_vpn/app/v2/shared",
+      "//brave/components/brave_vpn/app/v2/shared:crashrpt",
+    ]
+
+    ldflags = []
+    if (is_component_build) {
+      # This is similar to what "chrome_helper_app" template does.
+      ldflags += [
+        "-Wl,-rpath,@executable_path/../../../../../../..",
+        "-Wl,-rpath,@loader_path/../../../../../../../../../..",
+      ]
+    }
+  }
+
+  # Drops the assembled app into the browser framework's Helpers directory.
+  bundle_data("brave_vpn_agent_bundle_data") {
+    sources = [ "$root_out_dir/$vpn_agent_product_full_name.app" ]
+    outputs = [ "{{bundle_contents_dir}}/Helpers/{{source_file_part}}" ]
+    public_deps = [ ":brave_vpn_agent_bundle" ]
+  }
+
+  # Generates the LaunchAgent plist with channel-specific substitutions.
+  process_version("brave_vpn_agent_launchd_plist") {
+    extra_args = [
+      "-e",
+      "VPN_AGENT_BUNDLE_ID=\"$vpn_agent_bundle_id\"",
+      "-e",
+      "VPN_AGENT_NAME=\"$vpn_agent_product_full_name\"",
+      "-e",
+      "FRAMEWORK_NAME=\"$chrome_product_full_name Framework\"",
+    ]
+    process_only = true
+    template_file = "mac/launchd.plist"
+    output = "$target_gen_dir/$vpn_agent_bundle_id.plist"
+  }
+
+  # Drops the LaunchAgent plist into the browser bundle.
+  bundle_data("brave_vpn_agent_launchd_plist_data") {
+    sources = [ "$target_gen_dir/$vpn_agent_bundle_id.plist" ]
+    outputs =
+        [ "{{bundle_contents_dir}}/Library/LaunchAgents/{{source_file_part}}" ]
+    public_deps = [ ":brave_vpn_agent_launchd_plist" ]
+  }
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/fake_browser.cc",
+    "test/fake_browser.h",
+    "test/fake_browser_endpoint.cc",
+    "test/fake_browser_endpoint.h",
+    "test/fake_browser_identity.cc",
+    "test/fake_browser_identity.h",
+  ]
+
+  public_deps = [
+    ":core",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_vpn/common/mojom:agent",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "agent_app_unittest.cc",
+    "browser_host_impl_unittest.cc",
+    "browser_host_provider_impl_unittest.cc",
+    "browser_registry_unittest.cc",
+    "shutdown_handlers_unittest.cc",
+    "single_instance_unittest.cc",
+  ]
+
+  deps = [
+    ":core",
+    ":test_support",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_vpn/common/mojom:agent",
+    "//components/named_mojo_ipc_server:test_support",
+    "//mojo/public/cpp/bindings",
+    "//testing/gtest",
+  ]
+}

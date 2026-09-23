@@ -1,0 +1,42 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//mojo/public/tools/bindings/mojom.gni")
+
+mojom("mojom") {
+  generate_java = true
+
+  sources = [
+    "rewards.mojom",
+    "rewards_database.mojom",
+  ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
+}
+
+mojom("engine") {
+  sources = [
+    "rewards_engine.mojom",
+    "rewards_engine_internal.mojom",
+  ]
+
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//url/mojom:url_mojom_gurl",
+  ]
+
+  deps = [ ":mojom" ]
+}
+
+mojom("webui") {
+  sources = [ "rewards_page.mojom" ]
+
+  public_deps = [ "//mojo/public/mojom/base" ]
+
+  deps = [
+    ":mojom",
+    "//brave/components/services/bat_ads/public/interfaces",
+  ]
+}

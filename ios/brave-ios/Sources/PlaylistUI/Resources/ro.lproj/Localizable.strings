@@ -1,0 +1,174 @@
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle AirPlay */
+"playlist.accessibilityAirPlay" = "AirPlay";
+
+/* A label that VoiceOver accessibility technology will read out if the user taps the media progress bar */
+"playlist.accessibilityCurrentMediaTime" = "Timpul curent în media";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
+"playlist.accessibilityEnterFullscreen" = "Deschide în ecran complet";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will enter picture in picture mode */
+"playlist.accessibilityEnterPictureInPicture" = "Deschide în picture-in-picture";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
+"playlist.accessibilityExitFullscreen" = "Ieși din ecranul complet";
+
+/* A label shown on an item when the item is ready for offline play */
+"playlist.accessibilityItemDownloadStatusReady" = "Elementul este gata";
+
+/* A button title that VoiceOver accessibility technology will read out when highlighting the more menu button (ellipsis icon) */
+"playlist.accessibilityMoreMenuButtonTitle" = "Mai multe";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play the next item in the queue */
+"playlist.accessibilityNextItem" = "Următorul element";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will pause some currently playing media */
+"playlist.accessibilityPause" = "Întrerupe";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play some media */
+"playlist.accessibilityPlay" = "Redă";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will display playback speed options */
+"playlist.accessibilityPlaybackSpeed" = "Viteza de redare";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play the previous item in the queue */
+"playlist.accessibilityPreviousItem" = "Articolul precedent";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the All option (repeats entire playlist) */
+"playlist.accessibilityRepeatModeAll" = "Mod repetare: toate";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled off */
+"playlist.accessibilityRepeatModeOff" = "Mod repetare: dezactivat";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the One option (repeats single item) */
+"playlist.accessibilityRepeatModeOne" = "Mod repetare: unul singur";
+
+/* A label read by VoiceOver accessibility technology that indicates the shuffle mode button is toggled off */
+"playlist.accessibilityShuffleModeOff" = "Mod aleatoriu: dezactivat";
+
+/* A label read by VoiceOver accessibility technology that indicates the shuffle mode button is toggled off */
+"playlist.accessibilityShuffleModeOn" = "Mod aleatoriu: activat";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will move the media progress by a step backwards */
+"playlist.accessibilityStepBack" = "Derulează înapoi";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will move the media progress by a step forward */
+"playlist.accessibilityStepForwards" = "Derulează înainte";
+
+/* A label read by VoiceOver accessibility technology that indicates that tapping the screen will display playback controls */
+"playlist.accessibilityTapToToggleControls" = "Apasă pentru a activa controalele";
+
+/* A button title that when tapped will create a new playlist */
+"playlist.createNewPlaylistButtonTitle" = "Creează";
+
+/* A button title that when tapped will allow the user to delete the selected item. */
+"playlist.deleteItem" = "Șterge";
+
+/* A menu button that when tapped will present a confirmation dialog to delete a playlist and all its contents */
+"playlist.deletePlaylist" = "Șterge playlist...";
+
+/* A message display when the user attempts to delete a playlist. */
+"playlist.deletePlaylistConfirmationMessage" = "Toate videoclipurile din acest playlist vor fi șterse";
+
+/* A button call to action that allows the user to dismiss the active modal */
+"playlist.doneButtonTitle" = "Finalizat";
+
+/* A button title that when tapped will allow the user to edit the selected playlist. */
+"playlist.editPlaylist" = "Editează playlist";
+
+/* A button title that when tapped will allow the user to edit the selected playlist. */
+"playlist.editPlaylistShortTitle" = "Editează";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Începeți să tastezi pentru a căuta înregistrările audio și video salvate";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Căutare Media";
+
+/* A title shown above a list of videos in your default playlist. */
+"playlist.fillNewPlaylistSubtitle" = "Apasă pentru a selecta media";
+
+/* A title shown above a list of videos in your default playlist. '%@' will be replaced with the default playlist name which has already been localized, for example: 'Add from your Play Later playlist' */
+"playlist.fillNewPlaylistTitle" = "Adaugă din playlist-ul **%@**";
+
+/* A count of how many items there are in the playlist. '%lld' would be replaced with a number, for example: 10 items */
+"playlist.itemCountPlural" = "%lld elemente";
+
+/* A count of how many items there are in the playlist */
+"playlist.itemCountSingular" = "1 element";
+
+/* A label shown on an item when it is being prepared for offline play */
+"playlist.itemDownloadStatusPreparing" = "Se pregătește";
+
+/* A label shown next to the media progress bar that when the particular media being played is being live streamed. */
+"playlist.liveIndicator" = "Live";
+
+/* A button title that when tapped will allow the user to move the selected item to another playlist. */
+"playlist.moveItem" = "Mută";
+
+/* A button title that will display a list of menu options to move an item to a different playlist */
+"playlist.moveMenuItemTitle" = "Mută...";
+
+/* A button title that when tapped will prompt the user to create a new playlist */
+"playlist.newPlaylistButtonTitle" = "Creează";
+
+/* A placeholder shown in the text field when creating a new playlist. */
+"playlist.newPlaylistPlaceholder" = "Noul meu playlist";
+
+/* Shown when the user has not selected any media to play. */
+"playlist.noMediaSelectedEmptyState" = "Apasă pe videoclipuri din playlist-ul tău pentru a reda.";
+
+/* Shown when there is no content available to play for a given folder */
+"playlist.noMediaToPickFromEmptyState" = "Adaugă media din site-urile preferate și le vei putea putea reda aici.";
+
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Nu au fost găsite rezultate";
+
+/* A button title that will open the selected item in a new private tab. */
+"playlist.openInNewPrivateTab" = "Deschide în filă privată nouă";
+
+/* A button title that will open the selected item in a new tab. */
+"playlist.openInNewTab" = "Deschide în filă nouă";
+
+/* A button title that will delete the selected items data saved to the users device. */
+"playlist.removeOfflineData" = "Șterge datele offline";
+
+/* A menu button that when tapped will present the user with a text box to change the name of the selected playlist */
+"playlist.renamePlaylist" = "Redenumește playlist";
+
+/* A repeat mode option, where selecting All will mean that the entire playlist will repeat from the beginning when the last item in it completes. */
+"playlist.repeatModeOptionAll" = "Tot";
+
+/* A repeat mode option, where selecting None will mean that repeat mode is off and nothing will repeat. */
+"playlist.repeatModeOptionNone" = "Niciuna";
+
+/* A repeat mode option, where selecting One will mean that the current playing item will repeat itself when completing. */
+"playlist.repeatModeOptionOne" = "Unul singur";
+
+/* A button call to action that allows the user to save their selection */
+"playlist.saveButtonTitle" = "Salvează";
+
+/* A button title that will attempt to save the selected item for offline playback. */
+"playlist.saveOfflineData" = "Salvarea datelor offline";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Căutare";
+
+/* A button title that will present a share sheet for the selected item */
+"playlist.share" = "Trimite";
+
+/* Describes an icon which allows the user to set a timer that when reaches 0 will stop playback of any media. */
+"playlist.sleepTimer" = "Temporizator oprire";
+
+/* A button title shown when the sleep timer is currently active and allows the user to turn off the sleep timer. */
+"playlist.sleepTimerCancelTimer" = "Anulează temporizator";
+
+/* An option in the sleep timer menu which describes that playback will stop when the current media item that is playing finishes. */
+"playlist.sleepTimerEndOfItem" = "La finalul media";
+
+/* A title shown above a set of time based options that describe when playback should stop. */
+"playlist.sleepTimerStopPlaybackAfter" = "Oprește redarea după...";
+
+/* A fallback error message displayed when a video fails to play */
+"playlist.somethingWentWrong" = "A apărut o problemă";
+

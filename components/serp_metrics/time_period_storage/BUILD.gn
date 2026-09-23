@@ -1,0 +1,64 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("time_period_storage") {
+  sources = [
+    "serp_metrics_pref_time_period_store.cc",
+    "serp_metrics_pref_time_period_store.h",
+    "serp_metrics_pref_time_period_store_factory.cc",
+    "serp_metrics_pref_time_period_store_factory.h",
+    "serp_metrics_time_period_storage.cc",
+    "serp_metrics_time_period_storage.h",
+    "serp_metrics_time_period_store.h",
+    "serp_metrics_time_period_store_factory.h",
+    "serp_time_period_storage_daily_value_info.h",
+  ]
+
+  deps = [
+    "//base",
+    "//components/prefs",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  public = [ "test/scoped_timezone_for_testing.h" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "serp_metrics_pref_time_period_store_factory_unittest.cc",
+    "serp_metrics_pref_time_period_store_unittest.cc",
+    "serp_metrics_time_period_storage_unittest.cc",
+  ]
+
+  # `ScopedLibcTimezoneOverride` is a no-op on Windows for IANA timezone
+  # identifiers, so timezone-parameterized tests are excluded on Windows to
+  # avoid spurious failures caused by a non-overridable libc timezone.
+  if (!is_win) {
+    sources += [
+      "serp_metrics_time_period_storage_migration_travel_unittest.cc",
+      "serp_metrics_time_period_storage_migration_unittest.cc",
+    ]
+  }
+
+  deps = [
+    ":test_support",
+    ":time_period_storage",
+    "//base",
+    "//base/test:test_support",
+    "//components/prefs:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

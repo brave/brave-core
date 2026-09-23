@@ -1,0 +1,75 @@
+diff --git a/ui/views/controls/button/md_text_button.h b/ui/views/controls/button/md_text_button.h
+index c098f2a19cfe9198751862487314043f334fd81b..3641b7b3fb5ea9de5d0a936baaa140898c93c362 100644
+--- a/ui/views/controls/button/md_text_button.h
++++ b/ui/views/controls/button/md_text_button.h
+@@ -29,11 +29,11 @@ namespace views {
+ enum class PropertyEffects;
+ 
+ // A button class that implements the Material Design text button spec.
+-class VIEWS_EXPORT MdTextButton : public LabelButton {
+-  METADATA_HEADER(MdTextButton, LabelButton)
++class VIEWS_EXPORT MdTextButton_ChromiumImpl : public LabelButton {
++  METADATA_HEADER(MdTextButton_ChromiumImpl, LabelButton)
+ 
+  public:
+-  explicit MdTextButton(
++  explicit MdTextButton_ChromiumImpl(
+       PressedCallback callback = PressedCallback(),
+       std::u16string_view text = {},
+       int button_context = style::CONTEXT_BUTTON_MD,
+@@ -41,10 +41,10 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
+       std::unique_ptr<LabelButtonImageContainer> image_container =
+           std::make_unique<SingleImageContainer>());
+ 
+-  MdTextButton(const MdTextButton&) = delete;
+-  MdTextButton& operator=(const MdTextButton&) = delete;
++  MdTextButton_ChromiumImpl(const MdTextButton_ChromiumImpl&) = delete;
++  MdTextButton_ChromiumImpl& operator=(const MdTextButton_ChromiumImpl&) = delete;
+ 
+-  ~MdTextButton() override;
++  ~MdTextButton_ChromiumImpl() override;
+ 
+   void SetStyle(ui::ButtonStyle button_style);
+   ui::ButtonStyle GetStyle() const;
+@@ -104,10 +104,11 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
+   virtual void UpdateColors();
+ 
+  private:
++  friend class ::views::MdTextButton;
+   void UpdatePadding();
+   gfx::Insets CalculateDefaultPadding() const;
+ 
+-  void UpdateTextColor();
++  virtual void UpdateTextColor();
+   void UpdateBackgroundColor() override;
+   void UpdateIconColor();
+ 
+@@ -141,17 +142,17 @@ class VIEWS_EXPORT MdTextButton : public LabelButton {
+ class VIEWS_EXPORT MdTextButtonActionViewInterface
+     : public LabelButtonActionViewInterface {
+  public:
+-  explicit MdTextButtonActionViewInterface(MdTextButton* action_view);
++  explicit MdTextButtonActionViewInterface(MdTextButton_ChromiumImpl* action_view);
+   ~MdTextButtonActionViewInterface() override = default;
+ 
+   // LabelButtonActionViewInterface:
+   void ActionItemChangedImpl(actions::ActionItem* action_item) override;
+ 
+  private:
+-  raw_ptr<MdTextButton> action_view_;
++  raw_ptr<MdTextButton_ChromiumImpl> action_view_;
+ };
+ 
+-BEGIN_VIEW_BUILDER(VIEWS_EXPORT, MdTextButton, LabelButton)
++BEGIN_VIEW_BUILDER(VIEWS_EXPORT, MdTextButton_ChromiumImpl, LabelButton)
+ VIEW_BUILDER_PROPERTY(gfx::RoundedCornersF, CornerRadii)
+ VIEW_BUILDER_PROPERTY(std::optional<SkColor>, BgColorOverrideDeprecated)
+ VIEW_BUILDER_PROPERTY(std::optional<ui::ColorId>, BgColorIdOverride)
+@@ -161,6 +162,6 @@ END_VIEW_BUILDER
+ 
+ }  // namespace views
+ 
+-DEFINE_VIEW_BUILDER(VIEWS_EXPORT, MdTextButton)
++DEFINE_VIEW_BUILDER(VIEWS_EXPORT, MdTextButton_ChromiumImpl)
+ 
+ #endif  // UI_VIEWS_CONTROLS_BUTTON_MD_TEXT_BUTTON_H_

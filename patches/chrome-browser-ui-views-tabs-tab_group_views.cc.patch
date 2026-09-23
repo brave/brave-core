@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_group_views.cc b/chrome/browser/ui/views/tabs/tab_group_views.cc
+index 409cdae2d439cfc35ac2f1cba76a59574e0dc39f..c12100f9433c84c3097de2d760e781b4e5f9a9d8 100644
+--- a/chrome/browser/ui/views/tabs/tab_group_views.cc
++++ b/chrome/browser/ui/views/tabs/tab_group_views.cc
+@@ -165,6 +165,7 @@ TabGroupViews::GetLeadingTrailingGroupViews(
+   views::View* trailing_child = nullptr;
+   gfx::Rect trailing_child_widget_bounds;
+ 
++  BRAVE_TAB_GROUP_VIEWS_GET_LEADING_TRAILING_GROUP_VIEWS
+   for (views::View* child : children) {
+     TabSlotView* tab_slot_view = views::AsViewClass<TabSlotView>(child);
+     if (!tab_slot_view || tab_slot_view->group() != group_ ||

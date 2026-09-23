@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+
+assert(enable_brave_news)
+
+source_set("brave_news") {
+  sources = [
+    "brave_news_side_panel_web_view.cc",
+    "brave_news_side_panel_web_view.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ui/webui/brave_news",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser/profiles",
+    "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+    "//chrome/browser/ui/views/side_panel",
+    "//chrome/browser/ui/webui:webui_util",
+    "//ui/base",
+    "//ui/views",
+    "//url",
+  ]
+}

@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/browser/net/model/BUILD.gn b/ios/chrome/browser/net/model/BUILD.gn
+index fcc01d0ec5ec870b7ff1611d77221a0b3f29e30f..d263f52ab995c6abf53f7766913b3b23f4b02337 100644
+--- a/ios/chrome/browser/net/model/BUILD.gn
++++ b/ios/chrome/browser/net/model/BUILD.gn
+@@ -56,6 +56,7 @@ source_set("network_delegate") {
+     "//ios/web/public/thread",
+     "//net",
+   ]
++  import("//brave/chromium_src/ios/chrome/browser/net/sources.gni") deps += brave_chromium_src_ios_chrome_browser_net_deps
+ }
+ 
+ source_set("net_types") {

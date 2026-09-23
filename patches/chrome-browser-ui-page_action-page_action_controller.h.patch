@@ -1,0 +1,56 @@
+diff --git a/chrome/browser/ui/page_action/page_action_controller.h b/chrome/browser/ui/page_action/page_action_controller.h
+index bf85386bf0873ef571eec7c4bb3d4901d4d2f35d..fd8eb845271e595ab29864689fae3396c55b2442 100644
+--- a/chrome/browser/ui/page_action/page_action_controller.h
++++ b/chrome/browser/ui/page_action/page_action_controller.h
+@@ -388,10 +388,10 @@ class PageActionController {
+   virtual void DecrementActivityCounter(actions::ActionId action_id) = 0;
+ };
+ 
+-class PageActionControllerImpl : public PageActionController,
++class PageActionControllerImpl_ChromiumImpl : public PageActionController,
+                                  public PinnedToolbarActionsModel::Observer {
+  public:
+-  PageActionControllerImpl(
++  PageActionControllerImpl_ChromiumImpl(
+       tabs::TabInterface& tab_interface,
+       const std::vector<actions::ActionId>& action_ids,
+       const PageActionPropertiesProviderInterface& properties_provider,
+@@ -399,9 +399,9 @@ class PageActionControllerImpl : public PageActionController,
+       PageActionModelFactory* page_action_model_factory = nullptr,
+       PageActionMetricsRecorderFactory* page_action_metrics_recorder_factory =
+           nullptr);
+-  PageActionControllerImpl(const PageActionControllerImpl&) = delete;
+-  PageActionControllerImpl& operator=(const PageActionControllerImpl&) = delete;
+-  ~PageActionControllerImpl() override;
++  PageActionControllerImpl_ChromiumImpl(const PageActionControllerImpl_ChromiumImpl&) = delete;
++  PageActionControllerImpl_ChromiumImpl& operator=(const PageActionControllerImpl_ChromiumImpl&) = delete;
++  ~PageActionControllerImpl_ChromiumImpl() override;
+ 
+   // PageActionController:
+   void Show(actions::ActionId action_id) override;
+@@ -477,6 +477,7 @@ class PageActionControllerImpl : public PageActionController,
+   void OnActionsChanged() override;
+ 
+  private:
++  friend class ::page_actions::PageActionControllerImpl;
+   using PageActionModelsMap =
+       std::map<actions::ActionId, std::unique_ptr<PageActionModelInterface>>;
+ 
+@@ -507,7 +508,7 @@ class PageActionControllerImpl : public PageActionController,
+   void ActionItemChanged(const actions::ActionItem* action_item);
+   void PinnedActionsModelChanged();
+ 
+-  std::unique_ptr<PageActionModelInterface> CreateModel(
++  virtual std::unique_ptr<PageActionModelInterface> CreateModel(
+       actions::ActionId action_id,
+       bool is_ephemeral);
+ 
+@@ -567,7 +568,7 @@ class PageActionControllerImpl : public PageActionController,
+ 
+   ui::ScopedUnownedUserData<PageActionController> scoped_unowned_user_data_;
+ 
+-  base::WeakPtrFactory<PageActionControllerImpl> weak_factory_{this};
++  base::WeakPtrFactory<PageActionControllerImpl_ChromiumImpl> weak_factory_{this};
+ };
+ 
+ // Returns page action IDs that are present in the browser window's root action

@@ -1,0 +1,68 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+.dropdown {
+  leo-option {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--leo-spacing-m);
+    padding: var(--leo-spacing-m);
+  }
+}
+
+.description {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+  margin-bottom: var(--leo-spacing-xl);
+}
+
+.optionLeft {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+}
+
+.gradientIcon {
+  --leo-icon-color: var(--leo-gradient-icons-active);
+  --leo-icon-size: 20px;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--leo-spacing-m);
+  margin-top: var(--leo-spacing-2xl);
+}
+
+.footerAlignRight {
+  justify-content: flex-end;
+}
+
+.deleteButton {
+  --leo-button-color: var(--leo-color-systemfeedback-error-text);
+  flex: 0;
+}
+
+.rightButtons {
+  display: flex;
+  gap: var(--leo-spacing-m);
+}
+
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl);
+  margin-bottom: var(--leo-spacing-xl);
+}
+
+[slot='label'] {
+  font-weight: 600;
+}
+
+[slot='errors'] {
+  color: var(--leo-color-systemfeedback-error-icon);
+}

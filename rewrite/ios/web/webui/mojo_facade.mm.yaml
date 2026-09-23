@@ -1,0 +1,176 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Serve the frame belonging to this facade's WebUI host.
+
+      Every use of main_frame_ in this file means "the frame this facade
+      talks to" rather than "the main frame of the WebState": the poll loop
+      it drives, the frame it compares against when a poll completes, the
+      frame it delivers watch callbacks to, and the frame whose
+      disappearance tears its state down. Pointing it at the frame matching
+      served_host_ is therefore all a facade for a chrome-untrusted:// WebUI
+      needs to stop competing with the main frame's facade. See the
+      mojo_facade.h plaster for why more than one facade exists at all.
+    regex:
+      re_pattern:
+        'MojoFacade::MojoFacade\(WebState\* web_state\)\s*:
+        web_state_\(web_state\) \{'
+      re_flags: [DOTALL]
+      replace: |-
+        MojoFacade::MojoFacade(WebState* web_state, const std::string& webui_host)
+            : web_state_(web_state) {
+          served_host_ = webui_host;
+
+  - description: |-
+      Adopt the frame this facade's host names, rather than the main frame.
+    regex:
+      re_pattern: |-
+        WebFrame\* main_frame =
+              web_state_->GetPageWorldWebFramesManager\(\)->GetMainWebFrame\(\);
+      replace: |-
+        WebFrame* main_frame = nullptr;
+          for (WebFrame* frame :
+               web_state_->GetPageWorldWebFramesManager()->GetAllWebFrames()) {
+            if (ServesFrame(frame)) {
+              main_frame = frame;
+              break;
+            }
+          }
+
+  - description: |-
+      Track the served frame, and start polling as soon as it turns up.
+
+      A frame whose WebUI was created before it existed (the WebUI is built
+      from the navigation, the frame registers later) would otherwise never
+      be polled: upstream only ever starts the loop from the constructor and
+      from PageLoaded, both of which can run before the frame appears.
+    regex:
+      re_pattern: |-
+        if \(web_frame && web_frame->IsMainFrame\(\)\) \{
+            main_frame_ = web_frame->AsWeakPtr\(\);
+          \}
+      replace: |-
+        if (web_frame && ServesFrame(web_frame)) {
+            main_frame_ = web_frame->AsWeakPtr();
+            AwaitNextMessage();
+          }
+
+  - description: |-
+      Stop discarding live pipes when the page finishes loading.
+
+      PageLoaded means "done loading", not "new JS context". The document's
+      scripts have already run by then, so this throws away pipes the very
+      much alive JS context is still holding handles for, while nothing
+      resets its Mojo.nextAvailableHandleId counter (mojo_api.js keeps it
+      deliberately, via `Mojo.nextAvailableHandleId || 1`). The handle a
+      WebUI binds first and keeps longest is exactly the one that goes
+      stale, and writing to it later hits CHECK(pipe.is_valid()).
+
+      The correctly timed reset already exists in WebFrameBecameUnavailable,
+      which fires when the served frame goes away, i.e. when the JS context
+      that minted those ids is actually gone.
+    regex:
+      re_pattern:
+        'pipes_\.clear\(\);\n    watchers_\.clear\(\);\n    last_watch_id_ =
+        0;\n    '
+      replace: ''
+
+  - description: |-
+      Don't restart a poll that is already in flight, it loses a message.
+
+      fetchNextMessageFromJS() shifts the message off the JS queue as it
+      hands it over, so a poll that never completes takes that message with
+      it, permanently. Invalidating the weak pointers here drops the
+      in-flight poll's completion silently, and the replacement poll
+      overwrites sendNextMessagePromiseResolver in JS.
+
+      AwaitNextMessage() already no-ops when a poll is running, so calling
+      it unguarded is all this needs to do. A frame that genuinely went away
+      is reset by WebFrameBecameUnavailable, which is where the state reset
+      belongs.
+    regex:
+      re_pattern:
+        'is_awaiting_message_ =
+        false;\n    weak_ptr_factory_\.InvalidateWeakPtrs\(\);\n
+        \   AwaitNextMessage\(\);'
+      replace: 'AwaitNextMessage();'
+
+  - description: |-
+      Keep polling a frame that hands back nothing.
+
+      A completion with neither a value nor an error ends the poll loop for
+      good, because only the error branch re-arms. Retrying can't be
+      unconditional either: upstream re-posts on every error with no bound,
+      so a frame whose document can no longer run scripts spins a PostTask
+      loop forever. ShouldRetryPoll gives up after a few consecutive
+      failures, and the counter resets on the first completion that carries
+      a message.
+    regex:
+      re_pattern: 'if \(error && is_same_frame\) \{'
+      replace: 'if (is_same_frame && ShouldRetryPoll()) {'
+
+  - description: |-
+      Space out poll retries instead of re-posting immediately.
+
+      The first polls of a page routinely fail with "ReferenceError: Can't
+      find variable: Mojo", because the loop starts before the page's copy of
+      mojo_api.js has run. Retrying immediately is no help there: each
+      attempt fails at once and only spends the allowance ShouldRetryPoll
+      keeps, so on a slower load the WebUI gives up before its own script is
+      ready. A short delay makes each retry a real second chance.
+    regex:
+      re_pattern: 'PostTask\(\s*FROM_HERE,\s*base::BindOnce\(&MojoFacade::AwaitNextMessage,\s*weak_ptr_factory_\.GetWeakPtr\(\)\)\);'
+      replace:
+        'PostDelayedTask(\n          FROM_HERE,\n          base::BindOnce(&MojoFacade::AwaitNextMessage,\n                         weak_ptr_factory_.GetWeakPtr()),\n          kPollRetryDelay);'
+
+  - description: |-
+      A poll that delivered a message clears the consecutive-failure count.
+    regex:
+      re_pattern: |-
+        return;
+          \}
+
+          const base::DictValue\* dict = value->GetIfDict\(\);
+      replace: |-
+        return;
+          }
+          consecutive_poll_failures_ = 0;
+
+          const base::DictValue* dict = value->GetIfDict();
+
+  - description: |-
+      Don't crash the browser when a write names a pipe id we don't hold.
+
+      Upstream hit this same "handle unknown to the facade" failure on the
+      sibling call site and made it non-fatal in 62168f0dc5969 ([iOS] Make
+      MojoFacade::HandleMojoBindInterface non-fatal), cherry-picked into the
+      8010 branch this rebase targets, without touching this one. A WebUI
+      page shouldn't be able to take the browser down either way.
+    regex:
+      re_pattern: |-
+        CHECK\(pipe_id\.has_value\(\)\);
+          mojo::MessagePipeHandle pipe = GetPipeFromId\(\*pipe_id\);
+          CHECK\(pipe\.is_valid\(\)\);
+      replace: |-
+        mojo::MessagePipeHandle pipe =
+              pipe_id.has_value() ? GetPipeFromId(*pipe_id) : mojo::MessagePipeHandle();
+          if (!pipe.is_valid()) {
+            ReportUnknownPipe("MojoHandle.writeMessage", pipe_id);
+            return base::Value(static_cast<int>(MOJO_RESULT_INVALID_ARGUMENT));
+          }
+
+  - description: |-
+      Gate Mojo.bindInterface against Brave's chrome-untrusted:// per-origin
+      interface allowlist.
+
+      Upstream doesn't check origin at all here; see
+      InterfaceBinder::IsAllowedForOrigin in
+      brave/chromium_src/ios/web/public/web_state.h for the allowlist itself.
+    preempt_function_impl:
+      function_name: MojoFacade::HandleMojoBindInterface
+      return_if: '!IsBindInterfaceAllowedForFrame(args)'
+      return_value: 'false'

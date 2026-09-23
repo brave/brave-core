@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Add bookmark HTML import/export support to BookmarkBridge.'
+    add_to_public:
+      class_name: BookmarkBridge
+      code: |-
+        void ImportBookmarks(
+            JNIEnv* env,
+            const base::android::JavaRef<jobject>& obj,
+            const base::android::JavaRef<jobject>& java_window,
+            const base::android::JavaRef<jstring>& import_file_path);
+        void OnParseFinished(
+            user_data_importer::BookmarkParser::BookmarkParsingResult result);
+        base::SequenceBound<user_data_importer::ContentBookmarkParser>
+            bookmark_parser_;
+        void ExportBookmarks(
+            JNIEnv* env,
+            const base::android::JavaRef<jobject>& obj,
+            const base::android::JavaRef<jobject>& java_window,
+            const base::android::JavaRef<jstring>& export_file_path);

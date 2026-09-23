@@ -1,0 +1,74 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+static_library("browser") {
+  sources = [
+    "pref_names.h",
+    "skus_context_impl.cc",
+    "skus_context_impl.h",
+    "skus_service_impl.cc",
+    "skus_service_impl.h",
+    "skus_url_loader_impl.cc",
+    "skus_url_loader_impl.h",
+    "skus_utils.cc",
+    "skus_utils.h",
+  ]
+
+  public_deps = [ "rs/cxx:rust_lib" ]
+
+  deps = [
+    "//base",
+    "//brave/components/api_request_helper",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//components/keyed_service/core",
+    "//components/pref_registry",
+    "//components/prefs",
+    "//net",
+    "//services/network/public/cpp",
+    "//services/preferences/public/cpp",
+    "//url",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/fake_skus_service.cc",
+    "test/fake_skus_service.h",
+  ]
+
+  public_deps = [
+    "//brave/components/skus/common:mojom",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "skus_url_loader_impl_unittest.cc",
+    "skus_utils_unittest.cc",
+  ]
+
+  # Remove when linux fixed https://github.com/brave/brave-browser/issues/15817.
+  if (is_win || is_mac) {
+    sources += [ "skus_service_unittest.cc" ]
+  }
+
+  deps = [
+    "//base",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//net:test_support",
+    "//services/network:test_support",
+    "//testing/gtest",
+  ]
+}

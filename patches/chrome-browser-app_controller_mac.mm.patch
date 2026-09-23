@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/app_controller_mac.mm b/chrome/browser/app_controller_mac.mm
+index 608f3503bb68c6039b5e18d2d6214ff8a852d49e..4dfb73357d84b5aff330116d22d8840e23e67d46 100644
+--- a/chrome/browser/app_controller_mac.mm
++++ b/chrome/browser/app_controller_mac.mm
+@@ -791,7 +791,7 @@ class AppControllerProfileObserver : public ProfileAttributesStorage::Observer,
+ 
+ + (AppController*)sharedController {
+   static AppController* sharedController = [] {
+-    AppController* sharedController = [[AppController alloc] init];
++    AppController* sharedController = [[BraveAppController alloc] init];
+     NSApp.delegate = sharedController;
+     return sharedController;
+   }();
+@@ -1541,7 +1541,7 @@ class AppControllerProfileObserver : public ProfileAttributesStorage::Observer,
+   }
+ 
+   auto it = _profileBookmarkMenuBridgeMap.find(profilePath);
+-  if (it != _profileBookmarkMenuBridgeMap.end() &&
++  if (it != _profileBookmarkMenuBridgeMap.end() && !isOffTheRecord &&
+       (!base::FeatureList::IsEnabled(features::kDestroyProfileOnBrowserClose) ||
+        (it->second->GetProfile() && !isOffTheRecord))) {
+     // Clean up the dangling Profile* in |_profileBookmarkMenuBridgeMap|.

@@ -1,0 +1,44 @@
+diff --git a/chrome/browser/ui/bookmarks/bookmark_utils.cc b/chrome/browser/ui/bookmarks/bookmark_utils.cc
+index ed11adf55026f1189a906c15485e8571a9784ec1..6e412d3b13b7f7075ff40da23b8ce75c85cdea18 100644
+--- a/chrome/browser/ui/bookmarks/bookmark_utils.cc
++++ b/chrome/browser/ui/bookmarks/bookmark_utils.cc
+@@ -254,6 +254,7 @@ void UpdateBookmarkBarVisibilityPrefOnUserAction(Profile* profile) {
+ }
+ 
+ std::u16string FormatBookmarkURLForDisplay(const GURL& url) {
++  std::u16string url_string = [&]() -> std::u16string {
+   // Because this gets re-parsed by FixupURL(), it's safe to omit the scheme
+   // and trailing slash, and unescape most characters. However, it's
+   // important not to drop any username/password, or unescape anything that
+@@ -270,9 +271,13 @@ std::u16string FormatBookmarkURLForDisplay(const GURL& url) {
+ 
+   return url_formatter::FormatUrl(url, format_types, base::UnescapeRule::SPACES,
+                                   nullptr, nullptr, nullptr);
++  }();
++  brave_utils::ReplaceChromeToBraveScheme(url_string);
++  return url_string;
+ }
+ 
+ bool IsAppsShortcutEnabled(Profile* profile) {
++  if ((true)) return false;
+ #if BUILDFLAG(IS_CHROMEOS)
+   // Chrome OS uses the app list / app launcher.
+   return false;
+@@ -282,6 +287,7 @@ bool IsAppsShortcutEnabled(Profile* profile) {
+ }
+ 
+ bool ShouldShowAppsShortcutInBookmarkBar(Profile* profile) {
++  if ((true)) return false;
+   return IsAppsShortcutEnabled(profile) &&
+          profile->GetPrefs()->GetBoolean(
+              bookmarks::prefs::kShowAppsShortcutInBookmarkBar);
+@@ -383,6 +389,9 @@ bool CanAllBeEditedByUser(
+ 
+ ui::ImageModel GetBookmarkFolderIcon(BookmarkFolderIconType icon_type,
+                                      ui::ColorVariant color) {
++#if defined(TOOLKIT_VIEWS)
++  if ((true)) return GetBraveBookmarkFolderIcon(icon_type, color);
++#endif  // defined(TOOLKIT_VIEWS)
+   const gfx::VectorIcon* icon_id;
+   if (icon_type == BookmarkFolderIconType::kNormal) {
+     icon_id = &(features::IsRoundedIconsEnabled()

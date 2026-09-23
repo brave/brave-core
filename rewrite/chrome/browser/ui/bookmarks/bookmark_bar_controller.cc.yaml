@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Replaces bookmark_model->HasBookmarks() with `true` to prevent early 
+      return due to empty items in bookmark bar.
+
+      We want to show bookmark bar with import instruction when it's empty.
+    regex:
+      re_pattern: 'bookmark_model->HasBookmarks\(\)'
+      replace: 'true'

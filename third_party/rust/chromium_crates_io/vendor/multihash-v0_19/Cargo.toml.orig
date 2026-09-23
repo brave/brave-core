@@ -1,0 +1,43 @@
+[workspace]
+members = ["derive", "derive-impl", ".", "codetable"]
+resolver = "2"
+
+[package]
+name = "multihash"
+description = "Implementation of the multihash format"
+repository = "https://github.com/multiformats/rust-multihash"
+keywords = ["multihash", "ipfs"]
+version = "0.19.2"
+authors = ["dignifiedquire <dignifiedquire@gmail.com>", "David Craven <david@craven.ch>", "Volker Mische <volker.mische@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+documentation = "https://docs.rs/multihash/"
+edition = "2021"
+rust-version = "1.64"
+
+[features]
+default = ["std"]
+std = ["unsigned-varint/std", "alloc"]
+alloc = []
+arb = ["dep:quickcheck", "dep:rand", "dep:arbitrary"]
+scale-codec = ["dep:parity-scale-codec"]
+serde-codec = ["serde"] # Deprecated, don't use.
+serde = ["dep:serde"]
+
+[dependencies]
+parity-scale-codec = { version = "3.0.0", default-features = false, features = ["derive"], optional = true }
+quickcheck = { version = "1.0.3", optional = true }
+rand = { version = "0.8.5", optional = true, features = ["small_rng"] }
+serde = { version = "1.0.116", optional = true, default-features = false }
+unsigned-varint = { version = "0.8.0", default-features = false }
+arbitrary = { version = "1.1.0", optional = true }
+
+core2 = { version = "0.4.0", default-features = false }
+
+[dev-dependencies]
+hex = "0.4.2"
+serde_json = "1.0.58"
+quickcheck = "1.0.3"
+rand = "0.8.5"
+arbitrary = "1.1.0"
+serde_test = "1.0.160"

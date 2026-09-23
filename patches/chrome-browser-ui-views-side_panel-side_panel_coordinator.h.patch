@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/side_panel/side_panel_coordinator.h b/chrome/browser/ui/views/side_panel/side_panel_coordinator.h
+index 73bad76d1e3f736cdcdc741afb304b9871a8fb77..6a3b1be91c2efc70f1a9b158456d8c76d0141ee6 100644
+--- a/chrome/browser/ui/views/side_panel/side_panel_coordinator.h
++++ b/chrome/browser/ui/views/side_panel/side_panel_coordinator.h
+@@ -36,7 +36,7 @@ class View;
+ // Existence and value of registries' active_entry() determines which entry is
+ // visible for a given tab where the order of precedence is contextual
+ // registry's active_entry() then global registry's.
+-class SidePanelCoordinator final : public SidePanelUIBase,
++class SidePanelCoordinator : public SidePanelUIBase,
+                                    public views::ViewObserver {
+  public:
+   explicit SidePanelCoordinator(BrowserWindowInterface* browser);

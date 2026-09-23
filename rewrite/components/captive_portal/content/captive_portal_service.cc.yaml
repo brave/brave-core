@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Keep captive portal detection enabled regardless of settings.
+
+      Brave does not enable resolve_errors_with_web_service_ by default,
+      which would otherwise leave captive portal detection permanently
+      disabled; enabled_ should depend only on the testing state.
+    regex:
+      re_pattern: |-
+        (void CaptivePortalService::UpdateEnabledState\(\)\s*\{.*?enabled_ = testing_state_ != DISABLED_FOR_TESTING) &&\s*resolve_errors_with_web_service_\.GetValue\(\);
+      re_flags: [DOTALL]
+      replace: '\1;'

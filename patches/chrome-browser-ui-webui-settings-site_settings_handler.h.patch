@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/webui/settings/site_settings_handler.h b/chrome/browser/ui/webui/settings/site_settings_handler.h
+index a8cafc8d0dfbb383f3cd0af0d96cd5762261409b..f931d3d0d65bf26fabdbe99fedb74a11dd436d29 100644
+--- a/chrome/browser/ui/webui/settings/site_settings_handler.h
++++ b/chrome/browser/ui/webui/settings/site_settings_handler.h
+@@ -246,6 +246,7 @@ class SiteSettingsHandler
+   BrowsingDataModel* GetBrowsingDataModelForTesting();
+ 
+  private:
++  friend class BraveSiteSettingsHandler;
+   friend class SiteSettingsHandlerBaseTest;
+   friend class SiteSettingsHandlerInfobarTest;
+   // TODO(crbug.com/40101962): Remove this friend class when the Persistent
+@@ -328,7 +329,7 @@ class SiteSettingsHandler
+   // to be removed when entries for |origins| are removed.
+   // TODO(crbug.com/40205603): This function is a temporary hack while the
+   // CookiesTreeModel is deprecated.
+-  void RemoveNonModelData(const std::vector<url::Origin>& origins);
++  virtual void RemoveNonModelData(const std::vector<url::Origin>& origins);
+ 
+   // Returns a dictionary containing the lists of the allowed permission
+   // grant objects granted via the File System Access API, per origin.

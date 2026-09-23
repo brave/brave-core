@@ -1,0 +1,22 @@
+diff --git a/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc b/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
+index 4d5b3f6dd0b2abeaaffa2f4781cb9a1adbd1528d..b440aa83d9ebd861113c40fff28fcb0acc7aa36b 100644
+--- a/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
++++ b/chrome/browser/ui/views/omnibox/rounded_omnibox_results_frame.cc
+@@ -236,7 +236,7 @@ RoundedOmniboxResultsFrame::RoundedOmniboxResultsFrame(
+     bool forward_mouse_events)
+     : contents_(contents), forward_mouse_events_(forward_mouse_events) {
+   const int corner_radius = views::LayoutProvider::Get()->GetCornerRadiusMetric(
+-      views::ShapeContextTokens::kOmniboxExpandedRadius);
++      views::ShapeContextTokensOverride::kOmniboxExpandedRadius);
+   auto* webui_content = GetOmniboxPopupWebUIBaseContent();
+   const bool masks_to_bounds =
+       webui_content && webui_content->ShouldSizeWebViewToPreferredHeight();
+@@ -366,7 +366,7 @@ void RoundedOmniboxResultsFrame::SetCutoutVisibility(bool visible) {
+ 
+ void RoundedOmniboxResultsFrame::SetElevation(int elevation) {
+   const int corner_radius = views::LayoutProvider::Get()->GetCornerRadiusMetric(
+-      views::ShapeContextTokens::kOmniboxExpandedRadius);
++      views::ShapeContextTokensOverride::kOmniboxExpandedRadius);
+   auto border = std::make_unique<views::BubbleBorder>(
+       views::BubbleBorder::Arrow::NONE,
+       elevation == 0 ? views::BubbleBorder::Shadow::NO_SHADOW

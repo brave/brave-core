@@ -1,0 +1,223 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
+
+#include "base/check.h"
+#include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_movable_side_panel_web_view.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_web_contents_delegate/browser_web_contents_delegate.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/navigator/browser_navigator.h"
+#include "chrome/browser/ui/navigator/browser_navigator_params.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
+#include "chrome/browser/ui/views/status_bubble_views.h"
+#include "components/grit/brave_components_strings.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/web_contents_delegate.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
+#include "ui/views/widget/widget.h"
+#include "url/gurl.h"
+
+using SidePanelWebUIViewT_AIChatUI = SidePanelWebUIViewT<AIChatUI>;
+BEGIN_TEMPLATE_METADATA(SidePanelWebUIViewT_AIChatUI, SidePanelWebUIViewT)
+END_METADATA
+
+namespace {
+BrowserWindowInterface* FindNormalBrowser(
+    const content::BrowserContext* context) {
+  BrowserWindowInterface* normal_browser = nullptr;
+  ForEachCurrentBrowserWindowInterfaceOrderedByActivation(
+      [&](BrowserWindowInterface* browser) {
+        if (browser->GetType() == BrowserWindowInterface::TYPE_NORMAL &&
+            browser->GetProfile() == context) {
+          normal_browser = browser;
+          return false;  // stop iterating
+        }
+        return true;  // continue iterating
+      });
+  return normal_browser;
+}
+}  // namespace
+
+// static
+std::unique_ptr<views::View> AIChatSidePanelWebView::CreateView(
+    Profile* profile,
+    bool is_tab_associated,
+    SidePanelEntryScope& scope) {
+  CHECK(profile);
+
+  // When enabled, serve AI Chat from a plain WebView that owns its WebContents,
+  // so the live conversation can be moved between a tab and the side panel. If
+  // this feature flag becomes the default, we can remove this
+  // AIChatSidePanelWebView class, or rename the movable version to this name.
+  if (base::FeatureList::IsEnabled(
+          ai_chat::features::kAIChatMoveFullPageToSidePanel)) {
+    return AIChatMovableSidePanelWebView::CreateView(profile, is_tab_associated,
+                                                     scope);
+  }
+
+  auto web_view = std::make_unique<AIChatSidePanelWebView>(
+      scope, std::make_unique<AIChatSidePanelContentsWrapper>(
+                 is_tab_associated ? ai_chat::TabAssociatedConversationUrl()
+                                   : GURL(kAIChatUIURL),
+                 profile, IDS_SIDEBAR_CHAT_SUMMARIZER_ITEM_TITLE,
+                 /*esc_closes_ui=*/false));
+  web_view->ShowUI();
+  return web_view;
+}
+
+AIChatSidePanelWebView::AIChatSidePanelWebView(
+    SidePanelEntryScope& scope,
+    std::unique_ptr<AIChatSidePanelContentsWrapper> contents_wrapper)
+    : SidePanelWebUIViewT<AIChatUI>(
+          scope,
+          base::BindRepeating(&AIChatSidePanelWebView::OnShow,
+                              base::Unretained(this)),
+          base::RepeatingClosure(),
+          std::move(contents_wrapper)),
+      status_bubble_(std::make_unique<StatusBubbleViews>(this)) {
+  // Forward link-hover URLs from the panel's WebContents (whose delegate does
+  // not drive the browser status bubble) into our own status bubble.
+  // `this->` disambiguates the inherited accessor from the (moved-from) ctor
+  // parameter of the same name.
+  static_cast<AIChatSidePanelContentsWrapper*>(this->contents_wrapper())
+      ->SetTargetURLChangedCallback(base::BindRepeating(
+          &AIChatSidePanelWebView::OnTargetURLChanged, base::Unretained(this)));
+}
+
+AIChatSidePanelWebView::~AIChatSidePanelWebView() {
+  // Clear the target-URL callback before our members (notably `status_bubble_`)
+  // are destroyed. The callback is bound with `base::Unretained(this)` and is
+  // held by `contents_wrapper()`, which the base class destroys only after this
+  // derived destructor returns. Resetting it here ensures a late
+  // `UpdateTargetURL` during teardown can't call into a partially destroyed
+  // view.
+  if (auto* wrapper =
+          static_cast<AIChatSidePanelContentsWrapper*>(contents_wrapper())) {
+    wrapper->SetTargetURLChangedCallback(base::NullCallback());
+  }
+}
+
+bool AIChatSidePanelWebView::GetNeedsNotificationWhenVisibleBoundsChange()
+    const {
+  return true;
+}
+
+void AIChatSidePanelWebView::OnVisibleBoundsChanged() {
+  if (status_bubble_) {
+    status_bubble_->Reposition();
+  }
+}
+
+void AIChatSidePanelWebView::OnTargetURLChanged(const GURL& url) {
+  status_bubble_url_for_testing_ = url;
+  if (status_bubble_) {
+    status_bubble_->SetURL(url);
+  }
+}
+
+void AIChatSidePanelWebView::OnShow() {
+  if (!should_focus_) {
+    return;
+  }
+
+  if (IsFocusable()) {
+    auto* widget = GetWidget();
+    CHECK(widget);
+    // There's a bug in focus handling. We should clear focus before setting
+    // side panel focused. Otherwise, focus won't be forwarded to the
+    // web contents properly.
+    widget->GetFocusManager()->ClearFocus();
+    RequestFocus();
+    should_focus_ = false;
+  }
+}
+
+content::WebContents* AIChatSidePanelWebView::AddNewContents(
+    content::WebContents* source,
+    std::unique_ptr<content::WebContents> new_contents,
+    const GURL& target_url,
+    WindowOpenDisposition disposition,
+    const blink::mojom::WindowFeatures& window_features,
+    bool user_gesture,
+    bool* was_blocked) {
+  auto* browser_view = BrowserView::GetBrowserViewForNativeWindow(
+      this->GetWidget()->GetNativeWindow());
+  auto* browser = browser_view->browser();
+
+  // If AI Chat is not open in the side panel, don't open the tab.
+  if (browser->GetFeatures().side_panel_ui()->GetCurrentEntryId() !=
+      SidePanelEntryId::kChatUI) {
+    return nullptr;
+  }
+
+  // Rather than opening a new tab from the side panel we navigate the active
+  // tab next to the sidepanel.
+  auto* active_tab = browser->GetTabStripModel()->GetActiveWebContents();
+  NavigateParams params(browser, target_url, ui::PAGE_TRANSITION_LINK);
+
+  // If the global side panel is enabled, open the url in the current active
+  // tab. Otherwise open in a new tab.
+  if (ai_chat::features::IsAIChatGlobalSidePanelEverywhereEnabled()) {
+    params.source_contents = active_tab;
+    params.disposition = WindowOpenDisposition::CURRENT_TAB;
+  } else {
+    // We open in a new foreground tab so we don't start a new conversation.
+    params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
+  }
+
+  params.window_action = NavigateParams::WindowAction::kNoAction;
+  params.user_gesture = user_gesture;
+
+  Navigate(&params);
+
+  return params.navigated_or_inserted_contents;
+}
+
+void AIChatSidePanelWebView::RunFileChooser(
+    content::RenderFrameHost* render_frame_host,
+    scoped_refptr<content::FileSelectListener> listener,
+    const blink::mojom::FileChooserParams& params) {
+  auto* browser_view = BrowserView::GetBrowserViewForNativeWindow(
+      GetWidget()->GetNativeWindow());
+  if (browser_view) {
+    BrowserWebContentsDelegate::From(browser_view->browser())
+        ->RunFileChooser(render_frame_host, std::move(listener), params);
+  } else {
+    listener->FileSelectionCanceled();
+  }
+}
+
+content::WebContents* AIChatSidePanelWebView::OpenURLFromTab(
+    content::WebContents* source,
+    const content::OpenURLParams& params,
+    base::OnceCallback<void(content::NavigationHandle&)>
+        navigation_handle_callback) {
+  auto* browser = FindNormalBrowser(source->GetBrowserContext());
+  if (browser &&
+      (params.disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB ||
+       params.disposition == WindowOpenDisposition::NEW_BACKGROUND_TAB ||
+       params.disposition == WindowOpenDisposition::NEW_WINDOW ||
+       params.disposition == WindowOpenDisposition::OFF_THE_RECORD)) {
+    return browser->OpenURL(params, std::move(navigation_handle_callback));
+  }
+  return WebUIContentsWrapper::Host::OpenURLFromTab(
+      source, params, std::move(navigation_handle_callback));
+}

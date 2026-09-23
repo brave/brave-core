@@ -1,0 +1,6 @@
+{
+  "access_token": "5ccce9ad53514d9f5559f4d3896fc8f792b9d6f3",
+  "token_type": "bearer",
+  "expires_in": 5183999,
+  "scope": "cards:read cards:write user:read transactions:read transactions:transfer:application transactions:transfer:others"
+}

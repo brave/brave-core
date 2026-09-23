@@ -1,0 +1,4 @@
+Name: ethash
+URL: https://github.com/chfast/ethash
+License: Apache-2.0
+License File: /brave/third_party/ethash/src/LICENSE

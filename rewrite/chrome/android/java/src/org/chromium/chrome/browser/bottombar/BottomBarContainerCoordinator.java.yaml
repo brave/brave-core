@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Add Brave imports beneath the bottom bar container package declaration.'
+    regex:
+      re_pattern: '^(package [^;]+;\n)'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1
+        import org.chromium.chrome.browser.ui.bottombar.BraveBottomBarCoordinator;
+  - description: |-
+      Instantiate Brave's bottom bar coordinator.
+
+      BraveBottomBarCoordinator gives the bottom bar the button set Brave's own
+      bottom navigation controls used to show. The upstream import stays in use by
+      the field declaration it is assigned to.
+    regex:
+      re_pattern: |-
+        new (BottomBarCoordinator\()
+      replace: |-
+        new Brave\1

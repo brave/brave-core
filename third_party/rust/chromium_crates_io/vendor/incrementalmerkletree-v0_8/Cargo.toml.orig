@@ -1,0 +1,43 @@
+[package]
+name = "incrementalmerkletree"
+description = "Common types, interfaces, and utilities for Merkle tree data structures"
+version = "0.8.2"
+authors = [
+    "Sean Bowe <ewillbefull@gmail.com>",
+    "Kris Nuttycombe <kris@nutty.land>",
+]
+edition.workspace = true
+license.workspace = true
+homepage.workspace = true
+repository.workspace = true
+categories.workspace = true
+rust-version.workspace = true
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dependencies]
+either = { version = "1.8", default-features = false }
+proptest = { workspace = true, optional = true }
+rand = { version = "0.8", optional = true }
+rand_core = { version = "0.6", optional = true }
+
+[dev-dependencies]
+proptest.workspace = true
+rand = "0.8"
+rand_core = "0.6"
+rand_chacha = "0.3"
+
+[features]
+# The `std` feature is no longer enabled by default because it is not needed
+# for backwards compatibility; it is only enabled by the `test-dependencies`
+# feature.
+std = []
+# The legacy-api feature guards types and functions that were previously
+# part of the `zcash_primitives` crate. Those types were removed in the
+# `zcash_primitives` 0.12 release and are now maintained here.
+legacy-api = []
+# The test-dependencies feature guards types and functions that are
+# useful for testing incremental Merkle trees and Merkle tree frontiers.
+test-dependencies = ["dep:proptest", "dep:rand", "dep:rand_core", "std"]

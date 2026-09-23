@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Autoplay</title>
+  </head>
+  <body>
+
+    <video width="320" height="240" controls autoplay onplay="onPlay()"
+                                                      oncanplay="onCanPlay()">
+      <source src="autoplay.mp4" type="video/mp4">
+    </video>
+
+    <div id='status'>Video not playing</div>
+
+    <script>
+      function onPlay() {
+        let status = document.getElementById('status')
+        status.textContent = 'Video playing'
+      }
+      function onCanPlay() {
+        window.canPlay = true;
+        if (window.notifyBrowser)
+          notifyWhenCanPlay();
+      }
+
+      function notifyWhenCanPlay() {
+        return new Promise(resolve => {
+          const timer = setInterval(function () {
+            if (window.canPlay) {
+              clearInterval(timer);
+              resolve("CANPLAY");
+            }
+            else {
+              window.notifyBrowser = true;
+            }
+          }, 100);
+        });
+      }
+    </script>
+
+  </body>
+</html>

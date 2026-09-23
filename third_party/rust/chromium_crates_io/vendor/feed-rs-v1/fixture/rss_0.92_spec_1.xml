@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<!-- RSS generation done by 'Radio UserLand' on Fri, 13 Apr 2001 19:23:02 GMT -->
+<rss version="0.92">
+    <channel>
+        <title>Dave Winer: Grateful Dead</title>
+        <link>http://www.scripting.com/blog/categories/gratefulDead.html</link>
+        <description>A high-fidelity Grateful Dead song every day. This is where we&apos;re experimenting with
+            enclosures on RSS news items that download when you&apos;re not using your computer. If it works (it will)
+            it will be the end of the Click-And-Wait multimedia experience on the Internet.
+        </description>
+        <lastBuildDate>Fri, 13 Apr 2001 19:23:02 GMT</lastBuildDate>
+        <docs>http://backend.userland.com/rss092</docs>
+        <managingEditor>dave@userland.com (Dave Winer)</managingEditor>
+        <webMaster>dave@userland.com (Dave Winer)</webMaster>
+        <cloud domain="data.ourfavoritesongs.com" port="80" path="/RPC2"
+               registerProcedure="ourFavoriteSongs.rssPleaseNotify" protocol="xml-rpc"/>
+        <item>
+            <description>Kevin Drennan started a &lt;a href=&quot;http://deadend.editthispage.com/&quot;&gt;Grateful
+                Dead Weblog&lt;/a&gt;. Hey it&apos;s cool, he even has a &lt;a href=&quot;http://deadend.editthispage.com/directory/61&quot;&gt;directory&lt;/a&gt;.
+                &lt;i&gt;A Frontier 7 feature.&lt;/i&gt;
+            </description>
+            <source url="http://scriptingnews.userland.com/xml/scriptingNews2.xml">Scripting News</source>
+        </item>
+        <item>
+            <description>&lt;a href=&quot;http://arts.ucsc.edu/GDead/AGDL/other1.html&quot;&gt;The Other One&lt;/a&gt;,
+                live instrumental, One From The Vault. Very rhythmic very spacy, you can listen to it many times, and
+                enjoy something new every time.
+            </description>
+            <enclosure url="http://www.scripting.com/mp3s/theOtherOne.mp3" length="6666097" type="audio/mpeg"/>
+        </item>
+        <item>
+            <description>This is a test of a change I just made. Still diggin..</description>
+        </item>
+    </channel>
+</rss>

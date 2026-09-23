@@ -1,0 +1,19 @@
+diff --git a/components/autofill/core/browser/payments/credit_card_access_manager.cc b/components/autofill/core/browser/payments/credit_card_access_manager.cc
+index 8cabb00980b9eea1c40049c214d81ea1a6080ded..61687a0ae0a208842f1be92897054a4c9d4f1bab 100644
+--- a/components/autofill/core/browser/payments/credit_card_access_manager.cc
++++ b/components/autofill/core/browser/payments/credit_card_access_manager.cc
+@@ -378,10 +378,10 @@ void CreditCardAccessManager::FetchCreditCard(
+   // Log the server card unmasking attempt, and differentiate based on server
+   // card or virtual card.
+   if (ShouldLogServerCardUnmaskAttemptMetrics(record_type)) {
+-    autofill_metrics::LogServerCardUnmaskAttempt(
+-        record_type == CreditCard::RecordType::kVirtualCard
+-            ? PaymentsRpcCardType::kVirtualCard
+-            : PaymentsRpcCardType::kServerCard);
++    if (record_type == CreditCard::RecordType::kVirtualCard) {
++      autofill_metrics::LogServerCardUnmaskAttempt(
++          PaymentsRpcCardType::kVirtualCard);
++    }
+   }
+ 
+   // If the to-be-unmasked card is a virtual card eligible card (this also

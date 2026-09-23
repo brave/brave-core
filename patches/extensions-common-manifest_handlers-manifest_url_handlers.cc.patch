@@ -1,0 +1,14 @@
+diff --git a/extensions/common/manifest_handlers/manifest_url_handlers.cc b/extensions/common/manifest_handlers/manifest_url_handlers.cc
+index 0db59de4fb0d3cae052ae500f2d8f57b5cd56230..3600b327953f30390e3cc7a5eb364803ffad1d1d 100644
+--- a/extensions/common/manifest_handlers/manifest_url_handlers.cc
++++ b/extensions/common/manifest_handlers/manifest_url_handlers.cc
+@@ -51,6 +51,9 @@ const GURL& ManifestURL::GetManifestHomePageURL(const Extension* extension) {
+ 
+ // static
+ GURL ManifestURL::GetWebStoreURL(const Extension* extension) {
++  if (extensions_mv2::IsKnownBraveHostedExtension(extension->id())) {
++    return GURL::EmptyGURL();
++  }
+   bool use_webstore_url = UpdatesFromGallery(extension) &&
+                           !SharedModuleInfo::IsSharedModule(extension);
+   return use_webstore_url

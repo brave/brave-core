@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<!-- Outlined row under the emoji pair. Stroke only - the interior is the sheet
+     background. The radius is deliberately larger than the emoji pills' 20dp;
+     at the row's 48dp height it reads as a capsule. Corners are symmetric, so
+     unlike the pills this needs no drawable-ldrtl variant. -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <stroke
+        android:width="1dp"
+        android:color="?attr/colorSurfaceContainerHighest" />
+    <corners android:radius="24dp" />
+</shape>

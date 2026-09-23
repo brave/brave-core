@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Guard default search engine geolocation after native teardown.
+
+      Android can recreate an activity while this Java object remains after
+      native code clears its pointer. Do not calculate the location header for the
+      default search engine when TemplateUrlService has no native object. Return
+      UNSUITABLE_URL before calling JNI methods such as getUrlForSearchQuery.
+    count: 1
+    regex:
+      re_pattern: '(geoHeaderStateForDse\s*\([^)]*\)\s*\{)'
+      replace: |-
+        \1
+                if (!templateService.hasNativeService()) {
+                    return HeaderState.UNSUITABLE_URL;
+                }
+  - description: |
+      Guard URL geolocation after TemplateUrlService native teardown.
+
+      Omnibox URL loads use getGeoHeader, which reaches this path without going
+      through geoHeaderStateForDse. The Java TemplateUrlService can outlive
+      native teardown during activity recreation. Do not call TemplateUrlService
+      JNI from geoHeaderStateForUrl when the native object is gone.
+    count: 1
+    regex:
+      re_pattern: '(if\s*\(\s*profile\s*==\s*null\s*\|\|\s*service\s*==\s*null\s*\)\s*return\s+HeaderState\.UNSUITABLE_URL;)'
+      replace: |-
+        \1
+                    if (!service.hasNativeService()) return HeaderState.UNSUITABLE_URL;

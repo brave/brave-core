@@ -1,0 +1,76 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "chrome/browser/ui/views/frame/browser_frame_view_layout_linux.h"
+
+#include "base/check.h"
+#include "base/check_is_test.h"
+#include "base/check_op.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "ui/views/window/caption_button_layout_constants.h"
+#include "ui/views/window/frame_caption_button.h"
+
+#define NonClientExtraTopThickness NonClientExtraTopThickness_ChromiumImpl
+
+#include <chrome/browser/ui/views/frame/browser_frame_view_layout_linux.cc>
+
+#undef NonClientExtraTopThickness
+
+int BrowserFrameViewLayoutLinux::NonClientExtraTopThickness() const {
+  // Upstream returns kExtraTopBorder (3px) whenever IsTabStripVisible() is
+  // false, intending to add a thin resize border for popup windows. With Brave
+  // vertical tabs, IsTabStripVisible() is also false even though the toolbar is
+  // present, producing a spurious 3px strip at the top. Suppress it when the
+  // toolbar is visible; only popup windows (no tab strip, no toolbar) need it.
+  if (delegate_->IsToolbarVisible()) {
+    return 0;
+  }
+
+  return NonClientExtraTopThickness_ChromiumImpl();
+}
+
+void BrowserFrameViewLayoutLinux::SetBoundsForButton(
+    views::FrameButton button_id,
+    views::Button* button,
+    ButtonAlignment align) {
+  OpaqueBrowserFrameViewLayout::SetBoundsForButton(button_id, button, align);
+  if (!view_) {
+    CHECK_IS_TEST();
+    return;
+  }
+
+  auto* browser = view_->GetBrowserView()->browser();
+  DCHECK(browser);
+
+  auto* vtc = VerticalTabController::FromBrowser(browser);
+  const bool should_window_caption_buttons_overlap_toolbar =
+      vtc && vtc->ShouldShowBraveVerticalTabs() &&
+      !vtc->ShouldShowWindowTitleForVerticalTabs();
+  if (!should_window_caption_buttons_overlap_toolbar) {
+    return;
+  }
+
+  if (delegate_->GetFrameButtonStyle() ==
+      OpaqueBrowserFrameViewLayoutDelegate::FrameButtonStyle::kMdButton) {
+    // Synchronize frame button's bounds with toolbar's bounds.
+    gfx::Size size = button->GetPreferredSize();
+    DCHECK_LT(0, size.width());
+    auto* toolbar = view_->GetBrowserView()->toolbar();
+    const auto toolbar_height = toolbar->GetPreferredSize().height();
+    size.set_height(toolbar_height);
+    button->SetPreferredSize(size);
+    button->SetSize(size);
+    gfx::Point toolbar_origin;
+    views::View::ConvertPointToTarget(toolbar, button->parent(),
+                                      &toolbar_origin);
+    button->SetY(toolbar_origin.y());
+
+    static_cast<views::FrameCaptionButton*>(button)->SetInkDropCornerRadius(
+        views::kCaptionButtonInkDropDefaultCornerRadius);
+  }
+}

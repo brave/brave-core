@@ -1,0 +1,332 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/profiles/brave_renderer_updater.h"
+
+#include <utility>
+
+#include "base/check_is_test.h"
+#include "base/functional/bind.h"
+#include "brave/common/brave_renderer_configuration.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/de_amp/browser/de_amp_util.h"
+#include "brave/components/de_amp/common/pref_names.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/browser/render_process_host.h"
+#include "extensions/buildflags/buildflags.h"
+#include "ipc/ipc_channel_proxy.h"
+#include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/tor/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "extensions/browser/extension_registry.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
+#include "brave/components/playlist/core/common/pref_names.h"
+#endif
+
+BraveRendererUpdater::BraveRendererUpdater(
+    Profile* profile,
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    brave_wallet::KeyringService* keyring_service,
+#endif
+    PrefService* local_state)
+    : profile_(profile),
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+      keyring_service_(keyring_service),
+#endif
+      local_state_(local_state) {
+  PrefService* pref_service = profile->GetPrefs();
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  brave_wallet_ethereum_provider_.Init(brave_wallet::kDefaultEthereumWallet,
+                                       pref_service);
+  brave_wallet_solana_provider_.Init(brave_wallet::kDefaultSolanaWallet,
+                                     pref_service);
+  brave_wallet_cardano_provider_.Init(brave_wallet::kDefaultCardanoWallet,
+                                      pref_service);
+#endif
+
+  de_amp_enabled_.Init(de_amp::kDeAmpPrefEnabled, pref_service);
+#if BUILDFLAG(ENABLE_TOR)
+  onion_only_in_tor_windows_.Init(tor::prefs::kOnionOnlyInTorWindows,
+                                  pref_service);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  CheckActiveWallet();
+#endif
+
+  pref_change_registrar_.Init(pref_service);
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  pref_change_registrar_.Add(
+      brave_wallet::kDefaultEthereumWallet,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_wallet::kDefaultSolanaWallet,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
+      brave_wallet::kDefaultCardanoWallet,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
+  // The wallet can be disabled at runtime by policy (e.g. via Brave Origin).
+  // When that happens the renderers must stop installing the provider objects
+  // so they don't request interface binders the browser no longer registers.
+  pref_change_registrar_.Add(
+      brave_wallet::kBraveWalletDisabledByPolicy,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
+#endif
+  pref_change_registrar_.Add(
+      de_amp::kDeAmpPrefEnabled,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  pref_change_registrar_.Add(
+      brave_wallet::kBraveWalletKeyrings,
+      base::BindRepeating(
+          &BraveRendererUpdater::CheckActiveWalletAndMaybeUpdateRenderers,
+          base::Unretained(this)));
+#endif
+#if BUILDFLAG(ENABLE_TOR)
+  pref_change_registrar_.Add(
+      tor::prefs::kOnionOnlyInTorWindows,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  if (local_state_) {
+    widevine_enabled_.Init(kWidevineEnabled, local_state_);
+    local_state_change_registrar_.Init(local_state_);
+    local_state_change_registrar_.Add(
+        kWidevineEnabled,
+        base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                            base::Unretained(this)));
+  } else {
+    CHECK_IS_TEST();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  pref_change_registrar_.Add(
+      playlist::kPlaylistEnabledPref,
+      base::BindRepeating(&BraveRendererUpdater::UpdateAllRenderers,
+                          base::Unretained(this)));
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+}
+
+BraveRendererUpdater::~BraveRendererUpdater() = default;
+
+void BraveRendererUpdater::InitializeRenderer(
+    content::RenderProcessHost* render_process_host) {
+  auto renderer_configuration = GetRendererConfiguration(render_process_host);
+  Profile* profile =
+      Profile::FromBrowserContext(render_process_host->GetBrowserContext());
+
+  bool is_brave_wallet_available = false;
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  is_wallet_allowed_for_context_ = brave_wallet::IsAllowedForContext(profile);
+  is_brave_wallet_available = is_wallet_allowed_for_context_;
+#endif
+
+  renderer_configuration->SetInitialConfiguration(
+      profile->IsTor(), is_brave_wallet_available,
+      profile->IsOffTheRecord() &&
+          profile->GetOTRProfileID().IsSearchBackupResults());
+  UpdateRenderer(&renderer_configuration);
+}
+
+std::vector<mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>>
+BraveRendererUpdater::GetRendererConfigurations() {
+  std::vector<mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>>
+      rv;
+  for (content::RenderProcessHost::iterator it(
+           content::RenderProcessHost::AllHostsIterator());
+       !it.IsAtEnd(); it.Advance()) {
+    Profile* renderer_profile =
+        static_cast<Profile*>(it.GetCurrentValue()->GetBrowserContext());
+    if (renderer_profile == profile_ ||
+        renderer_profile->GetOriginalProfile() == profile_) {
+      auto renderer_configuration =
+          GetRendererConfiguration(it.GetCurrentValue());
+      if (renderer_configuration) {
+        rv.push_back(std::move(renderer_configuration));
+      }
+    }
+  }
+  return rv;
+}
+
+mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>
+BraveRendererUpdater::GetRendererConfiguration(
+    content::RenderProcessHost* render_process_host) {
+  IPC::ChannelProxy* channel = render_process_host->GetChannel();
+  if (!channel) {
+    return mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>();
+  }
+
+  mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>
+      renderer_configuration;
+  channel->GetRemoteAssociatedInterface(&renderer_configuration);
+
+  return renderer_configuration;
+}
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+void BraveRendererUpdater::CheckActiveWalletAndMaybeUpdateRenderers() {
+  if (CheckActiveWallet()) {
+    UpdateAllRenderers();
+  }
+}
+
+bool BraveRendererUpdater::CheckActiveWallet() {
+  if (!keyring_service_) {
+    return false;
+  }
+  bool is_wallet_created = keyring_service_->IsWalletCreatedSync();
+  bool changed = is_wallet_created != is_wallet_created_;
+  is_wallet_created_ = is_wallet_created;
+  return changed;
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+void BraveRendererUpdater::UpdateAllRenderers() {
+  auto renderer_configurations = GetRendererConfigurations();
+  for (auto& renderer_configuration : renderer_configurations) {
+    UpdateRenderer(&renderer_configuration);
+  }
+}
+
+void BraveRendererUpdater::UpdateRenderer(
+    mojo::AssociatedRemote<brave::mojom::BraveRendererConfiguration>*
+        renderer_configuration) {
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+  extensions::ExtensionRegistry* registry =
+      extensions::ExtensionRegistry::Get(profile_);
+  bool has_installed_metamask =
+      registry && registry->enabled_extensions().Contains(
+                      brave_wallet::kMetamaskExtensionId);
+#else
+  bool has_installed_metamask = false;
+#endif
+
+  // Recompute whether the wallet is allowed for this context on every update.
+  // This can change at runtime (e.g. when the BraveWalletDisabled policy is
+  // toggled via Brave Origin) and the renderers must be told to stop installing
+  // the provider objects. Otherwise a renderer keeps a stale `true` value,
+  // installs `window.ethereum`/`window.solana`/`window.cardano`, and the
+  // browser kills the renderer with a "No binder found" bad message because the
+  // matching interface binder is no longer registered.
+  is_wallet_allowed_for_context_ = brave_wallet::IsAllowedForContext(profile_);
+
+  // Nothing is injected until the user has actually created a wallet. A
+  // provider with no keyring behind it can't serve a dApp anyway, and its mere
+  // presence is observable by page scripts, so users who never opted into the
+  // wallet get no page-world properties at all.
+  bool can_install_providers =
+      is_wallet_allowed_for_context_ && is_wallet_created_;
+
+  auto default_ethereum_wallet =
+      static_cast<brave_wallet::mojom::DefaultWallet>(
+          brave_wallet_ethereum_provider_.GetValue());
+  bool install_window_brave_ethereum_provider =
+      can_install_providers &&
+      default_ethereum_wallet != brave_wallet::mojom::DefaultWallet::None;
+  // The unprefixed `window.ethereum` is additionally yielded to MetaMask when
+  // the user asked to prefer the extension.
+  bool install_window_ethereum_provider =
+      can_install_providers &&
+      (default_ethereum_wallet ==
+           brave_wallet::mojom::DefaultWallet::BraveWallet ||
+       (default_ethereum_wallet ==
+            brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension &&
+        !has_installed_metamask));
+  bool allow_overwrite_window_ethereum_provider =
+      default_ethereum_wallet ==
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
+
+  auto default_solana_wallet = static_cast<brave_wallet::mojom::DefaultWallet>(
+      brave_wallet_solana_provider_.GetValue());
+  bool brave_use_native_solana_wallet =
+      can_install_providers &&
+      (default_solana_wallet ==
+           brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension ||
+       default_solana_wallet ==
+           brave_wallet::mojom::DefaultWallet::BraveWallet);
+  bool allow_overwrite_window_solana_provider =
+      default_solana_wallet ==
+      brave_wallet::mojom::DefaultWallet::BraveWalletPreferExtension;
+
+  auto default_cardano_wallet = static_cast<brave_wallet::mojom::DefaultWallet>(
+      brave_wallet_cardano_provider_.GetValue());
+  bool install_window_brave_cardano_provider =
+      can_install_providers && brave_wallet::IsCardanoDAppSupportEnabled() &&
+      default_cardano_wallet == brave_wallet::mojom::DefaultWallet::BraveWallet;
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+
+  PrefService* pref_service = profile_->GetPrefs();
+  bool de_amp_enabled = de_amp::IsDeAmpEnabled(pref_service);
+  bool onion_only_in_tor_windows = true;
+#if BUILDFLAG(ENABLE_TOR)
+  onion_only_in_tor_windows =
+      pref_service->GetBoolean(tor::prefs::kOnionOnlyInTorWindows);
+#endif
+  bool widevine_enabled = false;
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  if (local_state_) {
+    widevine_enabled = local_state_->GetBoolean(kWidevineEnabled);
+  } else {
+    CHECK_IS_TEST();
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  const bool playlist_enabled =
+      base::FeatureList::IsEnabled(playlist::features::kPlaylist) &&
+      pref_service->GetBoolean(playlist::kPlaylistEnabledPref);
+#else
+  const bool playlist_enabled = false;
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+  auto params = brave::mojom::DynamicParams::New();
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  params->install_window_brave_ethereum_provider =
+      install_window_brave_ethereum_provider;
+  params->install_window_ethereum_provider = install_window_ethereum_provider;
+  params->install_window_brave_cardano_provider =
+      install_window_brave_cardano_provider;
+  params->allow_overwrite_window_ethereum_provider =
+      allow_overwrite_window_ethereum_provider;
+  params->brave_use_native_solana_wallet = brave_use_native_solana_wallet;
+  params->allow_overwrite_window_solana_provider =
+      allow_overwrite_window_solana_provider;
+#endif
+  params->de_amp_enabled = de_amp_enabled;
+  params->onion_only_in_tor_windows = onion_only_in_tor_windows;
+  params->widevine_enabled = widevine_enabled;
+  params->playlist_enabled = playlist_enabled;
+
+  (*renderer_configuration)->SetConfiguration(std::move(params));
+}

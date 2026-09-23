@@ -1,0 +1,3 @@
+include_rules = [
+  "+third_party/blink/renderer/platform/graphics/dom_node_id.h",
+]

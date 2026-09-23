@@ -1,0 +1,33 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("application_context") {
+  sources = [
+    "brave_application_context_impl.h",
+    "brave_application_context_impl.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_sync:network_time_helper",
+    "//brave/components/brave_wallet/common/buildflags",
+    "//brave/components/debounce/core/browser",
+    "//brave/components/https_upgrade_exceptions/browser",
+    "//brave/components/url_sanitizer/core/browser",
+    "//components/application_locale_storage",
+    "//ios/chrome/browser/application_context/model",
+    "//ios/chrome/browser/shared/model/application_context",
+  ]
+  if (enable_brave_wallet) {
+    deps += [
+      "//brave/components/brave_wallet/browser",
+      "//brave/ios/browser/brave_wallet",
+    ]
+  }
+}

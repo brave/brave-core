@@ -1,0 +1,31 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module mojom_objc_test.mojom;
+
+// Test fixture used only by mojom_objc_generator_unittest.mm to exercise
+// optional (nullable) enum support in the iOS Obj-C mojom generator.
+enum SomeEnum {
+  kAlpha,
+  kBeta,
+  kGamma,
+};
+
+struct NullableEnumStruct {
+  // Non-nullable enum field, used as a baseline for comparison.
+  SomeEnum required_enum_field;
+
+  // Nullable enum field with no default value; should default to nil.
+  SomeEnum? optional_enum_field;
+
+  // Nullable enum field with an explicit default value.
+  SomeEnum? optional_enum_field_with_default = kBeta;
+};
+
+interface NullableEnumInterface {
+  // Exercises a nullable enum as both a method parameter and a
+  // response/callback parameter.
+  DoSomething(SomeEnum? maybe_enum) => (SomeEnum? result);
+};

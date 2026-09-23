@@ -1,0 +1,87 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(enable_brave_vpn_v2_apps)
+
+static_library("agent") {
+  sources = [
+    "agent_client.cc",
+    "agent_client.h",
+    "agent_launcher.cc",
+    "agent_launcher.h",
+    "agent_launcher_internal.h",
+    "browser_endpoint_impl.cc",
+    "browser_endpoint_impl.h",
+  ]
+
+  if (is_mac) {
+    sources += [ "agent_launcher_mac.mm" ]
+  } else if (is_linux) {
+    sources += [ "agent_launcher_linux.cc" ]
+  } else if (is_win) {
+    sources += [ "agent_launcher_win.cc" ]
+  }
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/mojom:agent",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/platform",
+    "//mojo/public/cpp/system",
+    "//net",
+  ]
+
+  deps = [
+    "//brave/components/brave_vpn/common/v2:branding_buildflags",
+    "//brave/components/brave_vpn/common/v2:common",
+    "//components/named_mojo_ipc_server",
+  ]
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/fake_agent.cc",
+    "test/fake_agent.h",
+    "test/fake_agent_launcher.cc",
+    "test/fake_agent_launcher.h",
+  ]
+
+  public_deps = [
+    ":agent",
+    "//base",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/platform",
+    "//mojo/public/cpp/system",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "agent_client_unittest.cc",
+    "agent_launcher_unittest.cc",
+  ]
+
+  if (is_mac) {
+    sources += [ "agent_launcher_mac_unittest.mm" ]
+  } else if (is_win) {
+    sources += [ "agent_launcher_win_unittest.cc" ]
+  }
+
+  deps = [
+    ":agent",
+    ":test_support",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_vpn/common/v2:branding_buildflags",
+    "//testing/gtest",
+  ]
+}

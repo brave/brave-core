@@ -1,0 +1,10 @@
+{
+  "version": "1.0.0",
+  "name": "NewTabPageOverride",
+  "manifest_version": 2,
+  "description": "NTP override",
+  "chrome_url_overrides" : {
+    "newtab": "new_tab_override.html"
+  },
+  "permissions": [ "contentSettings", "tabs", "storage", "webNavigation" ]
+}

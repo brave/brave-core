@@ -1,0 +1,258 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/brave_tab_helpers.h"
+
+#include <memory>
+#include <utility>
+
+#include "base/command_line.h"
+#include "base/containers/flat_map.h"
+#include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
+#include "base/unguessable_token.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/serp_metrics/serp_metrics_tab_helper.h"
+#include "brave/browser/ui/brave_ui_features.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/request_otr/common/buildflags/buildflags.h"
+#include "brave/components/serp_metrics/serp_metrics_feature.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/tor/buildflags/buildflags.h"
+#include "brave/components/web_discovery/buildflags/buildflags.h"
+#include "build/build_config.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
+#include "components/content_settings/browser/page_specific_content_settings.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/web_contents.h"
+#include "extensions/buildflags/buildflags.h"
+#include "net/base/features.h"
+#include "printing/buildflags/buildflags.h"
+#include "third_party/widevine/cdm/buildflags.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ai_chat/ai_chat_utils.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/browser/brave_ads/creatives/search_result_ad/creative_search_result_ad_tab_helper.h"
+#include "brave/browser/brave_ads/tabs/ads_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+#include "brave/browser/brave_rewards/rewards_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/content/browser/playlist_tab_helper.h"
+#include "brave/components/playlist/core/browser/utils.h"
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
+#endif
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
+#include "brave/browser/ui/geolocation/brave_geolocation_permission_tab_helper.h"
+#endif
+
+#if BUILDFLAG(IS_WIN)
+#include "brave/browser/new_tab/background_color_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+#include "brave/browser/screenshot/print_preview_extractor_factory.h"
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/print_preview_extraction_delegate_impl.h"
+#include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+#endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+#include "brave/browser/brave_drm_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/ui/speedreader/speedreader_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/components/tor/onion_location_tab_helper.h"
+#include "brave/components/tor/tor_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
+#include "brave/browser/web_discovery/web_discovery_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+#include "brave/browser/request_otr/request_otr_tab_helper.h"
+#include "brave/components/request_otr/common/features.h"
+#endif
+
+#if defined(TOOLKIT_VIEWS)
+#include "brave/browser/onboarding/onboarding_tab_helper.h"
+#include "brave/browser/ui/sidebar/sidebar_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/browser/brave_wallet/brave_wallet_tab_helper.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/browser/brave_news/brave_news_tab_helper.h"
+#endif
+
+namespace brave {
+
+void AttachTabHelpers(content::WebContents* web_contents) {
+  // If your TabHelper is related to privacy consider whether it belongs in this
+  // method, so it can also be attached to background WebContents.
+  AttachPrivacySensitiveTabHelpers(web_contents);
+
+#if BUILDFLAG(IS_ANDROID)
+  YouTubeScriptInjectorTabHelper::CreateForWebContents(web_contents);
+#else
+  // Add tab helpers here unless they are intended for android too
+  brave_shields::BraveShieldsTabHelper::CreateForWebContents(web_contents);
+  BraveGeolocationPermissionTabHelper::CreateForWebContents(web_contents);
+#endif
+
+#if BUILDFLAG(IS_WIN)
+  if (base::FeatureList::IsEnabled(features::kBraveWorkaroundNewWindowFlash)) {
+    BackgroundColorTabHelper::CreateForWebContents(web_contents);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_REWARDS)
+  brave_rewards::RewardsTabHelper::CreateForWebContents(web_contents);
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  content::BrowserContext* context = web_contents->GetBrowserContext();
+  if (ai_chat::IsAllowedForContext(context)) {
+    ai_chat::AIChatTabHelper::CreateForWebContents(
+        web_contents,
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+        std::make_unique<ai_chat::PrintPreviewExtractionDelegateImpl>(
+            web_contents,
+            screenshot::CreatePrintPreviewExtractor(base::BindRepeating(
+                []() -> base::flat_map<base::UnguessableToken, int>& {
+                  return printing::PrintPreviewUI::
+                      GetPrintPreviewUIRequestIdMap();
+                })))
+#else
+        nullptr
+#endif
+    );
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_WIDEVINE)
+  BraveDrmTabHelper::CreateForWebContents(web_contents);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  BraveWaybackMachineTabHelper::CreateIfNeeded(web_contents);
+#endif
+
+  brave_perf_predictor::PerfPredictorTabHelper::CreateForWebContents(
+      web_contents);
+
+  if (base::FeatureList::IsEnabled(serp_metrics::kSerpMetricsFeature)) {
+    serp_metrics::SerpMetricsTabHelper::MaybeCreateForWebContents(web_contents);
+  }
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  brave_ads::AdsTabHelper::CreateForWebContents(web_contents);
+  brave_ads::CreativeSearchResultAdTabHelper::MaybeCreateForWebContents(
+      web_contents);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
+#if BUILDFLAG(ENABLE_WEB_DISCOVERY)
+  web_discovery::WebDiscoveryTabHelper::MaybeCreateForWebContents(web_contents);
+#endif
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  speedreader::SpeedreaderTabHelper::MaybeCreateForWebContents(web_contents);
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+  tor::TorTabHelper::MaybeCreateForWebContents(web_contents);
+  tor::OnionLocationTabHelper::CreateForWebContents(web_contents);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  BraveNewsTabHelper::MaybeCreateForWebContents(web_contents);
+#endif
+
+#if defined(TOOLKIT_VIEWS)
+  OnboardingTabHelper::MaybeCreateForWebContents(web_contents);
+  sidebar::SidebarTabHelper::MaybeCreateForWebContents(web_contents);
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  brave_wallet::BraveWalletTabHelper::CreateForWebContents(web_contents);
+#endif
+
+  misc_metrics::PageMetricsTabHelper::CreateForWebContents(web_contents);
+
+#if BUILDFLAG(ENABLE_REQUEST_OTR)
+  if (!web_contents->GetBrowserContext()->IsOffTheRecord() &&
+      base::FeatureList::IsEnabled(
+          request_otr::features::kBraveRequestOTRTab)) {
+    RequestOTRTabHelper::CreateForWebContents(web_contents);
+  }
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (playlist::IsPlaylistAllowed(
+          user_prefs::UserPrefs::Get(web_contents->GetBrowserContext()))) {
+    if (auto* playlist_service =
+            playlist::PlaylistServiceFactory::GetForBrowserContext(
+                web_contents->GetBrowserContext())) {
+      playlist::PlaylistTabHelper::CreateForWebContents(web_contents,
+                                                        playlist_service);
+    }
+  }
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
+}
+
+void AttachPrivacySensitiveTabHelpers(content::WebContents* web_contents) {
+  content_settings::PageSpecificContentSettings::CreateForWebContents(
+      web_contents,
+      std::make_unique<PageSpecificContentSettingsDelegate>(web_contents));
+  brave_shields::BraveShieldsWebContentsObserver::CreateForWebContents(
+      web_contents);
+  ephemeral_storage::EphemeralStorageTabHelper::CreateForWebContents(
+      web_contents);
+}
+
+}  // namespace brave

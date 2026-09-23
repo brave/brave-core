@@ -1,0 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Replace `.canary` with `.nightly` in the bundle identifier, in line with
+      our branding. This ensures that the browser (whose identifier is .nightly,
+      not .canary) can connect to the privileged helper.
+    regex:
+      pattern: 'MAC_BROWSER_BUNDLE_IDENTIFIER_STRING ".canary"'
+      replace: 'MAC_BROWSER_BUNDLE_IDENTIFIER_STRING ".nightly"'

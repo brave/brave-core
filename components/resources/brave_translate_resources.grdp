@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+  <include name="IDR_BRAVE_TRANSLATE_JS" file="../translate/core/browser/resources/brave_translate.js" type="BINDATA" />
+</grit-part>

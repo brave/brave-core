@@ -1,0 +1,66 @@
+diff --git a/chrome/browser/ui/page_action/page_action_model.h b/chrome/browser/ui/page_action/page_action_model.h
+index 05ddda45c3da6b49bdbeeaa264b235d6321ba9de..da8fef645217f18bd6b8d71f62aea1244c1aa02c 100644
+--- a/chrome/browser/ui/page_action/page_action_model.h
++++ b/chrome/browser/ui/page_action/page_action_model.h
+@@ -140,16 +140,34 @@ class PageActionModelInterface {
+   virtual std::optional<ui::ColorId> GetOverrideBackgroundColorId() const = 0;
+ 
+   virtual bool IsEphemeral() const = 0;
++  virtual void SetOverrideChipColors(
++      PageActionPassKey,
++      std::optional<SkColor> override_background_color,
++      std::optional<SkColor> override_foreground_color) = 0;
++  virtual void SetAlwaysShowLabel(PageActionPassKey,
++                                  bool always_show) = 0;
++  virtual void SetOverrideHeight(PageActionPassKey,
++                                 std::optional<int> height) = 0;
++  virtual void SetOverrideTriggerableEvent(PageActionPassKey,
++                                           std::optional<int> event_flags) = 0;
++  virtual void SetOverrideBorder(PageActionPassKey,
++                                 std::optional<gfx::Insets> border) = 0;
++  virtual std::optional<SkColor> GetOverrideBackgroundColor() const = 0;
++  virtual std::optional<SkColor> GetOverrideForegroundColor() const = 0;
++  virtual bool GetAlwaysShowLabel() const = 0;
++  virtual std::optional<int> GetOverrideHeight() const = 0;
++  virtual std::optional<int> GetOverrideTriggerableEvent() const = 0;
++  virtual std::optional<gfx::Insets> GetOverrideBorder() const = 0;
+ };
+ 
+ // PageActionModel represents the page action's state, scoped to a single tab.
+-class PageActionModel : public PageActionModelInterface {
++class PageActionModel_ChromiumImpl : public PageActionModelInterface {
+  public:
+-  explicit PageActionModel(actions::ActionId action_id,
++  explicit PageActionModel_ChromiumImpl(actions::ActionId action_id,
+                            bool is_ephemeral = false);
+-  PageActionModel(const PageActionModel&) = delete;
+-  PageActionModel& operator=(const PageActionModel&) = delete;
+-  ~PageActionModel() override;
++  PageActionModel_ChromiumImpl(const PageActionModel_ChromiumImpl&) = delete;
++  PageActionModel_ChromiumImpl& operator=(const PageActionModel_ChromiumImpl&) = delete;
++  ~PageActionModel_ChromiumImpl() override;
+ 
+   actions::ActionId GetActionId() const override;
+ 
+@@ -264,6 +282,7 @@ class PageActionModel : public PageActionModelInterface {
+   bool IsEphemeral() const override;
+ 
+  private:
++  friend class ::page_actions::PageActionModel;
+   // Identifies which property triggered a NotifyChange call, used for
+   // per-property reentrancy checks.
+   enum class Property {
+@@ -291,7 +310,12 @@ class PageActionModel : public PageActionModelInterface {
+     kTrailingImage,
+     kShowTrailingIcon,
+     kOverrideBackgroundColor,
+-    kMaxValue = kOverrideBackgroundColor,
++    kAlwaysShowLabel,
++    kOverrideChipColors,
++    kOverrideHeight,
++    kOverrideTriggerableEvent,
++    kOverrideBorder,
++    kMaxValue = kOverrideBorder,
+   };
+   using PropertySet =
+       base::EnumSet<Property, Property::kShowRequested, Property::kMaxValue>;

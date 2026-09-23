@@ -1,0 +1,164 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import * as React from 'react'
+
+// Types
+import {
+  externalWalletProviderFromString, //
+} from '../../../../brave_rewards/resources/shared/lib/external_wallet'
+
+// Constants
+import { BraveWallet, SupportedTestNetworks } from '../../../constants/types'
+
+// Utils
+import {
+  stripERC20TokenImageURL,
+  isRemoteImageURL,
+  isValidIconExtension,
+  isComponentInStorybook,
+} from '../../../utils/string-utils'
+import {
+  getRewardsProviderIcon,
+  getIsRewardsNetwork,
+} from '../../../utils/rewards_utils'
+
+// Styled components
+import { IconWrapper, Placeholder, NetworkIcon, IconSize } from './style'
+
+// Options
+import { getNetworkLogo } from '../../../options/asset-options'
+
+// Hooks
+import { useNetworkOrb } from '../../../common/hooks/use-orb'
+
+type SimpleNetwork = Pick<
+  BraveWallet.NetworkInfo,
+  'iconUrls' | 'chainId' | 'symbol' | 'chainName'
+>
+
+interface Props {
+  network?: SimpleNetwork | null
+  marginRight?: number
+  size?: IconSize
+}
+
+const isStorybook = isComponentInStorybook()
+
+export const CreateNetworkIcon = ({ network, marginRight, size }: Props) => {
+  // exit early if no network
+  if (!network) {
+    return (
+      <NetworkPlaceholderIcon
+        marginRight={marginRight}
+        network={network}
+        size={size}
+      />
+    )
+  }
+
+  // Computed
+  const isRewardsNetwork = getIsRewardsNetwork(network)
+
+  const externalProvider = isRewardsNetwork
+    ? externalWalletProviderFromString(network.chainId)
+    : null
+
+  const networkLogo = isRewardsNetwork
+    ? getRewardsProviderIcon(externalProvider)
+    : getNetworkLogo(network.chainId, network.symbol)
+
+  const isTestnet = SupportedTestNetworks.includes(network.chainId)
+
+  // simple render
+  if (networkLogo) {
+    return (
+      <IconWrapper
+        marginRight={marginRight ?? 0}
+        isTestnet={isTestnet}
+        size={size}
+        externalProvider={externalProvider}
+      >
+        <NetworkIcon
+          size={size}
+          icon={networkLogo}
+          isExternalProvider={!!externalProvider}
+        />
+      </IconWrapper>
+    )
+  }
+
+  // complex compute + render
+  const networkIcon = network.iconUrls[0]
+  const isSandboxUrl = networkIcon?.startsWith('chrome://image/')
+  const networkImageURL = isSandboxUrl
+    ? stripERC20TokenImageURL(networkIcon)
+    : networkIcon
+
+  const isRemoteURL = isRemoteImageURL(networkImageURL)
+
+  // needs placeholder
+  if (
+    !networkImageURL
+    || !isStorybook
+    || (isRemoteURL || isSandboxUrl
+      ? !isValidIconExtension(new URL(networkIcon).pathname)
+      : true)
+  ) {
+    return (
+      <NetworkPlaceholderIcon
+        marginRight={marginRight}
+        network={network}
+        size={size}
+      />
+    )
+  }
+
+  return (
+    <IconWrapper
+      marginRight={marginRight ?? 0}
+      isTestnet={isTestnet}
+      size={size}
+    >
+      <NetworkIcon
+        size={size}
+        icon={
+          isRemoteURL
+            ? `chrome://image?url=${encodeURIComponent(networkImageURL)}&staticEncode=true`
+            : networkIcon
+        }
+      />
+    </IconWrapper>
+  )
+}
+
+export default CreateNetworkIcon
+
+function NetworkPlaceholderIcon({
+  marginRight,
+  network,
+  size,
+}: {
+  marginRight: number | undefined
+  network?: SimpleNetwork | null
+  size?: IconSize
+}) {
+  // custom hooks
+  const orb = useNetworkOrb(network)
+
+  // render
+  return (
+    <IconWrapper
+      marginRight={marginRight ?? 0}
+      isTestnet={false}
+      size={size}
+    >
+      <Placeholder
+        size={size}
+        orb={orb}
+      />
+    </IconWrapper>
+  )
+}

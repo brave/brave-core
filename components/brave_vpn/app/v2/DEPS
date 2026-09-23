@@ -1,0 +1,4 @@
+include_rules = [
+  "+components/named_mojo_ipc_server",
+  "+mojo/core/embedder",
+]

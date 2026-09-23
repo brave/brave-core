@@ -1,0 +1,14 @@
+Name: once_cell
+Short Name: once_cell
+URL: https://github.com/matklad/once_cell
+Version: 1.21.4
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/once_cell.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

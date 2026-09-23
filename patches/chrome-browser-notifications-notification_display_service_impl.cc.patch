@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/notifications/notification_display_service_impl.cc b/chrome/browser/notifications/notification_display_service_impl.cc
+index eb32525e290a2ff93b181048d3d6cdcfc6cc7d7e..b6d94f02dcdb74bf5b393331aece194d42ce1abb 100644
+--- a/chrome/browser/notifications/notification_display_service_impl.cc
++++ b/chrome/browser/notifications/notification_display_service_impl.cc
+@@ -133,6 +133,7 @@ NotificationDisplayServiceImpl::NotificationDisplayServiceImpl(Profile* profile)
+                              std::make_unique<NearbyNotificationHandler>());
+     }
+ #endif
++    BRAVE_NOTIFICATION_DISPLAY_SERVICE_IMPL_CONSTRUCTOR;
+   }
+ 
+   bridge_delegator_ = std::make_unique<NotificationPlatformBridgeDelegator>(

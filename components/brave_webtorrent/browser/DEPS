@@ -1,0 +1,8 @@
+include_rules = [
+  "+brave/components/constants",
+  "+components/prefs",
+  "+content/public/browser",
+  "+extensions/browser",
+  "+extensions/common",
+  "+ui/base",
+]

@@ -1,0 +1,13 @@
+Name: tracing-core
+Short Name: tracing-core
+URL: https://github.com/tokio-rs/tracing
+Version: 0.1.36
+License: MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/tracing-core.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

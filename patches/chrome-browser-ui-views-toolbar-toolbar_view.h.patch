@@ -1,0 +1,57 @@
+diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
+index 51f030104cf30ce651c65e48c1ac0ca353070f39..04beee37efbd51eef818b9c6e5f16359d71cad83 100644
+--- a/chrome/browser/ui/views/toolbar/toolbar_view.h
++++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
+@@ -117,13 +117,13 @@ class ToolbarView : public views::AccessiblePaneView,
+   ~ToolbarView() override;
+ 
+   // Create the contents of the Browser Toolbar.
+-  void Init();
++  virtual void Init();
+ 
+   // Forces the toolbar (and transitively the location bar) to update its
+   // current state.  If |tab| is non-NULL, we're switching (back?) to this tab
+   // and should restore any previous location bar state (such as user editing)
+   // as well.
+-  void Update(content::WebContents* tab);
++  virtual void Update(content::WebContents* tab);
+ 
+   // Updates the toolbar's visible security state if the state has changed
+   // since the last update. Returns true if the toolbar was updated.
+@@ -157,7 +157,7 @@ class ToolbarView : public views::AccessiblePaneView,
+       IntentPickerResponse callback);
+ 
+   // Shows a bookmark bubble and anchors it appropriately.
+-  void ShowBookmarkBubble(const GURL& url, bool already_bookmarked);
++  virtual void ShowBookmarkBubble(const GURL& url, bool already_bookmarked);
+ 
+   // Returns true if the view is a descendant of the ToolbarView and should be
+   // treated as caption area for window dragging purposes.
+@@ -270,6 +270,8 @@ class ToolbarView : public views::AccessiblePaneView,
+   // Updates glic button parenting after hiding glic actor task icon.
+   void FinalizeHideGlicActorTaskIcon();
+ 
++  BrowserAppMenuButton* app_menu_button() const { return app_menu_button_; }
++
+  protected:
+   // This controls Toolbar, LocationBar and CustomTabBar visibility.
+   // If we don't set all three, tab navigation from the app menu breaks
+@@ -277,6 +279,9 @@ class ToolbarView : public views::AccessiblePaneView,
+   void SetToolbarVisibility(bool visible);
+ 
+  private:
++  friend class BraveToolbarView;
++  FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, SplitTabsToolbarButtonTest);
++  FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarCornerRadiusTest);
+   // Forwards view overrides to this class.
+   class ContainerView;
+ 
+@@ -333,7 +338,7 @@ class ToolbarView : public views::AccessiblePaneView,
+   void OnChromeLabsPrefChanged();
+ 
+   // Loads the images for all the child views.
+-  void LoadImages();
++  virtual void LoadImages();
+ 
+   void OnShowForwardButtonChanged();
+ 

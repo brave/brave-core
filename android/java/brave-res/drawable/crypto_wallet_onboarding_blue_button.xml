@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_enabled="false" android:state_pressed="false">
+        <shape android:padding="12dp" android:shape="rectangle">
+            <solid android:color="@color/button_disabled" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <item android:state_enabled="true" android:state_pressed="false">
+        <shape android:padding="12dp" android:shape="rectangle">
+            <solid android:color="@color/brave_wallet_dn_button_color" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <item android:state_focused="false" android:state_pressed="true">
+        <shape android:padding="12dp" android:shape="rectangle">
+            <solid android:color="@color/brave_button_pressed" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+    <item android:state_enabled="true">
+        <shape android:padding="12dp" android:shape="rectangle">
+            <solid android:color="@color/brave_wallet_dn_button_color" />
+            <corners android:radius="16dp" />
+        </shape>
+    </item>
+</selector>

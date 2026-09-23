@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/webui/settings/import_data_handler.h b/chrome/browser/ui/webui/settings/import_data_handler.h
+index 89cd5efda8587ca522e7d1b96c7b219654d20865..fc536970a5282ff04897c22b0dfe1fa33c6bd057 100644
+--- a/chrome/browser/ui/webui/settings/import_data_handler.h
++++ b/chrome/browser/ui/webui/settings/import_data_handler.h
+@@ -38,7 +38,8 @@ class ImportDataHandler : public SettingsPageUIHandler,
+   void OnJavascriptDisallowed() override;
+ 
+  private:
+-  void StartImport(const user_data_importer::SourceProfile& source_profile,
++  friend class BraveImportDataHandler;
++  virtual void StartImport(const user_data_importer::SourceProfile& source_profile,
+                    uint16_t imported_items);
+ 
+   // Handler for the "importData" message. First argument is the selected

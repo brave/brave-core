@@ -1,0 +1,812 @@
+
+<!doctype html>
+<html lang="en-US" class="no-js aws-lng-en_US" xmlns="http://www.w3.org/1999/xhtml" data-aws-assets="//a0.awsstatic.com" data-js-version="1.0.614" data-css-version="1.0.525" data-static-assets="//a0.awsstatic.com">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AWS Secrets Manager | AWS Security Blog</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https://a0.awsstatic.com; connect-src 'self' *.akamaized.net *.googlevideo.com/videoplayback https://112-tzm-766.mktoresp.com https://112-tzm-766.mktoutil.com https://a0.awsstatic.com https://a0.p.awsstatic.com https://a1.awsstatic.com https://amazonwebservices.d2.sc.omtrdc.net https://amazonwebservicesinc.tt.omtrdc.net https://api.regional-table.region-services.aws.a2z.com https://api.us-west-2.prod.pricing.aws.a2z.com https://aws.demdex.net https://b0.p.awsstatic.com https://c0.b0.p.awsstatic.com https://calculator.aws https://cm.everesttech.net https://d0.awsstatic.com https://d1.awsstatic.com https://d1fgizr415o1r6.cloudfront.net https://d3borx6sfvnesb.cloudfront.net https://dc.ads.linkedin.com https://dftu77xade0tc.cloudfront.net https://dpm.demdex.net https://fls-na.amazon.com https://googleads.g.doubleclick.net https://i18n-string.us-west-2.prod.pricing.aws.a2z.com https://prod-us-west-2.csp-report.marketing.aws.dev https://prod-us-west-2.csp-report.marketing.aws.dev/submit https://prod.log.shortbread.aws.dev https://prod.tools.shortbread.aws.dev https://s0.awsstatic.com https://s3.amazonaws.com/aws-messaging-pricing-information/ https://s3.amazonaws.com/public-pricing-agc/ https://spot-bid-advisor.s3.amazonaws.com https://view-stage.us-west-2.prod.pricing.aws.a2z.com https://view-staging.us-east-1.prod.plc1-prod.pricing.aws.a2z.com https://www.youtube-nocookie.com https://www.youtube.com; font-src 'self' data: https://a0.awsstatic.com https://c.disquscdn.com https://f0.awsstatic.com https://fonts.gstatic.com; frame-src 'self' https://aws.demdex.net https://c0.b0.p.awsstatic.com https://calculator.aws https://commenting.awsblogs.com https://disqus.com https://dpm.demdex.net https://player.vimeo.com https://www.youtube-nocookie.com https://www.youtube.com; img-src 'self' data: https://*.ads.linkedin.com https://*.githubusercontent.com https://*.gravatar.com https://*.vidyard.com https://*.ytimg.com https://a0.awsstatic.com https://amazonwebservices.d2.sc.omtrdc.net https://aws-blogs-media-prod.s3.amazonaws.com https://aws-database-blog.s3.amazonaws.com https://aws-ml-blog.s3.amazonaws.com https://aws-quickstart.s3.amazonaws.com https://aws.amazon.com https://aws.demdex.net https://awscomputeblogimages.s3-us-west-2.amazonaws.com/ https://awscomputeblogmedia.s3.amazonaws.com/ https://awsmedia.s3.amazonaws.com https://awsopensourceblog.s3.us-east-2.amazonaws.com/ https://bank-test2.s3.amazonaws.com https://cdn.amazonblogs.com https://cm.everesttech.net https://d1.awsstatic.com https://d1d1et6laiqoh9.cloudfront.net https://d1nqddva888cns.cloudfront.net https://d2908q01vomqb2.cloudfront.net https://d2cpw7vd6a2efr.cloudfront.net https://d2mee59kmfnfxw.cloudfront.net https://d2tinsms4add52.cloudfront.net https://d36cz9buwru1tt.cloudfront.net https://denisb-public.s3.amazonaws.com https://dmhnzl5mp9mj6.cloudfront.net https://docs.aws.amazon.com https://dpm.demdex.net https://fls-na.amazon.com https://g.cn https://github.com https://google.ac https://google.ad https://google.ae https://google.al https://google.am https://google.as https://google.at https://google.az https://google.ba https://google.be https://google.bf https://google.bg https://google.bi https://google.bj https://google.bs https://google.bt https://google.by https://google.ca https://google.cat https://google.cc https://google.cd https://google.cf https://google.cg https://google.ch https://google.ci https://google.cl https://google.cm https://google.cn https://google.co.ao https://google.co.bw https://google.co.ck https://google.co.cr https://google.co.id https://google.co.il https://google.co.in https://google.co.jp https://google.co.ke https://google.co.kr https://google.co.ls https://google.co.ma https://google.co.mz https://google.co.nz https://google.co.pn https://google.co.th https://google.co.tz https://google.co.ug https://google.co.uk https://google.co.uz https://google.co.ve https://google.co.vi https://google.co.za https://google.co.zm https://google.co.zw https://google.com https://google.com.af https://google.com.ag https://google.com.ai https://google.com.ar https://google.com.au https://google.com.bd https://google.com.bh https://google.com.bn https://google.com.bo https://google.com.br https://google.com.bz https://google.com.co https://google.com.cu https://google.com.cy https://google.com.do https://google.com.ec https://google.com.eg https://google.com.et https://google.com.fj https://google.com.gh https://google.com.gi https://google.com.gt https://google.com.hk https://google.com.jm https://google.com.kh https://google.com.kw https://google.com.lb https://google.com.lc https://google.com.ly https://google.com.mm https://google.com.mt https://google.com.mx https://google.com.my https://google.com.na https://google.com.nf https://google.com.ng https://google.com.ni https://google.com.np https://google.com.om https://google.com.pa https://google.com.pe https://google.com.pg https://google.com.ph https://google.com.pk https://google.com.pr https://google.com.py https://google.com.qa https://google.com.sa https://google.com.sb https://google.com.sg https://google.com.sl https://google.com.sv https://google.com.tj https://google.com.tr https://google.com.tw https://google.com.ua https://google.com.uy https://google.com.vc https://google.com.vn https://google.cv https://google.cz https://google.de https://google.dj https://google.dk https://google.dm https://google.dz https://google.ee https://google.es https://google.fi https://google.fm https://google.fr https://google.ga https://google.ge https://google.gf https://google.gg https://google.gl https://google.gm https://google.gp https://google.gr https://google.gy https://google.hn https://google.hr https://google.ht https://google.hu https://google.ie https://google.im https://google.io https://google.iq https://google.is https://google.it https://google.je https://google.jo https://google.kg https://google.ki https://google.kz https://google.la https://google.li https://google.lk https://google.lt https://google.lu https://google.lv https://google.md https://google.me https://google.mg https://google.mk https://google.ml https://google.mn https://google.ms https://google.mu https://google.mv https://google.mw https://google.ne https://google.nl https://google.no https://google.nr https://google.nu https://google.pl https://google.pn https://google.ps https://google.pt https://google.ro https://google.rs https://google.ru https://google.rw https://google.sc https://google.se https://google.sh https://google.si https://google.sk https://google.sm https://google.sn https://google.so https://google.sr https://google.st https://google.td https://google.tg https://google.tk https://google.tl https://google.tm https://google.tn https://google.to https://google.tt https://google.vg https://google.vu https://google.ws https://googleads.g.doubleclick.net https://img.youtube.com https://marcia.dev https://marketingplatform.google.com https://media.amazonwebservices.com https://p.adsymptotic.com https://pages.awscloud.com https://pbs.twimg.com https://s3-us-west-2.amazonaws.com/aws-developer-blog-media/ https://s3.amazonaws.com/apnblog/ https://s3.amazonaws.com/aws-bigdata-blog/ https://s3.amazonaws.com/aws-iot-blog-assets/ https://s3.amazonaws.com/aws-machine-learning-blog/ https://s3.amazonaws.com/aws-quickstart/ https://s3.amazonaws.com/awsemailuploads/ https://s3.amazonaws.com/chrisb/ https://s3.amazonaws.com/cloudformation-examples/ https://s3.amazonaws.com/wwps-blog/ https://s3.cn-north-1.amazonaws.com.cn/awschinablog/ https://s3.cn-north-1.amazonaws.com.cn/images-bjs/ https://ssl-static.libsyn.com https://static-cdn.jtvnw.net https://www.google.com https://www.linkedin.com https://yt3.ggpht.com; media-src 'self' https://*.libsyn.com https://a0.awsstatic.com https://anchor.fm https://aws-automotive-blogs.s3.amazonaws.com https://aws-big-data-blog.s3.amazonaws.com https://aws-bigdata-blog.s3.amazonaws.com https://aws-database-blog.s3.amazonaws.com https://aws-ml-blog.s3.amazonaws.com https://awschinablog.s3.cn-north-1.amazonaws.com.cn https://awsmedia.s3.amazonaws.com https://awsopensourceblog.s3.us-east-2.amazonaws.com/ https://awspodcastsiberiaent.s3.eu-west-3.amazonaws.com https://awssecurityroadshow2020.s3-ap-northeast-1.amazonaws.com https://chtbl.com https://computeblog-us-east-1.s3.amazonaws.com https://d1.awsstatic.com https://d1hemuljm71t2j.cloudfront.net https://d1le29qyzha1u4.cloudfront.net https://d1oqpvwii7b6rh.cloudfront.net https://d1vo51ubqkiilx.cloudfront.net https://d1yyh5dhdgifnx.cloudfront.net https://d2908q01vomqb2.cloudfront.net https://d2a6igt6jhaluh.cloudfront.net https://d2mee59kmfnfxw.cloudfront.net https://d3ctxlq1ktw2nl.cloudfront.net https://d3h2ozso0dirfl.cloudfront.net https://dgen8gghn3u86.cloudfront.net https://dk261l6wntthl.cloudfront.net https://download.stormacq.com/aws/podcast/ https://dts.podtrac.com https://jsimon-polly.s3.amazonaws.com https://jsimon-transcribe-demo.s3-us-west-2.amazonaws.com https://media.amazonwebservices.com https://mktg-apac.s3-ap-southeast-1.amazonaws.com https://s3-ap-northeast-1.amazonaws.com/aws-china-media/ https://s3-us-west-2.amazonaws.com/aws-developer-blog-media/ https://s3.amazonaws.com/aws-bigdata-blog/ https://s3.amazonaws.com/aws-machine-learning-blog/ https://www.buzzsprout.com; object-src 'none'; script-src 'self' 'unsafe-eval' 'unsafe-inline' https://a0.awsstatic.com https://amazonwebservicesinc.tt.omtrdc.net https://aws-official-blog.disqus.com https://aws-publicsector-blog.disqus.com https://c.disquscdn.com https://f.vimeocdn.com https://googleads.g.doubleclick.net https://referrer.disqus.com https://spot-price.s3.amazonaws.com https://static.doubleclick.net https://website.spot.ec2.aws.a2z.com https://www.google.com https://www.gstatic.com https://www.youtube.com/iframe_api https://www.youtube.com/s/player/; style-src 'self' 'unsafe-inline' https://a0.awsstatic.com https://c.disquscdn.com https://f.vimeocdn.com; report-uri https://prod-us-west-2.csp-report.marketing.aws.dev/submit" data-report-uri="https://prod-us-west-2.csp-report.marketing.aws.dev/submit">
+  <script src="//a0.awsstatic.com/libra/1.0.426/csp/csp-report.js"></script>
+  <link rel="dns-prefetch" href="//a0.awsstatic.com">
+  <link rel="alternate" type="application/rss+xml" title="AWS Security Blog » AWS Secrets Manager Category Feed" href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/feed/">
+  <link rel="icon" type="image/ico" href="//a0.awsstatic.com/main/images/site/fav/favicon.ico">
+  <link rel="shortcut icon" type="image/ico" href="//a0.awsstatic.com/main/images/site/fav/favicon.ico">
+  <link rel="apple-touch-icon" sizes="57x57" href="//a0.awsstatic.com/main/images/site/touch-icon-iphone-114-smile.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="//a0.awsstatic.com/main/images/site/touch-icon-ipad-144-smile.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="//a0.awsstatic.com/main/images/site/touch-icon-iphone-114-smile.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="//a0.awsstatic.com/main/images/site/touch-icon-ipad-144-smile.png">
+  <link rel="home" type="application/rss+xml" title="RSS 2.0 Feed" href="https://aws.amazon.com/blogs/security/feed/">
+  <meta name="robots" content="index, follow">
+  <link rel="next" href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/page/2/">
+  <link rel="canonical" href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/">
+  <link rel="stylesheet" href="//a0.awsstatic.com/libra-css/css/1.0.402/style-awsm.css">
+  <link rel="stylesheet" href="//a0.awsstatic.com/aws-blog/1.0.51/css/blog.css">
+  <script>
+    var AWS = {
+      PageSettings: {
+        supportedLanguages: ["ar","de","en","es","fr","id","it","jp","ko","pt","ru","th","tr","vi","cn","tw"],
+        libraCSSPath: '//a0.awsstatic.com/libra-css/css/1.0.402',
+        currentLanguage: 'en-US',
+        blogPageTitle: ""      }
+    };
+    var require = {
+      baseUrl: '//a0.awsstatic.com',
+      packages: [
+        { name: 'libra', location: 'libra/1.0.426' }
+      ],
+      paths: {
+        'aws-blog': '//a0.awsstatic.com/aws-blog/1.0.51/js',
+        'blog': '//a0.awsstatic.com/chrome/js/1.0.614/blog',
+        'directories': '//a0.awsstatic.com/libra/1.0.426/directories',
+        'jquery': 'jquery-amd',
+        'librastandardlib': '//a0.awsstatic.com/libra/1.0.426/librastandardlib',
+        "plugins": '//a0.awsstatic.com/chrome/js/1.0.614/plugins',
+        "scripts": '//a0.awsstatic.com/libra/1.0.426/v1-polyfills/scripts'
+      },
+      deps: [ 'scripts' ],
+      waitSeconds: 15
+    };
+  </script>
+  <script src="//a0.awsstatic.com/aws-blog/1.0.51/js/blog-head.js"></script>
+  <script src="//a0.awsstatic.com/s_code/js/3.0/awshome_s_code.js"></script>
+  <script>
+    AWS.TargetMediator = {
+      supportedLanguages: AWS.PageSettings.supportedLanguages,
+      pageLanguage: 'en',
+      customParams: {}    };
+  </script>
+  <script src="//a0.awsstatic.com/target/1.0.117/aws-target-mediator.js"></script>
+  <noscript>
+   <style>.js-mbox { visibility: visible; }</style>
+  </noscript>
+ </head>
+ <body class="awsm aws-blogs-page aws-blogs-page-type-archive">
+  <header id="aws-page-header" class="awsm m-page-header" role="banner">
+   <div id="m-nav" class="m-nav" role="navigation">
+    <div class="m-nav-header lb-clearfix" data-menu-url="https://s0.awsstatic.com/en_US/nav/v3/panel-content/desktop/index.html">
+     <div class="m-nav-logo">
+      <div class="lb-bg-logo aws-amazon_web_services_smile-header-desktop-en">
+       <a href="https://aws.amazon.com/?nc2=h_lg"><span>Click here to return to Amazon Web Services homepage</span></a>
+      </div>
+     </div>
+     <div class="m-nav-secondary-links" style="min-width: 620px">
+      <a href="https://aws.amazon.com/contact-us/?nc2=h_header">Contact Us</a>
+      <a class="lb-txt-none lb-tiny-iblock lb-txt-13 lb-txt lb-has-trigger-indicator" href="#" data-mbox-ignore="true" data-lb-popover-trigger="popover-support-selector"> Support&nbsp; <i class="icon-caret-down lb-trigger-mount"></i></a>
+      <a id="m-nav-language-selector" class="lb-tiny-iblock lb-txt lb-has-trigger-indicator" href="#" data-lb-popover-trigger="popover-language-selector" data-language="en">English&nbsp;<i class="icon-caret-down lb-trigger-mount"></i></a>
+      <a class="lb-tiny-iblock lb-txt lb-has-trigger-indicator" href="#" data-lb-popover-trigger="popover-my-account">My Account&nbsp;<i class="icon-caret-down lb-trigger-mount"></i></a>
+      <div class="m-nav-cta-btn">
+       <div class="lb-mbox js-mbox" data-lb-comp="mbox" data-lb-comp-ignore="true" data-mbox="en_header_nav_cta">
+        <div class="lb-data-attr-wrapper data-attr-wrapper" data-da-type="so" data-da-so-type="viewport" data-da-so-language="en" data-da-so-category="monitoring" data-da-so-name="nav-buttons" data-da-so-version="sign-up-sign-in-all" data-da-so-url="nav">
+         <div class="data-attr-wrapper lb-tiny-iblock lb-none-pad lb-box" data-da-type="so" data-da-so-type="viewport" data-da-so-language="en" data-da-so-category="monitoring" data-da-so-name="nav-buttons" data-da-so-version="prospect-sign-in" data-da-so-url="all">
+          <a class="lb-txt-none lb-tiny-iblock lb-txt-13 lb-txt" style="padding-top:8px; padding-right:13px;" href="https://console.aws.amazon.com/console/home?nc2=h_ct&amp;src=header-signin"> Sign In</a>
+         </div>
+         <div class="data-attr-wrapper lb-tiny-iblock lb-none-v-margin lb-btn" data-da-type="so" data-da-so-type="viewport" data-da-so-language="en" data-da-so-category="monitoring" data-da-so-name="nav-buttons" data-da-so-version="prospect-signup" data-da-so-url="all">
+          <a class="lb-btn-p-primary" href="https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc2=h_ct&amp;src=header_signup" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}" role="button"> <span> Create an AWS Account</span> </a>
+         </div>
+        </div>
+       </div>
+      </div>
+     </div>
+     <div class="m-nav-primary-group">
+      <div class="m-nav-primary-links">
+       <i class="m-nav-angle-left-icon" aria-hidden="true"></i>
+       <ul>
+        <li><a href="https://aws.amazon.com/products/?nc2=h_ql_prod" data-panel="m-nav-panel-products">Products</a></li>
+        <li><a href="https://aws.amazon.com/solutions/?nc2=h_ql_sol" data-panel="m-nav-panel-solutions">Solutions</a></li>
+        <li><a href="https://aws.amazon.com/pricing/?nc2=h_ql_pr" data-panel="m-nav-panel-pricing">Pricing</a></li>
+        <li><a href="https://docs.aws.amazon.com/index.html?nc2=h_ql_doc" data-panel="m-nav-panel-documentation">Documentation</a></li>
+        <li><a href="https://aws.amazon.com/getting-started/?nc2=h_ql_le" data-panel="m-nav-panel-learn">Learn</a></li>
+        <li><a href="https://aws.amazon.com/partners/?nc2=h_ql_pn" data-panel="m-nav-panel-partner">Partner Network</a></li>
+        <li><a href="https://aws.amazon.com/marketplace/?nc2=h_ql_mp" data-panel="m-nav-panel-marketplace">AWS Marketplace</a></li>
+        <li><a href="https://aws.amazon.com/customer-enablement/?nc2=h_ql_ce" data-panel="m-nav-panel-customer">Customer Enablement</a></li>
+        <li><a href="https://aws.amazon.com/events/?nc2=h_ql_ev" data-panel="m-nav-panel-events">Events</a></li>
+        <li><a href="https://aws.amazon.com/contact-us/?nc2=h_ql_exm" data-panel="m-nav-panel-more">Explore More </a></li>
+       </ul>
+       <div class="m-nav-icon-group">
+        <i class="m-nav-angle-right-icon" aria-hidden="true"></i>
+        <i class="m-nav-search-icon"></i>
+       </div>
+      </div>
+      <div class="m-nav-search">
+       <form action="https://aws.amazon.com/search/" role="search">
+        <div class="m-typeahead" data-directory-id="typeahead-suggestions" data-lb-comp="typeahead">
+         <input class="m-nav-search-field" placeholder="Search" autocomplete="off" spellcheck="false" dir="auto" type="text" name="searchQuery">
+        </div>
+       </form>
+       <i class="m-nav-close-icon"></i>
+      </div>
+     </div>
+    </div>
+    <div class="lb-popover lb-popover-aui lb-popover-tiny" data-lb-comp="popover" data-id="popover-language-selector" data-action="hover" data-position="top">
+     <div class="lb-grid lb-row lb-row-max-large lb-snap">
+      <div class="lb-col lb-tiny-24 lb-mid-12">
+       <ul class="lb-txt-none lb-ul lb-list-style-none lb-tiny-ul-block">
+        <li data-language="ar"><a href="https://aws.amazon.com/ar/?nc1=h_ls">عربي</a></li>
+        <li data-language="id"><a href="https://aws.amazon.com/id/?nc1=h_ls">Bahasa Indonesia</a></li>
+        <li data-language="de"><a href="https://aws.amazon.com/de/?nc1=h_ls">Deutsch</a></li>
+        <li data-language="en"><a href="https://aws.amazon.com/?nc1=h_ls">English</a></li>
+        <li data-language="es"><a href="https://aws.amazon.com/es/?nc1=h_ls">Español</a></li>
+        <li data-language="fr"><a href="https://aws.amazon.com/fr/?nc1=h_ls">Français</a></li>
+        <li data-language="it"><a href="https://aws.amazon.com/it/?nc1=h_ls">Italiano</a></li>
+        <li data-language="pt"><a href="https://aws.amazon.com/pt/?nc1=h_ls">Português</a></li>
+       </ul>
+      </div>
+      <div class="lb-col lb-tiny-24 lb-mid-12">
+       <ul class="lb-txt-none lb-ul lb-list-style-none lb-tiny-ul-block">
+        <li data-language="vi"><a href="https://aws.amazon.com/vi/?nc1=f_ls">Tiếng Việt</a></li>
+        <li data-language="tr"><a href="https://aws.amazon.com/tr/?nc1=h_ls">Türkçe</a></li>
+        <li data-language="ru"><a href="https://aws.amazon.com/ru/?nc1=h_ls">Ρусский</a></li>
+        <li data-language="th"><a href="https://aws.amazon.com/th/?nc1=f_ls">ไทย</a></li>
+        <li data-language="jp"><a href="https://aws.amazon.com/jp/?nc1=h_ls">日本語</a></li>
+        <li data-language="ko"><a href="https://aws.amazon.com/ko/?nc1=h_ls">한국어</a></li>
+        <li data-language="cn"><a href="https://aws.amazon.com/cn/?nc1=h_ls">中文 (简体)</a></li>
+        <li data-language="tw"><a href="https://aws.amazon.com/tw/?nc1=h_ls">中文 (繁體)</a></li>
+       </ul>
+      </div>
+     </div>
+    </div>
+    <div class="lb-popover lb-popover-aui lb-popover-tiny" data-lb-comp="popover" data-id="popover-my-account" data-action="hover" data-position="top">
+     <ul class="lb-txt-none lb-ul lb-list-style-none lb-tiny-ul-block">
+      <li><a href="https://console.aws.amazon.com/?nc2=h_m_mc">AWS Management Console</a></li>
+      <li><a href="https://console.aws.amazon.com/billing/home#/account?nc2=h_m_ma">Account Settings</a></li>
+      <li><a href="https://console.aws.amazon.com/billing/home?nc2=h_m_bc">Billing &amp; Cost Management</a></li>
+      <li><a href="https://console.aws.amazon.com/iam/home?nc2=h_m_sc#security_credential">Security Credentials</a></li>
+      <li><a href="https://phd.aws.amazon.com/?nc2=h_m_sc">AWS Personal Health Dashboard</a></li>
+     </ul>
+    </div>
+    <div class="lb-popover lb-popover-aui lb-popover-tiny" data-lb-comp="popover" data-id="popover-support-selector" data-action="hover" data-position="top">
+     <ul class="lb-txt-none lb-ul lb-list-style-none lb-tiny-ul-block">
+      <li><a href="https://console.aws.amazon.com/support/home/?nc2=h_ql_cu">Support Center</a></li>
+      <li><a href="https://aws.amazon.com/premiumsupport/knowledge-center/?nc2=h_m_ma">Knowledge Center</a></li>
+      <li><a href="https://aws.amazon.com/premiumsupport/?nc2=h_m_bc">AWS Support Overview</a></li>
+     </ul>
+    </div>
+    <script type="text/x-handlebars-template" data-hbs-template-path="nav-desktop/suggestions" data-hbs-context="{&quot;pricingText&quot;:&quot;Pricing&quot;,&quot;documentationText&quot;:&quot;Documentation&quot;,&quot;calculatorText&quot;:&quot;Calculator&quot;}"></script>
+    <script type="text/x-handlebars-template" data-hbs-template-path="nav-desktop/products-head" data-hbs-context="{&quot;productsText&quot;:&quot;Products&quot;}"></script>
+    <script type="text/x-handlebars-template" data-hbs-template-path="nav-desktop/keypages-head" data-hbs-context="{&quot;relatedPagesText&quot;:&quot;Related Pages&quot;}"></script>
+    <script type="text/x-handlebars-template" data-hbs-template-path="nav-desktop/tutorials-head" data-hbs-context="{&quot;tutorialsText&quot;:&quot;Tutorials&quot;}"></script>
+    <script type="text/x-handlebars-template" data-hbs-template-path="nav-desktop/blogs-head" data-hbs-context="{&quot;blogsText&quot;:&quot;Blogs&quot;}"></script>
+    <script type="text/x-handlebars-template" data-hbs-template-path="nav-desktop/see-all" data-hbs-context="{&quot;resultsText&quot;:&quot;See more results for&quot;}"></script>
+   </div>
+   <div id="m-nav-mobile" class="m-nav-mobile">
+    <div id="m-nav-mobile-header" class="m-nav-mobile-header" data-menu-url="https://s0.awsstatic.com/en_US/nav/v3/panel-content/mobile/index.html">
+     <div class="lb-bg-logo aws-amazon_web_services_smile-header-mobile-en">
+      <a href="https://aws.amazon.com/?nc2=h_lg"><span>Click here to return to Amazon Web Services homepage</span></a>
+     </div>
+     <div class="m-nav-mobile-button-group">
+      <i class="m-nav-mobile-button icon-search"></i>
+      <i class="m-nav-mobile-button icon-reorder"></i>
+     </div>
+    </div>
+    <div id="m-nav-mobile-search" class="m-nav-mobile-search">
+     <form action="https://aws.amazon.com/search" role="search">
+      <div class="m-typeahead">
+       <input class="m-nav-search-field" placeholder="Search" autocomplete="off" spellcheck="false" dir="auto" type="text" name="searchQuery">
+      </div>
+     </form>
+    </div>
+    <nav id="m-nav-trimdown" role="navigation">
+     <ul class="m-nav-mobile-menu-group">
+      <li> <a href="https://aws.amazon.com/products/?nc2=h_mo">Products</a> </li>
+      <li> <a href="https://aws.amazon.com/solutions/?nc2=h_mo">Solutions</a> </li>
+      <li> <a href="https://aws.amazon.com/pricing/?nc2=h_mo">Pricing</a> </li>
+      <li> <a href="https://aws.amazon.com/what-is-aws/?nc2=h_mo">Introduction to AWS</a> </li>
+      <li> <a href="https://aws.amazon.com/getting-started/?nc2=h_mo">Getting Started</a> </li>
+      <li> <a href="https://aws.amazon.com/documentation/?nc2=h_mo">Documentation</a> </li>
+      <li> <a href="https://aws.amazon.com/training/?nc2=h_mo">Training and Certification</a> </li>
+      <li> <a href="https://aws.amazon.com/developer/?nc2=h_mo">Developer Center</a> </li>
+      <li> <a href="https://aws.amazon.com/solutions/case-studies/?nc2=h_mo">Customer Success</a> </li>
+      <li> <a href="https://aws.amazon.com/partners/?nc2=h_mo">Partner Network</a> </li>
+      <li> <a href="https://aws.amazon.com/marketplace/?nc2=h_mo">AWS Marketplace</a> </li>
+      <li> <a href="https://console.aws.amazon.com/support/home?nc2=h_ql_cu">Support</a> </li>
+      <li> <a href="https://console.aws.amazon.com/console/home">Log into Console</a> </li>
+      <li> <a href="https://aws.amazon.com/console/mobile/">Download the Mobile App</a> </li>
+     </ul>
+    </nav>
+   </div>
+  </header>
+  <div class="awsm">
+   <div class="lb-blog-nav" data-lb-comp="aws-blog:blog-nav">
+    <div class="lb-row lb-row-max-xlarge lb-snap">
+     <div class="lb-blog-nav-content">
+      <div class="lb-blog-nav-links">
+       <a class="lb-txt-none lb-txt" href="/blogs"> Blog Home</a>
+       <a class="lb-txt-none lb-txt lb-has-trigger-indicator" href="/blogs" data-lb-popover-trigger="blog-category" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> Category&nbsp; <i class="icon-caret-down lb-trigger-mount"></i></a>
+       <a class="lb-txt-none lb-txt lb-has-trigger-indicator" href="/blogs" data-lb-popover-trigger="blog-editions"> Edition&nbsp; <i class="icon-caret-down lb-trigger-mount"></i></a>
+       <a class="lb-txt-none lb-txt lb-has-trigger-indicator" href="/blogs" data-lb-popover-trigger="blog-follow"> Follow&nbsp; <i class="icon-caret-down lb-trigger-mount"></i></a>
+      </div>
+      <div class="lb-blog-nav-search">
+       <form action="https://aws.amazon.com/search" role="search">
+        <input type="hidden" name="facet_type" value="blogs">
+        <input type="hidden" name="sortResults" value="modification_date desc">
+        <div class="lb-search-input">
+         <input name="q" type="text" placeholder="Search Blogs">
+         <div class="lb-blog-search-button">
+          <button class="icon-search" type="submit"></button>
+         </div>
+        </div>
+       </form>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="lb-popover lb-popover-aui lb-popover-xlarge" data-lb-comp="popover" data-id="blog-category" data-action="hover" data-position="top">
+    <div class="lb-grid lb-row lb-row-max-large lb-snap">
+     <div class="lb-col lb-tiny-24 lb-mid-12">
+      <div class="lb-none-pad lb-none-v-margin lb-box">
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/architecture/"> Architecture</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/aws-cloud-financial-management/"> AWS Cloud Financial Management</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/mt/" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> AWS Cloud Operations &amp; Migrations</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/apn/"> AWS Partner Network</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/podcasts/aws-podcast/?sc_ichannel=ha&amp;sc_icampaign=acq_awsblognav&amp;sc_icontent=categorynav"> AWS Podcast</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/awsmarketplace/"> AWS Marketplace</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/aws/"> AWS News</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/big-data/"> Big Data</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/business-productivity/"> Business Productivity</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/compute/"> Compute</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/contact-center/"> Contact Center</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/containers/"> Containers</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/database/"> Database</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/desktop-and-application-streaming/"> Desktop &amp; Application Streaming</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/developer/"> Developer</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/devops/"> DevOps</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/enterprise-strategy/"> Enterprise Strategy</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/mobile/"> Front-End Web &amp; Mobile</a>
+      </div>
+     </div>
+     <div class="lb-col lb-tiny-24 lb-mid-12">
+      <div class="lb-none-pad lb-none-v-margin lb-box">
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/gametech/"> Game Tech</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/hpc/"> HPC</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/infrastructure-and-automation/"> Infrastructure &amp; Automation</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/industries/"> Industries</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/iot/"> Internet of Things</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/machine-learning/"> Machine Learning</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/media/"> Media</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/messaging-and-targeting/"> Messaging &amp; Targeting</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/networking-and-content-delivery/"> Networking &amp; Content Delivery</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/opensource/"> Open Source</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/publicsector/"> Public Sector</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/quantum-computing/" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> Quantum Computing</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/robotics/"> Robotics</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/awsforsap/"> SAP</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/security/"> Security, Identity, &amp; Compliance</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/startups/"> Startups</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/storage/"> Storage</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/training-and-certification/"> Training &amp; Certification</a>
+       <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/modernizing-with-aws/"> Windows on AWS</a>
+      </div>
+     </div>
+    </div>
+   </div>
+   <div class="lb-popover lb-popover-aui lb-popover-tiny" data-lb-comp="popover" data-id="blog-editions" data-action="hover" data-position="top">
+    <div class="lb-none-pad lb-box">
+     <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/cn/blogs/china/"> 中国版</a>
+     <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/fr/blogs/france/"> Édition Française</a>
+     <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/de/blogs/germany/"> Deutsche Edition</a>
+     <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/jp/blogs/news/"> 日本版</a>
+     <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/ko/blogs/korea/"> 한국 에디션</a>
+     <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/pt/blogs/aws-brasil/" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> Edição em Português</a>
+     <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/es/blogs/aws-spanish/" data-trk-params="{&quot;trkOverrideWithQs&quot;:true}"> Edición en Español</a>
+     <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/blogs/"> English Edition</a>
+     <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/ru/blogs/rus/"> Версия на русском</a>
+     <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/id/blogs/indonesia/"> Edisi Bahasa Indonesia</a>
+     <a class="lb-txt-none lb-txt" href="https://aws.amazon.com/tr/blogs/turkey/"> Türkçe Sürüm</a>
+    </div>
+   </div>
+   <div class="lb-popover lb-popover-aui lb-popover-tiny" data-lb-comp="popover" data-id="blog-follow" data-action="hover" data-position="top">
+    <div class="lb-none-pad lb-box">
+     <a class="lb-txt-none lb-txt" href="https://pages.awscloud.com/communication-preferences?sc_ichannel=ha&amp;sc_icampaign=multi_emailoptin&amp;sc_isegment=en&amp;sc_iplace=fl-nav&amp;sc_icontent=subscribe_for_updates&amp;trkCampaign=EmailOptin&amp;trk=blog"> Mailing List</a>
+    </div>
+   </div>
+  </div>
+  <div id="aws-page-content" class="lb-page-content lb-page-with-sticky-subnav blog-page blog-posts" data-page-alert-target="true">
+   <div class="aws-blog-content lb-row lb-row-max-large lb-snap">
+    <main class="lb-col lb-tiny-24" role="main">
+     <h2 class="lb-h5 blog-title"><a href="https://aws.amazon.com/blogs/security/">AWS Security Blog</a></h2>
+     <h1 class="lb-h2 blog-title">Category: AWS Secrets Manager</h1>
+     <article class="blog-post" vocab="http://schema.org/" typeof="TechArticle">
+      <meta property="inLanguage" content="en-US">
+      <meta property="image" content="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2021/09/24/Manage-AWS-Directory-Service-credentials-ForSocial.jpg">
+      <div class="lb-row lb-snap">
+       <div class="lb-col lb-mid-6 lb-tiny-24">
+        <a href="https://aws.amazon.com/blogs/security/manage-your-aws-directory-service-credentials-using-aws-secrets-manager/" property="url" rel="bookmark"><img width="800" height="400" src="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2021/09/24/Manage-AWS-Directory-Service-credentials-ForSocial.jpg" class="attachment-large size-large wp-post-image" alt=""></a>
+       </div>
+       <div class="lb-col lb-mid-18 lb-tiny-24">
+        <h2 class="blog-post-title"><a href="https://aws.amazon.com/blogs/security/manage-your-aws-directory-service-credentials-using-aws-secrets-manager/" property="url" rel="bookmark"><span property="name headline">Manage your AWS Directory Service credentials using AWS Secrets Manager</span></a></h2>
+        <footer class="blog-post-meta" data-lb-comp="aws-blog:share-dialog">
+          by
+         <span property="author" typeof="Person"><span property="name">Ashwin Bhargava</span></span> and
+         <span property="author" typeof="Person"><span property="name">Satya Vajrapu</span></span> | on
+         <time property="datePublished" datetime="2021-09-28T09:53:15-07:00">28 SEP 2021</time> | in
+         <span class="blog-post-categories"><a href="https://aws.amazon.com/blogs/security/category/learning-levels/advanced-300/" title="View all posts in Advanced (300)"><span property="articleSection">Advanced (300)</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-directory-service/" title="View all posts in AWS Directory Service"><span property="articleSection">AWS Directory Service</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/" title="View all posts in AWS Secrets Manager"><span property="articleSection">AWS Secrets Manager</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/" title="View all posts in Security, Identity, &amp; Compliance"><span property="articleSection">Security, Identity, &amp; Compliance</span></a></span> |
+         <a href="https://aws.amazon.com/blogs/security/manage-your-aws-directory-service-credentials-using-aws-secrets-manager/" property="url">Permalink</a> |
+         <a id="aws-comment-trigger-22339" href="https://commenting.awsblogs.com/embed.html?disqus_shortname=aws-security-blog&amp;disqus_identifier=22339&amp;disqus_title=Manage+your+AWS+Directory+Service+credentials+using+AWS+Secrets+Manager&amp;disqus_url=https://aws.amazon.com/blogs/security/manage-your-aws-directory-service-credentials-using-aws-secrets-manager/" data-lb-comp="aws-blog:commenting" data-sandbox-attr="allow-forms allow-scripts allow-popups allow-same-origin" property="discussionUrl"><i class="icon-comment"></i> Comments</a> |
+         <a href="#" role="button" data-share-dialog-toggle><span class="span icon-share"></span>&nbsp;Share</a>
+         <div class="blog-share-dialog" data-share-dialog style="display: none;">
+          <ul>
+           <li> <a class="lb-txt" href="https://www.facebook.com/sharer/sharer.php?u=https://aws.amazon.com/blogs/security/manage-your-aws-directory-service-credentials-using-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-facebook-square" aria-label="Share on Facebook"></span></a> </li>
+           <li> <a class="lb-txt" href="https://twitter.com/intent/tweet/?text=Manage%20your%20AWS%20Directory%20Service%20credentials%20using%20AWS%20Secrets%20Manager&amp;via=awscloud&amp;url=https://aws.amazon.com/blogs/security/manage-your-aws-directory-service-credentials-using-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-twitter-square" aria-label="Share on Twitter"></span></a> </li>
+           <li> <a class="lb-txt" href="https://www.linkedin.com/shareArticle?mini=true&amp;title=Manage%20your%20AWS%20Directory%20Service%20credentials%20using%20AWS%20Secrets%20Manager&amp;source=Amazon%20Web%20Services&amp;url=https://aws.amazon.com/blogs/security/manage-your-aws-directory-service-credentials-using-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-linkedin-square" aria-label="Share on LinkedIn"></span></a> </li>
+           <li> <a class="lb-txt" href="mailto:?subject=Manage%20your%20AWS%20Directory%20Service%20credentials%20using%20AWS%20Secrets%20Manager&amp;body=Manage%20your%20AWS%20Directory%20Service%20credentials%20using%20AWS%20Secrets%20Manager%0A%0Ahttps://aws.amazon.com/blogs/security/manage-your-aws-directory-service-credentials-using-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-envelope-square" aria-label="Share on Email"></span></a> </li>
+           <li class="blog-share-dialog-url"><input type="text" value="https://aws.amazon.com/blogs/security/manage-your-aws-directory-service-credentials-using-aws-secrets-manager/" title="Link to Manage your AWS Directory Service credentials using AWS Secrets Manager" readonly data-share-dialog-url></li>
+          </ul>
+         </div>
+        </footer>
+        <section class="blog-post-excerpt" property="description">
+         <p>AWS Secrets Manager helps you protect the secrets that are needed to access your applications, services, and IT resources. With this service, you can rotate, manage, and retrieve database credentials, API keys, OAuth tokens, and other secrets throughout their lifecycle. The secret value rotation feature has built-in integration for services like Amazon Relational Database Service […]</p>
+         <a href="https://aws.amazon.com/blogs/security/manage-your-aws-directory-service-credentials-using-aws-secrets-manager/" class="blog-read-more blog-btn-a blog-btn-a-small">Read More</a>
+        </section>
+       </div>
+      </div>
+     </article>
+     <article class="blog-post" vocab="http://schema.org/" typeof="TechArticle">
+      <meta property="inLanguage" content="en-US">
+      <meta property="image" content="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2021/04/21/AWS-Secrets-Configuration-Provider-2021-ForSocial.jpg">
+      <div class="lb-row lb-snap">
+       <div class="lb-col lb-mid-6 lb-tiny-24">
+        <a href="https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-configuration-provider-with-kubernetes-secrets-store-csi-driver/" property="url" rel="bookmark"><img width="800" height="400" src="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2021/04/21/AWS-Secrets-Configuration-Provider-2021-ForSocial.jpg" class="attachment-large size-large wp-post-image" alt=""></a>
+       </div>
+       <div class="lb-col lb-mid-18 lb-tiny-24">
+        <h2 class="blog-post-title"><a href="https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-configuration-provider-with-kubernetes-secrets-store-csi-driver/" property="url" rel="bookmark"><span property="name headline">How to use AWS Secrets &amp; Configuration Provider with your Kubernetes Secrets Store CSI driver</span></a></h2>
+        <footer class="blog-post-meta" data-lb-comp="aws-blog:share-dialog">
+          by
+         <span property="author" typeof="Person"><span property="name">Tracy Pierce</span></span> | on
+         <time property="datePublished" datetime="2021-04-22T15:58:26-07:00">22 APR 2021</time> | in
+         <span class="blog-post-categories"><a href="https://aws.amazon.com/blogs/security/category/learning-levels/advanced-300/" title="View all posts in Advanced (300)"><span property="articleSection">Advanced (300)</span></a>, <a href="https://aws.amazon.com/blogs/security/category/compute/amazon-kubernetes-service/" title="View all posts in Amazon Elastic Kubernetes Service"><span property="articleSection">Amazon Elastic Kubernetes Service</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/" title="View all posts in AWS Secrets Manager"><span property="articleSection">AWS Secrets Manager</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/" title="View all posts in Security, Identity, &amp; Compliance"><span property="articleSection">Security, Identity, &amp; Compliance</span></a></span> |
+         <a href="https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-configuration-provider-with-kubernetes-secrets-store-csi-driver/" property="url">Permalink</a> |
+         <a id="aws-comment-trigger-20152" href="https://commenting.awsblogs.com/embed.html?disqus_shortname=aws-security-blog&amp;disqus_identifier=20152&amp;disqus_title=How+to+use+AWS+Secrets+%26amp%3B+Configuration+Provider+with+your+Kubernetes+Secrets+Store+CSI+driver&amp;disqus_url=https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-configuration-provider-with-kubernetes-secrets-store-csi-driver/" data-lb-comp="aws-blog:commenting" data-sandbox-attr="allow-forms allow-scripts allow-popups allow-same-origin" property="discussionUrl"><i class="icon-comment"></i> Comments</a> |
+         <a href="#" role="button" data-share-dialog-toggle><span class="span icon-share"></span>&nbsp;Share</a>
+         <div class="blog-share-dialog" data-share-dialog style="display: none;">
+          <ul>
+           <li> <a class="lb-txt" href="https://www.facebook.com/sharer/sharer.php?u=https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-configuration-provider-with-kubernetes-secrets-store-csi-driver/" target="_blank" rel="noopener noreferrer"><span class="icon-facebook-square" aria-label="Share on Facebook"></span></a> </li>
+           <li> <a class="lb-txt" href="https://twitter.com/intent/tweet/?text=How%20to%20use%20AWS%20Secrets%20%26amp%3B%20Configuration%20Provider%20with%20your%20Kubernetes%20Secrets%20Store%20CSI%20driver&amp;via=awscloud&amp;url=https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-configuration-provider-with-kubernetes-secrets-store-csi-driver/" target="_blank" rel="noopener noreferrer"><span class="icon-twitter-square" aria-label="Share on Twitter"></span></a> </li>
+           <li> <a class="lb-txt" href="https://www.linkedin.com/shareArticle?mini=true&amp;title=How%20to%20use%20AWS%20Secrets%20%26amp%3B%20Configuration%20Provider%20with%20your%20Kubernetes%20Secrets%20Store%20CSI%20driver&amp;source=Amazon%20Web%20Services&amp;url=https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-configuration-provider-with-kubernetes-secrets-store-csi-driver/" target="_blank" rel="noopener noreferrer"><span class="icon-linkedin-square" aria-label="Share on LinkedIn"></span></a> </li>
+           <li> <a class="lb-txt" href="mailto:?subject=How%20to%20use%20AWS%20Secrets%20%26amp%3B%20Configuration%20Provider%20with%20your%20Kubernetes%20Secrets%20Store%20CSI%20driver&amp;body=How%20to%20use%20AWS%20Secrets%20%26amp%3B%20Configuration%20Provider%20with%20your%20Kubernetes%20Secrets%20Store%20CSI%20driver%0A%0Ahttps://aws.amazon.com/blogs/security/how-to-use-aws-secrets-configuration-provider-with-kubernetes-secrets-store-csi-driver/" target="_blank" rel="noopener noreferrer"><span class="icon-envelope-square" aria-label="Share on Email"></span></a> </li>
+           <li class="blog-share-dialog-url"><input type="text" value="https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-configuration-provider-with-kubernetes-secrets-store-csi-driver/" title="Link to How to use AWS Secrets &amp; Configuration Provider with your Kubernetes Secrets Store CSI driver" readonly data-share-dialog-url></li>
+          </ul>
+         </div>
+        </footer>
+        <section class="blog-post-excerpt" property="description">
+         <p>April 29, 2021: We’ve updated the order of the commands in Step 1. April 23, 2021: We’ve updated the commands in Steps 1 and 5 and in the “Additional Features” section. AWS Secrets Manager now enables you to securely retrieve secrets from AWS Secrets Manager for use in your Amazon Elastic Kubernetes Service (Amazon EKS) […]</p>
+         <a href="https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-configuration-provider-with-kubernetes-secrets-store-csi-driver/" class="blog-read-more blog-btn-a blog-btn-a-small">Read More</a>
+        </section>
+       </div>
+      </div>
+     </article>
+     <article class="blog-post" vocab="http://schema.org/" typeof="TechArticle">
+      <meta property="inLanguage" content="en-US">
+      <meta property="image" content="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2021/02/28/Replicate-AWS-Secrets-Manager-2021-ForSocial.jpg">
+      <div class="lb-row lb-snap">
+       <div class="lb-col lb-mid-6 lb-tiny-24">
+        <a href="https://aws.amazon.com/blogs/security/how-to-replicate-secrets-aws-secrets-manager-multiple-regions/" property="url" rel="bookmark"><img width="1024" height="512" src="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2021/02/28/Replicate-AWS-Secrets-Manager-2021-ForSocial.jpg" class="attachment-large size-large wp-post-image" alt=""></a>
+       </div>
+       <div class="lb-col lb-mid-18 lb-tiny-24">
+        <h2 class="blog-post-title"><a href="https://aws.amazon.com/blogs/security/how-to-replicate-secrets-aws-secrets-manager-multiple-regions/" property="url" rel="bookmark"><span property="name headline">How to replicate secrets in AWS Secrets Manager to multiple Regions</span></a></h2>
+        <footer class="blog-post-meta" data-lb-comp="aws-blog:share-dialog">
+          by
+         <span property="author" typeof="Person"><span property="name">Fatima Ahmed</span></span> | on
+         <time property="datePublished" datetime="2021-03-04T11:52:07-07:00">04 MAR 2021</time> | in
+         <span class="blog-post-categories"><a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/" title="View all posts in AWS Secrets Manager"><span property="articleSection">AWS Secrets Manager</span></a>, <a href="https://aws.amazon.com/blogs/security/category/learning-levels/intermediate-200/" title="View all posts in Intermediate (200)"><span property="articleSection">Intermediate (200)</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/" title="View all posts in Security, Identity, &amp; Compliance"><span property="articleSection">Security, Identity, &amp; Compliance</span></a></span> |
+         <a href="https://aws.amazon.com/blogs/security/how-to-replicate-secrets-aws-secrets-manager-multiple-regions/" property="url">Permalink</a> |
+         <a id="aws-comment-trigger-19231" href="https://commenting.awsblogs.com/embed.html?disqus_shortname=aws-security-blog&amp;disqus_identifier=19231&amp;disqus_title=How+to+replicate+secrets+in+AWS+Secrets+Manager+to+multiple+Regions&amp;disqus_url=https://aws.amazon.com/blogs/security/how-to-replicate-secrets-aws-secrets-manager-multiple-regions/" data-lb-comp="aws-blog:commenting" data-sandbox-attr="allow-forms allow-scripts allow-popups allow-same-origin" property="discussionUrl"><i class="icon-comment"></i> Comments</a> |
+         <a href="#" role="button" data-share-dialog-toggle><span class="span icon-share"></span>&nbsp;Share</a>
+         <div class="blog-share-dialog" data-share-dialog style="display: none;">
+          <ul>
+           <li> <a class="lb-txt" href="https://www.facebook.com/sharer/sharer.php?u=https://aws.amazon.com/blogs/security/how-to-replicate-secrets-aws-secrets-manager-multiple-regions/" target="_blank" rel="noopener noreferrer"><span class="icon-facebook-square" aria-label="Share on Facebook"></span></a> </li>
+           <li> <a class="lb-txt" href="https://twitter.com/intent/tweet/?text=How%20to%20replicate%20secrets%20in%20AWS%20Secrets%20Manager%20to%20multiple%20Regions&amp;via=awscloud&amp;url=https://aws.amazon.com/blogs/security/how-to-replicate-secrets-aws-secrets-manager-multiple-regions/" target="_blank" rel="noopener noreferrer"><span class="icon-twitter-square" aria-label="Share on Twitter"></span></a> </li>
+           <li> <a class="lb-txt" href="https://www.linkedin.com/shareArticle?mini=true&amp;title=How%20to%20replicate%20secrets%20in%20AWS%20Secrets%20Manager%20to%20multiple%20Regions&amp;source=Amazon%20Web%20Services&amp;url=https://aws.amazon.com/blogs/security/how-to-replicate-secrets-aws-secrets-manager-multiple-regions/" target="_blank" rel="noopener noreferrer"><span class="icon-linkedin-square" aria-label="Share on LinkedIn"></span></a> </li>
+           <li> <a class="lb-txt" href="mailto:?subject=How%20to%20replicate%20secrets%20in%20AWS%20Secrets%20Manager%20to%20multiple%20Regions&amp;body=How%20to%20replicate%20secrets%20in%20AWS%20Secrets%20Manager%20to%20multiple%20Regions%0A%0Ahttps://aws.amazon.com/blogs/security/how-to-replicate-secrets-aws-secrets-manager-multiple-regions/" target="_blank" rel="noopener noreferrer"><span class="icon-envelope-square" aria-label="Share on Email"></span></a> </li>
+           <li class="blog-share-dialog-url"><input type="text" value="https://aws.amazon.com/blogs/security/how-to-replicate-secrets-aws-secrets-manager-multiple-regions/" title="Link to How to replicate secrets in AWS Secrets Manager to multiple Regions" readonly data-share-dialog-url></li>
+          </ul>
+         </div>
+        </footer>
+        <section class="blog-post-excerpt" property="description">
+         <p>On March 3, 2021, we launched a new feature for AWS Secrets Manager that makes it possible for you to replicate secrets across multiple AWS Regions. You can give your multi-Region applications access to replicated secrets in the required Regions and rely on Secrets Manager to keep the replicas in sync with the primary secret. […]</p>
+         <a href="https://aws.amazon.com/blogs/security/how-to-replicate-secrets-aws-secrets-manager-multiple-regions/" class="blog-read-more blog-btn-a blog-btn-a-small">Read More</a>
+        </section>
+       </div>
+      </div>
+     </article>
+     <article class="blog-post" vocab="http://schema.org/" typeof="TechArticle">
+      <meta property="inLanguage" content="en-US">
+      <meta property="image" content="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2020/12/27/AWS-Secrets-Manager-Dec-2020-ForSocial-1260x630.jpg">
+      <div class="lb-row lb-snap">
+       <div class="lb-col lb-mid-6 lb-tiny-24">
+        <a href="https://aws.amazon.com/blogs/security/use-aws-secrets-manager-to-simplify-the-management-of-private-certificates/" property="url" rel="bookmark"><img width="1024" height="512" src="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2020/12/27/AWS-Secrets-Manager-Dec-2020-ForSocial-1024x512.jpg" class="attachment-large size-large wp-post-image" alt=""></a>
+       </div>
+       <div class="lb-col lb-mid-18 lb-tiny-24">
+        <h2 class="blog-post-title"><a href="https://aws.amazon.com/blogs/security/use-aws-secrets-manager-to-simplify-the-management-of-private-certificates/" property="url" rel="bookmark"><span property="name headline">Use AWS Secrets Manager to simplify the management of private certificates</span></a></h2>
+        <footer class="blog-post-meta" data-lb-comp="aws-blog:share-dialog">
+          by
+         <span property="author" typeof="Person"><span property="name">Maitreya Ranganath</span></span> and
+         <span property="author" typeof="Person"><span property="name">Blake Franzen</span></span> | on
+         <time property="datePublished" datetime="2021-01-07T13:00:36-07:00">07 JAN 2021</time> | in
+         <span class="blog-post-categories"><a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-certificate-manager/" title="View all posts in AWS Certificate Manager"><span property="articleSection">AWS Certificate Manager</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/" title="View all posts in AWS Secrets Manager"><span property="articleSection">AWS Secrets Manager</span></a>, <a href="https://aws.amazon.com/blogs/security/category/learning-levels/intermediate-200/" title="View all posts in Intermediate (200)"><span property="articleSection">Intermediate (200)</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/" title="View all posts in Security, Identity, &amp; Compliance"><span property="articleSection">Security, Identity, &amp; Compliance</span></a></span> |
+         <a href="https://aws.amazon.com/blogs/security/use-aws-secrets-manager-to-simplify-the-management-of-private-certificates/" property="url">Permalink</a> |
+         <a id="aws-comment-trigger-18042" href="https://commenting.awsblogs.com/embed.html?disqus_shortname=aws-security-blog&amp;disqus_identifier=18042&amp;disqus_title=Use+AWS+Secrets+Manager+to+simplify+the+management+of+private+certificates&amp;disqus_url=https://aws.amazon.com/blogs/security/use-aws-secrets-manager-to-simplify-the-management-of-private-certificates/" data-lb-comp="aws-blog:commenting" data-sandbox-attr="allow-forms allow-scripts allow-popups allow-same-origin" property="discussionUrl"><i class="icon-comment"></i> Comments</a> |
+         <a href="#" role="button" data-share-dialog-toggle><span class="span icon-share"></span>&nbsp;Share</a>
+         <div class="blog-share-dialog" data-share-dialog style="display: none;">
+          <ul>
+           <li> <a class="lb-txt" href="https://www.facebook.com/sharer/sharer.php?u=https://aws.amazon.com/blogs/security/use-aws-secrets-manager-to-simplify-the-management-of-private-certificates/" target="_blank" rel="noopener noreferrer"><span class="icon-facebook-square" aria-label="Share on Facebook"></span></a> </li>
+           <li> <a class="lb-txt" href="https://twitter.com/intent/tweet/?text=Use%20AWS%20Secrets%20Manager%20to%20simplify%20the%20management%20of%20private%20certificates&amp;via=awscloud&amp;url=https://aws.amazon.com/blogs/security/use-aws-secrets-manager-to-simplify-the-management-of-private-certificates/" target="_blank" rel="noopener noreferrer"><span class="icon-twitter-square" aria-label="Share on Twitter"></span></a> </li>
+           <li> <a class="lb-txt" href="https://www.linkedin.com/shareArticle?mini=true&amp;title=Use%20AWS%20Secrets%20Manager%20to%20simplify%20the%20management%20of%20private%20certificates&amp;source=Amazon%20Web%20Services&amp;url=https://aws.amazon.com/blogs/security/use-aws-secrets-manager-to-simplify-the-management-of-private-certificates/" target="_blank" rel="noopener noreferrer"><span class="icon-linkedin-square" aria-label="Share on LinkedIn"></span></a> </li>
+           <li> <a class="lb-txt" href="mailto:?subject=Use%20AWS%20Secrets%20Manager%20to%20simplify%20the%20management%20of%20private%20certificates&amp;body=Use%20AWS%20Secrets%20Manager%20to%20simplify%20the%20management%20of%20private%20certificates%0A%0Ahttps://aws.amazon.com/blogs/security/use-aws-secrets-manager-to-simplify-the-management-of-private-certificates/" target="_blank" rel="noopener noreferrer"><span class="icon-envelope-square" aria-label="Share on Email"></span></a> </li>
+           <li class="blog-share-dialog-url"><input type="text" value="https://aws.amazon.com/blogs/security/use-aws-secrets-manager-to-simplify-the-management-of-private-certificates/" title="Link to Use AWS Secrets Manager to simplify the management of private certificates" readonly data-share-dialog-url></li>
+          </ul>
+         </div>
+        </footer>
+        <section class="blog-post-excerpt" property="description">
+         <p>AWS Certificate Manager (ACM) lets you easily provision, manage, and deploy public and private Secure Sockets Layer/Transport Layer Security (SSL/TLS) certificates for use with Amazon Web Services (AWS) services and your internal connected resources. For private certificates, AWS Certificate Manager Private Certificate Authority (ACM PCA) can be used to create private CA hierarchies, including root […]</p>
+         <a href="https://aws.amazon.com/blogs/security/use-aws-secrets-manager-to-simplify-the-management-of-private-certificates/" class="blog-read-more blog-btn-a blog-btn-a-small">Read More</a>
+        </section>
+       </div>
+      </div>
+     </article>
+     <article class="blog-post" vocab="http://schema.org/" typeof="TechArticle">
+      <meta property="inLanguage" content="en-US">
+      <meta property="image" content="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2020/10/18/Enhance-Amazon-CloudFront-Origin-ForSocial-1260x630.jpg">
+      <div class="lb-row lb-snap">
+       <div class="lb-col lb-mid-6 lb-tiny-24">
+        <a href="https://aws.amazon.com/blogs/security/how-to-enhance-amazon-cloudfront-origin-security-with-aws-waf-and-aws-secrets-manager/" property="url" rel="bookmark"><img width="1024" height="512" src="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2020/10/18/Enhance-Amazon-CloudFront-Origin-ForSocial-1024x512.jpg" class="attachment-large size-large wp-post-image" alt=""></a>
+       </div>
+       <div class="lb-col lb-mid-18 lb-tiny-24">
+        <h2 class="blog-post-title"><a href="https://aws.amazon.com/blogs/security/how-to-enhance-amazon-cloudfront-origin-security-with-aws-waf-and-aws-secrets-manager/" property="url" rel="bookmark"><span property="name headline">How to enhance Amazon CloudFront origin security with AWS WAF and AWS Secrets Manager</span></a></h2>
+        <footer class="blog-post-meta" data-lb-comp="aws-blog:share-dialog">
+          by
+         <span property="author" typeof="Person"><span property="name">Cameron Worrell</span></span> | on
+         <time property="datePublished" datetime="2020-10-22T09:35:22-07:00">22 OCT 2020</time> | in
+         <span class="blog-post-categories"><a href="https://aws.amazon.com/blogs/security/category/networking-content-delivery/amazon-cloudfront/" title="View all posts in Amazon CloudFront"><span property="articleSection">Amazon CloudFront</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/" title="View all posts in AWS Secrets Manager"><span property="articleSection">AWS Secrets Manager</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-waf/" title="View all posts in AWS WAF"><span property="articleSection">AWS WAF</span></a>, <a href="https://aws.amazon.com/blogs/security/category/learning-levels/intermediate-200/" title="View all posts in Intermediate (200)"><span property="articleSection">Intermediate (200)</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/" title="View all posts in Security, Identity, &amp; Compliance"><span property="articleSection">Security, Identity, &amp; Compliance</span></a></span> |
+         <a href="https://aws.amazon.com/blogs/security/how-to-enhance-amazon-cloudfront-origin-security-with-aws-waf-and-aws-secrets-manager/" property="url">Permalink</a> |
+         <a id="aws-comment-trigger-16667" href="https://commenting.awsblogs.com/embed.html?disqus_shortname=aws-security-blog&amp;disqus_identifier=16667&amp;disqus_title=How+to+enhance+Amazon+CloudFront+origin+security+with+AWS+WAF+and+AWS+Secrets+Manager&amp;disqus_url=https://aws.amazon.com/blogs/security/how-to-enhance-amazon-cloudfront-origin-security-with-aws-waf-and-aws-secrets-manager/" data-lb-comp="aws-blog:commenting" data-sandbox-attr="allow-forms allow-scripts allow-popups allow-same-origin" property="discussionUrl"><i class="icon-comment"></i> Comments</a> |
+         <a href="#" role="button" data-share-dialog-toggle><span class="span icon-share"></span>&nbsp;Share</a>
+         <div class="blog-share-dialog" data-share-dialog style="display: none;">
+          <ul>
+           <li> <a class="lb-txt" href="https://www.facebook.com/sharer/sharer.php?u=https://aws.amazon.com/blogs/security/how-to-enhance-amazon-cloudfront-origin-security-with-aws-waf-and-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-facebook-square" aria-label="Share on Facebook"></span></a> </li>
+           <li> <a class="lb-txt" href="https://twitter.com/intent/tweet/?text=How%20to%20enhance%20Amazon%20CloudFront%20origin%20security%20with%20AWS%20WAF%20and%20AWS%20Secrets%20Manager&amp;via=awscloud&amp;url=https://aws.amazon.com/blogs/security/how-to-enhance-amazon-cloudfront-origin-security-with-aws-waf-and-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-twitter-square" aria-label="Share on Twitter"></span></a> </li>
+           <li> <a class="lb-txt" href="https://www.linkedin.com/shareArticle?mini=true&amp;title=How%20to%20enhance%20Amazon%20CloudFront%20origin%20security%20with%20AWS%20WAF%20and%20AWS%20Secrets%20Manager&amp;source=Amazon%20Web%20Services&amp;url=https://aws.amazon.com/blogs/security/how-to-enhance-amazon-cloudfront-origin-security-with-aws-waf-and-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-linkedin-square" aria-label="Share on LinkedIn"></span></a> </li>
+           <li> <a class="lb-txt" href="mailto:?subject=How%20to%20enhance%20Amazon%20CloudFront%20origin%20security%20with%20AWS%20WAF%20and%20AWS%20Secrets%20Manager&amp;body=How%20to%20enhance%20Amazon%20CloudFront%20origin%20security%20with%20AWS%20WAF%20and%20AWS%20Secrets%20Manager%0A%0Ahttps://aws.amazon.com/blogs/security/how-to-enhance-amazon-cloudfront-origin-security-with-aws-waf-and-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-envelope-square" aria-label="Share on Email"></span></a> </li>
+           <li class="blog-share-dialog-url"><input type="text" value="https://aws.amazon.com/blogs/security/how-to-enhance-amazon-cloudfront-origin-security-with-aws-waf-and-aws-secrets-manager/" title="Link to How to enhance Amazon CloudFront origin security with AWS WAF and AWS Secrets Manager" readonly data-share-dialog-url></li>
+          </ul>
+         </div>
+        </footer>
+        <section class="blog-post-excerpt" property="description">
+         <p>Whether your web applications provide static or dynamic content, you can improve their performance, availability, and security by using Amazon CloudFront as your content delivery network (CDN). CloudFront is a web service that speeds up distribution of your web content through a worldwide network of data centers called edge locations. CloudFront ensures that end-user requests […]</p>
+         <a href="https://aws.amazon.com/blogs/security/how-to-enhance-amazon-cloudfront-origin-security-with-aws-waf-and-aws-secrets-manager/" class="blog-read-more blog-btn-a blog-btn-a-small">Read More</a>
+        </section>
+       </div>
+      </div>
+     </article>
+     <article class="blog-post" vocab="http://schema.org/" typeof="TechArticle">
+      <meta property="inLanguage" content="en-US">
+      <meta property="image" content="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2020/07/09/Secrets-Manager-Social-800x400-1.jpg">
+      <div class="lb-row lb-snap">
+       <div class="lb-col lb-mid-6 lb-tiny-24">
+        <a href="https://aws.amazon.com/blogs/security/identify-arrange-manage-secrets-easily-using-enhanced-search-in-aws-secrets-manager/" property="url" rel="bookmark"><img width="800" height="400" src="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2020/07/09/Secrets-Manager-Social-800x400-1.jpg" class="attachment-large size-large wp-post-image" alt=""></a>
+       </div>
+       <div class="lb-col lb-mid-18 lb-tiny-24">
+        <h2 class="blog-post-title"><a href="https://aws.amazon.com/blogs/security/identify-arrange-manage-secrets-easily-using-enhanced-search-in-aws-secrets-manager/" property="url" rel="bookmark"><span property="name headline">Identify, arrange, and manage secrets easily using enhanced search in AWS Secrets Manager</span></a></h2>
+        <footer class="blog-post-meta" data-lb-comp="aws-blog:share-dialog">
+          by
+         <span property="author" typeof="Person"><span property="name">David Ogunmola</span></span> and
+         <span property="author" typeof="Person"><span property="name">Divya Sridhar</span></span> | on
+         <time property="datePublished" datetime="2020-07-10T09:02:43-07:00">10 JUL 2020</time> | in
+         <span class="blog-post-categories"><a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/" title="View all posts in AWS Secrets Manager"><span property="articleSection">AWS Secrets Manager</span></a>, <a href="https://aws.amazon.com/blogs/security/category/learning-levels/foundational-100/" title="View all posts in Foundational (100)"><span property="articleSection">Foundational (100)</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/" title="View all posts in Security, Identity, &amp; Compliance"><span property="articleSection">Security, Identity, &amp; Compliance</span></a></span> |
+         <a href="https://aws.amazon.com/blogs/security/identify-arrange-manage-secrets-easily-using-enhanced-search-in-aws-secrets-manager/" property="url">Permalink</a> |
+         <a id="aws-comment-trigger-14461" href="https://commenting.awsblogs.com/embed.html?disqus_shortname=aws-security-blog&amp;disqus_identifier=14461&amp;disqus_title=Identify%2C+arrange%2C+and+manage+secrets+easily+using+enhanced+search+in+AWS+Secrets+Manager&amp;disqus_url=https://aws.amazon.com/blogs/security/identify-arrange-manage-secrets-easily-using-enhanced-search-in-aws-secrets-manager/" data-lb-comp="aws-blog:commenting" data-sandbox-attr="allow-forms allow-scripts allow-popups allow-same-origin" property="discussionUrl"><i class="icon-comment"></i> Comments</a> |
+         <a href="#" role="button" data-share-dialog-toggle><span class="span icon-share"></span>&nbsp;Share</a>
+         <div class="blog-share-dialog" data-share-dialog style="display: none;">
+          <ul>
+           <li> <a class="lb-txt" href="https://www.facebook.com/sharer/sharer.php?u=https://aws.amazon.com/blogs/security/identify-arrange-manage-secrets-easily-using-enhanced-search-in-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-facebook-square" aria-label="Share on Facebook"></span></a> </li>
+           <li> <a class="lb-txt" href="https://twitter.com/intent/tweet/?text=Identify%2C%20arrange%2C%20and%20manage%20secrets%20easily%20using%20enhanced%20search%20in%20AWS%20Secrets%20Manager&amp;via=awscloud&amp;url=https://aws.amazon.com/blogs/security/identify-arrange-manage-secrets-easily-using-enhanced-search-in-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-twitter-square" aria-label="Share on Twitter"></span></a> </li>
+           <li> <a class="lb-txt" href="https://www.linkedin.com/shareArticle?mini=true&amp;title=Identify%2C%20arrange%2C%20and%20manage%20secrets%20easily%20using%20enhanced%20search%20in%20AWS%20Secrets%20Manager&amp;source=Amazon%20Web%20Services&amp;url=https://aws.amazon.com/blogs/security/identify-arrange-manage-secrets-easily-using-enhanced-search-in-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-linkedin-square" aria-label="Share on LinkedIn"></span></a> </li>
+           <li> <a class="lb-txt" href="mailto:?subject=Identify%2C%20arrange%2C%20and%20manage%20secrets%20easily%20using%20enhanced%20search%20in%20AWS%20Secrets%20Manager&amp;body=Identify%2C%20arrange%2C%20and%20manage%20secrets%20easily%20using%20enhanced%20search%20in%20AWS%20Secrets%20Manager%0A%0Ahttps://aws.amazon.com/blogs/security/identify-arrange-manage-secrets-easily-using-enhanced-search-in-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-envelope-square" aria-label="Share on Email"></span></a> </li>
+           <li class="blog-share-dialog-url"><input type="text" value="https://aws.amazon.com/blogs/security/identify-arrange-manage-secrets-easily-using-enhanced-search-in-aws-secrets-manager/" title="Link to Identify, arrange, and manage secrets easily using enhanced search in AWS Secrets Manager" readonly data-share-dialog-url></li>
+          </ul>
+         </div>
+        </footer>
+        <section class="blog-post-excerpt" property="description">
+         <p>AWS Secrets Manager now enables you to search secrets based on attributes such as secret name, description, tag keys, and tag values. With this launch, you can easily identify, arrange, and manage your secrets into logical groups that can then be used by specific applications, departments, or employees. For example, you can use the Secrets […]</p>
+         <a href="https://aws.amazon.com/blogs/security/identify-arrange-manage-secrets-easily-using-enhanced-search-in-aws-secrets-manager/" class="blog-read-more blog-btn-a blog-btn-a-small">Read More</a>
+        </section>
+       </div>
+      </div>
+     </article>
+     <article class="blog-post" vocab="http://schema.org/" typeof="TechArticle">
+      <meta property="inLanguage" content="en-US">
+      <meta property="image" content="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2020/07/10/Resource-Based-Policies-Secrets-Manager-For-Social-400x800-1.jpg">
+      <div class="lb-row lb-snap">
+       <div class="lb-col lb-mid-6 lb-tiny-24">
+        <a href="https://aws.amazon.com/blogs/security/how-to-use-resource-based-policies-aws-secrets-manager-console-to-securely-access-secrets-aws-accounts/" property="url" rel="bookmark"><img width="800" height="400" src="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2020/07/10/Resource-Based-Policies-Secrets-Manager-For-Social-400x800-1.jpg" class="attachment-large size-large wp-post-image" alt=""></a>
+       </div>
+       <div class="lb-col lb-mid-18 lb-tiny-24">
+        <h2 class="blog-post-title"><a href="https://aws.amazon.com/blogs/security/how-to-use-resource-based-policies-aws-secrets-manager-console-to-securely-access-secrets-aws-accounts/" property="url" rel="bookmark"><span property="name headline">How to use resource-based policies in the AWS Secrets Manager console to securely access secrets across AWS accounts</span></a></h2>
+        <footer class="blog-post-meta" data-lb-comp="aws-blog:share-dialog">
+          by
+         <span property="author" typeof="Person"><span property="name">Tracy Pierce</span></span> | on
+         <time property="datePublished" datetime="2020-07-10T09:02:06-07:00">10 JUL 2020</time> | in
+         <span class="blog-post-categories"><a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/" title="View all posts in AWS Secrets Manager"><span property="articleSection">AWS Secrets Manager</span></a>, <a href="https://aws.amazon.com/blogs/security/category/learning-levels/foundational-100/" title="View all posts in Foundational (100)"><span property="articleSection">Foundational (100)</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/" title="View all posts in Security, Identity, &amp; Compliance"><span property="articleSection">Security, Identity, &amp; Compliance</span></a></span> |
+         <a href="https://aws.amazon.com/blogs/security/how-to-use-resource-based-policies-aws-secrets-manager-console-to-securely-access-secrets-aws-accounts/" property="url">Permalink</a> |
+         <a id="aws-comment-trigger-14476" href="https://commenting.awsblogs.com/embed.html?disqus_shortname=aws-security-blog&amp;disqus_identifier=14476&amp;disqus_title=How+to+use+resource-based+policies+in+the+AWS+Secrets+Manager+console+to+securely+access+secrets+across+AWS+accounts&amp;disqus_url=https://aws.amazon.com/blogs/security/how-to-use-resource-based-policies-aws-secrets-manager-console-to-securely-access-secrets-aws-accounts/" data-lb-comp="aws-blog:commenting" data-sandbox-attr="allow-forms allow-scripts allow-popups allow-same-origin" property="discussionUrl"><i class="icon-comment"></i> Comments</a> |
+         <a href="#" role="button" data-share-dialog-toggle><span class="span icon-share"></span>&nbsp;Share</a>
+         <div class="blog-share-dialog" data-share-dialog style="display: none;">
+          <ul>
+           <li> <a class="lb-txt" href="https://www.facebook.com/sharer/sharer.php?u=https://aws.amazon.com/blogs/security/how-to-use-resource-based-policies-aws-secrets-manager-console-to-securely-access-secrets-aws-accounts/" target="_blank" rel="noopener noreferrer"><span class="icon-facebook-square" aria-label="Share on Facebook"></span></a> </li>
+           <li> <a class="lb-txt" href="https://twitter.com/intent/tweet/?text=How%20to%20use%20resource-based%20policies%20in%20the%20AWS%20Secrets%20Manager%20console%20to%20securely%20access%20secrets%20across%20AWS%20accounts&amp;via=awscloud&amp;url=https://aws.amazon.com/blogs/security/how-to-use-resource-based-policies-aws-secrets-manager-console-to-securely-access-secrets-aws-accounts/" target="_blank" rel="noopener noreferrer"><span class="icon-twitter-square" aria-label="Share on Twitter"></span></a> </li>
+           <li> <a class="lb-txt" href="https://www.linkedin.com/shareArticle?mini=true&amp;title=How%20to%20use%20resource-based%20policies%20in%20the%20AWS%20Secrets%20Manager%20console%20to%20securely%20access%20secrets%20across%20AWS%20accounts&amp;source=Amazon%20Web%20Services&amp;url=https://aws.amazon.com/blogs/security/how-to-use-resource-based-policies-aws-secrets-manager-console-to-securely-access-secrets-aws-accounts/" target="_blank" rel="noopener noreferrer"><span class="icon-linkedin-square" aria-label="Share on LinkedIn"></span></a> </li>
+           <li> <a class="lb-txt" href="mailto:?subject=How%20to%20use%20resource-based%20policies%20in%20the%20AWS%20Secrets%20Manager%20console%20to%20securely%20access%20secrets%20across%20AWS%20accounts&amp;body=How%20to%20use%20resource-based%20policies%20in%20the%20AWS%20Secrets%20Manager%20console%20to%20securely%20access%20secrets%20across%20AWS%20accounts%0A%0Ahttps://aws.amazon.com/blogs/security/how-to-use-resource-based-policies-aws-secrets-manager-console-to-securely-access-secrets-aws-accounts/" target="_blank" rel="noopener noreferrer"><span class="icon-envelope-square" aria-label="Share on Email"></span></a> </li>
+           <li class="blog-share-dialog-url"><input type="text" value="https://aws.amazon.com/blogs/security/how-to-use-resource-based-policies-aws-secrets-manager-console-to-securely-access-secrets-aws-accounts/" title="Link to How to use resource-based policies in the AWS Secrets Manager console to securely access secrets across AWS accounts" readonly data-share-dialog-url></li>
+          </ul>
+         </div>
+        </footer>
+        <section class="blog-post-excerpt" property="description">
+         <p>AWS Secrets Manager now enables you to create and manage your resource-based policies using the Secrets Manager console. With this launch, we are also improving your security posture by both identifying and preventing creation of resource policies that grant overly broad access to your secrets across your Amazon Web Services (AWS) accounts. To achieve this, […]</p>
+         <a href="https://aws.amazon.com/blogs/security/how-to-use-resource-based-policies-aws-secrets-manager-console-to-securely-access-secrets-aws-accounts/" class="blog-read-more blog-btn-a blog-btn-a-small">Read More</a>
+        </section>
+       </div>
+      </div>
+     </article>
+     <article class="blog-post" vocab="http://schema.org/" typeof="TechArticle">
+      <meta property="inLanguage" content="en-US">
+      <meta property="image" content="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2020/04/17/Config-Secrets-Manager-for-social-800x400-1.jpg">
+      <div class="lb-row lb-snap">
+       <div class="lb-col lb-mid-6 lb-tiny-24">
+        <a href="https://aws.amazon.com/blogs/security/how-to-track-changes-to-secrets-stored-in-aws-secrets-manager-using-aws-config-and-aws-config-rules/" property="url" rel="bookmark"><img width="800" height="400" src="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2020/04/17/Config-Secrets-Manager-for-social-800x400-1.jpg" class="attachment-large size-large wp-post-image" alt=""></a>
+       </div>
+       <div class="lb-col lb-mid-18 lb-tiny-24">
+        <h2 class="blog-post-title"><a href="https://aws.amazon.com/blogs/security/how-to-track-changes-to-secrets-stored-in-aws-secrets-manager-using-aws-config-and-aws-config-rules/" property="url" rel="bookmark"><span property="name headline">How to track changes to secrets stored in AWS Secrets Manager using AWS Config and AWS Config Rules</span></a></h2>
+        <footer class="blog-post-meta" data-lb-comp="aws-blog:share-dialog">
+          by
+         <span property="author" typeof="Person"><span property="name">Jerry Hayes</span></span> | on
+         <time property="datePublished" datetime="2020-04-20T10:06:37-07:00">20 APR 2020</time> | in
+         <span class="blog-post-categories"><a href="https://aws.amazon.com/blogs/security/category/management-tools/aws-config/" title="View all posts in AWS Config"><span property="articleSection">AWS Config</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/" title="View all posts in AWS Secrets Manager"><span property="articleSection">AWS Secrets Manager</span></a>, <a href="https://aws.amazon.com/blogs/security/category/learning-levels/intermediate-200/" title="View all posts in Intermediate (200)"><span property="articleSection">Intermediate (200)</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/" title="View all posts in Security, Identity, &amp; Compliance"><span property="articleSection">Security, Identity, &amp; Compliance</span></a></span> |
+         <a href="https://aws.amazon.com/blogs/security/how-to-track-changes-to-secrets-stored-in-aws-secrets-manager-using-aws-config-and-aws-config-rules/" property="url">Permalink</a> |
+         <a id="aws-comment-trigger-13371" href="https://commenting.awsblogs.com/embed.html?disqus_shortname=aws-security-blog&amp;disqus_identifier=13371&amp;disqus_title=How+to+track+changes+to+secrets+stored+in+AWS+Secrets+Manager+using+AWS+Config+and+AWS+Config+Rules&amp;disqus_url=https://aws.amazon.com/blogs/security/how-to-track-changes-to-secrets-stored-in-aws-secrets-manager-using-aws-config-and-aws-config-rules/" data-lb-comp="aws-blog:commenting" data-sandbox-attr="allow-forms allow-scripts allow-popups allow-same-origin" property="discussionUrl"><i class="icon-comment"></i> Comments</a> |
+         <a href="#" role="button" data-share-dialog-toggle><span class="span icon-share"></span>&nbsp;Share</a>
+         <div class="blog-share-dialog" data-share-dialog style="display: none;">
+          <ul>
+           <li> <a class="lb-txt" href="https://www.facebook.com/sharer/sharer.php?u=https://aws.amazon.com/blogs/security/how-to-track-changes-to-secrets-stored-in-aws-secrets-manager-using-aws-config-and-aws-config-rules/" target="_blank" rel="noopener noreferrer"><span class="icon-facebook-square" aria-label="Share on Facebook"></span></a> </li>
+           <li> <a class="lb-txt" href="https://twitter.com/intent/tweet/?text=How%20to%20track%20changes%20to%20secrets%20stored%20in%20AWS%20Secrets%20Manager%20using%20AWS%20Config%20and%20AWS%20Config%20Rules&amp;via=awscloud&amp;url=https://aws.amazon.com/blogs/security/how-to-track-changes-to-secrets-stored-in-aws-secrets-manager-using-aws-config-and-aws-config-rules/" target="_blank" rel="noopener noreferrer"><span class="icon-twitter-square" aria-label="Share on Twitter"></span></a> </li>
+           <li> <a class="lb-txt" href="https://www.linkedin.com/shareArticle?mini=true&amp;title=How%20to%20track%20changes%20to%20secrets%20stored%20in%20AWS%20Secrets%20Manager%20using%20AWS%20Config%20and%20AWS%20Config%20Rules&amp;source=Amazon%20Web%20Services&amp;url=https://aws.amazon.com/blogs/security/how-to-track-changes-to-secrets-stored-in-aws-secrets-manager-using-aws-config-and-aws-config-rules/" target="_blank" rel="noopener noreferrer"><span class="icon-linkedin-square" aria-label="Share on LinkedIn"></span></a> </li>
+           <li> <a class="lb-txt" href="mailto:?subject=How%20to%20track%20changes%20to%20secrets%20stored%20in%20AWS%20Secrets%20Manager%20using%20AWS%20Config%20and%20AWS%20Config%20Rules&amp;body=How%20to%20track%20changes%20to%20secrets%20stored%20in%20AWS%20Secrets%20Manager%20using%20AWS%20Config%20and%20AWS%20Config%20Rules%0A%0Ahttps://aws.amazon.com/blogs/security/how-to-track-changes-to-secrets-stored-in-aws-secrets-manager-using-aws-config-and-aws-config-rules/" target="_blank" rel="noopener noreferrer"><span class="icon-envelope-square" aria-label="Share on Email"></span></a> </li>
+           <li class="blog-share-dialog-url"><input type="text" value="https://aws.amazon.com/blogs/security/how-to-track-changes-to-secrets-stored-in-aws-secrets-manager-using-aws-config-and-aws-config-rules/" title="Link to How to track changes to secrets stored in AWS Secrets Manager using AWS Config and AWS Config Rules" readonly data-share-dialog-url></li>
+          </ul>
+         </div>
+        </footer>
+        <section class="blog-post-excerpt" property="description">
+         <p>On April 20th, AWS Config announced support for AWS Secrets Manager, making it easier to track configuration changes to the secrets you manage in AWS Secrets Manager. You can now use AWS Config to track changes to secrets’ metadata — such as secret description and rotation configuration, relationship to other AWS sources such as the […]</p>
+         <a href="https://aws.amazon.com/blogs/security/how-to-track-changes-to-secrets-stored-in-aws-secrets-manager-using-aws-config-and-aws-config-rules/" class="blog-read-more blog-btn-a blog-btn-a-small">Read More</a>
+        </section>
+       </div>
+      </div>
+     </article>
+     <article class="blog-post" vocab="http://schema.org/" typeof="TechArticle">
+      <meta property="inLanguage" content="en-US">
+      <meta property="image" content="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2019/07/30/Promo-Securing_cluster_on_AWS.jpg">
+      <div class="lb-row lb-snap">
+       <div class="lb-col lb-mid-6 lb-tiny-24">
+        <a href="https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/" property="url" rel="bookmark"><img width="800" height="400" src="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2019/07/30/Promo-Securing_cluster_on_AWS.jpg" class="attachment-large size-large wp-post-image" alt=""></a>
+       </div>
+       <div class="lb-col lb-mid-18 lb-tiny-24">
+        <h2 class="blog-post-title"><a href="https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/" property="url" rel="bookmark"><span property="name headline">How to use AWS Secrets Manager to securely store and rotate SSH key pairs</span></a></h2>
+        <footer class="blog-post-meta" data-lb-comp="aws-blog:share-dialog">
+          by
+         <span property="author" typeof="Person"><span property="name">Maitreya Ranganath</span></span> and
+         <span property="author" typeof="Person"><span property="name">Assaf Namer</span></span> | on
+         <time property="datePublished" datetime="2019-09-18T08:59:38-07:00">18 SEP 2019</time> | in
+         <span class="blog-post-categories"><a href="https://aws.amazon.com/blogs/security/category/learning-levels/advanced-300/" title="View all posts in Advanced (300)"><span property="articleSection">Advanced (300)</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/" title="View all posts in AWS Secrets Manager"><span property="articleSection">AWS Secrets Manager</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/" title="View all posts in Security, Identity, &amp; Compliance"><span property="articleSection">Security, Identity, &amp; Compliance</span></a></span> |
+         <a href="https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/" property="url">Permalink</a> |
+         <a id="aws-comment-trigger-11167" href="https://commenting.awsblogs.com/embed.html?disqus_shortname=aws-security-blog&amp;disqus_identifier=11167&amp;disqus_title=How+to+use+AWS+Secrets+Manager+to+securely+store+and+rotate+SSH+key+pairs&amp;disqus_url=https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/" data-lb-comp="aws-blog:commenting" data-sandbox-attr="allow-forms allow-scripts allow-popups allow-same-origin" property="discussionUrl"><i class="icon-comment"></i> Comments</a> |
+         <a href="#" role="button" data-share-dialog-toggle><span class="span icon-share"></span>&nbsp;Share</a>
+         <div class="blog-share-dialog" data-share-dialog style="display: none;">
+          <ul>
+           <li> <a class="lb-txt" href="https://www.facebook.com/sharer/sharer.php?u=https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/" target="_blank" rel="noopener noreferrer"><span class="icon-facebook-square" aria-label="Share on Facebook"></span></a> </li>
+           <li> <a class="lb-txt" href="https://twitter.com/intent/tweet/?text=How%20to%20use%20AWS%20Secrets%20Manager%20to%20securely%20store%20and%20rotate%20SSH%20key%20pairs&amp;via=awscloud&amp;url=https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/" target="_blank" rel="noopener noreferrer"><span class="icon-twitter-square" aria-label="Share on Twitter"></span></a> </li>
+           <li> <a class="lb-txt" href="https://www.linkedin.com/shareArticle?mini=true&amp;title=How%20to%20use%20AWS%20Secrets%20Manager%20to%20securely%20store%20and%20rotate%20SSH%20key%20pairs&amp;source=Amazon%20Web%20Services&amp;url=https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/" target="_blank" rel="noopener noreferrer"><span class="icon-linkedin-square" aria-label="Share on LinkedIn"></span></a> </li>
+           <li> <a class="lb-txt" href="mailto:?subject=How%20to%20use%20AWS%20Secrets%20Manager%20to%20securely%20store%20and%20rotate%20SSH%20key%20pairs&amp;body=How%20to%20use%20AWS%20Secrets%20Manager%20to%20securely%20store%20and%20rotate%20SSH%20key%20pairs%0A%0Ahttps://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/" target="_blank" rel="noopener noreferrer"><span class="icon-envelope-square" aria-label="Share on Email"></span></a> </li>
+           <li class="blog-share-dialog-url"><input type="text" value="https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/" title="Link to How to use AWS Secrets Manager to securely store and rotate SSH key pairs" readonly data-share-dialog-url></li>
+          </ul>
+         </div>
+        </footer>
+        <section class="blog-post-excerpt" property="description">
+         <p>August 31, 2021: AWS KMS is replacing the term customer master key (CMK) with AWS KMS key and KMS key. The concept has not changed. To prevent breaking changes, AWS KMS is keeping some variations of this term. More info. October 4, 2019: We’ve updated the estimated solution cost for accuracy. AWS Secrets Manager provides […]</p>
+         <a href="https://aws.amazon.com/blogs/security/how-to-use-aws-secrets-manager-securely-store-rotate-ssh-key-pairs/" class="blog-read-more blog-btn-a blog-btn-a-small">Read More</a>
+        </section>
+       </div>
+      </div>
+     </article>
+     <article class="blog-post" vocab="http://schema.org/" typeof="TechArticle">
+      <meta property="inLanguage" content="en-US">
+      <meta property="image" content="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2019/06/05/PROMO_AWS_SecretsManager_Lambda.png">
+      <div class="lb-row lb-snap">
+       <div class="lb-col lb-mid-6 lb-tiny-24">
+        <a href="https://aws.amazon.com/blogs/security/how-to-securely-provide-database-credentials-to-lambda-functions-by-using-aws-secrets-manager/" property="url" rel="bookmark"><img width="800" height="400" src="https://d2908q01vomqb2.cloudfront.net/22d200f8670dbdb3e253a90eee5098477c95c23d/2019/06/05/PROMO_AWS_SecretsManager_Lambda.png" class="attachment-large size-large wp-post-image" alt=""></a>
+       </div>
+       <div class="lb-col lb-mid-18 lb-tiny-24">
+        <h2 class="blog-post-title"><a href="https://aws.amazon.com/blogs/security/how-to-securely-provide-database-credentials-to-lambda-functions-by-using-aws-secrets-manager/" property="url" rel="bookmark"><span property="name headline">How to securely provide database credentials to Lambda functions by using AWS Secrets Manager</span></a></h2>
+        <footer class="blog-post-meta" data-lb-comp="aws-blog:share-dialog">
+          by
+         <span property="author" typeof="Person"><span property="name">Ramesh Adabala</span></span> | on
+         <time property="datePublished" datetime="2019-06-06T08:42:15-07:00">06 JUN 2019</time> | in
+         <span class="blog-post-categories"><a href="https://aws.amazon.com/blogs/security/category/learning-levels/advanced-300/" title="View all posts in Advanced (300)"><span property="articleSection">Advanced (300)</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/" title="View all posts in AWS Secrets Manager"><span property="articleSection">AWS Secrets Manager</span></a>, <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/" title="View all posts in Security, Identity, &amp; Compliance"><span property="articleSection">Security, Identity, &amp; Compliance</span></a></span> |
+         <a href="https://aws.amazon.com/blogs/security/how-to-securely-provide-database-credentials-to-lambda-functions-by-using-aws-secrets-manager/" property="url">Permalink</a> |
+         <a id="aws-comment-trigger-10756" href="https://commenting.awsblogs.com/embed.html?disqus_shortname=aws-security-blog&amp;disqus_identifier=10756&amp;disqus_title=How+to+securely+provide+database+credentials+to+Lambda+functions+by+using+AWS+Secrets+Manager&amp;disqus_url=https://aws.amazon.com/blogs/security/how-to-securely-provide-database-credentials-to-lambda-functions-by-using-aws-secrets-manager/" data-lb-comp="aws-blog:commenting" data-sandbox-attr="allow-forms allow-scripts allow-popups allow-same-origin" property="discussionUrl"><i class="icon-comment"></i> Comments</a> |
+         <a href="#" role="button" data-share-dialog-toggle><span class="span icon-share"></span>&nbsp;Share</a>
+         <div class="blog-share-dialog" data-share-dialog style="display: none;">
+          <ul>
+           <li> <a class="lb-txt" href="https://www.facebook.com/sharer/sharer.php?u=https://aws.amazon.com/blogs/security/how-to-securely-provide-database-credentials-to-lambda-functions-by-using-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-facebook-square" aria-label="Share on Facebook"></span></a> </li>
+           <li> <a class="lb-txt" href="https://twitter.com/intent/tweet/?text=How%20to%20securely%20provide%20database%20credentials%20to%20Lambda%20functions%20by%20using%20AWS%20Secrets%20Manager&amp;via=awscloud&amp;url=https://aws.amazon.com/blogs/security/how-to-securely-provide-database-credentials-to-lambda-functions-by-using-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-twitter-square" aria-label="Share on Twitter"></span></a> </li>
+           <li> <a class="lb-txt" href="https://www.linkedin.com/shareArticle?mini=true&amp;title=How%20to%20securely%20provide%20database%20credentials%20to%20Lambda%20functions%20by%20using%20AWS%20Secrets%20Manager&amp;source=Amazon%20Web%20Services&amp;url=https://aws.amazon.com/blogs/security/how-to-securely-provide-database-credentials-to-lambda-functions-by-using-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-linkedin-square" aria-label="Share on LinkedIn"></span></a> </li>
+           <li> <a class="lb-txt" href="mailto:?subject=How%20to%20securely%20provide%20database%20credentials%20to%20Lambda%20functions%20by%20using%20AWS%20Secrets%20Manager&amp;body=How%20to%20securely%20provide%20database%20credentials%20to%20Lambda%20functions%20by%20using%20AWS%20Secrets%20Manager%0A%0Ahttps://aws.amazon.com/blogs/security/how-to-securely-provide-database-credentials-to-lambda-functions-by-using-aws-secrets-manager/" target="_blank" rel="noopener noreferrer"><span class="icon-envelope-square" aria-label="Share on Email"></span></a> </li>
+           <li class="blog-share-dialog-url"><input type="text" value="https://aws.amazon.com/blogs/security/how-to-securely-provide-database-credentials-to-lambda-functions-by-using-aws-secrets-manager/" title="Link to How to securely provide database credentials to Lambda functions by using AWS Secrets Manager" readonly data-share-dialog-url></li>
+          </ul>
+         </div>
+        </footer>
+        <section class="blog-post-excerpt" property="description">
+         <p>As a solutions architect at AWS, I often assist customers in architecting and deploying business applications using APIs and microservices that rely on serverless services such as AWS Lambda and database services such as Amazon Relational Database Service (Amazon RDS). Customers can take advantage of these fully managed AWS services to unburden their teams from […]</p>
+         <a href="https://aws.amazon.com/blogs/security/how-to-securely-provide-database-credentials-to-lambda-functions-by-using-aws-secrets-manager/" class="blog-read-more blog-btn-a blog-btn-a-small">Read More</a>
+        </section>
+       </div>
+      </div>
+     </article>
+     <div class="blog-pagination">
+      <a href="https://aws.amazon.com/blogs/security/category/security-identity-compliance/aws-secrets-manager/page/2/" class="blog-btn-a">← Older posts</a>
+     </div>
+    </main>
+   </div>
+  </div>
+  <div class="awsm">
+   <footer id="aws-page-footer" class="m-page-footer" role="contentinfo">
+    <div data-url="https://dc.ads.linkedin.com/collect/?pid=3038&amp;fmt=gif" data-lb-comp="tracking-pixel"></div>
+    <div data-lb-comp="google-rlsa-pixel"></div>
+    <div class="data-attr-wrapper lb-none-v-margin lb-xb-grid-wrap" style="background-color:#242F3E;" data-da-type="so" data-da-so-type="viewport" data-da-so-language="en" data-da-so-category="monitoring" data-da-so-name="footer" data-da-so-version="a">
+     <div class="lb-xb-grid lb-row-max-large lb-snap lb-tiny-xb-1 lb-small-xb-3 lb-large-xb-5">
+      <div class="lb-xbcol">
+       <div class="data-attr-wrapper lb-small-hide lb-btn" data-da-type="so" data-da-so-type="viewport" data-da-so-language="en" data-da-so-category="monitoring" data-da-so-name="footer_buttons" data-da-so-url="all" data-da-so-version="footer_signin-mobile-default">
+        <a class="lb-btn-p-primary" href="https://console.aws.amazon.com/console/home?nc1=f_ct&amp;src=footer-signin-mobile" role="button"> <span> Sign In to the Console</span> </a>
+       </div>
+       <h3 id="Learn_About_AWS" class="lb-txt-none lb-txt-p-chromium lb-tiny-v-margin lb-h3 lb-title"> Learn About AWS</h3>
+       <ul class="lb-txt-p-chromium lb-ul lb-list-style-none lb-li-micro-v-margin lb-tiny-ul-block" style="margin-bottom:0px;">
+        <li><a href="https://aws.amazon.com/what-is-aws/?nc1=f_cc" target="_blank" rel="noopener">What Is AWS?</a></li>
+        <li><a href="https://aws.amazon.com/what-is-cloud-computing/?nc1=f_cc" target="_blank" rel="noopener">What Is Cloud Computing?</a></li>
+        <li><a href="https://aws.amazon.com/diversity-inclusion/?nc1=f_cc" target="_blank" rel="noopener">AWS Inclusion, Diversity &amp; Equity</a></li>
+        <li><a href="https://aws.amazon.com/devops/what-is-devops/?nc1=f_cc" target="_blank" rel="noopener">What Is DevOps?</a></li>
+        <li><a href="https://aws.amazon.com/containers/?nc1=f_cc" target="_blank" rel="noopener">What Is a Container?</a></li>
+        <li><a href="https://aws.amazon.com/big-data/datalakes-and-analytics/what-is-a-data-lake/?nc1=f_cc" target="_blank" rel="noopener">What Is a Data Lake?</a></li>
+        <li><a href="https://aws.amazon.com/security/?nc1=f_cc" target="_blank" rel="noopener">AWS Cloud Security</a></li>
+        <li><a href="https://aws.amazon.com/new/?nc1=f_cc" target="_blank" rel="noopener">What's New</a></li>
+        <li><a href="https://aws.amazon.com/blogs/?nc1=f_cc" target="_blank" rel="noopener">Blogs</a></li>
+        <li><a href="https://press.aboutamazon.com/press-releases/aws" target="_blank" rel="noopener" title="Press Releases">Press Releases</a></li>
+       </ul>
+      </div>
+      <div class="lb-xbcol">
+       <h3 id="Resources_for_AWS" class="lb-txt-none lb-txt-p-chromium lb-tiny-v-margin lb-h3 lb-title"> Resources for AWS</h3>
+       <ul class="lb-txt-p-chromium lb-ul lb-list-style-none lb-li-micro-v-margin lb-tiny-ul-block" style="margin-bottom:0px;">
+        <li><a href="https://aws.amazon.com/getting-started/?nc1=f_cc" target="_blank" rel="noopener">Getting Started</a></li>
+        <li><a href="https://aws.amazon.com/training/?nc1=f_cc" target="_blank" rel="noopener">Training and Certification</a></li>
+        <li><a href="https://aws.amazon.com/solutions/?nc1=f_cc" target="_blank" rel="noopener">AWS Solutions Portfolio</a></li>
+        <li><a href="https://aws.amazon.com/architecture/?nc1=f_cc" target="_blank" rel="noopener">Architecture Center</a></li>
+        <li><a href="https://aws.amazon.com/faqs/?nc1=f_dr" target="_blank" rel="noopener">Product and Technical FAQs</a></li>
+        <li><a href="https://aws.amazon.com/resources/analyst-reports/?nc1=f_cc" target="_blank" rel="noopener">Analyst Reports</a></li>
+        <li><a href="https://aws.amazon.com/partners/work-with-partners/?nc1=f_dr" target="_blank" rel="noopener">AWS Partners</a></li>
+       </ul>
+      </div>
+      <div class="lb-xbcol">
+       <h3 id="Developers_on_AWS" class="lb-txt-none lb-txt-p-chromium lb-tiny-v-margin lb-h3 lb-title"> Developers on AWS</h3>
+       <ul class="lb-txt-p-chromium lb-ul lb-list-style-none lb-li-micro-v-margin lb-tiny-ul-block" style="margin-bottom:0px;">
+        <li><a href="https://aws.amazon.com/developer/?nc1=f_dr" target="_blank" rel="noopener">Developer Center</a></li>
+        <li><a href="https://aws.amazon.com/developer/tools/?nc1=f_dr" target="_blank" rel="noopener">SDKs &amp; Tools</a></li>
+        <li><a href="https://aws.amazon.com/developer/language/net/?nc1=f_dr" target="_blank" rel="noopener">.NET on AWS</a></li>
+        <li><a href="https://aws.amazon.com/developer/language/python/?nc1=f_dr" target="_blank" rel="noopener">Python on AWS</a></li>
+        <li><a href="https://aws.amazon.com/developer/language/java/?nc1=f_dr" target="_blank" rel="noopener">Java on AWS</a></li>
+        <li><a href="https://aws.amazon.com/developer/language/php/?nc1=f_cc" target="_blank" rel="noopener">PHP on AWS</a></li>
+        <li><a href="https://aws.amazon.com/developer/language/javascript/?nc1=f_dr" target="_blank" rel="noopener">JavaScript on AWS</a></li>
+       </ul>
+      </div>
+      <div class="lb-xbcol">
+       <h3 id="Help" class="lb-txt-none lb-txt-p-chromium lb-tiny-v-margin lb-h3 lb-title"> Help</h3>
+       <ul class="lb-txt-p-chromium lb-ul lb-list-style-none lb-li-micro-v-margin lb-tiny-ul-block" style="margin-bottom:0px;">
+        <li><a href="https://aws.amazon.com/contact-us/?nc1=f_m" target="_blank" rel="noopener">Contact Us</a></li>
+        <li><a href="https://console.aws.amazon.com/support/home/?nc1=f_dr" target="_blank" rel="noopener">File a Support Ticket</a></li>
+        <li><a href="https://aws.amazon.com/premiumsupport/knowledge-center/?nc1=f_dr" target="_blank" rel="noopener">Knowledge Center</a></li>
+        <li><a href="https://repost.aws/?nc1=f_dr" target="_blank" rel="noopener">AWS re:Post</a></li>
+        <li><a href="https://aws.amazon.com/premiumsupport/?nc1=f_dr" target="_blank" rel="noopener">AWS Support Overview</a></li>
+        <li><a href="https://aws.amazon.com/legal/?nc1=f_cc" target="_blank" rel="noopener">Legal</a></li>
+        <li><a href="https://www.amazon.jobs/aws" target="_blank" rel="noopener">AWS Careers</a></li>
+       </ul>
+       <div class="lb-mbox js-mbox" data-lb-comp="mbox" data-lb-comp-ignore="true" data-mbox="en_footer-v3_addl-help">
+       </div>
+      </div>
+      <div class="lb-xbcol">
+       <div class="lb-mbox js-mbox" data-lb-comp="mbox" data-lb-comp-ignore="true" data-mbox="en_footer-v3_cta">
+        <div class="data-attr-wrapper lb-tiny-hide lb-small-show lb-btn" data-da-type="so" data-da-so-type="viewport" data-da-so-language="en" data-da-so-category="monitoring" data-da-so-name="footer_buttons" data-da-so-url="all" data-da-so-version="footer_signup-default">
+         <a class="lb-btn-p-primary" href="https://portal.aws.amazon.com/gp/aws/developer/registration/index.html?nc1=f_ct&amp;src=default" role="button"> <span> Create an AWS Account</span> </a>
+        </div>
+       </div>
+       <div class="lb-xb-grid-wrap" style="padding-left:0px; margin-top:20px;">
+        <div class="lb-xb-grid lb-row-max-large lb-xb-equal-height lb-snap lb-gutter-collapse lb-vgutter-collapse lb-tiny-xb-auto">
+         <div class="lb-xbcol">
+          <a class="lb-txt-none lb-txt-p-chromium lb-none-pad lb-txt" style="padding-left:0px; padding-right:5px;" href="https://twitter.com/awscloud" target="_blank" rel="noopener" title="Twitter"> <i class="icon-twitter"></i></a>
+         </div>
+         <div class="lb-xbcol">
+          <a class="lb-txt-none lb-txt-p-chromium lb-none-pad lb-none-v-margin lb-txt" style="padding-right:5px;" href="https://www.facebook.com/amazonwebservices" target="_blank" rel="noopener" title="Facebook"> <i class="icon-facebook"></i></a>
+         </div>
+         <div class="lb-xbcol">
+          <a class="lb-txt-none lb-txt-p-chromium lb-none-pad lb-txt" style="padding-right:5px;" href="https://www.twitch.tv/aws" target="_blank" rel="noopener" title="Twitch"> <i class="icon-twitch"></i></a>
+         </div>
+         <div class="lb-xbcol">
+          <a class="lb-txt-none lb-txt-p-chromium lb-none-pad lb-txt" style="padding-right:5px;" href="https://www.youtube.com/user/AmazonWebServices/Cloud/" target="_blank" rel="noopener" title="YouTube"> <i class="icon-youtube"></i></a>
+         </div>
+         <div class="lb-xbcol">
+          <a class="lb-txt-none lb-txt-p-chromium lb-none-pad lb-txt" style="padding-right:5px;" href="https://aws.amazon.com/podcasts/" target="_blank" rel="noopener" title="Podcast"> <i class="icon-podcast"></i></a>
+         </div>
+         <div class="lb-xbcol">
+          <a class="lb-txt-none lb-txt-p-chromium lb-none-pad lb-txt" style="padding-right:5px;" href="https://pages.awscloud.com/communication-preferences?trk=homepage" target="_blank" rel="noopener" title="Email"> <i class="icon-envelope-o"></i></a>
+         </div>
+        </div>
+       </div>
+       <div class="lb-txt-normal lb-txt-white lb-txt-14 lb-rtxt" style="color:#eaeded; margin-top:0px;">
+        <div>
+          Amazon is an Equal Opportunity Employer:
+         <i> Minority / Women / Disability / Veteran / Gender Identity / Sexual Orientation / Age.</i>
+        </div>
+       </div>
+      </div>
+     </div>
+    </div>
+    <div class="lb-none-pad lb-none-v-margin lb-xb-grid-wrap" style="background-color:#242F3E;">
+     <div class="lb-xb-grid lb-row-max-large lb-snap lb-tiny-xb-1">
+      <div class="lb-xbcol">
+       <ul class="lb-txt-p-chromium lb-tiny-iblock lb-none-v-margin lb-ul lb-list-style-none lb-li-micro-v-margin lb-tiny-ul-iblock">
+        <li class="lb-txt-bold">Language</li>
+        <li data-language="ar"><a href="https://aws.amazon.com/ar/?nc1=h_ls">عربي</a></li>
+        <li data-language="id"><a href="https://aws.amazon.com/id/?nc1=h_ls">Bahasa Indonesia</a></li>
+        <li data-language="de"><a href="https://aws.amazon.com/de/?nc1=h_ls">Deutsch</a></li>
+        <li data-language="en"><a href="https://aws.amazon.com/?nc1=h_ls">English</a></li>
+        <li data-language="es"><a href="https://aws.amazon.com/es/?nc1=h_ls">Español</a></li>
+        <li data-language="fr"><a href="https://aws.amazon.com/fr/?nc1=h_ls">Français</a></li>
+        <li data-language="it"><a href="https://aws.amazon.com/it/?nc1=h_ls">Italiano</a></li>
+        <li data-language="pt"><a href="https://aws.amazon.com/pt/?nc1=h_ls">Português</a></li>
+        <li data-language="vi"><a href="https://aws.amazon.com/vi/?nc1=f_ls">Tiếng Việt</a></li>
+        <li data-language="tr"><a href="https://aws.amazon.com/tr/?nc1=h_ls">Türkçe</a></li>
+        <li data-language="ru"><a href="https://aws.amazon.com/ru/?nc1=h_ls">Ρусский</a></li>
+        <li data-language="th"><a href="https://aws.amazon.com/th/?nc1=f_ls">ไทย</a></li>
+        <li data-language="jp"><a href="https://aws.amazon.com/jp/?nc1=h_ls">日本語</a></li>
+        <li data-language="ko"><a href="https://aws.amazon.com/ko/?nc1=h_ls">한국어</a></li>
+        <li data-language="cn"><a href="https://aws.amazon.com/cn/?nc1=h_ls">中文 (简体)</a></li>
+        <li data-language="tw"><a href="https://aws.amazon.com/tw/?nc1=h_ls">中文 (繁體)</a></li>
+       </ul>
+      </div>
+     </div>
+    </div>
+    <div class="lb-none-pad lb-none-v-margin lb-xb-grid-wrap" style="background-color:#EAEDED; padding-top:5px;">
+     <div class="lb-xb-grid lb-row-max-large lb-snap lb-tiny-xb-1">
+      <div class="lb-xbcol">
+       <ul class="lb-txt-p-squid-ink lb-none-v-margin lb-ul lb-list-style-none lb-li-none-v-margin lb-tiny-ul-iblock">
+        <li><a href="https://aws.amazon.com/privacy/?nc1=f_pr">Privacy</a></li>
+        <li>|</li>
+        <li><a href="https://aws.amazon.com/terms/?nc1=f_pr">Site Terms</a></li>
+        <li>|</li>
+        <li data-cookie-consent-modal="1"><a href="#"> Cookie Preferences </a></li>
+        <li>|</li>
+        <li>© 2022, Amazon Web Services, Inc. or its affiliates. All rights reserved.</li>
+       </ul>
+      </div>
+     </div>
+    </div>
+   </footer>
+  </div>
+  <script data-disqus-cookies-disabled-dialog type="text/html">
+  <div class="lb-alert lb-alert-info">
+    <h4 class="lb-title">Feature not available</h4>
+
+    <p>Visit <a href="#" data-shortbread-modal="true">cookie preferences</a> and allow all cookies to enable this feature.</p>
+  </div>
+</script>
+  <div id="aws-page-end"></div>
+  <div id="lb-page-end"></div>
+  <script src="//a0.awsstatic.com/da/js/1.0.48/aws-da.js" async></script>
+  <script src="//a0.awsstatic.com/aws-blog/1.0.51/js/vendor/prism.js" data-default-language="markup"></script>
+ </body>
+</html>

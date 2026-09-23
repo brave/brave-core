@@ -1,0 +1,262 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include <memory>
+#include <string>
+#include <utility>
+
+#include "base/check.h"
+#include "base/check_op.h"
+#include "base/feature_list.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.h"
+#include "brave/components/ai_chat/core/common/ai_chat_urls.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/tab_list/tab_list_interface.h"
+#include "chrome/browser/ui/browser_window.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_animation_content_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
+#include "chrome/browser/ui/webui/webui_embedding_context.h"
+#include "components/tabs/public/tab_interface.h"
+#include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/web_contents.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/views/controls/webview/webview.h"
+#include "ui/views/view_utils.h"
+#include "url/gurl.h"
+
+namespace ai_chat {
+
+BrowserWindowInterface* GetBrowserForWebContents(
+    content::WebContents* web_contents) {
+  if (!web_contents) {
+    return nullptr;
+  }
+
+  auto* browser_window =
+      BrowserWindow::FindBrowserWindowWithWebContents(web_contents);
+  auto* browser_view = static_cast<BrowserView*>(browser_window);
+  if (!browser_view) {
+    return nullptr;
+  }
+
+  return browser_view->browser();
+}
+
+void ClosePanel(content::WebContents* web_contents) {
+  if (!web_contents) {
+    return;
+  }
+
+  BrowserWindowInterface* browser = GetBrowserForWebContents(web_contents);
+  if (!browser) {
+    return;
+  }
+
+  if (SidePanelUI* ui = browser->GetFeatures().side_panel_ui()) {
+    ui->Close();
+  }
+}
+
+void ClosePanelIfChatActive(content::WebContents* web_contents) {
+  if (!web_contents) {
+    return;
+  }
+
+  BrowserWindowInterface* browser = GetBrowserForWebContents(web_contents);
+  if (!browser) {
+    return;
+  }
+
+  SidePanelUI* ui = browser->GetFeatures().side_panel_ui();
+  if (ui && ui->GetCurrentEntryId() == SidePanelEntryId::kChatUI) {
+    ui->Close();
+  }
+}
+
+bool MaybeMoveFullPageChatToSidePanel(
+    content::WebContents* ai_chat_web_contents) {
+  if (!base::FeatureList::IsEnabled(features::kAIChatMoveFullPageToSidePanel)) {
+    return false;
+  }
+
+  // Only move a full-page AI Chat. When the conversation is already hosted in
+  // the side panel its contents is owned by the view and is not part of any tab
+  // strip, so there is no owning tab and the click is left to the caller.
+  tabs::TabInterface* ai_chat_tab =
+      tabs::TabInterface::MaybeGetFromContents(ai_chat_web_contents);
+  if (!ai_chat_tab) {
+    return false;
+  }
+
+  BrowserWindowInterface* browser = ai_chat_tab->GetBrowserWindowInterface();
+  if (!browser) {
+    return false;
+  }
+
+  // The transfer only works with the global (window-scoped) side panel. A
+  // tab-scoped side panel is tied to the tab that is active when it opens, so
+  // once the moved conversation is shown and the clicked link activates a new
+  // tab, the panel closes and the conversation would be destroyed. In
+  // contextual mode leave the link to the caller: it opens in a tab and AI Chat
+  // stays a full page.
+  if (!ShouldSidePanelBeGlobal(browser->GetProfile())) {
+    return false;
+  }
+
+  AIChatSidePanelTabTransferBridge* transfer_controller =
+      browser->GetFeatures().ai_chat_side_panel_tab_transfer_bridge();
+  if (!transfer_controller) {
+    // Flag off, or a window type that has no controller.
+    return false;
+  }
+
+  TabListInterface* tab_list = TabListInterface::From(browser);
+  if (!tab_list) {
+    return false;
+  }
+
+  const tabs::TabHandle ai_chat_handle = ai_chat_tab->GetHandle();
+
+  // Capture the content area's rect (in browser/widget coordinates) before
+  // detaching, so the side panel can animate the conversation in from where the
+  // full page sits. The active contents web view spans that area whichever tab
+  // is active, which is what matters here: AI Chat is still the active tab when
+  // it moves from a Mojo link handler, while the link's new tab has just been
+  // activated when it moves from `AIChatFullPageLinkObserver`. This must happen
+  // before `DetachWebContents`, which orphans the contents' native view and
+  // leaves it unable to report an on-screen rect.
+  gfx::Rect starting_bounds;
+  if (BrowserElementsViews* elements = BrowserElementsViews::From(browser)) {
+    if (views::WebView* contents_web_view =
+            elements->RetrieveView(kActiveContentsWebViewRetrievalId)) {
+      starting_bounds = contents_web_view->ConvertRectToWidget(
+          contents_web_view->GetContentsBounds());
+    }
+  }
+
+  // Detach AI Chat's live contents (not destroyed, not reloaded) and hand it to
+  // the controller, which shows it in the side panel.
+  std::unique_ptr<content::WebContents> ai_chat_contents =
+      tab_list->DetachWebContents(ai_chat_handle);
+  if (!ai_chat_contents) {
+    return false;
+  }
+
+  transfer_controller->TransferFullPageContentsToSidePanel(
+      std::move(ai_chat_contents), starting_bounds);
+  return true;
+}
+
+bool MaybeMoveSidePanelChatToTab(content::WebContents* ai_chat_web_contents) {
+  if (!base::FeatureList::IsEnabled(features::kAIChatMoveFullPageToSidePanel)) {
+    return false;
+  }
+
+  // A side-panel-hosted AI Chat keeps its browser-window association while
+  // hosted (see `AIChatMovableSidePanelWebView`), so resolve the window from
+  // the contents without a `Browser*`.
+  BrowserWindowInterface* browser =
+      webui::GetBrowserWindowInterface(ai_chat_web_contents);
+  if (!browser) {
+    return false;
+  }
+
+  // Symmetric with the forward move: only the global (window-scoped) side panel
+  // transfers. A tab-scoped panel is tied to the tab it opened on, so moving
+  // the conversation out and closing the panel there is not the standalone case
+  // we support; leave it to the caller's fresh-tab path.
+  if (!ShouldSidePanelBeGlobal(browser->GetProfile())) {
+    return false;
+  }
+
+  AIChatSidePanelTabTransferBridge* transfer_bridge =
+      browser->GetFeatures().ai_chat_side_panel_tab_transfer_bridge();
+  if (!transfer_bridge) {
+    // The feature is enabled (checked above), so this is a window type that has
+    // no bridge (e.g. not a normal browser window).
+    return false;
+  }
+
+  return transfer_bridge->MoveSidePanelContentsToTab(ai_chat_web_contents);
+}
+
+content::WebContents* GetSidePanelWebContents(BrowserWindowInterface* browser) {
+  BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  if (!browser_view) {
+    return nullptr;
+  }
+
+  views::WebView* web_view = nullptr;
+  if (auto* anim_view = browser_view->GetSidePanelAnimationContent()) {
+    CHECK_EQ(anim_view->children().size(), 1u);
+    web_view = views::AsViewClass<views::WebView>(anim_view->children()[0]);
+  }
+  if (!web_view) {
+    web_view = views::AsViewClass<views::WebView>(
+        browser_view->side_panel()->GetViewByID(
+            SidePanelWebUIView::kSidePanelWebViewId));
+  }
+  return web_view ? web_view->web_contents() : nullptr;
+}
+
+void OpenConversationInSidePanel(Profile* profile,
+                                 const std::string& conversation_uuid) {
+  CHECK(profile);
+
+  // Only the global (window-scoped) side panel is supported.
+  if (!ShouldSidePanelBeGlobal(profile)) {
+    return;
+  }
+
+  // No eligible browser window for this profile (e.g. all windows closed):
+  // there is nothing to open the panel in.
+  ProfileBrowserCollection* collection =
+      ProfileBrowserCollection::GetForProfile(profile);
+  if (!collection) {
+    return;
+  }
+  BrowserWindowInterface* browser = collection->FindTabbedBrowser();
+  if (!browser) {
+    return;
+  }
+
+  // Window type without a side panel UI (not a normal browser window).
+  SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
+  if (!side_panel_ui) {
+    return;
+  }
+
+  const GURL conversation_url = ConversationUrl(conversation_uuid);
+  if (!conversation_url.is_valid()) {
+    return;
+  }
+
+  // Always show the AI Chat entry: `SidePanelUI::Show()` is already idempotent
+  // for the entry that is currently showing, and it re-opens the panel if a
+  // close animation is in flight.
+  side_panel_ui->Show(SidePanelEntryId::kChatUI);
+
+  content::WebContents* contents = GetSidePanelWebContents(browser);
+  if (!contents) {
+    return;
+  }
+
+  if (!contents->GetLastCommittedURL().EqualsIgnoringRef(conversation_url)) {
+    contents->GetController().LoadURLWithParams(
+        content::NavigationController::LoadURLParams(conversation_url));
+  }
+}
+
+}  // namespace ai_chat

@@ -1,0 +1,300 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import BraveCore
+import BraveStrings
+import CarPlay
+import Combine
+import CoreData
+import Data
+import Foundation
+import Playlist
+import Preferences
+import Strings
+
+/// Handles display and input of audio on CarPlay
+///
+/// This class populates the CarPlay interface and binds the UI to the player model.
+public class CarPlayController {
+  public let player: PlayerModel
+  public let interface: CPInterfaceController
+
+  private let playLaterFolder = PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID)
+  private let foldersFRC = PlaylistFolder.frc(savedFolder: false, sharedFolders: false)
+  private let fetchResultsDelegate: FetchResultsDelegate
+
+  public init(
+    player: PlayerModel,
+    interface: CPInterfaceController
+  ) {
+    self.player = player
+    self.interface = interface
+    self.fetchResultsDelegate = FetchResultsDelegate()
+
+    foldersFRC.delegate = fetchResultsDelegate
+    try? foldersFRC.performFetch()
+
+    Task { @MainActor [self] in
+      await player.prepareItemQueue()
+
+      let folderList = folderListTemplate
+      self.currentFolderListTemplate = folderList
+      interface.setRootTemplate(
+        CPTabBarTemplate(templates: [folderList, settingsTemplate]),
+        animated: true,
+        completion: nil
+      )
+
+      let nowPlaying = CPNowPlayingTemplate.shared
+      let shuffleButton = CPNowPlayingShuffleButton { [weak self] _ in
+        self?.player.isShuffleEnabled.toggle()
+      }
+      shuffleButton.isSelected = player.isShuffleEnabled
+      let repeatButton = CPNowPlayingRepeatButton { [weak self] _ in
+        self?.player.repeatMode.cycle()
+      }
+      repeatButton.isSelected = player.repeatMode != .none
+      nowPlaying.updateNowPlayingButtons([shuffleButton, repeatButton])
+    }
+
+    fetchResultsDelegate.contentDidChange = { [weak self] in
+      guard let self else { return }
+      Task { @MainActor in
+        self.updateFoldersList()
+        await self.updateItemList()
+      }
+    }
+    setUpPlayerBindings()
+  }
+
+  private var currentFolderListTemplate: CPListTemplate?
+  private var currentItemListTemplate: CPListTemplate?
+  private var selectedFolderID: PlaylistFolder.ID?
+  private var downloadStates: [String: PlaylistDownloadManager.CacheState] = [:]
+
+  @MainActor private func updateFoldersList() {
+    let folderListTemplate = self.folderListTemplate
+    currentFolderListTemplate?.updateSections(folderListTemplate.sections)
+  }
+
+  @MainActor private func updateItemList() async {
+    guard let selectedFolderID else { return }
+    let itemListTemplate = await self.itemListTemplate(for: selectedFolderID)
+    currentItemListTemplate?.updateSections(itemListTemplate.sections)
+  }
+
+  @MainActor private func handlePlayerError() {
+    // Avoid showing error alerts so as not to distract the driver in scenarios where the where the user is the driver.
+    // Invoke the error's recovery handler which advances to the next item (for better user experience)
+    guard let error = player.error else { return }
+    error.handler?()
+    player.error = nil
+  }
+
+  private var cancellables: Set<AnyCancellable> = []
+  private func setUpPlayerBindings() {
+    player.objectWillChange
+      .receive(on: RunLoop.main)
+      .sink { [weak self] in
+        Task { @MainActor in
+          await self?.updateItemList()
+          self?.handlePlayerError()
+        }
+      }
+      .store(in: &cancellables)
+
+    PlaylistManager.shared.downloadStateChanged
+      .receive(on: RunLoop.main)
+      .sink { [weak self] _ in
+        Task { @MainActor in
+          await self?.updateItemList()
+        }
+      }
+      .store(in: &cancellables)
+  }
+
+  // MARK: -
+
+  @MainActor private func handleItemTap(_ item: PlaylistItem) {
+    if player.selectedItemID != item.id {
+      player.selectedItemID = item.id
+      // FIXME: Move this into PlayerModel
+      player.makeItemQueue(selectedItemID: item.id)
+      // Technically we don't need to set this folder at all, but we could
+      // player.selectedFolderID = item.playlistFolder?.id
+      Task {
+        await player.prepareToPlaySelectedItem(initialOffset: nil, playImmediately: true)
+      }
+    } else {
+      // Tapped the currently active item, resume playback or reset based on user pref
+      if Preferences.Playlist.enableCarPlayRestartPlayback.value {
+        Task {
+          await player.seek(to: 0)
+          player.play()
+        }
+      } else {
+        player.play()
+      }
+    }
+    let nowPlaying = CPNowPlayingTemplate.shared
+    if interface.topTemplate != nowPlaying {
+      interface.pushTemplate(nowPlaying, animated: true, completion: nil)
+    }
+  }
+
+  // MARK: - Template Generation
+
+  @MainActor private func itemListTemplate(for folderID: PlaylistFolder.ID) async -> CPListTemplate
+  {
+    guard let folder = PlaylistFolder.getFolder(uuid: folderID) else {
+      return CPListTemplate(title: nil, sections: [])
+    }
+
+    let playlistItems = PlaylistItem.getItems(parentFolder: folder)
+    await refreshDownloadStates(for: playlistItems)
+    let items: [CPListItem] =
+      playlistItems
+      .compactMap { item in
+        guard let itemUUID = item.uuid else { return nil }
+        let listItem = item.listItem
+        listItem.accessoryType =
+          !FeatureList.kPlaylistCacheFirstEnabled.enabled && downloadStates[itemUUID] != .cached
+          ? .cloud : .none
+        listItem.isPlaying = player.isPlaying && player.selectedItemID == item.id
+        listItem.playingIndicatorLocation = .trailing
+        listItem.userInfo = ["id": item.id, "uuid": itemUUID]
+        listItem.handler = { [unowned self] _, completion in
+          handleItemTap(item)
+          completion()
+        }
+        return listItem
+      }
+    return CPListTemplate(
+      title: folder.title ?? "",
+      sections: [.init(items: items)]
+    )
+  }
+
+  @MainActor private var folderListTemplate: CPListTemplate {
+    var folders = (foldersFRC.fetchedObjects ?? [])
+    if let playLaterFolder {
+      folders.insert(playLaterFolder, at: 0)
+    }
+    var items: [CPListItem] = []
+    for folder in folders {
+      let listItem = folder.listItem
+      listItem.handler = { [weak self, id = folder.id] _, completion in
+        guard let self else {
+          completion()
+          return
+        }
+        Task { @MainActor in
+          let template = await self.itemListTemplate(for: id)
+          self.currentItemListTemplate = template
+          self.selectedFolderID = id
+          self.interface.pushTemplate(template, animated: true, completion: nil)
+          completion()
+        }
+      }
+      items.append(listItem)
+    }
+
+    let template = CPListTemplate(
+      title: Strings.PlayList.playlistCarplayTitle,
+      sections: [
+        .init(items: items)
+      ]
+    )
+    template.tabImage = UIImage(braveSystemNamed: "leo.product.playlist")
+    template.emptyViewTitleVariants = [Strings.PlayList.noItemLabelTitle]
+    template.emptyViewSubtitleVariants = [Strings.PlayList.noItemLabelDetailLabel]
+    return template
+  }
+
+  private var settingsTemplate: CPListTemplate {
+    var restartPlaybackAccessoryImage: UIImage? {
+      Preferences.Playlist.enableCarPlayRestartPlayback.value
+        ? UIImage(braveSystemNamed: "leo.checkbox.checked")
+        : UIImage(braveSystemNamed: "leo.checkbox.unchecked")
+    }
+    let restartPlaybackItem = CPListItem(
+      text: Strings.PlayList.playlistCarplayRestartPlaybackOptionTitle,
+      detailText: Strings.PlayList.playlistCarplayRestartPlaybackOptionDetailsTitle,
+      image: nil,
+      accessoryImage: restartPlaybackAccessoryImage,
+      accessoryType: .none
+    )
+    restartPlaybackItem.handler = { _, completion in
+      Preferences.Playlist.enableCarPlayRestartPlayback.value.toggle()
+      restartPlaybackItem.setAccessoryImage(restartPlaybackAccessoryImage)
+      completion()
+    }
+    let template = CPListTemplate(
+      title: Strings.PlayList.playlistCarplaySettingsSectionTitle,
+      sections: [
+        .init(
+          items: [restartPlaybackItem],
+          header: Strings.PlayList.playlistCarplayOptionsScreenTitle,
+          sectionIndexTitle: Strings.PlayList.playlistCarplayOptionsScreenTitle
+        )
+      ]
+    )
+    template.tabImage = UIImage(braveSystemNamed: "leo.settings")
+    return template
+  }
+
+  @MainActor private func refreshDownloadStates(for items: [PlaylistItem]) async {
+    let uuids = items.compactMap(\.uuid)
+
+    // Fetch each item's download state concurrently so list refresh stays O(1) wall-clock in the number of items.
+    let resolvedStates = await withTaskGroup(
+      of: (String, PlaylistDownloadManager.CacheState).self
+    ) { group in
+      for uuid in uuids {
+        group.addTask {
+          (uuid, await PlaylistManager.shared.cacheState(for: uuid))
+        }
+      }
+      var result: [String: PlaylistDownloadManager.CacheState] = [:]
+      for await (uuid, state) in group {
+        result[uuid] = state
+      }
+      return result
+    }
+
+    // Replacing wholesale also drops entries for items that are no longer present.
+    downloadStates = resolvedStates
+  }
+}
+
+extension PlaylistFolder {
+  fileprivate var listItem: CPListItem {
+    let itemCount = playlistItems?.count ?? 0
+    return .init(
+      text: title ?? Strings.PlaylistFolders.playlistUntitledFolderTitle,
+      detailText:
+        "\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))",
+      image: nil,
+      accessoryImage: nil,
+      accessoryType: .disclosureIndicator
+    )
+  }
+}
+
+extension PlaylistItem {
+  fileprivate var listItem: CPListItem {
+    .init(text: name, detailText: pageSrc)
+  }
+}
+
+private class FetchResultsDelegate: NSObject, NSFetchedResultsControllerDelegate {
+  var contentDidChange: (() -> Void)?
+
+  func controllerDidChangeContent(
+    _ controller: NSFetchedResultsController<any NSFetchRequestResult>
+  ) {
+    self.contentDidChange?()
+  }
+}

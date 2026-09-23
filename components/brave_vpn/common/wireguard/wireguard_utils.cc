@@ -1,0 +1,215 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_vpn/common/wireguard/wireguard_utils.h"
+
+#include <stdint.h>
+
+#include <optional>
+#include <string_view>
+#include <vector>
+
+#include "base/base64.h"
+#include "base/check.h"
+#include "base/check_op.h"
+#include "base/compiler_specific.h"
+#include "base/logging.h"
+#include "base/strings/string_split.h"
+#include "base/strings/string_util.h"
+#include "base/strings/string_view_util.h"
+#include "crypto/openssl_util.h"
+#include "net/base/ip_address.h"
+#include "net/base/url_util.h"
+#include "third_party/boringssl/src/include/openssl/base64.h"
+#include "third_party/boringssl/src/include/openssl/curve25519.h"
+#include "third_party/re2/src/re2/re2.h"
+#include "url/url_util.h"
+
+namespace brave_vpn {
+
+namespace wireguard {
+
+std::string EncodeBase64(base::span<const uint8_t> in) {
+  size_t size = 0;
+  CHECK(EVP_EncodedLength(&size, in.size()));
+  std::vector<uint8_t> out(size);
+  size_t bytes_encoded = EVP_EncodeBlock(&out.front(), &in.front(), in.size());
+  return std::string(
+      base::as_string_view(base::span(out).first(bytes_encoded)));
+}
+
+namespace {
+constexpr char kCloudflareIPv4[] = "1.1.1.1";
+
+// Covers the whole address space split in half so no prefix is a default route.
+// tunnel.dll installs its own blockAll/blockDNS WFP filters only when a peer
+// routes a literal /0, and those filters block the local network. We install an
+// equivalent filter set ourselves, plus permits for the LAN, in
+// brave_vpn_wireguard_service. Used when allow_lan_traffic is true.
+// See https://git.zx2c4.com/wireguard-windows/about/docs/netquirk.md
+constexpr char kAllowedIPsLan[] = "0.0.0.0/1, 128.0.0.0/1, ::/1, 8000::/1";
+
+// Literal default routes: tunnel.dll installs its own blockAll/blockDNS WFP
+// filters, which also block LAN traffic. Used when allow_lan_traffic is false.
+constexpr char kAllowedIPsNoLan[] = "0.0.0.0/0, ::/0";
+
+// Template for wireguard config generation.
+// For a quick reference on the keys/values, please see:
+// https://github.com/pirate/wireguard-docs?tab=readme-ov-file#config-reference
+constexpr char kWireguardConfigTemplate[] = R"(
+  [Interface]
+  PrivateKey = {client_private_key}
+  Address = {mapped_ipv4_address}
+  DNS = {dns_servers}
+  [Peer]
+  PublicKey = {server_public_key}
+  AllowedIPs = {allowed_ips}
+  Endpoint = {vpn_server_hostname}:51821
+)";
+
+}  // namespace
+
+std::optional<std::string> CreateWireguardConfig(
+    const std::string& client_private_key,
+    const std::string& server_public_key,
+    const std::string& vpn_server_hostname,
+    const std::string& mapped_ipv4_address,
+    bool allow_lan_traffic) {
+  if (client_private_key.empty() || server_public_key.empty() ||
+      vpn_server_hostname.empty() || mapped_ipv4_address.empty()) {
+    return std::nullopt;
+  }
+  std::string config = kWireguardConfigTemplate;
+  base::ReplaceSubstringsAfterOffset(&config, 0, "{client_private_key}",
+                                     client_private_key);
+  base::ReplaceSubstringsAfterOffset(&config, 0, "{server_public_key}",
+                                     server_public_key);
+  base::ReplaceSubstringsAfterOffset(&config, 0, "{vpn_server_hostname}",
+                                     vpn_server_hostname);
+  base::ReplaceSubstringsAfterOffset(&config, 0, "{mapped_ipv4_address}",
+                                     mapped_ipv4_address);
+  base::ReplaceSubstringsAfterOffset(&config, 0, "{dns_servers}",
+                                     kCloudflareIPv4);
+  base::ReplaceSubstringsAfterOffset(
+      &config, 0, "{allowed_ips}",
+      allow_lan_traffic ? kAllowedIPsLan : kAllowedIPsNoLan);
+  return config;
+}
+
+std::vector<std::string> ParseAllowedIPs(const std::string& config) {
+  constexpr std::string_view kPrefix = "AllowedIPs = ";
+  auto start = config.find(kPrefix);
+  if (start == std::string::npos) {
+    return {};
+  }
+  std::string_view value(config);
+  value.remove_prefix(start + kPrefix.size());
+  value = value.substr(0, value.find('\n'));
+  return base::SplitString(value, ",", base::TRIM_WHITESPACE,
+                           base::SPLIT_WANT_NONEMPTY);
+}
+
+bool ConfigUsesFullTunnelRoutes(const std::string& config) {
+  for (const auto& ip : ParseAllowedIPs(config)) {
+    net::IPAddress prefix;
+    size_t prefix_length = 0;
+    if (net::ParseCIDRBlock(ip, &prefix, &prefix_length) &&
+        prefix_length == 0) {
+      return true;
+    }
+  }
+  return false;
+}
+
+WireguardKeyPair GenerateNewX25519Keypair() {
+  uint8_t pubkey[32] = {}, privkey[32] = {};
+  X25519_keypair(pubkey, privkey);
+  return std::make_tuple(
+      EncodeBase64(std::vector<uint8_t>(pubkey, UNSAFE_TODO(pubkey + 32))),
+      EncodeBase64(std::vector<uint8_t>(privkey, UNSAFE_TODO(privkey + 32))));
+}
+
+std::optional<std::string> ValidateKey(const std::string& key,
+                                       const std::string& field_name) {
+  if (key.length() == 0) {
+    VLOG(1) << "`" << field_name << "` does not have a value";
+    return std::nullopt;
+  }
+
+  if (!re2::RE2::FullMatch(key, R"(^[-A-Za-z0-9+\/=]+$)")) {
+    VLOG(1) << "`" << field_name << "` contains invalid characters";
+    return std::nullopt;
+  }
+
+  std::string decoded_config;
+  if (!base::Base64Decode(key, &decoded_config) || decoded_config.empty()) {
+    VLOG(1) << "`" << field_name << "` is not base64 encoded";
+    return std::nullopt;
+  }
+
+  if (decoded_config.length() != 32) {
+    VLOG(1) << "`" << field_name << "` is not the correct length";
+    return std::nullopt;
+  }
+
+  return key;
+}
+
+std::optional<std::string> ValidateAddress(const std::string& address) {
+  if (!re2::RE2::FullMatch(address, R"(^[A-Za-z0-9._\-:[\]]+$)")) {
+    VLOG(1) << "address contains invalid characters";
+    return std::nullopt;
+  }
+
+  auto parsed = net::IPAddress::FromIPLiteral(address);
+  if (!parsed.has_value()) {
+    VLOG(1) << "failed parsing address";
+    return std::nullopt;
+  }
+
+  auto parsed_ip = parsed.value();
+  if (!parsed_ip.IsValid()) {
+    VLOG(1) << "address is not valid";
+    return std::nullopt;
+  }
+
+  if (!parsed_ip.IsIPv4()) {
+    VLOG(1) << "address must be IPv4";
+    return std::nullopt;
+  }
+
+  if (parsed_ip.IsLinkLocal() || parsed_ip.IsLoopback()) {
+    VLOG(1) << "address should not be local / loopback";
+    return std::nullopt;
+  }
+
+  return parsed_ip.ToString();
+}
+
+std::optional<std::string> ValidateEndpoint(const std::string& endpoint) {
+  if (!re2::RE2::FullMatch(endpoint, R"(^[A-Za-z0-9._\-:]+$)")) {
+    VLOG(1) << "endpoint contains invalid characters";
+    return std::nullopt;
+  }
+
+  std::string parsed_host;
+  int parsed_port = 0;
+  if (!net::ParseHostAndPort(endpoint, &parsed_host, &parsed_port)) {
+    VLOG(1) << "failed parsing endpoint";
+    return std::nullopt;
+  }
+
+  if (!url::DomainIs(parsed_host, "guardianapp.com") &&
+      !url::DomainIs(parsed_host, "sudosecuritygroup.com")) {
+    VLOG(1) << "endpoint is not a valid hostname";
+    return std::nullopt;
+  }
+
+  return parsed_host;
+}
+
+}  // namespace wireguard
+
+}  // namespace brave_vpn

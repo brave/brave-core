@@ -1,0 +1,20 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("test_support") {
+  testonly = true
+
+  sources = [
+    "//brave/components/sync/test/brave_mock_sync_engine.cc",
+    "//brave/components/sync/test/brave_mock_sync_engine.h",
+  ]
+
+  public_deps = [ "//testing/gmock" ]
+
+  deps = [
+    "//base",
+    "//components/sync:test_support",
+  ]
+}

@@ -1,0 +1,17 @@
+diff --git a/content/browser/client_hints/critical_client_hints_throttle.h b/content/browser/client_hints/critical_client_hints_throttle.h
+index 499a92a02beffdf1935906ea9f7bd797bc5c93fb..c852108c2c470509b8c1685382d0c704f27aafa7 100644
+--- a/content/browser/client_hints/critical_client_hints_throttle.h
++++ b/content/browser/client_hints/critical_client_hints_throttle.h
+@@ -59,8 +59,10 @@ class CONTENT_EXPORT CriticalClientHintsThrottle
+       const network::mojom::URLResponseHead& response_head,
+       RestartWithURLReset* restart_with_url_reset);
+ 
+-  raw_ptr<BrowserContext> context_;
+-  raw_ptr<ClientHintsControllerDelegate> client_hint_delegate_;
++  // https://issues.chromium.org/issues/428146684
++  raw_ptr<BrowserContext, DisableDanglingPtrDetection> context_;
++  raw_ptr<ClientHintsControllerDelegate, DisableDanglingPtrDetection>
++      client_hint_delegate_;
+   FrameTreeNodeId frame_tree_node_id_;
+ 
+   // Ensure that there's only one restart per origin

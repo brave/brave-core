@@ -1,0 +1,37 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+//
+// Collapsed vertical-tabs toolbar glyph: window with narrow tab rail and
+// content area (matches Figma selection). Geometry aligned with Nala
+// `leo_window_tabs_vertical_expanded` minus the tab-indicator dots.
+
+CANVAS_DIMENSIONS, 24,
+FILL_RULE_NONZERO,
+MOVE_TO, 20, 3.3f,
+CUBIC_TO, 21.1f, 3.3f, 22, 4.2f, 22, 5.3f,
+V_LINE_TO, 18.7f,
+CUBIC_TO, 22, 19.8f, 21.1f, 20.7f, 20, 20.7f,
+H_LINE_TO, 4,
+CUBIC_TO, 2.9f, 20.7f, 2, 19.8f, 2, 18.7f,
+V_LINE_TO, 5.3f,
+CUBIC_TO, 2, 4.2f, 2.9f, 3.3f, 4, 3.3f,
+H_LINE_TO, 20,
+CLOSE,
+MOVE_TO, 6.9f, 19.1f,
+H_LINE_TO, 20,
+CUBIC_TO, 20.22f, 19.1f, 20.4f, 18.92f, 20.4f, 18.7f,
+V_LINE_TO, 5.3f,
+CUBIC_TO, 20.4f, 5.08f, 20.22f, 4.9f, 20, 4.9f,
+H_LINE_TO, 6.9f,
+V_LINE_TO, 19.1f,
+CLOSE,
+MOVE_TO, 4, 4.9f,
+CUBIC_TO, 3.78f, 4.9f, 3.6f, 5.08f, 3.6f, 5.3f,
+V_LINE_TO, 18.7f,
+CUBIC_TO, 3.6f, 18.92f, 3.78f, 19.1f, 4, 19.1f,
+H_LINE_TO, 5.2f,
+V_LINE_TO, 4.9f,
+H_LINE_TO, 4,
+CLOSE

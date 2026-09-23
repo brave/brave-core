@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 10
+  |
+1 | a = """\@"""
+  |          ^
+invalid escape sequence
+expected `b`, `f`, `n`, `r`, `t`, `u`, `U`, `\`, `"`

@@ -1,0 +1,92 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_welcome_page.mojom;
+
+// The browser color scheme selected by the user.
+enum ColorScheme {
+  kSystem,
+  kLight,
+  kDark,
+};
+
+// A point in the onboarding flow that the user can reach. Values are ordered
+// by progression through the flow.
+enum OnboardingPhase {
+  kWelcome,
+  kImport,
+  kMetrics,
+  kFinished,
+};
+
+// A browser feature that can be displayed to the user on the welcome page.
+enum Feature {
+  kAIChat,
+  kWallet,
+  kRewards,
+  kVPN,
+};
+
+// Whether each feature's UI entry points, such as toolbar buttons and new tab
+// page cards, are visible. A feature is considered visible if any of its entry
+// points are visible. Hiding a feature's entry points does not disable the
+// feature itself.
+struct FeatureVisibility {
+  bool ai_chat;
+  bool wallet;
+  bool rewards;
+  bool vpn;
+};
+
+// WebUI-side handler for notifications from the browser.
+interface WelcomePage {
+  // Called when the current browser theme scheme has changed.
+  OnThemeChanged();
+
+  // Called when the vertical tabs enabled state has changed.
+  OnVerticalTabsEnabledChanged();
+
+  // Called when the visibility of any feature's entry points has changed.
+  OnFeatureVisibilityChanged();
+};
+
+// Browser-side handler for requests from the welcome page WebUI.
+interface WelcomePageHandler {
+  // Sets the WelcomePage remote interface that will receive notifications from
+  // the browser.
+  SetWelcomePage(pending_remote<WelcomePage> page);
+
+  // Gets or sets the current browser color scheme.
+  GetColorScheme() => (ColorScheme color_scheme);
+  SetColorScheme(ColorScheme color_scheme) => ();
+
+  // Gets or sets whether vertical tabs are enabled.
+  GetVerticalTabsEnabled() => (bool enabled);
+  SetVerticalTabsEnabled(bool enabled) => ();
+
+  // Gets the current visibility of every feature's entry points. Features that
+  // are unavailable are reported as not visible.
+  GetFeatureVisibility() => (FeatureVisibility visibility);
+
+  // Shows or hides the entry points for the specified feature. Has no effect
+  // for features that are unavailable.
+  SetFeatureVisible(Feature feature, bool visible) => ();
+
+  // Sets whether the Web Discovery Project is enabled.
+  SetWebDiscoveryEnabled(bool enabled) => ();
+
+  // Sets whether P3A (anonymous product analytics) is enabled.
+  SetP3AEnabled(bool enabled) => ();
+
+  // Sets whether crash reporting is enabled.
+  SetCrashReportsEnabled(bool enabled) => ();
+
+  // Returns the URL to navigate to once onboarding is complete.
+  GetWelcomeCompleteURL() => (string url);
+
+  // Reports the furthest point that the user has reached in the onboarding
+  // flow. Phases that precede the furthest reported phase are ignored.
+  SetOnboardingPhase(OnboardingPhase phase);
+};

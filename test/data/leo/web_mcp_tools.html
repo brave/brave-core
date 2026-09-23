@@ -1,0 +1,36 @@
+<!doctype html>
+<!-- Registers two tools via document.modelContext. The feature is only
+     available on secure contexts when blink::features::kWebMCP is enabled.
+     Used by web_mcp_browsertest.cc.
+
+     registerTool() is async, so the page exposes `window.__webmcpReady`, which
+     resolves to the number of tools the page itself can see once registration
+     has actually completed. Browser-side tests await that before probing, which
+     removes the race and surfaces a registration failure as a promise rejection
+     (a plain try/catch cannot see one, since registerTool() rejects rather than
+     throws). -->
+<html><head><title>WebMCP test</title></head>
+<body>
+<script>
+  window.__webmcpReady = (async () => {
+    await document.modelContext.registerTool({
+      execute: async ({text}) => text,
+      name: "echo",
+      description: "Echo input back",
+      inputSchema: {
+        type: "object",
+        properties: {
+          text: { type: "string", description: "Value to echo" }
+        },
+        required: ["text"]
+      },
+    });
+    await document.modelContext.registerTool({
+      execute: async () => "ok",
+      name: "ping",
+      description: "Returns ok",
+    });
+    return (await document.modelContext.getTools()).length;
+  })();
+</script>
+</body></html>

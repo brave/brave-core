@@ -1,0 +1,34 @@
+caption: Prevent sites from fingerprinting based on language preferences.
+default: null
+desc: |-
+  Reduces how much web sites can learn about the user's language preferences
+
+  If this policy is set to true, language preferences fingerprinting protection will be enabled.
+
+  If this policy is set to false, language preferences fingerprinting protection will be disabled.
+
+  If this policy is left unset, language preferences fingerprinting protection will be controlled by the user setting (enabled by default).
+
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Disable language preferences fingerprinting protection
+  value: false
+- caption: Enable language preferences fingerprinting protection
+  value: true
+- caption: Allow the user to decide (enabled by default)
+  value: null
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:140-
+- android:140-
+tags: []
+type: main

@@ -1,0 +1,14 @@
+{%- import "interface_macros.tmpl" as interface_macros -%}
+{%- set cpp_namespace = interface|cpp_namespace_from_kind %}
+{%- set objc_name = class_prefix ~ interface.name %}
+class {{objc_name}}Bridge: public {{cpp_namespace}}::{{interface.name}} {
+public:
+  explicit {{objc_name}}Bridge(id<{{class_prefix}}{{interface.name}}> bridge) : bridge_(bridge) { }
+  mojo::PendingRemote<{{cpp_namespace}}::{{interface.name}}> GetRemote();
+private:
+  __weak id<{{objc_name}}> bridge_;
+  mojo::Receiver<{{cpp_namespace}}::{{interface.name}}> receiver_{this};
+{% for method in interface.methods %}
+  void {{method.name}}({{interface_macros.cpp_declare_request_params(method, cpp_namespace)}}) override;
+{%- endfor %}
+};

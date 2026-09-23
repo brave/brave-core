@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<grit-part>
+  <if expr="enable_speedreader">
+     <include name="IDR_SPEEDREADER_STYLE_DESKTOP" file="../speedreader/resources/speedreader-desktop.css" type="BINDATA" />
+     <include name="IDR_SPEEDREADER_JS_DESKTOP" file="../speedreader/resources/speedreader-desktop.js" type="BINDATA" />
+     <if expr="not is_android">
+       <include name="IDR_SPEEDREADER_UI_HTML" file="../speedreader/resources/panel/speedreader_toolbar.html" type="BINDATA" />
+     </if>
+     <include name="IDR_SPEEDREADER_ATKINSON_HYPERLIGIBLE" file="../speedreader/resources/third_party/atkinson_hyperligible/atkinson-hyperligible.css" type="BINDATA" />
+     <include name="IDR_SPEEDREADER_OPEN_DYSLEXIC_FONT" file="../speedreader/resources/third_party/opendyslexic/opendyslexic.css" type="BINDATA" />
+  </if>
+</grit-part>

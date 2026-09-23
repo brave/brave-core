@@ -1,0 +1,50 @@
+/* Copyright (c) 2021 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/diagnostics/entries/catalog_last_updated_diagnostic_entry.h"
+
+#include "base/strings/strcat.h"
+#include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_feature.h"
+#include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
+#include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
+
+namespace brave_ads {
+
+namespace {
+constexpr char kName[] = "Catalog last updated";
+constexpr char kNever[] = "Never";
+}  // namespace
+
+DiagnosticEntryType CatalogLastUpdatedDiagnosticEntry::GetType() const {
+  return DiagnosticEntryType::kCatalogLastUpdated;
+}
+
+std::string CatalogLastUpdatedDiagnosticEntry::GetName() const {
+  return kName;
+}
+
+std::string CatalogLastUpdatedDiagnosticEntry::GetValue() const {
+  const base::Time last_updated_at = GetCatalogLastUpdated();
+  if (last_updated_at.is_null()) {
+    return kNever;
+  }
+
+  const std::string last_updated_at_text =
+      LongFriendlyDateAndTime(last_updated_at, /*use_sentence_style=*/false);
+
+  const base::Time expires_at = last_updated_at + kCatalogLifespan.Get();
+  if (!HasCatalogExpired()) {
+    return base::StrCat(
+        {last_updated_at_text, " (expires in ",
+         FormatApproximateDuration(expires_at - base::Time::Now()), ")"});
+  }
+
+  return base::StrCat(
+      {last_updated_at_text, " (",
+       FormatApproximateDuration(base::Time::Now() - expires_at), " overdue)"});
+}
+
+}  // namespace brave_ads

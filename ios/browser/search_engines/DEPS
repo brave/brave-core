@@ -1,0 +1,6 @@
+include_rules = [
+  "+components/prefs",
+  "+components/search_engines",
+  "+ios/chrome/browser/search_engines/model",
+  "+ios/chrome/browser/shared/model/profile",
+]

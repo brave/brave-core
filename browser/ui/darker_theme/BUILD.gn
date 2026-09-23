@@ -1,0 +1,55 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("darker_theme") {
+  sources = [
+    "darker_theme_color_transform_factory.cc",
+    "darker_theme_color_transform_factory.h",
+    "features.cc",
+    "features.h",
+    "pref_names.h",
+  ]
+
+  deps = [
+    "//base",
+    "//skia",
+    "//ui/color",
+    "//ui/color:color_headers",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "darker_theme_browsertest.cc" ]
+
+  deps = [
+    ":darker_theme",
+    "//base",
+    "//base/test:test_support",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/color:mixers",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "darker_theme_unittest.cc" ]
+
+  deps = [
+    ":darker_theme",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

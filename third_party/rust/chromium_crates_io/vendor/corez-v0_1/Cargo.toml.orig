@@ -1,0 +1,27 @@
+[package]
+name = "corez"
+description = "Safe, no_std-compatible Read/Write traits for the Zcash ecosystem."
+version = "0.1.1"
+authors = [
+    "Kris Nuttycombe <kris@nutty.land>",
+]
+homepage = "https://github.com/zcash/corez"
+repository = "https://github.com/zcash/corez"
+readme = "README.md"
+license = "MIT OR Apache-2.0"
+edition = "2021"
+rust-version = "1.85.1"
+categories = ["encoding", "no-std"]
+keywords = ["io", "no_std"]
+
+[features]
+default = ["std"]
+## Enables use of the standard library. All types are re-exported from
+## `std::io` and no custom code is compiled.
+std = ["alloc"]
+## Enables types requiring heap allocation: `Write for Vec<u8>`,
+## `Box` forwarding impls, and richer `Error` messages.
+alloc = []
+
+[lib]
+bench = false

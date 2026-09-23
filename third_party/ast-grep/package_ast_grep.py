@@ -1,0 +1,152 @@
+#!/usr/bin/env vpython3
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+"""Build ast-grep and package its per-platform tree into a versioned tarball.
+
+Runs the same build as `build_ast_grep.py`, then archives the contents of this
+host's `third_party/ast-grep/ast-grep-<os>/` tree into a tar.gz named:
+
+    ast-grep-<version>-<platform>.tar.gz  (members: bin/ast-grep, ...)
+"""
+
+from __future__ import annotations
+
+import argparse
+import logging
+import os
+from pathlib import Path
+import re
+import subprocess
+import sys
+import tarfile
+
+sys.path.insert(
+    0,
+    str(Path(__file__).resolve().parents[2] / 'tools' / 'cr' / 'toolchains'))
+
+# pylint: disable=wrong-import-position
+import build_ast_grep
+import build_utils
+from upload import S3Uploader, sha256_file, summarise
+
+# GCS-style host platform tag, mirroring build_rust_toolchain.py. Keyed off
+# `build_utils.platform_dir()` so there's a single place deciding which OS/arch
+# this host is.
+_PLATFORM_TAGS = {
+    'mac_arm64': 'mac-arm64',
+    'mac': 'mac',
+    'win': 'win',
+    'linux': 'linux-x64',
+}
+
+
+def _platform_tag() -> str:
+    return _PLATFORM_TAGS[build_utils.platform_dir()]
+
+
+def _ast_grep_version() -> str:
+    """Return the release version of the freshly built ast-grep binary.
+
+    Raises:
+        RuntimeError: If the binary is missing or its version cannot be parsed.
+    """
+    binary = build_ast_grep.AST_GREP_BIN
+    if not binary.is_file():
+        raise RuntimeError(f'ast-grep binary not found at {binary}')
+    output = subprocess.run([str(binary), '--version'],
+                            check=True,
+                            capture_output=True,
+                            text=True).stdout
+    match = re.search(r'\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?', output)
+    if not match:
+        raise RuntimeError(f'Could not parse ast-grep version from {output!r}')
+    return match.group(0)
+
+
+def _package_name() -> str:
+    """Output archive filename: `ast-grep-<version>-<platform>.tar.gz`."""
+    return f'ast-grep-{_ast_grep_version()}-{_platform_tag()}.tar.gz'
+
+
+def _extra_deps_path() -> str:
+    """This host's `EXTRA_DEPS` key: the install dir, checkout-relative.
+    """
+    return build_utils.AST_GREP_PLATFORM_DIR.relative_to(
+        build_utils.CHROMIUM_ROOT.parent).as_posix()
+
+
+def _create_archive(out_dir: Path) -> Path:
+    """Archive the *contents* of this host's `ast-grep-<os>/` tree into *out_dir*.
+
+    Raises:
+        RuntimeError: If the ast-grep build output directory is missing.
+    """
+    source = build_utils.AST_GREP_PLATFORM_DIR
+    if not source.is_dir():
+        raise RuntimeError(f'ast-grep build output not found at {source}')
+
+    out_dir.mkdir(parents=True, exist_ok=True)
+    archive = out_dir / _package_name()
+
+    logging.info('Packaging contents of %s -> %s', source, archive)
+    with tarfile.open(archive, 'w:gz') as tar:
+        for child in sorted(source.iterdir()):
+            tar.add(child, arcname=child.name)
+    return archive
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description='Build ast-grep and package third_party/ast-grep into a '
+        'versioned tar.gz.')
+    parser.add_argument('--out-dir',
+                        type=Path,
+                        default=Path.cwd(),
+                        help='Directory the tar.gz is written to '
+                        '(default: current directory).')
+    parser.add_argument('--clean',
+                        action='store_true',
+                        help='Remove prior ast-grep build dirs before '
+                        'building.')
+    parser.add_argument('-j',
+                        '--jobs',
+                        type=int,
+                        default=os.cpu_count() or 1,
+                        help='Number of parallel build jobs (default: nproc).')
+    parser.add_argument('--verbose',
+                        action='store_true',
+                        help='Enable debug logging.')
+    parser.add_argument('--upload',
+                        action='store_true',
+                        help='Upload the packaged tarball to our public '
+                        'bucket.')
+    args = parser.parse_args()
+
+    logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
+                        force=True)
+
+    build_ast_grep.build(args.jobs, clean=args.clean)
+    archive = _create_archive(args.out_dir.expanduser().resolve())
+
+    if args.upload:
+        result = S3Uploader(bucket='brave-build-deps-public').upload(
+            archive, prefix='ast-grep', sign=False)
+        logging.info('Upload summary:\n%s', summarise(result))
+        sha256, size = result.sha256, result.size_bytes
+    else:
+        sha256, size = sha256_file(archive), archive.stat().st_size
+
+    logging.info('Done.')
+    logging.info('ast-grep package: %s', archive)
+    logging.info('  sha256: %s  (%d bytes)', sha256, size)
+    logging.info(
+        'Update EXTRA_DEPS with (from src/brave):\n\n'
+        'vpython3 tools/cr/install_extra_deps.py setdep \\\n'
+        '  -r %s@%s,%s,%d', _extra_deps_path(), archive.name, sha256, size)
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

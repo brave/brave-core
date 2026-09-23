@@ -1,0 +1,23 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "name": "first"
+  },
+  {
+    "cmd": [
+      "do-thing"
+    ],
+    "name": "might fail",
+    "retcode": 1
+  },
+  {
+    "failure": {
+      "failure": {},
+      "humanReason": "Step('might fail') failed"
+    },
+    "name": "$result"
+  }
+]

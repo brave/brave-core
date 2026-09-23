@@ -1,0 +1,25 @@
+framework = "CoreData"
+crate = "objc2-core-data"
+required-crates = ["objc2", "objc2-foundation"]
+macos = "10.4"
+maccatalyst = "13.0"
+ios = "3.0"
+tvos = "9.0"
+watchos = "2.0"
+visionos = "1.0"
+
+external.CSSearchableItemAttributeSet.module = "CoreSpotlight.CSSearchableItemAttributeSet"
+external.CSSearchableIndex.module = "CoreSpotlight.CSSearchableIndex"
+
+# Has `error:` parameter, but returns NSInteger (where 0 means error)
+class.NSManagedObjectContext.methods."countForFetchRequest:error:".skipped = true
+
+# Defined in multiple files
+static.NSErrorMergePolicy.skipped = true
+static.NSMergeByPropertyObjectTrumpMergePolicy.skipped = true
+static.NSMergeByPropertyStoreTrumpMergePolicy.skipped = true
+static.NSOverwriteMergePolicy.skipped = true
+static.NSRollbackMergePolicy.skipped = true
+
+# Uses `NSDiffableDataSourceSnapshot`, which is defined in AppKit
+protocol.NSFetchedResultsControllerDelegate.methods."controller:didChangeContentWithSnapshot:".skipped = true

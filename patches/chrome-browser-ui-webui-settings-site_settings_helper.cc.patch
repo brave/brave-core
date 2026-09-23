@@ -1,0 +1,130 @@
+diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
+index 2c619f65cb02fa424d0c6d900360a2be1ac29dba..eca5a78dddaf7f3aecce47a4e7f8d12258f43504 100644
+--- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
++++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
+@@ -263,6 +263,51 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
+     {ContentSettingsType::LOCAL_NETWORK_ACCESS, nullptr},
+     {ContentSettingsType::SUB_APPS_WITHOUT_PROMPTS, nullptr},
+     {ContentSettingsType::SUSPICIOUS_SITE_WARNING_DATA, nullptr},
++    {ContentSettingsType::BRAVE_ADS, nullptr},
++    {ContentSettingsType::BRAVE_COSMETIC_FILTERING, nullptr},
++    {ContentSettingsType::BRAVE_TRACKERS, nullptr},
++    {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, nullptr},
++    {ContentSettingsType::BRAVE_FINGERPRINTING_V2, nullptr},
++    {ContentSettingsType::BRAVE_SHIELDS, brave_shields::kBraveShields},
++    {ContentSettingsType::BRAVE_REFERRERS, nullptr},
++    {ContentSettingsType::BRAVE_COOKIES, nullptr},
++    {ContentSettingsType::BRAVE_SPEEDREADER, nullptr},
++#if BUILDFLAG(ENABLE_BRAVE_WALLET)
++    {ContentSettingsType::BRAVE_ETHEREUM, "ethereum"},
++    {ContentSettingsType::BRAVE_SOLANA, "solana"},
++    {ContentSettingsType::BRAVE_CARDANO, "cardano"},
++#else
++    {ContentSettingsType::BRAVE_ETHEREUM, nullptr},
++    {ContentSettingsType::BRAVE_SOLANA, nullptr},
++    {ContentSettingsType::BRAVE_CARDANO, nullptr},
++#endif
++    {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, "googleSignIn"},
++    {ContentSettingsType::BRAVE_HTTPS_UPGRADE, nullptr},
++    {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, nullptr},
++    {ContentSettingsType::BRAVE_OPEN_AI_CHAT, "braveOpenAIChat"},
++    {ContentSettingsType::BRAVE_AUTO_SHRED, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_DEVICE_MEMORY, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_FONT, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_KEYBOARD, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_MEDIA_DEVICES, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGPU, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, nullptr},
++    {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr},
++    {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr},
++    {ContentSettingsType::BRAVE_PSST, nullptr},
+ });
+ 
+ static_assert(
+@@ -526,7 +571,7 @@ constexpr UrlIdentity::TypeSet kUrlIdentityAllowedTypes = {
+ 
+ }  // namespace
+ 
+-bool HasRegisteredGroupName(ContentSettingsType type) {
++bool HasRegisteredGroupName_ChromiumImpl(ContentSettingsType type) {
+   for (auto kContentSettingsTypeGroupName : kContentSettingsTypeGroupNames) {
+     if (type == kContentSettingsTypeGroupName.type &&
+         kContentSettingsTypeGroupName.name) {
+@@ -537,6 +582,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+ }
+ 
+ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
++  if (name == "autoplay") {
++    return ContentSettingsType::AUTOPLAY;
++  }
+   for (const auto& entry : kContentSettingsTypeGroupNames) {
+     // Content setting types that aren't represented in the settings UI
+     // will have `nullptr` as their `name`. However, converting `nullptr`
+@@ -551,6 +599,9 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+ }
+ 
+ std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
++  if (type == ContentSettingsType::AUTOPLAY) {
++    return "autoplay";
++  }
+   for (const auto& entry : kContentSettingsTypeGroupNames) {
+     if (type == entry.type) {
+       // Content setting types that aren't represented in the settings UI
+@@ -570,7 +621,7 @@ std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
+                << " is not a recognized content settings type.";
+ }
+ 
+-std::vector<ContentSettingsType> GetVisiblePermissionCategories(
++std::vector<ContentSettingsType> GetVisiblePermissionCategories_ChromiumImpl(
+     const std::string& origin,
+     Profile* profile) {
+   // First build the list of permissions that will be shown regardless of
+@@ -712,6 +763,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+       return "policy";
+     case SiteSettingSource::kPreference:
+       return "preference";
++    case SiteSettingSource::kRemoteList:
++      return "remote-list";
+     case SiteSettingSource::kNumSources:
+       NOTREACHED();
+   }
+@@ -720,6 +773,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+ SiteSettingSource ProviderTypeToSiteSettingsSource(
+     const ProviderType provider_type) {
+   switch (provider_type) {
++    case ProviderType::kRemoteListProvider:
++      return SiteSettingSource::kRemoteList;
+     case ProviderType::kWebuiAllowlistProvider:
+     case ProviderType::kComponentExtensionProvider:
+       return SiteSettingSource::kAllowlist;
+@@ -749,6 +804,8 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+ std::string_view ProviderToDefaultSettingSourceString(
+     const ProviderType provider) {
+   switch (provider) {
++    case ProviderType::kRemoteListProvider:
++      return "remote_list";
+     case ProviderType::kPolicyProvider:
+       return "policy";
+     case ProviderType::kSupervisedProvider:
+@@ -840,7 +897,7 @@ std::u16string GetExpirationDescription(const base::Time& expiration) {
+ 
+ // Create a base::DictValue that will act as a data source for a single row
+ // in a HostContentSettingsMap-controlled exceptions table (e.g., cookies).
+-base::DictValue GetExceptionForPage(
++base::DictValue GetExceptionForPage_ChromiumImpl(
+     ContentSettingsType content_type,
+     Profile* profile,
+     const ContentSettingsPattern& pattern,

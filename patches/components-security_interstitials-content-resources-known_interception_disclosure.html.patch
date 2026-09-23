@@ -1,0 +1,12 @@
+diff --git a/components/security_interstitials/content/resources/known_interception_disclosure.html b/components/security_interstitials/content/resources/known_interception_disclosure.html
+index e66f3ff07ac075d5dd69f82b74886ad7afcd2de5..85e2276eec39fe0eaad1af319d217d62afdae93a 100644
+--- a/components/security_interstitials/content/resources/known_interception_disclosure.html
++++ b/components/security_interstitials/content/resources/known_interception_disclosure.html
+@@ -7,6 +7,7 @@
+     <link rel="stylesheet" href="chrome://resources/css/text_defaults.css">
+     <link rel="stylesheet" href="interstitial_core.css">
+     <link rel="stylesheet" href="interstitial_common.css">
++    <link rel="stylesheet" href="../../../../../brave/components/security_interstitials/core/common/resources/interstitial_common.css">
+     <link rel="stylesheet" href="monitoring_disclosure.css">
+   </head>
+   <body>

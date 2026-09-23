@@ -1,0 +1,37 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+// Schema for Brave PSST script responses.
+namespace psst {
+    dictionary UserScriptTask {
+        DOMString uid;
+        DOMString url;
+        DOMString description;
+    };
+
+    dictionary UserScriptResult {
+       DOMString user_id;
+       DOMString site_name;
+       UserScriptTask[] tasks;
+       boolean? initial_execution;
+    };
+
+    dictionary PolicyTask {
+        DOMString uid;
+        DOMString url;
+        DOMString description;
+        DOMString? error_description;
+    };
+
+    dictionary PsstData {
+        long progress;
+        PolicyTask[] applied_tasks;
+    };
+
+    dictionary PolicyScriptResult {
+        DOMString? next_url;
+        PsstData psst;
+    };
+};

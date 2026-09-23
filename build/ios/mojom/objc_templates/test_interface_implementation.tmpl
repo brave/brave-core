@@ -1,0 +1,24 @@
+{%- import "interface_macros.tmpl" as interface_macros %}
+
+@implementation {{class_prefix}}Test{{interface.name}}
+{% for method in interface.methods -%}
+{%- set name = "_%s"|format(method|objc_method_name_formatter) %}
+{{ interface_macros.objc_method(method) }} {
+  if (self.{{name}} != nil) {
+    self.{{name}}(
+{%-  for param in method.parameters -%}
+    {{param.name|under_to_lower_camel}}
+{%-  if not loop.last -%},{{" "}}{%- endif -%}
+{%-  endfor %}
+{%-  if method.response_parameters -%}
+{%-  if method.parameters -%},{{" "}}{%- endif -%}
+completion
+{%-  endif -%}
+);
+  } else {
+    [NSException raise:NSInvalidArgumentException
+                format:@"{{name}} is not implemented"];
+  }
+}
+{%- endfor %}
+@end

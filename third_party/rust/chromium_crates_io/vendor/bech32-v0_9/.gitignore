@@ -1,0 +1,6 @@
+**/target
+*.o
+/Cargo.lock
+
+/embedded/Cargo.lock
+/embedded/.cargo

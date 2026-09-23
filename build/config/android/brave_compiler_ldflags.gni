@@ -1,0 +1,24 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/compiler/compiler.gni")
+
+assert(is_android)
+
+# Resolve conflict between libgcc++ and rustup symbols (e.g. __divdi3)
+brave_build_config_android_compiler_ldflags =
+    [ "-Wl,--allow-multiple-definition" ]
+
+# Use -fdebug-types-section to avoid out-of-range relocations
+# (crbug.com/1050819). When using ThinLTO, pass the equivalent
+# to the code generator.
+if (use_thin_lto) {
+  brave_build_config_android_compiler_ldflags += [
+    "-Wl,-mllvm",
+    "-Wl,-generate-type-units",
+  ]
+} else {
+  brave_build_config_android_compiler_ldflags += [ "-fdebug-types-section" ]
+}

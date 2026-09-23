@@ -1,0 +1,19 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module skus.mojom;
+
+import "brave/components/skus/common/skus_sdk.mojom";
+
+interface SkusInternals {
+  GetEventLog() => (string response);
+  GetSkusState() => (string response);
+  GetVpnState() => (string response);
+  GetLeoState() => (string response);
+  CopySkusStateToClipboard();
+  DownloadSkusState();
+  ResetSkusState();
+  CreateOrderFromReceipt(string domain, string receipt) => (SkusResult response);
+};

@@ -1,0 +1,8 @@
+browser_api_certificate_public_headers = [
+  "//brave/ios/browser/api/certificate/brave_certificate.h",
+  "//brave/ios/browser/api/certificate/models/brave_certificate_enums.h",
+  "//brave/ios/browser/api/certificate/models/brave_certificate_fingerprint.h",
+  "//brave/ios/browser/api/certificate/models/brave_certificate_public_key_info.h",
+  "//brave/ios/browser/api/certificate/models/brave_certificate_rdns_sequence.h",
+  "//brave/ios/browser/api/certificate/models/brave_certificate_signature.h",
+]

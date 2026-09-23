@@ -1,0 +1,174 @@
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle AirPlay */
+"playlist.accessibilityAirPlay" = "AirPlay";
+
+/* A label that VoiceOver accessibility technology will read out if the user taps the media progress bar */
+"playlist.accessibilityCurrentMediaTime" = "Trenutačno vrijeme medija";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
+"playlist.accessibilityEnterFullscreen" = "Pristupi punom zaslonu";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will enter picture in picture mode */
+"playlist.accessibilityEnterPictureInPicture" = "Pristupi načinu Slika u slici";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
+"playlist.accessibilityExitFullscreen" = "Izađi iz punog zaslona";
+
+/* A label shown on an item when the item is ready for offline play */
+"playlist.accessibilityItemDownloadStatusReady" = "Stavka je spremna";
+
+/* A button title that VoiceOver accessibility technology will read out when highlighting the more menu button (ellipsis icon) */
+"playlist.accessibilityMoreMenuButtonTitle" = "Više";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play the next item in the queue */
+"playlist.accessibilityNextItem" = "Sljedeća stavka";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will pause some currently playing media */
+"playlist.accessibilityPause" = "Pauziraj";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play some media */
+"playlist.accessibilityPlay" = "Reproduciraj";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will display playback speed options */
+"playlist.accessibilityPlaybackSpeed" = "Brzina reprodukcije";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play the previous item in the queue */
+"playlist.accessibilityPreviousItem" = "Prethodna stavka";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the All option (repeats entire playlist) */
+"playlist.accessibilityRepeatModeAll" = "Način ponavljanja: Sve";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled off */
+"playlist.accessibilityRepeatModeOff" = "Način ponavljanja: Isključen";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the One option (repeats single item) */
+"playlist.accessibilityRepeatModeOne" = "Način ponavljanja: Jedna stavka";
+
+/* A label read by VoiceOver accessibility technology that indicates the shuffle mode button is toggled off */
+"playlist.accessibilityShuffleModeOff" = "Nasumični način: Isključen";
+
+/* A label read by VoiceOver accessibility technology that indicates the shuffle mode button is toggled off */
+"playlist.accessibilityShuffleModeOn" = "Nasumični način: Uključen";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will move the media progress by a step backwards */
+"playlist.accessibilityStepBack" = "Korak natrag";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will move the media progress by a step forward */
+"playlist.accessibilityStepForwards" = "Korak naprijed";
+
+/* A label read by VoiceOver accessibility technology that indicates that tapping the screen will display playback controls */
+"playlist.accessibilityTapToToggleControls" = "Dodirnite za prebacivanje kontrola";
+
+/* A button title that when tapped will create a new playlist */
+"playlist.createNewPlaylistButtonTitle" = "Stvori";
+
+/* A button title that when tapped will allow the user to delete the selected item. */
+"playlist.deleteItem" = "Izbriši";
+
+/* A menu button that when tapped will present a confirmation dialog to delete a playlist and all its contents */
+"playlist.deletePlaylist" = "Izbrišite popis za reprodukciju...";
+
+/* A message display when the user attempts to delete a playlist. */
+"playlist.deletePlaylistConfirmationMessage" = "Uklanjaju se svi videozapisi na ovom popisu za reprodukciju";
+
+/* A button call to action that allows the user to dismiss the active modal */
+"playlist.doneButtonTitle" = "Završeno";
+
+/* A button title that when tapped will allow the user to edit the selected playlist. */
+"playlist.editPlaylist" = "Uređivanje popisa za reprodukciju";
+
+/* A button title that when tapped will allow the user to edit the selected playlist. */
+"playlist.editPlaylistShortTitle" = "Uredi";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Počnite tipkati u polje za pretragu kako biste pretražili spremljene audio i video zapise";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Pretraži medije";
+
+/* A title shown above a list of videos in your default playlist. */
+"playlist.fillNewPlaylistSubtitle" = "Dodirivanje za odabiranje medija";
+
+/* A title shown above a list of videos in your default playlist. '%@' will be replaced with the default playlist name which has already been localized, for example: 'Add from your Play Later playlist' */
+"playlist.fillNewPlaylistTitle" = "Dodavanje s popisa **%@** za reprodukciju";
+
+/* A count of how many items there are in the playlist. '%lld' would be replaced with a number, for example: 10 items */
+"playlist.itemCountPlural" = "Stavke %lld";
+
+/* A count of how many items there are in the playlist */
+"playlist.itemCountSingular" = "1 stavka";
+
+/* A label shown on an item when it is being prepared for offline play */
+"playlist.itemDownloadStatusPreparing" = "Priprema";
+
+/* A label shown next to the media progress bar that when the particular media being played is being live streamed. */
+"playlist.liveIndicator" = "Uživo";
+
+/* A button title that when tapped will allow the user to move the selected item to another playlist. */
+"playlist.moveItem" = "Pomaknite";
+
+/* A button title that will display a list of menu options to move an item to a different playlist */
+"playlist.moveMenuItemTitle" = "Pomaknite…";
+
+/* A button title that when tapped will prompt the user to create a new playlist */
+"playlist.newPlaylistButtonTitle" = "Stvori";
+
+/* A placeholder shown in the text field when creating a new playlist. */
+"playlist.newPlaylistPlaceholder" = "Moj novi popis za reprodukciju";
+
+/* Shown when the user has not selected any media to play. */
+"playlist.noMediaSelectedEmptyState" = "Dodirnite videozapise s popisa za reprodukciju kako biste ih reproducirali.";
+
+/* Shown when there is no content available to play for a given folder */
+"playlist.noMediaToPickFromEmptyState" = "Dodajte medije s omiljenih mrežnih mjesta i reproducirajte ih ovdje.";
+
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Nema rezultata";
+
+/* A button title that will open the selected item in a new private tab. */
+"playlist.openInNewPrivateTab" = "Otvori u novoj privatnoj kartici";
+
+/* A button title that will open the selected item in a new tab. */
+"playlist.openInNewTab" = "Otvori u novoj kartici";
+
+/* A button title that will delete the selected items data saved to the users device. */
+"playlist.removeOfflineData" = "Uklanjanje izvanmrežnih podataka";
+
+/* A menu button that when tapped will present the user with a text box to change the name of the selected playlist */
+"playlist.renamePlaylist" = "Preimenuj popis za reprodukciju";
+
+/* A repeat mode option, where selecting All will mean that the entire playlist will repeat from the beginning when the last item in it completes. */
+"playlist.repeatModeOptionAll" = "Sve";
+
+/* A repeat mode option, where selecting None will mean that repeat mode is off and nothing will repeat. */
+"playlist.repeatModeOptionNone" = "Nema";
+
+/* A repeat mode option, where selecting One will mean that the current playing item will repeat itself when completing. */
+"playlist.repeatModeOptionOne" = "Jedna stavka";
+
+/* A button call to action that allows the user to save their selection */
+"playlist.saveButtonTitle" = "Spremi";
+
+/* A button title that will attempt to save the selected item for offline playback. */
+"playlist.saveOfflineData" = "Spremanje izvanmrežnih podataka";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Pretraži";
+
+/* A button title that will present a share sheet for the selected item */
+"playlist.share" = "Podijeli";
+
+/* Describes an icon which allows the user to set a timer that when reaches 0 will stop playback of any media. */
+"playlist.sleepTimer" = "Brojač vremena spavanja";
+
+/* A button title shown when the sleep timer is currently active and allows the user to turn off the sleep timer. */
+"playlist.sleepTimerCancelTimer" = "Otkaži brojač vremena";
+
+/* An option in the sleep timer menu which describes that playback will stop when the current media item that is playing finishes. */
+"playlist.sleepTimerEndOfItem" = "Završetak reprodukcije stavke";
+
+/* A title shown above a set of time based options that describe when playback should stop. */
+"playlist.sleepTimerStopPlaybackAfter" = "Zaustavite reprodukciju nakon...";
+
+/* A fallback error message displayed when a video fails to play */
+"playlist.somethingWentWrong" = "Nešto je pošlo po zlu";
+

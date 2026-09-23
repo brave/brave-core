@@ -1,0 +1,212 @@
+/* Copyright (c) 2022 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/omnibox/brave_omnibox_result_view.h"
+
+#include <memory>
+
+#include "base/check.h"
+#include "base/time/time.h"
+#include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/views/omnibox/brave_omnibox_popup_view_views.h"
+#include "brave/browser/ui/views/omnibox/brave_search_conversion_promotion_view.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/omnibox/browser/promotion_utils.h"
+#include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/ui/omnibox/omnibox_controller.h"
+#include "chrome/browser/ui/omnibox/omnibox_edit_model.h"
+#include "chrome/browser/ui/views/omnibox/omnibox_match_cell_view.h"
+#include "chrome/browser/ui/views/omnibox/omnibox_popup_view_views.h"
+#include "chrome/browser/ui/views/omnibox/omnibox_suggestion_button_row_view.h"
+#include "components/grit/brave_components_strings.h"
+#include "components/omnibox/browser/autocomplete_controller.h"
+#include "components/omnibox/browser/autocomplete_match.h"
+#include "components/omnibox/browser/autocomplete_provider_client.h"
+#include "components/omnibox/browser/autocomplete_result.h"
+#include "components/omnibox/browser/omnibox_popup_selection.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/resource/resource_bundle.h"
+#include "ui/base/window_open_disposition.h"
+#include "ui/gfx/canvas.h"
+#include "ui/gfx/scoped_canvas.h"
+#include "ui/views/border.h"
+#include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/label.h"
+#include "ui/views/layout/fill_layout.h"
+#include "ui/views/layout/flex_layout.h"
+#include "ui/views/layout/flex_layout_types.h"
+#include "ui/views/view_class_properties.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/omnibox/browser/leo_provider.h"
+#endif
+
+BraveOmniboxResultView::~BraveOmniboxResultView() = default;
+
+void BraveOmniboxResultView::ResetChildren() {
+  if (brave_search_promotion_view_) {
+    RemoveChildViewT(brave_search_promotion_view_);
+    brave_search_promotion_view_ = nullptr;
+  }
+
+  if (leo_match_label_) {
+    leo_match_label_->parent()->RemoveChildViewT(
+        leo_match_label_.ExtractAsDangling());
+  }
+
+  // Reset children visibility. Their visibility could be configured later
+  // based on |match_| and the current input.
+  // Reset upstream's layout manager.
+  SetLayoutManager(std::make_unique<views::FillLayout>());
+  for (auto& child : children()) {
+    child->SetVisible(true);
+  }
+}
+
+void BraveOmniboxResultView::SetMatch(const AutocompleteMatch& match) {
+  ResetChildren();
+  OmniboxResultView::SetMatch(match);
+
+  UpdateForBraveSearchConversion();
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  UpdateForLeoMatch();
+#endif
+}
+
+void BraveOmniboxResultView::OnSelectionStateChanged() {
+  OmniboxResultView::OnSelectionStateChanged();
+
+  HandleSelectionStateChangedForPromotionView();
+}
+
+gfx::Image BraveOmniboxResultView::GetIcon() const {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (LeoProvider::IsMatchFromLeoProvider(match_)) {
+    // As Leo icon has gradient color, we can't use vector icon because it lacks
+    // of gradient color.
+    return ui::ResourceBundle::GetSharedInstance().GetImageNamed(
+        IDR_LEO_FAVICON);
+  }
+#endif
+  return OmniboxResultView::GetIcon();
+}
+
+void BraveOmniboxResultView::OnThemeChanged() {
+  OmniboxResultView::OnThemeChanged();
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  UpdateForLeoMatch();
+#endif
+}
+
+void BraveOmniboxResultView::OpenMatch() {
+  popup_view_->controller()->edit_model()->OpenSelection(
+      OmniboxPopupSelection(model_index_), base::TimeTicks::Now());
+}
+
+void BraveOmniboxResultView::RefreshOmniboxResult() {
+  auto* controller = popup_view_->controller()->autocomplete_controller();
+
+  // To refresh autocomplete result, start again with current input.
+  controller->Start(controller->input());
+}
+
+BraveOmniboxPopupViewViews* BraveOmniboxResultView::GetPopupView() {
+  return static_cast<BraveOmniboxPopupViewViews*>(popup_view_);
+}
+
+void BraveOmniboxResultView::HandleSelectionStateChangedForPromotionView() {
+  if (brave_search_promotion_view_ && IsBraveSearchPromotionMatch(match_)) {
+    brave_search_promotion_view_->OnSelectionStateChanged(
+        GetMatchSelected() &&
+        popup_view_->GetSelection().state == OmniboxPopupSelection::NORMAL);
+  }
+}
+
+void BraveOmniboxResultView::UpdateForBraveSearchConversion() {
+  if (!IsBraveSearchPromotionMatch(match_)) {
+    return;
+  }
+
+  // Hide upstream children and show our promotion view.
+  // It'll be the only visible child view.
+  for (auto& child : children()) {
+    child->SetVisible(false);
+  }
+
+  // To have proper size for promotion view.
+  SetLayoutManager(std::make_unique<views::FlexLayout>())
+      ->SetOrientation(views::LayoutOrientation::kVertical);
+
+  CHECK(!brave_search_promotion_view_);
+  auto* controller = popup_view_->controller()->autocomplete_controller();
+  auto* prefs = controller->autocomplete_provider_client()->GetPrefs();
+  brave_search_promotion_view_ =
+      AddChildView(std::make_unique<BraveSearchConversionPromotionView>(
+          this, g_browser_process->local_state(), prefs,
+          popup_view_->controller()->client()->GetTemplateURLService()));
+
+  brave_search_promotion_view_->SetTypeAndInput(
+      GetConversionTypeFromMatch(match_),
+      popup_view_->controller()->autocomplete_controller()->input().text());
+  HandleSelectionStateChangedForPromotionView();
+}
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+void BraveOmniboxResultView::UpdateForLeoMatch() {
+  if (LeoProvider::IsMatchFromLeoProvider(match_)) {
+    constexpr int kLeoMatchPadding = 4;
+    SetProperty(views::kMarginsKey, gfx::Insets().set_top(kLeoMatchPadding));
+    if (auto* cp = GetColorProvider()) {
+      SetBorder(views::CreatePaddedBorder(
+          views::CreateSolidSidedBorder(
+              gfx::Insets().set_top(1),
+              cp->GetColor(kColorBraveOmniboxResultViewSeparator)),
+          gfx::Insets().set_top(kLeoMatchPadding)));
+
+      if (!leo_match_label_) {
+        // Note: The |suggestion_view_| is a child of suggestion_and_button_row
+        // which has a FlexLayout but is not stored in a field, so we have to
+        // go via |suggestion_view_->parent()| to add |leo_match_label_|.
+        leo_match_label_ = suggestion_view_->parent()->AddChildView(
+            std::make_unique<views::Label>(
+                l10n_util::GetStringUTF16(IDS_OMNIBOX_SELECT_ASK_LEO_HINT)));
+        leo_match_label_->SetHorizontalAlignment(gfx::ALIGN_RIGHT);
+        leo_match_label_->SetBorder(
+            views::CreateEmptyBorder(gfx::Insets().set_left_right(24, 24)));
+        leo_match_label_->SetProperty(
+            views::kFlexBehaviorKey,
+            views::FlexSpecification(views::LayoutOrientation::kHorizontal,
+                                     views::MinimumFlexSizeRule::kPreferred,
+                                     views::MaximumFlexSizeRule::kUnbounded));
+      }
+
+      // The "Press ↑ to highlight" label should only be visible when pressing
+      // up will actually highlight it.
+      leo_match_label_->SetVisible(popup_view_->GetSelection().line == 0 &&
+                                   !GetMatchSelected());
+    }
+  } else {
+    ClearProperty(views::kMarginsKey);
+    SetBorder(nullptr);
+  }
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+void BraveOmniboxResultView::OnPaintBackground(gfx::Canvas* canvas) {
+  gfx::ScopedCanvas scoped_canvas(canvas);
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (LeoProvider::IsMatchFromLeoProvider(match_)) {
+    // Clip upper padding
+    canvas->ClipRect(GetContentsBounds());
+  }
+#endif
+
+  OmniboxResultView::OnPaintBackground(canvas);
+}
+
+BEGIN_METADATA(BraveOmniboxResultView)
+END_METADATA

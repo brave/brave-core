@@ -1,0 +1,12 @@
+diff --git a/components/history/core/browser/expire_history_backend.cc b/components/history/core/browser/expire_history_backend.cc
+index deedebf63a31a11fe26d13040876bc1f4ec29aff..55f2e3062151dbb981ebdce101c6a40eed4e5935 100644
+--- a/components/history/core/browser/expire_history_backend.cc
++++ b/components/history/core/browser/expire_history_backend.cc
+@@ -395,6 +395,7 @@ void ExpireHistoryBackend::StartExpiringOldStuff(
+ 
+   // Remove all readers, just in case this was method was called before.
+   readers_.clear();
++  BRAVE_EXPIRE_HISTORY_BACKEND_START_EXPIRING_OLD_STUFF
+   // For now, we explicitly add all known readers. If we come up with more
+   // reader types (in case we want to expire different types of visits in
+   // different ways), we can make it be populated by creator/owner of

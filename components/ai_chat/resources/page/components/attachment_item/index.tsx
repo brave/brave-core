@@ -1,0 +1,322 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import * as React from 'react'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import ProgressRing from '@brave/leo/react/progressRing'
+import Tooltip from '@brave/leo/react/tooltip'
+import classnames from '$web-common/classnames'
+
+// Types
+import * as Mojom from '../../../common/mojom'
+
+// Styles
+import styles from './style.module.scss'
+import { getLocale } from '$web-common/locale'
+import { isFullPageScreenshot } from '../../../common/conversation_history_utils'
+
+/**
+ * Formats file size in bytes to human readable format
+ * @param bytes - File size in bytes
+ * @returns Formatted string (e.g., "1.25 MB")
+ */
+export const formatFileSize = (bytes: number): string => {
+  const units = ['B', 'KB', 'MB', 'GB']
+  let index = 0
+  let size = bytes
+
+  while (size >= 1024 && index < units.length - 1) {
+    size /= 1024
+    index++
+  }
+
+  return `${size.toFixed(2)} ${units[index]}`
+}
+
+type Props = {
+  icon: React.ReactNode
+  title: string
+  subtitle: React.ReactNode
+  className?: string
+
+  // remove is optional here so we can also reuse
+  // this component in the conversation thread where remove
+  // is not needed.
+  remove?: () => void
+
+  // When set, the whole item becomes a button that activates what it
+  // describes, e.g. switching to the tab it represents.
+  onClick?: () => void
+}
+
+const tooltipHideDelay = 0
+const tooltipShowDelay = 500
+
+export function AttachmentItem(props: Props) {
+  const Wrapper = props.onClick ? 'button' : 'div'
+  return (
+    <Wrapper
+      className={classnames(styles.itemWrapper, props.className, {
+        [styles.clickable]: !!props.onClick,
+      })}
+      onClick={props.onClick}
+      title={props.onClick ? props.title : undefined}
+    >
+      <div className={styles.leftSide}>
+        {props.icon}
+        <div className={styles.info}>
+          <div className={styles.forEllipsis}>
+            <span className={styles.title}>{props.title}</span>
+          </div>
+          {props.subtitle && (
+            <span
+              data-key='subtitle'
+              className={styles.subtitle}
+            >
+              {props.subtitle}
+            </span>
+          )}
+        </div>
+      </div>
+      {props.remove && (
+        <Button
+          fab
+          kind='plain-faint'
+          className={styles.removeButton}
+          onClick={props.remove}
+        >
+          <Icon name='close' />
+        </Button>
+      )}
+    </Wrapper>
+  )
+}
+
+export function AttachmentSpinnerItem(props: {
+  title: string
+  className?: string
+}) {
+  return (
+    <AttachmentItem
+      icon={
+        <div className={styles.loadingContainer}>
+          <ProgressRing />
+        </div>
+      }
+      title={props.title}
+      subtitle={''}
+      className={props.className}
+    />
+  )
+}
+
+export function AttachmentPageItem(props: {
+  title: string
+  url: string
+  /**
+   * Optional URL (probably a data URI) for the favicon image.
+   * Without being specified, the browser favicon service will be used
+   * to lookup via the url.
+   */
+  faviconUrl?: string
+  remove?: () => void
+  onClick?: () => void
+  className?: string
+}) {
+  // We don't display the scheme in the subtitle.
+  const sansSchemeUrl = props.url.replace(/^https?:\/\//, '')
+
+  return (
+    <AttachmentItem
+      icon={
+        <div className={styles.favicon}>
+          <img
+            src={
+              props.faviconUrl
+              ?? `//favicon2?size=256&pageUrl=${encodeURIComponent(props.url)}&allowGoogleServerFallback=0`
+            }
+          />
+        </div>
+      }
+      title={props.title}
+      subtitle={
+        <>
+          {props.remove && (
+            <Tooltip
+              mode='mini'
+              mouseleaveTimeout={tooltipHideDelay}
+              mouseenterDelay={tooltipShowDelay}
+              positionStrategy='fixed'
+            >
+              <Icon name='info-outline' />
+              <div
+                className={styles.tooltipContent}
+                slot='content'
+              >
+                {getLocale(S.CHAT_UI_PAGE_ATTACHMENT_TOOLTIP_INFO)}
+              </div>
+            </Tooltip>
+          )}
+          <Tooltip
+            mode='mini'
+            mouseleaveTimeout={tooltipHideDelay}
+            mouseenterDelay={tooltipShowDelay}
+            className={styles.subtitleText}
+            positionStrategy='fixed'
+          >
+            <div>{sansSchemeUrl}</div>
+            <div
+              className={styles.tooltipContent}
+              slot='content'
+            >
+              {props.url}
+            </div>
+          </Tooltip>
+        </>
+      }
+      remove={props.remove}
+      onClick={props.onClick}
+      className={props.className}
+    />
+  )
+}
+
+function AttachmentUploadItem({
+  file,
+  index,
+  remove,
+  onPreview,
+  className,
+}: {
+  file: Mojom.UploadedFile
+  index: number
+  remove?: (index: number) => void
+  onPreview: (file: Mojom.UploadedFile) => void
+  className?: string
+}) {
+  const isImage =
+    file.type === Mojom.UploadedFileType.kImage
+    || file.type === Mojom.UploadedFileType.kScreenshot
+  const isPdf = file.type === Mojom.UploadedFileType.kPdf
+  const isText = file.type === Mojom.UploadedFileType.kText
+  const isFileFullPageScreenshot = isFullPageScreenshot(file)
+
+  const dataUrl = React.useMemo(() => {
+    if (!isImage) return null
+    const blob = new Blob([new Uint8Array(file.data)], {
+      type: 'image/*',
+    })
+    return URL.createObjectURL(blob)
+  }, [file, isImage])
+
+  React.useEffect(() => {
+    return () => {
+      if (dataUrl) {
+        URL.revokeObjectURL(dataUrl)
+      }
+    }
+  }, [dataUrl])
+
+  const filesize = React.useMemo(() => {
+    return formatFileSize(Number(file.filesize))
+  }, [file.filesize])
+
+  if (isImage) {
+    return (
+      <AttachmentItem
+        icon={
+          <button
+            type='button'
+            className={styles.imageButton}
+            aria-label={getLocale(
+              S.CHAT_UI_IMAGE_LIGHTBOX_PREVIEW_BUTTON_LABEL,
+            )}
+            onClick={() => onPreview(file)}
+          >
+            <img
+              className={styles.image}
+              src={dataUrl!}
+              alt=''
+            />
+          </button>
+        }
+        title={
+          isFileFullPageScreenshot
+            ? getLocale(S.CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE)
+            : file.filename
+        }
+        subtitle={filesize}
+        remove={remove ? () => remove(index) : undefined}
+        className={className}
+      />
+    )
+  } else if (isPdf || isText) {
+    return (
+      <AttachmentItem
+        icon={<Icon name='file' />}
+        title={file.filename}
+        subtitle={filesize}
+        remove={remove ? () => remove(index) : undefined}
+        className={className}
+      />
+    )
+  }
+
+  return null
+}
+
+export function AttachmentUploadItems(props: {
+  uploadedFiles: Mojom.UploadedFile[]
+  remove?: (index: number) => void
+  onPreview: (file: Mojom.UploadedFile) => void
+  chipClassName?: string
+}) {
+  // We're only going to show 1 item for full-page screenshot,
+  // so find the index of the first one and sum the filesizes for accuracy
+  // of the context impact.
+  let firstFullPageScreenshotIndex = -1
+  let totalFullPageScreenshotFilesizes = 0
+  props.uploadedFiles.forEach((file, index) => {
+    if (isFullPageScreenshot(file)) {
+      if (firstFullPageScreenshotIndex === -1) {
+        firstFullPageScreenshotIndex = index
+      }
+      totalFullPageScreenshotFilesizes += file.filesize
+    }
+  })
+
+  return (
+    <>
+      {props.uploadedFiles
+        .filter((file, index) => {
+          // Only show the first full page screenshot, hide the rest
+          return (
+            !isFullPageScreenshot(file)
+            || index === firstFullPageScreenshotIndex
+          )
+        })
+        .map((file) => {
+          // Find the original index in the unfiltered array
+          const originalIndex = props.uploadedFiles.indexOf(file)
+
+          if (isFullPageScreenshot(file)) {
+            file = { ...file, filesize: totalFullPageScreenshotFilesizes }
+          }
+
+          return (
+            <AttachmentUploadItem
+              key={`${file.filename}-${originalIndex}`}
+              file={file}
+              index={originalIndex}
+              remove={props.remove}
+              onPreview={props.onPreview}
+              className={props.chipClassName}
+            />
+          )
+        })}
+    </>
+  )
+}

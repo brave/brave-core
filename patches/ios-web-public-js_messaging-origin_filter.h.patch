@@ -1,0 +1,15 @@
+diff --git a/ios/web/public/js_messaging/origin_filter.h b/ios/web/public/js_messaging/origin_filter.h
+index 0e5a088140cbf94801aaf4fcd0156e42189d64e5..12d44212b5b8b575e332c0b9ac58800949471d01 100644
+--- a/ios/web/public/js_messaging/origin_filter.h
++++ b/ios/web/public/js_messaging/origin_filter.h
+@@ -12,6 +12,10 @@ namespace web {
+ // The origin filter to restrict the script injection.
+ enum class OriginFilter {
+   kPublic = 0,
++  kYouTube,
++  kBraveSearch,
++  kBraveTalk,
++  kBraveAccount,
+   // A temporary origin filter to use for test. Once a real filter has been
+   // added, remove the temporary origin and use the new origins in tests.
+   // TODO(crbug.com/481255908): Remove the placeholder filter.

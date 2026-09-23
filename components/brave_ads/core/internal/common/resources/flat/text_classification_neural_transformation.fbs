@@ -1,0 +1,25 @@
+namespace brave_ads.neural_text_classification.flat;
+
+table LowercaseTransformation {}
+
+table DistributionTransformation {}
+
+table TokenToSegmentIndices {
+  token: string (key, required);
+  segment_indices: [uint16] (required);
+}
+
+table MappedTokenTransformation {
+  dimension: uint16;
+  mapping: [TokenToSegmentIndices] (required);
+}
+
+union TransformationType {
+  LowercaseTransformation,
+  DistributionTransformation,
+  MappedTokenTransformation
+}
+
+table Transformation {
+  transformation: TransformationType (required);
+}

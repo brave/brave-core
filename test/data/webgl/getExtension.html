@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebGL getExtension() test</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <canvas id="test" width="8" height="8"></canvas>
+    <script>
+      var canvas = document.getElementById("test");
+      var gl = canvas.getContext("webgl");
+      var ext_list = [];
+      for (const [i, name] of Object.entries(gl.getSupportedExtensions())) {
+        ext_list = ext_list.concat(gl.getExtension(name) ? name : null);
+      }
+      document.title = ext_list.join(",");
+
+      function getExtensionWithInvalidName() {
+        document.title = gl.getExtension("INVALID_EXTENSION_NAME_666");
+      }
+      
+      //https://github.com/brave/brave-browser/issues/57902.
+      function getExtensionPlotlyReglStyle() {
+        const required = [
+          'ANGLE_instanced_arrays',
+          'OES_element_index_uint',
+        ];
+        const supported = gl.getSupportedExtensions() || [];
+        const results = [];
+        for (const name of required) {
+          const isListed = supported.some(
+              (s) => s.toLowerCase() === name.toLowerCase());
+          if (!isListed) {
+            results.push(name + ':absent');
+            continue;
+          }
+          const ext = gl.getExtension(name.toLowerCase());
+          results.push(name + ':' + (ext ? 'ok' : 'fail'));
+        }
+        document.title = results.join(',');
+      }
+
+      // Every name from getSupportedExtensions() must also resolve when
+      // requested in lowercase (Chromium matches case-insensitively).
+      function getExtensionLowercaseAllSupported() {
+        const supported = gl.getSupportedExtensions() || [];
+        const failed = [];
+        for (const name of supported) {
+          if (!gl.getExtension(name.toLowerCase())) {
+            failed.push(name);
+          }
+        }
+        document.title = failed.length ? failed.join(',') : 'ok';
+      }
+
+    </script>
+  </body>
+</html>

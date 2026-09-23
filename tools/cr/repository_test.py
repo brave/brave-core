@@ -1,0 +1,527 @@
+#!/usr/bin/env vpython3
+# # Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import os
+from pathlib import Path
+import subprocess
+import unittest
+
+import repository
+from repository import Repository
+
+from test.fake_chromium_repo import FakeChromiumRepo
+from unittest.mock import patch
+
+
+class RepositoryTest(unittest.TestCase):
+
+    def setUp(self):
+        """Set up a fake Chromium repository for testing."""
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.fake_chromium_src.add_dep('v8')
+        self.fake_chromium_src.add_dep('third_party/test1')
+        self.addCleanup(self.fake_chromium_src.cleanup)
+
+    def test_relative_path_constants(self):
+        # Pin the relative-path contract that the rest of tools/cr depends on
+        # for cwd-portability across tests and subprocesses: both paths must
+        # be relative (so they re-resolve against the *current* cwd) and
+        # resolve to the fake brave/chromium roots set up by FakeChromiumRepo.
+        self.assertFalse(repository.brave.root.is_absolute())
+        self.assertFalse(repository.chromium.root.is_absolute())
+        self.assertEqual(repository.brave.root.resolve(),
+                         self.fake_chromium_src.brave)
+        self.assertEqual(repository.chromium.root.resolve(),
+                         self.fake_chromium_src.chromium)
+
+    def test_chromium_repository(self):
+        self.assertEqual(repository.chromium.root.resolve(),
+                         self.fake_chromium_src.chromium)
+        self.assertTrue(repository.chromium.is_chromium)
+        self.assertFalse(repository.chromium.is_brave)
+
+    def test_brave_repository(self):
+        self.assertEqual(repository.brave.root.resolve(),
+                         self.fake_chromium_src.brave)
+        self.assertTrue(repository.brave.is_brave)
+        self.assertFalse(repository.brave.is_chromium)
+
+    def test_to_brave(self):
+        self.assertEqual(repository.chromium.to_brave(), Path('brave'))
+        self.assertEqual(repository.brave.to_brave(), Path('../brave'))
+        self.assertEqual(
+            Repository(repository.chromium.root / 'v8').to_brave(),
+            Path('../brave'))
+        self.assertEqual(
+            Repository(repository.chromium.root /
+                       'third_party/test1').to_brave(), Path('../../brave'))
+
+    def test_from_brave(self):
+        self.assertEqual(repository.chromium.from_brave().resolve(),
+                         repository.brave.root.resolve().parent)
+        self.assertEqual(repository.brave.from_brave().resolve(),
+                         repository.brave.root.resolve())
+        self.assertEqual(
+            Repository(repository.chromium.root / 'v8').from_brave().resolve(),
+            repository.brave.root.resolve().parent / 'v8')
+        self.assertEqual(
+            Repository(repository.chromium.root /
+                       'third_party/test1').from_brave().resolve(),
+            repository.brave.root.resolve().parent / 'third_party/test1')
+        self.assertEqual(
+            Repository(
+                repository.chromium.root / 'third_party/test1').from_brave(
+                    Path('test_file.txt')).resolve(),
+            repository.brave.root.resolve().parent /
+            'third_party/test1/test_file.txt')
+
+    def test_run_git(self):
+        """Test Repository.run_git by verifying the hash of the last commit."""
+        # Verify the hash of the last commit using Repository.run_git
+        self.assertEqual(
+            self.fake_chromium_src.commit_empty("Empty commit in brave",
+                                                self.fake_chromium_src.brave),
+            repository.brave.run_git("rev-parse", "HEAD"),
+        )
+        self.assertEqual(
+            self.fake_chromium_src.commit_empty(
+                "Empty commit in chromium", self.fake_chromium_src.chromium),
+            repository.chromium.run_git("rev-parse", "HEAD"),
+        )
+        self.assertEqual(
+            self.fake_chromium_src.commit_empty(
+                "Empty commit in v8", self.fake_chromium_src.chromium / "v8"),
+            Repository(repository.chromium.root / "v8").run_git(
+                "rev-parse", "HEAD"),
+        )
+        self.assertEqual(
+            self.fake_chromium_src.commit_empty(
+                "Empty commit in third_party/test1",
+                self.fake_chromium_src.chromium / "third_party/test1"),
+            Repository(repository.chromium.root / "third_party/test1").run_git(
+                "rev-parse", "HEAD"),
+        )
+
+    def test_run_git_no_trim(self):
+        """Test that no_trim is correctly passed to run_git."""
+        with patch("terminal.terminal.run_git") as mock_run_git:
+            # Call run_git with no_trim=True for brave repository
+            repository.brave.run_git("log", no_trim=True)
+            mock_run_git.assert_called_once()
+            args, kwargs = mock_run_git.call_args
+            self.assertEqual(args[-1], "log")
+            self.assertEqual(kwargs.get("no_trim"), True)
+
+            # Reset mock and call run_git with no_trim=False
+            mock_run_git.reset_mock()
+            repository.brave.run_git("log", no_trim=False)
+            mock_run_git.assert_called_once()
+            args, kwargs = mock_run_git.call_args
+            self.assertEqual(args[-1], "log")
+            self.assertEqual(kwargs.get("no_trim"), False)
+
+    def test_unstage_all_changes(self):
+        """Test unstage_all_changes and has_staged_changes."""
+        # Create a new file and stage it
+        test_file = self.fake_chromium_src.chromium / "test_file.txt"
+        test_file.write_text("Test content")
+        repository.chromium.run_git("add", str(test_file))
+
+        # Verify the file is staged and has_staged_changes returns True
+        staged_files = repository.chromium.run_git("diff", "--cached",
+                                                   "--name-only")
+        self.assertIn("test_file.txt", staged_files)
+        self.assertTrue(repository.chromium.has_staged_changes())
+
+        # Unstage all changes
+        repository.chromium.unstage_all_changes()
+
+        # Verify the file is no longer staged and has_staged_changes is false
+        staged_files_after = repository.chromium.run_git(
+            "diff", "--cached", "--name-only")
+        self.assertNotIn("test_file.txt", staged_files_after)
+        self.assertFalse(repository.chromium.has_staged_changes())
+
+    def test_get_commit_short_description(self):
+        """Test get_commit_short_description using the chromium repository."""
+        # Create an empty commit with a specific message
+        commit_message = "Test commit message"
+        commit_hash = self.fake_chromium_src.commit_empty(
+            commit_message, self.fake_chromium_src.chromium)
+
+        # Verify the short description of the commit
+        short_description = repository.chromium.get_commit_short_description(
+            commit_hash)
+        self.assertEqual(short_description, commit_message)
+
+    def test_git_commit(self):
+        """Test git_commit."""
+
+        # Case 1: Commit with staged changes
+        test_file = self.fake_chromium_src.chromium / "test_file.txt"
+        test_file.write_text("Test content")
+        repository.chromium.run_git("add", str(test_file))
+        commit_message = "Add test_file.txt"
+        repository.chromium.git_commit(commit_message)
+
+        # Verify the commit message
+        last_commit_message = repository.chromium.get_commit_short_description(
+        )
+        self.assertEqual(last_commit_message, commit_message)
+
+        # Case 2: Commit with no staged changes
+        repository.chromium.git_commit("This should not create a commit")
+        # Verify that the last commit message remains unchanged
+        last_commit_message_after = (
+            repository.chromium.get_commit_short_description())
+        self.assertEqual(last_commit_message_after, commit_message)
+
+    def test_git_commit_allows_empty(self):
+        """Test git_commit with allows_empty."""
+        head_before_empty_commit = repository.chromium.run_git(
+            'rev-parse', 'HEAD')
+
+        # Case 1: Empty commit is created when allows_empty=True and there are
+        # no staged changes.
+        empty_commit_message = 'Create empty commit'
+        repository.chromium.git_commit(empty_commit_message, allows_empty=True)
+
+        self.assertEqual(repository.chromium.get_commit_short_description(),
+                         empty_commit_message)
+        self.assertEqual(repository.chromium.run_git('rev-parse', 'HEAD~1'),
+                         head_before_empty_commit)
+
+        # Case 2: allows_empty=True raises when there are staged changes.
+        test_file = self.fake_chromium_src.chromium / 'test_file.txt'
+        test_file.write_text('staged content')
+        repository.chromium.run_git('add', str(test_file))
+
+        with self.assertRaises(ValueError):
+            repository.chromium.git_commit('Should fail', allows_empty=True)
+
+    def test_git_commit_fixup(self):
+        """Test git_commit_fixup."""
+
+        # Case 1: Fixup commit is created when there are staged changes.
+        target_hash = self.fake_chromium_src.commit_empty(
+            'Target commit', self.fake_chromium_src.chromium)
+
+        test_file = self.fake_chromium_src.chromium / 'fixup_file.txt'
+        test_file.write_text('fixup content')
+        repository.chromium.run_git('add', str(test_file))
+        repository.chromium.git_commit_fixup(target_hash)
+
+        last_subject = repository.chromium.get_commit_short_description()
+        self.assertEqual(last_subject, 'fixup! Target commit')
+
+        # Case 2: No commit is created when nothing is staged.
+        head_before = repository.chromium.run_git('rev-parse', 'HEAD')
+        repository.chromium.git_commit_fixup(target_hash)
+        self.assertEqual(repository.chromium.run_git('rev-parse', 'HEAD'),
+                         head_before)
+
+    def test_git_commit_fixup_allows_empty(self):
+        """Test git_commit_fixup with allows_empty."""
+        target_hash = self.fake_chromium_src.commit_empty(
+            'Target commit', self.fake_chromium_src.chromium)
+
+        # Case 1: Empty fixup commit is created when allows_empty=True and
+        # there are no staged changes.
+        head_before = repository.chromium.run_git('rev-parse', 'HEAD')
+        repository.chromium.git_commit_fixup(target_hash, allows_empty=True)
+
+        self.assertEqual(repository.chromium.get_commit_short_description(),
+                         'fixup! Target commit')
+        self.assertEqual(repository.chromium.run_git('rev-parse', 'HEAD~1'),
+                         head_before)
+
+        # Case 2: allows_empty=True raises when there are staged changes.
+        test_file = self.fake_chromium_src.chromium / 'fixup_file.txt'
+        test_file.write_text('staged content')
+        repository.chromium.run_git('add', str(test_file))
+
+        with self.assertRaises(ValueError):
+            repository.chromium.git_commit_fixup(target_hash,
+                                                 allows_empty=True)
+
+    def test_git_commit_fixup_uses_fixup_flag(self):
+        """Test git_commit_fixup passes --fixup to git commit."""
+        with patch.object(Repository, 'has_staged_changes',
+                          return_value=True), patch.object(
+                              Repository,
+                              'run_git',
+                              return_value='abcd123 msg') as mock_run_git:
+            repository.chromium.git_commit_fixup('deadbeef')
+
+        self.assertIn(
+            unittest.mock.call('commit', '--fixup', 'deadbeef', env=None),
+            mock_run_git.mock_calls)
+
+    def test_git_commit_no_verify(self):
+        """Test git_commit passes --no-verify when no_verify=True."""
+        with patch.object(Repository, 'has_staged_changes',
+                          return_value=True), patch.object(
+                              Repository,
+                              'run_git',
+                              return_value='abcd123 msg') as mock_run_git:
+            repository.chromium.git_commit('Commit with no verify',
+                                           no_verify=True)
+
+        self.assertIn(
+            unittest.mock.call('commit',
+                               '-m',
+                               'Commit with no verify',
+                               '--no-verify',
+                               env=None), mock_run_git.mock_calls)
+
+    def test_git_commit_env_plumbed_to_run_git(self):
+        """Test git_commit forwards `env` down to run_git."""
+        with patch.object(Repository, 'has_staged_changes',
+                          return_value=True), patch.object(
+                              Repository,
+                              'run_git',
+                              return_value='abcd123 msg') as mock_run_git:
+            repository.chromium.git_commit('Toolchain bump',
+                                           env={
+                                               'tags': 'toolchain',
+                                               'culprit': 'deadbeef',
+                                           })
+
+        self.assertIn(
+            unittest.mock.call('commit',
+                               '-m',
+                               'Toolchain bump',
+                               env={
+                                   'tags': 'toolchain',
+                                   'culprit': 'deadbeef',
+                               }), mock_run_git.mock_calls)
+
+    def test_is_valid_git_reference(self):
+        """Test is_valid_git_reference using the chromium repository."""
+
+        # Create a valid commit and verify the reference
+        commit_message = "Valid commit"
+        valid_commit_hash = self.fake_chromium_src.commit_empty(
+            commit_message, self.fake_chromium_src.chromium)
+        self.assertTrue(
+            repository.chromium.is_valid_git_reference(valid_commit_hash))
+
+        # Test an invalid reference
+        self.assertFalse(
+            repository.chromium.is_valid_git_reference("invalid_reference"))
+
+    def test_is_rebase_in_progress(self):
+        """Test is_rebase_in_progress detects a stopped rebase."""
+        chromium = self.fake_chromium_src.chromium
+        for message in ('base', 'A', 'B'):
+            self.fake_chromium_src.commit_empty(message, chromium)
+
+        self.assertFalse(repository.chromium.is_rebase_in_progress())
+
+        # Start an interactive rebase that stops on an `edit` command.
+        env = {
+            **os.environ, 'GIT_SEQUENCE_EDITOR': "sed -i.bak '1s/^pick/edit/'"
+        }
+        subprocess.run(['git', 'rebase', '-i', 'HEAD~2'],
+                       cwd=chromium,
+                       env=env,
+                       capture_output=True,
+                       text=True,
+                       check=True)
+        try:
+            self.assertTrue(repository.chromium.is_rebase_in_progress())
+        finally:
+            subprocess.run(['git', 'rebase', '--abort'],
+                           cwd=chromium,
+                           capture_output=True,
+                           check=False)
+
+        self.assertFalse(repository.chromium.is_rebase_in_progress())
+
+    def test_last_changed(self):
+        """Test last_changed using the chromium repository."""
+        # Create and commit a file
+        self.fake_chromium_src.commit_empty('empty #1',
+                                            self.fake_chromium_src.chromium)
+        file_commits = []
+        self.fake_chromium_src.write_and_stage_file(
+            "test_file.txt", "Initial content",
+            self.fake_chromium_src.chromium)
+        file_commits.append(
+            self.fake_chromium_src.commit("Initial commit for test_file.txt",
+                                          self.fake_chromium_src.chromium))
+        self.fake_chromium_src.commit_empty('empty #2',
+                                            self.fake_chromium_src.chromium)
+
+        # Modify and commit the file again
+        self.fake_chromium_src.commit_empty('empty #3',
+                                            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.write_and_stage_file(
+            "test_file.txt", "Updated content",
+            self.fake_chromium_src.chromium)
+        file_commits.append(
+            self.fake_chromium_src.commit("Updated test_file.txt",
+                                          self.fake_chromium_src.chromium))
+        self.fake_chromium_src.commit_empty('empty #4',
+                                            self.fake_chromium_src.chromium)
+
+        # Verify last_changed returns the latest commit hash for the file
+        last_changed_hash = repository.chromium.last_changed("test_file.txt")
+        self.assertEqual(last_changed_hash[:7], file_commits[-1][:7])
+
+        # Verify last_changed with a specific from_commit returns the correct
+        # hash
+        last_changed_from_initial = repository.chromium.last_changed(
+            "test_file.txt", from_commit=f'{file_commits[-1]}~1')
+        self.assertEqual(last_changed_from_initial[:7], file_commits[-2][:7])
+
+    def test_read_file(self):
+        """Test read_file, including reading multiple files."""
+        # Create and commit two files
+        self.fake_chromium_src.write_and_stage_file(
+            "file1.txt", "Content of file 1\n",
+            self.fake_chromium_src.chromium)
+        commit1 = self.fake_chromium_src.commit(
+            "Add file1.txt", self.fake_chromium_src.chromium)
+
+        self.fake_chromium_src.write_and_stage_file(
+            "file2.txt", "Content of file 2\n",
+            self.fake_chromium_src.chromium)
+        commit2 = self.fake_chromium_src.commit(
+            "Add file2.txt", self.fake_chromium_src.chromium)
+
+        # Test reading a single file
+        content_file1 = repository.chromium.read_file("file1.txt",
+                                                      commit=commit1)
+        self.assertEqual(content_file1, "Content of file 1\n")
+
+        # Test reading multiple files
+        content_files = repository.chromium.read_file("file1.txt",
+                                                      "file2.txt",
+                                                      commit=commit2)
+        self.assertIn("Content of file 1\n", content_files)
+        self.assertIn("Content of file 2\n", content_files)
+
+        # Test enforcing no_trim (ensure trailing newlines are preserved)
+        self.fake_chromium_src.write_and_stage_file(
+            "file3.txt", "Content with trailing newline\n\n",
+            self.fake_chromium_src.chromium)
+        commit3 = self.fake_chromium_src.commit(
+            "Add file3.txt", self.fake_chromium_src.chromium)
+        content_file3 = repository.chromium.read_file("file3.txt",
+                                                      commit=commit3)
+        self.assertEqual(content_file3, "Content with trailing newline\n\n")
+
+    def test_get_patch_stats_single(self):
+        """Test get_patch_stats with a single patch returns its affected
+        file."""
+        test_file = Path('chrome/browser/ui/page_actions/action_ids.h')
+        self.fake_chromium_src.write_and_stage_file(
+            test_file, 'line1\nline2\nline3\n',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add action_ids.h',
+                                      self.fake_chromium_src.chromium)
+
+        (self.fake_chromium_src.chromium /
+         test_file).write_text('line1\nline2\nline3\nbrave_line\n')
+        self.fake_chromium_src.run_update_patches()
+
+        patch_path = Path('brave') / self.fake_chromium_src \
+            .get_patchfile_path_for_source(self.fake_chromium_src.chromium,
+                                           test_file)
+
+        stats = repository.chromium.get_patch_stats(patch_path)
+
+        self.assertEqual(stats, [test_file])
+
+    def test_get_patch_stats_multiple(self):
+        """Test get_patch_stats with several patches returns each in order."""
+        file1 = Path('chrome/browser/ui/page_actions/action_ids.h')
+        file2 = Path(
+            'chrome/browser/ui/views/page_action/page_action_controller.h')
+
+        for test_file in [file1, file2]:
+            self.fake_chromium_src.write_and_stage_file(
+                test_file, 'line1\nline2\nline3\n',
+                self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add header files',
+                                      self.fake_chromium_src.chromium)
+
+        for test_file in [file1, file2]:
+            target = self.fake_chromium_src.chromium / test_file
+            target.write_text(target.read_text() + 'brave_line\n')
+        self.fake_chromium_src.run_update_patches()
+
+        patch_paths = [
+            Path('brave') /
+            self.fake_chromium_src.get_patchfile_path_for_source(
+                self.fake_chromium_src.chromium, f) for f in [file1, file2]
+        ]
+
+        self.assertEqual(repository.chromium.get_patch_stats(patch_paths[0]),
+                         [file1])
+        self.assertEqual(repository.chromium.get_patch_stats(patch_paths[1]),
+                         [file2])
+
+    def test_get_patch_stats_multiple_sources_in_patch(self):
+        """Test get_patch_stats with a patch covering several source files."""
+        file1 = Path('chrome/browser/ui/page_actions/action_ids.h')
+        file2 = Path('base/feature_list.cc')
+
+        for test_file, content in [(file1, 'line1\nline2\n'),
+                                   (file2, 'func() {}\n')]:
+            self.fake_chromium_src.write_and_stage_file(
+                test_file, content, self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add two source files',
+                                      self.fake_chromium_src.chromium)
+
+        patch_filename = self.fake_chromium_src._run_git_command(
+            ['format-patch', '-1', 'HEAD'], self.fake_chromium_src.chromium)
+        patch_path = self.fake_chromium_src.chromium / patch_filename
+
+        stats = repository.chromium.get_patch_stats(patch_path)
+
+        self.assertIn(file1, stats)
+        self.assertIn(file2, stats)
+        self.assertEqual(len(stats), 2)
+
+    def test_current_branch(self):
+        """Test current_branch using the chromium repository."""
+        # Verify the default branch is "master" or "main"
+        current_branch = repository.chromium.current_branch()
+        self.assertIn(current_branch, ["master", "main"])
+
+        # Create and switch to a new branch
+        new_branch = "test-branch"
+        repository.chromium.run_git("checkout", "-b", new_branch)
+
+        # Verify the current branch is updated
+        self.assertEqual(repository.chromium.current_branch(), new_branch)
+
+    def test_relative_to_chromium(self):
+        # Chromium root should be relative to itself as ''
+        self.assertEqual((self.fake_chromium_src.chromium /
+                          repository.chromium.relative_to_chromium).resolve(),
+                         repository.chromium.root.resolve())
+        # Brave root should be relative to chromium as 'brave'
+        self.assertEqual((self.fake_chromium_src.chromium /
+                          repository.brave.relative_to_chromium).resolve(),
+                         repository.brave.root.resolve())
+        # Subdirectory v8 should be relative as 'v8'
+        self.assertEqual((self.fake_chromium_src.chromium / Repository(
+            repository.chromium.root / 'v8').relative_to_chromium).resolve(),
+                         (repository.chromium.root / 'v8').resolve())
+        # Nested subdirectory should be relative as 'third_party/test1'
+        self.assertEqual(
+            (self.fake_chromium_src.chromium /
+             Repository(repository.chromium.root /
+                        'third_party/test1').relative_to_chromium).resolve(),
+            (repository.chromium.root / 'third_party/test1').resolve())
+
+
+if __name__ == "__main__":
+    unittest.main()

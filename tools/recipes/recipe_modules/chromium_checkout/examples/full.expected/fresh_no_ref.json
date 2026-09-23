@@ -1,0 +1,185 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/b/src/third_party/depot_tools"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "gclient",
+      "config",
+      "--name",
+      "src",
+      "--unmanaged",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "cwd": "[WORKSPACE]/b",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "gclient config"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "populate",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git",
+      "--reset-fetch-config",
+      "--no-fetch-tags"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache populate exists (after)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "git cache exists"
+  },
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--no-checkout",
+      "--local",
+      "--shared",
+      "/b/cache/chromium.googlesource.com-chromium-src",
+      "[WORKSPACE]/b/src"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "clone from git cache"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.auto",
+      "0"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: gc.auto=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: gc.autodetach=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "disable auto-gc: maintenance.gc.enabled=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "checkout",
+      "--force",
+      "origin/HEAD",
+      "--"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "checkout origin/HEAD"
+  },
+  {
+    "name": "$result"
+  }
+]

@@ -1,0 +1,47 @@
+##
+## Filters for tests that fail only in ASAN/LSAN builds on Linux
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# Upstream Chromium test. The failure filtered here occurs only under
+# LeakSanitizer, and it is not caused by Brave: there is no chromium_src
+# override and no patch under components/ui_devtools.
+#
+# The leak is in upstream production code. When a widget is torn down while the
+# UI DevTools DOM tree exists, WidgetElement::OnWidgetDestroyed() detaches
+# itself from its parent with parent()->RemoveChild(this) but never deletes
+# itself, unlike the sibling WindowElement::OnWindowHierarchyChanging(), which
+# does `parent()->RemoveChild(this); delete this;`. The orphaned WidgetElement
+# is no longer reachable from DOMAgent::element_root_, so DOMAgent teardown
+# cannot free it. This matches the reported leaks exactly: the WidgetElement
+# allocated in dom_agent_aura.cc BuildTreeForWindow(), its children_ vector
+# buffer, and its WidgetObserver WeakPtrFactory flag. Still present at Chromium
+# ToT.
+#
+# It only reproduces when the DevTools frontend's DOM.getDocument request is
+# dispatched late enough that widget teardown races it during browser shutdown,
+# which is why it is intermittent.
+#
+# Upstream LUCI Analysis, 60 day lookback, per builder:
+#   Linux ASan LSan Tests (1)              42/853 (4.9%)
+#   linux_chromium_asan_rel_ng             11/225 (4.9%)
+#   Linux Chromium OS ASan LSan Tests (1)  12/751 (1.6%)
+#   linux-arm64-wayland-rel-fyi            13/824 (1.6%)
+#   linux-wayland-mutter-rel-tests         40/3081 (1.3%)
+#   linux-rel                             162/56646 (0.3%)
+#   linux-chromeos-rel                    137/57952 (0.2%)
+#   aggregate over all 123 variants                (0.2%)
+#
+# Why this file and not the broader browser_tests-linux.filter: the upstream
+# failures on the non-sanitizer builders above are a separate, ongoing flake
+# that cannot be this leak. A LeakSanitizer report is only produced by an
+# LSAN-enabled build, so the failure mode tracked here is unreachable outside
+# ASAN/LSAN, and it is the only mode Brave CI has observed for this test. If a
+# non-sanitizer failure does show up in Brave CI it is a different root cause
+# and belongs in its own entry with its own root-cause comment, rather than
+# being pre-emptively covered here, which would drop coverage of this CSP
+# regression test on every Linux build.
+# https://github.com/brave/brave-browser/issues/58032
+-UIDevToolsBrowserTest.Connection

@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use Brave's own user data directory naming scheme
+
+      Brave doesn't use CHROME_CONFIG_HOME or Google Chrome's directory names;
+      it always lives under BraveSoftware, with a channel-specific suffix and
+      a separate name when Brave Origin branded. This preempts the upstream
+      body unconditionally, so it never runs.
+    preempt_function_impl:
+      function_name: GetDefaultUserDataDirectory
+      code: |-
+        return BraveGetDefaultUserDataDirectory(result);

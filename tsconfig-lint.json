@@ -1,0 +1,16 @@
+{
+  "extends": "./tsconfig",
+  "include": [
+    "./components/**/*",
+    "./chromium_src/**/*",
+    "./build/**/*",
+    "./ios/**/*",
+    "./web/**/*",
+    "./tools/cr/test/plasters/**/*",
+    "./*.js",
+    "./*.ts",
+    "./*.mjs",
+    "./*.mts",
+  ],
+  "exclude": [],
+}

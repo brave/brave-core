@@ -1,0 +1,1188 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
+import '@testing-library/jest-dom'
+import * as React from 'react'
+import * as Mojom from '../../../common/mojom'
+import {
+  createConversationTurnWithDefaults,
+  getCompletionEvent,
+  getToolUseEvent,
+} from '../../../common/test_data_utils'
+import MockContext, {
+  MockContextRef,
+} from '../../mock_untrusted_conversation_context'
+import { UntrustedConversationContext } from '../../untrusted_conversation_context'
+import type { AssistantResponseProps } from '../assistant_response'
+import ConversationEntries, { highlightRichText } from '.'
+import styles from './style.module.scss'
+
+const assistantResponseMock = jest.fn((props: AssistantResponseProps) => (
+  <div />
+))
+
+jest.mock('../assistant_response', () => ({
+  __esModule: true,
+  default: (props: AssistantResponseProps) => {
+    assistantResponseMock(props)
+    return <div />
+  },
+}))
+
+// A response that includes a tool call renders as a task (AssistantTask)
+// rather than an AssistantResponse. Stub it out so these tests can focus on
+// ConversationEntries' own decision of whether to render the context actions.
+jest.mock('../assistant_task/assistant_task', () => ({
+  __esModule: true,
+  default: () => <div data-testid='assistant-task' />,
+}))
+
+jest.mock('../model_intro', () => ({
+  __esModule: true,
+  default: ({ modelKey }: { modelKey: string }) => (
+    <div
+      data-testid='model-intro'
+      data-model-key={modelKey}
+    />
+  ),
+}))
+
+describe('ConversationEntries ModelIntro placement', () => {
+  it('renders inline markers after the anchored entry pair', () => {
+    const { container, getByTestId } = render(
+      <MockContext
+        initialState={{
+          conversationHistory: [
+            createConversationTurnWithDefaults({
+              characterType: Mojom.CharacterType.ASSISTANT,
+              text: 'Latest reply',
+            }),
+          ],
+        }}
+      >
+        <ConversationEntries
+          modelIntroMarkers={[
+            {
+              id: 'marker-1',
+              modelKey: 'test-model',
+              afterPairIndex: 0,
+            },
+          ]}
+        />
+      </MockContext>,
+    )
+
+    const modelIntro = getByTestId('model-intro')
+    const entryPairs = container.querySelectorAll(`.${styles.entryPair}`)
+    const anchoredEntryPair = entryPairs[0]
+    expect(anchoredEntryPair).toContainElement(modelIntro)
+    expect(modelIntro).toHaveAttribute('data-model-key', 'test-model')
+
+    const assistantTurn = anchoredEntryPair.querySelector(
+      '[data-testid="assistant-turn"]',
+    )
+    expect(assistantTurn).toBeTruthy()
+    expect(
+      assistantTurn!.compareDocumentPosition(modelIntro)
+        & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+  })
+})
+
+describe('ConversationEntries allowedLinks per response', () => {
+  const assistantTurn1 = {
+    characterType: Mojom.CharacterType.ASSISTANT,
+    events: [
+      { completionEvent: { completion: 'Response 1' } },
+      {
+        sourcesEvent: {
+          sources: [
+            {
+              url: { url: 'https://a.com' },
+              title: 'Title 1',
+              faviconUrl: { url: 'https://a.com/favicon.ico' },
+            },
+          ],
+        },
+      },
+    ],
+  }
+
+  const humanTurn1: Partial<Mojom.ConversationTurn> = {
+    characterType: Mojom.CharacterType.HUMAN,
+    text: 'Question 1',
+  }
+
+  const assistantTurn2 = {
+    characterType: Mojom.CharacterType.ASSISTANT,
+    events: [
+      { completionEvent: { completion: 'Response 2' } },
+      {
+        sourcesEvent: {
+          sources: [
+            {
+              url: { url: 'https://b.com' },
+              title: 'Title 2',
+              faviconUrl: { url: 'https://b.com/favicon.ico' },
+            },
+          ],
+        },
+      },
+    ],
+  }
+
+  let mockOverrides: Partial<UntrustedConversationContext>
+  let mockConversationHistory: Mojom.ConversationTurn[]
+
+  beforeEach(() => {
+    assistantResponseMock.mockClear()
+    mockOverrides = {
+      isGenerating: false,
+      isMobile: false,
+      isLeoModel: true,
+      allModels: [],
+      canSubmitUserEntries: true,
+      trimmedTokens: BigInt(0),
+      totalTokens: BigInt(100),
+      contentUsedPercentage: 100,
+    }
+    mockConversationHistory = [
+      assistantTurn1,
+      humanTurn1,
+      assistantTurn2,
+    ] as any
+  })
+
+  it('passes correct allowedLinks to each AssistantResponse', () => {
+    render(
+      <MockContext
+        overrides={mockOverrides}
+        initialState={{ conversationHistory: mockConversationHistory }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+    expect(assistantResponseMock).toHaveBeenCalledTimes(2)
+    expect(assistantResponseMock.mock.calls[0][0]?.allowedLinks).toEqual([
+      'https://a.com',
+    ])
+    expect(assistantResponseMock.mock.calls[1][0]?.allowedLinks).toEqual([
+      'https://b.com',
+    ])
+  })
+
+  it(
+    'passes the same group-wide allowedLinks to every AssistantResponse '
+      + 'in a combined group',
+    () => {
+      // A client-side tool call lives in a separate assistant entry from the
+      // follow-up response that references its URLs, so allowedLinks is
+      // computed per group (not per entry) and every entry in the group sees
+      // the union.
+      render(
+        <MockContext
+          overrides={mockOverrides}
+          initialState={{
+            conversationHistory: [
+              humanTurn1,
+              assistantTurn1,
+              assistantTurn2,
+            ] as any,
+          }}
+        >
+          <ConversationEntries />
+        </MockContext>,
+      )
+      expect(assistantResponseMock).toHaveBeenCalledTimes(2)
+      expect(assistantResponseMock.mock.calls[0][0]?.allowedLinks).toEqual([
+        'https://a.com',
+        'https://b.com',
+      ])
+      expect(assistantResponseMock.mock.calls[1][0]?.allowedLinks).toEqual([
+        'https://a.com',
+        'https://b.com',
+      ])
+    },
+  )
+})
+
+describe('conversation entries', () => {
+  it("doesn't render attached tabs until the conversation has started", () => {
+    const { container } = render(
+      <MockContext
+        overrides={{
+          associatedContent: [
+            {
+              contentId: 1,
+              contentType: Mojom.ContentType.PageContent,
+              contentUsedPercentage: 0.5,
+              title: 'Associated Content',
+              url: { url: 'https://example.com' },
+              uuid: '1234',
+              conversationTurnUuid: '111',
+            },
+          ],
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    expect(screen.queryByText('Associated Content')).not.toBeInTheDocument()
+    expect(
+      container.querySelector('img[src*="//favicon2"]'),
+    ).not.toBeInTheDocument()
+  })
+
+  it('renders attached tabs on started conversation', () => {
+    const { container } = render(
+      <MockContext
+        overrides={{
+          associatedContent: [
+            {
+              contentId: 1,
+              contentType: Mojom.ContentType.PageContent,
+              contentUsedPercentage: 0.5,
+              title: 'Associated Content',
+              url: { url: 'https://example.com' },
+              uuid: '1234',
+              conversationTurnUuid: '111',
+            },
+          ],
+        }}
+        initialState={{
+          conversationHistory: [
+            {
+              characterType: Mojom.CharacterType.HUMAN,
+              text: 'Summarize this page',
+              actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+              events: [],
+              createdTime: { internalValue: BigInt(0) },
+              edits: [],
+              fromBraveSearchSERP: false,
+              uploadedFiles: [],
+              uuid: '111',
+              prompt: undefined,
+              selectedText: undefined,
+              modelKey: 'gpt-4o',
+            },
+          ],
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    expect(
+      screen.getByText('Associated Content', { selector: '.title' }),
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector('img[src*="//favicon2"]'),
+    ).toBeInTheDocument()
+  })
+
+  it('only renders attached tabs on first entry', () => {
+    const { container } = render(
+      <MockContext
+        overrides={{
+          associatedContent: [
+            {
+              contentId: 1,
+              contentType: Mojom.ContentType.PageContent,
+              contentUsedPercentage: 0.5,
+              title: 'Associated Content',
+              url: { url: 'https://example.com' },
+              uuid: '1234',
+              conversationTurnUuid: '111',
+            },
+          ],
+        }}
+        initialState={{
+          conversationHistory: [
+            {
+              characterType: Mojom.CharacterType.HUMAN,
+              text: 'Summarize this page',
+              actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+              events: undefined,
+              createdTime: { internalValue: BigInt(0) },
+              edits: undefined,
+              fromBraveSearchSERP: false,
+              uploadedFiles: [],
+              uuid: '111',
+              prompt: undefined,
+              selectedText: undefined,
+              modelKey: 'gpt-4o',
+            },
+
+            {
+              characterType: Mojom.CharacterType.ASSISTANT,
+              text: 'It Means this!',
+              actionType: Mojom.ActionType.RESPONSE,
+              events: undefined,
+              createdTime: { internalValue: BigInt(1) },
+              edits: undefined,
+              fromBraveSearchSERP: false,
+              uploadedFiles: [],
+              uuid: '222',
+              prompt: undefined,
+              selectedText: undefined,
+              modelKey: 'gpt-4o',
+            },
+            {
+              characterType: Mojom.CharacterType.HUMAN,
+              text: 'Question',
+              actionType: Mojom.ActionType.QUERY,
+              events: undefined,
+              createdTime: { internalValue: BigInt(3) },
+              edits: undefined,
+              fromBraveSearchSERP: false,
+              uploadedFiles: [],
+              uuid: '333',
+              prompt: undefined,
+              selectedText: undefined,
+              modelKey: 'gpt-4o',
+            },
+          ],
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    // One for the text, one for the tooltip
+    expect(screen.queryAllByText('Associated Content').length).toBe(1)
+    expect(
+      Array.from(container.querySelectorAll('img[src*="//favicon2"]')).length,
+    ).toBe(1)
+  })
+
+  it('renders attached tabs from the original turn on edited conversation turns', () => {
+    const { container } = render(
+      <MockContext
+        overrides={{
+          associatedContent: [
+            {
+              contentId: 1,
+              contentType: Mojom.ContentType.PageContent,
+              contentUsedPercentage: 0.5,
+              title: 'Associated Content',
+              url: { url: 'https://example.com' },
+              uuid: '1234',
+              conversationTurnUuid: '111',
+            },
+          ],
+        }}
+        initialState={{
+          conversationHistory: [
+            {
+              characterType: Mojom.CharacterType.HUMAN,
+              text: 'Summarize this page',
+              actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+              events: [],
+              createdTime: { internalValue: BigInt(0) },
+              edits: [
+                {
+                  characterType: Mojom.CharacterType.HUMAN,
+                  text: 'Summarize this page please',
+                  actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+                  events: [],
+                  createdTime: { internalValue: BigInt(1) },
+                  edits: [],
+                  fromBraveSearchSERP: false,
+                  uploadedFiles: [],
+                  uuid: '222',
+                  prompt: undefined,
+                  selectedText: undefined,
+                  modelKey: 'gpt-4o',
+                },
+              ],
+              fromBraveSearchSERP: false,
+              uploadedFiles: [],
+              uuid: '111',
+              prompt: undefined,
+              selectedText: undefined,
+              modelKey: 'gpt-4o',
+            },
+          ],
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    expect(
+      screen.getByText('Associated Content', { selector: '.title' }),
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector('img[src*="//favicon2"]'),
+    ).toBeInTheDocument()
+  })
+
+  it('renders attached tabs from earlier edits on re-edited conversation turns', () => {
+    const { container } = render(
+      <MockContext
+        overrides={{
+          associatedContent: [
+            {
+              contentId: 1,
+              contentType: Mojom.ContentType.PageContent,
+              contentUsedPercentage: 0.5,
+              title: 'Associated Content',
+              url: { url: 'https://example.com' },
+              uuid: '1234',
+              conversationTurnUuid: '222',
+            },
+          ],
+        }}
+        initialState={{
+          conversationHistory: [
+            {
+              characterType: Mojom.CharacterType.HUMAN,
+              text: 'Summarize this page',
+              actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+              events: [],
+              createdTime: { internalValue: BigInt(0) },
+              edits: [
+                {
+                  characterType: Mojom.CharacterType.HUMAN,
+                  text: 'Summarize this page please',
+                  actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+                  events: [],
+                  createdTime: { internalValue: BigInt(1) },
+                  edits: [],
+                  fromBraveSearchSERP: false,
+                  uploadedFiles: [],
+                  uuid: '222',
+                  prompt: undefined,
+                  selectedText: undefined,
+                  modelKey: 'gpt-4o',
+                },
+                {
+                  characterType: Mojom.CharacterType.HUMAN,
+                  text: 'Summarize this page now',
+                  actionType: Mojom.ActionType.SUMMARIZE_PAGE,
+                  events: [],
+                  createdTime: { internalValue: BigInt(2) },
+                  edits: [],
+                  fromBraveSearchSERP: false,
+                  uploadedFiles: [],
+                  uuid: '333',
+                  prompt: undefined,
+                  selectedText: undefined,
+                  modelKey: 'gpt-4o',
+                },
+              ],
+              fromBraveSearchSERP: false,
+              uploadedFiles: [],
+              uuid: '111',
+              prompt: undefined,
+              selectedText: undefined,
+              modelKey: 'gpt-4o',
+            },
+          ],
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    expect(
+      screen.getByText('Associated Content', { selector: '.title' }),
+    ).toBeInTheDocument()
+    expect(
+      container.querySelector('img[src*="//favicon2"]'),
+    ).toBeInTheDocument()
+  })
+
+  test('allows editing of entries', () => {
+    const humanTurn1: Mojom.ConversationTurn = {
+      characterType: Mojom.CharacterType.HUMAN,
+      text: 'What is the meaning of life?',
+      actionType: Mojom.ActionType.QUERY,
+      createdTime: { internalValue: BigInt(0) },
+      events: undefined,
+      edits: [],
+      fromBraveSearchSERP: false,
+      uploadedFiles: [],
+      uuid: '111',
+      prompt: undefined,
+      selectedText: undefined,
+      modelKey: 'gpt-4o',
+    }
+
+    const assistantTurn1: Mojom.ConversationTurn = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      text: 'assistant never renders text property',
+      actionType: Mojom.ActionType.RESPONSE,
+      createdTime: { internalValue: BigInt(4) },
+      events: [getCompletionEvent('It Means this!')],
+      edits: undefined,
+      fromBraveSearchSERP: false,
+      uploadedFiles: [],
+      uuid: '444',
+      prompt: undefined,
+      selectedText: undefined,
+      modelKey: 'any-model',
+    }
+
+    render(
+      <MockContext
+        initialState={{ conversationHistory: [humanTurn1, assistantTurn1] }}
+        overrides={{ canSubmitUserEntries: true }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    // Should show the edit button when hovering over the human turn
+    fireEvent.mouseEnter(screen.getByText('What is the meaning of life?'))
+    expect(screen.queryByTitle(S.CHAT_UI_EDIT_BUTTON_LABEL)).toBeInTheDocument()
+    // should show the assistant edit button
+    expect(
+      screen.queryByText(S.CHAT_UI_EDIT_PROMPT_BUTTON_LABEL),
+    ).toBeInTheDocument()
+  })
+
+  test('disallows editing of entries for agent conversations', () => {
+    const humanTurn1: Mojom.ConversationTurn = {
+      characterType: Mojom.CharacterType.HUMAN,
+      text: 'What is the meaning of life?',
+      actionType: Mojom.ActionType.QUERY,
+      createdTime: { internalValue: BigInt(0) },
+      events: undefined,
+      edits: [],
+      fromBraveSearchSERP: false,
+      uploadedFiles: [],
+      uuid: '111',
+      prompt: undefined,
+      selectedText: undefined,
+      modelKey: 'gpt-4o',
+    }
+
+    const assistantTurn1: Mojom.ConversationTurn = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      text: 'assistant never renders text property',
+      actionType: Mojom.ActionType.RESPONSE,
+      createdTime: { internalValue: BigInt(4) },
+      events: [getCompletionEvent('It Means this!')],
+      edits: undefined,
+      fromBraveSearchSERP: false,
+      uploadedFiles: [],
+      uuid: '444',
+      prompt: undefined,
+      selectedText: undefined,
+      modelKey: 'any-model',
+    }
+
+    render(
+      <MockContext
+        initialState={{ conversationHistory: [humanTurn1, assistantTurn1] }}
+        overrides={{
+          conversationCapabilities: [
+            Mojom.ConversationCapability.CONTENT_AGENT,
+          ],
+          canSubmitUserEntries: true,
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    // Should not show the edit buttons
+    fireEvent.mouseEnter(screen.getByText('What is the meaning of life?'))
+    expect(
+      screen.queryByTitle(S.CHAT_UI_EDIT_BUTTON_LABEL),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByText(S.CHAT_UI_EDIT_PROMPT_BUTTON_LABEL),
+    ).not.toBeInTheDocument()
+  })
+
+  test('displays the edited version of entries', () => {
+    const humanTurn1: Mojom.ConversationTurn = {
+      characterType: Mojom.CharacterType.HUMAN,
+      text: 'What is the meaning of life?',
+      actionType: Mojom.ActionType.QUERY,
+      createdTime: { internalValue: BigInt(0) },
+      events: undefined,
+      edits: [],
+      fromBraveSearchSERP: false,
+      uploadedFiles: [],
+      uuid: '111',
+      prompt: undefined,
+      selectedText: undefined,
+      modelKey: 'gpt-4o',
+    }
+
+    humanTurn1.edits = [
+      {
+        ...humanTurn1,
+        uuid: '222',
+        text: 'What is the meaning of edits?',
+        createdTime: { internalValue: BigInt(2) },
+      },
+      {
+        ...humanTurn1,
+        uuid: '333',
+        text: 'What is the meaning of the current edit?',
+        createdTime: { internalValue: BigInt(1) },
+      },
+    ]
+
+    const assistantTurn1: Mojom.ConversationTurn = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      text: 'assistant never renders text property',
+      actionType: Mojom.ActionType.RESPONSE,
+      createdTime: { internalValue: BigInt(4) },
+      events: [getCompletionEvent('It Means this!')],
+      edits: undefined,
+      fromBraveSearchSERP: false,
+      uploadedFiles: [],
+      uuid: '444',
+      prompt: undefined,
+      selectedText: undefined,
+      modelKey: 'any-model',
+    }
+
+    assistantTurn1.edits = [
+      {
+        ...assistantTurn1,
+        uuid: '555',
+        text: 'assistant never renders text property',
+        events: [getCompletionEvent('It Means edits!')],
+        createdTime: { internalValue: BigInt(5) },
+      },
+      {
+        ...assistantTurn1,
+        uuid: '666',
+        text: 'assistant never renders text property',
+        events: [getCompletionEvent('It Means the current edit!')],
+        createdTime: { internalValue: BigInt(6) },
+      },
+    ]
+
+    render(
+      <MockContext
+        initialState={{ conversationHistory: [humanTurn1, assistantTurn1] }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    // Should show the edited version of the entries
+    expect(
+      screen.queryByText('What is the meaning of the current edit?'),
+    ).toBeInTheDocument()
+    expect(
+      screen.queryByText('What is the meaning of life?'),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByText('What is the meaning of edits?'),
+    ).not.toBeInTheDocument()
+    expect(
+      screen.queryByText('assistant never renders text property'),
+    ).not.toBeInTheDocument()
+
+    expect(assistantResponseMock).toHaveBeenCalledTimes(1)
+    expect(assistantResponseMock.mock.calls[0][0]?.events).toEqual([
+      getCompletionEvent('It Means the current edit!'),
+    ])
+  })
+})
+
+describe('ConversationEntries visualContentUsedPercentage handling', () => {
+  const createAssistantTurn = (): Partial<Mojom.ConversationTurn> => ({
+    characterType: Mojom.CharacterType.ASSISTANT,
+    events: [{ completionEvent: { completion: 'Assistant response' } }],
+  })
+
+  const createHumanTurn = (
+    overrides: Partial<Mojom.ConversationTurn> = {},
+  ): Mojom.ConversationTurn =>
+    ({
+      characterType: Mojom.CharacterType.HUMAN,
+      text: 'Human question',
+      ...overrides,
+    }) as Mojom.ConversationTurn
+
+  beforeEach(() => {
+    assistantResponseMock.mockClear()
+  })
+
+  test('should show visual content warning when visualContentUsedPercentage is less than 100', () => {
+    const { container } = render(
+      <MockContext
+        initialState={{
+          conversationHistory: [createHumanTurn(), createAssistantTurn()],
+        }}
+        overrides={{
+          visualContentUsedPercentage: 75,
+          contentUsedPercentage: 100,
+          trimmedTokens: BigInt(0),
+          totalTokens: BigInt(0),
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    // Should render LongVisualContentWarning component when visual content is truncated
+    // We check for the info icon which is part of the warning components
+    const infoElement = container.querySelector('leo-icon[name="info-outline"]')
+    expect(infoElement).toBeInTheDocument()
+  })
+
+  test('should show visual content warning when visualContentUsedPercentage is 0', () => {
+    const { container } = render(
+      <MockContext
+        initialState={{
+          conversationHistory: [createHumanTurn(), createAssistantTurn()],
+        }}
+        overrides={{
+          visualContentUsedPercentage: 0,
+          contentUsedPercentage: 100,
+          trimmedTokens: BigInt(0),
+          totalTokens: BigInt(0),
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    const infoElement = container.querySelector('leo-icon[name="info-outline"]')
+    expect(infoElement).toBeInTheDocument()
+  })
+
+  test('should not show content warning when visualContentUsedPercentage is 100', () => {
+    const { container } = render(
+      <MockContext
+        initialState={{
+          conversationHistory: [createHumanTurn(), createAssistantTurn()],
+        }}
+        overrides={{
+          visualContentUsedPercentage: 100,
+          contentUsedPercentage: 100,
+          trimmedTokens: BigInt(0),
+          totalTokens: BigInt(0),
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    // Should not show warning when no content truncation
+    const infoElement = container.querySelector('leo-icon[name="info-outline"]')
+    expect(infoElement).not.toBeInTheDocument()
+  })
+
+  test('should not show content warning when visualContentUsedPercentage is undefined (defaults to 100)', () => {
+    const { container } = render(
+      <MockContext
+        initialState={{
+          conversationHistory: [createHumanTurn(), createAssistantTurn()],
+        }}
+        overrides={{
+          visualContentUsedPercentage: undefined,
+          contentUsedPercentage: 100,
+          trimmedTokens: BigInt(0),
+          totalTokens: BigInt(0),
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    // Should not show warning when visualContentUsedPercentage is undefined
+    const infoElement = container.querySelector('leo-icon[name="info-outline"]')
+    expect(infoElement).not.toBeInTheDocument()
+  })
+
+  test('should show visual content warning when both contentUsedPercentage and visualContentUsedPercentage are truncated', () => {
+    const { container } = render(
+      <MockContext
+        initialState={{
+          conversationHistory: [createHumanTurn(), createAssistantTurn()],
+        }}
+        overrides={{
+          visualContentUsedPercentage: 60,
+          contentUsedPercentage: 80,
+          trimmedTokens: BigInt(0),
+          totalTokens: BigInt(0),
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    // Should show visual content warning (prioritizes visual content warning over page content warning)
+    const infoElement = container.querySelector('leo-icon[name="info-outline"]')
+    expect(infoElement).toBeInTheDocument()
+  })
+
+  test('should show text content warning when visualContentUsedPercentage is fine but trimmed tokens exist', () => {
+    const { container } = render(
+      <MockContext
+        initialState={{
+          conversationHistory: [createHumanTurn(), createAssistantTurn()],
+        }}
+        overrides={{
+          visualContentUsedPercentage: 100,
+          contentUsedPercentage: 100,
+          trimmedTokens: BigInt(200),
+          totalTokens: BigInt(1000),
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    // Should show text content warning due to trimmed tokens (highest priority)
+    const infoElement = container.querySelector('leo-icon[name="info-outline"]')
+    expect(infoElement).toBeInTheDocument()
+  })
+
+  test('should only show content warnings for assistant responses, not human turns', () => {
+    const { container } = render(
+      <MockContext
+        initialState={{
+          conversationHistory: [createHumanTurn()], // Only human turn
+        }}
+        overrides={{
+          visualContentUsedPercentage: 50,
+          contentUsedPercentage: 80,
+          trimmedTokens: BigInt(0),
+          totalTokens: BigInt(0),
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    // Should not show warnings for human-only conversation
+    const infoElement = container.querySelector('leo-icon[name="info-outline"]')
+    expect(infoElement).not.toBeInTheDocument()
+  })
+
+  test('should highlight skill shortcuts in text', () => {
+    render(
+      <MockContext
+        initialState={{
+          conversationHistory: [
+            createHumanTurn({
+              text: '/shortcut and additional text',
+              uuid: '111',
+              skill: { shortcut: 'shortcut', prompt: 'prompt' },
+            }),
+          ],
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+    expect(document.querySelector('.richLabel')).toBeInTheDocument()
+    expect(document.querySelector('.richLabel')).toHaveTextContent('/shortcut')
+    expect(document.querySelector('.richLabel')).not.toHaveTextContent(
+      'and additional text',
+    )
+  })
+})
+
+describe('last entry pair scroll on mount', () => {
+  const humanTurn = createConversationTurnWithDefaults({
+    characterType: Mojom.CharacterType.HUMAN,
+    text: 'Hello',
+  })
+
+  let scrollToBottomMock: jest.Mock
+
+  beforeEach(() => {
+    scrollToBottomMock = jest.fn()
+  })
+
+  it('scrolls the last entry pair into view when generation has started', () => {
+    render(
+      <MockContext
+        overrides={{ isGenerating: true }}
+        initialState={{ conversationHistory: [humanTurn] }}
+      >
+        <ConversationEntries scrollToBottom={scrollToBottomMock} />
+      </MockContext>,
+    )
+
+    expect(scrollToBottomMock).toHaveBeenCalledTimes(1)
+  })
+
+  it('does not scroll when generation has never started', () => {
+    render(
+      <MockContext initialState={{ conversationHistory: [humanTurn] }}>
+        <ConversationEntries scrollToBottom={scrollToBottomMock} />
+      </MockContext>,
+    )
+
+    expect(scrollToBottomMock).not.toHaveBeenCalled()
+  })
+
+  it('only scrolls once per element mount, not on subsequent re-renders', async () => {
+    const mockRef = React.createRef<MockContextRef>()
+
+    render(
+      <MockContext
+        ref={mockRef}
+        initialState={{
+          conversationHistory: [humanTurn],
+          conversationEntriesState: { isGenerating: true },
+        }}
+      >
+        <ConversationEntries scrollToBottom={scrollToBottomMock} />
+      </MockContext>,
+    )
+
+    expect(scrollToBottomMock).toHaveBeenCalledTimes(1)
+
+    // Re-render with isGenerating: false — entry pairs unchanged, ref value unchanged
+    await act(async () => {
+      mockRef.current!.api.state.update({ isGenerating: false })
+    })
+
+    expect(scrollToBottomMock).toHaveBeenCalledTimes(1)
+  })
+})
+
+describe('ContextActionsAssistant rendering', () => {
+  const humanTurn = (text: string, uuid: string) =>
+    ({
+      characterType: Mojom.CharacterType.HUMAN,
+      text,
+      uuid,
+    }) as Mojom.ConversationTurn
+
+  const assistantTurn = (completion: string, uuid: string) =>
+    ({
+      characterType: Mojom.CharacterType.ASSISTANT,
+      uuid,
+      events: [{ completionEvent: { completion } }],
+    }) as Mojom.ConversationTurn
+
+  const baseOverrides: Partial<UntrustedConversationContext> = {
+    isMobile: false,
+    isLeoModel: true,
+    allModels: [],
+    canSubmitUserEntries: true,
+    trimmedTokens: BigInt(0),
+    totalTokens: BigInt(0),
+    contentUsedPercentage: 100,
+  }
+
+  const renderConversation = (
+    conversationHistory: Mojom.ConversationTurn[],
+    isGenerating: boolean,
+  ) =>
+    render(
+      <MockContext
+        overrides={{ ...baseOverrides, isGenerating }}
+        initialState={{ conversationHistory }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+  // Maps each rendered assistant turn (in document order) to whether it shows
+  // the assistant context actions. The like button is always present inside
+  // ContextActionsAssistant, so it is a reliable marker for the whole
+  // component being rendered.
+  const assistantTurnsShowingActions = (container: HTMLElement) =>
+    Array.from(
+      container.querySelectorAll('[data-testid="assistant-turn"]'),
+    ).map(
+      (turn) =>
+        !!turn.querySelector(`[title="${S.CHAT_UI_LIKE_ANSWER_BUTTON_LABEL}"]`),
+    )
+
+  // A response whose group contains a tool call. A single tool call is enough
+  // to make the group a task, which takes a different render path but must
+  // still surface the context actions.
+  const toolCallAssistantTurn = (uuid: string) =>
+    ({
+      characterType: Mojom.CharacterType.ASSISTANT,
+      uuid,
+      events: [
+        getCompletionEvent('Response part a'),
+        getToolUseEvent({
+          toolName: 'some-tool',
+          id: '1',
+          argumentsJson: '{}',
+          output: undefined,
+        }),
+        getCompletionEvent('Response part b'),
+      ],
+    }) as Mojom.ConversationTurn
+
+  // Two human/assistant pairs. The first response contains a tool call (a
+  // task), the second is a plain response. The second (last) pair is the
+  // "active group".
+  const twoResponseHistory = [
+    humanTurn('Question 1', '1'),
+    toolCallAssistantTurn('2'),
+    humanTurn('Question 2', '3'),
+    assistantTurn('Response 2', '4'),
+  ]
+
+  it('renders context actions for every response when not generating', () => {
+    const { container } = renderConversation(twoResponseHistory, false)
+    // Including the tool-call/task response and the last/active group, since
+    // it is no longer generating.
+    expect(assistantTurnsShowingActions(container)).toEqual([true, true])
+  })
+
+  it('hides context actions for only the active group while generating', () => {
+    const { container } = renderConversation(twoResponseHistory, true)
+    // The last (active) group is still generating, so its context actions are
+    // hidden; every earlier, completed response keeps them — including the
+    // tool-call/task response.
+    expect(assistantTurnsShowingActions(container)).toEqual([true, false])
+  })
+
+  it('hides context actions for a lone active group while generating', () => {
+    const { container } = renderConversation(
+      [humanTurn('Question 1', '1'), assistantTurn('Response 1', '2')],
+      true,
+    )
+    expect(assistantTurnsShowingActions(container)).toEqual([false])
+  })
+
+  it('renders context actions for a lone group once generation completes', () => {
+    const { container } = renderConversation(
+      [humanTurn('Question 1', '1'), assistantTurn('Response 1', '2')],
+      false,
+    )
+    expect(assistantTurnsShowingActions(container)).toEqual([true])
+  })
+})
+
+describe('highlightRichText', () => {
+  test('should highlight associated content mentions', () => {
+    const associatedContent: Mojom.AssociatedContent[] = [
+      {
+        conversationTurnUuid: '1',
+        contentId: 1,
+        title: 'Test Page',
+        url: { url: 'https://test.com' },
+        contentType: Mojom.ContentType.PageContent,
+        contentUsedPercentage: 0,
+        uuid: '1',
+        toolsAttached: false,
+      },
+    ]
+
+    const text = 'Check out [mention(Test Page)] for more info'
+    const result = highlightRichText(text, undefined, associatedContent)
+
+    // Render into a container to test
+    const TestComponent = () => <>{result}</>
+    const { container } = render(<TestComponent />)
+
+    expect(container.textContent).toContain('Check out Test Page for more info')
+
+    // Check that richLabel span exists and wraps the mention
+    const richLabel = container.querySelector('.richLabel')
+    expect(richLabel).toBeInTheDocument()
+    expect(richLabel).toHaveTextContent('Test Page')
+
+    // Check that the mention text is inside the richLabel
+    const richLabelTitle = richLabel?.querySelector('.richLabelTitle')
+    expect(richLabelTitle).toBeInTheDocument()
+    expect(richLabelTitle).toHaveTextContent('Test Page')
+
+    // Check that the image has the correct favicon URL
+    const img = richLabel?.querySelector('img')
+    expect(img?.src).toContain('test.com')
+  })
+
+  test('should highlight multiple mentions', () => {
+    const associatedContent: Mojom.AssociatedContent[] = [
+      {
+        conversationTurnUuid: '1',
+        contentId: 1,
+        title: 'Page One',
+        url: { url: 'https://one.com' },
+        contentType: Mojom.ContentType.PageContent,
+        contentUsedPercentage: 0,
+        uuid: '1',
+        toolsAttached: false,
+      },
+      {
+        conversationTurnUuid: '1',
+        contentId: 2,
+        title: 'Page Two',
+        url: { url: 'https://two.com' },
+        contentType: Mojom.ContentType.PageContent,
+        contentUsedPercentage: 0,
+        uuid: '2',
+        toolsAttached: false,
+      },
+    ]
+
+    const text = 'See [mention(Page One)] and [mention(Page Two)] for details'
+    const result = highlightRichText(text, undefined, associatedContent)
+
+    const TestComponent = () => <>{result}</>
+    const { container } = render(<TestComponent />)
+
+    expect(container.textContent).toContain(
+      'See Page One and Page Two for details',
+    )
+
+    // Check that we have two richLabel spans wrapping the mentions
+    const richLabels = container.querySelectorAll('.richLabel')
+    expect(richLabels.length).toBe(2)
+    expect(richLabels[0]).toHaveTextContent('Page One')
+    expect(richLabels[1]).toHaveTextContent('Page Two')
+
+    // Check that each richLabel has a richLabelTitle
+    const richLabelTitles = container.querySelectorAll('.richLabelTitle')
+    expect(richLabelTitles.length).toBe(2)
+    expect(richLabelTitles[0]).toHaveTextContent('Page One')
+    expect(richLabelTitles[1]).toHaveTextContent('Page Two')
+
+    // Check favicon URLs
+    const images = container.querySelectorAll('img')
+    expect(images[0]?.src).toContain('one.com')
+    expect(images[1]?.src).toContain('two.com')
+  })
+
+  test('should return plain text when no mentions exist', () => {
+    const text = 'Just plain text'
+    const result = highlightRichText(text, undefined, [])
+
+    expect(result).toBe(text)
+  })
+
+  test('should handle skill mentions at the beginning', () => {
+    const skill: Mojom.SkillEntry = {
+      shortcut: 'test',
+      prompt: 'Test prompt',
+    }
+
+    const text = '/test some query'
+    const result = highlightRichText(text, skill, [])
+
+    const TestComponent = () => <>{result}</>
+    const { container } = render(<TestComponent />)
+
+    expect(container.textContent).toContain('/test')
+    expect(container.textContent).toContain('some query')
+
+    // Check that richLabel span exists for the skill and wraps it
+    const richLabel = container.querySelector('.richLabel')
+    expect(richLabel).toBeInTheDocument()
+    expect(richLabel).toHaveTextContent('/test')
+
+    // Check that the skill shortcut is wrapped in richLabelTitle
+    const richLabelTitle = richLabel?.querySelector('.richLabelTitle')
+    expect(richLabelTitle).toBeInTheDocument()
+    expect(richLabelTitle).toHaveTextContent('/test')
+  })
+})

@@ -1,0 +1,603 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Trump, vaccine mandates, and the 'millionaires tax': Key takeaways from the MassGOP lieutenant governor debate</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Trump, vaccine mandates, and the 'millionaires tax': Key takeaways from the MassGOP lieutenant governor debate</h1><p class="subhead metadata">Former state Reps. Kate Campanale and Leah Cole Allen tackled everything from the proposed millionaires tax to navigating vaccine mandates.</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+				
+
+				
+
+				
+
+
+<p>Is having the support of Donald Trump an asset or a liability in Massachusetts?</p>
+
+<p>Where exactly the former president should fall within Massachusetts’s Republican primary for lieutenant governor made for the largest squabble between the party’s two hopefuls in <a href="https://www.youtube.com/watch?v=vjBO2l79vd8" rel="noreferrer noopener" target="_blank">an hour-long debate Monday morning.</a></p>
+
+<p>Leah Cole Allen and Kate Campanale, the two former state representatives turned lieutenant governor hopefuls, outlined tax cuts, delved into the problems on the MBTA, and spoke out over the so-called millionaires tax that’s slated to go before voters this November.</p>
+
+<p>But no other topic sparked friction quite like what a Trump endorsement means in this race.</p>
+
+<p>The former president has <a href="https://www.boston.com/news/politics/2021/10/06/donald-trump-geoff-diehl-massachusetts-charlie-baker/" rel="noreferrer noopener" target="_blank">endorsed</a> Allen’s running mate, former state Rep. Geoff Diehl, who also received the state party’s endorsement this spring.</p>
+
+<p> So what bearing could Trump’s support have on a gubernatorial contest in Massachusetts, a deep-blue state with a track record of picking moderate Republicans for its top executive office?</p>
+
+<p>Asked on Monday during the debate sponsored by WBUR, <em>The Boston Globe</em>, and WCVB whether she considers Trump’s endorsement a positive or negative accolade in this race, Allen said, “It hasn’t hurt us so far.”</p>
+
+<p>“I think the policies that we had under the former president are what we’re running on,” Allen said. “We had energy independence. We had border security. We had low unemployment rates. I think that people’s retirement funds were doing better. The things we are running on are those policies, and I think if anyone is honest with themselves, we were better off three or four years ago than we are today.”</p>
+
+<p>Allen went on to highlight President Joe Biden’s low approval rating, <a href="https://www.boston.com/news/politics/2022/06/30/ma-joe-biden-approval-45-percent/" rel="noreferrer noopener" target="_blank">even in the Bay State</a>.</p>
+
+<p>“I think that people are tired of the government getting involved in their personal decisions,” Allen said, adding that “leadership has consequences.”</p>
+
+<p>But Campanale, whose running mate in the Sept. 6 primary is businessman Chris Doughty, offered simply that Trump’s support is a sure-fire way to make certain a Democrat wins the race for the corner office this fall.</p>
+
+<p>“We’re not focused on national politics,” she said. “Chris and I are here to focus on Massachusetts issues. Both of our opponents on the right and the left are so focused on this one man. One wants to be like them. The other wants to sue them.”</p>
+
+<p>In a rebuttal, Allen quipped that Doughty voted for Hillary Clinton in the 2016 presidential election, but later supported Trump in the 2020 election.</p>
+
+<p>“I would assume that means that he saw that his policies were better for his business, better for his family, and became a de facto Trump supporter by voting for him in 2020,” Allen said.</p>
+
+<p>Campanale responded with a peer into Diehl’s own voting record.</p>
+
+<p>She noted Diehl, <a href="https://www.bostonglobe.com/metro/2018/03/13/gop-candidate-diehl-once-voted-true-blue/p1e7o8BAlVwind12h4ckeM/story.html" rel="noreferrer noopener" target="_blank">a former Democrat</a>, supported Biden for president in the 2008 primaries.</p>
+
+<p>“If we bring up the Hillary Clinton vote, I think we have to look at my opponent’s running mate’s record,” she said.</p>
+
+<p><strong>Here are two other key takeaways from Monday’s debate:</strong></p>
+
+<h2>Allen made clear she is not ‘anti-vax,’ but anti-mandates for COVID-19 vaccines. </h2>
+
+<p>Allen, a nurse, has said <a href="https://www.salemnews.com/news/allen-my-beloved-beverly-hospital-let-me-go/article_a0f59d88-d093-11ec-bb7a-47c43530cca9.html" rel="noreferrer noopener" target="_blank">she lost her job at Beverly Hospital</a> because she declined to get vaccinated against COVID-19.</p>
+
+<p>At several points during Monday’s debate, Allen underscored her platform for medical freedom, arguing that individuals, not the government, should make decisions regarding their personal health.</p>
+
+<p>“The pandemic really highlighted for me the need for critical thinking and our executive leadership when it comes to making decisions and the fact that no emergency should ever suspend our constitutional rights as citizens,” she said during her opening remarks.</p>
+
+<p>Later asked if Republican Gov. Charlie Baker’s administration was wrong to promote the vaccines, Allen clarified her position.</p>
+
+<p>“I think anyone who wants to get a vaccine is free to do so, and I encourage them to do so,” she said. “We are anti-mandate because the government should not be involved in your health care decisions, and anytime that the government tries to make you choose between your job or making a personal medical decision, to me, that’s a red flag for government overreach and it shouldn’t be tolerated.”</p>
+
+<p>Meanwhile, Campanale said if elected, a Doughty-Campanale administration would give state employees the freedom to decide whether to get vaccinated without consequence.</p>
+
+<p>That’s what Doughty did for his own employees, she said.</p>
+
+<p>“That’s exactly what Chris Doughty and I would do as governor and lieutenant governor: Provide leadership but allow people to make their own health decisions,” she said.</p>
+
+<h2 id="h-both-candidates-agree-the-millionaires-tax-is-wrong-for-massachusetts">Both candidates agree the ‘millionaires tax’ is wrong for Massachusetts.</h2>
+
+<p>In November, Massachusetts voters will decide on whether to adopt the so-called “millionaires tax.”</p>
+
+<p>If passed, <a href="https://www.nbcboston.com/news/politics/massachusetts-millionaires-tax-ballot-question/2787385/" rel="noreferrer noopener" target="_blank">the law would amend the state constitution to charge an extra 4 percent income tax </a>on personal income over $1 million.</p>
+
+<p>Earlier this year, the Tufts University Center for Policy Analysis <a href="https://cspa.tufts.edu/node/406" rel="noreferrer noopener" target="_blank">found</a> that such a tax would generate $1.3 billion in 2023 and would “do so in a highly progressive way likely to advance racial and economic equity.”</p>
+
+<p>Some high earners could move out of state as a result, but the center found the number of movers is likely small.</p>
+
+<p>Asked why she is against the tax, Campanale pointed to other states who have taken similar steps and said top earners in those places left.</p>
+
+<p>“That’s exactly what’s happening in Massachusetts right now,” she said. “We’ve talked to residents who have moved to New Hampshire. They’ve moved to Florida, and that is what’s going to happen if we implement this fair share amendment here in Massachusetts.</p>
+
+<p>“These are the job creators here in our state,” she added. “We can’t have them leaving.”</p>
+
+<p>Allen said to call the ballot initiative a “millionaires tax” is “misleading.”</p>
+
+<p>“First of all, $1 million is not what it used to be,” she said. “And also, this would affect retired families because this tax would also affect you on one-time income. … If you sell your house — and we all know that it’s easy to get a house valued at close to $1 million — on top of any income that you have, you’re going to be taxed.”</p>
+
+<p>The primary election is on Sept. 6. Early voting begins on Aug. 27.</p>
+
+<p><strong>Watch the full debate:</strong></p>
+
+<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"></figure>
+
+<div class="m-block m-generic-cta m-generic-cta--post-content m-generic-cta--dark m-generic-cta--homepage m-generic-cta--email-signup t-amp__generic-cta">
+	<div class="m-generic-cta__wrap">
+		
+		
+		<div class="m-generic-cta__content">
+							<h3 class="m-generic-cta__title">Newsletter Signup</h3>
+			
+							<p class="m-generic-cta__subtitle">Stay up to date on all the latest news from Boston.com</p>
+					</div>
+		
+
+			</div>
+</div>
+
+
+								
+				
+		
+
+
+			</body>

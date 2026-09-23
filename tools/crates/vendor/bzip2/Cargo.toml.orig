@@ -1,0 +1,44 @@
+[package]
+edition = "2021"
+name = "bzip2"
+version = "0.5.2"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+keywords = ["bzip", "encoding"]
+repository = "https://github.com/trifectatechfoundation/bzip2-rs"
+homepage = "https://github.com/trifectatechfoundation/bzip2-rs"
+documentation = "https://docs.rs/bzip2"
+description = """
+Bindings to libbzip2 for bzip2 compression and decompression exposed as
+Reader/Writer streams.
+"""
+categories = ["compression", "api-bindings"]
+rust-version = "1.65.0" # MSRV
+publish = true
+
+[workspace]
+
+[dependencies]
+bzip2-sys = { version = "0.1.13", path = "bzip2-sys", optional = true }
+
+[dependencies.libbz2-rs-sys]
+version = "0.1.3"
+# Don't enable the stdio feature for better portability.
+default-features = false
+features = ["rust-allocator", "semver-prefix"]
+optional = true
+
+[dev-dependencies]
+rand = "0.9"
+partial-io = { version = "0.5.4", features = ["quickcheck1"] }
+quickcheck = "1.0"
+
+[features]
+default = ["dep:bzip2-sys"]
+# Use the pure rust `libbz2-rs-sys` instead of the C FFI bindings of `bzip2-sys`
+# The rust bzip2 implementation is always statically linked.
+libbz2-rs-sys = ["dep:libbz2-rs-sys", "bzip2-sys?/__disabled"]
+# Always build `libbz2` from C source, and statically link it.
+# This flag is only meaningful when `bzip2-sys` is used,
+# and has no effect when `libbz2-rs-sys` is used as the bzip2 implementation.
+static = ["bzip2-sys?/static"]

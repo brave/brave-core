@@ -1,0 +1,50 @@
+diff --git a/components/sync/base/data_type.cc b/components/sync/base/data_type.cc
+index e987e5b4d6c701478d7b332f94e297888cc7b0d4..0100fd8c74ffca94f8e7b426e1d36bea22396c7e 100644
+--- a/components/sync/base/data_type.cc
++++ b/components/sync/base/data_type.cc
+@@ -1193,10 +1193,25 @@ constexpr std::array<DataTypeInfo, syncer::GetNumDataTypes()>
+             .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,
+             .local_sync_support_policy = LocalSyncSupportPolicy::kUnsupported,
+         },
++        {
++            .type = AI_CHAT_CONVERSATION,
++            .specifics_field_number =
++                sync_pb::EntitySpecifics::kAiChatConversationFieldNumber,
++            .debug_string = "AI Chat Conversation",
++            .histogram_suffix = "AI_CHAT_CONVERSATION",
++            .stable_lowercase_string = "ai_chat_conversation",
++            .encryption_policy = EncryptionPolicy::kEncryptedIfCustomPassphraseSet,
++            .priority = DataTypePriority::kRegular,
++            .communication_direction = CommunicationDirection::kRegularTwoWay,
++            .apply_updates_batch_policy = ApplyUpdatesBatchPolicy::kStandard,
++            .unsynced_data_check_on_signout_policy =
++                UnsyncedDataCheckOnSignoutPolicy::kNone,
++            .cross_user_sharing_policy = CrossUserSharingPolicy::kNone,
++        },
+     }};
+ 
+ // LINT.IfChange(DataTypeHistogramSuffix)
+-static_assert(GetNumDataTypes() == 65,
++static_assert(GetNumDataTypes() == 65 + 1,
+               "When adding a new type, update kDataTypeInfoTable, update "
+               "histograms.xml and follow the integration checklist in "
+               "https://www.chromium.org/developers/design-documents/sync/"
+@@ -1419,6 +1434,9 @@ void AddDefaultFieldValue(DataType type, sync_pb::EntitySpecifics* specifics) {
+     case JOURNEY:
+       specifics->mutable_journey();
+       break;
++    case AI_CHAT_CONVERSATION:
++      specifics->mutable_ai_chat_conversation();
++      break;
+   }
+ }
+ 
+@@ -1757,6 +1775,8 @@ DataTypeForHistograms DataTypeHistogramValue(DataType data_type) {
+       return DataTypeForHistograms::kNotebook;
+     case JOURNEY:
+       return DataTypeForHistograms::kJourney;
++    case AI_CHAT_CONVERSATION:
++      return DataTypeForHistograms::kAIChatConversation;
+   }
+   NOTREACHED();
+ }

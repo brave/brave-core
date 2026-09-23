@@ -1,0 +1,13 @@
+diff --git a/components/sync_sessions/synced_session.cc b/components/sync_sessions/synced_session.cc
+index 9426a50483c72e4cb1339a6a290ba12e900917e3..9724d7b1f207fe411be6891984bf1a3a0d6fe916 100644
+--- a/components/sync_sessions/synced_session.cc
++++ b/components/sync_sessions/synced_session.cc
+@@ -103,7 +103,7 @@ sync_pb::TabNavigation SessionNavigationToSyncData(
+   // local storage: SessionStore does not enforce this so it is necessary to
+   // handle empty or invalid URLs here.
+   sync_data.set_virtual_url(navigation.virtual_url().is_valid()
+-                                ? navigation.virtual_url().spec()
++                                ? navigation.maybe_prefixed_virtual_url_spec()
+                                 : std::string());
+   sync_data.set_referrer(navigation.referrer_url().is_valid()
+                              ? navigation.referrer_url().spec()

@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>‘I would rather be in Afghanistan’ – Group Resettling Afghans Faces Scrutiny</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">‘I would rather be in Afghanistan’ – Group Resettling Afghans Faces Scrutiny</h1><p class="subhead metadata">A year after the fall of Kabul, some Afghan refugees resettled by a Washington-area organization say they are still struggling to get basic services – and sources say the State Department is looking into it.</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><p>Mohammad’s journey from Afghanistan to a home in the U.S. played out in three stages.</p><p>The first occurred following the fall of Kabul a year ago, after which the husband and father who worked with the U.S. government for 14 years spent a month shuttling his family from safe house to safe house, trying to outrun the Taliban.</p><p>The second took place in Qatar, where his family spent four weeks on a military base, living in a shipping container turned into transitional housing. And the third leg involved two months on a military base in New Jersey, where his family was vaccinated, processed and housed under a tent with hundreds of other Afghan evacuees, their only privacy provided by a thin partition dividing households.<br></p><react-trigger trigger="view"></react-trigger><p>In February, Mohammad and his family reached their final destination in Manassas, Virginia, where they now live in a two-story, three-bedroom apartment with a proper roof and sturdy walls. It couldn’t have come soon enough: His wife is struggling with a dangerous medical condition. Still, nobody in his family has found work. Food is scarce, and he’s not sure how he’ll pay his bills. In fact, Mohammad says he feels more insecure now than at any time since his government fell. From the moment his family was assigned to Northern Virginia, he says his refugee resettlement caseworker – the person assigned to help him with his basic needs – has been unresponsive to his pleas for assistance.</p><p>“To be honest, I’m disappointed,” says Mohammad, whose real name can’t be used due to security concerns.</p><p>Mohammad is referring to his treatment by Lutheran Social Services of the National Capital Area, a refugee resettlement agency charged with using federal funds to provide housing and other basic services to help refugees get on their feet. The agency says it has resettled more than <a href="https://lssnca.org/programs/afghan-allies.html" target="_blank">4,500 Afghan refugees</a> so far – the most, it says, of any organization on the East Coast.</p><p>In Mohammad’s mind, it’s doing an inadequate job of it. And plenty of others agree, according to a U.S. News investigation. More than two dozen interviews with Afghan clients of the agency, current and former employees and volunteers who work closely with the organization uncovered stories about multiple failures to perform services.</p><p>Some employees, sources say, have provided inadequate food, housing and other services to refugees and played favorites among clients. They also say some staff have failed to securely store sensitive documents, falsified case notes, skimmed funds from petty cash and paid questionable bonuses to employees.<br></p><div class="ImageCaptioned-sc-1yr50o7-4 gUcyXc mt5 mb5"><div class="ImageCaptioned__ImageBox-sc-1yr50o7-1 gooiWq mb4"><div class="ImageCaptioned__AspectRatioInner-sc-1yr50o7-2 hRKaKt"><picture class="Image__Picture-sc-412cjc-0 hRvayO"><source data-srcset="https://www.usnews.com/object/image/00000182-a2d7-dc6b-a1e3-ebd7530d0000/usn-afghan-refugees-03.JPG?update-time=1660589747296&amp;size=responsiveFlow970" media="(min-width: 640px)" srcset="https://www.usnews.com/object/image/00000182-a2d7-dc6b-a1e3-ebd7530d0000/usn-afghan-refugees-03.JPG?update-time=1660589747296&amp;size=responsiveFlow970"></picture></div></div><p class="Paragraph-sc-1iyax29-0 Caption__Wrapper-bee4ah-0 lbGMQc koepFU"><span class="Raw-slyvem-0 Caption__DescSpan-bee4ah-1 eFsMWr dLbCpb">Mohammad poses for a photo at his home in Manassas, Virginia.</span><span class="Credit__Container-lfa4w-6-span Credit__SpanContainer-lfa4w-7 dsEOlb Caption__CreditExposed-bee4ah-2 hBaTP"><span class="Span-sc-19wk4id-0 Credit__Target-lfa4w-8 jswYky gMxtXD" color="#515767" size="2"><svg class="Icon-sc-9wq8ul-0 Credit__CameraIconExposed-lfa4w-1 hiHdJZ bXHhQo" fill="#515767" height="1.5rem" role="img" width="1.5rem"><use filter="0" xlink:href="#camera"></use></svg>(Avi Gupta for USN&amp;WR)</span></span></p></div><p>“You just scratch your head going, ‘Is anybody watching this office? Is anybody auditing them?’” says Ted Vinatieri, a pastor at Pillar Church in Stafford, Virginia, and one of several volunteers who expressed apprehension about the treatment of Afghan refugees by Lutheran Social Services.</p><p>Concerns about the agency have already made their way to the federal government, where the Department of State monitors refugee resettlement during the first few months after their arrival. Individuals close to Lutheran Social Services have reached out to the State Department, which is now investigating claims about client mistreatment.</p><p>One of those individuals reached out to the FBI with concerns, and the law enforcement agency has contacted at least one former and one current employee to discuss their experiences. The FBI would not confirm whether there is an official investigation.</p><p>Lutheran Social Services declined to comment on many of the allegations against it. However, it said it was aware of the complaints and that it had worked with third-party organizations, including an accounting firm and a law firm, to investigate them.</p><p>Lutheran Social Services declined to share the law firm’s report with U.S. News, but it shared its 2021 third-party <a href="https://lssnca.org/about/mission/impact-audits.html" target="_blank">financial audit</a>, which showed no evidence of financial malfeasance or fraud. It says the same firm looked beyond 2021 to the present and found the same but Lutheran Social Services declined to share that report as well. The group’s parent organization, which is responsible for monitoring Lutheran Social Services, also investigated complaints and found no evidence of financial malfeasance or fraud.</p><p>“We are committed to serving our community with excellence,” the group said in a statement, adding, “we welcome and respond to all concerns brought to our attention.”</p><p><b>An Emergency Response</b></p><p>There is no doubt resettlement agencies have faced a herculean challenge. More than 74,000 Afghans have come to the United States following the Taliban’s takeover of Kabul a year ago, according to the State Department. Of those, about 9,000 – or 12% – settled in Maryland, Virginia and Washington, D.C. Many asked to be resettled in the Washington area because of a desire to be near the government agencies they’d worked closely with in Afghanistan and because of its sizable Afghan community. Virginia had the most resettled Afghan refugees of <a href="https://www.usnews.com/news/best-states/articles/2021-09-14/afghan-refugee-resettlement-by-state" target="_blank">any state per capita</a> between 2001 and September 2021.</p><p>The U.S. government contracts nine nonprofit agencies to assist with resettling refugees from all over the world. Those agencies rely on a network of local affiliates, like Lutheran Social Services, across the country that <a href="https://www.state.gov/refugee-admissions/reception-and-placement/" target="_blank">provide basic services</a> to refugees and sometimes offer additional assistance such as <a href="https://refugees.org/refugee-health/" target="_blank">medical screening programs</a> or support for <a href="https://www.lirs.org/foster-care-services/" target="_blank">unaccompanied migrant children</a>. In the last 12 months alone, those agencies have received nearly $1.5 billion in federal funds.<br>The State Department says it awarded more than $40 million to Lutheran Immigration and Refugee Service, Lutheran Social Services’ parent organization, in August 2021 to resettle Afghan refugees. Since then, Lutheran Immigration and Refugee Service says it has helped about 12,000 Afghan refugees find a home in the U.S.</p><p>Under their cooperative agreements with the State Department, resettlement agencies like Lutheran Social Services have a list of services they’re obligated to provide to Afghan refugees within three months, using a fixed per capita grant of $2,275. Upon arrival, refugees are supposed to have safe housing, for example, as well as culturally appropriate food, seasonal clothes and pocket money for emergency expenses. The State Department’s agreement with Lutheran Immigration and Refugee Service requires staff members to perform two home-visits to refugees within 30 days of arrival – either virtually or in-person – to the extent possible, and to help them apply for cash assistance, Social Security cards, English-language programs and an array of other services and benefits within 90 days.<br></p><p>Within five days, according to their agreement, employees are required to conduct intake interviews with refugees and explain their rights and responsibilities. Within 90 days, they’re required to provide “orientation” information about a range of topics, including housing, immigration status, employment and U.S. law.</p><p>In the immediate weeks following the evacuation of Kabul, refugee resettlement organizations struggled to meet those obligations – and, many argued, understandably so.</p><p>Former President Donald Trump drastically lowered the country’s refugee admissions cap during his time in office, essentially incapacitating the U.S. refugee program. Presidents typically set the country’s refugee cap between 70,000 to 90,000, according to the <a href="https://www.migrationpolicy.org/article/refugees-and-asylees-united-states-2021#refugee-admission-ceiling" target="_blank">Migration Policy Institute</a>. Yet the Trump administration reduced the fiscal 2017 cap set by the Obama administration from 110,000 to 50,000, and then continued to lower it until in fiscal 2021 it reached 15,000 – the lowest since the 1980 Refugee Act that governs admissions took effect.</p><p>Because resettlement groups receive money based on the numbers of refugees they resettle, their budgets were devastated. Hundreds of affiliate offices had to close, and many employees – some with decades of experience – lost their jobs. Lutheran Immigration and Refugee Service alone had to close a third of its <a href="https://apnews.com/article/joe-biden-politics-immigration-coronavirus-pandemic-0a649290b8a6628900598d4324c3d72b" target="_blank">48 offices</a> and lay off more than 120 employees. Lutheran Social Services says its resources and staff were “decimated.”</p><p>After the evacuation of Kabul in August 2021, resettlement organizations found themselves pushed to the limit. Usually, they would have weeks or months to plan for refugee arrivals. Now they had days and far too few staff members to deal with the sheer numbers – the largest influx of refugees since roughly <a href="https://www.migrationpolicy.org/article/vietnamese-immigrants-united-states#:~:text=The%20arrival%20of%20125%2C000%20Vietnamese,following%20the%20U.S.%20military's%20withdrawal." target="_blank">125,000 Vietnamese</a> arrived at the end of the Vietnam War. Lutheran Social Services says it went from serving 500 people a year through its refugee program during the Trump administration to 500 people a month in August 2021. And it kept its doors open to Afghans, even after local peers began to limit their numbers.</p><p>The sudden uptick in refugees caused problems not only for Lutheran Social Services but for resettlement organizations throughout the country: Airport pickups didn’t run as smoothly as they once did. Refugees were placed in cramped hotel rooms while staff looked for more permanent housing. Some arrived at homes without furniture. Services that were once commonplace fell by the wayside.<br></p><p>“When Kabul fell, like when Saigon fell in 1975, we weren’t prepared,” says <a href="https://refugees.org/leaderships/eskinder-negash/" target="_blank">Eskinder Negash</a>, president and CEO of the U.S. Committee for Refugees and Immigrants, one of the nine resettlement organizations that contracts with the U.S. government. “I’m just being very candid. We are not a disaster response team.”</p><p>On top of that, there was a global pandemic to contend with. Refugee resettlement groups were working remotely. Employees fell ill and couldn’t work. When entire offices were overwhelmed with coronavirus outbreaks, refugee flights had to be redirected to other locations. Afghans were also arriving in the midst of a housing crisis, with rents climbing to some of the <a href="https://www.washingtonpost.com/business/interactive/2022/rising-rent-prices/" target="_blank">highest prices</a> in decades.</p><p>“I've done this work for over four decades,” Negash says. “This was probably the most challenging environment to resettle anybody, let alone over 70,000 Afghans.”</p><p>Initially, some groups had to tap into privately raised funds to meet the needs. But soon federal dollars rolled in, allowing organizations to hire staff and provide services. Yet now, a year after the evacuation, clients and others say Lutheran Social Services is still struggling to provide vital assistance to Afghan refugees.</p><p><b>Promises Unfulfilled</b></p><p>In late June, Amir, a Lutheran Social Services client and former member of the Afghan special forces, is sitting behind his coffee table in his sparsely furnished apartment in Hyattsville, Maryland. As his toddler darts in and out the room, he holds up his phone and shows his text message exchanges with his caseworker.</p><p>“Hello brother,” he starts out each text, before asking for help with things like rent, a bus card and English-language classes. The caseworker doesn’t always respond, but when he does, it’s with phrases like, “in a meeting” or “will call you back.” The problem, according to Amir, is that he never does.</p><p>It’s been over four months since Amir – a soft spoken 29-year-old – and his wife, son and sister left a military base in Virginia and moved to Maryland. Yet his wife, who has a medical condition and has been struggling with headaches and sleeplessness, still doesn’t have the Medicaid insurance she should <a href="https://health.maryland.gov/mmcp/Pages/Medicaid-Immigration-Status-Requirements.aspx#:~:text=To%20be%20eligible%20for%20full,must%20only%20be%20lawfully%2Dpresent." target="_blank">be eligible</a> for.</p><div class="ImageCaptioned-sc-1yr50o7-4 gUcyXc mt5 mb5"><div class="ImageCaptioned__ImageBox-sc-1yr50o7-1 gooiWq mb4"><div class="ImageCaptioned__AspectRatioInner-sc-1yr50o7-2 hRKaKt"><picture class="Image__Picture-sc-412cjc-0 hRvayO"><source data-srcset="https://www.usnews.com/object/image/00000182-a2d7-dc6b-a1e3-ebd753930000/usn-afghan-refugees-05.JPG?update-time=1660589655587&amp;size=responsiveFlow970" media="(min-width: 640px)" srcset="https://www.usnews.com/object/image/00000182-a2d7-dc6b-a1e3-ebd753930000/usn-afghan-refugees-05.JPG?update-time=1660589655587&amp;size=responsiveFlow970"></picture></div></div><p class="Paragraph-sc-1iyax29-0 Caption__Wrapper-bee4ah-0 lbGMQc koepFU"><span class="Raw-slyvem-0 Caption__DescSpan-bee4ah-1 eFsMWr dLbCpb">Amir displays his Afghan special forces beret, as his toddler looks on, in Hyattsville, Maryland. </span><span class="Credit__Container-lfa4w-6-span Credit__SpanContainer-lfa4w-7 dsEOlb Caption__CreditExposed-bee4ah-2 hBaTP"><span class="Span-sc-19wk4id-0 Credit__Target-lfa4w-8 jswYky gMxtXD" color="#515767" size="2"><svg class="Icon-sc-9wq8ul-0 Credit__CameraIconExposed-lfa4w-1 hiHdJZ bXHhQo" fill="#515767" height="1.5rem" role="img" width="1.5rem"><use filter="0" xlink:href="#camera"></use></svg>(Avi Gupta for USN&amp;WR)</span></span></p></div><p>The issue has been eating away at Amir, who has been asking his caseworker for help to no avail. He’s taken his wife to the front desk of the hospital two times, he says, but administrators wouldn’t accept her without Medicaid. At one point, Amir’s caseworker told him to just call 911, and he almost did – before a friend cautioned against it due to cost.</p><p>“I asked [the caseworker] many times, please make an appointment for my wife, she has a health problem and we don't know what's going on,” Amir says. “When we call him every time he tells me, ‘I'm very busy. I’ll call you back.’ We wait one, two, three days, we call him back and he says, ‘I'm on vacation,’ ‘I'm in the vehicle.’”</p><p>“Four months and we cannot get insurance,” he continues. “My wife’s health is very important. … This is very difficult.”</p><p>Amir, whose name has been changed, rattles off a list of other complaints: Despite multiple invitations for a meal or tea, his caseworker never entered his home, where he would have seen his dilapidated stove and broken dining chairs or heard the mice in the walls. At one point, the caseworker stopped by with documents but asked that Amir come to his car to sign them since he was running late. Paperwork was never explained. After his caseworker told him his unit couldn’t receive internet, he turned to a volunteer who nevertheless found him Wi-Fi so he could take English classes. Amir’s family has food stamps – but not because his caseworker set them up – because Amir went to a county office in person to get them himself.<br></p><react-trigger trigger="view"></react-trigger><p>“They made me mad,” he says of the agency – so mad, in fact, that in June he blocked his case manager’s phone number.</p><p>Lutheran Social Services says it does not comment on specific clients as their privacy and safety is of “utmost importance” to the agency. But volunteers and other Afghan refugee clients of the agency say the complaints made by Amir (whose wife received Medicaid in mid-July) are not isolated.</p><p>They say some caseworkers, often inexperienced and overwhelmed with high caseloads, regularly ignore client messages about urgent needs. Refugees say house visits can be irregular and rushed and that paperwork often goes unexplained. Some said they’ve waited months to receive the government documents that allow them to work and get benefits, and that their caseworkers didn’t follow-up to explain or help reduce the delays.</p><p>At times, rent checks, which Lutheran Social Services is supposed to pay for the first three months, come late, leaving refugees worried about late fees. Housing can be inappropriate, unfurnished or unsanitary. In July, U.S. News visited a family in an extended stay hotel that they’d been staying in since May. Several refugees pointed to bites on their arms and said they’d seen insects in their sheets.</p><p>Vinatieri, the pastor, says he was especially bewildered by the treatment of a wheelchair-bound paraplegic man who the agency moved into an Airbnb with seven front steps.</p><p>“This whole thing was just like, ‘Oh, come on,’” he says. “This guy got shot defending the American cause and this is how we treat him? Let’s do better with our tax dollars.”</p><p>Behind the scenes, two current employees say they have seen some staff members make up case notes about services they didn’t deliver and falsify client signatures meant to verify that they’d received things like food delivery and cash. One current employee says they saw a caseworker give a family of seven $200 in cash, had them sign a receipt and later wrote on it that the family had been given $700.</p><p>Another current employee says they have gone through several audits, including annual financial audits and monitoring by Lutheran Immigration and Refugee Service, the parent organization. In the weeks before each audit, which they tell U.S. News are “very easy to pass,” they say some staff members forged client signatures on receipts and other documents to be compliant. Whether or not the services were actually provided to refugees, the employee says, was unclear.</p><p>“What they do is they quickly call the families and see what they are missing. They sometimes provide it right before the audit – a day before. … I, myself, dropped off furniture almost in the middle of the night – at 10 p.m. – because the auditor was coming at 8 a.m. to see and check the furniture.”</p><p>Whether or not a family receives something as basic as a couch can come down to their position on a hierarchy determined by Lutheran Social Services staff, sources say. Refugees and volunteers say some staff members, who are mostly well-educated Afghans, can be dismissive of Afghan refugees who struggle to read and write or who speak a different first language. Sources say refugees with strong U.S. ties, and those savvy enough to leverage them, are often the ones who get the most attention: prompt responses to their questions, rent paid beyond the required three months, new furniture, funds from the petty cash box.</p><p>Current staff members said there’s another factor that can give refugees an advantage: sharing the same last names as staff.</p><p>“Some clients who are relatives are getting better services,” one current employee says plainly. They reported seeing relatives get more rent, more cash, better furniture, more job assistance and more Uber trips for transportation.</p><p>A member of another organization helping Afghan refugees says they saw nepotism firsthand. Their organization was working with Lutheran Social Services to do home setups, using private donations to ensure families had furniture, basic house supplies, food and other necessities they needed when they first arrived. Lutheran Social Services would flag needy homes for them, but half of the time, they say, the group would show up to find that homes flagged as needy often had more than enough supplies.</p><p>“A handful of times, that person would turn out to be a relative of a case manager or employee,” they say. (Lutheran Social Services declined to comment on some of these claims, but said its legal investigators did not find evidence to sustain allegations that its case management team treats clients differently based on their ethnic backgrounds.)</p><p>While sources say well-connected Afghans see their complaints addressed quickly, others are said to be ignored, dismissed or even threatened if they share their concerns.</p><p>Two refugee families told U.S. News they’d been instructed by the same caseworker not to complain to the media about their treatment by Lutheran Social Services. A father with a young child was so worried during his interview with U.S. News that he closed his window blinds, nervously peeking outside to see if anyone was watching. One of the families said the caseworker also told them they would be deported by the State Department if they complained.</p><p>Lutheran Social Services says its media policy doesn’t restrict client participation in media interviews. We believe “in the importance of sharing and amplifying Afghan Allies’ stories,” the group said in a statement. “We are grateful to those who are willing to share their experiences and support their right to do so.”</p><p>Mohammad puts himself in the ignored and dismissed category.</p><p>On Feb.12, the day Mohammad and his family were scheduled to leave a military base in New Jersey for Virginia, his wife had a medical emergency while waiting in line for the bus. She was rushed to an off-base emergency room and had surgery early the next morning.</p><p>While Mohammad stayed at his wife’s bedside, his four teenaged children remained at the base for another week, until Feb. 18, when the government removed the last remaining evacuees from the facility. That day Mohammad’s children packed into a bus with other refugees and were driven about 200 miles south to an area near Washington Dulles International Airport in the D.C. suburbs of Virginia. There, Mohammad says, his children waited for hours, luggage in tow, while other Afghans were picked up by their caseworkers and taken to their new housing.</p><p>Mohammad was preparing for his wife to have another operation when his kids called him and asked what they should do. He called his caseworker, who told him she couldn’t make the trip and suggested that he ask a friend to retrieve his children.</p><p>Mohammad scrambled to reach one of his friends – a colleague he knew from the development work he did with the U.S. back in Afghanistan – and he agreed to head toward Dulles.</p><p>“He was shocked,” Mohammad says.</p><p>The friend took the children to their designated hotel, where the surprises kept coming: The four children were to stay in a single room with one bed. There was no food or money to pay for it. Mohammad says he frantically called his caseworker to ask how his children could eat.</p><p>Her response?</p><p>“Ask your friend.”</p><p>The fact that Mohammad’s family ended up in a hotel wasn’t atypical. Some refugees have waited months in hotels while resettlement agencies have worked to find them more permanent housing. But Mohammad didn’t want his children to wait, so he reached out to the same friend, who helped him secure an apartment in the Washington suburbs three days later.</p><p>While his caseworker approved of the apartment and agreed to pay the rent, Mohammad says he had to once again rely on his friend, instead of the caseworker, to get his children there.</p><p>“And then when they came, there was nothing inside the house,” Mohammad says. “No furniture, no kitchen tools, no water, no food.”</p><p>When Mohammad and his wife finally reunited with their children in mid-March, he said his apartment was sparsely furnished with pieces of furniture his children had salvaged from garbage they’d found on a nearby curb. Soon, he noticed small, itchy red bumps on everyone's arms and legs – bites from insects that had infested the sofa.</p><p>Lutheran Social Services also declined to comment on the specifics of Mohammad’s story, citing client privacy and safety concerns.</p><p><b>The Commander</b></p><p>Employees say they have tried to flag cases like Mohammad's, but that it doesn’t go well. They feel that when they raise concerns, supervisors either ignore their claims, say they will address them and do nothing, or use the opportunity to question the employee’s own performance. “Dismissive and indifferent” are the words one employee used to describe the leadership culture.</p><p>For a brief moment last January, several Lutheran Social Services employees had hope the organization could turn itself around. The CEO, Kristyn Peck, had announced the hire of a new executive director of refugee and immigrant services named Eric Coulson – and he had the kind of resume that convinced staff he meant business. Coulson was a retired attorney and former Army Reserve captain who had commanded a 130-soldier engineer company in Ramadi and Fallujah, Iraq, during which time he earned a Bronze Star and a Combat Action Badge. He served as a legal adviser to the U.S. military in Egypt, a special assistant to the U.S. ambassador to Nigeria and had experience as a consular officer and refugee program officer at the State Department.</p><div class="ImageCaptioned-sc-1yr50o7-4 gUcyXc mt5 mb5"><div class="ImageCaptioned__ImageBox-sc-1yr50o7-1 gooiWq mb4"><div class="ImageCaptioned__AspectRatioInner-sc-1yr50o7-2 hRKaKt"><picture class="Image__Picture-sc-412cjc-0 hRvayO"><source data-srcset="https://www.usnews.com/object/image/00000182-a2d7-dc6b-a1e3-ebd753e40000/usn-afghan-refugees-07.JPG?update-time=1660589524503&amp;size=responsiveFlow970" media="(min-width: 640px)" srcset="https://www.usnews.com/object/image/00000182-a2d7-dc6b-a1e3-ebd753e40000/usn-afghan-refugees-07.JPG?update-time=1660589524503&amp;size=responsiveFlow970"></picture></div></div><p class="Paragraph-sc-1iyax29-0 Caption__Wrapper-bee4ah-0 lbGMQc koepFU"><span class="Raw-slyvem-0 Caption__DescSpan-bee4ah-1 eFsMWr dLbCpb">Eric Coulson poses for a portrait at his Alexandria, Virginia home. </span><span class="Credit__Container-lfa4w-6-span Credit__SpanContainer-lfa4w-7 dsEOlb Caption__CreditExposed-bee4ah-2 hBaTP"><span class="Span-sc-19wk4id-0 Credit__Target-lfa4w-8 jswYky gMxtXD" color="#515767" size="2"><svg class="Icon-sc-9wq8ul-0 Credit__CameraIconExposed-lfa4w-1 hiHdJZ bXHhQo" fill="#515767" height="1.5rem" role="img" width="1.5rem"><use filter="0" xlink:href="#camera"></use></svg>(Avi Gupta for USN&amp;WR)</span></span></p></div><p>Coulson, 54, was nervous about his decision to retire from the State Department and join Lutheran Social Services – he’d never been part of the nonprofit world – but he was excited by the opportunity to give back to Afghans who had sacrificed on behalf of the U.S.</p><p>He spent the first three weeks of his tenure working from home, attending virtual training sessions and online meetings he found less than effective. Then, just after this third week, he got a message that an overwhelmed employee had passed out at work. Immediately, he says, he hopped into his car and drove to the organization’s branch office where it happened to investigate.</p><p>“By the time I got there, she had gone home,” he says. “But I start poking around, looking at how people are doing, really going back to my Army days of being a commander and trying to take care of people and find out what's going on.”</p><p>The first thing he noticed, he says, was seven employees in a meeting trying to figure out how to pay rent for Afghan refugees with the first of the month just three days away. When he subsequently asked the office director about the late-stage decision making, he says he was told, “We have until the fifth of the month to pay anyway.” (One message reviewed by U.S. News shows a staff member asking about a May rent check for a client on May 17; another shows staff discussing how to pay July rent on the first of July.)</p><p>But more worrying, according to Coulson, was the fact that refugee identity documents, Social Security cards and employment authorization cards were scattered haphazardly around the main office area, where they could have been easily snatched and used for identity theft.</p><p>“I spent the last seven years handling passports and all sorts of identity documents,” he says. “If I had to go to the restroom when I was working with a bunch of diplomatic passports, I would lock them in my desk. I take identity document protection very seriously, as does the U.S. government.”</p><react-trigger trigger="view"></react-trigger><p>Coulson shared his concerns with the organization’s executives, who agreed there was a problem, and they met with the person in charge of the office to express their concerns. Coulson said he planned to counsel the employee – a direct report – in writing, and he says his bosses approved of the approach.</p><p>The employee pushed back, insisting he did have a process in place to store sensitive documents, but Coulson says he visited the office a few days later to find checks totalling more than $10,000 sitting on his desk. “They were just sitting there, signed, anyone could have taken them,” he says.</p><p>“The other thing I found is two boxes on the floor, just cardboard boxes, that had hundreds of Social Security cards and employment authorization documents – no inventories. And it wasn’t even like someone had set them on their desk or whatever. No, they were just tossed there.”</p><p>In one corner of the office, he found opened and discarded envelopes that had contained Social Security cards simply thrown in a pile. He went through them again and found five cards that employees had missed.</p><p>“What I would have expected generally was that those would have been in a locked safe of some sort with a list of the documents and who they belong to and who signed them,” he says. “I would expect some sort of record keeping so that you don't run the risk of identity theft. And there were no such controls in place.”<br></p><div class="ImageCaptioned-sc-1yr50o7-4 gUcyXc mt5 mb5"><div class="ImageCaptioned__ImageBox-sc-1yr50o7-1 gooiWq mb4"><div class="ImageCaptioned__AspectRatioInner-sc-1yr50o7-2 hRKaKt"><picture class="Image__Picture-sc-412cjc-0 hRvayO"><source data-srcset="https://www.usnews.com/object/image/00000182-a2d7-dc6b-a1e3-ebd7541c0000/usn-afghan-refugees-08.JPG?update-time=1660589495270&amp;size=responsiveFlow970" media="(min-width: 640px)" srcset="https://www.usnews.com/object/image/00000182-a2d7-dc6b-a1e3-ebd7541c0000/usn-afghan-refugees-08.JPG?update-time=1660589495270&amp;size=responsiveFlow970"></picture></div></div><p class="Paragraph-sc-1iyax29-0 Caption__Wrapper-bee4ah-0 lbGMQc koepFU"><span class="Raw-slyvem-0 Caption__DescSpan-bee4ah-1 eFsMWr dLbCpb">Opened and discarded envelopes sit in an office at Lutheran Social Services.  Coulson says he went through them again and found five social security cards that employees had missed.</span><span class="Credit__Container-lfa4w-6-span Credit__SpanContainer-lfa4w-7 dsEOlb Caption__CreditExposed-bee4ah-2 hBaTP"><span class="Span-sc-19wk4id-0 Credit__Target-lfa4w-8 jswYky gMxtXD" color="#515767" size="2"><svg class="Icon-sc-9wq8ul-0 Credit__CameraIconExposed-lfa4w-1 hiHdJZ bXHhQo" fill="#515767" height="1.5rem" role="img" width="1.5rem"><use filter="0" xlink:href="#camera"></use></svg>(Courtesy of Eric Coulson)</span></span></p></div><p>At that point, Coulson says, “I'm like, OK, this is why I was hired. I have lots of leadership experience in situations that are challenging,” including managing sensitive documents. “This is all within my wheelhouse.”</p><p>Coulson went ahead with his plan: He had a conversation with his direct report, which he recorded, and he also counseled the employee in writing. But when Coulson’s supervisor got word of the moves, Coulson says he was chastised for putting the “operation at risk” and warned his behavior could undermine trust in the organization.</p><p>“I couldn't believe what I was hearing,” Coulson says. “I said, ‘Well, I guess maybe if you don't think I should be counseling people in writing and worrying about some of these things, maybe I'm not the person for you.’”</p><p>In response, Coulson says he was told where to return his office equipment. And within 10 minutes, he says, his access to all systems was cut off.</p><p>“They really wanted me out,” he says. “I was zeroing in on processes that were clearly not working and clearly put people at risk, and I think I was clearly going to find more that was going on.”</p><p>Lutheran Social Services declined to comment on Coulson’s versions of events, saying it doesn’t discuss personnel matters. However, it notes that its <a href="https://drive.google.com/file/d/1EtM277etHqsOKHsbjt9maxztV5-YcvXV/view?usp=sharing" target="_blank">2021 audit</a>, which ran through September – the beginning of the refugee surge – was clean except for one issue: Of 40 “items” randomly selected, there was one instance where Lutheran Social Services either misplaced or potentially destroyed an eligibility document that would have allowed a client to receive benefits.</p><p>“This appears to be an isolated incident,” according to Pager Metis, the firm that conducted the audit.</p><p>At the time, the agency was only keeping physical copies of documents, the report said, but it is now also using electronic copies.</p><p><b>A Hefty Bonus</b></p><p>Coulson didn’t have the chance, but there was another issue he’d planned to bring up in that final meeting with management – something that had been bothering him for a while.</p><p>On Martin Luther King Day, less than two weeks after Coulson started, <a href="https://usun.usmission.gov/remarks-by-ambassador-linda-thomas-greenfield-at-a-dr-martin-luther-king-jr-day-of-service-event-in-alexandria-va/" target="_blank">U.S. Ambassador to the U.N. Linda Thomas-Greenfield</a> came to a resettlement office to take part in a day of service on behalf of refugees. Coulson decided to swing by, just to check it out, and the following week he noticed he’d been given a $250 bonus simply for attending.</p><p>“I didn’t really know what to do,” he says, adding that coming out of the Army and the State Department, he’d never been paid for that kind of thing. “Especially as someone almost making six figures a year, I wasn't really comfortable,” he says. “I kept the money, but it was one of those things that I was having problems processing.”</p><p>It turns out Coulson had received a “surge bonus,” which was part of a new program that raised eyebrows among several employees.</p><p>In November, when Afghans were arriving to the Washington area in record numbers, Peck instituted a program in which employees would be paid more for working beyond their regular hours to “show appreciation for those going above and beyond” to meet the organization’s “growing needs.” Anyone working an extra 3 1/2 hours would earn a $250 bonus, and anyone working seven hours would earn $500. All staff, regardless of whether they were hourly or salaried, were eligible.</p><p>When the bonuses were first announced, there was no formal process tied to earning them, says Rosalind Floyd, who processed the payments as part of her role as then-human resources manager. At first, she says, managers would simply email her telling her to process bonuses for their employees. Eventually, a form was created. But even then, she says, employees only needed to include a brief description of what work they were doing and when.</p><p>When Coulson approved his first round of paychecks, he was alarmed to see that several people directly reporting to him were earning thousands of dollars in bonuses for work that they had claimed to do all weekend.</p><p>“There was no real explanation of what they had been doing,” he says. “Just something very vague about, you know, working refugee issues.”</p><p>Coulson says he didn’t “believe for a second” that these employees were working all weekend. “And if they were there,” he says, “there was certainly nothing to show for it.”</p><p>It was, in fact, common for staff to receive thousands of dollars in bonuses, even in a single two-week pay period, Floyd says. She says she processed one paycheck in which a single employee earned a $9,000 bonus. Over three months, she says she processed more than $100,000 in the surge stipends. She recalls an employee who was so confused by her pay bump that she called HR just to make sure there hadn’t been an error.</p><p>Lutheran Social Services said the bonuses, all reviewed by leadership, were to reward employees working “70-hour plus weeks during the surge” and that they were allowable costs through federal funding. The group also emphasized its staffing challenges, which put great strain on employees at the start of the refugee deluge. In July 2021, it says, it had a team of 65. Today, it has 140 employees.</p><p>Floyd also expressed concern about an issue several other current and former staff members mentioned to U.S. News: insufficient accounting of community donations, which, like refugees, were flowing in at levels not seen in decades.</p><p>“Everybody wanted to be a part of the cause, and not just with the money, but with the physical donations,” she says. “They had everything: cribs, laptops, iPads, gift cards of $5,000.”</p><p>The problem, she says, was that there were no records of how many donations were received, or who ended up receiving them. Theoretically, in other words, anyone could have taken the items home.</p><p>“I went and worked in the Virginia office over a weekend,” she says. “There were so many donations, and nothing was cataloged.”</p><p>Lutheran Social Services disputes this account and says it “reached out to a national volunteer organization which deployed a team of volunteers to track, inventory, warehouse, and distribute the donated goods to clients in need.” It also said its recent audit assessed its system of inventorying and distributing in-kind donations and found it to be sound.</p><p>One employee of Lutheran Social Services says that they did indeed see theft, albeit on a small scale. A handful of employees, they say, sometimes took home donations meant for refugees, including gift cards, backpacks, toys, home items and hygiene supplies. They say some staff used the Uber account meant for refugee transportation for personal errands.</p><p>The same employee says a senior staff member in one office treated the petty cash box like his own “personal cash box,” taking money out to pay for his wife’s shoes. A handful of others, they say, would sometimes use petty cash for lunch or for other personal needs. (In the spring, a message went out to staff in one office saying $300 was missing from petty cash. A month later, a note was sent saying that moving forward, only two people would have keys to the cash box. Both messages were reviewed by U.S. News.)</p><p><b>Sufficient Oversight?&nbsp;</b></p><p>It’s not uncommon to hear tales of refugees-turned-case workers taking advantage of those who followed in their footsteps, says Anita Fábos, an anthropologist at Clark University with a focus on refugee issues.</p><p>“Just because a person is of the same nationality doesn't mean that they're going to be not trying to exploit another person,” she says. “There are caste differences. Class differences. Sometimes you find employees from the same backgrounds of other refugees doing things like charging them to help them fill out a Social Security application.”</p><p>But, after learning from U.S. News about the concerns with Lutheran Social Services, she says, “In my years of working in this, I've never quite heard the level of what sounds to me like chaos.” She notes she’s seen all of the things described to her at other agencies – albeit on a smaller scale.</p><p>Affiliates like Lutheran Social Services essentially have two organizations charged with monitoring the services provided to refugees during the first three months after their arrival: their parent organization – in this case, Lutheran Immigration and Refugee Service – and the State Department.</p><p>Lutheran Immigration and Refugee Service, like the other eight resettlement organizations, is required to monitor its affiliates once every three years and within a year of the appointment of a new executive director. It’s also obligated to conduct additional monitoring of affiliates, like Lutheran Social Services, that are resettling the recent wave of Afghan refugees.</p><p>Lutheran Immigration and Refugee Service is led by <a href="https://www.lirs.org/meet-krish" target="_blank">Krish O'Mara Vignarajah</a>, a Washington insider who previously served as policy director for Michelle Obama and as senior adviser to Secretary of State Hillary Clinton and Secretary of State John Kerry. Vignarajah declined to speak about Lutheran Social Services, but a statement released by her organization confirmed that it had launched an investigation into the affiliate following “complaints raised to the State Department about working practices” there.</p><p>The parent organization said its investigation, just like its affiliates’, found “no indication of fraud or financial malfeasance.” The group declined to release its report or to comment on any additional findings and directed U.S. News to the State Department, which said it was unable to provide the requested information.</p><p>“LIRS treats any complaint about client or staff well-being with the utmost seriousness,” Lutheran Immigration and Refugee Service said in a statement. “Our oversight of implementing organizations is of the highest standards and complies with all legal and regulatory requirements.” At least one of the group’s other affiliates – <a href="https://lsiowa.org/resettlement-services/" target="_blank">Lutheran Services in Iowa</a> – has been <a href="https://www.desmoinesregister.com/story/news/2022/05/20/volunteers-file-complaint-over-afghan-refugee-resettlement-issues-des-moines-iowa/9806368002/" target="_blank">accused</a> of failing to meet the needs of Afghan refugees, and a refugee recently expressed complaints about a Texas affiliate to the <a href="https://twitter.com/nationaljournal/status/1557140467980066817" target="_blank">National Journal</a>.</p><p>The State Department, which said it could not answer specific questions about Lutheran Social Services while “conducting an ongoing review,” says it audits every single affiliate office every five years unless it has a reason to do so more often. Of the roughly 250 local organizations resettling the recent wave of Afghan refugees, the department says it’s monitoring about 30, “with the vast majority of monitoring taking place virtually.”</p><p>So far, one State Department official suggested, there appears to be little cause for concern about how resettlement organizations are performing their duties.</p><p>"I will say that the grievances that we have followed up on, given the sheer scope of how many people have come … proportionally it's not that high,” one State Department official said. “Every time we follow up, we have not found negligence, we have found that there are some unrealistic expectations."</p><p>That doesn’t make sense to <a href="https://www.irocenter.org/our-team" target="_blank">Megan Flores</a>, executive director of the Immigrant &amp; Refugee Outreach Center, which has provided volunteer help to more than 70 of Lutheran Social Services’ Afghan families.</p><p>“How can they say, ‘We’re barely monitoring’ and also say ‘but things are going fine?’ They are clearly far removed,” says Flores, who has concerns about how local resettlement agencies have responded to the influx of Afghans. “This isn’t like most refugee crises, these folks served side by side with our military. They gave the ultimate sacrifice, and now that they’re here in the U.S. they’re being told, ‘Figure it out – sink or swim.’ It’s a tough thing to watch and an even tougher thing to justify or explain. Yes, there have definitely been some unrealistic expectations [among refugees], but there have also been some egregious mishandlings throughout this entire situation.”</p><p><b>Lost Hope</b></p><p>Mohammad eventually received better furniture.</p><p>“See this?” he says one afternoon in late May, pointing to a shiny, large screen TV. “This is from my friend.”</p><p>He points to his sofa. “And see this? This, too, is from my friend.”</p><p>He gestures toward his coffee table and to three geometric burgundy rugs that cover his living room carpet. All gently used items, he says, were given to him by his friend just across the street in the same apartment complex.</p><p>It’s been more than three months since Mohammad joined his family in this apartment, and he says every day is still a struggle.</p><p>He hasn’t been able to find a job he can do remotely, which he says he needs to support his wife, who requires help with simple things like changing her clothes. She’s already been rushed to the emergency room several times since they arrived in their apartment. On a handful of occasions, he says, he’s made it to the final rounds of interviews, only to be asked about his work authorization, which expires in December 2022. He’s not sure when his green card will arrive.</p><div class="ImageCaptioned-sc-1yr50o7-4 gUcyXc mt5 mb5"><div class="ImageCaptioned__ImageBox-sc-1yr50o7-1 gooiWq mb4"><div class="ImageCaptioned__AspectRatioInner-sc-1yr50o7-2 hRKaKt"><picture class="Image__Picture-sc-412cjc-0 hRvayO"><source data-srcset="https://www.usnews.com/object/image/00000182-a2d7-dc6b-a1e3-ebd7534f0000/usn-afghan-refugees-04.JPG?update-time=1660589710659&amp;size=responsiveFlow970" media="(min-width: 640px)" srcset="https://www.usnews.com/object/image/00000182-a2d7-dc6b-a1e3-ebd7534f0000/usn-afghan-refugees-04.JPG?update-time=1660589710659&amp;size=responsiveFlow970"></picture></div></div><p class="Paragraph-sc-1iyax29-0 Caption__Wrapper-bee4ah-0 lbGMQc koepFU"><span class="Raw-slyvem-0 Caption__DescSpan-bee4ah-1 eFsMWr dLbCpb">Mohammad's passport sits on his coffee table at his Manassas, Virginia apartment.</span><span class="Credit__Container-lfa4w-6-span Credit__SpanContainer-lfa4w-7 dsEOlb Caption__CreditExposed-bee4ah-2 hBaTP"><span class="Span-sc-19wk4id-0 Credit__Target-lfa4w-8 jswYky gMxtXD" color="#515767" size="2"><svg class="Icon-sc-9wq8ul-0 Credit__CameraIconExposed-lfa4w-1 hiHdJZ bXHhQo" fill="#515767" height="1.5rem" role="img" width="1.5rem"><use filter="0" xlink:href="#camera"></use></svg>(Avi Gupta for USN&amp;WR)</span></span></p></div><p>He says he received about $600 each month through food stamps, but that’s not enough for four children and an ill wife. He can’t afford transportation to the grocery store, so he walks each way, lugging what he can carry.</p><p>Then there’s the issue of rent: $2,500 a month for his three-bedroom apartment, which, while commonplace in the Washington area, feels like a crushing weight upon his shoulders.</p><p>After sending several inquiries, Mohammad says he finally managed to arrange an in-person meeting at one of the Lutheran Social Services offices to talk about his concerns. When he asked if the agency could help with rent for July – his fourth month – he says they agreed to pay.</p><p>“They told me nice words,” he says. “They said, ‘Don’t worry, we’ll support you.’ They said, ‘We’re sorry for this. We’re sorry for that,’ but nothing is happening. There are no actions.”</p><p>Mohammad finally received his rent check on July 13, eight days after it was due. Even still, on July 25, he received an eviction notice, though Lutheran Social Services paid his August rent, and the leasing agent said the notice would be canceled.</p><p>Mohammad says he struggles to sleep at night because he feels so powerless to help his family. At times he’s thought about ending his life.</p><p>Reflecting on his experience with the U.S. government, he says he has nothing but glowing reviews of the U.S. military. But the project manager in him remains baffled by the U.S. refugee resettlement program, which he says is giving hard-earned taxpayer money to ineffective groups like Lutheran Social Services.</p><p>“When friends and family ask, I tell them, ‘Don’t come,’” he says. “I would rather be in Afghanistan. In Afghanistan, if the Taliban slits your throat, it is only seconds of pain. Here, it is pain every day.”</p><p><i>– Elliott Davis, Christopher Wolf and Madeline Fitzgerald contributed to this report.&nbsp;</i></p></body>

@@ -1,0 +1,75 @@
+diff --git a/chrome/installer/mac/keystone_install.sh b/chrome/installer/mac/keystone_install.sh
+index f7bc063859d65b10fd9f3833c5c4a4f65a8e2843..57a18793c79dca6619dc76462805fb44caafa14e 100755
+--- a/chrome/installer/mac/keystone_install.sh
++++ b/chrome/installer/mac/keystone_install.sh
+@@ -484,9 +484,13 @@ main() {
+     trap "handle_signal \"${exit_signal}\"" "${exit_signal}"
+   done
+ 
+-  readonly APP_DIR_NAMES=( "Google Chrome.app" "Google Chrome Beta.app"
+-                           "Google Chrome Dev.app" "Google Chrome Canary.app" )
+-  readonly FRAMEWORK_NAME="Google Chrome Framework"
++  readonly INSTALLED_APP_PATH=\
++"${GOOGLE_CHROME_UPDATER_TEST_PATH:-${KS_TICKET_XC_PATH:-}}"
++  readonly PRODUCT_NAME=\
++"$(infoplist_read "${INSTALLED_APP_PATH}/Contents/Info" \
++                  "CFBundleDisplayName")"
++  readonly APP_DIR_NAMES=( "${PRODUCT_NAME}.app" )
++  readonly FRAMEWORK_NAME="${PRODUCT_NAME} Framework"
+   readonly FRAMEWORK_DIR="${FRAMEWORK_NAME}.framework"
+   readonly CONTENTS_DIR="Contents"
+   readonly APP_PLIST="${CONTENTS_DIR}/Info"
+@@ -809,7 +813,52 @@ main() {
+       rm -rf "${new_versioned_dir}"
+     fi
+ 
+-    exit 7
++    # Try various remedies; Report in exit code what would have worked.
++    local mkdir_stderr
++    if ! mkdir_stderr="$(mkdir -p "${new_versioned_dir}" 2>&1 1>/dev/null)"
++    then
++      # If `mkdir` fails, then other remedies won't work either; Exit with a
++      # code that tells us the cause.
++      case "${mkdir_stderr}" in
++        *"Read-only file system"*)
++          exit 70 ;;
++        *"No space left on device"*|*"Disc quota exceeded"*)
++          exit 71 ;;
++        *"Operation not permitted"*)
++          exit 72 ;;
++        *"Permission denied"*)
++          exit 73 ;;
++        *"File exists"*|*"Not a directory"*)
++          exit 74 ;;
++        *)
++          exit 75 ;;
++      esac
++    fi
++    # `mkdir` succeeded. Retry the original rsync. If it succeeds, then clean
++    # up and return an exit code that tells us that this fix is worth keeping.
++    if rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}/" \
++                                            "${new_versioned_dir}"; then
++      rm -rf "${new_versioned_dir}"
++      exit 76
++    fi
++    # Another potential remedy is to rsync into the parent directory. As
++    # before, if this succeeds, clean up and return a unique exit code that
++    # tells us that this workaround is worth keeping.
++    if rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}" \
++                                            "${installed_versions_dir}"; then
++      rm -rf "${new_versioned_dir}"
++      exit 77
++    fi
++    # Try the same rsync-into-parent, but from a clean slate.
++    rm -rf "${new_versioned_dir}"
++    if rsync ${RSYNC_FLAGS} --delete-before "${update_versioned_dir}" \
++                                            "${installed_versions_dir}"; then
++      rm -rf "${new_versioned_dir}"
++      exit 78
++    fi
++    # None of the attempted remedies worked.
++    rm -rf "${new_versioned_dir}"
++    exit 79
+   fi
+ 
+   # See if the timestamp of what's currently on disk is newer than the

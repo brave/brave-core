@@ -1,0 +1,25 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./app-chromium.css.js
+ * #scheme=relative
+ * #include=app-chromium
+ * #css_wrapper_metadata_end */
+
+:host(.background-visible) {
+  background: linear-gradient(-50deg, rgba(250, 114, 80, 0.25) 6.99%, rgba(255, 24, 147, 0.2) 45.46%, rgba(167, 138, 255, 0.25) 88.2%);
+  cursor: not-allowed;
+}
+
+#border-stroke {
+  background: #ff1893;
+}
+
+#border-glow {
+  box-shadow:
+    inset 0 0 35px 12px #ff1893;
+}

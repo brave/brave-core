@@ -1,0 +1,12 @@
+diff --git a/chrome/common/extensions/api/developer_private.webidl b/chrome/common/extensions/api/developer_private.webidl
+index 2c42babfad433571828b3c2c9642570b5c749c82..f40caa98f188c80248ce3f2ac41beb02d2c5a6be 100644
+--- a/chrome/common/extensions/api/developer_private.webidl
++++ b/chrome/common/extensions/api/developer_private.webidl
+@@ -224,6 +224,7 @@ dictionary ExtensionInfo {
+   required AccessModifier incognitoAccess;
+   required AccessModifier userScriptsAccess;
+   required boolean incognitoAccessPendingChange;
++  required boolean isSplitMode;
+   required sequence<DOMString> installWarnings;
+   required boolean isCommandRegistrationHandledExternally;
+   DOMString launchUrl;

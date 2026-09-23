@@ -1,0 +1,16 @@
+diff --git a/components/metrics/metrics_features.cc b/components/metrics/metrics_features.cc
+index 73cc027a331eeb5fcb78065e36115bdd5e04cb9d..557bc10559ab3cc4c5de7ec7b73db440875d1450 100644
+--- a/components/metrics/metrics_features.cc
++++ b/components/metrics/metrics_features.cc
+@@ -10,9 +10,9 @@
+ 
+ namespace metrics::features {
+ 
+-BASE_FEATURE(kStructuredMetrics,
++BASE_OVERRIDDEN_FEATURE(kStructuredMetrics,
+              "EnableStructuredMetrics",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kFlushPersistentSystemProfileOnWrite,
+              base::FEATURE_DISABLED_BY_DEFAULT);

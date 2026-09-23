@@ -1,0 +1,6 @@
+{
+  "git": {
+    "sha1": "4e9d718634a4ad735847267e63986106143082a3"
+  },
+  "path_in_vcs": "components/wasm-opt-cxx-sys"
+}

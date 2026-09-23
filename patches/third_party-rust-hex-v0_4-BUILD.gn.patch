@@ -1,0 +1,13 @@
+diff --git a/third_party/rust/hex/v0_4/BUILD.gn b/third_party/rust/hex/v0_4/BUILD.gn
+index f077e6703b5dbea9cb22ee4dfc84478957796123..88ea943933af7c325d330bf82445f1c2ea2f811f 100644
+--- a/third_party/rust/hex/v0_4/BUILD.gn
++++ b/third_party/rust/hex/v0_4/BUILD.gn
+@@ -38,7 +38,7 @@ cargo_crate("lib") {
+     "std",
+   ]
+ 
+-  testonly = true
++  # testonly = true
+ 
+   #####################################################################
+   # Tweaking which GN `config`s apply to this target.

@@ -1,0 +1,173 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h"
+
+#include <optional>
+
+#include "base/check.h"
+#include "base/functional/bind.h"
+#include "base/logging.h"
+#include "brave/browser/brave_browser_features.h"
+#include "brave/browser/brave_stats/first_run_util.h"
+#include "brave/browser/day_zero_browser_ui_expt/pref_names.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/p3a/pref_names.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include <string_view>
+
+#include "base/android/jni_android.h"
+#include "base/android/jni_string.h"
+#include "brave/build/android/jni_headers/DayZeroHelper_jni.h"
+#endif  // #BUILDFLAG(IS_ANDROID)
+
+// static
+void DayZeroBrowserUIExptManager::RegisterLocalStatePrefs(
+    PrefRegistrySimple* registry) {
+  registry->RegisterBooleanPref(kDayZeroExperimentTargetInstall, false);
+}
+
+std::optional<std::string> DayZeroBrowserUIExptManager::GetDayZeroVariant() {
+  std::optional<std::string> day_zero_variant;
+  if (base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
+    day_zero_variant = features::kBraveDayZeroExperimentVariant.Get();
+  }
+
+  return day_zero_variant;
+}
+
+// static
+std::unique_ptr<DayZeroBrowserUIExptManager>
+DayZeroBrowserUIExptManager::Create(ProfileManager* profile_manager) {
+  if (!base::FeatureList::IsEnabled(features::kBraveDayZeroExperiment)) {
+    return nullptr;
+  }
+
+  std::optional<std::string> day_zero_variant = GetDayZeroVariant();
+  if (!day_zero_variant) {
+    VLOG(2) << __func__ << ": Day zero Expt variant is not available";
+    return nullptr;
+  }
+
+  CHECK(g_browser_process && g_browser_process->local_state());
+  auto* local_state = g_browser_process->local_state();
+  if (!day_zero_variant) {
+    VLOG(2) << __func__ << ": Day zero Expt variant is not available";
+    local_state->SetBoolean(kDayZeroExperimentTargetInstall, false);
+    return nullptr;
+  }
+
+  if (brave_stats::IsFirstRun(local_state)) {
+    VLOG(2) << __func__ << ": Set Day zero experiment to this fresh user.";
+    local_state->SetBoolean(kDayZeroExperimentTargetInstall, true);
+  }
+
+  if (!local_state->GetBoolean(kDayZeroExperimentTargetInstall)) {
+    VLOG(2) << __func__
+            << ": This is existing user. Day zero experiment is only applied "
+               "to fresh user.";
+    return nullptr;
+  }
+
+  // base::WrapUnique for using private ctor.
+  return base::WrapUnique(
+      new DayZeroBrowserUIExptManager(profile_manager, local_state));
+}
+
+DayZeroBrowserUIExptManager::DayZeroBrowserUIExptManager(
+    ProfileManager* profile_manager,
+    PrefService* local_state)
+    : profile_manager_(*profile_manager) {
+  p3a_enabled_.Init(
+      p3a::kP3AEnabled, local_state,
+      base::BindRepeating(&DayZeroBrowserUIExptManager::OnP3AEnabledChanged,
+                          base::Unretained(this)));
+
+  if (IsP3AEnabled()) {
+    SetDayZeroBrowserUIForAllProfiles();
+  }
+
+  observation_.Observe(&(*profile_manager_));
+}
+
+DayZeroBrowserUIExptManager::~DayZeroBrowserUIExptManager() {
+  if (observation_.IsObserving()) {
+    observation_.Reset();
+  }
+}
+
+void DayZeroBrowserUIExptManager::OnProfileAdded(Profile* profile) {
+  if (!IsP3AEnabled()) {
+    return;
+  }
+
+  SetForDayZeroBrowserUI(profile);
+}
+
+void DayZeroBrowserUIExptManager::OnProfileManagerDestroying() {
+  // Unsubscribe the pref callback before resetting the observation to ensure
+  // OnP3AEnabledChanged() can't fire after the ProfileManager is gone.
+  p3a_enabled_.Destroy();
+  if (observation_.IsObserving()) {
+    observation_.Reset();
+  }
+}
+
+void DayZeroBrowserUIExptManager::SetForDayZeroBrowserUI(Profile* profile) {
+  VLOG(2) << __func__ << " Update prefs for day zero expt.";
+#if BUILDFLAG(IS_ANDROID)
+  Java_DayZeroHelper_setDayZeroVariant(base::android::AttachCurrentThread(),
+                                       base::android::ConvertUTF8ToJavaString(
+                                           base::android::AttachCurrentThread(),
+                                           GetDayZeroVariant().value_or("")));
+#endif  // #BUILDFLAG(IS_ANDROID)
+}
+
+void DayZeroBrowserUIExptManager::ResetForDayZeroBrowserUI(Profile* profile) {
+  VLOG(2) << __func__ << " Update prefs for day zero expt.";
+}
+
+void DayZeroBrowserUIExptManager::ResetBrowserUIStateForAllProfiles() {
+  CHECK(observation_.IsObserving());
+  // Don't reset observation_ here. Previously it was reset when P3A was
+  // disabled, but that caused a CHECK crash if P3A was toggled off->on->off
+  // because the observation was never re-established. It's safe to keep
+  // observing because OnProfileAdded() already guards on IsP3AEnabled(),
+  // making it a no-op when P3A is off.
+  // Reset all currently active normal profiles.
+  for (auto* profile : profile_manager_->GetLoadedProfiles()) {
+    if (!profile->IsRegularProfile()) {
+      continue;
+    }
+
+    ResetForDayZeroBrowserUI(profile);
+  }
+}
+
+void DayZeroBrowserUIExptManager::OnP3AEnabledChanged(
+    const std::string& pref_names) {
+  IsP3AEnabled() ? SetDayZeroBrowserUIForAllProfiles()
+                 : ResetBrowserUIStateForAllProfiles();
+}
+
+bool DayZeroBrowserUIExptManager::IsP3AEnabled() const {
+  return p3a_enabled_.GetValue();
+}
+
+void DayZeroBrowserUIExptManager::SetDayZeroBrowserUIForAllProfiles() {
+  for (auto* profile : profile_manager_->GetLoadedProfiles()) {
+    if (!profile->IsRegularProfile()) {
+      continue;
+    }
+
+    SetForDayZeroBrowserUI(profile);
+  }
+}

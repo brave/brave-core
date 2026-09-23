@@ -1,0 +1,12 @@
+diff --git a/scripts/build/devtools_plugin.js b/scripts/build/devtools_plugin.js
+index 5e6146c4013db071583284cf3a5d1cddf2f695f5..2d2f7518662122892225b3828ca9fa8fa32b72db 100644
+--- a/scripts/build/devtools_plugin.js
++++ b/scripts/build/devtools_plugin.js
+@@ -164,6 +164,7 @@ export function esbuildPlugin(outdir, genRoot, rootDir, externalFiles) {
+       }
+     }
+ 
++    if (res.id.endsWith('.patch.js')) { const p = path.join(root, 'brave', 'chromium_src', path.relative(root, res.id.slice(0, -9) + '.ts')); if (fs.existsSync(p)) { return {path: p}; } }
+     return {
+       path: res.id,
+     };

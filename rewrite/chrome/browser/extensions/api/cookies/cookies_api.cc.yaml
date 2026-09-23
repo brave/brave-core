@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Drop cookie-change events bound for Tor windows.
+
+      A Tor profile behaves as though it has no primary OTR profile
+      (crbug.com/417228685 is not yet fixed upstream). Once it is, Tor
+      profiles can be treated like any other main-OTR profile and this can be
+      removed.
+    preempt_function_impl:
+      function_name: CookiesEventRouter::OnCookieChange
+      return_if:
+        'otr && !profile_->GetPrimaryOTRProfile(/*create_if_needed=*/false)'
+
+  - description: |
+      Skip Tor profiles when starting to observe a new OTR profile.
+
+      Tor windows must not be observed for cookie changes (see the
+      OnCookieChange substitution above for the same reasoning).
+    preempt_function_impl:
+      function_name: CookiesEventRouter::OnOffTheRecordProfileCreated
+      return_if: 'off_the_record->IsTor()'

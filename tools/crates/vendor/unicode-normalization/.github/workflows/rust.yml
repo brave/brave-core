@@ -1,0 +1,132 @@
+name: Rust
+
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+env:
+  CARGO_INCREMENTAL: 0
+  CARGO_TERM_COLOR: always
+  RUST_BACKTRACE: 1
+  RUSTFLAGS: -D warnings
+  RUSTDOCFLAGS: -D warnings --cfg docsrs
+
+jobs:
+  get-package-info:
+    runs-on: ubuntu-latest
+    outputs:
+      msrv: ${{ steps.msrv.outputs.metadata }}
+      name: ${{ steps.name.outputs.metadata }}
+      version: ${{ steps.version.outputs.metadata }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Get MSRV
+        id: msrv
+        uses: nicolaiunrein/cargo-get@v1.4.0
+        with:
+          subcommand: 'package.rust_version'
+      - name: Get package name
+        id: name
+        uses: nicolaiunrein/cargo-get@v1.4.0
+        with:
+          subcommand: 'package.name'
+      - name: Get package version
+        id: version
+        uses: nicolaiunrein/cargo-get@v1.4.0
+        with:
+          subcommand: 'package.version'
+
+  build_test:
+    needs: get-package-info
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest ]
+        rust:
+          - ${{ needs.get-package-info.outputs.msrv }}
+          - stable
+          - beta
+          - nightly
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+          components: rustfmt, clippy
+      - name: Use tinyvec 1.6.0
+        if: matrix.rust == ${{ needs.get-package-info.outputs.msrv }}
+        run: cargo update -p tinyvec --precise 1.6.0
+      - name: Build
+        run: cargo build --verbose
+      - name: Run tests with all features
+        run: cargo test --all-features --verbose
+      - name: Run tests without features
+        run: cargo test --no-default-features --verbose
+      - name: Package
+        run: cargo package --offline
+      - name: Test package
+        working-directory: target/package/${{ needs.get-package-info.outputs.name }}-${{ needs.get-package-info.outputs.version }}/
+        run: cargo test --offline
+      - name: Test package without features
+        working-directory: target/package/${{ needs.get-package-info.outputs.name }}-${{ needs.get-package-info.outputs.version }}/
+        run: cargo test --no-default-features --offline
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly
+      - name: Build docs
+        run: cargo doc --all-features --verbose
+
+  lints:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+      - name: Check formatting
+        run: cargo fmt --all --check
+      - name: Check clippy
+        run: cargo clippy --all-features --lib --tests --examples --verbose
+      - name: Check fuzz tests with clippy
+        working-directory: fuzz
+        run: cargo clippy --all-features --all-targets --verbose
+      - name: Check fuzz tests formatting
+        working-directory: fuzz
+        run: cargo fmt --all --check
+
+  bench-lints:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install toolchain
+        uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly
+          components: rustfmt, clippy
+      - name: Check benchmarks with clippy
+        run: cargo clippy --all-features --benches --verbose
+
+  regen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Regen
+        run: cd scripts && python3 unicode.py
+      - name: Diff tables
+        run: diff src/tables.rs scripts/tables.rs
+      - name: Diff tests
+        run: diff tests/data/normalization_tests.rs scripts/normalization_tests.rs

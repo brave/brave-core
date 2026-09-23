@@ -1,0 +1,82 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+   This Source Code Form is subject to the terms of the Mozilla Public
+   License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=//resources/cr_elements/cr_shared_style_lit.css.js
+ * #import=//resources/cr_elements/cr_shared_vars.css.js
+ * #include=cr-shared-style-lit
+ * #css_wrapper_metadata_end */
+
+.flex {
+  flex: 1;
+}
+
+.error-message {
+  color: var(--leo-color-schemes-error);
+}
+
+cr-dialog [slot='title'] {
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-heading-h3);
+}
+
+.edit-subsection-label {
+  color: var(--leo-color-text-primary);
+  font: var(--leo-font-default-semibold);
+}
+
+.field-description {
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-default-regular);
+}
+
+.editing-rule {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl);
+}
+
+.field-section.enabled-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--leo-spacing-xl);
+}
+
+.field-section cr-textarea {
+  --cr-input-background-color: transparent;
+  --cr-input-border-bottom: none;
+  --cr-input-border-radius: var(--leo-radius-m);
+  --cr-input-underline-display: none;
+  /* Grow from 3 rows up to ~6, then scroll. */
+  --cr-textarea-autogrow-max-height: calc(1lh * 6);
+
+  /* cr-textarea does not honor --cr-input-border (unlike cr-input), so
+     draw the stroked border on the host. */
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-m);
+  box-sizing: border-box;
+  display: block;
+  margin-block-start: var(--leo-spacing-m);
+  width: 100%;
+}
+
+.field-section settings-dropdown-menu {
+  --md-select-width: 100%;
+  display: block;
+  margin-block: var(--leo-spacing-m);
+  width: 100%;
+}
+
+.field-hint {
+  color: var(--leo-color-text-secondary);
+  font: var(--leo-font-small-regular);
+}
+
+.field-hint .filter-example {
+  font: var(--leo-font-monospace-small);
+  color: var(--leo-color-text-primary);
+}

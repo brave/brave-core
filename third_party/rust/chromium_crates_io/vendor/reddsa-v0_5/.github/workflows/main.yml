@@ -1,0 +1,49 @@
+name: CI
+
+on: [push]
+
+jobs:
+  test_msrv:
+    name: test on MSRV
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3.5.3
+    - uses: actions-rs/toolchain@v1.0.7
+      with:
+        # When toolchain is not specified, it uses rust-toolchain, which is the MSRV
+        override: true
+    - uses: actions-rs/cargo@v1.0.3
+      with:
+        command: test
+        args: --all-features
+  test_nightly:
+    name: test on nightly
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3.5.3
+    # Because we use nightly features for building docs,
+    # using --all-features will fail without nightly toolchain.
+    - uses: actions-rs/toolchain@v1.0.7
+      with:
+        toolchain: nightly
+        override: true
+    - uses: actions-rs/cargo@v1.0.3
+      with:
+        command: test
+        args: --all-features
+  build_no_std:
+    name: build with no_std
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3.5.3
+    - uses: actions-rs/toolchain@v1.0.7
+      with:
+        toolchain: stable
+        override: true
+        # This does not support std, so we use to test if no_std works
+        target: thumbv6m-none-eabi
+    - uses: actions-rs/cargo@v1.0.3
+      with:
+        command: build
+        # Disables std feature
+        args: --no-default-features --target thumbv6m-none-eabi

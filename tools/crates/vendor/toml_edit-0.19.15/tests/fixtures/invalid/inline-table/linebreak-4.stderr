@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 14
+  |
+1 | json_like = {
+  |              ^
+invalid inline table
+expected `}`

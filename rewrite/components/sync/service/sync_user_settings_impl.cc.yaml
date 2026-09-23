@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Call BraveAdjustPreferredDataTypes for unconditional and
+      local-sync-only type exclusions.
+    regex:
+      re_pattern: '(SyncUserSettingsImpl::GetPreferredDataTypes[\s\S]+?)(\s+return\s+types;\s*\})'
+      re_flags: ['MULTILINE']
+      replace: |-
+        \1
+          BraveAdjustPreferredDataTypes(&types, prefs_->IsLocalSyncEnabled());\2

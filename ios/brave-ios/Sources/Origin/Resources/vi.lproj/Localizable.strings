@@ -1,0 +1,99 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Quảng cáo";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Đã mua trên brave.com?";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Phân tích";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Mua ngay";
+
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Bật hoặc tắt tính năng Brave yêu cầu khởi động lại trình duyệt để áp dụng các thay đổi. Vui lòng đóng (vuốt lên trong App Switcher) và sau đó mở lại Brave.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Thay đổi tính năng Brave";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "**Tùy chỉnh trình duyệt của bạn trong khi vẫn hỗ trợ Brave**\n\nBrave Origin là phiên bản trả phí của trình duyệt dành cho những người dùng không cần tất cả các tính năng hỗ trợ Brave như một doanh nghiệp, nhưng vẫn muốn có quyền riêng tư mà chỉ có Brave cung cấp. Người dùng Origin sẽ tiếp tục hưởng lợi từ quyền riêng tư hàng đầu trong ngành của chúng tôi, chặn quảng cáo và tốc độ (thông qua Lá chắn), cũng như các bản cập nhật phần mềm thường xuyên, bản vá Chromium và cải tiến bảo mật và quyền riêng tư. Origin sẽ xóa hầu hết các tính năng khác từ trình duyệt.";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Tính năng";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Xác minh lần mua Brave Origin";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo AI";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Liên kết giao dịch mua với tài khoản Brave của bạn";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Tin tức";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Mua một lần";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Danh sách phát";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Phân tích bảo vệ quyền riêng tư";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Bạn có mã khuyến mãi?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Chọn phương thức thanh toán phù hợp với bạn:";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Không thể hoàn tất giao dịch mua hàng. Vui lòng thử lại hoặc kiểm tra thông tin thanh toán của bạn trên Apple và thử lại.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Liên kết giao dịch mua trên App Store với tài khoản Brave của bạn để sử dụng Brave Origin trên các thiết bị khác";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Mua";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Quy đổi mã khuyến mãi";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Đặt lại về cài đặt mặc định";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Phục hồi";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Phần thưởng";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Báo cáo thống kê";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Trò chuyện";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Giữ nguyên chức năng chặn quảng cáo, bảo vệ quyền riêng tư, & tốc độ";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Giao diện người dùng trình duyệt tối giản tập trung vào Lá chắn Brave";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Mua một lần có thể được kích hoạt nhiều lần trên tất cả các thiết bị của bạn";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Hỗ trợ sứ mệnh của chúng tôi & công việc mã nguồn mở";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "Xem biên lai App Store";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Ví";
+

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebGPU adapter info test</title>
+    <meta charset="utf-8">
+  </head>
+  <body>
+    <script>
+      window.gpuAdapterInfoPromise = (async () => {
+        if (!navigator.gpu) {
+          return 'no-gpu';
+        }
+        const adapter = await navigator.gpu.requestAdapter({
+          featureLevel: 'compatibility',
+        });
+        if (!adapter) {
+          return 'no-adapter';
+        }
+        const info = adapter.info;
+        return info.vendor + ',' + info.architecture + ',' + info.device;
+      })();
+    </script>
+  </body>
+</html>

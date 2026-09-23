@@ -1,0 +1,7 @@
+{
+   "description": "Brave Tor Pluggable Transports Updater extension",
+   "key": "MIIBojANBgkqhkiG9w0BAQEFAAOCAY8AMIIBigKCAYEA1f30bAR70KT2EJKNxP3O5lXckE6+Io67Hydjmiou6R5iwkHkrCbelRqLmDpR1i9lR1uLxgc1ZVLKoy0bWeX4CFu/qwyrWvQ3fnzZ6+AZPk7r2sI56pcj94/RrrVkhvsWwOC6NordeJSLvjlYt+wQ44UDjobpEaW3p7mz1eXJDNIARL/aI4ARYqWTV2/xtACh1uubSVEo9h7R1TGLTI4A67X5qtp9FRvgB2O/QHDbdlVXZkhFA3/Bf7k+JonXzpHAbvOXA/QnS8zILYpoOf7dySPcI0VBeiH2lM/CX+ZKv+nfOTdBRnWDoE9MxE1eUNWVxdrn/7BsVZh56xnLKO8DIVkVkE2/e9CNLqSfcAazU672Ro3oA/8XjcyYbLjzbmV3FM85KgEEq6OMlGbSroBi5KHW/4YhYoRKljhePtuOKmaNNMcZ13iBtiXjZByce+FKfVDw7Lw1wzB7mF4YBfeOI0AI8JYknZEB8AkrOEMvPvokwXISqRQjkIr7DH3SV4WxAgMBAAE=",
+   "manifest_version": 2,
+   "name": "Brave Tor Pluggable Transports (Linux)",
+   "version": "1.0.0"
+}

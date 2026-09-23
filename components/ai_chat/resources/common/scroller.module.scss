@@ -1,0 +1,23 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.scroller {
+  --scrollbar-width: 6px;
+
+  position: relative;
+  overflow: auto;
+  scrollbar-gutter: stable;
+  height: 100%;
+  padding-bottom: var(--leo-spacing-xl);
+
+  &::-webkit-scrollbar {
+    width: var(--scrollbar-width);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--leo-color-neutral-20);
+    border-radius: var(--leo-spacing-m);
+  }
+}

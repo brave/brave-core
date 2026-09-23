@@ -1,0 +1,160 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_wallet.mojom;
+
+import "brave/components/brave_wallet/common/brave_wallet.mojom";
+
+// Interfaces for communicating with the Ledger hardware-wallet JS library that
+// runs in the untrusted `chrome-untrusted://ledger-bridge` frame. This is the
+// Mojom counterpart of that frame's legacy `postMessage` protocol (see
+// components/brave_wallet_ui/common/hardware/ledgerjs); the frame's frontend
+// selects between the two transports at runtime via a loadTimeData flag.
+
+// A per-command device error. `code` stringifies the underlying Ledger
+// TransportStatusError.statusCode (a number) or any other library error code;
+// it is null when the error is not device/transport related.
+struct LedgerError {
+  string message;
+  string? code;
+};
+
+// Ethereum account info returned by Eth GetAccount.
+struct EthAccount {
+  string public_key;
+  string address;
+  string? chain_code;
+};
+
+// Solana account info returned by Sol GetAccount.
+struct SolAccount {
+  array<uint8> address;
+};
+
+// Filecoin accounts returned by Fil GetAccount.
+struct FilAccounts {
+  array<string> accounts;
+};
+
+// Bitcoin account info returned by Btc GetAccount.
+struct BtcAccount {
+  string xpub;
+};
+
+// One input transaction for Btc SignTransaction.
+struct BtcInputTransaction {
+  array<uint8> tx_bytes;
+  uint32 output_index;
+  string associated_path;
+};
+
+union DeviceNameResult {
+  string device_name;
+  LedgerError error;
+};
+
+union EthAccountResult {
+  EthAccount account;
+  LedgerError error;
+};
+
+union EthVrsResult {
+  EthereumSignatureVRS signature;
+  LedgerError error;
+};
+
+union EthBytesResult {
+  EthereumSignatureBytes signature;
+  LedgerError error;
+};
+
+union SolAccountResult {
+  SolAccount account;
+  LedgerError error;
+};
+
+union SolSignatureResult {
+  SolanaSignature signature;
+  LedgerError error;
+};
+
+union FilAccountResult {
+  FilAccounts accounts;
+  LedgerError error;
+};
+
+union FilSignatureResult {
+  FilecoinSignature signature;
+  LedgerError error;
+};
+
+union BtcAccountResult {
+  BtcAccount account;
+  LedgerError error;
+};
+
+union BtcSignatureResult {
+  BitcoinSignature signature;
+  LedgerError error;
+};
+
+// Implemented by the untrusted `chrome-untrusted://ledger-bridge` frame
+// (renderer), which hosts the `@ledgerhq/*` libraries and talks to the device
+// over WebHID.
+// The trusted wallet page/panel renderer holds the Remote and calls these
+// methods.
+interface LedgerBridge {
+  // Ensures a device is connected and unlocked. A null error means success.
+  Unlock() => (LedgerError? error);
+
+  GetDeviceName() => (DeviceNameResult result);
+
+  EthGetAccount(string path) => (EthAccountResult result);
+
+  EthSignTransaction(string path, string raw_tx_hex) => (EthVrsResult result);
+
+  EthSignPersonalMessage(string path, string message_hex)
+      => (EthBytesResult result);
+
+  EthSignEip712Message(string path,
+                       string domain_separator_hex,
+                       string hash_struct_message_hex)
+      => (EthBytesResult result);
+
+  SolGetAccount(string path) => (SolAccountResult result);
+
+  SolSignTransaction(string path, array<uint8> raw_tx_bytes)
+      => (SolSignatureResult result);
+
+  FilGetAccount(uint32 from, uint32 count, bool is_testnet)
+      => (FilAccountResult result);
+
+  FilSignTransaction(string message) => (FilSignatureResult result);
+
+  BtcGetAccount(string path, uint32 xpub_version)
+      => (BtcAccountResult result);
+
+  BtcSignTransaction(array<BtcInputTransaction> input_transactions,
+                     array<uint8> output_script,
+                     string? change_path,
+                     uint32 lock_time) => (BtcSignatureResult result);
+};
+
+// Implemented by the browser (the UntrustedLedgerUI controller).
+interface LedgerBridgeUIHandler {
+  // The child passes the remote end of its LedgerBridge; the browser fuses it
+  // with the receiver end passed by the parent to `LedgerBridgeService`,
+  // splicing the two pipes into one that connects the parent and child
+  // renderers directly.
+  BindLedgerBridge(pending_remote<LedgerBridge> bridge);
+};
+
+// Implemented by the browser (the wallet page/panel controller).
+interface LedgerBridgeService {
+  // The parent passes the receiver end of its LedgerBridge; the browser fuses
+  // it with the remote end passed by the untrusted child frame to
+  // `LedgerBridgeUIHandler`.
+  BindLedgerBridge(pending_receiver<LedgerBridge> bridge);
+};

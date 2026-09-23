@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+
+assert(enable_local_ai)
+
+# Cross-origin-isolated worker that runs the Nemotron 0.6B int4 ONNX model
+# through onnxruntime-web at
+# chrome-untrusted://on-device-speech-recognition-worker/
+transpile_web_ui("on_device_speech_recognition_worker_ui") {
+  entry_points = [ [
+        "speech_worker",
+        rebase_path("speech_worker.ts"),
+      ] ]
+  webpack_aliases = [ "browser" ]
+  resource_name = "on_device_speech_recognition_worker"
+
+  imports_from = [ "//brave/components/local_ai/resources/speech_worker/" ]
+
+  deps = [
+    "//brave/components/local_ai/core:speech_recognition_mojom_js",
+    "//services/on_device_model/public/mojom:mojom_js",
+  ]
+}
+
+pack_web_resources("on_device_speech_recognition_worker_generated") {
+  resource_name = "on_device_speech_recognition_worker"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  deps = [ ":on_device_speech_recognition_worker_ui" ]
+}

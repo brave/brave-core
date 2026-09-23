@@ -1,0 +1,9 @@
+{
+  "compile": [
+    "brave:all"
+  ],
+  "tests": [
+    "chromium_unit_tests",
+    "browser_tests"
+  ]
+}

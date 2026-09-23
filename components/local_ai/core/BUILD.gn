@@ -1,0 +1,105 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+assert(enable_local_ai)
+
+mojom_component("speech_recognition_mojom") {
+  output_prefix = "on_device_speech_recognition_mojom"
+  macro_prefix = "ON_DEVICE_SPEECH_RECOGNITION_MOJOM"
+
+  generate_legacy_js_bindings = true
+  webui_module_path = "/"
+
+  sources = [ "on_device_speech_recognition.mojom" ]
+
+  public_deps = [
+    "//mojo/public/mojom/base",
+    "//services/on_device_model/public/mojom",
+  ]
+}
+
+component("features") {
+  defines = [ "IS_LOCAL_AI_FEATURES_IMPL" ]
+
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  public_deps = [ "//base" ]
+}
+
+static_library("core") {
+  assert_no_deps = [ "//content/public/*" ]
+  friend = [ ":unit_tests" ]
+
+  public = [
+    "background_web_contents.h",
+    "local_models_updater.h",
+    "on_device_speech_models_component_installer.h",
+    "on_device_speech_models_state.h",
+    "pref_names.h",
+    "url_constants.h",
+    "utils.h",
+  ]
+
+  sources = [
+    "background_web_contents.h",
+    "local_models_updater.cc",
+    "local_models_updater.h",
+    "on_device_speech_models_component_installer.cc",
+    "on_device_speech_models_component_installer.h",
+    "on_device_speech_models_state.cc",
+    "on_device_speech_models_state.h",
+    "pref_names.cc",
+    "pref_names.h",
+    "utils.cc",
+    "utils.h",
+  ]
+
+  public_deps = [
+    ":features",
+    "//base",
+    "//mojo/public/cpp/base",
+  ]
+
+  deps = [
+    "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/resources:strings_grit",
+    "//components/component_updater",
+    "//components/component_updater:component_updater_paths",
+    "//components/history_embeddings/core",
+    "//components/prefs",
+    "//components/update_client",
+    "//crypto",
+    "//mojo/public/cpp/bindings",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "local_models_updater_unittest.cc",
+    "on_device_speech_models_component_installer_unittest.cc",
+    "on_device_speech_models_state_unittest.cc",
+  ]
+
+  deps = [
+    ":core",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/brave_component_updater/browser:test_support",
+    "//components/component_updater:test_support",
+    "//components/history_embeddings/core",
+    "//components/prefs:test_support",
+    "//components/update_client",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

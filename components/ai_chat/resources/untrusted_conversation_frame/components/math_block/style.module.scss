@@ -1,0 +1,22 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.inline {
+  // KaTeX sizes itself relative to the surrounding text, so inline expressions
+  // need no extra treatment.
+  display: inline;
+}
+
+.block {
+  display: block;
+  // katex.css sets `white-space: nowrap` on display math, so a wide equation
+  // would otherwise stretch the message and horizontally scroll the whole
+  // conversation. Scroll the equation in place instead.
+  overflow-x: auto;
+  overflow-y: hidden;
+  // Leave room for the scrollbar so it doesn't overlap the equation. Vertical
+  // spacing already comes from katex.css's `.katex-display` margin.
+  padding-bottom: var(--leo-spacing-s);
+}
