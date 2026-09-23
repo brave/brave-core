@@ -11,10 +11,10 @@ import WalletLogoLight from '$wallet/assets/svg-icons/wallet_logo_light.svg'
 import WalletLogoDark from '$wallet/assets/svg-icons/wallet_logo_dark.svg'
 
 // Shared Styles
-import { Column } from '$wallet/components/shared/style'
+import { Column, WalletButton } from '$wallet/components/shared/style'
 
 export const Wrapper = styled(Column)`
-  background-color: ${leo.color.container.background};
+  background-color: ${leo.color.page.background};
 `
 
 export const WalletLogo = styled.div`
@@ -47,5 +47,37 @@ export const CardStack = styled.div`
 
   & > *:hover {
     --card-lift: calc(-1 * var(--card-hover-lift));
+  }
+`
+
+export const FabButton = styled(WalletButton)`
+  --leo-icon-size: 20px;
+  --leo-icon-color: ${leo.color.icon.default};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  padding: 0px;
+
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: ${leo.radius.full};
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.05);
+  height: 32px;
+  width: 32px;
+  transition: box-shadow 0.2s ease-in-out;
+  &:hover {
+    box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.08);
+  }
+  @media (prefers-color-scheme: dark) {
+    background-color: ${leo.color.container.highlight};
+    border: 1px solid ${leo.color.divider.subtle};
+    box-shadow: none;
+    &:hover {
+      background-color: ${leo.color.divider.faint};
+    }
   }
 `

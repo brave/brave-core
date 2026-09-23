@@ -5,8 +5,12 @@
 
 import * as React from 'react'
 
+// Constants
+import { LOCAL_STORAGE_KEYS } from '$wallet/common/constants/local-storage-keys'
+
 // Utils
 import { getLocale } from '$web-common/locale'
+import { useSyncedLocalStorage } from '$wallet/common/hooks/use_local_storage'
 
 // Components
 import { Card } from '../card'
@@ -26,6 +30,12 @@ interface Props {
 
 export const Rewards = (props: Props) => {
   const { onClick } = props
+
+  // Local Storage
+  const [hidePortfolioBalances] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
+    false,
+  )
 
   return (
     <Card onClick={onClick}>
@@ -60,7 +70,7 @@ export const Rewards = (props: Props) => {
             variant='heading.h3'
             textColor='white'
           >
-            0.00 BAT
+            {hidePortfolioBalances ? '•••• BAT' : '0.00 BAT'}
           </Text>
           <EnableRewardsWrapper>
             <EnableRewardsText variant='small.semibold'>
