@@ -60,7 +60,8 @@ bool IsZCashShieldedTransactionsEnabled() {
 }
 
 bool IsZCashIronwoodEnabled() {
-  return IsZCashEnabled() && features::kZCashIronwoodEnabled.Get();
+  return IsZCashEnabled() && IsZCashShieldedTransactionsEnabled() &&
+         features::kZCashIronwoodEnabled.Get();
 }
 
 bool IsPolkadotEnabled() {
