@@ -160,7 +160,8 @@ bool HasMultipleUserProfiles() {
 }
 
 bool IsAvatarButtonHideable(Profile* profile) {
-  return !profile->IsIncognitoProfile() && !profile->IsGuestSession();
+  return !profile->IsIncognitoProfile() && !profile->IsGuestSession() &&
+         !profile->IsEnterpriseIsolatedModeProfile();
 }
 
 // Brave-specific optional toolbar buttons should hide before the location bar
