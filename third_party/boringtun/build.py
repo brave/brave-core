@@ -114,7 +114,7 @@ def _finalize_logging(flush: bool):
 
 def _has_prebuilt_std(toolchain_root: Path, triple: str) -> bool:
     """Check whether prebuilt rust-std is installed for the given target.
- 
+
     A present rustlib/<triple>/lib/ with at least one libcore-*.rlib
     indicates the stdlib was installed via the toolchain's normal
     component-install mechanism. When this returns False, the caller
@@ -129,15 +129,15 @@ def _has_prebuilt_std(toolchain_root: Path, triple: str) -> bool:
 def _build_merged_vendor(target_dir: Path, project_vendor: Path,
                          rust_std_vendor: Path) -> Path:
     """Create a merged view containing both vendor directories.
- 
+
     Required because `-Zbuild-std` needs std's dependencies AND
     boringtun's dependencies (in "vendor") resolvable from the same
     crates-io source replacement. Cargo doesn't support two disjoint
     directory sources for crates-io.
- 
+
     The merged view uses symlinks: fast to create, zero byte duplication,
     and cargo's checksum verification reads through them transparently.
- 
+
     Placed under target_dir so it's ephemeral -- wiped when the cargo
     target dir is cleaned, never committed to the source tree.
     """
@@ -189,6 +189,14 @@ def _ensure_win_clang_shim(binpath: Path, shim_dir: Path) -> Path:
     if not src.is_file():
         raise FileNotFoundError(f'clang-cl not found at {src}')
     shim_dir.mkdir(parents=True, exist_ok=True)
+    if sys.platform != 'win32':
+        # Remove the old POSIX hardlink before writing the PATH wrapper; it
+        # shares the compiler inode and makes Clang look for headers here.
+        dst = shim_dir / CLANG
+        if dst.is_symlink() or (dst.exists() and os.path.samefile(src, dst)):
+            dst.unlink()
+        return shim_dir
+
     dst = shim_dir / CLANG
     if dst.is_symlink() or dst.exists():
         dst.unlink()
@@ -203,18 +211,19 @@ def _write_shell_wrapper(directory: Path, name: str, command: str,
                          flags: list[str], *, flags_after_args: bool) -> Path:
     """Write a host-appropriate shell wrapper invoking `command` with
     `flags` plus the user's args.
- 
-    Host (sys.platform) selects .cmd vs .sh; flags_after_args selects
-    the position of the user's args relative to our injected flags:
- 
+
+    Windows uses a .cmd suffix; POSIX wrappers are executable shell scripts.
+    flags_after_args selects the position of the user's args relative to our
+    injected flags:
+
     flags_after_args=False -> `"command" <flags> <args>`
     flags_after_args=True  -> `"command" <args> <flags>`
- 
+
     `command` is wrapped in double quotes; any path-quoting needed
     inside individual `flags` entries is the caller's responsibility
     (e.g. f'"{sysroot}"' for paths that may contain spaces). On POSIX
     hosts the resulting .sh is chmod'd 0755.
- 
+
     Returns the path to the written wrapper.
     """
     directory.mkdir(parents=True, exist_ok=True)
@@ -226,7 +235,7 @@ def _write_shell_wrapper(directory: Path, name: str, command: str,
                         encoding='ascii',
                         newline='')
     else:
-        path = directory / f'{name}.sh'
+        path = directory / name
         argv = f'"$@" {flag_str}' if flags_after_args else f'{flag_str} "$@"'
         path.write_text(f'#!/bin/sh\nexec "{command}" {argv}\n',
                         encoding='ascii',
@@ -308,8 +317,13 @@ def _win_sysroot_flags_gnu(winsysroot: Path,
 def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
                             winsysroot: Path,
                             winsdkdir: Path | None) -> tuple[Path, Path]:
-    """Create clang and clang-cl shell scripts that inject the Windows
-    sysroot in the dialect each compiler personality understands.
+    """Write compiler wrappers under `<CARGO_TARGET_DIR>/.tool-wrappers`.
+
+    The extensionless POSIX `clang` wrapper is also the PATH entry used by
+    build scripts that look up bare `clang`.
+
+    The wrappers inject the Windows sysroot in the dialect each compiler
+    personality understands.
 
     The bare-clang shim and clang-cl share CFLAGS via cc-rs, but they
     accept different sysroot flags: clang-cl takes the /winsysroot
@@ -320,9 +334,9 @@ def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
     Wrappers move the sysroot out of CFLAGS so each personality gets
     its own form.
 
-    The clang wrapper invokes the local `clang` (placed by
-    _ensure_win_clang_shim) via a script-dir-relative path -- never
-    through PATH, which would risk recursing into the wrapper itself.
+    On Windows, the clang wrapper invokes the local `clang` executable placed
+    by _ensure_win_clang_shim. On POSIX, it invokes the compiler from binpath
+    directly so Clang finds its resource headers beside the toolchain.
 
     Returns (clang_wrapper, clang_cl_wrapper).
     """
@@ -336,15 +350,13 @@ def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
         flags_after_args=False,
     )
 
-    # clang wrapper: invoke the sibling `clang` (the shim) by
-    # script-dir-relative path. %~dp0 / $(dirname "$0") avoids the
-    # cwd-relative ".\clang.exe" / "./clang" form, which would only
-    # resolve correctly when the build's cwd happens to be the wrappers
-    # directory.
+    # The Windows PATH shim must be a physical executable. On POSIX, invoke
+    # the real compiler path so Clang finds its resource headers relative to
+    # the LLVM installation rather than the temporary wrapper directory.
     if sys.platform == 'win32':
         local_clang = f'%~dp0{CLANG}'
     else:
-        local_clang = f'$(dirname "$0")/{CLANG}'
+        local_clang = str(binpath / CLANG)
     clang = _write_shell_wrapper(
         wrappers_dir,
         'clang',
@@ -360,7 +372,7 @@ def _make_compiler_wrappers(wrappers_dir: Path, binpath: Path,
 
 def _target_rustflags(target_os: str, libname: str) -> list[str]:
     """Non-default rustflags by target OS, applied to all build profiles.
- 
+
     Windows: +crt-static statically links the MSVC runtime so the
         shipped DLL has no vcruntime/msvcp redistributable dependency.
     Linux: -Wl,--no-undefined makes the linker fail on unresolved
@@ -385,7 +397,7 @@ def _target_rustflags(target_os: str, libname: str) -> list[str]:
 
 def _cross_compile_flags(triple, target_os, sysroot, mac_min_version) -> list:
     """Return the compiler flags shared between CFLAGS and the linker wrapper.
- 
+
     Includes --target, --sysroot (POSIX targets only; Windows targets
     use clang-cl's /winsysroot, which the caller adds separately), and
     -mmacosx-version-min when applicable. Order is stable but argument
@@ -448,12 +460,12 @@ def _setup_cc_env(env,
                   mac_min_version,
                   win_sdk_dir=None):
     """Configure env vars for cc-rs and cargo's target linker.
- 
+
     Ring and other Rust crates that build C via build.rs use cc-rs,
     which looks up CC_<triple>, CFLAGS_<triple>, AR_<triple>. Cargo
     itself looks up CARGO_TARGET_<TRIPLE>_LINKER. All of these are
     expected to be set consistently for a clean cross-compile.
- 
+
     CRATE_CC_NO_DEFAULTS=1 stops cc-rs from adding host-probed flags
     on top of what we pass, which is essential for cross-builds where
     host defaults would be wrong.
@@ -507,15 +519,15 @@ def _run_cargo(cargo,
                build_std,
                merged_vendor=None):
     """Invoke `cargo build` with our pinned configuration.
- 
+
     Always passes --offline so cargo cannot reach the network and must
     resolve from the vendored sources. --locked is the default; pass
     locked=False only on first-time setup to allow Cargo.lock generation.
- 
+
     When build_std is True, also passes -Zbuild-std=std,panic_abort and
     --config source.vendored-sources.directory=<merged_vendor> so std
     and project crates resolve from a single vendor view.
- 
+
     On failure, raises subprocess.CalledProcessError. In quiet mode,
     cargo's stdout/stderr is appended to the log buffer so main()'s
     failure path can flush it alongside our progress logs.
@@ -583,7 +595,7 @@ def _run_cargo(cargo,
 
 def _locate_cargo_and_rustc(rust_sysroot: Path | None, src_root: Path):
     """Resolve cargo and rustc within the bundled Rust toolchain.
- 
+
     Resolution order:
     1. --rust-sysroot (passed by BUILD.gn from Chromium's rust_sysroot).
     2. Auto-derive third_party/rust-toolchain from this script's location
@@ -638,13 +650,13 @@ _STATIC_SCRUB = frozenset({
 def _make_isolated_env(toolchain_bin: Path, rustc: Path, cargo_home: Path,
                        target_dir: Path) -> dict:
     """Build a process env dict with all flag-injection vectors scrubbed.
- 
+
         Drops anything inherited from Chromium's build that could change
     cargo's behavior; this build depends only on our own config.
     Untrusted upstream environments are also a concern -- these env
     vars are how an attacker would inject rustc flags to disable safety
     checks, alter codegen, or smuggle in a malicious linker/wrapper.
- 
+
     Sets RUSTC to the bundled rustc and prepends the bundled bin to
     PATH so any sibling tools (rustdoc, rustfmt) resolve consistently
     rather than via rustup's shim.
