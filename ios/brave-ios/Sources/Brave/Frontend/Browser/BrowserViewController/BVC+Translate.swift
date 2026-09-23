@@ -26,7 +26,7 @@ extension BrowserViewController: BraveTranslateScriptHandlerDelegate {
 
     return Preferences.Translate.translateEnabled.value
       && !isSearchContainerVisible
-      && topToolbar.secureContentState == .secure
+      && selectedTab.visibleSecureContentState == .secure
       && Preferences.Translate.translateURLBarOnboardingCount.value < 2
       && shouldShowTranslationOnboardingThisSession && presentedViewController == nil
   }

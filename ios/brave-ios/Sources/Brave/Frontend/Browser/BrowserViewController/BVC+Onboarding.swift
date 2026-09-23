@@ -29,7 +29,7 @@ extension BrowserViewController {
     iapObserver.savedPromotedProduct = nil
 
     if !isSearchContainerVisible,
-      topToolbar.currentURL == nil,
+      tabManager.selectedTab?.visibleURL?.displayURL == nil,
       Preferences.DebugFlag.skipNTPCallouts != true
     {
 
