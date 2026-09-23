@@ -26,9 +26,13 @@ import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.base.test.util.MinAndroidSdkLevel;
+import org.chromium.base.test.util.Restriction;
 import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.ui.bottombar.BraveBottomBarUserPrefs;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
+import org.chromium.ui.base.DeviceFormFactor;
 
 /** Test for {@link AppearancePreferences}. */
 @RunWith(ChromeJUnit4ClassRunner.class)
@@ -68,7 +72,9 @@ public class BraveAppearancePreferencesTest {
             AppearancePreferences.PREF_BRAVE_CUSTOMIZE_MENU,
             AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT,
             AppearancePreferences.PREF_ADDRESS_BAR,
+            // These two share an order value and are mutually exclusive, so one is always null.
             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
+            BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR,
             AppearancePreferences.PREF_ENABLE_MULTI_WINDOWS,
             AppearancePreferences.PREF_GENERAL_SECTION,
             AppearancePreferences.PREF_BRAVE_NIGHT_MODE_ENABLED,
@@ -121,6 +127,58 @@ public class BraveAppearancePreferencesTest {
         startSettings();
 
         Assert.assertFalse(ChromeSharedPreferences.getInstance().contains(key));
+    }
+
+    // The bottom bar and Brave's own bottom controls are separate implementations with a setting
+    // each, so exactly one of the two rows is on screen at any time.
+    @Test
+    @SmallTest
+    @Restriction(DeviceFormFactor.PHONE)
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testEnableBottomBarRowShownWithAndroidBottomBar() {
+        startSettings();
+
+        Preference enableBottomBar =
+                mAppearancePreferences.findPreference(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR);
+        Assert.assertNotNull(enableBottomBar);
+        assertTrue(enableBottomBar.isVisible());
+        Assert.assertNull(
+                mAppearancePreferences.findPreference(
+                        BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY));
+    }
+
+    @Test
+    @SmallTest
+    @Restriction(DeviceFormFactor.PHONE)
+    @DisableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testEnableBottomBarRowHiddenWithoutAndroidBottomBar() {
+        startSettings();
+
+        Assert.assertNull(
+                mAppearancePreferences.findPreference(BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR));
+        Preference bottomToolbar =
+                mAppearancePreferences.findPreference(
+                        BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
+        Assert.assertNotNull(bottomToolbar);
+        assertTrue(bottomToolbar.isVisible());
+    }
+
+    // While unset the switch inherits the bottom navigation toolbar setting, so displaying it must
+    // not write it out and freeze that inheritance.
+    @Test
+    @SmallTest
+    @Restriction(DeviceFormFactor.PHONE)
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testEnableBottomBarInitializationDoesNotPersistDefault() {
+        String key = BravePreferenceKeys.BRAVE_ENABLE_BOTTOM_BAR;
+        ChromeSharedPreferences.getInstance().removeKey(key);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, true);
+
+        startSettings();
+
+        Assert.assertFalse(ChromeSharedPreferences.getInstance().contains(key));
+        assertTrue(BraveBottomBarUserPrefs.isBottomBarEnabled());
     }
 
     @Test
