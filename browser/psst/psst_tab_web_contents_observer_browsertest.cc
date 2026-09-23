@@ -14,6 +14,7 @@
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
+#include "base/test/repeating_test_future.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
@@ -374,7 +375,7 @@ class InfobarObserver : public infobars::InfoBarManager::Observer {
       return false;  // Manager is destroyed
     }
 
-    return infobar_added_future_.Get();
+    return infobar_added_future_.Take();
   }
 
   bool WaitForInfobarRemoved() {
@@ -388,7 +389,7 @@ class InfobarObserver : public infobars::InfoBarManager::Observer {
   void OnInfoBarAdded(infobars::InfoBar* infobar) override {
     if (infobar && infobar->delegate() &&
         infobar->delegate()->GetIdentifier() == identifier_) {
-      infobar_added_future_.SetValue(true);
+      infobar_added_future_.AddValue(true);
     }
   }
 
@@ -401,7 +402,7 @@ class InfobarObserver : public infobars::InfoBarManager::Observer {
 
   void OnManagerWillBeDestroyed(infobars::InfoBarManager* manager) override {
     // Quit any pending waits since the manager is being destroyed
-    infobar_added_future_.SetValue(false);
+    infobar_added_future_.AddValue(false);
     infobar_removed_future_.SetValue(false);
     infobar_observation_.Reset();
   }
@@ -411,13 +412,13 @@ class InfobarObserver : public infobars::InfoBarManager::Observer {
     for (infobars::InfoBar* infobar : manager->infobars()) {
       if (infobar && infobar->delegate() &&
           infobar->delegate()->GetIdentifier() == identifier_) {
-        infobar_added_future_.SetValue(true);
+        infobar_added_future_.AddValue(true);
         break;
       }
     }
   }
 
-  base::test::TestFuture<bool> infobar_added_future_;
+  base::test::RepeatingTestFuture<bool> infobar_added_future_;
   base::test::TestFuture<bool> infobar_removed_future_;
   const infobars::InfoBarDelegate::InfoBarIdentifier identifier_;
   base::ScopedObservation<infobars::InfoBarManager,

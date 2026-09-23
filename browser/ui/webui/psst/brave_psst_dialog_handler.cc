@@ -140,10 +140,6 @@ void BravePsstDialogHandler::CloseDialog() {
     return;
   }
 
-  if(active_tab_helper_) {
-    active_tab_helper_->CancelLogicalFlow();
-  }
-
   psst_dialog_delegate_->OnDialogClose();
   psst_dialog_delegate_->RemoveObserver(this);
   dialog_ui_->Close();

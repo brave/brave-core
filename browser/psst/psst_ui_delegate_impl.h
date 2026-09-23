@@ -47,7 +47,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
             PsstWebsiteSettings dialog_data,
             const int rule_version,
             std::optional<UserScriptResult> user_script_result,
-            PsstTabWebContentsObserver::ConsentCallback apply_changes_callback)
+            PsstTabWebContentsObserver::ConsentCallback apply_changes_callback,
+            PsstTabWebContentsObserver::CancelCallback cancel_callback)
       override;
   void UpdateTasks(long progress,
                    const std::vector<PolicyTask>& performed_tasks,
@@ -85,6 +86,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
   std::optional<UserScriptResult> user_script_result_;
   std::optional<PolicyTasksSet> failed_policy_tasks_;
   PsstTabWebContentsObserver::ConsentCallback apply_changes_callback_;
+  PsstTabWebContentsObserver::CancelCallback cancel_callback_;
   raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
   raw_ptr<PsstReporterService> psst_reporter_service_ = nullptr;
   base::ObserverList<Observer> observer_list_;

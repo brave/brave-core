@@ -185,13 +185,9 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
       registry_(registry),
       psst_settings_service_(psst_settings_service),
       variations_service_(variations_service),
-      ui_delegate_(std::move(ui_delegate)) {
-  psst_settings_service_->AddObserver(this);
-}
+      ui_delegate_(std::move(ui_delegate)) {}
 
-PsstTabWebContentsObserver::~PsstTabWebContentsObserver() {
-  psst_settings_service_->RemoveObserver(this);
-}
+PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
 PsstTabWebContentsObserver::PsstUiDelegate*
 PsstTabWebContentsObserver::GetPsstUiDelegate() const {
@@ -202,13 +198,11 @@ PsstTabWebContentsObserver::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
-void PsstTabWebContentsObserver::CancelLogicalFlow() {
+void PsstTabWebContentsObserver::CancelInFlightFlow() {
   logical_flow_cancelled_ = true;
-  CancelInFlightFlow();
-}
-
-void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
-  CancelInFlightFlow();
+  script_injector_remote_.reset();
+  page_weak_factory_.InvalidateWeakPtrs();
+  should_process_current_page_ = false;
 }
 
 void PsstTabWebContentsObserver::DidFinishNavigation(
@@ -235,6 +229,12 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
                      page_weak_factory_.GetWeakPtr()));
 }
 
+void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
+  script_injector_remote_.reset();
+  page_weak_factory_.InvalidateWeakPtrs();
+  should_process_current_page_ = false;
+}
+
 void PsstTabWebContentsObserver::InsertUserScript(
     std::unique_ptr<MatchedRule> rule) {
   if (!rule) {
@@ -255,6 +255,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result) {
   timeout_timer_.Stop();
+LOG(INFO) << "[PSST] 100 user_script_result:" << user_script_result.DebugString();
 
   // We should break the flow in case of policy script is not available or user
   // script result is not a dictionary
@@ -275,7 +276,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
     return;
   }
-
+LOG(INFO) << "[PSST] 500 user_script_result_parsed:" << user_script_result_parsed->ToValue().DebugString();
   auto origin = web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   auto psst_settings = ui_delegate_->GetPsstWebsiteSettings(
       origin, user_script_result_parsed->user_id);
@@ -323,7 +324,9 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
       std::move(user_script_result_parsed),
       base::BindOnce(&PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
                      page_weak_factory_.GetWeakPtr(), true, std::move(rule),
-                     std::move(user_script_result)));
+                     std::move(user_script_result)),
+      base::BindOnce(&PsstTabWebContentsObserver::CancelInFlightFlow,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
@@ -404,19 +407,6 @@ void PsstTabWebContentsObserver::SetInjectAsyncScriptCallback(
     InjectScriptAsyncCallback inject_async_script_callback) {
   CHECK(!inject_async_script_callback.is_null());
   inject_async_script_callback_ = std::move(inject_async_script_callback);
-}
-
-void PsstTabWebContentsObserver::CancelInFlightFlow() {
-  script_injector_remote_.reset();
-  page_weak_factory_.InvalidateWeakPtrs();
-  should_process_current_page_ = false;
-}
-
-void PsstTabWebContentsObserver::OnPsstEnableChange(bool new_value) {
-  if (new_value) {
-    return;
-  }
-  CancelInFlightFlow();
 }
 
 }  // namespace psst

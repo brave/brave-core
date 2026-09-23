@@ -205,7 +205,8 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
        PsstWebsiteSettings dialog_data,
        const int rule_version,
        std::optional<UserScriptResult> user_script_result,
-       PsstTabWebContentsObserver::ConsentCallback apply_changes_callback),
+       PsstTabWebContentsObserver::ConsentCallback apply_changes_callback,
+       PsstTabWebContentsObserver::CancelCallback cancel_callback),
       (override));
 
   MOCK_METHOD(void,
@@ -501,6 +502,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // Hold the user script result until after the second navigation commits.
   PsstTabWebContentsObserver::InsertScriptInPageCallback
       held_user_script_callback;
+LOG(INFO) << "[PSST] user_script_:" << user_script_;
   ExpectUserScriptInjected(user_script_)
       .WillOnce(HoldInsertScriptInPageCallback(&held_user_script_callback));
 
@@ -891,7 +893,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
               Show(url::Origin::Create(url_),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
-                   1, _, _))
+                   1, _, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
@@ -1004,7 +1006,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
               Show(url::Origin::Create(url_),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
-                   1, _, _))
+                   1, _, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
@@ -1092,7 +1094,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
               Show(url::Origin::Create(url_),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
-                   1, _, _))
+                   1, _, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
@@ -1231,7 +1233,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                    PsstWebsiteSettingsEq(
                        settings.consent_status, settings.script_version,
                        settings.user_id, settings.uids_to_perform),
-                   current_script_version_, _, _))
+                   current_script_version_, _, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              stored_uids_to_perform));
 
@@ -1314,7 +1316,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
               Show(url::Origin::Create(url_),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
-                   1, _, _))
+                   1, _, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
@@ -1337,7 +1339,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   ASSERT_FALSE(held_policy_script_callback.is_null());
 
   // The user clicks Cancel while the policy script is still in flight.
-  observer()->CancelLogicalFlow();
+  observer()->CancelInFlightFlow();
 
   // A result that would otherwise report completion and navigate the tab to
   // `next_url` must be dropped instead, since the flow was cancelled.

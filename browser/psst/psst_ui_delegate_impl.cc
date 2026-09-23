@@ -43,8 +43,10 @@ void PsstUiDelegateImpl::Show(
     PsstWebsiteSettings dialog_data,
     const int rule_version,
     std::optional<UserScriptResult> user_script_result,
-    PsstTabWebContentsObserver::ConsentCallback apply_changes_callback) {
+    PsstTabWebContentsObserver::ConsentCallback apply_changes_callback,
+    PsstTabWebContentsObserver::CancelCallback cancel_callback) {
   apply_changes_callback_ = std::move(apply_changes_callback);
+  cancel_callback_ = std::move(cancel_callback);
   dialog_data_ = std::move(dialog_data);
   origin_ = std::move(origin);
   user_script_result_ = std::move(user_script_result);
@@ -168,6 +170,9 @@ void PsstUiDelegateImpl::OnDialogClose() {
   ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
                                         base::NullCallback(),
                                         base::NullCallback());
+  if (cancel_callback_) {
+    std::move(cancel_callback_).Run();
+  }
 }
 
 void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
@@ -192,6 +197,9 @@ void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
 void PsstUiDelegateImpl::OnDontShowForThisSite() {
   CHECK(origin_);
   CHECK(dialog_data_);
+  if (cancel_callback_) {
+    std::move(cancel_callback_).Run();
+  }
   psst_settings_service_->SetPsstWebsiteSettings(
       origin_.value(), ConsentStatus::kBlock, dialog_data_->script_version,
       dialog_data_->user_id, {});
@@ -203,6 +211,9 @@ void PsstUiDelegateImpl::OnDontShowForThisSite() {
 }
 
 void PsstUiDelegateImpl::OnDisablePrivacySettingsTuning() {
+  if (cancel_callback_) {
+    std::move(cancel_callback_).Run();
+  }
   psst_settings_service_->SetPsstEnabled(false);
   ui_presenter_->HideInfoBar();
   ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
@@ -216,6 +227,9 @@ void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {
     return;
   }
 
+  if (cancel_callback_) {
+    std::move(cancel_callback_).Run();
+  }
   ui_presenter_->HideInfoBar();
   ui_presenter_->HideConsentDialog();
   ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,

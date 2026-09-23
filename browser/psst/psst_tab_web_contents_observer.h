@@ -30,8 +30,7 @@ namespace psst {
 class MatchedRule;
 class PsstRuleRegistry;
 
-class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
-                                   public PsstSettingsService::PrefObserver {
+class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
  public:
   using InsertScriptInPageCallback = base::OnceCallback<void(base::Value)>;
   using InsertScriptInPageTimeoutCallback =
@@ -44,6 +43,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
   using ConsentCallback =
       base::OnceCallback<void(const std::vector<std::string>&)>;
+  using CancelCallback = base::OnceCallback<void()>;
 
   // Delegate interface for UI-related actions. This class is responsible for
   // facilitating communication with the consent dialog, ensuring that the UI
@@ -56,7 +56,8 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
                       PsstWebsiteSettings dialog_data,
                       const int rule_version,
                       std::optional<UserScriptResult> user_script_result,
-                      ConsentCallback apply_changes_callback) = 0;
+                      ConsentCallback apply_changes_callback,
+                      CancelCallback cancel_callback) = 0;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
                              const std::vector<PolicyTask>& applied_tasks,
@@ -89,7 +90,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
 
   PsstUiDelegate* GetPsstUiDelegate() const;
   base::WeakPtr<PsstTabWebContentsObserver> AsWeakPtr();
-  void CancelLogicalFlow();
+  void CancelInFlightFlow();
 
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
@@ -123,10 +124,6 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
   void SetInjectScriptCallback(InjectScriptCallback inject_script_callback);
   void SetInjectAsyncScriptCallback(
       InjectScriptAsyncCallback inject_async_script_callback);
-  void CancelInFlightFlow();
-
-  // PsstSettingsService::Observer
-  void OnPsstEnableChange(bool new_value) override;
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
