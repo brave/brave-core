@@ -1,0 +1,552 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>You don’t need reproducible builds.</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">You don’t need reproducible builds.</h1><p class="subhead metadata">I’m skeptical about build reproducibility, but ardent supporters are defending and cheering for it at every opportunity. After a few too man...</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+<p><span><br>I’m skeptical about build reproducibility, but ardent supporters are defending and cheering for it at every opportunity. After a few too many heated discussions, I’ve decided to write down my thoughts on the topic.<p>I’ll try my best to summarize the arguments for reproducible builds, and explain why I find them unconvincing.</p><p>Supporters like to pretend the topic is simple, as one reproducibility fan brusquely put it to me on twitter:</p></span></p><blockquote class="tr_bq">
+<span><i>“Reproducibility is important. Source code A leading to binary B through a reproducible build guarantees what you see (source) is what you get (the binary from the vendor). What is not clear here?”</i></span></blockquote>
+<p><span><br></span><b><span><br></span></b></p>
+<p><b><span><br></span></b>
+<span><p>What isn’t clear is what <b><i>benefit&nbsp;</i></b>the reproducibility provides. The only way to verify that the untrusted binary is bit-for-bit identical to the binary that would be produced by building the source code, is to produce your own trusted binary first and then compare it. At that point you already have a trusted binary you can use, so what value did reproducible builds provide?</p><p>This diagram demonstrates how to get a trusted binary without reproducible builds.</p></span></p><div>
+<p><span><br></span></p>
+<p><b><span><br></span></b>
+<span>The answer to this question is that reproducible builds are not for users, they are expected to nominate somebody they trust to build it for them, and verify that the output is correct.<p>The revised workflow is similar to the first diagram, but now a trusted vendor takes care of the compilation step, so the problem is the same. The trusted vendor has to produce the binary anyway, why not just use that one, making reproducible builds unnecessary?</p><p>The answer is that we can design a system where several third parties reproduce the binary, and we can require them all to agree that a binary matches. Here is a diagram of that workflow.</p></span></p></div>
+<div>
+<p><span><br></span></p>
+<p><b><span><br></span></b>
+<span><br>The problem with this scenario is that the user still has to trust the vendor to do the verification. If the trusted vendor is compromised, then they can provide tampered binaries. If they’re not compromised, then there was no benefit to reproducing it with third parties.<p>In effect, this is no different to how the system works today with Linux distributions.</p><p>The answer to this problem is that we can build a system where the user only has to trust the vendor once. If the vendor is compromised after that point, the reproducing builds will prevent them from distributing tampered packages to the user.</p><p>This is a little more complicated, the user can’t verify the builds reproduce by compiling them themselves, because then they already have a trusted build. The answer is for the user to nominate the vendors they trust, and then require a signature from them to install any packages.</p><p>Here is that workflow:</p></span></p></div>
+<div>
+<p><span><br></span></p>
+<p><span><p>Now if the vendor is compromised or becomes malicious, they can’t give the user any compromised binaries without also providing the source code. This ignores some complexities, like ensuring security updates are delivered even if one vendor is compromised, what to do if the reproducers stop working, or how to reach consensus if the reproducers and your vendor disagree on what software or fork you should be using.</p><p>Regardless, even if we ignore these practicalities, the problem with this solution is that the vendor that was only trusted once still provides the source code for the system you’re using. They can still provide malicious source code to the builders for them to build and sign.</p><p>I don’t know what supporters suggest is the solution to this problem, perhaps that the vendor you trusted shouldn’t provide any patches, configuration or any of the system software. If operating system vendors can’t actually modify or configure the operating system, then frankly this doesn’t seem like a useful system.</p><p>Perhaps some people are convinced this system is still worthwhile and achievable, but it is clearly not a simple solution. For this reason, I think it is entirely reasonable to be skeptical about the benefits of reproducible builds, and the benefits are not as clear as supporters claim.</p></span></p></div>
+<p><span><br></span></p>
+<div>
+<p><span><br></span></p><ul>
+<li><b><span>Q. It’s easier to audit source code than binaries, and this will make it harder for vendors to hide malicious code.</span></b></li>
+</ul>
+<p><span><br>I don’t think this is true, because of “bugdoors”. A <i>bugdoor </i>is simply an intentional security vulnerability that the vendor can "exploit" when they want backdoor access.</span></p><p><span><br></span></p>
+<div>
+<p><span>The benefit of bugdoors to attackers is that they’re perfectly plausibly deniable. If someone catches you, you can simply claim it was a mistake, and there are zero consequences. You can then repeat this ad infinitum, it’s simply not unusual to fix “mistakes” continuously, and there is no way to determine intent.<p>If someone wants to provide a malicious program, reproducible builds can force them to also provide the source code, but it can’t force the program to be non-malicious, so this is not particularly useful. You already <i>have&nbsp;</i>to trust the source code.</p><p>You might claim that I have no data to support this, but that’s the benefit of bugdoors to attackers: There can never be data to prove your wrongdoing.</p></span></p><ul>
+<li><b><span>Q. It’s easier to tamper with binaries than to write a bugdoor, so reproducible builds do improve security.</span></b></li>
+</ul>
+<p><span>I absolutely disagree, every programmer knows how to write a bug or short circuit some logic. Hiding malicious activity in a binary, with a multi billion dollar malware industry determined to find it is more difficult. In addition, once you’ve produced and signed the malicious backdoor, it is not repudiable - you can’t deny you wrote and provided it.<p>With bugdoors, you don’t need to deny it - you just claim it was an error, and you’re automatically forgiven.</p></span></p><ul>
+<li><b><span>Q. Build servers get compromised, and that’s a fact. Reproducible builds mean proprietary vendors can quickly check if their infrastructure is producing tampered binaries.</span></b></li>
+</ul>
+<p><span><br>I think this is true, but ignores significant trade-offs. The vendor needs to create and maintain two disparate build infrastructures, and then provide additional people privileged access to that new infrastructure. If you don't do this, there was no benefit to reproducible builds because you'd be building the same potentially compromised binary twice.</span></p></div>
+<p><span><br></span></p>
+<div>
+<p><span>We know that attackers really do want to compromise build infrastructure, but more often they want to steal proprietary source code, which must pass through build servers.<p>This means that vendors will <b>increase&nbsp;</b>the likelihood of attacks that really are happening, to prevent an attack that <b>could&nbsp;</b>happen.</p><p>That is a significant trade off, and the decision to invest in reproducible builds isn’t as obvious as supporters claim.</p></span></p><p><span><br></span></p>
+<p><span><br></span></p>
+<div>
+<p><span><br></span></p><ul>
+<li><b><span>Q. If a user has chosen to trust a platform where all binaries must be codesigned by the vendor, but doesn’t trust the vendor, then reproducible builds allow them to verify the vendor isn’t malicious.</span></b></li>
+</ul>
+<p><span><br>I think this is a fantasy threat model. If the user does discover the vendor was malicious, what are they supposed to do?</span></p></div>
+<p><span><br>The malicious vendor can simply refuse to provide them with signed security updates instead, so this threat model doesn’t work.</span></p>
+<p><span><br></span></p>
+<div>
+<p><span><br></span></p><ul>
+<li><b><span>Q. Non-reproducible builds violate the GPL, because you can’t produce a bit-for-bit identical binary from the provided source code.</span></b></li>
+</ul>
+<p><span><br>I think this argument is ridiculous, and would mean GPL binaries also can’t use code signing or TLS. Clearly the vendor cannot give you the private keys required to produce the code signatures or the CA roots, so by this argument they also violate the GPL.</span></p></div>
+<p><span><br></span></p>
+<p><span><br></span></p>
+<div>
+<p><span><br></span></p><ul>
+<li><b><span>Q. Whether it’s useful for end users or not, it will allow experts to monitor for compromised build servers producing tampered builds.</span></b></li>
+</ul>
+<p><span><br>I think this is true, but there are other attacks against compromised build servers, all of which are more common than producing tampered builds.</span></p></div>
+<p><span><br>More often, attackers want signing keys so they can <a href="https://www.redhat.com/security/data/openssh-blacklist.html">sign their own binaries</a>, <a href="https://www.theverge.com/2019/3/28/18286027/microsoft-nintendo-vtech-security-hack-breach-researcher-guilty">steal proprietary source code</a>, inject malicious code into <a href="https://metalkey.github.io/vsftpd-v234-backdoor-command-execution.html">source code</a> tarballs, or <a href="https://lwn.net/Articles/57135/">malicious patches</a> into source repositories.<p>Reproducible builds don’t help with any of those problems.<b><b>Q. A reproducible build is a good quality build. Whether there are security benefits or not, I just want people to do it.</b></b></p><p>Whether reproducible builds are better quality or not is a matter of opinion, and we shouldn’t be trying to force our opinions on others by claiming it’s for security.</p><p>I happen to disagree, and don’t think reproducibility makes a quality build, I think it adds unnecessary complexity.</p></span></p>
+</div>
+</div>
+
+</body>

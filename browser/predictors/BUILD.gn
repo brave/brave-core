@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "loading_predictor_disabled_unittest.cc" ]
+
+  deps = [
+    "//chrome/browser/predictors",
+    "//chrome/browser/predictors:config",
+    "//chrome/browser/preloading:prefs",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}

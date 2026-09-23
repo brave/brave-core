@@ -1,0 +1,16 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/grit/generated_resources.h"
+
+#if !defined(IDS_DOWNLOAD_HISTORY_TITLE)
+#error IDS_DOWNLOAD_HISTORY_TITLE is no longer defined in Chromium
+#endif
+#undef IDS_DOWNLOAD_HISTORY_TITLE
+#define IDS_DOWNLOAD_HISTORY_TITLE IDS_DOWNLOADS_TITLE
+
+#include <chrome/browser/ui/webui/downloads/downloads_ui.cc>
+#undef IDS_DOWNLOAD_HISTORY_TITLE

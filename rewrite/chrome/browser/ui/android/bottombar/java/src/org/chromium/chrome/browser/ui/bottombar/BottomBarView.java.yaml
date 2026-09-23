@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Resolve Brave's bookmark action to the shared extra container.
+
+      Brave's bookmark button occupies the container upstream shares between Glic
+      and AI Mode, so it has to resolve to it alongside them - BottomBarViewBinder
+      looks the container up by the action id that owns the slot.
+    regex:
+      re_pattern: |-
+        ( *)(case ActionId\.AI_MODE:)
+      replace: |-
+        \1\2
+        \1case ActionId.BRAVE_BOOKMARK:

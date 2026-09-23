@@ -1,0 +1,27 @@
+/* Shields Ads Stat */
+"AdsAndTrackersrBlocked" = "Seurantaohjelmat ja mainosta estetty";
+
+/* Shields Ads Stat */
+"AdsrBlocked" = "mainosta\nestetty";
+
+/* Data Saved Shield Stat */
+"DataSavedStat" = "Tallennettuja\ntietoja keskim.";
+
+/* Shields Time Saved Stat */
+"EstTimerSaved" = "Arvioitu\najansäästö";
+
+/* Time Saved Days */
+"ShieldsTimeStatsDays" = "p";
+
+/* Time Saved Hours */
+"ShieldsTimeStatsHour" = "t";
+
+/* Time Saved Minutes */
+"ShieldsTimeStatsMinutes" = "min";
+
+/* Time Saved Seconds */
+"ShieldsTimeStatsSeconds" = "s";
+
+/* Shields Trackers Stat */
+"TrackersrBlocked" = "seurantaohjelmaa\nestetty";
+

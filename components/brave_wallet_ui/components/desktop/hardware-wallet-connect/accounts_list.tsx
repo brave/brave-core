@@ -1,0 +1,388 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
+import * as React from 'react'
+import { EntityId } from '@reduxjs/toolkit'
+import Dropdown from '@brave/leo/react/dropdown'
+
+// Types
+import { BraveWallet } from '../../../constants/types'
+import {
+  DerivationScheme,
+  HardwareImportScheme,
+  AccountFromDevice,
+} from '../../../common/hardware/types'
+
+// Utils
+import { getLocale } from '../../../../common/locale'
+
+import {
+  useGetNetworksRegistryQuery, //
+} from '../../../common/slices/api.slice'
+import { makeNetworkAsset } from '../../../options/asset-options'
+import {
+  getNetworkId,
+  networkSelectors,
+} from '../../../common/slices/entities/network.entity'
+
+// Components
+import { SearchBar } from '../../shared/search-bar/index'
+import { NetworkFilterSelector } from '$wallet/page/components/network_filter_selector/network_filter_selector'
+import { AccountListItem } from './account_list_item'
+
+// Styles
+import {
+  DisclaimerText,
+  DisclaimerWrapper,
+} from '../popup-modals/add-account-modal/style'
+import {
+  ButtonsContainer,
+  HardwareWalletAccountsListContainer,
+  SelectRow,
+  SelectWrapper,
+  LoadingWrapper,
+  LoadIcon,
+  NoSearchResultText,
+  AccountListContainer,
+  AccountListHeader,
+  AccountListContent,
+  DropdownLabel,
+  HardwareWalletCaption,
+  HelpLink,
+} from './hardware_wallet_connect.styles'
+import {
+  ContinueButton, //
+} from '../../../page/screens/onboarding/onboarding.style'
+import { Row } from '../../shared/style'
+
+export interface AccountFromDeviceListItem extends AccountFromDevice {
+  alreadyInWallet: boolean
+  shouldAddToWallet: boolean
+}
+
+interface Props {
+  currentHardwareImportScheme: HardwareImportScheme
+  deviceName: string
+  supportedSchemes: HardwareImportScheme[]
+  accounts: AccountFromDeviceListItem[]
+  onLoadMore: () => void
+  onAccountChecked: (path: string, checked: boolean) => void
+  setHardwareImportScheme: (scheme: DerivationScheme) => void
+  onAddAccounts: () => void
+}
+
+const defaultNetworkId = (
+  currentHardwareImportScheme: HardwareImportScheme,
+) => {
+  if (currentHardwareImportScheme.coin === BraveWallet.CoinType.ETH) {
+    return BraveWallet.MAINNET_CHAIN_ID
+  }
+
+  if (currentHardwareImportScheme.coin === BraveWallet.CoinType.SOL) {
+    return BraveWallet.SOLANA_MAINNET
+  }
+
+  if (currentHardwareImportScheme.coin === BraveWallet.CoinType.FIL) {
+    assert(currentHardwareImportScheme.fixedNetwork)
+    return currentHardwareImportScheme.fixedNetwork
+  }
+
+  if (currentHardwareImportScheme.coin === BraveWallet.CoinType.BTC) {
+    assert(currentHardwareImportScheme.fixedNetwork)
+    return currentHardwareImportScheme.fixedNetwork
+  }
+
+  assertNotReached(
+    `Unknown currentHardwareImportScheme ${currentHardwareImportScheme}`,
+  )
+}
+
+const coinsSupportingSchemesDropdown = [
+  BraveWallet.CoinType.ETH,
+  BraveWallet.CoinType.SOL,
+]
+
+const getHardwareImportSchemeLabel = (scheme: HardwareImportScheme): string => {
+  return `${scheme.name} "${scheme.pathTemplate('x')}"`
+}
+
+export const HardwareWalletAccountsList = ({
+  currentHardwareImportScheme,
+  deviceName,
+  supportedSchemes,
+  setHardwareImportScheme,
+  accounts,
+  onLoadMore,
+  onAccountChecked,
+  onAddAccounts,
+}: Props) => {
+  const { coin } = currentHardwareImportScheme
+
+  // queries
+  const { data: networksRegistry } = useGetNetworksRegistryQuery()
+
+  // state
+  const [filteredAccountList, setFilteredAccountList] = React.useState<
+    AccountFromDeviceListItem[]
+  >([])
+  const [isLoadingMore, setIsLoadingMore] = React.useState<boolean>(false)
+  const [selectedNetworkId, setSelectedNetworkId] = React.useState<EntityId>(
+    defaultNetworkId(currentHardwareImportScheme),
+  )
+
+  // memos
+  const visibleNetworks = React.useMemo(() => {
+    return networkSelectors.selectVisibleNetworks(networksRegistry)
+  }, [networksRegistry, currentHardwareImportScheme.coin])
+
+  const selectedNetwork = networkSelectors.selectById(
+    networksRegistry,
+    selectedNetworkId,
+  )
+
+  const accountNativeAsset = React.useMemo(() => {
+    return makeNetworkAsset(selectedNetwork)
+  }, [selectedNetwork])
+
+  const networksSubset = React.useMemo(() => {
+    if (currentHardwareImportScheme.fixedNetwork) {
+      return networkSelectors
+        .selectAll(networksRegistry)
+        .filter(
+          (n) =>
+            n.coin === currentHardwareImportScheme.coin
+            && n.chainId === currentHardwareImportScheme.fixedNetwork,
+        )
+    }
+
+    return visibleNetworks.filter(
+      (n) => n.coin === currentHardwareImportScheme.coin,
+    )
+  }, [networksRegistry, currentHardwareImportScheme, visibleNetworks])
+
+  const showSchemesDropdown = coinsSupportingSchemesDropdown.includes(
+    currentHardwareImportScheme.coin,
+  )
+
+  const dropdownItems = React.useMemo(() => {
+    if (!showSchemesDropdown) {
+      return null
+    }
+    return (
+      <>
+        <div slot='value'>
+          {getHardwareImportSchemeLabel(currentHardwareImportScheme)}
+        </div>
+        {supportedSchemes.map((scheme) => {
+          return (
+            <leo-option
+              value={scheme.derivationScheme}
+              key={scheme.derivationScheme}
+            >
+              {getHardwareImportSchemeLabel(scheme)}
+            </leo-option>
+          )
+        })}
+      </>
+    )
+  }, [currentHardwareImportScheme, showSchemesDropdown, supportedSchemes])
+
+  // methods
+  const onSelectAccountCheckbox =
+    (account: AccountFromDeviceListItem) => () => {
+      onAccountChecked(account.derivationPath, !account.shouldAddToWallet)
+    }
+
+  const filterAccountList = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const search = event?.target?.value || ''
+    if (search === '') {
+      setFilteredAccountList(accounts)
+    } else {
+      const filteredList = accounts.filter((account) => {
+        return (
+          account.address.toLowerCase() === search.toLowerCase()
+          || account.address.toLowerCase().startsWith(search.toLowerCase())
+        )
+      })
+      setFilteredAccountList(filteredList)
+    }
+  }
+
+  const onClickLoadMore = () => {
+    setIsLoadingMore(true)
+    onLoadMore()
+  }
+
+  const onSelectNetwork = React.useCallback(
+    (n: BraveWallet.NetworkInfo): void => {
+      setSelectedNetworkId(getNetworkId(n))
+      assert(!currentHardwareImportScheme.fixedNetwork)
+    },
+    [currentHardwareImportScheme],
+  )
+
+  const onChangeDerivationScheme = (value?: string) => {
+    if (value) {
+      setHardwareImportScheme(value as DerivationScheme)
+    }
+  }
+
+  // effects
+  React.useEffect(() => {
+    setFilteredAccountList(accounts)
+    setIsLoadingMore(false)
+  }, [accounts])
+
+  React.useEffect(() => {
+    if (selectedNetworkId) {
+      return
+    }
+    if (!networksRegistry) {
+      return
+    }
+
+    // set network dropdown default value
+    setSelectedNetworkId(getNetworkId(visibleNetworks[0]))
+  }, [networksRegistry, coin, selectedNetworkId])
+
+  // render
+  return (
+    <>
+      <SelectRow>
+        <SelectWrapper>
+          <Row
+            alignItems='center'
+            justifyContent='space-between'
+            gap='16px'
+            width='100%'
+          >
+            <NetworkFilterSelector
+              networkListSubset={networksSubset}
+              selectedNetwork={selectedNetwork}
+              onSelectNetwork={onSelectNetwork}
+              disableAllAccountsOption
+              isV2
+            />
+            {deviceName ? (
+              <HardwareWalletCaption>{deviceName}</HardwareWalletCaption>
+            ) : null}
+          </Row>
+          {coin === BraveWallet.CoinType.ETH ? (
+            <Dropdown
+              value={currentHardwareImportScheme.derivationScheme}
+              onChange={(e) => onChangeDerivationScheme(e.value)}
+            >
+              <Row
+                width='100%'
+                justifyContent='space-between'
+                slot='label'
+              >
+                <DropdownLabel>
+                  {getLocale(S.BRAVE_WALLET_H_D_PATH)}
+                </DropdownLabel>
+                <HelpLink
+                  href='https://support.brave.app/hc/categories/360001062531-Wallet'
+                  target='_blank'
+                  rel='noopener noreferrer'
+                >
+                  {getLocale(S.BRAVE_WALLET_HELP_CENTER)}
+                </HelpLink>
+              </Row>
+              {dropdownItems}
+            </Dropdown>
+          ) : null}
+          {coin === BraveWallet.CoinType.SOL ? (
+            <Dropdown
+              value={currentHardwareImportScheme.derivationScheme}
+              onChange={(e) => onChangeDerivationScheme(e.value)}
+            >
+              {dropdownItems}
+            </Dropdown>
+          ) : null}
+        </SelectWrapper>
+      </SelectRow>
+      {showSchemesDropdown && (
+        <DisclaimerWrapper>
+          <DisclaimerText
+            textColor='secondary'
+            variant='small.regular'
+          >
+            {getLocale(S.BRAVE_WALLET_SWITCH_H_D_PATH_TEXT_HARDWARE_WALLET)}
+          </DisclaimerText>
+        </DisclaimerWrapper>
+      )}
+      <SearchBar
+        placeholder={getLocale(S.BRAVE_WALLET_SEARCH_SCANNED_ACCOUNTS)}
+        action={filterAccountList}
+        isV2
+      />
+      <HardwareWalletAccountsListContainer>
+        {accounts.length === 0 && (
+          <LoadingWrapper>
+            <LoadIcon size={'big'} />
+          </LoadingWrapper>
+        )}
+
+        {accounts.length > 0 && filteredAccountList.length === 0 && (
+          <NoSearchResultText>
+            {getLocale(S.BRAVE_WALLET_CONNECT_HARDWARE_SEARCH_NOTHING_FOUND)}
+          </NoSearchResultText>
+        )}
+
+        {accountNativeAsset
+          && accounts.length > 0
+          && filteredAccountList.length > 0 && (
+            <AccountListContainer>
+              <AccountListHeader>
+                <div>{getLocale(S.BRAVE_WALLET_SUBVIEW_ACCOUNT)}</div>
+                <div>{getLocale(S.BRAVE_WALLET_BALANCE)}</div>
+                <div>{getLocale(S.BRAVE_WALLET_ADD_ACCOUNT_CONNECT)}</div>
+              </AccountListHeader>
+              <AccountListContent>
+                {filteredAccountList.map((account) => {
+                  return (
+                    <AccountListItem
+                      key={account.derivationPath}
+                      balanceAsset={accountNativeAsset}
+                      address={account.address}
+                      selected={
+                        account.alreadyInWallet || account.shouldAddToWallet
+                      }
+                      disabled={account.alreadyInWallet}
+                      onSelect={onSelectAccountCheckbox(account)}
+                    />
+                  )
+                })}
+              </AccountListContent>
+            </AccountListContainer>
+          )}
+      </HardwareWalletAccountsListContainer>
+      <ButtonsContainer>
+        <ContinueButton
+          onClick={onClickLoadMore}
+          isLoading={isLoadingMore}
+          isDisabled={
+            isLoadingMore
+            || accounts.length === 0
+            || currentHardwareImportScheme.singleAccount
+          }
+        >
+          {isLoadingMore
+            ? getLocale(S.BRAVE_WALLET_LOADING_MORE_ACCOUNTS_HARDWARE_WALLET)
+            : getLocale(S.BRAVE_WALLET_LOAD_MORE_ACCOUNTS_HARDWARE_WALLET)}
+        </ContinueButton>
+        <ContinueButton
+          onClick={onAddAccounts}
+          isDisabled={!accounts.find((acc) => acc.shouldAddToWallet)}
+        >
+          {getLocale(S.BRAVE_WALLET_BUTTON_CONTINUE)}
+        </ContinueButton>
+      </ButtonsContainer>
+    </>
+  )
+}
+
+export default HardwareWalletAccountsList

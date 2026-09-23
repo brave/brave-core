@@ -1,0 +1,108 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.dialog {
+  --leo-dialog-padding: var(--leo-spacing-2xl);
+  --leo-dialog-width: 520px;
+  --leo-dialog-backdrop-background: var(--leo-color-dialogs-scrim-background);
+}
+
+.dialogTitle {
+  font: var(--leo-font-heading-h3);
+  font-size: 20px;
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-2xl);
+}
+
+.categorySection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+}
+
+.categoryLabel {
+  font: var(--leo-font-small-semibold);
+  color: var(--leo-color-text-primary);
+  padding-inline: var(--leo-spacing-s);
+}
+
+.reasons {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--leo-spacing-m);
+
+  leo-button {
+    width: 100%;
+  }
+}
+
+.detailsLabel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-s);
+  font: var(--leo-font-small-semibold);
+  color: var(--leo-color-text-primary);
+
+  textarea {
+    display: block;
+    width: 100%;
+    padding: 11px 16px;
+    resize: none;
+    background-color: var(--leo-color-container-background);
+    border: 1px solid var(--leo-color-divider-subtle);
+    border-radius: var(--leo-radius-l);
+    font: var(--leo-font-default-regular);
+    color: var(--leo-color-text-primary);
+
+    &:focus-within {
+      outline: none;
+      box-shadow: var(--leo-effect-focus-state);
+      border-color: transparent;
+    }
+
+    &::placeholder {
+      color: var(--leo-color-text-tertiary);
+    }
+  }
+}
+
+.premiumNote {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-systemfeedback-info-text);
+  padding: 16px;
+  border-radius: var(--leo-radius-l);
+  background: var(--leo-color-systemfeedback-info-background);
+}
+
+.learnMoreLink {
+  cursor: pointer;
+  background: none;
+  border: none;
+  margin: 0;
+  padding: 0;
+  text-decoration: underline;
+  color: inherit;
+
+  &:hover {
+    color: var(--leo-color-text-interactive);
+  }
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--leo-spacing-m);
+  margin-top: var(--leo-spacing-m);
+}
+
+.footerButton {
+  flex: 0 0 auto;
+  width: auto;
+  max-width: max-content;
+}

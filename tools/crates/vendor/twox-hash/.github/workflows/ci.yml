@@ -1,0 +1,174 @@
+on: [push, pull_request]
+
+name: Continuous integration
+
+env:
+  RUSTFLAGS: -D warnings
+  RUSTDOCFLAGS: -D warnings
+
+jobs:
+  library:
+    strategy:
+      matrix:
+        platform:
+          - ubuntu-latest
+
+        rust:
+          - stable
+          - beta
+          - nightly
+          - 1.81.0  # MSRV
+
+        include:
+          - platform: macos-latest # This serves as our aarch64 / arm64 runner
+            rust: stable
+
+          - platform: windows-latest
+            rust: stable
+
+    runs-on: ${{ matrix.platform }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: git submodule update --init --recursive
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.rust }}
+
+      - name: Unit Tests
+        run: cargo test --all-features
+
+      - name: Property Tests
+        run: cargo test -p comparison --all-features
+
+  miri:
+    runs-on: ubuntu-latest
+    env:
+      MIRIFLAGS: --cfg _internal_xxhash3_force_scalar
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly
+          components: miri
+
+      - name: Unsafe Code
+        run: cargo miri test --all-features
+
+      - name: Big Endian Platform
+        run: cargo miri test --all-features --target s390x-unknown-linux-gnu
+
+  lints:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: git submodule update --init --recursive
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+
+      - run: cargo fmt --check --all
+
+      - run: cargo clippy --all --all-targets --all-features
+
+      - run: cargo doc --all-features
+
+  no-std:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+          targets: thumbv6m-none-eabi
+
+      - run: >
+          cargo build
+          --no-default-features
+          --features=xxhash32,xxhash64,xxhash3_64
+          --target thumbv6m-none-eabi
+
+  features:
+    runs-on: ubuntu-latest
+
+    env:
+      IMPLEMENTATIONS: xxhash32 xxhash64 xxhash3_64 xxhash3_128
+      FEATURE_SET: random serialize std alloc
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: git submodule update --init --recursive
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: stable
+
+      - name: Compute Powerset
+        shell: "ruby {0}"
+        run: |
+          features = ENV['FEATURE_SET']
+            .split(' ')
+            .reduce([[]]) { |ps, i| ps + ps.map { |e| e + [i] } }
+            .map { |s| s.join(',') }
+            .join(" ")
+
+          File.open(ENV['GITHUB_ENV'], 'a') { |f| f.write("FEATURES=#{features}") }
+
+      - name: Check implementations with features
+        run: |
+          for impl in ${IMPLEMENTATIONS}; do
+              echo "::group::Implementation ${impl}"
+
+              # Check the implementation by itself
+              cargo check --no-default-features --features="${impl}"
+
+              # And with extra features
+              for feature in ${FEATURES}; do
+                  echo "::group::Features ${feature}"
+                  cargo check --no-default-features --features="${impl},${feature}"
+                  echo "::endgroup::"
+              done
+
+              echo ::endgroup::
+          done
+
+  minimal-versions:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: git submodule update --init --recursive
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.81.0  # MSRV
+
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: nightly
+
+      - name: Remove non-essential dependencies
+        run: |
+          # Remove workspace dependencies
+          sed -i '/\[workspace]/,/#END-\[workspace]/d' Cargo.toml
+
+          # Remove dev-dependencies
+          sed -i '/\[dev-dependencies]/,/#END-\[dev-dependencies]/d' Cargo.toml
+
+      - name: Downgrade to minimal dependencies
+        run: |
+          cargo +nightly -Z minimal-versions update
+
+      - run: cargo +1.81.0 build --all-features

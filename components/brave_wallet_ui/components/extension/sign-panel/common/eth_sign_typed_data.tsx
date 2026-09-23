@@ -1,0 +1,102 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+import * as React from 'react'
+
+// Utils
+import { getLocale } from '../../../../../common/locale'
+import { unicodeEscape, hasUnicode } from '../../../../utils/string-utils'
+
+// Types
+import { BraveWallet } from '../../../../constants/types'
+
+// Styled Components
+import {
+  MessageBox,
+  MessageHeader,
+  MessageText,
+  WarningTitleRow,
+} from '../style'
+
+import {
+  WarningBox,
+  LearnMoreButton,
+  WarningIcon,
+} from '../../shared-panel-styles'
+import { Text } from '../../../shared/style'
+
+interface Props {
+  data?: BraveWallet.EthSignTypedData
+  height?: string
+  width?: string
+}
+
+export function EthSignTypedData(props: Props) {
+  const { data, height, width } = props
+
+  const [renderUnicode, setRenderUnicode] = React.useState<boolean>(true)
+
+  return (
+    <>
+      {(hasUnicode(data?.messageJson ?? '')
+        || hasUnicode(data?.domainJson ?? '')) && (
+        <WarningBox warningType='warning'>
+          <WarningTitleRow>
+            <WarningIcon warningType='warning' />
+            <Text
+              textColor='error'
+              variant='small.semibold'
+            >
+              {getLocale(
+                S.BRAVE_WALLET_NON_ASCII_CHARACTERS_IN_MESSAGE_WARNING,
+              )}
+            </Text>
+          </WarningTitleRow>
+          <LearnMoreButton onClick={() => setRenderUnicode((prev) => !prev)}>
+            {renderUnicode
+              ? getLocale(S.BRAVE_WALLET_VIEW_DECODED_MESSAGE)
+              : getLocale(S.BRAVE_WALLET_VIEW_ENCODED_MESSAGE)}
+          </LearnMoreButton>
+        </WarningBox>
+      )}
+
+      {data && (
+        <MessageBox
+          height={height ?? '180px'}
+          width={width}
+        >
+          <MessageHeader
+            textColor='secondary'
+            variant='small.semibold'
+          >
+            {getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_DOMAIN)}:
+          </MessageHeader>
+          <MessageText
+            textColor='secondary'
+            variant='small.regular'
+          >
+            {!renderUnicode && hasUnicode(data.domainJson)
+              ? unicodeEscape(data.domainJson)
+              : data.domainJson}
+          </MessageText>
+
+          <MessageHeader
+            textColor='secondary'
+            variant='small.semibold'
+          >
+            {getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_MESSAGE_TITLE)}:
+          </MessageHeader>
+          <MessageText
+            textColor='secondary'
+            variant='small.regular'
+          >
+            {!renderUnicode && hasUnicode(data.messageJson)
+              ? unicodeEscape(data.messageJson)
+              : data.messageJson}
+          </MessageText>
+        </MessageBox>
+      )}
+    </>
+  )
+}

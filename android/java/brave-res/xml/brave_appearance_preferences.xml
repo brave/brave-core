@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <PreferenceCategory
+        android:key="navigation_section"
+        android:title="@string/appearance_navigation_section_title" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_android_dynamic_colors_enabled"
+        android:persistent="false"
+        android:icon="@drawable/ic_themes"
+        android:title="@string/brave_android_dynamic_colors_title"
+        android:summary="@string/brave_android_dynamic_colors_summary"
+        app:isPreferenceVisible="false" />
+
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.brave.browser.customize_menu.settings.BraveCustomizeMenuPreferenceFragment"
+        android:key="brave_customize_menu"
+        android:icon="@drawable/ic_window_screwdriver"
+        android:title="@string/customize_menu_title"/>
+
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:fragment="org.chromium.chrome.browser.toolbar.settings.AddressBarSettingsFragment"
+        android:key="address_bar"
+        android:title="@string/address_bar_settings"/>
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_bottom_toolbar_enabled_key"
+        android:icon="@drawable/ic_browser_mobile_bottom_toolbar"
+        android:title="@string/bottom_toolbar_title"
+        android:summary="@string/bottom_toolbar_summary" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="enable_multi_windows"
+        android:icon="@drawable/ic_windows_open"
+        android:title="@string/enable_multi_windows_title"
+        android:summary="@string/enable_multi_windows_summary" />
+
+    <PreferenceCategory
+        android:key="general_section"
+        android:title="@string/prefs_section_general" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_night_mode_enabled_key"
+        android:icon="@drawable/ic_theme_dark"
+        android:title="@string/night_mode_enable"
+        android:summary="@string/night_mode_summary" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_disable_sharing_hub"
+        android:icon="@drawable/ic_share"
+        android:title="@string/brave_sharing_hub_title"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off"
+        app:isPreferenceVisible="false" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="show_brave_rewards_icon"
+        android:icon="@drawable/ic_product_bat_outline"
+        android:title="@string/show_brave_rewards_icon_title"
+        android:summary="@string/show_brave_rewards_icon_summary" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="ads_switch"
+        android:icon="@drawable/ic_notification"
+        android:title="@string/show_ads_when_brave_is_not_in_use_title"
+        android:summary="@string/show_ads_when_brave_is_not_in_use_summary" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="brave_enable_tab_groups"
+        android:title="@string/enable_tab_groups_title"
+        android:summary="@string/enable_tab_groups_text"
+        app:isPreferenceVisible="false" />
+
+    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
+        android:key="show_undo_when_tabs_closed"
+        android:title="@string/show_undo_when_tabs_closed"
+        android:summaryOn="@string/text_on"
+        android:summaryOff="@string/text_off"
+        app:isPreferenceVisible="false" />
+</PreferenceScreen>

@@ -1,0 +1,22 @@
+[features]
+gnustep-1-7 = []
+gnustep-1-8 = []
+gnustep-1-9 = []
+gnustep-2-0 = []
+gnustep-2-1 = []
+
+# TODO(breaking): Remove this
+NSFetchedResultsController = [
+    "objc2-foundation/NSArray",
+    "objc2-foundation/NSError",
+    "objc2-foundation/NSIndexPath",
+    "objc2-foundation/NSOrderedCollectionDifference",
+    "objc2-foundation/NSString",
+    "NSFetchRequest",
+]
+NSPersistentStoreResult = [
+    "objc2-foundation/NSArray",
+    "objc2-foundation/NSError",
+    "objc2-foundation/NSProgress",
+    "NSFetchRequest",
+]

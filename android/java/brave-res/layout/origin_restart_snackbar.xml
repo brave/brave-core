@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+   This Source Code Form is subject to the terms of the Mozilla Public
+   License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/origin_restart_snackbar_bg"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/snackbar_title"
+        style="@style/LargeRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/origin_changing_brave_features_title"
+        android:textColor="?attr/colorOnSurfaceInverse" />
+
+    <TextView
+        android:id="@+id/snackbar_message"
+        style="@style/DefaultRegular"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="@string/origin_changing_brave_features_message"
+        android:textColor="?attr/colorOnSurfaceInverse"
+        android:textColorLink="?attr/colorOnSurfaceInverse" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp">
+
+        <!-- Shown during credential fetch: "Disabling features" + spinner + close -->
+        <LinearLayout
+            android:id="@+id/snackbar_fetching_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|end"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:id="@+id/snackbar_fetching_spinner"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:indeterminate="true"
+                android:indeterminateTint="?attr/colorPrimaryInverse" />
+
+            <TextView
+                android:id="@+id/snackbar_fetching_text"
+                style="@style/DefaultRegular"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="@string/origin_disabling_features"
+                android:textColor="?attr/colorPrimaryInverse" />
+
+        </LinearLayout>
+
+        <!-- Shown after credentials are fetched: "Restart now" + close -->
+        <LinearLayout
+            android:id="@+id/snackbar_restart_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical|end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/snackbar_action"
+                style="@style/ComponentsButtonDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackground"
+                android:paddingStart="12dp"
+                android:paddingEnd="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:text="@string/origin_restart_now"
+                android:textColor="?attr/colorPrimaryInverse" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>

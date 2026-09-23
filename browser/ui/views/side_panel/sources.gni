@@ -1,0 +1,11 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_ui_views_side_panel_deps = [
+  "//brave/components/brave_wallet/common/buildflags",
+  "//brave/ui/color:nala_color_id",
+  "//chrome/browser/ui:layout_constants",
+]
+brave_browser_ui_views_side_panel_public_deps = []

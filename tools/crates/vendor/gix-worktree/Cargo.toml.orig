@@ -1,0 +1,43 @@
+lints.workspace = true
+
+[package]
+name = "gix-worktree"
+version = "0.43.1"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+license = "MIT OR Apache-2.0"
+description = "A crate of the gitoxide project for shared worktree related types and utilities."
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+edition = "2021"
+include = ["src/**/*", "LICENSE-*"]
+rust-version = "1.82"
+autotests = false
+
+[lib]
+doctest = false
+
+[features]
+default = ["attributes"]
+## Instantiate stacks that can access `.gitattributes` information.
+attributes = ["dep:gix-attributes", "dep:gix-validate"]
+## Data structures implement `serde::Serialize` and `serde::Deserialize`.
+serde = ["dep:serde", "bstr/serde", "gix-index/serde", "gix-hash/serde", "gix-object/serde", "gix-attributes?/serde", "gix-ignore/serde"]
+
+[dependencies]
+gix-index = { version = "^0.42.1", path = "../gix-index" }
+gix-fs = { version = "^0.17.0", path = "../gix-fs" }
+gix-hash = { version = "^0.20.1", path = "../gix-hash" }
+gix-object = { version = "^0.51.1", path = "../gix-object" }
+gix-glob = { version = "^0.22.1", path = "../gix-glob" }
+gix-path = { version = "^0.10.21", path = "../gix-path" }
+gix-attributes = { version = "^0.28.1", path = "../gix-attributes", optional = true }
+gix-validate = { version = "^0.10.1", path = "../gix-validate", optional = true }
+gix-ignore = { version = "^0.17.1", path = "../gix-ignore" }
+gix-features = { version = "^0.44.1", path = "../gix-features" }
+
+serde = { version = "1.0.114", optional = true, default-features = false, features = ["derive"] }
+bstr = { version = "1.12.0", default-features = false }
+
+document-features = { version = "0.2.0", optional = true }
+
+[package.metadata.docs.rs]
+features = ["document-features", "serde"]

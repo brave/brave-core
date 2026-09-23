@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/profile_resetter/profile_resetter.h b/chrome/browser/profile_resetter/profile_resetter.h
+index 4e3de66fe910d8fbaf804c2b27104cbc7cd37179..6c334e67f06cf3312c338b79823d1c8a96dbf8c1 100644
+--- a/chrome/browser/profile_resetter/profile_resetter.h
++++ b/chrome/browser/profile_resetter/profile_resetter.h
+@@ -117,6 +117,7 @@ class ProfileResetter : public content::BrowsingDataRemover::Observer {
+   virtual bool IsActive() const;
+ 
+  private:
++  friend class BraveProfileResetter;
+   FRIEND_TEST_ALL_PREFIXES(::ProfileResetterTest, ResetNTPCustomizationsTest);
+ 
+   // Resets |resettable_flags| and calls |callback| on the UI thread on
+@@ -131,7 +132,7 @@ class ProfileResetter : public content::BrowsingDataRemover::Observer {
+   // have completed.
+   void MarkAsDone(Resettable resettable);
+ 
+-  void ResetDefaultSearchEngine();
++  virtual void ResetDefaultSearchEngine();
+   void ResetHomepage();
+   void ResetContentSettings();
+   void ResetCookiesAndSiteData();

@@ -1,0 +1,65 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//printing/buildflags/buildflags.gni")
+
+source_set("screenshot") {
+  sources = [
+    "devtools_full_page_extractor.cc",
+    "devtools_full_page_extractor.h",
+    "features.cc",
+    "features.h",
+    "screenshot_controller.cc",
+    "screenshot_controller.h",
+  ]
+
+  public_deps = [
+    "//printing/buildflags",
+    "//skia",
+    "//ui/gfx",
+    "//ui/shell_dialogs",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/components/screenshot/content",
+    "//chrome/app:generated_resources",
+    "//chrome/browser/download",
+    "//chrome/browser/image_editor",
+    "//components/devtools/simple_devtools_protocol_client",
+    "//components/viz/common",
+    "//content/public/browser",
+    "//ui/base",
+    "//ui/gfx/codec",
+  ]
+
+  if (enable_print_preview) {
+    deps += [ "//brave/browser/screenshot" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "devtools_full_page_extractor_unittest.cc",
+    "screenshot_controller_unittest.cc",
+  ]
+  deps = [
+    ":screenshot",
+    "//base",
+    "//base/test:test_support",
+    "//chrome/browser/image_editor",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//printing/buildflags",
+    "//skia",
+    "//testing/gtest",
+    "//ui/base/clipboard:clipboard_test_support",
+    "//ui/gfx",
+    "//ui/gfx/codec",
+    "//ui/shell_dialogs:test_support",
+  ]
+}

@@ -1,0 +1,19 @@
+diff --git a/chrome/installer/gcapi/google_update_util.cc b/chrome/installer/gcapi/google_update_util.cc
+index 433098591b24fa90174181a723c1715ad8391971..8f3fed298c80c4fb8a816fd1f97f38d0502cab40 100644
+--- a/chrome/installer/gcapi/google_update_util.cc
++++ b/chrome/installer/gcapi/google_update_util.cc
+@@ -11,12 +11,14 @@
+ 
+ namespace gcapi_internals {
+ 
++#if 0
+ const wchar_t kChromeRegClientsKey[] =
+     L"Software\\Google\\Update\\Clients\\"
+     L"{8A69D345-D564-463c-AFF1-A69D9E530F96}";
+ const wchar_t kChromeRegClientStateKey[] =
+     L"Software\\Google\\Update\\ClientState\\"
+     L"{8A69D345-D564-463c-AFF1-A69D9E530F96}";
++#endif
+ 
+ // Mirror the strategy used by GoogleUpdateSettings::GetBrand.
+ bool GetBrand(std::wstring* value) {

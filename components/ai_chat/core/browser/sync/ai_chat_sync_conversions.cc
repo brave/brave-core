@@ -1,0 +1,982 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
+
+#include <algorithm>
+#include <array>
+#include <memory>
+#include <optional>
+#include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
+
+#include "base/containers/flat_map.h"
+#include "base/containers/map_util.h"
+#include "base/containers/span.h"
+#include "base/containers/to_vector.h"
+#include "base/functional/function_ref.h"
+#include "base/hash/hash.h"
+#include "base/logging.h"
+#include "base/notreached.h"
+#include "base/numerics/safe_conversions.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_view_util.h"
+#include "base/system/sys_info.h"
+#include "base/time/time.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-shared.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
+#include "components/sync/protocol/entity_data.h"
+#include "components/sync/protocol/entity_specifics.pb.h"
+#include "mojo/public/cpp/bindings/enum_utils.h"
+#include "third_party/protobuf/src/google/protobuf/repeated_ptr_field.h"
+#include "third_party/zlib/google/compression_utils.h"
+#include "url/gurl.h"
+
+namespace ai_chat {
+
+void WriteCompressibleString(std::string_view value,
+                             sync_pb::AIChatCompressibleString* out) {
+  // Setting a real value supersedes any previous omitted_content_hash on |out|
+  // (they share the same oneof), which matters on the merge path where an
+  // AIChatCompressibleString the sender omitted is being restored.
+  if (std::string compressed; value.size() >= kSyncCompressionThresholdBytes &&
+                              compression::GzipCompress(value, &compressed) &&
+                              compressed.size() < value.size()) {
+    out->set_gzipped(std::move(compressed));
+    return;
+  }
+  out->set_raw(value);
+}
+
+void OmitCompressibleString(sync_pb::AIChatCompressibleString* out) {
+  // Replace the (possibly large) value with a hash of its content so the
+  // receiver can restore it from a local copy that hashes identically. Reading
+  // the current value handles both raw and gzipped storage; an already-omitted
+  // or empty field hashes the empty string. Setting the hash arm of the oneof
+  // clears any existing value.
+  const std::string value =
+      ReadCompressibleString(*out).value_or(std::string());
+  out->set_omitted_content_hash(base::PersistentHash(value));
+}
+
+void OmitUploadedFileData(sync_pb::AIChatUploadedFile* file) {
+  // Replace the raw bytes with a hash of them so the receiver can restore the
+  // file from a local copy with identical content. Setting the hash arm of the
+  // oneof clears |data|. Mirrors OmitCompressibleString for binary attachments.
+  file->set_omitted_data_hash(base::PersistentHash(file->data()));
+}
+
+std::optional<std::string> ReadCompressibleString(
+    const sync_pb::AIChatCompressibleString& in) {
+  if (in.has_omitted_content_hash()) {
+    // The sender omitted this field to fit the record budget; the caller
+    // restores it from a local copy with identical content or preserves the
+    // existing local value.
+    return std::nullopt;
+  }
+  if (in.has_gzipped()) {
+    // Limit maximum decompressed size to allowed maximum, or available memory.
+    const uint32_t uncompressed_size =
+        compression::GetUncompressedSize(in.gzipped());
+    const size_t max_allowed_size = std::min(
+        kSyncCompressionMaxDecompressedBytes,
+        base::saturated_cast<size_t>(
+            base::SysInfo::AmountOfAvailablePhysicalMemory().InBytes()));
+    if (uncompressed_size > max_allowed_size) {
+      DVLOG(1) << "Rejecting uncompressed string of size " << uncompressed_size
+               << " bytes, exceeds max allowed " << max_allowed_size;
+      return std::nullopt;
+    }
+    std::string out;
+    if (!compression::GzipUncompress(in.gzipped(), &out)) {
+      DVLOG(1) << "Rejecting gzipped string that failed to decompress";
+      return std::nullopt;
+    }
+    return out;
+  }
+  if (in.has_raw()) {
+    return in.raw();
+  }
+  DVLOG(1) << "Rejecting compressible string with no usable value";
+  return std::nullopt;
+}
+
+namespace {
+
+// --- Upload helpers: mojom → sync proto ---
+
+void WriteAssociatedContent(const mojom::AssociatedContent& content,
+                            std::optional<std::string_view> last_contents,
+                            sync_pb::AIChatAssociatedContentProto* proto) {
+  // Not synced: content_id and tools_attached are runtime-only. The parent
+  // linkage (conversation_turn_uuid) is implied by the entry this content is
+  // nested under, so it is not written here.
+  proto->set_uuid(content.uuid);
+  proto->set_title(content.title);
+  if (content.url.is_valid()) {
+    proto->set_url(content.url.spec());
+  }
+  proto->set_content_type(std::to_underlying(content.content_type));
+  proto->set_content_used_percentage(content.content_used_percentage);
+  // When |last_contents| is absent the receiver preserves any local text for
+  // this UUID; we do not need to set the field at all.
+  if (last_contents) {
+    WriteCompressibleString(*last_contents, proto->mutable_last_contents());
+  }
+}
+
+void WriteWebSource(const mojom::WebSource& source,
+                    sync_pb::AIChatWebSource* proto) {
+  proto->set_title(source.title);
+  if (source.url.is_valid()) {
+    proto->set_url(source.url.spec());
+  }
+  if (source.favicon_url.is_valid()) {
+    proto->set_favicon_url(source.favicon_url.spec());
+  }
+  if (source.page_content) {
+    WriteCompressibleString(*source.page_content,
+                            proto->mutable_page_content());
+  }
+  if (source.extra_snippets) {
+    proto->mutable_extra_snippets()->Assign(source.extra_snippets->begin(),
+                                            source.extra_snippets->end());
+  }
+}
+
+void WriteWebSourcesContentBlock(const mojom::WebSourcesContentBlock& block,
+                                 sync_pb::AIChatWebSourcesContentBlock* proto) {
+  for (const auto& source : block.sources) {
+    WriteWebSource(*source, proto->add_sources());
+  }
+  proto->mutable_queries()->Assign(block.queries.begin(), block.queries.end());
+  for (const auto& rr : block.rich_results) {
+    WriteCompressibleString(rr, proto->add_rich_results());
+  }
+}
+
+void WriteToolUse(const mojom::ToolUseEvent& tool_use,
+                  sync_pb::AIChatToolUseEvent* proto) {
+  // Not synced: permission_challenge is transient (resolved during the live
+  // turn) and not persisted to the local store; each artifact's id is a local
+  // identifier.
+  proto->set_tool_name(tool_use.tool_name);
+  proto->set_id(tool_use.id);
+  WriteCompressibleString(tool_use.arguments_json,
+                          proto->mutable_arguments_json());
+  proto->set_is_server_result(tool_use.is_server_result);
+  if (tool_use.output) {
+    for (const auto& block : *tool_use.output) {
+      auto* block_proto = proto->add_output();
+      // No default case: adding a new ContentBlock variant must be an explicit
+      // decision here rather than silently not syncing.
+      switch (block->which()) {
+        case mojom::ContentBlock::Tag::kTextContentBlock:
+          WriteCompressibleString(
+              block->get_text_content_block()->text,
+              block_proto->mutable_text_content_block()->mutable_text());
+          break;
+        case mojom::ContentBlock::Tag::kImageContentBlock:
+          block_proto->mutable_image_content_block()->set_image_url(
+              block->get_image_content_block()->image_url.spec());
+          break;
+        case mojom::ContentBlock::Tag::kWebSourcesContentBlock:
+          WriteWebSourcesContentBlock(
+              *block->get_web_sources_content_block(),
+              block_proto->mutable_web_sources_content_block());
+          break;
+        // Runtime-only content blocks that are intentionally not synced.
+        case mojom::ContentBlock::Tag::kFileContentBlock:
+        case mojom::ContentBlock::Tag::kFileExtractedTextContentBlock:
+        case mojom::ContentBlock::Tag::kPageExcerptContentBlock:
+        case mojom::ContentBlock::Tag::kPageTextContentBlock:
+        case mojom::ContentBlock::Tag::kVideoTranscriptContentBlock:
+        case mojom::ContentBlock::Tag::kRequestTitleContentBlock:
+        case mojom::ContentBlock::Tag::kChangeToneContentBlock:
+        case mojom::ContentBlock::Tag::kMemoryContentBlock:
+        case mojom::ContentBlock::Tag::kFilterTabsContentBlock:
+        case mojom::ContentBlock::Tag::kSuggestFocusTopicsContentBlock:
+        case mojom::ContentBlock::Tag::kSuggestFocusTopicsWithEmojiContentBlock:
+        case mojom::ContentBlock::Tag::kReduceFocusTopicsContentBlock:
+        case mojom::ContentBlock::Tag::kSimpleRequestContentBlock:
+          break;
+      }
+    }
+  }
+  if (tool_use.artifacts) {
+    for (const auto& artifact : *tool_use.artifacts) {
+      auto* a = proto->add_artifacts();
+      a->set_type(artifact->type);
+      WriteCompressibleString(artifact->content_json,
+                              a->mutable_content_json());
+    }
+  }
+}
+
+void WriteUploadedFile(const mojom::UploadedFile& file,
+                       sync_pb::AIChatUploadedFile* proto) {
+  proto->set_filename(file.filename);
+  proto->set_filesize(file.filesize);
+  proto->set_type(std::to_underlying(file.type));
+  // Raw bytes are inlined here; the size-budget policy may later omit them
+  // and set |omitted_data_hash| if the entry exceeds the size cap.
+  if (!file.data.empty()) {
+    proto->set_data(base::as_string_view(file.data));
+  }
+  if (file.extracted_text) {
+    WriteCompressibleString(*file.extracted_text,
+                            proto->mutable_extracted_text());
+  }
+}
+
+void WriteEvent(const mojom::ConversationEntryEvent& event,
+                sync_pb::AIChatEntryEventProto* proto) {
+  // No default case: adding a new ConversationEntryEvent variant must be an
+  // explicit decision here rather than silently not syncing.
+  switch (event.which()) {
+    case mojom::ConversationEntryEvent::Tag::kCompletionEvent:
+      WriteCompressibleString(event.get_completion_event()->completion,
+                              proto->mutable_completion());
+      break;
+    case mojom::ConversationEntryEvent::Tag::kSearchQueriesEvent: {
+      const auto& queries = event.get_search_queries_event()->search_queries;
+      proto->mutable_search_queries()->mutable_queries()->Assign(
+          queries.begin(), queries.end());
+      break;
+    }
+    case mojom::ConversationEntryEvent::Tag::kSourcesEvent: {
+      auto* ws = proto->mutable_web_sources();
+      const auto& sources_event = event.get_sources_event();
+      for (const auto& source : sources_event->sources) {
+        WriteWebSource(*source, ws->add_sources());
+      }
+      for (const auto& rr : sources_event->rich_results) {
+        WriteCompressibleString(rr, ws->add_rich_results());
+      }
+      break;
+    }
+    case mojom::ConversationEntryEvent::Tag::kInlineSearchEvent: {
+      auto* is = proto->mutable_inline_search();
+      is->set_query(event.get_inline_search_event()->query);
+      WriteCompressibleString(event.get_inline_search_event()->results_json,
+                              is->mutable_results_json());
+      break;
+    }
+    case mojom::ConversationEntryEvent::Tag::kToolUseEvent:
+      WriteToolUse(*event.get_tool_use_event(), proto->mutable_tool_use());
+      break;
+    // Runtime-only / engine-response events that are intentionally not synced.
+    case mojom::ConversationEntryEvent::Tag::kSearchStatusEvent:
+    case mojom::ConversationEntryEvent::Tag::kDeepResearchEvent:
+    case mojom::ConversationEntryEvent::Tag::kContentReceiptEvent:
+    case mojom::ConversationEntryEvent::Tag::kConversationTitleEvent:
+      break;
+  }
+}
+
+void WriteEntryFields(const mojom::ConversationTurn& entry,
+                      sync_pb::AIChatConversationSpecifics::Entry* proto) {
+  // Not synced: from_brave_search_SERP is runtime-only (not persisted to the
+  // local store). edits are not written here; EntryToSpecifics collapses them
+  // into the latest revision before calling this.
+  if (entry.uuid) {
+    proto->set_uuid(*entry.uuid);
+  }
+  proto->set_created_time_windows_epoch_micros(
+      entry.created_time.ToDeltaSinceWindowsEpoch().InMicroseconds());
+  proto->set_entry_text(entry.text);
+  if (entry.prompt) {
+    proto->set_prompt(*entry.prompt);
+  }
+  proto->set_character_type(std::to_underlying(entry.character_type));
+  proto->set_action_type(std::to_underlying(entry.action_type));
+  if (entry.selected_text) {
+    proto->set_selected_text(*entry.selected_text);
+  }
+  if (entry.model_key) {
+    proto->set_model_key(*entry.model_key);
+  }
+
+  if (entry.events) {
+    // Event order is preserved by the repeated field's ordering.
+    for (const auto& event : *entry.events) {
+      WriteEvent(*event, proto->add_events());
+    }
+  }
+
+  if (entry.uploaded_files) {
+    for (const auto& file : *entry.uploaded_files) {
+      WriteUploadedFile(*file, proto->add_uploaded_files());
+    }
+  }
+
+  if (entry.skill) {
+    auto* skill_proto = proto->mutable_skill();
+    skill_proto->set_shortcut(entry.skill->shortcut);
+    skill_proto->set_prompt(entry.skill->prompt);
+  }
+
+  if (entry.near_verification_status) {
+    proto->mutable_near_verification_status()->set_verified(
+        entry.near_verification_status->verified);
+  }
+}
+
+// --- Download helpers: sync proto → mojom ---
+
+// Decodes a repeated AIChatCompressibleString field into strings, skipping any
+// entry with no usable value (omitted-for-sync, empty, or undecodable).
+std::vector<std::string> ReadCompressibleStrings(
+    const google::protobuf::RepeatedPtrField<sync_pb::AIChatCompressibleString>&
+        strings) {
+  std::vector<std::string> out;
+  out.reserve(strings.size());
+  for (const auto& string : strings) {
+    if (auto decoded = ReadCompressibleString(string)) {
+      out.push_back(std::move(*decoded));
+    }
+  }
+  return out;
+}
+
+mojom::WebSourcePtr ProtoToWebSource(const sync_pb::AIChatWebSource& proto) {
+  auto source = mojom::WebSource::New();
+  source->title = proto.title();
+  if (proto.has_url()) {
+    source->url = GURL(proto.url());
+  }
+  if (proto.has_favicon_url()) {
+    source->favicon_url = GURL(proto.favicon_url());
+  }
+  source->page_content = ReadCompressibleString(proto.page_content());
+  if (!proto.extra_snippets().empty()) {
+    source->extra_snippets = base::ToVector(proto.extra_snippets());
+  }
+  return source;
+}
+
+mojom::WebSourcesContentBlockPtr ProtoToWebSourcesContentBlock(
+    const sync_pb::AIChatWebSourcesContentBlock& proto) {
+  auto block = mojom::WebSourcesContentBlock::New();
+  block->sources = base::ToVector(proto.sources(), &ProtoToWebSource);
+  block->queries = base::ToVector(proto.queries());
+  block->rich_results = ReadCompressibleStrings(proto.rich_results());
+  return block;
+}
+
+mojom::ToolUseEventPtr ProtoToToolUse(
+    const sync_pb::AIChatToolUseEvent& proto) {
+  auto tool_use = mojom::ToolUseEvent::New();
+  tool_use->tool_name = proto.tool_name();
+  tool_use->id = proto.id();
+  tool_use->arguments_json =
+      ReadCompressibleString(proto.arguments_json()).value_or(std::string());
+  tool_use->is_server_result = proto.is_server_result();
+  if (!proto.output().empty()) {
+    std::vector<mojom::ContentBlockPtr> blocks;
+    blocks.reserve(proto.output_size());
+    // No default case: adding a new content-block variant must be an explicit
+    // decision here rather than silently dropping it.
+    for (const auto& block_proto : proto.output()) {
+      switch (block_proto.content_case()) {
+        case sync_pb::AIChatContentBlock::kTextContentBlock:
+          blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
+              mojom::TextContentBlock::New(
+                  ReadCompressibleString(
+                      block_proto.text_content_block().text())
+                      .value_or(std::string()))));
+          break;
+        case sync_pb::AIChatContentBlock::kImageContentBlock:
+          blocks.push_back(mojom::ContentBlock::NewImageContentBlock(
+              mojom::ImageContentBlock::New(
+                  GURL(block_proto.image_content_block().image_url()))));
+          break;
+        case sync_pb::AIChatContentBlock::kWebSourcesContentBlock:
+          blocks.push_back(mojom::ContentBlock::NewWebSourcesContentBlock(
+              ProtoToWebSourcesContentBlock(
+                  block_proto.web_sources_content_block())));
+          break;
+        case sync_pb::AIChatContentBlock::CONTENT_NOT_SET:
+          // Variant not known by this client or not set
+          return nullptr;
+      }
+    }
+    tool_use->output = std::move(blocks);
+  }
+  if (!proto.artifacts().empty()) {
+    tool_use->artifacts = base::ToVector(proto.artifacts(), [](const auto& a) {
+      auto artifact = mojom::ToolArtifact::New();
+      artifact->type = a.type();
+      artifact->content_json =
+          ReadCompressibleString(a.content_json()).value_or(std::string());
+      return artifact;
+    });
+  }
+  return tool_use;
+}
+
+mojom::ConversationEntryEventPtr ProtoToEntryEvent(
+    const sync_pb::AIChatEntryEventProto& proto) {
+  switch (proto.event_case()) {
+    case sync_pb::AIChatEntryEventProto::kCompletion:
+      return mojom::ConversationEntryEvent::NewCompletionEvent(
+          mojom::CompletionEvent::New(ReadCompressibleString(proto.completion())
+                                          .value_or(std::string())));
+    case sync_pb::AIChatEntryEventProto::kSearchQueries:
+      return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
+          mojom::SearchQueriesEvent::New(
+              base::ToVector(proto.search_queries().queries())));
+    case sync_pb::AIChatEntryEventProto::kWebSources:
+      return mojom::ConversationEntryEvent::NewSourcesEvent(
+          mojom::WebSourcesEvent::New(
+              base::ToVector(proto.web_sources().sources(), &ProtoToWebSource),
+              ReadCompressibleStrings(proto.web_sources().rich_results())));
+    case sync_pb::AIChatEntryEventProto::kInlineSearch:
+      return mojom::ConversationEntryEvent::NewInlineSearchEvent(
+          mojom::InlineSearchEvent::New(
+              proto.inline_search().query(),
+              ReadCompressibleString(proto.inline_search().results_json())
+                  .value_or(std::string())));
+    case sync_pb::AIChatEntryEventProto::kToolUse:
+      return mojom::ConversationEntryEvent::NewToolUseEvent(
+          ProtoToToolUse(proto.tool_use()));
+    case sync_pb::AIChatEntryEventProto::EVENT_NOT_SET:
+      // Variant not known by this client or not set
+      return nullptr;
+  }
+}
+
+mojom::AssociatedContentPtr ProtoToAssociatedContent(
+    const sync_pb::AIChatAssociatedContentProto& proto,
+    const std::string& entry_uuid) {
+  auto content = mojom::AssociatedContent::New();
+  content->uuid = proto.uuid();
+  content->title = proto.title();
+  if (proto.has_url()) {
+    content->url = GURL(proto.url());
+  }
+  auto content_type =
+      mojo::ConvertIntToMojoEnum<mojom::ContentType>(proto.content_type());
+  if (!content_type) {
+    DVLOG(1) << "Rejecting associated content with unknown content_type "
+             << proto.content_type();
+    return nullptr;
+  }
+  content->content_type = content_type.value();
+  content->content_used_percentage = proto.content_used_percentage();
+  content->conversation_turn_uuid = entry_uuid;
+  return content;
+}
+
+mojom::UploadedFilePtr ProtoToUploadedFile(
+    const sync_pb::AIChatUploadedFile& proto) {
+  auto file = mojom::UploadedFile::New();
+  if (proto.has_filename()) {
+    file->filename = proto.filename();
+  }
+  file->filesize = proto.filesize();
+  auto type = mojo::ConvertIntToMojoEnum<mojom::UploadedFileType>(proto.type());
+  if (!type) {
+    DVLOG(1) << "Rejecting uploaded file with unknown type " << proto.type();
+    return nullptr;
+  }
+  file->type = type.value();
+  // Only populate bytes when the sender actually shipped them. When the sender
+  // omitted them (the oneof holds omitted_data_hash instead), leave |data|
+  // empty so the caller can restore any existing local bytes.
+  if (proto.has_data()) {
+    file->data = base::ToVector(base::as_byte_span(proto.data()));
+  }
+  file->extracted_text = ReadCompressibleString(proto.extracted_text());
+  return file;
+}
+
+// Populates |associated_content| from the entry's associated_content field
+// (each tagged with the entry UUID) and, when provided, |associated_content_
+// texts| with the last_contents value for each AC the sender included. An AC
+// with omitted last_contents is intentionally left out of the texts map so the
+// caller preserves any existing local text.
+bool ReadAssociatedContentFromEntry(
+    const sync_pb::AIChatConversationSpecifics_Entry& proto,
+    std::vector<mojom::AssociatedContentPtr>& associated_content,
+    base::flat_map<std::string, std::string>* associated_content_texts) {
+  for (const auto& content_proto : proto.associated_content()) {
+    mojom::AssociatedContentPtr content_item =
+        ProtoToAssociatedContent(content_proto, proto.uuid());
+    if (!content_item) {
+      // If the associated content failed to decode, reject the entire entry.
+      return false;
+    }
+    associated_content.push_back(std::move(content_item));
+    if (associated_content_texts && content_proto.has_last_contents()) {
+      if (auto value = ReadCompressibleString(content_proto.last_contents())) {
+        (*associated_content_texts)[content_proto.uuid()] = std::move(*value);
+      }
+    }
+  }
+  return true;
+}
+
+// --- Size-budget policy: which fields may be omitted, and in what order ---
+
+// One category of omittable field. A pass invokes |visit| for every
+// AIChatCompressibleString it covers; FitEntryWithinSyncBudget omits a whole
+// category at a time, and ForEachOmittableString runs every pass so that the
+// restore side sees the same fields.
+using OmissionPass = void (*)(sync_pb::AIChatConversationSpecifics_Entry*,
+                              CompressibleStringVisitor);
+
+void VisitEachString(google::protobuf::RepeatedPtrField<
+                         sync_pb::AIChatCompressibleString>* strings,
+                     CompressibleStringVisitor visit) {
+  std::ranges::for_each(*strings, visit);
+}
+
+void VisitEachPageContent(
+    google::protobuf::RepeatedPtrField<sync_pb::AIChatWebSource>* sources,
+    CompressibleStringVisitor visit) {
+  for (auto& source : *sources) {
+    if (source.has_page_content()) {
+      visit(*source.mutable_page_content());
+    }
+  }
+}
+
+// Invokes |visit| for each persisted content block in tool output. Web sources
+// and text both appear here as well as at the event level, so three passes
+// share this walk.
+void ForEachToolOutputBlock(
+    sync_pb::AIChatConversationSpecifics_Entry* entry,
+    base::FunctionRef<void(sync_pb::AIChatContentBlock&)> visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (!event.has_tool_use()) {
+      continue;
+    }
+    for (auto& block : *event.mutable_tool_use()->mutable_output()) {
+      visit(block);
+    }
+  }
+}
+
+void VisitAssociatedContentTexts(
+    sync_pb::AIChatConversationSpecifics_Entry* entry,
+    CompressibleStringVisitor visit) {
+  for (auto& content : *entry->mutable_associated_content()) {
+    if (content.has_last_contents()) {
+      visit(*content.mutable_last_contents());
+    }
+  }
+}
+
+void VisitUploadedFileTexts(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                            CompressibleStringVisitor visit) {
+  for (auto& file : *entry->mutable_uploaded_files()) {
+    if (file.has_extracted_text()) {
+      visit(*file.mutable_extracted_text());
+    }
+  }
+}
+
+void VisitInlineSearchResults(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                              CompressibleStringVisitor visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_inline_search() && event.inline_search().has_results_json()) {
+      visit(*event.mutable_inline_search()->mutable_results_json());
+    }
+  }
+}
+
+void VisitWebSourcePageContents(
+    sync_pb::AIChatConversationSpecifics_Entry* entry,
+    CompressibleStringVisitor visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_web_sources()) {
+      VisitEachPageContent(event.mutable_web_sources()->mutable_sources(),
+                           visit);
+    }
+  }
+  ForEachToolOutputBlock(entry, [visit](sync_pb::AIChatContentBlock& block) {
+    if (block.has_web_sources_content_block()) {
+      VisitEachPageContent(
+          block.mutable_web_sources_content_block()->mutable_sources(), visit);
+    }
+  });
+}
+
+void VisitToolOutputTexts(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                          CompressibleStringVisitor visit) {
+  ForEachToolOutputBlock(entry, [visit](sync_pb::AIChatContentBlock& block) {
+    if (block.has_text_content_block() &&
+        block.text_content_block().has_text()) {
+      visit(*block.mutable_text_content_block()->mutable_text());
+    }
+  });
+}
+
+void VisitToolArguments(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                        CompressibleStringVisitor visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_tool_use() && event.tool_use().has_arguments_json()) {
+      visit(*event.mutable_tool_use()->mutable_arguments_json());
+    }
+  }
+}
+
+void VisitWebSourceRichResults(
+    sync_pb::AIChatConversationSpecifics_Entry* entry,
+    CompressibleStringVisitor visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_web_sources()) {
+      VisitEachString(event.mutable_web_sources()->mutable_rich_results(),
+                      visit);
+    }
+  }
+  ForEachToolOutputBlock(entry, [visit](sync_pb::AIChatContentBlock& block) {
+    if (block.has_web_sources_content_block()) {
+      VisitEachString(
+          block.mutable_web_sources_content_block()->mutable_rich_results(),
+          visit);
+    }
+  });
+}
+
+void VisitToolArtifactContents(
+    sync_pb::AIChatConversationSpecifics_Entry* entry,
+    CompressibleStringVisitor visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (!event.has_tool_use()) {
+      continue;
+    }
+    for (auto& artifact : *event.mutable_tool_use()->mutable_artifacts()) {
+      if (artifact.has_content_json()) {
+        visit(*artifact.mutable_content_json());
+      }
+    }
+  }
+}
+
+void VisitCompletions(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                      CompressibleStringVisitor visit) {
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_completion()) {
+      visit(*event.mutable_completion());
+    }
+  }
+}
+
+// Every AIChatCompressibleString the size-budget policy may drop, in the order
+// it drops them. The order weighs what a field is worth as context for
+// continuing the conversation on another device against how much of the budget
+// it costs to carry. Most of it the model can do without or regenerate; what it
+// cannot replace is what the conversation actually said, so that goes last.
+// Adding a compressible field to the proto without listing it here means it can
+// never be omitted, and an entry that only that field makes oversized becomes
+// uncommittable.
+constexpr auto kOmissionPasses = std::to_array<OmissionPass>({
+    // Page text. Bulk context the replies already reflect, and the receiver
+    // still has the URL to re-derive it from.
+    &VisitAssociatedContentTexts,
+    // Text extracted from an attachment. Bulk context, same reasoning.
+    &VisitUploadedFileTexts,
+    // Raw inline-search JSON. Never reaches the model, and not read directly.
+    &VisitInlineSearchResults,
+    // Snippets fetched for cited pages. Costly, and the replies drew on them
+    // already.
+    &VisitWebSourcePageContents,
+    // Tool output the model worked from, likewise reflected in the replies.
+    &VisitToolOutputTexts,
+    // Tool call arguments. Small, and the model can produce them again.
+    &VisitToolArguments,
+    // Rich search result JSON. Costly, and only used to re-render results.
+    &VisitWebSourceRichResults,
+    // Artifact content. Never reaches the model, but the user opens these.
+    &VisitToolArtifactContents,
+    // The assistant's replies — the conversation itself, and the one thing
+    // nothing else can stand in for.
+    &VisitCompletions,
+});
+
+bool FitsWithinBudget(const sync_pb::AIChatConversationSpecifics_Entry& entry) {
+  return entry.ByteSizeLong() <= kSyncMaxRecordBytes;
+}
+
+}  // namespace
+
+void ForEachOmittableString(sync_pb::AIChatConversationSpecifics_Entry* entry,
+                            CompressibleStringVisitor visit) {
+  for (OmissionPass pass : kOmissionPasses) {
+    pass(entry, visit);
+  }
+}
+
+bool FitEntryWithinSyncBudget(
+    sync_pb::AIChatConversationSpecifics_Entry* entry) {
+  if (FitsWithinBudget(*entry)) {
+    return true;
+  }
+
+  // Uploaded file bytes go before any of kOmissionPasses. They are real
+  // context — without them the receiver cannot open the attachment at all —
+  // but one file can take most of the budget, and already-compressed image or
+  // PDF data will not shrink any further. Drop the biggest first and stop as
+  // soon as the entry fits, so one oversized attachment does not cost the
+  // small ones. Only the visit order is sorted; |uploaded_files| keeps its
+  // original order on the wire.
+  std::vector<sync_pb::AIChatUploadedFile*> files_by_size;
+  files_by_size.reserve(entry->uploaded_files_size());
+  for (auto& file : *entry->mutable_uploaded_files()) {
+    if (!file.data().empty()) {
+      files_by_size.push_back(&file);
+    }
+  }
+  std::ranges::sort(files_by_size, std::ranges::greater(),
+                    [](const sync_pb::AIChatUploadedFile* file) {
+                      return file->data().size();
+                    });
+  for (sync_pb::AIChatUploadedFile* file : files_by_size) {
+    if (FitsWithinBudget(*entry)) {
+      return true;
+    }
+    OmitUploadedFileData(file);
+  }
+
+  for (OmissionPass pass : kOmissionPasses) {
+    if (FitsWithinBudget(*entry)) {
+      return true;
+    }
+    pass(entry, [](sync_pb::AIChatCompressibleString& value) {
+      // Skip fields that are absent or that a previous pass already omitted;
+      // re-omitting would hash the empty string over the original hash. An
+      // explicitly-empty raw string is skipped too: ReadCompressibleString()
+      // reports that as a value rather than an omission, and replacing it with
+      // a hash would both lose that distinction and cost more bytes than the
+      // empty string it replaced.
+      if (value.has_gzipped() || (value.has_raw() && !value.raw().empty())) {
+        OmitCompressibleString(&value);
+      }
+    });
+  }
+
+  if (FitsWithinBudget(*entry)) {
+    return true;
+  }
+  // Nothing omittable is left, so the entry is over budget on fields that
+  // cannot be dropped (plain proto strings such as selected_text). Refuse the
+  // commit rather than sending a record the server will reject.
+  DLOG(ERROR) << "AI Chat entry " << entry->uuid()
+              << " exceeds the sync record budget after omitting every "
+                 "omittable field; refusing to commit. Size="
+              << entry->ByteSizeLong();
+  return false;
+}
+
+sync_pb::AIChatConversationSpecifics ConversationMetadataToSpecifics(
+    const mojom::Conversation& conversation) {
+  // Not synced: updated_time and has_content are inferred locally from the
+  // entries; temporary conversations are excluded from sync entirely;
+  // associated_content is carried by the per-entry records, not here.
+  sync_pb::AIChatConversationSpecifics specifics;
+  auto* meta = specifics.mutable_conversation();
+  meta->set_uuid(conversation.uuid);
+  meta->set_title(conversation.title);
+  if (conversation.model_key) {
+    meta->set_model_key(*conversation.model_key);
+  }
+  meta->set_total_tokens(conversation.total_tokens);
+  meta->set_trimmed_tokens(conversation.trimmed_tokens);
+  return specifics;
+}
+
+sync_pb::AIChatConversationSpecifics EntryToSpecifics(
+    const std::string& conversation_uuid,
+    const mojom::ConversationTurn& entry,
+    const std::vector<mojom::AssociatedContentPtr>& associated_content,
+    const base::flat_map<std::string, std::string>& associated_content_texts) {
+  sync_pb::AIChatConversationSpecifics specifics;
+  auto* entry_proto = specifics.mutable_entry();
+  entry_proto->set_conversation_uuid(conversation_uuid);
+
+  // A turn that has been edited keeps its original text in |entry.text| and
+  // stores each revision in |entry.edits|, with the most recent edit last.
+  // That most recent edit is what the UI displays (see the untrusted
+  // conversation UI, which renders `edits.at(-1)`), so it is the content we
+  // sync. We serialize that content but keep the ORIGINAL turn's identity
+  // (uuid + created_time) below, so the sync entity is stable across edits and
+  // keeps its position in the conversation. Edit history itself is not synced
+  // (only the latest revision); syncing the full edit/thread history is a
+  // planned follow-up.
+  const mojom::ConversationTurn& displayed =
+      (entry.edits && !entry.edits->empty()) ? *entry.edits->back() : entry;
+  WriteEntryFields(displayed, entry_proto);
+  // Identity always comes from the original turn, not the edit.
+  if (entry.uuid) {
+    entry_proto->set_uuid(*entry.uuid);
+  }
+  entry_proto->set_created_time_windows_epoch_micros(
+      entry.created_time.ToDeltaSinceWindowsEpoch().InMicroseconds());
+
+  // Filter associated content to items tied to this entry only. Associated
+  // content stays linked to the original turn's uuid even after an edit (the
+  // associated content manager records only the first turn a content appears
+  // with), so match on |entry.uuid|.
+  if (entry.uuid) {
+    for (const auto& content : associated_content) {
+      if (!content->conversation_turn_uuid ||
+          *content->conversation_turn_uuid != *entry.uuid) {
+        continue;
+      }
+      std::optional<std::string_view> text;
+      if (const std::string* found =
+              base::FindOrNull(associated_content_texts, content->uuid)) {
+        text = *found;
+      }
+      WriteAssociatedContent(*content, text,
+                             entry_proto->add_associated_content());
+    }
+  }
+
+  return specifics;
+}
+
+mojom::ConversationPtr SpecificsToConversationMetadata(
+    const sync_pb::AIChatConversationSpecifics& specifics) {
+  if (!specifics.has_conversation()) {
+    return nullptr;
+  }
+  const auto& meta = specifics.conversation();
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = meta.uuid();
+  conversation->title = meta.title();
+  if (meta.has_model_key()) {
+    conversation->model_key = meta.model_key();
+  }
+  conversation->total_tokens = meta.total_tokens();
+  conversation->trimmed_tokens = meta.trimmed_tokens();
+  conversation->has_content = true;
+  return conversation;
+}
+
+mojom::ConversationTurnPtr SpecificsToEntry(
+    const sync_pb::AIChatConversationSpecifics& specifics,
+    std::vector<mojom::AssociatedContentPtr>& associated_content,
+    base::flat_map<std::string, std::string>* associated_content_texts) {
+  if (!specifics.has_entry()) {
+    return nullptr;
+  }
+  const auto& proto = specifics.entry();
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = proto.uuid();
+  entry->created_time = base::Time::FromDeltaSinceWindowsEpoch(
+      base::Microseconds(proto.created_time_windows_epoch_micros()));
+  entry->text = proto.entry_text();
+  if (proto.has_prompt()) {
+    entry->prompt = proto.prompt();
+  }
+  auto character_type =
+      mojo::ConvertIntToMojoEnum<mojom::CharacterType>(proto.character_type());
+  if (!character_type) {
+    DVLOG(1) << "Rejecting entry with unknown character_type "
+             << proto.character_type();
+    return nullptr;
+  }
+  entry->character_type = character_type.value();
+  auto action_type =
+      mojo::ConvertIntToMojoEnum<mojom::ActionType>(proto.action_type());
+  if (!action_type) {
+    DVLOG(1) << "Rejecting entry with unknown action_type "
+             << proto.action_type();
+    return nullptr;
+  }
+  entry->action_type = action_type.value();
+
+  if (proto.has_selected_text()) {
+    entry->selected_text = proto.selected_text();
+  }
+  if (proto.has_model_key()) {
+    entry->model_key = proto.model_key();
+  }
+
+  if (!proto.events().empty()) {
+    std::vector<mojom::ConversationEntryEventPtr> events;
+    events.reserve(proto.events_size());
+    for (const auto& event_proto : proto.events()) {
+      auto event = ProtoToEntryEvent(event_proto);
+      if (!event) {
+        return nullptr;
+      }
+      events.push_back(std::move(event));
+    }
+    entry->events = std::move(events);
+  }
+
+  if (!ReadAssociatedContentFromEntry(proto, associated_content,
+                                      associated_content_texts)) {
+    return nullptr;
+  }
+
+  if (!proto.uploaded_files().empty()) {
+    entry->uploaded_files =
+        base::ToVector(proto.uploaded_files(), &ProtoToUploadedFile);
+    // If any are nullptr (failed to decode), reject the entire entry.
+    if (std::any_of(entry->uploaded_files->begin(),
+                    entry->uploaded_files->end(),
+                    [](const auto& file) { return !file; })) {
+      return nullptr;
+    }
+  }
+
+  if (proto.has_skill()) {
+    entry->skill = mojom::SkillEntry::New(proto.skill().shortcut(),
+                                          proto.skill().prompt());
+  }
+  if (proto.has_near_verification_status()) {
+    entry->near_verification_status = mojom::NEARVerificationStatus::New(
+        proto.near_verification_status().verified());
+  }
+  return entry;
+}
+
+std::unique_ptr<syncer::EntityData> CreateEntityDataFromSpecifics(
+    const sync_pb::AIChatConversationSpecifics& specifics) {
+  auto entity_data = std::make_unique<syncer::EntityData>();
+  *entity_data->specifics.mutable_ai_chat_conversation() = specifics;
+  if (specifics.has_conversation()) {
+    entity_data->name =
+        base::StrCat({"conversation:", specifics.conversation().uuid()});
+  } else if (specifics.has_entry()) {
+    entity_data->name = base::StrCat({"entry:", specifics.entry().uuid()});
+  }
+  return entity_data;
+}
+
+std::string GetStorageKeyFromSpecifics(
+    const sync_pb::AIChatConversationSpecifics& specifics) {
+  if (specifics.has_conversation()) {
+    return base::StrCat(
+        {kConversationStorageKeyPrefix, specifics.conversation().uuid()});
+  }
+  if (specifics.has_entry()) {
+    return base::StrCat({kEntryStorageKeyPrefix, specifics.entry().uuid()});
+  }
+  // Specifics with neither kind set are rejected by IsEntityDataValid before
+  // any storage-key/client-tag derivation runs.
+  NOTREACHED();
+}
+
+std::string GetClientTagFromSpecifics(
+    const sync_pb::AIChatConversationSpecifics& specifics) {
+  return GetStorageKeyFromSpecifics(specifics);
+}
+
+std::string GetStorageKeyFromEntitySpecifics(
+    const sync_pb::EntitySpecifics& specifics) {
+  return GetStorageKeyFromSpecifics(specifics.ai_chat_conversation());
+}
+
+}  // namespace ai_chat

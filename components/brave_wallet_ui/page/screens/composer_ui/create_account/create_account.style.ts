@@ -1,0 +1,33 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import styled from 'styled-components'
+
+// Shared Styles
+import { Text } from '../../../../components/shared/style'
+
+export const StyledWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  min-height: 200px;
+`
+
+export const Description = styled(Text)`
+  width: 80%;
+  margin-bottom: 20px;
+`
+
+export const ButtonRow = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+`

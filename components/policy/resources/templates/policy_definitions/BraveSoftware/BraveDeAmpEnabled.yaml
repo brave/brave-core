@@ -1,0 +1,34 @@
+caption: Control De-AMP feature to bypass Google-hosted AMP pages.
+default: null
+desc: |-
+  De-AMP allows Brave users to bypass Google-hosted AMP pages and instead visit the content's publisher directly. This protects users' privacy, security and internet experience by preventing tracking and profiling users through AMP.
+
+  If this policy is set to true, De-AMP will be enabled to redirect users away from AMP pages to the original publisher's content.
+
+  If this policy is set to false, De-AMP will be disabled and users may visit AMP pages as served by Google.
+
+  If this policy is left unset, De-AMP will be controlled by the user setting (enabled by default).
+
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Disable De-AMP feature
+  value: false
+- caption: Enable De-AMP feature
+  value: true
+- caption: Allow the user to decide (enabled by default)
+  value: null
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:140-
+- android:140-
+tags: []
+type: main

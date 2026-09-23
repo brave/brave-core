@@ -1,0 +1,13 @@
+diff --git a/chrome/app/android/chrome_main_delegate_android.h b/chrome/app/android/chrome_main_delegate_android.h
+index 3632cb7c50e26a205edb8bf6724ff0ae0adbbb41..57bceba519fa3889679b7a0f67f7d0142f80c1ff 100644
+--- a/chrome/app/android/chrome_main_delegate_android.h
++++ b/chrome/app/android/chrome_main_delegate_android.h
+@@ -14,7 +14,7 @@
+ #include "content/public/browser/browser_main_runner.h"
+ 
+ // Android override of ChromeMainDelegate
+-class ChromeMainDelegateAndroid : public ChromeMainDelegate {
++class ChromeMainDelegateAndroid : public BraveMainDelegate {
+  public:
+   ChromeMainDelegateAndroid();
+ 

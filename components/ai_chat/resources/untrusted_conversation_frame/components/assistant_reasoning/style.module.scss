@@ -1,0 +1,82 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.wrapper {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 100%;
+  gap: var(--leo-spacing-xl);
+  margin-bottom: var(--leo-spacing-xl);
+}
+
+.quote {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  padding: 0px;
+  gap: 12px;
+  width: 100%;
+}
+
+.reasoningRow {
+  display: flex;
+  flex-direction: row;
+  gap: var(--leo-spacing-m);
+  align-items: center;
+}
+
+.reasoningLabel {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+}
+
+.text::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--leo-color-divider-strong);
+  border-radius: 2px;
+}
+
+.text {
+  width: 100%;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  word-wrap: break-word;
+  position: relative;
+  padding-left: 18px;
+  letter-spacing: -0.1px;
+  color: var(--leo-color-text-secondary);
+  white-space: pre-line;
+  margin: 0px;
+}
+
+.icon {
+  --leo-icon-size: var(--leo-icon-s);
+  color: var(--leo-color-icon-default);
+}
+
+.progressRing {
+  --leo-progressring-size: var(--leo-icon-s);
+  --leo-progressring-color: var(--leo-color-icon-default);
+}
+
+.showHide {
+  font: var(--leo-font-small-regular);
+  text-decoration: underline;
+  color: var(--leo-color-text-tertiary);
+  border: none;
+  background: none;
+  cursor: pointer;
+  &:hover {
+    color: var(--leo-color-text-primary);
+  }
+}

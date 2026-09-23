@@ -1,0 +1,1089 @@
+#[non_exhaustive] pub enum bech32::DecodeError
+#[non_exhaustive] pub enum bech32::EncodeError
+#[non_exhaustive] pub enum bech32::EncodeIoError
+#[non_exhaustive] pub enum bech32::primitives::decode::CharError
+#[non_exhaustive] pub enum bech32::primitives::decode::CheckedHrpstringError
+#[non_exhaustive] pub enum bech32::primitives::decode::ChecksumError
+#[non_exhaustive] pub enum bech32::primitives::decode::PaddingError
+#[non_exhaustive] pub enum bech32::primitives::decode::SegwitHrpstringError
+#[non_exhaustive] pub enum bech32::primitives::decode::UncheckedHrpstringError
+#[non_exhaustive] pub enum bech32::primitives::gf32::FromCharError
+#[non_exhaustive] pub enum bech32::primitives::gf32::TryFromError
+#[non_exhaustive] pub enum bech32::primitives::hrp::Error
+#[non_exhaustive] pub enum bech32::primitives::segwit::WitnessLengthError
+#[non_exhaustive] pub enum bech32::segwit::EncodeError
+#[non_exhaustive] pub struct bech32::primitives::decode::CodeLengthError
+#[non_exhaustive] pub struct bech32::primitives::decode::SegwitCodeLengthError(pub usize)
+#[non_exhaustive] pub struct bech32::primitives::segwit::InvalidWitnessVersionError(pub bech32::primitives::gf32::Fe32)
+#[non_exhaustive] pub struct bech32::segwit::DecodeError(pub bech32::primitives::decode::SegwitHrpstringError)
+#[repr(transparent)] pub struct bech32::Fe32(_)
+#[repr(transparent)] pub struct bech32::primitives::gf32::Fe32(_)
+impl !core::panic::unwind_safe::RefUnwindSafe for bech32::EncodeIoError
+impl !core::panic::unwind_safe::UnwindSafe for bech32::EncodeIoError
+impl bech32::primitives::checksum::Checksum for bech32::primitives::Bech32
+impl bech32::primitives::checksum::Checksum for bech32::primitives::Bech32m
+impl bech32::primitives::checksum::Checksum for bech32::primitives::NoChecksum
+impl bech32::primitives::checksum::PackedFe32 for bech32::primitives::checksum::PackedNull
+impl bech32::primitives::checksum::PackedFe32 for u128
+impl bech32::primitives::checksum::PackedFe32 for u32
+impl bech32::primitives::checksum::PackedFe32 for u64
+impl bech32::primitives::gf32::Fe32
+impl bech32::primitives::hrp::Hrp
+impl core::clone::Clone for bech32::DecodeError
+impl core::clone::Clone for bech32::EncodeError
+impl core::clone::Clone for bech32::primitives::Bech32
+impl core::clone::Clone for bech32::primitives::Bech32m
+impl core::clone::Clone for bech32::primitives::NoChecksum
+impl core::clone::Clone for bech32::primitives::checksum::PackedNull
+impl core::clone::Clone for bech32::primitives::decode::CharError
+impl core::clone::Clone for bech32::primitives::decode::CheckedHrpstringError
+impl core::clone::Clone for bech32::primitives::decode::ChecksumError
+impl core::clone::Clone for bech32::primitives::decode::CodeLengthError
+impl core::clone::Clone for bech32::primitives::decode::PaddingError
+impl core::clone::Clone for bech32::primitives::decode::SegwitCodeLengthError
+impl core::clone::Clone for bech32::primitives::decode::SegwitHrpstringError
+impl core::clone::Clone for bech32::primitives::decode::UncheckedHrpstringError
+impl core::clone::Clone for bech32::primitives::gf32::Fe32
+impl core::clone::Clone for bech32::primitives::gf32::FromCharError
+impl core::clone::Clone for bech32::primitives::gf32::TryFromError
+impl core::clone::Clone for bech32::primitives::hrp::Error
+impl core::clone::Clone for bech32::primitives::hrp::Hrp
+impl core::clone::Clone for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::clone::Clone for bech32::primitives::segwit::WitnessLengthError
+impl core::clone::Clone for bech32::segwit::DecodeError
+impl core::clone::Clone for bech32::segwit::EncodeError
+impl core::cmp::Eq for bech32::DecodeError
+impl core::cmp::Eq for bech32::EncodeError
+impl core::cmp::Eq for bech32::primitives::Bech32
+impl core::cmp::Eq for bech32::primitives::Bech32m
+impl core::cmp::Eq for bech32::primitives::NoChecksum
+impl core::cmp::Eq for bech32::primitives::checksum::PackedNull
+impl core::cmp::Eq for bech32::primitives::decode::CharError
+impl core::cmp::Eq for bech32::primitives::decode::CheckedHrpstringError
+impl core::cmp::Eq for bech32::primitives::decode::ChecksumError
+impl core::cmp::Eq for bech32::primitives::decode::CodeLengthError
+impl core::cmp::Eq for bech32::primitives::decode::PaddingError
+impl core::cmp::Eq for bech32::primitives::decode::SegwitCodeLengthError
+impl core::cmp::Eq for bech32::primitives::decode::SegwitHrpstringError
+impl core::cmp::Eq for bech32::primitives::decode::UncheckedHrpstringError
+impl core::cmp::Eq for bech32::primitives::gf32::Fe32
+impl core::cmp::Eq for bech32::primitives::gf32::FromCharError
+impl core::cmp::Eq for bech32::primitives::gf32::TryFromError
+impl core::cmp::Eq for bech32::primitives::hrp::Error
+impl core::cmp::Eq for bech32::primitives::hrp::Hrp
+impl core::cmp::Eq for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::cmp::Eq for bech32::primitives::segwit::WitnessLengthError
+impl core::cmp::Eq for bech32::segwit::DecodeError
+impl core::cmp::Eq for bech32::segwit::EncodeError
+impl core::cmp::Ord for bech32::primitives::Bech32
+impl core::cmp::Ord for bech32::primitives::Bech32m
+impl core::cmp::Ord for bech32::primitives::NoChecksum
+impl core::cmp::Ord for bech32::primitives::hrp::Hrp
+impl core::cmp::PartialEq for bech32::DecodeError
+impl core::cmp::PartialEq for bech32::EncodeError
+impl core::cmp::PartialEq for bech32::primitives::Bech32
+impl core::cmp::PartialEq for bech32::primitives::Bech32m
+impl core::cmp::PartialEq for bech32::primitives::NoChecksum
+impl core::cmp::PartialEq for bech32::primitives::checksum::PackedNull
+impl core::cmp::PartialEq for bech32::primitives::decode::CharError
+impl core::cmp::PartialEq for bech32::primitives::decode::CheckedHrpstringError
+impl core::cmp::PartialEq for bech32::primitives::decode::ChecksumError
+impl core::cmp::PartialEq for bech32::primitives::decode::CodeLengthError
+impl core::cmp::PartialEq for bech32::primitives::decode::PaddingError
+impl core::cmp::PartialEq for bech32::primitives::decode::SegwitCodeLengthError
+impl core::cmp::PartialEq for bech32::primitives::decode::SegwitHrpstringError
+impl core::cmp::PartialEq for bech32::primitives::decode::UncheckedHrpstringError
+impl core::cmp::PartialEq for bech32::primitives::gf32::Fe32
+impl core::cmp::PartialEq for bech32::primitives::gf32::FromCharError
+impl core::cmp::PartialEq for bech32::primitives::gf32::TryFromError
+impl core::cmp::PartialEq for bech32::primitives::hrp::Error
+impl core::cmp::PartialEq for bech32::primitives::hrp::Hrp
+impl core::cmp::PartialEq for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::cmp::PartialEq for bech32::primitives::segwit::WitnessLengthError
+impl core::cmp::PartialEq for bech32::segwit::DecodeError
+impl core::cmp::PartialEq for bech32::segwit::EncodeError
+impl core::cmp::PartialOrd for bech32::primitives::Bech32
+impl core::cmp::PartialOrd for bech32::primitives::Bech32m
+impl core::cmp::PartialOrd for bech32::primitives::NoChecksum
+impl core::cmp::PartialOrd for bech32::primitives::hrp::Hrp
+impl core::convert::AsRef<u8> for bech32::primitives::gf32::Fe32
+impl core::convert::From<bech32::primitives::decode::CharError> for bech32::primitives::decode::UncheckedHrpstringError
+impl core::convert::From<bech32::primitives::decode::ChecksumError> for bech32::primitives::decode::CheckedHrpstringError
+impl core::convert::From<bech32::primitives::decode::ChecksumError> for bech32::primitives::decode::SegwitHrpstringError
+impl core::convert::From<bech32::primitives::decode::CodeLengthError> for bech32::EncodeError
+impl core::convert::From<bech32::primitives::decode::CodeLengthError> for bech32::EncodeIoError
+impl core::convert::From<bech32::primitives::decode::CodeLengthError> for bech32::primitives::decode::SegwitCodeLengthError
+impl core::convert::From<bech32::primitives::decode::PaddingError> for bech32::primitives::decode::SegwitHrpstringError
+impl core::convert::From<bech32::primitives::decode::SegwitCodeLengthError> for bech32::segwit::EncodeError
+impl core::convert::From<bech32::primitives::decode::SegwitHrpstringError> for bech32::segwit::DecodeError
+impl core::convert::From<bech32::primitives::decode::UncheckedHrpstringError> for bech32::DecodeError
+impl core::convert::From<bech32::primitives::decode::UncheckedHrpstringError> for bech32::primitives::decode::CheckedHrpstringError
+impl core::convert::From<bech32::primitives::decode::UncheckedHrpstringError> for bech32::primitives::decode::SegwitHrpstringError
+impl core::convert::From<bech32::primitives::gf32::Fe32> for u8
+impl core::convert::From<bech32::primitives::hrp::Error> for bech32::primitives::decode::UncheckedHrpstringError
+impl core::convert::From<bech32::primitives::segwit::InvalidWitnessVersionError> for bech32::segwit::EncodeError
+impl core::convert::From<bech32::primitives::segwit::WitnessLengthError> for bech32::primitives::decode::SegwitHrpstringError
+impl core::convert::From<bech32::primitives::segwit::WitnessLengthError> for bech32::segwit::EncodeError
+impl core::convert::From<core::convert::Infallible> for bech32::primitives::gf32::TryFromError
+impl core::convert::From<core::fmt::Error> for bech32::EncodeError
+impl core::convert::From<core::fmt::Error> for bech32::segwit::EncodeError
+impl core::convert::From<core::num::error::TryFromIntError> for bech32::primitives::gf32::TryFromError
+impl core::convert::From<std::io::error::Error> for bech32::EncodeIoError
+impl core::convert::TryFrom<i128> for bech32::primitives::gf32::Fe32
+impl core::convert::TryFrom<i16> for bech32::primitives::gf32::Fe32
+impl core::convert::TryFrom<i32> for bech32::primitives::gf32::Fe32
+impl core::convert::TryFrom<i64> for bech32::primitives::gf32::Fe32
+impl core::convert::TryFrom<i8> for bech32::primitives::gf32::Fe32
+impl core::convert::TryFrom<u128> for bech32::primitives::gf32::Fe32
+impl core::convert::TryFrom<u16> for bech32::primitives::gf32::Fe32
+impl core::convert::TryFrom<u32> for bech32::primitives::gf32::Fe32
+impl core::convert::TryFrom<u64> for bech32::primitives::gf32::Fe32
+impl core::convert::TryFrom<u8> for bech32::primitives::gf32::Fe32
+impl core::error::Error for bech32::DecodeError
+impl core::error::Error for bech32::EncodeError
+impl core::error::Error for bech32::EncodeIoError
+impl core::error::Error for bech32::primitives::decode::CharError
+impl core::error::Error for bech32::primitives::decode::CheckedHrpstringError
+impl core::error::Error for bech32::primitives::decode::ChecksumError
+impl core::error::Error for bech32::primitives::decode::CodeLengthError
+impl core::error::Error for bech32::primitives::decode::PaddingError
+impl core::error::Error for bech32::primitives::decode::SegwitCodeLengthError
+impl core::error::Error for bech32::primitives::decode::SegwitHrpstringError
+impl core::error::Error for bech32::primitives::decode::UncheckedHrpstringError
+impl core::error::Error for bech32::primitives::gf32::FromCharError
+impl core::error::Error for bech32::primitives::gf32::TryFromError
+impl core::error::Error for bech32::primitives::hrp::Error
+impl core::error::Error for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::error::Error for bech32::primitives::segwit::WitnessLengthError
+impl core::error::Error for bech32::segwit::DecodeError
+impl core::error::Error for bech32::segwit::EncodeError
+impl core::fmt::Debug for bech32::DecodeError
+impl core::fmt::Debug for bech32::EncodeError
+impl core::fmt::Debug for bech32::EncodeIoError
+impl core::fmt::Debug for bech32::primitives::checksum::PackedNull
+impl core::fmt::Debug for bech32::primitives::decode::CharError
+impl core::fmt::Debug for bech32::primitives::decode::CheckedHrpstringError
+impl core::fmt::Debug for bech32::primitives::decode::ChecksumError
+impl core::fmt::Debug for bech32::primitives::decode::CodeLengthError
+impl core::fmt::Debug for bech32::primitives::decode::PaddingError
+impl core::fmt::Debug for bech32::primitives::decode::SegwitCodeLengthError
+impl core::fmt::Debug for bech32::primitives::decode::SegwitHrpstringError
+impl core::fmt::Debug for bech32::primitives::decode::UncheckedHrpstringError
+impl core::fmt::Debug for bech32::primitives::gf32::Fe32
+impl core::fmt::Debug for bech32::primitives::gf32::FromCharError
+impl core::fmt::Debug for bech32::primitives::gf32::TryFromError
+impl core::fmt::Debug for bech32::primitives::hrp::Error
+impl core::fmt::Debug for bech32::primitives::hrp::Hrp
+impl core::fmt::Debug for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::fmt::Debug for bech32::primitives::segwit::WitnessLengthError
+impl core::fmt::Debug for bech32::segwit::DecodeError
+impl core::fmt::Debug for bech32::segwit::EncodeError
+impl core::fmt::Display for bech32::DecodeError
+impl core::fmt::Display for bech32::EncodeError
+impl core::fmt::Display for bech32::EncodeIoError
+impl core::fmt::Display for bech32::primitives::decode::CharError
+impl core::fmt::Display for bech32::primitives::decode::CheckedHrpstringError
+impl core::fmt::Display for bech32::primitives::decode::ChecksumError
+impl core::fmt::Display for bech32::primitives::decode::CodeLengthError
+impl core::fmt::Display for bech32::primitives::decode::PaddingError
+impl core::fmt::Display for bech32::primitives::decode::SegwitCodeLengthError
+impl core::fmt::Display for bech32::primitives::decode::SegwitHrpstringError
+impl core::fmt::Display for bech32::primitives::decode::UncheckedHrpstringError
+impl core::fmt::Display for bech32::primitives::gf32::Fe32
+impl core::fmt::Display for bech32::primitives::gf32::FromCharError
+impl core::fmt::Display for bech32::primitives::gf32::TryFromError
+impl core::fmt::Display for bech32::primitives::hrp::Error
+impl core::fmt::Display for bech32::primitives::hrp::Hrp
+impl core::fmt::Display for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::fmt::Display for bech32::primitives::segwit::WitnessLengthError
+impl core::fmt::Display for bech32::segwit::DecodeError
+impl core::fmt::Display for bech32::segwit::EncodeError
+impl core::hash::Hash for bech32::primitives::Bech32
+impl core::hash::Hash for bech32::primitives::Bech32m
+impl core::hash::Hash for bech32::primitives::NoChecksum
+impl core::hash::Hash for bech32::primitives::gf32::Fe32
+impl core::hash::Hash for bech32::primitives::hrp::Hrp
+impl core::marker::Copy for bech32::primitives::Bech32
+impl core::marker::Copy for bech32::primitives::Bech32m
+impl core::marker::Copy for bech32::primitives::NoChecksum
+impl core::marker::Copy for bech32::primitives::checksum::PackedNull
+impl core::marker::Copy for bech32::primitives::gf32::Fe32
+impl core::marker::Copy for bech32::primitives::gf32::FromCharError
+impl core::marker::Copy for bech32::primitives::gf32::TryFromError
+impl core::marker::Copy for bech32::primitives::hrp::Hrp
+impl core::marker::Freeze for bech32::DecodeError
+impl core::marker::Freeze for bech32::EncodeError
+impl core::marker::Freeze for bech32::EncodeIoError
+impl core::marker::Freeze for bech32::primitives::Bech32
+impl core::marker::Freeze for bech32::primitives::Bech32m
+impl core::marker::Freeze for bech32::primitives::NoChecksum
+impl core::marker::Freeze for bech32::primitives::checksum::PackedNull
+impl core::marker::Freeze for bech32::primitives::decode::CharError
+impl core::marker::Freeze for bech32::primitives::decode::CheckedHrpstringError
+impl core::marker::Freeze for bech32::primitives::decode::ChecksumError
+impl core::marker::Freeze for bech32::primitives::decode::CodeLengthError
+impl core::marker::Freeze for bech32::primitives::decode::PaddingError
+impl core::marker::Freeze for bech32::primitives::decode::SegwitCodeLengthError
+impl core::marker::Freeze for bech32::primitives::decode::SegwitHrpstringError
+impl core::marker::Freeze for bech32::primitives::decode::UncheckedHrpstringError
+impl core::marker::Freeze for bech32::primitives::gf32::Fe32
+impl core::marker::Freeze for bech32::primitives::gf32::FromCharError
+impl core::marker::Freeze for bech32::primitives::gf32::TryFromError
+impl core::marker::Freeze for bech32::primitives::hrp::Error
+impl core::marker::Freeze for bech32::primitives::hrp::Hrp
+impl core::marker::Freeze for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::marker::Freeze for bech32::primitives::segwit::WitnessLengthError
+impl core::marker::Freeze for bech32::segwit::DecodeError
+impl core::marker::Freeze for bech32::segwit::EncodeError
+impl core::marker::Send for bech32::DecodeError
+impl core::marker::Send for bech32::EncodeError
+impl core::marker::Send for bech32::EncodeIoError
+impl core::marker::Send for bech32::primitives::Bech32
+impl core::marker::Send for bech32::primitives::Bech32m
+impl core::marker::Send for bech32::primitives::NoChecksum
+impl core::marker::Send for bech32::primitives::checksum::PackedNull
+impl core::marker::Send for bech32::primitives::decode::CharError
+impl core::marker::Send for bech32::primitives::decode::CheckedHrpstringError
+impl core::marker::Send for bech32::primitives::decode::ChecksumError
+impl core::marker::Send for bech32::primitives::decode::CodeLengthError
+impl core::marker::Send for bech32::primitives::decode::PaddingError
+impl core::marker::Send for bech32::primitives::decode::SegwitCodeLengthError
+impl core::marker::Send for bech32::primitives::decode::SegwitHrpstringError
+impl core::marker::Send for bech32::primitives::decode::UncheckedHrpstringError
+impl core::marker::Send for bech32::primitives::gf32::Fe32
+impl core::marker::Send for bech32::primitives::gf32::FromCharError
+impl core::marker::Send for bech32::primitives::gf32::TryFromError
+impl core::marker::Send for bech32::primitives::hrp::Error
+impl core::marker::Send for bech32::primitives::hrp::Hrp
+impl core::marker::Send for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::marker::Send for bech32::primitives::segwit::WitnessLengthError
+impl core::marker::Send for bech32::segwit::DecodeError
+impl core::marker::Send for bech32::segwit::EncodeError
+impl core::marker::StructuralPartialEq for bech32::DecodeError
+impl core::marker::StructuralPartialEq for bech32::EncodeError
+impl core::marker::StructuralPartialEq for bech32::primitives::Bech32
+impl core::marker::StructuralPartialEq for bech32::primitives::Bech32m
+impl core::marker::StructuralPartialEq for bech32::primitives::NoChecksum
+impl core::marker::StructuralPartialEq for bech32::primitives::checksum::PackedNull
+impl core::marker::StructuralPartialEq for bech32::primitives::decode::CharError
+impl core::marker::StructuralPartialEq for bech32::primitives::decode::CheckedHrpstringError
+impl core::marker::StructuralPartialEq for bech32::primitives::decode::ChecksumError
+impl core::marker::StructuralPartialEq for bech32::primitives::decode::CodeLengthError
+impl core::marker::StructuralPartialEq for bech32::primitives::decode::PaddingError
+impl core::marker::StructuralPartialEq for bech32::primitives::decode::SegwitCodeLengthError
+impl core::marker::StructuralPartialEq for bech32::primitives::decode::SegwitHrpstringError
+impl core::marker::StructuralPartialEq for bech32::primitives::decode::UncheckedHrpstringError
+impl core::marker::StructuralPartialEq for bech32::primitives::gf32::Fe32
+impl core::marker::StructuralPartialEq for bech32::primitives::gf32::FromCharError
+impl core::marker::StructuralPartialEq for bech32::primitives::gf32::TryFromError
+impl core::marker::StructuralPartialEq for bech32::primitives::hrp::Error
+impl core::marker::StructuralPartialEq for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::marker::StructuralPartialEq for bech32::primitives::segwit::WitnessLengthError
+impl core::marker::StructuralPartialEq for bech32::segwit::DecodeError
+impl core::marker::StructuralPartialEq for bech32::segwit::EncodeError
+impl core::marker::Sync for bech32::DecodeError
+impl core::marker::Sync for bech32::EncodeError
+impl core::marker::Sync for bech32::EncodeIoError
+impl core::marker::Sync for bech32::primitives::Bech32
+impl core::marker::Sync for bech32::primitives::Bech32m
+impl core::marker::Sync for bech32::primitives::NoChecksum
+impl core::marker::Sync for bech32::primitives::checksum::PackedNull
+impl core::marker::Sync for bech32::primitives::decode::CharError
+impl core::marker::Sync for bech32::primitives::decode::CheckedHrpstringError
+impl core::marker::Sync for bech32::primitives::decode::ChecksumError
+impl core::marker::Sync for bech32::primitives::decode::CodeLengthError
+impl core::marker::Sync for bech32::primitives::decode::PaddingError
+impl core::marker::Sync for bech32::primitives::decode::SegwitCodeLengthError
+impl core::marker::Sync for bech32::primitives::decode::SegwitHrpstringError
+impl core::marker::Sync for bech32::primitives::decode::UncheckedHrpstringError
+impl core::marker::Sync for bech32::primitives::gf32::Fe32
+impl core::marker::Sync for bech32::primitives::gf32::FromCharError
+impl core::marker::Sync for bech32::primitives::gf32::TryFromError
+impl core::marker::Sync for bech32::primitives::hrp::Error
+impl core::marker::Sync for bech32::primitives::hrp::Hrp
+impl core::marker::Sync for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::marker::Sync for bech32::primitives::segwit::WitnessLengthError
+impl core::marker::Sync for bech32::segwit::DecodeError
+impl core::marker::Sync for bech32::segwit::EncodeError
+impl core::marker::Unpin for bech32::DecodeError
+impl core::marker::Unpin for bech32::EncodeError
+impl core::marker::Unpin for bech32::EncodeIoError
+impl core::marker::Unpin for bech32::primitives::Bech32
+impl core::marker::Unpin for bech32::primitives::Bech32m
+impl core::marker::Unpin for bech32::primitives::NoChecksum
+impl core::marker::Unpin for bech32::primitives::checksum::PackedNull
+impl core::marker::Unpin for bech32::primitives::decode::CharError
+impl core::marker::Unpin for bech32::primitives::decode::CheckedHrpstringError
+impl core::marker::Unpin for bech32::primitives::decode::ChecksumError
+impl core::marker::Unpin for bech32::primitives::decode::CodeLengthError
+impl core::marker::Unpin for bech32::primitives::decode::PaddingError
+impl core::marker::Unpin for bech32::primitives::decode::SegwitCodeLengthError
+impl core::marker::Unpin for bech32::primitives::decode::SegwitHrpstringError
+impl core::marker::Unpin for bech32::primitives::decode::UncheckedHrpstringError
+impl core::marker::Unpin for bech32::primitives::gf32::Fe32
+impl core::marker::Unpin for bech32::primitives::gf32::FromCharError
+impl core::marker::Unpin for bech32::primitives::gf32::TryFromError
+impl core::marker::Unpin for bech32::primitives::hrp::Error
+impl core::marker::Unpin for bech32::primitives::hrp::Hrp
+impl core::marker::Unpin for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::marker::Unpin for bech32::primitives::segwit::WitnessLengthError
+impl core::marker::Unpin for bech32::segwit::DecodeError
+impl core::marker::Unpin for bech32::segwit::EncodeError
+impl core::ops::arith::Add for bech32::primitives::gf32::Fe32
+impl core::ops::arith::Add<&bech32::primitives::gf32::Fe32> for &bech32::primitives::gf32::Fe32
+impl core::ops::arith::Add<&bech32::primitives::gf32::Fe32> for bech32::primitives::gf32::Fe32
+impl core::ops::arith::Add<bech32::primitives::gf32::Fe32> for &bech32::primitives::gf32::Fe32
+impl core::ops::arith::AddAssign for bech32::primitives::gf32::Fe32
+impl core::ops::arith::Div for bech32::primitives::gf32::Fe32
+impl core::ops::arith::Div<&bech32::primitives::gf32::Fe32> for &bech32::primitives::gf32::Fe32
+impl core::ops::arith::Div<&bech32::primitives::gf32::Fe32> for bech32::primitives::gf32::Fe32
+impl core::ops::arith::Div<bech32::primitives::gf32::Fe32> for &bech32::primitives::gf32::Fe32
+impl core::ops::arith::DivAssign for bech32::primitives::gf32::Fe32
+impl core::ops::arith::Mul for bech32::primitives::gf32::Fe32
+impl core::ops::arith::Mul<&bech32::primitives::gf32::Fe32> for &bech32::primitives::gf32::Fe32
+impl core::ops::arith::Mul<&bech32::primitives::gf32::Fe32> for bech32::primitives::gf32::Fe32
+impl core::ops::arith::Mul<bech32::primitives::gf32::Fe32> for &bech32::primitives::gf32::Fe32
+impl core::ops::arith::MulAssign for bech32::primitives::gf32::Fe32
+impl core::ops::arith::Sub for bech32::primitives::gf32::Fe32
+impl core::ops::arith::Sub<&bech32::primitives::gf32::Fe32> for &bech32::primitives::gf32::Fe32
+impl core::ops::arith::Sub<&bech32::primitives::gf32::Fe32> for bech32::primitives::gf32::Fe32
+impl core::ops::arith::Sub<bech32::primitives::gf32::Fe32> for &bech32::primitives::gf32::Fe32
+impl core::ops::arith::SubAssign for bech32::primitives::gf32::Fe32
+impl core::ops::bit::BitXor for bech32::primitives::checksum::PackedNull
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::DecodeError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::EncodeError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::Bech32
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::Bech32m
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::NoChecksum
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::checksum::PackedNull
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::CharError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::CheckedHrpstringError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::ChecksumError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::CodeLengthError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::PaddingError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::SegwitCodeLengthError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::SegwitHrpstringError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::UncheckedHrpstringError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::gf32::Fe32
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::gf32::FromCharError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::gf32::TryFromError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::hrp::Error
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::hrp::Hrp
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::segwit::WitnessLengthError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::segwit::DecodeError
+impl core::panic::unwind_safe::RefUnwindSafe for bech32::segwit::EncodeError
+impl core::panic::unwind_safe::UnwindSafe for bech32::DecodeError
+impl core::panic::unwind_safe::UnwindSafe for bech32::EncodeError
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::Bech32
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::Bech32m
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::NoChecksum
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::checksum::PackedNull
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::CharError
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::CheckedHrpstringError
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::ChecksumError
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::CodeLengthError
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::PaddingError
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::SegwitCodeLengthError
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::SegwitHrpstringError
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::UncheckedHrpstringError
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::gf32::Fe32
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::gf32::FromCharError
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::gf32::TryFromError
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::hrp::Error
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::hrp::Hrp
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::segwit::InvalidWitnessVersionError
+impl core::panic::unwind_safe::UnwindSafe for bech32::primitives::segwit::WitnessLengthError
+impl core::panic::unwind_safe::UnwindSafe for bech32::segwit::DecodeError
+impl core::panic::unwind_safe::UnwindSafe for bech32::segwit::EncodeError
+impl<'a, I, Ck> core::iter::traits::iterator::Iterator for bech32::primitives::encode::ByteIter<'a, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+impl<'a, I, Ck> core::iter::traits::iterator::Iterator for bech32::primitives::encode::CharIter<'a, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+impl<'b> core::iter::traits::double_ended::DoubleEndedIterator for bech32::primitives::hrp::ByteIter<'b>
+impl<'b> core::iter::traits::double_ended::DoubleEndedIterator for bech32::primitives::hrp::CharIter<'b>
+impl<'b> core::iter::traits::double_ended::DoubleEndedIterator for bech32::primitives::hrp::LowercaseByteIter<'b>
+impl<'b> core::iter::traits::double_ended::DoubleEndedIterator for bech32::primitives::hrp::LowercaseCharIter<'b>
+impl<'b> core::iter::traits::exact_size::ExactSizeIterator for bech32::primitives::hrp::ByteIter<'b>
+impl<'b> core::iter::traits::exact_size::ExactSizeIterator for bech32::primitives::hrp::CharIter<'b>
+impl<'b> core::iter::traits::exact_size::ExactSizeIterator for bech32::primitives::hrp::LowercaseByteIter<'b>
+impl<'b> core::iter::traits::exact_size::ExactSizeIterator for bech32::primitives::hrp::LowercaseCharIter<'b>
+impl<'b> core::iter::traits::iterator::Iterator for bech32::primitives::hrp::ByteIter<'b>
+impl<'b> core::iter::traits::iterator::Iterator for bech32::primitives::hrp::CharIter<'b>
+impl<'b> core::iter::traits::iterator::Iterator for bech32::primitives::hrp::LowercaseByteIter<'b>
+impl<'b> core::iter::traits::iterator::Iterator for bech32::primitives::hrp::LowercaseCharIter<'b>
+impl<'b> core::iter::traits::marker::FusedIterator for bech32::primitives::hrp::ByteIter<'b>
+impl<'b> core::iter::traits::marker::FusedIterator for bech32::primitives::hrp::CharIter<'b>
+impl<'b> core::iter::traits::marker::FusedIterator for bech32::primitives::hrp::LowercaseByteIter<'b>
+impl<'b> core::iter::traits::marker::FusedIterator for bech32::primitives::hrp::LowercaseCharIter<'b>
+impl<'b> core::marker::Freeze for bech32::primitives::hrp::ByteIter<'b>
+impl<'b> core::marker::Freeze for bech32::primitives::hrp::CharIter<'b>
+impl<'b> core::marker::Freeze for bech32::primitives::hrp::LowercaseByteIter<'b>
+impl<'b> core::marker::Freeze for bech32::primitives::hrp::LowercaseCharIter<'b>
+impl<'b> core::marker::Send for bech32::primitives::hrp::ByteIter<'b>
+impl<'b> core::marker::Send for bech32::primitives::hrp::CharIter<'b>
+impl<'b> core::marker::Send for bech32::primitives::hrp::LowercaseByteIter<'b>
+impl<'b> core::marker::Send for bech32::primitives::hrp::LowercaseCharIter<'b>
+impl<'b> core::marker::Sync for bech32::primitives::hrp::ByteIter<'b>
+impl<'b> core::marker::Sync for bech32::primitives::hrp::CharIter<'b>
+impl<'b> core::marker::Sync for bech32::primitives::hrp::LowercaseByteIter<'b>
+impl<'b> core::marker::Sync for bech32::primitives::hrp::LowercaseCharIter<'b>
+impl<'b> core::marker::Unpin for bech32::primitives::hrp::ByteIter<'b>
+impl<'b> core::marker::Unpin for bech32::primitives::hrp::CharIter<'b>
+impl<'b> core::marker::Unpin for bech32::primitives::hrp::LowercaseByteIter<'b>
+impl<'b> core::marker::Unpin for bech32::primitives::hrp::LowercaseCharIter<'b>
+impl<'b> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::hrp::ByteIter<'b>
+impl<'b> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::hrp::CharIter<'b>
+impl<'b> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::hrp::LowercaseByteIter<'b>
+impl<'b> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::hrp::LowercaseCharIter<'b>
+impl<'b> core::panic::unwind_safe::UnwindSafe for bech32::primitives::hrp::ByteIter<'b>
+impl<'b> core::panic::unwind_safe::UnwindSafe for bech32::primitives::hrp::CharIter<'b>
+impl<'b> core::panic::unwind_safe::UnwindSafe for bech32::primitives::hrp::LowercaseByteIter<'b>
+impl<'b> core::panic::unwind_safe::UnwindSafe for bech32::primitives::hrp::LowercaseCharIter<'b>
+impl<'hrp, I, Ck> bech32::primitives::encode::ByteIter<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+impl<'hrp, I, Ck> bech32::primitives::encode::CharIter<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+impl<'hrp, I, Ck> bech32::primitives::encode::Encoder<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+impl<'hrp, I, Ck> bech32::primitives::encode::Fe32Iter<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+impl<'hrp, I, Ck> core::clone::Clone for bech32::primitives::encode::Encoder<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32> + core::clone::Clone, Ck: bech32::primitives::checksum::Checksum + core::clone::Clone
+impl<'hrp, I, Ck> core::cmp::Eq for bech32::primitives::encode::Encoder<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32> + core::cmp::Eq, Ck: bech32::primitives::checksum::Checksum + core::cmp::Eq
+impl<'hrp, I, Ck> core::cmp::PartialEq for bech32::primitives::encode::Encoder<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32> + core::cmp::PartialEq, Ck: bech32::primitives::checksum::Checksum + core::cmp::PartialEq
+impl<'hrp, I, Ck> core::iter::traits::iterator::Iterator for bech32::primitives::encode::Fe32Iter<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+impl<'hrp, I, Ck> core::marker::Freeze for bech32::primitives::encode::ByteIter<'hrp, I, Ck> where I: core::marker::Freeze, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Freeze
+impl<'hrp, I, Ck> core::marker::Freeze for bech32::primitives::encode::CharIter<'hrp, I, Ck> where I: core::marker::Freeze, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Freeze
+impl<'hrp, I, Ck> core::marker::Freeze for bech32::primitives::encode::Encoder<'hrp, I, Ck> where I: core::marker::Freeze
+impl<'hrp, I, Ck> core::marker::Freeze for bech32::primitives::encode::Fe32Iter<'hrp, I, Ck> where I: core::marker::Freeze, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Freeze
+impl<'hrp, I, Ck> core::marker::Send for bech32::primitives::encode::ByteIter<'hrp, I, Ck> where I: core::marker::Send, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Send
+impl<'hrp, I, Ck> core::marker::Send for bech32::primitives::encode::CharIter<'hrp, I, Ck> where I: core::marker::Send, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Send
+impl<'hrp, I, Ck> core::marker::Send for bech32::primitives::encode::Encoder<'hrp, I, Ck> where I: core::marker::Send, Ck: core::marker::Send
+impl<'hrp, I, Ck> core::marker::Send for bech32::primitives::encode::Fe32Iter<'hrp, I, Ck> where I: core::marker::Send, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Send
+impl<'hrp, I, Ck> core::marker::StructuralPartialEq for bech32::primitives::encode::Encoder<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+impl<'hrp, I, Ck> core::marker::Sync for bech32::primitives::encode::ByteIter<'hrp, I, Ck> where I: core::marker::Sync, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Sync
+impl<'hrp, I, Ck> core::marker::Sync for bech32::primitives::encode::CharIter<'hrp, I, Ck> where I: core::marker::Sync, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Sync
+impl<'hrp, I, Ck> core::marker::Sync for bech32::primitives::encode::Encoder<'hrp, I, Ck> where I: core::marker::Sync, Ck: core::marker::Sync
+impl<'hrp, I, Ck> core::marker::Sync for bech32::primitives::encode::Fe32Iter<'hrp, I, Ck> where I: core::marker::Sync, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Sync
+impl<'hrp, I, Ck> core::marker::Unpin for bech32::primitives::encode::ByteIter<'hrp, I, Ck> where I: core::marker::Unpin, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Unpin
+impl<'hrp, I, Ck> core::marker::Unpin for bech32::primitives::encode::CharIter<'hrp, I, Ck> where I: core::marker::Unpin, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Unpin
+impl<'hrp, I, Ck> core::marker::Unpin for bech32::primitives::encode::Encoder<'hrp, I, Ck> where I: core::marker::Unpin, Ck: core::marker::Unpin
+impl<'hrp, I, Ck> core::marker::Unpin for bech32::primitives::encode::Fe32Iter<'hrp, I, Ck> where I: core::marker::Unpin, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Unpin
+impl<'hrp, I, Ck> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::encode::ByteIter<'hrp, I, Ck> where I: core::panic::unwind_safe::RefUnwindSafe, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::panic::unwind_safe::RefUnwindSafe
+impl<'hrp, I, Ck> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::encode::CharIter<'hrp, I, Ck> where I: core::panic::unwind_safe::RefUnwindSafe, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::panic::unwind_safe::RefUnwindSafe
+impl<'hrp, I, Ck> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::encode::Encoder<'hrp, I, Ck> where I: core::panic::unwind_safe::RefUnwindSafe, Ck: core::panic::unwind_safe::RefUnwindSafe
+impl<'hrp, I, Ck> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::encode::Fe32Iter<'hrp, I, Ck> where I: core::panic::unwind_safe::RefUnwindSafe, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::panic::unwind_safe::RefUnwindSafe
+impl<'hrp, I, Ck> core::panic::unwind_safe::UnwindSafe for bech32::primitives::encode::ByteIter<'hrp, I, Ck> where I: core::panic::unwind_safe::UnwindSafe, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::panic::unwind_safe::UnwindSafe
+impl<'hrp, I, Ck> core::panic::unwind_safe::UnwindSafe for bech32::primitives::encode::CharIter<'hrp, I, Ck> where I: core::panic::unwind_safe::UnwindSafe, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::panic::unwind_safe::UnwindSafe
+impl<'hrp, I, Ck> core::panic::unwind_safe::UnwindSafe for bech32::primitives::encode::Encoder<'hrp, I, Ck> where I: core::panic::unwind_safe::UnwindSafe, Ck: core::panic::unwind_safe::UnwindSafe
+impl<'hrp, I, Ck> core::panic::unwind_safe::UnwindSafe for bech32::primitives::encode::Fe32Iter<'hrp, I, Ck> where I: core::panic::unwind_safe::UnwindSafe, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::panic::unwind_safe::UnwindSafe
+impl<'hrp> bech32::primitives::checksum::HrpFe32Iter<'hrp>
+impl<'hrp> core::iter::traits::iterator::Iterator for bech32::primitives::checksum::HrpFe32Iter<'hrp>
+impl<'hrp> core::marker::Freeze for bech32::primitives::checksum::HrpFe32Iter<'hrp>
+impl<'hrp> core::marker::Send for bech32::primitives::checksum::HrpFe32Iter<'hrp>
+impl<'hrp> core::marker::Sync for bech32::primitives::checksum::HrpFe32Iter<'hrp>
+impl<'hrp> core::marker::Unpin for bech32::primitives::checksum::HrpFe32Iter<'hrp>
+impl<'hrp> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::checksum::HrpFe32Iter<'hrp>
+impl<'hrp> core::panic::unwind_safe::UnwindSafe for bech32::primitives::checksum::HrpFe32Iter<'hrp>
+impl<'s> bech32::primitives::decode::CheckedHrpstring<'s>
+impl<'s> bech32::primitives::decode::SegwitHrpstring<'s>
+impl<'s> bech32::primitives::decode::UncheckedHrpstring<'s>
+impl<'s> core::fmt::Debug for bech32::primitives::decode::CheckedHrpstring<'s>
+impl<'s> core::fmt::Debug for bech32::primitives::decode::SegwitHrpstring<'s>
+impl<'s> core::fmt::Debug for bech32::primitives::decode::UncheckedHrpstring<'s>
+impl<'s> core::iter::traits::exact_size::ExactSizeIterator for bech32::primitives::decode::AsciiToFe32Iter<'s>
+impl<'s> core::iter::traits::exact_size::ExactSizeIterator for bech32::primitives::decode::ByteIter<'s>
+impl<'s> core::iter::traits::iterator::Iterator for bech32::primitives::decode::AsciiToFe32Iter<'s>
+impl<'s> core::iter::traits::iterator::Iterator for bech32::primitives::decode::ByteIter<'s>
+impl<'s> core::iter::traits::iterator::Iterator for bech32::primitives::decode::Fe32Iter<'s>
+impl<'s> core::marker::Freeze for bech32::primitives::decode::AsciiToFe32Iter<'s>
+impl<'s> core::marker::Freeze for bech32::primitives::decode::ByteIter<'s>
+impl<'s> core::marker::Freeze for bech32::primitives::decode::CheckedHrpstring<'s>
+impl<'s> core::marker::Freeze for bech32::primitives::decode::Fe32Iter<'s>
+impl<'s> core::marker::Freeze for bech32::primitives::decode::SegwitHrpstring<'s>
+impl<'s> core::marker::Freeze for bech32::primitives::decode::UncheckedHrpstring<'s>
+impl<'s> core::marker::Send for bech32::primitives::decode::AsciiToFe32Iter<'s>
+impl<'s> core::marker::Send for bech32::primitives::decode::ByteIter<'s>
+impl<'s> core::marker::Send for bech32::primitives::decode::CheckedHrpstring<'s>
+impl<'s> core::marker::Send for bech32::primitives::decode::Fe32Iter<'s>
+impl<'s> core::marker::Send for bech32::primitives::decode::SegwitHrpstring<'s>
+impl<'s> core::marker::Send for bech32::primitives::decode::UncheckedHrpstring<'s>
+impl<'s> core::marker::Sync for bech32::primitives::decode::AsciiToFe32Iter<'s>
+impl<'s> core::marker::Sync for bech32::primitives::decode::ByteIter<'s>
+impl<'s> core::marker::Sync for bech32::primitives::decode::CheckedHrpstring<'s>
+impl<'s> core::marker::Sync for bech32::primitives::decode::Fe32Iter<'s>
+impl<'s> core::marker::Sync for bech32::primitives::decode::SegwitHrpstring<'s>
+impl<'s> core::marker::Sync for bech32::primitives::decode::UncheckedHrpstring<'s>
+impl<'s> core::marker::Unpin for bech32::primitives::decode::AsciiToFe32Iter<'s>
+impl<'s> core::marker::Unpin for bech32::primitives::decode::ByteIter<'s>
+impl<'s> core::marker::Unpin for bech32::primitives::decode::CheckedHrpstring<'s>
+impl<'s> core::marker::Unpin for bech32::primitives::decode::Fe32Iter<'s>
+impl<'s> core::marker::Unpin for bech32::primitives::decode::SegwitHrpstring<'s>
+impl<'s> core::marker::Unpin for bech32::primitives::decode::UncheckedHrpstring<'s>
+impl<'s> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::AsciiToFe32Iter<'s>
+impl<'s> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::ByteIter<'s>
+impl<'s> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::CheckedHrpstring<'s>
+impl<'s> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::Fe32Iter<'s>
+impl<'s> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::SegwitHrpstring<'s>
+impl<'s> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::decode::UncheckedHrpstring<'s>
+impl<'s> core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::AsciiToFe32Iter<'s>
+impl<'s> core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::ByteIter<'s>
+impl<'s> core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::CheckedHrpstring<'s>
+impl<'s> core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::Fe32Iter<'s>
+impl<'s> core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::SegwitHrpstring<'s>
+impl<'s> core::panic::unwind_safe::UnwindSafe for bech32::primitives::decode::UncheckedHrpstring<'s>
+impl<Ck: bech32::primitives::checksum::Checksum> bech32::primitives::checksum::Engine<Ck>
+impl<Ck: bech32::primitives::checksum::Checksum> core::default::Default for bech32::primitives::checksum::Engine<Ck>
+impl<Ck: bech32::primitives::checksum::Checksum> core::marker::StructuralPartialEq for bech32::primitives::checksum::Engine<Ck>
+impl<Ck: core::clone::Clone + bech32::primitives::checksum::Checksum> core::clone::Clone for bech32::primitives::checksum::Engine<Ck> where <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::clone::Clone
+impl<Ck: core::cmp::Eq + bech32::primitives::checksum::Checksum> core::cmp::Eq for bech32::primitives::checksum::Engine<Ck> where <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::cmp::Eq
+impl<Ck: core::cmp::PartialEq + bech32::primitives::checksum::Checksum> core::cmp::PartialEq for bech32::primitives::checksum::Engine<Ck> where <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::cmp::PartialEq
+impl<Ck: core::fmt::Debug + bech32::primitives::checksum::Checksum> core::fmt::Debug for bech32::primitives::checksum::Engine<Ck> where <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::fmt::Debug
+impl<Ck: core::marker::Copy + bech32::primitives::checksum::Checksum> core::marker::Copy for bech32::primitives::checksum::Engine<Ck> where <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Copy
+impl<Ck> core::marker::Freeze for bech32::primitives::checksum::Engine<Ck> where <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Freeze
+impl<Ck> core::marker::Send for bech32::primitives::checksum::Engine<Ck> where <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Send
+impl<Ck> core::marker::Sync for bech32::primitives::checksum::Engine<Ck> where <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Sync
+impl<Ck> core::marker::Unpin for bech32::primitives::checksum::Engine<Ck> where <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Unpin
+impl<Ck> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::checksum::Engine<Ck> where <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::panic::unwind_safe::RefUnwindSafe
+impl<Ck> core::panic::unwind_safe::UnwindSafe for bech32::primitives::checksum::Engine<Ck> where <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::panic::unwind_safe::UnwindSafe
+impl<I, Ck> bech32::primitives::iter::Checksummed<I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+impl<I, Ck> core::clone::Clone for bech32::primitives::iter::Checksummed<I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32> + core::clone::Clone, Ck: bech32::primitives::checksum::Checksum + core::clone::Clone
+impl<I, Ck> core::cmp::Eq for bech32::primitives::iter::Checksummed<I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32> + core::cmp::Eq, Ck: bech32::primitives::checksum::Checksum + core::cmp::Eq
+impl<I, Ck> core::cmp::PartialEq for bech32::primitives::iter::Checksummed<I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32> + core::cmp::PartialEq, Ck: bech32::primitives::checksum::Checksum + core::cmp::PartialEq
+impl<I, Ck> core::iter::traits::iterator::Iterator for bech32::primitives::iter::Checksummed<I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+impl<I, Ck> core::marker::Freeze for bech32::primitives::iter::Checksummed<I, Ck> where I: core::marker::Freeze, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Freeze
+impl<I, Ck> core::marker::Send for bech32::primitives::iter::Checksummed<I, Ck> where I: core::marker::Send, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Send
+impl<I, Ck> core::marker::StructuralPartialEq for bech32::primitives::iter::Checksummed<I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+impl<I, Ck> core::marker::Sync for bech32::primitives::iter::Checksummed<I, Ck> where I: core::marker::Sync, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Sync
+impl<I, Ck> core::marker::Unpin for bech32::primitives::iter::Checksummed<I, Ck> where I: core::marker::Unpin, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::marker::Unpin
+impl<I, Ck> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::iter::Checksummed<I, Ck> where I: core::panic::unwind_safe::RefUnwindSafe, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::panic::unwind_safe::RefUnwindSafe
+impl<I, Ck> core::panic::unwind_safe::UnwindSafe for bech32::primitives::iter::Checksummed<I, Ck> where I: core::panic::unwind_safe::UnwindSafe, <Ck as bech32::primitives::checksum::Checksum>::MidstateRepr: core::panic::unwind_safe::UnwindSafe
+impl<I: core::clone::Clone + core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>> core::clone::Clone for bech32::primitives::iter::FesToBytes<I>
+impl<I: core::clone::Clone + core::iter::traits::iterator::Iterator<Item = u8>> core::clone::Clone for bech32::primitives::iter::BytesToFes<I>
+impl<I: core::cmp::Eq + core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>> core::cmp::Eq for bech32::primitives::iter::FesToBytes<I>
+impl<I: core::cmp::Eq + core::iter::traits::iterator::Iterator<Item = u8>> core::cmp::Eq for bech32::primitives::iter::BytesToFes<I>
+impl<I: core::cmp::PartialEq + core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>> core::cmp::PartialEq for bech32::primitives::iter::FesToBytes<I>
+impl<I: core::cmp::PartialEq + core::iter::traits::iterator::Iterator<Item = u8>> core::cmp::PartialEq for bech32::primitives::iter::BytesToFes<I>
+impl<I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>> core::marker::StructuralPartialEq for bech32::primitives::iter::FesToBytes<I>
+impl<I: core::iter::traits::iterator::Iterator<Item = u8>> core::marker::StructuralPartialEq for bech32::primitives::iter::BytesToFes<I>
+impl<I> bech32::primitives::encode::WitnessVersionIter<I> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>
+impl<I> bech32::primitives::iter::ByteIterExt for I where I: core::iter::traits::iterator::Iterator<Item = u8>
+impl<I> bech32::primitives::iter::Fe32IterExt for I where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>
+impl<I> core::iter::traits::exact_size::ExactSizeIterator for bech32::primitives::iter::BytesToFes<I> where I: core::iter::traits::iterator::Iterator<Item = u8> + core::iter::traits::exact_size::ExactSizeIterator
+impl<I> core::iter::traits::exact_size::ExactSizeIterator for bech32::primitives::iter::FesToBytes<I> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32> + core::iter::traits::exact_size::ExactSizeIterator
+impl<I> core::iter::traits::iterator::Iterator for bech32::primitives::encode::WitnessVersionIter<I> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>
+impl<I> core::iter::traits::iterator::Iterator for bech32::primitives::iter::BytesToFes<I> where I: core::iter::traits::iterator::Iterator<Item = u8>
+impl<I> core::iter::traits::iterator::Iterator for bech32::primitives::iter::FesToBytes<I> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>
+impl<I> core::marker::Freeze for bech32::primitives::encode::WitnessVersionIter<I> where I: core::marker::Freeze
+impl<I> core::marker::Freeze for bech32::primitives::iter::BytesToFes<I> where I: core::marker::Freeze
+impl<I> core::marker::Freeze for bech32::primitives::iter::FesToBytes<I> where I: core::marker::Freeze
+impl<I> core::marker::Send for bech32::primitives::encode::WitnessVersionIter<I> where I: core::marker::Send
+impl<I> core::marker::Send for bech32::primitives::iter::BytesToFes<I> where I: core::marker::Send
+impl<I> core::marker::Send for bech32::primitives::iter::FesToBytes<I> where I: core::marker::Send
+impl<I> core::marker::Sync for bech32::primitives::encode::WitnessVersionIter<I> where I: core::marker::Sync
+impl<I> core::marker::Sync for bech32::primitives::iter::BytesToFes<I> where I: core::marker::Sync
+impl<I> core::marker::Sync for bech32::primitives::iter::FesToBytes<I> where I: core::marker::Sync
+impl<I> core::marker::Unpin for bech32::primitives::encode::WitnessVersionIter<I> where I: core::marker::Unpin
+impl<I> core::marker::Unpin for bech32::primitives::iter::BytesToFes<I> where I: core::marker::Unpin
+impl<I> core::marker::Unpin for bech32::primitives::iter::FesToBytes<I> where I: core::marker::Unpin
+impl<I> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::encode::WitnessVersionIter<I> where I: core::panic::unwind_safe::RefUnwindSafe
+impl<I> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::iter::BytesToFes<I> where I: core::panic::unwind_safe::RefUnwindSafe
+impl<I> core::panic::unwind_safe::RefUnwindSafe for bech32::primitives::iter::FesToBytes<I> where I: core::panic::unwind_safe::RefUnwindSafe
+impl<I> core::panic::unwind_safe::UnwindSafe for bech32::primitives::encode::WitnessVersionIter<I> where I: core::panic::unwind_safe::UnwindSafe
+impl<I> core::panic::unwind_safe::UnwindSafe for bech32::primitives::iter::BytesToFes<I> where I: core::panic::unwind_safe::UnwindSafe
+impl<I> core::panic::unwind_safe::UnwindSafe for bech32::primitives::iter::FesToBytes<I> where I: core::panic::unwind_safe::UnwindSafe
+pub bech32::DecodeError::Checksum(bech32::primitives::decode::ChecksumError)
+pub bech32::DecodeError::Parse(bech32::primitives::decode::UncheckedHrpstringError)
+pub bech32::EncodeError::Fmt(core::fmt::Error)
+pub bech32::EncodeError::TooLong(bech32::primitives::decode::CodeLengthError)
+pub bech32::EncodeIoError::TooLong(bech32::primitives::decode::CodeLengthError)
+pub bech32::EncodeIoError::Write(std::io::error::Error)
+pub bech32::primitives::decode::CharError::InvalidChar(char)
+pub bech32::primitives::decode::CharError::MissingSeparator
+pub bech32::primitives::decode::CharError::MixedCase
+pub bech32::primitives::decode::CharError::NothingAfterSeparator
+pub bech32::primitives::decode::CheckedHrpstringError::Checksum(bech32::primitives::decode::ChecksumError)
+pub bech32::primitives::decode::CheckedHrpstringError::Parse(bech32::primitives::decode::UncheckedHrpstringError)
+pub bech32::primitives::decode::ChecksumError::CodeLength(bech32::primitives::decode::CodeLengthError)
+pub bech32::primitives::decode::ChecksumError::InvalidLength
+pub bech32::primitives::decode::ChecksumError::InvalidResidue
+pub bech32::primitives::decode::CodeLengthError::code_length: usize
+pub bech32::primitives::decode::CodeLengthError::encoded_length: usize
+pub bech32::primitives::decode::PaddingError::NonZero
+pub bech32::primitives::decode::PaddingError::TooMuch
+pub bech32::primitives::decode::SegwitHrpstringError::Checksum(bech32::primitives::decode::ChecksumError)
+pub bech32::primitives::decode::SegwitHrpstringError::InvalidWitnessVersion(bech32::primitives::gf32::Fe32)
+pub bech32::primitives::decode::SegwitHrpstringError::NoData
+pub bech32::primitives::decode::SegwitHrpstringError::Padding(bech32::primitives::decode::PaddingError)
+pub bech32::primitives::decode::SegwitHrpstringError::TooLong(usize)
+pub bech32::primitives::decode::SegwitHrpstringError::Unchecked(bech32::primitives::decode::UncheckedHrpstringError)
+pub bech32::primitives::decode::SegwitHrpstringError::WitnessLength(bech32::primitives::segwit::WitnessLengthError)
+pub bech32::primitives::decode::UncheckedHrpstringError::Char(bech32::primitives::decode::CharError)
+pub bech32::primitives::decode::UncheckedHrpstringError::Hrp(bech32::primitives::hrp::Error)
+pub bech32::primitives::gf32::FromCharError::Invalid(char)
+pub bech32::primitives::gf32::FromCharError::NotAscii(char)
+pub bech32::primitives::gf32::TryFromError::InvalidByte(u8)
+pub bech32::primitives::gf32::TryFromError::NotAByte(core::num::error::TryFromIntError)
+pub bech32::primitives::hrp::Error::Empty
+pub bech32::primitives::hrp::Error::InvalidAsciiByte(u8)
+pub bech32::primitives::hrp::Error::MixedCase
+pub bech32::primitives::hrp::Error::NonAsciiChar(char)
+pub bech32::primitives::hrp::Error::TooLong(usize)
+pub bech32::primitives::segwit::WitnessLengthError::InvalidSegwitV0
+pub bech32::primitives::segwit::WitnessLengthError::TooLong
+pub bech32::primitives::segwit::WitnessLengthError::TooShort
+pub bech32::segwit::EncodeError::Fmt(core::fmt::Error)
+pub bech32::segwit::EncodeError::TooLong(bech32::primitives::decode::SegwitCodeLengthError)
+pub bech32::segwit::EncodeError::WitnessLength(bech32::primitives::segwit::WitnessLengthError)
+pub bech32::segwit::EncodeError::WitnessVersion(bech32::primitives::segwit::InvalidWitnessVersionError)
+pub const bech32::Checksum::CHECKSUM_LENGTH: usize
+pub const bech32::Checksum::CODE_LENGTH: usize
+pub const bech32::Checksum::GENERATOR_SH: [Self::MidstateRepr; 5]
+pub const bech32::Checksum::TARGET_RESIDUE: Self::MidstateRepr
+pub const bech32::hrp::BC: bech32::primitives::hrp::Hrp
+pub const bech32::hrp::BCRT: bech32::primitives::hrp::Hrp
+pub const bech32::hrp::TB: bech32::primitives::hrp::Hrp
+pub const bech32::primitives::Bech32::CHECKSUM_LENGTH: usize
+pub const bech32::primitives::Bech32::CODE_LENGTH: usize
+pub const bech32::primitives::Bech32::GENERATOR_SH: [u32; 5]
+pub const bech32::primitives::Bech32::TARGET_RESIDUE: u32
+pub const bech32::primitives::Bech32m::CHECKSUM_LENGTH: usize
+pub const bech32::primitives::Bech32m::CODE_LENGTH: usize
+pub const bech32::primitives::Bech32m::GENERATOR_SH: [u32; 5]
+pub const bech32::primitives::Bech32m::TARGET_RESIDUE: u32
+pub const bech32::primitives::NoChecksum::CHECKSUM_LENGTH: usize
+pub const bech32::primitives::NoChecksum::CODE_LENGTH: usize
+pub const bech32::primitives::NoChecksum::GENERATOR_SH: [bech32::primitives::checksum::PackedNull; 5]
+pub const bech32::primitives::NoChecksum::TARGET_RESIDUE: bech32::primitives::checksum::PackedNull
+pub const bech32::primitives::checksum::Checksum::CHECKSUM_LENGTH: usize
+pub const bech32::primitives::checksum::Checksum::CODE_LENGTH: usize
+pub const bech32::primitives::checksum::Checksum::GENERATOR_SH: [Self::MidstateRepr; 5]
+pub const bech32::primitives::checksum::Checksum::TARGET_RESIDUE: Self::MidstateRepr
+pub const bech32::primitives::checksum::PackedFe32::ONE: Self
+pub const bech32::primitives::checksum::PackedFe32::WIDTH: usize
+pub const bech32::primitives::checksum::PackedNull::ONE: Self
+pub const bech32::primitives::gf32::Fe32::A: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::C: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::D: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::E: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::F: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::G: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::H: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::J: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::K: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::L: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::M: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::N: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::P: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::Q: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::R: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::S: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::T: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::U: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::V: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::W: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::X: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::Y: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::Z: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::_0: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::_2: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::_3: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::_4: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::_5: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::_6: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::_7: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::_8: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::gf32::Fe32::_9: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::hrp::BC: bech32::primitives::hrp::Hrp
+pub const bech32::primitives::hrp::BCRT: bech32::primitives::hrp::Hrp
+pub const bech32::primitives::hrp::TB: bech32::primitives::hrp::Hrp
+pub const bech32::primitives::segwit::MAX_STRING_LENGTH: usize
+pub const bech32::primitives::segwit::VERSION_0: bech32::primitives::gf32::Fe32
+pub const bech32::primitives::segwit::VERSION_1: bech32::primitives::gf32::Fe32
+pub const bech32::segwit::VERSION_0: bech32::primitives::gf32::Fe32
+pub const bech32::segwit::VERSION_1: bech32::primitives::gf32::Fe32
+pub const fn bech32::primitives::hrp::Hrp::parse_unchecked(hrp: &str) -> Self
+pub const u128::ONE: Self
+pub const u32::ONE: Self
+pub const u64::ONE: Self
+pub enum bech32::Bech32
+pub enum bech32::Bech32m
+pub enum bech32::NoChecksum
+pub enum bech32::primitives::Bech32
+pub enum bech32::primitives::Bech32m
+pub enum bech32::primitives::NoChecksum
+pub fn &bech32::primitives::gf32::Fe32::add(self, other: &bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn &bech32::primitives::gf32::Fe32::add(self, other: bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn &bech32::primitives::gf32::Fe32::div(self, other: &bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn &bech32::primitives::gf32::Fe32::div(self, other: bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn &bech32::primitives::gf32::Fe32::mul(self, other: &bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn &bech32::primitives::gf32::Fe32::mul(self, other: bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn &bech32::primitives::gf32::Fe32::sub(self, other: &bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn &bech32::primitives::gf32::Fe32::sub(self, other: bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn bech32::ByteIterExt::bytes_to_fes(self) -> bech32::primitives::iter::BytesToFes<Self>
+pub fn bech32::Checksum::sanity_check()
+pub fn bech32::DecodeError::clone(&self) -> bech32::DecodeError
+pub fn bech32::DecodeError::eq(&self, other: &bech32::DecodeError) -> bool
+pub fn bech32::DecodeError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::DecodeError::from(e: bech32::primitives::decode::UncheckedHrpstringError) -> Self
+pub fn bech32::DecodeError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::EncodeError::clone(&self) -> bech32::EncodeError
+pub fn bech32::EncodeError::eq(&self, other: &bech32::EncodeError) -> bool
+pub fn bech32::EncodeError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::EncodeError::from(e: bech32::primitives::decode::CodeLengthError) -> Self
+pub fn bech32::EncodeError::from(e: core::fmt::Error) -> Self
+pub fn bech32::EncodeError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::EncodeIoError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::EncodeIoError::from(e: bech32::primitives::decode::CodeLengthError) -> Self
+pub fn bech32::EncodeIoError::from(e: std::io::error::Error) -> Self
+pub fn bech32::EncodeIoError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::Fe32IterExt::fes_to_bytes(self) -> bech32::primitives::iter::FesToBytes<Self>
+pub fn bech32::Fe32IterExt::with_checksum<Ck: bech32::primitives::checksum::Checksum>(self, hrp: &bech32::primitives::hrp::Hrp) -> bech32::primitives::encode::Encoder<'_, Self, Ck>
+pub fn bech32::decode(s: &str) -> core::result::Result<(bech32::primitives::hrp::Hrp, alloc::vec::Vec<u8>), bech32::DecodeError>
+pub fn bech32::encode<Ck: bech32::primitives::checksum::Checksum>(hrp: bech32::primitives::hrp::Hrp, data: &[u8]) -> core::result::Result<alloc::string::String, bech32::EncodeError>
+pub fn bech32::encode_lower<Ck: bech32::primitives::checksum::Checksum>(hrp: bech32::primitives::hrp::Hrp, data: &[u8]) -> core::result::Result<alloc::string::String, bech32::EncodeError>
+pub fn bech32::encode_lower_to_fmt<Ck: bech32::primitives::checksum::Checksum, W: core::fmt::Write>(fmt: &mut W, hrp: bech32::primitives::hrp::Hrp, data: &[u8]) -> core::result::Result<(), bech32::EncodeError>
+pub fn bech32::encode_lower_to_writer<Ck: bech32::primitives::checksum::Checksum, W: std::io::Write>(w: &mut W, hrp: bech32::primitives::hrp::Hrp, data: &[u8]) -> core::result::Result<(), bech32::EncodeIoError>
+pub fn bech32::encode_to_fmt<Ck: bech32::primitives::checksum::Checksum, W: core::fmt::Write>(fmt: &mut W, hrp: bech32::primitives::hrp::Hrp, data: &[u8]) -> core::result::Result<(), bech32::EncodeError>
+pub fn bech32::encode_to_writer<Ck: bech32::primitives::checksum::Checksum, W: std::io::Write>(w: &mut W, hrp: bech32::primitives::hrp::Hrp, data: &[u8]) -> core::result::Result<(), bech32::EncodeIoError>
+pub fn bech32::encode_upper<Ck: bech32::primitives::checksum::Checksum>(hrp: bech32::primitives::hrp::Hrp, data: &[u8]) -> core::result::Result<alloc::string::String, bech32::EncodeError>
+pub fn bech32::encode_upper_to_fmt<Ck: bech32::primitives::checksum::Checksum, W: core::fmt::Write>(fmt: &mut W, hrp: bech32::primitives::hrp::Hrp, data: &[u8]) -> core::result::Result<(), bech32::EncodeError>
+pub fn bech32::encode_upper_to_writer<Ck: bech32::primitives::checksum::Checksum, W: std::io::Write>(w: &mut W, hrp: bech32::primitives::hrp::Hrp, data: &[u8]) -> core::result::Result<(), bech32::EncodeIoError>
+pub fn bech32::encoded_length<Ck: bech32::primitives::checksum::Checksum>(hrp: bech32::primitives::hrp::Hrp, data: &[u8]) -> core::result::Result<usize, bech32::primitives::decode::CodeLengthError>
+pub fn bech32::primitives::Bech32::clone(&self) -> bech32::primitives::Bech32
+pub fn bech32::primitives::Bech32::cmp(&self, other: &bech32::primitives::Bech32) -> core::cmp::Ordering
+pub fn bech32::primitives::Bech32::eq(&self, other: &bech32::primitives::Bech32) -> bool
+pub fn bech32::primitives::Bech32::hash<__H: core::hash::Hasher>(&self, state: &mut __H)
+pub fn bech32::primitives::Bech32::partial_cmp(&self, other: &bech32::primitives::Bech32) -> core::option::Option<core::cmp::Ordering>
+pub fn bech32::primitives::Bech32m::clone(&self) -> bech32::primitives::Bech32m
+pub fn bech32::primitives::Bech32m::cmp(&self, other: &bech32::primitives::Bech32m) -> core::cmp::Ordering
+pub fn bech32::primitives::Bech32m::eq(&self, other: &bech32::primitives::Bech32m) -> bool
+pub fn bech32::primitives::Bech32m::hash<__H: core::hash::Hasher>(&self, state: &mut __H)
+pub fn bech32::primitives::Bech32m::partial_cmp(&self, other: &bech32::primitives::Bech32m) -> core::option::Option<core::cmp::Ordering>
+pub fn bech32::primitives::NoChecksum::clone(&self) -> bech32::primitives::NoChecksum
+pub fn bech32::primitives::NoChecksum::cmp(&self, other: &bech32::primitives::NoChecksum) -> core::cmp::Ordering
+pub fn bech32::primitives::NoChecksum::eq(&self, other: &bech32::primitives::NoChecksum) -> bool
+pub fn bech32::primitives::NoChecksum::hash<__H: core::hash::Hasher>(&self, state: &mut __H)
+pub fn bech32::primitives::NoChecksum::partial_cmp(&self, other: &bech32::primitives::NoChecksum) -> core::option::Option<core::cmp::Ordering>
+pub fn bech32::primitives::checksum::Checksum::sanity_check()
+pub fn bech32::primitives::checksum::Engine<Ck>::clone(&self) -> bech32::primitives::checksum::Engine<Ck>
+pub fn bech32::primitives::checksum::Engine<Ck>::default() -> Self
+pub fn bech32::primitives::checksum::Engine<Ck>::eq(&self, other: &bech32::primitives::checksum::Engine<Ck>) -> bool
+pub fn bech32::primitives::checksum::Engine<Ck>::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::checksum::Engine<Ck>::input_fe(&mut self, e: bech32::primitives::gf32::Fe32)
+pub fn bech32::primitives::checksum::Engine<Ck>::input_hrp(&mut self, hrp: bech32::primitives::hrp::Hrp)
+pub fn bech32::primitives::checksum::Engine<Ck>::input_target_residue(&mut self)
+pub fn bech32::primitives::checksum::Engine<Ck>::new() -> Self
+pub fn bech32::primitives::checksum::Engine<Ck>::residue(&self) -> &<Ck as bech32::primitives::checksum::Checksum>::MidstateRepr
+pub fn bech32::primitives::checksum::HrpFe32Iter<'hrp>::new(hrp: &'hrp bech32::primitives::hrp::Hrp) -> Self
+pub fn bech32::primitives::checksum::HrpFe32Iter<'hrp>::next(&mut self) -> core::option::Option<bech32::primitives::gf32::Fe32>
+pub fn bech32::primitives::checksum::HrpFe32Iter<'hrp>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::checksum::PackedFe32::mul_by_x_then_add(&mut self, degree: usize, add: u8) -> u8
+pub fn bech32::primitives::checksum::PackedFe32::unpack(&self, n: usize) -> u8
+pub fn bech32::primitives::checksum::PackedNull::bitxor(self, _: bech32::primitives::checksum::PackedNull) -> bech32::primitives::checksum::PackedNull
+pub fn bech32::primitives::checksum::PackedNull::clone(&self) -> bech32::primitives::checksum::PackedNull
+pub fn bech32::primitives::checksum::PackedNull::eq(&self, other: &bech32::primitives::checksum::PackedNull) -> bool
+pub fn bech32::primitives::checksum::PackedNull::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::checksum::PackedNull::mul_by_x_then_add(&mut self, _: usize, _: u8) -> u8
+pub fn bech32::primitives::checksum::PackedNull::unpack(&self, _: usize) -> u8
+pub fn bech32::primitives::decode::AsciiToFe32Iter<'s>::len(&self) -> usize
+pub fn bech32::primitives::decode::AsciiToFe32Iter<'s>::next(&mut self) -> core::option::Option<bech32::primitives::gf32::Fe32>
+pub fn bech32::primitives::decode::AsciiToFe32Iter<'s>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::decode::ByteIter<'s>::len(&self) -> usize
+pub fn bech32::primitives::decode::ByteIter<'s>::next(&mut self) -> core::option::Option<u8>
+pub fn bech32::primitives::decode::ByteIter<'s>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::decode::CharError::clone(&self) -> bech32::primitives::decode::CharError
+pub fn bech32::primitives::decode::CharError::eq(&self, other: &bech32::primitives::decode::CharError) -> bool
+pub fn bech32::primitives::decode::CharError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::decode::CharError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::decode::CheckedHrpstring<'s>::byte_iter(&self) -> bech32::primitives::decode::ByteIter<'_>
+pub fn bech32::primitives::decode::CheckedHrpstring<'s>::data_part_ascii_no_checksum(&self) -> &'s [u8]
+pub fn bech32::primitives::decode::CheckedHrpstring<'s>::fe32_iter<I: core::iter::traits::iterator::Iterator<Item = u8>>(&self) -> bech32::primitives::decode::AsciiToFe32Iter<'_>
+pub fn bech32::primitives::decode::CheckedHrpstring<'s>::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::decode::CheckedHrpstring<'s>::hrp(&self) -> bech32::primitives::hrp::Hrp
+pub fn bech32::primitives::decode::CheckedHrpstring<'s>::new<Ck: bech32::primitives::checksum::Checksum>(s: &'s str) -> core::result::Result<Self, bech32::primitives::decode::CheckedHrpstringError>
+pub fn bech32::primitives::decode::CheckedHrpstring<'s>::remove_witness_version(&mut self) -> core::option::Option<bech32::primitives::gf32::Fe32>
+pub fn bech32::primitives::decode::CheckedHrpstring<'s>::validate_segwit(self) -> core::result::Result<bech32::primitives::decode::SegwitHrpstring<'s>, bech32::primitives::decode::SegwitHrpstringError>
+pub fn bech32::primitives::decode::CheckedHrpstring<'s>::validate_segwit_padding(&self) -> core::result::Result<(), bech32::primitives::decode::PaddingError>
+pub fn bech32::primitives::decode::CheckedHrpstring<'s>::validate_witness_program_length(&self, witness_version: bech32::primitives::gf32::Fe32) -> core::result::Result<(), bech32::primitives::segwit::WitnessLengthError>
+pub fn bech32::primitives::decode::CheckedHrpstring<'s>::witness_version(&self) -> core::option::Option<bech32::primitives::gf32::Fe32>
+pub fn bech32::primitives::decode::CheckedHrpstringError::clone(&self) -> bech32::primitives::decode::CheckedHrpstringError
+pub fn bech32::primitives::decode::CheckedHrpstringError::eq(&self, other: &bech32::primitives::decode::CheckedHrpstringError) -> bool
+pub fn bech32::primitives::decode::CheckedHrpstringError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::decode::CheckedHrpstringError::from(e: bech32::primitives::decode::ChecksumError) -> Self
+pub fn bech32::primitives::decode::CheckedHrpstringError::from(e: bech32::primitives::decode::UncheckedHrpstringError) -> Self
+pub fn bech32::primitives::decode::CheckedHrpstringError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::decode::ChecksumError::clone(&self) -> bech32::primitives::decode::ChecksumError
+pub fn bech32::primitives::decode::ChecksumError::eq(&self, other: &bech32::primitives::decode::ChecksumError) -> bool
+pub fn bech32::primitives::decode::ChecksumError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::decode::ChecksumError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::decode::CodeLengthError::clone(&self) -> bech32::primitives::decode::CodeLengthError
+pub fn bech32::primitives::decode::CodeLengthError::eq(&self, other: &bech32::primitives::decode::CodeLengthError) -> bool
+pub fn bech32::primitives::decode::CodeLengthError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::decode::CodeLengthError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::decode::Fe32Iter<'s>::next(&mut self) -> core::option::Option<bech32::primitives::gf32::Fe32>
+pub fn bech32::primitives::decode::Fe32Iter<'s>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::decode::PaddingError::clone(&self) -> bech32::primitives::decode::PaddingError
+pub fn bech32::primitives::decode::PaddingError::eq(&self, other: &bech32::primitives::decode::PaddingError) -> bool
+pub fn bech32::primitives::decode::PaddingError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::decode::PaddingError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::decode::SegwitCodeLengthError::clone(&self) -> bech32::primitives::decode::SegwitCodeLengthError
+pub fn bech32::primitives::decode::SegwitCodeLengthError::eq(&self, other: &bech32::primitives::decode::SegwitCodeLengthError) -> bool
+pub fn bech32::primitives::decode::SegwitCodeLengthError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::decode::SegwitCodeLengthError::from(e: bech32::primitives::decode::CodeLengthError) -> Self
+pub fn bech32::primitives::decode::SegwitCodeLengthError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::decode::SegwitHrpstring<'s>::byte_iter(&self) -> bech32::primitives::decode::ByteIter<'_>
+pub fn bech32::primitives::decode::SegwitHrpstring<'s>::data_part_ascii_no_witver_no_checksum(&self) -> &'s [u8]
+pub fn bech32::primitives::decode::SegwitHrpstring<'s>::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::decode::SegwitHrpstring<'s>::has_valid_hrp(&self) -> bool
+pub fn bech32::primitives::decode::SegwitHrpstring<'s>::hrp(&self) -> bech32::primitives::hrp::Hrp
+pub fn bech32::primitives::decode::SegwitHrpstring<'s>::new(s: &'s str) -> core::result::Result<Self, bech32::primitives::decode::SegwitHrpstringError>
+pub fn bech32::primitives::decode::SegwitHrpstring<'s>::new_bech32(s: &'s str) -> core::result::Result<Self, bech32::primitives::decode::SegwitHrpstringError>
+pub fn bech32::primitives::decode::SegwitHrpstring<'s>::witness_version(&self) -> bech32::primitives::gf32::Fe32
+pub fn bech32::primitives::decode::SegwitHrpstringError::clone(&self) -> bech32::primitives::decode::SegwitHrpstringError
+pub fn bech32::primitives::decode::SegwitHrpstringError::eq(&self, other: &bech32::primitives::decode::SegwitHrpstringError) -> bool
+pub fn bech32::primitives::decode::SegwitHrpstringError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::decode::SegwitHrpstringError::from(e: bech32::primitives::decode::ChecksumError) -> Self
+pub fn bech32::primitives::decode::SegwitHrpstringError::from(e: bech32::primitives::decode::PaddingError) -> Self
+pub fn bech32::primitives::decode::SegwitHrpstringError::from(e: bech32::primitives::decode::UncheckedHrpstringError) -> Self
+pub fn bech32::primitives::decode::SegwitHrpstringError::from(e: bech32::primitives::segwit::WitnessLengthError) -> Self
+pub fn bech32::primitives::decode::SegwitHrpstringError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::decode::UncheckedHrpstring<'s>::data_part_ascii(&self) -> &'s [u8]
+pub fn bech32::primitives::decode::UncheckedHrpstring<'s>::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::decode::UncheckedHrpstring<'s>::has_valid_checksum<Ck: bech32::primitives::checksum::Checksum>(&self) -> bool
+pub fn bech32::primitives::decode::UncheckedHrpstring<'s>::hrp(&self) -> bech32::primitives::hrp::Hrp
+pub fn bech32::primitives::decode::UncheckedHrpstring<'s>::new(s: &'s str) -> core::result::Result<Self, bech32::primitives::decode::UncheckedHrpstringError>
+pub fn bech32::primitives::decode::UncheckedHrpstring<'s>::remove_checksum<Ck: bech32::primitives::checksum::Checksum>(self) -> bech32::primitives::decode::CheckedHrpstring<'s>
+pub fn bech32::primitives::decode::UncheckedHrpstring<'s>::remove_witness_version(&mut self) -> core::option::Option<bech32::primitives::gf32::Fe32>
+pub fn bech32::primitives::decode::UncheckedHrpstring<'s>::validate_and_remove_checksum<Ck: bech32::primitives::checksum::Checksum>(self) -> core::result::Result<bech32::primitives::decode::CheckedHrpstring<'s>, bech32::primitives::decode::ChecksumError>
+pub fn bech32::primitives::decode::UncheckedHrpstring<'s>::validate_checksum<Ck: bech32::primitives::checksum::Checksum>(&self) -> core::result::Result<(), bech32::primitives::decode::ChecksumError>
+pub fn bech32::primitives::decode::UncheckedHrpstring<'s>::witness_version(&self) -> core::option::Option<bech32::primitives::gf32::Fe32>
+pub fn bech32::primitives::decode::UncheckedHrpstringError::clone(&self) -> bech32::primitives::decode::UncheckedHrpstringError
+pub fn bech32::primitives::decode::UncheckedHrpstringError::eq(&self, other: &bech32::primitives::decode::UncheckedHrpstringError) -> bool
+pub fn bech32::primitives::decode::UncheckedHrpstringError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::decode::UncheckedHrpstringError::from(e: bech32::primitives::decode::CharError) -> Self
+pub fn bech32::primitives::decode::UncheckedHrpstringError::from(e: bech32::primitives::hrp::Error) -> Self
+pub fn bech32::primitives::decode::UncheckedHrpstringError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::encode::ByteIter<'a, I, Ck>::next(&mut self) -> core::option::Option<u8>
+pub fn bech32::primitives::encode::ByteIter<'a, I, Ck>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::encode::ByteIter<'hrp, I, Ck>::new(char_iter: bech32::primitives::encode::CharIter<'hrp, I, Ck>) -> Self
+pub fn bech32::primitives::encode::CharIter<'a, I, Ck>::next(&mut self) -> core::option::Option<char>
+pub fn bech32::primitives::encode::CharIter<'a, I, Ck>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::encode::CharIter<'hrp, I, Ck>::new(hrp: &'hrp bech32::primitives::hrp::Hrp, data: bech32::primitives::encode::WitnessVersionIter<I>) -> Self
+pub fn bech32::primitives::encode::Encoder<'hrp, I, Ck>::bytes(self) -> bech32::primitives::encode::ByteIter<'hrp, I, Ck>
+pub fn bech32::primitives::encode::Encoder<'hrp, I, Ck>::chars(self) -> bech32::primitives::encode::CharIter<'hrp, I, Ck>
+pub fn bech32::primitives::encode::Encoder<'hrp, I, Ck>::clone(&self) -> bech32::primitives::encode::Encoder<'hrp, I, Ck>
+pub fn bech32::primitives::encode::Encoder<'hrp, I, Ck>::eq(&self, other: &bech32::primitives::encode::Encoder<'hrp, I, Ck>) -> bool
+pub fn bech32::primitives::encode::Encoder<'hrp, I, Ck>::fes(self) -> bech32::primitives::encode::Fe32Iter<'hrp, I, Ck>
+pub fn bech32::primitives::encode::Encoder<'hrp, I, Ck>::new(data: I, hrp: &'hrp bech32::primitives::hrp::Hrp) -> Self
+pub fn bech32::primitives::encode::Encoder<'hrp, I, Ck>::with_witness_version(self, witness_version: bech32::primitives::gf32::Fe32) -> Self
+pub fn bech32::primitives::encode::Fe32Iter<'hrp, I, Ck>::new(hrp: &'hrp bech32::primitives::hrp::Hrp, data: bech32::primitives::encode::WitnessVersionIter<I>) -> Self
+pub fn bech32::primitives::encode::Fe32Iter<'hrp, I, Ck>::next(&mut self) -> core::option::Option<bech32::primitives::gf32::Fe32>
+pub fn bech32::primitives::encode::Fe32Iter<'hrp, I, Ck>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::encode::WitnessVersionIter<I>::new(witness_version: core::option::Option<bech32::primitives::gf32::Fe32>, iter: I) -> Self
+pub fn bech32::primitives::encode::WitnessVersionIter<I>::next(&mut self) -> core::option::Option<bech32::primitives::gf32::Fe32>
+pub fn bech32::primitives::encode::WitnessVersionIter<I>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::gf32::Fe32::add(self, other: &bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn bech32::primitives::gf32::Fe32::add(self, other: bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn bech32::primitives::gf32::Fe32::add_assign(&mut self, other: bech32::primitives::gf32::Fe32)
+pub fn bech32::primitives::gf32::Fe32::as_ref(&self) -> &u8
+pub fn bech32::primitives::gf32::Fe32::clone(&self) -> bech32::primitives::gf32::Fe32
+pub fn bech32::primitives::gf32::Fe32::div(self, other: &bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn bech32::primitives::gf32::Fe32::div(self, other: bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn bech32::primitives::gf32::Fe32::div_assign(&mut self, other: bech32::primitives::gf32::Fe32)
+pub fn bech32::primitives::gf32::Fe32::eq(&self, other: &bech32::primitives::gf32::Fe32) -> bool
+pub fn bech32::primitives::gf32::Fe32::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::gf32::Fe32::from_char(c: char) -> core::result::Result<bech32::primitives::gf32::Fe32, bech32::primitives::gf32::FromCharError>
+pub fn bech32::primitives::gf32::Fe32::from_char_unchecked(c: u8) -> bech32::primitives::gf32::Fe32
+pub fn bech32::primitives::gf32::Fe32::hash<__H: core::hash::Hasher>(&self, state: &mut __H)
+pub fn bech32::primitives::gf32::Fe32::iter_alpha() -> impl core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>
+pub fn bech32::primitives::gf32::Fe32::mul(self, other: &bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn bech32::primitives::gf32::Fe32::mul(self, other: bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn bech32::primitives::gf32::Fe32::mul_assign(&mut self, other: bech32::primitives::gf32::Fe32)
+pub fn bech32::primitives::gf32::Fe32::sub(self, other: &bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn bech32::primitives::gf32::Fe32::sub(self, other: bech32::primitives::gf32::Fe32) -> bech32::primitives::gf32::Fe32
+pub fn bech32::primitives::gf32::Fe32::sub_assign(&mut self, other: bech32::primitives::gf32::Fe32)
+pub fn bech32::primitives::gf32::Fe32::to_char(self) -> char
+pub fn bech32::primitives::gf32::Fe32::to_u8(self) -> u8
+pub fn bech32::primitives::gf32::Fe32::try_from(value: i128) -> core::result::Result<Self, Self::Error>
+pub fn bech32::primitives::gf32::Fe32::try_from(value: i16) -> core::result::Result<Self, Self::Error>
+pub fn bech32::primitives::gf32::Fe32::try_from(value: i32) -> core::result::Result<Self, Self::Error>
+pub fn bech32::primitives::gf32::Fe32::try_from(value: i64) -> core::result::Result<Self, Self::Error>
+pub fn bech32::primitives::gf32::Fe32::try_from(value: i8) -> core::result::Result<Self, Self::Error>
+pub fn bech32::primitives::gf32::Fe32::try_from(value: u128) -> core::result::Result<Self, Self::Error>
+pub fn bech32::primitives::gf32::Fe32::try_from(value: u16) -> core::result::Result<Self, Self::Error>
+pub fn bech32::primitives::gf32::Fe32::try_from(value: u32) -> core::result::Result<Self, Self::Error>
+pub fn bech32::primitives::gf32::Fe32::try_from(value: u64) -> core::result::Result<Self, Self::Error>
+pub fn bech32::primitives::gf32::Fe32::try_from(value: u8) -> core::result::Result<Self, Self::Error>
+pub fn bech32::primitives::gf32::FromCharError::clone(&self) -> bech32::primitives::gf32::FromCharError
+pub fn bech32::primitives::gf32::FromCharError::eq(&self, other: &bech32::primitives::gf32::FromCharError) -> bool
+pub fn bech32::primitives::gf32::FromCharError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::gf32::FromCharError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::gf32::TryFromError::clone(&self) -> bech32::primitives::gf32::TryFromError
+pub fn bech32::primitives::gf32::TryFromError::eq(&self, other: &bech32::primitives::gf32::TryFromError) -> bool
+pub fn bech32::primitives::gf32::TryFromError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::gf32::TryFromError::from(e: core::num::error::TryFromIntError) -> Self
+pub fn bech32::primitives::gf32::TryFromError::from(i: core::convert::Infallible) -> Self
+pub fn bech32::primitives::gf32::TryFromError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::hrp::ByteIter<'b>::len(&self) -> usize
+pub fn bech32::primitives::hrp::ByteIter<'b>::next(&mut self) -> core::option::Option<u8>
+pub fn bech32::primitives::hrp::ByteIter<'b>::next_back(&mut self) -> core::option::Option<Self::Item>
+pub fn bech32::primitives::hrp::ByteIter<'b>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::hrp::CharIter<'b>::len(&self) -> usize
+pub fn bech32::primitives::hrp::CharIter<'b>::next(&mut self) -> core::option::Option<char>
+pub fn bech32::primitives::hrp::CharIter<'b>::next_back(&mut self) -> core::option::Option<Self::Item>
+pub fn bech32::primitives::hrp::CharIter<'b>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::hrp::Error::clone(&self) -> bech32::primitives::hrp::Error
+pub fn bech32::primitives::hrp::Error::eq(&self, other: &bech32::primitives::hrp::Error) -> bool
+pub fn bech32::primitives::hrp::Error::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::hrp::Error::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::hrp::Hrp::as_bytes(&self) -> &[u8]
+pub fn bech32::primitives::hrp::Hrp::as_str(&self) -> &str
+pub fn bech32::primitives::hrp::Hrp::byte_iter(&self) -> bech32::primitives::hrp::ByteIter<'_>
+pub fn bech32::primitives::hrp::Hrp::char_iter(&self) -> bech32::primitives::hrp::CharIter<'_>
+pub fn bech32::primitives::hrp::Hrp::clone(&self) -> bech32::primitives::hrp::Hrp
+pub fn bech32::primitives::hrp::Hrp::cmp(&self, other: &Self) -> core::cmp::Ordering
+pub fn bech32::primitives::hrp::Hrp::eq(&self, other: &Self) -> bool
+pub fn bech32::primitives::hrp::Hrp::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::hrp::Hrp::hash<H: core::hash::Hasher>(&self, h: &mut H)
+pub fn bech32::primitives::hrp::Hrp::is_valid_on_mainnet(&self) -> bool
+pub fn bech32::primitives::hrp::Hrp::is_valid_on_regtest(&self) -> bool
+pub fn bech32::primitives::hrp::Hrp::is_valid_on_signet(&self) -> bool
+pub fn bech32::primitives::hrp::Hrp::is_valid_on_testnet(&self) -> bool
+pub fn bech32::primitives::hrp::Hrp::is_valid_segwit(&self) -> bool
+pub fn bech32::primitives::hrp::Hrp::len(&self) -> usize
+pub fn bech32::primitives::hrp::Hrp::lowercase_byte_iter(&self) -> bech32::primitives::hrp::LowercaseByteIter<'_>
+pub fn bech32::primitives::hrp::Hrp::lowercase_char_iter(&self) -> bech32::primitives::hrp::LowercaseCharIter<'_>
+pub fn bech32::primitives::hrp::Hrp::parse(hrp: &str) -> core::result::Result<Self, bech32::primitives::hrp::Error>
+pub fn bech32::primitives::hrp::Hrp::partial_cmp(&self, other: &Self) -> core::option::Option<core::cmp::Ordering>
+pub fn bech32::primitives::hrp::Hrp::to_lowercase(&self) -> alloc::string::String
+pub fn bech32::primitives::hrp::LowercaseByteIter<'b>::len(&self) -> usize
+pub fn bech32::primitives::hrp::LowercaseByteIter<'b>::next(&mut self) -> core::option::Option<u8>
+pub fn bech32::primitives::hrp::LowercaseByteIter<'b>::next_back(&mut self) -> core::option::Option<Self::Item>
+pub fn bech32::primitives::hrp::LowercaseByteIter<'b>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::hrp::LowercaseCharIter<'b>::len(&self) -> usize
+pub fn bech32::primitives::hrp::LowercaseCharIter<'b>::next(&mut self) -> core::option::Option<char>
+pub fn bech32::primitives::hrp::LowercaseCharIter<'b>::next_back(&mut self) -> core::option::Option<Self::Item>
+pub fn bech32::primitives::hrp::LowercaseCharIter<'b>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::iter::ByteIterExt::bytes_to_fes(self) -> bech32::primitives::iter::BytesToFes<Self>
+pub fn bech32::primitives::iter::BytesToFes<I>::clone(&self) -> bech32::primitives::iter::BytesToFes<I>
+pub fn bech32::primitives::iter::BytesToFes<I>::eq(&self, other: &bech32::primitives::iter::BytesToFes<I>) -> bool
+pub fn bech32::primitives::iter::BytesToFes<I>::len(&self) -> usize
+pub fn bech32::primitives::iter::BytesToFes<I>::next(&mut self) -> core::option::Option<bech32::primitives::gf32::Fe32>
+pub fn bech32::primitives::iter::BytesToFes<I>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::iter::Checksummed<I, Ck>::clone(&self) -> bech32::primitives::iter::Checksummed<I, Ck>
+pub fn bech32::primitives::iter::Checksummed<I, Ck>::eq(&self, other: &bech32::primitives::iter::Checksummed<I, Ck>) -> bool
+pub fn bech32::primitives::iter::Checksummed<I, Ck>::new(data: I) -> bech32::primitives::iter::Checksummed<I, Ck>
+pub fn bech32::primitives::iter::Checksummed<I, Ck>::new_hrp(hrp: bech32::primitives::hrp::Hrp, data: I) -> bech32::primitives::iter::Checksummed<I, Ck>
+pub fn bech32::primitives::iter::Checksummed<I, Ck>::next(&mut self) -> core::option::Option<bech32::primitives::gf32::Fe32>
+pub fn bech32::primitives::iter::Checksummed<I, Ck>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::iter::Fe32IterExt::fes_to_bytes(self) -> bech32::primitives::iter::FesToBytes<Self>
+pub fn bech32::primitives::iter::Fe32IterExt::with_checksum<Ck: bech32::primitives::checksum::Checksum>(self, hrp: &bech32::primitives::hrp::Hrp) -> bech32::primitives::encode::Encoder<'_, Self, Ck>
+pub fn bech32::primitives::iter::FesToBytes<I>::clone(&self) -> bech32::primitives::iter::FesToBytes<I>
+pub fn bech32::primitives::iter::FesToBytes<I>::eq(&self, other: &bech32::primitives::iter::FesToBytes<I>) -> bool
+pub fn bech32::primitives::iter::FesToBytes<I>::len(&self) -> usize
+pub fn bech32::primitives::iter::FesToBytes<I>::next(&mut self) -> core::option::Option<u8>
+pub fn bech32::primitives::iter::FesToBytes<I>::size_hint(&self) -> (usize, core::option::Option<usize>)
+pub fn bech32::primitives::segwit::InvalidWitnessVersionError::clone(&self) -> bech32::primitives::segwit::InvalidWitnessVersionError
+pub fn bech32::primitives::segwit::InvalidWitnessVersionError::eq(&self, other: &bech32::primitives::segwit::InvalidWitnessVersionError) -> bool
+pub fn bech32::primitives::segwit::InvalidWitnessVersionError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::segwit::InvalidWitnessVersionError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::segwit::WitnessLengthError::clone(&self) -> bech32::primitives::segwit::WitnessLengthError
+pub fn bech32::primitives::segwit::WitnessLengthError::eq(&self, other: &bech32::primitives::segwit::WitnessLengthError) -> bool
+pub fn bech32::primitives::segwit::WitnessLengthError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::primitives::segwit::WitnessLengthError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::primitives::segwit::is_valid_witness_program_length(length: usize, witness_version: bech32::primitives::gf32::Fe32) -> bool
+pub fn bech32::primitives::segwit::is_valid_witness_version(witness_version: bech32::primitives::gf32::Fe32) -> bool
+pub fn bech32::primitives::segwit::validate_witness_program_length(length: usize, version: bech32::primitives::gf32::Fe32) -> core::result::Result<(), bech32::primitives::segwit::WitnessLengthError>
+pub fn bech32::primitives::segwit::validate_witness_version(witness_version: bech32::primitives::gf32::Fe32) -> core::result::Result<(), bech32::primitives::segwit::InvalidWitnessVersionError>
+pub fn bech32::segwit::DecodeError::clone(&self) -> bech32::segwit::DecodeError
+pub fn bech32::segwit::DecodeError::eq(&self, other: &bech32::segwit::DecodeError) -> bool
+pub fn bech32::segwit::DecodeError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::segwit::DecodeError::from(e: bech32::primitives::decode::SegwitHrpstringError) -> Self
+pub fn bech32::segwit::DecodeError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::segwit::EncodeError::clone(&self) -> bech32::segwit::EncodeError
+pub fn bech32::segwit::EncodeError::eq(&self, other: &bech32::segwit::EncodeError) -> bool
+pub fn bech32::segwit::EncodeError::fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result
+pub fn bech32::segwit::EncodeError::from(e: bech32::primitives::decode::SegwitCodeLengthError) -> Self
+pub fn bech32::segwit::EncodeError::from(e: bech32::primitives::segwit::InvalidWitnessVersionError) -> Self
+pub fn bech32::segwit::EncodeError::from(e: bech32::primitives::segwit::WitnessLengthError) -> Self
+pub fn bech32::segwit::EncodeError::from(e: core::fmt::Error) -> Self
+pub fn bech32::segwit::EncodeError::source(&self) -> core::option::Option<&(dyn core::error::Error + 'static)>
+pub fn bech32::segwit::decode(s: &str) -> core::result::Result<(bech32::primitives::hrp::Hrp, bech32::primitives::gf32::Fe32, alloc::vec::Vec<u8>), bech32::segwit::DecodeError>
+pub fn bech32::segwit::encode(hrp: bech32::primitives::hrp::Hrp, witness_version: bech32::primitives::gf32::Fe32, witness_program: &[u8]) -> core::result::Result<alloc::string::String, bech32::segwit::EncodeError>
+pub fn bech32::segwit::encode_lower_to_fmt_unchecked<W: core::fmt::Write>(fmt: &mut W, hrp: bech32::primitives::hrp::Hrp, witness_version: bech32::primitives::gf32::Fe32, witness_program: &[u8]) -> core::fmt::Result
+pub fn bech32::segwit::encode_lower_to_writer_unchecked<W: std::io::Write>(w: &mut W, hrp: bech32::primitives::hrp::Hrp, witness_version: bech32::primitives::gf32::Fe32, witness_program: &[u8]) -> std::io::error::Result<()>
+pub fn bech32::segwit::encode_to_fmt_unchecked<W: core::fmt::Write>(fmt: &mut W, hrp: bech32::primitives::hrp::Hrp, witness_version: bech32::primitives::gf32::Fe32, witness_program: &[u8]) -> core::fmt::Result
+pub fn bech32::segwit::encode_to_writer_unchecked<W: std::io::Write>(w: &mut W, hrp: bech32::primitives::hrp::Hrp, witness_version: bech32::primitives::gf32::Fe32, witness_program: &[u8]) -> std::io::error::Result<()>
+pub fn bech32::segwit::encode_upper_to_fmt_unchecked<W: core::fmt::Write>(fmt: &mut W, hrp: bech32::primitives::hrp::Hrp, witness_version: bech32::primitives::gf32::Fe32, witness_program: &[u8]) -> core::fmt::Result
+pub fn bech32::segwit::encode_upper_to_writer_unchecked<W: std::io::Write>(w: &mut W, hrp: bech32::primitives::hrp::Hrp, witness_version: bech32::primitives::gf32::Fe32, witness_program: &[u8]) -> std::io::error::Result<()>
+pub fn bech32::segwit::encode_v0(hrp: bech32::primitives::hrp::Hrp, witness_program: &[u8]) -> core::result::Result<alloc::string::String, bech32::segwit::EncodeError>
+pub fn bech32::segwit::encode_v1(hrp: bech32::primitives::hrp::Hrp, witness_program: &[u8]) -> core::result::Result<alloc::string::String, bech32::segwit::EncodeError>
+pub fn bech32::segwit::encoded_length(hrp: bech32::primitives::hrp::Hrp, _witness_version: bech32::primitives::gf32::Fe32, witness_program: &[u8]) -> core::result::Result<usize, bech32::primitives::decode::SegwitCodeLengthError>
+pub fn u128::mul_by_x_then_add(&mut self, degree: usize, add: u8) -> u8
+pub fn u128::unpack(&self, n: usize) -> u8
+pub fn u32::mul_by_x_then_add(&mut self, degree: usize, add: u8) -> u8
+pub fn u32::unpack(&self, n: usize) -> u8
+pub fn u64::mul_by_x_then_add(&mut self, degree: usize, add: u8) -> u8
+pub fn u64::unpack(&self, n: usize) -> u8
+pub fn u8::from(v: bech32::primitives::gf32::Fe32) -> u8
+pub mod bech32
+pub mod bech32::hrp
+pub mod bech32::primitives
+pub mod bech32::primitives::checksum
+pub mod bech32::primitives::decode
+pub mod bech32::primitives::encode
+pub mod bech32::primitives::gf32
+pub mod bech32::primitives::hrp
+pub mod bech32::primitives::iter
+pub mod bech32::primitives::segwit
+pub mod bech32::segwit
+pub struct bech32::Hrp
+pub struct bech32::hrp::Hrp
+pub struct bech32::primitives::checksum::Engine<Ck: bech32::primitives::checksum::Checksum>
+pub struct bech32::primitives::checksum::HrpFe32Iter<'hrp>
+pub struct bech32::primitives::checksum::PackedNull
+pub struct bech32::primitives::decode::AsciiToFe32Iter<'s>
+pub struct bech32::primitives::decode::ByteIter<'s>
+pub struct bech32::primitives::decode::CheckedHrpstring<'s>
+pub struct bech32::primitives::decode::Fe32Iter<'s>
+pub struct bech32::primitives::decode::SegwitHrpstring<'s>
+pub struct bech32::primitives::decode::UncheckedHrpstring<'s>
+pub struct bech32::primitives::encode::ByteIter<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+pub struct bech32::primitives::encode::CharIter<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+pub struct bech32::primitives::encode::Encoder<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+pub struct bech32::primitives::encode::Fe32Iter<'hrp, I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+pub struct bech32::primitives::encode::WitnessVersionIter<I> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>
+pub struct bech32::primitives::hrp::ByteIter<'b>
+pub struct bech32::primitives::hrp::CharIter<'b>
+pub struct bech32::primitives::hrp::Hrp
+pub struct bech32::primitives::hrp::LowercaseByteIter<'b>
+pub struct bech32::primitives::hrp::LowercaseCharIter<'b>
+pub struct bech32::primitives::iter::BytesToFes<I: core::iter::traits::iterator::Iterator<Item = u8>>
+pub struct bech32::primitives::iter::Checksummed<I, Ck> where I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>, Ck: bech32::primitives::checksum::Checksum
+pub struct bech32::primitives::iter::FesToBytes<I: core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>>
+pub trait bech32::ByteIterExt: core::marker::Sized + core::iter::traits::iterator::Iterator<Item = u8>
+pub trait bech32::Checksum
+pub trait bech32::Fe32IterExt: core::marker::Sized + core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>
+pub trait bech32::primitives::checksum::Checksum
+pub trait bech32::primitives::checksum::PackedFe32: core::marker::Copy + core::cmp::PartialEq + core::cmp::Eq + core::ops::bit::BitXor<Self, Output = Self>
+pub trait bech32::primitives::iter::ByteIterExt: core::marker::Sized + core::iter::traits::iterator::Iterator<Item = u8>
+pub trait bech32::primitives::iter::Fe32IterExt: core::marker::Sized + core::iter::traits::iterator::Iterator<Item = bech32::primitives::gf32::Fe32>
+pub type &bech32::primitives::gf32::Fe32::Output = bech32::primitives::gf32::Fe32
+pub type bech32::Checksum::MidstateRepr: bech32::primitives::checksum::PackedFe32
+pub type bech32::primitives::Bech32::MidstateRepr = u32
+pub type bech32::primitives::Bech32m::MidstateRepr = u32
+pub type bech32::primitives::NoChecksum::MidstateRepr = bech32::primitives::checksum::PackedNull
+pub type bech32::primitives::checksum::Checksum::MidstateRepr: bech32::primitives::checksum::PackedFe32
+pub type bech32::primitives::checksum::HrpFe32Iter<'hrp>::Item = bech32::primitives::gf32::Fe32
+pub type bech32::primitives::checksum::PackedNull::Output = bech32::primitives::checksum::PackedNull
+pub type bech32::primitives::decode::AsciiToFe32Iter<'s>::Item = bech32::primitives::gf32::Fe32
+pub type bech32::primitives::decode::ByteIter<'s>::Item = u8
+pub type bech32::primitives::decode::Fe32Iter<'s>::Item = bech32::primitives::gf32::Fe32
+pub type bech32::primitives::encode::ByteIter<'a, I, Ck>::Item = u8
+pub type bech32::primitives::encode::CharIter<'a, I, Ck>::Item = char
+pub type bech32::primitives::encode::Fe32Iter<'hrp, I, Ck>::Item = bech32::primitives::gf32::Fe32
+pub type bech32::primitives::encode::WitnessVersionIter<I>::Item = bech32::primitives::gf32::Fe32
+pub type bech32::primitives::gf32::Fe32::Error = bech32::primitives::gf32::TryFromError
+pub type bech32::primitives::gf32::Fe32::Output = bech32::primitives::gf32::Fe32
+pub type bech32::primitives::hrp::ByteIter<'b>::Item = u8
+pub type bech32::primitives::hrp::CharIter<'b>::Item = char
+pub type bech32::primitives::hrp::LowercaseByteIter<'b>::Item = u8
+pub type bech32::primitives::hrp::LowercaseCharIter<'b>::Item = char
+pub type bech32::primitives::iter::BytesToFes<I>::Item = bech32::primitives::gf32::Fe32
+pub type bech32::primitives::iter::Checksummed<I, Ck>::Item = bech32::primitives::gf32::Fe32
+pub type bech32::primitives::iter::FesToBytes<I>::Item = u8

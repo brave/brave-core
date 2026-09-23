@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
+index 569803648f205e48f47dab4d11ed541d1c69e5d5..c8a03ff3eac262bcdd8fed3485630273a8e7d54d 100644
+--- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
++++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
+@@ -786,7 +786,16 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
+ #endif
+ 
+   if (resource_name.empty()) {
+-    DUMP_WILL_BE_NOTREACHED()
++    if (icon.name == kLeoWindowTabNewIcon.name) {
++    return kLeoWindowTabNewIconResourceName;
++  } else if (icon.name == kLeoMessageBubbleAskIcon.name) {
++    return kLeoMessageBubbleAskIconResourceName;
++  }
++  // This function is used for the WebUI Omnibox which isn't enabled in
++  // Brave, so its okay to disable the DUMP_WILL_BE_NOTREACHED() check
++  // here and use the default icon instead.
++  if ((true)) return "";
++  DUMP_WILL_BE_NOTREACHED()
+         << "Every autocomplete icon must have an equivalent SVG "
+            "resource for the NTP Realbox. icon.name: '"
+         << icon.name << "'";
+@@ -1235,7 +1244,7 @@ void SearchboxHandler::QueryAutocomplete(
+   current_query_id_ = query_id;
+ 
+   std::u16string input_with_keyword = input;
+-  bool is_keyword_selected = false;
++  bool is_keyword_selected = true;
+   const TemplateURL* template_url = nullptr;
+   if (!keyword.empty()) {
+     TemplateURLService* service =

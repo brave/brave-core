@@ -1,0 +1,25 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("url_sanitizer") {
+  sources = [
+    "url_sanitizer_service_factory+private.h",
+    "url_sanitizer_service_factory.h",
+    "url_sanitizer_service_factory.mm",
+  ]
+  deps = [
+    "//base",
+    "//brave/components/url_sanitizer/core/browser",
+    "//brave/components/url_sanitizer/ios/browser",
+    "//brave/ios/browser/application_context",
+    "//brave/ios/browser/keyed_service",
+    "//components/keyed_service/core",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+    "//ios/web/public",
+  ]
+  frameworks = [ "Foundation.framework" ]
+}

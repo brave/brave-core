@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Never add upstream's Material tab strip colors.
+
+      Brave has not used upstream's Material tab strip colors since the
+      Chromium 127 tabstrip style fix, so AddMaterialTabStripColorMixer()
+      must stay a no-op.
+    preempt_function_impl:
+      function_name: AddMaterialTabStripColorMixer
+      return_if: '(true)'

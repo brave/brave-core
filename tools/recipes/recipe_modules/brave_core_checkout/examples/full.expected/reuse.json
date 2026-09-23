@@ -1,0 +1,107 @@
+[
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/b/src/brave",
+      "fetch",
+      "--depth",
+      "2",
+      "origin",
+      "master"
+    ],
+    "name": "fetch brave-core ref"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/b/src/brave",
+      "checkout",
+      "--force",
+      "FETCH_HEAD"
+    ],
+    "name": "checkout brave-core ref"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/b/src/brave",
+      "sparse-checkout",
+      "list"
+    ],
+    "name": "sparse-checkout list"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/b/src/brave",
+      "sparse-checkout",
+      "add",
+      "third_party/node"
+    ],
+    "name": "sparse-checkout add"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/b/src/brave",
+      "fetch",
+      "--depth",
+      "2",
+      "origin",
+      "master"
+    ],
+    "name": "fetch brave-core ref (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/b/src/brave",
+      "checkout",
+      "--force",
+      "FETCH_HEAD"
+    ],
+    "name": "checkout brave-core ref (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/b/src/brave",
+      "sparse-checkout",
+      "list"
+    ],
+    "name": "sparse-checkout list (2)"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/b/src/brave",
+      "sparse-checkout",
+      "add",
+      "tools/cr/bootstrap"
+    ],
+    "name": "sparse-checkout add (2)"
+  },
+  {
+    "cmd": [
+      "npm",
+      "--version"
+    ],
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/b/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "npm version"
+  },
+  {
+    "name": "$result"
+  }
+]

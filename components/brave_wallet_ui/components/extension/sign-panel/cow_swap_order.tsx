@@ -1,0 +1,240 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
+
+// Types / constants
+import { BraveWallet } from '../../../constants/types'
+import { UNKNOWN_TOKEN_COINGECKO_ID } from '../../../common/constants/magics'
+
+// Utils
+import { getLocale } from '../../../../common/locale'
+import { findTokenByContractAddress } from '../../../utils/asset-utils'
+import { getAccountLabel, getAddressLabel } from '../../../utils/account-utils'
+
+// Styled components
+import { StyledWrapper, TopRow, SignPanelButtonRow, HeaderTitle } from './style'
+import { WalletButton, Text } from '../../shared/style'
+import { CreateNetworkIcon } from '../../shared/create-network-icon/index'
+
+// Components
+import { NavButton } from '../buttons/nav-button/index'
+import {
+  TransactionQueueSteps, //
+} from '../confirm-transaction-panel/common/queue'
+import { Origin } from '../confirm-transaction-panel/common/origin'
+import { SwapBase } from '../swap'
+import { EthSignTypedData } from './common/eth_sign_typed_data'
+
+// Queries
+import {
+  useGetCombinedTokensListQuery, //
+} from '../../../common/slices/api.slice.extra'
+import {
+  useGetAccountInfosRegistryQuery, //
+  useGetNetworkQuery,
+} from '../../../common/slices/api.slice'
+
+// Hooks
+import { useAccountOrb, useAddressOrb } from '../../../common/hooks/use-orb'
+
+const makeUnknownToken = (
+  chainId: string,
+  coin: BraveWallet.CoinType,
+  contractAddress: string,
+) => ({
+  chainId,
+  coin,
+  symbol: '???',
+  contractAddress,
+  logo: '',
+  isErc721: false,
+  isNft: false,
+  name: '',
+  coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
+  decimals: 0,
+  zcashTokenType: BraveWallet.ZCashTokenType.kNone,
+})
+
+interface Props {
+  data: BraveWallet.SignMessageRequest
+  queueLength: number
+  queueNumber: number
+  isDisabled: boolean
+  onQueueNextSignMessage: () => void
+  onSignIn: () => void
+  onCancel: () => void
+}
+
+export function SignCowSwapOrder(props: Props) {
+  const {
+    data,
+    queueLength,
+    queueNumber,
+    isDisabled,
+    onQueueNextSignMessage,
+    onSignIn,
+    onCancel,
+  } = props
+
+  // State
+  const [showDetails, setShowDetails] = React.useState<boolean>(false)
+
+  const { data: combinedTokensList } = useGetCombinedTokensListQuery()
+  const { data: accounts } = useGetAccountInfosRegistryQuery()
+
+  const cowSwapOrder = data.signData.ethSignTypedData?.meta?.cowSwapOrder
+
+  const buyToken = cowSwapOrder?.buyToken
+    ? findTokenByContractAddress(cowSwapOrder.buyToken, combinedTokensList)
+    : undefined
+  const sellToken = cowSwapOrder?.sellToken
+    ? findTokenByContractAddress(cowSwapOrder.sellToken, combinedTokensList)
+    : undefined
+
+  const { data: network } = useGetNetworkQuery({
+    chainId: data.chainId,
+    coin: data.coin,
+  })
+
+  const senderLabel = accounts && getAccountLabel(data.accountId, accounts)
+  const recipientLabel =
+    accounts
+    && cowSwapOrder
+    && cowSwapOrder.receiver
+    && getAddressLabel(cowSwapOrder.receiver, accounts)
+  const senderOrb = useAccountOrb({
+    accountId: data.accountId,
+    address: data.accountId.address,
+  })
+  const recipientOrb = useAddressOrb(cowSwapOrder?.receiver, { scale: 10 })
+
+  return (
+    <StyledWrapper>
+      <TopRow>
+        <TransactionQueueSteps
+          queueNextTransaction={onQueueNextSignMessage}
+          transactionQueueNumber={queueNumber}
+          transactionsQueueLength={queueLength}
+        />
+      </TopRow>
+
+      <HeaderTitle>{getLocale(S.BRAVE_WALLET_SWAP_REVIEW_HEADER)}</HeaderTitle>
+
+      <Origin originInfo={data.originInfo} />
+
+      {!showDetails && (
+        <SwapBase
+          sellToken={
+            sellToken
+            || (cowSwapOrder
+              ? makeUnknownToken(
+                  data.chainId,
+                  data.coin,
+                  cowSwapOrder.sellToken,
+                )
+              : undefined)
+          }
+          buyToken={
+            buyToken
+            || (cowSwapOrder
+              ? makeUnknownToken(data.chainId, data.coin, cowSwapOrder.buyToken)
+              : undefined)
+          }
+          sellAmount={cowSwapOrder?.sellAmount}
+          buyAmount={cowSwapOrder?.buyAmount}
+          senderLabel={senderLabel}
+          senderOrb={senderOrb}
+          recipientOrb={recipientOrb}
+          recipientLabel={recipientLabel}
+          expectRecipientAddress={true}
+        />
+      )}
+
+      {showDetails && (
+        <EthSignTypedData
+          data={data.signData.ethSignTypedData}
+          height='220px'
+          width='calc(100% - 8px)'
+        />
+      )}
+
+      <NetworkFeeAndDetailsContainer>
+        <NetworkFeeContainer>
+          <NetworkFeeTitle>
+            {getLocale(S.BRAVE_WALLET_NETWORK_FEES)}
+          </NetworkFeeTitle>
+          <NetworkFeeValue>
+            <CreateNetworkIcon
+              network={network}
+              marginRight={0}
+            />
+            {getLocale(S.BRAVE_SWAP_FREE)}
+          </NetworkFeeValue>
+        </NetworkFeeContainer>
+        <TextButton onClick={() => setShowDetails(!showDetails)}>
+          {showDetails
+            ? getLocale(
+                S.BRAVE_WALLET_SIGN_TRANSACTION_EIP712_MESSAGE_HIDE_DETAILS,
+              )
+            : getLocale(S.BRAVE_WALLET_DETAILS)}
+        </TextButton>
+      </NetworkFeeAndDetailsContainer>
+
+      <SignPanelButtonRow>
+        <NavButton
+          buttonType='secondary'
+          text={getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
+          onSubmit={onCancel}
+          disabled={isDisabled}
+        />
+        <NavButton
+          buttonType='sign'
+          text={getLocale(S.BRAVE_WALLET_SIGN_TRANSACTION_BUTTON)}
+          onSubmit={onSignIn}
+          disabled={isDisabled}
+        />
+      </SignPanelButtonRow>
+    </StyledWrapper>
+  )
+}
+
+const NetworkFeeAndDetailsContainer = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: calc(100% - 8px);
+`
+
+const NetworkFeeContainer = styled.div``
+
+const NetworkFeeTitle = styled(Text).attrs({
+  variant: 'small.regular',
+  textColor: 'secondary',
+})``
+
+const NetworkFeeValue = styled(Text).attrs({
+  variant: 'default.semibold',
+})`
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  letter-spacing: ${leo.typography.letterSpacing.default};
+  color: ${leo.color.systemfeedback.successText};
+`
+
+const TextButton = styled(WalletButton)`
+  font: ${leo.font.small.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.small};
+  color: ${leo.color.text.interactive};
+  background: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+`

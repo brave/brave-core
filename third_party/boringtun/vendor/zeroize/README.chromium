@@ -1,0 +1,14 @@
+Name: zeroize
+Short Name: zeroize
+URL: https://github.com/RustCrypto/utils
+Version: 1.8.2
+License: Apache-2.0 OR MIT
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/zeroize.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

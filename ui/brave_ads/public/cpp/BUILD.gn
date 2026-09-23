@@ -1,0 +1,29 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# C++ headers and sources that can be used outside brave_ads.
+component("cpp") {
+  output_name = "brave_ui_brave_ads_cpp"
+
+  sources = [
+    "brave_ads_public_export.h",
+    "constants.h",
+    "notification.cc",
+    "notification.h",
+    "notification_delegate.cc",
+    "notification_delegate.h",
+  ]
+
+  defines = [ "BRAVE_ADS_UI_PUBLIC_IMPLEMENTATION" ]
+
+  public_deps = [ "//skia" ]
+
+  deps = [
+    "//base",
+    "//ui/gfx",
+    "//ui/strings",
+    "//url",
+  ]
+}

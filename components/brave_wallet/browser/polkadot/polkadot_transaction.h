@@ -1,0 +1,78 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TRANSACTION_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TRANSACTION_H_
+
+#include <vector>
+
+#include "base/values.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet_types.h"
+
+namespace brave_wallet {
+
+struct PolkadotTransaction {
+ public:
+  PolkadotTransaction();
+  ~PolkadotTransaction();
+
+  PolkadotTransaction(PolkadotTransaction&&);
+
+  base::DictValue ToValue() const;
+  static std::optional<PolkadotTransaction> FromValue(
+      const base::DictValue& value);
+
+  const PolkadotAddress& recipient() const { return recipient_; }
+  void set_recipient(PolkadotAddress recipient) { recipient_ = recipient; }
+
+  uint128_t amount() const { return amount_; }
+  void set_amount(uint128_t amount) { amount_ = amount; }
+
+  uint128_t fee() const { return fee_; }
+  void set_fee(uint128_t fee) { fee_ = fee; }
+
+  bool transfer_all() const { return transfer_all_; }
+  void set_transfer_all(bool transfer_all) { transfer_all_ = transfer_all; }
+
+  std::optional<uint32_t> asset_id() const { return asset_id_; }
+  void set_asset_id(uint32_t asset_id) { asset_id_ = asset_id; }
+
+  // The SCALE-encoded blob the sender signs to authorize this transfer. It's
+  // stored while the transaction is still unapproved so the confirmation UI can
+  // show the user what they're about to sign, and refreshed with the payload
+  // that was actually signed once the transaction is approved.
+  const std::vector<uint8_t>& signature_payload() const {
+    return signature_payload_;
+  }
+
+  void set_signature_payload(std::vector<uint8_t> signature_payload) {
+    signature_payload_ = std::move(signature_payload);
+  }
+
+  const PolkadotExtrinsicMetadata* extrinsic_metadata() const {
+    return extrinsic_metadata_.has_value() ? &extrinsic_metadata_.value()
+                                           : nullptr;
+  }
+
+  void set_extrinsic_metadata(PolkadotExtrinsicMetadata metadata) {
+    extrinsic_metadata_ = std::move(metadata);
+  }
+
+ private:
+  PolkadotAddress recipient_;
+  uint128_t amount_ = uint128_t{0};
+  uint128_t fee_ = uint128_t{0};
+  bool transfer_all_ = false;
+  std::optional<uint32_t> asset_id_;
+  std::vector<uint8_t> signature_payload_;
+
+  std::optional<PolkadotExtrinsicMetadata> extrinsic_metadata_;
+};
+
+}  // namespace brave_wallet
+
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TRANSACTION_H_

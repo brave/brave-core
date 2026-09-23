@@ -1,0 +1,73 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+import("//third_party/jni_zero/jni_zero.gni")
+
+source_set("youtube_script_injector") {
+  sources = [
+    "brave_youtube_script_injector_native_helper.cc",
+    "brave_youtube_script_injector_native_helper.h",
+    "youtube_script_injector_tab_helper.cc",
+    "youtube_script_injector_tab_helper.h",
+  ]
+
+  public_deps = [ "//content/public/browser" ]
+
+  deps = [
+    ":features",
+    "//base",
+    "//brave/build/android:jni_headers",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/constants",
+    "//brave/components/script_injector/common/mojom",
+    "//chrome/browser/profiles:profile",
+    "//chrome/common",
+    "//components/prefs",
+    "//net",
+    "//url",
+  ]
+}
+
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  public_deps = [ "//base" ]
+}
+
+source_set("browser_tests") {
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+  testonly = true
+  sources = [
+    "youtube_script_injector_browsertest.cc",
+    "youtube_script_injector_tab_helper_browsertest.cc",
+  ]
+
+  deps = [
+    ":features",
+    ":youtube_script_injector",
+    "//base",
+    "//brave/components/constants",
+    "//chrome/test:test_support",
+    "//net:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "youtube_script_injector_tab_helper_unittest.cc" ]
+
+  deps = [
+    ":youtube_script_injector",
+    "//base/test:test_support",
+    "//chrome/test:test_support",
+    "//testing/gtest",
+  ]
+}

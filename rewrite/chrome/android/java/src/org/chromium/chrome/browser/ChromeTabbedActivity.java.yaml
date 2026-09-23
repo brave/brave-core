@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Only remove a window with zero tabs when Brave allows it
+    regex:
+      re_pattern: |-
+        ( +)private void (closeIfNoTabsAndHomepageEnabled)(\(\n +boolean isPendingClosure, boolean shouldRemoveWindowWithZeroTabs\) \{)
+      replace: |-
+        \1private void \2\3
+        \1    if (getTabModelSelector().getTotalTabCount() == 0) {
+        \1        shouldRemoveWindowWithZeroTabs = shouldRemoveWindowWithZeroTabs && org.chromium.chrome.browser.partnercustomizations.CloseBraveManager.shouldCloseAppWithZeroTabs();
+        \1    }
+        \1    \2_ChromiumImpl(isPendingClosure, shouldRemoveWindowWithZeroTabs);
+        \1}
+
+        \1private void \2_ChromiumImpl\3
+  - description: |-
+      Notify Brave once tab state has been initialized
+    regex:
+      re_pattern: |-
+        ( +)public void (onTabStateInitialized)(\(\) \{)
+      replace: |-
+        \1public void \2\3
+        \1    \2_ChromiumImpl();
+        \1    onTabStateInitializedHandler();
+        \1}
+
+        \1private void \2_ChromiumImpl\3

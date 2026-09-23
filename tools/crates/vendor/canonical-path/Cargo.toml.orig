@@ -1,0 +1,19 @@
+[package]
+name        = "canonical-path"
+description = "Path and PathBuf-like types for representing canonical filesystem paths"
+version     = "2.0.2" # Also update html_root_url in lib.rs when bumping this
+authors     = ["Tony Arcieri <tony@iqlusion.io>"]
+license     = "Apache-2.0"
+edition     = "2018"
+homepage    = "https://github.com/iqlusioninc/crates/"
+repository  = "https://github.com/iqlusioninc/crates/tree/develop/canonical-path"
+readme      = "README.md"
+categories  = ["filesystem"]
+keywords    = ["filesystem", "path", "canonicalization"]
+
+[badges]
+maintenance = { status = "passively-maintained" }
+travis-ci = { repository = "iqlusioninc/crates", branch = "develop" }
+
+[dev-dependencies]
+tempfile = "3"

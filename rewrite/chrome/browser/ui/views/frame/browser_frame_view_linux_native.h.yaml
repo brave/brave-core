@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Note: MaybeUpdateCachedFrameButtonImages is already declared `virtual`
+# upstream, so no make_virtual substitution is needed — only the friend
+# declaration so BraveBrowserFrameViewLinuxNative can reach private members
+# (nav_button_provider_, cache_).
+substitutions:
+  - description: 'Friend BraveBrowserFrameViewLinuxNative'
+    add_friend:
+      class_name: BrowserFrameViewLinuxNative
+      friend_type: class BraveBrowserFrameViewLinuxNative

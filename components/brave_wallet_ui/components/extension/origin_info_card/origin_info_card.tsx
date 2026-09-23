@@ -1,0 +1,104 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+
+// Images
+import BraveIcon from '../../../assets/svg-icons/brave-icon.svg'
+import PlaceholderIcon from '../../../assets/svg-icons/nft-placeholder.svg'
+
+// Types
+import { BraveWallet } from '../../../constants/types'
+
+// Utils
+import {
+  getIsBraveWalletOrigin,
+  isComponentInStorybook,
+} from '../../../utils/string-utils'
+import { getLocale } from '../../../../common/locale'
+
+// Components
+import { CreateSiteOrigin } from '../../shared/create-site-origin'
+
+// Styled Components
+import {
+  FavIcon,
+  OriginName,
+  OriginUrl,
+  StyledWrapper,
+} from './origin_info_card.style'
+import { Column } from '../../shared/style'
+
+const isStorybook = isComponentInStorybook()
+
+interface Props {
+  origin: BraveWallet.OriginInfo
+  noBackground?: boolean
+  provider?: string
+  orientation?: 'horizontal' | 'vertical'
+}
+
+export const OriginInfoCard = (props: Props) => {
+  const {
+    origin,
+    noBackground = false,
+    provider,
+    orientation = 'horizontal',
+  } = props
+
+  // Computed
+  const isBraveWallet = getIsBraveWalletOrigin(origin)
+
+  // In Storybook, show a placeholder icon.
+  const iconSrc = isStorybook
+    ? PlaceholderIcon
+    : 'chrome://favicon2?size=64&pageUrl='
+      + encodeURIComponent(origin.originSpec)
+
+  return (
+    <StyledWrapper
+      padding='10px 16px'
+      gap={orientation === 'vertical' ? '8px' : '16px'}
+      justifyContent={orientation === 'vertical' ? 'center' : 'flex-start'}
+      noBackground={noBackground}
+      orientation={orientation}
+      data-testid='origin-info-card'
+    >
+      <FavIcon
+        src={isBraveWallet ? BraveIcon : iconSrc}
+        bigger={orientation === 'vertical'}
+      />
+      <Column alignItems={orientation === 'vertical' ? 'center' : 'flex-start'}>
+        {!isBraveWallet && provider && (
+          <OriginName
+            textColor='primary'
+            textAlign={orientation === 'horizontal' ? 'left' : undefined}
+          >
+            {provider}
+          </OriginName>
+        )}
+        <OriginName
+          textColor='primary'
+          textAlign={orientation === 'horizontal' ? 'left' : undefined}
+        >
+          {isBraveWallet
+            ? getLocale(S.BRAVE_WALLET_PANEL_TITLE)
+            : origin.eTldPlusOne}
+        </OriginName>
+        {!isBraveWallet && (
+          <OriginUrl
+            textColor='tertiary'
+            textAlign={orientation === 'horizontal' ? 'left' : undefined}
+          >
+            <CreateSiteOrigin
+              originSpec={origin.originSpec}
+              eTldPlusOne={origin.eTldPlusOne}
+            />
+          </OriginUrl>
+        )}
+      </Column>
+    </StyledWrapper>
+  )
+}

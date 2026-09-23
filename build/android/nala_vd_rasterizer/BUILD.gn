@@ -1,0 +1,51 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+# VdPreview (Android's VectorDrawable renderer) lives in sdk-common.jar. The
+# upstream //third_party/android_deps targets for these Android-tools jars are
+# visibility-restricted to //build/android/unused_resources and intentionally
+# ship without their transitive deps, so re-declare them here, pointing at the
+# same CIPD jars, with the deps VdPreview needs at runtime. guava and the
+# Kotlin stdlib are public, so they are referenced directly.
+_android_tools_dir = "//third_party/android_deps/cipd/libs"
+
+java_prebuilt("layoutlib_api_java") {
+  jar_path = "$_android_tools_dir/com_android_tools_layoutlib_layoutlib_api/layoutlib-api.jar"
+  output_name = "brave_nala_layoutlib_api"
+  enable_bytecode_checks = false
+  deps = [ ":common_java" ]
+}
+
+java_prebuilt("common_java") {
+  jar_path = "$_android_tools_dir/com_android_tools_common/common.jar"
+  output_name = "brave_nala_android_common"
+  enable_bytecode_checks = false
+  deps = [
+    "//third_party/android_deps:guava_java",
+    "//third_party/kotlin_stdlib:kotlin_stdlib_java",
+  ]
+}
+
+java_prebuilt("sdk_common_java") {
+  jar_path = "$_android_tools_dir/com_android_tools_sdk_common/sdk-common.jar"
+  output_name = "brave_nala_sdk_common"
+  enable_bytecode_checks = false
+  deps = [
+    ":common_java",
+    ":layoutlib_api_java",
+    "//third_party/android_deps:guava_java",
+    "//third_party/kotlin_stdlib:kotlin_stdlib_java",
+  ]
+}
+
+java_binary("nala_vd_rasterizer") {
+  main_class = "org.chromium.build.nala.NalaVdRasterizer"
+  sources = [ "java/org/chromium/build/nala/NalaVdRasterizer.java" ]
+  deps = [ ":sdk_common_java" ]
+  wrapper_script_name = "helper/nala_vd_rasterizer"
+  enable_errorprone = false
+}

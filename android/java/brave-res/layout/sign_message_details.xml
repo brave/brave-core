@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/fragment_sign_msg_tv_message_details"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:textColor="@color/tab_color"
+        android:gravity="center"
+        android:text="@string/details"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/view_tab_line"
+        android:layout_width="match_parent"
+        android:background="@drawable/tab_gradient_separator"
+        android:layout_marginBottom="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fragment_sign_msg_tv_message_details"
+        android:layout_height="2dp" />
+
+    <LinearLayout
+        android:id="@+id/non_ascii_warning_layout"
+        android:background="@drawable/wallet_top_banner_bg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view_tab_line">
+
+        <TextView
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/wallet_error_text_color"
+            android:drawablePadding="2dp"
+            app:drawableStartCompat="@drawable/ic_warning"
+            android:text="@string/wallet_non_ascii_characters"/>
+
+        <TextView
+            android:id="@+id/non_ascii_warning_text_link"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textSize="16sp"
+            android:textColor="@color/brave_link"
+            android:text="@string/wallet_non_ascii_characters_original"/>
+
+    </LinearLayout>
+
+    <include
+        android:id="@+id/sign_msg_warning_container"
+        layout="@layout/sign_warning_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/non_ascii_warning_layout" />
+
+    <EditText
+        android:id="@+id/sign_message_text"
+        style="@style/BraveWalletEditTextBordered"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="32dp"
+        android:inputType="none"
+        android:paddingVertical="10dp"
+        android:textIsSelectable="true"
+        android:focusable="false"
+        android:longClickable="false"
+        android:importantForAutofill="no"
+        app:layout_constraintBottom_toTopOf="@+id/approve_tx_bottom_sheet_action"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/non_ascii_warning_layout"
+        android:scrollbars="vertical"
+        android:fadeScrollbars="false"
+        tools:ignore="LabelFor" />
+
+    <LinearLayout
+        android:id="@+id/approve_tx_bottom_sheet_action"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/fragment_sign_msg_btn_cancel"
+            style="@style/BraveWalletButtonHollow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:text="@string/brave_cancel"
+            android:textSize="16sp"
+            tools:ignore="DuplicateSpeakableTextCheck" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/fragment_sign_msg_btn_sign"
+            style="@style/BraveWalletButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginStart="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_weight="1"
+            android:drawableStart="@drawable/ic_key"
+            app:drawableTint="@color/brave_white"
+            android:text="@string/brave_wallet_sign_message_positive_button_action" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,44 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Expose new_tab_button() and GetComboButton() to Brave
+    add_to_public:
+      class_name: HorizontalTabStripRegionViewOld
+      code: |-
+        views::Button* new_tab_button() { return new_tab_button_; }
+        TabStripComboButton* GetComboButton() { return combo_button_; }
+
+  - description: |
+      Friend the Brave tab strip subclasses
+
+      Grants the Brave tab strip subclasses access to private members.
+    add_friend:
+      class_name: HorizontalTabStripRegionViewOld
+      friend_type:
+        - class BraveVerticalTabStripRegionView
+        - class BraveTabStrip
+        - class BraveHorizontalTabStripRegionView
+
+  - description: |
+      Friend the vertical tab strip browser test
+
+      FRIEND_TEST_ALL_PREFIXES is a macro rather than a `friend class`, so it is
+      added with a regex. It runs before add_friend below so the friend classes
+      end up ahead of it (as add_friend prepends to the private section).
+    regex:
+      re_pattern: '(  friend class BraveHorizontalTabStripRegionView;)'
+      replace: |-
+        \1
+          FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, MinHeight);
+
+  - description: |
+      Make UpdateTabStripMargin overridable
+
+      BraveHorizontalTabStripRegionView overrides this method.
+    make_virtual:
+      class_name: HorizontalTabStripRegionViewOld
+      method_name: UpdateTabStripMargin

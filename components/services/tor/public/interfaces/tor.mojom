@@ -1,0 +1,27 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+module tor.mojom;
+
+import "mojo/public/mojom/base/safe_base_name.mojom";
+import "sandbox/policy/mojom/sandbox.mojom";
+
+struct TorConfig {
+  // The install directory provided by the component updater for the Tor
+  // client.
+  mojo_base.mojom.SafeBaseName install_dir;
+
+  // The filename for the tor executable. The executable is expected to be in
+  // the install directory.
+  mojo_base.mojom.SafeBaseName executable;
+};
+
+[ServiceSandbox=sandbox.mojom.Sandbox.kNoSandbox]
+interface TorLauncher {
+    Shutdown();
+
+    Launch(tor.mojom.TorConfig config) => (bool result, int64 pid);
+
+    SetCrashHandler() => (int64 pid);
+};
+

@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc
+index dc571ae36e3b9b695e86ab9329c20919b455cf4e..d6f1cfd4d489bb1ad68bf95bea7b6d6f86599870 100644
+--- a/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc
++++ b/chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.cc
+@@ -442,7 +442,7 @@ class TabHoverCardBubbleView::TabCardView : public views::View {
+     }
+   }
+ 
+-  void UpdateContent(const HoverCardAnchorTarget* anchor_target) {
++  virtual void UpdateContent(const HoverCardAnchorTarget* anchor_target) {
+     CHECK(std::holds_alternative<TabCardData>(anchor_target->data()));
+     const TabCardData& card_data = std::get<TabCardData>(anchor_target->data());
+ 
+@@ -533,6 +533,7 @@ class TabHoverCardBubbleView::TabCardView : public views::View {
+   }
+ 
+  private:
++  friend class BraveTabCardView;
+   raw_ptr<FadeLabelView> title_label_ = nullptr;
+   raw_ptr<FadeLabelView> domain_label_ = nullptr;
+   raw_ptr<FooterView> footer_view_ = nullptr;
+@@ -679,7 +680,7 @@ TabHoverCardBubbleView::TabHoverCardBubbleView(
+ 
+   SetProperty(views::kElementIdentifierKey, kHoverCardBubbleElementId);
+ 
+-  tab_card_view_ = AddChildView(std::make_unique<TabCardView>(this));
++  tab_card_view_ = AddChildView(CreateTabCardView());
+ 
+   if (std::holds_alternative<TabCardData>(anchor_target->data())) {
+     const TabCardData& card_data = std::get<TabCardData>(anchor_target->data());

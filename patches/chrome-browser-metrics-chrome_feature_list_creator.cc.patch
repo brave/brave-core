@@ -1,0 +1,11 @@
+diff --git a/chrome/browser/metrics/chrome_feature_list_creator.cc b/chrome/browser/metrics/chrome_feature_list_creator.cc
+index 90e572fe4efe1baa00ca8218dbcb3a5d0ad36ddb..526342e18e9ae40255cd50e566d0b17e3cb41f0a 100644
+--- a/chrome/browser/metrics/chrome_feature_list_creator.cc
++++ b/chrome/browser/metrics/chrome_feature_list_creator.cc
+@@ -298,5 +298,6 @@ void ChromeFeatureListCreator::SetupInitialPrefs() {
+     local_state_->SetTime(variations::prefs::kVariationsSeedDate,
+                           base::Time::Now());
+   }
++  BRAVE_CHROME_FEATURE_LIST_CREATOR_SETUP_INITIAL_PREFS
+ #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_CHROMEOS)
+ }

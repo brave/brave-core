@@ -1,0 +1,12 @@
+diff --git a/chrome/common/channel_info_android.cc b/chrome/common/channel_info_android.cc
+index 959a301c4bc7befbe037ad5d06b5c329f9beb97f..8b8036f59ae8b8192468cdc8b316e58a40359a23 100644
+--- a/chrome/common/channel_info_android.cc
++++ b/chrome/common/channel_info_android.cc
+@@ -12,6 +12,7 @@
+ namespace chrome {
+ 
+ std::string GetChannelName(WithExtendedStable with_extended_stable) {
++  if (GetChannel() == version_info::Channel::CANARY) return "nightly";
+   switch (GetChannel()) {
+     case version_info::Channel::UNKNOWN: return "unknown";
+     case version_info::Channel::CANARY: return "canary";

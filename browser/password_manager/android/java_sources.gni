@@ -1,0 +1,32 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_browser_password_manager_java_sources = [
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/BravePasswordManagerHelper.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/BravePasswordsPreference.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/CallbackDelayer.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/DialogManager.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/ExportErrorDialogFragment.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/ExportFlow.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/ExportFlowInterface.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/ImportFlow.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/NonCancelableProgressBar.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/PasswordAccessReauthenticationHelper.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/PasswordListObserver.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/PasswordManagerHandler.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/PasswordManagerHandlerProvider.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/PasswordReauthenticationFragment.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/PasswordUiView.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/ProgressBarDialogFragment.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/ReauthenticationManager.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/SavedPasswordEntry.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/SingleThreadBarrierClosure.java",
+  "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/TimedCallbackDelayer.java",
+]
+
+brave_browser_password_manager_deps =
+    [ "//brave/build/android:android_brave_strings_grd" ]
+
+brave_browser_password_manager_jni_headers = [ "//brave/browser/password_manager/android/java/src/org/chromium/chrome/browser/password_manager/settings/PasswordUiView.java" ]

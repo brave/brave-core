@@ -1,0 +1,13 @@
+diff --git a/tools/perf/core/services/dashboard_service.py b/tools/perf/core/services/dashboard_service.py
+index 6b8450c254bfc1f88df64d80ab3300f848473819..d3006653ef73f70ab089e9f8ea9c58366e9f1b4a 100644
+--- a/tools/perf/core/services/dashboard_service.py
++++ b/tools/perf/core/services/dashboard_service.py
+@@ -12,7 +12,7 @@ import urllib.parse
+ 
+ from core.services import request
+ 
+-SERVICE_URL = 'https://chromeperf.appspot.com'
++SERVICE_URL = 'https://brave-perf-dashboard.appspot.com'
+ 
+ 
+ def Request(endpoint, **kwargs):

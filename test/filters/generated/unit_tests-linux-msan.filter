@@ -1,0 +1,78 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream unit_tests tests with a flake rate >= 1.0% on
+## linux-msan bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 1.2% flake rate over 30 days per LUCI Analysis (505 passed, 0 failed, 6 flaky).
+-AISummarizerWithFeatureConfigTest.CanCreateAndCreateWithManifestSpeedPreference
+
+# 93.3% flake rate over 30 days per LUCI Analysis (22 passed, 0 failed, 308 flaky).
+-All/AppIconColorCacheTestTest.SortableIconColorTest/1
+
+# 12.4% flake rate over 30 days per LUCI Analysis (289 passed, 0 failed, 41 flaky).
+-All/PowerwashTest.PolicyEnabled/1
+
+# 87.9% flake rate over 30 days per LUCI Analysis (40 passed, 0 failed, 290 flaky).
+-ArcAdbdMonitorBridgeTest.TestStartArcVmAdbdFailure
+
+# 50.3% flake rate over 30 days per LUCI Analysis (164 passed, 0 failed, 166 flaky).
+-ArcSystemStateObservationTest.TestCallback
+
+# 5.4% flake rate over 30 days per LUCI Analysis (740 passed, 0 failed, 42 flaky).
+-CastMediaNotificationItemTest.MediaPositionUpdate
+
+# 7.3% flake rate over 30 days per LUCI Analysis (306 passed, 0 failed, 24 flaky).
+-ChromeShelfControllerPromiseAppsTest.PromiseAppNotPinnedByMatchingSyncDataIfNotReadyToBeShown
+
+# 7.3% flake rate over 30 days per LUCI Analysis (306 passed, 0 failed, 24 flaky).
+-ChromeShelfControllerPromiseAppsTest.SyncDataCreatesCorrectShelfItem
+
+# 1.1% flake rate over 30 days per LUCI Analysis (447 passed, 0 failed, 5 flaky).
+-DefaultBrowserManagerTest.CreateControllerForSettingsPage
+
+# 3.3% flake rate over 30 days per LUCI Analysis (319 passed, 0 failed, 11 flaky).
+-FloatingWorkspaceServiceTest.ConnectAfterNotHavingNetworkInitially
+
+# 1.8% flake rate over 30 days per LUCI Analysis (324 passed, 0 failed, 6 flaky).
+-FloatingWorkspaceServiceTest.NetworkConnectedButOffline
+
+# 1.5% flake rate over 30 days per LUCI Analysis (325 passed, 0 failed, 5 flaky).
+-FloatingWorkspaceServiceTest.NoNetworkForFloatingWorkspaceTemplateAfterLongDelay
+
+# 27.0% flake rate over 30 days per LUCI Analysis (571 passed, 0 failed, 211 flaky).
+-GlicEnablingTest.GlicFeatureEnabledTest
+
+# 40.3% flake rate over 30 days per LUCI Analysis (467 passed, 0 failed, 315 flaky).
+-GlicMetricsFeaturesEnabledTest.TimeToEnabledFromStartupDelayed
+
+# 89.1% flake rate over 30 days per LUCI Analysis (36 passed, 0 failed, 294 flaky).
+-MultiDeviceSectionTest.OnScreenLockStatusChanged
+
+# 34.8% flake rate over 30 days per LUCI Analysis (215 passed, 0 failed, 115 flaky).
+-PushNotificationServerClientDesktopImplTest.MakeSecondRequestBeforeFirstRequestSucceeds
+
+# 90.3% flake rate over 30 days per LUCI Analysis (32 passed, 0 failed, 298 flaky).
+-QuickInsertClientImplTest.IgnoresWhatYouTypedResults
+
+# 25.8% flake rate over 30 days per LUCI Analysis (245 passed, 0 failed, 85 flaky).
+-SigninErrorNotifierTest.ErrorShownForUnconsentedPrimaryAccount
+
+# 87.1% flake rate over 30 days per LUCI Analysis (8 passed, 54 failed, 0 flaky).
+-TabRestoreServiceImplWithMockClientTest.RestoreWindowEntryAllTabsClosed
+
+# 87.1% flake rate over 30 days per LUCI Analysis (8 passed, 54 failed, 0 flaky).
+-TabRestoreServiceImplWithMockClientTest.RestoreWindowEntryOmitsTabsClosedDuringRestore
+
+# 2.2% flake rate over 30 days per LUCI Analysis (765 passed, 0 failed, 17 flaky).
+-WebUIContentsPreloadManagerTest.PreloadedContentsChangesAfterSecondWarmupWithDifferentContext
+
+# 55.8% flake rate over 30 days per LUCI Analysis (146 passed, 0 failed, 184 flaky).
+-WeeklyIntervalTimerTest.TimezoneChangeToSameTimezoneDoesNotRetriggerCallback
+
+# 7.6% flake rate over 30 days per LUCI Analysis (305 passed, 0 failed, 25 flaky).
+-WifiDirectServerSocketTest.Close_WhileAccepting
+
+# 5.8% flake rate over 30 days per LUCI Analysis (311 passed, 0 failed, 19 flaky).
+-WifiLanMediumTest.Connect_DestroyWhileWaiting

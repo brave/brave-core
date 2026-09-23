@@ -1,0 +1,58 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//mojo/public/tools/bindings/mojom.gni")
+
+static_library("common") {
+  sources = [
+    "brave_search_utils.cc",
+    "brave_search_utils.h",
+    "features.cc",
+    "features.h",
+    "pref_names.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//components/prefs",
+    "//net",
+    "//url",
+  ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+}
+
+mojom("mojom") {
+  sources = [
+    "brave_search_default.mojom",
+    "brave_search_fallback.mojom",
+  ]
+
+  deps = [ "//mojo/public/mojom/base" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "brave_search_utils_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_search/common",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common" ]
+  }
+}

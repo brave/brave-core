@@ -1,0 +1,30 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("tooltips") {
+  sources = []
+  deps = []
+
+  if (!is_android) {
+    sources += [
+      "ads_captcha_tooltip.cc",
+      "ads_captcha_tooltip.h",
+      "ads_tooltips_controller.cc",
+      "ads_tooltips_controller.h",
+      "ads_tooltips_delegate_impl.cc",
+      "ads_tooltips_delegate_impl.h",
+    ]
+
+    deps += [
+      "//base",
+      "//brave/browser/profiles:util",
+      "//brave/browser/ui/brave_tooltips",
+      "//brave/components/brave_ads/browser",
+      "//brave/components/resources:strings_grit",
+      "//chrome/browser/profiles:profile",
+      "//ui/base",
+    ]
+  }
+}

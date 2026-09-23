@@ -1,0 +1,75 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/webui/brave_wallet/line_chart/line_chart_ui.h"
+
+#include <memory>
+#include <string>
+
+#include "brave/components/brave_wallet/common/web_ui_constants.h"
+#include "brave/components/line_chart_display/resources/grit/line_chart_display_generated_map.h"
+#include "components/grit/brave_components_resources.h"
+#include "components/grit/brave_components_webui_strings.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui_data_source.h"
+#include "ui/webui/webui_util.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/theme_source.h"
+#endif
+
+namespace line_chart {
+
+UntrustedLineChartUI::UntrustedLineChartUI(content::WebUI* web_ui)
+    : ui::UntrustedWebUIController(web_ui) {
+  auto* untrusted_source = content::WebUIDataSource::CreateAndAdd(
+      web_ui->GetWebContents()->GetBrowserContext(), kUntrustedLineChartURL);
+
+  untrusted_source->AddLocalizedStrings(webui::kWalletStrings);
+
+  untrusted_source->SetDefaultResource(
+      IDR_BRAVE_WALLET_LINE_CHART_DISPLAY_HTML);
+  untrusted_source->AddResourcePaths(kLineChartDisplayGenerated);
+  untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPageURL));
+  untrusted_source->AddFrameAncestor(GURL(kBraveUIWalletPanelURL));
+  webui::SetupWebUIDataSource(untrusted_source, kLineChartDisplayGenerated,
+                              IDR_BRAVE_WALLET_LINE_CHART_DISPLAY_HTML);
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ScriptSrc,
+      std::string("script-src 'self' chrome-untrusted://resources "
+                  "chrome-untrusted://brave-resources;"));
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::StyleSrc,
+      std::string("style-src 'self' 'unsafe-inline' "
+                  "chrome-untrusted://resources chrome-untrusted://theme;"));
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FontSrc,
+      std::string("font-src 'self' data: chrome-untrusted://resources;"));
+  untrusted_source->AddString("braveWalletLineChartBridgeUrl",
+                              kUntrustedLineChartURL);
+  untrusted_source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::ImgSrc,
+      std::string("img-src 'self' data:;"));
+
+#if !BUILDFLAG(IS_ANDROID)
+  Profile* profile = Profile::FromWebUI(web_ui);
+  content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(
+                                           profile, /*serve_untrusted=*/true));
+#endif
+}
+
+UntrustedLineChartUI::~UntrustedLineChartUI() = default;
+
+std::unique_ptr<content::WebUIController>
+UntrustedLineChartUIConfig::CreateWebUIController(content::WebUI* web_ui,
+                                                  const GURL& url) {
+  return std::make_unique<UntrustedLineChartUI>(web_ui);
+}
+
+UntrustedLineChartUIConfig::UntrustedLineChartUIConfig()
+    : WebUIConfig(content::kChromeUIUntrustedScheme, kUntrustedLineChartHost) {}
+
+}  // namespace line_chart

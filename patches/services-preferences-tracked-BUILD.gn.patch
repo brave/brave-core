@@ -1,0 +1,12 @@
+diff --git a/services/preferences/tracked/BUILD.gn b/services/preferences/tracked/BUILD.gn
+index aae16eebf1285d7a11b887f538dfcbb3ed29cd15..815b4b496a90a6b32804bf4f23d2eba7382ee10a 100644
+--- a/services/preferences/tracked/BUILD.gn
++++ b/services/preferences/tracked/BUILD.gn
+@@ -70,6 +70,7 @@ source_set("tracked") {
+   if (is_mac) {
+     frameworks = [ "IOKit.framework" ]
+   }
++  import("//brave/services/preferences/tracked/sources.gni") deps += brave_services_preferences_tracked_deps
+ }
+ 
+ source_set("unit_tests") {

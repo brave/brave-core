@@ -1,0 +1,114 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# See https://pnpm.io/settings for documentation on the settings below.
+
+# Packages allowed to run install/build lifecycle scripts.
+allowBuilds:
+  '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/b5a6139df7ebd3f7d55aa8d6af60a524edab87b0': true
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/ff620e4e53b70dc9868c2215c5cb56e8145e92df': true
+  # No-op unless npm_config_build_from_source is set; prebuilt binaries ship as optionalDependencies.
+  '@parcel/watcher': false
+  # Falls back to pure-JS hashing (lib/js.js) if the native binding is unavailable.
+  blake-hash: false
+  # ws falls back to pure-JS framing/masking if unavailable.
+  bufferutil: false
+  # postinstall only prints a donation banner.
+  core-js: false
+  # Required: hardlinks the platform binary into bin/esbuild and verifies its version; no JS fallback exists (engine is a Go binary).
+  esbuild: true
+  # Falls back to pure-JS hashing (lib/js.js) if the native binding is unavailable.
+  keccak: false
+  # postinstall only warns about version-scheme mismatches.
+  protobufjs: false
+  # Falls back to the pure-JS elliptic implementation if the native binding is unavailable.
+  secp256k1: false
+  # postinstall only echoes a reminder message.
+  svelte-preprocess: false
+  # Falls back to the pure-JS implementation (js.js); otherwise always recompiles from source (no prebuilds shipped).
+  tiny-secp256k1: false
+  # Dev/test-only (jest-resolve); runtime loader requires the platform package directly.
+  unrs-resolver: false
+  # @trezor/transport's "browser" field swaps this for WebUSB in the actual webui bundle; never loaded.
+  usb: false
+  # ws falls back to pure-JS framing/masking if unavailable.
+  utf-8-validate: false
+
+catalog:
+  '@types/react': '19.2.17'
+  '@types/react-dom': '19.2.3'
+  'react': '19.2.7'
+  'react-dom': '19.2.7'
+  'styled-components': '6.4.3'
+
+# HTTP fetch timeout in milliseconds (5 minutes).
+fetchTimeout: 300000
+
+# Minimum age (minutes) a published dependency version must have.
+minimumReleaseAge: 5040
+
+# Use isolated node_modules layout (no package hoisting).
+nodeLinker: isolated
+
+# Force specific versions for dependencies across the graph.
+overrides:
+  # React overrides.
+  '@brave/brave-ui>styled-components': 'catalog:'
+  '@types/react': 'catalog:'
+  '@types/react-dom': 'catalog:'
+  'react': 'catalog:'
+  'react-dom': 'catalog:'
+
+  # Security-related overrides.
+  'axios': '1.18.0'
+  'elliptic': '6.6.1'
+  'esbuild': '0.28.1'
+  'http-proxy-middleware': '2.0.10'
+  'postcss': '8.5.23'
+  'prismjs': '1.30.0'
+  'protobufjs': '7.6.5'
+  'tiny-secp256k1': '1.1.7'
+  'toml': '4.1.2'
+  'uuid': '14.0.0'
+
+# Relax peer dependency version checks for listed packages.
+peerDependencyRules:
+  allowedVersions:
+    utf-8-validate: '6'
+
+# Disable pnpm version management.
+pmOnFail: ignore
+
+# Hoist listed packages to the root node_modules.
+#
+# !!! Do not add new packages to this list without a real reason. By default,
+# you should add a dependency to package.json. If you need to hoist a package,
+# explain why it's necessary.
+publicHoistPattern:
+  ### Packages to move to package.json ###
+  # Some @dnd-kit sub-packages are used without explicit dependencies.
+  - '@dnd-kit/*'
+  # Some @glif/filecoin sub-packages are used without explicit dependencies.
+  - '@glif/filecoin-*'
+  # Some @ledgerhq sub-packages are used without explicit dependencies.
+  - '@ledgerhq/*'
+  # Some @testing-library sub-packages are used without explicit dependencies.
+  - '@testing-library/*'
+
+  ### OK to hoist permanently ###
+  # ESLint sub-packages are required by ESLint to work.
+  - '@eslint/*'
+  # Storybook sub-packages are required by Storybook to work.
+  - '@storybook/*'
+
+# Store exact versions.
+savePrefix: ''
+
+# Do not show pnpm update notifications.
+updateNotifier: false
+
+# Skip verifying that installed dependencies match the lockfile before scripts
+# run. The check takes some time, we can't run it on each build/test command.
+verifyDepsBeforeRun: false

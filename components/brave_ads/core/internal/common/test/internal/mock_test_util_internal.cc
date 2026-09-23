@@ -1,0 +1,209 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/common/test/internal/mock_test_util_internal.h"
+
+#include <optional>
+#include <string>
+#include <utility>
+
+#include "base/check.h"
+#include "base/files/file.h"
+#include "base/files/file_util.h"
+#include "base/values.h"
+#include "brave/components/brave_ads/core/internal/common/test/file_path_test_util.h"
+#include "brave/components/brave_ads/core/internal/common/test/internal/local_state_pref_storage_test_util_internal.h"
+#include "brave/components/brave_ads/core/internal/common/test/internal/profile_pref_storage_test_util_internal.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client_notifier_observer.h"
+#include "components/prefs/testing_pref_service.h"
+
+namespace brave_ads::test {
+
+void MockAdsClientNotifierAddObserver(AdsClientMock& ads_client_mock,
+                                      AdsClientNotifier& ads_client_notifier) {
+  ON_CALL(ads_client_mock, AddObserver)
+      .WillByDefault(
+          [&ads_client_notifier](AdsClientNotifierObserver* const observer) {
+            CHECK(observer);
+            ads_client_notifier.AddObserver(observer);
+          });
+}
+
+void MockNotifyPendingObservers(AdsClientMock& ads_client_mock,
+                                AdsClientNotifier& ads_client_notifier) {
+  ON_CALL(ads_client_mock, NotifyPendingObservers)
+      .WillByDefault([&ads_client_notifier]() {
+        ads_client_notifier.NotifyPendingObservers();
+      });
+}
+
+void MockShowNotificationAd(AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, ShowNotificationAd)
+      .WillByDefault([](mojom::NotificationAdInfoPtr ad) {
+        CHECK(ad);
+
+        const bool is_valid =
+            ad->type != mojom::AdType::kUndefined &&
+            !ad->placement_id.empty() && !ad->creative_instance_id.empty() &&
+            !ad->creative_set_id.empty() && !ad->campaign_id.empty() &&
+            !ad->advertiser_id.empty() && !ad->segment.empty() &&
+            ad->target_url.is_valid() && !ad->title.empty() &&
+            !ad->body.empty();
+
+        // TODO(https://github.com/brave/brave-browser/issues/29587): Decouple
+        // reminders from push notification ads.
+        const bool is_reminder_valid =
+            !ad->placement_id.empty() && !ad->title.empty() &&
+            !ad->body.empty() && ad->target_url.is_valid();
+
+        CHECK(is_valid || is_reminder_valid);
+      });
+}
+
+void MockCloseNotificationAd(AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, CloseNotificationAd)
+      .WillByDefault([](const std::string& placement_id) {
+        CHECK(!placement_id.empty());
+      });
+}
+
+void MockSave(AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, Save)
+      .WillByDefault([](const std::string& /*name*/,
+                        const std::string& /*value*/, ResultCallback callback) {
+        std::move(callback).Run(/*success=*/true);
+      });
+}
+
+void MockRemove(AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, Remove)
+      .WillByDefault([](const std::string& /*name*/, ResultCallback callback) {
+        std::move(callback).Run(/*success=*/true);
+      });
+}
+
+void MockLoad(AdsClientMock& ads_client_mock,
+              const base::FilePath& profile_path) {
+  ON_CALL(ads_client_mock, Load)
+      .WillByDefault(
+          [&profile_path](const std::string& name, LoadCallback callback) {
+            base::FilePath path = profile_path.AppendASCII(name);
+            if (!base::PathExists(path)) {
+              // If path does not exist attempt to load the file from the test
+              // data path.
+              path = DataPath().AppendASCII(name);
+            }
+
+            std::string value;
+            if (!base::ReadFileToString(path, &value)) {
+              return std::move(callback).Run(/*value=*/std::nullopt);
+            }
+
+            std::move(callback).Run(value);
+          });
+}
+
+void MockLoadResourceComponent(AdsClientMock& ads_client_mock,
+                               const base::FilePath& profile_path) {
+  ON_CALL(ads_client_mock, LoadResourceComponent)
+      .WillByDefault([&profile_path](const std::string& id, int /*version*/,
+                                     LoadResourceComponentCallback callback) {
+        base::FilePath path = profile_path.AppendASCII(id);
+
+        bool exists = base::PathExists(path);
+        if (!exists) {
+          // If path does not exist attempt to load the file from the test
+          // resource components data path.
+          path = ResourceComponentsDataPath().AppendASCII(id);
+          exists = base::PathExists(path);
+        }
+
+        base::File file(
+            path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+        std::move(callback).Run(std::move(file), exists);
+      });
+}
+
+void MockFindProfilePref(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, FindProfilePref)
+      .WillByDefault([](const std::string& path) -> bool {
+        return GetProfilePrefServiceForTesting().FindPreference(path) !=
+               nullptr;
+      });
+}
+
+void MockGetProfilePref(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, GetProfilePref)
+      .WillByDefault([](const std::string& path) -> std::optional<base::Value> {
+        return GetProfilePrefServiceForTesting().GetValue(path).Clone();
+      });
+}
+
+void MockSetProfilePref(const AdsClientMock& ads_client_mock,
+                        AdsClientNotifier& ads_client_notifier) {
+  ON_CALL(ads_client_mock, SetProfilePref)
+      .WillByDefault(
+          [&ads_client_notifier](const std::string& path, base::Value value) {
+            GetProfilePrefServiceForTesting().Set(path, value);
+            ads_client_notifier.NotifyPrefDidChange(path);
+          });
+}
+
+void MockClearProfilePref(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, ClearProfilePref)
+      .WillByDefault([](const std::string& path) {
+        GetProfilePrefServiceForTesting().ClearPref(path);
+      });
+}
+
+void MockHasProfilePrefPath(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, HasProfilePrefPath)
+      .WillByDefault([](const std::string& path) -> bool {
+        return GetProfilePrefServiceForTesting().HasPrefPath(path);
+      });
+}
+
+void MockFindLocalStatePref(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, FindLocalStatePref)
+      .WillByDefault([](const std::string& path) -> bool {
+        return GetLocalStatePrefServiceForTesting().FindPreference(path) !=
+               nullptr;
+      });
+}
+
+void MockGetLocalStatePref(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, GetLocalStatePref)
+      .WillByDefault([](const std::string& path) -> std::optional<base::Value> {
+        return GetLocalStatePrefServiceForTesting().GetValue(path).Clone();
+      });
+}
+
+void MockSetLocalStatePref(const AdsClientMock& ads_client_mock,
+                           AdsClientNotifier& ads_client_notifier) {
+  ON_CALL(ads_client_mock, SetLocalStatePref)
+      .WillByDefault(
+          [&ads_client_notifier](const std::string& path, base::Value value) {
+            GetLocalStatePrefServiceForTesting().Set(path, value);
+            ads_client_notifier.NotifyPrefDidChange(path);
+          });
+}
+
+void MockClearLocalStatePref(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, ClearLocalStatePref)
+      .WillByDefault([](const std::string& path) {
+        GetLocalStatePrefServiceForTesting().ClearPref(path);
+      });
+}
+
+void MockHasLocalStatePrefPath(const AdsClientMock& ads_client_mock) {
+  ON_CALL(ads_client_mock, HasLocalStatePrefPath)
+      .WillByDefault([](const std::string& path) -> bool {
+        return GetLocalStatePrefServiceForTesting().HasPrefPath(path);
+      });
+}
+
+}  // namespace brave_ads::test

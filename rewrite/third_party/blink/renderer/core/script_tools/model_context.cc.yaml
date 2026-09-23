@@ -1,0 +1,35 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Tell WebLocalFrameObservers that the document's WebMCP tools changed.
+
+      Preempted rather than appended so that a page `toolchange` handler which
+      detaches the frame can't make the notification be silently dropped.
+    preempt_function_impl:
+      function_name: ModelContext::NotifyToolChange
+      code: |-
+        if (auto* web_frame = WebLocalFrameImpl::FromFrame(document_->GetFrame())) {
+          web_frame->NotifyScriptToolsChanged();
+        }
+
+  - description: |
+      Allow chrome-untrusted:// WebUI documents to use the Model Context (WebMCP)
+      API.
+
+      The Leo "workspace" tools run on a hidden
+      chrome-untrusted://<uuid>.leo-workspace page and register themselves via
+      navigator.modelContext. Each workspace has its own subdomain, so the check
+      is on the host suffix; no other chrome-untrusted:// host can end with it,
+      as WebUI hosts have a single label unless they opt into subdomains.
+    regex:
+      re_pattern: '(!document_->GetSettings\(\)->GetWebSecurityEnabled\(\)\));'
+      replace: |-
+        \1 ||
+                 (document_->GetExecutionContext()->GetSecurityOrigin()->Protocol() ==
+                      "chrome-untrusted" &&
+                   document_->GetExecutionContext()->GetSecurityOrigin()->Host().ends_with(
+                      ai_chat::kAIChatLeoWorkspaceUIHostSuffix));

@@ -1,0 +1,89 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.container {
+  border: 1px solid var(--leo-color-yellow-20);
+  border-radius: var(--leo-radius-l);
+  // Overflow: hidden ensures the border radius clips the header background
+  overflow: hidden;
+  background: var(--leo-color-container-background);
+}
+
+.header {
+  background: var(--leo-color-yellow-20);
+  padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  color: var(--leo-color-yellow-60);
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+}
+
+.headerIcon {
+  --leo-icon-size: 16px;
+}
+
+.headerText {
+  font: var(--leo-font-default-semibold);
+}
+
+.content {
+  padding: var(--leo-spacing-l);
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-l);
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+  p {
+    margin: 0;
+  }
+}
+
+.assessment {
+  padding: 0 var(--leo-spacing-s);
+  font-style: italic;
+}
+
+.argumentsToggle {
+  all: unset;
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-xs);
+  width: fit-content;
+  cursor: pointer;
+  font: var(--leo-font-small-semibold);
+  // A subordinate disclosure control, so it sits back from the card's primary
+  // body text rather than competing with the warning accent in the header.
+  color: var(--leo-color-text-secondary);
+  --leo-icon-size: 16px;
+
+  &:hover {
+    color: var(--leo-color-text-primary);
+  }
+
+  &:focus-visible {
+    outline: 1px solid var(--leo-color-schemes-outline);
+    outline-offset: 2px;
+  }
+}
+
+.arguments {
+  margin-top: var(--leo-spacing-m);
+  // The card's body text is sized for prose - step it down so the code block
+  // reads as data rather than copy.
+  font: var(--leo-font-x-small-regular);
+  // Tool arguments are model output and can be arbitrarily long, so cap the
+  // height rather than letting them push the Allow/Deny buttons off screen.
+  max-height: 240px;
+  overflow: auto;
+}
+
+.permissionButton {
+  --leo-button-color: var(--leo-color-divider-subtle);
+}
+
+.permissionButtonText {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-secondary);
+}

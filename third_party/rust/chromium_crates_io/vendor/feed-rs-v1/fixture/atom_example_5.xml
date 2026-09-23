@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:georss="http://www.georss.org/georss">
+    <title>USGS Magnitude 2.5+ Earthquakes, Past Hour</title>
+    <updated>2019-07-31T13:17:27Z</updated>
+    <author>
+        <name>U.S. Geological Survey</name>
+        <uri>https://earthquake.usgs.gov/</uri>
+    </author>
+    <id>https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_hour.atom</id>
+    <link rel="self" href="https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/2.5_hour.atom"/>
+    <icon>https://earthquake.usgs.gov/favicon.ico</icon>
+    <entry>
+        <id>urn:earthquake-usgs-gov:nc:73239366</id>
+        <title>M 3.6 - 15km W of Petrolia, CA</title>
+        <updated>2019-07-31T13:07:31.364Z</updated>
+        <link rel="alternate" type="text/html" href="https://earthquake.usgs.gov/earthquakes/eventpage/nc73239366"/>
+        <summary type="html">
+            <![CDATA[<p class="quicksummary"><a href="https://earthquake.usgs.gov/earthquakes/eventpage/nc73239366#shakemap" title="ShakeMap maximum estimated intensity" class="mmi-II">ShakeMap - <strong class="roman">II</strong></a> <a href="https://earthquake.usgs.gov/earthquakes/eventpage/nc73239366#dyfi" class="mmi-IV" title="Did You Feel It? maximum reported intensity (4 reports)">DYFI? - <strong class="roman">IV</strong></a></p><dl><dt>Time</dt><dd>2019-07-31 12:26:15 UTC</dd><dd>2019-07-31 04:26:15 -08:00 at epicenter</dd><dt>Location</dt><dd>40.347&deg;N 124.460&deg;W</dd><dt>Depth</dt><dd>29.35 km (18.24 mi)</dd></dl>]]></summary>
+        <georss:point>40.3465004 -124.4599991</georss:point>
+        <georss:elev>-29350</georss:elev>
+        <category label="Age" term="Past Hour"/>
+        <category label="Magnitude" term="Magnitude 3"/>
+        <category label="Contributor" term="nc"/>
+        <category label="Author" term="nc"/>
+    </entry>
+</feed>

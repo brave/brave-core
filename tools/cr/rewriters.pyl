@@ -1,0 +1,1311 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# rewriters.pyl — rewriter op specs for plaster. Data only: a Python literal
+# (ast.literal_eval), so no imports, calls, or names.
+#
+# Four op categories, each keyed by an op id "<namespace>.<name>".
+#
+# The namespace says which sources an op may be used on. It is matched against
+# the namespace claiming a plaster's target suffix (`foo.cc.yaml` -> `.cc` ->
+# `cxx`), so two ops may share a name as long as they are in different
+# namespaces. `all` is the global namespace: its ops apply to every target,
+# whatever the suffix, and are what a name falls back to when nothing matches
+# the target's own namespace.
+#
+#   "ast.matcher" — a structural query:
+#       template: ast-grep rule body (the part under `rule:`). Its {placeholder}
+#                 fields are the matcher's inputs; they are inferred from the
+#                 template, not declared.
+#       result:   what each match yields:
+#                 node:     the <tree-sitter kind> each match is.
+#                 captures: optional { name: [candidate, ...] } of values read
+#                 out of the matched code, which a rewriter using this matcher
+#                 may reference as {name} in its `replace` templates. Each
+#                 candidate derives the value from the metavariables the
+#                 template binds, and the first one whose metavariables are all
+#                 bound wins. A value that upstream can spell more than one
+#                 way is expressed as a list, most specific first:
+#                     { "text": "VAR" }        the text $VAR matched.
+#                     { "span": ["A", "B"] }   the source from the start of $A
+#                                              to the start of $B, for a value
+#                                              no single node covers. It takes
+#                                              whatever lies between them, so
+#                                              $B must be the token right after
+#                                              the wanted text.
+#                     { "literal": "void" }    a fixed string, for code that
+#                                              binds nothing; it always
+#                                              resolves, so it is only useful
+#                                              last.
+#                 Captures are resolved lazily, and only the ones a rendered
+#                 template names are read, so a matcher may offer a capture that
+#                 does not resolve for every node it matches. A capture with no
+#                 applicable candidate is an error naming the op and the line.
+#                 Whitespace in a resolved value is collapsed to single spaces,
+#                 since captures are spliced into generated code as a single
+#                 expression -- so a capture suits a declaration or a type, not
+#                 text whose own spacing matters (a string literal, a comment).
+#
+#   "ast.rewriter" — edits each node a matcher finds:
+#       matcher:  id of the "ast.matcher" op locating the node(s).
+#       inputs:   the interface the rewriter requires, so the template it uses
+#                 can be rendered. Distinct from the matcher's captures, which
+#                 the engine supplies per match rather than the caller.
+#       when_set: optional { input: template } making an input optional. When
+#                 the caller passes a non-empty value, {input} renders as that
+#                 template (which may itself read the input, other inputs, and
+#                 captures); when the value is empty, it renders as nothing. It
+#                 is how one op covers a shape with an optional part, instead of
+#                 near-duplicate ops that differ only by a lead or a suffix.
+#       replace:  { re_pattern, replace }, re.sub'd over each match's source;
+#                 `replace` is {input}/{capture}-formatted first (literal
+#                 braces: {{ }}).
+#                 Optional `consume_before` / `consume_after` tokens (also
+#                 {input}-formatted) are folded into the rewritten span when the
+#                 matched node stops short of an adjacent token (e.g. the `:`
+#                 after an access_specifier, the space before a `final`
+#                 specifier, or a class member's leading indentation).
+#       first_match: optional bool; when true only the first match (in source
+#                 order) is rewritten and any later matches are ignored. Use it
+#                 when the matcher can legitimately find several nodes but the
+#                 rewrite belongs to only the first (e.g. a class that reopens
+#                 `private:` more than once).
+#       result:   { node: <kind> } being replaced.
+#
+# An op yields every match in source order; the caller (plaster) decides how
+# many it expects. Input values are injected verbatim into the rule's `regex:`
+# fields, so the caller escapes any regex metacharacters.
+#
+#   "regex_macro" — a named, reusable `regex:` substitution: the templated
+#       equivalent of a substitution's own `regex:` block (see the `Regex`
+#       rewriter), keyed the same way as the ast ops above ("<lang>.<name>").
+#       description: Markdown documenting what the macro is for, meant for a
+#                future `plaster --help <macro>`, the same way a `Rewriter`'s
+#                `HELP` is.
+#       inputs:  the macro's `{placeholder}`s, each documented rather than
+#                bare, since a macro is meant to be read and reused by
+#                someone other than its author: { name, description }, where
+#                `name` is threaded into `pattern`/`re_pattern`/`replace` via
+#                `str.format` and `description` explains what to pass and why.
+#       One of either `pattern` (escaped for you) or `re_pattern`, plus
+#       `replace` and optional `re_flags` -- exactly the fields a
+#       substitution's own `regex:` block takes, applied as one `re.subn`. A
+#       macro need not know the target's current spelling of a value it is
+#       changing (e.g. one of several states a toggle can hold): the pattern
+#       can match every known spelling via alternation and `replace` can
+#       overwrite it wholesale with the wanted one, taken as an input, rather
+#       than the macro inspecting what is there. The substitution's own
+#       `count:` is what tells the caller a match -- and so a change --
+#       actually happened.
+#
+#   "gn_edit" — an edit performed by `gn edit` itself. Where the categories
+#       above rewrite text, these hand the build file to gn, which parses it,
+#       edits its syntax tree and formats the result, so an op says what to
+#       change.
+#       description: Markdown documenting the op, rendered by
+#                `plaster --help <name>` like a `Rewriter`'s `HELP`.
+#       inputs:  the op's `{placeholder}`s, each documented as
+#                { name, description }, plus optional `variadic` for the one a
+#                plaster may pass a list to (the values being added), which is
+#                rendered as gn's space-separated, quoted value list.
+#       pattern: the label pattern argument, selecting the targets to edit.
+#                Plaster hands gn the build file as the root `BUILD.gn`, so a
+#                target is addressed as "//:{target}".
+#       command: the command argument, i.e. a `gn help edit` subcommand and its
+#                values.
+#       Both templates are `str.format`ed with the inputs, and between them
+#       they must name every declared input exactly once over -- the same
+#       interface check the regex macros get. gn edits are idempotent, so
+#       plaster treats "the file did not change" as the failure to report
+#       rather than a `count:`, which these ops reject.
+
+{
+    "ast.matcher": {
+
+        # The full method, including a multi-line signature and either its
+        # trailing semicolon (a bodyless declaration) or its inline `{ ... }`
+        # body (a definition). The name is matched by text, so methods
+        # (field_identifier), destructors (destructor_name, e.g. "~Foo") and
+        # constructors (identifier) are all found. Overloads sharing the name
+        # each produce their own match. The result node is a field_declaration
+        # for a bodyless method, a declaration for a bodyless con/destructor,
+        # or a function_definition for one defined inline.
+        #
+        # Templated functions are guaranteed to be skipped.
+        "cxx.find_class_method_decl": {
+            "template": """\
+any:
+  - kind: field_declaration
+  - kind: declaration
+  - all:
+      - kind: function_definition
+      - not:
+          inside:
+            kind: template_declaration
+            stopBy: end
+has:
+  kind: function_declarator
+  stopBy: end
+  has:
+    field: declarator
+    regex: ^{method_name}$
+inside:
+  kind: class_specifier
+  stopBy: end
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "field_declaration",
+            },
+        },
+
+        # The `private` access specifier opening `class_name`'s private section.
+        # The node is the `private` keyword; the `:` that follows is a separate
+        # token immediately after it. The specifier must be a *direct* member of
+        # `class_name`: its immediate parent is the class body
+        # (field_declaration_list), whose immediate parent is the class. Nesting
+        # through the body with the default (neighbor) `stopBy` -- rather than an
+        # `stopBy: end` ancestor search -- keeps a nested class's own `private:`
+        # from matching the enclosing class.
+        "cxx.find_class_private_section": {
+            "template": """\
+kind: access_specifier
+regex: ^private$
+inside:
+  kind: field_declaration_list
+  inside:
+    kind: class_specifier
+    has:
+      field: name
+      regex: ^{class_name}$
+""",
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # Finds the protected section in a given class.
+        "cxx.find_class_protected_section": {
+            "template": """\
+kind: access_specifier
+regex: ^protected$
+inside:
+  kind: field_declaration_list
+  inside:
+    kind: class_specifier
+    has:
+      field: name
+      regex: ^{class_name}$
+""",
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # Finds the first access specifier after the `public:` section, the
+        # first match being the boundary of the `public:` section.
+        "cxx.find_section_after_public": {
+            "template": """\
+kind: access_specifier
+regex: ^(private|protected)$
+follows:
+  kind: access_specifier
+  regex: ^public$
+  stopBy: end
+inside:
+  kind: field_declaration_list
+  inside:
+    kind: class_specifier
+    has:
+      field: name
+      regex: ^{class_name}$
+""",
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # The body of a class after the `public:` section is found.
+        "cxx.find_class_body_with_public": {
+            "template": """\
+kind: field_declaration_list
+has:
+  kind: access_specifier
+  regex: ^public$
+inside:
+  kind: class_specifier
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "field_declaration_list",
+            },
+        },
+
+        # The `final` specifier on `class_name`'s declaration (the
+        # virtual_specifier node holding the `final` keyword). Only the
+        # class-head `final` matches; a method's trailing `final` is nested
+        # under its declaration, not directly inside the class.
+        "cxx.find_class_final": {
+            "template": """\
+kind: virtual_specifier
+regex: ^final$
+inside:
+  kind: class_specifier
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "virtual_specifier",
+            },
+        },
+
+        # The body (compound_statement) of the definition of `function_name`.
+        # The match is the whole `{ ... }` block of the function_definition
+        # whose declarator text is exactly `function_name` -- a qualified
+        # `Class::Method` for a member, or the bare name for a free function.
+        # The function_declarator is reached with `stopBy: end`, so
+        # return-type wrappers (pointer/reference declarators, a trailing return
+        # type) between it and the definition do not matter. Anchoring on the
+        # AST body -- rather than a regex from the signature to the first `{` --
+        # is immune to braces in the parameter list (a `= {}` default argument),
+        # a multi-line signature, or an earlier overload. Each overload sharing
+        # the name yields its own match.
+        #
+        # `return_type` captures the function's return type exactly as upstream
+        # spells it. No single node holds it: the C++ grammar puts a leading
+        # `const` in a type_qualifier *sibling* of the `type` field, hangs `*`
+        # and `&` off the declarator, and leaves `type` as a bare `auto` when
+        # the real type trails the parameter list. So the candidates read, in
+        # order: a trailing return type; else the source from the leading
+        # qualifier to the name (`const std::vector<int>& Foo::Get`); else the
+        # source from the type to the name (`Widget* Foo::Get`, `bool Foo::Is`).
+        # Each of the three parts is optional in the rule, so a con/destructor
+        # -- which has no `type` field at all -- still matches; for it the
+        # candidates fall through to the literal `void`, which is what a body
+        # wrapped in a lambda there returns.
+        "cxx.find_function_body": {
+            "template": """\
+kind: compound_statement
+inside:
+  kind: function_definition
+  all:
+    - has:
+        kind: function_declarator
+        stopBy: end
+        all:
+          - has:
+              field: declarator
+              pattern: $FUNCTION
+              regex: ^{function_name}$
+          - any:
+              - has:
+                  kind: trailing_return_type
+                  has:
+                    kind: type_descriptor
+                    pattern: $TRAILING_RETURN_TYPE
+              - not:
+                  has:
+                    kind: trailing_return_type
+    - any:
+        - has:
+            field: type
+            pattern: $RETURN_TYPE
+        - not:
+            has:
+              field: type
+              pattern: $_
+    - any:
+        - has:
+            kind: type_qualifier
+            pattern: $LEADING_QUALIFIER
+        - not:
+            has:
+              kind: type_qualifier
+""",
+            "result": {
+                "node": "compound_statement",
+                "captures": {
+                    "return_type": [
+                        {
+                            "text": "TRAILING_RETURN_TYPE"
+                        },
+                        {
+                            "span": ["LEADING_QUALIFIER", "FUNCTION"]
+                        },
+                        {
+                            "span": ["RETURN_TYPE", "FUNCTION"]
+                        },
+                        {
+                            "literal": "void"
+                        },
+                    ],
+                },
+            },
+        },
+
+        # The last entry of the enum named `enum_name`: the final `enumerator`
+        # among the ones its body holds. `ofRule` narrows what `nthChild`
+        # counts to entries alone, so a comment sitting after the last entry, or
+        # anywhere else in the body, does not displace it. Anchoring on the
+        # entry, rather than on the body's closing brace, also means the match
+        # never depends on where that brace sits.
+        "cxx.find_last_enum_entry": {
+            "template": """\
+kind: enumerator
+nthChild:
+  position: 1
+  reverse: true
+  ofRule:
+    kind: enumerator
+inside:
+  kind: enumerator_list
+  inside:
+    kind: enum_specifier
+    has:
+      field: name
+      regex: ^{enum_name}$
+""",
+            "result": {
+                "node": "enumerator",
+            },
+        },
+
+        # Every identifier-family token whose text is exactly `class_name`:
+        # type positions (type_identifier), the `Class::` qualifier
+        # (namespace_identifier), the ctor/dtor name and bare uses (identifier),
+        # and the delegating/base name in a member initializer (`: Class(...)`,
+        # a field_identifier). The last is scoped to the name slot (first child
+        # of a field_initializer), so a member access like `other.Class` in the
+        # argument list is left untouched.
+        "cxx.find_class_name_tokens": {
+            "template": """\
+any:
+  - kind: type_identifier
+  - kind: namespace_identifier
+  - kind: identifier
+  - all:
+      - kind: field_identifier
+      - nthChild: 1
+      - inside:
+          kind: field_initializer
+regex: ^{class_name}$
+""",
+            "result": {
+                "node": "identifier",
+            },
+        },
+
+        # A `runtime_enabled_features.json5` feature entry: the object, in
+        # that file's list of features, whose `name` field is `feature_name`.
+        #
+        # Matched through `has`/`all` rather than a `{name: "...", $$$REST}`
+        # as preceeding comments confuse the parser.
+        "js.find_runtime_feature_entry": {
+            "template": """\
+kind: object
+has:
+  kind: pair
+  all:
+    - has:
+        field: key
+        regex: ^name$
+    - has:
+        field: value
+        regex: ^"{feature_name}"$
+""",
+            "result": {
+                "node": "object",
+            },
+        },
+
+        # The two matchers that follow both reach a GN target through its call,
+        # e.g. `source_set("browser") { ... }`, and both spell that the same
+        # roundabout way, for two reasons.
+        #
+        # tree-sitter-gn does not attach the trailing `{ ... }` to the
+        # `call_expression`: the call and the block that follows it end up as
+        # two adjacent nodes instead, hence `follows` rather than a
+        # `has`/`inside` pair.
+        #
+        # The `has` matching the target's name string also goes one level
+        # deeper than it looks like it should: `call_expression`'s arguments are
+        # declared as `$.expression`, which tree-sitter-gn *does* inline, but
+        # the `primary_expression` alternative it resolves to (covering a bare
+        # string, identifier, etc.) is not itself inlined, so a plain string
+        # argument shows up as `primary_expression > string`, not `string`
+        # directly, hence matching a `primary_expression` node by regex instead
+        # of `string`.
+        #
+        # A metavariable (`$VALUE` below) only parses at all because the
+        # generated `sgconfig.yml` sets `expandoChar: _`: a bare `$` is not
+        # valid GN outside a string, so ast-grep swaps the sign for a character
+        # the grammar accepts in an identifier before parsing.
+
+        # The assignment already setting `list_name` (with a plain `=`, not
+        # `+=`/`-=`) as a direct statement of `target`'s block, if any. Used to
+        # tell whether `gn.add_literal_to_list` should append to it or create it
+        # fresh.
+        "gn.find_target_list_assignment": {
+            "template": """\
+kind: assignment_statement
+any:
+  - pattern: {list_name} = $VALUE
+  - pattern: {list_name} += $VALUE
+inside:
+  kind: block
+  inside:
+    kind: primary_expression
+    follows:
+      kind: primary_expression
+      has:
+        kind: call_expression
+        all:
+          - has:
+              field: function
+              regex: {type}
+          - has:
+              kind: primary_expression
+              any:
+                - regex: ^"{target}"$
+                - regex: ^{target}$
+""",
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # `target`'s own `{ ... }` body, anchored on its opening brace so a
+        # value can be inserted as the block's first statement. One match per
+        # declaration of the target, which is also how the frontend counts
+        # those declarations, and its closing brace is what an inserted
+        # statement takes its indentation from.
+        "gn.find_target_block": {
+            "template": """\
+kind: block
+inside:
+  kind: primary_expression
+  follows:
+    kind: primary_expression
+    has:
+      kind: call_expression
+      all:
+        - has:
+            field: function
+            regex: {type}
+        - has:
+            kind: primary_expression
+            any:
+              - regex: ^"{target}"$
+              - regex: ^{target}$
+""",
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # The body of an `if` that `target` declares directly, selected by
+        # `condition` -- a regex, since a condition carries characters a plain
+        # comparison would have to escape anyway (`!`, `&&`, `||`). The
+        # frontend anchors an exact condition, and passes a wildcard when it
+        # only needs to know whether the target conditions the list at all.
+        #
+        # Anchoring on the `block` whose immediate parent is the `if_statement`
+        # takes the consequence and never an `else` body, whose own block hangs
+        # off an `else_statement` instead.
+        "gn.find_target_conditional_block": {
+            "template": """\
+kind: block
+inside:
+  kind: if_statement
+  has:
+    field: condition
+    regex: {condition}
+  inside:
+    kind: block
+    inside:
+      kind: primary_expression
+      follows:
+        kind: primary_expression
+        has:
+          kind: call_expression
+          all:
+            - has:
+                field: function
+                regex: {type}
+            - has:
+                kind: primary_expression
+                any:
+                  - regex: ^"{target}"$
+                  - regex: ^{target}$
+""",
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # A file-scope assignment of `variable`, i.e. one the file makes
+        # directly rather than inside a target or a conditional. `.gni` files
+        # are largely these bare list variables, which no target label reaches.
+        "gn.find_toplevel_list_assignment": {
+            "template": """\
+kind: assignment_statement
+pattern: {variable} = $VALUE
+inside:
+  kind: source_file
+""",
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # The file's last `import()`, which a variable arriving through one of
+        # them is appended after. Anchoring here rather than on the first
+        # statement below keeps a comment documenting that statement attached
+        # to it, since a comment is trivia the statement's node excludes.
+        "gn.find_last_import": {
+            "template": """\
+kind: import_statement
+inside:
+  kind: source_file
+nthChild:
+  position: 1
+  reverse: true
+  ofRule:
+    kind: import_statement
+""",
+            "result": {
+                "node": "import_statement",
+            },
+        },
+
+        # The file's first statement, which an import is inserted above so it
+        # lands at the top of the fil, but below the copyright header, since a
+        # comment is not a statement.
+        #
+        # The `any` is grammar.js's `statement` rule transcribed: its four
+        # named alternatives, plus the three `expression` resolves to (that
+        # supertype being inlined), which is how a target's call statement
+        # appears. `nthChild` needs `ofRule` to repeat the set, since without
+        # it a leading comment counts as the first child and nothing matches.
+        #
+        # The result node is therefore whichever of those kinds opens the file,
+        # which could be an import_statement in a file that already imports
+        # something, or a primary_expression when a target comes first, with the
+        # latter named below as the representative.
+        "gn.find_first_statement": {
+            "template": """\
+any:
+  - kind: import_statement
+  - kind: if_statement
+  - kind: foreach_statement
+  - kind: assignment_statement
+  - kind: primary_expression
+  - kind: binary_expression
+  - kind: unary_expression
+inside:
+  kind: source_file
+nthChild:
+  position: 1
+  ofRule:
+    any:
+      - kind: import_statement
+      - kind: if_statement
+      - kind: foreach_statement
+      - kind: assignment_statement
+      - kind: primary_expression
+      - kind: binary_expression
+      - kind: unary_expression
+""",
+            "result": {
+                "node": "primary_expression",
+            },
+        },
+
+        # The statement registering `class_name` as a custom element, i.e. the
+        # `customElements.define(<tag>, {class_name})` call WebUI sources end
+        # with. The match is the whole expression_statement, so the trailing
+        # semicolon and a call broken over several lines are both covered.
+        #
+        # The class is matched as an identifier argument of the call rather than
+        # by the tag name, since the tag is spelled `{class_name}.is` about as
+        # often as it is a string literal, and the class is what a plaster
+        # knows. Both `customElements.define(Foo.is, Foo)` and
+        # `customElements.define('x-foo', Foo)` therefore match, while
+        # a registration of some *other* class does not, however its tag is
+        # spelled.
+        "ts.find_custom_element_registration": {
+            "template": """\
+kind: expression_statement
+has:
+  kind: call_expression
+  all:
+    - has:
+        field: function
+        regex: ^customElements\\.define$
+    - has:
+        field: arguments
+        has:
+          kind: identifier
+          regex: ^{class_name}$
+""",
+            "result": {
+                "node": "expression_statement",
+            },
+        },
+    },
+    "ast.rewriter": {
+
+        # The whole method declaration (multi-line signature and trailing
+        # semicolon included) with `virtual ` inserted before the type. Any
+        # attributes are re-emitted.
+        "cxx.make_virtual": {
+            "matcher": "cxx.find_class_method_decl",
+            "inputs": ["class_name", "method_name"],
+            "replace": {
+                "re_pattern": "^((?:\\[\\[.*?\\]\\]\\s*)*)",
+                "replace": "\\1virtual ",
+            },
+            "result": {
+                "node": "field_declaration",
+            },
+        },
+
+        # The class's first `private:` section with a `friend` declaration
+        # inserted as its first line. The matcher stops at the `private`
+        # keyword, so the op consumes the original `:` and re-emits it. A class
+        # may reopen `private:` more than once, so `first_match` keeps the
+        # friend in the first section only.
+        "cxx.add_friend": {
+            "matcher": "cxx.find_class_private_section",
+            "inputs": ["class_name", "friend_type"],
+            "first_match": True,
+            "replace": {
+                "consume_after": ":",
+                "re_pattern": "$",
+                "replace": ":\\n  friend {friend_type};",
+            },
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # `class_name`'s declaration with its `final` specifier removed, so the
+        # class can be subclassed. `consume_before` also drops the leading space
+        # before `final` so no doubled space is left behind.
+        "cxx.drop_final": {
+            "matcher": "cxx.find_class_final",
+            "inputs": ["class_name"],
+            "replace": {
+                "consume_before": " ",
+                "re_pattern": "^final$",
+                "replace": "",
+            },
+            "result": {
+                "node": "virtual_specifier",
+            },
+        },
+
+        # The function body with `prologue` inserted as its first statement,
+        # right after the opening brace. The matcher lands on the whole
+        # compound_statement, so anchoring the replace on `^{` inserts after the
+        # brace and leaves the rest of the body untouched. The caller passes
+        # `prologue` already indented to the body's first-statement level and
+        # with backslashes escaped for the `re.sub` replacement.
+        "cxx.preempt_function_impl": {
+            "matcher": "cxx.find_function_body",
+            "inputs": ["function_name", "prologue"],
+            "replace": {
+                "re_pattern": "^\\{",
+                "replace": "{{\\n{prologue}",
+            },
+            "result": {
+                "node": "compound_statement",
+            },
+        },
+
+        # The function body wrapped in an immediately-invoked `[&]` lambda, with
+        # `epilogue` appended after it. The matcher lands on the whole
+        # compound_statement; a DOTALL `^{ ... }$` capture folds the entire
+        # upstream body (`\1`) between a lambda prefix and its `}();`
+        # invocation, so the body's own lines are re-emitted verbatim, then
+        # appends `epilogue` as the body's trailing statements. The lambda
+        # states the enclosing function's `return_type` rather than deducing
+        # one, so a body returning `{}` still compiles and a `T&` return is not
+        # quietly deduced to a `T` copy. The caller passes `epilogue` indented
+        # to the body level, with backslashes escaped for the `re.sub`
+        # replacement.
+        # `result_var` is optional: when the caller names one, `when_set`
+        # expands it to a declaration binding the wrapped body's value, and
+        # when it is empty the placeholder renders as nothing, leaving a bare
+        # void wrap. The variable is declared with the same `return_type` the
+        # lambda returns, which keeps a reference or pointer return exactly as
+        # upstream declared it (an `auto` lead would decay `const T&` to a `T`
+        # copy).
+        "cxx.after_function_impl": {
+            "matcher": "cxx.find_function_body",
+            "inputs": ["function_name", "result_var", "epilogue"],
+            "when_set": {
+                "result_var": "{return_type} {result_var} = ",
+            },
+            "replace": {
+                "re_pattern": "(?s)^\\{(.*)\\}$",
+                "replace": "{{\\n  {result_var}[&]() -> {return_type} "
+                "{{\\1  }}();\\n{epilogue}\\n}}",
+            },
+            "result": {
+                "node": "compound_statement",
+            },
+        },
+
+        # Each matched name token replaced with `rename`. The matcher already
+        # pinned every match's text to exactly `class_name`, so the whole token
+        # (`^.+$`) is swapped for the new name.
+        "cxx.rename_class": {
+            "matcher": "cxx.find_class_name_tokens",
+            "inputs": ["class_name", "rename"],
+            "replace": {
+                "re_pattern": "^.+$",
+                "replace": "{rename}",
+            },
+            "result": {
+                "node": "identifier",
+            },
+        },
+
+        # Inserts `code` under an existing `protected:` specifier for the class.
+        "cxx.add_to_protected": {
+            "matcher": "cxx.find_class_protected_section",
+            "inputs": ["class_name", "code"],
+            "first_match": True,
+            "replace": {
+                "consume_after": ":",
+                "re_pattern": "$",
+                "replace": ":\\n{code}",
+            },
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # Inserts a fresh `protected:` section just before an existing
+        # `private:` one, and adds `code` under it. The matched `private`
+        # keyword's own leading whitespace prefixes the new `protected:`, so it
+        # inherits the class's indentation; `code` arrives at the member level
+        # and `indent` re-emits the `private` keyword at its original column.
+        "cxx.add_protected_before_private": {
+            "matcher": "cxx.find_class_private_section",
+            "inputs": ["class_name", "code", "indent"],
+            "first_match": True,
+            "replace": {
+                "re_pattern": "^private$",
+                "replace": "protected:\\n{code}\\n\\n{indent}private",
+            },
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # Appends `code` at the end of `class_name`'s public section, just
+        # before the section that follows it. `consume_before` folds the
+        # keyword's entire leading indentation (`indent`) into the span so the
+        # replacement controls all whitespace: `code` (already member-indented)
+        # becomes the last public line(s), a blank line separates it, then the
+        # boundary keyword (`\1`) is re-emitted at that same `indent`.
+        "cxx.append_to_public_before_section": {
+            "matcher": "cxx.find_section_after_public",
+            "inputs": ["class_name", "code", "indent"],
+            "first_match": True,
+            "replace": {
+                "consume_before": "{indent}",
+                "re_pattern": "^(private|protected)$",
+                "replace": "{code}\\n\\n{indent}\\1",
+            },
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # Appends `code` at the end of `class_name`'s public section when it is
+        # the last (or only) section, inserting it just before the body's
+        # closing brace. The pattern consumes the final `}` together with the
+        # newline and indentation on its line, so inline method bodies earlier
+        # in the class are left alone and the brace is re-emitted at its
+        # original column (`indent`) after the appended, member-indented `code`.
+        "cxx.append_to_public_before_close": {
+            "matcher": "cxx.find_class_body_with_public",
+            "inputs": ["class_name", "code", "indent"],
+            "first_match": True,
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{code}\\n{indent}}}",
+            },
+            "result": {
+                "node": "field_declaration_list",
+            },
+        },
+
+        # The enum's max-value entry, the last one, which the caller has already
+        # established is the declared one, replaced by `entries` followed by
+        # that entry itself, its name (`\1`) re-emitted so the match's own
+        # spelling carries over. `entries` arrives with its first line
+        # unindented, the match starting at the column the entry already sits
+        # at, and `indent` opens every line after it.
+        # `value` is optional: when the caller names the entry to re-point at,
+        # `when_set` expands it to the value this one now takes, and when it is
+        # empty the placeholder renders as nothing, which is what an entry
+        # carrying no value of its own needs, since it simply follows on from
+        # whatever was inserted above it.
+        "cxx.insert_enum_entries_before_max_value": {
+            "matcher": "cxx.find_last_enum_entry",
+            "inputs": ["enum_name", "entries", "indent", "value"],
+            "when_set": {
+                "value": " = {value}",
+            },
+            "replace": {
+                "re_pattern": "(?s)^(\\w+).*$",
+                "replace": "{entries}\\n{indent}\\1{value}",
+            },
+            "result": {
+                "node": "enumerator",
+            },
+        },
+
+        # `entries` appended after the enum's last entry, which is re-emitted
+        # (`\1`) with the separator the new entries now require. `comma` is the
+        # separator the source already has, if any: it is folded into the
+        # rewritten span so it cannot be left dangling after the appended
+        # entries, and is empty for a last entry that carries none (the closing
+        # brace allows it). `entries` arrives fully indented, as it opens a
+        # line of its own.
+        "cxx.append_enum_entries_after_last": {
+            "matcher": "cxx.find_last_enum_entry",
+            "inputs": ["enum_name", "entries", "comma"],
+            "replace": {
+                "consume_after": "{comma}",
+                "re_pattern": "(?s)^(.*)$",
+                "replace": "\\1,\\n{entries}",
+            },
+            "result": {
+                "node": "enumerator",
+            },
+        },
+
+        # Both ops below set a feature entry's `base_feature_status`, which is
+        # what forces the default state of the `base::Feature` the entry
+        # generates. Which one applies depends on whether the entry already
+        # declares the field, so the two are paired and chosen between by
+        # `js.set_blink_runtime_enabled_feature_state`'s frontend rewriter.
+        #
+        # We leave a trailing comment on the field, so the substitution always
+        # produces a diff even when upstream's own value already agrees with
+        # ours, as feature flags are preemtively overridden most of the time.
+
+        # The field is absent, so it is inserted directly after `name`. The
+        # negative lookahead is what establishes absence; with the field
+        # present this op matches nothing, and the count check reports it.
+        "js.add_blink_runtime_enabled_feature_state": {
+            "matcher": "js.find_runtime_feature_entry",
+            "inputs": ["feature_name", "value"],
+            "replace": {
+                "re_pattern":
+                    "([ \\t]*)((?<![A-Za-z0-9_])name:\\s*\"[^\"]*\",)"
+                    "(?![\\s\\S]*?(?<![A-Za-z0-9_])base_feature_status:)",
+                "replace":
+                    "\\1\\2\\n\\1base_feature_status: \"{value}\",  "
+                    "// feature state is enforced via plaster rewrite.",
+            },
+            "result": {
+                "node": "object",
+            },
+        },
+
+        # The field is already declared, so only its value changes, wherever
+        # in the entry it sits. Upstream tends to put it last, next to
+        # `copied_from_base_feature_if`, rather than beside `name`. The
+        # optional trailing group swallows a comment an earlier run left, so
+        # reapplying does not stack up copies of it.
+        "js.set_blink_runtime_enabled_feature_state": {
+            "matcher": "js.find_runtime_feature_entry",
+            "inputs": ["feature_name", "value"],
+            "replace": {
+                "re_pattern":
+                    "((?<![A-Za-z0-9_])base_feature_status:\\s*\")[^\"]*(\",)"
+                    "(?:[ \\t]*// feature state is enforced via plaster "
+                    "rewrite\\.)?",
+                "replace":
+                    "\\1{value}\\2  "
+                    "// feature state is enforced via plaster rewrite.",
+            },
+            "result": {
+                "node": "object",
+            },
+        },
+
+        # `target`'s existing `list_name = [...]` with `+= {literal}` appended
+        # as a new statement right after it, at the same indentation. The
+        # zero-width `$` appends without re-emitting the assignment, which may
+        # be a long list; it lands once because a node never ends on the
+        # newline that `$` would otherwise match ahead of.
+        "gn.append_literal_to_list": {
+            "matcher": "gn.find_target_list_assignment",
+            "inputs": ["target", "type", "list_name", "literal", "indent"],
+            "first_match": True,
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{indent}{list_name} += {literal}",
+            },
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # `+= {literal}` appended as the LAST statement of the conditional
+        # body, rather than the first: a block that assigns `list_name` with a
+        # plain `=` would otherwise overwrite an append placed above it.
+        #
+        # `indent` is the column of the brace closing the body, so the two
+        # spaces before `list_name` are the one level of GN body indentation
+        # that `gn format` fixes.
+        "gn.append_literal_to_conditional": {
+            "matcher": "gn.find_target_conditional_block",
+            "inputs": [
+                "target", "type", "condition", "list_name", "literal", "indent"
+            ],
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{indent}  {list_name} += {literal}"
+                           "\\n{indent}}}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # A fresh `if ({condition}) { list_name += {literal} }` appended after
+        # `target`'s existing `list_name` assignment, for a target that does
+        # not condition the list yet. `condition` is the condition's own text
+        # here, where the matcher above takes a regex for it.
+        "gn.assign_conditional_literal_to_list": {
+            "matcher": "gn.find_target_list_assignment",
+            "inputs": [
+                "target", "type", "condition", "list_name", "literal", "indent"
+            ],
+            "first_match": True,
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{indent}if ({condition}) {{"
+                           "\\n{indent}  {list_name} += {literal}"
+                           "\\n{indent}}}",
+            },
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # `list_name = {literal}` inserted as the first statement of `target`'s
+        # body, for when it declares no `list_name` yet.
+        "gn.assign_literal_to_list": {
+            "matcher": "gn.find_target_block",
+            "inputs": ["target", "type", "list_name", "literal", "indent"],
+            "replace": {
+                "re_pattern": "^\\{",
+                "replace": "{{\\n{indent}{list_name} = {literal}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # `variable += {literal}` appended after the file's own assignment of
+        # it. A file-scope assignment opens its own line, so the append needs
+        # no indentation of its own.
+        "gn.append_literal_to_variable": {
+            "matcher": "gn.find_toplevel_list_assignment",
+            "inputs": ["variable", "literal"],
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{variable} += {literal}",
+            },
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # The same, subtracting. Kept a separate op rather than an operator
+        # input because the two are not interchangeable: a subtraction only
+        # holds where nothing adds the value back afterwards, which is why the
+        # frontend guards this one and not the append.
+        "gn.subtract_literal_from_variable": {
+            "matcher": "gn.find_toplevel_list_assignment",
+            "inputs": ["variable", "literal"],
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{variable} -= {literal}",
+            },
+            "result": {
+                "node": "assignment_statement",
+            },
+        },
+
+        # `variable += {literal}` appended after the last import, for a
+        # variable the file never assigns because an `import()` supplies it.
+        # Sound only because appending does not depend on where it happens,
+        # which is why no subtracting counterpart exists.
+        "gn.append_literal_after_imports": {
+            "matcher": "gn.find_last_import",
+            "inputs": ["variable", "literal"],
+            "replace": {
+                "re_pattern": "$",
+                "replace": "\\n{variable} += {literal}",
+            },
+            "result": {
+                "node": "import_statement",
+            },
+        },
+
+        # Free-form `code` closing `target`'s body, for a change no list
+        # append expresses. The caller indents `code` to the body level and
+        # `indent` re-emits the brace at its own column, the same division of
+        # labour `cxx.append_to_public_before_close` uses.
+        "gn.append_code_to_body": {
+            "matcher": "gn.find_target_block",
+            "inputs": ["target", "type", "code", "indent"],
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{code}\\n{indent}}}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # `+= {literal}` closing `target`'s body, for an attribute defined
+        # somewhere other than this file -- `configs`, say, which
+        # `set_defaults` populates, so a target carries it without assigning
+        # it. Nothing is created, since the attribute exists already.
+        #
+        # `indent` is the column of the brace closing the body, so the two
+        # spaces before `list_name` are the one level of GN body indentation
+        # that `gn format` fixes.
+        "gn.append_literal_to_body": {
+            "matcher": "gn.find_target_block",
+            "inputs": ["target", "type", "list_name", "literal", "indent"],
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{indent}  {list_name} += {literal}"
+                           "\\n{indent}}}",
+            },
+            "result": {
+                "node": "block",
+            },
+        },
+
+        # An `import("{import}")` statement inserted above the file's first
+        # statement, i.e. at the top of the file but under its copyright
+        # header. The zero-width `^` inserts without re-emitting the statement
+        # itself, which may be a whole `if` block.
+        #
+        # `separator` is the blank line the import needs when the statement
+        # below it is code, and nothing when that statement is another import,
+        # which would otherwise be split off from the one being added.
+        "gn.add_import": {
+            "matcher": "gn.find_first_statement",
+            "inputs": ["import", "separator"],
+            "replace": {
+                "re_pattern": "^",
+                "replace": "import(\"{import}\")\\n{separator}",
+            },
+            "result": {
+                "node": "primary_expression",
+            },
+        },
+
+        # The custom element registration removed outright, so the tag name it
+        # claimed is left free for a Brave subclass in `chromium_src/` to
+        # register instead.
+        #
+        # `consume_after` folds in the newline ending the statement's line, so
+        # the line goes away whole rather than being left behind empty. The
+        # blank line above the statement is deliberately kept: it is context
+        # separating the code that remains, and a patch that removed an empty
+        # line at a hunk boundary would trip `patches/PRESUBMIT.py`. A
+        # registration that is the last line of a file with no trailing newline
+        # has no `\n` to consume and is reported as an unmatched count rather
+        # than rewritten -- Chromium sources always end in one.
+        "ts.drop_custom_element_registration": {
+            "matcher": "ts.find_custom_element_registration",
+            "inputs": ["class_name"],
+            "replace": {
+                "consume_after": "\n",
+                "re_pattern": "(?s)^.+$",
+                "replace": "",
+            },
+            "result": {
+                "node": "expression_statement",
+            },
+        },
+    },
+    "regex_macro": {
+        "cxx.set_feature_flag_default_state": {
+            "description": """\
+Sets a compile-time override on a `BASE_FEATURE` feature flag.
+
+`set_feature_flag_default_state` can be safely used even when the value being
+assigned is already set, with the intent of preventing sliding back.
+
+```yaml
+substitutions:
+  - description: Ship kMyFeature disabled.
+    set_feature_flag_default_state:
+      feature_name: kMyFeature
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+```
+
+```diff
+-BASE_FEATURE(kMyFeature,
++BASE_OVERRIDDEN_FEATURE(kMyFeature,
+              "MyFeature",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+```
+""",
+            "inputs": [
+                {
+                    "name": "feature_name",
+                    "description": "The `BASE_FEATURE` feature flag name, e.g. `kMyFeature`.",
+                },
+                {
+                    "name": "value",
+                    "description": "The new value, e.g. `base::FEATURE_DISABLED_BY_DEFAULT`.",
+                },
+            ],
+            "re_pattern": "([ \\t]*)BASE_FEATURE\\((\\s*{feature_name}\\s*,)([^;]*,)?(\\s*)[^;]*?(\\);)",
+            "replace": "\\1BASE_OVERRIDDEN_FEATURE(\\2\\3\\4{value}\\5",
+        },
+    },
+    "gn_edit": {
+        "gn.set_attribute": {
+            "description": """\
+Sets a target's attribute, creating it if none exists.
+
+The value is written as given, so a `gn` boolean or number goes in bare and a
+string keeps the quotes a `gn` string needs.
+
+```yaml
+substitutions:
+  - description: Let Brave depend on the crate outside tests.
+    set_attribute:
+      target: lib
+      attribute: allow_unsafe
+      value: "true"
+```
+
+```diff
+ rust_static_library("lib") {
+-  allow_unsafe = false
++  allow_unsafe = true
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to edit, e.g. `lib` for `rust_static_library(\"lib\")`.",
+                },
+                {
+                    "name": "attribute",
+                    "description": "The attribute to set, e.g. `allow_unsafe` or `testonly`.",
+                },
+                {
+                    "name": "value",
+                    "description": "The value to set it to, e.g. `true`.",
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "set {attribute} {value}",
+        },
+
+        "gn.remove_attribute": {
+            "description": """\
+Removes an attribute from a target entirely.
+
+```yaml
+substitutions:
+  - description: Let Brave depend on the crate outside tests.
+    remove_attribute:
+      target: lib
+      attribute: testonly
+```
+
+```diff
+ rust_static_library("lib") {
+-  testonly = true
+   crate_name = "hashbrown"
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to edit, e.g. `lib` for `rust_static_library(\"lib\")`.",
+                },
+                {
+                    "name": "attribute",
+                    "description": "The attribute to remove, e.g. `testonly`.",
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "remove {attribute}",
+        },
+
+        "gn.insert_into_list": {
+            "description": """\
+Inserts value(s) into a list attribute on a GN target.
+
+The values are added to the target's `list_name` attribute (e.g. `deps`,
+`sources`, `configs`, `public_deps`, `visibility`), which is created if the
+target has none.
+
+```yaml
+substitutions:
+  - description: Depend on the Brave omnibox additions.
+    insert_into_list:
+      target: browser
+      list_name: deps
+      values:
+        - //brave/components/omnibox/browser
+        - //brave/components/omnibox/common
+```
+
+```diff
+   deps = [
++    "//brave/components/omnibox/browser",
++    "//brave/components/omnibox/common",
+     "//build:branding_buildflags",
+```
+""",
+            "inputs": [
+                {
+                    "name": "target",
+                    "description": "The target to edit, e.g. `browser` for `static_library(\"browser\")`.",
+                },
+                {
+                    "name": "list_name",
+                    "description": "The target's list attribute to insert into, e.g. `deps`, `sources`, `configs`, `public_deps`, or `visibility`.",
+                },
+                {
+                    "name": "values",
+                    "description": "The value(s) to insert, e.g. `//brave/components/omnibox/browser`.",
+                    "variadic": True,
+                },
+            ],
+            "pattern": "//:{target}",
+            "command": "add {list_name} {values}",
+        },
+    },
+}

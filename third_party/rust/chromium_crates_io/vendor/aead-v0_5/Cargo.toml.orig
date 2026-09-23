@@ -1,0 +1,39 @@
+[package]
+name = "aead"
+version = "0.5.2"
+description = """
+Traits for Authenticated Encryption with Associated Data (AEAD) algorithms,
+such as AES-GCM as ChaCha20Poly1305, which provide a high-level API
+"""
+authors = ["RustCrypto Developers"]
+edition = "2021"
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+documentation = "https://docs.rs/aead"
+repository = "https://github.com/RustCrypto/traits"
+keywords = ["crypto", "encryption"]
+categories = ["cryptography", "no-std"]
+rust-version = "1.56"
+
+[dependencies]
+crypto-common = "0.1.4"
+generic-array = { version = "0.14", default-features = false }
+
+# optional dependencies
+arrayvec = { version = "0.7", optional = true, default-features = false }
+blobby = { version = "0.3", optional = true }
+bytes = { version = "1", optional = true, default-features = false }
+heapless = { version = "0.7", optional = true, default-features = false }
+
+[features]
+default = ["rand_core"]
+alloc = []
+std = ["alloc", "crypto-common/std"]
+dev = ["blobby"]
+getrandom = ["crypto-common/getrandom", "rand_core"]
+rand_core = ["crypto-common/rand_core"]
+stream = []
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

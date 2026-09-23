@@ -1,0 +1,13 @@
+Name: x25519-dalek
+Short Name: x25519-dalek
+URL: https://github.com/dalek-cryptography/curve25519-dalek/tree/main/x25519-dalek
+Version: 2.0.1
+License: BSD-3-Clause
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/x25519-dalek.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

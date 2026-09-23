@@ -1,0 +1,20 @@
+diff --git a/components/sync/protocol/device_info_specifics.proto b/components/sync/protocol/device_info_specifics.proto
+index 5b3755e2221856b979ec3ea59176b41029647b0c..184f1603695958c2c41463eb07a8f774e60fe9ab 100644
+--- a/components/sync/protocol/device_info_specifics.proto
++++ b/components/sync/protocol/device_info_specifics.proto
+@@ -17,6 +17,7 @@ option optimize_for = LITE_RUNTIME;
+ package sync_pb;
+ 
+ import "components/sync/protocol/sync_enums.proto";
++import "brave/components/sync/protocol/brave_device_info_specifics.proto";
+ 
+ // Information about a device that is running a sync-enabled Chrome browser.  We
+ // are mapping the per-client cache guid to more specific information about the
+@@ -107,6 +108,7 @@ message DeviceInfoSpecifics {
+ 
+   // Device specific information for Personal Context feature.
+   optional PersonalContextSpecificFields personal_context_fields = 23;
++  optional BraveSpecificFields brave_fields = 1000;
+ }
+ 
+ // Feature specific information about the device that is running a sync-enabled

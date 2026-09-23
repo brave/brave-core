@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("renderer") {
+  sources = [
+    "rss_link_reader.cc",
+    "rss_link_reader.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_news/common:rss_link_reader_mojom",
+    "//content/public/renderer",
+    "//mojo/public/cpp/bindings",
+    "//services/service_manager/public/cpp",
+    "//third_party/blink/public:blink_headers",
+    "//url",
+  ]
+}

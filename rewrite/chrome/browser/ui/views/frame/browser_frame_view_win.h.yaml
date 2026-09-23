@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Make ShouldShowWindowTitle virtual'
+    make_virtual:
+      class_name: BrowserFrameViewWin
+      method_name: ShouldShowWindowTitle
+
+  - description: 'Make LayoutCaptionButtons virtual'
+    make_virtual:
+      class_name: BrowserFrameViewWin
+      method_name: LayoutCaptionButtons
+
+  - description: 'Make FrameTopBorderThickness virtual'
+    make_virtual:
+      class_name: BrowserFrameViewWin
+      method_name: FrameTopBorderThickness
+
+  - description: 'Friend BraveBrowserFrameViewWin'
+    add_friend:
+      class_name: BrowserFrameViewWin
+      friend_type: class BraveBrowserFrameViewWin

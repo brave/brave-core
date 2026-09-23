@@ -1,0 +1,62 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "[1, 2, 3]"
+    ],
+    "name": "echo list"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[2, 3, 4]"
+    ],
+    "name": "echo more"
+  },
+  {
+    "cmd": [
+      "run_tests",
+      "/path/to/tmp/json"
+    ],
+    "name": "run tests"
+  },
+  {
+    "cmd": [
+      "run_tests",
+      "/path/to/tmp/json",
+      "/path/to/tmp/json"
+    ],
+    "name": "run more tests"
+  },
+  {
+    "cmd": [
+      "cat",
+      "{\n  \"x\": 1,\n  \"y\": 2\n}"
+    ],
+    "name": "cat config"
+  },
+  {
+    "cmd": [
+      "cat",
+      "{\n  \"y\": 2,\n  \"x\": 1\n}"
+    ],
+    "name": "cat unsorted config"
+  },
+  {
+    "cmd": [
+      "write",
+      "/path/to/tmp/json"
+    ],
+    "name": "write garbage"
+  },
+  {
+    "cmd": [
+      "write",
+      "[WORKSPACE]/out.json"
+    ],
+    "name": "write nothing"
+  },
+  {
+    "name": "$result"
+  }
+]

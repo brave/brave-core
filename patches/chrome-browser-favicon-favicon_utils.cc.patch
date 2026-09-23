@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/favicon/favicon_utils.cc b/chrome/browser/favicon/favicon_utils.cc
+index c67469586876753e83ef2adf508a5e13db510dea..e012b3f7201390cba760fe1c2e4adc1b8a0204af 100644
+--- a/chrome/browser/favicon/favicon_utils.cc
++++ b/chrome/browser/favicon/favicon_utils.cc
+@@ -194,6 +194,9 @@ bool ShouldThemifyFavicon(GURL url) {
+ }
+ 
+ bool ShouldThemifyFaviconForEntry(content::NavigationEntry* entry) {
++  if (auto brave_themify = ShouldThemifyFaviconForEntryBraveImpl(entry)) {
++    return *brave_themify;
++  }
+   const GURL& virtual_url = entry->GetVirtualURL();
+   const GURL& actual_url = entry->GetURL();
+ 

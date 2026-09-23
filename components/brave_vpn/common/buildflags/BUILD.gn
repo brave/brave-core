@@ -1,0 +1,18 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/buildflag_header.gni")
+import("buildflags.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_BRAVE_VPN=$enable_brave_vpn",
+    "ENABLE_BRAVE_VPN_V1=$enable_brave_vpn_v1",
+    "ENABLE_BRAVE_VPN_V2=$enable_brave_vpn_v2",
+    "ENABLE_BRAVE_VPN_WIREGUARD=$enable_brave_vpn_wireguard",
+    "ENABLE_BRAVE_VPN_V2_APPS=$enable_brave_vpn_v2_apps",
+  ]
+}

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <category term="rust" label="r/rust"/>
+    <updated>2020-05-24T21:51:16+00:00</updated>
+    <icon>https://www.redditstatic.com/icon.png/</icon>
+    <id>/r/rust/.rss</id>
+    <link rel="self" href="https://www.reddit.com/r/rust/.rss" type="application/atom+xml"/>
+    <link rel="alternate" href="https://www.reddit.com/r/rust/" type="text/html"/>
+    <logo>https://b.thumbs.redditmedia.com/LRVZAleMnMpem_LXPPFP8mjoLP-Gz7THdBqyV7NMhHU.png</logo>
+    <subtitle>A place for all things related to the Rust programming language—an open-source systems language that
+        emphasizes performance, reliability, and productivity.
+    </subtitle>
+    <title>The Rust Programming Language</title>
+    <entry>
+        <author>
+            <name>/u/llogiq</name>
+            <uri>https://www.reddit.com/user/llogiq</uri>
+        </author>
+        <category term="rust" label="r/rust"/>
+        <content type="html">&lt;!-- SC_OFF --&gt;&lt;div class=&quot;md&quot;&gt;&lt;p&gt;Mystified about strings?
+            Borrow checker have you in a headlock? Seek help here! There are no stupid questions, only docs that haven&amp;#39;t
+            been written yet.&lt;/p&gt; &lt;p&gt;If you have a &lt;a href=&quot;http://stackoverflow.com/&quot;&gt;StackOverflow&lt;/a&gt;
+            account, consider asking it there instead! StackOverflow shows up much higher in search results, so having
+            your question there also helps future Rust users (be sure to give it &lt;a href=&quot;http://stackoverflow.com/questions/tagged/rust&quot;&gt;the
+            &amp;quot;Rust&amp;quot; tag&lt;/a&gt; for maximum visibility). Note that this site is very interested in
+            question quality. I&amp;#39;ve been asked to read a RFC I authored once. If you want your code reviewed or
+            review other&amp;#39;s code, there&amp;#39;s a &lt;a href=&quot;https://codereview.stackexchange.com/questions/tagged/rust&quot;&gt;codereview
+            stackexchange&lt;/a&gt;, too. If you need to test your code, maybe &lt;a href=&quot;https://play.rust-lang.org&quot;&gt;the
+            Rust playground&lt;/a&gt; is for you.&lt;/p&gt; &lt;p&gt;Here are some other venues where help may be found:&lt;/p&gt;
+            &lt;p&gt;&lt;a href=&quot;https://www.reddit.com/r/learnrust&quot;&gt;/r/learnrust&lt;/a&gt; is a subreddit
+            to share your questions and epiphanies learning Rust programming.&lt;/p&gt; &lt;p&gt;The official Rust user
+            forums: &lt;a href=&quot;https://users.rust-lang.org/&quot;&gt;https://users.rust-lang.org/&lt;/a&gt;.&lt;/p&gt;
+            &lt;p&gt;The official Rust Programming Language Discord: &lt;a href=&quot;https://discord.gg/rust-lang&quot;&gt;https://discord.gg/rust-lang&lt;/a&gt;&lt;/p&gt;
+            &lt;p&gt;The unofficial Rust community Discord: &lt;a href=&quot;https://bit.ly/rust-community&quot;&gt;https://bit.ly/rust-community&lt;/a&gt;&lt;/p&gt;
+            &lt;p&gt;Also check out &lt;a href=&quot;https://reddit.com/r/rust/comments/ghw4v6/hey_rustaceans_got_an_easy_question_ask_here/&quot;&gt;last
+            week&amp;#39;s thread&lt;/a&gt; with many good questions and answers. And if you believe your question to be
+            either very complex or worthy of larger dissemination, feel free to create a text post.&lt;/p&gt; &lt;p&gt;Also
+            if you want to be mentored by experienced Rustaceans, tell us the area of expertise that you seek.&lt;/p&gt;
+            &lt;/div&gt;&lt;!-- SC_ON --&gt; &amp;#32; submitted by &amp;#32; &lt;a href=&quot;https://www.reddit.com/user/llogiq&quot;&gt;
+            /u/llogiq &lt;/a&gt; &lt;br/&gt; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/rust/comments/glvkc5/hey_rustaceans_got_an_easy_question_ask_here/&quot;&gt;[link]&lt;/a&gt;&lt;/span&gt;
+            &amp;#32; &lt;span&gt;&lt;a href=&quot;https://www.reddit.com/r/rust/comments/glvkc5/hey_rustaceans_got_an_easy_question_ask_here/&quot;&gt;[comments]&lt;/a&gt;&lt;/span&gt;
+        </content>
+        <id>t3_glvkc5</id>
+        <link href="https://www.reddit.com/r/rust/comments/glvkc5/hey_rustaceans_got_an_easy_question_ask_here/"/>
+        <updated>2020-05-18T05:44:47+00:00</updated>
+        <title>Hey Rustaceans! Got an easy question? Ask here (21/2020)!</title>
+    </entry>
+</feed>

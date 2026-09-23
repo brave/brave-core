@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Brave एक्सटेंशन",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Shields",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "ऊपर",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "नीचे",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "इस साइट के लिए",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "अगर किसी साइट में समस्या नज़र आती है, तो शील्ड को हटाने की कोशिश करें",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "आप इस साइट को Brave के निजता और सुरक्षा के बिना ब्राउज़ कर रहे हैं। क्या यह Shields के साथ सही तरीके से काम नहीं करता है?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "खराब हुई साइट की रिपोर्ट करें",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "आइटम ब्लॉक किए गए",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "आइटम ब्लॉक किया गया",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "और",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "कनेक्शन अपग्रेड किए गए",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "कनेक्शन अपग्रेड किया गया",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "क्रॉस-साइट ट्रैकर्स ब्लॉक किए गए",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "ट्रैकर्स और विज्ञापन ब्लॉक किए गए",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "ट्रैकर्स और विज्ञापन ब्लॉक किए गए (प्रभाशाली)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "ट्रैकर्स और विज्ञापन ब्लॉक किए गए (सामान्य)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "सभी ट्रैकर्स और विज्ञापनों को अनुमति दें",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "कनेक्शन HTTPS पर अपग्रेड किए गए",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "कनेक्शन HTTPS पर अपग्रेड किया गया",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "स्क्रिप्ट्स ब्लॉक हैं",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "क्रॉस-साइट कुकीज़ ब्लॉक की गईं",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "कुकीज़ ब्लॉक की गईं",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "सभी कुकीज़ स्वीकार की गईं",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "फ़िंगरप्रिंटिंग ब्लॉक की गई",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "फ़िंगरप्रिंटिंग ब्लॉक की गई (सामान्य)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "फ़िंगरप्रिंटिंग ब्लॉक की गई (सख्त, साइटों को खराब कर सकता है)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "सभी फिंगरप्रिंटिंग की अनुमति दें",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "फ़िंगरप्रिंटिंग की कोशिशें",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "इस साइट पर उपलब्ध स्क्रिप्ट्स",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "अनुमति दें",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "अनुमति वाली स्क्रिप्ट्स",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "सभी को ब्लॉक करें",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "सभी को अनुमति दें",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "ब्लॉक करें",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "अनुमति दें",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "एक बार ब्लॉक किया गया",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "एक बार अनुमति दी गई",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "एक बार स्क्रिप्ट की अनुमति दें",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "रद्द करें",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "वापस जाएँ",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "एक बार लागू करें",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "ग्लोबल शील्ड डिफ़ॉल्ट को बदलें",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "कस्टम फ़िल्टर मैनेज करें",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "एलिमेंट ब्लॉक करें",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "एडवांस व्यू",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "साधारण व्यू",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "साइटों में अक्सर कुकीज़ और स्क्रिप्ट होते हैं जो आपकी और आपके डिवाइस की पहचान करने की कोशिश करते हैं (अक्सर विज्ञापनों में शामिल होते हैं)। वे जानना चाहते हैं कि आप कौन हैं और पूरे वेब पर आपको फ़ॉलो करते हैं — हर साइट पर आपकी गतिविधि को ट्रैक करते हैं। Brave इन चीज़ों को ब्लॉक करता है, ताकि किसी के फ़ॉलो किए बिना आप ब्राउज कर सकें।",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "क्रॉस-साइट ट्रैकर और दूसरी खतरनाक चीज़ों को ब्लॉक कर दिया गया है",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "इस व्यू में शील्ड सेटिंग बदलने से इस साइट पर वेब की अनुकूलता पर असर पड़ सकता है।",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "समझ लिया",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "ज़्यादा जानें",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Brave में जोड़ें",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Brave से हटाएँ",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Chrome में जोड़ें",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Chrome से हटाएं",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

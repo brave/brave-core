@@ -1,0 +1,12 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "on"
+    ],
+    "name": "flag set"
+  },
+  {
+    "name": "$result"
+  }
+]

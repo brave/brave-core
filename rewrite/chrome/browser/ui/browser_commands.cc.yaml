@@ -1,0 +1,85 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Call BraveMaybeHandleReloadBypassingCache() in ReloadBypassingCache()
+
+      Before reloading, check if the browser is a Tor profile by calling
+      BraveMaybeHandleReloadBypassingCache() to handle the reload. If so,
+      return early.
+
+    preempt_function_impl:
+      function_name: ReloadBypassingCache
+      return_if: 'BraveMaybeHandleReloadBypassingCache(browser)'
+
+  - description:
+      Replace chrome::kChromeUISplitViewNewTabPageURL to kChromeUINewTabURL in
+      NewSplitTab(). We don't want to have a separate NTP URL for split view.
+    regex:
+      re_pattern: |-
+        (void NewSplitTab\(.*?)(chrome::kChromeUISplitViewNewTabPageURL)(.*?^})
+      re_flags: [DOTALL, MULTILINE]
+      replace: \1chrome::kChromeUINewTabURL\3
+
+  - description:
+      Nullify toast controller in CloseTab() not to show toast when closing a
+      pinned tab
+    regex:
+      re_pattern: (void CloseTab\(.*?toast_controller\(\);)
+      re_flags: [DOTALL]
+      replace: \1\n  toast_controller = nullptr;
+
+  - description: Call InsertDetachedTreeTabNodeAt() in MoveTabsToWindowImpl().
+
+      In case of the detached collection is a tree tab node collection, we
+      should call InsertDetachedTreeTabNodeAt(). This inserts the code ahead of
+      other if statements that checks the collection type.
+    regex:
+      re_pattern: |
+        (if \(std::holds_alternative<std::unique_ptr<tabs::TabGroupTabCollection>>\()
+      replace: |-
+        if (std::holds_alternative<
+                      std::unique_ptr<tabs::TreeTabNodeTabCollection>>(
+                      collection->get()->collection_)) {
+                target_model->InsertDetachedTreeTabNodeAt(std::move(*collection),
+                                                          target_model->count());
+              } else \1\n
+
+  - description: |-
+      Scope ReloadInternal() to the active tab when its whole tree-tab
+      subtree is selected.
+
+      When `multiple_ui_tabs_selected` is true, the reload will perform on all
+      selected tabs. So when the selected tabs represent a whole tree tab, mark
+      `multiple_ui_tabs_selected` as false to scope the reload to the active tab
+      only. This is to avoid reloading the whole tree tab.
+
+    regex:
+      re_pattern: (void ReloadInternal\(.*?bool multiple_ui_tabs_selected =.*?;)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          if (multiple_ui_tabs_selected &&
+              static_cast<BraveTabStripModel*>(tab_strip_model)
+                  ->IsOnlyActiveTabAndTreeDescendantsSelected()) {
+            multiple_ui_tabs_selected = false;
+          }
+
+  - description: |-
+      Scope CloseTab() to the active tab when its whole tree-tab subtree
+      is selected.
+
+      When `only_active_split_tab_selected` is true, the close will perform on
+      only the active tab of split view. Likewise, when the selected tabs
+      represent a whole tree tab, fallback to the active tab only closing.
+
+    regex:
+      re_pattern: (void CloseTab\(.*?if \(only_active_split_tab_selected)\) \{
+      re_flags: [DOTALL]
+      replace: |-
+        \1 ||
+              static_cast<BraveTabStripModel*>(browser->GetTabStripModel())
+                  ->IsOnlyActiveTabAndTreeDescendantsSelected()) {

@@ -1,0 +1,29 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_metadata_header_macros: true
+
+substitutions:
+  - description: Add BraveTabCardView as a friend class to TabCardView
+    add_friend:
+      class_name: TabHoverCardBubbleView::TabCardView
+      friend_type: class BraveTabCardView
+
+  - description: |
+      Replace std::make_unique<TabCardView> with a factory method.
+
+      The factory method will be overriden in chromium_src to create
+      BraveTabCardView instead of TabCardView.
+
+    regex:
+      pattern: 'std::make_unique<TabCardView>(this)'
+      replace: 'CreateTabCardView()'
+
+  - description: |
+      Make TabCardView::UpdateContent virtual for BraveTabCardView.
+
+    make_virtual:
+      class_name: TabHoverCardBubbleView::TabCardView
+      method_name: UpdateContent

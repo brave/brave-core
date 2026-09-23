@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/component_updater/trust_token_key_commitments_component_installer.cc b/chrome/browser/component_updater/trust_token_key_commitments_component_installer.cc
+index a921aaa95fa207323648bd07c8e6afadda506b47..4c27a56aa969d5a7931e3bfc20c2d613a3b45998 100644
+--- a/chrome/browser/component_updater/trust_token_key_commitments_component_installer.cc
++++ b/chrome/browser/component_updater/trust_token_key_commitments_component_installer.cc
+@@ -19,6 +19,7 @@ namespace component_updater {
+ 
+ void RegisterTrustTokenKeyCommitmentsComponentIfTrustTokensEnabled(
+     ComponentUpdateService* cus) {
++  if ((true)) return;
+   VLOG(1) << "Registering Trust Token Key Commitments component.";
+   auto installer = base::MakeRefCounted<ComponentInstaller>(
+       std::make_unique<TrustTokenKeyCommitmentsComponentInstallerPolicy>(

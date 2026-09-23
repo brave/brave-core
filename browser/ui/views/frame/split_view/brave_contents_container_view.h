@@ -1,0 +1,86 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_CONTENTS_CONTAINER_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_CONTENTS_CONTAINER_VIEW_H_
+
+#include "base/gtest_prod_util.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
+#include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "chrome/browser/ui/views/frame/contents_container_view.h"
+#include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+#include "brave/browser/ui/views/speedreader/reader_mode_toolbar_view.h"
+#endif
+
+class BraveContentsContainerView :
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+    public ReaderModeToolbarView::Delegate,
+#endif
+    public ContentsContainerView {
+  METADATA_HEADER(BraveContentsContainerView, ContentsContainerView)
+ public:
+  static constexpr int kBorderThickness = 2;
+
+  static BraveContentsContainerView* From(ContentsContainerView* view);
+
+  BraveContentsContainerView(BrowserView* browser_view,
+                             bool for_web_panel = false);
+  ~BraveContentsContainerView() override;
+
+  // true when a tab that wraps this container's web contents is active.
+  bool IsActive() const;
+
+  // Sets the corner radii of the region this container occupies. Empty radii
+  // indicate that the contents should not be rounded. Takes effect on the next
+  // border update.
+  void SetContentsCornerRadii(const gfx::RoundedCornersF& corner_radii);
+
+  // ContentsContainerView:
+  void UpdateBorderAndOverlay(bool is_in_split,
+                              bool is_active,
+                              bool is_highlighted) override;
+  void UpdateBorderRoundedCorners() override;
+  views::ProposedLayout CalculateProposedLayout(
+      const views::SizeBounds& size_bounds) const override;
+  void ChildVisibilityChanged(views::View* child) override;
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  // ReaderModeToolbarView::Delegate:
+  void OnReaderModeToolbarActivate(ReaderModeToolbarView* toolbar) override;
+
+  ReaderModeToolbarView* reader_mode_toolbar() { return reader_mode_toolbar_; }
+#endif
+
+ private:
+  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest, BraveMultiContentsViewTest);
+
+  // |border_thickness| is added to the content corner radii to get the
+  // concentric outer radius for a border of that thickness; pass 0 for the
+  // content's own (unbordered) corner radii.
+  gfx::RoundedCornersF GetCornerRadius(int border_thickness) const;
+
+  // True when this container should display its domain in the mini toolbar.
+  bool ShouldAlwaysShowDomain() const;
+
+  // True when this container's web contents occupies the entire window.
+  bool IsTabFullscreen() const;
+
+  raw_ref<BrowserView> browser_view_;
+
+  // true when this view is used for web panel.
+  const bool for_web_panel_;
+
+  gfx::RoundedCornersF contents_corner_radii_;
+
+#if BUILDFLAG(ENABLE_SPEEDREADER)
+  raw_ptr<ReaderModeToolbarView> reader_mode_toolbar_ = nullptr;
+#endif
+};
+
+#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_SPLIT_VIEW_BRAVE_CONTENTS_CONTAINER_VIEW_H_

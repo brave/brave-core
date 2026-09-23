@@ -1,0 +1,144 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/application_state/browser_manager.h"
+
+#include "base/check.h"
+#include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
+#include "brave/components/brave_ads/core/internal/common/logging_util.h"
+#include "brave/components/brave_ads/core/internal/global_state/global_state.h"
+#include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
+
+namespace brave_ads {
+
+BrowserManager::BrowserManager() {
+  ads_client_observation_.Observe(&GetAdsClient());
+}
+
+BrowserManager::~BrowserManager() = default;
+
+// static
+BrowserManager& BrowserManager::GetInstance() {
+  return GlobalState::GetInstance()->GetBrowserManager();
+}
+
+void BrowserManager::AddObserver(BrowserManagerObserver* const observer) {
+  CHECK(observer);
+
+  observers_.AddObserver(observer);
+}
+
+void BrowserManager::RemoveObserver(BrowserManagerObserver* const observer) {
+  CHECK(observer);
+
+  observers_.RemoveObserver(observer);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+bool BrowserManager::IsCurrentlyActive() const {
+  return is_active_.has_value() && *is_active_;
+}
+
+void BrowserManager::NotifyBrowserDidBecomeActive() {
+  observers_.Notify(&BrowserManagerObserver::OnBrowserDidBecomeActive);
+}
+
+bool BrowserManager::IsCurrentlyInactive() const {
+  return is_active_.has_value() && !*is_active_;
+}
+
+void BrowserManager::NotifyBrowserDidResignActive() {
+  observers_.Notify(&BrowserManagerObserver::OnBrowserDidResignActive);
+}
+
+void BrowserManager::LogBrowserActiveState() const {
+  BLOG(1, "Browser did " << (IsActive() ? "become" : "resign") << " active");
+}
+
+bool BrowserManager::IsCurrentlyInForeground() const {
+  return is_in_foreground_.has_value() && *is_in_foreground_;
+}
+
+void BrowserManager::NotifyBrowserDidEnterForeground() {
+  observers_.Notify(&BrowserManagerObserver::OnBrowserDidEnterForeground);
+}
+
+bool BrowserManager::IsCurrentlyInBackground() const {
+  return is_in_foreground_.has_value() && !*is_in_foreground_;
+}
+
+void BrowserManager::NotifyBrowserDidEnterBackground() {
+  observers_.Notify(&BrowserManagerObserver::OnBrowserDidEnterBackground);
+}
+
+void BrowserManager::InitializeBrowserBackgroundState() {
+  const bool is_active = GetAdsClient().IsBrowserActive();
+  is_active_ = is_active;
+  is_in_foreground_ = is_active;
+
+  LogBrowserActiveState();
+  LogBrowserBackgroundState();
+}
+
+void BrowserManager::LogBrowserBackgroundState() const {
+  BLOG(1, "Browser did enter "
+              << (IsInForeground() ? "foreground" : "background"));
+}
+
+void BrowserManager::OnNotifyDidInitializeAds() {
+  InitializeBrowserBackgroundState();
+}
+
+void BrowserManager::OnNotifyBrowserDidBecomeActive() {
+  if (!IsCurrentlyActive()) {
+    is_active_ = true;
+    LogBrowserActiveState();
+    NotifyBrowserDidBecomeActive();
+  }
+
+  // The OS doesn't reliably send a separate foreground/background transition
+  // on desktop the way it does on mobile, so a stale `false` foreground
+  // reading from `InitializeBrowserBackgroundState()`'s startup race (see
+  // `IsBrowserActive()`) would otherwise never self-correct; an activated
+  // browser window is, by definition, in the foreground.
+  if (!IsCurrentlyInForeground()) {
+    is_in_foreground_ = true;
+    LogBrowserBackgroundState();
+    NotifyBrowserDidEnterForeground();
+  }
+}
+
+void BrowserManager::OnNotifyBrowserDidResignActive() {
+  if (IsCurrentlyInactive()) {
+    return;
+  }
+
+  is_active_ = false;
+  LogBrowserActiveState();
+  NotifyBrowserDidResignActive();
+}
+
+void BrowserManager::OnNotifyBrowserDidEnterForeground() {
+  if (IsCurrentlyInForeground()) {
+    return;
+  }
+
+  is_in_foreground_ = true;
+  LogBrowserBackgroundState();
+  NotifyBrowserDidEnterForeground();
+}
+
+void BrowserManager::OnNotifyBrowserDidEnterBackground() {
+  if (IsCurrentlyInBackground()) {
+    return;
+  }
+
+  is_in_foreground_ = false;
+  LogBrowserBackgroundState();
+  NotifyBrowserDidEnterBackground();
+}
+
+}  // namespace brave_ads

@@ -1,0 +1,13 @@
+diff --git a/components/cached_flags/android/java/src/org/chromium/components/cached_flags/CachedFlag.java b/components/cached_flags/android/java/src/org/chromium/components/cached_flags/CachedFlag.java
+index 78965d6c63bb22c60c09d24c763915203351ba48..563267655c768036ada5adf0989e0ccc4073693b 100644
+--- a/components/cached_flags/android/java/src/org/chromium/components/cached_flags/CachedFlag.java
++++ b/components/cached_flags/android/java/src/org/chromium/components/cached_flags/CachedFlag.java
+@@ -50,7 +50,7 @@ import java.util.function.Supplier;
+  */
+ @NullMarked
+ public class CachedFlag extends Flag {
+-    private final boolean mDefaultValue;
++    protected boolean mDefaultValue;
+     private @Nullable String mPreferenceKey;
+     private @Nullable Supplier<Boolean> mValueSupplier;
+ 

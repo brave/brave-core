@@ -1,0 +1,48 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "יש לגעת ולהחזיק את הסמל של Brave, ולאחר מכן לגרור אותו אל ה-Dock לגישה מהירה.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "הוספת Brave ל-Dock שלך";
+
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "המשך";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "להגדיר את Brave כדפדפן ברירת המחדל שלך עוד היום.";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "ליהנות מחסימת מודעות בכל אתר שמבקרים בו";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "לא עכשיו";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "לחסום הפרעות מרגיזות באתרי הסטרימינג החביבים עליך.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "לחסום הפרעות במהלך הסטרימינג";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "נשמח לשמוע מאילו פיצ׳רים הכי נהנית.";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "לעזור לשפר את Brave";
+
+/* The description shown below the toggle for enabling privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "שתפו תובנות פרטיות ואנונימיות לחלוטין בנוגע למוצרים בכל מה שקשור לתכונות שבהן משתמשי Brave עושים שימוש.";
+
+/* The title of the toggle that allows the user to enable/disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "תובנות פרטיות של מוצר";
+
+/* The description shown below the toggle for enabling crash reporting. */
+"focusOnboarding.sendCrashReportsToggleDescription" = "שלחו דוחות אבחון אנונימיים אם חווית קריסה או הקפאה.";
+
+/* The title of the toggle that allows the user to enable/disable crash reporting. */
+"focusOnboarding.sendCrashReportsToggleTitle" = "שלח דוחות קריסה";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "להתחיל לגלוש";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "הגדרה כברירת מחדל";
+

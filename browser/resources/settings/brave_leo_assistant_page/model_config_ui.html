@@ -1,0 +1,252 @@
+<style include="cr-shared-style settings-shared">
+  .container {
+    width: 100%;
+    padding: 16px 0;
+  }
+
+  .input-container {
+    margin-bottom: var(--leo-spacing-2xl);
+  }
+
+  .custom-label {
+    font: var(--leo-font-small-semibold);
+    color: var(--leo-color-text-primary);
+    margin-bottom: var(--leo-spacing-s);
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+  }
+
+  .label-text {
+    display: flex;
+    gap: var(--leo-spacing-s);
+    align-items: center;
+  }
+
+  .required {
+    color: var(--leo-color-systemfeedback-error-text);
+    font: var(--leo-font-small-regular);
+  }
+
+  .helper-text {
+    color: var(--leo-color-text-secondary);
+    font: var(--leo-font-small-regular);
+    margin-top: var(--leo-spacing-s);
+  }
+
+  .inline-note {
+    color: var(--leo-color-text-tertiary);
+    font: var(--leo-font-small-regular);
+    margin-top: var(--leo-spacing-s);
+  }
+
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: var(--leo-spacing-xl);
+  }
+
+  .toggle-row .toggle-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .toggle-row .toggle-title {
+    color: var(--leo-color-text-primary);
+    font: var(--leo-font-default-regular);
+  }
+
+  .toggle-row .helper-text {
+    margin-top: 0;
+  }
+
+  .actions-container leo-button:first-of-type {
+    margin-right: 5px;
+  }
+
+  .unsafe-endpoint-label {
+    display: flex;
+    justify-content: center;
+    margin-top: var(--leo-spacing-s);
+  }
+</style>
+
+<!-- warning message against potentially unsafe endpoints -->
+<template is="dom-if" if="[[shouldShowUnsafeEndpointModal]]">
+  <cr-dialog show-close-button show-on-attach>
+    <div slot="title">
+      <span class="dialog-title">
+        $i18n{braveLeoAssistantEndpointValidAsPrivateIp_Title}
+      </span>
+    </div>
+    <div slot="body">
+      <p>$i18n{braveLeoAssistantEndpointValidAsPrivateIp_Body}</p>
+      <p>$i18n{braveLeoAssistantEndpointValidAsPrivateIp_Instructions}</p>
+    </div>
+  </cr-dialog>
+</template>
+
+<div class="settings-box">
+  <div class="container">
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputModelLabel}</span>
+          <span class="required">$i18n{braveLeoAssistantRequiredLabel}</span>
+        </div>
+      </div>
+      <leo-input
+        required
+        auto-validate
+        type="text"
+        value="[[label]]"
+        on-change="onModelLabelChange_"
+      ></leo-input>
+      <div class="helper-text">
+        $i18n{braveLeoAssistantInputModelLabelTooltipInfo}
+      </div>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputModelRequestName}</span>
+          <span class="required">$i18n{braveLeoAssistantRequiredLabel}</span>
+        </div>
+      </div>
+      <leo-input
+        required
+        auto-validate
+        type="text"
+        value="[[modelRequestName]]"
+        on-change="onModelRequestNameChange_"
+      ></leo-input>
+      <div class="helper-text">
+        $i18n{braveLeoAssistantInputModelRequestNameTooltipInfo}
+      </div>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <div class="label-text">
+          <span>$i18n{braveLeoAssistantInputModelServerEndpoint}</span>
+          <span class="required">$i18n{braveLeoAssistantRequiredLabel}</span>
+        </div>
+      </div>
+      <leo-input
+        id="endpointInput"
+        required
+        type="url"
+        value="[[endpointUrl]]"
+        on-change="onModelServerEndpointChange_"
+        show-errors="[[isUrlInvalid]]"
+      >
+        <div slot="errors">[[invalidUrlErrorMessage]]</div>
+      </leo-input>
+      <div class="helper-text">
+        $i18n{braveLeoAssistantInputModelServerEndpointTooltipInfo}
+        $i18n{braveLeoAssistantProxyNote}
+      </div>
+      <template is="dom-if" if="[[shouldShowUnsafeEndpointLabel]]">
+        <div class="unsafe-endpoint-label">
+          <leo-label mode="loud" color="red">
+            <leo-icon name="lock-open" slot="icon-before"></leo-icon>
+            $i18n{braveLeoAssistantEndpointPotentiallyUnsafeError}
+          </leo-label>
+        </div>
+      </template>
+    </div>
+
+    <div class="input-container">
+      <div class="custom-label">
+        <span>$i18n{braveLeoAssistantInputContextSizeLabel}</span>
+      </div>
+      <leo-input
+        auto-validate
+        type="number"
+        value="[[contextSize]]"
+        placeholder="$i18n{braveLeoAssistantInputDefaultContextSize}"
+        on-change="onContextSizeChange_"
+      ></leo-input>
+      <div class="helper-text">
+        $i18n{braveLeoAssistantInputContextSizeTooltipInfo}
+      </div>
+    </div>
+    <div class="input-container">
+      <div class="custom-label">
+        <span>$i18n{braveLeoAssistantInputModelApiKey}</span>
+      </div>
+      <leo-input
+        auto-validate
+        type="text"
+        value="[[apiKey]]"
+        on-change="onModelApiKeyChange_"
+      >
+      </leo-input>
+      <div class="helper-text">
+        $i18n{braveLeoAssistantInputModelApiKeyTooltipInfo}
+      </div>
+    </div>
+
+    <div class="input-container toggle-row">
+      <div class="toggle-content">
+        <div class="toggle-title">
+          $i18n{braveLeoAssistantInputModelVisionSupport}
+        </div>
+        <div class="helper-text">
+          $i18n{braveLeoAssistantInputModelVisionSupportTooltipInfo}
+        </div>
+      </div>
+      <leo-toggle
+          checked="{{hasVisionSupport}}"
+          on-change="onVisionSupportChanged_">
+      </leo-toggle>
+    </div>
+    <div class="input-container toggle-row">
+      <div class="toggle-content">
+        <div class="toggle-title">
+          $i18n{braveLeoAssistantInputModelToolSupport}
+        </div>
+        <div class="helper-text">
+          $i18n{braveLeoAssistantInputModelToolSupportTooltipInfo}
+        </div>
+      </div>
+      <leo-toggle
+          checked="{{supportsTools}}"
+          on-change="onSupportsToolsChanged_">
+      </leo-toggle>
+    </div>
+
+    <div class="input-container">
+      <div class="custom-label">
+        <span>$i18n{braveLeoAssistantModelSystemPromptTitle}</span>
+      </div>
+      <leo-textarea
+        value="[[modelSystemPrompt]]"
+        rows="4"
+        placeholder="$i18n{braveLeoAssistantModelSystemPromptPlaceholder}"
+        on-change="onModelSystemPromptChange_"
+        on-input="constructTokenEstimateString_"
+      ></leo-textarea>
+      <div class="helper-text">
+        $i18n{braveLeoAssistantModelSystemPromptDesc}
+      </div>
+      <div class="inline-note">
+        [[promptTokensEstimateString]]
+      </div>
+    </div>
+
+    <div class="actions-container">
+      <leo-button
+        isDisabled$="[[!saveEnabled_(label, modelRequestName, endpointUrl, isUrlInvalid)]]"
+        on-click="handleClick_"
+      >
+        [[buttonLabel_]]
+      </leo-button>
+      <leo-button
+        kind="plain-faint"
+        on-click="handleCloseClick_"
+      >
+        $i18n{cancel}
+      </leo-button>
+    </div>
+  </div>
+</div>

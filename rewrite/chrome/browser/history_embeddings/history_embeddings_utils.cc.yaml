@@ -1,0 +1,67 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Swap the upstream history semantic search disclaimer IDS references to
+# Brave-owned strings. Brave's implementation runs entirely on-device (see
+# brave/browser/history_embeddings/README.md), so the upstream text about
+# data being sent to Brave and seen by human reviewers is inaccurate. The
+# IDS_BRAVE_* definitions are pulled in by the chromium_src override at
+# brave/chromium_src/chrome/browser/history_embeddings/history_embeddings_utils.cc.
+
+substitutions:
+  - description:
+      'Swap IDS_HISTORY_EMBEDDINGS_DISCLAIMER_LOGGING_OFF to the Brave-owned
+      string.'
+    regex:
+      re_pattern: '\bIDS_HISTORY_EMBEDDINGS_DISCLAIMER_LOGGING_OFF\b'
+      replace: 'IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER'
+
+  - description:
+      'Swap IDS_HISTORY_EMBEDDINGS_DISCLAIMER to the Brave-owned string.'
+    regex:
+      re_pattern: '\bIDS_HISTORY_EMBEDDINGS_DISCLAIMER\b'
+      replace: 'IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER'
+
+  - description: 'Ship kLaunchedHistoryEmbeddings disabled.'
+    set_feature_flag_default_state:
+      feature_name: kLaunchedHistoryEmbeddings
+      value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Gate IsHistoryEmbeddingsFeatureEnabled on the local-state
+      kBraveLocalAIEnabled master switch.
+
+      This function is the chokepoint every upstream consumer reaches the
+      feature through (model component installer, side bar toggle
+      visibility, history embeddings service factory, etc.), so folding it
+      off here folds off every consumer with it, without needing to touch
+      each of them individually. See ShouldForceHistoryEmbeddingsFeatureDisabled
+      in the chromium_src override for the actual check.
+    preempt_function_impl:
+      function_name: IsHistoryEmbeddingsFeatureEnabled
+      return_if: 'ShouldForceHistoryEmbeddingsFeatureDisabled()'
+      return_value: 'false'
+
+  - description: |-
+      Additionally gate IsHistoryEmbeddingsEnabledForProfile on the
+      per-profile kBraveHistoryEmbeddingsEnabled pref backing the
+      chrome://history side bar toggle.
+
+      See ComputeHistoryEmbeddingsEnabledForProfile in the chromium_src
+      override for the actual check.
+    preempt_function_impl:
+      function_name: IsHistoryEmbeddingsEnabledForProfile
+      code: |-
+        if ((true)) return ComputeHistoryEmbeddingsEnabledForProfile(profile);
+
+  - description: |-
+      Force IsHistoryEmbeddingsSettingVisible off.
+
+      The per-profile toggle lives on chrome://history, so the
+      chrome://settings/ai History Search entry is never surfaced.
+    preempt_function_impl:
+      function_name: IsHistoryEmbeddingsSettingVisible
+      code: |-
+        if ((true)) return false;

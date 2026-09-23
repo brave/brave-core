@@ -1,0 +1,17 @@
+diff --git a/components/affiliations/core/browser/hash_affiliation_fetcher.cc b/components/affiliations/core/browser/hash_affiliation_fetcher.cc
+index 9495cf4d053bd755b90c2f45b28211de176aba9b..efe16ae7fe6df3be637b590ca8c238aae638a6ee 100644
+--- a/components/affiliations/core/browser/hash_affiliation_fetcher.cc
++++ b/components/affiliations/core/browser/hash_affiliation_fetcher.cc
+@@ -134,6 +134,12 @@ void HashAffiliationFetcher::StartRequest(
+     const std::vector<FacetURI>& facet_uris,
+     RequestInfo request_info,
+     base::OnceCallback<void(FetchResult)> result_callback) {
++  result_callback_ = std::move(result_callback);
++  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
++      FROM_HERE,
++      base::BindOnce(&HashAffiliationFetcher::CompleteStubbedRequest,
++                     weak_ptr_factory_.GetWeakPtr()));
++  return;
+   requested_facet_uris_ = facet_uris;
+   result_callback_ = std::move(result_callback);
+ 

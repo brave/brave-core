@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Nyongeza ya Brave",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Ngao",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "juu",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "chini",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "kwa tovuti hii",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Ikiwa tovuti inaonekana imevunjika, jaribu ngao hapa chini",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Unavinjari tovuti hii bila ulinzi wa faragha na usalama wa Brave. Haifanyi kazi vizuri na Shields?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Ripoti tovuti yenye hitilafu",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "Vitu vimezuiwa",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "Kitu kimezuiwa",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "na",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "miunganisho imepandishwa",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "muungaisho umepandishwa",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "Vifuatiliaji vya kwenye tovuti vimezuiwa",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Vifuatiliaji na matangazo yamezuiwa",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Vifuatiliaji na matangazo yamezuiwa (hima)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Vifuatiliaji na matangazo yamezuiwa (wastani)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Ruhusu vifuatiliaji na matangazo yote",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "Miunganisho imepandishwa kwenye HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "Muunganisho umepandishwa kwenye HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Maandishi yamezuiwa",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "Vidakuzi vya kwenye tovuti vimezuiwa",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Vidakuzi vimezuiwa",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Vidakuzi vyote vimeruhusiwa",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Alama za vidole zimezuiwa",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "Alama ya kidole imezuiwa (kawaida)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "Alama ya kidole imezuiwa (inasisitizwa, inaweza kuathiri utendaji wa tovuti)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "Ruhusu uchapishaji wote wa alama za vidole",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Majaribio ya kuchukua alama za vidole",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Maandishi kwenye tovuti hii",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Maandishi yaliyozuiwa",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Maandishi yaliyoruhusiwa",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "Zuia vyote",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Ruhusu yote",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "Zuia",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "Ruhusu",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "Vimezuiwa mara moja",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Vimeruhusiwa mara moja",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Ruhusu maandishi mara moja",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "Ghairi",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Rudi nyuma",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Tumia mara moja",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Badilisha mipangilio chaguo msingi ya ngao ya kiulimwengu",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "Dhibiti vichujio maalum",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Zuia elementi",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "Mwonekano Mahiri",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Mwonekano Rahisi",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Mara nyingi tovuti inajumuisha vidakuzi na hati ambazo hujaribu kukutambua wewe na kifaa chako (mara nyingi hupachikwa katika matangazo). Zinataka kujua wewe ni  nani na kukufuata kwenye wavuti — kufuatilia unachokifanya kwenye kila tovuti. Brave huzuia mambo haya ili uweze kuvinjari bila kufuatiliwa.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Vishambulizi vya tovuti nzima na mambo mengine ya ajabu yaliyozuiwa.",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Kubadilisha mipangilio ya Shield katika mwonekano huu kunaweza kuathiri uoanaji wa wavuti kwenye tovuti hii.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Nimeelewa",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Jifunze zaidi",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Ongeza kwenye Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Ondoa kwenye Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Add to Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Remove from Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit latest_public_release="0" current_release="1">
+  <outputs>
+    <output filename="grit/test_resources.h" type="rc_header">
+      <emit emit_type='prepend'></emit>
+    </output>
+    <output filename="test_resources.pak" type="data_package" />
+  </outputs>
+  <release seq="1">
+    <includes>
+      <include name="IDR_WEBUI_TEST_HTML" file="data/webui_test.html" type="BINDATA" />
+      <include name="IDR_WEBUI_TEST_HTML_2" file="data/webui_test_2.html" type="BINDATA" />
+    </includes>
+  </release>
+</grit>

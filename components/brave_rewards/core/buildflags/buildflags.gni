@@ -1,0 +1,61 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
+
+declare_args() {
+  enable_brave_rewards = !is_brave_origin_branded
+
+  # These are public, non-secret endpoints and custodian fee addresses. They
+  # are defaulted here so they don't need to be supplied via the build
+  # environment on CI. They can still be overridden for custom builds via
+  # --gn=<arg>:<value>.
+  bitflyer_production_fee_address = "e77cacb4-c49c-4451-bc2d-5072c10e55d3"
+  bitflyer_production_url = "https://bitflyer.com"
+  bitflyer_sandbox_fee_address = "068e675b-f137-48ed-8068-4ad34ca4f30f"
+  bitflyer_sandbox_url = "https://demo24kiuw4dcyncsy3qlud8u8.azurewebsites.net"
+
+  rewards_grant_dev_endpoint = "https://grant.rewards.brave.software"
+  rewards_grant_staging_endpoint = "https://grant.rewards.bravesoftware.com"
+  rewards_grant_prod_endpoint = "https://grant.rewards.brave.com"
+
+  uphold_production_api_url = "https://api.uphold.com"
+  uphold_production_fee_address = "b01e8c55-5004-4761-9e4b-01ec13e25c92"
+  uphold_production_oauth_url = "https://wallet.uphold.com"
+  uphold_sandbox_api_url = "https://api-sandbox.uphold.com"
+  uphold_sandbox_fee_address = "1b2b466f-5c15-49bf-995e-c91777d3da93"
+  uphold_sandbox_oauth_url = "https://wallet-sandbox.uphold.com"
+
+  zebpay_production_api_url = "https://brave.zebpay.com"
+  zebpay_production_oauth_url = "https://connect.zebpay.com"
+  zebpay_sandbox_api_url = "https://rewards.zebpay.co"
+  zebpay_sandbox_oauth_url = "https://braveconnect.zebpay.co"
+}
+
+# These args have public defaults above, so these asserts now only guard
+# against a custom build explicitly overriding one back to empty.
+#
+# Note: This block is NOT executed during PR builder CI runs. When making
+# changes to this block, ensure that "release-test" passes in CI before merging.
+if (is_official_build) {
+  if (enable_brave_rewards && target_os != "ios") {
+    assert(bitflyer_production_fee_address != "")
+    assert(bitflyer_production_url != "")
+    assert(uphold_production_api_url != "")
+    assert(uphold_production_fee_address != "")
+    assert(uphold_production_oauth_url != "")
+    assert(zebpay_production_api_url != "")
+    assert(zebpay_production_oauth_url != "")
+  }
+
+  # These args are currently used by "components/brave_adaptive_captcha" when
+  # rewards is disabled. They are not needed for Brave Origin builds, which
+  # ship with rewards (and adaptive captcha) disabled.
+  if (!is_brave_origin_branded) {
+    assert(rewards_grant_dev_endpoint != "")
+    assert(rewards_grant_staging_endpoint != "")
+    assert(rewards_grant_prod_endpoint != "")
+  }
+}

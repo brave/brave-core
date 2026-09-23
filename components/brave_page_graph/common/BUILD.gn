@@ -1,0 +1,23 @@
+# Copyright 2022 The Brave Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+import("//brave/components/brave_page_graph/common/buildflags.gni")
+import("//build/buildflag_header.gni")
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [
+    "ENABLE_BRAVE_PAGE_GRAPH=$enable_brave_page_graph",
+    "ENABLE_BRAVE_PAGE_GRAPH_WEBAPI_PROBES=$enable_brave_page_graph_webapi_probes",
+  ]
+}
+
+source_set("common") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [ "//base" ]
+}

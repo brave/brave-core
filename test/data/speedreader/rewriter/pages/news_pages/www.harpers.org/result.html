@@ -1,0 +1,555 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Both Sides Now, by Tess McNulty</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Both Sides Now, by Tess McNulty</h1><p class="subhead metadata">Domination and abuse on the high school debate circuit</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+                                    
+                
+                                    <p class="drop-cap">In the conference room, three words were printed on the whiteboard: <span>full spectrum dominance</span>. Before them stood a stocky young man in a tactical vest and cadet cap, a prominent debate coach.</p>
+<p>He began to address us, stating a basic fact: to excel in competitive debate, we had to become experts in moral argumentation. We had to learn everything there was to know about a particular issue, like the death penalty or nuclear disarmament, and then we had to argue the issue persuasively from either side.</p>
+<p>But to succeed at the highest level, he continued, to win national tournaments and qualify for the Tournament of Champions, we had to do something more: dominate our opponents in every way. During rounds, he said, we should attempt to overwhelm them, not only with intelligent claims, but also with fusillades of outlandish arguments. Between rounds, we should wage full-scale campaigns of intimidation, blasting rap music through giant headphones, smiling mysteriously, underdressing, or walking around flanked by powerful figures (prominent coaches, successful debaters).</p>
+<p>It was 2008, and we were a group of devoted high school debaters who had traveled to this summer program to hone our skills. Most of us were already consumed by what we called the “activity.” On weekends we flew to tournaments across the United States (Dallas, Nashville, Los Angeles, Boston). On weekdays we worked on our materials, chatted online with other debaters, and feverishly refreshed victorybriefsdaily.com, a website that posted tournament results and other news. During the summer, we attended multiweek camps like this one, considered obligatory for successful competitors.</p>
+<p>So we knew that while the coach’s tone was playful, his advice was serious. The behaviors he enumerated were not simply prescriptions for how the most elite debaters should act; they were descriptions of how they already did.</p>
+<p>Gleeful, nervous laughter filled the room. Pens flipped around fingers. Keyboards clacked. Hearts fluttered.</p>
+<p class="drop-cap">I had begun the activity three years earlier, in 2005, as a freshman member of a public high school team in New Jersey. I competed in Lincoln–Douglas Debate. Each LD round was around forty-five minutes long and centered on a resolution: “Civil disobedience in a democracy is morally justified,” say, or “The use of the state’s power of eminent domain to promote private enterprise is unjust.” Two debaters—one Affirmative (Aff) and one Negative (Neg)—would give alternating speeches defending or opposing the resolution. A judge would take careful notes, a process called “flowing,” and determine who won.</p>
+<p>At first I debated on the local circuit. Every few Saturdays, I would travel to a nearby high school for a daylong tournament that was managed, chaperoned, and judged by parents and teachers. I spoke slowly and emphatically, making reasonable arguments that might persuade a lawyer, a plumber, or an English teacher to award me the victory. During my sophomore year, I began to compete on the national circuit. I attended weekend tournaments at colleges and prep schools—Yale, Harvard, the Blake School in Minneapolis, the Greenhill School in the Dallas suburbs—that were presided over not by parents and teachers but by a bevy of young, mostly male, privately contracted coaches, themselves former debaters. I learned to debate differently. For one thing, the pace was much faster. National circuit debaters—then as now—spoke at speeds of up to 350 words per minute, sounding more like cattle auctioneers than eloquent orators. The aim of this practice, called “spreading,” is to fit as many arguments as possible into the allotted time. The rules of the game were complex. Competitors learned an array of experimental maneuvers, including “kritiking” the resolution itself, by arguing that it was based on problematic assumptions; arguing by way of artistic performance (telling a fictional story, rapping); and accusing an opponent of rule violations. So arcane and ever-changing were these tactics that only recent alumni were considered fit to coach or to judge.</p>
+<p>In my first year on the circuit, I learned to spread and did decently well. I won most of my rounds, not that I could tell you how I did it. I experienced each one as a swirling chaos from which—thanks to quick thinking or basic competence—I typically emerged triumphant. But during the summer after my sophomore year, while I was attending a debate camp, something clicked. As if touched by the divine, I began to debate rounds with a sense of clarity that showed me what I needed to do to win.</p>
+<p>Back on the circuit, I found that I couldn’t lose. More precisely, I couldn’t lose preliminary rounds: the first six of a tournament that determined which debaters would advance to elimination rounds. According to the Bronx Science coach Jon Cruz—the circuit’s self-appointed impresario—only one person had ever won more preliminary rounds in a row, and I would soon beat that record. “I broke the streak!” teenage boys yelled victoriously as they burst out of preliminary rounds with me, convinced they would be awarded the win. I would smile serenely, waiting for the judge’s decision to reveal that they were wrong.</p>
+<p>Successful circuit debaters were treated as celebrities, and I learned for the first time what it felt like to sit atop a social hierarchy. When I walked into a room or down a hallway, other debaters would point and whisper. Someone coined a piece of circuit jargon—“shadow-flowing”—for one of my maneuvers: taking notes with both hands at once (or at least appearing to) at high speeds. This, I imagined, was how the popular kids at my high school must have felt.</p>
+<p class="drop-cap">High school debate—managed largely by the non-profit National Speech and Debate Association—has flourished in the past few decades. The NSDA currently boasts more than one hundred and fifty thousand student participants (per affiliated team rosters), many of whom compete in Lincoln–Douglas or policy. The activities are distinct in structure—policy is two-on-two—but they operate similarly on the national circuit, and involve spreading and other experimental tactics.</p>
+<p>Debate’s appeal is simultaneously idyllic and cynical. On the one hand, the activity is touted as training for democratic citizenship, teaching students to analyze moral issues rationally and negotiate their differences impartially. The NSDA website is littered with photos of teens from many different racial and ethnic backgrounds, offering testimonials like: “Debate taught me courage, generosity, and an understanding that diversity makes us strong.” But the activity is also advertised as a path to power. The website includes a list of influential alumni: Elizabeth Warren, Oprah Winfrey, Stephen Colbert, and three current Supreme Court justices. Affluent parents know elite debate as a pipeline to the Ivy League, and pour thousands of dollars into their children’s competitive careers, paying for flights to tournaments, private coaches, and summer training camps.</p>
+<p>We felt this tension on the circuit, however unconsciously. On an intellectual level, debate required that we master the skill of seeing an issue from two sides. For each topic—from standardized testing to universal health care—we had to learn every Aff and Neg argument, every response to those arguments, and their relative merits. To be effective, we had to grasp not only their weaknesses but their strengths, parsing moral issues with precision. Such skills were essential on both the local and national circuits. A debater could not prevail on blistering speed alone.</p>
+<p>But outside of rounds, the circuit’s moral stance was clear: it worshipped power unequivocally. The pursuit of victory took precedence over competitive integrity and even basic decency. We learned to behave in ways that would preserve the hierarchies of the system. We could pursue dominance for ourselves, or accept our subjection to it, silently.</p>
+<p>Circuit debaters rarely worked independently. They typically hired private coaches or, if they were members of wealthy or well-established teams, made use of armies of trainers. It was accepted that these coaches would write their debaters’ materials, producing the “cases” they read to begin rounds, or the “blocks” they used to respond to common points. Debaters like myself, who weren’t part of a major team and didn’t hire year-round support, could still bring in coaches for individual tournaments, or attend camps to learn new strategies.</p>
+<p>Coaches and judges exacerbated students’ monomania. Fueled by vivid memories of their own triumphs and losses, many forgot—or never learned—how adults should interact with children. They yelled angrily at their students’ opponents, scoffed derisively at debaters who gave mediocre performances, and dealt out scathing critiques in their Reasons for Decision (or RFDs). It was typical for the judge presiding over the championship round of a tournament to roll his eyes, rumple his hair, or sigh with exasperation, as if the burden of watching such buffoons were unbearable. The debaters who made it to the later elimination rounds were called “big deals”; those who didn’t were mocked as “strugs,” hopeless strugglers.</p>
+<p>We all knew our place in the pecking order. I was well positioned to learn the basics of LD and how to spread, but I didn’t know the coaches who might teach me debate’s more experimental tactics. These were originally developed to help competitors combat the circuit’s inequalities—to kritik a resolution’s racist, sexist, or classist assumptions, which we called “running Ks,” or use debating theory to protest spreading as unfair. But they were often accessible only to the circuit’s most privileged competitors, those who could hire the most cutting-edge coaches (even at my camp, I found it difficult to learn these skills). In later elimination rounds, savvy competitors could easily beat me by running Ks or theory, knowing that I wasn’t familiar enough with these techniques to use them myself. My opponents would beat me by arguing, somewhat ironically—in a language that I did not understand—that I possessed an unfair advantage.</p>
+<p>To survive, debaters had to learn to take punches. The circuit’s revered behavioral patterns, like all forms of cool, involved performing a dullness of feeling. For cool debaters, who were always male, this meant wearing sneakers, jeans, and hoodies instead of suits, emulating Mark Zuckerberg’s fuck-you nerd chic. They gave their speeches sitting down instead of standing. They took cigarette breaks—or, in more recent years, Juul breaks—with their coaches. Even the act of debating itself involved a sort of affected roboticism: the proper spread was delivered with empty eyes, in a jerky monotone.</p>
+<p>The circuit made us all complicit in sustaining its stratifications, if only by stoically accepting our place within them. This undermined its more lofty intellectual pretensions. Every rule could be bent in the pursuit of power. To protest was to show weakness. This made it difficult for teenage minds to recognize when lines were crossed.</p>
+<p class="drop-cap">I met Dave—as I’ll call him—at one of the last local tournaments I attended, during the fall of my junior year. He was the only national circuit coach present, which made him the event’s gravitational center. Students’ eyes followed him as he strolled down the hallways, drank from water fountains, or adjusted the beanie that topped off his late-Aughts hipster uniform. He also seemed—at twenty-three to my sixteen—impossibly old, a full-fledged adult.</p>
+<p>When he first said hello from across a cafeteria table, I did my best to act nonchalant. I couldn’t believe that he wanted to talk to me, so I returned my eyes to my computer screen. But he kept chatting, amiably at first, and then conspiratorially. What a bore, he complained, to have to spend hours with his team. What a burden to sit through bad rounds. His words and smiles enfolded me in his special circle, anointing me the adult among the kids, the big deal among the strugs.</p>
+<p>Throughout the day, Dave’s attention delivered me from my typical between-round anxiety and into a fantasy—that I was just the type of fascinating creature that my teenage performances, fine-tuned on the circuit, were designed to convey. As we chatted, I learned that unlike most young circuit coaches, he was employed full-time as a teacher, at a high school (all girls, I later discovered). He seemed to be particularly friendly with one of the older girls on his team.</p>
+<p>When the tournament ended, Dave opted to ride home with me on my team’s bus. Though I wondered how he would make his way back to his hotel, or the airport, from my high school’s parking lot, he didn’t seem concerned. Before he disappeared, we exchanged AIM screen names.</p>
+<p>For the next year and a half, Dave and I chatted over AIM. Our conversations were often jokey or flirtatious. One day, Dave told me with mocking derision that he had asked another girl on the circuit to send him nude photos. He repeatedly claimed to be sleeping with the older girl on his team. (His reference to “fisting” her in a tournament hotel room inspired a horrific Google search.) His remarks left me feeling vaguely queasy, but I tuned them out in order to sustain my romantic fantasy. Dave spoke to me in ways that made me feel that I was different from these girls. They were foolish children; I was his sophisticated peer.</p>
+<p>Occasionally, I spent time with Dave in person, thanks to the circuit’s lax rules regarding chaperones. If you could pay for a coach to serve as a member of the judging pool, tournament policy typically allowed that coach to double as your chaperone, in place of a teacher or parent. At the recommendation of some team members, toward the end of junior year I began to pay the judging fees for a twenty-one-year-old coach I’ll call Val. My teammates suggested that he could be my chaperone, which would allow me to travel to national tournaments, and throw in some coaching services on the side. My hope was that Val, who had been a debater on the notoriously experimental Texas circuit, might teach me the most cutting-edge tactics. In practice, this never happened. Like most young coaches, Val preferred to spend his downtime at tournaments doing what college students do: drinking and smoking weed with his peers. Because I was his charge—and because I was no strug—he brought me along. Every so often, Dave would float through these types of gatherings, but he was far less friendly than he was over AIM or when we saw each other one-on-one.</p>
+<p>Because it was so common for coaches and students to socialize, I didn’t register Dave’s approach as alarming—though on some level I sensed that it was. Even if I had fully comprehended the situation, I wouldn’t have known where to take my complaint. Val was what passed for adult authority on the circuit. Physically speaking, he was an unsteady structure: his facial features were vaguely lopsided and his tuft of hair shook to and fro like a gelatin mold. His personality was equally unstable. He was mostly sweet, and a bit flirtatious, but he could erupt into fits of anger. When I told him casually about my interactions with Dave, he seemed irritated at both of us. Later, he harangued me—his voice taking on a whiny pitch—that Dave was on his case, annoyed that I had told him about our chats. Val’s histrionics may have had a positive effect: Dave began to fade away, and by the end of my senior year he talked to me only on occasion.</p>
+<p class="drop-cap">The circuit is rarely represented accurately. One exception came in 2019, with Ben Lerner’s celebrated novel <em>The Topeka School. </em>The book, which drew material from the author’s experience as a Kansas-based circuit debater in the Nineties, got many things right, from the rules of the game, to the spread, to the culture’s prevailing affective ambiance: ruthlessness, cultishness, armored arrogance, and trollish irreverence. These behaviors and practices were inextricably bound up with a corrosive form of geeky masculinity. To a former female debater, however, there was something uncanny, even comical, about Lerner’s abstraction. He drew theoretical connections between debate and male conditioning (the spread, he suggested, enacts male fears of vulnerability), but he neglected the more concrete forms of gendered depravity that plagued the circuit.</p>
+<p>Of its many sins, one of the most prominent was misogyny. Female debaters were overtly sexualized. Male debaters ranked our appearances among themselves; coaches made comments about our bodies. At the beginning of my senior year, Val scanned me up and down in front of a group of coaches who were taking a cigarette break, and said sarcastically: “Well, I no longer think you have an eating disorder.”</p>
+<p>Female debaters were likewise belittled as competitors. Judges often complained—in their written decisions—about the high pitch of our voices. I once listened to a coach who appeared to be in his forties describe judging a round in which two girls I knew faced off. “What a linebacker,” he said of the heavier of the two. “I mean, I was afraid she was going to <em>eat </em>her.” Needless to say, he awarded the win to the diminutive competitor.</p>
+<p>This atmosphere has contributed to debate’s male dominance. The majority of the most successful debaters on the circuit are boys, a dynamic that continues when they are later hired as coaches and camp instructors.</p>
+<p>Girls, of course, could also excel and secure status—as I did. But this power, like much afforded to the second sex, was double-edged. Skilled female competitors were often treated not as equals but as superior specimens of an inferior breed. Seated at a table with two particularly dominant male debaters and their coaches one day, I listened as they commented on the sex appeal of the petite girl. One turned to me: “Do you agree?” “Sure,” I said, feigning nonchalance. “She’s hot.” I felt rewarded—and, on some quieter, deeper level, enraged—when he responded: “It’s so cool of you to say that.”</p>
+<p>The circuit’s romantic politics, similarly, afforded girls only a compromised kind of power. Boys who were strong debaters were said to possess Good Debater Syndrome, meaning that their skill made them seem more attractive to their female peers. For girls, hooking up with a good male debater was widely considered an accolade: a way of sharing in his power. But the designation only applied to boys. There was no such thing as a girl possessing GDS.</p>
+<p>Coaches were thought to possess the most potent form of GDS, and some took advantage of the presumption. Of course, everyone agreed that coach-student relationships were verboten. Yet romantic interactions between the younger coaches, still in college, and the high school students under their supervision were an open secret.</p>
+<p>A coach I’ll call Thomas briefly pursued me when he was twenty-one and I was seventeen. I met him during the summer after my sophomore year, when he was my lab leader, or primary instructor, at camp. I was starstruck not only because he was a former big deal, and an especially successful coach, but because he was widely considered a heartthrob. My female friends and I giggled as he delivered lectures about Marxism. We passed notes about his effeminate beauty. I wouldn’t have said it out loud, but I had a sense that Thomas sometimes glanced at me significantly—me and another girl, a blonde.</p>
+<p>He confirmed that he was attracted to me (and to the blonde as well) when I encountered him at a tournament in Las Vegas at the end of my junior year, while he was playing cards with Val and a few other coaches. He turned to me and began to chat dourly, passing me sips from a bottle of amber-colored alcohol (I didn’t know what kind). He offered me more (I took small sips) as he walked me back to my hotel room. After we entered the room, he slept over, and spent the night making out with me, in various states of undress. He then returned the next evening for more of the same. (In my inexperience, I was both relieved and perplexed that he didn’t take things further; now, I imagine that he might have been aware of the line he was crossing.)</p>
+<p>In the weeks that followed, I was sure that I would hear from Thomas. I refreshed my Facebook page routinely, waiting for his message. Instead, Thomas ignored me throughout the next year—even when he judged my rounds (though he gave me the wins).</p>
+<p><img alt="Illustrations by Evangeline Gallagher" class="aligncenter size-full wp-image-285472" height="552" loading="lazy" sizes="(max-width: 900px) 100vw, 900px" src="https://harpers.org/wp-content/uploads/2022/08/CUT-11.jpg" srcset="https://harpers.org/wp-content/uploads/2022/08/CUT-11.jpg 900w, https://harpers.org/wp-content/uploads/2022/08/CUT-11-300x184.jpg 300w, https://harpers.org/wp-content/uploads/2022/08/CUT-11-768x471.jpg 768w" width="900"></p>
+<p class="drop-cap">On a hot September night in the Dallas suburbs, in 2008, I experienced a salvific recollection outside the hotel where I was spending the weekend. “If you ever want to leave somewhere for any reason,” my father had told me when he dropped me off at camp at age eight, “just call me and you can come home. No questions asked.” Suddenly, I could see a way out of my misery. Relief flooded my body as I picked up the phone.</p>
+<p>The event that I wanted to escape was the Greenhill Round Robin, a competition between the top dozen or so debaters in the country (as judged by the organizers), which preceded the larger Greenhill tournament. It was the fall of my senior year, and my participation should have been a crowning achievement. So far, it had been a fiasco.</p>
+<p>When I arrived, about forty-eight hours earlier, I had discovered that Val, as if bent on turning my life into an anxiety dream, had not done any work for me. I had paid him to write the cases I would run at the Round Robin—an experiment, as I had thus far written my own—but he had not done the work. Nor could he be bothered to do it now. “I have to sell this,” he explained, gesturing to the trash bag of weed slung over his shoulder.</p>
+<p>When I pressed him, he relented somewhat. Within an hour, he returned with an old case—a K—that he had borrowed from a friend. The case, he said, had always been a winner. But he had little time to explain. He became irate when it took me five minutes to work through the text, which was full of Nietzsche quotes. Back when he was a debater, he yelled, he could absorb Nietzsche in seconds.</p>
+<p>During the next forty-eight hours, I suffered other humiliations. When I passed Thomas in the halls, he gave me the cold shoulder. In the computer room, I encountered a coach who had some amusing gossip to share. Though I don’t remember the details, the gist was that rumors were going around about my romantic life. The implication was not simply that I was some sort of jezebel (Dave was mentioned), but also that I was pathetic—in love with coaches who had only a casual interest in me.</p>
+<p>By this time, I was feeling acute panic. My overwhelming impulse was to get away. I left the tournament hotel and hitchhiked as far as a CVS a few miles down the road, only to turn around and walk back. Then I had a better idea. Despite Val’s complaints that the tournament directors would be furious, I took my father up on his decade-old deal. The next morning, I flew home to New Jersey, no questions asked.</p>
+<p>For the remainder of my senior season, I dealt with the aftermath of these events, which preoccupied me more than my actual debating. For one thing, I had to withstand an eruption of Val’s anger. After I fired him, he used various digital platforms to threaten to ruin my reputation, “end me,” or break my parents’ knees. Meanwhile, I was devoted to the idea of redeeming myself before the circuit and Thomas.</p>
+<p>Predictably, my debating suffered. I now lost preliminary rounds. And that spring, my competitive career ended not with a bang but with a whimper. For the first time in two years, I failed to make it to elimination rounds. Unfortunately, this was at the all-important finale: the Tournament of Champions.</p>
+<p class="drop-cap">I left the circuit immediately after graduation. While many of my friends stayed on to coach or work at a camp, I volunteered with an Urban Debate League team. But the circuit continued to follow me wherever I went—elite universities were crawling with circuit alumni. As I spoke with other former debaters, especially women, I realized that many of us were having the same experience, suddenly realizing just how much had been amiss. The congruities were uncanny. One circuit friend said she felt “pressured to act out this aloof persona—the type of person who thinks it’s funny or cool to prey on girls or be a dick rather than calling it out.” She had also known Dave, and had looked back at several online conversations between the two of them with disgust. “He was grooming us,” she said. Somehow, I had never thought to call it that. When I began to coach my UDL team, I noticed just how young high school students seemed, partially due to the different stage of life they were in, and partially due to their dependence on my authority. How could a college student want to hang out—let alone have sex—with them?</p>
+<p>Yet this practice had been the subject of open talk not only among students but also among the judges and coaches to whom we’d been entrusted. By my junior year, that talk had begun to solidify into criminal charges: police showed up at a tournament in Scarsdale to arrest a twenty-six-year-old coach named John Weaver for sending sexually explicit messages to a fifteen-year-old girl and arranging to meet her there. Weaver’s behavior had been widely rumored in the Northeast. Coaches had also told stories about Jon Cruz, the Bronx Science teacher (and a director of the Victory Briefs Institute camp) who told me that I had broken the record for most preliminary-round wins in a row. In 2015, Cruz, then in his early thirties, was arrested by the FBI on charges of creating and receiving child pornography. After I graduated, there were a number of reports in regional newspapers about high school debate coaches—Joshua Hoe, Erickson Bynum, Henry Olson, Cody Gray—being apprehended on charges ranging from explicit communications with a minor to rape. Hoe, who was convicted for sending pornographic materials to a fourteen-year-old girl, had also run a prominent camp for high schoolers at the University of Michigan.</p>
+<p>For years, I waited for what I thought would be the inevitable exposé. When the <em>New York Times</em> reported that Cruz had been arrested, I thought the time had come. Surely a follow-up story would soon appear, explaining that Cruz was not a mere coach but the doyen of the LD national circuit, and that its mores had played into his predation. But it never did. Nor did the story emerge in 2017, when #MeToo swept the country. Eventually, I stopped wondering how debate’s young men could have wanted to cross lines—as we’d all learned, that was perfectly common. I wondered instead why members of the debate community had remained silent while gymnasts and boy scouts and editorial assistants came forward.</p>
+<p>I found the answer in my own psyche. Everything debate had taught me—the good and the bad—restrained me from speaking. I had been trained to analyze moral issues carefully, scrupulously considering them from either side, and when I considered speaking out about the behavior I had witnessed, I was bombarded with reasons not to.</p>
+<p>Consider, first, the younger coaches like Thomas, who were between eighteen and twenty-one. They shouldn’t have acted as they did, pursuing students over whom they had institutional authority; but these men were hardly older than the debaters they taught, and were enmeshed in a culture that normalized their behavior. (Thomas did not respond to multiple requests for comment.) The offenders I knew were no longer involved in the world of debate. Publicly naming them, twelve years later, seemed like the wrong solution. That type of recourse was unpredictable—it could have no effect at all or bring about disproportionate repercussions.</p>
+<p>As for an older coach like Dave: his conduct was clearly morally wrong, especially if he’d actually done the things he’d boasted about. But the statute of limitations had passed, and with it the opportunity to determine his culpability in court. He was no longer a high school teacher and no longer involved in debate. (When contacted by <em>Harper’s Magazine,</em> Dave said the claims this piece makes about his behavior are inaccurate, and that he “had very little interaction with Tess,” but declined to respond further.)</p>
+<p>Meanwhile I’d learned that Val had died at the age of twenty-eight. I couldn’t discern cause of death from his obituary; all I could find on the internet were the records of an arrest for possession.</p>
+<p>Individual coaches passed through the circuit, doing their part to perpetuate its toxic culture, but that culture transcended any single act. None of the incidents that I could substantiate could be tried in a court of law. I considered naming names, in the #MeToo mode—but I felt conflicted about the ethics of trying such cases in the court of public opinion.</p>
+<p>There were other reasons for my silence, closely linked to the circuit’s more visceral lessons. Debate had taught me to be complicit, encouraging mental habits—repression, toughness, and female coolness—that eased the way for the strongest or most ruthless to prevail without complaint. I had long since dismissed these habits as juvenile, and yet they shaped my reaction to the idea of speaking out even still. When I thought of protesting debate’s culture, I heard clearly in my mind the circuit’s response: I was just annoyed that I hadn’t been better at debate, that I had done poorly at the Tournament of Champions. And I had indeed wanted to win, badly. When I thought about questioning the actions of the coaches who’d pursued me, I heard another retort: I had gone along with it, because receiving attention from men with GDS felt like an honor. And again, I had. I had played the circuit’s game and it had rewarded me—with wins, with an Ivy League education, and with a future I would never have reached otherwise. It felt impossible to see myself as even the most minor sort of victim.</p>
+<p>The forms of shame I felt over the years were confusingly commingled. If I had been a better debater, I reasoned at times, then I wouldn’t have been so easily objectified, and discarded, by coaches like Dave and Thomas. The weight of these feelings did have their effect. I would continue to associate romance with manipulation; I would continue to internalize its effects as, inevitably, my own responsibility, and as a verdict on my quality as a person. But these were feelings many women had. I certainly didn’t feel as though mine were a severe case, even in the world of debate. I let it go and moved on, as I had been trained to do. The circuit kept grinding along.</p>
+
+                            </body>

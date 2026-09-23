@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/color/material_tab_strip_color_mixer.cc b/chrome/browser/ui/color/material_tab_strip_color_mixer.cc
+index 5f4d166f7e5c62e1708df6ed4f0a3540031f3360..c2fdf3046bd7fb19dc8518fbccc648a8ec5d81d5 100644
+--- a/chrome/browser/ui/color/material_tab_strip_color_mixer.cc
++++ b/chrome/browser/ui/color/material_tab_strip_color_mixer.cc
+@@ -14,6 +14,7 @@
+ 
+ void AddMaterialTabStripColorMixer(ui::ColorProvider* provider,
+                                    const ui::ColorProviderKey& key) {
++  if ((true)) return;
+   if (!ShouldApplyChromeMaterialOverrides(key)) {
+     return;
+   }

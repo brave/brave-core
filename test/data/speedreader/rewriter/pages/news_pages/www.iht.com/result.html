@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>No One Will Get Rid of Vladimir Putin</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">No One Will Get Rid of Vladimir Putin</h1><p class="subhead metadata">Terror is always more persuasive than anything else.</p><div class=""><p class="metadata">By Oleg Kashin</p><p class="metadata date">Updated Aug. 18, 2022 05:00 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><section class="meteredContent css-1r7ky0e" name="articleBody"><div class="css-s99gbd StoryBodyCompanionColumn"><div class="css-53u6y8"><p class="css-at9mc1 evys1bk0">What’s easier to imagine — Vladimir Putin suddenly declaring an end to the war on Ukraine and withdrawing his troops or a Russia without Mr. Putin that revises his policies, ends the war and begins to build relations with Ukraine and the West on a peaceful new foundation?</p><p class="css-at9mc1 evys1bk0">It’s a hard one to answer. The war in Ukraine is, to a significant degree, the result of Mr. Putin’s personal obsession, and it’s hardly likely that he will voluntarily agree to end it. Which leaves the other possibility: Russia without Mr. Putin, with all hopes for a peaceful Russia tied to a change of power in the country.</p><p class="css-at9mc1 evys1bk0">That also seems pretty unlikely. Six months into the war, Mr. Putin’s power does not appear to be any less solid than it was during peacetime. His approval ratings are high, and he doesn’t have a single opponent in Russia whose voice can be heard. Of his two most likely successors — <a class="css-yywogo" href="https://meduza.io/en/feature/2022/07/22/he-doesn-t-speak-out-even-behind-closed-doors" rel="noopener noreferrer" target="_blank" title="">Mikhail Mishustin</a>, the prime minister, and <a class="css-yywogo" href="https://www.nytimes.com/2021/04/27/opinion/navalny-putin-russia.html" title="">Aleksei Navalny</a>, the opposition leader — one is bound by loyalty to the president, and the other is in prison. For either to come to office, Mr. Putin would have to depart. But short of a sudden change of heart or medical emergency, he’s not going anywhere. Mr. Putin’s successor may well be Mr. Putin.</p></div></div><div class="css-s99gbd StoryBodyCompanionColumn"><p class="css-at9mc1 evys1bk0">It’s a bleak prospect and one many find hard to accept. Why are no members of the ruling elite, faced with a president driving their country to ruin and themselves badly affected by the war, pushing for the removal of Mr. Putin? Where are the brave technocrats or functionaries who will, in the interest of their class and their country, contrive to oust the president? Such questions, given regular voice in the West, are more of a lament than a spur to analysis. But the answer lies close at hand.</p></div><div class="css-s99gbd StoryBodyCompanionColumn"><div class="css-53u6y8"><p class="css-at9mc1 evys1bk0">For years, critics inside and outside Russia relied on one major theme to galvanize opposition to Mr. Putin: corruption. For a spell, the approach made some inroads, especially in the hands of Mr. Navalny, whose <a class="css-yywogo" href="https://www.nytimes.com/2021/01/19/world/europe/navalny-putin.html" title="">well-produced videos</a> documenting corruption throughout the ruling elite — including Mr. Putin — appeared to dent the president’s popularity.</p><p class="css-at9mc1 evys1bk0">But corruption is the glue that holds the system together, not the catalyst to bring it down. Basing his power on the thievery of his subordinates, Mr. Putin’s goal was hardly to ensure their comfort and well-being. The point, more likely, was to bind the ruling class within a conspiratorial system of collective responsibility, ensuring its absolute solidarity. In this condition of complicity, no one could emerge to challenge the president.</p><p class="css-at9mc1 evys1bk0">Strictly speaking, it is not completely correct to call such a system corruption. Corruption entails a deviation from the norm, whereas in Mr. Putin’s Russia the norm is precisely that of officials living on money of dubious origin. If the law were to be followed literally, then practically every Russian minister or governor could end up in prison. In practice, though, Mr. Putin always applied the law selectively. Every time one of his influential subordinates found himself charged with corruption, the main question on people’s minds was about the hidden political reason for the arrest.</p><p class="css-at9mc1 evys1bk0">Such was the case with the former economic minister <a class="css-yywogo" href="https://www.nytimes.com/2017/10/21/world/europe/russia-bribery-vladimir-putin-igor-sechin.html" title="">Aleksei Ulyukayev</a>, who was accused of taking bribes after clashing with Igor Sechin, the influential chief executive of the Russian oil giant Rosneft and a friend of <a class="css-yywogo" href="https://www.svoboda.org/a/28920290.html" rel="noopener noreferrer" target="_blank" title="">Mr. Putin</a>. So, too, with several governors, including <a class="css-yywogo" href="https://www.vedomosti.ru/politics/articles/2018/02/01/749640-nikitu-belih-priznali-vinovnim" rel="noopener noreferrer" target="_blank" title="">Nikita Belykh</a>, who at one time headed a major opposition party, and Sergei Furgal, whose victory in an election ran counter to the Kremlin’s desire and who was duly accused of not corruption but <a class="css-yywogo" href="https://www.nytimes.com/2020/07/10/world/europe/russian-governor-arrested-murders.html" title="">murder</a>.</p></div></div><div class="css-s99gbd StoryBodyCompanionColumn"><p class="css-at9mc1 evys1bk0">What is called corruption in Russia would be more correctly called a system of incitement and blackmail. If you are loyal and if the president is pleased with you, you have the right to steal — but if you are disloyal, you’ll be thrown in prison for theft. It’s no surprise that in recent decades only a few individuals inside Mr. Putin’s system have spoken out publicly against it. Terror is always more persuasive than anything else.</p></div><div class="css-s99gbd StoryBodyCompanionColumn"><div class="css-53u6y8"><p class="css-at9mc1 evys1bk0">The war had the potential to upend this calculus. The ruling class, which owes its acquisition of wealth to its position in power, has come up against a new reality: Their property in the West has been either seized or subjected to sanctions — no more yachts, no more villas, nowhere to run. For many officials and oligarchs close to the government, this means the collapse of all their life plans, and in principle, it can be presumed that there’s not a single social group in Russia more dissatisfied with the war than Mr. Putin’s kleptocrats.</p><p class="css-at9mc1 evys1bk0">But there’s a catch: They traded in their rights as political agents for those very yachts and villas. The fundamental intrigue in internal Russian politics is tied up with this fact. Mr. Putin’s military escapade has had a devastating impact on the lives of the establishment elite, on whom he has always relied. But the elites, hamstrung by their dependence on power for their wealth and security, find themselves in no position to say no to Mr. Putin.</p><p class="css-at9mc1 evys1bk0">That’s not to say their dissatisfaction doesn’t come to light. The finance minister, Anton Siluanov, <a class="css-yywogo" href="https://www.forbes.ru/society/466719-siluanov-prizval-vlasti-ostorozno-planirovat-traty-iz-za-novyh-territorij-i-armii" rel="noopener noreferrer" target="_blank" title="">spoke publicly</a> about the difficulties of carrying out his duties under the new conditions. Aleksei Kudrin, the chairman of the body that audits the state finances and a Kremlin insider, explained at a <a class="css-yywogo" href="https://www.agents.media/kudrin/" rel="noopener noreferrer" target="_blank" title="">meeting with Mr. Putin</a> that the war had led Russia’s economy to a dead end. And even the head of the state military-industrial monopoly, Sergei Chemezov, <a class="css-yywogo" href="https://www.rbc.ru/opinions/economics/15/06/2022/62a87e589a7947cbf332c253" rel="noopener noreferrer" target="_blank" title="">wrote an article</a> about the impossibility of realizing Mr. Putin’s plans. But backed by no political weight, such views hold no interest — or danger — for Mr. Putin.</p><p class="css-at9mc1 evys1bk0">It’s true that wars often bring out a new elite among officers and generals, who could conceivably threaten the president’s rule. Yet this is not happening in Russia, possibly because Mr. Putin is trying to prevent his generals from gaining too much fame. The names of those in command of Russian troops in Ukraine were <a class="css-yywogo" href="https://www.kommersant.ru/doc/5433629" rel="noopener noreferrer" target="_blank" title="">kept secret</a> until the end of June, and propaganda about the “heroes” of the war prefers to feature stories about those who have lost their lives and are no longer able to manifest political ambitions. In any case, Mr. Putin has surrounded himself with favored security personnel whose loyalty to him is beyond question.</p><p class="css-at9mc1 evys1bk0">Given this situation, Russia’s functionaries can do little other than wait. They could try to conduct some kind of quiet game of their own, including separate negotiations with the West, but up to now, there has been no evidence of humanitarian corridors for Russian elites. Even if someone — for example, an oligarch close to Mr. Putin such as Roman Abramovich — managed to break through to the West, all that would await him would be confiscated assets and suspicion. By comparison, even Mr. Putin’s paranoia might be preferable.</p><p class="css-at9mc1 evys1bk0">If members of the ruling elite aren’t able to topple Mr. Putin, then perhaps the professional middle classes could? But there, too, the outlook is grim. For those who step out to criticize the war, the fate of <a class="css-yywogo" href="https://www.nytimes.com/2022/03/14/world/europe/russian-protester-tv.html" title="">Marina Ovsyannikova</a>, an editor at the state-controlled Channel 1, is instructive. After staging a high-profile protest — during a live broadcast of a popular evening news program, she stood behind the announcer and held a poster that read, “Stop the war” — she fled the country to avoid arrest, leaving her family behind in Moscow.</p></div></div><div class="css-s99gbd StoryBodyCompanionColumn"><p class="css-at9mc1 evys1bk0">For months she roamed Europe, subjected to numerous accusations that no matter how impressive her protest might have been, she was still, first and foremost, a cog in Mr. Putin’s propaganda machine. She returned to Russia, where she’s been <a class="css-yywogo" href="https://www.theguardian.com/world/2022/jul/18/russian-journalist-who-staged-tv-protest-over-ukraine-invasion-arrested-again" rel="noopener noreferrer" target="_blank" title="">arrested</a> and <a class="css-yywogo" href="https://www.bbc.co.uk/news/world-europe-62335914" rel="noopener noreferrer" target="_blank" title="">fined</a> several times, been charged with <a class="css-yywogo" href="https://www.theguardian.com/world/2022/aug/10/russian-journalist-who-protested-ukraine-war-live-on-tv-has-home-raided" rel="noopener noreferrer" target="_blank" title="">spreading false information</a> and had her <a class="css-yywogo" href="https://news.sky.com/story/russian-journalist-marina-ovsyannikova-who-protested-ukraine-war-live-on-tv-has-home-raided-12669779" rel="noopener noreferrer" target="_blank" title="">home raided</a>. Her former colleagues in the media and the professional class more widely must understand that it makes no sense to emulate her action. Better to sit out the war quietly in their jobs than to risk ruin and infamy.</p></div><div class="css-s99gbd StoryBodyCompanionColumn"><div class="css-53u6y8"><p class="css-at9mc1 evys1bk0">At the popular level, things are no better. The initially promising protests against the war have been completely <a class="css-yywogo" href="https://www.nytimes.com/2022/03/04/world/europe/russia-censorship-media-crackdown.html" title="">choked off</a> by the threat of prison time. Critical public statements, let alone rallies or demonstrations, are now all but impossible. Wielding repression, the regime is in full control of the domestic situation.</p><p class="css-at9mc1 evys1bk0">Instead, the factor seriously threatening Mr. Putin’s strength today is the Ukrainian Army. Only losses at the front have a realistic chance of bringing change to the political situation in Russia — as Russian history well attests. After defeat in the Crimean War in the mid-19th century, Czar Alexander II was forced to introduce radical reforms. The same thing happened when Russia lost a war with Japan in 1905, and perestroika in the Soviet Union was driven in large part by the failure of the war in Afghanistan. If Ukraine manages to inflict heavy losses on Russian forces, a similar process could unfold.</p><p class="css-at9mc1 evys1bk0">Yet for all <a class="css-yywogo" href="https://www.nytimes.com/2022/08/11/us/politics/russian-casualties-ukraine.html" title="">the damage</a> wrought so far, such a turnaround feels a long way off. For now and the foreseeable future, it’s Mr. Putin — and the fear that without him, things would be worse — that rules Russia.</p></div></div><div class="css-s99gbd StoryBodyCompanionColumn"><div class="css-53u6y8"><p class="css-798hid etfikam0">Oleg Kashin (<a class="css-yywogo" href="https://twitter.com/KSHN?ref_src=twsrc%5Egoogle%7Ctwcamp%5Eserp%7Ctwgr%5Eauthor" rel="noopener noreferrer" target="_blank" title="">@KSHN</a>) is a journalist and the author of “Fardwor, Russia! A Fantastical Tale of Life Under Putin.” This essay was translated by Carol Apollonio from the Russian.</p><p class="css-798hid etfikam0"><em class="css-2fg4z9 e1gzwzxm0">The Times is committed to publishing </em><a class="css-yywogo" href="https://www.nytimes.com/2019/01/31/opinion/letters/letters-to-editor-new-york-times-women.html" title=""><em class="css-2fg4z9 e1gzwzxm0">a diversity of letters</em></a><em class="css-2fg4z9 e1gzwzxm0"> to the editor. We’d like to hear what you think about this or any of our articles. Here are some </em><a class="css-yywogo" href="https://help.nytimes.com/hc/en-us/articles/115014925288-How-to-submit-a-letter-to-the-editor" title=""><em class="css-2fg4z9 e1gzwzxm0">tips</em></a><em class="css-2fg4z9 e1gzwzxm0">. And here’s our email: </em><a class="css-yywogo" href="mailto:letters@nytimes.com" title=""><em class="css-2fg4z9 e1gzwzxm0">letters@nytimes.com</em></a><em class="css-2fg4z9 e1gzwzxm0">.</em></p><p class="css-798hid etfikam0"><em class="css-2fg4z9 e1gzwzxm0">Follow The New York Times Opinion section on </em><a class="css-yywogo" href="https://www.facebook.com/nytopinion" rel="noopener noreferrer" target="_blank" title=""><em class="css-2fg4z9 e1gzwzxm0">Facebook</em></a><em class="css-2fg4z9 e1gzwzxm0">, </em><a class="css-yywogo" href="http://twitter.com/NYTOpinion" rel="noopener noreferrer" target="_blank" title=""><em class="css-2fg4z9 e1gzwzxm0">Twitter (@NYTopinion)</em></a><em class="css-2fg4z9 e1gzwzxm0"> and </em><a class="css-yywogo" href="https://www.instagram.com/nytopinion/" rel="noopener noreferrer" target="_blank" title=""><em class="css-2fg4z9 e1gzwzxm0">Instagram</em></a><em class="css-2fg4z9 e1gzwzxm0">.</em></p></div></div></section></body>

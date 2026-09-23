@@ -1,0 +1,99 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "広告";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "brave.comで購入済みですか？";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "アナリティクス";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "今すぐ購入";
+
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Brave機能を有効または無効にするには、ブラウザを再起動して変更を適用する必要があります。Braveを閉じて（App Switcherで上にスワイプ）から、再度開いてください。";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Brave機能の変更";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "**Braveをサポートしながらブラウザをカスタマイズ**\n\nBrave Originは、Braveのビジネスをサポートするすべての機能が必要ないが、Braveのみが提供するプライバシーが必要なユーザー向けの有料版ブラウザです。Originユーザーは、業界トップクラスのプライバシー、広告ブロック、速度(Shields経由)に加えて、定期的なソフトウェアアップデート、Chromiumパッチ、セキュリティおよびプライバシーの改善の恩恵を受け続けます。Originは、ブラウザからほとんどの他の機能を削除します。";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "機能";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Brave Origin購入を確認";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo AI";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "購入情報をBraveアカウントにリンク";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "News";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "一度きりの購入";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Playlist";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "プライバシー保護分析";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "プロモコードをお持ちですか？";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "ご都合の良い支払い方法をお選びください: ";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "購入を完了できません。再度お試しいただくか、Appleでお支払い内容をご確認の上、再度お試しください。";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "App Storeで購入した商品をBraveアカウントにリンクさせると、他のデバイスでBrave Originを利用できます。";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "購入";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "プロモコードを使う";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "デフォルトにリセット";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "復元";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "リワード";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "統計報告";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Talk";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "アドブロック、プライバシー、 & スピードを維持";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Brave Shields を中心とした最小限のブラウザUI";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "一度きりの購入は、お使いのすべてのデバイスで複数回有効化できます";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "私たちのミッションと& オープンソースをサポートください";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "App Storeのレシートを見る";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "ウォレット";
+

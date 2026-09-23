@@ -1,0 +1,24 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+syntax = "proto3";
+
+option optimize_for = LITE_RUNTIME;
+
+package brave_account.endpoint_client;
+
+// Schemas for Protobuf bodies used by test endpoints.
+
+message ProtobufRequestBody {
+  string request = 1;
+}
+
+message ProtobufSuccessBody {
+  string success = 1;
+}
+
+message ProtobufErrorBody {
+  string error = 1;
+}

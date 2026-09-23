@@ -1,0 +1,52 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(!is_ios)
+
+source_set("renderer") {
+  sources = [
+    "skus_js_handler.cc",
+    "skus_js_handler.h",
+    "skus_render_frame_observer.cc",
+    "skus_render_frame_observer.h",
+    "skus_utils.cc",
+    "skus_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/skus/common",
+    "//brave/components/skus/common:mojom",
+    "//content/public/renderer",
+    "//gin",
+    "//mojo/public/cpp/bindings",
+    "//third_party/blink/public:blink",
+    "//third_party/blink/public/common",
+    "//third_party/blink/public/strings",
+    "//v8",
+  ]
+
+  if (enable_brave_vpn) {
+    deps += [ "//brave/components/brave_vpn/common" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "skus_utils_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/components/skus/renderer",
+    "//services/network:test_support",
+    "//testing/gtest",
+    "//third_party/blink/public:blink",
+  ]
+}

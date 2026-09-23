@@ -1,0 +1,5 @@
+error: Must pass two metas or string literals like `async(condition, async_test_macro)`, you passed 3 metas.
+ --> tests/ui/test_fail/03-async-gt2.rs:8:40
+  |
+8 | #[maybe_async::test(feature="is_sync", async(feature="async", async_std::test, added))]
+  |                                        ^^^^^

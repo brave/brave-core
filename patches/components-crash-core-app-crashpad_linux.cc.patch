@@ -1,0 +1,13 @@
+diff --git a/components/crash/core/app/crashpad_linux.cc b/components/crash/core/app/crashpad_linux.cc
+index ce5c8a721fb1e4f10a5ffaa8cfdddb74ed60da86..dd90a21754e03560aeece466505a516f9904fc29 100644
+--- a/components/crash/core/app/crashpad_linux.cc
++++ b/components/crash/core/app/crashpad_linux.cc
+@@ -137,7 +137,7 @@ bool PlatformCrashpadInitialization(
+     const std::vector<std::string>& initial_arguments,
+     const std::vector<base::FilePath>& attachments,
+     base::FilePath* database_path) {
+-  DCHECK_EQ(initial_client, browser_process);
++  // DCHECK_EQ(initial_client, browser_process);  // fix for Brave VPN apps
+   DCHECK(initial_arguments.empty());
+ 
+   // Not used on Linux.

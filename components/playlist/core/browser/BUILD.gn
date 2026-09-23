@@ -1,0 +1,50 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+
+assert(enable_playlist)
+
+static_library("browser") {
+  sources = [
+    "playlist_exclusions.cc",
+    "playlist_exclusions.h",
+    "playlist_exclusions_component_installer.cc",
+    "playlist_exclusions_component_installer.h",
+    "utils.cc",
+    "utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/playlist/core/common",
+    "//brave/components/playlist/core/common/buildflags",
+    "//components/component_updater",
+    "//components/prefs",
+    "//net",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "playlist_exclusion_unittest.cc",
+    "utils_unittest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/playlist/core/browser",
+    "//brave/components/playlist/core/common",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+}

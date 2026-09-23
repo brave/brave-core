@@ -1,0 +1,56 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_OPAQUE_BROWSER_FRAME_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_OPAQUE_BROWSER_FRAME_VIEW_H_
+
+#include <memory>
+
+#include "base/callback_list.h"
+#include "base/scoped_observation.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "chrome/browser/ui/views/frame/opaque_browser_frame_view.h"
+#include "ui/base/metadata/metadata_header_macros.h"
+
+class BraveWindowFrameGraphic;
+
+class BraveOpaqueBrowserFrameView : public OpaqueBrowserFrameView,
+                                    public FocusModeController::Observer {
+  METADATA_HEADER(BraveOpaqueBrowserFrameView, OpaqueBrowserFrameView)
+ public:
+  BraveOpaqueBrowserFrameView(BrowserWidget* frame,
+                              BrowserView* browser_view,
+                              OpaqueBrowserFrameViewLayout* layout);
+  ~BraveOpaqueBrowserFrameView() override;
+
+  BraveOpaqueBrowserFrameView(const BraveOpaqueBrowserFrameView&) = delete;
+  BraveOpaqueBrowserFrameView& operator=(
+      const BraveOpaqueBrowserFrameView&) = delete;
+
+  // OpaqueBrowserFrameView overrides:
+  void OnPaint(gfx::Canvas* canvas) override;
+  int NonClientHitTest(const gfx::Point& point) override;
+  void UpdateCaptionButtonPlaceholderContainerBackground() override;
+  void PaintClientEdge(gfx::Canvas* canvas) const override;
+  int GetTopInset(bool restored) const override;
+  int GetTopAreaHeight() const override;
+  void Layout(PassKey) override;
+
+  // FocusModeController::Observer:
+  void OnFocusModeToggled(bool enabled) override;
+
+ private:
+  bool ShouldShowVerticalTabs() const;
+  bool ShouldCaptionButtonsPaintToLayer() const;
+  void RefreshCaptionButtonLayers();
+  void OnTopOverlayRevealFractionChanged(double reveal_fraction);
+
+  std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
+  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
+      focus_mode_observation_{this};
+  base::CallbackListSubscription overlay_reveal_subscription_;
+};
+
+#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_OPAQUE_BROWSER_FRAME_VIEW_H_

@@ -1,0 +1,50 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module brave_account.mojom;
+
+struct ResendVerificationEmailResult {
+  // Currently empty, serves as a placeholder for success.
+};
+
+enum ResendVerificationEmailClientErrorCode {
+  kCalledInWrongState,
+  kUnexpected,
+  kVerificationTokenDecryptionFailed,
+};
+
+struct ResendVerificationEmailClientError {
+  ResendVerificationEmailClientErrorCode error_code;
+};
+
+enum ResendVerificationEmailServerErrorCode {
+  // Sentinel: server returned a malformed response
+  // (e.g. success body missing required fields).
+  kInvalidResponse                         = -1,
+  // Sentinel: server returned "code": null in the JSON body.
+  kNull                                    = 0,
+  // Sentinel: server returned an unrecognized "code" in the JSON body.
+  kUnknown                                 = 1,
+  // /v2/verify/resend:
+  // - internal: -
+  // - user-facing:
+  kMaximumEmailSendAttemptsExceeded        = 13008,
+  kEmailAlreadyVerified                    = 13009,
+  kMaximumCodeVerificationAttemptsExceeded = 13010,
+  kTokenHasExpired                         = 14014,
+};
+
+struct ResendVerificationEmailServerError {
+  // < 0: network error code (net_error_list.h)
+  // >= 0: HTTP status code (http_status_code_list.h) if available,
+  //       otherwise net::OK
+  int32 net_error_or_http_status;
+  ResendVerificationEmailServerErrorCode error_code;
+};
+
+union ResendVerificationEmailError {
+  ResendVerificationEmailClientError client_error;
+  ResendVerificationEmailServerError server_error;
+};

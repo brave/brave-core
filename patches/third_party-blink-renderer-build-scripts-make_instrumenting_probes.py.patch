@@ -1,0 +1,11 @@
+diff --git a/third_party/blink/renderer/build/scripts/make_instrumenting_probes.py b/third_party/blink/renderer/build/scripts/make_instrumenting_probes.py
+index 5c69d890f08dab4704febc450578fcc9f7e16114..530417c35cd2515e5b35e046b58ffea0445199dd 100644
+--- a/third_party/blink/renderer/build/scripts/make_instrumenting_probes.py
++++ b/third_party/blink/renderer/build/scripts/make_instrumenting_probes.py
+@@ -308,5 +308,6 @@ def main():
+         h_file.close()
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == "__main__":
+     main()

@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- These messages are the user-facing UI strings for omnibox pedals. -->
+<!-- There are two kinds of UI strings here: -->
+<!--   * Visible UI labels -->
+<!--   * Invisible screen reader text for screen readers -->
+<grit-part>
+  <message name="IDS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_HINT" desc="The button text contents to suggest pedal action, LAUNCH_INCOGNITO">
+    Open Private window
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUGGESTION_CONTENTS" desc="The button hover tooltip text to describe pedal action, LAUNCH_INCOGNITO">
+    Open a new Private window to browse privately
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to LAUNCH_INCOGNITO.">
+    <ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to open a new Private window to browse privately
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO" desc="Announcement when pedal action button is focused, LAUNCH_INCOGNITO">
+    Open Private Window button, activate to open a new Private window to browse privately
+  </message>
+
+  <message name="IDS_OMNIBOX_PEDAL_CLOSE_INCOGNITO_WINDOWS_HINT" desc="The button text contents to suggest pedal action, CLOSE_INCOGNITO_WINDOWS">
+    Close all Private windows
+  </message>
+  <message name="IDS_OMNIBOX_PEDAL_CLOSE_INCOGNITO_WINDOWS_SUGGESTION_CONTENTS" desc="The button hover tooltip text to describe pedal action, CLOSE_INCOGNITO_WINDOWS">
+    Close all Private windows that are currently open
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_CLOSE_INCOGNITO_WINDOWS_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to CLOSE_INCOGNITO_WINDOWS.">
+    <ph name="CLOSE_INCOGNITO_WINDOWS_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, Press tab then Enter to close all Private windows that are currently open
+  </message>
+  <message name="IDS_ACC_OMNIBOX_PEDAL_CLOSE_INCOGNITO_WINDOWS" desc="Announcement when pedal action button is focused, CLOSE_INCOGNITO_WINDOWS">
+    Close Private windows button, activate to close all Private windows that are currently open
+  </message>
+
+  <message name="IDS_ANDROID_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_HINT" desc="The button text contents to suggest pedal action, LAUNCH_INCOGNITO">
+    Open Private tab
+  </message>
+  <message name="IDS_ANDROID_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUGGESTION_CONTENTS" desc="The button hover tooltip text to describe pedal action, LAUNCH_INCOGNITO">
+    Open a new Private tab to browse privately
+  </message>
+  <message name="IDS_ANDROID_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUFFIX" desc="Suffix for spoken suggestion description with pedal action button, to explain keystroke used to LAUNCH_INCOGNITO.">
+    <ph name="LAUNCH_INCOGNITO_FOCUSED_FRIENDLY_MATCH_TEXT">$1<ex>The Chromium Projects http://www.chromium.org bookmark</ex></ph>, press Tab then Enter to open a new Private tab to browse privately
+  </message>
+  <message name="IDS_ANDROID_ACC_OMNIBOX_PEDAL_LAUNCH_INCOGNITO" desc="Announcement when pedal action button is focused, LAUNCH_INCOGNITO">
+    Open Private tab button, activate to open a new Private tab to browse privately
+  </message>
+
+  <message name="IDS_IOS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_HINT" desc="In Title Case: The button text contents to suggest pedal action, LAUNCH_INCOGNITO">
+    Open Private Tab
+  </message>
+  <message name="IDS_IOS_OMNIBOX_PEDAL_LAUNCH_INCOGNITO_SUGGESTION_CONTENTS" desc="The button hover tooltip text to describe pedal action, LAUNCH_INCOGNITO">
+    Open a new Private tab to browse privately
+  </message>
+  </grit-part>

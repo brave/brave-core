@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h b/chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h
+index 4a92fd22a44b2af4a38935da5dbf93d54e958842..6ddd4a6a145ab3a64087e1d570abba968eb4e238 100644
+--- a/chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h
++++ b/chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h
+@@ -178,6 +178,7 @@ class OpaqueBrowserFrameViewLayout : public views::LayoutManager {
+   int minimum_size_for_buttons_ = 0;
+ 
+  private:
++  friend class BrowserFrameViewLayoutLinux;
+   friend class OpaqueBrowserFrameViewLayoutTest;
+ 
+   // Layout various sub-components of this view.
+@@ -190,7 +191,7 @@ class OpaqueBrowserFrameViewLayout : public views::LayoutManager {
+   void HideButton(views::FrameButton button_id);
+ 
+   // Adds a window caption button to either the leading or trailing side.
+-  void SetBoundsForButton(views::FrameButton button_id,
++  virtual void SetBoundsForButton(views::FrameButton button_id,
+                           views::Button* button,
+                           ButtonAlignment align);
+ 

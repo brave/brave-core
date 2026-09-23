@@ -1,0 +1,187 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
+
+#include "base/feature_list.h"
+#include "base/metrics/histogram_macros.h"
+#include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_stats/first_run_util.h"
+#include "brave/browser/misc_metrics/fingerprint_frequency_metrics.h"
+#include "brave/browser/misc_metrics/media_session_metrics_impl.h"
+#include "brave/browser/misc_metrics/process_misc_metrics.h"
+#include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
+#include "brave/browser/misc_metrics/theme_metrics.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
+#include "brave/components/constants/pref_names.h"
+#include "brave/components/misc_metrics/autofill_metrics.h"
+#include "brave/components/misc_metrics/features.h"
+#include "brave/components/misc_metrics/language_metrics.h"
+#include "brave/components/misc_metrics/page_metrics.h"
+#include "brave/components/misc_metrics/pref_names.h"
+#include "chrome/browser/autofill/personal_data_manager_factory.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/content_settings/host_content_settings_map_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/themes/theme_service_factory.h"
+#include "chrome/common/pref_names.h"
+#include "components/prefs/pref_service.h"
+#include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/misc_metrics/misc_android_metrics.h"
+#include "brave/browser/search_engines/search_engine_tracker.h"
+#else
+#include "brave/browser/misc_metrics/extension_metrics.h"
+#include "extensions/browser/extension_registry_factory.h"
+#endif
+
+namespace misc_metrics {
+
+ProfileMiscMetricsService::ProfileMiscMetricsService(
+    content::BrowserContext* context) {
+  profile_prefs_ = user_prefs::UserPrefs::Get(context);
+  auto* local_state = g_browser_process->local_state();
+  if (profile_prefs_) {
+    language_metrics_ = std::make_unique<LanguageMetrics>(profile_prefs_);
+    pref_change_registrar_.Init(profile_prefs_);
+    pref_change_registrar_.Add(
+        brave_shields::prefs::kAdBlockDeveloperMode,
+        base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
+                            base::Unretained(this)));
+#if BUILDFLAG(ENABLE_AI_CHAT)
+    if (local_state) {
+      ai_chat_metrics_ =
+          std::make_unique<ai_chat::AIChatMetrics>(local_state, profile_prefs_);
+    }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+  }
+  auto* profile = Profile::FromBrowserContext(context);
+  if (local_state && profile &&
+      base::FeatureList::IsEnabled(features::kFingerprintInputMetrics)) {
+    fingerprint_frequency_metrics_ =
+        std::make_unique<FingerprintFrequencyMetrics>(local_state, profile);
+  }
+  auto* history_service = HistoryServiceFactory::GetForProfile(
+      profile, ServiceAccessType::EXPLICIT_ACCESS);
+  auto* host_content_settings_map =
+      HostContentSettingsMapFactory::GetForProfile(context);
+  auto* bookmark_model = BookmarkModelFactory::GetForBrowserContext(context);
+
+  auto* process_misc_metrics = g_brave_browser_process->process_misc_metrics();
+  auto* template_url_service =
+      TemplateURLServiceFactory::GetForProfile(profile);
+  if (history_service && host_content_settings_map && process_misc_metrics) {
+    page_metrics_ = std::make_unique<PageMetrics>(
+        local_state, profile_prefs_, host_content_settings_map, history_service,
+        bookmark_model, process_misc_metrics->default_browser_monitor(),
+        process_misc_metrics->media_session_metrics(), template_url_service,
+        base::BindRepeating(&brave_stats::GetFirstRunTime,
+                            base::Unretained(local_state)));
+  }
+#if BUILDFLAG(IS_ANDROID)
+  auto* search_engine_tracker =
+      SearchEngineTrackerFactory::GetInstance()->GetForBrowserContext(context);
+  misc_android_metrics_ = std::make_unique<MiscAndroidMetrics>(
+      local_state, g_brave_browser_process->process_misc_metrics(),
+      search_engine_tracker, template_url_service, page_metrics_.get());
+#else
+  extensions::ExtensionRegistry* extension_registry =
+      extensions::ExtensionRegistryFactory::GetForBrowserContext(context);
+  if (extension_registry) {
+    extension_metrics_ = std::make_unique<ExtensionMetrics>(extension_registry);
+  }
+  auto* theme_service = ThemeServiceFactory::GetForProfile(profile);
+  if (theme_service) {
+    theme_metrics_ = std::make_unique<ThemeMetrics>(theme_service);
+  }
+  if (profile_prefs_) {
+    new_tab_metrics_ = std::make_unique<ProfileNewTabMetrics>(profile_prefs_);
+    pref_change_registrar_.Add(
+        prefs::kSearchSuggestEnabled,
+        base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
+                            base::Unretained(this)));
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+    pref_change_registrar_.Add(
+        brave_ads::prefs::kSponsoredEnabled,
+        base::BindRepeating(&ProfileMiscMetricsService::ReportSimpleMetrics,
+                            base::Unretained(this)));
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+  }
+#endif
+  auto* personal_data_manager =
+      autofill::PersonalDataManagerFactory::GetInstance()->GetForBrowserContext(
+          context);
+  if (personal_data_manager) {
+    autofill_metrics_ =
+        std::make_unique<AutofillMetrics>(personal_data_manager);
+  }
+
+  ReportSimpleMetrics();
+}
+
+ProfileMiscMetricsService::~ProfileMiscMetricsService() = default;
+
+void ProfileMiscMetricsService::Shutdown() {
+  fingerprint_frequency_metrics_ = nullptr;
+#if !BUILDFLAG(IS_ANDROID)
+  if (extension_metrics_) {
+    extension_metrics_->Shutdown();
+  }
+#endif
+}
+
+PageMetrics* ProfileMiscMetricsService::GetPageMetrics() {
+  return page_metrics_.get();
+}
+
+#if BUILDFLAG(IS_ANDROID)
+MiscAndroidMetrics* ProfileMiscMetricsService::GetMiscAndroidMetrics() {
+  return misc_android_metrics_.get();
+}
+#endif
+
+void ProfileMiscMetricsService::ReportSimpleMetrics() {
+  if (!profile_prefs_) {
+    return;
+  }
+  UMA_HISTOGRAM_BOOLEAN(
+      kSearchSuggestEnabledHistogramName,
+      profile_prefs_->GetBoolean(prefs::kSearchSuggestEnabled));
+  bool shields_dev_mode_enabled =
+      profile_prefs_->GetBoolean(brave_shields::prefs::kAdBlockDeveloperMode);
+  UMA_HISTOGRAM_EXACT_LINEAR(kShieldsDevModeEnabledHistogramName,
+                             shields_dev_mode_enabled ? 1 : INT_MAX - 1, 2);
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  bool sponsored_ads_enabled =
+      profile_prefs_->GetBoolean(brave_ads::prefs::kSponsoredEnabled);
+#else
+  bool sponsored_ads_enabled = false;
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+  UMA_HISTOGRAM_EXACT_LINEAR(kSponsoredAdsEnabledHistogramName,
+                             sponsored_ads_enabled ? INT_MAX - 1 : 0, 2);
+}
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+ai_chat::AIChatMetrics* ProfileMiscMetricsService::GetAIChatMetrics() {
+  return ai_chat_metrics_.get();
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+}  // namespace misc_metrics

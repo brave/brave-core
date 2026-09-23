@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Rename CookieMonster references to CookieMonster_ChromiumImpl.
+
+      CookieMonsterChangeDispatcher is used by the upstream CookieMonster
+      implementation, so it refers to the renamed upstream class. rename_class
+      also rewrites the forward declaration in place, keeping valid syntax.
+    rename_class:
+      class_name: CookieMonster
+      rename: CookieMonster_ChromiumImpl

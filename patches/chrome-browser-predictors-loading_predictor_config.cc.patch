@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/predictors/loading_predictor_config.cc b/chrome/browser/predictors/loading_predictor_config.cc
+index a878c25f851187e0f79f507d4eb4bbe828850d2c..d0a088eb1fb08f4f3cdfd2bf9058ddfe09d86f66 100644
+--- a/chrome/browser/predictors/loading_predictor_config.cc
++++ b/chrome/browser/predictors/loading_predictor_config.cc
+@@ -13,6 +13,7 @@
+ namespace predictors {
+ 
+ bool IsLoadingPredictorEnabled(Profile* profile) {
++  if ((true)) return false;
+   // Disabled for off-the-record. Policy choice, not a technical limitation.
+   return profile && !profile->IsOffTheRecord();
+ }

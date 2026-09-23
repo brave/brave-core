@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2021 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+<resources>
+    <string-array name="blockTrackersAdsTexts">
+        <item>@string/block_trackers_ads_option_1</item>
+        <item>@string/block_trackers_ads_option_2</item>
+        <item>@string/block_trackers_ads_option_3</item>
+    </string-array>
+
+    <string-array name="blockCookiesTexts">
+        <item>@string/block_cookies_option_1</item>
+        <item>@string/block_cookies_option_2</item>
+        <item>@string/block_cookies_option_3</item>
+    </string-array>
+    
+    <string-array name="blockFingerprintingTexts">
+        <item>@string/block_fingerprinting_option_1</item>
+        <item>@string/block_fingerprinting_option_2</item>
+        <item>@string/block_fingerprinting_option_3</item>
+    </string-array>
+
+    <string-array name="httpsUpgradeTexts">
+        <item>@string/https_upgrade_option_1</item>
+        <item>@string/https_upgrade_option_2</item>
+        <item>@string/https_upgrade_option_3</item>
+    </string-array>
+
+    <string-array name="requestOTRTexts">
+        <item>@string/request_otr_option_1</item>
+        <item>@string/request_otr_option_2</item>
+        <item>@string/request_otr_option_3</item>
+    </string-array>
+
+    <string-array name="settingsDefaultWalletTexts">
+        <item>@string/settings_default_wallet_option_1</item>
+        <item>@string/settings_default_wallet_option_2</item>
+    </string-array>
+
+</resources>

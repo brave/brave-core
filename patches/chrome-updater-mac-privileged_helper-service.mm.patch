@@ -1,0 +1,13 @@
+diff --git a/chrome/updater/mac/privileged_helper/service.mm b/chrome/updater/mac/privileged_helper/service.mm
+index 71c5ff06a13cafd56c98ac9a3ccb816723291ed8..6c3927938e8001de9fa2cf4e0acf6acbd21e3806 100644
+--- a/chrome/updater/mac/privileged_helper/service.mm
++++ b/chrome/updater/mac/privileged_helper/service.mm
+@@ -116,7 +116,7 @@
+           .IdentifierIsOneOf({MAC_BROWSER_BUNDLE_IDENTIFIER_STRING,
+                               MAC_BROWSER_BUNDLE_IDENTIFIER_STRING ".beta",
+                               MAC_BROWSER_BUNDLE_IDENTIFIER_STRING ".dev",
+-                              MAC_BROWSER_BUNDLE_IDENTIFIER_STRING ".canary"})
++                              MAC_BROWSER_BUNDLE_IDENTIFIER_STRING ".nightly"})
+           .SignedWithSameIdentity()
+           .Build();
+   if (!requirement || !requirement->ValidateProcess(newConnection.auditToken)) {

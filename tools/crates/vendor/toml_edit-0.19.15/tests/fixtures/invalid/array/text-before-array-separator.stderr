@@ -1,0 +1,6 @@
+TOML parse error at line 2, column 46
+  |
+2 |   "Is there life before an array separator?" No,
+  |                                              ^
+invalid array
+expected `]`

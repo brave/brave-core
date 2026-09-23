@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Swap Chrome's service for Brave's concrete subclass at both
+      construction sites.
+
+      Brave overrides OnPassageVisibilityCalculated to synthesize a passing
+      visibility score since Brave doesn't use PageContentAnnotationsService.
+      The header this needs is included by the chromium_src override at
+      brave/chromium_src/chrome/browser/history_embeddings/
+      history_embeddings_service_factory.cc.
+    count: 2
+    regex:
+      pattern: 'std::make_unique<history_embeddings::ChromeHistoryEmbeddingsService>('
+      replace: |-
+        std::make_unique<history_embeddings::
+        #if BUILDFLAG(ENABLE_LOCAL_AI)
+            BraveHistoryEmbeddingsService
+        #else
+            ChromeHistoryEmbeddingsService
+        #endif
+            >(

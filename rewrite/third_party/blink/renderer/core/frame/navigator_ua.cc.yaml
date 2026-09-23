@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Hide the "Brave" brand in navigator.userAgentData for excepted sites.
+
+      Sites on the brave-checks.txt list already have "Brave" replaced with
+      "Google Chrome" in their Sec-CH-UA request headers, but that rewrite
+      happens in the browser process. Without this, the same brand is still
+      readable from JavaScript, which defeats the purpose of the header rewrite.
+      Wrapping the metadata here covers navigator.userAgentData.brands as well
+      as getHighEntropyValues(['fullVersionList']), since both are populated
+      from it.
+    regex:
+      re_pattern: '(UserAgentMetadata metadata = )(GetUserAgentMetadata\(\));'
+      replace: |-
+        \1brave::MaybeHideBraveBrand(
+              GetUAExecutionContext(), \2);

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" version="2.0">
+    <channel>
+        <title>Latest Movie Trailers</title>
+        <link>https://trailers.apple.com/</link>
+        <description>Recently added Movie Trailers.</description>
+        <language>en-US</language>
+        <lastBuildDate>Fri, 07 Feb 2020 07:30:28 PST</lastBuildDate>
+        <generator>Custom</generator>
+        <copyright>2020 Apple Inc.</copyright>
+        <item>
+            <title>Vitalina Varela - Trailer</title>
+            <link>https://trailers.apple.com/trailers/independent/vitalina-varela</link>
+            <description>A film of deeply concentrated beauty, acclaimed filmmaker Pedro Costa’s VITALINA VARELA stars nonprofessional actor Vitalina Varela in an extraordinary performance based on her own life. Vitalina plays a Cape Verdean woman who has travelled to Lisbon to reunite with her husband, after two decades of separation, only to arrive mere days after his funeral. Alone in a strange forbidding land, she perseveres and begins to establish a new life. Winner of the Golden Leopard for Best Film and Best Actress at the Locarno Film Festival, as well as an official selection of the Sundance Film Festival, VITALINA VARELA is a film of shadow and whisper, a profoundly moving and visually ravishing masterpiece.</description>
+            <pubDate>Thu, 06 Feb 2020 00:00:00 PST</pubDate>
+            <content:encoded><![CDATA[<span style="font-size: 16px; font-weight: 900; text-decoration: underline;">Vitalina Varela - Trailer</span>]]></content:encoded>
+        </item>
+    </channel>
+</rss>

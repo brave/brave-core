@@ -1,0 +1,51 @@
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "계속";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "탭하는 모든 링크를 Brave의 프라이버시 보호로 열기";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Brave를 기본 브라우저로 설정";
+
+/* The subtitle of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenDescription" = "더욱 빠른 탐색, 적은 데이터 사용량.";
+
+/* The title of the screen that shows ads are blocked */
+"focusOnboarding.movingAdsScreenTitle" = "더 적은 광고 및 트래커.";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "나중에";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "보기 싫은 것을 보지 않을 자유.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "동영상 광고에서 해방.";
+
+/* The title of the button that opens the website abouyt privacy preserving analytics. */
+"focusOnboarding.p3aInformationButtonTitle" = "프라이버시 보호 제품 분석(P3A)에 대해 자세히 알아보기";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "어떤 기능이 가장 마음에 드는지 알려주세요.";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Brave 개선에 도움을 주세요.";
+
+/* The title of the toggle for enable / disable privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "'Brave Shields 및 프라이버시' 아래 Brave 설정에서 언제든지 변경할 수 있습니다.";
+
+/* The title of the toggle for enable / disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "프라이버시가 보장되는 익명 제품 인사이트를 공유합니다.";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "브라우징 시작";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "시스템 설정으로 이동";
+
+/* The description of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorDescription" = "URL을 입력하여 더 적은 광고 및 트래커로 웹 탐색";
+
+/* The title of the popup which points to URL Bar after onboarding */
+"focusOnboarding.urlBarIndicatorTitle" = "Brave의 차별점 보기";
+

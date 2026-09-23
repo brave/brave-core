@@ -1,0 +1,751 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Meta-Learning in 50 Lines of JAX</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">Meta-Learning in 50 Lines of JAX</h1><p class="subhead metadata">Github repo here:&nbsp; https://github.com/ericjang/maml-jax   Adaptive behavior in humans and animals occurs at many time scales: when I use a n...</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><p>
+Github repo here:&nbsp;<a href="https://github.com/ericjang/maml-jax">https://github.com/ericjang/maml-jax</a><br>
+<br>
+Adaptive behavior in humans and animals occurs at many time scales: when I use a new shower handle for the first time, it takes me a few seconds to figure out how to adjust the water temperature to my liking. Upon reading a news article, I obtain new information that I didn't have before. More difficult skills, such as mastering a musical instrument, are acquired over a lifetime of deliberate practice.<br>
+<br>
+Learning is hardly restricted to animal-level intelligence; it can be found in every living creature. Multi-cellular developmental programs are highly plastic and can even <a href="https://www.youtube.com/watch?v=RjD1aLm4Thg">store epigenetic “memories'” between generations</a>. At the longest time-scales, evolution itself can be thought of as “learning” on the genomic level, whereby favorable genetic codes are discovered and remembered over the course of many generations. At the shortest of timescales, a single ion channel activating in response to a stimulus can also be thought of as “learning”, as it is an adaptive, stateful response to the environment. Biological intelligence blurs the boundaries between “<b>behavior</b>” (responding to the environment), “<b>learning</b>” (acquiring information about the world in order to improve fitness), and “optimization” (<b>improving fitness</b>). <br>
+<br>
+The focus of Machine Learning (ML) is to imbue computers with the ability to learn from data, so that they may accomplish tasks that humans have difficulty expressing in pure code. However, what most ML researchers call “learning” right now is but a very small subset of the vast range of behavioral adaptability encountered in biological life! Deep Learning models are powerful, but require a large amount of data and many iterations of stochastic gradient descent (SGD). This learning procedure is time-consuming and once a deep model is trained, its behavior is fairly rigid; at deployment time, one cannot really change the behavior of the system (e.g. correcting mistakes) without an expensive retraining process. Can we build systems that can learn faster, and with less data?<br>
+<br>
+“Meta-learning'', one of the most exciting ML research topics right now, addresses this problem by optimizing a model not just for the ability to “predict well'', but also the ability to “learn well''. Although Meta-Learning has attracted a lot of research attention in recent years, related ideas and algorithms have been around for some time (see Hugo Larochelle's <a href="https://t.co/Wjp8BvSBfp">slides</a> and Lilian Weng’s <a href="https://lilianweng.github.io/lil-log/2018/11/30/meta-learning.html">blog post</a> for an excellent overview of related concepts). <br>
+<br>
+This blog post won’t cover all the possible ways in which one can build a meta-learning system; instead, this is a practical tutorial on how to get your feet wet in meta-learning research. Specifically, I'll show you how to implement the <a href="https://arxiv.org/abs/1703.03400">MAML</a> meta-learning algorithm in about 50 lines of Python code, using Google's awesome JAX library.</p>
+<p>
+You can find a self-contained Jupyter notebook <a href="https://github.com/ericjang/maml-jax/blob/master/maml.ipynb">here</a>&nbsp;reproducing this tutorial.</p>
+
+<h3>
+An Operator Perspective on Learning and Meta-Learning</h3>
+<p>
+“Meta-learning” is used in so many different research contexts nowadays that it's difficult to communicate to other researchers what I’m exactly working on when I say “Meta-Learning”. A source of this confusion stems from the blurred semantics between “optimization”, “learning”, “adaptation”, “memory”, and how these terms can be employed in wildly different applications.<br>
+<br>
+This section is my attempt to make the definition of “learning” and “meta-learning” more mathematically precise, and explain why seemingly different algorithms are all branded as “meta-learning” these days. Feel free to skip to the next section if you want to dive straight into the MAML+JAX coding tutorial.<br>
+<br>
+We define a <b>learning operator</b> $f : F_\theta \to F_\theta$ as a function that improves a model function $f_\theta$ with respect to some task. A common learning operator used in deep learning and reinforcement learning literature is the stochastic gradient descent algorithm, with respect to a loss function. In standard DL contexts, learning occurs over hundreds of thousands or even millions of gradient steps, but generally, “learning'' can also occur on shorter (conditioning) or longer timescales (hyperparameter search). In addition to explicit optimization, learning can also be implemented implicitly via a dynamical system (recurrent neural networks conditioning on the past) or probabilistic inference.<br>
+<br>
+A <b>meta-learning operator</b> $f_o(f_i(f_\theta))$ is a composite operator of two learning operators: an “inner loop'' $f_i \in F_i$ and an “outer loop'' $f_o \in F_o$. Furthermore, $f_i$ is a model itself, and $f_o : F_i \to F_i$ is an operator over the inner learning rule $f_i$. In other words, $f_o$ learns the learning rule $f_i$, and $f_i$ learns a model for a given task, where we define “task'' to be a self-contained family of problems for which $f_i$ can adequately update $f_\theta$ to solve. At <b>meta-training time</b>, $f_o$ is applied to select for $f_i$ across a variety of training tasks. At <b>meta-test time</b>, we evaluate the generalization properties of $f_i$ and $f_\theta$ to holdout tasks.<br>
+<br>
+The choice of $f_o$ and $f_i$ depends largely on the problem domain. In architecture search literature (also called “<b>learning to learn</b>''), $f_i$ is a relatively slow training procedure of a neural network from scratch, while $f_o$ can be a neural controller, random search algorithm, or a Gaussian Process Bandit.<br>
+<br>
+A wide variety of machine learning problems can be formulated in terms meta-learning operators. In <b>(meta) imitation learning</b> (or <b>goal-conditioned reinforcement learning</b>), $f_i$ is used to relay instructions to the RL agent, such as conditioning on a task embedding or human demonstrations. In <b>meta-reinforcement learning</b> (MRL), $f_i$ instead implements a “fast reinforcement learning'' algorithm by which an agent improves itself after trying the task a couple times. It’s worth re-iterating here that I don’t see a distinction between “learning” and “conditioning”, because they both rely on inputs that are supplied at test time (i.e. “new information provided by the environment”). <br>
+<br>
+MAML is a meta-learning algorithm that implements $f_i$ via SGD, i.e. $\theta := \theta - \alpha \nabla_{\theta}(\mathcal{L}(\theta))$. This SGD update is differentiable with respect to $\theta$, allowing $f_o$ to effectively optimize $f_i$ via backpropagation without requiring many additional parameters to express $f_i$.
+
+</p><div>
+<div>
+<div dir="ltr">
+<h3>
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada">
+Exploring JAX: Gradients</span></h3>
+<p><span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada"><br></span>
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada">We begin the tutorial by importing JAX’s numpy drop-in and the gradient operator, grad. </span><br>
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada"><span id="docs-internal-guid-472840e5-7fff-942b-aad2-c8770ec17df1"><br></span>
+</span></p><div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span>import</span><span> jax.numpy </span><span>as</span><span> np</span><span><br></span><span>from</span><span> jax </span><span>import</span><span> grad</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+</div>
+<p><span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada"><br></span>
+<span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada">The gradient operator grad transforms a python function into another function that computes the gradients. Here, we compute first, second, and third order derivatives of $e^x$ and $x^2$:</span></p>
+<p><span id="docs-internal-guid-4c099eea-7fff-afe1-9be4-08124ea73ada">
+
+<div dir="ltr">
+<p><span id="docs-internal-guid-7f2bf7c0-7fff-c722-584d-a8d03da74443"><br></span></p><div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span>f = </span><span>lambda</span><span> x : np.exp(x)</span><span><br></span><span>g = </span><span>lambda</span><span> x : np.square(x)</span><span><br></span><span>print(grad(f)(</span><span>1.</span><span>)) </span><span># = e^{1}</span><span><br></span><span>print(grad(grad(f))(</span><span>1.</span><span>))</span><span><br></span><span>print(grad(grad(grad(f)))(</span><span>1.</span><span>))</span><span><br></span><span><br></span><span>print(grad(g)(</span><span>2.</span><span>)) </span><span># 2x = 4</span><span><br></span><span>print(grad(grad(g))(</span><span>2.</span><span>)) </span><span># x = 2</span><span><br></span><span>print(grad(grad(grad(g)))(</span><span>2.</span><span>)) </span><span># x = 0</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+</div>
+
+</span></p></div>
+<h3>
+<span id="docs-internal-guid-b0d8c8b5-7fff-e35e-5b1d-ce6ab8cff1d3">Exploring JAX: Auto-Vectorization with <span>vmap</span></span></h3>
+
+<p>
+Now let’s consider a toy regression problem in which we try to learn the function $f_\theta(x) = sin(x)$ with a neural network. The goal here is to get familiar with defining and training models. JAX provides some lightweight helper functions to make it easy to set up a neural network.</p>
+
+<div>
+<br>
+<div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span>from</span><span> jax </span><span>import</span><span> vmap </span><span># for auto-vectorizing functions</span><span><br></span><span>from</span><span> functools </span><span>import</span><span> partial </span><span># for use with vmap</span><span><br></span><span>from</span><span> jax </span><span>import</span><span> jit </span><span># for compiling functions for speedup</span><span><br></span><span>from</span><span> jax.experimental </span><span>import</span><span> stax </span><span># neural network library</span><span><br></span><span>from</span><span> jax.experimental.stax </span><span>import</span><span> Conv, Dense, MaxPool, Relu, Flatten, LogSoftmax </span><span># neural network layers</span><span><br></span><span>import</span><span> matplotlib.pyplot </span><span>as</span><span> plt </span><span># visualization</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+<br>
+<p>
+We’ll define a simple neural network with 2 hidden layers. We’ve specified an in_shape of (-1, 1), which means that the model takes in a variable-size batch dimension, and has a feature dimension of 1 scalar (since this is a 1-D regression task). JAX’s helper libraries all take on a functional API (unlike TensorFlow, which maintains a graph state), so we get back a function that initializes parameters and a function that applies the forward pass of the network. These callables return lists and tuples of numpy arrays - a simple and flat data structure for storing network parameters.</p></div>
+
+<div>
+<br>
+<div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span># Use stax to set up network initialization and evaluation functions</span><span><br></span><span>net_init, net_apply = stax.serial(</span><span><br></span><span> &nbsp;&nbsp;&nbsp;Dense(</span><span>40</span><span>), Relu,</span><span><br></span><span> &nbsp;&nbsp;&nbsp;Dense(</span><span>40</span><span>), Relu,</span><span><br></span><span> &nbsp;&nbsp;&nbsp;Dense(</span><span>1</span><span>)</span><span><br></span><span>)</span><span><br></span><span>in_shape = (</span><span>-1</span><span>, </span><span>1</span><span>,)</span><span><br></span><span>out_shape, net_params = net_init(in_shape)</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+<p>
+Next, we define the model loss to be Mean-Squared Error (MSE) across a batch of inputs.</p></div>
+<div>
+
+
+<div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span>def</span><span>loss</span><span>(params, inputs, targets):</span><span><br></span><span># Computes average loss for the batch</span><span><br></span><span> &nbsp;&nbsp;&nbsp;predictions = net_apply(params, inputs)</span><span><br></span><span>return</span><span> np.mean((targets - predictions)**</span><span>2</span><span>)</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+<p>
+We evaluate the uninitialized network across a range of inputs:</p></div>
+<div>
+
+
+<div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span># batch the inference across K=100</span><span><br></span><span>xrange_inputs = np.linspace(</span><span>-5</span><span>,</span><span>5</span><span>,</span><span>100</span><span>).reshape((</span><span>100</span><span>, </span><span>1</span><span>)) </span><span># (k, 1)</span><span><br></span><span>targets = np.sin(xrange_inputs)</span><span><br></span><span>predictions = vmap(partial(net_apply, net_params))(xrange_inputs)</span><span><br></span><span>losses = vmap(partial(loss, net_params))(xrange_inputs, targets) </span><span># per-input loss</span><span><br></span><span>plt.plot(xrange_inputs, predictions, label=</span><span>'prediction'</span><span>)</span><span><br></span><span>plt.plot(xrange_inputs, losses, label=</span><span>'loss'</span><span>)</span><span><br></span><span>plt.plot(xrange_inputs, targets, label=</span><span>'target'</span><span>)</span><span><br></span><span>plt.legend()</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+<p>
+As expected, at random initialization, the model’s predictions (blue) are totally off the target function (green).</p></div>
+
+</div>
+
+<p><a href="https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s1600/download.png" imageanchor="1"><img data-original-height="252" data-original-width="374" height="268" src="https://4.bp.blogspot.com/-TmFaWx0UoOM/XG7FkD3y42I/AAAAAAAAOe0/D8cAfvL486A6oU4zHmAeQF-Ylo8FytgHQCLcBGAs/s400/download.png" width="400"></a></p>
+
+<p>
+Let’s train the network via gradient descent. JAX’s random number generator is set up differently than Numpy’s, so to initialize network parameters we’ll use the original Numpy library (onp) to generate random numbers. We’ll also import the tree_multimap utility to easily manipulate collections of per-parameter gradients (for TensorFlow users, this is analogous to nest.map_structure for Tensors).
+
+</p><div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span>import</span><span> numpy </span><span>as</span><span> onp</span><span><br></span><span>from</span><span> jax.experimental </span><span>import</span><span> optimizers</span><span><br></span><span>from</span><span> jax.tree_util </span><span>import</span><span> tree_multimap &nbsp;</span><span># Element-wise manipulation of collections of numpy arrays </span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+<p><b><br></b></p>
+<p>
+We initialize the parameters and optimizer, and run the curve fitting for 100 steps. Note that adding the @jit decorator to the “step” function uses XLA to compile the entire training step into machine code, along with optimizations like fused accelerator kernels, memory and layout optimization.&nbsp;TensorFlow itself also uses XLA for <a href="https://developers.googleblog.com/2017/03/xla-tensorflow-compiled.html">accelerating statically defined graphs</a>. XLA makes the computation very fast and amenable to hardware acceleration because the entire thing can be executed without returning to a Python interpreter (or Graph interpreter in the case of TensorFlow sans XLA). The code in this tutorial will&nbsp;<i>just work</i>&nbsp;on CPU/GPU/TPU.
+
+</p><div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span>opt_init, opt_update = optimizers.adam(step_size=</span><span>1e-2</span><span>)</span><span><br></span><span>opt_state = opt_init(net_params)</span><span><br></span><span># Define a compiled update step</span><span><br></span><span>@jit</span><span><br></span><span>def</span><span>step</span><span>(i, opt_state, x1, y1):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;p = optimizers.get_params(opt_state)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;g = grad(loss)(p, x1, y1)</span><span><br></span><span>return</span><span> opt_update(i, g, opt_state)</span><span><br></span><span><br></span><span>for</span><span> i </span><span>in</span><span> range(</span><span>100</span><span>):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;opt_state = step(i, opt_state, xrange_inputs, targets)</span><span><br></span><span>net_params = optimizers.get_params(opt_state)</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+
+<p>
+Evaluating our network again, we see that the sinusoid curve has been correctly approximated.</p>
+<p><a href="https://4.bp.blogspot.com/-NuCVncO9wmI/XG7FjVOAetI/AAAAAAAAOes/G6hN1eRupnEAxrfgdeccjvrOz0G9oyCKgCEwYBhgL/s1600/download%2B%25281%2529.png" imageanchor="1"><img data-original-height="252" data-original-width="383" height="262" src="https://4.bp.blogspot.com/-NuCVncO9wmI/XG7FjVOAetI/AAAAAAAAOes/G6hN1eRupnEAxrfgdeccjvrOz0G9oyCKgCEwYBhgL/s400/download%2B%25281%2529.png" width="400"></a></p>
+<br>
+<p>
+This result is nothing to write home about, but in just a moment we’ll re-use a lot of these functions to implement MAML.</p>
+<div>
+<h3>
+Exploring JAX: Checking MAML Numerics</h3>
+<br>
+<p>
+When implementing ML algorithms, it’s important to unit-testing implementations against test cases where the true values can be computed analytically. The following example does this for MAML on a toy objective $g$. Note that by default JAX computes gradients with respect to the first argument of the function.</p></div>
+<div>
+<br>
+<div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span># gradients of gradients test for MAML</span><span><br></span><span># check numerics</span><span><br></span><span>g = </span><span>lambda</span><span> x, y : np.square(x) + y</span><span><br></span><span>x0 = </span><span>2.</span><span><br></span><span>y0 = </span><span>1.</span><span><br></span><span>print(</span><span>'grad(g)(x0) = {}'</span><span>.format(grad(g)(x0, y0))) </span><span># 2x = 4</span><span><br></span><span>print(</span><span>'x0 - grad(g)(x0) = {}'</span><span>.format(x0 - grad(g)(x0, y0))) </span><span># x - 2x = -2</span><span><br></span><span>def</span><span>maml_objective</span><span>(x, y):</span><span><br></span><span>return</span><span> g(x - grad(g)(x, y), y)</span><span><br></span><span>print(</span><span>'maml_objective(x,y)={}'</span><span>.format(maml_objective(x0, y0))) </span><span># x**2 + 1 = 5</span><span><br></span><span>print(</span><span>'x0 - maml_objective(x,y) = {}'</span><span>.format(x0 - grad(maml_objective)(x0, y0))) </span><span># x - (2x) = -2.</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+<br>
+<h3>
+<br>Implementing MAML with JAX</h3>
+<p>
+Now let’s extend our sinusoid regression task to a multi-task problem, in which the sinusoid function can have varying phases and amplitudes. This task was proposed in the MAML paper as a way to illustrate how MAML works on a toy problem. Below are some points sampled from two different tasks, divided into “train” (used to compute the inner loss) and “validation” splits (sampled from the same task, used to compute the outer loss).</p></div>
+
+<p><a href="https://3.bp.blogspot.com/-_juVWfK0Uj0/XG7FjZzbFnI/AAAAAAAAOe4/LG9MdTEaincGPjlS4p6lqdqP-AWmiihsACEwYBhgL/s1600/download%2B%25282%2529.png" imageanchor="1"><img data-original-height="252" data-original-width="383" height="262" src="https://3.bp.blogspot.com/-_juVWfK0Uj0/XG7FjZzbFnI/AAAAAAAAOe4/LG9MdTEaincGPjlS4p6lqdqP-AWmiihsACEwYBhgL/s400/download%2B%25282%2529.png" width="400"></a></p>
+
+
+<p><span id="docs-internal-guid-313a0369-7fff-b1c4-535d-2c17f57be320"><br>Suppose a task loss function $\mathcal{L}$ is defined with respect to model parameters $\theta$, input features $X$, output labels $Y$. Let $x_1, y_1$ and $x_2, y_2$ be identically distributed task instance data sampled from $X, Y$. Then MAML optimizes the following:<p>$\mathcal{L}(\theta - \nabla \mathcal{L}(\theta, x_1, y_1), x_2, y_2)$</p><p>MAML’s inner update operator is just gradient descent on the regression loss. The outer loss, <span>maml_loss</span>, is simply the original loss applied <i>after</i> the inner_update operator has been applied. One interpretation of the MAML objective is that it is a differentiable estimate of a cross-validation loss with respect to a learner. Meta-training results in an <span>inner_update</span> that minimizes the cross-validation loss.</p></span></p>
+<div>
+
+
+<div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span>def</span><span>inner_update</span><span>(p, x1, y1, alpha=</span><span>.1</span><span>):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;grads = grad(loss)(p, x1, y1)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;inner_sgd_fn = </span><span>lambda</span><span> g, state: (state - alpha*g)</span><span><br></span><span>return</span><span> tree_multimap(inner_sgd_fn, grads, p)</span><span><br></span><span><br></span><span>def</span><span>maml_loss</span><span>(p, x1, y1, x2, y2):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;p2 = inner_update(p, x1, y1)</span><span><br></span><span>return</span><span> loss(p2, x2, y2)</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+<br>
+<p>
+In each iteration of optimizing the MAML objective, we sample a single new task, sample a different set of input features and input labels for both the training and validation splits.</p></div>
+<div>
+
+
+<div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span>opt_init, opt_update = optimizers.adam(step_size=</span><span>1e-3</span><span>) &nbsp;</span><span># this LR seems to be better than 1e-2 and 1e-4</span><span><br></span><span>out_shape, net_params = net_init(in_shape)</span><span><br></span><span>opt_state = opt_init(net_params)</span><span><br></span><span><br></span><span>@jit</span><span><br></span><span>def</span><span>step</span><span>(i, opt_state, x1, y1, x2, y2):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;p = optimizers.get_params(opt_state)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;g = grad(maml_loss)(p, x1, y1, x2, y2)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;l = maml_loss(p, x1, y1, x2, y2)</span><span><br></span><span>return</span><span> opt_update(i, g, opt_state), l</span><span><br></span><span>K=</span><span>20</span><span><br></span><span><br></span><span>np_maml_loss = []</span><span><br></span><span><br></span><span># Adam optimization</span><span><br></span><span>for</span><span> i </span><span>in</span><span> range(</span><span>20000</span><span>):</span><span><br></span><span># define the task</span><span><br></span><span> &nbsp;&nbsp;&nbsp;A = onp.random.uniform(low=</span><span>0.1</span><span>, high=</span><span>.5</span><span>)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;phase = onp.random.uniform(low=</span><span>0.</span><span>, high=np.pi)</span><span><br></span><span># meta-training inner split (K examples)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;x1 = onp.random.uniform(low=</span><span>-5.</span><span>, high=</span><span>5.</span><span>, size=(K,</span><span>1</span><span>))</span><span><br></span><span> &nbsp;&nbsp;&nbsp;y1 = A * onp.sin(x1 + phase)</span><span><br></span><span># meta-training outer split (1 example). Like cross-validating with respect to one example.</span><span><br></span><span> &nbsp;&nbsp;&nbsp;x2 = onp.random.uniform(low=</span><span>-5.</span><span>, high=</span><span>5.</span><span>)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;y2 = A * onp.sin(x2 + phase)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;opt_state, l = step(i, opt_state, x1, y1, x2, y2)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;np_maml_loss.append(l)</span><span><br></span><span>if</span><span> i % </span><span>1000</span><span> == </span><span>0</span><span>:</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(i)</span><span><br></span><span>net_params = optimizers.get_params(opt_state)</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+<p><a href="https://3.bp.blogspot.com/-_B1gjozIcYk/XG7FjFCW-wI/AAAAAAAAOe8/MifBFI8wAtIKsoxOYUv6Lt23zk6rFyGbACEwYBhgL/s1600/download%2B%25283%2529.png" imageanchor="1"><img data-original-height="252" data-original-width="384" height="262" src="https://3.bp.blogspot.com/-_B1gjozIcYk/XG7FjFCW-wI/AAAAAAAAOe8/MifBFI8wAtIKsoxOYUv6Lt23zk6rFyGbACEwYBhgL/s400/download%2B%25283%2529.png" width="400"></a></p>
+
+<p>
+At meta-training time, the network learns to “quickly adapt” to x1, y1 in order to minimize cross-validation error on a new set of points x2. At deployment time (shown in the plot above), when we have a <i>new</i> task (new amplitude and phase not seen at training time), the model can apply the <span>inner_update</span> operator to fit the target sinusoid much faster and with fewer data samples than simply re-training the parameters with SGD.<br>
+<br>
+Why is <span>inner_update</span> a more effective learning rule than retraining with SGD on a new dataset? The magic here is that by training in a multi-task setting, the <span>inner_update</span> operator has <i>generalized</i> across tasks into a learning rule that is specially adapted for sinusoid regression tasks. In the standard data regime of deep learning, generalization is obtained from many examples of a single task (e.g. RL, image classification). In meta-learning, generalization is obtained from a few examples each from many tasks, and a shared learning rule is learned for the task distribution.</p></div>
+<div>
+<p><span id="docs-internal-guid-27909428-7fff-4416-96ea-1572559d1674"><br></span></p><div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span># batch the inference across K=100</span><span><br></span><span>targets = np.sin(xrange_inputs)</span><span><br></span><span>predictions = vmap(partial(net_apply, net_params))(xrange_inputs)</span><span><br></span><span>plt.plot(xrange_inputs, predictions, label=</span><span>'pre-update predictions'</span><span>)</span><span><br></span><span>plt.plot(xrange_inputs, targets, label=</span><span>'target'</span><span>)</span><span><br></span><span><br></span><span>x1 = onp.random.uniform(low=</span><span>-5.</span><span>, high=</span><span>5.</span><span>, size=(K,</span><span>1</span><span>))</span><span><br></span><span>y1 = </span><span>1.</span><span> * onp.sin(x1 + </span><span>0.</span><span>)</span><span><br></span><span><br></span><span>for</span><span> i </span><span>in</span><span> range(</span><span>1</span><span>,</span><span>5</span><span>):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;net_params = inner_update(net_params, x1, y1)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;predictions = vmap(partial(net_apply, net_params))(xrange_inputs)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;plt.plot(xrange_inputs, predictions, label=</span><span>'{}-shot predictions'</span><span>.format(i))</span><span><br></span><span>plt.legend()</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+</div>
+<div>
+<h3>
+<span id="docs-internal-guid-69eed823-7fff-6a28-8986-809fe526b254"><br></span><span id="docs-internal-guid-69eed823-7fff-6a28-8986-809fe526b254">Batching MAML Gradients Across Tasks with <span>vmap</span></span></h3>
+<p><span id="docs-internal-guid-69eed823-7fff-6a28-8986-809fe526b254">
+We can compute the MAML gradients across multiple tasks at once to reduce the variance of gradients of the learning operator. This was proposed in the MAML paper, and is analogous to how increasing minibatch size of standard SGD reduces variance of the parameter gradients (leading to more efficient learning).<p>Thanks to the <span>vmap</span> operator, we can automatically transform our single-task MAML implementation into a “batched version” that operates across tasks. From a software engineering &amp; testing perspective, <span>vmap</span> is extremely nice because the "task-batched" MAML implementation simply re-uses code from the non-task batched MAML algorithm, without losing any vectorization benefits. This means that when unit-testing code, we can test the single-task MAML algorithm for numerical correctness, then scale up to a more advanced batched version (e.g. for handling harder tasks such as robotic learning) for efficiency.&nbsp;</p></span></p></div>
+<div>
+<br>
+<div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span># vmapped version of maml loss.</span><span><br></span><span># returns scalar for all tasks.</span><span><br></span><span>def</span><span>batch_maml_loss</span><span>(p, x1_b, y1_b, x2_b, y2_b):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;task_losses = vmap(partial(maml_loss, p))(x1_b, y1_b, x2_b, y2_b)</span><span><br></span><span>return</span><span> np.mean(task_losses)</span></span><span><br></span></p>
+</td></tr>
+</tbody></table>
+</div>
+<p>
+Below is a function that samples a batch of tasks, where outer_batch_size is the number of tasks we meta-train on in each step, and inner_batch_size is the number of data points per-task.&nbsp;</p></div>
+<div>
+
+
+<div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span>def</span><span>sample_tasks</span><span>(outer_batch_size, inner_batch_size):</span><span><br></span><span># Select amplitude and phase for the task</span><span><br></span><span> &nbsp;&nbsp;&nbsp;As = []</span><span><br></span><span> &nbsp;&nbsp;&nbsp;phases = []</span><span><br></span><span>for</span><span> _ </span><span>in</span><span> range(outer_batch_size): &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;As.append(onp.random.uniform(low=</span><span>0.1</span><span>, high=</span><span>.5</span><span>))</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;phases.append(onp.random.uniform(low=</span><span>0.</span><span>, high=np.pi))</span><span><br></span><span>def</span><span>get_batch</span><span>():</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs, ys = [], []</span><span><br></span><span>for</span><span> A, phase </span><span>in</span><span> zip(As, phases):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;x = onp.random.uniform(low=</span><span>-5.</span><span>, high=</span><span>5.</span><span>, size=(inner_batch_size, </span><span>1</span><span>))</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;y = A * onp.sin(x + phase)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;xs.append(x)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ys.append(y)</span><span><br></span><span>return</span><span> np.stack(xs), np.stack(ys)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;x1, y1 = get_batch()</span><span><br></span><span> &nbsp;&nbsp;&nbsp;x2, y2 = get_batch()</span><span><br></span><span>return</span><span> x1, y1, x2, y2</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+
+<p>
+Now for the training loop, which strongly resembles the previous single-task one.&nbsp;As you can see, gradient-based meta-learning requires treating two kinds of variance: those of&nbsp;<i>intra-task</i> gradients for the inner loss, and those of&nbsp;<i>inter-task</i> gradients for the outer loss.</p>
+<br>
+<div dir="ltr">
+<table><colgroup></colgroup><tbody>
+<tr><td><p><span><span>opt_init, opt_update = optimizers.adam(step_size=</span><span>1e-3</span><span>)</span><span><br></span><span>out_shape, net_params = net_init(in_shape)</span><span><br></span><span>opt_state = opt_init(net_params)</span><span><br></span><span><br></span><span># vmapped version of maml loss.</span><span><br></span><span># returns scalar for all tasks.</span><span><br></span><span>def</span><span>batch_maml_loss</span><span>(p, x1_b, y1_b, x2_b, y2_b):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;task_losses = vmap(partial(maml_loss, p))(x1_b, y1_b, x2_b, y2_b)</span><span><br></span><span>return</span><span> np.mean(task_losses)</span><span><br></span><span><br></span><span>@jit</span><span><br></span><span>def</span><span>step</span><span>(i, opt_state, x1, y1, x2, y2):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;p = optimizers.get_params(opt_state)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;g = grad(batch_maml_loss)(p, x1, y1, x2, y2)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;l = batch_maml_loss(p, x1, y1, x2, y2)</span><span><br></span><span>return</span><span> opt_update(i, g, opt_state), l</span><span><br></span><span><br></span><span>np_batched_maml_loss = []</span><span><br></span><span>K=</span><span>20</span><span><br></span><span>for</span><span> i </span><span>in</span><span> range(</span><span>20000</span><span>):</span><span><br></span><span> &nbsp;&nbsp;&nbsp;x1_b, y1_b, x2_b, y2_b = sample_tasks(</span><span>4</span><span>, K)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;opt_state, l = step(i, opt_state, x1_b, y1_b, x2_b, y2_b)</span><span><br></span><span> &nbsp;&nbsp;&nbsp;np_batched_maml_loss.append(l)</span><span><br></span><span>if</span><span> i % </span><span>1000</span><span> == </span><span>0</span><span>:</span><span><br></span><span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print(i)</span><span><br></span><span>net_params = optimizers.get_params(opt_state)</span></span></p>
+</td></tr>
+</tbody></table>
+</div>
+<p>
+When we plot the MAML objective as a function of training step, we see that the batched MAML trains much faster (as a function of gradient steps) and also has lower variance during training.</p></div>
+<div>
+<br>
+<p><a href="https://2.bp.blogspot.com/-B_XbZrb3x-Y/XG7Fj-YtcNI/AAAAAAAAOe8/u8TtEfoZFF0kIa--Zlm23kFrtbjZWQOKwCEwYBhgL/s1600/download%2B%25284%2529.png" imageanchor="1"><img data-original-height="252" data-original-width="381" height="263" src="https://2.bp.blogspot.com/-B_XbZrb3x-Y/XG7Fj-YtcNI/AAAAAAAAOe8/u8TtEfoZFF0kIa--Zlm23kFrtbjZWQOKwCEwYBhgL/s400/download%2B%25284%2529.png" width="400"></a></p>
+
+<br>
+<h3>
+Conclusions</h3>
+<p>
+In this tutorial we explored the MAML algorithm and reproduced the Sinusoid regression task from the paper in about 50 lines of Python code. I was very pleasantly surprised to find how easy <span>grad</span>, <span>vmap</span>, and <span>jit</span> made it to implement MAML, and I am excited to continue using it for my own meta-learning research.<br>
+<br>
+So, what are the distinctions between “optimization”, “learning”, “adaptation”, and “memory”? I believe they are all equivalent, because it is possible to implement memory capabilities with optimization techniques (MAML) and vice versa (e.g. RNN-based meta reinforcement learning). In reinforcement learning, imitating a teacher or conditioning on user-specified goal or recovering from a failure can all use the same machinery.<br>
+<br>
+Thinking about precise definitions of “learning” and “meta-learning”, and attempting to reconcile them with the capabilities of biological intelligence have led me to realize that every process in Life itself, spanning molecular reaction to behavioral adaptation to genetic evolution, is nothing more than learning happening at many time scales. I’ll have much more to say on the topic of Artificial Life and Machine Learning in the future, but for now, thank you for reading this humble tutorial on fitting sinusoidal functions!
+
+</p><h3>
+Acknowledgements</h3><p>
+Thanks to Matthew Johnson for helping to proofread this post and helping me to resolve JAX questions.</p></div>
+
+</body>

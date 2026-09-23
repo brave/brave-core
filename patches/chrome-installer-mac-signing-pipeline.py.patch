@@ -1,0 +1,20 @@
+diff --git a/chrome/installer/mac/signing/pipeline.py b/chrome/installer/mac/signing/pipeline.py
+index 3282a9deb9f43b34206945a79b47a6e603b2c623..cb90608ca0ff26503f9b9203839fdefacf9a997c 100644
+--- a/chrome/installer/mac/signing/pipeline.py
++++ b/chrome/installer/mac/signing/pipeline.py
+@@ -775,6 +775,9 @@ async def sign_all(
+                 ),
+                 timeout=60 * 60 * 2,
+             )
++        elif 'dest_dir' in locals():
++            # Copy the notarized app to the orig_paths.output dir where the user expects it.
++            commands.copy_files(dest_dir, orig_paths.output)
+ 
+ 
+ async def _sign_and_maybe_notarize_distributions(
+@@ -942,3 +945,5 @@ async def _package_and_maybe_notarize_distributions(
+     if config.notarize.should_staple():
+         for path in staple_paths:
+             notarize.staple(path)
++
++from brave_chromium_utils import inline_file; inline_file("//brave/chromium_src/chrome/installer/mac/signing/pipeline.py", globals(), locals())

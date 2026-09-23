@@ -1,0 +1,507 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
+
+#include <cstdint>
+#include <memory>
+#include <optional>
+#include <ostream>
+#include <string>
+#include <string_view>
+#include <vector>
+
+#include "base/barrier_callback.h"
+#include "base/check_deref.h"
+#include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/logging.h"
+#include "base/memory/weak_ptr.h"
+#include "base/strings/string_util.h"
+#include "base/strings/utf_ostream_operators.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/types/fixed_array.h"
+#include "base/uuid.h"
+#include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
+#include "brave/components/ai_chat/content/browser/content_tool.h"
+#include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
+#include "brave/components/ai_chat/core/browser/associated_content_driver.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
+#include "brave/components/ai_chat/core/browser/utils.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include "brave/components/screenshot/content/pdf_utils.h"
+#include "content/public/browser/browser_accessibility_state.h"
+#include "content/public/browser/browser_context.h"
+#include "content/public/browser/navigation_details.h"
+#include "content/public/browser/navigation_entry.h"
+#include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/permission_controller.h"
+#include "content/public/browser/permission_descriptor_util.h"
+#include "content/public/browser/permission_result.h"
+#include "content/public/browser/reload_type.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/storage_partition.h"
+#include "content/public/browser/web_contents.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
+#include "mojo/public/cpp/bindings/remote.h"
+#include "pdf/buildflags.h"
+#include "services/service_manager/public/cpp/interface_provider.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/blink/public/common/features.h"
+#include "third_party/blink/public/common/permissions/permission_utils.h"
+
+#if BUILDFLAG(ENABLE_PDF)
+#include "brave/components/ai_chat/content/browser/pdf_text_helper.h"
+#include "components/pdf/browser/pdf_document_helper.h"
+#endif  // BUILDFLAG(ENABLE_PDF)
+
+namespace ai_chat {
+
+namespace {
+
+void ExtractTextFromAIPageContentNode(
+    const blink::mojom::AIPageContentNode& node,
+    std::string& out) {
+  const auto& attrs = node.content_attributes;
+  if (attrs && attrs->text_info && !attrs->text_info->text_content.empty()) {
+    if (!out.empty()) {
+      out.append("\n");
+    }
+    out.append(attrs->text_info->text_content);
+  }
+  for (const auto& child : node.children_nodes) {
+    ExtractTextFromAIPageContentNode(*child, out);
+  }
+}
+
+}  // namespace
+
+AssociatedWebContentsContent::AssociatedWebContentsContent(
+    content::WebContents* web_contents,
+    std::unique_ptr<PrintPreviewExtractionDelegate>
+        print_preview_extraction_delegate)
+    : content::WebContentsObserver(web_contents),
+      AssociatedContentDriver(web_contents->GetBrowserContext()
+                                  ->GetDefaultStoragePartition()
+                                  ->GetURLLoaderFactoryForBrowserProcess()),
+      print_preview_extraction_delegate_(
+          std::move(print_preview_extraction_delegate)) {
+  if (features::IsAIChatDetailedPageContentExtractionEnabled()) {
+    page_content_fetcher_delegate_ =
+        std::make_unique<AIPageContentFetcher>(web_contents);
+  } else {
+    page_content_fetcher_delegate_ =
+        std::make_unique<PageContentFetcher>(web_contents);
+  }
+  previous_page_title_ = web_contents->GetTitle();
+}
+
+AssociatedWebContentsContent::~AssociatedWebContentsContent() = default;
+
+void AssociatedWebContentsContent::ReadyToCommitNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInPrimaryMainFrame()) {
+    return;
+  }
+  // NavigationEntryCommitted() runs before DidFinishNavigation() and
+  // LoadCommittedDetails doesn't expose the reload type, so record it here.
+  pending_navigation_is_reload_ =
+      navigation_handle->GetReloadType() != content::ReloadType::NONE;
+}
+
+void AssociatedWebContentsContent::NavigationEntryCommitted(
+    const content::LoadCommittedDetails& load_details) {
+  if (!load_details.is_main_frame) {
+    return;
+  }
+  // UniqueID will provide a consistent value for the entry when navigating
+  // through history, allowing us to re-join conversations and navigations.
+  int pending_navigation_id = load_details.entry->GetUniqueID();
+  pending_navigation_id_ = pending_navigation_id;
+  DVLOG(2) << __func__ << " id: " << pending_navigation_id_
+           << "\n url: " << load_details.entry->GetVirtualURL()
+           << "\n current page title: " << load_details.entry->GetTitle()
+           << "\n previous page title: " << previous_page_title_
+           << "\n same document? " << load_details.is_same_document;
+
+  // Allow same-document navigation, as content often changes as a result
+  // of framgment / pushState / replaceState navigations.
+  // Content won't be retrieved immediately and we don't have a similar
+  // "DOM Content Loaded" event, so let's wait for something else such as
+  // page title changing before committing to starting a new conversation
+  // and treating it as a "fresh page".
+  is_same_document_navigation_ = load_details.is_same_document;
+  // Experimentally only call |OnNewPage| for same-page navigations _if_
+  // it results in a page title change (see |TtileWasSet|). Title detection
+  // also done within the navigation entry so that back/forward navigations
+  // are handled correctly.
+
+  // Page loaded is only considered changing when full document changes
+  if (!is_same_document_navigation_) {
+    is_page_loaded_ = false;
+  }
+
+  // A reload of the same URL is the same logical page, so leave the content
+  // alone.
+  // Note: This doesn't treat navigations to the same URL as a reload as
+  // they have a different content_id.
+  const bool is_reload = pending_navigation_is_reload_;
+  const bool is_same_page_reload =
+      pending_navigation_is_reload_ && !is_same_document_navigation_ &&
+      load_details.previous_main_frame_url ==
+          web_contents()->GetLastCommittedURL() &&
+      load_details.entry->GetUniqueID() == content_id();
+  pending_navigation_is_reload_ = false;
+
+  if (!is_same_page_reload &&
+      (!is_same_document_navigation_ ||
+       previous_page_title_ != load_details.entry->GetTitle())) {
+    OnNewPage(pending_navigation_id_);
+  }
+  previous_page_title_ = load_details.entry->GetTitle();
+
+  // A new document means a new PageContentExtractor, so any subscription we had
+  // died with the old RenderFrame. A non-reload navigation runs OnNewPage
+  // above, which archives this content and gets the new document attached (and
+  // so subscribed) afresh, so only reloads need re-subscribing here.
+  // |content_tools_listener_| is never passively unbound, so it records whether
+  // a conversation ever attached this content.
+  if (is_reload && !is_same_document_navigation_ &&
+      content_tools_listener_.is_bound()) {
+    SubscribeToContentToolChanges();
+  }
+}
+
+void AssociatedWebContentsContent::TitleWasSet(
+    content::NavigationEntry* entry) {
+  DVLOG(2) << __func__ << ": id=" << entry->GetUniqueID()
+           << " title=" << entry->GetTitle();
+  MaybeSameDocumentIsNewPage();
+  previous_page_title_ = entry->GetTitle();
+  SetTitle(entry->GetTitle());
+}
+
+void AssociatedWebContentsContent::DidFinishLoad(
+    content::RenderFrameHost* render_frame_host,
+    const GURL& validated_url) {
+  DVLOG(4) << __func__ << ": " << validated_url.spec();
+  if (validated_url == web_contents()->GetLastCommittedURL()) {
+    is_page_loaded_ = true;
+    if (pending_get_page_content_callback_) {
+      GetPageContent(std::move(pending_get_page_content_callback_), "");
+    }
+  }
+}
+
+void AssociatedWebContentsContent::GetPageContent(
+    FetchPageContentCallback callback,
+    std::string_view invalidation_token) {
+  bool is_pdf = screenshot::IsPdf(web_contents());
+  if (is_pdf) {
+#if BUILDFLAG(ENABLE_PDF)
+    auto* pdf_helper =
+        pdf::PDFDocumentHelper::MaybeGetForWebContents(*web_contents());
+    if (pdf_helper) {
+      pdf_helper->RegisterForDocumentLoadComplete(base::BindOnce(
+          &AssociatedWebContentsContent::OnPDFDocumentLoadComplete,
+          weak_ptr_factory_.GetWeakPtr(),
+          base::BindOnce(
+              &AssociatedWebContentsContent::OnFetchPageContentComplete,
+              weak_ptr_factory_.GetWeakPtr(), std::move(callback))));
+      return;
+    }
+#endif  // BUILDFLAG(ENABLE_PDF)
+    // If we have a PDF but no PDFHelper there's no point running one of our
+    // other extractors - we'll just end up with empty content anyway.
+    std::move(callback).Run("", false, "");
+    return;
+  }
+  if (print_preview_extraction_delegate_ &&
+      screenshot::kPrintPreviewRetrievalHosts.contains(
+          web_contents()->GetLastCommittedURL().host())) {
+    // Get content using print preview image capture for server-side OCR
+    DVLOG(1) << __func__ << " print preview url";
+    // For print preview hosts, we always return empty content to trigger
+    // the autoscreenshots mechanism which will use CaptureImages for
+    // server-side OCR. However, if the page isn't loaded yet, wait for load
+    // completion.
+    if (!is_page_loaded_) {
+      DVLOG(1) << "print preview page was not loaded yet, will return empty "
+                  "after load";
+      SetPendingGetContentCallback(std::move(callback));
+      return;
+    }
+    DVLOG(1) << "print preview host detected, returning empty to trigger "
+                "autoscreenshots";
+    std::move(callback).Run("", false, "");
+    return;
+  }
+  page_content_fetcher_delegate_->FetchPageContent(
+      invalidation_token,
+      base::BindOnce(&AssociatedWebContentsContent::OnFetchPageContentComplete,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AssociatedWebContentsContent::OnFetchPageContentComplete(
+    FetchPageContentCallback callback,
+    std::string content,
+    bool is_video,
+    std::string invalidation_token) {
+  base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
+  // If content is empty, and page was not loaded yet, wait for page load.
+  // Once page load is complete, try again.
+  if (content.empty() && !is_video && !is_page_loaded_) {
+    DVLOG(1) << "page was not loaded yet, will try again after load";
+    SetPendingGetContentCallback(std::move(callback));
+    return;
+  }
+  // If content is still empty after page load, try AIPageContentAgent as a
+  // fallback. It uses layout tree walking which may succeed where AX
+  // tree-based extraction fails.
+  if (content.empty() && !is_video && is_page_loaded_) {
+    DVLOG(1) << "page content empty, trying AIPageContentAgent fallback";
+    FetchPageContentFromAIPageContentAgent(std::move(callback));
+    return;
+  }
+  std::move(callback).Run(std::move(content), is_video,
+                          std::move(invalidation_token));
+}
+
+void AssociatedWebContentsContent::SetPendingGetContentCallback(
+    FetchPageContentCallback callback) {
+  if (pending_get_page_content_callback_) {
+    std::move(pending_get_page_content_callback_).Run("", false, "");
+  }
+  pending_get_page_content_callback_ = std::move(callback);
+}
+
+void AssociatedWebContentsContent::OnNewPage(int64_t navigation_id) {
+  DVLOG(3) << __func__ << " id: " << navigation_id;
+  AssociatedContentDriver::OnNewPage(navigation_id);
+  set_url(web_contents()->GetLastCommittedURL());
+  SetTitle(web_contents()->GetTitle());
+  if (pending_get_page_content_callback_) {
+    std::move(pending_get_page_content_callback_).Run("", false, "");
+  }
+
+  // Note: A new page needs a new UUID.
+  set_uuid(base::Uuid::GenerateRandomV4().AsLowercaseString());
+
+  // Notify observers now that url, title, and uuid are all set for the new
+  // page. This fires after OnRequestArchive has completed for all observers.
+  NotifyNewPage();
+}
+
+void AssociatedWebContentsContent::MaybeSameDocumentIsNewPage() {
+  if (is_same_document_navigation_) {
+    DVLOG(2) << "Same document navigation detected new \"page\" - calling "
+                "OnNewPage()";
+    // Cancel knowledge that the current navigation should be associated
+    // with any conversation that's associated with the previous navigation.
+    // Tell any conversation that it shouldn't be associated with this
+    // content anymore, as we've moved on.
+    OnNewPage(pending_navigation_id_);
+    // Don't respond to further TitleWasSet
+    is_same_document_navigation_ = false;
+  }
+}
+
+#if BUILDFLAG(ENABLE_PDF)
+void AssociatedWebContentsContent::OnPDFDocumentLoadComplete(
+    FetchPageContentCallback callback) {
+  ExtractTextFromLoadedPdf(
+      CHECK_DEREF(web_contents()),
+      base::BindOnce(
+          [](FetchPageContentCallback cb, std::optional<std::string> result) {
+            std::move(cb).Run(result.value_or(""), false, "");
+          },
+          std::move(callback)));
+}
+#endif  // BUILDFLAG(ENABLE_PDF)
+
+void AssociatedWebContentsContent::FetchPageContentFromAIPageContentAgent(
+    FetchPageContentCallback callback) {
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    std::move(callback).Run("", false, "");
+    return;
+  }
+
+  // |AIPageContentAgent| is bound to the RenderFrameHost so we just keep the
+  // remote for one request by storing it in the callback to avoid talking to
+  // the wrong RFH.
+  mojo::Remote<blink::mojom::AIPageContentAgent> agent;
+  rfh->GetRemoteInterfaces()->GetInterface(agent.BindNewPipeAndPassReceiver());
+
+  auto options = blink::mojom::AIPageContentOptions::New();
+  options->mode = blink::mojom::AIPageContentMode::kDefault;
+  options->on_critical_path = true;
+
+  auto* agent_ptr = agent.get();
+  agent_ptr->GetAIPageContent(
+      std::move(options),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(&AssociatedWebContentsContent::OnAIPageContentResult,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                         std::move(agent)),
+          nullptr));
+}
+
+void AssociatedWebContentsContent::OnAIPageContentResult(
+    FetchPageContentCallback callback,
+    mojo::Remote<blink::mojom::AIPageContentAgent> agent,
+    blink::mojom::AIPageContentPtr result) {
+  std::string content;
+  if (result) {
+    ExtractTextFromAIPageContentNode(*result->root_node, content);
+    base::TrimWhitespaceASCII(content, base::TRIM_ALL, &content);
+  }
+
+  DVLOG(1) << "AIPageContentAgent fallback "
+           << (content.empty() ? "returned empty" : "succeeded");
+  DVLOG(2) << "AIPageContentAgent extracted content: " << content;
+  std::move(callback).Run(std::move(content), false, "");
+}
+
+void AssociatedWebContentsContent::GetSearchSummarizerKey(
+    GetSearchSummarizerKeyCallback callback) {
+  if (!IsBraveSearchSERP(web_contents()->GetLastCommittedURL())) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  page_content_fetcher_delegate_->GetSearchSummarizerKey(std::move(callback));
+}
+
+void AssociatedWebContentsContent::GetOpenAIChatButtonNonce(
+    mojom::PageContentExtractor::GetOpenAIChatButtonNonceCallback callback) {
+  page_content_fetcher_delegate_->GetOpenAIChatButtonNonce(std::move(callback));
+}
+
+void AssociatedWebContentsContent::GetContentTools(
+    GetContentToolsCallback callback) {
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    std::move(callback).Run({});
+    return;
+  }
+
+  // |AIPageContentAgent| is bound to the RenderFrameHost so we just keep the
+  // remote for one request by storing it in the callback to avoid talking to
+  // the wrong RFH.
+  mojo::Remote<blink::mojom::AIPageContentAgent> agent;
+  rfh->GetRemoteInterfaces()->GetInterface(agent.BindNewPipeAndPassReceiver());
+  auto* agent_ptr = agent.get();
+  auto options = blink::mojom::AIPageContentOptions::New();
+  options->mode = blink::mojom::AIPageContentMode::kDefault;
+  options->on_critical_path = true;
+  agent_ptr->GetAIPageContent(
+      std::move(options),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(&AssociatedWebContentsContent::OnContentToolsFetched,
+                         weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                         rfh->GetWeakDocumentPtr(), std::move(agent)),
+          nullptr));
+}
+
+void AssociatedWebContentsContent::OnContentToolsFetched(
+    GetContentToolsCallback callback,
+    content::WeakDocumentPtr rfh,
+    mojo::Remote<blink::mojom::AIPageContentAgent> agent,
+    blink::mojom::AIPageContentPtr result) {
+  std::vector<std::unique_ptr<Tool>> tools;
+  if (result && result->frame_data) {
+    for (const auto& script_tool : result->frame_data->script_tools) {
+      tools.push_back(std::make_unique<ContentTool>(*script_tool, rfh));
+    }
+  }
+  std::move(callback).Run(std::move(tools));
+}
+
+void AssociatedWebContentsContent::OnAssociatedWithConversation() {
+  SubscribeToContentToolChanges();
+}
+
+void AssociatedWebContentsContent::OnContentToolsChanged() {
+  NotifyContentToolsChanged();
+}
+
+void AssociatedWebContentsContent::SubscribeToContentToolChanges() {
+  if (!base::FeatureList::IsEnabled(blink::features::kWebMCP)) {
+    return;
+  }
+
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    return;
+  }
+
+  content_tools_extractor_.reset();
+  rfh->GetRemoteInterfaces()->GetInterface(
+      content_tools_extractor_.BindNewPipeAndPassReceiver());
+
+  content_tools_listener_.reset();
+  content_tools_extractor_->SetContentToolsListener(
+      content_tools_listener_.BindNewPipeAndPassRemote());
+}
+
+bool AssociatedWebContentsContent::HasOpenAIChatPermission() const {
+  content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
+  content::PermissionController* permission_controller =
+      web_contents()->GetBrowserContext()->GetPermissionController();
+  content::PermissionResult permission_status =
+      permission_controller->GetPermissionResultForCurrentDocument(
+          content::PermissionDescriptorUtil::
+              CreatePermissionDescriptorForPermissionType(
+                  blink::PermissionType::BRAVE_OPEN_AI_CHAT),
+          rfh);
+  return permission_status.status == content::PermissionStatus::GRANTED;
+}
+
+void AssociatedWebContentsContent::GetScreenshots(
+    mojom::ConversationHandler::GetScreenshotsCallback callback) {
+  if (print_preview_extraction_delegate_ &&
+      (screenshot::IsPdf(web_contents()) ||
+       screenshot::kPrintPreviewRetrievalHosts.contains(
+           web_contents()->GetLastCommittedURL().host()))) {
+    // Use print preview extraction for PDFs and print preview hosts
+    // when delegate is available
+    print_preview_extraction_delegate_->CaptureImages(
+        base::BindOnce(&AssociatedWebContentsContent::OnScreenshotsCaptured,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  } else {
+    full_screenshotter_ = std::make_unique<FullScreenshotter>();
+    full_screenshotter_->CaptureScreenshots(
+        web_contents(),
+        base::BindOnce(&AssociatedWebContentsContent::OnScreenshotsCaptured,
+                       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+  }
+}
+
+void AssociatedWebContentsContent::OnScreenshotsCaptured(
+    mojom::ConversationHandler::GetScreenshotsCallback callback,
+    base::expected<std::vector<std::vector<uint8_t>>, std::string> result) {
+  if (result.has_value()) {
+    std::vector<mojom::UploadedFilePtr> screenshots;
+    size_t screenshot_index = 0;
+    for (auto& screenshot : result.value()) {
+      size_t screenshot_size = screenshot.size();
+      screenshots.push_back(mojom::UploadedFile::New(
+          absl::StrFormat("%s%i.png", mojom::kFullPageScreenshotPrefix,
+                          screenshot_index++),
+          screenshot_size, std::move(screenshot),
+          mojom::UploadedFileType::kScreenshot, std::nullopt));
+    }
+    std::move(callback).Run(std::move(screenshots));
+  } else {
+    VLOG(1) << result.error();
+    std::move(callback).Run(std::nullopt);
+  }
+}
+
+}  // namespace ai_chat

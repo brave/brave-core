@@ -1,0 +1,5 @@
+include_rules = [
+  "+skia/ext",
+  "+third_party/skia/include/core",
+  "+ui/gfx/image",
+]

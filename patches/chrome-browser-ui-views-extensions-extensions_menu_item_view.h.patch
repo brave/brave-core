@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/extensions/extensions_menu_item_view.h b/chrome/browser/ui/views/extensions/extensions_menu_item_view.h
+index f6f59e9ee313b01bbb77243647c4697d67748dff..aee9f46a6f4e96cbb362e8351bb4f1bec282459e 100644
+--- a/chrome/browser/ui/views/extensions/extensions_menu_item_view.h
++++ b/chrome/browser/ui/views/extensions/extensions_menu_item_view.h
+@@ -38,7 +38,7 @@ class ExtensionMenuItemView : public views::FlexLayoutView,
+   ~ExtensionMenuItemView() override;
+ 
+   // Updates the pin button.
+-  void UpdatePinButton(bool is_force_pinned, bool is_pinned);
++  virtual void UpdatePinButton(bool is_force_pinned, bool is_pinned);
+ 
+   ToolbarActionViewModel* view_model() { return view_model_.get(); }
+   const ToolbarActionViewModel* view_model() const { return view_model_.get(); }
+@@ -49,6 +49,7 @@ class ExtensionMenuItemView : public views::FlexLayoutView,
+   HoverButton* pin_button_for_testing();
+ 
+  private:
++  friend class BraveExtensionMenuItemView;
+   // ExtensionContextMenuController::Observer:
+   void OnContextMenuShown() override;
+   void OnContextMenuClosed() override;

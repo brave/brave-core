@@ -1,0 +1,119 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { showAlert } from '@brave/leo/react/alertCenter'
+import Icon from '@brave/leo/react/icon'
+
+// Types
+import { BraveWallet } from '$wallet/constants/types'
+
+// Utils
+import { getLocale } from '$web-common/locale'
+import { copyToClipboard } from '$wallet/utils/copy-to-clipboard'
+
+// Hooks
+import {
+  useOnClickOutside, //
+} from '$wallet/common/hooks/useOnClickOutside'
+
+// Components
+import {
+  DepositModal, //
+} from '$wallet/components/desktop/popup-modals/account-settings-modal/account-settings-modal'
+import {
+  ViewOnBlockExplorerModal, //
+} from '$wallet/components/desktop/popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
+import { PopupModal } from '$wallet/components/desktop/popup-modals'
+
+// Styled Components
+import { ButtonMenu } from './wallet_menus.style'
+import { Button } from './address_actions_menu.style'
+import { VerticalDivider, Column } from '$wallet/components/shared/style'
+
+export interface Props {
+  account: BraveWallet.AccountInfo
+  children?: React.ReactNode
+}
+
+export const AddressActionsMenu = (props: Props) => {
+  const { account, children } = props
+
+  // State
+  const [showDepositModal, setShowDepositModal] = React.useState(false)
+  const [showViewOnExplorerModal, setShowViewOnExplorerModal] =
+    React.useState(false)
+
+  // Refs
+  const depositModalRef = React.useRef<HTMLDivElement>(null)
+  const viewOnExplorerModalRef = React.useRef<HTMLDivElement>(null)
+
+  // Hooks
+  useOnClickOutside(
+    depositModalRef,
+    () => setShowDepositModal(false),
+    showDepositModal,
+  )
+  useOnClickOutside(
+    viewOnExplorerModalRef,
+    () => setShowViewOnExplorerModal(false),
+    showViewOnExplorerModal,
+  )
+
+  const handleCopyAddress = () => {
+    copyToClipboard(account.address)
+    showAlert({
+      type: 'success',
+      content: getLocale(S.BRAVE_WALLET_BUTTON_COPIED),
+      actions: [],
+    })
+  }
+
+  return (
+    <>
+      <ButtonMenu placement='bottom-start'>
+        <Button slot='anchor-content'>{children}</Button>
+        <leo-menu-item onClick={handleCopyAddress}>
+          <Icon name='copy' />
+          {getLocale(S.BRAVE_WALLET_BUTTON_COPY)}
+        </leo-menu-item>
+        <leo-menu-item onClick={() => setShowDepositModal(true)}>
+          <Icon name='qr-code-alternative' />
+          {getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
+        </leo-menu-item>
+        <leo-menu-item onClick={() => setShowViewOnExplorerModal(true)}>
+          <Icon name='web3-blockexplorer' />
+          {getLocale(S.BRAVE_WALLET_PORTFOLIO_VIEW_ON_EXPLORER_MENU_LABEL)}
+        </leo-menu-item>
+      </ButtonMenu>
+      {showDepositModal && (
+        <PopupModal
+          title={getLocale(S.BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON)}
+          onClose={() => setShowDepositModal(false)}
+          ref={depositModalRef}
+        >
+          <VerticalDivider />
+          <Column
+            fullHeight={true}
+            fullWidth={true}
+            justifyContent='flex-start'
+            padding='20px 15px'
+          >
+            <DepositModal selectedAccount={account} />
+          </Column>
+        </PopupModal>
+      )}
+      {showViewOnExplorerModal && (
+        <ViewOnBlockExplorerModal
+          account={account}
+          onClose={() => setShowViewOnExplorerModal(false)}
+          ref={viewOnExplorerModalRef}
+        />
+      )}
+    </>
+  )
+}
+
+export default AddressActionsMenu

@@ -1,0 +1,78 @@
+diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
+index 085b77cb112a792cba97dc548ead347ea9eb8375..e53cbb81f4b0805e9d193c752b3f05af1fef506e 100644
+--- a/chrome/browser/prefs/browser_prefs.cc
++++ b/chrome/browser/prefs/browser_prefs.cc
+@@ -1044,6 +1044,7 @@ inline constexpr char kPluginVmEngagementTimeDayId[] =
+ // Register local state used only for migration (clearing or moving to a new
+ // key).
+ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
++  brave::RegisterLocalStatePrefs(registry);
+   // Deprecated 08/2025.
+   registry->RegisterDictionaryPref(kInvalidationClientIDCache);
+   registry->RegisterDictionaryPref(kInvalidationTopicsToHandler);
+@@ -1792,6 +1793,7 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+ // Register prefs applicable to all profiles.
+ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+                           const std::string& locale) {
++  [&]() -> void {
+   TRACE_EVENT0("browser", "chrome::RegisterProfilePrefs");
+   // User prefs. Please keep this list alphabetized.
+   AccessibilityLabelsService::RegisterProfilePrefs(registry);
+@@ -2322,6 +2324,8 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ #endif  // BUILDFLAG(IS_ANDROID)
+ 
+   registry->RegisterBooleanPref(prefs::kStaticStorageQuotaEnabled, false);
++  }();
++  brave::RegisterProfilePrefs(registry);
+ }
+ 
+ void RegisterUserProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+@@ -2362,6 +2366,7 @@ void RegisterSigninProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ // This method should be periodically pruned of year+ old migrations.
+ // See chrome/browser/prefs/README.md for details.
+ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
++  [&]() -> void {
+   // IMPORTANT NOTE: This code is *not* run on iOS Chrome. If a pref is migrated
+   // or cleared here, and that pref is also used in iOS Chrome, it may also need
+   // to be migrated or cleared specifically for iOS as well. This could be by
+@@ -2505,12 +2510,16 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
+   // doing the migration in feature code that's called by all platforms instead
+   // of here, or by calling migration code in the appropriate place for iOS
+   // specifically, e.g. ios/chrome/browser/shared/model/prefs/browser_prefs.mm.
++  }();
++  MigrateObsoleteBraveLocalStatePrefsAfterChromium(local_state);
+ }
+ 
+ // This method should be periodically pruned of year+ old migrations.
+ // See chrome/browser/prefs/README.md for details.
+ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+                                  const base::FilePath& profile_path) {
++  [&]() -> void {
++  MigrateObsoleteBraveProfilePrefsBeforeChromium(profile_prefs);
+   // IMPORTANT NOTE: This code is *not* run on iOS Chrome. If a pref is migrated
+   // or cleared here, and that pref is also used in iOS Chrome, it may also need
+   // to be migrated or cleared specifically for iOS as well. This could be by
+@@ -2570,6 +2579,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+   profile_prefs->ClearPref(kObsoletePasswordsUseUPMLocalAndSeparateStores);
+   profile_prefs->ClearPref(kObsoleteEmptyProfileStoreLoginDatabase);
+   profile_prefs->ClearPref(kObsoleteUpmAutoExportCsvNeedsDeletion);
++#if 0
+   base::DeleteFile(profile_path.Append(FILE_PATH_LITERAL("Login Data")));
+   base::DeleteFile(
+       profile_path.Append(FILE_PATH_LITERAL("Login Data For Account")));
+@@ -2577,6 +2587,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+       profile_path.Append(FILE_PATH_LITERAL("Login Data-journal")));
+   base::DeleteFile(
+       profile_path.Append(FILE_PATH_LITERAL("Login Data For Account-journal")));
++#endif
+ #endif  // BUILDFLAG(IS_ANDROID)
+ 
+   // Added 09/2025.
+@@ -2812,4 +2823,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
+   // doing the migration in feature code that's called by all platforms instead
+   // of here, or by calling migration code in the appropriate place for iOS
+   // specifically, e.g. ios/chrome/browser/shared/model/prefs/browser_prefs.mm.
++  }();
++  MigrateObsoleteBraveProfilePrefsAfterChromium(profile_prefs,
++                                                 profile_path);
+ }

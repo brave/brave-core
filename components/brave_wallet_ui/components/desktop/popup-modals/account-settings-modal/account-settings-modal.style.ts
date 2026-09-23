@@ -1,0 +1,153 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import styled from 'styled-components'
+import AlertReact from '@brave/leo/react/alert'
+import * as leo from '@brave/leo/tokens/css/variables'
+import LeoSegmentedControl, {
+  SegmentedControlProps,
+} from '@brave/leo/react/segmentedControl'
+
+// Assets
+import ClipboardIcon from '../../../../assets/svg-icons/copy-to-clipboard-icon.svg'
+
+// Shared Styles
+import { Text, WalletButton, Row, Column } from '../../../shared/style'
+import {
+  layoutPanelWidth, //
+} from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
+
+export const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 0px;
+  height: 100%;
+  min-height: 200px;
+`
+
+export const EditWrapper = styled(StyledWrapper)`
+  gap: 14px;
+  & > * {
+    width: 250px;
+  }
+`
+
+export const QRCodeWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 185px;
+  height: 185px;
+  border-radius: 16px;
+  border: 2px solid ${leo.color.divider.subtle};
+  margin-bottom: 16px;
+`
+
+export const QRCodeImage = styled.img`
+  width: 170px;
+  height: 170px;
+  @media (prefers-color-scheme: dark) {
+    filter: invert(1);
+  }
+`
+
+export const AddressButton = styled(WalletButton)`
+  font: ${leo.font.large.regular};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  letter-spacing: 0.02em;
+  color: ${leo.color.text.tertiary};
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  word-wrap: break-word;
+  word-break: break-all;
+  flex-wrap: wrap;
+`
+
+export const ButtonRow = styled.div`
+  width: 100%;
+  display: flex;
+`
+
+export const CopyIcon = styled.div`
+  width: 18px;
+  height: 18px;
+  background-color: ${leo.color.neutral[70]};
+  -webkit-mask-image: url(${ClipboardIcon});
+  mask-image: url(${ClipboardIcon});
+  mask-size: cover;
+  margin-left: 10px;
+`
+
+export const PrivateKeyWrapper = styled(Column)`
+  max-width: 350px;
+`
+
+export const PrivateKeyBubble = styled(WalletButton)`
+  font: ${leo.font.default.semibold};
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  background-color: ${leo.color.page.background};
+  padding: 5px 10px;
+  max-width: 350px;
+  height: auto;
+  border-radius: 4px;
+  margin: 0px;
+  word-break: break-all;
+  color: ${leo.color.text.primary};
+  outline: none;
+  border: none;
+`
+
+export const ButtonWrapper = styled.div`
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 40px;
+
+  & > * {
+    width: 100%;
+  }
+`
+
+export const ErrorText = styled(Text)`
+  margin-bottom: 16px;
+`
+
+export const Line = styled.div`
+  display: flex;
+  width: 100%;
+  height: 2px;
+  background: ${leo.color.divider.subtle};
+`
+
+export const Alert = styled(AlertReact)`
+  margin-bottom: 15px;
+
+  &:first-of-type {
+    margin: 15px 0px;
+  }
+`
+
+export const ControlsWrapper = styled(Row)`
+  margin-bottom: 24px;
+  --leo-segmented-control-width: 100%;
+`
+
+export const SegmentedControl = styled(LeoSegmentedControl).attrs({
+  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'default',
+})<SegmentedControlProps>``

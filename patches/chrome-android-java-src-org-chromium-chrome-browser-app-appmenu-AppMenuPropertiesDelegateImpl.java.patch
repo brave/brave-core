@@ -1,0 +1,30 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
+index 62ec141e9d48f8841f7eac163dbdea757cd74baf..9d6dc1d4b2a171935e5e5391d4b0f28871e24c80 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl.java
+@@ -40,6 +40,7 @@ import org.chromium.build.annotations.NullMarked;
+ import org.chromium.build.annotations.Nullable;
+ import org.chromium.build.annotations.RequiresNonNull;
+ import org.chromium.chrome.R;
++import org.chromium.components.embedder_support.util.UrlConstants;
+ import org.chromium.chrome.browser.ActivityTabProvider;
+ import org.chromium.chrome.browser.accessibility.PageZoomMenuItemViewBinder;
+ import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+@@ -147,7 +148,7 @@ public abstract class AppMenuPropertiesDelegateImpl implements AppMenuProperties
+     protected @Nullable Runnable mReadAloudAppMenuResetter;
+     private boolean mHasReadAloudInserted;
+     protected final @Nullable OpenInAppMenuItemProvider mOpenInAppMenuItemProvider;
+-    private final AppMenuItemTheme mAppMenuItemTheme;
++    protected final AppMenuItemTheme mAppMenuItemTheme;
+ 
+     @VisibleForTesting
+     @IntDef({
+@@ -453,7 +454,7 @@ public abstract class AppMenuPropertiesDelegateImpl implements AppMenuProperties
+         //                is not persisted when adding to the homescreen.
+         // * If creating shortcuts it not supported by the current home screen.
+         return WebappsUtils.isAddToHomeIntentSupported()
+-                && !isNativePage
++                && (!isNativePage || (url != null && UrlConstants.CHROME_SCHEME.equals(url.getScheme()) && url.getHost().equals("leo-ai")))
+                 && !isFileScheme
+                 && !isContentScheme
+                 && !isIncognito

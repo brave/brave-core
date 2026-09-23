@@ -1,0 +1,429 @@
+#!/usr/bin/env vpython3
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+"""Download and install bucket-hosted archives declared in `EXTRA_DEPS`.
+
+This is a small, general-purpose installer for archives Brave publishes to its
+own download bucket, similar to gclient's `gcs` dependency types. This mechanism
+was first written for the Rust/WASM toolchain, and to make the process of having
+it deployed more generic, and reusable for other cases.
+"""
+
+from __future__ import annotations
+
+import argparse
+import ast
+from collections.abc import Mapping
+from io import StringIO
+import logging
+import sys
+import tokenize
+from pathlib import Path
+
+# `src/` directory (this script lives at src/brave/tools/cr/).
+_SRC_DIR = Path(__file__).resolve().parents[3]
+
+# Importing depot_tools explicitly, so we can call this script from the terminal
+# without needing to set up the PYTHONPATH. `depot_tools` is inserted at the
+# front so its `third_party` package (which provides `third_party.schema`,
+# needed by gclient_eval) is not shadowed by the `third_party` package in the
+# vpython virtualenv.
+sys.path.insert(0, str(_SRC_DIR / 'third_party' / 'depot_tools'))
+
+import gclient  # pylint: disable=wrong-import-position,import-error
+import gclient_eval  # pylint: disable=wrong-import-position,import-error
+import gclient_paths  # pylint: disable=wrong-import-position,import-error
+import gclient_utils  # pylint: disable=wrong-import-position,import-error
+
+from extra_deps import (  # pylint: disable=wrong-import-position
+    EXTRA_DEPS, EXTRA_DEPS_FILE)
+from tarball_installer import (  # pylint: disable=wrong-import-position
+    TarballInstaller)
+
+# This script's own logger, so we don't step on gclient's logger. It is also of
+# notice that most logs are DEBUG. No-op runs should not produce any output in
+# normal runs, to avoid cluttering the sync output.
+_LOG = logging.getLogger('install_extra_deps')
+
+# Level defaults to WARNING for users of this file that import it. For the
+# application mode, the CLI determines that based on the presence of `--quiet`.
+_LOG.setLevel(logging.WARNING)
+
+
+def _select_object(objects: list[dict],
+                   variables: dict[str, object]) -> dict | None:
+    """Return the single object whose condition matches the resolved variables.
+
+    Returns None if no object matches, and raises if more than one does, since
+    an entry is expected to have exactly one matching object (e.g. one per
+    host platform).
+    """
+    matches = [
+        obj for obj in objects if 'condition' not in obj
+        or gclient_eval.EvaluateCondition(obj['condition'], variables)
+    ]
+    if not matches:
+        return None
+    if len(matches) > 1:
+        raise RuntimeError('Multiple objects match the resolved variables: ' +
+                           ', '.join(obj['object_name'] for obj in matches))
+    return matches[0]
+
+
+# The optional per-object overlay-base key our own EXTRA_DEPS schema adds on
+# top of upstream's GCS-dep object schema (see the module docstring).
+# `gclient_eval.SetGCS` only knows about upstream's own keys (`object_name`,
+# `sha256sum`, `size_bytes`, `generation`), so `setdep` rewrites this one
+# itself, the same way SetGCS rewrites its own.
+_OVERLAYED_ON_KEY = 'overlayed_on'
+
+# Object keys `setdep` can rewrite: the plain GCS-object triple, always
+# required, plus the optional overlay base.
+_SETDEP_REQUIRED_KEYS = ('object_name', 'sha256sum', 'size_bytes')
+_SETDEP_OBJECT_KEYS = _SETDEP_REQUIRED_KEYS + (_OVERLAYED_ON_KEY, )
+
+
+def _parse_object_spec(spec: str) -> dict[str, str]:
+    """Parse one `object_name,sha256sum,size_bytes[,overlayed_on]` setdep arg.
+    """
+    fields = [field.strip() for field in spec.split(',')]
+    if (len(fields)
+            not in (len(_SETDEP_REQUIRED_KEYS), len(_SETDEP_OBJECT_KEYS))
+            or not all(fields)):
+        raise ValueError(
+            f'Object {spec!r} must be `{",".join(_SETDEP_REQUIRED_KEYS)}`, '
+            f'optionally followed by `{_OVERLAYED_ON_KEY}` (no field may be '
+            f'empty).')
+    obj = dict(zip(_SETDEP_OBJECT_KEYS, fields))
+    if not obj['size_bytes'].isdigit():
+        raise ValueError(f'size_bytes must be a non-negative integer, got '
+                         f'{obj["size_bytes"]!r}.')
+    return obj
+
+
+def format_setdep_revision(path: str, objects: list[dict]) -> str:
+    """Build one `setdep`/`-r` argument from `path`'s current EXTRA_DEPS.
+
+    Renders each object as `object_name,sha256sum,size_bytes`, plus
+    `overlayed_on` when the object has one, joined with `?` in order -- the
+    inverse of `_parse_object_spec`.
+    """
+
+    def render(obj: dict) -> str:
+        keys = (_SETDEP_OBJECT_KEYS
+                if _OVERLAYED_ON_KEY in obj else _SETDEP_REQUIRED_KEYS)
+        return ','.join(str(obj[key]) for key in keys)
+
+    return f'{path}@' + '?'.join(render(obj) for obj in objects)
+
+
+def _load_editable_extra_deps(extra_deps_file: Path) -> gclient_eval._NodeDict:
+    """Parse `extra_deps_file` into gclient's token-aware, editable form.
+
+    We drive the tokeniser, capturing every comment, blank line, and quote
+    style.
+
+    gclient's in-place editor (`SetGCS`) and renderer key off a top-level
+    `deps` mapping, so the table is also exposed under `deps` (sharing the very
+    same nodes and tokens) to drive that machinery unchanged.
+    """
+    content = extra_deps_file.read_text(encoding='utf-8')
+    filename = str(extra_deps_file)
+
+    # pylint: disable=protected-access
+    tokens = {
+        token[2]: list(token)
+        for token in tokenize.generate_tokens(StringIO(content).readline)
+    }
+    scope = gclient_eval._NodeDict({}, tokens)
+    for statement in ast.parse(content, filename=filename).body:
+        if (not isinstance(statement, ast.Assign)
+                or len(statement.targets) != 1
+                or not isinstance(statement.targets[0], ast.Name)):
+            raise ValueError(
+                f'{filename}: only simple `name = ...` assignments are '
+                f'supported.')
+        scope.SetNode(statement.targets[0].id,
+                      gclient_eval._gclient_eval(statement.value, filename),
+                      statement.value)
+
+    if 'extra_deps' not in scope:
+        raise ValueError(f'{filename}: no `extra_deps` assignment found.')
+    scope.SetNode('deps', scope['extra_deps'], scope.GetNode('extra_deps'))
+    return scope
+
+
+def _set_objects(scope: gclient_eval._NodeDict, path: str,
+                 new_objects: list[dict[str, str]]) -> None:
+    """Rewrite one EXTRA_DEPS entry's objects in place, in `scope`'s tokens.
+
+    Delegates `object_name`/`sha256sum`/`size_bytes` to `gclient_eval.SetGCS`,
+    which also enforces the object-count match, then separately rewrites
+    `overlayed_on` for the objects that specify it, since `SetGCS` only knows
+    about upstream's own GCS-dep keys.
+    """
+    gclient_eval.SetGCS(scope, path, new_objects)
+
+    tokens = scope.tokens
+    objects_node = scope['deps'][path].GetNode('objects')
+    for index, object_node in enumerate(objects_node.elts):
+        overlayed_on = new_objects[index].get(_OVERLAYED_ON_KEY)
+        if overlayed_on is None:
+            continue
+        for key, value in zip(object_node.keys, object_node.values):
+            if key.value == _OVERLAYED_ON_KEY:
+                # pylint: disable-next=protected-access
+                gclient_eval._UpdateAstString(tokens, value, overlayed_on)
+                break
+        else:
+            raise ValueError(f'Object {index} of {path!r} has no '
+                             f'{_OVERLAYED_ON_KEY!r} key to update.')
+
+
+def setdep(revisions: list[str], extra_deps_file: Path | None = None) -> None:
+    """Repin one or more EXTRA_DEPS entries in place, preserving formatting.
+
+    Each `revisions` element is a `DEP@object[?object...]` string (as
+    `gclient setdep -r` takes), where every object is an
+    `object_name,sha256sum,size_bytes` triple, optionally followed by
+    `overlayed_on`. The number of objects must match the entry's current
+    object count, and their order is preserved.
+    """
+    extra_deps_file = extra_deps_file or EXTRA_DEPS_FILE
+    scope = _load_editable_extra_deps(extra_deps_file)
+    for revision in revisions:
+        path, separator, objects_spec = revision.partition('@')
+        if not separator or not path or not objects_spec:
+            raise ValueError(
+                f'Revision {revision!r} must be of the form `DEP@object,...`.')
+        if path not in scope['extra_deps']:
+            raise ValueError(f'Unknown EXTRA_DEPS entry {path!r}. Known '
+                             f'entries: {sorted(scope["extra_deps"])}.')
+        new_objects = [
+            _parse_object_spec(obj) for obj in objects_spec.split('?')
+        ]
+        _set_objects(scope, path, new_objects)
+        _LOG.info('Repinned %s', path)
+
+    # `RenderDEPSFile` untokenizes the (now-mutated) tokens back to source, so
+    # everything the edit did not touch is byte-for-byte preserved. `newline=''`
+    # keeps the file's `\n` line endings intact on every platform.
+    extra_deps_file.write_text(gclient_eval.RenderDEPSFile(scope),
+                               encoding='utf-8',
+                               newline='')
+
+
+class ExtraDepsRunner:
+    """Installs `EXTRA_DEPS` entries with gclient-resolved conditions.
+
+    Holds the loaded `.gclient` context for a run so each solution's variables
+    are resolved once (via depot_tools) and shared across the entries processed.
+    """
+
+    def __init__(self, client: gclient.GClient) -> None:
+        self._client = client
+        # Parsed DEPS context, cached lazily per solution name. Each entry holds
+        # the fully-resolved `vars` and the raw `deps` mapping for the solution.
+        self._scope_by_solution: dict[str, dict[str, object]] = {}
+
+    @classmethod
+    def from_checkout(cls) -> ExtraDepsRunner:
+        """Build an installer from the checkout's `.gclient` config.
+
+        This installer emulates DEPS as an environmnet. `_SRC_DIR.parent` is
+        used as the starting point, so it resolves regardless of where the hook
+        is invoked from. Starting at the parent is deliberate: `FindGclientRoot`
+        walks upward and returns the first directory containing a `.gclient`,
+        and the Chromium `src` checkout is never itself the gclient root.
+        """
+        parser = gclient.OptionParser()
+        options, _ = parser.parse_args([])
+        root = gclient_paths.FindGclientRoot(str(_SRC_DIR.parent),
+                                             options.config_filename)
+        if root is None:
+            raise RuntimeError(
+                f'Could not find a .gclient root from {_SRC_DIR.parent}')
+        client = gclient.GClient(root, options)
+        client.SetConfig(
+            gclient_utils.FileRead(Path(root) / options.config_filename))
+        return cls(client)
+
+    def _solution_scope(self, name: str) -> dict[str, object]:
+        """Parse a solution's DEPS once, caching its `vars` and `deps`.
+
+        Returns a dict with two keys:
+
+          * `vars`: the exact dict gclient builds while processing that
+            solution's DEPS during a sync: the DEPS-declared `vars` overlaid
+            with `.gclient` custom_vars, plus the built-in vars (`host_os`,
+            `host_cpu`, `checkout_*`, ...). Letting depot_tools load and merge
+            everything means this script never has to know which variables exist
+            or how to compute their values. Conditions resolve the same way they
+            would with `sync`.
+          * `deps`: the raw `deps` mapping declared in the DEPS file, keyed by
+            checkout-relative path. Used to cross-check that an overlay still
+            targets the upstream archive currently pinned in DEPS.
+        """
+        if name not in self._scope_by_solution:
+            solution = next(
+                (d for d in self._client.dependencies if d.name == name), None)
+            if solution is None:
+                names = [d.name for d in self._client.dependencies]
+                raise RuntimeError(
+                    f'No gclient solution named {name!r} (have: {names})')
+            # Resolve the solution's DEPS READ-ONLY. We deliberately do NOT call
+            # `solution.ParseDepsFile()`, as that will have other side effects.
+            # For example: for `gcs`-type deps, gclient's dependency processing
+            # runs its first-class-GCS handling, which can `rmtree()` paths.
+            builtin_vars = solution.get_builtin_vars()
+            deps_file = _SRC_DIR.parent / solution.name / solution.deps_file
+            local_scope = gclient_eval.Parse(
+                deps_file.read_bytes().decode('utf-8'), str(deps_file),
+                solution.custom_vars, builtin_vars)
+            merged: dict[str, object] = dict(local_scope.get('vars', {}))
+            merged.update(builtin_vars)
+            merged.update(solution.custom_vars or {})
+            self._scope_by_solution[name] = {
+                'vars': merged,
+                'deps': local_scope.get('deps', {}),
+            }
+        return self._scope_by_solution[name]
+
+    def _solution_vars(self, name: str) -> dict[str, object]:
+        """Return (and cache) the fully-resolved DEPS variables for a solution.
+        """
+        return self._solution_scope(name)['vars']
+
+    def _validate_overlay_target(self, path: str, overlayed_on: str) -> None:
+        """Fail unless DEPS still pins the upstream archive we overlay on.
+
+        At the moment, the only entry in `EXTRA_DEPS` is the Rust/WASM
+        toolchain, which is deployed as an overlay on top of the upstream
+        Chromium rust toolchain. To ensure that we are not sliding away from the
+        version deploying by upstream, and the version used in our overlay, we
+        provide `overlayed_on` to validate that the archive we are downloading
+        is still pinned against a corresponding upstream archive in DEPS.
+
+        This is sanity check prevents us from silently applying an overlay on
+        top of a different upstream version, which could easily happen whenever
+        upstream rolls a new toolchain version.
+        """
+        deps_map = self._solution_scope(path.split('/', 1)[0])['deps']
+        # gclient_eval parses deps into `_NodeDict` (a Mapping, NOT a `dict`
+        # subclass), so check against Mapping rather than `dict`.
+        dep = deps_map.get(path)
+        if not isinstance(dep, Mapping) or dep.get('dep_type') != 'gcs':
+            raise RuntimeError(
+                f'Refusing to install {path}: it is not a `gcs` dependency in '
+                f'DEPS, so the overlay base {overlayed_on!r} cannot be '
+                f'verified.')
+        objects = dep.get('objects') or []
+        if not any(obj.get('object_name') == overlayed_on for obj in objects):
+            available = sorted(str(obj.get('object_name')) for obj in objects)
+            raise RuntimeError(
+                f'Refusing to install {path}: DEPS does not pin the expected '
+                f'overlay base {overlayed_on!r} (upstream may have rolled the '
+                f'toolchain). Objects currently pinned in DEPS: {available}.')
+
+    def install(self, path: str, spec: dict) -> None:
+        """Download and install the matching object for one `EXTRA_DEPS` entry.
+        """
+        variables = self._solution_vars(path.split('/', 1)[0])
+
+        condition = spec.get('condition')
+        if condition and not gclient_eval.EvaluateCondition(
+                condition, variables):
+            _LOG.debug('Skipping %s: condition %r is false', path, condition)
+            return
+
+        obj = _select_object(spec['objects'], variables)
+        if obj is None:
+            _LOG.debug('No matching object for %s on this host', path)
+            return
+
+        overlayed_on = obj.get('overlayed_on')
+        installer = TarballInstaller.for_object(_SRC_DIR.parent / path,
+                                                spec['bucket'], obj)
+
+        # An overlay must sit on the base it was built against: validate it
+        # still matches DEPS before touching the destination. No `overlayed_on`
+        # means the dep owns its destination, so there is no base to validate.
+        if overlayed_on:
+            self._validate_overlay_target(path, overlayed_on)
+
+        # `install()` no-ops (returns False) when the sidecar already records
+        # this object's sha, so there is no separate deployment check here.
+        installer.install()
+
+
+def main() -> int:
+    # The gclient machinery used to resolve DEPS conditions logs very verbosely
+    # on the root logger (every dependency's `verify_validity`, recursedeps,
+    # etc.). Keep the root at ERROR to silence that chatter; this script's own
+    # messages go through `_LOG`, whose level is set from `--quiet` below.
+    logging.basicConfig(level=logging.ERROR, format='%(message)s')
+
+    parser = argparse.ArgumentParser(
+        description='Download and install the bucket-hosted archive(s) for the '
+        'given EXTRA_DEPS entries.')
+    subparsers = parser.add_subparsers(dest='command', required=True)
+
+    # Shared by every subcommand, so `--quiet` is accepted after the command
+    # name rather than only ahead of it.
+    common_parser = argparse.ArgumentParser(add_help=False)
+    common_parser.add_argument('-q',
+                               '--quiet',
+                               action='store_true',
+                               help='Report nothing but warnings and errors.')
+
+    sync_parser = subparsers.add_parser(
+        'sync',
+        parents=[common_parser],
+        help='Download and install the bucket-hosted archive(s) for the given '
+        'EXTRA_DEPS entries.')
+    sync_parser.add_argument(
+        'deps',
+        nargs='+',
+        choices=sorted(EXTRA_DEPS),
+        metavar='DEP_PATH',
+        help='One or more path keys in EXTRA_DEPS identifying the entries to '
+        'install. Entries whose condition is false on this host are skipped, '
+        'so a single invocation may list every per-platform variant.')
+
+    setdep_parser = subparsers.add_parser(
+        'setdep',
+        parents=[common_parser],
+        help='Repin EXTRA_DEPS entries in place, preserving comments and '
+        'formatting (like `gclient setdep`).')
+    setdep_parser.add_argument(
+        '-r',
+        '--revision',
+        action='append',
+        dest='revisions',
+        required=True,
+        metavar='DEP@object_name,sha256sum,size_bytes[,overlayed_on][?...]',
+        help='Repin the EXTRA_DEPS entry DEP to the given object(s). Each '
+        'object is an `object_name,sha256sum,size_bytes` triple, optionally '
+        'followed by `overlayed_on`. Join multiple objects with `?`, in the '
+        'entry\'s existing order. The object count must match the entry\'s '
+        'current count. May be repeated to repin several entries in one '
+        'invocation.')
+
+    args = parser.parse_args()
+    if not args.quiet:
+        _LOG.setLevel(logging.INFO)
+
+    if args.command == 'setdep':
+        setdep(args.revisions)
+        return 0
+
+    runner = ExtraDepsRunner.from_checkout()
+    for dep in args.deps:
+        runner.install(dep, EXTRA_DEPS[dep])
+    return 0
+
+
+if __name__ == '__main__':
+    sys.exit(main())

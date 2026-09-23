@@ -1,0 +1,40 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Definitions for results from the Brave News topics API
+[generate_error_messages, none_as_absent_optional]
+namespace topics {
+
+  // A dictionary with fields representing an article in a topic.
+  dictionary TopicArticle {
+    long topic_index;
+
+    DOMString title;
+    DOMString? description;
+    DOMString url;
+    DOMString? img;
+    DOMString publisher_name;
+    double score;
+    double publish_time;
+    DOMString category;
+    DOMString origin;
+  };
+
+  // A dictionary with fields representing a topic.
+  dictionary Topic {
+    long topic_index;
+
+    DOMString title;
+    DOMString claude_title;
+    DOMString claude_title_short;
+    DOMString most_popular_query;
+    DOMString[] queries;
+
+    double timestamp;
+
+    double overall_score;
+    double breaking_score;
+  };
+};

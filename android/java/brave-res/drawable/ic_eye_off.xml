@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. */ -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FF62757E"
+        android:fillType="evenOdd"
+        android:pathData="M4.26 20.92a0.83 0.83 0 0 1-1.17 0 0.83 0.83 0 0 1 0-1.18l2.56-2.56C2.93 15.43 2 13 2 12c0-2.18 3.5-7.5 10-7.5 2.5 0 4.08 0.76 4.95 1.38l2.8-2.8a0.83 0.83 0 1 1 1.18 1.18L4.27 20.92Zm5.5-7.85l3.32-3.31A2.5 2.5 0 0 0 12 9.5 2.5 2.5 0 0 0 9.5 12c0 0.38 0.1 0.74 0.26 1.07ZM12 6.17c-5.65 0-8.33 4.68-8.33 5.83 0 0.37 0.6 2.44 3.2 3.96l1.7-1.7c-0.06-0.05-0.13-0.1-0.17-0.16A4.16 4.16 0 0 1 7.83 12 4.17 4.17 0 0 1 12 7.83c0.82 0 1.62 0.26 2.3 0.7l1.45-1.44c-0.7-0.43-1.88-0.92-3.75-0.92Zm0 10a0.83 0.83 0 0 1-0.05-1.67 2.75 2.75 0 0 0 2.55-2.55 0.83 0.83 0 1 1 1.66 0.1 4.42 4.42 0 0 1-4.1 4.11H12Zm-2.3 1.39a9.44 9.44 0 0 0 2.3 0.27c5.65 0 8.33-4.68 8.33-5.83 0-0.35-0.36-1.48-1.47-2.75a0.83 0.83 0 1 1 1.25-1.1C21.26 9.45 22 10.97 22 12c0 2.18-3.5 7.5-10 7.5-0.94 0-1.85-0.11-2.7-0.33a0.83 0.83 0 1 1 0.4-1.61Z"/>
+</vector>

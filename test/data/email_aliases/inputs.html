@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" >
+    <title>Input types test page</title>
+    <style>
+      input {
+        width: 296px;
+        padding: 2px;
+      }
+    </style>
+  </head>
+  <script>
+    function getElementX(id) {
+      const element = document.getElementById(id)
+      const rect = element.getBoundingClientRect()
+      return Math.ceil(rect.x)
+    }
+
+    function getElementY(id) {
+      const element = document.getElementById(id)
+      const rect = element.getBoundingClientRect()
+      return Math.ceil(rect.y)
+    }
+  </script>
+  <body>
+    <form action=".">
+      <div class="text">
+        <input
+          type="text"
+          name="type-text"
+          id="type-text"
+        >
+      </div>
+      <div class="text">
+        <input
+          type="search"
+          name="type-search"
+          id="type-search"
+        >
+      </div>
+      <div class="text">
+        <input
+          type="tel"
+          name="type-tel"
+          id="type-tel"
+        >
+      </div>
+      <div class="text">
+        <input
+          type="url"
+          name="type-url"
+          id="type-url"
+        >
+      </div>
+      <div class="text">
+        <input
+          type="email"
+          name="type-email"
+          id="type-email"
+        >
+      </div>
+      <div class="text">
+        <input
+          type="datetime"
+          name="type-datetime"
+          id="type-datetime"
+        >
+      </div>
+    </form>
+  </body>
+</html>

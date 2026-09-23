@@ -1,0 +1,10 @@
+diff --git a/chrome/browser/resources/settings/appearance_page/appearance_page_index.ts b/chrome/browser/resources/settings/appearance_page/appearance_page_index.ts
+index 8f0fadc69b5c62bd98a71eaf7e882ae953df0621..1da5568531b56155dc28cf56cdf7f5848dd4ac91 100644
+--- a/chrome/browser/resources/settings/appearance_page/appearance_page_index.ts
++++ b/chrome/browser/resources/settings/appearance_page/appearance_page_index.ts
+@@ -87,5 +87,3 @@ declare global {
+   }
+ }
+ 
+-customElements.define(
+-    SettingsAppearancePageIndexElement.is, SettingsAppearancePageIndexElement);

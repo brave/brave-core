@@ -1,0 +1,33 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+source_set("favicon") {
+  sources = [
+    "brave_ios_favicon_loader.h",
+    "brave_ios_favicon_loader.mm",
+    "brave_ios_favicon_loader_factory.h",
+    "brave_ios_favicon_loader_factory.mm",
+    "brave_ios_web_favicon_driver.h",
+    "brave_ios_web_favicon_driver.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/ios/browser/api/web_image",
+    "//components/favicon/core",
+    "//components/favicon/ios",
+    "//components/favicon_base",
+    "//components/image_fetcher/ios",
+    "//components/keyed_service/core",
+    "//components/keyed_service/ios",
+    "//ios/chrome/browser/favicon/model",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+    "//ios/chrome/browser/shared/ui/util",
+    "//ios/chrome/common/ui/favicon",
+    "//ios/web/navigation:core",
+    "//net",
+  ]
+}

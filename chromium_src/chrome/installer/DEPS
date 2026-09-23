@@ -1,0 +1,13 @@
+from brave_chromium_utils import inline_file
+inline_file("//chrome/installer/DEPS", globals(), locals())
+
+include_rules += [
+  "+brave/browser/brave_vpn/win",
+  "+brave/components/brave_origin/buildflags",
+  "+brave/components/brave_vpn/browser/connection/ikev2/win",
+  "+brave/components/brave_vpn/common/buildflags",
+  "+brave/installer",
+  # We need bspatch for delta updates on Windows until we are on Omaha 4. See:
+  # github.com/brave/brave-core/pull/31937
+  "+brave/third_party/bspatch"
+]

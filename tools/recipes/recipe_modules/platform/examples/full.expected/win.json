@@ -1,0 +1,35 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "win"
+    ],
+    "name": "report platform"
+  },
+  {
+    "cmd": [
+      "echo",
+      "win"
+    ],
+    "name": "windows only"
+  },
+  {
+    "cmd": [
+      "echo",
+      "8",
+      "16384"
+    ],
+    "name": "report capacity"
+  },
+  {
+    "cmd": [
+      "echo",
+      "64",
+      "intel"
+    ],
+    "name": "report machine"
+  },
+  {
+    "name": "$result"
+  }
+]

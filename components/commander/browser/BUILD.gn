@@ -1,0 +1,27 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/commander/common/buildflags/buildflags.gni")
+
+assert(enable_commander)
+
+component("browser") {
+  output_name = "commander_browser"
+  defines = [ "IS_COMMANDER_BROWSER_IMPL" ]
+
+  sources = [
+    "commander_frontend_delegate.h",
+    "commander_item_model.cc",
+    "commander_item_model.h",
+  ]
+
+  deps = [
+    "//base",
+    "//ui/gfx",
+    "//url",
+  ]
+
+  public_deps = [ "//brave/components/commander/common" ]
+}

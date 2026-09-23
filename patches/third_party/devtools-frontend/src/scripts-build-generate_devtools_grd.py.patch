@@ -1,0 +1,11 @@
+diff --git a/scripts/build/generate_devtools_grd.py b/scripts/build/generate_devtools_grd.py
+index baad55e800e9a90ba718f0ac2ba661ec5caf697a..6d1962af7924828d2e081f5c3747b654316131ab 100644
+--- a/scripts/build/generate_devtools_grd.py
++++ b/scripts/build/generate_devtools_grd.py
+@@ -117,5 +117,6 @@ def main(argv):
+             f.write(f"{output_file}: {' '.join(depfile_inputs)}\n")
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if __name__ == '__main__':
+     sys.exit(main(sys.argv))

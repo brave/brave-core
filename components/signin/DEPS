@@ -1,0 +1,9 @@
+include_rules = [
+  "+components/signin/public",
+]
+
+specific_include_rules = {
+  "brave_identity_manager_unittest\.cc": [ 
+    "+components/signin/internal/identity_manager"
+  ],
+}

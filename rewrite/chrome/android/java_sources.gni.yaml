@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add the Brave java sources.
+
+      `chrome_java_sources` is supplied by an `import()` rather than assigned
+      here, so the append goes below the file's imports.
+    add_literal_to_variable:
+      variable: chrome_java_sources
+      literal: brave_java_sources
+      assume_defined: true

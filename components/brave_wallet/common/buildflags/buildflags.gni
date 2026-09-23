@@ -1,0 +1,23 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_origin/buildflags/buildflags.gni")
+
+declare_args() {
+  enable_brave_wallet = !is_brave_origin_branded
+
+  # Enables unclocking wallet with passoword set by command line.
+  # Only for dev builds.
+  enable_brave_wallet_dev_cmd_line_unlock = false
+}
+
+declare_args() {
+  # MetaMask Snaps support is desktop-only.
+  enable_snaps = enable_brave_wallet && !is_android && !is_ios
+}
+
+if (is_official_build) {
+  assert(!enable_brave_wallet_dev_cmd_line_unlock)
+}

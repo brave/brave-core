@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+    <channel>
+        <title>Relative Enclosure URL example feed</title>
+        <link>https://kryogenix.org/random/relurleg.xml</link>
+        <description>To demo a problem in newsflash the gtk rss reader</description>
+        <lastBuildDate>Wed, 17 Mar 2021 18:14:23 GMT</lastBuildDate>
+        <docs>http://blogs.law.harvard.edu/tech/rss</docs>
+        <generator>Stuart</generator>
+        <image>
+            <title>Relative Enclosure URL example feed</title>
+            <url>https://kryogenix.org/images/me/hackergotchi-simpler.png</url>
+            <link>https://kryogenix.org/</link>
+        </image>
+        <item>
+            <title><![CDATA[An item with a relative enclosure URL]]></title>
+            <link>https://kryogenix.org/nothing-here-really</link>
+            <guid>https://kryogenix.org/nothing-here-really</guid>
+            <pubDate>Wed, 17 Mar 2021 18:14:23 GMT</pubDate>
+            <description><![CDATA[Article demoing a valid relative enclosure]]></description>
+            <content:encoded><![CDATA[
+<p>This article, in the RSS feed, contains an enclosure element with a relative URL in it.
+]]></content:encoded>
+            <enclosure url="/images/me/hackergotchi-simpler.png">
+            </enclosure>
+        </item>
+    </channel>
+</rss>

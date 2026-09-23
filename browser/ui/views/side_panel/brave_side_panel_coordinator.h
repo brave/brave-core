@@ -1,0 +1,44 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_COORDINATOR_H_
+#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_COORDINATOR_H_
+
+#include <memory>
+#include <optional>
+
+#include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_helper.h"
+
+class BraveSidePanelCoordinator : public SidePanelCoordinator {
+ public:
+  using SidePanelCoordinator::SidePanelCoordinator;
+  ~BraveSidePanelCoordinator() override;
+
+  // SidePanelUI overrides:
+  void Toggle() override;
+  void Toggle(SidePanelEntryKey key,
+              SidePanelOpenTrigger open_trigger) override;
+
+  // SidePanelUIBase overrides:
+  void Show(const UniqueKey& entry,
+            std::optional<SidePanelOpenTrigger> open_trigger,
+            bool suppress_animations) override;
+  void Close(SidePanelEntryHideReason hide_reason,
+             bool suppress_animations) override;
+  void PopulateSidePanel(
+      bool supress_animations,
+      const UniqueKey& unique_key,
+      std::optional<SidePanelOpenTrigger> open_trigger,
+      SidePanelEntry* entry,
+      std::optional<std::unique_ptr<views::View>> content_view) override;
+
+ private:
+  // Returns the last active entry or the default entry if no last active
+  // entry exists.
+  std::optional<SidePanelEntry::Key> GetLastActiveEntryKey() const;
+};
+
+#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_BRAVE_SIDE_PANEL_COORDINATOR_H_

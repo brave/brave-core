@@ -1,0 +1,31 @@
+diff --git a/chrome/browser/ui/views/autofill/popup/popup_row_factory_utils.cc b/chrome/browser/ui/views/autofill/popup/popup_row_factory_utils.cc
+index 666e63162c276e32e45b874e8732035ce1145954..986dcc6a327854d1a38c3911d9714044fca464c0 100644
+--- a/chrome/browser/ui/views/autofill/popup/popup_row_factory_utils.cc
++++ b/chrome/browser/ui/views/autofill/popup/popup_row_factory_utils.cc
+@@ -333,7 +333,7 @@ std::vector<std::unique_ptr<views::View>> CreateSubtextViews(
+         // To make sure the popup width will not exceed its maximum value,
+         // divide the maximum label width by the number of labels.
+         FormatLabel(*label, label_text, main_filling_product,
+-                    kAutofillSuggestionMaxWidth / label_row.size());
++                    ((suggestion.brave_new_email_alias_suggestion || suggestion.brave_email_alias_suggestion)? 512: kAutofillSuggestionMaxWidth) / label_row.size());
+       }
+     }
+     result.push_back(std::move(label_row_container_view));
+@@ -878,7 +878,7 @@ std::unique_ptr<PopupRowContentView> CreatePopupRowContentView(
+                                        filter_match->main_text_match);
+   }
+ 
+-  FormatLabel(*main_text_label, suggestion.main_text, main_filling_product);
++  FormatLabel(*main_text_label, suggestion.main_text, main_filling_product, (suggestion.brave_new_email_alias_suggestion || suggestion.brave_email_alias_suggestion)? std::optional<int>(512): std::nullopt);
+   popup_cell_utils::AddSuggestionContentToView(
+       suggestion, std::move(main_text_label), CreateMinorTextLabels(suggestion),
+       /*description_label=*/nullptr,
+@@ -953,7 +953,7 @@ std::unique_ptr<PopupRowView> CreatePopupRowView(
+   SuggestionType type = suggestion.type;
+   FillingProduct main_filling_product = controller->GetMainFillingProduct();
+ 
+-  if (type == SuggestionType::kAutocompleteEntry) {
++  if (type == SuggestionType::kAutocompleteEntry && !suggestion.brave_email_alias_suggestion) {
+     return CreateAutocompleteRowWithDeleteButton(
+         controller, a11y_selection_delegate, selection_delegate, line_number);
+   }

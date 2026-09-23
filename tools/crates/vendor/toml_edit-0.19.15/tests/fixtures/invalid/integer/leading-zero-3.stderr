@@ -1,0 +1,5 @@
+TOML parse error at line 1, column 19
+  |
+1 | leading-zero-3 = 0_0
+  |                   ^
+expected newline, `#`

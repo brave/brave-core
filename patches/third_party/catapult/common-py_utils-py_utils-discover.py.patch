@@ -1,0 +1,9 @@
+diff --git a/common/py_utils/py_utils/discover.py b/common/py_utils/py_utils/discover.py
+index d28ec132f5975807910e2aef724d7e3785e3a866..a6324a8edf973e5b9ff94bc0a6c4ebea7b6b08de 100644
+--- a/common/py_utils/py_utils/discover.py
++++ b/common/py_utils/py_utils/discover.py
+@@ -188,3 +188,4 @@ _COUNTER = [0]
+ def _GetUniqueModuleName():
+   _COUNTER[0] += 1
+   return "module_" + str(_COUNTER[0])
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

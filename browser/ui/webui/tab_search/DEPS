@@ -1,0 +1,5 @@
+specific_include_rules = {
+ "tab_search_page_handler_browsertest\.cc": [
+    "+brave/components/history_embeddings/test/fake_history_embeddings_search.h",
+ ],
+}

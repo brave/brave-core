@@ -1,0 +1,35 @@
+diff --git a/chrome/browser/ui/window_feature_controller/window_feature_controller.cc b/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
+index ec7bd3ea6cd00a5093b9bac2cfca9fe1a0bc4bfb..b6cf946d7d09953d6e3c81771db477448338dbcb 100644
+--- a/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
++++ b/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
+@@ -17,12 +17,14 @@ WindowFeatureController::WindowFeatureController(
+     web_app::AppBrowserController* app_controller,
+     BrowserWindowInterface::Type browser_type,
+     bool is_trusted_source,
+-    ui::UnownedUserDataHost& host)
++    ui::UnownedUserDataHost& host,
++      const base::WeakPtr<VerticalTabController>& vertical_tab_controller)
+     : fullscreen_controller_(CHECK_DEREF(fullscreen_controller)),
+       app_controller_(app_controller),
+       browser_type_(browser_type),
+       is_trusted_source_(is_trusted_source),
+-      scoped_unowned_user_data_(host, *this) {}
++      scoped_unowned_user_data_(host, *this),
++      vertical_tab_controller_(vertical_tab_controller) {}
+ 
+ WindowFeatureController::~WindowFeatureController() = default;
+ 
+@@ -77,6 +79,13 @@ bool WindowFeatureController::UsesImmersiveFullscreenTabbedMode() const {
+ bool WindowFeatureController::NormalBrowserSupportsWindowFeature(
+     WindowFeature feature,
+     bool check_can_support) const {
++  #if BUILDFLAG(IS_WIN)
++  if (feature == WindowFeature::kFeatureTitleBar) {
++    // In case of vertical tab strip is allowed, we need to have ability to
++    // show title bar on Windows.
++    return BraveShouldShowTitlebar(vertical_tab_controller_);
++  }
++  #endif
+   switch (feature) {
+     case WindowFeature::kFeatureBookmarkBar:
+       return true;

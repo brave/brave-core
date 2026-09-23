@@ -1,0 +1,107 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add a virtual AddTabRecursive overload carrying the opener.
+
+      BraveTabStripCollection overrides this to hand tree-tab placement an
+      opener, without touching the plain overload or the template forwarder
+      that upstream added alongside it.
+    add_to_public:
+      class_name: TabStripCollection
+      code: |-
+        virtual void AddTabRecursive(
+            ScopedTab tab,
+            size_t index,
+            std::optional<tab_groups::TabGroupId> new_group_id,
+            bool new_pinned_state,
+            TabInterface* opener);
+
+  - description: 'Let BraveTabStripCollection override single-tab moves.'
+    make_virtual:
+      class_name: TabStripCollection
+      method_name: MoveTabRecursive
+
+  - description: 'Let BraveTabStripCollection override multi-tab moves.'
+    make_virtual:
+      class_name: TabStripCollection
+      method_name: MoveTabsRecursive
+
+  - description: |-
+      Let BraveTabStripCollection override RemoveTabAtIndexRecursive.
+
+      Needed so BraveTabStripCollection can delegate tab removal instead of
+      the tree-tab bypass preempted onto the body itself (see
+      rewrite/components/tabs/impl/tab_strip_collection.cc.yaml).
+    make_virtual:
+      class_name: TabStripCollection
+      method_name: RemoveTabAtIndexRecursive
+
+  - description: |-
+      Add public hooks for Brave's tree-tab handling around collection
+      insertion.
+
+      AddTabCollectionAtPosition exposes the position-based insert that
+      BraveTabStripCollectionDelegate wraps with a PassKey-restricted
+      overload. The other hooks let a delegate participate in detaching and
+      re-attaching a tree-tab subtree; they default to a no-op so only
+      Brave's subclass needs to act on them.
+    add_to_public:
+      class_name: TabStripCollection
+      code: |-
+        void AddTabCollectionAtPosition(
+            std::unique_ptr<TabCollection> collection,
+            const TabCollection::Position& position);
+        virtual void PrepareTreeTabNodesForBatchDetach(
+            const std::vector<TabInterface*>& moving_tabs) {}
+        virtual bool ShouldDetachAsTreeSubtreeRoot(
+            TabInterface* tab, const std::vector<TabInterface*>& moving_tabs);
+        virtual void WillDetachTreeTabNodeSubtree(
+            tabs::TreeTabNodeTabCollection& subtree_root) {}
+        virtual void DidAttachTreeTabNodeSubtree(
+            tabs::TreeTabNodeTabCollection& subtree_root) {}
+        virtual void InsertDetachedTreeTabNode(
+            std::unique_ptr<TabCollection> collection, int index);
+
+  - description: 'Let BraveTabStripCollection override collection insertion.'
+    make_virtual:
+      class_name: TabStripCollection
+      method_name: InsertTabCollectionAt
+
+  - description: 'Let BraveTabStripCollection override split creation.'
+    make_virtual:
+      class_name: TabStripCollection
+      method_name: CreateSplit
+
+  - description: 'Let BraveTabStripCollection override split removal.'
+    make_virtual:
+      class_name: TabStripCollection
+      method_name: Unsplit
+
+  - description: |-
+      Let BraveTabStripCollection reach the private group/split mapping
+      helpers it overrides.
+    add_friend:
+      class_name: TabStripCollection
+      friend_type: class BraveTabStripCollection
+
+  - description:
+      'Add a hook so Brave can report the tree-tab node owning a group.'
+    add_to_protected:
+      class_name: TabStripCollection
+      code: |-
+        virtual const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
+            tab_groups::TabGroupId group_id) const;
+
+  - description: 'Let BraveTabStripCollection override group mapping updates.'
+    make_virtual:
+      class_name: TabStripCollection
+      method_name: AddCollectionMapping
+
+  - description: 'Let BraveTabStripCollection override group mapping removal.'
+    make_virtual:
+      class_name: TabStripCollection
+      method_name: RemoveCollectionMapping

@@ -1,0 +1,18 @@
+diff --git a/ios/web/web_state/ui/crw_web_controller.mm b/ios/web/web_state/ui/crw_web_controller.mm
+index 42f523d453b6d7d3aa16c3feaa6a2501f5b13ff4..4b232ed0c9d1ddc27e7adf9d9a95477204a5d70d 100644
+--- a/ios/web/web_state/ui/crw_web_controller.mm
++++ b/ios/web/web_state/ui/crw_web_controller.mm
+@@ -339,11 +339,11 @@ JavaScriptCompletionBlock WrapCompletionBlock(
+       web::AnnotationsTextManager::CreateForWebState(_webStateImpl);
+     }
+ 
+-    _navigationHandler = [[CRWWKNavigationHandler alloc] initWithDelegate:self];
++    _navigationHandler = [[BraveCRWWKNavigationHandler alloc] initWithDelegate:self];
+ 
+     _jsNavigationHandler = [[CRWJSNavigationHandler alloc] init];
+ 
+-    _UIHandler = [[CRWWKUIHandler alloc] init];
++    _UIHandler = [[BraveCRWWKUIHandler alloc] init];
+     _UIHandler.delegate = self;
+ 
+     _webViewNavigationObserver = [[CRWWebViewNavigationObserver alloc] init];

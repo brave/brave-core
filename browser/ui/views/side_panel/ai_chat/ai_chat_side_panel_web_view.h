@@ -1,0 +1,100 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_WEB_VIEW_H_
+#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_WEB_VIEW_H_
+
+#include <memory>
+
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_contents_wrapper.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
+#include "url/gurl.h"
+
+namespace blink::mojom {
+class FileChooserParams;
+}
+
+namespace content {
+class FileSelectListener;
+class RenderFrameHost;
+}  // namespace content
+
+class AIChatUI;
+class Profile;
+class StatusBubbleViews;
+
+// A custom web view to set focus correctly when the side panel is shown.
+class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
+ public:
+  // Factory method to create and configure an AIChatSidePanelWebView.
+  // If `is_tab_associated` is true, the side panel will be related
+  // to the active tab and will change conversation when the tab navigates.
+  static std::unique_ptr<views::View> CreateView(Profile* profile,
+                                                 bool is_tab_associated,
+                                                 SidePanelEntryScope& scope);
+
+  AIChatSidePanelWebView(
+      SidePanelEntryScope& scope,
+      std::unique_ptr<AIChatSidePanelContentsWrapper> contents_wrapper);
+  ~AIChatSidePanelWebView() override;
+
+  // Disable copy and assign.
+  AIChatSidePanelWebView(const AIChatSidePanelWebView&) = delete;
+  AIChatSidePanelWebView& operator=(const AIChatSidePanelWebView&) = delete;
+
+  // views::View:
+  // Keep the status bubble anchored to the bottom-left of the panel as it
+  // resizes, mirroring how ContentsWebView drives the tab status bubble.
+  bool GetNeedsNotificationWhenVisibleBoundsChange() const override;
+  void OnVisibleBoundsChanged() override;
+
+  // WebUIContentsWrapper::Host:
+  content::WebContents* AddNewContents(
+      content::WebContents* source,
+      std::unique_ptr<content::WebContents> new_contents,
+      const GURL& target_url,
+      WindowOpenDisposition disposition,
+      const blink::mojom::WindowFeatures& window_features,
+      bool user_gesture,
+      bool* was_blocked) override;
+
+  content::WebContents* OpenURLFromTab(
+      content::WebContents* source,
+      const content::OpenURLParams& params,
+      base::OnceCallback<void(content::NavigationHandle&)>
+          navigation_handle_callback) override;
+
+  // Allow the file chooser to be used from the AI Chat side panel.
+  void RunFileChooser(content::RenderFrameHost* render_frame_host,
+                      scoped_refptr<content::FileSelectListener> listener,
+                      const blink::mojom::FileChooserParams& params) override;
+
+  // Returns the most recent hovered-link URL forwarded to the status bubble
+  // (empty when no link is hovered). Lets tests verify that link-hover
+  // destination disclosure is wired up.
+  const GURL& status_bubble_url_for_testing() const {
+    return status_bubble_url_for_testing_;
+  }
+
+ private:
+  // This callback is invoked multiple times, so we need to ensure that
+  // focus is set only once with `should_focus_`.
+  void OnShow();
+
+  // Invoked when the hovered link URL changes. Drives the status bubble.
+  void OnTargetURLChanged(const GURL& url);
+
+  // Whether focus should be set when the side panel is shown. We only do this
+  // for the first time the side panel is shown, and not for subsequent shows.
+  bool should_focus_ = true;
+
+  // Shows the hovered link's URL in the bottom-left of the panel, like a tab.
+  std::unique_ptr<StatusBubbleViews> status_bubble_;
+
+  // Mirror of the last URL forwarded to `status_bubble_`, for tests.
+  GURL status_bubble_url_for_testing_;
+};
+
+#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_WEB_VIEW_H_

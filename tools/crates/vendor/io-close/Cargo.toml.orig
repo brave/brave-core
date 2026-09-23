@@ -1,0 +1,25 @@
+[package]
+name = "io-close"
+version = "0.3.7"
+authors = ["wufz"]
+edition = "2018"
+description = "An extension trait for safely dropping I/O writers such as File and BufWriter."
+license = "MIT OR Apache-2.0"
+repository = "https://gitlab.com/wufz/io-close"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]
+
+[dev-dependencies]
+tempfile = "3.1.0"
+
+[dependencies]
+# Crates used for optional trait implementations
+os_pipe = { version = "0.9.2", optional = true }
+
+[target."cfg(unix)".dependencies]
+libc = "0.2.80"
+
+[target."cfg(windows)".dependencies]
+winapi = { version = "0.3.9", features = ["handleapi", "std", "winsock2"] }

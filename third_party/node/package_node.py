@@ -1,0 +1,140 @@
+#!/usr/bin/env vpython3
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+"""Package the version-free Node directories deployed by `download_node.py`.
+
+For each platform, this packs the *contents* of the version-free `node-<suffix>`
+directory (its `bin/`, `lib/`, ... entries) into a single gzipped tarball, so
+extracting it does not recreate the `node-<suffix>/` wrapper directory:
+
+    third_party/node/node-linux-x64/{bin,lib,...}
+        ->  node-v24.17.0-linux-x64.tar.gz  (members: bin/, lib/, ...)
+"""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import logging
+import mmap
+import os
+import sys
+import tarfile
+from pathlib import Path
+
+# Import the shared version/platform definitions from the sibling downloader so
+# the Node version lives in exactly one place.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(
+    0,
+    str(Path(__file__).resolve().parents[2] / 'tools' / 'cr' / 'toolchains'))
+
+# pylint: disable=wrong-import-position
+from download_node import NODE_VERSION, PLATFORMS
+from upload import S3Uploader, summarise
+
+# This directory: third_party/node.
+_NODE_DIR = Path(__file__).resolve().parent
+
+# `EXTRA_DEPS` keys its entries by checkout-relative install path, so every
+# entry packaged here hangs off this prefix (e.g. `<prefix>/node-linux-x64`).
+EXTRA_DEPS_PREFIX = 'src/brave/third_party/node'
+
+
+def print_setdep_command(revisions: list[str]) -> None:
+    """Print the `install_extra_deps.py setdep` command repinning `revisions`.
+    """
+    command = ' \\\n'.join([
+        'vpython3 tools/cr/install_extra_deps.py setdep',
+        *(f'  -r {revision}' for revision in revisions),
+    ])
+    print(f'\nRepin EXTRA_DEPS with (from src/brave):\n\n{command}')
+
+
+def package(tarball_name: str, deployed_dir: str,
+            output_dir: Path) -> Path | None:
+    """Pack the *contents* of `deployed_dir` into `tarball_name`.
+
+    Returns the tarball path, or None when the platform has not been deployed
+    yet (run `download_node.py` first).
+    """
+    dest_dir = _NODE_DIR / deployed_dir
+    if not dest_dir.is_dir():
+        print(f'Skipping {tarball_name}: {dest_dir} does not exist '
+              f'(run download_node.py first).')
+        return None
+
+    tarball = output_dir / tarball_name
+    # Archive the contents of the deployed dir (bin/, lib/, ...) at the archive
+    # root, so extracting the tarball does not recreate the node-<suffix>/
+    # wrapper directory.
+    with tarfile.open(tarball, mode='w:gz') as tar:
+        for child in sorted(dest_dir.iterdir()):
+            tar.add(child, arcname=child.name)
+    return tarball
+
+
+def sha256_and_size(path: Path) -> tuple[str, int]:
+    """Return the (sha256, byte size) of `path`."""
+    with path.open('rb') as file:
+        size = os.fstat(file.fileno()).st_size
+        # Our tarballs are never empty; a zero-length file means packaging
+        # produced nothing, and mmap cannot map it either.
+        if size == 0:
+            raise RuntimeError(f'refusing to hash empty file: {path}')
+        with mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ) as mapped:
+            return hashlib.sha256(mapped).hexdigest(), size
+
+
+def main() -> int:
+    parser = argparse.ArgumentParser(
+        description=f'Package Node {NODE_VERSION} directories into '
+        'version-free tarballs for upload.')
+    parser.add_argument(
+        '--output-dir',
+        type=Path,
+        default=_NODE_DIR,
+        help='Directory to write the tarballs into (defaults to this '
+        'directory).')
+    parser.add_argument(
+        '--upload',
+        action='store_true',
+        help='Upload the packaged tarballs to our public bucket.')
+    args = parser.parse_args()
+
+    args.output_dir.mkdir(parents=True, exist_ok=True)
+
+    uploader = None
+    if args.upload:
+        logging.basicConfig(level=logging.INFO, format='%(message)s')
+        uploader = S3Uploader(bucket='brave-build-deps-public')
+
+    # Sorted so the `-r` arguments come out in a stable order run to run
+    # (`PLATFORMS` is a frozenset).
+    revisions: list[str] = []
+    for _archive, tarball_name, deployed_dir in sorted(PLATFORMS):
+        tarball = package(tarball_name, deployed_dir, args.output_dir)
+        if tarball is None:
+            continue
+        print(f'Packaged {tarball.name}')
+        if uploader is not None:
+            result = uploader.upload(tarball, prefix='nodejs', sign=False)
+            print(f'\nUpload summary:\n{summarise(result)}')
+            sha256, size = result.sha256, result.size_bytes
+        else:
+            sha256, size = sha256_and_size(tarball)
+        revisions.append(f'{EXTRA_DEPS_PREFIX}/{deployed_dir}@'
+                         f'{tarball.name},{sha256},{size}')
+
+    if revisions:
+        print_setdep_command(revisions)
+    return 0
+
+
+if __name__ == '__main__':
+    try:
+        sys.exit(main())
+    except KeyboardInterrupt:
+        sys.exit(130)

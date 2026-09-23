@@ -1,0 +1,145 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.toolbar.bottom;
+
+import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
+import org.chromium.base.supplier.NullableObservableSupplier;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.SettableNonNullObservableSupplier;
+import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
+import org.chromium.chrome.browser.browser_controls.BottomControlsStacker.LayerType;
+import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
+import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.overlay_panel.PanelState;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabObscuringHandler;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
+import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modelutil.PropertyModel;
+
+import java.util.function.Supplier;
+
+class BraveBottomControlsMediator extends BottomControlsMediator {
+    // To delete in bytecode, members from parent class will be used instead.
+    private PropertyModel mModel;
+    private BottomControlsStacker mBottomControlsStacker;
+
+    // Own members.
+    private final SettableNonNullObservableSupplier<Boolean> mTabGroupUiVisibleSupplier =
+            ObservableSuppliers.createNonNull(false);
+    private final SettableNonNullObservableSupplier<Boolean> mBottomToolbarVisibleSupplier =
+            ObservableSuppliers.createNonNull(false);
+    private final int mBottomControlsHeightSingle;
+    private final int mBottomControlsHeightDouble;
+    private boolean mTabGroupUiRequestedVisible;
+
+    BraveBottomControlsMediator(
+            WindowAndroid windowAndroid,
+            PropertyModel model,
+            BottomControlsStacker controlsStacker,
+            BrowserStateBrowserControlsVisibilityDelegate browserControlsVisibilityDelegate,
+            FullscreenManager fullscreenManager,
+            @LayerType int layerType,
+            OneshotSupplier<BottomControlsContentDelegate> contentDelegateSupplier,
+            TabObscuringHandler tabObscuringHandler,
+            int bottomControlsHeight,
+            int bottomControlsShadowHeight,
+            NonNullObservableSupplier<@PanelState Integer> overlayPanelStateSupplier,
+            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            NullableObservableSupplier<Tab> tabSupplier,
+            Supplier<Boolean> readAloudRestoringSupplier) {
+        super(
+                windowAndroid,
+                model,
+                controlsStacker,
+                browserControlsVisibilityDelegate,
+                fullscreenManager,
+                layerType,
+                contentDelegateSupplier,
+                tabObscuringHandler,
+                bottomControlsHeight,
+                bottomControlsShadowHeight,
+                overlayPanelStateSupplier,
+                edgeToEdgeControllerSupplier,
+                tabSupplier,
+                readAloudRestoringSupplier);
+
+        mBottomControlsHeightSingle = bottomControlsHeight;
+        mBottomControlsHeightDouble = bottomControlsHeight * 2;
+    }
+
+    @Override
+    public void setBottomControlsVisible(boolean visible) {
+        mTabGroupUiRequestedVisible = visible;
+        boolean tabGroupUiVisible = isTabGroupUiEffectivelyVisible();
+        mTabGroupUiVisibleSupplier.set(tabGroupUiVisible);
+        // We should keep it visible if bottom toolbar is visible.
+        super.setBottomControlsVisible(mBottomToolbarVisibleSupplier.get() || tabGroupUiVisible);
+        updateYOffset();
+    }
+
+    public void setBottomToolbarVisible(boolean visible) {
+        mBottomToolbarVisibleSupplier.set(visible);
+        boolean tabGroupUiVisible = isTabGroupUiEffectivelyVisible();
+        mTabGroupUiVisibleSupplier.set(tabGroupUiVisible);
+        // We should keep it visible if tag group UI is visible.
+        super.setBottomControlsVisible(tabGroupUiVisible || visible);
+        updateYOffset();
+    }
+
+    public NonNullObservableSupplier<Boolean> getBottomToolbarVisibleSupplier() {
+        return mBottomToolbarVisibleSupplier;
+    }
+
+    public NonNullObservableSupplier<Boolean> getTabGroupUiVisibleSupplier() {
+        return mTabGroupUiVisibleSupplier;
+    }
+
+    /**
+     * Re-applies the visibility last requested by the tab group UI, so that toggling the tab groups
+     * switches in settings shows/hides the tab groups bar right away instead of only on the next
+     * tab switch. Called when one of those switches changes.
+     */
+    public void onTabGroupsSettingsChanged() {
+        setBottomControlsVisible(mTabGroupUiRequestedVisible);
+    }
+
+    private void updateYOffset() {
+        // This indicates that both controls are visible, but bottom toolbar has already been
+        // scrolled down, so we move scroll further for tab groups control.
+        if (bothBottomControlsVisible()
+                && mBottomControlsStacker.getBrowserControls().getBottomControlOffset()
+                        == mBottomControlsHeightSingle) {
+            mModel.set(BottomControlsProperties.Y_OFFSET, mBottomControlsHeightDouble);
+        }
+    }
+
+    @Override
+    public int getHeight() {
+        if (bothBottomControlsVisible()) {
+            // Factor in the height of the Brave navigation bottom controls when they are visible.
+            return super.getHeight() + mBottomControlsHeightSingle;
+        }
+
+        return super.getHeight();
+    }
+
+    private boolean bothBottomControlsVisible() {
+        return mTabGroupUiVisibleSupplier.get() && mBottomToolbarVisibleSupplier.get();
+    }
+
+    private boolean isTabGroupUiEffectivelyVisible() {
+        return mTabGroupUiRequestedVisible
+                && ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED, true)
+                && ChromeSharedPreferences.getInstance()
+                        .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_BAR_ENABLED, true);
+    }
+}

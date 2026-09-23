@@ -1,0 +1,30 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
+index 928541c4c85f252a0bba6cf8b57c5a73325e456f..fdaf4710e760c89b2dcd6eca0cdb86182b83bebf 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
+@@ -195,7 +195,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+     private boolean mShouldUpdatePrefs;
+ 
+     /** Maps {@link UserSelectableType} to the corresponding preference. */
+-    private Map<Integer, ChromeSwitchPreference> mSyncTypeSwitchPreferencesMap = new HashMap<>();
++    protected Map<Integer, ChromeSwitchPreference> mSyncTypeSwitchPreferencesMap = new HashMap<>();
+ 
+     private Preference mGoogleActivityControls;
+     private Preference mSyncEncryption;
+@@ -284,6 +284,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+ 
+     @Override
+     public boolean onPreferenceChange(Preference preference, Object newValue) {
++        if (false)  // Suppress the "addresses not encrypted" warning (not applicable to Brave's sync model).
+         if (mSyncService.isUsingExplicitPassphrase()
+                 && preference
+                         .getKey()
+@@ -529,7 +530,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+      * this state.
+      */
+     private void updateSyncPreferences() {
+-        @Nullable AccountInfo primaryAccount = getIdentityManager().getPrimaryAccountInfo();
++        @Nullable AccountInfo primaryAccount = new AccountInfo.Builder("", new org.chromium.google_apis.gaia.GaiaId("")).build();
+         // May happen if account is removed from the device while this screen is shown.
+         if (primaryAccount == null) {
+             finishCurrentSettings();

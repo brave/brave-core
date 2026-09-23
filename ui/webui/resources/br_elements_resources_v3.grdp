@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+  <!-- Polymer 3.0 Elements -->
+  <include name="IDR_BR_ELEMENTS_BR_SHARED_STYLE_CSS_M_JS"
+         file="${root_gen_dir}/brave/ui/webui/resources/br_elements/shared_style_css.m.js"
+         resource_path="br_elements/shared_style_css.m.js"
+         use_base_dir="false"
+         type="BINDATA"
+         compress="gzip" />
+  <include name="IDR_BR_ELEMENTS_BR_SHARED_VARS_CSS_M_JS"
+         file="${root_gen_dir}/brave/ui/webui/resources/br_elements/shared_vars_css.m.js"
+         resource_path="br_elements/shared_vars_css.m.js"
+         use_base_dir="false"
+         type="BINDATA"
+         compress="gzip" />
+</grit-part>

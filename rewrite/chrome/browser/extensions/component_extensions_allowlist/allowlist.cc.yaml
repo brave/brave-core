@@ -1,0 +1,42 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Allow Brave's own component extension by id.
+      Ensure some upstream component extensions are not loaded via denying by
+      id.
+
+      preempt_function_impl can't target one overload out of several sharing
+      a name (it applies the same code to every match), so this uses regex
+      instead to reach just the std::string overload.
+
+      TODO(https://brave.dev/b/57607): Fix preempt_function_impl to support
+      overload sets, then migrate these substitutions off regex.
+    regex:
+      pattern: |-
+        bool IsComponentExtensionAllowlisted(const std::string& extension_id) {
+      replace: |-
+        bool IsComponentExtensionAllowlisted(const std::string& extension_id) {
+          if (IsComponentExtensionAllowlistedBraveImpl(extension_id)) {
+            return true;
+          }
+          if (IsComponentExtensionDenylistedBraveImpl(extension_id)) {
+            return false;
+          }
+
+  - description: |
+      Allow Brave's own component extension by manifest resource id.
+
+      TODO(https://brave.dev/b/57607): Fix preempt_function_impl to support
+      overload sets, then migrate these substitutions off regex.
+    regex:
+      pattern: |-
+        bool IsComponentExtensionAllowlisted(int manifest_resource_id) {
+      replace: |-
+        bool IsComponentExtensionAllowlisted(int manifest_resource_id) {
+          if (IsComponentExtensionAllowlistedBraveImpl(manifest_resource_id)) {
+            return true;
+          }

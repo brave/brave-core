@@ -1,0 +1,9 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 782948e336b9fcaaf993d40cd290eff20399d34766a93793fc3a4516274c1ea7 # shrinks to (selectors, max_degree) = ([SelectorDescription { selector: 0, activations: [false], max_degree: 0 }, SelectorDescription { selector: 1, activations: [false], max_degree: 0 }], 1)
+cc 656e5446792c4f5fe22fd10bcd2dbadc70e84ac1ddb1a7ec8f622f64a15ff260 # shrinks to (selectors, max_degree) = ([SelectorDescription { selector: 0, activations: [false], max_degree: 1 }, SelectorDescription { selector: 1, activations: [false], max_degree: 1 }, SelectorDescription { selector: 2, activations: [false], max_degree: 1 }], 2)
+cc b7b81ca8745931e4dd8b4f896f7bde78f85f4d88857c5fdf9dc4bbf0f172db5e # shrinks to (selectors, max_degree) = ([SelectorDescription { selector: 0, activations: [false], max_degree: 1 }, SelectorDescription { selector: 1, activations: [false], max_degree: 1 }, SelectorDescription { selector: 2, activations: [false], max_degree: 1 }], 2)

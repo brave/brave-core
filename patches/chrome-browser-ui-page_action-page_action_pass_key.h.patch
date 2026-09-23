@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/page_action/page_action_pass_key.h b/chrome/browser/ui/page_action/page_action_pass_key.h
+index ce58aff6558ab43454329283011080b86e9c6080..c3593a8b7d3e7a23398e88de86bbfd3e835d56d2 100644
+--- a/chrome/browser/ui/page_action/page_action_pass_key.h
++++ b/chrome/browser/ui/page_action/page_action_pass_key.h
+@@ -28,6 +28,7 @@ class PageActionPassKey {
+   static PageActionPassKey PassKeyForTesting() { return PageActionPassKey(); }
+ 
+  private:
++  friend class page_actions::PageActionControllerImpl_ChromiumImpl;
+   friend class PageActionController;
+   friend class PageActionControllerImpl;
+   friend class PageActionView;

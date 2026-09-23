@@ -1,0 +1,83 @@
+<style include="settings-shared">
+  .dialog-title
+  {
+    display: block;
+    font-weight: 700;
+    line-height: 1.6;
+  }
+  .dialog-subtitle
+  {
+    display: block;
+    font-size: 90%;
+    line-height: 1.4;
+    margin-top: 10px;
+  }
+  .button-group > *
+  {
+    margin-inline-end: 8px;
+  }
+  .button-group:last-child
+  {
+    margin-inline-end: 0;
+  }
+  .delete-account-error
+  {
+    color: red;
+  }
+  .delete-account-in-progress
+  {
+    color: gray;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+</style>
+
+<cr-dialog
+  show-on-attach
+>
+
+  <div slot="title">
+    <span class="dialog-title">$i18n{braveSyncDeleteAccountButtonAndDialogTitle}</span>
+  </div>
+
+  <div slot="body">
+    <span class="dialog-subtitle">
+         $i18n{braveSyncDeleteAccountDesc1}
+     </span>
+    <span class="dialog-subtitle">
+         $i18n{braveSyncDeleteAccountDesc2}
+     </span>
+    <span class="dialog-subtitle">
+         $i18n{braveSyncDeleteAccountDesc3}
+    </span>
+
+    <template is="dom-if" if="[[deleteAccountError]]">
+      <div class="delete-account-error">
+        [[deleteAccountError]]
+      </div>
+    </template>
+
+    <template is="dom-if" if="[[deleteIsInProgress]]">
+      <div class="delete-account-in-progress">
+        $i18n{braveSyncPermanentlyDeleteAccountInProgress}
+      </div>
+    </template>
+  </div>
+
+  <template is="dom-if" if="[[!deleteIsInProgress]]">
+  <div slot="button-container" class="button-group">
+    <cr-button
+      on-click="handleCancel_"
+    >
+      $i18n{cancel}
+    </cr-button>
+
+    <cr-button class="action-button"
+      on-click="handleDeleteAccount_"
+    >
+      $i18n{braveSyncPermanentlyDeleteAccountButton}
+    </cr-button>
+  </div>
+  </template>
+
+</cr-dialog>

@@ -1,0 +1,158 @@
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import BraveCore
+import BraveUI
+import Foundation
+import Growth
+import Onboarding
+import Preferences
+import SwiftUI
+
+struct RetentionPreferencesDebugMenuView: View {
+  private let p3aUtilities: BraveP3AUtils
+  private let attributionManager: AttributionManager
+  private let localState: PrefService
+
+  @State private var isOnboardingPresented: Bool = false
+
+  @ObservedObject private var isNewRetentionUser = Preferences.Onboarding.isNewRetentionUser
+  @ObservedObject private var ntpCalloutCompleted = Preferences.FullScreenCallout
+    .ntpCalloutCompleted
+  @ObservedObject private var rewardsCalloutCompleted = Preferences.FullScreenCallout
+    .rewardsCalloutCompleted
+  @ObservedObject private var defaultBrowserIntroCompleted = Preferences.DefaultBrowserIntro
+    .completed
+
+  init(
+    p3aUtilities: BraveP3AUtils,
+    attributionManager: AttributionManager,
+    localState: PrefService
+  ) {
+    self.p3aUtilities = p3aUtilities
+    self.attributionManager = attributionManager
+    self.localState = localState
+  }
+
+  var body: some View {
+    Form {
+      Section {
+        Button("Start Onboarding") {
+          isOnboardingPresented = true
+        }
+        .fullScreenCover(isPresented: $isOnboardingPresented) {
+          OnboardingRepresentable(
+            p3aUtilities: p3aUtilities,
+            attributionManager: attributionManager,
+            localState: localState
+          )
+        }
+      }
+      Section {
+        Toggle(isOn: $isNewRetentionUser.value.coalesced) {
+          VStack(alignment: .leading) {
+            Text("Retention User")
+            Text(
+              "Flag showing if the user installed the application after new onboarding is added."
+            )
+            .foregroundStyle(.secondary)
+            .font(.footnote)
+          }
+        }
+        Toggle(isOn: $ntpCalloutCompleted.value) {
+          VStack(alignment: .leading) {
+            Text("NTP Education Shown")
+            Text("Flag tracking NTP Education should be loaded after onboarding of user.")
+              .foregroundStyle(.secondary)
+              .font(.footnote)
+          }
+        }
+        Toggle(isOn: $rewardsCalloutCompleted.value) {
+          VStack(alignment: .leading) {
+            Text("Rewards Callout Shown")
+            Text("Flag determining if Rewards callout is shown to user.")
+              .foregroundStyle(.secondary)
+              .font(.footnote)
+          }
+        }
+        Toggle(isOn: $defaultBrowserIntroCompleted.value) {
+          VStack(alignment: .leading) {
+            Text("Default Browser Callout Shown")
+            Text("Flag determining if DefaultBrowser callout is shown to user.")
+              .foregroundStyle(.secondary)
+              .font(.footnote)
+          }
+        }
+      } header: {
+        Text("Onboarding Debug Menu")
+      } footer: {
+        Text(
+          "These are the preferences that stored in preferences for determining the If certain elements are shown to user."
+        )
+      }
+    }
+  }
+}
+
+extension Bool? {
+  fileprivate var coalesced: Bool {
+    get { self ?? false }
+    set { self = newValue }
+  }
+}
+
+private struct OnboardingRepresentable: UIViewControllerRepresentable {
+  var p3aUtilities: BraveP3AUtils
+  var attributionManager: AttributionManager
+  var localState: PrefService
+
+  func makeUIViewController(context: Context) -> OnboardingController {
+    let env = OnboardingEnvironment(
+      p3aUtils: p3aUtilities,
+      attributionManager: attributionManager,
+      localState: localState
+    )
+    var steps: [any OnboardingStep] = [.defaultBrowsing, .addToDock, .blockInterruptions]
+
+    if !p3aUtilities.isP3APreferenceManaged
+      || !localState.isManagedPreference(forPath: kMetricsReportingEnabled)
+    {
+      steps.append(.metricsOptIn)
+    }
+    return OnboardingController(environment: env, steps: steps)
+  }
+  func updateUIViewController(_ uiViewController: OnboardingController, context: Context) {
+  }
+}
+
+class RetentionPreferencesDebugMenuViewController: UIHostingController<
+  RetentionPreferencesDebugMenuView
+>
+{
+  init(
+    p3aUtilities: BraveP3AUtils,
+    attributionManager: AttributionManager,
+    localState: PrefService
+  ) {
+    super.init(
+      rootView: RetentionPreferencesDebugMenuView(
+        p3aUtilities: p3aUtilities,
+        attributionManager: attributionManager,
+        localState: localState
+      )
+    )
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+
+  override func viewDidLoad() {
+    super.viewDidLoad()
+
+    title = "Onboarding Debug Menu"
+  }
+}

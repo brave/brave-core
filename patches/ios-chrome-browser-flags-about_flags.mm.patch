@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/browser/flags/about_flags.mm b/ios/chrome/browser/flags/about_flags.mm
+index 8e84efe6197a86da6cee275170888e69e352819f..4a4bd4908cdce0094cb7a66fdae734ac901b4e8e 100644
+--- a/ios/chrome/browser/flags/about_flags.mm
++++ b/ios/chrome/browser/flags/about_flags.mm
+@@ -1471,6 +1471,7 @@ const FeatureEntry::FeatureVariation
+ //
+ // When adding a new choice, add it to the end of the list.
+ constexpr auto kFeatureEntries = std::to_array<flags_ui::FeatureEntry>({
++    BRAVE_ABOUT_FLAGS_FEATURE_ENTRIES
+     {"build-external-privacy-context",
+      flag_descriptions::kBuildExternalPrivacyContextName,
+      flag_descriptions::kBuildExternalPrivacyContextDescription,

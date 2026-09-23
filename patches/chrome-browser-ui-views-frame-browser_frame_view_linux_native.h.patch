@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/frame/browser_frame_view_linux_native.h b/chrome/browser/ui/views/frame/browser_frame_view_linux_native.h
+index a00ae50dfe5dadff49255d326ea44f69108d0765..4f3abb6e146e3f426f8e10f8a8ea88b67ce55f29 100644
+--- a/chrome/browser/ui/views/frame/browser_frame_view_linux_native.h
++++ b/chrome/browser/ui/views/frame/browser_frame_view_linux_native.h
+@@ -45,6 +45,7 @@ class BrowserFrameViewLinuxNative : public BrowserFrameViewLinux {
+   void PaintRestoredFrameBorder(gfx::Canvas* canvas) const override;
+ 
+  private:
++  friend class BraveBrowserFrameViewLinuxNative;
+   // Redraws the image resources associated with the minimize, maximize,
+   // restore, and close buttons.
+   virtual void MaybeUpdateCachedFrameButtonImages();

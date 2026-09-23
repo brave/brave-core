@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/ui/views/overlay/playback_image_button.cc b/chrome/browser/ui/views/overlay/playback_image_button.cc
+index a0263becf6d731da15bcb6b9011dad647600d26b..1064b552617feaf94a539d192a45898f4b88dce6 100644
+--- a/chrome/browser/ui/views/overlay/playback_image_button.cc
++++ b/chrome/browser/ui/views/overlay/playback_image_button.cc
+@@ -34,15 +34,15 @@ PlaybackImageButton::PlaybackImageButton(PressedCallback callback)
+   play_image_ = ui::ImageModel::FromVectorIcon(
+       features::IsRoundedIconsEnabled()
+           ? vector_icons::kPlayArrowFilledFlippableIcon
+-          : vector_icons::kPlayArrowOldIcon,
++          : kLeoPlayFilledIcon,
+       ui::kColorSysOnSecondaryContainer, kPlaybackButtonIconSize);
+   pause_image_ = ui::ImageModel::FromVectorIcon(
+       features::IsRoundedIconsEnabled() ? vector_icons::kPauseFilledIcon
+-                                        : vector_icons::kPauseOldIcon,
++                                        : kLeoPauseFilledIcon,
+       kColorPipWindowForeground, kPlaybackButtonIconSize);
+   replay_image_ = ui::ImageModel::FromVectorIcon(
+       features::IsRoundedIconsEnabled() ? vector_icons::kReplayIcon
+-                                        : vector_icons::kReplayOldIcon,
++                                        : kLeoReloadIcon,
+       kColorPipWindowForeground, kPlaybackButtonIconSize);
+ 
+   UpdateImageAndText();

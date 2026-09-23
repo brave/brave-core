@@ -1,0 +1,27 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream services_unittests tests with a flake rate >= 1.0% on
+## linux bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 42.7% flake rate over 30 days per LUCI Analysis (51 passed, 38 failed, 0 flaky).
+-BackgroundTracingManagerTest.SavedCountPreventsStart
+
+# 92.1% flake rate over 30 days per LUCI Analysis (7 passed, 0 failed, 82 flaky).
+-CoordinatorImplTest.DumpsAreAddedToTraceWhenRequested
+
+# 92.4% flake rate over 30 days per LUCI Analysis (1582 passed, 0 failed, 19311 flaky).
+-HeapProfilingDataSourceTest.EmitSamples
+
+# 10.4% flake rate over 30 days per LUCI Analysis (20577 passed, 2 failed, 2398 flaky).
+-HistogramSamplesDataSourceTest.RecordAllHistogramsWithoutTrackEvent
+
+# 68.2% flake rate over 30 days per LUCI Analysis (7303 passed, 0 failed, 15679 flaky).
+-NetworkServiceBoostIOThreadTest.DoesNotBoostIOThreadWhenFeatureIsOff
+
+# 40.8% flake rate over 30 days per LUCI Analysis (13606 passed, 0 failed, 9380 flaky).
+-TracingServiceTest.PerfettoClientConsumer
+
+# 3.3% flake rate over 30 days per LUCI Analysis (22225 passed, 0 failed, 758 flaky).
+-TracingServiceTest.TracingServiceInstantiate

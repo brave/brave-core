@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/views/frame/contents_container_view.h b/chrome/browser/ui/views/frame/contents_container_view.h
+index e3ae9d104db2d7e03712a6f0dbc3c4c2f34af0d8..36f3dfb6c72f9025e04e3efaabc798f9abf531e4 100644
+--- a/chrome/browser/ui/views/frame/contents_container_view.h
++++ b/chrome/browser/ui/views/frame/contents_container_view.h
+@@ -119,7 +119,7 @@ class ContentsContainerView : public views::View,
+                               SkColor outline_color,
+                               int font_size);
+ 
+-  void UpdateBorderAndOverlay(bool is_in_split,
++  virtual void UpdateBorderAndOverlay(bool is_in_split,
+                               bool is_active,
+                               bool is_highlighted);
+ 
+@@ -144,6 +144,7 @@ class ContentsContainerView : public views::View,
+   views::View* GetToastAnchorView() { return toast_anchor_view_; }
+ 
+  private:
++  friend class BraveContentsContainerView;
+   void UpdateContentsClip();
+ 
+   // Updates the DevTools docked placement. It infers the docked placement from
+@@ -151,7 +152,7 @@ class ContentsContainerView : public views::View,
+   // container that holds both contents_webview and devtools_webview.
+   void UpdateDevToolsDockedPlacement();
+ 
+-  void UpdateBorderRoundedCorners();
++  virtual void UpdateBorderRoundedCorners();
+   void SetBorderRoundedCornersFrom(const gfx::RoundedCornersF& corner_radii);
+ 
+   // views::View:

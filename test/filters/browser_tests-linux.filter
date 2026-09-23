@@ -1,0 +1,355 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# These tests pass locally but fail on CI
+-All/ChromeMultiProfileStartupBrowserTestBase.PostProfileInitInvocation/1
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/3840x2160
+-AvatarMenuBrowserTest.AddNewProfile
+-DebuggerExtensionApiTest.ParentTargetPermissions
+-GWSAbandonedPageLoadMetricsObserverBrowserTest.SearchTabHidden
+-InfoBarUiTest.InvokeUi_bad_flags
+-InfoBarUiTest.InvokeUi_reload_plugin
+-InstanceIDApiTest.GetCreationTimeFormat
+-InterstitialUITest.PinnedCertInterstitial
+-PageInfoBubbleViewBrowserTest.BlockedAndInvalidCert
+-PageInfoBubbleViewBrowserTest.MalwareAndEvCert
+-PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
+-PaymentHandlerWebFlowViewMandatoryUi*Test.*
+-PermissionElementBrowserTest.DoubleClickDoesNotTriggerTwoRequests
+-WebViewNewWindowTest.UserAgent_NewWindow/InnerWebContents
+
+# FlushForTesting() deadlocks on Linux because Brave background services (AI
+# Chat, etc.) trigger D-Bus thread pool tasks that post replies to the blocked
+# main thread.
+# https://github.com/brave/brave-browser/issues/54038
+-AutofillCounterTest.TimeRanges
+
+# These tests fail because we disable adding Open Search engines by default.
+# See https://github.com/brave/brave-browser/issues/14496
+# We short circuit the SearchEngineTabHelper::PageHasOpenSearchDescriptionDocument
+# via SearchEngineTabHelper::IsFormSubmit in chromium_src override.
+-PersistentBackground/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
+-ServiceWorker/ExtensionWebRequestApiTestWithContextType.WebRequestTestOSDD/0
+
+# This test runs fine when run individually, but times out when run with test
+# launcher.
+-PageDiscardingHelperBrowserTest.DiscardedTabEligibleForSuccessiveDiscards/RetainedWebContents
+
+# These tests fail because in identity_test_utils.cc waiting for
+# identity_manager->AreRefreshTokensLoaded() times out.
+-AvatarToolbarButtonPromoBrowserTest.*
+-AvatarToolbarButtonPromoClickBrowserTest.*
+-AvatarToolbarButtonSignedOutPromoBrowserTest.SignedOutPromoTriggeredOnStartupAfterDelayExpired 
+
+# These tests fail because kPrerender2 feature is disabled.
+-MediaEngagementPreThirdPartyCookieDeprecationBrowserTest.Ignored
+
+# This test fails because we override RegionalCapabilitiesServiceClientLinux::
+# FetchCountryId to get locale from device instead of the variations service.
+-RegionalCapabilitiesServiceFactoryBrowserTestForVariationsCountry.GetCountryId/FR
+
+# These tests fail because Brave enables screen farbling
+# (kBraveBlockScreenFingerprinting) by default on desktop, which modifies
+# screen dimension values returned to web content.
+-MultiscreenWindowManagementPermissionContextTest.IsExtendedCrossOriginAllow
+-MultiscreenWindowManagementPermissionContextTest.IsExtendedCrossOriginDeny
+-MultiscreenWindowManagementPermissionContextTest.IsExtendedSameOriginAllow
+-WindowManagementTest.OnCurrentScreenChangeEvent
+-WindowManagementTest.OnScreensChangeEvent
+-WindowManagementTest.ScreenDetailedOnChange
+-WindowManagementTest.ScreenDetailedOnHdrHeadroomChange
+
+# Chromium test: race between document.cookie setter (CookieJar mojo pipe, async
+# with AsyncSetCookie) and cookieStore.get() (CookieStore API, separate mojo pipe).
+# These use independent RestrictedCookieManager pipes with no ordering guarantee.
+# Brave's ephemeral storage checks (FillEphemeralStorageParams,
+# IsEphemeralCookieAccessible) add processing overhead that widens the race window.
+# Stable upstream: 0.2% flake rate over 30 days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/55325
+-All/CookieStoreSameSiteTest.CookieStoreUsesEffectiveSameSiteForUnspecifiedCookies/0
+-All/CookieStoreSameSiteTest.CookieStoreUsesEffectiveSameSiteForUnspecifiedCookies/1
+
+# Chromium test: intermittent RunLoop timeout in DevTools paused debugger focus
+# mechanism. The test relies on an async chain (DebuggerPaused event → SourcesPanel
+# module loading → bringToFront IPC) that sometimes doesn't complete before the
+# test timeout. Already disabled upstream on Windows ASAN (crbug.com/337141755).
+# 0.2% upstream flake rate over 30 days per LUCI Analysis. No Brave-specific code
+# affects this path.
+# https://github.com/brave/brave-browser/issues/53358
+-DevToolsProcessPerSiteTest.PausedDebuggerFocus
+
+# These tests fail on Linux because kPromptForDownload defaults to true,
+# triggering the GTK file chooser dialog which causes g_malloc leaks
+# detected by LSan on ASAN builds and timeouts.
+# https://github.com/brave/brave-browser/issues/52572
+# https://github.com/brave/brave-browser/issues/52649
+# https://github.com/brave/brave-browser/issues/52569
+-All/PDFPluginDisabledTest.DirectNavigationToPDF/*
+-ChromeMojoProxyResolverFactoryBrowserTest.*
+-PluginResponseInterceptorURLLoaderThrottleBrowserTest.DownloadPdf
+
+# These fail because OsIntegrationTestOverride::GetShortcutPath and
+# OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux hard-codes "chrome-"
+# into the shortcut name but our shortcut starts with "brave-".
+-ShortcutSubManagerBrowserTest.CleanUpEphemeralProfileDeletesShortcuts
+
+# Brave's canvas farbling (PerturbPixels) modifies getImageData() results,
+# breaking this test's canvas-based video playback detection. The test only
+# compiles on Linux non-sanitizer builds (#if BUILDFLAG(IS_LINUX)). The
+# 3840x2160 variant passes. Upstream stable: 0.6% flake rate (30-day LUCI).
+# https://github.com/brave/brave-browser/issues/54521
+-All/GetDisplayMediaHiDpiBrowserTest.Capture/640x480
+
+# Chromium test: ApplyDefaultSearchChangeForTesting(FROM_EXTENSION) on Linux
+# leaves default_search_provider_ null (extension DSEs unsupported on Linux)
+# while default_search_provider_source_ stays FROM_EXTENSION. Brave's
+# DefaultSearchManager override causes MaybeShowDialog() to record the
+# histogram twice with differing conditions (kControlledByPolicy and
+# kExtensionControlled), failing the ExpectUniqueSample assertion.
+# Already disabled on Windows in upstream source; upstream TODO crbug.com/429600559
+# acknowledges the broken extension DSE test setup.
+# Stable upstream: 0.3% flake rate over 30 days per LUCI Analysis.
+# https://github.com/brave/brave-browser/issues/54542
+-SearchEngineChoiceDialogBrowserTest.DialogDoesNotShowWithExtensionEnabledThatOverridesDSE
+
+# Upstream Chromium test (chrome/browser/webapps/installable/
+# installable_manager_browsertest.cc). It asserts on InstallableManager's
+# private task queue via friend access, and that assertion is racy whenever a
+# second, unrelated GetData() request is in flight.
+#
+# InstallableTask::IncrementStateAndWorkOnNextTask() calls
+# manager_->OnTaskFinished() (which POSTs FinishAndStartNextTask) and only then
+# RunCallback(); CallbackTester::OnDidFinishInstallableCheck in turn POSTs the
+# run loop's quit closure. So the pop-the-queue task is always ordered ahead of
+# the quit closure. Separately, every primary page carrying a manifest reaches
+# ManifestUpdateManager::OnManifestSeenOnPrimaryPage, which unconditionally
+# schedules a ManifestSilentUpdateCommand; that command calls
+# WebAppDataRetriever::CheckInstallabilityAndRetrieveManifest, i.e. a second
+# InstallableManager::GetData(). When that request is queued while the test's
+# own task is still running, FinishAndStartNextTask pops the test's task and
+# immediately Start()s the background one, which completes off already-fetched
+# page data and posts its own FinishAndStartNextTask. That post is still
+# pending when the quit closure runs, so task_queue_.HasCurrent() is true at
+# the assertion. Whether the background request lands inside that window is
+# pure timing, hence the intermittency.
+#
+# Not caused by Brave. Brave has no chromium_src override or patch under
+# components/webapps/browser/installable/, none under
+# chrome/browser/web_applications/ outside os_integration/mac/ (macOS app
+# shims), and none on the test itself. The only Brave override anywhere near
+# this path is chromium_src/components/webapps/browser/features.cc disabling
+# kWebAppsEnableMLModelForPromotion, and it is inert here: on this path that
+# flag is read only by MLInstallabilityPromoter, and the fixture sets
+# test::g_disable_banner_triggering_for_testing, which makes
+# MLInstallabilityPromoter::StartPipeline() bail out before it starts any of
+# its tasks.
+#
+# tools/chromium_tests_analysis/check-upstream-flake.py reports "STABLE UPSTREAM" (0.8% over 60 days),
+# i.e. below the 1% bar, so this entry rests on the mechanism above and on
+# Brave being provably not at fault, not on the flake rate. The rate only
+# decides which file the entry belongs in: over that window linux-rel and
+# win-rel both sit at ~0.2%, the Linux ASAN/LSAN builders show no failures at
+# all, and macOS shows 1 flake in 10922 verdicts. The per-OS Ubuntu-22.04
+# figure of 1.13% is dominated by ChromeOS builders, which Brave does not ship.
+#
+# So not browser_tests-linux-asan.filter: the race needs no sanitizer to occur,
+# and upstream's own Linux ASAN/LSAN builders are the clean ones, so filtering
+# only ASAN would leave the non-sanitizer Linux builds exposed. And not the
+# all-platform browser_tests.filter: macOS shows no evidence of the failure, so
+# there is no reason to drop coverage there, and Windows is already covered in
+# browser_tests-windows.filter.
+#
+# Fixing this requires reordering the callback and the queue pop in upstream
+# test or production code. A previous attempt, brave/brave-core#34786, patched
+# the upstream test to add content::RunAllTasksUntilIdle() before the
+# assertion; it was closed unmerged with no review comments. Independent of why
+# it was closed, patching upstream test files is disallowed (TUF-001), and
+# draining the run loop is a timing adjustment rather than synchronization.
+#
+# https://github.com/brave/brave-browser/issues/58061 (Linux)
+# https://github.com/brave/brave-browser/issues/53717 (Windows, closed)
+-InstallableManagerBrowserTest.CheckWebapp
+
+# Upstream Chromium test (chrome/browser/ui/webui/tab_search/
+# tab_search_page_handler_browsertest.cc). Fails intermittently on Linux x64
+# with "Mock function called more times than expected ... TabUpdated ...
+# over-saturated and active".
+#
+# The test sets EXPECT_CALL(page_, TabUpdated(_)).Times(0) on a StrictMock,
+# which shadows the AnyNumber() expectation SetUpOnMainThread() installed, and
+# then calls AddTabWithTitle() twice. Each of those spins the run loop
+# (WaitForLoadStop(), ExecJs(), TitleWatcher::WaitAndGetTitle()), so any
+# tab-UI update still pending for a tab in a browser the handler tracks gets
+# delivered inside the test body and over-saturates the expectation. The most
+# likely source is BrowserUiController::ScheduleUIUpdate(), which coalesces
+# WebContents invalidations into a 200ms delayed ProcessPendingUIUpdates()
+# that notifies TabChangeType::kAll, which BuildTabFieldMask() maps onto the
+# fields HasTabSiteDataChanged() tests, so
+# TabSearchPageHandler::OnTabDataChanged() forwards it as TabUpdated() with no
+# debounce. There are other kAll producers and the CI log does not identify
+# which one fired, but either way the test never bounds that window, so it is
+# timing-dependent by construction.
+#
+# Upstream considers this fixture flaky too. At our pinned Chromium
+# (153.0.8010.28), TabSearchPageHandlerTest.TabUpdated is disabled on all of
+# Linux and .TabSearchUsedPref on Linux MSan, both citing crbug.com/537538766;
+# .GetTabs is disabled on Linux dbg/asan/msan with no bug referenced; and
+# TabsNotChanged itself is already disabled on ChromeOS (crbug.com/537468010).
+#
+# Brave is not the cause. Every Brave entry point into this mechanism was
+# checked:
+#  - The only Brave code that invalidates tab UI at all is Tor's:
+#    tor_profile_manager.cc passes INVALIDATE_TYPE_ALL from
+#    OnTorCircuitEstablished() on a Tor window's NTP tab, and
+#    INVALIDATE_TYPE_URL from that same file's OpenURL() and from
+#    onion_location_tab_helper.cc. ScheduleUIUpdate() handles the URL-only
+#    invalidations synchronously and strips the flag before anything is
+#    queued for the coalesced kAll path, and the ALL site is not reachable
+#    for an about:blank tab in a non-Tor profile. Nothing else under brave/
+#    calls NavigationStateChanged(), UpdateWebContentsStateAt(),
+#    NotifyTabChanged(), TabChangeType::kAll or SetNeedsAttention(), and
+#    Brave has no patch or chromium_src override on tab_ui_helper.* or the
+#    tab alert controller, which are what TabData::FromTabInterface() reads
+#    and whose inequality gates the kAll notify.
+#  - The patch on browser_ui_controller.cc injects
+#    MaybeUpdateSidebarForUrlChange() as the first statement of
+#    ScheduleUIUpdate(), but it returns early unless INVALIDATE_TYPE_URL is
+#    set for the active tab and its only effect is
+#    Sidebar::UpdateSidebarItemsState(), a views-only refresh. It schedules no
+#    task and touches no tab state.
+#  - The patch on tab_model.cc swaps in BraveTabFeatures for every tab, which
+#    attaches per-tab page-action controllers and WebContents observers (AI
+#    Chat, PSST, containers, Speedreader, Wayback Machine, Playlist, Tor,
+#    Brave News) plus a contextual side panel registration. None of them
+#    reach the entry points above.
+#  - The tab_search_page_handler and tab_search_ui chromium_src overrides only
+#    add tab-organization and content-search mojo methods, a pref observer
+#    emitting TabFocusEnabledChanged()/TabFocusShowFREChanged(), and extra
+#    WebUI data source values. tab_data.cc's hooks are inert for an
+#    about:blank tab, tab_converters.cc only redefines the TREE_NODE/SPLIT
+#    collection case rather than BuildTabFieldMask(), and the existing patch
+#    on this test file only adds two MOCK_METHODs.
+#
+# The only tab in a tracked browser here is InProcessBrowserTest's about:blank
+# tab in browser1 (browser2 is tracked too, but this test never gives it a
+# tab).
+#
+# script/check-upstream-flake.py reports "STABLE UPSTREAM" (0.2% over 30
+# days), below the 1% bar, so this entry rests on the mechanism above and on
+# Brave being ruled out rather than on the aggregate rate. That aggregate is
+# diluted by two high-volume CQ trybots, linux-rel (~29k verdicts) and win-rel
+# (~28k), together ~66% of all verdicts, whose events are all "failed" and
+# none "flaky", i.e. attributable to the CL under test. Counting only flaky
+# verdicts, which are the test's own fault, gives 67 on Linux --
+# concentrated in linux_chromium_asan_rel_ng 5.48%, Linux ASan LSan Tests (1)
+# 4.02%, linux_chromium_dbg_ng 2.41%, linux-wayland-mutter-rel-tests 1.88%,
+# Linux Tests (dbg)(1) 1.03% and linux-arm64-wayland-rel-fyi 0.93% -- against
+# 4 across every Windows and macOS builder combined. That gradient tracks how
+# loaded the builder is, which is what a 200ms coalescing window predicts.
+#
+# Hence this file and not the all-platform browser_tests.filter: both Brave
+# reports (browser linux x64 beta v1.95.92, origin linux x64 nightly v1.96.30)
+# are Linux x64. And not browser_tests-linux-asan.filter: upstream's
+# non-sanitizer Linux builders flake too, and Brave's own failures are Release
+# builds.
+#
+# https://github.com/brave/brave-browser/issues/58475
+-TabSearchPageHandlerTest.TabsNotChanged
+
+# Upstream Chromium tests (chrome/browser/ui/views/payments/
+# payment_handler_web_flow_view_browsertest.cc). Four tests in that file
+# synthesize a mouse click into the payment handler web contents, but these
+# two are the only ones that have to hit a specific element: they use
+# content::SimulateMouseClickOrTapElementWithId(payment_handler_contents,
+# "reject-button"), whose listener posts 'reject' to the service worker, which
+# rejects the PaymentRequestEvent promise, and then they wait for the
+# resulting ERROR_MESSAGE_SHOWN / DIALOG_CLOSED. The other two,
+# UserInteractionRecorded and PaymentResponseDeferredUntilUserInteraction,
+# call content::SimulateMouseClick(), which only has to register user
+# activation somewhere on the page, and those sit at 0.1% upstream against
+# 0.6% and 0.4% for these two. That is suggestive rather than conclusive (the
+# stable pair also uses a different launcher and a different payment app), but
+# it is consistent with the click being delivered and not landing on the
+# button.
+#
+# Every failing log stops there. None of the console messages a successful run
+# emits after the click appear ("PaymentRequestEvent.respondWith() failed: the
+# promise passed to respondWith() was rejected." and "Uncaught (in promise)
+# Error: Rejected"), and the event waiter still has all of its expected events
+# pending when the 30s RunLoop timeout fires. Console output from both the
+# payment handler window and the service worker reaches browser_tests stderr
+# (content::LogConsoleMessage is on either path, and checked locally by
+# logging from that listener), so neither a rejection nor an exception thrown
+# inside the listener would go unlogged. Nothing is logged, so the listener
+# most likely never ran.
+#
+# Upstream has already had one round of flake fixes on this exact path:
+# crrev.com/c/8045781 ("[Payments] Fix user interaction flaky tests",
+# crbug.com/531590249, 530162399, 530434790) added the merchant /
+# service-worker / window-client readiness handshake these tests use, and both
+# already call SimulateEndOfPaintHoldingOnPrimaryMainFrame() before clicking.
+# Both mitigations are in our tree and neither closes this window.
+#
+# script/check-upstream-flake.py reports STABLE UPSTREAM for both — 0.6% and
+# 0.4% over 30 days, 0.7% and 0.5% over 60 — i.e. below the 1% bar, so the
+# flake rate alone does not justify the entry. The TUF-002 checks come back
+# clean: no chromium_src override under chrome/browser/ui/views/payments/ or
+# components/payments/, no patch touching either tree, and no Brave override
+# of the payments::features::kPaymentRequestMandatoryPaymentAppUi default that
+# the two fixtures toggle. All Brave code matching "payments" is credit card
+# autofill (components/autofill/core/browser/payments/ and its iOS and rewrite
+# counterparts), a different subsystem. Locally both tests pass — 38 runs on
+# Linux across single-process and test-launcher configurations, 30 of them at
+# --test-launcher-jobs=12 — too few to prove much on their own. So no Brave
+# cause was found, but the gap between the failure rate on these builders and
+# upstream's remains unexplained.
+#
+# Linux-only filter: every occurrence since the first report on 2026-08-13 is
+# linux-x64, on both the browser and origin builders (58146 on nightly and
+# release, 58147 on nightly and beta). Brave files browser_tests failures for
+# macOS and Windows too and neither has reported these, so there is no reason
+# to drop coverage there. Per TUF-001 a filter is preferred over patching
+# upstream test code for an intermittent failure, and since no Brave override
+# or patch is responsible, there is nothing on our side to fix instead.
+#
+# Only the MandatoryUiEnabledTest half is filtered here: the
+# MandatoryUiDisabledTest one (issue 58146) was filtered separately by
+# brave/brave-core#40010, which lists it under "These tests pass locally but
+# fail on CI" at the top of this file. The analysis above still covers both,
+# since the two share the click path.
+#
+# https://github.com/brave/brave-browser/issues/58147
+-PaymentHandlerWebFlowViewMandatoryUiEnabledTest.DialogClosedOnErrorAfterUserInteraction
+
+# Tests below this point have not been diagnosed or had issues created yet.
+-AccessCodeCastHandlerBrowserTest.*
+-AdsPageLoadMetricsObserverBrowserTest.*
+-BluetoothLowEnergyApiTest.*
+-CaptureHandleBrowserTest.*
+-ExtensionStartupTest.*
+-ExternalProtocolHandlerSandboxBrowserTest.*
+-HeadlessModeScreenshotCommandBrowserTest.HeadlessScreenshot
+-LayoutInstabilityTest.*
+-NewTabUIBrowserTest.*
+-NewTabUIProcessPerTabTest.*
+-OzonePlatformTest.*
+-ParameterizedFrameNodeImplBrowserTest.ViewportIntersection_OutOfView/*
+-PrefHashBrowserTestAccountValueUntrustedAddition.AccountValueUntrustedAddition
+-PrintBrowserTest.*
+-ProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.Hsts/*
+-ProcessMemoryMetricsEmitterTest.*
+-PushSubscriptionWithExpirationTimeTest.*
+-SingleProcessBrowserTest.*
+-SpellingOptionsSubMenuObserverTest.*
+-TabCaptureApiTest.*
+-WebAppOpaqueBrowserFrameViewTest.*
+-WebAppTagWebAppTest.TabNavigatedAwayNotWebAppTask
+-WebAppTagWebAppTest.WebAppTaskCreatedForStandalone
+-WebAppTagWebAppTest.WebAppTaskCreatedForTab
+-WebRtcBrowserTest.*
+-WebRtcDisableEncryptionFlagBrowserTest.*

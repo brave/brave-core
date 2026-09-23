@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Make `IsDownloadReadyForCompletion` virtual.
+
+      This is the completion gate used to run post-download work
+      (e.g. image metadata stripping) before the file is
+      renamed/quarantined. `BraveDownloadManagerDelegate` overrides it.
+    make_virtual:
+      class_name: ChromeDownloadManagerDelegate
+      method_name: IsDownloadReadyForCompletion
+
+  - description: |
+      Friend `BraveDownloadManagerDelegate`.
+
+      The Brave subclass overrides the private virtual above and calls
+      the Chromium implementation, and also reads private members such
+      as `download_manager_`.
+    add_friend:
+      class_name: ChromeDownloadManagerDelegate
+      friend_type: class BraveDownloadManagerDelegate

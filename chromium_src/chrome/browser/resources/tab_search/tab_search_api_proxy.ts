@@ -1,0 +1,68 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import { TabSearchApiProxy, TabSearchApiProxyImpl } from './tab_search_api_proxy-chromium.js'
+
+import type { Error } from './tab_search.mojom-webui.js'
+
+export interface BraveTabSearchApiProxy extends TabSearchApiProxy {
+  getSuggestedTopics: () => Promise<{ topics: string[], error: Error | null }>
+  getFocusTabs: (topic: string) => Promise<{ windowCreated: boolean, error: Error | null }>
+  undoFocusTabs: () => Promise<void>
+  openLeoGoPremiumPage: () => void
+  openLearnMorePage: () => void
+  setTabFocusEnabled: () => void
+  getTabFocusShowFRE: () => Promise<{ showFRE: boolean }>
+  searchTabsByContent: (query: string) => Promise<{ tabIds: number[] }>
+}
+
+export class BraveTabSearchApiProxyImpl extends TabSearchApiProxyImpl implements BraveTabSearchApiProxy {
+  // Shadow the parent's `getInstance` with a `BraveTabSearchApiProxy`-typed
+  // return so callers using the Brave class name get the extended interface
+  // without an `as` cast.
+  static override getInstance(): BraveTabSearchApiProxy {
+    return braveInstance || (braveInstance = new BraveTabSearchApiProxyImpl())
+  }
+
+  getSuggestedTopics() {
+    return this.handler.getSuggestedTopics()
+  }
+
+  getFocusTabs(topic: string) {
+    return this.handler.getFocusTabs(topic)
+  }
+
+  undoFocusTabs() {
+    return this.handler.undoFocusTabs()
+  }
+
+  openLeoGoPremiumPage() {
+    this.handler.openLeoGoPremiumPage()
+  }
+
+  openLearnMorePage() {
+    this.handler.openLearnMorePage()
+  }
+
+  setTabFocusEnabled() {
+    this.handler.setTabFocusEnabled()
+  }
+
+  getTabFocusShowFRE() {
+    return this.handler.getTabFocusShowFRE()
+  }
+
+  searchTabsByContent(query: string) {
+    return this.handler.searchTabsByContent(query)
+  }
+}
+
+let braveInstance: BraveTabSearchApiProxy | null = null
+
+// Re-point upstream's static `getInstance` so callers that only know the
+// `TabSearchApiProxyImpl` class name also receive the Brave singleton.
+TabSearchApiProxyImpl.getInstance = BraveTabSearchApiProxyImpl.getInstance
+
+export * from './tab_search_api_proxy-chromium.js'

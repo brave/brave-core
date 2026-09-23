@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave sources to `component("color")`.
+    add_literal_to_list:
+      target: color
+      list_name: sources
+      literal: brave_ui_color_sources
+      import: //brave/ui/color/sources.gni
+
+  - description: Add the Brave public_deps to `component("color")`.
+    add_literal_to_list:
+      target: color
+      list_name: public_deps
+      literal: brave_ui_color_public_deps
+      import: //brave/ui/color/sources.gni
+
+  - description: Add the Brave mixer sources to `component("mixers")`.
+    add_literal_to_list:
+      target: mixers
+      list_name: sources
+      literal: brave_ui_color_mixer_sources
+      import: //brave/ui/color/sources.gni
+
+  - description: Add the Brave mixer public_deps to `component("mixers")`.
+    add_literal_to_list:
+      target: mixers
+      list_name: public_deps
+      literal: brave_ui_color_mixer_public_deps
+      import: //brave/ui/color/sources.gni

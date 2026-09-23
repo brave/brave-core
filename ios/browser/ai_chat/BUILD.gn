@@ -1,0 +1,52 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("ai_chat") {
+  sources = [
+    "ai_chat_service_factory.h",
+    "ai_chat_service_factory.mm",
+    "ai_chat_settings_helper.h",
+    "ai_chat_settings_helper.mm",
+    "ai_chat_ui_handler_bridge.h",
+    "ai_chat_ui_handler_bridge_holder.h",
+    "ai_chat_ui_handler_bridge_holder.mm",
+    "ai_chat_utils.h",
+    "ai_chat_utils.mm",
+    "model_service_factory.h",
+    "model_service_factory.mm",
+    "tab_data_web_state_observer.h",
+    "tab_data_web_state_observer.mm",
+    "tab_tracker_service_factory.h",
+    "tab_tracker_service_factory.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/ai_chat/core/browser",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/ai_chat/ios/browser",
+    "//brave/components/ai_chat/ios/common:mojom",
+    "//brave/components/resources:strings_grit",
+    "//brave/ios/browser/api/profile",
+    "//brave/ios/browser/misc_metrics",
+    "//brave/ios/browser/skus",
+    "//brave/ios/browser/web/text_content_distiller",
+    "//brave/ios/components/prefs",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//components/version_info",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+    "//ios/chrome/common",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}

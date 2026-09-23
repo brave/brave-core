@@ -1,0 +1,26 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "brave_confirm_infobar_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//brave/common",
+    "//brave/components/infobars/core",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/views:layout_provider",
+    "//chrome/test:test_support",
+    "//components/infobars/core",
+    "//testing/gtest",
+    "//ui/base",
+    "//ui/events",
+    "//ui/gfx",
+    "//ui/views",
+    "//ui/views:test_support",
+  ]
+}

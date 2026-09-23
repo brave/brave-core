@@ -1,0 +1,11 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Build the info plist strings util with the Brave constants.
+    add_literal_to_list:
+      target: infoplist_strings_util
+      list_name: configs
+      literal: '[ "//brave/common:constants_configs($default_toolchain)" ]'

@@ -1,0 +1,21 @@
+<style include="settings-shared">
+  cr-view-manager [hidden-by-search],
+  cr-view-manager[show-all] [slot=view][data-parent-view-id] {
+    display: none;
+  }
+</style>
+
+<cr-view-manager id="viewManager" class="cr-centered-card-container"
+  show-all$="[[shouldShowAll]]">
+  <settings-brave-sync-manage-devices-page
+    slot="view"
+    id="braveSync"
+    label="[[syncLabel_]]">
+  </settings-brave-sync-manage-devices-page>
+  <settings-brave-sync-subpage prefs="{{prefs}}"
+    sync-status="[[syncStatus_]]"
+    sync-label="[[syncLabel_]]"
+    slot="view" id="setup"
+    data-parent-view-id="braveSync">
+  </settings-brave-sync-subpage>
+</cr-view-manager>

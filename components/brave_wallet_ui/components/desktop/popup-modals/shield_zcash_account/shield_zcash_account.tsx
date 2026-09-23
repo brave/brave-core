@@ -1,0 +1,332 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
+
+// Slices
+import {
+  useGetChainTipStatusQuery,
+  useGetZCashAccountInfoQuery,
+  useMakeAccountShieldedMutation,
+  useResetSyncStateMutation,
+} from '../../../../common/slices/api.slice'
+
+// Types
+import { BraveWallet } from '../../../../constants/types'
+
+// Utils
+import { getLocale } from '../../../../../common/locale'
+
+// Components
+import { PopupModal } from '../../popup-modals/index'
+import {
+  CreateAccountIcon, //
+} from '../../../shared/create-account-icon/create-account-icon'
+
+// Styles
+import {
+  AccountRow,
+  ShieldIconWrapper,
+  ShieldIcon,
+  AdvancedSettingsWrapper,
+  AdvancedSettingsButton,
+  CollapseIcon,
+} from './shield_zcash_account.style'
+import { Column, Text, Row } from '../../../shared/style'
+import { NumberInput } from '../../../shared/number_input/number_input'
+import {
+  getZCashBirthdayBlockError,
+  isAllowedZCashBirthdayBlockInput,
+  MIN_ACCOUNT_BIRTHDAY_BLOCK,
+  shouldBlockZCashBirthdayBlockKey,
+} from './zcash_birthday_block'
+
+interface Props {
+  account: BraveWallet.AccountInfo
+  onClose: () => void
+}
+
+export const ShieldZCashAccountModal = (props: Props) => {
+  const { account, onClose } = props
+
+  // State
+  const [isShielding, setIsShielding] = React.useState<boolean>(false)
+  const [isResettingBirthday, setIsResettingBirthday] =
+    React.useState<boolean>(false)
+  const [showAdvanced, setShowAdvanced] = React.useState<boolean>(false)
+  const [customBirthdayBlock, setCustomBirthdayBlock] =
+    React.useState<string>('')
+
+  // Queries
+  const { data: chainTipStatus } = useGetChainTipStatusQuery(account.accountId)
+  const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
+    account.accountId,
+  )
+
+  // Mutations
+  const [shieldAccount] = useMakeAccountShieldedMutation()
+  const [resetSyncState] = useResetSyncStateMutation()
+
+  // Computed
+  const existingShieldBirthday = zcashAccountInfo?.accountShieldBirthday
+  const accountBirthdayBlock =
+    customBirthdayBlock !== '' ? Number(customBirthdayBlock) : 0
+  const birthdayBlockError = getZCashBirthdayBlockError(
+    customBirthdayBlock,
+    chainTipStatus?.chainTip,
+  )
+  const invalidBirthdayBlock = birthdayBlockError !== undefined
+  const isBusy = isShielding || isResettingBirthday
+  const birthdayBlockIsDifferent =
+    existingShieldBirthday
+    && existingShieldBirthday.value.toString() !== customBirthdayBlock
+
+  React.useEffect(() => {
+    if (existingShieldBirthday) {
+      setCustomBirthdayBlock(existingShieldBirthday.value.toString())
+    }
+  }, [existingShieldBirthday])
+
+  // Methods
+  const onShieldAccount = React.useCallback(async () => {
+    if (!account.accountId || invalidBirthdayBlock) {
+      return
+    }
+    setIsShielding(true)
+    await shieldAccount({
+      accountId: account.accountId,
+      accountBirthdayBlock: accountBirthdayBlock,
+    })
+    setIsShielding(false)
+    onClose()
+  }, [
+    shieldAccount,
+    account,
+    onClose,
+    accountBirthdayBlock,
+    invalidBirthdayBlock,
+  ])
+
+  const onResetShieldAccountBirthday = React.useCallback(async () => {
+    if (!account.accountId || !existingShieldBirthday || invalidBirthdayBlock) {
+      return
+    }
+    setIsResettingBirthday(true)
+    await resetSyncState({
+      accountId: account.accountId,
+      accountBirthdayBlock,
+    })
+    setIsResettingBirthday(false)
+    onClose()
+  }, [
+    resetSyncState,
+    account,
+    accountBirthdayBlock,
+    existingShieldBirthday,
+    onClose,
+    invalidBirthdayBlock,
+  ])
+
+  const onToggleShowAdvanced = () => {
+    setShowAdvanced((prev) => !prev)
+  }
+
+  const onBirthdayBlockInput = React.useCallback((e: { value: string }) => {
+    if (isAllowedZCashBirthdayBlockInput(e.value)) {
+      setCustomBirthdayBlock(e.value)
+    }
+  }, [])
+
+  const onBirthdayBlockKeyDown = React.useCallback(
+    (e: { innerEvent: Event }) => {
+      const event = e.innerEvent as KeyboardEvent
+      if (event.metaKey || event.ctrlKey || event.altKey) {
+        return
+      }
+      if (shouldBlockZCashBirthdayBlockKey(event.key, customBirthdayBlock)) {
+        event.preventDefault()
+      }
+    },
+    [customBirthdayBlock],
+  )
+
+  return (
+    <PopupModal
+      title={
+        existingShieldBirthday
+          ? getLocale(S.BRAVE_WALLET_RESET_SHIELDED_ACCOUNT_BIRTHDAY)
+          : getLocale(S.BRAVE_WALLET_SWITCH_TO_SHIELDED_ACCOUNT)
+      }
+      onClose={onClose}
+      width='520px'
+      headerPaddingHorizontal='32px'
+      headerPaddingVertical='32px'
+    >
+      <Column
+        gap='24px'
+        padding='8px 32px'
+      >
+        <AccountRow
+          width='unset'
+          padding='8px 30px 8px 8px'
+        >
+          <ShieldIconWrapper>
+            <ShieldIcon />
+          </ShieldIconWrapper>
+          <CreateAccountIcon
+            account={account}
+            size='huge'
+            marginRight={16}
+          />
+          <Column alignItems='flex-start'>
+            <Text
+              textSize='14px'
+              isBold={true}
+              textColor='primary'
+              textAlign='left'
+            >
+              {account.name}
+            </Text>
+            <Text
+              textSize='12px'
+              isBold={false}
+              textColor='secondary'
+              textAlign='left'
+            >
+              ZCash
+            </Text>
+          </Column>
+        </AccountRow>
+        <Text
+          textSize='14px'
+          isBold={false}
+          textColor='primary'
+          textAlign='left'
+        >
+          {existingShieldBirthday
+            ? getLocale(
+                S.BRAVE_WALLET_RESET_SHIELDED_ACCOUNT_BIRTHDAY_DESCRIPTION,
+              )
+            : getLocale(S.BRAVE_WALLET_ACCOUNT_NOT_SHIELDED_DESCRIPTION)}
+        </Text>
+        {!existingShieldBirthday && (
+          <Text
+            textSize='14px'
+            isBold={true}
+            textColor='primary'
+            textAlign='left'
+          >
+            {getLocale(S.BRAVE_WALLET_ACCOUNT_SHIELDED_DESCRIPTION)}
+          </Text>
+        )}
+        <AdvancedSettingsWrapper fullWidth={true}>
+          {!existingShieldBirthday && (
+            <AdvancedSettingsButton onClick={onToggleShowAdvanced}>
+              <Row
+                width='unset'
+                gap='4px'
+              >
+                <Icon
+                  name='settings'
+                  slot='icon'
+                />
+                <Text
+                  textColor='primary'
+                  textSize='14px'
+                  isBold={true}
+                >
+                  {getLocale(S.BRAVE_WALLET_ADVANCED_TRANSACTION_SETTINGS)}
+                </Text>
+              </Row>
+              <CollapseIcon
+                isCollapsed={!showAdvanced}
+                name='carat-down'
+              />
+            </AdvancedSettingsButton>
+          )}
+          {(existingShieldBirthday || showAdvanced) && (
+            <Column fullWidth={true}>
+              <Row
+                padding={existingShieldBirthday ? '12px' : '0px 8px 12px 28px'}
+                justifyContent='space-between'
+                gap='8px'
+              >
+                <Text
+                  textColor='primary'
+                  textSize='14px'
+                  isBold={false}
+                  textAlign='left'
+                >
+                  {getLocale(S.BRAVE_WALLET_SHIELDED_ACCOUNT_BIRTHDAY_BLOCK)}
+                </Text>
+                <NumberInput
+                  size='small'
+                  step={1}
+                  min={1}
+                  value={customBirthdayBlock}
+                  onKeyDown={onBirthdayBlockKeyDown}
+                  onInput={onBirthdayBlockInput}
+                  showErrors={invalidBirthdayBlock}
+                />
+              </Row>
+              {(birthdayBlockError === 'too-low'
+                || birthdayBlockError === 'too-high') && (
+                <Row
+                  padding='0px 8px 12px 28px'
+                  justifyContent='flex-end'
+                >
+                  <Text
+                    textColor='error'
+                    textSize='12px'
+                    isBold={false}
+                  >
+                    {birthdayBlockError === 'too-low'
+                      ? getLocale(
+                          S.BRAVE_WALLET_ACCOUNT_BIRTHDAY_TOO_LOW,
+                        ).replace('$1', MIN_ACCOUNT_BIRTHDAY_BLOCK.toString())
+                      : getLocale(
+                          S.BRAVE_WALLET_ACCOUNT_BIRTHDAY_TOO_HIGH,
+                        ).replace(
+                          '$1',
+                          chainTipStatus?.chainTip.toString() ?? '',
+                        )}
+                  </Text>
+                </Row>
+              )}
+            </Column>
+          )}
+        </AdvancedSettingsWrapper>
+      </Column>
+      <Row
+        gap='16px'
+        padding='32px'
+      >
+        <Button
+          onClick={onClose}
+          kind='outline'
+        >
+          {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
+        </Button>
+        <Button
+          onClick={
+            existingShieldBirthday
+              ? onResetShieldAccountBirthday
+              : onShieldAccount
+          }
+          isDisabled={
+            isBusy
+            || invalidBirthdayBlock
+            || (existingShieldBirthday && !birthdayBlockIsDifferent)
+          }
+        >
+          {existingShieldBirthday
+            ? getLocale(S.BRAVE_WALLET_RESET_SHIELDED_ACCOUNT_BIRTHDAY)
+            : getLocale(S.BRAVE_WALLET_SHIELD_ACCOUNT)}
+        </Button>
+      </Row>
+    </PopupModal>
+  )
+}

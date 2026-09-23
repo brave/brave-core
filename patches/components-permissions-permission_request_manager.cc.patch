@@ -1,0 +1,56 @@
+diff --git a/components/permissions/permission_request_manager.cc b/components/permissions/permission_request_manager.cc
+index 0fb19de52c5e119d2dbfe9de84e204c2655d50d6..32d74069887bf3860f23fcd012e6660f7240c421 100644
+--- a/components/permissions/permission_request_manager.cc
++++ b/components/permissions/permission_request_manager.cc
+@@ -604,6 +604,7 @@ void PermissionRequestManager::OnVisibilityChanged(
+   }
+   bool prior_tab_is_active_ = tab_is_active_;
+   tab_is_active_ = visibility != content::Visibility::HIDDEN;
++  BRAVE_PERMISSION_REQUEST_MANAGER_ON_VISIBILITY_CHANGED
+   if (prior_tab_is_active_ != tab_is_active_) {
+     OnTabActiveChanged();
+   }
+@@ -623,6 +624,7 @@ GURL PermissionRequestManager::GetRequestingOrigin() const {
+   GURL origin = requests_.front()->requesting_origin();
+   if (DCHECK_IS_ON()) {
+     for (const auto& request : requests_) {
++      BRAVE_PERMISSION_REQUEST_MANAGER_GET_REQUESTING_ORIGIN
+       DCHECK_EQ(origin, request->requesting_origin());
+     }
+   }
+@@ -914,7 +916,7 @@ bool PermissionRequestManager::RecreateView() {
+   // has an initiated permission prompt. If a flow model is not created even
+   // though a permission prompt has been requested, it will cause a crash.
+   if (PermissionUtil::ShouldCurrentRequestUsePermissionElementSecondaryUI(
+-          this, web_contents())) {
++          this, web_contents()) && BRAVE_PERMISSION_REQUEST_MANAGER_RECREATE_VIEW) {
+     if (!embedded_prompt_flow_model_) {
+       embedded_prompt_flow_model_ =
+           std::make_unique<EmbeddedPermissionPromptFlowModel>(web_contents(),
+@@ -1050,7 +1052,7 @@ void PermissionRequestManager::DequeueRequestIfNeeded() {
+   // only after the camera request is resolved. This is caused by code in
+   // PermissionBubbleMediaAccessHandler and UserMediaClient. We probably don't
+   // need two permission queues, so resolve the duplication.
+-  if (web_contents()->HasUncommittedNavigationInPrimaryMainFrame() || view_ ||
++  if (!web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame() || view_ ||
+       IsRequestInProgress()) {
+     return;
+   }
+@@ -1188,7 +1190,7 @@ void PermissionRequestManager::ShowPrompt() {
+     return;
+   }
+ 
+-  DCHECK(!web_contents()->HasUncommittedNavigationInPrimaryMainFrame());
++  DCHECK(web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame());
+   DCHECK(current_request_ui_to_use_);
+ 
+   if (!tab_is_active_) {
+@@ -2096,7 +2098,7 @@ void PermissionRequestManager::OnTabActiveChanged() {
+     return;
+   }
+ 
+-  if (web_contents()->HasUncommittedNavigationInPrimaryMainFrame()) {
++  if (!web_contents()->IsDocumentOnLoadCompletedInPrimaryMainFrame()) {
+     return;
+   }
+ 

@@ -1,0 +1,14 @@
+Name: wasi
+Short Name: wasi
+URL: https://github.com/bytecodealliance/wasi
+Version: 0.11.1
+License: Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/wasi.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

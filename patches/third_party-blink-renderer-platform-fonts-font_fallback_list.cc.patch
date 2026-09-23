@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/platform/fonts/font_fallback_list.cc b/third_party/blink/renderer/platform/fonts/font_fallback_list.cc
+index a35f4d61b28cdcd3c878726fa36cbb0f1b69e2bd..a73f8f0a498c93528cb2ab4c8cc00d1c7cf992e1 100644
+--- a/third_party/blink/renderer/platform/fonts/font_fallback_list.cc
++++ b/third_party/blink/renderer/platform/fonts/font_fallback_list.cc
+@@ -171,6 +171,7 @@ const FontData* FontFallbackList::GetFontData(
+     if (!result && !curr_family->FamilyName().empty()) {
+       result = FontCache::Get().GetFontData(font_description,
+                                             curr_family->FamilyName());
++      BRAVE_GET_FONT_DATA
+     }
+     if (result) {
+       return result;

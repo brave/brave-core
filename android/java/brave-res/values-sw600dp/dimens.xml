@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<resources>
+    <!-- On sw600dp phones, location_bar_height=48dp vs 56dp default.
+         Pill height = location_bar_height - 2*location_bar_vertical_margin(8dp). -->
+    <dimen name="brave_toolbar_button_height">32dp</dimen>
+</resources>

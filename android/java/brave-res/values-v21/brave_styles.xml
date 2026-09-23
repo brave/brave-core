@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2019 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<resources>
+    <!-- Brave Ads Notifications -->
+    <style name="WebNotificationBodyBraveAd"
+        parent="@android:style/TextAppearance.Material.Notification">
+        <item name="android:textSize">13sp</item>
+    </style>
+    <style name="WebNotificationSmallIcon">
+        <item name="android:background">@drawable/web_notification_small_icon_background</item>
+        <item name="android:padding">3dp</item>
+    </style>
+    <style name="WebNotificationLargeIcon">
+        <item name="android:padding">12dp</item>
+    </style>
+    <style name="WebNotificationTitle"
+        parent="@android:style/TextAppearance.Material.Notification.Title"/>
+</resources>

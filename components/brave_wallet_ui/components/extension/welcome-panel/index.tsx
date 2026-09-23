@@ -1,0 +1,59 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+
+// utils
+import { getLocale } from '../../../../common/locale'
+
+// components
+import { NavButton } from '../buttons/nav-button/index'
+
+// style
+import { VerticalSpace, WalletWelcomeGraphic } from '../../shared/style'
+import { StyledWrapper, Title, Description } from './style'
+
+export const WelcomePanel = () => {
+  // methods
+  const onSetup = () => {
+    chrome.tabs.create({ url: 'chrome://wallet' }, () => {
+      if (chrome.runtime.lastError) {
+        console.error('tabs.create failed: ' + chrome.runtime.lastError.message)
+      }
+    })
+  }
+
+  // render
+  return (
+    <StyledWrapper>
+      <WalletWelcomeGraphic scale={0.9} />
+
+      <VerticalSpace space='16px' />
+
+      <Title
+        textColor='primary'
+        variant='heading.h3'
+      >
+        {getLocale(S.BRAVE_WALLET_PANEL_TITLE)}
+      </Title>
+      <Description
+        textColor='secondary'
+        variant='default.regular'
+      >
+        {getLocale(S.BRAVE_WALLET_WELCOME_PANEL_DESCRIPTION)}
+      </Description>
+
+      <NavButton
+        buttonType='primary'
+        text={getLocale(S.BRAVE_WALLET_LEARN_MORE)}
+        onSubmit={onSetup}
+      />
+
+      <VerticalSpace space='16px' />
+    </StyledWrapper>
+  )
+}
+
+export default WelcomePanel

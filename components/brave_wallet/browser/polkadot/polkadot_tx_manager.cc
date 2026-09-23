@@ -1,0 +1,452 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_manager.h"
+
+#include <ranges>
+#include <utility>
+
+#include "base/notimplemented.h"
+#include "brave/components/brave_wallet/browser/account_resolver_delegate.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
+#include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_block_tracker.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_transaction_status_task.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_state_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_wallet_service.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/grit/brave_components_strings.h"
+#include "ui/base/l10n/l10n_util.h"
+
+namespace brave_wallet {
+
+using TransferAll = PolkadotWalletService::TransferAll;
+
+PolkadotTxManager::PolkadotTxManager(
+    TxService& tx_service,
+    PolkadotWalletService& polkadot_wallet_service,
+    NetworkManager& network_manager,
+    KeyringService& keyring_service,
+    TxStorage& tx_storage,
+    AccountResolverDelegate& account_resolver_delegate)
+    : TxManager(
+          std::make_unique<PolkadotTxStateManager>(tx_storage,
+                                                   account_resolver_delegate),
+          std::make_unique<PolkadotBlockTracker>(
+              *polkadot_wallet_service.GetPolkadotRpc(),
+              polkadot_wallet_service.GetNetworkManager()),
+          tx_service,
+          keyring_service),
+      polkadot_wallet_service_(polkadot_wallet_service),
+      network_manager_(network_manager) {
+  GetPolkadotBlockTracker().AddObserver(this);
+}
+
+PolkadotTxManager::~PolkadotTxManager() {
+  GetPolkadotBlockTracker().RemoveObserver(this);
+}
+
+std::unique_ptr<PolkadotTxMeta> PolkadotTxManager::GetPolkadotTx(
+    const std::string& tx_meta_id) {
+  auto tx_meta = tx_state_manager().GetTx(tx_meta_id);
+  if (!tx_meta) {
+    return {};
+  }
+
+  // Because our tx_state_manager() points to the base object of the
+  // PolkadotTxStateManager, we dispatch correctly to the
+  // PolkadotTxStateManager::ValueToTxMeta() definition which creates a complete
+  // PolkadotTxMeta structure which makes this cast well-defined.
+  return base::WrapUnique<PolkadotTxMeta>(
+      static_cast<PolkadotTxMeta*>(tx_meta.release()));
+}
+
+void PolkadotTxManager::ApproveTransaction(
+    const std::string& tx_meta_id,
+    ApproveTransactionCallback callback) {
+  auto tx_meta = GetPolkadotTx(tx_meta_id);
+  if (!tx_meta) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewPolkadotProviderError(
+            mojom::PolkadotProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  tx_meta->set_status(mojom::TransactionStatus::Approved);
+  if (!tx_state_manager().AddOrUpdateTx(*tx_meta)) {
+    std::move(callback).Run(false,
+                            mojom::ProviderErrorUnion::NewPolkadotProviderError(
+                                mojom::PolkadotProviderError::kInternalError),
+                            WalletInternalErrorMessage());
+    return;
+  }
+
+  const auto& account_id = tx_meta->from();
+  const auto& chain_id = tx_meta->chain_id();
+  auto transfer_all = tx_meta->tx()->transfer_all();
+  auto send_amount = tx_meta->tx()->amount();
+  auto asset_id = tx_meta->tx()->asset_id();
+  auto recipient = tx_meta->tx()->recipient().pubkey;
+
+  std::variant<uint128_t, TransferAll> transfer_amount = send_amount;
+  if (transfer_all) {
+    transfer_amount = TransferAll{};
+  }
+
+  polkadot_wallet_service_->SignAndSendTransaction(
+      chain_id, account_id->Clone(), std::move(transfer_amount), asset_id,
+      recipient,
+      base::BindOnce(&PolkadotTxManager::OnApprovePolkadotTransaction,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(tx_meta),
+                     std::move(callback)));
+}
+
+void PolkadotTxManager::OnApprovePolkadotTransaction(
+    std::unique_ptr<PolkadotTxMeta> tx_meta,
+    ApproveTransactionCallback callback,
+    base::expected<std::pair<std::string, PolkadotExtrinsicMetadata>,
+                   std::string> tx_hash_metadata_pair) {
+  CHECK(tx_meta);
+
+  if (!tx_hash_metadata_pair.has_value()) {
+    tx_meta->set_status(mojom::TransactionStatus::Error);
+  } else {
+    const auto& [tx_hash, extrinsic_metadata] = tx_hash_metadata_pair.value();
+
+    tx_meta->set_status(mojom::TransactionStatus::Submitted);
+    tx_meta->set_submitted_time(base::Time::Now());
+    tx_meta->set_tx_hash(tx_hash);
+
+    auto* tx = tx_meta->tx();
+    CHECK(tx);
+
+    // Replace the payload we estimated with the one that was actually signed.
+    tx->set_signature_payload(extrinsic_metadata.signature_payload());
+    tx->set_extrinsic_metadata(extrinsic_metadata);
+  }
+
+  if (!tx_state_manager().AddOrUpdateTx(*tx_meta)) {
+    return std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewPolkadotProviderError(
+            mojom::PolkadotProviderError::kInternalError),
+        WalletInternalErrorMessage());
+  }
+
+  if (!tx_hash_metadata_pair.has_value()) {
+    return std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewPolkadotProviderError(
+            mojom::PolkadotProviderError::kInternalError),
+        tx_hash_metadata_pair.error());
+  }
+
+  UpdatePendingTransactions(tx_meta->chain_id());
+
+  return std::move(callback).Run(
+      true,
+      mojom::ProviderErrorUnion::NewPolkadotProviderError(
+          mojom::PolkadotProviderError::kSuccess),
+      tx_meta->tx_hash());
+}
+
+void PolkadotTxManager::AddUnapprovedPolkadotTransaction(
+    mojom::NewPolkadotTransactionParamsPtr params,
+    AddUnapprovedPolkadotTransactionCallback callback) {
+  if (!params || !params->from) {
+    return std::move(callback).Run(false, "", WalletInternalErrorMessage());
+  }
+
+  auto chain_id = params->chain_id;
+  auto network = network_manager_->GetChain(chain_id, mojom::CoinType::DOT);
+  if (!network || !std::ranges::contains(network->supported_keyrings,
+                                         params->from->keyring_id)) {
+    return std::move(callback).Run(false, "", WalletInternalErrorMessage());
+  }
+  polkadot_wallet_service_->GetChainMetadata(
+      chain_id,
+      base::BindOnce(&PolkadotTxManager::OnGetChainMetadataForUnapproved,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(params),
+                     std::move(callback)));
+}
+
+PolkadotTxStateManager& PolkadotTxManager::GetPolkadotTxStateManager() {
+  return static_cast<PolkadotTxStateManager&>(tx_state_manager());
+}
+
+void PolkadotTxManager::OnGetChainMetadataForUnapproved(
+    mojom::NewPolkadotTransactionParamsPtr params,
+    AddUnapprovedPolkadotTransactionCallback callback,
+    base::expected<PolkadotChainMetadata, std::string> chain_metadata) {
+  if (!chain_metadata.has_value()) {
+    return std::move(callback).Run(false, "", chain_metadata.error());
+  }
+
+  auto recipient =
+      ParsePolkadotAccount(params->to, (*chain_metadata)->ss58_prefix);
+  if (!recipient.has_value()) {
+    return std::move(callback).Run(false, "", WalletInternalErrorMessage());
+  }
+
+  std::string chain_id = params->chain_id;
+  auto account_id = params->from.Clone();
+  auto transfer_all = params->sending_max_amount;
+  auto send_amount = MojomToUint128(params->amount);
+  std::optional<uint32_t> asset_id;
+  if (!params->asset_id.is_null()) {
+    asset_id = params->asset_id->id;
+  }
+
+  std::variant<uint128_t, TransferAll> transfer_amount = send_amount;
+  if (transfer_all) {
+    transfer_amount = TransferAll{};
+  }
+
+  polkadot_wallet_service_->GetFeeEstimate(
+      std::move(chain_id), std::move(account_id), std::move(transfer_amount),
+      asset_id, recipient->pubkey,
+      base::BindOnce(&PolkadotTxManager::OnGetFeeForUnapproved,
+                     weak_ptr_factory_.GetWeakPtr(),
+                     std::move(chain_metadata.value()), std::move(params),
+                     std::move(callback)));
+}
+
+void PolkadotTxManager::OnGetFeeForUnapproved(
+    PolkadotChainMetadata chain_metadata,
+    mojom::NewPolkadotTransactionParamsPtr params,
+    AddUnapprovedPolkadotTransactionCallback callback,
+    base::expected<PolkadotWalletService::FeeEstimate, std::string>
+        fee_estimate) {
+  if (!fee_estimate.has_value()) {
+    return std::move(callback).Run(false, "", WalletInternalErrorMessage());
+  }
+
+  // We don't support Polkadot dApps so far, so all transactions come from
+  // wallet origin.
+  std::optional<url::Origin> origin = std::nullopt;
+
+  auto recipient =
+      ParsePolkadotAccount(params->to, chain_metadata->ss58_prefix);
+  // We should have already verified this upon retrieving the chain metadata.
+  CHECK(recipient.has_value());
+
+  auto amount = MojomToUint128(params->amount);
+  if (params->sending_max_amount && params->asset_id.is_null()) {
+    // If we're sending the maximum amount, the front-end will refuse to let the
+    // user sign due to insufficient balances i.e. `(x + fee) > x` for all x. We
+    // manually adjust this and if our fee is larger than our max send amount,
+    // we can go ahead and reject the transaction.
+    base::CheckedNumeric<uint128_t> checked_amount = amount;
+    checked_amount -= fee_estimate->partial_fee;
+    if (!checked_amount.AssignIfValid(&amount)) {
+      return std::move(callback).Run(false, "",
+                                     WalletInsufficientBalanceErrorMessage());
+    }
+  }
+
+  PolkadotTxMeta tx_metadata;
+
+  PolkadotTransaction tx;
+  tx.set_amount(amount);
+  tx.set_fee(fee_estimate->partial_fee);
+  tx.set_recipient(*recipient);
+  tx.set_transfer_all(params->sending_max_amount);
+  tx.set_signature_payload(std::move(fee_estimate->signature_payload));
+  if (!params->asset_id.is_null()) {
+    tx.set_asset_id(params->asset_id->id);
+  }
+  tx_metadata.set_tx(std::move(tx));
+
+  tx_metadata.set_from(params->from);
+  tx_metadata.set_id(TxMeta::GenerateMetaID());
+  tx_metadata.set_origin(
+      origin.value_or(url::Origin::Create(GURL("chrome://wallet"))));
+  tx_metadata.set_created_time(base::Time::Now());
+  tx_metadata.set_status(mojom::TransactionStatus::Unapproved);
+  tx_metadata.set_chain_id(params->chain_id);
+  tx_metadata.set_swap_info(std::move(params->swap_info));
+
+  if (!tx_state_manager().AddOrUpdateTx(tx_metadata)) {
+    std::move(callback).Run(false, "", WalletInternalErrorMessage());
+    return;
+  }
+
+  std::move(callback).Run(true, tx_metadata.id(), "");
+}
+
+void PolkadotTxManager::SpeedupOrCancelTransaction(
+    const std::string& tx_meta_id,
+    bool cancel,
+    SpeedupOrCancelTransactionCallback callback) {
+  NOTIMPLEMENTED_LOG_ONCE();
+
+  std::move(callback).Run(false, "", "Not implemented");
+}
+
+void PolkadotTxManager::RetryTransaction(const std::string& tx_meta_id,
+                                         RetryTransactionCallback callback) {
+  NOTIMPLEMENTED_LOG_ONCE();
+
+  std::move(callback).Run(false, "", "Not implemented");
+}
+
+void PolkadotTxManager::Reset() {
+  NOTIMPLEMENTED_LOG_ONCE();
+}
+
+mojom::CoinType PolkadotTxManager::GetCoinType() const {
+  return mojom::CoinType::DOT;
+}
+
+void PolkadotTxManager::UpdatePendingTransactions(
+    const std::optional<std::string>& chain_id) {
+  auto txs = tx_state_manager().GetTransactionsByStatus(
+      chain_id, mojom::TransactionStatus::Submitted, std::nullopt);
+
+  // Grab all the current pending chain ids for this transaction manager. If we
+  // were passed a chain_id, we clear it from the current list. This is because
+  // we need to cleanup our timers from the previous runs. So if we probe
+  // transaction set again and we have no more Submitted transactions, we can go
+  // ahead and stop the block tracker.
+  auto new_pending_chain_ids = pending_chain_ids();
+  if (chain_id.has_value()) {
+    new_pending_chain_ids.erase(chain_id.value());
+  }
+
+  for (auto& tx : txs) {
+    auto polkadot_tx =
+        base::WrapUnique(static_cast<PolkadotTxMeta*>(tx.release()));
+    if (!polkadot_tx->tx()) {
+      // Maybe we should treat this as an error?
+      continue;
+    }
+
+    const auto* extrinsic_metadata = polkadot_tx->tx()->extrinsic_metadata();
+    if (!extrinsic_metadata) {
+      continue;
+    }
+
+    new_pending_chain_ids.insert(polkadot_tx->chain_id());
+
+    auto tx_meta_id = polkadot_tx->id();
+    if (polkadot_transaction_status_tasks_.contains(tx_meta_id)) {
+      continue;
+    }
+
+    auto task_ptr = PolkadotTransactionStatusTask::Create(
+        *polkadot_wallet_service_, keyring_service(),
+        polkadot_tx->from()->Clone(), polkadot_tx->chain_id(),
+        extrinsic_metadata->extrinsic(), extrinsic_metadata->block_num(),
+        extrinsic_metadata->mortality_period());
+
+    if (!task_ptr) {
+      continue;
+    }
+
+    auto* task = task_ptr.get();
+    polkadot_transaction_status_tasks_.emplace(std::move(tx_meta_id),
+                                               std::move(task_ptr));
+
+    task->Start(base::BindOnce(&PolkadotTxManager::OnTransactionStatusResolved,
+                               weak_ptr_factory_.GetWeakPtr(),
+                               std::move(polkadot_tx)));
+  }
+
+  CheckIfBlockTrackerShouldRun(new_pending_chain_ids);
+}
+
+void PolkadotTxManager::OnTransactionStatusResolved(
+    std::unique_ptr<PolkadotTxMeta> polkadot_tx,
+    base::expected<
+        std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
+        std::string> result) {
+  CHECK(polkadot_tx->tx());
+  polkadot_transaction_status_tasks_.erase(polkadot_tx->id());
+
+  if (!result.has_value()) {
+    return;
+  }
+
+  auto [status, fee_paid] = result.value();
+
+  const auto adjust_transfer_all_amount = [=](PolkadotTransaction* tx) {
+    if (tx->transfer_all() && !tx->asset_id().has_value()) {
+      // If we're using transfer_all, we had to manually adjust the tx amount.
+      // Because the actual fee can differ, our new amount can differ as well.
+      // Undo our previous operation and apply the new fee, storing the
+      // updated send amount. Return true or false if we were able to adjust the
+      // amount without overflow/underflow, which is possible assuming a
+      // malicious peer response.
+      const uint128_t old_fee = tx->fee();
+      base::CheckedNumeric<uint128_t> amount = tx->amount();
+      amount += old_fee;
+      amount -= fee_paid.value();
+      if (!amount.IsValid()) {
+        return false;
+      }
+      tx->set_amount(amount.ValueOrDie());
+    }
+    return true;
+  };
+
+  switch (status) {
+    case PolkadotTransactionStatus::kSuccess:
+      CHECK(fee_paid.has_value());
+      if (!adjust_transfer_all_amount(polkadot_tx->tx())) {
+        // Leave the tx untouched in a Submitted status.
+        return;
+      }
+      polkadot_tx->set_status(mojom::TransactionStatus::Confirmed);
+      polkadot_tx->set_confirmed_time(base::Time::Now());
+      polkadot_tx->tx()->set_fee(*fee_paid);
+      break;
+
+    case PolkadotTransactionStatus::kFailed:
+      CHECK(fee_paid.has_value());
+      if (!adjust_transfer_all_amount(polkadot_tx->tx())) {
+        // Leave the tx untouched in a Submitted status.
+        return;
+      }
+      polkadot_tx->set_status(mojom::TransactionStatus::Error);
+      polkadot_tx->tx()->set_fee(*fee_paid);
+      break;
+
+    case PolkadotTransactionStatus::kNotFound:
+      // If an extrinsic was not included in a finalized block, it doesn't incur
+      // a fee.
+      polkadot_tx->set_status(mojom::TransactionStatus::Dropped);
+      polkadot_tx->tx()->set_fee(0);
+      break;
+
+    case PolkadotTransactionStatus::kInvalidResponse:
+      // Don't clear our estimated fee here. This case only occurs when we've
+      // failed to parse the events blob or there was a failed integrity check
+      // within it. Regardless, the user's extrinsic is still included inside of
+      // a finalized block which means a fee was incurred.
+      return;
+
+    case PolkadotTransactionStatus::kNotFinalized:
+      return;
+  }
+
+  tx_state_manager().AddOrUpdateTx(*polkadot_tx);
+}
+
+void PolkadotTxManager::OnLatestBlock(const std::string& chain_id,
+                                      uint32_t block_num) {
+  UpdatePendingTransactions(chain_id);
+}
+
+PolkadotBlockTracker& PolkadotTxManager::GetPolkadotBlockTracker() {
+  return static_cast<PolkadotBlockTracker&>(block_tracker());
+}
+
+}  // namespace brave_wallet

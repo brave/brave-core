@@ -1,0 +1,34 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/common/typescript.gni")
+import("//tools/grit/grit_rule.gni")
+import("//tools/grit/repack.gni")
+
+assert(enable_brave_wallet)
+
+transpile_web_ui("brave_wallet_script_resources") {
+  output_module = false
+  entry_points = [
+    [
+      "ethereum_provider_script",
+      rebase_path("ethereum_provider.js"),
+    ],
+    [
+      "solana_provider_script",
+      rebase_path("solana_provider.js"),
+    ],
+  ]
+
+  resource_name = "brave_wallet_script"
+  imports_from = [ "//brave/components/brave_wallet/resources/" ]
+}
+
+pack_web_resources("ethereum_provider_generated_resources") {
+  resource_name = "brave_wallet_script"
+  output_dir = "$root_gen_dir/brave/components/brave_wallet/resources"
+  deps = [ ":brave_wallet_script_resources" ]
+}

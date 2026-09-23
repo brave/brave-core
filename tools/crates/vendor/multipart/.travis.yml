@@ -1,0 +1,28 @@
+language: rust
+cache: cargo
+branches:
+  except:
+  - fuzzing
+rust:
+  - 1.33.0
+  - stable
+  - beta
+  - nightly
+os:
+  - linux
+  - osx
+env:
+  global:
+   - RUST_LOG=multipart=trace RUST_BACKTRACE=1 ARGS=
+matrix:
+  include:
+    - rust: stable
+      env: ARGS+=--no-default-features --features "nickel"
+    - rust: stable
+      env: ARGS+=--features "use_arc_str"
+    - rust: nightly
+      env: ARGS+=--features "nightly,rocket"
+script:
+  - cargo build --verbose $ARGS;
+  - cargo test --verbose $ARGS -- --test-threads=1;
+  - cargo doc --verbose $ARGS;

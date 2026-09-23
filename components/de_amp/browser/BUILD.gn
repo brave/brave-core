@@ -1,0 +1,26 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("browser") {
+  sources = [
+    "de_amp_body_handler.cc",
+    "de_amp_body_handler.h",
+    "de_amp_util.cc",
+    "de_amp_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/body_sniffer",
+    "//brave/components/de_amp/common",
+    "//components/prefs",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//third_party/re2",
+    "//url",
+  ]
+}

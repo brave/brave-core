@@ -1,0 +1,5 @@
+include_rules = [
+  "+brave/components/skus/common",
+  "+brave/components/skus/browser",
+  "+brave/components/constants",
+]

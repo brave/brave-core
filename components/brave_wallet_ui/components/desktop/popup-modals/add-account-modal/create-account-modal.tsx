@@ -1,0 +1,313 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+import { assert } from 'chrome://resources/js/assert.js'
+import * as React from 'react'
+import { useHistory, useLocation, useParams } from 'react-router'
+import { InputEventDetail } from '@brave/leo/react/input'
+import Button from '@brave/leo/react/button'
+import { showAlert } from '@brave/leo/react/alertCenter'
+
+// utils
+import { getLocale } from '$web-common/locale'
+import {
+  getAccountsForNetwork,
+  keyringIdForNewAccount,
+} from '../../../../utils/account-utils'
+
+// options
+import { CreateAccountOptions } from '../../../../options/create-account-options'
+
+// types
+import {
+  BraveWallet,
+  CreateAccountOptionsType,
+  WalletRoutes,
+} from '../../../../constants/types'
+
+// components
+import PopupModal from '..'
+import { SelectAccountType } from './select-account-type'
+
+// selectors
+import { WalletSelectors } from '../../../../common/selectors'
+
+// hooks
+import {
+  useSafeWalletSelector, //
+} from '../../../../common/hooks/use-safe-selector'
+import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
+import {
+  useAddAccountMutation,
+  useGetHiddenAccountsQuery,
+  useGetVisibleNetworksQuery,
+} from '../../../../common/slices/api.slice'
+
+// Styles
+import {
+  CreateAccountContent,
+  CreateAccountWrapper,
+  Input,
+  NetworkIcon,
+  NetworkName,
+  NetworkDescription,
+} from './style'
+import { Row } from '../../../shared/style'
+
+interface Params {
+  accountTypeName: string
+}
+
+export const CreateAccountModal = () => {
+  // routing
+  const history = useHistory()
+  const { pathname: walletLocation } = useLocation()
+  const { accountTypeName } = useParams<Params>()
+
+  // redux
+  const isBitcoinEnabled = useSafeWalletSelector(
+    WalletSelectors.isBitcoinEnabled,
+  )
+  const isZCashEnabled = useSafeWalletSelector(WalletSelectors.isZCashEnabled)
+  const isCardanoEnabled = useSafeWalletSelector(
+    WalletSelectors.isCardanoEnabled,
+  )
+  const isPolkadotEnabled = useSafeWalletSelector(
+    WalletSelectors.isPolkadotEnabled,
+  )
+
+  // queries
+  const { accounts } = useAccountsQuery()
+  const { data: hiddenAccounts = [] } = useGetHiddenAccountsQuery()
+  const { data: visibleNetworks = [] } = useGetVisibleNetworksQuery()
+
+  // mutations
+  const [addAccount] = useAddAccountMutation()
+
+  // state
+  const [fullLengthAccountName, setFullLengthAccountName] =
+    React.useState<string>('')
+  const accountName = fullLengthAccountName.substring(0, 30)
+
+  // memos
+  const createAccountOptions = React.useMemo(() => {
+    return CreateAccountOptions({
+      visibleNetworks,
+      isFilecoinEnabled: true,
+      isBitcoinEnabled,
+      isZCashEnabled,
+      isCardanoEnabled,
+      isPolkadotEnabled,
+    })
+  }, [
+    visibleNetworks,
+    isBitcoinEnabled,
+    isZCashEnabled,
+    isCardanoEnabled,
+    isPolkadotEnabled,
+  ])
+
+  const selectedAccountType = React.useMemo(() => {
+    return createAccountOptions.find((option) => {
+      return option.name.toLowerCase() === accountTypeName?.toLowerCase()
+    })
+  }, [accountTypeName, createAccountOptions])
+
+  const suggestedAccountName = React.useMemo(() => {
+    const allAccounts = [...accounts, ...hiddenAccounts]
+    // Polkadot accounts are scoped by keyring (mainnet vs testnet), not coin,
+    // so defer to getAccountsForNetwork for keyring-aware counting.
+    const matchingAccounts =
+      selectedAccountType?.coin === BraveWallet.CoinType.DOT
+      && selectedAccountType.fixedNetwork
+        ? getAccountsForNetwork(
+            {
+              coin: selectedAccountType.coin,
+              chainId: selectedAccountType.fixedNetwork,
+            },
+            allAccounts,
+          )
+        : allAccounts.filter(
+            (account) => account.accountId.coin === selectedAccountType?.coin,
+          )
+    const accountTypeLength = matchingAccounts.length + 1
+    return `${
+      selectedAccountType?.name //
+    } ${getLocale(S.BRAVE_WALLET_SUBVIEW_ACCOUNT)} ${
+      //
+      accountTypeLength
+    }`
+  }, [accounts, hiddenAccounts, selectedAccountType])
+
+  const targetKeyringId = React.useMemo(() => {
+    if (!selectedAccountType) {
+      return
+    }
+    let network
+    if (
+      [
+        BraveWallet.CoinType.FIL,
+        BraveWallet.CoinType.BTC,
+        BraveWallet.CoinType.ZEC,
+        BraveWallet.CoinType.ADA,
+        BraveWallet.CoinType.DOT,
+      ].includes(selectedAccountType.coin)
+    ) {
+      network = selectedAccountType.fixedNetwork
+      assert(network)
+    }
+
+    return keyringIdForNewAccount(selectedAccountType.coin, network)
+  }, [selectedAccountType])
+
+  // computed
+  const isDisabled = accountName === ''
+  const modalTitle = selectedAccountType
+    ? getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT).replace(
+        '$1',
+        selectedAccountType.name,
+      )
+    : getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT_BUTTON)
+
+  // methods
+  const onClickClose = React.useCallback(() => {
+    history.push(WalletRoutes.Accounts)
+  }, [history])
+
+  const onClickBack = React.useCallback(() => {
+    history.goBack()
+  }, [history])
+
+  const handleAccountNameChanged = React.useCallback(
+    (detail: InputEventDetail) => {
+      setFullLengthAccountName(detail.value)
+    },
+    [],
+  )
+
+  const onClickCreateAccount = React.useCallback(async () => {
+    if (!selectedAccountType || targetKeyringId === undefined || isDisabled) {
+      return
+    }
+
+    try {
+      await addAccount({
+        coin: selectedAccountType.coin,
+        keyringId: targetKeyringId,
+        accountName,
+      }).unwrap()
+
+      showAlert({
+        type: 'success',
+        content: getLocale(S.BRAVE_WALLET_ACCOUNT_CREATED_SUCCESSFULLY),
+        actions: [],
+      })
+
+      if (walletLocation.includes(WalletRoutes.Accounts)) {
+        history.push(WalletRoutes.Accounts)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }, [
+    accountName,
+    addAccount,
+    history,
+    isDisabled,
+    selectedAccountType,
+    targetKeyringId,
+    walletLocation,
+  ])
+
+  const handleKeyDown = React.useCallback(
+    (detail: InputEventDetail) => {
+      if ((detail.innerEvent as unknown as KeyboardEvent).key === 'Enter') {
+        onClickCreateAccount()
+      }
+    },
+    [onClickCreateAccount],
+  )
+
+  const pickNewAccountType = React.useCallback(
+    (option: CreateAccountOptionsType) => () => {
+      history.push(
+        WalletRoutes.CreateAccountModal.replace(
+          ':accountTypeName?',
+          option.name.toLowerCase(),
+        ),
+      )
+    },
+    [history],
+  )
+
+  // effects
+  React.useEffect(() => {
+    setFullLengthAccountName(suggestedAccountName)
+  }, [suggestedAccountName])
+
+  // render
+  return (
+    <PopupModal
+      title={modalTitle}
+      onClose={onClickClose}
+      onBack={selectedAccountType ? onClickBack : undefined}
+      headerPaddingHorizontal='32px'
+      headerPaddingVertical='32px'
+      headerPaddingMobile='20px'
+    >
+      {selectedAccountType && (
+        <CreateAccountWrapper width='100%'>
+          <CreateAccountContent
+            width='100%'
+            gap='16px'
+          >
+            <NetworkIcon src={selectedAccountType.icon} />
+            <NetworkName textColor='primary'>
+              {selectedAccountType.name}
+            </NetworkName>
+            <NetworkDescription textColor='tertiary'>
+              {selectedAccountType.description}
+            </NetworkDescription>
+            <Input
+              value={accountName}
+              placeholder={getLocale(S.BRAVE_WALLET_ACCOUNT_NAME)}
+              onInput={handleAccountNameChanged}
+              onKeyDown={handleKeyDown}
+              showErrors={isDisabled}
+              maxlength={BraveWallet.ACCOUNT_NAME_MAX_CHARACTER_LENGTH}
+            >
+              {getLocale(S.BRAVE_WALLET_ADD_ACCOUNT_PLACEHOLDER)}
+            </Input>
+          </CreateAccountContent>
+
+          <Row gap='16px'>
+            <Button
+              onClick={onClickClose}
+              kind='outline'
+            >
+              {getLocale(S.BRAVE_WALLET_BUTTON_CANCEL)}
+            </Button>
+            <Button
+              onClick={onClickCreateAccount}
+              isDisabled={isDisabled}
+              kind='filled'
+            >
+              {getLocale(S.BRAVE_WALLET_CREATE_ACCOUNT_BUTTON)}
+            </Button>
+          </Row>
+        </CreateAccountWrapper>
+      )}
+
+      {!selectedAccountType && (
+        <SelectAccountType
+          createAccountOptions={createAccountOptions}
+          onSelectAccountType={pickNewAccountType}
+        />
+      )}
+    </PopupModal>
+  )
+}
+
+export default CreateAccountModal

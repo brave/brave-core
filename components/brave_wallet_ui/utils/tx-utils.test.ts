@@ -1,0 +1,2036 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+import { getLocale } from '../../common/locale'
+import {
+  getMockedTransactionInfo,
+  mockAccount,
+  mockCardanoAccount,
+  mockNetwork,
+  mockPolkadotMainnetNetwork,
+  mockSolanaAccount,
+} from '../common/constants/mocks'
+import { NATIVE_EVM_ASSET_CONTRACT_ADDRESS } from '../common/constants/magics'
+import { BraveWallet, SerializableTransactionInfo } from '../constants/types'
+import {
+  mockBasicAttentionToken,
+  mockBitcoinErc20Token,
+  mockBtcToken,
+  mockErc20TokensList,
+  mockEthToken,
+  mockFilToken,
+  mockMoonCatNFT,
+  mockSolToken,
+  mockSplBat,
+  mockZecToken,
+} from '../stories/mock-data/mock-asset-options'
+import {
+  NetworksRegistry,
+  getNetworkId,
+  networkEntityAdapter,
+} from '../common/slices/entities/network.entity'
+import {
+  createMockTransactionInfo,
+  mockATAInstruction,
+  mockBtcSendTransaction,
+  mockEthSendTransaction,
+  mockFilSendTransaction,
+  mockSolanaTransactionInfo,
+  mockTransactionInfo,
+  mockZecSendTransaction,
+} from '../stories/mock-data/mock-transaction-info'
+import { mockCardanoMainnetNetwork } from '../stories/mock-data/mock-networks'
+import {
+  mockEthAccount,
+  mockPolkadotAccount,
+} from '../stories/mock-data/mock-wallet-accounts'
+import Amount from './amount'
+import { bigIntToUint128 } from './polkadot-utils'
+import {
+  accountHasInsufficientFundsForGas,
+  accountHasInsufficientFundsForTransaction,
+  findTransactionToken,
+  getIsRevokeApprovalTx,
+  getIsSolanaAssociatedTokenAccountCreation,
+  getTransactionFormattedSendCurrencyTotal,
+  getTransactionGas,
+  getTransactionMemo,
+  getTransactionStatusString,
+  getTransactionTokenSymbol,
+  getTransactionTransferredToken,
+  getTransactionTransferredValue,
+  getTransactionTypeName,
+  isCancelTransaction,
+  parseSwapInfo,
+} from './tx-utils'
+
+const mockCardanoMinswapTokenIdHex = 'deadbeefcafe'
+
+const mockCardanoMinswapToken = {
+  contractAddress: mockCardanoMinswapTokenIdHex,
+  name: 'Minswap',
+  symbol: 'MIN',
+  decimals: 6,
+  visible: true,
+  tokenId: '',
+  coingeckoId: '',
+  chainId: mockCardanoMainnetNetwork.chainId,
+  coin: BraveWallet.CoinType.ADA,
+  isCompressed: false,
+  isErc20: false,
+  isErc721: false,
+  isErc1155: false,
+  splTokenProgram: BraveWallet.SPLTokenProgram.kUnsupported,
+  isNft: false,
+  isSpam: false,
+  zcashTokenType: BraveWallet.ZCashTokenType.kNone,
+  logo: '',
+} as BraveWallet.BlockchainToken
+
+const mockCardanoSendTokenTransaction: SerializableTransactionInfo = {
+  id: 'cardano-send-min-tx',
+  chainId: mockCardanoMainnetNetwork.chainId,
+  fromAccountId: mockCardanoAccount.accountId,
+  txHash: '',
+  txStatus: BraveWallet.TransactionStatus.Confirmed,
+  txType: BraveWallet.TransactionType.CardanoSendToken,
+  txParams: [],
+  txArgs: [],
+  createdTime: { microseconds: 0 },
+  submittedTime: { microseconds: 0 },
+  confirmedTime: { microseconds: 0 },
+  originInfo: undefined,
+  effectiveRecipient: '',
+  isRetriable: false,
+  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
+  txDataUnion: {
+    ethTxData1559: undefined,
+    ethTxData: undefined,
+    solanaTxData: undefined,
+    filTxData: undefined,
+    btcTxData: undefined,
+    zecTxData: undefined,
+    polkadotTxData: undefined,
+    cardanoTxData: {
+      to: 'addr1qxytest',
+      sendingLovelace: BigInt(0),
+      sendingToken: {
+        tokenIdHex: mockCardanoMinswapTokenIdHex,
+        value: BigInt(1_000_000),
+      },
+      fee: BigInt(170_000),
+      inputs: [],
+      outputs: [],
+    },
+  },
+}
+
+const mockPolkadotAssetId = 1984
+
+const mockPolkadotAssetToken = {
+  // DOT asset tokens are keyed by their (decimal) asset id.
+  contractAddress: String(mockPolkadotAssetId),
+  name: 'Brave Bucks',
+  symbol: 'XBBC',
+  // Deliberately different from the network's 10 decimals.
+  decimals: 12,
+  visible: true,
+  tokenId: '',
+  coingeckoId: '',
+  chainId: mockPolkadotMainnetNetwork.chainId,
+  coin: BraveWallet.CoinType.DOT,
+  isCompressed: false,
+  isErc20: false,
+  isErc721: false,
+  isErc1155: false,
+  splTokenProgram: BraveWallet.SPLTokenProgram.kUnsupported,
+  isNft: false,
+  isSpam: false,
+  zcashTokenType: BraveWallet.ZCashTokenType.kNone,
+  logo: '',
+} as BraveWallet.BlockchainToken
+
+const mockPolkadotNativeToken = {
+  ...mockPolkadotAssetToken,
+  contractAddress: '',
+  name: 'Polkadot',
+  symbol: 'DOT',
+  decimals: mockPolkadotMainnetNetwork.decimals,
+} as BraveWallet.BlockchainToken
+
+/**
+ * Polkadot has no dedicated token txType — both a native send and a
+ * `pallet_assets` transfer are `Other`, discriminated only by `assetId`.
+ */
+const makePolkadotTransaction = ({
+  amount,
+  fee,
+  assetId,
+  sendingMaxAmount = false,
+  chainId = mockPolkadotMainnetNetwork.chainId,
+}: {
+  amount: bigint
+  fee: bigint
+  assetId?: number
+  sendingMaxAmount?: boolean
+  chainId?: string
+}): SerializableTransactionInfo => ({
+  id: 'polkadot-send-tx',
+  chainId,
+  fromAccountId: mockPolkadotAccount.accountId,
+  txHash: '',
+  txStatus: BraveWallet.TransactionStatus.Unapproved,
+  txType: BraveWallet.TransactionType.Other,
+  txParams: [],
+  txArgs: [],
+  createdTime: { microseconds: 0 },
+  submittedTime: { microseconds: 0 },
+  confirmedTime: { microseconds: 0 },
+  originInfo: undefined,
+  effectiveRecipient: '',
+  isRetriable: false,
+  swapInfo: undefined,
+  swapInfoDeprecated: undefined,
+  txDataUnion: {
+    ethTxData1559: undefined,
+    ethTxData: undefined,
+    solanaTxData: undefined,
+    filTxData: undefined,
+    btcTxData: undefined,
+    zecTxData: undefined,
+    cardanoTxData: undefined,
+    polkadotTxData: {
+      to: 'mockPolkadotRecipient',
+      amount: bigIntToUint128(amount),
+      fee: bigIntToUint128(fee),
+      sendingMaxAmount,
+      assetId: assetId === undefined ? undefined : { id: assetId },
+      signaturePayload: undefined,
+    },
+  },
+})
+
+/** 1 XBBC @ 12 decimals. */
+const mockPolkadotAssetSendTransaction = makePolkadotTransaction({
+  amount: BigInt(1_000_000_000_000),
+  fee: BigInt(1_000_000),
+  assetId: mockPolkadotAssetId,
+})
+
+/** 1 DOT @ 10 decimals. */
+const mockPolkadotSendTransaction = makePolkadotTransaction({
+  amount: BigInt(10_000_000_000),
+  fee: BigInt(1_000_000),
+})
+
+describe('Check Transaction Status Strings Value', () => {
+  test('Transaction ID 0 should return Unapproved', () => {
+    expect(getTransactionStatusString(0)).toEqual(
+      S.BRAVE_WALLET_TRANSACTION_STATUS_UNAPPROVED,
+    )
+  })
+  test('Transaction ID 1 should return Approved', () => {
+    expect(getTransactionStatusString(1)).toEqual(
+      S.BRAVE_WALLET_TRANSACTION_STATUS_APPROVED,
+    )
+  })
+
+  test('Transaction ID 2 should return Rejected', () => {
+    expect(getTransactionStatusString(2)).toEqual(
+      S.BRAVE_WALLET_TRANSACTION_STATUS_REJECTED,
+    )
+  })
+
+  test('Transaction ID 3 should return Submitted', () => {
+    expect(getTransactionStatusString(3)).toEqual(
+      S.BRAVE_WALLET_TRANSACTION_STATUS_SUBMITTED,
+    )
+  })
+
+  test('Transaction ID 4 should return Confirmed', () => {
+    expect(getTransactionStatusString(4)).toEqual(
+      S.BRAVE_WALLET_TRANSACTION_STATUS_CONFIRMED,
+    )
+  })
+
+  test('Transaction ID 5 should return Error', () => {
+    expect(getTransactionStatusString(5)).toEqual(
+      S.BRAVE_WALLET_TRANSACTION_STATUS_ERROR,
+    )
+  })
+
+  test('Transaction ID 6 should return Dropped', () => {
+    expect(getTransactionStatusString(6)).toEqual(
+      S.BRAVE_WALLET_TRANSACTION_STATUS_DROPPED,
+    )
+  })
+
+  test('Transaction ID 7 should return Signed', () => {
+    expect(getTransactionStatusString(7)).toEqual(
+      S.BRAVE_WALLET_TRANSACTION_STATUS_SIGNED,
+    )
+  })
+
+  // Follow up issue to fix test via https://github.com/brave/brave-browser/issues/43583
+
+  // test('Transaction ID 8 should return an empty string', () => {
+  //   expect(getTransactionStatusString(8)).toEqual('')
+  // })
+})
+
+describe('getTransactionGas()', () => {
+  it('should get the gas values of a FIL transaction', () => {
+    const txGas = getTransactionGas(mockFilSendTransaction)
+
+    const { filTxData } = mockFilSendTransaction.txDataUnion
+
+    expect(txGas.maxFeePerGas).toBe(filTxData.gasFeeCap || '')
+    expect(txGas.maxPriorityFeePerGas).toBe(filTxData.gasPremium)
+    expect(txGas.gasPrice).toBe(
+      new Amount(filTxData.gasFeeCap)
+        .minus(filTxData.gasPremium)
+        .value?.toString() || '',
+    )
+  })
+  it('should get the gas values of an EVM transaction', () => {
+    const txGas = getTransactionGas(mockTransactionInfo)
+
+    const { ethTxData1559 } = mockTransactionInfo.txDataUnion
+
+    expect(txGas.maxFeePerGas).toBe(ethTxData1559?.maxFeePerGas || '')
+    expect(txGas.maxPriorityFeePerGas).toBe(
+      ethTxData1559?.maxPriorityFeePerGas || '',
+    )
+    expect(txGas.gasPrice).toBe(ethTxData1559?.baseData.gasPrice || '')
+  })
+})
+
+describe('parseSwapInfo', () => {
+  const createMockNetworksRegistry = (): NetworksRegistry => {
+    const sourceNetworkId = getNetworkId({
+      chainId: mockBasicAttentionToken.chainId,
+    })
+    const destinationNetworkId = getNetworkId({
+      chainId: mockBitcoinErc20Token.chainId,
+    })
+
+    return {
+      ...networkEntityAdapter.getInitialState(),
+      entities: {
+        [sourceNetworkId]: mockNetwork,
+        [destinationNetworkId]: mockNetwork,
+      },
+      ids: [sourceNetworkId, destinationNetworkId],
+      hiddenIds: [],
+      offRampChainIds: [],
+      ankrChainIds: [],
+      swapChainIds: [],
+    }
+  }
+
+  it('should parse swap info with new structure (source/destination)', () => {
+    const networksRegistry = createMockNetworksRegistry()
+    const {
+      sourceToken,
+      sourceAmount,
+      destinationToken,
+      destinationAmount,
+      destinationAmountMin,
+      destinationAddress,
+      provider,
+    } = parseSwapInfo({
+      tokensList: mockErc20TokensList,
+      swapInfo: {
+        sourceCoin: mockBasicAttentionToken.coin,
+        sourceChainId: mockBasicAttentionToken.chainId,
+        sourceTokenAddress: mockBasicAttentionToken.contractAddress,
+        sourceAmount: '1000000000000000000', // 1 token with 18 decimals
+        destinationCoin: mockBitcoinErc20Token.coin,
+        destinationChainId: mockBitcoinErc20Token.chainId,
+        destinationTokenAddress: mockBitcoinErc20Token.contractAddress,
+        destinationAmount: '2000000000000000000', // 2 tokens
+        destinationAmountMin: '1900000000000000000', // 1.9 tokens
+        recipient: '0x1234567890123456789012345678901234567890',
+        provider: BraveWallet.SwapProvider.kZeroEx,
+      },
+      networksRegistry,
+    })
+
+    expect(sourceToken).toBeDefined()
+    expect(destinationToken).toBeDefined()
+    expect(sourceToken?.contractAddress).toBe(
+      mockBasicAttentionToken.contractAddress,
+    )
+    expect(destinationToken?.contractAddress).toBe(
+      mockBitcoinErc20Token.contractAddress,
+    )
+    expect(sourceAmount.format()).toEqual('1000000000000000000')
+    expect(
+      sourceAmount.divideByDecimals(mockBasicAttentionToken.decimals).format(6),
+    ).toEqual('1')
+    expect(destinationAmount.format()).toEqual('2000000000000000000')
+    expect(destinationAmount.divideByDecimals(18).format(6)).toEqual('2')
+    expect(destinationAmountMin.divideByDecimals(18).format(6)).toEqual('1.9')
+    expect(destinationAddress).toBe(
+      '0x1234567890123456789012345678901234567890',
+    )
+    expect(provider).toBe(BraveWallet.SwapProvider.kZeroEx)
+  })
+
+  it('should handle undefined swapInfo', () => {
+    const networksRegistry = createMockNetworksRegistry()
+    const {
+      sourceToken,
+      sourceAmount,
+      destinationToken,
+      destinationAmount,
+      destinationAmountMin,
+      destinationAddress,
+      provider,
+    } = parseSwapInfo({
+      tokensList: mockErc20TokensList,
+      swapInfo: undefined,
+      networksRegistry,
+    })
+
+    expect(sourceToken).toBeUndefined()
+    expect(destinationToken).toBeUndefined()
+    expect(sourceAmount.format()).toEqual('')
+    expect(destinationAmount.format()).toEqual('')
+    expect(destinationAmountMin.format()).toEqual('')
+    expect(destinationAddress).toBe('')
+    expect(provider).toBeUndefined()
+  })
+
+  it('should handle native assets correctly', () => {
+    const networksRegistry = createMockNetworksRegistry()
+    const {
+      sourceToken,
+      sourceAmount,
+      destinationToken,
+      destinationAmount,
+      destinationAmountMin,
+      destinationAddress,
+      provider,
+    } = parseSwapInfo({
+      tokensList: mockErc20TokensList,
+      swapInfo: {
+        sourceCoin: mockBasicAttentionToken.coin,
+        sourceChainId: mockBasicAttentionToken.chainId,
+        sourceTokenAddress: NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
+        sourceAmount: '1000000000000000000', // 1 token with 18 decimals
+        destinationCoin: mockBitcoinErc20Token.coin,
+        destinationChainId: mockBitcoinErc20Token.chainId,
+        destinationTokenAddress: NATIVE_EVM_ASSET_CONTRACT_ADDRESS,
+        destinationAmount: '2000000000000000000', // 2 tokens
+        destinationAmountMin: '',
+        recipient: '',
+        provider: BraveWallet.SwapProvider.kZeroEx,
+      },
+      networksRegistry,
+    })
+
+    expect(sourceToken).toBeDefined()
+    expect(destinationToken).toBeDefined()
+    expect(sourceToken?.contractAddress).toBe('')
+    expect(destinationToken?.contractAddress).toBe('')
+    expect(sourceAmount.format()).toEqual('1000000000000000000')
+    expect(destinationAmount.format()).toEqual('2000000000000000000')
+    expect(destinationAmountMin.format()).toEqual('')
+    expect(destinationAddress).toBe('')
+    expect(provider).toBe(BraveWallet.SwapProvider.kZeroEx)
+  })
+})
+
+describe('check for insufficient funds errors', () => {
+  describe.each([
+    ['ERC20Transfer', BraveWallet.TransactionType.ERC20Transfer],
+    ['ERC20Approve', BraveWallet.TransactionType.ERC20Approve],
+    ['ERC721TransferFrom', BraveWallet.TransactionType.ERC721TransferFrom],
+    [
+      'ERC721SafeTransferFrom',
+      BraveWallet.TransactionType.ERC721SafeTransferFrom,
+    ],
+    ['ETHSend', BraveWallet.TransactionType.ETHSend],
+    ['Other', BraveWallet.TransactionType.Other],
+  ])('%s', (_, txType) => {
+    it('should correctly indicate when funds are insufficient for gas', () => {
+      const mockTransactionInfo = getMockedTransactionInfo()
+
+      /**
+       * Account balance: 0.001 ETH
+       * Transaction value: 0 ETH
+       *
+       * Gas fee: 0.00315 ETH
+       *   - gasPrice: 150 Gwei
+       *   - gasLimit: 21000
+       */
+      const nativeBalanceRegistry = {
+        [mockTransactionInfo.chainId]: '1000000000000000', // 0.001 ETH
+      }
+
+      const accountNativeBalance =
+        nativeBalanceRegistry[mockTransactionInfo.chainId]
+
+      const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
+        accountNativeBalance,
+        gasFee: '3150000000000000', // 0.00315 ETH
+      })
+
+      expect(insufficientFundsForGasError).toBeTruthy()
+    })
+
+    it('should be false when funds are sufficient for gas', () => {
+      /**
+       * Account balance: 1 ETH
+       * Transaction value: 0 ETH
+       */
+      const nativeBalanceRegistry = {
+        '0x1': '1000000000000000000', // 1 ETH
+      }
+      const tokenBalanceRegistry = {
+        '0x07865c6e87b9f70255377e024ace6630c1eaa37f': '450346',
+        '0xc3f733ca98E0daD0386979Eb96fb1722A1A05E69': '450346',
+      }
+      /**
+       * Gas fee: 0.00315 ETH
+       */
+      const gasFee = '3150000000000000' // 0.00315 ETH
+      const mockTxData: BraveWallet.TxData1559 =
+        getMockedTransactionInfo().txDataUnion.ethTxData1559
+
+      const mockTransactionInfo = {
+        ...getMockedTransactionInfo(),
+        txArgs: [
+          BraveWallet.TransactionType.ERC20Approve,
+          BraveWallet.TransactionType.ERC20Transfer,
+        ].includes(txType)
+          ? ['mockRecipient', '0x0']
+          : ['mockOwner', 'mockRecipient', 'mockTokenID'],
+        txType,
+        txDataUnion: {
+          ethTxData: {} as any,
+          filTxData: undefined,
+          solanaTxData: undefined,
+          btcTxData: undefined,
+          ethTxData1559: {
+            ...mockTxData,
+            baseData: {
+              ...mockTxData.baseData,
+              value: '0x0',
+              gasLimit: '0x5208', // 21000
+              gasPrice: '0x22ecb25c00', // 150 Gwei
+            },
+          },
+        },
+      }
+
+      const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
+        accountNativeBalance:
+          nativeBalanceRegistry[mockTransactionInfo.chainId] || '',
+        gasFee,
+      })
+
+      const token = findTransactionToken(
+        mockTransactionInfo,
+        mockErc20TokensList,
+      )
+
+      const { sourceAmount, sourceToken } = parseSwapInfo({
+        swapInfo: mockTransactionInfo.swapInfo,
+        tokensList: mockErc20TokensList,
+        networksRegistry: undefined,
+      })
+
+      const accountNativeBalance =
+        nativeBalanceRegistry[mockTransactionInfo.chainId]
+
+      const sourceTokenBalance =
+        tokenBalanceRegistry[sourceToken?.contractAddress ?? '']
+
+      const tokenBalance = tokenBalanceRegistry[token?.contractAddress ?? '']
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance,
+        accountTokenBalance: tokenBalance || '',
+        gasFee,
+        sourceAmount,
+        sourceTokenBalance: sourceTokenBalance || '',
+        tx: mockTransactionInfo,
+        txAccount: mockEthAccount,
+      })
+
+      expect(insufficientFundsForGasError).toBeFalsy()
+      expect(insufficientFundsError).toBeFalsy()
+    })
+  })
+
+  describe.each([
+    ['ETHSend', BraveWallet.TransactionType.ETHSend],
+    ['Other', BraveWallet.TransactionType.Other],
+  ])('%s', (_, txType) => {
+    const mockTransactionInfo = getMockedTransactionInfo()
+    const transactionInfo: SerializableTransactionInfo = {
+      ...mockTransactionInfo,
+      txType,
+      txDataUnion: {
+        ethTxData: {} as any,
+        filTxData: undefined,
+        solanaTxData: undefined,
+        btcTxData: undefined,
+        zecTxData: undefined,
+        ethTxData1559: {
+          ...mockTransactionInfo.txDataUnion.ethTxData1559,
+          baseData: {
+            ...mockTransactionInfo.txDataUnion.ethTxData1559.baseData,
+            value: '0xde0b6b3a7640000', // 1 ETH
+            gasLimit: '0x5208', // 21000
+            gasPrice: '0x22ecb25c00', // 150 Gwei
+          },
+        },
+      },
+    }
+
+    it('should be true when funds are insufficient for send amount', () => {
+      /**
+       * Account balance: 0.004 ETH
+       * Transaction value: 1 ETH
+       *
+       * Gas fee: 0.00315 ETH
+       *   - gasPrice: 150 Gwei
+       *   - gasLimit: 21000
+       *
+       * Remarks: sufficient funds for gas, but not for send amount.
+       */
+      const gasFee = '3150000000000000' // 0.00315 ETH
+      const nativeBalanceRegistry = {
+        [transactionInfo.chainId]: '4000000000000000', // 0.004 ETH
+      }
+
+      const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
+        accountNativeBalance: nativeBalanceRegistry[transactionInfo.chainId],
+        gasFee,
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
+        accountTokenBalance: '',
+        gasFee,
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
+        tx: transactionInfo,
+        txAccount: mockEthAccount,
+      })
+
+      expect(insufficientFundsError).toBeTruthy()
+      expect(insufficientFundsForGasError).toBeFalsy()
+    })
+
+    it('should be false when funds are sufficient for send amount', () => {
+      /**
+       * Account balance: 1.00315 ETH
+       * Transaction value: 1 ETH
+       *
+       * Gas fee: 0.00315 ETH
+       *   - gasPrice: 150 Gwei
+       *   - gasLimit: 21000
+       *
+       * Remarks: sufficient funds for gas, and for send amount.
+       */
+      const gasFee = '3150000000000000' // 0.00315 ETH
+      const nativeBalanceRegistry = {
+        '0x1': '1003150000000000000', // 1.00315 ETH
+      }
+      const accountNativeBalance =
+        nativeBalanceRegistry[mockTransactionInfo.chainId] || ''
+
+      const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
+        accountNativeBalance,
+        gasFee,
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance,
+        accountTokenBalance: '',
+        gasFee,
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
+        tx: mockTransactionInfo,
+        txAccount: mockEthAccount,
+      })
+
+      expect(insufficientFundsError).toBeFalsy()
+      expect(insufficientFundsForGasError).toBeFalsy()
+    })
+  })
+
+  describe('ERC20Transfer', () => {
+    it('should be true when funds are insufficient for send amount', () => {
+      /**
+       * Account ETH balance: 0.00315 ETH
+       * Account Token balance: 0.99
+       * Transaction value: 1 token
+       *
+       * Gas fee: 0.00315 ETH
+       *   - gasPrice: 150 Gwei
+       *   - gasLimit: 21000
+       *
+       * Remarks: sufficient funds for gas, but not for send amount.
+       */
+      const mockTransactionInfo = getMockedTransactionInfo()
+      const transferredToken = mockErc20TokensList[0]
+      const sendAmount = new Amount('1')
+        .multiplyByDecimals(transferredToken.decimals)
+        .toHex() // 1 full Token
+      const transactionInfo: SerializableTransactionInfo = {
+        ...mockTransactionInfo,
+        // (address recipient, uint256 amount)
+        txArgs: ['mockRecipient', sendAmount],
+        txType: BraveWallet.TransactionType.ERC20Transfer,
+        txDataUnion: {
+          ethTxData: {} as any,
+          filTxData: undefined,
+          solanaTxData: undefined,
+          btcTxData: undefined,
+          zecTxData: undefined,
+          ethTxData1559: {
+            ...mockTransactionInfo.txDataUnion.ethTxData1559,
+            baseData: {
+              ...mockTransactionInfo.txDataUnion.ethTxData1559.baseData,
+              to: transferredToken.contractAddress,
+              value: '0x0', // 0 ETH
+              gasLimit: '0x5208', // 21000
+              gasPrice: '0x22ecb25c00', // 150 Gwei
+            },
+          },
+        },
+      }
+      const gasFee = '3150000000000000' // 0.00315 ETH
+      const nativeBalanceRegistry = {
+        [transactionInfo.chainId]: '1003150000000000000', // 1.00315 ETH
+      }
+      const tokenBalanceRegistry = {
+        [transferredToken.contractAddress]: new Amount('0.99')
+          .multiplyByDecimals(transferredToken.decimals)
+          .toHex(), // less than 1 full Token
+      }
+
+      const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
+        gasFee,
+      })
+
+      const token = findTransactionToken(transactionInfo, mockErc20TokensList)
+
+      const { sourceAmount, sourceToken } = parseSwapInfo({
+        swapInfo: transactionInfo.swapInfo,
+        tokensList: mockErc20TokensList,
+        networksRegistry: undefined,
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
+        accountTokenBalance: tokenBalanceRegistry[token?.contractAddress ?? ''],
+        gasFee,
+        sourceAmount,
+        sourceTokenBalance:
+          tokenBalanceRegistry[sourceToken?.contractAddress ?? ''],
+        tx: transactionInfo,
+        txAccount: mockEthAccount,
+      })
+
+      expect(nativeBalanceRegistry[transactionInfo.chainId]).toBeTruthy()
+      expect(token).toBeTruthy()
+      expect(tokenBalanceRegistry[token?.contractAddress ?? '']).toBeTruthy()
+      expect(insufficientFundsError).toBeTruthy()
+      expect(insufficientFundsForGasError).toBeFalsy()
+    })
+
+    it('should be false when funds are sufficient for send amount', () => {
+      /**
+       * Account ETH balance: 0.00315 ETH
+       * Account Token balance: 2
+       * Transaction value: 0.5 tokens
+       *
+       * Gas fee: 0.00315 ETH
+       *   - gasPrice: 150 Gwei
+       *   - gasLimit: 21000
+       *
+       * Remarks: sufficient funds for gas, but not for send amount.
+       */
+      const mockTransactionInfo = getMockedTransactionInfo()
+      const transferredToken = mockErc20TokensList[0]
+      const sendAmount = new Amount('0.5')
+        .multiplyByDecimals(transferredToken.decimals)
+        .toHex() // half of a full token
+
+      const transactionInfo: SerializableTransactionInfo = {
+        ...mockTransactionInfo,
+        // (address recipient, uint256 amount)
+        txArgs: ['mockRecipient', sendAmount],
+        txType: BraveWallet.TransactionType.ERC20Transfer,
+        txDataUnion: {
+          ethTxData: {} as any,
+          filTxData: undefined,
+          solanaTxData: undefined,
+          btcTxData: undefined,
+          zecTxData: undefined,
+          ethTxData1559: {
+            ...mockTransactionInfo.txDataUnion.ethTxData1559,
+            baseData: {
+              ...mockTransactionInfo.txDataUnion.ethTxData1559.baseData,
+              to: transferredToken.contractAddress,
+              value: '0x0', // 0 ETH
+              gasLimit: '0x5208', // 21000
+              gasPrice: '0x22ecb25c00', // 150 Gwei
+            },
+          },
+        },
+      }
+      const gasFee = '3150000000000000' // 0.00315 ETH
+      const nativeBalanceRegistry = {
+        [transactionInfo.chainId]: '1003150000000000000', // 1.00315 ETH
+      }
+      const tokenBalanceRegistry = {
+        [transferredToken.contractAddress]: new Amount('2')
+          .multiplyByDecimals(transferredToken.decimals)
+          .toHex(), // 2 full Tokens
+      }
+
+      const insufficientFundsForGasError = accountHasInsufficientFundsForGas({
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
+        gasFee,
+      })
+
+      const token = findTransactionToken(transactionInfo, mockErc20TokensList)
+
+      const { sourceAmount, sourceToken } = parseSwapInfo({
+        swapInfo: transactionInfo.swapInfo,
+        tokensList: mockErc20TokensList,
+        networksRegistry: undefined,
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance:
+          nativeBalanceRegistry[transactionInfo.chainId] || '',
+        accountTokenBalance: tokenBalanceRegistry[token?.contractAddress ?? ''],
+        gasFee,
+        sourceAmount,
+        sourceTokenBalance:
+          tokenBalanceRegistry[sourceToken?.contractAddress ?? ''],
+        tx: transactionInfo,
+        txAccount: mockEthAccount,
+      })
+
+      expect(insufficientFundsError).toBeFalsy()
+      expect(insufficientFundsForGasError).toBeFalsy()
+    })
+  })
+
+  describe('Polkadot', () => {
+    it(
+      'should be false for a max-amount asset send even when the asset '
+        + 'balance exceeds the native balance',
+      () => {
+        // A max asset send: amount equals the full asset balance. The native
+        // fee is paid in DOT and must NOT be added to the asset amount, nor
+        // compared against the (smaller) native balance. This reproduces the
+        // reported bug where max asset sends were wrongly blocked.
+        const assetBalance = BigInt(5_000_000_000_000) // 5 XBBC @ 12 decimals
+        const tx = makePolkadotTransaction({
+          amount: assetBalance,
+          fee: BigInt(1_000_000),
+          assetId: mockPolkadotAssetId,
+          sendingMaxAmount: true,
+        })
+
+        const insufficientFundsError =
+          accountHasInsufficientFundsForTransaction({
+            // 0.01 DOT — smaller in raw units than the asset balance
+            accountNativeBalance: '100000000',
+            accountTokenBalance: assetBalance.toString(),
+            gasFee: '1000000',
+            sourceAmount: Amount.empty(),
+            sourceTokenBalance: '',
+            tx,
+            txAccount: mockPolkadotAccount,
+          })
+
+        expect(insufficientFundsError).toBeFalsy()
+      },
+    )
+
+    it('should be true when the asset send amount exceeds the asset balance', () => {
+      const tx = makePolkadotTransaction({
+        amount: BigInt(6_000_000_000_000), // 6 XBBC
+        fee: BigInt(1_000_000),
+        assetId: mockPolkadotAssetId,
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance: '100000000000',
+        accountTokenBalance: '5000000000000', // only 5 XBBC
+        gasFee: '1000000',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
+        tx,
+        txAccount: mockPolkadotAccount,
+      })
+
+      expect(insufficientFundsError).toBeTruthy()
+    })
+
+    it('should treat asset id 0 as an asset send', () => {
+      // 0 is a valid `pallet_assets` id and must not be mistaken for a native
+      // send, which would compare the amount against the native balance.
+      const tx = makePolkadotTransaction({
+        amount: BigInt(5_000_000_000_000),
+        fee: BigInt(1_000_000),
+        assetId: 0,
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance: '100000000', // far less than the amount
+        accountTokenBalance: '5000000000000',
+        gasFee: '1000000',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
+        tx,
+        txAccount: mockPolkadotAccount,
+      })
+
+      expect(insufficientFundsError).toBeFalsy()
+    })
+
+    it('should compare a native DOT send against the native balance + fee', () => {
+      // No asset_id: falls through to the native balance + gasFee check. For a
+      // max native send the backend subtracts the fee, so amount + fee equals
+      // the balance exactly and is not insufficient.
+      const tx = makePolkadotTransaction({
+        amount: BigInt(9_999_000_000), // balance (10000000000) - fee (1000000)
+        fee: BigInt(1_000_000),
+        sendingMaxAmount: true,
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance: '10000000000', // 1 DOT @ 10 decimals
+        accountTokenBalance: '10000000000',
+        gasFee: '1000000',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
+        tx,
+        txAccount: mockPolkadotAccount,
+      })
+
+      expect(insufficientFundsError).toBeFalsy()
+    })
+
+    it('should be true when a native DOT send exceeds the balance', () => {
+      const tx = makePolkadotTransaction({
+        amount: BigInt(10_000_000_000),
+        fee: BigInt(1_000_000),
+      })
+
+      const insufficientFundsError = accountHasInsufficientFundsForTransaction({
+        accountNativeBalance: '10000000000', // amount + fee overruns this
+        accountTokenBalance: '10000000000',
+        gasFee: '1000000',
+        sourceAmount: Amount.empty(),
+        sourceTokenBalance: '',
+        tx,
+        txAccount: mockPolkadotAccount,
+      })
+
+      expect(insufficientFundsError).toBeTruthy()
+    })
+  })
+})
+
+describe('getIsRevokeApprovalTx', () => {
+  test('correctly detects revocations', () => {
+    expect(
+      getIsRevokeApprovalTx({
+        ...mockTransactionInfo,
+        txType: BraveWallet.TransactionType.ERC20Approve,
+        txArgs: [
+          mockEthAccount.address, // spender
+          '0', // amount
+        ],
+      }),
+    ).toBe(true)
+  })
+  test('correctly detects non-revocation approvals', () => {
+    expect(
+      getIsRevokeApprovalTx({
+        ...mockTransactionInfo,
+        txType: BraveWallet.TransactionType.ERC20Approve,
+        txArgs: [
+          mockEthAccount.address, // spender
+          '10', // amount
+        ],
+      }),
+    ).toBe(false)
+  })
+})
+
+describe('findTransactionToken', () => {
+  describe('Native asset Transfers', () => {
+    it(
+      'should detect SOL '
+        + 'as the token for Solana System transfer transactions',
+      () => {
+        expect(
+          findTransactionToken(mockSolanaTransactionInfo, [mockSolToken])
+            ?.symbol,
+        ).toBe('SOL')
+      },
+    )
+
+    it('should detect FIL as the token for Filecoin send transactions', () => {
+      expect(
+        findTransactionToken(mockFilSendTransaction, [mockFilToken])?.symbol,
+      ).toBe('FIL')
+    })
+
+    it('should detect ETH as the token for Ethereum send transactions', () => {
+      expect(
+        findTransactionToken(mockEthSendTransaction, [mockEthToken])?.symbol,
+      ).toBe('ETH')
+    })
+
+    it('should detect BTC as the token for Bitcoin transactions', () => {
+      expect(
+        findTransactionToken(mockBtcSendTransaction, [mockBtcToken])?.symbol,
+      ).toBe('BTC')
+    })
+
+    it('should detect ZEC as the token for ZCash transactions', () => {
+      const transparentToken = {
+        ...mockZecToken,
+        zcashTokenType: BraveWallet.ZCashTokenType.kTransparent,
+      }
+      const transparentTransaction = {
+        ...mockZecSendTransaction,
+        txDataUnion: {
+          zecTxData: {
+            ...mockZecSendTransaction.txDataUnion.zecTxData,
+            zcashTokenType: BraveWallet.ZCashTokenType.kTransparent,
+          },
+        },
+      }
+      expect(
+        findTransactionToken(transparentTransaction, [transparentToken])
+          ?.symbol,
+      ).toBe('ZEC')
+    })
+
+    it('should detect the exact ZCash token type for ZCash transactions', () => {
+      const transparentToken = {
+        ...mockZecToken,
+        zcashTokenType: BraveWallet.ZCashTokenType.kTransparent,
+      }
+      const orchardToken = {
+        ...mockZecToken,
+        zcashTokenType: BraveWallet.ZCashTokenType.kOrchard,
+      }
+      const ironwoodToken = {
+        ...mockZecToken,
+        zcashTokenType: BraveWallet.ZCashTokenType.kIronwood,
+      }
+      const transactionWithTokenType = (
+        zcashTokenType: BraveWallet.ZCashTokenType,
+      ) => ({
+        ...mockZecSendTransaction,
+        txDataUnion: {
+          zecTxData: {
+            ...mockZecSendTransaction.txDataUnion.zecTxData,
+            zcashTokenType,
+          },
+        },
+      })
+
+      expect(
+        findTransactionToken(
+          transactionWithTokenType(BraveWallet.ZCashTokenType.kTransparent),
+          [transparentToken, orchardToken, ironwoodToken],
+        ),
+      ).toBe(transparentToken)
+      expect(
+        findTransactionToken(
+          transactionWithTokenType(BraveWallet.ZCashTokenType.kOrchard),
+          [transparentToken, orchardToken, ironwoodToken],
+        ),
+      ).toBe(orchardToken)
+      expect(
+        findTransactionToken(
+          transactionWithTokenType(BraveWallet.ZCashTokenType.kIronwood),
+          [transparentToken, orchardToken, ironwoodToken],
+        ),
+      ).toBe(ironwoodToken)
+    })
+  })
+
+  describe('Token Transfers', () => {
+    it('should detect sent ERC20 tokens', () => {
+      expect(
+        findTransactionToken(
+          createMockTransactionInfo({
+            chainId: BraveWallet.MAINNET_CHAIN_ID,
+            coinType: BraveWallet.CoinType.ETH,
+            fromAccount: mockEthAccount,
+            sendApproveOrSellAmount: '1000',
+            sendApproveOrSellAssetContractAddress:
+              mockBasicAttentionToken.contractAddress,
+            toAddress: mockAccount.address,
+            isERC20Send: true,
+          }),
+          [mockEthToken, mockBasicAttentionToken],
+        )?.symbol,
+      ).toBe('BAT')
+    })
+
+    it('should detect sent ERC721 tokens', () => {
+      expect(
+        findTransactionToken(
+          createMockTransactionInfo({
+            chainId: BraveWallet.MAINNET_CHAIN_ID,
+            coinType: BraveWallet.CoinType.ETH,
+            fromAccount: mockEthAccount,
+            sendApproveOrSellAmount: '1000',
+            sendApproveOrSellAssetContractAddress:
+              mockMoonCatNFT.contractAddress,
+            toAddress: mockAccount.address,
+            isERC721Send: true,
+          }),
+          [mockEthToken, mockMoonCatNFT],
+        )?.symbol,
+      ).toBe('AMC')
+    })
+
+    it('should detect sent SPL tokens', () => {
+      expect(
+        findTransactionToken(
+          createMockTransactionInfo({
+            chainId: BraveWallet.SOLANA_MAINNET,
+            coinType: BraveWallet.CoinType.SOL,
+            fromAccount: mockSolanaAccount,
+            sendApproveOrSellAmount: '1000',
+            sendApproveOrSellAssetContractAddress: mockSplBat.contractAddress,
+            toAddress: mockSolanaAccount.address,
+          }),
+          [mockSolToken, mockSplBat],
+        )?.symbol,
+      ).toBe('BAT')
+    })
+
+    it('should detect sent Cardano tokens', () => {
+      expect(
+        findTransactionToken(mockCardanoSendTokenTransaction, [
+          mockCardanoMinswapToken,
+        ])?.symbol,
+      ).toBe('MIN')
+    })
+  })
+})
+
+describe('Cardano send token transfer formatting', () => {
+  it('getTransactionTransferredToken returns the token, not native ADA', () => {
+    expect(
+      getTransactionTransferredToken({
+        tx: mockCardanoSendTokenTransaction,
+        txNetwork: mockCardanoMainnetNetwork,
+        token: mockCardanoMinswapToken,
+        sourceToken: undefined,
+      }),
+    ).toBe(mockCardanoMinswapToken)
+  })
+
+  it('getTransactionTransferredValue uses token decimals', () => {
+    const { normalized, wei } = getTransactionTransferredValue({
+      tx: mockCardanoSendTokenTransaction,
+      token: mockCardanoMinswapToken,
+      sourceToken: undefined,
+      txAccount: mockCardanoAccount,
+      txNetwork: mockCardanoMainnetNetwork,
+    })
+    expect(wei.format()).toBe('1000000')
+    expect(normalized.format(6)).toBe('1')
+  })
+
+  it('getTransactionFormattedSendCurrencyTotal uses the token symbol', () => {
+    expect(
+      getTransactionFormattedSendCurrencyTotal({
+        normalizedTransferredValue: '1',
+        tx: mockCardanoSendTokenTransaction,
+        token: mockCardanoMinswapToken,
+        sourceToken: undefined,
+        txNetwork: mockCardanoMainnetNetwork,
+      }),
+    ).toBe('1 MIN')
+  })
+
+  it('getTransactionTokenSymbol returns the token ticker', () => {
+    expect(
+      getTransactionTokenSymbol({
+        tx: mockCardanoSendTokenTransaction,
+        token: mockCardanoMinswapToken,
+        sourceToken: undefined,
+        txNetwork: { symbol: 'ADA' },
+      }),
+    ).toBe('MIN')
+  })
+})
+
+describe('Polkadot send transfer formatting', () => {
+  it('findTransactionToken resolves the asset by its id', () => {
+    expect(
+      findTransactionToken(mockPolkadotAssetSendTransaction, [
+        mockPolkadotNativeToken,
+        mockPolkadotAssetToken,
+      ]),
+    ).toBe(mockPolkadotAssetToken)
+  })
+
+  it('findTransactionToken resolves asset id 0', () => {
+    // 0 is a valid `pallet_assets` id and must not read as "no asset".
+    const zeroIdToken = {
+      ...mockPolkadotAssetToken,
+      contractAddress: '0',
+      symbol: 'XZERO',
+    } as BraveWallet.BlockchainToken
+
+    expect(
+      findTransactionToken(
+        makePolkadotTransaction({
+          amount: BigInt(1),
+          fee: BigInt(1),
+          assetId: 0,
+        }),
+        [mockPolkadotNativeToken, zeroIdToken],
+      ),
+    ).toBe(zeroIdToken)
+  })
+
+  it('findTransactionToken does not match an asset id on another chain', () => {
+    // Unlike every other coin's contract address, an asset id is a small
+    // integer that is only unique within a chain, so an identically numbered
+    // asset on a different Polkadot chain must not be picked up.
+    const otherChainAssetToken = {
+      ...mockPolkadotAssetToken,
+      chainId: BraveWallet.POLKADOT_TESTNET,
+      symbol: 'NOTMINE',
+    } as BraveWallet.BlockchainToken
+
+    expect(
+      findTransactionToken(mockPolkadotAssetSendTransaction, [
+        otherChainAssetToken,
+        mockPolkadotAssetToken,
+      ]),
+    ).toBe(mockPolkadotAssetToken)
+
+    expect(
+      findTransactionToken(mockPolkadotAssetSendTransaction, [
+        otherChainAssetToken,
+      ]),
+    ).toBeUndefined()
+  })
+
+  it('findTransactionToken resolves the native asset for a native send', () => {
+    expect(
+      findTransactionToken(mockPolkadotSendTransaction, [
+        mockPolkadotAssetToken,
+        mockPolkadotNativeToken,
+      ]),
+    ).toBe(mockPolkadotNativeToken)
+  })
+
+  it('findTransactionToken treats a null assetId as a native send', () => {
+    // Optional Mojo fields are `null` when unset (not `undefined`).
+    const tx = {
+      ...mockPolkadotSendTransaction,
+      txDataUnion: {
+        ...mockPolkadotSendTransaction.txDataUnion,
+        polkadotTxData: {
+          ...mockPolkadotSendTransaction.txDataUnion.polkadotTxData,
+          assetId: null,
+        },
+      },
+    } as unknown as SerializableTransactionInfo
+
+    expect(
+      findTransactionToken(tx, [
+        mockPolkadotAssetToken,
+        mockPolkadotNativeToken,
+      ]),
+    ).toBe(mockPolkadotNativeToken)
+  })
+
+  it('getTransactionTransferredToken returns the asset, not native DOT', () => {
+    expect(
+      getTransactionTransferredToken({
+        tx: mockPolkadotAssetSendTransaction,
+        txNetwork: mockPolkadotMainnetNetwork,
+        token: mockPolkadotAssetToken,
+        sourceToken: undefined,
+      }),
+    ).toBe(mockPolkadotAssetToken)
+  })
+
+  it('getTransactionTransferredValue uses the asset decimals', () => {
+    // The asset has 12 decimals while the network has 10, so falling back to
+    // the network decimals would overstate the amount by 100x.
+    const { normalized, wei } = getTransactionTransferredValue({
+      tx: mockPolkadotAssetSendTransaction,
+      token: mockPolkadotAssetToken,
+      sourceToken: undefined,
+      txAccount: mockPolkadotAccount,
+      txNetwork: mockPolkadotMainnetNetwork,
+    })
+    expect(wei.format()).toBe('1000000000000')
+    expect(normalized.format(6)).toBe('1')
+  })
+
+  it('getTransactionTransferredValue uses network decimals for a native send', () => {
+    const { normalized, wei } = getTransactionTransferredValue({
+      tx: mockPolkadotSendTransaction,
+      token: mockPolkadotNativeToken,
+      sourceToken: undefined,
+      txAccount: mockPolkadotAccount,
+      txNetwork: mockPolkadotMainnetNetwork,
+    })
+    expect(wei.format()).toBe('10000000000')
+    expect(normalized.format(6)).toBe('1')
+  })
+
+  it('getTransactionTransferredValue handles amounts above 64 bits', () => {
+    // uint128 is carried as a { high, low } pair; anything that only reads
+    // `low` silently truncates here.
+    const amount = (BigInt(1) << BigInt(64)) + BigInt(5)
+    const { wei } = getTransactionTransferredValue({
+      tx: makePolkadotTransaction({
+        amount,
+        fee: BigInt(1_000_000),
+        assetId: mockPolkadotAssetId,
+      }),
+      token: mockPolkadotAssetToken,
+      sourceToken: undefined,
+      txAccount: mockPolkadotAccount,
+      txNetwork: mockPolkadotMainnetNetwork,
+    })
+    expect(wei.format()).toBe(amount.toString())
+  })
+
+  it('getTransactionFormattedSendCurrencyTotal uses the asset symbol', () => {
+    expect(
+      getTransactionFormattedSendCurrencyTotal({
+        normalizedTransferredValue: '1',
+        tx: mockPolkadotAssetSendTransaction,
+        token: mockPolkadotAssetToken,
+        sourceToken: undefined,
+        txNetwork: mockPolkadotMainnetNetwork,
+      }),
+    ).toBe('1 XBBC')
+  })
+
+  it('getTransactionTokenSymbol returns the asset ticker', () => {
+    // A DOT asset transfer has txType === Other and no dedicated token txType,
+    // so the symbol must come from the resolved asset rather than falling
+    // through to the native network symbol.
+    expect(
+      getTransactionTokenSymbol({
+        tx: mockPolkadotAssetSendTransaction,
+        token: mockPolkadotAssetToken,
+        sourceToken: undefined,
+        txNetwork: mockPolkadotMainnetNetwork,
+      }),
+    ).toBe('XBBC')
+  })
+
+  it('getTransactionTokenSymbol returns the network symbol for a native send', () => {
+    expect(
+      getTransactionTokenSymbol({
+        tx: mockPolkadotSendTransaction,
+        token: undefined,
+        sourceToken: undefined,
+        txNetwork: mockPolkadotMainnetNetwork,
+      }),
+    ).toBe('DOT')
+  })
+})
+
+describe('getTransactionTypeName', () => {
+  test.each([
+    {
+      txType: BraveWallet.TransactionType.ERC1155SafeTransferFrom,
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SAFE_TRANSFER_FROM,
+      ),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ERC20Approve,
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_ERC_20_APPROVE,
+      ),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ERC20Transfer,
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_TOKEN_TRANSFER,
+      ),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ERC721SafeTransferFrom,
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SAFE_TRANSFER_FROM,
+      ),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ERC721TransferFrom,
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_NFT_TRANSFER,
+      ),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ETHFilForwarderTransfer,
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_FORWARD_FIL,
+      ),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ETHSend,
+      expectedString: getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_SEND).replace(
+        '$1',
+        'ETH',
+      ),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.ETHSwap,
+      expectedString: getLocale(S.BRAVE_WALLET_SWAP),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.Other,
+      expectedString: getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_OTHER),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaCompressedNftTransfer,
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_COMPRESSED_NFT_TRANSFER,
+      ),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SIGN_AND_SEND_DAPP_TRANSACTION,
+      ),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaDappSignTransaction,
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SIGN_DAPP_TRANSACTION,
+      ),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaSPLTokenTransfer,
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_TOKEN_TRANSFER,
+      ),
+    },
+
+    {
+      txType:
+        BraveWallet.TransactionType
+          .SolanaSPLTokenTransferWithAssociatedTokenAccountCreation,
+      expectedString: getLocale(
+        S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_SPL_TOKEN_TRANSFER_WITH_ASSOCIATED_TOKEN_ACCOUNT_CREATION,
+      ),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaSwap,
+      expectedString: getLocale(S.BRAVE_WALLET_SWAP),
+    },
+
+    {
+      txType: BraveWallet.TransactionType.SolanaSystemTransfer,
+      expectedString: getLocale(S.BRAVE_WALLET_TRANSACTION_INTENT_SEND).replace(
+        '$1',
+        'SOL',
+      ),
+    },
+  ])(
+    'renders the correct localized function name per tx type',
+    ({ expectedString, txType }) => {
+      expect(getTransactionTypeName(txType)).toBe(expectedString)
+    },
+  )
+
+  test('should return "Other" for unknown tx type', () => {
+    expect(getTransactionTypeName(999)).toBe(
+      getLocale(S.BRAVE_WALLET_TRANSACTION_TYPE_NAME_OTHER),
+    )
+  })
+})
+
+describe('Test getIsSolanaAssociatedTokenAccountCreation', () => {
+  it('should return true for ATACreation transaction', () => {
+    expect(
+      getIsSolanaAssociatedTokenAccountCreation({
+        ...mockSolanaTransactionInfo,
+        txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+        txDataUnion: {
+          solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
+            staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
+            instructions: [mockATAInstruction],
+          },
+        },
+      }),
+    ).toBe(true)
+  })
+
+  it('should return false for ATACreation with different payer', () => {
+    expect(
+      getIsSolanaAssociatedTokenAccountCreation({
+        ...mockSolanaTransactionInfo,
+        fromAccountId: {
+          ...mockSolanaAccount.accountId,
+          address: 'different_address',
+        },
+        txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+        txDataUnion: {
+          solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
+            staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
+            instructions: [mockATAInstruction],
+          },
+        },
+      }),
+    ).toBe(false)
+  })
+
+  it('should return false for a non ATACreation program id', () => {
+    expect(
+      getIsSolanaAssociatedTokenAccountCreation({
+        ...mockSolanaTransactionInfo,
+        txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+        txDataUnion: {
+          solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
+            staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
+            instructions: [
+              {
+                ...mockATAInstruction,
+                programId: 'different_program_id',
+              },
+            ],
+          },
+        },
+      }),
+    ).toBe(false)
+  })
+
+  it('should return false for a ATACreation transaction with data', () => {
+    expect(
+      getIsSolanaAssociatedTokenAccountCreation({
+        ...mockSolanaTransactionInfo,
+        txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+        txDataUnion: {
+          solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
+            staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
+            instructions: [
+              {
+                ...mockATAInstruction,
+                data: [1],
+              },
+            ],
+          },
+        },
+      }),
+    ).toBe(false)
+  })
+
+  it('should return false for a ATACreation with instructions', () => {
+    expect(
+      getIsSolanaAssociatedTokenAccountCreation({
+        ...mockSolanaTransactionInfo,
+        txType: BraveWallet.TransactionType.SolanaDappSignAndSendTransaction,
+        txDataUnion: {
+          solanaTxData: {
+            ...mockSolanaTransactionInfo.txDataUnion.solanaTxData,
+            staticAccountKeys: [BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID],
+            instructions: [
+              {
+                ...mockATAInstruction,
+              },
+              {
+                ...mockATAInstruction,
+                accountMetas: [
+                  {
+                    pubkey: BraveWallet.SOLANA_ASSOCIATED_TOKEN_PROGRAM_ID,
+                    isSigner: true,
+                    isWritable: true,
+                    addrTableLookupIndex: undefined,
+                  },
+                ],
+                programId: BraveWallet.SOLANA_STAKE_PROGRAM_ID,
+              },
+            ],
+          },
+        },
+      }),
+    ).toBe(false)
+  })
+})
+
+describe('isCancelTransaction', () => {
+  const mockFromAddress = '0x1234567890123456789012345678901234567890'
+  const mockToAddress = '0x0987654321098765432109876543210987654321'
+
+  const mockEthSendTestTransaction = {
+    ...mockEthSendTransaction,
+    txType: BraveWallet.TransactionType.ETHSend,
+    fromAccountId: { address: mockFromAddress } as BraveWallet.AccountId,
+  }
+
+  const mockEthTXData = {
+    to: mockFromAddress,
+    value: '',
+    data: [],
+    nonce: '',
+    gasPrice: '',
+    gasLimit: '',
+    signOnly: false,
+    signedTransaction: '',
+  }
+
+  test('should return false for non-ETH transactions', () => {
+    const solanaTx = {
+      ...mockSolanaTransactionInfo,
+      txType: BraveWallet.TransactionType.SolanaSystemTransfer,
+    }
+    expect(isCancelTransaction(solanaTx)).toBe(false)
+  })
+
+  test('should return false for non-ETHSend transactions', () => {
+    const erc20Tx = {
+      ...mockEthSendTransaction,
+      txType: BraveWallet.TransactionType.ERC20Transfer,
+    }
+    expect(isCancelTransaction(erc20Tx)).toBe(false)
+  })
+
+  test('should return false for ETH send with non-zero value', () => {
+    const ethSendTx = {
+      ...mockEthSendTestTransaction,
+      txDataUnion: {
+        ethTxData: { ...mockEthTXData, value: '1000000000000000000' },
+      },
+    }
+    expect(isCancelTransaction(ethSendTx)).toBe(false)
+  })
+
+  test('should return false for ETH send with data', () => {
+    const ethSendTx = {
+      ...mockEthSendTestTransaction,
+      txDataUnion: {
+        ethTxData: {
+          ...mockEthTXData,
+          value: '0',
+          data: [1, 2, 3, 4], // non-empty data
+        },
+      },
+    }
+    expect(isCancelTransaction(ethSendTx)).toBe(false)
+  })
+
+  test('should return false for ETH send to different address', () => {
+    const ethSendTx = {
+      ...mockEthSendTestTransaction,
+      txDataUnion: {
+        ethTxData: {
+          ...mockEthTXData,
+          to: mockToAddress, // different address
+          value: '0',
+        },
+      },
+    }
+    expect(isCancelTransaction(ethSendTx)).toBe(false)
+  })
+
+  test(
+    'should return false for cancel transaction (legacy)'
+      + 'with different nonce',
+    () => {
+      const cancelTx = {
+        ...mockEthSendTestTransaction,
+        txDataUnion: {
+          ethTxData1559: undefined,
+          ethTxData: {
+            ...mockEthTXData,
+            value: '0',
+            nonce: '2',
+          },
+        },
+      }
+      const submittedTx = {
+        ...mockEthSendTestTransaction,
+        txDataUnion: {
+          ethTxData1559: undefined,
+          ethTxData: {
+            ...mockEthTXData,
+            value: '0',
+            nonce: '1',
+          },
+        },
+        txStatus: BraveWallet.TransactionStatus.Submitted,
+        id: 'submitted-tx',
+      }
+      expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(false)
+    },
+  )
+
+  test(
+    'should return false for cancel transaction (EIP1559)'
+      + 'with different nonce',
+    () => {
+      const cancelTx = {
+        ...mockEthSendTestTransaction,
+        txDataUnion: {
+          ethTxData1559: {
+            baseData: {
+              to: mockFromAddress, // same as from
+              value: '0',
+              data: [],
+              nonce: '4',
+              gasPrice: '',
+              gasLimit: '',
+              signOnly: false,
+              signedTransaction: '',
+            },
+            chainId: '0x1',
+            maxPriorityFeePerGas: '0x0',
+            maxFeePerGas: '0x0',
+          },
+        },
+      }
+      const submittedTx = {
+        ...mockEthSendTestTransaction,
+        txDataUnion: {
+          ethTxData1559: {
+            baseData: {
+              to: mockFromAddress, // same as from
+              value: '0',
+              data: [],
+              nonce: '3',
+              gasPrice: '',
+              gasLimit: '',
+              signOnly: false,
+              signedTransaction: '',
+            },
+            chainId: '0x1',
+            maxPriorityFeePerGas: '0x0',
+            maxFeePerGas: '0x0',
+          },
+        },
+        txStatus: BraveWallet.TransactionStatus.Submitted,
+        id: 'submitted-tx',
+      }
+      expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(false)
+    },
+  )
+
+  test('should return true for cancel transaction (legacy)', () => {
+    const cancelTx = {
+      ...mockEthSendTestTransaction,
+      txDataUnion: {
+        ethTxData1559: undefined,
+        ethTxData: {
+          ...mockEthTXData,
+          value: '0',
+          nonce: '2',
+        },
+      },
+    }
+    const submittedTx = {
+      ...cancelTx,
+      txStatus: BraveWallet.TransactionStatus.Submitted,
+      id: 'submitted-tx',
+    }
+    expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(true)
+  })
+
+  test('should return true for cancel transaction (EIP1559)', () => {
+    const cancelTx = {
+      ...mockEthSendTestTransaction,
+      txDataUnion: {
+        ethTxData1559: {
+          baseData: {
+            to: mockFromAddress, // same as from
+            value: '0',
+            data: [],
+            nonce: '4',
+            gasPrice: '',
+            gasLimit: '',
+            signOnly: false,
+            signedTransaction: '',
+          },
+          chainId: '0x1',
+          maxPriorityFeePerGas: '0x0',
+          maxFeePerGas: '0x0',
+        },
+      },
+    }
+    const submittedTx = {
+      ...cancelTx,
+      txStatus: BraveWallet.TransactionStatus.Submitted,
+      id: 'submitted-tx',
+    }
+    expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(true)
+  })
+
+  test('should return true for cancel transaction with 0x0 value', () => {
+    const cancelTx = {
+      ...mockEthSendTestTransaction,
+      txDataUnion: {
+        ethTxData: {
+          ...mockEthTXData,
+          value: '0x0', // hex zero
+        },
+      },
+    }
+    const submittedTx = {
+      ...cancelTx,
+      txStatus: BraveWallet.TransactionStatus.Submitted,
+      id: 'submitted-tx',
+    }
+    expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(true)
+  })
+
+  test('should handle case insensitive address comparison', () => {
+    const cancelTx = {
+      ...mockEthSendTestTransaction,
+      fromAccountId: {
+        address: mockFromAddress.toLowerCase(),
+      } as BraveWallet.AccountId,
+      txDataUnion: {
+        ethTxData: {
+          ...mockEthTXData,
+          to: mockFromAddress.toUpperCase(), // different case
+          value: '0',
+        },
+      },
+    }
+    const submittedTx = {
+      ...cancelTx,
+      txStatus: BraveWallet.TransactionStatus.Submitted,
+      id: 'submitted-tx',
+    }
+    expect(isCancelTransaction(cancelTx, [submittedTx])).toBe(true)
+  })
+})
+
+// Test vectors based on Zcash ZIP 302 memo field format specification
+// https://zips.z.cash/zip-0302
+describe('getTransactionMemo', () => {
+  it('should return empty string for undefined transaction', () => {
+    expect(getTransactionMemo(undefined)).toBe('')
+  })
+
+  it('should return empty string for non-ZCash transaction', () => {
+    expect(getTransactionMemo(mockEthSendTransaction)).toBe('')
+    expect(getTransactionMemo(mockSolanaTransactionInfo)).toBe('')
+    expect(getTransactionMemo(mockBtcSendTransaction)).toBe('')
+    expect(getTransactionMemo(mockFilSendTransaction)).toBe('')
+  })
+
+  it('should return empty string for ZCash transaction without memo', () => {
+    expect(getTransactionMemo(mockZecSendTransaction)).toBe('')
+  })
+
+  it('should return empty string for ZCash transaction with undefined memo', () => {
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: undefined,
+        },
+      },
+    }
+    expect(getTransactionMemo(tx)).toBe('')
+  })
+
+  // ZIP 302: UTF-8 text (first byte ≤ 0xF4) padded with trailing zeros
+  it('should decode UTF-8 memo and strip trailing zeros', () => {
+    // "Hello, Zcash!" encoded as UTF-8 with trailing zeros (simulating 512-byte memo)
+    const memoText = 'Hello, Zcash!'
+    const memoBytes = new TextEncoder().encode(memoText)
+    const paddedMemo = new Uint8Array(512)
+    paddedMemo.set(memoBytes)
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: Array.from(paddedMemo),
+        },
+      },
+    }
+    expect(getTransactionMemo(tx)).toBe('Hello, Zcash!')
+  })
+
+  it('should handle memo without trailing zeros', () => {
+    const memoText = 'No padding needed'
+    const memoBytes = Array.from(new TextEncoder().encode(memoText))
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: memoBytes,
+        },
+      },
+    }
+    expect(getTransactionMemo(tx)).toBe('No padding needed')
+  })
+
+  it('should handle memo with embedded zeros followed by more text', () => {
+    // "Hello" + null byte + "World" - should only return "Hello"
+    const memo = [
+      0x48,
+      0x65,
+      0x6c,
+      0x6c,
+      0x6f, // "Hello"
+      0x00, // null terminator
+      0x57,
+      0x6f,
+      0x72,
+      0x6c,
+      0x64, // "World" (should be ignored)
+    ]
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo,
+        },
+      },
+    }
+    expect(getTransactionMemo(tx)).toBe('Hello')
+  })
+
+  // ZIP 302: 0xF6 followed by zeros indicates "no memo"
+  // Note: Since TextDecoder doesn't throw by default, 0xF6 decodes to
+  // replacement character. However, if the memo is 0xF6 followed by zeros,
+  // we only slice up to the first zero, leaving just 0xF6.
+  it('should handle "no memo" marker (0xF6)', () => {
+    const noMemoMarker = new Uint8Array(512)
+    noMemoMarker[0] = 0xf6 // "no memo" marker, followed by zeros
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: Array.from(noMemoMarker),
+        },
+      },
+    }
+    // 0xF6 is invalid UTF-8, TextDecoder returns replacement character
+    expect(getTransactionMemo(tx)).toBe('\uFFFD')
+  })
+
+  // ZIP 302: First byte ≥ 0xF5 indicates arbitrary data
+  it('should handle arbitrary data marker (0xFF)', () => {
+    // 0xFF followed by non-zero data (no null terminator)
+    const arbitraryData = [0xff, 0x01, 0x02, 0x03]
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: arbitraryData,
+        },
+      },
+    }
+    // Invalid UTF-8 bytes produce replacement characters
+    expect(getTransactionMemo(tx)).toContain('\uFFFD')
+  })
+
+  it('should return empty string for all zeros (empty memo)', () => {
+    const emptyMemo = new Uint8Array(512) // all zeros
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: Array.from(emptyMemo),
+        },
+      },
+    }
+    // First byte is 0, so slice is empty
+    expect(getTransactionMemo(tx)).toBe('')
+  })
+
+  it('should handle Unicode characters correctly', () => {
+    // Test with emojis and multi-byte UTF-8 characters
+    const memoText = '🦓 Zcash: こんにちは'
+    const memoBytes = new TextEncoder().encode(memoText)
+    const paddedMemo = new Uint8Array(512)
+    paddedMemo.set(memoBytes)
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: Array.from(paddedMemo),
+        },
+      },
+    }
+    expect(getTransactionMemo(tx)).toBe('🦓 Zcash: こんにちは')
+  })
+
+  it('should handle invalid UTF-8 sequences with replacement characters', () => {
+    // Invalid UTF-8: continuation bytes without start byte
+    const invalidUtf8 = [0x80, 0x81, 0x82]
+
+    const tx: SerializableTransactionInfo = {
+      ...mockZecSendTransaction,
+      txDataUnion: {
+        zecTxData: {
+          ...mockZecSendTransaction.txDataUnion.zecTxData,
+          memo: invalidUtf8,
+        },
+      },
+    }
+    // TextDecoder replaces invalid bytes with U+FFFD
+    expect(getTransactionMemo(tx)).toBe('\uFFFD\uFFFD\uFFFD')
+  })
+})

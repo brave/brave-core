@@ -1,0 +1,13 @@
+diff --git a/chrome/test/include_js_tests.gni b/chrome/test/include_js_tests.gni
+index c27374c548a04e3f51778891b598c3f8cf9120e7..973c5cd7d4e435932f7938e6ae05839275ffeab9 100644
+--- a/chrome/test/include_js_tests.gni
++++ b/chrome/test/include_js_tests.gni
+@@ -1,7 +1,7 @@
+ import("//build/config/sanitizers/sanitizers.gni")
+ 
+ if (!is_android) {
+-  include_js_tests = !(is_asan || is_msan || is_tsan || is_cfi)
++  include_js_tests = false && !(is_asan || is_msan || is_tsan || is_cfi)
+ 
+   # Tests using js2gtest don't work in cross builds, https://crbug.com/40101516
+   include_js2gtest_tests = include_js_tests && !(is_win && host_os != "win")

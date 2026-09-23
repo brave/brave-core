@@ -1,0 +1,96 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(enable_brave_vpn_v2)
+
+static_library("browser") {
+  sources = [
+    "brave_vpn_service_impl.cc",
+    "brave_vpn_service_impl.h",
+    "credential_store.cc",
+    "credential_store.h",
+    "credential_summary.cc",
+    "credential_summary.h",
+    "purchased_state_manager.cc",
+    "purchased_state_manager.h",
+    "skus_service_client.cc",
+    "skus_service_client.h",
+  ]
+
+  if (is_android) {
+    sources += [ "brave_vpn_service_impl_android.cc" ]
+  } else if (is_linux || is_mac || is_win) {
+    sources += [ "brave_vpn_service_impl_desktop.cc" ]
+  }
+
+  public_deps = [
+    "//brave/components/brave_vpn/browser",
+    "//brave/components/brave_vpn/common/buildflags",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/common:mojom",
+    "//mojo/public/cpp/bindings",
+  ]
+
+  if (enable_brave_vpn_v2_apps) {
+    public_deps += [ "agent" ]
+  }
+
+  deps = [
+    "api",
+    "//base",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/resources:strings",
+    "//components/prefs",
+    "//net",
+    "//services/network/public/cpp",
+    "//third_party/icu",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "brave_vpn_service_impl_unittest.cc",
+    "credential_store_test_util.cc",
+    "credential_store_test_util.h",
+    "credential_store_unittest.cc",
+    "credential_summary_unittest.cc",
+    "purchased_state_manager_unittest.cc",
+    "skus_service_client_unittest.cc",
+  ]
+
+  deps = [
+    ":browser",
+    "api",
+    "//base",
+    "//base:i18n",
+    "//base/test:test_support",
+    "//brave/components/brave_account/endpoint_client:test_support",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/resources:strings",
+    "//brave/components/skus/browser",
+    "//brave/components/skus/browser:test_support",
+    "//brave/components/skus/common",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gtest",
+    "//ui/base",
+  ]
+
+  if (enable_brave_vpn_v2_apps) {
+    deps += [ "agent:test_support" ]
+  }
+}

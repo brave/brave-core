@@ -1,0 +1,68 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.deepResearch {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+  margin: var(--leo-spacing-m) 0;
+  font: var(--leo-font-small-regular);
+}
+
+.progressLine {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  background: var(--leo-color-container-highlight);
+  border-radius: var(--leo-radius-m);
+  color: var(--leo-color-text-secondary);
+
+  .icon {
+    flex-shrink: 0;
+    --leo-icon-size: 16px;
+  }
+
+  .description {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: opacity 150ms ease-in-out;
+
+    &.fadeIn {
+      opacity: 1;
+    }
+
+    &.fadeOut {
+      opacity: 0;
+    }
+  }
+
+  .elapsed {
+    flex-shrink: 0;
+    color: var(--leo-color-text-tertiary);
+    font: var(--leo-font-x-small-regular);
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.error {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  color: var(--leo-color-systemfeedback-error-text);
+  background: var(--leo-color-systemfeedback-error-background);
+  padding: var(--leo-spacing-m) var(--leo-spacing-l);
+  border-radius: var(--leo-radius-s);
+}
+
+.complete {
+  display: flex;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  color: var(--leo-color-systemfeedback-success-text);
+  font: var(--leo-font-x-small-regular);
+}

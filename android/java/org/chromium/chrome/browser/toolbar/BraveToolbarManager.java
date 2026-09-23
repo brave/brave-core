@@ -1,0 +1,831 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.toolbar;
+
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
+import android.content.res.Configuration;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewStub;
+
+import androidx.annotation.VisibleForTesting;
+import androidx.appcompat.app.AppCompatActivity;
+
+import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.Callback;
+import org.chromium.base.CallbackController;
+import org.chromium.base.ContextUtils;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
+import org.chromium.base.supplier.NullableObservableSupplier;
+import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.cc.input.BrowserControlsState;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.app.ChromeActivity;
+import org.chromium.chrome.browser.app.tabwindow.TabWindowManagerSingleton;
+import org.chromium.chrome.browser.back_press.BackPressManager;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.bookmarks.TabBookmarker;
+import org.chromium.chrome.browser.bottombar.BraveBottomBarActionCoordinator;
+import org.chromium.chrome.browser.browser_controls.BottomControlsStacker;
+import org.chromium.chrome.browser.browser_controls.BottomControlsStacker.LayerType;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
+import org.chromium.chrome.browser.browser_controls.BrowserStateBrowserControlsVisibilityDelegate;
+import org.chromium.chrome.browser.browser_controls.TopControlsStacker;
+import org.chromium.chrome.browser.compositor.CompositorViewHolder;
+import org.chromium.chrome.browser.compositor.layouts.LayoutManagerImpl;
+import org.chromium.chrome.browser.compositor.overlays.strip.StripLayoutHelperManager;
+import org.chromium.chrome.browser.customtabs.FullScreenCustomTabActivity;
+import org.chromium.chrome.browser.data_sharing.DataSharingTabManager;
+import org.chromium.chrome.browser.ephemeraltab.EphemeralTabCoordinator;
+import org.chromium.chrome.browser.findinpage.FindToolbarManager;
+import org.chromium.chrome.browser.fullscreen.FullscreenManager;
+import org.chromium.chrome.browser.glic.GlicButtonDelegate;
+import org.chromium.chrome.browser.homepage.HomepageManager;
+import org.chromium.chrome.browser.hub.HubManager;
+import org.chromium.chrome.browser.layouts.LayoutStateProvider;
+import org.chromium.chrome.browser.layouts.LayoutType;
+import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
+import org.chromium.chrome.browser.omnibox.LocationBar;
+import org.chromium.chrome.browser.omnibox.OmniboxChipManager;
+import org.chromium.chrome.browser.omnibox.suggestions.action.OmniboxActionDelegateImpl;
+import org.chromium.chrome.browser.preferences.ChromePreferenceKeys;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.readaloud.ReadAloudController;
+import org.chromium.chrome.browser.share.ShareDelegate;
+import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.tab.TabObscuringHandler;
+import org.chromium.chrome.browser.tab_ui.TabContentManager;
+import org.chromium.chrome.browser.tab_ui.TabModelDotInfo;
+import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
+import org.chromium.chrome.browser.tabmodel.TabClosureParams;
+import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
+import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.chrome.browser.tasks.tab_management.TabGroupUiOneshotSupplier;
+import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
+import org.chromium.chrome.browser.theme.ThemeColorProvider;
+import org.chromium.chrome.browser.theme.ToolbarThemeColorProvider;
+import org.chromium.chrome.browser.toolbar.bottom.BottomControlsContentDelegate;
+import org.chromium.chrome.browser.toolbar.bottom.BottomControlsCoordinator;
+import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
+import org.chromium.chrome.browser.toolbar.bottom.BraveBottomControlsCoordinator;
+import org.chromium.chrome.browser.toolbar.bottom.BraveScrollingBottomViewResourceFrameLayout;
+import org.chromium.chrome.browser.toolbar.menu_button.BraveMenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
+import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator.VisibilityDelegate;
+import org.chromium.chrome.browser.toolbar.optional_button.ButtonDataProvider;
+import org.chromium.chrome.browser.toolbar.top.ActionModeController;
+import org.chromium.chrome.browser.toolbar.top.BottomTabSwitcherActionMenuCoordinator;
+import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
+import org.chromium.chrome.browser.toolbar.top.BraveTopToolbarCoordinator;
+import org.chromium.chrome.browser.toolbar.top.ToolbarActionModeCallback;
+import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
+import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
+import org.chromium.chrome.browser.toolbar.top.TopToolbarCoordinator;
+import org.chromium.chrome.browser.ui.actions.ActionRegistry;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuCoordinator;
+import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarHostManager;
+import org.chromium.chrome.browser.ui.browser_window.ChromeAndroidTask;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
+import org.chromium.chrome.browser.ui.edge_to_edge.TopInsetProvider;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.ui.system.StatusBarColorController;
+import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarThrottle;
+import org.chromium.components.browser_ui.accessibility.PageZoomManager;
+import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
+import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
+import org.chromium.components.browser_ui.device_lock.DeviceLockActivityLauncher;
+import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
+import org.chromium.components.embedder_support.contextmenu.ContextMenuPopulatorFactory;
+import org.chromium.components.embedder_support.util.UrlUtilities;
+import org.chromium.components.omnibox.AutocompleteInput;
+import org.chromium.content_public.browser.selection.SelectionDropdownMenuDelegate;
+import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
+import org.chromium.ui.base.ActivityResultTracker;
+import org.chromium.ui.base.WindowAndroid;
+import org.chromium.ui.modaldialog.ModalDialogManager;
+import org.chromium.ui.util.TokenHolder;
+
+import java.util.List;
+import java.util.function.Supplier;
+
+@SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
+public class BraveToolbarManager extends ToolbarManager
+        implements OnSharedPreferenceChangeListener {
+    private static final String TAG = "BraveToolbarManager";
+
+    // To delete in bytecode, members from parent class will be used instead.
+    private SettableMonotonicObservableSupplier<BottomControlsCoordinator>
+            mTabGroupUiBottomControlsCoordinatorSupplier;
+    private CallbackController mCallbackController;
+    private BottomControlsStacker mBottomControlsStacker;
+    private FullscreenManager mFullscreenManager;
+    private ActivityTabProvider mActivityTabProvider;
+    private AppThemeColorProvider mAppThemeColorProvider;
+    private ScrimManager mScrimManager;
+    private MenuButtonCoordinator mMenuButtonCoordinator;
+    private ToolbarTabControllerImpl mToolbarTabController;
+    private LocationBar mLocationBar;
+    private ActionModeController mActionModeController;
+    private LocationBarModel mLocationBarModel;
+    private TopToolbarCoordinator mToolbar;
+    private NullableObservableSupplier<BookmarkModel> mBookmarkModelSupplier;
+    private LayoutManagerImpl mLayoutManager;
+    private TabModelSelector mTabModelSelector;
+    private IncognitoStateProvider mIncognitoStateProvider;
+    private BottomSheetController mBottomSheetController;
+    private TabContentManager mTabContentManager;
+    private TabCreatorManager mTabCreatorManager;
+    private NonNullObservableSupplier<ModalDialogManager> mModalDialogManagerSupplier;
+    private TabObscuringHandler mTabObscuringHandler;
+
+    private MonotonicObservableSupplier<ReadAloudController> mReadAloudControllerSupplier;
+    private ToolbarThemeColorProvider mToolbarThemeColorProvider;
+    private int mCurrentOrientation;
+    private boolean mInitializedWithNative;
+
+    // Deleted in bytecode; parent class field is used instead.
+    @SuppressWarnings("FieldCanBeLocal")
+    private @Nullable TabGroupUiOneshotSupplier mTabGroupUiOneshotSupplier;
+
+    private @Nullable UndoBarThrottle mUndoBarThrottle;
+
+    // Own members.
+    private boolean mIsBraveBottomControlsVisible;
+    private final NonNullObservableSupplier<Boolean> mOmniboxFocusStateSupplier;
+    private final OneshotSupplier<LayoutStateProvider> mLayoutStateProviderSupplier;
+    private final HomepageManager.HomepageStateListener mBraveHomepageStateListener;
+    private final AppCompatActivity mActivity;
+    private final WindowAndroid mWindowAndroid;
+    private final CompositorViewHolder mCompositorViewHolder;
+    private final Object mLock = new Object();
+    private boolean mBottomControlsEnabled;
+    private BraveScrollingBottomViewResourceFrameLayout mBottomControls;
+    private final MonotonicObservableSupplier<EdgeToEdgeController> mEdgeToEdgeControllerSupplier;
+    private final MonotonicObservableSupplier<Profile> mProfileSupplier;
+    private final BrowserControlsSizer mBrowserControlsSizer;
+    private final DataSharingTabManager mDataSharingTabManager;
+    private final MonotonicObservableSupplier<TabModelSelector> mTabModelSelectorSupplier;
+    private Runnable mOpenGridTabSwitcherHandler;
+    private final MonotonicObservableSupplier<TabBookmarker> mTabBookmarkerSupplier;
+    private final Supplier<ShareDelegate> mShareDelegateSupplier;
+    private final @Nullable ActionRegistry mBraveActionRegistry;
+    private @Nullable BraveBottomBarActionCoordinator mBraveBottomBarActionCoordinator;
+
+    // Hub layout state provider and observer for hiding the toolbar when the hub is shown.
+    // See https://github.com/brave/brave-browser/issues/57997.
+    private boolean mIsHubHiding;
+    private @Nullable LayoutStateProvider mHubLayoutStateProvider;
+    private final LayoutStateProvider.LayoutStateObserver mHubLayoutStateObserver =
+            new LayoutStateProvider.LayoutStateObserver() {
+                @Override
+                public void onStartedShowing(@LayoutType int layoutType) {
+                    if (layoutType == LayoutType.HUB) mIsHubHiding = false;
+                }
+
+                @Override
+                public void onFinishedShowing(@LayoutType int layoutType) {
+                    if (layoutType == LayoutType.HUB) mIsHubHiding = false;
+                }
+
+                @Override
+                public void onStartedHiding(@LayoutType int layoutType) {
+                    if (layoutType == LayoutType.HUB) mIsHubHiding = true;
+                }
+
+                @Override
+                public void onFinishedHiding(@LayoutType int layoutType) {
+                    if (layoutType == LayoutType.HUB) mIsHubHiding = false;
+                }
+            };
+
+    public BraveToolbarManager(
+            AppCompatActivity activity,
+            BottomControlsStacker bottomControlsStacker,
+            BrowserControlsSizer controlsSizer,
+            FullscreenManager fullscreenManager,
+            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            ToolbarControlContainer controlContainer,
+            CompositorViewHolder compositorViewHolder,
+            Callback<Boolean> urlFocusChangedCallback,
+            ToolbarThemeColorProvider toolbarThemeColorProvider,
+            @Nullable ToolbarThemeColorProvider adjustedTopUiThemeColorProvider,
+            BottomUiThemeColorProvider bottomUiThemeColorProvider,
+            IncognitoStateProvider incognitoStateProvider,
+            TabObscuringHandler tabObscuringHandler,
+            MonotonicObservableSupplier<ShareDelegate> shareDelegateSupplier,
+            List<ButtonDataProvider> buttonDataProviders,
+            ActivityTabProvider tabProvider,
+            ScrimManager scrimManager,
+            ToolbarActionModeCallback toolbarActionModeCallback,
+            FindToolbarManager findToolbarManager,
+            MonotonicObservableSupplier<@Nullable Profile> profileSupplier,
+            NullableObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
+            OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
+            boolean canShowUpdateBadge,
+            MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            NonNullObservableSupplier<Boolean> omniboxFocusStateSupplier,
+            OneshotSupplier<Boolean> promoShownOneshotSupplier,
+            WindowAndroid windowAndroid,
+            ActivityResultTracker activityResultTracker,
+            DeviceLockActivityLauncher deviceLockActivityLauncher,
+            OneshotSupplier<ChromeAndroidTask> chromeAndroidTaskSupplier,
+            Supplier<Boolean> isInOverviewModeSupplier,
+            NonNullObservableSupplier<ModalDialogManager> modalDialogManagerSupplier,
+            StatusBarColorController statusBarColorController,
+            AppMenuDelegate appMenuDelegate,
+            ActivityLifecycleDispatcher activityLifecycleDispatcher,
+            BottomSheetController bottomSheetController,
+            DataSharingTabManager dataSharingTabManager,
+            TabContentManager tabContentManager,
+            TabCreatorManager tabCreatorManager,
+            MonotonicObservableSupplier<MerchantTrustSignalsCoordinator>
+                    merchantTrustSignalsCoordinatorSupplier,
+            OmniboxActionDelegateImpl omniboxActionDelegate,
+            MonotonicObservableSupplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
+            boolean initializeWithIncognitoColors,
+            @Nullable BackPressManager backPressManager,
+            MonotonicObservableSupplier<ReadAloudController> readAloudControllerSupplier,
+            @Nullable DesktopWindowStateManager desktopWindowStateManager,
+            @Nullable TokenHolder lockTopControlsTokenJar,
+            MonotonicObservableSupplier<TabBookmarker> tabBookmarkerSupplier,
+            @Nullable VisibilityDelegate menuButtonVisibilityDelegate,
+            TopControlsStacker topControlsStacker,
+            TopInsetProvider topInsetProvider,
+            NonNullObservableSupplier<Boolean> xrSpaceModeObservableSupplier,
+            PageZoomManager pageZoomManager,
+            SnackbarManager snackbarManager,
+            @Nullable OmniboxChipManager omniboxChipManager,
+            @Nullable BottomBarHostManager bottomBarHostManager,
+            @Nullable ActionRegistry actionRegistry,
+            @Nullable OneshotSupplier<String> countrySupplier,
+            GlicButtonDelegate toggleGlicCallback,
+            boolean suppressTabStripAtStart,
+            @Nullable OneshotSupplier<HubManager> hubManagerSupplier) {
+        super(
+                activity,
+                bottomControlsStacker,
+                controlsSizer,
+                fullscreenManager,
+                edgeToEdgeControllerSupplier,
+                controlContainer,
+                compositorViewHolder,
+                urlFocusChangedCallback,
+                toolbarThemeColorProvider,
+                adjustedTopUiThemeColorProvider,
+                bottomUiThemeColorProvider,
+                incognitoStateProvider,
+                tabObscuringHandler,
+                shareDelegateSupplier,
+                buttonDataProviders,
+                tabProvider,
+                scrimManager,
+                toolbarActionModeCallback,
+                findToolbarManager,
+                profileSupplier,
+                bookmarkModelSupplier,
+                layoutStateProviderSupplier,
+                appMenuCoordinatorSupplier,
+                canShowUpdateBadge,
+                tabModelSelectorSupplier,
+                omniboxFocusStateSupplier,
+                promoShownOneshotSupplier,
+                windowAndroid,
+                activityResultTracker,
+                deviceLockActivityLauncher,
+                chromeAndroidTaskSupplier,
+                isInOverviewModeSupplier,
+                modalDialogManagerSupplier,
+                statusBarColorController,
+                appMenuDelegate,
+                activityLifecycleDispatcher,
+                bottomSheetController,
+                dataSharingTabManager,
+                tabContentManager,
+                tabCreatorManager,
+                merchantTrustSignalsCoordinatorSupplier,
+                omniboxActionDelegate,
+                ephemeralTabCoordinatorSupplier,
+                initializeWithIncognitoColors,
+                backPressManager,
+                readAloudControllerSupplier,
+                desktopWindowStateManager,
+                lockTopControlsTokenJar,
+                tabBookmarkerSupplier,
+                menuButtonVisibilityDelegate,
+                topControlsStacker,
+                topInsetProvider,
+                xrSpaceModeObservableSupplier,
+                pageZoomManager,
+                snackbarManager,
+                omniboxChipManager,
+                bottomBarHostManager,
+                actionRegistry,
+                countrySupplier,
+                toggleGlicCallback,
+                suppressTabStripAtStart,
+                hubManagerSupplier);
+
+        mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
+        mLayoutStateProviderSupplier = layoutStateProviderSupplier;
+        mActivity = activity;
+        mWindowAndroid = windowAndroid;
+        mCompositorViewHolder = compositorViewHolder;
+        mEdgeToEdgeControllerSupplier = edgeToEdgeControllerSupplier;
+        mProfileSupplier = profileSupplier;
+        mBrowserControlsSizer = controlsSizer;
+        mDataSharingTabManager = dataSharingTabManager;
+        mTabModelSelectorSupplier = tabModelSelectorSupplier;
+        mTabBookmarkerSupplier = tabBookmarkerSupplier;
+        mShareDelegateSupplier = shareDelegateSupplier;
+        mBraveActionRegistry = actionRegistry;
+
+        if (isToolbarPhone()) {
+            updateBraveBottomControlsVisibility();
+        }
+
+        mBraveHomepageStateListener =
+                () -> {
+                    if (mTabGroupUiBottomControlsCoordinatorSupplier != null
+                            && mTabGroupUiBottomControlsCoordinatorSupplier.get()
+                                    instanceof BraveBottomControlsCoordinator) {
+                        ((BraveBottomControlsCoordinator)
+                                        mTabGroupUiBottomControlsCoordinatorSupplier.get())
+                                .updateHomeButtonState();
+                    }
+                };
+        HomepageManager.getInstance().addListener(mBraveHomepageStateListener);
+    }
+
+    @Override
+    public void enableBottomControls() {
+        assert (mActivity instanceof ChromeActivity);
+        synchronized (mLock) {
+            if (mBottomControlsEnabled) {
+                return;
+            }
+            mBottomControlsEnabled = true;
+            if (!BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
+                super.enableBottomControls();
+                return;
+            }
+        }
+        // Defer bottom controls inflation to avoid ANR from GPU contention
+        // during startup. All consumers null-check the coordinator supplier.
+        // The bottom toolbar starts with visibility="gone", so the one-frame
+        // delay is imperceptible to the user. Using makeCancelable ensures
+        // the task is auto-cancelled when mCallbackController.destroy() is
+        // called during Activity teardown, preventing use-after-destroy.
+        PostTask.postTask(
+                TaskTraits.UI_DEFAULT,
+                mCallbackController.makeCancelable(this::initBraveBottomControls));
+    }
+
+    private void initBraveBottomControls() {
+        ViewStub bottomControlsStub =
+                (ViewStub) mActivity.findViewById(R.id.tab_group_ui_container_stub);
+        mBottomControls =
+                (BraveScrollingBottomViewResourceFrameLayout) bottomControlsStub.inflate();
+
+        ThemeColorProvider bottomUiThemeColorProvider =
+                new BottomUiThemeColorProvider(
+                        mToolbarThemeColorProvider,
+                        mBrowserControlsSizer,
+                        mBottomControlsStacker,
+                        mIncognitoStateProvider,
+                        mActivity);
+
+        mTabGroupUiOneshotSupplier =
+                new TabGroupUiOneshotSupplier(
+                        mActivityTabProvider,
+                        mTabModelSelector,
+                        mActivity,
+                        mBottomControls.findViewById(R.id.bottom_container_slot),
+                        mBrowserControlsSizer,
+                        mScrimManager,
+                        mOmniboxFocusStateSupplier,
+                        mBottomSheetController,
+                        mDataSharingTabManager,
+                        mTabContentManager,
+                        mTabCreatorManager,
+                        mLayoutStateProviderSupplier,
+                        mModalDialogManagerSupplier.get(),
+                        bottomUiThemeColorProvider,
+                        mUndoBarThrottle,
+                        mTabBookmarkerSupplier,
+                        mShareDelegateSupplier);
+        // mTabGroupUiOneshotSupplier is a OneshotSupplier of a concrete subtype, so narrowing
+        // the wildcard to the bound type is safe in practice but not provable to the compiler.
+        @SuppressWarnings("unchecked")
+        var bottomControlsContentDelegateSupplier =
+                (OneshotSupplier<BottomControlsContentDelegate>)
+                        ((OneshotSupplier<? extends BottomControlsContentDelegate>)
+                                mTabGroupUiOneshotSupplier);
+
+        BrowserStateBrowserControlsVisibilityDelegate controlsVisibilityDelegate =
+                mBrowserControlsSizer.getBrowserVisibilityDelegate();
+        assert controlsVisibilityDelegate != null;
+        var bottomControlsCoordinator =
+                new BraveBottomControlsCoordinator(
+                        mLayoutStateProviderSupplier,
+                        BottomTabSwitcherActionMenuCoordinator.createOnLongClickListener(
+                                id -> ((ChromeActivity) mActivity).onOptionsItemSelected(id, null),
+                                mProfileSupplier,
+                                mTabModelSelectorSupplier,
+                                TabWindowManagerSingleton.getInstance()),
+                        mActivityTabProvider,
+                        mToolbarTabController::openHomepage,
+                        mCallbackController.makeCancelable(
+                                (reason) -> beginFuseboxInput(new AutocompleteInput(reason))),
+                        mMenuButtonCoordinator.getMenuButtonHelperSupplier(),
+                        mAppThemeColorProvider,
+                        mBookmarkModelSupplier,
+                        mLocationBarModel,
+                        /* Below are parameters for BottomControlsCoordinator */
+                        mWindowAndroid,
+                        mLayoutManager,
+                        mCompositorViewHolder.getResourceManager(),
+                        mBottomControlsStacker,
+                        controlsVisibilityDelegate,
+                        mFullscreenManager,
+                        mEdgeToEdgeControllerSupplier,
+                        mActivityTabProvider.asObservable(),
+                        mBottomControls,
+                        LayerType.TABSTRIP_TOOLBAR,
+                        R.dimen.brave_bottom_toolbar_height,
+                        bottomControlsContentDelegateSupplier,
+                        mTabObscuringHandler,
+                        mLayoutManager.getOverlayPanelManager().getPanelStateSupplier(),
+                        getConstraintsProxy(),
+                        /* readAloudRestoringSupplier= */ () -> {
+                            final var readAloud = mReadAloudControllerSupplier.get();
+                            return readAloud != null && readAloud.isRestoringPlayer();
+                        });
+        if (mInitializedWithNative) {
+            Runnable closeAllTabsAction =
+                    () -> {
+                        mTabModelSelector
+                                .getModel(mIncognitoStateProvider.isIncognitoSelected())
+                                .getTabRemover()
+                                .closeTabs(TabClosureParams.closeAllTabs().build(), false);
+                    };
+
+            assert (mActivity instanceof ChromeActivity);
+            OnClickListener wrappedNewTabClickHandler =
+                    v -> {
+                        recordNewTabClick();
+                        ((ChromeActivity) mActivity)
+                                .getMenuOrKeyboardActionController()
+                                .onMenuOrKeyboardAction(
+                                        mIncognitoStateProvider.isIncognitoSelected()
+                                                ? R.id.new_incognito_tab_menu_id
+                                                : R.id.new_tab_menu_id,
+                                        false,
+                                        /* menuItemData= */ null,
+                                        /* triggeringMotion= */ null);
+                    };
+
+            bottomControlsCoordinator.initializeWithNative(
+                    mActivity,
+                    mCompositorViewHolder.getResourceManager(),
+                    mCompositorViewHolder.getLayoutManager(),
+                    /*tabSwitcherListener*/ v -> mOpenGridTabSwitcherHandler.run(),
+                    /*newTabClickListener*/ wrappedNewTabClickHandler,
+                    mWindowAndroid,
+                    mTabModelSelector,
+                    mIncognitoStateProvider,
+                    mActivity.findViewById(R.id.control_container),
+                    closeAllTabsAction);
+        }
+        assert mTabGroupUiBottomControlsCoordinatorSupplier != null
+                : "It must not be null at this point! Something has changed in the upstream!";
+        mTabGroupUiBottomControlsCoordinatorSupplier.set(bottomControlsCoordinator);
+        mBottomControls.setBottomControlsCoordinatorSupplier(
+                mTabGroupUiBottomControlsCoordinatorSupplier);
+        updateBraveBottomControlsVisibility();
+        if (mIsBraveBottomControlsVisible) {
+            mBottomControls.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
+    public void beginFuseboxInput(AutocompleteInput input) {
+        // Hub exposes the bottom search accelerator before its hide animation completes.
+        // Starting input in that interval can leave Hub and omnibox UI visible together.
+        if (mIsHubHiding) return;
+
+        super.beginFuseboxInput(input);
+    }
+
+    // The 3rd parameter at ToolbarManager.initializeWithNativ is
+    // OnClickListener newTabClickHandler, but at
+    // ChromeTabbedActivity.initializeToolbarManager
+    // `v -> onTabSwitcherClicked()` is passed.
+    // Also ToolbarManager.initializeWithNative calls
+    // TopToolbarCoordinator.initializeWithNative where 3rd parameter is
+    // `OnClickListener tabSwitcherClickHandler`. So it is a tabSwitcherClickHandler.
+    //
+    // Suppress to observe SharedPreferences, which is discouraged; use another messaging channel
+    // instead.
+    @SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
+    @Override
+    public void initializeWithNative(
+            LayoutManagerImpl layoutManager,
+            @Nullable StripLayoutHelperManager stripLayoutHelperManager,
+            @Nullable Runnable openGridTabSwitcherHandler,
+            @Nullable OnClickListener bookmarkClickHandler,
+            @Nullable OnClickListener customTabsBackClickHandler,
+            @Nullable NonNullObservableSupplier<Integer> archivedTabCountSupplier,
+            NonNullObservableSupplier<TabModelDotInfo> tabModelNotificationDotSupplier,
+            @Nullable UndoBarThrottle undoBarThrottle,
+            @Nullable ContextMenuPopulatorFactory contextMenuPopulatorFactory,
+            @Nullable SelectionDropdownMenuDelegate selectionDropdownMenuDelegate) {
+
+        super.initializeWithNative(
+                layoutManager,
+                stripLayoutHelperManager,
+                openGridTabSwitcherHandler,
+                bookmarkClickHandler,
+                customTabsBackClickHandler,
+                archivedTabCountSupplier,
+                tabModelNotificationDotSupplier,
+                undoBarThrottle,
+                contextMenuPopulatorFactory,
+                selectionDropdownMenuDelegate);
+
+        registerHubLayoutObserver();
+        mOpenGridTabSwitcherHandler = openGridTabSwitcherHandler;
+
+        // Registers the bottom bar buttons Brave adds to upstream's, alongside the ones upstream
+        // registers for it in ActionUtils#registerBottomBarActions.
+        if (mBraveActionRegistry != null
+                && BottomToolbarConfiguration.isAndroidBottomBarEnabled()) {
+            mBraveBottomBarActionCoordinator =
+                    new BraveBottomBarActionCoordinator(
+                            mBraveActionRegistry,
+                            mActivityTabProvider,
+                            mCallbackController.makeCancelable(
+                                    (reason) -> beginFuseboxInput(new AutocompleteInput(reason))));
+            updateBookmarkButtonStatus();
+        }
+
+        if (isToolbarPhone() && BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
+            mLocationBar.getContainerView().setAccessibilityTraversalBefore(R.id.bottom_toolbar);
+            ContextUtils.getAppSharedPreferences().registerOnSharedPreferenceChangeListener(this);
+        }
+
+        ToolbarLayout toolbarLayout = mActivity.findViewById(R.id.toolbar);
+        assert toolbarLayout instanceof BraveToolbarLayoutImpl
+                : "Something has changed in the upstream!";
+        if (toolbarLayout instanceof BraveToolbarLayoutImpl) {
+            final BraveToolbarLayoutImpl braveToolbarLayout =
+                    (BraveToolbarLayoutImpl) toolbarLayout;
+            braveToolbarLayout.setTabModelSelector(mTabModelSelectorSupplier.get());
+        }
+    }
+
+    @Override
+    public @Nullable View getMenuButtonView() {
+        // ToolbarManager.destroy() nulls mMenuButtonCoordinator, but the ToolbarManager supplier
+        // keeps handing us out afterwards: ModalDialogManager.destroy() dismisses the remaining
+        // dialogs later in onDestroy() and that reaches here via
+        // ChromeTabModalPresenter.setMenuButtonEnabled().
+        if (mMenuButtonCoordinator == null) return null;
+        if (mMenuButtonCoordinator.getMenuButton() != null) {
+            return super.getMenuButtonView();
+        }
+        // The menu button is in the bottom toolbar (isMenuFromBottom). Use the bottom toolbar's
+        // real menu button view so that IPH anchored to it finds an attached view.
+        if (mTabGroupUiBottomControlsCoordinatorSupplier != null) {
+            var coord = mTabGroupUiBottomControlsCoordinatorSupplier.get();
+            if (coord instanceof BraveBottomControlsCoordinator) {
+                View bottomMenuButton =
+                        ((BraveBottomControlsCoordinator) coord).getMenuButtonView();
+                if (bottomMenuButton != null) return bottomMenuButton;
+            }
+        }
+        // Fallback: keeps existing behaviour (satisfies the assert in TabbedRootUiCoordinator).
+        // In practice this path should not be reached when the bottom toolbar is fully set up.
+        return new View(mActivity);
+    }
+
+    @Override
+    public void destroy() {
+        unregisterHubLayoutObserver();
+        super.destroy();
+        HomepageManager.getInstance().removeListener(mBraveHomepageStateListener);
+        if (mBraveBottomBarActionCoordinator != null) {
+            mBraveBottomBarActionCoordinator.destroy();
+            mBraveBottomBarActionCoordinator = null;
+        }
+    }
+
+    @Override
+    public void onUrlFocusChange(boolean hasFocus) {
+        super.onUrlFocusChange(hasFocus);
+        if (isToolbarPhone()) {
+            updateBraveBottomControlsVisibility(hasFocus);
+        }
+    }
+
+    private void registerHubLayoutObserver() {
+        mLayoutStateProviderSupplier.onAvailable(
+                mCallbackController.makeCancelable(this::setHubLayoutStateProvider));
+    }
+
+    private void setHubLayoutStateProvider(LayoutStateProvider layoutStateProvider) {
+        if (mHubLayoutStateProvider != null) return;
+
+        mHubLayoutStateProvider = layoutStateProvider;
+        layoutStateProvider.addObserver(mHubLayoutStateObserver);
+    }
+
+    private void unregisterHubLayoutObserver() {
+        if (mHubLayoutStateProvider != null) {
+            mHubLayoutStateProvider.removeObserver(mHubLayoutStateObserver);
+            mHubLayoutStateProvider = null;
+        }
+        mIsHubHiding = false;
+    }
+
+    private void recordNewTabClick() {
+        if (!mIncognitoStateProvider.isIncognitoSelected()) {
+            if (mActivity instanceof BraveActivity) {
+                MiscAndroidMetrics miscAndroidMetrics =
+                        ((BraveActivity) mActivity).getMiscAndroidMetrics();
+                if (miscAndroidMetrics != null) {
+                    miscAndroidMetrics.recordTabSwitcherNewTab();
+                }
+            }
+        }
+    }
+
+    protected void onOrientationChange() {
+        if (mActionModeController != null) mActionModeController.showControlsOnOrientationChange();
+
+        if (mTabGroupUiBottomControlsCoordinatorSupplier != null
+                && mTabGroupUiBottomControlsCoordinatorSupplier.get() != null
+                && BottomToolbarConfiguration.isBraveBottomControlsEnabled()) {
+            updateBraveBottomControlsVisibility();
+        }
+
+        if (mActivity instanceof FullScreenCustomTabActivity) {
+            // When rewards page is shown on rotated screen we don't care about
+            // the toolbar.
+            return;
+        }
+
+        if (mActivity instanceof BraveActivity) {
+            ((BraveActivity) mActivity).updateBottomSheetPosition(mCurrentOrientation);
+        }
+    }
+
+    protected void updateBookmarkButtonStatus() {
+        if (mBookmarkModelSupplier == null) return;
+        Tab currentTab = mLocationBarModel.getTab();
+        BookmarkModel bridge = mBookmarkModelSupplier.get();
+        boolean isBookmarked =
+                currentTab != null && bridge != null && bridge.hasBookmarkIdForTab(currentTab);
+        boolean editingAllowed =
+                currentTab == null || bridge == null || bridge.isEditBookmarksEnabled();
+        mToolbar.updateBookmarkButton(isBookmarked, editingAllowed);
+
+        if (mTabGroupUiBottomControlsCoordinatorSupplier != null
+                && mTabGroupUiBottomControlsCoordinatorSupplier.get()
+                        instanceof BraveBottomControlsCoordinator) {
+            ((BraveBottomControlsCoordinator) mTabGroupUiBottomControlsCoordinatorSupplier.get())
+                    .updateBookmarkButton(isBookmarked, editingAllowed);
+        }
+
+        if (mBraveBottomBarActionCoordinator != null) {
+            mBraveBottomBarActionCoordinator.updateBookmarkButton(isBookmarked, editingAllowed);
+        }
+    }
+
+    protected void updateReloadState(boolean tabCrashed) {
+        assert false;
+    }
+
+    @Override
+    protected boolean shouldSuppressToolbarLongPress() {
+        return shouldSuppressToolbarLongPressForTab(
+                super.shouldSuppressToolbarLongPress(),
+                mLocationBarModel.getTab(),
+                mOmniboxFocusStateSupplier.get());
+    }
+
+    /**
+     * Upstream suppresses the address bar long press menu on the standard NTP, where the address
+     * bar is replaced by the NTP fakebox. Brave's NTP keeps the real address bar, so the menu - and
+     * with it the "Move address bar to the bottom/top" item - stays available there. While the
+     * address bar is focused it is being edited, so the upstream suppression stands.
+     *
+     * @param suppressedByUpstream what {@link ToolbarManager#shouldSuppressToolbarLongPress()}
+     *     decided for the current state.
+     * @param tab the tab the address bar is currently showing, may be null.
+     * @param isOmniboxFocused whether the address bar is currently focused.
+     * @return whether the address bar long press menu should be suppressed.
+     */
+    @VisibleForTesting
+    static boolean shouldSuppressToolbarLongPressForTab(
+            boolean suppressedByUpstream, @Nullable Tab tab, boolean isOmniboxFocused) {
+        if (suppressedByUpstream
+                && !isOmniboxFocused
+                && tab != null
+                && tab.getUrl() != null
+                && UrlUtilities.isNtpUrl(tab.getUrl())) {
+            return false;
+        }
+        return suppressedByUpstream;
+    }
+
+    private void setBraveBottomControlsVisible(boolean visible) {
+        mIsBraveBottomControlsVisible = visible;
+        boolean isMenuFromBottom =
+                (mIsBraveBottomControlsVisible
+                                && BottomToolbarConfiguration.isBraveBottomControlsEnabled())
+                        || BottomToolbarConfiguration.isToolbarBottomAnchored();
+        BraveMenuButtonCoordinator.setMenuFromBottom(isMenuFromBottom);
+
+        if (mToolbar instanceof BraveTopToolbarCoordinator) {
+            ((BraveTopToolbarCoordinator) mToolbar).onBottomControlsVisibilityChanged(visible);
+        }
+        if (mTabGroupUiBottomControlsCoordinatorSupplier != null
+                && mTabGroupUiBottomControlsCoordinatorSupplier.get()
+                        instanceof BraveBottomControlsCoordinator) {
+            ((BraveBottomControlsCoordinator) mTabGroupUiBottomControlsCoordinatorSupplier.get())
+                    .setBottomToolbarVisible(visible);
+        }
+    }
+
+    private void updateBraveBottomControlsVisibility() {
+        updateBraveBottomControlsVisibility(mOmniboxFocusStateSupplier.get());
+    }
+
+    private void updateBraveBottomControlsVisibility(boolean isOmniboxFocused) {
+        boolean isBraveBottomControlsVisible =
+                shouldShowBraveBottomControls(
+                        BottomToolbarConfiguration.isBraveBottomControlsEnabled(),
+                        mActivity.getResources().getConfiguration().orientation,
+                        isOmniboxFocused);
+        setBraveBottomControlsVisible(isBraveBottomControlsVisible);
+    }
+
+    @VisibleForTesting
+    static boolean shouldShowBraveBottomControls(
+            boolean isBottomControlsEnabled, int orientation, boolean isOmniboxFocused) {
+        return isBottomControlsEnabled
+                && orientation != Configuration.ORIENTATION_LANDSCAPE
+                && !isOmniboxFocused;
+    }
+
+    private boolean isToolbarPhone() {
+        assert (mToolbar instanceof BraveTopToolbarCoordinator);
+        return mToolbar instanceof BraveTopToolbarCoordinator
+                && ((BraveTopToolbarCoordinator) mToolbar).isToolbarPhone();
+    }
+
+    private NullableObservableSupplier<@BrowserControlsState Integer> getConstraintsProxy() {
+        if (mToolbar instanceof BraveTopToolbarCoordinator) {
+            return ((BraveTopToolbarCoordinator) mToolbar).getConstraintsProxy();
+        }
+
+        assert false : "Wrong top toolbar type!";
+        return null;
+    }
+
+    @Override
+    public LocationBar getLocationBar() {
+        return mLocationBar;
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(
+            SharedPreferences sharedPreferences, @Nullable String key) {
+        if (ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED.equals(key)) {
+            if (sharedPreferences.getBoolean(
+                    BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, true)) {
+                updateBraveBottomControlsVisibility();
+            }
+        }
+    }
+
+    public void openHomepage() {
+        if (mToolbarTabController == null) return;
+
+        mToolbarTabController.openHomepage();
+    }
+}

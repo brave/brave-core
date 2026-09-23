@@ -1,0 +1,17 @@
+diff --git a/components/browsing_data/core/browsing_data_utils.h b/components/browsing_data/core/browsing_data_utils.h
+index e6974f6fc1902ae516b1f24e2ebcdd005d9cfed4..1638aee48431a0e1e7b7ec0ede560f308828de4a 100644
+--- a/components/browsing_data/core/browsing_data_utils.h
++++ b/components/browsing_data/core/browsing_data_utils.h
+@@ -38,7 +38,12 @@ enum class BrowsingDataType {
+   HOSTED_APPS_DATA = 7,
+   // Only for Android:
+   TABS = 8,
++#if BUILDFLAG(ENABLE_AI_CHAT)
++  BRAVE_AI_CHAT = TABS + 1,
++  MAX_VALUE = BRAVE_AI_CHAT,
++#else
+   MAX_VALUE = TABS,
++#endif
+ };
+ // LINT.ThenChange(/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_browser_proxy.ts:BrowsingDataType)
+ 

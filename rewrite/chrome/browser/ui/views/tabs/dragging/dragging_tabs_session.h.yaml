@@ -1,0 +1,16 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Remove final keyword from DraggingTabsSession to allow subclassing'
+    drop_final:
+      class_name: DraggingTabsSession
+
+  - description:
+      'Make the DraggingTabsSession destructor virtual to allow subclassing'
+    make_virtual:
+      class_name: DraggingTabsSession
+      method_name: '~DraggingTabsSession'

@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml b/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
+index 33601c27d4ba6096a012f4fdc758637454f9785b..d2a432d42795815f59000265c62018ee59b5ab46 100644
+--- a/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
++++ b/chrome/browser/hub/internal/android/res/layout/hub_toolbar_layout.xml
+@@ -21,7 +21,7 @@ found in the LICENSE file.
+     android:background="@android:color/white"
+     android:visibility="gone" />
+ 
+-  <org.chromium.chrome.browser.hub.HubToolbarView
++  <org.chromium.chrome.browser.hub.BraveHubToolbarView
+     android:id="@+id/hub_toolbar"
+     android:layout_width="match_parent"
+     android:layout_height="wrap_content"
+@@ -109,6 +109,7 @@ found in the LICENSE file.
+             android:tooltipText="@string/accessibility_search_loupe_tooltip_text"
+             style="@style/ToolbarMenuButton"
+             app:tint="@color/default_icon_color_tint_list"  />
++        <include layout="@layout/brave_shred_data_button" android:layout_height="wrap_content" android:layout_width="match_parent"/>
+         <include layout="@layout/menu_button" />
+ 
+         <!-- On large form factor devices, a close button is shown. -->
+@@ -162,5 +163,5 @@ found in the LICENSE file.
+         android:gravity="top"
+         android:importantForAccessibility="no"
+         android:visibility="gone"/>
+-  </org.chromium.chrome.browser.hub.HubToolbarView>
++  </org.chromium.chrome.browser.hub.BraveHubToolbarView>
+ </FrameLayout>

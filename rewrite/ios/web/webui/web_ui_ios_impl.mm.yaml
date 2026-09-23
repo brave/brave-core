@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Hand the WebUI's host down to the MojoFacade it owns, so the facade
+      polls that host's frame instead of defaulting to the main frame. See
+      the web_ui_ios_impl.h plaster for why more than one of these exists.
+    regex:
+      re_pattern: |-
+        WebUIIOSImpl::WebUIIOSImpl\(WebState\* web_state\)
+            : mojo_facade_\(std::make_unique<MojoFacade>\(web_state\)\),
+              web_state_\(web_state\) \{\}
+      replace: |-
+        WebUIIOSImpl::WebUIIOSImpl(WebState* web_state,
+                                   const std::string& webui_host)
+            : mojo_facade_(std::make_unique<MojoFacade>(web_state, webui_host)),
+              web_state_(web_state) {}

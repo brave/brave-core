@@ -1,0 +1,13 @@
+diff --git a/components/browser_ui/widget/android/java/res/values/dimens.xml b/components/browser_ui/widget/android/java/res/values/dimens.xml
+index f96eef9abda091f97b7554df18a6eceb32613d68..f9fee8b252394df73ed0affda1eaf111107dfb42 100644
+--- a/components/browser_ui/widget/android/java/res/values/dimens.xml
++++ b/components/browser_ui/widget/android/java/res/values/dimens.xml
+@@ -92,7 +92,7 @@ found in the LICENSE file.
+     <dimen name="modern_toolbar_tablet_background_size">48dp</dimen>
+     <!-- Sometimes the modern toolbar is shown at 48dp so a corner radius of
+          24dp is needed to completely round the corners. -->
+-    <dimen name="modern_toolbar_background_corner_radius">24dp</dimen>
++    <dimen name="modern_toolbar_background_corner_radius">8dp</dimen>
+     <dimen name="modern_toolbar_background_inner_corner_radius">16dp</dimen>
+     <!-- The offset is required for the background drawable used by the
+          location bar on tablets. -->

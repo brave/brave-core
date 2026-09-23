@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+
+     Install VPN profile illustration: the dotted texture background (raster,
+     because its single halftone path is too large for a VectorDrawable) with
+     the crisp phone mock-up (vector) overlaid. Both layers share the 548x300
+     canvas so they align without insets. -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:drawable="@drawable/vpn_install_bg"
+        android:gravity="fill"/>
+    <item
+        android:drawable="@drawable/vpn_install_phone"
+        android:gravity="fill"/>
+</layer-list>

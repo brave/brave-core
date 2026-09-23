@@ -1,0 +1,335 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/components/brave_shields/core/browser/ad_block_custom_resource_provider.h"
+
+#include "base/base64.h"
+#include "base/files/scoped_temp_dir.h"
+#include "base/scoped_observation.h"
+#include "base/test/scoped_feature_list.h"
+#include "base/test/task_environment.h"
+#include "base/test/test_future.h"
+#include "base/values.h"
+#include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
+#include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/testing_pref_service.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+namespace brave_shields {
+
+namespace {
+
+base::Value CreateResource(const std::string& name,
+                           const std::string& content) {
+  base::DictValue resource;
+  resource.Set("name", name);
+  resource.Set("content", base::Base64Encode(content));
+  resource.SetByDottedPath("kind.mime", "application/javascript");
+  return base::Value(std::move(resource));
+}
+
+class TestResourceProvider : public AdBlockResourceProvider {
+ public:
+  TestResourceProvider() = default;
+  ~TestResourceProvider() override = default;
+
+  void LoadResources(
+      base::OnceCallback<void(AdblockResourceStorageBox)> on_load) override {
+    default_resource_load_calls_++;
+    auto storage = adblock::new_resource_storage(resources_json_);
+    std::move(on_load).Run(std::move(storage));
+  }
+
+  void SetResources(const std::string& resources_json) {
+    resources_json_ = resources_json;
+    base::test::TestFuture<AdblockResourceStorageBox> result;
+    LoadResources(result.GetCallback());
+    auto storage = result.Take();
+    NotifyResourcesLoaded(std::move(storage));
+  }
+
+  int default_resource_load_calls() const {
+    return default_resource_load_calls_;
+  }
+
+ private:
+  int default_resource_load_calls_ = 0;
+  std::string resources_json_;
+};
+
+class TestObserver : public AdBlockResourceProvider::Observer {
+ public:
+  explicit TestObserver(AdBlockResourceProvider* provider) {
+    observation_.Observe(provider);
+  }
+  ~TestObserver() override = default;
+
+  void WaitForResourcesUpdated() { run_loop_.Run(); }
+
+  void OnResourcesLoaded(AdblockResourceStorageBox /*storage*/) override {
+    run_loop_.Quit();
+  }
+
+ private:
+  base::ScopedObservation<AdBlockResourceProvider,
+                          AdBlockResourceProvider::Observer>
+      observation_{this};
+  base::RunLoop run_loop_;
+};
+
+}  // namespace
+
+class AdBlockCustomResourceProviderTest : public ::testing::Test {
+ public:
+  AdBlockCustomResourceProviderTest() = default;
+
+  ~AdBlockCustomResourceProviderTest() override = default;
+
+  void SetUp() override {
+    auto default_resource_provider = std::make_unique<TestResourceProvider>();
+    default_resource_provider_ = default_resource_provider.get();
+
+    prefs_.registry()->RegisterBooleanPref(prefs::kAdBlockDeveloperMode, false);
+
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    custom_resource_provider_ = std::make_unique<AdBlockCustomResourceProvider>(
+        temp_dir_.GetPath(), std::move(default_resource_provider));
+  }
+
+  PrefService* prefs() { return &prefs_; }
+
+  AdBlockCustomResourceProvider* custom_resource_provider() {
+    return custom_resource_provider_.get();
+  }
+
+  TestResourceProvider* default_resource_provider() {
+    return default_resource_provider_.get();
+  }
+
+  base::Value GetResources() {
+    base::test::TestFuture<base::Value> value;
+    custom_resource_provider()->GetCustomResources(value.GetCallback());
+    return value.Take();
+  }
+
+  AdBlockCustomResourceProvider::ErrorCode AddResource(
+      const base::Value& resource) {
+    base::test::TestFuture<AdBlockCustomResourceProvider::ErrorCode> result;
+    custom_resource_provider()->AddResource(prefs(), resource,
+                                            result.GetCallback());
+    return result.Take();
+  }
+
+  AdBlockCustomResourceProvider::ErrorCode RemoveResource(
+      const std::string& resource) {
+    base::test::TestFuture<AdBlockCustomResourceProvider::ErrorCode> result;
+    custom_resource_provider()->RemoveResource(prefs(), resource,
+                                               result.GetCallback());
+    return result.Take();
+  }
+
+  AdBlockCustomResourceProvider::ErrorCode UpdateResource(
+      const std::string& resource_name,
+      const base::Value& update) {
+    base::test::TestFuture<AdBlockCustomResourceProvider::ErrorCode> result;
+    custom_resource_provider()->UpdateResource(prefs(), resource_name, update,
+                                               result.GetCallback());
+    return result.Take();
+  }
+
+  bool HasResource(const std::string& name) {
+    base::test::TestFuture<AdblockResourceStorageBox> result;
+    custom_resource_provider()->LoadResources(result.GetCallback());
+    auto storage = result.Take();
+    return adblock::has_resource_for_testing(*storage, name);
+  }
+
+ private:
+  base::test::TaskEnvironment task_environment_;
+  base::test::ScopedFeatureList feature_list_;
+  base::ScopedTempDir temp_dir_;
+  std::unique_ptr<AdBlockCustomResourceProvider> custom_resource_provider_;
+  raw_ptr<TestResourceProvider> default_resource_provider_ = nullptr;
+  TestingPrefServiceSimple prefs_;
+};
+
+TEST_F(AdBlockCustomResourceProviderTest, AddResource) {
+  {
+    // empty list by default.
+    EXPECT_EQ(base::ListValue(), GetResources());
+  }
+  {
+    // Dev mode OFF.
+    auto resource = CreateResource("user-1.js", "user-1");
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kInvalid,
+              AddResource(resource));
+
+    EXPECT_EQ(base::ListValue(), GetResources());
+  }
+
+  {
+    // Dev mode ON.
+    prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, true);
+
+    base::ListValue expect;
+
+    {
+      auto resource = CreateResource("user-1.js", "user-1");
+      EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk,
+                AddResource(resource));
+
+      expect.Append(std::move(resource));
+      EXPECT_EQ(expect, GetResources());
+    }
+
+    {
+      // Try the same.
+      auto resource = CreateResource("user-1.js", "user-1");
+      EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kAlreadyExists,
+                AddResource(resource));
+
+      EXPECT_EQ(expect, GetResources());
+    }
+
+    {
+      // One more.
+      auto resource = CreateResource("user-2.js", "user-2");
+      base::test::TestFuture<AdBlockCustomResourceProvider::ErrorCode> result;
+      custom_resource_provider()->AddResource(prefs(), resource,
+                                              result.GetCallback());
+      EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk, result.Get());
+
+      expect.Append(std::move(resource));
+      EXPECT_EQ(expect, GetResources());
+    }
+
+    {
+      // Invalid resource.
+      EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kInvalid,
+                AddResource(base::Value()));
+    }
+  }
+}
+
+TEST_F(AdBlockCustomResourceProviderTest, RemoveResource) {
+  prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, true);
+  AddResource(CreateResource("user-1.js", "user-1"));
+  AddResource(CreateResource("user-2.js", "user-2"));
+  AddResource(CreateResource("user-3.js", "user-3"));
+
+  {
+    prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, false);
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kInvalid,
+              RemoveResource("user-1"));
+  }
+
+  {
+    prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, true);
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk,
+              RemoveResource("user-1.js"));
+
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kNotFound,
+              RemoveResource("user-1.js"));
+  }
+
+  {
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk,
+              RemoveResource("user-2.js"));
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk,
+              RemoveResource("user-3.js"));
+    EXPECT_EQ(base::ListValue(), GetResources());
+  }
+}
+
+TEST_F(AdBlockCustomResourceProviderTest, UpdateResource) {
+  prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, true);
+  AddResource(CreateResource("user-1.js", "user-1"));
+  AddResource(CreateResource("user-2.js", "user-2"));
+  AddResource(CreateResource("user-3.js", "user-3"));
+
+  {
+    prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, false);
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kInvalid,
+              UpdateResource("user-1.js", CreateResource("user-1-update.js",
+                                                         "user-1-update.js")));
+  }
+  {
+    prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, true);
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kInvalid,
+              UpdateResource("user-1.js", base::Value()));
+
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kNotFound,
+              UpdateResource("user-4.js", CreateResource("user-4-update.js",
+                                                         "user-4-update.js")));
+  }
+  {
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kAlreadyExists,
+              UpdateResource("user-1.js",
+                             CreateResource("user-2.js", "user-1-updated")));
+  }
+  {
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk,
+              UpdateResource("user-1.js", CreateResource("user-1-update.js",
+                                                         "user-1-update.js")));
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk,
+              UpdateResource("user-2.js", CreateResource("user-2-update.js",
+                                                         "user-2-update.js")));
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk,
+              UpdateResource("user-3.js", CreateResource("user-3-update.js",
+                                                         "user-3-update.js")));
+    EXPECT_EQ(
+        base::ListValue()
+            .Append(CreateResource("user-1-update.js", "user-1-update.js"))
+            .Append(CreateResource("user-2-update.js", "user-2-update.js"))
+            .Append(CreateResource("user-3-update.js", "user-3-update.js")),
+        GetResources());
+  }
+}
+
+TEST_F(AdBlockCustomResourceProviderTest, LoadResource) {
+  // Empty resources by default and a single call to load resources.
+  EXPECT_FALSE(HasResource("default-1.js"));
+  EXPECT_EQ(1, default_resource_provider()->default_resource_load_calls());
+
+  {
+    TestObserver observer(custom_resource_provider());
+    default_resource_provider()->SetResources(
+        base::ListValue()
+            .Append(CreateResource("default-1.js", "default-1"))
+            .DebugString());
+
+    observer.WaitForResourcesUpdated();
+    // A single extra call to load the default resources after they are updated.
+    EXPECT_EQ(2, default_resource_provider()->default_resource_load_calls());
+  }
+
+  // Check the loaded resources, the cached copy should be used.
+  EXPECT_TRUE(HasResource("default-1.js"));
+  EXPECT_FALSE(HasResource("user-1.js"));
+  EXPECT_EQ(2, default_resource_provider()->default_resource_load_calls());
+
+  {
+    TestObserver observer(custom_resource_provider());
+    prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, true);
+    AddResource(CreateResource("user-1.js", "user-1"));
+    observer.WaitForResourcesUpdated();
+    // User resources are updated => the default resources is reloaded.
+    EXPECT_EQ(3, default_resource_provider()->default_resource_load_calls());
+  }
+
+  EXPECT_TRUE(HasResource("default-1.js"));
+  EXPECT_TRUE(HasResource("user-1.js"));
+  // A cached copy is used.
+  EXPECT_EQ(3, default_resource_provider()->default_resource_load_calls());
+
+  prefs()->SetBoolean(prefs::kAdBlockDeveloperMode, false);
+  EXPECT_TRUE(HasResource("default-1.js"));
+  EXPECT_TRUE(HasResource("user-1.js"));
+  EXPECT_EQ(3, default_resource_provider()->default_resource_load_calls());
+}
+
+}  // namespace brave_shields

@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/permissions/contexts",
+  "+brave/components/brave_wallet_panel/resources",
+]

@@ -1,0 +1,367 @@
+// Copyright (c) 2020 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#import "brave/ios/browser/web/brave_web_client.h"
+
+#import <WebKit/WebKit.h>
+
+#include "base/feature_list.h"
+#include "base/functional/bind.h"
+#include "base/ios/ns_error_util.h"
+#include "base/no_destructor.h"
+#include "base/notimplemented.h"
+#include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/constants/url_constants.h"
+#include "brave/components/global_privacy_control/pref_names.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/ios/browser/api/profile/profile_bridge_impl.h"
+#include "brave/ios/browser/api/web_view/brave_web_view_internal.h"
+#include "brave/ios/browser/brave_ads/ads_media_reporting_javascript_feature.h"
+#include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
+#include "brave/ios/browser/brave_search/brave_search_make_default_javascript_feature.h"
+#include "brave/ios/browser/brave_shields/cookie_control_javascript_feature.h"
+#include "brave/ios/browser/brave_shields/cosmetic_filtering/cosmetic_filtering_javascript_feature.h"
+#include "brave/ios/browser/brave_shields/farbling_javascript_feature.h"
+#include "brave/ios/browser/brave_shields/protection_stats_javascript_feature.h"
+#include "brave/ios/browser/brave_shields/request_blocking/request_blocking_javascript_feature.h"
+#include "brave/ios/browser/brave_shields/scriptlets/scriptlets_javascript_feature.h"
+#include "brave/ios/browser/global_privacy_control/gpc_javascript_feature.h"
+#include "brave/ios/browser/playlist/playlist_compatibility_javascript_feature.h"
+#include "brave/ios/browser/playlist/playlist_javascript_feature.h"
+#include "brave/ios/browser/skus/skus_javascript_feature.h"
+#include "brave/ios/browser/ui/web_view/features.h"
+#include "brave/ios/browser/web/brave_web_main_parts.h"
+#include "brave/ios/browser/web/de_amp/de_amp_javascript_feature.h"
+#include "brave/ios/browser/web/document_fetch/document_fetch_javascript_feature.h"
+#include "brave/ios/browser/web/force_paste/force_paste_javascript_feature.h"
+#include "brave/ios/browser/web/fullscreen/fullscreen_helper_javascript_feature.h"
+#include "brave/ios/browser/web/logins/logins_javascript_feature.h"
+#include "brave/ios/browser/web/media/media_backgrounding_javascript_feature.h"
+#include "brave/ios/browser/web/navigator/brave_navigator_javascript_feature.h"
+#include "brave/ios/browser/web/night_mode/night_mode_javascript_feature.h"
+#include "brave/ios/browser/web/page_metadata/page_metadata_javascript_feature.h"
+#include "brave/ios/browser/web/reader_mode/reader_mode_javascript_feature.h"
+#include "brave/ios/browser/web/text_content_distiller/text_content_distiller_javascript_feature.h"
+#include "brave/ios/browser/youtube/youtube_quality_javascript_feature.h"
+#include "brave/ios/web/js_messaging/safe_builtins_javascript_feature.h"
+#include "components/autofill/ios/browser/autofill_java_script_feature.h"
+#include "components/autofill/ios/browser/suggestion_controller_java_script_feature.h"
+#include "components/autofill/ios/form_util/form_handlers_java_script_feature.h"
+#include "components/language/ios/browser/language_detection_java_script_feature.h"
+#include "components/password_manager/ios/password_manager_java_script_feature.h"
+#include "components/prefs/pref_service.h"
+#import "components/translate/ios/browser/translate_java_script_feature.h"
+#include "ios/chrome/browser/shared/model/profile/profile_ios.h"
+#include "ios/chrome/browser/shared/model/url/chrome_url_constants.h"
+#include "ios/chrome/browser/web/model/chrome_web_client.h"
+#include "ios/chrome/browser/web/model/print/print_java_script_feature.h"
+#import "ios/components/security_interstitials/ios_security_interstitial_java_script_feature.h"
+#import "ios/components/security_interstitials/lookalikes/lookalike_url_error.h"
+#import "ios/components/security_interstitials/safe_browsing/safe_browsing_error.h"
+#include "ios/components/webui/web_ui_url_constants.h"
+#import "ios/public/provider/chrome/browser/url_rewriters/url_rewriters_api.h"
+#include "ios/web/common/url_scheme_util.h"
+#include "ios/web/common/user_agent.h"
+#import "ios/web/public/navigation/browser_url_rewriter.h"
+#import "ios/web/public/web_state.h"
+#import "ios/web_view/internal/cwv_ssl_error_handler_internal.h"
+#import "ios/web_view/internal/cwv_web_view_internal.h"
+#import "ios/web_view/public/cwv_navigation_delegate.h"
+#import "net/base/apple/url_conversions.h"
+#include "url/gurl.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+#include "brave/ios/browser/brave_talk/brave_talk_launcher_javascript_feature.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/ios/browser/brave_wallet/cardano_provider_javascript_feature.h"
+#include "brave/ios/browser/brave_wallet/ethereum_provider_javascript_feature.h"
+#endif
+
+BraveWebClient::BraveWebClient() {}
+
+BraveWebClient::~BraveWebClient() {}
+
+std::unique_ptr<web::WebMainParts> BraveWebClient::CreateWebMainParts() {
+  return std::make_unique<BraveWebMainParts>(
+      *base::CommandLine::ForCurrentProcess());
+}
+
+std::string BraveWebClient::GetUserAgent(web::UserAgentType type) const {
+  if (!legacy_user_agent_.empty()) {
+    return legacy_user_agent_;
+  }
+  return ChromeWebClient::GetUserAgent(type);
+}
+
+void BraveWebClient::AddAdditionalSchemes(Schemes* schemes) const {
+  ChromeWebClient::AddAdditionalSchemes(schemes);
+
+  schemes->standard_schemes.push_back(kBraveUIScheme);
+  schemes->secure_schemes.push_back(kBraveUIScheme);
+
+  schemes->standard_schemes.push_back(kChromeUIUntrustedScheme);
+  schemes->secure_schemes.push_back(kChromeUIUntrustedScheme);
+}
+
+bool BraveWebClient::IsAppSpecificURL(const GURL& url) const {
+  // temporarily add `internal://` scheme handling until those pages can be
+  // ported to WebUI
+  return ChromeWebClient::IsAppSpecificURL(url) ||
+         url.SchemeIs(kBraveUIScheme) ||
+         url.SchemeIs(kChromeUIUntrustedScheme) || url.SchemeIs("internal");
+}
+
+bool WillHandleBraveURLRedirect(GURL* url, web::BrowserState* browser_state) {
+  if (url->SchemeIs(kBraveUIScheme)) {
+    GURL::Replacements replacements;
+    replacements.SetSchemeStr(kChromeUIScheme);
+    *url = url->ReplaceComponents(replacements);
+  }
+  return false;
+}
+
+std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
+    web::BrowserState* browser_state) const {
+  // Add any JavaScriptFeature's from Chromium or Brave as needed
+  std::vector<web::JavaScriptFeature*> features;
+  features.push_back(
+      security_interstitials::IOSSecurityInterstitialJavaScriptFeature::
+          GetInstance());
+  if (base::FeatureList::IsEnabled(
+          brave::features::kUseChromiumWebViewsAutofill)) {
+    // Order matters for these scripts, `PasswordManagerJavaScriptFeature` must
+    // be _after_ the autofill features for it to function correctly.
+    features.push_back(autofill::AutofillJavaScriptFeature::GetInstance());
+    features.push_back(autofill::FormHandlersJavaScriptFeature::GetInstance());
+    features.push_back(
+        autofill::SuggestionControllerJavaScriptFeature::GetInstance());
+    features.push_back(
+        password_manager::PasswordManagerJavaScriptFeature::GetInstance());
+  }
+  if (base::FeatureList::IsEnabled(
+          brave::features::kUseProfileWebViewConfiguration)) {
+    static base::NoDestructor<PrintJavaScriptFeature> print_feature;
+    features.push_back(print_feature.get());
+    features.push_back(
+        language::LanguageDetectionJavaScriptFeature::GetInstance());
+    features.push_back(translate::TranslateJavaScriptFeature::GetInstance());
+
+    // The base safe builtins should be added before other Brave JS features
+    features.push_back(SafeBuiltinsJavaScriptFeature::GetInstance());
+
+    // Add Brave iOS ported JavaScriptFeatures based on their original
+    // counterpart in //brave-ios
+    features.push_back(
+        brave_ads::AdsMediaReportingJavaScriptFeature::GetInstance());
+    features.push_back(TextContentDistillerJavaScriptFeature::GetInstance());
+    features.push_back(BraveNavigatorJavaScriptFeature::GetInstance());
+    features.push_back(brave_shields::FarblingJavaScriptFeature::GetInstance());
+    features.push_back(BraveSearchAdResultsJavaScriptFeature::GetInstance());
+    features.push_back(BraveSearchMakeDefaultJavaScriptFeature::GetInstance());
+#if BUILDFLAG(ENABLE_BRAVE_TALK)
+    features.push_back(BraveTalkLauncherJavaScriptFeature::GetInstance());
+#endif
+    features.push_back(
+        CookieControlJavaScriptFeature::FromBrowserState(browser_state));
+    features.push_back(DeAmpJavaScriptFeature::GetInstance());
+    features.push_back(DocumentFetchJavaScriptFeature::GetInstance());
+    features.push_back(ForcePasteJavaScriptFeature::GetInstance());
+    features.push_back(FullscreenHelperJavaScriptFeature::GetInstance());
+    // On iOS 27+ WebKit handles GPC natively when the feature is enabled
+    bool gpc_handled_by_webkit = false;
+    if (@available(iOS 27.0, *)) {
+      gpc_handled_by_webkit = base::FeatureList::IsEnabled(
+          brave_shields::features::kWebKitGlobalPrivacyControl);
+    }
+    if (!gpc_handled_by_webkit) {
+      features.push_back(GPCJavaScriptFeature::FromBrowserState(browser_state));
+    }
+    features.push_back(
+        MediaBackgroundingJavaScriptFeature::FromBrowserState(browser_state));
+    features.push_back(NightModeJavaScriptFeature::GetInstance());
+    features.push_back(PageMetadataJavaScriptFeature::GetInstance());
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+      features.push_back(playlist::PlaylistJavaScriptFeature::GetInstance());
+      features.push_back(
+          playlist::PlaylistCompatibilityJavaScriptFeature::GetInstance());
+    }
+#endif
+    features.push_back(brave::ReaderModeJavaScriptFeature::GetInstance());
+    features.push_back(
+        skus::SkusJavaScriptFeature::FromBrowserState(browser_state));
+    features.push_back(youtube::YouTubeQualityJavaScriptFeature::GetInstance());
+    features.push_back(CosmeticFilteringJavaScriptFeature::GetInstance());
+    features.push_back(ScriptletsJavaScriptFeature::GetInstance());
+    if (!base::FeatureList::IsEnabled(
+            brave::features::kUseChromiumWebViewsAutofill)) {
+      features.push_back(LoginsJavaScriptFeature::GetInstance());
+    }
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    features.push_back(
+        brave_wallet::EthereumProviderJavaScriptFeature::FromBrowserState(
+            browser_state));
+    features.push_back(
+        brave_wallet::CardanoProviderJavaScriptFeature::FromBrowserState(
+            browser_state));
+#endif
+
+    // Some privacy related features need to be injected in a specific order
+    // as they may override similar JavaScript APIs
+    features.push_back(RequestBlockingJavaScriptFeature::GetInstance());
+    features.push_back(
+        brave_shields::ProtectionStatsJavaScriptFeature::GetInstance());
+  }
+  return features;
+}
+
+void BraveWebClient::PostBrowserURLRewriterCreation(
+    web::BrowserURLRewriter* rewriter) {
+  rewriter->AddURLRewriter(&WillHandleBraveURLRedirect);
+  ChromeWebClient::PostBrowserURLRewriterCreation(rewriter);
+}
+
+bool BraveWebClient::EnableLongPressUIContextMenu() const {
+  return CWVWebView.chromeContextMenuEnabled;
+}
+
+bool BraveWebClient::EnableWebInspector(
+    web::BrowserState* browser_state) const {
+  return CWVWebView.webInspectorEnabled;
+}
+
+void BraveWebClient::SetLegacyUserAgent(const std::string& user_agent) {
+  legacy_user_agent_ = user_agent;
+}
+
+bool BraveWebClient::IsInsecureFormWarningEnabled(
+    web::BrowserState* browser_state) const {
+  // TODO: Remove when brave/brave-browser#46667 is implemented
+  return false;
+}
+
+void BraveWebClient::BuildEditMenu(web::WebState* web_state,
+                                   id<UIMenuBuilder> builder) const {
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:web_state];
+  if (!webView) {
+    return;
+  }
+  id<BraveWebViewUIDelegate> uiDelegate = webView.UIDelegate;
+
+  if ([uiDelegate respondsToSelector:@selector(webView:
+                                         buildEditMenuWithBuilder:)]) {
+    return [uiDelegate webView:webView buildEditMenuWithBuilder:builder];
+  }
+}
+
+bool BraveWebClient::ShouldBlockJavaScript(web::WebState* webState,
+                                           NSURLRequest* request) {
+  if (!web::UrlHasWebScheme(request.URL)) {
+    return false;
+  }
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:webState];
+  if (!webView) {
+    return false;
+  }
+  id<BraveWebViewNavigationDelegate> navigationDelegate =
+      webView.navigationDelegate;
+
+  if ([navigationDelegate respondsToSelector:@selector
+                          (webView:shouldBlockJavaScriptForRequest:)]) {
+    return [navigationDelegate webView:webView
+        shouldBlockJavaScriptForRequest:request];
+  }
+  return false;
+}
+
+bool BraveWebClient::ShouldBlockUniversalLinks(web::WebState* webState,
+                                               NSURLRequest* request) {
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:webState];
+  if (!webView) {
+    return false;
+  }
+  id<BraveWebViewNavigationDelegate> navigationDelegate =
+      webView.navigationDelegate;
+
+  if ([navigationDelegate respondsToSelector:@selector
+                          (webView:shouldBlockUniversalLinksForRequest:)]) {
+    return [navigationDelegate webView:webView
+        shouldBlockUniversalLinksForRequest:request];
+  }
+  return false;
+}
+
+NSString* BraveWebClient::GetUserAgentForRequest(
+    web::WebState* webState,
+    web::UserAgentType userAgentType,
+    NSURLRequest* request) {
+  BraveWebView* webView = [BraveWebView braveWebViewForWebState:webState];
+  if (!webView) {
+    return nil;
+  }
+
+  id<BraveWebViewNavigationDelegate> navigationDelegate =
+      webView.navigationDelegate;
+  if ([navigationDelegate respondsToSelector:@selector
+                          (webView:userAgentForUserAgentType:request:)]) {
+    return [navigationDelegate
+                          webView:webView
+        userAgentForUserAgentType:static_cast<CWVUserAgentType>(userAgentType)
+                          request:request];
+  }
+  return nil;
+}
+
+bool BraveWebClient::IsGlobalPrivacyControlEnabled(
+    web::BrowserState* browser_state) {
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kWebKitGlobalPrivacyControl)) {
+    return false;
+  }
+  auto* profile = ProfileIOS::FromBrowserState(browser_state);
+  if (!profile) {
+    return false;
+  }
+  return profile->GetPrefs()->GetBoolean(
+      global_privacy_control::kGlobalPrivacyControlEnabled);
+}
+
+bool BraveWebClient::CanRunOpenPanel(web::WebState* source) const
+    API_AVAILABLE(ios(18.4)) {
+  return false;
+}
+
+void BraveWebClient::RunOpenPanel(
+    web::WebState* source,
+    WKOpenPanelParameters* parameters,
+    WKFrameInfo* frame,
+    base::OnceCallback<void(NSArray<NSURL*>*)> completion) const
+    API_AVAILABLE(ios(18.4)) {
+  NOTIMPLEMENTED();
+}
+
+void BraveWebClient::DidResetConfiguration(web::BrowserState* browser_state,
+                                           WKWebViewConfiguration* config) {
+  if (BraveWebView.didResetConfiguration) {
+    auto* profile = ProfileIOS::FromBrowserState(browser_state);
+    ProfileBridgeImpl* profile_bridge =
+        [[ProfileBridgeImpl alloc] initWithProfile:profile];
+    BraveWebView.didResetConfiguration(profile_bridge, config);
+  }
+}
+
+bool BraveWebClient::IsSmoothScrollingSupported() const {
+  return true;
+}

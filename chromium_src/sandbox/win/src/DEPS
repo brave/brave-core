@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/sandbox/win/src",
+  "+sandbox/win/src",
+]

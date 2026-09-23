@@ -1,0 +1,34 @@
+diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
+index 60b5036186d7fa7010a5b3c754aaa8535427b756..35555e5dd7dac520a8ee8854841432d1071f6fa5 100644
+--- a/third_party/polymer/v3_0/BUILD.gn
++++ b/third_party/polymer/v3_0/BUILD.gn
+@@ -19,6 +19,7 @@ js_files = [
+ ]
+ 
+ if (is_chromeos) {
++} if (!is_android) {
+   js_files += [
+     "iron-a11y-announcer/iron-a11y-announcer.js",
+     "iron-a11y-keys/iron-a11y-keys.js",
+@@ -135,6 +136,7 @@ ts_library("library") {
+   ]
+ 
+   if (is_chromeos) {
++  } if (!is_android) {
+     visibility += [
+       "//ash/webui/*",
+       "//chrome/browser/resources/ash/*",
+@@ -206,6 +208,7 @@ ts_library("library") {
+   ]
+ 
+   if (is_chromeos) {
++  } if (!is_android) {
+     definitions += [
+       "components-chromium/iron-a11y-announcer/iron-a11y-announcer.d.ts",
+       "components-chromium/iron-a11y-keys/iron-a11y-keys.d.ts",
+@@ -249,4 +252,5 @@ ts_library("library") {
+       "components-chromium/paper-tooltip/paper-tooltip.d.ts",
+     ]
+   }
++  import("//brave/third_party/polymer/v3_0/sources.gni") visibility += brave_polymer_library_visibility
+ }

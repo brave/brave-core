@@ -1,0 +1,35 @@
+diff --git a/chrome/browser/ui/browser_tabrestore.cc b/chrome/browser/ui/browser_tabrestore.cc
+index fa43dd782cdb8c9f01e4c8f448e51f99e3e24d35..1d2665b1d5dee95e4e04925a3ae03c798591111e 100644
+--- a/chrome/browser/ui/browser_tabrestore.cc
++++ b/chrome/browser/ui/browser_tabrestore.cc
+@@ -71,6 +71,10 @@ std::unique_ptr<WebContents> CreateRestoredTab(
+       content::CreateMapWithDefaultSessionStorageNamespace(
+           browser->GetProfile(), session_storage_namespace);
+   WebContents::CreateParams create_params(browser->GetProfile());
++#if BUILDFLAG(ENABLE_CONTAINERS)
++  MaybeSetContainerSiteInstance(browser, navigations, selected_navigation,
++                                &create_params);
++#endif  // BUILDFLAG(ENABLE_CONTAINERS)
+   create_params.initially_hidden = initially_hidden;
+   create_params.desired_renderer_state =
+       WebContents::CreateParams::kNoRendererProcess;
+@@ -287,9 +291,10 @@ WebContents* AddRestoredTab(
+       last_active_time_ticks, last_active_time, session_storage_namespace,
+       user_agent_override, extra_data, initially_hidden, from_session_restore);
+ 
+-  return AddRestoredTabImpl(std::move(web_contents), browser, tab_index, group,
++  content::WebContents* restored_contents = AddRestoredTabImpl(std::move(web_contents), browser, tab_index, group,
+                             select, pin, from_session_restore,
+                             is_active_browser);
++  return MaybeRestoreTabTreeHierarchy(browser, restored_contents, extra_data);
+ }
+ 
+ WebContents* ReplaceRestoredTab(
+@@ -328,6 +333,7 @@ WebContents* ReplaceRestoredTab(
+ 
+   LoadRestoredTabIfVisible(browser, raw_web_contents);
+ 
++  MaybeRestoreTabTreeHierarchy(browser, raw_web_contents, extra_data);
+   return raw_web_contents;
+ }
+ 

@@ -1,0 +1,514 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Trump Steamrolls His Way Past Accountability. The Mar-a-Lago Search Might Be Different.</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Trump Steamrolls His Way Past Accountability. The Mar-a-Lago Search Might Be Different.</h1><p class="subhead metadata">Donald Trump’s signature strategy for getting ahead of scandals, ignoring inconvenient facts and hammering his own version of events has served him well, but it might not save him this time.</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+
+<p class="story-text__paragraph   ">Trump premiered this signature M.O. in 1973, when the Justice Department sued the Trump Organization for racial discrimination. He retaliated with a press conference and a $100 million countersuit for defamation. The headline-grabbing move catapulted him into the public eye. Few noticed when the judge tossed Trump’s suit as “a waste of time.” Fewer noticed the endless delaying tactics used by Trump’s lawyer, Roy Cohn, to achieve a settlement in the original case that amounted to little more than a slap on the wrist.</p>
+<p class="story-text__paragraph   ">Trump trotted out the same strategy again in 1980, when he was razing the old department store building that stood on the future site of Trump Tower and jackhammered a pair of much-admired art deco bas reliefs that had been promised to the Metropolitan Museum of Art. After the <i>New York Times</i> ran a front-page story about the destruction of artworks estimated to be worth $200,000, a man who identified himself as a Trump Organization vice-president named John Barron — but who sounded exactly like Trump — phoned reporters and said the art was worthless. Later, Trump, as Trump, called the sculptures junk and said he’d demolished them to protect pedestrians from falling debris. As before, public attention faded, and when Trump Tower opened four years later, the <i>New York Times</i> architecture critic gave it a rave review.</p>
+<p class="story-text__paragraph   ">The next year, Trump bought an apartment building on Central Park South, intending to tear it down and build a luxury hotel and shopping arcade. When the occupants complained that he was pressuring them to move, he attacked the attackers, calling reporters and claiming that the tenants didn’t qualify for New York’s various rent regulations. When they provided documentation, he filed eviction lawsuits and made what he called “a generous offer” — tenants termed it a threat — to turn empty units into homeless shelters. And when the tenants sued and press coverage of Trump’s actions turned hostile, he did an about-face and announced that he would leave the building as it was, but only because changes in market conditions meant he’d make more through renovation than demolition. It had, he insisted, been a savvy business move, not a defeat.</p>
+
+<p class="story-text__paragraph   ">By 1990, he owed creditors almost a billion dollars, but the same well-honed strategy worked its magic once again. The problem, he said in interview after interview, wasn’t that he’d overspent but that the banks had overlent — and the banks, unwilling to risk losing the Trump name on mortgaged properties, rolled over, lowering their interest rates and extending payment deadlines. In August, when the New Jersey Casino Control Commission met with him to decide whether he was financially stable enough to keep his casino license, he told the reporters and TV cameras outside the hearing room that he was “in really good shape” and any financial problems were due not to anything he’d done but to the invasion of Kuwait by “that madman” Saddam Hussein; four days later, the commission voted to let him stay. In December, Marine Midland Bank foreclosed on two unfinished condo buildings in West Palm Beach that he’d bought and renamed Trump Plaza of the Palm Beaches, and he was forced to hold a public auction. For anyone else, it might have been a moment to avoid the limelight, but Trump sent out elaborate invitations and staged the event at a prestigious Palm Beach hotel. After local high-school cheerleaders held an opening pep rally, Trump stood at the back of an enormous ballroom smiling and chatting up prospects with an enthusiastic spiel about the great deals they could snap up.</p>
+<p class="story-text__paragraph   ">Trump soon learned that his flim-flam in business also worked in politics, particularly in a changing media environment. In the 2000s, the explosive growth of cable talk shows and online media meant that he could get his version of events to the public without the help of the mainstream press; all he had to do was call into a broadcast or post a message. In 2011 he went after Barack Obama with endless cable interviews and Facebook posts demanding that he produce his birth certificate; in 2016, he posted and tweeted nonstop about Hillary Clinton’s emails and, after the Access Hollywood tape in which he bragged about getting away with sexual misconduct was leaked, he used his online megaphone to hurl accusations of sexual misconduct against her husband, Bill Clinton.</p>
+<p class="story-text__paragraph   ">Once again, the Trump M.O. worked, and for the next four years he sat in the Oval Office, dodging and weaving his way past all manner of accusations, including two impeachments. It’s the same approach he used after he fell short on Election Night in 2020, insisting that he had won and that fraud on behalf of the Democrats had been rampant — despite having absolutely zero evidence.</p>
+
+<p class="story-text__paragraph   ">Then on Monday, August 8, things shifted. Trump was no longer president, he no longer had dozens of accomplished attorneys at his disposal and he no longer controlled the narrative. The January 6 committee had made inroads into public opinion; multiple investigations into his business and his time in office had been launched; and the federal archives, which administers the document retention regulations he’d blatantly ignored, wouldn’t stop pestering him.</p>
+<p class="story-text__paragraph   ">He was being squeezed, and he responded as he had so many times in the past, going full Trump with the Truth Social post about the search. At first, his allies rallied to him. Scores of GOP politicians expressed outrage, far-right websites called for revenge and armed violence, everyone shoved out fundraising appeals tied to the search — and Fox News slimed the judge who had signed off on the warrant by showing a photoshopped image of him with convicted sex offender Ghislaine Maxwell.</p>
+<p class="story-text__paragraph   ">But Trump was now operating from a vantage point he loathes: one of weakness.</p>
+<p class="story-text__paragraph   ">Soon he found himself in New York for a long-delayed deposition in a financial fraud investigation. While president, he had managed to limit his involvement in legal proceedings to providing written answers to questions; two days after the FBI search, he was sitting in front of New York State Attorney General Letitia James and doing something he’d previously mocked as the province of the guilty: answering every question except his name by pleading the Fifth Amendment.</p>
+<p class="story-text__paragraph   ">The next day, Attorney General Merrick Garland addressed the public, speaking in a careful, even-handed tone. He said that he had authorized the operation himself, and that in light of what he called “substantial public interest in the matter,” he was filing the paperwork to release the warrant and the property receipt — but Trump was entitled to file an objection. He was calling Trump’s bluff, and everyone knew it.</p>
+
+<p class="story-text__paragraph   ">Trump may yet manage to wriggle away from all the charges being hurled at him and eventually make it back into the Oval Office; after all, a search warrant is not the same as an indictment, and his followers are not likely to disavow him. But it didn’t help his case when on the same day that Garland spoke, a man linked to a Truth Media account condemning the FBI attacked a Cincinnati bureau office with an AR-15 rifle and a nail gun. (The man was killed by state police after a high-speed car chase.) Nor did it help when <a class=" js-tealium-tracking " data-tracking="mpos=&amp;mid=&amp;lindex=&amp;lcol=" href="https://www.politico.com/news/2022/08/11/garland-defends-mar-a-lago-search-fbi-trump-00051193" target="_blank">Garland released portions of the warrant</a> and the press saw that Trump was also under investigation for obstruction of justice and violation of the Espionage Act and that anything from nuclear weapons to foreign intelligence might be in play. And it especially didn’t help that all this was unfolding as Biden, having signed into law three ground-breaking bills — the Inflation Reduction Act, the CHIPS and Science Act, and the PACT Act — was having his best week in years.</p>
+<p class="story-text__paragraph   ">For perhaps the first time in Trump’s entire career, the M.O. that had served him so well seemed to be losing its magic. Maybe not for good, perhaps not even for long. The question now is whether it can save his ass yet again.</p>
+<p class="story-text__paragraph   ">I wouldn’t bet on it.</p>
+</body>

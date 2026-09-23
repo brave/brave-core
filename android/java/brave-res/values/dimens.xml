@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<resources>
+    <dimen name="brave_toolbar_button_height">40dp</dimen>
+    <dimen name="onboarding_padding_top">4dp</dimen>
+    <dimen name="onboarding_main_container_horizontal_margin">8dp</dimen>
+    <dimen name="onboarding_buttons_vertical_margin">8dp</dimen>
+    <dimen name="onboarding_illustration_margin_top">12dp</dimen>
+    <dimen name="onboarding_illustration_padding">12dp</dimen>
+    <dimen name="onboarding_title_margin_top">0dp</dimen>
+    <dimen name="onboarding_subtitle_margin_top">8dp</dimen>
+    <dimen name="mvt_container_top_margin">23dp</dimen>
+    <dimen name="brave_bottom_toolbar_height">@dimen/min_touch_target_size</dimen>
+</resources>

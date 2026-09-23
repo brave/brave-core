@@ -1,0 +1,45 @@
+lints.workspace = true
+
+[package]
+name = "gix-credentials"
+version = "0.31.1"
+repository = "https://github.com/GitoxideLabs/gitoxide"
+license = "MIT OR Apache-2.0"
+description = "A crate of the gitoxide project to interact with git credentials helpers"
+authors = ["Sebastian Thiel <sebastian.thiel@icloud.com>"]
+edition = "2021"
+rust-version = "1.82"
+include = ["src/**/*", "LICENSE-*"]
+
+[lib]
+doctest = false
+
+[features]
+## Data structures implement `serde::Serialize` and `serde::Deserialize`.
+serde = ["dep:serde", "bstr/serde", "gix-sec/serde"]
+
+[dependencies]
+gix-sec = { version = "^0.12.2", path = "../gix-sec" }
+gix-url = { version = "^0.33.1", path = "../gix-url" }
+gix-path = { version = "^0.10.21", path = "../gix-path" }
+gix-command = { version = "^0.6.3", path = "../gix-command" }
+gix-config-value = { version = "^0.15.3", path = "../gix-config-value" }
+gix-prompt = { version = "^0.11.2", path = "../gix-prompt" }
+gix-date = { version = "^0.10.7", path = "../gix-date" }
+gix-trace = { version = "^0.1.15", path = "../gix-trace" }
+
+thiserror = "2.0.17"
+serde = { version = "1.0.114", optional = true, default-features = false, features = ["derive"] }
+bstr = { version = "1.12.0", default-features = false, features = ["std"] }
+
+
+
+document-features = { version = "0.2.1", optional = true }
+
+[dev-dependencies]
+gix-testtools = { path = "../tests/tools" }
+gix-sec = { path = "../gix-sec" }
+
+[package.metadata.docs.rs]
+all-features = true
+features = ["document-features"]

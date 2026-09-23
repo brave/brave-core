@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Default to ENFORCE_STRICT on official builds, not just Google Chrome.
+
+      `VerifyInfo::Mode::ENFORCE_STRICT` is only defaulted for Google Chrome
+      upstream. Brave wants the same default for its own official builds.
+    regex:
+      pattern: '#if BUILDFLAG(GOOGLE_CHROME_BRANDING)'
+      replace: '#if defined(OFFICIAL_BUILD)'

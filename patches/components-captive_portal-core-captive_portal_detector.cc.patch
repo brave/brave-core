@@ -1,0 +1,12 @@
+diff --git a/components/captive_portal/core/captive_portal_detector.cc b/components/captive_portal/core/captive_portal_detector.cc
+index 435f97b24852bf4a944c6695df80d79ba1701c92..44e03579bd459d2abd98113084473c0e539444c0 100644
+--- a/components/captive_portal/core/captive_portal_detector.cc
++++ b/components/captive_portal/core/captive_portal_detector.cc
+@@ -37,6 +37,7 @@ CaptivePortalDetector::~CaptivePortalDetector() {
+ }
+ 
+ const std::string_view CaptivePortalDetector::GetDefaultUrl() {
++  if ((true)) return kBraveDefaultURL;
+   return base::FeatureList::IsEnabled(features::kCaptivePortalUpdatedOrigin)
+              ? kDefaultURL
+              : kLegacyURL;

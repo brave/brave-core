@@ -1,0 +1,14 @@
+Name: find-msvc-tools
+Short Name: find-msvc-tools
+URL: https://github.com/rust-lang/cc-rs
+Version: 0.1.9
+License: MIT OR Apache-2.0
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/find-msvc-tools.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

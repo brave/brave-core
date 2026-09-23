@@ -1,0 +1,13 @@
+diff --git a/components/themes/ntp_background_service.h b/components/themes/ntp_background_service.h
+index 422a2845ff7da820ef902166f3d7fa2c2f933024..a53e1879b16e6b24643f46812fbe4692b6fbeff8 100644
+--- a/components/themes/ntp_background_service.h
++++ b/components/themes/ntp_background_service.h
+@@ -175,7 +175,7 @@ class NtpBackgroundService : public KeyedService {
+   using URLLoaderList = std::list<std::unique_ptr<network::SimpleURLLoader>>;
+ 
+   // Must be non-null and outlive this object.
+-  const raw_ref<ApplicationLocaleStorage> application_locale_storage_;
++  const raw_ref<ApplicationLocaleStorage, DanglingUntriaged> application_locale_storage_;
+ 
+   // Used to download the proto from the Backdrop service.
+   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

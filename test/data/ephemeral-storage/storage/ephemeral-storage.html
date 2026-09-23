@@ -1,0 +1,585 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Brave QA Tests | Storage Policy | Ephemeral Storage</title>
+  <link rel="icon" href="/static/images/brave-favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+  <link rel="stylesheet" href="/static/css/site.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <nav aria-label="breadcrumb">
+          <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="/index.html">Home</a></li>
+            <li class="breadcrumb-item"><a href="/storage/index.html">Storage</a></li>
+            <li class="breadcrumb-item active" aria-current="page">Ephemeral storage</li>
+            <li class="ml-auto"><a class="other-origin" data-href="/index.html" href="#">Other site</a></li>
+          </ol>
+        </nav>
+      </div>
+    </div>
+
+    <section>
+      <div class="row">
+        <div class="col">
+          <h1>Ephemeral Storage</h1>
+          <p>
+            This page demonstrates how Brave should behave under different storage
+            and shield configurations. This same page can be used to test
+            all six relevant Brave configurations:
+          </p>
+          <p class="text-center">
+            <em>{Cross-site cookies blocked, Cookies blocked, Cookies allowed}</em> x
+            <em>{Ephemeral storage on, Ephemeral storage off}</em>
+          </p>
+          <p>
+            You can change the <em>ephemeral storage</em> setting by
+            going to <code>brave://flags</code> and toggling the
+            <em>Enable Ephemeral Storage</em> option.  You can set the cookie
+            blocking setting through shields.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="row">
+        <div class="col">
+          <form>
+            <div class="form-group">
+              <label for="ephemeral-storage-setting">Ephemeral storage:</label>
+              <select id="ephemeral-storage-setting" class="form-control" aria-label="Ephemeral storage setting">
+                <option value="ON" selected>Enabled</option>
+                <option value="OFF">Disabled</option>
+              </select>
+            </div>
+          </form>
+        </div>
+        <div class="col">
+          <form>
+            <div class="form-group">
+              <label for="cookie-blocking-setting">Cookie blocking:</label>
+              <select id="cookie-blocking-setting" class="form-control" aria-label="Cookie blocking setting">
+                <option value="BLOCK_THIRD_PARTY" selected>Cross-site cookies blocked</option>
+                <option value="BLOCK_ALL">Cookies blocked</option>
+                <option value="ALLOW_ALL">All cookies allowed</option>
+              </select>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <button id="button-start-test" type="button" class="btn btn-primary btn-lg btn-block">Start test</button>
+          <button id="button-read-values" type="button" class="btn btn-success btn-lg btn-block">Read values</button>
+          <button id="button-clean-up" type="button" class="btn btn-secondary btn-lg btn-block">Reset test</button>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col">
+          <h2>Current Results</h2>
+          <table class="table" id="storage-rs">
+            <thead>
+              <tr>
+                <th scope="col">Storage API</th>
+                <th scope="col">This Frame</th>
+                <th scope="col">Local Frame</th>
+                <th scope="col">Remote Frame</th>
+                <th scope="col">Nested 1p Frame</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-cookies">
+                <th scope="row">Cookies</th>
+                <td class="cell-this-frame"></td>
+                <td class="cell-local-frame"></td>
+                <td class="cell-remote-frame"></td>
+                <td class="cell-nested-frame"></td>
+              </tr>
+              <tr class="row-local-storage">
+                <th scope="row">Local storage</th>
+                <td class="cell-this-frame"></td>
+                <td class="cell-local-frame"></td>
+                <td class="cell-remote-frame"></td>
+                <td class="cell-nested-frame"></td>
+              </tr>
+              <tr class="row-session-storage">
+                <th scope="row">Session storage</th>
+                <td class="cell-this-frame"></td>
+                <td class="cell-local-frame"></td>
+                <td class="cell-remote-frame"></td>
+                <td class="cell-nested-frame"></td>
+              </tr>
+              <tr class="row-index-db">
+                <th scope="row">IndexDB</th>
+                <td class="cell-this-frame"></td>
+                <td class="cell-local-frame"></td>
+                <td class="cell-remote-frame"></td>
+                <td class="cell-nested-frame"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="row-padding" id="section-steps">
+      <div class="row align-items-start">
+        <div class="col">
+          <h3>Test Description</h3>
+          <p>
+            This test has four parts. To start the test click the
+            <em>Start Test</em> button above, and then check the above
+            table under four cases. You should start these tests with a clean
+            profile (so clearing all browsing data, or being in private browsing
+            mode).
+          </p>
+        </div>
+
+        <div class="col">
+          <h3>Expected Outcome</h3>
+          <p>
+            The below shows what the above table should look like, under each
+            of the possible fix configurations.
+          </p>
+        </div>
+      </div>
+
+      <div class="row align-items-start" id="initial">
+        <div class="col">
+          <h4>Step 1: Initial Case</h4>
+          <p>
+            Just hit the button above and observe the table on this page.
+          </p>
+        </div>
+
+        <div class="col">
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th></th>
+                <th>This frame</th>
+                <th>Local frame</th>
+                <th>Remote frame</th>
+                <th>Nested frame</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-cookies">
+                <th colspan="row">cookies</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-local-storage">
+                <th colspan="row">local</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-session-storage">
+                <th colspan="row">session</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-index-db">
+                <th scope="row">indexdb</th>
+                <td class="cell-this-frame"></td>
+                <td class="cell-local-frame"></td>
+                <td class="cell-remote-frame"></td>
+                <td class="cell-nested-frame"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row align-items-start" id="remote-page-same-session">
+        <div class="col">
+          <h4>Step 2: Remote Page, Same Session</h4>
+          <p>
+            <a target="_blank" class="other-origin ephem-storage-test" data-href="/storage/ephemeral-storage.html" href="#">
+            Open up the version of this page on the other origin</a>.
+            For the test to work correctly you must click the above link;
+            visiting the page in any other manner will break the test.
+          </p>
+          <p>
+            <strong>Do not</strong> click the <em>Start Test</em> button on
+            the new page.
+          </p>
+        </div>
+
+        <div class="col">
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th></th>
+                <th>This frame</th>
+                <th>Local frame</th>
+                <th>Remote frame</th>
+                <th>Nested frame</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-cookies">
+                <th colspan="row">cookies</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-local-storage">
+                <th colspan="row">local</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-session-storage">
+                <th colspan="row">session</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-index-db">
+                <th scope="row">indexdb</th>
+                <td class="cell-this-frame"></td>
+                <td class="cell-local-frame"></td>
+                <td class="cell-remote-frame"></td>
+                <td class="cell-nested-frame"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <div class="row align-items-start" id="remote-page-diff-session">
+        <div class="col">
+          <h4>Step 3: Remote Page, New Session</h4>
+          <p>
+            Visit the remote page again, this time in an unrelated tab.
+            Copy the URL below, open a new tab, and paste the URL in
+            the address bar.
+          </p>
+          <form class="form-inline">
+            <div class="form-group">
+              <label class="mr-2" for="continue-test-url-step-3">Test URL:</label>
+               <input id="continue-test-url-step-3" readonly class="form-control mr-2 continue-test-url remote-origin-input">
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-info copy-url-button remote-origin-button">Copy to clipboard</button>
+            </div>
+          </form>
+
+          <p>
+            <strong>Do not</strong> click the <em>Start Test</em> button on
+            the new page.
+          </p>
+        </div>
+
+        <div class="col">
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th></th>
+                <th>This frame</th>
+                <th>Local frame</th>
+                <th>Remote frame</th>
+                <th>Nested frame</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-cookies">
+                <th colspan="row">cookies</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-local-storage">
+                <th colspan="row">local</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-session-storage">
+                <th colspan="row">session</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-index-db">
+                <th scope="row">indexdb</th>
+                <td class="cell-this-frame"></td>
+                <td class="cell-local-frame"></td>
+                <td class="cell-remote-frame"></td>
+                <td class="cell-nested-frame"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <div class="row align-items-start" id="same-page-same-session">
+        <div class="col">
+          <h4>Step 4: This Page, Same Session Case</h4>
+
+          <p>
+            <a target="_blank" class="this-origin ephem-storage-test" data-href="/storage/ephemeral-storage.html" href="#">
+            Open another instance of this page</a>.
+            For the test to work correctly you must click the above link;
+            visiting the page in any other manner will break the test.
+          </p>
+          <p>
+            <strong>Do not</strong> click the <em>Start Test</em> button
+            in the new page, just read the table.
+          </p>
+          <p>
+            Similarly, <strong>do not</strong> close this page. Both versions of
+            this page should be open for this case.
+          </p>
+        </div>
+
+        <div class="col">
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th></th>
+                <th>This frame</th>
+                <th>Local frame</th>
+                <th>Remote frame</th>
+                <th>Nested frame</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-cookies">
+                <th colspan="row">cookies</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-local-storage">
+                <th colspan="row">local</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-session-storage">
+                <th colspan="row">session</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-index-db">
+                <th scope="row">indexdb</th>
+                <td class="cell-this-frame"></td>
+                <td class="cell-local-frame"></td>
+                <td class="cell-remote-frame"></td>
+                <td class="cell-nested-frame"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row align-items-start" id="same-page-diff-session">
+        <div class="col">
+          <h4>Step 5: This Page, Different Session</h4>
+          <p>
+            Copy the URL below, create a new tab, and paste the URL in
+            the address bar.
+          </p>
+
+          <form class="form-inline">
+            <div class="form-group">
+              <label class="mr-2" for="continue-test-url-step-5">Test URL:</label>
+               <input id="continue-test-url-step-5" readonly class="form-control mr-2 continue-test-url this-origin-input">
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-info copy-url-button this-origin-button">Copy to clipboard</button>
+            </div>
+          </form>
+
+          <p>
+            <strong>Make sure</strong> you stay in the same session (e.g., don't
+            quit Brave).
+          </p>
+
+          <p>
+            <strong>Make sure</strong> you keep this page open too.
+          </p>
+
+          <p>
+            <strong>Do not</strong> click the
+            <em>Start Test</em> button in the new page, just read the
+            table.
+          </p>
+        </div>
+
+        <div class="col">
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th></th>
+                <th>This frame</th>
+                <th>Local frame</th>
+                <th>Remote frame</th>
+                <th>Nested frame</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-cookies">
+                <th colspan="row">cookies</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-local-storage">
+                <th colspan="row">local</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-session-storage">
+                <th colspan="row">session</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-index-db">
+                <th scope="row">indexdb</th>
+                <td class="cell-this-frame"></td>
+                <td class="cell-local-frame"></td>
+                <td class="cell-remote-frame"></td>
+                <td class="cell-nested-frame"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+
+      <div class="row align-items-start" id="same-page-reset-session">
+        <div class="col">
+          <h4>Step 6: New Page, Reset Session Case</h4>
+          <p>
+            Close all instances of this page (including the one you're
+            reading now), and the open this page again by copying the
+            URL below into the address bar.
+          </p>
+
+          <form class="form-inline">
+            <div class="form-group">
+              <label class="mr-2" for="continue-test-url-step-6">Test URL:</label>
+              <input id="continue-test-url-step-6" readonly class="form-control mr-2 continue-test-url this-origin-input">
+            </div>
+            <div class="form-group">
+              <button type="button" class="btn btn-info copy-url-button this-origin-button">Copy to clipboard</button>
+            </div>
+          </form>
+
+          <p>
+            <strong>Make sure</strong> you stay in the same session (e.g., don't
+            quit Brave).
+          </p>
+
+          <p>
+            <strong>Do not</strong> click the
+            <em>Start Test</em> button in the new page, just read the
+            table.
+          </p>
+        </div>
+
+        <div class="col">
+          <table class="table table-condensed">
+            <thead>
+              <tr>
+                <th></th>
+                <th>This frame</th>
+                <th>Local frame</th>
+                <th>Remote frame</th>
+                <th>Nested frame</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="row-cookies">
+                <th colspan="row">cookies</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-local-storage">
+                <th colspan="row">local</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-session-storage">
+                <th colspan="row">session</th>
+                <td class="cell-this-frame">-</td>
+                <td class="cell-local-frame">-</td>
+                <td class="cell-remote-frame">-</td>
+                <td class="cell-nested-frame">-</td>
+              </tr>
+              <tr class="row-index-db">
+                <th scope="row">indexdb</th>
+                <td class="cell-this-frame"></td>
+                <td class="cell-local-frame"></td>
+                <td class="cell-remote-frame"></td>
+                <td class="cell-nested-frame"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="row align-items-start" id="clean-up">
+        <div class="col">
+          <h4>Step 7: Clean Up</h4>
+
+          <p>
+            Click the <strong>Reset test</strong> button to clear all the
+            storage values used in these tests.
+          </p>
+        </div>
+
+        <div class="col">
+        </div>
+      </div>
+    </section>
+  </div>
+  <iframe data-src="/frames/ephemeral-storage.html" class="this-origin d-none"></iframe>
+  <iframe data-src="/frames/ephemeral-storage.html" class="other-origin d-none"></iframe>
+  <script src="/static/js/site.js"></script>
+  <script src="/static/js/libs/js.cookie.min.js"></script>
+  <script src="/static/js/libs/index-min.js"></script>
+  <script src="/static/js/frames/ephemeral-storage.js"></script>
+  <script src="/static/js/ephemeral-storage.js"></script>
+</body>
+
+</html>

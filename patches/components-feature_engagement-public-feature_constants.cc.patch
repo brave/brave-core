@@ -1,0 +1,113 @@
+diff --git a/components/feature_engagement/public/feature_constants.cc b/components/feature_engagement/public/feature_constants.cc
+index 0c9c9a68f98d35d614e73b4ed831fd5b6dfa291b..3e549078d08a5e2fa0cdc62a5c0099f080c6273e 100644
+--- a/components/feature_engagement/public/feature_constants.cc
++++ b/components/feature_engagement/public/feature_constants.cc
+@@ -74,9 +74,9 @@ BASE_FEATURE(kIPHDesktopCustomizeChromeAutoOpenFeature,
+ BASE_FEATURE(kIPHDesktopRealboxContextualSearchFeature,
+              "IPH_DesktopRealboxContextualSearchFeature",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kIPHDiscardRingFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHDiscardRingFeature,
+              "IPH_DiscardRing",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kIPHDownloadEsbPromoFeature,
+              "IPH_DownloadEsbPromo",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -119,9 +119,9 @@ BASE_FEATURE_ENUM_PARAM(
+ BASE_FEATURE(kIPHFocusHelpBubbleScreenReaderPromoFeature,
+              "IPH_FocusHelpBubbleScreenReaderPromo",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+-BASE_FEATURE(kIPHGMCCastStartStopFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHGMCCastStartStopFeature,
+              "IPH_GMCCastStartStop",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kIPHGMCLocalMediaCastingFeature,
+              "IPH_GMCLocalMediaCasting",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -178,9 +178,9 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
+ BASE_FEATURE(kIPHPasswordsSaveRecoveryPromoFeature,
+              "IPH_PasswordsSaveRecoveryPromo",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+-BASE_FEATURE(kIPHPasswordsManagementBubbleAfterSaveFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHPasswordsManagementBubbleAfterSaveFeature,
+              "IPH_PasswordsManagementBubbleAfterSave",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kIPHPasswordsManagementBubbleDuringSigninFeature,
+              "IPH_PasswordsManagementBubbleDuringSignin",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -196,9 +196,9 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
+ BASE_FEATURE(kIPHPdfGlicSummarizeFeature,
+              "IPH_PdfGlicSummarizeFeature",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+-BASE_FEATURE(kIPHPdfInkSignaturesFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHPdfInkSignaturesFeature,
+              "IPH_PdfInkSignatures",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kIPHPdfSearchifyFeature,
+              "IPH_PdfSearchifyFeature",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -229,7 +229,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
+ BASE_FEATURE(kIPHReadingListEntryPointFeature,
+              "IPH_ReadingListEntryPoint",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kIPHReadingListInSidePanelFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHReadingListInSidePanelFeature,
+              "IPH_ReadingListInSidePanel",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kIPHReadingModeKeyboardShortcutFeature,
+@@ -259,21 +259,21 @@ BASE_FEATURE(kIPHSmartTabSharingFeature,
+ BASE_FEATURE(kIPHSmartTabSharingTryItFeature,
+              "IPH_SmartTabSharingTryItFeature",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kIPHSideBySidePinnableFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHSideBySidePinnableFeature,
+              "IPH_SideBySidePinnableFeature",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
+-BASE_FEATURE(kIPHSideBySideTabSwitchFeature,
++             base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kIPHSideBySideTabSwitchFeature,
+              "IPH_SideBySideTabSwitchFeature",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kIPHSplitViewHorizontalIndirectAccessFeature,
+              "IPH_SplitViewHorizontalIndirectAccessFeature",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+ BASE_FEATURE(kIPHVerticalTabsExpandOnHoverFeature,
+              "IPH_VerticalTabsExpandOnHoverFeature",
+              base::FEATURE_DISABLED_BY_DEFAULT);
+-BASE_FEATURE(kIPHVerticalTabstripTutorialFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHVerticalTabstripTutorialFeature,
+              "IPH_VerticalTabstripTutorialFeature",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kIPHSidePanelGenericPinnableFeature,
+              "IPH_SidePanelGenericPinnableFeature",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -295,9 +295,9 @@ BASE_FEATURE(kIPHSideSearchPageActionLabelFeature,
+ BASE_FEATURE(kIPHPwaQuietNotificationFeature,
+              "IPH_PwaQuietNotification",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+-BASE_FEATURE(kIPHTabGroupsSaveV2IntroFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHTabGroupsSaveV2IntroFeature,
+              "IPH_TabGroupsSaveV2Intro",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kIPHTabGroupsSaveV2CloseGroupFeature,
+              "IPH_TabGroupsSaveV2CloseGroup",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -1031,9 +1031,9 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
+ BASE_FEATURE(kIPHAutofillHomeWorkProfileSuggestionFeature,
+              "IPH_AutofillHomeWorkProfileSuggestion",
+              base::FEATURE_ENABLED_BY_DEFAULT);
+-BASE_FEATURE(kIPHAutofillAccountNameEmailSuggestionFeature,
++BASE_OVERRIDDEN_FEATURE(kIPHAutofillAccountNameEmailSuggestionFeature,
+              "IPH_AutofillAccountNameEmailSuggestion",
+-             base::FEATURE_ENABLED_BY_DEFAULT);
++             base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kIPHAutofillAiOptInFeature,
+              "IPH_AutofillAiOptIn",
+              base::FEATURE_ENABLED_BY_DEFAULT);
