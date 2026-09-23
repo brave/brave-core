@@ -43,10 +43,8 @@ void PsstUiDelegateImpl::Show(
     PsstWebsiteSettings dialog_data,
     const int rule_version,
     std::optional<UserScriptResult> user_script_result,
-    PsstTabWebContentsObserver::ConsentCallback apply_changes_callback,
-    PsstTabWebContentsObserver::CancelCallback cancel_callback) {
+    PsstTabWebContentsObserver::ConsentCallback apply_changes_callback) {
   apply_changes_callback_ = std::move(apply_changes_callback);
-  cancel_callback_ = std::move(cancel_callback);
   dialog_data_ = std::move(dialog_data);
   origin_ = std::move(origin);
   user_script_result_ = std::move(user_script_result);
@@ -104,6 +102,11 @@ std::optional<PsstWebsiteSettings> PsstUiDelegateImpl::GetPsstWebsiteSettings(
     const url::Origin& origin,
     const std::string& user_id) {
   return psst_settings_service_->GetPsstWebsiteSettings(origin, user_id);
+}
+
+void PsstUiDelegateImpl::SetLogicalFlowCancelCallback(
+    PsstTabWebContentsObserver::CancelCallback cancel_callback) {
+  cancel_callback_ = std::move(cancel_callback);
 }
 
 void PsstUiDelegateImpl::AddObserver(Observer* obs) {

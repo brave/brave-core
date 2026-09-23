@@ -205,8 +205,7 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
        PsstWebsiteSettings dialog_data,
        const int rule_version,
        std::optional<UserScriptResult> user_script_result,
-       PsstTabWebContentsObserver::ConsentCallback apply_changes_callback,
-       PsstTabWebContentsObserver::CancelCallback cancel_callback),
+       PsstTabWebContentsObserver::ConsentCallback apply_changes_callback),
       (override));
 
   MOCK_METHOD(void,
@@ -220,6 +219,12 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
               GetPsstWebsiteSettings,
               (const url::Origin& origin, const std::string& user_id),
               (override));
+
+  MOCK_METHOD(void,
+              SetLogicalFlowCancelCallback,
+              (PsstTabWebContentsObserver::CancelCallback cancel_callback),
+              (override));
+
 };
 
 class PsstTabWebContentsObserverUnitTestBase
@@ -892,7 +897,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
               Show(url::Origin::Create(url_),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
-                   1, _, _, _))
+                   1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
@@ -1005,7 +1010,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
               Show(url::Origin::Create(url_),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
-                   1, _, _, _))
+                   1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
@@ -1093,7 +1098,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
               Show(url::Origin::Create(url_),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
-                   1, _, _, _))
+                   1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
@@ -1232,7 +1237,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                    PsstWebsiteSettingsEq(
                        settings.consent_status, settings.script_version,
                        settings.user_id, settings.uids_to_perform),
-                   current_script_version_, _, _, _))
+                   current_script_version_, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              stored_uids_to_perform));
 
@@ -1315,7 +1320,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
               Show(url::Origin::Create(url_),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
                                          std::vector<std::string>()),
-                   1, _, _, _))
+                   1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 

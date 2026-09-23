@@ -56,8 +56,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
                       PsstWebsiteSettings dialog_data,
                       const int rule_version,
                       std::optional<UserScriptResult> user_script_result,
-                      ConsentCallback apply_changes_callback,
-                      CancelCallback cancel_callback) = 0;
+                      ConsentCallback apply_changes_callback) = 0;
     // Update the UI state based on the applied tasks and progress.
     virtual void UpdateTasks(long progress,
                              const std::vector<PolicyTask>& applied_tasks,
@@ -66,6 +65,8 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
     virtual std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
         const url::Origin& origin,
         const std::string& user_id) = 0;
+    virtual void SetLogicalFlowCancelCallback(
+        CancelCallback cancel_callback) = 0;
   };
 
   // Creates an observer for `tab`'s web contents, or returns null for

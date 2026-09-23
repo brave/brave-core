@@ -185,7 +185,11 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
       registry_(registry),
       psst_settings_service_(psst_settings_service),
       variations_service_(variations_service),
-      ui_delegate_(std::move(ui_delegate)) {}
+      ui_delegate_(std::move(ui_delegate)) {
+  ui_delegate_->SetLogicalFlowCancelCallback(
+      base::BindOnce(&PsstTabWebContentsObserver::CancelInFlightFlow,
+                     weak_factory_.GetWeakPtr()));
+}
 
 PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
@@ -325,9 +329,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
       std::move(user_script_result_parsed),
       base::BindOnce(&PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
                      page_weak_factory_.GetWeakPtr(), true, std::move(rule),
-                     std::move(user_script_result)),
-      base::BindOnce(&PsstTabWebContentsObserver::CancelInFlightFlow,
-                     weak_factory_.GetWeakPtr()));
+                     std::move(user_script_result)));
 }
 
 void PsstTabWebContentsObserver::OnUserAcceptedPsstSettings(
