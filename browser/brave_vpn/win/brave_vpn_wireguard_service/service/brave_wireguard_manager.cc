@@ -38,7 +38,18 @@ HRESULT BraveWireguardManager::EnableVpn2(const BSTR public_key,
                                      address && wcslen(address) == 0 &&
                                      endpoint && wcslen(endpoint) == 0;
   if (reconnect_using_last_config) {
-    if (!brave_vpn::wireguard::LaunchWireguardService(L"")) {
+    // The caller has no server details to rebuild a config from, but the
+    // persisted one may predate the current allow-LAN setting, so refresh its
+    // AllowedIPs. Passing the result back through rewrites the file, keeping it
+    // as the last known good config. An empty config reuses the file as is.
+    auto refreshed_config =
+        brave_vpn::wireguard::GetLastUsedConfigIfLanTrafficChanged(
+            allow_lan_traffic);
+    std::wstring encoded_config =
+        refreshed_config.has_value()
+            ? base::UTF8ToWide(base::Base64Encode(refreshed_config.value()))
+            : L"";
+    if (!brave_vpn::wireguard::LaunchWireguardService(encoded_config)) {
       *last_error = ::GetLastError();
       return E_FAIL;
     } else {

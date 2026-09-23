@@ -118,13 +118,11 @@ bool StatusTrayRunner::IsVPNConnected() const {
 void StatusTrayRunner::ConnectVPN() {
   if (IsWireguardActive()) {
     wireguard::EnableBraveVpnWireguardService(
-        // passing empty params will reconnect using last known good config.
+        // passing empty params will reconnect using last known good config,
+        // with its AllowedIPs refreshed from |allow_lan_traffic|.
         // TODO(https://github.com/brave/brave-browser/issues/47115): fetch
         // actual server details. See issue for more info.
-        //
-        // Passing false to |allow_lan_traffic| is a no-op as this reconnect
-        // will use last known good config instead of updating current config.
-        "", "", "", "", /*allow_lan_traffic=*/false, std::nullopt,
+        "", "", "", "", IsLanTrafficAllowed(), std::nullopt,
         base::BindOnce(&StatusTrayRunner::OnConnected,
                        weak_factory_.GetWeakPtr()));
   } else {

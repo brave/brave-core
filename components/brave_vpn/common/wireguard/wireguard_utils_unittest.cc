@@ -243,6 +243,47 @@ TEST(BraveVPNWireGuardUtilsUnitTest, WireguardConfigNoLanTraffic) {
   EXPECT_THAT(allowed_ips, testing::ElementsAre("0.0.0.0/0", "::/0"));
 }
 
+TEST(BraveVPNWireGuardUtilsUnitTest, UpdateAllowedIPs) {
+  // Toggling off and back on lands exactly on the configs CreateWireguardConfig
+  // would have produced, so a refreshed config is indistinguishable from a
+  // freshly generated one.
+  auto lan_config = CreateTestConfig(/*allow_lan_traffic=*/true);
+  auto no_lan_config = CreateTestConfig(/*allow_lan_traffic=*/false);
+
+  EXPECT_EQ(brave_vpn::wireguard::UpdateAllowedIPs(lan_config,
+                                                   /*allow_lan_traffic=*/false),
+            no_lan_config);
+  EXPECT_EQ(brave_vpn::wireguard::UpdateAllowedIPs(no_lan_config,
+                                                   /*allow_lan_traffic=*/true),
+            lan_config);
+
+  // Idempotent.
+  EXPECT_EQ(brave_vpn::wireguard::UpdateAllowedIPs(lan_config,
+                                                   /*allow_lan_traffic=*/true),
+            lan_config);
+
+  // The server details we cannot reproduce must survive untouched.
+  auto refreshed = brave_vpn::wireguard::UpdateAllowedIPs(
+      lan_config, /*allow_lan_traffic=*/false);
+  ASSERT_TRUE(refreshed.has_value());
+  EXPECT_THAT(*refreshed, testing::HasSubstr("PrivateKey = " +
+                                             std::string(kTestPrivateKey)));
+  EXPECT_THAT(*refreshed,
+              testing::HasSubstr("PublicKey = " + std::string(kTestPublicKey)));
+  EXPECT_THAT(*refreshed,
+              testing::HasSubstr("Address = " + std::string(kTestAddress)));
+  EXPECT_THAT(*refreshed,
+              testing::HasSubstr("Endpoint = " + std::string(kTestHostname) +
+                                 ":51821"));
+  EXPECT_THAT(*refreshed, testing::HasSubstr("DNS = 1.1.1.1"));
+  EXPECT_TRUE(brave_vpn::wireguard::ConfigUsesFullTunnelRoutes(*refreshed));
+
+  // Nothing to rewrite.
+  EXPECT_FALSE(
+      brave_vpn::wireguard::UpdateAllowedIPs("", /*allow_lan_traffic=*/true)
+          .has_value());
+}
+
 TEST(BraveVPNWireGuardUtilsUnitTest, ConfigUsesFullTunnelRoutes) {
   EXPECT_FALSE(brave_vpn::wireguard::ConfigUsesFullTunnelRoutes(
       CreateTestConfig(/*allow_lan_traffic=*/true)));

@@ -21,6 +21,7 @@ class BraveVPNServiceDelegateWin : public BraveVPNServiceDelegate {
 
   void WriteConnectionState(mojom::ConnectionState state) override;
   void ShowBraveVpnStatusTrayIcon() override;
+  void SetAllowLanTraffic(bool allow) override;
 };
 
 }  // namespace brave_vpn

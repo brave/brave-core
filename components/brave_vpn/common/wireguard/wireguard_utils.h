@@ -33,6 +33,13 @@ WireguardKeyPair GenerateNewX25519Keypair();
 
 std::vector<std::string> ParseAllowedIPs(const std::string& config);
 
+// Rewrites the AllowedIPs line of an existing config so it matches
+// |allow_lan_traffic|, leaving the rest of the config untouched. Used to
+// refresh a persisted config whose server details we can no longer reproduce.
+// Returns nullopt when the config has no AllowedIPs line.
+std::optional<std::string> UpdateAllowedIPs(const std::string& config,
+                                            bool allow_lan_traffic);
+
 // Returns true when AllowedIPs uses literal /0 prefixes (full tunnel
 // routing), meaning tunnel.dll will install its own blockAll/blockDNS WFP
 // filters.
