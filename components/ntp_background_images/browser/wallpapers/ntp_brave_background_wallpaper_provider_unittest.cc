@@ -45,7 +45,7 @@ class NTPBraveBackgroundWallpaperProviderTest : public testing::Test {
         *view_counter_model_);
   }
 
-  void MockBackgroundImagesData() {
+  void InstallBackgroundImagesData() {
     auto background_images_data = std::make_unique<NTPBackgroundImagesData>();
     background_images_data->backgrounds = {
         {base::FilePath(FILE_PATH_LITERAL("wallpaper.jpg")),
@@ -90,7 +90,7 @@ TEST_F(NTPBraveBackgroundWallpaperProviderTest,
        FallsBackToRandomWhenPinnedPhotoIsEmpty) {
   custom_background_delegate_.SetPreferredBraveBackground(
       /*has_preferred=*/true, base::DictValue());
-  MockBackgroundImagesData();
+  InstallBackgroundImagesData();
   auto wallpaper_provider = CreateWallpaperProvider();
 
   base::test::TestFuture<std::optional<base::DictValue>> test_future;
@@ -102,7 +102,7 @@ TEST_F(NTPBraveBackgroundWallpaperProviderTest,
 
 TEST_F(NTPBraveBackgroundWallpaperProviderTest,
        FallsBackToRandomWhenNotPinned) {
-  MockBackgroundImagesData();
+  InstallBackgroundImagesData();
   auto wallpaper_provider = CreateWallpaperProvider();
 
   base::test::TestFuture<std::optional<base::DictValue>> test_future;
@@ -114,7 +114,7 @@ TEST_F(NTPBraveBackgroundWallpaperProviderTest,
 
 TEST_F(NTPBraveBackgroundWallpaperProviderTest,
        NoWallpaperWhenIndexIsOutOfRangeForCurrentBackgrounds) {
-  MockBackgroundImagesData();
+  InstallBackgroundImagesData();
   // Simulate the component data shrinking after the index was chosen: the
   // model believes there are 2 backgrounds and rotates to index 1, but only
   // 1 is actually available now.
