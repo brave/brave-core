@@ -523,6 +523,38 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
     @Test
     @Config(qualifiers = "sw320dp")
+    @DisableFeatures(ChromeFeatureList.ENABLE_DOWNLOAD_SAVE_AS_CONTEXT_MENU)
+    public void testBraveIconRowItems() {
+        setUpMocksForPageMenu();
+        setMenuOptions(new MenuOptions());
+        doReturn(true).when(mTabbedAppMenuPropertiesDelegate).shouldShowIconRow();
+
+        MVCListAdapter.ModelList modelList = mTabbedAppMenuPropertiesDelegate.getMenuItems();
+
+        List<Integer> iconIds = new ArrayList<>();
+        for (MVCListAdapter.ListItem item : modelList) {
+            Integer itemId = item.model.get(AppMenuItemProperties.MENU_ITEM_ID);
+            if (itemId == null || itemId != R.id.icon_row_menu_id) continue;
+            for (MVCListAdapter.ListItem icon :
+                    item.model.get(AppMenuItemProperties.ADDITIONAL_ICONS)) {
+                iconIds.add(icon.model.get(AppMenuItemProperties.MENU_ITEM_ID));
+            }
+        }
+
+        // Brave shows share instead of forward, and the row renders five icons at most.
+        assertThat(
+                "Icon row items were: " + iconIds,
+                iconIds,
+                Matchers.contains(
+                        R.id.back_menu_id,
+                        R.id.bookmark_this_page_id,
+                        R.id.offline_page_id,
+                        R.id.share_menu_id,
+                        R.id.reload_menu_id));
+    }
+
+    @Test
+    @Config(qualifiers = "sw320dp")
     public void testBravePageMenuItems_FeaturesDisabledByPolicy() {
         setUpMocksForPageMenu();
         when(mTab.getUrl()).thenReturn(JUnitTestGURLs.NTP_URL);
