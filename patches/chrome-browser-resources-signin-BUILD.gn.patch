@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/resources/signin/BUILD.gn b/chrome/browser/resources/signin/BUILD.gn
+index 4144ea861f23361f7cd8661e6f120d38bd316260..5ee24a85b45744deb0d0796876ec570a0aa83c9a 100644
+--- a/chrome/browser/resources/signin/BUILD.gn
++++ b/chrome/browser/resources/signin/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
+ import("//chrome/common/features.gni")
+ import("//components/signin/features.gni")
+ import("//ui/webui/resources/tools/build_webui.gni")
+@@ -9,6 +10,7 @@ import("//ui/webui/resources/tools/build_webui.gni")
+ assert(!is_android)
+ 
+ build_webui("build") {
++  preprocessor_defines = [ "enable_brave_custom_profile_image_webui=$enable_brave_custom_profile_image_webui" ]
+   grd_prefix = "signin"
+ 
+   mojo_files_deps = [ "//chrome/browser/ui/webui/signin/cross_device_signin_qr_bubble:mojo_bindings_ts__generator" ]

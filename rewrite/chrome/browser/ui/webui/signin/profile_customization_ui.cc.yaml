@@ -22,3 +22,14 @@ substitutions:
         \1
               {"profile_customization_app-chromium.js",
                IDR_SIGNIN_PROFILE_CUSTOMIZATION_PROFILE_CUSTOMIZATION_APP_CHROMIUM_JS},
+
+  - description: |-
+      Supply custom profile image data after the profile page registers resources.
+
+      Keep the feature and string setup in the Brave-owned signin target.
+    regex:
+      re_pattern: '(ProfileCustomizationUI::ProfileCustomizationUI\([^)]*\).*?webui::SetupWebUIDataSource\([^;]+;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          brave::AddProfileCustomizationData(source);
