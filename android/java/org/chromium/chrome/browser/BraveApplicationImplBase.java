@@ -16,8 +16,7 @@ import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.base.SplitCompatApplication;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.chrome.browser.profiles.OriginalProfileSupplier;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
@@ -69,23 +68,8 @@ public class BraveApplicationImplBase extends SplitCompatApplication.Impl {
             // waiting for BraveActivity. Entry points such as the search widget resolve queries
             // through SearchActivity, which never runs BraveActivity and would otherwise search
             // with whatever engine the country default picked.
-            ProfileManager.addObserver(
-                    new ProfileManager.Observer() {
-                        @Override
-                        public void onProfileAdded(Profile profile) {
-                            if (profile.isOffTheRecord()) {
-                                // Incognito profiles come and go; wait for the regular one.
-                                return;
-                            }
-                            BraveSearchEngineUtils.initializeOnProfileAdded(profile);
-                            // Reconciliation is a one shot, so stop listening. ObserverList
-                            // allows an observer to remove itself while being notified.
-                            ProfileManager.removeObserver(this);
-                        }
-
-                        @Override
-                        public void onProfileDestroyed(Profile profile) { /* Not used. */ }
-                    });
+            new OriginalProfileSupplier()
+                    .onAvailable(BraveSearchEngineUtils::initializeOnProfileAdded);
 
             // Fix ClassNotFoundException crash in Play Core's in-app review flow.
             //

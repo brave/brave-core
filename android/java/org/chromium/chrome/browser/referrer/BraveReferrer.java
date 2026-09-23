@@ -26,7 +26,7 @@ import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.profiles.ProfileManager;
+import org.chromium.chrome.browser.profiles.OriginalProfileSupplier;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
 import org.jni_zero.CalledByNative;
@@ -219,14 +219,16 @@ public class BraveReferrer implements InstallReferrerStateListener {
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePreferenceKeys.SEARCH_CHOICE_SCREEN_INSTALL, true);
             // The referrer resolves asynchronously, so the DSE may already have been initialized
-            // from the country default by now. Apply the user's choice regardless.
-            if (ProfileManager.isInitialized()) {
-                PostTask.postTask(
-                        TaskTraits.UI_DEFAULT,
-                        () ->
-                                BraveSearchEngineUtils.applySearchChoiceScreenDefault(
-                                        ProfileManager.getLastUsedRegularProfile()));
-            }
+            // from the country default by now. Apply the user's choice regardless, once the
+            // regular profile exists. OriginalProfileSupplier is single threaded, hence the hop
+            // to the UI thread: this runs on a background task.
+            PostTask.postTask(
+                    TaskTraits.UI_DEFAULT,
+                    () ->
+                            new OriginalProfileSupplier()
+                                    .onAvailable(
+                                            BraveSearchEngineUtils
+                                                    ::applySearchChoiceScreenDefault));
             return SEARCH_CHOICE_SCREEN_REFERRAL_CODE;
         } else if (UTM_SOURCE_EEA_BROWSER_CHOICE.equals(utmSource)) {
             return BROWSER_CHOICE_SCREEN_REFERRAL_CODE;
