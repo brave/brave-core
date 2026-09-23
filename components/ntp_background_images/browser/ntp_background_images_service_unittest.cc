@@ -22,6 +22,7 @@
 #include "base/path_service.h"
 #include "base/test/run_until.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
@@ -1261,6 +1262,49 @@ TEST_F(
   EXPECT_EQ(observer_.sponsored_content_data(),
             base::JSONReader::ReadDict(kTestSponsoredImages,
                                        base::JSON_PARSE_CHROMIUM_EXTENSIONS));
+}
+
+TEST_F(NTPBackgroundImagesServiceTest,
+       OnlyUnregistersSponsoredImagesComponentWhenNoProfileRemainsOptedIn) {
+  Init();
+
+  // `Init()` also asynchronously registers the unrelated NTP Background
+  // Images component, which can race with the sponsored images registration
+  // below. Ignore `RegisterComponent()` calls for any other component so the
+  // expectation below only asserts on the sponsored images registration.
+  EXPECT_CALL(component_update_service(),
+              RegisterComponent(testing::Not(testing::Field(
+                  &component_updater::ComponentRegistration::app_id,
+                  GetComponentId("US")))))
+      .Times(testing::AnyNumber())
+      .WillRepeatedly(testing::Return(true));
+
+  // Two profiles opt in. Only the first one should trigger registration.
+  base::test::TestFuture<void> test_future;
+  EXPECT_CALL(component_update_service(),
+              RegisterComponent(testing::Field(
+                  &component_updater::ComponentRegistration::app_id,
+                  GetComponentId("US"))))
+      .Times(1)
+      .WillOnce([&](const component_updater::ComponentRegistration&) {
+        test_future.SetValue();
+        return true;
+      });
+  service_->AddSponsoredImagesOptedInProfile();
+  service_->AddSponsoredImagesOptedInProfile();
+  ASSERT_TRUE(test_future.Wait());
+  EXPECT_TRUE(service_->GetSponsoredImagesComponentId());
+
+  // One profile opts out, but the other profile is still opted in, so the
+  // component must remain registered.
+  EXPECT_CALL(component_update_service(), UnregisterComponent).Times(0);
+  service_->RemoveSponsoredImagesOptedInProfile();
+  EXPECT_TRUE(service_->GetSponsoredImagesComponentId());
+
+  // The last opted-in profile opts out, so the component is unregistered.
+  EXPECT_CALL(component_update_service(), UnregisterComponent).Times(1);
+  service_->RemoveSponsoredImagesOptedInProfile();
+  EXPECT_FALSE(service_->GetSponsoredImagesComponentId());
 }
 
 }  // namespace ntp_background_images

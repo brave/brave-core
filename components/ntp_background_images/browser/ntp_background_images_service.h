@@ -91,6 +91,14 @@ class NTPBackgroundImagesService {
       const base::FilePath& request_path) const;
   const std::optional<std::string>& GetSponsoredImagesComponentId() const;
   virtual void RegisterSponsoredImagesComponent();
+  virtual void UnregisterSponsoredImagesComponent();
+
+  // Each profile's `ViewCounterService` calls one of these when its opt-in
+  // state changes. The component stays registered as long as at least one
+  // loaded profile is opted in, so opting out in one profile does not clear
+  // the sponsored images data still used by other loaded profiles.
+  void AddSponsoredImagesOptedInProfile();
+  void RemoveSponsoredImagesOptedInProfile();
 
   void MaybeCheckForSponsoredComponentUpdate();
   void ForceSponsoredComponentUpdate();
@@ -190,6 +198,8 @@ class NTPBackgroundImagesService {
   std::unique_ptr<NTPSponsoredImagesData>
       sponsored_images_data_excluding_rich_media_;
   std::unique_ptr<NTPSponsoredSitesData> sponsored_sites_data_;
+
+  size_t sponsored_images_opted_in_profile_count_ = 0;
 
   base::ObserverList<Observer>::Unchecked observers_;
 
