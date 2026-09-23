@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 
 namespace brave_wallet {
 
@@ -19,22 +20,26 @@ struct SnapTarResult {
 
 // Extracts a single file from a POSIX ustar tar archive.
 //
-// |path_suffix| is matched against the end of each entry's full path
-// (case-sensitive). For example, "snap.manifest.json" matches
-// "package/snap.manifest.json", and "dist/snap.js" matches
-// "package/dist/snap.js".
+// |relative_path| is matched exactly against each entry's path with the
+// archive's root directory component stripped (e.g. npm tarballs wrap
+// everything in "package/"). For example, "snap.manifest.json" matches
+// "package/snap.manifest.json" but not "package/nested/snap.manifest.json",
+// and "dist/snap.js" does not match "package/dist/snap.js" when given as
+// "snap.js".
+//
+// Entries outside a root directory, and entries whose relative path is
+// absolute or contains a ".." component, are ignored.
 //
 // Returns std::nullopt if no matching entry is found or the archive is
 // malformed.
 std::optional<std::string> ExtractFileFromTar(const std::string& tar_data,
-                                              std::string_view path_suffix);
+                                              std::string_view relative_path);
 
 // Parses a POSIX ustar tar archive and extracts the snap manifest and bundle.
 //
-// |bundle_file_path| is the relative path from the manifest's
-// source.location.npm.filePath (e.g. "dist/snap.js"). The function first
-// looks for a file whose path ends with that suffix. If |bundle_file_path|
-// is empty it falls back to any .js file under a "dist/" directory.
+// |bundle_file_path| is the manifest's source.location.npm.filePath (e.g.
+// "dist/snap.js") and must be non-empty; it is matched exactly against each
+// entry's root-relative path, per ExtractFileFromTar above.
 //
 // Returns std::nullopt if either file is absent or the archive is malformed.
 std::optional<SnapTarResult> ExtractSnapFiles(

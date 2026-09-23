@@ -5,14 +5,16 @@
 
 #include "brave/components/brave_wallet/browser/snap/installer/snap_installer_tar_decompressor.h"
 
+#include <cstddef>
 #include <optional>
 #include <string>
 #include <utility>
 
+#include "base/containers/span.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/json/json_reader.h"
-#include "base/logging.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/snap/installer/snap_installer_checksum_calculator.h"
 #include "brave/components/brave_wallet/browser/snap/installer/snap_tar_utils.h"
@@ -20,105 +22,99 @@
 
 namespace brave_wallet {
 
-namespace {
-
-SnapTarballExtractResult ExtractError(std::string msg) {
-  SnapTarballExtractResult r;
-  r.error = std::move(msg);
-  return r;
-}
-
-}  // namespace
-
-SnapTarballExtractResult SnapInstallerTarDecompressor::ExtractTarballToDir(
-    base::FilePath tarball_path) {
-  // Create a snap-specific temp dir on the thread pool (blocking allowed
-  // here). The guard cleans the dir up on any failure path below; ownership
-  // is released to the caller on success.
+SnapTarballExtractOutcome SnapInstallerTarDecompressor::ExtractTarballToDir(
+    const base::FilePath& tarball_path) {
+  // Blocking file I/O on the calling thread; the caller must allow it. The
+  // guard cleans the dir up on any failure path below; ownership is released
+  // to the caller on success.
   base::ScopedTempDir temp_dir;
   if (!temp_dir.CreateUniqueTempDir(FILE_PATH_LITERAL("brave_snap"))) {
-    base::DeleteFile(tarball_path);
-    return ExtractError("Failed to create snap temp directory");
+    return base::unexpected("Failed to create snap temp directory");
   }
   const base::FilePath unpacked_dir =
       temp_dir.GetPath().AppendASCII("unpacked");
 
-  // Read and delete the downloaded tarball.
   std::string compressed;
-  if (!base::ReadFileToString(tarball_path, &compressed)) {
-    base::DeleteFile(tarball_path);
-    return ExtractError("Failed to read tarball from disk");
+  if (!base::ReadFileToStringWithMaxSize(tarball_path, &compressed,
+                                         kMaxSnapTarballSize)) {
+    return base::unexpected("Failed to read tarball from disk");
   }
-  base::DeleteFile(tarball_path);
 
-  // Gzip decompress.
+  // GzipUncompress resizes its output buffer to the size recorded in the gzip
+  // trailer before inflating, so check that bound first.
+  if (compression::GetUncompressedSize(base::as_byte_span(compressed)) >
+      kMaxSnapTarballSize) {
+    return base::unexpected("Tarball is too large");
+  }
+
   std::string decompressed;
   if (!compression::GzipUncompress(compressed, &decompressed)) {
-    return ExtractError("Failed to decompress tarball");
+    return base::unexpected("Failed to decompress tarball");
   }
 
   // Phase 1: extract snap.manifest.json.
   std::optional<std::string> manifest_json =
       ExtractFileFromTar(decompressed, "snap.manifest.json");
   if (!manifest_json) {
-    return ExtractError("Failed to extract snap.manifest.json from tarball");
+    return base::unexpected(
+        "Failed to extract snap.manifest.json from tarball");
   }
 
-  // Phase 2: parse manifest for bundle filePath.
-  std::string bundle_file_path;
-  std::string expected_shasum;
-  {
-    auto parsed = base::JSONReader::Read(*manifest_json, base::JSON_PARSE_RFC);
-    if (parsed && parsed->is_dict()) {
-      if (const auto* source = parsed->GetDict().FindDict("source")) {
-        if (const auto* s = source->FindString("shasum")) {
-          expected_shasum = *s;
-        }
-        if (const auto* location = source->FindDict("location")) {
-          if (const auto* npm = location->FindDict("npm")) {
-            if (const auto* fp = npm->FindString("filePath")) {
-              bundle_file_path = *fp;
-            }
-          }
-        }
+  // Phase 2: the manifest must tell us which entry is the bundle. Guessing
+  // would let a crafted archive choose the bundle for us.
+  std::optional<base::DictValue> manifest =
+      base::JSONReader::ReadDict(*manifest_json, base::JSON_PARSE_RFC);
+  if (!manifest) {
+    return base::unexpected("Failed to parse snap.manifest.json");
+  }
+  const std::string* bundle_file_path = nullptr;
+  if (const auto* source = manifest->FindDict("source")) {
+    if (const auto* location = source->FindDict("location")) {
+      if (const auto* npm = location->FindDict("npm")) {
+        bundle_file_path = npm->FindString("filePath");
       }
     }
+  }
+  if (!bundle_file_path || bundle_file_path->empty()) {
+    return base::unexpected("Manifest is missing source.location.npm.filePath");
   }
 
   // Phase 3: extract bundle.
   std::optional<SnapTarResult> extracted =
-      ExtractSnapFiles(decompressed, bundle_file_path);
+      ExtractSnapFiles(decompressed, *bundle_file_path);
   if (!extracted) {
-    return ExtractError("Failed to extract snap bundle from tarball");
+    return base::unexpected("Failed to extract snap bundle from tarball");
   }
   extracted->manifest_json = std::move(*manifest_json);
 
   // Compute MetaMask checksum before the in-memory content is released.
   std::optional<std::string> computed_shasum =
       SnapInstallerChecksumCalculator::ComputeMetaMaskChecksum(
-          decompressed, extracted->bundle_js, bundle_file_path,
+          decompressed, extracted->bundle_js, *bundle_file_path,
           extracted->manifest_json);
   if (!computed_shasum) {
-    return ExtractError("Failed to compute MetaMask checksum");
+    return base::unexpected("Failed to compute MetaMask checksum");
   }
 
   // Write extracted files to the unpacked directory.
   if (!base::CreateDirectory(unpacked_dir)) {
-    return ExtractError("Failed to create unpacked directory");
+    return base::unexpected("Failed to create unpacked directory");
   }
   if (!base::WriteFile(unpacked_dir.AppendASCII("bundle.js"),
                        extracted->bundle_js)) {
-    return ExtractError("Failed to write bundle.js to unpacked directory");
+    return base::unexpected("Failed to write bundle.js to unpacked directory");
   }
   if (!base::WriteFile(unpacked_dir.AppendASCII("manifest.json"),
                        extracted->manifest_json)) {
-    return ExtractError("Failed to write manifest.json to unpacked directory");
+    return base::unexpected(
+        "Failed to write manifest.json to unpacked directory");
   }
 
   SnapTarballExtractResult result;
   result.manifest_json = std::move(extracted->manifest_json);
   result.computed_shasum = std::move(*computed_shasum);
-  result.bundle_size_bytes = static_cast<uint64_t>(extracted->bundle_js.size());
+  result.bundle_size_bytes =
+      base::checked_cast<uint64_t>(extracted->bundle_js.size());
   result.temp_dir_path = temp_dir.Take();
   return result;
 }

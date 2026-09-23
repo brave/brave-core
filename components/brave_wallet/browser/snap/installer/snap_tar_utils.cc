@@ -5,11 +5,12 @@
 
 #include "brave/components/brave_wallet/browser/snap/installer/snap_tar_utils.h"
 
-#include <algorithm>
 #include <optional>
 #include <string_view>
 
+#include "base/check.h"
 #include "base/containers/span.h"
+#include "base/strings/string_split.h"
 
 namespace brave_wallet {
 
@@ -67,18 +68,44 @@ std::string GetEntryPath(base::span<const char> header) {
   return name;
 }
 
-bool EndsWithSuffix(std::string_view path, std::string_view suffix) {
-  return path.size() >= suffix.size() &&
-         path.substr(path.size() - suffix.size()) == suffix;
+// |path| is the entry path after the archive root component is stripped.
+// Rejects an empty path, a leading '/', and any ".." component. Entry names
+// are attacker controlled and select which member is read; they are not used
+// as output paths.
+bool IsSafeRelativePath(std::string_view path) {
+  if (path.empty() || path.front() == '/') {
+    return false;
+  }
+  for (std::string_view component : base::SplitStringPiece(
+           path, "/", base::TRIM_WHITESPACE, base::SPLIT_WANT_ALL)) {
+    if (component == "..") {
+      return false;
+    }
+  }
+  return true;
 }
 
-bool IsDistJsFile(std::string_view path) {
-  return path.find("/dist/") != std::string_view::npos &&
-         EndsWithSuffix(path, ".js");
+// Strips the archive's root directory component (e.g. "package/") so entries
+// can be matched against the relative paths used in snap.manifest.json.
+// Returns nullopt for entries that are not inside a root directory, or whose
+// remainder is unsafe.
+std::optional<std::string_view> ToSnapRelativePath(
+    std::string_view entry_path) {
+  const size_t slash = entry_path.find('/');
+  if (slash == std::string_view::npos) {
+    return std::nullopt;
+  }
+  const std::string_view relative = entry_path.substr(slash + 1);
+  if (!IsSafeRelativePath(relative)) {
+    return std::nullopt;
+  }
+  return relative;
 }
 
 // Core iterator: calls |visitor| for each regular file entry.
-// |visitor| receives (path, file_span) and returns true to stop early.
+// |visitor| receives (relative_path, file_span) and returns true to stop
+// early. |relative_path| has the archive's root directory component
+// stripped.
 template <typename Visitor>
 bool IterateTar(base::span<const char> data, Visitor visitor) {
   size_t offset = 0;
@@ -103,10 +130,14 @@ bool IterateTar(base::span<const char> data, Visitor visitor) {
       if (offset + *file_size > data.size()) {
         return false;  // Truncated archive.
       }
-      std::string path = GetEntryPath(header);
-      auto file_span = data.subspan(offset, *file_size);
-      if (visitor(path, file_span)) {
-        return true;  // Early exit requested by visitor.
+      std::string entry_path = GetEntryPath(header);
+      std::optional<std::string_view> relative_path =
+          ToSnapRelativePath(entry_path);
+      if (relative_path) {
+        auto file_span = data.subspan(offset, *file_size);
+        if (visitor(*relative_path, file_span)) {
+          return true;  // Early exit requested by visitor.
+        }
       }
     }
 
@@ -119,13 +150,13 @@ bool IterateTar(base::span<const char> data, Visitor visitor) {
 }  // namespace
 
 std::optional<std::string> ExtractFileFromTar(const std::string& tar_data,
-                                              std::string_view path_suffix) {
+                                              std::string_view relative_path) {
   auto data = base::as_chars(base::as_byte_span(tar_data));
   std::optional<std::string> result;
 
   bool ok = IterateTar(
-      data, [&](const std::string& path, base::span<const char> file_span) {
-        if (EndsWithSuffix(path, path_suffix)) {
+      data, [&](std::string_view path, base::span<const char> file_span) {
+        if (path == relative_path) {
           result.emplace(file_span.begin(), file_span.end());
           return true;  // Stop.
         }
@@ -141,24 +172,23 @@ std::optional<std::string> ExtractFileFromTar(const std::string& tar_data,
 std::optional<SnapTarResult> ExtractSnapFiles(
     const std::string& tar_data,
     std::string_view bundle_file_path) {
+  // The bundle path comes from the manifest and must be known; guessing which
+  // file is the bundle would let a crafted archive choose it for us.
+  CHECK(!bundle_file_path.empty());
+
   auto data = base::as_chars(base::as_byte_span(tar_data));
   SnapTarResult result;
   bool found_manifest = false;
   bool found_bundle = false;
 
   bool ok = IterateTar(
-      data, [&](const std::string& path, base::span<const char> file_span) {
-        if (!found_manifest && EndsWithSuffix(path, "snap.manifest.json")) {
+      data, [&](std::string_view path, base::span<const char> file_span) {
+        if (!found_manifest && path == "snap.manifest.json") {
           result.manifest_json.assign(file_span.begin(), file_span.end());
           found_manifest = true;
-        } else if (!found_bundle) {
-          bool matches = !bundle_file_path.empty()
-                             ? EndsWithSuffix(path, bundle_file_path)
-                             : IsDistJsFile(path);
-          if (matches) {
-            result.bundle_js.assign(file_span.begin(), file_span.end());
-            found_bundle = true;
-          }
+        } else if (!found_bundle && path == bundle_file_path) {
+          result.bundle_js.assign(file_span.begin(), file_span.end());
+          found_bundle = true;
         }
         return found_manifest && found_bundle;  // Stop when both found.
       });
