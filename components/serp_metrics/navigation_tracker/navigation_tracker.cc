@@ -3,8 +3,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/serp_metrics/navigation_tracker/navigation_tracker.h"
+#include <optional>
 
+#include "brave/components/serp_metrics/navigation_tracker/navigation_tracker.h"
 #include "brave/components/serp_metrics/serp_classifier.h"
 #include "brave/components/serp_metrics/serp_classifier_utils.h"
 #include "brave/components/serp_metrics/serp_metric_type.h"
