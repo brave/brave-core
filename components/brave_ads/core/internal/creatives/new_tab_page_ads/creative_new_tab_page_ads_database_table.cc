@@ -319,6 +319,8 @@ void CreativeNewTabPageAds::GetForCreativeInstanceId(
     const std::string& creative_instance_id,
     GetCreativeNewTabPageAdCallback callback) const {
   if (creative_instance_id.empty()) {
+    BLOG(0, "Failed to get creative new tab page ad due to a missing "
+                "creative instance id");
     return std::move(callback).Run(/*success=*/false, creative_instance_id,
                                    /*creative_ad=*/{});
   }

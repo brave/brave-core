@@ -146,6 +146,21 @@ export const style = scoped.css`
     gap: 8px;
   }
 
+  /* Shown above every tab's content (see HealthBar in app.tsx), so matches
+     main's own centering/width rather than stretching full width. */
+  .health-bar {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 0 auto;
+    max-width: 1024px;
+    padding: 0 32px;
+
+    &:not(:empty) {
+      padding-bottom: 16px;
+    }
+  }
+
   h1 {
     max-width: 1024px;
     padding: 0 32px;
@@ -416,6 +431,32 @@ style.passthrough.css`
     overflow: hidden;
   }
 
+  /* Keeps a comma-separated list (e.g. Segments) and its trailing "show
+     all" link on one row, with the list itself clipped to fit rather than
+     the link getting pushed off or the row growing taller. */
+  .segment-list {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .segment-list-collapsed {
+    /* Lets this flex item shrink below its content width so the ellipsis
+       below actually has room to kick in. */
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  /* Without this, the "show all" link is itself a shrinkable flex item and
+     can wrap its own text onto a second line once space is tight, instead
+     of the sibling collapsed-list text doing all the shrinking. */
+  .segment-list .text-link {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+
   /* Keeps an id and its reaction icon on the same line; two adjacent inline
      elements with no text between them can otherwise still wrap apart at a
      narrow width. */
@@ -426,6 +467,7 @@ style.passthrough.css`
     white-space: nowrap;
     --leo-icon-size: 14px;
   }
+
 
   .condition-matcher-match {
     color: ${color.systemfeedback.successText};
@@ -576,6 +618,10 @@ style.passthrough.css`
 
   .icon-error {
     --leo-icon-color: ${color.systemfeedback.errorIcon};
+  }
+
+  .icon-warning {
+    --leo-icon-color: ${color.systemfeedback.warningIcon};
   }
 
   /* Sized to match the check/close icons it stands in for while loading. */

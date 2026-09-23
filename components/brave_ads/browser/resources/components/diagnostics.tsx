@@ -64,9 +64,13 @@ const DIAGNOSTIC_VALUE_LABELS: Record<
   string,
   Record<string, { label: string; isProblem: boolean; isSuccess: boolean }>
 > = {
+  // `false` isn't a startup failure: the service also never starts at all
+  // when there's nothing for it to do (e.g. Rewards not joined and
+  // Sponsored Ads disabled), so it's shown as a healthy state, not a
+  // flagged problem.
   'Ads initialized': {
     'true': { label: 'Running', isProblem: false, isSuccess: true },
-    'false': { label: 'FAILED', isProblem: true, isSuccess: false },
+    'false': { label: 'Not running', isProblem: false, isSuccess: true },
   },
 }
 
@@ -357,6 +361,7 @@ export function Diagnostics() {
   const actions = useAppActions()
   const rawEntries = useAppState((state) => state.diagnosticEntries)
   const isInitialized = useAppState((state) => state.isInitialized)
+  const diagnosticsLoaded = useAppState((state) => state.diagnosticsLoaded)
   const rewardsEnabled = useAppState((state) => state.rewardsEnabled)
   const variationsCountryCode = useAppState(
     (state) => state.variationsCountryCode,
@@ -365,14 +370,12 @@ export function Diagnostics() {
     actions.loadDiagnostics()
   }, [])
 
-  // `isInitialized` defaults to `false` until the first `loadDiagnostics`
-  // response arrives, which would otherwise flash "Status: FAILED" on every
-  // page load rather than only when startup genuinely fails; only show it
-  // once real diagnostic entries have actually loaded.
-  const hasLoadedDiagnostics = rawEntries.length > 0
+  // `rawEntries.length` can't stand in for "has loaded": an ads service
+  // that's legitimately shut down also yields an empty `rawEntries`, which
+  // would otherwise be mistaken for "hasn't loaded yet" and hide this status.
   const entries = combineLanguageAndCountry([
     ...rawEntries,
-    ...(hasLoadedDiagnostics
+    ...(diagnosticsLoaded
       ? [{ name: 'Ads initialized', value: String(isInitialized) }]
       : []),
     {
@@ -393,13 +396,17 @@ export function Diagnostics() {
 
   const sections = DIAGNOSTIC_SECTIONS.map((section) => ({
     title: section.title,
+    // Language & Region is ad-targeting diagnostics; meaningless while the
+    // ads service isn't running, so hidden entirely rather than shown stale.
     // Look up entries in `section.names` order rather than filtering the flat
     // list; filtering would keep the backend's enum-derived order, silently
     // ignoring the order declared for this section.
-    entries: section.names
-      .map((name) => entries.find((entry) => entry.name === name))
-      .filter((entry): entry is DiagnosticEntry => entry !== undefined &&
-        (rewardsEnabled || !REWARDS_ONLY_ENTRY_NAMES.has(entry.name))),
+    entries: section.title === 'Language & Region' && !isInitialized
+      ? []
+      : section.names
+          .map((name) => entries.find((entry) => entry.name === name))
+          .filter((entry): entry is DiagnosticEntry => entry !== undefined &&
+            (rewardsEnabled || !REWARDS_ONLY_ENTRY_NAMES.has(entry.name))),
   }))
   const otherEntries = entries.filter((entry) => !named.has(entry.name))
 

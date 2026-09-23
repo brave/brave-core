@@ -214,6 +214,7 @@ interface AdsInternalsPage {
   UpdateBraveRewardsEnabled(bool enabled);
   UpdateBraveRewardsWalletConnected(bool connected);
   UpdateDidInitializeAdsService();
+  UpdateAdFormatSettings();
 };
 
 // Exposes the Brave Rewards diagnostic log to brave://ads-internals so it can

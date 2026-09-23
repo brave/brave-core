@@ -45,6 +45,13 @@ export function createAppStore(): AppStore {
   pageCallbackRouter.updateDidInitializeAdsService.addListener(() => {
     loadDiagnostics()
   })
+  // Sponsored Ads/New Tab Page background image can be toggled from
+  // brave://settings while this page is open; those prefs drive Ad
+  // Formats/Last seen state but aren't observed by any of the listeners
+  // above.
+  pageCallbackRouter.updateAdFormatSettings.addListener(() => {
+    loadDiagnostics()
+  })
   API.createAdsInternalsPageHandler(
     pageCallbackRouter.$.bindNewPipeAndPassRemote(),
   )

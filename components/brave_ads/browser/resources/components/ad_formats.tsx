@@ -11,7 +11,8 @@ import { MatchIcon } from './match_icon'
 import { TabHeader } from './tab_header'
 
 // There's no NTP "Top Sites" tiles surface on iOS, so this row would always
-// read "No" there regardless of the underlying pref.
+// read "No" there regardless of the underlying pref. Exported so `app.tsx`
+// can factor tiles into whether every ad format is disabled.
 // <if expr="is_ios">
 const TILES_SUPPORTED = false
 // </if>
@@ -19,10 +20,11 @@ const TILES_SUPPORTED = false
 const TILES_SUPPORTED = true
 // </if>
 
+export { TILES_SUPPORTED }
+
 export function AdFormats() {
   const actions = useAppActions()
   const rawEntries = useAppState((state) => state.diagnosticEntries)
-  const rewardsEnabled = useAppState((state) => state.rewardsEnabled)
   const rewardsEntries = useAppState((state) => state.rewardsDiagnosticEntries)
   const isSponsoredTilesShown = useAppState(
     (state) => state.isSponsoredTilesShown,
@@ -44,19 +46,17 @@ export function AdFormats() {
         description='Which ad formats are enabled on this device.'
         onRefresh={actions.loadDiagnostics}
       />
-      {rewardsEnabled && (
-        <div className='content-card'>
-          <h4>
-            <span className='title'>Notification</span>
-          </h4>
-          <section className='key-value-list'>
-            <div>
-              <span>Enabled</span>
-              <MatchIcon isMatch={isMatch('Notification ads enabled')} />
-            </div>
-          </section>
-        </div>
-      )}
+      <div className='content-card'>
+        <h4>
+          <span className='title'>Notification</span>
+        </h4>
+        <section className='key-value-list'>
+          <div>
+            <span>Enabled</span>
+            <MatchIcon isMatch={isMatch('Notification ads enabled')} />
+          </div>
+        </section>
+      </div>
       <div className='content-card'>
         <h4>
           <span className='title'>Sponsored</span>
@@ -75,7 +75,7 @@ export function AdFormats() {
               it's only the ad event metrics sent for them that depend on
               sponsored ads being enabled and no wallet being connected. */}
           <div>
-            <span>Search result ad metrics</span>
+            <span>Search result ad metrics sent</span>
             <MatchIcon
               isMatch={isMatch('Sponsored ads enabled') && !walletConnected}
             />

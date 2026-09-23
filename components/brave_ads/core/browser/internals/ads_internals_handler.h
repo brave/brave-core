@@ -106,6 +106,9 @@ class AdsInternalsHandler final : public bat_ads::mojom::AdsInternals,
   void OnBraveRewardsWalletConnectedPrefChanged(const std::string& path);
   void UpdateBraveRewardsWalletConnected();
 
+  void OnAdFormatSettingsPrefChanged(const std::string& path);
+  void UpdateAdFormatSettings();
+
   // brave_ads::AdsServiceObserver:
   void OnDidInitializeAdsService() override;
 

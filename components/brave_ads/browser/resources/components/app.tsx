@@ -8,10 +8,10 @@ import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 
 import { useAppState } from '../lib/app_context'
-import { isWalletConnected } from '../lib/diagnostics'
+import { getDiagnosticValue, isWalletConnected } from '../lib/diagnostics'
 import { useRoute, useRouter } from '../lib/router'
 import { Rewards } from './rewards'
-import { AdFormats } from './ad_formats'
+import { AdFormats, TILES_SUPPORTED } from './ad_formats'
 import { PermissionRules } from './permission_rules'
 import { Storage } from './storage'
 import { UserAttention } from './user_attention'
@@ -30,6 +30,8 @@ import { Reactions } from './reactions'
 // </if>
 import { Events } from './events'
 import { Diagnostics } from './diagnostics'
+import { AdsDisabled } from './ads_disabled'
+import { HealthBar } from './health_bar'
 // <if expr="enable_brave_rewards && !is_ios">
 import { Logs } from './logs'
 // </if>
@@ -57,6 +59,11 @@ function useTabs(): TabConfig[] {
     useAppState((state) => state.adsInternalsVerboseModeEnabled)
   const rewardsDiagnosticEntries =
     useAppState((state) => state.rewardsDiagnosticEntries)
+  const isInitialized = useAppState((state) => state.isInitialized)
+  const rawEntries = useAppState((state) => state.diagnosticEntries)
+  const isSponsoredTilesShown = useAppState(
+    (state) => state.isSponsoredTilesShown,
+  )
   // <if expr="enable_brave_rewards && !is_ios">
   const logsSupported = useAppState((state) => state.logsSupported)
   // </if>
@@ -69,6 +76,19 @@ function useTabs(): TabConfig[] {
   // Confirmation Tokens/Payment Tokens are only refilled/earned once a
   // wallet is connected, not just once Rewards is joined.
   const connectedRewardsTabVisible = rewardsEnabled && walletConnected
+
+  function isMatch(name: string) {
+    return getDiagnosticValue(rawEntries, name) === 'true'
+  }
+
+  // Mirrors Ad Formats' own enabled checks for each format; Resources (the
+  // ad catalog/model download state) has nothing to show once none of them
+  // can ever serve an ad.
+  const anyAdFormatEnabled =
+    (rewardsEnabled && isMatch('Notification ads enabled')) ||
+    isMatch('New tab page ads shown') ||
+    (isMatch('Sponsored ads enabled') && !walletConnected) ||
+    (TILES_SUPPORTED && isSponsoredTilesShown && !walletConnected)
 
   const tabs: TabConfig[] = [
     {
@@ -100,8 +120,8 @@ function useTabs(): TabConfig[] {
     {
       route: routes.storage,
       label: 'Storage',
-      isVisible: true,
-      content: <Storage />,
+      isVisible: isInitialized,
+      content: isInitialized ? <Storage /> : <AdsDisabled />,
     },
     {
       route: routes.userAttention,
@@ -114,44 +134,44 @@ function useTabs(): TabConfig[] {
     {
       route: routes.resources,
       label: 'Resources',
-      isVisible: true,
-      content: <Resources />,
+      isVisible: anyAdFormatEnabled,
+      content: anyAdFormatEnabled ? <Resources /> : <AdsDisabled />,
     },
     {
       route: routes.campaigns,
       label: 'Campaigns',
-      isVisible: true,
-      content: <Campaigns />,
+      isVisible: isInitialized,
+      content: isInitialized ? <Campaigns /> : <AdsDisabled />,
     },
     {
       route: routes.dayParts,
       label: 'Dayparts',
-      isVisible: true,
-      content: <DayParts />,
+      isVisible: isInitialized,
+      content: isInitialized ? <DayParts /> : <AdsDisabled />,
     },
     {
       route: routes.segments,
       label: 'Segments',
-      isVisible: true,
-      content: <Segments />,
+      isVisible: isInitialized,
+      content: isInitialized ? <Segments /> : <AdsDisabled />,
     },
     {
       route: routes.conditionMatchers,
       label: 'Condition Matchers',
-      isVisible: true,
-      content: <ConditionMatchers />,
+      isVisible: isInitialized,
+      content: isInitialized ? <ConditionMatchers /> : <AdsDisabled />,
     },
     {
       route: routes.confirmationQueue,
       label: 'Confirmation Queue',
-      isVisible: true,
-      content: <ConfirmationQueue />,
+      isVisible: isInitialized,
+      content: isInitialized ? <ConfirmationQueue /> : <AdsDisabled />,
     },
     {
       route: routes.conversions,
       label: 'Conversions',
-      isVisible: true,
-      content: <Conversions />,
+      isVisible: isInitialized,
+      content: isInitialized ? <Conversions /> : <AdsDisabled />,
     },
     {
       route: routes.transactions,
@@ -196,16 +216,20 @@ function useTabs(): TabConfig[] {
   tabs.push({
     route: routes.events,
     label: 'Events',
-    isVisible: true,
-    content: <Events />,
+    isVisible: isInitialized,
+    content: isInitialized ? <Events /> : <AdsDisabled />,
   })
 
   // <if expr="enable_brave_rewards && !is_ios">
+  // Ads-related activity is logged whenever the ads service is running, even
+  // without Rewards joined (e.g. sponsored NTP ads or search result ads), so
+  // this isn't gated on `rewardsEnabled` alone.
+  const logsTabVisible = logsSupported && (rewardsEnabled || isInitialized)
   tabs.push({
     route: routes.logs,
     label: 'Logs',
-    isVisible: logsSupported,
-    content: logsSupported ? <Logs /> : <Diagnostics />,
+    isVisible: logsTabVisible,
+    content: logsTabVisible ? <Logs /> : <Diagnostics />,
   })
   // </if>
 
@@ -350,10 +374,11 @@ export function App() {
             </div>
             <h1>Ads internals</h1>
             <div className='disclaimer'>
-              WARNING: data on these pages may be sensitive. Be careful who
-              you share it with.
+              <strong>WARNING:</strong> data on these pages may be sensitive.
+              Be careful who you share it with.
             </div>
           </div>
+          <HealthBar />
           <main>
             {content}
           </main>
