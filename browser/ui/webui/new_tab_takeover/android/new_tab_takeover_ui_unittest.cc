@@ -17,7 +17,7 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/new_tab_takeover/mojom/new_tab_takeover.mojom.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/profiles/profile.h"

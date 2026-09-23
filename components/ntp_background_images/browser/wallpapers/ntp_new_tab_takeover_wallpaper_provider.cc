@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"

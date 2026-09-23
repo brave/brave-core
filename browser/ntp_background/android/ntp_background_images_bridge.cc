@@ -26,7 +26,7 @@
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "chrome/android/chrome_jni_headers/NTPBackgroundImagesBridge_jni.h"

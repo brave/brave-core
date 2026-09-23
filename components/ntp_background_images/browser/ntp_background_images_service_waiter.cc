@@ -5,7 +5,7 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
 
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
 
 namespace ntp_background_images {
 

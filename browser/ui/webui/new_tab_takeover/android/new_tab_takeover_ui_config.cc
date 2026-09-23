@@ -12,7 +12,7 @@
 #include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"

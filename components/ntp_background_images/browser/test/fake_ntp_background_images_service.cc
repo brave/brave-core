@@ -10,7 +10,7 @@
 #include "base/files/file_path.h"
 #include "base/json/json_reader.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_sites_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/site/ntp_sponsored_sites_data.h"
 
 namespace ntp_background_images {
 

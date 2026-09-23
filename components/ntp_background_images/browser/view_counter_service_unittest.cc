@@ -27,7 +27,7 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
 #include "brave/components/ntp_background_images/browser/test/fake_ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
