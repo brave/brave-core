@@ -200,9 +200,7 @@ PsstTabWebContentsObserver::AsWeakPtr() {
 
 void PsstTabWebContentsObserver::CancelInFlightFlow() {
   logical_flow_cancelled_ = true;
-  script_injector_remote_.reset();
-  page_weak_factory_.InvalidateWeakPtrs();
-  should_process_current_page_ = false;
+  PageScopedReset();
 }
 
 void PsstTabWebContentsObserver::DidFinishNavigation(
@@ -230,9 +228,7 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
 }
 
 void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
-  script_injector_remote_.reset();
-  page_weak_factory_.InvalidateWeakPtrs();
-  should_process_current_page_ = false;
+  PageScopedReset();
 }
 
 void PsstTabWebContentsObserver::InsertUserScript(
@@ -255,12 +251,14 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     std::unique_ptr<MatchedRule> rule,
     base::Value user_script_result) {
   timeout_timer_.Stop();
-LOG(INFO) << "[PSST] 100 user_script_result:" << user_script_result.DebugString();
 
   // We should break the flow in case of policy script is not available or user
   // script result is not a dictionary
   if (!rule || rule->policy_script().empty() || !user_script_result.is_dict()) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    DVLOG(1) << __func__
+             << " The policy script is unavailable or the user script returned "
+                "an unexpected format";
     return;
   }
 
@@ -268,19 +266,22 @@ LOG(INFO) << "[PSST] 100 user_script_result:" << user_script_result.DebugString(
       UserScriptResult::FromValue(user_script_result);
   if (!user_script_result_parsed) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    DVLOG(1) << __func__ << " Failed to parse the user script result";
     return;
   }
 
   // We should break the flow in case of signed-in user ID is not available
   if (user_script_result_parsed->user_id.empty()) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    DVLOG(1) << __func__ << " User ID is not available";
     return;
   }
-LOG(INFO) << "[PSST] 500 user_script_result_parsed:" << user_script_result_parsed->ToValue().DebugString();
+
   auto origin = web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   auto psst_settings = ui_delegate_->GetPsstWebsiteSettings(
       origin, user_script_result_parsed->user_id);
   if (psst_settings && psst_settings->consent_status == ConsentStatus::kBlock) {
+    DVLOG(1) << __func__ << " Psst is disabled for the current website";
     return;
   }
 
@@ -407,6 +408,12 @@ void PsstTabWebContentsObserver::SetInjectAsyncScriptCallback(
     InjectScriptAsyncCallback inject_async_script_callback) {
   CHECK(!inject_async_script_callback.is_null());
   inject_async_script_callback_ = std::move(inject_async_script_callback);
+}
+
+void PsstTabWebContentsObserver::PageScopedReset() {
+  script_injector_remote_.reset();
+  page_weak_factory_.InvalidateWeakPtrs();
+  should_process_current_page_ = false;
 }
 
 }  // namespace psst

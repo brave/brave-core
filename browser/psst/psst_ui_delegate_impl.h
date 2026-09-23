@@ -79,6 +79,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
       long progress,
       const std::vector<PolicyTask>& performed_tasks);
   void NotifyObserversOfPsstErrorsReportSent();
+  void CancelLogicalFlow();
 
   std::unique_ptr<PsstUiPresenter> ui_presenter_;
   std::optional<PsstWebsiteSettings> dialog_data_;

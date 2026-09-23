@@ -502,7 +502,6 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // Hold the user script result until after the second navigation commits.
   PsstTabWebContentsObserver::InsertScriptInPageCallback
       held_user_script_callback;
-LOG(INFO) << "[PSST] user_script_:" << user_script_;
   ExpectUserScriptInjected(user_script_)
       .WillOnce(HoldInsertScriptInPageCallback(&held_user_script_callback));
 

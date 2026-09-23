@@ -124,6 +124,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   void SetInjectScriptCallback(InjectScriptCallback inject_script_callback);
   void SetInjectAsyncScriptCallback(
       InjectScriptAsyncCallback inject_async_script_callback);
+  void PageScopedReset();
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
@@ -135,6 +136,11 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   std::unique_ptr<PsstUiDelegate> ui_delegate_;
   base::OneShotTimer timeout_timer_;
 
+  // Set when the user aborts an in-progress PSST flow. Unlike
+  // page_weak_factory_, which is invalidated on every document commit,
+  // this flag persists across same-document navigations and is only
+  // cleared when a fresh initial user-script execution begins,
+  // preventing the flow from resuming silently.
   bool logical_flow_cancelled_ = false;
 
   // Whether the currently committed primary page is eligible for PSST
