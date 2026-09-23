@@ -793,7 +793,6 @@ public class BrowserViewController: UIViewController {
         toolbar?.setSearchButtonState(url: tabManager.selectedTab?.visibleURL)
         footer.addSubview(toolbar!)
         toolbar?.tabToolbarDelegate = self
-        toolbar?.menuButton.setBadges(Array(topToolbar.menuButton.badges.keys))
       }
       view.setNeedsUpdateConstraints()
     }

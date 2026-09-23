@@ -21,7 +21,7 @@ class BottomToolbarView: UIView, ToolbarProtocol {
   let searchButton = ToolbarButton().then {
     $0.isHidden = true
   }
-  let menuButton = MenuButton()
+  let menuButton = ToolbarButton()
   let actionButtons: [UIButton]
 
   var helper: ToolbarHelper?
