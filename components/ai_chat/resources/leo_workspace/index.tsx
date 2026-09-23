@@ -14,8 +14,13 @@
 // The handle is delivered via launchQueue; once captured, the file tools are
 // registered with Leo via WebMCP (see tools.ts / file_ops.ts). The `view.`
 // sibling origin can also read files over postMessage (see message_handler.ts).
+//
+// When this page's own URL fragment names a file, it is being used as a shell
+// to preview it: it frames a viewer for that file, full page. Reading stays
+// here, because this is the origin the folder was granted to.
 
-import { installMessageHandler } from './message_handler'
+import { fileFragment, filePathFromHash } from './file_fragment'
+import { installMessageHandler, viewOrigin } from './message_handler'
 import { registerTools } from './tools'
 
 // launchQueue is not in the default TS DOM lib; declare the minimal surface we
@@ -59,6 +64,50 @@ function onLaunch(params: LaunchParams) {
   void registerTools(root)
 }
 
+// The viewer being framed, if one is. Kept so that a retargeted fragment
+// changes its URL rather than replacing the element, which keeps the framed
+// document (and the worker controlling it) alive.
+let viewerFrame: HTMLIFrameElement | null = null
+
+// Frames a viewer for the file the fragment asks for, or removes the frame
+// when it asks for none. |origin| is this page's own; the viewer is its
+// `view.` sibling, which is the only origin this page may frame.
+export function showViewerFrame(
+  root: HTMLElement,
+  origin = window.location.origin,
+) {
+  const path = filePathFromHash(window.location.hash)
+  if (!path) {
+    viewerFrame?.remove()
+    viewerFrame = null
+    return
+  }
+  const viewer = viewOrigin(origin)
+  if (!viewer) {
+    console.error('[leo-workspace] no viewer origin to frame')
+    return
+  }
+
+  const src = `${viewer}/${fileFragment(path)}`
+  if (viewerFrame) {
+    // Same document, new fragment: the viewer re-reads without reloading.
+    viewerFrame.src = src
+    return
+  }
+  viewerFrame = document.createElement('iframe')
+  viewerFrame.src = src
+  viewerFrame.title = 'Leo Workspace View'
+  // Set through the CSSOM rather than a style attribute, which this page's
+  // style-src would block.
+  const style = viewerFrame.style
+  style.position = 'fixed'
+  style.inset = '0'
+  style.width = '100%'
+  style.height = '100%'
+  style.border = '0'
+  root.appendChild(viewerFrame)
+}
+
 function initialize() {
   console.log('[leo-workspace] bundle loaded at', window.location.origin)
   installMessageHandler(rootHandle)
@@ -68,6 +117,14 @@ function initialize() {
     console.error('[leo-workspace] window.launchQueue is unavailable')
     rejectRoot(new Error('workspace folder is unavailable'))
   }
+
+  const root = document.getElementById('root')
+  if (!root) {
+    console.error('[leo-workspace] no #root to frame the viewer in')
+    return
+  }
+  window.addEventListener('hashchange', () => showViewerFrame(root))
+  showViewerFrame(root)
 }
 
 document.addEventListener('DOMContentLoaded', initialize)
