@@ -9,4 +9,4 @@ substitutions:
       This allows RBE-enabled win-arm64 compilation to work from mac-arm64 host.
     regex:
       pattern: if (target_os == "mac")
-      replace: if (host_os == "mac")
+      replace: if (target_os == "mac" || host_os == "mac")
