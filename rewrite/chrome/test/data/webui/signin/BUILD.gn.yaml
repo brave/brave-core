@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Import the custom profile image availability flag for signin resources.
+
+    regex:
+      re_pattern: '(# found in the LICENSE file\.\n)'
+      replace: |-
+        \1
+        import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
+  - description: |-
+      Preprocess the custom image code with the flag that owns its resources.
+
+    regex:
+      pattern: 'build_webui_tests("build") {'
+      replace: |-
+        build_webui_tests("build") {
+          preprocessor_defines = [ "enable_brave_custom_profile_image_webui=$enable_brave_custom_profile_image_webui" ]

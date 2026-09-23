@@ -91,6 +91,9 @@ source_set("core") {
   if (enable_brave_custom_profile_image_webui) {
     deps += [ "//brave/browser/ui/webui/custom_profile_image" ]
   }
+  if (use_blink && !is_android) {
+    deps += [ "//brave/browser/ui/webui/signin" ]
+  }
   public_deps = brave_chrome_browser_public_deps +
                 [ "//chrome/browser:browser_public_dependencies" ]
   allow_circular_includes_from =
