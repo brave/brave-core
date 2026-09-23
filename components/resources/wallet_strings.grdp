@@ -1294,4 +1294,6 @@
   <message name="IDS_BRAVE_WALLET_GET_YOUR_CARD_DESCRIPTION" desc="Description on the wallet card hub card explaining identity verification is required to use the Brave card" formatter_data="webui=Wallet">Verify your identity to see card numbers and start spending.</message>
   <message name="IDS_BRAVE_WALLET_TAP_TO_VERIFY" desc="Action label on the wallet card hub card to start identity verification" formatter_data="webui=Wallet">Tap to verify</message>
   <message name="IDS_BRAVE_WALLET_ENABLE_REWARDS" desc="Action label on the wallet card hub rewards card to enable Brave Rewards" formatter_data="webui=Wallet">Enable Rewards</message>
+  <message name="IDS_BRAVE_WALLET_HIDE_BALANCES" desc="Action label on the wallet card hub menu to hide balances" formatter_data="webui=Wallet">Hide balances</message>
+  <message name="IDS_BRAVE_WALLET_SHOW_BALANCES" desc="Action label on the wallet card hub menu to show balances" formatter_data="webui=Wallet">Show balances</message>
 </grit-part>
