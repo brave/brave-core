@@ -43,7 +43,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
   using ConsentCallback =
       base::OnceCallback<void(const std::vector<std::string>&)>;
-  using CancelCallback = base::OnceCallback<void()>;
+  using CancelCallback = base::RepeatingCallback<void()>;
 
   // Delegate interface for UI-related actions. This class is responsible for
   // facilitating communication with the consent dialog, ensuring that the UI

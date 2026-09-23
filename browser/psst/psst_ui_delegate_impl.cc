@@ -266,7 +266,7 @@ void PsstUiDelegateImpl::CancelLogicalFlow() {
   if (!cancel_callback_) {
     return;
   }
-  std::move(cancel_callback_).Run();
+  cancel_callback_.Run();
 }
 
 }  // namespace psst

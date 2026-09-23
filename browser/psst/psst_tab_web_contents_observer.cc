@@ -187,7 +187,7 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
       variations_service_(variations_service),
       ui_delegate_(std::move(ui_delegate)) {
   ui_delegate_->SetLogicalFlowCancelCallback(
-      base::BindOnce(&PsstTabWebContentsObserver::CancelInFlightFlow,
+      base::BindRepeating(&PsstTabWebContentsObserver::CancelInFlightFlow,
                      weak_factory_.GetWeakPtr()));
 }
 
