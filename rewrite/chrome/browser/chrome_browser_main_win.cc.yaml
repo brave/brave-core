@@ -10,16 +10,14 @@ substitutions:
       This has to run ahead of `os_crypt_async::Init()`, which is what reads
       `os_crypt.encrypted_key` and what mints a replacement when it finds
       none — minting over a key that `Local State` merely mislaid is how the
-      data becomes unreadable. Only acts when the key is absent, so on a
-      healthy profile it reads one in-memory pref and returns.
+      data becomes unreadable. `Init()` is called further down this same body,
+      so the top of the function is early enough, and asks nothing of the
+      statements in between. Only acts when the key is absent, so on a healthy
+      profile it reads one in-memory pref and returns.
       See https://github.com/brave/brave-browser/issues/40375.
-    regex:
-      re_pattern:
-        '// Initialize the OSCrypt\.\s+bool os_crypt_init =
-        os_crypt_async::Init\(local_state\);'
-      replace: |-
+    preempt_function_impl:
+      function_name: ChromeBrowserMainPartsWin::PreCreateMainMessageLoop
+      code: |-
         brave::MaybeRestoreOSCryptKey(
-              base::PathService::CheckedGet(chrome::DIR_USER_DATA), local_state);
-
-          // Initialize the OSCrypt.
-          bool os_crypt_init = os_crypt_async::Init(local_state);
+            base::PathService::CheckedGet(chrome::DIR_USER_DATA),
+            g_browser_process->local_state());
