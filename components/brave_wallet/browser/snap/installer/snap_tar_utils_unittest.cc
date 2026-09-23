@@ -12,7 +12,7 @@
 
 namespace brave_wallet {
 
-TEST(SnapTarUtilsTest, ExtractFileFromTarBySuffix) {
+TEST(SnapTarUtilsTest, ExtractFileFromTarByRelativePath) {
   std::string tar = BuildUstarTar({
       {"package/snap.manifest.json", "MANIFEST"},
       {"package/dist/bundle.js", "BUNDLE"},
@@ -26,10 +26,8 @@ TEST(SnapTarUtilsTest, ExtractFileFromTarBySuffix) {
   ASSERT_TRUE(bundle);
   EXPECT_EQ(*bundle, "BUNDLE");
 
-  // A shorter suffix of the full path still matches.
-  auto by_short_suffix = ExtractFileFromTar(tar, "bundle.js");
-  ASSERT_TRUE(by_short_suffix);
-  EXPECT_EQ(*by_short_suffix, "BUNDLE");
+  // A bare filename is not the entry's root-relative path.
+  EXPECT_FALSE(ExtractFileFromTar(tar, "bundle.js"));
 }
 
 TEST(SnapTarUtilsTest, ExtractFileFromTarIsCaseSensitive) {
@@ -58,15 +56,28 @@ TEST(SnapTarUtilsTest, ExtractSnapFilesWithExplicitBundlePath) {
   EXPECT_EQ(result->bundle_js, "BUNDLE");
 }
 
-TEST(SnapTarUtilsTest, ExtractSnapFilesFallsBackToDistJs) {
+TEST(SnapTarUtilsTest, ExtractSnapFilesRejectsDecoyBundlePath) {
   std::string tar = BuildUstarTar({
       {"package/snap.manifest.json", "MANIFEST"},
-      {"package/dist/index.js", "BUNDLE"},
+      {"package/evil/dist/bundle.js", "EVIL"},
   });
-  auto result = ExtractSnapFiles(tar, /*bundle_file_path=*/"");
-  ASSERT_TRUE(result);
-  EXPECT_EQ(result->manifest_json, "MANIFEST");
-  EXPECT_EQ(result->bundle_js, "BUNDLE");
+  EXPECT_FALSE(ExtractSnapFiles(tar, "dist/bundle.js"));
+}
+
+TEST(SnapTarUtilsTest, ExtractFileFromTarIgnoresNestedManifest) {
+  std::string tar = BuildUstarTar({{"package/nested/snap.manifest.json", "X"}});
+  EXPECT_FALSE(ExtractFileFromTar(tar, "snap.manifest.json"));
+}
+
+TEST(SnapTarUtilsTest, ExtractFileFromTarIgnoresPathTraversal) {
+  std::string tar = BuildUstarTar({{"package/../escape.js", "PWNED"}});
+  EXPECT_FALSE(ExtractFileFromTar(tar, "../escape.js"));
+  EXPECT_FALSE(ExtractFileFromTar(tar, "escape.js"));
+}
+
+TEST(SnapTarUtilsTest, ExtractFileFromTarIgnoresTopLevelEntries) {
+  std::string tar = BuildUstarTar({{"snap.manifest.json", "X"}});
+  EXPECT_FALSE(ExtractFileFromTar(tar, "snap.manifest.json"));
 }
 
 TEST(SnapTarUtilsTest, ExtractSnapFilesMissingManifest) {

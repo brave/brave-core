@@ -16,8 +16,9 @@ if (enable_snaps) {
       "snap_tar_utils.h",
     ]
 
+    public_deps = [ "//base" ]
+
     deps = [
-      "//base",
       "//crypto",
       "//third_party/zlib/google:compression_utils",
     ]

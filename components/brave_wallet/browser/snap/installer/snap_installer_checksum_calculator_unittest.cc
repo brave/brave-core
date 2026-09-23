@@ -83,6 +83,28 @@ TEST(SnapInstallerChecksumCalculatorTest, SourceOnlySnap) {
   EXPECT_EQ(*checksum, "1PJusGW80ttgzxknJidI/JKg2Timv0O/NV6b57TKWTI=");
 }
 
+TEST(SnapInstallerChecksumCalculatorTest,
+     ManifestKeyOrderDoesNotAffectChecksum) {
+  const std::string bundle = "export const onRpcRequest = () => 42;";
+  const std::string shasum = ComputeSnapBundleShasum(bundle);
+  // Same manifest, keys written in reverse order at two nesting levels.
+  const std::string reordered =
+      "{\"source\":{\"location\":{\"npm\":{\"filePath\":\"dist/bundle.js\"}},"
+      "\"shasum\":\"" +
+      shasum +
+      "\"},"
+      "\"initialPermissions\":{},"
+      "\"description\":\"A snap used in tests\","
+      "\"proposedName\":\"Test Snap\"}";
+  std::string tar = BuildSnapTarWithFiles(reordered, bundle, "dist/bundle.js");
+
+  auto checksum = SnapInstallerChecksumCalculator::ComputeMetaMaskChecksum(
+      tar, bundle, "dist/bundle.js", reordered);
+  ASSERT_TRUE(checksum);
+  // Identical to SourceOnlySnap, which spells the same keys alphabetically.
+  EXPECT_EQ(*checksum, "1PJusGW80ttgzxknJidI/JKg2Timv0O/NV6b57TKWTI=");
+}
+
 TEST(SnapInstallerChecksumCalculatorTest, RealArchiveMatchesManifestShasum) {
   base::FilePath real_tarball =
       BraveWalletComponentsTestDataFolder()

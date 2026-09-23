@@ -9,7 +9,7 @@
 #include <cstddef>
 #include <optional>
 #include <string>
-#include <string_view>
+#include <utility>
 #include <vector>
 
 #include "base/base64.h"
@@ -23,57 +23,20 @@
 namespace brave_wallet {
 
 namespace {
-base::Value SortValue(const base::Value& value);
 
-base::DictValue SortDictKeys(const base::DictValue& dict) {
-  std::vector<std::string_view> keys;
-  for (const auto [key, value] : dict) {
-    keys.push_back(key);
-  }
-  std::sort(keys.begin(), keys.end());
-
-  base::DictValue sorted;
-  for (const std::string_view key : keys) {
-    const base::Value* value = dict.Find(key);
-    CHECK(value);
-    sorted.Set(key, SortValue(*value));
-  }
-  return sorted;
-}
-
-base::Value SortValue(const base::Value& value) {
-  if (value.is_dict()) {
-    return base::Value(SortDictKeys(value.GetDict()));
-  }
-  if (value.is_list()) {
-    base::ListValue sorted;
-    for (const auto& item : value.GetList()) {
-      sorted.Append(SortValue(item));
-    }
-    return base::Value(std::move(sorted));
-  }
-  return value.Clone();
-}
-
-// Returns the manifest JSON with source.shasum removed and keys sorted
-// deterministically, matching MetaMask's fast-json-stable-stringify output.
+// MetaMask's getSnapChecksum() hashes the manifest with source.shasum removed,
+// serialized by fast-json-stable-stringify, which sorts object keys. No
+// explicit sort is needed here: base::DictValue stores entries in a flat_map
+// ordered by std::less<std::string> and base::WriteJson emits them in that
+// order. (The two orders diverge only for keys outside the BMP, where
+// std::less compares UTF-8 bytes while JS '<' compares UTF-16 code units --
+// snap manifest keys never are.)
 std::optional<std::string> GetChecksummableManifestJson(
-    const std::string& manifest_json) {
-  auto parsed = base::JSONReader::Read(manifest_json, base::JSON_PARSE_RFC);
-  if (!parsed || !parsed->is_dict()) {
-    return std::nullopt;
-  }
-
-  base::Value sorted = SortValue(*parsed);
-  if (!sorted.is_dict()) {
-    return std::nullopt;
-  }
-
-  if (base::DictValue* source = sorted.GetDict().FindDict("source")) {
+    base::DictValue manifest) {
+  if (base::DictValue* source = manifest.FindDict("source")) {
     source->Remove("shasum");
   }
-
-  return base::WriteJson(sorted);
+  return base::WriteJson(manifest);
 }
 
 }  // namespace
@@ -93,9 +56,37 @@ SnapInstallerChecksumCalculator::ComputeMetaMaskChecksum(
     const std::string& bundle_js,
     const std::string& bundle_file_path,
     const std::string& manifest_json) {
-  // Build the checksummable manifest (source.shasum removed, keys sorted).
+  std::optional<base::DictValue> manifest =
+      base::JSONReader::ReadDict(manifest_json, base::JSON_PARSE_RFC);
+  if (!manifest) {
+    return std::nullopt;
+  }
+
+  // Collect the auxiliary paths before the dict is consumed below.
+  std::string icon_path;
+  std::vector<std::string> other_paths;
+  if (const auto* source = manifest->FindDict("source")) {
+    if (const auto* loc = source->FindDict("location")) {
+      if (const auto* npm = loc->FindDict("npm")) {
+        if (const auto* ip = npm->FindString("iconPath")) {
+          icon_path = *ip;
+        }
+      }
+    }
+    for (const char* key : {"files", "locales"}) {
+      if (const auto* list = source->FindList(key)) {
+        for (const auto& item : *list) {
+          if (item.is_string()) {
+            other_paths.push_back(item.GetString());
+          }
+        }
+      }
+    }
+  }
+
+  // Build the checksummable manifest (source.shasum removed).
   std::optional<std::string> checksummable_manifest =
-      GetChecksummableManifestJson(manifest_json);
+      GetChecksummableManifestJson(std::move(*manifest));
   if (!checksummable_manifest) {
     return std::nullopt;
   }
@@ -104,32 +95,6 @@ SnapInstallerChecksumCalculator::ComputeMetaMaskChecksum(
   std::vector<std::pair<std::string, std::string>> files;
   files.emplace_back(bundle_file_path, bundle_js);
   files.emplace_back("snap.manifest.json", *checksummable_manifest);
-
-  std::string icon_path;
-  std::vector<std::string> other_paths;
-  {
-    auto parsed = base::JSONReader::Read(manifest_json, base::JSON_PARSE_RFC);
-    if (parsed && parsed->is_dict()) {
-      if (const auto* source = parsed->GetDict().FindDict("source")) {
-        if (const auto* loc = source->FindDict("location")) {
-          if (const auto* npm = loc->FindDict("npm")) {
-            if (const auto* ip = npm->FindString("iconPath")) {
-              icon_path = *ip;
-            }
-          }
-        }
-        for (const char* key : {"files", "locales"}) {
-          if (const auto* list = source->FindList(key)) {
-            for (const auto& item : *list) {
-              if (item.is_string()) {
-                other_paths.push_back(item.GetString());
-              }
-            }
-          }
-        }
-      }
-    }
-  }
 
   if (!icon_path.empty()) {
     auto icon_data = ExtractFileFromTar(decompressed_tar, icon_path);
@@ -147,7 +112,8 @@ SnapInstallerChecksumCalculator::ComputeMetaMaskChecksum(
     files.emplace_back(path, *file);
   }
 
-  // Sort by path (UTF-16 code unit order; ASCII lexicographic is equivalent).
+  // Sort by path. Bytewise order matches JS UTF-16 code-unit order for ASCII
+  // paths, which is what MetaMask sorts on.
   std::sort(files.begin(), files.end(),
             [](const auto& a, const auto& b) { return a.first < b.first; });
 
