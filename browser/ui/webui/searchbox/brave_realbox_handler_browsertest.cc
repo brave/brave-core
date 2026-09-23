@@ -12,6 +12,8 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_search/common/features.h"
+#include "brave/components/brave_search/common/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser.h"
@@ -24,6 +26,7 @@
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_match_type.h"
 #include "components/omnibox/browser/omnibox_client.h"
+#include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
@@ -107,6 +110,12 @@ IN_PROC_BROWSER_TEST_P(BraveRealboxHandlerSourceTest,
   EXPECT_EQ(GURL("about:blank"), contents()->GetVisibleURL());
   EXPECT_TRUE(VerifyTemplateURLServiceLoad());
 
+  // The `newtab_v1b` source is only used for users which installed while the
+  // feature was enabled.
+  g_browser_process->local_state()->SetBoolean(
+      brave_search::prefs::kNewTabV1SourceEnabledAtFirstRun,
+      GetParam().source == "newtab_v1b");
+
   OnAutocompleteAccept(
       GURL("https://search.brave.com/search?q=hello+world&source=desktop"),
       u":br");
@@ -120,11 +129,11 @@ INSTANTIATE_TEST_SUITE_P(
     BraveRealboxHandlerSourceTest,
     testing::Values(
         NewTabSourceTestParams{"newtab", std::nullopt},
-        NewTabSourceTestParams{"newtab_v1",
+        NewTabSourceTestParams{"newtab_v1b",
                                brave_search::features::kSearchNewTabV1Source}
 #if BUILDFLAG(ENABLE_AI_CHAT)
         ,
-        NewTabSourceTestParams{"newtab_v2",
+        NewTabSourceTestParams{"newtab_v2b",
                                ai_chat::features::kShowAIChatInputOnNewTabPage}
 #endif
         ));

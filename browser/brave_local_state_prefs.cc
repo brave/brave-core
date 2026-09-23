@@ -22,6 +22,7 @@
 #include "brave/components/brave_origin/brave_origin_prefs.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_search/browser/backup_results_metrics.h"
+#include "brave/components/brave_search/common/pref_names.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
@@ -239,6 +240,8 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 
   brave_search_conversion::p3a::RegisterLocalStatePrefs(registry);
   SearchEngineTrackerFactory::RegisterLocalStatePrefs(registry);
+  registry->RegisterBooleanPref(
+      brave_search::prefs::kNewTabV1SourceEnabledAtFirstRun, false);
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::RegisterLocalStatePrefs(registry);
