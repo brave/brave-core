@@ -247,8 +247,11 @@ void BackUpOSCryptKey(const base::FilePath& user_data_dir,
                      std::move(encrypted_key),
                      local_state->GetString(
                          os_crypt_async::kAppBoundEncryptedKeyPrefName)),
-      // `local_state` is owned by BrowserProcessImpl and outlives every task
-      // posted here; SKIP_ON_SHUTDOWN keeps this from running during teardown.
+      // `local_state` outlives the thread this reply runs on.
+      // BrowserProcessImpl is released in
+      // ChromeBrowserMainParts::PostDestroyThreads(), after the browser threads
+      // are gone, so a reply the UI thread never gets to run is destroyed
+      // rather than invoked — which never touches the pointer.
       base::BindOnce(&OnBackupFinished, base::Unretained(local_state)));
 }
 
