@@ -6,11 +6,26 @@
 #include "brave/browser/ui/webui/history/brave_history_embeddings_page_handler.h"
 
 #include "base/functional/bind.h"
-#include "brave/browser/history_embeddings/brave_history_embeddings_status.h"
 #include "brave/components/local_ai/core/pref_names.h"
+#include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
+
+// static
+BraveHistoryEmbeddingsPageHandler::State
+BraveHistoryEmbeddingsPageHandler::GetState(Profile* profile) {
+  State state;
+  state.enabled =
+      history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile);
+  // The factory caches its result, including a null one, for the life of the
+  // profile, so the setting turning on cannot conjure a service. Asking the
+  // factory also covers profiles that never get one, such as ephemeral ones.
+  const bool service_exists =
+      HistoryEmbeddingsServiceFactory::GetForProfile(profile) != nullptr;
+  state.needs_restart = state.enabled != service_exists;
+  return state;
+}
 
 BraveHistoryEmbeddingsPageHandler::BraveHistoryEmbeddingsPageHandler(
     mojo::PendingReceiver<brave_history_embeddings::mojom::PageHandler>
@@ -47,10 +62,6 @@ void BraveHistoryEmbeddingsPageHandler::SetEnabled(bool enabled) {
 }
 
 void BraveHistoryEmbeddingsPageHandler::OnPrefChanged() {
-  // Same helper the WebUI data source reads `enableHistoryEmbeddings` from, so
-  // the pushed value matches what the rest of the page sees.
-  page_->OnEnabledChanged(
-      history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile_),
-      history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(profile_)
-          ->NeedsRestart());
+  State state = GetState(profile_);
+  page_->OnEnabledChanged(state.enabled, state.needs_restart);
 }
