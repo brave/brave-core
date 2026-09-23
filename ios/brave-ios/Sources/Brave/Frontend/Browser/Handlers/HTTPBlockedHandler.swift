@@ -32,6 +32,9 @@ public class HTTPBlockedHandler: InternalSchemeResponse {
       return nil
     }
 
+    let originalHost =
+      (originalURL.host ?? originalURL.domainURL.absoluteDisplayString).htmlEntityEncodedString
+
     html =
       html
       .replacingOccurrences(
@@ -42,7 +45,7 @@ public class HTTPBlockedHandler: InternalSchemeResponse {
         of: "%blocked_title%",
         with: String.localizedStringWithFormat(
           Strings.Shields.theConnectionIsNotSecure,
-          "<tt>\(originalURL.host ?? originalURL.domainURL.absoluteDisplayString)</tt>"
+          "<tt>\(originalHost)</tt>"
         )
       )
       .replacingOccurrences(

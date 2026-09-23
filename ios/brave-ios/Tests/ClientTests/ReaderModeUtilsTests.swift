@@ -38,33 +38,46 @@ final class ReaderModeUtilsTests: XCTestCase {
 
   // MARK: - %READER-ORIGINAL-PAGE-META-TAGS%
 
-  /// Each CSP meta tag value is substituted into a `content="..."` attribute, so an attacker
-  /// controlled value must be HTML entity encoded to avoid breaking out into the <head>
-  func testCSPMetaTagInjectionIsEntityEncoded() async throws {
+  /// Only `img-src` is adopted from CSP meta tags. Other directives must not be copied into the
+  /// reader document, and values must be HTML entity encoded in the `content` attribute.
+  func testCSPMetaTagDirectivesOtherThanImgSrcAreDropped() async throws {
     let result = try makeReadabilityResult(
-      cspMetaTags: ["default-src 'self'\"><script>alert(1)</script>"]
+      cspMetaTags: [
+        "style-src 'none'; img-src 'none'; report-uri https://example.com/leak"
+      ]
     )
     let html = try await generateReaderContent(result)
     XCTAssertTrue(
       html.contains(
         "<meta http-equiv=\"Content-Security-Policy\" "
-          + "content=\"default-src &#39;self&#39;&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;\">"
+          + "content=\"img-src &#39;none&#39;\">"
       )
     )
+    XCTAssertFalse(html.contains("report-uri"))
+    XCTAssertFalse(html.contains("style-src"))
     XCTAssertEqual(countOccurrences(of: "</script>", in: html), 1)
   }
 
-  func testValidCSPMetaTags() async throws {
+  func testCSPMetaTagWithoutImgSrcIsOmitted() async throws {
     let result = try makeReadabilityResult(
       cspMetaTags: ["default-src 'none'; script-src 'none'"]
     )
     let html = try await generateReaderContent(result)
+    XCTAssertFalse(html.contains("http-equiv=\"Content-Security-Policy\""))
+  }
+
+  func testCSPMetaTagImgSrcValueIsEntityEncoded() async throws {
+    let result = try makeReadabilityResult(
+      cspMetaTags: ["img-src 'self'\"><script>alert(1)</script>"]
+    )
+    let html = try await generateReaderContent(result)
     XCTAssertTrue(
       html.contains(
         "<meta http-equiv=\"Content-Security-Policy\" "
-          + "content=\"default-src &#39;none&#39;; script-src &#39;none&#39;\">"
+          + "content=\"img-src &#39;self&#39;&quot;&gt;&lt;script&gt;alert(1)&lt;/script&gt;\">"
       )
     )
+    XCTAssertEqual(countOccurrences(of: "</script>", in: html), 1)
   }
 
   // MARK: - %READER-PAGE-LANGUAGE%
