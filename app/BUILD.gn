@@ -14,6 +14,7 @@ import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//brave/resources/brave_grit.gni")
 import("//build/config/features.gni")
 import("//build/config/locales.gni")
+import("//extensions/buildflags/buildflags.gni")
 import("//pdf/features.gni")
 
 action("generate_command_metadata") {
@@ -195,6 +196,7 @@ source_set("unit_tests") {
     "//components/sync/base:features",
     "//components/user_education/common",
     "//components/webapps/browser",
+    "//extensions/buildflags",
     "//gpu/config",
     "//pdf:buildflags",
     "//services/device/public/cpp:device_features",
@@ -221,12 +223,14 @@ source_set("unit_tests") {
       "//chrome/browser/ui/views/desktop_capture",
       "//chrome/common:chrome_features",
       "//components/translate/core/common",
-      "//extensions/common",
       "//ui/accessibility:ax_base",
     ]
   }
   if (is_win) {
     deps += [ "//chrome/browser/startup" ]
+  }
+  if (enable_extensions_core) {
+    deps += [ "//extensions/common" ]
   }
   if (enable_brave_vpn_v2_apps) {
     deps += [ "//brave/components/brave_vpn/app/v2/shared" ]
