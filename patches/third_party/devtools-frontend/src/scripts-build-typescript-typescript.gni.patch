@@ -1,45 +1,58 @@
 diff --git a/scripts/build/typescript/typescript.gni b/scripts/build/typescript/typescript.gni
-index bc030591cfc829235d07a62e95f898f334e12df7..02b76b053673249c9cf280d34691cd543bbb21a3 100644
+index bc030591cfc829235d07a62e95f898f334e12df7..7016d539fcee83a96dde0491d8580a92f073a5d9 100644
 --- a/scripts/build/typescript/typescript.gni
 +++ b/scripts/build/typescript/typescript.gni
-@@ -94,7 +94,7 @@ import("./typescript_vars.gni")
- #    causing Ninja to prune recompilation of :module_b_checked.
- 
- # Defines a TypeScript library target using tsc v7+.
--template("ts_library") {
-+template("ts_library_chromium") {
-   assert(defined(invoker.sources),
-          "You must specify 'sources' for $target_name")
- 
-@@ -498,6 +498,31 @@ template("ts_library") {
+@@ -120,6 +120,26 @@ template("ts_library") {
+     _all_sources += invoker.additional_type_definitions
    }
- }
  
-+template("ts_library") {
-+  assert(defined(invoker.sources),
-+         "You must specify 'sources' for $target_name")
-+
-+  ts_library_chromium(target_name) {
-+    forward_variables_from(invoker, "*")
-+
-+    # Brave adds new DevTools files from //brave/..., which sit outside this
-+    # target's rootDir. run_with_restat.py hardlinks them next to the upstream
-+    # sources before tsc runs, so everything tsc is told about them -- the
-+    # tsconfig `files` list, the -dts source list and the computed output paths
-+    # -- has to name that in-tree copy instead. `_all_sources` keeps the
-+    # original path, so the actions still list the real file as an input. See
-+    # //brave/docs/devtools_frontend_patching.md.
-+    sources = []
-+    foreach(src, invoker.sources) {
-+      if (label_matches(src, [ "//brave/*" ])) {
-+        sources += [ get_path_info(src, "file") ]
-+      } else {
-+        sources += [ src ]
-+      }
++  # Brave adds new DevTools files from //brave/..., which sit outside this
++  # target's rootDir. run_with_restat.py hardlinks them next to the upstream
++  # sources before tsc runs, so everything tsc is told about them -- the
++  # tsconfig `files` list, the -dts source list and the computed output paths
++  # -- has to name that in-tree copy instead. `_all_sources` keeps the original
++  # path, so the actions still list the real file as an input.
++  # See //brave/docs/devtools_frontend_patching.md.
++  _rooted_sources = []
++  foreach(src, invoker.sources) {
++    if (label_matches(src, [ "//brave/*" ])) {
++      _rooted_sources += [ get_path_info(src, "file") ]
++    } else {
++      _rooted_sources += [ src ]
 +    }
 +  }
-+}
++  _all_rooted_sources = _rooted_sources + typescript_global_definition_files
++  if (defined(invoker.additional_type_definitions)) {
++    _all_rooted_sources += invoker.additional_type_definitions
++  }
 +
- set_defaults("ts_library") {
-   # Build output should be private and directories should export all relevant
-   # components in a group
+   _ts_references = []
+   _ts_deps = []
+   _sources_deps = []
+@@ -221,7 +241,7 @@ template("ts_library") {
+                                       "*.d.mts",
+                                       "*.d.cts",
+                                     ])
+-  _non_dts_sources = filter_exclude(invoker.sources,
++  _non_dts_sources = filter_exclude(_rooted_sources,
+                                     [
+                                       "*.d.ts",
+                                       "*.d.mts",
+@@ -253,7 +273,7 @@ template("ts_library") {
+   if (!_no_js_emit) {
+     _js_outputs = []
+   }
+-  foreach(src, invoker.sources) {
++  foreach(src, _rooted_sources) {
+     _ext = get_path_info(src, "extension")
+     _rel_name = rebase_path(src, _rootdir)
+     _rel_dir = get_path_info(_rel_name, "dir")
+@@ -305,7 +325,7 @@ template("ts_library") {
+           rebase_path(target_gen_dir, root_build_dir),
+           "--rootDir",
+           rebase_path(_rootdir, root_build_dir),
+-        ] + rebase_path(_all_sources, root_build_dir)
++        ] + rebase_path(_all_rooted_sources, root_build_dir)
+ 
+     args = [ "@{{response_file_name}}" ]
+ 
