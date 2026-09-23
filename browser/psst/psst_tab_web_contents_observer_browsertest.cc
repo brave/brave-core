@@ -188,7 +188,7 @@ const PSST_INITIAL_EXECUTION_FLAG =
 const PSST_CHECK_SETTINGS_LOADED =
   window.__bravePsstParams.psst_settings_status ?? null;
 
-const PSST_SESSIONSTORAGE_KEY = 'psst';
+const PSST_STORAGE_KEY = 'psst';
 
 // State of operations
 const psstState = {
@@ -290,7 +290,7 @@ const createInitData = () => {
 const savePsstData = (psst) => {
   // Save the psst object to local storage.
   globalThis.parent.sessionStorage.setItem(
-    PSST_SESSIONSTORAGE_KEY,
+    PSST_STORAGE_KEY,
     JSON.stringify(psst)
   );
 };
@@ -316,7 +316,7 @@ const moveCurrentTask = (psstObj, errorMessage) => {
 
 (async () => {
   const psstObj = JSON.parse(
-    globalThis.parent.sessionStorage.getItem(PSST_SESSIONSTORAGE_KEY)
+    globalThis.parent.sessionStorage.getItem(PSST_STORAGE_KEY)
   );
   if (!psstObj || PSST_INITIAL_EXECUTION_FLAG) {
     const [psstObj, nextUrl] = createInitData()
