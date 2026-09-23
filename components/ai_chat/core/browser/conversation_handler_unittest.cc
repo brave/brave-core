@@ -7058,16 +7058,14 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
           /*is_content_agent_allowed=*/false,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/true,
-          {mojom::ConversationCapability::CHAT,
-           mojom::ConversationCapability::MATH_ML},
+          {mojom::ConversationCapability::MATH_ML},
       },
       {
           "ChatWithDeepResearch",
           /*is_content_agent_allowed=*/false,
           /*deep_research_enabled=*/true,
           /*math_rendering_enabled=*/true,
-          {mojom::ConversationCapability::CHAT,
-           mojom::ConversationCapability::DEEP_RESEARCH,
+          {mojom::ConversationCapability::DEEP_RESEARCH,
            mojom::ConversationCapability::MATH_ML},
       },
       {
@@ -7075,8 +7073,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
           /*is_content_agent_allowed=*/true,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/true,
-          {mojom::ConversationCapability::CHAT,
-           mojom::ConversationCapability::CONTENT_AGENT,
+          {mojom::ConversationCapability::CONTENT_AGENT,
            mojom::ConversationCapability::MATH_ML},
       },
       {
@@ -7084,8 +7081,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
           /*is_content_agent_allowed=*/true,
           /*deep_research_enabled=*/true,
           /*math_rendering_enabled=*/true,
-          {mojom::ConversationCapability::CHAT,
-           mojom::ConversationCapability::CONTENT_AGENT,
+          {mojom::ConversationCapability::CONTENT_AGENT,
            mojom::ConversationCapability::DEEP_RESEARCH,
            mojom::ConversationCapability::MATH_ML},
       },
@@ -7096,7 +7092,7 @@ TEST_F(ConversationHandlerUnitTest, ConversationCapabilities) {
           /*is_content_agent_allowed=*/false,
           /*deep_research_enabled=*/false,
           /*math_rendering_enabled=*/false,
-          {mojom::ConversationCapability::CHAT},
+          {},
       },
   };
 

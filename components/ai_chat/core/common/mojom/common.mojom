@@ -59,12 +59,24 @@ enum CharacterType {
   ASSISTANT
 };
 
+// Toggleable capabilities for a conversation (such as CONTENT_AGENT), and
+// static capabilities of the client (such as the ability to render MATH_ML).
+// Informs:
+// - which tools are attached to a conversation.
+// - system prompt variations for a conversation.
+// Models may state which capabilities they support, but entries should only
+// exist in this list for communication from client to server about a particular
+// conversation or client. Otherwise we risk attaching items that aren't
+// explicitly wanted for a particular conversation.
 enum ConversationCapability {
-  CHAT,
+  // A conversation should include content agent tools. Only models approved for
+  // content control should announce their support for CONTENT_AGENT, which
+  // should be approved by security team.
   CONTENT_AGENT,
+  // A conversation should include the deep research tools and encourage its
+  // use in the system prompt.
   DEEP_RESEARCH,
-  FILES,
-  SUMMARY,
+
   // Client can render MathML. A hint to the server, not a model capability -
   // see kServerHintCapabilities in browser/constants.h.
   MATH_ML
@@ -101,10 +113,10 @@ enum ActionType {
   SUGGESTION,
 };
 
-// When adding or modifying category names, associated UI strings must also
-// be provided via ai_chat_ui_strings.grdp and ai_chat/core/constants.cc
 enum ModelCategory {
+  // Model can be selected for chat conversations
   CHAT,
+  // Model can be selected for isolated summary requests
   SUMMARY,
 };
 
@@ -654,7 +666,7 @@ struct Thread {
 
   uint64 total_tokens;
   uint64 trimmed_tokens;
-  
+
   uint32 entry_count;
 };
 
@@ -689,7 +701,7 @@ struct LeoModelOptions {
   string display_maker;
   // description, for users
   string description = "";
-  // user-facing category
+  // Internally determine when to use the model
   ModelCategory category;
   // Which access level grants permission to use the model
   ModelAccess access;
@@ -733,12 +745,8 @@ struct Model {
   bool audio_support = false;
   // whether accept video as input
   bool video_support = false;
-  // Conversation capabilities this model supports. Used to filter which models
-  // are available for different conversation types (e.g. basic chat, content
-  // agent, deep research).
-  // All models that can participate in regular conversations should include
-  // CHAT. Models approved for agentic contexts (content agent, agent profile)
-  // should include CONTENT_AGENT, which should be approved by security team.
+  // Informs which variations of system prompts and tools a model supports that
+  // a conversation can optionally utilize.
   array<ConversationCapability> supported_capabilities;
   // Is a suggested model
   bool is_suggested_model;
@@ -776,6 +784,7 @@ struct ConversationEntriesState {
   uint64 total_tokens;
   // Indicates the number of tokens that were trimmed from the conversation
   uint64 trimmed_tokens;
+  // Which options the conversation has currently opted-in to
   array<ConversationCapability> conversation_capabilities;
   // Suggested questions for the conversation
   array<string> suggested_questions;

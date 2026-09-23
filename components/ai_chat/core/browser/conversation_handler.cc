@@ -183,7 +183,6 @@ void ConversationHandler::BuildCapabilitiesSet() {
   // we should have some client function that changes the conversation
   // capability. And when this is not global to a Profile, we should not have
   // the service make the determination.
-  conversation_capabilities_.insert(mojom::ConversationCapability::CHAT);
   if (ai_chat_service_->GetIsContentAgentAllowed()) {
     conversation_capabilities_.insert(
         mojom::ConversationCapability::CONTENT_AGENT);

@@ -231,11 +231,9 @@ TEST_F(RemoteModelsFetcherTest, SuccessfulFetch) {
   EXPECT_EQ(mojom::ModelAccess::BASIC, opts1->access);
   EXPECT_EQ(100000u, opts1->max_associated_content_length);
   EXPECT_EQ(200000u, opts1->long_conversation_warning_character_limit);
-  ASSERT_EQ(2u, fetched_models[0]->supported_capabilities.size());
-  EXPECT_EQ(mojom::ConversationCapability::CHAT,
-            fetched_models[0]->supported_capabilities[0]);
-  EXPECT_EQ(mojom::ConversationCapability::FILES,
-            fetched_models[0]->supported_capabilities[1]);
+  // "chat" only sets the category and "files" describes model functionality,
+  // so neither is a conversation capability.
+  EXPECT_TRUE(fetched_models[0]->supported_capabilities.empty());
 
   EXPECT_EQ("test-model-2", fetched_models[1]->key);
   EXPECT_EQ("Test Model 2", fetched_models[1]->display_name);
@@ -250,13 +248,9 @@ TEST_F(RemoteModelsFetcherTest, SuccessfulFetch) {
   EXPECT_EQ(mojom::ModelAccess::PREMIUM, opts2->access);
   EXPECT_EQ(150000u, opts2->max_associated_content_length);
   EXPECT_EQ(300000u, opts2->long_conversation_warning_character_limit);
-  ASSERT_EQ(3u, fetched_models[1]->supported_capabilities.size());
-  EXPECT_EQ(mojom::ConversationCapability::CHAT,
-            fetched_models[1]->supported_capabilities[0]);
-  EXPECT_EQ(mojom::ConversationCapability::FILES,
-            fetched_models[1]->supported_capabilities[1]);
+  ASSERT_EQ(1u, fetched_models[1]->supported_capabilities.size());
   EXPECT_EQ(mojom::ConversationCapability::CONTENT_AGENT,
-            fetched_models[1]->supported_capabilities[2]);
+            fetched_models[1]->supported_capabilities[0]);
 
   EXPECT_EQ("test-model-3", fetched_models[2]->key);
   EXPECT_EQ("Test Model 3", fetched_models[2]->display_name);
@@ -264,11 +258,7 @@ TEST_F(RemoteModelsFetcherTest, SuccessfulFetch) {
   auto& opts3 = fetched_models[2]->options->get_leo_model_options();
   EXPECT_EQ(mojom::ModelCategory::SUMMARY, opts3->category);
   EXPECT_EQ(mojom::ModelAccess::BASIC, opts3->access);
-  ASSERT_EQ(2u, fetched_models[2]->supported_capabilities.size());
-  EXPECT_EQ(mojom::ConversationCapability::SUMMARY,
-            fetched_models[2]->supported_capabilities[0]);
-  EXPECT_EQ(mojom::ConversationCapability::FILES,
-            fetched_models[2]->supported_capabilities[1]);
+  EXPECT_TRUE(fetched_models[2]->supported_capabilities.empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, HTTPError500) {
@@ -461,7 +451,7 @@ TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
         "display_name": "Test Model",
         "is_suggested_model": false,
         "is_near_model": false,
-        "capabilities": ["chat", "unknown_capability"],
+        "capabilities": ["chat", "unknown_capability", "content_agent"],
         "options": {
           "name": "test-model-api",
           "display_maker": "Test Provider",
@@ -480,7 +470,7 @@ TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
 
   ASSERT_EQ(1u, fetched_models.size());
   ASSERT_EQ(1u, fetched_models[0]->supported_capabilities.size());
-  EXPECT_EQ(mojom::ConversationCapability::CHAT,
+  EXPECT_EQ(mojom::ConversationCapability::CONTENT_AGENT,
             fetched_models[0]->supported_capabilities[0]);
 }
 
