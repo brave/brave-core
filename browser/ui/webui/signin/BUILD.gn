@@ -11,14 +11,22 @@ assert(use_blink && !is_android)
 source_set("signin") {
   visibility = [ "//brave/browser:core" ]
 
-  sources = [ "profile_customization_ui.cc" ]
+  sources = [
+    "profile_customization_file_chooser.cc",
+    "profile_customization_ui.cc",
+  ]
 
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
     "//brave/ui/webui/custom_profile_image/buildflags",
+    "//chrome/browser:file_select_helper",
+    "//chrome/browser/ui/webui/signin:signin_utils",
+    "//chrome/common",
+    "//components/signin/public/base:signin_buildflags",
     "//content/public/browser",
     "//ui/base",
+    "//url",
   ]
 
   if (enable_brave_custom_profile_image_webui) {
