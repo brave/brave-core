@@ -96,6 +96,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kPlaylistOfflineCacheEnabled;
 @property(class, nonatomic, readonly) Feature* kPlaylistCacheFirstEnabled;
 @property(class, nonatomic, readonly) Feature* kTopsitesEnabled;
+@property(class, nonatomic, readonly) Feature* kBrowserToolbarRefactorEnabled;
 @end
 
 NS_ASSUME_NONNULL_END
