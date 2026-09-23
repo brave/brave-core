@@ -136,12 +136,12 @@ void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CloseDialog() {
     return;
   }
 
-  CancelInFlightFlow();
+  CancelLogicalFlow();
   web_dialog_delegate_->OnDialogCloseFromWebUI();
   web_dialog_delegate_->GetWebDialogDelegate()->OnDialogClosed({});
 }
 
-void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CancelInFlightFlow() {
+void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CancelLogicalFlow() {
   auto* wc = initiator_web_contents_.get();
   if (!wc) {
     return;
@@ -163,7 +163,7 @@ void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CancelInFlightFlow() {
     return;
   }
 
-  observer->CancelInFlightFlow();
+  observer->CancelLogicalFlow();
 }
 
 PsstUiDesktopPresenter::PsstUiDesktopPresenter(

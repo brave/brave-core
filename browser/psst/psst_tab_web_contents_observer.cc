@@ -10,16 +10,15 @@
 
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
-#include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/browser/psst_rule.h"
 #include "brave/components/psst/core/browser/psst_rule_registry.h"
 #include "brave/components/psst/core/common/features.h"
-#include "components/prefs/pref_service.h"
 #include "components/variations/service/variations_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
@@ -203,10 +202,9 @@ PsstTabWebContentsObserver::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
-void PsstTabWebContentsObserver::CancelInFlightFlow() {
-  script_injector_remote_.reset();
-  page_weak_factory_.InvalidateWeakPtrs();
-  should_process_current_page_ = false;
+void PsstTabWebContentsObserver::CancelLogicalFlow() {
+  logical_flow_cancelled_ = true;
+  CancelInFlightFlow();
 }
 
 void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
@@ -282,6 +280,18 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   auto psst_settings = ui_delegate_->GetPsstWebsiteSettings(
       origin, user_script_result_parsed->user_id);
   if (psst_settings && psst_settings->consent_status == ConsentStatus::kBlock) {
+    return;
+  }
+
+  if (user_script_result_parsed->initial_execution.has_value() &&
+      user_script_result_parsed->initial_execution.value()) {
+    DVLOG(1) << __func__ << " Reset the cancellation flag for the logical flow";
+    // Reset the logical flow cancellation flag on initial execution
+    logical_flow_cancelled_ = false;
+  } else if (logical_flow_cancelled_) {
+    DVLOG(1) << __func__
+             << " Stop the execution of the logical flow, as it was cancelled";
+    // Stop the logical flow
     return;
   }
 
@@ -394,6 +404,12 @@ void PsstTabWebContentsObserver::SetInjectAsyncScriptCallback(
     InjectScriptAsyncCallback inject_async_script_callback) {
   CHECK(!inject_async_script_callback.is_null());
   inject_async_script_callback_ = std::move(inject_async_script_callback);
+}
+
+void PsstTabWebContentsObserver::CancelInFlightFlow() {
+  script_injector_remote_.reset();
+  page_weak_factory_.InvalidateWeakPtrs();
+  should_process_current_page_ = false;
 }
 
 void PsstTabWebContentsObserver::OnPsstEnableChange(bool new_value) {

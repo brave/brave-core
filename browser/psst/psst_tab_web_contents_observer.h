@@ -89,7 +89,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
 
   PsstUiDelegate* GetPsstUiDelegate() const;
   base::WeakPtr<PsstTabWebContentsObserver> AsWeakPtr();
-  void CancelInFlightFlow();
+  void CancelLogicalFlow();
 
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
@@ -123,6 +123,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
   void SetInjectScriptCallback(InjectScriptCallback inject_script_callback);
   void SetInjectAsyncScriptCallback(
       InjectScriptAsyncCallback inject_async_script_callback);
+  void CancelInFlightFlow();
 
   // PsstSettingsService::Observer
   void OnPsstEnableChange(bool new_value) override;
@@ -136,6 +137,8 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
   InjectScriptAsyncCallback inject_async_script_callback_;
   std::unique_ptr<PsstUiDelegate> ui_delegate_;
   base::OneShotTimer timeout_timer_;
+
+  bool logical_flow_cancelled_ = false;
 
   // Whether the currently committed primary page is eligible for PSST
   // processing. Recomputed on every cross-document primary main frame commit.
