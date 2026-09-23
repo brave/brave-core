@@ -175,6 +175,15 @@ public class BraveUnifiedPanelHandler {
     private @Nullable View mPopupView;
     private @Nullable View mAnchorView;
     private @Nullable View mHardwareButtonMenuAnchor;
+    private @Nullable View mDecorView;
+    private final View.OnLayoutChangeListener mDecorViewLayoutChangeListener =
+            (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+                boolean widthChanged = (right - left) != (oldRight - oldLeft);
+                boolean heightChanged = (bottom - top) != (oldBottom - oldTop);
+                if (widthChanged || heightChanged) {
+                    hide(); // hide Shields panel if screen rotated to avoid bad positioning.
+                }
+            };
     private @Nullable GURL mUrl;
     private View mMainPanelContainer;
     private View mHttpsPanelContainer;
@@ -447,14 +456,20 @@ public class BraveUnifiedPanelHandler {
 
         try {
             int[] anchorLocation = new int[2];
-            mAnchorView.getLocationOnScreen(anchorLocation);
+            mAnchorView.getLocationInWindow(anchorLocation);
+            int decorViewHeight = ((Activity) mContext).getWindow().getDecorView().getHeight();
+            int overlapPx = (int) (PANEL_OVERLAP_OFFSET_DP * density);
+
             if (BottomToolbarConfiguration.isToolbarBottomAnchored()) {
                 // Mirror the top-toolbar rule: end the panel 7 dp above the toolbar top so
                 // its bottom edge lands in the browser-chrome space adjacent to the URL bar,
                 // which a web page cannot render into.
-                int screenHeight = mContext.getResources().getDisplayMetrics().heightPixels;
                 int anchorTop = anchorLocation[1];
-                int yOffset = screenHeight - anchorTop - (int) (PANEL_OVERLAP_OFFSET_DP * density);
+                int yOffset = decorViewHeight - anchorTop - overlapPx;
+                int panelBottom = anchorTop + overlapPx;
+
+                ((MaxHeightFrameLayout) mPopupView)
+                        .setMaxHeightPx(panelBottom - marginPx);
 
                 popupWindow.showAtLocation(
                         mAnchorView, Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, yOffset);
@@ -464,17 +479,21 @@ public class BraveUnifiedPanelHandler {
                 // the URL bar is a spoofing deterrent: a web page cannot render into that
                 // gap. On phones the panel width is screenWidth - 2 * marginPx; on tablets
                 // it is capped at POPUP_MAX_WIDTH_DP, right-aligned under the Shields icon.
-                int yOffset =
-                        anchorLocation[1]
-                                + mAnchorView.getHeight()
-                                - (int) (PANEL_OVERLAP_OFFSET_DP * density);
+                int panelTop = anchorLocation[1] + mAnchorView.getHeight() - overlapPx;
+
+                ((MaxHeightFrameLayout) mPopupView)
+                        .setMaxHeightPx(decorViewHeight - panelTop - marginPx);
+
                 popupWindow.showAtLocation(
-                        mAnchorView, Gravity.TOP | Gravity.END, marginPx, yOffset);
+                        mAnchorView, Gravity.TOP | Gravity.END, marginPx, panelTop);
             }
         } catch (Exception e) {
             Log.e(TAG, "Failed to show popup window", e);
             return null;
         }
+
+        mDecorView = ((Activity) mContext).getWindow().getDecorView();
+        mDecorView.addOnLayoutChangeListener(mDecorViewLayoutChangeListener);
 
         return popupWindow;
     }
@@ -1171,6 +1190,10 @@ public class BraveUnifiedPanelHandler {
     }
 
     public void hide() {
+        if (mDecorView != null) {
+            mDecorView.removeOnLayoutChangeListener(mDecorViewLayoutChangeListener);
+            mDecorView = null;
+        }
         if (mPopupWindow != null && mPopupWindow.isShowing()) {
             mPopupWindow.dismiss();
         }
