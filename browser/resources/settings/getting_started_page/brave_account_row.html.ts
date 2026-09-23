@@ -5,8 +5,8 @@
 
 import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 
-import './brave_account_logged_in_row.js'
-import './brave_account_logged_out_row.js'
+import '../brave_account_logged_in_row.js'
+import '../brave_account_logged_out_row.js'
 import {
   AccountStateFieldTags,
   whichAccountState,
