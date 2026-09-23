@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_ads/core/internal/ads_client/test/ads_client_mock.h"
+#include "brave/components/brave_ads/core/public/test/ads_client_mock.h"
 
-namespace brave_ads {
+namespace brave_ads::test {
 
 AdsClientMock::AdsClientMock() = default;
 
 AdsClientMock::~AdsClientMock() = default;
 
-}  // namespace brave_ads
+}  // namespace brave_ads::test
