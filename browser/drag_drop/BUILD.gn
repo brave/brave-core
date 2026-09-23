@@ -9,12 +9,17 @@ source_set("drag_drop") {
     "brave_drag_drop_image_metadata_stripper.h",
   ]
 
-  public_deps = [ "//content/public/browser" ]
+  public_deps = [
+    "//base",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//content/public/browser",
+    "//ui/base/unowned_user_data",
+  ]
 
   deps = [
-    "//base",
     "//brave/components/image_metadata_stripper",
     "//brave/components/image_metadata_stripper/common",
+    "//components/tabs:public",
     "//content/public/common",
     "//ui/base/clipboard:file_info",
   ]
@@ -30,9 +35,13 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/image_metadata_stripper/common",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//components/tabs:impl",
+    "//components/tabs:test_support",
     "//content/public/browser",
     "//content/public/common",
     "//content/test:test_support",
+    "//testing/gmock",
     "//testing/gtest",
     "//ui/base/clipboard:file_info",
   ]

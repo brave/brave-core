@@ -5,12 +5,14 @@
 
 #include "brave/browser/drag_drop/brave_drag_drop_image_metadata_stripper.h"
 
+#include <memory>
 #include <optional>
 #include <string>
 #include <string_view>
 #include <utility>
 
 #include "base/base_paths.h"
+#include "base/callback_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -20,8 +22,11 @@
 #include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
+#include "components/tabs/public/mock_tab_interface.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/common/drop_data.h"
 #include "content/public/test/test_renderer_host.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/clipboard/file_info.h"
 
@@ -43,10 +48,33 @@ class DragDropImageMetadataStripperTestBase
 
     base::ScopedAllowBlockingForTesting allow_blocking;
     ASSERT_TRUE(source_dir_.CreateUniqueTempDir());
+
+    // Production associates a tab with its WebContents and creates this
+    // feature from BraveTabFeatures. The harness contents are not a tab, so
+    // do that here. Copies are deleted when the feature is destroyed, which
+    // is when the tab closes.
+    tabs::TabLookupFromWebContents::CreateForWebContents(web_contents(), &tab_);
+    ON_CALL(tab_, GetContents()).WillByDefault(testing::Return(web_contents()));
+    ON_CALL(tab_, RegisterWillDiscardContents(testing::_))
+        .WillByDefault(
+            [this](tabs::TabInterface::WillDiscardContentsCallback callback) {
+              will_discard_contents_ = std::move(callback);
+              return base::CallbackListSubscription();
+            });
+    if (strip_metadata_) {
+      drop_strip_temp_dirs_ = std::make_unique<DropStripTempDirs>(tab_);
+    }
+  }
+
+  void TearDown() override {
+    drop_strip_temp_dirs_.reset();
+    will_discard_contents_.Reset();
+    content::RenderViewHostTestHarness::TearDown();
   }
 
  protected:
-  explicit DragDropImageMetadataStripperTestBase(bool strip_metadata) {
+  explicit DragDropImageMetadataStripperTestBase(bool strip_metadata)
+      : strip_metadata_(strip_metadata) {
     feature_list_.InitWithFeatureState(
         image_metadata_stripper::features::kStripImageMetadataV1,
         strip_metadata);
@@ -110,6 +138,10 @@ class DragDropImageMetadataStripperTestBase
 
   base::ScopedTempDir source_dir_;
   base::test::ScopedFeatureList feature_list_;
+  const bool strip_metadata_;
+  tabs::MockTabInterface tab_;
+  std::unique_ptr<DropStripTempDirs> drop_strip_temp_dirs_;
+  tabs::TabInterface::WillDiscardContentsCallback will_discard_contents_;
 };
 
 class DragDropImageMetadataStripperTest
@@ -145,7 +177,7 @@ TEST_F(DragDropImageMetadataStripperTest, DropsAStrippedCopyOfTheImage) {
 }
 
 TEST_F(DragDropImageMetadataStripperTest,
-       DeletesStrippedCopiesWhenWebContentsIsDestroyed) {
+       DeletesStrippedCopiesWhenTheTabIsDestroyed) {
   const std::optional<content::DropData> result =
       PerformDropOf(CreateDroppableFbmdImage());
 
@@ -154,7 +186,23 @@ TEST_F(DragDropImageMetadataStripperTest,
   const base::FilePath temp_root = TempRootOf(result->filenames[0].path);
   ASSERT_TRUE(PathExists(temp_root));
 
-  DeleteContents();
+  drop_strip_temp_dirs_.reset();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return !PathExists(temp_root); }));
+}
+
+TEST_F(DragDropImageMetadataStripperTest,
+       DeletesStrippedCopiesWhenContentsAreDiscarded) {
+  const std::optional<content::DropData> result =
+      PerformDropOf(CreateDroppableFbmdImage());
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_EQ(1u, result->filenames.size());
+  const base::FilePath temp_root = TempRootOf(result->filenames[0].path);
+  ASSERT_TRUE(PathExists(temp_root));
+
+  std::unique_ptr<content::WebContents> replacement = CreateTestWebContents();
+  ASSERT_TRUE(will_discard_contents_);
+  will_discard_contents_.Run(&tab_, web_contents(), replacement.get());
   ASSERT_TRUE(base::test::RunUntil([&]() { return !PathExists(temp_root); }));
 }
 

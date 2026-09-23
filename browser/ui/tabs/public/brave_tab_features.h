@@ -24,7 +24,7 @@ class Profile;
 namespace ai_chat {
 class TabDataWebContentsObserver;
 class WebMcpInjector;
-}
+}  // namespace ai_chat
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -65,6 +65,7 @@ class PsstTabWebContentsObserver;
 
 namespace tabs {
 
+class ContentsObservingTabFeature;
 class TabInterface;
 
 class BraveTabFeatures : public TabFeatures {
@@ -127,6 +128,10 @@ class BraveTabFeatures : public TabFeatures {
 #endif
 
  private:
+  // Holds stripped image copies dropped onto this tab. Null when metadata
+  // stripping is disabled.
+  std::unique_ptr<ContentsObservingTabFeature> drop_strip_temp_dirs_;
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;

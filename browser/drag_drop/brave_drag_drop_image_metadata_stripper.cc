@@ -19,10 +19,9 @@
 #include "brave/components/image_metadata_stripper/common/features.h"
 #include "brave/components/image_metadata_stripper/image_metadata_stripper.h"
 #include "brave/components/image_metadata_stripper/image_metadata_stripper_utils.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_observer.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "content/public/common/drop_data.h"
 #include "ui/base/clipboard/file_info.h"
 
@@ -40,12 +39,6 @@ bool HasSupportedImage(const content::DropData& drop_data) {
 }
 
 void DeleteTempRootDirsOnBlockingThread(std::vector<base::FilePath> dirs) {
-  for (const base::FilePath& dir : dirs) {
-    image_metadata_stripper::DeleteStrippedImageCopies(dir);
-  }
-}
-
-void DeleteTempRootDirs(std::vector<base::FilePath> dirs) {
   if (dirs.empty()) {
     return;
   }
@@ -57,41 +50,14 @@ void DeleteTempRootDirs(std::vector<base::FilePath> dirs) {
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
-      base::BindOnce(&DeleteTempRootDirsOnBlockingThread, std::move(dirs)));
+      base::BindOnce(
+          [](std::vector<base::FilePath>&& dirs) {
+            for (const base::FilePath& dir : dirs) {
+              image_metadata_stripper::DeleteStrippedImageCopies(dir);
+            }
+          },
+          std::move(dirs)));
 }
-
-// Owns the temporary directories holding the stripped copies handed to a drop
-// target. The `File` the page receives is backed by the copy on disk, so the
-// copy has to outlive the drop itself; the WebContents going away is the point
-// at which the page can no longer reach it. This is the same lifetime
-// FileSelectHelper gives the copies made for an upload.
-class DropStripTempDirs
-    : public content::WebContentsUserData<DropStripTempDirs> {
- public:
-  ~DropStripTempDirs() override {
-    DeleteTempRootDirs(std::move(temp_root_dirs_));
-    temp_root_dirs_.clear();
-  }
-
-  void Add(base::FilePath temp_root_dir) {
-    temp_root_dirs_.push_back(std::move(temp_root_dir));
-  }
-
- private:
-  friend content::WebContentsUserData<DropStripTempDirs>;
-
-  explicit DropStripTempDirs(content::WebContents* web_contents)
-      : content::WebContentsUserData<DropStripTempDirs>(*web_contents) {}
-
-  std::vector<base::FilePath> temp_root_dirs_;
-
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
-};
-
-// Needed for maintenace purposes by the `DropStripTempDirs` class.
-// This will ensure when the WebContents is destroyed, the ~DropStripTempDirs is
-// called.
-[[__maybe_unused__]] WEB_CONTENTS_USER_DATA_KEY_IMPL(DropStripTempDirs);
 
 struct StripResult {
   content::DropData drop_data;
@@ -126,14 +92,17 @@ void OnStripComplete(base::WeakPtr<content::WebContents> web_contents,
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
   if (!result.temp_root_dir.empty()) {
+    DropStripTempDirs* dirs = nullptr;
     if (web_contents) {
-      DropStripTempDirs::CreateForWebContents(web_contents.get());
-      DropStripTempDirs::FromWebContents(web_contents.get())
-          ->Add(std::move(result.temp_root_dir));
+      dirs = DropStripTempDirs::From(
+          tabs::TabInterface::GetFromContents(web_contents.get()));
+    }
+    if (dirs) {
+      dirs->Add(std::move(result.temp_root_dir));
     } else {
-      // The tab went away while stripping; nothing is left to hand the copies
-      // to, and the view will discard the drop.
-      DeleteTempRootDirs({std::move(result.temp_root_dir)});
+      // The tab went away while stripping, or this contents has no tab
+      // feature to own the copies. Nothing is left to hand them to.
+      DeleteTempRootDirsOnBlockingThread({std::move(result.temp_root_dir)});
     }
   }
 
@@ -162,6 +131,34 @@ void MaybeStripDropData(base::WeakPtr<content::WebContents> web_contents,
 }
 
 }  // namespace
+
+DEFINE_USER_DATA(DropStripTempDirs);
+
+DropStripTempDirs::DropStripTempDirs(tabs::TabInterface& tab)
+    : tabs::ContentsObservingTabFeature(tab),
+      scoped_unowned_user_data_(tab.GetUnownedUserDataHost(), *this) {}
+
+DropStripTempDirs::~DropStripTempDirs() {
+  DeleteTempRootDirsOnBlockingThread(std::move(temp_root_dirs_));
+}
+
+// static
+DropStripTempDirs* DropStripTempDirs::From(tabs::TabInterface* tab) {
+  return tab ? Get(tab->GetUnownedUserDataHost()) : nullptr;
+}
+
+void DropStripTempDirs::Add(base::FilePath temp_root_dir) {
+  temp_root_dirs_.push_back(std::move(temp_root_dir));
+}
+
+void DropStripTempDirs::OnDiscardContents(tabs::TabInterface* tab,
+                                          content::WebContents* old_contents,
+                                          content::WebContents* new_contents) {
+  // The discarded page can no longer reach its copies.
+  DeleteTempRootDirsOnBlockingThread(std::move(temp_root_dirs_));
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+}
 
 DropCompletionCallback MaybeStripImageMetadataForDrop(
     content::WebContents* web_contents,
