@@ -168,6 +168,7 @@ bool AdsInternalsUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
   auto* profile = Profile::FromBrowserContext(browser_context);
   return !profile->IsIncognitoProfile() &&
+         !profile->IsEnterpriseIsolatedModeProfile() &&
          !profile->GetPrefs()->GetBoolean(
              brave_rewards::prefs::kDisabledByPolicy);
 }
