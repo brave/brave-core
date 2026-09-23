@@ -15,8 +15,11 @@
 
 namespace sidebar {
 
-SidebarWebPanelController::SidebarWebPanelController(BrowserView& browser_view)
-    : browser_view_(browser_view) {
+SidebarWebPanelController::SidebarWebPanelController(
+    BrowserView& browser_view,
+    base::RepeatingClosure web_panel_state_changed)
+    : browser_view_(browser_view),
+      web_panel_state_changed_(std::move(web_panel_state_changed)) {
   CHECK(IsWebPanelFeatureEnabled());
   browser_view_->browser()->GetTabStripModel()->AddObserver(this);
 }
@@ -33,19 +36,13 @@ void SidebarWebPanelController::ToggleWebPanel(const SidebarItem& item) {
   // Otherwise, open new panel after closing.
   // When item is same but url has been changed, closes the current panel and
   // reopens the panel with the new url.
-  const bool close_and_return =
-      panel_item_.IsValidItem() && panel_item_.url == item.url;
-  if (panel_item_.IsValidItem()) {
-    chrome::CloseWebContents(browser_view_->browser(), panel_contents_, false);
-  }
+  const bool close_and_return = HasOpenPanel() && panel_item_.url == item.url;
+  CloseWebPanel();
 
   if (close_and_return) {
     return;
   }
 
-  // Clear before opening another web panel.
-  panel_contents_ = nullptr;
-  panel_item_ = sidebar::SidebarItem();
   OpenWebPanel(item);
 
   // browser view could have different UI per web panel state.
@@ -53,19 +50,31 @@ void SidebarWebPanelController::ToggleWebPanel(const SidebarItem& item) {
       ->UpdateRoundedCornersUI();
 }
 
-void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item) {
-  CHECK(!panel_item_.IsValidItem());
+bool SidebarWebPanelController::HasOpenPanel() const {
+  return panel_contents_ && panel_item_.IsValidItem();
+}
 
+void SidebarWebPanelController::OpenWebPanel(const SidebarItem& item) {
   panel_contents_ = chrome::AddAndReturnTabAt(
       browser_view_->browser(), item.url, 0, false, std::nullopt, true);
   panel_item_ = item;
   GetMultiContentsView()->SetWebPanelContents(panel_contents_);
+  web_panel_state_changed_.Run();
 }
 
 void SidebarWebPanelController::CloseWebPanel() {
+  if (!HasOpenPanel()) {
+    return;
+  }
+
+  chrome::CloseWebContents(browser_view_->browser(), panel_contents_, false);
+}
+
+void SidebarWebPanelController::ClearPanelState() {
   GetMultiContentsView()->SetWebPanelContents(nullptr);
   panel_contents_ = nullptr;
   panel_item_ = sidebar::SidebarItem();
+  web_panel_state_changed_.Run();
 }
 
 bool SidebarWebPanelController::IsShowingWebPanel() const {
@@ -86,7 +95,7 @@ const BraveMultiContentsView* SidebarWebPanelController::GetMultiContentsView()
 void SidebarWebPanelController::OnTabWillBeRemoved(tabs::TabInterface* tab,
                                                    int index) {
   if (panel_contents_ == tab->GetContents()) {
-    CloseWebPanel();
+    ClearPanelState();
   }
 }
 

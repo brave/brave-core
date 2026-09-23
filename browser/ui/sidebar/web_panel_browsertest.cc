@@ -3,24 +3,39 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <cstddef>
+
+#include "base/check.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/sidebar/sidebar_browsertest_base.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
+#include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
+#include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/components/sidebar/browser/pref_names.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/sidebar/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/contents_web_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
+#include "ui/views/animation/ink_drop.h"
+#include "ui/views/view_utils.h"
 #include "url/gurl.h"
 
 namespace sidebar {
@@ -98,6 +113,102 @@ IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest,
   EXPECT_EQ(
       web_panel_controller()->panel_contents(),
       GetBraveMultiContentsView()->GetActiveContentsView()->GetWebContents());
+}
+
+// A web panel item is the active sidebar item while its panel is open, and
+// active state is mutually exclusive with the side panel's.
+// See https://github.com/brave/brave-browser/issues/33533.
+IN_PROC_BROWSER_TEST_F(WebPanelBrowserTest, WebPanelItemActiveStateTest) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
+  auto items_contents_view = GetSidebarItemsContentsView(controller());
+  auto* sidebar = GetSidebarContainerView();
+  auto* panel_ui = SidePanelUI::From(browser());
+  GetSidePanel()->DisableAnimationsForTesting();
+
+  // To prevent item added bubble launching.
+  browser()->GetProfile()->GetPrefs()->SetInteger(
+      kSidebarItemAddedFeedbackBubbleShowCount, 3);
+
+  auto ink_drop_state_at = [&](size_t index) {
+    auto* item_view = views::AsViewClass<SidebarItemView>(
+        items_contents_view->children()[index].get());
+    CHECK(item_view);
+    return views::InkDrop::Get(item_view)
+        ->GetInkDrop()
+        ->GetTargetInkDropState();
+  };
+
+  // Add two web panel type items.
+  const GURL url_a("https://brave.com/");
+  const GURL url_b("https://basicattentiontoken.com/");
+  for (const auto& url : {url_a, url_b}) {
+    service->AddItem(SidebarItem::Create(url, u"title",
+                                         SidebarItem::Type::kTypeWeb,
+                                         SidebarItem::BuiltInItemType::kNone,
+                                         /*open_in_panel*/ true));
+  }
+  const size_t index_b = model()->GetAllSidebarItems().size() - 1;
+  const size_t index_a = index_b - 1;
+  RunScheduledLayouts();
+
+  ASSERT_TRUE(sidebar->IsSidebarVisible());
+
+  // Activating a web panel item highlights it.
+  SimulateSidebarItemClickAt(index_a);
+  EXPECT_EQ(model()->active_index(), index_a);
+  EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_a));
+  EXPECT_TRUE(GetBraveMultiContentsView()->IsWebPanelVisible());
+
+  // Switching panels moves the highlight.
+  SimulateSidebarItemClickAt(index_b);
+  EXPECT_EQ(model()->active_index(), index_b);
+  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop_state_at(index_a));
+  EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
+
+  // Clicking the active web panel item toggles it off.
+  SimulateSidebarItemClickAt(index_b);
+  EXPECT_FALSE(model()->active_index());
+  EXPECT_FALSE(web_panel_controller()->panel_contents());
+  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop_state_at(index_b));
+
+  // Closing the panel's pinned tab clears the highlight.
+  SimulateSidebarItemClickAt(index_b);
+  ASSERT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
+  tab_model()->GetTabAtIndex(0)->Close();
+  EXPECT_FALSE(model()->active_index());
+  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop_state_at(index_b));
+
+  // Showing a side panel closes the web panel and takes over the active state.
+  SimulateSidebarItemClickAt(index_b);
+  ASSERT_EQ(model()->active_index(), index_b);
+  panel_ui->Show(SidePanelEntryId::kBookmarks);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
+  EXPECT_FALSE(web_panel_controller()->panel_contents());
+  EXPECT_FALSE(GetBraveMultiContentsView()->IsWebPanelVisible());
+  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop_state_at(index_b));
+  const auto side_panel_item_index =
+      model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
+  ASSERT_TRUE(side_panel_item_index);
+  EXPECT_EQ(model()->active_index(), side_panel_item_index);
+
+  // And the other way around.
+  SimulateSidebarItemClickAt(index_b);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !panel_ui->IsSidePanelShowing(); }));
+  EXPECT_EQ(model()->active_index(), index_b);
+  EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
+  EXPECT_EQ(views::InkDropState::HIDDEN,
+            ink_drop_state_at(*side_panel_item_index));
+
+  // The highlight survives hiding and re-showing the sidebar.
+  service->SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowNever);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return !sidebar->IsSidebarVisible(); }));
+  EXPECT_EQ(views::InkDropState::HIDDEN, ink_drop_state_at(index_b));
+  controller()->ToggleSidebarPinning();
+  ASSERT_TRUE(sidebar->IsSidebarVisible());
+  EXPECT_EQ(views::InkDropState::ACTIVATED, ink_drop_state_at(index_b));
 }
 
 }  // namespace sidebar
