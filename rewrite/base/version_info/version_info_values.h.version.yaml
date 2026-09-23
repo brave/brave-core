@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Make PRODUCT_VERSION macro available on Android.
+
+      Since revision 7cb5ec9c41e7f upstream takes the version string
+      on Android from manifest. This doesn't work for Brave because
+      the expected value for `version_info::GetVersionNumber` is
+      4 segments like `156.1.98.18` with Chromium major code, and
+      we store at the manifest 3 segments Brave version like `1.98.13`.
+      We cannot change the version at the manifest because it is visible
+      to users. So this plaster logically reverts the mentioned upstream
+      change and makes PRODUCT_VERSION be available at
+      `version_info::GetVersionNumber`.
+    regex:
+      re_pattern: |-
+        (#if !BUILDFLAG\(IS_ANDROID\))
+        (#define PRODUCT_VERSION \"@MAJOR@.@MINOR@.@BUILD@.@PATCH@\")
+        (#endif)
+      replace: |-
+        \2
