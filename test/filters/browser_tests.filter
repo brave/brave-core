@@ -1554,6 +1554,7 @@
 # does not enable this feature
 -All/LensOverlayController*.*/*
 -ContextualTasksNoMockBrowserTest.InitSidePanelWithGhostLoader_WaitUntilPanelOpen
+-ContextualTasksUiServiceRearchitectureEnabledTest.SidePanelNavigation_*
 -LensComposeboxControllerBrowserTest.*
 -LensOverlayController*.*
 -LensSearchController*.*
@@ -1711,6 +1712,7 @@
 -ControlledFrameDisabledPermissionSerialTest.WebSerial/*
 -ControlledFrameDisabledPermissionUsbTest.WebUSB/*
 -ControlledFrameDisabledPermissionWebBluetoothTest.WebBluetooth/*
+-ControlledFrameHidChooserTest.*
 -ControlledFrameNewWindowBrowserTest.*
 -ControlledFrameNewWindowHidBrowserTest.*
 -ControlledFramePermissionStatusLeakTest.*
