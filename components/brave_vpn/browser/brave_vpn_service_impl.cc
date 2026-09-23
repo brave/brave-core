@@ -376,13 +376,9 @@ void BraveVpnServiceImpl::AllowLanTraffic(bool allow) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   local_prefs_->SetBoolean(prefs::kBraveVPNWireguardAllowLanTraffic, allow);
 
-#if BUILDFLAG(IS_WIN)
-  // Mirror to the registry so the status tray, which reconnects using the last
-  // known good config, can apply this to that config.
   if (delegate_) {
     delegate_->SetAllowLanTraffic(allow);
   }
-#endif
 
   if (IsConnected()) {
     VLOG(2) << __func__ << " : reconnect to apply this change(" << allow

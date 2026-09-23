@@ -394,15 +394,23 @@ std::optional<std::string> GetLastUsedConfigIfLanTrafficChanged(
     bool allow_lan_traffic) {
   auto config_path = GetLastUsedConfigPath();
   if (!config_path.has_value()) {
+    VLOG(1) << "No last used config, allow_lan_traffic not applied";
     return std::nullopt;
   }
   std::string config;
   if (!base::ReadFileToString(config_path.value(), &config)) {
-    VLOG(1) << "Failed to read last used config:" << config_path.value();
+    VLOG(1) << "Failed to read last used config, allow_lan_traffic not applied:"
+            << config_path.value();
     return std::nullopt;
   }
   auto updated = UpdateAllowedIPs(config, allow_lan_traffic);
-  if (!updated.has_value() || updated.value() == config) {
+  if (!updated.has_value()) {
+    VLOG(1) << "No AllowedIPs in last used config, allow_lan_traffic not "
+               "applied:"
+            << config_path.value();
+    return std::nullopt;
+  }
+  if (updated.value() == config) {
     return std::nullopt;
   }
   return updated;
