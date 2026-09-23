@@ -56,7 +56,7 @@ mojom("mojom") {
 if (enable_local_ai) {
   source_set("browser_tests") {
     testonly = true
-    sources = [ "brave_history_embeddings_page_handler_browsertest.cc" ]
+    sources = [ "brave_history_ui_embeddings_browsertest.cc" ]
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
