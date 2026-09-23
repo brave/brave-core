@@ -372,6 +372,8 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
   html_source->AddBoolean(
       "isShowBraveShieldsInPageInfoEnabled",
       page_info::features::IsShowBraveShieldsInPageInfoEnabled());
+  html_source->AddBoolean("isUpstreamVerticalTabsFeatureEnabled",
+                          tabs::IsUpstreamVerticalTabsForceEnabled());
 }
 
 // static

@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/tabs/features.cc b/chrome/browser/ui/tabs/features.cc
+index 6aac05299cda8288f2303da3de64d1f275662083..2b441d95d4652ec4ac4037724c6c00bf7bd1e6bb 100644
+--- a/chrome/browser/ui/tabs/features.cc
++++ b/chrome/browser/ui/tabs/features.cc
+@@ -34,7 +34,7 @@ BASE_FEATURE(kTabSearchPerformanceImprovements,
+              base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kVerticalTabsNewBadge, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kVerticalTabsExpandOnHover, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kVerticalTabsExpandOnHover, base::FEATURE_ENABLED_BY_DEFAULT);
+ BASE_FEATURE_PARAM(bool,
+                    kVerticalTabsExpandOnHoverDefaultEnabled,
+                    &kVerticalTabsExpandOnHover,
