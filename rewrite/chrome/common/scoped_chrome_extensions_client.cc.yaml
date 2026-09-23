@@ -25,7 +25,7 @@ substitutions:
     preempt_function_impl:
       function_name: ScopedChromeExtensionsClient::ScopedChromeExtensionsClient
       code: |-
-        if (!UseGlobalExtensionsClientForSingleProcessTests(this)) {
+        if (UseGlobalExtensionsClientForSingleProcessTests(this)) {
           client_.reset();
           return;
         }
@@ -38,6 +38,6 @@ substitutions:
     preempt_function_impl:
       function_name: ScopedChromeExtensionsClient::~ScopedChromeExtensionsClient
       code: |-
-        if (!ReleaseGlobalExtensionsClientForSingleProcessTests(this)) {
+        if (ReleaseGlobalExtensionsClientForSingleProcessTests(this)) {
           return;
         }
