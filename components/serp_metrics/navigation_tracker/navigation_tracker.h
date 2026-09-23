@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SERP_METRICS_SHARED_TAB_HELPER_SHARED_TAB_HELPER_H_
-#define BRAVE_COMPONENTS_SERP_METRICS_SHARED_TAB_HELPER_SHARED_TAB_HELPER_H_
+#ifndef BRAVE_COMPONENTS_SERP_METRICS_NAVIGATION_TRACKER_NAVIGATION_TRACKER_H_
+#define BRAVE_COMPONENTS_SERP_METRICS_NAVIGATION_TRACKER_NAVIGATION_TRACKER_H_
 
 #include <optional>
 
@@ -17,15 +17,15 @@ namespace serp_metrics {
 class SerpMetrics;
 
 // Contains SERP metrics logic shared by platform-specific tab helpers.
-class SerpMetricsSharedTabHelper {
+class SerpMetricsNavigationTracker {
  public:
-  explicit SerpMetricsSharedTabHelper(SerpMetrics& serp_metrics);
+  explicit SerpMetricsNavigationTracker(SerpMetrics& serp_metrics);
 
-  SerpMetricsSharedTabHelper(const SerpMetricsSharedTabHelper&) = delete;
-  SerpMetricsSharedTabHelper& operator=(
-      const SerpMetricsSharedTabHelper&) = delete;
+  SerpMetricsNavigationTracker(const SerpMetricsNavigationTracker&) = delete;
+  SerpMetricsNavigationTracker& operator=(const SerpMetricsNavigationTracker&) =
+      delete;
 
-  ~SerpMetricsSharedTabHelper();
+  ~SerpMetricsNavigationTracker();
 
   void OnNavigationFinished(const GURL& url, bool is_new_navigation);
 
@@ -40,4 +40,4 @@ class SerpMetricsSharedTabHelper {
 
 }  // namespace serp_metrics
 
-#endif  // BRAVE_COMPONENTS_SERP_METRICS_SHARED_TAB_HELPER_SHARED_TAB_HELPER_H_
+#endif  // BRAVE_COMPONENTS_SERP_METRICS_NAVIGATION_TRACKER_NAVIGATION_TRACKER_H_

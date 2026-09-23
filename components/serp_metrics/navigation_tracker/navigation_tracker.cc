@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/serp_metrics/shared_tab_helper/shared_tab_helper.h"
+#include "brave/components/serp_metrics/navigation_tracker/navigation_tracker.h"
 
 #include "brave/components/serp_metrics/serp_classifier.h"
 #include "brave/components/serp_metrics/serp_classifier_utils.h"
@@ -23,32 +23,35 @@ bool ShouldRecordSearchEngine(SearchEngineType search_engine_type,
 
 }  // namespace
 
-SerpMetricsSharedTabHelper::SerpMetricsSharedTabHelper(
+SerpMetricsNavigationTracker::SerpMetricsNavigationTracker(
     SerpMetrics& serp_metrics)
     : serp_metrics_(serp_metrics) {}
 
-SerpMetricsSharedTabHelper::~SerpMetricsSharedTabHelper() = default;
+SerpMetricsNavigationTracker::~SerpMetricsNavigationTracker() = default;
 
-void SerpMetricsSharedTabHelper::OnNavigationFinished(
+void SerpMetricsNavigationTracker::OnNavigationFinished(
     const GURL& url,
     bool is_new_navigation) {
-  if (!is_new_navigation || !IsSameSerpAsLastRecorded(url)) {
-    // If this isn't a new navigation or it doesn't go to the same SERP as the
-    // last recorded one, clear the last recorded SERP URL so the next visit to
-    // that SERP can be recorded again.
+  if (!is_new_navigation) {
+    // Reloads, back/forward navigations and session restores are not new
+    // navigations.
+    return;
+  }
+
+  if (!IsSameSerpAsLastRecorded(url)) {
     last_recorded_serp_url_.reset();
   }
 
   MaybeClassifyAndRecordSearchEngineForUrl(url);
 }
 
-bool SerpMetricsSharedTabHelper::IsSameSerpAsLastRecorded(
+bool SerpMetricsNavigationTracker::IsSameSerpAsLastRecorded(
     const GURL& url) const {
   return last_recorded_serp_url_ &&
          IsSameSearchQuery(url, *last_recorded_serp_url_);
 }
 
-void SerpMetricsSharedTabHelper::MaybeClassifyAndRecordSearchEngineForUrl(
+void SerpMetricsNavigationTracker::MaybeClassifyAndRecordSearchEngineForUrl(
     const GURL& url) {
   if (IsSameSerpAsLastRecorded(url)) {
     return;
@@ -63,7 +66,7 @@ void SerpMetricsSharedTabHelper::MaybeClassifyAndRecordSearchEngineForUrl(
   }
 }
 
-void SerpMetricsSharedTabHelper::RecordSearchEngine(
+void SerpMetricsNavigationTracker::RecordSearchEngine(
     SearchEngineType search_engine_type) {
   switch (search_engine_type) {
     case SEARCH_ENGINE_BRAVE:

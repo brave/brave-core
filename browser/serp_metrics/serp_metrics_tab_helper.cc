@@ -13,13 +13,13 @@
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/serp_metrics/serp_metrics_service.h"
-#include "brave/components/serp_metrics/shared_tab_helper/shared_tab_helper.h"
+#include "brave/components/serp_metrics/navigation_tracker/navigation_tracker.h"
 #include "chrome/browser/browser_process.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/base/page_transition_types.h"
-#include "components/prefs/pref_service.h"
 
 namespace serp_metrics {
 
@@ -51,14 +51,13 @@ void SerpMetricsTabHelper::MaybeCreateForWebContents(
   CreateForWebContents(web_contents, CHECK_DEREF(serp_metrics));
 }
 
-SerpMetricsTabHelper::SerpMetricsTabHelper(
-    content::WebContents* web_contents,
-    SerpMetrics& serp_metrics)
+SerpMetricsTabHelper::SerpMetricsTabHelper(content::WebContents* web_contents,
+                                           SerpMetrics& serp_metrics)
     : content::WebContentsObserver(web_contents),
       content::WebContentsUserData<SerpMetricsTabHelper>(*web_contents),
       serp_metrics_(serp_metrics),
-      shared_tab_helper_(
-          std::make_unique<SerpMetricsSharedTabHelper>(serp_metrics)) {}
+      navigation_tracker_(
+          std::make_unique<SerpMetricsNavigationTracker>(serp_metrics)) {}
 
 void SerpMetricsTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
@@ -75,8 +74,8 @@ void SerpMetricsTabHelper::DidFinishNavigation(
   const bool is_new_navigation =
       ui::PageTransitionIsNewNavigation(navigation_handle->GetPageTransition());
 
-  shared_tab_helper_->OnNavigationFinished(
-      navigation_handle->GetURL(), is_new_navigation);
+  navigation_tracker_->OnNavigationFinished(navigation_handle->GetURL(),
+                                            is_new_navigation);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(SerpMetricsTabHelper);

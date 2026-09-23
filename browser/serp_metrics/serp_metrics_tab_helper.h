@@ -19,7 +19,7 @@ class WebContents;
 namespace serp_metrics {
 
 class SerpMetrics;
-class SerpMetricsSharedTabHelper;
+class SerpMetricsNavigationTracker;
 
 class SerpMetricsTabHelper final
     : public content::WebContentsObserver,
@@ -43,7 +43,7 @@ class SerpMetricsTabHelper final
 
   const raw_ref<SerpMetrics> serp_metrics_;
 
-  std::unique_ptr<SerpMetricsSharedTabHelper> shared_tab_helper_;
+  std::unique_ptr<SerpMetricsNavigationTracker> navigation_tracker_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

@@ -21,7 +21,7 @@ class WebState;
 namespace serp_metrics {
 
 class SerpMetrics;
-class SerpMetricsSharedTabHelper;
+class SerpMetricsNavigationTracker;
 
 // Observes navigations and records search engine result page visits.
 class SerpMetricsTabHelper : public web::WebStateUserData<SerpMetricsTabHelper>,
@@ -47,7 +47,7 @@ class SerpMetricsTabHelper : public web::WebStateUserData<SerpMetricsTabHelper>,
   raw_ptr<web::WebState> web_state_;
   const raw_ref<SerpMetrics> serp_metrics_;
 
-  std::unique_ptr<SerpMetricsSharedTabHelper> shared_tab_helper_;
+  std::unique_ptr<SerpMetricsNavigationTracker> navigation_tracker_;
 };
 
 }  // namespace serp_metrics

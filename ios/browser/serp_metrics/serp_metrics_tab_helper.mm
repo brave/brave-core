@@ -12,7 +12,7 @@
 #include "brave/components/serp_metrics/serp_metrics.h"
 #include "brave/components/serp_metrics/serp_metrics_feature.h"
 #include "brave/components/serp_metrics/serp_metrics_service.h"
-#include "brave/components/serp_metrics/shared_tab_helper/shared_tab_helper.h"
+#include "brave/components/serp_metrics/navigation_tracker/navigation_tracker.h"
 #include "brave/ios/browser/serp_metrics/serp_metrics_service_factory_ios.h"
 #include "components/prefs/pref_service.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
@@ -62,8 +62,8 @@ SerpMetricsTabHelper::SerpMetricsTabHelper(web::WebState* web_state,
                                            SerpMetrics& serp_metrics)
     : web_state_(web_state),
       serp_metrics_(serp_metrics),
-      shared_tab_helper_(
-          std::make_unique<SerpMetricsSharedTabHelper>(serp_metrics)) {
+      navigation_tracker_(
+          std::make_unique<SerpMetricsNavigationTracker>(serp_metrics)) {
   CHECK(web_state_);
   web_state_->AddObserver(this);
 }
@@ -83,8 +83,8 @@ void SerpMetricsTabHelper::DidFinishNavigation(
   const bool is_new_navigation = ui::PageTransitionIsNewNavigation(
       navigation_context->GetPageTransition());
 
-  shared_tab_helper_->OnNavigationFinished(
-      navigation_context->GetUrl(), is_new_navigation);
+  navigation_tracker_->OnNavigationFinished(navigation_context->GetUrl(),
+                                            is_new_navigation);
 }
 
 void SerpMetricsTabHelper::WebStateDestroyed(web::WebState* web_state) {
