@@ -195,12 +195,17 @@ tab_search::mojom::ErrorPtr TabSearchPageHandler::GetError(
   CHECK(ai_chat_service);
 
   tab_search::mojom::ErrorPtr error = tab_search::mojom::Error::New();
-  if (api_error == ai_chat::mojom::APIError::RateLimitReached) {
+  if (api_error == ai_chat::mojom::APIError::RateLimitReached ||
+      api_error == ai_chat::mojom::APIError::ModelRateLimitReached) {
     bool is_premium = ai_chat_service->IsPremiumStatus();
-    error->message =
-        is_premium
-            ? l10n_util::GetStringUTF8(IDS_CHAT_UI_ERROR_RATE_LIMIT)
-            : l10n_util::GetStringUTF8(IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC);
+    int message_id = IDS_CHAT_UI_RATE_LIMIT_REACHED_DESC;
+    if (is_premium) {
+      message_id =
+          api_error == ai_chat::mojom::APIError::ModelRateLimitReached
+              ? IDS_CHAT_UI_ERROR_MODEL_RATE_LIMIT
+              : IDS_CHAT_UI_ERROR_RATE_LIMIT;
+    }
+    error->message = l10n_util::GetStringUTF8(message_id);
     error->rate_limited_info =
         tab_search::mojom::RateLimitedInfo::New(is_premium);
   } else if (api_error == ai_chat::mojom::APIError::ConnectionIssue) {
