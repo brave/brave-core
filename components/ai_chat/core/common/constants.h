@@ -59,14 +59,17 @@ inline constexpr char kAIChatCodeSandboxUIURL[] =
 // overriding WebUIConfig::ShouldHandleSubdomains().
 inline constexpr char kAIChatLeoWorkspaceUIHost[] = "leo-workspace";
 
-// The suffix every workspace host ends with. For code which only has a host (or
-// an origin) to go on and can't reason about the per-workspace label, such as
-// the WebMCP origin check in blink.
+// The suffix every workspace host ends with, for IsAIChatLeoWorkspaceHost().
 inline constexpr char kAIChatLeoWorkspaceUIHostSuffix[] = ".leo-workspace";
 static_assert(
     std::string_view(kAIChatLeoWorkspaceUIHostSuffix).substr(1) ==
         std::string_view(kAIChatLeoWorkspaceUIHost),
     "The workspace host suffix must be the workspace host, preceded by a dot.");
+
+// Prefixed to a workspace's host to get the host of that workspace's viewer
+// document (chrome-untrusted://view.<uuid>.leo-workspace), which is a separate
+// origin from the workspace that frames it.
+inline constexpr char kAIChatLeoWorkspaceViewUIHostPrefix[] = "view.";
 
 }  // namespace ai_chat
 

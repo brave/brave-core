@@ -40,7 +40,10 @@ component("common") {
 # WebUI host) so that blink renderer code can depend on the constants without
 # pulling in the rest of //brave/components/ai_chat/core/common.
 source_set("constants") {
-  sources = [ "constants.h" ]
+  sources = [
+    "constants.h",
+    "leo_workspace_util.h",
+  ]
 
   deps = [
     "//base",
@@ -86,6 +89,7 @@ source_set("test_support") {
 source_set("unit_tests") {
   testonly = true
   sources = [
+    "leo_workspace_util_unittest.cc",
     "pref_names_unittest.cc",
     "prefs_unittest.cc",
     "proto_conversion_unittest.cc",
