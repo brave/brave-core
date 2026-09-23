@@ -21,6 +21,7 @@ namespace content {
 class RenderFrameHost;
 class WebContents;
 struct GlobalRequestID;
+class Page;
 }  // namespace content
 
 namespace blink::mojom {
@@ -90,12 +91,21 @@ class CaptchaMetrics {
     CloudflareJsDetectionTabHelper(tabs::TabInterface& tab,
                                    CaptchaMetrics* captcha_metrics);
 
-    // content::WebContentsObserver:
+    // content::WebContentsObserver override.
+    // This is the core callback responsible to identify Cloudflare js detection
+    // script loads which is not visible from
+    // page_load_metrics::PageLoadMetricsObserver.
     void ResourceLoadComplete(
         content::RenderFrameHost* render_frame_host,
         const content::GlobalRequestID& request_id,
         const GURL& original_url,
         const blink::mojom::ResourceLoadInfo& resource_load_info) override;
+
+    // content::WebContentsObserver override.
+    // This helps to detect cases when a new navigation was initiated in the
+    // same tab but for another site that may show a captcha.
+    // `OnDiscardContents` is not called for such cases.
+    void PrimaryPageChanged(content::Page& page) override;
 
     // tabs::ContentsObservingTabFeature:
     void OnDiscardContents(tabs::TabInterface* tab,
@@ -108,6 +118,9 @@ class CaptchaMetrics {
     bool recorded_javascript_detection_ = false;
     // This is needed to trigger calls to record events to local state.
     raw_ptr<CaptchaMetrics> captcha_metrics_;
+    // Keeps track locally of the last origin for which this class may have
+    // recorded the captcha.
+    url::Origin last_recorded_main_frame_origin_;
   };
 
   // Schedules the first P3A report. Does not emit on a first-ever registration.

@@ -28,9 +28,11 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/global_request_id.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/page.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace misc_metrics {
 
@@ -244,8 +246,30 @@ void CaptchaMetrics::CloudflareJsDetectionTabHelper::ResourceLoadComplete(
   }
 
   recorded_javascript_detection_ = true;
+  // This helps to prevent over counting when the same origin redirects to
+  // another resource which can trigger PrimaryPageChanged.
+  last_recorded_main_frame_origin_ =
+      web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   captcha_metrics_->MaybeRecordCaptchaForUrl(original_url,
                                              /*is_user_activated=*/false);
+}
+
+void CaptchaMetrics::CloudflareJsDetectionTabHelper::PrimaryPageChanged(
+    content::Page& page) {
+  const url::Origin new_origin =
+      page.GetMainDocument().GetLastCommittedOrigin();
+  // We have already recorded the captcha for this origin in
+  // ResourceLoadComplete. So, if true, this current flow is for a re-direct to
+  // another document in the same origin which will also
+  // re-trigger ResourceLoadComplete which checks
+  // recorded_javascript_detection_. So we don't reset the
+  // recorded_javascript_detection_ flag here to not overcount.
+  if (recorded_javascript_detection_ &&
+      new_origin.IsSameOriginWith(last_recorded_main_frame_origin_)) {
+    return;
+  }
+  recorded_javascript_detection_ = false;
+  tabs::ContentsObservingTabFeature::PrimaryPageChanged(page);
 }
 
 void CaptchaMetrics::CloudflareJsDetectionTabHelper::OnDiscardContents(
@@ -253,6 +277,7 @@ void CaptchaMetrics::CloudflareJsDetectionTabHelper::OnDiscardContents(
     content::WebContents* old_contents,
     content::WebContents* new_contents) {
   recorded_javascript_detection_ = false;
+  last_recorded_main_frame_origin_ = url::Origin();
   tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
                                                        new_contents);
 }
