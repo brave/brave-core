@@ -12,14 +12,13 @@ index 9c1e6e82b7af68fb3574fed34ec4875b20196549..f184848e30075a8c586f6a2d0f3cfd39
    DispatchEvent(*Event::Create(event_type_names::kToolchange));
  }
  
-@@ -962,7 +965,9 @@ bool ModelContext::IsModelContextAllowed() const {
+@@ -962,7 +965,8 @@ bool ModelContext::IsModelContextAllowed() const {
                url::kFileScheme &&
            key.IsUniversalFileAgent()) ||
           (document_->GetSettings() &&
 -          !document_->GetSettings()->GetWebSecurityEnabled());
 +          !document_->GetSettings()->GetWebSecurityEnabled()) ||
-+         (document_->GetExecutionContext()->GetSecurityOrigin()->Protocol() == "chrome-untrusted" &&
-+          ai_chat::IsAIChatLeoWorkspaceHost(document_->GetExecutionContext()->GetSecurityOrigin()->Host().Utf8()));
++         IsAIChatLeoWorkspaceDocument(*document_);
  }
  
  ScriptPromise<IDLSequence<RegisteredTool>> ModelContext::getTools(

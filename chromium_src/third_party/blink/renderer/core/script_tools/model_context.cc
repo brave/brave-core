@@ -21,6 +21,7 @@
 #include "third_party/blink/renderer/bindings/core/v8/v8_script_runner.h"
 #include "third_party/blink/renderer/bindings/core/v8/v8_tool_annotations.h"
 #include "third_party/blink/renderer/core/dom/abort_signal.h"
+#include "third_party/blink/renderer/core/dom/document.h"
 #include "third_party/blink/renderer/core/dom/events/event.h"
 #include "third_party/blink/renderer/core/dom/scoped_abort_state.h"
 #include "third_party/blink/renderer/core/event_type_names.h"
@@ -47,5 +48,24 @@
 #include "third_party/blink/renderer/platform/wtf/text/ascii_ctype.h"
 #include "third_party/blink/renderer/platform/wtf/text/strcat.h"
 #include "url/url_constants.h"
+
+namespace blink {
+namespace {
+
+// Whether `document` is a Leo "workspace": a hidden
+// chrome-untrusted://<uuid>.leo-workspace page whose tools register themselves
+// via navigator.modelContext. Each workspace has its own subdomain, so this
+// tests the shape of the host rather than a fixed host, and excludes the
+// workspace's viewer document at chrome-untrusted://view.<uuid>.leo-workspace,
+// which has no tools of its own.
+bool IsAIChatLeoWorkspaceDocument(const Document& document) {
+  const SecurityOrigin* origin =
+      document.GetExecutionContext()->GetSecurityOrigin();
+  return origin->Protocol() == "chrome-untrusted" &&
+         ai_chat::IsAIChatLeoWorkspaceHost(origin->Host().Utf8());
+}
+
+}  // namespace
+}  // namespace blink
 
 #include <third_party/blink/renderer/core/script_tools/model_context.cc>
