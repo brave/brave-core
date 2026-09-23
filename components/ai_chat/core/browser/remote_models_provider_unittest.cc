@@ -58,7 +58,6 @@ mojom::ModelPtr MakeTestModel(const std::string& key) {
   model->display_name = key + " Display";
   model->is_suggested_model = false;
   model->is_near_model = false;
-  model->supported_capabilities = {};
   model->options = mojom::ModelOptions::NewLeoModelOptions(std::move(leo_opts));
   return model;
 }

@@ -59,8 +59,8 @@ enum CharacterType {
   ASSISTANT
 };
 
-// Toggleable capabilities that can be added to a specific conversation. Or
-// static for all conversations for a specific version of the client.
+// Toggleable capabilities for a conversation (such as CONTENT_AGENT), and
+// static capabilities of the client (such as the ability to render MATH_ML).
 // Informs:
 // - which tools are attached to a conversation.
 // - system prompt variations for a conversation.
@@ -69,10 +69,12 @@ enum CharacterType {
 // conversation or client. Otherwise we risk attaching items that aren't
 // explicitly wanted for a particular conversation.
 enum ConversationCapability {
-  // Only models approved for content control should include CONTENT_AGENT,
-  // which should be approved by security team.
+  // A conversation should include content agent tools. Only models approved for
+  // content control should announce their support for CONTENT_AGENT, which
+  // should be approved by security team.
   CONTENT_AGENT,
-  // Include the deep research tools and encourage its used in the system prompt
+  // A conversation should include the deep research tools and encourage its
+  // use in the system prompt.
   DEEP_RESEARCH,
 
   // Client can render MathML. A hint to the server, not a model capability -
