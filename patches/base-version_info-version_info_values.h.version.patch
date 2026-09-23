@@ -1,0 +1,14 @@
+diff --git a/base/version_info/version_info_values.h.version b/base/version_info/version_info_values.h.version
+index e7a14529a99e979c636d2cdaefc75999584687b3..955877d8407c965fe4f68a0bf963a1f60b7f682c 100644
+--- a/base/version_info/version_info_values.h.version
++++ b/base/version_info/version_info_values.h.version
+@@ -8,9 +8,7 @@
+ #include "build/build_config.h"
+ 
+ #define PRODUCT_NAME "@PRODUCT_FULLNAME@"
+-#if !BUILDFLAG(IS_ANDROID)
+ #define PRODUCT_VERSION "@MAJOR@.@MINOR@.@BUILD@.@PATCH@"
+-#endif
+ #define LAST_CHANGE "@LASTCHANGE@"
+ #define IS_OFFICIAL_BUILD @OFFICIAL_BUILD@
+ 

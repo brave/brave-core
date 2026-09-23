@@ -11,9 +11,15 @@ testonly = true
 
 if (is_android) {
   robolectric_library("brave_junit_tests_org.chromium.base") {
-    sources = [ "src/org/chromium/base/BraveCommandLineInitUtilTest.java" ]
+    sources = [
+      "src/org/chromium/base/BraveCommandLineInitUtilTest.java",
+      "src/org/chromium/base/version_info/BraveVersionInfoTest.java",
+    ]
 
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+    deps = [
+      "//base/version_info/android:version_constants_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
   }
 
   robolectric_library(
