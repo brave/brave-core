@@ -21,13 +21,16 @@ import {
 // `compute*_` methods cache the value.
 function onHistoryEmbeddingsEnabledChanged(
     enabled: boolean, needsRestart: boolean) {
+  // Upstream gates its calls into the embeddings service on this.
+  const searchEnabled = enabled && !needsRestart
   loadTimeData.overrideValues({
-    enableHistoryEmbeddings: enabled,
+    enableHistoryEmbeddings: searchEnabled,
+    braveHistoryEmbeddingsEnabled: enabled,
     braveHistoryEmbeddingsNeedsRestart: needsRestart,
   })
   for (const app of document.querySelectorAll('history-app')) {
     ;(app as unknown as {enableHistoryEmbeddings_: boolean})
-        .enableHistoryEmbeddings_ = enabled
+        .enableHistoryEmbeddings_ = searchEnabled
   }
   const root = document.querySelector('history-app')?.shadowRoot
   if (!root) {

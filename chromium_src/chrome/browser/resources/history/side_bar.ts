@@ -96,8 +96,10 @@ class HistorySideBarElement extends HistorySideBarElementChromium {
 
   override accessor braveHistoryEmbeddingsFeatureEnabled: boolean =
       loadTimeData.getBoolean('isHistoryEmbeddingsFeatureEnabled')
+  // Distinct from `enableHistoryEmbeddings`, which is only true once a session
+  // actually has an embeddings service.
   override accessor braveHistoryEmbeddingsEnabled: boolean =
-      loadTimeData.getBoolean('enableHistoryEmbeddings')
+      loadTimeData.getBoolean('braveHistoryEmbeddingsEnabled')
   // True while the toggle differs from the value the embedding services were
   // built with. Tracked in the browser and injected by BraveHistoryUI so it
   // outlives a page reload.
@@ -111,7 +113,7 @@ class HistorySideBarElement extends HistorySideBarElementChromium {
   override willUpdate(changedProperties: PropertyValues<this>) {
     super.willUpdate(changedProperties)
     this.braveHistoryEmbeddingsEnabled =
-        loadTimeData.getBoolean('enableHistoryEmbeddings')
+        loadTimeData.getBoolean('braveHistoryEmbeddingsEnabled')
     this.braveHistoryEmbeddingsNeedsRestart =
         loadTimeData.getBoolean('braveHistoryEmbeddingsNeedsRestart')
   }
