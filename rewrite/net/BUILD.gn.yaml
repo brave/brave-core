@@ -15,4 +15,3 @@ substitutions:
       target: net
       list_name: deps
       literal: brave_net_deps
-      import: //brave/components/brave_wallet/sources.gni
