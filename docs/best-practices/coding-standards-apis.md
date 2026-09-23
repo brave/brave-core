@@ -804,6 +804,47 @@ if (value.has_value()) {
 result = base::saturated_cast<uint64_t>(value.value_or(0));
 ```
 
+**Pick the cast that matches what an out-of-range value means:**
+
+| Helper                    | Out-of-range behavior   | Use when                                            |
+| ------------------------- | ----------------------- | --------------------------------------------------- |
+| `base::saturated_cast<T>` | Clamps to `T`'s min/max | Clamping is a valid result                          |
+| `base::checked_cast<T>`   | `CHECK`-fails           | The value is an invariant and can't be out of range |
+
+For arithmetic that could overflow before the cast, compute with
+`base::CheckedNumeric<T>` (or `base::MakeCheckedNum`) and read the result via
+`.AssignIfValid()` / `.ValueOrDie()` rather than casting after the fact. All are
+in `base/numerics/`. See the
+[`//base/numerics` README](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/base/numerics/README.md)
+and the
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+**Use the non-member helpers (`base::CheckAdd`, `base::CheckSub`,
+`base::CheckMul`, …) instead of `CheckedNumeric`'s operator overloads.** With
+the operators it is easy to write one term of the expression outside the safe
+construct without noticing, so the overflow the type was meant to catch happens
+before `CheckedNumeric` ever sees it. The helpers name every checked operation
+explicitly. See
+[non-member helper functions](https://chromium.googlesource.com/chromium/src/+/refs/heads/main/base/numerics/README.md#checkednumeric_in-checked_math_h-non_member-helper-functions).
+
+```cpp
+// ❌ WRONG - overflow happens before the cast can help
+size_t total = base::saturated_cast<size_t>(count * item_size);
+
+// ❌ WRONG - `count * item_size` is a naked multiplication; it overflows
+// before the CheckedNumeric is constructed
+base::CheckedNumeric<size_t> checked_total = count * item_size;
+
+// ✅ CORRECT - the checked operation is named, so nothing is computed naked
+size_t total = 0;
+if (!base::CheckMul(count, item_size).AssignIfValid(&total)) {
+  return std::nullopt;
+}
+
+// ✅ CORRECT - CHECK when the range is an invariant
+uint8_t byte = base::checked_cast<uint8_t>(value_known_to_be_0_255);
+```
+
 ---
 
 <a id="CSA-042"></a>
@@ -1617,5 +1658,41 @@ Highest safety. Fully decouples from C++ memory on receipt.
 ```rust
 fn ingest_small(items: Vec<String>);
 ```
+
+---
+
+<a id="CSA-071"></a>
+
+## ✅ Use `std::u16string` for 16-Bit Strings, Not `std::wstring`
+
+**Chromium uses UTF-16 extensively — use `std::u16string` and `char16_t*`, and
+declare UTF-16 literals with the `u"..."` prefix.** `std::wstring` and
+`wchar_t*` are legal only in Windows-only code, where they are a distinct type
+from `std::u16string`, not an alias. See
+[Chromium C++ style guide](https://chromium.googlesource.com/chromium/src/+/HEAD/styleguide/c++/c++.md).
+
+```cpp
+// ❌ WRONG - wstring in cross-platform code
+std::wstring title = L"Brave";
+
+// ✅ CORRECT
+std::u16string title = u"Brave";
+```
+
+**For non-ASCII characters, use the literal character or a `\uXXXX` /
+`\UXXXXXXXX` escape — never `\xXX` style escapes**, which are byte-oriented and
+silently produce the wrong code unit.
+
+```cpp
+// ❌ WRONG - byte escapes in a UTF-16 literal
+std::u16string bullet = u"\xe2\x80\xa2";
+
+// ✅ CORRECT - actual character, or a \u escape
+std::u16string bullet = u"•";
+std::u16string bullet_escaped = u"\u2022";
+```
+
+Convert at the boundary with `base::UTF8ToUTF16`/`base::UTF16ToUTF8`
+(`base/strings/utf_string_conversions.h`) rather than storing both forms.
 
 ---

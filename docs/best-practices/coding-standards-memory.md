@@ -899,3 +899,99 @@ another sequence (see [CSM-010](#CSM-010)), stored in a longer-lived object, or
 handed to an API whose lifetime is independent of `this`. A linter that flags
 every `base::Unretained(this)` produces mostly false positives, since
 member-owned callbacks are the dominant, correct usage.
+
+---
+
+<a id="CSM-039"></a>
+
+## ✅ Let Pointer Types in Signatures Express Ownership
+
+**The pointer type in a parameter or return type is the ownership contract.**
+Follow the
+[Chromium smart pointer guidelines](https://www.chromium.org/developers/smart-pointer-guidelines/)
+so callers don't have to read the implementation to learn who frees what.
+
+**Parameters:**
+
+| Declare              | Meaning                                                                               |
+| -------------------- | ------------------------------------------------------------------------------------- |
+| `T*` / `T&`          | No ownership change; caller keeps `t` alive for the call                              |
+| `std::unique_ptr<T>` | The function takes ownership                                                          |
+| `scoped_refptr<T>`   | The function may take a ref; the caller chooses `std::move(t)` or keeping its own ref |
+
+**A smart pointer is not the default way to move a value.** When the type is
+moveable, take it by value — `void Consume(T value)`, called as
+`Consume(std::move(t))` — and reach for `std::unique_ptr<T>` only when the type
+is not moveable, which is typically the case for polymorphic types held by base
+pointer. Much of the `std::unique_ptr<T>` in existing code is historical: before
+move semantics it was the only way to hand an object around, and before
+`std::optional<T>` it doubled as the way to express "maybe a value".
+
+**Return values:**
+
+| Return                                             | Meaning                                                                     |
+| -------------------------------------------------- | --------------------------------------------------------------------------- |
+| `T*`                                               | If and only if the caller does _not_ take ownership                         |
+| `std::unique_ptr<T>` / `scoped_refptr<T>` by value | The implementation is handing off ownership                                 |
+| `const scoped_refptr<T>&`                          | The implementation retains ownership; the caller isn't forced to take a ref |
+
+The same caveat applies to returns: for a moveable type, return a plain `T` by
+value rather than wrapping it in a smart pointer to hand it back.
+
+**A function must never take ownership of a parameter passed as `T*`.** That is
+the single most common violation, and it's invisible at the call site.
+
+```cpp
+// ❌ WRONG - silently deletes a pointer the caller still owns
+void SetDelegate(Delegate* delegate);  // impl does: delegate_.reset(delegate);
+
+// ✅ CORRECT - ownership transfer is visible at every call site
+void SetDelegate(std::unique_ptr<Delegate> delegate);
+
+// ✅ CORRECT - borrowing only
+void UseDelegate(Delegate* delegate);
+```
+
+Callers must `std::move()` a non-temporary `std::unique_ptr<T>` into such a
+parameter (see [CSA-010](coding-standards-apis.md#CSA-010),
+[CSA-047](coding-standards-apis.md#CSA-047)). Do **not** `std::move()` a
+temporary or a local on the way out of a function: `return std::move(foo);`
+suppresses copy elision, so it produces a move the compiler would otherwise have
+elided entirely. Write `return foo;`. For passing smart pointers by const
+reference, see [CSM-031](#CSM-031); for class fields, use
+`const raw_ref<T>`/`raw_ptr<T>` ([CSM-036](#CSM-036)).
+
+---
+
+<a id="CSM-040"></a>
+
+## ✅ Use Platform Scoper Types for Platform Handles
+
+**Don't manage OS handles and Core Foundation objects by hand, rather use the
+platform-specific scopers**, which release on destruction like any other smart
+pointer.
+
+| Platform                          | Type                              |
+| --------------------------------- | --------------------------------- |
+| Windows `HANDLE`                  | `base::win::ScopedHandle`         |
+| Core Foundation types (macOS/iOS) | `base::apple::ScopedCFTypeRef<T>` |
+
+```cpp
+// ❌ WRONG - leaks on every early return
+HANDLE file = ::CreateFile(...);
+if (!IsValid(file)) {
+  return false;
+}
+::CloseHandle(file);
+
+// ✅ CORRECT
+base::win::ScopedHandle file(::CreateFile(...));
+if (!file.IsValid()) {
+  return false;
+}
+```
+
+Note that the Core Foundation scoper lives in `base::apple::` — the old
+`base::mac::ScopedCFTypeRef` spelling (still referenced by the upstream smart
+pointer guidelines) no longer exists. See
+[Chromium smart pointer guidelines](https://www.chromium.org/developers/smart-pointer-guidelines/).
