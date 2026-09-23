@@ -339,6 +339,9 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
 #if !BUILDFLAG(IS_ANDROID)
       &sharing_hub::kDesktopScreenshots,
 #endif
+#if !BUILDFLAG(IS_ANDROID)
+      &tabs::kVerticalTabsExpandOnHover,
+#endif  // !BUILDFLAG(IS_ANDROID)
       &network::features::kLocalNetworkAccessChecksWebSockets,
   };
 

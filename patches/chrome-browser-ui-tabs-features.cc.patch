@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/tabs/features.cc b/chrome/browser/ui/tabs/features.cc
+index a19c2c636ed2f789523a08d0d70e599a8c9f0094..1b3e5a32fb773ac59f723671295fd857a7f13c64 100644
+--- a/chrome/browser/ui/tabs/features.cc
++++ b/chrome/browser/ui/tabs/features.cc
+@@ -32,7 +32,7 @@ BASE_FEATURE(kTabSearchCjkWordBoundary, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ BASE_FEATURE(kVerticalTabsNewBadge, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+-BASE_FEATURE(kVerticalTabsExpandOnHover, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kVerticalTabsExpandOnHover, base::FEATURE_ENABLED_BY_DEFAULT);
+ BASE_FEATURE_PARAM(bool,
+                    kVerticalTabsExpandOnHoverDefaultEnabled,
+                    &kVerticalTabsExpandOnHover,

@@ -9,3 +9,14 @@ substitutions:
     set_feature_flag_default_state:
       feature_name: kTtc
       value: base::FEATURE_DISABLED_BY_DEFAULT
+
+  - description: |-
+      Ship kVerticalTabsExpandOnHover enabled, to match Brave's existing
+      floating-mode-on-by-default UX once a user/QA build has upstream
+      vertical tabs (kVerticalTabs/kVerticalTabsLaunch) turned on. This is
+      safe while those are disabled by default: IsVerticalTabsExpandOnHoverFeatureEnabled()
+      unconditionally requires IsVerticalTabsFeatureEnabled() first, so this
+      flip has no effect until vertical tabs itself is enabled.
+    set_feature_flag_default_state:
+      feature_name: kVerticalTabsExpandOnHover
+      value: base::FEATURE_ENABLED_BY_DEFAULT

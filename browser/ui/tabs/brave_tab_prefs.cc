@@ -67,18 +67,21 @@ void MigrateBraveProfilePrefs(PrefService* prefs) {
 #if !BUILDFLAG(IS_ANDROID)
 void MaybeApplyVerticalTabMigrationTestingOverride(PrefService* prefs) {
   auto* command_line = base::CommandLine::ForCurrentProcess();
-  if (!command_line->HasSwitch(tabs::switches::kVerticalTabMigrationSwitch)) {
-    return;  // "default" choice (or flag untouched) - don't touch the pref.
-  }
-  const std::string value = command_line->GetSwitchValueASCII(
-      tabs::switches::kVerticalTabMigrationSwitch);
+  const std::string value =
+      command_line->HasSwitch(tabs::switches::kVerticalTabMigrationSwitch)
+          ? command_line->GetSwitchValueASCII(
+                tabs::switches::kVerticalTabMigrationSwitch)
+          : "";
   if (value == tabs::switches::kVerticalTabMigrationForceUpstreamValue) {
     prefs->SetBoolean(prefs::kVerticalTabsEnabled, true);
-  } else if (value == tabs::switches::kVerticalTabMigrationResetValue) {
-    // Unset -> falls back to upstream's own default (false); Brave's backend
-    // takes over via VerticalTabController::SupportsBraveVerticalTabs().
-    prefs->ClearPref(prefs::kVerticalTabsEnabled);
+    return;
   }
+
+  // Unset/Default -> falls back to upstream's own default (false);
+  // VerticalTabController::SupportsBraveVerticalTabs() only considers the
+  // switch value, and having the pref turned on simultaneously would cause
+  // crash.
+  prefs->ClearPref(prefs::kVerticalTabsEnabled);
 }
 #endif  // !BUILDFLAG(IS_ANDROID)
 
