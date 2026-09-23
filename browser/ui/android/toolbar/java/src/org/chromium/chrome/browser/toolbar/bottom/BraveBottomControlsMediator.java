@@ -38,6 +38,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
             ObservableSuppliers.createNonNull(false);
     private final int mBottomControlsHeightSingle;
     private final int mBottomControlsHeightDouble;
+    private final @LayerType int mLayerType;
     private boolean mTabGroupUiRequestedVisible;
 
     BraveBottomControlsMediator(
@@ -73,10 +74,18 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
 
         mBottomControlsHeightSingle = bottomControlsHeight;
         mBottomControlsHeightDouble = bottomControlsHeight * 2;
+        mLayerType = layerType;
     }
 
     @Override
     public void setBottomControlsVisible(boolean visible) {
+        // Bytecode swaps in this class for every layer, but only the tab strip layer shares its
+        // controls with the tab groups bar. Others, such as the Android bottom bar, must not be
+        // hidden by the tab groups settings.
+        if (mLayerType != LayerType.TABSTRIP_TOOLBAR) {
+            super.setBottomControlsVisible(visible);
+            return;
+        }
         mTabGroupUiRequestedVisible = visible;
         boolean tabGroupUiVisible = isTabGroupUiEffectivelyVisible();
         mTabGroupUiVisibleSupplier.set(tabGroupUiVisible);
@@ -108,6 +117,7 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
      * tab switch. Called when one of those switches changes.
      */
     public void onTabGroupsSettingsChanged() {
+        if (mLayerType != LayerType.TABSTRIP_TOOLBAR) return;
         setBottomControlsVisible(mTabGroupUiRequestedVisible);
     }
 

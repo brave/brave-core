@@ -61,25 +61,55 @@ public class BraveBottomControlsMediatorTest {
         when(mBottomControlsStacker.getBrowserControls()).thenReturn(mBrowserControlsStateProvider);
 
         mModel = new PropertyModel.Builder(BottomControlsProperties.ALL_KEYS).build();
-        mMediator =
-                new BraveBottomControlsMediator(
-                        mWindowAndroid,
-                        mModel,
-                        mBottomControlsStacker,
-                        // Not a mock: NullableObservableSupplier is @DoNotMock, so supply the
-                        // persistent fullscreen state instead.
-                        new BrowserStateBrowserControlsVisibilityDelegate(
-                                ObservableSuppliers.createNonNull(false)),
-                        mFullscreenManager,
-                        LayerType.BOTTOM_TOOLBAR,
-                        mContentDelegateSupplier,
-                        mTabObscuringHandler,
-                        BOTTOM_CONTROLS_HEIGHT,
-                        /* bottomControlsShadowHeight= */ 0,
-                        ObservableSuppliers.createNonNull(PanelState.UNDEFINED),
-                        ObservableSuppliers.alwaysNull(),
-                        ObservableSuppliers.createNullable(),
-                        /* readAloudRestoringSupplier= */ () -> false);
+        // The layer BraveToolbarManager builds Brave's bottom controls with.
+        mMediator = createMediator(LayerType.TABSTRIP_TOOLBAR);
+    }
+
+    private BraveBottomControlsMediator createMediator(@LayerType int layerType) {
+        return new BraveBottomControlsMediator(
+                mWindowAndroid,
+                mModel,
+                mBottomControlsStacker,
+                // Not a mock: NullableObservableSupplier is @DoNotMock, so supply the persistent
+                // fullscreen state instead.
+                new BrowserStateBrowserControlsVisibilityDelegate(
+                        ObservableSuppliers.createNonNull(false)),
+                mFullscreenManager,
+                layerType,
+                mContentDelegateSupplier,
+                mTabObscuringHandler,
+                BOTTOM_CONTROLS_HEIGHT,
+                /* bottomControlsShadowHeight= */ 0,
+                ObservableSuppliers.createNonNull(PanelState.UNDEFINED),
+                ObservableSuppliers.alwaysNull(),
+                ObservableSuppliers.createNullable(),
+                /* readAloudRestoringSupplier= */ () -> false);
+    }
+
+    // Bytecode swaps this mediator in for the Android bottom bar's layer too, which the tab groups
+    // switches have nothing to do with.
+    @Test
+    public void testBottomAppBar_shownWithTabGroupsBarAndTabGroupsDisabled() {
+        setTabGroupsBarEnabled(false);
+        setTabGroupsEnabled(false);
+        mMediator = createMediator(LayerType.BOTTOM_APP_BAR);
+
+        mMediator.setBottomControlsVisible(true);
+        assertTrue(mModel.get(BottomControlsProperties.COMPOSITED_VIEW_VISIBLE));
+
+        mMediator.setBottomControlsVisible(false);
+        assertFalse(mModel.get(BottomControlsProperties.COMPOSITED_VIEW_VISIBLE));
+    }
+
+    @Test
+    public void testBottomAppBar_notHiddenByTabGroupsSettingsChange() {
+        mMediator = createMediator(LayerType.BOTTOM_APP_BAR);
+        mMediator.setBottomControlsVisible(true);
+
+        setTabGroupsBarEnabled(false);
+        mMediator.onTabGroupsSettingsChanged();
+        assertTrue(mModel.get(BottomControlsProperties.COMPOSITED_VIEW_VISIBLE));
+        assertFalse(mMediator.getTabGroupUiVisibleSupplier().get());
     }
 
     @Test
