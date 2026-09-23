@@ -203,18 +203,14 @@ PsstTabWebContentsObserver::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
-void PsstTabWebContentsObserver::CancelInFlightFlow(
-    bool reset_current_page_processing) {
+void PsstTabWebContentsObserver::CancelInFlightFlow() {
   script_injector_remote_.reset();
   page_weak_factory_.InvalidateWeakPtrs();
-
-  if (reset_current_page_processing) {
-    should_process_current_page_ = false;
-  }
+  should_process_current_page_ = false;
 }
 
 void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
-  CancelInFlightFlow(true);
+  CancelInFlightFlow();
 }
 
 void PsstTabWebContentsObserver::DidFinishNavigation(
@@ -404,7 +400,7 @@ void PsstTabWebContentsObserver::OnPsstEnableChange(bool new_value) {
   if (new_value) {
     return;
   }
-  CancelInFlightFlow(true);
+  CancelInFlightFlow();
 }
 
 }  // namespace psst

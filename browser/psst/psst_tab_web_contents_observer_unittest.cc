@@ -1276,7 +1276,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
 }
 
-// Clicking Cancel while the flow is running calls CancelInFlightFlow(false)
+// Clicking Cancel while the flow is running calls CancelInFlightFlow()
 // (see PsstUiDesktopPresenter::PsstUiDesktopDelegate::CancelInFlightFlow).
 // Once called, a policy script result that arrives afterwards - simulating a
 // script that was already in flight when the user cancelled - must be
@@ -1337,7 +1337,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   ASSERT_FALSE(held_policy_script_callback.is_null());
 
   // The user clicks Cancel while the policy script is still in flight.
-  observer()->CancelInFlightFlow(/*reset_current_page_processing=*/false);
+  observer()->CancelInFlightFlow();
 
   // A result that would otherwise report completion and navigate the tab to
   // `next_url` must be dropped instead, since the flow was cancelled.

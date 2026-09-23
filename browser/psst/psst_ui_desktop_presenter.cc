@@ -113,7 +113,6 @@ PsstUiDesktopPresenter::PsstUiDesktopDelegate::GetInitiatorWebContents() const {
 
 void PsstUiDesktopPresenter::PsstUiDesktopDelegate::OnDialogClosed(
     const std::string& /* json_retval */) {
-  CancelInFlightFlow();
   auto* dialog_web_contents = GetDialogWebContents(web_dialog_delegate_);
   if (!dialog_web_contents) {
     return;
@@ -163,7 +162,7 @@ void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CancelInFlightFlow() {
     return;
   }
 
-  observer->CancelInFlightFlow(false);
+  observer->CancelInFlightFlow();
 }
 
 PsstUiDesktopPresenter::PsstUiDesktopPresenter(
