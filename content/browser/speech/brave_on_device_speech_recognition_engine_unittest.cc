@@ -22,6 +22,7 @@
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
+#include "brave/components/local_ai/core/test/fake_asr_session.h"
 #include "components/speech/audio_buffer.h"
 #include "content/browser/speech/speech_recognition_engine.h"
 #include "content/public/browser/browser_thread.h"
@@ -48,62 +49,12 @@ namespace {
 
 constexpr int kSampleRateHz = 16000;
 
-// The worker end of one recognition. Members are public so tests can drive and
-// inspect the pipes without an accessor for each one.
-class FakeAsrSession : public local_ai::mojom::AsrSession,
-                       public on_device_model::mojom::AsrStreamInput {
- public:
-  mojo::PendingRemote<local_ai::mojom::AsrSession> BindRemote() {
-    return session_receiver.BindNewPipeAndPassRemote();
-  }
-
-  // local_ai::mojom::AsrSession:
-  void Start(on_device_model::mojom::AsrStreamOptionsPtr start_options,
-             mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput>
-                 pending_stream,
-             mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder>
-                 pending_responder) override {
-    options = std::move(start_options);
-    stream_receiver.Bind(std::move(pending_stream));
-    responder.Bind(std::move(pending_responder));
-    started.SetValue();
-  }
-
-  // on_device_model::mojom::AsrStreamInput:
-  void AddAudioChunk(on_device_model::mojom::AudioDataPtr data) override {
-    audio_chunk.SetValue(std::move(data));
-  }
-
-  void SendResult(const std::string& transcript, bool is_final) {
-    std::vector<on_device_model::mojom::SpeechRecognitionResultPtr> results;
-    results.push_back(on_device_model::mojom::SpeechRecognitionResult::New(
-        transcript, is_final));
-    responder->OnResponse(std::move(results));
-    responder.FlushForTesting();
-  }
-
-  // Reports that nothing was recognized, then waits for delivery. This result
-  // is what ends a session with no transcript, so it must survive filtering.
-  void SendEmptyResult() {
-    responder->OnResponse(
-        std::vector<on_device_model::mojom::SpeechRecognitionResultPtr>());
-    responder.FlushForTesting();
-  }
-
-  base::test::TestFuture<void> started;
-  base::test::TestFuture<on_device_model::mojom::AudioDataPtr> audio_chunk;
-  on_device_model::mojom::AsrStreamOptionsPtr options;
-  mojo::Receiver<local_ai::mojom::AsrSession> session_receiver{this};
-  mojo::Receiver<on_device_model::mojom::AsrStreamInput> stream_receiver{this};
-  mojo::Remote<on_device_model::mojom::AsrStreamResponder> responder;
-};
-
 // Stands in for BraveContentBrowserClient, which always hands out a session.
 // Built without one, it stands in for an embedder that does not implement
 // GetAsrSession, whose base version answers with an invalid remote.
 class FakeContentBrowserClient : public ContentBrowserClient {
  public:
-  explicit FakeContentBrowserClient(FakeAsrSession* session)
+  explicit FakeContentBrowserClient(local_ai::FakeAsrSession* session)
       : session_(session) {}
 
   mojo::PendingRemote<local_ai::mojom::AsrSession> GetAsrSession() override {
@@ -118,7 +69,7 @@ class FakeContentBrowserClient : public ContentBrowserClient {
   base::test::TestFuture<void> requested;
 
  private:
-  raw_ptr<FakeAsrSession> session_ = nullptr;
+  raw_ptr<local_ai::FakeAsrSession> session_ = nullptr;
 };
 
 // SpeechRecognizerImpl is the real delegate. Strict, so an unexpected result or
@@ -155,7 +106,7 @@ class BraveOnDeviceSpeechRecognitionEngineTest : public testing::Test {
   // Builds the engine against a client that hands out `session`, or that has
   // none to hand out when it is null. The session is asked for on the UI
   // thread, so it has not arrived when this returns.
-  void CreateEngine(FakeAsrSession* session,
+  void CreateEngine(local_ai::FakeAsrSession* session,
                     const std::string& language = "en-US",
                     bool interim_results = false) {
     client_ = std::make_unique<FakeContentBrowserClient>(session);
@@ -203,7 +154,7 @@ class BraveOnDeviceSpeechRecognitionEngineTest : public testing::Test {
 // only then does ending recognition drop the session remote, which is what
 // releases the worker.
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, NormalFlow) {
-  FakeAsrSession session;
+  local_ai::FakeAsrSession session;
   CreateEngine(&session, "en-US", /*interim_results=*/true);
   SetAudioParameters();
   ASSERT_TRUE(session.started.Wait());
@@ -245,7 +196,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, NormalFlow) {
 // the page's choice is the engine's job.
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
        InterimResultsDroppedWhenNotRequested) {
-  FakeAsrSession session;
+  local_ai::FakeAsrSession session;
   CreateEngine(&session, "en-US", /*interim_results=*/false);
   SetAudioParameters();
   ASSERT_TRUE(session.started.Wait());
@@ -263,7 +214,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
 // a provisional is unwanted even from a session that asked for interims.
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
        InterimResultsDroppedAfterAudioEnds) {
-  FakeAsrSession session;
+  local_ai::FakeAsrSession session;
   CreateEngine(&session, "en-US", /*interim_results=*/true);
   SetAudioParameters();
   ASSERT_TRUE(session.started.Wait());
@@ -282,7 +233,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
 // interims must not swallow it.
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
        EmptyResultSurvivesInterimFiltering) {
-  FakeAsrSession session;
+  local_ai::FakeAsrSession session;
   CreateEngine(&session, "en-US", /*interim_results=*/false);
   SetAudioParameters();
   ASSERT_TRUE(session.started.Wait());
@@ -294,7 +245,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
 // The stream needs both the session remote and the audio parameters, which
 // arrive asynchronously. The next two cover each arrival order.
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, StartsWhenSessionArrivesLast) {
-  FakeAsrSession session;
+  local_ai::FakeAsrSession session;
   CreateEngine(&session);
 
   // The session request is still in flight, so the parameters cannot start it.
@@ -306,7 +257,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, StartsWhenSessionArrivesLast) {
 
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
        StartsWhenAudioParametersArriveLast) {
-  FakeAsrSession session;
+  local_ai::FakeAsrSession session;
   CreateEngine(&session);
 
   // The session is in, so the parameters are what is missing.
@@ -319,7 +270,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
 }
 
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, EmptyLanguageIsNotForwarded) {
-  FakeAsrSession session;
+  local_ai::FakeAsrSession session;
   CreateEngine(&session, /*language=*/"");
   SetAudioParameters();
 
@@ -329,7 +280,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, EmptyLanguageIsNotForwarded) {
 
 // A second set of audio parameters must not start a second stream.
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, StartsOnlyOnce) {
-  FakeAsrSession session;
+  local_ai::FakeAsrSession session;
   CreateEngine(&session);
   SetAudioParameters();
   ASSERT_TRUE(session.started.Wait());
@@ -348,7 +299,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, StartsOnlyOnce) {
 // the engine ends recognition the way upstream does, with an empty result.
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
        AudioChunksEndedBeforeSessionArrives) {
-  FakeAsrSession session;
+  local_ai::FakeAsrSession session;
   CreateEngine(&session);
   SetAudioParameters();
 
@@ -365,7 +316,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
 // dropped rather than started.
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTest,
        EndRecognitionBeforeSessionArrives) {
-  FakeAsrSession session;
+  local_ai::FakeAsrSession session;
   CreateEngine(&session);
   SetAudioParameters();
 
@@ -407,7 +358,7 @@ TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, InvalidSessionIsNotBound) {
 // session. AudioChunksEnded relies on this being what unblocks a recognizer
 // waiting for a final result that is never coming.
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTest, WorkerDeathReportsError) {
-  FakeAsrSession session;
+  local_ai::FakeAsrSession session;
   CreateEngine(&session);
   SetAudioParameters();
   ASSERT_TRUE(session.started.Wait());
@@ -442,7 +393,7 @@ class BraveOnDeviceSpeechRecognitionEngineTimeoutTest
 
 TEST_F(BraveOnDeviceSpeechRecognitionEngineTimeoutTest,
        SilentWorkerEndsRecognition) {
-  FakeAsrSession session;
+  local_ai::FakeAsrSession session;
   CreateEngine(&session);
   SetAudioParameters();
   ASSERT_TRUE(session.started.Wait());
