@@ -1429,7 +1429,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
  
  import {html} from '//resources/lit/v3_0/lit.rollup.js';
  
-@@ -9,101 +7,46 @@
+@@ -9,93 +7,39 @@
  export function getHtml(this: PowerBookmarksAppElement) {
    // clang-format off
    return html\`<!--_html_template_start_-->
@@ -1538,16 +1538,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
        </div>
      </cr-toolbar-selection-overlay>
    </sp-footer>
- </div>
- 
--<power-bookmarks-edit-dialog id="editDialog"
--    @save="\${this.onEditDialogSave_}">
-+<power-bookmarks-edit-dialog id="editDialog" @save="\${this.onEditDialogSave_}">
- </power-bookmarks-edit-dialog>
- 
- <cr-dialog id="disabledFeatureDialog">
-   <div slot="body" class="dialog-body">
-@@ -116,14 +59,9 @@
+@@ -112,14 +56,9 @@
      </cr-button>
    </div>
  </cr-dialog>
