@@ -16,6 +16,9 @@ import android.net.Uri;
 
 import androidx.test.filters.SmallTest;
 
+import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
+import org.chromium.url.GURL;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -24,10 +27,6 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
-
-import org.chromium.base.test.BaseRobolectricTestRunner;
-import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
-import org.chromium.url.GURL;
 
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
@@ -215,6 +214,63 @@ public class BraveIntentHandlerUnitTest {
         String result = BraveIntentHandler.extractUrlFromIntent(intent);
 
         assertEquals("https://search.brave.com/search?q=a%26b%3Dc&source=android-widget", result);
+    }
+
+    @Test
+    @SmallTest
+    public void maybeReplaceBraveSearchSource_quickSearch_rewritesSource() {
+        String result =
+                BraveIntentHandler.maybeReplaceBraveSearchSource(
+                        "https://search.brave.com/search?q=test&source=android",
+                        BraveIntentHandler.ANDROID_QUICK_SEARCH);
+
+        assertEquals("https://search.brave.com/search?q=test&source=android-quicksearch", result);
+    }
+
+    @Test
+    @SmallTest
+    public void maybeReplaceBraveSearchSource_quickSearch_preservesLiteralPlusInQuery() {
+        String result =
+                BraveIntentHandler.maybeReplaceBraveSearchSource(
+                        "https://search.brave.com/search?q=C%2B%2B+tutorial&source=android",
+                        BraveIntentHandler.ANDROID_QUICK_SEARCH);
+
+        assertEquals(
+                "https://search.brave.com/search?q=C%2B%2B+tutorial&source=android-quicksearch",
+                result);
+    }
+
+    @Test
+    @SmallTest
+    public void maybeReplaceBraveSearchSource_nonBraveSearchHost_isUnchanged() {
+        String url = "https://example.com/search?q=test&source=android";
+
+        assertEquals(
+                url,
+                BraveIntentHandler.maybeReplaceBraveSearchSource(
+                        url, BraveIntentHandler.ANDROID_QUICK_SEARCH));
+    }
+
+    @Test
+    @SmallTest
+    public void maybeReplaceBraveSearchSource_sourceNotAndroid_isUnchanged() {
+        String url = "https://search.brave.com/search?q=test&source=web";
+
+        assertEquals(
+                url,
+                BraveIntentHandler.maybeReplaceBraveSearchSource(
+                        url, BraveIntentHandler.ANDROID_QUICK_SEARCH));
+    }
+
+    @Test
+    @SmallTest
+    public void maybeReplaceBraveSearchSource_noSourceParam_isUnchanged() {
+        String url = "https://search.brave.com/search?q=test";
+
+        assertEquals(
+                url,
+                BraveIntentHandler.maybeReplaceBraveSearchSource(
+                        url, BraveIntentHandler.ANDROID_QUICK_SEARCH));
     }
 
     @Test
