@@ -6,7 +6,6 @@
 #include "brave/browser/psst/psst_ui_desktop_presenter.h"
 
 #include "brave/browser/psst/psst_infobar_delegate.h"
-#include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #include "brave/browser/ui/views/page_action/psst_action_controller.h"
 #include "brave/components/psst/core/common/constants.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
@@ -14,7 +13,6 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 #include "content/public/browser/web_contents.h"
-#include "brave/browser/ui/tabs/public/brave_tab_features.h"
 namespace {
 
 constexpr int kDialogMinHeight = 100;
@@ -136,34 +134,8 @@ void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CloseDialog() {
     return;
   }
 
-  CancelLogicalFlow();
   web_dialog_delegate_->OnDialogCloseFromWebUI();
   web_dialog_delegate_->GetWebDialogDelegate()->OnDialogClosed({});
-}
-
-void PsstUiDesktopPresenter::PsstUiDesktopDelegate::CancelLogicalFlow() {
-  auto* wc = initiator_web_contents_.get();
-  if (!wc) {
-    return;
-  }
-
-  auto* tab = tabs::TabInterface::MaybeGetFromContents(wc);
-  if (!tab) {
-    return;
-  }
-
-  auto* brave_features =
-              tabs::BraveTabFeatures::FromTabFeatures(tab->GetTabFeatures());
-  if (!brave_features) {
-    return;
-  }
-
-  auto* observer = brave_features->psst_web_contents_observer();
-  if (!observer) {
-    return;
-  }
-
-  observer->CancelLogicalFlow();
 }
 
 PsstUiDesktopPresenter::PsstUiDesktopPresenter(
