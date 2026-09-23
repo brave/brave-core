@@ -41,6 +41,7 @@ struct ReaderModeUtils {
       "%READER-DIRECTION%": readabilityResult.direction.htmlEntityEncodedString,
       "%READER-MESSAGE%": "",
       "%READER-ORIGINAL-PAGE-META-TAGS%": readabilityResult.cspMetaTags
+        .flatMap { ReaderModeHandler.adoptedImageSourcePolicyContents(from: $0) }
         .map {
           "<meta http-equiv=\"Content-Security-Policy\" content=\"\($0.htmlEntityEncodedString)\">"
         }
