@@ -8,7 +8,6 @@
 #include <string>
 #include <string_view>
 
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/strings/strcat.h"
@@ -24,6 +23,7 @@
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/webui/webui_util.h"
 #include "url/gurl.h"
 #include "url/url_constants.h"
