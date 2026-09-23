@@ -93,6 +93,7 @@ source_set("unit_tests") {
 source_set("browser_tests") {
   testonly = true
   sources = [
+    "brave_history_ui_embeddings_browsertest.cc",
     "history_embeddings_omnibox_browsertest.cc",
     "open_tab_search_browsertest.cc",
   ]
@@ -110,8 +111,11 @@ source_set("browser_tests") {
     "//chrome/browser/history",
     "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles",
+    "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/tabs:tab_strip",
     "//chrome/browser/ui/tabs:tabs_public",
+    "//chrome/common:constants",
     "//chrome/test:test_support",
     "//components/history/core/browser",
     "//components/history_embeddings/core",

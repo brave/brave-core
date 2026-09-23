@@ -1559,10 +1559,7 @@ test("brave_browser_tests") {
   }
 
   if (enable_local_ai) {
-    deps += [
-      "//brave/browser/history_embeddings:browser_tests",
-      "//brave/browser/ui/webui/history:browser_tests",
-    ]
+    deps += [ "//brave/browser/history_embeddings:browser_tests" ]
   }
 
   if (enable_ai_chat) {

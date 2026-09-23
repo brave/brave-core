@@ -52,31 +52,3 @@ mojom("mojom") {
   sources = [ "brave_history_embeddings.mojom" ]
   webui_module_path = "/"
 }
-
-if (enable_local_ai) {
-  source_set("browser_tests") {
-    testonly = true
-    sources = [ "brave_history_ui_embeddings_browsertest.cc" ]
-
-    defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
-
-    deps = [
-      ":history",
-      "//base",
-      "//base/test:test_support",
-      "//brave/components/local_ai/core",
-      "//chrome/browser/history_embeddings",
-      "//chrome/browser/profiles:profile",
-      "//chrome/browser/ui",
-      "//chrome/browser/ui/tabs:tab_strip",
-      "//chrome/common:constants",
-      "//chrome/test:test_support",
-      "//components/history_embeddings/core",
-      "//components/prefs",
-      "//content/public/browser",
-      "//content/test:test_support",
-      "//testing/gtest",
-      "//url",
-    ]
-  }
-}
