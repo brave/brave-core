@@ -57,9 +57,16 @@ function responseCodeClassName(line: string) {
 
 // Not every real failure is logged at ERROR level (e.g. some Rewards
 // diagnostic log lines report "Failed to ..." at a lower severity), so
-// matching the message text catches those too, not just the level tag.
+// matching the message text catches those too, not just the level tag. Also
+// catches a 5xx or failed-to-connect (negative net:: code) response, since
+// those are genuine failures too; a 4xx is a client error, not treated as
+// one here since it's often just an expected outcome (e.g. not found).
 function isErrorLine(line: string) {
-  return line.includes('ERROR') || line.includes('Failed')
+  if (line.includes('ERROR') || line.includes('Failed')) {
+    return true
+  }
+  const match = line.match(RESPONSE_CODE_REGEX)
+  return !!match && (match[1][0] === '5' || match[1][0] === '-')
 }
 
 // Highlights ERROR/WARNING lines and bolds request/response markers

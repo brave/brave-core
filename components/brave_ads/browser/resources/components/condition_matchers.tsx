@@ -126,6 +126,32 @@ function matchesClassName(row: ConditionMatcher) {
   return 'diagnostic-muted'
 }
 
+// Same states as `matchesClassName` above, as an icon instead of colored
+// text: a plain check/cross for Yes/No, and a warning triangle (orange for
+// Unknown, red for Invalid) for the two configuration-problem states.
+function matchesIcon(row: ConditionMatcher) {
+  if (row['Current Value'] === UNKNOWN_CURRENT_VALUE &&
+      !isNotOperatorPrefPath(row['Pref Path'])) {
+    return (
+      <Icon
+        name='warning-triangle-filled'
+        className='icon-warning'
+        title='Unknown value'
+      />
+    )
+  }
+  if (row.Matches === 'Invalid') {
+    return (
+      <Icon
+        name='warning-triangle-filled'
+        className='icon-error'
+        title='Invalid condition'
+      />
+    )
+  }
+  return <MatchIcon isMatch={row.Matches === 'Yes'} />
+}
+
 // Copyable so a value can be pasted straight into the "Test a condition
 // matcher" form's matching input below.
 const COPYABLE_COLUMNS = new Set<keyof ConditionMatcher>([
@@ -190,7 +216,9 @@ function ConditionMatchersTable({ data }: { data: ConditionMatcher[] }) {
                 >
                   {header === 'Pref Path'
                     ? renderPrefPath(String(displayValue))
-                    : displayValue}
+                    : header === 'Matches'
+                      ? matchesIcon(row)
+                      : displayValue}
                 </td>
               )
             })}
@@ -355,7 +383,7 @@ function TestConditionMatcherForm() {
             Pref Path
             {pathExists && (
               <span className='diagnostic-muted'>
-                {' '}({currentValue})
+                {' '}(current value: {currentValue})
               </span>
             )}
           </span>
@@ -412,7 +440,7 @@ function TestConditionMatcherForm() {
                   value={testValue}
                   autoComplete='off'
                   spellCheck={false}
-                  placeholder='Leave blank to match against the actual value'
+                  placeholder='Blank to match current value'
                   onChange={(event) => setTestValue(event.target.value)}
                 />
                 {testValueTimestamp && (
@@ -468,7 +496,9 @@ export function ConditionMatchers() {
       <TabHeader
         title='Condition matchers'
         description="Rules that decide whether an ad is eligible to be
-          shown, and whether each rule currently matches on this device."
+          shown, matched with glob wildcards (*, ?) by default or RE2
+          regex when the condition uses regex-only syntax, and whether
+          each rule currently matches on this device."
         onRefresh={actions.loadAdsInternals}
       />
 

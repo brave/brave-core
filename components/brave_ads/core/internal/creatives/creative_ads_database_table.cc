@@ -103,6 +103,7 @@ void CreativeAds::GetForCreativeInstanceId(
   const CreativeAdInfo creative_ad;
 
   if (creative_instance_id.empty()) {
+    BLOG(0, "Failed to get creative ad due to a missing creative instance id");
     return std::move(callback).Run(/*success=*/false, creative_instance_id,
                                    creative_ad);
   }

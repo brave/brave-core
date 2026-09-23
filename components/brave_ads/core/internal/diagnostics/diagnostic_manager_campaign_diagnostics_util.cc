@@ -7,6 +7,7 @@
 
 #include <algorithm>
 #include <optional>
+#include <map>
 #include <string>
 #include <utility>
 #include <vector>
@@ -125,7 +126,9 @@ struct CreativeSetInfo {
   // segment (see `creatives_builder.cc`), so the distinct segments across
   // its rows are its targeting list.
   base::flat_set<std::string> segments;
-  absl::flat_hash_map<std::string, CreativeInfo> creatives_by_instance_id;
+  // Ordered by key rather than `absl::flat_hash_map` so the UI's rendered
+  // order is stable across repeated loads of the same underlying data.
+  std::map<std::string, CreativeInfo> creatives_by_instance_id;
 };
 
 // Aggregates every creative ad belonging to the same campaign into a single
@@ -140,7 +143,9 @@ struct CampaignInfo {
   int priority = 0;
   double pass_through_rate = 0.0;
   std::string metric_type;
-  absl::flat_hash_map<std::string, CreativeSetInfo> creative_sets_by_id;
+  // Ordered by key rather than `absl::flat_hash_map` so the UI's rendered
+  // order is stable across repeated loads of the same underlying data.
+  std::map<std::string, CreativeSetInfo> creative_sets_by_id;
   // The catalog's own geo-targeting for this campaign, as opposed to the
   // device's own locale-derived country; shown on the Resources tab's
   // Catalog card since it's the more meaningful "what region is this data
@@ -224,7 +229,9 @@ void BuildCampaigns(GetCampaignsDiagnosticsCallback callback,
       BuildServedImpressionTimestamps(ad_events);
 
   size_t active_ad_count = 0;
-  absl::flat_hash_map<std::string, CampaignInfo> campaigns;
+  // Ordered by key rather than `absl::flat_hash_map` so the UI's rendered
+  // order is stable across repeated loads of the same underlying data.
+  std::map<std::string, CampaignInfo> campaigns;
 
   for (const auto& creative_ad : creative_ads) {
     if (!exclusion_rule.ShouldInclude(creative_ad)) {
