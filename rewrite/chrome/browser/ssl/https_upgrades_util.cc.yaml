@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Enable HTTPS-Only Mode when Shields forces HTTPS for the URL.
+
+      Brave's HTTPS-by-default Shields setting can require HTTPS for a site
+      even if the upstream pref is off.
+    regex:
+      pattern: 'prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)'
+      replace:
+        'prefs->GetBooleanOr(prefs::kHttpsOnlyModeEnabled,
+        NormalWindowHttpsOnly(url, profile))'
+
+  - description: |-
+      Enable HTTPS-First Mode in Incognito when Shields forces HTTPS for the URL.
+    regex:
+      pattern: 'prefs->GetBoolean(prefs::kHttpsFirstModeIncognito)'
+      replace:
+        'prefs->GetBooleanOr(prefs::kHttpsFirstModeIncognito,
+        NormalWindowHttpsOnly(url, profile))'
