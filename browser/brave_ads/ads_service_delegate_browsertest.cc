@@ -17,8 +17,9 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/lifetime/browser_shutdown.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/tab_list/tab_list_interface.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -70,7 +71,7 @@ IN_PROC_BROWSER_TEST_F(BraveAdsServiceDelegateBrowserTest,
   delegate().OpenNewTabWithUrl(url);
 
   content::WebContents* const web_contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
+      chrome_test_utils::GetActiveWebContents(this);
   ASSERT_TRUE(web_contents);
   EXPECT_TRUE(content::WaitForLoadStop(web_contents));
   EXPECT_EQ(url, web_contents->GetLastCommittedURL());
@@ -80,18 +81,18 @@ IN_PROC_BROWSER_TEST_F(BraveAdsServiceDelegateBrowserTest,
                        OpenNewTabWithUrlDoesNotNavigateAfterShutdownStarted) {
   const GURL url = embedded_test_server()->GetURL("/title1.html");
   content::WebContents* const web_contents_before =
-      browser()->tab_strip_model()->GetActiveWebContents();
+      chrome_test_utils::GetActiveWebContents(this);
   ASSERT_TRUE(web_contents_before);
-  const int tab_count_before = browser()->tab_strip_model()->count();
+  const int tab_count_before = GetTabListInterface()->GetTabCount();
 
   browser_shutdown::OnShutdownStarting(
       browser_shutdown::ShutdownType::kWindowClose);
 
   delegate().OpenNewTabWithUrl(url);
 
-  EXPECT_EQ(tab_count_before, browser()->tab_strip_model()->count());
+  EXPECT_EQ(tab_count_before, GetTabListInterface()->GetTabCount());
   EXPECT_EQ(web_contents_before,
-            browser()->tab_strip_model()->GetActiveWebContents());
+            chrome_test_utils::GetActiveWebContents(this));
   EXPECT_NE(url, web_contents_before->GetLastCommittedURL());
 
   browser_shutdown::ResetShutdownGlobalsForTesting();

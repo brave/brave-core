@@ -167,6 +167,7 @@ source_set("browser_tests") {
     "//brave/components/brave_ads/core/browser/service:test_support",
     "//chrome/browser",
     "//chrome/browser/lifetime",
+    "//chrome/browser/tab_list",
     "//chrome/test:test_support",
   ]
 
