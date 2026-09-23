@@ -138,8 +138,16 @@ constexpr char kPsstCrxUserScriptTemplate[] = R"(
   }
   const curUrl = window.location.href
   console.log("[PSST USER SCRIPT] Current URL: " + curUrl);
+
+  // Mirrors real per-site scripts (e.g. linkedin/user.js): initial_execution
+  // is true only for the very first execution of the flow - before the
+  // policy script has ever saved state - and false for every later one,
+  // including the return to the start page once all tasks are done.
+  const initial_execution = sessionStorage.getItem('psst') === null;
+
   return {
     user_id: getUserId(),
+    initial_execution,
     share_experience_link: "https://$2:$1/",
     site_name: '$2',
     tasks: [
@@ -180,7 +188,7 @@ const PSST_INITIAL_EXECUTION_FLAG =
 const PSST_CHECK_SETTINGS_LOADED =
   window.__bravePsstParams.psst_settings_status ?? null;
 
-const PSST_LOCALSTORAGE_KEY = 'psst';
+const PSST_SESSIONSTORAGE_KEY = 'psst';
 
 // State of operations
 const psstState = {
@@ -249,6 +257,12 @@ const calculateProgress = (psstObj) => {
   return total === 0 ? 0 : Math.round((processed / total) * 100);
 };
 
+const cleanPsstDataStorage = () => {
+  try {
+    sessionStorage.removeItem(PSST_STORAGE_KEY);
+  } catch (error) {}
+}
+
 const getResult = (psst, nextUrl) => {
   const result_value = {
     psst: psst,
@@ -275,8 +289,8 @@ const createInitData = () => {
 
 const savePsstData = (psst) => {
   // Save the psst object to local storage.
-  globalThis.parent.localStorage.setItem(
-    PSST_LOCALSTORAGE_KEY,
+  globalThis.parent.sessionStorage.setItem(
+    PSST_SESSIONSTORAGE_KEY,
     JSON.stringify(psst)
   );
 };
@@ -302,16 +316,12 @@ const moveCurrentTask = (psstObj, errorMessage) => {
 
 (async () => {
   const psstObj = JSON.parse(
-    globalThis.parent.localStorage.getItem(PSST_LOCALSTORAGE_KEY)
+    globalThis.parent.sessionStorage.getItem(PSST_SESSIONSTORAGE_KEY)
   );
   if (!psstObj || PSST_INITIAL_EXECUTION_FLAG) {
     const [psstObj, nextUrl] = createInitData()
     savePsstData(psstObj)
     return getResult(psstObj, nextUrl)
-  }
-
-  if (psstObj.state === psstState.COMPLETED) {
-    return getResult(psstObj, null)
   }
 
   try {
@@ -335,7 +345,13 @@ const moveCurrentTask = (psstObj, errorMessage) => {
   const nextUrl = hasMoreTasks ? next_task.url : psstObj.start_url;
   psstObj.progress = calculateProgress(psstObj)
 
-  savePsstData(psstObj)
+  if (psstObj.state === psstState.COMPLETED) {
+    // Clean up storage on finish
+    cleanPsstDataStorage();
+  } else {
+    savePsstData(psstObj)
+  }
+
   return getResult(psstObj, nextUrl)
 })();
 )";
