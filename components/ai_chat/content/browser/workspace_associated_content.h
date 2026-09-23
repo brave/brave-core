@@ -60,11 +60,20 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
  private:
   // content::WebContentsObserver:
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
+  void DidFinishNavigation(content::NavigationHandle* handle) override;
 
   // Grants the workspace origin File System Access read/write permission, mints
   // a directory handle for |folder_path_|, and delivers it to the page's JS via
   // launchQueue. Runs once the page's main frame has loaded.
   void DeliverDirectoryHandle(content::RenderFrameHost* rfh);
+
+  // As above, read-only, for the viewer document the workspace page frames to
+  // show one of the folder's files. The viewer is a separate origin with none
+  // of this workspace's grants, and it cannot be given this page's handle -
+  // handles cannot cross an origin - so it is given one of its own, which its
+  // service worker reads the file with. Read-only: nothing on that origin has
+  // any business writing to the folder.
+  void DeliverViewerDirectoryHandle(content::RenderFrameHost* rfh);
 
   void OnContentToolsFetched(
       GetContentToolsCallback callback,

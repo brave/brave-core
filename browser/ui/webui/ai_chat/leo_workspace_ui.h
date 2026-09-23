@@ -28,6 +28,8 @@ class LeoWorkspaceUIConfig : public content::WebUIConfig {
   // opting into subdomains means being handed every unclaimed host under this
   // one.
   bool ShouldHandleURL(const GURL& url) override;
+  // Lets the viewer origins' service worker control viewer documents.
+  bool ShouldInterceptNavigationsWithServiceWorker() override;
   std::unique_ptr<content::WebUIController> CreateWebUIController(
       content::WebUI* web_ui,
       const GURL& url) override;
@@ -54,7 +56,11 @@ class LeoWorkspaceUI : public ui::UntrustedWebUIController {
 // from chrome-untrusted://view.<guid>.leo-workspace. Nothing frames it yet.
 // Being a different origin from the workspace it belongs to, it has none of
 // that workspace's File System Access grants, storage or WebMCP, and no other
-// page may frame it. Anything it needs has to cross the frame boundary.
+// page may frame it. Anything it needs has to cross the frame boundary: its
+// service worker turns /files/<path> URLs into READ_FILE postMessage requests
+// to the parent workspace frame, which this controller registers for the
+// origin browser-side, because a chrome-untrusted origin cannot register a
+// worker from JavaScript.
 class LeoWorkspaceViewUI : public ui::UntrustedWebUIController {
  public:
   LeoWorkspaceViewUI(content::WebUI* web_ui, const GURL& url);
@@ -62,6 +68,9 @@ class LeoWorkspaceViewUI : public ui::UntrustedWebUIController {
 
   LeoWorkspaceViewUI(const LeoWorkspaceViewUI&) = delete;
   LeoWorkspaceViewUI& operator=(const LeoWorkspaceViewUI&) = delete;
+
+ private:
+  void RegisterServiceWorker(content::WebUI* web_ui, const GURL& url);
 };
 
 }  // namespace ai_chat
