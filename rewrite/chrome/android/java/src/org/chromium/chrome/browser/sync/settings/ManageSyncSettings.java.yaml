@@ -27,6 +27,24 @@ substitutions:
         \2\3
 
   - description: |-
+      Skip initializing the central account card when there is no primary account
+
+      Brave Sync does not use a Google account, so getPrimaryAccountInfo() is
+      null here and the surrounding assumeNonNull() is a no-op at runtime.
+      BraveManageSyncSettings drops this card anyway, but it can only do so
+      after super.onCreatePreferences() has returned, and initialize() now
+      dereferences the account eagerly instead of at bind time.
+    regex:
+      re_pattern: |-
+        (IdentityManager identityManager = getIdentityManager\(profile\);)\n( *)(centralAccountCardPreference\.initialize\()
+      replace: |-
+        \1
+        \2if (identityManager.getPrimaryAccountInfo() == null) {
+        \2    return;
+        \2}
+        \2\3
+
+  - description: |-
       Use an empty AccountInfo for primaryAccount in updateSyncPreferences
 
       This forces the signed-in account name passed to
