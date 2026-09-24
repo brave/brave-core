@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Construct BraveAppMenu instead of AppMenu.
+
+      Scoped to this single construction site so that
+      AppMenuButton::GetAppMenu() keeps returning AppMenu*, matching its
+      declaration in app_menu_button.h. A blanket AppMenu -> BraveAppMenu
+      rename (e.g. via a chromium_src #define) would also rewrite that
+      return type, breaking the vtable ABI shared with BrowserAppMenuButton
+      and WebAppMenuButton.
+    regex:
+      pattern: 'std::make_unique<AppMenu>'
+      replace: 'std::make_unique<BraveAppMenu>'
