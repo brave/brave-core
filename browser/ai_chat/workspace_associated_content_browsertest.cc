@@ -16,10 +16,12 @@
 #include "base/functional/callback_helpers.h"
 #include "base/location.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_util.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/threading/thread_restrictions.h"
+#include "base/uuid.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/constants.h"
@@ -70,6 +72,20 @@ class WorkspaceAssociatedContentBrowserTest : public InProcessBrowserTest {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
   }
 
+  void TearDownOnMainThread() override {
+    // Each page saves the handle it's given to IndexedDB, which serializes it
+    // asynchronously while committing. Tearing the transaction down mid-commit
+    // trips the dangling pointer detector in IndexedDB's BackingStore (it binds
+    // the external object Unretained, guarded only by a WeakPtr checked inside
+    // the callback), so let every write land before destroying anything.
+    for (const auto& content : contents_) {
+      EXPECT_TRUE(WaitForStoredHandle(content.get()))
+          << "workspace " << content->uuid();
+    }
+    contents_.clear();
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   // Returns a fresh folder, with a file in it, for a workspace to be pointed
   // at. Tests which create more than one workspace need a folder each.
   base::FilePath CreateWorkspaceFolder() {
@@ -82,10 +98,51 @@ class WorkspaceAssociatedContentBrowserTest : public InProcessBrowserTest {
     return folder;
   }
 
-  std::unique_ptr<WorkspaceAssociatedContent> CreateContent(
-      const base::FilePath& folder) {
-    return std::make_unique<WorkspaceAssociatedContent>(
-        folder, browser()->GetProfile(), base::DoNothing());
+  // Creates a workspace for |folder|, owned by the fixture so that it outlives
+  // its page's IndexedDB write (see TearDownOnMainThread()).
+  WorkspaceAssociatedContent* CreateContent(const base::FilePath& folder) {
+    return contents_
+        .emplace_back(std::make_unique<WorkspaceAssociatedContent>(
+            folder, browser()->GetProfile(), base::DoNothing()))
+        .get();
+  }
+
+  // Evaluates to the directory handle |content|'s page has committed to
+  // IndexedDB, waiting for the page to load and save it. A read transaction
+  // can't run until an earlier write to the same store has committed, so once
+  // this sees the handle the write is complete.
+  static constexpr char kGetStoredHandleJs[] = R"JS(
+      (async () => {
+        const getHandle = () => new Promise((resolve, reject) => {
+          const open = indexedDB.open('leo-workspace', 1);
+          open.onerror = () => reject(open.error);
+          open.onupgradeneeded = () => open.result.createObjectStore('handles');
+          open.onsuccess = () => {
+            const db = open.result;
+            const request =
+                db.transaction('handles').objectStore('handles').get('root');
+            request.onerror = () => reject(request.error);
+            request.onsuccess = () => {
+              db.close();
+              resolve(request.result);
+            };
+          };
+        });
+        let handle;
+        while (!(handle = await getHandle())) {
+          await new Promise(resolve => setTimeout(resolve, 10));
+        }
+        return handle;
+      })()
+  )JS";
+
+  [[nodiscard]] static bool WaitForStoredHandle(
+      WorkspaceAssociatedContent* content) {
+    content::WebContents* web_contents = content->GetWebContentsForTesting();
+    return content::WaitForLoadStop(web_contents) &&
+           content::EvalJs(web_contents, base::StrCat({kGetStoredHandleJs,
+                                                       ".then(h => h.kind)"}))
+                   .ExtractString() == "directory";
   }
 
   ContentSetting GetSetting(const GURL& url, ContentSettingsType type) {
@@ -145,25 +202,35 @@ class WorkspaceAssociatedContentBrowserTest : public InProcessBrowserTest {
   base::ScopedTempDir temp_dir_;
 
  private:
+  std::vector<std::unique_ptr<WorkspaceAssociatedContent>> contents_;
   base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
                        LoadsHiddenWorkspacePageForPickedFolder) {
   const base::FilePath folder = CreateWorkspaceFolder();
-  auto content = CreateContent(folder);
+  auto* content = CreateContent(folder);
 
-  EXPECT_EQ(folder, content->folder_path());
+  // The content is identified by workspace://<uuid>, which is what's stored
+  // with the conversation and never loaded.
+  EXPECT_FALSE(content->uuid().empty());
+  EXPECT_EQ(
+      GURL(base::StrCat({kAIChatWorkspaceScheme, url::kStandardSchemeSeparator,
+                         content->uuid()})),
+      content->url());
 
-  // Each workspace is served from its own
+  // Each workspace's page is served from its own
   // chrome-untrusted://<uuid>.leo-workspace subdomain, so no two conversations
   // share an origin (and therefore neither storage nor File System Access
   // grants).
-  const GURL url = content->url();
+  const GURL url = content->page_url();
   EXPECT_TRUE(url.SchemeIs(content::kChromeUIUntrustedScheme));
-  EXPECT_FALSE(content->uuid().empty());
   EXPECT_EQ(content->uuid() + "." + kAIChatLeoWorkspaceUIHost, url.host());
   EXPECT_EQ("/", url.path());
+  // Tools, and so tool permissions, belong to the page's origin, not the
+  // (opaque) origin of the workspace:// URL.
+  EXPECT_EQ(url::Origin::Create(url), content->GetOrigin());
+  EXPECT_FALSE(content->GetOrigin().opaque());
 
   // The page is a headless tool host: it must never be visible to the user.
   content::WebContents* web_contents = content->GetWebContentsForTesting();
@@ -171,7 +238,10 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   EXPECT_EQ(content::Visibility::HIDDEN, web_contents->GetVisibility());
 
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+  // The page is loaded without the folder, so it is never told which folder it
+  // has and cannot ask for a different one.
   EXPECT_EQ(url, web_contents->GetLastCommittedURL());
+  EXPECT_FALSE(web_contents->GetLastCommittedURL().has_query());
 
   // Once loaded, the delegate is a live tool host, so the next generation loop
   // harvests whatever the page registered.
@@ -180,8 +250,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
                        GrantsFileSystemAccessToWorkspaceOriginOnLoad) {
-  auto content = CreateContent(CreateWorkspaceFolder());
-  const GURL workspace_url = content->url();
+  auto* content = CreateContent(CreateWorkspaceFolder());
+  const GURL workspace_url = content->page_url();
   ASSERT_EQ(
       CONTENT_SETTING_ASK,
       GetSetting(workspace_url, ContentSettingsType::FILE_SYSTEM_READ_GUARD));
@@ -200,6 +270,16 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   EXPECT_EQ(
       CONTENT_SETTING_ALLOW,
       GetSetting(workspace_url, ContentSettingsType::FILE_SYSTEM_WRITE_GUARD));
+
+  // The handle the page received is for the folder this content was created
+  // with: read the test file through the handle the page saved to IndexedDB.
+  EXPECT_EQ("hello world",
+            content::EvalJs(content->GetWebContentsForTesting(),
+                            base::StrCat({kGetStoredHandleJs, R"JS(
+          .then(handle => handle.getFileHandle('hello.txt'))
+          .then(file => file.getFile())
+          .then(file => file.text())
+      )JS"})));
 
   // The grant is scoped to this workspace's own origin: it must not extend to
   // the workspace host itself, nor to any other workspace's subdomain.
@@ -225,8 +305,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
 // renderer processes, which is the point of the per-workspace subdomain.
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
                        WorkspacesAreIsolatedFromEachOther) {
-  auto first = CreateContent(CreateWorkspaceFolder());
-  auto second = CreateContent(CreateWorkspaceFolder());
+  auto* first = CreateContent(CreateWorkspaceFolder());
+  auto* second = CreateContent(CreateWorkspaceFolder());
 
   content::WebContents* first_contents = first->GetWebContentsForTesting();
   content::WebContents* second_contents = second->GetWebContentsForTesting();
@@ -239,8 +319,10 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
       second_contents->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   ASSERT_FALSE(first_origin.opaque());
   ASSERT_FALSE(second_origin.opaque());
-  EXPECT_EQ(url::Origin::Create(first->url()), first_origin);
-  EXPECT_EQ(url::Origin::Create(second->url()), second_origin);
+  EXPECT_EQ(url::Origin::Create(first->page_url()), first_origin);
+  EXPECT_EQ(url::Origin::Create(second->page_url()), second_origin);
+  EXPECT_EQ(first->GetOrigin(), first_origin);
+  EXPECT_EQ(second->GetOrigin(), second_origin);
   EXPECT_NE(first_origin, second_origin);
 
   // Distinct sites, so distinct processes.
@@ -255,19 +337,20 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
                        ContributesNoPageTextToTheConversation) {
-  auto content = CreateContent(CreateWorkspaceFolder());
+  auto* content = CreateContent(CreateWorkspaceFolder());
   ASSERT_TRUE(content::WaitForLoadStop(content->GetWebContentsForTesting()));
 
   // The value of this content is its tools, not its text: sending the
   // workspace page's markup to the model would be noise.
   base::test::TestFuture<PageContent> page_content;
   content->GetContent(page_content.GetCallback());
-  EXPECT_EQ(PageContent(), page_content.Get());
+  EXPECT_EQ(PageContent("", mojom::ContentType::Workspace), page_content.Get());
+  EXPECT_TRUE(page_content.Get().content.empty());
 }
 
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
                        ReportsNoToolsBeforeThePageIsReady) {
-  auto content = CreateContent(CreateWorkspaceFolder());
+  auto* content = CreateContent(CreateWorkspaceFolder());
 
   // Before the page loads, GetContentTools must reply synchronously and empty:
   // a late reply for the initial (about:blank) document would clobber the
@@ -281,9 +364,76 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
                        DestroyingContentBeforeLoadDoesNotCrash) {
-  auto content = CreateContent(CreateWorkspaceFolder());
+  // Owned here rather than by the fixture, so it can be destroyed before its
+  // page loads (and so before the page writes to IndexedDB).
+  auto content = std::make_unique<WorkspaceAssociatedContent>(
+      CreateWorkspaceFolder(), browser()->GetProfile(), base::DoNothing());
   // The navigation started in the constructor is still in flight.
   content.reset();
+}
+
+// CreateFromUrl restores a workspace from the workspace://<uuid> URL stored
+// with the conversation, loading its chrome-untrusted page.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       CreateFromUrlRestoresWorkspace) {
+  const std::string uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  const GURL url(base::StrCat(
+      {kAIChatWorkspaceScheme, url::kStandardSchemeSeparator, uuid}));
+  auto content = WorkspaceAssociatedContent::CreateFromUrl(
+      url, browser()->GetProfile(), base::DoNothing());
+  ASSERT_TRUE(content);
+  EXPECT_EQ(uuid, content->uuid());
+  EXPECT_EQ(url, content->url());
+
+  const GURL page_url(base::StrCat({content::kChromeUIUntrustedScheme,
+                                    url::kStandardSchemeSeparator, uuid,
+                                    kAIChatLeoWorkspaceUIHostSuffix, "/"}));
+  EXPECT_EQ(page_url, content->page_url());
+  EXPECT_EQ(url::Origin::Create(page_url), content->GetOrigin());
+
+  content::WebContents* web_contents = content->GetWebContentsForTesting();
+  ASSERT_TRUE(content::WaitForLoadStop(web_contents));
+  EXPECT_EQ(page_url, web_contents->GetLastCommittedURL());
+  EXPECT_TRUE(base::test::RunUntil([&] { return content->tools_attached(); }));
+}
+
+// Stored URLs are read back from the database, so anything that isn't exactly
+// workspace://<uuid> is rejected (returning nullptr, rather than crashing). The
+// uuid becomes a subdomain of the page's origin, so it must be a real one.
+IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
+                       CreateFromUrlRejectsInvalidUrls) {
+  const std::string uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
+  const std::string workspace = base::StrCat(
+      {kAIChatWorkspaceScheme, url::kStandardSchemeSeparator, uuid});
+  for (const GURL& url : {
+           GURL(),
+           // The page's URL is not the workspace's.
+           GURL(base::StrCat({content::kChromeUIUntrustedScheme,
+                              url::kStandardSchemeSeparator, uuid,
+                              kAIChatLeoWorkspaceUIHostSuffix, "/"})),
+           GURL(base::StrCat(
+               {url::kHttpsScheme, url::kStandardSchemeSeparator, uuid})),
+           // Not a uuid.
+           GURL(base::StrCat(
+               {kAIChatWorkspaceScheme, url::kStandardSchemeSeparator})),
+           GURL(base::StrCat(
+               {kAIChatWorkspaceScheme, url::kStandardSchemeSeparator, "abc"})),
+           GURL(base::StrCat({kAIChatWorkspaceScheme,
+                              url::kStandardSchemeSeparator, "evil.", uuid})),
+           GURL(base::StrCat({kAIChatWorkspaceScheme,
+                              url::kStandardSchemeSeparator,
+                              base::ToUpperASCII(uuid)})),
+           // Anything beyond the uuid.
+           GURL(base::StrCat({workspace, "/"})),
+           GURL(base::StrCat({workspace, "/path"})),
+           GURL(base::StrCat({workspace, "?folder=/tmp"})),
+           GURL(base::StrCat({workspace, "#ref"})),
+           GURL(base::StrCat({workspace, ":123"})),
+       }) {
+    EXPECT_FALSE(WorkspaceAssociatedContent::CreateFromUrl(
+        url, browser()->GetProfile(), base::DoNothing()))
+        << url.possibly_invalid_spec();
+  }
 }
 
 // A workspace displays its contents in an iframe served from a further
@@ -291,11 +441,11 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
 // the workspace's File System Access grants and none of its storage.
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
                        WorkspaceFramesItsOwnViewer) {
-  auto content = CreateContent(CreateWorkspaceFolder());
+  auto* content = CreateContent(CreateWorkspaceFolder());
   content::WebContents* web_contents = content->GetWebContentsForTesting();
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
 
-  const GURL viewer_url = ViewerURL(content->url());
+  const GURL viewer_url = ViewerURL(content->page_url());
   ASSERT_EQ(base::StrCat({kAIChatLeoWorkspaceViewUIHostPrefix, content->uuid(),
                           kAIChatLeoWorkspaceUIHostSuffix}),
             viewer_url.host());
@@ -324,14 +474,14 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
 // and no origin in this feature can reach it to exercise it on its own.
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
                        WorkspaceCannotFrameAnotherWorkspacesViewer) {
-  auto first = CreateContent(CreateWorkspaceFolder());
-  auto second = CreateContent(CreateWorkspaceFolder());
+  auto* first = CreateContent(CreateWorkspaceFolder());
+  auto* second = CreateContent(CreateWorkspaceFolder());
   content::WebContents* first_contents = first->GetWebContentsForTesting();
   ASSERT_TRUE(content::WaitForLoadStop(first_contents));
   ASSERT_TRUE(content::WaitForLoadStop(second->GetWebContentsForTesting()));
 
-  ASSERT_TRUE(FrameLoads(first_contents, ViewerURL(first->url())));
-  EXPECT_FALSE(FrameLoads(first_contents, ViewerURL(second->url())));
+  ASSERT_TRUE(FrameLoads(first_contents, ViewerURL(first->page_url())));
+  EXPECT_FALSE(FrameLoads(first_contents, ViewerURL(second->page_url())));
   EXPECT_FALSE(first_contents->IsCrashed());
 }
 
@@ -406,10 +556,10 @@ class WorkspaceAssociatedContentWebMcpBrowserTest
 // accept the per-workspace subdomain the page is actually served from.
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
                        PageCanRegisterToolsFromItsOwnSubdomain) {
-  auto content = CreateContent(CreateWorkspaceFolder());
+  auto* content = CreateContent(CreateWorkspaceFolder());
   content::WebContents* web_contents = content->GetWebContentsForTesting();
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
-  ASSERT_EQ(content->url(), web_contents->GetLastCommittedURL());
+  ASSERT_EQ(content->page_url(), web_contents->GetLastCommittedURL());
 
   // registerTool() rejects with a SecurityError when WebMCP isn't allowed for
   // the document's origin, so the promise resolving is the assertion here.
@@ -429,10 +579,10 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
 // it just because its host ends with the workspace host.
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
                        ViewerCannotRegisterTools) {
-  auto content = CreateContent(CreateWorkspaceFolder());
+  auto* content = CreateContent(CreateWorkspaceFolder());
   content::WebContents* web_contents = content->GetWebContentsForTesting();
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
-  ASSERT_TRUE(FrameLoads(web_contents, ViewerURL(content->url())));
+  ASSERT_TRUE(FrameLoads(web_contents, ViewerURL(content->page_url())));
 
   content::RenderFrameHost* viewer =
       content::ChildFrameAt(web_contents->GetPrimaryMainFrame(), 0);

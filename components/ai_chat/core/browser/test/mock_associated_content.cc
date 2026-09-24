@@ -27,8 +27,14 @@ void MockAssociatedContent::OnNewPage(int64_t navigation_id) {
   AssociatedContentDelegate::OnNewPage(navigation_id);
 }
 
+url::Origin MockAssociatedContent::GetOrigin() const {
+  return origin_ ? *origin_ : AssociatedContentDelegate::GetOrigin();
+}
+
 void MockAssociatedContent::GetContent(GetPageContentCallback callback) {
-  set_cached_page_content(PageContent(text_content_, is_video_));
+  set_cached_page_content(
+      PageContent(text_content_, is_video_ ? mojom::ContentType::VideoTranscript
+                                           : mojom::ContentType::PageContent));
   std::move(callback).Run(cached_page_content_);
 }
 

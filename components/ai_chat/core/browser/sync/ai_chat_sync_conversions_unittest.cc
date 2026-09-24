@@ -8,6 +8,7 @@
 #include <cstdint>
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
@@ -371,6 +372,46 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsFiltersAssociatedContent) {
   EXPECT_EQ(proto_content.title(), "Mine");
   EXPECT_EQ(proto_content.url(), "https://example.com/mine");
   EXPECT_EQ(proto_content.content_used_percentage(), 50);
+}
+
+TEST(AIChatSyncConversionsTest, EntryToSpecificsFiltersWorkspaceContent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->created_time = base::Time::Now();
+
+  // One PageContent and one Workspace content, both tied to this entry.
+  // Only the PageContent should be synced.
+  std::vector<mojom::AssociatedContentPtr> content;
+
+  auto page = mojom::AssociatedContent::New();
+  page->uuid = "content-page";
+  page->title = "Page";
+  page->url = GURL("https://example.com/page");
+  page->content_type = mojom::ContentType::PageContent;
+  page->content_used_percentage = 50;
+  page->conversation_turn_uuid = "entry-1";
+  content.push_back(std::move(page));
+
+  auto workspace = mojom::AssociatedContent::New();
+  workspace->uuid = "content-workspace";
+  workspace->title = "Workspace";
+  workspace->url = GURL("workspace://6a0b4a8e-4f3c-4b7e-9d33-0f2d6a1c9b11");
+  workspace->content_type = mojom::ContentType::Workspace;
+  workspace->content_used_percentage = 100;
+  workspace->conversation_turn_uuid = "entry-1";
+  content.push_back(std::move(workspace));
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      EntryToSpecifics("conv-1", *entry, content);
+
+  ASSERT_TRUE(specifics.has_entry());
+  // Only PageContent should be synced, Workspace should be filtered out.
+  ASSERT_EQ(specifics.entry().associated_content_size(), 1);
+  const auto& proto_content = specifics.entry().associated_content(0);
+  EXPECT_EQ(proto_content.uuid(), "content-page");
+  EXPECT_EQ(proto_content.title(), "Page");
 }
 
 TEST(AIChatSyncConversionsTest, EntryToSpecificsCompletionEventCompressed) {
@@ -1145,6 +1186,49 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripAssociatedContentText) {
                                 /*compare_non_persisted_fields=*/false);
   EXPECT_EQ(rebuilt_texts,
             (base::flat_map<std::string, std::string>{{"ac-1", content_text}}));
+}
+
+// Workspace content is device-local and must be rejected when arriving from
+// sync (e.g., a malicious or misconfigured peer).
+TEST(AIChatSyncConversionsTest, SpecificsToEntryRejectsWorkspaceContent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-ws";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+
+  auto ac = mojom::AssociatedContent::New();
+  ac->uuid = "content-ws";
+  ac->title = "Workspace";
+  ac->url = GURL("workspace://6a0b4a8e-4f3c-4b7e-9d33-0f2d6a1c9b11");
+  ac->content_type = mojom::ContentType::PageContent;
+  ac->content_used_percentage = 100;
+  ac->conversation_turn_uuid = "entry-ws";
+  std::vector<mojom::AssociatedContentPtr> all_content;
+  all_content.push_back(std::move(ac));
+
+  // The outgoing path never writes Workspace content, so build an otherwise
+  // valid entry and then mark its content as Workspace on the wire, as a peer
+  // could.
+  auto specifics = EntryToSpecifics("conv-1", *entry, all_content);
+  ASSERT_EQ(specifics.entry().associated_content_size(), 1);
+  {
+    // Control: the unmodified entry decodes, so the rejection below is due to
+    // the content type alone.
+    std::vector<mojom::AssociatedContentPtr> control_content;
+    ASSERT_TRUE(SpecificsToEntry(specifics, control_content));
+    ASSERT_EQ(control_content.size(), 1u);
+  }
+  specifics.mutable_entry()->mutable_associated_content(0)->set_content_type(
+      std::to_underlying(mojom::ContentType::Workspace));
+
+  std::vector<mojom::AssociatedContentPtr> rebuilt_content;
+  auto rebuilt = SpecificsToEntry(specifics, rebuilt_content);
+
+  // Like any associated content that fails to decode, Workspace content
+  // rejects the whole entry, so nothing from it reaches this device.
+  EXPECT_FALSE(rebuilt);
+  EXPECT_TRUE(rebuilt_content.empty());
 }
 
 TEST(AIChatSyncConversionsTest, EntryRoundTripSkillAndNearVerification) {

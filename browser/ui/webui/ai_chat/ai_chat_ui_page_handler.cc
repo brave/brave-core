@@ -434,8 +434,8 @@ void AIChatUIPageHandler::OnWorkspaceFolderChosen(
     std::move(callback).Run(std::nullopt);
     return;
   }
-  // The workspace page is a chrome-untrusted:// content, which isn't in
-  // |kAllowedContentSchemes|, so attach it directly via the manager rather than
+  // A workspace's workspace:// URL isn't in |kAllowedContentSchemes|, so attach
+  // it directly via the manager rather than
   // AIChatService::AssociateOwnedContent (which would reject the scheme).
   conversation->associated_content_manager()->AddOwnedContent(
       std::make_unique<ai_chat::WorkspaceAssociatedContent>(

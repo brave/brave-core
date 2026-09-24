@@ -6,12 +6,14 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TEST_MOCK_ASSOCIATED_CONTENT_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TEST_MOCK_ASSOCIATED_CONTENT_H_
 
+#include <optional>
 #include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace ai_chat {
 
@@ -23,6 +25,10 @@ class MockAssociatedContent : public AssociatedContentDelegate {
   void SetContentId(int id) { content_id_ = id; }
 
   void SetUrl(GURL url) { url_ = std::move(url); }
+
+  // Overrides the origin derived from the url, as content whose url is only an
+  // identifier (e.g. a workspace) does.
+  void SetOrigin(url::Origin origin) { origin_ = std::move(origin); }
 
   void SetTextContent(std::string text_content) {
     text_content_ = std::move(text_content);
@@ -38,6 +44,7 @@ class MockAssociatedContent : public AssociatedContentDelegate {
   // AssociatedContentDelegate:
   void GetContent(GetPageContentCallback callback) override;
   void OnNewPage(int64_t navigation_id) override;
+  url::Origin GetOrigin() const override;
 
   MOCK_METHOD(void,
               GetStagedEntriesFromContent,
@@ -58,6 +65,7 @@ class MockAssociatedContent : public AssociatedContentDelegate {
  private:
   std::string text_content_;
   bool is_video_ = false;
+  std::optional<url::Origin> origin_;
 
   base::WeakPtrFactory<AssociatedContentDelegate> weak_ptr_factory_{this};
 };
