@@ -63,6 +63,20 @@ class BraveChromeTestSetupHelper : public testing::EmptyTestEventListener {
                     },
                 .disable_features = {"BraveFarbling"},
             },
+            // ExtensionUpdater::Start() schedules a background update check
+            // when this feature is enabled (the default). These tests
+            // choreograph their own sequence of update checks via a test-only
+            // ExtensionDownloaderTestDelegate that fails on any unexpected
+            // check, so the scheduled check races with it and can flakily fail
+            // with "Unexpected extension id".
+            {
+                .test_patterns =
+                    {
+                        "ChromeRuntimeAPIDelegateTest.*",
+                        "ChromeRuntimeAPIDelegateReloadTest.*",
+                    },
+                .disable_features = {"BraveAutoUpdateExtensions"},
+            },
         });
 
     const std::string& test_name =
