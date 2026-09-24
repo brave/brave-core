@@ -1,0 +1,12 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave webapps deps.
+    add_literal_to_list:
+      target: browser
+      list_name: deps
+      literal: brave_components_webapps_browser_deps
+      import: //brave/components/webapps/browser/sources.gni
