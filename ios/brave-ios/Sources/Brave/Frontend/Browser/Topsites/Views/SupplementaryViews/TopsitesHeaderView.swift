@@ -7,7 +7,7 @@ import BraveUI
 import Shared
 import UIKit
 
-class FavoritesHeaderView: UICollectionReusableView {
+class TopsitesHeaderView: UICollectionReusableView {
   private let label = UILabel()
 
   var isPrivateBrowsing: Bool = false {

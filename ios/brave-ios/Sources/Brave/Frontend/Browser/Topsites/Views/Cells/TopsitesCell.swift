@@ -7,11 +7,11 @@ import BraveUI
 import Shared
 import UIKit
 
-@objc protocol FavoriteCellDelegate {
-  func editFavorite(_ favoriteCell: FavoritesCell)
+@objc protocol TopsitesCellDelegate {
+  func editFavorite(_ cell: TopsitesCell)
 }
 
-class FavoritesCell: UICollectionViewCell, CollectionViewReusable {
+class TopsitesCell: UICollectionViewCell, CollectionViewReusable {
   static let imageAspectRatio: Float = 1.0
   static let placeholderImage = UIImage(
     named: "defaultTopSiteIcon",
@@ -27,7 +27,7 @@ class FavoritesCell: UICollectionViewCell, CollectionViewReusable {
     static let labelAlignment: NSTextAlignment = .center
   }
 
-  weak var delegate: FavoriteCellDelegate?
+  weak var delegate: TopsitesCellDelegate?
 
   var imageInsets: UIEdgeInsets = UIEdgeInsets.zero
   var cellInsets: UIEdgeInsets = UIEdgeInsets.zero
@@ -156,7 +156,7 @@ class FavoritesCell: UICollectionViewCell, CollectionViewReusable {
   }
 }
 
-extension FavoritesCell: UIPointerInteractionDelegate {
+extension TopsitesCell: UIPointerInteractionDelegate {
   func pointerInteraction(
     _ interaction: UIPointerInteraction,
     styleFor region: UIPointerRegion

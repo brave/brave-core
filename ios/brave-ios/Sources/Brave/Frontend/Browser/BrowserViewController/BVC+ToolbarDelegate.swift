@@ -346,6 +346,11 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
       bookmarkManager: bookmarkManager,
       historyAPI: profileController.historyAPI,
       searchEngines: profile.searchEngines,
+      tileSource: TopsitesTileSource(
+        mostVisitedSites: privateBrowsingManager.isPrivateBrowsing
+          ? nil : MostVisitedSitesFactory.get(for: profileController.profile),
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+      ),
       privateBrowsingManager: privateBrowsingManager,
       speechRecognizer: speechRecognizer,
       isAIChatAvailable: !isPrivate && Preferences.AIChat.leoInQuickSearchBarEnabled.value

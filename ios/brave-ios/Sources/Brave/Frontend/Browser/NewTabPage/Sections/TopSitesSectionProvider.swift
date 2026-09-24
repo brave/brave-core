@@ -62,7 +62,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
     }
   }
 
-  static var defaultIconSize = CGSize(width: 64, height: FavoritesCell.height(forWidth: 64))
+  static var defaultIconSize = CGSize(width: 64, height: TopsitesCell.height(forWidth: 64))
 
   /// The maximum width of the favorites content, matching the stats section.
   static let maxWidth: CGFloat = 640
@@ -75,8 +75,8 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
 
   func registerCells(to collectionView: UICollectionView) {
     collectionView.register(
-      FavoritesCell.self,
-      forCellWithReuseIdentifier: FavoritesCell.identifier
+      TopsitesCell.self,
+      forCellWithReuseIdentifier: TopsitesCell.identifier
     )
   }
 
@@ -110,7 +110,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
     cellForItemAt indexPath: IndexPath
   ) -> UICollectionViewCell {
     return collectionView.dequeueReusableCell(
-      withReuseIdentifier: FavoritesCell.identifier,
+      withReuseIdentifier: TopsitesCell.identifier,
       for: indexPath
     )
   }
@@ -121,7 +121,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
     forItemAt indexPath: IndexPath
   ) {
 
-    guard let cell = cell as? FavoritesCell,
+    guard let cell = cell as? TopsitesCell,
       let item = tiles[safe: indexPath.item]
     else {
       return
@@ -150,7 +150,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
       // to fit at least 4 icons
       size = CGSize(
         width: floor(width / 4.0),
-        height: FavoritesCell.height(forWidth: floor(width / 4.0))
+        height: TopsitesCell.height(forWidth: floor(width / 4.0))
       )
     }
     return size
@@ -278,7 +278,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
     contextMenuConfiguration configuration: UIContextMenuConfiguration,
     highlightPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
+    guard let cell = collectionView.cellForItem(at: indexPath) as? TopsitesCell
     else {
       return nil
     }
@@ -296,7 +296,7 @@ class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
     contextMenuConfiguration configuration: UIContextMenuConfiguration,
     dismissalPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCell
+    guard let cell = collectionView.cellForItem(at: indexPath) as? TopsitesCell
     else {
       return nil
     }

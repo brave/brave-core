@@ -66,7 +66,7 @@ class SearchCompositionalLayout: UICollectionViewCompositionalLayout {
     self.browserColors = browserColors
     super.init(sectionProvider: sectionProvider, configuration: configuration)
     self.register(
-      FavoritesSectionBackgroundView.self,
+      TopsitesSectionBackgroundView.self,
       forDecorationViewOfKind: "background_with_header"
     )
     self.register(
@@ -90,7 +90,7 @@ class SearchCompositionalLayout: UICollectionViewCompositionalLayout {
     for attr in attributes {
       if let indexPath = attr.indexPath as IndexPath? {
         if attr.representedElementKind == "background_with_header" {
-          let customAttr = FavoritesSectionBackgroundLayoutAttribute(
+          let customAttr = TopsitesSectionBackgroundLayoutAttribute(
             forDecorationViewOfKind: "background_with_header",
             with: indexPath
           )
@@ -331,7 +331,7 @@ public class SearchViewController: UIViewController, LoaderListener {
         withReuseIdentifier: SupplementaryViewReuseIdentifier.searchHeaderIdentifier
       )
       $0.register(
-        FavoritesRecentSearchFooterView.self,
+        TopsitesRecentSearchFooterView.self,
         forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter,
         withReuseIdentifier: SupplementaryViewReuseIdentifier.inYourDeviceSectionFooterIdentifer
       )
@@ -1098,7 +1098,7 @@ extension SearchViewController: UICollectionViewDelegate, UICollectionViewDataSo
           ofKind: kind,
           withReuseIdentifier: SupplementaryViewReuseIdentifier.inYourDeviceSectionFooterIdentifer,
           for: indexPath
-        ) as? FavoritesRecentSearchFooterView
+        ) as? TopsitesRecentSearchFooterView
       {
         footer.isPrivateBrowsing = dataSource.isPrivate
 

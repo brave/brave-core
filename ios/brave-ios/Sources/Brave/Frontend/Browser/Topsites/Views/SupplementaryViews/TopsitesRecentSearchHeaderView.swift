@@ -8,7 +8,7 @@ import Foundation
 import Shared
 import UIKit
 
-class FavoritesRecentSearchHeaderView: UICollectionReusableView {
+class TopsitesRecentSearchHeaderView: UICollectionReusableView {
 
   private let label = UILabel()
 

@@ -46,6 +46,7 @@ class SearchContainerViewController: UIViewController {
     bookmarkManager: BookmarkManager,
     historyAPI: BraveHistoryAPI,
     searchEngines: SearchEngines,
+    tileSource: TopsitesTileSource,
     privateBrowsingManager: PrivateBrowsingManager,
     speechRecognizer: SpeechRecognizer,
     isAIChatAvailable: Bool,

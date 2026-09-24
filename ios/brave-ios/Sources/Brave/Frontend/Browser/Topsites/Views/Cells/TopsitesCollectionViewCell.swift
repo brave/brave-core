@@ -8,7 +8,7 @@ import Foundation
 import Shared
 import UIKit
 
-class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable {
+class TopsitesCollectionViewCell: UICollectionViewCell, CollectionViewReusable {
 
   let imageContainer = UIView()
 
@@ -112,7 +112,7 @@ class FavoritesCollectionViewCell: UICollectionViewCell, CollectionViewReusable 
   }
 }
 
-extension FavoritesCollectionViewCell: UIPointerInteractionDelegate {
+extension TopsitesCollectionViewCell: UIPointerInteractionDelegate {
   func pointerInteraction(
     _ interaction: UIPointerInteraction,
     styleFor region: UIPointerRegion

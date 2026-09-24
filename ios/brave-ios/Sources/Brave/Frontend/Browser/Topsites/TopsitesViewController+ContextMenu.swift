@@ -23,8 +23,8 @@ extension TopsitesViewController {
     }
 
     switch section {
-    case .favorites:
-      guard let favorite = favoritesFRC.fetchedObjects?[indexPath.item] else { return nil }
+    case .topsites:
+      guard let topsiteViewModel = tileSource[indexPath.item] else { return nil }
       return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
         _ -> UIMenu? in
         let openInNewTab = UIAction(
@@ -40,19 +40,25 @@ extension TopsitesViewController {
             )
           }
         )
-        let edit = UIAction(
-          title: Strings.editFavorite,
-          handler: UIAction.deferredActionHandler { _ in
-            self.topSiteAction(.edited(favorite: favorite))
-          }
-        )
-        let delete = UIAction(
-          title: Strings.removeFavorite,
-          attributes: .destructive,
-          handler: UIAction.deferredActionHandler { _ in
-            favorite.delete()
-          }
-        )
+        var children: [UIMenuElement] = []
+        if case .favorite(let favorite) = topsiteViewModel.source {
+          let edit = UIAction(
+            title: Strings.editFavorite,
+            handler: UIAction.deferredActionHandler { _ in
+              self.topsiteAction(.edited(favorite: favorite))
+            }
+          )
+          let delete = UIAction(
+            title: Strings.removeFavorite,
+            attributes: .destructive,
+            handler: UIAction.deferredActionHandler { _ in
+              favorite.delete()
+            }
+          )
+
+          let favMenu = UIMenu(title: "", options: .displayInline, children: [edit, delete])
+          children.append(favMenu)
+        }
 
         var urlChildren: [UIAction] = [openInNewTab]
         if !self.privateBrowsingManager.isPrivateBrowsing {
@@ -73,11 +79,11 @@ extension TopsitesViewController {
         }
 
         let urlMenu = UIMenu(title: "", options: .displayInline, children: urlChildren)
-        let favMenu = UIMenu(title: "", options: .displayInline, children: [edit, delete])
+        children.append(urlMenu)
         return UIMenu(
-          title: favorite.title ?? favorite.url ?? "",
+          title: topsiteViewModel.title ?? topsiteViewModel.url?.absoluteString ?? "",
           identifier: nil,
-          children: [urlMenu, favMenu]
+          children: children
         )
       }
     case .recentSearches, .recentSearchesOptIn:
@@ -91,7 +97,7 @@ extension TopsitesViewController {
     contextMenuConfiguration configuration: UIContextMenuConfiguration,
     highlightPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
+    guard let cell = collectionView.cellForItem(at: indexPath) as? TopsitesCollectionViewCell
     else {
       return nil
     }
@@ -103,7 +109,7 @@ extension TopsitesViewController {
     contextMenuConfiguration configuration: UIContextMenuConfiguration,
     dismissalPreviewForItemAt indexPath: IndexPath
   ) -> UITargetedPreview? {
-    guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
+    guard let cell = collectionView.cellForItem(at: indexPath) as? TopsitesCollectionViewCell
     else {
       return nil
     }

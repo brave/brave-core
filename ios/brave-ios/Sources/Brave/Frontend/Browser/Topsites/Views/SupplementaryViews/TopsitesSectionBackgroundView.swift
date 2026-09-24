@@ -7,26 +7,26 @@ import BraveUI
 import Shared
 import UIKit
 
-class FavoritesSectionBackgroundLayoutAttribute: UICollectionViewLayoutAttributes {
+class TopsitesSectionBackgroundLayoutAttribute: UICollectionViewLayoutAttributes {
   var backgroundColour = UIColor(braveSystemName: .materialThin)
   var groupBackgroundColour = UIColor(braveSystemName: .containerBackground)
 
   override func copy(with zone: NSZone? = nil) -> Any {
-    let copy = super.copy(with: zone) as! FavoritesSectionBackgroundLayoutAttribute
+    let copy = super.copy(with: zone) as! TopsitesSectionBackgroundLayoutAttribute
     copy.backgroundColour = self.backgroundColour
     copy.groupBackgroundColour = self.groupBackgroundColour
     return copy
   }
 
   override func isEqual(_ object: Any?) -> Bool {
-    guard let other = object as? FavoritesSectionBackgroundLayoutAttribute else { return false }
+    guard let other = object as? TopsitesSectionBackgroundLayoutAttribute else { return false }
 
     return super.isEqual(object) && backgroundColour.rgba == other.backgroundColour.rgba
       && groupBackgroundColour.rgba == other.groupBackgroundColour.rgba
   }
 }
 
-class FavoritesSectionBackgroundView: UICollectionReusableView {
+class TopsitesSectionBackgroundView: UICollectionReusableView {
 
   let sectionGroupBackground = UIView()
 
@@ -59,7 +59,7 @@ class FavoritesSectionBackgroundView: UICollectionReusableView {
   override func apply(_ layoutAttributes: UICollectionViewLayoutAttributes) {
     super.apply(layoutAttributes)
 
-    guard let customAttrs = layoutAttributes as? FavoritesSectionBackgroundLayoutAttribute else {
+    guard let customAttrs = layoutAttributes as? TopsitesSectionBackgroundLayoutAttribute else {
       return
     }
     self.backgroundColor = customAttrs.backgroundColour

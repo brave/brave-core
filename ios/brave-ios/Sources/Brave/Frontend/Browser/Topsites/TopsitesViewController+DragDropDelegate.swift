@@ -22,21 +22,23 @@ extension TopsitesViewController: UICollectionViewDragDelegate, UICollectionView
     }
 
     switch section {
-    case .favorites:
-      // Fetch results controller indexpath is independent from our collection view.
-      // All results of it are stored in first section.
-      let adjustedIndexPath = IndexPath(row: indexPath.row, section: 0)
-      let bookmark = favoritesFRC.object(at: adjustedIndexPath)
+    case .topsites:
+      // Only favorites can be reordered, and only when there is more than one.
+      guard tileSource.isReorderingEnabled,
+        case .favorite(let favorite) = tileSource[indexPath.item]?.source
+      else {
+        return []
+      }
       let itemProvider = NSItemProvider(object: "\(indexPath)" as NSString)
       let dragItem = UIDragItem(itemProvider: itemProvider)
       dragItem.previewProvider = { () -> UIDragPreview? in
-        guard let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell
+        guard let cell = collectionView.cellForItem(at: indexPath) as? TopsitesCollectionViewCell
         else {
           return nil
         }
         return UIDragPreview(view: cell.imageContainer)
       }
-      dragItem.localObject = bookmark
+      dragItem.localObject = favorite
       return [dragItem]
     case .recentSearches, .recentSearchesOptIn:
       break
@@ -64,13 +66,19 @@ extension TopsitesViewController: UICollectionViewDragDelegate, UICollectionView
 
     switch coordinator.proposal.operation {
     case .move:
-      guard let item = coordinator.items.first else { return }
+      guard tileSource.isReorderingEnabled,
+        let item = coordinator.items.first
+      else { return }
       _ = coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
       Favorite.reorder(
         sourceIndexPath: sourceIndexPath,
         destinationIndexPath: destinationIndexPath,
         isInteractiveDragReorder: true
       )
+      // The reorder writes synchronously on the view context, so the tiles are already current.
+      // Applying here rather than waiting for the tile source's async notification keeps the
+      // snapshot in step with the drop animation.
+      updateUIWithSnapshot(animated: true)
     case .copy:
       break
     default: return
@@ -82,7 +90,10 @@ extension TopsitesViewController: UICollectionViewDragDelegate, UICollectionView
     dropSessionDidUpdate session: UIDropSession,
     withDestinationIndexPath destinationIndexPath: IndexPath?
   ) -> UICollectionViewDropProposal {
-    if favoritesFRC.fetchedObjects?.count == 1 {
+    guard tileSource.isReorderingEnabled,
+      let destinationIndexPath,
+      availableSections[safe: destinationIndexPath.section] == .topsites
+    else {
       return .init(operation: .cancel)
     }
     return .init(operation: .move, intent: .insertAtDestinationIndexPath)
@@ -94,7 +105,7 @@ extension TopsitesViewController: UICollectionViewDragDelegate, UICollectionView
   ) -> UIDragPreviewParameters? {
     let params = UIDragPreviewParameters()
     params.backgroundColor = .clear
-    if let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell {
+    if let cell = collectionView.cellForItem(at: indexPath) as? TopsitesCollectionViewCell {
       params.visiblePath = UIBezierPath(roundedRect: cell.imageContainer.frame, cornerRadius: 8)
     }
     return params
@@ -106,7 +117,7 @@ extension TopsitesViewController: UICollectionViewDragDelegate, UICollectionView
   ) -> UIDragPreviewParameters? {
     let params = UIDragPreviewParameters()
     params.backgroundColor = .clear
-    if let cell = collectionView.cellForItem(at: indexPath) as? FavoritesCollectionViewCell {
+    if let cell = collectionView.cellForItem(at: indexPath) as? TopsitesCollectionViewCell {
       params.visiblePath = UIBezierPath(roundedRect: cell.imageContainer.frame, cornerRadius: 8)
     }
     return params
