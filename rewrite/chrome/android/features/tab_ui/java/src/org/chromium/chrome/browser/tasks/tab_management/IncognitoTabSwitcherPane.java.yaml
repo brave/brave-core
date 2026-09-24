@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let subclasses replace the pane's reference button data.
+
+      BraveIncognitoTabSwitcherPane points this at Brave's private tab icon
+      instead of Chromium's incognito one, so the field has to be visible to the
+      subclass. `final` goes as well as `private`, because the subclass assigns
+      it from its own constructor, after `super()` has already initialized it.
+    regex:
+      re_pattern: |-
+        private final (ResourceButtonData mReferenceButtonData;)
+      replace: |-
+        protected \1

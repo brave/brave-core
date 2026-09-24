@@ -22,7 +22,6 @@ import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
@@ -139,8 +138,6 @@ import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
-import org.chromium.chrome.browser.tasks.tab_management.TabGroupCreationUiDelegate;
-import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneCoordinatorFactory;
 import org.chromium.chrome.browser.tasks.tab_management.vertical_tabs.VerticalTabsActionDelegate;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
@@ -163,7 +160,6 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionHandler;
 import org.chromium.chrome.browser.ui.actions.ActionRegistry;
-import org.chromium.chrome.browser.ui.actions.button.ResourceButtonData;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
@@ -251,7 +247,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.function.DoubleConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -2353,22 +2348,6 @@ public class BytecodeTest {
 
         Assert.assertTrue(
                 constructorsMatch(
-                        "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane", // presubmit: ignore-long-line
-                        "org/chromium/chrome/browser/tasks/tab_management/BraveIncognitoTabSwitcherPane", // presubmit: ignore-long-line
-                        Context.class,
-                        TabSwitcherPaneCoordinatorFactory.class,
-                        Supplier.class,
-                        OnClickListener.class,
-                        OneshotSupplier.class,
-                        DoubleConsumer.class,
-                        UserEducationHelper.class,
-                        MonotonicObservableSupplier.class,
-                        MonotonicObservableSupplier.class,
-                        TabGroupCreationUiDelegate.class,
-                        NonNullObservableSupplier.class));
-
-        Assert.assertTrue(
-                constructorsMatch(
                         "org/chromium/components/browser_ui/notifications/ForegroundServiceUtils", // presubmit: ignore-long-line
                         "org/chromium/components/browser_ui/notifications/BraveForegroundServiceUtils")); // presubmit: ignore-long-line
 
@@ -2856,12 +2835,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/ui/system/StatusBarColorController",
                         "mBackgroundColorForNtp"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane",
-                        "mReferenceButtonData",
-                        true,
-                        ResourceButtonData.class));
         Assert.assertFalse(
                 fieldExists(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line
