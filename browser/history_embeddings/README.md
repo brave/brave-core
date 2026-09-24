@@ -91,9 +91,9 @@ stored history rather than mix vector spaces. The file is generated in
 - **`brave_history_embeddings_status.{h,cc}`** — Profile user data holding the
   Semantic history search setting the embedding services were built with. The
   passage embedder gate reads through it, and the settings toggle compares
-  against it to tell whether the setting is waiting on a relaunch (see
-  "Enabling / the Semantic history search setting" above). Also clears the Tab
-  Focus page-content opt-in whenever the feature becomes unavailable.
+  against it to tell whether the setting is waiting on a relaunch (see "Enabling
+  / the Semantic history search setting" above). Also clears the Tab Focus
+  page-content opt-in whenever the feature becomes unavailable.
 
 - **`brave_passage_embeddings_service_controller.{h,cc}`** — Singleton subclass
   of `PassageEmbeddingsServiceController`. Provides `LitertServiceLauncher`,

@@ -42,11 +42,7 @@ export const VerifyTextWrapper = styled.div`
   align-items: center;
   border-radius: ${leo.radius.full};
   padding: ${leo.spacing.s} ${leo.spacing.m};
-  background-color: color-mix(
-    in srgb,
-    ${leo.color.white} 15%,
-    transparent
-  );
+  background-color: color-mix(in srgb, ${leo.color.white} 15%, transparent);
 `
 
 export const BalanceText = styled(Text)`

@@ -71,7 +71,9 @@ export function getHtml(this: BraveAccountLoggedInRowElement) {
         </leo-icon>
         <div class="title-and-description">
           <div class="title">
-            ${loadTimeData.getString(BraveAccountSettingsStrings.BRAVE_ACCOUNT_TITLE)}
+            ${loadTimeData.getString(
+              BraveAccountSettingsStrings.BRAVE_ACCOUNT_TITLE,
+            )}
           </div>
           <div class="description">
             <div id="email">${this.truncatedEmail}</div>
