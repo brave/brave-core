@@ -19,6 +19,7 @@
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/types.h"
@@ -47,6 +48,10 @@ class MockAssociatedContentDriver : public AssociatedContentDriver {
 
   void SetUrl(GURL url) { url_ = std::move(url); }
   void SetTitle(std::u16string title) { title_ = std::move(title); }
+
+  // OnNewPage is protected, and only a subclass may reach it. Republish it so
+  // tests can move content_id_ the way a navigation does.
+  using AssociatedContentDriver::OnNewPage;
 
   MOCK_METHOD(void,
               GetPageContent,
@@ -222,6 +227,72 @@ TEST_F(AssociatedContentDriverUnitTest, ParseSearchQuerySummaryResponse) {
             base::test::ParseJson(test_case.response));
     EXPECT_EQ(query_summary, test_case.expected_query_summary);
   }
+}
+
+// A page change while a content fetch is in flight must still release every
+// waiter, otherwise callers wait forever.
+TEST_F(AssociatedContentDriverUnitTest, GetContentRunsCallbackOnPageChange) {
+  AssociatedContentDriver::FetchPageContentCallback captured_callback;
+  EXPECT_CALL(*associated_content_driver_, GetPageContent(_, _))
+      .WillOnce(
+          [&captured_callback](
+              AssociatedContentDriver::FetchPageContentCallback callback,
+              std::string_view) { captured_callback = std::move(callback); });
+
+  associated_content_driver_->OnNewPage(1);
+
+  base::test::TestFuture<PageContent> content_future;
+  associated_content_driver_->GetContent(
+      content_future.GetCallback<PageContent>());
+
+  // The page navigates before the in-flight fetch replies.
+  associated_content_driver_->OnNewPage(2);
+
+  // The stale fetch now completes against the old navigation id.
+  ASSERT_TRUE(captured_callback);
+  std::move(captured_callback).Run("stale content", false, "");
+
+  // The waiter must be released rather than left hanging.
+  ASSERT_TRUE(content_future.Wait());
+  EXPECT_TRUE(content_future.Get().content.empty());
+  // The stale reply must not be cached.
+  EXPECT_TRUE(
+      associated_content_driver_->cached_page_content().content.empty());
+}
+
+// After a fetch is abandoned by a page change, later fetches must not join a
+// dead event.
+TEST_F(AssociatedContentDriverUnitTest, GetContentWorksAfterAbandonedFetch) {
+  AssociatedContentDriver::FetchPageContentCallback first_callback;
+  EXPECT_CALL(*associated_content_driver_, GetPageContent(_, _))
+      .WillOnce([&first_callback](
+                    AssociatedContentDriver::FetchPageContentCallback callback,
+                    std::string_view) { first_callback = std::move(callback); })
+      .WillOnce([](AssociatedContentDriver::FetchPageContentCallback callback,
+                   std::string_view) {
+        std::move(callback).Run("fresh content", false, "");
+      });
+
+  associated_content_driver_->OnNewPage(1);
+
+  base::test::TestFuture<PageContent> abandoned_future;
+  associated_content_driver_->GetContent(
+      abandoned_future.GetCallback<PageContent>());
+
+  associated_content_driver_->OnNewPage(2);
+  ASSERT_TRUE(first_callback);
+  std::move(first_callback).Run("stale content", false, "");
+  ASSERT_TRUE(abandoned_future.Wait());
+
+  // A fetch for the new page must complete and deliver the new content.
+  base::test::TestFuture<PageContent> fresh_future;
+  associated_content_driver_->GetContent(
+      fresh_future.GetCallback<PageContent>());
+  ASSERT_TRUE(fresh_future.Wait());
+
+  EXPECT_EQ(fresh_future.Get().content, "fresh content");
+  EXPECT_EQ(associated_content_driver_->cached_page_content().content,
+            "fresh content");
 }
 
 }  // namespace ai_chat
