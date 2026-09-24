@@ -36,7 +36,13 @@ type OverriddenConfig = Pick<
 >
 
 function git(cwd: string, ...args: string[]): string {
-  const result = spawnSync('git', args, { cwd, encoding: 'utf8' })
+  // Pass the env explicitly: jest's `process.env` is a sandboxed copy, which
+  // child_process would not otherwise pick up.
+  const result = spawnSync('git', args, {
+    cwd,
+    encoding: 'utf8',
+    env: process.env,
+  })
   if (result.status !== 0) {
     throw new Error(`git ${args.join(' ')} failed:\n${result.stderr}`)
   }
@@ -48,6 +54,7 @@ describe('checkoutChromiumRef', () => {
   let upstream: string
   let srcDir: string
   let savedConfig: OverriddenConfig
+  let savedEnv: Record<string, string | undefined>
 
   // Commit an empty change onto whatever `upstream` has checked out.
   function commit(message: string): string {
@@ -116,6 +123,21 @@ describe('checkoutChromiumRef', () => {
     }
 
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'brave-chromium-fetch-'))
+
+    // Ignore the user's git config: e.g. `tag.gpgsign` turns `git tag` into an
+    // annotated tag that waits on an editor, hanging the test.
+    //
+    // Only these vars are saved and restored: replacing `process.env` with a
+    // plain copy loses its case-insensitivity on Windows (`Path` vs `PATH`).
+    savedEnv = {
+      GIT_CONFIG_GLOBAL: process.env.GIT_CONFIG_GLOBAL,
+      GIT_CONFIG_NOSYSTEM: process.env.GIT_CONFIG_NOSYSTEM,
+    }
+    const emptyConfig = path.join(tmpDir, 'gitconfig')
+    fs.writeFileSync(emptyConfig, '')
+    process.env.GIT_CONFIG_GLOBAL = emptyConfig
+    process.env.GIT_CONFIG_NOSYSTEM = '1'
+
     upstream = path.join(tmpDir, 'upstream')
     srcDir = path.join(tmpDir, 'src')
 
@@ -155,6 +177,13 @@ describe('checkoutChromiumRef', () => {
   afterEach(() => {
     jest.restoreAllMocks()
     Object.assign(config, savedConfig)
+    for (const [name, value] of Object.entries(savedEnv)) {
+      if (value === undefined) {
+        delete process.env[name]
+      } else {
+        process.env[name] = value
+      }
+    }
     fs.rmSync(tmpDir, { recursive: true, force: true })
   })
 
