@@ -134,6 +134,7 @@ source_set("unit_tests") {
     sources += [
       "brave_shields_tab_helper_unittest.cc",
       "brave_shields_util_profiles_unittest.cc",
+      "brave_shields_web_contents_observer_unittest.cc",
     ]
 
     deps += [

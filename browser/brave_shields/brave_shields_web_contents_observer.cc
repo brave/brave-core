@@ -316,22 +316,33 @@ void BraveShieldsWebContentsObserver::SetReceiverImplForTesting(
   g_receiver_impl_for_testing = impl;
 }
 
+GURL BraveShieldsWebContentsObserver::GetPrimaryUrlFromHandle(
+    NavigationHandle* handle) {
+  // Relying on url::Origin::Create correctly extracts the embedded origin for
+  // blob: URLs (e.g. blob:https://example.com/uuid to https://example.com) and
+  // works for all other schemes as well. Origin is more secure than working
+  // with last committed URLs.
+  url::Origin navigation_handle_origin =
+      handle->GetParentFrameOrOuterDocument()
+          ? handle->GetParentFrameOrOuterDocument()
+                ->GetOutermostMainFrame()
+                ->GetLastCommittedOrigin()
+          : url::Origin::Create(handle->GetURL());
+
+  // |handle| pointing to sandboxed iframes can return an opaque origin, and an
+  // opaque origin GURL can be empty. So, we can't do much here then simply
+  // relying plainly on the |handle| GURL.
+  return navigation_handle_origin.GetURL().is_empty()
+             ? handle->GetURL()
+             : navigation_handle_origin.GetURL();
+}
+
 void BraveShieldsWebContentsObserver::SendShieldsSettings(
     NavigationHandle* navigation_handle) {
   DCHECK(navigation_handle);
   RenderFrameHost* rfh = navigation_handle->GetRenderFrameHost();
 
-  // Relying on url::Origin::Create correctly extracts the embedded origin for
-  // blob: URLs (e.g. blob:https://example.com/uuid to https://example.com) and
-  // works for all other schemes as well. Origin is more secure than working
-  // with last committed URLs.
-  const GURL primary_url =
-      navigation_handle->GetParentFrameOrOuterDocument()
-          ? navigation_handle->GetParentFrameOrOuterDocument()
-                ->GetOutermostMainFrame()
-                ->GetLastCommittedOrigin()
-                .GetURL()
-          : url::Origin::Create(navigation_handle->GetURL()).GetURL();
+  const GURL primary_url = GetPrimaryUrlFromHandle(navigation_handle);
 
   HostContentSettingsMap* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());

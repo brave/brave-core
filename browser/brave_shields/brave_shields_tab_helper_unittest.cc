@@ -17,12 +17,14 @@
 #include "components/favicon/core/test/mock_favicon_service.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/browser/navigation_entry.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_renderer_host.h"
 #include "content/public/test/web_contents_tester.h"
 #include "content/test/test_web_contents.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/origin.h"
 
 namespace brave_shields {
 
@@ -329,6 +331,87 @@ TEST_F(BraveShieldsTabHelperUnitTest,
   brave_shields_tab_helper_->SetBraveShieldsEnabled(false);
   EXPECT_TRUE(brave_shields_tab_helper_
                   ->ShouldShowShieldsDisabledAdBlockOnlyModePrompt());
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest, CurrentSiteUrlUsesCommittedOrigin) {
+  NavigateTo(GURL("https://example.com/path?q=1"));
+
+  EXPECT_EQ(GURL("https://example.com/"),
+            brave_shields_tab_helper_->GetCurrentSiteURL());
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest, CurrentSiteUrlBlobUsesEmbeddedOrigin) {
+  NavigateTo(
+      GURL("blob:https://example.com/550e8400-e29b-41d4-a716-446655440000"));
+
+  EXPECT_EQ(GURL("https://example.com/"),
+            brave_shields_tab_helper_->GetCurrentSiteURL());
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest, CurrentSiteUrlBraveUrlUsesOrigin) {
+  // Can't navigate directly to internal url without appropriate webui factory.
+  content::OverrideLastCommittedOrigin(
+      web_contents()->GetPrimaryMainFrame(),
+      url::Origin::Create(GURL("brave://version")));
+
+  EXPECT_EQ(GURL("brave://version/"),
+            brave_shields_tab_helper_->GetCurrentSiteURL());
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest,
+       CurrentSiteUrlAboutBlankFallsBackToCommittedUrl) {
+  const GURL about_blank("about:blank");
+  NavigateTo(about_blank);
+
+  EXPECT_EQ(about_blank, brave_shields_tab_helper_->GetCurrentSiteURL());
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest,
+       CurrentSiteUrlOpaqueOriginFallsBackToCommittedUrl) {
+  const GURL data_url("data:text/html,hello");
+  NavigateTo(data_url);
+
+  EXPECT_EQ(data_url, brave_shields_tab_helper_->GetCurrentSiteURL());
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest, CurrentSiteUrlIgnoresSubframe) {
+  NavigateTo(GURL("https://example.com/page"));
+
+  content::RenderFrameHost* subframe =
+      content::RenderFrameHostTester::For(main_rfh())->AppendChild("subframe");
+  content::NavigationSimulator::NavigateAndCommitFromDocument(
+      GURL("https://ads.example/tracker"), subframe);
+
+  EXPECT_EQ(GURL("https://example.com/"),
+            brave_shields_tab_helper_->GetCurrentSiteURL());
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest,
+       CurrentSiteUrlAboutBlankSubframeUsesMainFrameOrigin) {
+  NavigateTo(GURL("https://example.com/page"));
+
+  content::RenderFrameHost* subframe =
+      content::RenderFrameHostTester::For(main_rfh())->AppendChild("subframe");
+  content::NavigationSimulator::NavigateAndCommitFromDocument(
+      GURL("about:blank"), subframe);
+
+  EXPECT_EQ(GURL("https://example.com/"),
+            brave_shields_tab_helper_->GetCurrentSiteURL());
+}
+
+TEST_F(BraveShieldsTabHelperUnitTest,
+       CurrentSiteUrlOpaqueMainFrameIgnoresSubframe) {
+  const GURL data_url("data:text/html,parent");
+  NavigateTo(data_url);
+  ASSERT_TRUE(
+      web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin().opaque());
+
+  content::RenderFrameHost* subframe =
+      content::RenderFrameHostTester::For(main_rfh())->AppendChild("subframe");
+  content::NavigationSimulator::NavigateAndCommitFromDocument(
+      GURL("https://embedded.example/frame"), subframe);
+
+  EXPECT_EQ(data_url, brave_shields_tab_helper_->GetCurrentSiteURL());
 }
 
 }  // namespace brave_shields
