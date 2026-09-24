@@ -1,5 +1,4 @@
 include_rules = [
   "+brave/components/brave_account",
   "+brave/components/password_strength_meter",
-  "+brave/ios/browser/api/web_view",
 ]
