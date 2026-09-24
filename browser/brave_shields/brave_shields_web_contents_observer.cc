@@ -329,9 +329,21 @@ GURL BraveShieldsWebContentsObserver::GetPrimaryUrlFromHandle(
                 ->GetLastCommittedOrigin()
           : url::Origin::Create(navigation_handle->GetURL());
 
-  // |handle| pointing to sandboxed iframes can return an opaque origin, and an
-  // opaque origin GURL can be empty. So, we can't do much here then simply
-  // relying plainly on the |handle| GURL.
+  // Shields settings are always derived from the mainframe and then a subset of
+  // supported settings are then passed down to the renderer via
+  // SendShieldsSettings. In the above call, if
+  // |navigation_handle|->GetParentFrameOrOuterDocument() succeeds it always
+  // gives back the outermost document. The outermost document corresponds to
+  // the main frame for us to get the shields settings. However, from
+  // RenderFrameHost* GetParentOrOuterDocument() documentation, when the
+  // |navigation_handle| already belongs to the outermost frame
+  // GetParentOrOuterDocument can return nullptr. Therefore, we do
+  // url::Origin::Create(navigation_handle->GetURL()). We need to go through
+  // url::Origin::Create, to ensure URLs like
+  // blob://https://example.com/550e8400-e29b-41d4-a716-4466 turns into
+  // "https://example.com" and not blob://https://example.com/ before we query
+  // the GURL to fetch the shields settings. blob://https://example.com and
+  // https://example.com are not the same origin since the scheme is different.
   return navigation_handle_origin.GetURL().is_empty()
              ? navigation_handle->GetURL()
              : navigation_handle_origin.GetURL();
