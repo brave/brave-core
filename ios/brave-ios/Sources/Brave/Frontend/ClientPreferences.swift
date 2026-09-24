@@ -360,9 +360,8 @@ extension Preferences {
 
     /// Mode to display NTP tiles in NTP
     ///
-    /// The default only governs launches before the topsites feature is enabled, where the legacy
-    /// favourites-only UI is what settings can represent. Migration stores a real value on the first
-    /// launch with the feature on.
+    /// Defaults to favourites so the mode matches what the NTP renders for users who never picked
+    /// one. Most visited is an explicit choice until the NTP reads the mode itself.
     public static let topsitesMode = Option<TopsitesMode>(
       key: "newtabpage.topsites-mode",
       default: .favourite
