@@ -823,7 +823,7 @@ AIChatDatabase::GetArchiveContentsForConversation(
       "SELECT uuid, last_contents, conversation_entry_uuid"
       " FROM associated_content"
       " WHERE conversation_uuid=?"
-      " AND last_contents IS NOT NULL"
+      " AND (last_contents IS NOT NULL OR content_type = 2)"
       " ORDER BY uuid ASC";
   sql::Statement statement(GetDB().GetCachedStatement(SQL_FROM_HERE, kQuery));
   CHECK(statement.is_valid());

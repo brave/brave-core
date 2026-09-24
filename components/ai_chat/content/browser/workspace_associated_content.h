@@ -7,14 +7,17 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CONTENT_BROWSER_WORKSPACE_ASSOCIATED_CONTENT_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/browser/weak_document_ptr.h"
 #include "content/public/browser/web_contents_observer.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/blink/public/mojom/content_extraction/ai_page_content.mojom.h"
 
@@ -36,7 +39,8 @@ namespace ai_chat {
 // delegate. Tool discovery reuses the same AIPageContentAgent harvest as tab
 // content (see GetContentTools).
 class WorkspaceAssociatedContent : public AssociatedContentDelegate,
-                                   public content::WebContentsObserver {
+                                   public content::WebContentsObserver,
+                                   public mojom::ContentToolsListener {
  public:
   WorkspaceAssociatedContent(
       base::FilePath folder_path,
@@ -47,19 +51,39 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
   WorkspaceAssociatedContent& operator=(const WorkspaceAssociatedContent&) =
       delete;
 
-  const base::FilePath& folder_path() const { return folder_path_; }
+  // Restores a workspace from a persisted URL. Returns nullptr if the URL is
+  // invalid or not a workspace URL.
+  static std::unique_ptr<WorkspaceAssociatedContent> CreateFromUrl(
+      GURL url,
+      content::BrowserContext* browser_context,
+      base::OnceCallback<void(content::WebContents*)> attach_tab_helpers);
 
   // AssociatedContentDelegate:
   void GetContent(GetPageContentCallback callback) override;
   void GetContentTools(GetContentToolsCallback callback) override;
+  void OnAssociatedWithConversation() override;
 
   content::WebContents* GetWebContentsForTesting() {
     return web_contents_.get();
   }
 
  private:
+  // Private default constructor for use by CreateFromUrl factory.
+  WorkspaceAssociatedContent();
+
+  void AttachWebContents(
+      const GURL& url,
+      content::BrowserContext* browser_context,
+      base::OnceCallback<void(content::WebContents*)> attach_tab_helpers);
+
   // content::WebContentsObserver:
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
+
+  // mojom::ContentToolsListener:
+  void OnContentToolsChanged() override;
+
+  // Subscribes to WebMCP tool registration changes from the workspace page.
+  void SubscribeToContentToolChanges();
 
   // Grants the workspace origin File System Access read/write permission, mints
   // a directory handle for |folder_path_|, and delivers it to the page's JS via
@@ -72,13 +96,19 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
       mojo::Remote<blink::mojom::AIPageContentAgent> agent,
       blink::mojom::AIPageContentPtr result);
 
-  const base::FilePath folder_path_;
+  // The folder path for new workspaces. Empty for restored workspaces, which
+  // get their FileSystemDirectoryHandle from IndexedDB instead.
+  std::optional<base::FilePath> folder_path_;
   std::unique_ptr<content::WebContents> web_contents_;
 
   // True once the workspace page has loaded and its handle has been delivered.
   // Until then GetContentTools reports no tools synchronously, so the manager's
   // add-time probe can't race with (and clobber) the attach we do on load.
   bool page_ready_ = false;
+
+  // Mojo bindings for receiving WebMCP tool change notifications.
+  mojo::Remote<mojom::PageContentExtractor> content_tools_extractor_;
+  mojo::Receiver<mojom::ContentToolsListener> content_tools_listener_{this};
 
   base::WeakPtrFactory<WorkspaceAssociatedContent> weak_ptr_factory_{this};
 };
