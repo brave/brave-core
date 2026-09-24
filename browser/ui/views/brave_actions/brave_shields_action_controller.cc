@@ -11,8 +11,10 @@
 #include "base/check_deref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ui/views/brave_actions/brave_icon_with_badge_image_source.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -181,7 +183,11 @@ BraveShieldsActionController::GetImageSource(
       badge_text = count > 99 ? "99+" : base::NumberToString(count);
     }
 
-    is_enabled = shields_data_controller->IsBraveShieldsEnabled() &&
+    auto* shields_settings = BraveShieldsSettingsServiceFactory::GetForProfile(
+        Profile::FromBrowserContext(web_contents->GetBrowserContext()));
+    CHECK(shields_settings);
+    is_enabled = shields_settings->IsBraveShieldsEnabled(
+                     shields_data_controller->GetCurrentSiteURL()) &&
                  !IsPageInReaderMode(web_contents);
 
     if (!badge_text.empty()) {
