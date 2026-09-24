@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/pref_service_incognito_allowlist.cc b/chrome/browser/prefs/pref_service_incognito_allowlist.cc
-index 916d5c4e13c994332fd72005f22dced5399e3ff8..a1caaa7ba7551d79cf19e8b0766f381ea49b4b74 100644
+index db262016de186c9deb760feea11c7a8b1bf97163..cf848b8e1e1732bfaee6c9d970fd4e3eabf565e3 100644
 --- a/chrome/browser/prefs/pref_service_incognito_allowlist.cc
 +++ b/chrome/browser/prefs/pref_service_incognito_allowlist.cc
-@@ -226,10 +226,16 @@ const char* const kPersistentPrefNames[] = {
+@@ -227,10 +227,16 @@ const char* const kPersistentPrefNames[] = {
  namespace prefs {
  
  std::vector<const char*> GetIncognitoPersistentPrefsAllowlist() {

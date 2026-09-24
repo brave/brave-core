@@ -1,5 +1,5 @@
 diff --git a/chrome/renderer/BUILD.gn b/chrome/renderer/BUILD.gn
-index 94d46c0511dfc2c7b6256b3a61d478d1f97063ce..0b94fb17e5eb6f90913e1a8922726d35cbb1788b 100644
+index 429eb6884b2c486dc9e49ae81d32412c0510c9bc..26b361c22c6bf413a5235ce98567793ccd5a7621 100644
 --- a/chrome/renderer/BUILD.gn
 +++ b/chrome/renderer/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 94d46c0511dfc2c7b6256b3a61d478d1f97063ce..0b94fb17e5eb6f90913e1a8922726d35
  import("//build/config/buildflags_paint_preview.gni")
  import("//chrome/common/features.gni")
  import("//chrome/common/request_header_integrity/buildflags.gni")
-@@ -115,6 +116,7 @@ static_library("renderer") {
+@@ -117,6 +118,7 @@ static_library("renderer") {
      "worker_content_settings_client.cc",
      "worker_content_settings_client.h",
    ]
@@ -18,7 +18,7 @@ index 94d46c0511dfc2c7b6256b3a61d478d1f97063ce..0b94fb17e5eb6f90913e1a8922726d35
  
    defines = []
  
-@@ -122,6 +124,7 @@ static_library("renderer") {
+@@ -124,6 +126,7 @@ static_library("renderer") {
      "//components/signin/public/base:signin_buildflags",
      "//components/touch_to_search:buildflags",
    ]
@@ -26,7 +26,7 @@ index 94d46c0511dfc2c7b6256b3a61d478d1f97063ce..0b94fb17e5eb6f90913e1a8922726d35
  
    deps = [
      ":process_state",
-@@ -232,6 +235,7 @@ static_library("renderer") {
+@@ -235,6 +238,7 @@ static_library("renderer") {
      "//ui/gfx/geometry",
      "//v8",
    ]

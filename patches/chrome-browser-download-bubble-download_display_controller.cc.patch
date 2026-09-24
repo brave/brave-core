@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/download/bubble/download_display_controller.cc b/chrome/browser/download/bubble/download_display_controller.cc
-index 57397fdc0702b9e670da2ae450527cf53ab70359..a8f402e9deec3f8cfcd4b77d03c2cc6619a30793 100644
+index 6c90b04266ff0ad5f77d8625de97630edd964214..9399c4bf47c9a85744ae692a47270243e5ba34fe 100644
 --- a/chrome/browser/download/bubble/download_display_controller.cc
 +++ b/chrome/browser/download/bubble/download_display_controller.cc
-@@ -278,6 +278,7 @@ void DownloadDisplayController::OpenSecuritySubpage(
+@@ -276,6 +276,7 @@ void DownloadDisplayController::OpenSecuritySubpage(
  void DownloadDisplayController::UpdateToolbarButtonState(
      const DownloadBubbleDisplayInfo& info,
      const DownloadDisplay::ProgressInfo& progress_info) {
@@ -10,7 +10,7 @@ index 57397fdc0702b9e670da2ae450527cf53ab70359..a8f402e9deec3f8cfcd4b77d03c2cc66
    if (info.all_models_size == 0) {
      HideToolbarButton();
      return;
-@@ -326,6 +327,11 @@ void DownloadDisplayController::UpdateToolbarButtonState(
+@@ -324,6 +325,11 @@ void DownloadDisplayController::UpdateToolbarButtonState(
    updates.new_progress = progress_info;
  
    display_->UpdateDownloadIcon(updates);

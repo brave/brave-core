@@ -1,5 +1,5 @@
 diff --git a/chrome/test/data/webui/settings/BUILD.gn b/chrome/test/data/webui/settings/BUILD.gn
-index bdafff6e985955b8fc1a876e7402e1322368b0f0..fef7c2072cb3272d337481e89143da925a8844d8 100644
+index 201072f9c3ec83d4bf2b7784e73e97c15c1475b4..30bbec89cf8975cd1c8dbc4cd58072f2006fb39d 100644
 --- a/chrome/test/data/webui/settings/BUILD.gn
 +++ b/chrome/test/data/webui/settings/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index bdafff6e985955b8fc1a876e7402e1322368b0f0..fef7c2072cb3272d337481e89143da92
  import("../build_webui_tests.gni")
  
  build_webui_tests("build") {
-@@ -304,6 +305,7 @@ build_webui_tests("build") {
+@@ -305,6 +306,7 @@ build_webui_tests("build") {
      "//tools/typescript/definitions/pending.d.ts",
      "//tools/typescript/definitions/settings_private.d.ts",
    ]

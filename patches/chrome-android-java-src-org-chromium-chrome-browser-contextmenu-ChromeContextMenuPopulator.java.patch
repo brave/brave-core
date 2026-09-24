@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-index 15e829f8b90e479b2d83de7a7b21140e40bd005f..22cb778e8d19b8daeec1980be686afed6b06e0e3 100644
+index e783bf65be65ee6a38d2f9609c3f1baa9c83a752..a94f1976a8453b69128cb85fe8d203615d402ce2 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuPopulator.java
-@@ -275,6 +275,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -270,6 +270,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              Action.TRANSLATE,
              Action.CREATE_QR_CODE,
              Action.ASK_GEMINI,
@@ -10,7 +10,7 @@ index 15e829f8b90e479b2d83de7a7b21140e40bd005f..22cb778e8d19b8daeec1980be686afed
          })
          @Retention(RetentionPolicy.SOURCE)
          public @interface Action {
-@@ -338,7 +339,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -333,7 +334,8 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              int TRANSLATE = 57;
              int CREATE_QR_CODE = 58;
              int ASK_GEMINI = 59;
@@ -20,7 +20,7 @@ index 15e829f8b90e479b2d83de7a7b21140e40bd005f..22cb778e8d19b8daeec1980be686afed
          }
  
          // LINT.ThenChange(/tools/metrics/histograms/enums.xml:ContextMenuOptionAndroid)
-@@ -735,6 +737,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
+@@ -727,6 +729,7 @@ public class ChromeContextMenuPopulator implements ContextMenuPopulator {
              if (!MailTo.isMailTo(mParams.getLinkUrl().getSpec())
                      && !UrlUtilities.isTelScheme(mParams.getLinkUrl())) {
                  linkGroup.add(createListItem(Item.COPY_LINK_ADDRESS));

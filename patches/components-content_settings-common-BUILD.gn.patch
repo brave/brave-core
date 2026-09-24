@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/common/BUILD.gn b/components/content_settings/common/BUILD.gn
-index 04c77e73d6817ad6f1d77cc3f89630d273535574..857b6f9e3da15fb1de8a590b09dba25cffa1afc8 100644
+index f4e43fbbe30ac81e56af1314f354917a02d7550b..04842f33a29f1ccbcf8c4a12cc9e08e5595d7b89 100644
 --- a/components/content_settings/common/BUILD.gn
 +++ b/components/content_settings/common/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 04c77e73d6817ad6f1d77cc3f89630d273535574..857b6f9e3da15fb1de8a590b09dba25c
  import("//mojo/public/tools/bindings/mojom.gni")
  
  mojom("mojom") {
-@@ -19,4 +20,5 @@ mojom("mojom") {
+@@ -17,4 +18,5 @@ mojom("mojom") {
      "//url/mojom:url_mojom_gurl",
      "//url/mojom:url_mojom_origin",
    ]

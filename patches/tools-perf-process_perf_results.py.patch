@@ -1,5 +1,5 @@
 diff --git a/tools/perf/process_perf_results.py b/tools/perf/process_perf_results.py
-index 1ebcb330d56233e3ab670e750ac29b3de98d000e..8a539b0da952287ef5152b4af9b29487a8186a89 100755
+index 2ca689ea92d34e13fa5c6e626c4185d3f7757a86..76dd0193a914cce1a1e3391bb5bf85253d292425 100755
 --- a/tools/perf/process_perf_results.py
 +++ b/tools/perf/process_perf_results.py
 @@ -49,7 +49,7 @@ try:

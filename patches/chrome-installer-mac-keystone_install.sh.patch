@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/mac/keystone_install.sh b/chrome/installer/mac/keystone_install.sh
-index f7bc063859d65b10fd9f3833c5c4a4f65a8e2843..57a18793c79dca6619dc76462805fb44caafa14e 100755
+index 764c8f164f0292f7134e5b4874cdacef7e636e26..677711c5dbc8340e3df0bdc29da5e259c54415a7 100755
 --- a/chrome/installer/mac/keystone_install.sh
 +++ b/chrome/installer/mac/keystone_install.sh
 @@ -484,9 +484,13 @@ main() {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
-index 7b7578690cd7b90ed433be9d552d725f83b74bf1..765a87b7a6ef8214f330c824d10b0949cae33692 100644
+index 68287f6eb78bf85479a488bee3be414657db072a..1553fc4eef5dcaea2a0e666fc79a17d1ba8c61d7 100644
 --- a/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
 +++ b/chrome/browser/ui/bookmarks/bookmark_bar_controller.cc
-@@ -268,7 +268,7 @@ bool BookmarkBarController::ShouldShowBookmarkBar() const {
+@@ -269,7 +269,7 @@ bool BookmarkBarController::ShouldShowBookmarkBar() const {
  
    bookmarks::BookmarkModel* bookmark_model =
        BookmarkModelFactory::GetForBrowserContext(profile);
