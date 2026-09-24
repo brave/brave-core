@@ -33,15 +33,15 @@ from tarball_installer import (  # pylint: disable=wrong-import-position
     TarballInstaller)
 
 # The hash sum for the archive expected to be downloaded.
-MAC_BINARIES_HASH = 'cb19e884ebd5764a3da8cf39c2f9ac0389c14c69952040abe08bacf5490a15e1'
+MAC_BINARIES_HASH = '0e1a4db4cb6fc9ca78cc71872ff57f837226f1004a7fbf6ce73a5cd89345c289'
 
 # The exact size of the archive in bytes, checked on download.
-MAC_BINARIES_SIZE = 955861099
+MAC_BINARIES_SIZE = 883762569
 
-# This contains binaries from Xcode 27.0 (27A266a) along with the macOS 27.0
-# SDK (26A425) and the Metal toolchain (27A266).
-MAC_SDK_OFFICIAL_VERSION = '27.0'
-MAC_SDK_OFFICIAL_BUILD_VERSION = '26A425'
+# This contains binaries from Xcode 26.5 (17F42) along with the macOS 26.5 SDK
+# (25F70) and the Metal toolchain (17F42).
+MAC_SDK_OFFICIAL_VERSION = '26.5'
+MAC_SDK_OFFICIAL_BUILD_VERSION = '25F70'
 
 # The bucket prefix the archive object name is appended to.
 XCODE_TOOLCHAIN_BUCKET = (
