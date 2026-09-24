@@ -899,11 +899,6 @@ class LiftArgumentTest(LiftTestCase):
         self._assert_usage_error(
             run, 'Switch --from-ref not supported with --continue.')
 
-    def test_no_conflict_change_requires_continue(self):
-        run = self.env.run_lift(f'--to={MINOR_TARGET}', '--no-conflict-change')
-        self._assert_usage_error(
-            run, '--no-conflict-change can only be used with --continue')
-
     def test_restart_is_rejected_with_continue(self):
         run = self.env.run_lift(f'--to={MINOR_TARGET}', '--restart',
                                 '--continue')
@@ -1195,8 +1190,8 @@ class LiftConflictResolutionTest(LiftTestCase):
             run, 'To run with --continue the Chromium version has to be in '
             f'Sync with Brave. Brave {MAJOR_TARGET} ➜ Chromium {BASE_VERSION}')
 
-    def test_continue_with_nothing_resolved_is_rejected(self):
-        """A continuation is expected to bring resolved patches with it."""
+    def test_continue_with_nothing_left_to_resolve_finishes(self):
+        """No conflict-resolved commit is made when there is nothing for it."""
         self._release_with_conflict()
         self.env.run_lift(f'--to={MAJOR_TARGET}')
         # The user regenerated and committed the patches themselves, leaving
@@ -1205,20 +1200,6 @@ class LiftConflictResolutionTest(LiftTestCase):
         self.env.commit_patch_changes('Update patches by hand')
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
-
-        self.assert_failed(
-            run,
-            'Nothing has been staged to commit conflict-resolved patches. '
-            '(Did you mean to pass --no-conflict-change?)')
-
-    def test_continue_with_no_conflict_change_finishes(self):
-        self._release_with_conflict()
-        self.env.run_lift(f'--to={MAJOR_TARGET}')
-        self.env.resolve_conflict(FOO)
-        self.env.commit_patch_changes('Update patches by hand')
-
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue',
-                                '--no-conflict-change')
 
         self.assert_succeeded(run)
         self.assert_commit_subjects([
@@ -1360,8 +1341,7 @@ class LiftDeletedSourceTest(LiftTestCase):
         # not needed anymore.
         self.env.commit_patch_changes(f'Remove patch for deleted {BAR}')
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue',
-                                '--no-conflict-change')
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_succeeded(run)
         self.assert_commit_subjects([
@@ -1434,8 +1414,7 @@ class LiftRenamedSourceTest(LiftTestCase):
                 UPSTREAM_SYMBOL, BRAVE_SYMBOL), self.env.repo.chromium)
         self.env.commit_patch_changes(f'Follow the rename of {BAR}')
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue',
-                                '--no-conflict-change')
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_succeeded(run)
         self.assertFalse((self.env.repo.brave / BAR_PATCH).exists())
@@ -1583,29 +1562,14 @@ class LiftPlasterTest(LiftTestCase):
         self.assertIn(f'  {BRAVE_SYMBOL} thing;  // upstream tweak',
                       self.env.read_source(FOO))
 
-    def test_plaster_only_failures_stop_the_lift(self):
-        """A lift whose only apply failures were fixed by plaster still stops:
-        the continuation it runs expects conflict-resolved patches to commit and
-        finds none. Recovering takes another run (see the test below)."""
+    def test_plaster_only_failures_finish_the_lift(self):
+        """A lift whose only apply failures were fixed by plaster runs to the
+        end without stopping."""
         self.env.add_plaster_for_foo()
         self._release_reworking_the_patched_line(
             f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak')
 
         run = self.env.run_lift(f'--to={MAJOR_TARGET}')
-
-        self.assert_failed(
-            run,
-            'Nothing has been staged to commit conflict-resolved patches. '
-            '(Did you mean to pass --no-conflict-change?)')
-
-    def test_plaster_only_failures_finish_on_continue(self):
-        self.env.add_plaster_for_foo()
-        self._release_reworking_the_patched_line(
-            f'  {UPSTREAM_SYMBOL} thing;  // upstream tweak')
-        self.env.run_lift(f'--to={MAJOR_TARGET}')
-
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue',
-                                '--no-conflict-change')
 
         self.assert_succeeded(run)
         self.assert_commit_subjects([
@@ -1704,8 +1668,7 @@ class LiftPlasterTest(LiftTestCase):
 
         # The user points the plaster at the renamed symbol and reapplies it.
         self.env.reapply_plaster_for_foo(self.FIXED_PLASTER_BODY)
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue',
-                                '--no-conflict-change')
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_succeeded(run)
         self.assertIn(f'  {BRAVE_SYMBOL} thing;  // upstream rework',
@@ -1758,8 +1721,7 @@ class LiftPlasterTest(LiftTestCase):
         # patch (now one hunk) without committing it, exactly like
         # `test_continue_after_fixing_the_plaster_finishes`.
         self.env.reapply_plaster_for_foo(self.FIXED_TWO_HUNK_PLASTER_BODY)
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue',
-                                '--no-conflict-change')
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_succeeded(run)
 
@@ -1843,8 +1805,7 @@ class LiftOrphanedPlasterTest(LiftTestCase):
         self.env.commit_patch_changes(
             f'Remove patch and plaster for deleted {FOO}')
 
-        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue',
-                                '--no-conflict-change')
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
         self.assert_succeeded(run)
         self.assertFalse((self.env.repo.brave / FOO_PATCH).exists())
