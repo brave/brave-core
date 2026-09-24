@@ -408,15 +408,21 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 - (void)saveComponentUpdaterPrefs {
   NSDictionary* prefs = [self.componentUpdaterPrefs copy];
   NSString* path = [[self componentUpdaterPrefsPath] copy];
-  dispatch_group_enter(self.componentUpdaterPrefsWriteGroup);
+  dispatch_group_t prefsWriteGroup = self.componentUpdaterPrefsWriteGroup;
+  dispatch_group_enter(prefsWriteGroup);
+  const auto __weak weakSelf = self;
   dispatch_async(self.componentUpdaterPrefsWriteThread, ^{
     NSError* error = nil;
     [prefs writeToURL:[NSURL fileURLWithPath:path isDirectory:NO] error:&error];
     if (error) {
-      BLOG(0, @"Failed to write component updater prefs: %@", error);
+      [weakSelf logFailedToWriteComponentUpdaterPrefs:error];
     }
-    dispatch_group_leave(self.componentUpdaterPrefsWriteGroup);
+    dispatch_group_leave(prefsWriteGroup);
   });
+}
+
+- (void)logFailedToWriteComponentUpdaterPrefs:(NSError*)error {
+  BLOG(0, @"Failed to write component updater prefs: %@", error);
 }
 
 - (NSDictionary*)componentUpdaterMetadata {
