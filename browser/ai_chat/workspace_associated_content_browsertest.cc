@@ -37,6 +37,7 @@
 #include "content/public/common/url_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "net/base/url_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/features.h"
 #include "url/gurl.h"
@@ -83,6 +84,14 @@ class WorkspaceAssociatedContentBrowserTest : public InProcessBrowserTest {
         folder, browser()->GetProfile(), base::DoNothing());
   }
 
+  // The folder a persisted workspace URL records, or "" if it records none.
+  static std::string FolderPathFromUrl(const GURL& url) {
+    std::string folder_path;
+    return net::GetValueForKeyInQuery(url, "folder_path", &folder_path)
+               ? folder_path
+               : std::string();
+  }
+
   ContentSetting GetSetting(const GURL& url, ContentSettingsType type) {
     return HostContentSettingsMapFactory::GetForProfile(browser()->GetProfile())
         ->GetContentSetting(url, url, type);
@@ -111,13 +120,20 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   EXPECT_EQ(content->uuid() + "." + kAIChatLeoWorkspaceUIHost, url.host());
   EXPECT_EQ("/", url.path());
 
+  // url() also records the folder, because that is what gets persisted and so
+  // what a later session reopens the workspace from.
+  EXPECT_EQ(folder.AsUTF8Unsafe(), FolderPathFromUrl(url));
+
   // The page is a headless tool host: it must never be visible to the user.
   content::WebContents* web_contents = content->GetWebContentsForTesting();
   ASSERT_TRUE(web_contents);
   EXPECT_EQ(content::Visibility::HIDDEN, web_contents->GetVisibility());
 
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
-  EXPECT_EQ(url, web_contents->GetLastCommittedURL());
+  // The page is loaded without the folder, so it is never told which folder it
+  // has and cannot ask for a different one.
+  EXPECT_EQ(url.GetWithEmptyPath(), web_contents->GetLastCommittedURL());
+  EXPECT_FALSE(web_contents->GetLastCommittedURL().has_query());
 
   // Once loaded, the delegate is a live tool host, so the next generation loop
   // harvests whatever the page registered.
@@ -208,7 +224,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
   // workspace page's markup to the model would be noise.
   base::test::TestFuture<PageContent> page_content;
   content->GetContent(page_content.GetCallback());
-  EXPECT_EQ(PageContent(), page_content.Get());
+  EXPECT_EQ(PageContent("", mojom::ContentType::Workspace), page_content.Get());
+  EXPECT_TRUE(page_content.Get().content.empty());
 }
 
 IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentBrowserTest,
@@ -261,7 +278,8 @@ IN_PROC_BROWSER_TEST_F(WorkspaceAssociatedContentWebMcpBrowserTest,
   auto content = CreateContent(CreateWorkspaceFolder());
   content::WebContents* web_contents = content->GetWebContentsForTesting();
   ASSERT_TRUE(content::WaitForLoadStop(web_contents));
-  ASSERT_EQ(content->url(), web_contents->GetLastCommittedURL());
+  ASSERT_EQ(content->url().GetWithEmptyPath(),
+            web_contents->GetLastCommittedURL());
 
   // registerTool() rejects with a SecurityError when WebMCP isn't allowed for
   // the document's origin, so the promise resolving is the assertion here.
