@@ -80,13 +80,6 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesTest) {
   model.SetCampaignsTotalNewTabTakeoverCreativeCount(
       kTestCampaignsTotalImageCount);
 
-  // Check randomly picked campaign index.
-  EXPECT_TRUE(model.current_campaign_index_ <
-              kTestCampaignsTotalImageCount.size());
-
-  // Set current campaign index explicitely to test easily.
-  model.current_campaign_index_ = 1;
-
   // Loading initial count times.
   for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
        ++i) {
@@ -97,12 +90,6 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesTest) {
   for (size_t i = 0; i < 30; i++) {
     // Random image should be displayed now after loading initial count.
     EXPECT_TRUE(model.ShouldShowSponsoredImages());
-
-    const auto [campaign_index, creative_index] =
-        model.GetCurrentNewTabTakeoverCampaignAndCreativeIndex();
-    EXPECT_TRUE(campaign_index < kTestCampaignsTotalImageCount.size());
-    EXPECT_TRUE(creative_index <
-                kTestCampaignsTotalImageCount.at(campaign_index));
     model.RegisterPageView();
 
     // Loading regular-count times.
@@ -119,13 +106,6 @@ TEST_F(ViewCounterModelTest, NTPSponsoredImagesCountToNewTabTakeoverTest) {
 
   model.SetCampaignsTotalNewTabTakeoverCreativeCount(
       kTestCampaignsTotalImageCount);
-
-  // Check randomly picked campaign index.
-  EXPECT_TRUE(model.current_campaign_index_ <
-              kTestCampaignsTotalImageCount.size());
-
-  // Set current campaign index explicitely to test easily.
-  model.current_campaign_index_ = 1;
 
   // Count is 1 so we should not show the New Tab Takeover wallpaper.
   EXPECT_FALSE(model.ShouldShowSponsoredImages());
@@ -266,11 +246,7 @@ TEST_F(ViewCounterModelTest,
       kTestCampaignsTotalImageCount);
   InstallDeterministicBackgroundRng(&model);
 
-  // Check the New Tab Takeover creative index is not modified when only
-  // background images are used.
   model.set_show_new_tab_takeover_wallpaper(false);
-  const auto initial_new_tab_takeover_creative_index =
-      model.GetCurrentNewTabTakeoverCampaignAndCreativeIndex();
 
   constexpr int kTestPageViewCount = 30;
   for (int i = 0; i < kTestPageViewCount; ++i) {
@@ -281,10 +257,6 @@ TEST_F(ViewCounterModelTest,
     // adopts exactly the index returned by the RNG.
     EXPECT_EQ(next_background_image_index_,
               model.current_wallpaper_image_index());
-
-    // Check the New Tab Takeover creative index is not changed.
-    EXPECT_EQ(initial_new_tab_takeover_creative_index,
-              model.GetCurrentNewTabTakeoverCampaignAndCreativeIndex());
   }
 
   // Disable background image and check its count is not changed.

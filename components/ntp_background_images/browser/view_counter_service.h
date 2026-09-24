@@ -84,7 +84,6 @@ class ViewCounterService : public KeyedService,
       base::OnceCallback<void(std::optional<base::DictValue>)> callback);
   void GetCurrentBrandedWallpaperFromAdsService(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback);
-  std::optional<base::DictValue> GetCurrentBrandedWallpaperFromModel() const;
 
   NTPSponsoredImagesData* GetSponsoredImagesData() const;
 
