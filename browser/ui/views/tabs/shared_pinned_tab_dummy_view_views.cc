@@ -26,6 +26,7 @@
 #include "ui/views/border.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
+#include "ui/views/controls/webview/webview.h"
 #include "ui/views/layout/fill_layout.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/view_class_properties.h"
@@ -47,7 +48,7 @@ void SharedPinnedTabDummyView::CreateAndInstall(
   // TODO(sko) We should take split view into account. This is the same problem
   // as with SadTabView.
   BrowserView::GetBrowserViewForBrowser(browser)
-      ->contents_web_view()
+      ->GetActiveContentsWebView()
       ->TakeCrashedOverlayView(std::move(dummy_view));
 
   // WebView hides the crash overlay when web contents is not crashed. The
