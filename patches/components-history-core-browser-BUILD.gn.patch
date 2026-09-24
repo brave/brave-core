@@ -1,5 +1,5 @@
 diff --git a/components/history/core/browser/BUILD.gn b/components/history/core/browser/BUILD.gn
-index 30c7b55cf4fda17c4928410b0912d3c64c127403..ed03e39cbb86d871369225616c7021b8a11e0c20 100644
+index 4cf2d97a3df3b30989edbc465e65e95def198372..7efb0a1e6d86fa3dacf194c55090dce53013fa9b 100644
 --- a/components/history/core/browser/BUILD.gn
 +++ b/components/history/core/browser/BUILD.gn
 @@ -2,6 +2,8 @@
@@ -11,7 +11,7 @@ index 30c7b55cf4fda17c4928410b0912d3c64c127403..ed03e39cbb86d871369225616c7021b8
  component("features") {
    sources = [
      "features.cc",
-@@ -119,6 +121,7 @@ static_library("browser") {
+@@ -127,6 +129,7 @@ static_library("browser") {
      "web_history_service.h",
      "web_history_service_observer.h",
    ]
@@ -19,7 +19,7 @@ index 30c7b55cf4fda17c4928410b0912d3c64c127403..ed03e39cbb86d871369225616c7021b8
  
    public_deps = [
      ":features",
-@@ -157,6 +160,7 @@ static_library("browser") {
+@@ -165,6 +168,7 @@ static_library("browser") {
      "//ui/gfx",
      "//url",
    ]

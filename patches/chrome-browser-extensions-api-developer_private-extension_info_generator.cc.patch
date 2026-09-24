@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
-index 64c57f2ca2148914d6e7721def8142d7cf128492..200dc7f93da9b058b6501d8722247a47cb2bd837 100644
+index 832d389b0ebedcdcdcd1f1540378cfab097c0f58..d10f8fac03ec2e14c3ffef0521960fae44ae29f9 100644
 --- a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
 +++ b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
-@@ -723,6 +723,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
+@@ -747,6 +747,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
  #else
    info.incognito_access_pending_change = false;
  #endif
@@ -10,7 +10,7 @@ index 64c57f2ca2148914d6e7721def8142d7cf128492..200dc7f93da9b058b6501d8722247a47
  
    // User Scripts toggle.
    info.user_scripts_access.is_enabled =
-@@ -877,6 +878,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
+@@ -901,6 +902,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
    CHECK(mv2_handler);
    info.is_affected_by_mv2_deprecation =
        mv2_handler->IsExtensionAffected(extension);
