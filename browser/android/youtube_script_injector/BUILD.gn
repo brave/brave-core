@@ -69,6 +69,7 @@ source_set("unit_tests") {
     ":youtube_script_injector",
     "//base/test:test_support",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_render_view_host_test_harness",
     "//testing/gtest",
   ]
 }

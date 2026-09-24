@@ -224,6 +224,7 @@ source_set("unit_tests") {
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/hid",
       "//chrome/browser/ui/hid",
+      "//chrome/test/base:chrome_render_view_host_test_harness",
       "//components/permissions:test_support",
       "//services/device/public/cpp:test_support",
       "//ui/display:test_support",
