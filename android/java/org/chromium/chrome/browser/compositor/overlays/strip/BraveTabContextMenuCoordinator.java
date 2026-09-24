@@ -57,7 +57,8 @@ public class BraveTabContextMenuCoordinator extends TabContextMenuCoordinator {
             @TabClosingSource int tabClosingSource,
             @Nullable BooleanSupplier canActivateTabLayoutToggleMenuSupplier,
             @TabStripLayoutType int tabStripLayout,
-            @Nullable TabGroupUiActionHandler tabGroupUiActionHandler) {
+            @Nullable TabGroupUiActionHandler tabGroupUiActionHandler,
+            @Nullable Runnable onMenuDismissedCallback) {
         super(
                 tabModelSupplier,
                 tabGroupListBottomSheetCoordinator,
@@ -76,7 +77,8 @@ public class BraveTabContextMenuCoordinator extends TabContextMenuCoordinator {
                 tabClosingSource,
                 canActivateTabLayoutToggleMenuSupplier,
                 tabStripLayout,
-                tabGroupUiActionHandler);
+                tabGroupUiActionHandler,
+                onMenuDismissedCallback);
     }
 
     @Override
