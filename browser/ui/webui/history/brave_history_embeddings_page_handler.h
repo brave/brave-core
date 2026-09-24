@@ -20,6 +20,25 @@ class Profile;
 class BraveHistoryEmbeddingsPageHandler
     : public brave_history_embeddings::mojom::PageHandler {
  public:
+  // The two facts the chrome://history UI runs on.
+  struct State {
+    // The setting, which is what the toggle shows.
+    bool enabled = false;
+    // Whether the setting is waiting on a relaunch to take effect, which is
+    // when the side bar offers its "Relaunch" button.
+    bool needs_restart = false;
+
+    // Whether a search can run this session: the setting is on and the
+    // embeddings service it needs was built. Upstream gates every call into
+    // that service on this, including the `Search()` that CHECKs it is
+    // non-null.
+    bool search_enabled() const { return enabled && !needs_restart; }
+  };
+
+  // The one place the two facts are read, so the pref observer and
+  // BraveHistoryUI's loadTimeData snapshot report the same values.
+  static State GetState(Profile* profile);
+
   BraveHistoryEmbeddingsPageHandler(
       mojo::PendingReceiver<brave_history_embeddings::mojom::PageHandler>
           receiver,
