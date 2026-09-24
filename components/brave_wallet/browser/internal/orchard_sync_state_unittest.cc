@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 
+#include <optional>
 #include <utility>
+#include <vector>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/string_number_conversions.h"
@@ -24,6 +26,93 @@ namespace brave_wallet {
 namespace {
 
 constexpr uint32_t kDefaultCommitmentSeed = 1;
+
+// Distinct amounts for each pool so tests can assert that Orchard and Ironwood
+// notes never get mixed together.
+constexpr uint64_t kOrchardNoteAmount = 10000;
+constexpr uint64_t kIronwoodNoteAmount = 20000;
+
+OrchardNote MakeTestNote(uint32_t block_id,
+                         uint8_t nullifier_byte,
+                         uint64_t amount = kOrchardNoteAmount) {
+  OrchardNote note;
+  note.block_id = block_id;
+  note.amount = amount;
+  note.nullifier.fill(nullifier_byte);
+  note.note_version = 2;
+  return note;
+}
+
+OrchardNoteSpend MakeTestSpend(uint32_t block_id, uint8_t nullifier_byte) {
+  OrchardNoteSpend spend;
+  spend.block_id = block_id;
+  spend.nullifier.fill(nullifier_byte);
+  return spend;
+}
+
+std::vector<OrchardCommitment> MakeToMarkedHeightCommitments(uint32_t seed) {
+  std::vector<OrchardCommitment> commitments;
+  for (int i = 0; i < 100; i++) {
+    switch (i) {
+      case 2:
+        commitments.push_back(
+            CreateCommitment(CreateMockCommitmentValue(i, seed), true, 1));
+        break;
+      case 50:
+        commitments.push_back(
+            CreateCommitment(CreateMockCommitmentValue(i, seed), false, 2));
+        break;
+      default:
+        commitments.push_back(CreateCommitment(
+            CreateMockCommitmentValue(i, seed), false, std::nullopt));
+        break;
+    }
+  }
+  return commitments;
+}
+
+std::vector<OrchardCommitment> MakeToMarkedHeightPostRewindCommitments(
+    uint32_t seed) {
+  std::vector<OrchardCommitment> commitments;
+  for (int i = 3; i < 100; i++) {
+    switch (i) {
+      case 50:
+        commitments.push_back(
+            CreateCommitment(CreateMockCommitmentValue(i, seed), false, 2));
+        break;
+      default:
+        commitments.push_back(CreateCommitment(
+            CreateMockCommitmentValue(i, seed), false, std::nullopt));
+        break;
+    }
+  }
+  return commitments;
+}
+
+std::vector<OrchardCommitment> MakeRewindCommitments(uint32_t seed) {
+  std::vector<OrchardCommitment> commitments;
+  for (int i = 0; i < 10; i++) {
+    switch (i) {
+      case 2:
+        commitments.push_back(CreateCommitment(
+            CreateMockCommitmentValue(i, seed), true, std::nullopt));
+        break;
+      case 3:
+        commitments.push_back(
+            CreateCommitment(CreateMockCommitmentValue(i, seed), false, 1));
+        break;
+      case 5:
+        commitments.push_back(
+            CreateCommitment(CreateMockCommitmentValue(i, seed), false, 2));
+        break;
+      default:
+        commitments.push_back(CreateCommitment(
+            CreateMockCommitmentValue(i, seed), false, std::nullopt));
+        break;
+    }
+  }
+  return commitments;
+}
 
 OrchardNoteWitness CreateWitness(const std::vector<std::string>& path,
                                  uint32_t position) {
@@ -553,68 +642,62 @@ TEST_F(OrchardSyncStateTest, NoWitnessOnWrongCheckpoint) {
   }
 }
 
-TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
+class OrchardSyncStateRewindTest : public OrchardSyncStateTest {
+ public:
+  void SetIronwoodEnabled(bool enabled) {
+    feature_list_.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_ironwood_enabled", enabled ? "true" : "false"}});
+  }
+
+  void ExpectAllNoteBlockIds(OrchardPool pool,
+                             const std::vector<uint32_t>& block_ids) {
+    auto notes = sync_state()->GetSpendableNotes(pool, account_id(), {});
+    ASSERT_TRUE(notes.has_value());
+    ASSERT_TRUE(notes.value().has_value());
+    ASSERT_EQ(block_ids.size(), notes.value()->all_notes.size());
+    for (size_t i = 0; i < block_ids.size(); ++i) {
+      EXPECT_EQ(block_ids[i], notes.value()->all_notes[i].block_id);
+    }
+  }
+
+  // Verifies both the block id and amount of every note, so tests can assert
+  // that a pool holds exactly its own notes and none from the other pool.
+  void ExpectAllNotes(
+      OrchardPool pool,
+      const std::vector<std::pair<uint32_t, uint64_t>>& block_id_amounts) {
+    auto notes = sync_state()->GetSpendableNotes(pool, account_id(), {});
+    ASSERT_TRUE(notes.has_value());
+    ASSERT_TRUE(notes.value().has_value());
+    ASSERT_EQ(block_id_amounts.size(), notes.value()->all_notes.size());
+    for (size_t i = 0; i < block_id_amounts.size(); ++i) {
+      EXPECT_EQ(block_id_amounts[i].first,
+                notes.value()->all_notes[i].block_id);
+      EXPECT_EQ(block_id_amounts[i].second, notes.value()->all_notes[i].amount);
+    }
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+TEST_F(OrchardSyncStateRewindTest, ToMarkedHeight_IronwoodDisabled) {
+  SetIronwoodEnabled(false);
   EXPECT_TRUE(sync_state()->RegisterAccount(account_id(), 0u).has_value());
 
   {
-    std::vector<OrchardCommitment> commitments;
-
-    for (int i = 0; i < 100; i++) {
-      switch (i) {
-        case 2:
-          commitments.push_back(CreateCommitment(
-              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), true, 1));
-          break;
-        case 50:
-          commitments.push_back(CreateCommitment(
-              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false, 2));
-          break;
-        default:
-          commitments.push_back(CreateCommitment(
-              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false,
-              std::nullopt));
-          break;
-      }
-    }
-    auto result = CreateResultForTesting(OrchardTreeState(),
-                                         std::move(commitments), 1000, "1000");
-    {
-      OrchardNote note;
-      note.block_id = 1;
-      note.amount = 10000;
-      note.nullifier.fill(1);
-      note.note_version = 2;
-      result.orchard.discovered_notes.push_back(note);
-    }
-    {
-      OrchardNote note;
-      note.block_id = 2;
-      note.amount = 10000;
-      note.nullifier.fill(2);
-      note.note_version = 2;
-      result.orchard.discovered_notes.push_back(note);
-    }
-    {
-      OrchardNoteSpend spend;
-      spend.block_id = 2;
-      spend.nullifier.fill(1);
-      result.orchard.found_spends.push_back(spend);
-    }
+    auto result = CreateResultForTesting(
+        OrchardTreeState(),
+        MakeToMarkedHeightCommitments(kDefaultCommitmentSeed), 1000, "1000");
+    result.orchard.discovered_notes = {MakeTestNote(1, 1), MakeTestNote(2, 2)};
+    result.orchard.found_spends.push_back(MakeTestSpend(2, 1));
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
               sync_state()
                   ->ApplyScanResults(account_id(), std::move(result))
                   .value());
   }
 
-  EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
-                    .value()
-                    ->all_notes.size());
-  EXPECT_EQ(2u, sync_state()
-                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
-                    .value()
-                    ->all_notes[0]
-                    .block_id);
+  ExpectAllNoteBlockIds(OrchardPool::kOrchard, {2u});
 
   OrchardInput input;
   input.note.orchard_commitment_tree_position = 2;
@@ -624,65 +707,24 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
   EXPECT_EQ(OrchardStorage::Result::kSuccess,
             sync_state()->Rewind(account_id(), 1, "1").value());
 
-  EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
-                    .value()
-                    ->all_notes.size());
-  EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
-                    .value()
-                    ->all_notes[0]
-                    .block_id);
+  ExpectAllNoteBlockIds(OrchardPool::kOrchard, {1u});
 
   {
     OrchardTreeState tree_state;
     tree_state.block_height = 3;
     tree_state.tree_size = 3;
-
-    std::vector<OrchardCommitment> commitments;
-    for (int i = 3; i < 100; i++) {
-      switch (i) {
-        case 50:
-          commitments.push_back(CreateCommitment(
-              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false, 2));
-          break;
-        default:
-          commitments.push_back(CreateCommitment(
-              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false,
-              std::nullopt));
-          break;
-      }
-    }
-    auto result = CreateResultForTesting(std::move(tree_state),
-                                         std::move(commitments), 1000, "1000");
-    {
-      OrchardNote note;
-      note.block_id = 2;
-      note.amount = 10000;
-      note.nullifier.fill(2);
-      note.note_version = 2;
-      result.orchard.discovered_notes.push_back(note);
-    }
+    auto result = CreateResultForTesting(
+        std::move(tree_state),
+        MakeToMarkedHeightPostRewindCommitments(kDefaultCommitmentSeed), 1000,
+        "1000");
+    result.orchard.discovered_notes.push_back(MakeTestNote(2, 2));
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
               sync_state()
                   ->ApplyScanResults(account_id(), std::move(result))
                   .value());
   }
 
-  EXPECT_EQ(2u, sync_state()
-                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
-                    .value()
-                    ->all_notes.size());
-  EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
-                    .value()
-                    ->all_notes[0]
-                    .block_id);
-  EXPECT_EQ(2u, sync_state()
-                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
-                    .value()
-                    ->all_notes[1]
-                    .block_id);
+  ExpectAllNoteBlockIds(OrchardPool::kOrchard, {1u, 2u});
 
   auto actual_witness = sync_state()->CalculateWitnessForCheckpoint(
       OrchardPool::kOrchard, account_id(), {input}, 2);
@@ -690,81 +732,128 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
             actual_witness.value()[0].witness.value());
 }
 
-TEST_F(OrchardSyncStateTest, Rewind) {
+TEST_F(OrchardSyncStateRewindTest, ToMarkedHeight_IronwoodEnabled) {
+  SetIronwoodEnabled(true);
   EXPECT_TRUE(sync_state()->RegisterAccount(account_id(), 0u).has_value());
 
   {
-    std::vector<OrchardCommitment> commitments;
-
-    for (int i = 0; i < 10; i++) {
-      switch (i) {
-        case 2:
-          commitments.push_back(CreateCommitment(
-              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), true,
-              std::nullopt));
-          break;
-        case 3:
-          commitments.push_back(CreateCommitment(
-              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false, 1));
-          break;
-        case 5:
-          commitments.push_back(CreateCommitment(
-              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false, 2));
-          break;
-        default:
-          commitments.push_back(CreateCommitment(
-              CreateMockCommitmentValue(i, kDefaultCommitmentSeed), false,
-              std::nullopt));
-          break;
-      }
-    }
-
-    auto result = CreateResultForTesting(OrchardTreeState(),
-                                         std::move(commitments), 1000, "1000");
-    {
-      OrchardNote note;
-      note.block_id = 1;
-      note.amount = 10000;
-      note.nullifier.fill(1);
-      note.note_version = 2;
-      result.orchard.discovered_notes.push_back(note);
-    }
-    {
-      OrchardNote note;
-      note.block_id = 2;
-      note.amount = 10000;
-      note.nullifier.fill(2);
-      note.note_version = 2;
-      result.orchard.discovered_notes.push_back(note);
-    }
-    {
-      OrchardNoteSpend spend;
-      spend.block_id = 3;
-      spend.nullifier.fill(1);
-      result.orchard.found_spends.push_back(spend);
-    }
-
+    auto result = CreateResultForTesting(
+        OrchardTreeState(),
+        MakeToMarkedHeightCommitments(kDefaultCommitmentSeed), 1000, "1000");
+    result.orchard.discovered_notes = {MakeTestNote(1, 1), MakeTestNote(2, 2)};
+    result.orchard.found_spends.push_back(MakeTestSpend(2, 1));
+    result.ironwood = CreateIronwoodPoolResultForTesting(
+        OrchardTreeState(),
+        MakeToMarkedHeightCommitments(kDefaultCommitmentSeed + 10), 1000,
+        "1000");
+    // Ironwood uses a different block layout and note count than Orchard to
+    // prove the two pools never share note data: three notes at blocks 5/6/7
+    // (with a distinct amount) instead of Orchard's two notes at blocks 1/2.
+    result.ironwood->discovered_notes = {
+        MakeTestNote(5, 11, kIronwoodNoteAmount),
+        MakeTestNote(6, 12, kIronwoodNoteAmount),
+        MakeTestNote(7, 13, kIronwoodNoteAmount)};
+    result.ironwood->found_spends.push_back(MakeTestSpend(8, 11));
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
               sync_state()
                   ->ApplyScanResults(account_id(), std::move(result))
                   .value());
   }
 
-  EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
-                    .value()
-                    ->all_notes.size());
+  ExpectAllNotes(OrchardPool::kOrchard, {{2u, kOrchardNoteAmount}});
+  // The spend removed the block-5 note, leaving the block-6 and block-7 notes.
+  ExpectAllNotes(OrchardPool::kIronwood,
+                 {{6u, kIronwoodNoteAmount}, {7u, kIronwoodNoteAmount}});
+  EXPECT_EQ(
+      2u,
+      storage().CheckpointCount(OrchardPool::kIronwood, account_id()).value());
+
+  OrchardInput input;
+  input.note.orchard_commitment_tree_position = 2;
+  auto expected_witness = sync_state()->CalculateWitnessForCheckpoint(
+      OrchardPool::kOrchard, account_id(), {input}, 2);
+  auto expected_ironwood_witness = sync_state()->CalculateWitnessForCheckpoint(
+      OrchardPool::kIronwood, account_id(), {input}, 2);
+  ASSERT_TRUE(expected_ironwood_witness.has_value());
+
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            sync_state()->Rewind(account_id(), 1, "1").value());
+
+  ExpectAllNotes(OrchardPool::kOrchard, {{1u, kOrchardNoteAmount}});
+  // Every Ironwood note lived at blocks 5-7, so rewinding to block 1 removes
+  // all of them, whereas Orchard's block-1 note survives.
+  ExpectAllNotes(OrchardPool::kIronwood, {});
+  // TruncateToCheckpoint(1) drops checkpoint 1 and later.
+  EXPECT_EQ(
+      0u,
+      storage().CheckpointCount(OrchardPool::kIronwood, account_id()).value());
+
+  {
+    OrchardTreeState tree_state;
+    tree_state.block_height = 3;
+    tree_state.tree_size = 3;
+    auto result = CreateResultForTesting(
+        std::move(tree_state),
+        MakeToMarkedHeightPostRewindCommitments(kDefaultCommitmentSeed), 1000,
+        "1000");
+    result.orchard.discovered_notes.push_back(MakeTestNote(2, 2));
+    OrchardTreeState ironwood_tree_state;
+    ironwood_tree_state.block_height = 3;
+    ironwood_tree_state.tree_size = 3;
+    result.ironwood = CreateIronwoodPoolResultForTesting(
+        std::move(ironwood_tree_state),
+        MakeToMarkedHeightPostRewindCommitments(kDefaultCommitmentSeed + 10),
+        1000, "1000");
+    result.ironwood->discovered_notes = {
+        MakeTestNote(5, 11, kIronwoodNoteAmount),
+        MakeTestNote(6, 12, kIronwoodNoteAmount),
+        MakeTestNote(7, 13, kIronwoodNoteAmount)};
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              sync_state()
+                  ->ApplyScanResults(account_id(), std::move(result))
+                  .value());
+  }
+
+  ExpectAllNotes(OrchardPool::kOrchard,
+                 {{1u, kOrchardNoteAmount}, {2u, kOrchardNoteAmount}});
+  ExpectAllNotes(OrchardPool::kIronwood, {{5u, kIronwoodNoteAmount},
+                                          {6u, kIronwoodNoteAmount},
+                                          {7u, kIronwoodNoteAmount}});
+
+  auto actual_witness = sync_state()->CalculateWitnessForCheckpoint(
+      OrchardPool::kOrchard, account_id(), {input}, 2);
+  EXPECT_EQ(expected_witness.value()[0].witness.value(),
+            actual_witness.value()[0].witness.value());
+  auto actual_ironwood_witness = sync_state()->CalculateWitnessForCheckpoint(
+      OrchardPool::kIronwood, account_id(), {input}, 2);
+  EXPECT_EQ(expected_ironwood_witness.value()[0].witness.value(),
+            actual_ironwood_witness.value()[0].witness.value());
+}
+
+TEST_F(OrchardSyncStateRewindTest, Rewind_IronwoodDisabled) {
+  SetIronwoodEnabled(false);
+  EXPECT_TRUE(sync_state()->RegisterAccount(account_id(), 0u).has_value());
+
+  {
+    auto result = CreateResultForTesting(
+        OrchardTreeState(), MakeRewindCommitments(kDefaultCommitmentSeed), 1000,
+        "1000");
+    result.orchard.discovered_notes = {MakeTestNote(1, 1), MakeTestNote(2, 2)};
+    result.orchard.found_spends.push_back(MakeTestSpend(3, 1));
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              sync_state()
+                  ->ApplyScanResults(account_id(), std::move(result))
+                  .value());
+  }
+
+  ExpectAllNoteBlockIds(OrchardPool::kOrchard, {2u});
   EXPECT_EQ(OrchardStorage::Result::kSuccess,
             sync_state()->Rewind(account_id(), 2, "2").value());
   // Nullifier was deleted so we should have 2 spendable notes now.
-  EXPECT_EQ(2u, sync_state()
-                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
-                    .value()
-                    ->all_notes.size());
+  ExpectAllNoteBlockIds(OrchardPool::kOrchard, {1u, 2u});
 
   {
     std::vector<OrchardCommitment> commitments;
-
     for (int j = 0; j < 5; j++) {
       if (j == 3) {
         commitments.push_back(
@@ -787,17 +876,13 @@ TEST_F(OrchardSyncStateTest, Rewind) {
                   .value());
   }
 
-  {
-    OrchardInput input;
-    input.note.orchard_commitment_tree_position = 2;
-    auto witness_result = sync_state()->CalculateWitnessForCheckpoint(
-        OrchardPool::kOrchard, account_id(), {input}, 2);
-    // Since checkpoint #2 was deleted we shouldn't be able to calc witness
-    EXPECT_FALSE(witness_result.has_value());
-  }
-
   OrchardInput input;
   input.note.orchard_commitment_tree_position = 2;
+  auto deleted_checkpoint_witness = sync_state()->CalculateWitnessForCheckpoint(
+      OrchardPool::kOrchard, account_id(), {input}, 2);
+  // Since checkpoint #2 was deleted we shouldn't be able to calc witness
+  EXPECT_FALSE(deleted_checkpoint_witness.has_value());
+
   auto witness_result = sync_state()->CalculateWitnessForCheckpoint(
       OrchardPool::kOrchard, account_id(), {input}, 1);
   EXPECT_TRUE(witness_result.has_value());
@@ -814,6 +899,125 @@ TEST_F(OrchardSyncStateTest, Rewind) {
            "4e14563df191a2a65b4b37113b5230680555051b22d74a8e1f1d706f90f3133"
            "b"},
           2));
+}
+
+TEST_F(OrchardSyncStateRewindTest, Rewind_IronwoodEnabled) {
+  SetIronwoodEnabled(true);
+  EXPECT_TRUE(sync_state()->RegisterAccount(account_id(), 0u).has_value());
+
+  {
+    auto result = CreateResultForTesting(
+        OrchardTreeState(), MakeRewindCommitments(kDefaultCommitmentSeed), 1000,
+        "1000");
+    result.orchard.discovered_notes = {MakeTestNote(1, 1), MakeTestNote(2, 2)};
+    result.orchard.found_spends.push_back(MakeTestSpend(3, 1));
+    result.ironwood = CreateIronwoodPoolResultForTesting(
+        OrchardTreeState(), MakeRewindCommitments(kDefaultCommitmentSeed + 10),
+        1000, "1000");
+    // Ironwood uses a different block layout and note count than Orchard to
+    // prove the two pools never share note data. It has a note at block 1
+    // (below the rewind height, so it survives the rewind) plus notes at
+    // blocks 5/6/7 (above the rewind height, so they are dropped), all with a
+    // distinct amount, versus Orchard's two notes at blocks 1/2.
+    result.ironwood->discovered_notes = {
+        MakeTestNote(1, 11, kIronwoodNoteAmount),
+        MakeTestNote(5, 12, kIronwoodNoteAmount),
+        MakeTestNote(6, 13, kIronwoodNoteAmount),
+        MakeTestNote(7, 14, kIronwoodNoteAmount)};
+    result.ironwood->found_spends.push_back(MakeTestSpend(8, 12));
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              sync_state()
+                  ->ApplyScanResults(account_id(), std::move(result))
+                  .value());
+  }
+
+  ExpectAllNotes(OrchardPool::kOrchard, {{2u, kOrchardNoteAmount}});
+  // The spend removed the block-5 note, leaving the block-1, block-6 and
+  // block-7 notes.
+  ExpectAllNotes(OrchardPool::kIronwood, {{1u, kIronwoodNoteAmount},
+                                          {6u, kIronwoodNoteAmount},
+                                          {7u, kIronwoodNoteAmount}});
+  EXPECT_EQ(
+      2u,
+      storage().CheckpointCount(OrchardPool::kIronwood, account_id()).value());
+
+  OrchardInput input;
+  input.note.orchard_commitment_tree_position = 2;
+  auto expected_ironwood_witness = sync_state()->CalculateWitnessForCheckpoint(
+      OrchardPool::kIronwood, account_id(), {input}, 1);
+  ASSERT_TRUE(expected_ironwood_witness.has_value());
+
+  EXPECT_EQ(OrchardStorage::Result::kSuccess,
+            sync_state()->Rewind(account_id(), 2, "2").value());
+  // Orchard's spend nullifier was removed by the rewind, so its spent note is
+  // spendable again (blocks 1 and 2). Ironwood keeps its block-1 note, which is
+  // below the rewind height, while its block-5/6/7 notes are above the rewind
+  // height and are dropped - proving the two pools are rewound independently.
+  ExpectAllNotes(OrchardPool::kOrchard,
+                 {{1u, kOrchardNoteAmount}, {2u, kOrchardNoteAmount}});
+  ExpectAllNotes(OrchardPool::kIronwood, {{1u, kIronwoodNoteAmount}});
+  EXPECT_EQ(
+      1u,
+      storage().CheckpointCount(OrchardPool::kIronwood, account_id()).value());
+
+  // Extend only the Orchard tree here. The Ironwood tree is intentionally left
+  // untouched: Rewind(2) already dropped its checkpoint 2, and the assertions
+  // below verify checkpoint 1 still yields the pre-rewind witness.
+  {
+    std::vector<OrchardCommitment> commitments;
+    for (int j = 0; j < 5; j++) {
+      if (j == 3) {
+        commitments.push_back(
+            CreateCommitment(CreateMockCommitmentValue(j, 5), false, 3));
+      } else {
+        commitments.push_back(CreateCommitment(CreateMockCommitmentValue(j, 5),
+                                               false, std::nullopt));
+      }
+    }
+
+    OrchardTreeState tree_state;
+    tree_state.block_height = 2;
+    // Truncate was on position 5, so 6 elements left in the tree
+    tree_state.tree_size = 6;
+    auto result = CreateResultForTesting(std::move(tree_state),
+                                         std::move(commitments), 2000, "2000");
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              sync_state()
+                  ->ApplyScanResults(account_id(), std::move(result))
+                  .value());
+  }
+
+  auto deleted_orchard_witness = sync_state()->CalculateWitnessForCheckpoint(
+      OrchardPool::kOrchard, account_id(), {input}, 2);
+  // Since checkpoint #2 was deleted we shouldn't be able to calc witness
+  EXPECT_FALSE(deleted_orchard_witness.has_value());
+
+  auto witness_result = sync_state()->CalculateWitnessForCheckpoint(
+      OrchardPool::kOrchard, account_id(), {input}, 1);
+  EXPECT_TRUE(witness_result.has_value());
+  EXPECT_EQ(
+      witness_result.value()[0].witness.value(),
+      CreateWitness(
+          {"f342eb6489f4e5b5a0fb0a4ece48d137dcd5e80011aab4668913f98be2af3311",
+           "d4059d13ddcbe9ec7e6fc99bdf9bfd08b0a678d26e3bf6a734e7688eca669f37",
+           "c7413f4614cd64043abbab7cc1095c9bb104231cea89e2c3e0df83769556d030",
+           "2111fc397753e5fd50ec74816df27d6ada7ed2a9ac3816aab2573c8fac794204",
+           "806afbfeb45c64d4f2384c51eff30764b84599ae56a7ab3d4a46d9ce3aeab431",
+           "873e4157f2c0f0c645e899360069fcc9d2ed9bc11bf59827af0230ed52edab18",
+           "27ab1320953ae1ad70c8c15a1253a0a86fbc8a0aa36a84207293f8a495ffc402",
+           "4e14563df191a2a65b4b37113b5230680555051b22d74a8e1f1d706f90f3133"
+           "b"},
+          2));
+
+  auto deleted_ironwood_witness = sync_state()->CalculateWitnessForCheckpoint(
+      OrchardPool::kIronwood, account_id(), {input}, 2);
+  EXPECT_FALSE(deleted_ironwood_witness.has_value());
+
+  auto remaining_ironwood_witness = sync_state()->CalculateWitnessForCheckpoint(
+      OrchardPool::kIronwood, account_id(), {input}, 1);
+  ASSERT_TRUE(remaining_ironwood_witness.has_value());
+  EXPECT_EQ(expected_ironwood_witness.value()[0].witness.value(),
+            remaining_ironwood_witness.value()[0].witness.value());
 }
 
 TEST_F(OrchardSyncStateTest, TruncateTreeWrongCheckpoint) {
