@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "components/assist_ranker/ranker_model_loader_impl.h"
+#include "components/translate/core/browser/ranker_model_loader_impl.h"
 
 #include <initializer_list>
 #include <memory>
@@ -12,9 +12,9 @@
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
-#include "components/assist_ranker/proto/ranker_model.pb.h"
-#include "components/assist_ranker/proto/translate_ranker_model.pb.h"
-#include "components/assist_ranker/ranker_model.h"
+#include "components/translate/core/browser/ranker_model.h"
+#include "components/translate/core/browser/ranker_model.pb.h"
+#include "components/translate/core/browser/translate_ranker_model.pb.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
