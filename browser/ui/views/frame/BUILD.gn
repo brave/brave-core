@@ -80,6 +80,7 @@ source_set("unit_tests") {
     "//chrome/browser/ui/views:layout_provider",
     "//chrome/browser/ui/views/frame:browser_view_layout_delegate",
     "//chrome/browser/ui/views/frame:opaque_browser_frame_view_layout_delegate",
+    "//chrome/browser/ui/views/tabs/organizer:organizer_panel_host",
     "//chrome/test:test_support",
     "//components/tabs:test_support",
     "//content/test:test_support",
