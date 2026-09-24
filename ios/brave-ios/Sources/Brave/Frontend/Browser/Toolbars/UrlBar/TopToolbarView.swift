@@ -308,10 +308,8 @@ class TopToolbarView: UIView, ToolbarProtocol {
       )
     }
 
-    if UIDevice.current.userInterfaceIdiom == .phone {
-      trailingItemsStackView.addArrangedSubview(addTabButton)
-    }
     trailingItemsStackView.addArrangedSubview(tabsButton)
+    trailingItemsStackView.addArrangedSubview(addTabButton)
     trailingItemsStackView.addArrangedSubview(menuButton)
 
     shieldsRewardsStack.addArrangedSubview(shieldsButton)

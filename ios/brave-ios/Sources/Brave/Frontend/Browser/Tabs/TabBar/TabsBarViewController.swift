@@ -12,10 +12,7 @@ import Web
 
 protocol TabsBarViewControllerDelegate: AnyObject {
   func tabsBarDidSelectTab(_ tabsBarController: TabsBarViewController, _ tab: some TabState)
-  func tabsBarDidLongPressAddTab(_ tabsBarController: TabsBarViewController, button: UIButton)
-  func tabsBarDidSelectAddNewTab(_ isPrivate: Bool)
   func tabsBarDidChangeReaderModeVisibility(_ isHidden: Bool)
-  func tabsBarDidSelectAddNewWindow(_ isPrivate: Bool)
 }
 
 class TabsBarViewController: UIViewController {
@@ -24,18 +21,6 @@ class TabsBarViewController: UIViewController {
 
   weak var delegate: TabsBarViewControllerDelegate?
   private var cancellables: Set<AnyCancellable> = []
-
-  private lazy var plusButton: UIButton = {
-    let button = UIButton()
-    button.setImage(UIImage(braveSystemNamed: "leo.plus.add"), for: .normal)
-    button.contentMode = .scaleAspectFit
-    button.addTarget(self, action: #selector(addTabPressed), for: .touchUpInside)
-    button.addGestureRecognizer(
-      UILongPressGestureRecognizer(target: self, action: #selector(didLongPressAddTab(_:)))
-    )
-    button.backgroundColor = .clear
-    return button
-  }()
 
   fileprivate lazy var collectionView: UICollectionView = {
     let layout = UICollectionViewFlowLayout()
@@ -101,21 +86,10 @@ class TabsBarViewController: UIViewController {
       object: nil
     )
 
-    if UIDevice.current.userInterfaceIdiom == .pad {
-      view.addSubview(plusButton)
-
-      plusButton.snp.makeConstraints { make in
-        make.right.top.bottom.equalTo(view)
-        make.width.equalTo(UX.TabsBar.buttonWidth)
-      }
-    }
-
     collectionView.snp.makeConstraints { make in
-      make.bottom.top.left.equalTo(view)
-      make.right.equalTo(view).inset(UX.TabsBar.buttonWidth)
+      make.edges.equalTo(view)
     }
 
-    updatePlusButtonMenu()
     updateColors()
 
     privateModeCancellable = tabManager?.privateBrowsingManager
@@ -124,7 +98,6 @@ class TabsBarViewController: UIViewController {
       .receive(on: RunLoop.main)
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         guard let self = self else { return }
-        self.updatePlusButtonMenu()
         self.updateColors()
       })
 
@@ -137,7 +110,7 @@ class TabsBarViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    updateOverflowIndicatorsLayout(addButtonIncluded: true)
+    updateOverflowIndicatorsLayout()
   }
 
   private var privateModeCancellable: AnyCancellable?
@@ -146,7 +119,6 @@ class TabsBarViewController: UIViewController {
       tabManager?.privateBrowsingManager.browserColors ?? .standard
     view.backgroundColor = browserColors.tabBarTabBackground
     collectionView.backgroundColor = view.backgroundColor
-    plusButton.tintColor = browserColors.iconDefault
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -187,69 +159,6 @@ class TabsBarViewController: UIViewController {
 
   @objc func orientationChanged() {
     overflowIndicators()
-  }
-
-  @objc func addTabPressed() {
-    delegate?.tabsBarDidSelectAddNewTab(
-      tabManager?.privateBrowsingManager.isPrivateBrowsing == true
-    )
-  }
-
-  @objc private func didLongPressAddTab(_ longPress: UILongPressGestureRecognizer) {
-    if longPress.state == .began {
-      delegate?.tabsBarDidLongPressAddTab(self, button: plusButton)
-    }
-  }
-
-  func updatePlusButtonMenu() {
-    var newTabMenu: [UIAction] = []
-    let isPrivateBrowsing = tabManager?.privateBrowsingManager.isPrivateBrowsing == true
-
-    let openNewTab = UIAction(
-      title: isPrivateBrowsing ? Strings.Hotkey.newPrivateTabTitle : Strings.Hotkey.newTabTitle,
-      image: isPrivateBrowsing
-        ? UIImage(braveSystemNamed: "leo.product.private-window")
-        : UIImage(braveSystemNamed: "leo.browser.mobile-tab-new"),
-      handler: UIAction.deferredActionHandler { [unowned self] _ in
-        self.delegate?.tabsBarDidSelectAddNewTab(isPrivateBrowsing)
-      }
-    )
-
-    newTabMenu.append(openNewTab)
-
-    if !isPrivateBrowsing {
-      let openNewPrivateTab = UIAction(
-        title: Strings.Hotkey.newPrivateTabTitle,
-        image: UIImage(braveSystemNamed: "leo.product.private-window"),
-        handler: UIAction.deferredActionHandler { [unowned self] _ in
-          self.delegate?.tabsBarDidSelectAddNewTab(true)
-        }
-      )
-
-      newTabMenu.append(openNewPrivateTab)
-    }
-
-    newTabMenu.append(
-      UIAction(
-        title: Strings.newWindowTitle,
-        image: UIImage(braveSystemNamed: "leo.window.tab-new"),
-        handler: UIAction.deferredActionHandler { [unowned self] _ in
-          self.delegate?.tabsBarDidSelectAddNewWindow(false)
-        }
-      )
-    )
-
-    newTabMenu.append(
-      UIAction(
-        title: Strings.newPrivateWindowTitle,
-        image: UIImage(braveSystemNamed: "leo.window.tab-private"),
-        handler: UIAction.deferredActionHandler { [unowned self] _ in
-          self.delegate?.tabsBarDidSelectAddNewWindow(true)
-        }
-      )
-    )
-
-    plusButton.menu = UIMenu(title: "", identifier: nil, children: newTabMenu)
   }
 
   func updateData(reloadingCollectionView: Bool = true) {
@@ -341,17 +250,14 @@ class TabsBarViewController: UIViewController {
     return max(overflow, 0)
   }
 
-  private func updateOverflowIndicatorsLayout(addButtonIncluded: Bool = false) {
+  private func updateOverflowIndicatorsLayout() {
     let offset = Float(collectionView.contentOffset.x)
     let startFade = Float(30)
     leftOverflowIndicator.opacity = min(1, offset / startFade)
 
     // all the way scrolled right
-    var offsetFromRight =
+    let offsetFromRight =
       collectionView.contentSize.width - CGFloat(offset) - collectionView.frame.width
-    if addButtonIncluded {
-      offsetFromRight -= plusButton.frame.width
-    }
     rightOverflowIndicator.opacity = min(1, Float(offsetFromRight) / startFade)
   }
 

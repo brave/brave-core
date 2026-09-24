@@ -500,7 +500,6 @@ extension BrowserViewController: TabManagerDelegate {
     topToolbar.updateTabCount(count)
 
     // Update Actions for Tab-Tray Button
-    var newTabMenuChildren: [UIAction] = []
     var addTabMenuChildren: [UIAction] = []
 
     if !privateBrowsingManager.isPrivateBrowsing {
@@ -526,12 +525,6 @@ extension BrowserViewController: TabManagerDelegate {
         }
       )
 
-      if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar.view.isHidden == true)
-        || (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil)
-      {
-        newTabMenuChildren.append(openNewPrivateTab)
-      }
-
       addTabMenuChildren.append(openNewPrivateTab)
     }
 
@@ -548,13 +541,29 @@ extension BrowserViewController: TabManagerDelegate {
         )
       }
     )
-
-    if (UIDevice.current.userInterfaceIdiom == .pad && tabsBar.view.isHidden)
-      || (UIDevice.current.userInterfaceIdiom == .phone && toolbar == nil)
-    {
-      newTabMenuChildren.append(openNewTab)
-    }
     addTabMenuChildren.append(openNewTab)
+
+    if UIApplication.shared.supportsMultipleScenes {
+      addTabMenuChildren.append(
+        UIAction(
+          title: Strings.newWindowTitle,
+          image: UIImage(braveSystemNamed: "leo.window.tab-new"),
+          handler: UIAction.deferredActionHandler { [unowned self] _ in
+            self.openInNewWindow(url: nil, isPrivate: false)
+          }
+        )
+      )
+
+      addTabMenuChildren.append(
+        UIAction(
+          title: Strings.newPrivateWindowTitle,
+          image: UIImage(braveSystemNamed: "leo.window.tab-private"),
+          handler: UIAction.deferredActionHandler { [unowned self] _ in
+            self.openInNewWindow(url: nil, isPrivate: true)
+          }
+        )
+      )
+    }
 
     var bookmarkMenuChildren: [UIAction] = []
 
@@ -786,7 +795,6 @@ extension BrowserViewController: TabManagerDelegate {
       closeAllTabMenuChildren.append(closeAllTabs)
     }
 
-    let newTabMenu = UIMenu(title: "", options: .displayInline, children: newTabMenuChildren)
     let addTabMenu = UIMenu(title: "", options: .displayInline, children: addTabMenuChildren)
     let bookmarkMenu = UIMenu(title: "", options: .displayInline, children: bookmarkMenuChildren)
     let duplicateTabMenu = UIMenu(
@@ -807,7 +815,7 @@ extension BrowserViewController: TabManagerDelegate {
     let closeTabMenu = UIMenu(title: "", options: .displayInline, children: closeTabMenuChildren)
 
     let tabButtonMenuActionList = [
-      closeTabMenu, closeAllTabMenu, recentlyClosedMenu, duplicateTabMenu, bookmarkMenu, newTabMenu,
+      closeTabMenu, closeAllTabMenu, recentlyClosedMenu, duplicateTabMenu, bookmarkMenu,
     ]
     let addTabMenuActionList = [addTabMenu]
 
