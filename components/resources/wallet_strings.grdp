@@ -1296,4 +1296,8 @@
   <message name="IDS_BRAVE_WALLET_ENABLE_REWARDS" desc="Action label on the wallet card hub rewards card to enable Brave Rewards" formatter_data="webui=Wallet">Enable Rewards</message>
   <message name="IDS_BRAVE_WALLET_HIDE_BALANCES" desc="Action label on the wallet card hub menu to hide balances" formatter_data="webui=Wallet">Hide balances</message>
   <message name="IDS_BRAVE_WALLET_SHOW_BALANCES" desc="Action label on the wallet card hub menu to show balances" formatter_data="webui=Wallet">Show balances</message>
+  <message name="IDS_BRAVE_WALLET_BRAVE_REWARDS_CARD" desc="Label for the Brave Rewards card in the wallet card hub" formatter_data="webui=Wallet">Brave Rewards Card</message>
+  <message name="IDS_BRAVE_WALLET_APPEARANCE" desc="Section label for appearance settings in the wallet card hub settings screen" formatter_data="webui=Wallet">Appearance</message>
+  <message name="IDS_BRAVE_WALLET_SECURITY" desc="Section label for security settings in the wallet card hub settings screen" formatter_data="webui=Wallet">Security</message>
+  <message name="IDS_BRAVE_WALLET_REQUIRE_UNLOCK_NEXT_TIME" desc="Description under the lock wallet button in the wallet card hub settings screen" formatter_data="webui=Wallet">Require unlock next time</message>
 </grit-part>
