@@ -104,10 +104,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return tree_tab_session_manager_.get();
   }
 
-  screenshot::ScreenshotController* screenshot_controller() {
-    return screenshot_controller_.get();
-  }
-
   VerticalTabController* vertical_tab_controller() {
     return vertical_tab_controller_.get();
   }

@@ -18,6 +18,7 @@ source_set("screenshot") {
   public_deps = [
     "//printing/buildflags",
     "//skia",
+    "//ui/base/unowned_user_data",
     "//ui/gfx",
     "//ui/shell_dialogs",
   ]
@@ -29,6 +30,7 @@ source_set("screenshot") {
     "//chrome/app:generated_resources",
     "//chrome/browser/download",
     "//chrome/browser/image_editor",
+    "//chrome/browser/ui/browser_window",
     "//components/devtools/simple_devtools_protocol_client",
     "//components/viz/common",
     "//content/public/browser",
