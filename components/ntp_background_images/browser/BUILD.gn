@@ -9,6 +9,7 @@ import("//build/config/features.gni")
 
 static_library("browser") {
   sources = [
+    "component_ready_callback.h",
     "features.cc",
     "features.h",
     "ntp_background_images_component_installer.cc",
@@ -27,6 +28,8 @@ static_library("browser") {
     "sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h",
     "sponsored_content/new_tab_takeover/static/sponsored_images_component_data.cc",
     "sponsored_content/new_tab_takeover/static/sponsored_images_component_data.h",
+    "sponsored_content/ntp_sponsored_images_component_installer.cc",
+    "sponsored_content/ntp_sponsored_images_component_installer.h",
     "sponsored_content/ntp_sponsored_content_source_util.cc",
     "sponsored_content/ntp_sponsored_content_source_util.h",
     "sponsored_content/site/ntp_sponsored_sites_data.cc",
@@ -67,7 +70,6 @@ static_library("browser") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
-    "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/content_settings/core/common",
     "//components/keyed_service/core",
@@ -75,13 +77,16 @@ static_library("browser") {
     "//components/prefs",
     "//components/variations",
     "//components/variations/service",
-    "//crypto",
     "//services/network/public/cpp",
     "//ui/gfx/geometry",
     "//url",
   ]
 
-  public_deps = [ "//brave/components/ntp_background_images/browser/mojom" ]
+  public_deps = [
+    "//brave/components/ntp_background_images/browser/mojom",
+    "//components/component_updater",
+    "//crypto",
+  ]
 
   if (is_ios) {
     deps += [ "//brave/extensions:common" ]
