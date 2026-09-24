@@ -533,6 +533,7 @@ source_set("ui") {
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/browser/ui/tabs:tab_menu",
       "//chrome/browser/ui/thumbnails",
+      "//chrome/browser/ui/views/frame:browser_view_header",
       "//chrome/browser/ui/views/page_action",
       "//chrome/browser/ui/views/side_panel",
       "//chrome/browser/ui/webui:favicon_source",
@@ -866,7 +867,10 @@ source_set("ui") {
         "views/frame/brave_browser_frame_view_linux_native.h",
       ]
 
-      deps += [ "//chrome/browser/ui/views/frame:browser_frame_view_layout_linux_native" ]
+      deps += [
+        "//chrome/browser/ui/views/frame:browser_frame_view_layout_linux_native",
+        "//chrome/browser/ui/views/frame:browser_view_header",
+      ]
 
       public_deps +=
           [ "//chrome/browser/ui/views/frame:browser_frame_view_linux_native" ]
@@ -1660,6 +1664,7 @@ source_set("browser_tests") {
       "//chrome/browser/ui:tab_ui_helper",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/startup",
+      "//chrome/browser/ui/views/frame:browser_view_header",
       "//chrome/browser/ui/webui:profile_helper",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
@@ -1678,6 +1683,7 @@ source_set("browser_tests") {
         "//brave/browser/ui/sidebar",
         "//brave/components/playlist/core/common",
         "//chrome/browser/ui/browser_window",
+        "//chrome/browser/ui/views/frame:browser_view_header",
         "//chrome/browser/web_applications:web_applications_test_support",
       ]
     }

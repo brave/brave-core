@@ -77,6 +77,7 @@ source_set("sidebar_impl") {
     "//chrome/browser/ui/side_panel",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/views/frame:browser_view_header",
     "//chrome/browser/ui/views/side_panel",
     "//components/image_fetcher/core",
     "//components/pref_registry",

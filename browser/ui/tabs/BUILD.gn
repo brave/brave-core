@@ -145,6 +145,7 @@ if (!is_android) {
         "//brave/components/containers/content/browser",
         "//brave/components/containers/core/browser",
         "//brave/components/containers/core/common",
+        "//chrome/browser/ui/views/frame:browser_view_header",
         "//components/tabs:public",
       ]
     }
@@ -236,6 +237,7 @@ source_set("browser_tests") {
       ":tab_menu",
       ":tab_model",
       "//chrome/browser/ui/tabs:tab_menu",
+      "//chrome/browser/ui/views/frame:browser_view_header",
     ]
   }
 
