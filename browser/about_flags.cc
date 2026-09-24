@@ -413,18 +413,30 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           FEATURE_VALUE_TYPE(brave_ads::kAdsInternalsVerboseModeFeature), \
       }))
 
-#define WAYBACK_MACHINE_FEATURE_ENTRIES                                        \
-  IF_BUILDFLAG(                                                                \
-      ENABLE_BRAVE_WAYBACK_MACHINE,                                            \
-      EXPAND_FEATURE_ENTRIES({                                                 \
-          "brave-wayback-machine-auto-show-bubble",                            \
-          "Auto-show Wayback Machine bubble",                                  \
-          "Automatically show the Wayback Machine bubble when the current "    \
-          "page is missing (for example, a 404).",                             \
-          kOsWin | kOsMac | kOsLinux,                                          \
-          FEATURE_VALUE_TYPE(                                                  \
-              brave_wayback_machine::features::kWaybackMachineAutoShowBubble), \
-      }))
+#define WAYBACK_MACHINE_FEATURE_ENTRIES                                       \
+  IF_BUILDFLAG(                                                               \
+      ENABLE_BRAVE_WAYBACK_MACHINE,                                           \
+      EXPAND_FEATURE_ENTRIES(                                                 \
+          {                                                                   \
+              "brave-wayback-machine-auto-show-bubble",                       \
+              "Auto-show Wayback Machine bubble",                             \
+              "Automatically show the Wayback Machine bubble when the "       \
+              "current "                                                      \
+              "page is missing (for example, a 404).",                        \
+              kOsWin | kOsMac | kOsLinux,                                     \
+              FEATURE_VALUE_TYPE(brave_wayback_machine::features::            \
+                                     kWaybackMachineAutoShowBubble),          \
+          },                                                                  \
+          {                                                                   \
+              "brave-wayback-machine-auto-check",                             \
+              "Wayback Machine auto-check",                                   \
+              "Allows automatically checking the Wayback Machine for an "     \
+              "archived "                                                     \
+              "version of a missing page.",                                   \
+              kOsWin | kOsMac | kOsLinux,                                     \
+              FEATURE_VALUE_TYPE(                                             \
+                  brave_wayback_machine::features::kWaybackMachineAutoCheck), \
+          }))
 
 #if !BUILDFLAG(IS_ANDROID)
 #define BRAVE_COMMANDS_FEATURE_ENTRIES                                      \
