@@ -95,3 +95,13 @@ void BraveHistoryEmbeddingsStatus::OnEnabledPrefChanged() {
 }
 
 }  // namespace history_embeddings
+
+// Forward declared by the chromium_src overrides that need the captured
+// setting, so neither carries a Brave header: the passage embedder gate in
+// //chrome/browser/passage_embeddings and brave://history's data source in
+// //chrome/browser/ui/webui/history.
+bool BraveHistoryEmbeddingsEnabledAtStartup(Profile* profile) {
+  return history_embeddings::BraveHistoryEmbeddingsStatus::GetForProfile(
+             profile)
+      ->IsEnabled();
+}

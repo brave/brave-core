@@ -207,6 +207,7 @@ leo_icons_sources = [
   "btc-color.svg",
   "bug.svg",
   "calendar-check.svg",
+  "calendar-time.svg",
   "calendar.svg",
   "camera.svg",
   "caps-lock.svg",

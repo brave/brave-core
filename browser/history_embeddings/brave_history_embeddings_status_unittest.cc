@@ -78,45 +78,31 @@ class BraveHistoryEmbeddingsStatusTest : public testing::Test {
   std::unique_ptr<TestingProfile> profile_;
 };
 
-TEST_F(BraveHistoryEmbeddingsStatusTest, NoRestartWhileTheSettingIsUnchanged) {
+TEST_F(BraveHistoryEmbeddingsStatusTest, CapturesTheSettingAtProfileSetup) {
   BuildProfileWithSetting(false);
 
   EXPECT_FALSE(status()->IsEnabled());
-  EXPECT_FALSE(status()->NeedsRestart());
 
   BuildProfileWithSetting(true);
 
   EXPECT_TRUE(status()->IsEnabled());
-  EXPECT_FALSE(status()->NeedsRestart());
 }
 
-TEST_F(BraveHistoryEmbeddingsStatusTest, RestartOnceTheSettingIsTurnedOn) {
+TEST_F(BraveHistoryEmbeddingsStatusTest, HoldsTheSettingWhenThePrefTurnsOn) {
   BuildProfileWithSetting(false);
 
   SetSemanticHistorySearchEnabled(true);
 
   // The services are still running with the setting they were built with.
   EXPECT_FALSE(status()->IsEnabled());
-  EXPECT_TRUE(status()->NeedsRestart());
 }
 
-TEST_F(BraveHistoryEmbeddingsStatusTest, RestartOnceTheSettingIsTurnedOff) {
+TEST_F(BraveHistoryEmbeddingsStatusTest, HoldsTheSettingWhenThePrefTurnsOff) {
   BuildProfileWithSetting(true);
 
   SetSemanticHistorySearchEnabled(false);
 
   EXPECT_TRUE(status()->IsEnabled());
-  EXPECT_TRUE(status()->NeedsRestart());
-}
-
-TEST_F(BraveHistoryEmbeddingsStatusTest, RestartClearsWhenTheSettingReverts) {
-  BuildProfileWithSetting(false);
-  SetSemanticHistorySearchEnabled(true);
-  ASSERT_TRUE(status()->NeedsRestart());
-
-  SetSemanticHistorySearchEnabled(false);
-
-  EXPECT_FALSE(status()->NeedsRestart());
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)

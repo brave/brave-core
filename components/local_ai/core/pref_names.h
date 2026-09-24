@@ -11,7 +11,7 @@ class PrefRegistrySimple;
 namespace local_ai::prefs {
 
 // Profile-scoped: per-profile history embeddings on/off. Surfaced as the
-// chrome://history side bar toggle.
+// "Semantic history search" toggle in brave://settings/privacy.
 inline constexpr char kBraveHistoryEmbeddingsEnabled[] =
     "brave.history_embeddings_enabled";
 

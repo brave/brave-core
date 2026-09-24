@@ -333,6 +333,12 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[ai_chat::prefs::kBraveAIChatOllamaFetchEnabled] =
       settings_api::PrefType::kBoolean;
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // On-device AI pref
+  (*s_brave_allowlist)[local_ai::prefs::kBraveHistoryEmbeddingsEnabled] =
+      settings_api::PrefType::kBoolean;
+#endif
+
 #if !BUILDFLAG(USE_GCM_FROM_PLATFORM)
   // Push Messaging Pref
   (*s_brave_allowlist)[kBraveGCMChannelStatus] =

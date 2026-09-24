@@ -829,6 +829,13 @@
   <message name="IDS_SETTINGS_PUSH_MESSAGING" desc="Select value">
     Use Google services for push messaging
   </message>
+  <!-- Semantic history search -->
+  <message name="IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_LABEL" desc="Label for the setting that turns on indexing of visited pages so they can be found by meaning">
+    Semantic history search
+  </message>
+  <message name="IDS_SETTINGS_SEMANTIC_HISTORY_SEARCH_SUB_LABEL" desc="Description for the setting that turns on indexing of visited pages so they can be found by meaning">
+    Index pages you visit so you can find them easily in history, open tabs and Leo.
+  </message>
   <!-- History retention -->
   <message name="IDS_SETTINGS_HISTORY_RETENTION_LABEL" desc="Label for the setting that controls how long browsing history is retained">
     Local history retention
@@ -1742,8 +1749,8 @@
   <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_SEND_PAGE_CONTENT_LABEL" desc="Label for the toggle, nested under the Tab Focus Mode toggle, that lets tab focus send excerpts of page text to the model that organizes the tabs">
     Send page content for tab focus
   </message>
-  <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_SEND_PAGE_CONTENT_DESC" desc="Description below the toggle that lets tab focus send excerpts of page text to the model that organizes the tabs. That model is Leo by default, or the user's own model if they picked one in the 'Default model for tab focus' dropdown. The link text is the name of the Semantic History Search toggle, and the link opens the history page where it lives.">
-    Also send short excerpts of the text of each tab, so tabs are grouped by what a page is about instead of its title. Excerpts go to Leo, or to your own model if you chose one for tab focus. This needs <ph name="BEGIN_LINK">&lt;a href="$1" target="_blank"&gt;</ph><ph name="SEMANTIC_HISTORY_SEARCH">$2<ex>Semantic History Search</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>, which builds the excerpts on your device.
+  <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_SEND_PAGE_CONTENT_DESC" desc="Description below the toggle that lets tab focus send excerpts of page text to the model that organizes the tabs. That model is Leo by default, or the user's own model if they picked one in the 'Default model for tab focus' dropdown. The link text is the name of the Semantic history search toggle, and the link opens the privacy settings page where it lives.">
+    Also send short excerpts of the text of each tab, so tabs are grouped by what a page is about instead of its title. Excerpts go to Leo, or to your own model if you chose one for tab focus. This needs <ph name="BEGIN_LINK">&lt;a href="$1"&gt;</ph><ph name="SEMANTIC_HISTORY_SEARCH">$2<ex>Semantic history search</ex></ph><ph name="END_LINK">&lt;/a&gt;</ph>, which builds the excerpts on your device.
   </message>
   <message name="IDS_SETTINGS_LEO_ASSISTANT_TAB_ORGANIZATION_MODEL_LABEL" desc="The label for the tab organization model selection dropdown">
     Default model for tab focus
