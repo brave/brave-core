@@ -43,6 +43,6 @@ class BraveHistoryUIInitializer {
 
 #define ManagedUIHandler BraveHistoryUIInitializer
 
-#include <chrome/browser/ui/webui/history/history_ui.cc>
+#include <chrome/browser/ui/webui/history/history_ui_platform_handlers_desktop.cc>
 
 #undef ManagedUIHandler
