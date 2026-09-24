@@ -14,8 +14,8 @@ PRESUBMIT_VERSION = '2.0.0'
 
 
 def CheckTests(input_api, output_api):
-    """Run every *_test.py file found under this directory.
-    """
+    if all(f.LocalPath().endswith('.md') for f in input_api.AffectedFiles()):
+        return []
     script_dir = input_api.PresubmitLocalPath()
     tests = []
     for root, dirs, files in os.walk(script_dir):
