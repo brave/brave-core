@@ -11,6 +11,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
+#include "chrome/browser/ui/views/tabs/organizer/organizer_panel_host.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/gfx/geometry/insets.h"
@@ -56,8 +57,8 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   ExclusiveAccessBubbleViews* GetExclusiveAccessBubble() const override {
     return nullptr;
   }
-  OrganizerPanelController* GetOrganizerPanelController() const override {
-    return nullptr;
+  OrganizerPanelLocation GetOrganizerPanelLocation() const override {
+    return OrganizerPanelLocation::kNone;
   }
   bool IsTopControlsSlideBehaviorEnabled() const override { return false; }
   float GetTopControlsSlideBehaviorShownRatio() const override { return 0.0f; }
