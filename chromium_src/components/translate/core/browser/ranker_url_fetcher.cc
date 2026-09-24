@@ -7,7 +7,7 @@
 
 #include "services/network/public/cpp/simple_url_loader.h"
 
-namespace assist_ranker {
+namespace translate {
 
 RankerURLFetcher::RankerURLFetcher() = default;
 
@@ -24,4 +24,4 @@ bool RankerURLFetcher::Request(
   return false;
 }
 
-}  // namespace assist_ranker
+}  // namespace translate
