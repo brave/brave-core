@@ -58,6 +58,8 @@ public class BraveSearchEngineUtilsTest {
                 .removeKey(BraveSearchEngineAdapter.PRIVATE_DSE_SHORTNAME);
         ChromeSharedPreferences.getInstance()
                 .removeKey(BravePreferenceKeys.SEARCH_CHOICE_SCREEN_INSTALL);
+        ChromeSharedPreferences.getInstance()
+                .removeKey(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED);
 
         // Set up mock TemplateUrlService
         TemplateUrlServiceFactory.setInstanceForTesting(mTemplateUrlService);
@@ -88,6 +90,8 @@ public class BraveSearchEngineUtilsTest {
                 .removeKey(BraveSearchEngineAdapter.PRIVATE_DSE_SHORTNAME);
         ChromeSharedPreferences.getInstance()
                 .removeKey(BravePreferenceKeys.SEARCH_CHOICE_SCREEN_INSTALL);
+        ChromeSharedPreferences.getInstance()
+                .removeKey(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED);
     }
 
     @Test
@@ -203,5 +207,23 @@ public class BraveSearchEngineUtilsTest {
                 ChromeSharedPreferences.getInstance()
                         .readString(BraveSearchEngineAdapter.PRIVATE_DSE_SHORTNAME, ""));
         verify(mTemplateUrlService).setSearchEngine(BRAVE_KEYWORD);
+    }
+
+    @Test
+    @SmallTest
+    public void testApplySearchChoiceScreenDefaultKeepsUserSelection() {
+        // The referrer fetch is retried on later launches, by which point the user may have
+        // chosen an engine. That selection must win over the Search Choice Screen.
+        BraveSearchEngineUtils.initializeDSEPrefsForTesting(mProfile);
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED, true);
+
+        BraveSearchEngineUtils.applySearchChoiceScreenDefault(mProfile);
+
+        assertEquals(
+                GOOGLE_SEARCH_ENGINE,
+                ChromeSharedPreferences.getInstance()
+                        .readString(BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, ""));
+        verify(mTemplateUrlService, never()).setSearchEngine(BRAVE_KEYWORD);
     }
 }

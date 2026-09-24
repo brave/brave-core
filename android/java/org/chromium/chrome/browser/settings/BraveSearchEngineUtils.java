@@ -49,6 +49,13 @@ public class BraveSearchEngineUtils {
      * initialized from the country default, which would otherwise ignore the user's choice.
      */
     public static void applySearchChoiceScreenDefault(final Profile profile) {
+        if (ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED, false)) {
+            // The referrer fetch is retried on later launches when it fails, for example when the
+            // Play Store service is unavailable. By then the user may have picked an engine, and
+            // that selection outranks the one made on the Search Choice Screen.
+            return;
+        }
         final TemplateUrlService templateUrlService =
                 TemplateUrlServiceFactory.getForProfile(profile);
         templateUrlService.runWhenLoaded(
