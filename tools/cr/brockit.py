@@ -1452,9 +1452,7 @@ class Upgrade(Versioned):
 
         return False
 
-    def _continue(self,
-                  no_conflict_continuation: bool = False,
-                  apply_record: ApplyPatchesRecord | None = None):
+    def _continue(self, apply_record: ApplyPatchesRecord | None = None):
         """Continues the upgrade process.
 
     This function is responsible for continuing the upgrade process. It will
@@ -1467,11 +1465,6 @@ class Upgrade(Versioned):
     Files that are staged are considered as being meant for the
     `conflict-resolved` change. Deleted files will cause this function to bail
     out, so the user provide a commit message for the deletion.
-
-    Args:
-        no_conflict_continuation:
-            Indicates that a continuation does not produce a conflict-resolved
-            change.
         """
         if not apply_record:
             apply_record = (ContinuationFile.load(
@@ -1495,11 +1488,6 @@ class Upgrade(Versioned):
                 for patch in apply_record.all_conflict_resolved_patches()
                 if patch.path.as_posix() in update_status.unstaged.modified
             }
-
-        if not conflict_resolved_patches and not no_conflict_continuation:
-            raise InvalidInputException(
-                'Nothing has been staged to commit conflict-resolved patches. '
-                '(Did you mean to pass [bold cyan]--no-conflict-change[/]?)')
 
         if conflict_resolved_patches:
             # For major upgrades, patches last touched by dev-cycle commits
@@ -1618,16 +1606,12 @@ class Upgrade(Versioned):
         terminal.run_pnpm_command('chromium_rebase_l10n')
         self._save_rebased_l10n()
 
-    def execute(self, no_conflict_continuation: bool, with_github: bool,
-                ack_advisory: bool):
+    def execute(self, with_github: bool, ack_advisory: bool):
         """Executes the upgrade process.
 
     Keep in this function all code that is common to both start and continue.
 
     Args:
-        no_conflict_continuation:
-            Indicates that a continuation does not produce a conflict-resolved
-            change.
         with_github:
             Indicates the user wants to create or update the github issue for
             the upgrade.
@@ -1676,7 +1660,7 @@ class Upgrade(Versioned):
                     f'{self.target_version} ➜ '
                     f'Chromium {self.chromium_src_version}')
 
-            self._continue(no_conflict_continuation=no_conflict_continuation)
+            self._continue()
         else:
             self._start(ack_advisory=ack_advisory)
 
@@ -2524,12 +2508,6 @@ def main():
         action='store_true',
         help='Creates or updates the github for this branch.',
         dest='with_github')
-    lift_parser.add_argument(
-        '--no-conflict-change',
-        action='store_true',
-        help='Indicates that a continuation does not have conflict patches to '
-        'commit any longer.',
-        dest='no_conflict')
 
     regen_parser = subparsers.add_parser(
         'regen',
@@ -2762,8 +2740,6 @@ def main():
     def resolve_version_with_from_ref_arg() -> Version:
         return Version.from_git(_solve_brave_ref(args.from_ref))
 
-    if args.command == 'lift' and args.no_conflict and not args.is_continuation:
-        parser.error('--no-conflict-change can only be used with --continue')
     if args.command == 'lift' and args.restart and args.is_continuation:
         parser.error('--restart does not support --continue')
     if args.command == 'lift' and args.ack_advisory and args.is_continuation:
@@ -2781,8 +2757,7 @@ def main():
                 upgrade = Upgrade(_fetch_chromium_tag(args.to),
                                   args.is_continuation)
 
-            upgrade.run(no_conflict_continuation=args.no_conflict,
-                        with_github=args.with_github,
+            upgrade.run(with_github=args.with_github,
                         ack_advisory=args.ack_advisory)
         if args.command == 'rebase':
             Rebase().run(from_ref=args.from_ref,
