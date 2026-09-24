@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave network panel sources.
+    add_literal_to_list:
+      target: network
+      type: devtools_ui_module
+      list_name: sources
+      literal: brave_devtools_front_end_panels_network_sources
+      import: //brave/third_party/devtools-frontend/src/front_end/panels/network/sources.gni
+
+  - description: Add the Brave network panel deps.
+    add_literal_to_list:
+      target: network
+      type: devtools_ui_module
+      list_name: deps
+      literal: brave_devtools_front_end_panels_network_deps
+      import: //brave/third_party/devtools-frontend/src/front_end/panels/network/sources.gni
