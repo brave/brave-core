@@ -1,0 +1,13 @@
+diff --git a/content/browser/renderer_host/clipboard_host_impl.h b/content/browser/renderer_host/clipboard_host_impl.h
+index 4e4afb745bcea6db666a75c8b1fb04a8b31b3d7e..796c2953d049e91e07ed91ee7aa61bcdc61f9626 100644
+--- a/content/browser/renderer_host/clipboard_host_impl.h
++++ b/content/browser/renderer_host/clipboard_host_impl.h
+@@ -97,6 +97,8 @@ class CONTENT_EXPORT ClipboardHostImpl : public blink::mojom::ClipboardHost,
+     // web page gets only the file list.
+     virtual bool IncludeAllTypesWhenFilesPresent() = 0;
+ #endif
++    virtual void MaybeSanitizeClipboardText(bool& sanitize_on_next_write_text,
++                                            std::u16string& text);
+   };
+ 
+   explicit ClipboardHostImpl(std::unique_ptr<Context> context);
