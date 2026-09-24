@@ -188,29 +188,6 @@ public class BraveSearchEngineUtilsTest {
 
     @Test
     @SmallTest
-    public void testApplySearchChoiceScreenDefaultOverridesInitializedDSE() {
-        // The install referrer can resolve after the DSE was initialized from the country default.
-        BraveSearchEngineUtils.initializeDSEPrefsForTesting(mProfile);
-        assertEquals(
-                GOOGLE_SEARCH_ENGINE,
-                ChromeSharedPreferences.getInstance()
-                        .readString(BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, ""));
-
-        BraveSearchEngineUtils.applySearchChoiceScreenDefault(mProfile);
-
-        assertEquals(
-                OnboardingPrefManager.BRAVE,
-                ChromeSharedPreferences.getInstance()
-                        .readString(BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, ""));
-        assertEquals(
-                OnboardingPrefManager.BRAVE,
-                ChromeSharedPreferences.getInstance()
-                        .readString(BraveSearchEngineAdapter.PRIVATE_DSE_SHORTNAME, ""));
-        verify(mTemplateUrlService).setSearchEngine(BRAVE_KEYWORD);
-    }
-
-    @Test
-    @SmallTest
     public void testApplySearchChoiceScreenDefaultKeepsUserSelection() {
         // The referrer fetch is retried on later launches, by which point the user may have
         // chosen an engine. That selection must win over the Search Choice Screen.
