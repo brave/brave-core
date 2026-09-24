@@ -17,11 +17,6 @@ import com.android.installreferrer.api.InstallReferrerClient.InstallReferrerResp
 import com.android.installreferrer.api.InstallReferrerStateListener;
 import com.android.installreferrer.api.ReferrerDetails;
 
-import org.jni_zero.CalledByNative;
-import org.jni_zero.JNINamespace;
-import org.jni_zero.JniType;
-import org.jni_zero.NativeMethods;
-
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
@@ -31,7 +26,13 @@ import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.OriginalProfileSupplier;
+import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.util.PackageUtils;
+import org.jni_zero.CalledByNative;
+import org.jni_zero.JNINamespace;
+import org.jni_zero.JniType;
+import org.jni_zero.NativeMethods;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -217,6 +218,17 @@ public class BraveReferrer implements InstallReferrerStateListener {
             // Set flag to indicate that the install originated from the Search Choice Screen
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePreferenceKeys.SEARCH_CHOICE_SCREEN_INSTALL, true);
+            // The referrer resolves asynchronously, so the DSE may already have been initialized
+            // from the country default by now. Apply the user's choice regardless, once the
+            // regular profile exists. OriginalProfileSupplier is single threaded, hence the hop
+            // to the UI thread: this runs on a background task.
+            PostTask.postTask(
+                    TaskTraits.UI_DEFAULT,
+                    () ->
+                            new OriginalProfileSupplier()
+                                    .onAvailable(
+                                            BraveSearchEngineUtils
+                                                    ::applySearchChoiceScreenDefault));
             return SEARCH_CHOICE_SCREEN_REFERRAL_CODE;
         } else if (UTM_SOURCE_EEA_BROWSER_CHOICE.equals(utmSource)) {
             return BROWSER_CHOICE_SCREEN_REFERRAL_CODE;

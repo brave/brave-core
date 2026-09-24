@@ -16,6 +16,8 @@ import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.base.SplitCompatApplication;
+import org.chromium.chrome.browser.profiles.OriginalProfileSupplier;
+import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
 import org.chromium.components.safe_browsing.BraveSafeBrowsingApiHandler;
 import org.chromium.components.safe_browsing.SafeBrowsingApiBridge;
@@ -61,6 +63,13 @@ public class BraveApplicationImplBase extends SplitCompatApplication.Impl {
             // Set a handler for SafeBrowsing. It has to be done only once for a process lifetime.
             SafeBrowsingApiBridge.setSafeBrowsingApiHandler(
                     BraveSafeBrowsingApiHandler.getInstance());
+
+            // Apply Brave's default search engine as soon as the profile exists, instead of
+            // waiting for BraveActivity. Entry points such as the search widget resolve queries
+            // through SearchActivity, which never runs BraveActivity and would otherwise search
+            // with whatever engine the country default picked.
+            new OriginalProfileSupplier()
+                    .onAvailable(BraveSearchEngineUtils::initializeOnProfileAdded);
 
             // Fix ClassNotFoundException crash in Play Core's in-app review flow.
             //

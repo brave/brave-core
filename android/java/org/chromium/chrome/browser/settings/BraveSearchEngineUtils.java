@@ -22,6 +22,58 @@ import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
 
 public class BraveSearchEngineUtils {
+    private static final String NOT_INITIALIZED = "notInitialized";
+
+    /**
+     * Applies Brave's default search engine the first time a regular profile is created, so that
+     * entry points which never start BraveActivity, such as the search widget, use the same engine
+     * as the browser. Does nothing once the DSE has been initialized, leaving later changes alone.
+     */
+    public static void initializeOnProfileAdded(@Nullable final Profile profile) {
+        if (profile == null || profile.isOffTheRecord()) {
+            return;
+        }
+        if (!NOT_INITIALIZED.equals(
+                ChromeSharedPreferences.getInstance()
+                        .readString(
+                                BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME,
+                                NOT_INITIALIZED))) {
+            return;
+        }
+        initializeBraveSearchEngineStates(profile);
+    }
+
+    /**
+     * Sets Brave Search as the default for an install that came from the EEA Search Choice Screen.
+     * The install referrer resolves asynchronously, so this can run after the DSE was already
+     * initialized from the country default, which would otherwise ignore the user's choice.
+     */
+    public static void applySearchChoiceScreenDefault(@Nullable final Profile profile) {
+        if (profile == null) {
+            return;
+        }
+        if (ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED, false)) {
+            // The referrer fetch is retried on later launches when it fails, for example when the
+            // Play Store service is unavailable. By then the user may have picked an engine, and
+            // that selection outranks the one made on the Search Choice Screen.
+            return;
+        }
+        final TemplateUrlService templateUrlService =
+                TemplateUrlServiceFactory.getForProfile(profile);
+        templateUrlService.runWhenLoaded(
+                () -> {
+                    TemplateUrl braveTemplateUrl =
+                            getTemplateUrlByShortName(profile, OnboardingPrefManager.BRAVE);
+                    if (braveTemplateUrl == null) {
+                        return;
+                    }
+                    setDSEPrefs(braveTemplateUrl, profile);
+                    setPrivateDSEPrefs(braveTemplateUrl);
+                    updateActiveDSE(profile, templateUrlService);
+                });
+    }
+
     public static void initializeBraveSearchEngineStates(TabModelSelector tabModelSelector) {
         tabModelSelector
                 .getCurrentTabModelSupplier()
@@ -69,11 +121,10 @@ public class BraveSearchEngineUtils {
     private static void initializeDSEPrefs(Profile profile) {
         // At first run, we should set initial default prefs to each standard/private DSE prefs.
         // Those pref values will be used until user change DES options explicitly.
-        final String notInitialized = "notInitialized";
         SharedPreferencesManager sharedPreferences = ChromeSharedPreferences.getInstance();
-        if (notInitialized.equals(
+        if (NOT_INITIALIZED.equals(
                 sharedPreferences.readString(
-                        BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, notInitialized))) {
+                        BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, NOT_INITIALIZED))) {
             final TemplateUrlService templateUrlService =
                     TemplateUrlServiceFactory.getForProfile(profile);
 
