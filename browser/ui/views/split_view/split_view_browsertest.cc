@@ -333,7 +333,7 @@ class SplitViewBrowserTest : public InProcessBrowserTest {
 
   ContentsWebView* GetContentsWebView() {
     return BrowserView::GetBrowserViewForBrowser(browser())
-        ->contents_web_view();
+        ->contents_web_view_for_testing();
   }
 
  protected:
