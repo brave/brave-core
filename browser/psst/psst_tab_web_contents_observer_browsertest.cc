@@ -139,12 +139,11 @@ constexpr char kPsstCrxUserScriptTemplate[] = R"(
   console.log("[PSST USER SCRIPT] Current URL: " + curUrl);
 
   // Mirrors real per-site scripts (e.g. linkedin/user.js): initial_execution
-  // is true only for the very first execution of the flow - before the
-  // policy script has ever saved state - and false for every later one,
-  // On the completing task, it removes the psst key and returns
-  // next_url = start_url. So when the tab navigates back to start_url,
-  // the user script sees
-  // getItem('psst') === null → initial_execution = true.
+  // is true whenever the flow has no saved state yet - the very first
+  // execution, and again after the completing task removes the psst key and
+  // returns next_url = start_url. It is false while a flow is in progress and
+  // state is present. So when the tab navigates back to start_url, the user
+  // script sees getItem('psst') === null → initial_execution = true.
   const initial_execution = sessionStorage.getItem('psst') === null;
 
   return {
@@ -290,7 +289,7 @@ const createInitData = () => {
 };
 
 const savePsstData = (psst) => {
-  // Save the psst object to local storage.
+  // Save the psst object to session storage.
   globalThis.parent.sessionStorage.setItem(
     PSST_STORAGE_KEY,
     JSON.stringify(psst)

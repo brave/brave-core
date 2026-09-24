@@ -5,6 +5,7 @@
 
 #include "brave/browser/psst/psst_ui_desktop_presenter.h"
 
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/psst/psst_infobar_delegate.h"
 #include "brave/browser/ui/views/page_action/psst_action_controller.h"
 #include "brave/components/psst/core/common/constants.h"
@@ -13,6 +14,7 @@
 #include "components/infobars/content/content_infobar_manager.h"
 #include "components/infobars/core/infobar.h"
 #include "content/public/browser/web_contents.h"
+
 namespace {
 
 constexpr int kDialogMinHeight = 100;

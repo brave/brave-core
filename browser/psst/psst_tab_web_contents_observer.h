@@ -65,6 +65,8 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
     virtual std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
         const url::Origin& origin,
         const std::string& user_id) = 0;
+    // Sets the callback used to cancel an in-flight PSST flow from the UI side
+    // (dialog close, "don't show for this site", or feature disable).
     virtual void SetLogicalFlowCancelCallback(
         CancelCallback cancel_callback) = 0;
   };
@@ -138,10 +140,10 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
   base::OneShotTimer timeout_timer_;
 
   // Set when the user aborts an in-progress PSST flow. Unlike
-  // page_weak_factory_, which is invalidated on every document commit,
-  // this flag persists across same-document navigations and is only
-  // cleared when a fresh initial user-script execution begins,
-  // preventing the flow from resuming silently.
+  // page_weak_factory_, which is invalidated on every cross-document
+  // commit, this flag persists across such commits and is only cleared
+  // when a fresh initial user-script execution begins, preventing the
+  // flow from resuming silently on a later page.
   bool logical_flow_cancelled_ = false;
 
   // Whether the currently committed primary page is eligible for PSST
