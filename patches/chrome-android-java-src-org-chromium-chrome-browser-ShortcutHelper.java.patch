@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/ShortcutHelper.java b/chrome/android/java/src/org/chromium/chrome/browser/ShortcutHelper.java
-index 55b6365710f09f7c9e74fc0e511191c81e210650..4860b943cbef438847832977346e105889cf623f 100644
+index 153d6f5f7f439d2d5b132988e5248a2fcc5be4ec..9b92fdc4b1564444df74622d4c9e9df30805188f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/ShortcutHelper.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/ShortcutHelper.java
-@@ -110,7 +110,7 @@ public class ShortcutHelper {
+@@ -111,7 +111,7 @@ public class ShortcutHelper {
                  // Encoding {@link icon} as a string and computing the mac are expensive.
  
                  // Encode the icon as a base64 string (Launcher drops Bitmaps in the Intent).

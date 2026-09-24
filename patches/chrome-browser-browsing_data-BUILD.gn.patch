@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/browsing_data/BUILD.gn b/chrome/browser/browsing_data/BUILD.gn
-index 5181cf3a523bdac9ad0590cdecdd6f4c9a592ff1..5e5ba6ded94b6ee3c81af9a23f5bae01293233a6 100644
+index 5181cf3a523bdac9ad0590cdecdd6f4c9a592ff1..3dbf1591aee7a564a001afd9a079f1ece2f84ea5 100644
 --- a/chrome/browser/browsing_data/BUILD.gn
 +++ b/chrome/browser/browsing_data/BUILD.gn
-@@ -12,6 +12,7 @@ source_set("constants") {
-     "//content/public/browser",
-     "//extensions/buildflags",
-   ]
-+  public_deps = [ "//brave/components/ai_chat/core/common/buildflags" ]
- }
+@@ -7,6 +7,7 @@ import("//ui/webui/webui_features.gni")
  
- source_set("browsing_data") {
+ source_set("constants") {
+   sources = [ "chrome_browsing_data_remover_constants.h" ]
++  public_deps = [ "//brave/components/ai_chat/core/common/buildflags" ]
+   deps = [
+     "//chrome/common:buildflags",
+     "//content/public/browser",

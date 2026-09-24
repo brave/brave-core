@@ -1,5 +1,5 @@
 diff --git a/chrome/common/BUILD.gn b/chrome/common/BUILD.gn
-index 4b012092fb7d66a4b1a7a657cfd7892f6b766eb6..1ba86e47389c518fd2523a624c1de21d82a719a9 100644
+index e2dcc5447606a4c0ba556e42654dd978d99eb562..6abbf748c8bbc05866be36988307e0310ecea89a 100644
 --- a/chrome/common/BUILD.gn
 +++ b/chrome/common/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 4b012092fb7d66a4b1a7a657cfd7892f6b766eb6..1ba86e47389c518fd2523a624c1de21d
  import("//build/buildflag_header.gni")
  import("//build/config/chrome_build.gni")
  import("//build/util/process_version.gni")
-@@ -87,6 +88,7 @@ source_set("channel_info") {
+@@ -88,6 +89,7 @@ source_set("channel_info") {
    deps = [ "//build:branding_buildflags" ]
    public_deps = [
      "//base",
@@ -18,7 +18,7 @@ index 4b012092fb7d66a4b1a7a657cfd7892f6b766eb6..1ba86e47389c518fd2523a624c1de21d
      "//components/version_info",
      "//components/version_info:version_string",
    ]
-@@ -175,6 +177,7 @@ static_library("common_lib") {
+@@ -176,6 +178,7 @@ static_library("common_lib") {
      "webui_util.cc",
      "webui_util.h",
    ]
@@ -26,7 +26,7 @@ index 4b012092fb7d66a4b1a7a657cfd7892f6b766eb6..1ba86e47389c518fd2523a624c1de21d
    defines = []
  
    configs += [
-@@ -266,6 +269,7 @@ static_library("common_lib") {
+@@ -267,6 +270,7 @@ static_library("common_lib") {
      "//ui/resources",
      "//url",
    ]
@@ -34,7 +34,7 @@ index 4b012092fb7d66a4b1a7a657cfd7892f6b766eb6..1ba86e47389c518fd2523a624c1de21d
  
    deps = [
      "//components/cdm/common:buildflags",
-@@ -281,6 +285,7 @@ static_library("common_lib") {
+@@ -282,6 +286,7 @@ static_library("common_lib") {
      "//components/pdf/common:constants",
      "//components/pdf/common:util",
    ]
@@ -42,7 +42,7 @@ index 4b012092fb7d66a4b1a7a657cfd7892f6b766eb6..1ba86e47389c518fd2523a624c1de21d
  
    if (is_mac || is_win || is_linux || is_chromeos) {
      deps += [ "//components/webapps/isolated_web_apps:scheme" ]
-@@ -470,6 +475,7 @@ static_library("non_code_constants") {
+@@ -471,6 +476,7 @@ static_library("non_code_constants") {
      "env_vars.h",
    ]
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
@@ -50,7 +50,7 @@ index 4b012092fb7d66a4b1a7a657cfd7892f6b766eb6..1ba86e47389c518fd2523a624c1de21d
  
    deps = [
      ":buildflags",
-@@ -593,6 +599,7 @@ static_library("constants") {
+@@ -598,6 +604,7 @@ static_library("constants") {
      "//printing/buildflags",
      "//third_party/widevine/cdm:buildflags",
    ]

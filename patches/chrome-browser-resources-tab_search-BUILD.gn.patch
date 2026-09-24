@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/tab_search/BUILD.gn b/chrome/browser/resources/tab_search/BUILD.gn
-index c7e2b6c4141f19b67c76dde642b027d1848d1120..3a7926f83bebab675d1e153c6d83f99537034564 100644
+index c7e2b6c4141f19b67c76dde642b027d1848d1120..e8e6f8536360005fd9893f0f02fc69a006eb7795 100644
 --- a/chrome/browser/resources/tab_search/BUILD.gn
 +++ b/chrome/browser/resources/tab_search/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -22,7 +22,7 @@ index c7e2b6c4141f19b67c76dde642b027d1848d1120..3a7926f83bebab675d1e153c6d83f995
    grd_prefix = "tab_search"
  
    static_files = [
-@@ -49,6 +55,7 @@ build_webui("build") {
+@@ -47,6 +53,7 @@ build_webui("build") {
      "tab_search_utils.ts",
      "title_item.ts",
    ]
@@ -30,7 +30,7 @@ index c7e2b6c4141f19b67c76dde642b027d1848d1120..3a7926f83bebab675d1e153c6d83f995
  
    css_files = [
      "app.css",
-@@ -60,6 +67,7 @@ build_webui("build") {
+@@ -58,6 +65,7 @@ build_webui("build") {
      "tab_search_page.css",
      "tab_search_split_item.css",
    ]

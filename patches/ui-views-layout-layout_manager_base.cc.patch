@@ -1,5 +1,5 @@
 diff --git a/ui/views/layout/layout_manager_base.cc b/ui/views/layout/layout_manager_base.cc
-index e3b23272e27affac8406dd6eec9c45e9e083eb51..8dc107799bdbe84622ff735f17359cbdcc0fe961 100644
+index 76031ae55a22f505485471c3d41bafc11e64d661..6e837ce59a0326f16ea750bddb5f2ee836a24708 100644
 --- a/ui/views/layout/layout_manager_base.cc
 +++ b/ui/views/layout/layout_manager_base.cc
 @@ -197,7 +197,10 @@ bool LayoutManagerBase::CanBeVisible(const View* child) const {

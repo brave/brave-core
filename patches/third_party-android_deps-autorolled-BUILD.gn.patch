@@ -1,5 +1,5 @@
 diff --git a/third_party/android_deps/autorolled/BUILD.gn b/third_party/android_deps/autorolled/BUILD.gn
-index 79e9e4dd8a400e5502e3565820879b618d7f31de..156c104b55719f81b75e0927b244b286a98ca02a 100644
+index e332031ceb4878f695208866f52764d64d1a4cd1..b2bc756893c9c1acdf9feca0bc73751af25e9e94 100644
 --- a/third_party/android_deps/autorolled/BUILD.gn
 +++ b/third_party/android_deps/autorolled/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 79e9e4dd8a400e5502e3565820879b618d7f31de..156c104b55719f81b75e0927b244b286
  import("//build/config/android/rules.gni")
  
  template("define_autorolled_targets") {
-@@ -1131,6 +1132,7 @@ template("define_autorolled_targets") {
+@@ -1150,6 +1151,7 @@ template("define_autorolled_targets") {
            ":*",
            "//third_party/androidx:*",
          ]
@@ -18,7 +18,7 @@ index 79e9e4dd8a400e5502e3565820879b618d7f31de..156c104b55719f81b75e0927b244b286
          deps = [
            "$google_play_services_package:google_android_datatransport_transport_api_java",
            "$google_play_services_package:google_android_datatransport_transport_runtime_java",
-@@ -1156,6 +1158,7 @@ template("define_autorolled_targets") {
+@@ -1175,6 +1177,7 @@ template("define_autorolled_targets") {
            ":*",
            "//third_party/androidx:*",
          ]

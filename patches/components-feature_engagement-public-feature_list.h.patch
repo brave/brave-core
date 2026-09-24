@@ -1,5 +1,5 @@
 diff --git a/components/feature_engagement/public/feature_list.h b/components/feature_engagement/public/feature_list.h
-index 5b494b33b7b235060df4bb4b540be7287b3707d5..10d0dc6612389b4b24933800fa23884a1948672b 100644
+index 3ae5f7b58a85893b262d4a61aea873df9042216f..72c7f980a9d26ef49ac12d9840398b61d745c016 100644
 --- a/components/feature_engagement/public/feature_list.h
 +++ b/components/feature_engagement/public/feature_list.h
 @@ -646,6 +646,7 @@ DEFINE_VARIATION_PARAM(kIPHiOSTabGroupsDesktopFeature,

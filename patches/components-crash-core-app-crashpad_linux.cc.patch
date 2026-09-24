@@ -1,8 +1,8 @@
 diff --git a/components/crash/core/app/crashpad_linux.cc b/components/crash/core/app/crashpad_linux.cc
-index ce5c8a721fb1e4f10a5ffaa8cfdddb74ed60da86..dd90a21754e03560aeece466505a516f9904fc29 100644
+index 733ef9eac99f228166b013883c9cb9a0e7b470af..67f2a6ae294d01a197f01bf01508f5a32ba5f680 100644
 --- a/components/crash/core/app/crashpad_linux.cc
 +++ b/components/crash/core/app/crashpad_linux.cc
-@@ -137,7 +137,7 @@ bool PlatformCrashpadInitialization(
+@@ -140,7 +140,7 @@ bool PlatformCrashpadInitialization(
      const std::vector<std::string>& initial_arguments,
      const std::vector<base::FilePath>& attachments,
      base::FilePath* database_path) {

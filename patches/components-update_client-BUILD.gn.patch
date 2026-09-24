@@ -1,5 +1,5 @@
 diff --git a/components/update_client/BUILD.gn b/components/update_client/BUILD.gn
-index 3b2f387695256c03e84f2221b066f496a0a3b91e..31f0b5dcc7524995057ee1b6af3416fbd3a96eb8 100644
+index 82ba5c3990a93c18195726763e2c6e71e893f705..c1398626a4bf626206d4560cfbd1e81af22fe5a4 100644
 --- a/components/update_client/BUILD.gn
 +++ b/components/update_client/BUILD.gn
 @@ -86,6 +86,7 @@ group("common_impl") {
