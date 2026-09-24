@@ -3,15 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-// This is a CommonJS module so we can use __dirname to resolve the root
-// directory. The rest of the codebase is ESM, which would require
-// import.meta.dirname for this, but that isn't supported by Jest.
+import fs from 'node:fs'
+import path from 'node:path'
 
-const fs = require('node:fs')
-const path = require('node:path')
-
-let dirName = __dirname
-// Use fs.realpathSync to normalize the path(__dirname could be c:\.. or C:\..).
+let dirName = import.meta.dirname
+// Use fs.realpathSync to normalize the path(dirname could be c:\.. or C:\..).
 if (process.platform === 'win32') {
   dirName = fs.realpathSync.native(dirName)
 }
@@ -24,4 +20,4 @@ if (rootDir.includes(' ')) {
   process.exit(1)
 }
 
-module.exports = rootDir
+export default rootDir
