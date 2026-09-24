@@ -5475,10 +5475,14 @@ def main():
 
     # Add the 'check' subparser
     check_parser = add_command(
-        'check', 'Check that plaster files are applied to sources.')
-    check_parser.add_argument('filepaths',
-                              nargs='*',
-                              help='Filepaths to check')
+        'check',
+        'Check that plaster files are applied to sources.',
+        fromfile_prefix_chars='@')
+    check_parser.add_argument(
+        'filepaths',
+        nargs='*',
+        help='Filepaths to check. `@file` reads them from a file, one per '
+        'line.')
     check_parser.set_defaults(func=check)
 
     # Our custom `--help` renderer.
