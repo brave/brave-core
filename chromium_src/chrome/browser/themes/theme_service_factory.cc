@@ -7,11 +7,13 @@
 
 #include "brave/browser/themes/brave_theme_service.h"
 
-#if !BUILDFLAG(IS_LINUX)
+#if !BUILDFLAG(IS_LINUX) && !BUILDFLAG(IS_ANDROID)
 #define BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR \
   using ThemeService = BraveThemeService;
 #else
 // On Linux ThemeServiceAuraLinux derives from BraveThemeService instead.
+// On Android BraveThemeService isn't built at all, see
+// brave/browser/themes/sources.gni.
 #define BRAVE_THEMESERVICEFACTORY_BUILDSERVICEINSTANCEFOR
 #endif
 
