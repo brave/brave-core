@@ -51,17 +51,6 @@ class DropStripTempDirs : public tabs::ContentsObservingTabFeature {
   ui::ScopedUnownedUserData<DropStripTempDirs> scoped_unowned_user_data_;
 };
 
-// Wraps |callback| which is the completion callback `HandleOnPerformingDrop`
-// runs to hand the dropped files back to the page. We wrap it so as to strip
-// out the metadata from the images before running the original
-// |callback|. Returns |callback| unchanged when the feature is off.
-//
-// As with the upload flow, the dropped files themselves are never modified.
-// Each strippable jpeg is copied into a unique subdirectory of one temporary
-// parent directory (so the original basename is preserved) and
-// `DropData::filenames` is pointed at the copy. The page holds those copies for
-// as long as it holds the `File`, so the parent directory is owned by the tab's
-// `DropStripTempDirs` and deleted once that tab is discarded or destroyed.
 content::WebContentsViewDelegate::DropCompletionCallback
 MaybeStripImageMetadataForDrop(
     content::WebContents* web_contents,
