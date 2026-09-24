@@ -226,4 +226,17 @@ public class BraveSearchEngineUtilsTest {
                         .readString(BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, ""));
         verify(mTemplateUrlService, never()).setSearchEngine(BRAVE_KEYWORD);
     }
+
+    @Test
+    @SmallTest
+    public void testNullProfileIsIgnored() {
+        BraveSearchEngineUtils.initializeOnProfileAdded(null);
+        BraveSearchEngineUtils.applySearchChoiceScreenDefault(null);
+
+        assertEquals(
+                "",
+                ChromeSharedPreferences.getInstance()
+                        .readString(BraveSearchEngineAdapter.STANDARD_DSE_SHORTNAME, ""));
+        verify(mTemplateUrlService, never()).setSearchEngine(BRAVE_KEYWORD);
+    }
 }

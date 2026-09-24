@@ -29,8 +29,8 @@ public class BraveSearchEngineUtils {
      * entry points which never start BraveActivity, such as the search widget, use the same engine
      * as the browser. Does nothing once the DSE has been initialized, leaving later changes alone.
      */
-    public static void initializeOnProfileAdded(final Profile profile) {
-        if (profile.isOffTheRecord()) {
+    public static void initializeOnProfileAdded(@Nullable final Profile profile) {
+        if (profile == null || profile.isOffTheRecord()) {
             return;
         }
         if (!NOT_INITIALIZED.equals(
@@ -48,7 +48,10 @@ public class BraveSearchEngineUtils {
      * The install referrer resolves asynchronously, so this can run after the DSE was already
      * initialized from the country default, which would otherwise ignore the user's choice.
      */
-    public static void applySearchChoiceScreenDefault(final Profile profile) {
+    public static void applySearchChoiceScreenDefault(@Nullable final Profile profile) {
+        if (profile == null) {
+            return;
+        }
         if (ChromeSharedPreferences.getInstance()
                 .readBoolean(BravePreferenceKeys.DEFAULT_SEARCH_ENGINE_CHANGED, false)) {
             // The referrer fetch is retried on later launches when it fails, for example when the
