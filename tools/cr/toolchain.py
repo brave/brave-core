@@ -732,6 +732,18 @@ class XcodeToolchain(Toolchain):
             + '\n'
         )
 
+    @staticmethod
+    def _archive_size(url: str) -> int:
+        """The size in bytes of the published archive at `url`."""
+        try:
+            response = requests.head(url, allow_redirects=True, timeout=30)
+            response.raise_for_status()
+            return int(response.headers['Content-Length'])
+        except (requests.RequestException, KeyError, ValueError) as e:
+            raise BadOutcomeException(
+                f'Could not determine the size of {url}: {e}'
+            ) from e
+
     def _rewrite_hermetic_xcode_script(
         self,
         sdk_info: build_xcode_toolchain.MacSdkInfo,
@@ -824,6 +836,11 @@ class XcodeToolchain(Toolchain):
             index = build_xcode_toolchain.fetch_published_index(sdk_info)
         except RuntimeError as e:
             raise BadOutcomeException(str(e)) from e
+
+        # Indices published before `size_bytes` was introduced lack it, so the
+        # archive size is taken from the bucket instead.
+        if 'size_bytes' not in index:
+            index['size_bytes'] = self._archive_size(index['url'])
 
         if not self._rewrite_hermetic_xcode_script(
             sdk_info, index, mac_toolchain_py
