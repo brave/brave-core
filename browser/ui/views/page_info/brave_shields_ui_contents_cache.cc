@@ -6,6 +6,7 @@
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
 
 #include "base/check.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h"
 
 namespace {
@@ -15,15 +16,25 @@ constexpr auto kCacheExpiryInterval = base::Seconds(30);
 
 }  // namespace
 
-BraveShieldsUIContentsCache::BraveShieldsUIContentsCache()
+DEFINE_USER_DATA(BraveShieldsUIContentsCache);
+
+BraveShieldsUIContentsCache::BraveShieldsUIContentsCache(
+    ui::UnownedUserDataHost& host)
     : cache_timer_(std::make_unique<base::RetainingOneShotTimer>(
           FROM_HERE,
           kCacheExpiryInterval,
           base::BindRepeating(
               &BraveShieldsUIContentsCache::ResetCachedShieldsUIContents,
-              base::Unretained(this)))) {}
+              base::Unretained(this)))),
+      scoped_unowned_user_data_(host, *this) {}
 
 BraveShieldsUIContentsCache::~BraveShieldsUIContentsCache() = default;
+
+// static
+BraveShieldsUIContentsCache* BraveShieldsUIContentsCache::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 std::unique_ptr<WebUIContentsWrapper>
 BraveShieldsUIContentsCache::GetCachedShieldsUIContents() {

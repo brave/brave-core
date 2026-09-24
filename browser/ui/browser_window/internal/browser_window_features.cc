@@ -128,7 +128,8 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
 #endif
 
   brave_shields_ui_contents_cache_ =
-      std::make_unique<BraveShieldsUIContentsCache>();
+      GetUserDataFactory().CreateInstance<BraveShieldsUIContentsCache>(
+          *browser, browser->GetUnownedUserDataHost());
 
   brave_non_client_hit_test_helper_ =
       std::make_unique<BraveNonClientHitTestHelper>();
