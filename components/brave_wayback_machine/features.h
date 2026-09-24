@@ -14,6 +14,10 @@ namespace brave_wayback_machine::features {
 // missing (for example, a 404).
 BASE_DECLARE_FEATURE(kWaybackMachineAutoShowBubble);
 
+// Surfaces a setting that allows the browser to automatically check the
+// Wayback Machine for an archived version of a missing page.
+BASE_DECLARE_FEATURE(kWaybackMachineAutoCheck);
+
 }  // namespace brave_wayback_machine::features
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_FEATURES_H_

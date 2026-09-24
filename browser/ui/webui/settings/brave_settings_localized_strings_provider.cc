@@ -24,6 +24,9 @@
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/brave_wayback_machine/pref_names.h"
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/components/brave_wayback_machine/features.h"
+#endif
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
@@ -602,6 +605,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"braveWallet", IDS_BRAVE_WALLET_SETTINGS_SECTION},
       {"braveWaybackMachineLabel",
        IDS_SETTINGS_SHOW_BRAVE_WAYBACK_MACHINE_PROMPT},
+      {"braveWaybackMachineAutoCheckLabel",
+       IDS_SETTINGS_BRAVE_WAYBACK_MACHINE_AUTO_CHECK},
       {"braveWarnBeforeClosingWindow",
        IDS_SETTINGS_WINDOW_CLOSING_CONFIRM_OPTION_LABEL},
       {"braveClosingLastTab", IDS_SETTINGS_CLOSING_LAST_TAB_OPTION_LABEL},
@@ -1357,6 +1362,15 @@ void BraveAddLocalizedStrings(content::WebUIDataSource* html_source,
       "showStrictFingerprintingMode",
       base::FeatureList::IsEnabled(
           brave_shields::features::kBraveShowStrictFingerprintingMode));
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  html_source->AddBoolean(
+      "isWaybackMachineAutoCheckFeatureEnabled",
+      base::FeatureList::IsEnabled(
+          brave_wayback_machine::features::kWaybackMachineAutoCheck));
+#else
+  html_source->AddBoolean("isWaybackMachineAutoCheckFeatureEnabled", false);
+#endif
 
 #if BUILDFLAG(ENABLE_TOR)
   html_source->AddBoolean("braveTorDisabledByPolicy",

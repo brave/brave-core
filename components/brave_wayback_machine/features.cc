@@ -8,5 +8,6 @@
 namespace brave_wayback_machine::features {
 
 BASE_FEATURE(kWaybackMachineAutoShowBubble, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kWaybackMachineAutoCheck, base::FEATURE_DISABLED_BY_DEFAULT);
 
 }  // namespace brave_wayback_machine::features

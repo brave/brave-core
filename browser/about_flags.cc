@@ -414,6 +414,15 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
           kOsWin | kOsMac | kOsLinux,                                          \
           FEATURE_VALUE_TYPE(                                                  \
               brave_wayback_machine::features::kWaybackMachineAutoShowBubble), \
+      },                                                                       \
+      {                                                                        \
+          "brave-wayback-machine-auto-check",                                  \
+          "Wayback Machine auto-check",                                        \
+          "Show a setting that allows automatically checking the Wayback "     \
+          "Machine for an archived version of a missing page.",                \
+          kOsWin | kOsMac | kOsLinux,                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_wayback_machine::features::kWaybackMachineAutoCheck),      \
       }))
 
 #if !BUILDFLAG(IS_ANDROID)

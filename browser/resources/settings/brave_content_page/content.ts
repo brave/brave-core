@@ -80,6 +80,14 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
         },
       },
 
+      isWaybackMachineAutoCheckFeatureEnabled_: {
+        type: Boolean,
+        value() {
+          return loadTimeData.getBoolean(
+              'isWaybackMachineAutoCheckFeatureEnabled');
+        },
+      },
+
     }
   }
 
@@ -93,6 +101,7 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
   private declare pageZoomLevels_: number[]
   private declare defaultZoom_: number;
   private declare showSplitViewDragAndDropSetting_: boolean;
+  private declare isWaybackMachineAutoCheckFeatureEnabled_: boolean;
   private appearanceBrowserProxy_: AppearanceBrowserProxy =
       AppearanceBrowserProxyImpl.getInstance();
 
@@ -125,6 +134,11 @@ export class SettingsBraveContentContentElement extends SettingsBraveAppearanceC
       pref: chrome.settingsPrivate.PrefObject): boolean {
     return pref &&
         pref.enforcement === chrome.settingsPrivate.Enforcement.ENFORCED;
+  }
+
+  private shouldShowWaybackMachineAutoCheck_(
+      featureEnabled: boolean, waybackEnabled: boolean): boolean {
+    return featureEnabled && !!waybackEnabled;
   }
 
   /**

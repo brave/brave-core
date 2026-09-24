@@ -55,6 +55,14 @@
     label="$i18n{braveWaybackMachineLabel}"
     hidden="[[isWaybackMachineManaged_(prefs.brave.wayback_machine_enabled)]]">
   </settings-toggle-button>
+  <settings-toggle-button
+    class="cr-row"
+    pref="{{prefs.brave.wayback_machine_auto_check_enabled}}"
+    label="$i18n{braveWaybackMachineAutoCheckLabel}"
+    hidden="[[!shouldShowWaybackMachineAutoCheck_(
+        isWaybackMachineAutoCheckFeatureEnabled_,
+        prefs.brave.wayback_machine_enabled.value)]]">
+  </settings-toggle-button>
 </if>
 
 </settings-section>
