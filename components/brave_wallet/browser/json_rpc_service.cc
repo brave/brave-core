@@ -2396,16 +2396,21 @@ void JsonRpcService::NotifySwitchChainRequestProcessed(
   auto pending_request = std::move(pending_switch_chain_requests_[request_id]);
   pending_switch_chain_requests_.erase(request_id);
 
-  if (approved) {
-    // We already check chain id validity in
-    // JsonRpcService::AddSwitchEthereumChainRequest so this should always
-    // be successful unless chain id differs or we add more check other than
-    // chain id
-    CHECK(SetNetwork(pending_request.switch_chain_request->chain_id,
-                     mojom::CoinType::ETH, pending_request.origin));
-  }
   auto callback = std::move(pending_request.switch_chain_callback);
   base::Value id = std::move(pending_request.switch_chain_id);
+
+  if (approved) {
+    if (!SetNetwork(pending_request.switch_chain_request->chain_id,
+                    mojom::CoinType::ETH, pending_request.origin)) {
+      std::move(callback).Run(mojom::EthereumProviderResponse::New(
+          std::move(id),
+          GetProviderErrorDictionary(
+              mojom::ProviderError::kUserRejectedRequest,
+              l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST)),
+          true, "", false));
+      return;
+    }
+  }
 
   bool reject = false;
   if (approved) {
