@@ -96,8 +96,8 @@ class BraveShieldsWebContentsObserver
   // given |navigation_handle|.
   void SendShieldsSettings(content::NavigationHandle* navigation_handle);
 
-  // URL used to look up shields settings for |handle|.
-  GURL GetPrimaryUrlFromHandle(content::NavigationHandle* handle);
+  // URL used to look up shields settings for |navigation_handle|.
+  GURL GetPrimaryUrlFromHandle(content::NavigationHandle* navigation_handle);
 
   std::vector<std::string> allowed_scripts_;
   // We keep a set of the current page's blocked URLs in case the page

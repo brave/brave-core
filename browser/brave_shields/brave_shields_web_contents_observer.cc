@@ -317,23 +317,23 @@ void BraveShieldsWebContentsObserver::SetReceiverImplForTesting(
 }
 
 GURL BraveShieldsWebContentsObserver::GetPrimaryUrlFromHandle(
-    NavigationHandle* handle) {
+    NavigationHandle* navigation_handle) {
   // Relying on url::Origin::Create correctly extracts the embedded origin for
   // blob: URLs (e.g. blob:https://example.com/uuid to https://example.com) and
   // works for all other schemes as well. Origin is more secure than working
   // with last committed URLs.
   url::Origin navigation_handle_origin =
-      handle->GetParentFrameOrOuterDocument()
-          ? handle->GetParentFrameOrOuterDocument()
+      navigation_handle->GetParentFrameOrOuterDocument()
+          ? navigation_handle->GetParentFrameOrOuterDocument()
                 ->GetOutermostMainFrame()
                 ->GetLastCommittedOrigin()
-          : url::Origin::Create(handle->GetURL());
+          : url::Origin::Create(navigation_handle->GetURL());
 
   // |handle| pointing to sandboxed iframes can return an opaque origin, and an
   // opaque origin GURL can be empty. So, we can't do much here then simply
   // relying plainly on the |handle| GURL.
   return navigation_handle_origin.GetURL().is_empty()
-             ? handle->GetURL()
+             ? navigation_handle->GetURL()
              : navigation_handle_origin.GetURL();
 }
 
