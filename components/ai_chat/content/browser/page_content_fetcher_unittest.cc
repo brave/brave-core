@@ -13,6 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/values.h"
@@ -73,6 +74,10 @@ class MockPageContentExtractor : public mojom::PageContentExtractor {
     receiver_.Bind(
         mojo::PendingReceiver<mojom::PageContentExtractor>(std::move(handle)));
   }
+
+  // Mirrors BindReceiver resetting its receiver, which closes the pipe of a
+  // fetch already in flight.
+  void ResetReceiver() { receiver_.reset(); }
 
  private:
   mojo::Receiver<mojom::PageContentExtractor> receiver_{this};
@@ -721,5 +726,34 @@ INSTANTIATE_TEST_SUITE_P(
         // Normal URLs → false
         HasCustomExtractionCase{"https://example.com/page", false},
         HasCustomExtractionCase{"https://brave.com/about", false}));
+
+// Rebinding the extractor resets the renderer's receiver, disconnecting a fetch
+// that is already in flight. The caller must still be answered.
+TEST_F(PageContentFetcherTest, CallbackRunWhenExtractorDisconnects) {
+  NavigateAndCommit(GURL("https://example.com"));
+
+  MockPageContentExtractor* mock_extractor = SetUpMockExtractor();
+
+  // Hold the reply, then close the pipe without answering, as the renderer's
+  // receiver reset does.
+  mojom::PageContentExtractor::ExtractPageContentCallback pending_reply;
+  EXPECT_CALL(*mock_extractor, ExtractPageContent(_))
+      .WillOnce([&pending_reply](
+                    mojom::PageContentExtractor::ExtractPageContentCallback
+                        callback) { pending_reply = std::move(callback); });
+
+  base::test::TestFuture<std::string, bool, std::string> future;
+  fetcher_->FetchPageContent("", future.GetCallback());
+  ASSERT_TRUE(base::test::RunUntil([&]() { return !pending_reply.is_null(); }));
+
+  mock_extractor->ResetReceiver();
+  pending_reply.Reset();
+
+  auto [content, is_video, invalidation_token] = future.Get();
+
+  EXPECT_TRUE(content.empty());
+  EXPECT_FALSE(is_video);
+  EXPECT_TRUE(invalidation_token.empty());
+}
 
 }  // namespace ai_chat

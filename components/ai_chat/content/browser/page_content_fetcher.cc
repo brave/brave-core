@@ -31,6 +31,7 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "net/base/load_flags.h"
@@ -473,7 +474,12 @@ void PageContentFetcher::FetchPageContent(std::string_view invalidation_token,
   // GetRemoteInterfaces() cannot be null if the render frame is created.
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
-  fetcher->Start(std::move(extractor), invalidation_token, std::move(callback));
+  // A second fetch rebinds the extractor, which resets the renderer's receiver
+  // and disconnects this one. The fetcher deletes itself on disconnect without
+  // replying, so guarantee an answer or the caller waits forever.
+  fetcher->Start(std::move(extractor), invalidation_token,
+                 mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+                     std::move(callback), "", false, ""));
 }
 
 void PageContentFetcher::GetSearchSummarizerKey(

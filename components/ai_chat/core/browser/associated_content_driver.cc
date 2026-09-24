@@ -16,6 +16,7 @@
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/logging.h"
+#include "base/memory/ptr_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
 #include "base/strings/strcat.h"
@@ -97,6 +98,8 @@ void AssociatedContentDriver::OnExistingGeneratePageContentComplete(
     GetPageContentCallback callback,
     int64_t navigation_id) {
   if (navigation_id != content_id()) {
+    // Stale page. Answer anyway; callers wait forever on a dropped callback.
+    std::move(callback).Run(PageContent());
     return;
   }
   std::move(callback).Run(cached_page_content());
@@ -112,6 +115,8 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
            << ", invalidation_token=" << invalidation_token
            << "): " << contents_text;
   if (navigation_id != content_id()) {
+    // Stale page, so don't cache it, but still release whoever is waiting.
+    SignalPageTextFetchComplete();
     return;
   }
 
@@ -129,8 +134,16 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
     }
   }
 
-  on_page_text_fetch_complete_->Signal();
-  on_page_text_fetch_complete_ = nullptr;
+  SignalPageTextFetchComplete();
+}
+
+void AssociatedContentDriver::SignalPageTextFetchComplete() {
+  if (!on_page_text_fetch_complete_) {
+    return;
+  }
+  // release() nulls the member before Signal(): OneShotEvent CHECKs that
+  // Signal() is called at most once.
+  base::WrapUnique(on_page_text_fetch_complete_.release())->Signal();
 }
 
 void AssociatedContentDriver::GetStagedEntriesFromContent(
