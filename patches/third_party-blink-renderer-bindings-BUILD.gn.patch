@@ -1,20 +1,42 @@
 diff --git a/third_party/blink/renderer/bindings/BUILD.gn b/third_party/blink/renderer/bindings/BUILD.gn
-index 91b34f022ba515026415dcc4f86526a420f01bfa..9ce26752773bafc4b64a49a170dc3cad61cfb06c 100644
+index 91b34f022ba515026415dcc4f86526a420f01bfa..fb72c7f533f8d2eac4e3da3f64fd7f14d078c2f0 100644
 --- a/third_party/blink/renderer/bindings/BUILD.gn
 +++ b/third_party/blink/renderer/bindings/BUILD.gn
-@@ -131,6 +131,7 @@ action_with_pydeps("web_idl_database") {
-            rebase_path(runtime_enabled_features_file, root_build_dir),
-            "--",
-          ] + rebase_path(input_data_files, root_build_dir)
-+  import("//brave/third_party/blink/renderer/bindings/sources.gni") inputs += brave_third_party_blink_renderer_bindings_web_idl_database_inputs deps += brave_third_party_blink_renderer_bindings_web_idl_database_deps
- }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
- template("generate_bindings") {
-@@ -180,6 +181,7 @@ template("generate_bindings") {
++import("//brave/third_party/blink/renderer/bindings/sources.gni")
+ import("//build/buildflag_header.gni")
+ import("//build/config/python.gni")
+ import("//third_party/blink/renderer/bindings/bindings.gni")
+@@ -117,11 +118,13 @@ action_with_pydeps("web_idl_database") {
+     ":web_idl_in_modules",
+     ":web_idl_in_modules_for_testing",
+   ]
++  deps += brave_third_party_blink_renderer_bindings_web_idl_database_deps
+   if (use_blink_extensions_webview) {
+     input_data_files += get_target_outputs(":web_idl_in_extensions_webview")
+     deps += [ ":web_idl_in_extensions_webview" ]
+   }
+   inputs = input_data_files + [ runtime_enabled_features_file ]
++  inputs += brave_third_party_blink_renderer_bindings_web_idl_database_inputs
+   outputs = [ web_idl_database_filepath ]
+ 
+   args = [
+@@ -152,6 +155,7 @@ template("generate_bindings") {
+       web_idl_database,
+       "union_name_map.conf",
+     ]
++    inputs += brave_third_party_blink_renderer_bindings_generate_bindings_inputs
+     outputs = invoker.outputs
+ 
+     args = [
+@@ -180,6 +184,7 @@ template("generate_bindings") {
      args += invoker.targets
  
      deps = [ ":web_idl_database" ]
-+    import("//brave/third_party/blink/renderer/bindings/sources.gni") inputs += brave_third_party_blink_renderer_bindings_generate_bindings_inputs deps += brave_third_party_blink_renderer_bindings_generate_bindings_deps
++    deps += brave_third_party_blink_renderer_bindings_generate_bindings_deps
    }
  }
  

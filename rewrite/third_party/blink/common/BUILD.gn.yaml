@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave blink common deps.
+    add_literal_to_list:
+      target: common
+      list_name: deps
+      literal: brave_blink_common_deps
+      import: //brave/components/brave_wallet/sources.gni
+
+  - description: Add the Brave blink common unit test deps.
+    add_literal_to_list:
+      target: common_unittests_sources
+      list_name: deps
+      literal: brave_blink_common_deps
+      import: //brave/components/brave_wallet/sources.gni

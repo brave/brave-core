@@ -443,6 +443,15 @@ has:
         # directly, hence matching a `primary_expression` node by regex instead
         # of `string`.
         #
+        # Every target matcher can also be confined to one `template()`, for a
+        # template that declares its target through `target_name` and so has
+        # no literal name to tell it from another template's. `unscoped` is `.`
+        # when no template is named, which satisfies the `any` on its own and
+        # leaves the scope moot; when one is, it is a pattern nothing matches,
+        # so only the branch placing the target inside that template can. The
+        # body is found at any depth, since a template may declare its target
+        # inside an `if`.
+        #
         # A metavariable (`$VALUE` below) only parses at all because the
         # generated `sgconfig.yml` sets `expandoChar: _`: a bare `$` is not
         # valid GN outside a string, so ast-grep swaps the sign for a character
@@ -475,6 +484,24 @@ inside:
               any:
                 - regex: ^"{target}"$
                 - regex: ^{target}$
+    any:
+      - regex: {unscoped}
+      - inside:
+          kind: block
+          stopBy: end
+          inside:
+            kind: primary_expression
+            follows:
+              kind: primary_expression
+              has:
+                kind: call_expression
+                all:
+                  - has:
+                      field: function
+                      regex: ^template$
+                  - has:
+                      kind: primary_expression
+                      regex: {template}
 """,
             "result": {
                 "node": "assignment_statement",
@@ -504,6 +531,24 @@ inside:
             any:
               - regex: ^"{target}"$
               - regex: ^{target}$
+  any:
+    - regex: {unscoped}
+    - inside:
+        kind: block
+        stopBy: end
+        inside:
+          kind: primary_expression
+          follows:
+            kind: primary_expression
+            has:
+              kind: call_expression
+              all:
+                - has:
+                    field: function
+                    regex: ^template$
+                - has:
+                    kind: primary_expression
+                    regex: {template}
 """,
             "result": {
                 "node": "block",
@@ -544,6 +589,24 @@ inside:
                 any:
                   - regex: ^"{target}"$
                   - regex: ^{target}$
+      any:
+        - regex: {unscoped}
+        - inside:
+            kind: block
+            stopBy: end
+            inside:
+              kind: primary_expression
+              follows:
+                kind: primary_expression
+                has:
+                  kind: call_expression
+                  all:
+                    - has:
+                        field: function
+                        regex: ^template$
+                    - has:
+                        kind: primary_expression
+                        regex: {template}
 """,
             "result": {
                 "node": "block",
@@ -955,7 +1018,7 @@ has:
         # newline that `$` would otherwise match ahead of.
         "gn.append_literal_to_list": {
             "matcher": "gn.find_target_list_assignment",
-            "inputs": ["target", "type", "list_name", "literal", "indent"],
+            "inputs": ["target", "type", "template", "unscoped", "list_name", "literal", "indent"],
             "first_match": True,
             "replace": {
                 "re_pattern": "$",
@@ -976,7 +1039,7 @@ has:
         "gn.append_literal_to_conditional": {
             "matcher": "gn.find_target_conditional_block",
             "inputs": [
-                "target", "type", "condition", "list_name", "literal", "indent"
+                "target", "type", "template", "unscoped", "condition", "list_name", "literal", "indent"
             ],
             "replace": {
                 "re_pattern": "\\n[ \\t]*\\}$",
@@ -995,7 +1058,7 @@ has:
         "gn.assign_conditional_literal_to_list": {
             "matcher": "gn.find_target_list_assignment",
             "inputs": [
-                "target", "type", "condition", "list_name", "literal", "indent"
+                "target", "type", "template", "unscoped", "condition", "list_name", "literal", "indent"
             ],
             "first_match": True,
             "replace": {
@@ -1013,7 +1076,7 @@ has:
         # body, for when it declares no `list_name` yet.
         "gn.assign_literal_to_list": {
             "matcher": "gn.find_target_block",
-            "inputs": ["target", "type", "list_name", "literal", "indent"],
+            "inputs": ["target", "type", "template", "unscoped", "list_name", "literal", "indent"],
             "replace": {
                 "re_pattern": "^\\{",
                 "replace": "{{\\n{indent}{list_name} = {literal}",
@@ -1076,7 +1139,7 @@ has:
         # labour `cxx.append_to_public_before_close` uses.
         "gn.append_code_to_body": {
             "matcher": "gn.find_target_block",
-            "inputs": ["target", "type", "code", "indent"],
+            "inputs": ["target", "type", "template", "unscoped", "code", "indent"],
             "replace": {
                 "re_pattern": "\\n[ \\t]*\\}$",
                 "replace": "\\n{code}\\n{indent}}}",
@@ -1096,7 +1159,7 @@ has:
         # that `gn format` fixes.
         "gn.append_literal_to_body": {
             "matcher": "gn.find_target_block",
-            "inputs": ["target", "type", "list_name", "literal", "indent"],
+            "inputs": ["target", "type", "template", "unscoped", "list_name", "literal", "indent"],
             "replace": {
                 "re_pattern": "\\n[ \\t]*\\}$",
                 "replace": "\\n{indent}  {list_name} += {literal}"

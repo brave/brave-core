@@ -1,0 +1,46 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Depend on the Brave channel info.
+    insert_into_list:
+      target: channel_info
+      list_name: public_deps
+      values:
+        - //brave/common:channel_info
+
+  - description: Add the Brave common sources.
+    add_literal_to_list:
+      target: common_lib
+      list_name: sources
+      literal: brave_chrome_common_sources
+      import: //brave/common/sources.gni
+
+  - description: Add the Brave common deps.
+    add_literal_to_list:
+      target: common_lib
+      list_name: deps
+      literal: brave_chrome_common_deps
+      import: //brave/common/sources.gni
+
+  - description: Add the Brave common public_deps.
+    add_literal_to_list:
+      target: common_lib
+      list_name: public_deps
+      literal: brave_chrome_common_public_deps
+      import: //brave/common/sources.gni
+
+  - description: Build the non-code constants with the Brave constants config.
+    add_literal_to_list:
+      target: non_code_constants
+      list_name: configs
+      literal: '[ "//brave/common:constants_configs" ]'
+
+  - description: Add the Brave constants deps.
+    add_literal_to_list:
+      target: constants
+      list_name: deps
+      literal: brave_chrome_constants_deps
+      import: //brave/common/sources.gni
