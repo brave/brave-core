@@ -7,8 +7,6 @@ source_set("brave_account") {
   sources = [
     "brave_account_ui_ios.h",
     "brave_account_ui_ios.mm",
-    "dialog_mode_holder.h",
-    "dialog_mode_holder.mm",
   ]
 
   deps = [
@@ -16,8 +14,8 @@ source_set("brave_account") {
     "//brave/components/brave_account",
     "//brave/components/brave_account/mojom",
     "//brave/components/password_strength_meter:mojom",
+    "//brave/ios/browser/api/web_view",
     "//brave/ios/browser/brave_account",
-    "//brave/ios/browser/ui:view_controller_util",
     "//brave/ios/web/webui",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/web/public",

@@ -16,14 +16,3 @@ source_set("ui") {
 
   frameworks = [ "Foundation.framework" ]
 }
-
-source_set("view_controller_util") {
-  sources = [
-    "view_controller_util.h",
-    "view_controller_util.mm",
-  ]
-
-  deps = [ "//base" ]
-
-  frameworks = [ "UIKit.framework" ]
-}

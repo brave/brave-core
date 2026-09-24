@@ -60,7 +60,7 @@ protocol SettingsDelegate: AnyObject {
 }
 
 class SettingsViewController: TableViewController, BraveAccountAuthenticationObserver,
-  BraveAccountDialogOpening
+  BraveAccountWebUIDelegate
 {
   weak var settingsDelegate: SettingsDelegate?
 
@@ -433,6 +433,7 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     if let dialogMode {
       controller.webView.braveAccountDialogMode = dialogMode
     }
+    controller.webView.braveAccountDelegate = self
     controller.webView.load(URLRequest(url: url))
     controller.navigationItem.rightBarButtonItem = .doneButton { [unowned container] in
       container.dismiss(animated: true)
@@ -453,22 +454,13 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     )
   }
 
-  private func openBraveAccountDialog(
-    dialogMode: BraveAccount.DialogMode = .default
-  ) {
-    openBraveAccountDialog(
-      initiatingServiceName: "",
-      dialogMode: dialogMode
-    )
-  }
-
-  // MARK: - BraveAccountDialogOpening
+  // MARK: - BraveAccountWebUIDelegate
 
   // Also called from the WebUI serving the account rows, which asks for the
   // dialog to be opened over it.
   func openBraveAccountDialog(
-    initiatingServiceName: String,
-    dialogMode: BraveAccount.DialogMode
+    initiatingServiceName: String = "",
+    dialogMode: BraveAccount.DialogMode = .default
   ) {
     var components = URLComponents(string: "brave://account")!
     if !initiatingServiceName.isEmpty {

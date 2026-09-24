@@ -5,45 +5,17 @@
 
 #include "brave/ios/browser/ui/webui/brave_account/brave_account_ui_ios.h"
 
-#import <UIKit/UIKit.h>
-
 #include <utility>
 
 #include "base/functional/bind.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/password_strength_meter/password_strength_meter.mojom.h"
-#include "brave/ios/browser/brave_account/brave_account_dialog_opening.h"
-#include "brave/ios/browser/ui/view_controller_util.h"
-#include "brave/ios/browser/ui/webui/brave_account/dialog_mode_holder.h"
+#include "brave/ios/browser/api/web_view/brave_web_view_internal.h"
+#include "brave/ios/browser/brave_account/dialog_mode_holder.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/web_state.h"
 #include "ios/web/public/webui/web_ui_ios.h"
 #include "url/gurl.h"
-
-namespace {
-
-// Finds the nearest controller that can present the dialog - in practice the
-// settings screen that opened this page, though the search only looks for
-// conformance. The controller hosting the page is a generic WebUI host, so
-// the search walks up the presentation chain that led here. At each step it
-// checks the controller and its children, because a screen is presented
-// wrapped in a UINavigationController, and `presentingViewController` returns
-// that wrapper rather than the screen.
-id<BraveAccountDialogOpening> GetDialogOpenerFromView(UIView* view) {
-  for (UIViewController* controller = brave::ViewControllerForView(view);
-       controller; controller = controller.presentingViewController) {
-    for (UIViewController* candidate in [@[ controller ]
-             arrayByAddingObjectsFromArray:controller.childViewControllers]) {
-      if ([candidate conformsToProtocol:@protocol(BraveAccountDialogOpening)]) {
-        return static_cast<id<BraveAccountDialogOpening>>(candidate);
-      }
-    }
-  }
-
-  return nil;
-}
-
-}  // namespace
 
 BraveAccountUIIOS::BraveAccountUIIOS(web::WebUIIOS* web_ui, const GURL& url)
     : BraveAccountUIBase(ProfileIOS::FromWebUIIOS(web_ui), url),
@@ -62,13 +34,9 @@ BraveAccountUIIOS::~BraveAccountUIIOS() {
 void BraveAccountUIIOS::OpenDialog(
     const std::string& initiating_service_name,
     brave_account::mojom::DialogMode dialog_mode) {
-  id<BraveAccountDialogOpening> opener =
-      GetDialogOpenerFromView(web_ui()->GetWebState()->GetView());
-  if (!opener) {
-    return;
-  }
-
-  [opener
+  BraveWebView* web_view =
+      [BraveWebView braveWebViewForWebState:web_ui()->GetWebState()];
+  [web_view.braveAccountDelegate
       openBraveAccountDialogWithInitiatingServiceName:
           base::SysUTF8ToNSString(initiating_service_name)
                                            dialogMode:

@@ -20,7 +20,6 @@
 #include "brave/components/skus/browser/pref_names.h"
 #include "brave/components/skus/browser/resources/grit/skus_internals_generated_map.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
-#include "brave/ios/browser/ui/view_controller_util.h"
 #include "brave/ios/web/webui/brave_webui_utils.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
@@ -37,6 +36,23 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/webui/resource_path.h"
 #include "ui/base/webui/web_ui_util.h"
+
+namespace {
+
+UIViewController* GetParentControllerFromView(UIView* view) {
+  UIResponder* nextResponder = [view nextResponder];
+  if ([nextResponder isKindOfClass:[UIViewController class]]) {
+    return static_cast<UIViewController*>(nextResponder);
+  }
+
+  if ([nextResponder isKindOfClass:[UIView class]]) {
+    return GetParentControllerFromView(static_cast<UIView*>(nextResponder));
+  }
+
+  return nil;
+}
+
+}  // namespace
 
 ///////////////////////////////////////////////////////////////////////////////
 //
@@ -163,7 +179,7 @@ void SkusInternalsUI::CopySkusStateToClipboard() {
 
 void SkusInternalsUI::DownloadSkusState() {
   UIViewController* controller =
-      brave::ViewControllerForView(web_ui()->GetWebState()->GetView());
+      GetParentControllerFromView(web_ui()->GetWebState()->GetView());
   if (controller) {
     NSString* skus_state = base::SysUTF8ToNSString(GetSkusStateAsString());
 

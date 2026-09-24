@@ -135,6 +135,17 @@ CWV_EXPORT
                    inBackground:(BOOL)inBackground;
 @end
 
+/// Implemented by the host of a Brave Account WebUI page, so that the page can
+/// ask for the authentication dialog to be presented over it.
+CWV_EXPORT
+@protocol BraveAccountWebUIDelegate <NSObject>
+- (void)openBraveAccountDialogWithInitiatingServiceName:
+            (NSString*)initiatingServiceName
+                                             dialogMode:(BraveAccountDialogMode)
+                                                            dialogMode
+    NS_SWIFT_NAME(openBraveAccountDialog(initiatingServiceName:dialogMode:));
+@end
+
 /// A CWVWebView with Chrome tab helpers attached and the ability to handle
 /// some Brave specific features
 CWV_EXPORT
@@ -149,6 +160,10 @@ CWV_EXPORT
 
 // This web view's UI delegate.
 @property(nonatomic, weak, nullable) id<BraveWebViewUIDelegate> UIDelegate;
+
+/// Set by the host of a Brave Account WebUI page, before the page is loaded.
+@property(nonatomic, weak, nullable) id<BraveAccountWebUIDelegate>
+    braveAccountDelegate;
 
 /// Allows customizing the underlying WKWebView input views (see UIResponder),
 /// alongside `inputAccessoryView` which is already exposed by CWVWebView
