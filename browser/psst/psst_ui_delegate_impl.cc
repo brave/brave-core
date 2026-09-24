@@ -105,7 +105,7 @@ std::optional<PsstWebsiteSettings> PsstUiDelegateImpl::GetPsstWebsiteSettings(
 }
 
 void PsstUiDelegateImpl::SetLogicalFlowCancelCallback(
-    PsstTabWebContentsObserver::CancelCallback cancel_callback) {
+    base::RepeatingClosure cancel_callback) {
   cancel_callback_ = std::move(cancel_callback);
 }
 

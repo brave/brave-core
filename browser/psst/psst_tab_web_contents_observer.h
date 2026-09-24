@@ -43,7 +43,6 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
       PsstTabWebContentsObserver::InsertScriptInPageCallback)>;
   using ConsentCallback =
       base::OnceCallback<void(const std::vector<std::string>&)>;
-  using CancelCallback = base::RepeatingCallback<void()>;
 
   // Delegate interface for UI-related actions. This class is responsible for
   // facilitating communication with the consent dialog, ensuring that the UI
@@ -68,7 +67,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
     // Sets the callback used to cancel an in-flight PSST flow from the UI side
     // (dialog close, "don't show for this site", or feature disable).
     virtual void SetLogicalFlowCancelCallback(
-        CancelCallback cancel_callback) = 0;
+        base::RepeatingClosure cancel_callback) = 0;
   };
 
   // Creates an observer for `tab`'s web contents, or returns null for

@@ -250,7 +250,7 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
 
   MOCK_METHOD(void,
               SetLogicalFlowCancelCallback,
-              (PsstTabWebContentsObserver::CancelCallback cancel_callback),
+              (base::RepeatingClosure cancel_callback),
               (override));
 
 };
