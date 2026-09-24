@@ -10,7 +10,10 @@ PRESUBMIT_VERSION = '2.0.0'
 
 
 def CheckTests(input_api, output_api):
-    """Runs the unit tests in this directory."""
+    """Runs the unit tests in this directory.
+    """
+    if not input_api.HasAffectedFiles(extensions=('.py', '.vpython3')):
+        return []
     script_dir = input_api.PresubmitLocalPath()
     tests = [
         input_api.Command(
