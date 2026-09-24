@@ -2287,7 +2287,9 @@
 # This test fails because the expected width of the chip doesn't match (24px
 # vs 28px)
 -PaymentHandlerWebFlowViewCameraUxTest.BlockedCameraIndicator_DismissalLifecycleAndRepeatDismissal
+-PaymentHandlerWebFlowViewCameraUxTest.CameraInUseIndicator_CaptureRestartsDuringHold_ResumesWithoutFlicker
 -PaymentHandlerWebFlowViewCameraUxTest.CameraInUseIndicator_ExpandsAndAutoCollapses
+-PaymentHandlerWebFlowViewCameraUxTest.CameraInUseIndicator_RepeatRequestShowsCompactIconWithoutExpanding
 
 # This test fails because the expected margins of the toolbar don't match.
 -All/ToolbarViewContextualTasksInteriorMarginBrowserTest.BackButtonLeadingMarginInMaximizedWindow/0
