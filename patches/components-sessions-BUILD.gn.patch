@@ -1,20 +1,28 @@
 diff --git a/components/sessions/BUILD.gn b/components/sessions/BUILD.gn
-index 8fdb01e9efaf2b351ebbcdc24e50c5917f9d0031..bca7939e7dac68c633c73cc825a43e865b773cfc 100644
+index 8fdb01e9efaf2b351ebbcdc24e50c5917f9d0031..7fc572f137ee16c11b744498522f80cfe12d9bdd 100644
 --- a/components/sessions/BUILD.gn
 +++ b/components/sessions/BUILD.gn
-@@ -47,6 +47,7 @@ if (use_blink && !(is_ios && target_platform == "iphoneos")) {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/components/sessions/sources.gni")
+ import("//build/config/apple/mobile_config.gni")
+ import("//build/config/features.gni")
+ 
+@@ -47,6 +48,7 @@ if (use_blink && !(is_ios && target_platform == "iphoneos")) {
        "//ui/base",
        "//url",
      ]
-+    import("//brave/components/sessions/sources.gni") deps += brave_components_sessions_deps
++    deps += brave_components_sessions_deps
    }
  } else {
    source_set("sessions") {
-@@ -161,6 +162,7 @@ source_set("shared") {
-     "//ui/gfx",
-     "//url",
+@@ -145,6 +147,7 @@ source_set("shared") {
+     "//components/os_crypt/common",
+     "//skia",
    ]
-+  import("//brave/components/sessions/sources.gni") public_deps += brave_components_sessions_shared_public_deps
- }
++  public_deps += brave_components_sessions_shared_public_deps
  
- static_library("test_support") {
+   deps = [
+     "//base",

@@ -1,20 +1,38 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index 76391be1666b0b2e57c91bdac59070224e57ce24..96a9be5649c82e356a6f36f4c3257af844d2c651 100644
+index 76391be1666b0b2e57c91bdac59070224e57ce24..b8d014a7eff446d873153e791ebde7651335d8da 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -938,6 +938,7 @@ config("internal_config_base") {
+@@ -4,6 +4,7 @@
+ 
+ # LINT.IfChange
+ 
++import("//brave/v8/sources.gni")
+ import("//build/config/android/config.gni")
+ import("//build/config/arm.gni")
+ import("//build/config/c++/c++.gni")
+@@ -938,6 +939,9 @@ config("internal_config_base") {
      "$target_gen_dir",
      "$target_gen_dir/include",
    ]
-+  _include_dirs = include_dirs include_dirs = [] include_dirs = [ "//brave/chromium_src/v8" ] + _include_dirs
++  _include_dirs = include_dirs
++  include_dirs = []
++  include_dirs = [ "//brave/chromium_src/v8" ] + _include_dirs
  }
  
  config("internal_config") {
-@@ -3646,6 +3647,7 @@ v8_header_set("v8_headers") {
-     ":v8_tracing",
-     ":v8_version",
+@@ -3630,6 +3634,7 @@ v8_header_set("v8_headers") {
+     "include/v8-weak-callback-info.h",
+     "include/v8.h",
    ]
-+  import("//brave/v8/sources.gni") sources += brave_v8_headers_sources public_deps += brave_v8_headers_public_deps
- }
++  sources += brave_v8_headers_sources
  
- if (v8_generate_external_defines_header) {
+   sources += [
+     # The following headers cannot be platform-specific. The include validation
+@@ -3640,6 +3645,7 @@ v8_header_set("v8_headers") {
+   ]
+ 
+   public_deps = [ ":v8_config_headers" ]
++  public_deps += brave_v8_headers_public_deps
+ 
+   deps = [
+     ":cppgc_headers",

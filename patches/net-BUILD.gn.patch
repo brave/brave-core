@@ -1,12 +1,28 @@
 diff --git a/net/BUILD.gn b/net/BUILD.gn
-index 9db60a2d55f666d9a6b83856925e21fe4403c217..1a389e18bbec0aef2c845d75e18bef86e807f869 100644
+index 9db60a2d55f666d9a6b83856925e21fe4403c217..be395d0915d9cb6be99b6007802b7b04685d96d5 100644
 --- a/net/BUILD.gn
 +++ b/net/BUILD.gn
-@@ -1293,6 +1293,7 @@ component("net") {
-       "reporting/reporting_uploader.h",
-     ]
-   }
-+  sources += brave_net_sources import("//brave/components/brave_wallet/sources.gni") deps += brave_net_deps
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-   if (enable_device_bound_sessions) {
-     sources += [
++import("//brave/components/brave_wallet/sources.gni")
+ import("//build/buildflag_header.gni")
+ import("//build/config/cast.gni")
+ import("//build/config/compiler/compiler.gni")
+@@ -1200,6 +1201,7 @@ component("net") {
+     "url_request/websocket_handshake_userdata_key.cc",
+     "url_request/websocket_handshake_userdata_key.h",
+   ]
++  sources += brave_net_sources
+ 
+   if (is_posix || is_fuchsia) {
+     sources += [ "base/net_errors_posix.cc" ]
+@@ -1227,6 +1229,7 @@ component("net") {
+     "//third_party/rust/sfv/v0_15/wrapper",
+     "//third_party/simdutf",
+   ]
++  deps += brave_net_deps
+ 
+   public_deps = [
+     ":disk_cache_buildflags",

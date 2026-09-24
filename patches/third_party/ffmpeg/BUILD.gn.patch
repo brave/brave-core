@@ -1,12 +1,12 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index 4e2e57ad83be5de10fb7322fbb5ec28fadcb17d8..ef960d78e5b02d3dfa856b103f15dd05ad7b9468 100644
+index 4e2e57ad83be5de10fb7322fbb5ec28fadcb17d8..5a77a3dac3c65d3990c809c4b93ccb5930b21764 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
-@@ -248,6 +248,7 @@ target(link_target_type, "ffmpeg_internal") {
-   include_dirs = [
+@@ -249,6 +249,7 @@ target(link_target_type, "ffmpeg_internal") {
      platform_config_root,
      ".",
-+    "libavcodec",
    ]
++  include_dirs += [ "libavcodec" ]
    defines = [
      "HAVE_AV_CONFIG_H",
+     "_POSIX_C_SOURCE=200112",
