@@ -34,6 +34,7 @@ class PsstUiPresenter {
   virtual void ShowConsentDialog() = 0;
   virtual void HideConsentDialog() = 0;
   virtual bool IsDialogShown() const = 0;
+  virtual void HideAll() = 0;
 };
 
 }  // namespace psst

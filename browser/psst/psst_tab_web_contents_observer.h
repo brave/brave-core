@@ -30,8 +30,7 @@ namespace psst {
 class MatchedRule;
 class PsstRuleRegistry;
 
-class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
-                                   public PsstSettingsService::PrefObserver {
+class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
  public:
   using InsertScriptInPageCallback = base::OnceCallback<void(base::Value)>;
   using InsertScriptInPageTimeoutCallback =
@@ -65,6 +64,10 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
     virtual std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
         const url::Origin& origin,
         const std::string& user_id) = 0;
+    // Sets the callback used to cancel an in-flight PSST flow from the UI side
+    // (dialog close, "don't show for this site", or feature disable).
+    virtual void SetLogicalFlowCancelCallback(
+        base::RepeatingClosure cancel_callback) = 0;
   };
 
   // Creates an observer for `tab`'s web contents, or returns null for
@@ -89,6 +92,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
 
   PsstUiDelegate* GetPsstUiDelegate() const;
   base::WeakPtr<PsstTabWebContentsObserver> AsWeakPtr();
+  void CancelInFlightFlow();
 
  private:
   friend class PsstTabWebContentsObserverUnitTestBase;
@@ -122,10 +126,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
   void SetInjectScriptCallback(InjectScriptCallback inject_script_callback);
   void SetInjectAsyncScriptCallback(
       InjectScriptAsyncCallback inject_async_script_callback);
-  void CancelInFlightFlow();
-
-  // PsstSettingsService::Observer
-  void OnPsstEnableChange(bool new_value) override;
+  void PageScopedReset();
 
   const raw_ptr<PsstRuleRegistry> registry_;
   const raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
@@ -136,6 +137,13 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature,
   InjectScriptAsyncCallback inject_async_script_callback_;
   std::unique_ptr<PsstUiDelegate> ui_delegate_;
   base::OneShotTimer timeout_timer_;
+
+  // Set when the user aborts an in-progress PSST flow. Unlike
+  // page_weak_factory_, which is invalidated on every cross-document
+  // commit, this flag persists across such commits and is only cleared
+  // when a fresh initial user-script execution begins, preventing the
+  // flow from resuming silently on a later page.
+  bool logical_flow_cancelled_ = false;
 
   // Whether the currently committed primary page is eligible for PSST
   // processing. Recomputed on every cross-document primary main frame commit.

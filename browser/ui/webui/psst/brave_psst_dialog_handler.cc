@@ -140,6 +140,7 @@ void BravePsstDialogHandler::CloseDialog() {
     return;
   }
 
+  psst_dialog_delegate_->OnDialogClose();
   psst_dialog_delegate_->RemoveObserver(this);
   dialog_ui_->Close();
 }

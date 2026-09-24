@@ -75,6 +75,8 @@ class PsstUiDesktopPresenter
 
   bool IsDialogShown() const override;
 
+  void HideAll() override;
+
  private:
   // page_actions::PsstActionController::Delegate overrides:
 

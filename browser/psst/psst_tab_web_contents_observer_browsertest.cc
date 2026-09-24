@@ -5,8 +5,8 @@
 
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 
+#include <algorithm>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/files/file_util.h"
@@ -16,7 +16,6 @@
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
@@ -138,8 +137,18 @@ constexpr char kPsstCrxUserScriptTemplate[] = R"(
   }
   const curUrl = window.location.href
   console.log("[PSST USER SCRIPT] Current URL: " + curUrl);
+
+  // Mirrors real per-site scripts (e.g. linkedin/user.js): initial_execution
+  // is true whenever the flow has no saved state yet - the very first
+  // execution, and again after the completing task removes the psst key and
+  // returns next_url = start_url. It is false while a flow is in progress and
+  // state is present. So when the tab navigates back to start_url, the user
+  // script sees getItem('psst') === null → initial_execution = true.
+  const initial_execution = sessionStorage.getItem('psst') === null;
+
   return {
     user_id: getUserId(),
+    initial_execution,
     share_experience_link: "https://$2:$1/",
     site_name: '$2',
     tasks: [
@@ -180,7 +189,7 @@ const PSST_INITIAL_EXECUTION_FLAG =
 const PSST_CHECK_SETTINGS_LOADED =
   window.__bravePsstParams.psst_settings_status ?? null;
 
-const PSST_LOCALSTORAGE_KEY = 'psst';
+const PSST_STORAGE_KEY = 'psst';
 
 // State of operations
 const psstState = {
@@ -249,6 +258,12 @@ const calculateProgress = (psstObj) => {
   return total === 0 ? 0 : Math.round((processed / total) * 100);
 };
 
+const cleanPsstDataStorage = () => {
+  try {
+    sessionStorage.removeItem(PSST_STORAGE_KEY);
+  } catch (error) {}
+}
+
 const getResult = (psst, nextUrl) => {
   const result_value = {
     psst: psst,
@@ -274,9 +289,9 @@ const createInitData = () => {
 };
 
 const savePsstData = (psst) => {
-  // Save the psst object to local storage.
-  globalThis.parent.localStorage.setItem(
-    PSST_LOCALSTORAGE_KEY,
+  // Save the psst object to session storage.
+  globalThis.parent.sessionStorage.setItem(
+    PSST_STORAGE_KEY,
     JSON.stringify(psst)
   );
 };
@@ -302,16 +317,12 @@ const moveCurrentTask = (psstObj, errorMessage) => {
 
 (async () => {
   const psstObj = JSON.parse(
-    globalThis.parent.localStorage.getItem(PSST_LOCALSTORAGE_KEY)
+    globalThis.parent.sessionStorage.getItem(PSST_STORAGE_KEY)
   );
   if (!psstObj || PSST_INITIAL_EXECUTION_FLAG) {
     const [psstObj, nextUrl] = createInitData()
     savePsstData(psstObj)
     return getResult(psstObj, nextUrl)
-  }
-
-  if (psstObj.state === psstState.COMPLETED) {
-    return getResult(psstObj, null)
   }
 
   try {
@@ -335,11 +346,22 @@ const moveCurrentTask = (psstObj, errorMessage) => {
   const nextUrl = hasMoreTasks ? next_task.url : psstObj.start_url;
   psstObj.progress = calculateProgress(psstObj)
 
-  savePsstData(psstObj)
+  if (psstObj.state === psstState.COMPLETED) {
+    // Clean up storage on finish
+    cleanPsstDataStorage();
+  } else {
+    savePsstData(psstObj)
+  }
+
   return getResult(psstObj, nextUrl)
 })();
 )";
 
+// Tracks whether the infobar with `identifier` is currently present in the
+// observed manager. The PSST flow shows and hides its infobar more than once
+// per test (e.g. the infobar is shown again when the flow returns to the page
+// it started on), so waiting is state-based: each Wait*() call returns as soon
+// as the infobar is in the requested state.
 class InfobarObserver : public infobars::InfoBarManager::Observer {
  public:
   InfobarObserver(infobars::InfoBarManager* manager,
@@ -348,61 +370,59 @@ class InfobarObserver : public infobars::InfoBarManager::Observer {
     if (manager) {
       infobar_observation_.Observe(manager);
       // Check if the target infobar already exists
-      CheckForExistingInfobar(manager);
+      infobar_present_ = HasTargetInfobar(*manager);
     }
   }
   ~InfobarObserver() override = default;
 
-  bool WaitForInfobarAdded() {
-    if (!infobar_observation_.IsObserving()) {
-      return false;  // Manager is destroyed
-    }
+  bool WaitForInfobarAdded() { return WaitForInfobarPresent(true); }
 
-    return infobar_added_future_.Get();
-  }
-
-  bool WaitForInfobarRemoved() {
-    if (!infobar_observation_.IsObserving()) {
-      return false;  // Manager is destroyed
-    }
-
-    return infobar_removed_future_.Get();
-  }
+  bool WaitForInfobarRemoved() { return WaitForInfobarPresent(false); }
 
   void OnInfoBarAdded(infobars::InfoBar* infobar) override {
-    if (infobar && infobar->delegate() &&
-        infobar->delegate()->GetIdentifier() == identifier_) {
-      infobar_added_future_.SetValue(true);
+    if (IsTargetInfobar(infobar)) {
+      infobar_present_ = true;
     }
   }
 
   void OnInfoBarRemoved(infobars::InfoBar* infobar, bool animate) override {
-    if (infobar && infobar->delegate() &&
-        infobar->delegate()->GetIdentifier() == identifier_) {
-      infobar_removed_future_.SetValue(true);
+    if (IsTargetInfobar(infobar)) {
+      infobar_present_ = false;
     }
   }
 
   void OnManagerWillBeDestroyed(infobars::InfoBarManager* manager) override {
     // Quit any pending waits since the manager is being destroyed
-    infobar_added_future_.SetValue(false);
-    infobar_removed_future_.SetValue(false);
     infobar_observation_.Reset();
   }
 
  private:
-  void CheckForExistingInfobar(infobars::InfoBarManager* manager) {
-    for (infobars::InfoBar* infobar : manager->infobars()) {
-      if (infobar && infobar->delegate() &&
-          infobar->delegate()->GetIdentifier() == identifier_) {
-        infobar_added_future_.SetValue(true);
-        break;
-      }
-    }
+  bool IsTargetInfobar(infobars::InfoBar* infobar) const {
+    return infobar && infobar->delegate() &&
+           infobar->delegate()->GetIdentifier() == identifier_;
   }
 
-  base::test::TestFuture<bool> infobar_added_future_;
-  base::test::TestFuture<bool> infobar_removed_future_;
+  bool HasTargetInfobar(infobars::InfoBarManager& manager) const {
+    return std::ranges::any_of(manager.infobars(),
+                               [this](infobars::InfoBar* infobar) {
+                                 return IsTargetInfobar(infobar);
+                               });
+  }
+
+  // Returns false if the manager is destroyed or the wait times out.
+  bool WaitForInfobarPresent(bool present) {
+    if (!infobar_observation_.IsObserving()) {
+      return false;  // Manager is destroyed
+    }
+
+    return base::test::RunUntil([&]() {
+             return infobar_present_ == present ||
+                    !infobar_observation_.IsObserving();
+           }) &&
+           infobar_present_ == present;
+  }
+
+  bool infobar_present_ = false;
   const infobars::InfoBarDelegate::InfoBarIdentifier identifier_;
   base::ScopedObservation<infobars::InfoBarManager,
                           infobars::InfoBarManager::Observer>
@@ -679,6 +699,27 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
     return true;
   }
 
+  // Simulates clicking the Cancel button in the consent/progress dialog by
+  // invoking the same mojo call the WebUI's `api.closeDialog` triggers.
+  bool CancelModalDialog(content::WebContents* dialog_wc) {
+    if (!dialog_wc) {
+      return false;
+    }
+
+    auto* dialog_ui =
+        dialog_wc->GetWebUI()->GetController()->GetAs<BravePsstDialogUI>();
+    if (!dialog_ui) {
+      return false;
+    }
+
+    if (dialog_ui->psst_consent_handler_) {
+      dialog_ui->psst_consent_handler_->CloseDialog();
+      return true;
+    }
+
+    return false;
+  }
+
   // Returns the PSST location bar page action icon view for the active browser
   // window, or nullptr if it can't be resolved.
   IconLabelBubbleView* GetPsstPageActionView() {
@@ -803,6 +844,36 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
         *dialog_wc_out = dialog_wc;
       }
     }
+  }
+
+  // Right-clicks the already-visible PSST location bar icon to open its
+  // context menu, without performing any navigation, and waits for the menu
+  // to appear. Returns the context menu's root MenuItemView, or nullptr on
+  // failure.
+  views::MenuItemView* RightClickPsstLocationBarIconAndWaitForMenu() {
+    actions::ActionItem* const action =
+        actions::ActionManager::Get().FindAction(kActionShowPsstIcon);
+    if (!action) {
+      return nullptr;
+    }
+
+    IconLabelBubbleView* const psst_view = GetPsstPageActionView();
+    if (!psst_view) {
+      return nullptr;
+    }
+
+    const gfx::Point click_location = psst_view->GetLocalBounds().CenterPoint();
+    const ui::MouseEvent click_event(
+        ui::EventType::kMousePressed, click_location, click_location,
+        ui::EventTimeForNow(), ui::EF_RIGHT_MOUSE_BUTTON,
+        ui::EF_RIGHT_MOUSE_BUTTON);
+    views::test::ButtonTestApi(views::Button::AsButton(psst_view))
+        .NotifyClick(click_event);
+    if (!base::test::RunUntil([&]() { return action->GetIsShowingBubble(); })) {
+      return nullptr;
+    }
+
+    return GetActiveContextMenuRoot();
   }
 
   // Waits for the PSST context menu to close.
@@ -1191,6 +1262,140 @@ IN_PROC_BROWSER_TEST_F(
   EXPECT_EQ(psst_website_settings->uids_to_perform, perform_uids);
 
   ASSERT_TRUE(CloseModalDialog(dialog_wc));
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59223:
+// clicking Cancel after starting the PSST flow must stop the flow and close
+// the consent dialog, instead of leaving the flow running.
+IN_PROC_BROWSER_TEST_F(PsstTabWebContentsObserverBrowserTest,
+                       LocationBarIconLeftClickCancelDuringFlowStopsFlow) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+  ASSERT_TRUE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  content::WebContents* dialog_wc = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+  ASSERT_TRUE(dialog_wc);
+
+  DialogCloseObserver dialog_close_observer(dialog_wc);
+
+  // Click Apply to start the flow, then immediately click Cancel, before
+  // pumping the message loop again, so the cancellation is guaranteed to run
+  // ahead of any in-flight script response that could otherwise navigate the
+  // tab to the next task page.
+  const std::vector<std::string> perform_uids = {"1", "2"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
+  ASSERT_TRUE(CancelModalDialog(dialog_wc));
+
+  // The dialog closes and the location bar icon hides as part of the same
+  // cancellation.
+  dialog_close_observer.Wait();
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
+
+  // The flow was cancelled before the tab could navigate to any task page.
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59223:
+// selecting "Don't show for this site" from the context menu after starting
+// the PSST flow must stop the flow and close the consent dialog, instead of
+// leaving the flow running and letting it navigate to a task page.
+IN_PROC_BROWSER_TEST_F(
+    PsstTabWebContentsObserverBrowserTest,
+    LocationBarIconContextMenuDontShowForThisSiteDuringFlowStopsFlow) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  content::WebContents* dialog_wc = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+  ASSERT_TRUE(dialog_wc);
+
+  DialogCloseObserver dialog_close_observer(dialog_wc);
+
+  // Open the context menu before starting the flow, so the item can be
+  // selected synchronously as soon as the flow starts.
+  views::MenuItemView* const root =
+      RightClickPsstLocationBarIconAndWaitForMenu();
+  ASSERT_TRUE(root);
+  views::MenuItemView* const dont_show_item =
+      root->GetMenuItemByID(IDC_PSST_DONT_SHOW_FOR_THIS_SITE);
+  ASSERT_TRUE(dont_show_item);
+
+  // Click Apply to start the flow, then immediately select the context menu
+  // item, before pumping the message loop again, so the cancellation is
+  // guaranteed to run ahead of any in-flight policy script response that
+  // could otherwise navigate the tab to the next task page.
+  const std::vector<std::string> perform_uids = {"1", "2"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
+  ASSERT_NO_FATAL_FAILURE(AcceptContextMenuItem(dont_show_item));
+
+  // The dialog closes and the location bar icon hides as part of the same
+  // cancellation.
+  dialog_close_observer.Wait();
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
+
+  // The flow was cancelled before the tab could navigate to any task page.
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
+
+  // PSST is blocked for this origin.
+  auto psst_website_settings = GetPsstSettingsService()->GetPsstWebsiteSettings(
+      url::Origin::Create(url), kASiteSignedInUserId);
+  ASSERT_TRUE(psst_website_settings);
+  EXPECT_EQ(psst_website_settings->consent_status, ConsentStatus::kBlock);
+}
+
+// Regression test for https://github.com/brave/brave-browser/issues/59223:
+// selecting "Disable privacy settings tuning" from the context menu after
+// starting the PSST flow must stop the flow and close the consent dialog,
+// instead of leaving the flow running and letting it navigate to a task page.
+IN_PROC_BROWSER_TEST_F(
+    PsstTabWebContentsObserverBrowserTest,
+    LocationBarIconContextMenuDisablePrivacySettingsTuningDuringFlowStopsFlow) {
+  GetPrefs()->SetBoolean(prefs::kPsstEnabled, true);
+
+  const GURL url = GetEmbeddedTestServer().GetURL("a.test", "/a_test_0.html");
+
+  content::WebContents* dialog_wc = nullptr;
+  ASSERT_NO_FATAL_FAILURE(NavigateAndClickOnPsstLocationBarIcon(
+      url, ui::EF_LEFT_MOUSE_BUTTON, &dialog_wc));
+  ASSERT_TRUE(dialog_wc);
+
+  DialogCloseObserver dialog_close_observer(dialog_wc);
+
+  // Open the context menu before starting the flow, so the item can be
+  // selected synchronously as soon as the flow starts.
+  views::MenuItemView* const root =
+      RightClickPsstLocationBarIconAndWaitForMenu();
+  ASSERT_TRUE(root);
+  views::MenuItemView* const disable_item =
+      root->GetMenuItemByID(IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING);
+  ASSERT_TRUE(disable_item);
+
+  // Click Apply to start the flow, then immediately select the context menu
+  // item, before pumping the message loop again, so the cancellation is
+  // guaranteed to run ahead of any in-flight policy script response that
+  // could otherwise navigate the tab to the next task page.
+  const std::vector<std::string> perform_uids = {"1", "2"};
+  ASSERT_TRUE(AcceptModalDialog(
+      dialog_wc, url::Origin::Create(url).GetURL().spec(), perform_uids));
+  ASSERT_NO_FATAL_FAILURE(AcceptContextMenuItem(disable_item));
+
+  // The dialog closes and the location bar icon hides as part of the same
+  // cancellation.
+  dialog_close_observer.Wait();
+  ASSERT_NO_FATAL_FAILURE(WaitForPsstIconHidden());
+
+  // The flow was cancelled before the tab could navigate to any task page.
+  EXPECT_EQ(web_contents()->GetLastCommittedURL(), url);
+
+  // PSST is disabled globally.
+  EXPECT_FALSE(GetPrefs()->GetBoolean(prefs::kPsstEnabled));
 }
 
 // Regression test for https://github.com/brave/brave-browser/issues/58296:

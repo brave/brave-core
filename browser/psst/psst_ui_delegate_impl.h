@@ -55,6 +55,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
   std::optional<PsstWebsiteSettings> GetPsstWebsiteSettings(
       const url::Origin& origin,
       const std::string& user_id) override;
+  void SetLogicalFlowCancelCallback(
+      base::RepeatingClosure cancel_callback) override;
 
   void AddObserver(Observer* obs);
   void RemoveObserver(Observer* obs);
@@ -66,6 +68,8 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
 
   void SubmitPsstErrorsReport();
 
+  void OnDialogClose();
+
  private:
   void OnUserAcceptedInfobar(const bool is_accepted);
   void OnDontShowForThisSite();
@@ -76,6 +80,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
       long progress,
       const std::vector<PolicyTask>& performed_tasks);
   void NotifyObserversOfPsstErrorsReportSent();
+  void CancelLogicalFlow();
 
   std::unique_ptr<PsstUiPresenter> ui_presenter_;
   std::optional<PsstWebsiteSettings> dialog_data_;
@@ -83,6 +88,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate,
   std::optional<UserScriptResult> user_script_result_;
   std::optional<PolicyTasksSet> failed_policy_tasks_;
   PsstTabWebContentsObserver::ConsentCallback apply_changes_callback_;
+  base::RepeatingClosure cancel_callback_;
   raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
   raw_ptr<PsstReporterService> psst_reporter_service_ = nullptr;
   base::ObserverList<Observer> observer_list_;

@@ -10,16 +10,15 @@
 
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "base/values.h"
-#include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/browser/psst_rule.h"
 #include "brave/components/psst/core/browser/psst_rule_registry.h"
 #include "brave/components/psst/core/common/features.h"
-#include "components/prefs/pref_service.h"
 #include "components/variations/service/variations_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
@@ -187,12 +186,12 @@ PsstTabWebContentsObserver::PsstTabWebContentsObserver(
       psst_settings_service_(psst_settings_service),
       variations_service_(variations_service),
       ui_delegate_(std::move(ui_delegate)) {
-  psst_settings_service_->AddObserver(this);
+  ui_delegate_->SetLogicalFlowCancelCallback(
+      base::BindRepeating(&PsstTabWebContentsObserver::CancelInFlightFlow,
+                     weak_factory_.GetWeakPtr()));
 }
 
-PsstTabWebContentsObserver::~PsstTabWebContentsObserver() {
-  psst_settings_service_->RemoveObserver(this);
-}
+PsstTabWebContentsObserver::~PsstTabWebContentsObserver() = default;
 
 PsstTabWebContentsObserver::PsstUiDelegate*
 PsstTabWebContentsObserver::GetPsstUiDelegate() const {
@@ -203,8 +202,9 @@ PsstTabWebContentsObserver::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
 
-void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
-  CancelInFlightFlow();
+void PsstTabWebContentsObserver::CancelInFlightFlow() {
+  logical_flow_cancelled_ = true;
+  PageScopedReset();
 }
 
 void PsstTabWebContentsObserver::DidFinishNavigation(
@@ -229,6 +229,10 @@ void PsstTabWebContentsObserver::DocumentOnLoadCompletedInPrimaryMainFrame() {
       web_contents()->GetLastCommittedURL(),
       base::BindOnce(&PsstTabWebContentsObserver::InsertUserScript,
                      page_weak_factory_.GetWeakPtr()));
+}
+
+void PsstTabWebContentsObserver::PrimaryPageChanged(content::Page& page) {
+  PageScopedReset();
 }
 
 void PsstTabWebContentsObserver::InsertUserScript(
@@ -256,6 +260,9 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   // script result is not a dictionary
   if (!rule || rule->policy_script().empty() || !user_script_result.is_dict()) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    DVLOG(1) << __func__
+             << " The policy script is unavailable or the user script returned "
+                "an unexpected format";
     return;
   }
 
@@ -263,12 +270,14 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
       UserScriptResult::FromValue(user_script_result);
   if (!user_script_result_parsed) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    DVLOG(1) << __func__ << " Failed to parse the user script result";
     return;
   }
 
   // We should break the flow in case of signed-in user ID is not available
   if (user_script_result_parsed->user_id.empty()) {
     ui_delegate_->UpdateTasks(100, {}, mojom::PsstStatus::kFailed);
+    DVLOG(1) << __func__ << " User ID is not available";
     return;
   }
 
@@ -276,6 +285,19 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   auto psst_settings = ui_delegate_->GetPsstWebsiteSettings(
       origin, user_script_result_parsed->user_id);
   if (psst_settings && psst_settings->consent_status == ConsentStatus::kBlock) {
+    DVLOG(1) << __func__ << " Psst is disabled for the current website";
+    return;
+  }
+
+  if (user_script_result_parsed->initial_execution.has_value() &&
+      user_script_result_parsed->initial_execution.value()) {
+    DVLOG(1) << __func__ << " Reset the cancellation flag for the logical flow";
+    // Reset the logical flow cancellation flag on initial execution
+    logical_flow_cancelled_ = false;
+  } else if (logical_flow_cancelled_) {
+    DVLOG(1) << __func__
+             << " Stop the execution of the logical flow, as it was cancelled";
+    // Stop the logical flow
     return;
   }
 
@@ -390,17 +412,10 @@ void PsstTabWebContentsObserver::SetInjectAsyncScriptCallback(
   inject_async_script_callback_ = std::move(inject_async_script_callback);
 }
 
-void PsstTabWebContentsObserver::CancelInFlightFlow() {
+void PsstTabWebContentsObserver::PageScopedReset() {
   script_injector_remote_.reset();
   page_weak_factory_.InvalidateWeakPtrs();
   should_process_current_page_ = false;
-}
-
-void PsstTabWebContentsObserver::OnPsstEnableChange(bool new_value) {
-  if (new_value) {
-    return;
-  }
-  CancelInFlightFlow();
 }
 
 }  // namespace psst
