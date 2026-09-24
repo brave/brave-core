@@ -5,9 +5,11 @@
 
 #include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 
+#include <string_view>
 #include <utility>
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/time/time.h"
@@ -32,6 +34,7 @@
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/mojom/file_system_access/file_system_access_directory_handle.mojom.h"
 #include "third_party/blink/public/mojom/web_launch/web_launch.mojom.h"
 #include "ui/base/page_transition_types.h"
@@ -39,37 +42,80 @@
 
 namespace ai_chat {
 
+namespace {
+
+// Builds the chrome-untrusted:// URL for the workspace.
+// Format: chrome-untrusted://<uuid>.leo-workspace/
+GURL BuildChromeUntrustedUrl(const std::string& uuid) {
+  return GURL(absl::StrFormat("%s://%s.%s/", content::kChromeUIUntrustedScheme,
+                              uuid, kAIChatLeoWorkspaceUIHost));
+}
+
+// Parses a chrome-untrusted://<uuid>.leo-workspace/ URL and extracts the uuid.
+// Returns true if parsing succeeded.
+bool ParseChromeUntrustedUrl(const GURL& url, std::string* uuid) {
+  if (!url.is_valid() || url.scheme() != content::kChromeUIUntrustedScheme) {
+    return false;
+  }
+  // Host is <uuid>.leo-workspace - extract the uuid prefix.
+  std::string_view host = url.host();
+  size_t dot_pos = host.find('.');
+  if (dot_pos == std::string_view::npos) {
+    return false;
+  }
+  std::string_view suffix = host.substr(dot_pos + 1);
+  if (suffix != kAIChatLeoWorkspaceUIHost) {
+    return false;
+  }
+  *uuid = std::string(host.substr(0, dot_pos));
+  return !uuid->empty();
+}
+
+}  // namespace
+
 WorkspaceAssociatedContent::WorkspaceAssociatedContent(
     base::FilePath folder_path,
     content::BrowserContext* browser_context,
     base::OnceCallback<void(content::WebContents*)> attach_tab_helpers)
     : folder_path_(std::move(folder_path)) {
   std::string uuid = base::Uuid::GenerateRandomV4().AsLowercaseString();
-  // The uuid is the page's subdomain rather than a path under the workspace
-  // host, so that each workspace is a distinct origin and doesn't share storage
-  // or File System Access grants with any other workspace.
-  GURL url(absl::StrFormat("%s://%s.%s/", content::kChromeUIUntrustedScheme,
-                           uuid, kAIChatLeoWorkspaceUIHost));
-  CHECK(url.is_valid());
-  DVLOG(2) << __func__ << " creating workspace content at " << url.spec()
-           << " for folder " << folder_path_;
+
+  GURL chrome_untrusted_url = BuildChromeUntrustedUrl(uuid);
+  DVLOG(2) << __func__ << " creating workspace at "
+           << chrome_untrusted_url.spec() << " for folder " << *folder_path_;
 
   set_uuid(uuid);
-  set_url(url);
-  SetTitle(u"Workspace");
+  set_url(chrome_untrusted_url);
 
-  // Hidden, headless background WebContents that hosts the workspace page.
-  content::WebContents::CreateParams params(browser_context);
-  params.initially_hidden = true;
-  web_contents_ = content::WebContents::Create(params);
-  std::move(attach_tab_helpers).Run(web_contents_.get());
-  content::WebContentsObserver::Observe(web_contents_.get());
+  AttachWebContents(chrome_untrusted_url, browser_context,
+                    std::move(attach_tab_helpers));
+}
 
-  // Load eagerly so the page can receive its handle and register tools before
-  // the user sends a message.
-  content::NavigationController::LoadURLParams load_params(url);
-  load_params.transition_type = ui::PAGE_TRANSITION_AUTO_TOPLEVEL;
-  web_contents_->GetController().LoadURLWithParams(load_params);
+WorkspaceAssociatedContent::WorkspaceAssociatedContent() = default;
+
+// static
+std::unique_ptr<WorkspaceAssociatedContent>
+WorkspaceAssociatedContent::CreateFromUrl(
+    GURL url,
+    content::BrowserContext* browser_context,
+    base::OnceCallback<void(content::WebContents*)> attach_tab_helpers) {
+  // Parse the chrome-untrusted://<uuid>.leo-workspace/ URL to extract the uuid.
+  // The FileSystemDirectoryHandle is restored from IndexedDB by the JS side.
+  std::string uuid;
+  if (!ParseChromeUntrustedUrl(url, &uuid)) {
+    DVLOG(1) << "Invalid workspace URL: " << url.spec();
+    return nullptr;
+  }
+
+  DVLOG(2) << __func__ << " restoring workspace at " << url.spec();
+
+  // Use WrapUnique since we need to access private members.
+  auto content = base::WrapUnique(new WorkspaceAssociatedContent());
+  content->set_uuid(uuid);
+  content->set_url(url);
+  content->AttachWebContents(url, browser_context,
+                             std::move(attach_tab_helpers));
+  return content;
 }
 
 WorkspaceAssociatedContent::~WorkspaceAssociatedContent() = default;
@@ -77,7 +123,7 @@ WorkspaceAssociatedContent::~WorkspaceAssociatedContent() = default;
 void WorkspaceAssociatedContent::GetContent(GetPageContentCallback callback) {
   // Headless tool host: there is no page text to contribute to the
   // conversation. The value of this content is its tools, not its content.
-  std::move(callback).Run(PageContent());
+  std::move(callback).Run(PageContent("", mojom::ContentType::Workspace));
 }
 
 void WorkspaceAssociatedContent::GetContentTools(
@@ -125,14 +171,75 @@ void WorkspaceAssociatedContent::OnContentToolsFetched(
 
 void WorkspaceAssociatedContent::DocumentOnLoadCompletedInPrimaryMainFrame() {
   DVLOG(2) << __func__ << " workspace page loaded: " << url().spec();
-  content::RenderFrameHost* rfh = web_contents_->GetPrimaryMainFrame();
-  if (rfh && rfh->IsRenderFrameLive()) {
-    DeliverDirectoryHandle(rfh);
+
+  // Only deliver the directory handle for new workspaces. Restored workspaces
+  // get their FileSystemDirectoryHandle from IndexedDB.
+  if (folder_path_.has_value()) {
+    content::RenderFrameHost* rfh = web_contents_->GetPrimaryMainFrame();
+    if (rfh && rfh->IsRenderFrameLive()) {
+      DeliverDirectoryHandle(rfh);
+    }
   }
-  // The page is now live and its handle delivered; mark it ready and attach so
-  // the next generation loop harvests the tools it registers via WebMCP.
+
+  // The page is now live and its handle delivered (or will be restored from
+  // IndexedDB); mark it ready so GetContentTools can harvest tools.
   page_ready_ = true;
+
+  // Now that the page is loaded, subscribe to tool changes. This may have been
+  // called earlier in OnAssociatedWithConversation but the RFH wasn't ready.
+  SubscribeToContentToolChanges();
+
   set_tools_attached(true);
+}
+
+void WorkspaceAssociatedContent::OnAssociatedWithConversation() {
+  SubscribeToContentToolChanges();
+}
+
+void WorkspaceAssociatedContent::OnContentToolsChanged() {
+  NotifyContentToolsChanged();
+}
+
+void WorkspaceAssociatedContent::SubscribeToContentToolChanges() {
+  if (!base::FeatureList::IsEnabled(blink::features::kWebMCP)) {
+    return;
+  }
+
+  content::RenderFrameHost* rfh = web_contents_->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    return;
+  }
+
+  content_tools_extractor_.reset();
+  rfh->GetRemoteInterfaces()->GetInterface(
+      content_tools_extractor_.BindNewPipeAndPassReceiver());
+
+  content_tools_listener_.reset();
+  content_tools_extractor_->SetContentToolsListener(
+      content_tools_listener_.BindNewPipeAndPassRemote());
+}
+
+void WorkspaceAssociatedContent::AttachWebContents(
+    const GURL& url,
+    content::BrowserContext* browser_context,
+    base::OnceCallback<void(content::WebContents*)> attach_tab_helpers) {
+  CHECK(!web_contents())
+      << "Should only attach once per WorkspaceAssociatedContent";
+  SetTitle(u"Workspace");
+  set_cached_page_content(PageContent("", mojom::ContentType::Workspace));
+
+  // Hidden, headless background WebContents that hosts the workspace page.
+  content::WebContents::CreateParams params(browser_context);
+  params.initially_hidden = true;
+  web_contents_ = content::WebContents::Create(params);
+  std::move(attach_tab_helpers).Run(web_contents_.get());
+  content::WebContentsObserver::Observe(web_contents_.get());
+
+  // Load eagerly so the page can receive its handle and register tools before
+  // the user sends a message.
+  content::NavigationController::LoadURLParams load_params(url);
+  load_params.transition_type = ui::PAGE_TRANSITION_AUTO_TOPLEVEL;
+  web_contents_->GetController().LoadURLWithParams(load_params);
 }
 
 void WorkspaceAssociatedContent::DeliverDirectoryHandle(
@@ -170,7 +277,7 @@ void WorkspaceAssociatedContent::DeliverDirectoryHandle(
       factory->CreateDirectoryEntryFromPath(
           content::FileSystemAccessEntryFactory::BindingContext(
               rfh->GetStorageKey(), committed_url, rfh->GetGlobalId()),
-          content::PathInfo(folder_path_),
+          content::PathInfo(*folder_path_),
           content::FileSystemAccessEntryFactory::UserAction::kOpen);
   if (!entry) {
     return;

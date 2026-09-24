@@ -24,10 +24,10 @@ struct PageContent {
   // Note: |content| is not sanitized for use in the backend. Run it through
   // |EngineConsumer::SanitizeInput| before sending it.
   std::string content = "";
-  bool is_video = false;
+  mojom::ContentType content_type = mojom::ContentType::PageContent;
 
   PageContent();
-  PageContent(std::string content, bool is_video);
+  PageContent(std::string content, mojom::ContentType content_type);
 
   PageContent(const PageContent&);
   PageContent(PageContent&&);
@@ -35,7 +35,7 @@ struct PageContent {
   PageContent& operator=(PageContent&&);
 
   bool operator==(const PageContent& other) const {
-    return content == other.content && is_video == other.is_video;
+    return content == other.content && content_type == other.content_type;
   }
 };
 

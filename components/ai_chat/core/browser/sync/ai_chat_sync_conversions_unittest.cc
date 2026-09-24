@@ -373,6 +373,46 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsFiltersAssociatedContent) {
   EXPECT_EQ(proto_content.content_used_percentage(), 50);
 }
 
+TEST(AIChatSyncConversionsTest, EntryToSpecificsFiltersWorkspaceContent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->created_time = base::Time::Now();
+
+  // One PageContent and one Workspace content, both tied to this entry.
+  // Only the PageContent should be synced.
+  std::vector<mojom::AssociatedContentPtr> content;
+
+  auto page = mojom::AssociatedContent::New();
+  page->uuid = "content-page";
+  page->title = "Page";
+  page->url = GURL("https://example.com/page");
+  page->content_type = mojom::ContentType::PageContent;
+  page->content_used_percentage = 50;
+  page->conversation_turn_uuid = "entry-1";
+  content.push_back(std::move(page));
+
+  auto workspace = mojom::AssociatedContent::New();
+  workspace->uuid = "content-workspace";
+  workspace->title = "Workspace";
+  workspace->url = GURL("chrome-untrusted://leo-workspace/");
+  workspace->content_type = mojom::ContentType::Workspace;
+  workspace->content_used_percentage = 100;
+  workspace->conversation_turn_uuid = "entry-1";
+  content.push_back(std::move(workspace));
+
+  sync_pb::AIChatConversationSpecifics specifics =
+      EntryToSpecifics("conv-1", *entry, content);
+
+  ASSERT_TRUE(specifics.has_entry());
+  // Only PageContent should be synced, Workspace should be filtered out.
+  ASSERT_EQ(specifics.entry().associated_content_size(), 1);
+  const auto& proto_content = specifics.entry().associated_content(0);
+  EXPECT_EQ(proto_content.uuid(), "content-page");
+  EXPECT_EQ(proto_content.title(), "Page");
+}
+
 TEST(AIChatSyncConversionsTest, EntryToSpecificsCompletionEventCompressed) {
   auto entry = mojom::ConversationTurn::New();
   entry->uuid = "entry-1";

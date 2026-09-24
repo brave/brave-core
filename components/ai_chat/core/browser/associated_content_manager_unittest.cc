@@ -1056,7 +1056,8 @@ TEST_F(AssociatedContentManagerUnitTest,
 
   // Should have empty cached page content.
   EXPECT_TRUE(associated_content.cached_page_content().content.empty());
-  EXPECT_FALSE(associated_content.cached_page_content().is_video);
+  EXPECT_EQ(associated_content.cached_page_content().content_type,
+            mojom::ContentType::PageContent);
 
   // Conversation metadata should have no associated content.
   EXPECT_TRUE(conversation_->associated_content.empty());
@@ -1067,7 +1068,8 @@ TEST_F(AssociatedContentManagerUnitTest,
   // GetContent should have been called when adding the content to the manager.
   EXPECT_EQ("Some video transcript",
             associated_content.cached_page_content().content);
-  EXPECT_TRUE(associated_content.cached_page_content().is_video);
+  EXPECT_EQ(associated_content.cached_page_content().content_type,
+            mojom::ContentType::VideoTranscript);
 
   // Conversation metadata should have been updated now the AssociatedContent
   // knows its a video.

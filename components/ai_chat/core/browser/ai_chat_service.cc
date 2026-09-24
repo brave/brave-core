@@ -119,7 +119,16 @@ void CopyTextToClipboardAsConfidential(std::string_view text) {
 
 // Determines whether its safe to associate content with a conversation.
 bool CanAssociateContent(AssociatedContentDelegate* delegate) {
-  return delegate && kAllowedContentSchemes.contains(delegate->url().scheme());
+  if (!delegate) {
+    return false;
+  }
+  // Always allow workspace content (identified by content type).
+  if (delegate->cached_page_content().content_type ==
+      mojom::ContentType::Workspace) {
+    return true;
+  }
+  std::string_view scheme = delegate->url().scheme();
+  return kAllowedContentSchemes.contains(scheme);
 }
 
 AIChatService::AIChatService(
@@ -1131,6 +1140,17 @@ void AIChatService::OnSkillsChanged() {
 bool AIChatService::IsAIChatHistoryEnabled() {
   return (features::IsAIChatHistoryEnabled() &&
           profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled));
+}
+
+std::unique_ptr<AssociatedContentDelegate>
+AIChatService::RestoreWorkspaceAssociatedContentFromUrl(const GURL& url) {
+  // Note: This can happen if there's a workspace in the DB but the flag has
+  // been disabled.
+  if (!workspace_content_restorer_) {
+    return nullptr;
+  }
+
+  return workspace_content_restorer_.Run(url);
 }
 
 void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
