@@ -1,0 +1,44 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Rename the upstream class to TestLauncher_ChromiumImpl
+
+      We rename the upstream class so we can provide our own override for the
+      whole codebase for it.
+    rename_class:
+      class_name: TestLauncher
+      rename: TestLauncher_ChromiumImpl
+
+  - description: 'Make OnTestFinished virtual so Brave can override it'
+    make_virtual:
+      class_name: TestLauncher_ChromiumImpl
+      method_name: OnTestFinished
+
+  - description: 'Make MaybeSaveSummaryAsJSON virtual so Brave can override it'
+    make_virtual:
+      class_name: TestLauncher_ChromiumImpl
+      method_name: MaybeSaveSummaryAsJSON
+
+  - description: |
+      Add the pure-virtual OnTestResult hook in a protected section
+
+      The Brave subclass overrides OnTestResult. The upstream `OnTestFinished`
+      body (also patched) routes recorded results through it. Targets the
+      already-renamed class, so it runs after the rename.
+    add_to_protected:
+      class_name: TestLauncher_ChromiumImpl
+      code: |-
+        virtual const TestResult& OnTestResult(const TestResult& result) = 0;
+
+  - description: |
+      Make the Brave subclass a friend
+
+      The subclass needs access to the protected OnTestResult hook and to
+      private members of the upstream class.
+    add_friend:
+      class_name: TestLauncher_ChromiumImpl
+      friend_type: class TestLauncher

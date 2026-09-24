@@ -1,0 +1,18 @@
+diff --git a/components/sync/service/sync_stopped_reporter.h b/components/sync/service/sync_stopped_reporter.h
+index 3c2f6d17c768cdc47c9971afea83b161c9ab67e5..150a8727ee844352969bf92cbd63dbf23e9a6e44 100644
+--- a/components/sync/service/sync_stopped_reporter.h
++++ b/components/sync/service/sync_stopped_reporter.h
+@@ -34,11 +34,11 @@ class SyncStoppedReporter {
+   SyncStoppedReporter(const SyncStoppedReporter&) = delete;
+   SyncStoppedReporter& operator=(const SyncStoppedReporter&) = delete;
+ 
+-  ~SyncStoppedReporter();
++  virtual ~SyncStoppedReporter();
+ 
+   // Inform the sync server that sync was stopped on this device.
+   // `access_token`, `cache_guid`, and `birthday` must not be empty.
+-  void ReportSyncStopped(const std::string& access_token,
++  virtual void ReportSyncStopped(const std::string& access_token,
+                          const std::string& cache_guid,
+                          const std::string& birthday);
+ 

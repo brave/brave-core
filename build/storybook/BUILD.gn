@@ -1,0 +1,81 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
+import("//brave/components/speedreader/common/buildflags/buildflags.gni")
+
+group("storybook_deps") {
+  # Depend on any generated JS output that will
+  # be imported by any JS code used in any Brave
+  # storybook JS.
+  # Explicitly defined here so that even when those targets
+  # are disabled in a regular brave build due to build flags,
+  # they will be generated before storybook is compiled.
+  deps = [
+    "//brave/build/webpack:build_flags_json",
+    "//brave/components/brave_ads/core/mojom:mojom_js",
+    "//brave/components/brave_new_tab_ui:mojom_js",
+    "//brave/components/brave_rewards/core/mojom:mojom_js",
+    "//brave/components/brave_rewards/core/mojom:webui_js",
+    "//brave/components/brave_shields/core/common:mojom_js",
+    "//brave/components/brave_vpn/common/mojom:mojom_js",
+    "//brave/components/brave_welcome_ui:welcome_background",
+    "//brave/components/brave_welcome_ui:welcome_hill",
+    "//brave/components/brave_welcome_ui:welcome_logo",
+    "//brave/components/brave_welcome_ui:welcome_pyramid",
+    "//brave/components/brave_welcome_ui:welcome_sky",
+    "//brave/components/resources:strings",
+    "//components/omnibox/composebox:mojo_bindings_js",
+    "//mojo/public/js:bindings",
+    "//mojo/public/js:resources",
+    "//ui/webui/resources/js:build_ts",
+  ]
+
+  if (!is_android) {
+    deps += [
+      "//brave/browser/ui/webui/brave_new_tab_page_refresh:mojom_js",
+      "//brave/browser/ui/webui/brave_welcome_page:mojom_js",
+      "//brave/components/ntp_background_images/browser/mojom:mojom_js",
+      "//ui/webui/resources/cr_components/theme_color_picker:build_ts",
+    ]
+  }
+
+  if (enable_ai_chat) {
+    deps += [ "//brave/components/ai_chat/core/common/mojom:mojom_js" ]
+  }
+
+  if (enable_brave_news) {
+    deps += [ "//brave/components/brave_news/common:mojom_js" ]
+  }
+
+  if (enable_brave_wallet) {
+    deps += [ "//brave/components/brave_wallet/common:mojom_js" ]
+  }
+
+  if (enable_email_aliases) {
+    deps += [
+      "//brave/components/brave_account/mojom:mojom_js",
+      "//brave/components/email_aliases:mojom_js",
+    ]
+  }
+
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/core/common/mojom:mojom_js" ]
+  }
+
+  if (enable_psst) {
+    deps += [ "//brave/components/psst/core/common:mojom_js" ]
+  }
+
+  if (enable_speedreader) {
+    deps += [ "//brave/components/speedreader/common:mojom_js" ]
+  }
+}

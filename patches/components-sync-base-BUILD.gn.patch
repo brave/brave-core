@@ -1,0 +1,20 @@
+diff --git a/components/sync/base/BUILD.gn b/components/sync/base/BUILD.gn
+index 3dcc8f723e2b5225f4ec5ebf7743772e30c517cf..240d5b9004525f528c877b81f47fb72c10fda2ca 100644
+--- a/components/sync/base/BUILD.gn
++++ b/components/sync/base/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/components/sync/base/sources.gni")
+ import("//testing/libfuzzer/fuzzer_test.gni")
+ 
+ declare_args() {
+@@ -74,6 +75,7 @@ static_library("base") {
+     "//components/sync/protocol",
+     "//url",
+   ]
++  public_deps += brave_components_sync_base_public_deps
+   deps = [
+     "//base",
+     "//base:i18n",

@@ -1,0 +1,71 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/frame/brave_system_menu_model_builder.h"
+
+#include "brave/app/brave_command_ids.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/ui/immersive/immersive_mode_controller.h"
+#include "ui/menus/simple_menu_model.h"
+
+BraveSystemMenuModelBuilder::~BraveSystemMenuModelBuilder() = default;
+
+void BraveSystemMenuModelBuilder::InsertBraveSystemMenuForBrowserWindow(
+    ui::SimpleMenuModel* model) {
+  std::optional<size_t> insert_after =
+      model->GetIndexOfCommandId(IDC_BOOKMARK_ALL_TABS);
+
+  auto get_next_position = [&]() -> std::optional<size_t> {
+    if (insert_after) {
+      insert_after.value() += 1;
+    }
+    return insert_after;
+  };
+
+  if (auto* vtc = VerticalTabController::FromBrowser(browser());
+      vtc && vtc->SupportsBraveVerticalTabs()) {
+    // Upstream unconditionally adds its own vertical-tabs toggle plus a "Send
+    // feedback about the tab strip" item (preceded by a separator) to the menu
+    // built by the base class above. Remove them here so they don't duplicate
+    // the vertical tabs item we insert below.
+    if (auto feedback_index =
+            model->GetIndexOfCommandId(IDC_VERTICAL_TABS_SEND_FEEDBACK)) {
+      model->RemoveItemAt(*feedback_index);
+    }
+    if (auto toggle_index =
+            model->GetIndexOfCommandId(IDC_TOGGLE_VERTICAL_TABS)) {
+      size_t index = *toggle_index;
+      model->RemoveItemAt(index);
+      if (index > 0 &&
+          model->GetTypeAt(index - 1) == ui::MenuModel::TYPE_SEPARATOR) {
+        model->RemoveItemAt(index - 1);
+      }
+    }
+
+    if (auto pos = get_next_position()) {
+      model->InsertCheckItemWithStringIdAt(pos.value(),
+                                           IDC_TOGGLE_VERTICAL_TABS,
+                                           IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
+    }
+  }
+
+  if (BrowserSupportsFocusMode(browser())) {
+    if (!ImmersiveModeController::From(browser())->IsEnabled()) {
+      if (auto pos = get_next_position()) {
+        model->InsertCheckItemWithStringIdAt(pos.value(), IDC_TOGGLE_FOCUS_MODE,
+                                             IDS_SYSTEM_MENU_FOCUS_MODE);
+      }
+    }
+  }
+}
+
+void BraveSystemMenuModelBuilder::BuildSystemMenuForBrowserWindow(
+    ui::SimpleMenuModel* model) {
+  SystemMenuModelBuilder::BuildSystemMenuForBrowserWindow(model);
+  InsertBraveSystemMenuForBrowserWindow(model);
+}

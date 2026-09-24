@@ -1,0 +1,48 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "按住 Brave 圖示，然後將其拖曳至您的 Dock 以便快速存取。";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "將 Brave 加入您的 Dock";
+
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "繼續";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "立即將 Brave 設為預設瀏覽器。";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "讓您前往的每個網站都有廣告攔截功能";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "現在不要";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "在您最愛的串流網站阻擋惱人干擾。";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "觀看串流媒體時防止受到中斷";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "請告訴我們您最喜愛的功能有哪些。";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "讓 Brave 更好";
+
+/* The description shown below the toggle for enabling privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "分享完全不公開的匿名產品深入分析，指出 Brave 使用者正在使用哪些功能。";
+
+/* The title of the toggle that allows the user to enable/disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "私人產品深入分析";
+
+/* The description shown below the toggle for enabling crash reporting. */
+"focusOnboarding.sendCrashReportsToggleDescription" = "系統當機或停止回應時傳送匿名診斷報告。";
+
+/* The title of the toggle that allows the user to enable/disable crash reporting. */
+"focusOnboarding.sendCrashReportsToggleTitle" = "傳送當機報告";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "開始瀏覽";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "設為預設";
+

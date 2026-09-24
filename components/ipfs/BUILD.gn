@@ -1,0 +1,33 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ipfs/buildflags/buildflags.gni")
+
+static_library("ipfs") {
+  sources = [
+    "ipfs_prefs.cc",
+    "ipfs_prefs.h",
+    "ipfs_utils.cc",
+    "ipfs_utils.h",
+  ]
+
+  if (deprecate_ipfs) {
+    sources += [
+      "ipfs_common.h",
+      "ipfs_component_cleaner.cc",
+      "ipfs_component_cleaner.h",
+    ]
+  }
+
+  deps = [
+    "buildflags",
+    "//base",
+    "//brave/components/filecoin/rs:rust_lib",
+    "//components/base32",
+    "//components/prefs",
+    "//net",
+    "//url",
+  ]
+}

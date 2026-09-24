@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Exclude integral types wider than 8 bytes from the non-streamable-integral
+       `ToStringHelper` specialization, so they fall through to the generic
+       byte-dump fallback instead of failing on the 
+       `static_assert(sizeof(T) <= 8)` below.
+    regex:
+      pattern:
+        requires(!SupportsOstreamOperator<const T&> && std::is_integral_v<T>)
+      replace:
+        requires(!SupportsOstreamOperator<const T&> && std::is_integral_v<T> &&
+        sizeof(T) <= 8)

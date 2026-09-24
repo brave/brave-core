@@ -1,0 +1,68 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//brave/components/request_otr/common/buildflags/buildflags.gni")
+
+assert(enable_request_otr)
+
+source_set("browser") {
+  sources = []
+  deps = []
+
+  sources += [
+    "request_otr_blocking_page.cc",
+    "request_otr_blocking_page.h",
+    "request_otr_component_installer.cc",
+    "request_otr_component_installer.h",
+    "request_otr_controller_client.cc",
+    "request_otr_controller_client.h",
+    "request_otr_navigation_throttle.cc",
+    "request_otr_navigation_throttle.h",
+    "request_otr_p3a.cc",
+    "request_otr_p3a.h",
+    "request_otr_rule.cc",
+    "request_otr_rule.h",
+    "request_otr_service.cc",
+    "request_otr_service.h",
+    "request_otr_storage_tab_helper.cc",
+    "request_otr_storage_tab_helper.h",
+  ]
+
+  deps += [
+    "//base",
+    "//brave/components/brave_component_updater/browser",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/p3a_utils",
+    "//brave/components/request_otr/common",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings_grit",
+    "//brave/components/time_period_storage",
+    "//brave/extensions:common",
+    "//components/prefs",
+    "//components/profile_metrics",
+    "//components/security_interstitials/content:security_interstitial_page",
+    "//components/security_interstitials/core",
+    "//components/user_prefs",
+    "//content/public/browser",
+    "//ui/base",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "request_otr_p3a_unittest.cc" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/request_otr/browser",
+    "//components/prefs:test_support",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+}

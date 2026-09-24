@@ -1,0 +1,73 @@
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!DOCTYPE html>
+
+<link rel="import" href="/tracing/metrics/metric_registry.html">
+<link rel="import" href="/tracing/base/unit.html">
+<link rel="import" href="/tracing/base/utils.html">
+<link rel="import" href="/tracing/extras/chrome/chrome_processes.html">
+<link rel="import" href="/tracing/value/histogram.html">
+<script>
+  'use strict';
+
+  tr.exportTo('tr.metrics', function () {
+    const SUMMARY_OPTIONS = {
+      avg: false,
+      count: false,
+      max: false,
+      min: false,
+      std: false,
+      sum: true,
+    };
+
+    function isSpecialUrl(url) {
+      return url == 'about:blank' ||
+        url == 'http://does.not.exist/' ||
+        url.startsWith('chrome-extension://') ||
+        url.startsWith('chrome-error://') ||
+        url.startsWith('chrome-untrusted://');
+    }
+
+    function braveNavigationMetric(histograms, model) {
+      const chromeHelper = model.getOrCreateHelper(
+        tr.model.helpers.ChromeModelHelper);
+
+      const histogramMap = new Map();
+      const addSample = (name, unit, sample) => {
+        let histogram = histogramMap.get(name);
+        if (!histogram) {
+          histogram = histograms.createHistogram(name, unit, [], {
+            summaryOptions: SUMMARY_OPTIONS,
+          });
+          histogramMap.set(name, histogram);
+        }
+        histogram.addSample(sample);
+
+      };
+      for (const helper of chromeHelper.browserHelpers) {
+        helper.iterAllThreads(function (thread) {
+          for (const slice of thread.asyncSliceGroup.slices) {
+            if (slice.title === 'Navigation StartToCommit' &&
+              !isSpecialUrl(slice.args.URL)) {
+              addSample(
+                'Navigation_StartToCommit',
+                tr.b.Unit.byName.timeDurationInMs_smallerIsBetter,
+                slice.duration);
+            }
+          }
+        });
+      }
+    }
+
+    tr.metrics.MetricRegistry.register(braveNavigationMetric, {
+      requiredCategories: ['benchmark'],
+    });
+
+    return {
+      braveNavigationMetric,
+    };
+  });
+</script>

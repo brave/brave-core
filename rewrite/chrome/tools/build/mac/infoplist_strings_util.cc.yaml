@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Initialise `name` with `BRAVE_PRODUCT_STRING`
+
+      Keep the upstream `LoadStringFromDataPack` call as a dead ternary branch so
+      `name_id` / `name_id_str` stay referenced and don't trip unused-variable
+      warnings.
+    regex:
+      re_pattern:
+        'std::string name = (LoadStringFromDataPack\(.*?name_id_str\));'
+      re_flags: [DOTALL]
+      replace: 'std::string name = ((true)) ? BRAVE_PRODUCT_STRING : \1;'

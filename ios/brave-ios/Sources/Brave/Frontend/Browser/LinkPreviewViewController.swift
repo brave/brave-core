@@ -1,0 +1,100 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import BraveCore
+import BraveShields
+import Data
+import Shared
+import UIKit
+import Web
+import WebKit
+
+class LinkPreviewViewController: UIViewController {
+
+  private let url: URL
+  private weak var parentTab: (any TabState)?
+  private var currentTab: (any TabState)?
+  private weak var policyDecider: (any TabPolicyDecider)?
+  private weak var tabDelegate: (any TabDelegate)?
+  private weak var downloadDelegate: (any TabDownloadDelegate)?
+
+  init(
+    url: URL,
+    for tab: some TabState,
+    policyDecider: (any TabPolicyDecider)?,
+    tabDelegate: any TabDelegate,
+    downloadDelegate: (any TabDownloadDelegate)?
+  ) {
+    self.url = url
+    self.parentTab = tab
+    self.policyDecider = policyDecider
+    self.tabDelegate = tabDelegate
+    self.downloadDelegate = downloadDelegate
+    super.init(nibName: nil, bundle: nil)
+  }
+
+  @available(*, unavailable)
+  required init?(coder aDecoder: NSCoder) { fatalError() }
+
+  override func viewDidLoad() {
+    guard let parentTab else {
+      return
+    }
+
+    var initialConfiguration: WKWebViewConfiguration?
+    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+      initialConfiguration =
+        parentTab.isPrivate
+        ? TabManager.privateConfiguration : TabManager.defaultConfiguration
+    }
+    let tab = TabStateFactory.create(
+      with: .init(profile: parentTab.profile, initialConfiguration: initialConfiguration)
+    )
+    tab.createWebView()
+    if let policyDecider {
+      tab.addPolicyDecider(policyDecider)
+    }
+    let braveShieldsTabHelper: BraveShieldsTabHelper = .init(
+      tab: tab,
+      braveShieldsSettings: BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
+    )
+    tab.braveShieldsHelper = braveShieldsTabHelper
+    tab.addPolicyDecider(braveShieldsTabHelper)
+    tab.delegate = tabDelegate
+    tab.downloadDelegate = downloadDelegate
+    tab.webViewProxy?.scrollView?.layer.masksToBounds = true
+    tab.isVisible = true
+    self.currentTab = tab
+
+    guard let currentTab = currentTab else {
+      return
+    }
+
+    // Add rule lists for this page
+    Task(priority: .userInitiated) {
+      let isBraveShieldsEnabled = braveShieldsTabHelper.isBraveShieldsEnabled(for: url)
+      let shieldLevel = braveShieldsTabHelper.shieldLevel(for: url, considerAllShieldsOption: true)
+      let ruleLists = await AdBlockGroupsManager.shared.ruleLists(
+        isBraveShieldsEnabled: isBraveShieldsEnabled,
+        shieldLevel: shieldLevel,
+        isBlockAllCookiesEnabled: tab.profile.prefs.boolean(forPath: kBlockAllCookiesEnabled)
+      )
+      for ruleList in ruleLists {
+        currentTab.configuration?.userContentController.add(ruleList)
+      }
+    }
+
+    currentTab.view.frame = view.bounds
+    view.addSubview(currentTab.view)
+
+    currentTab.loadRequest(URLRequest(url: url))
+  }
+
+  deinit {
+    if let policyDecider {
+      currentTab?.removePolicyDecider(policyDecider)
+    }
+    self.currentTab = nil
+  }
+}

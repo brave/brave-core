@@ -1,0 +1,17 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("util") {
+  sources = [
+    "brave_shell_util.cc",
+    "brave_shell_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//chrome/install_static:install_static_util",
+    "//components/version_info",
+  ]
+}

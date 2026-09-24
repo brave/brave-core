@@ -1,0 +1,115 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import { formatLocale, getLocale } from '$web-common/locale'
+import * as Mojom from '../../../common/mojom'
+
+/**
+ * See navigation_tool.cc
+ * @param toolInput Expects { "website_url": string } but is not guaranteed.
+ * @returns
+ */
+function getNavigateToolNameLabel(toolInput: any) {
+  if (typeof toolInput?.website_url === 'string') {
+    return formatLocale(S.CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE_WITH_INPUT, {
+      $1: toolInput.website_url as string,
+    })
+  }
+  return getLocale(S.CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE)
+}
+
+/**
+ * See history_tool.cc
+ * @param toolInput Expects { "direction": "back" | "forward" } but is not guaranteed.
+ * @returns
+ */
+function getHistoryToolNameLabel(toolInput: any) {
+  // Tool input might not be complete, so check values explicitly.
+  if (toolInput?.direction === 'back') {
+    return getLocale(S.CHAT_UI_TOOL_LABEL_NAVIGATE_HISTORY_BACK)
+  } else if (toolInput?.direction === 'forward') {
+    return getLocale(S.CHAT_UI_TOOL_LABEL_NAVIGATE_HISTORY_FORWARD)
+  }
+  return getLocale(S.CHAT_UI_TOOL_LABEL_NAVIGATE_WEB_PAGE)
+}
+
+/**
+ * See history_search_tool.cc
+ * @param toolInput Expects { "query": string } but is not guaranteed.
+ */
+function getSemanticHistorySearchToolNameLabel(toolInput: any) {
+  if (typeof toolInput?.query === 'string' && toolInput.query.length > 0) {
+    return formatLocale(S.CHAT_UI_TOOL_LABEL_SEMANTIC_HISTORY_SEARCH, {
+      $1: toolInput.query as string,
+    })
+  }
+  return getLocale(S.CHAT_UI_TOOL_LABEL_SEMANTIC_HISTORY_SEARCH_GENERIC)
+}
+
+function getSearchToolNameLabel(toolInput: any) {
+  // toolInput is parsed (possibly malformed) JSON, so it may be undefined and
+  // its `query` field — confusingly named — may be missing or not actually be
+  // an array of strings.
+  const queries: string[] = Array.isArray(toolInput?.query)
+    ? toolInput.query
+    : []
+
+  if (!queries.length) {
+    return getLocale(S.CHAT_UI_SEARCH_GENERIC)
+  }
+  return formatLocale(S.CHAT_UI_SEARCH_QUERIES, {
+    $1: queries.map((query) => `"${query}"`).join(', '),
+  })
+}
+
+/**
+ * Get a display label for the specified tool given its name and input properties.
+ * To display any more complex UI for a tool and not simply a string label,
+ * the tool should get its own content component via ToolEventContent.
+ */
+export function getToolLabel(toolName: string, toolInput: any) {
+  switch (toolName) {
+    case Mojom.NAVIGATE_TOOL_NAME:
+      return getNavigateToolNameLabel(toolInput)
+    case Mojom.NAVIGATE_HISTORY_TOOL_NAME:
+      return getHistoryToolNameLabel(toolInput)
+    case Mojom.CLICK_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_CLICK_ELEMENT)
+    case Mojom.DRAG_AND_RELEASE_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_DRAG_AND_RELEASE)
+    case Mojom.MOVE_MOUSE_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_MOVE_MOUSE)
+    case Mojom.SCROLL_ELEMENT_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_SCROLL_ELEMENT)
+    case Mojom.SELECT_DROPDOWN_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_SELECT_DROPDOWN)
+    case Mojom.TYPE_TEXT_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_TYPE_TEXT)
+    case Mojom.WAIT_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_WAIT)
+    case Mojom.CODE_EXECUTION_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_CODE_EXECUTION)
+    case Mojom.SEMANTIC_HISTORY_SEARCH_TOOL_NAME:
+      return getSemanticHistorySearchToolNameLabel(toolInput)
+    // <if expr="enable_ai_chat_tab_management_tool">
+    case Mojom.TAB_MANAGEMENT_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_TAB_MANAGEMENT)
+    // </if>
+    case Mojom.DEEP_RESEARCH_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_DEEP_RESEARCH)
+    case Mojom.USER_CHOICE_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_USER_CHOICE)
+    case Mojom.ASSISTANT_DETAIL_STORAGE_TOOL_NAME:
+      return getLocale(S.CHAT_UI_TOOL_LABEL_ASSISTANT_DETAIL_STORAGE)
+    case Mojom.BRAVE_NEWS_SEARCH_TOOL_NAME:
+    case Mojom.BRAVE_WEB_SEARCH_TOOL_NAME:
+    case Mojom.BRAVE_FAQS_SEARCH_TOOL_NAME:
+      return getSearchToolNameLabel(toolInput)
+    case Mojom.WEB_CONTEXT_SEARCH_TOOL_NAME:
+      return getLocale(S.CHAT_UI_SEARCH_GENERIC)
+    default:
+      return toolName
+  }
+}

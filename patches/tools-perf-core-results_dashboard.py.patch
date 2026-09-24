@@ -1,0 +1,9 @@
+diff --git a/tools/perf/core/results_dashboard.py b/tools/perf/core/results_dashboard.py
+index f9c763d1220591b41b9ac56056819f40378dd041..0cc9a1815b0333c80fc91ae585b26ff0f7f89f93 100755
+--- a/tools/perf/core/results_dashboard.py
++++ b/tools/perf/core/results_dashboard.py
+@@ -555,3 +555,4 @@ def _SendHistogramJson(url, histogramset_json, token_generator_callback):
+       logging.info('Upload completion token created. Token id: %s' % token)
+   except Exception as e:  # pylint: disable=broad-except
+     logging.warning('Error fetching upload completion token: %s' % e)
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())

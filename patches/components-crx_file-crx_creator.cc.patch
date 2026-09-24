@@ -1,0 +1,13 @@
+diff --git a/components/crx_file/crx_creator.cc b/components/crx_file/crx_creator.cc
+index 76a591c924355e8d7dfc43df7b5bb6a68cc4f962..0ae0f7a02f43b03c9c2d0c7660ea10e06bd3d30e 100644
+--- a/components/crx_file/crx_creator.cc
++++ b/components/crx_file/crx_creator.cc
+@@ -72,7 +72,7 @@ CreatorResult SignArchiveAndCreateHeader(
+ 
+   // Assemble SignedData section.
+   SignedData signed_header_data;
+-  signed_header_data.set_crx_id(GetCrxId(public_key));
++  signed_header_data.set_crx_id(GetCrxId_BraveImpl(public_key, header));
+   const std::string signed_header_data_str =
+       signed_header_data.SerializeAsString();
+   const auto signed_header_size_octets =

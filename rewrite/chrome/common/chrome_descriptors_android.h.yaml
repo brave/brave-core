@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add Brave-specific pak descriptior
+
+      File descriptor for brave_resources.pak, passed from the browser process
+      which opens it from the APK via JNI) to child processes. Native-only
+      javaless) renderers have no JVM and cannot open the APK asset themselves,
+      so they load the pak from this descriptor instead.
+
+      TODO(https://github.com/brave/brave-browser/issues/57790):
+      Consider add_enum_entries for anonymous enums
+    count: 1
+    regex:
+      re_pattern: '(enum \{.+)(\};)'
+      replace: |-
+        \1  kBraveResourcesPakDescriptor,
+        \2
+      re_flags: [DOTALL]

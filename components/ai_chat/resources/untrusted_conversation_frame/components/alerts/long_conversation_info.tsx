@@ -1,0 +1,35 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
+import { getLocale } from '$web-common/locale'
+import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
+import styles from './alerts.module.scss'
+
+export default function LongConversationInfo() {
+  const context = useUntrustedConversationContext()
+
+  const handleClearChat = () => {
+    context.parentUiFrame.requestNewConversation()
+  }
+
+  return (
+    <div className={styles.info}>
+      <div className={styles.infoIcon}>
+        <Icon name='info-outline' />
+      </div>
+      <div className={styles.infoText}>
+        {getLocale(S.CHAT_UI_ERROR_CONTEXT_LIMIT_REACHING)}
+        <button
+          className={styles.link}
+          onClick={handleClearChat}
+        >
+          <span>{getLocale(S.CHAT_UI_CLEAR_CHAT_BUTTON_LABEL)}</span>
+        </button>
+      </div>
+    </div>
+  )
+}

@@ -1,0 +1,127 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+import styled from 'styled-components'
+import LeoSegmentedControl, {
+  SegmentedControlProps,
+} from '@brave/leo/react/segmentedControl'
+import * as leo from '@brave/leo/tokens/css/variables'
+import Icon from '@brave/leo/react/icon'
+
+// Shared Styles
+import { Title } from '../onboarding/onboarding.style'
+import {
+  Row,
+  Text,
+  Column,
+  WalletButton,
+} from '../../../components/shared/style'
+
+export const DepositTitle = styled(Title)`
+  margin-top: 0px;
+`
+
+export const ControlsWrapper = styled(Row)`
+  margin-bottom: 24px;
+  --leo-segmented-control-width: 100%;
+`
+
+export const SegmentedControl = styled(LeoSegmentedControl).attrs({
+  size: 'default',
+})<SegmentedControlProps>``
+
+export const AddressText = styled(Text)`
+  word-break: break-all;
+  max-width: 500px;
+`
+
+export const AddressTextLabel = styled(Text)`
+  font: ${leo.font.components.buttonLarge};
+  text-align: center;
+  color: ${leo.color.text.secondary};
+  word-break: break-all;
+`
+
+export const TokenListWrapper = styled(Column)`
+  box-sizing: border-box;
+  overflow: hidden;
+  flex: 1;
+  overflow-y: auto;
+`
+
+export const QRCodeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 260px;
+  height: 260px;
+  border-radius: 4px;
+  border: 4px solid ${leo.color.text.primary};
+  margin-bottom: 16px;
+`
+
+export const QRCodeImage = styled.img`
+  width: 260px;
+  height: 260px;
+  @media (prefers-color-scheme: dark) {
+    filter: invert(1);
+  }
+`
+
+export const ScrollContainer = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+`
+
+export const SearchWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-direction: column;
+  width: 100%;
+  position: relative;
+`
+
+export const SelectAssetWrapper = styled(Column)`
+  box-sizing: border-box;
+  overflow: hidden;
+`
+
+export const SearchAndDropdownWrapper = styled(Column)`
+  flex: 1;
+  min-width: 25%;
+`
+
+export const BackButton = styled(WalletButton)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  outline: none;
+  background: none;
+  border: none;
+  padding: 0px;
+  margin: 0px;
+`
+
+export const BackIcon = styled(Icon)`
+  --leo-icon-size: 24px;
+  color: ${leo.color.icon.default};
+`
+
+export const FilterTokenRow = styled.div<{
+  horizontalPadding?: number
+  isV2?: boolean
+}>`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: 14px;
+  padding: 0px
+    ${(p) => (p.horizontalPadding !== undefined ? p.horizontalPadding : 0)}px;
+  margin-bottom: ${(p) => (p.isV2 ? '16px' : 0)};
+`

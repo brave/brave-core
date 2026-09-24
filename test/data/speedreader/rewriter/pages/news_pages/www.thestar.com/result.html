@@ -1,0 +1,502 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>WestJet customers report data breach, leaked personal information</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">WestJet customers report data breach, leaked personal information</h1><p class="subhead metadata">WestJet app users say they were able to see personal details and account information associated with complete strangers.</p><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><div class="c-article-wrapper"><p class="print-header"> This copy is for your personal non-commercial use only. To order
+    presentation-ready copies of Toronto Star content for distribution
+    to colleagues, clients or customers, or inquire about
+    permissions/licensing, please go to: <a href="http://www.torontostarreprints.com/">www.TorontoStarReprints.com</a></p><div class="c-article-wrapper c-article-wrapper--has-rightrail"><div class="c-article-layout c-article-layout--has-rightrail"><div class="c-article-header" data-lpos="article|header"><div class="mainart-container c-article-header__mainart mainart-landscape" data-lpos="article|multimedia"><div class="image pure-image"><div class="image__body"><picture><source srcset="https://images.thestar.com/hPL7Hzt6cRf2ogviZMhRg0RAVo0=/1086x524/smart/filters:cb(1660794585897):format(webp)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 1086w,https://images.thestar.com/h6rp4PhecHZ_xv2mm4XJDGWb-XA=/968x467/smart/filters:cb(1660794585897):format(webp)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 968w,https://images.thestar.com/CvP16-F_vT9Wmw-Kv5UueRcZXGE=/850x410/smart/filters:cb(1660794585897):format(webp)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 850w,https://images.thestar.com/2HaetpU7xW5mZ2_jLKTymHxt0bo=/650x314/smart/filters:cb(1660794585897):format(webp)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 650w,https://images.thestar.com/fq0SMrASEB5wIBHGRBK5jtYeMP0=/605x292/smart/filters:cb(1660794585897):format(webp)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 605w,https://images.thestar.com/zhiyI2N5aoolDsyWOl9qCOwImVk=/480x232/smart/filters:cb(1660794585897):format(webp)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 480w,https://images.thestar.com/Vl_bAaEYY9lE7BNSoItZdVdSEZk=/400x193/smart/filters:cb(1660794585897):format(webp)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 400w,https://images.thestar.com/lq90FaGt3HzJB1HYsvIJbvkmh5o=/320x154/smart/filters:cb(1660794585897):format(webp)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 320w" type="image/webp"><source srcset="https://images.thestar.com/bKAwZx9CaAXIlJA6Y21f3opUKu0=/1086x524/smart/filters:cb(1660794585897)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 1086w,https://images.thestar.com/DY8wuLXqacjlAG9hmzeJZ4j5aXQ=/968x467/smart/filters:cb(1660794585897)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 968w,https://images.thestar.com/bJ3P6-RmJ020ChpGxBrhGXM0zfM=/850x410/smart/filters:cb(1660794585897)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 850w,https://images.thestar.com/e31CJLN7vufCHIVhkSCHfnxmSkM=/650x314/smart/filters:cb(1660794585897)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 650w,https://images.thestar.com/FSlQDIG12th9Z6qjDiaj-NkxcFI=/605x292/smart/filters:cb(1660794585897)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 605w,https://images.thestar.com/8YhJkd2XjvTqQhOxulWlwcvYKI0=/480x232/smart/filters:cb(1660794585897)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 480w,https://images.thestar.com/GWDKOZcdKNkf78YBgmmZh5EvHso=/400x193/smart/filters:cb(1660794585897)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 400w,https://images.thestar.com/cUZADoiOqUfkN9K3rcP8l3x8GV8=/320x154/smart/filters:cb(1660794585897)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg 320w" type="image/jpeg"><img alt="Canadian airline WestJet confirmed on Wednesday that a “technical issue”had impacted guest profiles on the company’s app." class="original-image" height="524" src="https://images.thestar.com/hPL7Hzt6cRf2ogviZMhRg0RAVo0=/1086x524/smart/filters:cb(1660794585897):format(webp)/https://www.thestar.com/content/dam/thestar/news/canada/2022/08/17/westjet-customers-report-data-breach-leaked-personal-information/westjet.jpg" width="1086"></picture></div></div></div><div class="article__byline__font c-article-header__byline article__byline-container-author-withphoto" data-lpos="article|author"><div class="article__img-container"><div class="c-author-badge article-byline__author-badge"><picture><source srcset="https://images.thestar.com/8_EnnG9YNUaGRSCsHrnsmjso5dU=/100x100/smart/filters:format(webp)/https://www.thestar.com/content/dam/thestar/columnist_logos/Murphy_Aisling_logo2022.png" type="image/webp"><source srcset="https://images.thestar.com/MV6Vlpi1FZ1vwVLFCrl8cpygzk4=/100x100/smart/https://www.thestar.com/content/dam/thestar/columnist_logos/Murphy_Aisling_logo2022.png" type="image/jpeg"><img alt="Aisling Murphy" aria-hidden="true" class="c-author-badge__img" src="https://images.thestar.com/MV6Vlpi1FZ1vwVLFCrl8cpygzk4=/100x100/smart/https://www.thestar.com/content/dam/thestar/columnist_logos/Murphy_Aisling_logo2022.png"></picture></div></div><div class="article__byline"><p><span class="article__author-by">By </span><span class="article__author"><span class="article__author-name"><span><span><a href="/authors.murphy_aisling.html"><span>Aisling Murphy</span></a></span></span></span><span class="article__author-credit">Staff Reporter</span></span></p><p><span class=""><span class="article__published-date">Wed., Aug. 17, 2022</span></span><span class="article__readtime"><i aria-hidden="true" class="material-icons-outlined c-material-icon c-material-icon--article-readtime-clock" focusable="false" pointer-events="none" role="img">timer</i><span>1 min. read</span></span></p><p><i aria-hidden="true" class="material-icons c-material-icon c-material-icon--article-last-modified" focusable="false" pointer-events="none" role="img">update</i><span class="article__updated-time">Article was updated 6 hrs ago </span></p></div></div></div><div class="c-article-body" data-lpos="article|body"><div class="c-article-body__content"><p class="text-block-container speakable-text-block-container">WestJet customers reported Wednesday that the Canadian airline’s app has compromised personal information.</p><p class="text-block-container speakable-text-block-container">App users took to Twitter to express their concern with the situation, claiming that when they logged in to the WestJet app, they were able to see personal details and account information associated with complete strangers.</p><p class="text-block-container">WestJet acknowledged the issue on Twitter, saying the issue lasted less than an hour and was resolved by 4:30 p.m. MST.</p><p class="text-block-container">The airline apologized, saying they “continue to actively investigate the cause of this issue.”</p><p class="text-block-container">The cause of the breach is not yet known. WestJet said on Twitter that once new information is available it will be provided to those affected by the error.</p><p class="text-block-container">WestJet responded to the Star’s request for comment, saying “we take the privacy of our guests extremely seriously and will continue to provide updates to our guests as required.”</p><p><span class="share-label-text">SHARE:</span></p><div id="conversations"><p>JOIN THE CONVERSATION </p><div class="c-signin c-signin--hide"><p class="c-register-message">Anyone can read Conversations, but to contribute, you should be registered Torstar account holder. If you do not yet have a Torstar account, you can create one now (it is free)</p><p class="c-button c-button--signin" role="button" tabindex="0">Sign In</p><p class="c-button c-button--signin" role="button" tabindex="0">Register</p></div><div class="c-disclaimer"><p>Conversations are opinions of our readers and are subject to the</p> <p><a href="https://www.thestar.com/about/community-guidelines.html">Code of Conduct</a>. The Star does not endorse these opinions.</p></div></div></div></div></div><div class="aggregation" data-wallpaper-bind="bindVertical"><div class="c-partner-articles"><h2 class="article-list-heading"><div class="article-list-heading-text"><p>More from </p><p>The Star</p><p> &amp; Partners</p></div></h2></div><div class="c-article-fullbleed"><div class="c-article-fullbleed__content c-article-list-group"><div class="c-more-articles c-article-list-group__more c-more-articles--partialwidth" data-lpos="more-news"><h2 class="article-list-heading"></h2></div><div class="c-top-articles c-article-list-group__top c-top-articles--partialwidth" data-lpos="top-stories"><h2 class="article-list-heading"><p>Top Stories</p></h2></div></div></div></div></div><p class="print-footer">Copyright owned or licensed by Toronto Star Newspapers Limited. All
+    rights reserved. Republication or distribution of this content is
+    expressly prohibited without the prior written consent of Toronto
+    Star Newspapers Limited and/or its licensors. To order copies of
+    Toronto Star articles, please go to: <a href="http://www.torontostarreprints.com/">www.TorontoStarReprints.com</a></p></div></body>

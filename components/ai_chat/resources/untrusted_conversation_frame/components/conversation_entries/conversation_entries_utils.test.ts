@@ -1,0 +1,778 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as Mojom from '../../../common/mojom'
+import {
+  getGroupAllowedLinks,
+  getReasoningText,
+  removeReasoning,
+  removeCitationsWithMissingLinks,
+  normalizeCitationSpacing,
+  normalizeMathDelimiters,
+  groupConversationEntries,
+  isAssistantGroupTask,
+  replaceCitationsWithUrlsExcludingCode,
+} from './conversation_entries_utils'
+import {
+  createConversationTurnWithDefaults,
+  getToolUseEvent,
+  getCompletionEvent,
+  getWebSourcesEvent,
+} from '../../../common/test_data_utils'
+
+describe('groupConversationEntries', () => {
+  it('should group consecutive assistant entries', () => {
+    const turn1 = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [
+        { completionEvent: { completion: 'Response 1' } },
+        {
+          sourcesEvent: {
+            sources: [
+              {
+                url: { url: 'https://a.com' },
+                title: 'Title 1',
+                faviconUrl: { url: 'https://a.com/favicon.ico' },
+              },
+            ],
+          },
+        },
+      ],
+    }
+
+    const turn2 = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [
+        { completionEvent: { completion: 'Response 2' } },
+        {
+          sourcesEvent: {
+            sources: [
+              {
+                url: { url: 'https://b.com' },
+                title: 'Title 2',
+                faviconUrl: { url: 'https://b.com/favicon.ico' },
+              },
+            ],
+          },
+        },
+      ],
+    }
+
+    const groupedEntries = groupConversationEntries([turn1, turn2] as any)
+
+    expect(groupedEntries).toHaveLength(1)
+    expect(groupedEntries[0]).toHaveLength(2)
+    expect(groupedEntries[0]).toEqual([turn1, turn2])
+  })
+
+  it('should not group non-consecutive assistant entries', () => {
+    const assistantTurn1 = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [
+        { completionEvent: { completion: 'Response 1' } },
+        {
+          sourcesEvent: {
+            sources: [
+              {
+                url: { url: 'https://a.com' },
+                title: 'Title 1',
+                faviconUrl: { url: 'https://a.com/favicon.ico' },
+              },
+            ],
+          },
+        },
+      ],
+    }
+
+    const humanTurn1: Partial<Mojom.ConversationTurn> = {
+      characterType: Mojom.CharacterType.HUMAN,
+      text: 'Question 1',
+    }
+
+    const assistantTurn2 = {
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [
+        { completionEvent: { completion: 'Response 2' } },
+        {
+          sourcesEvent: {
+            sources: [
+              {
+                url: { url: 'https://b.com' },
+                title: 'Title 2',
+                faviconUrl: { url: 'https://b.com/favicon.ico' },
+              },
+            ],
+          },
+        },
+      ],
+    }
+
+    const groupedEntries = groupConversationEntries([
+      assistantTurn1,
+      humanTurn1,
+      assistantTurn2,
+    ] as any)
+
+    expect(groupedEntries).toHaveLength(3)
+    expect(groupedEntries[0]).toEqual([assistantTurn1])
+    expect(groupedEntries[1]).toEqual([humanTurn1])
+    expect(groupedEntries[2]).toEqual([assistantTurn2])
+  })
+})
+
+describe('getReasoningText', () => {
+  it('Should extract reasoning text between start and end tags', () => {
+    const input = '<think>Reasoning text here.</think>'
+    expect(getReasoningText(input)).toBe('Reasoning text here.')
+  })
+
+  it('Should handle missing end tag by returning the rest of the text', () => {
+    const input = '<think>Start of reasoning without end.'
+    expect(getReasoningText(input)).toBe('Start of reasoning without end.')
+  })
+
+  it('Should handle missing start tag by returning an empty string', () => {
+    const input = 'Reasoning text with no start tag.</think>'
+    expect(getReasoningText(input)).toBe('')
+  })
+
+  it('Should handle nested think tags and remove them from the string', () => {
+    const input =
+      '<think>Reasoning text <think>with nested</think> tags.</think>'
+    expect(getReasoningText(input)).toBe('Reasoning text with nested tags.')
+  })
+
+  it('Should handle removing white space around reasoning text', () => {
+    const input = '<think> Reasoning text here. </think>'
+    expect(getReasoningText(input)).toBe('Reasoning text here.')
+  })
+})
+
+describe('removeReasoning', () => {
+  it('Should remove reasoning text between start and end tags', () => {
+    const input =
+      'Before reasoning.<think>Reasoning text here.'
+      + '</think> Rest of the text.'
+    expect(removeReasoning(input)).toBe('Before reasoning. Rest of the text.')
+  })
+
+  it('Should not fail if there is an empty string', () => {
+    const input = ''
+    expect(removeReasoning(input)).toBe('')
+  })
+
+  it('Should not fail if there is no reasoning text', () => {
+    const input = 'Rest of the text.'
+    expect(removeReasoning(input)).toBe('Rest of the text.')
+  })
+
+  it('should not fail if there is not ending tag', () => {
+    const input = 'Before reasoning.<think>Reasoning text here.'
+    expect(removeReasoning(input)).toBe('Before reasoning.')
+  })
+
+  it('should not fail if there is not starting tag', () => {
+    const input = 'Reasoning text here.</think> After reasoning.'
+    expect(removeReasoning(input)).toBe(' After reasoning.')
+  })
+})
+
+describe('removeCitationsWithMissingLinks', () => {
+  it('should remove citations with missing links', () => {
+    const input = 'Citation [1] and [2] thats it[3].'
+    const citationLinks = [
+      'https://example.com/link1',
+      'https://example.com/link2',
+    ]
+    expect(removeCitationsWithMissingLinks(input, citationLinks)).toBe(
+      'Citation [1] and [2] thats it.',
+    )
+  })
+
+  it('preserves bracket-number syntax inside fenced code blocks', () => {
+    const input = 'Cite [3].\n```js\nconst x = arr[3]\n```'
+    expect(removeCitationsWithMissingLinks(input, [])).toBe(
+      'Cite .\n```js\nconst x = arr[3]\n```',
+    )
+  })
+
+  it('preserves bracket-number syntax inside inline code', () => {
+    expect(removeCitationsWithMissingLinks('Use `arr[5]` and [5].', [])).toBe(
+      'Use `arr[5]` and .',
+    )
+  })
+})
+
+describe('normalizeCitationSpacing', () => {
+  it('should separate two consecutive citations to parse its own links', () => {
+    expect(
+      normalizeCitationSpacing('...set first dropped in Japan [2][3].'),
+    ).toBe('...set first dropped in Japan [2] [3].')
+  })
+
+  it('should separate five consecutive citations', () => {
+    expect(normalizeCitationSpacing('See [1][2][3][4][5] for sources.')).toBe(
+      'See [1] [2] [3] [4] [5] for sources.',
+    )
+  })
+
+  it('should add space before citation when it runs onto previous word', () => {
+    expect(normalizeCitationSpacing('in Japan[2].')).toBe('in Japan [2].')
+    expect(normalizeCitationSpacing('lair[2].')).toBe('lair [2].')
+  })
+
+  it('should leave already-spaced citations unchanged', () => {
+    const input = 'Citation [1] and [2] here.'
+    expect(normalizeCitationSpacing(input)).toBe(input)
+  })
+
+  it('should handle mixed consecutive citations and word boundary', () => {
+    expect(normalizeCitationSpacing('Japan[2][3].')).toBe('Japan [2] [3].')
+  })
+
+  it('does not insert a space inside fenced code blocks', () => {
+    const input = 'See Japan[1].\n```js\nconst x = arr[1]\n```'
+    expect(normalizeCitationSpacing(input)).toBe(
+      'See Japan [1].\n```js\nconst x = arr[1]\n```',
+    )
+  })
+
+  it('does not insert a space inside inline code', () => {
+    expect(normalizeCitationSpacing('Use `arr[1]` then Japan[1].')).toBe(
+      'Use `arr[1]` then Japan [1].',
+    )
+  })
+})
+
+describe('normalizeMathDelimiters', () => {
+  it('converts an inline \\(...\\) expression to $$...$$', () => {
+    expect(normalizeMathDelimiters('the area is \\(\\pi r^2\\) exactly')).toBe(
+      'the area is $$\\pi r^2$$ exactly',
+    )
+  })
+
+  it('converts multiple inline expressions on one line', () => {
+    expect(normalizeMathDelimiters('\\(a\\) and \\(b\\)')).toBe(
+      '$$a$$ and $$b$$',
+    )
+  })
+
+  it('collapses whitespace inside an inline expression', () => {
+    expect(normalizeMathDelimiters('x is \\( a +\n  b \\) here')).toBe(
+      'x is $$a + b$$ here',
+    )
+  })
+
+  it('converts a \\[...\\] expression on its own line to a $$ fence', () => {
+    expect(normalizeMathDelimiters('before\n\\[x^2\\]\nafter')).toBe(
+      'before\n\n\n$$\nx^2\n$$\n\n\nafter',
+    )
+  })
+
+  it('converts a multi-line \\[...\\] expression to a $$ fence', () => {
+    expect(normalizeMathDelimiters('\\[\n  a = b\n\\]')).toBe(
+      '\n\n$$\na = b\n$$\n\n',
+    )
+  })
+
+  // A fence needs blank lines around it, and injecting those mid-paragraph
+  // would split the paragraph apart.
+  it('keeps a mid-line \\[...\\] expression inline', () => {
+    expect(normalizeMathDelimiters('the value \\[x^2\\] shown')).toBe(
+      'the value $$x^2$$ shown',
+    )
+  })
+
+  it('leaves an unterminated expression alone so streaming does not flicker', () => {
+    expect(normalizeMathDelimiters('partial \\(x^')).toBe('partial \\(x^')
+    expect(normalizeMathDelimiters('partial \\[x^')).toBe('partial \\[x^')
+  })
+
+  it('leaves prose without math delimiters unchanged', () => {
+    const input = 'costs $5 and $10, see arr[1] and f(x)'
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  it('converts a single-dollar expression to $$...$$', () => {
+    expect(normalizeMathDelimiters('the area is $\\pi r^2$ exactly')).toBe(
+      'the area is $$\\pi r^2$$ exactly',
+    )
+  })
+
+  // The shape models reach for when naming the parts of a diagram.
+  it('converts every symbol in a sentence of single-letter variables', () => {
+    expect(
+      normalizeMathDelimiters('sides $a$, $b$ and $c$ opposite $A$, $B$, $C$'),
+    ).toBe('sides $$a$$, $$b$$ and $$c$$ opposite $$A$$, $$B$$, $$C$$')
+  })
+
+  it.each([
+    ['is always $180^\\circ$, so', 'is always $$180^\\circ$$, so'],
+    ['the ($\\sin^{-1}$) function', 'the ($$\\sin^{-1}$$) function'],
+    ['solve $f(x)$ for x', 'solve $$f(x)$$ for x'],
+    ['given $a + b$ here', 'given $$a + b$$ here'],
+    ['so $2+2=4$ holds', 'so $$2+2=4$$ holds'],
+  ])('converts %j', (input, expected) => {
+    expect(normalizeMathDelimiters(input)).toBe(expected)
+  })
+
+  it.each([
+    'costs $5 and $10 total',
+    'price is $5.99 USD and $3.50 tax',
+    'it cost $1,000.00 and $250',
+    'revenue grew from $1.5M to $2M',
+    'discount $10 off $50 orders',
+    'set $HOME and $PATH first',
+  ])('leaves the dollar amounts in %j alone', (input) => {
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  // A range leaves the dash hanging at the end of the span, which would
+  // otherwise read as the operator that makes the span an expression.
+  it.each([
+    'the range is $5-$10',
+    'salary of $100k-$150k a year',
+    'valued at $1.5M-$2M today',
+    'raised $2bn-$3bn in total',
+    'between $100 million-$150 million',
+    'the range is $5\u2013$10',
+    'the range is $5\u2014$10',
+  ])('leaves the dollar range in %j alone', (input) => {
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  // A rejected span must not consume the delimiters after it, or an expression
+  // that follows a price in the same paragraph would never be considered.
+  it('converts math that follows dollar amounts on the same line', () => {
+    expect(
+      normalizeMathDelimiters('costs $5 and $10. For side $a$ we get'),
+    ).toBe('costs $5 and $10. For side $$a$$ we get')
+  })
+
+  it('leaves an already-doubled delimiter untouched', () => {
+    const input = 'inline $$x^2$$ and a lone $ sign'
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  it('ignores an escaped dollar sign', () => {
+    const input = 'escaped \\$5 and \\$10 stay as prose'
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  it('leaves an unterminated single-dollar expression alone', () => {
+    expect(normalizeMathDelimiters('partial $x^')).toBe('partial $x^')
+  })
+
+  it('does not rewrite delimiters inside fenced code blocks', () => {
+    const input = '```tex\n\\(x^2\\)\n```'
+    expect(normalizeMathDelimiters(input)).toBe(input)
+  })
+
+  it('does not rewrite single dollars inside code', () => {
+    expect(normalizeMathDelimiters('run `echo $a` then $b$')).toBe(
+      'run `echo $a` then $$b$$',
+    )
+  })
+
+  it('does not rewrite delimiters inside inline code', () => {
+    expect(normalizeMathDelimiters('use `\\(x\\)` or \\(y\\)')).toBe(
+      'use `\\(x\\)` or $$y$$',
+    )
+  })
+})
+
+describe('replaceCitationsWithUrlsExcludingCode', () => {
+  const links = ['https://example.com/a', 'https://example.com/b']
+
+  it('replaces citations in plain prose', () => {
+    expect(
+      replaceCitationsWithUrlsExcludingCode('See [1] and [2].', links),
+    ).toBe('See https://example.com/a and https://example.com/b.')
+  })
+
+  it('returns text unchanged when allowedLinks is empty', () => {
+    expect(replaceCitationsWithUrlsExcludingCode('See [1].', [])).toBe(
+      'See [1].',
+    )
+  })
+
+  it('preserves bracket-number syntax inside fenced code blocks', () => {
+    const input = 'Use it like:\n```js\nconst x = arr[1]\n```\nSee [1].'
+    expect(replaceCitationsWithUrlsExcludingCode(input, links)).toBe(
+      'Use it like:\n```js\nconst x = arr[1]\n```\nSee https://example.com/a.',
+    )
+  })
+
+  it('preserves bracket-number syntax inside inline code', () => {
+    const input = 'Access via `arr[1]` — see [2].'
+    expect(replaceCitationsWithUrlsExcludingCode(input, links)).toBe(
+      'Access via `arr[1]` — see https://example.com/b.',
+    )
+  })
+
+  it('handles multiple citations across mixed code and prose', () => {
+    const input =
+      'Intro [1].\n```\narr[2] = arr[1] + 1\n```\nMore prose [2] then '
+      + '`obj[1]` and finally [1].'
+    expect(replaceCitationsWithUrlsExcludingCode(input, links)).toBe(
+      'Intro https://example.com/a.\n```\narr[2] = arr[1] + 1\n```\n'
+        + 'More prose https://example.com/b then `obj[1]` and finally '
+        + 'https://example.com/a.',
+    )
+  })
+
+  it('keeps citation when link is missing for that index', () => {
+    expect(replaceCitationsWithUrlsExcludingCode('See [3].', links)).toBe(
+      'See [3].',
+    )
+  })
+
+  it('adds a space before the URL when citation runs onto a word', () => {
+    expect(replaceCitationsWithUrlsExcludingCode('Japan[1].', links)).toBe(
+      'Japan https://example.com/a.',
+    )
+  })
+})
+
+describe('isAssistantGroupTask', () => {
+  it('should return true for a single-entry group containing at least one task tool', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getCompletionEvent('Running tasks...'),
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+        ],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(true)
+  })
+
+  it('should return true even when the group has no completion event', () => {
+    // A task is identified purely by the presence of task tool uses;
+    // a completion event is not required.
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool2',
+            id: '1',
+            argumentsJson: 'tool input',
+            output: undefined,
+          }),
+        ],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(true)
+  })
+
+  it('should return true with only 1 task tool use event spanning multiple entries', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('task completed')],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(true)
+  })
+
+  it('should return true when a task tool is mixed with a non-task tool', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+          getToolUseEvent({
+            toolName: Mojom.USER_CHOICE_TOOL_NAME,
+            id: '2',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('task completed')],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(true)
+  })
+
+  it('sanity check: should return false when including a non-assistant entry', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.HUMAN,
+        text: 'Question 1',
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: 'a-task-tool1',
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+          getToolUseEvent({
+            toolName: 'a-task-tool2',
+            id: '1',
+            argumentsJson: 'tool input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('task completed')],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(false)
+  })
+
+  it('should return false for empty group', () => {
+    const group: Mojom.ConversationTurn[] = []
+    expect(isAssistantGroupTask(group)).toBe(false)
+  })
+
+  it('should return false when group has no tool uses (completion-only)', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('Just an answer.')],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(false)
+  })
+
+  it('should return false when group has only non-task tool use events', () => {
+    const group: Mojom.ConversationTurn[] = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getCompletionEvent('Running tasks...'),
+          getToolUseEvent({
+            toolName: Mojom.USER_CHOICE_TOOL_NAME,
+            id: '1',
+            argumentsJson: ' input',
+            output: undefined,
+          }),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: Mojom.MEMORY_STORAGE_TOOL_NAME,
+            id: '1',
+            argumentsJson: 'tool input',
+            output: undefined,
+          }),
+        ],
+      }),
+    ]
+
+    expect(isAssistantGroupTask(group)).toBe(false)
+  })
+})
+
+describe('getGroupAllowedLinks', () => {
+  const makeArtifact = (contentJson: string): Mojom.ToolArtifact => ({
+    id: null,
+    type: Mojom.VISITED_LINKS_ARTIFACT_TYPE,
+    contentJson,
+  })
+
+  const turnWithArtifacts = (
+    artifacts: Mojom.ToolArtifact[],
+  ): Mojom.ConversationTurn =>
+    createConversationTurnWithDefaults({
+      characterType: Mojom.CharacterType.ASSISTANT,
+      events: [
+        getToolUseEvent({
+          toolName: Mojom.SEMANTIC_HISTORY_SEARCH_TOOL_NAME,
+          id: '1',
+          argumentsJson: '{}',
+          output: [],
+          artifacts,
+        }),
+      ],
+    })
+
+  it('returns URL strings from a visited_links artifact', () => {
+    const group = [
+      turnWithArtifacts([
+        makeArtifact(
+          JSON.stringify(['https://a.com/one', 'https://a.com/two']),
+        ),
+      ]),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual([
+      'https://a.com/one',
+      'https://a.com/two',
+    ])
+  })
+
+  it('flattens across all entries in the group', () => {
+    const group = [
+      turnWithArtifacts([makeArtifact(JSON.stringify(['https://a.com']))]),
+      turnWithArtifacts([makeArtifact(JSON.stringify(['https://b.com']))]),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual([
+      'https://a.com',
+      'https://b.com',
+    ])
+  })
+
+  it('ignores artifacts of other types', () => {
+    const group = [
+      turnWithArtifacts([
+        { id: null, type: 'line_chart', contentJson: '{"data": []}' },
+        makeArtifact(JSON.stringify(['https://kept.com'])),
+      ]),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual(['https://kept.com'])
+  })
+
+  it('filters out malformed JSON, non-array, and non-string entries', () => {
+    const group = [
+      turnWithArtifacts([
+        makeArtifact('not valid json'),
+        makeArtifact(JSON.stringify({ not: 'an array' })),
+        makeArtifact(JSON.stringify(['https://example.com/ok', 42, null])),
+      ]),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual(['https://example.com/ok'])
+  })
+
+  it('returns an empty array when no tool_use events exist', () => {
+    const group = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('plain response')],
+      }),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual([])
+  })
+
+  it('uses the latest edit of each entry', () => {
+    const original = turnWithArtifacts([
+      makeArtifact(JSON.stringify(['https://original.com'])),
+    ])
+    original.edits = [
+      turnWithArtifacts([makeArtifact(JSON.stringify(['https://edited.com']))]),
+    ]
+    expect(getGroupAllowedLinks([original])).toEqual(['https://edited.com'])
+  })
+
+  it('collects URLs from sourcesEvent across all entries in the group', () => {
+    const group = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getWebSourcesEvent([
+            {
+              url: { url: 'https://a.com' },
+              title: 'A',
+              faviconUrl: { url: 'https://a.com/favicon.ico' },
+            },
+          ]),
+        ],
+      }),
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getWebSourcesEvent([
+            {
+              url: { url: 'https://b.com' },
+              title: 'B',
+              faviconUrl: { url: 'https://b.com/favicon.ico' },
+            },
+          ]),
+        ],
+      }),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual([
+      'https://a.com',
+      'https://b.com',
+    ])
+  })
+
+  it('unions sourcesEvent and visited_links URLs and dedupes', () => {
+    const group = [
+      createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [
+          getToolUseEvent({
+            toolName: Mojom.SEMANTIC_HISTORY_SEARCH_TOOL_NAME,
+            id: '1',
+            argumentsJson: '{}',
+            output: [],
+            artifacts: [
+              makeArtifact(
+                JSON.stringify(['https://history.example', 'https://dup.com']),
+              ),
+            ],
+          }),
+          getWebSourcesEvent([
+            {
+              url: { url: 'https://search.example' },
+              title: 'Search',
+              faviconUrl: { url: 'https://search.example/favicon.ico' },
+            },
+            {
+              url: { url: 'https://dup.com' },
+              title: 'Dup',
+              faviconUrl: { url: 'https://dup.com/favicon.ico' },
+            },
+          ]),
+        ],
+      }),
+    ]
+    expect(getGroupAllowedLinks(group)).toEqual([
+      'https://history.example',
+      'https://dup.com',
+      'https://search.example',
+    ])
+  })
+})

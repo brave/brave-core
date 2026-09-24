@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Report Glic as unavailable to every Android UI surface.
+
+      Upstream enabled Glic on Android by default in
+      https://chromium.googlesource.com/chromium/src/+/fb99698eed3b0, which
+      makes Gemini surface throughout the browser: the first run promo, the
+      "Ask Gemini" text selection and context menu items, the settings page and
+      the adaptive toolbar button.
+
+      This class is the gate every one of those consults, and it is Java only -
+      the C++ actor machinery that Brave's AI Chat builds on lives behind
+      GlicEnabling::IsAccountManaged and friends, which are untouched here. That
+      makes this a safer place to switch Glic off than features::kGlic or
+      GlicEnabling::IsEnabledByGlobalCriteria, either of which would also
+      withdraw the actor code from underneath AI Chat.
+
+      Each accessor calls straight into JNI rather than delegating to
+      isEnabledByFlags(), so they all have to be answered individually. Note
+      that the sIsEnabledForTesting short circuit precedes the value being
+      replaced, so upstream tests that call setEnabledForTesting(true) still see
+      Glic as enabled and keep passing.
+
+      The policy accessors (isDisabledByPolicy, isPolicyEnforced,
+      isProfileManaged and wasPreviouslyNotAllowed) are deliberately left alone:
+      they report why Glic is unavailable rather than whether it is, and nothing
+      reaches them once the accessors below answer false.
+    count: 6
+    regex:
+      re_pattern: 'return GlicEnablingJni\.get\(\)\.(isEnabledByFlags|isProfileEligible|isEnabledForProfile|isReadyForProfile|shouldShowSettingsPage|shouldShowWebActuationToggle)\([^)]*\);'
+      replace: 'return false;'

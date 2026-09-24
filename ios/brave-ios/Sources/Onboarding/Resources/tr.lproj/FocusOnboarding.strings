@@ -1,0 +1,48 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Hızlı erişim için Brave simgesine dokunup basılı tutun, ardından dock'unuza sürükleyin.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Brave'i Dock'unuza Ekleyin";
+
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "Devam";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Brave'i hemen varsayılan tarayıcınız olarak ayarlayın.";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Ziyaret Ettiğiniz Her Sitede Reklam Engelleme";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "Şimdi Değil";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "En sevdiğiniz video sitelerinde kesintisiz bir izleme deneyimi yaşayın.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "Kesintisiz İzleme Deneyimi";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "En çok hangi özellikleri sevdiğinizi bizi söyleyin.";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Brave'i Daha da Geliştirelim";
+
+/* The description shown below the toggle for enabling privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "Brave kullanıcılarının hangi özellikleri kullandıklarına dair tamamen gizli ve anonim ürün içgörülerini paylaşın.";
+
+/* The title of the toggle that allows the user to enable/disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "Özel ürün içgörüleri";
+
+/* The description shown below the toggle for enabling crash reporting. */
+"focusOnboarding.sendCrashReportsToggleDescription" = "Kilitlenme veya çökme yaşarsanız anonim tanı raporu gönderin.";
+
+/* The title of the toggle that allows the user to enable/disable crash reporting. */
+"focusOnboarding.sendCrashReportsToggleTitle" = "Çökme raporları gönder";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "Göz Atmaya Başla";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "Varsayılan Olarak Ayarla";
+

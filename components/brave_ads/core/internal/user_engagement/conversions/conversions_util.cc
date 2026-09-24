@@ -1,0 +1,60 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util.h"
+
+#include <utility>
+
+#include "base/notreached.h"
+#include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/settings/settings.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_util_internal.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
+
+namespace brave_ads {
+
+bool IsAllowedToConvertAdEvent(const AdEventInfo& ad_event) {
+  if (!CanConvertAdEvent(ad_event)) {
+    return false;
+  }
+
+  switch (ad_event.type) {
+    case mojom::AdType::kNewTabPageAd: {
+      // Only if:
+      // - New tab page ads are enabled and the user has joined Brave
+      //   Rewards.
+      return IsNewTabPageAdsEnabled() && UserHasJoinedBraveRewards();
+    }
+
+    case mojom::AdType::kNotificationAd: {
+      // Only if:
+      // - Notification ads are enabled. Notification ads cannot be enabled
+      //   without joining Brave Rewards.
+      return IsNotificationAdsEnabled();
+    }
+
+    case mojom::AdType::kSearchResultAd: {
+      // Only if:
+      // - Sponsored ads are enabled.
+      return IsSponsoredAdsEnabled();
+    }
+
+    case mojom::AdType::kUndefined: {
+      break;
+    }
+  }
+
+  NOTREACHED() << "Unexpected value for mojom::AdType: "
+               << std::to_underlying(ad_event.type);
+}
+
+bool DidAdEventOccurWithinObservationWindow(
+    const AdEventInfo& ad_event,
+    base::TimeDelta observation_window) {
+  return ad_event.created_at >= base::Time::Now() - observation_window;
+}
+
+}  // namespace brave_ads

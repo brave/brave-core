@@ -1,0 +1,47 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("download") {
+  sources = [
+    "brave_download_manager_delegate.cc",
+    "brave_download_manager_delegate.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/image_metadata_stripper",
+    "//brave/components/image_metadata_stripper/common",
+    "//chrome/browser/download",
+    "//chrome/browser/profiles:profile",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+
+  sources = [ "brave_download_manager_delegate_browsertest.cc" ]
+
+  deps = [
+    ":download",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/image_metadata_stripper/common",
+    "//chrome/browser/download",
+    "//chrome/browser/profiles:profile",
+    "//chrome/common",
+    "//chrome/test:test_support",
+    "//components/prefs",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net",
+    "//net:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
+
+  data = [ "//brave/test/data/image_metadata_stripper/" ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}

@@ -1,0 +1,44 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
+
+assert(enable_text_recognition)
+
+component("browser") {
+  output_name = "text_recognition_browser"
+
+  sources = [ "text_recognition.h" ]
+
+  defines = [ "IS_TEXT_RECOGNITION_BROWSER_IMPL" ]
+
+  deps = [
+    "//base",
+    "//skia",
+  ]
+
+  if (is_win) {
+    sources += [
+      "text_recognition_win.cc",
+      "text_recognizer_win.cc",
+      "text_recognizer_win.h",
+    ]
+
+    deps += [
+      "//brave/components/l10n/common",
+      "//services/shape_detection:lib",
+      "//services/shape_detection/public/mojom",
+    ]
+  }
+
+  if (is_mac) {
+    sources += [ "text_recognition.mm" ]
+
+    frameworks = [
+      "Foundation.framework",
+      "Vision.framework",
+    ]
+  }
+}

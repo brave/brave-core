@@ -1,0 +1,32 @@
+diff --git a/third_party/blink/renderer/modules/webaudio/audio_buffer.h b/third_party/blink/renderer/modules/webaudio/audio_buffer.h
+index 4bbf70b4398c4753c650a93ba0314c9f841dd4e5..bb1525dd31fa9ed2420b37d01ca6b7abd58db002 100644
+--- a/third_party/blink/renderer/modules/webaudio/audio_buffer.h
++++ b/third_party/blink/renderer/modules/webaudio/audio_buffer.h
+@@ -44,6 +44,7 @@ class AudioBus;
+ class AudioBufferOptions;
+ class ExceptionState;
+ class SharedAudioBuffer;
++class ScriptState;
+ 
+ class MODULES_EXPORT AudioBuffer final : public ScriptWrappable {
+   DEFINE_WRAPPERTYPEINFO();
+@@ -89,13 +90,16 @@ class MODULES_EXPORT AudioBuffer final : public ScriptWrappable {
+ 
+   // Channel data access
+   unsigned numberOfChannels() const { return channels_.size(); }
+-  NotShared<DOMFloat32Array> getChannelData(unsigned channel_index,
++  NotShared<DOMFloat32Array> getChannelData(ScriptState*,
++                                            unsigned channel_index,
+                                             ExceptionState&);
+   NotShared<DOMFloat32Array> getChannelData(unsigned channel_index);
+-  void copyFromChannel(NotShared<DOMFloat32Array>,
++  void copyFromChannel(ScriptState*,
++                       NotShared<DOMFloat32Array>,
+                        int32_t channel_number,
+                        ExceptionState&);
+-  void copyFromChannel(NotShared<DOMFloat32Array>,
++  void copyFromChannel(ScriptState*,
++                       NotShared<DOMFloat32Array>,
+                        int32_t channel_number,
+                        size_t buffer_offset,
+                        ExceptionState&);

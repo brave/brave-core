@@ -1,0 +1,99 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Ads";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Уже придбали на brave.com?";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Аналітика";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Купити зараз";
+
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Для застосування змін потрібно перезавантажити браузер при вмиканні або вимиканні функції Brave. Закрийте (проведіть пальцем угору в перемикачі застосунків) і знову відкрийте Brave.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Зміна функцій Brave";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "**Налаштуйте свій браузер, продовжуючи підтримувати Brave**\n\nBrave Origin — це платна версія браузера для користувачів, які не потребують усіх функцій, що підтримують Brave як бізнес, але все ще хочуть приватність, яку пропонує лише Brave. Користувачі Origin продовжуватимуть користуватися нашою приватністю світового класу, блокуванням реклами та швидкістю (через Щити), а також регулярними оновленнями програмного забезпечення, виправленнями Chromium та покращеннями безпеки й приватності. Origin вилучить більшість інших функцій з браузера.";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Функції";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Підтвердити покупку Brave Origin";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "ШІ Leo";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Зв’язати покупку з обліковим записом Brave";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Новини";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Одноразова покупка";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Список відтворення";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Аналітика із збереженням конфіденційності";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Маєте промокод?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Оберіть зручний для вас спосіб оплати:";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Не вдалося здійснити покупку. Спробуйте ще раз або перевірте свої платіжні реквізити, вказані в мережі Apple, та повторіть спробу.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Зв’яжіть покупку в App Store з вашим обліковим записом Brave, щоб користуватися Brave Origin на інших пристроях";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Придбання";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Активувати промокод";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Скидання до налаштувань за замовчуванням";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Відновити";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Винагороди";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Статистична звітність";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Talk";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Збережіть основні блокування реклами, приватність та швидкість";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Мінімалістичний інтерфейс браузера, зосереджений на Щитах Brave";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Одноразову покупку можна активувати кілька разів на всіх ваших пристроях";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Підтримайте нашу місію та роботу з відкритим кодом";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "Переглянути квитанцію App Store";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Гаманець";
+

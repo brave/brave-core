@@ -1,0 +1,13 @@
+diff --git a/components/browsing_data/core/browsing_data_policies_utils_unittest.cc b/components/browsing_data/core/browsing_data_policies_utils_unittest.cc
+index 55f172f473dd2dd4d4ac6cb9f9e4514f95a00701..477db428826ad2ba940cc89c0cf4447fa39f6bc9 100644
+--- a/components/browsing_data/core/browsing_data_policies_utils_unittest.cc
++++ b/components/browsing_data/core/browsing_data_policies_utils_unittest.cc
+@@ -136,7 +136,7 @@ TEST(BrowsingDataPoliciesUtils, AllSyncTypesChecked) {
+       syncer::UserSelectableType::kThemes,
+       syncer::UserSelectableType::kExtensions,
+       syncer::UserSelectableType::kApps,
+-      syncer::UserSelectableType::kReadingList};
++      syncer::UserSelectableType::kReadingList, syncer::UserSelectableType::kAIChat};
+ 
+   syncer::UserSelectableTypeSet sync_types =
+       browsing_data::GetSyncTypesForClearBrowsingData(

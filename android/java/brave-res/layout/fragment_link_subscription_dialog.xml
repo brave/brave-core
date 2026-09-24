@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/onboarding_card_bg_color">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="32dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:src="@drawable/ic_vpn_promo"
+            android:contentDescription="@null"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/link_subscription_dialog_title"
+            android:textSize="24sp"
+            android:layout_marginBottom="24dp"
+            android:textColor="@color/shield_text_color"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:textSize="16sp"
+            android:text="@string/link_subscription_dialog_text"
+            android:layout_marginBottom="24dp"
+            android:textColor="@color/shield_text_color"/>
+
+        <android.widget.Button
+            android:id="@+id/btn_done"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/crypto_wallet_blue_button"
+            android:text="@string/link_subscription_dialog_action_text"
+            android:textAllCaps="false"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:layout_marginBottom="24dp"
+            style="?android:attr/borderlessButtonStyle"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:text="@string/powered_by"
+            android:textColor="@color/shield_text_color"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical"
+            android:textSize="13sp"
+            app:drawableTint="@color/brave_stats_close_button_color"
+            app:drawableRightCompat="@drawable/ic_guardian" />
+
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/modal_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:layout_gravity="end|top"
+            android:tint="@color/brave_stats_close_button_color"
+            android:padding="16dp"
+            app:srcCompat="@drawable/btn_close"/>
+
+</FrameLayout>

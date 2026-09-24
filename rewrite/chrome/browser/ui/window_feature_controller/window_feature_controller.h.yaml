@@ -1,0 +1,27 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add `vertical tab controller` to the ctor arg list
+
+      This `vertical_tab_controller_` field is required for `NormalBrowserSupportsWindowFeature`.
+    regex:
+      re_pattern: '(WindowFeatureController\((?=[^)]*ui::UnownedUserDataHost).*?)(\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1,
+              const base::WeakPtr<VerticalTabController>& vertical_tab_controller\2
+
+  - description: |
+      Add `vertical_tab_controller_` as the last member of WindowFeatureController
+
+      This `vertical_tab_controller_` field is required for `NormalBrowserSupportsWindowFeature`.
+    regex:
+      re_pattern: '(class WindowFeatureController \{.*)(\n\};)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          const base::WeakPtr<VerticalTabController> vertical_tab_controller_;\2

@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "L'extension Brave",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Boucliers",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "activés",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "désactivés",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "pour ce site",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Si le site semble ne pas fonctionner, essayez de désactiver les boucliers.",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Votre navigation sur ce site n'est pas protégée par Brave. Avez-vous rencontré des problèmes en utilisant les boucliers sur ce site ?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Signaler une panne du site",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "Éléments bloqués",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "Élément bloqué",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "et",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "connexions améliorées",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "connexion améliorée",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "Traqueurs intersites bloqués",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Traqueurs et pubs bloqués",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Traqueurs et pubs bloqués (agressif)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Traqueurs et pubs bloquée (standard)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Autoriser tous les traqueurs et pubs",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "Les connexions passent par HTTPS",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "La connexion passe par HTTPS",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Bloquer tous les scripts",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "Cookies intersites bloqués",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Cookies bloqués",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Accepter tous les cookies",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Empreinte digitale bloquée",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "Empreintes digitales bloquées (standard)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "Empreintes digitales bloquées (strict, peut casser les sites)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "Autoriser toutes les empreintes digitales",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Tentatives de collecte de l'empreinte digitale d'appareil",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Scripts sur ce site",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Scripts bloqués",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Scripts autorisés",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "Tout bloquer",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Tout autoriser",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "Bloquer",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "Autoriser",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "Bloqué une fois",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Autorisées une fois",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Autoriser les scripts une seule fois",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "Annuler",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Retour",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Appliquer pour cette fois",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Changer les paramètres Global Shield par défaut",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "Gérer les filtres personnalisés",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Élément bloqué",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "Affichage avancé",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Affichage simple",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Les sites incluent souvent des cookies et des scripts qui tentent de vous identifier et d'identifier votre appareil (ils sont souvent intégrés dans les publicités). Ils cherchent à déterminer qui vous êtes et vous suivent sur le web en gardant trace de vos activités sur chaque site. Brave bloque ces éléments pour que vous puissiez naviguer sans être suivi à la trace.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Traqueurs intersites et autres nuisances bloqués",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "La modification des paramètres du bouclier avec cet affichage peut affecter la compatibilité web sur ce site.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "OK",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "En savoir plus",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Ajouter à Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Supprimer de Brave",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Ajouter à Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Supprimer de Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

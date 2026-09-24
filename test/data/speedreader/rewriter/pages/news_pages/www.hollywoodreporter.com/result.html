@@ -1,0 +1,554 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>The Hollywood Reporter</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">The Hollywood Reporter</h1><p class="subhead metadata">The pop sensation had five No. 1 hits, including "Physical," "Have You Never Been Mellow" and "You're the One That I Want."</p><div class=""><p class="metadata">By Mike Barnes</p><p class="metadata date">Updated Aug. 09, 2022 11:37 AM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+					
+					<p>Olivia Newton-John, the angelic Australian singer who forged a hopelessly devoted following with her chart-topping hits “Physical,” “Have You Never Been Mellow” and “You’re the One That I Want,” her&nbsp;<em><a data-tag="grease" href="https://www.hollywoodreporter.com/t/grease/" id="auto-tag_grease">Grease</a>&nbsp;</em>duet with <a data-tag="john-travolta" href="https://www.hollywoodreporter.com/t/john-travolta/" id="auto-tag_john-travolta">John Travolta</a>, has died. She was 73.</p>
+<p>Newton-John died Monday morning at her ranch in Southern California, her husband, John Easterling, <a href="https://www.facebook.com/olivianewtonjohn/posts/pfbid0G8HA6NM3od3k81eeTVFDfY1HPrmv3SpHL8h67hn5BJ81CrxvMHc2VKAvCacb5Aswl" rel="nofollow" target="_blank">announced</a> on Facebook.
+
+</p>
+<p>“Olivia has been a symbol of triumphs and hope for over 30 years sharing her journey with breast cancer,” he wrote. “Her healing inspiration and pioneering experience with plant medicine continues with the <a href="http://onjfoundationfund.org" rel="nofollow" target="_blank">Olivia Newton-John Foundation Fund</a>, dedicated to researching plant medicine and cancer.”&nbsp;
+
+	</p>
+
+<p>Born in England and raised in Melbourne, Newton-John was first diagnosed with breast cancer in 1992, and she announced in May 2017 that after 25 years in remission the disease had spread to her lower back. The singer in August 2018 canceled a two-date tour just three weeks after announcing it; she was to reminisce about her career with an interviewer in Melbourne and Sydney.</p>
+<p>A country-pop and soft-rock sensation in the 1970s and ’80s with girl-next-door appeal, Newton-John sold more than 100 million albums and had nearly 40 entries on the Billboard Hot 100 during her five decades in music.</p>
+<p>Her popularity, however, reached another plateau after she was hired to play Rydell High good girl Sandy Olsson opposite Travolta as Danny Zuko in&nbsp;<em>Grease&nbsp;</em>(1978), Paramount’s adaptation of the musical that had bowed on Broadway in 1972 and would run for nearly 3,400 performances during its original run.</p>
+<p>For the actress to star opposite 23-year-old Travolta, producer Allan Carr considered <a data-tag="carrie-fisher" href="https://www.hollywoodreporter.com/t/carrie-fisher/" id="auto-tag_carrie-fisher">Carrie Fisher</a> (<em>Star Wars&nbsp;</em>had yet to be released), <a href="https://www.hollywoodreporter.com/tv/tv-news/deborah-raffin-actress-audiobook-dove-books-393715/">Deborah Raffin</a>, Susan Dey and Marie Osmond before he encountered Newton-John, then 29, at a dinner party hosted by singer <a href="https://www.hollywoodreporter.com/news/general-news/helen-reddy-voice-of-the-feminist-anthem-i-am-woman-dies-at-78-4068811/">Helen Reddy</a>. Her previous movie, the little-seen English sci-fi flick&nbsp;<em>Toomorrow&nbsp;</em>(1970), had been a failure, and that had Newton-John wary.</p>
+
+		
+			
+		
+	
+<p>“I was very anxious about making another film, because my music career was going well, and I did not want to mess it up by doing another movie that wasn’t good,” Newton-John <a href="https://www.vanityfair.com/hollywood/2016/01/grease-movie-musical-john-travolta-olivia-newton-john" rel="noopener nofollow" target="_blank">told</a>&nbsp;<em>Vanity Fair&nbsp;</em>in 2016.
+
+	</p>
+
+
+
+<p>As Carr tried to convince her to take the part — he promised to make her character Australian — Travolta also lobbied for her. “She had a brilliant voice, and I didn’t think there could be any more correct person for Sandy in the universe.”</p>
+<p>In its review of&nbsp;<em>Grease</em>,&nbsp;<em>The Hollywood Reporter&nbsp;</em><a href="https://www.hollywoodreporter.com/news/grease-thrs-1978-review-802851" rel="noopener" target="_blank">noted</a> that Newton-John projected “a youthful innocence and vulnerability” in her performance and likened her to a “kind of ’70s <a data-tag="debbie-reynolds" href="https://www.hollywoodreporter.com/t/debbie-reynolds/" id="auto-tag_debbie-reynolds">Debbie Reynolds</a>.” Others compared her to <a href="https://www.hollywoodreporter.com/news/general-news/doris-day-dead-pillow-talk-actress-que-sera-sera-singer-was-97-772821/">Doris Day</a>.</p>
+<p>Made for just $6 million,&nbsp;<em>Grease</em>, directed by first-timer Randal Kleiser, went on to reel in $395 million ($1.7 billion in today’s dollars), becoming the highest-grossing American movie musical of the 20th century. Newton-John’s “Hopelessly Devoted to You” and two duets with Travolta, “You’re the One That I Want” and “Summer Nights,” became instant classics.</p>
+<p>Travolta reacted to her death in an <a href="https://www.instagram.com/p/ChAtHO1psCS/" rel="nofollow" target="_blank">Instagram post</a>:</p>
+<p>“My dearest Olivia, you made all of our lives so much better. Your impact was incredible. I love you so much. We will see you down the road and we will all be together again. Yours from the first moment I saw you and forever!”&nbsp;<br>Your Danny, your John!</p>
+<blockquote class="instagram-media" data-instgrm-captioned="" data-instgrm-permalink="https://www.instagram.com/p/ChAtHO1psCS/?utm_source=ig_embed&amp;utm_campaign=loading" data-instgrm-version="14"></blockquote>
+<p>She was born on Sept. 26, 1948, in Cambridge, England, the youngest of three children. Her father, Brinley, was a headmaster and her mother, Irene, was the daughter of a Nobel Prize-winning physicist. The family moved to Melbourne when she was 5, and she learned to play the piano.</p>
+
+
+<p>By the time she turned 15, Newton-John had formed Sol Four, an all-girl group, and, performing “Everything’s Coming Up Roses,” won a talent contest on the popular TV show&nbsp;<em>Sing, Sing, Sing</em>. First prize was a trip to London, and she teamed with a friend, Pat Carroll, to perform on army bases and in clubs in Europe.
+
+	</p>
+
+<p>Newton-John signed with Decca Records and in 1966 recorded a version of Jackie DeShannon’s “Till You Say You’ll Be Mine,” then became the sole female member of a bubblegum band called Toomorrow, assembled by Don Kirshner in hopes of creating a U.K. version of The Monkees. (The&nbsp;<em>Toomorrow&nbsp;</em>film was written and directed by Val Guest.)</p>
+<p>Newton-John opened for Cliff Richard on tour and appeared on his British TV show before making an impression in 1971 with a version of Bob Dylan’s “If Not for You,” off her first album. In 1973, she received the first of her four Grammy Awards, winning the best country vocalist trophy for her U.S. album debut,&nbsp;<em>Let Me Be There</em>; the title track was her first top 10 single.</p>
+<p>She then had her first two No. 1s with “I Honestly Love You” in 1974 and “Have You Never Been Mellow” a year later.</p>
+<p>John Farrar, her longtime songwriter, wrote “Hopelessly Devoted to You” and “You’re the One That I Want” for her.</p>
+<p>“He came into my trailer at, like, six in the morning, because he had been up all night,” Newton-John recalled. “He played [‘You’re the One That I Want’] for me and said, ‘What do you think?’ I went, ‘Oh, God, it’s amazing.’ It just had this fantastic energy.”</p>
+
+
+<p>Newton-John followed up&nbsp;<em>Grease&nbsp;</em>with the roller-disco fantasy&nbsp;<em>Xanadu&nbsp;</em>(1980), in which she shared a dance with Gene Kelly in his final film. The movie stumbled at the box office, but the soundtrack contained her hits “Magic” (four weeks at No. 1), “Xanadu” (written by Jeff Lynne and performed with ELO) and “Suddenly” (a duet with Richard).</p>
+<p>She reteamed with Travolta for the fantasy comedy&nbsp;<em>Two of a Kind&nbsp;</em>(1983), and that spawned “Twist of Fate,” another top 10 hit for her.</p>
+<p>With Newton-John reinventing herself as a Spandex-clad aerobics fanatic in a sexy and funny <a href="https://www.youtube.com/watch?v=vWz9VN40nCA" rel="noopener nofollow" target="_blank">music video</a>, “Physical” spent 10 consecutive weeks at No. 1 from 1981 into early 1982, and no other song lasted as long at the top during the entire decade.</p>
+<p>Newton-John also had hits with “Let Me Be There,” “If You Love Me (Let Me Know),” “Make a Move on Me” and “Heart Attack,” among many others.
+
+	</p>
+
+<p>More recently, Newton-John played the barfly Bitsy Mae Harling in Del Shores’ black comedy&nbsp;<em>Sordid Lives&nbsp;</em>(2000) and on a 2008 TV spinoff for Logo; sang during the Opening Ceremony at the 2000 Summer Olympics in Sydney; appeared in the films&nbsp;<em>Score: A Hockey Musical&nbsp;</em>(2010) and&nbsp;<em>A Few Best Men&nbsp;</em>(2011); and played herself in two episodes of&nbsp;<em>Glee</em>, performing “Physical” with <a data-tag="jane-lynch" href="https://www.hollywoodreporter.com/t/jane-lynch/" id="auto-tag_jane-lynch">Jane Lynch</a>.</p>
+<p>In April 2014, she began a three-year residency at the Flamingo Las Vegas, billed as a “musical journey through her career in movies and music.”</p>
+<p>An inspiration to those affected by breast cancer, she helped launch the Olivia Newton-John Cancer and Wellness Centre in Melbourne and raised hundreds of millions of dollars in the fight against the disease.</p>
+<p>She always preferred to be called a cancer “thriver” rather than a cancer “survivor.” ” ‘Survivor’ sounds like someone clinging onto a lifeboat,” she said. “A thriver’s someone who’s already off the boat and on land.”</p>
+<p>She also supported many other charities and environmental concerns.</p>
+<p>Survivors include her husband, whom she married in 2008; her daughter Chloe, with whom she collaborated on the dance song “You Have to Believe”;&nbsp;sister Sarah; brother Toby; and nieces and nephews Tottie, Fiona, Brett, Emerson, Charlie, Zac, Jeremy, Randall, Pierz, Jude, Layla, Kira, Tasha, Brin and Valerie.</p>
+<p>Her sister Rona, who died of brain cancer in 2013, was an actress who was married to Olivia’s&nbsp;<em>Grease&nbsp;</em>co-star Jeff Conaway from 1980 until their divorce in 1985.</p>
+<p>In lieu of flowers, the family asks that donations be made in her memory to the Olivia Newton-John Foundation Fund.</p>				</body>

@@ -1,0 +1,47 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("brave_search") {
+  sources = [
+    "brave_search_ad_results_javascript_feature.h",
+    "brave_search_ad_results_javascript_feature.mm",
+    "brave_search_make_default_javascript_feature.h",
+    "brave_search_make_default_javascript_feature.mm",
+    "brave_search_make_default_tab_helper.h",
+    "brave_search_make_default_tab_helper.mm",
+    "brave_search_make_default_tab_helper_bridge.h",
+  ]
+  deps = [
+    ":brave_search_ad_results_js",
+    ":brave_search_make_default_helper_js",
+    "//url",
+  ]
+  public_deps = [
+    "//base",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("brave_search_ad_results_js") {
+  visibility = [ ":brave_search" ]
+
+  sources = [ "resources/brave_search_ad_results.ts" ]
+
+  deps = [
+    "//ios/web/public/js_messaging:gcrweb",
+    "//ios/web/public/js_messaging:util_scripts",
+  ]
+}
+
+optimize_ts("brave_search_make_default_helper_js") {
+  visibility = [ ":brave_search" ]
+
+  sources = [ "resources/brave_search_make_default_helper.ts" ]
+
+  deps = [ "//ios/web/public/js_messaging:util_scripts" ]
+}

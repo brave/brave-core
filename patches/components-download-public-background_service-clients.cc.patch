@@ -1,0 +1,13 @@
+diff --git a/components/download/public/background_service/clients.cc b/components/download/public/background_service/clients.cc
+index 091ddf6cc3e6aa45300b647be5a37ab8c57be315..46804a712f0919fe05e77c6d8570ecea0dda8984 100644
+--- a/components/download/public/background_service/clients.cc
++++ b/components/download/public/background_service/clients.cc
+@@ -9,6 +9,8 @@ namespace download {
+ // Must sync variants "DownloadClient" in histograms.xml
+ std::string BackgroundDownloadClientToString(DownloadClient client) {
+   switch (client) {
++    case DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS:
++      return "CustomListSubscriptions";
+     case DownloadClient::TEST:
+     case DownloadClient::TEST_2:
+     case DownloadClient::TEST_3:

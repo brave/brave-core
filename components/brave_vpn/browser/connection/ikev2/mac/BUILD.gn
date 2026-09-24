@@ -1,0 +1,33 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+
+assert(enable_brave_vpn)
+assert(is_mac)
+
+source_set("mac") {
+  sources = [
+    "ikev2_connection_api_impl_mac.h",
+    "ikev2_connection_api_impl_mac.mm",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/browser/connection:api",
+    "//brave/components/brave_vpn/browser/connection:common",
+    "//brave/components/brave_vpn/browser/connection/ikev2",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//components/prefs",
+    "//net",
+    "//services/network/public/cpp",
+  ]
+
+  frameworks = [
+    "NetworkExtension.framework",
+    "Foundation.framework",
+  ]
+}

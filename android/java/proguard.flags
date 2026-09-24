@@ -1,0 +1,115 @@
+-keep class org.chromium.components.media_router.caf.CastOptionsProvider { *; }
+
+-keep class com.google.android.material.bottomsheet.BottomSheetBehavior { *; }
+
+-keep class com.google.android.material.behavior.HideBottomViewOnScrollBehavior { *; }
+
+-keep class org.chromium.chrome.browser.BraveSyncWorker { *; }
+
+# Add methods for invocation below
+-keep class org.chromium.chrome.browser.ChromeTabbedActivity {
+    *** mLayoutManager;
+    *** mMultiInstanceManager;
+    *** hideOverview(...);
+    *** maybeHandleUrlIntent(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.OmniboxViewHolderFactory {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.AutocompleteMediator {
+    *** mContext;
+    *** mDataProvider;
+    *** loadUrlForOmniboxMatch(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.ContentSettingsResources {
+    *** getResourceItem(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.SingleCategorySettings {
+    *** mCategory;
+    *** getAddExceptionDialogMessageResourceId(...);
+    *** resetList(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.SingleWebsiteSettings {
+    *** mSite;
+    *** getPreferenceKey(...);
+    *** setupContentSettingsPreferences(...);
+    *** setupContentSettingsPreference(...);
+}
+
+-keep class org.chromium.components.browser_ui.site_settings.Website {
+    *** getPermissionInfo(...);
+    *** getContentSettingException(...);
+    *** getAddress(...);
+    *** setContentSettingException(...);
+    *** setContentSetting(...);
+}
+
+# Needed by the gson use inside the prebuilt Brave Playlist AAR.
+-keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
+
+-keep class org.chromium.chrome.browser.tabmodel.TabCollectionTabModelImpl {
+    *** shouldGroupWithParent(...);
+    *** isTabModelRestored(...);
+}
+
+-keep class org.chromium.chrome.browser.omnibox.suggestions.editurl.EditUrlSuggestionProcessor {
+    *** onCopyLink(...);
+}
+
+-keep class org.chromium.chrome.browser.hub.HubManagerImpl {
+    *** ensureHubCoordinatorIsInitialized(...);
+}
+
+-keep class org.chromium.chrome.browser.tasks.tab_management.IncognitoTabSwitcherPane {
+    *** mReferenceButtonData;
+}
+
+-keep class org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarController {
+    *** showUndoBar(...);
+}
+
+-keep class org.chromium.chrome.browser.tabbed_mode.TabbedNavigationBarColorController {
+    private *** getNavigationBarColor(...);
+    *** useActiveTabColor(...);
+}
+
+-keep class org.chromium.components.browser_ui.media.MediaSessionHelper {
+    *** mWebContents;
+    *** mNotificationInfoBuilder;
+    *** mMediaSessionActions;
+    *** showNotification(...);
+    *** createMediaSessionObserver(...);
+}
+
+-keep class org.chromium.chrome.browser.media.FullscreenVideoPictureInPictureController {
+    *** dismissActivityIfNeeded(...);
+}
+
+-keep class org.chromium.chrome.browser.notifications.channels.SiteChannelsManager {
+    *** toChannelStatus(...);
+}
+
+-keep class org.chromium.ui.base.Clipboard {
+    *** clear(...);
+}
+
+# Keep Play Core Review classes to prevent ClassNotFoundException during Parcelable deserialization
+-keep class com.google.android.play.core.review.** { *; }
+-keep class com.google.android.play.core.common.** { *; }
+
+# Keep Play Core App Update classes to prevent ClassNotFoundException during Parcelable deserialization
+-keep class com.google.android.play.core.appupdate.** { *; }
+-keep class com.google.android.play.core.install.** { *; }
+
+# Prevent R8 from inlining DeferredContentViewStub.<init> into TabImpl.initWebContents.
+# R8 inlining a constructor that calls super() incorrectly inserts check-cast on an
+# uninitialized reference before invoke-direct <init>, causing a VerifyError on tab
+# restore in release arm64 builds (crrev.com/c/7837252).
+-keep class org.chromium.chrome.browser.tab.TabImpl$DeferredContentViewStub {
+    <init>(android.content.Context, org.chromium.content_public.browser.WebContents);
+}

@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Brave кеңейтімі",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Қорғаныштар",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "жоғары",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "төмен",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "бұл сайт үшін",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "Сайт жарамсыз көрінсе, қалқандарды төмен түсіріп көріңіз",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Сіз бұл сайтты Brave-дің құпиялылық және қауіпсіздік қорғауларынсыз көріп отырсыз. Қалқандар қосулы күйде сайт дұрыс жұмыс істемейді ме?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "Сайттағы ақауды хабарлау",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "Бұғатталған заттар",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "Бұғатталған зат",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "және",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "қосылымдар жаңартылды",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "қосылым жаңартылды",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "Басқа сайттағы бақылағыштар бұғатталды",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "Трекерлер мен жарнамалар бұғатталды",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "Бақылағыштар мен жарнамалар бұғатталды (агрессивті)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "Бақылағыштар мен жарнамалар бұғатталды (стандартты)",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "Барлық трекерлер мен жарнамаларға рұқсат беру",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "HTTPS-ке жаңартылған қосылымдар",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "HTTPS-ке жаңартылған қосылым",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Сценарийлер бұғатталды",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "Басқа сайттағы cookie-файлдар бұғатталды",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "Cookie-файлдар бұғатталды",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "Барлық cookie файлдары рұқсат етілген",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "Саусақ іздерін бұғаттау",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "Саусақ іздерін бұғаттау (стандартты)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "Саусақ іздерін бұғаттау (қатаң, сайттарды бұғаттауы мүмкін)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "Барлық саусақ іздерін рұқсат ету",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Саусақ іздерін алу әрекеттері",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "Осы сайттағы сценарийлер",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "Бұғатталған сценарийлер",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "Рұқсат етілген сценарийлер",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "Барлығын бұғаттау",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "Барлығына рұқсат беру",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "Блоктау",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "Рұқсат беру",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "Бір рет бұғатталған",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "Бір рет рұқсат етілген",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "Сценарийлерді бір рет рұқсат ету",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "Бас тарту",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "Артқа қайту",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "Бір рет қолдану",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "Жалпы қалқан әдепкілерін өзгерту",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "Арнайы сүзгілерді басқару",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Элементті бұғаттау",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "Кеңейтілген көрініс",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "Қарапайым көрініс",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "Сайттар жиі сізді және құрылғыңызды анықтауға тырысатын cookie файлдары мен сценарийлерді қамтиды (көбінесе жарнамаларға енгізілген). Олар сіздің кім екеніңізді және интернеттегі әрекеттеріңізді бақылағысы келеді. Brave бұл нәрселерді бұғаттайды, сондықтан сізді ешкім бақыламай сайттарды қарай аласыз.",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Басқа сайттардың бақылағыштары және басқа да жағымсыз заттар бұғатталған.",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "Бұл көріністі өзгерткенде қалқан баптаулары сайт үйлесімділігіне әсер етуі мүмкін.",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "Түсінікті",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "Толығырақ білу",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Brave-ға қосу",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Brave-дан жою",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Add to Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Remove from Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

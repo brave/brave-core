@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:a10="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>Il Giornale - Cronache</title>
+        <link>https://www.ilgiornale.it/taxonomy/term/40821/feed</link>
+        <description>Ultime notizie</description>
+        <language>it</language>
+        <copyright>Copyright (c) 2022 Il Giornale Online</copyright>
+        <a10:id>https://www.ilgiornale.it/taxonomy/term/40821/feed</a10:id>
+        <a10:link rel="self" href="https://www.ilgiornale.it/taxonomy/term/40821/feed" />
+        <item>
+            <guid isPermaLink="true">https://www.ilgiornale.it/news/cronaca-nera/caso-saman-abbas-arrestato-pakistan-padre-shabbar-2085649.html</guid>
+            <link>https://www.ilgiornale.it/news/cronaca-nera/caso-saman-abbas-arrestato-pakistan-padre-shabbar-2085649.html</link>
+            <author>redazione@ilgiornale-web.it (Angela Leucci)</author>
+            <category>Cronaca nera</category>
+            <title>Arrestato in Pakistan Shabbar Abbas. In Italia è accusato per l'omicidio di Saman</title>
+            <description>&lt;figure&gt;&lt;img src="https://img.ilgcdn.com/sites/default/files/styles/md/public/foto/2022/09/30/1664568527-schermata-2022-09-30-214250.jpg?_=1664568527" width="500" height="280" alt="" /&gt;&lt;/figure&gt;È stato arrestato in Pakistan per frode Shabbar, padre di Saman Abbas. In Italia l&amp;#39;uomo è accusato di essere il mandante di un presunto delitto d&amp;#39;onore</description>
+            <pubDate>Tue, 15 Nov 2022 20:15:04 Z</pubDate>
+        </item>
+    </channel>
+</rss>

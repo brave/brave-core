@@ -1,0 +1,48 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Kosketa ja pidä Brave-kuvaketta painettuna, vedä se sitten telakkaan nopeaa käyttöä varten.";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "Lisää Brave telakkaasi";
+
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "Jatka";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Aseta Brave oletusselaimeksi jo tänään.";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "Mainokset estetään jokaisella sivustolla, jolla käyt";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "Ei nyt";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "Estä ärsyttävät keskeytykset suosimillasi suoratoistosivustoilla.";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "Estä keskeytykset suoratoiston aikana";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "Kerro meille, mistä toiminnoista pidät eniten.";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Auta parantamaan Bravea";
+
+/* The description shown below the toggle for enabling privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "Jaa täysin yksityisiä ja nimettömiä tuotetietoja siitä, mitä ominaisuuksia Braven käyttäjät käyttävät.";
+
+/* The title of the toggle that allows the user to enable/disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "Yksityiset tuotetiedot";
+
+/* The description shown below the toggle for enabling crash reporting. */
+"focusOnboarding.sendCrashReportsToggleDescription" = "Lähetä anonyymiä diagnostiikkaraportteja, jos selain kaatuu tai jäätyy.";
+
+/* The title of the toggle that allows the user to enable/disable crash reporting. */
+"focusOnboarding.sendCrashReportsToggleTitle" = "Lähetä kaatumisraportit";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "Aloita selaaminen";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "Aseta oletukseksi";
+

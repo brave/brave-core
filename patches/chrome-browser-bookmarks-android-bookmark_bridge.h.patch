@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/bookmarks/android/bookmark_bridge.h b/chrome/browser/bookmarks/android/bookmark_bridge.h
+index 7b7395043de2a9833ed66505f268b7428edeac74..ff7f2624e3d7e34873c2d171d824ae5368551fb8 100644
+--- a/chrome/browser/bookmarks/android/bookmark_bridge.h
++++ b/chrome/browser/bookmarks/android/bookmark_bridge.h
+@@ -278,6 +278,21 @@ class BookmarkBridge : public ProfileObserver,
+   reading_list::ReadingListManager*
+   GetAccountReadingListManagerIfAvailableForTesting();
+ 
++  void ImportBookmarks(
++      JNIEnv* env,
++      const base::android::JavaRef<jobject>& obj,
++      const base::android::JavaRef<jobject>& java_window,
++      const base::android::JavaRef<jstring>& import_file_path);
++  void OnParseFinished(
++      user_data_importer::BookmarkParser::BookmarkParsingResult result);
++  base::SequenceBound<user_data_importer::ContentBookmarkParser>
++      bookmark_parser_;
++  void ExportBookmarks(
++      JNIEnv* env,
++      const base::android::JavaRef<jobject>& obj,
++      const base::android::JavaRef<jobject>& java_window,
++      const base::android::JavaRef<jstring>& export_file_path);
++
+  private:
+   base::android::ScopedJavaLocalRef<jobject> CreateJavaBookmark(
+       const bookmarks::BookmarkNode* node);

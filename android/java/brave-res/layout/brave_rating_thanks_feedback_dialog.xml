@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Scrollable so the sheet stays usable on short screens: the field is focused as soon as the
+     sheet opens, and in landscape the keyboard leaves less height than the content needs.
+     BottomSheetBehavior drives the nested scroll natively. -->
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/askRatingDialogTitle"
+            style="@style/LargeSemibold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:text="@string/thanks_for_your_feedback"
+            android:textColor="?attr/colorOnSurface"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/askRatingDialogDescription"
+            style="@style/DefaultRegular"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:gravity="center_horizontal"
+            android:text="@string/let_us_know_how_we_can_improve_brave"
+            android:textColor="?attr/colorOnSurfaceVariant"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/askRatingDialogTitle" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/addSuggestionInputLayout"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="@string/brave_rating_add_suggestions_optional"
+            android:textColorHint="?attr/colorOnSurfaceVariant"
+            app:boxCornerRadiusBottomEnd="12dp"
+            app:boxCornerRadiusBottomStart="12dp"
+            app:boxCornerRadiusTopEnd="12dp"
+            app:boxCornerRadiusTopStart="12dp"
+            app:boxStrokeColor="?attr/colorOutlineVariant"
+            app:hintTextAppearance="@style/SmallRegular"
+            app:hintTextColor="?attr/colorOnSurfaceVariant"
+            app:placeholderText="@string/add_your_suggestions"
+            app:placeholderTextAppearance="@style/LargeRegular"
+            app:placeholderTextColor="@color/text_tertiary"
+            app:layout_constraintTop_toBottomOf="@id/askRatingDialogDescription"
+            tools:layout_editor_absoluteX="24dp">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/feedbackEditText"
+                android:layout_width="match_parent"
+                android:layout_height="109dp"
+                android:focusable="true"
+                android:gravity="top" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <LinearLayout
+            android:id="@+id/rate_feedback_buttons"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/addSuggestionInputLayout">
+
+            <Button
+                android:id="@+id/rate_cancel_button"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:text="@string/cancel"
+                android:textAllCaps="false"
+                android:textAppearance="@style/ComponentsButtonDefault"
+                android:textColor="?attr/colorOnSurfaceVariant" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/rate_send_button"
+                style="@style/LargeFilledButton"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="8dp"
+                android:backgroundTint="?attr/colorPrimary"
+                android:minWidth="0dp"
+                android:minHeight="0dp"
+                android:text="@string/brave_rating_send_feedback"
+                android:textAllCaps="false"
+                android:textAppearance="@style/ComponentsButtonDefault"
+                android:textColor="?attr/colorOnPrimary" />
+
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.core.widget.NestedScrollView>

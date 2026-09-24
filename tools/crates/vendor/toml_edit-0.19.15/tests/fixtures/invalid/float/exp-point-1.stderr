@@ -1,0 +1,5 @@
+TOML parse error at line 1, column 18
+  |
+1 | exp-point-1 = 1e2.3
+  |                  ^
+expected newline, `#`

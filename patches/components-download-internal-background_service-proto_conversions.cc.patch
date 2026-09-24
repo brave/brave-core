@@ -1,0 +1,22 @@
+diff --git a/components/download/internal/background_service/proto_conversions.cc b/components/download/internal/background_service/proto_conversions.cc
+index d7076f9a09f0b5aa558114520daf0eb2c3ef5d64..bfba3290783b9b3b5baf7c316a43af6e7fd2392b 100644
+--- a/components/download/internal/background_service/proto_conversions.cc
++++ b/components/download/internal/background_service/proto_conversions.cc
+@@ -53,6 +53,8 @@ Entry::State ProtoConversions::RequestStateFromProto(
+ protodb::DownloadClient ProtoConversions::DownloadClientToProto(
+     DownloadClient client) {
+   switch (client) {
++    case DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS:
++      return protodb::DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS;
+     case DownloadClient::INVALID:
+       return protodb::DownloadClient::INVALID;
+     case DownloadClient::TEST:
+@@ -85,6 +87,8 @@ protodb::DownloadClient ProtoConversions::DownloadClientToProto(
+ DownloadClient ProtoConversions::DownloadClientFromProto(
+     protodb::DownloadClient client) {
+   switch (client) {
++    case protodb::DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS:
++      return DownloadClient::CUSTOM_LIST_SUBSCRIPTIONS;
+     case protodb::DownloadClient::INVALID:
+       return DownloadClient::INVALID;
+     case protodb::DownloadClient::TEST:

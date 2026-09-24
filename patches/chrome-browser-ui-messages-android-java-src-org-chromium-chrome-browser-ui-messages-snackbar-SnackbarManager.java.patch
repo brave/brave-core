@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/messages/android/java/src/org/chromium/chrome/browser/ui/messages/snackbar/SnackbarManager.java b/chrome/browser/ui/messages/android/java/src/org/chromium/chrome/browser/ui/messages/snackbar/SnackbarManager.java
+index 52a9f1e3ce55751c7b867c8494a109044dccfd8e..93334cb6c16e2b64d83462318229a20e73d87699 100644
+--- a/chrome/browser/ui/messages/android/java/src/org/chromium/chrome/browser/ui/messages/snackbar/SnackbarManager.java
++++ b/chrome/browser/ui/messages/android/java/src/org/chromium/chrome/browser/ui/messages/snackbar/SnackbarManager.java
+@@ -532,7 +532,7 @@ public class SnackbarManager
+             boolean viewChanged = true;
+             if (mView == null) {
+                 mView =
+-                        new SnackbarView(
++                        new BraveSnackbarView(
+                                 mActivity,
+                                 this,
+                                 currentSnackbar,

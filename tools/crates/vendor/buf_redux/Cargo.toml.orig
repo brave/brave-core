@@ -1,0 +1,29 @@
+[package]
+name = "buf_redux"
+version = "0.8.4"
+authors = ["Austin Bonander <austin.bonander@gmail.com>"]
+
+description = "Drop-in replacements for buffered I/O in `std::io` with extra features."
+
+keywords = ["io", "buffer", "buffered"]
+
+documentation = "https://docs.rs/buf_redux"
+
+repository = "https://github.com/abonander/buf_redux"
+
+license = "MIT OR Apache-2.0"
+
+readme = "README.md"
+
+[dependencies]
+safemem = "0.3"
+memchr = "2.0"
+
+# `slice_deque` is only supported on platforms with virtual memory
+[target.'cfg(any(unix, windows))'.dependencies.slice-deque]
+version = "0.2"
+optional = true
+
+[features]
+nightly = ["slice-deque/unstable"]
+default = ["slice-deque"]

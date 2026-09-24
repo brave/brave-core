@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Brave Extension ပြုလုပ်ခြင်း",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "Shields",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "ဖွင့်ထားသည်",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "ပိတ်ထားသည်",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "ဤဆိုက်အတွက်",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "ဆိုက်ပိတ်နေပါက Shields ပိတ်ဖို့ကြိုးစားပါ",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "Shields မပါဘဲဤဆိုက်ကိုကြည့်နေတယ်။ ဆိုက်သည် Shields ဖြစ်မှန်မကောင်းဘူးလား?",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "ကောင်းစွာအလုပ်လုပ်ခြင်းမရှိသော ဆိုက်ကို ရီပို့တ်လုပ်ရန်",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "ပိတ်ထားသောအချက်အလက်များ",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "ပိတ်ထားသောအချက်အလက်",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "နှင့်",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "ချိတ်ဆက်ထားခြင်းများကိုတိုးမြှင့်",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "ချိတ်ဆက်ထားခြင်းတစ်ခုကိုတိုးမြှင့်",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "Cross-site trackers ပိတ်ထားချက်",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "ပိတ်ပင်ထားသော နောက်ယောင်ခံကုဒ်များနှင့် ကြော်ငြာများ",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "အကြမ်းဖက်ပိတ်တဲ့ Trackers & ads",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "စံချိန်စံညွှန်းဖြင့် track & ads ပိတ္သော",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "နောက်ယောင်ခံကုဒ်နှင့် ကြော်ငြာအားလုံးကို ခွင့်ပြုရန်",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "HTTPS သို့ချိတ်ဆက်ထားခြင်းများကို upgrade ဝင်ရန်",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "HTTPS သို့ချိတ်ဆက်ထားခြင်းကို upgrade ဝင်ရန်",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Scripts ပိတ်ထားခြင်းများ",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "Cross-site cookies ပိတ်ထားခြင်းများ",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "cookies ပိတ်ထားခြင်းများ",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "cookies အားလုံးခွင့်ပြုခြင်း",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "ဖေမိစာတိုက်ပုံစံပိတ်ဆို့ခြင်း",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "ဖေမိစာတိုက်ပုံစံကိုပိတ်ဆို့ခြင်း(စံ)",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "ဖေမိစာတိုက်ပုံစံကို ပိတ်(စက်တင်, ဆိုက်ပိတ်မည်။)",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "ဖေမိစာတိုက်ပုံစံအားလုံးကို ခွင့်ပြုပါ",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "Device Recognition ပိတ်ထားခြင်း",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "ဤဆိုက်၏ scriptများ",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "ပိတ်ဆို့ထားသော script များ",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "ခွင့်ပြုထားသော script များ",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "အားလုံးတားဆီးပါ",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "အားလုံးခွင့်ပြုပါ",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "ပိတ်ရန်",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "ခွင့်ပြုရန်",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "တစ်ကြိမ်ပိတ်ထားသည်",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "တစ်ကြိမ်ခွင့်ပြုသည်",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "script များကိုတစ်ကြိမ်ခွင့်ပြုသည်",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "ပယ်ဖျက်ရန်",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "နောက်သို့သွားပါ",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "တစ်ကြိမ်ထိရောက်လာသည်",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "global shield အနေနှင့်တည်ဆောက်ထားခြင်း",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "custom filters ကို စီမံပါ",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "Element ကိုပိတ်ရန်",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "အဆင့်မြင့်သုံးသပ်ခြင်း",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "ရိုးရိုးသုံးသပ်ခြင်း",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "ဆိုက်များနှင့်သင်၏စက်တို့မှ သင့်အကြောင်းကို စိစစ်ဖို့ cookies နှင့် scripts များထည့်သွင်းတပ်ဆင်ထားသည်။ ဤအရာများသည် ထောက်လှမ်းခြင်းသဖွယ် စီအစဉ်များဖြစ်ကာ သင်ယေဘူယျပေါ်မှာ ဘယ်လိုလုပ်နေသလဲဆိုတာကို ကြည့်ရှုပါသည်။ Brave သည် ဤအရာများကိုပိတ်ထားသဖြင့် သင် မလိုအပ်ဘဲ ကြည့်လို့ရစေမည်",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "Cross-site trackers နှင့် အခြား creepy ပိတ်ထားခြင်း",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "ဤမှတ်သားချက်များနှင့်ပတ်သက်ပြီး changing shield settingsများသည် သိက်မွေတဲ့ Wi-Fi ဆက်သွယ်၍ shield ကာတွန်းများကို ပြောင်းလဲခြင်းဖြစ်စေမည်။",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "သဘောပေါက်ပါပြီ",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "ပိုမိုလေ့လာရန်",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "Brave တွင်ထည့်ရန်",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "Brave မှဖယ်ရှားရန်",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "Add to Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "Remove from Chrome",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

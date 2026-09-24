@@ -1,0 +1,520 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>The long controversy around Salman Rushdie, and his refusal to stop speaking up</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">The long controversy around Salman Rushdie, and his refusal to stop speaking up</h1><p class="subhead metadata">The celebrated author is currently recovering from serious injuries after an attack on his life</p><div class=""><p class="metadata">By Alison Stine</p><p class="metadata date">Updated Aug. 15, 2022 06:03 PM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+									
+									<p>Author <a href="https://www.salon.com/2015/01/07/religion_is_a_medieval_form_of_unreason_salman_rushdie_responds_to_paris_attacks/" target="_blank">Salman Rushdie</a>&nbsp;has often sparked controversy and even incited anger, but the latest protest to his work has left him&nbsp;recovering after sustaining severe injuries during an attack in western New York.&nbsp;</p>
+<p><a href="https://www.salon.com/2022/08/13/jk-rowling-offers-condolences-after-salman-rushdie-and-is-told-you-are-next/">Rushdie</a>, who won the Booker Prize for his second novel "<a href="https://www.salon.com/2013/04/23/exclusive_midnights_children_clip_saleem_loses_his_innocence/">Midnight's Children</a>," was scheduled to appear Friday in a public lecture at the&nbsp;<a href="https://www.chq.org/event/salman-rushdie-henry-reese/">Chautauqua Institute</a>, along with Henry Reese, co-founder and president of&nbsp;<a href="https://cityofasylum.org/">City of Asylum</a>&nbsp;in Pittsburgh, which provides sanctuary to exiled writers. At the event, a 24-year-old man rushed the stage and stabbed the&nbsp;75-year-old&nbsp;Rushdie multiple times, including in the neck and stomach. Rushdie also received puncture wounds in his right eye, chest and thigh. Reese was also injured.</p>
+<p>Rushdie's son Zafar Rushdie&nbsp;said in statement released Sunday that the writer's injuries are "<a href="https://www.cnn.com/2022/08/15/us/salman-rushdie-attack-monday/index.html">life changing</a>." According to Rushdie's agent,&nbsp;<a href="https://www.cnbc.com/2022/08/13/salman-rushdie-on-ventilator-after-stabbing-may-lose-an-eye.html">Andrew Wylie</a>, Rushdie was on a ventilator for a time and will likely lose his eye. &nbsp;</p>
+<p>Rushdie has done few events over the years, canceling a&nbsp;<a href="https://www.aljazeera.com/news/2022/8/12/key-dates-in-the-life-of-british-author-salman-rushdie">planned appearance</a>&nbsp;at a literature festival in India, where he was born, a decade ago after protests. The celebrated author has lived under a cloud of controversy and threats on his life for a long time yet has never relinquished his support of free speech.&nbsp;</p>
+
+<p><strong>The dissent of the divine</strong></p>
+<p>In 1988, Rushdie published his fourth novel, "The Satanic Verses." Described as "<a href="https://www.salon.com/2018/09/29/why-the-satanic-verses-remains-so-controversial_partner/">one of the most controversial books in recent literary history</a>," multiple countries, including&nbsp;Bangladesh and Pakistan, promptly banned it. Like Rushdie's previous novels, the book utilizes magical realism, a style where the world is presented realistically except for elements of magic or the supernatural. As&nbsp;<a href="https://www.vox.com/2014/4/20/5628812/11-questions-youre-too-embarrassed-to-ask-about-magical-realism">Vox</a>&nbsp;describes it, "authors in the magical realism genre deliberately withhold information about the magic in their created world in order to present the magical events as ordinary occurrences, and to present the incredible as normal."&nbsp;</p>
+<p>"Literature is the unafraid form."</p>
+<p>In "<a href="https://bookshop.org/books/the-satanic-verses/9780812976717">The Satanic Verses</a>," Rushdie tells the fictional story of two Indian actors, linked when they both miraculously survive a mid-air plane bombing caused by hijacking. The characters transform, personifying good and evil. The title — and the controversy — relate to the&nbsp;Quranic&nbsp;Satanic Verses.&nbsp;With his novel, Rushdie was accused of mocking some of the tenets of&nbsp;Muslim religious beliefs. As&nbsp;<a href="https://www.salon.com/2018/09/29/why-the-satanic-verses-remains-so-controversial_partner/">Salon</a>&nbsp;wrote in 2018, 30 years after the book's first publication: "Rushdie appears to cast doubt on the divine nature of the Quran."</p>
+<p>The reaction to the book was swift. Thousands protested in the capital city of Pakistan outside the&nbsp;American Cultural Center, which left multiple people dead. The novel was whisked off of public display in bookstores in Brittan; it was burned in protests there. The book's launch event included&nbsp;<a href="https://www.theguardian.com/books/2012/sep/14/looking-at-salman-rushdies-satanic-verses">bomb-sniffing dogs</a>.</p>
+<p><strong>The threat of death</strong></p>
+<p>A few months after publication, Rushdie learned his life was gravely in danger via a phone call from a journalist. As&nbsp;<a href="https://www.salon.com/2012/09/20/salman_rushdie_it_was_worth_it/">Salon</a>&nbsp;wrote in a 2012 interview with Rushdie, a BBC reporter called the writer and asked "How does it feel" now that&nbsp;the Ayatollah Khomeini had sentenced him to death?</p>
+<p>The&nbsp;<a href="https://www.washingtonpost.com/history/2022/08/14/salman-rushdie-fatwa-history/">fatwa</a>, a legal ruling on a point of Islamic law, called for Rushdie's death because of his book, which some considered blasphemous. Soon, Rushdie lived in hiding and under police protection, going by a fake name. In 2012, he published a memoir "<a href="https://bookshop.org/books/joseph-anton-a-memoir/9780812982602">Joseph Anton</a>," the title of which was the pseudonym he had lived under for so long. According to Rushdie, he did not see his son much during his years in hiding, and his marriage at the time ended. He told&nbsp;<a href="https://www.salon.com/2012/09/20/salman_rushdie_it_was_worth_it/">Salon</a>&nbsp;in the 2012 interview: "I lost my 40s, essentially. I was 41 when this started, and the 40s are supposed to be the prime of a man's life."</p>
+<p>Instead, Iran announced in 2009, when the writer was well out of his 40s, that the ruling calling for the death of Rushdie was "still valid," according to&nbsp;<a href="https://www.aljazeera.com/news/2022/8/12/key-dates-in-the-life-of-british-author-salman-rushdie">Al Jazeera</a>.</p>
+<p>"We need to have the courage of our convictions ... we are privileged to live in one of the relatively few countries in the world where we get to say what we think."</p>
+<p>But Rushdie did not stay silent. Although he said it was difficult to write under these threats, he published multiple books, including "<a href="https://bookshop.org/books/two-years-eight-months-and-twenty-eight-nights/9780812988208">Two Years, Eight Months and Twenty-Eight Nights</a>." In 2014, he won the PEN/Pinter Prize for his support of other writers and freedom of speech. The next year, he warned free speech was in danger in his passionate, opening remarks at the&nbsp;<a href="https://www.theguardian.com/books/2015/oct/13/salman-rushdie-frankfurt-book-fair-iran-freedom-of-speech-expression">Frankfurt Book Fair</a>. "Publishers and writers are not warriors, we have not tanks. But it falls to us to hold the line," he said. "We challenge ourselves and refuse to take the world as a given. We challenge all correctives of opinion, all appeasements, all fears. Literature is the unafraid form."</p>
+<p><strong>A resurgence</strong></p>
+<p>In the wake of the recent attack on Rushdie, many of his words were recirculated, including this quote, from an interview with the&nbsp;<a href="https://books.google.com/books?id=0-EyDwAAQBAJ&amp;pg=PA287&amp;lpg=PA287&amp;dq=salman+rushdie+%22Nobody+has+the+right+to+not+be+offended.+That+right+doesn%27t+exist+in+any+declaration+%22&amp;source=bl&amp;ots=xaWjnckPUm&amp;sig=ACfU3U2Jqcmk9GTBit0-gSOCBC28IIwJJg&amp;hl=en&amp;sa=X&amp;ved=2ahUKEwic7e_kysn5AhUzoFsKHZxnBO0Q6AF6BAgkEAM#v=onepage&amp;q=salman%20rushdie%20%22Nobody%20has%20the%20right%20to%20not%20be%20offended.%20That%20right%20doesn't%20exist%20in%20any%20declaration%20%22&amp;f=false">BBC World Service</a>: "Nobody has the right to not be offended. That right doesn't exist in any declaration I have ever read. If you are offended it is your problem, and frankly lots of things offend lots of people . . . But it doesn't occur to me to burn the bookshop down. If you don't like a book, read another book."</p>
+<hr>
+<p><strong><em>Want a daily wrap-up of all the news and commentary Salon has to offer? <a href="https://www.salon.com/newsletter" target="_blank">Subscribe to our morning newsletter</a>, Crash Course.</em></strong></p>
+<hr>
+<p>As Rushdie, who became a U.S. citizen in 2016 after living in New York for decades, told&nbsp;<a href="https://www.salon.com/2012/09/20/salman_rushdie_it_was_worth_it/">Salon</a>&nbsp;in 2012, "We need to have the courage of our convictions. That we need to understand that we are privileged to live in one of the relatively few countries in the world where we get to say what we think. Yes, that means that some of those utterances will be unlikable, even objectionable, even insulting, because not everybody thinks well, not everybody's a nice person. But if you're going to have the good fortune of living in this kind of society, then you have to cherish it and defend it, that's just full stop."</p>
+
+								</body>

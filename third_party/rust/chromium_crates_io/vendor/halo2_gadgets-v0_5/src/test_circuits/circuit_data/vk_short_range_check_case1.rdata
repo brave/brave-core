@@ -1,0 +1,244 @@
+PinnedVerificationKey {
+    base_modulus: "0x40000000000000000000000000000000224698fc0994a8dd8c46eb2100000001",
+    scalar_modulus: "0x40000000000000000000000000000000224698fc094cf91b992d30ed00000001",
+    domain: PinnedEvaluationDomain {
+        k: 11,
+        extended_k: 14,
+        omega: 0x181b50ad5f32119e31cbd395426d600b7a9b88bcaaa1c24eef28545aada17813,
+    },
+    cs: PinnedConstraintSystem {
+        num_fixed_columns: 5,
+        num_advice_columns: 1,
+        num_instance_columns: 0,
+        num_selectors: 3,
+        gates: [
+            Product(
+                Fixed {
+                    query_index: 4,
+                    column_index: 4,
+                    rotation: Rotation(
+                        0,
+                    ),
+                },
+                Sum(
+                    Product(
+                        Scaled(
+                            Advice {
+                                query_index: 2,
+                                column_index: 0,
+                                rotation: Rotation(
+                                    -1,
+                                ),
+                            },
+                            0x0000000000000000000000000000000000000000000000000000000000000400,
+                        ),
+                        Advice {
+                            query_index: 1,
+                            column_index: 0,
+                            rotation: Rotation(
+                                1,
+                            ),
+                        },
+                    ),
+                    Negated(
+                        Advice {
+                            query_index: 0,
+                            column_index: 0,
+                            rotation: Rotation(
+                                0,
+                            ),
+                        },
+                    ),
+                ),
+            ),
+        ],
+        advice_queries: [
+            (
+                Column {
+                    index: 0,
+                    column_type: Advice,
+                },
+                Rotation(
+                    0,
+                ),
+            ),
+            (
+                Column {
+                    index: 0,
+                    column_type: Advice,
+                },
+                Rotation(
+                    1,
+                ),
+            ),
+            (
+                Column {
+                    index: 0,
+                    column_type: Advice,
+                },
+                Rotation(
+                    -1,
+                ),
+            ),
+        ],
+        instance_queries: [],
+        fixed_queries: [
+            (
+                Column {
+                    index: 1,
+                    column_type: Fixed,
+                },
+                Rotation(
+                    0,
+                ),
+            ),
+            (
+                Column {
+                    index: 0,
+                    column_type: Fixed,
+                },
+                Rotation(
+                    0,
+                ),
+            ),
+            (
+                Column {
+                    index: 2,
+                    column_type: Fixed,
+                },
+                Rotation(
+                    0,
+                ),
+            ),
+            (
+                Column {
+                    index: 3,
+                    column_type: Fixed,
+                },
+                Rotation(
+                    0,
+                ),
+            ),
+            (
+                Column {
+                    index: 4,
+                    column_type: Fixed,
+                },
+                Rotation(
+                    0,
+                ),
+            ),
+        ],
+        permutation: Argument {
+            columns: [
+                Column {
+                    index: 1,
+                    column_type: Fixed,
+                },
+                Column {
+                    index: 0,
+                    column_type: Advice,
+                },
+            ],
+        },
+        lookups: [
+            Argument {
+                input_expressions: [
+                    Product(
+                        Fixed {
+                            query_index: 2,
+                            column_index: 2,
+                            rotation: Rotation(
+                                0,
+                            ),
+                        },
+                        Sum(
+                            Product(
+                                Fixed {
+                                    query_index: 3,
+                                    column_index: 3,
+                                    rotation: Rotation(
+                                        0,
+                                    ),
+                                },
+                                Sum(
+                                    Advice {
+                                        query_index: 0,
+                                        column_index: 0,
+                                        rotation: Rotation(
+                                            0,
+                                        ),
+                                    },
+                                    Negated(
+                                        Scaled(
+                                            Advice {
+                                                query_index: 1,
+                                                column_index: 0,
+                                                rotation: Rotation(
+                                                    1,
+                                                ),
+                                            },
+                                            0x0000000000000000000000000000000000000000000000000000000000000400,
+                                        ),
+                                    ),
+                                ),
+                            ),
+                            Product(
+                                Sum(
+                                    Constant(
+                                        0x0000000000000000000000000000000000000000000000000000000000000001,
+                                    ),
+                                    Negated(
+                                        Fixed {
+                                            query_index: 3,
+                                            column_index: 3,
+                                            rotation: Rotation(
+                                                0,
+                                            ),
+                                        },
+                                    ),
+                                ),
+                                Advice {
+                                    query_index: 0,
+                                    column_index: 0,
+                                    rotation: Rotation(
+                                        0,
+                                    ),
+                                },
+                            ),
+                        ),
+                    ),
+                ],
+                table_expressions: [
+                    Fixed {
+                        query_index: 1,
+                        column_index: 0,
+                        rotation: Rotation(
+                            0,
+                        ),
+                    },
+                ],
+            },
+        ],
+        constants: [
+            Column {
+                index: 1,
+                column_type: Fixed,
+            },
+        ],
+        minimum_degree: None,
+    },
+    fixed_commitments: [
+        (0x05f5862cad2888855bc3c1843a9eff57b11b592d9eb0e13354256661387f5231, 0x32236b14df85bf5f532a930232cb23a5c56ef7d67aaeed8bcb8fc10ea132cbd6),
+        (0x369f0b3422178fecf6e9a4fc7224622da26e8b5c74fb9aca5864c9f72e30bd5c, 0x2d7892875c06c460c9c9f66449103e7b6ef2871fb0a4e39b9af90e938c8e291b),
+        (0x0980acedb0fd2c02718002125bf80f969175d1f90d1320f9f3d5e2ac584e0212, 0x235c651fefd49e387ef9a6293a428810994974d218c4757ca3f9c0971ae25767),
+        (0x2bbc94ef7b22aebef24f9a4b0cc1831882548b605171366017d45c3e6fd92075, 0x082b801a6e176239943bfb759fb02138f47a5c8cc4aa7fa0af559fde4e3abd97),
+        (0x28d1c924953bc53f232465943d25fd085f85727ae4e2d26249207da1e59559e2, 0x184d19e00f109c4dacf8026c6e0fc4181178b32a236828047c46d9d61eab90fa),
+    ],
+    permutation: VerifyingKey {
+        commitments: [
+            (0x3b7b93d7540327328791a14933d8f3345abd943eb35b67a8a4bd2eb72e2a707a, 0x26fff57a6fa3c01dd0d739fc56479303b4302d6baa6f1da06f4013419c40e10c),
+            (0x3fdf7a15a0d2378accc11f704f4ba4a487b542ace83c7f5a8551b569a3b9a380, 0x34253920878d15d6fe1b5198c31bdd670d32e81621e9fcd569d582e596ed0af5),
+        ],
+    },
+}

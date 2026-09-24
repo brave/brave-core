@@ -1,0 +1,174 @@
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle AirPlay */
+"playlist.accessibilityAirPlay" = "AirPlay";
+
+/* A label that VoiceOver accessibility technology will read out if the user taps the media progress bar */
+"playlist.accessibilityCurrentMediaTime" = "Aktuel medietid";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
+"playlist.accessibilityEnterFullscreen" = "Åbn i fuld skærm";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will enter picture in picture mode */
+"playlist.accessibilityEnterPictureInPicture" = "Indtast billede i billede";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will toggle fullscreen mode on */
+"playlist.accessibilityExitFullscreen" = "Luk fuld skærm";
+
+/* A label shown on an item when the item is ready for offline play */
+"playlist.accessibilityItemDownloadStatusReady" = "Artikel klar";
+
+/* A button title that VoiceOver accessibility technology will read out when highlighting the more menu button (ellipsis icon) */
+"playlist.accessibilityMoreMenuButtonTitle" = "Mere";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play the next item in the queue */
+"playlist.accessibilityNextItem" = "Næste artikel";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will pause some currently playing media */
+"playlist.accessibilityPause" = "Pause";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play some media */
+"playlist.accessibilityPlay" = "Afspil";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will display playback speed options */
+"playlist.accessibilityPlaybackSpeed" = "Afspilningshastighed";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will play the previous item in the queue */
+"playlist.accessibilityPreviousItem" = "Forrige element";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the All option (repeats entire playlist) */
+"playlist.accessibilityRepeatModeAll" = "Gentagelsestilstand: Alle";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled off */
+"playlist.accessibilityRepeatModeOff" = "Gentagelsestilstand: Fra";
+
+/* A label read by VoiceOver accessibility technology that indicates the repeat mode button is toggled to the One option (repeats single item) */
+"playlist.accessibilityRepeatModeOne" = "Gentagelsestilstand: En";
+
+/* A label read by VoiceOver accessibility technology that indicates the shuffle mode button is toggled off */
+"playlist.accessibilityShuffleModeOff" = "Shuffle-tilstand: Fra";
+
+/* A label read by VoiceOver accessibility technology that indicates the shuffle mode button is toggled off */
+"playlist.accessibilityShuffleModeOn" = "Shuffle-tilstand: Til";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will move the media progress by a step backwards */
+"playlist.accessibilityStepBack" = "Skift tilbage";
+
+/* A label read by VoiceOver accessibility technology that indicates the button will move the media progress by a step forward */
+"playlist.accessibilityStepForwards" = "Skrift frem";
+
+/* A label read by VoiceOver accessibility technology that indicates that tapping the screen will display playback controls */
+"playlist.accessibilityTapToToggleControls" = "Tryk for at skifte kontroller";
+
+/* A button title that when tapped will create a new playlist */
+"playlist.createNewPlaylistButtonTitle" = "Opret";
+
+/* A button title that when tapped will allow the user to delete the selected item. */
+"playlist.deleteItem" = "Slet";
+
+/* A menu button that when tapped will present a confirmation dialog to delete a playlist and all its contents */
+"playlist.deletePlaylist" = "Slet playliste...";
+
+/* A message display when the user attempts to delete a playlist. */
+"playlist.deletePlaylistConfirmationMessage" = "Alle videoer på denne playliste vil blive fjernet";
+
+/* A button call to action that allows the user to dismiss the active modal */
+"playlist.doneButtonTitle" = "Færdig";
+
+/* A button title that when tapped will allow the user to edit the selected playlist. */
+"playlist.editPlaylist" = "Rediger afspilningsliste";
+
+/* A button title that when tapped will allow the user to edit the selected playlist. */
+"playlist.editPlaylistShortTitle" = "Rediger";
+
+/* A subtitle shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQuerySubtitle" = "Begynd at skrive for at søge i dine gemte lydfiler og videoer";
+
+/* A title shown when no search query is entered in the search bar on the search page */
+"playlist.emptySearchQueryTitle" = "Søg i medier";
+
+/* A title shown above a list of videos in your default playlist. */
+"playlist.fillNewPlaylistSubtitle" = "Tryk for at vælge medie";
+
+/* A title shown above a list of videos in your default playlist. '%@' will be replaced with the default playlist name which has already been localized, for example: 'Add from your Play Later playlist' */
+"playlist.fillNewPlaylistTitle" = "Tilføj fra din **%@** playliste";
+
+/* A count of how many items there are in the playlist. '%lld' would be replaced with a number, for example: 10 items */
+"playlist.itemCountPlural" = "%lld elementer";
+
+/* A count of how many items there are in the playlist */
+"playlist.itemCountSingular" = "1 element";
+
+/* A label shown on an item when it is being prepared for offline play */
+"playlist.itemDownloadStatusPreparing" = "Forbereder";
+
+/* A label shown next to the media progress bar that when the particular media being played is being live streamed. */
+"playlist.liveIndicator" = "Live";
+
+/* A button title that when tapped will allow the user to move the selected item to another playlist. */
+"playlist.moveItem" = "Flyt";
+
+/* A button title that will display a list of menu options to move an item to a different playlist */
+"playlist.moveMenuItemTitle" = "Flyt...";
+
+/* A button title that when tapped will prompt the user to create a new playlist */
+"playlist.newPlaylistButtonTitle" = "Opret";
+
+/* A placeholder shown in the text field when creating a new playlist. */
+"playlist.newPlaylistPlaceholder" = "Min nye playliste";
+
+/* Shown when the user has not selected any media to play. */
+"playlist.noMediaSelectedEmptyState" = "Tryk på videoer fra din playliste for at afspille.";
+
+/* Shown when there is no content available to play for a given folder */
+"playlist.noMediaToPickFromEmptyState" = "Tilføj medier fra dine yndlingssider, så afspilles de her.";
+
+/* A title shown when a search query has yielded no results */
+"playlist.noSearchResultsFoundTitle" = "Ingen resultater fundet";
+
+/* A button title that will open the selected item in a new private tab. */
+"playlist.openInNewPrivateTab" = "Åbn i ny privat fane";
+
+/* A button title that will open the selected item in a new tab. */
+"playlist.openInNewTab" = "Åbn i ny fane";
+
+/* A button title that will delete the selected items data saved to the users device. */
+"playlist.removeOfflineData" = "Fjern offline data";
+
+/* A menu button that when tapped will present the user with a text box to change the name of the selected playlist */
+"playlist.renamePlaylist" = "Omdøb afspilningsliste";
+
+/* A repeat mode option, where selecting All will mean that the entire playlist will repeat from the beginning when the last item in it completes. */
+"playlist.repeatModeOptionAll" = "Alle";
+
+/* A repeat mode option, where selecting None will mean that repeat mode is off and nothing will repeat. */
+"playlist.repeatModeOptionNone" = "Ingen";
+
+/* A repeat mode option, where selecting One will mean that the current playing item will repeat itself when completing. */
+"playlist.repeatModeOptionOne" = "En";
+
+/* A button call to action that allows the user to save their selection */
+"playlist.saveButtonTitle" = "Gem";
+
+/* A button title that will attempt to save the selected item for offline playback. */
+"playlist.saveOfflineData" = "Gem offline data";
+
+/* A placeholder string shown in the search bar */
+"playlist.searchTitle" = "Søg";
+
+/* A button title that will present a share sheet for the selected item */
+"playlist.share" = "Del";
+
+/* Describes an icon which allows the user to set a timer that when reaches 0 will stop playback of any media. */
+"playlist.sleepTimer" = "Sleep-timer";
+
+/* A button title shown when the sleep timer is currently active and allows the user to turn off the sleep timer. */
+"playlist.sleepTimerCancelTimer" = "Annuller timer";
+
+/* An option in the sleep timer menu which describes that playback will stop when the current media item that is playing finishes. */
+"playlist.sleepTimerEndOfItem" = "Artikel færdig";
+
+/* A title shown above a set of time based options that describe when playback should stop. */
+"playlist.sleepTimerStopPlaybackAfter" = "Stop afspilning efter...";
+
+/* A fallback error message displayed when a video fails to play */
+"playlist.somethingWentWrong" = "Noget gik galt";
+

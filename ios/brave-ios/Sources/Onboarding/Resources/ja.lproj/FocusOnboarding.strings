@@ -1,0 +1,48 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "Braveアイコンを長押しして、Dockにドラッグするとすばやくアクセスできます。";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "BraveをDockに追加";
+
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "続ける";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "Braveを今すぐデフォルトブラウザに設定。";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "アクセスするすべてのサイトで広告をブロック";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "後で";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "お気に入りの動画サイトで、ストリーミングを中断する迷惑な広告をブロックします。";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "ストリーミングを中断する広告をブロック";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "お気に入りの機能についてご意見をお聞かせください";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "Braveは進化を続けます";
+
+/* The description shown below the toggle for enabling privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "Braveのユーザーがどのような機能を使用しているかについて、完全に非公開かつ匿名で製品インサイトを共有できます。";
+
+/* The title of the toggle that allows the user to enable/disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "プライベート製品インサイト";
+
+/* The description shown below the toggle for enabling crash reporting. */
+"focusOnboarding.sendCrashReportsToggleDescription" = "クラッシュやフリーズが発生した場合、匿名の診断レポートを送信してください。";
+
+/* The title of the toggle that allows the user to enable/disable crash reporting. */
+"focusOnboarding.sendCrashReportsToggleTitle" = "クラッシュレポートを送信";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "ブラウジングを開始する";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "デフォルトとして設定";
+

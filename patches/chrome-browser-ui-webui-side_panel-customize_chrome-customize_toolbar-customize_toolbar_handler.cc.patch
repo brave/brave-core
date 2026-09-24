@@ -1,0 +1,68 @@
+diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
+index 7f51aadbe7ca492a928817a016de74bb9a2cc300..160dc94a1a840509e70360495770018c1c32f5fb 100644
+--- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
++++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
+@@ -196,6 +196,7 @@ CustomizeToolbarHandler::CustomizeToolbarHandler(
+       base::BindRepeating(&CustomizeToolbarHandler::OnActionPinnedChanged,
+                           base::Unretained(this), kActionSplitTab,
+                           prefs::kPinSplitTabButton));
++  ObserveBraveActions(&client_, pref_change_registrar_);
+ }
+ 
+ CustomizeToolbarHandler::~CustomizeToolbarHandler() = default;
+@@ -369,7 +370,11 @@ void CustomizeToolbarHandler::ListActions(ListActionsCallback callback) {
+   add_action(kActionShowChromeLabs,
+              side_panel::customize_chrome::mojom::CategoryId::kTools);
+ 
+-  std::move(callback).Run(std::move(actions));
++  base::BindOnce(&customize_chrome::FilterUnsupportedChromiumActions)
++      .Then(base::BindOnce(&customize_chrome::ApplyBraveSpecificModifications,
++                           web_contents_.get()))
++      .Then(std::move(callback))
++      .Run(std::move(actions));
+ }
+ 
+ void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
+@@ -381,18 +386,24 @@ void CustomizeToolbarHandler::ListCategories(ListCategoriesCallback callback) {
+   categories.push_back(side_panel::customize_chrome::mojom::Category::New(
+       side_panel::customize_chrome::mojom::CategoryId::kYourChrome,
+       l10n_util::GetStringUTF8(
+-          IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME)));
++          IDS_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLBAR)));
+   categories.push_back(side_panel::customize_chrome::mojom::Category::New(
+       side_panel::customize_chrome::mojom::CategoryId::kTools,
+       l10n_util::GetStringUTF8(
+           IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLS_AND_ACTIONS)));
+ 
+-  std::move(callback).Run(std::move(categories));
++  base::BindOnce(&customize_chrome::AppendBraveSpecificCategories,
++           web_contents_.get())
++      .Then(std::move(callback))
++      .Run(std::move(categories));
+ }
+ 
+ void CustomizeToolbarHandler::PinAction(
+     side_panel::customize_chrome::mojom::ActionId action_id,
+     bool pin) {
++  if (PinBraveAction(action_id, prefs(), pin)) {
++    return;
++  }
+   const std::optional<actions::ActionId> chrome_action =
+       ChromeActionForMojoAction(action_id);
+   if (!chrome_action.has_value()) {
+@@ -426,10 +437,15 @@ void CustomizeToolbarHandler::PinAction(
+ 
+ void CustomizeToolbarHandler::GetIsCustomized(
+     GetIsCustomizedCallback callback) {
++  if (IsBraveActionCustomized(web_contents_.get())) {
++    std::move(callback).Run(true);
++    return;
++  }
+   std::move(callback).Run(!model_->IsDefault());
+ }
+ 
+ void CustomizeToolbarHandler::ResetToDefault() {
++  ResetBraveActionsToDefault(web_contents_.get());
+   model_->ResetToDefault();
+ }
+ 

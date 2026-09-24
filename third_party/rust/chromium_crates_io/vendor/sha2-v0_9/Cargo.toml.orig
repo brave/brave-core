@@ -1,0 +1,41 @@
+[package]
+name = "sha2"
+version = "0.9.9"
+description = """
+Pure Rust implementation of the SHA-2 hash function family
+including SHA-224, SHA-256, SHA-384, and SHA-512.
+"""
+authors = ["RustCrypto Developers"]
+license = "MIT OR Apache-2.0"
+readme = "README.md"
+edition = "2018"
+documentation = "https://docs.rs/sha2"
+repository = "https://github.com/RustCrypto/hashes"
+keywords = ["crypto", "sha2", "hash", "digest"]
+categories = ["cryptography", "no-std"]
+
+[dependencies]
+digest = "0.9"
+block-buffer = "0.9"
+opaque-debug = "0.3"
+cfg-if = "1.0"
+sha2-asm = { version = "0.6.1", optional = true }
+
+[target.'cfg(any(target_arch = "aarch64", target_arch = "x86_64", target_arch = "x86"))'.dependencies]
+cpufeatures = "0.2"
+
+[dev-dependencies]
+digest = { version = "0.9", features = ["dev"] }
+hex-literal = "0.2"
+
+[features]
+default = ["std"]
+std = ["digest/std"]
+asm = ["sha2-asm"]
+compress = [] # Expose compress function
+force-soft = [] # Force software implementation
+asm-aarch64 = ["asm"] # DEPRECATED: use `asm` instead
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs"]

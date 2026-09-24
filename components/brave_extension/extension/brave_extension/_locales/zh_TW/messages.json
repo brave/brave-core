@@ -1,0 +1,226 @@
+{
+  "appName": {
+    "message": "Brave 擴充功能",
+    "description": "The name of the extension."
+  },
+  "shields": {
+    "message": "盾牌",
+    "description": "The Shields feature name"
+  },
+  "up": {
+    "message": "上",
+    "description": "Message for when shields is enabled"
+  },
+  "down": {
+    "message": "下",
+    "description": "Message for when shields is disabled"
+  },
+  "forThisSite": {
+    "message": "為此網站",
+    "description": "Partial string for the phrase `shields is up *for this site*`"
+  },
+  "enabledMessage": {
+    "message": "如果某個網站出現故障，請嘗試關閉盾牌",
+    "description": "Message telling the user to disable shields if a site appears broken"
+  },
+  "disabledMessage": {
+    "message": "您瀏覽此網站時沒有 Brave 的隱私與安全保護。盾牌開啟時無法正常運作嗎？",
+    "description": "Message telling the user that shields are disabled, and prompting them towards reporting an issue if necessary"
+  },
+  "reportBrokenSite": {
+    "message": "回報壞掉的網站",
+    "description": "Message for the button allowing users to report a broken site to Brave developers"
+  },
+  "itemsBlocked": {
+    "message": "個已阻擋的項目",
+    "description": "Message for the main blocked resources text when there is more than one ad/track/script blocked (plural)"
+  },
+  "itemBlocked": {
+    "message": "個已阻擋的項目",
+    "description": "Message for the main blocked resources text when there is one ad/track/script blocked (singular)"
+  },
+  "and": {
+    "message": "與",
+    "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
+  },
+  "connectionsUpgraded": {
+    "message": "個已升級的連線",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
+  },
+  "connectionUpgraded": {
+    "message": "個已升級的連線",
+    "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
+  },
+  "thirdPartyTrackersBlocked": {
+    "message": "已封鎖跨站追蹤器",
+    "description": "Message for the scripts blocked row label"
+  },
+  "readOnlyAdsTrackersBlocking": {
+    "message": "追蹤裝置和廣告已封鎖",
+    "description": "Message for the option in the ads and trackers blocking select field in read only view"
+  },
+  "aggressiveAdsTrackersBlocking": {
+    "message": "追蹤器與廣告封鎖（積極）",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with aggressive heuristics"
+  },
+  "standardAdsTrackersBlocking": {
+    "message": "追蹤器與廣告封鎖（標準）",
+    "description": "Message for the option in the ads and trackers blocking select field to block ads and trackers with standard heuristics"
+  },
+  "allowAdsTrackers": {
+    "message": "允許所有追蹤器與廣告",
+    "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
+  },
+  "connectionsUpgradedHTTPS": {
+    "message": "條已升級到 HTTPS 的連線",
+    "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
+  },
+  "connectionUpgradedHTTPS": {
+    "message": "條已升級到 HTTPS 的連線",
+    "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
+  },
+  "scriptsBlocked": {
+    "message": "Script 被封鎖",
+    "description": "Message for the scripts blocked row label"
+  },
+  "thirdPartyCookiesBlocked": {
+    "message": "已封鎖跨站 Cookie",
+    "description": "Message for the option in the cookies select field to block all 3rd party cookies"
+  },
+  "allCookiesBlocked": {
+    "message": "被封鎖的 Cookie",
+    "description": "Message for the option in the cookies select field to block all cookies"
+  },
+  "allCookiesAllowed": {
+    "message": "允許所有 Cookie",
+    "description": "Message for the option in the cookies select field to allow all cookies"
+  },
+  "readOnlyFingerprinting": {
+    "message": "指紋已封鎖",
+    "description": "Message for the option in the fingerprinting field in read only view"
+  },
+  "standardFingerprinting": {
+    "message": "封鎖指紋（標準）",
+    "description": "Message for the option in the fingerprinting select field to block all 3rd party recognition attempts"
+  },
+  "strictFingerprinting": {
+    "message": "封鎖指紋（嚴格，可能會破壞網站）",
+    "description": "Message for the option in the fingerprinting select field to block all fingerprinting attempts"
+  },
+  "allowAllFingerprinting": {
+    "message": "允許所有指紋追蹤",
+    "description": "Message for the option in the fingerprinting select field to allow all fingerprinting attempts"
+  },
+  "deviceRecognitionAttempts": {
+    "message": "指紋嘗試",
+    "description": "Message for the fingerprinting attempts blocked panel"
+  },
+  "scriptsOnThisSite": {
+    "message": "此網站的 Script",
+    "description": "Message for the script resources blocked panel"
+  },
+  "blockedScripts": {
+    "message": "封鎖 Script",
+    "description": "Message for the script resources blocked"
+  },
+  "allowedScripts": {
+    "message": "允許 Script",
+    "description": "Message for the script resources allowed"
+  },
+  "blockAll": {
+    "message": "全部封鎖",
+    "description": "Message for the resources blocked *block all* option"
+  },
+  "allowAll": {
+    "message": "全部允許",
+    "description": "Message for the resources blocked *allow all* option"
+  },
+  "block": {
+    "message": "封鎖",
+    "description": "Message for the resources blocked *block* option"
+  },
+  "allow": {
+    "message": "允許",
+    "description": "Message for the resources blocked *allow* option"
+  },
+  "blockedOnce": {
+    "message": "封鎖一次",
+    "description": "Message for the resources blocked *blocked once* option"
+  },
+  "allowedOnce": {
+    "message": "允許一次",
+    "description": "Message for the resources blocked *allowed once* option"
+  },
+  "allowScriptsOnce": {
+    "message": "允許指令碼一次",
+    "description": "Message for the shortcut in the main interface to allow all scripts once"
+  },
+  "cancel": {
+    "message": "取消",
+    "description": "Message for the button inside the static list of resources blocked to cancel the operation"
+  },
+  "goBack": {
+    "message": "回到",
+    "description": "Message for the button inside the static list of resources blocked to go back from the current screen"
+  },
+  "applyOnce": {
+    "message": "允許一次",
+    "description": "Message for action in dynamic list of resources blocked to *apply once*"
+  },
+  "changeDefaults": {
+    "message": "變更全域防護預設值",
+    "description": "Message for the button action linking to the settings page"
+  },
+  "manageCustomFilters": {
+    "message": "管理自訂過濾器",
+    "description": "Message for context menu that opens a page for adding, editing, and removing custom cosmetic filters"
+  },
+  "elementPickerMode": {
+    "message": "封鎖元素",
+    "description": "Message for context menu that enables the element picker UI to apply cosmetic filter rules to the page."
+  },
+  "advancedView": {
+    "message": "進階檢視",
+    "description": "Message for the advanced view option"
+  },
+  "simpleView": {
+    "message": "簡易檢視",
+    "description": "Message for the simple view option"
+  },
+  "shieldsExplanation": {
+    "message": "網站經常包含試圖辨識您與您的裝置的 cookies 與指令碼（通常會嵌入到廣告中）。他們希望了解您的身份，並在網路上追蹤您，每個網站上都是。Brave 會阻擋這些事情，這樣您就可以不被追蹤地瀏覽網頁。",
+    "description": "Message in read-only view explaining what Brave Shields do"
+  },
+  "blockedResoucesExplanation": {
+    "message": "已封鎖跨頁面追蹤器與其他令人毛骨悚然的事物",
+    "description": "Message for the main trackers count in Shields simple view"
+  },
+  "webCompatWarning": {
+    "message": "在此檢視中變更 Shield 設定可能會影響此網站的網路相容性。",
+    "description": "Message for web compat warning when switching from simple to advanced view"
+  },
+  "gotIt": {
+    "message": "我瞭解了",
+    "description": "Message for the button that confirms the advanced view"
+  },
+  "learnMore": {
+    "message": "更多資訊",
+    "description": "Message inviting the user to learn more about Shields"
+  },
+  "addToBrave": {
+    "message": "新增至 Brave",
+    "description": "Message for adding an extension to Brave"
+  },
+  "removeFromBrave": {
+    "message": "從 Brave 中移除",
+    "description": "Message for removing an extension from Brave"
+  },
+  "addToChrome": {
+    "message": "加到 Chrome",
+    "description": "Message for adding an extension to Chrome"
+  },
+  "removeFromChrome": {
+    "message": "從 Chrome 中移除",
+    "description": "Message for removing an extension from Chrome"
+  }
+}

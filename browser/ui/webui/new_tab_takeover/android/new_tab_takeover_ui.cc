@@ -1,0 +1,249 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui.h"
+
+#include <memory>
+#include <ranges>
+#include <string>
+#include <utility>
+
+#include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ui/webui/brave_webui_source.h"
+#include "brave/components/constants/url_constants.h"
+#include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/new_tab_takeover/grit/new_tab_takeover_generated_map.h"
+#include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
+#include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
+#include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/ui/android/tab_model/tab_model.h"
+#include "chrome/browser/ui/android/tab_model/tab_model_list.h"
+#include "components/grit/brave_components_resources.h"
+#include "components/omnibox/browser/autocomplete_input.h"
+#include "components/omnibox/browser/autocomplete_match.h"
+#include "components/omnibox/browser/autocomplete_provider_client.h"
+#include "components/search_engines/template_url_service.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
+#include "content/public/browser/web_ui_data_source.h"
+#include "content/public/common/url_constants.h"
+#include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "third_party/metrics_proto/omnibox_event.pb.h"
+
+namespace {
+
+content::WebContents* GetActiveWebContents() {
+  const TabModelList::TabModelVector& tab_models = TabModelList::models();
+  const auto iter = std::ranges::find_if(
+      tab_models, [](const auto& model) { return model->IsActiveModel(); });
+  if (iter == tab_models.cend()) {
+    return nullptr;
+  }
+
+  return (*iter)->GetActiveWebContents();
+}
+
+}  // namespace
+
+NewTabTakeoverUI::NewTabTakeoverUI(
+    content::WebUI* const web_ui,
+    ntp_background_images::NTPBackgroundImagesService&
+        ntp_background_images_service,
+    std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
+        rich_media_ad_event_handler)
+    : ui::MojoWebUIController(web_ui),
+      ntp_background_images_service_(ntp_background_images_service),
+      rich_media_ad_event_handler_(std::move(rich_media_ad_event_handler)) {
+  content::WebUIDataSource* source = CreateAndAddWebUIDataSource(
+      web_ui, kNewTabTakeoverHost, kNewTabTakeoverGenerated,
+      IDR_NEW_TAB_TAKEOVER_HTML);
+
+  web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
+
+  source->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::FrameSrc,
+      absl::StrFormat("frame-src %s;", kNTPNewTabTakeoverRichMediaUrl));
+  source->AddString("ntpNewTabTakeoverRichMediaUrl",
+                    kNTPNewTabTakeoverRichMediaUrl);
+}
+
+NewTabTakeoverUI::~NewTabTakeoverUI() {
+  // A mojom reply callback must always be run, even if the
+  // AutocompleteController query it was waiting on never reached `done()`.
+  if (pending_query_autocomplete_callback_) {
+    std::move(pending_query_autocomplete_callback_).Run({});
+  }
+}
+
+void NewTabTakeoverUI::BindInterface(
+    mojo::PendingReceiver<new_tab_takeover::mojom::NewTabTakeover>
+        pending_receiver) {
+  if (new_tab_takeover_receiver_.is_bound()) {
+    new_tab_takeover_receiver_.reset();
+  }
+
+  new_tab_takeover_receiver_.Bind(std::move(pending_receiver));
+}
+
+void NewTabTakeoverUI::SetSafeArea(const gfx::RectF& safe_area) {
+  if (safe_area_ == safe_area) {
+    return;
+  }
+  safe_area_.emplace(safe_area);
+
+  if (page_.is_bound()) {
+    page_->SetSafeArea(safe_area);
+  }
+}
+
+void NewTabTakeoverUI::SetAutocompleteControllerForTesting(
+    std::unique_ptr<AutocompleteController> autocomplete_controller) {
+  autocomplete_controller_ = std::move(autocomplete_controller);
+  autocomplete_controller_->AddObserver(this);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void NewTabTakeoverUI::SetPage(
+    mojo::PendingRemote<new_tab_takeover::mojom::NewTabTakeoverPage> page) {
+  page_.reset();
+  page_.Bind(std::move(page));
+
+  if (safe_area_) {
+    page_->SetSafeArea(*safe_area_);
+  }
+}
+
+void NewTabTakeoverUI::SetSponsoredRichMediaAdEventHandler(
+    mojo::PendingReceiver<
+        ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
+        event_handler) {
+  rich_media_ad_event_handler_->Bind(std::move(event_handler));
+}
+
+void NewTabTakeoverUI::GetCurrentWallpaper(
+    const std::string& creative_instance_id,
+    GetCurrentWallpaperCallback callback) {
+  auto failed = [&callback]() {
+    std::move(callback).Run(
+        /*url=*/std::nullopt,
+        brave_ads::mojom::NewTabPageAdMetricType::kConfirmation,
+        /*target_url=*/std::nullopt);
+  };
+
+  const ntp_background_images::NTPSponsoredImagesData* sponsored_images_data =
+      ntp_background_images_service_->GetSponsoredImagesData(
+          /*supports_rich_media=*/true);
+  if (!sponsored_images_data) {
+    return failed();
+  }
+
+  const ntp_background_images::Creative* creative =
+      sponsored_images_data->GetCreativeByInstanceId(creative_instance_id);
+  if (!creative) {
+    return failed();
+  }
+
+  std::move(callback).Run(creative->url, creative->metric_type,
+                          GURL(creative->logo.destination_url));
+}
+
+void NewTabTakeoverUI::NavigateToUrl(const GURL& url) {
+  // The current New Tab Takeover web contents is displayed in the ThinWebView
+  // so it is not connected to the Android Tab, i.e. WebContents::GetDelegate()
+  // returns nullptr. Therefore to do a Tab navigation, we need to locate
+  // the current Android Tab and open the URL in it.
+  content::WebContents* web_contents = GetActiveWebContents();
+  if (!web_contents) {
+    return;
+  }
+
+  // Set navigation as renderer initiated to open links in their app/PWA (if
+  // installed).
+  content::OpenURLParams params(
+      url, content::Referrer(), WindowOpenDisposition::CURRENT_TAB,
+      ui::PAGE_TRANSITION_LINK, /*is_renderer_initiated=*/true);
+  params.user_gesture = true;
+  params.initiator_origin = url::Origin();
+  web_contents->OpenURL(params, /*navigation_handle_callback=*/{});
+}
+
+void NewTabTakeoverUI::QueryAutocomplete(const std::string& input,
+                                         QueryAutocompleteCallback callback) {
+  if (pending_query_autocomplete_callback_) {
+    // A query is already in flight. Resolve it with an empty result rather
+    // than dropping it, as mojom reply callbacks must always be run.
+    std::move(pending_query_autocomplete_callback_).Run({});
+  }
+  pending_query_autocomplete_callback_ = std::move(callback);
+
+  Profile* const profile = Profile::FromWebUI(web_ui());
+  if (!autocomplete_controller_) {
+    std::unique_ptr<AutocompleteProviderClient> autocomplete_provider_client =
+        std::make_unique<ChromeAutocompleteProviderClient>(profile);
+    autocomplete_controller_ = std::make_unique<AutocompleteController>(
+        std::move(autocomplete_provider_client),
+        AutocompleteControllerConfig{
+            .provider_types = AutocompleteProvider::TYPE_SEARCH});
+    autocomplete_controller_->AddObserver(this);
+  }
+
+  // `NTP_REALBOX` refers specifically to desktop's realbox widget. This is a
+  // search box rendered inside a rich media ad on Android's native New Tab
+  // Page, so the generic `NTP` classification is the accurate fit.
+  AutocompleteInput autocomplete_input(
+      base::UTF8ToUTF16(input), metrics::OmniboxEventProto::NTP,
+      ChromeAutocompleteSchemeClassifier(profile));
+  autocomplete_controller_->Start(autocomplete_input);
+}
+
+void NewTabTakeoverUI::SetDefaultSearchEngineAsBraveSearch(
+    SetDefaultSearchEngineAsBraveSearchCallback callback) {
+  Profile* const profile = Profile::FromWebUI(web_ui());
+  TemplateURLService* const template_url_service =
+      TemplateURLServiceFactory::GetForProfile(profile);
+  if (!template_url_service) {
+    std::move(callback).Run(/*success=*/false);
+    return;
+  }
+
+  auto* const template_url =
+      template_url_service->GetTemplateURLForHost(kBraveSearchHost);
+  if (!template_url) {
+    std::move(callback).Run(/*success=*/false);
+    return;
+  }
+
+  template_url_service->SetUserSelectedDefaultSearchProvider(template_url);
+  std::move(callback).Run(/*success=*/true);
+}
+
+void NewTabTakeoverUI::OnResultChanged(AutocompleteController* controller,
+                                       bool default_match_changed) {
+  if (!pending_query_autocomplete_callback_ || !controller->done()) {
+    return;
+  }
+
+  std::vector<new_tab_takeover::mojom::AutocompleteMatchPtr> matches;
+  for (const AutocompleteMatch& match : controller->result()) {
+    auto mojom_match = new_tab_takeover::mojom::AutocompleteMatch::New();
+    mojom_match->contents = base::UTF16ToUTF8(match.contents);
+    mojom_match->description = base::UTF16ToUTF8(match.description);
+    mojom_match->destination_url = match.destination_url;
+    mojom_match->icon_url = match.icon_url;
+    mojom_match->image_url = match.image_url;
+    mojom_match->allowed_to_be_default_match =
+        match.allowed_to_be_default_match;
+    matches.push_back(std::move(mojom_match));
+  }
+
+  std::move(pending_query_autocomplete_callback_).Run(std::move(matches));
+}
+
+WEB_UI_CONTROLLER_TYPE_IMPL(NewTabTakeoverUI)

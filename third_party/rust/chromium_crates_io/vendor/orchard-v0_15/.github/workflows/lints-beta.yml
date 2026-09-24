@@ -1,0 +1,26 @@
+name: Nightly lints
+
+# These lints are only informative, so we only run them directly on branches
+# and not trial-merges of PRs, to reduce noise.
+on: push
+
+jobs:
+  clippy-beta:
+    name: Clippy (beta)
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@beta
+        id: toolchain
+        with:
+          components: clippy
+      - run: rustup override set ${{steps.toolchain.outputs.name}}
+      - name: Run Clippy
+        uses: auguwu/clippy-action@1.3.0
+        continue-on-error: true
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          working-directory: ${{ inputs.target }}
+          warn: clippy::all

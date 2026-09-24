@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Let BraveGCMDriverDesktop toggle itself on/off.
+
+      BraveGCMDriverDesktop gates GCM registration on profile state, which
+      upstream has no notion of, so it needs a settable enabled flag with a
+      no-op default for every other GCMDriver implementation.
+    add_to_public:
+      class_name: GCMDriver
+      code: 'virtual void SetEnabled(bool enabled) {}'

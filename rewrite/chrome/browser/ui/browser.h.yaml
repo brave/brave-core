@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Make OnTabClosing virtual'
+    make_virtual:
+      class_name: Browser
+      method_name: OnTabClosing
+
+  - description: 'Friend BraveBrowser and BookmarkPrefsService'
+    add_friend:
+      class_name: Browser
+      friend_type:
+        - class BookmarkPrefsService
+        - class BraveBrowser

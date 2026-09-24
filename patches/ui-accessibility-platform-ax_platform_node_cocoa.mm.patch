@@ -1,0 +1,12 @@
+diff --git a/ui/accessibility/platform/ax_platform_node_cocoa.mm b/ui/accessibility/platform/ax_platform_node_cocoa.mm
+index f9154d0900689534ae5e1391af875f9f40f65cba..ccc8e76add180d4b372c0efa321c8637be8d6e48 100644
+--- a/ui/accessibility/platform/ax_platform_node_cocoa.mm
++++ b/ui/accessibility/platform/ax_platform_node_cocoa.mm
+@@ -3667,6 +3667,7 @@ const ui::CocoaActionList& GetCocoaActionListForTesting() {
+   if (!_node)
+     return nil;
+ 
++  BRAVE_ACCESSIBILITY_ATTRIBUTED_STRING_FOR_RANGE
+   return [self AXAttributedStringForRange:[NSValue valueWithRange:range]];
+ }
+ 

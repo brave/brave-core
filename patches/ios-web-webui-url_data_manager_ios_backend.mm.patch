@@ -1,0 +1,13 @@
+diff --git a/ios/web/webui/url_data_manager_ios_backend.mm b/ios/web/webui/url_data_manager_ios_backend.mm
+index e651ff754d7bdd12d335a6a3555219f5da428ee8..7060bdd069974419a8456c1e67cf34c6d988d694 100644
+--- a/ios/web/webui/url_data_manager_ios_backend.mm
++++ b/ios/web/webui/url_data_manager_ios_backend.mm
+@@ -360,7 +360,7 @@ void URLRequestChromeJob::GetResponseInfo(net::HttpResponseInfo* info) {
+   // that is compatible with a given WebUI URL, and append it to the existing
+   // response headers.
+   if (add_content_security_policy_) {
+-    std::string base = kChromeURLContentSecurityPolicyHeaderBase;
++    std::string base;
+     base.append(content_security_policy_object_source_);
+     base.append(content_security_policy_frame_source_);
+     info->headers->AddHeader(kContentSecurityPolicy, base);

@@ -1,0 +1,9 @@
+{
+  "description": "Extension to test extension compat",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAnsTdWGAO7gvCgM/ymAuEQ+OpT5T7zGj6UUR/ArzRvdM4RcU97O8Qnq86XSxwKdd/DjqsxGSimU5vw/WS4Xvos7ZnrSKy9oqo1ahPa7IQKnPNbs4OVwuI7HBnuskONveGcSH3LL+Vx5CDYpbjbgQMtOxEX3xO8u/MjAyzkt26XKS1jlsKbwY5yD38IsB9ldBVTU7oHMCA0pJpyQ0J4eKFtb0GdqUlUgpK/KYb+xP30Z81RzHXpdhXNN+jMQV8M9zox7FeWTGoKkE2faZcXn7VP88Gw0i8enZpR9JGD9fSexJ/IW9BzlkjEk8EI6pM309qGxe0ctj20a0MVcZDCLsGaQIDAQAB",
+  "manifest_version": 2,
+  "name": "Extension Compat Tester",
+  "permissions": ["cookies", "http://a.com/"],
+  "content_security_policy": "default-src 'self'; script-src 'self' 'sha256-31e31LQBQVgum7/5clgXSTtrpJAgy42Geb7daYIonf8=';",
+  "version": "1.0.0"
+}

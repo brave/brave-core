@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Let BraveSpellingOptionsSubMenuObserver access private submenu state
+
+      Its `InitMenu()` override reaches into the private `submenu_model_`,
+      `proxy_`, and `use_spelling_service_` directly, to drop a trailing
+      separator and disable the submenu when it ends up empty.
+    add_friend:
+      class_name: SpellingOptionsSubMenuObserver
+      friend_type: class BraveSpellingOptionsSubMenuObserver

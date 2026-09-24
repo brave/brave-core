@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/tabs/tab_style.h b/chrome/browser/ui/tabs/tab_style.h
+index 6cdbde2d0e548939fd6228a6bf1953ed3a09302d..cc0583fbd90222b317d3d70b58a4af257e95e9b3 100644
+--- a/chrome/browser/ui/tabs/tab_style.h
++++ b/chrome/browser/ui/tabs/tab_style.h
+@@ -108,7 +108,7 @@ class TabStyle {
+ 
+   TabStyle(const TabStyle&) = delete;
+   TabStyle& operator=(const TabStyle&) = delete;
+-  ~TabStyle();
++  virtual ~TabStyle();
+ 
+   // Returns the standard height of a single Tab.
+   int GetStandardHeight() const;

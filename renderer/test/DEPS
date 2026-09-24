@@ -1,0 +1,34 @@
+specific_include_rules = {
+  # browser tests should not be in renderer
+  "digital_goods_api_browsertest\.cc": [
+    "!brave/components/constants/brave_paths.h",
+    "!chrome/browser/ui/browser.h",
+    "!chrome/browser/ui/tabs/tab_strip_model.h",
+    "!content/public/browser/render_frame_host.h",
+    "!content/public/browser/web_contents.h",
+  ],
+  "file_system_access_browsertest\.cc": [
+    "!brave/components/constants/brave_paths.h",
+    "!chrome/browser/ui/browser.h",
+    "!chrome/browser/ui/tabs/tab_strip_model.h",
+    "!content/public/browser/render_frame_host.h",
+    "!content/public/browser/web_contents.h",
+  ],
+  "navigator_connection_attribute_browsertest\.cc": [
+    "!brave/components/constants/brave_paths.h",
+    "!chrome/browser/ui/browser.h",
+    "!chrome/browser/ui/tabs/tab_strip_model.h",
+    "!content/public/browser/render_frame_host.h",
+    "!content/public/browser/web_contents.h",
+  ],
+  "subresource_web_bundles_browsertest\.cc": [
+    "!chrome/browser/ui/browser.h",
+    "!chrome/browser/ui/tabs/tab_strip_model.h",
+    "!components/web_package/web_bundle_builder.h",
+    "!content/public/browser/render_frame_host.h",
+    "!content/public/browser/web_contents.h",
+  ],
+  "font_browsertest\.cc": [
+    "!brave/components/constants/brave_paths.h",
+  ],
+}

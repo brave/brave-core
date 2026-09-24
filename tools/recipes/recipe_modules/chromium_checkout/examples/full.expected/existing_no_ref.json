@@ -1,0 +1,42 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/b/src/third_party/depot_tools"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "git",
+      "log",
+      "-1",
+      "--oneline",
+      "chrome/VERSION"
+    ],
+    "cwd": "[WORKSPACE]/b/src",
+    "env": {
+      "CHROME_HEADLESS": "1"
+    },
+    "name": "check chrome/VERSION"
+  },
+  {
+    "name": "$result"
+  }
+]

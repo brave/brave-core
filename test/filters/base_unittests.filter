@@ -1,0 +1,41 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# rust logs severity has been tamed in brave, as crates were spamming CI with
+# logs.
+-RustLogIntegrationTest.CheckAllSeverity
+
+# Pkey pool tests exhaust the 256MB ThreadIsolatedPool size. The test allocates
+# up to 250 random-sized blocks (up to 2MB each) simultaneously, which exceeds
+# the pool capacity. This is an upstream test limitation - the test works with
+# the regular GiB-sized pool but not the smaller pkey pool.
+-AlternateTestParams/PartitionAllocTest.ZeroFill/2
+-AlternateTestParams/PartitionAllocTest.ZeroFill/3
+-AlternateTestParams/PartitionAllocWithSizedFreeTest.SchedulerLoopQuarantine/2
+-AlternateTestParams/PartitionAllocWithSizedFreeTest.SchedulerLoopQuarantine/3
+
+# Upstream Chromium test racing against upstream test infrastructure, not Brave
+# code. DelayedTaskManager::ProcessRipeTasks() pops a ripe ThreadPool delayed
+# task off delayed_task_queue_ and releases queue_lock_ before the callback
+# reaches TaskTracker::RegisterTaskSource(), which is what increments
+# num_incomplete_task_sources_. While the task is in flight in that window,
+# ThreadPoolImpl::NextScheduledRunTimeForTesting() reports no pending work, so
+# TaskEnvironment::FastForwardToNextTaskOrCap() returns kNone and
+# FastForwardUntilNoTasksRemain() returns before the delayed task has run
+# (reported as "expected 387, actual 131"). The service thread hits that window
+# once mock time has already advanced past the task's run time, making its
+# wake-up immediate. A fix belongs in base/task/thread_pool/. Upstream LUCI
+# Analysis reports the test as stable (0.4% flake rate / 30d), so Brave-specific
+# causes were checked first and came up empty: chromium_src/base has nothing
+# under base/task or base/test/task_environment*, and no patch touches either.
+# Filtered on all platforms rather than in a linux-msan file because the window
+# is platform-independent: Brave saw it on linux-x64-asan
+# (brave/brave-browser#50832) and linux-x64-msan, and the upstream flakes come
+# from non-sanitizer builders across several OSes (linux-chromeos-rel,
+# android-x64-rel, linux-rel, mac-rel, win-rel, ios-simulator).
+# https://github.com/brave/brave-browser/issues/57983
+-TaskEnvironmentTest.MultiThreadedMockTimeAndThreadPoolQueuedMode

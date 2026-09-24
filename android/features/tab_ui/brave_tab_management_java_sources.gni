@@ -1,0 +1,15 @@
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+brave_public_tab_management_java_sources = [
+  "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveIncognitoTabSwitcherPane.java",
+  "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridContextMenuCoordinator.java",
+  "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridItemTouchHelperCallback.java",
+  "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupsPane.java",
+  "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabListEditorManager.java",
+  "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabSwitcherPaneBase.java",
+  "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilities.java",
+  "//brave/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs_strip/BravePinnedTabStripItemContextMenuCoordinator.java",
+]

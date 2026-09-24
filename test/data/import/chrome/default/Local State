@@ -1,0 +1,23 @@
+{
+    "profile":
+    {
+        "info_cache":
+        {
+            "Default":
+            {
+
+                "name": "Profile 1"
+            },
+            "Profile 2":
+            {
+
+                "name": "Profile 2"
+            },
+            "Profile 3":
+            {
+
+                "badname": "no crash please"
+            }
+        }
+    }
+}

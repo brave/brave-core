@@ -1,0 +1,16 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+static_library("ntp_tiles") {
+  sources = [
+    "brave_popular_sites_impl.cc",
+    "brave_popular_sites_impl.h",
+  ]
+
+  deps = [
+    "//components/ntp_tiles",
+    "//net",
+  ]
+}

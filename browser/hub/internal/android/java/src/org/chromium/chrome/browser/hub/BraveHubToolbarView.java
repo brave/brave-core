@@ -1,0 +1,230 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.hub;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.res.ColorStateList;
+import android.content.res.Configuration;
+import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.FrameLayout;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.NonNull;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.widget.TextViewCompat;
+
+import org.chromium.base.ApplicationStatus;
+import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.brave_shields.FirstPartyStorageCleanerInterface;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
+import org.chromium.chrome.browser.ui.actions.button.FullButtonData;
+
+import java.util.List;
+
+/**
+ * Brave's extension for {@link HubToolbarView}. Here we control what elements should be visible in
+ * tab switcher mode when bottom toolbar is visible.
+ */
+public class BraveHubToolbarView extends HubToolbarView
+        implements ApplicationStatus.TaskVisibilityListener,
+                IncognitoReauthManager.IncognitoReauthCallback {
+    private Button mActionButton;
+    private Button mShredButton;
+    private FrameLayout mMenuButton;
+    private FrameLayout mPaneSwitcherCard;
+    private boolean mIsIncognitoSelected = true;
+    private @Nullable FirstPartyStorageCleanerInterface mFpCleaner;
+    private final @NonNull HubColorMixerRegistrationHelper mButtonColorMixerHelper =
+            new HubColorMixerRegistrationHelper();
+
+    public BraveHubToolbarView(Context context, AttributeSet attributeSet) {
+        super(context, attributeSet);
+    }
+
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
+        mActionButton = findViewById(R.id.toolbar_action_button);
+        mShredButton =
+                findViewById(org.chromium.chrome.browser.brave_shields.R.id.shred_data_button);
+        mMenuButton = findViewById(R.id.menu_button_wrapper);
+        mPaneSwitcherCard = findViewById(R.id.pane_switcher_card);
+        registerButtonColorBlend(mShredButton);
+
+        mShredButton.setOnClickListener(
+                v -> {
+                    if (mFpCleaner != null) {
+                        mFpCleaner.shredSiteData();
+                    }
+                });
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        Context context = getContext();
+        if (context instanceof FirstPartyStorageCleanerInterface) {
+            mFpCleaner = (FirstPartyStorageCleanerInterface) context;
+            mFpCleaner.setShredButtonVisibilityObserver(this);
+        }
+
+        ApplicationStatus.registerTaskVisibilityListener(this);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        ApplicationStatus.unregisterTaskVisibilityListener(this);
+        if (mFpCleaner != null) {
+            mFpCleaner.removeShredButtonVisibilityObserver(this);
+        }
+    }
+
+    @Override
+    void setPaneSwitcherButtonData(
+            @Nullable List<FullButtonData> buttonDataList, int selectedIndex) {
+        super.setPaneSwitcherButtonData(buttonDataList, selectedIndex);
+
+        // Upstream hides the pane switcher itself when there is a single pane, but keeps the card
+        // hosting it, so the card's rounded background and padding are left over as a stray sliver
+        // in the middle of the toolbar. Upstream always has at least two panes; Brave is down to
+        // one when tab groups are disabled and there are no incognito tabs.
+        mPaneSwitcherCard.setVisibility(
+                buttonDataList != null && buttonDataList.size() > 1 ? View.VISIBLE : View.GONE);
+    }
+
+    @Override
+    void setPaneSwitcherIndex(int index) {
+        super.setPaneSwitcherIndex(index);
+
+        // Update visibility of action and menu buttons based on the switching panes.
+        updateButtonsVisibility();
+    }
+
+    @Override
+    void setColorMixer(HubColorMixer mixer) {
+        super.setColorMixer(mixer);
+        mButtonColorMixerHelper.setColorMixer(mixer);
+    }
+
+    @Override
+    public void destroy() {
+        mButtonColorMixerHelper.destroy();
+        super.destroy();
+    }
+
+    @Override
+    void updateIncognitoElements(boolean isIncognito) {
+        super.updateIncognitoElements(isIncognito);
+        mIsIncognitoSelected = isIncognito;
+        updateButtonsVisibility();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        Context context = getContext();
+        if (context instanceof Activity
+                && (((Activity) context).isFinishing() || ((Activity) context).isDestroyed())) {
+            return;
+        }
+        updateButtonsVisibility();
+    }
+
+    @Override
+    void setMenuButtonVisible(boolean visible) {
+        super.setMenuButtonVisible(visible);
+        updateButtonsVisibility();
+    }
+
+    @Override
+    public void onIncognitoReauthSuccess() {
+        updateButtonsVisibility();
+    }
+
+    @Override
+    public void onIncognitoReauthNotPossible() {}
+
+    @Override
+    public void onIncognitoReauthFailure() {}
+
+    @Override
+    public void onTaskVisibilityChanged(int taskId, boolean isVisible) {
+        updateButtonsVisibility();
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    public void setFirstPartyStorageCleanerForTesting(
+            FirstPartyStorageCleanerInterface firstPartyStorageCleaner) {
+        mFpCleaner = firstPartyStorageCleaner;
+    }
+
+    private void registerButtonColorBlend(@NonNull Button button) {
+        mButtonColorMixerHelper.registerBlend(createButtonIconColorBlend(button));
+    }
+
+    /**
+     * Creates the standard Hub icon-color blend for a Brave-specific icon button.
+     *
+     * <p>Mirrors the blend applied to the upstream Hub menu button:
+     * https://chromium.googlesource.com/chromium/src/+/ef35003457e93c278f911a334b06e4a5f8967e06/chrome/browser/hub/internal/android/java/src/org/chromium/chrome/browser/hub/HubToolbarView.java#344
+     */
+    private @NonNull HubViewColorBlend createButtonIconColorBlend(@NonNull Button button) {
+        Context context = getContext();
+        return new SingleHubViewColorBlend(
+                HubAnimationConstants.PANE_COLOR_BLEND_ANIMATION_DURATION_MS,
+                colorScheme -> HubColors.getIconColor(context, colorScheme),
+                color -> updateButtonIconTint(context, button, color));
+    }
+
+    private void updateButtonIconTint(
+            @NonNull Context context, @NonNull Button button, @ColorInt int color) {
+        ColorStateList tint =
+                HubColors.getActionButtonColor(context, color, HubUtils.isGtsUpdateEnabled());
+        TextViewCompat.setCompoundDrawableTintList(button, tint);
+    }
+
+    private void updateButtonsVisibility() {
+        boolean shouldHideButtons =
+                AddressBarPreference.isToolbarConfiguredToShowOnTop()
+                        && ChromeSharedPreferences.getInstance()
+                                .readBoolean(BravePreferenceKeys.BRAVE_IS_MENU_FROM_BOTTOM, true);
+
+        mActionButton.setVisibility(shouldHideButtons ? View.GONE : View.VISIBLE);
+        mMenuButton.setVisibility(shouldHideButtons ? View.GONE : View.VISIBLE);
+
+        // When the menu button is GONE the shred button becomes the rightmost child of
+        // menu_button_container; give it an end margin matching the toolbar's start
+        // inset so the shred icon doesn't sit flush against the screen edge.
+        if (shouldHideButtons) {
+            ViewGroup.MarginLayoutParams shredLp =
+                    (ViewGroup.MarginLayoutParams) mShredButton.getLayoutParams();
+            int endMargin =
+                    getResources()
+                            .getDimensionPixelSize(R.dimen.hub_toolbar_action_button_start_margin);
+            if (shredLp.getMarginEnd() != endMargin) {
+                shredLp.setMarginEnd(endMargin);
+                mShredButton.setLayoutParams(shredLp);
+            }
+        }
+
+        final boolean isShredButtonVisible =
+                !mIsIncognitoSelected || mFpCleaner == null || mFpCleaner.isShredButtonVisible();
+        final boolean shouldShowShredButton =
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED) && isShredButtonVisible;
+        mShredButton.setVisibility(shouldShowShredButton ? View.VISIBLE : View.INVISIBLE);
+    }
+}

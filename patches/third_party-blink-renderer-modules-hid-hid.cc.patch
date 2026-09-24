@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/renderer/modules/hid/hid.cc b/third_party/blink/renderer/modules/hid/hid.cc
+index 6e75205329f611aac17a44dcc22676cd1d8ca544..8adf59d53211a6de1b64842923e63339a2dae660 100644
+--- a/third_party/blink/renderer/modules/hid/hid.cc
++++ b/third_party/blink/renderer/modules/hid/hid.cc
+@@ -316,7 +316,7 @@ ScriptPromise<IDLSequence<HIDDevice>> HID::requestDevice(
+     return ScriptPromise<IDLSequence<HIDDevice>>();
+   }
+ 
+-  if (!LocalFrame::HasTransientUserActivation(window->GetFrame())) {
++  if (!LocalFrame::HasTransientUserActivation(window->GetFrame()) && !AllowHidRequestDeviceWithoutTransientActivation(window->GetFrame())) {
+     exception_state.ThrowSecurityError(
+         "Must be handling a user gesture to show a permission request.");
+     return ScriptPromise<IDLSequence<HIDDevice>>();

@@ -1,0 +1,12 @@
+include_rules = [
+  "+brave/components/ai_chat/content/browser",
+  "+brave/components/ai_chat/core/browser",
+  "+brave/components/ai_chat/core/common",
+  "+brave/components/brave_shields/core/common",
+  "+brave/components/containers/buildflags",
+  "+brave/components/containers/content/browser",
+  "+brave/components/containers/core",
+  "+brave/components/email_aliases",
+  "+brave/components/text_recognition/common",
+  "+brave/components/tor/buildflags",
+]

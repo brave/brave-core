@@ -1,0 +1,31 @@
+import("//brave/build/config.gni")
+import("//chrome/version.gni")
+
+if (should_generate_symbols) {
+  action("generate_breakpad_symbols") {
+    script = "//brave/tools/mac/generate_breakpad_symbols.py"
+
+    symbols_dir = "$brave_dist_dir/$brave_product_name.breakpad.syms"
+    outputs = [ symbols_dir ]
+    breakpad_files_glob =
+        rebase_path(root_out_dir) + "/*-$chrome_version_full.breakpad"
+
+    args = [
+      "--symbols-dir=" + rebase_path(symbols_dir),
+      "--input-breakpad-files-glob=$breakpad_files_glob",
+      "--clear",
+    ]
+
+    deps = [ "//chrome:chrome_dump_syms" ]
+  }
+} else {
+  group("generate_breakpad_symbols") {
+  }
+}
+
+group("dist_resources") {
+}
+
+group("symbol_dist_resources") {
+  public_deps = [ ":generate_breakpad_symbols" ]
+}

@@ -1,0 +1,42 @@
+# Copyright (c) 2019 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+
+assert(enable_brave_ads)
+
+static_library("lib") {
+  visibility = [
+    "//brave/browser/brave_ads/services",
+    "//brave/test:*",
+    "//chrome/utility:*",
+  ]
+
+  sources = [
+    "bat_ads_client_mojo_bridge.cc",
+    "bat_ads_client_mojo_bridge.h",
+    "bat_ads_client_notifier_impl.cc",
+    "bat_ads_client_notifier_impl.h",
+    "bat_ads_impl.cc",
+    "bat_ads_impl.h",
+    "bat_ads_observer.cc",
+    "bat_ads_observer.h",
+    "bat_ads_service_impl.cc",
+    "bat_ads_service_impl.h",
+  ]
+
+  public_deps = [
+    "public/interfaces",
+    "//brave/components/brave_ads/core/mojom",
+  ]
+
+  deps = [
+    "//brave/components/brave_ads/core",
+    "//mojo/public/cpp/bindings",
+    "//mojo/public/cpp/system",
+    "//net",
+    "//ui/base",
+  ]
+}

@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The `#if defined(USE_AURA)` conditional in the `TabDragController` base-class
+# list stops tree-sitter from resolving the class, so the AST rewriters below
+# need the base-list conditional blanked out at parse time.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: 'Make Init() virtual'
+    make_virtual:
+      class_name: TabDragController
+      method_name: Init
+
+  - description: 'Make DetachAndAttachToNewContext virtual'
+    make_virtual:
+      class_name: TabDragController
+      method_name: DetachAndAttachToNewContext
+
+  - description: 'Make StartDraggingTabsSession virtual'
+    make_virtual:
+      class_name: TabDragController
+      method_name: StartDraggingTabsSession
+
+  - description: 'Friend BraveTabDragController'
+    add_friend:
+      class_name: TabDragController
+      friend_type: class BraveTabDragController

@@ -1,0 +1,15 @@
+##
+## Upstream tests to disable
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue if needed.
+##
+
+# Intermittent failure on Windows ASAN due to IPH_DiscardRing attempting to show
+# before browser initialization is complete. Not a bug in the code under test.
+# Brave suppresses AddAccessibilityLabelsServiceItem entirely.
+# Stable upstream (0.3% flake rate over 30 days per LUCI Analysis).
+# Chromium already disables AccessibilityLabelsMenuObserverTest.* on Linux
+# (testing/buildbot/filters/accessibility-linux.browser_tests.filter).
+# https://github.com/brave/brave-browser/issues/54036
+-AccessibilityLabelsMenuObserverTest.AccessibilityLabelsNotShownWithoutScreenReader

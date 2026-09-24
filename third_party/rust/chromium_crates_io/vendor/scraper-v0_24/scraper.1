@@ -1,0 +1,72 @@
+.Dd October 29, 2018
+.Dt SCRAPER 1
+.Os
+.
+.Sh NAME
+.Nm scraper
+.Nd HTML querying with CSS selectors
+.
+.Sh SYNOPSIS
+.Nm
+.Op Fl HIcint
+.Op Fl a Ar attr
+.Op Fl d | f
+.Ar selector
+.Op Ar
+.
+.Sh DESCRIPTION
+The
+.Nm
+utility parses HTML and outputs elements matching CSS selectors.
+.
+.Pp
+The arguments are as follows:
+.Bl -tag -width Ds
+.
+.It Fl H , Fl \-html
+Output the HTML of the matching elements.
+This is the default.
+.
+.It Fl I , Fl \-inner\-html
+Output the inner HTML of the matching elements.
+.
+.It Fl a Ar attr , Fl \-attr Ar attr
+Output the value of the attribute
+.Ar attr
+of the matching elements.
+.
+.It Fl c , Fl \-classes
+Output the classes of the matching elements.
+.
+.It Fl d , Fl \-document
+Parse the input as HTML documents.
+This is the default.
+.
+.It Fl f , Fl \-fragment
+Parse the input as HTML fragments.
+.
+.It Fl i , Fl \-id
+Output the IDs of the matching elements.
+.
+.It Fl n , Fl \-name
+Output the names of the matching elements.
+.
+.It Fl t , Fl \-text
+Output the text of the matching elements.
+.El
+.
+.Sh EXIT STATUS
+The
+.Nm
+utility exits 0 on success,
+1 if no elements match,
+and >1 if an error occurs.
+.
+.Sh AUTHORS
+.An June McEnroe Aq Mt june@causal.agency
+.An Vivek Kushwaha Aq Mt yoursvivek@gmail.com
+.Pp
+The
+.Nm
+utility relies heavily on code from the
+.Lk https://servo.org "Servo project" .

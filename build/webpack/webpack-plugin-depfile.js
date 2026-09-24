@@ -1,0 +1,58 @@
+// Copyright (c) 2018 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Outputs a file containing all files that were used in
+// the compilation, to be used by the ninja build system.
+// This can be useful to know which files to monitor for changes
+// to cause a re-build only when neccessary.
+
+import path from 'node:path'
+import fs from 'node:fs'
+import mkdirp from 'mkdirp'
+
+function generateDepfileContent(outputName, depPaths) {
+  // File format is "dependency information in the syntax of a Makefile"
+  // (https://ninja-build.org/manual.html#_depfile)
+  return `${outputName}: ${depPaths.join(' ')}`
+}
+
+function writeDepfileContentSync(filePath, content) {
+  mkdirp.sync(path.dirname(filePath))
+  fs.writeFileSync(filePath, content, { encoding: 'utf8' })
+}
+
+class GenerateDepfilePlugin {
+  constructor(options) {
+    this.options = {
+      depfilePath: 'depfile.d',
+      depfileSourceName: '[UnknownOutputName]',
+      ...options,
+    }
+  }
+
+  apply(compiler) {
+    // These hooks cannot be used async, so must do sync ops.
+    compiler.hooks.compilation.tap(this.constructor.name, (compilation) => {
+      compilation.hooks.finishModules.tap(this.constructor.name, (modules) => {
+        // Resolve all symlinks/junctions to real paths. Siso doesn't handle
+        // junctions on Windows well, so we need to resolve them here.
+        const depsPaths = Array.from(modules)
+          .filter((module) => module.resource)
+          .map((module) =>
+            path
+              .relative(process.cwd(), fs.realpathSync(module.resource))
+              .replace(/\\/g, '/'),
+          )
+        const depfileContent = generateDepfileContent(
+          this.options.depfileSourceName,
+          depsPaths,
+        )
+        writeDepfileContentSync(this.options.depfilePath, depfileContent)
+      })
+    })
+  }
+}
+
+export default GenerateDepfilePlugin

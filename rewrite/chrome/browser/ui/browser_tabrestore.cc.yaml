@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Pin a restored tab into its container's storage partition.
+    regex:
+      re_pattern:
+        '(WebContents::CreateParams create_params\(browser->GetProfile\(\)\);)'
+      replace: |-
+        \1
+        #if BUILDFLAG(ENABLE_CONTAINERS)
+          MaybeSetContainerSiteInstance(browser, navigations, selected_navigation,
+                                        &create_params);
+        #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+  - description: |-
+      Try restoration of tree tab hierarchy when restoring a tab after calling
+      AddRestoredTabImpl()
+    regex:
+      re_pattern: 'return (AddRestoredTabImpl\(.*?\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        content::WebContents* restored_contents = \1
+          return MaybeRestoreTabTreeHierarchy(browser, restored_contents, extra_data);
+
+  - description: |-
+      Try restoration of tree tab hierarchy when restoring a tab in
+      ReplaceRestoredTab() right before returning the new contents
+    regex:
+      re_pattern:
+        '(WebContents\*\ ReplaceRestoredTab\(.*?)(return\ raw_web_contents;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1MaybeRestoreTabTreeHierarchy(browser, raw_web_contents, extra_data);
+          \2

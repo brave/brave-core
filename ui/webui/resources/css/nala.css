@@ -1,0 +1,115 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* This file has been written by hand - these transforms should not ever change,
+ * as they just map a nala color name to a chromium color name.
+ * Note: Android doesn't support Theme source, so we just directly use the Nala
+ * varaibles there by copying `variables.css` to `nala.css`. */
+
+@import "//theme/colors.css?sets=ui";
+@import "//resources/brave/leo/css/variables.css";
+
+html:not(#z) {
+  --leo-color-primitive-neutral-0: var(--color-ref-neutral0);
+  --leo-color-primitive-neutral-10: var(--color-ref-neutral10);
+  --leo-color-primitive-neutral-100: var(--color-ref-neutral100);
+  --leo-color-primitive-neutral-12: var(--color-ref-neutral12);
+  --leo-color-primitive-neutral-15: var(--color-ref-neutral15);
+  --leo-color-primitive-neutral-17: var(--color-ref-neutral17);
+  --leo-color-primitive-neutral-20: var(--color-ref-neutral20);
+  --leo-color-primitive-neutral-22: var(--color-ref-neutral22);
+  --leo-color-primitive-neutral-25: var(--color-ref-neutral25);
+  --leo-color-primitive-neutral-30: var(--color-ref-neutral30);
+  --leo-color-primitive-neutral-35: var(--color-ref-neutral35);
+  --leo-color-primitive-neutral-4: var(--color-ref-neutral4);
+  --leo-color-primitive-neutral-40: var(--color-ref-neutral40);
+  --leo-color-primitive-neutral-5: var(--color-ref-neutral5);
+  --leo-color-primitive-neutral-50: var(--color-ref-neutral50);
+  --leo-color-primitive-neutral-6: var(--color-ref-neutral6);
+  --leo-color-primitive-neutral-60: var(--color-ref-neutral60);
+  --leo-color-primitive-neutral-70: var(--color-ref-neutral70);
+  --leo-color-primitive-neutral-8: var(--color-ref-neutral8);
+  --leo-color-primitive-neutral-80: var(--color-ref-neutral80);
+  --leo-color-primitive-neutral-87: var(--color-ref-neutral87);
+  --leo-color-primitive-neutral-90: var(--color-ref-neutral90);
+  --leo-color-primitive-neutral-92: var(--color-ref-neutral92);
+  --leo-color-primitive-neutral-94: var(--color-ref-neutral94);
+  --leo-color-primitive-neutral-95: var(--color-ref-neutral95);
+  --leo-color-primitive-neutral-96: var(--color-ref-neutral96);
+  --leo-color-primitive-neutral-98: var(--color-ref-neutral98);
+  --leo-color-primitive-neutral-99: var(--color-ref-neutral99);
+  --leo-color-primitive-neutral-variant-0: var(--color-ref-neutral-variant0);
+  --leo-color-primitive-neutral-variant-10: var(--color-ref-neutral-variant10);
+  --leo-color-primitive-neutral-variant-100: var(--color-ref-neutral-variant100);
+  --leo-color-primitive-neutral-variant-15: var(--color-ref-neutral-variant15);
+  --leo-color-primitive-neutral-variant-20: var(--color-ref-neutral-variant20);
+  --leo-color-primitive-neutral-variant-25: var(--color-ref-neutral-variant25);
+  --leo-color-primitive-neutral-variant-30: var(--color-ref-neutral-variant30);
+  --leo-color-primitive-neutral-variant-35: var(--color-ref-neutral-variant35);
+  --leo-color-primitive-neutral-variant-40: var(--color-ref-neutral-variant40);
+  --leo-color-primitive-neutral-variant-5: var(--color-ref-neutral-variant5);
+  --leo-color-primitive-neutral-variant-50: var(--color-ref-neutral-variant50);
+  --leo-color-primitive-neutral-variant-60: var(--color-ref-neutral-variant60);
+  --leo-color-primitive-neutral-variant-70: var(--color-ref-neutral-variant70);
+  --leo-color-primitive-neutral-variant-80: var(--color-ref-neutral-variant80);
+  --leo-color-primitive-neutral-variant-90: var(--color-ref-neutral-variant90);
+  --leo-color-primitive-neutral-variant-95: var(--color-ref-neutral-variant95);
+  --leo-color-primitive-neutral-variant-98: var(--color-ref-neutral-variant98);
+  --leo-color-primitive-neutral-variant-99: var(--color-ref-neutral-variant99);
+  --leo-color-primitive-primary-0: var(--color-ref-primary0);
+  --leo-color-primitive-primary-10: var(--color-ref-primary10);
+  --leo-color-primitive-primary-100: var(--color-ref-primary100);
+  --leo-color-primitive-primary-15: var(--color-ref-primary15);
+  --leo-color-primitive-primary-20: var(--color-ref-primary20);
+  --leo-color-primitive-primary-25: var(--color-ref-primary25);
+  --leo-color-primitive-primary-30: var(--color-ref-primary30);
+  --leo-color-primitive-primary-35: var(--color-ref-primary35);
+  --leo-color-primitive-primary-40: var(--color-ref-primary40);
+  --leo-color-primitive-primary-5: var(--color-ref-primary5);
+  --leo-color-primitive-primary-50: var(--color-ref-primary50);
+  --leo-color-primitive-primary-60: var(--color-ref-primary60);
+  --leo-color-primitive-primary-70: var(--color-ref-primary70);
+  --leo-color-primitive-primary-80: var(--color-ref-primary80);
+  --leo-color-primitive-primary-90: var(--color-ref-primary90);
+  --leo-color-primitive-primary-95: var(--color-ref-primary95);
+  --leo-color-primitive-primary-98: var(--color-ref-primary98);
+  --leo-color-primitive-primary-99: var(--color-ref-primary99);
+  --leo-color-primitive-secondary-0: var(--color-ref-secondary0);
+  --leo-color-primitive-secondary-10: var(--color-ref-secondary10);
+  --leo-color-primitive-secondary-100: var(--color-ref-secondary100);
+  --leo-color-primitive-secondary-15: var(--color-ref-secondary15);
+  --leo-color-primitive-secondary-20: var(--color-ref-secondary20);
+  --leo-color-primitive-secondary-25: var(--color-ref-secondary25);
+  --leo-color-primitive-secondary-30: var(--color-ref-secondary30);
+  --leo-color-primitive-secondary-35: var(--color-ref-secondary35);
+  --leo-color-primitive-secondary-40: var(--color-ref-secondary40);
+  --leo-color-primitive-secondary-5: var(--color-ref-secondary5);
+  --leo-color-primitive-secondary-50: var(--color-ref-secondary50);
+  --leo-color-primitive-secondary-60: var(--color-ref-secondary60);
+  --leo-color-primitive-secondary-70: var(--color-ref-secondary70);
+  --leo-color-primitive-secondary-80: var(--color-ref-secondary80);
+  --leo-color-primitive-secondary-90: var(--color-ref-secondary90);
+  --leo-color-primitive-secondary-95: var(--color-ref-secondary95);
+  --leo-color-primitive-secondary-98: var(--color-ref-secondary98);
+  --leo-color-primitive-secondary-99: var(--color-ref-secondary99);
+  --leo-color-primitive-tertiary-0: var(--color-ref-tertiary0);
+  --leo-color-primitive-tertiary-10: var(--color-ref-tertiary10);
+  --leo-color-primitive-tertiary-100: var(--color-ref-tertiary100);
+  --leo-color-primitive-tertiary-15: var(--color-ref-tertiary15);
+  --leo-color-primitive-tertiary-20: var(--color-ref-tertiary20);
+  --leo-color-primitive-tertiary-25: var(--color-ref-tertiary25);
+  --leo-color-primitive-tertiary-30: var(--color-ref-tertiary30);
+  --leo-color-primitive-tertiary-35: var(--color-ref-tertiary35);
+  --leo-color-primitive-tertiary-40: var(--color-ref-tertiary40);
+  --leo-color-primitive-tertiary-5: var(--color-ref-tertiary5);
+  --leo-color-primitive-tertiary-50: var(--color-ref-tertiary50);
+  --leo-color-primitive-tertiary-60: var(--color-ref-tertiary60);
+  --leo-color-primitive-tertiary-70: var(--color-ref-tertiary70);
+  --leo-color-primitive-tertiary-80: var(--color-ref-tertiary80);
+  --leo-color-primitive-tertiary-90: var(--color-ref-tertiary90);
+  --leo-color-primitive-tertiary-95: var(--color-ref-tertiary95);
+  --leo-color-primitive-tertiary-98: var(--color-ref-tertiary98);
+  --leo-color-primitive-tertiary-99: var(--color-ref-tertiary99);
+}

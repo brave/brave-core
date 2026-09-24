@@ -1,0 +1,27 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_group_header.h b/chrome/browser/ui/views/tabs/tab_group_header.h
+index 8c7b62e00a1f722cb51b1187712188d23ec3ef02..8012ab4312f820e16581ad335cff1e77951d67fc 100644
+--- a/chrome/browser/ui/views/tabs/tab_group_header.h
++++ b/chrome/browser/ui/views/tabs/tab_group_header.h
+@@ -96,7 +96,7 @@ class TabGroupHeader : public TabSlotView,
+   // for our group.
+   // TODO(crbug.com/372296676): Make TabGroupHeader observe the group for
+   // changes to cut down on the number of times we recalculate the view.
+-  void VisualsChanged();
++  virtual void VisualsChanged();
+ 
+   int GetCollapsedHeaderWidth() const;
+ 
+@@ -109,11 +109,12 @@ class TabGroupHeader : public TabSlotView,
+   bool is_collapsed_for_testing() const { return is_collapsed_; }
+ 
+  private:
++  friend class BraveTabGroupHeader;
+   friend class TabGroupEditorBubbleViewDialogBrowserTest;
+   FRIEND_TEST_ALL_PREFIXES(TabStripSaveBrowsertest, AttentionIndicatorIsShown);
+ 
+   // Calculate the width for this View.
+-  int GetDesiredWidth() const;
++  virtual int GetDesiredWidth() const;
+   // Determines if the sync icon should be shown in the header.
+   bool ShouldShowHeaderIcon() const;
+ 

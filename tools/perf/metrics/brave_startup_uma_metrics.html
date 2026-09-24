@@ -1,0 +1,41 @@
+<!-- Copyright (c) 2023 The Brave Authors. All rights reserved.
+This Source Code Form is subject to the terms of the Mozilla Public
+License, v. 2.0. If a copy of the MPL was not distributed with this file,
+You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!DOCTYPE html>
+
+<link rel="import" href="/tracing/metrics/metric_registry.html">
+<link rel="import" href="/brave/tools/perf/metrics/brave_uma_utils.html">
+
+<script>
+  'use strict';
+
+  tr.exportTo('tr.metrics', function () {
+    const REGULAR_HISTOGRAM_LIST = [
+      'Startup.BrowserMessageLoopStartTime',
+      'Startup.BrowserMessageLoopFirstIdle',
+      'Startup.BrowserWindow.FirstPaint',
+
+      'Startup.BrowserMainRunnerImplInitializeLongTime',
+
+      'Startup.FirstWebContents.MainNavigationStart',
+      'Startup.FirstWebContents.MainNavigationFinished',
+      'Startup.FirstWebContents.NonEmptyPaint3',
+    ];
+
+    function braveStartupUmaMetric(histograms, model) {
+      tr.metrics.braveExtendedUmaMetrics(histograms, model, {
+        regularHistograms: REGULAR_HISTOGRAM_LIST,
+      });
+    }
+
+    tr.metrics.MetricRegistry.register(braveStartupUmaMetric, {
+      requiredCategories: ['benchmark'],
+    });
+
+    return {
+      braveStartupUmaMetric,
+    };
+  });
+</script>

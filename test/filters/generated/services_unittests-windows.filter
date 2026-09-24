@@ -1,0 +1,33 @@
+## AUTO-GENERATED FILE -- DO NOT EDIT.
+##
+## Upstream services_unittests tests with a flake rate >= 1.0% on
+## windows bots over the past 30 days per Chromium LUCI Analysis.
+## Regenerate with:
+##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
+
+# 41.7% flake rate over 30 days per LUCI Analysis (14 passed, 10 failed, 0 flaky).
+-BackgroundTracingManagerTest.SavedCountPreventsStart
+
+# 83.3% flake rate over 30 days per LUCI Analysis (4 passed, 0 failed, 20 flaky).
+-CoordinatorImplTest.DumpsAreAddedToTraceWhenRequested
+
+# 93.4% flake rate over 30 days per LUCI Analysis (1135 passed, 30 failed, 16113 flaky).
+-HeapProfilingDataSourceTest.EmitSamples
+
+# 9.3% flake rate over 30 days per LUCI Analysis (17272 passed, 1 failed, 1776 flaky).
+-HistogramSamplesDataSourceTest.RecordAllHistogramsWithoutTrackEvent
+
+# 4.2% flake rate over 30 days per LUCI Analysis (18247 passed, 1 failed, 801 flaky).
+-NetworkContextTest.PreconnectMax
+
+# 1.1% flake rate over 30 days per LUCI Analysis (18830 passed, 1 failed, 218 flaky).
+-PlatformSensorProviderTestWinrt.SensorCreationReturnCheck
+
+# 5.3% flake rate over 30 days per LUCI Analysis (108 passed, 6 failed, 0 flaky).
+-SharedHttpCacheCorsURLLoaderFactoryTest.RedirectNotCached
+
+# 23.2% flake rate over 30 days per LUCI Analysis (14629 passed, 0 failed, 4423 flaky).
+-TracingServiceTest.PerfettoClientConsumer
+
+# 2.2% flake rate over 30 days per LUCI Analysis (18633 passed, 0 failed, 419 flaky).
+-TracingServiceTest.TracingServiceInstantiate

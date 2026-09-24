@@ -1,0 +1,12 @@
+diff --git a/third_party/search_engines_data/BUILD.gn b/third_party/search_engines_data/BUILD.gn
+index 7a3997c72aaf338f200e55344fb6ea77d2ef4da9..dc6e090efecdc2e4bb2a633ef0c6663a53a3b523 100644
+--- a/third_party/search_engines_data/BUILD.gn
++++ b/third_party/search_engines_data/BUILD.gn
+@@ -17,6 +17,7 @@ json_to_struct("prepopulated_engines") {
+   schema_file = "prepopulated_engines_schema.json"
+   namespace = "TemplateURLPrepopulateData"
+   deps = [ "//base" ]
++  import("//brave/components/search_engines/sources.gni") additional_sources = brave_third_party_search_engines_data_prepopulated_engines_sources deps += brave_third_party_search_engines_data_prepopulated_engines_deps
+ }
+ 
+ json_to_struct("regional_settings") {

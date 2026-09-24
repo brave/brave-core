@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add Leo omnibox icons to `AutocompleteIconToResourceName`.
+
+      This regex looks for the DUMP_WILL_BE_NOTREACHED at the end of the
+      function, making sure it is in fact the last one, and inserts our code
+      just before it, meaning, at the end of the function.
+    regex:
+      re_pattern:
+        '(SearchboxHandler::AutocompleteIconToResourceName\(.*?\) const
+        \{.*?)(DUMP_WILL_BE_NOTREACHED\b.*?;)(?=(?:(?!DUMP_WILL_BE_NOTREACHED).)*?\n\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1if (icon.name == kLeoWindowTabNewIcon.name) {
+            return kLeoWindowTabNewIconResourceName;
+          } else if (icon.name == kLeoMessageBubbleAskIcon.name) {
+            return kLeoMessageBubbleAskIconResourceName;
+          }
+          // This function is used for the WebUI Omnibox which isn't enabled in
+          // Brave, so its okay to disable the DUMP_WILL_BE_NOTREACHED() check
+          // here and use the default icon instead.
+          if ((true)) return "";
+          \2
+
+  - description: |
+      Force keyword mode in the NTP realbox.
+
+      We tweak a few AutocompleteInput settings because unlike Chromium we only
+      want keyword search results.
+    regex:
+      pattern: 'bool is_keyword_selected = false;'
+      replace: 'bool is_keyword_selected = true;'

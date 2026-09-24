@@ -1,0 +1,14 @@
+diff --git a/content/public/browser/browser_main_parts.h b/content/public/browser/browser_main_parts.h
+index d6e247ed846e2ca2eada6bec7b7f9d7e9dfe5a63..118d35153d59946d3b3185ef1eb4f23b366249c5 100644
+--- a/content/public/browser/browser_main_parts.h
++++ b/content/public/browser/browser_main_parts.h
+@@ -157,6 +157,9 @@ class CONTENT_EXPORT BrowserMainParts {
+   virtual void OnFirstIdle() {}
+   virtual void PostMainMessageLoopRun() {}
+   virtual void PostDestroyThreads() {}
++
++  // Called when shutdown is about to begin.
++  virtual void PreShutdown() {}
+ };
+ 
+ }  // namespace content

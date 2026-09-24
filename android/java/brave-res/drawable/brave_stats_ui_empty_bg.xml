@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/brave_stats_empty_bg_color" />
+    <!--border color and border width-->
+    <stroke
+        android:color="@color/brave_stats_empty_border_color" />
+    <!--border radius in dp-->
+    <corners android:radius="16dp"/>
+</shape>

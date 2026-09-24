@@ -1,0 +1,547 @@
+#!/usr/bin/env python3
+#
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+from collections import defaultdict
+
+import os
+import posixpath
+import re
+import FP
+import lxml.etree  # pylint: disable=import-error
+
+from lib.l10n.grd_string_replacements import (branding_replacements,
+                                              brave_strings_grd_replacements,
+                                              default_replacements,
+                                              fixup_replacements,
+                                              main_text_only_replacements)
+from lib.l10n.validation import validate_tags_in_one_string
+
+# Map of google_chrome_strings.grd resources ids to migrate to brave_strings.grd
+# The resources and all translations will be migrated to grd and xtb files.
+# key - id in google_chrome_strings.
+# value - new id in brave_stirngs.
+GOOGLE_CHROME_STRINGS_MIGRATION_MAP = {
+    'IDS_SHORTCUT_NAME_BETA': 'IDS_CHROME_SHORTCUT_NAME_BETA',
+    'IDS_SHORTCUT_NAME_DEV': 'IDS_CHROME_SHORTCUT_NAME_DEV'
+}
+
+# Installer strings that need to be in brave_strings.grd until we move Windows
+# to Omaha 4.
+INSTALLER_STRINGS = ['IDS_SETUP_PATCH_FAILED']
+
+
+def braveify_grd_text(text, is_main_text, branding_replacements_only):
+    """Replaces text string to Brave wording"""
+    for (pattern, to) in branding_replacements:
+        text = re.sub(pattern, to, text)
+    if not branding_replacements_only:
+        for (pattern, to) in default_replacements:
+            text = re.sub(pattern, to, text)
+    for (pattern, to) in fixup_replacements:
+        text = re.sub(pattern, to, text)
+    if is_main_text:
+        for (pattern, to) in main_text_only_replacements:
+            text = re.sub(pattern, to, text)
+    return text
+
+
+def generate_braveified_node(elem, is_comment, branding_replacements_only):
+    """Replaces a node and attributes to Brave wording"""
+    if elem.text:
+        elem.text = braveify_grd_text(
+            elem.text, not is_comment, branding_replacements_only)
+
+    if elem.tail:
+        elem.tail = braveify_grd_text(
+            elem.tail, not is_comment, branding_replacements_only)
+
+    if 'desc' in elem.keys():
+        elem.attrib['desc'] = braveify_grd_text(
+            elem.attrib['desc'], False, branding_replacements_only)
+    for child in elem:
+        generate_braveified_node(child, is_comment, branding_replacements_only)
+
+
+def escape_element_text(elem):
+    # ph tags use $ as placeholders, so don't touch them.
+    if elem.tag == 'ph':
+        return
+
+    # comments are irrelevant, so don't touch them.
+    if elem.tag is lxml.etree.Comment:
+        return
+
+    if elem.text:
+        elem.text = elem.text.replace('$', '&#36;')
+
+    if elem.tail:
+        elem.tail = elem.tail.replace('$', '&#36;')
+
+    for child in elem:
+        escape_element_text(child)
+
+
+def escape_messages_text(xml_tree):
+    for elem in xml_tree.xpath('//message'):
+        escape_element_text(elem)
+
+
+def format_xml_style(xml_content):
+    """Formats an xml file according to how Chromium GRDs are formatted"""
+    xml_content = re.sub(rb'\s+desc="', rb' desc="', xml_content)
+    xml_content = xml_content.replace(b'/>', b' />')
+    xml_content = xml_content.replace(
+        rb'<?xml version="1.0" encoding="UTF-8"?>',
+            rb'<?xml version=\'1.0\' encoding=\'UTF-8\'?>')
+    xml_content = xml_content.replace(rb'&amp;#36;', rb'&#36;')
+    return xml_content
+
+
+def write_xml_file_from_tree(string_path, xml_tree):
+    """Writes out an xml tree to a file with Chromium GRD formatting
+       replacements"""
+    escape_messages_text(xml_tree)
+    transformed_content = lxml.etree.tostring(xml_tree,
+                                              pretty_print=True,
+                                              xml_declaration=True,
+                                              encoding='UTF-8')
+    transformed_content = format_xml_style(transformed_content)
+    with open(string_path, mode='wb') as f:
+        f.write(transformed_content)
+
+
+def braveify_grd_tree(source_xml_tree, branding_replacements_only):
+    """Takes in a grd(p) tree and replaces all messages and comments with Brave
+       wording"""
+    for elem in source_xml_tree.xpath('//message'):
+        generate_braveified_node(elem, False, branding_replacements_only)
+    for elem in source_xml_tree.xpath('//comment()'):
+        generate_braveified_node(elem, True, branding_replacements_only)
+
+
+def replace_strings_in_brave_strings_grd(source_xml_tree):
+    """Takes in a brave_strings.grd tree and replaces strings listed in
+    brave_strings_grd_replacements"""
+    for (message_id, text) in brave_strings_grd_replacements:
+        elem = next(
+            iter(source_xml_tree.xpath('.//message[@name=$id]',
+                                       id=message_id)), None)
+        assert elem is not None, (
+            f'String with name {message_id} listed in ' +
+            'brave_strings_grd_replacements was not found in ' +
+            'brave_strings.grd. If the string with this name was ' +
+            'removed upstream, update the replacements accordingly.')
+        elem.text = text
+
+
+def braveify_grd_in_place(source_string_path):
+    """Takes in a grd file and replaces all messages and comments with Brave
+       wording"""
+    source_xml_tree = lxml.etree.parse(source_string_path)
+    print(f'Applying branding to {source_string_path}')
+    braveify_grd_tree(source_xml_tree, False)
+    if os.path.basename(source_string_path) == 'brave_strings.grd':
+        replace_strings_in_brave_strings_grd(source_xml_tree)
+    write_xml_file_from_tree(source_string_path, source_xml_tree)
+
+
+def get_override_file_path(source_string_path):
+    """Obtain src/brave source string override path for local grd strings with
+       replacements"""
+    filename = os.path.basename(source_string_path)
+    (basename, ext) = filename.split('.')
+    if ext == 'xtb':
+        # _override goes after the string name but before the _[locale].xtb part
+        parts = basename.split('_')
+        parts.insert(-1, 'override')
+        override_string_path = posixpath.join(
+            os.path.dirname(source_string_path), '.'.join(
+                ('_'.join(parts), ext)))
+    else:
+        override_string_path = posixpath.join(
+            os.path.dirname(source_string_path), '.'.join(
+                (basename + '_override', ext)))
+    return override_string_path
+
+
+def update_xtbs_locally(grd_file_path, brave_source_root, only_for_lang):
+    """Updates XTBs from the local Chromium files"""
+    xtb_files = get_xtb_files(grd_file_path)
+    chromium_grd_file_path = get_chromium_grd_src_with_fallback(grd_file_path,
+        brave_source_root)
+    chromium_xtb_files = get_xtb_files(chromium_grd_file_path)
+    if len(xtb_files) != len(chromium_xtb_files):
+        assert False, (f'XTB files counts in {grd_file_path} and ' +
+                       f'{chromium_grd_file_path} do not match ( ' +
+                       f'{len(xtb_files)} vs {len(chromium_xtb_files)}).')
+
+    grd_base_path = os.path.dirname(grd_file_path)
+    chromium_grd_base_path = os.path.dirname(chromium_grd_file_path)
+
+    # Update XTB FPs so it uses the branded source string
+    grd_strings = get_grd_strings(grd_file_path, validate_tags=False)
+    chromium_grd_strings = get_grd_strings(
+        chromium_grd_file_path, validate_tags=False)
+    # Special treatment for brave_strings.grd
+    extra_brave_strings_string_ids = []
+    if os.path.basename(grd_file_path) == 'brave_strings.grd':
+        assert len(grd_strings) == len(chromium_grd_strings) + \
+            len(GOOGLE_CHROME_STRINGS_MIGRATION_MAP) + \
+            len(INSTALLER_STRINGS)
+        extra_brave_strings_string_ids = remove_google_chrome_strings(
+            grd_strings, GOOGLE_CHROME_STRINGS_MIGRATION_MAP) + \
+            remove_installer_strings(grd_strings, INSTALLER_STRINGS)
+    assert len(grd_strings) == len(chromium_grd_strings), (
+        f'String count in {grd_file_path} and in {chromium_grd_file_path} do' +
+        f'not match: {len(grd_strings)} vs {len(chromium_grd_strings)}.')
+
+    # Verify that string names match
+    for idx, grd_string in enumerate(grd_strings):
+        assert chromium_grd_strings[idx][0] == grd_string[0]
+
+    # [2] is the string fingerprint
+    fp_map = {
+        chromium_grd_strings[idx][2]: grd_strings[idx][2]
+        for (idx, _) in enumerate(grd_strings)
+    }
+
+    xtb_file_paths = [os.path.join(
+        grd_base_path, path) for (lang, path) in xtb_files \
+            if not only_for_lang or only_for_lang == lang]
+    chromium_xtb_file_paths = [
+        os.path.join(chromium_grd_base_path, path) for
+        (lang, path) in chromium_xtb_files \
+            if not only_for_lang or only_for_lang == lang]
+    for idx, xtb_file in enumerate(xtb_file_paths):
+        chromium_xtb_file = chromium_xtb_file_paths[idx]
+        if not os.path.exists(chromium_xtb_file):
+            print('Warning: Skipping because Chromium path does not exist: ' \
+                  f'{chromium_xtb_file}')
+            continue
+        xml_tree = lxml.etree.parse(chromium_xtb_file)
+
+        for node in xml_tree.xpath('//translation'):
+            generate_braveified_node(node, False, True)
+            # Use our fp, when exists.
+            old_fp = node.attrib['id']
+            # It's possible for an xtb string to not be in our GRD.
+            # This happens, for exmaple, with Chrome OS strings which
+            # we don't process files for.
+            if old_fp in fp_map:
+                new_fp = fp_map.get(old_fp)
+                if new_fp != old_fp:
+                    node.attrib['id'] = new_fp
+                    # print(f'fp: {old_fp} -> {new_fp}')
+
+        # Special treatment for brave_strings.grd
+        if os.path.basename(grd_file_path) == 'brave_strings.grd':
+            add_extra_translations_from_brave_xtb(
+                xtb_file, xml_tree, extra_brave_strings_string_ids)
+
+        transformed_content = (b'<?xml version="1.0" ?>\n' +
+            lxml.etree.tostring(xml_tree, pretty_print=True,
+                xml_declaration=False, encoding='utf-8').strip())
+        with open(xtb_file, mode='wb') as f:
+            f.write(transformed_content)
+
+
+def combine_override_xtb_into_original(source_string_path, only_for_lang):
+    """Applies XTB override file to the original"""
+    source_base_path = os.path.dirname(source_string_path)
+    override_path = get_override_file_path(source_string_path)
+    override_base_path = os.path.dirname(override_path)
+    xtb_files = get_xtb_files(source_string_path)
+    override_xtb_files = get_xtb_files(override_path)
+    assert len(xtb_files) == len(override_xtb_files)
+
+    for (idx, _) in enumerate(xtb_files):
+        (lang, xtb_path) = xtb_files[idx]
+        if only_for_lang and lang != only_for_lang:
+            continue
+        (override_lang, override_xtb_path) = override_xtb_files[idx]
+        assert lang == override_lang
+
+        xtb_tree = lxml.etree.parse(os.path.join(source_base_path, xtb_path))
+        override_xtb_tree = lxml.etree.parse(
+            os.path.join(override_base_path, override_xtb_path))
+        translationbundle = xtb_tree.xpath('//translationbundle')[0]
+        override_translations = override_xtb_tree.xpath('//translation')
+        translations = xtb_tree.xpath('//translation')
+
+        override_translation_fps = [
+            t.attrib['id'] for t in override_translations
+        ]
+        translation_fps = [t.attrib['id'] for t in translations]
+
+        # Remove translations that we have a matching FP for
+        for translation in xtb_tree.xpath('//translation'):
+            if translation.attrib['id'] in override_translation_fps:
+                translation.getparent().remove(translation)
+            elif translation_fps.count(translation.attrib['id']) > 1:
+                translation.getparent().remove(translation)
+                translation_fps.remove(translation.attrib['id'])
+
+        # Append the override translations into the original translation bundle
+        for translation in override_translations:
+            translationbundle.append(translation)
+
+        xtb_content = (b'<?xml version="1.0" ?>\n' +
+                       lxml.etree.tostring(xtb_tree,
+                                           pretty_print=True,
+                                           xml_declaration=False,
+                                           encoding='utf-8').strip())
+        with open(os.path.join(source_base_path, xtb_path), mode='wb') as f:
+            f.write(xtb_content)
+        # Delete the override xtb for this lang
+        os.remove(os.path.join(override_base_path, override_xtb_path))
+
+
+
+def get_xtb_files(grd_file_path):
+    """Obtains all the XTB files from the specified GRD"""
+    all_xtb_file_tags = (
+        lxml.etree.parse(grd_file_path).findall('.//translations/file'))
+    xtb_files = []
+    for xtb_file_tag in all_xtb_file_tags:
+        lang = xtb_file_tag.get('lang')
+        path = xtb_file_tag.get('path')
+        pair = (lang, path)
+        xtb_files.append(pair)
+    return xtb_files
+
+
+def get_grd_languages(grd_file_path):
+    """Extracts the list of locales supported by the passed in GRD file"""
+    xtb_files = get_xtb_files(grd_file_path)
+    return {lang for (lang, _) in xtb_files}
+
+
+def get_chromium_grd_src_with_fallback(grd_file_path, brave_source_root):
+    source_root = os.path.dirname(brave_source_root)
+    chromium_grd_file_path = get_original_grd(source_root, grd_file_path)
+    if not chromium_grd_file_path:
+        rel_path = os.path.relpath(grd_file_path, brave_source_root)
+        chromium_grd_file_path = os.path.join(source_root, rel_path)
+    return chromium_grd_file_path
+
+
+def get_original_grd(src_root, grd_file_path):
+    """Obtains the Chromium GRD file for a specified Brave GRD file."""
+    # pylint: disable=fixme
+    # TODO: consider passing this mapping into the script from l10nUtil.js
+    grd_file_name = os.path.basename(grd_file_path)
+    if grd_file_name == 'components_brave_strings.grd':
+        return os.path.join(src_root, 'components',
+                            'components_chromium_strings.grd')
+    if grd_file_name == 'brave_strings.grd':
+        return os.path.join(src_root, 'chrome', 'app', 'chromium_strings.grd')
+    if grd_file_name == 'generated_resources.grd':
+        return os.path.join(src_root, 'chrome', 'app',
+                            'generated_resources.grd')
+    if grd_file_name == 'android_chrome_strings.grd':
+        return os.path.join(src_root, 'chrome', 'browser', 'ui', 'android',
+                            'strings', 'android_chrome_strings.grd')
+    if grd_file_name == 'android_chrome_tab_ui_strings.grd':
+        return os.path.join(src_root, 'chrome', 'android', 'features', 'tab_ui',
+                            'java', 'strings',
+                            'android_chrome_tab_ui_strings.grd')
+    if grd_file_name == 'android_webapps_strings.grd':
+        return os.path.join(src_root, 'components', 'webapps', 'browser',
+                            'android', 'android_webapps_strings.grd')
+    if grd_file_name == 'browser_ui_strings.grd':
+        return os.path.join(src_root, 'components', 'browser_ui', 'strings',
+                            'android', 'browser_ui_strings.grd')
+    return None
+
+
+def get_grd_strings(grd_file_path, validate_tags=True):
+    """Obtains a tuple of (name, value, FP, description) for each string in
+       a GRD file"""
+    strings = []
+    # Keep track of duplicate mesasge_names
+    dupe_dict = defaultdict(int)
+    all_message_tags = get_grd_message_tags(grd_file_path)
+    for message_tag in all_message_tags:
+        # Skip translateable="false" strings
+        if not is_translateable_string(grd_file_path, message_tag):
+            continue
+        message_name = message_tag.get('name')
+        dupe_dict[message_name] += 1
+
+        # Check for a duplicate message_name, this can happen, for example,
+        # for the same message id but one is title case and the other isn't.
+        # Both need to be uploaded to Crowdin with different message names.
+        # When XTB files are later generated, the ID doesn't matter at all.
+        # The only thing that matters is the fingerprint string hash.
+        if dupe_dict[message_name] > 1:
+            message_name += f"_{dupe_dict[message_name]}"
+        if validate_tags:
+            message_xml = lxml.etree.tostring(
+                message_tag, method='xml', encoding='utf-8')
+            errors = validate_tags_in_one_string(
+                lxml.etree.fromstring(message_xml), textify)
+            assert errors is None, '\n' + errors
+        message_desc = message_tag.get('desc') or ''
+        message_value = textify(message_tag)
+        assert message_name, 'Message name is empty'
+        assert (message_name.startswith('IDS_') or
+                message_name.startswith('IDR_') or
+                message_name.startswith('PRINT_PREVIEW_MEDIA_') or
+                message_name == 'DATA_SHARING_GROUP_LABEL_NEW_ACTIVITY'), \
+            f'Invalid message ID: {message_name}'
+        # None of the PRINT_PREVIEW_MEDIA_ messages currently get uploaded for
+        # translation, but in case this changes let's keep the prefix in the
+        # name (as opposed to IDS_ which we strip)
+        # There are some Chromium strings which (mistakenly) have IDR_ prefixes.
+        # Keep the prefix for them as well.
+        if message_name.startswith('IDS_'):
+            string_name = message_name[4:].lower()
+        else:
+            string_name = message_name.lower()
+        string_fp = get_fingerprint_for_xtb(message_tag)
+        string_tuple = (string_name, message_value, string_fp, message_desc)
+        strings.append(string_tuple)
+    return strings
+
+
+def remove_google_chrome_strings(brave_grd_strings, google_chrome_strings_map):
+    string_ids = []
+    string_names = [
+        string_name[4:].lower()
+        for string_name in google_chrome_strings_map.values()
+    ]
+    to_remove = []
+    for string_tuple in brave_grd_strings:
+        if string_tuple[0] in string_names:
+            to_remove.append(string_tuple)
+            string_ids.append(string_tuple[2])
+    assert len(to_remove) == len(google_chrome_strings_map)
+
+    for string_tuple in to_remove:
+        brave_grd_strings.remove(string_tuple)
+
+    return string_ids
+
+
+def remove_installer_strings(brave_grd_strings, installer_string):
+    string_ids = []
+    string_names = [
+        string_name[4:].lower() for string_name in installer_string
+    ]
+    to_remove = []
+    for string_tuple in brave_grd_strings:
+        if string_tuple[0] in string_names:
+            to_remove.append(string_tuple)
+            string_ids.append(string_tuple[2])
+    assert len(to_remove) == len(installer_string)
+
+    for string_tuple in to_remove:
+        brave_grd_strings.remove(string_tuple)
+
+    return string_ids
+
+
+def add_extra_translations_from_brave_xtb(brave_strings_xtb_file, xml_tree,
+                                          string_ids):
+    brave_xtb_tree = lxml.etree.parse(brave_strings_xtb_file)
+    translationbundle = xml_tree.xpath('//translationbundle')[0]
+    for string_id in string_ids:
+        translation = brave_xtb_tree.xpath(
+            '//translation[@id="{}"]'.format(string_id))[0]
+        translationbundle.append(translation)
+
+
+def get_grd_message_tags(grd_file_path):
+    """Obtains all message tags of the specified GRD file"""
+    output_elements = []
+    elements = lxml.etree.parse(grd_file_path).findall('.//message')
+    for element in elements:
+        if element.tag == 'message':
+            output_elements.append(element)
+        else:
+            assert False, f'Unexpected tag name {element.tag}'
+
+    elements = lxml.etree.parse(grd_file_path).findall('.//part')
+    for element in elements:
+        grd_base_path = os.path.dirname(grd_file_path)
+        grd_part_filename = element.get('file')
+        if grd_part_filename in ['chromeos_strings.grdp']:
+            continue
+        grd_part_path = os.path.join(grd_base_path, grd_part_filename)
+        part_output_elements = get_grd_message_tags(grd_part_path)
+        output_elements.extend(part_output_elements)
+
+    return output_elements
+
+
+def is_translateable_string(grd_file_path, message_tag):
+    """ Checks translateable attribute of the given message and additionally
+        certain exceptions"""
+    if message_tag.get('translateable') != 'false':
+        return True
+    # Check for exceptions that aren't translateable in Chromium, but are made
+    # to be translateable in Brave. These can be found in the main function in
+    # brave/script/chromium-rebase-l10n.py
+    grd_file_name = os.path.basename(grd_file_path)
+    if grd_file_name == 'chromium_strings.grd':
+        exceptions = {
+            'IDS_SXS_SHORTCUT_NAME', 'IDS_SHORTCUT_NAME_BETA',
+            'IDS_SHORTCUT_NAME_DEV', 'IDS_APP_SHORTCUTS_SUBDIR_NAME_BETA',
+            'IDS_APP_SHORTCUTS_SUBDIR_NAME_CANARY',
+            'IDS_APP_SHORTCUTS_SUBDIR_NAME_DEV',
+            'IDS_INBOUND_MDNS_RULE_NAME_BETA',
+            'IDS_INBOUND_MDNS_RULE_NAME_CANARY',
+            'IDS_INBOUND_MDNS_RULE_NAME_DEV',
+            'IDS_INBOUND_MDNS_RULE_DESCRIPTION_BETA',
+            'IDS_INBOUND_MDNS_RULE_DESCRIPTION_CANARY',
+            'IDS_INBOUND_MDNS_RULE_DESCRIPTION_DEV'
+        }
+        if message_tag.get('name') in exceptions:
+            return True
+    return False
+
+
+def get_fingerprint_for_xtb(message_tag):
+    """Obtains the fingerprint meant for xtb files from a message tag."""
+    string_to_hash = message_tag.text
+    string_phs = message_tag.findall('ph')
+    for string_ph in string_phs:
+        string_to_hash = (
+            (string_to_hash or '') + string_ph.get('name').upper() + (
+                string_ph.tail or ''))
+    string_to_hash = (string_to_hash or '').strip()
+    string_to_hash = clean_triple_quoted_string(string_to_hash)
+    fp = FP.FingerPrint(string_to_hash)
+    meaning = (message_tag.get('meaning') if 'meaning' in message_tag.attrib
+               else None)
+    if meaning:
+        # combine the fingerprints of message and meaning
+        fp2 = FP.FingerPrint(meaning)
+        if fp < 0:
+            fp = fp2 + (fp << 1) + 1
+        else:
+            fp = fp2 + (fp << 1)
+    # To avoid negative ids we strip the high-order bit
+    return str(fp & 0x7fffffffffffffff)
+
+
+def clean_triple_quoted_string(val):
+    """Grit parses out first 3 and last 3 single quote chars if they exist."""
+    val = val.strip()
+    if val.startswith("'''"):
+        val = val[3:]
+    if val.endswith("'''"):
+        val = val[:-3]
+    return val.strip()
+
+
+def textify(tag):
+    """Returns the text content of a tag"""
+    val = lxml.etree.tostring(tag, method='xml', encoding='unicode')
+    val = val[val.index('>')+1:val.rindex('<')]
+    val = clean_triple_quoted_string(val)
+    return val

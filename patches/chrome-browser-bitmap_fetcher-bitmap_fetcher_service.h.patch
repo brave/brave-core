@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h b/chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h
+index aa5df1703a5a7269c935335879c76e442a7c6a30..c244ff682acc95a743d3768f222d8d59897b743e 100644
+--- a/chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h
++++ b/chrome/browser/bitmap_fetcher/bitmap_fetcher_service.h
+@@ -70,6 +70,11 @@ class BitmapFetcherService : public KeyedService, public BitmapFetcherDelegate {
+   // front of the recency list.
+   bool IsCached(const GURL& url);
+ 
++  RequestId RequestImageWithNetworkTrafficAnnotationTag(
++      const GURL& url,
++      BitmapFetchedCallback callback,
++      const net::NetworkTrafficAnnotationTag& traffic_annotation);
++
+  protected:
+   // Create a bitmap fetcher for the given |url| and start it. Virtual method
+   // so tests can override this for different behavior.

@@ -1,0 +1,12 @@
+diff --git a/components/browsing_data/content/browsing_data_test_util.cc b/components/browsing_data/content/browsing_data_test_util.cc
+index 08673acd9e5064f793182e5b2e2c45a627c21fd3..4b13d76bee19a5173d04e643130b567a7c93c542 100644
+--- a/components/browsing_data/content/browsing_data_test_util.cc
++++ b/components/browsing_data/content/browsing_data_test_util.cc
+@@ -23,6 +23,7 @@ void SetDataForType(const std::string& type,
+                     content::WebContents* web_contents) {
+   EXPECT_TRUE(web_contents);
+   SetDataForType(type, web_contents->GetPrimaryMainFrame());
++  EXPECT_TRUE(HasDataForType(type, web_contents));
+ }
+ 
+ void SetDataForType(const std::string& type,

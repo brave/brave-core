@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Also treat a .onion page with an insecure form action as mixed
+      content.
+
+      We only need to handle top-level .onion pages since nested cases are
+      already handled correctly in Chromium.
+    after_function_impl:
+      function_name: IsFormMixedContent
+      result_var: is_mixed_content
+      code: |-
+        if (is_mixed_content) {
+          return true;
+        }
+        return net::IsOnion(client.GetLastCommittedPrimaryMainFrameOrigin()) &&
+               (form.action().is_valid() &&
+                security_interstitials::IsInsecureFormAction(form.action()));

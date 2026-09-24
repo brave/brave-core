@@ -1,0 +1,164 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
+
+#include "base/functional/callback_helpers.h"
+#include "base/memory/raw_ptr.h"
+#include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
+#include "brave/browser/ui/views/brave_actions/brave_rewards_action_view.h"
+#include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
+#include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/constants/pref_names.h"
+#include "chrome/browser/browser_process.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_window.h"
+#include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/test/base/in_process_browser_test.h"
+#include "chrome/test/base/search_test_utils.h"
+#include "chrome/test/base/ui_test_utils.h"
+#include "components/policy/core/browser/browser_policy_connector.h"
+#include "components/policy/core/common/mock_configuration_policy_provider.h"
+#include "components/policy/core/common/policy_map.h"
+#include "components/policy/policy_constants.h"
+#include "components/prefs/pref_service.h"
+#include "content/public/test/browser_test.h"
+#include "content/public/test/test_utils.h"
+
+static_assert(BUILDFLAG(ENABLE_BRAVE_REWARDS));
+
+class BraveActionsContainerTest : public InProcessBrowserTest {
+ public:
+  BraveActionsContainerTest() = default;
+  BraveActionsContainerTest(const BraveActionsContainerTest&) = delete;
+  BraveActionsContainerTest& operator=(const BraveActionsContainerTest&) =
+      delete;
+  ~BraveActionsContainerTest() override = default;
+
+  void SetUpInProcessBrowserTestFixture() override {
+    InProcessBrowserTest::SetUpInProcessBrowserTestFixture();
+    provider_.SetDefaultReturns(
+        /*is_initialization_complete_return=*/true,
+        /*is_first_policy_load_complete_return=*/true);
+    policy::BrowserPolicyConnector::SetPolicyProviderForTesting(&provider_);
+  }
+
+  void SetUpOnMainThread() override { Init(browser()); }
+
+  void BlockRewardsByPolicy(bool value) {
+    policy::PolicyMap policies;
+    policies.Set(policy::key::kBraveRewardsDisabled,
+                 policy::POLICY_LEVEL_MANDATORY, policy::POLICY_SCOPE_USER,
+                 policy::POLICY_SOURCE_PLATFORM, base::Value(value), nullptr);
+    provider_.UpdateChromePolicy(policies);
+    EXPECT_EQ(
+        prefs_->IsManagedPreference(brave_rewards::prefs::kDisabledByPolicy) &&
+            prefs_->GetBoolean(brave_rewards::prefs::kDisabledByPolicy),
+        value);
+  }
+
+  void Init(BrowserWindowInterface* browser) {
+    BrowserView* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+    ASSERT_NE(browser_view, nullptr);
+    BraveLocationBarView* brave_location_bar_view =
+        static_cast<BraveLocationBarView*>(browser_view->GetLocationBarView());
+    ASSERT_NE(brave_location_bar_view, nullptr);
+    brave_actions_ = brave_location_bar_view->brave_actions_;
+    ASSERT_NE(brave_actions_, nullptr);
+    prefs_ = browser->GetProfile()->GetPrefs();
+  }
+
+  void CheckBraveRewardsActionShown(bool expected_shown) {
+    const bool shown = brave_actions_->rewards_action_btn_->GetVisible();
+    ASSERT_EQ(shown, expected_shown);
+  }
+
+  void CloseRewardsPanel() {
+    brave_actions_->rewards_action_btn_->ClosePanelForTesting();
+  }
+
+ protected:
+  raw_ptr<BraveActionsContainer, DanglingUntriaged> brave_actions_ = nullptr;
+  raw_ptr<PrefService, DanglingUntriaged> prefs_ = nullptr;
+  policy::MockConfigurationPolicyProvider provider_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, HideBraveRewardsAction) {
+  // By default the action should be shown.
+  EXPECT_TRUE(prefs_->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
+  CheckBraveRewardsActionShown(true);
+
+  // Set to hide.
+  prefs_->SetBoolean(brave_rewards::prefs::kShowLocationBarButton, false);
+  CheckBraveRewardsActionShown(false);
+
+  // Set to show.
+  prefs_->SetBoolean(brave_rewards::prefs::kShowLocationBarButton, true);
+  CheckBraveRewardsActionShown(true);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
+                       HideBraveRewardsActionWhenDisabledByPolicy) {
+  // By default the action should be shown.
+  EXPECT_TRUE(prefs_->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
+  CheckBraveRewardsActionShown(true);
+
+  // Disabling Rewards via policy after the container was already
+  // constructed should hide the button.
+  BlockRewardsByPolicy(true);
+  CheckBraveRewardsActionShown(false);
+
+  // Lifting the policy should bring the button back.
+  BlockRewardsByPolicy(false);
+  CheckBraveRewardsActionShown(true);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest,
+                       BraveRewardsActionHiddenInGuestSession) {
+  // By default the action should be shown.
+  EXPECT_TRUE(prefs_->GetBoolean(brave_rewards::prefs::kShowLocationBarButton));
+  CheckBraveRewardsActionShown(true);
+
+  // Open a Guest window.
+  EXPECT_EQ(1U, GlobalBrowserCollection::GetInstance()->GetSize());
+  ui_test_utils::BrowserCreatedObserver browser_creation_observer;
+  profiles::SwitchToGuestProfile(base::DoNothing());
+  base::RunLoop().RunUntilIdle();
+  browser_creation_observer.Wait();
+  EXPECT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
+
+  // Retrieve the new Guest profile.
+  Profile* guest = g_browser_process->profile_manager()->GetProfileByPath(
+      ProfileManager::GetGuestProfilePath());
+  // The BrowsingDataRemover needs a loaded TemplateUrlService or else it hangs
+  // on to a CallbackList::Subscription forever.
+  search_test_utils::WaitForTemplateURLServiceToLoad(
+      TemplateURLServiceFactory::GetForProfile(guest));
+
+  // Access the browser with the Guest profile and re-init test for it.
+  BrowserWindowInterface* browser = ui_test_utils::FindAnyBrowser(guest, true);
+  EXPECT_TRUE(browser);
+  Init(browser);
+  CheckBraveRewardsActionShown(false);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveActionsContainerTest, ShowRewardsIconForPanel) {
+  prefs_->SetBoolean(brave_rewards::prefs::kShowLocationBarButton, false);
+  CheckBraveRewardsActionShown(false);
+
+  // Send a request to open the Rewards panel.
+  auto* coordinator = browser()->GetFeatures().rewards_panel_coordinator();
+  ASSERT_TRUE(coordinator);
+  coordinator->OpenRewardsPanel();
+  base::RunLoop().RunUntilIdle();
+
+  CheckBraveRewardsActionShown(false);
+}

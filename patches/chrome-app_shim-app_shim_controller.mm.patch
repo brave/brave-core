@@ -1,0 +1,12 @@
+diff --git a/chrome/app_shim/app_shim_controller.mm b/chrome/app_shim/app_shim_controller.mm
+index b271c200b71e1399e0ac0dd70f3bf38da05e3900..5ee18e757c543b2640838dd4d3c2f0cee5cea756 100644
+--- a/chrome/app_shim/app_shim_controller.mm
++++ b/chrome/app_shim/app_shim_controller.mm
+@@ -606,6 +606,7 @@ mojo::PlatformChannelEndpoint AppShimController::ConnectToBrowser(
+ 
+ void AppShimController::SendBootstrapOnShimConnected(
+     mojo::PlatformChannelEndpoint endpoint) {
++  AppendTestLaunchUrls(launch_urls_);
+   DCHECK_EQ(init_state_, InitState::kWaitingForChromeReady);
+   init_state_ = InitState::kHasSentOnShimConnected;
+ 

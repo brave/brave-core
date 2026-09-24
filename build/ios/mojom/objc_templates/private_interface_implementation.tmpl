@@ -1,0 +1,92 @@
+{%- from "interface_macros.tmpl" import result_or_response_callback_type -%}
+{%- macro objc_methods_impls(interface) -%}
+{%  for method in interface.methods %}
+{%-   set name = method|objc_method_name_formatter %}
+- (void){{name}}
+{%- if method.parameters or method.response_parameters %}:{%- endif -%}
+{%- for param in method.parameters -%}
+{%-   if not loop.first -%}{{param.name|under_to_lower_camel}}:{%- endif -%}
+{%-   set nullable = param.kind|objc_argument_modifiers -%}
+{%-   set type = "%s%s"|format(nullable + " " if nullable, param.kind|objc_wrapper_type) -%}
+({{type}}){{param.name|under_to_lower_camel}}
+{%- if not loop.last %} {% endif -%}
+{%- endfor -%}
+{%- if method.response_parameters -%}
+{%- if method.parameters %} completion:{% endif -%}
+(void (^){{ result_or_response_callback_type(method) }})completion
+{%- endif %} {
+{%- if method.response_parameters %}
+{%- if method.result_response %}
+  auto callback = ^({{method|cpp_result_callback_type}} result) {
+    if (result.has_value()) {
+      completion({{method.result_response.success_kind|cpp_to_objc_assign_kind("result.value()")}}, nil);
+    } else {
+      completion(nil, {{method.result_response.failure_kind|cpp_to_objc_assign_kind("result.error()")}});
+    }
+  };
+{%- else %}
+  auto callback = ^(
+{%- for param in method.response_parameters -%}
+{{param.kind|expected_cpp_param_type}} {{param.name}}_arg
+{%- if not loop.last %}, {% endif -%}
+{%- endfor -%}
+  ) {
+    completion(
+{%- for param in method.response_parameters -%}
+{{param|cpp_to_objc_assign('','_arg')}}
+{%- if not loop.last %}, {% endif -%}
+{%- endfor -%}
+    );
+  };
+{%- endif %}
+{%- endif %}
+  web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, base::BindOnce(^{
+    self->_wrappedValue->{{method.name}}(
+{%- for param in method.parameters -%}
+{{param|objc_to_cpp_assign}}
+{%- if not loop.last -%},{{" "}}{%- endif -%}
+{%- endfor -%}
+{%- if method.response_parameters -%}
+{%- if method.parameters %}, {% endif -%}
+base::BindOnce(callback)
+{%- endif -%}
+    );
+  }));
+}
+{% endfor %}
+{%- endmacro %}
+
+{%- set cpp_namespace = interface|cpp_namespace_from_kind %}
+@implementation {{class_prefix}}{{interface.name}}MojoImpl {
+  mojo::Remote<{{cpp_namespace}}::{{interface.name}}> _wrappedValue;
+{%- for bridge in interface|interface_remote_sets %}
+  std::vector<base::SequenceBound<std::unique_ptr<{{bridge}}>>> _{{bridge|under_to_lower_camel}}Receivers;
+{%- endfor %}
+}
+
+- (instancetype)initWith{{interface.name}}:(mojo::PendingRemote<{{cpp_namespace}}::{{interface.name}}>)obj {
+  if ((self = [super init])) {
+    _wrappedValue.Bind(std::move(obj), web::GetUIThreadTaskRunner({}));
+  }
+  return self;
+}
+
+- (instancetype)initWith{{interface.name}}Impl:(std::unique_ptr<{{cpp_namespace}}::{{interface.name}}>)obj {
+  if ((self = [super init])) {
+    mojo::PendingReceiver<{{cpp_namespace}}::{{interface.name}}> receiver;
+    _wrappedValue = mojo::Remote<{{cpp_namespace}}::{{interface.name}}>(receiver.InitWithNewPipeAndPassRemote());
+    mojo::MakeSelfOwnedReceiver(std::move(obj), std::move(receiver), web::GetUIThreadTaskRunner({}));
+  }
+  return self;
+}
+
+- (void)dealloc {
+  web::GetUIThreadTaskRunner({})->PostTask(FROM_HERE, base::BindOnce(
+    ^(mojo::Remote<{{cpp_namespace}}::{{interface.name}}> remote){
+      remote.reset();
+    }, std::move(_wrappedValue)));
+}
+
+{{ objc_methods_impls(interface) }}
+
+@end

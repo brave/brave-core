@@ -1,0 +1,327 @@
+#!/usr/bin/env python3
+#
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import html
+import json
+import os
+import re
+import lxml.etree  # pylint: disable=import-error
+
+from lib.l10n.grd_utils import (get_grd_strings, get_override_file_path,
+                                get_xtb_files)
+from lib.l10n.crowdin.common import (
+    get_acceptable_json_lang_codes, get_crowdin_client_wrapper,
+    get_json_strings, get_strings_dict_from_xml_content,
+    json_lang_to_crowdin_lang, textify_from_crowdin,
+    crowdin_name_from_filename, xtb_lang_to_crowdin_lang)
+from lib.l10n.validation import validate_tags_in_one_string
+
+# This module contains functionality specific to pulling down translations
+# from Crowdin.
+
+# API functions
+# -------------
+
+
+def pull_source_file_from_crowdin(channel, source_file_path, filename, lang,
+                                  dump_path):
+    """Downloads translations from Crowdin"""
+    ext = os.path.splitext(source_file_path)[1]
+    if ext == '.grd':
+        xtb_files = get_xtb_files(source_file_path)
+        base_path = os.path.dirname(source_file_path)
+        grd_strings = get_grd_strings(source_file_path)
+        for (lang_code, xtb_rel_path) in xtb_files:
+            if lang and lang != lang_code:
+                continue
+            xtb_file_path = os.path.join(base_path, xtb_rel_path)
+            print(f'Updating: {xtb_file_path} {lang_code}')
+            xml_content = get_crowdin_translation_file_content(
+                channel, source_file_path, filename, lang_code, dump_path)
+            xml_content = fixup_bad_ph_tags_from_raw_crowdin_string(
+                xml_content)
+            errors = validate_tags_in_crowdin_strings(xml_content)
+            assert errors is None, errors
+            xml_content = trim_ph_tags_in_xtb_file_content(xml_content)
+            translations = get_strings_dict_from_xml_content(xml_content)
+            xtb_content = generate_xtb_content(lang_code, grd_strings,
+                                               translations)
+            with open(xtb_file_path, mode='wb') as f:
+                f.write(xtb_content)
+    elif ext == '.json':
+        langs_dir_path = os.path.dirname(os.path.dirname(source_file_path))
+        lang_codes = get_acceptable_json_lang_codes(langs_dir_path)
+        for lang_code in lang_codes:
+            if lang and lang != lang_code:
+                continue
+            print(f'getting filename {filename} for lang_code {lang_code}')
+            content = get_crowdin_translation_file_content(
+                channel, source_file_path, filename, lang_code, dump_path)
+            json_content = generate_json_content(content, source_file_path)
+            localized_translation_path = (os.path.join(langs_dir_path,
+                                                       lang_code,
+                                                       'messages.json'))
+            dir_path = os.path.dirname(localized_translation_path)
+            if not os.path.exists(dir_path):
+                os.mkdir(dir_path)
+            with open(localized_translation_path, mode='wb') as f:
+                f.write(json_content.encode('utf-8'))
+
+
+# Helper functions
+# ----------------
+
+
+def crowdin_lang_to_xtb_lang(lang):
+    """Reformats language code from Crowdin format to XTB format"""
+    # The lang code "iw" is the old code for Hebrew, Crowdin and GRDs use
+    # "he", but Chromium still uses "iw" inside the XTBs, and it causes a
+    # compiling error on Windows if "he" is used.
+    if lang == 'he':
+        return 'iw'
+    if lang == 'pt':
+        return 'pt-PT'
+    return lang
+
+
+def get_crowdin_translation_file_content(channel, source_file_path, filename,
+                                         lang_code, dump_path):
+    """Obtains a translation Android xml format and returns the string"""
+    ext = os.path.splitext(source_file_path)[1]
+    assert ext in ('.grd', '.json'), f'Unexpected extension {ext}'
+    crowdin_lang_code = xtb_lang_to_crowdin_lang(
+        lang_code) if ext == '.grd' else json_lang_to_crowdin_lang(lang_code)
+    resource_name = crowdin_name_from_filename(source_file_path, filename)
+    content = get_crowdin_client_wrapper().get_resource_l10n(
+        channel, resource_name, crowdin_lang_code, ext)
+    content = fix_crowdin_translation_file_content(content, ext)
+    if dump_path:
+        with open(dump_path, mode='wb') as f:
+            f.write(content)
+    verify_crowdin_translation_file_content(content, ext)
+    return content.decode('utf-8')
+
+
+def fix_crowdin_translation_file_content(content, file_ext):
+    """Fixes escaped quotes in Crowdin translation file content"""
+    if file_ext == '.json':
+        # For .json files, for some reason Crowdin puts a \'
+        return content.replace(b"\\'", b"'")
+    if file_ext == '.grd':
+        # For .grd files, for some reason Crowdin puts a \\" and \'
+        # Also, in android grd files when we upload %% is converted to [%],
+        # so we need to convert it back.
+        return content.\
+            replace(b'\\\\"', b'"').\
+            replace(b'\\"', b'"').\
+            replace(b"\\'", b"'").\
+            replace(b"[%]", b"%%").\
+            replace(b"[ %]", b" %%")
+    return None
+
+
+def verify_crowdin_translation_file_content(content, file_ext):
+    """Verifies that Crowdin translation file content is parse-able"""
+    if file_ext == '.json':
+        json.loads(content)
+    elif file_ext == '.grd':
+        lxml.etree.fromstring(content)
+
+
+def fixup_bad_ph_tags_from_raw_crowdin_string(xml_content):
+    """Attempts to fix improperly formatted PH tags in Crowdin translation
+       file content"""
+    begin_index = 0
+    while begin_index < len(xml_content) and begin_index != -1:
+        string_index = xml_content.find('<string', begin_index)
+        if string_index == -1:
+            return xml_content
+        string_index = xml_content.find('>', string_index)
+        if string_index == -1:
+            return xml_content
+        string_index += 1
+        string_end_index = xml_content.find('</string>', string_index)
+        if string_end_index == -1:
+            return xml_content
+        before_part = xml_content[:string_index]
+        ending_part = xml_content[string_end_index:]
+        val = process_bad_ph_tags_for_one_string(
+            xml_content[string_index:string_end_index])
+        xml_content = before_part + val + ending_part
+        begin_index = xml_content.find('</string>', begin_index)
+        if begin_index != -1:
+            begin_index += 9
+    return xml_content
+
+
+def process_bad_ph_tags_for_one_string(val):
+    """Fixes common issues with PH tag formatting"""
+    val = (val.replace('\r\n', '\n').replace('\r', '\n'))
+    if val.find('&lt;ph') == -1:
+        return val
+    val = (val.replace('&lt;', '<').replace(
+        'ph name=&quot;',
+        'ph name="').replace('ph name= &quot;', 'ph name="').replace(
+            'ph name= ', 'ph name=').replace('&quot;&gt;', '">').replace(
+                '&gt;', '>').replace('>  ', '> ').replace('  <', ' <'))
+    return val
+
+
+def trim_ph_tags_in_xtb_file_content(xml_content):
+    """Removes all children of <ph> tags including text inside ph tag"""
+    xml = lxml.etree.fromstring(xml_content)
+    phs = xml.findall('.//ph')
+    for ph in phs:
+        lxml.etree.strip_elements(ph, '*')
+        if ph.text is not None:
+            ph.text = ''
+    return lxml.etree.tostring(xml, encoding='utf-8')
+
+
+def generate_xtb_content(lang_code, grd_strings, translations):
+    """Generates an XTB file from a set of translations and GRD strings"""
+    # Used to make sure duplicate fingerprint strings are not made
+    # XTB only contains 1 entry even if multiple string names are
+    # different but have the same value.
+    all_string_fps = set()
+    translationbundle_tag = create_xtb_format_translationbundle_tag(lang_code)
+    for string in grd_strings:
+        if string[0] in translations:
+            fingerprint = string[2]
+            if fingerprint in all_string_fps:
+                continue
+            all_string_fps.add(fingerprint)
+            translation = translations[string[0]]
+            if len(translation) != 0:
+                check_plural_string_formatting(string[1], translation)
+                translationbundle_tag.append(
+                    create_xtb_format_translation_tag(fingerprint,
+                                                      translation))
+
+    xml_string = lxml.etree.tostring(translationbundle_tag, encoding='utf-8')
+    xml_string = html.unescape(xml_string.decode('utf-8'))
+    xml_string = ('<?xml version="1.0" ?>\n<!DOCTYPE translationbundle>\n' +
+                  xml_string)
+    return xml_string.encode('utf-8')
+
+
+def create_xtb_format_translationbundle_tag(lang):
+    """Creates the root XTB XML element"""
+    translationbundle_tag = lxml.etree.Element('translationbundle')
+    lang = crowdin_lang_to_xtb_lang(lang)
+    translationbundle_tag.set('lang', lang)
+    # Adds a newline so the first translation isn't glued to the
+    # translationbundle element for us weak humans.
+    translationbundle_tag.text = '\n'
+    return translationbundle_tag
+
+
+def check_plural_string_clauses(all_text, clauses_text):
+    """Validates clauses of a plural ICU string"""
+    clause_pattern = re.compile(
+        r"(zero|one|two|few|many|other|=\d+)\s*\{([^{}]+|\{[^{}]+\})+\}")
+    clause_counts = {}
+    unmatched_parts = []
+    last_end = 0
+    for match in clause_pattern.finditer(clauses_text):
+        keyword = match.group(1)
+        clause_counts[keyword] = clause_counts.get(keyword, 0) + 1
+        start, end = match.span()
+        unmatched_parts.append(clauses_text[last_end:start])
+        last_end = end
+    unmatched_parts.append(clauses_text[last_end:])
+    unmatched_text = (' '.join(unmatched_parts).strip()).strip()
+    if len(unmatched_text):
+        error = (f"Plural string has invalid format:\n{'-' * 10}\n"
+                 f"{all_text}\n{'-' * 10}\nUnmatched parts:\n"
+                 f"{unmatched_text}\n{'-' * 10}")
+        raise ValueError(error)
+    dups = [(key, value) for key, value in clause_counts.items() if value > 1]
+    if dups:
+        dups_details = ', '.join(f"'{key}' ({value} of them)"
+                                 for key, value in dups)
+        error = (f"Plural string has duplicate clauses: {dups_details}\n"
+                 f"{'-' * 10}\n{all_text}\n{'-' * 10}")
+        raise ValueError(error)
+    # This is also a fall through when clause_counts is empty.
+    if 'other' not in clause_counts:
+        error = ("Plural string is missing the required 'other' clause:\n"
+                 f"{'-' * 10}\n{all_text}\n{'-' * 10}")
+        raise ValueError(error)
+
+
+def check_plural_string_formatting(grd_string_content, translation_content):
+    """Checks 'plural' string formatting in translations"""
+    outer_pattern = re.compile(
+        r"^\s*\{\s*([^,]*,\s*plural,)(\s*offset:[0-2])?(.*)\}\s*$", re.DOTALL)
+    match = outer_pattern.match(grd_string_content)
+    if match:
+        check_plural_string_clauses(grd_string_content, match.group(3))
+        translation_match = outer_pattern.match(translation_content)
+        if not translation_match:
+            error = (f"Translation of plural string:\n{'-' * 10}\n"
+                     f"{grd_string_content}\n{'-' * 10}\ndoes not match:\n"
+                     f"{'-' * 10}\n{translation_content}\n{'-' * 10}")
+            raise ValueError(error)
+        check_plural_string_clauses(translation_content,
+                                    translation_match.group(3))
+    else:
+        # This finds plural strings that the pattern above doesn't catch
+        leading_pattern = re.compile(r"\s*{.*,\s*plural,.*")
+        if leading_pattern.match(grd_string_content) is not None:
+            error = (f"Uncaught plural pattern:\n{'-' * 10}\n"
+                     f"{grd_string_content}\n{'-' * 10}\n")
+            raise ValueError(error)
+
+
+def create_xtb_format_translation_tag(fingerprint, string_value):
+    """Creates child XTB elements for each translation tag"""
+    string_tag = lxml.etree.Element('translation')
+    string_tag.set('id', str(fingerprint))
+    if string_value.count('<') != string_value.count('>'):
+        assert False, \
+            'Warning: Unmatched < character, consider fixing on Crowdin, ' \
+            f'force encoding the following string: {string_value}'
+    string_tag.text = string_value
+    string_tag.tail = '\n'
+    return string_tag
+
+
+def validate_tags_in_crowdin_strings(xml_content):
+    """Validates that all child elements of all <string>s are allowed"""
+    xml = lxml.etree.fromstring(xml_content)
+    string_tags = xml.findall('.//string')
+    # print(f'Validating HTML tags in {len(string_tags)} strings')
+    errors = None
+    for string_tag in string_tags:
+        error = validate_tags_in_one_string(string_tag, textify_from_crowdin)
+        if error is not None:
+            errors = (errors or '') + error
+    if errors is not None:
+        errors = ("\n") + errors
+    return errors
+
+
+def generate_json_content(l10n_content, source_file_path):
+    """Creates localized json file from source file and translations downloaded
+       from Crowdin. Some of the translations may no longer be needed and
+       untranslated strings need to be pulled from the source."""
+    l10n_data = json.loads(l10n_content)
+    source_strings = get_json_strings(source_file_path)
+    content = {}
+    for (string_name, string_value, string_desc) in source_strings:
+        if string_name not in l10n_data:
+            content[string_name] = \
+                {"message": string_value,
+                 "description": string_desc}
+        else:
+            # Fix escaped double quotes in values
+            content[string_name] = \
+                {"message": l10n_data[string_name]["message"].replace(
+                    '\\"', '\"'),
+                 "description": l10n_data[string_name]["description"]}
+    return json.dumps(content, ensure_ascii=False, indent=2) + '\n'

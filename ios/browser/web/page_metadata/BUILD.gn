@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("page_metadata") {
+  sources = [
+    "page_metadata_javascript_feature.h",
+    "page_metadata_javascript_feature.mm",
+  ]
+  deps = [
+    ":page_metadata_js",
+    "//base",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+optimize_ts("page_metadata_js") {
+  visibility = [ ":page_metadata" ]
+
+  sources = [ "resources/page_metadata.ts" ]
+
+  deps = [
+    "//ios/web/public/js_messaging:gcrweb",
+    "//ios/web/public/js_messaging:util_scripts",
+  ]
+}

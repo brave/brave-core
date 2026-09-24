@@ -1,0 +1,60 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Register Brave local state prefs.
+
+      RegisterLocalStatePrefsForMigration is intentionally the last thing
+      RegisterLocalState calls, so preempting it runs Brave's registration
+      right before that.
+    preempt_function_impl:
+      function_name: RegisterLocalStatePrefsForMigration
+      code: |-
+        brave::RegisterLocalStatePrefs(registry);
+
+  - description:
+      'Register Brave profile prefs at the end of RegisterProfilePrefs.'
+    after_function_impl:
+      function_name: RegisterProfilePrefs
+      code: |-
+        brave::RegisterProfilePrefs(registry);
+
+  - description: |
+      Don't delete the Login Data files on Android.
+
+      Upstream removes the login database during this pref migration, but Brave
+      needs to keep it, otherwise passwords are wiped and recreated on every
+      app start.
+    regex:
+      re_pattern: |-
+        (profile_prefs->ClearPref\(kObsoleteUpmAutoExportCsvNeedsDeletion\);\n)(.*?Login Data For Account-journal"\)\)\);\n)
+      re_flags: [DOTALL]
+      replace: |
+        \1#if 0
+        \2#endif
+
+  - description: |
+      Run Brave's profile pref migrations that must precede Chromium's own.
+
+      Some of these move a Chromium pref into a Brave one, so they need to
+      run before Chromium's own migration reads or clears it.
+    preempt_function_impl:
+      function_name: MigrateObsoleteProfilePrefs
+      code: |-
+        MigrateObsoleteBraveProfilePrefsBeforeChromium(profile_prefs);
+
+  - description: "Run the rest of Brave's obsolete profile pref migrations."
+    after_function_impl:
+      function_name: MigrateObsoleteProfilePrefs
+      code: |-
+        MigrateObsoleteBraveProfilePrefsAfterChromium(profile_prefs,
+                                                       profile_path);
+
+  - description: "Run Brave's obsolete local state pref migrations."
+    after_function_impl:
+      function_name: MigrateObsoleteLocalStatePrefs
+      code: |-
+        MigrateObsoleteBraveLocalStatePrefsAfterChromium(local_state);

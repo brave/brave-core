@@ -1,0 +1,48 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+
+assert(is_win)
+
+source_set("service") {
+  sources = [
+    "brave_wireguard_manager.cc",
+    "brave_wireguard_manager.h",
+    "wireguard_firewall.cc",
+    "wireguard_firewall.h",
+    "wireguard_service_runner.cc",
+    "wireguard_service_runner.h",
+    "wireguard_tunnel_service.cc",
+    "wireguard_tunnel_service.h",
+  ]
+
+  public_deps = [ "//brave/components/brave_vpn/common/wireguard/win:brave_wireguard_manager_idl" ]
+  deps = [
+    "//base",
+    "//brave/browser/brave_vpn/win:wireguard_utils",
+    "//brave/components/brave_vpn/common/win",
+    "//brave/components/brave_vpn/common/wireguard",
+    "//chrome/common:channel_info",
+    "//chrome/installer/util:with_no_strings",
+    "//components/version_info:channel",
+  ]
+  libs = [
+    "fwpuclnt.lib",
+    "iphlpapi.lib",
+    "runtimeobject.lib",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "wireguard_firewall_unittest.cc" ]
+  deps = [
+    ":service",
+    "//base",
+    "//testing/gtest",
+  ]
+}

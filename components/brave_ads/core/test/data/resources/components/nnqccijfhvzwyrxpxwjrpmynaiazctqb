@@ -1,0 +1,19 @@
+{
+  "locale": "us",
+  "version": 1,
+  "timestamp": "2023-03-19 05:35:00",
+  "conversion_id_patterns": {
+    "https://foo.com/bar?qux_id=*": {
+      "id_pattern": "qux_id=(.*)",
+      "search_in": "url"
+    },
+    "https://foo.com/bar": {
+      "id_pattern": "<div.*id=\"xyzzy-id\".*>(.*)<\/div>",
+      "search_in": "html"
+    },
+    "https://qux.com/*/corge": {
+      "id_pattern": "<meta name=\"ad-conversion-id\" content=\"(.*)\">",
+      "search_in": ""
+    }
+  }
+}

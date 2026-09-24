@@ -1,0 +1,36 @@
+diff --git a/tools/git/move_source_file.py b/tools/git/move_source_file.py
+index c0878c1f8e34078d1dfb8ff66d9a278c71672370..4e4a7d6527399b0c5688acb5dd7f31b6ca72ad71 100755
+--- a/tools/git/move_source_file.py
++++ b/tools/git/move_source_file.py
+@@ -96,6 +96,7 @@ def UpdatePostMove(from_path, to_path):
+   to update references in .gn/.gni/.gyp/.gypi files using a heuristic.
+   """
+   # Include paths always use forward slashes.
++  from move_source_fille_utils import to_src_relative_path; from_path, to_path = to_src_relative_path(from_path, to_path)
+   from_path = from_path.replace('\\', '/')
+   to_path = to_path.replace('\\', '/')
+   extension = os.path.splitext(from_path)[1]
+@@ -120,6 +121,7 @@ def UpdatePostMove(from_path, to_path):
+   mffr.MultiFileFindReplace(
+     r'(//.*)%s' % re.escape(from_path),
+     r'\1%s' % to_path,
++    ['*.gni', '*.gn'] + # Brave uses full paths (start with //) to add files
+     ['*.cc', '*.h', '*.m', '*.mm', '*.cpp'],
+   )
+ 
+@@ -155,6 +157,7 @@ def UpdatePostMove(from_path, to_path):
+       return (parts[0], '')
+ 
+   visiting_directory = ''
++  from move_source_fille_utils import to_cwd_relative_path; from_path, to_path = to_cwd_relative_path(from_path, to_path)
+   from_rest = from_path
+   to_rest = to_path
+   while True:
+@@ -194,6 +197,7 @@ def UpdateIncludeGuard(old_path, new_path):
+   old_guard = MakeIncludeGuardName(old_path)
+   new_guard = MakeIncludeGuardName(new_path)
+ 
++  from move_source_fille_utils import to_cwd_relative_path; [new_path] = to_cwd_relative_path(new_path)
+   with open(new_path) as f:
+     contents = f.read()
+ 

@@ -1,0 +1,99 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "विज्ञापन";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Brave.com पर पहले ही खरीद चुके हैं?";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "एनालिटिक्स";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "अभी खरीदें";
+
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Brave फ़ीचर को सक्षम या अक्षम करने के लिए ब्राउज़र को पुनः लॉन्च करने की आवश्यकता है। कृपया Brave को बंद करें (App Switcher में ऊपर की ओर स्वाइप करें) और फिर इसे पुनः खोलें।";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Brave सुविधाएँ बदलना";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "**Brave का समर्थन करते हुए अपने ब्राउज़र को अनुकूलित करें**\n\nBrave Origin ब्राउज़र का एक भुगतान संस्करण है जो उन उपयोगकर्ताओं के लिए है जिन्हें Brave को व्यवसाय के रूप में समर्थन देने वाली सभी सुविधाओं की आवश्यकता नहीं है, लेकिन फिर भी वे केवल Brave द्वारा प्रदान की जाने वाली गोपनीयता चाहते हैं। Origin उपयोगकर्ता हमारी उद्योग-अग्रणी गोपनीयता, विज्ञापन अवरोधक और गति (Shields के माध्यम से), साथ ही नियमित सॉफ़्टवेयर अपडेट, Chromium पैच, और सुरक्षा और गोपनीयता सुधार से लाभ उठाना जारी रखेंगे। Origin ब्राउज़र से अधिकांश अन्य सुविधाओं को हटा देगा।";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "सुविधाएँ";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Brave Origin खरीदारी सत्यापित करें";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "लियो AI";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "खरीदारी को अपने Brave अकाउंट से लिंक करें";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "समाचार";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "एकबारी खरीदारी";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "प्लेलिस्ट";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "गोपनीयता-संरक्षण एनालिटिक्स";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "कोई प्रोमो कोड है?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "आपके लिए काम करने वाला चेकआउट का तरीका चुनें:";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "खरीदारी पूरी नहीं हो पाई। कृपया फिर से कोशिश करे या Apple पर अपने भुगतान की जानकारी देखकर फिर से कोशिश करें।";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "दूसरे डिवाइसों पर Brave Origin का इस्तेमाल करने के लिए अपने App Store की खरीदारी को अपने Brave अकाउंट से लिंक करें";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "खरीदें";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "प्रोमो कोड रिडीम करें";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "डिफ़ॉल्ट पर रीसेट करें";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "पुनर्स्थापित करें";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "रिवॉर्ड";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "सांख्यिकी रिपोर्टिंग";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "बात करें";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "मुख्य ऐडब्लॉक, गोपनीयता और गति बनाए रखें";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Brave Shields पर केंद्रित न्यूनतम ब्राउज़र UI";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "एकबारी खरीदारी आपके सभी डिवाइसों पर कई बार सक्रिय की जा सकती है";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "हमारे मिशन और ओपन-सोर्स कार्य का समर्थन करें";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "App Store रसीद देखें";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "वॉलेट";
+

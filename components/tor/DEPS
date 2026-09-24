@@ -1,0 +1,22 @@
+include_rules = [
+  "+brave/net",
+  "+components/component_updater",
+  "+components/grit/brave_components_strings.h",
+  "+components/keyed_service",
+  "+components/prefs",
+  "+content/public/browser",
+  "+content/public/common",
+  "+content/public/test",
+  "+extensions/common",
+  "+services/network/public",
+  "+third_party/blink/public/common/web_preferences",
+  "+third_party/re2",
+]
+
+specific_include_rules = {
+  # component code should not have chrome deps
+  "tor_utils\.cc": [
+    "!chrome/common/chrome_constants.h",
+    "!chrome/common/pref_names.h",
+  ]
+}

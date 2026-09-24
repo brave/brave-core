@@ -1,0 +1,11 @@
+diff --git a/chrome/browser/ui/webui/cr_components/searchbox/BUILD.gn b/chrome/browser/ui/webui/cr_components/searchbox/BUILD.gn
+index 5876f39ef53ecd4cafd46ace8fc0028014926790..2235902ba3db6a74090e3d5c66f7e28bf43b23e2 100644
+--- a/chrome/browser/ui/webui/cr_components/searchbox/BUILD.gn
++++ b/chrome/browser/ui/webui/cr_components/searchbox/BUILD.gn
+@@ -126,4 +126,6 @@ source_set("searchbox_impl") {
+   if (enable_dice_support) {
+     deps += [ "//chrome/browser/ui/views/search_ai_mode" ]
+   }
++  import("//brave/chromium_src/chrome/browser/ui/webui/cr_components/searchbox/sources.gni")
++  deps += brave_chromium_src_chrome_browser_ui_webui_cr_components_searchbox_deps
+ }

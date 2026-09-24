@@ -1,0 +1,4 @@
+include_rules = [
+  "+chrome/installer/mini_installer",
+  "+chrome/install_static/install_modes.h",
+]

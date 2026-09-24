@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/page_info/page_info_bubble_view.h b/chrome/browser/ui/views/page_info/page_info_bubble_view.h
+index 71997156f1effc12a1964a6e57cc1a5e70984745..86e380e38e0a1b0f8206a87ab262e60a5fcf5b45 100644
+--- a/chrome/browser/ui/views/page_info/page_info_bubble_view.h
++++ b/chrome/browser/ui/views/page_info/page_info_bubble_view.h
+@@ -54,6 +54,7 @@ class PageInfoBubbleView : public PageInfoBubbleViewBase,
+   PageInfo* presenter_for_testing() { return presenter_.get(); }
+ 
+  private:
++  friend class BravePageInfoBubbleView;
+   PageInfoBubbleView(
+       views::BubbleAnchor anchor,
+       const gfx::Rect& anchor_rect,
+@@ -72,7 +73,7 @@ class PageInfoBubbleView : public PageInfoBubbleViewBase,
+   void WebContentsDestroyed() override;
+   void ChildPreferredSizeChanged(views::View* child) override;
+ 
+-  void AnnouncePageOpened(std::u16string announcement);
++  virtual void AnnouncePageOpened(std::u16string announcement);
+ 
+   // The presenter that controls the Page Info UI.
+   std::unique_ptr<PageInfo> presenter_;

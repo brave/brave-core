@@ -1,0 +1,64 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.ui.system;
+
+import android.app.Activity;
+import android.graphics.Color;
+
+import androidx.annotation.ColorInt;
+
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.layouts.LayoutManager;
+import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
+import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
+import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
+import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
+import org.chromium.ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
+import org.chromium.ui.util.ColorUtils;
+
+@NullMarked
+public class BraveStatusBarColorController extends StatusBarColorController {
+    // Will be removed with bytecode patch
+    public @ColorInt int mBackgroundColorForNtp;
+
+    public BraveStatusBarColorController(
+            Activity activity,
+            boolean isTablet,
+            StatusBarColorProvider statusBarColorProvider,
+            MonotonicObservableSupplier<LayoutManager> layoutManagerSupplier,
+            ActivityLifecycleDispatcher activityLifecycleDispatcher,
+            ActivityTabProvider tabProvider,
+            TopUiThemeColorProvider topUiThemeColorProvider,
+            EdgeToEdgeSystemBarColorHelper edgeToEdgeSystemBarColorHelper,
+            @Nullable DesktopWindowStateManager desktopWindowStateManager,
+            NonNullObservableSupplier<Integer> overviewColorSupplier,
+            BrowserControlsStateProvider browserControlsStateProvider) {
+        super(
+                activity,
+                isTablet,
+                statusBarColorProvider,
+                layoutManagerSupplier,
+                activityLifecycleDispatcher,
+                tabProvider,
+                topUiThemeColorProvider,
+                edgeToEdgeSystemBarColorHelper,
+                desktopWindowStateManager,
+                overviewColorSupplier,
+                browserControlsStateProvider);
+
+        // Dark theme doesn't have the regression, apply adjustment to light one only.
+        // Skip when dynamic colors are enabled — the themed surface color should be used instead.
+        if (!ColorUtils.inNightMode(activity) && !BraveDynamicColors.isDynamicColorsEnabled()) {
+            mBackgroundColorForNtp = Color.WHITE;
+        }
+    }
+}

@@ -1,0 +1,12 @@
+diff --git a/third_party/blink/renderer/core/loader/mixed_content_checker.h b/third_party/blink/renderer/core/loader/mixed_content_checker.h
+index fbe63658531822181d8053516d73212b37db0cfa..143b1c963077df7a634efc64350c5e4b0f49f1c3 100644
+--- a/third_party/blink/renderer/core/loader/mixed_content_checker.h
++++ b/third_party/blink/renderer/core/loader/mixed_content_checker.h
+@@ -107,7 +107,6 @@ class CORE_EXPORT MixedContentChecker final {
+           network::mojom::blink::IPAddressSpace::kUnknown);
+ 
+   static bool IsMixedContent(const SecurityOrigin*, const KURL&);
+-  static bool IsMixedContent(const String& origin_protocol, const KURL&);
+   static bool IsMixedContent(const FetchClientSettingsObject&, const KURL&);
+   static bool IsMixedFormAction(
+       LocalFrame*,

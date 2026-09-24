@@ -1,0 +1,5 @@
+TOML parse error at line 1, column 21
+  |
+1 | double-sign-plus = ++99
+  |                     ^
+invalid integer

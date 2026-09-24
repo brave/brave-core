@@ -1,0 +1,216 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module playlist.mojom;
+
+import "mojo/public/mojom/base/values.mojom";
+import "url/mojom/url.mojom";
+
+// TODO(sko) This should be removed
+// https://github.com/brave/brave-browser/issues/30735
+enum PlaylistEvent {
+  kNone,
+  kItemAdded,             // a new playlist item added but not ready state
+  kItemThumbnailReady,    // Thumbnail ready to use for playlist
+  kItemThumbnailFailed,   // Failed to fetch thumbnail
+  kItemCached,            // The item is cached in local storage
+  kItemDeleted,           // An item deleted
+  kItemUpdated,           // An item's properties have been changed
+  kItemMoved,             // An item moved
+  kItemAborted,           // Aborted during the creation process
+  kItemLocalDataRemoved,  // Local data removed
+
+  kListCreated,  // A list is created
+  kListRemoved,  // A list is removed
+  kAllDeleted,   // All playlist are deleted
+  kUpdated,
+};
+
+struct Playlist {
+  string? id;
+  string name;
+  array<PlaylistItem> items;
+};
+
+struct PlaylistItem {
+  string id;
+  string name;
+
+  // original sources
+  url.mojom.Url page_source;
+  url.mojom.Url page_redirected;
+  url.mojom.Url media_source;
+  // indicates that |media_source| url is blob: and from MediaSource API.
+  // In this case, we should additional process to cache media.
+  // e.g. * hide media source API and get plain url
+  //      * Fake UA
+  //      * load the same site in the background and record media
+  bool is_blob_from_media_source;
+
+  url.mojom.Url thumbnail_source;
+
+  // cached path or original src url
+  url.mojom.Url media_path;
+  url.mojom.Url hls_media_path;
+  url.mojom.Url thumbnail_path;
+
+  // When it's |cached|, |media_path| and |thumbnail_path| will be
+  // local path.
+  bool cached;
+  uint64 media_file_bytes;
+
+  string author;
+
+  // This value is from base::TimeDeltaToValue. It's converting base::TimeDelta
+  // to microseconds.
+  // TODO(sko) We might be able to use base::Time mojo type directly.
+  string duration;
+
+  int32 last_played_position;
+
+  // Playlists that contain this item. Could have multiple |Playlist| in case
+  // user copied this item to another list.
+  array<string> parents;
+};
+
+// Used by the web UI to bootstrap bidirectional communication.
+// the WebUI page's |BrowserProxy| singleton calls this method
+// when the page is first initialized.
+interface PageHandlerFactory {
+  CreatePageHandler(pending_remote<PlaylistPage> page,
+                    pending_remote<PlaylistServiceObserver> service_observer,
+                    pending_receiver<PlaylistService> service,
+                    pending_receiver<PlaylistPageHandler> page_handler);
+};
+
+// Service-side handler for requests from UI.
+interface PlaylistService {
+  // Getters for playlists.
+  GetAllPlaylists() => (array<Playlist> playlists);
+  GetPlaylist(string id) => (Playlist? playlist);
+
+  // Getters for playlist items.
+  GetAllPlaylistItems() => (array<PlaylistItem> items);
+  GetPlaylistItem(string id) => (PlaylistItem? item);
+
+  // Store or find all media files from the active tab.
+  AddMediaFilesFromActiveTabToPlaylist(string playlist_id, bool can_cache)
+      => (array<PlaylistItem> items);
+  FindMediaFilesFromActiveTab();
+
+  AddMediaFiles(array<PlaylistItem> items, string playlist_id, bool can_cache)
+      => (array<PlaylistItem> items);
+
+  CopyItemToPlaylist(array<string> item_ids, string playlist_id);
+
+  RemoveItemFromPlaylist(string playlist_id, string item_id);
+  MoveItem(string from_playlist_id, string to_playlist_id, string item_id);
+  ReorderItemFromPlaylist(string playlist_id, string item_id, int16 position)
+      => (bool result);
+
+  // If you want to update a specific field, using the version for the field
+  // would be better to gurantee the data consistency. We have many concurrent
+  // actors that update the item.
+  UpdateItem(PlaylistItem item);
+  UpdateItemLastPlayedPosition(string id, int32 last_played_position);
+  UpdateItemHlsMediaFilePath(string id, string media_file_path,
+    int64 updated_file_size);
+
+  // Try downloading media files again. Returns PlaylistItem after trying
+  // recovery. If it succeeded, |cached| state of the return item would be true.
+  RecoverLocalDataForItem(string id, bool update_media_src_before_recovery)
+      => (PlaylistItem result);
+
+  // Removes media files for a item stored in local directory.
+  RemoveLocalDataForItem(string id);
+
+  // Removes media files of all items in a playlist with |playlist_id|.
+  RemoveLocalDataForItemsInPlaylist(string playlist_id);
+
+  // Creates a new playlist with given |playlist| and return created Playlist
+  // with a new ID of the playlist.
+  CreatePlaylist(Playlist playlist) => (Playlist created_list);
+  ReorderPlaylist(string playlist_id, int16 position) => (bool result);
+  RemovePlaylist(string id);
+  RenamePlaylist(string playlist_id, string playlist_name)
+      => (Playlist updated_playlist);
+
+  // Removes all stored data and resets preferences to default values.
+  ResetAll();
+
+  RequestStreamingQuery(string query_id, string url,string method,
+   pending_remote<PlaylistStreamingObserver> observer);
+  ClearAllQueries();
+  CancelQuery(string query_id);
+
+  AddObserver(pending_remote<PlaylistServiceObserver> observer);
+};
+
+interface PlaylistPage {
+  OnActiveTabChanged(bool should_show_add_media_from_page_ui);
+};
+
+// WebUI will delegate some UIs to native UI via this interface. While
+// PlaylistService is shared among browsers with the same profile, a PageHandler
+// instance will be bound to each web ui.
+interface PlaylistPageHandler {
+  ShowCreatePlaylistUI();
+
+  ShowRemovePlaylistUI(string playlist_id);
+
+  ShowMoveItemsUI(string playlist_id, array<string> item_id);
+
+  OpenSettingsPage();
+
+  ShowAddMediaToPlaylistUI();
+
+  ClosePanel();
+
+  ShouldShowAddMediaFromPageUI() => (bool result);
+};
+
+// UI-side handler for response from the service.
+interface PlaylistServiceObserver {
+  // TODO(sko) For now, we only send |kUpdated| event. Need to make more events
+  // and parameters for client side.
+  // https://github.com/brave/brave-browser/issues/30735
+  OnEvent(PlaylistEvent event, string playlist_id);
+
+  OnItemCreated(PlaylistItem playlist_item);
+  OnItemLocalDataDeleted(string playlist_item_id);
+  OnItemAddedToList(string playlist_id, string playlist_item_id);
+  OnItemRemovedFromList(string playlist_id, string playlist_item_id);
+  OnItemCached(PlaylistItem playlist_item);
+  OnItemUpdated(PlaylistItem playlist_item);
+
+  OnPlaylistUpdated(Playlist playlist);
+
+  OnMediaFileDownloadScheduled(string id);
+  OnMediaFileDownloadProgressed(
+      string id,
+      int64 total_bytes,
+      int64 received_bytes,
+      int8 percent_complete,
+      string time_remaining);
+
+  OnMediaFilesUpdated(
+      url.mojom.Url page_url,
+      array<PlaylistItem> items);
+};
+
+interface PlaylistMediaResponder {
+  OnMediaDetected(array<PlaylistItem> items);
+};
+
+interface PlaylistStreamingObserver {
+  OnResponseStarted(string url, int64 content_length);
+  OnDataReceived(array<uint8> data_received);
+  OnDataCompleted();
+};
+
+interface PlaylistRenderFrameObserverConfigurator {
+  AddMediaSourceAPISuppressor(string media_source_api_suppressor);
+  AddMediaDetector(string media_detector);
+};

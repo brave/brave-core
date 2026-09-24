@@ -1,0 +1,20 @@
+diff --git a/services/network/BUILD.gn b/services/network/BUILD.gn
+index dd91e7c38f4afc02875f8f7fda6970edf799f76f..ecd2a625656199df50d623e7915d73288dc0d782 100644
+--- a/services/network/BUILD.gn
++++ b/services/network/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/services/network/sources.gni")
+ import("//build/config/features.gni")
+ import("//components/vrp_flags/features.gni")
+ import("//mojo/public/tools/bindings/mojom.gni")
+@@ -398,6 +399,7 @@ component("network_service") {
+     "//third_party/zstd:decompress",
+     "//url",
+   ]
++  deps += brave_services_network_deps
+ 
+   if (is_linux || is_chromeos) {
+     deps += [

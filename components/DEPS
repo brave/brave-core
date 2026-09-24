@@ -1,0 +1,63 @@
+include_rules = [
+  # Do not add chrome/ or brave/ as an allowed include.
+
+  # Individual components must explicitly declare their dependencies
+  # on other components. Cycles in the dependency graph within
+  # components/ are not allowed.
+  "-components",
+
+  # TODO(bridiver) - narrow this down
+  "+net",
+  "+mojo/public",
+  "+ui/base",
+
+  # Components that wish to use the content API or IPC must explicitly declare
+  # these dependencies; see /components/README.
+  "-ipc",
+
+  # In most cases you want l10n_util - see comments in the source
+  "-brave/components/l10n",
+
+  # This is equivalent to chrome/test/base
+  "-brave/test/base",
+
+  # This should only be used in brave equivalents to chrome/* directories. Use
+  # `base::DIR_SRC_TEST_DATA_ROOT` instead
+  "-brave/components/constants/brave_paths.h",
+]
+
+specific_include_rules = {
+  # IMPORTANT: Do not add new browser tests that depend on //chrome or
+  # //brave/browser/ to //brave/components.
+  #
+  # This is an exclusion list for browser tests written before proper dependency
+  # checking was implemented. These tests should be migrated out of
+  # //brave/components into //brave/browser eventually.
+  "brave_content_settings_agent_impl_browsertest\.cc": [
+    "+chrome",
+    "+content",
+  ],
+  "brave_wayback_machine_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "de_amp_browsertest\.cc": [
+    "+chrome",
+    "+content",
+  ],
+  "perf_predictor_tab_helper_browsertest\.cc": [
+    "+brave/browser",
+    "+chrome",
+  ],
+  "webcompat_exceptions_unittest\.cc": [
+    "+chrome",
+    "+content",
+    "!brave/components/constants/brave_paths.h",
+  ],
+  # brave_paths.h overrides
+  ".*browsertest.*\.cc": [
+    # browser tests that are still in components can use brave_paths because
+    # they belong in brave/browser
+    "+brave/components/constants/brave_paths.h",
+  ],
+}

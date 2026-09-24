@@ -1,0 +1,23 @@
+diff --git a/chrome/browser/importer/external_process_importer_host.h b/chrome/browser/importer/external_process_importer_host.h
+index e30cfba33a058c8fab9fedceab4563af4c358338..0459925d76922cfa1f4e1001c9b80d07e063715b 100644
+--- a/chrome/browser/importer/external_process_importer_host.h
++++ b/chrome/browser/importer/external_process_importer_host.h
+@@ -79,9 +79,17 @@ class ExternalProcessImporterHost
+   void NotifyImportStarted();
+   void NotifyImportItemStarted(user_data_importer::ImportItem item);
+   void NotifyImportItemEnded(user_data_importer::ImportItem item);
+-  void NotifyImportEnded();
++  virtual void NotifyImportEnded();
++
++  void set_parent_view(gfx::NativeView parent_view) {
++    parent_view_ = parent_view;
++  }
++
++ protected:
++  gfx::NativeView parent_view_ = gfx::NativeView();
+ 
+  private:
++  friend class BraveExternalProcessImporterHost;
+   // ExternalProcessImporterHost deletes itself in OnImportEnded().
+   ~ExternalProcessImporterHost() override;
+ 

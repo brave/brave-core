@@ -1,0 +1,17 @@
+// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module network.mojom;
+
+[BraveAdd]
+struct DnsRequestCounts {
+  uint64 total_count;
+  uint64 upgraded_count;
+};
+
+[BraveExtend]
+interface NetworkService {
+  GetDnsRequestCountsAndReset() => (DnsRequestCounts counts);
+};

@@ -1,0 +1,12 @@
+diff --git a/services/network/public/cpp/header_util.cc b/services/network/public/cpp/header_util.cc
+index 194375dffb35c35d99e5a5b02ac134b58e4202e3..ebed7f9bacc41488cc40ab1f84073e5e53fbfab4 100644
+--- a/services/network/public/cpp/header_util.cc
++++ b/services/network/public/cpp/header_util.cc
+@@ -144,6 +144,7 @@ bool ContainsForbiddenSecurityHeader(net::HttpRequestHeaders& headers,
+ 
+   auto sanitize_and_check_security_header = [&](std::string_view name,
+                                                 std::string_view value) {
++    BRAVE_CONTAINS_FORBIDDEN_SECURITY_HEADER
+     // Client Hints are harmless and set by the renderer.
+     if (base::StartsWith(name, "Sec-CH-",
+                          base::CompareCase::INSENSITIVE_ASCII)) {

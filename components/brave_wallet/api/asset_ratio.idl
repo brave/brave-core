@@ -1,0 +1,146 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Schema types used by brave wallet asset ratio service.
+[modernised_enums]
+namespace asset_ratio {
+  // A CoinMarket payload record. Sample looks like:
+  //
+  // {
+  //   "id": "bitcoin",
+  //   "symbol": "btc",
+  //   "name": "Bitcoin",
+  //   "image":
+  //   "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+  //   "market_cap": 727960800075,
+  //   "market_cap_rank": 1,
+  //   "current_price": 38357,
+  //   "price_change_24h": -1229.64683216549,
+  //   "price_change_percentage_24h": -3.10625,
+  //   "total_volume": 17160995925
+  // }
+  //
+  dictionary CoinMarketPayload {
+    // e.g. "bitcoin"
+    DOMString id;
+
+    // e.g. "btc"
+    DOMString symbol;
+
+    // e.g. "Bitcoin"
+    DOMString name;
+
+    // An url for the coin image.
+    DOMString image;
+
+    // e.g. 727960800075
+    double market_cap;
+
+    // e.g. 1
+    long market_cap_rank;
+
+    // e.g 38357
+    double current_price;
+
+    // e.g. -1229.64683216549
+    double price_change_24h;
+
+    // e.g. -3.10625
+    double price_change_percentage_24h;
+
+    // e.g. 17160995925
+    double total_volume;
+  };
+
+  // A dictionary provide with coin market information. Looks like:
+  //
+  // {
+  //   "payload": [
+  //     {
+  //       "id": "bitcoin",
+  //       "symbol": "btc",
+  //       "name": "Bitcoin",
+  //       "image":
+  //       "https://assets.coingecko.com/coins/images/1/large/bitcoin.png?1547033579",
+  //       "market_cap": 727960800075,
+  //       "market_cap_rank": 1,
+  //       "current_price": 38357,
+  //       "price_change_24h": -1229.64683216549,
+  //       "price_change_percentage_24h": -3.10625,
+  //       "total_volume": 17160995925
+  //     },
+  //     {
+  //       "id": "ethereum",
+  //       "symbol": "eth",
+  //       "name": "Ethereum",
+  //       "image":
+  //       "https://assets.coingecko.com/coins/images/279/large/ethereum.png?1595348880",
+  //       "market_cap": 304535808667,
+  //       "market_cap_rank": 2,
+  //       "current_price": 2539.82,
+  //       "price_change_24h": -136.841895278459,
+  //       "price_change_percentage_24h": -5.11242,
+  //       "total_volume": 9583014937
+  //     }
+  //   ],
+  //   "lastUpdated": "2022-03-07T00:25:12.259823452Z"
+  // }
+  //
+  dictionary CoinMarket {
+    // A payload list.
+    CoinMarketPayload[] payload;
+  };
+  
+  // A payload with a URL field
+  dictionary StripeBuyURLResponse {
+    // e.g "https://crypto.link.com?session_hash=abcdefgh"
+    DOMString url;
+  };
+
+  // AssetPricePayload models the response from GET /api/pricing/v1/getPrices
+  // to Gate3.
+  //
+  // The response is a list of AssetPricePayload objects.
+  //
+  // Example:
+  // {
+  //   "coin": "ETH",
+  //   "chain_id": "0x1",
+  //   "address": "0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
+  //   "price": "0.55393",
+  //   "percentage_change_24h": "0.1",
+  //   "vs_currency": "USD",
+  //   "cache_status": "HIT",
+  //   "source": "coingecko"
+  // }
+  //
+  dictionary AssetPricePayload {
+    // e.g. "ETH"
+    DOMString coin;
+
+    // e.g. "0x1"
+    DOMString chain_id;
+
+    // Nullable optional DOMString field
+    // e.g. "0x0D8775F648430679A709E98d2b0Cb6250d2887EF" or null
+    any? address;
+
+    // e.g. "0.55393"
+    DOMString price;
+
+    // Nullable optional DOMString field
+    // e.g. "0.1" or null
+    any? percentage_change_24h;
+
+    // e.g. "USD"
+    DOMString vs_currency;
+
+    // "HIT" or "MISS"
+    DOMString cache_status;
+
+    // e.g. "coingecko" or "jupiter"
+    DOMString source;
+  };
+};

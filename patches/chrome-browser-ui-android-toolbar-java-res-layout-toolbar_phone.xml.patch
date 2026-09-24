@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
+index 9e1f21d5a0c8ec9cdf75ca8a24c30adadd16af0c..26fc52f0a9f745e0a138fef665079354213c116a 100644
+--- a/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
++++ b/chrome/browser/ui/android/toolbar/java/res/layout/toolbar_phone.xml
+@@ -55,9 +55,11 @@ found in the LICENSE file.
+         android:orientation="horizontal"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"
++        android:layout_marginEnd="8dp"
+         android:layout_gravity="top|end"
+         android:focusable="false"
+         android:focusableInTouchMode="false">
++    <include layout="@layout/brave_toolbar" android:layout_height="@dimen/brave_toolbar_button_height" android:layout_width="match_parent" android:layout_marginTop="@dimen/location_bar_vertical_margin" />
+ 
+         <ViewStub
+             android:id="@+id/optional_button_stub"

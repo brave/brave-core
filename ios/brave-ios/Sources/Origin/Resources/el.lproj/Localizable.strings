@@ -1,0 +1,99 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Διαφημίσεις";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Έχετε ήδη κάνει αγορές στο brave.com;";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Analytics";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Αγορά τώρα";
+
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Η ενεργοποίηση ή η απενεργοποίηση μιας λειτουργίας του Brave απαιτεί επανεκκίνηση του προγράμματος περιήγησης για να εφαρμοστούν οι αλλαγές. Παρακαλώ κλείστε (σύρετε προς τα πάνω στο App Switcher) και έπειτα ανοίξτε ξανά το Brave.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Αλλαγή λειτουργιών Brave";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "**Προσαρμόστε το πρόγραμμα περιήγησής σας ενώ εξακολουθείτε να υποστηρίζετε το Brave**\n\nΤο Brave Origin είναι μια πληρωτή έκδοση του προγράμματος περιήγησης για χρήστες που δεν χρειάζονται όλες τις λειτουργίες που υποστηρίζουν το Brave ως επιχείρηση, αλλά εξακολουθούν να θέλουν το απόρρητο που παρέχει μόνο το Brave. Οι χρήστες του Origin θα συνεχίσουν να επωφελούνται από την κορυφαία στον κλάδο μας προστασία απορρήτου, φραγή διαφημίσεων και ταχύτητα (μέσω Ασπίδων Brave), καθώς και τακτικές ενημερώσεις λογισμικού, ενημερώσεις Chromium και βελτιώσεις ασφάλειας και απορρήτου. Το Origin θα καταργήσει τις περισσότερες άλλες λειτουργίες από το πρόγραμμα περιήγησης.";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Δυνατότητες";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Επαλήθευση αγοράς Brave Origin";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "AI Leo";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Συνδέστε την αγορά στον λογαριασμό σας Brave";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "Ειδήσεις";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Αγορά μιας φοράς";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Λίστα αναπαραγωγής";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Αναλυτικά στοιχεία για τη διατήρηση της ιδιωτικής ζωής";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Έχετε κωδικό προσφοράς;";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Επιλέξτε τν τρόπο πληρωμής που σας βολεύει:";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Δεν είναι δυνατή η ολοκλήρωση της αγοράς. Δοκιμάστε ξανά ή ελέγξτε τα στοιχεία πληρωμής σας στην Apple και δοκιμάστε ξανά.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Συνδέστε την αγορά σας από το App Store με τον λογαριασμό σας Brave για να χρησιμοποιήσετε το Brave Origin σε άλλες συσκευές";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Αγορά";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Εξαργύρωση κωδικού προσφοράς";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Επαναφορά στις προεπιλογές";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Ανάκτηση";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Ανταμοιβές";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Αναφορά στατιστικών στοιχείων";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Συνομιλία";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Διατήρηση βασικής αποκλεισμού διαφημίσεων, ιδιωτικότητας και ταχύτητας";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Ελάχιστο UI προγράμματος περιήγησης με επίκεντρο τις Ασπίδες Brave";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Η αγορά μιας φοράς μπορεί να ενεργοποιηθεί πολλές φορές σε όλες τις συσκευές σας";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Υποστηρίξτε την αποστολή μας & έργο ανοιχτού κώδικα";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "Προβολή απόδειξης AppStore";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Πορτοφόλι";
+

@@ -1,0 +1,62 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Also show the page action label when it must always be shown.
+
+      Upstream only animates the chip in when it is acting as a suggestion
+      chip. Brave has page actions whose label must remain visible regardless,
+      so we widen the condition to also cover `model.GetAlwaysShowLabel()`.
+    regex:
+      re_pattern: 'if \((model.ShouldShowSuggestionChip\(\))\)'
+      replace: 'if (\1 || model.GetAlwaysShowLabel())'
+
+  - description: |
+      Let Brave adjust the border insets before UpdateBorder() applies them.
+
+      UpdateBorder() computes `border_insets` and hands them straight to
+      SetBorder(). Inserting a MaybeOverrideBorder() hook just before that call
+      gives Brave a chance to tweak the insets without duplicating the whole
+      method.
+    regex:
+      re_pattern: '(void PageActionView::UpdateBorder\(\).*?)(SetBorder\()'
+      re_flags: [DOTALL]
+      replace: |-
+        \1MaybeOverrideBorder(observation_.GetSource(), border_insets);
+          \2
+
+  - description: |
+      Propagate the click event flags through the page action invocation.
+
+      Upstream's ActionInvocationContext does not carry the originating event's
+      modifier flags, so Brave action handlers cannot tell e.g. a plain click
+      from a ctrl/shift click. We attach them via `kBravePageActionEventFlagKey`
+      on the builder in NotifyClick() right before it is invoked.
+    regex:
+      re_pattern: |-
+        (void PageActionView::NotifyClick\(.*?)(\n\s*action_item_->InvokeAction\(std::move\(builder\)\.Build\(\)\);)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          builder = std::move(builder).SetProperty(
+              kBravePageActionEventFlagKey,
+              event.IsMouseEvent() ? event.flags() : ui::EF_NONE);\2
+
+  - description: |
+      Give page action chips a Brave-controlled background.
+
+      Early-return from GetBackgroundColor() via the GetBraveBackgroundColor()
+      hook (defined in the chromium_src override), which honours the model's
+      SkColor override and otherwise keeps chips transparent.
+    regex:
+      re_pattern: |-
+        (PageActionView::GetBackgroundColor\(\).*?\{)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          if (auto color = GetBraveBackgroundColor(observation_.GetSource())) {
+            return *color;
+          }

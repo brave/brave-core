@@ -1,0 +1,176 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "/b/cache"
+    ],
+    "name": "cache path"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "git cache populate exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.auto",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "git cache populate disable (before): gc.auto=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "git cache populate disable (before): gc.autodetach=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "git cache populate disable (before): gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "git cache populate disable (before): maintenance.gc.enabled=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "populate",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git",
+      "--reset-fetch-config",
+      "--no-fetch-tags"
+    ],
+    "name": "git cache populate"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "populate with tags exists (before)"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "populate",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git",
+      "--reset-fetch-config",
+      "--ref",
+      "refs/tags/*",
+      "--commit",
+      "c0ffeec0ffeec0ffeec0ffeec0ffeec0ffee"
+    ],
+    "name": "populate with tags"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "populate with tags exists (after)"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.auto",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "populate with tags disable (after): gc.auto=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autodetach",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "populate with tags disable (after): gc.autodetach=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "gc.autopacklimit",
+      "0"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "populate with tags disable (after): gc.autopacklimit=0"
+  },
+  {
+    "cmd": [
+      "git",
+      "config",
+      "maintenance.gc.enabled",
+      "false"
+    ],
+    "cwd": "/b/cache/chromium.googlesource.com-chromium-src",
+    "name": "populate with tags disable (after): maintenance.gc.enabled=false"
+  },
+  {
+    "cmd": [
+      "git",
+      "cache",
+      "exists",
+      "--quiet",
+      "--cache-dir",
+      "/b/cache",
+      "https://chromium.googlesource.com/chromium/src.git"
+    ],
+    "name": "git cache exists"
+  },
+  {
+    "cmd": [
+      "echo",
+      "/b/cache/chromium.googlesource.com-chromium-src"
+    ],
+    "name": "mirror"
+  },
+  {
+    "name": "$result"
+  }
+]

@@ -1,0 +1,9 @@
+diff --git a/tracing/tracing/metrics/all_metrics.html b/tracing/tracing/metrics/all_metrics.html
+index c41795e13ff303cf9a422ce14bbe44d9d6ccc838..c85299d7af0cf2e72b35e859821cc2e573589f62 100644
+--- a/tracing/tracing/metrics/all_metrics.html
++++ b/tracing/tracing/metrics/all_metrics.html
+@@ -47,3 +47,4 @@ found in the LICENSE file.
+ <link rel="import" href="/tracing/metrics/vr/webvr_metric.html">
+ <link rel="import" href="/tracing/metrics/vr/webxr_metric.html">
+ <link rel="import" href="/tracing/metrics/webrtc/webrtc_rendering_metric.html">
++<link rel="import" href="/brave/tools/perf/metrics/brave_all_metrics.html">

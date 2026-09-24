@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Mock Brave's `[BraveExtend] interface Page` methods in MockPage
+
+      Brave extends the `tab_search.mojom` `Page` interface with
+      `TabFocusShowFREChanged` and `TabFocusEnabledChanged` (see
+      brave/chromium_src/chrome/browser/ui/webui/tab_search/tab_search.mojom).
+      Those become pure virtual methods on `tab_search::mojom::Page`, so
+      upstream's `MockPage` must mock them or it stays abstract.
+    add_to_public:
+      class_name: MockPage
+      code: |-
+        MOCK_METHOD(void, TabFocusShowFREChanged, (bool show));
+        MOCK_METHOD(void, TabFocusEnabledChanged, (bool enabled));

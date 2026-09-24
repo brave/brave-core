@@ -1,0 +1,39 @@
+<html>
+<head>
+</head>
+<body>
+<img id="image1" src="" title="image1">
+<img id="image2" src="" title="image2c" crossorigin="anonymous">
+<img id="image3" src="" title="image3r">
+<img id="image4" src="" title="image4rc" crossorigin="anonymous">
+<br>
+<img id="image5" src="" title="image5x">
+<img id="image6" src="" title="image6xc" crossorigin="anonymous">
+<img id="image7" src="" title="image7xr">
+<img id="image8" src="" title="image8xrc" crossorigin="anonymous">>
+<script>
+const url = new URL(document.location);
+
+// Same-origin images
+let image1 = document.getElementById("image1");
+image1.src = "https://" + url.host + "/logo-referrer.png?1";
+let image2 = document.getElementById("image2");
+image2.src = "https://" + url.host + "/logo-referrer.png?2";
+let image3 = document.getElementById("image3");
+image3.src = "https://" + url.host + "/cross-site/" + url.hostname + "/logo-referrer.png?3";
+let image4 = document.getElementById("image4");
+image4.src = "https://" + url.host + "/cross-site/" + url.hostname + "/logo-referrer.png?4";
+
+// Cross-origin images
+let image5 = document.getElementById("image5");
+image5.src = "https://a.com:" + url.port + "/logo-referrer.png?5";
+let image6 = document.getElementById("image6");
+image6.src = "https://a.com:" + url.port + "/logo-referrer.png?6";
+let image7 = document.getElementById("image7");
+image7.src = "https://" + url.host + "/cross-site/a.com/logo-referrer.png?7";
+let image8 = document.getElementById("image8");
+image8.src = "https://" + url.host + "/cross-site/a.com/logo-referrer.png?8";
+
+</script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!-- Search tags used for CrOS settings search (go/cros-settings-search). -->
+<grit-part>
+  <message name="IDS_OS_SETTINGS_TAG_PEOPLE" desc="Text for search result item which, when clicked, navigates the user to profiles settings.">
+    Profiles
+  </message>
+  <message name="IDS_OS_SETTINGS_TAG_MANAGE_OTHER_PEOPLE_PAGE" desc="Text for search result item which, when clicked, navigates the user to manage other user account privileges.">
+    Manage other profiles
+  </message>
+  </grit-part>

@@ -1,0 +1,12 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the deps the Brave prefs overrides need.
+    add_literal_to_list:
+      target: impl
+      list_name: deps
+      literal: brave_chrome_browser_prefs_impl_deps
+      import: //brave/browser/sources.gni

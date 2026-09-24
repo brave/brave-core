@@ -1,0 +1,44 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Listed feature definitions are appended to the existing Chromium ones. To
+// fully replace definitions use "replace!" prefix like so:
+// "replace!sockets.tcp" : { ... }.
+
+{
+  "bookmarks": [
+    {
+      "channel": "stable",
+      "contexts": ["webui"],
+      "matches": ["chrome://newtab/*"]
+    }
+  ],
+  "extension.inIncognitoContext": [
+    {
+      "channel": "stable",
+      "contexts": ["webui"],
+      "matches": ["chrome://newtab/*"]
+    }
+  ],
+  "tabs": [
+    {
+      "channel": "stable",
+      "contexts": ["webui"],
+      "matches": [
+        "chrome://brave-shields.top-chrome/*",
+        "chrome://rewards-panel.top-chrome/*",
+        "chrome://wallet-panel.top-chrome/*",
+        "chrome://wallet/*"
+      ]
+    }
+  ],
+  "topSites": [
+    {
+      "channel": "stable",
+      "contexts": ["webui"],
+      "matches": ["chrome://newtab/*"]
+    }
+  ]
+}

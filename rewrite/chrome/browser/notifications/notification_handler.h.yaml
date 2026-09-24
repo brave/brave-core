@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add notification handler types for Brave Ads and Brave Wallet.
+
+      These are registered with NotificationDisplayServiceImpl so Brave's own
+      notifications can be dispatched to their own handlers, the same way
+      upstream types are.
+    add_enum_entries:
+      enum_name: Type
+      max_value: MAX
+      entries:
+        - BRAVE_ADS
+        - BRAVE_WALLET

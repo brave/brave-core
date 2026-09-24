@@ -1,0 +1,186 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//brave/components/email_aliases/buildflags/buildflags.gni")
+
+source_set("brave_account") {
+  sources = [
+    "brave_account_constants.h",
+    "brave_account_encryption.cc",
+    "brave_account_encryption.h",
+    "brave_account_service.cc",
+    "brave_account_service.h",
+    "brave_account_ui_base.h",
+    "brave_account_utils.h",
+    "flows/cancel_verification.cc",
+    "flows/cancel_verification.h",
+    "flows/change_password.cc",
+    "flows/change_password.h",
+    "flows/delete_account.cc",
+    "flows/delete_account.h",
+    "flows/flow_base.cc",
+    "flows/flow_base.h",
+    "flows/get_service_token.cc",
+    "flows/get_service_token.h",
+    "flows/log_out.cc",
+    "flows/log_out.h",
+    "flows/login.cc",
+    "flows/login.h",
+    "flows/make_request.h",
+    "flows/register.cc",
+    "flows/register.h",
+    "flows/resend_verification_email.cc",
+    "flows/resend_verification_email.h",
+    "flows/reset_password.cc",
+    "flows/reset_password.h",
+    "flows/update_email.cc",
+    "flows/update_email.h",
+    "logged_in_state.cc",
+    "logged_in_state.h",
+    "logged_out_state.cc",
+    "logged_out_state.h",
+    "prefs.cc",
+    "prefs.h",
+    "state_base.cc",
+    "state_base.h",
+    "state_internal.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_account:features",
+    "//brave/components/brave_account:internal",
+    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/brave_account/endpoints",
+    "//brave/components/brave_account/mojom",
+    "//brave/components/brave_account/resources",
+    "//brave/components/constants",
+    "//brave/components/password_strength_meter",
+    "//brave/components/password_strength_meter:mojom",
+    "//brave/components/resources:static_resources_grit",
+    "//brave/components/resources:strings_grit",
+    "//components/keyed_service/core",
+    "//components/os_crypt/async/browser",
+    "//components/os_crypt/async/common",
+    "//components/prefs",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom:mojom_content_security_policy",
+    "//ui/base",
+    "//url",
+  ]
+
+  if (is_android) {
+    deps += [ "//brave/components/brave_account/android:features" ]
+  }
+}
+
+source_set("internal") {
+  visibility = [
+    ":*",
+    "//brave/components/email_aliases:service",
+  ]
+
+  sources = [
+    "brave_account_service_constants.h",
+    "brave_account_state_prefs.cc",
+    "brave_account_state_prefs.h",
+    "pref_names.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_account/mojom",
+    "//components/prefs",
+  ]
+}
+
+source_set("features") {
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/email_aliases/buildflags",
+  ]
+
+  if (enable_email_aliases) {
+    deps += [ "//brave/components/email_aliases:features" ]
+  }
+}
+
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "mock_brave_account_authentication.cc",
+    "mock_brave_account_authentication.h",
+    "mock_brave_account_authentication_observer.cc",
+    "mock_brave_account_authentication_observer.h",
+  ]
+
+  deps = [
+    "//brave/components/brave_account/mojom",
+    "//mojo/public/cpp/bindings",
+    "//testing/gmock",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "brave_account_service_test.h",
+    "brave_account_service_unittest.cc",
+    "flows/cancel_verification_unittest.cc",
+    "flows/change_password_unittest.cc",
+    "flows/delete_account_unittest.cc",
+    "flows/flow_base_unittest.cc",
+    "flows/get_service_token_unittest.cc",
+    "flows/log_out_unittest.cc",
+    "flows/login_unittest.cc",
+    "flows/register_unittest.cc",
+    "flows/resend_verification_email_unittest.cc",
+    "flows/reset_password_unittest.cc",
+    "flows/update_email_unittest.cc",
+    "prefs_unittest.cc",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_account",
+    "//brave/components/brave_account:features",
+    "//brave/components/brave_account:internal",
+    "//brave/components/brave_account:test_support",
+    "//brave/components/brave_account/endpoint_client",
+    "//brave/components/brave_account/endpoint_client:json_test_endpoint_bodies",
+    "//brave/components/brave_account/endpoint_client:test_support",
+    "//brave/components/brave_account/endpoints",
+    "//brave/components/brave_account/mojom",
+    "//components/os_crypt/async/browser:test_support",
+    "//components/os_crypt/async/common",
+    "//components/prefs:test_support",
+    "//net",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//url",
+  ]
+
+  if (enable_email_aliases) {
+    sources += [ "features_unittest.cc" ]
+    deps += [
+      "//brave/components/email_aliases:features",
+      "//brave/components/email_aliases/buildflags",
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/resources/history/history_embeddings_promo.html.ts b/chrome/browser/resources/history/history_embeddings_promo.html.ts
+index 1948b83f22cc1fb0d56ebe61f8ba223245b5294f..2bbfaf51bcf39e12dbf03c2f2c30f44927c59cec 100644
+--- a/chrome/browser/resources/history/history_embeddings_promo.html.ts
++++ b/chrome/browser/resources/history/history_embeddings_promo.html.ts
+@@ -33,9 +33,6 @@ export function getHtml(this: HistoryEmbeddingsPromoElement) {
+       </div>
+       <div>
+         $i18n{historyEmbeddingsDisclaimer}
+-        <a href="$i18n{historyEmbeddingsSettingsUrl}" target="_blank">
+-          $i18n{historyEmbeddingsPromoSettingsLinkText}
+-        </a>
+       </div>
+     </div>
+   </div>

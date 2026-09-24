@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
+index 3bc10a66bbd7dbc61fc947811d4c487404cac2eb..b0f468d66487eb01268130995cf3cfc56cb7f329 100644
+--- a/chrome/browser/ui/views/tabs/tab_style_views.cc
++++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
+@@ -61,6 +61,7 @@ ui::metadata::TypeConverter<TabStyle::TabColors>::GetValidStrings() {
+ 
+ // TabStyleViews ---------------------------------------------------------------
+ 
++#if 0  // TabStyleViews::Create declared in the chromium_src.
+ // static
+ std::unique_ptr<TabStyleViews> TabStyleViews::Create(
+     std::unique_ptr<TabStyleViewDelegate> delegate,
+@@ -70,6 +71,7 @@ std::unique_ptr<TabStyleViews> TabStyleViews::Create(
+   }
+   return std::make_unique<HorizontalTabStyleViews>(std::move(delegate));
+ }
++#endif
+ 
+ TabStyleViews::TabStyleViews() : tab_style_(TabStyle::Get()) {}
+ 

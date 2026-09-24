@@ -1,0 +1,1282 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include <map>
+#include <memory>
+#include <set>
+#include <string>
+#include <utility>
+#include <vector>
+
+#include "base/files/scoped_temp_dir.h"
+#include "base/functional/callback_helpers.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/test/bind.h"
+#include "base/test/run_until.h"
+#include "base/test/task_environment.h"
+#include "base/test/test_future.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
+#include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
+#include "brave/components/ai_chat/core/browser/tools/mock_tool.h"
+#include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "build/build_config.h"
+#include "components/os_crypt/async/browser/test_utils.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "services/network/public/cpp/network_context_getter.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
+#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gtest/include/gtest/gtest-death-test.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+using ::testing::NiceMock;
+
+namespace ai_chat {
+
+namespace {
+
+class MockAIChatCredentialManager : public AIChatCredentialManager {
+ public:
+  using AIChatCredentialManager::AIChatCredentialManager;
+  void GetPremiumStatus(
+      mojom::Service::GetPremiumStatusCallback callback) override {
+    std::move(callback).Run(mojom::PremiumStatus::Inactive,
+                            mojom::PremiumInfo::New());
+  }
+  MOCK_METHOD(void, PutCredentialInCache, (CredentialCacheEntry), (override));
+};
+
+// Like a content tool, whose mangled name the model calls it by and whose
+// display name the website tools dialog lists it by must not be interchanged.
+class MangledNameTool : public MockTool {
+ public:
+  MangledNameTool() : MockTool("web_shop_cancel_cart") {}
+  ~MangledNameTool() override = default;
+
+  std::string_view DisplayName() const override { return "cancel_cart"; }
+};
+
+// Stands in for an open conversation UI, recording the tool lists the browser
+// pushes to it.
+class TestConversationUI : public mojom::ConversationUI {
+ public:
+  explicit TestConversationUI(ConversationHandler* handler) {
+    handler->Bind(receiver_.BindNewPipeAndPassRemote());
+  }
+  ~TestConversationUI() override = default;
+
+  const std::vector<mojom::ToolInfoPtr>& tools() const { return tools_; }
+  size_t push_count() const { return push_count_; }
+
+  // mojom::ConversationUI:
+  void OnContentToolsChanged(const std::string& content_uuid,
+                             std::vector<mojom::ToolInfoPtr> tools) override {
+    tools_ = std::move(tools);
+    ++push_count_;
+  }
+  void OnConversationHistoryUpdate(mojom::ConversationTurnPtr entry) override {}
+  void OnAPIRequestInProgress(bool in_progress) override {}
+  void OnAPIResponseError(mojom::APIError error,
+                          mojom::APIErrorDetailsPtr details) override {}
+  void OnTaskStateChanged(mojom::TaskState task_state) override {}
+  void OnModelDataChanged(const std::string& conversation_model_key,
+                          const std::string& default_model_key,
+                          std::vector<mojom::ModelPtr> all_models) override {}
+#if BUILDFLAG(IS_IOS)
+  void OnSuggestedQuestionsChanged(
+      const std::vector<std::string>& questions,
+      mojom::SuggestionGenerationStatus status) override {}
+#endif
+  void OnAssociatedContentInfoChanged(
+      std::vector<mojom::AssociatedContentPtr> associated_content) override {}
+  void OnConversationDeleted() override {}
+
+ private:
+  std::vector<mojom::ToolInfoPtr> tools_;
+  size_t push_count_ = 0;
+  mojo::Receiver<mojom::ConversationUI> receiver_{this};
+};
+
+}  // namespace
+
+class AssociatedContentManagerUnitTest : public testing::Test {
+ public:
+  AssociatedContentManagerUnitTest() : feedback_api_(nullptr, "") {}
+
+  void SetUp() override {
+    ASSERT_TRUE(temp_directory_.CreateUniqueTempDir());
+    prefs::RegisterProfilePrefs(prefs_.registry());
+    prefs::RegisterLocalStatePrefs(local_state_.registry());
+    ModelService::RegisterProfilePrefs(prefs_.registry());
+
+    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
+        /*is_sync_for_unittests=*/true);
+
+    shared_url_loader_factory_ =
+        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            &url_loader_factory_);
+
+    model_service_ = std::make_unique<ModelService>(
+        &prefs_, os_crypt_.get(), network::NetworkContextGetter(),
+        /*url_loader_factory=*/nullptr, base::FilePath());
+
+    ai_chat_service_ = std::make_unique<AIChatService>(
+        model_service_.get(), nullptr /* tab_tracker_service */,
+        std::make_unique<MockAIChatCredentialManager>(base::NullCallback(),
+                                                      &local_state_),
+        &prefs_, nullptr, os_crypt_.get(), shared_url_loader_factory_, "",
+        temp_directory_.GetPath());
+
+    conversation_ = mojom::Conversation::New(
+        "uuid", "title", base::Time::Now(), false, std::nullopt, 0, 0, false,
+        std::vector<mojom::AssociatedContentPtr>());
+
+    conversation_handler_ = std::make_unique<ConversationHandler>(
+        conversation_.get(), ai_chat_service_.get(), model_service_.get(),
+        ai_chat_service_->GetCredentialManagerForTesting(), &feedback_api_,
+        &prefs_, shared_url_loader_factory_,
+        std::vector<std::unique_ptr<ToolProvider>>());
+
+    conversation_handler_->SetEngineForTesting(
+        std::make_unique<NiceMock<MockEngineConsumer>>());
+  }
+
+ protected:
+  base::test::TaskEnvironment task_environment_;
+  sync_preferences::TestingPrefServiceSyncable prefs_;
+  sync_preferences::TestingPrefServiceSyncable local_state_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
+  AIChatFeedbackAPI feedback_api_;
+  std::unique_ptr<ModelService> model_service_;
+  std::unique_ptr<AIChatService> ai_chat_service_;
+  mojom::ConversationPtr conversation_;
+  std::unique_ptr<ConversationHandler> conversation_handler_;
+
+ private:
+  base::ScopedTempDir temp_directory_;
+};
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AssociateUnsentContentWithTurn_BasicAssociation) {
+  NiceMock<MockAssociatedContent> content;
+  conversation_handler_->associated_content_manager()->AddContent(&content);
+
+  auto turn = mojom::ConversationTurn::New(
+      "test-turn-uuid", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Test human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+
+  // Initially, GetAssociatedContent should not have conversation_turn_uuid set
+  auto initial_content = conversation_handler_->associated_content_manager()
+                             ->GetAssociatedContent();
+  ASSERT_EQ(1u, initial_content.size());
+  EXPECT_FALSE(initial_content[0]->conversation_turn_uuid.has_value());
+
+  // Associate content with turn
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  conversation_handler_->associated_content_manager()->AddContent(&content);
+
+  // After association, GetAssociatedContent should have conversation_turn_uuid
+  // set
+  auto associated_content = conversation_handler_->associated_content_manager()
+                                ->GetAssociatedContent();
+  ASSERT_EQ(1u, associated_content.size());
+  EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
+  EXPECT_EQ("test-turn-uuid",
+            associated_content[0]->conversation_turn_uuid.value());
+  EXPECT_EQ(content.uuid(), associated_content[0]->uuid);
+
+  // GetCachedContentsMap should work without crashing and include the turn UUID
+  // as key
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map.contains("test-turn-uuid"));
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AssociateUnsentContentWithTurn_MultipleContent) {
+  NiceMock<MockAssociatedContent> first_content;
+  conversation_handler_->associated_content_manager()->AddContent(
+      &first_content);
+
+  // Add a second content delegate
+  NiceMock<MockAssociatedContent> second_content;
+  conversation_handler_->associated_content_manager()->AddContent(
+      &second_content);
+
+  auto turn = mojom::ConversationTurn::New(
+      "test-turn-uuid", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Test human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+
+  // Associate content with turn
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  // Both content items should be associated with the turn
+  auto associated_content = conversation_handler_->associated_content_manager()
+                                ->GetAssociatedContent();
+  ASSERT_EQ(2u, associated_content.size());
+
+  // Both should have the same conversation_turn_uuid
+  EXPECT_TRUE(associated_content[0]->conversation_turn_uuid.has_value());
+  EXPECT_TRUE(associated_content[1]->conversation_turn_uuid.has_value());
+  EXPECT_EQ("test-turn-uuid",
+            associated_content[0]->conversation_turn_uuid.value());
+  EXPECT_EQ("test-turn-uuid",
+            associated_content[1]->conversation_turn_uuid.value());
+
+  // UUIDs should be match
+  EXPECT_EQ(first_content.uuid(), associated_content[0]->uuid);
+  EXPECT_EQ(second_content.uuid(), associated_content[1]->uuid);
+
+  // GetCachedContentsMap should work and have both content items under the same
+  // turn UUID
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map.contains("test-turn-uuid"));
+  EXPECT_EQ(2u, contents_map.at("test-turn-uuid").size());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AssociateUnsentContentWithTurn_MultipleContent_MultipleTurns) {
+  NiceMock<MockAssociatedContent> first_content;
+  first_content.SetTextContent("Page 1 content");
+
+  conversation_handler_->associated_content_manager()->AddContent(
+      &first_content);
+
+  auto turn1 = mojom::ConversationTurn::New(
+      "turn-1", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Test human message 1", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+
+  auto turn2 = mojom::ConversationTurn::New(
+      "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Test human message 2", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+
+  // Associate the first content with turn 1
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn1);
+
+  auto associated_content = conversation_handler_->associated_content_manager()
+                                ->GetAssociatedContent();
+  ASSERT_EQ(1u, associated_content.size());
+  EXPECT_EQ("turn-1", associated_content[0]->conversation_turn_uuid);
+
+  // Add a second content delegate
+  NiceMock<MockAssociatedContent> second_content;
+  second_content.SetTextContent("Page 2 content");
+
+  conversation_handler_->associated_content_manager()->AddContent(
+      &second_content);
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn2);
+
+  // Both content items should be associated with the turn
+  associated_content = conversation_handler_->associated_content_manager()
+                           ->GetAssociatedContent();
+  ASSERT_EQ(2u, associated_content.size());
+
+  // First content should be associated with turn 1.
+  EXPECT_EQ("turn-1", associated_content[0]->conversation_turn_uuid);
+  // Second content should be associated with turn 2.
+  EXPECT_EQ("turn-2", associated_content[1]->conversation_turn_uuid);
+
+  // GetCachedContentsMap should work and have both content items under their
+  // associated turns.
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map.contains("turn-1"));
+  ASSERT_EQ(1u, contents_map.at("turn-1").size());
+  EXPECT_EQ("Page 1 content", contents_map.at("turn-1")[0].get().content);
+
+  EXPECT_TRUE(contents_map.contains("turn-2"));
+  ASSERT_EQ(1u, contents_map.at("turn-2").size());
+  EXPECT_EQ("Page 2 content", contents_map.at("turn-2")[0].get().content);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AssociateUnsentContentWithTurn_AlreadyAssociated) {
+  NiceMock<MockAssociatedContent> content;
+  conversation_handler_->associated_content_manager()->AddContent(&content);
+
+  auto turn1 = mojom::ConversationTurn::New(
+      "test-turn-uuid-1", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "First human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+
+  auto turn2 = mojom::ConversationTurn::New(
+      "test-turn-uuid-2", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Second human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+
+  // Associate content with first turn
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn1);
+
+  // Verify association
+  auto content_after_first = conversation_handler_->associated_content_manager()
+                                 ->GetAssociatedContent();
+  ASSERT_EQ(1u, content_after_first.size());
+  EXPECT_EQ("test-turn-uuid-1",
+            content_after_first[0]->conversation_turn_uuid.value());
+
+  // Try to associate the same content with second turn - should be skipped
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn2);
+
+  // Content should still be associated with first turn
+  auto content_after_second =
+      conversation_handler_->associated_content_manager()
+          ->GetAssociatedContent();
+  ASSERT_EQ(1u, content_after_second.size());
+  EXPECT_EQ("test-turn-uuid-1",
+            content_after_second[0]->conversation_turn_uuid.value());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AssociateUnsentContentWithTurn_RequiresUuid) {
+  // Create turn without UUID - should crash
+  auto turn_without_uuid = mojom::ConversationTurn::New(
+      std::nullopt, std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Test human message", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+
+  EXPECT_DEATH_IF_SUPPORTED(
+      conversation_handler_->associated_content_manager()
+          ->AssociateUnsentContentWithTurn(turn_without_uuid),
+      "");
+}
+
+TEST_F(AssociatedContentManagerUnitTest, GetCachedContentsMap_Empty) {
+  // GetCachedContentsMap should return an empty map when there's no content
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map.empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       GetCachedContentsMap_UnassociatedContent) {
+  // Add content but don't associate it with any turn
+  NiceMock<MockAssociatedContent> content;
+  content.SetTextContent("Unassociated content");
+  conversation_handler_->associated_content_manager()->AddContent(&content);
+
+  auto associated_content = conversation_handler_->associated_content_manager()
+                                ->GetAssociatedContent();
+  ASSERT_EQ(1u, associated_content.size());
+  EXPECT_FALSE(associated_content[0]->conversation_turn_uuid.has_value());
+
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map.empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest, GetCachedContentsMap_MultipleContent) {
+  NiceMock<MockAssociatedContent> content1;
+  content1.SetTextContent("Content 1");
+  conversation_handler_->associated_content_manager()->AddContent(&content1);
+
+  NiceMock<MockAssociatedContent> content2;
+  content2.SetTextContent("Content 2");
+  conversation_handler_->associated_content_manager()->AddContent(&content2);
+
+  auto turn = mojom::ConversationTurn::New(
+      "turn-1", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Test human message", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+  ASSERT_TRUE(contents_map.contains("turn-1"));
+  ASSERT_EQ(2u, contents_map.at("turn-1").size());
+  EXPECT_EQ("Content 1", contents_map.at("turn-1")[0].get().content);
+  EXPECT_EQ("Content 2", contents_map.at("turn-1")[1].get().content);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       GetCachedContentsMap_MultipleContent_MultipleTurns) {
+  NiceMock<MockAssociatedContent> content1;
+  content1.SetTextContent("Content 1");
+  conversation_handler_->associated_content_manager()->AddContent(&content1);
+
+  NiceMock<MockAssociatedContent> content2;
+  content2.SetTextContent("Content 2");
+  conversation_handler_->associated_content_manager()->AddContent(&content2);
+
+  // Associate content 1 & 2 with turn 1
+  auto turn1 = mojom::ConversationTurn::New(
+      "turn-1", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Test human message", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn1);
+
+  NiceMock<MockAssociatedContent> content3;
+  content3.SetTextContent("Content 3");
+  conversation_handler_->associated_content_manager()->AddContent(&content3);
+
+  auto turn2 = mojom::ConversationTurn::New(
+      "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Test human message", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+
+  // Associate content 3 with turn 2
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn2);
+
+  auto contents_map = conversation_handler_->associated_content_manager()
+                          ->GetCachedContentsMap();
+
+  ASSERT_TRUE(contents_map.contains("turn-1"));
+  ASSERT_EQ(2u, contents_map.at("turn-1").size());
+  EXPECT_EQ("Content 1", contents_map.at("turn-1")[0].get().content);
+  EXPECT_EQ("Content 2", contents_map.at("turn-1")[1].get().content);
+
+  ASSERT_TRUE(contents_map.contains("turn-2"));
+  ASSERT_EQ(1u, contents_map.at("turn-2").size());
+  EXPECT_EQ("Content 3", contents_map.at("turn-2")[0].get().content);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       GetCachedContentsMap_WithRemovedContent) {
+  // Test that removed content doesn't appear in the cached contents map
+  NiceMock<MockAssociatedContent> content_to_keep;
+  content_to_keep.SetTextContent("Keep this content");
+  NiceMock<MockAssociatedContent> content_to_remove;
+  content_to_remove.SetTextContent("Remove this content");
+
+  conversation_handler_->associated_content_manager()->AddContent(
+      &content_to_keep);
+  conversation_handler_->associated_content_manager()->AddContent(
+      &content_to_remove);
+
+  auto turn = mojom::ConversationTurn::New(
+      "removal-turn", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Removal test",
+      std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+
+  // Associate both content items with the turn
+  conversation_handler_->associated_content_manager()
+      ->AssociateUnsentContentWithTurn(turn);
+
+  // Verify both are in the map initially
+  auto contents_map_before = conversation_handler_->associated_content_manager()
+                                 ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map_before.contains("removal-turn"));
+  EXPECT_EQ(2u, contents_map_before.at("removal-turn").size());
+
+  // Remove one content item
+  conversation_handler_->associated_content_manager()->RemoveContent(
+      &content_to_remove);
+
+  // Verify only the kept content remains in the map
+  auto contents_map_after = conversation_handler_->associated_content_manager()
+                                ->GetCachedContentsMap();
+  EXPECT_TRUE(contents_map_after.contains("removal-turn"));
+  ASSERT_EQ(1u, contents_map_after.at("removal-turn").size());
+  EXPECT_EQ("Keep this content",
+            contents_map_after.at("removal-turn")[0].get().content);
+}
+
+// Tests for the script-tools (WebMCP) plumbing: AssociatedContentManager acts
+// as a ToolProvider and aggregates per-content tools fetched via
+// AssociatedContentDelegate::GetContentTools.
+TEST_F(AssociatedContentManagerUnitTest,
+       UpdateToolsForNewGenerationLoop_NoDelegates) {
+  // With no content delegates attached, the on_updated callback must still
+  // fire and GetTools must return empty.
+  base::test::TestFuture<void> done;
+  conversation_handler_->associated_content_manager()
+      ->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  EXPECT_TRUE(done.Wait());
+  EXPECT_TRUE(
+      conversation_handler_->associated_content_manager()->GetTools().empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       UpdateToolsForNewGenerationLoop_AggregatesToolsFromAllDelegates) {
+  NiceMock<MockAssociatedContent> first_content;
+  NiceMock<MockAssociatedContent> second_content;
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&first_content);
+  manager->AddContent(&second_content);
+
+  // Only tools from attached content are loaded for a generation loop.
+  manager->SetToolsAttached(first_content.uuid(), /*tools_attached=*/true);
+  manager->SetToolsAttached(second_content.uuid(), /*tools_attached=*/true);
+
+  EXPECT_CALL(first_content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::vector<std::unique_ptr<Tool>> tools;
+        tools.push_back(std::make_unique<NiceMock<MockTool>>("first_tool"));
+        std::move(cb).Run(std::move(tools));
+      });
+  EXPECT_CALL(second_content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::vector<std::unique_ptr<Tool>> tools;
+        tools.push_back(std::make_unique<NiceMock<MockTool>>("second_tool"));
+        tools.push_back(std::make_unique<NiceMock<MockTool>>("third_tool"));
+        std::move(cb).Run(std::move(tools));
+      });
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  EXPECT_TRUE(done.Wait());
+
+  auto tools = manager->GetTools();
+  ASSERT_EQ(3u, tools.size());
+  std::set<std::string> tool_names;
+  for (const auto& tool : tools) {
+    ASSERT_TRUE(tool);
+    tool_names.insert(std::string(tool->Name()));
+  }
+  EXPECT_THAT(tool_names, ::testing::UnorderedElementsAre(
+                              "first_tool", "second_tool", "third_tool"));
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       UpdateToolsForNewGenerationLoop_ClearsPreviousTools) {
+  NiceMock<MockAssociatedContent> content;
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  // Only tools from attached content are loaded for a generation loop.
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/true);
+
+  EXPECT_CALL(content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::vector<std::unique_ptr<Tool>> tools;
+        tools.push_back(std::make_unique<NiceMock<MockTool>>("first_loop"));
+        std::move(cb).Run(std::move(tools));
+      });
+  base::test::TestFuture<void> first_done;
+  manager->UpdateToolsForNewGenerationLoop(first_done.GetCallback());
+  EXPECT_TRUE(first_done.Wait());
+  ASSERT_EQ(1u, manager->GetTools().size());
+
+  // A subsequent loop with no tools must clear the previously aggregated set.
+  EXPECT_CALL(content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::move(cb).Run({});
+      });
+  base::test::TestFuture<void> second_done;
+  manager->UpdateToolsForNewGenerationLoop(second_done.GetCallback());
+  EXPECT_TRUE(second_done.Wait());
+  EXPECT_TRUE(manager->GetTools().empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       UpdateToolsForNewGenerationLoop_DefersUntilAllDelegatesRespond) {
+  // Verifies the BarrierClosure semantics: on_updated must not run until the
+  // last GetScriptTools callback has been invoked.
+  NiceMock<MockAssociatedContent> first_content;
+  NiceMock<MockAssociatedContent> second_content;
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&first_content);
+  manager->AddContent(&second_content);
+
+  // Only tools from attached content are loaded for a generation loop.
+  manager->SetToolsAttached(first_content.uuid(), /*tools_attached=*/true);
+  manager->SetToolsAttached(second_content.uuid(), /*tools_attached=*/true);
+
+  AssociatedContentDelegate::GetContentToolsCallback pending_callback;
+  EXPECT_CALL(first_content, GetContentTools)
+      .WillOnce([&](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        pending_callback = std::move(cb);
+      });
+  EXPECT_CALL(second_content, GetContentTools)
+      .WillOnce([](AssociatedContentDelegate::GetContentToolsCallback cb) {
+        std::move(cb).Run({});
+      });
+
+  bool done_called = false;
+  manager->UpdateToolsForNewGenerationLoop(
+      base::BindLambdaForTesting([&] { done_called = true; }));
+
+  // Only second_content has responded so far; the barrier should still be
+  // open.
+  EXPECT_FALSE(done_called);
+  ASSERT_FALSE(pending_callback.is_null());
+
+  std::vector<std::unique_ptr<Tool>> deferred_tools;
+  deferred_tools.push_back(std::make_unique<NiceMock<MockTool>>("late_tool"));
+  std::move(pending_callback).Run(std::move(deferred_tools));
+
+  EXPECT_TRUE(done_called);
+  ASSERT_EQ(1u, manager->GetTools().size());
+  EXPECT_EQ("late_tool", std::string(manager->GetTools().front()->Name()));
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AddContent_AttachesContentExposingTools) {
+  // When added content exposes tools, it should be attached so the tools pill
+  // can surface it without waiting for a generation loop.
+  NiceMock<MockAssociatedContent> content;
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(std::make_unique<NiceMock<MockTool>>("a_tool"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  EXPECT_TRUE(content.tools_attached());
+  auto associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_TRUE(associated[0]->tools_attached);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolsAttached_UserDetachExcludesToolsFromGenerationLoop) {
+  // Content that exposes tools is attached on detection, but once the user
+  // detaches it (e.g. via the tools pill) its tools must not be loaded for
+  // generation.
+  NiceMock<MockAssociatedContent> content;
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(std::make_unique<NiceMock<MockTool>>("a_tool"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_TRUE(content.tools_attached());
+
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/false);
+  EXPECT_FALSE(content.tools_attached());
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  EXPECT_TRUE(done.Wait());
+  EXPECT_TRUE(manager->GetTools().empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AddContent_DoesNotAttachContentWithoutTools) {
+  // Content that exposes no tools should not be attached (its default state),
+  // so it contributes nothing to a generation loop.
+  NiceMock<MockAssociatedContent> content;
+  // MockAssociatedContent's default GetContentTools returns no tools.
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  EXPECT_FALSE(content.tools_attached());
+  auto associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_FALSE(associated[0]->tools_attached);
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  EXPECT_TRUE(done.Wait());
+  EXPECT_TRUE(manager->GetTools().empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest, GetToolInfos_DescribesTools) {
+  NiceMock<MockAssociatedContent> content;
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(std::make_unique<NiceMock<MockTool>>(
+                "browse_store", "Browse OR navigate to store collections."));
+            tools.push_back(std::make_unique<NiceMock<MockTool>>(
+                "cancel_cart", "Remove all items from the cart."));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos(content.uuid(), infos.GetCallback());
+  const auto& result = infos.Get();
+  ASSERT_EQ(2u, result.size());
+  EXPECT_EQ("browse_store", result[0]->name);
+  EXPECT_EQ("Browse OR navigate to store collections.", result[0]->description);
+  EXPECT_EQ("cancel_cart", result[1]->name);
+  EXPECT_EQ("Remove all items from the cart.", result[1]->description);
+}
+
+TEST_F(AssociatedContentManagerUnitTest, GetToolInfos_ReportsToolPermissions) {
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("browse_store"));
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> initial;
+  manager->GetToolInfos(content.uuid(), initial.GetCallback());
+  ASSERT_EQ(2u, initial.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAsk, initial.Get()[0]->permission);
+  EXPECT_EQ(mojom::ToolPermission::kAsk, initial.Get()[1]->permission);
+
+  manager->SetToolPermission(content.uuid(), "browse_store",
+                             mojom::ToolPermission::kAllowSession);
+  manager->SetToolPermission(content.uuid(), "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> updated;
+  manager->GetToolInfos(content.uuid(), updated.GetCallback());
+  ASSERT_EQ(2u, updated.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAllowSession, updated.Get()[0]->permission);
+  EXPECT_EQ(mojom::ToolPermission::kNeverAllow, updated.Get()[1]->permission);
+
+  // Blocked tools stay listed in the dialog, so the choice can be undone.
+  manager->SetToolPermission(content.uuid(), "cancel_cart",
+                             mojom::ToolPermission::kAsk);
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> reset;
+  manager->GetToolInfos(content.uuid(), reset.GetCallback());
+  ASSERT_EQ(2u, reset.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAsk, reset.Get()[1]->permission);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_NeverAllowWithholdsToolFromGenerationLoop) {
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("browse_store"));
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  manager->SetToolPermission(content.uuid(), "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  ASSERT_TRUE(done.Wait());
+
+  auto tools = manager->GetTools();
+  ASSERT_EQ(1u, tools.size());
+  EXPECT_EQ("browse_store", std::string(tools[0]->Name()));
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_AppliesChoiceToToolsForGenerationLoop) {
+  // Tools are rebuilt for every generation loop, so the manager has to
+  // reapply the user's choice to each fresh instance.
+  std::map<std::string, mojom::ToolPermission> applied;
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [&applied](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            for (const char* name : {"browse_store", "cancel_cart"}) {
+              auto tool = std::make_unique<NiceMock<MockTool>>(name);
+              ON_CALL(*tool, SetUserPermissionStrategy)
+                  .WillByDefault(
+                      [&applied, name](mojom::ToolPermission permission) {
+                        applied[name] = permission;
+                      });
+              tools.push_back(std::move(tool));
+            }
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  manager->SetToolPermission(content.uuid(), "browse_store",
+                             mojom::ToolPermission::kAllowSession);
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  ASSERT_TRUE(done.Wait());
+
+  EXPECT_THAT(applied,
+              ::testing::UnorderedElementsAre(
+                  std::pair<const std::string, mojom::ToolPermission>(
+                      "browse_store", mojom::ToolPermission::kAllowSession),
+                  std::pair<const std::string, mojom::ToolPermission>(
+                      "cancel_cart", mojom::ToolPermission::kAsk)));
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermissionForModelToolName_RecordsAgainstTheDisplayName) {
+  // A challenge is answered against the mangled name the model called the tool
+  // by, but the choice has to land under the name the dialog reads by.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(std::make_unique<NiceMock<MangledNameTool>>());
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  base::test::TestFuture<void> loaded;
+  manager->UpdateToolsForNewGenerationLoop(loaded.GetCallback());
+  ASSERT_TRUE(loaded.Wait());
+
+  manager->SetToolPermissionForModelToolName(
+      "web_shop_cancel_cart", mojom::ToolPermission::kAllowSession);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos(content.uuid(), infos.GetCallback());
+  ASSERT_EQ(1u, infos.Get().size());
+  EXPECT_EQ("cancel_cart", infos.Get()[0]->name);
+  EXPECT_EQ(mojom::ToolPermission::kAllowSession, infos.Get()[0]->permission);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermissionForModelToolName_UnknownToolIsIgnored) {
+  // Only content tools have a permission to record.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  manager->SetToolPermissionForModelToolName(
+      "semantic_history_search", mojom::ToolPermission::kAllowSession);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos(content.uuid(), infos.GetCallback());
+  ASSERT_EQ(1u, infos.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAsk, infos.Get()[0]->permission);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_IsScopedToTheContentsOrigin) {
+  // Two sites can each expose a tool of the same name, and a choice about one
+  // must not silently apply to the other.
+  NiceMock<MockAssociatedContent> first_content;
+  first_content.SetUrl(GURL("https://example.com/cart"));
+  NiceMock<MockAssociatedContent> second_content;
+  second_content.SetUrl(GURL("https://other.example/cart"));
+  for (auto* content : {&first_content, &second_content}) {
+    EXPECT_CALL(*content, GetContentTools)
+        .WillRepeatedly(
+            [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+              std::vector<std::unique_ptr<Tool>> tools;
+              tools.push_back(
+                  std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+              std::move(cb).Run(std::move(tools));
+            });
+  }
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&first_content);
+  manager->AddContent(&second_content);
+  manager->SetToolPermission(first_content.uuid(), "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> second_infos;
+  manager->GetToolInfos(second_content.uuid(), second_infos.GetCallback());
+  ASSERT_EQ(1u, second_infos.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAsk, second_infos.Get()[0]->permission);
+
+  base::test::TestFuture<void> done;
+  manager->UpdateToolsForNewGenerationLoop(done.GetCallback());
+  ASSERT_TRUE(done.Wait());
+  EXPECT_EQ(1u, manager->GetTools().size());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_UnknownContentIsIgnored) {
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  manager->SetToolPermission("not-an-attached-content", "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos(content.uuid(), infos.GetCallback());
+  ASSERT_EQ(1u, infos.Get().size());
+  EXPECT_EQ(mojom::ToolPermission::kAsk, infos.Get()[0]->permission);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_IsPushedToEveryBoundUI) {
+  // The choice is conversation-wide, so a UI that didn't make it mustn't be
+  // left showing the tool's old permission.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  EXPECT_CALL(content, GetContentTools)
+      .WillRepeatedly(
+          [](AssociatedContentDelegate::GetContentToolsCallback cb) {
+            std::vector<std::unique_ptr<Tool>> tools;
+            tools.push_back(
+                std::make_unique<NiceMock<MockTool>>("cancel_cart"));
+            std::move(cb).Run(std::move(tools));
+          });
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  TestConversationUI acting_ui(conversation_handler_.get());
+  TestConversationUI other_ui(conversation_handler_.get());
+
+  manager->SetToolPermission(content.uuid(), "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&] { return acting_ui.push_count() > 0 && other_ui.push_count() > 0; }));
+
+  for (const auto* ui : {&acting_ui, &other_ui}) {
+    ASSERT_EQ(1u, ui->tools().size());
+    EXPECT_EQ("cancel_cart", ui->tools()[0]->name);
+    EXPECT_EQ(mojom::ToolPermission::kNeverAllow, ui->tools()[0]->permission);
+  }
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       SetToolPermission_UnstoredChoiceIsNotPushed) {
+  // Nothing was recorded, so there's nothing for the UIs to reflect - pushing
+  // would tell them the choice took effect.
+  NiceMock<MockAssociatedContent> content;
+  content.SetUrl(GURL("https://example.com/cart"));
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  TestConversationUI ui(conversation_handler_.get());
+
+  manager->SetToolPermission("not-an-attached-content", "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+  // A choice that is recorded, to wait on. Pipes preserve order, so a push
+  // for the ignored call would have arrived before this one.
+  manager->SetToolPermission(content.uuid(), "cancel_cart",
+                             mojom::ToolPermission::kNeverAllow);
+  ASSERT_TRUE(base::test::RunUntil([&] { return ui.push_count() > 0; }));
+
+  EXPECT_EQ(1u, ui.push_count());
+}
+
+TEST_F(AssociatedContentManagerUnitTest, GetToolInfos_UnknownContentIsEmpty) {
+  // The dialog can outlive the content it was opened for, e.g. if the user
+  // detaches the tab while it's open.
+  NiceMock<MockAssociatedContent> content;
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+
+  base::test::TestFuture<std::vector<mojom::ToolInfoPtr>> infos;
+  manager->GetToolInfos("not-an-attached-content", infos.GetCallback());
+  EXPECT_TRUE(infos.Get().empty());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AddContent_TriggersUpdateAndNotifiesConversation) {
+  // Test that removed content doesn't appear in the cached contents map
+  NiceMock<MockAssociatedContent> associated_content;
+  associated_content.SetTextContent("Some video transcript");
+  associated_content.SetIsVideo(true);
+
+  // Should have empty cached page content.
+  EXPECT_TRUE(associated_content.cached_page_content().content.empty());
+  EXPECT_FALSE(associated_content.cached_page_content().is_video);
+
+  // Conversation metadata should have no associated content.
+  EXPECT_TRUE(conversation_->associated_content.empty());
+
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content);
+
+  // GetContent should have been called when adding the content to the manager.
+  EXPECT_EQ("Some video transcript",
+            associated_content.cached_page_content().content);
+  EXPECT_TRUE(associated_content.cached_page_content().is_video);
+
+  // Conversation metadata should have been updated now the AssociatedContent
+  // knows its a video.
+  ASSERT_EQ(1u, conversation_->associated_content.size());
+  EXPECT_EQ(conversation_->associated_content[0]->content_type,
+            mojom::ContentType::VideoTranscript);
+}
+
+// Content is attached before it can offer tools: a workspace only registers
+// them once its hidden page has loaded, long after it was attached.
+TEST_F(AssociatedContentManagerUnitTest, SurfacesToolsAttachedAfterTheFact) {
+  NiceMock<MockAssociatedContent> associated_content;
+  associated_content.SetUrl(GURL("https://example.com"));
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content);
+
+  ASSERT_EQ(1u, conversation_->associated_content.size());
+  ASSERT_FALSE(conversation_->associated_content[0]->tools_attached);
+
+  associated_content.set_tools_attached(true);
+
+  ASSERT_EQ(1u, conversation_->associated_content.size());
+  EXPECT_TRUE(conversation_->associated_content[0]->tools_attached);
+}
+
+TEST_F(AssociatedContentManagerUnitTest, SurfacesToolsBeingDetached) {
+  NiceMock<MockAssociatedContent> associated_content;
+  associated_content.SetUrl(GURL("https://example.com"));
+  conversation_handler_->associated_content_manager()->AddContent(
+      &associated_content);
+  associated_content.set_tools_attached(true);
+
+  ASSERT_EQ(1u, conversation_->associated_content.size());
+  ASSERT_TRUE(conversation_->associated_content[0]->tools_attached);
+
+  associated_content.set_tools_attached(false);
+
+  ASSERT_EQ(1u, conversation_->associated_content.size());
+  EXPECT_FALSE(conversation_->associated_content[0]->tools_attached);
+}
+
+namespace {
+
+// Counts how many times the manager probes the page's tools.
+class FakePageTools {
+ public:
+  FakePageTools(NiceMock<MockAssociatedContent>& content, bool has_tools)
+      : has_tools_(has_tools) {
+    // Real content fetches tools from a renderer, so reply asynchronously.
+    // Replying inline would re-enter the delegate's observer list while it is
+    // still notifying OnContentToolsChanged().
+    ON_CALL(content, GetContentTools)
+        .WillByDefault(
+            [this](
+                AssociatedContentDelegate::GetContentToolsCallback callback) {
+              ++probe_count_;
+              std::vector<std::unique_ptr<Tool>> tools;
+              if (has_tools_) {
+                tools.push_back(std::make_unique<NiceMock<MockTool>>("a_tool"));
+              }
+              base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+                  FROM_HERE,
+                  base::BindOnce(std::move(callback), std::move(tools)));
+            });
+  }
+
+  void set_has_tools(bool has_tools) { has_tools_ = has_tools; }
+  int probe_count() const { return probe_count_; }
+
+ private:
+  bool has_tools_;
+  int probe_count_ = 0;
+};
+
+}  // namespace
+
+TEST_F(AssociatedContentManagerUnitTest,
+       AddContent_TellsContentItWasAssociatedWithAConversation) {
+  // Content only watches for tool changes once a conversation is listening for
+  // them, so attaching must notify it.
+  NiceMock<MockAssociatedContent> content;
+  FakePageTools page_tools(content, /*has_tools=*/false);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  EXPECT_CALL(content, OnAssociatedWithConversation());
+  manager->AddContent(&content);
+  testing::Mock::VerifyAndClearExpectations(&content);
+
+  // Re-attaching after a detach notifies again, so the content can re-subscribe
+  // to whatever document it is now showing.
+  manager->RemoveContent(&content);
+  EXPECT_CALL(content, OnAssociatedWithConversation());
+  manager->AddContent(&content);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_AttachesStagedContentWhenToolsAppear) {
+  NiceMock<MockAssociatedContent> content;
+  FakePageTools page_tools(content, /*has_tools=*/false);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_FALSE(content.tools_attached());
+  ASSERT_EQ(1, page_tools.probe_count());
+
+  page_tools.set_has_tools(true);
+  content.NotifyContentToolsChanged();
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return content.tools_attached(); }));
+  auto associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_TRUE(associated[0]->tools_attached);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_DetachesStagedContentWhenToolsDisappear) {
+  NiceMock<MockAssociatedContent> content;
+  FakePageTools page_tools(content, /*has_tools=*/true);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_TRUE(base::test::RunUntil([&] { return content.tools_attached(); }));
+
+  page_tools.set_has_tools(false);
+  content.NotifyContentToolsChanged();
+
+  ASSERT_TRUE(base::test::RunUntil([&] { return !content.tools_attached(); }));
+  auto associated = manager->GetAssociatedContent();
+  ASSERT_EQ(1u, associated.size());
+  EXPECT_FALSE(associated[0]->tools_attached);
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_IgnoresContentAssociatedWithTurn) {
+  // Associated content is no longer staged, so changes are ignored.
+  NiceMock<MockAssociatedContent> content;
+  FakePageTools page_tools(content, /*has_tools=*/false);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_FALSE(content.tools_attached());
+  ASSERT_EQ(1, page_tools.probe_count());
+
+  auto turn = mojom::ConversationTurn::New(
+      "test-turn-uuid", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "Test human message", std::nullopt, std::nullopt, std::nullopt,
+      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
+      std::nullopt, nullptr,
+      std::vector<std::string>{} /* child_thread_uuids */);
+  manager->AssociateUnsentContentWithTurn(turn);
+
+  page_tools.set_has_tools(true);
+  content.NotifyContentToolsChanged();
+
+  // Drive a change we do expect to be probed, so the ignored one has had its
+  // chance to run.
+  NiceMock<MockAssociatedContent> other_content;
+  FakePageTools other_page_tools(other_content, /*has_tools=*/true);
+  manager->AddContent(&other_content);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return other_content.tools_attached(); }));
+
+  EXPECT_EQ(1, page_tools.probe_count());
+  EXPECT_FALSE(content.tools_attached());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_IgnoresUserOverriddenContent) {
+  NiceMock<MockAssociatedContent> content;
+  FakePageTools page_tools(content, /*has_tools=*/false);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_FALSE(content.tools_attached());
+  ASSERT_EQ(1, page_tools.probe_count());
+
+  manager->SetToolsAttached(content.uuid(), /*tools_attached=*/false);
+
+  page_tools.set_has_tools(true);
+  content.NotifyContentToolsChanged();
+
+  // Drive a change we do expect to be probed, so the ignored one has had its
+  // chance to run.
+  NiceMock<MockAssociatedContent> other_content;
+  FakePageTools other_page_tools(other_content, /*has_tools=*/true);
+  manager->AddContent(&other_content);
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return other_content.tools_attached(); }));
+
+  EXPECT_EQ(1, page_tools.probe_count());
+  EXPECT_FALSE(content.tools_attached());
+}
+
+TEST_F(AssociatedContentManagerUnitTest,
+       OnContentToolsChanged_ReprobesForEachChange) {
+  NiceMock<MockAssociatedContent> content;
+  FakePageTools page_tools(content, /*has_tools=*/true);
+
+  auto* manager = conversation_handler_->associated_content_manager();
+  manager->AddContent(&content);
+  ASSERT_EQ(1, page_tools.probe_count());
+
+  content.NotifyContentToolsChanged();
+  content.NotifyContentToolsChanged();
+  content.NotifyContentToolsChanged();
+
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return page_tools.probe_count() == 4; }));
+}
+
+}  // namespace ai_chat

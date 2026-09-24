@@ -1,0 +1,69 @@
+/* A message shown when a user tries to access their passwords and are presented with a Touch ID or passcode prompt. */
+"CredentialProvider.authenticationReason" = "A jelszavai eléréséhez hitelesítés szükséges";
+
+/* A title for a button shown to a user to authenticate themselves to display their passwords */
+"CredentialProvider.authenticationUnlockButtonTitle" = "Feloldás";
+
+/* A button that cancels the autofill request and dismisses the screen */
+"CredentialProvider.cancelButtonTitle" = "Mégse";
+
+/* A title for a button that when tapped copies the content highlighted into the users clipboard */
+"CredentialProvider.copyMenuItemTitle" = "Másolás";
+
+/* The title shown at the top of a list of credentials. 'Brave' in this case is the company name */
+"CredentialProvider.credentialListTitle" = "Brave-jelszavak";
+
+/* The password field in the details form. Shows the password (if revealed) or a mask of the users password for the website next to it */
+"CredentialProvider.detailsFormPasswordField" = "Jelszó";
+
+/* The URL field in the details form. Shows a website URL next to it */
+"CredentialProvider.detailsFormURLField" = "URL";
+
+/* The username field in the details form. Shows the username for the website next to it */
+"CredentialProvider.detailsFormUsernameField" = "Felhasználónév";
+
+/* Some text shown when there are no suggested logins for the website the user is trying to autofill on */
+"CredentialProvider.emptySuggestions" = "Nincs javaslat";
+
+/* A title for a button that when tapped hides a password that was previously revealed */
+"CredentialProvider.hidePasswordMenuItemTitle" = "A jelszó elrejtése";
+
+/* A header label shown above a list of logins (username/password combinations) for a particular website. '%@' is replaced by a website host for example: 'Logins for apple.com' */
+"CredentialProvider.loginsForWebsite" = "Bejelentkezés a következőhöz: %@";
+
+/* The title on a button that dismisses the onboarding view */
+"CredentialProvider.onboardingViewContinueCTA" = "Folytatás";
+
+/* A footnote shown on a screen shown when the user turns on Brave as a password autofill provider. 'iCloud Keychain' is an Apple product. */
+"CredentialProvider.onboardingViewFootnote" = "Ha szeretne gyorsabban hozzáférni a jelszavaihoz, szüntesse meg az iCloud-kulcslánc kijelölését";
+
+/* The subtitle on a screen shown when the user turns on Brave as a password autofill provider */
+"CredentialProvider.onboardingViewSubtitle" = "Az elmentett jelszavakat az eszköz más appjaiban is használhatja";
+
+/* The title on a screen shown when the user turns on Brave as a password autofill provider */
+"CredentialProvider.onboardingViewTitle" = "Az automatikus kitöltés be van kapcsolva";
+
+/* A header label shown above a list of website logins (username/password combinations) */
+"CredentialProvider.otherLogins" = "Egyéb bejelentkezések";
+
+/* A title for a button that when tapped reveals a users password that is currently masked */
+"CredentialProvider.revealPasswordMenuItemTitle" = "A jelszó megjelenítése";
+
+/* The placeholder/prompt that is shown in the search bar */
+"CredentialProvider.searchBarPrompt" = "Bejelentkezések keresése";
+
+/* A label shown when the users search has no results */
+"CredentialProvider.searchEmptyResults" = "Nincs eredmény a következőhöz: „%@”";
+
+/* The message displayed in alert when a user needs to set a passcode */
+"CredentialProvider.setPasscodeAlertMessage" = "Ahhoz, hogy hozzáférhessen a jelszavaihoz, először be kell állítania egy belépési kódot az eszközén.";
+
+/* The title displayed in alert when a user needs to set passcode */
+"CredentialProvider.setPasscodeAlertTitle" = "Jelkód beállítása";
+
+/* A title for a button shown as a confirmation action on a login's detail screen. Tapping it uses the password when autofilling into the website */
+"CredentialProvider.useButtonTitle" = "Felhasználás";
+
+/* An accessibility label read out when a user activates VoiceOver on a button that when taps drills down into a credentials details */
+"CredentialProvider.viewCredentialDetails" = "Részletek megtekintése";
+

@@ -1,0 +1,53 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
+
+import { layoutPanelWidth } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
+
+export const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0 32px 32px 32px;
+  border-radius: 16px;
+  z-index: 2;
+
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 0 24x 24px 24px;
+  }
+`
+
+export const Header = styled.div`
+  font: ${leo.font.heading.h2};
+
+  color: ${leo.color.text.primary};
+  text-align: center;
+  text-align: left;
+  width: 100%;
+  padding-bottom: 16px;
+`
+
+export const Description = styled.div`
+  font: ${leo.font.default.regular};
+
+  color: ${leo.color.text.secondary};
+  text-align: center;
+  padding-bottom: 24px;
+`
+
+export const ButtonRow = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: ${leo.spacing.xl};
+
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    flex-direction: column-reverse;
+    justify-content: center;
+    gap: ${leo.spacing.l};
+  }
+`

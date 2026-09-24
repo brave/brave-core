@@ -1,0 +1,22 @@
+diff --git a/components/history_embeddings/core/history_embeddings_features.cc b/components/history_embeddings/core/history_embeddings_features.cc
+index 97a176308b0fe576692d87d811314ca45c2d37e4..87eec88560c429054f5237abf248b9926aa75390 100644
+--- a/components/history_embeddings/core/history_embeddings_features.cc
++++ b/components/history_embeddings/core/history_embeddings_features.cc
+@@ -23,7 +23,7 @@ FeatureParameters& GetFeatureParametersMutable() {
+ // disabled, answering functionality will not be available either. This feature
+ // is client-side launched on desktop platforms in US only, so it remains
+ // disabled by default for other regions.
+-BASE_FEATURE(kHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ // This feature specifies whether to answer queries using an answerer; it can be
+ // considered a toggle for v2 answering functionality. Parameters are all kept
+@@ -32,7 +32,7 @@ BASE_FEATURE(kHistoryEmbeddings, base::FEATURE_DISABLED_BY_DEFAULT);
+ // Note: This feature has no parameters. Since it entirely depends on the
+ // above kHistoryEmbeddings feature, all parameters are owned by that
+ // feature to avoid confusion about which feature owns which parameters.
+-BASE_FEATURE(kHistoryEmbeddingsAnswers, base::FEATURE_DISABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kHistoryEmbeddingsAnswers, base::FEATURE_DISABLED_BY_DEFAULT);
+ 
+ ////////////////////////////////////////////////////////////////////////////////
+ 

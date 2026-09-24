@@ -1,0 +1,134 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/tabs/shared_pinned_tab_dummy_view_views.h"
+
+#include <memory>
+
+#include "base/check.h"
+#include "base/functional/bind.h"
+#include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/tabs/shared_pinned_tab_dummy_view.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/thumbnails/thumbnail_tab_helper.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "components/tabs/public/tab_interface.h"
+#include "third_party/skia/include/core/SkPath.h"
+#include "third_party/skia/include/core/SkRect.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/models/image_model.h"
+#include "ui/gfx/font_list.h"
+#include "ui/views/background.h"
+#include "ui/views/border.h"
+#include "ui/views/controls/image_view.h"
+#include "ui/views/controls/label.h"
+#include "ui/views/layout/fill_layout.h"
+#include "ui/views/layout/flex_layout.h"
+#include "ui/views/view_class_properties.h"
+
+// static
+void SharedPinnedTabDummyView::CreateAndInstall(
+    content::WebContents* shared_contents,
+    content::WebContents* dummy_contents) {
+  auto dummy_view = base::WrapUnique(
+      new SharedPinnedTabDummyViewViews(shared_contents, dummy_contents));
+  auto* dummy_view_ptr = dummy_view.get();
+
+  auto* browser = GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
+      dummy_view->dummy_contents_);
+  CHECK(browser);
+
+  // Transfer ownership to WebView via TakeCrashedOverlayView(), which hides
+  // the native content holder and shows the overlay in its place.
+  // TODO(sko) We should take split view into account. This is the same problem
+  // as with SadTabView.
+  BrowserView::GetBrowserViewForBrowser(browser)
+      ->contents_web_view()
+      ->TakeCrashedOverlayView(std::move(dummy_view));
+
+  // WebView hides the crash overlay when web contents is not crashed. The
+  // dummy contents intentionally has no renderer (kNoRendererProcess), so
+  // UpdateCrashedOverlayView() will not be called again after this point.
+  // Force the overlay visible here.
+  dummy_view_ptr->SetVisible(true);
+}
+
+SharedPinnedTabDummyViewViews::SharedPinnedTabDummyViewViews(
+    content::WebContents* shared_contents,
+    content::WebContents* dummy_contents)
+    : SharedPinnedTabDummyView(shared_contents, dummy_contents),
+      thumbnail_(ThumbnailTabHelper::From(
+                     tabs::TabInterface::GetFromContents(dummy_contents))
+                     ->thumbnail()),
+      subscription_(thumbnail_->Subscribe()) {
+  SetPaintToLayer();
+  SetLayoutManager(std::make_unique<views::FlexLayout>())
+      ->SetOrientation(views::LayoutOrientation::kVertical)
+      .SetCrossAxisAlignment(views::LayoutAlignment::kCenter)
+      .SetMainAxisAlignment(views::LayoutAlignment::kCenter);
+  SetBackground(views::CreateSolidBackground(
+      kColorBraveSharedPinnedTabDummyViewBackground));
+
+  constexpr auto kTitleFontSize = 22;
+  constexpr auto kDescriptionFontSize = 14;
+  constexpr auto kThumbnailSize = gfx::Size(360, 240);
+  constexpr auto kThumbnailRadius = 5;
+  constexpr auto kThumbnailBorderThickness = 1;
+  constexpr auto kThumbnailImageSize =
+      gfx::Size(kThumbnailSize.width() - kThumbnailBorderThickness * 2,
+                kThumbnailSize.height() - kThumbnailBorderThickness * 2);
+
+  views::Builder<SharedPinnedTabDummyViewViews>(this)
+      .AddChild(views::Builder<views::View>()
+                    .SetBorder(views::CreateRoundedRectBorder(
+                        kThumbnailBorderThickness, kThumbnailRadius,
+                        kColorBraveSharedPinnedTabDummyViewThumbnailBorder))
+                    .SetPreferredSize(kThumbnailSize)
+                    .SetLayoutManager(std::make_unique<views::FillLayout>())
+                    .AddChild(views::Builder<views::ImageView>()
+                                  .CopyAddressTo(&thumbnail_view_)
+                                  .SetImageSize(kThumbnailImageSize)))
+      .AddChild(views::Builder<views::Label>()
+                    .CopyAddressTo(&title_label_)
+                    .SetText(l10n_util::GetStringUTF16(
+                        IDS_SHARED_PINNED_TABS_DUMMY_TAB_VIEW_TITLE))
+                    .SetFontList(
+                        gfx::FontList()
+                            .DeriveWithSizeDelta(kTitleFontSize -
+                                                 gfx::FontList().GetFontSize())
+                            .DeriveWithWeight(gfx::Font::Weight::SEMIBOLD))
+                    .SetEnabledColor(kColorBraveSharedPinnedTabDummyViewTitle)
+                    .SetProperty(views::kMarginsKey, gfx::Insets().set_top(40)))
+      .AddChild(
+          views::Builder<views::Label>()
+              .CopyAddressTo(&description_label_)
+              .SetText(l10n_util::GetStringUTF16(
+                  IDS_SHARED_PINNED_TABS_DUMMY_TAB_VIEW_DESCRIPTION))
+              .SetFontList(gfx::FontList().DeriveWithSizeDelta(
+                  kDescriptionFontSize - gfx::FontList().GetFontSize()))
+              .SetEnabledColor(kColorBraveSharedPinnedTabDummyViewDescription)
+              .SetProperty(views::kMarginsKey, gfx::Insets().set_top(8)))
+      .BuildChildren();
+
+  thumbnail_view_->SetClipPath(SkPath::RRect(
+      SkRect::MakeWH(kThumbnailImageSize.width(), kThumbnailImageSize.height()),
+      kThumbnailRadius - kThumbnailBorderThickness,
+      kThumbnailRadius - kThumbnailBorderThickness));
+
+  subscription_->SetSizeHint(kThumbnailImageSize);
+  subscription_->SetUncompressedImageCallback(base::BindRepeating(
+      [](views::ImageView* thumbnail_view, gfx::ImageSkia image) {
+        thumbnail_view->SetImage(ui::ImageModel::FromImageSkia(image));
+      },
+      thumbnail_view_));
+  thumbnail_->RequestThumbnailImage();
+}
+
+SharedPinnedTabDummyViewViews::~SharedPinnedTabDummyViewViews() = default;
+
+BEGIN_METADATA(SharedPinnedTabDummyViewViews)
+END_METADATA

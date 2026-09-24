@@ -1,0 +1,13 @@
+diff --git a/components/heap_profiling/in_process/heap_profiler_parameters.cc b/components/heap_profiling/in_process/heap_profiler_parameters.cc
+index 3339556a64da17857f1a3fc579f8a58e97c7f5a3..51422637cbc7849fb7c8571f89078ef486d0ce85 100644
+--- a/components/heap_profiling/in_process/heap_profiler_parameters.cc
++++ b/components/heap_profiling/in_process/heap_profiler_parameters.cc
+@@ -125,7 +125,7 @@ constexpr base::FeatureParam<double> kUtilityHashSetLoadFactor{
+ 
+ }  // namespace
+ 
+-BASE_FEATURE(kHeapProfilerReporting, base::FEATURE_ENABLED_BY_DEFAULT);
++BASE_OVERRIDDEN_FEATURE(kHeapProfilerReporting, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kHeapProfilerChurnReporting, base::FEATURE_ENABLED_BY_DEFAULT);
+ 
+ const base::FeatureParam<double> kHeapChurnSubsamplingChance{

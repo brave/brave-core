@@ -1,0 +1,111 @@
+/* Error message shown when importing bookmarks failed */
+"failedToImportBookmarks" = "Ralat berlaku semasa mengimport Penanda Halaman.";
+
+/* Error message shown when importing history failed */
+"failedToImportHistory" = "Ralat berlaku semasa mengimport Sejarah.";
+
+/* Error message shown when importing passwords failed due to a password already existing (a conflict) */
+"failedToImportPasswordsDueToConflictError" = "Ralat berlaku semasa mengimport Kata Laluan.\nBeberapa kata laluan tidak boleh diimport kerana terdapat konflik.";
+
+/* Error message shown when importing passwords failed */
+"failedToImportPasswordsError" = "Ralat berlaku semasa mengimport Kata Laluan.";
+
+/* Error message shown when unzipping a zip file failed */
+"failedToUnzipError" = "Ralat berlaku semasa membuka zip fail.";
+
+/* The title of the button on the file selector screen that lets the user select a zip file (or other files) containing data to be imported. */
+"importDataFileSelectorButtonTitle" = "Pilih fail...";
+
+/* The message of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorMessage" = "Bawa penanda halaman, sejarah, dan data penyemak imbas anda yang lain ke dalam Brave.";
+
+/* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
+"importDataFileSelectorNavigationTitle" = "Import Data Penyemakan Imbas";
+
+/* The title of a Text on screen that explains to the user what type of data can be imported. */
+"importDataFileSelectorTitle" = "Import Penanda Halaman dan banyak lagi";
+
+/* The title of the button on the file selector screen that lets the user view the tutorial screen on how to import data. */
+"importDataViewTutorialButtonTitle" = "Bagaimana untuk mengeksport daripada Safari";
+
+/* The message shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureMessage" = "Kesilapan telah berlaku semasa mengimport data anda.\nSila cuba lagi.\nJika masalah berterusan, hubungi khidmat sokongan.";
+
+/* The title shown on the import data screen when importing the data from the browser profile failed. */
+"importStateFailureTitle" = "Import Gagal";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user keep your existing Brave passwords. */
+"importStatePasswordConflictKeepExistingPasswordsTitle" = "Simpan kata laluan daripada Brave";
+
+/* The title of the button on the import error screen when there is a conflict, that lets the user use the passwords that were imported, overwriting your existing passwords. */
+"importStatePasswordConflictKeepImportedPasswordsTitle" = "Gunakan kata laluan daripada Safari";
+
+/* The message shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). %d is a placeholder for the number of conflicting passwords. */
+"importStatePasswordConflictMessage" = "%d Konflik kata laluan ditemui.\nPilih apa yang ingin diimport.";
+
+/* The title shown on the import data screen when importing the data from has conflicting passwords (when two passwords exist for the same account, but are different, they are conflicting). */
+"importStatePasswordConflictTitle" = "Konflik kata laluan";
+
+/* The title of the button on the import success screen to let the user continue using the app as before. */
+"importStateSuccessContinueTitle" = "Teruskan";
+
+/* The message shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessMessage" = "Data anda telah berjaya diimport.\nAnda sudah bersedia untuk mula menyemak imbas dengan Brave.";
+
+/* The title shown on the import data screen when importing the data from the browser profile succeeded. */
+"importStateSuccessTitle" = "Berjaya!";
+
+/* The title of the button on the import error screen that lets the user try to import the data again */
+"importStateTryAgainTitle" = "Cuba Lagi";
+
+/* The message on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessMessage" = "Buka halaman bantuan Safari";
+
+/* The title on the tutorial page explaining the detailed process to export your data from other browsers. */
+"importTutorialDetailedProcessTitle" = "Ingin proses eksport yang terperinci?";
+
+/* The title of the tutorial page that shows in the Navigation Bar. */
+"importTutorialScreenTitle" = "Bagaimana untuk mengeksport daripada Safari";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFiveTitle" = "Simpan fail dalam **Files**, pilih lokasi yang anda mudah cari kemudian.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepFourTitle" = "**Pilih** data yang anda ingin eksport (Penanda Halaman, Sejarah, Kad Kredit, Kata Laluan).";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepOneTitle" = "Buka **Tetapan**, skrol ke bawah dan klik **Aplikasi**.";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepThreeTitle" = "Skrol ke bawah dan klik **Eksport**.";
+
+/* The title on each card indicating the tutorial step that has been completed. Step 1, Step 2, Step 3, etc... %d is a placeholder for the step number. */
+"importTutorialStepTitle" = "Langkah %d";
+
+/* The title on each card for the tutorial step that has been completed. Anything in between ** is bold. Do not remove the ** */
+"importTutorialStepTwoTitle" = "Daripada senarai aplikasi (disusun mengikut abjad), cari dan klik **Safari**.";
+
+/* Error message shown when the zip file doesn't contain any history, bookmarks, passwords, or credit cards to import */
+"invalidZipFileDataError" = "Fail zip tidak mengandungi data import.";
+
+/* The message shown on the import data screen when the data is being loaded or imported. */
+"loadingMessage" = "Sila tunggu sementara kami memindahkan data anda dengan selamat.\nIni mungkin mengambil masa beberapa saat.";
+
+/* The title shown on the import data screen when the data is being loaded or imported. */
+"loadingTitle" = "Mengimport Data Anda...";
+
+/* The message shown on the import data screen when there are multiple profiles such as Personal, Work, School, etc. */
+"multipleProfilesMessage" = "Pilih profil yang anda ingin import data daripadanya";
+
+/* The title shown on the import data screen when there are multiple browser profiles such as Personal, Work, School, etc. */
+"multipleProfilesTitle" = "Berbilang profil dikesan";
+
+/* The name of the folder or profile containing Personal data that should be imported. IE: You can have work profiles, personal profiles, etc. */
+"personalImportTitle" = "Peribadi";
+
+/* Folder name for where bookmarks are imported into when the root folder is not empty. */
+"SyncImportFolderName" = "Penanda Buku Diimport";
+
+/* An unknown error occurred during data importing. */
+"unknownError" = "Fail zip tidak mengandungi data import.";
+

@@ -1,0 +1,36 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+   This Source Code Form is subject to the terms of the Mozilla Public
+   License, v. 2.0. If a copy of the MPL was not distributed with this file,
+   You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=//resources/cr_elements/cr_shared_style_lit.css.js
+ * #import=//resources/cr_elements/cr_shared_vars.css.js
+ * #include=cr-shared-style-lit
+ * #css_wrapper_metadata_end */
+
+.icon-container {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position:relative;
+}
+
+.icon-container leo-icon {
+  box-sizing: border-box;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Selected state border */
+.icon-container.selected {
+  outline: 2px solid var(--leo-color-primary-50);
+  outline-offset: 2px;
+}

@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<script>
+const duration = 1;
+const sampleRate = 16000;
+const startOffset = 8000;
+const ctx = new AudioContext();
+const audioBuffer = ctx.createBuffer(1, sampleRate * duration, sampleRate);
+const destArray = new Float32Array(sampleRate * duration - startOffset);
+audioBuffer.copyFromChannel(destArray, 0, startOffset);
+</script>
+</body>
+</html>

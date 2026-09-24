@@ -1,0 +1,33 @@
+diff --git a/content/browser/browsing_data/browsing_data_filter_builder_impl.cc b/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
+index 9f4a76671507e252842de7957acb8f673aa658b0..309b8074411bf368e1abb7ff5bbd100e64f65744 100644
+--- a/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
++++ b/content/browser/browsing_data/browsing_data_filter_builder_impl.cc
+@@ -52,6 +52,12 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,
+ 
+   for (const auto& origin : origins) {
+     switch (match_mode) {
++      case BrowsingDataFilterBuilder::OriginMatchingMode::kThirdPartiesOnly:
++        if (storage_key.IsThirdPartyContext() &&
++            storage_key.MatchesOriginForTrustedStorageDeletion(origin)) {
++          return is_delete_list;
++        }
++        break;
+       case BrowsingDataFilterBuilder::OriginMatchingMode::kThirdPartiesIncluded:
+         if (storage_key.MatchesOriginForTrustedStorageDeletion(origin)) {
+           return is_delete_list;
+@@ -91,6 +97,15 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,
+   };
+ 
+   switch (match_mode) {
++    case OriginMatchingMode::kThirdPartiesOnly:
++      return is_delete_list ==
++             std::ranges::any_of(registerable_domains, [&](const std::string&
++                                                               domain) {
++               return storage_key.IsThirdPartyContext() &&
++                      storage_key
++                          .MatchesRegistrableDomainForTrustedStorageDeletion(
++                              domain);
++             });
+     case OriginMatchingMode::kThirdPartiesIncluded:
+       return third_party_predicate();
+     case OriginMatchingMode::kOriginInAllContexts:

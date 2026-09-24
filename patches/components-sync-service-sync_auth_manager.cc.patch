@@ -1,0 +1,16 @@
+diff --git a/components/sync/service/sync_auth_manager.cc b/components/sync/service/sync_auth_manager.cc
+index 931356eac5f6a76018ba64277c060d3af2b4c960..ddce1e485d57e6e84a09c639d03d442e6b3fc138 100644
+--- a/components/sync/service/sync_auth_manager.cc
++++ b/components/sync/service/sync_auth_manager.cc
+@@ -97,6 +97,11 @@ const SyncAccountInfo& SyncAuthManager::ActiveAccount::Get() const {
+ }
+ 
+ void SyncAuthManager::ActiveAccount::StartDeterminingAccountType() {
++  if (!account_info_.account_info.account_id.empty()) {
++    account_info_.managed_status =
++        signin::AccountManagedStatusFinderOutcome::kConsumerWellKnown;
++    return;
++  }
+   if (account_info_.account_info.account_id.empty()) {
+     managed_status_finder_.reset();
+     return;

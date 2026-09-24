@@ -1,0 +1,10 @@
+#include "resource.h"
+
+IDR_BRAVE_VPN_TRAY_DARK                  ICON                        "status_tray\\resources\\tray_dark.ico"
+IDR_BRAVE_VPN_TRAY_LIGHT                 ICON                        "status_tray\\resources\\tray_light.ico"
+IDR_BRAVE_VPN_TRAY_DARK_CONNECTED        ICON                        "status_tray\\resources\\tray_dark_connected.ico"
+IDR_BRAVE_VPN_TRAY_LIGHT_CONNECTED       ICON                        "status_tray\\resources\\tray_light_connected.ico"
+IDR_BRAVE_VPN_TRAY_DARK_ERROR            ICON                        "status_tray\\resources\\tray_dark_error.ico"
+IDR_BRAVE_VPN_TRAY_LIGHT_ERROR           ICON                        "status_tray\\resources\\tray_light_error.ico"
+IDR_BRAVE_VPN_TRAY_DARK_CONNECTING        ICON                        "status_tray\\resources\\tray_dark_connecting.ico"
+IDR_BRAVE_VPN_TRAY_LIGHT_CONNECTING       ICON                        "status_tray\\resources\\tray_light_connecting.ico"

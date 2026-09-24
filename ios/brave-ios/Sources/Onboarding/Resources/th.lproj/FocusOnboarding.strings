@@ -1,0 +1,48 @@
+/* The subtitle of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenDescription" = "แตะค้างที่ไอคอน Brave จากนั้นลากไปที่ Dock ของคุณเพื่อการเข้าถึงที่รวดเร็ว";
+
+/* The title of the screen that explains how to add Brave to the iOS dock */
+"focusOnboarding.addToDockScreenTitle" = "เพิ่ม Brave ไปยัง Dock ของคุณ";
+
+/* The title of the button that changes the screen to next */
+"focusOnboarding.continueButtonTitle" = "ดำเนินการต่อ";
+
+/* The subtitle of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenDescription" = "ตั้ง Brave เป็นเบราว์เซอร์เริ่มต้นของคุณวันนี้";
+
+/* The title of the screen that requests user to set Brave as default */
+"focusOnboarding.defaultBrowserScreenTitle" = "บล็อกโฆษณาทุกครั้งที่คุณเยี่ยมชมเว็บไซต์";
+
+/* The title of the button that closes the default browser full screen callout */
+"focusOnboarding.notNowActionButtonTitle" = "ไม่ใช่ตอนนี้";
+
+/* The subtitle of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenDescription" = "บล็อคสิ่งรบกวนที่น่ารำคาญบนเว็บไซต์สตรีมมิ่งที่คุณชื่นชอบ";
+
+/* The title of the screen that shows ads embeded in video are blocked */
+"focusOnboarding.noVideoAdsScreenTitle" = "บล็อคการขัดจังหวะตอนคุณสตรีม";
+
+/* The subtitle of the screen that asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenDescription" = "บอกให้เราทราบทีว่าฟีเจอร์ใดที่คุณชื่นชอบที่สุด";
+
+/* The title of the screen which asks user to enable privacy preserving analytics. */
+"focusOnboarding.p3aScreenTitle" = "ปรับปรุง Brave ให้ดีขึ้น";
+
+/* The description shown below the toggle for enabling privacy preserving analytics. */
+"focusOnboarding.p3aToggleDescription" = "แชร์ข้อมูลเชิงลึกของผลิตภัณฑ์แบบส่วนตัวและไม่ระบุชื่อโดยสมบูรณ์ ซึ่งมีข้อมูลเกี่ยวกับคุณสมบัติที่ผู้ใช้ Brave ใช้";
+
+/* The title of the toggle that allows the user to enable/disable the privacy preserving analytics. */
+"focusOnboarding.p3aToggleTitle" = "ข้อมูลเชิงลึกของผลิตภัณฑ์แบบส่วนตัว";
+
+/* The description shown below the toggle for enabling crash reporting. */
+"focusOnboarding.sendCrashReportsToggleDescription" = "ส่งรายงานการวินิจฉัยแบบไม่ระบุชื่อหากคุณพบข้อขัดข้องหรืออาการค้าง";
+
+/* The title of the toggle that allows the user to enable/disable crash reporting. */
+"focusOnboarding.sendCrashReportsToggleTitle" = "ส่งรายงานข้อขัดข้อง";
+
+/* The title of the button that finishes the onboarding without setting default */
+"focusOnboarding.startBrowseActionButtonTitle" = "เริ่มท่องเว็บ";
+
+/* The title of the button that triggers navigation link to settings */
+"focusOnboarding.systemSettingsButtonTitle" = "ตั้งเป็นค่าเริ่มต้น";
+

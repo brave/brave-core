@@ -1,0 +1,26 @@
+diff --git a/ui/webui/resources/cr_components/history_embeddings/history_embeddings.html.ts b/ui/webui/resources/cr_components/history_embeddings/history_embeddings.html.ts
+index 7c8cd022c150c237aadb20efd371bc8f78daad3c..4646ad638738ec457c696bf1a024ea02eac5e8bc 100644
+--- a/ui/webui/resources/cr_components/history_embeddings/history_embeddings.html.ts
++++ b/ui/webui/resources/cr_components/history_embeddings/history_embeddings.html.ts
+@@ -60,10 +60,6 @@ ${!this.enableAnswers_ ? html`
+ 
+         <div class="footer">
+           <div>${this.i18n('historyEmbeddingsFooter')}</div>
+-          <cr-feedback-buttons
+-              selected-option="${this.feedbackState_}"
+-              @selected-option-changed="${this.onFeedbackSelectedOptionChanged_}">
+-          </cr-feedback-buttons>
+         </div>
+       </div>
+     `}
+@@ -181,10 +177,6 @@ ${this.enableAnswers_ ? html`
+   </div>
+   <div class="footer">
+     <div>${this.i18n('historyEmbeddingsFooter')}</div>
+-    <cr-feedback-buttons
+-        selected-option="${this.feedbackState_}"
+-        @selected-option-changed="${this.onFeedbackSelectedOptionChanged_}">
+-    </cr-feedback-buttons>
+   </div>
+ ` : ''}
+ 

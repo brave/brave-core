@@ -1,0 +1,132 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//ios/web/public/js_messaging/compile_ts.gni")
+import("//ios/web/public/js_messaging/optimize_js.gni")
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
+source_set("js_messaging") {
+  sources = [
+    "safe_builtins_javascript_feature.h",
+    "safe_builtins_javascript_feature.mm",
+  ]
+  deps = [
+    ":message_handler_token",
+    ":randomized_message_handler_name",
+    ":safe_builtins_js",
+  ]
+  public_deps = [ "//ios/web/public/js_messaging" ]
+}
+
+source_set("message_handler_token") {
+  sources = [
+    "message_handler_token.h",
+    "message_handler_token.mm",
+  ]
+  public_deps = [
+    "//base",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+source_set("randomized_message_handler_name") {
+  sources = [
+    "randomized_message_handler_name.h",
+    "randomized_message_handler_name.mm",
+  ]
+  public_deps = [
+    "//base",
+    "//ios/web/public/js_messaging",
+  ]
+}
+
+source_set("prompt_facade") {
+  visibility = [
+    ":unittests",
+    "//ios/web/web_state/ui",
+  ]
+  sources = [
+    "prompt_facade.h",
+    "prompt_facade.mm",
+  ]
+  deps = [
+    "//ios/web/js_messaging",
+    "//ios/web/js_messaging:java_script_content_world_header",
+    "//ios/web/js_messaging:java_script_feature_manager_header",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
+    "//url",
+  ]
+  public_deps = [ "//base" ]
+  assert_no_deps = [ "//brave/ios/browser" ]
+}
+
+source_set("unittests") {
+  testonly = true
+  sources = [
+    "message_handler_token_inttest.mm",
+    "prompt_facade_unittest.mm",
+    "randomized_message_handler_name_inttest.mm",
+    "safe_builtins_javascript_test.mm",
+  ]
+  deps = [
+    ":js_messaging",
+    ":message_handler_token",
+    ":message_handler_token_test_api",
+    ":prompt_facade",
+    ":randomized_message_handler_name",
+    ":randomized_message_handler_test_api",
+    ":safe_builtins_js",
+    "//base",
+    "//base/test:test_support",
+    "//ios/web/js_messaging:java_script_feature_manager_header",
+    "//ios/web/public/js_messaging",
+    "//ios/web/public/test:javascript_test",
+    "//ios/web/public/test:test_fixture",
+    "//ios/web/public/test:util",
+    "//ios/web/public/test/fakes",
+    "//testing/gtest",
+    "//url",
+  ]
+}
+
+compile_ts("util_scripts") {
+  sources = [ "resources/utils.ts" ]
+  deps = [ ":safe_builtins" ]
+}
+
+compile_ts("safe_builtins") {
+  sources = [ "resources/safe_builtins.ts" ]
+}
+
+optimize_js("safe_builtins_js") {
+  _script = filter_include(get_target_outputs(":safe_builtins"),
+                           [ "*safe_builtins.js" ])
+  primary_script = _script[0]
+  sources = _script
+  output_name = "safe_builtins"
+
+  deps = [ ":safe_builtins" ]
+}
+
+optimize_ts("message_handler_token_test_api") {
+  testonly = true
+  sources = [ "resources/message_handler_token_test_api.ts" ]
+  deps = [
+    ":util_scripts",
+    "//ios/web/public/js_messaging:gcrweb",
+    "//ios/web/public/js_messaging:util_scripts",
+  ]
+}
+
+optimize_ts("randomized_message_handler_test_api") {
+  testonly = true
+  sources = [ "resources/randomized_message_handler_test_api.ts" ]
+  deps = [
+    ":util_scripts",
+    "//ios/web/public/js_messaging:gcrweb",
+    "//ios/web/public/js_messaging:util_scripts",
+  ]
+}

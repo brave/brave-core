@@ -1,0 +1,408 @@
+/* (No Comment) */
+"0W40Cl" = "Nov zavihek";
+
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "Obstaja ${count} možnosti, ki se ujemajo z »Pribl. čas prihranjen«.";
+
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "Obstaja ${count} možnosti, ki se ujemajo z »Pribl. podatki prihranjen«.";
+
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "Obstaja ${count} možnosti, ki se ujemajo z »Oglasi blokirani«.";
+
+/* (No Comment) */
+"7Ds8rk" = "Konfiguracija najljubšega zaslona za zaklepanje";
+
+/* (No Comment) */
+"7JYzOv" = "Vrsta";
+
+/* (No Comment) */
+"7MuqiB" = "Bližnjice";
+
+/* (No Comment) */
+"8pcZ6L" = "Pripomočka najljubšega zaslona za zaklepanje";
+
+/* (No Comment) */
+"8vyYRy" = "#3";
+
+/* (No Comment) */
+"9E2oRR" = "#1";
+
+/* (No Comment) */
+"AGMpus" = "Konfiguracija bližnjic";
+
+/* (No Comment) */
+"bUHTuL" = "Vprašaj Brave";
+
+/* (No Comment) */
+"bUXzTx" = "Vrsta statistike";
+
+/* (No Comment) */
+"crhbMy" = "Zaznamki";
+
+/* (No Comment) */
+"D5r3nt" = "URL";
+
+/* (No Comment) */
+"e13lS3-0W40Cl" = "Samo da potrdi, ste hoteli »Nov zavihek«?";
+
+/* (No Comment) */
+"e13lS3-bUHTuL" = "Samo da potrdi, ste hoteli »Vprašaj Brave«?";
+
+/* (No Comment) */
+"e13lS3-crhbMy" = "Samo da potrdi, ste hoteli »Zaznamke«?";
+
+/* (No Comment) */
+"e13lS3-FGO5qW" = "Samo da potrdi, ste hoteli »Brave Seznam predvajanja«?";
+
+/* (No Comment) */
+"e13lS3-jXiFQY" = "Samo da potrdi, ste hoteli »Brave Denarnica«?";
+
+/* (No Comment) */
+"e13lS3-nthxSL" = "Samo da potrdi, ste hoteli »Prenosi«?";
+
+/* (No Comment) */
+"e13lS3-qKrzyX" = "Samo da potrdi, ste hoteli »Skeniraj QR kodo«?";
+
+/* (No Comment) */
+"e13lS3-U0eRbw" = "Samo da potrdi, ste hoteli »Leo AI«?";
+
+/* (No Comment) */
+"e13lS3-VBH4G6" = "Samo da potrdi, ste hoteli »Zgodovina«?";
+
+/* (No Comment) */
+"e13lS3-vs094F" = "Samo da potrdi, ste hoteli »Nov zasebni zavihek«?";
+
+/* (No Comment) */
+"e13lS3-XCyA8c" = "Samo da potrdi, ste hoteli »Brave Novice«?";
+
+/* (No Comment) */
+"e13lS3-Y7TWy8" = "Samo da potrdi, ste hoteli »Iskanje«?";
+
+/* (No Comment) */
+"EUS9FL" = "Bližnjica pripomočka";
+
+/* (No Comment) */
+"EvESs0-0W40Cl" = "Samo da potrdi, ste hoteli »Nov zavihek«?";
+
+/* (No Comment) */
+"EvESs0-bUHTuL" = "Samo da potrdi, ste hoteli »Vprašaj Brave«?";
+
+/* (No Comment) */
+"EvESs0-crhbMy" = "Samo da potrdi, ste hoteli »Zaznamke«?";
+
+/* (No Comment) */
+"EvESs0-FGO5qW" = "Samo da potrdi, ste hoteli »Brave Seznam predvajanja«?";
+
+/* (No Comment) */
+"EvESs0-jXiFQY" = "Samo da potrdi, ste hoteli »Brave Denarnica«?";
+
+/* (No Comment) */
+"EvESs0-nthxSL" = "Samo da potrdi, ste hoteli »Prenosi«?";
+
+/* (No Comment) */
+"EvESs0-qKrzyX" = "Samo da potrdi, ste hoteli »Skeniraj QR kodo«?";
+
+/* (No Comment) */
+"EvESs0-U0eRbw" = "Samo da potrdi, ste hoteli »Leo AI«?";
+
+/* (No Comment) */
+"EvESs0-VBH4G6" = "Samo da potrdi, ste hoteli »Zgodovina«?";
+
+/* (No Comment) */
+"EvESs0-vs094F" = "Samo da potrdi, ste hoteli »Nov zasebni zavihek«?";
+
+/* (No Comment) */
+"EvESs0-XCyA8c" = "Samo da potrdi, ste hoteli »Brave Novice«?";
+
+/* (No Comment) */
+"EvESs0-Y7TWy8" = "Samo da potrdi, ste hoteli »Iskanje«?";
+
+/* (No Comment) */
+"FGO5qW" = "Seznam predvajanja Brave";
+
+/* (No Comment) */
+"gpCwrM" = "Konfiguracija statistike";
+
+/* (No Comment) */
+"hssb67" = "Konfiguracija pripomočka bližnjice";
+
+/* (No Comment) */
+"iB2TOM" = "Vnos najljubšega";
+
+/* (No Comment) */
+"joEZJM" = "#2";
+
+/* (No Comment) */
+"jXiFQY" = "Denarnica Brave";
+
+/* (No Comment) */
+"L1fziM-0W40Cl" = "Obstaja ${count} možnosti, ki se ujemajo z »Nov zavihek«.";
+
+/* (No Comment) */
+"L1fziM-bUHTuL" = "Obstaja ${count} možnosti, ki se ujemajo z »Vprašaj Brave«.";
+
+/* (No Comment) */
+"L1fziM-crhbMy" = "Obstaja ${count} možnosti, ki se ujemajo z »Zaznamke«.";
+
+/* (No Comment) */
+"L1fziM-FGO5qW" = "Obstaja ${count} možnosti, ki se ujemajo z »Brave Seznam predvajanja«.";
+
+/* (No Comment) */
+"L1fziM-jXiFQY" = "Obstaja ${count} možnosti, ki se ujemajo z »Brave Denarnica«.";
+
+/* (No Comment) */
+"L1fziM-nthxSL" = "Obstaja ${count} možnosti, ki se ujemajo z »Prenosi«.";
+
+/* (No Comment) */
+"L1fziM-qKrzyX" = "Obstaja ${count} možnosti, ki se ujemajo z »Skeniraj QR kodo«.";
+
+/* (No Comment) */
+"L1fziM-U0eRbw" = "Obstaja ${count} možnosti, ki se ujemajo z »Leo AI«.";
+
+/* (No Comment) */
+"L1fziM-VBH4G6" = "Obstaja ${count} možnosti, ki se ujemajo z »Zgodovina«.";
+
+/* (No Comment) */
+"L1fziM-vs094F" = "Obstaja ${count} možnosti, ki se ujemajo z »Nov zasebni zavihek«.";
+
+/* (No Comment) */
+"L1fziM-XCyA8c" = "Obstaja ${count} možnosti, ki se ujemajo z »Brave Novice«.";
+
+/* (No Comment) */
+"L1fziM-Y7TWy8" = "Obstaja ${count} možnosti, ki se ujemajo z »Iskanje«.";
+
+/* (No Comment) */
+"M2Y1rg" = "#4";
+
+/* (No Comment) */
+"nthxSL" = "Prenosi";
+
+/* (No Comment) */
+"nXONef" = "Najljubše";
+
+/* (No Comment) */
+"qKrzyX" = "Skeniraj QR kodo";
+
+/* (No Comment) */
+"r2EI05-0W40Cl" = "Samo da potrdi, ste hoteli »Nov zavihek«?";
+
+/* (No Comment) */
+"r2EI05-bUHTuL" = "Samo da potrdi, ste hoteli »Vprašaj Brave«?";
+
+/* (No Comment) */
+"r2EI05-crhbMy" = "Samo da potrdi, ste hoteli »Zaznamke«?";
+
+/* (No Comment) */
+"r2EI05-FGO5qW" = "Samo da potrdi, ste hoteli »Brave Seznam predvajanja«?";
+
+/* (No Comment) */
+"r2EI05-jXiFQY" = "Samo da potrdi, ste hoteli »Brave Denarnica«?";
+
+/* (No Comment) */
+"r2EI05-nthxSL" = "Samo da potrdi, ste hoteli »Prenosi«?";
+
+/* (No Comment) */
+"r2EI05-qKrzyX" = "Samo da potrdi, ste hoteli »Skeniraj QR kodo«?";
+
+/* (No Comment) */
+"r2EI05-U0eRbw" = "Samo da potrdi, ste hoteli »Leo AI«?";
+
+/* (No Comment) */
+"r2EI05-VBH4G6" = "Samo da potrdi, ste hoteli »Zgodovina«?";
+
+/* (No Comment) */
+"r2EI05-vs094F" = "Samo da potrdi, ste hoteli »Nov zasebni zavihek«?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Samo da potrdi, ste hoteli »Brave Novice«?";
+
+/* (No Comment) */
+"r2EI05-Y7TWy8" = "Samo da potrdi, ste hoteli »Iskanje«?";
+
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "Samo da potrdi, ste hoteli »Pribl. čas prihranjen«?";
+
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "Samo da potrdi, ste hoteli »Pribl. podatki prihranjen«?";
+
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "Samo da potrdi, ste hoteli »Oglasi blokirani«?";
+
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "Obstaja ${count} možnosti, ki se ujemajo z »Nov zavihek«.";
+
+/* (No Comment) */
+"tNCrcE-bUHTuL" = "Obstaja ${count} možnosti, ki se ujemajo z »Vprašaj Brave«.";
+
+/* (No Comment) */
+"tNCrcE-crhbMy" = "Obstaja ${count} možnosti, ki se ujemajo z »Zaznamke«.";
+
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "Obstaja ${count} možnosti, ki se ujemajo z »Brave Seznam predvajanja«.";
+
+/* (No Comment) */
+"tNCrcE-jXiFQY" = "Obstaja ${count} možnosti, ki se ujemajo z »Brave Denarnica«.";
+
+/* (No Comment) */
+"tNCrcE-nthxSL" = "Obstaja ${count} možnosti, ki se ujemajo z »Prenosi«.";
+
+/* (No Comment) */
+"tNCrcE-qKrzyX" = "Obstaja ${count} možnosti, ki se ujemajo z »Skeniraj QR kodo«.";
+
+/* (No Comment) */
+"tNCrcE-U0eRbw" = "Obstaja ${count} možnosti, ki se ujemajo z »Leo AI«.";
+
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "Obstaja ${count} možnosti, ki se ujemajo z »Zgodovina«.";
+
+/* (No Comment) */
+"tNCrcE-vs094F" = "Obstaja ${count} možnosti, ki se ujemajo z »Nov zasebni zavihek«.";
+
+/* (No Comment) */
+"tNCrcE-XCyA8c" = "Obstaja ${count} možnosti, ki se ujemajo z »Brave Novice«.";
+
+/* (No Comment) */
+"tNCrcE-Y7TWy8" = "Obstaja ${count} možnosti, ki se ujemajo z »Iskanje«.";
+
+/* (No Comment) */
+"tVvJ9c" = "Pripomočka konfiguracije statistike";
+
+/* (No Comment) */
+"TxuMja-0W40Cl" = "Obstaja ${count} možnosti, ki se ujemajo z »Nov zavihek«.";
+
+/* (No Comment) */
+"TxuMja-bUHTuL" = "Obstaja ${count} možnosti, ki se ujemajo z »Vprašaj Brave«.";
+
+/* (No Comment) */
+"TxuMja-crhbMy" = "Obstaja ${count} možnosti, ki se ujemajo z »Zaznamke«.";
+
+/* (No Comment) */
+"TxuMja-FGO5qW" = "Obstaja ${count} možnosti, ki se ujemajo z »Brave Seznam predvajanja«.";
+
+/* (No Comment) */
+"TxuMja-jXiFQY" = "Obstaja ${count} možnosti, ki se ujemajo z »Brave Denarnica«.";
+
+/* (No Comment) */
+"TxuMja-nthxSL" = "Obstaja ${count} možnosti, ki se ujemajo z »Prenosi«.";
+
+/* (No Comment) */
+"TxuMja-qKrzyX" = "Obstaja ${count} možnosti, ki se ujemajo z »Skeniraj QR kodo«.";
+
+/* (No Comment) */
+"TxuMja-U0eRbw" = "Obstaja ${count} možnosti, ki se ujemajo z »Leo AI«.";
+
+/* (No Comment) */
+"TxuMja-VBH4G6" = "Obstaja ${count} možnosti, ki se ujemajo z »Zgodovina«.";
+
+/* (No Comment) */
+"TxuMja-vs094F" = "Obstaja ${count} možnosti, ki se ujemajo z »Nov zasebni zavihek«.";
+
+/* (No Comment) */
+"TxuMja-XCyA8c" = "Obstaja ${count} možnosti, ki se ujemajo z »Brave Novice«.";
+
+/* (No Comment) */
+"TxuMja-Y7TWy8" = "Obstaja ${count} možnosti, ki se ujemajo z »Iskanje«.";
+
+/* (No Comment) */
+"tYwiRd" = "Pribl. čas prihranjen";
+
+/* (No Comment) */
+"U0eRbw" = "Leo AI";
+
+/* (No Comment) */
+"VBH4G6" = "Zgodovina";
+
+/* (No Comment) */
+"vjA5pZ" = "Pribl. podatki prihranjen";
+
+/* (No Comment) */
+"vs094F" = "Novi zavihek Zasebno";
+
+/* (No Comment) */
+"xcI3h9" = "Oglasi blokirani";
+
+/* (No Comment) */
+"XCyA8c" = "Brave novice";
+
+/* (No Comment) */
+"XkwBGY" = "Konfiguracija bližnjice zaslona za zaklepanje";
+
+/* (No Comment) */
+"Y7TWy8" = "Išči";
+
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "Samo da potrdi, ste hoteli »Nov zavihek«?";
+
+/* (No Comment) */
+"YQiQuz-bUHTuL" = "Samo da potrdi, ste hoteli »Vprašaj Brave«?";
+
+/* (No Comment) */
+"YQiQuz-crhbMy" = "Samo da potrdi, ste hoteli »Zaznamke«?";
+
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "Samo da potrdi, ste hoteli »Brave Seznam predvajanja«?";
+
+/* (No Comment) */
+"YQiQuz-jXiFQY" = "Samo da potrdi, ste hoteli »Brave Denarnica«?";
+
+/* (No Comment) */
+"YQiQuz-nthxSL" = "Samo da potrdi, ste hoteli »Prenosi«?";
+
+/* (No Comment) */
+"YQiQuz-qKrzyX" = "Samo da potrdi, ste hoteli »Skeniraj QR kodo«?";
+
+/* (No Comment) */
+"YQiQuz-U0eRbw" = "Samo da potrdi, ste hoteli »Leo AI«?";
+
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "Samo da potrdi, ste hoteli »Zgodovina«?";
+
+/* (No Comment) */
+"YQiQuz-vs094F" = "Samo da potrdi, ste hoteli »Nov zasebni zavihek«?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Samo da potrdi, ste hoteli »Brave Novice«?";
+
+/* (No Comment) */
+"YQiQuz-Y7TWy8" = "Samo da potrdi, ste hoteli »Iskanje«?";
+
+/* (No Comment) */
+"z517nu-0W40Cl" = "Obstaja ${count} možnosti, ki se ujemajo z »Nov zavihek«.";
+
+/* (No Comment) */
+"z517nu-bUHTuL" = "Obstaja ${count} možnosti, ki se ujemajo z »Vprašaj Brave«.";
+
+/* (No Comment) */
+"z517nu-crhbMy" = "Obstaja ${count} možnosti, ki se ujemajo z »Zaznamke«.";
+
+/* (No Comment) */
+"z517nu-FGO5qW" = "Obstaja ${count} možnosti, ki se ujemajo z »Brave Seznam predvajanja«.";
+
+/* (No Comment) */
+"z517nu-jXiFQY" = "Obstaja ${count} možnosti, ki se ujemajo z »Brave Denarnica«.";
+
+/* (No Comment) */
+"z517nu-nthxSL" = "Obstaja ${count} možnosti, ki se ujemajo z »Prenosi«.";
+
+/* (No Comment) */
+"z517nu-qKrzyX" = "Obstaja ${count} možnosti, ki se ujemajo z »Skeniraj QR kodo«.";
+
+/* (No Comment) */
+"z517nu-U0eRbw" = "Obstaja ${count} možnosti, ki se ujemajo z »Leo AI«.";
+
+/* (No Comment) */
+"z517nu-VBH4G6" = "Obstaja ${count} možnosti, ki se ujemajo z »Zgodovina«.";
+
+/* (No Comment) */
+"z517nu-vs094F" = "Obstaja ${count} možnosti, ki se ujemajo z »Nov zasebni zavihek«.";
+
+/* (No Comment) */
+"z517nu-XCyA8c" = "Obstaja ${count} možnosti, ki se ujemajo z »Brave Novice«.";
+
+/* (No Comment) */
+"z517nu-Y7TWy8" = "Obstaja ${count} možnosti, ki se ujemajo z »Iskanje«.";
+
+/* (No Comment) */
+"ziTvSZ" = "Konfiguracija pripomočka bližnjic";
+

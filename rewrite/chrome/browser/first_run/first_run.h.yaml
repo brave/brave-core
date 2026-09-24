@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Don't require accepting terms of service at first run on Linux.
+
+      Brave doesn't need to show terms-of-service dialog as terms are presented
+      by onboarding. Upstream's dialog only populates the content string for
+      the dialog (IDS_TERMS_TXT) in Chrome-branded builds. First run blocks in
+      a nested run loop showing an empty modal dialog, which also hangs any
+      browser test that enables first run.
+    regex:
+      pattern: 'bool eula_required = true;'
+      replace: 'bool eula_required = false;'

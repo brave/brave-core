@@ -1,0 +1,57 @@
+{
+  "version": "1.0.0",
+  "name": "Brave",
+  "manifest_version": 2,
+  "description": "__MSG_appName__",
+  "default_locale": "en_US",
+  "icons": {
+    "16": "assets/img/icon-16.png",
+    "32": "assets/img/icon-32.png",
+    "48": "assets/img/icon-48.png",
+    "64": "assets/img/icon-64.png",
+    "128": "assets/img/icon-128.png",
+    "256": "assets/img/icon-256.png"
+  },
+  "MAYBE_background":{
+    "scripts": [
+      "out/brave_extension_background.bundle.js"
+    ],
+    "persistent": true
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://chrome.google.com/webstore/*",
+        "https://chromewebstore.google.com/*"
+      ],
+      "js": [
+        "out/webstore.bundle.js"
+      ],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "permissions": [
+    "activeTab",
+    "alarms",
+    "contentSettings",
+    "contextMenus",
+    "cookies",
+    "history",
+    "management",
+    "settingsPrivate",
+    "storage",
+    "tabs",
+    "webNavigation",
+    "webRequest",
+    "*://*/*",
+    "chrome://favicon/*",
+    "webDiscovery",
+    "webRequestBlocking",
+    "unlimitedStorage",
+    "<all_urls>"
+  ],
+  "content_security_policy": "default-src 'self'; font-src 'self' data:; script-src 'self' 'wasm-eval'; style-src 'unsafe-inline'; img-src 'self' data: chrome://favicon/; connect-src * data: blob: filesystem:;",
+  "incognito": "split",
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAupOLMy5Fd4dCSOtjcApsAQOnuBdTs+OvBVt/3P93noIrf068x0xXkvxbn+fpigcqfNamiJ5CjGyfx9zAIs7zcHwbxjOw0Uih4SllfgtK+svNTeE0r5atMWE0xR489BvsqNuPSxYJUmW28JqhaSZ4SabYrRx114KcU6ko7hkjyPkjQa3P+chStJjIKYgu5tWBiMJp5QVLelKoM+xkY6S7efvJ8AfajxCViLGyDQPDviGr2D0VvIBob0D1ZmAoTvYOWafcNCaqaejPDybFtuLFX3pZBqfyOCyyzGhucyCmfBXJALKbhjRAqN5glNsUmGhhPK87TuGATQfVuZtenMvXMQIDAQAB"
+}

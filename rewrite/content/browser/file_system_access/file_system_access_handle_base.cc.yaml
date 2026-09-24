@@ -1,0 +1,49 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Restrict DoMove to the sandboxed (OPFS) file system.
+
+      Restores the effect of the removed kFileSystemAccessMoveLocalFiles flag:
+      Brave still disallows move() for local, non-sandboxed files.
+    preempt_function_impl:
+      function_name: FileSystemAccessHandleBase::DoMove
+      code: |-
+        if (url().type() != storage::FileSystemType::kFileSystemTypeTemporary) {
+          std::move(callback).Run(file_system_access_error::FromStatus(
+              blink::mojom::FileSystemAccessStatus::kNotSupportedError));
+          return;
+        }
+
+  - description: |
+      Restrict DoRename to the sandboxed (OPFS) file system.
+
+      Restores the effect of the removed kFileSystemAccessMoveLocalFiles flag:
+      Brave still disallows rename() for local, non-sandboxed files.
+    preempt_function_impl:
+      function_name: FileSystemAccessHandleBase::DoRename
+      code: |-
+        if (url().type() != storage::FileSystemType::kFileSystemTypeTemporary) {
+          std::move(callback).Run(file_system_access_error::FromStatus(
+              blink::mojom::FileSystemAccessStatus::kNotSupportedError));
+          return;
+        }
+
+  - description: |
+      Restrict cross-directory moves to the sandboxed (OPFS) file system.
+
+      DidResolveTokenToMove resolves the destination directory for a move
+      independently of DoMove, so it needs its own restriction to fully
+      restore the effect of the removed kFileSystemAccessMoveLocalFiles flag.
+    regex:
+      re_pattern: '(dir_handle->GetChildURL\(new_entry_name, &dest_url\);)'
+      replace: |-
+        \1
+          if (dest_url.type() != storage::FileSystemType::kFileSystemTypeTemporary) {
+            std::move(callback).Run(file_system_access_error::FromStatus(
+                blink::mojom::FileSystemAccessStatus::kNotSupportedError));
+            return;
+          }

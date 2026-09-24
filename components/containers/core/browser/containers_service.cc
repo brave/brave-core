@@ -1,0 +1,276 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/components/containers/core/browser/containers_service.h"
+
+#include <utility>
+#include <variant>
+#include <vector>
+
+#include "base/check.h"
+#include "base/check_deref.h"
+#include "base/containers/to_vector.h"
+#include "base/functional/bind.h"
+#include "base/logging.h"
+#include "base/types/to_address.h"
+#include "brave/components/containers/core/browser/containers_service_observer.h"
+#include "brave/components/containers/core/browser/pref_names.h"
+#include "brave/components/containers/core/browser/prefs.h"
+#include "brave/components/containers/core/browser/temporary_container.h"
+#include "brave/components/containers/core/browser/unknown_container.h"
+#include "brave/components/containers/core/mojom/containers.mojom.h"
+#include "components/prefs/pref_service.h"
+
+namespace containers {
+
+ContainersService::ContainersService(PrefService* prefs,
+                                     bool is_off_the_record,
+                                     std::unique_ptr<Delegate> delegate)
+    : prefs_(CHECK_DEREF(prefs)),
+      is_off_the_record_(is_off_the_record),
+      delegate_(std::move(delegate)) {
+  CHECK(delegate_);
+
+  pref_change_registrar_.Init(base::to_address(prefs_));
+  pref_change_registrar_.Add(
+      prefs::kContainersList,
+      base::BindRepeating(&ContainersService::OnSyncedContainersChanged,
+                          base::Unretained(this)));
+
+  ScheduleOrphanedContainersCleanup();
+}
+
+ContainersService::~ContainersService() = default;
+
+void ContainersService::Shutdown() {
+  weak_factory_.InvalidateWeakPtrs();
+  pref_change_registrar_.RemoveAll();
+  delegate_.reset();
+}
+
+void ContainersService::AddObserver(ContainersServiceObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void ContainersService::RemoveObserver(ContainersServiceObserver* observer) {
+  observers_.RemoveObserver(observer);
+}
+
+void ContainersService::MarkContainerUsed(std::string_view container_id) {
+  CHECK(!container_id.empty());
+
+  if (HasLocallyUsedContainerInPrefs(*prefs_, container_id)) {
+    return;
+  }
+
+  auto container = GetContainerFromPrefs(*prefs_, container_id);
+  if (!container) {
+    container = CreateUnknownContainer(container_id);
+  }
+
+  SetLocallyUsedContainerToPrefs(container, *prefs_);
+}
+
+mojom::ContainerPtr ContainersService::CreateAndPersistTemporaryContainer() {
+  auto container = CreateTemporaryContainer();
+  SetLocallyUsedContainerToPrefs(container, *prefs_);
+  return container;
+}
+
+mojom::ContainerPtr ContainersService::GetOrCreateTemporaryContainerByName(
+    std::string_view name) {
+  CHECK(!name.empty());
+
+  // Temporary containers are never synced, so only the locally used list is
+  // searched.
+  for (auto& container : GetLocallyUsedContainersFromPrefs(*prefs_)) {
+    if (container->name == name && IsTemporaryContainerId(container->id)) {
+      return std::move(container);
+    }
+  }
+
+  auto container = CreateTemporaryContainer(name);
+  SetLocallyUsedContainerToPrefs(container, *prefs_);
+  return container;
+}
+
+mojom::ContainerPtr ContainersService::GetRuntimeContainerById(
+    std::string_view id) const {
+  if (auto container = GetContainerFromPrefs(*prefs_, id)) {
+    return container;
+  }
+  if (auto container = GetLocallyUsedContainerFromPrefs(*prefs_, id)) {
+    return container;
+  }
+  return nullptr;
+}
+
+mojom::ContainerPtr ContainersService::GetRuntimeContainerByName(
+    std::string_view name) const {
+  for (auto& container : GetContainersFromPrefs(*prefs_)) {
+    if (container->name == name) {
+      return std::move(container);
+    }
+  }
+  for (auto& container : GetLocallyUsedContainersFromPrefs(*prefs_)) {
+    if (container->name == name) {
+      return std::move(container);
+    }
+  }
+  return nullptr;
+}
+
+std::vector<mojom::ContainerPtr> ContainersService::GetContainers() const {
+  return GetContainersFromPrefs(*prefs_);
+}
+
+std::vector<std::string> ContainersService::GetUsedContainerIds() const {
+  if (orphaned_cleanup_state_ ==
+      OrphanedContainersCleanupState::kDiscoveringOrphans) {
+    return {};
+  }
+
+  auto used_ids = base::ToVector(GetLocallyUsedContainersFromPrefs(*prefs_),
+                                 [](const auto& c) { return c->id; });
+  if (orphaned_cleanup_state_ ==
+      OrphanedContainersCleanupState::kRemovingOrphans) {
+    std::erase_if(used_ids, [&](const std::string& id) {
+      return orphaned_containers_pending_removal_.contains(id);
+    });
+  }
+  return used_ids;
+}
+
+bool ContainersService::ShouldShowContainerControls() const {
+  return prefs_->GetBoolean(prefs::kContainersEnabled);
+}
+
+void ContainersService::ScheduleOrphanedContainersCleanupForTesting() {
+  ScheduleOrphanedContainersCleanup();
+}
+
+void ContainersService::OnSyncedContainersChanged() {
+  RefreshLocallyUsedContainersFromSyncedList();
+  observers_.Notify(&ContainersServiceObserver::OnContainersListChanged);
+}
+
+void ContainersService::RefreshLocallyUsedContainersFromSyncedList() {
+  for (const auto& used_container :
+       GetLocallyUsedContainersFromPrefs(*prefs_)) {
+    if (auto container = GetContainerFromPrefs(*prefs_, used_container->id)) {
+      SetLocallyUsedContainerToPrefs(container, *prefs_);
+    } else {
+      // A container may be absent from the synced list if it was deleted. We
+      // don't remove the used-container snapshot in this case here. It will be
+      // removed with a separate cleanup logic later.
+    }
+  }
+}
+
+std::optional<std::string>
+ContainersService::GetContainerIdFromContainerSpecifier(
+    const ContainerSpecifier& container_specifier) const {
+  if (auto* container_id = std::get_if<ContainerId>(&container_specifier)) {
+    if (auto runtime_container =
+            GetRuntimeContainerById(container_id->value())) {
+      return runtime_container->id;
+    }
+    LOG(WARNING) << "Container with id " << container_id->value()
+                 << " not found";
+  } else if (auto* container_name =
+                 std::get_if<ContainerName>(&container_specifier)) {
+    if (auto runtime_container =
+            GetRuntimeContainerByName(container_name->value())) {
+      return runtime_container->id;
+    }
+    LOG(WARNING) << "Container with name " << container_name->value()
+                 << " not found";
+  }
+  return std::nullopt;
+}
+
+void ContainersService::ScheduleOrphanedContainersCleanup() {
+  if (is_off_the_record_) {
+    return;
+  }
+
+  if (orphaned_cleanup_state_ != OrphanedContainersCleanupState::kIdle) {
+    return;
+  }
+
+  bool should_cleanup = false;
+
+  // Check if any locally used container is not referenced by the synced
+  // containers list. If so, schedule the cleanup.
+  const auto& synced_containers = GetContainersFromPrefs(*prefs_);
+  for (const auto& locally_used_container :
+       GetLocallyUsedContainersFromPrefs(*prefs_)) {
+    const std::string& id = locally_used_container->id;
+    if (std::ranges::any_of(synced_containers,
+                            [&](const auto& c) { return c->id == id; })) {
+      continue;
+    }
+
+    should_cleanup = true;
+    break;
+  }
+
+  // If any locally used container is not referenced by the synced containers
+  // list, schedule the cleanup.
+  if (should_cleanup) {
+    orphaned_cleanup_state_ =
+        OrphanedContainersCleanupState::kDiscoveringOrphans;
+    delegate_->GetReferencedContainerIds(
+        base::BindOnce(&ContainersService::OnReferencedContainerIdsReady,
+                       weak_factory_.GetWeakPtr()));
+  }
+}
+
+void ContainersService::OnReferencedContainerIdsReady(
+    const base::flat_set<std::string>& referenced_container_ids) {
+  const auto& synced_containers = GetContainersFromPrefs(*prefs_);
+  for (const auto& locally_used_container :
+       GetLocallyUsedContainersFromPrefs(*prefs_)) {
+    const std::string& id = locally_used_container->id;
+    if (std::ranges::any_of(synced_containers,
+                            [&](const auto& c) { return c->id == id; }) ||
+        referenced_container_ids.contains(id)) {
+      continue;
+    }
+
+    orphaned_containers_pending_removal_.insert(id);
+    delegate_->DeleteContainerStorage(
+        id, base::BindOnce(&ContainersService::OnContainerStorageDeleted,
+                           weak_factory_.GetWeakPtr(), id));
+  }
+
+  if (orphaned_containers_pending_removal_.empty()) {
+    orphaned_cleanup_state_ = OrphanedContainersCleanupState::kIdle;
+  } else {
+    orphaned_cleanup_state_ = OrphanedContainersCleanupState::kRemovingOrphans;
+  }
+}
+
+void ContainersService::OnContainerStorageDeleted(const std::string& id,
+                                                  bool success) {
+  orphaned_containers_pending_removal_.erase(id);
+  if (orphaned_containers_pending_removal_.empty()) {
+    orphaned_cleanup_state_ = OrphanedContainersCleanupState::kIdle;
+  }
+
+  if (!success) {
+    LOG(WARNING) << "Failed to delete container storage for " << id
+                 << " will retry on next launch";
+    return;
+  }
+
+  // If the container did not reappear in the synced containers list, remove the
+  // used-container snapshot from the prefs to forget about it forever.
+  if (!GetContainerFromPrefs(*prefs_, id)) {
+    RemoveLocallyUsedContainerFromPrefs(id, *prefs_);
+  }
+}
+
+}  // namespace containers

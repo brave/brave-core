@@ -1,0 +1,28 @@
+{
+    "allowlist": [
+        {
+            "<all_urls>": [
+                "https://use.typekit.net/*",
+                "https://api.geetest.com/*",
+                "https://cloud.typography.com/*"
+            ]
+        },
+        {
+            "https://www.facebook.com/": [
+                "https://*.fbcdn.net/*"
+            ]
+        },
+        {
+            "https://accounts.google.com/": [
+                "https://content.googleapis.com/*"
+            ]
+        },
+        {
+            "https://www.reddit.com/*": [
+                "https://www.redditmedia.com/*",
+                "https://cdn.embedly.com/*",
+                "https://imgur.com/*"
+            ]
+        }
+    ]
+}

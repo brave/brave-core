@@ -1,0 +1,6 @@
+TOML parse error at line 1, column 10
+  |
+1 | a = """\UFFFFFFFF"""
+  |          ^
+invalid unicode 8-digit hex code
+value is out of range

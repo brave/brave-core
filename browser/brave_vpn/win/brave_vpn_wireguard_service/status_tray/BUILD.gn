@@ -1,0 +1,52 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/toolchain/gcc_toolchain.gni")
+
+source_set("status_tray") {
+  sources = [
+    "brave_vpn_tray_command_ids.h",
+    "status_tray_runner.cc",
+    "status_tray_runner.h",
+  ]
+  public_deps = [ "status_icon" ]
+  deps = [
+    "ras",
+    "resources",
+    "status_icon:utils",
+    "wireguard",
+    "//base",
+    "//brave/browser/brave_vpn/win:wireguard_utils",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/brave_vpn/common/win",
+    "//brave/components/brave_vpn/common/win/ras",
+    "//brave/components/resources:strings_grit",
+    "//chrome/common:channel_info",
+    "//components/version_info:channel",
+    "//ui/base",
+    "//ui/menus",
+    "//ui/native_theme",
+  ]
+  if (!enable_resource_allowlist_generation) {
+    deps += [ "//chrome:packed_resources" ]
+  }
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "status_tray_runner_unittest.cc" ]
+  deps = [
+    ":status_tray",
+    "//base/test:test_support",
+    "//brave/browser/brave_vpn/win:wireguard_utils",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//testing/gtest",
+    "//ui/menus",
+    "//ui/native_theme",
+  ]
+}

@@ -1,0 +1,756 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>News Archives</title><meta charset="UTF-8"/><body id="article"><h1 class="title metadata">News Archives</h1><div class=""><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+	<p><a class="skip-link screen-reader-text" href="#main">Skip to content</a></p>
+
+	
+	
+	
+	<div class="site-content" id="content">
+
+	<section class="content-area" id="primary">
+
+		
+
+		
+		<main class="site-main" id="main">
+
+		
+<article class="post-10964612 post type-post status-publish format-standard has-post-thumbnail hentry category-music category-news category-news-politics category-the-sale-of-douglass-park tag-alderman-cardenas tag-alderperson-cardenas tag-campaign-contributions tag-cardenas tag-chicago-park-district tag-douglass-park tag-riot-fest tag-scott-fischer tag-the-sale-of-douglass-park entry" id="post-10964612">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/the-sale-of-douglass-park/riot-fest-meeting-leaves-residents-worried-about-the-fate-of-their-park/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/08/Fischer.DouglassPark.KGarcia-scaled.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/08/Fischer.DouglassPark.KGarcia-scaled.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/08/Fischer.DouglassPark.KGarcia-scaled.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/08/Fischer.DouglassPark.KGarcia-scaled.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/08/Fischer.DouglassPark.KGarcia-scaled.jpg?resize=200%2C150&amp;ssl=1 200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/08/Fischer.DouglassPark.KGarcia-scaled.jpg?zoom=2&amp;resize=1200%2C900&amp;ssl=1 2400w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/08/Fischer.DouglassPark.KGarcia-scaled.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/08/Fischer.DouglassPark.KGarcia-scaled.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/08/Fischer.DouglassPark.KGarcia-scaled.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/08/Fischer.DouglassPark.KGarcia-scaled.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/08/Fischer.DouglassPark.KGarcia-scaled.jpg?resize=200%2C150&amp;ssl=1 200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/08/Fischer.DouglassPark.KGarcia-scaled.jpg?zoom=2&amp;resize=1200%2C900&amp;ssl=1 2400w"></amp-img>				</a>
+			</figure>
+
+			
+	
+</article>
+
+<article class="post-10963978 post type-post status-publish format-standard has-post-thumbnail hentry category-news category-news-politics tag-aclu tag-american-civil-liberties-union tag-awake-illinois tag-ctu tag-far-right tag-homophobia tag-lgbtq tag-paul-vallas tag-proud-boys tag-school-choice tag-transphobia tag-vol-51-no-22 tag-windy-city-times entry" id="post-10963978">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/paul-vallas-rubs-shoulders-with-the-far-right/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/Screen-Shot-2022-07-29-at-8.47.22-AM.png?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/Screen-Shot-2022-07-29-at-8.47.22-AM.png?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/Screen-Shot-2022-07-29-at-8.47.22-AM.png?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/Screen-Shot-2022-07-29-at-8.47.22-AM.png?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/Screen-Shot-2022-07-29-at-8.47.22-AM.png?resize=200%2C150&amp;ssl=1 200w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/Screen-Shot-2022-07-29-at-8.47.22-AM.png?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/Screen-Shot-2022-07-29-at-8.47.22-AM.png?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/Screen-Shot-2022-07-29-at-8.47.22-AM.png?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/Screen-Shot-2022-07-29-at-8.47.22-AM.png?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/Screen-Shot-2022-07-29-at-8.47.22-AM.png?resize=200%2C150&amp;ssl=1 200w"></amp-img>				</a>
+			</figure>
+
+			
+	<div class="entry-container">
+		<p><span class="cat-links"><span class="screen-reader-text">Posted in</span><a href="https://chicagoreader.com/news-politics/" rel="category tag">News &amp; Politics</a></span></p>
+
+									
+					
+		<p>The mayoral candidate spoke at a fundraiser for a group that has promoted transphobic rhetoric. </p>
+	</div>
+</article>
+
+<article class="post-10963783 post type-post status-publish format-standard has-post-thumbnail hentry category-news category-news-politics tag-43-green tag-43rd-street tag-bronzeville tag-development tag-great-migration tag-housing tag-invest-south-west tag-phillip-beckham tag-richard-m-daley tag-robert-taylor-homes tag-the-forum tag-third-ward tag-transit-oriented-development tag-vol-51-no-22 entry" id="post-10963783">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/can-a-new-housing-development-revitalize-bronzeville-without-displacing-residents/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/43-Green.jpeg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/43-Green.jpeg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/43-Green.jpeg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/43-Green.jpeg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/43-Green.jpeg?resize=200%2C150&amp;ssl=1 200w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/43-Green.jpeg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/43-Green.jpeg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/43-Green.jpeg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/43-Green.jpeg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/43-Green.jpeg?resize=200%2C150&amp;ssl=1 200w"></amp-img>				</a>
+			</figure>
+
+			
+	
+</article>
+
+<article class="post-10963653 post type-post status-publish format-standard has-post-thumbnail hentry category-news category-news-politics tag-chicago-police tag-chicago-police-department tag-cook-county-jail tag-cook-county-public-defender tag-cops tag-cpd tag-lucy-parsons-labs tag-macarthur-justice-center tag-police tag-shotspotter tag-surveillance entry" id="post-10963653">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/shotspotter-held-in-contempt-of-court/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/05/ShotSpot1_print-1-e1658843972406.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/05/ShotSpot1_print-1-e1658843972406.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/05/ShotSpot1_print-1-e1658843972406.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/05/ShotSpot1_print-1-e1658843972406.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/05/ShotSpot1_print-1-e1658843972406.jpg?resize=200%2C150&amp;ssl=1 200w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/05/ShotSpot1_print-1-e1658843972406.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/05/ShotSpot1_print-1-e1658843972406.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/05/ShotSpot1_print-1-e1658843972406.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/05/ShotSpot1_print-1-e1658843972406.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/05/ShotSpot1_print-1-e1658843972406.jpg?resize=200%2C150&amp;ssl=1 200w"></amp-img>				</a>
+			</figure>
+
+			
+	
+</article>
+
+<article class="post-10963628 post type-post status-publish format-standard has-post-thumbnail hentry category-news category-news-politics tag-alison-arwady tag-cdph tag-chicago-department-of-public-health tag-jyennos tag-lgbtq tag-lgbtq-2 tag-monkeypox tag-msm tag-uchicago-medicine tag-vaccines entry" id="post-10963628">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/chicago-prioritizing-first-doses-for-monkeypox-vaccine/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="600" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?resize=1200%2C600&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?w=1200&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?resize=300%2C150&amp;ssl=1 300w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?resize=1024%2C512&amp;ssl=1 1024w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?resize=768%2C384&amp;ssl=1 768w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?resize=400%2C200&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?resize=706%2C353&amp;ssl=1 706w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?resize=1200%2C600&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?w=1200&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?resize=300%2C150&amp;ssl=1 300w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?resize=1024%2C512&amp;ssl=1 1024w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?resize=768%2C384&amp;ssl=1 768w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?resize=400%2C200&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/monkeypox.jpg?resize=706%2C353&amp;ssl=1 706w"></amp-img>				</a>
+			</figure>
+
+			
+	<div class="entry-container">
+		<p><span class="cat-links"><span class="screen-reader-text">Posted in</span><a href="https://chicagoreader.com/news-politics/" rel="category tag">News &amp; Politics</a></span></p>
+
+									
+					
+		<p>The Department of Public Health is adapting its monkeypox vaccination strategy to deal with limited vaccine ability. </p>
+	</div>
+</article>
+
+<article class="post-10961936 post type-post status-publish format-standard has-post-thumbnail hentry category-news category-news-politics tag-austin tag-chicago-city-council tag-chicago-cred tag-communities-united tag-curfew tag-greater-grand-crossing tag-gun-violence tag-lori-lightfoot tag-mayor-lightfoot tag-millennium-park tag-public-safety tag-south-shore tag-vol-51-no-20 entry" id="post-10961936">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/young-people-dream-up-a-safer-summer-in-chicago/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/DeannaRobinson1_CREDIT_OliviaObineme_print-e1657197493141.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/DeannaRobinson1_CREDIT_OliviaObineme_print-e1657197493141.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/DeannaRobinson1_CREDIT_OliviaObineme_print-e1657197493141.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/DeannaRobinson1_CREDIT_OliviaObineme_print-e1657197493141.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/DeannaRobinson1_CREDIT_OliviaObineme_print-e1657197493141.jpg?resize=200%2C150&amp;ssl=1 200w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/DeannaRobinson1_CREDIT_OliviaObineme_print-e1657197493141.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/DeannaRobinson1_CREDIT_OliviaObineme_print-e1657197493141.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/DeannaRobinson1_CREDIT_OliviaObineme_print-e1657197493141.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/DeannaRobinson1_CREDIT_OliviaObineme_print-e1657197493141.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/DeannaRobinson1_CREDIT_OliviaObineme_print-e1657197493141.jpg?resize=200%2C150&amp;ssl=1 200w"></amp-img>				</a>
+			</figure>
+
+			
+	<div class="entry-container">
+		<p><span class="cat-links"><span class="screen-reader-text">Posted in</span><a href="https://chicagoreader.com/news-politics/" rel="category tag">News &amp; Politics</a></span></p>
+
+									
+					
+		<p>After Mayor Lori Lightfoot expanded the citywide curfew in response to a shooting, teenagers spoke about Chicago’s gun violence crisis and their relationship to the city.</p>
+	</div>
+</article>
+
+<article class="post-10962154 post type-post status-publish format-standard has-post-thumbnail hentry category-news category-news-politics tag-cdph tag-chicago-department-of-public-health tag-chicago-police-department tag-covid-19 tag-cpd tag-equality-illinois tag-harold-washington tag-kelly-cassidy tag-laquan-mcdonald tag-lgbtq tag-lgbtq-issues tag-lightfoot tag-lori-lightfoot tag-maria-hadden tag-mayor tag-mayor-lori-lightfoot tag-montrose-beach tag-national-coming-out-day tag-public-safety tag-rahm-emanuel tag-richard-j-daley tag-schools tag-scotus tag-sidetrack tag-tatiana-labelle tag-transgender-women tag-vol-51-no-20 entry" id="post-10962154">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/mixed-reviews/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/LoriLightfoot2022_PrideParade_KatFitzgerald-scaled.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/LoriLightfoot2022_PrideParade_KatFitzgerald-scaled.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/LoriLightfoot2022_PrideParade_KatFitzgerald-scaled.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/LoriLightfoot2022_PrideParade_KatFitzgerald-scaled.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/LoriLightfoot2022_PrideParade_KatFitzgerald-scaled.jpg?resize=200%2C150&amp;ssl=1 200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/LoriLightfoot2022_PrideParade_KatFitzgerald-scaled.jpg?zoom=2&amp;resize=1200%2C900&amp;ssl=1 2400w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/LoriLightfoot2022_PrideParade_KatFitzgerald-scaled.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/LoriLightfoot2022_PrideParade_KatFitzgerald-scaled.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/LoriLightfoot2022_PrideParade_KatFitzgerald-scaled.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/LoriLightfoot2022_PrideParade_KatFitzgerald-scaled.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/LoriLightfoot2022_PrideParade_KatFitzgerald-scaled.jpg?resize=200%2C150&amp;ssl=1 200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/07/LoriLightfoot2022_PrideParade_KatFitzgerald-scaled.jpg?zoom=2&amp;resize=1200%2C900&amp;ssl=1 2400w"></amp-img>				</a>
+			</figure>
+
+			
+	<div class="entry-container">
+		<p><span class="cat-links"><span class="screen-reader-text">Posted in</span><a href="https://chicagoreader.com/news-politics/" rel="category tag">News &amp; Politics</a></span></p>
+
+									
+					
+		<p>LGBTQ+ Chicagoans discuss Mayor Lori Lightfoot’s record.</p>
+	</div>
+</article>
+
+<article class="post-10961342 post type-post status-publish format-standard has-post-thumbnail hentry category-2022-primary-elections category-news category-news-politics tag-2022-primary-election tag-assessor tag-berrios tag-chicago-property-taxes tag-cook-county-assessor tag-cook-county-assessors-office tag-corruption tag-fritz-kaegi tag-joe-berrios tag-property-tax tag-property-tax-assessments tag-taxes entry" id="post-10961342">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/2022-primary-elections/assessing-the-assessor/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Fritz-Kaegi-Headshot-scaled.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Fritz-Kaegi-Headshot-scaled.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Fritz-Kaegi-Headshot-scaled.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Fritz-Kaegi-Headshot-scaled.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Fritz-Kaegi-Headshot-scaled.jpg?resize=200%2C150&amp;ssl=1 200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Fritz-Kaegi-Headshot-scaled.jpg?zoom=2&amp;resize=1200%2C900&amp;ssl=1 2400w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Fritz-Kaegi-Headshot-scaled.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Fritz-Kaegi-Headshot-scaled.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Fritz-Kaegi-Headshot-scaled.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Fritz-Kaegi-Headshot-scaled.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Fritz-Kaegi-Headshot-scaled.jpg?resize=200%2C150&amp;ssl=1 200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Fritz-Kaegi-Headshot-scaled.jpg?zoom=2&amp;resize=1200%2C900&amp;ssl=1 2400w"></amp-img>				</a>
+			</figure>
+
+			
+	<div class="entry-container">
+		<p><span class="cat-links"><span class="screen-reader-text">Posted in</span><a href="https://chicagoreader.com/news-politics/2022-primary-elections/" rel="category tag">2022 Primary Elections</a></span></p>
+
+									
+					
+		<p>Fritz Kaegi discusses his role in reforming an office known for patronage and favoritism.</p>
+	</div>
+</article>
+
+<article class="post-10961335 post type-post status-publish format-standard has-post-thumbnail hentry category-2022-primary-elections category-news category-news-politics tag-biden tag-biden-harris tag-criminal-justice tag-danny-davis tag-danny-k-davis tag-gun-violence tag-gun-violence-prevention tag-health-care tag-kamala-harris tag-kina-collins tag-medicare-for-all tag-one-aim-illinois tag-seventh-congressional-district entry" id="post-10961335">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/2022-primary-elections/second-times-the-charm/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Kina-Collins-Headshot-2-scaled.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Kina-Collins-Headshot-2-scaled.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Kina-Collins-Headshot-2-scaled.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Kina-Collins-Headshot-2-scaled.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Kina-Collins-Headshot-2-scaled.jpg?resize=200%2C150&amp;ssl=1 200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Kina-Collins-Headshot-2-scaled.jpg?zoom=2&amp;resize=1200%2C900&amp;ssl=1 2400w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Kina-Collins-Headshot-2-scaled.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Kina-Collins-Headshot-2-scaled.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Kina-Collins-Headshot-2-scaled.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Kina-Collins-Headshot-2-scaled.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Kina-Collins-Headshot-2-scaled.jpg?resize=200%2C150&amp;ssl=1 200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Kina-Collins-Headshot-2-scaled.jpg?zoom=2&amp;resize=1200%2C900&amp;ssl=1 2400w"></amp-img>				</a>
+			</figure>
+
+			
+	
+</article>
+
+<article class="post-10961327 post type-post status-publish format-standard has-post-thumbnail hentry category-2022-primary-elections category-news category-news-politics tag-elections tag-lgbtq tag-mwrd tag-precious-brady-davis tag-trans-women tag-transgender tag-transgender-issues entry" id="post-10961327">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/2022-primary-elections/testing-the-waters-2/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/PBD-in-Pink-Headshot-HighRes-scaled.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/PBD-in-Pink-Headshot-HighRes-scaled.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/PBD-in-Pink-Headshot-HighRes-scaled.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/PBD-in-Pink-Headshot-HighRes-scaled.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/PBD-in-Pink-Headshot-HighRes-scaled.jpg?resize=200%2C150&amp;ssl=1 200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/PBD-in-Pink-Headshot-HighRes-scaled.jpg?zoom=2&amp;resize=1200%2C900&amp;ssl=1 2400w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/PBD-in-Pink-Headshot-HighRes-scaled.jpg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/PBD-in-Pink-Headshot-HighRes-scaled.jpg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/PBD-in-Pink-Headshot-HighRes-scaled.jpg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/PBD-in-Pink-Headshot-HighRes-scaled.jpg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/PBD-in-Pink-Headshot-HighRes-scaled.jpg?resize=200%2C150&amp;ssl=1 200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/PBD-in-Pink-Headshot-HighRes-scaled.jpg?zoom=2&amp;resize=1200%2C900&amp;ssl=1 2400w"></amp-img>				</a>
+			</figure>
+
+			
+	<div class="entry-container">
+		<p><span class="cat-links"><span class="screen-reader-text">Posted in</span><a href="https://chicagoreader.com/news-politics/2022-primary-elections/" rel="category tag">2022 Primary Elections</a></span></p>
+
+									
+					
+		<p>Precious Brady-Davis hopes to make history as the first Black, openly transgender woman elected in Chicago.</p>
+	</div>
+</article>
+
+<article class="post-10961294 post type-post status-publish format-standard has-post-thumbnail hentry category-2022-primary-elections category-news category-news-politics tag-bernie-sanders tag-eighth-congressional-district tag-hindu tag-hindu-nationalism tag-hindus tag-india tag-islam tag-muslim tag-muslims tag-raja-krishnamoorthi tag-religion tag-religious-intolerance tag-religious-persecution tag-rss tag-schaumburg entry" id="post-10961294">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/2022-primary-elections/stark-differences/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Screen-Shot-2022-06-22-at-5.12.12-PM.png?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Screen-Shot-2022-06-22-at-5.12.12-PM.png?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Screen-Shot-2022-06-22-at-5.12.12-PM.png?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Screen-Shot-2022-06-22-at-5.12.12-PM.png?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Screen-Shot-2022-06-22-at-5.12.12-PM.png?resize=200%2C150&amp;ssl=1 200w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Screen-Shot-2022-06-22-at-5.12.12-PM.png?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Screen-Shot-2022-06-22-at-5.12.12-PM.png?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Screen-Shot-2022-06-22-at-5.12.12-PM.png?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Screen-Shot-2022-06-22-at-5.12.12-PM.png?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Screen-Shot-2022-06-22-at-5.12.12-PM.png?resize=200%2C150&amp;ssl=1 200w"></amp-img>				</a>
+			</figure>
+
+			
+	<div class="entry-container">
+		<p><span class="cat-links"><span class="screen-reader-text">Posted in</span><a href="https://chicagoreader.com/news-politics/2022-primary-elections/" rel="category tag">2022 Primary Elections</a></span></p>
+
+									
+					
+		<p>Indian American Muslim challenger Junaid Ahmed is running to unseat Raja Krishnamoorthi, who has ties to Hindu nationalist groups.</p>
+	</div>
+</article>
+
+<article class="post-10961279 post type-post status-publish format-standard has-post-thumbnail hentry category-2022-primary-elections category-news category-news-politics tag-2022-primary-elections tag-black-panther-movement tag-black-panther-party tag-bobby-rush tag-first-congressional-district tag-first-district tag-jesse-jackson tag-jonathan-jackson tag-operation-push tag-primary tag-primary-election tag-primary-elections entry" id="post-10961279">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/a-rush-to-be-first/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="792" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2021/08/ax009_2708_9.jpg?resize=1024%2C792&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2021/08/ax009_2708_9.jpg?w=1024&amp;ssl=1 1024w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2021/08/ax009_2708_9.jpg?resize=300%2C232&amp;ssl=1 300w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2021/08/ax009_2708_9.jpg?resize=768%2C594&amp;ssl=1 768w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2021/08/ax009_2708_9.jpg?resize=400%2C309&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2021/08/ax009_2708_9.jpg?resize=706%2C546&amp;ssl=1 706w" width="1024"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2021/08/ax009_2708_9.jpg?resize=1024%2C792&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2021/08/ax009_2708_9.jpg?w=1024&amp;ssl=1 1024w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2021/08/ax009_2708_9.jpg?resize=300%2C232&amp;ssl=1 300w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2021/08/ax009_2708_9.jpg?resize=768%2C594&amp;ssl=1 768w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2021/08/ax009_2708_9.jpg?resize=400%2C309&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2021/08/ax009_2708_9.jpg?resize=706%2C546&amp;ssl=1 706w"></amp-img>				</a>
+			</figure>
+
+			
+	<div class="entry-container">
+		<p><span class="cat-links"><span class="screen-reader-text">Posted in</span><a href="https://chicagoreader.com/news-politics/2022-primary-elections/" rel="category tag">2022 Primary Elections</a><span class="sep">, </span><a href="https://chicagoreader.com/news-politics/news/" rel="category tag">News</a><span class="sep">, </span><a href="https://chicagoreader.com/news-politics/" rel="category tag">News &amp; Politics</a></span></p>
+
+									
+					
+		<p>A whopping 17 Democrats and four Republicans are vying to replace Bobby Rush, who is retiring.</p>
+	</div>
+</article>
+
+<article class="post-10960104 post type-post status-publish format-standard has-post-thumbnail hentry category-news category-news-politics tag-ankle-bracelet tag-cash-bail tag-chicago-appleseed-fund-for-justice tag-cook-county-sheriff tag-cook-county-states-attorneys-office-4 tag-criminal-justice-system tag-electronic-monitor tag-electronic-monitoring tag-governor-j-b-pritzker tag-house-arrest tag-incarceration tag-j-b-pritzker tag-lori-lightfoot tag-money-bond tag-pretrial-fairness-act tag-prison-industrial-complex-2 tag-safe-t-act tag-sharone-mitchell tag-sheriff tag-wttw entry" id="post-10960104">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/news/false-alarms/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Carnilius_Triibe_ElectronicMonitoring_Header.png?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Carnilius_Triibe_ElectronicMonitoring_Header.png?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Carnilius_Triibe_ElectronicMonitoring_Header.png?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Carnilius_Triibe_ElectronicMonitoring_Header.png?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Carnilius_Triibe_ElectronicMonitoring_Header.png?resize=200%2C150&amp;ssl=1 200w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Carnilius_Triibe_ElectronicMonitoring_Header.png?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Carnilius_Triibe_ElectronicMonitoring_Header.png?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Carnilius_Triibe_ElectronicMonitoring_Header.png?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Carnilius_Triibe_ElectronicMonitoring_Header.png?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Carnilius_Triibe_ElectronicMonitoring_Header.png?resize=200%2C150&amp;ssl=1 200w"></amp-img>				</a>
+			</figure>
+
+			
+	<div class="entry-container">
+		<p><span class="cat-links"><span class="screen-reader-text">Posted in</span><a href="https://chicagoreader.com/news-politics/news/" rel="category tag">News</a></span></p>
+
+									
+					
+		<p>Ankle-monitor alerts garner phone calls and visits from sheriffs officers—­but more than 80 percent are bogus, according to a University of Chicago analysis.</p>
+	</div>
+</article>
+
+<article class="post-10960313 post type-post status-publish format-standard has-post-thumbnail hentry category-news category-news-politics tag-ankle-bracelet tag-ankle-monitor tag-ccso tag-cook-county-sheriff tag-cook-county-sheriffs-office tag-electronic-monitoring tag-gps tag-house-arrest tag-jeremey-johnson tag-jeremy-mohawk-johnson tag-mohawk-johnson tag-pretrial tag-pretrial-detention tag-pretrial-fairness-act tag-ptsd tag-sheriff tag-states-attorney tag-tom-dart tag-trauma entry" id="post-10960313">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/news/22-months/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Mohawk2-scaled.jpeg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Mohawk2-scaled.jpeg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Mohawk2-scaled.jpeg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Mohawk2-scaled.jpeg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Mohawk2-scaled.jpeg?resize=200%2C150&amp;ssl=1 200w" width="1200"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Mohawk2-scaled.jpeg?resize=1200%2C900&amp;ssl=1" srcset="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Mohawk2-scaled.jpeg?resize=1200%2C900&amp;ssl=1 1200w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Mohawk2-scaled.jpeg?resize=800%2C600&amp;ssl=1 800w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Mohawk2-scaled.jpeg?resize=400%2C300&amp;ssl=1 400w, https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/06/Mohawk2-scaled.jpeg?resize=200%2C150&amp;ssl=1 200w"></amp-img>				</a>
+			</figure>
+
+			
+	<div class="entry-container">
+		<p><span class="cat-links"><span class="screen-reader-text">Posted in</span><a href="https://chicagoreader.com/news-politics/news/" rel="category tag">News</a></span></p>
+
+									
+					
+		<p>Jeremey Johnson has chronicled nearly two years of pretrial house arrest.</p>
+	</div>
+</article>
+
+<article class="post-10959710 post type-post status-publish format-standard has-post-thumbnail hentry category-2022-primary-elections category-news category-news-politics tag-asamblea-general-de-illinois tag-board-of-review tag-condado-de-cook tag-contenido-en-espanol tag-cook-county-uncovered tag-donaciones-politicas tag-ed-burke tag-el-condado-de-cook-al-descubierto tag-elecciones-generales tag-elecciones-primarias tag-george-cardenas tag-george-cardenas-2 tag-junta-de-revision tag-la-villita tag-michael-madigan tag-pilsen-alliance tag-secretario-del-condado-de-cook tag-unete-la-villita entry" id="post-10959710">
+	
+			<figure class="post-thumbnail">
+				<a aria-hidden="true" class="post-thumbnail-inner" href="https://chicagoreader.com/news-politics/news/el-condado-de-cook-al-descubierto-la-junta-de-revision/" tabindex="-1">
+					<amp-img alt="" class="attachment-newspack-archive-image-large size-newspack-archive-image-large wp-post-image amp-wp-enforced-sizes i-amphtml-layout-intrinsic i-amphtml-layout-size-defined" data-hero="" data-hero-candidate="" disable-inline-width="" height="900" i-amphtml-layout="intrinsic" i-amphtml-ssr="" layout="intrinsic" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/05/BoardOfReview_1_print.jpg?resize=775%2C900&amp;ssl=1" width="775"><i-amphtml-sizer class="i-amphtml-sizer" slot="i-amphtml-svc"></i-amphtml-sizer><img alt="" class="i-amphtml-fill-content i-amphtml-replaced-content" decoding="async" loading="lazy" sizes="(max-width: 34.9rem) calc(100vw - 2rem), (max-width: 53rem) calc(8 * (100vw / 12)), (min-width: 53rem) calc(6 * (100vw / 12)), 100vw" src="https://i0.wp.com/chicagoreader.com/wp-content/uploads/2022/05/BoardOfReview_1_print.jpg?resize=775%2C900&amp;ssl=1"></amp-img>				</a>
+			</figure>
+
+			
+	<div class="entry-container">
+		<p><span class="cat-links"><span class="screen-reader-text">Posted in</span><a href="https://chicagoreader.com/news-politics/news/" rel="category tag">News</a></span></p>
+
+									
+					
+		<p>Una mirada dentro de la junta de apelaciones de impuestos sobre la propiedad del condado de Cook</p>
+	</div>
+</article>
+
+			</main>
+		
+
+	</section>
+
+
+	
+			
+				
+		
+	</div>
+
+	
+
+</body>

@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Display the brave:// scheme instead of chrome:// for internal tab URLs
+      in the Tab Search dialog.
+
+      Upstream prepends a hardcoded 'chrome://' text node to the secondary
+      text of chrome-internal tabs. Brave shows such URLs with the brave://
+      scheme everywhere else (location bar, hover cards, etc.) via
+      brave_utils::ReplaceChromeToBraveScheme, but that C++ display formatting
+      never runs for this WebUI dialog. Swap the displayed prefix to match.
+      Only the display string changes; the `protocol === 'chrome:'` guard is
+      left untouched because the tab's underlying URL keeps the real chrome://
+      scheme used for navigation.
+    regex:
+      re_pattern: "(document\\.createTextNode\\(')chrome://('\\))"
+      replace: '\1brave://\2'

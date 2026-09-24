@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Rename PageActionControllerImpl to PageActionControllerImpl_ChromiumImpl.
+
+      This lets Brave shadow the concrete controller with its own
+      `page_actions::PageActionControllerImpl` that reuses the name and derives
+      from the renamed upstream class. The abstract PageActionController base
+      and other free declarations keep their names.
+    rename_class:
+      class_name: PageActionControllerImpl
+      rename: PageActionControllerImpl_ChromiumImpl
+
+  - description: |
+      Make CreateModel virtual
+
+      This allows the brave PageActionControllerImpl override to replace model
+      construction with the brave PageActionModel.
+    make_virtual:
+      class_name: PageActionControllerImpl_ChromiumImpl
+      method_name: CreateModel
+
+  - description: |
+      Friend the brave page_actions::PageActionControllerImpl
+
+      This is done so it can reach the private members it relies on
+      (FindPageActionModel, page_action_model_factory_).
+    add_friend:
+      class_name: PageActionControllerImpl_ChromiumImpl
+      friend_type: class ::page_actions::PageActionControllerImpl

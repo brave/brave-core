@@ -1,0 +1,49 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "present"
+    ],
+    "name": "found version"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[WORKSPACE]/out"
+    ],
+    "name": "out ready"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[HOME]"
+    ],
+    "name": "home"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[HOME]"
+    ],
+    "name": "home again"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[HOME]/cache"
+    ],
+    "name": "cache"
+  },
+  {
+    "cmd": [
+      "echo",
+      "[WORKSPACE]/rc/tmp_tmp_1",
+      "[WORKSPACE]/rc/tmp_tmp_2",
+      "[WORKSPACE]/rc/unpacked_tmp_1"
+    ],
+    "name": "temp dirs"
+  },
+  {
+    "name": "$result"
+  }
+]

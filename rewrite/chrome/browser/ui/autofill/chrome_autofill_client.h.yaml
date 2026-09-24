@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let GetAutofillOptimizationGuideDecider be overridden.
+    regex:
+      re_pattern: 'GetAutofillOptimizationGuideDecider\(\)\s*const final;'
+      replace: 'GetAutofillOptimizationGuideDecider() const override;'
+
+  - description: |-
+      Let BraveChromeAutofillClient override IsAutofillEnabled.
+    regex:
+      pattern: 'bool IsAutofillEnabled() const final;'
+      replace: 'bool IsAutofillEnabled() const override;'
+
+  - description: |-
+      Let BraveChromeAutofillClient override IsAutocompleteEnabled.
+    regex:
+      pattern: 'bool IsAutocompleteEnabled() const final;'
+      replace: 'bool IsAutocompleteEnabled() const override;'

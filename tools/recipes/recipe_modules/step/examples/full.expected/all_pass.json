@@ -1,0 +1,25 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "hello"
+    ],
+    "name": "first"
+  },
+  {
+    "cmd": [
+      "do-thing"
+    ],
+    "name": "might fail"
+  },
+  {
+    "cmd": [
+      "echo",
+      "done"
+    ],
+    "name": "after"
+  },
+  {
+    "name": "$result"
+  }
+]

@@ -1,0 +1,4 @@
+Name: Brave VPN WireGuard Service
+URL: https://github.com/brave/brave-core/tree/master/components/brave_vpn/browser/connection/wireguard/win/brave_vpn_wireguard_service
+License: MPL-2.0
+License File: /brave/common/licenses/MPL-2.0

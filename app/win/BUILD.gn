@@ -1,0 +1,54 @@
+# Copyright (c) 2018 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/config/win/visual_studio_version.gni")
+import("//build/util/branding.gni")
+import("//media/cdm/library_cdm/cdm_paths.gni")
+
+if (should_generate_symbols) {
+  action("generate_symbols") {
+    symbols_dir = "$brave_dist_dir/$brave_product_name.syms"
+    outputs = [ symbols_dir ]
+
+    args = [
+      "--installer-config",
+      rebase_path("//chrome/installer/mini_installer/chrome.release"),
+      "--symbols-dir",
+      rebase_path(symbols_dir),
+      "--build-dir",
+      rebase_path(root_out_dir),
+      "--toolchain-dir",
+      rebase_path(visual_studio_path),
+      "--run-source-index",
+      "--clear",
+    ]
+
+    # chrome.release doesn't contain some additional files we need.
+    args += [
+      "--additional-files",
+      "setup.exe",
+    ]
+
+    script = "//brave/tools/win/generate_symbols.py"
+
+    deps = [ "//brave/build/win:create_signed_installer" ]
+  }
+} else {
+  group("generate_symbols") {
+  }
+}
+
+group("symbol_dist_resources") {
+  public_deps = [ ":generate_symbols" ]
+}
+
+copy("dist_resources") {
+  sources = [ "$root_out_dir/chrome_elf.dll" ]
+
+  outputs = [ "$brave_dist_dir/{{source_file_part}}" ]
+
+  public_deps = [ "//chrome/chrome_elf" ]
+}

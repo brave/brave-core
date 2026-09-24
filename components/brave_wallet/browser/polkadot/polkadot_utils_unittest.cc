@@ -1,0 +1,506 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_utils.h"
+
+#include "base/json/json_writer.h"
+#include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "testing/gtest/include/gtest/gtest.h"
+
+namespace brave_wallet {
+
+namespace {
+
+constexpr const char kDevPhrase[] =
+    "bottom drive obey lake curtain smoke basket hold race lonely fit walk";
+
+bool IsAddressAllowed(const std::string&) {
+  return true;
+}
+
+PolkadotKeyring MakePolkadotKeyring(mojom::KeyringId keyring) {
+  auto seed = bip39::MnemonicToEntropyToSeed(kDevPhrase).value();
+  return PolkadotKeyring(base::span(seed).first<kPolkadotSeedSize>(), keyring,
+                         base::BindRepeating(IsAddressAllowed));
+}
+
+}  // namespace
+
+TEST(PolkadotUtils, DestinationAddressParsing) {
+  // Account at:
+  // https://assethub-westend.subscan.io/account/5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
+  // https://polkadot.subscan.io/account/14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty", 42);
+    ASSERT_TRUE(parsed.has_value());
+    EXPECT_EQ(parsed->ToString(),
+              "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty");
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3", 0);
+    ASSERT_TRUE(parsed.has_value());
+    EXPECT_EQ(parsed->ToString(),
+              "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3");
+  }
+
+  // Raw hex public keys are rejected even though they encode a valid
+  // destination.
+  {
+    auto parsed = ParsePolkadotAccount(
+        R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)",
+        0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
+
+  // Invalid ss58 prefix.
+  {
+    auto parsed = ParsePolkadotAccount(
+        "FoQJpPyadYccjavVdTWxpxU7rUEaYhfLCPwXgkfD6Zat9QP", 42);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(), mojom::PolkadotValidationStatus::kInvalidPrefix);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount(
+        "FoQJpPyadYccjavVdTWxpxU7rUEaYhfLCPwXgkfD6Zat9QP", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(), mojom::PolkadotValidationStatus::kInvalidPrefix);
+  }
+
+  // Address is too long.
+  {
+    auto parsed = ParsePolkadotAccount(
+        "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty694ty", 42);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
+
+  // Address is too short.
+  {
+    auto parsed = ParsePolkadotAccount(
+        "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694t", 42);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
+
+  {
+    auto parsed = ParsePolkadotAccount("", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
+
+  // Random nonsense.
+  {
+    auto parsed = ParsePolkadotAccount("random string full of random words", 0);
+    EXPECT_FALSE(parsed.has_value());
+    EXPECT_EQ(parsed.error(),
+              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  }
+}
+
+TEST(PolkadotUtils, Uint128MojomConversions) {
+  // Zeroes.
+  EXPECT_EQ(Uint128ToMojom(0), mojom::uint128::New(0, 0));
+  EXPECT_EQ(MojomToUint128(mojom::uint128::New(0, 0)), uint128_t{0});
+
+  auto uint64_max = std::numeric_limits<uint64_t>::max();
+  auto uint128_max = std::numeric_limits<uint128_t>::max();
+
+  // Low bits set.
+  EXPECT_EQ(Uint128ToMojom(uint64_max), mojom::uint128::New(0, uint64_max));
+  EXPECT_EQ(MojomToUint128(mojom::uint128::New(0, uint64_max)),
+            uint128_t{uint64_max});
+
+  // High bits set.
+  EXPECT_EQ(Uint128ToMojom(uint128_t{uint64_max} << 64),
+            mojom::uint128::New(uint64_max, 0));
+  EXPECT_EQ(MojomToUint128(mojom::uint128::New(uint64_max, 0)),
+            uint128_t{uint64_max} << 64);
+
+  // All bits set.
+  EXPECT_EQ(Uint128ToMojom(uint128_max),
+            mojom::uint128::New(uint64_max, uint64_max));
+  EXPECT_EQ(MojomToUint128(mojom::uint128::New(uint64_max, uint64_max)),
+            uint128_max);
+
+  // Normal/sane value.
+  EXPECT_EQ(Uint128ToMojom(1234), mojom::uint128::New(0, 1234));
+  EXPECT_EQ(MojomToUint128(mojom::uint128::New(0, 1234)), uint128_t{1234});
+}
+
+// EncodePrivateKeyForExport / DecodePrivateKeyFromExport tests (Polkadot.js
+// format).
+
+TEST(PolkadotUtils, EncodePrivateKeyForExport) {
+  static constexpr char kPassword[] = "test_password_123";
+
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+  ASSERT_TRUE(keyring.AddNewHDAccount(1));
+
+  std::array<uint8_t, kScryptSaltSize> salt_bytes;
+  salt_bytes.fill(1);
+  std::array<uint8_t, kSecretboxNonceSize> nonce_bytes;
+  nonce_bytes.fill(2);
+  keyring.SetRandBytesForTesting(salt_bytes, nonce_bytes);
+
+  // Test account 0
+  {
+    auto pkcs8 = keyring.GetPkcs8KeyForTesting(0);
+    auto address = keyring.GetAddress(0, kSubstratePrefix);
+    ASSERT_TRUE(address.has_value());
+
+    auto private_key_0 = EncodePrivateKeyForExport(pkcs8, *address, kPassword,
+                                                   salt_bytes, nonce_bytes);
+    auto json_value =
+        base::test::ParseJsonDict(*private_key_0, base::JSON_PARSE_RFC);
+    constexpr const char kExpectedJson[] =
+        R"({
+            "address":"5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgIwzkDYhRCw+IdkOicc2Yh3kjcrjm4Ge+Vh5Lwh9XlJ3tA5UqJjSku1cAtVjOkDkEV0G/vmmLGXkDA+5ksPMKTuSfr+F0Lm6rRe5bKuQ4ZEmKD+IuD/EeR8eNkp535llXA6sm59VGuHPMeEv8sd437VEIuE8KS+DJIKLR/7L3MZiKGGRsHS",
+            "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    EXPECT_EQ(json_value, base::test::ParseJsonDict(kExpectedJson));
+  }
+
+  // Test account 1
+  {
+    auto pkcs8 = keyring.GetPkcs8KeyForTesting(1);
+    auto address = keyring.GetAddress(1, kSubstratePrefix);
+    ASSERT_TRUE(address.has_value());
+
+    auto private_key_1 = EncodePrivateKeyForExport(pkcs8, *address, kPassword,
+                                                   salt_bytes, nonce_bytes);
+    auto json_value_1 =
+        base::test::ParseJsonDict(*private_key_1, base::JSON_PARSE_RFC);
+    constexpr const char kExpectedJsonAccount1[] =
+        R"({
+            "address":"5D34dL5prEUaGNQtPPZ3yN5Y6BnkfXunKXXz6fo7ZJbLwRRH",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLTbm4tzKImwlp+eooQnWJrkjcrjm4Ge+Vh5Lwh9XlJ3s2YTtKXeTLFuneM0BD85jwGoUM9PzT086Z1nm+oS0TpzwQ0SgO0SebKBeClkDdjfDOp7Q7TNAWLeuw72BZZ+LE6sm59VAeXSA+GVrz9OHNuwOp2/W2o6g1Jrcf2H/qJl2Vs6/za",
+            "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    EXPECT_EQ(json_value_1, base::test::ParseJsonDict(kExpectedJsonAccount1));
+  }
+
+  // Empty password (should fail)
+  {
+    auto pkcs8 = keyring.GetPkcs8KeyForTesting(0);
+    auto address = keyring.GetAddress(0, kSubstratePrefix);
+    ASSERT_TRUE(address.has_value());
+
+    EXPECT_FALSE(EncodePrivateKeyForExport(pkcs8, *address, "", salt_bytes,
+                                           nonce_bytes));
+  }
+}
+
+TEST(PolkadotUtils, EncodePrivateKeyForExport_Testnet) {
+  static constexpr char kPassword[] = "test_password_123";
+
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+  ASSERT_TRUE(keyring.AddNewHDAccount(1));
+
+  std::array<uint8_t, kScryptSaltSize> salt_bytes;
+  salt_bytes.fill(1);
+  std::array<uint8_t, kSecretboxNonceSize> nonce_bytes;
+  nonce_bytes.fill(2);
+  keyring.SetRandBytesForTesting(salt_bytes, nonce_bytes);
+
+  // Test account 0
+  {
+    auto pkcs8 = keyring.GetPkcs8KeyForTesting(0);
+    auto address = keyring.GetAddress(0, kSubstratePrefix);
+    ASSERT_TRUE(address.has_value());
+
+    auto private_key_0 = EncodePrivateKeyForExport(pkcs8, *address, kPassword,
+                                                   salt_bytes, nonce_bytes);
+    auto json_value =
+        base::test::ParseJsonDict(*private_key_0, base::JSON_PARSE_RFC);
+    constexpr const char kExpectedJson[] =
+        R"({
+            "address":"5DfhGyQdFobKM8NsWvEeAKk5EQQgYe9AydgJ7rMB6E1EqRzV",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgIwzkDYhRCw+IdkOicc2Yh3kjcrjm4Ge+Vh5Lwh9XlJ3tA5UqJjSku1cAtVjOkDkEV0G/vmmLGXkDA+5ksPMKTuSfr+F0Lm6rRe5bKuQ4ZEmKD+IuD/EeR8eNkp535llXA6sm59VGuHPMeEv8sd437VEIuE8KS+DJIKLR/7L3MZiKGGRsHS",
+            "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    EXPECT_EQ(json_value, base::test::ParseJsonDict(kExpectedJson));
+  }
+
+  // Test account 1
+  {
+    auto pkcs8 = keyring.GetPkcs8KeyForTesting(1);
+    auto address = keyring.GetAddress(1, kSubstratePrefix);
+    ASSERT_TRUE(address.has_value());
+
+    auto private_key_1 = EncodePrivateKeyForExport(pkcs8, *address, kPassword,
+                                                   salt_bytes, nonce_bytes);
+    auto json_value_1 =
+        base::test::ParseJsonDict(*private_key_1, base::JSON_PARSE_RFC);
+    constexpr const char kExpectedJsonAccount1[] =
+        R"({
+            "address":"5D34dL5prEUaGNQtPPZ3yN5Y6BnkfXunKXXz6fo7ZJbLwRRH",
+            "encoded":"AQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAgICAgICAgICAgICAgICAgLTbm4tzKImwlp+eooQnWJrkjcrjm4Ge+Vh5Lwh9XlJ3s2YTtKXeTLFuneM0BD85jwGoUM9PzT086Z1nm+oS0TpzwQ0SgO0SebKBeClkDdjfDOp7Q7TNAWLeuw72BZZ+LE6sm59VAeXSA+GVrz9OHNuwOp2/W2o6g1Jrcf2H/qJl2Vs6/za",
+            "encoding":{"content":["pkcs8","sr25519"],"type":["scrypt","xsalsa20-poly1305"],"version":"3"}})";
+    EXPECT_EQ(json_value_1, base::test::ParseJsonDict(kExpectedJsonAccount1));
+  }
+
+  // Empty password (should fail)
+  {
+    auto pkcs8 = keyring.GetPkcs8KeyForTesting(0);
+    auto address = keyring.GetAddress(0, kSubstratePrefix);
+    ASSERT_TRUE(address.has_value());
+
+    EXPECT_FALSE(EncodePrivateKeyForExport(pkcs8, *address, "", salt_bytes,
+                                           nonce_bytes));
+  }
+}
+
+TEST(PolkadotUtils, DecodePrivateKeyFromExport_Roundtrip) {
+  static constexpr char kPassword[] = "test_password_123";
+
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+  ASSERT_TRUE(keyring.AddNewHDAccount(1));
+
+  // Account 0: encode then decode
+  {
+    auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+    ASSERT_TRUE(encoded_json.has_value());
+
+    auto original_pkcs8_key = keyring.GetPkcs8KeyForTesting(0);
+    auto decoded_pkcs8_key =
+        DecodePrivateKeyFromExport(*encoded_json, kPassword);
+    ASSERT_TRUE(decoded_pkcs8_key.has_value());
+    EXPECT_EQ(*decoded_pkcs8_key, original_pkcs8_key);
+
+    auto decoded_keypair =
+        HDKeySr25519::CreateFromPkcs8(base::span(*decoded_pkcs8_key));
+    ASSERT_TRUE(decoded_keypair.has_value());
+    EXPECT_EQ(decoded_keypair->GetPublicKey(), keyring.GetPublicKey(0));
+  }
+
+  // Account 1: encode then decode
+  {
+    auto encoded_json = keyring.EncodePrivateKeyForExport(1, kPassword);
+    ASSERT_TRUE(encoded_json.has_value());
+
+    auto original_pkcs8_key = keyring.GetPkcs8KeyForTesting(1);
+    auto decoded_pkcs8_key =
+        DecodePrivateKeyFromExport(*encoded_json, kPassword);
+    ASSERT_TRUE(decoded_pkcs8_key.has_value());
+    EXPECT_EQ(*decoded_pkcs8_key, original_pkcs8_key);
+
+    auto decoded_keypair =
+        HDKeySr25519::CreateFromPkcs8(base::span(*decoded_pkcs8_key));
+    ASSERT_TRUE(decoded_keypair.has_value());
+    EXPECT_EQ(decoded_keypair->GetPublicKey(), keyring.GetPublicKey(1));
+  }
+}
+
+TEST(PolkadotUtils, DecodePrivateKeyFromExport_WrongPassword) {
+  static constexpr char kPassword[] = "test_password_123";
+  static constexpr char kWrongPassword[] = "wrong_password";
+
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+
+  auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+  ASSERT_TRUE(encoded_json.has_value());
+
+  EXPECT_FALSE(
+      DecodePrivateKeyFromExport(*encoded_json, kWrongPassword).has_value());
+}
+
+TEST(PolkadotUtils, DecodePrivateKeyFromExport_EmptyPassword) {
+  static constexpr char kPassword[] = "test_password_123";
+
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotMainnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+
+  auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+  ASSERT_TRUE(encoded_json.has_value());
+
+  EXPECT_FALSE(DecodePrivateKeyFromExport(*encoded_json, "").has_value());
+}
+
+TEST(PolkadotUtils, DecodePrivateKeyFromExport_InvalidJSON) {
+  static constexpr char kPassword[] = "test_password_123";
+
+  EXPECT_FALSE(
+      DecodePrivateKeyFromExport("{ invalid json }", kPassword).has_value());
+  EXPECT_FALSE(DecodePrivateKeyFromExport("", kPassword).has_value());
+  EXPECT_FALSE(DecodePrivateKeyFromExport(R"({"address":"test"})", kPassword)
+                   .has_value());
+  EXPECT_FALSE(
+      DecodePrivateKeyFromExport(R"({"encoded":123})", kPassword).has_value());
+}
+
+TEST(PolkadotUtils, DecodePrivateKeyFromExport_Testnet) {
+  static constexpr char kPassword[] = "test_password_123";
+
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+
+  auto encoded_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+  ASSERT_TRUE(encoded_json.has_value());
+
+  auto original_pkcs8_key = keyring.GetPkcs8KeyForTesting(0);
+  auto decoded_pkcs8_key = DecodePrivateKeyFromExport(*encoded_json, kPassword);
+  ASSERT_TRUE(decoded_pkcs8_key.has_value());
+  EXPECT_EQ(*decoded_pkcs8_key, original_pkcs8_key);
+}
+
+TEST(PolkadotUtils, DecodePrivateKeyFromExport_MissingParts) {
+  static constexpr char kPassword[] = "test_password_123";
+
+  auto keyring = MakePolkadotKeyring(mojom::KeyringId::kPolkadotTestnet);
+  ASSERT_TRUE(keyring.AddNewHDAccount(0));
+
+  auto valid_json = keyring.EncodePrivateKeyForExport(0, kPassword);
+  ASSERT_TRUE(valid_json.has_value());
+
+  auto valid_dict = base::test::ParseJsonDict(*valid_json);
+
+  auto dict_to_json = [](const base::DictValue& dict) -> std::string {
+    std::string json_string;
+    base::JSONWriter::Write(dict, &json_string);
+    return json_string;
+  };
+
+  // Missing pkcs8 in content.
+  {
+    auto test_dict = valid_dict.Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    auto* content_list = encoding_dict->FindList("content");
+    ASSERT_TRUE(content_list);
+    content_list->clear();
+    content_list->Append("sr25519");
+    EXPECT_FALSE(
+        DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
+  }
+
+  // Missing sr25519 in content.
+  {
+    auto test_dict = valid_dict.Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    auto* content_list = encoding_dict->FindList("content");
+    ASSERT_TRUE(content_list);
+    content_list->clear();
+    content_list->Append("pkcs8");
+    EXPECT_FALSE(
+        DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
+  }
+
+  // Missing scrypt in type.
+  {
+    auto test_dict = valid_dict.Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    auto* type_list = encoding_dict->FindList("type");
+    ASSERT_TRUE(type_list);
+    type_list->clear();
+    type_list->Append("xsalsa20-poly1305");
+    EXPECT_FALSE(
+        DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
+  }
+
+  // Missing xsalsa20-poly1305 in type.
+  {
+    auto test_dict = valid_dict.Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    auto* type_list = encoding_dict->FindList("type");
+    ASSERT_TRUE(type_list);
+    type_list->clear();
+    type_list->Append("scrypt");
+    EXPECT_FALSE(
+        DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
+  }
+
+  // Version mismatch.
+  {
+    auto test_dict = valid_dict.Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    encoding_dict->Set("version", "2");
+    EXPECT_FALSE(
+        DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
+  }
+
+  // Missing content.
+  {
+    auto test_dict = valid_dict.Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    encoding_dict->Remove("content");
+    EXPECT_FALSE(
+        DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
+  }
+
+  // Missing encoding.
+  {
+    auto test_dict = valid_dict.Clone();
+    test_dict.Remove("encoding");
+    EXPECT_FALSE(
+        DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
+  }
+
+  // Missing type.
+  {
+    auto test_dict = valid_dict.Clone();
+    auto* encoding_dict = test_dict.FindDict("encoding");
+    ASSERT_TRUE(encoding_dict);
+    encoding_dict->Remove("type");
+    EXPECT_FALSE(
+        DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
+  }
+
+  // Missing encoded.
+  {
+    auto test_dict = valid_dict.Clone();
+    test_dict.Remove("encoded");
+    EXPECT_FALSE(
+        DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
+  }
+
+  // Corrupted encoded - invalid base64.
+  {
+    auto test_dict = valid_dict.Clone();
+    test_dict.Set(
+        "encoded",
+        "00EBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEBAQEAgAAAAQAAAAgAAAACAgICAgICAg"
+        "ICAgICAgICAgICAgICAgLCddKZgcxBjl0hYwjTBbfXkjcrjm4Ge+"
+        "Vh5Lwh9XlJ3lxHMOsL8JTT373MVhPUPjpg0fdTnx8C0Rn6NlqE25XqYVmzHtu08FNDkPHR"
+        "B7gGS7QEMooZrcX7+67a+1Uv3HE6sm59VA2vdfwY70yn/"
+        "WROki1+SZ1OLWclpgVjEDift12grx7X");
+    EXPECT_FALSE(
+        DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
+  }
+
+  // Corrupted encoded - wrong length.
+  {
+    auto test_dict = valid_dict.Clone();
+    const std::string* original_encoded = test_dict.FindString("encoded");
+    ASSERT_TRUE(original_encoded);
+    std::string shortened_encoded =
+        original_encoded->substr(0, original_encoded->size() - 10);
+    test_dict.Set("encoded", shortened_encoded);
+    EXPECT_FALSE(
+        DecodePrivateKeyFromExport(dict_to_json(test_dict), kPassword));
+  }
+}
+
+}  // namespace brave_wallet

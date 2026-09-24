@@ -1,0 +1,30 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/buildflag_header.gni")
+
+declare_args() {
+  brave_ios_developer_options_code = ""
+}
+
+if (is_official_build) {
+  assert(brave_ios_developer_options_code != "")
+}
+
+buildflag_header("developer_options_code_buildflag") {
+  header = "developer_options_code_buildflags.h"
+  flags = [
+    "BRAVE_IOS_DEVELOPER_OPTIONS_CODE=\"$brave_ios_developer_options_code\"",
+  ]
+}
+
+source_set("developer_options_code") {
+  sources = [
+    "developer_options_code.h",
+    "developer_options_code.mm",
+  ]
+  deps = [ ":developer_options_code_buildflag" ]
+  frameworks = [ "Foundation.framework" ]
+}

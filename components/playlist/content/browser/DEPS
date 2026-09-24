@@ -1,0 +1,18 @@
+include_rules = [
+  "+brave/components/brave_component_updater/browser",
+  "+components/component_updater",
+  "+components/download",
+  "+components/grit",
+  "+components/keyed_service/core",
+  "+components/prefs",
+  "+components/user_prefs",
+  "+content/public/browser",
+  "+content/public/common",
+  "+crypto",
+  "+services/network/public/cpp",
+  "+services/preferences/public/cpp",
+  "+third_party/blink/public/common",
+  "+third_party/re2",
+  "+ui/base",
+  "+ui/gfx",
+]

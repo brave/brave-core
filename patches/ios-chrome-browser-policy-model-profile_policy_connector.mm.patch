@@ -1,0 +1,12 @@
+diff --git a/ios/chrome/browser/policy/model/profile_policy_connector.mm b/ios/chrome/browser/policy/model/profile_policy_connector.mm
+index 114a10e097f958d15243546627ac917cdc012819..ba99de2188a170999cbb989ec2a3e8ad13d3f16d 100644
+--- a/ios/chrome/browser/policy/model/profile_policy_connector.mm
++++ b/ios/chrome/browser/policy/model/profile_policy_connector.mm
+@@ -50,6 +50,7 @@ void ProfilePolicyConnector::Init(
+         browser_policy_connector->local_test_policy_provider();
+   }
+ 
++  BRAVE_PROFILE_POLICY_CONNECTOR_INIT
+   policy_service_ = std::make_unique<policy::PolicyServiceImpl>(
+       policy_providers_, policy::PolicyServiceImpl::ScopeForMetrics::kMachine);
+ }

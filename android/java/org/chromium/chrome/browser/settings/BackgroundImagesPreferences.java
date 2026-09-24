@@ -1,0 +1,254 @@
+/* Copyright (c) 2019 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.settings;
+
+import android.content.Context;
+import android.os.Bundle;
+
+import androidx.preference.Preference;
+import androidx.preference.Preference.OnPreferenceChangeListener;
+import androidx.preference.PreferenceCategory;
+
+import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.Log;
+import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.ObservableSuppliers;
+import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.BraveRelaunchUtils;
+import org.chromium.chrome.browser.BraveRewardsPolicy;
+import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
+import org.chromium.chrome.browser.ntp.NtpUtil;
+import org.chromium.chrome.browser.preferences.BravePref;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
+import org.chromium.chrome.browser.util.TabUtils;
+import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
+import org.chromium.components.user_prefs.UserPrefs;
+import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
+import org.chromium.misc_metrics.mojom.OpeningScreenSwitchType;
+
+/** Fragment to keep track of all the display related preferences. */
+@NullMarked
+public class BackgroundImagesPreferences extends BravePreferenceFragment
+        implements OnPreferenceChangeListener {
+    private static final String TAG = "BackgroundImages";
+
+    // deprecated preferences from browser-android-tabs
+    public static final String PREF_SHOW_BACKGROUND_IMAGES = "show_background_images";
+    public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
+    public static final String PREF_SHOW_TOP_SITES = "show_top_sites";
+    public static final String PREF_SHOW_BRAVE_STATS = "show_brave_stats";
+    public static final String PREF_OPENING_SCREEN = "opening_screen_option";
+    public static final String PREF_OPENING_SCREEN_CATEGORY = "opening_screen";
+
+    public static final String PREF_SPONSORED_IMAGES_LEARN_MORE = "sponsored_images_learn_more";
+
+    public static final String NEW_TAB_TAKEOVER_LEARN_MORE_LINK_URL =
+            "https://support.brave.app/hc/en-us/articles/35182999599501";
+
+    private ChromeSwitchPreference mShowBackgroundImagesPref;
+    private ChromeSwitchPreference mShowSponsoredImagesPref;
+    private ChromeSwitchPreference mShowBraveStatsPref;
+    private ChromeSwitchPreference mShowTopSitesPref;
+    private BraveTextButtonPreference mLearnMorePreference;
+    private BraveRadioButtonGroupOpeningScreenPreference mOpeningScreenPref;
+
+    private final SettableMonotonicObservableSupplier<String> mPageTitle =
+            ObservableSuppliers.createMonotonic();
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mPageTitle.set(getString(R.string.prefs_new_tab_page));
+        SettingsUtils.addPreferencesFromResource(this, R.xml.background_images_preferences);
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        mShowBackgroundImagesPref =
+                (ChromeSwitchPreference) findPreference(PREF_SHOW_BACKGROUND_IMAGES);
+        if (mShowBackgroundImagesPref != null) {
+            mShowBackgroundImagesPref.setEnabled(true);
+            mShowBackgroundImagesPref.setChecked(
+                    UserPrefs.get(getProfile())
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
+            mShowBackgroundImagesPref.setOnPreferenceChangeListener(this);
+        }
+        boolean rewardsDisabledByPolicy = BraveRewardsPolicy.isDisabledByPolicy(getProfile());
+        mShowSponsoredImagesPref =
+                (ChromeSwitchPreference) findPreference(PREF_SHOW_SPONSORED_IMAGES);
+        if (mShowSponsoredImagesPref != null && rewardsDisabledByPolicy) {
+            mShowSponsoredImagesPref.setVisible(false);
+        } else if (mShowSponsoredImagesPref != null) {
+            mShowSponsoredImagesPref.setEnabled(
+                    UserPrefs.get(getProfile())
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
+            mShowSponsoredImagesPref.setChecked(
+                    UserPrefs.get(getProfile()).getBoolean(BravePref.SPONSORED_ENABLED));
+            mShowSponsoredImagesPref.setOnPreferenceChangeListener(this);
+        }
+        mLearnMorePreference =
+                (BraveTextButtonPreference) findPreference(PREF_SPONSORED_IMAGES_LEARN_MORE);
+        if (mLearnMorePreference != null && rewardsDisabledByPolicy) {
+            mLearnMorePreference.setVisible(false);
+        } else if (mLearnMorePreference != null) {
+            mLearnMorePreference.setOnPreferenceClickListener(
+                    preference -> {
+                        try {
+                            TabUtils.openUrlInNewTab(false, NEW_TAB_TAKEOVER_LEARN_MORE_LINK_URL);
+                            TabUtils.bringChromeTabbedActivityToTheTop(
+                                    BraveActivity.getBraveActivity());
+                        } catch (BraveActivity.BraveActivityNotFoundException e) {
+                            Log.e(TAG, "sponsored_images_learn_more" + e);
+                        }
+                        return true;
+                    });
+        }
+
+        mShowTopSitesPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_TOP_SITES);
+        if (mShowTopSitesPref != null) {
+            mShowTopSitesPref.setEnabled(true);
+            mShowTopSitesPref.setChecked(NtpUtil.shouldDisplayTopSites());
+            mShowTopSitesPref.setOnPreferenceChangeListener(this);
+        }
+        mShowBraveStatsPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_BRAVE_STATS);
+        if (mShowBraveStatsPref != null) {
+            mShowBraveStatsPref.setEnabled(true);
+            mShowBraveStatsPref.setChecked(NtpUtil.shouldDisplayBraveStats());
+            mShowBraveStatsPref.setOnPreferenceChangeListener(this);
+        }
+
+        // Initialize Opening Screen preference
+        mOpeningScreenPref =
+                (BraveRadioButtonGroupOpeningScreenPreference) findPreference(PREF_OPENING_SCREEN);
+        PreferenceCategory openingScreenCategory =
+                (PreferenceCategory) findPreference(PREF_OPENING_SCREEN_CATEGORY);
+
+        // Hide the preference category if feature is disabled or variant is "A"
+        if (!BraveFreshNtpHelper.isEnabled()) {
+            if (openingScreenCategory != null) {
+                getPreferenceScreen().removePreference(openingScreenCategory);
+            }
+        } else {
+            String variant = BraveFreshNtpHelper.getVariant();
+            if (variant != null && variant.equals("A")) {
+                if (openingScreenCategory != null) {
+                    getPreferenceScreen().removePreference(openingScreenCategory);
+                }
+            } else if (mOpeningScreenPref != null) {
+                int currentValue =
+                        ChromeSharedPreferences.getInstance()
+                                .readInt(
+                                        BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN,
+                                        BravePreferenceKeys
+                                                .BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY); // presubmit: ignore-long-line
+                mOpeningScreenPref.initialize(currentValue);
+                mOpeningScreenPref.setOnPreferenceChangeListener(this);
+            }
+        }
+    }
+
+    @Override
+    public MonotonicObservableSupplier<String> getPageTitle() {
+        return mPageTitle;
+    }
+
+    @Override
+    public String getMainMenuKey() {
+        return "background_images";
+    }
+
+    @Override
+    public boolean onPreferenceChange(Preference preference, Object newValue) {
+        String key = preference.getKey();
+        if (PREF_SHOW_BACKGROUND_IMAGES.equals(key)) {
+            if (mShowSponsoredImagesPref != null) {
+                mShowSponsoredImagesPref.setEnabled((boolean) newValue);
+            }
+            UserPrefs.get(getProfile())
+                    .setBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE, (boolean) newValue);
+            BraveRelaunchUtils.askForRelaunch(getActivity());
+        } else if (PREF_SHOW_SPONSORED_IMAGES.equals(key)) {
+            UserPrefs.get(getProfile()).setBoolean(BravePref.SPONSORED_ENABLED, (boolean) newValue);
+            BraveRelaunchUtils.askForRelaunch(getActivity());
+        } else if (PREF_SHOW_TOP_SITES.equals(key)) {
+            NtpUtil.setDisplayTopSites((boolean) newValue);
+        } else if (PREF_SHOW_BRAVE_STATS.equals(key)) {
+            NtpUtil.setDisplayBraveStats((boolean) newValue);
+        } else if (PREF_OPENING_SCREEN.equals(key)) {
+            int option = (int) newValue;
+            int previousOption =
+                    ChromeSharedPreferences.getInstance()
+                            .readInt(
+                                    BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN,
+                                    BravePreferenceKeys
+                                            .BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY);
+            ChromeSharedPreferences.getInstance()
+                    .writeInt(BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN, option);
+            recordOpeningScreenSwitch(previousOption, option);
+        }
+        return true;
+    }
+
+    private void recordOpeningScreenSwitch(int previousOption, int newOption) {
+        try {
+            MiscAndroidMetrics metrics = BraveActivity.getBraveActivity().getMiscAndroidMetrics();
+            if (metrics == null) return;
+
+            boolean previousIsInactivity =
+                    previousOption
+                            == BravePreferenceKeys
+                                    .BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY;
+            boolean newIsInactivity =
+                    newOption
+                            == BravePreferenceKeys
+                                    .BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY;
+
+            int switchType;
+            if (previousIsInactivity && !newIsInactivity) {
+                switchType = OpeningScreenSwitchType.FROM_INACTIVITY;
+            } else if (!previousIsInactivity && newIsInactivity) {
+                switchType = OpeningScreenSwitchType.TO_INACTIVITY;
+            } else {
+                switchType = OpeningScreenSwitchType.OTHER;
+            }
+            metrics.recordOpeningScreenSettingSwitch(switchType);
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "recordOpeningScreenSwitch " + e);
+        }
+    }
+
+    public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new ChromeBaseSearchIndexProvider(
+                    BackgroundImagesPreferences.class.getName(),
+                    R.xml.background_images_preferences) {
+
+                @Override
+                public void updateDynamicPreferences(
+                        Context context, SettingsIndexData indexData, Profile profile) {
+                    String frag = BackgroundImagesPreferences.class.getName();
+                    // Sponsored images and their "learn more" link are hidden when Brave Rewards
+                    // is disabled by policy, mirroring onActivityCreated().
+                    if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {
+                        indexData.removeEntryForKey(frag, PREF_SHOW_SPONSORED_IMAGES);
+                        indexData.removeEntryForKey(frag, PREF_SPONSORED_IMAGES_LEARN_MORE);
+                    }
+                    // The opening-screen section (PREF_OPENING_SCREEN_CATEGORY) is shown only when
+                    // the Fresh NTP feature is enabled with a non-"A" variant, but it needs no
+                    // handling here: the PreferenceCategory itself is never indexed, and its single
+                    // child (PREF_OPENING_SCREEN) is a custom radio-group widget with no
+                    // android:title, so it is not matchable by search regardless of feature state.
+                }
+            };
+}

@@ -1,0 +1,17 @@
+diff --git a/content/public/browser/navigation_handle.h b/content/public/browser/navigation_handle.h
+index 0bbe749662248c089a63b3940c952391446632e1..8794fee7769691ac7a38dcfa4ef8428de764ef95 100644
+--- a/content/public/browser/navigation_handle.h
++++ b/content/public/browser/navigation_handle.h
+@@ -966,6 +966,12 @@ class CONTENT_EXPORT NavigationHandle : public base::SupportsUserData {
+   // Returns true if the next redirect should bypass redirect checks, and resets
+   // the flag to false.
+   virtual bool ConsumeBypassRedirectChecksForNextRedirect() = 0;
++
++  // Returns true if the next redirect should bypass redirect checks,
++  // leaving the flag set for `ConsumeBypassRedirectChecksForNextRedirect`.
++  static bool HasBypassRedirectChecksForNextRedirect(
++      FrameTreeNodeId frame_tree_node_id,
++      int64_t navigation_id);
+ };
+ 
+ }  // namespace content

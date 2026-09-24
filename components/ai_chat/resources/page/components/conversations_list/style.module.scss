@@ -1,0 +1,181 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.nav {
+  width: 100%;
+  height: 100%;
+  padding: var(--leo-spacing-m);
+  color: var(--leo-color-text-primary);
+  max-width: 680px;
+  margin: 0 auto;
+
+  // In case we have multiple notices or notices + conversations
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-m);
+
+  ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  li {
+    margin-bottom: var(--leo-spacing-s);
+  }
+}
+
+.navItem {
+  all: unset;
+  position: relative;
+  border-radius: var(--leo-radius-m);
+  display: block;
+  font: var(--leo-font-default-regular);
+
+  // Display ButtonMenu button when menu is open or title
+  // is hovered.
+  @media (hover: hover) {
+    &:not(.isOptionsMenuOpen, :hover) .optionsMenu {
+      visibility: hidden;
+    }
+  }
+
+  // Dispaly ButtonMenu button when item is active when
+  // primary input method does not have convenient hover.
+  @media (hover: none) {
+    &:not(.navItemActive) .optionsMenu {
+      visibility: hidden;
+    }
+  }
+}
+
+.navItemActive {
+  background: var(--leo-color-container-background);
+  border-radius: var(--leo-radius-m);
+  transition: all 0.2s ease-out allow-discrete;
+}
+
+.optionsMenu {
+  leo-menu-item {
+    padding: var(--leo-spacing-m);
+  }
+}
+
+.optionsButton {
+  --leo-icon-size: 20px;
+  color: var(--leo-color-icon-default);
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  right: 0;
+  padding: 4px;
+}
+
+.displayTitle {
+  border-radius: var(--leo-radius-m);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  padding: var(--leo-spacing-l) var(--leo-spacing-xl);
+  position: relative;
+  transition: all 0.2s ease-out allow-discrete;
+  width: 100%;
+  // Take up minimum 1 line in case the title is
+  // somehow empty
+  min-height: 1lh;
+
+  &:hover,
+  .isOptionsMenuOpen & {
+    background: var(--leo-color-container-highlight);
+    box-shadow: var(--leo-effect-elevation-01);
+  }
+}
+
+.displayTitleContent {
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.text {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.editibleTitle {
+  // Take up the full size of the parent
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+
+  form,
+  input {
+    width: 100%;
+  }
+}
+
+.optionsMenuItemWithIcon {
+  --leo-icon-size: 16px;
+  font: var(--leo-font-default-regular);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.timeLabel {
+  font: var(--leo-font-components-label);
+  color: var(--leo-color-text-tertiary);
+  text-transform: uppercase;
+  padding: var(--leo-spacing-m) var(--leo-spacing-xl);
+}
+
+.scroller {
+  overflow: auto;
+  width: 100%;
+  height: 100%;
+  padding-bottom: 16px;
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--leo-color-neutral-20);
+    border-radius: var(--leo-spacing-m);
+  }
+}
+
+.filterInput {
+  width: 100%;
+}
+
+.filterNoResults {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: var(--leo-spacing-xl);
+  text-align: center;
+
+  span:first-child {
+    font: var(--leo-font-default-semibold);
+    color: var(--leo-color-text-tertiary);
+  }
+
+  span:last-child {
+    font: var(--leo-font-default-regular);
+    color: var(--leo-color-text-tertiary);
+  }
+}
+
+.simpleInput {
+  outline: 0;
+  border-radius: 4px;
+  border: 1px solid var(--leo-color-icon-interactive);
+  padding: 0 4px;
+  background: var(--leo-color-container-background);
+}

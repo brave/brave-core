@@ -1,0 +1,101 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import BraveCore
+import BraveStrings
+import SwiftUI
+
+struct ManagePasswordDetailReadOnlyView: View {
+  @Environment(\.openURL) private var openURL
+  @Binding var isPasswordRevealed: Bool
+  let password: CWVPassword
+
+  var body: some View {
+    Form {
+      Section {
+        LabeledContent {
+          Menu {
+            Button {
+              UIPasteboard.general.string = password.site
+            } label: {
+              Text(Strings.menuItemCopyTitle)
+            }
+            Button {
+              if let url = URL(string: password.site), url.isWebPage() {
+                openURL(url)
+              }
+            } label: {
+              Text(Strings.openWebsite)
+            }
+          } label: {
+            Text(password.site).lineLimit(1)
+              .contentShape(.rect)
+              .foregroundStyle(.secondary)
+          }
+        } label: {
+          Text(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
+        }
+        LabeledContent {
+          Menu {
+            Button {
+              UIPasteboard.general.setSecureString(password.username ?? "")
+            } label: {
+              Text(Strings.menuItemCopyTitle)
+            }
+          } label: {
+            Text(password.username ?? "")
+              .lineLimit(1)
+              .contentShape(.rect)
+              .foregroundStyle(.secondary)
+          }
+        } label: {
+          Text(Strings.Login.loginInfoDetailsUsernameFieldTitle)
+        }
+        LabeledContent {
+          HStack(spacing: 8) {
+            Menu {
+              Button {
+                UIPasteboard.general.setSecureString(password.password ?? "")
+              } label: {
+                Text(Strings.menuItemCopyTitle)
+              }
+            } label: {
+              HStack {
+                Spacer()
+                if isPasswordRevealed {
+                  Text(password.password ?? "")
+                    .lineLimit(1)
+                } else {
+                  Text(String(repeating: "•", count: 8))
+                    .lineLimit(1)
+                    .allowsHitTesting(false)
+                    .accessibility(hidden: true)
+                    .multilineTextAlignment(.trailing)
+                    .frame(maxWidth: .infinity, alignment: .trailing)
+                }
+              }
+              .contentShape(.rect)
+              .foregroundStyle(.secondary)
+            }
+
+            Button {
+              isPasswordRevealed.toggle()
+            } label: {
+              Label(
+                Strings.Autofill.managePasswordDetailRevealPassword,
+                braveSystemImage: isPasswordRevealed ? "leo.eye.on" : "leo.eye.off"
+              )
+              .foregroundStyle(Color(braveSystemName: .iconInteractive))
+              .labelStyle(.iconOnly)
+            }
+            .buttonStyle(.plain)
+          }
+        } label: {
+          Text(Strings.Login.loginInfoDetailsPasswordFieldTitle)
+        }
+      }
+    }
+  }
+}

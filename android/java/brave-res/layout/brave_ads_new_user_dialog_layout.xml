@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@android:color/transparent"
+        android:gravity="end">
+        <ImageView
+            android:id="@+id/close_button"
+            android:src="@drawable/btn_close"
+            android:contentDescription="@null"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:paddingTop="8dip"
+            android:layout_marginEnd="5dip" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:scaleType="fitCenter"
+            android:src="@drawable/brave_ads_launch_graphic"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="15dip"
+            android:paddingStart="15dip"
+            android:paddingEnd="15dip" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_ads_new_user_offer_title"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="15dip"
+            android:paddingStart="15dip"
+            android:paddingEnd="15dip"
+            android:textSize="22sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_ads_offer_text"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:paddingTop="15dip"
+            android:paddingStart="15dip"
+            android:paddingEnd="15dip" />
+
+    </LinearLayout>
+</RelativeLayout>

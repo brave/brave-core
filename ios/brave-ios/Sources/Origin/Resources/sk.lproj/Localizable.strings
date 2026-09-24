@@ -1,0 +1,99 @@
+/* A section header title for ads-related settings */
+"adsHeader" = "Reklamy";
+
+/* A title asking if the user already purchased on brave.com */
+"alreadyPurchasedTitle" = "Už ste nakupovali na brave.com?";
+
+/* A section header title for analytics-related settings */
+"analyticsHeader" = "Analytika";
+
+/* A button label to purchase Brave Origin */
+"buyNowButton" = "Kúpiť teraz";
+
+/* A message shown in a toast informing the user that enabling or disabling a Brave feature requires restarting the browser to take effect */
+"featureEnabledToastMessage" = "Zapnutie alebo vypnutie funkcie Brave vyžaduje reštart prehliadača, aby sa zmeny uplatnili. Zatvorte (potiahnutím nahor v Prepínači aplikácií) a potom znova otvorte Brave.";
+
+/* A title shown in a toast that appears after toggling a Brave feature on or off in Origin settings */
+"featureEnabledToastTitle" = "Zmena funkcií Brave";
+
+/* A footer text explaining Brave Origin subscription and its features. The stars represent markdown and the same paragraph should be also be bolded when translated. */
+"featuresFooter" = "**Prispôsobte si prehliadač a zároveň naďalej podporujte Brave**\n\nBrave Origin je platená verzia prehliadača pre používateľov, ktorí nepotrebujú všetky funkcie, ktoré podporujú Brave ako podnikanie, ale stále chcú súkromie, ktoré ponúka iba Brave. Používatelia Origin budú naďalej profitovať z našej špecializovanej ochrany súkromia, blokovania reklám a rýchlosti (prostredníctvom Štítov), ako aj z pravidelných aktualizácií softvéru, opráv Chromium a zlepšení bezpečnosti a súkromia. Origin odstráni väčšinu ďalších funkcií z prehliadača.";
+
+/* A section header title that is shown over a list of Brave specific features */
+"featuresHeader" = "Funkcie";
+
+/* A button label to get a login code for users who purchased on brave.com */
+"getLoginCodeButton" = "Overiť nákup Brave Origin";
+
+/* A toggle label for Brave Leo AI feature */
+"leoAILabel" = "Leo AI";
+
+/* A button title that when triggered will allow a user to link their App Store purchase with Brave Account */
+"linkPurchase" = "Prepojiť nákup s vaším účtom Brave";
+
+/* A toggle label for Brave News feature */
+"newsLabel" = "News";
+
+/* A label indicating this is a one-time purchase product */
+"oneTimePurchaseLabel" = "Jednorazový nákup";
+
+/* A toggle label for Brave Playlist feature */
+"playlistLabel" = "Zoznam";
+
+/* A toggle label for privacy preserving analytics feature */
+"privacyPreservingAnalyticsLabel" = "Analýza zachovávajúca súkromie";
+
+/* A title asking if the user has a promo code */
+"promoCodeTitle" = "Máte promo kód?";
+
+/* Text shown above buttons that give the user the option to choose a checkout option */
+"purchaseChoiceHeaderText" = "Vyberte si spôsob platby, ktorý vám vyhovuje:";
+
+/* An error message displayed when a purchase fails */
+"purchaseErrorMessage" = "Nákup nie je možné dokončiť. Skúste to znova alebo skontrolujte svoje platobné informácie Apple a skúste to znova.";
+
+/* The footer shown below the Purchase section of the settings page */
+"purchaseSectionFooter" = "Prepojte svoj nákup v App Store so svojím účtom Brave, aby ste mohli používať Brave Origin na iných zariadeniach";
+
+/* The header shown below the Purchase section of the settings page */
+"purchaseSectionHeader" = "Nákup";
+
+/* A button label to redeem a promo code */
+"redeemPromoCodeButton" = "Uplatniť promo kód";
+
+/* A button label to reset all Origin settings to their default values */
+"resetToDefaultsButton" = "Obnovenie predvolených nastavení";
+
+/* A button label to restore previous purchases */
+"restoreButton" = "Obnoviť";
+
+/* A toggle label for Brave Rewards feature */
+"rewardsLabel" = "Odmeny";
+
+/* A toggle label for statistics reporting feature */
+"statisticsReportingLabel" = "Vykazovanie štatistík";
+
+/* A toggle label for Brave Talk feature */
+"talkLabel" = "Hovoriť";
+
+/* An upsell point about maintaining core features like adblock, privacy, and speed */
+"upsellCoreFeatures" = "Zachovanie jadra blokovania reklám, súkromia, rýchlosti &";
+
+/* An upsell point about minimal browser UI */
+"upsellMinimalUI" = "Minimalistické užívateľské rozhranie prehliadača zamerané na Štíty Brave";
+
+/* An upsell point about the one-time purchase model */
+"upsellOneTimePurchase" = "Jednorazový nákup je možné aktivovať viackrát na všetkých vašich zariadeniach";
+
+/* An upsell point about supporting Brave's mission and open-source work */
+"upsellSupportMission" = "Podporte našu misiu & práce s otvoreným zdrojovým kódom";
+
+/* A button title that when triggered will allow a user to view their App Store receipt */
+"viewAppStoreReceipt" = "Zobraziť Potvrdenie z App Store";
+
+/* A toggle label for Brave VPN feature */
+"vpnLabel" = "VPN";
+
+/* A toggle label for Brave Wallet feature */
+"walletLabel" = "Peňaženka";
+

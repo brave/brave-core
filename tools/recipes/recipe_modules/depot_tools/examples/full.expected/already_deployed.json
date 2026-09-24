@@ -1,0 +1,18 @@
+[
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/b/src/third_party/depot_tools/vpython3",
+      "--version"
+    ],
+    "name": "use vpython3"
+  },
+  {
+    "name": "$result"
+  }
+]

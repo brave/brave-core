@@ -1,0 +1,59 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Append Brave-specific entries to `kContentSettingsTypeToHistogramValue`
+    regex:
+      re_pattern:
+        '(base::MakeFixedFlatMap<ContentSettingsType, int>\(\{.+?)(\s*\}\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+                {ContentSettingsType::BRAVE_ADS, GetBraveHistogramValue(0)},
+                {ContentSettingsType::BRAVE_COSMETIC_FILTERING, GetBraveHistogramValue(1)},
+                {ContentSettingsType::BRAVE_TRACKERS, GetBraveHistogramValue(2)},
+                {ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES, GetBraveHistogramValue(3)},
+                {ContentSettingsType::BRAVE_FINGERPRINTING_V2, GetBraveHistogramValue(4)},
+                {ContentSettingsType::BRAVE_SHIELDS, GetBraveHistogramValue(5)},
+                {ContentSettingsType::BRAVE_REFERRERS, GetBraveHistogramValue(6)},
+                {ContentSettingsType::BRAVE_COOKIES, GetBraveHistogramValue(7)},
+                {ContentSettingsType::BRAVE_SPEEDREADER, GetBraveHistogramValue(8)},
+                {ContentSettingsType::BRAVE_ETHEREUM, GetBraveHistogramValue(9)},
+                {ContentSettingsType::BRAVE_SOLANA, GetBraveHistogramValue(10)},
+                {ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, GetBraveHistogramValue(11)},
+                {ContentSettingsType::BRAVE_HTTPS_UPGRADE, GetBraveHistogramValue(12)},
+                {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, GetBraveHistogramValue(13)},
+                {ContentSettingsType::BRAVE_OPEN_AI_CHAT, GetBraveHistogramValue(15)},
+                {ContentSettingsType::BRAVE_AUTO_SHRED, GetBraveHistogramValue(16)},
+                // Begin webcompat items
+                {ContentSettingsType::BRAVE_WEBCOMPAT_NONE, GetBraveHistogramValue(50)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_AUDIO, GetBraveHistogramValue(51)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_CANVAS, GetBraveHistogramValue(52)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_DEVICE_MEMORY, GetBraveHistogramValue(53)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_EVENT_SOURCE_POOL,
+                 GetBraveHistogramValue(54)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_FONT, GetBraveHistogramValue(55)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_HARDWARE_CONCURRENCY,
+                 GetBraveHistogramValue(56)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_KEYBOARD, GetBraveHistogramValue(57)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_LANGUAGE, GetBraveHistogramValue(58)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_MEDIA_DEVICES, GetBraveHistogramValue(59)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_PLUGINS, GetBraveHistogramValue(60)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_SCREEN, GetBraveHistogramValue(61)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_SPEECH_SYNTHESIS,
+                 GetBraveHistogramValue(62)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_USB_DEVICE_SERIAL_NUMBER,
+                 GetBraveHistogramValue(63)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_USER_AGENT, GetBraveHistogramValue(64)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL, GetBraveHistogramValue(65)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGL2, GetBraveHistogramValue(66)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_WEBGPU, GetBraveHistogramValue(67)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL,
+                 GetBraveHistogramValue(68)},
+                {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, GetBraveHistogramValue(69)},
+                {ContentSettingsType::BRAVE_SHIELDS_METADATA, GetBraveHistogramValue(70)},
+                {ContentSettingsType::BRAVE_CARDANO, GetBraveHistogramValue(71)},
+                {ContentSettingsType::BRAVE_PSST, GetBraveHistogramValue(72)},\2

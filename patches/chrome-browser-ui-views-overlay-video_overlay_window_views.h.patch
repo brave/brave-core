@@ -1,0 +1,48 @@
+diff --git a/chrome/browser/ui/views/overlay/video_overlay_window_views.h b/chrome/browser/ui/views/overlay/video_overlay_window_views.h
+index 222a5167b5e719403268e672372acd809a043263..81a0f1b16c37c73192ff2fa4c60da86a4d32c490 100644
+--- a/chrome/browser/ui/views/overlay/video_overlay_window_views.h
++++ b/chrome/browser/ui/views/overlay/video_overlay_window_views.h
+@@ -146,7 +146,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
+   // AutoPipSettingOverlayView::Delegate:
+   void OnAutoPipSettingOverlayViewHidden() override;
+ 
+-  bool ControlsHitTestContainsPoint(const gfx::Point& point);
++  virtual bool ControlsHitTestContainsPoint(const gfx::Point& point);
+ #if BUILDFLAG(IS_CHROMEOS)
+   // Gets the proper hit test component when the hit point is on the resize
+   // handle in order to force a drag-to-resize.
+@@ -160,7 +160,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
+ #endif
+ 
+   // Called when the bounds of the controls should be updated.
+-  void OnUpdateControlsBounds();
++  virtual void OnUpdateControlsBounds();
+ 
+   content::PictureInPictureWindowController* GetController() const;
+   views::View* GetWindowBackgroundView() const;
+@@ -282,6 +282,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
+       content::VideoPictureInPictureWindowController* controller);
+ 
+  private:
++  friend class BraveVideoOverlayWindowViews;
+   friend class VideoPictureInPictureWindowControllerBrowserTest;
+ 
+   // Return the work area for the nearest display the widget is on.
+@@ -293,7 +294,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
+   gfx::Rect CalculateAndUpdateWindowBounds();
+ 
+   // Set up the views::Views that will be shown on the window.
+-  void SetUpViews();
++  virtual void SetUpViews();
+ 
+   // Finish initialization by performing the steps that require the root View.
+   void OnRootViewReady();
+@@ -397,7 +398,7 @@ class VideoOverlayWindowViews : public content::VideoOverlayWindow,
+   //    * `MediaSession` routed frame exists
+   //    * The `MediaSession` routed frame is the primary main frame
+   //    * The origin URL has high media engagement or is a file
+-  bool IsTrustedForMediaPlayback() const;
++  virtual bool IsTrustedForMediaPlayback() const;
+ 
+   // Updates the value of `meets_user_interaction_` if needed.
+   //

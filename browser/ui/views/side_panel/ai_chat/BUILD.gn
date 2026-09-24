@@ -1,0 +1,62 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
+
+assert(enable_ai_chat)
+
+source_set("ai_chat") {
+  sources = [
+    "ai_chat_movable_side_panel_web_view.cc",
+    "ai_chat_movable_side_panel_web_view.h",
+    "ai_chat_side_panel_contents_wrapper.cc",
+    "ai_chat_side_panel_contents_wrapper.h",
+    "ai_chat_side_panel_tab_transfer_bridge.cc",
+    "ai_chat_side_panel_tab_transfer_bridge.h",
+    "ai_chat_side_panel_utils_views.cc",
+    "ai_chat_side_panel_web_view.cc",
+    "ai_chat_side_panel_web_view.h",
+  ]
+
+  # Header-visible dependencies: `ai_chat_movable_side_panel_web_view.h` derives
+  # from `views::WebView` (//ui/views) and
+  # `web_modal::WebContentsModalDialogManagerDelegate` (//components/web_modal).
+  public_deps = [
+    "//components/web_modal",
+    "//ui/views",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/browser/ai_chat",
+    "//brave/browser/ui/webui/ai_chat",
+    "//brave/components/ai_chat/core/common",
+    "//brave/components/constants",
+    "//brave/components/resources:strings_grit",
+    "//chrome/browser:file_select_helper",
+    "//chrome/browser/profiles",
+    "//chrome/browser/tab_list",
+    "//chrome/browser/ui:browser_element_identifiers",
+    "//chrome/browser/ui/browser_web_contents_delegate",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/navigator",
+    "//chrome/browser/ui/side_panel",
+    "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+    "//chrome/browser/ui/views:status_bubble",
+    "//chrome/browser/ui/views/interaction",
+    "//chrome/browser/ui/views/side_panel",
+    "//chrome/browser/ui/webui:webui_util",
+    "//components/tabs:public",
+    "//content/public/browser",
+    "//extensions/buildflags",
+    "//ui/base",
+    "//url",
+  ]
+
+  if (enable_extensions_core) {
+    deps += [ "//extensions/browser" ]
+  }
+}

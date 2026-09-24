@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
+index d868c39fa0d094ed9a38501d3d30eb00e8aaec95..9cf5f3cc5c36dded61bbf8047865bfc783358c8c 100644
+--- a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
++++ b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
+@@ -42,6 +42,7 @@ class SpellingOptionsSubMenuObserver : public RenderViewContextMenuObserver {
+   void ExecuteCommand(int command_id) override;
+ 
+  private:
++  friend class BraveSpellingOptionsSubMenuObserver;
+   // The interface for adding a submenu to the parent.
+   raw_ptr<RenderViewContextMenuProxy> proxy_;
+ 

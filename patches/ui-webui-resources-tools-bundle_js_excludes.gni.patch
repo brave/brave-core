@@ -1,0 +1,9 @@
+diff --git a/ui/webui/resources/tools/bundle_js_excludes.gni b/ui/webui/resources/tools/bundle_js_excludes.gni
+index 544a35127374b54700255f5902e881fc5fb89d7d..378af61893f0a820f4fe5c95a1ad36e2ac0136e6 100644
+--- a/ui/webui/resources/tools/bundle_js_excludes.gni
++++ b/ui/webui/resources/tools/bundle_js_excludes.gni
+@@ -21,3 +21,4 @@ foreach(excluded_file,
+     "//${excluded_file}",
+   ]
+ }
++import("//brave/ui/webui/resources/tools/sources.gni") BUNDLE_JS_EXCLUDES += brave_resource_tools_extra_excludes

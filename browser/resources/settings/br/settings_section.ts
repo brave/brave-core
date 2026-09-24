@@ -1,0 +1,44 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import {injectStyle} from '//resources/brave/lit_overriding.js'
+import {css} from '//resources/lit/v3_0/lit.rollup.js'
+
+import {SettingsSectionElement} from '../settings_page/settings_section.js'
+
+injectStyle(SettingsSectionElement, css`
+  :host-context(settings-section:first-of-type) #header:has(.title:empty) {
+    display: none;
+  }
+
+  #header .title {
+    margin-top: calc(var(--cr-section-vertical-margin) - var(--leo-spacing-xl)) !important;
+    font-size: var(--leo-typography-heading-h4-font-size) !important;
+    font-weight: 600 !important;
+    padding-top: var(--leo-spacing-xl) !important;
+    padding-bottom: var(--leo-spacing-xl) !important;
+    margin-bottom: 0 !important;
+    letter-spacing: 0 !important;
+  }
+
+  #card {
+    margin-bottom: var(--leo-spacing-xl);
+  }
+
+  :host(:not(.expanded)) #card {
+    box-shadow: var(--leo-effect-elevation-01) !important;
+    background-color: var(--leo-color-container-background) !important;
+    border-radius: var(--leo-radius-m) !important;
+  }
+  .cr-row {
+    border-top: var(--leo-color-divider-subtle) !important;
+  }
+  .cr-row:first-child {
+    border-top: none !important;
+  }
+  .cr-centered-card-container {
+    height: auto !important;
+  }
+`)

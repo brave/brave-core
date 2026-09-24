@@ -1,0 +1,36 @@
+# Copyright (c) 2020 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at http://mozilla.org/MPL/2.0/.
+
+import("//build/config/ios/rules.gni")
+import("//ios/build/config.gni")
+
+source_set("sync") {
+  sources = [
+    "brave_sync_api.h",
+    "brave_sync_api.mm",
+    "brave_sync_worker.cc",
+    "brave_sync_worker.h",
+  ]
+
+  deps = [
+    "driver",
+    "//base",
+    "//brave/components/brave_sync",
+    "//brave/components/brave_sync:crypto",
+    "//brave/components/brave_sync:prefs",
+    "//brave/components/brave_sync:sync_service_impl_helper",
+    "//brave/components/brave_sync:time_limited_codes",
+    "//components/sync/base",
+    "//components/sync/protocol",
+    "//components/sync/service",
+    "//components/sync_device_info",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/sync/model",
+    "//ios/chrome/browser/sync/model:device_info_sync_service_factory",
+    "//ios/web/public/thread",
+  ]
+
+  frameworks = [ "Foundation.framework" ]
+}

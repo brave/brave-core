@@ -1,0 +1,189 @@
+#!/usr/bin/env vpython3
+# Copyright (c) 2022 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+"""Brave's hermetic Xcode toolchain installer.
+
+Mirrors the structure of upstream's build/mac_toolchain.py so changes there
+port cleanly. Brave-specific differences:
+
+  * Downloads a Brave-internal tarball rather than a CIPD package.
+  * Gated on USE_BRAVE_HERMETIC_TOOLCHAIN=1 in place of upstream's
+    should_use_hermetic_xcode.py check.
+  * Compares Xcode versions via packaging.version.parse (semver-aware)
+    instead of upstream's string-split lexicographic compare.
+"""
+
+from __future__ import annotations
+
+import argparse
+import os
+import platform
+import plistlib
+import subprocess
+import sys
+from pathlib import Path
+from urllib.error import URLError  # pylint: disable=no-name-in-module,import-error
+
+from packaging.version import parse as parse_version
+
+sys.path.append(str(Path(__file__).resolve().parents[2] / 'tools' / 'cr'))
+from tarball_installer import (  # pylint: disable=wrong-import-position
+    TarballInstaller)
+
+# The hash sum for the archive expected to be downloaded.
+MAC_BINARIES_HASH = '0e1a4db4cb6fc9ca78cc71872ff57f837226f1004a7fbf6ce73a5cd89345c289'
+
+# The exact size of the archive in bytes, checked on download.
+MAC_BINARIES_SIZE = 883762569
+
+# This contains binaries from Xcode 26.5 (17F42) along with the macOS 26.5 SDK
+# (25F70) and the Metal toolchain (17F42).
+MAC_SDK_OFFICIAL_VERSION = '26.5'
+MAC_SDK_OFFICIAL_BUILD_VERSION = '25F70'
+
+# The bucket prefix the archive object name is appended to.
+XCODE_TOOLCHAIN_BUCKET = (
+    'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
+    '/xcode-hermetic-toolchain/')
+
+# The archive object name; also drives the sidecar file names TarballInstaller
+# writes into MAC_BINARIES_ROOT to record what is deployed.
+XCODE_TOOLCHAIN_OBJECT = (
+    'xcode-hermetic-toolchain-'
+    f'{MAC_SDK_OFFICIAL_VERSION}-{MAC_SDK_OFFICIAL_BUILD_VERSION}.tar.gz')
+
+XCODE_TOOLCHAIN_DOWNLOAD_URL = XCODE_TOOLCHAIN_BUCKET + XCODE_TOOLCHAIN_OBJECT
+
+# The toolchain will not be downloaded if the minimum OS version is not met. 19
+# is the Darwin major version number for macOS 10.15. Xcode 26.4 17E192 only
+# runs on macOS 26.2 and newer, but some bots are still running older OS
+# versions. macOS 10.15.4, the OS minimum through Xcode 12.4, still seems to
+# work.
+MAC_MINIMUM_OS_VERSION = [19, 4]
+
+# Destination for the hermetic Xcode binaries to be extracted at.
+MAC_BINARIES_ROOT = Path(
+    __file__).resolve().parents[3] / 'build' / 'mac_files' / 'xcode_binaries'
+
+
+def _load_plist(path: Path) -> dict:
+    """Loads the plist at path and returns it as a dictionary."""
+    return plistlib.loads(path.read_bytes())
+
+
+def _platform_meets_hermetic_xcode_requirements() -> bool:
+    if sys.platform == 'darwin':
+        needed = MAC_MINIMUM_OS_VERSION
+        major_version = [
+            int(v) for v in platform.release().split('.')[:len(needed)]
+        ]
+        return major_version >= needed
+    return sys.platform.startswith('linux')
+
+
+def _use_hermetic_toolchain() -> bool:
+    return os.environ.get('USE_BRAVE_HERMETIC_TOOLCHAIN') == '1'
+
+
+def _get_hermetic_xcode_version() -> str:
+    plist_path = MAC_BINARIES_ROOT / 'Contents/version.plist'
+    if not plist_path.exists():
+        return ''
+    return _load_plist(plist_path)['CFBundleShortVersionString']
+
+
+def _install_xcode_binaries() -> int:
+    """Installs the Xcode binaries needed to build Brave and accepts the
+    license."""
+    installer = TarballInstaller.for_object(
+        MAC_BINARIES_ROOT, XCODE_TOOLCHAIN_BUCKET, {
+            'object_name': XCODE_TOOLCHAIN_OBJECT,
+            'sha256sum': MAC_BINARIES_HASH,
+            'size_bytes': MAC_BINARIES_SIZE,
+        })
+    try:
+        installer.install()
+    except URLError:
+        print('Failed to download hermetic Xcode: '
+              f'{XCODE_TOOLCHAIN_DOWNLOAD_URL}')
+        raise
+
+    if sys.platform != 'darwin':
+        return 0
+
+    # Accept the license for this version of Xcode if it's newer than the
+    # currently accepted version.
+    hermetic_xcode_version_plist_path = (MAC_BINARIES_ROOT /
+                                         'Contents/version.plist')
+    hermetic_xcode_version_plist = _load_plist(
+        hermetic_xcode_version_plist_path)
+    hermetic_xcode_version = (
+        hermetic_xcode_version_plist['CFBundleShortVersionString'])
+
+    hermetic_xcode_license_path = (MAC_BINARIES_ROOT /
+                                   'Contents/Resources/LicenseInfo.plist')
+    hermetic_xcode_license_plist = _load_plist(hermetic_xcode_license_path)
+    hermetic_xcode_license_version = hermetic_xcode_license_plist['licenseID']
+
+    should_overwrite_license = True
+    current_license_path = Path(
+        '/Library/Preferences/com.apple.dt.Xcode.plist')
+    if current_license_path.exists():
+        current_license_plist = _load_plist(current_license_path)
+        xcode_version = current_license_plist.get(
+            'IDEXcodeVersionForAgreedToGMLicense')
+        if (xcode_version is not None and parse_version(xcode_version)
+                >= parse_version(hermetic_xcode_version)):
+            should_overwrite_license = False
+
+    if not should_overwrite_license:
+        return 0
+
+    # Use puppet's sudoers script to accept the license if it's available.
+    license_accept_script = Path('/usr/local/bin/xcode_accept_license.py')
+    if license_accept_script.exists():
+        args = [
+            'sudo', license_accept_script, hermetic_xcode_version,
+            hermetic_xcode_license_version
+        ]
+        subprocess.check_call(args)
+        return 0
+
+    # Otherwise manually accept the license. This will prompt for sudo.
+    print('Accepting new Xcode license. Requires sudo.')
+    sys.stdout.flush()
+    args = [
+        'sudo', 'defaults', 'write', current_license_path,
+        'IDEXcodeVersionForAgreedToGMLicense', hermetic_xcode_version
+    ]
+    subprocess.check_call(args)
+    args = [
+        'sudo', 'defaults', 'write', current_license_path,
+        'IDELastGMLicenseAgreedTo', hermetic_xcode_license_version
+    ]
+    subprocess.check_call(args)
+    args = ['sudo', 'plutil', '-convert', 'xml1', current_license_path]
+    subprocess.check_call(args)
+
+    return 0
+
+
+def main() -> int:
+    if not _use_hermetic_toolchain():
+        print('Brave hermetic toolchain is not configured')
+        return 0
+
+    parser = argparse.ArgumentParser(description='Download hermetic Xcode.')
+    parser.parse_args()
+
+    if not _platform_meets_hermetic_xcode_requirements():
+        print('OS version does not support hermetic Xcode toolchain.')
+        return 0
+
+    return _install_xcode_binaries()
+
+
+if __name__ == '__main__':
+    sys.exit(main())

@@ -1,0 +1,83 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+package org.chromium.chrome.browser.contextmenu;
+
+import android.content.Context;
+
+import androidx.browser.customtabs.CustomContentAction;
+
+import org.chromium.chrome.R;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.share.ShareDelegate;
+import org.chromium.chrome.browser.shields.UrlSanitizerServiceFactory;
+import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
+import org.chromium.components.embedder_support.contextmenu.ContextMenuItemDelegate;
+import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDelegate;
+import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
+import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
+
+import java.util.List;
+import java.util.function.Supplier;
+
+public class BraveChromeContextMenuPopulator extends ChromeContextMenuPopulator {
+    // To be deleted via bytecode and super field to be used
+    private ContextMenuItemDelegate mItemDelegate;
+    // To be deleted via bytecode and super field to be used
+    private ContextMenuParams mParams;
+
+    public BraveChromeContextMenuPopulator(
+            ContextMenuItemDelegate itemDelegate,
+            Supplier<ShareDelegate> shareDelegate,
+            List<CustomContentAction> customContentActions,
+            @ContextMenuMode int mode,
+            Context context,
+            ContextMenuParams params,
+            ContextMenuNativeDelegate nativeDelegate) {
+        super(
+                itemDelegate,
+                shareDelegate,
+                customContentActions,
+                mode,
+                context,
+                params,
+                nativeDelegate);
+    }
+
+    @Override
+    public List<ModelList> buildContextMenu() {
+        List<ModelList> groupedItems = super.buildContextMenu();
+        // Hide the "Open in new tab in group" link context menu item when the Brave "Enable tab
+        // groups" master switch is off.
+        if (!BraveTabUiFeatureUtilities.isTabGroupsEnabled()) {
+            for (ModelList group : groupedItems) {
+                BraveTabUiFeatureUtilities.removeMenuItems(
+                        group, R.id.contextmenu_open_in_new_tab_in_group);
+            }
+        }
+        return groupedItems;
+    }
+
+    @Override
+    public boolean onItemSelected(int itemId) {
+        if (itemId != R.id.contextmenu_copy_clean_link) {
+            return super.onItemSelected(itemId);
+        }
+        UrlSanitizerServiceFactory.getInstance()
+                .sanitizeUrl(
+                        getProfile(),
+                        mParams.getUnfilteredLinkUrl().getSpec(),
+                        result ->
+                                mItemDelegate.onSaveToClipboard(
+                                        result, ContextMenuItemDelegate.ClipboardType.LINK_URL));
+
+        return true;
+    }
+
+    private Profile getProfile() {
+        assert false : "This method should be overridden via bytecode manipulation!";
+        return null;
+    }
+}

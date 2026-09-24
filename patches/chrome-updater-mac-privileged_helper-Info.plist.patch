@@ -1,0 +1,13 @@
+diff --git a/chrome/updater/mac/privileged_helper/Info.plist b/chrome/updater/mac/privileged_helper/Info.plist
+index 86af8f4cb72b06221e98769376610256cac3a9a1..0af46ffc962f5ac1670a067e1153e71eb2001736 100644
+--- a/chrome/updater/mac/privileged_helper/Info.plist
++++ b/chrome/updater/mac/privileged_helper/Info.plist
+@@ -18,7 +18,7 @@
+ 	<array>
+ 		<string>identifier "${BROWSER_BUNDLE_IDENTIFIER}"</string>
+ 		<string>identifier "${BROWSER_BUNDLE_IDENTIFIER}.beta"</string>
+-		<string>identifier "${BROWSER_BUNDLE_IDENTIFIER}.canary"</string>
++		<string>identifier "${BROWSER_BUNDLE_IDENTIFIER}.nightly"</string>
+ 		<string>identifier "${BROWSER_BUNDLE_IDENTIFIER}.dev"</string>
+ 	</array>
+ </dict>

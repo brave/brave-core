@@ -1,0 +1,268 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/frame/brave_browser_frame_view_win.h"
+
+#include "base/functional/bind.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
+#include "brave/browser/ui/views/frame/brave_window_frame_graphic.h"
+#include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
+#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/views/frame/browser_caption_button_container_win.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/win/titlebar_config.h"
+#include "ui/base/hit_test.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
+#include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/gfx/geometry/transform.h"
+#include "ui/gfx/scoped_canvas.h"
+
+BraveBrowserFrameViewWin::BraveBrowserFrameViewWin(
+    BrowserWidget* browser_widget,
+    BrowserView* browser_view)
+    : BrowserFrameViewWin(browser_widget, browser_view) {
+  auto* browser = browser_view->browser();
+  DCHECK(browser);
+  frame_graphic_ =
+      std::make_unique<BraveWindowFrameGraphic>(browser->GetProfile());
+
+  auto* prefs = browser->GetProfile()->GetPrefs();
+  using_vertical_tabs_.Init(
+      brave_tabs::kVerticalTabsEnabled, prefs,
+      base::BindRepeating(&BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
+                          base::Unretained(this)));
+  showing_window_title_for_vertical_tabs_.Init(
+      brave_tabs::kVerticalTabsShowTitleOnWindow, prefs,
+      base::BindRepeating(&BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged,
+                          base::Unretained(this)));
+
+  if (auto* controller = browser->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(controller);
+    if (auto* overlay =
+            BraveBrowserView::From(browser_view)->focus_mode_top_overlay()) {
+      overlay_reveal_subscription_ =
+          overlay->RegisterRevealFractionChanged(base::BindRepeating(
+              &BraveBrowserFrameViewWin::OnTopOverlayRevealFractionChanged,
+              base::Unretained(this)));
+    }
+  }
+}
+
+BraveBrowserFrameViewWin::~BraveBrowserFrameViewWin() = default;
+
+bool BraveBrowserFrameViewWin::ShouldCaptionButtonsBeDrawnOverToolbar() const {
+  auto* browser = GetBrowserView()->browser();
+  auto* vtc = VerticalTabController::FromBrowser(browser);
+  return vtc->ShouldShowBraveVerticalTabs() &&
+         !vtc->ShouldShowWindowTitleForVerticalTabs();
+}
+
+void BraveBrowserFrameViewWin::OnVerticalTabsPrefsChanged() {
+  caption_button_container_->UpdateButtons();
+  caption_button_container_->InvalidateLayout();
+  LayoutCaptionButtons();
+}
+
+void BraveBrowserFrameViewWin::OnPaint(gfx::Canvas* canvas) {
+  BrowserFrameViewWin::OnPaint(canvas);
+
+  // Don't draw frame graphic over border outline.
+  gfx::ScopedCanvas scoped_canvas(canvas);
+  gfx::Rect bounds_to_frame_graphic(bounds());
+  if (!IsFrameCondensed()) {
+    // Native frame has 1px top border outline.
+    constexpr int kFrameBorderOutlineThickness = 1;
+    bounds_to_frame_graphic.Inset(
+        gfx::Insets::VH(0, kFrameBorderOutlineThickness));
+    canvas->ClipRect(bounds_to_frame_graphic);
+  }
+  frame_graphic_->Paint(canvas, bounds_to_frame_graphic);
+}
+
+int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
+  auto* browser = GetBrowserView()->browser();
+  if (auto* vtc = VerticalTabController::FromBrowser(browser);
+      vtc->ShouldShowBraveVerticalTabs()) {
+    if (!vtc->ShouldShowWindowTitleForVerticalTabs()) {
+      if (auto* widget = GetWidget(); !widget || !widget->IsMaximized()) {
+        return 0;
+      }
+
+      // In case maximized with Mica enabled, we should return system borders
+      // thickness.
+      return ShouldBrowserCustomDrawTitlebar(GetBrowserView())
+                 ? 0
+                 : FrameTopBorderThickness(/*restored*/ false);
+    }
+
+    if (!ShouldBrowserCustomDrawTitlebar(GetBrowserView())) {
+      // In case Mica enabled, we should extend top insets so that title bar can
+      // be visible.
+      return TopAreaHeight(restored) +
+             caption_button_container_->GetPreferredSize().height();
+    }
+  }
+
+  return BrowserFrameViewWin::GetTopInset(restored);
+}
+
+int BraveBrowserFrameViewWin::NonClientHitTest(const gfx::Point& point) {
+  const gfx::Point local_point =
+      caption_button_container_ && parent()
+          ? ConvertPointToTarget(parent(), caption_button_container_, point)
+          : point;
+
+  if (caption_button_container_) {
+    auto* browser_view = BraveBrowserView::From(GetBrowserView());
+    CHECK(browser_view);
+    if (auto* overlay = browser_view->focus_mode_top_overlay();
+        overlay && overlay->active()) {
+      if (caption_button_container_->HitTestPoint(local_point)) {
+        // While the overlay is mid-animation, report the area as HTCAPTION so
+        // the user can't half-click a sliding button. Once fully revealed, hand
+        // it to client-area routing so Views can hover and click the buttons
+        // even though they overlay the web-contents surface.
+        return overlay->is_fully_revealed() ? HTCLIENT : HTCAPTION;
+      }
+    }
+  }
+
+  auto result = BrowserFrameViewWin::NonClientHitTest(point);
+  if (result != HTCLIENT) {
+    return result;
+  }
+
+  if (caption_button_container_) {
+    // When we use custom caption button container, it could return HTCLIENT.
+    // We shouldn't override it.
+    if (caption_button_container_->HitTestPoint(local_point)) {
+      const int hit_test_result =
+          caption_button_container_->NonClientHitTest(local_point);
+      if (hit_test_result != HTNOWHERE) {
+        return hit_test_result;
+      }
+    }
+  }
+
+  auto* browser = GetBrowserView()->browser();
+  if (auto overridden_result = browser->GetFeatures()
+                                   .brave_non_client_hit_test_helper()
+                                   ->NonClientHitTest(GetBrowserView(), point);
+      overridden_result != HTNOWHERE) {
+    return overridden_result;
+  }
+
+  return result;
+}
+
+void BraveBrowserFrameViewWin::OnTopOverlayRevealFractionChanged(
+    double reveal_fraction) {
+  if (!caption_button_container_ || !caption_button_container_->layer()) {
+    return;
+  }
+
+  const int height = caption_button_container_->height();
+  caption_button_container_->layer()->SetTransform(
+      gfx::Transform::MakeTranslation(0, -height * (1.0 - reveal_fraction)));
+}
+
+bool BraveBrowserFrameViewWin::ShouldShowWindowTitle(TitlebarType type) const {
+  auto* browser = GetBrowserView()->browser();
+  if (auto* vtc = VerticalTabController::FromBrowser(browser);
+      vtc->ShouldShowBraveVerticalTabs() &&
+      vtc->ShouldShowWindowTitleForVerticalTabs() &&
+      type == TitlebarType::kCustom &&
+      !ShouldBrowserCustomDrawTitlebar(GetBrowserView())) {
+    // When using Mica, title won't be drawn by the OS. In this case, we
+    // should use our custom title
+    // TODO(sko) Possibly, there's code that setting HWND wndclass that
+    // prevents the OS from drawing the title
+    return true;
+  }
+
+  return BrowserFrameViewWin::ShouldShowWindowTitle(type);
+}
+
+void BraveBrowserFrameViewWin::LayoutCaptionButtons() {
+  BrowserFrameViewWin::LayoutCaptionButtons();
+
+  // This may look pretty weird because we're laying out
+  // |caption_button_container_| while ShouldBrowserCustomDrawTitlebar()
+  // is false. This is because when Win11's Mica titlebar is enabled, we need to
+  // show custom caption buttons over toolbar. We're forcing them visible in
+  // chromium_src/.../browser_caption_button_container_win.cc
+  if (ShouldCaptionButtonsBeDrawnOverToolbar() &&
+      !ShouldBrowserCustomDrawTitlebar(GetBrowserView())) {
+    caption_button_container_->SetX(
+        CaptionButtonsOnLeadingEdge()
+            ? 0
+            : width() - caption_button_container_->width());
+  }
+
+  auto* browser = GetBrowserView()->browser();
+  if (auto* vtc = VerticalTabController::FromBrowser(browser);
+      vtc->ShouldShowBraveVerticalTabs()) {
+    // TODO(https://github.com/brave/brave-browser/issues/55744): Investigate
+    // why calculated container height is 1px longer than around.(ex, title bar
+    // or toolbar height).
+    int caption_button_container_height_delta = -1;
+
+    if (!vtc->ShouldShowWindowTitleForVerticalTabs()) {
+      // Upstream added 2px vertical padding but it doesn't fit with brave.
+      // See BrowserFrameViewWin::TitlebarMaximizedVisualHeight().
+      caption_button_container_height_delta += -2;
+    }
+    auto size = caption_button_container_->size();
+    size.Enlarge(0, caption_button_container_height_delta);
+    caption_button_container_->SetSize(size);
+  }
+
+  // See the comment in BraveOpaqueBrowserFrameView::Layout().
+  static_cast<BraveToolbarView*>(GetBrowserView()->toolbar())
+      ->UpdateHorizontalPadding();
+}
+
+int BraveBrowserFrameViewWin::FrameTopBorderThickness(bool restored) const {
+  const bool is_fullscreen =
+      (browser_widget()->IsFullscreen() || IsMaximized()) && !restored;
+
+  if (is_fullscreen) {
+    return BrowserFrameViewWin::FrameTopBorderThickness(restored);
+  }
+
+  auto* browser = GetBrowserView()->browser();
+  if (auto* vtc = VerticalTabController::FromBrowser(browser);
+      vtc->ShouldShowBraveVerticalTabs() &&
+      !vtc->ShouldShowWindowTitleForVerticalTabs()) {
+    return 0;
+  }
+
+  return BrowserFrameViewWin::FrameTopBorderThickness(restored);
+}
+
+void BraveBrowserFrameViewWin::OnFocusModeToggled(bool enabled) {
+  if (!caption_button_container_) {
+    return;
+  }
+  if (enabled) {
+    if (!caption_button_container_->layer()) {
+      caption_button_container_->SetPaintToLayer();
+      caption_button_container_->layer()->SetFillsBoundsOpaquely(false);
+    }
+  } else if (caption_button_container_->layer()) {
+    caption_button_container_->DestroyLayer();
+  }
+}
+
+BEGIN_METADATA(BraveBrowserFrameViewWin)
+END_METADATA

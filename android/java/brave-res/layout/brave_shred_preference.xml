@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this
+ * file, You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:focusable="false">
+
+
+    <org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout
+        android:id="@+id/radio_button_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <org.chromium.components.browser_ui.widget.BraveRadioButtonWithDescriptionRight
+            android:id="@+id/auto_shred_never_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:primaryText="@string/brave_shields_auto_shred_never_mode_text"
+            app:descriptionText="@string/brave_shields_auto_shred_never_mode_description_text"
+            app:backgroundStyle="none" />
+
+        <org.chromium.components.browser_ui.widget.BraveRadioButtonWithDescriptionRight
+            android:id="@+id/auto_shred_site_tab_closed_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/min_touch_target_size"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            app:primaryText="@string/brave_shields_auto_shred_site_tab_closed_mode_text"
+            app:descriptionText="@string/brave_shields_auto_shred_site_tab_closed_mode_description_text"
+            app:backgroundStyle="none" />
+
+        <org.chromium.components.browser_ui.widget.BraveRadioButtonWithDescriptionRight
+            android:id="@+id/auto_shred_app_close_mode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="@dimen/min_touch_target_size"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            app:primaryText="@string/brave_shields_auto_shred_app_close_mode_text"
+            app:descriptionText="@string/brave_shields_auto_shred_app_close_mode_description_text"
+            app:backgroundStyle="none" />
+
+    </org.chromium.components.browser_ui.widget.RadioButtonWithDescriptionLayout>
+
+</LinearLayout>

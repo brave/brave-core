@@ -1,0 +1,217 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+import styled from 'styled-components'
+import * as leo from '@brave/leo/tokens/css/variables'
+
+import { WalletButton, Text, Column } from '../shared/style'
+import WarningTriangle from '../../assets/svg-icons/warning-triangle.svg'
+
+interface StyleProps {
+  orb: string
+  warningType: 'warning' | 'danger'
+}
+
+export const StyledWrapper = styled.div`
+  display: flex;
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  background-color: ${leo.color.page.background};
+`
+
+export const TopRow = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  width: 100%;
+  padding: 15px 15px 0px 15px;
+`
+
+export const CenterColumn = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 100%;
+`
+
+export const AddressAndOrb = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+`
+
+export const AddressText = styled(Text)`
+  cursor: default;
+  margin-right: 12px;
+`
+
+export const PanelTitle = styled(Text)`
+  text-align: center;
+  width: 90%;
+  margin-bottom: 6px;
+`
+
+export const Description = styled(Text)`
+  width: 90%;
+  text-align: center;
+  margin-bottom: 12px;
+`
+
+export const TabRow = styled.div`
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  flex-direction: row;
+  width: 90%;
+  margin-bottom: 10px;
+`
+
+export const URLText = styled(Text)`
+  margin-bottom: 8px;
+  max-width: 80%;
+  word-break: break-word;
+`
+
+export const WarningBox = styled.div<Partial<StyleProps>>`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: column;
+  box-sizing: border-box;
+  border-radius: 4px;
+  width: 90%;
+  padding: 10px;
+  margin-bottom: 14px;
+  background-color: ${(p) =>
+    p.warningType === 'danger'
+      ? leo.color.systemfeedback.errorBackground
+      : leo.color.systemfeedback.warningBackground};
+  overflow-y: auto;
+`
+
+export const WarningBoxTitleRow = styled.div`
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  flex-direction: row;
+  flex-wrap: wrap;
+`
+
+export const WarningText = styled(Text)`
+  text-align: left;
+`
+
+export const WarningBoxIcon = styled.div<
+  Partial<Pick<StyleProps, 'warningType'>>
+>`
+  mask-size: 100%;
+  background-color: ${(p) =>
+    p.warningType === 'warning'
+      ? leo.color.systemfeedback.warningIcon
+      : leo.color.systemfeedback.errorIcon};
+  -webkit-mask-image: url(${WarningTriangle});
+  mask-image: url(${WarningTriangle});
+`
+
+export const WarningIcon = styled(WarningBoxIcon)`
+  width: 18px;
+  height: 18px;
+  margin-right: 6px;
+`
+
+export const LearnMoreButton = styled(WalletButton)`
+  font: ${leo.font.small.regular};
+  letter-spacing: 0.01em;
+  color: ${leo.color.button.background};
+  background: none;
+  cursor: pointer;
+  outline: none;
+  border: none;
+  margin: 0px;
+  padding: 0px;
+`
+
+// Floating card panel styles
+export const Background = styled.div`
+  background-color: ${leo.color.container.background};
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+`
+
+export const Backdrop = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.2);
+`
+
+export const FloatingCard = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: ${leo.color.container.background};
+  box-shadow: 0px 10px 48px 0px ${leo.effect.elevation['05']};
+`
+
+export const ConfirmationInfoLabel = styled(Text)`
+  font: ${leo.font.small.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.small};
+`
+
+export const ConfirmationInfoText = styled(Text)`
+  font: ${leo.font.small.regular};
+  letter-spacing: ${leo.typography.letterSpacing.small};
+`
+
+export const ConfirmationButtonLink = styled(WalletButton)`
+  --leo-icon-size: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  background: none;
+  font: ${leo.font.small.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.small};
+  color: ${leo.color.text.interactive};
+`
+
+export const ConfirmationIconButton = styled(WalletButton)`
+  --leo-icon-size: 16px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: row;
+  gap: 2px;
+  padding: 0px;
+  margin: 0px;
+  border: none;
+  background: none;
+  font: ${leo.font.small.semibold};
+  letter-spacing: ${leo.typography.letterSpacing.small};
+  color: ${leo.color.text.primary};
+`
+
+export const ScrollableColumn = styled(Column)`
+  overflow-x: hidden;
+  overflow-y: auto;
+`

@@ -1,0 +1,495 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>NYC investigators interview fired social services official in probe of Commissioner Gary Jenkins’ shelter slipup: sources</title><body id="article"><h1 class="title metadata">NYC investigators interview fired social services official in probe of Commissioner Gary Jenkins’ shelter slipup: sources</h1><p class="subhead metadata">Julia Savel, who was axed as deputy commissioner of public information at DSS on Aug. 5, sat down with the Department of Investigation officials for three hours, said the sources.</p><div class=""><p class="metadata">By Chris Sommerfeldt</p><p class="metadata date">Updated Aug. 15, 2022 09:46 PM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">City government investigators interviewed the Department of Social Services’ recently fired spokeswoman on Monday as part of a probe into allegations that her former boss tried to cover up the agency’s failure to provide housing for Latin American migrants, according to two sources directly familiar with the matter.</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">Julia Savel, who was axed as deputy commissioner of public information at DSS on Aug. 5, sat down with the Department of Investigation officials for more than three hours, said the sources, who spoke on condition of anonymity.</p><p>Advertisement</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">DOI rep Diane Struzzi declined to comment after the sit-down, as did Savel.</p><div class="figContainer"><figure class="image__FigureImage-sc-1w1bxrn-0 figImage "><picture class="Image__StyledPicture-sc-8yioqf-0 iKCNis"><source media="screen and (min-width: 992px)" srcset="https://www.nydailynews.com/resizer/1O7VV8flUUMbywEHaYF_wJoY9sk=/1440x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/tronc/I4QD2OGUKFFHNGXO4SIBJBQVC4.jpg"><source media="screen and (min-width: 768px)" srcset="https://www.nydailynews.com/resizer/b7-vdJ52PyBdx3i8qp4n54zPiks=/1024x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/tronc/I4QD2OGUKFFHNGXO4SIBJBQVC4.jpg"><source media="screen and (min-width: 0px)" srcset="https://www.nydailynews.com/resizer/NNML14ahOx8TzHmlPEuE2Krqpno=/768x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/tronc/I4QD2OGUKFFHNGXO4SIBJBQVC4.jpg"><img height="0" loading="lazy" src="https://www.nydailynews.com/resizer/1O7VV8flUUMbywEHaYF_wJoY9sk=/1440x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/tronc/I4QD2OGUKFFHNGXO4SIBJBQVC4.jpg" width="1440"></picture><figcaption class="figCap_"><p class="ImageMetadata__MetadataParagraph-sc-1gn0vty-0 hdnmjV image-metadata"><span>Julia Savel </span></p></figcaption></figure></div><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">In addition to giving testimony, Savel turned over text messages, emails and other records to DOI pertaining to her former boss, DSS Commissioner Gary Jenkins, and his handling of the city’s recent violation of the “Right to Shelter” law, the sources said.</p><p>Advertisement</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">The law requires the city to provide same-day placement in a homeless shelter to any family with young children who show up at an intake facility before 10 p.m.</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">But in late July, DSS failed to provide timely shelter to several families from Central and South America, hundreds of whom had arrived in the city in recent weeks. As a result, city officials have acknowledged that at least four families were forced to sleep on the floor of intake centers.</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">According to text messages <a href="https://www.nydailynews.com/news/politics/new-york-elections-government/ny-nyc-homeless-commissioner-gary-jenkins-julia-savel-20220811-teyemxsfvveulghvwfwszxhvbq-story.html" target="_blank">reviewed by the Daily News</a> and first reported by <a href="https://www.nbcnewyork.com/investigations/migrant-crisis/amid-shelter-crisis-nyc-agency-fires-official-who-pushed-back-on-lies-source/3817837/" target="_blank">NBC4</a> last week, Savel told a City Hall aide that Jenkins had instructed her and other DSS officials not to inform Mayor Adams’ office or the public that the families went unsheltered for longer than legally permissible.</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">“Gary was trying to not tell city hall that we broke the law,” Savel wrote in one text.</p><div class="figContainer"><figure class="image__FigureImage-sc-1w1bxrn-0 figImage "><picture class="Image__StyledPicture-sc-8yioqf-0 iKCNis"><source media="screen and (min-width: 992px)" srcset="https://www.nydailynews.com/resizer/pqPvM_fEcP6078sbg_a0pd85JJk=/1440x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/tronc/AH7S5RR26VGC5F6GLGLDTTIWBE.jpg"><source media="screen and (min-width: 768px)" srcset="https://www.nydailynews.com/resizer/KVUUuz-6zftuJbSIm39vZQ66z_s=/1024x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/tronc/AH7S5RR26VGC5F6GLGLDTTIWBE.jpg"><source media="screen and (min-width: 0px)" srcset="https://www.nydailynews.com/resizer/jxuS4BBd0-fAjtCF7qZahGAGQWI=/768x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/tronc/AH7S5RR26VGC5F6GLGLDTTIWBE.jpg"><img height="0" loading="lazy" src="https://www.nydailynews.com/resizer/pqPvM_fEcP6078sbg_a0pd85JJk=/1440x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/tronc/AH7S5RR26VGC5F6GLGLDTTIWBE.jpg" width="1440"></picture><figcaption class="figCap_"><p class="ImageMetadata__MetadataParagraph-sc-1gn0vty-0 hdnmjV image-metadata"><span>Department of Social Services Commissioner Gary P. Jenkins speaks during a press conference on an ongoing investigation at One Police Plaza.  </span>(Pacific Press/Pacific Press/LightRocket via Ge)</p></figcaption></figure></div><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">A few days after raising those concerns, Savel was fired. Jenkins and Adams have declined to specify why Savel got the boot.</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">Speaking at an unrelated press conference in the Bronx Monday afternoon, Adams offered a full-throated defense of Jenkins in the face of the DOI probe, which <a href="https://www.nbcnewyork.com/investigations/migrant-crisis/nyc-dept-of-investigation-opens-probe-into-alleged-shelter-cover-up-sources/3822221/" target="_blank">first came to light this past Friday</a>.</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">“I have the utmost confidence in him, I thank him for the job he’s doing and the entire team over there,” the mayor said. “I’m happy he’s part of my team.”</p><div class="figContainer"><figure class="image__FigureImage-sc-1w1bxrn-0 figImage "><picture class="Image__StyledPicture-sc-8yioqf-0 iKCNis"><source media="screen and (min-width: 992px)" srcset="https://www.nydailynews.com/resizer/P-ZaEx46kYVM10NsexFKl3xVoCY=/1440x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/tronc/T27HI4JU4FGV3JOVRVGGZHNK3Q.jpg"><source media="screen and (min-width: 768px)" srcset="https://www.nydailynews.com/resizer/dlkC-FnetAEN2cjTLQFxC4AP7kk=/1024x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/tronc/T27HI4JU4FGV3JOVRVGGZHNK3Q.jpg"><source media="screen and (min-width: 0px)" srcset="https://www.nydailynews.com/resizer/WzYfSv3WEVcqKMUg_jfoCF7e6wI=/768x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/tronc/T27HI4JU4FGV3JOVRVGGZHNK3Q.jpg"><img height="0" loading="lazy" src="https://www.nydailynews.com/resizer/P-ZaEx46kYVM10NsexFKl3xVoCY=/1440x0/filters:format(jpg):quality(70)/cloudfront-us-east-1.images.arcpublishing.com/tronc/T27HI4JU4FGV3JOVRVGGZHNK3Q.jpg" width="1440"></picture><figcaption class="figCap_"><p class="ImageMetadata__MetadataParagraph-sc-1gn0vty-0 hdnmjV image-metadata"><span>New York City Mayor Eric Adams </span>(Shawn Inglima/for New York Daily News)</p></figcaption></figure></div><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">Adams said DOI has not asked to interview anyone from his office as part of the Jenkins probe. He  dismissed concern over the matter, saying his administration has since found shelter placement for the families who went unhoused.</p><p>Advertisement</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">“There has been no attempt to cover that up,” he said.</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">Still, the Legal Aid Society and other advocacy groups said several more families than the four acknowledged by Adams have gone without shelter for longer than legally permitted.</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">At his Bronx press conference, Adams did not dispute that more families may have fallen through the cracks of the shelter system, but said he only received official reports about four. He also continued to point fingers at Texas Gov. Greg Abbott for refusing to house some of the asylum seekers in his state.</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">“We are going to provide these families with the dignity that the Texas governor failed to do,” he said.</p><p class="default__StyledText-sc-1wxyvyl-0 gaccNQ body-paragraph">The shelter crisis is being driven <a href="https://www.nydailynews.com/new-york/ny-migrants-arrive-bronx-20220813-puh3frpvsjakznjahrka6gccry-story.html" target="_blank">by waves of migrants who continue to be sent to New York</a> after crossing the U.S. southern border in hopes of seeking asylum. Many of them are fleeing violence and persecution in their home countries.</p></body>

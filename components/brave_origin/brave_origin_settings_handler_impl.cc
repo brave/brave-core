@@ -1,0 +1,104 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_origin/brave_origin_settings_handler_impl.h"
+
+#include <utility>
+
+#include "brave/components/brave_origin/brave_origin_service.h"
+#include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "build/build_config.h"
+
+namespace brave_origin {
+
+BraveOriginSettingsHandlerImpl::BraveOriginSettingsHandlerImpl(
+    BraveOriginService* brave_origin_service)
+    : brave_origin_service_(brave_origin_service) {
+  CHECK(brave_origin_service_);
+}
+
+BraveOriginSettingsHandlerImpl::~BraveOriginSettingsHandlerImpl() = default;
+
+void BraveOriginSettingsHandlerImpl::BindInterface(
+    mojo::PendingReceiver<mojom::BraveOriginSettingsHandler> receiver) {
+  receiver_.reset();
+  receiver_.Bind(std::move(receiver));
+}
+
+void BraveOriginSettingsHandlerImpl::IsBraveOriginUser(
+    IsBraveOriginUserCallback callback) {
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  std::move(callback).Run(true);
+#else
+  if (!brave_origin::IsBraveOriginFeatureEnabled()) {
+    std::move(callback).Run(false);
+    return;
+  }
+  brave_origin_service_->CheckPurchaseState(std::move(callback));
+#endif
+}
+
+void BraveOriginSettingsHandlerImpl::RefreshPurchaseState(
+    RefreshPurchaseStateCallback callback) {
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  std::move(callback).Run(true);
+#else
+  if (!brave_origin::IsBraveOriginFeatureEnabled()) {
+    std::move(callback).Run(false);
+    return;
+  }
+  brave_origin_service_->CheckPurchaseState(std::move(callback));
+#endif
+}
+
+void BraveOriginSettingsHandlerImpl::IsPolicyControlledByBraveOrigin(
+    const std::string& policy_key,
+    IsPolicyControlledByBraveOriginCallback callback) {
+  bool is_controlled =
+      brave_origin_service_->IsPolicyControlledByBraveOrigin(policy_key);
+  std::move(callback).Run(is_controlled);
+}
+
+void BraveOriginSettingsHandlerImpl::GetPolicyValue(
+    const std::string& policy_key,
+    GetPolicyValueCallback callback) {
+  if (!brave_origin::IsBraveOriginPurchased()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  std::optional<bool> value = brave_origin_service_->GetPolicyValue(policy_key);
+  std::move(callback).Run(value);
+}
+
+void BraveOriginSettingsHandlerImpl::SetPolicyValue(
+    const std::string& policy_key,
+    bool value,
+    SetPolicyValueCallback callback) {
+  if (!brave_origin::IsBraveOriginPurchased()) {
+    std::move(callback).Run(false);
+    return;
+  }
+
+  bool success = brave_origin_service_->SetPolicyValue(policy_key, value);
+  std::move(callback).Run(success);
+}
+
+void BraveOriginSettingsHandlerImpl::GetNeedsRestart(
+    GetNeedsRestartCallback callback) {
+  std::move(callback).Run(brave_origin_service_->NeedsRestart());
+}
+
+void BraveOriginSettingsHandlerImpl::ProceedFree(ProceedFreeCallback callback) {
+#if BUILDFLAG(IS_LINUX)
+  brave_origin_service_->AcceptFreeTier();
+  std::move(callback).Run(true);
+#else
+  std::move(callback).Run(false);
+#endif
+}
+
+}  // namespace brave_origin

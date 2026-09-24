@@ -1,0 +1,10 @@
+diff --git a/components/browser_ui/site_settings/android/java/res/menu/website_preferences_menu.xml b/components/browser_ui/site_settings/android/java/res/menu/website_preferences_menu.xml
+index 6bf02fcf2f10308370d06f02c8d7fa2047638e18..9c18364d4b63ad7978761f4faba770422e037be2 100644
+--- a/components/browser_ui/site_settings/android/java/res/menu/website_preferences_menu.xml
++++ b/components/browser_ui/site_settings/android/java/res/menu/website_preferences_menu.xml
+@@ -11,4 +11,5 @@ found in the LICENSE file.
+           android:title="@string/search"
+           app:showAsAction="always"
+           app:actionViewClass="androidx.appcompat.widget.SearchView" />
++    <item android:id="@+id/close_menu_id" android:icon="@drawable/btn_close" android:title="@string/settings_exit" app:showAsAction="ifRoom" app:iconTint="@color/default_icon_color_tint_list" />
+ </menu>

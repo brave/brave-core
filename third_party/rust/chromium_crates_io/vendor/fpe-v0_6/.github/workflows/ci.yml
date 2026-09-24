@@ -1,0 +1,99 @@
+name: CI checks
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    name: Build target ${{ matrix.target }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        target:
+          - wasm32-wasi
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Add target
+        run: rustup target add ${{ matrix.target }}
+      - name: cargo build
+        run: cargo build --verbose --no-default-features
+
+  test:
+    name: Test on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macOS-latest]
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@1.60.0
+        id: toolchain
+      - run: rustup override set ${{steps.toolchain.outputs.name}}
+      - name: Run tests
+        run: cargo test --verbose
+
+  bitrot:
+    name: Bitrot check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@1.60.0
+        id: toolchain
+      - run: rustup override set ${{steps.toolchain.outputs.name}}
+      # Build benchmarks to prevent bitrot
+      - name: Build benchmarks
+        run: cargo build --all --benches
+
+  clippy-test:
+    name: Clippy (MSRV)
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@1.60.0
+        id: toolchain
+      - run: rustup override set ${{steps.toolchain.outputs.name}}
+      - run: rustup component add clippy
+      - name: Run clippy
+        uses: actions-rs/clippy-check@v1
+        with:
+          name: Clippy (MSRV)
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-features --all-targets -- -D warnings
+
+  clippy-beta:
+    name: Clippy (beta)
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v3
+      - uses: dtolnay/rust-toolchain@beta
+        id: toolchain
+      - run: rustup override set ${{steps.toolchain.outputs.name}}
+      - run: rustup component add clippy
+      - name: Run Clippy (beta)
+        uses: actions-rs/clippy-check@v1
+        continue-on-error: true
+        with:
+          name: Clippy (beta)
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-features --all-targets -- -W clippy::all
+
+  doc-links:
+    name: Intra-doc links
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      # Requires #![deny(rustdoc::broken_intra_doc_links)] in crates.
+      - name: Check intra-doc links
+        run: cargo doc --document-private-items
+
+  fmt:
+    name: Rustfmt
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check formatting
+        run: cargo fmt -- --check

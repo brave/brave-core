@@ -1,0 +1,38 @@
+/* Copyright (c) 2020 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CAMPAIGNS_DATABASE_TABLE_H_
+#define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CAMPAIGNS_DATABASE_TABLE_H_
+
+#include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
+#include "brave/components/brave_ads/core/internal/database/database_table_interface.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
+
+namespace brave_ads::database::table {
+
+class Campaigns final : public TableInterface {
+ public:
+  Campaigns();
+
+  Campaigns(const Campaigns&) = delete;
+  Campaigns& operator=(const Campaigns&) = delete;
+
+  ~Campaigns() override;
+
+  void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+              const CreativeAdList& creative_ads);
+
+  // TableInterface:
+  void Create(const mojom::DBTransactionInfoPtr& mojom_db_transaction) override;
+  void Migrate(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
+               int to_version) override;
+
+ private:
+  void MigrateToV52(const mojom::DBTransactionInfoPtr& mojom_db_transaction);
+};
+
+}  // namespace brave_ads::database::table
+
+#endif  // BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CREATIVES_CAMPAIGNS_DATABASE_TABLE_H_

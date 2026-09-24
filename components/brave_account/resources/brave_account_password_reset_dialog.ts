@@ -1,0 +1,67 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
+
+import {
+  BraveAccountBrowserProxy,
+  BraveAccountBrowserProxyImpl,
+} from './brave_account_browser_proxy.js'
+import { getCss } from './brave_account_password_reset_dialog.css.js'
+import { getHtml } from './brave_account_password_reset_dialog.html.js'
+import { showError } from './brave_account_shared.js'
+
+export class BraveAccountPasswordResetDialogElement extends CrLitElement {
+  static get is() {
+    return 'brave-account-password-reset-dialog'
+  }
+
+  static override get styles() {
+    return getCss()
+  }
+
+  override render() {
+    return getHtml.bind(this)()
+  }
+
+  static override get properties() {
+    return {
+      email: { type: String },
+      isEmailValid: { type: Boolean },
+      isSubmitting: { type: Boolean, state: true },
+    }
+  }
+
+  protected async onResetPasswordButtonClicked() {
+    if (this.isSubmitting) return
+    this.isSubmitting = true
+
+    try {
+      await this.browserProxy.authentication.resetPasswordStep1(this.email)
+    } catch (e) {
+      showError('resetPassword', e)
+    }
+
+    this.isSubmitting = false
+  }
+
+  private browserProxy: BraveAccountBrowserProxy =
+    BraveAccountBrowserProxyImpl.getInstance()
+
+  protected accessor email: string = ''
+  protected accessor isEmailValid: boolean = false
+  protected accessor isSubmitting: boolean = false
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'brave-account-password-reset-dialog': BraveAccountPasswordResetDialogElement
+  }
+}
+
+customElements.define(
+  BraveAccountPasswordResetDialogElement.is,
+  BraveAccountPasswordResetDialogElement,
+)

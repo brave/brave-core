@@ -1,0 +1,39 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+
+assert(enable_playlist_webui)
+
+transpile_web_ui("playlist_ui") {
+  output_module = false
+  entry_points = [
+    [
+      "playlist",
+      rebase_path("playlist.tsx"),
+    ],
+    [
+      "videoFrameContents",
+      rebase_path("videoFrameContents.tsx"),
+    ],
+  ]
+
+  imports_from = [ "//brave/components/playlist/content/browser/resources" ]
+
+  public_deps = [
+    "//brave/components/playlist/core/common/mojom:mojom_js",
+    "//mojo/public/mojom/base",
+  ]
+
+  resource_name = "playlist"
+}
+
+pack_web_resources("generated_resources") {
+  resource_name = "playlist"
+  output_dir =
+      "$root_gen_dir/brave/components/playlist/content/browser/resources"
+  deps = [ ":playlist_ui" ]
+}

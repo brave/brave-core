@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let BraveBottomBarCoordinator override the bottom bar's button set.
+
+      Brave's bottom navigation controls are off whenever the Android bottom bar
+      flag is on, so the bottom bar takes over their button set.
+    regex:
+      re_pattern: |-
+        private (List<ActionConfig> createActionConfigs\()
+      replace: |-
+        protected \1
+  - description: |-
+      Let BraveBottomBarCoordinator drive the visibility of the buttons it adds.
+
+      Brave shares the home slot between the home button and the new tab button,
+      showing whichever matches the homepage setting, so it needs to flip their
+      requested visibility the way BottomBarMediator does for its own buttons.
+    regex:
+      re_pattern: |-
+        private (final BottomBarButtonManager mButtonManager;)
+      replace: |-
+        protected \1
+  - description: |-
+      Instantiate Brave's bottom bar button manager.
+
+      BraveBottomBarButtonManager makes Brave's search accelerator the centre
+      button, in place of upstream's new tab button.
+    regex:
+      re_pattern: |-
+        new (BottomBarButtonManager\()
+      replace: |-
+        new Brave\1

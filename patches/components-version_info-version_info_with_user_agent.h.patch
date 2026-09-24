@@ -1,0 +1,13 @@
+diff --git a/components/version_info/version_info_with_user_agent.h b/components/version_info/version_info_with_user_agent.h
+index beb5a2c97a796a78718ac27c240abdf250bf4de1..94322ee62d0b36978fa8bdf68a757ef8a2bf6ea9 100644
+--- a/components/version_info/version_info_with_user_agent.h
++++ b/components/version_info/version_info_with_user_agent.h
+@@ -19,7 +19,7 @@ std::string GetProductNameAndVersionForReducedUserAgent();
+ // Returns the product name and version information for the User-Agent header,
+ // in the format: Chrome/<major_version>.<minor_version>.<build>.<patch>.
+ constexpr std::string_view GetProductNameAndVersionForUserAgent() {
+-  return "Chrome/" PRODUCT_VERSION;
++  return "Chrome/" BRAVE_CHROMIUM_VERSION;
+ }
+ 
+ }  // namespace version_info

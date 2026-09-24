@@ -1,0 +1,25 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+/* #css_wrapper_metadata_start
+ * #type=style-lit
+ * #import=./cr_slider-chromium.css.js
+ * #scheme=relative
+ * #include=cr-slider-chromium
+ * #css_wrapper_metadata_end */
+
+:host {
+  --cr-slider-active-color: var(--leo-color-button-background);
+  --cr-slider-container-color: var(--leo-color-primary-20);
+  --cr-slider-container-disabled-color: color-mix(in srgb, var(--cr-slider-container-color), transparent 40%);
+  --cr-slider-knob-color-rgb: 69, 81, 209;
+}
+
+@media (prefers-color-scheme: dark) {
+  :host {
+    --cr-slider-knob-color-rgb: 193, 198, 255;
+  }
+}
+

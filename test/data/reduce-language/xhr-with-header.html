@@ -1,0 +1,15 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <title></title>
+        <script>
+         const xhr = new XMLHttpRequest();
+         xhr.open('GET', 'empty.json', true);
+         xhr.setRequestHeader('Accept-Language', 'en');
+         xhr.onload = function(e) {
+             document.title = "OK";
+         }
+         xhr.send();
+        </script>
+    </head>
+</html>

@@ -1,0 +1,625 @@
+<meta http-equiv="Content-Security-Policy" content="script-src 'none'; style-src 'sha256-v7Sjpv9uQQxtcKB6gHVHlOMJJybM68GhtfAotGfNbFw='">
+<style id="brave_speedreader_style">h1, h2, h3, h4, h5, h6 {
+  font-weight: bold;
+}
+
+h1 {
+  font-size: 2.2em;
+  line-height: 1.3em;
+  margin-top: 0;
+  margin-bottom: 0.5em;
+}
+
+h2 {
+  font-size: 1.5em;
+  line-height: 1.4em;
+}
+
+h3 {
+  font-size: 1.2em;
+  line-height: 1em;
+}
+
+h4, h5, h6 {
+  font-size: 1.1em;
+  line-height: 1.3em;
+}
+
+p {
+  font-size: 1.2em;
+  line-height: 1.5em;
+}
+
+li {
+  font-size: 1.2rem;
+  line-height: 1.5rem;
+}
+
+.subhead {
+  font-weight: normal;
+}
+
+.subhead, .subheading {
+  font-size: 1.5em;
+  line-height: 1em;
+  font-weight: normal;
+  color: var(--summary-text-color);
+}
+
+.metadata {
+  margin-top: -0.75em;
+  margin-bottom: 1.45em;
+}
+
+.metadata * {
+  font-size: 1em !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  display: inline !important;
+  margin: 0;
+}
+
+.metadata :matches(.byline, .date) {
+  display: inline !important;
+}
+
+.date {
+  display: inline-block;
+}
+
+.show_original {
+  display: inline-block;
+  float: right;
+}
+
+.metadata :matches(ul, ol, li) {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+.title+.metadata {
+  margin-top: -0.75em;
+}
+
+.subhead+.metadata {
+  margin-top: -0.7em;
+}
+
+a {
+  text-decoration: underline;
+  text-decoration-color: inherit;
+}
+
+a[href] {
+  color: #4C54D2;
+}
+
+#article {
+  text-rendering: optimizeLegibility;
+  font-family: "Georgia", "Times New Roman", Times, serif;
+  user-select: unset;
+}
+
+#article * {
+  /* Scale down anything larger than our view. Max-width maintains aspect ratios on images. */
+  max-width: 680;
+}
+
+#article img {
+  /* By default, images are centered on their own line. */
+  margin-bottom: 0.5em;
+  display: block;
+  height: auto;
+}
+
+#article img.reader-image-tiny {
+  display: inline;
+  margin: 0;
+}
+
+#article .leading-image, figure, .auxiliary {
+  margin-bottom: 1.15em;
+}
+
+#article .leading-image img {
+  margin: auto;
+  display: block;
+  clear: both;
+}
+
+#article .leading-image .credit {
+  margin: 0;
+}
+
+#article .leading-image, #article figure {
+  font-size: 0.85em;
+  line-height: 1.4em;
+}
+
+body {
+  background-color: var(--article-background-color);
+  color: var(--article-text-color);
+  padding-left: 120px !important;
+}
+
+body.watch #article .leading-image,
+body.watch #article figure {
+  font-size: 0.8125rem;
+}
+
+#article .leading-image :matches(.caption, .credit), #article figcaption {
+  margin-top: 0.8em;
+}
+
+#article figcaption>* {
+  margin-top: 0.25em;
+  margin-bottom: 0.25em;
+}
+
+#article :matches(.leading-image, figure) p {
+  margin-top: 0.4em;
+  margin-bottom: 0.4em;
+}
+
+#article .leading-image .credit+.caption {
+  margin-top: 0.1em;
+}
+
+#article .auxiliary {
+  display: block;
+  clear: both;
+  font-size: 0.75em;
+  line-height: 1.4em;
+  text-align: start;
+}
+
+#article .pullquote {
+  font-size: 1.42em;
+  line-height: 1.38em;
+  font-weight: 300;
+  font-style: italic;
+}
+
+#article .pullquote:not(.float) {
+  margin-top: 1em;
+  margin-bottom: 1em;
+  -webkit-margin-start: 1em;
+  max-width: calc(100% - 1em);
+}
+
+#article .auxiliary>*:not(img) {
+  -webkit-margin-start: 0;
+}
+
+#article .auxiliary.float img, #article .auxiliary>*:first-child:not(img) {
+  margin: 0;
+}
+
+
+article {
+  text-align: start;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+article.rtl {
+  direction: rtl;
+}
+
+
+/* If the element immediately after an image is inline, it might bump up against the image. */
+
+#article .auxiliary img+* {
+  display: block;
+}
+
+#article .auxiliary figcaption {
+  font-size: 100%;
+}
+
+#article .auxiliary * {
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+body:not(.watch) #article .float.left {
+  float: left;
+  margin-right: 20px;
+}
+
+body:not(.watch) #article .float.right {
+  float: right;
+  margin-left: 20px;
+}
+
+body.watch #article .float {
+  width: auto !important;
+}
+
+#article .clear {
+  clear: both;
+}
+
+#article ul.list-style-type-none, #article ol.list-style-type-none, #article .list-style-type-none>li {
+  list-style-type: none;
+  -webkit-padding-start: 0;
+}
+
+#article div.scrollable {
+  overflow-x: scroll;
+  word-wrap: normal;
+}
+
+#article div.scrollable table {
+  max-width: none;
+}
+
+#article-summary {
+  font-size: 1.5em;
+  line-height: 1.4em;
+  color: var(--summary-text-color);
+}
+
+#article .leading-image, #article figure, #article .auxiliary:not(.pullquote) {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+#article .leading-image,
+#article figure,
+#article .auxiliary,
+#article .pullquote {
+  color: var(--quote-text-color);
+}
+
+figure {
+  margin: 0;
+}
+
+body:not(.watch) figure:not(.float) {
+  margin-top: 1.4em;
+  margin-bottom: 1.4em;
+}
+
+hr {
+  position: relative;
+  display: block;
+  width: 100%;
+  margin: 2.5em 0 3.5em;
+  padding: 0;
+  background: rgba(0, 0, 0, 0.2);
+  height: 1px;
+  border: 0;
+}
+
+pre {
+  font-family: "Lucida Console", Courier, monospace;
+  font-size: 0.87em;
+  line-height: 1.45em;
+}
+
+pre,
+code {
+  white-space: pre-wrap;
+}
+
+blockquote,
+q {
+  color: var(--quote-text-color);
+}
+
+blockquote:not(.pullquote) {
+  margin-left: 2px;
+  margin-right: 6px;
+  padding-left: 16px;
+}
+
+blockquote:not(.simple):not(.pullquote) {
+  border-left: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+q.pullquote {
+  display: block;
+}
+
+.pullquote q::before, .pullquote q::after, q.pullquote::before, q.pullquote::after {
+  content: "";
+}
+
+/* Collapse excess whitespace. */
+
+article p>p:empty, article div>p:empty, article p>div:empty, article div>div:empty, article p+br, article img+br {
+  display: none;
+}
+
+article table {
+  font-size: 0.9em;
+  text-align: start;
+  word-wrap: break-word;
+  border-collapse: collapse;
+}
+
+article table td, article table th {
+  padding: 0.25em 0.5em;
+  border: 1px solid rgb(216, 216, 216);
+}
+
+.delimiter {
+  margin-left: 0.45em;
+  margin-right: 0.45em;
+  margin-top: 0.07em;
+  padding: 0;
+}
+
+.metadata.singleline .delimiter::after {
+  content: "•";
+}
+
+.metadata:not(.singleline) .delimiter {
+  content: "";
+  display: block !important;
+}
+
+article table th {
+  background-color: var(--article-background-color);
+}
+
+article sup, article sub {
+  line-height: 1;
+  font-size: 0.75em;
+}
+
+.hidden {
+  display: none;
+}
+
+@media screen {
+  body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    -webkit-text-size-adjust: none;
+  }
+
+  body.mac {
+    background-color: transparent;
+  }
+
+  #article {
+    pointer-events: auto;
+    overflow: visible;
+  }
+
+  #article:focus {
+    outline: none;
+  }
+
+  #article {
+    margin-left: auto;
+    margin-right: auto;
+    padding-top: 4.5em;
+    padding-bottom: 35px;
+    position: relative;
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
+  }
+
+  body article {
+    padding: 0 4px;
+  }
+
+  #article {
+    margin-top: 0;
+    border-top: none;
+  }
+
+  #article:last-of-type {
+    padding-bottom: 45px;
+  }
+
+  article video {
+    width: 100%;
+    height: auto;
+    position: relative;
+  }
+}
+
+#article .extendsBeyondTextColumn {
+  max-width: none;
+}
+
+.iframe-wrapper {
+  background-color: black;
+  max-width: none;
+  text-align: center;
+}
+
+iframe {
+  border: 0;
+}
+
+@media only screen and (min-width: 780px) {
+  #article {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  /* Readable margins. */
+  /* body #article {
+    max-width: 83.2ex;
+  } */
+}
+
+/* Use slightly smaller page padding when vertically constrained. */
+
+@media screen and (max-height: 700px) {
+  #article {
+    padding-top: 32px;
+    padding-bottom: 32px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme]) {
+    --background-color: #17171F;
+    --article-background-color: #1E2029;
+    --summary-text-color: #C2C4CF;
+    --article-text-color: #F0F2FF;
+    --quote-text-color: #C2C4CF;
+  }
+}
+
+html,
+html[data-theme='light'] {
+  --background-color: #F8F9FA;
+  --article-background-color: #FFFFFF;
+  --summary-text-color: #495057;
+  --article-text-color: #212529;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+
+  background-color: var(--background-color);
+}
+
+html[data-theme='sepia'] {
+  --background-color: #E9E0CA;
+  --article-background-color: #F2EBD9;
+  --summary-text-color: #5B4635;
+  --article-text-color: #331E05;
+  --quote-text-color: rgba(0, 0, 0, 0.65);
+}
+
+html[data-theme='dark'] {
+  --background-color: #17171F;
+  --article-background-color: #1E2029;
+  --summary-text-color: #C2C4CF;
+  --article-text-color: #F0F2FF;
+  --quote-text-color: #C2C4CF;
+}</style><title>Did overturning Roe hand Democrats a lifeline? The view from Virginia.</title><meta charset="utf-8"/><body id="article"><h1 class="title metadata">Did overturning Roe hand Democrats a lifeline? The view from Virginia.</h1><p class="subhead metadata">Pundits originally predicted that overturning Roe wouldn’t have much impact on November’s elections. But the summer is suggesting otherwise.</p><div class=""><p class="metadata">By Story Hinckley</p><p class="metadata date">Updated Aug. 15, 2022 04:27 PM</p><a class="metadata show_original" href="" id="c93e2206-2f31-4ddc-9828-2bb8e8ed940e"></a></div><hr class=""></hr>
+																									<p>
+Culpeper, Va.</p>
+																<p>Wearing a pink linen blazer and her congressional pin on a necklace chain, Abigail Spanberger bounces in the passenger seat of Roy Whitlock’s old truck as the octogenarian farmer drives his congresswoman to the wooded pasture where his cattle are hiding from the August sun.&nbsp;</p><p>Mr. Whitlock tells Ms. Spanberger about how his life has gotten harder recently, now that filling up his truck with gas a few times is equivalent to the profit from selling a calf.</p><p>The farm is one of several stops on a Field to Fridge Supply Chain Tour, in which Representative Spanberger is meeting with farmers, business owners, and voters in Virginia’s new 7th Congressional District that stretches from the northern suburbs to western farmlands. She has just come from a roundtable where farmers were lamenting the labor shortages impacting almost every area of their work, from truck drivers to veterinarians.&nbsp;</p><div class="editor-intro row">
+<h2 class="title text-center">Why We Wrote This</h2>
+<p>Pundits originally predicted that overturning Roe wouldn’t have much impact on November’s elections. But the summer is suggesting otherwise.</p>
+</div><p>Concerns about labor shortages, inflation, gun violence, democracy, and an array of other issues have led a vast majority of Americans to say the country is on the “<a href="https://www.monmouth.edu/polling-institute/reports/monmouthpoll_us_080322/" target="_self">wrong track</a>” ahead of this fall’s midterm elections. That pessimism, coupled with President Joe Biden’s low approval ratings and the tendency for post-presidential midterms to swing against the party in power, has led to grim election forecasts for the Democratic Party.&nbsp;</p><p>But in late June, following the Supreme Court ruling in Dobbs v. Jackson Women’s Health Organization that overturned Roe v. Wade, Democratic strategists and pollsters saw a glimmer of hope. With polls showing the <a href="https://www.pewresearch.org/fact-tank/2022/06/13/about-six-in-ten-americans-say-abortion-should-be-legal-in-all-or-most-cases-2/" target="_self">majority of Americans</a> support legal abortion, and protests erupting across the country, some Democrats reorganized their campaign messaging around a woman’s right to choose. Subsequent electoral tests this summer, such as on a Kansas ballot measure and <a href="https://twitter.com/Redistrict/status/1557372057947619328" target="_self">special elections in Minnesota and Nebraska</a>, suggested the Dobbs decision might work to counteract the “red wave” pollsters had predicted this November.&nbsp;</p><p>To be sure, Democrats still face a challenging landscape – especially in competitive House races like Virginia’s 7th District. As Ms. Spanberger knows, many voters have serious economic concerns, which are often the top priority when casting a ballot. Abortion is likely to be just one issue among many that voters will consider when they head to the polls. Still, it appears to be giving Democrats a measurable boost, scrambling the political calculus and suggesting a Republican takeover of Congress is no longer a slam-dunk.&nbsp;&nbsp;</p><p>“Let’s say, hypothetically, the economy is where it was three years ago, Joe Biden has a 50% job approval rating and the country is humming along – and then we have a reversal of Roe. That could really make a difference,” says Charlie Cook, a political analyst and founder of the Cook Political Report. “But that’s not the circumstance that we have. Will it motivate some people? Yes. But there are so many other things that are going on.”&nbsp;</p><div class="in_story_embed embed-object embed-image ">
+								
+<figure class="embed ezc-image ">
+																															
+	
+	
+	
+	
+	
+	
+	
+	
+		
+		
+		<picture>
+			
+			
+				
+								
+															
+				
+				
+																										
+				
+													
+				<source data-srcset="//images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20farmer.jpg?alias=standard_300x200 1x, //images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20farmer.jpg?alias=standard_600x400 2x" media="(max-width: 40em)">
+			
+				
+								
+															
+				
+				
+																										
+				
+													
+				<source data-srcset="//images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20farmer.jpg?alias=standard_600x400 1x, //images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20farmer.jpg?alias=standard_900x600 2x" media="(max-width: 64em)">
+			
+				
+								
+															
+				
+				
+									
+				
+				
+				
+				<source data-srcset="//images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20farmer.jpg?alias=standard_900x600" media="(min-width: 64em)">
+						
+
+			<img alt="" class=" lazyload" data-sizes="auto" data-src="//images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20farmer.jpg?alias=standard_900x600" src="//images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20farmer.jpg?alias=standard_900x600">
+		</picture>
+
+			</figure>
+	<div class="image-data">
+
+		
+					<p><span class="eza-credit">Story Hinckley/The Christian Science Monitor</span></p>
+							<p>Representative Spanberger tours Roy Whitlock's farm in Culpeper, Virginia, on Aug. 8, 2022. Mr. Whitlock, like many farmers, says he has been hit hard by inflation and labor shortages.</p>
+						</div>	</div><h2>A shift toward Democrats</h2><p>Polling suggests the national landscape has improved for Democrats in recent weeks.&nbsp;</p><p>Just last week, for the first time this year, Democrats eked out a narrow lead (albeit of 0.1%) over Republicans in <a href="https://projects.fivethirtyeight.com/polls/generic-ballot/" target="_self">FiveThirtyEight’s</a>&nbsp;generic congressional ballot test. And a <a href="https://www.monmouth.edu/polling-institute/reports/monmouthpoll_us_080322/" target="_self">recent Monmouth University poll</a> found more Americans would prefer Democratic over Republican control of Congress, an improvement from June. Likewise, a Fox News poll from last week found voters evenly split between preferring a Democrat or a Republican candidate for Congress, after Republicans had held a 7-point advantage in May – with the shift <a href="https://www.foxnews.com/official-polls/fox-news-poll-race-congress-tightens" rel="noopener" target="_blank">coming mainly from women</a>.</p><p>“There is a nervousness that’s there among Republican strategists that wasn’t really there 30 or 45 days ago,” says Mr. Cook. “You don’t have to paint them a picture about how this could go the wrong way.”&nbsp;</p><p>Democrats have also gained confidence from recent legislative wins – particularly the Inflation Reduction Act, which takes historic steps toward addressing climate change, along with lowering the costs of prescription drugs and raising taxes on corporations. Passage of that bill came shortly after the killing of Al Qaeda’s leader in Afghanistan, gas prices dropping below $4 a gallon, and a strong jobs report, rounding out a spate of positive news cycles for the Biden administration.&nbsp;</p><p>But the biggest source of optimism for Democrats unexpectedly came from Kansas, where <a href="https://www.nytimes.com/interactive/2022/08/02/us/elections/results-kansas-abortion-amendment.html" target="_self">almost 60%</a>&nbsp;of voters in that largely conservative state voted earlier this month against removing abortion protections from the state constitution, with higher than expected turnout in <a href="https://www.washingtonpost.com/politics/2022/08/03/democrats-abortion-midterms-kansas/" target="_self">suburban and rural areas alike</a>. “Kansas is the earthquake that is going to rattle every assumption about what is going to happen this fall,” Democratic Congressional Campaign Committee Chairman Sean Patrick Maloney&nbsp;<a href="https://www.washingtonpost.com/politics/2022/08/03/democrats-abortion-midterms-kansas/" target="_self">told The Washington Post.</a>&nbsp;</p><p>Then last week, in two special U.S. House elections in Minnesota and Nebraska districts – both areas former President Donald Trump had won by double digits in 2020 – Republican candidates <a href="https://www.washingtonpost.com/politics/2022/08/10/democrats-special-election-minnesota-roe/" target="_self">won by smaller margins than anticipated</a>, with Democrats over-performing in <a href="https://twitter.com/lennybronner/status/1557225005666246659?mkt_tok=NTU2LVlFRS05NjkAAAGGJ3ROYE9E3obKo17Kq1g0Bp274Ed0hyuOHgmOe2CKBMjEfHOPAtyR48sr9n-Z_PFu7XsjRxzid5yHB4SufmV4OiXhDIXpilVNEUGVvTbVaBEW" target="_self">larger, suburban districts</a>.&nbsp;</p><p>“There’s still time for things to snap back before November, but we’re no longer living in a political environment as pro-GOP as November 2021,” Cook Political Report’s House editor David Wasserman tweeted <a href="https://twitter.com/Redistrict/status/1557356657486839808" target="_self">on Wednesday</a>.&nbsp;</p><p>GOP strategists are quick to point out that a ballot measure on one specific issue is very different from a multifaceted congressional election in which voters are weighing candidates and a variety of issues. They say the abortion ruling may help Democrats cut in on Republicans’ margins somewhat, but not enough to pull off outright wins.</p><p>“People can latch onto anything for hope,” says Matt Gorman, former communications director for the National Republican Congressional Committee and current vice president at Targeted Victory. “The midterms are going to be dominated by the economy and inflation. That’s what people are feeling right now, and in every poll that’s what they’re caring about.”&nbsp;</p><p>To Mr. Gorman’s point, the <a href="https://www.monmouth.edu/polling-institute/reports/monmouthpoll_us_080322/" target="_self">recent Monmouth University poll</a> found that 24% of voters ranked economic policy as the most important issue in a congressional vote choice, followed by gun control policy (which has almost doubled in importance over the past three months) and abortion policy (which has actually fallen by 8 percentage points) tied at 17%. In third place is health control policy, followed by climate change and then immigration.&nbsp;</p><div class="in_story_embed embed-object embed-image ">
+								
+<figure class="embed ezc-image ">
+																															
+	
+	
+	
+	
+	
+	
+	
+	
+		
+		
+		<picture>
+			
+			
+				
+								
+															
+				
+				
+																										
+				
+													
+				<source data-srcset="//images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20gop.jpg?alias=standard_300x200 1x, //images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20gop.jpg?alias=standard_600x400 2x" media="(max-width: 40em)">
+			
+				
+								
+															
+				
+				
+																										
+				
+													
+				<source data-srcset="//images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20gop.jpg?alias=standard_600x400 1x, //images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20gop.jpg?alias=standard_900x600 2x" media="(max-width: 64em)">
+			
+				
+								
+															
+				
+				
+									
+				
+				
+				
+				<source data-srcset="//images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20gop.jpg?alias=standard_900x600" media="(min-width: 64em)">
+						
+
+			<img alt="" class=" lazyload" data-sizes="auto" data-src="//images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20gop.jpg?alias=standard_900x600" src="//images.csmonitor.com/csm/2022/08/0815%20MIDTERMS%20gop.jpg?alias=standard_900x600">
+		</picture>
+
+			</figure>
+	<div class="image-data">
+
+		
+					<p><span class="eza-credit">Steve Helber/AP</span></p>
+							<p>The Republican nominee in Virginia's 7th Congressional District race, Yesli Vega (front), is a Prince William County board supervisor and former police officer from northern Virginia. She's drawn national attention as one of several Republican Latina candidates running for office this year, and is hoping to unseat Representative Spanberger in the November election. </p>
+						</div>	</div><p>Ms. Spanberger recognizes the array of issues voters are considering.&nbsp;</p><p>“In a room full of people you might have, you know, 10 there who were there because they care about democracy-related issues and they’re worried about the fact that so many colleagues wouldn’t certify the election. You might have some folks who are just like, ‘You are the ones voting to lower prescription drug costs and that’s my issue,’” Ms. Spanberger tells the Monitor after her truck ride with Mr. Whitlock.&nbsp;</p><p>“Then there’s going to be people who are motivated because of the Dobbs decision,” adds the congresswoman. “So I don’t think it’s, like, the singular animating issue. But from what I’ve witnessed thus far, there are people for whom life is OK. Yes, maybe gas is more expensive and there are challenges here and there, but knowing we are in a position where there is a right that has been in place for 50 years and we’re now backtracking – for a certain group, that’s a pretty animating issue.”&nbsp;</p><h2>View from a competitive House district</h2><p>Ms. Spanberger’s reelection campaign may be one of several House races where this is particularly so. Holding one of the <a href="https://www.cookpolitical.com/ratings/house-race-ratings" target="_self">more</a> <a href="https://projects.fivethirtyeight.com/2022-election-forecast/house/" target="_self">competitive</a> <a href="https://centerforpolitics.org/crystalball/2022-house/" target="_self">seats</a> this fall, Ms. Spanberger is running in a new 7th District that was redrawn to include both rural and suburban areas around Culpeper and Fredericksburg. Her campaign highlights the two-term congresswoman’s moderate bona fides: She was recently ranked the <a href="https://www.thelugarcenter.org/ourwork-Bipartisan-Index.html?eType=EmailBlastContent&amp;eId=20abfc4c-e01c-49d2-8a26-5d420d4918fb" target="_self">fifth most bipartisan member </a>of the U.S. House by The Lugar Center.&nbsp;</p><p>Her Republican opponent, Yesli Vega, a Prince William County board supervisor and former police officer in northern Virginia, has drawn national attention as one of several Republican Latina candidates running for office this year. She <a href="https://www.washingtonpost.com/dc-md-va/2022/08/05/yesli-vega-cpac-congress/" target="_self">spoke onstage </a>at the Conservative Political Action Conference (CPAC) earlier this month about the GOP’s ability to attract new support among minority voters.&nbsp;</p><p>But Ms. Vega also made news earlier this summer when, in response to a question about state-level abortion restrictions, she <a href="https://www.axios.com/2022/06/27/yesli-vega-pregnancy-rape-audio-recording" target="_self">responded</a> by questioning a woman’s ability to get pregnant following a rape. Ms. Vega and her campaign did not respond to the Monitor’s repeated requests for comment.&nbsp;</p><p>Steve Mourning, chair of the Culpeper GOP and a software developer, says he’s feeling a level of energy among Republican voters comparable to 2020, when Republican Nick Freitas lost to Ms. Spanberger by <a href="https://ballotpedia.org/Nick_Freitas" target="_self">less than 1 percentage point</a>.&nbsp;</p><p>“Abortion just doesn’t seem to be that big of a factor in the race. Folks are suffering from inflation and gas prices,” says Mr. Mourning, adding that a few of the Republican committee’s retired members stopped coming to meetings in person due to the cost of gas.&nbsp;&nbsp;</p><p>But Jen Heinz, co-chair of the neighboring Orange County Democrats, says the issue of abortion has been coming up regularly when she is out canvassing.&nbsp;</p><p>“In the past couple of weeks, you can really feel the uptick in support,” says Ms. Heinz.&nbsp;</p><p>At the county fair in late June, shortly after the Supreme Court ruling came down, Ms. Heinz says three young women approached the Orange County Democrats’ booth to ask about Ms. Spanberger’s position on abortion. After Ms. Heinz responded that the congresswoman had voted to codify a woman’s right to an abortion into law, one of the girls asked how she could register to vote.</p><p>“Here is a young woman who has never voted before,” says Ms. Heinz, “but feels motivated to fill out the form.”</p>
+
+							<div class="story-one eza-body small-11 small-centered medium-10 large-12 quick-read story-body-toggle-content prem truncate-for-paywall">
+									<p>Amid concerns about labor shortages, inflation, gun violence, and other problems, a vast majority of Americans now say the country is on the “<a href="https://www.monmouth.edu/polling-institute/reports/monmouthpoll_us_080322/" target="_self">wrong track</a>.” That pessimism, along with President Joe Biden’s low approval ratings, has led to grim November election forecasts for Democrats.&nbsp;</p><p>But there are growing signs the anticipated “red wave” may be offset by a backlash over abortion. Since the Supreme Court overturned Roe v. Wade in June, ruling that the Constitution doesn’t ensure a right to an abortion, Democrats have made gains in national polling and are now tied with Republicans on generic ballot tests for Congress.</p><div class="editor-intro row">
+<h2 class="title text-center">Why We Wrote This</h2>
+<p>Pundits originally predicted that overturning Roe wouldn’t have much impact on November’s elections. But the summer is suggesting otherwise.</p>
+</div><p>And while Democrats still face a challenging landscape, results this month on a Kansas ballot measure and two&nbsp;<a href="https://twitter.com/Redistrict/status/1557372057947619328" target="_self">special elections in Minnesota and Nebraska</a> suggest a GOP takeover of Congress is no longer a slam-dunk.</p><p>Democratic Rep. Abigail Spanberger, whose Virginia House seat is rated among the most competitive this fall, acknowledges that economic concerns may be top of mind for many voters. But she says abortion will drive some voters to the polls. “Knowing we are in a position where there is a right that has been in place for 50 years and we’re now backtracking – for a certain group, that’s a pretty animating issue.”&nbsp;</p>
+
+								</div></body>

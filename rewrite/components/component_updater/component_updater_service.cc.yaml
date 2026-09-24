@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use SequentialUpdateClientFactory for component updates.
+
+      See the documentation of SequentialUpdateChecker for why it is needed
+      here. It is intentionally not used for extension or browser updates.
+    regex:
+      pattern: 'update_client::UpdateClientFactory(config)'
+      replace: 'update_client::SequentialUpdateClientFactory(config)'

@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/extensions/extensions_menu_entry_view.h b/chrome/browser/ui/views/extensions/extensions_menu_entry_view.h
+index 97a5e55dd0895e7731d56ddda2d98456db753a23..18ba46a7d7cf72a2c83644df8e2be05ccde39966 100644
+--- a/chrome/browser/ui/views/extensions/extensions_menu_entry_view.h
++++ b/chrome/browser/ui/views/extensions/extensions_menu_entry_view.h
+@@ -53,7 +53,7 @@ class ExtensionsMenuEntryView
+       const ExtensionsMenuViewModel::ControlState& button_state);
+ 
+   // Updates the context menu button given `is_action_pinned`.
+-  void UpdateContextMenuButton(
++  virtual void UpdateContextMenuButton(
+       ExtensionsMenuViewModel::ControlState button_state);
+ 
+   const extensions::ExtensionId& extension_id() { return extension_id_; }
+@@ -75,6 +75,7 @@ class ExtensionsMenuEntryView
+   }
+ 
+  private:
++  friend class BraveExtensionsMenuEntryView;
+   // Sets ups the context menu button controllers. Must be called by the
+   // constructor.
+   void SetupContextMenuButton(ToolbarActionViewModel* view_model);

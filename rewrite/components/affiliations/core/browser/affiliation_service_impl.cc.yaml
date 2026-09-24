@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Stub off AffiliationServiceImpl::FetchChangePasswordURL
+    preempt_function_impl:
+      function_name: AffiliationServiceImpl::FetchChangePasswordURL
+      code: |-
+        base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+          FROM_HERE, base::BindOnce(std::move(callback), GURL()));
+        if ((true)) return;
+
+  - description: |
+      Stub off AffiliationServiceImpl::Prefetch
+    preempt_function_impl:
+      function_name: AffiliationServiceImpl::Prefetch
+      code: |-
+        if ((true)) return;
+
+  - description: |
+      Stub off AffiliationServiceImpl::RegisterSource
+    preempt_function_impl:
+      function_name: AffiliationServiceImpl::RegisterSource
+      code: |-
+        if ((true)) return;

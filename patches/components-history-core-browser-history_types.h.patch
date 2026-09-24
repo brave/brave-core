@@ -1,0 +1,13 @@
+diff --git a/components/history/core/browser/history_types.h b/components/history/core/browser/history_types.h
+index 5eb62d3ee8b3f03e0f01d70c0b1275235c403824..76972acb4ebd8178754ea15a6142d846d3ab2dcc 100644
+--- a/components/history/core/browser/history_types.h
++++ b/components/history/core/browser/history_types.h
+@@ -56,6 +56,8 @@ enum VisitSource {
+   SOURCE_SAFARI_IMPORTED = 5,
+   SOURCE_ACTOR = 6,  // Added by the GLIC actor.
+   SOURCE_OS_MIGRATION_IMPORTED = 7,
++  SOURCE_CHROME_IMPORTED = 8,
++  SOURCE_BRAVE_IMPORTED = 9,
+ };
+ 
+ // Corresponds to the "id" column of the "visited_links" SQL table.

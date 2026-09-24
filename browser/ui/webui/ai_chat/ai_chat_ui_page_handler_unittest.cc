@@ -1,0 +1,661 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
+
+#include <memory>
+#include <optional>
+#include <string>
+#include <string_view>
+#include <utility>
+#include <vector>
+
+#include "base/base64.h"
+#include "base/files/file_path.h"
+#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
+#include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
+#include "base/time/time.h"
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
+#include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/associated_url_content.h"
+#include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
+#include "brave/components/ai_chat/core/browser/associated_content_manager.h"
+#include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/common/constants.h"
+#include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
+#include "build/build_config.h"
+#include "chrome/browser/favicon/favicon_service_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
+#include "chrome/test/base/chrome_render_view_host_test_harness.h"
+#include "components/favicon/core/favicon_service.h"
+#include "components/favicon_base/favicon_types.h"
+#include "components/history/core/browser/history_service.h"
+#include "components/history/core/browser/history_types.h"
+#include "components/keyed_service/core/service_access_type.h"
+#include "content/public/test/web_contents_tester.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "pdf/buildflags.h"
+#include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
+#include "testing/gtest/include/gtest/gtest.h"
+#include "third_party/skia/include/core/SkBitmap.h"
+#include "ui/gfx/codec/png_codec.h"
+#include "ui/gfx/image/image.h"
+#include "ui/gfx/image/image_unittest_util.h"
+#include "ui/shell_dialogs/select_file_dialog.h"
+#include "ui/shell_dialogs/select_file_dialog_factory.h"
+#include "ui/shell_dialogs/select_file_policy.h"
+#include "ui/shell_dialogs/selected_file_info.h"
+#include "url/gurl.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "content/public/test/navigation_simulator.h"
+#endif
+
+namespace ai_chat {
+
+namespace {
+
+// A ui::SelectFileDialog that lets the test decide when (and whether) a folder
+// is selected. ui::FakeSelectFileDialog isn't usable for a folder picker: its
+// CallFileSelected() looks the reply up by file-type extension, and a folder
+// picker passes no file types.
+class TestFolderSelectFileDialog : public ui::SelectFileDialog {
+ public:
+  TestFolderSelectFileDialog(Listener* listener,
+                             std::unique_ptr<ui::SelectFilePolicy> policy);
+
+  // ui::SelectFileDialog:
+  void SelectFileImpl(Type type,
+                      const std::u16string& title,
+                      const base::FilePath& default_path,
+                      const FileTypeInfo* file_types,
+                      int file_type_index,
+                      const base::FilePath::StringType& default_extension,
+                      gfx::NativeWindow owning_window,
+                      const GURL* caller) override;
+  bool HasMultipleFileTypeChoicesImpl() override;
+  bool IsRunning(gfx::NativeWindow owning_window) const override;
+  void ListenerDestroyed() override;
+
+  // Completes the dialog as if the user had picked |path| / hit cancel.
+  void SelectFolder(const base::FilePath& path);
+  void Cancel();
+
+  base::WeakPtr<TestFolderSelectFileDialog> GetWeakPtr();
+
+ private:
+  ~TestFolderSelectFileDialog() override;
+
+  base::WeakPtrFactory<TestFolderSelectFileDialog> weak_ptr_factory_{this};
+};
+
+TestFolderSelectFileDialog::TestFolderSelectFileDialog(
+    Listener* listener,
+    std::unique_ptr<ui::SelectFilePolicy> policy)
+    : ui::SelectFileDialog(listener, std::move(policy)) {}
+
+TestFolderSelectFileDialog::~TestFolderSelectFileDialog() = default;
+
+void TestFolderSelectFileDialog::SelectFileImpl(
+    Type type,
+    const std::u16string& title,
+    const base::FilePath& default_path,
+    const FileTypeInfo* file_types,
+    int file_type_index,
+    const base::FilePath::StringType& default_extension,
+    gfx::NativeWindow owning_window,
+    const GURL* caller) {}
+
+bool TestFolderSelectFileDialog::HasMultipleFileTypeChoicesImpl() {
+  return false;
+}
+
+bool TestFolderSelectFileDialog::IsRunning(
+    gfx::NativeWindow owning_window) const {
+  return listener_ != nullptr;
+}
+
+void TestFolderSelectFileDialog::ListenerDestroyed() {
+  listener_ = nullptr;
+}
+
+void TestFolderSelectFileDialog::SelectFolder(const base::FilePath& path) {
+  listener_->FileSelected(ui::SelectedFileInfo(path), /*index=*/0);
+}
+
+void TestFolderSelectFileDialog::Cancel() {
+  listener_->FileSelectionCanceled();
+}
+
+base::WeakPtr<TestFolderSelectFileDialog>
+TestFolderSelectFileDialog::GetWeakPtr() {
+  return weak_ptr_factory_.GetWeakPtr();
+}
+
+// Makes any dialog opened by the code under test a TestFolderSelectFileDialog
+// reachable via last_dialog(). Registration is process-wide, so pair
+// RegisterFactory() with ui::SelectFileDialog::SetFactory(nullptr).
+class TestFolderSelectFileDialogFactory : public ui::SelectFileDialogFactory {
+ public:
+  TestFolderSelectFileDialogFactory();
+  ~TestFolderSelectFileDialogFactory() override;
+
+  // Registers a new factory with ui::SelectFileDialog, which takes ownership,
+  // and returns it. The returned pointer is valid until the next SetFactory().
+  static TestFolderSelectFileDialogFactory* RegisterFactory();
+
+  // ui::SelectFileDialogFactory:
+  ui::SelectFileDialog* Create(
+      ui::SelectFileDialog::Listener* listener,
+      std::unique_ptr<ui::SelectFilePolicy> policy) override;
+
+  TestFolderSelectFileDialog* last_dialog() { return last_dialog_.get(); }
+
+ private:
+  base::WeakPtr<TestFolderSelectFileDialog> last_dialog_;
+};
+
+TestFolderSelectFileDialogFactory::TestFolderSelectFileDialogFactory() =
+    default;
+
+TestFolderSelectFileDialogFactory::~TestFolderSelectFileDialogFactory() =
+    default;
+
+// static
+TestFolderSelectFileDialogFactory*
+TestFolderSelectFileDialogFactory::RegisterFactory() {
+  auto factory = std::make_unique<TestFolderSelectFileDialogFactory>();
+  auto* factory_ptr = factory.get();
+  ui::SelectFileDialog::SetFactory(std::move(factory));
+  return factory_ptr;
+}
+
+ui::SelectFileDialog* TestFolderSelectFileDialogFactory::Create(
+    ui::SelectFileDialog::Listener* listener,
+    std::unique_ptr<ui::SelectFilePolicy> policy) {
+  auto* dialog = new TestFolderSelectFileDialog(listener, std::move(policy));
+  last_dialog_ = dialog->GetWeakPtr();
+  return dialog;
+}
+
+}  // namespace
+
+class AIChatUIPageHandlerTest : public ChromeRenderViewHostTestHarness {
+ public:
+  AIChatUIPageHandlerTest() = default;
+  ~AIChatUIPageHandlerTest() override = default;
+
+  void SetUp() override {
+    ChromeRenderViewHostTestHarness::SetUp();
+
+    // Registration is process-wide, so it's paired with the SetFactory(nullptr)
+    // in TearDown() to keep it from leaking into other tests in the binary.
+    dialog_factory_ = TestFolderSelectFileDialogFactory::RegisterFactory();
+
+    // Create the AIChatService
+    service_ = AIChatServiceFactory::GetForBrowserContext(GetBrowserContext());
+    ASSERT_TRUE(service_);
+
+    // Create page handler
+    mojo::PendingReceiver<mojom::AIChatUIHandler> receiver;
+    page_handler_ = std::make_unique<AIChatUIPageHandler>(
+        web_contents(), nullptr,
+        Profile::FromBrowserContext(GetBrowserContext()), std::move(receiver));
+  }
+
+  void TearDown() override {
+    service_ = nullptr;
+    page_handler_.reset();
+    dialog_factory_ = nullptr;
+    ui::SelectFileDialog::SetFactory(nullptr);
+    ChromeRenderViewHostTestHarness::TearDown();
+  }
+
+  // The favicon service, and the history service it stores favicons in, are not
+  // part of a TestingProfile by default.
+  TestingProfile::TestingFactories GetTestingFactories() const override {
+    TestingProfile::TestingFactories factories =
+        ChromeRenderViewHostTestHarness::GetTestingFactories();
+    factories.emplace_back(HistoryServiceFactory::GetInstance(),
+                           HistoryServiceFactory::GetDefaultFactory());
+    factories.emplace_back(FaviconServiceFactory::GetInstance(),
+                           FaviconServiceFactory::GetDefaultFactory());
+    return factories;
+  }
+
+  AIChatService* service() { return service_; }
+  AIChatUIPageHandler* page_handler() { return page_handler_.get(); }
+
+ protected:
+  TestFolderSelectFileDialog* last_dialog() {
+    return dialog_factory_->last_dialog();
+  }
+
+ private:
+  raw_ptr<AIChatService> service_ = nullptr;
+  std::unique_ptr<AIChatUIPageHandler> page_handler_;
+  raw_ptr<TestFolderSelectFileDialogFactory> dialog_factory_ = nullptr;
+};
+
+TEST_F(AIChatUIPageHandlerTest, AssociateUrlContent_ValidHttpsUrl) {
+  // Create a conversation
+  auto* conversation = service()->CreateConversation();
+  ASSERT_TRUE(conversation);
+  std::string conversation_uuid = conversation->get_conversation_uuid();
+
+  // Associate a URL with the conversation
+  GURL test_url("https://example.com/test");
+  std::string title = "Test Page";
+  page_handler()->AssociateUrlContent(test_url, title, conversation_uuid);
+
+  auto associated_content =
+      conversation->associated_content_manager()->GetAssociatedContent();
+  ASSERT_EQ(associated_content.size(), 1u);
+  EXPECT_EQ(associated_content[0]->url, test_url);
+  EXPECT_EQ(associated_content[0]->title, title);
+
+  // The delegate should have been created.
+  auto delegates = conversation->associated_content_manager()
+                       ->GetContentDelegatesForTesting();
+  ASSERT_EQ(delegates.size(), 1u);
+  EXPECT_EQ(delegates[0]->url(), test_url);
+  EXPECT_EQ(delegates[0]->title(), base::UTF8ToUTF16(title));
+
+  // It should be an AssociatedURLContent
+  auto* associated_link_content =
+      static_cast<AssociatedURLContent*>(delegates[0]);
+
+  // Should have attached shields observer and ephemeral storage tab helper
+  EXPECT_TRUE(brave_shields::BraveShieldsWebContentsObserver::FromWebContents(
+      associated_link_content->GetWebContentsForTesting()));
+  EXPECT_TRUE(ephemeral_storage::EphemeralStorageTabHelper::FromWebContents(
+      associated_link_content->GetWebContentsForTesting()));
+
+  // Should be possible to disassociate the content
+  page_handler()->DisassociateContent(std::move(associated_content[0]),
+                                      conversation_uuid);
+
+  associated_content =
+      conversation->associated_content_manager()->GetAssociatedContent();
+  EXPECT_TRUE(associated_content.empty());
+}
+
+TEST_F(AIChatUIPageHandlerTest, AssociateUrlContent_InvalidScheme) {
+  // Create a conversation
+  auto* conversation = service()->CreateConversation();
+  ASSERT_TRUE(conversation);
+  std::string conversation_uuid = conversation->get_conversation_uuid();
+
+  // Try to associate a chrome:// URL (disallowed scheme)
+  GURL chrome_url("chrome://settings");
+  std::string title = "Settings Page";
+  page_handler()->AssociateUrlContent(chrome_url, title, conversation_uuid);
+
+  // Verify the content was NOT associated due to invalid scheme
+  auto associated_content =
+      conversation->associated_content_manager()->GetAssociatedContent();
+  EXPECT_TRUE(associated_content.empty());
+}
+
+TEST_F(AIChatUIPageHandlerTest, AssociateUrlContent_InvalidConversation) {
+  // Try to associate with a non-existent conversation
+  GURL test_url("https://example.com/test");
+  std::string title = "Test Page";
+  page_handler()->AssociateUrlContent(test_url, title, "non-existent-uuid");
+
+  // Should not crash
+}
+
+// The picker is experimental and must stay inert unless the feature is on.
+// kAIChatWorkspaceTools is disabled by default, so no ScopedFeatureList here.
+TEST_F(AIChatUIPageHandlerTest, ShowWorkspaceFolderPicker_FeatureDisabled) {
+  auto* conversation = service()->CreateConversation();
+  ASSERT_TRUE(conversation);
+
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  page_handler()->ShowWorkspaceFolderPicker(
+      conversation->get_conversation_uuid(), future.GetCallback());
+
+  EXPECT_EQ(std::nullopt, future.Get());
+  EXPECT_FALSE(last_dialog()) << "no dialog should have been shown";
+  EXPECT_TRUE(conversation->associated_content_manager()
+                  ->GetAssociatedContent()
+                  .empty());
+}
+
+class AIChatUIPageHandlerWorkspaceTest : public AIChatUIPageHandlerTest {
+ public:
+  AIChatUIPageHandlerWorkspaceTest() {
+    scoped_feature_list_.InitAndEnableFeature(features::kAIChatWorkspaceTools);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+TEST_F(AIChatUIPageHandlerWorkspaceTest,
+       ShowWorkspaceFolderPicker_AttachesWorkspaceContent) {
+  auto* conversation = service()->CreateConversation();
+  ASSERT_TRUE(conversation);
+
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  page_handler()->ShowWorkspaceFolderPicker(
+      conversation->get_conversation_uuid(), future.GetCallback());
+
+  const base::FilePath folder(FILE_PATH_LITERAL("/tmp/workspace"));
+  ASSERT_TRUE(last_dialog());
+  last_dialog()->SelectFolder(folder);
+
+  ASSERT_TRUE(future.Get().has_value());
+  EXPECT_EQ(folder.AsUTF8Unsafe(), *future.Get());
+
+  // The chosen folder becomes a WorkspaceAssociatedContent owned by the
+  // conversation, which is what gives Leo its file tools.
+  auto delegates = conversation->associated_content_manager()
+                       ->GetContentDelegatesForTesting();
+  ASSERT_EQ(1u, delegates.size());
+  auto* workspace_content =
+      static_cast<WorkspaceAssociatedContent*>(delegates[0]);
+  EXPECT_EQ(folder, workspace_content->folder_path());
+
+  // The workspace page's WebContents is owned by the conversation, which
+  // outlives the test harness. Drop it here so the harness doesn't report a
+  // leaked RenderWidgetHost.
+  auto associated_content =
+      conversation->associated_content_manager()->GetAssociatedContent();
+  ASSERT_EQ(1u, associated_content.size());
+  page_handler()->DisassociateContent(std::move(associated_content[0]),
+                                      conversation->get_conversation_uuid());
+}
+
+TEST_F(AIChatUIPageHandlerWorkspaceTest,
+       ShowWorkspaceFolderPicker_CancelAttachesNothing) {
+  auto* conversation = service()->CreateConversation();
+  ASSERT_TRUE(conversation);
+
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  page_handler()->ShowWorkspaceFolderPicker(
+      conversation->get_conversation_uuid(), future.GetCallback());
+
+  ASSERT_TRUE(last_dialog());
+  last_dialog()->Cancel();
+
+  EXPECT_EQ(std::nullopt, future.Get());
+  EXPECT_TRUE(conversation->associated_content_manager()
+                  ->GetAssociatedContent()
+                  .empty());
+}
+
+// The conversation can be deleted while the (modal-less) picker is open, so a
+// stale uuid must be reported back as "nothing was picked" rather than
+// crashing or silently succeeding.
+TEST_F(AIChatUIPageHandlerWorkspaceTest,
+       ShowWorkspaceFolderPicker_UnknownConversation) {
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  page_handler()->ShowWorkspaceFolderPicker("non-existent-uuid",
+                                            future.GetCallback());
+
+  ASSERT_TRUE(last_dialog());
+  last_dialog()->SelectFolder(base::FilePath(FILE_PATH_LITERAL("/tmp/nope")));
+
+  EXPECT_EQ(std::nullopt, future.Get());
+}
+
+TEST_F(AIChatUIPageHandlerTest, ProcessImageFile) {
+  data_decoder::test::InProcessDataDecoder data_decoder;
+
+  // Empty data.
+  {
+    base::test::TestFuture<mojom::UploadedFilePtr> future;
+    page_handler()->ProcessImageFile({}, "empty.png", future.GetCallback());
+    EXPECT_FALSE(future.Take());
+  }
+
+  // Invalid (non-image) data.
+  {
+    base::test::TestFuture<mojom::UploadedFilePtr> future;
+    page_handler()->ProcessImageFile({1, 2, 3, 4}, "invalid.png",
+                                     future.GetCallback());
+    EXPECT_FALSE(future.Take());
+  }
+
+  // Valid 1x1 PNG - should succeed and round-trip correctly.
+  constexpr uint8_t kSamplePng[] = {
+      0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0x00, 0x00, 0x00,
+      0x0d, 0x49, 0x48, 0x44, 0x52, 0x00, 0x00, 0x00, 0x01, 0x00, 0x00,
+      0x00, 0x01, 0x08, 0x02, 0x00, 0x00, 0x00, 0x90, 0x77, 0x53, 0xde,
+      0x00, 0x00, 0x00, 0x10, 0x49, 0x44, 0x41, 0x54, 0x78, 0x9c, 0x62,
+      0x5a, 0xc4, 0x5e, 0x08, 0x08, 0x00, 0x00, 0xff, 0xff, 0x02, 0x71,
+      0x01, 0x1d, 0xcd, 0xd0, 0xd6, 0x62, 0x00, 0x00, 0x00, 0x00, 0x49,
+      0x45, 0x4e, 0x44, 0xae, 0x42, 0x60, 0x82};
+  auto sample_bitmap = gfx::PNGCodec::Decode(kSamplePng);
+  {
+    std::vector<uint8_t> data(std::begin(kSamplePng), std::end(kSamplePng));
+    base::test::TestFuture<mojom::UploadedFilePtr> future;
+    page_handler()->ProcessImageFile(data, "sample.png", future.GetCallback());
+    auto result = future.Take();
+    ASSERT_TRUE(result);
+    EXPECT_EQ(result->filename, "sample.png");
+    EXPECT_EQ(result->type, mojom::UploadedFileType::kImage);
+    EXPECT_GT(result->data.size(), 0u);
+    EXPECT_EQ(result->filesize, result->data.size());
+    auto decoded = gfx::PNGCodec::Decode(result->data);
+    EXPECT_EQ(decoded.width(), sample_bitmap.width());
+    EXPECT_EQ(decoded.height(), sample_bitmap.height());
+  }
+
+  // Large PNG (2048x2048) - should be scaled down to fit within 1024x768.
+  {
+    auto large_png_bytes = gfx::test::CreatePNGBytes(2048);
+    std::vector<uint8_t> data(large_png_bytes->begin(), large_png_bytes->end());
+    base::test::TestFuture<mojom::UploadedFilePtr> future;
+    page_handler()->ProcessImageFile(data, "large.png", future.GetCallback());
+    auto result = future.Take();
+    ASSERT_TRUE(result);
+    EXPECT_EQ(result->filename, "large.png");
+    EXPECT_EQ(result->type, mojom::UploadedFileType::kImage);
+    EXPECT_GT(result->data.size(), 0u);
+    auto decoded = gfx::PNGCodec::Decode(result->data);
+    EXPECT_EQ(decoded.width(), 768);
+    EXPECT_EQ(decoded.height(), 768);
+  }
+}
+
+#if BUILDFLAG(ENABLE_PDF)
+TEST_F(AIChatUIPageHandlerTest, ProcessPdfFile_LooksLikePdfRejection) {
+  // Data shorter than 50 bytes, even with a valid PDF header.
+  {
+    constexpr std::string_view kPdfHeader = "%PDF-1.4";
+    std::vector<uint8_t> too_small(kPdfHeader.begin(), kPdfHeader.end());
+    base::test::TestFuture<mojom::UploadedFilePtr> future;
+    page_handler()->ProcessPdfFile(too_small, "small.pdf",
+                                   future.GetCallback());
+    EXPECT_FALSE(future.Take());
+  }
+
+  // Sufficient size (>= 50 bytes) but wrong header.
+  {
+    std::vector<uint8_t> wrong_header(50, 'x');
+    base::test::TestFuture<mojom::UploadedFilePtr> future;
+    page_handler()->ProcessPdfFile(wrong_header, "fake.pdf",
+                                   future.GetCallback());
+    EXPECT_FALSE(future.Take());
+  }
+}
+#endif  // BUILDFLAG(ENABLE_PDF)
+
+TEST_F(AIChatUIPageHandlerTest, GetFaviconDataURL) {
+  const GURL page_url("https://example.com/page");
+  HistoryServiceFactory::GetForProfile(profile(),
+                                       ServiceAccessType::EXPLICIT_ACCESS)
+      ->AddPage(page_url, base::Time::Now(), history::SOURCE_BROWSED);
+  FaviconServiceFactory::GetForProfile(profile(),
+                                       ServiceAccessType::EXPLICIT_ACCESS)
+      ->SetFavicons(
+          {page_url}, GURL("https://example.com/icon.png"),
+          favicon_base::IconType::kFavicon,
+          gfx::Image::CreateFrom1xBitmap(gfx::test::CreateBitmap(16)));
+
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  page_handler()->GetFaviconDataURL(page_url, future.GetCallback());
+
+  const std::optional<std::string>& data_url = future.Get();
+  ASSERT_TRUE(data_url);
+  constexpr std::string_view kPngDataUrlPrefix = "data:image/png;base64,";
+  ASSERT_TRUE(base::StartsWith(*data_url, kPngDataUrlPrefix));
+
+  // The stored favicon should have been resized to the size the UI asks for.
+  std::optional<std::vector<uint8_t>> png = base::Base64Decode(
+      std::string_view(*data_url).substr(kPngDataUrlPrefix.size()));
+  ASSERT_TRUE(png);
+  SkBitmap decoded = gfx::PNGCodec::Decode(*png);
+  EXPECT_EQ(decoded.width(), kFaviconDataURLSizeInPixels);
+  EXPECT_EQ(decoded.height(), kFaviconDataURLSizeInPixels);
+}
+
+TEST_F(AIChatUIPageHandlerTest, GetFaviconDataURL_NoFavicon) {
+  // Nothing is stored for the page, so there is no data URL to provide. The
+  // callback must still run, otherwise the UI would wait forever.
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  page_handler()->GetFaviconDataURL(GURL("https://example.com/no-favicon"),
+                                    future.GetCallback());
+  EXPECT_FALSE(future.Get());
+}
+
+#if !BUILDFLAG(IS_ANDROID)
+
+namespace {
+
+class FakeChatUI : public mojom::ChatUI {
+ public:
+  void OnNewDefaultConversation(std::optional<int32_t> content_id) override {
+    last_content_id_ = content_id;
+    call_count_++;
+  }
+  void OnChildFrameBound(
+      mojo::PendingReceiver<mojom::ParentUIFrame> receiver) override {}
+  void OnDisplayModeChanged(bool is_standalone) override {}
+
+  std::optional<int32_t> last_content_id_;
+  int call_count_ = 0;
+};
+
+}  // namespace
+
+// Fixture that exercises the global side panel mode of the page handler so
+// that OnTabStripModelChanged runs end-to-end. The page handler is constructed
+// without a TabStripModel and the test invokes OnTabStripModelChanged directly
+// via the TabStripModelObserver interface.
+class AIChatUIPageHandlerGlobalSidePanelTest
+    : public ChromeRenderViewHostTestHarness {
+ public:
+  AIChatUIPageHandlerGlobalSidePanelTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        features::kAIChatGlobalSidePanelEverywhere);
+  }
+
+  void SetUp() override {
+    ChromeRenderViewHostTestHarness::SetUp();
+
+    ASSERT_TRUE(
+        AIChatServiceFactory::GetForBrowserContext(GetBrowserContext()));
+
+    // The constructor expects an AIChatTabHelper on chat_context_web_contents.
+    AIChatTabHelper::CreateForWebContents(web_contents(), nullptr);
+
+    mojo::PendingReceiver<mojom::AIChatUIHandler> receiver;
+    page_handler_ = std::make_unique<AIChatUIPageHandler>(
+        web_contents(), web_contents(),
+        Profile::FromBrowserContext(GetBrowserContext()), std::move(receiver));
+  }
+
+  void TearDown() override {
+    page_handler_.reset();
+    ChromeRenderViewHostTestHarness::TearDown();
+  }
+
+ protected:
+  FakeChatUI& BindFakeChatUI() {
+    mojo::PendingRemote<mojom::ChatUI> pending_remote;
+    fake_chat_ui_receiver_.emplace(
+        &fake_chat_ui_, pending_remote.InitWithNewPipeAndPassReceiver());
+    base::test::TestFuture<bool> future;
+    page_handler_->SetChatUI(std::move(pending_remote), future.GetCallback());
+    EXPECT_TRUE(future.Wait());
+    fake_chat_ui_receiver_->FlushForTesting();
+    return fake_chat_ui_;
+  }
+
+  void FlushChatUI() { fake_chat_ui_receiver_->FlushForTesting(); }
+
+  AIChatUIPageHandler* page_handler() { return page_handler_.get(); }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+  std::unique_ptr<AIChatUIPageHandler> page_handler_;
+  FakeChatUI fake_chat_ui_;
+  std::optional<mojo::Receiver<mojom::ChatUI>> fake_chat_ui_receiver_;
+};
+
+// Regression test: switching to a tab whose current page is not associable
+// (e.g. about:blank) must still set up observation of the tab's AIChatTabHelper
+// so that a subsequent navigation to an https:// page notifies the frontend.
+TEST_F(AIChatUIPageHandlerGlobalSidePanelTest,
+       SwitchToNonAssociableTabThenNavigateToHttpsNotifiesFrontend) {
+  auto& fake_chat_ui = BindFakeChatUI();
+
+  // Create a new tab WebContents at a non-associable URL (about:blank) with
+  // an AIChatTabHelper attached.
+  std::unique_ptr<content::WebContents> new_tab =
+      content::WebContentsTester::CreateTestWebContents(GetBrowserContext(),
+                                                        nullptr);
+  AIChatTabHelper::CreateForWebContents(new_tab.get(), nullptr);
+
+  // Simulate the active tab changing to |new_tab|.
+  TabStripSelectionChange selection;
+  selection.old_contents = web_contents();
+  selection.new_contents = new_tab.get();
+  ASSERT_TRUE(selection.active_tab_changed());
+
+  TabStripModelChange empty_change;
+  static_cast<TabStripModelObserver*>(page_handler())
+      ->OnTabStripModelChanged(/*tab_strip_model=*/nullptr, empty_change,
+                               selection);
+  FlushChatUI();
+
+  // The tab switch itself notifies the frontend, but because the new tab's
+  // current URL is non-associable the content_id is null.
+  EXPECT_FALSE(fake_chat_ui.last_content_id_.has_value());
+  const int count_before_nav = fake_chat_ui.call_count_;
+
+  // Navigate the new tab to an associable https:// URL. Prior to the fix the
+  // handler would not have been observing |new_tab|'s helper because its
+  // initial page was not associable, so this navigation would have gone
+  // unnoticed.
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(
+      new_tab.get(), GURL("https://example.com"));
+  FlushChatUI();
+
+  EXPECT_GT(fake_chat_ui.call_count_, count_before_nav)
+      << "Navigating a non-associable tab to https:// should notify the "
+         "frontend";
+  EXPECT_TRUE(fake_chat_ui.last_content_id_.has_value())
+      << "https:// page should produce a non-null content_id";
+}
+
+#endif  // !BUILDFLAG(IS_ANDROID)
+
+}  // namespace ai_chat

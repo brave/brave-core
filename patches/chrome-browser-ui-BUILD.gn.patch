@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
+index 0ab25c63c9f39dc0e96f154eedd3b03ad14fa638..b364b3d5498abe186f8dc8a8dabca4e84a735cbb 100644
+--- a/chrome/browser/ui/BUILD.gn
++++ b/chrome/browser/ui/BUILD.gn
+@@ -1238,6 +1238,7 @@ static_library("ui") {
+     # split out yet.
+     "//chrome/browser/webauthn:impl",
+   ]
++  import("//brave/browser/sources.gni") public_deps += [ "//brave/browser/ui" ] deps += brave_chrome_browser_ui_allow_circular_includes_from + brave_chrome_browser_ui_deps allow_circular_includes_from += brave_chrome_browser_ui_allow_circular_includes_from
+ 
+   if (!is_android) {
+     deps += [
+@@ -3538,6 +3539,7 @@ group("ui_public_dependencies") {
+     "//components/enterprise/buildflags",
+     "//components/paint_preview/buildflags",
+     "//components/safe_browsing:buildflags",
++    "//components/saved_tab_groups/public",
+     "//components/segmentation_platform/public",
+     "//components/sync",
+     "//components/sync_user_events",
+@@ -3550,6 +3552,7 @@ group("ui_public_dependencies") {
+   if (enable_extensions_core) {
+     public_deps += [ "//extensions/browser" ]
+   }
++  public_deps += [ "//brave/browser/ui:ui_public_dependencies" ]
+   if (!is_android) {
+     public_deps += [
+       "//build:branding_buildflags",

@@ -1,0 +1,11 @@
+diff --git a/buildtools/checkdeps/checkdeps.py b/buildtools/checkdeps/checkdeps.py
+index 201f0a5436709d18d6974caf94f219b01332b56e..befbf77df880690506fb08c45fb1e17584af14ee 100755
+--- a/buildtools/checkdeps/checkdeps.py
++++ b/buildtools/checkdeps/checkdeps.py
+@@ -299,5 +299,6 @@ def main():
+   return deps_checker.Report()
+ 
+ 
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+ if '__main__' == __name__:
+   sys.exit(main())

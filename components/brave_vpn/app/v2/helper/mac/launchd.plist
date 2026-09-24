@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>@VPN_HELPER_BUNDLE_ID@</string>
+  <key>BundleProgram</key>
+  <string>Contents/Frameworks/@FRAMEWORK_NAME@.framework/Helpers/@VPN_HELPER_NAME@.app/Contents/MacOS/@VPN_HELPER_NAME@</string>
+  <key>MachServices</key>
+  <dict>
+    <key>@VPN_HELPER_BUNDLE_ID@</key>
+    <dict/>
+  </dict>
+  <key>RunAtLoad</key>
+  <true/>
+  <key>KeepAlive</key>
+  <true/>
+</dict>
+</plist>

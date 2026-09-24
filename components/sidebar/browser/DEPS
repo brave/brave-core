@@ -1,0 +1,15 @@
+include_rules = [
+  "+brave/components/brave_wallet/common",
+  "+brave/components/constants",
+  "+components/grit/brave_components_strings.h",
+  "+components/keyed_service",
+  "+components/prefs",
+  "+content/public/test",
+  "+ui/base",
+]
+
+specific_include_rules = {
+  "sidebar_service\.cc": [
+    "!brave/components/l10n/common/locale_util.h",
+  ],
+}

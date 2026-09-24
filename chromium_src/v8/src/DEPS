@@ -1,0 +1,4 @@
+include_rules = [
+  "+brave/components/brave_page_graph/common/buildflags.h",
+  "+brave/v8/include",
+]

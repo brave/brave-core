@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<grit-part>
+  <structure type="chrome_scaled_image" name="IDR_FAVICON_NTP_DARK" file="favicon_ntp_dark.png" />
+  <structure type="chrome_scaled_image" name="IDR_FAVICON_NTP_LIGHT" file="favicon_ntp_light.png" />
+</grit-part>

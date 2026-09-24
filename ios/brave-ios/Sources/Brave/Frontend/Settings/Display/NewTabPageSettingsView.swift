@@ -1,0 +1,146 @@
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import BraveCore
+import BraveStrings
+import BraveUI
+import Foundation
+import Preferences
+import SwiftUI
+
+struct NewTabPageSettingsView: View {
+  var isSponsoredBackgroundsSupported: Bool
+  var linkTapped: ((URLRequest) -> Void)?
+
+  @ObservedObject private var backgroundImages = Preferences.NewTabPage.backgroundImages
+  @ObservedObject private var showNewTabPrivacyHub = Preferences.NewTabPage.showNewTabPrivacyHub
+  @ObservedObject private var topsitesModeSelection = Preferences.NewTabPage.topsitesMode
+
+  // This is observed to ensure the view updates correctly, but we instead access
+  // Preferences.NewTabPage.backgroundMediaType which accesses backgroundMediaTypeRaw
+  @ObservedObject private var backgroundMediaTypeRaw = Preferences.NewTabPage.backgroundMediaTypeRaw
+
+  var body: some View {
+    Form {
+      Section {
+        Toggle(Strings.NTP.settingsBackgroundImages, isOn: $backgroundImages.value)
+        if backgroundImages.value, isSponsoredBackgroundsSupported {
+          NavigationLink {
+            BackgroundMediaTypePicker(
+              selection: Binding(
+                get: { Preferences.NewTabPage.backgroundMediaType },
+                set: { Preferences.NewTabPage.backgroundMediaType = $0 }
+              )
+            )
+            .environment(
+              \.openURL,
+              OpenURLAction { _ in
+                self.linkTapped?(URLRequest(url: .brave.newTabTakeoverLearnMoreLinkUrl))
+                return .handled
+              }
+            )
+          } label: {
+            LabeledContent {
+              switch Preferences.NewTabPage.backgroundMediaType {
+              case .defaultImages:
+                Text(Strings.NTP.settingsDefaultImagesOnly)
+              case .sponsoredImages:
+                Text(Strings.NTP.settingsSponsoredImagesSelection)
+              }
+            } label: {
+              Text(Strings.NTP.settingsBackgroundImageSubMenu)
+            }
+          }
+        }
+      } header: {
+        Text(Strings.NTP.settingsBackgroundImages)
+      }
+      Section {
+        Toggle(Strings.PrivacyHub.privacyReportsTitle, isOn: $showNewTabPrivacyHub.value)
+        if FeatureList.kTopsitesEnabled.enabled {
+          Picker(
+            Strings.NTP.topsites,
+            selection: Binding(
+              get: { topsitesModeSelection.value },
+              set: {
+                topsitesModeSelection.value = $0
+              }
+            )
+          ) {
+            ForEach(TopsitesMode.allCases) { mode in
+              Text(mode.title)
+            }
+          }
+          .tint(Color(braveSystemName: .textTertiary))
+        } else {
+          Toggle(
+            Strings.Widgets.favoritesWidgetTitle,
+            isOn: Binding(
+              get: { topsitesModeSelection.value != TopsitesMode.none },
+              set: {
+                topsitesModeSelection.value = $0 ? TopsitesMode.favourite : TopsitesMode.none
+              }
+            )
+          )
+        }
+      } header: {
+        Text(Strings.Widgets.widgetTitle)
+      }
+    }
+    .tint(Color(braveSystemName: .primary40))
+    .navigationTitle(Strings.NTP.settingsTitle)
+    .navigationBarTitleDisplayMode(.inline)
+  }
+
+  private struct BackgroundMediaTypePicker: View {
+    @Binding var selection: BackgroundMediaType
+
+    @Environment(\.dismiss) private var dismiss
+
+    var body: some View {
+      Form {
+        Section {
+          Picker("", selection: $selection) {
+            Text(Strings.NTP.settingsDefaultImagesOnly)
+              .tag(BackgroundMediaType.defaultImages)
+            Text(Strings.NTP.settingsSponsoredImagesSelection)
+              .tag(BackgroundMediaType.sponsoredImages)
+          }
+          .pickerStyle(.inline)
+          .labelsHidden()
+          .onChange(of: selection, initial: false) {
+            dismiss()
+          }
+        } header: {
+          Text(Strings.NTP.settingsBackgroundImageSubMenu)
+        } footer: {
+          // Contains markdown with a link
+          Text(LocalizedStringKey(Strings.NTP.imageTypeSelectionDescription))
+            .tint(Color(braveSystemName: .textInteractive))
+        }
+      }
+      .navigationTitle(Strings.NTP.settingsBackgroundImageSubMenu)
+      .navigationBarTitleDisplayMode(.inline)
+    }
+  }
+}
+
+class NTPTableViewController: UIHostingController<NewTabPageSettingsView> {
+  var rewards: BraveRewards?
+  var linkTapped: ((URLRequest) -> Void)?
+
+  init(rewards: BraveRewards?, linkTapped: ((URLRequest) -> Void)?) {
+    super.init(
+      rootView: .init(
+        isSponsoredBackgroundsSupported: rewards != nil,
+        linkTapped: linkTapped
+      )
+    )
+  }
+
+  @available(*, unavailable)
+  required init(coder: NSCoder) {
+    fatalError()
+  }
+}

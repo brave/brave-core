@@ -1,0 +1,163 @@
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/components/brave_wallet/browser/solana_compiled_instruction.h"
+
+#include <algorithm>
+#include <optional>
+
+#include "base/check.h"
+#include "base/containers/extend.h"
+#include "brave/components/brave_wallet/browser/solana_instruction.h"
+#include "brave/components/brave_wallet/browser/solana_message_address_table_lookup.h"
+#include "brave/components/brave_wallet/common/solana_address.h"
+#include "brave/components/brave_wallet/common/solana_utils.h"
+
+namespace brave_wallet {
+
+namespace {
+
+std::optional<uint8_t> FindIndexInStaticAccounts(
+    const std::vector<SolanaAddress>& keys,
+    const std::string& target_key) {
+  if (keys.size() > UINT8_MAX) {
+    return std::nullopt;
+  }
+  auto it = std::ranges::find_if(keys, [&](const SolanaAddress& key) {
+    return key.ToBase58() == target_key;
+  });
+  if (it == keys.end()) {
+    return std::nullopt;
+  }
+  return it - keys.begin();
+}
+
+std::optional<uint8_t> FindIndexInAddressTableLookups(
+    const std::vector<SolanaMessageAddressTableLookup>& addr_table_lookups,
+    const SolanaAccountMeta& account,
+    uint8_t num_of_static_accounts,
+    uint8_t num_of_total_write_indexes) {
+  uint8_t index_of_combined_array =
+      account.is_writable ? num_of_static_accounts
+                          : num_of_static_accounts + num_of_total_write_indexes;
+
+  for (const auto& addr_table_lookup : addr_table_lookups) {
+    const auto& indexes = account.is_writable
+                              ? addr_table_lookup.write_indexes()
+                              : addr_table_lookup.read_indexes();
+    if (account.pubkey != addr_table_lookup.account_key().ToBase58()) {
+      index_of_combined_array += indexes.size();
+      continue;
+    }
+
+    for (size_t i = 0; i < indexes.size(); ++i) {
+      CHECK(account.address_table_lookup_index.has_value());
+      if (*account.address_table_lookup_index == indexes[i]) {
+        return index_of_combined_array + i;
+      }
+    }
+  }
+
+  return std::nullopt;
+}
+
+}  // namespace
+
+SolanaCompiledInstruction::SolanaCompiledInstruction(
+    uint8_t program_id_index,
+    std::vector<uint8_t> account_indexes,
+    std::vector<uint8_t> data)
+    : program_id_index_(program_id_index),
+      account_indexes_(std::move(account_indexes)),
+      data_(std::move(data)) {}
+
+SolanaCompiledInstruction::SolanaCompiledInstruction(
+    SolanaCompiledInstruction&&) = default;
+SolanaCompiledInstruction& SolanaCompiledInstruction::operator=(
+    SolanaCompiledInstruction&&) = default;
+SolanaCompiledInstruction::~SolanaCompiledInstruction() = default;
+
+// static
+std::optional<SolanaCompiledInstruction>
+SolanaCompiledInstruction::FromInstruction(
+    const SolanaInstruction& instruction,
+    const std::vector<SolanaAddress>& static_accounts,
+    const std::vector<SolanaMessageAddressTableLookup>& addr_table_lookups,
+    uint8_t num_of_total_write_indexes) {
+  // Program ID must come from static accounts.
+  // https://docs.rs/solana-program/1.14.12/src/solana_program/message/versions/v0/mod.rs.html#72-73
+  auto program_id_index =
+      FindIndexInStaticAccounts(static_accounts, instruction.GetProgramId());
+  if (!program_id_index) {
+    return std::nullopt;
+  }
+
+  std::vector<uint8_t> account_indexes;
+  for (const auto& account : instruction.GetAccounts()) {
+    std::optional<uint8_t> account_index;
+    if (!account.address_table_lookup_index) {  // static accounts
+      account_index =
+          FindIndexInStaticAccounts(static_accounts, account.pubkey);
+      if (!account_index) {
+        return std::nullopt;
+      }
+    } else {  // dynamic loaded accounts
+      account_index = FindIndexInAddressTableLookups(
+          addr_table_lookups, account, static_accounts.size(),
+          num_of_total_write_indexes);
+      if (!account_index) {
+        return std::nullopt;
+      }
+    }
+    account_indexes.emplace_back(*account_index);
+  }
+
+  return SolanaCompiledInstruction(*program_id_index, account_indexes,
+                                   instruction.data());
+}
+
+bool SolanaCompiledInstruction::Serialize(std::vector<uint8_t>& bytes) const {
+  bytes.emplace_back(program_id_index_);
+
+  uint8_t account_indexes_size = 0;
+  if (!base::CheckedNumeric<uint8_t>(account_indexes_.size())
+           .AssignIfValid(&account_indexes_size)) {
+    return false;
+  }
+
+  base::Extend(bytes, CompactU16Encode(account_indexes_size));
+  base::Extend(bytes, account_indexes_);
+
+  uint16_t data_size = 0;
+  if (!base::CheckedNumeric<uint16_t>(data_.size()).AssignIfValid(&data_size)) {
+    return false;
+  }
+  base::Extend(bytes, CompactU16Encode(data_size));
+  base::Extend(bytes, data_);
+
+  return true;
+}
+
+// https://solana.com/docs/core/transactions/transaction-structure#instructions
+// static
+std::optional<SolanaCompiledInstruction> SolanaCompiledInstruction::Deserialize(
+    base::SpanReader<const uint8_t>& reader) {
+  uint8_t program_id_index = 0;
+  if (!reader.ReadU8LittleEndian(program_id_index)) {
+    return std::nullopt;
+  }
+  auto account_indexes = CompactArrayDecode(reader);
+  if (!account_indexes) {
+    return std::nullopt;
+  }
+  auto data = CompactArrayDecode(reader);
+  if (!data) {
+    return std::nullopt;
+  }
+  return SolanaCompiledInstruction(
+      program_id_index, std::move(*account_indexes), std::move(*data));
+}
+
+}  // namespace brave_wallet

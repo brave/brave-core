@@ -1,0 +1,85 @@
+/* Copyright (c) 2025 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/tabs/containers_tab_menu_model_delegate.h"
+
+#include "brave/browser/ui/browser_commands.h"
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/common/features.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "content/public/browser/security_principal.h"
+#include "content/public/browser/site_instance.h"
+#include "content/public/browser/web_contents.h"
+#include "ui/compositor/compositor.h"
+#include "ui/views/widget/widget.h"
+
+namespace brave {
+
+ContainersTabMenuModelDelegate::ContainersTabMenuModelDelegate(
+    BrowserWindowInterface* browser_window,
+    const std::vector<tabs::TabHandle>& selected_tabs)
+    : browser_window_(browser_window), selected_tabs_(selected_tabs) {
+  CHECK(base::FeatureList::IsEnabled(containers::features::kContainers));
+}
+
+ContainersTabMenuModelDelegate::~ContainersTabMenuModelDelegate() = default;
+
+void ContainersTabMenuModelDelegate::OnContainerSelected(
+    const containers::mojom::ContainerPtr& container) {
+  brave::OpenTabUrlsInContainer(browser_window_.get(), selected_tabs_,
+                                container);
+}
+
+void ContainersTabMenuModelDelegate::OnNoContainerSelected() {
+  brave::OpenTabUrlsWithoutContainer(browser_window_.get(), selected_tabs_);
+}
+
+void ContainersTabMenuModelDelegate::OnNewTemporaryContainerSelected() {
+  brave::CreateTemporaryContainerAndOpenTabUrls(browser_window_.get(),
+                                                selected_tabs_);
+}
+
+base::flat_set<std::string>
+ContainersTabMenuModelDelegate::GetCurrentContainerIds() {
+  base::flat_set<std::string> container_ids;
+  for (auto tab_handle : selected_tabs_) {
+    auto* tab = tab_handle.Get();
+    if (!tab) {
+      continue;
+    }
+
+    auto* contents = tab->GetContents();
+    if (!contents) {
+      continue;
+    }
+
+    auto container_id = containers::GetContainerIdForWebContents(contents);
+    if (container_id.empty()) {
+      continue;
+    }
+
+    container_ids.insert(container_id);
+  }
+
+  return container_ids;
+}
+
+BrowserWindowInterface*
+ContainersTabMenuModelDelegate::GetBrowserToOpenSettings() {
+  return browser_window_;
+}
+
+float ContainersTabMenuModelDelegate::GetScaleFactor() {
+  // Get the device scale factor from the browser window's widget.
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_window_);
+  CHECK(browser_view);
+  auto* widget = browser_view->GetWidget();
+  CHECK(widget);
+  auto* compositor = widget->GetCompositor();
+  CHECK(compositor);
+  return compositor->device_scale_factor();
+}
+
+}  // namespace brave

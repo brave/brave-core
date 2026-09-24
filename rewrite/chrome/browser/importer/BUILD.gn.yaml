@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave importer sources.
+    add_literal_to_list:
+      target: importer
+      list_name: sources
+      literal: brave_browser_importer_sources
+      import: //brave/browser/importer/sources.gni
+
+  - description: Add the Brave importer public_deps.
+    add_literal_to_list:
+      target: importer
+      list_name: public_deps
+      literal: brave_browser_importer_public_deps
+      import: //brave/browser/importer/sources.gni
+
+  - description: Add the Brave importer implementation sources.
+    add_literal_to_list:
+      target: impl
+      list_name: sources
+      literal: brave_browser_importer_impl_sources
+      import: //brave/browser/importer/sources.gni
+
+  - description: Add the Brave importer implementation deps.
+    add_literal_to_list:
+      target: impl
+      list_name: deps
+      literal: brave_browser_importer_impl_deps
+      import: //brave/browser/importer/sources.gni

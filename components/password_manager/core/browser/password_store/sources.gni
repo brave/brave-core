@@ -1,0 +1,21 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# All these files are used on Desktop, but we need them for Android
+components_password_manager_core_browser_password_store_sources = [
+  "insecure_credentials_table.cc",
+  "insecure_credentials_table.h",
+  "login_database.cc",
+  "login_database.h",
+  "login_database_async_helper.cc",
+  "login_database_async_helper.h",
+  "login_database_posix.cc",
+  "password_notes_table.cc",
+  "password_notes_table.h",
+  "password_store_built_in_backend.cc",
+  "password_store_built_in_backend.h",
+  "statistics_table.cc",
+  "statistics_table.h",
+]

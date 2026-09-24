@@ -1,0 +1,139 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import {
+  CrLitElement,
+  PropertyValues,
+} from '//resources/lit/v3_0/lit.rollup.js'
+import { loadTimeData } from '//resources/js/load_time_data.js'
+
+import {
+  BraveAccountBrowserProxy,
+  BraveAccountBrowserProxyImpl,
+} from './brave_account_browser_proxy.js'
+import { BraveAccountStrings } from './brave_components_webui_strings.js'
+import { getCss } from './brave_account_password_strength_meter.css.js'
+import { getHtml } from './brave_account_password_strength_meter.html.js'
+
+// Minimum required password strength as a percentage.
+// This corresponds to zxcvbn's score 3 (0-4).
+const MINIMUM_PASSWORD_STRENGTH = 80
+
+export type PasswordStrengthChangedEventDetail = { isStrongEnough: boolean }
+
+export interface BraveAccountPasswordStrengthMeterElement {
+  $: {
+    text: HTMLElement
+  }
+}
+
+export class BraveAccountPasswordStrengthMeterElement extends CrLitElement {
+  static get is() {
+    return 'brave-account-password-strength-meter'
+  }
+
+  static override get styles() {
+    return getCss()
+  }
+
+  override render() {
+    return getHtml.bind(this)()
+  }
+
+  static override get properties() {
+    return {
+      category: { type: String, reflect: true },
+      meetsThreshold: { type: Boolean, reflect: true },
+      strength: { type: Number, state: true },
+      password: { type: String },
+    }
+  }
+
+  override connectedCallback() {
+    super.connectedCallback()
+    this.style.setProperty('--minimum-strength', `${MINIMUM_PASSWORD_STRENGTH}`)
+  }
+
+  override firstUpdated() {
+    // Reserve a width for the label that fits the widest of the four category
+    // strings so the bar's pixel width stays constant as the category changes
+    // — otherwise the percentage-positioned threshold tick would slide
+    // horizontally between categories.
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')!
+    ctx.font = getComputedStyle(this.$.text).font
+    const maxWidth = Math.max(
+      ...[
+        BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_TOO_WEAK,
+        BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_GETTING_THERE,
+        BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_STRONG_ENOUGH,
+        BraveAccountStrings.BRAVE_ACCOUNT_PASSWORD_STRENGTH_METER_EXCEPTIONALLY_STRONG,
+      ].map((id) => ctx.measureText(loadTimeData.getString(id)).width),
+    )
+    this.$.text.style.width = `${Math.ceil(maxWidth)}px`
+  }
+
+  override async updated(changedProperties: PropertyValues<this>) {
+    super.updated(changedProperties)
+
+    if ((changedProperties as Map<PropertyKey, unknown>).has('password')) {
+      const password = this.password
+      try {
+        const { strength } =
+          await this.browserProxy.password_strength_meter.getPasswordStrength(
+            password,
+          )
+
+        // Ignore stale response if password changed while we were waiting.
+        if (this.password !== password) {
+          return
+        }
+
+        this.strength = strength
+      } catch (error) {
+        console.error('Failed to calculate password strength:', error)
+        this.strength = 0
+      }
+
+      this.category =
+        this.strength < 60
+          ? 'TooWeak'
+          : this.strength < MINIMUM_PASSWORD_STRENGTH
+            ? 'GettingThere'
+            : this.strength < 100
+              ? 'StrongEnough'
+              : 'ExceptionallyStrong'
+
+      this.meetsThreshold = this.strength >= MINIMUM_PASSWORD_STRENGTH
+
+      this.fire('password-strength-changed', {
+        isStrongEnough: this.meetsThreshold,
+      })
+    }
+  }
+
+  private browserProxy: BraveAccountBrowserProxy =
+    BraveAccountBrowserProxyImpl.getInstance()
+
+  protected accessor category:
+    | 'TooWeak'
+    | 'GettingThere'
+    | 'StrongEnough'
+    | 'ExceptionallyStrong' = 'TooWeak'
+  protected accessor meetsThreshold = false
+  protected accessor strength = 0
+  private accessor password = ''
+}
+
+declare global {
+  interface HTMLElementTagNameMap {
+    'brave-account-password-strength-meter': BraveAccountPasswordStrengthMeterElement
+  }
+}
+
+customElements.define(
+  BraveAccountPasswordStrengthMeterElement.is,
+  BraveAccountPasswordStrengthMeterElement,
+)

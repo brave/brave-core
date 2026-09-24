@@ -1,0 +1,9 @@
+{%- import "interface_macros.tmpl" as interface_macros -%}
+{%- set cpp_namespace = interface|cpp_namespace_from_kind %}
+{%- set objc_name = class_prefix ~ interface.name %}
+@interface {{objc_name}}MojoImpl : NSObject <{{objc_name}}>
+{{- interface_macros.objc_methods(interface) }}
+- (instancetype)initWith{{interface.name}}:(mojo::PendingRemote<{{cpp_namespace}}::{{interface.name}}>)obj;
+- (instancetype)initWith{{interface.name}}Impl:(std::unique_ptr<{{cpp_namespace}}::{{interface.name}}>)obj;
+- (instancetype)init NS_UNAVAILABLE;
+@end

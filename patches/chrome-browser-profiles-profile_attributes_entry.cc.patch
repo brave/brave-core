@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/profiles/profile_attributes_entry.cc b/chrome/browser/profiles/profile_attributes_entry.cc
+index eb94d4a8ce89638336a1488369317de0b5146574..7723490165c98de22ca035f0e61b8d4b6370b347 100644
+--- a/chrome/browser/profiles/profile_attributes_entry.cc
++++ b/chrome/browser/profiles/profile_attributes_entry.cc
+@@ -1074,6 +1074,7 @@ bool ProfileAttributesEntry::ClearValue(const char* key) {
+ 
+ // This method should be periodically pruned of year+ old migrations.
+ void ProfileAttributesEntry::MigrateObsoleteProfileAttributes() {
++  BRAVE_PROFILE_ATTRIBUTES_ENTRY_MIGRATE_OBSOLETE_PROFILE_ATTRIBUTES
+   // Added 3/2023.
+   ClearValue(kAccountCategories);
+   // Added 2/2026.

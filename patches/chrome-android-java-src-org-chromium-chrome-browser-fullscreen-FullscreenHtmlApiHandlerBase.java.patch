@@ -1,0 +1,27 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
+index be20dc89b83b33ef9fa5dcc7113b4fbacfc74b02..64410685ecda671cc2bb30f8d06edd1af3d3b664 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/fullscreen/FullscreenHtmlApiHandlerBase.java
+@@ -320,6 +320,11 @@ public abstract class FullscreenHtmlApiHandlerBase
+ 
+                     @Override
+                     public void onHidden(Tab tab, @TabHidingType int reason) {
++                        if (BraveFullscreenHtmlApiHandlerBase.class.cast(
++                                        FullscreenHtmlApiHandlerBase.this)
++                                .maybeSkipExitFullscreenOnTabHidden(mActivity, reason)) {
++                            return;
++                        }
+                         // Clean up any fullscreen state that might impact other tabs.
+                         mFullscreenManagerDelegate.onExitFullscreen(null);
+                     }
+@@ -879,6 +884,10 @@ public abstract class FullscreenHtmlApiHandlerBase
+     @Override
+     public void onActivityStateChange(Activity activity, int newState) {
+         if (newState == ActivityState.STOPPED && mExitFullscreenOnStop) {
++            if (BraveFullscreenHtmlApiHandlerBase.class.cast(FullscreenHtmlApiHandlerBase.this)
++                        .shouldPreservePersistentFullscreenForPictureInPicture(activity)) {
++                return;
++            }
+             // Exit fullscreen in onStop to ensure the system UI flags are set
+             // correctly when
+             // showing again (on JB MR2+ builds, the omnibox would be covered by the

@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/ui/startup/startup_tab.h b/chrome/browser/ui/startup/startup_tab.h
+index 494d35877bec129310bef73cec9aebc722d135aa..0b9f50754fcc4db95d544d25126a794ee5c3a4a8 100644
+--- a/chrome/browser/ui/startup/startup_tab.h
++++ b/chrome/browser/ui/startup/startup_tab.h
+@@ -31,6 +31,15 @@ struct StartupTab {
+   // True if this tab was launched from an untrusted external custom protocol
+   // (e.g., google-chrome://) that was stripped on startup.
+   bool is_untrusted_launch = false;
++
++#if BUILDFLAG(ENABLE_CONTAINERS)
++  containers::ContainerSpecifier container;
++#endif
++
++  StartupTab(const StartupTab&);
++  StartupTab& operator=(const StartupTab&);
++  StartupTab(StartupTab&&) noexcept;
++  StartupTab& operator=(StartupTab&&) noexcept;
+ };
+ 
+ using StartupTabs = std::vector<StartupTab>;

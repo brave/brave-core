@@ -1,0 +1,6 @@
+include_rules = [
+  "+brave/components/brave_component_updater/browser",
+  "+components/component_updater",
+  "+components/update_client",
+  "+crypto",
+]

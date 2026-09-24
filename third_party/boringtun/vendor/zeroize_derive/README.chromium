@@ -1,0 +1,14 @@
+Name: zeroize_derive
+Short Name: zeroize_derive
+URL: https://github.com/RustCrypto/utils/tree/master/zeroize/derive
+Version: 1.4.3
+License: Apache-2.0 OR MIT
+License File: LICENSE-MIT
+
+Description:
+Transitive dependency of BoringTun, vendored under
+brave/third_party/boringtun/vendor/zeroize_derive.
+
+Local Modifications:
+None. Source vendored via `cargo vendor` from crates.io at the version
+pinned by brave/third_party/boringtun/Cargo.lock.

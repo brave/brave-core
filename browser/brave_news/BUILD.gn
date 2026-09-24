@@ -1,0 +1,128 @@
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_news/common/buildflags/buildflags.gni")
+
+assert(enable_brave_news)
+
+source_set("brave_news") {
+  sources = [
+    "brave_news_controller_delegate_impl.h",
+    "brave_news_controller_factory.h",
+    "brave_news_tab_helper.h",
+    "direct_feed_fetcher_delegate_impl.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/brave_news/browser",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_news/common:mojom",
+    "//brave/components/brave_news/common/buildflags",
+    "//components/keyed_service/content",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//url",
+  ]
+}
+
+source_set("impl") {
+  visibility = [
+    "//brave/browser:core",
+    "//brave/browser/ui/views/page_action:unit_tests",
+  ]
+
+  sources = [
+    "brave_news_controller_factory.cc",
+    "brave_news_tab_helper.cc",
+    "direct_feed_fetcher_delegate_impl.cc",
+    "rss_links_fetcher.cc",
+    "rss_links_fetcher.h",
+  ]
+
+  if (is_android) {
+    sources += [ "android/brave_news_controller_factory_android.cc" ]
+  }
+
+  deps = [
+    ":brave_news",
+    "//base",
+    "//brave/browser:browser_process",
+    "//brave/browser/brave_stats:first_run_util",
+    "//brave/components/brave_news/browser",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_news/common:rss_link_reader_mojom",
+    "//brave/components/brave_policy:policy_initialization_waiter",
+    "//brave/components/brave_shields/core/browser",
+    "//chrome/browser/content_settings:content_settings_factory",
+    "//chrome/browser/favicon",
+    "//chrome/browser/history",
+    "//chrome/browser/policy",
+    "//chrome/browser/profiles",
+    "//chrome/browser/profiles:profile",
+    "//components/keyed_service/content",
+    "//components/policy/core/common",
+    "//content/public/browser",
+    "//mojo/public/cpp/bindings",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
+    "//services/service_manager/public/cpp",
+    "//url",
+  ]
+
+  if (!is_android) {
+    # The controller delegate opens the New Tab Page, which requires
+    # //chrome/browser/ui/navigator (desktop only). CloseUI also closes the
+    # browser side panel, which requires //chrome/browser/ui/side_panel and
+    # //chrome/browser/ui/browser_window.
+    sources += [ "brave_news_controller_delegate_impl.cc" ]
+    deps += [
+      "//brave/components/constants",
+      "//chrome/browser/ui/browser_window",
+      "//chrome/browser/ui/navigator",
+      "//chrome/browser/ui/side_panel",
+      "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+    ]
+  }
+
+  if (is_android) {
+    # brave_news_controller_factory_android.cc includes the generated
+    # BraveNewsControllerFactory_jni.h.
+    deps += [ "//brave/build/android:jni_headers" ]
+  }
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  if (!is_android) {
+    sources = [
+      "brave_news_tab_helper_browsertest.cc",
+      "direct_feed_fetcher_browsertest.cc",
+    ]
+
+    deps = [
+      ":brave_news",
+      "//brave/components/brave_news/browser",
+      "//brave/components/brave_news/common",
+      "//brave/components/brave_news/common:mojom",
+      "//brave/components/constants",
+      "//chrome/browser",
+      "//chrome/browser:browser_process",
+      "//chrome/browser/profiles",
+      "//chrome/browser/profiles:profile",
+      "//chrome/browser/ui",
+      "//chrome/test:test_support_ui",
+      "//content/test:test_support",
+      "//net:test_support",
+      "//services/network/public/cpp:ip_address_space_overrides_test_utils",
+      "//services/network/public/mojom",
+      "//testing/gmock",
+      "//testing/gtest",
+    ]
+  }
+}

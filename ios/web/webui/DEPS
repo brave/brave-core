@@ -1,0 +1,12 @@
+include_rules = [
+  "+brave/components/constants",
+  "+brave/components/webui",
+  "+components/grit",
+  "+ios/chrome/browser/shared/model/profile",
+  "+ios/chrome/browser/shared/model/url",
+  "+ios/components/webui",
+  "+ios/web/webui",
+  "+ios/web/web_state",
+  "+ios/web/test",
+  "+services/network/public/mojom",
+]

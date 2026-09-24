@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/signin/signin_promo_util.cc b/chrome/browser/signin/signin_promo_util.cc
+index 325dc27fd94dd2adb5f4426bd663f9ab9abcb35d..e62bffae41ddf93479f6621aad3b4e9c823b641a 100644
+--- a/chrome/browser/signin/signin_promo_util.cc
++++ b/chrome/browser/signin/signin_promo_util.cc
+@@ -646,6 +646,7 @@ bool CanShowPromoForSyncableDataType(SignInPromoType type, Profile& profile) {
+ // Needs additional checks depending on the type of the promo.
+ // `profile` is the profile of the tab the promo would be shown on.
+ bool ShouldShowSignInPromoCommon(Profile& profile, SignInPromoType type) {
++  SHOULD_SHOW_SIGNIN_PROMO_COMMON
+   if (profile.IsOffTheRecord()) {
+     return false;
+   }

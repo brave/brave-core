@@ -1,0 +1,35 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/build/config.gni")
+import("//build/buildflag_header.gni")
+
+declare_args() {
+  service_key_stt = ""
+}
+
+if (is_official_build) {
+  assert(service_key_stt != "")
+}
+
+buildflag_header("buildflags") {
+  header = "buildflags.h"
+  flags = [ "SERVICE_KEY_STT=\"$service_key_stt\"" ]
+}
+
+component("speech_to_text") {
+  output_name = "speech_to_text"
+  defines = [ "IS_SPEECH_TO_TEXT_IMPL" ]
+
+  sources = [
+    "features.cc",
+    "features.h",
+  ]
+
+  public_deps = [
+    ":buildflags",
+    "//base",
+  ]
+}

@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm b/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm
+index d8cb9f66ac3b1fb1f6a2ca68a03dfe4b49028491..654096ca1c53ce8f0e43a6c8d8b2dd735c5afb72 100644
+--- a/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm
++++ b/chrome/browser/web_applications/os_integration/mac/apps_folder_support.mm
+@@ -87,6 +87,7 @@ base::FilePath GetChromeAppsFolderImpl() {
+     return path;
+   }
+ 
++  BRAVE_GET_CHROME_APPS_FOLDER_IMPL
+   return path.Append(GetLocalizableAppShortcutsSubdirName());
+ }
+ 

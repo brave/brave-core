@@ -1,0 +1,49 @@
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at http://mozilla.org/MPL/2.0/.
+
+module skus.mojom;
+
+// A Skus Result Code from //components/skus/browser/rs/cxx/src/lib.rs
+enum SkusResultCode {
+  Ok,
+  RequestFailed,
+  InternalServer,
+  BadRequest,
+  UnhandledStatus,
+  RetryLater,
+  NotFound,
+  SerializationFailed,
+  InvalidResponse,
+  InvalidProof,
+  QueryError,
+  OutOfCredentials,
+  StorageWriteFailed,
+  StorageReadFailed,
+  OrderUnpaid,
+  UnhandledVariant,
+  OrderLocationMismatch,
+  OrderMisconfiguration,
+  ItemCredentialsMissing,
+  ItemCredentialsExpired,
+  InvalidMerchantOrSku,
+  UnknownError,
+  BorrowFailed,
+  FutureCancelled,
+  InvalidCall,
+};
+
+struct SkusResult {
+  SkusResultCode code;
+  string message;
+};
+
+interface SkusService {
+  RefreshOrder(string domain, string order_id) => (SkusResult response);
+  FetchOrderCredentials(string domain, string order_id) => (SkusResult response);
+  PrepareCredentialsPresentation(string domain, string path) => (SkusResult response);
+  CredentialSummary(string domain) => (SkusResult response);
+  SubmitReceipt(string domain, string order_id, string receipt) => (SkusResult response);
+  CreateOrderFromReceipt(string domain, string receipt) => (SkusResult response);
+};

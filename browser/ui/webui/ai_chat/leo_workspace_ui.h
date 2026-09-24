@@ -1,0 +1,51 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_BROWSER_UI_WEBUI_AI_CHAT_LEO_WORKSPACE_UI_H_
+#define BRAVE_BROWSER_UI_WEBUI_AI_CHAT_LEO_WORKSPACE_UI_H_
+
+#include <memory>
+
+#include "content/public/browser/webui_config.h"
+#include "ui/webui/untrusted_web_ui_controller.h"
+
+namespace ai_chat {
+
+class LeoWorkspaceUIConfig : public content::WebUIConfig {
+ public:
+  LeoWorkspaceUIConfig();
+  ~LeoWorkspaceUIConfig() override;
+
+  // content::WebUIConfig:
+  bool IsWebUIEnabled(content::BrowserContext* browser_context) override;
+  // Every workspace is served from its own subdomain of the host this config is
+  // registered for, so that each one is a separate origin.
+  bool ShouldHandleSubdomains() const override;
+  std::unique_ptr<content::WebUIController> CreateWebUIController(
+      content::WebUI* web_ui,
+      const GURL& url) override;
+};
+
+// Hidden, headless Untrusted WebUI that hosts the Leo "workspace" tools. The
+// page receives a FileSystemDirectoryHandle (delivered by the browser via
+// launchQueue) for a user-picked folder, implements the file tools in
+// JavaScript against it, and registers them with Leo via WebMCP
+// (navigator.modelContext). One instance is created per conversation and served
+// from its own origin at chrome-untrusted://<guid>.leo-workspace; it runs with
+// a locked-down CSP that only permits its own first-party bundle. This page has
+// no visible UI.
+class LeoWorkspaceUI : public ui::UntrustedWebUIController {
+ public:
+  // `url` is the URL being loaded, whose origin is the workspace's own origin.
+  LeoWorkspaceUI(content::WebUI* web_ui, const GURL& url);
+  ~LeoWorkspaceUI() override;
+
+  LeoWorkspaceUI(const LeoWorkspaceUI&) = delete;
+  LeoWorkspaceUI& operator=(const LeoWorkspaceUI&) = delete;
+};
+
+}  // namespace ai_chat
+
+#endif  // BRAVE_BROWSER_UI_WEBUI_AI_CHAT_LEO_WORKSPACE_UI_H_
