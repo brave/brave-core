@@ -17,6 +17,7 @@
 #include <vector>
 
 #include "base/functional/callback.h"
+#include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
@@ -248,6 +249,9 @@ class AIChatService : public KeyedService,
   // Whether the feature and user preference for history storage is enabled
   bool IsAIChatHistoryEnabled();
 
+  std::unique_ptr<AssociatedContentDelegate>
+  RestoreWorkspaceAssociatedContentFromUrl(const GURL& url);
+
   std::unique_ptr<EngineConsumer> GetDefaultAIEngine();
   std::unique_ptr<EngineConsumer> GetEngineForModel(
       const std::string& model_key);
@@ -288,6 +292,12 @@ class AIChatService : public KeyedService,
 
   void SetDatabaseForTesting(base::SequenceBound<AIChatDatabase> db) {
     ai_chat_db_ = std::move(db);
+  }
+
+  void SetWorkspaceContentRestorer(
+      base::RepeatingCallback<std::unique_ptr<AssociatedContentDelegate>(GURL)>
+          workspace_content_restorer) {
+    workspace_content_restorer_ = std::move(workspace_content_restorer);
   }
 
  private:
@@ -437,6 +447,10 @@ class AIChatService : public KeyedService,
 
   // All conversation metadata. Mainly just titles and uuids.
   ConversationMap conversations_;
+
+  // Used to restore a WorkspaceAssociatedContent from a url.
+  base::RepeatingCallback<std::unique_ptr<AssociatedContentDelegate>(GURL)>
+      workspace_content_restorer_;
 
   // Only keep ConversationHandlers around that are being
   // actively used. Any metadata that needs to stay in-memory

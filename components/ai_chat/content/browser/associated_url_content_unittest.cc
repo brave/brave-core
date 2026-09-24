@@ -112,7 +112,8 @@ TEST_F(AssociatedURLContentTest, ConstructorDoesNotTriggerLoad) {
   EXPECT_EQ(associated_content->title(), test_title());
   EXPECT_FALSE(associated_content->uuid().empty());
   EXPECT_TRUE(associated_content->cached_page_content().content.empty());
-  EXPECT_FALSE(associated_content->cached_page_content().is_video);
+  EXPECT_EQ(associated_content->cached_page_content().content_type,
+            mojom::ContentType::PageContent);
 }
 
 TEST_F(AssociatedURLContentTest,
@@ -127,15 +128,15 @@ TEST_F(AssociatedURLContentTest,
 
   associated_content->DocumentOnLoadCompletedInPrimaryMainFrame();
 
-  const auto [content, is_video] = future.Take();
+  const auto [content, content_type] = future.Take();
   EXPECT_EQ(content, test_content());
-  EXPECT_FALSE(is_video);
+  EXPECT_EQ(content_type, mojom::ContentType::PageContent);
 }
 
 TEST_F(AssociatedURLContentTest, GetContentWhenCachePopulated) {
   auto testable_content = CreateAssociatedURLContent(test_url(), test_title());
 
-  PageContent cached_content(test_content(), false);
+  PageContent cached_content(test_content(), mojom::ContentType::PageContent);
   testable_content->set_cached_page_content(cached_content);
 
   base::test::TestFuture<PageContent> future;
@@ -143,7 +144,7 @@ TEST_F(AssociatedURLContentTest, GetContentWhenCachePopulated) {
 
   const PageContent& result = future.Take();
   EXPECT_EQ(result.content, test_content());
-  EXPECT_FALSE(result.is_video);
+  EXPECT_EQ(result.content_type, mojom::ContentType::PageContent);
 }
 
 TEST_F(AssociatedURLContentTest, MultipleGetContentCallsWithEmptyCache) {
@@ -162,13 +163,13 @@ TEST_F(AssociatedURLContentTest, MultipleGetContentCallsWithEmptyCache) {
 
   associated_content->DocumentOnLoadCompletedInPrimaryMainFrame();
 
-  const auto& [content1, is_video1] = future1.Take();
+  const auto& [content1, content_type1] = future1.Take();
   EXPECT_EQ(content1, test_content());
-  EXPECT_FALSE(is_video1);
+  EXPECT_EQ(content_type1, mojom::ContentType::PageContent);
 
-  const auto& [content2, is_video2] = future2.Take();
+  const auto& [content2, content_type2] = future2.Take();
   EXPECT_EQ(content2, test_content());
-  EXPECT_FALSE(is_video2);
+  EXPECT_EQ(content_type2, mojom::ContentType::PageContent);
 }
 
 TEST_F(AssociatedURLContentTest, DidFinishNavigationWithError) {
@@ -187,7 +188,7 @@ TEST_F(AssociatedURLContentTest, DidFinishNavigationWithError) {
 
   const PageContent& result = future.Take();
   EXPECT_TRUE(result.content.empty());
-  EXPECT_FALSE(result.is_video);
+  EXPECT_EQ(result.content_type, mojom::ContentType::PageContent);
 }
 
 TEST_F(AssociatedURLContentTest, DidFinishNavigationNonPrimaryFrame) {
@@ -238,13 +239,13 @@ TEST_F(AssociatedURLContentTest, OnContentExtractionCompleteSetsCache) {
   associated_content->OnContentExtractionComplete(test_content(), true,
                                                   "invalidation_token");
 
-  const auto& [content, is_video] = future.Take();
+  const auto& [content, content_type] = future.Take();
   EXPECT_EQ(content, test_content());
-  EXPECT_TRUE(is_video);
+  EXPECT_EQ(content_type, mojom::ContentType::VideoTranscript);
 
   const PageContent& cached = associated_content->cached_page_content();
   EXPECT_EQ(cached.content, test_content());
-  EXPECT_TRUE(cached.is_video);
+  EXPECT_EQ(cached.content_type, mojom::ContentType::VideoTranscript);
 }
 
 TEST_F(AssociatedURLContentTest, TimeoutAttemptsToExtractContent) {
@@ -261,9 +262,9 @@ TEST_F(AssociatedURLContentTest, TimeoutAttemptsToExtractContent) {
   task_environment()->FastForwardBy(base::Seconds(31));
 
   // Verify the callback was invoked with empty content
-  const auto& [content, is_video] = future.Take();
+  const auto& [content, content_type] = future.Take();
   EXPECT_TRUE(content.empty());
-  EXPECT_FALSE(is_video);
+  EXPECT_EQ(content_type, mojom::ContentType::PageContent);
 }
 
 }  // namespace ai_chat

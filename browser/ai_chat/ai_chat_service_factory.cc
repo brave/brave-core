@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/browser_tool_provider_factory.h"
@@ -19,6 +20,7 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/skus/skus_service_factory.h"
+#include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -130,6 +132,16 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   // the AIChatService constructor.
   service->SetIsContentAgentAllowed(is_actor_allowed);
 #endif
+
+  if (base::FeatureList::IsEnabled(ai_chat::features::kAIChatWorkspaceTools)) {
+    service->SetWorkspaceContentRestorer(base::BindRepeating(
+        [](content::BrowserContext* context,
+           GURL url) -> std::unique_ptr<AssociatedContentDelegate> {
+          return std::make_unique<WorkspaceAssociatedContent>(
+              std::move(url), context, base::DoNothingWithBoundArgs());
+        },
+        context));
+  }
 
   return service;
 }

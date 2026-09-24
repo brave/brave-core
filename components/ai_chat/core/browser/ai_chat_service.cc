@@ -1128,6 +1128,17 @@ bool AIChatService::IsAIChatHistoryEnabled() {
           profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled));
 }
 
+std::unique_ptr<AssociatedContentDelegate>
+AIChatService::RestoreWorkspaceAssociatedContentFromUrl(const GURL& url) {
+  // Note: This can happen if there's a workspace in the DB but the flag has
+  // been disabled.
+  if (!workspace_content_restorer_) {
+    return nullptr;
+  }
+
+  return workspace_content_restorer_.Run(url);
+}
+
 void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
                                                bool in_progress) {
   if (ai_chat_metrics_) {

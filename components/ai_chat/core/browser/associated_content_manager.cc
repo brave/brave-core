@@ -18,14 +18,17 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
+#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/associated_archive_content.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/common/constants.h"
 
 namespace ai_chat {
 
@@ -66,11 +69,24 @@ void AssociatedContentManager::LoadArchivedContent(
     }
 
     auto* content = content_it->get();
-    bool is_video =
-        (content->content_type == mojom::ContentType::VideoTranscript);
-    owned_content_.push_back(std::make_unique<AssociatedArchiveContent>(
-        content->url, archive_content->content,
-        base::UTF8ToUTF16(content->title), is_video, content->uuid));
+    std::unique_ptr<AssociatedContentDelegate> owned_content;
+    if (content->url.scheme() == "workspace") {
+      owned_content =
+          conversation_->ai_chat_service()
+              ->RestoreWorkspaceAssociatedContentFromUrl(content->url);
+    }
+
+    // Not a workspace, or workspace restoration failed, so create an archive.
+    if (!owned_content) {
+      bool is_video =
+          (content->content_type == mojom::ContentType::VideoTranscript);
+      owned_content = std::make_unique<AssociatedArchiveContent>(
+          content->url, archive_content->content,
+          base::UTF8ToUTF16(content->title), is_video, content->uuid);
+    }
+
+    CHECK(owned_content);
+    owned_content_.push_back(std::move(owned_content));
     AddContent(owned_content_.back().get(), /*notify_updated=*/false);
 
     // Be sure to record the turn that this content is associated with.
@@ -86,7 +102,8 @@ void AssociatedContentManager::CreateArchiveContent(
   DVLOG(1) << __func__;
   auto content_uuid = to_archive->uuid();
   auto text_content = to_archive->cached_page_content().content;
-  auto is_video = to_archive->cached_page_content().is_video;
+  auto is_video = to_archive->cached_page_content().content_type ==
+                  mojom::ContentType::VideoTranscript;
 
   auto it = std::ranges::find(content_delegates_, content_uuid,
                               [](const auto& ptr) { return ptr->uuid(); });
@@ -431,9 +448,7 @@ AssociatedContentManager::GetAssociatedContent() const {
     content->content_id = delegate->content_id();
     content->url = delegate->url();
     content->title = base::UTF16ToUTF8(delegate->title());
-    content->content_type = cached_page_content.is_video
-                                ? mojom::ContentType::VideoTranscript
-                                : mojom::ContentType::PageContent;
+    content->content_type = cached_page_content.content_type;
 
     const uint32_t content_length =
         cached_page_content.content.length() + kAdditionalCharsPerContent;
@@ -638,7 +653,8 @@ bool AssociatedContentManager::IsVideo() const {
   DVLOG(1) << __func__;
 
   return content_delegates_.size() == 1 &&
-         content_delegates_[0]->cached_page_content().is_video;
+         content_delegates_[0]->cached_page_content().content_type ==
+             mojom::ContentType::VideoTranscript;
 }
 
 size_t AssociatedContentManager::GetContentDelegateCount() const {

@@ -42,6 +42,10 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
       base::FilePath folder_path,
       content::BrowserContext* browser_context,
       base::OnceCallback<void(content::WebContents*)> attach_tab_helpers);
+  WorkspaceAssociatedContent(
+      GURL url,
+      content::BrowserContext* browser_context,
+      base::OnceCallback<void(content::WebContents*)> attach_tab_helpers);
   ~WorkspaceAssociatedContent() override;
   WorkspaceAssociatedContent(const WorkspaceAssociatedContent&) = delete;
   WorkspaceAssociatedContent& operator=(const WorkspaceAssociatedContent&) =
@@ -58,6 +62,11 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
   }
 
  private:
+  void AttachWebContents(
+      const GURL& url,
+      content::BrowserContext* browser_context,
+      base::OnceCallback<void(content::WebContents*)> attach_tab_helpers);
+
   // content::WebContentsObserver:
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
 
@@ -72,7 +81,7 @@ class WorkspaceAssociatedContent : public AssociatedContentDelegate,
       mojo::Remote<blink::mojom::AIPageContentAgent> agent,
       blink::mojom::AIPageContentPtr result);
 
-  const base::FilePath folder_path_;
+  base::FilePath folder_path_;
   std::unique_ptr<content::WebContents> web_contents_;
 
   // True once the workspace page has loaded and its handle has been delivered.

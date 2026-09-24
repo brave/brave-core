@@ -189,7 +189,8 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
         base::BindLambdaForTesting(
             [&run_loop, expected_text,
              wait_for_callback](ai_chat::PageContent content) {
-              EXPECT_FALSE(content.is_video);
+              EXPECT_EQ(content.content_type,
+                        ai_chat::mojom::ContentType::PageContent);
               EXPECT_EQ(content.content, expected_text);
               if (wait_for_callback) {
                 run_loop.Quit();
