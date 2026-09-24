@@ -21,6 +21,7 @@
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "content/public/browser/web_contents.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
 
 namespace psst {
 
@@ -75,15 +76,15 @@ BravePsstDialogHandler::BravePsstDialogHandler(
       client_page_(std::move(client_page)) {
   CHECK(dialog_ui_);
   CHECK(initiator_web_contents);
+  callback = mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+      std::move(callback), psst::mojom::SettingCardData::New());
   psst_tab_helper_ = GetPsstTabHelperForContents(initiator_web_contents);
   if (!psst_tab_helper_) {
-    std::move(callback).Run(psst::mojom::SettingCardData::New());
     return;
   }
 
   psst_dialog_delegate_ = GetPsstUIDelegate(psst_tab_helper_);
   if (!psst_dialog_delegate_) {
-    std::move(callback).Run(psst::mojom::SettingCardData::New());
     return;
   }
 
