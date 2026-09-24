@@ -2,6 +2,12 @@
   "disabled_checks": {
     // Checks defined in the //PRESUBMIT.py global scope.
     "//PRESUBMIT.py": [
+      // Ignore chromium tree status on commit.
+      "CheckTreeIsOpenOnCommit",
+      // Ignore chromium requirement for a bug field on commit.
+      "CheckChangeHasBugFieldOnCommit",
+      // Ignore chromium requirement for no unwanted tags on commit.
+      "CheckChangeHasNoUnwantedTagsOnCommit",
       // We don't use OWNERS files.
       "CheckSecurityOwners",
       // This validates added strings with screenshot tests which we don't use.
@@ -36,6 +42,10 @@
       // are used. We currently don't use this setup, but even then it is broken
       // for sub repositories when the number of files changed is >1000.
       "CheckForCommitObjects",
+      // Disable Chromium-specific checks.
+      "CheckChangeHasDescription",
+      "CheckDoNotSubmitInDescription",
+      "CheckDoNotSubmitInFiles",
     ],
   },
 
