@@ -33,6 +33,7 @@ source_set("browser_tests") {
     "//base/test:test_support",
     "//chrome/browser/ui",
     "//chrome/browser/ui/color:mixers",
+    "//chrome/browser/ui/views/frame:browser_view_header",
     "//chrome/test:test_support_ui",
     "//content/test:test_support",
     "//testing/gtest",
