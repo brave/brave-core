@@ -31,9 +31,10 @@ bool ContainsMetadataToStrip(const base::FilePath& file_path);
 
 // Removes the FBMD metadata from the IPTC Instructions field for an image file
 // in |file_path|. The |client| is needed to log the stripping result code
-// tagged on client.
-// Returns true only when the fbmd iptc metadata was actually removed and false
-// otherwise.
+// tagged on client. Returns true only when the fbmd iptc metadata was actually
+// removed and false otherwise.
+//
+// Upload specfic clients must rely on ImageMetadataStripperUploadController.
 bool RemoveIptcMetadata(const StrippingClient client,
                         const base::FilePath& file_path);
 

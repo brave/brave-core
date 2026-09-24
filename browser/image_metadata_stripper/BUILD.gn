@@ -1,0 +1,39 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("image_metadata_stripper") {
+  sources = [
+    "image_metadata_stripper_upload_controller.cc",
+    "image_metadata_stripper_upload_controller.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/components/image_metadata_stripper",
+    "//content/public/browser",
+    "//ui/base/unowned_user_data",
+  ]
+
+  deps = [ "//components/tabs:public" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "image_metadata_stripper_upload_controller_unittest.cc" ]
+
+  deps = [
+    ":image_metadata_stripper",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/image_metadata_stripper",
+    "//chrome/test:test_support",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//testing/gtest",
+  ]
+
+  data = [ "//brave/test/data/image_metadata_stripper/" ]
+}

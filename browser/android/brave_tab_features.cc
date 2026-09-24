@@ -5,9 +5,12 @@
 
 #include "brave/browser/android/brave_tab_features.h"
 
+#include "base/feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
 #include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
+#include "brave/browser/image_metadata_stripper/image_metadata_stripper_upload_controller.h"
+#include "brave/components/image_metadata_stripper/common/features.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
@@ -24,6 +27,13 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
     // Injects Brave-provided WebMCP tools into matching pages; see
     // WebMcpInjector. Null when WebMCP is disabled or has no rules.
     web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(web_contents);
+  }
+
+  if (base::FeatureList::IsEnabled(
+          image_metadata_stripper::features::kStripImageMetadataV1)) {
+    image_metadata_stripper_dir_controller_ =
+        std::make_unique<brave::ImageMetadataStripperUploadController>(
+            web_contents);
   }
 }
 

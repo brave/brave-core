@@ -8,10 +8,13 @@
 
 #include <vector>
 
-#include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "third_party/blink/public/mojom/choosers/file_chooser.mojom-forward.h"
+
+namespace content {
+class WebContents;
+}  // namespace content
 
 namespace brave {
 
@@ -26,11 +29,10 @@ namespace brave {
 // the regular execution.
 //
 // The method does not strip metadata from the original file. It copies each
-// strippable JPEG into a unique subdirectory of one temporary parent directory
+// strippable JPEG into a unique subdirectory of the tab's temporary root
 // (so the original basename is preserved) and that copy is what gets uploaded.
-// Only the parent directory is added to |temporary_files|;
-// `MaybeDeleteImageMetadataStripperTemporaryDir` recursively deletes it
-// after the upload completes.
+// The root is owned by `ImageMetadataStripperUploadController` until the
+// page that received the copies is destroyed, or the tab closes.
 //
 // |already_processed| helps to avoid looping between `NotifyListenerAndEnd`
 // and `MaybeStripImageMetadataForUpload` by letting `NotifyListenerAndEnd` know
@@ -42,21 +44,15 @@ namespace brave {
 // ownership would still be with the caller.
 bool MaybeStripImageMetadataForUpload(
     bool& already_processed,
-    std::vector<base::FilePath>& temporary_files,
+    content::WebContents* web_contents,
     std::vector<blink::mojom::FileChooserFileInfoPtr>& list,
     base::OnceCallback<void(std::vector<blink::mojom::FileChooserFileInfoPtr>)>
         notify);
 
-// Recursively deletes the upload-strip temp directory (basename contains
-// `image_metadata_stripper::kStripTempDirPrefix`) which holds the stripped
-// copies. No-ops if |paths| has no matching directory.
-void MaybeDeleteImageMetadataStripperTemporaryDir(
-    std::vector<base::FilePath>& paths);
-
 // Test-only: The caller owns |callback| and must keep
 // it alive until it fires; pass nullptr to clear it.
 void SetStripCompletedCallbackForTesting(  // IN-TEST
-    base::OnceCallback<void(std::vector<base::FilePath>)>* callback);
+    base::OnceClosure* callback);
 
 }  // namespace brave
 
