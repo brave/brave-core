@@ -12,6 +12,8 @@
 #include "base/functional/function_ref.h"
 #include "base/memory/raw_ptr.h"
 #include "base/numerics/safe_math.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -133,6 +135,17 @@ class BraveAdsAdsServiceImplTest : public testing::Test {
 
   void SimulateIdleState(ui::IdleState idle_state, base::TimeDelta idle_time) {
     ads_service_->ProcessIdleState(idle_state, idle_time);
+  }
+
+  // Blocks until every task already posted to the current sequence has run,
+  // including tasks posted by production code from a pref change
+  // notification (which cannot run synchronously; see
+  // `AdsServiceImpl::OnAdsPrefChanged`).
+  void FlushPendingTasks() {
+    bool did_run = false;
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindLambdaForTesting([&] { did_run = true; }));
+    ASSERT_TRUE(base::test::RunUntil([&] { return did_run; }));
   }
 
   base::test::TaskEnvironment task_environment_;
@@ -263,7 +276,9 @@ TEST_F(BraveAdsAdsServiceImplTest,
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
   Startup();
-  // A proxy for the `brave.brave_ads.*` prefs cleared alongside it.
+  // `ClearAdsPrefs` clears the whole `brave.brave_ads.*` prefix at once, so
+  // checking this one pref is enough to tell whether the whole prefix was
+  // cleared.
   prefs_.SetString(prefs::kDiagnosticId, "foo");
   test::AdsServiceWaiter waiter(*ads_service_);
 
@@ -274,6 +289,26 @@ TEST_F(BraveAdsAdsServiceImplTest,
   // Assert
   EXPECT_FALSE(prefs_.HasPrefPath(prefs::kDiagnosticId));
   EXPECT_FALSE(prefs_.GetBoolean(prefs::kSponsoredEnabled));
+}
+
+TEST_F(
+    BraveAdsAdsServiceImplTest,
+    PreservesAdsDataWhenSponsoredAdsAreDisabledThenReenabledBeforeClearDataRuns) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+  Startup();
+  prefs_.SetString(prefs::kDiagnosticId, "foo");
+
+  // Act
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+  // Toggled back before the posted clear task has a chance to run.
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+  // Ensures `MaybeClearAdsData`'s posted task has had a
+  // chance to (not) clear data before asserting.
+  FlushPendingTasks();
+
+  // Assert
+  EXPECT_EQ("foo", prefs_.GetString(prefs::kDiagnosticId));
 }
 
 TEST_F(BraveAdsAdsServiceImplTest,
@@ -381,14 +416,13 @@ TEST_F(BraveAdsAdsServiceImplTest,
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
-// Sponsored ads are disabled so the service does not start during
-// `Startup`, keeping each test's trigger isolated.
-TEST_F(BraveAdsAdsServiceImplTest, ServiceStartsWhenNotificationAdsAreEnabled) {
+TEST_F(BraveAdsAdsServiceImplTest,
+       ServiceDoesNotRestartWhenNotificationAdsAreEnabledWhileAlreadyRunning) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
   Startup();
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
-  ASSERT_EQ(0U, bat_ads_service_factory_->launch_count());
+  ASSERT_EQ(1U, bat_ads_service_factory_->launch_count());
 
   // Act
   prefs_.SetBoolean(prefs::kNotificationsEnabled, true);
@@ -427,24 +461,90 @@ TEST_F(
   EXPECT_EQ(0U, bat_ads_service_factory_->shutdown_count());
 }
 
-TEST_F(BraveAdsAdsServiceImplTest,
-       ClearsAdsDataWhenSponsoredAdsBecomeDisabledWhileServiceKeepsRunning) {
+TEST_F(
+    BraveAdsAdsServiceImplTest,
+    PreservesAdsDataWhenSponsoredAdsBecomeDisabledForBraveRewardsUserWhileServiceKeepsRunning) {
   // Arrange
   prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
   prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
   Startup();
   ASSERT_EQ(1U, bat_ads_service_factory_->launch_count());
-  // A proxy for the `brave.brave_ads.*` prefs cleared alongside it.
+  // `ClearAdsPrefs` clears the whole `brave.brave_ads.*` prefix at once, so
+  // checking this one pref is enough to tell whether the whole prefix was
+  // cleared.
+  prefs_.SetString(prefs::kDiagnosticId, "foo");
+
+  // Act
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+  // Ensures `MaybeClearAdsData`'s posted task has had a
+  // chance to (not) clear data before asserting.
+  FlushPendingTasks();
+
+  // Assert
+  EXPECT_EQ("foo", prefs_.GetString(prefs::kDiagnosticId));
+}
+
+TEST_F(
+    BraveAdsAdsServiceImplTest,
+    PreservesAdsDataWhenBraveRewardsBecomesDisabledWhileSponsoredAdsRemainEnabled) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, true);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  Startup();
+  ASSERT_EQ(1U, bat_ads_service_factory_->launch_count());
+  prefs_.SetString(prefs::kDiagnosticId, "foo");
+
+  // Act
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, false);
+  // Ensures `MaybeClearAdsData`'s posted task has had a
+  // chance to (not) clear data before asserting.
+  FlushPendingTasks();
+
+  // Assert
+  EXPECT_EQ("foo", prefs_.GetString(prefs::kDiagnosticId));
+}
+
+TEST_F(BraveAdsAdsServiceImplTest,
+       ClearsAdsDataWhenBraveRewardsBecomesDisabledAndSponsoredAdsAreDisabled) {
+  // Arrange
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+  Startup();
+  ASSERT_EQ(1U, bat_ads_service_factory_->launch_count());
+  // `ClearAdsPrefs` clears the whole `brave.brave_ads.*` prefix at once, so
+  // checking this one pref is enough to tell whether the whole prefix was
+  // cleared.
   prefs_.SetString(prefs::kDiagnosticId, "foo");
   test::AdsServiceWaiter waiter(*ads_service_);
 
   // Act
-  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, false);
   waiter.WaitForOnDidClearAdsServiceData();
 
   // Assert
   EXPECT_FALSE(prefs_.HasPrefPath(prefs::kDiagnosticId));
-  EXPECT_FALSE(prefs_.GetBoolean(prefs::kSponsoredEnabled));
+}
+
+TEST_F(
+    BraveAdsAdsServiceImplTest,
+    PreservesAdsDataWhenBraveRewardsIsDisabledThenRejoinedBeforeClearDataRuns) {
+  // Arrange
+  prefs_.SetBoolean(prefs::kSponsoredEnabled, false);
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  Startup();
+  ASSERT_EQ(1U, bat_ads_service_factory_->launch_count());
+  prefs_.SetString(prefs::kDiagnosticId, "foo");
+
+  // Act
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, false);
+  // Toggled back before the posted clear task has a chance to run.
+  prefs_.SetBoolean(brave_rewards::prefs::kEnabled, true);
+  // Ensures `MaybeClearAdsData`'s posted task has had a
+  // chance to (not) clear data before asserting.
+  FlushPendingTasks();
+
+  // Assert
+  EXPECT_EQ("foo", prefs_.GetString(prefs::kDiagnosticId));
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
