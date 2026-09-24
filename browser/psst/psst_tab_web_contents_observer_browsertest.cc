@@ -5,8 +5,8 @@
 
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 
+#include <algorithm>
 #include <string>
-#include <utility>
 #include <vector>
 
 #include "base/files/file_util.h"
@@ -141,7 +141,10 @@ constexpr char kPsstCrxUserScriptTemplate[] = R"(
   // Mirrors real per-site scripts (e.g. linkedin/user.js): initial_execution
   // is true only for the very first execution of the flow - before the
   // policy script has ever saved state - and false for every later one,
-  // including the return to the start page once all tasks are done.
+  // On the completing task, it removes the psst key and returns
+  // next_url = start_url. So when the tab navigates back to start_url,
+  // the user script sees
+  // getItem('psst') === null → initial_execution = true.
   const initial_execution = sessionStorage.getItem('psst') === null;
 
   return {

@@ -239,6 +239,13 @@ bool PsstUiDesktopPresenter::IsDialogShown() const {
   return dialog_delegate_->IsDialogShown();
 }
 
+void PsstUiDesktopPresenter::HideAll() {
+  HideInfoBar();
+  HideConsentDialog();
+  SetLocationBarIconStatus(LocationBarIconStatus::kHidden, base::NullCallback(),
+                           base::NullCallback());
+}
+
 void PsstUiDesktopPresenter::OnShowConsentDialogSelected() {
   // Close the infobar if it is present. This is necessary because when the user
   // clicks the omnibar icon, the PSST infobar may still be visible with no way

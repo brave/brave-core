@@ -202,21 +202,13 @@ void PsstUiDelegateImpl::OnDontShowForThisSite() {
   psst_settings_service_->SetPsstWebsiteSettings(
       origin_.value(), ConsentStatus::kBlock, dialog_data_->script_version,
       dialog_data_->user_id, {});
-  ui_presenter_->HideInfoBar();
-  ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
-                                          base::NullCallback(),
-                                          base::NullCallback());
-  ui_presenter_->HideConsentDialog();
+  ui_presenter_->HideAll();
 }
 
 void PsstUiDelegateImpl::OnDisablePrivacySettingsTuning() {
   CancelLogicalFlow();
   psst_settings_service_->SetPsstEnabled(false);
-  ui_presenter_->HideInfoBar();
-  ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
-                                          base::NullCallback(),
-                                          base::NullCallback());
-  ui_presenter_->HideConsentDialog();
+  ui_presenter_->HideAll();
 }
 
 void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {
@@ -225,11 +217,7 @@ void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {
   }
 
   CancelLogicalFlow();
-  ui_presenter_->HideInfoBar();
-  ui_presenter_->HideConsentDialog();
-  ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
-                                          base::NullCallback(),
-                                          base::NullCallback());
+  ui_presenter_->HideAll();
 }
 
 void PsstUiDelegateImpl::RecordFailedTasks(

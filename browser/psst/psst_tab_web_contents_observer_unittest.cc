@@ -1449,7 +1449,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 // (initial_execution is false) must not resume it.
 TEST_F(PsstTabWebContentsObserverUnitTest,
        CancelInFlightFlowDropsLogicalFlowContinuationOnNextPage) {
-  StartFlowAndCancelWhilePolicyScriptInFlight();
+  ASSERT_NO_FATAL_FAILURE(StartFlowAndCancelWhilePolicyScriptInFlight());
 
   const GURL continuation_url("https://example1.com/next");
   const std::string continuation_user_script = "user_continuation";
@@ -1495,7 +1495,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 // really released instead of just bypassed by the initial run.
 TEST_F(PsstTabWebContentsObserverUnitTest,
        CancelledFlowRestartsOnInitialUserScriptResult) {
-  StartFlowAndCancelWhilePolicyScriptInFlight();
+  ASSERT_NO_FATAL_FAILURE(StartFlowAndCancelWhilePolicyScriptInFlight());
 
   const GURL restarted_url("https://example1.com/restarted");
   const GURL continuation_url("https://example1.com/next");
