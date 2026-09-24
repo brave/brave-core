@@ -86,6 +86,34 @@ std::string WithCountryIdParams(const std::string& script,
        ";\n", script});
 }
 
+// A user script result that drives the whole flow: it has a user id and a task
+// for `page_url`, so it shows the consent dialog and runs the policy script.
+// `initial_execution` tells the observer whether this starts a new logical flow
+// or continues the one started on a previous page.
+base::Value CreateUserScriptResult(const std::string& user_id,
+                                   bool initial_execution,
+                                   const GURL& page_url) {
+  return base::Value(
+      base::DictValue()
+          .Set("initial_execution", initial_execution)
+          .Set("user_id", user_id)
+          .Set("site_name", "example")
+          .Set("tasks",
+               base::ListValue().Append(base::DictValue()
+                                            .Set("uid", "1")
+                                            .Set("url", page_url.spec())
+                                            .Set("description", "settings"))));
+}
+
+std::string WithPsstParams(const base::Value& params,
+                           const std::string& script) {
+  return base::StrCat({"window.__bravePsstParams = ",
+                       base::WriteJsonWithOptions(
+                           params, base::JSONWriter::OPTIONS_PRETTY_PRINT)
+                           .value(),
+                       ";\n", script});
+}
+
 }  // namespace
 
 class DocumentOnLoadObserver : public content::WebContentsObserver {
@@ -350,6 +378,56 @@ class PsstTabWebContentsObserverUnitTest
   }
 
  protected:
+  // Runs a flow on `url_` up to the point where the policy script is in flight
+  // and then cancels it, the way clicking Cancel does. Leaves the tab in the
+  // state a cancellation leaves behind: nothing pending for the current page,
+  // but the logical flow marked as cancelled.
+  void StartFlowAndCancelWhilePolicyScriptInFlight() {
+    base::RunLoop check_loop;
+    EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
+        .WillOnce(CheckIfMatchCallback(
+            &check_loop, CreateMatchedRule(user_script_, policy_script_,
+                                           stored_script_version_)));
+
+    const auto script_result =
+        CreateUserScriptResult(user_id_, /*initial_execution=*/true, url_);
+    base::test::TestFuture<base::Value> user_script_insert_future;
+    ExpectUserScriptInjected(user_script_)
+        .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                             script_result.Clone()));
+
+    EXPECT_CALL(ui_delegate(),
+                GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_));
+
+    base::test::TestFuture<void> consent_future;
+    EXPECT_CALL(ui_delegate(),
+                Show(url::Origin::Create(url_),
+                     PsstWebsiteSettingsEq(ConsentStatus::kAsk, -1, user_id_,
+                                           std::vector<std::string>()),
+                     stored_script_version_, _, _))
+        .WillOnce(ShowCallback(&consent_future, std::vector<std::string>{"1"}));
+
+    // Holding the result callback keeps the policy script in flight, so the
+    // cancellation happens mid-flow.
+    PsstTabWebContentsObserver::InsertScriptInPageCallback
+        held_policy_script_callback;
+    EXPECT_CALL(inject_async_script_callback(),
+                Run(WithPsstParams(script_result, policy_script_), _))
+        .WillOnce(HoldInsertScriptInPageCallback(&held_policy_script_callback));
+
+    DocumentOnLoadObserver load_observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                               url_);
+    load_observer.Wait();
+
+    check_loop.Run();
+    ASSERT_EQ(script_result, user_script_insert_future.Take());
+    ASSERT_TRUE(consent_future.Wait());
+    ASSERT_FALSE(held_policy_script_callback.is_null());
+
+    observer()->CancelInFlightFlow();
+  }
+
   const std::string user_script_ = "user";
   const std::string policy_script_ = "policy";
   const GURL url_ = GURL("https://example1.com");
@@ -1364,6 +1442,177 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                                     .Set("description", "settings"))))));
 
   EXPECT_EQ(url_, web_contents()->GetLastCommittedURL());
+}
+
+// The cancellation outlives the page it happened on: once a new page commits,
+// a user script result that only continues the cancelled logical flow
+// (initial_execution is false) must not resume it.
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       CancelInFlightFlowDropsLogicalFlowContinuationOnNextPage) {
+  StartFlowAndCancelWhilePolicyScriptInFlight();
+
+  const GURL continuation_url("https://example1.com/next");
+  const std::string continuation_user_script = "user_continuation";
+
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(continuation_url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop,
+          CreateMatchedRule(continuation_user_script, policy_script_,
+                            stored_script_version_)));
+
+  const auto continuation_script_result = CreateUserScriptResult(
+      user_id_, /*initial_execution=*/false, continuation_url);
+  base::test::TestFuture<base::Value> user_script_insert_future;
+  ExpectUserScriptInjected(continuation_user_script)
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           continuation_script_result.Clone()));
+
+  EXPECT_CALL(
+      ui_delegate(),
+      GetPsstWebsiteSettings(url::Origin::Create(continuation_url), user_id_));
+
+  // The continuation must be dropped: no dialog, no policy script and no UI
+  // update on the new page.
+  EXPECT_CALL(ui_delegate(), Show).Times(0);
+  EXPECT_CALL(ui_delegate(), UpdateTasks).Times(0);
+  EXPECT_CALL(inject_async_script_callback(), Run).Times(0);
+
+  DocumentOnLoadObserver load_observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             continuation_url);
+  load_observer.Wait();
+
+  check_loop.Run();
+  EXPECT_EQ(continuation_script_result, user_script_insert_future.Take());
+}
+
+// The cancellation is remembered for the whole tab lifetime, so it has to be
+// released again when a new logical flow starts (a user script result with
+// initial_execution set) - a cancellation left in place would silently disable
+// PSST on the tab for good. The restarted flow must also survive into its
+// continuation on the page after it, which only happens if the cancellation was
+// really released instead of just bypassed by the initial run.
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       CancelledFlowRestartsOnInitialUserScriptResult) {
+  StartFlowAndCancelWhilePolicyScriptInFlight();
+
+  const GURL restarted_url("https://example1.com/restarted");
+  const GURL continuation_url("https://example1.com/next");
+  const std::string restarted_user_script = "user_restarted";
+  const std::string continuation_user_script = "user_continuation";
+
+  base::RunLoop restarted_check_loop;
+  base::RunLoop continuation_check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(restarted_url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &restarted_check_loop,
+          CreateMatchedRule(restarted_user_script, policy_script_,
+                            stored_script_version_)));
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(continuation_url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &continuation_check_loop,
+          CreateMatchedRule(continuation_user_script, policy_script_,
+                            stored_script_version_)));
+
+  // The consent accepted before the cancellation is stored, so the continuation
+  // page runs without showing the dialog again.
+  PsstWebsiteSettings stored_settings;
+  stored_settings.consent_status = ConsentStatus::kAllow;
+  stored_settings.script_version = stored_script_version_;
+  stored_settings.user_id = user_id_;
+  stored_settings.uids_to_perform = {"1"};
+  EXPECT_CALL(ui_delegate(),
+              GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_))
+      .Times(2)
+      .WillRepeatedly(
+          [&stored_settings](const url::Origin&, const std::string&) {
+            return stored_settings.Clone();
+          });
+
+  const auto restarted_script_result = CreateUserScriptResult(
+      user_id_, /*initial_execution=*/true, restarted_url);
+  base::test::TestFuture<base::Value> restarted_user_script_future;
+  ExpectUserScriptInjected(restarted_user_script)
+      .WillOnce(InsertScriptInPageCallback(&restarted_user_script_future,
+                                           restarted_script_result.Clone()));
+
+  const auto continuation_script_result = CreateUserScriptResult(
+      user_id_, /*initial_execution=*/false, continuation_url);
+  base::test::TestFuture<base::Value> continuation_user_script_future;
+  ExpectUserScriptInjected(continuation_user_script)
+      .WillOnce(InsertScriptInPageCallback(&continuation_user_script_future,
+                                           continuation_script_result.Clone()));
+
+  // The restarted flow starts over, so it asks for consent again.
+  base::test::TestFuture<void> consent_future;
+  EXPECT_CALL(
+      ui_delegate(),
+      Show(url::Origin::Create(restarted_url),
+           PsstWebsiteSettingsEq(ConsentStatus::kAllow, stored_script_version_,
+                                 user_id_, stored_settings.uids_to_perform),
+           stored_script_version_, _, _))
+      .WillOnce(ShowCallback(&consent_future, stored_settings.uids_to_perform));
+
+  // Both policy scripts run: the restarted flow works on the page that started
+  // it, and keeps working on the page that continues it.
+  base::test::TestFuture<base::Value> restarted_policy_script_future;
+  EXPECT_CALL(inject_async_script_callback(),
+              Run(WithPsstParams(restarted_script_result, policy_script_), _))
+      .WillOnce(InsertPolicyScriptInPageCallback(
+          &restarted_policy_script_future,
+          base::Value(base::DictValue().Set(
+              "psst", base::DictValue()
+                          .Set("progress", 50)
+                          .Set("applied_tasks",
+                               base::ListValue().Append(
+                                   base::DictValue()
+                                       .Set("uid", "1")
+                                       .Set("url", restarted_url.spec())
+                                       .Set("description", "settings")))))));
+  EXPECT_CALL(ui_delegate(), UpdateTasks(50, _, mojom::PsstStatus::kInProgress))
+      .Times(1);
+
+  base::test::TestFuture<base::Value> continuation_policy_script_future;
+  EXPECT_CALL(
+      inject_async_script_callback(),
+      Run(WithPsstParams(continuation_script_result, policy_script_), _))
+      .WillOnce(InsertPolicyScriptInPageCallback(
+          &continuation_policy_script_future,
+          base::Value(base::DictValue().Set(
+              "psst", base::DictValue()
+                          .Set("progress", 100)
+                          .Set("applied_tasks",
+                               base::ListValue().Append(
+                                   base::DictValue()
+                                       .Set("uid", "1")
+                                       .Set("url", continuation_url.spec())
+                                       .Set("description", "settings")))))));
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kCompleted))
+      .Times(1);
+
+  {
+    DocumentOnLoadObserver load_observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                               restarted_url);
+    load_observer.Wait();
+  }
+  restarted_check_loop.Run();
+  EXPECT_EQ(restarted_script_result, restarted_user_script_future.Take());
+  EXPECT_TRUE(consent_future.Wait());
+  // The scripts run inline here, so the flow either reached the policy script
+  // by now or was dropped on the way - waiting for it would only hang.
+  EXPECT_TRUE(restarted_policy_script_future.IsReady());
+
+  {
+    DocumentOnLoadObserver load_observer(web_contents());
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(
+        web_contents(), continuation_url);
+    load_observer.Wait();
+  }
+  continuation_check_loop.Run();
+  EXPECT_EQ(continuation_script_result, continuation_user_script_future.Take());
+  EXPECT_TRUE(continuation_policy_script_future.IsReady());
 }
 
 class PsstTabWebContentsObserverFeatureDisabledUnitTest

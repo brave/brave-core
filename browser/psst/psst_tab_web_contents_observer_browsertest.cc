@@ -14,10 +14,8 @@
 #include "base/run_loop.h"
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
-#include "base/test/repeating_test_future.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/test_future.h"
 #include "base/values.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/psst/psst_settings_service_factory.h"
@@ -357,6 +355,11 @@ const moveCurrentTask = (psstObj, errorMessage) => {
 })();
 )";
 
+// Tracks whether the infobar with `identifier` is currently present in the
+// observed manager. The PSST flow shows and hides its infobar more than once
+// per test (e.g. the infobar is shown again when the flow returns to the page
+// it started on), so waiting is state-based: each Wait*() call returns as soon
+// as the infobar is in the requested state.
 class InfobarObserver : public infobars::InfoBarManager::Observer {
  public:
   InfobarObserver(infobars::InfoBarManager* manager,
@@ -365,61 +368,59 @@ class InfobarObserver : public infobars::InfoBarManager::Observer {
     if (manager) {
       infobar_observation_.Observe(manager);
       // Check if the target infobar already exists
-      CheckForExistingInfobar(manager);
+      infobar_present_ = HasTargetInfobar(*manager);
     }
   }
   ~InfobarObserver() override = default;
 
-  bool WaitForInfobarAdded() {
-    if (!infobar_observation_.IsObserving()) {
-      return false;  // Manager is destroyed
-    }
+  bool WaitForInfobarAdded() { return WaitForInfobarPresent(true); }
 
-    return infobar_added_future_.Take();
-  }
-
-  bool WaitForInfobarRemoved() {
-    if (!infobar_observation_.IsObserving()) {
-      return false;  // Manager is destroyed
-    }
-
-    return infobar_removed_future_.Get();
-  }
+  bool WaitForInfobarRemoved() { return WaitForInfobarPresent(false); }
 
   void OnInfoBarAdded(infobars::InfoBar* infobar) override {
-    if (infobar && infobar->delegate() &&
-        infobar->delegate()->GetIdentifier() == identifier_) {
-      infobar_added_future_.AddValue(true);
+    if (IsTargetInfobar(infobar)) {
+      infobar_present_ = true;
     }
   }
 
   void OnInfoBarRemoved(infobars::InfoBar* infobar, bool animate) override {
-    if (infobar && infobar->delegate() &&
-        infobar->delegate()->GetIdentifier() == identifier_) {
-      infobar_removed_future_.SetValue(true);
+    if (IsTargetInfobar(infobar)) {
+      infobar_present_ = false;
     }
   }
 
   void OnManagerWillBeDestroyed(infobars::InfoBarManager* manager) override {
     // Quit any pending waits since the manager is being destroyed
-    infobar_added_future_.AddValue(false);
-    infobar_removed_future_.SetValue(false);
     infobar_observation_.Reset();
   }
 
  private:
-  void CheckForExistingInfobar(infobars::InfoBarManager* manager) {
-    for (infobars::InfoBar* infobar : manager->infobars()) {
-      if (infobar && infobar->delegate() &&
-          infobar->delegate()->GetIdentifier() == identifier_) {
-        infobar_added_future_.AddValue(true);
-        break;
-      }
-    }
+  bool IsTargetInfobar(infobars::InfoBar* infobar) const {
+    return infobar && infobar->delegate() &&
+           infobar->delegate()->GetIdentifier() == identifier_;
   }
 
-  base::test::RepeatingTestFuture<bool> infobar_added_future_;
-  base::test::TestFuture<bool> infobar_removed_future_;
+  bool HasTargetInfobar(infobars::InfoBarManager& manager) const {
+    return std::ranges::any_of(manager.infobars(),
+                               [this](infobars::InfoBar* infobar) {
+                                 return IsTargetInfobar(infobar);
+                               });
+  }
+
+  // Returns false if the manager is destroyed or the wait times out.
+  bool WaitForInfobarPresent(bool present) {
+    if (!infobar_observation_.IsObserving()) {
+      return false;  // Manager is destroyed
+    }
+
+    return base::test::RunUntil([&]() {
+             return infobar_present_ == present ||
+                    !infobar_observation_.IsObserving();
+           }) &&
+           infobar_present_ == present;
+  }
+
+  bool infobar_present_ = false;
   const infobars::InfoBarDelegate::InfoBarIdentifier identifier_;
   base::ScopedObservation<infobars::InfoBarManager,
                           infobars::InfoBarManager::Observer>
