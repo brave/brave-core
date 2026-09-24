@@ -23,10 +23,12 @@ import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
+import org.chromium.components.tab_group_sync.TabGroupUiActionHandler;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Brave's {@link TabListEditorManager}. Instantiated in place of the upstream class via a plaster
@@ -46,7 +48,8 @@ public class BraveTabListEditorManager extends TabListEditorManager {
             @Nullable BottomSheetController bottomSheetController,
             @Nullable Runnable onTabGroupCreation,
             @Nullable DesktopWindowStateManager desktopWindowStateManager,
-            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier) {
+            MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeSupplier,
+            Supplier<@Nullable TabGroupUiActionHandler> tabGroupUiActionHandlerSupplier) {
         super(
                 activity,
                 modalDialogManager,
@@ -59,7 +62,8 @@ public class BraveTabListEditorManager extends TabListEditorManager {
                 bottomSheetController,
                 onTabGroupCreation,
                 desktopWindowStateManager,
-                edgeToEdgeSupplier);
+                edgeToEdgeSupplier,
+                tabGroupUiActionHandlerSupplier);
     }
 
     @Override
