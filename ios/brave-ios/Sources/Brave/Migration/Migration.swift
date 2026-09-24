@@ -163,6 +163,10 @@ public class BraveProfileMigrations {
   }
 
   private func migrateShowNewFavoritesPreference() {
+    // Nothing should store a topsites mode before the feature ships, otherwise the mode would not
+    // match what settings can display. This runs again on the first launch after the flag is on.
+    guard FeatureList.kTopsitesEnabled.enabled else { return }
+
     Preferences.NewTabPage.showNewTabFavourites.migrate { value in
       if value {
         Preferences.NewTabPage.topsitesMode.value =
@@ -170,6 +174,13 @@ public class BraveProfileMigrations {
       } else {
         Preferences.NewTabPage.topsitesMode.value = TopsitesMode.none
       }
+    }
+
+    // The migration above only fires for users who changed the legacy preference, so it is a no-op
+    // for fresh installs and for anyone who left it alone. Seed those the way
+    let topsitesMode = Preferences.NewTabPage.topsitesMode
+    if topsitesMode.container.object(forKey: topsitesMode.key) == nil {
+      topsitesMode.value = Favorite.hasFavorites ? TopsitesMode.favourite : TopsitesMode.mostVisited
     }
   }
 }
