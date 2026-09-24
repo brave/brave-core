@@ -7,10 +7,10 @@
 
 #include "base/functional/bind.h"
 #include "base/task/single_thread_task_runner.h"
+#include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/views/toolbar/screenshot_bubble_view.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/tabs/public/tab_interface.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -48,7 +48,7 @@ void ScreenshotButton::ButtonPressed() {
   }
 
   auto* controller =
-      browser_window_interface_->GetFeatures().screenshot_controller();
+      screenshot::ScreenshotController::From(browser_window_interface_);
   auto host = screenshot::ShowScreenshotBubble(
       browser_window_interface_->GetActiveTabInterface()->GetContents(), this,
       controller);

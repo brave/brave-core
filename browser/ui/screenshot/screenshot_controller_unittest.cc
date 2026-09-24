@@ -24,6 +24,7 @@
 #include "ui/base/clipboard/clipboard.h"
 #include "ui/base/clipboard/test/clipboard_test_util.h"
 #include "ui/base/clipboard/test/test_clipboard.h"
+#include "ui/base/unowned_user_data/unowned_user_data_host.h"
 #include "ui/gfx/codec/png_codec.h"
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/native_ui_types.h"
@@ -109,7 +110,8 @@ class ScreenshotControllerTest : public ChromeRenderViewHostTestHarness {
     // DownloadPrefs (which requires a full download-service stack).
     const base::FilePath download_dir = temp_dir_.GetPath();
     controller_ = std::make_unique<ScreenshotController>(
-        profile(), base::BindRepeating([]() { return gfx::NativeWindow(); }),
+        user_data_host_, profile(),
+        base::BindRepeating([]() { return gfx::NativeWindow(); }),
         base::BindRepeating(&ScreenshotControllerTest::AutoConfirmPreview));
     controller_->set_download_dir_for_testing(download_dir);
   }
@@ -198,6 +200,7 @@ class ScreenshotControllerTest : public ChromeRenderViewHostTestHarness {
 
   base::ScopedTempDir temp_dir_;
   raw_ptr<ui::FakeSelectFileDialog::Factory> dialog_factory_ = nullptr;
+  ui::UnownedUserDataHost user_data_host_;
   std::unique_ptr<ScreenshotController> controller_;
 };
 
@@ -281,9 +284,10 @@ TEST_F(ScreenshotControllerTest,
         preview_shown.SetValue();
       });
 
+  ui::UnownedUserDataHost user_data_host;
   auto controller = std::make_unique<ScreenshotController>(
-      profile(), base::BindRepeating([]() { return gfx::NativeWindow(); }),
-      shower);
+      user_data_host, profile(),
+      base::BindRepeating([]() { return gfx::NativeWindow(); }), shower);
   controller->set_download_dir_for_testing(temp_dir_.GetPath());
 
   base::test::TestFuture<Result> future;
@@ -314,9 +318,10 @@ TEST_F(ScreenshotControllerTest,
         preview_shown.SetValue();
       });
 
+  ui::UnownedUserDataHost user_data_host;
   auto controller = std::make_unique<ScreenshotController>(
-      profile(), base::BindRepeating([]() { return gfx::NativeWindow(); }),
-      shower);
+      user_data_host, profile(),
+      base::BindRepeating([]() { return gfx::NativeWindow(); }), shower);
   controller->set_download_dir_for_testing(temp_dir_.GetPath());
 
   SkBitmap bitmap = MakeSolidBitmap(64, 64, SK_ColorBLUE);
@@ -382,9 +387,10 @@ TEST_F(ScreenshotControllerTest,
         preview_shown.SetValue();
       });
 
+  ui::UnownedUserDataHost user_data_host;
   auto controller = std::make_unique<ScreenshotController>(
-      otr_profile, base::BindRepeating([]() { return gfx::NativeWindow(); }),
-      shower);
+      user_data_host, otr_profile,
+      base::BindRepeating([]() { return gfx::NativeWindow(); }), shower);
   controller->set_download_dir_for_testing(temp_dir_.GetPath());
 
   base::test::TestFuture<Result> future;
@@ -438,9 +444,10 @@ TEST_F(ScreenshotControllerTest, CopyToClipboard_TorProfile_MarksPrivacyBits) {
         preview_shown.SetValue();
       });
 
+  ui::UnownedUserDataHost user_data_host;
   auto controller = std::make_unique<ScreenshotController>(
-      tor_profile, base::BindRepeating([]() { return gfx::NativeWindow(); }),
-      shower);
+      user_data_host, tor_profile,
+      base::BindRepeating([]() { return gfx::NativeWindow(); }), shower);
   controller->set_download_dir_for_testing(temp_dir_.GetPath());
 
   base::test::TestFuture<Result> future;
@@ -484,9 +491,10 @@ TEST_F(ScreenshotControllerTest,
         preview_shown.SetValue();
       });
 
+  ui::UnownedUserDataHost user_data_host;
   auto controller = std::make_unique<ScreenshotController>(
-      profile(), base::BindRepeating([]() { return gfx::NativeWindow(); }),
-      shower);
+      user_data_host, profile(),
+      base::BindRepeating([]() { return gfx::NativeWindow(); }), shower);
   controller->set_download_dir_for_testing(temp_dir_.GetPath());
 
   base::test::TestFuture<Result> future;

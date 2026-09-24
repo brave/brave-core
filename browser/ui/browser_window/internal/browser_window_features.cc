@@ -178,25 +178,29 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
             []() -> base::flat_map<base::UnguessableToken, int>& {
               return printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap();
             }));
-    screenshot_controller_ = std::make_unique<screenshot::ScreenshotController>(
-        browser_view->GetProfile(),
-        base::BindRepeating(
-            [](BrowserView* bv) -> gfx::NativeWindow {
-              return bv->GetNativeWindow();
-            },
-            browser_view),
-        base::BindRepeating(&screenshot::ShowScreenshotPreviewDialog),
-        std::move(extractor));
+    screenshot_controller_ =
+        GetUserDataFactory().CreateInstance<screenshot::ScreenshotController>(
+            *browser_, browser_->GetUnownedUserDataHost(),
+            browser_view->GetProfile(),
+            base::BindRepeating(
+                [](BrowserView* bv) -> gfx::NativeWindow {
+                  return bv->GetNativeWindow();
+                },
+                browser_view),
+            base::BindRepeating(&screenshot::ShowScreenshotPreviewDialog),
+            std::move(extractor));
   }
 #else
-  screenshot_controller_ = std::make_unique<screenshot::ScreenshotController>(
-      browser_view->GetProfile(),
-      base::BindRepeating(
-          [](BrowserView* bv) -> gfx::NativeWindow {
-            return bv->GetNativeWindow();
-          },
-          browser_view),
-      base::BindRepeating(&screenshot::ShowScreenshotPreviewDialog));
+  screenshot_controller_ =
+      GetUserDataFactory().CreateInstance<screenshot::ScreenshotController>(
+          *browser_, browser_->GetUnownedUserDataHost(),
+          browser_view->GetProfile(),
+          base::BindRepeating(
+              [](BrowserView* bv) -> gfx::NativeWindow {
+                return bv->GetNativeWindow();
+              },
+              browser_view),
+          base::BindRepeating(&screenshot::ShowScreenshotPreviewDialog));
 #endif
 
   if (base::FeatureList::IsEnabled(features::kWorkspaces) &&
