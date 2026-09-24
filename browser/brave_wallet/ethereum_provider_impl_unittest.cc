@@ -42,6 +42,7 @@
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "brave/components/permissions/contexts/brave_wallet_permission_context.h"
 #include "brave/components/version_info/version_info.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -2757,6 +2758,50 @@ TEST_F(EthereumProviderImplUnitTest, SwitchEthereumChain) {
   EXPECT_EQ(
       json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin()),
       "0x1");
+}
+
+TEST_F(EthereumProviderImplUnitTest,
+       SwitchEthereumChainCustomNetworkRemovedWhilePending) {
+  CreateBraveWalletTabHelper();
+  Navigate(GURL("https://bravesoftware.com"));
+  brave_wallet_tab_helper()->SetSkipDelegateForTesting(true);
+
+  std::string chain_id = "0x123";
+  brave_wallet_service()->network_manager()->AddCustomNetwork(
+      GetTestNetworkInfo1(chain_id));
+
+  base::RunLoop run_loop;
+  mojom::ProviderError error = mojom::ProviderError::kUnknown;
+  std::string error_message;
+  provider()->SwitchEthereumChain(
+      chain_id,
+      base::BindLambdaForTesting(
+          [&](mojom::EthereumProviderResponsePtr response) {
+            GetErrorCodeMessage(std::move(response->formed_response), &error,
+                                &error_message);
+            run_loop.Quit();
+          }),
+      base::Value());
+  ASSERT_TRUE(brave_wallet_tab_helper()->IsShowingBubble());
+
+  // The custom network is removed while the switch request is still
+  // pending, so SetNetwork fails when the switch is later approved.
+  std::string request_id = GetPendingSwitchChainRequestId();
+  base::RunLoop remove_run_loop;
+  json_rpc_service()->RemoveChain(
+      chain_id, mojom::CoinType::ETH,
+      base::BindLambdaForTesting([&](bool) { remove_run_loop.Quit(); }));
+  remove_run_loop.Run();
+
+  json_rpc_service()->NotifySwitchChainRequestProcessed(request_id, true);
+  run_loop.Run();
+
+  EXPECT_EQ(error, mojom::ProviderError::kUserRejectedRequest);
+  EXPECT_EQ(error_message,
+            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  EXPECT_EQ(
+      json_rpc_service()->GetChainIdSync(mojom::CoinType::ETH, GetOrigin()),
+      mojom::kMainnetChainId);
 }
 
 TEST_F(EthereumProviderImplUnitTest, AddEthereumChainSwitchesForInactive) {
