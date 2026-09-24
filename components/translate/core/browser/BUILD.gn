@@ -11,8 +11,8 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
-    "//components/assist_ranker",
-    "//components/assist_ranker/proto",
+    "//components/translate/core/browser",
+    "//components/translate/core/browser:translate_ranker_proto",
     "//services/network:test_support",
     "//services/network/public/cpp",
     "//testing/gtest",
