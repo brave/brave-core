@@ -21,6 +21,13 @@ substitutions:
           impl_->SanitizeOnNextWriteText();
         }
 
+  - description: 'Sanitize clipboard text against the frame context main frame.'
+    add_to_public:
+      class_name: FrameClipboardContext
+      code: |-
+        void MaybeSanitizeClipboardText(bool& sanitize_on_next_write_text,
+                                        std::u16string& text) override;
+
   - description: |-
       Sanitize the text before it's written to the clipboard, when requested.
 
@@ -29,6 +36,5 @@ substitutions:
     regex:
       re_pattern: '(data\.text = text;\n  \+\+pending_writes_;\n)'
       replace: |
-        \1  MaybeSanitizeClipboardText(
-              &sanitize_on_next_write_text_, GetContentClient()->browser(),
-              render_frame_host_->GetMainFrame(), &data.text);
+        \1  context_->MaybeSanitizeClipboardText(sanitize_on_next_write_text_,
+                                               data.text);

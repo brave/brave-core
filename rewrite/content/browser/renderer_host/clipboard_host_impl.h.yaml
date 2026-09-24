@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |-
+      Let a clipboard context sanitize text written via `WriteText`.
+
+      Brave sanitizes copied URLs against the main frame's URL, and
+      `ClipboardHostImpl` only reaches its frame through `Context`. Contexts
+      without a frame don't sanitize.
+    add_to_public:
+      class_name: Context
+      code: |-
+        virtual void MaybeSanitizeClipboardText(bool& sanitize_on_next_write_text,
+                                                std::u16string& text);
