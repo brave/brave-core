@@ -87,6 +87,7 @@ if (enable_local_ai) {
       "//base",
       "//base/test:test_support",
       "//brave/browser",
+      "//brave/components/brave_component_updater/browser:test_support",
       "//brave/components/local_ai/core",
       "//brave/components/local_ai/core:features",
       "//brave/components/local_ai/core:speech_recognition_mojom",
@@ -94,7 +95,9 @@ if (enable_local_ai) {
       "//chrome/browser:browser_process",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//components/component_updater",
       "//components/prefs",
+      "//components/update_client",
       "//content/public/browser",
       "//content/public/common",
       "//content/test:test_support",
@@ -110,6 +113,7 @@ if (enable_local_ai) {
     testonly = true
 
     sources = [
+      "brave_soda_installer_unittest.cc",
       "on_device_speech_recognition_controller_unittest.cc",
       "on_device_speech_recognition_util_unittest.cc",
     ]
@@ -119,16 +123,23 @@ if (enable_local_ai) {
       ":speech",
       "//base",
       "//base/test:test_support",
+      "//brave/components/brave_component_updater/browser:test_support",
       "//brave/components/local_ai/core",
       "//brave/components/local_ai/core:features",
       "//brave/components/local_ai/core:speech_recognition_mojom",
       "//chrome/browser/profiles:profile",
       "//chrome/test:test_support",
+      "//components/component_updater",
+      "//components/component_updater:test_support",
       "//components/prefs",
+      "//components/soda",
+      "//components/soda:constants",
+      "//components/update_client",
       "//content/test:test_support",
       "//media/mojo/mojom:web_speech_recognition",
       "//mojo/public/cpp/bindings",
       "//services/on_device_model/public/mojom",
+      "//testing/gmock",
       "//testing/gtest",
     ]
   }
