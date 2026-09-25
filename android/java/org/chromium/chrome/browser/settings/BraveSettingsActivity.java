@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -193,7 +194,8 @@ public class BraveSettingsActivity extends SettingsActivity {
         return windowInsets;
     }
 
-    private static @Nullable View getInsetView(Fragment fragment, View fragmentView) {
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static @Nullable View getInsetView(Fragment fragment, View fragmentView) {
         if (fragment instanceof BottomInsetViewProvider provider) {
             return provider.getBottomInsetView(fragmentView);
         }

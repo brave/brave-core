@@ -22,6 +22,7 @@ brave_android_manifest_includes = [
 
 brave_chrome_java_deps = [
   "//brave/android:qrreader_java",
+  "//brave/android:settings_insets_java",
   "//brave/android/java/org/chromium/chrome/browser/accessibility:java",
   "//brave/android/java/org/chromium/chrome/browser/brave_search:java",
   "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
@@ -121,6 +122,11 @@ brave_chrome_java_srcjar_deps = [
   "//brave/components/brave_account/android:brave_account_constants_srcjar",
   "//brave/components/web_discovery/browser/android:java_pref_names_srcjar",
 ]
+
+# Compile with upstream site settings to avoid a dependency cycle.
+brave_components_browser_ui_site_settings_java_sources = [ "//brave/components/browser_ui/site_settings/android/java/src/org/chromium/components/browser_ui/site_settings/BraveAllSiteSettings.java" ]
+brave_components_browser_ui_site_settings_java_deps =
+    [ "//brave/android:settings_insets_java" ]
 
 brave_chrome_app_java_resources_deps = [
   "//brave/android:java_resources",
