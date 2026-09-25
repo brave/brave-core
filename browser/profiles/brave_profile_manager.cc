@@ -12,7 +12,6 @@
 #include "base/check.h"
 #include "base/path_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
-#include "brave/browser/password_manager/android/brave_account_to_profile_password_migration.h"
 #include "brave/browser/perf/brave_perf_features_processor.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/request_otr/request_otr_service_factory.h"
@@ -77,6 +76,10 @@
 
 #if BUILDFLAG(ENABLE_TOR)
 #include "brave/components/tor/tor_constants.h"
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/browser/password_manager/android/brave_account_to_profile_password_migration.h"
 #endif
 
 using brave_shields::ControlType;
