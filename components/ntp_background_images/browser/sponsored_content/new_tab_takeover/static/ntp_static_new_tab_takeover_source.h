@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_STATIC_NTP_SPONSORED_IMAGE_SOURCE_H_
-#define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_STATIC_NTP_SPONSORED_IMAGE_SOURCE_H_
+#ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_STATIC_NTP_STATIC_NEW_TAB_TAKEOVER_SOURCE_H_
+#define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_STATIC_NTP_STATIC_NEW_TAB_TAKEOVER_SOURCE_H_
 
 #include <optional>
 #include <string>
@@ -23,18 +23,19 @@ namespace ntp_background_images {
 
 class NTPBackgroundImagesService;
 
-// This class is responsible for provided sponsored image content from the file
-// system to the new tab page.
+// This class is responsible for providing static new tab takeover content from
+// the file system to the new tab page.
 
-class NTPSponsoredImageSource final : public content::URLDataSource {
+class NTPStaticNewTabTakeoverSource final : public content::URLDataSource {
  public:
-  explicit NTPSponsoredImageSource(
+  explicit NTPStaticNewTabTakeoverSource(
       NTPBackgroundImagesService* background_images_service);
 
-  NTPSponsoredImageSource(const NTPSponsoredImageSource&) = delete;
-  NTPSponsoredImageSource& operator=(const NTPSponsoredImageSource&) = delete;
+  NTPStaticNewTabTakeoverSource(const NTPStaticNewTabTakeoverSource&) = delete;
+  NTPStaticNewTabTakeoverSource& operator=(
+      const NTPStaticNewTabTakeoverSource&) = delete;
 
-  ~NTPSponsoredImageSource() override;
+  ~NTPStaticNewTabTakeoverSource() override;
 
   // content::URLDataSource:
   std::string GetSource() override;
@@ -54,9 +55,9 @@ class NTPSponsoredImageSource final : public content::URLDataSource {
   const raw_ptr<NTPBackgroundImagesService>
       background_images_service_;  // Not owned.
 
-  base::WeakPtrFactory<NTPSponsoredImageSource> weak_factory_{this};
+  base::WeakPtrFactory<NTPStaticNewTabTakeoverSource> weak_factory_{this};
 };
 
 }  // namespace ntp_background_images
 
-#endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_STATIC_NTP_SPONSORED_IMAGE_SOURCE_H_
+#endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_STATIC_NTP_STATIC_NEW_TAB_TAKEOVER_SOURCE_H_

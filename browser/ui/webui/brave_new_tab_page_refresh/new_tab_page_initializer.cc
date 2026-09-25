@@ -177,7 +177,7 @@ void NewTabPageInitializer::AddCSPOverrides() {
 
   source_->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::StrCat({"frame-src ", kNTPNewTabTakeoverRichMediaUrl, ";"}));
+      base::StrCat({"frame-src ", kNTPDynamicNewTabTakeoverUrl, ";"}));
 
   // Brave News uses a dedicated Trusted Types policy to parse imported OPML
   // subscription files (see brave_news .../customize/opml.ts). Append it to the
@@ -195,8 +195,7 @@ void NewTabPageInitializer::AddLoadTimeValues() {
       "customBackgroundFeatureEnabled",
       !prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict));
 
-  source_->AddString("sponsoredRichMediaBaseUrl",
-                     kNTPNewTabTakeoverRichMediaUrl);
+  source_->AddString("sponsoredRichMediaBaseUrl", kNTPDynamicNewTabTakeoverUrl);
 
   source_->AddBoolean(
       "ntpSearchFeatureEnabled",

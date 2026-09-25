@@ -13,18 +13,17 @@
 #include "base/functional/bind.h"
 #include "base/notreached.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/pref_service.h"
-
-#include "brave/components/brave_ads/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -53,9 +52,9 @@ NTPNewTabTakeoverWallpaperProvider::~NTPNewTabTakeoverWallpaperProvider() =
     default;
 
 bool NTPNewTabTakeoverWallpaperProvider::IsEligible() const {
-  return GetSponsoredImagesData() && IsShowBackgroundImageOptedIn() &&
-         IsSponsoredImagesWallpaperOptedIn() &&
-         view_counter_model_->ShouldShowSponsoredImages();
+  return GetNewTabTakeover() && IsShowBackgroundImageOptedIn() &&
+         CanShowNewTabTakeoverWallpaper() &&
+         view_counter_model_->ShouldShowNewTabTakeover();
 }
 
 void NTPNewTabTakeoverWallpaperProvider::MaybeGetWallpaper(
@@ -69,13 +68,13 @@ void NTPNewTabTakeoverWallpaperProvider::MaybeGetWallpaper(
       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-NTPSponsoredImagesData* NTPNewTabTakeoverWallpaperProvider::
-    GetSponsoredImagesData() const {
-  const bool supports_rich_media =
+NTPSponsoredContentData* NTPNewTabTakeoverWallpaperProvider::GetNewTabTakeover()
+    const {
+  const bool supports_dynamic_new_tab_takeover =
       host_content_settings_map_->GetDefaultContentSetting(
           ContentSettingsType::JAVASCRIPT) == CONTENT_SETTING_ALLOW;
-  return background_images_service_->GetSponsoredImagesData(
-      supports_rich_media);
+  return background_images_service_->GetNewTabTakeover(
+      supports_dynamic_new_tab_takeover);
 }
 
 bool NTPNewTabTakeoverWallpaperProvider::IsShowBackgroundImageOptedIn()
@@ -83,7 +82,7 @@ bool NTPNewTabTakeoverWallpaperProvider::IsShowBackgroundImageOptedIn()
   return prefs_->GetBoolean(prefs::kNewTabPageShowBackgroundImage);
 }
 
-bool NTPNewTabTakeoverWallpaperProvider::IsSponsoredImagesWallpaperOptedIn()
+bool NTPNewTabTakeoverWallpaperProvider::CanShowNewTabTakeoverWallpaper()
     const {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   return prefs_->GetBoolean(brave_ads::prefs::kSponsoredEnabled) &&
@@ -100,14 +99,13 @@ void NTPNewTabTakeoverWallpaperProvider::MaybeServeNewTabPageAdCallback(
     return std::move(callback).Run(std::nullopt);
   }
 
-  NTPSponsoredImagesData* const sponsored_images_data =
-      GetSponsoredImagesData();
-  if (!sponsored_images_data) {
+  NTPSponsoredContentData* const sponsored_content_data = GetNewTabTakeover();
+  if (!sponsored_content_data) {
     return std::move(callback).Run(std::nullopt);
   }
 
   std::optional<base::DictValue> creative_dict =
-      sponsored_images_data->MaybeGetBackground(*ad);
+      sponsored_content_data->MaybeGetBackground(*ad);
   if (!creative_dict) {
     return std::move(callback).Run(std::nullopt);
   }

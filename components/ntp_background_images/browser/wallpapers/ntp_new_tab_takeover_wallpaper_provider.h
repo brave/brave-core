@@ -22,9 +22,9 @@ namespace ntp_background_images {
 
 class NTPBackgroundImagesService;
 class ViewCounterModel;
-struct NTPSponsoredImagesData;
+struct NTPSponsoredContentData;
 
-// Whether the resulting takeover is a static image or a dynamic rich media
+// Whether the resulting takeover is a static or dynamic new tab takeover
 // creative is decided by the ad server response, not by this provider.
 class NTPNewTabTakeoverWallpaperProvider final : public NTPWallpaperProvider {
  public:
@@ -50,9 +50,9 @@ class NTPNewTabTakeoverWallpaperProvider final : public NTPWallpaperProvider {
       override;
 
  private:
-  NTPSponsoredImagesData* GetSponsoredImagesData() const;
+  NTPSponsoredContentData* GetNewTabTakeover() const;
   bool IsShowBackgroundImageOptedIn() const;
-  bool IsSponsoredImagesWallpaperOptedIn() const;
+  bool CanShowNewTabTakeoverWallpaper() const;
 
   void MaybeServeNewTabPageAdCallback(
       NTPWallpaperProvider::MaybeGetWallpaperCallback callback,

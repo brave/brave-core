@@ -5,7 +5,7 @@
 
 #include <cstddef>
 
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/test/ntp_sponsored_rich_media_source_test_base.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/test/ntp_dynamic_new_tab_takeover_source_test_base.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/test/ntp_sponsored_content_source_test_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -16,21 +16,23 @@ namespace ntp_background_images {
 namespace {
 
 base::FilePath GetComponentPath() {
-  return test::GetSponsoredImagesComponentPath().AppendASCII("rich_media");
+  return test::GetSponsoredImagesComponentPath()
+      .AppendASCII("new_tab_takeover")
+      .AppendASCII("dynamic");
 }
 
 }  // namespace
 
-class NTPSponsoredRichMediaSourceTest
-    : public test::NTPSponsoredRichMediaSourceTestBase {
+class NTPDynamicNewTabTakeoverSourceTest
+    : public test::NTPDynamicNewTabTakeoverSourceTestBase {
  protected:
   void SetUp() override {
-    test::NTPSponsoredRichMediaSourceTestBase::SetUp();
-    SimulateOnSponsoredImagesDataDidUpdate(GetComponentPath());
+    test::NTPDynamicNewTabTakeoverSourceTestBase::SetUp();
+    SimulateDeprecatedOnSponsoredContentDidUpdate(GetComponentPath());
   }
 };
 
-TEST_F(NTPSponsoredRichMediaSourceTest, StartDataRequest) {
+TEST_F(NTPDynamicNewTabTakeoverSourceTest, StartDataRequest) {
   EXPECT_THAT(
       test::StartDataRequest(
           url_data_source(),
@@ -39,7 +41,7 @@ TEST_F(NTPSponsoredRichMediaSourceTest, StartDataRequest) {
       ::testing::Not(::testing::IsEmpty()));
 }
 
-TEST_F(NTPSponsoredRichMediaSourceTest,
+TEST_F(NTPDynamicNewTabTakeoverSourceTest,
        DoNotStartDataRequestIfContentIsReferencingParentDirectory) {
   EXPECT_THAT(test::StartDataRequest(
                   url_data_source(),
@@ -53,7 +55,7 @@ TEST_F(NTPSponsoredRichMediaSourceTest,
       ::testing::IsEmpty());
 }
 
-TEST_F(NTPSponsoredRichMediaSourceTest,
+TEST_F(NTPDynamicNewTabTakeoverSourceTest,
        DoNotStartDataRequestIfContentIsFromAnotherCampaign) {
   EXPECT_THAT(
       test::StartDataRequest(
@@ -63,7 +65,7 @@ TEST_F(NTPSponsoredRichMediaSourceTest,
       ::testing::IsEmpty());
 }
 
-TEST_F(NTPSponsoredRichMediaSourceTest,
+TEST_F(NTPDynamicNewTabTakeoverSourceTest,
        DoNotStartDataRequestIfContentIsOutsideOfSandbox) {
   EXPECT_THAT(test::StartDataRequest(
                   url_data_source(),
@@ -85,7 +87,7 @@ TEST_F(NTPSponsoredRichMediaSourceTest,
 
 // `DUMP_WILL_BE_NOTREACHED()` aborts the process in non-official DCHECK builds.
 #if defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
-TEST_F(NTPSponsoredRichMediaSourceTest,
+TEST_F(NTPDynamicNewTabTakeoverSourceTest,
        DoNotStartDataRequestIfContentDoesNotExist) {
   EXPECT_THAT(
       test::StartDataRequest(
@@ -102,18 +104,18 @@ TEST_F(NTPSponsoredRichMediaSourceTest,
 }
 #endif  // defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
 
-TEST_F(NTPSponsoredRichMediaSourceTest, GetMimeType) {
+TEST_F(NTPDynamicNewTabTakeoverSourceTest, GetMimeType) {
   EXPECT_EQ(
       "text/html",
       url_data_source()->GetMimeType(GURL(
           R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html)")));
 }
 
-TEST_F(NTPSponsoredRichMediaSourceTest, AllowCaching) {
+TEST_F(NTPDynamicNewTabTakeoverSourceTest, AllowCaching) {
   EXPECT_FALSE(url_data_source()->AllowCaching());
 }
 
-TEST_F(NTPSponsoredRichMediaSourceTest, GetContentSecurityPolicy) {
+TEST_F(NTPDynamicNewTabTakeoverSourceTest, GetContentSecurityPolicy) {
   for (size_t i = 0;
        i < static_cast<size_t>(network::mojom::CSPDirectiveName::kMaxValue);
        ++i) {

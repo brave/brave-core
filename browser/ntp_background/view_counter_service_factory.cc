@@ -11,8 +11,8 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_source.h"
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/static/ntp_sponsored_image_source.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_source.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/static/ntp_static_new_tab_takeover_source.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/site/ntp_sponsored_site_image_source.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
@@ -88,10 +88,11 @@ ViewCounterServiceFactory::BuildServiceInstanceForBrowserContext(
     content::URLDataSource::Add(
         browser_context, std::make_unique<NTPBackgroundImagesSource>(service));
     content::URLDataSource::Add(
-        browser_context, std::make_unique<NTPSponsoredImageSource>(service));
+        browser_context,
+        std::make_unique<NTPStaticNewTabTakeoverSource>(service));
     content::URLDataSource::Add(
         browser_context,
-        std::make_unique<NTPSponsoredRichMediaSource>(service));
+        std::make_unique<NTPDynamicNewTabTakeoverSource>(service));
     content::URLDataSource::Add(
         browser_context,
         std::make_unique<NTPSponsoredSiteImageSource>(service));

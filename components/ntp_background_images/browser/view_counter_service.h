@@ -38,7 +38,7 @@ namespace ntp_background_images {
 class BraveNTPCustomBackgroundService;
 
 struct NTPBackgroundImagesData;
-struct NTPSponsoredImagesData;
+struct NTPSponsoredContentData;
 
 inline constexpr char kNewTabsCreatedDailyHistogramName[] =
     "Brave.NTP.NewTabsCreatedDaily";
@@ -78,19 +78,19 @@ class ViewCounterService : public KeyedService,
   std::optional<base::DictValue> GetNextWallpaperForDisplay();
   void GetCurrentWallpaperForDisplay(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
-      bool allow_sponsored_image = true);
+      bool allow_sponsored_content = true);
   std::optional<base::DictValue> GetCurrentWallpaper() const;
   void GetCurrentBrandedWallpaper(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback);
   void GetCurrentBrandedWallpaperFromAdsService(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback);
 
-  NTPSponsoredImagesData* GetSponsoredImagesData() const;
+  NTPSponsoredContentData* GetNewTabTakeover() const;
 
  private:
   friend class ViewCounterServiceTest;
   friend class NTPBackgroundImagesServiceTest;
-  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowSponsoredImages);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, CanShowNewTabTakeover);
   FRIEND_TEST_ALL_PREFIXES(
       ViewCounterServiceTest,
       AllowNewTabTakeoverWithRichMediaIfJavaScriptContentSettingIsSetToAllowed);
@@ -104,11 +104,11 @@ class ViewCounterService : public KeyedService,
       ViewCounterServiceTest,
       AllowNewTabTakeoverWithImageIfJavaScriptContentSettingIsSetToBlocked);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
-                           CannotShowSponsoredImagesIfUninitialized);
+                           CannotShowSponsoredContentIfUninitialized);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
-                           CannotShowSponsoredImagesIfMalformed);
+                           CannotShowSponsoredContentIfMalformed);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
-                           CannotShowSponsoredImagesIfOptedOut);
+                           CannotShowSponsoredContentIfOptedOut);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, IsActiveOptedIn);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest, ActiveInitiallyOptedIn);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterServiceTest,
@@ -142,21 +142,22 @@ class ViewCounterService : public KeyedService,
 
   // NTPBackgroundImagesService::Observer:
   void OnBackgroundImagesDataDidUpdate(NTPBackgroundImagesData* data) override;
-  void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) override;
+  void DeprecatedOnSponsoredContentDidUpdate(
+      NTPSponsoredContentData* data) override;
   void OnSponsoredContentDidUpdate(const base::DictValue& data) override;
 
   void ParseAndSaveNewTabPageAdsCallback(bool success);
 
   void ResetNotificationState();
   bool IsShowBackgroundImageOptedIn() const;
-  bool IsSponsoredImagesWallpaperOptedIn() const;
+  bool CanShowNewTabTakeoverWallpaper() const;
 
   // Do we have a sponsored or referral wallpaper to show and has the user
   // opted-in to showing it at some time.
-  bool CanShowSponsoredImages() const;
+  bool CanShowNewTabTakeover() const;
   // Should we show the branded wallpaper right now, in addition to the result
-  // from `CanShowSponsoredImages()`.
-  bool ShouldShowSponsoredImages() const;
+  // from `CanShowNewTabTakeover()`.
+  bool ShouldShowNewTabTakeover() const;
 
   bool CanShowBackgroundImages() const;
 

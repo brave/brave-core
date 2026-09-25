@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_source.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_source.h"
 
 #include <utility>
 
@@ -13,7 +13,7 @@
 #include "base/task/thread_pool.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/ntp_sponsored_content_source_util.h"
 #include "content/public/browser/browser_thread.h"
 #include "net/base/mime_util.h"
@@ -22,17 +22,17 @@
 
 namespace ntp_background_images {
 
-NTPSponsoredRichMediaSource::NTPSponsoredRichMediaSource(
+NTPDynamicNewTabTakeoverSource::NTPDynamicNewTabTakeoverSource(
     NTPBackgroundImagesService* background_images_service)
     : background_images_service_(background_images_service) {}
 
-NTPSponsoredRichMediaSource::~NTPSponsoredRichMediaSource() = default;
+NTPDynamicNewTabTakeoverSource::~NTPDynamicNewTabTakeoverSource() = default;
 
-std::string NTPSponsoredRichMediaSource::GetSource() {
-  return kNTPNewTabTakeoverRichMediaUrl;
+std::string NTPDynamicNewTabTakeoverSource::GetSource() {
+  return kNTPDynamicNewTabTakeoverUrl;
 }
 
-void NTPSponsoredRichMediaSource::StartDataRequest(
+void NTPDynamicNewTabTakeoverSource::StartDataRequest(
     const GURL& url,
     const content::WebContents::Getter& /*wc_getter*/,
     GotDataCallback callback) {
@@ -42,17 +42,17 @@ void NTPSponsoredRichMediaSource::StartDataRequest(
     return DenyAccess(std::move(callback));
   }
 
-  const NTPSponsoredImagesData* const images_data =
-      background_images_service_->GetSponsoredImagesData(
-          /*supports_rich_media=*/true);
-  if (!images_data) {
+  const NTPSponsoredContentData* const sponsored_content_data =
+      background_images_service_->GetNewTabTakeover(
+          /*supports_dynamic_new_tab_takeover=*/true);
+  if (!sponsored_content_data) {
     return DenyAccess(std::move(callback));
   }
 
   const base::FilePath request_path =
       base::FilePath::FromUTF8Unsafe(URLToRequestPath(url));
-  std::optional<base::FilePath> file_path =
-      MaybeGetFilePathForRequestPath(request_path, images_data->campaigns);
+  std::optional<base::FilePath> file_path = MaybeGetFilePathForRequestPath(
+      request_path, sponsored_content_data->campaigns);
   if (!file_path) {
     return DenyAccess(std::move(callback));
   }
@@ -60,7 +60,7 @@ void NTPSponsoredRichMediaSource::StartDataRequest(
   AllowAccess(*file_path, std::move(callback));
 }
 
-std::string NTPSponsoredRichMediaSource::GetMimeType(const GURL& url) {
+std::string NTPDynamicNewTabTakeoverSource::GetMimeType(const GURL& url) {
   std::string mime_type;
   const base::FilePath file_path = base::FilePath::FromUTF8Unsafe(url.path());
   if (!file_path.empty()) {
@@ -70,11 +70,11 @@ std::string NTPSponsoredRichMediaSource::GetMimeType(const GURL& url) {
   return mime_type;
 }
 
-bool NTPSponsoredRichMediaSource::AllowCaching() {
+bool NTPDynamicNewTabTakeoverSource::AllowCaching() {
   return false;
 }
 
-std::string NTPSponsoredRichMediaSource::GetContentSecurityPolicy(
+std::string NTPDynamicNewTabTakeoverSource::GetContentSecurityPolicy(
     network::mojom::CSPDirectiveName directive) {
   switch (directive) {
     case network::mojom::CSPDirectiveName::FrameAncestors:
@@ -109,7 +109,7 @@ std::string NTPSponsoredRichMediaSource::GetContentSecurityPolicy(
   }
 }
 
-void NTPSponsoredRichMediaSource::ReadFileCallback(
+void NTPDynamicNewTabTakeoverSource::ReadFileCallback(
     GotDataCallback callback,
     std::optional<std::string> input) {
   if (!input) {
@@ -120,16 +120,17 @@ void NTPSponsoredRichMediaSource::ReadFileCallback(
       new base::RefCountedBytes(base::as_byte_span(*input)));
 }
 
-void NTPSponsoredRichMediaSource::AllowAccess(const base::FilePath& file_path,
-                                              GotDataCallback callback) {
+void NTPDynamicNewTabTakeoverSource::AllowAccess(
+    const base::FilePath& file_path,
+    GotDataCallback callback) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&ReadFileToString, file_path),
-      base::BindOnce(&NTPSponsoredRichMediaSource::ReadFileCallback,
+      base::BindOnce(&NTPDynamicNewTabTakeoverSource::ReadFileCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void NTPSponsoredRichMediaSource::DenyAccess(GotDataCallback callback) {
+void NTPDynamicNewTabTakeoverSource::DenyAccess(GotDataCallback callback) {
   std::move(callback).Run(scoped_refptr<base::RefCountedMemory>());
 }
 

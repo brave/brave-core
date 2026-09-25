@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/static/ntp_sponsored_image_source.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/static/ntp_static_new_tab_takeover_source.h"
 
 #include <memory>
 #include <string>
@@ -18,8 +18,8 @@
 #include "base/strings/string_view_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service_waiter.h"
-#include "brave/components/ntp_background_images/browser/switches.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/test/ntp_sponsored_content_source_test_util.h"
+#include "brave/components/ntp_background_images/browser/switches.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -30,12 +30,14 @@ namespace ntp_background_images {
 namespace {
 
 base::FilePath GetComponentPath() {
-  return test::GetSponsoredImagesComponentPath().AppendASCII("image");
+  return test::GetSponsoredImagesComponentPath()
+      .AppendASCII("new_tab_takeover")
+      .AppendASCII("static");
 }
 
 }  // namespace
 
-class NTPSponsoredImageSourceTest : public testing::Test {
+class NTPStaticNewTabTakeoverSourceTest : public testing::Test {
  protected:
   void SetUp() override {
     NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
@@ -44,13 +46,15 @@ class NTPSponsoredImageSourceTest : public testing::Test {
     background_images_service_ = std::make_unique<NTPBackgroundImagesService>(
         /*variations_service=*/nullptr, /*component_update_service=*/nullptr,
         &pref_service_);
-    url_data_source_ = std::make_unique<NTPSponsoredImageSource>(
+    url_data_source_ = std::make_unique<NTPStaticNewTabTakeoverSource>(
         background_images_service_.get());
 
-    SimulateOnSponsoredImagesDataDidUpdate();
+    SimulateDeprecatedOnSponsoredContentDidUpdate();
   }
 
-  NTPSponsoredImageSource* url_data_source() { return url_data_source_.get(); }
+  NTPStaticNewTabTakeoverSource* url_data_source() {
+    return url_data_source_.get();
+  }
 
   std::string StartDataRequest(const GURL& url) {
     CHECK(url_data_source_);
@@ -76,30 +80,30 @@ class NTPSponsoredImageSourceTest : public testing::Test {
   }
 
  private:
-  void SimulateOnSponsoredImagesDataDidUpdate() {
+  void SimulateDeprecatedOnSponsoredContentDidUpdate() {
     base::CommandLine::ForCurrentProcess()->AppendSwitchPath(
         switches::kOverrideSponsoredImagesComponentPath, GetComponentPath());
 
     NTPBackgroundImagesServiceWaiter waiter(*background_images_service_);
     background_images_service_->Init();
-    waiter.WaitForOnSponsoredImagesDataDidUpdate();
+    waiter.WaitForDeprecatedOnSponsoredContentDidUpdate();
   }
 
   content::BrowserTaskEnvironment task_environment_;
   TestingPrefServiceSimple pref_service_;
 
   std::unique_ptr<NTPBackgroundImagesService> background_images_service_;
-  std::unique_ptr<NTPSponsoredImageSource> url_data_source_;
+  std::unique_ptr<NTPStaticNewTabTakeoverSource> url_data_source_;
 };
 
-TEST_F(NTPSponsoredImageSourceTest, StartDataRequest) {
+TEST_F(NTPStaticNewTabTakeoverSourceTest, StartDataRequest) {
   EXPECT_THAT(
       StartDataRequest(GURL(
           R"(chrome://branded-wallpaper/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/background.jpg)")),
       ::testing::Not(::testing::IsEmpty()));
 }
 
-TEST_F(NTPSponsoredImageSourceTest,
+TEST_F(NTPStaticNewTabTakeoverSourceTest,
        DoNotStartDataRequestIfContentIsReferencingParentDirectory) {
   EXPECT_THAT(
       StartDataRequest(GURL(
@@ -110,7 +114,7 @@ TEST_F(NTPSponsoredImageSourceTest,
       ::testing::IsEmpty());
 }
 
-TEST_F(NTPSponsoredImageSourceTest,
+TEST_F(NTPStaticNewTabTakeoverSourceTest,
        DoNotStartDataRequestIfContentIsFromAnotherCampaign) {
   EXPECT_THAT(
       StartDataRequest(GURL(
@@ -120,7 +124,7 @@ TEST_F(NTPSponsoredImageSourceTest,
 
 // `DUMP_WILL_BE_NOTREACHED()` aborts the process in non-official DCHECK builds.
 #if defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
-TEST_F(NTPSponsoredImageSourceTest,
+TEST_F(NTPStaticNewTabTakeoverSourceTest,
        DoNotStartDataRequestIfContentDoesNotExist) {
   EXPECT_THAT(
       StartDataRequest(GURL(
@@ -133,14 +137,14 @@ TEST_F(NTPSponsoredImageSourceTest,
 }
 #endif  // defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
 
-TEST_F(NTPSponsoredImageSourceTest, GetMimeType) {
+TEST_F(NTPStaticNewTabTakeoverSourceTest, GetMimeType) {
   EXPECT_EQ(
       "image/jpeg",
       url_data_source()->GetMimeType(GURL(
           R"(chrome://branded-wallpaper/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/background.jpg)")));
 }
 
-TEST_F(NTPSponsoredImageSourceTest, AllowCaching) {
+TEST_F(NTPStaticNewTabTakeoverSourceTest, AllowCaching) {
   EXPECT_FALSE(url_data_source()->AllowCaching());
 }
 

@@ -238,15 +238,15 @@ public class NTPImageUtil {
 
     public static void getNTPImage(
             NTPBackgroundImagesBridge mNTPBackgroundImagesBridge,
-            boolean allowSponsoredImage,
+            boolean allowSponsoredContent,
             Callback<NTPImage> callback) {
         mNTPBackgroundImagesBridge.getCurrentWallpaper(
-                allowSponsoredImage,
+                allowSponsoredContent,
                 wallpaper ->
                         callback.onResult(
                                 wallpaper != null
                                         ? wallpaper
-                                        : SponsoredImageUtil.getBackgroundImage()));
+                                        : SponsoredContentUtil.getBackgroundImage()));
     }
 
     public static int getViewHeight(View view) {
