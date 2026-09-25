@@ -1,0 +1,34 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Upstream builds password_sync_bridge_unittest.cc in components_unittests,
+# which is not built for Android, so the Brave tests added by
+# //brave/chromium_src/components/password_manager/core/browser/sync/password_sync_bridge_unittest.cc
+# would never run. Build the same file here instead.
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "//components/password_manager/core/browser/sync/password_sync_bridge_unittest.cc" ]
+
+  deps = [
+    "//base/test:test_support",
+    "//brave/components/brave_sync:features",
+    "//components/password_manager/core/browser",
+    "//components/password_manager/core/browser:password_form",
+    "//components/password_manager/core/browser/features:password_features",
+    "//components/password_manager/core/browser/password_store:password_store_interface",
+    "//components/password_manager/core/browser/password_store:test_support",
+    "//components/password_manager/core/browser/sync",
+    "//components/password_manager/core/common",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//components/signin/public/identity_manager:test_support",
+    "//components/sync:test_support",
+    "//components/sync/protocol",
+    "//sql",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}
