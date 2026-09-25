@@ -28,6 +28,7 @@ source_set("unit_tests") {
     "//base/test:test_support",
     "//brave/components/local_ai/core:features",
     "//brave/components/local_ai/core:speech_recognition_mojom",
+    "//brave/components/local_ai/core:test_support",
     "//components/speech",
     "//content/browser:for_content_tests",
     "//content/public/browser",
