@@ -1,20 +1,22 @@
 diff --git a/chrome/app/theme/BUILD.gn b/chrome/app/theme/BUILD.gn
-index 361f09f7fd3aaf2b391dac51b3f2f85c4277e4b0..b1a95240477d8ff1d0f41670536814e8fe581503 100644
+index 361f09f7fd3aaf2b391dac51b3f2f85c4277e4b0..addc91a407123274e34df2c7e6bc56a2bdcec765 100644
 --- a/chrome/app/theme/BUILD.gn
 +++ b/chrome/app/theme/BUILD.gn
-@@ -70,6 +70,7 @@ grit("webui_theme_resources") {
+@@ -70,6 +70,9 @@ grit("webui_theme_resources") {
      ":chrome_unscaled_resources",
      "//ui/resources",
    ]
-+  if (!is_android) { deps += ["//brave/app/theme:brave_theme_resources"] }
++  if (!is_android) {
++    deps += [ "//brave/app/theme:brave_theme_resources" ]
++  }
  
    output_dir = "$root_gen_dir/chrome"
  }
-@@ -81,6 +82,7 @@ grit("chrome_unscaled_resources") {
-     "grit/chrome_unscaled_resources.h",
-     "chrome_unscaled_resources.pak",
+@@ -83,4 +86,7 @@ grit("chrome_unscaled_resources") {
    ]
-+  deps = [] if (!is_android) { deps += ["//brave/app/theme:brave_unscaled_resources"] }
  
    output_dir = "$root_gen_dir/chrome"
++  if (!is_android) {
++    deps = [ "//brave/app/theme:brave_unscaled_resources" ]
++  }
  }
