@@ -31,13 +31,17 @@ import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.ObservableSuppliers;
 import org.chromium.base.supplier.SettableNonNullObservableSupplier;
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.base.test.util.Features.DisableFeatures;
+import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarUtils;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.ui.base.TestActivity;
@@ -45,6 +49,7 @@ import org.chromium.ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 
 /** Unit tests for {@link BraveStatusBarColorController}. */
 @RunWith(BaseRobolectricTestRunner.class)
+@DisableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
 public class BraveStatusBarColorControllerUnitTest {
     private static final @ColorInt int TEST_UPSTREAM_NTP_BACKGROUND_COLOR =
             Color.rgb(0x12, 0x34, 0x56);
@@ -111,6 +116,20 @@ public class BraveStatusBarColorControllerUnitTest {
         BraveStatusBarColorController controller =
                 newControllerWithUpstreamNtpBackground(TEST_UPSTREAM_NTP_BACKGROUND_COLOR);
         assertEquals(Color.WHITE, controller.getBackgroundColorForNtpForTesting());
+    }
+
+    // The NTP toolbar takes the bottom bar's color, and the status bar must match it.
+    @Test
+    @Config(sdk = Build.VERSION_CODES.S)
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testBackgroundColorForNtp_bottomBarEnabled_returnsBottomBarColor() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, false);
+        BraveStatusBarColorController controller =
+                newControllerWithUpstreamNtpBackground(TEST_UPSTREAM_NTP_BACKGROUND_COLOR);
+        assertEquals(
+                BottomBarUtils.getBottomBarBackgroundColor(mActivity, /* isIncognito= */ false),
+                controller.getBackgroundColorForNtpForTesting());
     }
 
     private BraveStatusBarColorController newControllerWithUpstreamNtpBackground(
