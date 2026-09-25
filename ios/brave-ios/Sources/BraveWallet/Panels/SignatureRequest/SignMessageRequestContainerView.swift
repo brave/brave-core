@@ -17,37 +17,31 @@ struct SignMessageRequestContainerView: View {
   @ObservedObject var networkStore: NetworkStore
   var onDismiss: () -> Void
 
-  /// The account for the current request
-  private var currentRequestAccount: BraveWallet.AccountInfo {
-    keyringStore.allAccounts.first(where: { $0.id == store.currentRequest.accountId.uniqueKey })
-      ?? keyringStore.selectedAccount
-  }
-
   /// The network for the current request
   private var currentRequestNetwork: BraveWallet.NetworkInfo? {
-    networkStore.allChains.first(where: { $0.chainId == store.currentRequest.chainId })
+    networkStore.allChains.first(where: { $0.chainId == store.currentRequest.request.chainId })
   }
 
   var body: some View {
     Group {
-      if let ethSiweData = store.currentRequest.signData.ethSiweData {
+      if let ethSiweData = store.currentRequest.request.signData.ethSiweData {
         SignInWithEthereumView(
-          account: currentRequestAccount,
-          originInfo: store.currentRequest.originInfo,
+          account: store.currentRequest.account,
+          originInfo: store.currentRequest.request.originInfo,
           message: ethSiweData,
           action: handleAction(approved:)
         )
-      } else if let cowSwapOrder = store.currentRequest.signData.ethSignTypedData?.meta?
+      } else if let cowSwapOrder = store.currentRequest.request.signData.ethSignTypedData?.meta?
         .cowSwapOrder
       {
         SaferSignMessageRequestContainerView(
-          account: currentRequestAccount,
-          request: store.currentRequest,
+          account: store.currentRequest.account,
+          request: store.currentRequest.request,
           network: currentRequestNetwork,
           requestIndex: store.requestIndex,
           requestCount: store.requests.count,
           namedFromAddress: NamedAddresses.name(
-            for: currentRequestAccount.address,
+            for: store.currentRequest.account.address,
             accounts: keyringStore.allAccounts
           ),
           receiverAddress: cowSwapOrder.receiver,
@@ -64,8 +58,8 @@ struct SignMessageRequestContainerView: View {
         )
       } else {  // ethSignTypedData, ethStandardSignData, solanaSignData
         SignMessageRequestView(
-          account: currentRequestAccount,
-          request: store.currentRequest,
+          account: store.currentRequest.account,
+          request: store.currentRequest.request,
           network: currentRequestNetwork,
           requestIndex: store.requestIndex,
           requestCount: store.requests.count,
