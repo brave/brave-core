@@ -254,13 +254,14 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_RechecksPermissionOnEveryCall) {
       IsAccountAllowed(mojom::CoinType::DOT,
                        GetAccountPermissionIdentifier(account->account_id)))
       .Times(2)
-      .WillRepeatedly(testing::Return(true));
+      .WillRepeatedly(testing::Return(!keyring_service()->IsLockedSync()));
 
   auto [first_accounts, first_error] = GetAccounts();
+  keyring_service()->Lock();
   auto [second_accounts, second_error] = GetAccounts();
 
   EXPECT_TRUE(first_accounts);
-  EXPECT_TRUE(second_accounts);
+  EXPECT_FALSE(second_accounts);
 }
 
 TEST_F(PolkadotApiImplUnitTest, GetAccounts_PermissionRevoked) {
