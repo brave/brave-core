@@ -150,6 +150,7 @@ if (is_android) {
 
     deps = [
       "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
+      "//brave/browser/custom_search_engines/android:java",
       "//brave/components/browser_ui/settings/android:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/safe_browsing/android:java",

@@ -23,6 +23,7 @@ import org.junit.runner.RunWith;
 import org.robolectric.annotation.Config;
 
 import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.brave.browser.custom_search_engines.settings.AddCustomSearchEnginePreferenceFragment;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browsing_data.BraveClearBrowsingDataFragment;
 import org.chromium.components.browser_ui.site_settings.AllSiteSettings;
@@ -43,6 +44,14 @@ public class BraveSettingsActivityTest {
         mList = new RecyclerView(mRoot.getContext());
         mList.setId(R.id.recycler_view);
         mRoot.addView(mList);
+    }
+
+    @Test
+    public void testCustomSearchEngineInsetsIncludeFooter() {
+        assertSame(
+                mRoot,
+                BraveSettingsActivity.getInsetView(
+                        new AddCustomSearchEnginePreferenceFragment(), mRoot));
     }
 
     @Test
