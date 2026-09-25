@@ -50,13 +50,11 @@
 #include "services/network/public/cpp/network_switches.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
-#include "third_party/blink/public/common/page_state/page_state.h"
-#include "third_party/blink/public/common/page_state/page_state_serialization.h"
 
 using BraveSessionRestoreBrowserTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
-                       SerializationClearNonEmptyPageState) {
+                       SerializationClearPageStateForNewTab) {
   auto* tab_model = browser()->tab_strip_model();
   auto* web_contents = tab_model->GetActiveWebContents();
   SessionService* const session_service =
@@ -88,11 +86,10 @@ IN_PROC_BROWSER_TEST_F(BraveSessionRestoreBrowserTest,
         EXPECT_EQ(serialized_navigation.virtual_url(),
                   GURL("chrome://newtab/"));
 
-        // Check encoded data is not empty but clean state only with url info.
-        EXPECT_EQ(blink::PageState::CreateFromURL(GURL("chrome://newtab/"))
-                      .ToEncodedData(),
-                  serialized_navigation.encoded_page_state());
-        EXPECT_FALSE(serialized_navigation.encoded_page_state().empty());
+        // Check encoded data is empty. On restore, the virtual_url is
+        // re-resolved (e.g. to any current extension NTP override), so no
+        // page state should be persisted here.
+        EXPECT_TRUE(serialized_navigation.encoded_page_state().empty());
         loop.Quit();
       }));
   loop.Run();
