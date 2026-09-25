@@ -1,12 +1,21 @@
 diff --git a/components/sync_preferences/BUILD.gn b/components/sync_preferences/BUILD.gn
-index 952d70810eb36c73a12fca4a545ccddabca21a4f..a38ac1a9fb98d2857adb1a69c7f81ddd3db777fc 100644
+index 952d70810eb36c73a12fca4a545ccddabca21a4f..d889124314c66ebf03b9a479ceb9c5a0c2d459b8 100644
 --- a/components/sync_preferences/BUILD.gn
 +++ b/components/sync_preferences/BUILD.gn
-@@ -78,6 +78,7 @@ source_set("common_syncable_prefs_database") {
-     "//components/translate/core/browser",
-     "//components/variations/service",
-   ]
-+  import("//brave/components/sync_preferences/sources.gni") public_deps = brave_common_syncable_prefs_database_public_deps
+@@ -2,6 +2,8 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/components/sync_preferences/sources.gni")
++
+ source_set("features") {
+   sources = [
+     "features.cc",
+@@ -47,6 +49,7 @@ static_library("sync_preferences") {
  }
  
- static_library("test_support") {
+ source_set("common_syncable_prefs_database") {
++  public_deps = brave_common_syncable_prefs_database_public_deps
+   sources = [
+     "common_syncable_prefs_database.cc",
+     "common_syncable_prefs_database.h",
