@@ -28,13 +28,13 @@ import {
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   PageTitleHeader, //
-} from '../../../components/desktop/card-headers/page-title-header'
+} from '$wallet/page/components/card_headers/page_title_header'
 import {
   PanelActionHeader, //
-} from '../../../components/desktop/card-headers/panel-action-header'
+} from '$wallet/page/components/card_headers/panel_action_header'
 import {
   DefaultPanelHeader, //
-} from '../../../components/desktop/card-headers/default-panel-header'
+} from '$wallet/page/components/card_headers/default_panel_header'
 import {
   SelectAssetButton, //
 } from './components/select_asset_button/select_asset_button'

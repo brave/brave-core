@@ -49,7 +49,7 @@ import { WalletPageActions } from '../../actions'
 import {
   LineChartControls, //
 } from '$wallet/page/components/line_chart_controls/line_chart_controls'
-import { AssetDetailsHeader } from '../../../components/desktop/card-headers/asset-details-header'
+import { AssetDetailsHeader } from '$wallet/page/components/card_headers/asset_details_header'
 import {
   TokenDetailsModal, //
 } from '../../../components/desktop/popup-modals/token_details_modal/token_details_modal'

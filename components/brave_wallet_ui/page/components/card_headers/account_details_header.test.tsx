@@ -11,17 +11,17 @@ import { Provider } from 'react-redux'
 import {
   createMockStore,
   WalletTestThemeProvider,
-} from '../../../utils/test-utils'
-import { reduceAddress } from '../../../utils/reduce-address'
+} from '$wallet/utils/test-utils'
+import { reduceAddress } from '$wallet/utils/reduce-address'
 
 // Components
-import { AccountDetailsHeader } from './account-details-header'
+import { AccountDetailsHeader } from './account_details_header'
 
 // Mocks
 import {
   mockAccount,
   mockTokenBalanceRegistry, //
-} from '../../../common/constants/mocks'
+} from '$wallet/common/constants/mocks'
 
 interface RenderComponentProps {
   isMobile: boolean

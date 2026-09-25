@@ -9,28 +9,28 @@ import { useHistory, useLocation } from 'react-router-dom'
 // Constants
 import {
   LOCAL_STORAGE_KEYS, //
-} from '../../../common/constants/local-storage-keys'
+} from '$wallet/common/constants/local-storage-keys'
 
 // Selectors
 import {
   useSafeUISelector, //
-} from '../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../common/selectors'
+} from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors } from '$wallet/common/selectors'
 
 // Types
-import { WalletRoutes } from '../../../constants/types'
+import { WalletRoutes } from '$wallet/constants/types'
 
 // Utils
-import { openWalletRouteTab } from '../../../utils/routes-utils'
+import { openWalletRouteTab } from '$wallet/utils/routes-utils'
 
 // Styled Components
 import {
   Button,
   ButtonIcon,
   LeftRightContainer,
-} from './shared-panel-headers.style'
-import { Row } from '../../shared/style'
-import { HeaderTitle } from './shared-card-headers.style'
+} from './shared_panel_headers.style'
+import { Row } from '$wallet/components/shared/style'
+import { HeaderTitle } from './shared_card_headers.style'
 
 interface Props {
   title: string

@@ -6,7 +6,11 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
-import { AssetIconProps, AssetIconFactory, Column } from '../../shared/style'
+import {
+  AssetIconProps,
+  AssetIconFactory,
+  Column,
+} from '$wallet/components/shared/style'
 
 export const AssetIcon = AssetIconFactory<AssetIconProps>({
   width: '40px',

@@ -2,19 +2,15 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
-// Copyright (c) 2023 The Brave Authors. All rights reserved.
-// This Source Code Form is subject to the terms of the Mozilla Public
-// License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
 // Selectors
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../common/selectors'
+import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors } from '$wallet/common/selectors'
 
 // utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Styled Components
 import {
@@ -22,8 +18,8 @@ import {
   HeaderTitle,
   MenuButtonIcon,
   SendButton,
-} from './shared-card-headers.style'
-import { Row } from '../../shared/style'
+} from './shared_card_headers.style'
+import { Row } from '$wallet/components/shared/style'
 
 interface Props {
   assetName?: string
@@ -77,5 +73,3 @@ export const NftAssetHeader = ({
     </Row>
   )
 }
-
-export default NftAssetHeader

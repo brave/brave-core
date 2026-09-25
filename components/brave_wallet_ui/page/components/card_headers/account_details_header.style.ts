@@ -8,7 +8,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
-import { Text } from '../../shared/style'
+import { Text } from '$wallet/components/shared/style'
 
 export const AccountNameText = styled(Text)`
   line-height: 24px;
