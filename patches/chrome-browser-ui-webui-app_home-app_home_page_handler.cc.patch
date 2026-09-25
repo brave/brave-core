@@ -1,0 +1,65 @@
+diff --git a/chrome/browser/ui/webui/app_home/app_home_page_handler.cc b/chrome/browser/ui/webui/app_home/app_home_page_handler.cc
+--- a/chrome/browser/ui/webui/app_home/app_home_page_handler.cc
++++ b/chrome/browser/ui/webui/app_home/app_home_page_handler.cc
+@@ -30,6 +30,7 @@
+ #include "chrome/browser/ui/dialogs/browser_dialogs.h"
+ #include "chrome/browser/ui/extensions/extension_enable_flow.h"
+ #include "chrome/browser/ui/tab_dialogs.h"
++#include "chrome/browser/ui/tabs/tab_strip_model.h"
+ #include "chrome/browser/ui/views/apps/app_info_dialog/app_info_dialog_container.h"
+ #include "chrome/browser/ui/webui/app_home/app_home.mojom-shared.h"
+ #include "chrome/browser/ui/webui/extensions/extension_icon_source.h"
+@@ -230,22 +231,29 @@
+                                      base::DoNothing());
+   } else {
+     // To give a more "launchy" experience when using the NTP launcher, we close
+-    // it automatically. However, if the chrome://apps page is the LAST page in
+-    // the browser window, then we don't close it.
++    // it automatically. However, if the chrome://apps page is pinned or the
++    // LAST page in the browser window, then we don't close it.
+     Browser* browser = GetCurrentBrowser();
+     base::WeakPtr<Browser> browser_ptr;
+     content::WebContents* old_contents = nullptr;
+     base::WeakPtr<content::WebContents> old_contents_ptr;
++    bool apps_page_is_pinned = false;
+     if (browser) {
+       browser_ptr = browser->AsWeakPtr();
+       old_contents = browser->tab_strip_model()->GetActiveWebContents();
+       old_contents_ptr = old_contents->GetWeakPtr();
++      const int old_contents_index =
++          browser->tab_strip_model()->GetIndexOfWebContents(old_contents);
++      apps_page_is_pinned =
++          old_contents_index != TabStripModel::kNoTab &&
++          browser->tab_strip_model()->IsTabPinned(old_contents_index);
+     }
+
+     apps::AppLaunchParams params(
+         app_id, launch_container,
+-        old_contents ? WindowOpenDisposition::CURRENT_TAB
+-                     : WindowOpenDisposition::NEW_FOREGROUND_TAB,
++        old_contents && !apps_page_is_pinned
++            ? WindowOpenDisposition::CURRENT_TAB
++            : WindowOpenDisposition::NEW_FOREGROUND_TAB,
+         apps::LaunchSource::kFromAppHomePage);
+     params.override_url = override_url;
+     web_app::LaunchExtensionOrWebApp(
+@@ -253,8 +261,9 @@
+         base::BindOnce(
+             [](base::WeakPtr<Browser> apps_page_browser,
+                base::WeakPtr<content::WebContents> old_contents,
++               bool apps_page_is_pinned,
+                content::WebContents* new_web_contents) {
+-              if (!apps_page_browser || !old_contents) {
++              if (!apps_page_browser || !old_contents || apps_page_is_pinned) {
+                 return;
+               }
+               if (new_web_contents != old_contents.get() &&
+@@ -266,7 +275,7 @@
+                                          /*add_to_history=*/true);
+               }
+             },
+-            browser_ptr, old_contents_ptr));
++            browser_ptr, old_contents_ptr, apps_page_is_pinned));
+   }
+ }
+
