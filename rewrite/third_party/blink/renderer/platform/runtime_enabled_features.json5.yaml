@@ -149,3 +149,8 @@ substitutions:
     set_blink_runtime_enabled_feature_state:
       feature_name: UserMediaElement
       value: disabled
+
+  - description: 'Ship the WebMCP API base feature disabled.'
+    set_blink_runtime_enabled_feature_state:
+      feature_name: WebMCP
+      value: disabled
