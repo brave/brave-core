@@ -90,6 +90,9 @@
   <message name="IDS_CHAT_UI_ERROR_RATE_LIMIT" desc="An error presented when the user has exhausted the API request limit" formatter_data="webui=AiChat">
     You've reached the premium rate limit. Please try again in a few hours.
   </message>
+  <message name="IDS_CHAT_UI_ERROR_MODEL_RATE_LIMIT" desc="An error presented when the premium user has exhausted the API request limit for the currently selected model" formatter_data="webui=AiChat">
+    You've reached the premium limit for this model. Select a different model or try again later.
+  </message>
   <message name="IDS_CHAT_UI_ERROR_OAI_RATE_LIMIT" desc="An error presented when the BYOM user has exhausted the API request limit" formatter_data="webui=AiChat">
     You've reached the rate limit for this model or are out of credits. Please try again later.
   </message>
