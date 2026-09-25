@@ -190,22 +190,38 @@ public class BraveSettingsActivity extends SettingsActivity {
         WindowInsetsCompat rootWindowInsets = ViewCompat.getRootWindowInsets(contentView);
         if (rootWindowInsets == null) rootWindowInsets = windowInsets;
 
-        setBottomPadding(
-                contentView, rootWindowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom);
-
-        Insets navigationBarInsets =
-                rootWindowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
-        Insets tappableElementInsets =
-                rootWindowInsets.getInsets(WindowInsetsCompat.Type.tappableElement());
+        applyContentInsets(contentView, mOriginalContentBottomPaddings, rootWindowInsets);
         int navigationBarBottomInset =
-                Math.max(navigationBarInsets.bottom, tappableElementInsets.bottom);
+                Math.max(
+                        rootWindowInsets.getInsets(WindowInsetsCompat.Type.navigationBars()).bottom,
+                        rootWindowInsets.getInsets(WindowInsetsCompat.Type.tappableElement()).bottom);
         // The snackbar's parent already applies the keyboard inset as bottom padding.
         mSnackbarBottomMarginSupplier.set(
                 Math.max(0, navigationBarBottomInset - contentView.getPaddingBottom()));
-        for (Map.Entry<View, Integer> entry : mOriginalContentBottomPaddings.entrySet()) {
+        return windowInsets;
+    }
+
+    @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
+    static void applyContentInsets(
+            View contentView,
+            Map<View, Integer> originalBottomPaddings,
+            WindowInsetsCompat windowInsets) {
+        int imeBottomInset = windowInsets.getInsets(WindowInsetsCompat.Type.ime()).bottom;
+        setBottomPadding(contentView, imeBottomInset);
+
+        Insets navigationBarInsets =
+                windowInsets.getInsets(WindowInsetsCompat.Type.navigationBars());
+        Insets tappableElementInsets =
+                windowInsets.getInsets(WindowInsetsCompat.Type.tappableElement());
+        // The outer content already avoids the keyboard, including its navigation-bar area.
+        int navigationBarBottomInset =
+                Math.max(
+                        0,
+                        Math.max(navigationBarInsets.bottom, tappableElementInsets.bottom)
+                                - imeBottomInset);
+        for (Map.Entry<View, Integer> entry : originalBottomPaddings.entrySet()) {
             setBottomPadding(entry.getKey(), entry.getValue() + navigationBarBottomInset);
         }
-        return windowInsets;
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
