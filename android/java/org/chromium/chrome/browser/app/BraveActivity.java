@@ -3222,6 +3222,9 @@ public abstract class BraveActivity extends ChromeActivity
     public void onSharedPreferenceChanged(
             SharedPreferences sharedPreferences, @Nullable String key) {
         if (ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED.equals(key)) {
+            // Upstream moves the address bar live. Only Brave's bottom controls, which the bottom
+            // bar replaces, are built once per run.
+            if (BottomToolbarConfiguration.isAndroidBottomBarEnabled()) return;
             Activity currentActivity = ApplicationStatus.getLastTrackedFocusedActivity();
             if (currentActivity == null) {
                 currentActivity = this;

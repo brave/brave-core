@@ -292,7 +292,7 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             // The bottom bar is shown with the address bar in either position, so unlike the
             // switch above this one has nothing to disable it for.
             ((ChromeSwitchPreference) enableBottomBar)
-                    .setChecked(BraveBottomBarUserPrefs.isBottomBarEnabled());
+                    .setChecked(BraveBottomBarUserPrefs.isBottomBarSettingEnabled());
         }
 
         updatePreferenceIcon(
