@@ -420,6 +420,14 @@ class ConversationHandler : public mojom::ConversationHandler,
   void SetAPIError(EngineConsumer::Error error);
   void UpdateOrCreateLastAssistantEntry(
       EngineConsumer::GenerationResultData result);
+
+  // Moves any follow-up suggestions the assistant offered via a tool use
+  // request into the conversation's suggestions, removing the tool use request
+  // from the entry. They mark the end of the assistant's turn rather than
+  // something it is waiting on, so leaving the request in place would keep the
+  // tool loop waiting for output that may never come.
+  void TakeFollowUpSuggestionsFromLastEntry();
+
   void MaybeSeedOrClearSuggestions();
   void PerformQuestionGeneration();
 
