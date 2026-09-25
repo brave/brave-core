@@ -33,6 +33,7 @@
 #include "components/password_manager/core/browser/password_store/password_store_consumer.h"
 #include "components/password_manager/core/browser/password_store/password_store_interface.h"
 #include "components/password_manager/core/browser/password_store/test_password_store.h"
+#include "components/password_manager/core/browser/password_string.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -188,7 +189,8 @@ class BraveAccountToProfilePasswordMigrationTest : public ::testing::Test {
     form.url = GURL(signon_realm);
     form.signon_realm = signon_realm;
     form.username_value = base::ASCIIToUTF16(username);
-    form.password_value = base::ASCIIToUTF16(password);
+    form.password_value =
+        password_manager::PasswordString(base::ASCIIToUTF16(password));
     form.blocked_by_user = blocked;
     form.date_created = modified;
     form.date_password_modified = modified;
