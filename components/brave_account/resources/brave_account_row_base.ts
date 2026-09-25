@@ -105,6 +105,8 @@ export abstract class BraveAccountRowBaseElement<
   // Either way the browser does it, so both go through the same call.
   private openDialog(dialogMode: DialogMode) {
     this.browserProxy.dialogController.openDialog(
-      this.initiatingServiceName, dialogMode)
+      this.initiatingServiceName,
+      dialogMode,
+    )
   }
 }
