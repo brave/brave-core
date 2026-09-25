@@ -167,9 +167,7 @@ export function isHardwareAccount(account: BraveWallet.AccountId) {
 }
 
 export const usesUniqueKeyPermissions = (coin: BraveWallet.CoinType) => {
-  return (
-    coin === BraveWallet.CoinType.ADA || coin === BraveWallet.CoinType.DOT
-  )
+  return coin === BraveWallet.CoinType.ADA || coin === BraveWallet.CoinType.DOT
 }
 
 export const isPolkadotRelayNetwork = (chainId: string) => {

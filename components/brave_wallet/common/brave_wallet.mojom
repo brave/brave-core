@@ -286,15 +286,14 @@ struct PolkadotInjectedAccount {
 interface PolkadotApi {
   // `accounts.get(anyType)`. `any_type` asks for accounts that can't be used
   // for signing, which we have none of so we ignore the param.
-  GetAccounts(bool any_type)
-      => (array<PolkadotInjectedAccount>? accounts,
-          PolkadotProviderErrorBundle? error);
+  GetAccounts(bool any_type) => (array<PolkadotInjectedAccount>? accounts,
+                                 PolkadotProviderErrorBundle? error);
 };
 
 // https://github.com/polkadot-js/extension#injection-information
 interface PolkadotProvider {
-  Enable()
-      => (pending_remote<PolkadotApi>? api, PolkadotProviderErrorBundle? error);
+  Enable() => (pending_remote<PolkadotApi>? api,
+               PolkadotProviderErrorBundle? error);
 };
 
 struct ChainId {
