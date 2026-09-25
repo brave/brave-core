@@ -324,10 +324,7 @@ void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModePromptDismissed() {
 }
 
 GURL BraveShieldsTabHelper::GetCurrentSiteURL() const {
-  return web_contents()
-      ->GetPrimaryMainFrame()
-      ->GetLastCommittedOrigin()
-      .GetURL();
+  return web_contents()->GetLastCommittedURL();
 }
 
 GURL BraveShieldsTabHelper::GetFaviconURL(bool refresh) {
