@@ -142,13 +142,9 @@ class PolkadotProviderImplUnitTest : public testing::Test {
   }
 
   void UnlockWallet() {
-    base::RunLoop run_loop;
-    keyring_service()->Unlock(kTestWalletPassword,
-                              base::BindLambdaForTesting([&](bool success) {
-                                ASSERT_TRUE(success);
-                                run_loop.Quit();
-                              }));
-    run_loop.Run();
+    TestFuture<bool> future;
+    keyring_service()->Unlock(kTestWalletPassword, future.GetCallback());
+    ASSERT_TRUE(future.Get());
   }
 
   // Makes the permission layer report `accounts` as already granted, so

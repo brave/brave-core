@@ -193,7 +193,7 @@ class PolkadotProviderRendererTest : public InProcessBrowserTest {
 
   void ExpectEnableGranted() {
     EXPECT_CALL(*provider(), Enable(testing::_))
-        .WillRepeatedly([&](mojom::PolkadotProvider::EnableCallback callback) {
+        .WillOnce([&](mojom::PolkadotProvider::EnableCallback callback) {
           mojo::PendingRemote<mojom::PolkadotApi> remote;
           api()->BindReceiver(remote.InitWithNewPipeAndPassReceiver());
           std::move(callback).Run(std::move(remote), nullptr);
@@ -586,7 +586,7 @@ IN_PROC_BROWSER_TEST_F(PolkadotProviderRendererTest, EnableRejected) {
   // supplied, since that is all a dapp has to show the user.
 
   EXPECT_CALL(*provider(), Enable(testing::_))
-      .WillRepeatedly([](mojom::PolkadotProvider::EnableCallback callback) {
+      .WillOnce([](mojom::PolkadotProvider::EnableCallback callback) {
         std::move(callback).Run(
             mojo::NullRemote(),
             mojom::PolkadotProviderErrorBundle::New(
