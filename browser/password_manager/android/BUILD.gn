@@ -15,6 +15,7 @@ source_set("password_migration") {
     "//base",
     "//brave/components/brave_sync:features",
     "//chrome/browser/password_manager/factories",
+    "//chrome/browser/profiles:profile",
     "//components/keyed_service/core",
     "//components/password_manager/core/browser:password_form",
     "//components/password_manager/core/browser/password_store:password_store_interface",
