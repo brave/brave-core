@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/profiles/signin_view_controller_delegate_views.h b/chrome/browser/ui/views/profiles/signin_view_controller_delegate_views.h
+index c188dccc4e015f414c2d5fb37748f6159bb252c1..87b666602d7f3bfadf13de999beb48ad4ecf07fa 100644
+--- a/chrome/browser/ui/views/profiles/signin_view_controller_delegate_views.h
++++ b/chrome/browser/ui/views/profiles/signin_view_controller_delegate_views.h
+@@ -124,6 +124,9 @@ class SigninViewControllerDelegateViews
+   // views::ViewObserver:
+   void OnViewAddedToWidget(views::View* observed_view) override;
+   void OnViewIsDeleting(View* observed_view) override;
++  void RunFileChooser(content::RenderFrameHost* render_frame_host,
++                      scoped_refptr<content::FileSelectListener> listener,
++                      const blink::mojom::FileChooserParams& params) override;
+ 
+  private:
+   friend SigninViewControllerDelegate;

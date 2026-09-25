@@ -1666,5 +1666,20 @@ source_set("browser_tests") {
     if (enable_text_recognition) {
       sources += [ "text_recognition_browsertest.cc" ]
     }
+
+    if (enable_brave_custom_profile_image_webui) {
+      sources +=
+          [ "views/profiles/profile_customization_file_chooser_browsertest.cc" ]
+      deps += [
+        "//base/test:test_support",
+        "//brave/browser/ui/webui/custom_profile_image",
+        "//chrome/browser/ui/signin",
+        "//chrome/browser/ui/webui/signin:signin_utils",
+        "//content/public/browser",
+        "//ui/events",
+        "//ui/shell_dialogs",
+        "//ui/shell_dialogs:test_support",
+      ]
+    }
   }
 }

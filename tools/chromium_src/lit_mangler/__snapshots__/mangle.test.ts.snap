@@ -1690,6 +1690,49 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "
 `;
 
+exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/signin/profile_customization/profile_customization_app.html.ts.lit_mangler.ts should match snapshot 1`] = `
+"===================================================================
+--- ../chrome/browser/resources/signin/profile_customization/profile_customization_app.html.ts
++++ gen/chrome/browser/resources/signin/preprocessed/profile_customization/profile_customization_app.html.ts
+@@ -86,27 +86,25 @@
+ 
+   \${this.isLocalProfileCreation_ ? html\`
+     <div id="selectAvatarDialog" slot="view">
+       <div class="select-avatar-header">
+-        <cr-icon-button iron-icon="cr:arrow-back" id="selectAvatarBackButton"
+-            title="$i18n{profileCustomizationAvatarSelectionBackButtonLabel}"
+-            aria-label="$i18n{profileCustomizationAvatarSelectionBackButtonLabel}"
+-            @click="\${this.onSelectAvatarBackClick_}">
++        <cr-icon-button iron-icon="cr:arrow-back" id="selectAvatarBackButton" title="$i18n{profileCustomizationAvatarSelectionBackButtonLabel}" aria-label="$i18n{profileCustomizationAvatarSelectionBackButtonLabel}" @click="\${this.onSelectAvatarBackClick_}">
+         </cr-icon-button>
+         <div class="select-avatar-title">
+           $i18n{profileCustomizationAvatarSelectionTitle}
+         </div>
+       </div>
+       <div id="selectAvatarWrapper" class="custom-scrollbar">
+-        <cr-profile-avatar-selector .avatars="\${this.availableIcons_}"
+-            .selectedAvatar="\${this.selectedAvatar_}"
+-            @selected-avatar-changed="\${this.onSelectedAvatarChanged_}"
+-            columns="5">
++        
++      \${this.isCustomProfileImageEnabled_() ? html\`
++        <br-custom-profile-image-row hide-title="">
++        </br-custom-profile-image-row>
++      \` : ''}
++    <cr-profile-avatar-selector .avatars="\${this.availableIcons_}" .selectedAvatar="\${this.selectedAvatar_}" @selected-avatar-changed="\${this.onSelectedAvatarChanged_}" columns="5">
+         </cr-profile-avatar-selector>
+       </div>
+       <div class="action-container">
+-        <cr-button id="selectAvatarConfirmButton" class="action-button"
+-            @click="\${this.onSelectAvatarConfirmClick_}">
++        <cr-button id="selectAvatarConfirmButton" class="action-button" @click="\${this.onSelectAvatarConfirmClick_}">
+           $i18n{profileCustomizationDoneLabel}
+         </cr-button>
+       </div>
+     </div>
+"
+`;
+
 exports[`mangled files should have up to date snapshots ./chromium_src/chrome/browser/resources/signin/profile_picker/profile_card.html.ts.lit_mangler.ts should match snapshot 1`] = `
 "===================================================================
 --- ../chrome/browser/resources/signin/profile_picker/profile_card.html.ts

@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let WebUI tests supply the same feature defines as their production host.
+
+      Forward optional defines to both static-file and TypeScript preprocessing.
+      Existing callers retain their default defines.
+    count: 2
+    regex:
+      re_pattern: '^([ \t]+)(defines = chrome_grit_defines)'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1\2
+        \1if (defined(invoker.preprocessor_defines)) {
+        \1  defines += invoker.preprocessor_defines
+        \1}

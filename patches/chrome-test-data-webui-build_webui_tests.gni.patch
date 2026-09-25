@@ -1,0 +1,24 @@
+diff --git a/chrome/test/data/webui/build_webui_tests.gni b/chrome/test/data/webui/build_webui_tests.gni
+index c4ba211cbf7f9c06a46b036b45a3f6b58f0be310..c0783e7b7b6977b192e468b9d6b6f7d2f01a00d7 100644
+--- a/chrome/test/data/webui/build_webui_tests.gni
++++ b/chrome/test/data/webui/build_webui_tests.gni
+@@ -41,6 +41,9 @@ template("build_webui_tests") {
+     preprocess_if_expr("preprocess_static_files") {
+       visibility = [ ":build_grdp" ]
+       defines = chrome_grit_defines
++      if (defined(invoker.preprocessor_defines)) {
++        defines += invoker.preprocessor_defines
++      }
+       in_folder = "."
+       out_folder = preprocess_dir
+       in_files = static_files
+@@ -54,6 +57,9 @@ template("build_webui_tests") {
+       ":lint",
+     ]
+     defines = chrome_grit_defines
++    if (defined(invoker.preprocessor_defines)) {
++      defines += invoker.preprocessor_defines
++    }
+     in_folder = "."
+     out_folder = preprocess_dir
+     in_files = files
