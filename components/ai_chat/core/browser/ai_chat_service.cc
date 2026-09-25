@@ -119,7 +119,13 @@ void CopyTextToClipboardAsConfidential(std::string_view text) {
 
 // Determines whether its safe to associate content with a conversation.
 bool CanAssociateContent(AssociatedContentDelegate* delegate) {
-  return delegate && kAllowedContentSchemes.contains(delegate->url().scheme());
+  if (!delegate) {
+    return false;
+  }
+  std::string_view scheme = delegate->url().scheme();
+  // Allow standard web content schemes and the workspace:// scheme for
+  // workspace-associated content.
+  return kAllowedContentSchemes.contains(scheme) || scheme == "workspace";
 }
 
 AIChatService::AIChatService(

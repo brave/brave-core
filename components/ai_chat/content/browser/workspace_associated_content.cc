@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/time/time.h"
@@ -33,6 +34,7 @@
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/mojom/file_system_access/file_system_access_directory_handle.mojom.h"
 #include "third_party/blink/public/mojom/web_launch/web_launch.mojom.h"
 #include "ui/base/page_transition_types.h"
@@ -187,7 +189,39 @@ void WorkspaceAssociatedContent::DocumentOnLoadCompletedInPrimaryMainFrame() {
   // The page is now live and its handle delivered; mark it ready and attach so
   // the next generation loop harvests the tools it registers via WebMCP.
   page_ready_ = true;
+
+  // Now that the page is loaded, subscribe to tool changes. This may have been
+  // called earlier in OnAssociatedWithConversation but the RFH wasn't ready.
+  SubscribeToContentToolChanges();
+
   set_tools_attached(true);
+}
+
+void WorkspaceAssociatedContent::OnAssociatedWithConversation() {
+  SubscribeToContentToolChanges();
+}
+
+void WorkspaceAssociatedContent::OnContentToolsChanged() {
+  NotifyContentToolsChanged();
+}
+
+void WorkspaceAssociatedContent::SubscribeToContentToolChanges() {
+  if (!base::FeatureList::IsEnabled(blink::features::kWebMCP)) {
+    return;
+  }
+
+  content::RenderFrameHost* rfh = web_contents_->GetPrimaryMainFrame();
+  if (!rfh || !rfh->IsRenderFrameLive()) {
+    return;
+  }
+
+  content_tools_extractor_.reset();
+  rfh->GetRemoteInterfaces()->GetInterface(
+      content_tools_extractor_.BindNewPipeAndPassReceiver());
+
+  content_tools_listener_.reset();
+  content_tools_extractor_->SetContentToolsListener(
+      content_tools_listener_.BindNewPipeAndPassRemote());
 }
 
 void WorkspaceAssociatedContent::AttachWebContents(

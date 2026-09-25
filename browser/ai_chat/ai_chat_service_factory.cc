@@ -13,6 +13,7 @@
 #include "base/functional/bind.h"
 #include "base/no_destructor.h"
 #include "brave/browser/ai_chat/ai_chat_utils.h"
+#include "brave/browser/brave_tab_helpers.h"
 #include "brave/browser/ai_chat/browser_tool_provider_factory.h"
 #include "brave/browser/ai_chat/model_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
@@ -138,7 +139,8 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
         [](content::BrowserContext* context,
            GURL url) -> std::unique_ptr<AssociatedContentDelegate> {
           return std::make_unique<WorkspaceAssociatedContent>(
-              std::move(url), context, base::DoNothingWithBoundArgs());
+              std::move(url), context,
+              base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers));
         },
         context));
   }
