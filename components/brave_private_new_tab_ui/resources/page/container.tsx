@@ -55,6 +55,7 @@ const BadgePrivateWindow = styled.div`
 
 function Container () {
   const isWindowTor = loadTimeData.getBoolean('isWindowTor')
+  const showSearchBox = loadTimeData.getBoolean('showSearchBox')
 
   const { isConnected, progress, message, connectionStatus } = useTorObserver()
   const { hasDisclaimerDismissed } = useHasDisclaimerDismissed()
@@ -108,9 +109,11 @@ function Container () {
   return (
     <BackgroundView isTor={isWindowTor}>
       <BadgeBox>{badgeElement}</BadgeBox>
-      <CenterView>
-        <SearchBox onSubmit={handleSearchSubmit} />
-      </CenterView>
+      {showSearchBox && (
+        <CenterView>
+          <SearchBox onSubmit={handleSearchSubmit} />
+        </CenterView>
+      )}
       <DialogBox>
         {(hasDisclaimerDismissed != null) && (
           <DisclaimerDialog
