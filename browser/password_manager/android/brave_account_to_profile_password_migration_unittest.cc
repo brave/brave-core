@@ -305,6 +305,69 @@ TEST_F(BraveAccountToProfilePasswordMigrationTest, NoOpWhenAccountEmpty) {
   EXPECT_EQ(0u, GetLogins(account_store_.get()).size());
 }
 
+TEST_F(BraveAccountToProfilePasswordMigrationTest,
+       ConcurrentCallDoesNotStartSecondMigration) {
+  EnableFeature();
+  AddLogin(account_store_.get(), MakeForm("https://a.com/", "u1", "p1"));
+  AddLogin(account_store_.get(), MakeForm("https://b.com/", "u2", "p2"));
+
+  base::test::TestFuture<void> first;
+  base::test::TestFuture<void> second;
+  MaybeMigrateAccountPasswordsToProfileStore(profile_, first.GetCallback());
+  // The profile already owns a running migrator, so this call must not start a
+  // second one racing it over the same stores.
+  MaybeMigrateAccountPasswordsToProfileStore(profile_, second.GetCallback());
+
+  EXPECT_TRUE(first.Wait());
+  EXPECT_TRUE(second.Wait());
+  EXPECT_EQ(2u, GetLogins(profile_store_.get()).size());
+  EXPECT_EQ(0u, GetLogins(account_store_.get()).size());
+}
+
+TEST_F(BraveAccountToProfilePasswordMigrationTest,
+       MigrationCanRunAgainAfterFinishing) {
+  EnableFeature();
+  AddLogin(account_store_.get(), MakeForm("https://a.com/", "u1", "p1"));
+
+  RunMigration();
+  ASSERT_EQ(1u, GetLogins(profile_store_.get()).size());
+
+  // The finished migration must have released its claim on the profile,
+  // otherwise this one would be skipped as a duplicate.
+  AddLogin(account_store_.get(), MakeForm("https://b.com/", "u2", "p2"));
+  RunMigration();
+
+  EXPECT_EQ(2u, GetLogins(profile_store_.get()).size());
+  EXPECT_EQ(0u, GetLogins(account_store_.get()).size());
+}
+
+TEST_F(BraveAccountToProfilePasswordMigrationTest,
+       StoreShutdownStopsMigrationWithoutCompleting) {
+  EnableFeature();
+  AddLogin(account_store_.get(), MakeForm("https://a.com/", "u", "p"));
+  // Every PasswordStore method returns early once shutdown started, dropping
+  // the request without running its callback.
+  account_store_->ShutdownOnUIThread();
+
+  base::test::TestFuture<void> future;
+  MaybeMigrateAccountPasswordsToProfileStore(profile_, future.GetCallback());
+
+  // The stopped migrator is still parked on the profile, which a second call
+  // observes by short-circuiting instead of starting its own migration. Waiting
+  // for that completion also gives the stopped chain the chance to run anything
+  // it might still have queued, before the checks below.
+  base::test::TestFuture<void> probe;
+  MaybeMigrateAccountPasswordsToProfileStore(profile_, probe.GetCallback());
+  ASSERT_TRUE(probe.Wait());
+
+  // Nothing was copied, and the chain stops where the dropped callback would
+  // have continued it. What keeps the migrator and the credentials it holds
+  // from living until process exit is the profile owning it, not this callback
+  // running.
+  EXPECT_EQ(0u, GetLogins(profile_store_.get()).size());
+  EXPECT_FALSE(future.IsReady());
+}
+
 class BraveAccountToProfilePasswordMigrationStoreErrorTest
     : public BraveAccountToProfilePasswordMigrationTest {
  protected:
