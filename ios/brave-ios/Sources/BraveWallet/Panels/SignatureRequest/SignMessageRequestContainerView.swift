@@ -40,6 +40,10 @@ struct SignMessageRequestContainerView: View {
           network: currentRequestNetwork,
           requestIndex: store.requestIndex,
           requestCount: store.requests.count,
+          namedFromAddress: NamedAddresses.name(
+            for: store.currentRequest.account.address,
+            accounts: keyringStore.allAccounts
+          ),
           receiverAddress: cowSwapOrder.receiver,
           namedReceiverAddress: NamedAddresses.name(
             for: cowSwapOrder.receiver,

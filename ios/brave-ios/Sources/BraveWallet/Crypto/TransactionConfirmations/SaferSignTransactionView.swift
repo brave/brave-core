@@ -15,8 +15,8 @@ struct SaferSignTransactionView: View {
 
   /// The address of the account making the swap
   let fromAddress: String?
-  /// Signing account
-  let fromAccount: BraveWallet.AccountInfo
+  /// The name of the account
+  let namedFromAddress: String?
 
   /// The address of the recipient (applicable to CoW Swap)
   let receiverAddress: String?
@@ -48,7 +48,7 @@ struct SaferSignTransactionView: View {
   init(
     network: BraveWallet.NetworkInfo?,
     fromAddress: String?,
-    fromAccount: BraveWallet.AccountInfo,
+    namedFromAddress: String?,
     receiverAddress: String?,
     namedReceiverAddress: String?,
     fromToken: BraveWallet.BlockchainToken?,
@@ -60,7 +60,7 @@ struct SaferSignTransactionView: View {
   ) {
     self.network = network
     self.fromAddress = fromAddress
-    self.fromAccount = fromAccount
+    self.namedFromAddress = namedFromAddress
     self.receiverAddress = receiverAddress
     self.namedReceiverAddress = namedReceiverAddress
     self.fromToken = fromToken
@@ -107,7 +107,7 @@ struct SaferSignTransactionView: View {
           HStack(spacing: 2) {
             Blockie(address: fromAddress ?? "")
               .frame(width: 15, height: 15)
-            Text(fromAccount.name)
+            Text(namedFromAddress ?? "")
               .font(.footnote)
           }
           .padding(4)
@@ -298,7 +298,7 @@ struct SaferSignTransactionView_Previews: PreviewProvider {
           SaferSignTransactionView(
             network: parsedTransaction.network,
             fromAddress: parsedTransaction.fromAccountInfo.address,
-            fromAccount: parsedTransaction.fromAccountInfo,
+            namedFromAddress: parsedTransaction.namedFromAddress,
             receiverAddress: nil,
             namedReceiverAddress: nil,
             fromToken: .mockUSDCToken,

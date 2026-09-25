@@ -11,6 +11,7 @@ struct TransactionHeader: View {
 
   let txCoinType: BraveWallet.CoinType
   let fromAccountInfo: BraveWallet.AccountInfo
+  let fromAccountName: String
   let toAccountAddress: String
   let toAccountName: String
   let isContractAddress: Bool
@@ -34,7 +35,7 @@ struct TransactionHeader: View {
               height: min(blockieSize, maxBlockieSize)
             )
           AddressView(address: fromAccountInfo.address) {
-            Text(fromAccountInfo.name)
+            Text(fromAccountName)
           }
         } else {
           if txCoinType == .btc || txCoinType == .ada || txCoinType == .zec {
@@ -54,7 +55,7 @@ struct TransactionHeader: View {
             if sizeCategory.isAccessibilityCategory {
               VStack {
                 AddressView(address: fromAccountInfo.address) {
-                  Text(fromAccountInfo.name)
+                  Text(fromAccountName)
                 }
                 Image(systemName: "arrow.down")
                 toAddressView
@@ -62,7 +63,7 @@ struct TransactionHeader: View {
             } else {
               HStack {
                 AddressView(address: fromAccountInfo.address) {
-                  Text(fromAccountInfo.name)
+                  Text(fromAccountName)
                 }
                 Image(systemName: "arrow.right")
                 toAddressView
@@ -79,7 +80,7 @@ struct TransactionHeader: View {
         label: Text(
           String.localizedStringWithFormat(
             Strings.Wallet.transactionFromToAccessibilityLabel,
-            fromAccountInfo.name,
+            fromAccountName,
             toAccountName
           )
         )
