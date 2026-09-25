@@ -5,86 +5,20 @@
 
 #include "brave/browser/ui/webui/brave_account/brave_account_ui_desktop.h"
 
-#include <memory>
 #include <utility>
 
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/functional/bind.h"
-#include "base/memory/weak_ptr.h"
 #include "brave/browser/brave_account/dialog_mode_holder.h"
-#include "brave/components/brave_account/brave_account_constants.h"
 #include "brave/components/brave_account/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
-#include "content/public/browser/web_contents_user_data.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
-#include "net/base/url_util.h"
-#include "ui/compositor/layer.h"
-#include "ui/gfx/geometry/rounded_corners_f.h"
-#include "ui/gfx/geometry/size.h"
-#include "ui/views/widget/widget.h"
 #include "ui/web_dialogs/web_dialog_delegate.h"
 #include "ui/webui/webui_util.h"
-#include "url/gurl.h"
-
-namespace {
-
-constexpr float kDialogBorderRadius = 16;
-constexpr int kDialogWidth = 500;
-constexpr gfx::Size kDialogMinSize(kDialogWidth, 300);
-constexpr gfx::Size kDialogMaxSize(kDialogWidth, 800);
-
-// Tracks whether a Brave Account dialog is open for a WebContents.
-// This prevents multiple dialogs from being created via rapid clicks.
-class BraveAccountDialogTracker
-    : public content::WebContentsUserData<BraveAccountDialogTracker> {
- public:
-  ~BraveAccountDialogTracker() override = default;
-
- private:
-  friend class content::WebContentsUserData<BraveAccountDialogTracker>;
-
-  explicit BraveAccountDialogTracker(content::WebContents* web_contents)
-      : content::WebContentsUserData<BraveAccountDialogTracker>(*web_contents) {
-  }
-
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
-};
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveAccountDialogTracker);
-
-class BraveAccountDialogDelegate : public ui::WebDialogDelegate {
- public:
-  BraveAccountDialogDelegate(content::WebContents* web_contents,
-                             const std::string& initiating_service_name)
-      : web_contents_(CHECK_DEREF(web_contents).GetWeakPtr()) {
-    BraveAccountDialogTracker::CreateForWebContents(web_contents);
-
-    set_delete_on_close(false);
-    const GURL url(kBraveAccountURL);
-    set_dialog_content_url(
-        initiating_service_name.empty()
-            ? url
-            : net::AppendQueryParameter(
-                  url, brave_account::kInitiatingServiceNameQueryParam,
-                  initiating_service_name));
-    set_show_dialog_title(false);
-  }
-
-  ~BraveAccountDialogDelegate() override {
-    if (web_contents_) {
-      web_contents_->RemoveUserData(BraveAccountDialogTracker::UserDataKey());
-    }
-  }
-
- private:
-  base::WeakPtr<content::WebContents> web_contents_;
-};
-
-}  // namespace
 
 BraveAccountUIDesktop::BraveAccountUIDesktop(content::WebUI* web_ui)
     : BraveAccountUIBase(Profile::FromWebUI(web_ui),
@@ -124,36 +58,4 @@ WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIDesktop)
 BraveAccountUIDesktopConfig::BraveAccountUIDesktopConfig()
     : DefaultWebUIConfig(content::kChromeUIScheme, kBraveAccountHost) {
   CHECK(brave_account::features::IsBraveAccountEnabled());
-}
-
-void ShowBraveAccountDialog(content::WebUI* web_ui,
-                            const std::string& initiating_service_name,
-                            brave_account::mojom::DialogMode dialog_mode) {
-  auto* web_contents = CHECK_DEREF(web_ui).GetWebContents();
-  CHECK(web_contents);
-
-  if (BraveAccountDialogTracker::FromWebContents(web_contents)) {
-    return;
-  }
-
-  auto& delegate = CHECK_DEREF(ShowConstrainedWebDialogWithAutoResize(
-      Profile::FromWebUI(web_ui),
-      std::make_unique<BraveAccountDialogDelegate>(web_contents,
-                                                   initiating_service_name),
-      web_contents, kDialogMinSize, kDialogMaxSize));
-
-  // On the dialog's own `WebContents` - the one that hosts brave://account,
-  // not the opener's.
-  brave_account::DialogModeHolder::SetDialogMode(
-      CHECK_DEREF(delegate.GetWebContents()), dialog_mode);
-
-  auto* widget =
-      views::Widget::GetWidgetForNativeWindow(delegate.GetNativeDialog());
-  if (!widget) {
-    return;
-  }
-
-  if (auto* layer = widget->GetLayer()) {
-    layer->SetRoundedCornerRadius(gfx::RoundedCornersF(kDialogBorderRadius));
-  }
 }

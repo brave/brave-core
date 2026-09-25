@@ -7,6 +7,11 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orderingFromXml="false">
+    <org.chromium.components.browser_ui.settings.ChromeBasePreference
+        android:key="brave_account"
+        android:order="0"
+        android:icon="@drawable/ic_social_brave_release_favicon_fullheight_color"
+        android:title="@string/settings_brave_account_row_title"/>
     <PreferenceCategory
         android:key="brave_account_section"
         android:order="1"
@@ -47,7 +52,7 @@
         android:order="7"
         android:title="@string/settings_brave_account_resend_confirmation_email_button_label"
         app:title_text_appearance="@style/TextAppearance.Brave.PreferenceTitle.TextButton"
-        android:summary="@string/settings_brave_account_verification_row_description_3"/>
+        android:summary="@string/settings_brave_account_verification_row_description_3_native"/>
     <org.chromium.chrome.browser.settings.BraveAccountPreference
         android:key="cancel_verification"
         android:order="8"

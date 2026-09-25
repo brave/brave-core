@@ -6,9 +6,14 @@
 import("//brave/build/config.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 
+# Header-only, so that users needing just the constants do not pull in the
+# service.
+source_set("constants") {
+  sources = [ "brave_account_constants.h" ]
+}
+
 source_set("brave_account") {
   sources = [
-    "brave_account_constants.h",
     "brave_account_encryption.cc",
     "brave_account_encryption.h",
     "brave_account_service.cc",
@@ -48,6 +53,9 @@ source_set("brave_account") {
     "state_base.h",
     "state_internal.h",
   ]
+
+  # brave_account_ui_base.h includes brave_account_constants.h.
+  public_deps = [ "//brave/components/brave_account:constants" ]
 
   deps = [
     "//base",

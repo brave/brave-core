@@ -6,16 +6,16 @@
 import { assert } from '//resources/js/assert.js'
 import { CrLitElement } from '//resources/lit/v3_0/lit.rollup.js'
 
+import { AccountState } from './brave_account.mojom-webui.js'
 import {
   BraveAccountRowBrowserProxy,
-  BraveAccountRowBrowserProxyImpl
-} from '../brave_account_row_browser_proxy.js'
-import { AccountState, DialogMode } from '../brave_account.mojom-webui.js'
+  BraveAccountRowBrowserProxyImpl,
+} from './brave_account_row_browser_proxy.js'
 import { getHtml } from './brave_account_row.html.js'
 
-export class SettingsBraveAccountRowElement extends CrLitElement {
+export class BraveAccountRowElement extends CrLitElement {
   static get is() {
-    return 'settings-brave-account-row'
+    return 'brave-account-row'
   }
 
   override render() {
@@ -35,26 +35,17 @@ export class SettingsBraveAccountRowElement extends CrLitElement {
   protected accessor initiatingServiceName = ''
   protected accessor state: AccountState | undefined = undefined
 
-  // The rows live here in brave://settings rather than in the Brave Account
-  // WebUI, so this asks the browser to open the flows over the page.
-  protected onOpenBraveAccountDialog(
-        e: CustomEvent<{ initiatingServiceName: string,
-                         dialogMode: DialogMode }>) {
-    this.browserProxy.dialogController.openDialog(
-        e.detail.initiatingServiceName, e.detail.dialogMode)
-  }
-
   private accountStateListenerId: number | null = null
 
   override connectedCallback() {
     super.connectedCallback()
 
     this.accountStateListenerId =
-      this.browserProxy.authenticationObserverCallbackRouter
-        .onAccountStateChanged
-        .addListener((state: AccountState) => {
+      this.browserProxy.authenticationObserverCallbackRouter.onAccountStateChanged.addListener(
+        (state: AccountState) => {
           this.state = state
-        })
+        },
+      )
   }
 
   override disconnectedCallback() {
@@ -62,14 +53,18 @@ export class SettingsBraveAccountRowElement extends CrLitElement {
 
     assert(this.accountStateListenerId)
     this.browserProxy.authenticationObserverCallbackRouter.removeListener(
-      this.accountStateListenerId)
+      this.accountStateListenerId,
+    )
   }
 }
 
 declare global {
   interface HTMLElementTagNameMap {
-    'settings-brave-account-row': SettingsBraveAccountRowElement
+    'brave-account-row': BraveAccountRowElement
   }
 }
 
-customElements.define(SettingsBraveAccountRowElement.is, SettingsBraveAccountRowElement)
+customElements.define(
+  BraveAccountRowElement.is,
+  BraveAccountRowElement,
+)

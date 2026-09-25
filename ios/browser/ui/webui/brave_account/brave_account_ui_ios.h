@@ -36,10 +36,8 @@ class BraveAccountUIIOS
   using BraveAccountUIBase::BindInterface;
 
   // brave_account::mojom::DialogController:
-  // No-op: the rows are native here, so nothing asks this WebUI to open
-  // the dialog.
   void OpenDialog(const std::string& initiating_service_name,
-                  brave_account::mojom::DialogMode dialog_mode) override {}
+                  brave_account::mojom::DialogMode dialog_mode) override;
   void CloseDialog() override;
   void GetDialogMode(GetDialogModeCallback callback) override;
 

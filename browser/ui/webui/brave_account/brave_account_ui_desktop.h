@@ -58,8 +58,4 @@ class BraveAccountUIDesktopConfig
   BraveAccountUIDesktopConfig();
 };
 
-void ShowBraveAccountDialog(content::WebUI* web_ui,
-                            const std::string& initiating_service_name,
-                            brave_account::mojom::DialogMode dialog_mode);
-
 #endif  // BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_DESKTOP_H_

@@ -28,6 +28,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @protocol AIChatUIHandlerBridge;
+@protocol BraveAccountDialogOpenerBridge;
 @protocol WalletPageHandlerBridge;
 @protocol AIChatAssociatedContentPageFetcher;
 @protocol ProfileBridge;
@@ -189,6 +190,9 @@ CWV_EXPORT
 /// Set before loading brave://account; read back by the page through
 /// `brave_account::mojom::DialogController::GetDialogMode()`.
 @property(nonatomic) BraveAccountDialogMode braveAccountDialogMode;
+/// A bridge for opening the Brave Account dialog over the WebUI page.
+@property(nonatomic, weak, nullable) id<BraveAccountDialogOpenerBridge>
+    braveAccountDialogOpener;
 @end
 
 CWV_EXPORT

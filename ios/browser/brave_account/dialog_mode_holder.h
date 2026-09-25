@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
-#define BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
+#ifndef BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
+#define BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
 
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "ios/web/public/web_state_user_data.h"
@@ -35,4 +35,4 @@ class DialogModeHolder : public web::WebStateUserData<DialogModeHolder> {
 
 }  // namespace brave_account
 
-#endif  // BRAVE_IOS_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
+#endif  // BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
