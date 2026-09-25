@@ -97,6 +97,33 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
       verticalTabsHideCompletelyWhenCollapsedPref_: Object,
       verticalTabsShowToggleButtonPref_: Object,
       scrollableHorizontalTabStripPref_: Object,
+
+      // Resolved once at page load: which pref backs the "float on mouse
+      // over" control depends on whether upstream's vertical tabs feature
+      // (rather than Brave's own implementation) is the one actually live.
+      // See VerticalTabController::SupportsBraveVerticalTabs().
+      floatingModePrefKey_: {
+        type: String,
+        readOnly: true,
+        value() {
+          return loadTimeData.getBoolean('isUpstreamVerticalTabsFeatureEnabled')
+              ? 'vertical_tabs.expand_on_hover'
+              : 'brave.tabs.vertical_tabs_floating_enabled'
+        },
+      },
+
+      // Resolved once at page load: which pref backs the "Use vertical tabs"
+      // toggle depends on whether upstream's vertical tabs feature (rather than
+      // Brave's own implementation) is the one actually live.
+      verticalTabsEnabledPrefKey_: {
+        type: String,
+        readOnly: true,
+        value() {
+          return loadTimeData.getBoolean('isUpstreamVerticalTabsFeatureEnabled')
+              ? 'vertical_tabs.enabled'
+              : 'brave.tabs.vertical_tabs_enabled'
+        },
+      },
     }
   }
 
@@ -113,6 +140,8 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
       PrefObject<boolean>|undefined
   declare private verticalTabsShowToggleButtonPref_: PrefObject<boolean>|undefined
   declare private scrollableHorizontalTabStripPref_: PrefObject<boolean>|undefined
+  declare private floatingModePrefKey_: string
+  declare private verticalTabsEnabledPrefKey_: string
 
   override connectedCallback() {
     super.connectedCallback()
@@ -123,7 +152,8 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
         (enabled: boolean) => { this.verticalTabsToggleEnabled_ = enabled })
 
     this.mirrorPrefs({
-      'brave.tabs.vertical_tabs_enabled': 'verticalTabsEnabledPref_',
+      // Mirror based on which backend is active
+      [this.verticalTabsEnabledPrefKey_]: 'verticalTabsEnabledPref_',
       'brave.tabs.vertical_tabs_hide_completely_when_collapsed':
           'verticalTabsHideCompletelyWhenCollapsedPref_',
       'brave.tabs.vertical_tabs_show_toggle_button':
@@ -148,6 +178,20 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
 
   private isHideVerticalTabCompletelyFlagEnabled() {
     return loadTimeData.getBoolean('isHideVerticalTabCompletelyFlagEnabled');
+  }
+
+  private isUpstreamVerticalTabsFeatureEnabled_() {
+    return loadTimeData.getBoolean('isUpstreamVerticalTabsFeatureEnabled')
+  }
+
+  // Mirrors upstream's SettingsAppearancePageElement.showEverythingMenuToggle_()
+  // (chrome/browser/resources/settings/appearance_page/appearance_page.ts).
+  // will show toggle button for everything_menu.pinned_to_tabstrip, and it'll
+  // show "Show saved tab groups button" item
+  private showEverythingMenuToggle_() {
+    return this.isUpstreamVerticalTabsFeatureEnabled_() &&
+        !loadTimeData.getBoolean('showOrganizerPanelEnabled') &&
+        loadTimeData.getBoolean('showEverythingMenuEnabled')
   }
 
   // "Float on mouse over" (auto-expand on hover) is forced on, and its

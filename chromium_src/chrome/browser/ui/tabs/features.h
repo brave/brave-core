@@ -34,6 +34,8 @@ BASE_DECLARE_FEATURE(kBraveBringAllTabsToThisWindow);
 
 bool HorizontalTabsUpdateEnabled();
 
+bool IsUpstreamVerticalTabsForceEnabled();
+
 }  // namespace tabs
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TABS_FEATURES_H_

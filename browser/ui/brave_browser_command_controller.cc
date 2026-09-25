@@ -128,6 +128,14 @@ bool IsBraveCommands(int id) {
 }
 
 bool IsBraveOverrideCommands(int id) {
+  if (id == IDC_TOGGLE_VERTICAL_TABS &&
+      tabs::IsUpstreamVerticalTabsForceEnabled()) {
+    // The upstream vertical tab strip is active, so the toggle must go through
+    // the upstream command controller (which drives the upstream
+    // VerticalTabStripStateController). brave::ToggleVerticalTabStrip() would
+    // toggle Brave's own pref, which has no effect on the upstream strip.
+    return false;
+  }
   static constexpr auto kOverrideCommands = base::MakeFixedFlatSet<int>({
       IDC_NEW_WINDOW,
       IDC_NEW_INCOGNITO_WINDOW,
@@ -749,6 +757,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       brave::ToggleActiveTabAudioMute(&*browser_);
       break;
     case IDC_TOGGLE_VERTICAL_TABS:
+      CHECK(!tabs::IsUpstreamVerticalTabsForceEnabled());
       brave::ToggleVerticalTabStrip(&*browser_);
       break;
     case IDC_SHARING_HUB_SCREENSHOT: {

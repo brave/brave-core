@@ -5,7 +5,10 @@
 
 #include <memory>
 
+#include "base/command_line.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
+#include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
@@ -13,6 +16,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -527,3 +531,37 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuWithContainersBrowserTest,
   EXPECT_TRUE(index.has_value());
 }
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
+
+class BraveTabMenuVerticalTabsBrowserTest : public BraveTabMenuBrowserTest {
+ public:
+  BraveTabMenuVerticalTabsBrowserTest() = default;
+  ~BraveTabMenuVerticalTabsBrowserTest() override = default;
+
+  void SetUpOnMainThread() override {
+    BraveTabMenuBrowserTest::SetUpOnMainThread();
+
+    base::CommandLine::ForCurrentProcess()->AppendSwitchASCII(
+        tabs::switches::kVerticalTabMigrationSwitch,
+        tabs::switches::kVerticalTabMigrationForceUpstreamValue);
+  }
+};
+
+IN_PROC_BROWSER_TEST_F(BraveTabMenuVerticalTabsBrowserTest,
+                       ShowVerticalTabsAndToggleVerticalAreMutuallyExclusive) {
+  // Regression test for the vertical tab migration effort: when upstream's
+  // vertical tab is enabled, VerticalTabController::
+  // SupportsBraveVerticalTabs() returns false, so Brave's own
+  // CommandShowVerticalTabs item must not be present, and upstream's
+  // CommandToggleVertical item (added because
+  // VerticalTabStripStateController::From() now returns non-null) must be
+  // the one shown instead.
+  auto menu = CreateMenuControllerAt(0);
+  auto* menu_model = CreateMenuModelAt(menu.get(), 0);
+
+  EXPECT_FALSE(
+      menu_model->GetIndexOfCommandId(TabStripModel::CommandShowVerticalTabs)
+          .has_value());
+  EXPECT_TRUE(
+      menu_model->GetIndexOfCommandId(TabStripModel::CommandToggleVertical)
+          .has_value());
+}

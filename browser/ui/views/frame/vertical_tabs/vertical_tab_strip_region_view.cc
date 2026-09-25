@@ -290,6 +290,8 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
       browser_(browser_view->browser()),
       original_region_view_(region_view),
       tab_style_(TabStyle::Get()) {
+  CHECK(original_region_view_);
+
   // Register this view to handle caption area hit test, so that users can drag
   // the window by dragging the vertical tab strip region.
   browser_view->browser()
