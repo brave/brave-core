@@ -15,7 +15,10 @@ import {
 import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 
 // Types
-import { BraveWallet } from '../../../../../constants/types'
+import {
+  BraveWallet,
+  PolkadotMainnetKeyringIds,
+} from '../../../../../constants/types'
 
 // Components
 import {
@@ -40,8 +43,15 @@ export const DAppConnectionAccounts = (props: Props) => {
 
   // Memos
   const accountByCoinType = React.useMemo(() => {
-    // Allow only first account for ADA
-    return accounts.filter((account) => account.accountId.coin === coin)
+    return accounts.filter((account) => {
+      if (account.accountId.coin !== coin) {
+        return false
+      }
+      if (coin === BraveWallet.CoinType.DOT) {
+        return PolkadotMainnetKeyringIds.includes(account.accountId.keyringId)
+      }
+      return true
+    })
   }, [accounts, coin])
 
   const connectedAccounts = React.useMemo(() => {
