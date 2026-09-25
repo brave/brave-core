@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <memory>
 
+#include "base/check_op.h"
 #include "base/command_line.h"
 #include "base/debug/crash_logging.h"
 #include "base/files/file_path.h"
@@ -255,22 +256,7 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   }
 
   if (sponsored_images_component_id_) {
-    // Unregister previous component.
-    component_update_service_->UnregisterComponent(
-        *sponsored_images_component_id_);
-
-    // Drop any in-progress callbacks bound to the previous component
-    // registration.
-    sponsored_images_weak_factory_.InvalidateWeakPtrs();
-
-    // Reset the installed directory to prevent replay of the callback for the
-    // previous component.
-    sponsored_images_installed_dir_.reset();
-
-    ResetSponsoredImagesData();
-
-    sponsored_sites_data_.reset();
-    observers_.Notify(&Observer::OnSponsoredSitesDataDidUpdate);
+    UnregisterSponsoredImagesComponent();
   }
   sponsored_images_component_id_ = sponsored_images_component->id;
 
@@ -298,6 +284,51 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   last_updated_at_ = base::Time::Now();
 
   ScheduleNextSponsoredImagesComponentUpdate();
+}
+
+void NTPBackgroundImagesService::UnregisterSponsoredImagesComponent() {
+  if (!sponsored_images_component_id_) {
+    return;
+  }
+
+  VLOG(0) << "Unregistering NTP Sponsored Images component with ID "
+          << *sponsored_images_component_id_;
+  // `component_update_service_` is cleared by `StartTearDown()` before the
+  // profile manager destroys per-profile `ViewCounterService` instances, so
+  // it can be null here during shutdown.
+  if (component_update_service_) {
+    component_update_service_->UnregisterComponent(
+        *sponsored_images_component_id_);
+  }
+  sponsored_images_component_id_.reset();
+
+  // Drop any in-progress callbacks bound to the now-unregistered component.
+  sponsored_images_weak_factory_.InvalidateWeakPtrs();
+  sponsored_images_installed_dir_.reset();
+
+  ResetSponsoredImagesData();
+
+  sponsored_sites_data_.reset();
+  observers_.Notify(&Observer::OnSponsoredSitesDataDidUpdate);
+
+  sponsored_images_update_check_callback_.Reset();
+  sponsored_images_update_check_timer_.Stop();
+}
+
+void NTPBackgroundImagesService::AddSponsoredImagesOptedInProfile() {
+  ++sponsored_images_opted_in_profile_count_;
+
+  // Always register, even if already registered by another profile.
+  // `RegisterSponsoredImagesComponent()` replays the ready callback for an
+  // already-loaded component so this profile still receives the data.
+  RegisterSponsoredImagesComponent();
+}
+
+void NTPBackgroundImagesService::RemoveSponsoredImagesOptedInProfile() {
+  CHECK_GT(sponsored_images_opted_in_profile_count_, 0U);
+  if (--sponsored_images_opted_in_profile_count_ == 0U) {
+    UnregisterSponsoredImagesComponent();
+  }
 }
 
 void NTPBackgroundImagesService::OnVariationsCountryPrefChanged() {

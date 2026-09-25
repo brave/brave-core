@@ -191,6 +191,12 @@ class ViewCounterServiceTest : public testing::Test {
     view_counter_service_->OnDidInitializeAdsService();
   }
 
+  void SimulateAdsServiceDataCleared() {
+    view_counter_service_->OnDidClearAdsServiceData();
+  }
+
+  void SimulateShutdown() { view_counter_service_->Shutdown(); }
+
   void CreateViewCounterService() {
     BraveNTPCustomBackgroundService* custom_background_service = nullptr;
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
@@ -620,6 +626,40 @@ TEST_F(ViewCounterServiceTest,
   SimulateAdsServiceInitialized();
   EXPECT_EQ(1U, background_images_service_
                     ->register_sponsored_images_component_call_count());
+}
+
+TEST_F(ViewCounterServiceTest,
+       UnregistersSponsoredImagesComponentOnShutdownWhenOptedIn) {
+  SimulateAdsServiceInitialized();
+
+  SimulateShutdown();
+
+  EXPECT_EQ(1U, background_images_service_
+                    ->unregister_sponsored_images_component_call_count());
+}
+
+TEST_F(ViewCounterServiceTest,
+       DoesNotUnregisterSponsoredImagesComponentOnShutdownWhenNeverOptedIn) {
+  SimulateShutdown();
+
+  EXPECT_EQ(0U, background_images_service_
+                    ->unregister_sponsored_images_component_call_count());
+}
+
+TEST_F(
+    ViewCounterServiceTest,
+    DoesNotReRegisterSponsoredImagesComponentWhenClearingAdsDataAfterOptOut) {
+  SimulateAdsServiceInitialized();
+  SetSponsoredImagesVisibility(/*should_show=*/false);
+  const size_t register_call_count_after_opt_out =
+      background_images_service_
+          ->register_sponsored_images_component_call_count();
+
+  SimulateAdsServiceDataCleared();
+
+  EXPECT_EQ(register_call_count_after_opt_out,
+            background_images_service_
+                ->register_sponsored_images_component_call_count());
 }
 
 }  // namespace ntp_background_images

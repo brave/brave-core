@@ -151,6 +151,12 @@ class ViewCounterService : public KeyedService,
   bool IsShowBackgroundImageOptedIn() const;
   bool IsSponsoredImagesWallpaperOptedIn() const;
 
+  // Registers or unregisters this profile's interest in the Sponsored Images
+  // component with `background_images_service_` based on the current opt-in
+  // prefs, tracking `is_sponsored_images_component_registered_` so the
+  // registration count stays balanced.
+  void UpdateSponsoredImagesComponentRegistration();
+
   // Do we have a sponsored or referral wallpaper to show and has the user
   // opted-in to showing it at some time.
   bool CanShowSponsoredImages() const;
@@ -192,6 +198,7 @@ class ViewCounterService : public KeyedService,
   const raw_ptr<PrefService> prefs_ = nullptr;
   const raw_ptr<PrefService> local_state_ = nullptr;
   bool is_supported_locale_ = false;
+  bool is_sponsored_images_component_registered_ = false;
   PrefChangeRegistrar pref_change_registrar_;
   ViewCounterModel model_;
   base::WallClockTimer p3a_update_timer_;

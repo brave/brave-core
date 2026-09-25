@@ -126,10 +126,32 @@ ViewCounterService::ViewCounterService(
 ViewCounterService::~ViewCounterService() = default;
 
 void ViewCounterService::OnDidInitializeAdsService() {
-  background_images_service_->RegisterSponsoredImagesComponent();
+  const bool was_already_registered = is_sponsored_images_component_registered_;
+
+  UpdateSponsoredImagesComponentRegistration();
+
+  // The ads service can restart independently of this profile's opt-in state.
+  // If already registered before this call, re-register so it immediately
+  // gets the already-downloaded sponsored data, instead of waiting for the
+  // next scheduled component check. Skip when `was_already_registered` is
+  // false, since `UpdateSponsoredImagesComponentRegistration()` just
+  // performed the initial registration above, which already replays the
+  // data.
+  if (was_already_registered && IsSponsoredImagesWallpaperOptedIn() &&
+      IsShowBackgroundImageOptedIn()) {
+    background_images_service_->RegisterSponsoredImagesComponent();
+  }
 }
 
 void ViewCounterService::OnDidClearAdsServiceData() {
+  // Disabling NTP sponsored ads triggers an asynchronous ads data clear,
+  // which fires this after `UpdateSponsoredImagesComponentRegistration()`
+  // has already unregistered the component for this profile. Forcing a
+  // component update here would re-register it against this profile's wish.
+  if (!is_sponsored_images_component_registered_) {
+    return;
+  }
+
   background_images_service_->ForceSponsoredComponentUpdate();
 }
 
@@ -238,6 +260,11 @@ void ViewCounterService::Shutdown() {
   ads_service_observation_.Reset();
   host_content_settings_map_observation_.Reset();
   ntp_background_images_service_observation_.Reset();
+
+  if (is_sponsored_images_component_registered_) {
+    is_sponsored_images_component_registered_ = false;
+    background_images_service_->RemoveSponsoredImagesOptedInProfile();
+  }
 }
 
 void ViewCounterService::OnBackgroundImagesDataDidUpdate(
@@ -313,6 +340,7 @@ void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
   if (pref_name == brave_ads::prefs::kSponsoredEnabled ||
       pref_name == prefs::kNewTabPageShowBackgroundImage) {
     RecordSponsoredImagesEnabledP3A(prefs_);
+    UpdateSponsoredImagesComponentRegistration();
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
@@ -380,6 +408,21 @@ bool ViewCounterService::IsSponsoredImagesWallpaperOptedIn() const {
 #else
   return false;
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
+}
+
+void ViewCounterService::UpdateSponsoredImagesComponentRegistration() {
+  const bool should_register =
+      IsSponsoredImagesWallpaperOptedIn() && IsShowBackgroundImageOptedIn();
+  if (should_register == is_sponsored_images_component_registered_) {
+    return;
+  }
+
+  is_sponsored_images_component_registered_ = should_register;
+  if (should_register) {
+    background_images_service_->AddSponsoredImagesOptedInProfile();
+  } else {
+    background_images_service_->RemoveSponsoredImagesOptedInProfile();
+  }
 }
 
 void ViewCounterService::OnGetCurrentBrandedWallpaper(
