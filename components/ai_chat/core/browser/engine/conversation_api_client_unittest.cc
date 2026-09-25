@@ -2184,41 +2184,61 @@ TEST_F(ConversationAPIClientUnitTest, ErrorParsing_SSE) {
       client_->GetMockAPIRequestHelper();
   testing::StrictMock<MockCallbacks> mock_callbacks;
   base::RunLoop run_loop;
+  int request_count = 0;
+  int completed_count = 0;
 
   EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
-      .WillOnce([&](const std::string& method, const GURL& url,
-                    const std::string& body, const std::string& content_type,
-                    DataReceivedCallback data_received_callback,
-                    ResultCallback result_callback,
-                    const base::flat_map<std::string, std::string>& headers,
-                    const api_request_helper::APIRequestOptions& options) {
-        // Error body arrives via value_body() in the terminal APIRequestResult,
-        // populated by APIRequestHelper from the non-2xx SSE response body.
-        auto error_dict = base::test::ParseJsonDict(
-            R"({"error":{"type":"1234","message":"bad request"}})");
-        std::move(result_callback)
-            .Run(api_request_helper::APIRequestResult(
-                400, base::Value(std::move(error_dict)), {}, net::OK, GURL()));
-        return Ticket();
-      });
+      .Times(2)
+      .WillRepeatedly(
+          [&](const std::string& method, const GURL& url,
+              const std::string& body, const std::string& content_type,
+              DataReceivedCallback data_received_callback,
+              ResultCallback result_callback,
+              const base::flat_map<std::string, std::string>& headers,
+              const api_request_helper::APIRequestOptions& options) {
+            // Error body arrives via value_body() in the terminal
+            // APIRequestResult, populated by APIRequestHelper from the non-2xx
+            // SSE response body. First request hits the general rate limit,
+            // second hits the model-specific one.
+            auto error_dict = base::test::ParseJsonDict(
+                request_count++ == 0
+                    ? R"({"error":{"type":"1234","message":"rate limited"}})"
+                    : R"({"error":{"type":"42904","message":"rate limited"}})");
+            std::move(result_callback)
+                .Run(api_request_helper::APIRequestResult(
+                    net::HTTP_TOO_MANY_REQUESTS,
+                    base::Value(std::move(error_dict)), {}, net::OK, GURL()));
+            return Ticket();
+          });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
-      .WillOnce([&](EngineConsumer::GenerationResult result) {
+      .Times(2)
+      .WillRepeatedly([&](EngineConsumer::GenerationResult result) {
         ASSERT_FALSE(result.has_value());
-        EXPECT_EQ(result.error().api_error, mojom::APIError::ConnectionIssue);
         ASSERT_TRUE(result.error().details);
-        EXPECT_EQ(result.error().details->status_code, 400);
-        EXPECT_EQ(result.error().details->error_type, "1234");
+        EXPECT_EQ(result.error().details->status_code,
+                  net::HTTP_TOO_MANY_REQUESTS);
+        if (completed_count++ == 0) {
+          EXPECT_EQ(result.error().api_error,
+                    mojom::APIError::RateLimitReached);
+          EXPECT_EQ(result.error().details->error_type, "1234");
+          return;
+        }
+        EXPECT_EQ(result.error().api_error,
+                  mojom::APIError::ModelRateLimitReached);
+        EXPECT_EQ(result.error().details->error_type, "42904");
         run_loop.Quit();
       });
 
-  client_->PerformRequest(
-      GetMockMessagesAndExpectedMessagesJson().first, std::nullopt,
-      std::nullopt, {mojom::ConversationCapability::CHAT},
-      base::BindRepeating(&MockCallbacks::OnDataReceived,
-                          base::Unretained(&mock_callbacks)),
-      base::BindOnce(&MockCallbacks::OnCompleted,
-                     base::Unretained(&mock_callbacks)));
+  for (int i = 0; i < 2; ++i) {
+    client_->PerformRequest(
+        GetMockMessagesAndExpectedMessagesJson().first, std::nullopt,
+        std::nullopt, {mojom::ConversationCapability::CHAT},
+        base::BindRepeating(&MockCallbacks::OnDataReceived,
+                            base::Unretained(&mock_callbacks)),
+        base::BindOnce(&MockCallbacks::OnCompleted,
+                       base::Unretained(&mock_callbacks)));
+  }
 
   run_loop.Run();
 }
