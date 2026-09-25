@@ -294,7 +294,9 @@ void BraveBrowserFrameViewMac::OnFullscreenStateChanged() {
   // and both modes want to move the tabstrip into different parent views.
   // Disabling focus mode before immersive mode is enabled ensures that the
   // tabstrip view is returned to the expected placement before the immersive
-  // controller attempts to reparent it.
+  // controller attempts to reparent it. Likewise, focus mode is only restored
+  // after immersive mode has been disabled and the top container has been
+  // returned to the browser view.
   if (GetBrowserView()->IsFullscreen()) {
     if (!scoped_focus_mode_disable_) {
       auto* browser = GetBrowserView()->browser();
@@ -303,10 +305,11 @@ void BraveBrowserFrameViewMac::OnFullscreenStateChanged() {
             std::make_unique<ScopedFocusModeDisable>(controller);
       }
     }
+    BrowserFrameViewMac::OnFullscreenStateChanged();
   } else {
+    BrowserFrameViewMac::OnFullscreenStateChanged();
     scoped_focus_mode_disable_.reset();
   }
-  BrowserFrameViewMac::OnFullscreenStateChanged();
 }
 
 void BraveBrowserFrameViewMac::OnFocusModeToggled(bool enabled) {
