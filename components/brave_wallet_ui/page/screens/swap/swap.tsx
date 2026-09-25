@@ -36,8 +36,8 @@ import { QuoteInfo } from './components/swap/quote-info/quote-info'
 import { PrivacyModal } from './components/swap/privacy-modal/privacy-modal'
 import { ComposerControls } from '../composer_ui/composer_controls/composer_controls'
 import WalletPageWrapper from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
-import { DefaultPanelHeader } from '../../../components/desktop/card-headers/default-panel-header'
-import { PanelActionHeader } from '../../../components/desktop/card-headers/panel-action-header'
+import { DefaultPanelHeader } from '$wallet/page/components/card_headers/default_panel_header'
+import { PanelActionHeader } from '$wallet/page/components/card_headers/panel_action_header'
 import { SwapProviders } from './components/swap/swap_providers/swap_providers'
 import {
   BottomSheet, //

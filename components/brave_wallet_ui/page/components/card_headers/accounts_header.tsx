@@ -6,19 +6,19 @@
 import * as React from 'react'
 
 // Types
-import { BraveWallet, WalletRoutes } from '../../../constants/types'
+import { BraveWallet, WalletRoutes } from '$wallet/constants/types'
 
 // Selectors
-import { UISelectors } from '../../../common/selectors'
+import { UISelectors } from '$wallet/common/selectors'
 
 // Components
-import { DefaultPanelHeader } from './default-panel-header'
+import { DefaultPanelHeader } from './default_panel_header'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Hooks
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
 
 import { AccountsMenu } from '$wallet/page/components/wallet_menus/accounts_menu'
 
@@ -27,8 +27,8 @@ import {
   HeaderTitle,
   MenuButton,
   MenuButtonIcon,
-} from './shared-card-headers.style'
-import { Row } from '../../shared/style'
+} from './shared_card_headers.style'
+import { Row } from '$wallet/components/shared/style'
 
 interface Props {
   hiddenAccounts: BraveWallet.AccountInfo[]
@@ -63,5 +63,3 @@ export const AccountsHeader = ({ hiddenAccounts }: Props) => {
     </Row>
   )
 }
-
-export default AccountsHeader

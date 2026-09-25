@@ -83,7 +83,7 @@ import {
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   AssetDetailsHeader, //
-} from '../../../components/desktop/card-headers/asset-details-header'
+} from '$wallet/page/components/card_headers/asset_details_header'
 import {
   TokenDetailsModal, //
 } from '../../../components/desktop/popup-modals/token_details_modal/token_details_modal'

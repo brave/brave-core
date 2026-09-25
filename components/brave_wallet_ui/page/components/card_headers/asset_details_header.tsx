@@ -7,62 +7,67 @@ import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // Selectors
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../common/selectors'
+import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors } from '$wallet/common/selectors'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
-import Amount from '../../../utils/amount'
+import { getLocale } from '$web-common/locale'
+import Amount from '$wallet/utils/amount'
 import {
   getPriceRequestsForTokens,
   getTokenPriceFromRegistry,
-} from '../../../utils/pricing-utils'
-import { BraveWallet } from '../../../constants/types'
+} from '$wallet/utils/pricing-utils'
+import { BraveWallet } from '$wallet/constants/types'
 import {
   getIsRewardsToken,
   getRewardsTokenDescription,
-} from '../../../utils/rewards_utils'
+} from '$wallet/utils/rewards_utils'
 import {
   externalWalletProviderFromString, //
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
 import {
   checkIfTokenNeedsNetworkIcon,
   isShieldedToken,
-} from '../../../utils/asset-utils'
+} from '$wallet/utils/asset-utils'
 
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetTokenSpotPricesQuery,
-} from '../../../common/slices/api.slice'
-import { querySubscriptionOptions60s } from '../../../common/slices/constants'
+} from '$wallet/common/slices/api.slice'
+import { querySubscriptionOptions60s } from '$wallet/common/slices/constants'
 
 // Hooks
-import useExplorer from '../../../common/hooks/explorer'
+import useExplorer from '$wallet/common/hooks/explorer'
 
 // Components
-import withPlaceholderIcon from '../../shared/create-placeholder-icon'
+import withPlaceholderIcon from '$wallet/components/shared/create-placeholder-icon'
 import { AssetDetailsMenu } from '$wallet/page/components/wallet_menus/asset_details_menu'
-import { CreateNetworkIcon } from '../../shared/create-network-icon'
-import { ShieldedLabel } from '../../shared/shielded_label/shielded_label'
+import { CreateNetworkIcon } from '$wallet/components/shared/create-network-icon'
+import { ShieldedLabel } from '$wallet/components/shared/shielded_label/shielded_label'
 
 // Styled Components
 import {
   MenuButton,
   MenuButtonIcon,
   HorizontalDivider,
-} from './shared-card-headers.style'
+} from './shared_card_headers.style'
 import {
   AssetIcon,
   PercentChange,
   UpDownIcon,
   IconsWrapper,
   NetworkIconWrapper,
-} from './asset-details-header.style'
-import { Button, ButtonIcon } from './shared-panel-headers.style'
-import { Text, Row, Column, HorizontalSpace } from '../../shared/style'
-import { Skeleton } from '../../shared/loading-skeleton/styles'
+} from './asset_details_header.style'
+import { Button, ButtonIcon } from './shared_panel_headers.style'
+import {
+  Text,
+  Row,
+  Column,
+  HorizontalSpace,
+} from '$wallet/components/shared/style'
+import { Skeleton } from '$wallet/components/shared/loading-skeleton/styles'
 
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, {
   size: 'big',
@@ -312,5 +317,3 @@ export const AssetDetailsHeader = (props: Props) => {
     </Row>
   )
 }
-
-export default AssetDetailsHeader

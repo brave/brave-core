@@ -6,13 +6,13 @@
 import * as React from 'react'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Styled Components
 import { SearchBarWrapper } from './activity_page_header.style'
-import { HeaderTitle } from './shared-card-headers.style'
-import { Row } from '../../shared/style'
-import SearchBar from '../../shared/search-bar'
+import { HeaderTitle } from './shared_card_headers.style'
+import { Row } from '$wallet/components/shared/style'
+import SearchBar from '$wallet/components/shared/search-bar'
 
 export interface Props {
   searchValue: string
@@ -44,5 +44,3 @@ export const ActivityPageHeader = (props: Props) => {
     </Row>
   )
 }
-
-export default ActivityPageHeader

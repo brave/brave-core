@@ -7,27 +7,27 @@ import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 
 // Types
-import { WalletRoutes } from '../../../constants/types'
+import { WalletRoutes } from '$wallet/constants/types'
 
 // Selectors
-import { UISelectors } from '../../../common/selectors'
+import { UISelectors } from '$wallet/common/selectors'
 
 // Components
-import { DefaultPanelHeader } from './default-panel-header'
+import { DefaultPanelHeader } from './default_panel_header'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Hooks
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
 
 // Styled Components
 import {
   HeaderTitle,
   MenuButton,
   MenuButtonIcon,
-} from './shared-card-headers.style'
-import { Row } from '../../shared/style'
+} from './shared_card_headers.style'
+import { Row } from '$wallet/components/shared/style'
 
 export const PortfolioOverviewHeader = () => {
   // UI Selectors (safe)
@@ -60,5 +60,3 @@ export const PortfolioOverviewHeader = () => {
     </Row>
   )
 }
-
-export default PortfolioOverviewHeader

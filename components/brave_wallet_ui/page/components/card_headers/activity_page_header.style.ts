@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 
 // Shared Styles
-import { Column } from '../../shared/style'
+import { Column } from '$wallet/components/shared/style'
 
 export const SearchBarWrapper = styled(Column)`
   flex: 1;

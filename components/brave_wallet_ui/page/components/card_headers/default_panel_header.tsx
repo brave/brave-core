@@ -8,23 +8,23 @@ import * as React from 'react'
 // Local Storage
 import {
   useSyncedLocalStorage, //
-} from '../../../common/hooks/use_local_storage'
+} from '$wallet/common/hooks/use_local_storage'
 import {
   LOCAL_STORAGE_KEYS, //
-} from '../../../common/constants/local-storage-keys'
+} from '$wallet/common/constants/local-storage-keys'
 
 // Selectors
 import {
   useSafeUISelector, //
-} from '../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../common/selectors'
+} from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors } from '$wallet/common/selectors'
 
 // Types
-import { WalletRoutes } from '../../../constants/types'
+import { WalletRoutes } from '$wallet/constants/types'
 
 // Utils
-import { openWalletRouteTab } from '../../../utils/routes-utils'
-import { getLocale } from '../../../../common/locale'
+import { openWalletRouteTab } from '$wallet/utils/routes-utils'
+import { getLocale } from '$web-common/locale'
 
 // Components
 import { WalletSettingsMenu } from '$wallet/page/components/wallet_menus/wallet_settings_menu'
@@ -36,10 +36,10 @@ import {
   SidePanelIcon,
   LeftRightContainer,
   SidePanelWrapper,
-} from './shared-panel-headers.style'
-import { HeaderTitle } from './shared-card-headers.style'
-import { Row, Text, HorizontalDivider } from '../../shared/style'
-import { useCloseSidePanelUIMutation } from '../../../common/slices/api.slice'
+} from './shared_panel_headers.style'
+import { HeaderTitle } from './shared_card_headers.style'
+import { Row, Text, HorizontalDivider } from '$wallet/components/shared/style'
+import { useCloseSidePanelUIMutation } from '$wallet/common/slices/api.slice'
 
 interface Props {
   title?: string
@@ -183,5 +183,3 @@ export const DefaultPanelHeader = (props: Props) => {
     </Row>
   )
 }
-
-export default DefaultPanelHeader

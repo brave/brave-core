@@ -8,7 +8,7 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 // Shared Styles
-import { Text, WalletButton } from '../../shared/style'
+import { Text, WalletButton } from '$wallet/components/shared/style'
 import {
   layoutSmallWidth, //
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'

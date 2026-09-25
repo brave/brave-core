@@ -31,7 +31,7 @@ import {
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   DefaultPanelHeader, //
-} from '../../desktop/card-headers/default-panel-header'
+} from '$wallet/page/components/card_headers/default_panel_header'
 import { CreateSiteOrigin } from '../../shared/create-site-origin/index'
 import {
   ConnectionSection, //

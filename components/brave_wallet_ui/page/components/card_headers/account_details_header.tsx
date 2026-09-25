@@ -11,8 +11,8 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import {
   useSafeUISelector,
   useSafeWalletSelector, //
-} from '../../../common/hooks/use-safe-selector'
-import { UISelectors, WalletSelectors } from '../../../common/selectors'
+} from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors, WalletSelectors } from '$wallet/common/selectors'
 
 // Types
 import {
@@ -20,23 +20,23 @@ import {
   AccountModalTypes,
   BraveWallet,
   WalletRoutes,
-} from '../../../constants/types'
+} from '$wallet/constants/types'
 
 // Options
 import {
   AccountDetailsMenuOptions, //
-} from '../../../options/account-details-menu-options'
+} from '$wallet/options/account-details-menu-options'
 
 // Utils
-import { reduceAddress } from '../../../utils/reduce-address'
-import { getBalance } from '../../../utils/balance-utils'
+import { reduceAddress } from '$wallet/utils/reduce-address'
+import { getBalance } from '$wallet/utils/balance-utils'
 import {
   computeFiatAmount,
   getPriceRequestsForTokens,
-} from '../../../utils/pricing-utils'
-import { getAccountTypeDescription } from '../../../utils/account-utils'
-import { getLocale } from '../../../../common/locale'
-import Amount from '../../../utils/amount'
+} from '$wallet/utils/pricing-utils'
+import { getAccountTypeDescription } from '$wallet/utils/account-utils'
+import { getLocale } from '$web-common/locale'
+import Amount from '$wallet/utils/amount'
 
 // Queries
 import {
@@ -44,25 +44,25 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetUserTokensRegistryQuery,
   useGetZCashAccountInfoQuery,
-} from '../../../common/slices/api.slice'
+} from '$wallet/common/slices/api.slice'
 import {
   usePersistedTokenSpotPricesQuery, //
-} from '../../../common/hooks/use-persisted-spot-prices'
+} from '$wallet/common/hooks/use-persisted-spot-prices'
 import {
   selectAllVisibleUserAssetsFromQueryResult, //
-} from '../../../common/slices/entities/blockchain-token.entity'
+} from '$wallet/common/slices/entities/blockchain-token.entity'
 import {
   TokenBalancesRegistry, //
-} from '../../../common/slices/entities/token-balance.entity'
-import { querySubscriptionOptions60s } from '../../../common/slices/constants'
+} from '$wallet/common/slices/entities/token-balance.entity'
+import { querySubscriptionOptions60s } from '$wallet/common/slices/constants'
 
 // Components
 import {
   CreateAccountIcon, //
-} from '../../shared/create-account-icon/create-account-icon'
-import CopyTooltip from '../../shared/copy-tooltip/copy-tooltip'
+} from '$wallet/components/shared/create-account-icon/create-account-icon'
+import CopyTooltip from '$wallet/components/shared/copy-tooltip/copy-tooltip'
 import { AccountDetailsMenu } from '$wallet/page/components/wallet_menus/account_details_menu'
-import { LoadingSkeleton } from '../../shared/loading-skeleton/index'
+import { LoadingSkeleton } from '$wallet/components/shared/loading-skeleton/index'
 
 // Styled Components
 import {
@@ -71,14 +71,14 @@ import {
   AccountsNetworkText,
   AccountBalanceText,
   CopyIcon,
-} from './account-details-header.style'
+} from './account_details_header.style'
 import {
   MenuButton,
   MenuButtonIcon,
   HorizontalDivider,
-} from './shared-card-headers.style'
-import { Row, Column, HorizontalSpace } from '../../shared/style'
-import { Button, ButtonIcon } from './shared-panel-headers.style'
+} from './shared_card_headers.style'
+import { Row, Column, HorizontalSpace } from '$wallet/components/shared/style'
+import { Button, ButtonIcon } from './shared_panel_headers.style'
 
 interface Props {
   account: BraveWallet.AccountInfo
@@ -362,5 +362,3 @@ export const AccountDetailsHeader = (props: Props) => {
     </Row>
   )
 }
-
-export default AccountDetailsHeader

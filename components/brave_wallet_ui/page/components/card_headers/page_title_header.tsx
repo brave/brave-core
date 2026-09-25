@@ -2,27 +2,28 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import * as React from 'react'
 
 // Types
-import { WalletRoutes } from '../../../constants/types'
+import { WalletRoutes } from '$wallet/constants/types'
 
 // Selectors
-import { UISelectors } from '../../../common/selectors'
+import { UISelectors } from '$wallet/common/selectors'
 
 // Hooks
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
 
 // Components
-import { DefaultPanelHeader } from './default-panel-header'
+import { DefaultPanelHeader } from './default_panel_header'
 
 // styles
-import { Row } from '../../shared/style'
+import { Row } from '$wallet/components/shared/style'
 import {
   MenuButtonIcon,
   MenuButton,
   HeaderTitle,
-} from './shared-card-headers.style'
+} from './shared_card_headers.style'
 
 interface Props {
   title: string
