@@ -6,6 +6,8 @@
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_ANDROID)
+#include "base/feature_list.h"
+#include "brave/components/brave_sync/features.h"
 #include "components/password_manager/core/browser/affiliation/affiliated_match_helper.h"
 #include "components/password_manager/core/browser/password_store/login_database.h"
 #include "components/password_manager/core/browser/password_store/password_store_built_in_backend.h"
@@ -28,7 +30,15 @@ CreatePasswordStoreBackend(
   std::unique_ptr<password_manager::LoginDatabase> login_db(
       password_manager::CreateLoginDatabase(is_account_store,
                                             login_db_directory, prefs));
-  auto behavior = is_account_store
+  // Under kBraveAndroidSyncPasswordsInProfileStore the profile store is the
+  // synced one and the account store is drained into it by the startup
+  // migrator, so account-store credentials have to survive leaving the sync
+  // chain.
+  const bool wipe_account_store_upon_sync_disabled =
+      is_account_store &&
+      !base::FeatureList::IsEnabled(
+          brave_sync::features::kBraveAndroidSyncPasswordsInProfileStore);
+  auto behavior = wipe_account_store_upon_sync_disabled
                       ? syncer::WipeModelUponSyncDisabledBehavior::kAlways
                       : syncer::WipeModelUponSyncDisabledBehavior::kNever;
   CHECK(affiliation_service);

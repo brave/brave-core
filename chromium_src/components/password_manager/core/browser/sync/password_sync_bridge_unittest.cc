@@ -14,16 +14,17 @@
 namespace password_manager {
 namespace {
 
-// With kBraveAndroidSyncPasswordsInProfileStore on, leaving the sync chain must
-// keep the account-store credentials, because the startup migrator is what
-// drains them into the profile store. Only the sync metadata may be dropped.
-// Reaching the kNever branch with an account store also exercises the relaxed
-// CHECK(!IsAccountStore()) there.
-TEST_F(PasswordSyncBridgeAccountStoreTest,
-       BraveKeepsAccountCredentialsOnSyncDisable) {
+// With kBraveAndroidSyncPasswordsInProfileStore on, the backend factory builds
+// the account store with kNever, because the startup migrator is what drains it
+// into the profile store. Leaving the sync chain must then keep the credentials
+// and only drop the sync metadata. This combination also exercises the relaxed
+// CHECK(!IsAccountStore()) on the kNever branch.
+TEST_F(PasswordSyncBridgeTest, BraveKeepsAccountCredentialsOnSyncDisable) {
   base::test::ScopedFeatureList features;
   features.InitAndEnableFeature(
       brave_sync::features::kBraveAndroidSyncPasswordsInProfileStore);
+  ON_CALL(*mock_password_store_sync(), IsAccountStore())
+      .WillByDefault(Return(true));
   fake_db()->AddLoginWithPrimaryKey(MakeStoredCredential(kSignonRealm1));
 
   EXPECT_CALL(*mock_sync_metadata_store_sync(),
@@ -36,13 +37,11 @@ TEST_F(PasswordSyncBridgeAccountStoreTest,
   bridge()->ApplyDisableSyncChanges(bridge()->CreateMetadataChangeList());
 }
 
-// Without the flag the account store keeps the upstream behavior: data and
-// metadata are both wiped and the removals are reported to the store.
+// With the flag off the factory keeps picking kAlways for the account store,
+// which must still wipe both data and metadata and report the removals. The
+// flag is irrelevant to this path, so it is left at its default.
 TEST_F(PasswordSyncBridgeAccountStoreTest,
-       BraveWipesAccountCredentialsOnSyncDisableWithoutFlag) {
-  base::test::ScopedFeatureList features;
-  features.InitAndDisableFeature(
-      brave_sync::features::kBraveAndroidSyncPasswordsInProfileStore);
+       BraveWipesAccountCredentialsOnSyncDisable) {
   fake_db()->AddLoginWithPrimaryKey(MakeStoredCredential(kSignonRealm1));
 
   EXPECT_CALL(*mock_sync_metadata_store_sync(),
