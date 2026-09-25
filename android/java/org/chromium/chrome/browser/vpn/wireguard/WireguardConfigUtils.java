@@ -27,13 +27,14 @@ public class WireguardConfigUtils {
         if (!file.createNewFile()) {
             throw new IOException("Configuration file already exists");
         }
-        FileOutputStream fileOutputStream = new FileOutputStream(file, false);
         Config config =
                 new Config.Builder()
                         .setInterface(getInterface(address, clientPrivateKey))
                         .addPeers(getPeers(host, serverPublicKey, true))
                         .build();
-        fileOutputStream.write(config.toWgQuickString().getBytes(StandardCharsets.UTF_8));
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file, false)) {
+            fileOutputStream.write(config.toWgQuickString().getBytes(StandardCharsets.UTF_8));
+        }
         return config;
     }
 
@@ -43,12 +44,13 @@ public class WireguardConfigUtils {
         if (!file.createNewFile()) {
             throw new IOException("Configuration file already exists");
         }
-        FileOutputStream fileOutputStream = new FileOutputStream(file, false);
         Config config = new Config.Builder()
                                 .setInterface(getInterface(existingConfig.getInterface()))
                                 .addPeers(existingConfig.getPeers())
                                 .build();
-        fileOutputStream.write(config.toWgQuickString().getBytes(StandardCharsets.UTF_8));
+        try (FileOutputStream fileOutputStream = new FileOutputStream(file, false)) {
+            fileOutputStream.write(config.toWgQuickString().getBytes(StandardCharsets.UTF_8));
+        }
         return config;
     }
 
@@ -60,8 +62,9 @@ public class WireguardConfigUtils {
     }
 
     public static Config loadConfig(Context context) throws Exception {
-        FileInputStream fileInputStream = new FileInputStream(fileForConfig(context));
-        return Config.parse(fileInputStream);
+        try (FileInputStream fileInputStream = new FileInputStream(fileForConfig(context))) {
+            return Config.parse(fileInputStream);
+        }
     }
 
     public static boolean isConfigExist(Context context) {
