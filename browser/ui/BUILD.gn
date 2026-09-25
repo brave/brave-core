@@ -118,6 +118,7 @@ source_set("ui") {
       "//chrome/browser/ui/views/extensions:extensions_menu_button",
       "//chrome/browser/ui/views/frame:browser_frame_view",
       "//chrome/browser/ui/views/frame:opaque_browser_frame_view_layout",
+      "//chrome/browser/ui/views/frame:top_container_view",
       "//chrome/browser/ui/views/tabs/hovercard",
     ]
   }
@@ -227,6 +228,7 @@ source_set("ui") {
         "//brave/browser/ui/webui/brave_wallet/wallet_panel",
         "//chrome/browser/picture_in_picture",
         "//chrome/browser/ui:browser_window_header",
+        "//chrome/browser/ui/views/frame:top_container_view",
       ]
 
       if (enable_snap) {
