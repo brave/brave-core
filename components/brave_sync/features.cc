@@ -10,8 +10,7 @@
 namespace brave_sync::features {
 
 BASE_FEATURE(kBraveSync, base::FEATURE_ENABLED_BY_DEFAULT);
-BASE_FEATURE(kBraveSyncDefaultPasswords,
-             base::FEATURE_ENABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveSyncDefaultPasswords, base::FEATURE_ENABLED_BY_DEFAULT);
 BASE_FEATURE(kBraveAndroidSyncPasswordsInProfileStore,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
