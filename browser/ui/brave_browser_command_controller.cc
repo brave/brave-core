@@ -901,7 +901,8 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       }
 
       brave::OpenUrlInContainer(base::to_address(browser_),
-                                browser_->GetNewTabURL(), containers[index],
+                                chrome::GetNewTabURL(browser_),
+                                containers[index],
                                 /*is_link=*/false);
 
       break;
