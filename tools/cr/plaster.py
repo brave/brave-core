@@ -4665,7 +4665,8 @@ class RegexMacroEngine:
         rendered with `inputs` via `str.format` before being handed to
         `re.subn`, so the macro's own backreferences (`\\1`) reach `re.subn`
         untouched. `re_pattern` gets each input escaped first though to avoid
-        confusion.
+        confusion, and `replace` gets each input's backslashes escaped, so an
+        input is inserted verbatim rather than read as a regex escape.
         """
         spec = self._rewriters.regex_macro(op_id)
         declared = frozenset(entry['name'] for entry in spec['inputs'])
@@ -4682,7 +4683,10 @@ class RegexMacroEngine:
             pattern = re_pattern.format(**escaped_inputs)
         else:
             pattern = re.escape(spec['pattern'].format(**inputs))
-        replace = spec['replace'].format(**inputs)
+        replace = spec['replace'].format(**{
+            key: value.replace('\\', '\\\\')
+            for key, value in inputs.items()
+        })
         flags = _parse_re_flags(spec.get('re_flags', []), op_id)
         self._source, matches = re.subn(pattern,
                                         replace,

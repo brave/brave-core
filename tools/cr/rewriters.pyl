@@ -89,6 +89,8 @@
 #                someone other than its author: { name, description }, where
 #                `name` is threaded into `pattern`/`re_pattern`/`replace` via
 #                `str.format` and `description` explains what to pass and why.
+#                Input values are inserted verbatim: they are escaped in
+#                `re_pattern` and their backslashes are escaped in `replace`.
 #       One of either `pattern` (escaped for you) or `re_pattern`, plus
 #       `replace` and optional `re_flags` -- exactly the fields a
 #       substitution's own `regex:` block takes, applied as one `re.subn`. A
@@ -1251,6 +1253,157 @@ substitutions:
             ],
             "re_pattern": "([ \\t]*)BASE_FEATURE\\((\\s*{feature_name}\\s*,)([^;]*,)?(\\s*)[^;]*?(\\);)",
             "replace": "\\1BASE_OVERRIDDEN_FEATURE(\\2\\3\\4{value}\\5",
+        },
+
+        # `line` must be the whole line, ignoring its leading and trailing
+        # whitespace, so a longer line that merely contains it never matches.
+        # The line's own `\n` is consumed and re-emitted before `code`, which
+        # also covers a last line with no trailing newline.
+        "all.add_after_line": {
+            "description": """\
+Insert code after a given line.
+
+`line` is matched against the whole line, ignoring its indentation and any
+trailing whitespace. `code` is inserted as is, so it carries its own
+indentation.
+
+```yaml
+substitutions:
+  - description: Declare the Brave hook at the top of the namespace.
+    add_after_line:
+      line: 'namespace content {'
+      code: |-
+
+        void BraveOnNavigationStarted();
+```
+
+```diff
+ namespace content {
++
++void BraveOnNavigationStarted();
+
+ class NavigationHandle;
+```
+""",
+            "inputs": [
+                {
+                    "name": "line",
+                    "description": "The line to insert after, without its indentation.",
+                },
+                {
+                    "name": "code",
+                    "description": "The line(s) to insert.",
+                },
+            ],
+            "re_pattern": "^([ \\t]*{line}[ \\t]*)(?:\\n|\\Z)",
+            "replace": "\\1\\n{code}\\n",
+            "re_flags": ["MULTILINE"],
+        },
+
+        "all.add_before_line": {
+            "description": """\
+Insert code before a given line.
+
+`line` is matched against the whole line, ignoring its indentation and any
+trailing whitespace. `code` is inserted as is, so it carries its own
+indentation.
+
+```yaml
+substitutions:
+  - description: Let Brave observe the tab first.
+    add_before_line:
+      line: 'tab_strip_model_->AddObserver(this);'
+      code: |-
+        brave::AttachTabObserver(tab_strip_model_);
+```
+
+```diff
++  brave::AttachTabObserver(tab_strip_model_);
+   tab_strip_model_->AddObserver(this);
+```
+""",
+            "inputs": [
+                {
+                    "name": "line",
+                    "description": "The line to insert before, without its indentation.",
+                },
+                {
+                    "name": "code",
+                    "description": "The line(s) to insert.",
+                },
+            ],
+            "re_pattern": "^([ \\t]*{line}[ \\t]*)$",
+            "replace": "{code}\\n\\1",
+            "re_flags": ["MULTILINE"],
+        },
+
+        # The notice is the file's first paragraph (its leading run of
+        # non-blank lines), which must contain `Copyright`. That spans a
+        # shebang or `<?xml ?>` line before it, and a block comment's closing
+        # line after it, whatever the comment syntax.
+        "all.add_after_copyright_notice": {
+            "description": """\
+Insert code after the copyright notice at the top of a file.
+
+The notice is the file's first paragraph, which must contain `Copyright`.
+`code` is separated from it by a blank line.
+
+```yaml
+substitutions:
+  - description: Only build these targets in the default toolchain.
+    add_after_copyright_notice:
+      code: |-
+        assert(current_toolchain == default_toolchain)
+```
+
+```diff
+ # Copyright 2014 The Chromium Authors
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+
++assert(current_toolchain == default_toolchain)
++
+ import("//base/allocator/allocator.gni")
+```
+""",
+            "inputs": [
+                {
+                    "name": "code",
+                    "description": "The line(s) to insert.",
+                },
+            ],
+            "re_pattern": "\\A((?=(?:[ \\t]*\\S.*\\n)*?.*Copyright)(?:[ \\t]*\\S.*\\n)+)",
+            "replace": "\\1\\n{code}\\n",
+        },
+
+        # Matches the file's final `\n`, or the end of a file lacking one, so
+        # `code` always starts on a line of its own and is inserted just
+        # once.
+        "all.add_at_end_of_the_file": {
+            "description": """\
+Append code at the end of a file.
+
+```yaml
+substitutions:
+  - description: Load the Brave chromium_src override.
+    add_at_end_of_the_file:
+      code: |-
+        from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+```
+
+```diff
+       raise Exception('Unknown build')
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+```
+""",
+            "inputs": [
+                {
+                    "name": "code",
+                    "description": "The line(s) to append.",
+                },
+            ],
+            "re_pattern": "(?:\\n|(?<!\\n))\\Z",
+            "replace": "\\n{code}\\n",
         },
     },
     "gn_edit": {

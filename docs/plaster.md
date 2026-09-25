@@ -135,6 +135,10 @@ introduce more rewriters. These are the ones we have supported for now.
 | Rewriter                                  | Namespace | Kind  | Description                                           |
 | ----------------------------------------- | --------- | ----- | ----------------------------------------------------- |
 | `regex`                                   | `all`     | text  | A Python `re.subn` substitution (the default).        |
+| `add_after_line`                          | `all`     | macro | Inserts code after a given line.                      |
+| `add_before_line`                         | `all`     | macro | Inserts code before a given line.                     |
+| `add_after_copyright_notice`              | `all`     | macro | Inserts code after the copyright notice.              |
+| `add_at_end_of_the_file`                  | `all`     | macro | Appends code at the end of a file.                    |
 | `make_virtual`                            | `cxx`     | AST   | Prepends `virtual ` to a C++ method declaration.      |
 | `add_friend`                              | `cxx`     | AST   | Adds a `friend` declaration to a private section.     |
 | `drop_final`                              | `cxx`     | AST   | Removes `final` from a C++ class declaration.         |
