@@ -881,6 +881,12 @@ if (enable_local_ai) {
     "//brave/components/history_embeddings:open_tab_passages",
   ]
 }
+if (is_android && !is_desktop_android && enable_extensions_core) {
+  brave_chrome_browser_ui_deps += [
+    "//brave/browser/extensions/android:side_panel_stub",
+    "//chrome/browser/ui/android/extensions/windowing/internal",
+  ]
+}
 if (enable_brave_wallet) {
   brave_chrome_browser_ui_deps += [
     "//brave/browser/brave_wallet",
