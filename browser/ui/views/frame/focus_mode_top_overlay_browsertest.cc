@@ -52,6 +52,10 @@
 #include "ui/views/window/non_client_view.h"
 #include "url/gurl.h"
 
+#if BUILDFLAG(IS_MAC)
+#include "ui/base/test/scoped_fake_nswindow_fullscreen.h"
+#endif
+
 class FocusModeTopOverlayBrowserTest : public InProcessBrowserTest {
  protected:
   FocusModeTopOverlayBrowserTest()
@@ -395,6 +399,9 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
 #if BUILDFLAG(IS_MAC)
 IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
                        ExitFullscreenWithSuppressedOverlay) {
+  // Real macOS fullscreen transitions are unreliable on bots.
+  ui::test::ScopedFakeNSWindowFullscreen fake_fullscreen;
+
   auto* overlay = browser_view()->focus_mode_top_overlay();
   ASSERT_TRUE(overlay);
   auto* top_container = browser_view()->top_container();
