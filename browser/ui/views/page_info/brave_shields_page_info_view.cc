@@ -17,7 +17,6 @@
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
@@ -192,7 +191,7 @@ BraveShieldsPageInfoView::CreateContentsWrapper() {
 }
 
 BraveShieldsUIContentsCache& BraveShieldsPageInfoView::GetContentsCache() {
-  return CHECK_DEREF(browser_->GetFeatures().brave_shields_ui_contents_cache());
+  return CHECK_DEREF(BraveShieldsUIContentsCache::From(browser_));
 }
 
 BEGIN_METADATA(BraveShieldsPageInfoView)
