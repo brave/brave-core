@@ -113,7 +113,8 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             @NonNull GURL url,
             long inputStart,
             boolean openInNewTab,
-            boolean openInNewWindow) {
+            boolean openInNewWindow,
+            boolean openInBackground) {
         Context context =
                 (Context)
                         BraveReflectionUtil.getField(AutocompleteMediator.class, "mContext", this);
@@ -163,7 +164,13 @@ class BraveAutocompleteMediator extends AutocompleteMediator
         }
 
         super.loadUrlForOmniboxMatch(
-                matchIndex, suggestion, url, inputStart, openInNewTab, openInNewWindow);
+                matchIndex,
+                suggestion,
+                url,
+                inputStart,
+                openInNewTab,
+                openInNewWindow,
+                openInBackground);
     }
 
     @Override
