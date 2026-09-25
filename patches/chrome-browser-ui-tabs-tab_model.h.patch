@@ -1,0 +1,19 @@
+diff --git a/chrome/browser/ui/tabs/tab_model.h b/chrome/browser/ui/tabs/tab_model.h
+index e7b5824cb2284ecb4adb2a9f8325c580a221eabf..6dc5156b3f85975df3f9cb8dedf386304a6cf7ff 100644
+--- a/chrome/browser/ui/tabs/tab_model.h
++++ b/chrome/browser/ui/tabs/tab_model.h
+@@ -198,6 +198,14 @@ class TabModel final : public TabInterface,
+     base::AutoReset<bool> scoped_prevent_initialization_;
+   };
+ 
++  void set_opener_was_set_for_empty_new_tab() { opener_was_set_for_empty_new_tab_ = true; }
++  bool opener_was_set_for_empty_new_tab() const {
++     return opener_was_set_for_empty_new_tab_;
++  }
++
++ protected:
++  bool opener_was_set_for_empty_new_tab_ = false;
++
+  private:
+   // content::WebContentsObserver:
+   void OnVisibilityChanged(content::Visibility visibility) override;

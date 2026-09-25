@@ -86,7 +86,8 @@ std::optional<tabs::TabData> MaybeGetSharedPinnedTabData(
 }
 
 // Overrides favicon theming for Brave WebUIs and surfaces unloaded-tab status.
-void ApplyBraveTabDataOverrides(tabs::TabInterface* tab, tabs::TabData& data) {
+tabs::TabData& MaybeApplyBraveTabDataOverrides(tabs::TabInterface* tab,
+                                               tabs::TabData& data) {
   auto* const bwi = tab->GetBrowserWindowInterface();
   content::WebContents* const contents = tab->GetContents();
   const GURL& url = contents->GetVisibleURL();
@@ -102,21 +103,10 @@ void ApplyBraveTabDataOverrides(tabs::TabInterface* tab, tabs::TabData& data) {
       data.should_themify_favicon = false;
     }
   }
+
+  return data;
 }
 
 }  // namespace
 
-// Can't override TabData::FromTabInterface as it's defined and also called in
-// this same file.
-#define BRAVE_TAB_DATA_FROM_TAB_INTERFACE_SHARED_PINNED_EARLY_RETURN \
-  if (auto tab_data = MaybeGetSharedPinnedTabData(tab_interface)) {  \
-    return *tab_data;                                                \
-  }
-
-#define BRAVE_TAB_DATA_FROM_TAB_INTERFACE_APPLY_OVERRIDES \
-  ApplyBraveTabDataOverrides(tab_interface, tab_data);
-
 #include <chrome/browser/ui/tabs/tab_data.cc>
-
-#undef BRAVE_TAB_DATA_FROM_TAB_INTERFACE_APPLY_OVERRIDES
-#undef BRAVE_TAB_DATA_FROM_TAB_INTERFACE_SHARED_PINNED_EARLY_RETURN

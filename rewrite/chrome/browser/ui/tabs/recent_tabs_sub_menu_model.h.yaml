@@ -1,0 +1,35 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Let BraveRecentTabsSubMenuModel reach RecentTabsSubMenuModel's private
+      members.
+
+    add_friend:
+      class_name: RecentTabsSubMenuModel
+      friend_type: class BraveRecentTabsSubMenuModel
+
+  - description: |-
+      Add stub_tab_ member to RecentTabsSubMenuModel as member
+    add_to_protected:
+      class_name: RecentTabsSubMenuModel
+      code: std::unique_ptr<sessions::SessionTab> stub_tab_;
+
+  - description: |-
+      Add MaybeAppendOverflowStubTab()  to RecentTabsSubMenuModel as private
+      member
+
+      As the new method depend on other private member including private methods
+      of RecentTabsSubMenuModel, it should be added as a private member itself.
+    regex:
+      re_pattern: |-
+        (private:)
+      replace: |-
+        \1
+          void MaybeAppendOverflowStubTab(
+              std::vector<const sessions::SessionTab*>& tabs_in_session,
+              size_t max_tabs_to_show,
+              ui::SimpleMenuModel* device_menu_model);

@@ -1,0 +1,84 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add RecentTabsSubMenuModelTest::VerifyModel overloads.
+
+      These adjust the base::VerifyModel() expectations for Brave's extra
+      "Clear browsing data" menu item and disabled History Clusters entry.
+    add_to_public:
+      class_name: RecentTabsSubMenuModelTest
+      code: |-
+        void VerifyModel(const RecentTabsSubMenuModel& model, base::span<const ModelData> data);
+        void VerifyModel(const ui::MenuModel* model, base::span<const ModelData> data);
+
+  - description: |-
+      Disables tests that's also included in the brave_browser_tests
+
+      The disabled tests refer to g_brave_browser_process which is not 
+      initialized in unit tests, is null and so they are crashing. Not related
+      to change in RecentTabsSubMenuModel for additional `More...` menu item
+    count: 2
+    regex:
+      re_pattern: (RecentlyClosed(?:Tabs|Groups)FromCurrentSession)
+      replace: DISABLED_\1
+
+  - description: |-
+      Disable MaxSessionsAndRecency tests that references items in menu by index
+
+      The index doesn't match our menu since we insert an additional "Clear
+      browsing data" item ahead of the entries of interest to the test.
+    regex:
+      re_pattern: (MaxSessionsAndRecency)
+      replace: DISABLED_\1
+
+  - description: |-
+      Disables the MaxTabsPerSessionAndRecency test.
+
+      Our "More..." item doesn't match the test's expectation of the tab name.
+    regex:
+      re_pattern: (MaxTabsPerSessionAndRecency)
+      replace: DISABLED_\1
+
+  - description: |-
+      Disables the RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh test.
+
+      This test fails because ExtensionWebContentsObserver::GetForWebContents
+      returns nullptr and makes the test crash.
+    regex:
+      re_pattern: (RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh)
+      replace: DISABLED_\1
+
+  - description: |-
+      Disables tests that reference the recently closed submenu by explicit index.
+
+      The index doesn't match Brave's menu since we disable History Clusters and
+      every item shifts down by one (submenu is at index 3 for us).
+    count: 6
+    regex:
+      re_pattern: (RecentlyClosedSplitsFromCurrentSession|RecentlyClosedWindowWithSplit|RecentlyClosedWindowWithGroupsAndSplits|RecentlyClosedWindowWithSplitAndRegularTabs|RecentlyClosedGroupWithSplit|SavingBrowserHistoryDisabledPolicyChangeMidSession)
+      replace: DISABLED_\1
+
+  - description: |-
+      Disables the OtherDevicesAvailability test.
+
+      This test fails because Brave Sync uses its own keypair-based auth instead
+      of Google identity, so it never reports signed-in from
+      signin::MakeAccountAvailable() and SyncUserSettingsImpl::SetSelectedType()
+      then hits NOTREACHED for kNotSignedIn.
+    regex:
+      re_pattern: (OtherDevicesAvailability)
+      replace: DISABLED_\1
+
+  - description: |-
+      Disables the LogMenuMetricsForShowGroupedHistory test.
+
+      This test fails because upstream code won't execute
+      IDC_SHOW_HISTORY_CLUSTERS_SIDE_PANEL command when history clusters aren't
+      enabled but the test doesn't check for it.
+    regex:
+      re_pattern: (LogMenuMetricsForShowGroupedHistory)
+      replace: DISABLED_\1

@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Handle TREE_NODE type in TabModel::UpdateProperties().
+
+      A tree-tab node behaves like an unpinned tab for pinned/group/split
+      state purposes, so it falls through with UNPINNED.
+    regex:
+      re_pattern: |-
+        (case TabCollection::Type::UNPINNED:)
+      replace: |-
+        \1
+              case TabCollection::Type::TREE_NODE:
+
+  - description: |
+      Use BraveTabFeatures instead of TabFeatures.
+
+      BraveTabFeatures subclasses TabFeatures to add Brave-specific per-tab
+      features.
+    regex:
+      pattern: |-
+        tab_features_ = std::make_unique<TabFeatures>();
+      replace: |-
+        tab_features_ = std::make_unique<BraveTabFeatures>();

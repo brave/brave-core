@@ -1,0 +1,66 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Make the destructor virtual for subclassing.
+
+      BraveTabStyle (chromium_src/chrome/browser/ui/tabs/tab_style.cc)
+      subclasses TabStyle.
+    make_virtual:
+      class_name: TabStyle
+      method_name: '~TabStyle'
+
+  - description: Make GetStandardWidth virtual for BraveTabStyle to override.
+    make_virtual:
+      class_name: TabStyle
+      method_name: GetStandardWidth
+
+  - description: Make GetPinnedWidth virtual for BraveTabStyle to override.
+    make_virtual:
+      class_name: TabStyle
+      method_name: GetPinnedWidth
+
+  - description:
+      Make GetMinimumActiveWidth virtual for BraveTabStyle to override.
+    make_virtual:
+      class_name: TabStyle
+      method_name: GetMinimumActiveWidth
+
+  - description: Make GetTabOverlap virtual for BraveTabStyle to override.
+    make_virtual:
+      class_name: TabStyle
+      method_name: GetTabOverlap
+
+  - description: Make GetSeparatorSize virtual for BraveTabStyle to override.
+    make_virtual:
+      class_name: TabStyle
+      method_name: GetSeparatorSize
+
+  - description: Make GetSeparatorMargins virtual for BraveTabStyle to override.
+    make_virtual:
+      class_name: TabStyle
+      method_name: GetSeparatorMargins
+
+  - description:
+      Make GetSeparatorCornerRadius virtual for BraveTabStyle to override.
+    make_virtual:
+      class_name: TabStyle
+      method_name: GetSeparatorCornerRadius
+
+  - description: Make GetTopCornerRadius virtual for BraveTabStyle to override.
+    make_virtual:
+      class_name: TabStyle
+      method_name: GetTopCornerRadius
+
+  - description:
+      Make GetBottomCornerRadius virtual for BraveTabStyle to override.
+    make_virtual:
+      class_name: TabStyle
+      method_name: GetBottomCornerRadius
+
+  - description: Make GetContentsInsets virtual for BraveTabStyle to override.
+    make_virtual:
+      class_name: TabStyle
+      method_name: GetContentsInsets

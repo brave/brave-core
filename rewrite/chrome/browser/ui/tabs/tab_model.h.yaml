@@ -1,0 +1,20 @@
+substitutions:
+  - description: |-
+      Add accessors for bool opener_was_set_for_empty_new_tab
+
+    add_to_public:
+      class_name: TabModel
+      code: |-
+        void set_opener_was_set_for_empty_new_tab() { opener_was_set_for_empty_new_tab_ = true; }
+        bool opener_was_set_for_empty_new_tab() const {
+           return opener_was_set_for_empty_new_tab_;
+        }
+
+  - description: |
+      Add bool opener_was_set_for_empty_new_tab_ member.
+
+      Used for tree tabs to track whether the opener was set for an empty
+      new tab in TabStripModel::AddTab().
+    add_to_protected:
+      class_name: TabModel
+      code: bool opener_was_set_for_empty_new_tab_ = false;

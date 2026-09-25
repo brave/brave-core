@@ -1,12 +1,131 @@
 diff --git a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc
-index cd1ff234764c04275a35f522cd952b3b875ff3f6..61249d2691232af2d513749339c8365360e3266d 100644
+index cd1ff234764c04275a35f522cd952b3b875ff3f6..37ec075e825f17db9d4073cbacbaed49cea2c8cb 100644
 --- a/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc
 +++ b/chrome/browser/ui/tabs/recent_tabs_sub_menu_model_browsertest.cc
-@@ -202,6 +202,7 @@ class RecentTabsSubMenuModelTest : public InProcessBrowserTest {
+@@ -202,6 +202,9 @@ class RecentTabsSubMenuModelTest : public InProcessBrowserTest {
      return new_browser;
    }
  
-+  BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
++  void VerifyModel(const RecentTabsSubMenuModel& model, base::span<const ModelData> data);
++  void VerifyModel(const ui::MenuModel* model, base::span<const ModelData> data);
++
   private:
    std::unique_ptr<syncer::DataTypeProcessor> sync_processor_;
  };
+@@ -246,7 +249,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+ }
+ 
+ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+-                       LogMenuMetricsForShowGroupedHistory) {
++                       DISABLED_LogMenuMetricsForShowGroupedHistory) {
+   Init();
+   FakeIconDelegate fake_delegate;
+   AppMenuIconController app_menu_icon_controller(browser()->GetProfile(),
+@@ -331,7 +334,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest, NoTabs) {
+ 
+ // Test enabled "Recently closed" header with no foreign tabs.
+ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+-                       RecentlyClosedTabsFromCurrentSession) {
++                       DISABLED_RecentlyClosedTabsFromCurrentSession) {
+   Init();
+   DisableSync();
+ 
+@@ -370,7 +373,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+ 
+ // Test recently closed groups with no foreign tabs.
+ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+-                       RecentlyClosedGroupsFromCurrentSession) {
++                       DISABLED_RecentlyClosedGroupsFromCurrentSession) {
+   Init();
+   ASSERT_TRUE(browser()->tab_strip_model()->SupportsTabGroups());
+ 
+@@ -427,7 +430,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+ }
+ 
+ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+-                       RecentlyClosedSplitsFromCurrentSession) {
++                       DISABLED_RecentlyClosedSplitsFromCurrentSession) {
+   Init();
+   ASSERT_TRUE(browser()->tab_strip_model()->SupportsTabGroups());
+ 
+@@ -477,7 +480,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+ }
+ 
+ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+-                       RecentlyClosedWindowWithSplit) {
++                       DISABLED_RecentlyClosedWindowWithSplit) {
+   Init();
+   DisableSync();
+ 
+@@ -528,7 +531,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+ }
+ 
+ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+-                       RecentlyClosedWindowWithGroupsAndSplits) {
++                       DISABLED_RecentlyClosedWindowWithGroupsAndSplits) {
+   Init();
+   DisableSync();
+ 
+@@ -630,7 +633,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+ }
+ 
+ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+-                       RecentlyClosedWindowWithSplitAndRegularTabs) {
++                       DISABLED_RecentlyClosedWindowWithSplitAndRegularTabs) {
+   Init();
+   DisableSync();
+ 
+@@ -687,7 +690,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+ }
+ 
+ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+-                       RecentlyClosedGroupWithSplit) {
++                       DISABLED_RecentlyClosedGroupWithSplit) {
+   Init();
+   ASSERT_TRUE(browser()->tab_strip_model()->SupportsTabGroups());
+ 
+@@ -745,7 +748,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+ }
+ 
+ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+-                       RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh) {
++                       DISABLED_RecentlyClosedTabsAndWindowsFromLastSessionWithRefresh) {
+   Init();
+   DisableSync();
+ 
+@@ -933,7 +936,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest, OtherDevicesDynamicUpdate) {
+   VerifyModel(model, kDataAfterUpdate);
+ }
+ 
+-IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest, MaxSessionsAndRecency) {
++IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest, DISABLED_MaxSessionsAndRecency) {
+   Init();
+   EnableSync();
+ 
+@@ -972,7 +975,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest, MaxSessionsAndRecency) {
+ }
+ 
+ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+-                       MaxTabsPerSessionAndRecency) {
++                       DISABLED_MaxTabsPerSessionAndRecency) {
+   Init();
+   EnableSync();
+ 
+@@ -1016,7 +1019,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+ }
+ 
+ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+-                       SavingBrowserHistoryDisabledPolicyChangeMidSession) {
++                       DISABLED_SavingBrowserHistoryDisabledPolicyChangeMidSession) {
+   Init();
+   DisableSync();
+   // Ensure the policy is explicitly false to start with.
+@@ -1099,7 +1102,7 @@ IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest,
+ }
+ 
+ #if !BUILDFLAG(IS_CHROMEOS)
+-IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest, OtherDevicesAvailability) {
++IN_PROC_BROWSER_TEST_F(RecentTabsSubMenuModelTest, DISABLED_OtherDevicesAvailability) {
+   if (!syncer::IsReplaceSyncPromosWithSignInPromosEnabled()) {
+     GTEST_SKIP();
+   }

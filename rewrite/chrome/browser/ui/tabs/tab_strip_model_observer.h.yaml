@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add Brave-specific callbacks to TabStripModelObserver.
+
+      * TabCustomTitleChanged(): BraveBrowser stores the custom title in the
+        session service so it can be restored even after browser restarts.
+      * OnTreeTabChanged(): Notifies observers of tree-tab structure changes.
+    add_to_public:
+      class_name: TabStripModelObserver
+      code: |-
+        virtual void TabCustomTitleChanged(content::WebContents* contents, const std::optional<std::string>& custom_title) {}
+        virtual void OnTreeTabChanged(const TreeTabChange& change) {}
