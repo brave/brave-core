@@ -24,14 +24,14 @@ window.__firefox__.includeOnce("MediaBackgrounding", function($) {
     })
   });
 
-  Object.defineProperty(HTMLVideoElement.prototype, 'userHitPause', {
+  Object.defineProperty(HTMLMediaElement.prototype, 'userHitPause', {
     enumerable: false,
     configurable: false,
     writable: true,
     value: false
   });
 
-  Object.defineProperty(HTMLVideoElement.prototype, 'pauseListener', {
+  Object.defineProperty(HTMLMediaElement.prototype, 'pauseListener', {
     enumerable: false,
     configurable: false,
     writable: true,
@@ -45,14 +45,14 @@ window.__firefox__.includeOnce("MediaBackgrounding", function($) {
     value: false
   });
 
-  var pauseControl = HTMLVideoElement.prototype.pause;
-  HTMLVideoElement.prototype.pause = $(function() {
+  var pauseControl = HTMLMediaElement.prototype.pause;
+  HTMLMediaElement.prototype.pause = $(function() {
     this.userHitPause = true;
     return pauseControl.call(this);
   });
 
-  var playControl = HTMLVideoElement.prototype.play;
-  HTMLVideoElement.prototype.play = $(function() {
+  var playControl = HTMLMediaElement.prototype.play;
+  HTMLMediaElement.prototype.play = $(function() {
     this.userHitPause = false;
     return playControl.call(this);
   });
@@ -89,7 +89,7 @@ window.__firefox__.includeOnce("MediaBackgrounding", function($) {
       }), false);
     }
 
-    if (!element.presentationModeListener) {
+    if (element instanceof HTMLVideoElement && !element.presentationModeListener) {
         element.presentationModeListener = true;
 
         element.addEventListener('webkitpresentationmodechanged', $(function(e) {
@@ -98,13 +98,23 @@ window.__firefox__.includeOnce("MediaBackgrounding", function($) {
     }
   });
 
+  let addListenersForNode = $(function(node) {
+    if (node instanceof HTMLMediaElement) {
+      addListeners(node);
+    }
+
+    if (node.querySelectorAll) {
+      node.querySelectorAll("video, audio").forEach(addListeners);
+    }
+  });
+
+  document.querySelectorAll("video, audio").forEach(addListeners);
+
   const queue = [];
   let onMutation = $(function() {
     for (const mutations of queue) {
       mutations.addedNodes.forEach(function (node) {
-        if (node.constructor.name == 'HTMLVideoElement') {
-          addListeners(node);
-        }
+        addListenersForNode(node);
       });
     }
     queue.length = 0;
