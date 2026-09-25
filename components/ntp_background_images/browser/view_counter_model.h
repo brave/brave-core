@@ -38,7 +38,7 @@ class ViewCounterModel {
   }
   void set_show_wallpaper(bool show) { show_wallpaper_ = show; }
 
-  bool ShouldShowSponsoredImages() const;
+  bool ShouldShowNewTabTakeover() const;
   void RegisterPageView();
   void MaybeResetNewTabTakeoverCount();
   void Reset();

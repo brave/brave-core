@@ -36,7 +36,7 @@ class PrefService;
 namespace ntp_background_images {
 
 struct NTPBackgroundImagesData;
-struct NTPSponsoredImagesData;
+struct NTPSponsoredContentData;
 struct NTPSponsoredSitesData;
 
 class NTPBackgroundImagesService {
@@ -49,7 +49,8 @@ class NTPBackgroundImagesService {
 
     // Called when the sponsored content component is updated. This is
     // deprecated, use `OnSponsoredContentDidUpdate`.
-    virtual void OnSponsoredImagesDataDidUpdate(NTPSponsoredImagesData* data) {}
+    virtual void DeprecatedOnSponsoredContentDidUpdate(
+        NTPSponsoredContentData* data) {}
 
     // Called when the sponsored content component is updated.
     virtual void OnSponsoredContentDidUpdate(const base::DictValue& data) {}
@@ -82,8 +83,8 @@ class NTPBackgroundImagesService {
   bool HasObserver(Observer* observer);
 
   NTPBackgroundImagesData* GetBackgroundImagesData() const;
-  NTPSponsoredImagesData* GetSponsoredImagesData(
-      bool supports_rich_media) const;
+  NTPSponsoredContentData* GetNewTabTakeover(
+      bool supports_dynamic_new_tab_takeover) const;
   NTPSponsoredSitesData* GetSponsoredSitesData() const;
   // Returns the absolute file path for a sponsored site image request path
   // (e.g. "amazon.png"), or nullopt if unavailable or invalid.
@@ -157,8 +158,8 @@ class NTPBackgroundImagesService {
   void OnVariationsCountryPrefChanged();
 
   void ScheduleNextSponsoredImagesComponentUpdate();
-  void CheckSponsoredImagesComponentUpdate(const std::string& component_id);
-  void ResetSponsoredImagesData();
+  void CheckSponsoredContentComponentUpdate(const std::string& component_id);
+  void ResetSponsoredContentData();
 
   // virtual for test.
   virtual void RegisterBackgroundImagesComponent();
@@ -185,10 +186,10 @@ class NTPBackgroundImagesService {
   base::WallClockTimer sponsored_images_update_check_timer_;
   base::RepeatingClosure sponsored_images_update_check_callback_;
   std::optional<std::string> sponsored_images_component_id_;
-  std::optional<base::FilePath> sponsored_images_installed_dir_;
-  std::unique_ptr<NTPSponsoredImagesData> sponsored_images_data_;
-  std::unique_ptr<NTPSponsoredImagesData>
-      sponsored_images_data_excluding_rich_media_;
+  std::optional<base::FilePath> sponsored_content_installed_dir_;
+  std::unique_ptr<NTPSponsoredContentData> sponsored_content_data_;
+  std::unique_ptr<NTPSponsoredContentData>
+      sponsored_content_data_excluding_dynamic_;
   std::unique_ptr<NTPSponsoredSitesData> sponsored_sites_data_;
 
   base::ObserverList<Observer>::Unchecked observers_;

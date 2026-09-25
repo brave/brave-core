@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
 
 #include <string_view>
 
@@ -170,34 +170,34 @@ void SetCreativeTargetUrls(base::DictValue& dict, std::string_view target_url) {
 
 }  // namespace
 
-TEST(NTPSponsoredImagesDataTest, EmptyJson) {
+TEST(NTPSponsoredContentDataTest, EmptyJson) {
   base::DictValue dict;
-  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
-  NTPSponsoredImagesData sponsored_images_data(dict, installed_dir);
-  EXPECT_FALSE(sponsored_images_data.IsValid());
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  EXPECT_FALSE(sponsored_content_data.IsValid());
 }
 
-TEST(NTPSponsoredImagesDataTest, EmptyCampaigns) {
+TEST(NTPSponsoredContentDataTest, EmptyCampaigns) {
   base::DictValue dict = base::test::ParseJsonDict(kTestEmptyCampaigns);
-  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
-  NTPSponsoredImagesData sponsored_images_data(dict, installed_dir);
-  EXPECT_FALSE(sponsored_images_data.IsValid());
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  EXPECT_FALSE(sponsored_content_data.IsValid());
 }
 
-TEST(NTPSponsoredImagesDataTest, ParseSponsoredImageCampaign) {
+TEST(NTPSponsoredContentDataTest, ParseSponsoredImageCampaign) {
   base::DictValue dict =
       base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
-  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
-  NTPSponsoredImagesData sponsored_images_data(dict, installed_dir);
-  EXPECT_TRUE(sponsored_images_data.IsValid());
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  EXPECT_TRUE(sponsored_content_data.IsValid());
 
   EXPECT_THAT(
-      sponsored_images_data.campaigns,
+      sponsored_content_data.campaigns,
       testing::ElementsAre(testing::FieldsAre(
           /*campaign_id=*/"65933e82-6b21-440b-9956-c0f675ca7435",
           /*creatives=*/
           testing::ElementsAre(testing::FieldsAre(
-              WallpaperType::kImage,
+              WallpaperType::kStaticNewTabTakeover,
               GURL("chrome://branded-wallpaper/"
                    "30244a36-561a-48f0-8d7a-780e9035c57a/background-1.jpg"),
               /*file_path=*/
@@ -218,36 +218,36 @@ TEST(NTPSponsoredImagesDataTest, ParseSponsoredImageCampaign) {
                   /*company_name=*/"Image NTT Creative"))))));
 }
 
-TEST(NTPSponsoredImagesDataTest,
+TEST(NTPSponsoredContentDataTest,
      GetCreativeByInstanceIdReturnsCreativeForKnownInstanceId) {
   base::DictValue dict =
       base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
-  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
-  NTPSponsoredImagesData sponsored_images_data(dict, installed_dir);
-  EXPECT_TRUE(sponsored_images_data.IsValid());
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  EXPECT_TRUE(sponsored_content_data.IsValid());
 
   const Creative* const creative =
-      sponsored_images_data.GetCreativeByInstanceId(kImageCreativeInstanceId);
+      sponsored_content_data.GetCreativeByInstanceId(kImageCreativeInstanceId);
   ASSERT_TRUE(creative);
   EXPECT_EQ(creative->creative_instance_id, kImageCreativeInstanceId);
 }
 
 // `DUMP_WILL_BE_NOTREACHED` aborts the process in non-official `DCHECK` builds.
 #if defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
-TEST(NTPSponsoredImagesDataTest,
+TEST(NTPSponsoredContentDataTest,
      GetCreativeByInstanceIdReturnsNullForUnknownInstanceId) {
   base::DictValue dict =
       base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
-  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_images_data"));
-  NTPSponsoredImagesData sponsored_images_data(dict, installed_dir);
-  EXPECT_TRUE(sponsored_images_data.IsValid());
+  base::FilePath installed_dir(FILE_PATH_LITERAL("ntp_sponsored_content_data"));
+  NTPSponsoredContentData sponsored_content_data(dict, installed_dir);
+  EXPECT_TRUE(sponsored_content_data.IsValid());
 
-  EXPECT_FALSE(sponsored_images_data.GetCreativeByInstanceId(
+  EXPECT_FALSE(sponsored_content_data.GetCreativeByInstanceId(
       "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"));
 }
 #endif  // defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
 
-TEST(NTPSponsoredImagesDataTest,
+TEST(NTPSponsoredContentDataTest,
      FilterCampaignsRemovesImageCreativeIfRelativeUrlReferencesParent) {
   base::DictValue dict = base::test::ParseJsonDict(
       kTestImageCampaignWithWallpaperRelativeUrlReferencingParent);
@@ -257,7 +257,7 @@ TEST(NTPSponsoredImagesDataTest,
 
 // `DUMP_WILL_BE_NOTREACHED` aborts the process in non-official `DCHECK` builds.
 #if defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
-TEST(NTPSponsoredImagesDataTest,
+TEST(NTPSponsoredContentDataTest,
      FilterCampaignsRemovesImageCreativeIfWallpaperFileIsMissing) {
   base::ScopedTempDir installed_dir;
   ASSERT_TRUE(installed_dir.CreateUniqueTempDir());
@@ -269,7 +269,7 @@ TEST(NTPSponsoredImagesDataTest,
 }
 #endif  // defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
 
-TEST(NTPSponsoredImagesDataTest,
+TEST(NTPSponsoredContentDataTest,
      FilterCampaignsKeepsImageCreativeIfCreativeFilesExist) {
   base::ScopedTempDir installed_dir;
   ASSERT_TRUE(installed_dir.CreateUniqueTempDir());
@@ -287,7 +287,7 @@ TEST(NTPSponsoredImagesDataTest,
   EXPECT_THAT(dict.FindList("campaigns"), testing::Pointee(testing::SizeIs(1)));
 }
 
-TEST(NTPSponsoredImagesDataTest,
+TEST(NTPSponsoredContentDataTest,
      FilterCampaignsRemovesRichMediaCreativeIfRelativeUrlReferencesParent) {
   base::DictValue dict = base::test::ParseJsonDict(
       kTestRichMediaCampaignWithWallpaperRelativeUrlReferencingParent);
@@ -297,7 +297,7 @@ TEST(NTPSponsoredImagesDataTest,
 
 // `DUMP_WILL_BE_NOTREACHED` aborts the process in non-official `DCHECK` builds.
 #if defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
-TEST(NTPSponsoredImagesDataTest,
+TEST(NTPSponsoredContentDataTest,
      FilterCampaignsRemovesRichMediaCreativeIfFileIsMissing) {
   base::ScopedTempDir installed_dir;
   ASSERT_TRUE(installed_dir.CreateUniqueTempDir());
@@ -308,7 +308,7 @@ TEST(NTPSponsoredImagesDataTest,
 }
 #endif  // defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
 
-TEST(NTPSponsoredImagesDataTest,
+TEST(NTPSponsoredContentDataTest,
      FilterCampaignsKeepsRichMediaCreativeIfFileExists) {
   base::ScopedTempDir installed_dir;
   ASSERT_TRUE(installed_dir.CreateUniqueTempDir());
@@ -324,31 +324,31 @@ TEST(NTPSponsoredImagesDataTest,
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
-TEST(NTPSponsoredImagesDataTest, RejectsCreativeWithHttpTargetUrl) {
+TEST(NTPSponsoredContentDataTest, RejectsCreativeWithHttpTargetUrl) {
   base::DictValue dict =
       base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
   SetCreativeTargetUrls(dict, "http://basicattentiontoken.org");
-  NTPSponsoredImagesData sponsored_images_data(
-      dict, base::FilePath(FILE_PATH_LITERAL("ntp_sponsored_images_data")));
-  EXPECT_THAT(sponsored_images_data.campaigns, testing::IsEmpty());
+  NTPSponsoredContentData sponsored_content_data(
+      dict, base::FilePath(FILE_PATH_LITERAL("ntp_sponsored_content_data")));
+  EXPECT_THAT(sponsored_content_data.campaigns, testing::IsEmpty());
 }
 
-TEST(NTPSponsoredImagesDataTest, RejectsCreativeWithJavascriptTargetUrl) {
+TEST(NTPSponsoredContentDataTest, RejectsCreativeWithJavascriptTargetUrl) {
   base::DictValue dict =
       base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
   SetCreativeTargetUrls(dict, "javascript:alert(1)");
-  NTPSponsoredImagesData sponsored_images_data(
-      dict, base::FilePath(FILE_PATH_LITERAL("ntp_sponsored_images_data")));
-  EXPECT_THAT(sponsored_images_data.campaigns, testing::IsEmpty());
+  NTPSponsoredContentData sponsored_content_data(
+      dict, base::FilePath(FILE_PATH_LITERAL("ntp_sponsored_content_data")));
+  EXPECT_THAT(sponsored_content_data.campaigns, testing::IsEmpty());
 }
 
-TEST(NTPSponsoredImagesDataTest, RejectsCreativeWithMalformedTargetUrl) {
+TEST(NTPSponsoredContentDataTest, RejectsCreativeWithMalformedTargetUrl) {
   base::DictValue dict =
       base::test::ParseJsonDict(kTestSponsoredImagesCampaign);
   SetCreativeTargetUrls(dict, "MALFORMED_TARGET_URL");
-  NTPSponsoredImagesData sponsored_images_data(
-      dict, base::FilePath(FILE_PATH_LITERAL("ntp_sponsored_images_data")));
-  EXPECT_THAT(sponsored_images_data.campaigns, testing::IsEmpty());
+  NTPSponsoredContentData sponsored_content_data(
+      dict, base::FilePath(FILE_PATH_LITERAL("ntp_sponsored_content_data")));
+  EXPECT_THAT(sponsored_content_data.campaigns, testing::IsEmpty());
 }
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 

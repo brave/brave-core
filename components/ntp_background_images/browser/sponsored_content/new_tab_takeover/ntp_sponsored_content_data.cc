@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
 
 #include "base/check.h"
 #include "base/debug/crash_logging.h"
@@ -39,12 +39,12 @@ constexpr char kCreativeCompanyNameKey[] = "companyName";
 constexpr char kCreativeAltKey[] = "alt";
 constexpr char kCreativeTargetUrlKey[] = "targetUrl";
 constexpr char kWallpaperKey[] = "wallpaper";
-constexpr char kImageWallpaperRelativeUrlKey[] = "relativeUrl";
-constexpr char kImageWallpaperFocalPointXKey[] = "focalPoint.x";
-constexpr char kImageWallpaperFocalPointYKey[] = "focalPoint.y";
-constexpr char kImageWallpaperButtonImageRelativeUrlKey[] =
+constexpr char kStaticNewTabTakeoverWallpaperRelativeUrlKey[] = "relativeUrl";
+constexpr char kStaticNewTabTakeoverWallpaperFocalPointXKey[] = "focalPoint.x";
+constexpr char kStaticNewTabTakeoverWallpaperFocalPointYKey[] = "focalPoint.y";
+constexpr char kStaticNewTabTakeoverWallpaperButtonImageRelativeUrlKey[] =
     "button.image.relativeUrl";
-constexpr char kRichMediaWallpaperRelativeUrlKey[] = "relativeUrl";
+constexpr char kDynamicNewTabTakeoverWallpaperRelativeUrlKey[] = "relativeUrl";
 
 // Normalizes `relative_url` to a `FilePath` and validates that it is a valid
 // relative path. Returns `std::nullopt` otherwise.
@@ -66,12 +66,12 @@ std::optional<base::FilePath> MaybeNormalizeRelativeUrl(
 
 std::optional<std::string> ToString(WallpaperType wallpaper_type) {
   switch (wallpaper_type) {
-    case WallpaperType::kImage: {
-      return kImageWallpaperType;
+    case WallpaperType::kStaticNewTabTakeover: {
+      return kStaticNewTabTakeoverWallpaperType;
     }
 
-    case WallpaperType::kRichMedia: {
-      return kRichMediaWallpaperType;
+    case WallpaperType::kDynamicNewTabTakeover: {
+      return kDynamicNewTabTakeoverWallpaperType;
     }
   }
 
@@ -196,12 +196,12 @@ std::optional<Campaign> MaybeParseCampaign(
         continue;
       }
 
-      if (*wallpaper_type == kImageWallpaperType) {
-        // Image.
-        creative.wallpaper_type = WallpaperType::kImage;
+      if (*wallpaper_type == kStaticNewTabTakeoverWallpaperType) {
+        // Static new tab takeover.
+        creative.wallpaper_type = WallpaperType::kStaticNewTabTakeover;
 
-        const std::string* const relative_url =
-            wallpaper_dict->FindString(kImageWallpaperRelativeUrlKey);
+        const std::string* const relative_url = wallpaper_dict->FindString(
+            kStaticNewTabTakeoverWallpaperRelativeUrlKey);
         if (!relative_url) {
           // Relative url is required.
           continue;
@@ -221,17 +221,21 @@ std::optional<Campaign> MaybeParseCampaign(
 
         // Focal point (optional).
         const int focal_point_x =
-            wallpaper_dict->FindIntByDottedPath(kImageWallpaperFocalPointXKey)
+            wallpaper_dict
+                ->FindIntByDottedPath(
+                    kStaticNewTabTakeoverWallpaperFocalPointXKey)
                 .value_or(0);
         const int focal_point_y =
-            wallpaper_dict->FindIntByDottedPath(kImageWallpaperFocalPointYKey)
+            wallpaper_dict
+                ->FindIntByDottedPath(
+                    kStaticNewTabTakeoverWallpaperFocalPointYKey)
                 .value_or(0);
         creative.focal_point = {focal_point_x, focal_point_y};
 
         // Button.
         const std::string* const button_image_relative_url =
             wallpaper_dict->FindStringByDottedPath(
-                kImageWallpaperButtonImageRelativeUrlKey);
+                kStaticNewTabTakeoverWallpaperButtonImageRelativeUrlKey);
         if (!button_image_relative_url) {
           // Relative url is required.
           continue;
@@ -249,12 +253,12 @@ std::optional<Campaign> MaybeParseCampaign(
             {content::kChromeUIScheme, kBrandedWallpaperHost,
              *button_image_relative_url},
             nullptr);
-      } else if (*wallpaper_type == kRichMediaWallpaperType) {
-        // Rich media.
-        creative.wallpaper_type = WallpaperType::kRichMedia;
+      } else if (*wallpaper_type == kDynamicNewTabTakeoverWallpaperType) {
+        // Dynamic new tab takeover.
+        creative.wallpaper_type = WallpaperType::kDynamicNewTabTakeover;
 
-        const std::string* const relative_url =
-            wallpaper_dict->FindString(kRichMediaWallpaperRelativeUrlKey);
+        const std::string* const relative_url = wallpaper_dict->FindString(
+            kDynamicNewTabTakeoverWallpaperRelativeUrlKey);
         if (!relative_url) {
           // Relative url is required.
           continue;
@@ -266,7 +270,7 @@ std::optional<Campaign> MaybeParseCampaign(
           continue;
         }
         creative.file_path = installed_dir.Append(*relative_file_path);
-        creative.url = GURL(kNTPNewTabTakeoverRichMediaUrl + *relative_url);
+        creative.url = GURL(kNTPDynamicNewTabTakeoverUrl + *relative_url);
       } else {
         // Unknown wallpaper type.
         continue;
@@ -331,26 +335,27 @@ bool CreativeFilesExist(const base::DictValue& creative_dict,
     return true;
   }
 
-  if (*wallpaper_type == kRichMediaWallpaperType) {
-    const std::string* const rich_media_relative_url =
-        wallpaper->FindString(kRichMediaWallpaperRelativeUrlKey);
-    if (rich_media_relative_url &&
-        !CreativeFileByRelativeUrlExists(*rich_media_relative_url,
-                                         installed_dir, creative_dict)) {
+  if (*wallpaper_type == kDynamicNewTabTakeoverWallpaperType) {
+    const std::string* const dynamic_relative_url =
+        wallpaper->FindString(kDynamicNewTabTakeoverWallpaperRelativeUrlKey);
+    if (dynamic_relative_url &&
+        !CreativeFileByRelativeUrlExists(*dynamic_relative_url, installed_dir,
+                                         creative_dict)) {
       return false;
     }
-  } else if (*wallpaper_type == kImageWallpaperType) {
-    const std::string* const image_relative_url =
-        wallpaper->FindStringByDottedPath(kImageWallpaperRelativeUrlKey);
-    if (image_relative_url &&
-        !CreativeFileByRelativeUrlExists(*image_relative_url, installed_dir,
+  } else if (*wallpaper_type == kStaticNewTabTakeoverWallpaperType) {
+    const std::string* const static_relative_url =
+        wallpaper->FindStringByDottedPath(
+            kStaticNewTabTakeoverWallpaperRelativeUrlKey);
+    if (static_relative_url &&
+        !CreativeFileByRelativeUrlExists(*static_relative_url, installed_dir,
                                          creative_dict)) {
       return false;
     }
 
     const std::string* const button_image_relative_url =
         wallpaper->FindStringByDottedPath(
-            kImageWallpaperButtonImageRelativeUrlKey);
+            kStaticNewTabTakeoverWallpaperButtonImageRelativeUrlKey);
     if (button_image_relative_url &&
         !CreativeFileByRelativeUrlExists(*button_image_relative_url,
                                          installed_dir, creative_dict)) {
@@ -481,11 +486,11 @@ bool Campaign::IsValid() const {
   return !creatives.empty();
 }
 
-NTPSponsoredImagesData::NTPSponsoredImagesData() = default;
-NTPSponsoredImagesData::NTPSponsoredImagesData(
+NTPSponsoredContentData::NTPSponsoredContentData() = default;
+NTPSponsoredContentData::NTPSponsoredContentData(
     const base::DictValue& dict,
     const base::FilePath& installed_dir)
-    : NTPSponsoredImagesData() {
+    : NTPSponsoredContentData() {
   std::optional<int> schema_version = dict.FindInt(kSchemaVersionKey);
   if (schema_version != kExpectedSchemaVersion) {
     // Currently, only version 1 is supported. Update this code to maintain.
@@ -501,21 +506,21 @@ NTPSponsoredImagesData::NTPSponsoredImagesData(
   }
 }
 
-NTPSponsoredImagesData::NTPSponsoredImagesData(
-    const NTPSponsoredImagesData& data) = default;
+NTPSponsoredContentData::NTPSponsoredContentData(
+    const NTPSponsoredContentData& data) = default;
 
-NTPSponsoredImagesData& NTPSponsoredImagesData::operator=(
-    const NTPSponsoredImagesData& data) = default;
+NTPSponsoredContentData& NTPSponsoredContentData::operator=(
+    const NTPSponsoredContentData& data) = default;
 
-NTPSponsoredImagesData::NTPSponsoredImagesData(
-    NTPSponsoredImagesData&& other) noexcept = default;
+NTPSponsoredContentData::NTPSponsoredContentData(
+    NTPSponsoredContentData&& other) noexcept = default;
 
-NTPSponsoredImagesData& NTPSponsoredImagesData::operator=(
-    NTPSponsoredImagesData&& other) noexcept = default;
+NTPSponsoredContentData& NTPSponsoredContentData::operator=(
+    NTPSponsoredContentData&& other) noexcept = default;
 
-NTPSponsoredImagesData::~NTPSponsoredImagesData() = default;
+NTPSponsoredContentData::~NTPSponsoredContentData() = default;
 
-void NTPSponsoredImagesData::ParseCampaigns(
+void NTPSponsoredContentData::ParseCampaigns(
     const base::ListValue& list,
     const base::FilePath& installed_dir) {
   for (const auto& value : list) {
@@ -532,11 +537,11 @@ void NTPSponsoredImagesData::ParseCampaigns(
   }
 }
 
-bool NTPSponsoredImagesData::IsValid() const {
+bool NTPSponsoredContentData::IsValid() const {
   return !campaigns.empty();
 }
 
-const Creative* NTPSponsoredImagesData::GetCreativeByInstanceId(
+const Creative* NTPSponsoredContentData::GetCreativeByInstanceId(
     const std::string& creative_instance_id) const {
   // O(n) is fine given the small number of campaigns and creatives.
   for (const Campaign& campaign : campaigns) {
@@ -554,7 +559,7 @@ const Creative* NTPSponsoredImagesData::GetCreativeByInstanceId(
   return nullptr;
 }
 
-std::optional<base::DictValue> NTPSponsoredImagesData::MaybeGetBackgroundAt(
+std::optional<base::DictValue> NTPSponsoredContentData::MaybeGetBackgroundAt(
     size_t campaign_index,
     size_t creative_index) const {
   CHECK(campaign_index < campaigns.size());
@@ -591,7 +596,7 @@ std::optional<base::DictValue> NTPSponsoredImagesData::MaybeGetBackgroundAt(
       .Set(kWallpaperTypeKey, *wallpaper_type);
 }
 
-std::optional<base::DictValue> NTPSponsoredImagesData::MaybeGetBackground(
+std::optional<base::DictValue> NTPSponsoredContentData::MaybeGetBackground(
     const brave_ads::mojom::NewTabPageAdInfo& ad) {
   // Find campaign
   size_t campaign_index = 0;

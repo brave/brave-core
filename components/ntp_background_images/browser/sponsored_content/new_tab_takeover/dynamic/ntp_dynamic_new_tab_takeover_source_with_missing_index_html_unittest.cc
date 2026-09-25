@@ -5,7 +5,7 @@
 
 #include "base/dcheck_is_on.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/test/ntp_sponsored_rich_media_source_test_base.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/test/ntp_dynamic_new_tab_takeover_source_test_base.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/test/ntp_sponsored_content_source_test_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -13,23 +13,24 @@ namespace ntp_background_images {
 
 // Tests for a campaign where all creatives are invalid rich media (missing
 // index.html).
-class NTPSponsoredRichMediaSourceMissingIndexHtmlTest
-    : public test::NTPSponsoredRichMediaSourceTestBase {
+class NTPDynamicNewTabTakeoverSourceMissingIndexHtmlTest
+    : public test::NTPDynamicNewTabTakeoverSourceTestBase {
  protected:
   void SetUp() override {
-    test::NTPSponsoredRichMediaSourceTestBase::SetUp();
-    SimulateOnSponsoredImagesDataDidUpdate(
-        test::GetSponsoredImagesComponentPath().AppendASCII(
-            "rich_media_with_missing_index_html"));
+    test::NTPDynamicNewTabTakeoverSourceTestBase::SetUp();
+    SimulateDeprecatedOnSponsoredContentDidUpdate(
+        test::GetSponsoredImagesComponentPath()
+            .AppendASCII("new_tab_takeover")
+            .AppendASCII("dynamic_with_missing_index_html"));
   }
 };
 
 // `DUMP_WILL_BE_NOTREACHED` aborts the process in non-official `DCHECK` builds.
 #if defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
-TEST_F(NTPSponsoredRichMediaSourceMissingIndexHtmlTest,
+TEST_F(NTPDynamicNewTabTakeoverSourceMissingIndexHtmlTest,
        CampaignIsRemovedIfAllCreativesAreInvalid) {
-  EXPECT_FALSE(background_images_service_->GetSponsoredImagesData(
-      /*supports_rich_media=*/true));
+  EXPECT_FALSE(background_images_service_->GetNewTabTakeover(
+      /*supports_dynamic_new_tab_takeover=*/true));
 }
 #endif  // defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
 

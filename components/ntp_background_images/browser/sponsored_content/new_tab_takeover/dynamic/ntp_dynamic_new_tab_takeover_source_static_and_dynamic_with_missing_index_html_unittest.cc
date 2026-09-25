@@ -5,8 +5,8 @@
 
 #include "base/dcheck_is_on.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/test/ntp_sponsored_rich_media_source_test_base.h"
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/test/ntp_dynamic_new_tab_takeover_source_test_base.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/test/ntp_sponsored_content_source_test_util.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -15,27 +15,28 @@ namespace ntp_background_images {
 
 // Tests for a campaign with both image and rich media creatives where the rich
 // media creative is missing index.html.
-class NTPSponsoredImageAndRichMediaWithMissingIndexHtmlTest
-    : public test::NTPSponsoredRichMediaSourceTestBase {
+class NTPDynamicNewTabTakeoverSourceStaticAndDynamicWithMissingIndexHtmlTest
+    : public test::NTPDynamicNewTabTakeoverSourceTestBase {
  protected:
   void SetUp() override {
-    test::NTPSponsoredRichMediaSourceTestBase::SetUp();
-    SimulateOnSponsoredImagesDataDidUpdate(
-        test::GetSponsoredImagesComponentPath().AppendASCII(
-            "image_and_rich_media_with_missing_index_html"));
+    test::NTPDynamicNewTabTakeoverSourceTestBase::SetUp();
+    SimulateDeprecatedOnSponsoredContentDidUpdate(
+        test::GetSponsoredImagesComponentPath()
+            .AppendASCII("new_tab_takeover")
+            .AppendASCII("static_and_dynamic_with_missing_index_html"));
   }
 };
 
 // `DUMP_WILL_BE_NOTREACHED()` aborts the process in non-official DCHECK builds.
 #if defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()
-TEST_F(NTPSponsoredImageAndRichMediaWithMissingIndexHtmlTest,
-       InvalidRichMediaCreativeIsRemovedButImageCreativeIsKept) {
-  const auto* const data = background_images_service_->GetSponsoredImagesData(
-      /*supports_rich_media=*/true);
+TEST_F(NTPDynamicNewTabTakeoverSourceStaticAndDynamicWithMissingIndexHtmlTest,
+       InvalidDynamicCreativeIsRemovedButStaticCreativeIsKept) {
+  const auto* const data = background_images_service_->GetNewTabTakeover(
+      /*supports_dynamic_new_tab_takeover=*/true);
   ASSERT_NE(nullptr, data);
   ASSERT_THAT(data->campaigns, ::testing::SizeIs(1));
   ASSERT_THAT(data->campaigns[0].creatives, ::testing::SizeIs(1));
-  EXPECT_EQ(WallpaperType::kImage,
+  EXPECT_EQ(WallpaperType::kStaticNewTabTakeover,
             data->campaigns[0].creatives[0].wallpaper_type);
 }
 #endif  // defined(OFFICIAL_BUILD) && !DCHECK_IS_ON()

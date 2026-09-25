@@ -121,8 +121,8 @@ if (enable_custom_background) {
 
     sources = [
       "custom_background_file_manager_browsertest.cc",
-      "ntp_sponsored_rich_media_browsertest.cc",
-      "ntp_sponsored_rich_media_with_csp_violation_browsertest.cc",
+      "ntp_dynamic_new_tab_takeover_browsertest.cc",
+      "ntp_dynamic_new_tab_takeover_with_csp_violation_browsertest.cc",
     ]
 
     deps = [

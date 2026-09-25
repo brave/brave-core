@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.ntp_background_images.util;
 
+import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ntp_background_images.model.BackgroundImage;
 import org.chromium.chrome.browser.ntp_background_images.model.ImageCredit;
@@ -14,7 +15,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class SponsoredImageUtil {
+@NullMarked
+public class SponsoredContentUtil {
 
     public static final String NTP_TYPE = "ntp_type";
 
@@ -54,8 +56,8 @@ public class SponsoredImageUtil {
     }
 
     private static int getRandomIndex(int count) {
-    	Random rand = new Random();
-    	return rand.nextInt(count);
+        Random rand = new Random();
+        return rand.nextInt(count);
     }
 
     public static BackgroundImage getBackgroundImage() {

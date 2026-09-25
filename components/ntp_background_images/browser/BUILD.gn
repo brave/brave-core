@@ -24,14 +24,14 @@ static_library("browser") {
     "sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_ad_event_handler.h",
     "sponsored_content/new_tab_takeover/new_tab_takeover_infobar_util.cc",
     "sponsored_content/new_tab_takeover/new_tab_takeover_infobar_util.h",
-    "sponsored_content/new_tab_takeover/ntp_sponsored_images_data.cc",
-    "sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h",
+    "sponsored_content/new_tab_takeover/ntp_sponsored_content_data.cc",
+    "sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h",
     "sponsored_content/new_tab_takeover/static/sponsored_images_component_data.cc",
     "sponsored_content/new_tab_takeover/static/sponsored_images_component_data.h",
-    "sponsored_content/ntp_sponsored_images_component_installer.cc",
-    "sponsored_content/ntp_sponsored_images_component_installer.h",
     "sponsored_content/ntp_sponsored_content_source_util.cc",
     "sponsored_content/ntp_sponsored_content_source_util.h",
+    "sponsored_content/ntp_sponsored_images_component_installer.cc",
+    "sponsored_content/ntp_sponsored_images_component_installer.h",
     "sponsored_content/site/ntp_sponsored_sites_data.cc",
     "sponsored_content/site/ntp_sponsored_sites_data.h",
     "switches.h",
@@ -50,10 +50,10 @@ static_library("browser") {
     sources += [
       "ntp_background_images_source.cc",
       "ntp_background_images_source.h",
-      "sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_source.cc",
-      "sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_source.h",
-      "sponsored_content/new_tab_takeover/static/ntp_sponsored_image_source.cc",
-      "sponsored_content/new_tab_takeover/static/ntp_sponsored_image_source.h",
+      "sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_source.cc",
+      "sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_source.h",
+      "sponsored_content/new_tab_takeover/static/ntp_static_new_tab_takeover_source.cc",
+      "sponsored_content/new_tab_takeover/static/ntp_static_new_tab_takeover_source.h",
       "sponsored_content/site/ntp_sponsored_site_image_source.cc",
       "sponsored_content/site/ntp_sponsored_site_image_source.h",
     ]
@@ -165,8 +165,8 @@ source_set("unit_tests") {
   sources = [
     "ntp_background_images_service_unittest.cc",
     "sponsored_content/new_tab_takeover/new_tab_takeover_infobar_util_unittest.cc",
-    "sponsored_content/new_tab_takeover/ntp_sponsored_images_data_unittest.cc",
-    "sponsored_content/new_tab_takeover/ntp_sponsored_rich_media_data_unittest.cc",
+    "sponsored_content/new_tab_takeover/ntp_sponsored_content_data_dynamic_unittest.cc",
+    "sponsored_content/new_tab_takeover/ntp_sponsored_content_data_unittest.cc",
     "sponsored_content/ntp_sponsored_content_source_util_unittest.cc",
     "sponsored_content/site/ntp_sponsored_sites_data_unittest.cc",
     "view_counter_model_unittest.cc",
@@ -181,8 +181,8 @@ source_set("unit_tests") {
   if (enable_brave_ads) {
     sources += [
       "sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_ad_event_handler_unittest.cc",
-      "wallpapers/ntp_new_tab_takeover_wallpaper_provider_unittest.cc",
       "view_counter_service_unittest.cc",
+      "wallpapers/ntp_new_tab_takeover_wallpaper_provider_unittest.cc",
     ]
   }
 

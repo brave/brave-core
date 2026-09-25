@@ -5,7 +5,6 @@
 
 #include "base/command_line.h"
 #include "base/files/file_path.h"
-#include "base/functional/bind.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/constants/brave_paths.h"
@@ -26,11 +25,12 @@
 namespace ntp_background_images {
 
 namespace {
-constexpr char kRichMediaUrl[] =
+constexpr char kDynamicNewTabTakeoverUrl[] =
     R"(chrome-untrusted://new-tab-takeover/aa0b561e-9eed-4aaa-8999-5627bc6b14fd/index.html)";
 }  // namespace
 
-class NTPSponsoredRichMediaBrowserTest : public PlatformBrowserTest {
+class NTPDynamicNewTabTakeoverWithCSPViolationBrowserTest
+    : public PlatformBrowserTest {
  protected:
   void SetUpOnMainThread() override {
     PlatformBrowserTest::SetUpOnMainThread();
@@ -41,7 +41,8 @@ class NTPSponsoredRichMediaBrowserTest : public PlatformBrowserTest {
     const base::FilePath component_file_path =
         test_data_file_path.AppendASCII("components")
             .AppendASCII("ntp_sponsored_images")
-            .AppendASCII("rich_media");
+            .AppendASCII("new_tab_takeover")
+            .AppendASCII("dynamic_with_csp_violation");
     base::CommandLine::ForCurrentProcess()->AppendSwitchPath(
         switches::kOverrideSponsoredImagesComponentPath, component_file_path);
 
@@ -57,23 +58,38 @@ class NTPSponsoredRichMediaBrowserTest : public PlatformBrowserTest {
   content::WebContents* GetActiveWebContents() {
     return chrome_test_utils::GetActiveWebContents(this);
   }
+
+  void NavigateToUrlAndVerifyExpectation(
+      const std::string& console_observer_pattern) {
+    content::WebContentsConsoleObserver console_observer(
+        GetActiveWebContents());
+    console_observer.SetPattern(console_observer_pattern);
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(),
+                                             GURL(kDynamicNewTabTakeoverUrl)));
+    EXPECT_TRUE(console_observer.Wait());
+  }
 };
 
-IN_PROC_BROWSER_TEST_F(NTPSponsoredRichMediaBrowserTest,
-                       LoadResourceAndClickButton) {
-  content::WebContentsConsoleObserver console_observer(GetActiveWebContents());
-  console_observer.SetFilter(base::BindRepeating(
-      [](const content::WebContentsConsoleObserver::Message& message) {
-        return message.log_level == blink::mojom::ConsoleMessageLevel::kError;
-      }));
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kRichMediaUrl)));
-  EXPECT_TRUE(console_observer.messages().empty());
+IN_PROC_BROWSER_TEST_F(NTPDynamicNewTabTakeoverWithCSPViolationBrowserTest,
+                       DoNotLoadLocalResource) {
+  NavigateToUrlAndVerifyExpectation(
+      "Not allowed to load local resource: chrome://csp-violation/script.js");
+}
 
-  ASSERT_TRUE(content::ExecJs(GetActiveWebContents(),
-                              "document.querySelector('.button').click();"));
-  content::EvalJsResult result = content::EvalJs(
-      GetActiveWebContents(), "document.querySelector('.button').textContent;");
-  EXPECT_EQ(result.ExtractString(), "🚀");
+IN_PROC_BROWSER_TEST_F(NTPDynamicNewTabTakeoverWithCSPViolationBrowserTest,
+                       DoNotLoadLocalResourceWithDifferentOrigin) {
+  NavigateToUrlAndVerifyExpectation(
+      R"(Loading the stylesheet )"
+      R"('chrome-untrusted://csp-violation/styles.css' violates the )"
+      R"(following Content Security Policy directive: "style-src 'self'".*)");
+}
+
+IN_PROC_BROWSER_TEST_F(NTPDynamicNewTabTakeoverWithCSPViolationBrowserTest,
+                       DoNotLoadRemoteResource) {
+  NavigateToUrlAndVerifyExpectation(
+      R"(Loading the image 'https://csp-violation.com/background.jpg' )"
+      R"(violates the following Content Security Policy directive: )"
+      R"("img-src 'self'".*)");
 }
 
 }  // namespace ntp_background_images

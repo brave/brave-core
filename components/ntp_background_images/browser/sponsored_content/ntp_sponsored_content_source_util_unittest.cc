@@ -8,7 +8,7 @@
 #include <vector>
 
 #include "base/files/file_path.h"
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ntp_background_images {

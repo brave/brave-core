@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_NTP_SPONSORED_IMAGES_DATA_H_
-#define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_NTP_SPONSORED_IMAGES_DATA_H_
+#ifndef BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_NTP_SPONSORED_CONTENT_DATA_H_
+#define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_NTP_SPONSORED_CONTENT_DATA_H_
 
 #include <optional>
 #include <string>
@@ -22,8 +22,8 @@ struct NewTabPageAdInfo;
 
 namespace ntp_background_images {
 
-inline constexpr char kImageWallpaperType[] = "image";
-inline constexpr char kRichMediaWallpaperType[] = "richMedia";
+inline constexpr char kStaticNewTabTakeoverWallpaperType[] = "image";
+inline constexpr char kDynamicNewTabTakeoverWallpaperType[] = "richMedia";
 
 struct Logo {
   Logo();
@@ -43,7 +43,7 @@ struct Logo {
   std::string company_name;
 };
 
-enum class WallpaperType { kImage, kRichMedia };
+enum class WallpaperType { kStaticNewTabTakeover, kDynamicNewTabTakeover };
 
 struct Creative {
   Creative();
@@ -92,18 +92,18 @@ struct Campaign {
   std::vector<Creative> creatives;
 };
 
-struct NTPSponsoredImagesData {
-  NTPSponsoredImagesData();
-  NTPSponsoredImagesData(const base::DictValue& dict,
-                         const base::FilePath& installed_dir);
+struct NTPSponsoredContentData {
+  NTPSponsoredContentData();
+  NTPSponsoredContentData(const base::DictValue& dict,
+                          const base::FilePath& installed_dir);
 
-  NTPSponsoredImagesData(const NTPSponsoredImagesData&);
-  NTPSponsoredImagesData& operator=(const NTPSponsoredImagesData&);
+  NTPSponsoredContentData(const NTPSponsoredContentData&);
+  NTPSponsoredContentData& operator=(const NTPSponsoredContentData&);
 
-  NTPSponsoredImagesData(NTPSponsoredImagesData&&) noexcept;
-  NTPSponsoredImagesData& operator=(NTPSponsoredImagesData&&) noexcept;
+  NTPSponsoredContentData(NTPSponsoredContentData&&) noexcept;
+  NTPSponsoredContentData& operator=(NTPSponsoredContentData&&) noexcept;
 
-  ~NTPSponsoredImagesData();
+  ~NTPSponsoredContentData();
 
   [[nodiscard]] bool IsValid() const;
 
@@ -131,4 +131,4 @@ void FilterCampaigns(base::DictValue& dict,
 
 }  // namespace ntp_background_images
 
-#endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_NTP_SPONSORED_IMAGES_DATA_H_
+#endif  // BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_SPONSORED_CONTENT_NEW_TAB_TAKEOVER_NTP_SPONSORED_CONTENT_DATA_H_

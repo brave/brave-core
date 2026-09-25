@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/test/ntp_sponsored_rich_media_source_test_base.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/test/ntp_dynamic_new_tab_takeover_source_test_base.h"
 
 #include "base/files/file_path.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -12,13 +12,13 @@
 
 namespace ntp_background_images::test {
 
-NTPSponsoredRichMediaSourceTestBase::NTPSponsoredRichMediaSourceTestBase() =
-    default;
+NTPDynamicNewTabTakeoverSourceTestBase::
+    NTPDynamicNewTabTakeoverSourceTestBase() = default;
 
-NTPSponsoredRichMediaSourceTestBase::~NTPSponsoredRichMediaSourceTestBase() =
-    default;
+NTPDynamicNewTabTakeoverSourceTestBase::
+    ~NTPDynamicNewTabTakeoverSourceTestBase() = default;
 
-void NTPSponsoredRichMediaSourceTestBase::SetUp() {
+void NTPDynamicNewTabTakeoverSourceTestBase::SetUp() {
   NTPBackgroundImagesService::RegisterLocalStatePrefsForMigration(
       pref_service_.registry());
 
@@ -27,10 +27,10 @@ void NTPSponsoredRichMediaSourceTestBase::SetUp() {
       &pref_service_);
 }
 
-void NTPSponsoredRichMediaSourceTestBase::
-    SimulateOnSponsoredImagesDataDidUpdate(
+void NTPDynamicNewTabTakeoverSourceTestBase::
+    SimulateDeprecatedOnSponsoredContentDidUpdate(
         const base::FilePath& component_path) {
-  url_data_source_ = std::make_unique<NTPSponsoredRichMediaSource>(
+  url_data_source_ = std::make_unique<NTPDynamicNewTabTakeoverSource>(
       background_images_service_.get());
 
   scoped_command_line_.GetProcessCommandLine()->AppendSwitchPath(
@@ -38,7 +38,7 @@ void NTPSponsoredRichMediaSourceTestBase::
 
   NTPBackgroundImagesServiceWaiter waiter(*background_images_service_);
   background_images_service_->Init();
-  waiter.WaitForOnSponsoredImagesDataDidUpdate();
+  waiter.WaitForDeprecatedOnSponsoredContentDidUpdate();
 }
 
 }  // namespace ntp_background_images::test

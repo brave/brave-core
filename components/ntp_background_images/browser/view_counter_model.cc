@@ -38,7 +38,7 @@ void ViewCounterModel::SetCampaignsTotalNewTabTakeoverCreativeCount(
   total_campaign_count_ = campaigns_total_creative_count.size();
 }
 
-bool ViewCounterModel::ShouldShowSponsoredImages() const {
+bool ViewCounterModel::ShouldShowNewTabTakeover() const {
   if (!show_new_tab_takeover_wallpaper_) {
     return false;
   }

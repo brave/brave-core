@@ -83,7 +83,8 @@ class NewTabTakeoverBrowserTest : public InProcessBrowserTest {
     const base::FilePath component_file_path =
         test_data_file_path.AppendASCII("components")
             .AppendASCII("ntp_sponsored_images")
-            .AppendASCII("image");
+            .AppendASCII("new_tab_takeover")
+            .AppendASCII("static");
     base::CommandLine::ForCurrentProcess()->AppendSwitchPath(
         ntp_background_images::switches::kOverrideSponsoredImagesComponentPath,
         component_file_path);

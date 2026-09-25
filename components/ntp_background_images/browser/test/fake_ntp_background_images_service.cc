@@ -31,7 +31,7 @@ void FakeNTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
 
 void FakeNTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     const std::string& json) {
-  sponsored_images_installed_dir_ =
+  sponsored_content_installed_dir_ =
       base::FilePath::FromASCII("fake_sponsored_images_installed_dir");
   NTPBackgroundImagesService::OnHandledSponsoredComponentData(
       base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS));
