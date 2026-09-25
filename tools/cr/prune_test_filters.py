@@ -93,13 +93,14 @@ def is_filter_applicable(filename, current_platform):
 
     platform_info = base.split("-", 1)[1].lower()
 
-    supported_platforms = {"mac": "mac", "linux": "linux", "windows": "win"}
+    # Filters are named after target_os, same as get_current_platform_tag().
+    supported_platforms = ("mac", "linux", "win")
 
-    for plat_key, plat_tag in supported_platforms.items():
-        if platform_info.startswith(plat_key):
-            if plat_tag == current_platform:
+    for platform in supported_platforms:
+        if platform_info.startswith(platform):
+            if platform == current_platform:
                 return True
-            print(f"Skipping {filename} (platform '{plat_key}' does not "
+            print(f"Skipping {filename} (platform '{platform}' does not "
                   f"match '{current_platform}')")
             return False
 

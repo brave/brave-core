@@ -129,7 +129,7 @@ upstream LUCI Analysis data shows the test also fails on non-sanitizer builds.**
 LUCI Analysis aggregates across all build configs, so a non-zero upstream flake
 rate means the test can fail outside of sanitizer builds too. In that case, use
 a broader filter file (e.g., `browser_tests.filter` or
-`browser_tests-windows.filter`) to cover all environments where the failure may
+`browser_tests-win.filter`) to cover all environments where the failure may
 occur.
 
 ---

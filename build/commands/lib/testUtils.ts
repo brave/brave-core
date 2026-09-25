@@ -59,28 +59,15 @@ export function getTestsToRun(config: Config, suite: string) {
   return testsToRun
 }
 
-// Translates the platform name our own filters use into the one upstream uses
-// for its filters in testing/buildbot/filters/.
-function toUpstreamPlatform(targetPlatform: string) {
-  switch (targetPlatform) {
-    case 'windows':
-      return 'win'
-    case 'macos':
-      return 'mac'
-    default:
-      return targetPlatform
-  }
-}
-
 // Returns a list of paths to files containing all the filters that would apply
 // to the current test suite. Include missing paths when detecting changes to
 // deleted filters.
 //
 // For instance, for Windows 64-bit and assuming all the filters files exist
 // in the filesystem, this method would return paths to the following files:
-//   - unit-tests.filter              -> Base filters
-//   - unit_tests-windows.filters:    -> Platform specific
-//   - unit_tests-windows-x86.filters -> Platform & Architecture specific
+//   - unit-tests.filter          -> Base filters
+//   - unit_tests-win.filters:    -> OS specific
+//   - unit_tests-win-x86.filters -> OS & Architecture specific
 //
 // Each filter is looked up both in test/filters/ (hand-written) and in
 // test/filters/generated/ (auto-generated upstream flake filters, see
@@ -92,38 +79,30 @@ export function getApplicableFilters(
 ) {
   let filterFilePaths: string[] = []
 
-  let targetPlatform: string = process.platform
-  if (targetPlatform === 'win32') {
-    targetPlatform = 'windows'
-  } else if (targetPlatform === 'darwin') {
-    targetPlatform = 'macos'
-  }
-
   let possibleFilters: string[] = [
     suite,
-    [suite, targetPlatform].join('-'),
-    [suite, targetPlatform, config.targetArch].join('-'),
+    [suite, config.targetOS].join('-'),
+    [suite, config.targetOS, config.targetArch].join('-'),
   ]
 
   // Upstream names its filters after the mode they apply to rather than after
-  // a build config, so they get names of their own (see the README in
-  // testing/buildbot/filters/).
+  // a build config (see the README in testing/buildbot/filters/), so they get
+  // names of their own.
   let possibleUpstreamFilters: string[] = []
-  const upstreamPlatform = toUpstreamPlatform(targetPlatform)
 
   // If you make changes to the list of *san variants here, also update
   // update-upstream-flake-filters.py.
   if (config.is_ubsan) {
-    possibleFilters.push([suite, targetPlatform, 'ubsan'].join('-'))
+    possibleFilters.push([suite, config.targetOS, 'ubsan'].join('-'))
   }
 
   if (config.is_asan) {
-    possibleFilters.push([suite, targetPlatform, 'asan'].join('-'))
-    possibleUpstreamFilters.push([upstreamPlatform, 'asan', suite].join('.'))
+    possibleFilters.push([suite, config.targetOS, 'asan'].join('-'))
+    possibleUpstreamFilters.push([config.targetOS, 'asan', suite].join('.'))
   }
 
   if (config.is_msan) {
-    possibleFilters.push([suite, targetPlatform, 'msan'].join('-'))
+    possibleFilters.push([suite, config.targetOS, 'msan'].join('-'))
   }
 
   const filterDirs = [
