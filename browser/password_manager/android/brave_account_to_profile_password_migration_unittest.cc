@@ -20,6 +20,7 @@
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/components/brave_sync/features.h"
+#include "chrome/browser/password_manager/factories/account_password_store_factory.h"
 #include "chrome/browser/password_manager/factories/profile_password_store_factory.h"
 #include "chrome/browser/password_manager/password_manager_test_util.h"
 #include "chrome/test/base/testing_browser_process.h"
@@ -30,6 +31,7 @@
 #include "components/password_manager/core/browser/password_store/password_form_converters.h"
 #include "components/password_manager/core/browser/password_store/password_store_backend_error.h"
 #include "components/password_manager/core/browser/password_store/password_store_consumer.h"
+#include "components/password_manager/core/browser/password_store/password_store_interface.h"
 #include "components/password_manager/core/browser/password_store/test_password_store.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -43,17 +45,30 @@ using password_manager::PasswordForm;
 using password_manager::PasswordStoreBackendError;
 using password_manager::PasswordStoreBackendErrorType;
 using password_manager::PasswordStoreConsumer;
+using password_manager::StoredCredential;
 using password_manager::TestPasswordStore;
 
-// A store whose reads fail while `fail_reads_` is set. Writes keep working, so
-// a caller that mistakes a failed read for an empty store can still do damage
-// and be caught. TestPasswordStore::ReturnErrorOnRequest fails the writes too,
-// which would mask exactly that.
-class FailingReadPasswordStore : public TestPasswordStore {
+// A store whose reads and writes fail independently, so a read failure can be
+// simulated while writes still work and vice versa.
+// TestPasswordStore::ReturnErrorOnRequest fails both at once and cannot be
+// turned off again, which would mask the damage a caller does after
+// misreading a failure as an empty store.
+class FailingPasswordStore : public TestPasswordStore {
  public:
-  FailingReadPasswordStore() = default;
+  explicit FailingPasswordStore(
+      password_manager::IsAccountStore is_account_store =
+          password_manager::IsAccountStore(false))
+      : TestPasswordStore(is_account_store) {}
 
   void set_fail_reads(bool fail_reads) { fail_reads_ = fail_reads; }
+  void set_fail_writes(bool fail_writes) { fail_writes_ = fail_writes; }
+
+  // Starts failing reads as soon as a write has landed. That is how a caller
+  // which re-reads to confirm its own writes hits an error at the verify step
+  // and not before, without the test having to count reads.
+  void set_fail_reads_after_write(bool fail_reads_after_write) {
+    fail_reads_after_write_ = fail_reads_after_write;
+  }
 
   void GetAllLogins(base::WeakPtr<PasswordStoreConsumer> consumer) override {
     if (!fail_reads_) {
@@ -62,12 +77,32 @@ class FailingReadPasswordStore : public TestPasswordStore {
     }
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
-        base::BindOnce(&FailingReadPasswordStore::ReplyWithError,
+        base::BindOnce(&FailingPasswordStore::ReplyWithError,
                        base::WrapRefCounted(this), std::move(consumer)));
   }
 
+  void AddLogins(std::vector<StoredCredential> forms,
+                 base::OnceClosure completion) override {
+    if (!fail_writes_) {
+      TestPasswordStore::AddLogins(std::move(forms),
+                                   WrapWriteCompletion(std::move(completion)));
+      return;
+    }
+    DropWrite(std::move(completion));
+  }
+
+  void UpdateLogins(std::vector<StoredCredential> forms,
+                    base::OnceClosure completion) override {
+    if (!fail_writes_) {
+      TestPasswordStore::UpdateLogins(
+          std::move(forms), WrapWriteCompletion(std::move(completion)));
+      return;
+    }
+    DropWrite(std::move(completion));
+  }
+
  protected:
-  ~FailingReadPasswordStore() override = default;
+  ~FailingPasswordStore() override = default;
 
  private:
   void ReplyWithError(base::WeakPtr<PasswordStoreConsumer> consumer) {
@@ -78,7 +113,31 @@ class FailingReadPasswordStore : public TestPasswordStore {
     }
   }
 
+  // PasswordStore joins a backend error into the completion callback rather
+  // than dropping it, so a caller sees a failed write as a finished one.
+  void DropWrite(base::OnceClosure completion) {
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, std::move(completion));
+  }
+
+  // Flips `fail_reads_` before handing control back, so the read the caller
+  // issues from its completion callback is the first one to fail.
+  base::OnceClosure WrapWriteCompletion(base::OnceClosure completion) {
+    if (!fail_reads_after_write_) {
+      return completion;
+    }
+    return base::BindOnce(&FailingPasswordStore::FailReadsThen,
+                          base::WrapRefCounted(this), std::move(completion));
+  }
+
+  void FailReadsThen(base::OnceClosure completion) {
+    fail_reads_ = true;
+    std::move(completion).Run();
+  }
+
   bool fail_reads_ = false;
+  bool fail_writes_ = false;
+  bool fail_reads_after_write_ = false;
 };
 
 }  // namespace
@@ -92,13 +151,17 @@ class BraveAccountToProfilePasswordMigrationTest : public ::testing::Test {
     ASSERT_TRUE(testing_profile_manager_.SetUp());
     profile_ = testing_profile_manager_.CreateTestingProfile("TestProfile");
     profile_store_ = CreateProfileStore();
-    account_store_ = CreateAndUseTestAccountPasswordStore(profile_);
+    account_store_ = CreateAccountStore();
     profile_store_->Init();
     account_store_->Init();
   }
 
   virtual scoped_refptr<TestPasswordStore> CreateProfileStore() {
     return CreateAndUseTestPasswordStore(profile_);
+  }
+
+  virtual scoped_refptr<TestPasswordStore> CreateAccountStore() {
+    return CreateAndUseTestAccountPasswordStore(profile_);
   }
 
   void TearDown() override {
@@ -242,26 +305,42 @@ TEST_F(BraveAccountToProfilePasswordMigrationTest, NoOpWhenAccountEmpty) {
   EXPECT_EQ(0u, GetLogins(account_store_.get()).size());
 }
 
-class BraveAccountToProfilePasswordMigrationReadErrorTest
+class BraveAccountToProfilePasswordMigrationStoreErrorTest
     : public BraveAccountToProfilePasswordMigrationTest {
  protected:
   scoped_refptr<TestPasswordStore> CreateProfileStore() override {
     failing_profile_store_ =
-        base::WrapRefCounted(static_cast<FailingReadPasswordStore*>(
+        base::WrapRefCounted(static_cast<FailingPasswordStore*>(
             ProfilePasswordStoreFactory::GetInstance()
                 ->SetTestingFactoryAndUse(
                     profile_,
                     base::BindRepeating(
                         &password_manager::BuildPasswordStore<
-                            content::BrowserContext, FailingReadPasswordStore>))
+                            content::BrowserContext, FailingPasswordStore>))
                 .get()));
     return failing_profile_store_;
   }
 
-  scoped_refptr<FailingReadPasswordStore> failing_profile_store_;
+  scoped_refptr<TestPasswordStore> CreateAccountStore() override {
+    failing_account_store_ =
+        base::WrapRefCounted(static_cast<FailingPasswordStore*>(
+            AccountPasswordStoreFactory::GetInstance()
+                ->SetTestingFactoryAndUse(
+                    profile_,
+                    base::BindRepeating(
+                        &password_manager::BuildPasswordStoreWithArgs<
+                            content::BrowserContext, FailingPasswordStore,
+                            password_manager::IsAccountStore>,
+                        password_manager::IsAccountStore(true)))
+                .get()));
+    return failing_account_store_;
+  }
+
+  scoped_refptr<FailingPasswordStore> failing_profile_store_;
+  scoped_refptr<FailingPasswordStore> failing_account_store_;
 };
 
-TEST_F(BraveAccountToProfilePasswordMigrationReadErrorTest,
+TEST_F(BraveAccountToProfilePasswordMigrationStoreErrorTest,
        ProfileStoreReadErrorAbortsMigration) {
   EnableFeature();
   const base::Time older = base::Time::Now();
@@ -283,6 +362,81 @@ TEST_F(BraveAccountToProfilePasswordMigrationReadErrorTest,
   ASSERT_EQ(1u, profile_logins.size());
   EXPECT_EQ(u"profilenew", profile_logins[0].password_value);
   EXPECT_EQ(1u, GetLogins(account_store_.get()).size());
+}
+
+TEST_F(BraveAccountToProfilePasswordMigrationStoreErrorTest,
+       AccountStoreReadErrorLeavesBothStoresIntact) {
+  EnableFeature();
+  AddLogin(profile_store_.get(), MakeForm("https://a.com/", "u1", "p1"));
+  AddLogin(account_store_.get(), MakeForm("https://b.com/", "u2", "p2"));
+
+  failing_account_store_->set_fail_reads(true);
+  RunMigration();
+  failing_account_store_->set_fail_reads(false);
+
+  // Nothing is known about the account store, so nothing may be written or
+  // removed; the next launch retries.
+  EXPECT_EQ(1u, GetLogins(profile_store_.get()).size());
+  EXPECT_EQ(1u, GetLogins(account_store_.get()).size());
+}
+
+TEST_F(BraveAccountToProfilePasswordMigrationStoreErrorTest,
+       ProfileStoreAddFailureKeepsAccountCredential) {
+  EnableFeature();
+  AddLogin(account_store_.get(), MakeForm("https://a.com/", "u", "p"));
+
+  failing_profile_store_->set_fail_writes(true);
+  RunMigration();
+  failing_profile_store_->set_fail_writes(false);
+
+  // The credential never reached the profile store, so the account store must
+  // keep it for the next launch instead of losing it.
+  EXPECT_EQ(0u, GetLogins(profile_store_.get()).size());
+  EXPECT_EQ(1u, GetLogins(account_store_.get()).size());
+}
+
+TEST_F(BraveAccountToProfilePasswordMigrationStoreErrorTest,
+       ProfileStoreVerifyReadErrorKeepsAccountCredential) {
+  EnableFeature();
+  AddLogin(account_store_.get(), MakeForm("https://a.com/", "u", "p"));
+
+  // The copy into the profile store lands, but the read that would confirm it
+  // fails.
+  failing_profile_store_->set_fail_reads_after_write(true);
+  RunMigration();
+  failing_profile_store_->set_fail_reads_after_write(false);
+  failing_profile_store_->set_fail_reads(false);
+
+  // An unconfirmed write must not be taken for a confirmed one. The credential
+  // stays in both stores, and the next launch drains the now-identical account
+  // copy.
+  EXPECT_EQ(1u, GetLogins(profile_store_.get()).size());
+  EXPECT_EQ(1u, GetLogins(account_store_.get()).size());
+}
+
+TEST_F(BraveAccountToProfilePasswordMigrationStoreErrorTest,
+       ProfileStoreUpdateFailureKeepsAccountCredential) {
+  EnableFeature();
+  const base::Time older = base::Time::Now();
+  const base::Time newer = older + base::Hours(1);
+  AddLogin(profile_store_.get(), MakeForm("https://a.com/", "u", "profileold",
+                                          /*blocked=*/false, older));
+  AddLogin(account_store_.get(), MakeForm("https://a.com/", "u", "accountnew",
+                                          /*blocked=*/false, newer));
+
+  failing_profile_store_->set_fail_writes(true);
+  RunMigration();
+  failing_profile_store_->set_fail_writes(false);
+
+  // The profile copy still holds the old password, so the newer account copy
+  // must survive. Its unique key matches the stale profile entry, which is why
+  // the verify step compares passwords and timestamps rather than keys alone.
+  std::vector<PasswordForm> profile_logins = GetLogins(profile_store_.get());
+  ASSERT_EQ(1u, profile_logins.size());
+  EXPECT_EQ(u"profileold", profile_logins[0].password_value);
+  std::vector<PasswordForm> account_logins = GetLogins(account_store_.get());
+  ASSERT_EQ(1u, account_logins.size());
+  EXPECT_EQ(u"accountnew", account_logins[0].password_value);
 }
 
 TEST_F(BraveAccountToProfilePasswordMigrationTest,
