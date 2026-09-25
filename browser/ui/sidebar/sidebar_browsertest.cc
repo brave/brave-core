@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include <algorithm>
+#include <atomic>
 #include <optional>
 
 #include "base/check.h"
@@ -15,9 +16,11 @@
 #include "base/scoped_observation.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
+#include "base/test/test_timeouts.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
@@ -56,6 +59,7 @@
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/components/sidebar/common/features.h"
+#include "brave/components/tor/buildflags/buildflags.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -65,6 +69,7 @@
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_registry.h"
@@ -83,6 +88,9 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
+#include "net/dns/mock_host_resolver.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/http_request.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "ui/base/ui_base_features.h"
@@ -112,6 +120,10 @@
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
+#endif
+
+#if BUILDFLAG(ENABLE_TOR)
+#include "brave/browser/tor/tor_profile_manager.h"
 #endif
 
 using ::testing::Eq;
@@ -2464,5 +2476,88 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithFocusMode,
   focus_mode_controller()->SetEnabled(false);
   EXPECT_FALSE(sidebar_container->IsSidebarVisible());
 }
+
+#if BUILDFLAG(ENABLE_TOR)
+class SidebarTorBrowserTest : public SidebarBrowserTest {
+ public:
+  SidebarTorBrowserTest() = default;
+  ~SidebarTorBrowserTest() override = default;
+
+  void SetUpOnMainThread() override {
+    SidebarBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
+    embedded_test_server()->RegisterRequestMonitor(base::BindRepeating(
+        &SidebarTorBrowserTest::MonitorRequest, base::Unretained(this)));
+    ASSERT_TRUE(embedded_test_server()->Start());
+  }
+
+ protected:
+  // Runs on the test server's IO thread.
+  void MonitorRequest(const net::test_server::HttpRequest& request) {
+    if (request.relative_url != "/favicon.ico") {
+      return;
+    }
+    const auto host = request.headers.find("Host");
+    if (host == request.headers.end()) {
+      return;
+    }
+    if (host->second.starts_with("tor-only.test")) {
+      ++tor_item_favicon_requests_;
+    } else if (host->second.starts_with("regular-only.test")) {
+      ++regular_item_favicon_requests_;
+    }
+  }
+
+  std::atomic<int> tor_item_favicon_requests_ = 0;
+  std::atomic<int> regular_item_favicon_requests_ = 0;
+};
+
+// A web item's favicon falls back to ImageFetcherService, which uses the
+// system network context. A Tor window must never use it, because the request
+// would go straight to the item's host instead of through Tor. The Tor proxy is
+// not reachable in tests, so any request for the Tor item's favicon that
+// reaches the test server has bypassed Tor.
+IN_PROC_BROWSER_TEST_F(SidebarTorBrowserTest,
+                       TorWindowSidebarFaviconNotFetchedOutsideTor) {
+  BrowserWindowInterface* tor_browser =
+      TorProfileManager::SwitchToTorProfile(browser()->GetProfile());
+  ASSERT_TRUE(tor_browser);
+  Profile* tor_profile = tor_browser->GetProfile();
+  ASSERT_TRUE(tor_profile->IsTor());
+  ASSERT_TRUE(tor_browser->GetFeatures().sidebar_controller());
+
+  // Add a web item in the Tor window. Its favicon is not in the regular
+  // profile's favicon database, which is the normal case for a page that was
+  // only visited over Tor.
+  SidebarServiceFactory::GetForProfile(tor_profile)
+      ->AddItem(SidebarItem::Create(
+          embedded_test_server()->GetURL("tor-only.test", "/"), u"tor-only",
+          SidebarItem::Type::kTypeWeb, SidebarItem::BuiltInItemType::kNone,
+          false));
+
+  // Opening another Tor window builds a new SidebarModel, which fetches the
+  // favicon of every stored item again.
+  chrome::OpenEmptyWindow(tor_profile);
+
+  // Control: a web item added in the regular window still gets its favicon
+  // from the network. Waiting for it makes sure the favicon lookups had time
+  // to run.
+  SidebarServiceFactory::GetForProfile(browser()->GetProfile())
+      ->AddItem(SidebarItem::Create(
+          embedded_test_server()->GetURL("regular-only.test", "/"),
+          u"regular-only", SidebarItem::Type::kTypeWeb,
+          SidebarItem::BuiltInItemType::kNone, false));
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return regular_item_favicon_requests_ > 0; }));
+
+  // Give any late request from the Tor windows a chance to arrive.
+  base::RunLoop run_loop;
+  base::SequencedTaskRunner::GetCurrentDefault()->PostDelayedTask(
+      FROM_HERE, run_loop.QuitClosure(), TestTimeouts::tiny_timeout());
+  run_loop.Run();
+
+  EXPECT_EQ(0, tor_item_favicon_requests_);
+}
+#endif  // BUILDFLAG(ENABLE_TOR)
 
 }  // namespace sidebar
