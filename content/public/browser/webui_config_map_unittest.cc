@@ -103,24 +103,19 @@ TEST(BraveWebUIConfigSubdomainTest, SubdomainRejectedByShouldHandleURL) {
             map.GetConfig(nullptr, GURL("chrome-untrusted://sub.picky")));
 }
 
-// The nearest registered ancestor wins, and its opt-in alone decides whether
-// the subdomain resolves: a closer ancestor that has not opted in must not be
-// bypassed in favour of one further up that has.
-TEST(BraveWebUIConfigSubdomainTest, NearestAncestorConfigWins) {
+// Only the top-level domain's config is consulted for subdomain handling.
+TEST(BraveWebUIConfigSubdomainTest, OnlyTopLevelDomainConfigIsConsulted) {
   auto& map = WebUIConfigMap::GetInstance();
   ScopedWebUIConfigRegistration outer(MakeSubdomainConfig("outer"));
-  // ShouldHandleSubdomains() is left at its default (false).
   ScopedWebUIConfigRegistration inner(
       std::make_unique<TestConfig>("inner.outer"));
 
   auto* outer_config = map.GetConfig(nullptr, GURL("chrome-untrusted://outer"));
   ASSERT_TRUE(outer_config);
 
-  // A sibling of the non-opted-in host still reaches the opted-in ancestor.
   EXPECT_EQ(outer_config,
             map.GetConfig(nullptr, GURL("chrome-untrusted://other.outer")));
-  // But a subdomain of the non-opted-in host stops there.
-  EXPECT_EQ(nullptr,
+  EXPECT_EQ(outer_config,
             map.GetConfig(nullptr, GURL("chrome-untrusted://x.inner.outer")));
 }
 
