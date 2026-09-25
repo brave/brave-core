@@ -658,11 +658,32 @@ test("brave_unit_tests") {
     deps += [ "//brave/components/brave_talk" ]
   }
 
-  if (enable_extensions) {
+  if (enable_extensions_core) {
     sources += [
       "//brave/browser/extensions/api/brave_extensions_api_client_unittest.cc",
       "//brave/browser/extensions/chrome_content_verifier_delegate_unittest.cc",
       "//brave/browser/extensions/install_verifier_unittest.cc",
+    ]
+
+    deps += [
+      "//brave/browser/extensions:core",
+      "//brave/browser/extensions/manifest_v2:unit_tests",
+      "//chrome/browser/extensions",
+      "//extensions/browser",
+      "//extensions/common",
+    ]
+  }
+
+  if (is_android && !is_desktop_android && enable_extensions_core) {
+    sources += [ "//brave/browser/extensions/android/brave_extension_management_unittest.cc" ]
+    deps += [
+      "//chrome/browser/flags:flags_android",
+      "//extensions:test_support",
+    ]
+  }
+
+  if (enable_extensions) {
+    sources += [
       "//brave/browser/extensions/mv2_warning_unittest.cc",
       "//brave/common/importer/chrome_importer_utils_unittest.cc",
       "//chrome/browser/extensions/extension_service_test_base.cc",
@@ -672,7 +693,6 @@ test("brave_unit_tests") {
     deps += [
       "//brave/browser/extensions",
       "//brave/browser/extensions/api:unit_tests",
-      "//brave/browser/extensions/manifest_v2:unit_tests",
       "//brave/browser/importer:unit_tests",
       "//brave/common/importer",
       "//chrome/browser/extensions",

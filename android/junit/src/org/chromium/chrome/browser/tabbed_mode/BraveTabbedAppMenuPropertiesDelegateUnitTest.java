@@ -125,6 +125,7 @@ import java.util.List;
 /** Unit tests for {@link BraveTabbedAppMenuPropertiesDelegate}. */
 @RunWith(BaseRobolectricTestRunner.class)
 @DisableFeatures({
+    BraveFeatureList.BRAVE_ANDROID_EXTENSIONS,
     BraveFeatureList.BRAVE_PLAYLIST,
     ChromeFeatureList.ANDROID_PAGE_INFO_AS_APP_MENU_ITEM,
     ChromeFeatureList.FEED_AUDIO_OVERVIEWS,
