@@ -91,12 +91,30 @@ public class BraveBottomBarUserPrefsTest {
     // flag on does not hand a bottom bar back to someone who turned that one off.
     @Test
     @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
-    public void testUnsetSettingInheritsBottomToolbarSetting() {
+    public void testUnsetSettingInheritsBottomToolbarSettingOff() {
         setBottomToolbarSetting(false);
         assertFalse(BraveBottomBarUserPrefs.isBottomBarEnabled());
         assertBottomBarGates(false);
+    }
 
+    @Test
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testUnsetSettingInheritsBottomToolbarSettingOn() {
         setBottomToolbarSetting(true);
+        assertTrue(BraveBottomBarUserPrefs.isBottomBarEnabled());
+        assertBottomBarGates(true);
+    }
+
+    // The bottom bar UI is built once per run, so a change the user declined to relaunch for must
+    // not reach the gates, while the settings screen still shows it.
+    @Test
+    @EnableFeatures(ChromeFeatureList.ANDROID_BOTTOM_BAR)
+    public void testSettingChangeAppliesOnlyAfterRelaunch() {
+        setBottomBarSetting(true);
+        assertBottomBarGates(true);
+
+        setBottomBarSetting(false);
+        assertFalse(BraveBottomBarUserPrefs.isBottomBarSettingEnabled());
         assertTrue(BraveBottomBarUserPrefs.isBottomBarEnabled());
         assertBottomBarGates(true);
     }

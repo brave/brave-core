@@ -15,7 +15,6 @@ import android.view.ViewStub;
 import androidx.annotation.VisibleForTesting;
 import androidx.appcompat.app.AppCompatActivity;
 
-import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.Callback;
 import org.chromium.base.CallbackController;
 import org.chromium.base.ContextUtils;
@@ -816,10 +815,9 @@ public class BraveToolbarManager extends ToolbarManager
     public void onSharedPreferenceChanged(
             SharedPreferences sharedPreferences, @Nullable String key) {
         if (ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED.equals(key)) {
-            if (sharedPreferences.getBoolean(
-                    BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, true)) {
-                updateBraveBottomControlsVisibility();
-            }
+            // Also refreshes whether the menu opens from the bottom, which follows the address
+            // bar position even with the bottom controls off.
+            updateBraveBottomControlsVisibility();
         }
     }
 

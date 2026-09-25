@@ -178,7 +178,7 @@ public class BraveAppearancePreferencesTest {
         startSettings();
 
         Assert.assertFalse(ChromeSharedPreferences.getInstance().contains(key));
-        assertTrue(BraveBottomBarUserPrefs.isBottomBarEnabled());
+        assertTrue(BraveBottomBarUserPrefs.isBottomBarSettingEnabled());
     }
 
     @Test
