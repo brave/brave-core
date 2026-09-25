@@ -46,6 +46,7 @@ namespace brave_wallet {
 namespace {
 
 constexpr char kTestOrigin[] = "https://brave.com";
+constexpr char kSr25519[] = "sr25519";
 
 class MockBraveWalletProviderDelegate : public BraveWalletProviderDelegate {
  public:
@@ -432,7 +433,10 @@ TEST_F(PolkadotProviderImplUnitTest, Enable_GrantedRemoteServesTheAccount) {
   ASSERT_FALSE(accounts_error);
   ASSERT_TRUE(accounts);
   ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_EQ(accounts->at(0)->address, account->address);
+  EXPECT_THAT(accounts->at(0),
+              EqualsMojo(mojom::PolkadotInjectedAccount::New(
+                  account->address, /*genesis_hash=*/std::nullopt,
+                  account->name, kSr25519)));
 }
 
 TEST_F(PolkadotProviderImplUnitTest, Enable_TabInactive) {
