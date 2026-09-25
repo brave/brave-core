@@ -50,6 +50,7 @@ public class BraveIntentHandler {
     private static final String SOURCE = "source";
     private static final String ANDROID = "android";
     private static final String ANDROID_WIDGET = "android-widget";
+    public static final String ANDROID_QUICK_SEARCH = "android-quicksearch";
 
     /**
      * Helper method to extract the raw URL from the intent, without further processing. The URL may
@@ -79,6 +80,20 @@ public class BraveIntentHandler {
             return url;
         }
 
+        return maybeReplaceBraveSearchSource(url, ANDROID_WIDGET);
+    }
+
+    /**
+     * Relabels where a Brave Search query came from, so the search backend can tell an omnibox
+     * search from one started elsewhere in the app.
+     *
+     * @param url The search URL to rewrite.
+     * @param newSource The value to put in the `source` parameter, e.g. {@link
+     *     #ANDROID_QUICK_SEARCH}.
+     * @return The rewritten URL, or {@code url} unchanged when it is not a Brave Search URL
+     *     carrying the default `source=android`.
+     */
+    public static String maybeReplaceBraveSearchSource(final String url, final String newSource) {
         final Uri parsedUrl = Uri.parse(url);
         final String host = parsedUrl.getHost();
         final String source = parsedUrl.getQueryParameter(SOURCE);
@@ -135,9 +150,9 @@ public class BraveIntentHandler {
                     && ANDROID.equals(Uri.decode(pair.substring(eq + 1)))) {
                 // Keep the original "source=" prefix (preserving any
                 // encoding the caller used in the name) and substitute just
-                // the value. Uri.encode() percent-encodes ANDROID_WIDGET
-                // safely, though "android-widget" has no chars that need it.
-                newQuery.append(pair, 0, eq + 1).append(Uri.encode(ANDROID_WIDGET));
+                // the value. Uri.encode() percent-encodes the new source
+                // safely, though our own values have no chars that need it.
+                newQuery.append(pair, 0, eq + 1).append(Uri.encode(newSource));
             } else {
                 // Any other parameter including the search query `q`
                 // passes through untouched, byte-for-byte.

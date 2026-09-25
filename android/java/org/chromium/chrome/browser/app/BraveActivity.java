@@ -3177,12 +3177,16 @@ public abstract class BraveActivity extends ChromeActivity
                     GOOGLE_SEARCH_ENGINE_KEYWORD.equals(quickSearchEnginesModel.getKeyword())
                             ? QuickSearchEnginesUtil.GOOGLE_SEARCH_ENGINE_URL
                             : quickSearchEnginesModel.getUrl();
-            LoadUrlParams loadUrlParams =
-                    new LoadUrlParams(
-                            quickSearchEngineUrl
-                                    .replace("{searchTerms}", query)
-                                    .replace("{inputEncoding}", "UTF-8"));
-            getActivityTab().loadUrl(loadUrlParams);
+            String searchUrl =
+                    quickSearchEngineUrl
+                            .replace("{searchTerms}", query)
+                            .replace("{inputEncoding}", "UTF-8");
+            // Tells the Brave search backend the query started from the quick search bar.
+            // Leaves any other engine's URL untouched.
+            searchUrl =
+                    BraveIntentHandler.maybeReplaceBraveSearchSource(
+                            searchUrl, BraveIntentHandler.ANDROID_QUICK_SEARCH);
+            getActivityTab().loadUrl(new LoadUrlParams(searchUrl));
         }
         getBraveToolbarLayout().clearOmniboxFocus();
     }
