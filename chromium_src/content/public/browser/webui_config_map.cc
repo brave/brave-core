@@ -17,13 +17,11 @@
 namespace content {
 namespace {
 
-// If `url`'s host is a single-label subdomain of a host with a registered
+// If `url`'s host is a subdomain under a top-level domain with a registered
 // chrome-untrusted:// config that opts into handling its own subdomains via
-// WebUIConfig::ShouldHandleSubdomains(), returns that config (e.g.
-// chrome-untrusted://<id>.leo-workspace resolves to the config registered for
-// chrome-untrusted://leo-workspace). Otherwise returns `configs.end()`.
-// Called from WebUIConfigMap::GetConfig() via the plaster for
-// content/public/browser/webui_config_map.cc.
+// WebUIConfig::ShouldHandleSubdomains(), returns that config. Returns
+// `configs.end()` otherwise. Called from WebUIConfigMap::GetConfig() via the
+// plaster for content/public/browser/webui_config_map.cc.
 std::map<url::Origin, std::unique_ptr<WebUIConfig>>::iterator
 FindConfigForSubdomain(
     std::map<url::Origin, std::unique_ptr<WebUIConfig>>& configs,
@@ -34,17 +32,19 @@ FindConfigForSubdomain(
   if (url.scheme() != kChromeUIUntrustedScheme) {
     return configs.end();
   }
-  const std::string_view host = url.host();
-  const size_t dot = host.find('.');
+  // Look up the config by the top-level domain only.
+  std::string_view host = url.host();
+  const size_t dot = host.rfind('.');
   if (dot == std::string_view::npos) {
     return configs.end();
   }
+  host = host.substr(dot + 1);
   GURL::Replacements replacements;
-  replacements.SetHostStr(host.substr(dot + 1));
+  replacements.SetHostStr(host);
   const auto parent_origin =
       url::Origin::Create(url.ReplaceComponents(replacements));
   const auto origin_and_config = configs.find(parent_origin);
-  if (origin_and_config != configs.end() &&
+  if (origin_and_config == configs.end() ||
       !origin_and_config->second->ShouldHandleSubdomains()) {
     return configs.end();
   }
