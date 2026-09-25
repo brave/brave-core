@@ -108,10 +108,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return vertical_tab_controller_.get();
   }
 
-  WorkspacesBubbleController* workspaces_bubble_controller() {
-    return workspaces_bubble_controller_.get();
-  }
-
   void SetVerticalTabControllerForTesting(
       std::unique_ptr<VerticalTabController> vertical_tab_controller);
 

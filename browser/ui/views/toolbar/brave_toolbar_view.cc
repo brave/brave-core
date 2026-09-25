@@ -852,7 +852,7 @@ void BraveToolbarView::CreateWorkspaceButtonIfNeeded() {
 }
 
 void BraveToolbarView::OnWorkspacesButtonPressed() {
-  auto* controller = browser_->GetFeatures().workspaces_bubble_controller();
+  auto* controller = WorkspacesBubbleController::From(browser_);
   CHECK(controller);
   controller->ShowBubble(workspaces_button_, browser_->GetProfile());
 }
