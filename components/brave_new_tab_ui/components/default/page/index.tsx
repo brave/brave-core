@@ -24,7 +24,7 @@ interface HasImageProps {
   imageHasLoaded: boolean
   imageSrc?: string
   colorForBackground?: string
-  hasSponsoredRichMediaBackground: boolean
+  hasDynamicNewTabTakeover: boolean
 }
 
 type AppProps = {
@@ -119,7 +119,7 @@ const StyledPage = styled('div') <PageProps>`
     align-items: center;
   }
 
-  ${p => p.hasSponsoredRichMediaBackground && pointerEventPassthrough}
+  ${p => p.hasDynamicNewTabTakeover && pointerEventPassthrough}
 `
 
 export const Page: React.FunctionComponent<React.PropsWithChildren<PageProps>> = (props) => {
@@ -332,7 +332,7 @@ export const FooterContent = styled('div')`
 
 // Gets the value of the CSS `background` property.
 function getBackground(p: HasImageProps) {
-  if (p.hasSponsoredRichMediaBackground) {
+  if (p.hasDynamicNewTabTakeover) {
     return ''
   }
 

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_ad_event_handler.h"
 
 #include <utility>
 
@@ -40,21 +40,21 @@ bool ShouldReportNewTabPageAdEvent(
 
 }  // namespace
 
-NTPSponsoredRichMediaAdEventHandler::NTPSponsoredRichMediaAdEventHandler(
+NTPDynamicNewTabTakeoverAdEventHandler::NTPDynamicNewTabTakeoverAdEventHandler(
     brave_ads::AdsService* ads_service)
     : ads_service_(ads_service) {}
 
-NTPSponsoredRichMediaAdEventHandler::~NTPSponsoredRichMediaAdEventHandler() =
-    default;
+NTPDynamicNewTabTakeoverAdEventHandler::
+    ~NTPDynamicNewTabTakeoverAdEventHandler() = default;
 
-void NTPSponsoredRichMediaAdEventHandler::Bind(
-    mojo::PendingReceiver<mojom::SponsoredRichMediaAdEventHandler>
+void NTPDynamicNewTabTakeoverAdEventHandler::Bind(
+    mojo::PendingReceiver<mojom::SponsoredContentAdEventHandler>
         pending_receiver) {
   receiver_.reset();
   receiver_.Bind(std::move(pending_receiver));
 }
 
-void NTPSponsoredRichMediaAdEventHandler::MaybeReportRichMediaAdEvent(
+void NTPDynamicNewTabTakeoverAdEventHandler::MaybeReportSponsoredContentAdEvent(
     const std::string& placement_id,
     const std::string& creative_instance_id,
     brave_ads::mojom::NewTabPageAdMetricType mojom_ad_metric_type,

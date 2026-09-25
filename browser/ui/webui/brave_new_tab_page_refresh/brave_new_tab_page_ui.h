@@ -49,7 +49,7 @@ class HistoryUIHandler;
 #endif
 
 namespace ntp_background_images {
-class NTPSponsoredRichMediaAdEventHandler;
+class NTPDynamicNewTabTakeoverAdEventHandler;
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -77,7 +77,7 @@ class BraveNewTabPageUI : public ui::MojoWebUIController,
 
   void BindInterface(
       mojo::PendingReceiver<
-          ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
+          ntp_background_images::mojom::SponsoredContentAdEventHandler>
           receiver);
 
   // Instantiates the implementor of the searchbox::mojom::PageHandlerFactory
@@ -134,8 +134,8 @@ class BraveNewTabPageUI : public ui::MojoWebUIController,
 
   std::unique_ptr<brave_new_tab_page_refresh::mojom::NewTabPageHandler>
       page_handler_;
-  std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
-      rich_media_ad_event_handler_;
+  std::unique_ptr<ntp_background_images::NTPDynamicNewTabTakeoverAdEventHandler>
+      sponsored_content_ad_event_handler_;
   std::unique_ptr<RealboxHandler> realbox_handler_;
   mojo::Receiver<searchbox::mojom::PageHandlerFactory>
       searchbox_page_factory_receiver_{this};

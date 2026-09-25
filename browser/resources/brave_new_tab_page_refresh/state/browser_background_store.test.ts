@@ -12,7 +12,7 @@ jest.mock('./new_tab_page_proxy')
 jest.mock(
   'gen/brave/components/ntp_background_images/browser/mojom/'
     + 'ntp_background_images.mojom.m.js',
-  () => ({ SponsoredRichMediaAdEventHandler: { getRemote: () => ({}) } }),
+  () => ({ SponsoredContentAdEventHandler: { getRemote: () => ({}) } }),
 )
 
 function createMockNewTabPageProxy() {

@@ -31,8 +31,10 @@ struct AutocompleteMatch {
 interface NewTabTakeover {
   SetPage(pending_remote<NewTabTakeoverPage> page);
 
-  SetSponsoredRichMediaAdEventHandler(
-      pending_receiver<ntp_background_images.mojom.SponsoredRichMediaAdEventHandler> event_handler);
+  SetSponsoredContentAdEventHandler(
+      pending_receiver<
+          ntp_background_images.mojom.SponsoredContentAdEventHandler>
+          event_handler);
 
   GetCurrentWallpaper(string creative_instance_id) =>
       (url.mojom.Url? url,

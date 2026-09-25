@@ -773,8 +773,7 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
           .Add<brave_news::mojom::BraveNewsController>()
 #endif
-          .Add<
-              ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>();
+          .Add<ntp_background_images::mojom::SponsoredContentAdEventHandler>();
 
   auto ntp_registration =
       registry.ForWebUI<BraveNewTabUI>()

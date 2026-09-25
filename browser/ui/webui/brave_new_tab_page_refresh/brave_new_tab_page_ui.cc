@@ -25,7 +25,7 @@
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/misc_metrics/page_metrics.h"
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_ad_event_handler.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/contextual_search/contextual_search_service_factory.h"
@@ -146,17 +146,17 @@ void BraveNewTabPageUI::BindInterface(
 
 void BraveNewTabPageUI::BindInterface(
     mojo::PendingReceiver<
-        ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
+        ntp_background_images::mojom::SponsoredContentAdEventHandler>
         receiver) {
-  rich_media_ad_event_handler_ = std::make_unique<
-      ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
+  sponsored_content_ad_event_handler_ = std::make_unique<
+      ntp_background_images::NTPDynamicNewTabTakeoverAdEventHandler>(
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
       brave_ads::AdsServiceFactory::GetForProfile(Profile::FromWebUI(web_ui()))
 #else
       nullptr
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   );
-  rich_media_ad_event_handler_->Bind(std::move(receiver));
+  sponsored_content_ad_event_handler_->Bind(std::move(receiver));
 }
 
 void BraveNewTabPageUI::BindInterface(
