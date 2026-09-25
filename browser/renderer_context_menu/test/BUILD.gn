@@ -23,6 +23,7 @@ source_set("unit_tests") {
     "//testing/gmock",
     "//testing/gtest",
     "//third_party/abseil-cpp:absl",
+    "//ui/base/clipboard:clipboard_test_support",
   ]
 
   if (enable_ai_chat) {
