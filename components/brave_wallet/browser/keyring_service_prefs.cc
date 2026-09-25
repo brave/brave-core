@@ -166,7 +166,8 @@ std::string GetSelectedDappAccountFromPrefs(PrefService* profile_prefs,
   const char* pref_name =
       dapp_coin == mojom::CoinType::ETH   ? kBraveWalletSelectedEthDappAccount
       : dapp_coin == mojom::CoinType::SOL ? kBraveWalletSelectedSolDappAccount
-                                          : kBraveWalletSelectedAdaDappAccount;
+      : dapp_coin == mojom::CoinType::ADA ? kBraveWalletSelectedAdaDappAccount
+                                          : kBraveWalletSelectedDotDappAccount;
 
   return profile_prefs->GetString(pref_name);
 }
@@ -178,7 +179,8 @@ bool SetSelectedDappAccountInPrefs(PrefService* profile_prefs,
   const char* pref_name =
       dapp_coin == mojom::CoinType::ETH   ? kBraveWalletSelectedEthDappAccount
       : dapp_coin == mojom::CoinType::SOL ? kBraveWalletSelectedSolDappAccount
-                                          : kBraveWalletSelectedAdaDappAccount;
+      : dapp_coin == mojom::CoinType::ADA ? kBraveWalletSelectedAdaDappAccount
+                                          : kBraveWalletSelectedDotDappAccount;
   if (unique_key == profile_prefs->GetString(pref_name)) {
     return false;
   }

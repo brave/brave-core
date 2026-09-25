@@ -3891,7 +3891,6 @@ mojom::AccountInfoPtr KeyringService::GetSelectedDappAccount(
   }
 
   auto unique_key = GetSelectedDappAccountFromPrefs(profile_prefs_, coin);
-
   for (auto keyring_id : keyring_ids) {
     for (auto& account_info : GetAccountInfosForKeyring(keyring_id)) {
       if (account_info->account_id->unique_key == unique_key) {
