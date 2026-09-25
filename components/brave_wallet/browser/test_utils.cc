@@ -9,12 +9,14 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/notreached.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
@@ -80,6 +82,17 @@ base::FilePath BraveWalletComponentsTestDataFolder() {
       .AppendASCII("test")
       .AppendASCII("data")
       .AppendASCII("brave_wallet");
+}
+
+std::string ReadTestSnapBundle() {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+  base::FilePath path = BraveWalletTestDataFolder()
+                            .AppendASCII("snap")
+                            .AppendASCII("test_snap")
+                            .AppendASCII("bundle.js");
+  std::string contents;
+  CHECK(base::ReadFileToString(path, &contents));
+  return contents;
 }
 
 base::FilePath BraveWalletTestDataFolder() {

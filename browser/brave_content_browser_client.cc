@@ -746,6 +746,12 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
       .Add<brave_rewards::mojom::RewardsPageHandler>()
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
       ;
+#if BUILDFLAG(ENABLE_SNAP)
+  if (brave_wallet::IsSnapFeatureEnabled()) {
+    registry.ForWebUI<brave_wallet::WalletPageUI>()
+        .Add<brave_wallet::mojom::SnapService>();
+  }
+#endif  // BUILDFLAG(ENABLE_SNAP)
 #if !BUILDFLAG(IS_ANDROID)
   registry.ForWebUI<WalletPanelUI>()
       .Add<brave_wallet::mojom::PanelHandlerFactory>()

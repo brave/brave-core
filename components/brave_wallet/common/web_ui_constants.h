@@ -33,5 +33,7 @@ inline constexpr char kUntrustedMarketURL[] =
 inline constexpr char kUntrustedTrezorHost[] = "trezor-bridge";
 inline constexpr char kUntrustedTrezorURL[] =
     "chrome-untrusted://trezor-bridge/";
+inline constexpr char kUntrustedSnapHost[] = "snap-host";
+inline constexpr char kUntrustedSnapURL[] = "chrome-untrusted://snap-host/";
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_COMMON_WEB_UI_CONSTANTS_H_

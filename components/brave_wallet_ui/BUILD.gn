@@ -36,6 +36,12 @@ repack("resources") {
       "$root_gen_dir/brave/components/ledger_bridge/resources/ledger_bridge_generated.pak",
       "$root_gen_dir/brave/components/trezor_bridge/resources/trezor_bridge_generated.pak",
     ]
+
+    if (enable_snap) {
+      deps +=
+          [ "//brave/components/brave_wallet_ui/snap_host:snap_host_generated" ]
+      sources += [ "$root_gen_dir/brave/components/snap_host/resources/snap_host_generated.pak" ]
+    }
   }
 
   output =

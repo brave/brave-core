@@ -60,6 +60,10 @@
 #include "url/origin.h"
 #include "url/url_constants.h"
 
+#if BUILDFLAG(ENABLE_SNAP)
+#include "brave/components/brave_wallet/browser/snap_service.h"
+#endif
+
 namespace brave_wallet {
 
 // DEPRECATED 01/2024. For migration only.
@@ -291,6 +295,12 @@ BraveWalletService::BraveWalletService(
         *keyring_service(), *network_manager(), *profile_prefs,
         url_loader_factory);
   }
+
+#if BUILDFLAG(ENABLE_SNAP)
+  if (IsSnapFeatureEnabled()) {
+    snap_service_ = std::make_unique<SnapService>();
+  }
+#endif
 
   tx_service_ = std::make_unique<TxService>(
       json_rpc_service(), GetBitcoinWalletService(), GetZcashWalletService(),

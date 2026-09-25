@@ -45,7 +45,9 @@ BASE_DECLARE_FEATURE(kBraveWalletAnkrBalancesFeature);
 BASE_DECLARE_FEATURE(kBraveWalletTransactionSimulationsFeature);
 BASE_DECLARE_FEATURE(kBraveWalletAccountHidingFeature);
 
-BASE_DECLARE_FEATURE(kBraveWalletSnapsFeature);
+#if BUILDFLAG(ENABLE_SNAP)
+BASE_DECLARE_FEATURE(kBraveWalletSnapFeature);
+#endif
 
 BASE_DECLARE_FEATURE(kBraveWalletSidePanel);
 

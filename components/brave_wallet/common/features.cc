@@ -91,9 +91,9 @@ BASE_FEATURE(kBraveWalletAccountHidingFeature,
 #endif
 );
 
-BASE_FEATURE(kBraveWalletSnapsFeature,
-             "BraveWalletSnaps",
-             base::FEATURE_DISABLED_BY_DEFAULT);
+#if BUILDFLAG(ENABLE_SNAP)
+BASE_FEATURE(kBraveWalletSnapFeature, base::FEATURE_DISABLED_BY_DEFAULT);
+#endif
 
 BASE_FEATURE(kBraveWalletSidePanel, base::FEATURE_DISABLED_BY_DEFAULT);
 
