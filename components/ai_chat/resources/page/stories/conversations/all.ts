@@ -317,7 +317,8 @@ const conversation: ConversationDataJson = {
             'isServerResult': false,
             'id': 'abc123e',
             'toolName': 'user_choice_tool',
-            'argumentsJson': '{"choices":["7:00pm","8:00pm"]}',
+            'argumentsJson':
+              '{"choice_type":"preference","choices":["7:00pm","8:00pm"]}',
           },
         },
         {
@@ -325,7 +326,8 @@ const conversation: ConversationDataJson = {
             'isServerResult': false,
             'id': 'abc123f',
             'toolName': 'user_choice_tool',
-            'argumentsJson': '{"choices":["7:00pm","8:00pm"]}',
+            'argumentsJson':
+              '{"choice_type":"preference","choices":["7:00pm","8:00pm"]}',
           },
         },
       ],

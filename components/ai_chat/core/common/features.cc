@@ -75,7 +75,7 @@ bool IsAIChatFirstEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatFirst);
 }
 
-BASE_FEATURE(kAIChatUserChoiceTool, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kAIChatUserChoiceTool, base::FEATURE_ENABLED_BY_DEFAULT);
 
 // Enables experimental "workspace" local coding-agent tools that let Leo view,
 // search, and edit files within a user-selected local folder.

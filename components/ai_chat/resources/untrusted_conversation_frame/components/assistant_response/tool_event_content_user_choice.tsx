@@ -12,11 +12,22 @@ import { useUntrustedConversationContext } from '../../untrusted_conversation_co
 import type { ToolComponent, ToolUseContent } from './tool_event'
 import styles from './tool_event.module.scss'
 
+// Matches the choice_type input property values of the user choice tool. Any
+// other value, including a missing one, is treated as a preference choice.
+const FOLLOW_UP_CHOICE_TYPE = 'follow_up'
+
 const ToolEventContentUserChoice: ToolComponent = (props) => {
   const context = useUntrustedConversationContext()
   const content: ToolUseContent = {
     toolLabel: null,
     expandedContent: null,
+  }
+
+  // Follow-ups are questions the user could ask next, not a decision the
+  // assistant is waiting on. The browser moves them to the conversation's
+  // suggested questions, so nothing is displayed with the response itself.
+  if (props.toolInput?.choice_type === FOLLOW_UP_CHOICE_TYPE) {
+    return props.children(content)
   }
 
   if (props.toolUseEvent.output) {

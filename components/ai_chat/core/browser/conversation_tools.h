@@ -6,13 +6,25 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_TOOLS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONVERSATION_TOOLS_H_
 
+#include <optional>
+#include <string>
 #include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 
 namespace ai_chat {
+
+// The user choice tool asks the user to provide the tool's output, except when
+// it is offering follow-up suggestions - those mark the end of the assistant's
+// turn and the user is free to ignore them. If |tool_use| is such a request,
+// returns its suggestion titles, which may be empty if the assistant didn't
+// provide any usable ones. Returns nullopt for any other tool use, including a
+// user choice which the assistant is waiting on an answer for.
+std::optional<std::vector<std::string>> GetFollowUpSuggestionsFromToolUse(
+    const mojom::ToolUseEvent& tool_use);
 
 class ConversationToolProvider : public ToolProvider {
  public:
