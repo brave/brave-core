@@ -1,20 +1,28 @@
 diff --git a/third_party/android_deps/autorolled/BUILD.gn b/third_party/android_deps/autorolled/BUILD.gn
-index 79e9e4dd8a400e5502e3565820879b618d7f31de..bfa8e8f8a1744ae5dfe441ce166e7e8609965e19 100644
+index 79e9e4dd8a400e5502e3565820879b618d7f31de..156c104b55719f81b75e0927b244b286a98ca02a 100644
 --- a/third_party/android_deps/autorolled/BUILD.gn
 +++ b/third_party/android_deps/autorolled/BUILD.gn
-@@ -1138,6 +1138,7 @@ template("define_autorolled_targets") {
-           "$google_play_services_package:google_firebase_firebase_encoders_json_java",
-           "//third_party/androidx:androidx_annotation_annotation_java",
-         ]
-+        import("//brave/third_party/android_deps/sources.gni") visibility += brave_third_party_android_deps_visibility
-       }
-     }
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-@@ -1163,6 +1164,7 @@ template("define_autorolled_targets") {
-           "//third_party/android_deps:javax_inject_javax_inject_java",
-           "//third_party/androidx:androidx_annotation_annotation_java",
-         ]
-+        import("//brave/third_party/android_deps/sources.gni") visibility += brave_third_party_android_deps_visibility
-       }
-     }
++import("//brave/third_party/android_deps/sources.gni")
+ import("//build/config/android/rules.gni")
  
+ template("define_autorolled_targets") {
+@@ -1131,6 +1132,7 @@ template("define_autorolled_targets") {
+           ":*",
+           "//third_party/androidx:*",
+         ]
++        visibility += brave_third_party_android_deps_visibility
+         deps = [
+           "$google_play_services_package:google_android_datatransport_transport_api_java",
+           "$google_play_services_package:google_android_datatransport_transport_runtime_java",
+@@ -1156,6 +1158,7 @@ template("define_autorolled_targets") {
+           ":*",
+           "//third_party/androidx:*",
+         ]
++        visibility += brave_third_party_android_deps_visibility
+         deps = [
+           "$google_play_services_package:google_android_datatransport_transport_api_java",
+           "$google_play_services_package:google_firebase_firebase_encoders_java",

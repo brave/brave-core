@@ -1,20 +1,28 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index f261c72029a989e0fc0cdf0f7042b1bc12b84e07..842e3e14fe639cebbfcb2b95a50d09dbf3b6fc10 100644
+index f261c72029a989e0fc0cdf0f7042b1bc12b84e07..9596dfc422475fac93feb266049012d92d262efe 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -3336,6 +3336,7 @@ source_set("browser") {
-       "//chrome/browser/safe_browsing/suspicious_site_warnings",
-     ]
-   }
-+  public_deps += [ "//brave/browser:core" ]
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-   # This target intentionally has no sources of its own and no
-   # allow_circular_includes_from; it only aggregates dependencies. Do NOT add
-@@ -3505,6 +3506,7 @@ group("browser_public_dependencies") {
-       "//components/offline_pages/core/background:background_offliner",
-     ]
-   }
-+  import("//brave/browser/sources.gni") public_deps += brave_chrome_browser_public_deps
- }
- 
- # All generated files in //chrome/browser/ depended on by
++import("//brave/browser/sources.gni")
+ import("//base/allocator/allocator.gni")
+ import("//build/buildflag_header.gni")
+ import("//build/config/buildflags_paint_preview.gni")
+@@ -2011,6 +2012,7 @@ source_set("browser") {
+     # should be added to browser_generated_files.
+     ":browser_public_dependencies",
+     ":core",
++    "//brave/browser:core",
+     "//chrome/browser/accessibility/accessibility_prefs",
+     "//chrome/browser/browsing_data",
+     "//chrome/browser/download",
+@@ -3435,6 +3437,7 @@ group("browser_public_dependencies") {
+     "//sql",
+     "//ui/lottie",
+   ]
++  public_deps += brave_chrome_browser_public_deps
+   if (is_android) {
+     public_deps += [
+       "//chrome/android/features/dev_ui:buildflags",

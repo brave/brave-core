@@ -4716,6 +4716,76 @@ class RewriterFormsTest(unittest.TestCase):
                 '      type: action\n')
         self.assertIn('found no body for target', str(ctx.exception))
 
+    # Two templates each declaring an `action(target_name)`, the second one
+    # inside an `if`, which `type:` alone cannot tell apart.
+    _TWO_TEMPLATES = ('template("collect") {\n'
+                      '  action(target_name) {\n    deps = []\n  }\n}\n\n'
+                      'template("generate") {\n  if (is_win) {\n'
+                      '    action(target_name) {\n      deps = []\n    }\n'
+                      '  }\n}\n')
+
+    def test_add_literal_to_list_template_picks_a_template_apart(self):
+        # The template is named, so the append lands in its action -- found
+        # inside the `if` -- and not in the other template's.
+        result = self._apply(
+            'template_scope.gni', self._TWO_TEMPLATES, 'substitutions:\n'
+            '  - description: add to the generate action only\n'
+            '    add_literal_to_list:\n'
+            '      target: target_name\n'
+            '      type: action\n'
+            '      template: generate\n'
+            '      list_name: deps\n'
+            '      literal: brave_deps\n')
+        self.assertEqual(
+            result, 'template("collect") {\n'
+            '  action(target_name) {\n    deps = []\n  }\n}\n\n'
+            'template("generate") {\n  if (is_win) {\n'
+            '    action(target_name) {\n      deps = []\n'
+            '      deps += brave_deps\n    }\n  }\n}\n')
+
+    def test_add_literal_to_list_two_templates_need_template(self):
+        # Without it the two declarations are ambiguous, and the refusal names
+        # the field that resolves them.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'template_ambiguous.gni', self._TWO_TEMPLATES,
+                'substitutions:\n'
+                '  - description: ambiguous across templates\n'
+                '    add_literal_to_list:\n'
+                '      target: target_name\n'
+                '      type: action\n'
+                '      list_name: deps\n'
+                '      literal: brave_deps\n')
+        message = str(ctx.exception)
+        self.assertIn('found 2 declarations of target', message)
+        self.assertIn('`template:`', message)
+
+    def test_add_literal_to_list_template_leaves_other_targets_out(self):
+        # A target outside the named template is not a candidate at all.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'template_outside.gn', 'source_set("b") {\n  deps = []\n}\n',
+                'substitutions:\n'
+                '  - description: target is not in that template\n'
+                '    add_literal_to_list:\n'
+                '      target: b\n'
+                '      template: generate\n'
+                '      list_name: deps\n'
+                '      literal: brave_deps\n')
+        self.assertIn('found no body for target', str(ctx.exception))
+
+    def test_add_literal_to_list_empty_template_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: blank template\n'
+            '    add_literal_to_list:\n'
+            '      target: target_name\n'
+            '      list_name: deps\n'
+            '      literal: brave_deps\n'
+            "      template: ''\n",
+            'add_literal_to_list `template` must be a non-empty string',
+            name='validation.gni')
+
     def test_add_literal_to_list_ambiguous_target_names_type(self):
         # The refusal points at the field that resolves it.
         with self.assertRaises(plaster.PlasterApplyError) as ctx:
@@ -4840,6 +4910,23 @@ class RewriterFormsTest(unittest.TestCase):
             self._GN_HEADER + 'import("//brave/utility/sources.gni")\n\n'
             'source_set("utility") {\n  sources = [ "u.cc" ]\n'
             '  sources += brave_utility_sources\n}\n')
+
+    def test_append_to_target_template_picks_a_template_apart(self):
+        result = self._apply(
+            'append_template.gni', self._TWO_TEMPLATES, 'substitutions:\n'
+            '  - description: append to the collect action only\n'
+            '    append_to_target:\n'
+            '      target: target_name\n'
+            '      type: action\n'
+            '      template: collect\n'
+            '      code: deps += brave_deps\n')
+        self.assertEqual(
+            result, 'template("collect") {\n'
+            '  action(target_name) {\n    deps = []\n'
+            '    deps += brave_deps\n  }\n}\n\n'
+            'template("generate") {\n  if (is_win) {\n'
+            '    action(target_name) {\n      deps = []\n    }\n'
+            '  }\n}\n')
 
     def test_append_to_target_type_picks_a_declaration_apart(self):
         result = self._apply(

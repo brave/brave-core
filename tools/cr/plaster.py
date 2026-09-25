@@ -2517,6 +2517,9 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
           assignment when the target does not have it.
         - `type` — optional call declaring the target, e.g. `source_set`,
           narrowing `target` to that declaration.
+        - `template` — optional `template()` holding the target, e.g.
+          `generate_bindings`, for a target declared through `target_name`
+          in a file where more than one template does so.
         - `assume_defined` — optional flag indicating that the attribute has
           been defined elsewhere, always using `+=` for assignment.
 
@@ -2574,11 +2577,13 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
 
     def __init__(self, *, target: str, list_name: str, literal: str,
                  import_path: str, conditional: str, assume_defined: bool,
-                 target_type: str):
+                 target_type: str, template: str):
         super().__init__()
         self._target = target
         # Empty when the plaster entry gave no `type:`.
         self._target_type = target_type
+        # Empty when the plaster entry gave no `template:`.
+        self._template = template
         self._list_name = list_name
         self._literal = literal
 
@@ -2629,6 +2634,7 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
         inputs = {
             'target': self._target,
             'type': _gn_type_pattern(self._target_type),
+            **_gn_template_inputs(self._template),
             'list_name': self._list_name,
         }
         # This rewriter only supports count one, so if an attribute is declared
@@ -2641,7 +2647,8 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
             return (f'{self.NAME} found {len(bodies)} declarations of target '
                     f'{self._target!r} and cannot tell which one the literal '
                     f'belongs in; name what declares the one you mean with '
-                    f'`type:`, or patch it by hand')
+                    f'`type:` or the template holding it with `template:`, or '
+                    f'patch it by hand')
 
         if self._conditional:
             return self._add_conditional_literal(engine, inputs)
@@ -2770,7 +2777,7 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
             raise ValueError(
                 f'"{cls.NAME}" must be a mapping (in "{description}")')
         required = {'target', 'list_name', 'literal'}
-        optional = {'import', 'conditional', 'type'}
+        optional = {'import', 'conditional', 'type', 'template'}
         flags = {'assume_defined'}
         unknown = sorted(set(body) - required - optional - flags)
         if unknown:
@@ -2804,7 +2811,8 @@ class GnAddLiteralToListRewriter(_AstGrepRewriter):
                    import_path=body.get('import', ''),
                    conditional=body.get('conditional', ''),
                    assume_defined=assume_defined,
-                   target_type=body.get('type', ''))
+                   target_type=body.get('type', ''),
+                   template=body.get('template', ''))
 
 
 def _gn_type_pattern(target_type: str) -> str:
@@ -2814,6 +2822,22 @@ def _gn_type_pattern(target_type: str) -> str:
     passes a pattern matching whichever call it happens to be.
     """
     return f'^{re.escape(target_type)}$' if target_type else '.'
+
+
+# A pattern no text matches, for switching off a branch of a matcher's `any`.
+_GN_NEVER: Final = r'\b\B'
+
+
+def _gn_template_inputs(template: str) -> dict[str, str]:
+    """The inputs confining a target matcher to one `template()`, or not.
+
+    With no template named, `unscoped` matches anything, which satisfies the
+    matcher's scope on its own; with one, it matches nothing, leaving only
+    the branch that places the target inside that template.
+    """
+    if not template:
+        return {'template': '.', 'unscoped': '.'}
+    return {'template': f'^"{re.escape(template)}"$', 'unscoped': _GN_NEVER}
 
 
 def _add_gn_import(engine: AstRewriter, import_path: str,
@@ -3118,6 +3142,9 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
           block is indented to the target's body level for you.
         - `type` — optional call declaring the target, e.g. `source_set`,
           narrowing `target` to that declaration.
+        - `template` — optional `template()` holding the target, e.g.
+          `generate_bindings`, for a target declared through `target_name`
+          in a file where more than one template does so.
 
         Example:
 
@@ -3146,12 +3173,15 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
     # One level of GN body indentation. gn format fixes this at two spaces.
     _BODY_INDENT: Final = '  '
 
-    def __init__(self, *, target: str, code: str, target_type: str):
+    def __init__(self, *, target: str, code: str, target_type: str,
+                 template: str):
         super().__init__()
         self._target = target
         self._code = code
         # Empty when the plaster entry gave no `type:`.
         self._target_type = target_type
+        # Empty when the plaster entry gave no `template:`.
+        self._template = template
 
     @classmethod
     def validate_count(cls, count: int, description: str) -> None:
@@ -3182,6 +3212,7 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
         inputs = {
             'target': self._target,
             'type': _gn_type_pattern(self._target_type),
+            **_gn_template_inputs(self._template),
         }
         bodies = engine.matches(Operation(self._FIND_BODY, inputs))
         if not bodies:
@@ -3190,7 +3221,8 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
             return (f'{self.NAME} found {len(bodies)} declarations of target '
                     f'{self._target!r} and cannot tell which one the code '
                     f'belongs in; name what declares the one you mean with '
-                    f'`type:`, or append to it by hand')
+                    f'`type:` or the template holding it with `template:`, or '
+                    f'append to it by hand')
         # The brace closing the body has a line of its own to read a column
         # off, which the code then sits one level in from.
         indent = _leading_indent(engine.content.encode('utf-8'),
@@ -3212,7 +3244,7 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
             raise ValueError(
                 f'"{cls.NAME}" must be a mapping (in "{description}")')
         required = {'target', 'code'}
-        optional = {'type'}
+        optional = {'type', 'template'}
         unknown = sorted(set(body) - required - optional)
         if unknown:
             raise ValueError(
@@ -3229,7 +3261,8 @@ class GnAppendToTargetRewriter(_AstGrepRewriter):
                                  f'string (in "{description}")')
         return cls(target=body['target'],
                    code=body['code'],
-                   target_type=body.get('type', ''))
+                   target_type=body.get('type', ''),
+                   template=body.get('template', ''))
 
 
 class GnAddImportRewriter(_AstGrepRewriter):
