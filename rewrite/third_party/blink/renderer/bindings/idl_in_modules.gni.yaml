@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Add the Brave static IDL files, dropping the upstream ones Brave excludes
+
+      Appended at the end of the file, after every upstream addition, so no
+      later addition can bring an excluded file back.
+    add_at_end_of_the_file:
+      code: |-
+        static_idl_files_in_modules += brave_static_idl_files_in_modules
+        static_idl_files_in_modules -= brave_static_idl_files_to_exclude_in_modules
