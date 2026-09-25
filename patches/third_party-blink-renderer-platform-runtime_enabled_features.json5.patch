@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 7718a28600c53fca00ec57e47167f176af9ff9c5..ef96b5287b257fe0ca9404c95c6984ad6f51fc23 100644
+index 56be67e70f1cd457e8f820d616f84767997711a0..f8ce554fd660a9df2878c87d6d3671ffd705166e 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -297,6 +297,7 @@
@@ -170,6 +170,15 @@ index 7718a28600c53fca00ec57e47167f176af9ff9c5..ef96b5287b257fe0ca9404c95c6984ad
        status: "stable",
        public: true,
      },
+@@ -7024,7 +7038,7 @@
+       origin_trial_feature_name: "WebMCP",
+       origin_trial_allows_third_party: true,
+       public: true,
+-      base_feature_status: "enabled",
++      base_feature_status: "disabled",  // feature state is enforced via plaster rewrite.
+       copied_from_base_feature_if: "overridden",
+       // Note that `depends_on` isn't supported by origin trials.
+       implied_by: [
 @@ -7424,5 +7438,10 @@
        // crbug.com/435623334.
        name: "XSLTSpecialTrial",
