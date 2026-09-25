@@ -18,7 +18,8 @@ namespace brave_password_manager {
 // store under the flag). Copy -> verify present in profile -> delete from
 // account, so nothing is deleted before it is confirmed copied. No-op when the
 // flag is off or the account store is empty; safe to call on every startup.
-// `on_complete` runs once the migration has finished, including no-op cases.
+// `on_complete` always runs asynchronously once the migration has finished,
+// including no-op cases.
 void MaybeMigrateAccountPasswordsToProfileStore(
     Profile* profile,
     base::OnceClosure on_complete = base::DoNothing());

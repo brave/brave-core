@@ -18,6 +18,7 @@
 #include "base/location.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/brave_sync/features.h"
 #include "chrome/browser/password_manager/factories/account_password_store_factory.h"
@@ -38,6 +39,13 @@ using password_manager::PasswordForm;
 using password_manager::PasswordStoreBackendError;
 using password_manager::PasswordStoreInterface;
 using password_manager::StoredCredential;
+
+// Runs `on_complete` from a fresh task, so that the early returns below finish
+// asynchronously like the migration itself does and callers see one ordering.
+void FinishAsync(base::OnceClosure on_complete) {
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE, std::move(on_complete));
+}
 
 // The most recent of a form's last-used, password-modified and creation times.
 // Used to decide which side wins when the same credential exists in both
@@ -287,7 +295,7 @@ void MaybeMigrateAccountPasswordsToProfileStore(Profile* profile,
                                                 base::OnceClosure on_complete) {
   if (!base::FeatureList::IsEnabled(
           brave_sync::features::kBraveAndroidSyncPasswordsInProfileStore)) {
-    std::move(on_complete).Run();
+    FinishAsync(std::move(on_complete));
     return;
   }
   scoped_refptr<PasswordStoreInterface> account_store =
@@ -297,7 +305,7 @@ void MaybeMigrateAccountPasswordsToProfileStore(Profile* profile,
       ProfilePasswordStoreFactory::GetForProfile(
           profile, ServiceAccessType::EXPLICIT_ACCESS);
   if (!account_store || !profile_store) {
-    std::move(on_complete).Run();
+    FinishAsync(std::move(on_complete));
     return;
   }
   auto migrator = std::make_unique<AccountToProfilePasswordMigrator>(
