@@ -4,10 +4,25 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
+  - description: |-
+      Skip the Web Store icons on mobile Android, matching the condition in
+      theme_resources.grd.
+    regex:
+      re_pattern:
+        '(\n  static const webui::ResourcePath
+        kExtraComponentExtensionResources\[\] =
+        \{.*?\n  \};\n)(\n  AddComponentResourceEntries\(kComponentExtensionResources\);\n)(  AddComponentResourceEntries\(kExtraComponentExtensionResources\);\n)'
+      replace:
+        '\n#if !BUILDFLAG(IS_ANDROID) ||
+        BUILDFLAG(IS_DESKTOP_ANDROID)\1#endif\n\2#if !BUILDFLAG(IS_ANDROID) ||
+        BUILDFLAG(IS_DESKTOP_ANDROID)\n\3#endif\n'
+      re_flags: [DOTALL]
   - description: |
       Register Brave's own component extension resources.
     after_function_impl:
       function_name: ChromeComponentExtensionResourceManager::Data::Data
       code: |-
+        #if BUILDFLAG(ENABLE_EXTENSIONS)
         AddComponentResourceEntries(kBraveExtension);
         AddComponentResourceEntries(kBraveExtensionGenerated);
+        #endif

@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 167b043f9a1f7ec59d8e10705b4956b5647f6886..7950130972c40300bc25600b1e4c30711a2afa07 100644
+index 167b043f9a1f7ec59d8e10705b4956b5647f6886..4efd4b6b3d31bd1f1abf9c4b6d64eaf361cbe1c6 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -26,6 +26,15 @@ index 167b043f9a1f7ec59d8e10705b4956b5647f6886..7950130972c40300bc25600b1e4c3071
  
    if (enable_guest_view) {
      public_deps += [ "//components/guest_view/browser:test_support" ]
+@@ -1478,7 +1481,7 @@ if (is_android) {
+       ]
+     }
+ 
+-    if (enable_desktop_android_extensions) {
++    if (is_desktop_android) {
+       deps += [
+         "//chrome/browser/extensions:browser_tests",
+         "//chrome/browser/extensions/api/messaging:android_browsertests",
 @@ -5529,6 +5532,7 @@ test("unit_tests") {
      "//ui/webui",
      "//v8",

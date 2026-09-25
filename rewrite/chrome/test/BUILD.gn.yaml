@@ -32,3 +32,14 @@ substitutions:
       list_name: deps
       values:
         - //brave/test:browser_test_support
+
+  - description: |-
+      Gate the desktop Android extension browser tests on desktop Android.
+
+      They are desktop Android specific and Brave sets
+      enable_desktop_android_extensions on mobile Android too.
+    regex:
+      re_pattern:
+        'if \(enable_desktop_android_extensions\)(\s*\{\s*deps \+=
+        \[\s*"//chrome/browser/extensions:browser_tests",)'
+      replace: 'if (is_desktop_android)\1'

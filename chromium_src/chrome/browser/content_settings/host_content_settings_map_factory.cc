@@ -12,7 +12,7 @@
 #include "components/keyed_service/core/simple_keyed_service_factory.h"
 #include "extensions/buildflags/buildflags.h"
 
-#if BUILDFLAG(ENABLE_EXTENSIONS)
+#if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
 #include "extensions/browser/browser_context_keyed_api_factory.h"
 #endif
 

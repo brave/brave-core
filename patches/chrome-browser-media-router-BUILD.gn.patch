@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/media/router/BUILD.gn b/chrome/browser/media/router/BUILD.gn
+index 714cf7581362fb427b5526dbff8c86df99dbcdf6..80a54ad6760633d7ffe70c74d0cc7d31521d0aa0 100644
+--- a/chrome/browser/media/router/BUILD.gn
++++ b/chrome/browser/media/router/BUILD.gn
+@@ -434,7 +434,7 @@ source_set("unittests") {
+   }
+ 
+   # Traditional desktop platforms and desktop android with extensions support.
+-  if (!is_android || enable_desktop_android_extensions) {
++  if (!is_android || is_desktop_android) {
+     deps += [ "//chrome/browser/media/router/discovery:test_support" ]
+   }
+ 

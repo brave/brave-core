@@ -7,6 +7,7 @@ import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/components/common/typescript.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 import("//tools/grit/preprocess_if_expr.gni")
 import("//tools/polymer/css_to_wrapper.gni")
 import("//tools/polymer/html_to_wrapper.gni")
@@ -25,6 +26,10 @@ import("./sources.gni")
 
 include_polymer = !is_android && !is_ios
 
+# Android with the extensions core only needs lit_overriding, for the
+# chrome://extensions page overrides.
+include_lit_overriding_only = !include_polymer && enable_extensions_core
+
 group("grdp") {
   public_deps = [
     ":external_js_bundles",
@@ -33,8 +38,21 @@ group("grdp") {
     ":static_grdp",
     "//brave/components/brave_account/resources/opaque_ke",
   ]
-  if (include_polymer) {
+  if (include_polymer || include_lit_overriding_only) {
     public_deps += [ ":build_grdp" ]
+  }
+}
+
+if (include_lit_overriding_only) {
+  build_webui("build") {
+    grd_prefix = "brave"
+    ts_files = [ "lit_overriding.ts" ]
+    ts_composite = true
+    generate_grdp = true
+    grd_resource_path_prefix = "brave"
+    ts_out_dir = "$root_gen_dir/brave/ui/webui/resources/tsc"
+    ts_deps = [ "//third_party/lit/v3_0:build_ts" ]
+    webui_context_type = "trusted"
   }
 }
 

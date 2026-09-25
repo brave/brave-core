@@ -13,3 +13,24 @@ substitutions:
       list_name: deps
       literal: brave_extensions_resources
       import: //brave/browser/extensions/resources.gni
+
+  - description: |-
+      Skip the mDNS API unit test on mobile Android.
+
+      The mDNS API needs //chrome/browser/media/router/discovery, which is
+      desktop-only.
+    regex:
+      re_pattern:
+        'if \(enable_service_discovery\)(\s*\{\s*sources \+=
+        \[\s*"api/mdns/mdns_api_unittest\.cc")'
+      replace:
+        'if (enable_service_discovery && (!is_android || is_desktop_android))\1'
+
+  - description: |-
+      Don't define the extension browser tests on mobile Android.
+
+      They pull in the desktop WebUI NTP and other desktop-only targets.
+    regex:
+      re_pattern: '\nsource_set\("browser_tests"\) \{.*?\n\}\n'
+      re_flags: [DOTALL]
+      replace: '\nif (!is_android || is_desktop_android) {\g<0>}\n'

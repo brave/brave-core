@@ -441,6 +441,11 @@ if (!is_android) {
   }
 }
 
+if (!is_android || enable_extensions_core) {
+  brave_chrome_browser_deps +=
+      [ "//ui/webui/resources/cr_components/color_change_listener:mojom" ]
+}
+
 if (!is_android) {
   # Already included on android by upstream
 
@@ -709,6 +714,18 @@ if (enable_extensions) {
     "//extensions/browser",
     "//extensions/common:common_constants",
     "//extensions/common:extension_features",
+  ]
+} else if (enable_extensions_core) {
+  brave_chrome_browser_sources += [
+    "//brave/browser/extensions/android/brave_extension_management.cc",
+    "//brave/browser/extensions/android/brave_extension_management.h",
+  ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/extensions:core",
+    "//chrome/browser/extensions",
+    "//chrome/browser/extensions:chrome_extensions_browser_client",
+    "//extensions/browser",
+    "//extensions/common",
   ]
 }
 
