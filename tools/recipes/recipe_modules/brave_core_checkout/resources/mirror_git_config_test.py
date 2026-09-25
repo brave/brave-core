@@ -5,6 +5,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Tests for mirror_git_config.py."""
 
+import json
 import os
 import subprocess
 import tempfile
@@ -68,13 +69,13 @@ class TestBuildGitConfig(unittest.TestCase):
     """Unit tests for rendering the git config text."""
 
     def test_empty_input_is_empty_output(self):
-        self.assertEqual(build_git_config([], 'bot'), '')
+        self.assertEqual(build_git_config([]), '')
 
     def test_one_project(self):
         config = build_git_config(
-            ['mirror/boringssl.googlesource.com/boringssl'], 'bot')
+            ['mirror/boringssl.googlesource.com/boringssl'])
         self.assertEqual(
-            config, '[url "ssh://bot@gerrit-ssh.brave.com:29418/mirror/'
+            config, '[url "ssh://gerrit-ssh.brave.com:29418/mirror/'
             'boringssl.googlesource.com/boringssl"]\n'
             '\tinsteadOf = https://boringssl.googlesource.com/boringssl\n'
             '\tinsteadOf = https://boringssl.googlesource.com/boringssl.git\n')
@@ -83,7 +84,7 @@ class TestBuildGitConfig(unittest.TestCase):
         with self.assertLogs(level='WARNING') as logs:
             config = build_git_config([
                 'not-a-mirror', 'mirror/boringssl.googlesource.com/boringssl'
-            ], 'bot')
+            ])
         self.assertNotIn('not-a-mirror', config)
         self.assertIn('not-a-mirror', '\n'.join(logs.output))
         self.assertIn('boringssl.googlesource.com/boringssl', config)
@@ -93,7 +94,7 @@ class TestBuildGitConfig(unittest.TestCase):
         # each carry their own exact upstream strings, not a shorter shared
         # prefix that could be ambiguous to a reader of the generated file.
         config = build_git_config(
-            ['mirror/example.com/foo', 'mirror/example.com/foo-bar'], 'bot')
+            ['mirror/example.com/foo', 'mirror/example.com/foo-bar'])
         self.assertIn('insteadOf = https://example.com/foo\n', config)
         self.assertIn('insteadOf = https://example.com/foo.git\n', config)
         self.assertIn('insteadOf = https://example.com/foo-bar\n', config)
@@ -209,14 +210,14 @@ class TestInstall(unittest.TestCase):
         install(Path('/a/mirrors.gitconfig'), self.global_config)
         text = _read(self.global_config)
         self.assertIn('[include]', text)
-        self.assertIn('path = /a/mirrors.gitconfig', text)
+        self.assertIn('path = "/a/mirrors.gitconfig"', text)
 
     def test_preserves_existing_content(self):
         _write(self.global_config, '[user]\n\tname = Test\n')
         install(Path('/a/mirrors.gitconfig'), self.global_config)
         text = _read(self.global_config)
         self.assertIn('[user]\n\tname = Test', text)
-        self.assertIn('path = /a/mirrors.gitconfig', text)
+        self.assertIn('path = "/a/mirrors.gitconfig"', text)
 
     def test_second_call_replaces_rather_than_accumulates(self):
         install(Path('/a/first.gitconfig'), self.global_config)
@@ -224,14 +225,44 @@ class TestInstall(unittest.TestCase):
         text = _read(self.global_config)
         self.assertNotIn('/a/first.gitconfig', text)
         self.assertEqual(text.count('[include]'), 1)
-        self.assertIn('path = /b/second.gitconfig', text)
+        self.assertIn('path = "/b/second.gitconfig"', text)
 
     def test_does_not_disturb_a_users_own_include_section(self):
         _write(self.global_config, '[include]\n\tpath = ~/own.gitconfig\n')
         install(Path('/a/mirrors.gitconfig'), self.global_config)
         text = _read(self.global_config)
         self.assertIn('path = ~/own.gitconfig', text)
-        self.assertIn('path = /a/mirrors.gitconfig', text)
+        self.assertIn('path = "/a/mirrors.gitconfig"', text)
+
+    def test_reinstall_elsewhere_deletes_previous_target(self):
+        first = Path(self._tmp.name) / 'first.gitconfig'
+        second = Path(self._tmp.name) / 'second.gitconfig'
+        _write(first, '')
+        _write(second, '')
+        install(first, self.global_config)
+        install(second, self.global_config)
+        self.assertFalse(first.exists())
+        self.assertTrue(second.exists())
+
+    def test_reinstall_same_path_keeps_target(self):
+        target = Path(self._tmp.name) / 'mirrors.gitconfig'
+        _write(target, '')
+        install(target, self.global_config)
+        install(target, self.global_config)
+        self.assertTrue(target.exists())
+
+    def test_path_with_comment_characters_is_read_back_by_git(self):
+        target = Path(self._tmp.name) / 'a#b;c.gitconfig'
+        _write(target, '[mirror]\n\tprobe = yes\n')
+        install(target, self.global_config)
+        result = subprocess.run([
+            'git', 'config', '--includes', '--file',
+            str(self.global_config), 'mirror.probe'
+        ],
+                                capture_output=True,
+                                text=True,
+                                check=True)
+        self.assertEqual(result.stdout.strip(), 'yes')
 
 
 class TestUninstall(unittest.TestCase):
@@ -280,33 +311,100 @@ class TestUninstall(unittest.TestCase):
         self.assertEqual(
             _read(self.global_config).strip(), '[user]\n\tname = Test')
 
+    def test_round_trip_restores_original_bytes(self):
+        original = '[user]\n\tname = Test\n\n\n[core]\n\teditor = vi\n'
+        _write(self.global_config, original)
+        install(self.tmp / 'mirrors.gitconfig', self.global_config)
+        uninstall(self.global_config)
+        self.assertEqual(_read(self.global_config), original)
+
+    def test_removes_block_from_crlf_file(self):
+        _write(self.global_config, '[user]\r\n\tname = Test\r\n')
+        install(self.tmp / 'mirrors.gitconfig', self.global_config)
+        _write(
+            self.global_config,
+            _read(self.global_config).replace('\r\n',
+                                              '\n').replace('\n', '\r\n'))
+        uninstall(self.global_config)
+        self.assertEqual(_read(self.global_config),
+                         '[user]\r\n\tname = Test\r\n')
+
+    def test_removes_unquoted_block_from_older_install(self):
+        target = self.tmp / 'mirrors.gitconfig'
+        _write(target, '')
+        _write(
+            self.global_config,
+            f'{mirror_git_config._INCLUDE_HEADER}\n[include]\n'
+            f'\tpath = {target.as_posix()}\n')
+        self.assertEqual(uninstall(self.global_config), target)
+        self.assertFalse(target.exists())
+        self.assertEqual(_read(self.global_config), '')
+
 
 class TestListMirrorProjects(unittest.TestCase):
-    """Unit tests for the `gerrit ls-projects` query wrapper."""
+    """Unit tests for the anonymous Gerrit REST project listing."""
 
-    def test_success_parses_and_sorts_lines(self):
-        out = 'mirror/b.googlesource.com/b\nmirror/a.googlesource.com/a\n\n'
-        with mock.patch.object(mirror_git_config,
-                               '_run',
-                               return_value=subprocess.CompletedProcess(
-                                   [], 0, stdout=out, stderr='')) as run:
-            projects = list_mirror_projects('bot')
+    @staticmethod
+    def _page(*names: str, more: bool = False) -> str:
+        page = {name: {'state': 'ACTIVE'} for name in names}
+        if more:
+            page[names[-1]]['_more_projects'] = True
+        return ")]}'\n" + json.dumps(page)
+
+    def test_success_parses_and_sorts_projects(self):
+        body = self._page('mirror/b.googlesource.com/b',
+                          'mirror/a.googlesource.com/a')
+        with mock.patch.object(mirror_git_config, '_fetch',
+                               return_value=body) as fetch:
+            projects = list_mirror_projects()
         self.assertEqual(
             projects,
             ['mirror/a.googlesource.com/a', 'mirror/b.googlesource.com/b'])
-        argv = run.call_args.args
-        self.assertEqual(argv[:4],
-                         ('ssh', '-p', '29418', 'bot@gerrit-ssh.brave.com'))
-        self.assertEqual(argv[4:],
-                         ('gerrit', 'ls-projects', '--prefix', 'mirror/'))
+        self.assertEqual(
+            fetch.call_args.args,
+            ('https://gerrit.brave.com/projects/?p=mirror%2F&S=0', ))
 
-    def test_query_failure_raises(self):
+    def test_follows_more_projects_pages(self):
+        pages = [
+            self._page('mirror/a.com/a', 'mirror/b.com/b', more=True),
+            self._page('mirror/c.com/c'),
+        ]
+        with mock.patch.object(mirror_git_config, '_fetch',
+                               side_effect=pages) as fetch:
+            projects = list_mirror_projects()
+        self.assertEqual(
+            projects, ['mirror/a.com/a', 'mirror/b.com/b', 'mirror/c.com/c'])
+        self.assertTrue(fetch.call_args.args[0].endswith('&S=2'))
+
+    def test_empty_listing(self):
         with mock.patch.object(mirror_git_config,
-                               '_run',
-                               return_value=subprocess.CompletedProcess(
-                                   [], 255, stdout='', stderr='denied')):
+                               '_fetch',
+                               return_value=")]}'\n{}"):
+            self.assertEqual(list_mirror_projects(), [])
+
+    def test_connection_failure_raises(self):
+        with mock.patch.object(mirror_git_config,
+                               '_fetch',
+                               side_effect=OSError('unreachable')):
             with self.assertRaises(RuntimeError):
-                list_mirror_projects('bot')
+                list_mirror_projects()
+
+    def test_malformed_response_raises(self):
+        with mock.patch.object(mirror_git_config,
+                               '_fetch',
+                               return_value='<html>not json</html>'):
+            with self.assertRaises(RuntimeError):
+                list_mirror_projects()
+
+
+class TestOutputPath(unittest.TestCase):
+    """The generated config lands at the brave-core root."""
+
+    def test_is_at_brave_core_root(self):
+        root = Path(__file__).resolve().parents[5]
+        self.assertTrue((root / 'DEPS').is_file())
+        self.assertEqual(mirror_git_config.OUTPUT_PATH,
+                         root / '.gerrit_mirror_redirect')
 
 
 class TestMain(unittest.TestCase):
@@ -315,31 +413,67 @@ class TestMain(unittest.TestCase):
     def setUp(self):
         self._tmp = tempfile.TemporaryDirectory()
         self.tmp = Path(self._tmp.name)
+        self.output = self.tmp / '.gerrit_mirror_redirect'
+        patcher = mock.patch.object(mirror_git_config, 'OUTPUT_PATH',
+                                    self.output)
+        patcher.start()
+        self.addCleanup(patcher.stop)
 
     def tearDown(self):
         self._tmp.cleanup()
 
     def test_install_writes_config_and_includes_it(self):
-        output = self.tmp / 'mirrors.gitconfig'
+        output = self.output
         global_config = self.tmp / 'gitconfig'
         with mock.patch.object(
                 mirror_git_config,
                 'list_mirror_projects',
-                return_value=['mirror/boringssl.googlesource.com/boringssl'
-                              ]), mock.patch('sys.argv', [
-                                  'mirror_git_config.py', 'install', '--user',
-                                  'bot', '--output',
-                                  str(output), '--global-config',
-                                  str(global_config)
-                              ]):
+                return_value=[
+                    'mirror/boringssl.googlesource.com/boringssl'
+                ]), mock.patch('sys.argv', [
+                    'mirror_git_config.py', 'install', '--global-config',
+                    str(global_config)
+                ]):
             self.assertEqual(main(), 0)
         self.assertIn(
             'insteadOf = https://boringssl.googlesource.com/boringssl\n',
             _read(output))
-        self.assertIn(f'path = {output.as_posix()}', _read(global_config))
+        self.assertIn(f'path = "{output.as_posix()}"', _read(global_config))
+
+    def _install(self, projects: list[str], *extra: str) -> mock.MagicMock:
+        """Run `install` against a fake project list; return the list mock."""
+        with mock.patch.object(mirror_git_config,
+                               'list_mirror_projects',
+                               return_value=projects) as listing, \
+             mock.patch('sys.argv', [
+                 'mirror_git_config.py', 'install', '--global-config',
+                 str(self.tmp / 'gitconfig'), *extra
+             ]):
+            self.assertEqual(main(), 0)
+        return listing
+
+    def test_install_leaves_existing_install_alone(self):
+        self._install(['mirror/a.com/a'])
+        listing = self._install(['mirror/b.com/b'])
+        listing.assert_not_called()
+        self.assertIn('https://a.com/a', _read(self.output))
+        self.assertNotIn('https://b.com/b', _read(self.output))
+
+    def test_install_with_update_overwrites_existing_install(self):
+        self._install(['mirror/a.com/a'])
+        self._install(['mirror/b.com/b'], '--update')
+        self.assertNotIn('https://a.com/a', _read(self.output))
+        self.assertIn('https://b.com/b', _read(self.output))
+        self.assertEqual(_read(self.tmp / 'gitconfig').count('[include]'), 1)
+
+    def test_install_repairs_include_whose_file_is_gone(self):
+        self._install(['mirror/a.com/a'])
+        self.output.unlink()
+        self._install(['mirror/b.com/b'])
+        self.assertIn('https://b.com/b', _read(self.output))
 
     def test_install_defaults_global_config_from_env(self):
-        output = self.tmp / 'mirrors.gitconfig'
+        output = self.output
         global_config = self.tmp / 'env.gitconfig'
         with mock.patch.object(mirror_git_config,
                                'list_mirror_projects',
@@ -347,25 +481,23 @@ class TestMain(unittest.TestCase):
              mock.patch.dict(os.environ,
                              {'GIT_CONFIG_GLOBAL': str(global_config)}), \
              mock.patch('sys.argv', [
-                'mirror_git_config.py', 'install', '--user', 'bot',
-                '--output', str(output)
+                'mirror_git_config.py', 'install'
              ]):
             self.assertEqual(main(), 0)
-        self.assertIn(f'path = {output.as_posix()}', _read(global_config))
+        self.assertIn(f'path = "{output.as_posix()}"', _read(global_config))
 
     def test_uninstall_removes_include_and_deletes_file(self):
-        output = self.tmp / 'mirrors.gitconfig'
+        output = self.output
         global_config = self.tmp / 'gitconfig'
         with mock.patch.object(
                 mirror_git_config,
                 'list_mirror_projects',
-                return_value=['mirror/boringssl.googlesource.com/boringssl'
-                              ]), mock.patch('sys.argv', [
-                                  'mirror_git_config.py', 'install', '--user',
-                                  'bot', '--output',
-                                  str(output), '--global-config',
-                                  str(global_config)
-                              ]):
+                return_value=[
+                    'mirror/boringssl.googlesource.com/boringssl'
+                ]), mock.patch('sys.argv', [
+                    'mirror_git_config.py', 'install', '--global-config',
+                    str(global_config)
+                ]):
             main()
 
         with mock.patch('sys.argv', [

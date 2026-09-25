@@ -203,6 +203,38 @@ function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
   return needsUpdate
 }
 
+// Installs the global git config redirecting upstream fetches to our Gerrit
+// mirrors when BRAVE_USE_GERRIT_MIRRORS=1, and uninstalls it otherwise. An
+// existing install is only regenerated when `update` is set. No-op unless
+// `gerrit_mirror_support` is enabled.
+/** @param {{ update: boolean }} options */
+function configureGerritMirrors({ update }) {
+  if (!config.gerritMirrorSupport) {
+    return
+  }
+
+  const args = [
+    path.join(
+      config.braveCoreDir,
+      'tools',
+      'recipes',
+      'recipe_modules',
+      'brave_core_checkout',
+      'resources',
+      'mirror_git_config.py',
+    ),
+  ]
+  if (process.env.BRAVE_USE_GERRIT_MIRRORS === '1') {
+    args.push('install')
+    if (update) {
+      args.push('--update')
+    }
+  } else {
+    args.push('uninstall')
+  }
+  util.run('vpython3', args, config.defaultOptions)
+}
+
 function syncChromium(program) {
   const syncWithForce = program.init || program.force
   const syncChromiumValue = program.sync_chromium
@@ -248,6 +280,11 @@ function syncChromium(program) {
     latestSyncInfo,
     expectedSyncInfo,
   )
+  // Before any fetch, so both the Chromium and Brave syncs go through the
+  // mirrors when enabled. The mirror list is only refreshed alongside a
+  // Chromium update, so no-op syncs stay offline.
+  configureGerritMirrors({ update: chromiumNeedsUpdate })
+
   const shouldSyncChromium = chromiumNeedsUpdate || syncWithForce
   if (!shouldSyncChromium && !syncChromiumValue) {
     if (deleteUnusedDeps && !isCI) {
