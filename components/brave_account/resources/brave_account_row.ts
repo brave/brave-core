@@ -64,7 +64,4 @@ declare global {
   }
 }
 
-customElements.define(
-  BraveAccountRowElement.is,
-  BraveAccountRowElement,
-)
+customElements.define(BraveAccountRowElement.is, BraveAccountRowElement)
