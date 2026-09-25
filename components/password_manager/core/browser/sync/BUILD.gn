@@ -3,14 +3,17 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# Upstream builds password_sync_bridge_unittest.cc in components_unittests,
-# which is not built for Android, so the Brave tests added by
-# //brave/chromium_src/components/password_manager/core/browser/sync/password_sync_bridge_unittest.cc
-# would never run. Build the same file here instead.
+# Upstream builds these test files in components_unittests, which is not built
+# for Android, so the Brave tests added by their chromium_src overrides in
+# //brave/chromium_src/components/password_manager/core/browser/sync/ would
+# never run. Build the same files here instead.
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "//components/password_manager/core/browser/sync/password_sync_bridge_unittest.cc" ]
+  sources = [
+    "//components/password_manager/core/browser/sync/password_data_type_controller_unittest.cc",
+    "//components/password_manager/core/browser/sync/password_sync_bridge_unittest.cc",
+  ]
 
   deps = [
     "//base/test:test_support",
