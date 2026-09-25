@@ -31,6 +31,7 @@ import org.chromium.build.annotations.MonotonicNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.settings.BottomInsetViewProvider;
 import org.chromium.chrome.browser.settings.ChromeBaseSettingsFragment;
 import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
@@ -43,7 +44,8 @@ import java.util.List;
 import java.util.Locale;
 
 @NullMarked
-public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsFragment {
+public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsFragment
+        implements BottomInsetViewProvider {
     private static final String BOLD_END_TEXT1_TEXT2 = "%s";
     private static final String HTTPS_SCHEME = "https://";
     private static final String HTTP_SCHEME = "http://";
@@ -86,6 +88,11 @@ public class AddCustomSearchEnginePreferenceFragment extends ChromeBaseSettingsF
         updateToolbarTitle();
 
         return rootView;
+    }
+
+    @Override
+    public View getBottomInsetView(View fragmentView) {
+        return fragmentView;
     }
 
     private void updateToolbarTitle() {
