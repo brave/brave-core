@@ -1,0 +1,55 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave tab search TypeScript files.
+    add_literal_to_list:
+      target: build
+      list_name: ts_files
+      literal: brave_tab_search_ts_files
+      import: //brave/browser/resources/tab_search/sources.gni
+
+  - description: Add the Brave tab search CSS files.
+    add_literal_to_list:
+      target: build
+      list_name: css_files
+      literal: brave_tab_search_css_files
+      import: //brave/browser/resources/tab_search/sources.gni
+
+  - description:
+      Keep the Brave tab search TypeScript out of Chromium's preprocessing.
+    add_literal_to_list:
+      target: build
+      list_name: exclude_ts_preprocess_files
+      literal: brave_tab_search_ts_files
+      import: //brave/browser/resources/tab_search/sources.gni
+
+  - description: Keep the Brave tab search CSS out of Chromium's preprocessing.
+    add_literal_to_list:
+      target: build
+      list_name: exclude_html_css_preprocess_files
+      literal: brave_tab_search_css_files
+      import: //brave/browser/resources/tab_search/sources.gni
+
+  - description: Depend on the Brave tab search preprocessing.
+    add_literal_to_list:
+      target: build
+      list_name: preprocess_deps
+      literal: brave_tab_search_preprocess_deps
+      import: //brave/browser/resources/tab_search/sources.gni
+
+  - description: Bundle the Brave tab search grdp deps.
+    add_literal_to_list:
+      target: build
+      list_name: extra_grdp_deps
+      literal: brave_tab_search_extra_grdp_deps
+      import: //brave/browser/resources/tab_search/sources.gni
+
+  - description: Bundle the Brave tab search grdp files.
+    add_literal_to_list:
+      target: build
+      list_name: extra_grdp_files
+      literal: brave_tab_search_extra_grdp_files
+      import: //brave/browser/resources/tab_search/sources.gni

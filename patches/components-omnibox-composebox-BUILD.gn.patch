@@ -1,12 +1,12 @@
 diff --git a/components/omnibox/composebox/BUILD.gn b/components/omnibox/composebox/BUILD.gn
-index a960b52e36796e6b8e7aeeb08d73cd4ca2dff43d..94a72323f8dd266a8cebfdf8defe871d7b853500 100644
+index a960b52e36796e6b8e7aeeb08d73cd4ca2dff43d..b768e290cd77f385ecb66e9ff3b5367e32dd96e1 100644
 --- a/components/omnibox/composebox/BUILD.gn
 +++ b/components/omnibox/composebox/BUILD.gn
-@@ -5,6 +5,7 @@
- import("//mojo/public/tools/bindings/mojom.gni")
- 
- mojom("mojo_bindings") {
+@@ -59,6 +59,7 @@ mojom("mojo_bindings") {
+       ]
+     },
+   ]
 +  generate_legacy_js_bindings = true
-   sources = [ "composebox_query.mojom" ]
-   public_deps = [ "//mojo/public/mojom/base" ]
+ }
  
+ source_set("unit_tests") {

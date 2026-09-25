@@ -1,12 +1,28 @@
 diff --git a/components/update_client/BUILD.gn b/components/update_client/BUILD.gn
-index 3b2f387695256c03e84f2221b066f496a0a3b91e..04f258507b13c02157834f451335c1ca93037e14 100644
+index 3b2f387695256c03e84f2221b066f496a0a3b91e..31f0b5dcc7524995057ee1b6af3416fbd3a96eb8 100644
 --- a/components/update_client/BUILD.gn
 +++ b/components/update_client/BUILD.gn
-@@ -203,6 +203,7 @@ static_library("update_client") {
-       "background_downloader_win.h",
-     ]
-   }
-+  sources += brave_components_update_client_sources deps += brave_components_update_client_deps public_deps = brave_components_update_client_public_deps
+@@ -86,6 +86,7 @@ group("common_impl") {
  }
  
- if (is_mac) {
+ static_library("update_client") {
++  public_deps = brave_components_update_client_public_deps
+   include_dirs = [ "//third_party/puffin/src/include" ]
+   sources = [
+     "action_runner.cc",
+@@ -174,6 +175,7 @@ static_library("update_client") {
+     "utils.cc",
+     "utils.h",
+   ]
++  sources += brave_components_update_client_sources
+ 
+   deps = [
+     "//base",
+@@ -187,6 +189,7 @@ static_library("update_client") {
+     "//third_party/zlib/google:compression_utils",
+     "//url",
+   ]
++  deps += brave_components_update_client_deps
+ 
+   if (is_mac) {
+     sources += [
