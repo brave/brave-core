@@ -39,7 +39,7 @@ index b3ed5f8ec54b9aa3b91b92014af0d3cf07b62de8..869686526e9791bd743515c991942046
  
    switch (command_id) {
 +    case CommandRestoreTab:
-+    case CommandBookmarkAllTabs:
++    case CommandBookmarkTab:
 +    case CommandShowVerticalTabs:
 +    case CommandToggleTabMuted:
 +    case CommandBringAllTabsToThisWindow:
@@ -55,7 +55,7 @@ index b3ed5f8ec54b9aa3b91b92014af0d3cf07b62de8..869686526e9791bd743515c991942046
    }
    switch (command_id) {
 +    case CommandRestoreTab:
-+    case CommandBookmarkAllTabs:
++    case CommandBookmarkTab:
 +    case CommandShowVerticalTabs:
 +    case CommandToggleTabMuted:
 +    case CommandBringAllTabsToThisWindow:
@@ -75,15 +75,14 @@ index b3ed5f8ec54b9aa3b91b92014af0d3cf07b62de8..869686526e9791bd743515c991942046
      int destination_index) {
    const int pinned_tab_count = IndexOfFirstNonPinnedTab();
    const std::vector<int> pinned_selected_indices = GetSelectedPinnedTabs();
-@@ -4758,8 +4785,10 @@ void TabStripModel::InsertTabAtIndexImpl(
+@@ -4758,8 +4785,9 @@ void TabStripModel::InsertTabAtIndexImpl(
    }
- 
+
    tabs::TabInterface* old_active_tab = GetActiveTab();
 +  auto* opener = tab_model->opener_was_set_for_empty_new_tab() ? nullptr : tab_model->opener();
    contents_data_->AddTabRecursive(tabs::ScopedTab(tab_model.release()), index,
 -                                  group, pin);
 +                                  group, pin, opener);
-+
    selection_model_.InvalidateListSelectionModel(base::PassKey<TabStripModel>());
  
    // If a tab is added that does not belong to the focused group (and is not
