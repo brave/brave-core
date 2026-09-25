@@ -35,6 +35,7 @@ source_set("frame") {
     "//chrome/browser/ui/views/frame:browser_view_layout_delegate_impl",
     "//chrome/browser/ui/views/frame:browser_view_tabbed_layout_impl",
     "//chrome/browser/ui/views/frame:custom_corners_background",
+    "//chrome/browser/ui/views/frame:multi_contents_view",
     "//chrome/browser/ui/views/frame:top_container_view",
     "//chrome/browser/ui/views/infobars",
     "//ui/compositor",
