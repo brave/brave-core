@@ -14,8 +14,6 @@ namespace brave_wallet {
 
 namespace {
 
-// Every Polkadot account we hold is an sr25519 keypair. `KeypairType` in
-// @polkadot/util-crypto.
 constexpr char kSr25519[] = "sr25519";
 
 bool IsPolkadotDappAccount(const mojom::AccountIdPtr& account_id) {
@@ -52,9 +50,6 @@ mojom::AccountIdPtr GetPolkadotPreferredDappAccount(
     return selected_account->account_id.Clone();
   }
 
-  // The connect prompt grants a single account, so the selected dapp account
-  // normally is the allowed one. Fall back to the first allowed account when it
-  // isn't, matching CardanoProviderImpl and EthereumProviderImpl.
   for (const auto& account : keyring_service->GetAllAccountInfos()) {
     if (std::ranges::contains(*allowed_accounts, GetAccountPermissionIdentifier(
                                                      account->account_id))) {
@@ -66,12 +61,6 @@ mojom::AccountIdPtr GetPolkadotPreferredDappAccount(
 
 mojom::PolkadotInjectedAccountPtr MakePolkadotInjectedAccount(
     const mojom::AccountInfo& account) {
-  // `genesis_hash` is left unset, which dapps read as "usable on any chain".
-  // The address we hand over is encoded with the keyring's SS58 prefix, and
-  // @polkadot/extension-dapp re-encodes it with the prefix of the chain the
-  // dapp is on, so the prefix we pick here is not what the dapp displays.
-  // Restricting testnet accounts to their chain needs the chain's genesis
-  // hash, which isn't available synchronously here.
   return mojom::PolkadotInjectedAccount::New(
       account.address, /*genesis_hash=*/std::nullopt, account.name, kSr25519);
 }

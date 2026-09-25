@@ -879,6 +879,7 @@ source_set("unit_tests") {
       "internal/hd_key_unittest.cc",
       "keyring_service_unittest.cc",
       "polkadot/polkadot_api_impl_unittest.cc",
+      "polkadot/polkadot_dapp_utils_unittest.cc",
       "polkadot/polkadot_provider_impl_unittest.cc",
       "wallet_data_files_installer_unittest.cc",
       "zcash/zcash_create_transparent_transaction_task_unittest.cc",
