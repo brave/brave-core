@@ -38,11 +38,13 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "extensions/buildflags/buildflags.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
+#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
 #include "brave/browser/brave_ads/ads_service_factory.h"
@@ -558,6 +560,12 @@ IN_PROC_BROWSER_TEST_F(TorProfileManagerTest, CanWebRTC) {
   auto* tor_contents = tor_browser->tab_strip_model()->GetActiveWebContents();
   content::WaitForLoadStop(tor_contents);
 
+  EXPECT_EQ(false, content::EvalJs(tor_contents, kCheckWebRTC));
+
+  // A WebPreferences recompute (e.g. on a theme, contrast or font settings
+  // change) must not re-enable RTCPeerConnection.
+  tor_contents->OnWebPreferencesChanged();
+  EXPECT_TRUE(tor_contents->GetOrCreateWebPreferences().is_tor_window);
   EXPECT_EQ(false, content::EvalJs(tor_contents, kCheckWebRTC));
 
   auto* regular_contents =

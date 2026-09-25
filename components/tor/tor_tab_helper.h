@@ -31,8 +31,6 @@ class TorTabHelper final : public content::WebContentsObserver,
   explicit TorTabHelper(content::WebContents* web_contents);
 
   // content::WebContentsObserver
-  void ReadyToCommitNavigation(
-      content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
