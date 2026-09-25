@@ -129,14 +129,10 @@ class PolkadotApiImplUnitTest : public testing::Test {
 
   // Only for the imported accounts.
   void RemoveAccount(const mojom::AccountIdPtr& account_id) {
-    base::RunLoop run_loop;
-    keyring_service()->RemoveAccount(
-        account_id.Clone(), kTestWalletPassword,
-        base::BindLambdaForTesting([&](bool success) {
-          ASSERT_TRUE(success);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    TestFuture<bool> future;
+    keyring_service()->RemoveAccount(account_id.Clone(), kTestWalletPassword,
+                                     future.GetCallback());
+    ASSERT_TRUE(future.Get());
   }
 
   auto GetAccounts(bool any_type = false) {
