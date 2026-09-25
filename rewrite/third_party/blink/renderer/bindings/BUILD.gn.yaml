@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave web IDL database inputs.
+    add_literal_to_list:
+      target: web_idl_database
+      list_name: inputs
+      literal: brave_third_party_blink_renderer_bindings_web_idl_database_inputs
+      import: //brave/third_party/blink/renderer/bindings/sources.gni
+
+  - description: Add the Brave web IDL database deps.
+    add_literal_to_list:
+      target: web_idl_database
+      list_name: deps
+      literal: brave_third_party_blink_renderer_bindings_web_idl_database_deps
+      import: //brave/third_party/blink/renderer/bindings/sources.gni
+
+  - description: |
+      Add the Brave bindings generation inputs.
+
+      `collect_idl_files` declares an `action_with_pydeps(target_name)` too,
+      so the template is named to pick out the one meant here.
+    add_literal_to_list:
+      target: target_name
+      type: action_with_pydeps
+      template: generate_bindings
+      list_name: inputs
+      literal: brave_third_party_blink_renderer_bindings_generate_bindings_inputs
+      import: //brave/third_party/blink/renderer/bindings/sources.gni
+
+  - description: Add the Brave bindings generation deps.
+    add_literal_to_list:
+      target: target_name
+      type: action_with_pydeps
+      template: generate_bindings
+      list_name: deps
+      literal: brave_third_party_blink_renderer_bindings_generate_bindings_deps
+      import: //brave/third_party/blink/renderer/bindings/sources.gni
