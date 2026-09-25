@@ -58,8 +58,9 @@ export abstract class BraveAccountRowBaseElement<
     return {
       beforeLink: [
         this.verificationIntentDescription,
-        loadTimeData.getString(BraveAccountSettingsStrings
-          .SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2),
+        loadTimeData.getString(
+          BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_VERIFICATION_ROW_DESCRIPTION_2,
+        ),
         beforeLink,
       ].join(' '),
       linkLabel,

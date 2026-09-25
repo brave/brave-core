@@ -53,8 +53,8 @@ export class BraveAccountLoggedInRowElement extends BraveAccountRowBaseElement<
 
   protected override get verificationIntentDescription() {
     return loadTimeData.getString(
-      BraveAccountSettingsStrings
-        .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ROW_DESCRIPTION_1)
+      BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ROW_DESCRIPTION_1,
+    )
   }
 
   override disconnectedCallback() {
@@ -87,8 +87,8 @@ export class BraveAccountLoggedInRowElement extends BraveAccountRowBaseElement<
     } catch (e) {
       showError('changePassword', e, {
         title: loadTimeData.getString(
-          BraveAccountSettingsStrings
-            .SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ERROR_TITLE),
+          BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_CHANGE_PASSWORD_ERROR_TITLE,
+        ),
         durationMs: 30000,
       })
     }

@@ -11,5 +11,6 @@ substitutions:
     add_literal_to_list:
       target: peerconnection
       list_name: deps
-      literal: 'brave_blink_renderer_modules_peerconnection_ai_chat_deps  # Brave'
+      literal:
+        'brave_blink_renderer_modules_peerconnection_ai_chat_deps  # Brave'
       import: //brave/components/ai_chat/sources.gni

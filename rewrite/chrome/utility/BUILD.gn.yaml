@@ -18,7 +18,8 @@ substitutions:
       literal: brave_utility_deps
       import: //brave/utility/sources.gni
 
-  - description: Add the brave/utility public_deps to `static_library("utility")`.
+  - description:
+      Add the brave/utility public_deps to `static_library("utility")`.
     add_literal_to_list:
       target: utility
       list_name: public_deps

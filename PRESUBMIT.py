@@ -136,7 +136,7 @@ def CheckTypeScriptSuppressionsHaveReasons(input_api, output_api):
 
 
 # Check and fix formatting issues (supports --fix).
-def CheckPatchFormatted(input_api, output_api):
+def CheckPatchFormattedBrave(input_api, output_api):
     cmd = [
         brave_chromium_utils.wspath(
             '//brave/build/commands/scripts/format.ts'), '--presubmit'

@@ -249,9 +249,7 @@ export const PortfolioAccountItem = (props: Props) => {
         {!isRewardsAccount && showAccountMenu && (
           <PortfolioAccountMenu
             onClickViewOnExplorer={
-              blockExplorerSupported
-                ? onViewAccountOnBlockExplorer
-                : undefined
+              blockExplorerSupported ? onViewAccountOnBlockExplorer : undefined
             }
             onClickSell={
               isSellSupported && !isAssetsBalanceZero
@@ -259,9 +257,7 @@ export const PortfolioAccountItem = (props: Props) => {
                 : undefined
             }
             onClickDeposit={
-              isDepositSupported
-                ? () => setShowDepositModal(true)
-                : undefined
+              isDepositSupported ? () => setShowDepositModal(true) : undefined
             }
           />
         )}

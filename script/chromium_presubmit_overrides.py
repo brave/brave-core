@@ -255,12 +255,21 @@ def inline_presubmit(filename, _globals, _locals):
         state.PreRunChecks(input_api)
         return []
 
+    existing_checks = {
+        name: value
+        for name, value in _globals.items() if name.startswith('Check')
+    }
     func_suffix = re.sub(r'[^\w]', '_', filename)
     pre_check_name = f'Check_Pre_{func_suffix}'
     assert pre_check_name not in _globals
     _globals[pre_check_name] = PreRunChecks
 
     brave_chromium_utils.inline_file(filename, _globals, _locals)
+    for name, existing_check in existing_checks.items():
+        if _globals.get(name) is not existing_check:
+            raise RuntimeError(
+                f'Existing presubmit check {name} was replaced by '
+                f'inline_presubmit from {filename}')
     apply_generic_check_overrides(_globals, filename, True)
 
     def PostRunChecks(input_api, _output_api):

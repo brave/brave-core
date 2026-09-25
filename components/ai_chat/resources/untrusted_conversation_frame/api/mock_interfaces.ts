@@ -78,7 +78,8 @@ export function createMockUntrustedConversationHandler(
     submitSuggestion: () => {},
     generateQuestions: () => {},
     retryAPIRequest: () => {},
-    createConversationThread: (_originEntryUuid: string) => Promise.resolve({ threadUuid: null }),
+    createConversationThread: (_originEntryUuid: string) =>
+      Promise.resolve({ threadUuid: null }),
     switchToNonPremiumModel() {},
 
     // Apply overrides
