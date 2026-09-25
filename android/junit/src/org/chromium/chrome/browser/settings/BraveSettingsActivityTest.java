@@ -5,11 +5,15 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertSame;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.FrameLayout;
 
+import androidx.core.graphics.Insets;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.core.app.ApplicationProvider;
 
@@ -24,7 +28,9 @@ import org.chromium.chrome.browser.browsing_data.BraveClearBrowsingDataFragment;
 import org.chromium.components.browser_ui.site_settings.AllSiteSettings;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
 
-/** Tests which view receives insets on Settings pages with footer buttons. */
+import java.util.Map;
+
+/** Tests inset handling on Settings pages with footer buttons. */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
 public class BraveSettingsActivityTest {
@@ -68,6 +74,29 @@ public class BraveSettingsActivityTest {
                 mList,
                 BraveSettingsActivity.getInsetView(
                         createSiteSettings(SiteSettingsCategory.Type.ALL_SITES), mRoot));
+    }
+
+    @Test
+    public void testKeyboardDoesNotAddNavigationPaddingTwice() {
+        Map<View, Integer> originalBottomPaddings = Map.of(mList, 8);
+        WindowInsetsCompat.Builder insets =
+                new WindowInsetsCompat.Builder()
+                        .setInsets(WindowInsetsCompat.Type.navigationBars(), Insets.of(0, 0, 0, 48))
+                        .setInsets(WindowInsetsCompat.Type.ime(), Insets.NONE);
+
+        BraveSettingsActivity.applyContentInsets(mRoot, originalBottomPaddings, insets.build());
+        assertEquals(0, mRoot.getPaddingBottom());
+        assertEquals(56, mList.getPaddingBottom());
+
+        insets.setInsets(WindowInsetsCompat.Type.ime(), Insets.of(0, 0, 0, 300));
+        BraveSettingsActivity.applyContentInsets(mRoot, originalBottomPaddings, insets.build());
+        assertEquals(300, mRoot.getPaddingBottom());
+        assertEquals(8, mList.getPaddingBottom());
+
+        insets.setInsets(WindowInsetsCompat.Type.ime(), Insets.NONE);
+        BraveSettingsActivity.applyContentInsets(mRoot, originalBottomPaddings, insets.build());
+        assertEquals(0, mRoot.getPaddingBottom());
+        assertEquals(56, mList.getPaddingBottom());
     }
 
     private static AllSiteSettings createSiteSettings(@SiteSettingsCategory.Type int category) {
