@@ -14,25 +14,36 @@ const crossPlatforms = ['mac', 'win']
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
 
+// The build output dir brave-core commands would use, or the most recent one.
+// Checked first so a stale build in another dir doesn't shadow it.
+const guessedOutputPath = await import('./build/commands/lib/guessConfig.js')
+  .then(({ outputPath }) => outputPath.replaceAll('\\', '/'))
+  .catch(() => undefined)
+
 function getBuildOutputPathList(buildOutputRelativePath: string): string[] {
-  return buildConfigs
-    .reduce(
-      (outDirs, outDir) => [
-        ...outDirs,
-        outDir,
-        ...crossPlatforms.map((platform) => `${platform}_${outDir}`),
-      ],
-      [],
-    )
-    .reduce(
-      (outDirs, outDir) => [
-        ...outDirs,
-        outDir,
-        ...extraArchitectures.map((arch) => `${outDir}_${arch}`),
-      ],
-      [],
-    )
-    .map((outDir) => `<rootDir>/../out/${outDir}/${buildOutputRelativePath}`)
+  const guessedPaths = guessedOutputPath
+    ? [`${guessedOutputPath}/${buildOutputRelativePath}`]
+    : []
+  return guessedPaths.concat(
+    buildConfigs
+      .reduce(
+        (outDirs, outDir) => [
+          ...outDirs,
+          outDir,
+          ...crossPlatforms.map((platform) => `${platform}_${outDir}`),
+        ],
+        [],
+      )
+      .reduce(
+        (outDirs, outDir) => [
+          ...outDirs,
+          outDir,
+          ...extraArchitectures.map((arch) => `${outDir}_${arch}`),
+        ],
+        [],
+      )
+      .map((outDir) => `<rootDir>/../out/${outDir}/${buildOutputRelativePath}`),
+  )
 }
 
 function getReporters() {
