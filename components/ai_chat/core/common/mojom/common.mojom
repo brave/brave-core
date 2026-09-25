@@ -32,6 +32,7 @@ enum APIError {
   InternalError,
   ConnectionIssue,
   RateLimitReached,
+  ModelRateLimitReached,
   ContextLimitReached,
   InvalidEndpointURL,
   InvalidAPIKey,
