@@ -1070,7 +1070,10 @@ test("brave_browser_tests") {
   ]
 
   if (toolkit_views) {
-    deps += [ "//chrome/browser/ui/views/tabs/hovercard:test_support" ]
+    deps += [
+      "//chrome/browser/ui/views/frame:browser_frame_view",
+      "//chrome/browser/ui/views/tabs/hovercard:test_support",
+    ]
   }
 
   if (enable_session_service) {

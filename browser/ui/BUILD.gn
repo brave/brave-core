@@ -116,6 +116,8 @@ source_set("ui") {
   if (toolkit_views) {
     deps += [
       "//chrome/browser/ui/views/extensions:extensions_menu_button",
+      "//chrome/browser/ui/views/frame:browser_frame_view",
+      "//chrome/browser/ui/views/frame:opaque_browser_frame_view_layout",
       "//chrome/browser/ui/views/tabs/hovercard",
     ]
   }
@@ -148,10 +150,16 @@ source_set("ui") {
     public_deps += [
       "//chrome/browser/ui/views/extensions:extensions_menu_entry_view",
       "//chrome/browser/ui/views/extensions:extensions_menu_item_view",
+      "//chrome/browser/ui/views/frame:opaque_browser_frame_view",
       "//chrome/browser/ui/views/tabs:tab_container",
       "//chrome/browser/ui/views/tabs:tab_group",
       "//chrome/browser/ui/views/tabs/hovercard",
     ]
+
+    if (is_mac) {
+      public_deps +=
+          [ "//chrome/browser/ui/views/frame:browser_frame_view_mac" ]
+    }
   }
 
   sources = [
@@ -791,6 +799,7 @@ source_set("ui") {
       "//chrome/browser/ui/views/controls",
       "//chrome/browser/ui/views/download",
       "//chrome/browser/ui/views/extensions:extensions_menu_main_page_view",
+      "//chrome/browser/ui/views/frame:browser_view_layout",
       "//chrome/browser/ui/views/frame:contents_web_view",
       "//chrome/browser/ui/views/frame:system_menu_model_builder",
       "//chrome/browser/ui/views/infobars",
@@ -859,6 +868,9 @@ source_set("ui") {
         "//chrome/browser/ui/views/frame:browser_caption_button_container_win",
         "//chrome/browser/win",
       ]
+
+      public_deps +=
+          [ "//chrome/browser/ui/views/frame:browser_frame_view_win" ]
     }
 
     if (is_linux) {
