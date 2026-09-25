@@ -1,9 +1,12 @@
 diff --git a/third_party/libwebp/visibility.gni b/third_party/libwebp/visibility.gni
-index 03012cc382eae65b745a8b999e034c4aa99329dc..9a29f8370de541939989373df4f1335652630876 100644
+index 03012cc382eae65b745a8b999e034c4aa99329dc..3c8b4b2554c77dc732bde2c784f34c2d403ba550 100644
 --- a/third_party/libwebp/visibility.gni
 +++ b/third_party/libwebp/visibility.gni
-@@ -24,3 +24,4 @@ cwebp_exe_allowed_visibility = [
-   "//clank/android_webview/*",
-   "//clank/java/*",
+@@ -13,6 +13,7 @@ allowed_visibility = [
+   "//third_party/blink/renderer/*",
+   "//third_party/libwebp/*",
  ]
 +allowed_visibility += [ "//brave/ios/browser/svg" ]
+ 
+ # This is the visibility list of `cwebp` executable (which is used during
+ # Chromium build when targeting Android).  This is a *separate* visibility list
