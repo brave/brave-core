@@ -8,8 +8,6 @@
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "components/sessions/core/serialized_navigation_entry_test_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/blink/public/common/page_state/page_state.h"
-#include "third_party/blink/public/common/page_state/page_state_serialization.h"
 
 namespace sessions {
 
@@ -25,12 +23,9 @@ TEST(BraveContentSerializedNavigationDriverTest,
   // When post data is present, the page state should be sanitized.
   EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
 
-  // Check encoded data is not empty but clean state only with url info for
-  // chrome overridable url by extension.
+  // Check encoded data is empty for a chrome:// url overridable by extension.
   navigation.set_virtual_url(GURL("chrome://newtab"));
-  EXPECT_EQ(blink::PageState::CreateFromURL(navigation.original_request_url())
-                .ToEncodedData(),
-            driver->GetSanitizedPageStateForPickle(&navigation));
+  EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
 
   // Check encoded data is empty.
   navigation.set_virtual_url(GURL("chrome://wallet"));
@@ -49,12 +44,9 @@ TEST(BraveContentSerializedNavigationDriverTest,
   EXPECT_EQ(test_data::kEncodedPageState,
             driver->GetSanitizedPageStateForPickle(&navigation));
 
-  // Check encoded data is not empty but clean state only with url info for
-  // chrome overridable url by extension.
+  // Check encoded data is empty for a chrome:// url overridable by extension.
   navigation.set_virtual_url(GURL("chrome://newtab"));
-  EXPECT_EQ(blink::PageState::CreateFromURL(navigation.original_request_url())
-                .ToEncodedData(),
-            driver->GetSanitizedPageStateForPickle(&navigation));
+  EXPECT_EQ(std::string(), driver->GetSanitizedPageStateForPickle(&navigation));
 
   // Check encoded data is empty.
   navigation.set_virtual_url(GURL("chrome://wallet"));
