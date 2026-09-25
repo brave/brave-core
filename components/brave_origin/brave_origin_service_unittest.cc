@@ -537,6 +537,7 @@ TEST_F(BraveOriginServiceTest,
        CheckPurchaseState_NoSkusGetter_ReturnsCachedValue) {
   // Reset purchase state so we can verify the fallback path.
   BraveOriginPolicyManager::GetInstance()->SetPurchased(false);
+  local_state_.ClearPref(kOriginPurchaseValidated);
 
   // Service was created with a NullDelegate that returns an empty
   // PendingRemote, so CheckPurchaseState should return the cached value.
@@ -581,6 +582,7 @@ TEST_F(BraveOriginServiceTest, NeedsRestart_AfterFirstPurchase_ReturnsTrue) {
   service_.reset();
   auto* manager = BraveOriginPolicyManager::GetInstance();
   manager->SetPurchased(false);
+  local_state_.ClearPref(kOriginPurchaseValidated);
   local_state_.SetBoolean(kOriginPoliciesWereEnforced, false);
 
   service_ = std::make_unique<BraveOriginService>(
@@ -713,7 +715,6 @@ TEST_F(BraveOriginServiceWithSkusTest,
   base::test::TestFuture<bool> result;
   service_->CheckPurchaseState(result.GetCallback());
   EXPECT_FALSE(result.Get());
-  EXPECT_FALSE(service_->IsPurchased());
 }
 
 TEST_F(BraveOriginServiceWithSkusTest,
@@ -723,7 +724,6 @@ TEST_F(BraveOriginServiceWithSkusTest,
   base::test::TestFuture<bool> result;
   service_->CheckPurchaseState(result.GetCallback());
   EXPECT_FALSE(result.Get());
-  EXPECT_FALSE(service_->IsPurchased());
 }
 
 TEST_F(BraveOriginServiceWithSkusTest,
@@ -733,7 +733,6 @@ TEST_F(BraveOriginServiceWithSkusTest,
   base::test::TestFuture<bool> result;
   service_->CheckPurchaseState(result.GetCallback());
   EXPECT_FALSE(result.Get());
-  EXPECT_FALSE(service_->IsPurchased());
 }
 
 TEST_F(BraveOriginServiceWithSkusTest,
@@ -743,7 +742,6 @@ TEST_F(BraveOriginServiceWithSkusTest,
   base::test::TestFuture<bool> result;
   service_->CheckPurchaseState(result.GetCallback());
   EXPECT_FALSE(result.Get());
-  EXPECT_FALSE(service_->IsPurchased());
 }
 
 TEST_F(BraveOriginServiceWithSkusTest,
@@ -753,12 +751,10 @@ TEST_F(BraveOriginServiceWithSkusTest,
   base::test::TestFuture<bool> result;
   service_->CheckPurchaseState(result.GetCallback());
   EXPECT_FALSE(result.Get());
-  EXPECT_FALSE(service_->IsPurchased());
 }
 
 TEST_F(BraveOriginServiceWithSkusTest,
-       CheckPurchaseState_CachesPurchasedState) {
-  // First check returns purchased.
+       CheckPurchaseState_FalseAfterTrue_KeepsPurchase) {
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 3})");
 
@@ -767,14 +763,16 @@ TEST_F(BraveOriginServiceWithSkusTest,
   EXPECT_TRUE(result1.Get());
   EXPECT_TRUE(service_->IsPurchased());
 
-  // Second check returns not purchased - cached value should update.
+  // A later summary can select another cached Origin order that has no local
+  // credentials. That must not revoke the validated purchase.
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 0, "expires_at": ""})");
 
   base::test::TestFuture<bool> result2;
   service_->CheckPurchaseState(result2.GetCallback());
   EXPECT_FALSE(result2.Get());
-  EXPECT_FALSE(service_->IsPurchased());
+  EXPECT_TRUE(service_->IsPurchased());
+  EXPECT_TRUE(local_state_.GetBoolean(kOriginPurchaseValidated));
 }
 
 TEST_F(BraveOriginServiceWithSkusTest, FirstPurchaseDetection_CallsDelegate) {
@@ -782,6 +780,7 @@ TEST_F(BraveOriginServiceWithSkusTest, FirstPurchaseDetection_CallsDelegate) {
   // first-purchase transition.
   service_.reset();
   BraveOriginPolicyManager::GetInstance()->SetPurchased(false);
+  local_state_.ClearPref(kOriginPurchaseValidated);
 
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 0, "expires_at": ""})");
@@ -841,6 +840,7 @@ TEST_F(BraveOriginServiceWithSkusTest, DelegateIsOneShot_OnlyFiresOnce) {
   // Start from not-purchased so we can trigger the delegate.
   service_.reset();
   BraveOriginPolicyManager::GetInstance()->SetPurchased(false);
+  local_state_.ClearPref(kOriginPurchaseValidated);
 
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 0, "expires_at": ""})");
@@ -887,6 +887,7 @@ TEST_F(BraveOriginServiceWithSkusTest,
   service_.reset();
   auto* manager = BraveOriginPolicyManager::GetInstance();
   manager->SetPurchased(false);
+  local_state_.ClearPref(kOriginPurchaseValidated);
 
   fake_skus_service_->SetCredentialSummaryResponse(
       R"({"remaining_credential_count": 0, "expires_at": ""})");
