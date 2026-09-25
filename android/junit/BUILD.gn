@@ -143,6 +143,7 @@ if (is_android) {
       "brave_junit_tests_org.chromium.chrome.browser.settings") {
     sources = [
       "src/org/chromium/chrome/browser/settings/BraveSearchEngineUtilsTest.java",
+      "src/org/chromium/chrome/browser/settings/BraveSettingsActivityTest.java",
       "src/org/chromium/chrome/browser/settings/BraveSettingsLauncherImplTest.java",
       "src/org/chromium/components/browser_ui/settings/BraveSettingsIconTintUtilsTest.java",
     ]
@@ -152,6 +153,7 @@ if (is_android) {
       "//brave/components/browser_ui/settings/android:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/safe_browsing/android:java",
+      "//components/browser_ui/site_settings/android:java",
     ]
   }
 
