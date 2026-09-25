@@ -203,6 +203,38 @@ function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
   return needsUpdate
 }
 
+// Generates the git config that includes the global one plus redirects of
+// upstream fetches to our Gerrit mirrors, then points GIT_CONFIG_GLOBAL at it.
+// Fetches authenticate as BRAVE_USE_GERRIT_MIRRORS_USER. An existing file is
+// only regenerated when `update` is set. No-op unless that user is set. The
+// file is inert without GIT_CONFIG_GLOBAL being set.
+/** @param {boolean} update */
+function configureGerritMirrors(update) {
+  if (!config.gerritMirrorsUser) {
+    return
+  }
+
+  const args = [
+    path.join(
+      config.braveCoreDir,
+      'tools',
+      'recipes',
+      'recipe_modules',
+      'brave_core_checkout',
+      'resources',
+      'mirror_git_config.py',
+    ),
+    'install',
+    '--user',
+    config.gerritMirrorsUser,
+  ]
+  if (update) {
+    args.push('--update')
+  }
+  util.run('vpython3', args, config.defaultOptions)
+  config.applyGerritMirrorsGitConfig()
+}
+
 function syncChromium(program) {
   const syncWithForce = program.init || program.force
   const syncChromiumValue = program.sync_chromium
@@ -249,6 +281,13 @@ function syncChromium(program) {
     expectedSyncInfo,
   )
   const shouldSyncChromium = chromiumNeedsUpdate || syncWithForce
+
+  // Before any fetch, so both the Chromium and Brave syncs go through the
+  // mirrors when enabled. The mirror list is only refreshed alongside a
+  // Chromium update or a forced sync (`init`, `--force`), so no-op syncs stay
+  // offline.
+  configureGerritMirrors(shouldSyncChromium)
+
   if (!shouldSyncChromium && !syncChromiumValue) {
     if (deleteUnusedDeps && !isCI) {
       Log.warn(

@@ -60,6 +60,8 @@ export class Config {
   gclientFile: string
   gclientVerbose: boolean
   disableGclientConfigUpdate: boolean
+  gerritMirrorsUser: string | undefined
+  gerritMirrorGitConfig: string
   leanSync: boolean
   gclientGlobalVars: Record<string, any>
   targetArch: string
@@ -170,6 +172,12 @@ export class Config {
     this.disableGclientConfigUpdate = envConfig.getBoolean(
       ['disable_gclient_config_update'],
       false,
+    )
+    this.gerritMirrorsUser =
+      process.env.BRAVE_USE_GERRIT_MIRRORS_USER || undefined
+    this.gerritMirrorGitConfig = path.join(
+      this.braveCoreDir,
+      '.gitconfig_gerrit_mirror_redirect',
     )
     this.leanSync = envConfig.getBoolean(['lean_sync'], false)
     this.gclientGlobalVars = envConfig.getMergedObject([
@@ -691,6 +699,14 @@ export class Config {
     gnArgs.target_arch = gnArgs.target_cpu
     this.updateInternal(Object.assign({}, gnArgs, options))
     assert(!isCI)
+  }
+
+  // Points GIT_CONFIG_GLOBAL at the generated mirror git config, so every
+  // process spawned from here on fetches through our Gerrit mirrors. Only
+  // called by sync after generating the file, so the generator never runs with
+  // GIT_CONFIG_GLOBAL pointing at its own output.
+  applyGerritMirrorsGitConfig() {
+    process.env.GIT_CONFIG_GLOBAL = this.gerritMirrorGitConfig
   }
 
   update(options: UpdateOptions) {
