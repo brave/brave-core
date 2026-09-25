@@ -25,6 +25,7 @@ import org.robolectric.annotation.Config;
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.brave.browser.custom_search_engines.settings.AddCustomSearchEnginePreferenceFragment;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.autofill.settings.AutofillLocalCardEditor;
 import org.chromium.chrome.browser.browsing_data.BraveClearBrowsingDataFragment;
 import org.chromium.components.browser_ui.site_settings.AllSiteSettings;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
@@ -52,6 +53,11 @@ public class BraveSettingsActivityTest {
                 mRoot,
                 BraveSettingsActivity.getInsetView(
                         new AddCustomSearchEnginePreferenceFragment(), mRoot));
+    }
+
+    @Test
+    public void testCardEditorInsetsIncludeFooter() {
+        assertSame(mRoot, BraveSettingsActivity.getInsetView(new AutofillLocalCardEditor(), mRoot));
     }
 
     @Test

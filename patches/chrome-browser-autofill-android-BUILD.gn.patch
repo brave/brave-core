@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/autofill/android/BUILD.gn b/chrome/browser/autofill/android/BUILD.gn
+index 0bede6d0f68f64f0d7cc4c9362242db53b6aa2ee..5f9147b29b2b8f1317ab9708f437425cc44529cf 100644
+--- a/chrome/browser/autofill/android/BUILD.gn
++++ b/chrome/browser/autofill/android/BUILD.gn
+@@ -111,6 +111,7 @@ android_library("java") {
+     ":java_resources",
+     ":third_party_provider_java",
+     "//base:base_java",
++    "//brave/android:settings_insets_java",
+     "//build/android:build_java",
+     "//chrome/android:chrome_app_java_resources",
+     "//chrome/browser/device_reauth/android:java",
