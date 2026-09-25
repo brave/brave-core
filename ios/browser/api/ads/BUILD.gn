@@ -64,3 +64,32 @@ ios_objc_mojom_wrappers("brave_ads_mojom_wrappers") {
   # The module name is `BraveAds` now which matches the class we already have
   generate_namespace = false
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  configs += [ ":external_config" ]
+
+  sources = [ "brave_ads_unittest.mm" ]
+
+  deps = [
+    ":ads",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_ads/core/mojom",
+    "//brave/components/brave_ads/core/public:headers",
+    "//brave/components/brave_news/common",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/common",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/application_context",
+    "//ios/chrome/browser/shared/model/profile",
+    "//ios/chrome/browser/shared/model/profile/test",
+    "//ios/chrome/test:test_support",
+    "//ios/web/public/test",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//url",
+  ]
+}
