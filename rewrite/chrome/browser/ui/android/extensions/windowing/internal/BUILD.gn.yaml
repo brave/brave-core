@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Import the extensions buildflags.
+    add_import:
+      import: //extensions/buildflags/buildflags.gni
+  - description: |-
+      Build the window controller bridge whenever the extensions core is built.
+      Without it no Android window is visible to the extensions tabs and
+      windows APIs.
+    regex:
+      pattern: 'assert(is_desktop_android)'
+      replace: 'assert(is_desktop_android || enable_extensions_core)'
