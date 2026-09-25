@@ -13,6 +13,8 @@ import styles from './alerts.module.scss'
 
 interface Props {
   _testIsCurrentModelLeo?: boolean
+  // Whether the premium rate limit was reached for the current model only.
+  isModelRateLimit?: boolean
 }
 
 function ErrorRateLimit(props: Props) {
@@ -59,7 +61,11 @@ function ErrorRateLimit(props: Props) {
   return (
     <div className={styles.alert}>
       <Alert type='warning'>
-        {getLocale(S.CHAT_UI_ERROR_RATE_LIMIT)}
+        {getLocale(
+          props.isModelRateLimit
+            ? S.CHAT_UI_ERROR_MODEL_RATE_LIMIT
+            : S.CHAT_UI_ERROR_RATE_LIMIT,
+        )}
         <Button
           slot='actions'
           kind='filled'
