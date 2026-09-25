@@ -12,8 +12,6 @@
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
-#include "base/run_loop.h"
-#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -24,6 +22,7 @@
 #include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"  // IWYU pragma: keep
@@ -173,10 +172,10 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_ReturnsTheGrantedAccount) {
   ASSERT_FALSE(error);
   ASSERT_TRUE(accounts);
   ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_EQ(accounts->at(0)->address, account->address);
-  EXPECT_EQ(accounts->at(0)->name, account->name);
-  EXPECT_EQ(accounts->at(0)->type, kSr25519);
-  EXPECT_FALSE(accounts->at(0)->genesis_hash);
+  EXPECT_THAT(accounts->at(0),
+              EqualsMojo(mojom::PolkadotInjectedAccount::New(
+                  account->address, /*genesis_hash=*/std::nullopt,
+                  account->name, kSr25519)));
 }
 
 TEST_F(PolkadotApiImplUnitTest, GetAccounts_OnlyEverServesTheGrantedAccount) {
@@ -195,7 +194,10 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_OnlyEverServesTheGrantedAccount) {
   ASSERT_FALSE(error);
   ASSERT_TRUE(accounts);
   ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_EQ(accounts->at(0)->address, granted->address);
+  EXPECT_THAT(accounts->at(0),
+              EqualsMojo(mojom::PolkadotInjectedAccount::New(
+                  granted->address, /*genesis_hash=*/std::nullopt,
+                  granted->name, kSr25519)));
 }
 
 TEST_F(PolkadotApiImplUnitTest, GetAccounts_AnyTypeIsIgnored) {
@@ -216,9 +218,9 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_AnyTypeIsIgnored) {
   ASSERT_FALSE(error);
   ASSERT_TRUE(any_type_accounts);
   ASSERT_TRUE(accounts);
-  EXPECT_EQ(any_type_accounts->size(), 1u);
-  EXPECT_EQ(accounts->size(), 1u);
-  EXPECT_EQ(any_type_accounts->at(0)->address, accounts->at(0)->address);
+  ASSERT_EQ(any_type_accounts->size(), 1u);
+  ASSERT_EQ(accounts->size(), 1u);
+  EXPECT_THAT(any_type_accounts->at(0), EqualsMojo(accounts->at(0)));
 }
 
 TEST_F(PolkadotApiImplUnitTest, GetAccounts_ImportedAccount) {
@@ -232,7 +234,10 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_ImportedAccount) {
   ASSERT_FALSE(error);
   ASSERT_TRUE(accounts);
   ASSERT_EQ(accounts->size(), 1u);
-  EXPECT_EQ(accounts->at(0)->address, imported->address);
+  EXPECT_THAT(accounts->at(0),
+              EqualsMojo(mojom::PolkadotInjectedAccount::New(
+                  imported->address, /*genesis_hash=*/std::nullopt,
+                  imported->name, kSr25519)));
 }
 
 TEST_F(PolkadotApiImplUnitTest, GetAccounts_RechecksPermissionOnEveryCall) {
@@ -271,9 +276,10 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_PermissionRevoked) {
 
   EXPECT_FALSE(accounts);
   ASSERT_TRUE(error);
-  EXPECT_EQ(error->code, mojom::PolkadotProviderError::kUnknown);
-  EXPECT_EQ(error->message,
-            l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST));
+  EXPECT_THAT(error,
+              EqualsMojo(mojom::PolkadotProviderErrorBundle::New(
+                  mojom::PolkadotProviderError::kUnknown,
+                  l10n_util::GetStringUTF8(IDS_WALLET_USER_REJECTED_REQUEST))));
 }
 
 TEST_F(PolkadotApiImplUnitTest, GetAccounts_WalletLocked) {
@@ -287,9 +293,11 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_WalletLocked) {
 
   EXPECT_FALSE(accounts);
   ASSERT_TRUE(error);
-  EXPECT_EQ(error->code, mojom::PolkadotProviderError::kUnknown);
-  EXPECT_EQ(error->message,
-            l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
+  EXPECT_THAT(
+      error,
+      EqualsMojo(mojom::PolkadotProviderErrorBundle::New(
+          mojom::PolkadotProviderError::kUnknown,
+          l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR))));
 }
 
 TEST_F(PolkadotApiImplUnitTest, GetAccounts_AccountRemovedAfterGrant) {
@@ -307,9 +315,9 @@ TEST_F(PolkadotApiImplUnitTest, GetAccounts_AccountRemovedAfterGrant) {
 
   EXPECT_FALSE(accounts);
   ASSERT_TRUE(error);
-  EXPECT_EQ(error->code, mojom::PolkadotProviderError::kInternalError);
-  EXPECT_EQ(error->message,
-            l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+  EXPECT_THAT(error, EqualsMojo(mojom::PolkadotProviderErrorBundle::New(
+                         mojom::PolkadotProviderError::kInternalError,
+                         l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR))));
 }
 
 }  // namespace brave_wallet

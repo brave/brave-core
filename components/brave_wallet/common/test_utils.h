@@ -143,6 +143,8 @@ void PrintTo(const BtcHardwareTransactionSignInputDataPtr& input_data,
              ::std::ostream* os);
 void PrintTo(const CardanoAddressPtr& address, ::std::ostream* os);
 void PrintTo(const CardanoBalancePtr& balance, ::std::ostream* os);
+void PrintTo(const PolkadotInjectedAccountPtr& account, ::std::ostream* os);
+void PrintTo(const PolkadotProviderErrorBundlePtr& error, ::std::ostream* os);
 
 }  // namespace mojom
 

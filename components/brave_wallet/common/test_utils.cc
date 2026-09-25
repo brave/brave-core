@@ -134,6 +134,17 @@ void PrintTo(const CardanoBalancePtr& balance, ::std::ostream* os) {
   *os << absl::StrFormat("[%d]", balance->total_balance);
 }
 
+void PrintTo(const PolkadotInjectedAccountPtr& account, ::std::ostream* os) {
+  *os << absl::StrFormat("[%s %s %s %s]", account->address, account->name,
+                         account->type,
+                         account->genesis_hash.value_or("<none>"));
+}
+
+void PrintTo(const PolkadotProviderErrorBundlePtr& error, ::std::ostream* os) {
+  *os << absl::StrFormat("[%d %s]", static_cast<int>(error->code),
+                         error->message);
+}
+
 }  // namespace mojom
 
 }  // namespace brave_wallet
