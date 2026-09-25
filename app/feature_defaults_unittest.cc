@@ -148,6 +148,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kFencedFrames,
       &blink::features::kPreloadingEagerViewportHeuristics,
+      &blink::features::kWebMCP,
       &browser_actuator::kBrowserActuator,
       &browser_actuator::kBrowserActuatorProtoStreamTransport,
 #if BUILDFLAG(IS_ANDROID)
