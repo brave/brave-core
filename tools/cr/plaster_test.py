@@ -7991,6 +7991,19 @@ class RegexMacroEngineTest(unittest.TestCase):
         self.assertEqual(matches, 1)
         self.assertEqual(engine.content, '[foo] bar')
 
+    def test_backslashes_in_replace_inputs_are_inserted_verbatim(self):
+        # A C string escape in an input must not be read by `re.subn` as a
+        # newline or a backreference.
+        rewriters = self._rewriters({
+            'inputs': ['name', 'value'],
+            're_pattern': '{name}',
+            'replace': '{value}',
+        })
+        engine = plaster.RegexMacroEngine(rewriters, 'foo')
+        engine.run('cxx.rename_constant', {'name': 'foo', 'value': r'"a\n\1"'})
+        self.assertEqual(engine.content, r'"a\n\1"')
+
+
     def test_missing_input_raises(self):
         rewriters = self._rewriters({
             'inputs': ['old_name', 'new_name'],
@@ -8484,6 +8497,160 @@ class OverrideFeatureDefaultStateTest(unittest.TestCase):
                     'value': 'base::FEATURE_ENABLED_BY_DEFAULT',
                     'extra': 'x',
                 })
+
+
+class AllInsertionMacrosTest(unittest.TestCase):
+    """Exercises the shipped `all.` line insertion macros."""
+
+    def setUp(self):
+        self.rewriters = plaster.RewritersEval.load()
+
+    def _run(self, op_id: str, source: str, **inputs) -> tuple[int, str]:
+        engine = plaster.RegexMacroEngine(self.rewriters, source)
+        matches = engine.run(op_id, inputs)
+        return matches, engine.content
+
+    # -- add_after_line ------------------------------------------------------
+
+    def test_add_after_line(self):
+        matches, content = self._run('all.add_after_line',
+                                     '#include "a.h"\n#include "c.h"\n',
+                                     line='#include "a.h"',
+                                     code='#include "b.h"')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content,
+                         '#include "a.h"\n#include "b.h"\n#include "c.h"\n')
+
+    def test_add_after_line_ignores_indentation(self):
+        matches, content = self._run('all.add_after_line',
+                                     '{\n  Foo();  \n}\n',
+                                     line='Foo();',
+                                     code='  Bar();')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content, '{\n  Foo();  \n  Bar();\n}\n')
+
+    def test_add_after_line_on_last_line_without_newline(self):
+        matches, content = self._run('all.add_after_line',
+                                     'a\nb',
+                                     line='b',
+                                     code='c')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content, 'a\nb\nc\n')
+
+    def test_add_after_line_requires_the_whole_line(self):
+        matches, content = self._run('all.add_after_line',
+                                     'Foo(); // x\nFoo2();\n',
+                                     line='Foo();',
+                                     code='Bar();')
+        self.assertEqual(matches, 0)
+        self.assertEqual(content, 'Foo(); // x\nFoo2();\n')
+
+    def test_add_after_line_matches_every_occurrence(self):
+        matches, content = self._run('all.add_after_line',
+                                     'a\nb\na\n',
+                                     line='a',
+                                     code='x')
+        self.assertEqual(matches, 2)
+        self.assertEqual(content, 'a\nx\nb\na\nx\n')
+
+    # -- add_before_line -----------------------------------------------------
+
+    def test_add_before_line(self):
+        matches, content = self._run('all.add_before_line',
+                                     '{\n  Foo();\n}\n',
+                                     line='Foo();',
+                                     code='  Bar();')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content, '{\n  Bar();\n  Foo();\n}\n')
+
+    def test_add_before_first_line(self):
+        matches, content = self._run('all.add_before_line',
+                                     'a\nb\n',
+                                     line='a',
+                                     code='x')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content, 'x\na\nb\n')
+
+    # -- add_after_copyright_notice ------------------------------------------
+
+    def test_add_after_copyright_notice(self):
+        matches, content = self._run(
+            'all.add_after_copyright_notice',
+            '# Copyright 2014 The Chromium Authors\n'
+            '# found in the LICENSE file.\n'
+            '\n'
+            'import("//base/allocator/allocator.gni")\n',
+            code='import("//brave/browser/sources.gni")')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content, '# Copyright 2014 The Chromium Authors\n'
+            '# found in the LICENSE file.\n'
+            '\n'
+            'import("//brave/browser/sources.gni")\n'
+            '\n'
+            'import("//base/allocator/allocator.gni")\n')
+
+    def test_add_after_copyright_notice_with_slash_comments(self):
+        matches, content = self._run('all.add_after_copyright_notice',
+                                     '// Copyright 2016 The Chromium Authors\n'
+                                     '// found in the LICENSE file.\n'
+                                     '\n'
+                                     '#include "a.h"\n',
+                                     code='#include "brave/b.h"')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content, '// Copyright 2016 The Chromium Authors\n'
+            '// found in the LICENSE file.\n'
+            '\n'
+            '#include "brave/b.h"\n'
+            '\n'
+            '#include "a.h"\n')
+
+    def test_add_after_copyright_notice_spans_a_shebang(self):
+        matches, content = self._run(
+            'all.add_after_copyright_notice',
+            '#!/usr/bin/env python3\n#\n# Copyright 2013\n\nimport os\n',
+            code='import brave')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content, '#!/usr/bin/env python3\n#\n# Copyright 2013\n\n'
+            'import brave\n\nimport os\n')
+
+    def test_add_after_copyright_notice_spans_a_block_comment(self):
+        matches, content = self._run(
+            'all.add_after_copyright_notice',
+            '/* Copyright 2014\n * found in the LICENSE file. */\n\na {}\n',
+            code='b {}')
+        self.assertEqual(matches, 1)
+        self.assertEqual(
+            content, '/* Copyright 2014\n * found in the LICENSE file. */\n\n'
+            'b {}\n\na {}\n')
+
+    def test_add_after_copyright_notice_requires_a_leading_notice(self):
+        source = 'int x;\n\n// Copyright 2014\n'
+        matches, content = self._run('all.add_after_copyright_notice',
+                                     source,
+                                     code='int y;')
+        self.assertEqual(matches, 0)
+        self.assertEqual(content, source)
+
+    # -- add_at_end_of_the_file ----------------------------------------------
+
+    def test_add_at_end_of_the_file(self):
+        for source in ('a\n', 'a'):
+            with self.subTest(source=source):
+                matches, content = self._run('all.add_at_end_of_the_file',
+                                             source,
+                                             code='b')
+                self.assertEqual(matches, 1)
+                self.assertEqual(content, 'a\nb\n')
+
+    def test_add_at_end_of_the_file_after_a_blank_line(self):
+        matches, content = self._run('all.add_at_end_of_the_file',
+                                     'a\n\n',
+                                     code='b')
+        self.assertEqual(matches, 1)
+        self.assertEqual(content, 'a\n\nb\n')
 
 
 class DeclaredInputsTest(unittest.TestCase):
