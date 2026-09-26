@@ -7,7 +7,6 @@
 
 #include <memory>
 #include <utility>
-#include <vector>
 
 #include "brave/browser/widevine/widevine_permission_request.h"
 #include "brave/browser/widevine/widevine_utils.h"
@@ -27,6 +26,7 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/check_is_test.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #endif
