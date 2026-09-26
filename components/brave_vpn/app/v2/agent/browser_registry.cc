@@ -14,14 +14,13 @@
 #include "base/check_op.h"
 #include "base/containers/map_util.h"
 #include "base/functional/bind.h"
-#include "base/location.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/process/process_handle.h"
 #include "base/sequence_checker.h"
 #include "base/strings/strcat.h"
-#include "base/task/sequenced_task_runner.h"
+#include "base/task/bind_post_task.h"
 #include "base/time/time.h"
 #include "base/timer/elapsed_timer.h"
 #include "brave/components/brave_vpn/app/v2/agent/browser_host_impl.h"
@@ -133,31 +132,13 @@ brave_vpn::mojom::BrowserHostProvider* BrowserRegistry::OnBrowserConnecting(
   return &host_provider_;
 }
 
-BrowserRegistry::Connection* BrowserRegistry::FindConnection(
-    mojo::ReceiverId receiver_id) {
+scoped_refptr<BrowserIdentity> BrowserRegistry::ResolvePeer(
+    const named_mojo_ipc_server::ConnectionInfo& info) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto* connection = base::FindOrNull(connections_, receiver_id);
-  if (!connection) {
-    return nullptr;
-  }
-  return connection->get();
-}
-
-BrowserRegistry::Connection* BrowserRegistry::ResolveConnection(
-    mojo::ReceiverId receiver_id) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  DCHECK_EQ(receiver_id, host_server_->current_receiver());
-
-  // Already connected: a browser may drop its host and authenticate again on
-  // the same connection, possibly long after the accept-time entry expired.
-  if (auto* connection = FindConnection(receiver_id)) {
-    return connection;
-  }
 
   // Capturing the dispatching peer is how its pid is read; this identity is
   // discarded, since the accept-time one is what pins the process.
-  scoped_refptr<BrowserIdentity> dispatching =
-      BrowserIdentity::Create(host_server_->current_connection_info());
+  scoped_refptr<BrowserIdentity> dispatching = BrowserIdentity::Create(info);
   if (!dispatching) {
     return nullptr;
   }
@@ -184,7 +165,7 @@ BrowserRegistry::Connection* BrowserRegistry::ResolveConnection(
   scoped_refptr<BrowserIdentity> identity = connecting->second.identity;
   if (!identity->IsSameProcess(*dispatching)) {
     VLOG(1) << "Refusing " << dispatching->GetDescription()
-            << ": the capture held for that pid belongs to another process ("
+            << ": capture held for pid belongs to another process ("
             << identity->GetDescription() << ")";
     peers_.erase(connecting);
     return nullptr;
@@ -196,66 +177,101 @@ BrowserRegistry::Connection* BrowserRegistry::ResolveConnection(
   // Consuming the entry here would resolve the first profile and leave every
   // other one unresolvable, which reads to the browser as rejected and takes
   // those profiles to "unavailable" state for the life of the process.
-  auto stored_connection = std::make_unique<Connection>();
-  stored_connection->identity = std::move(identity);
-  auto it =
-      connections_.emplace(receiver_id, std::move(stored_connection)).first;
-  return it->second.get();
+  return identity;
 }
 
-void BrowserRegistry::Authenticate(
+void BrowserRegistry::InitializeBrowser(
     uint32_t protocol_version,
-    mojo::PendingRemote<mojom::BrowserEndpoint> browser_endpoint,
-    mojo::PendingReceiver<mojom::BrowserHost> host,
-    base::OnceCallback<void(mojom::BrowserAuthResult)> callback) {
+    mojo::PlatformHandle identity_channel,
+    base::OnceCallback<void(mojom::BrowserInitResult)> callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  // Called synchronously from BindBrowserHost(), so the calling browser is
-  // still the current receiver. It is the only handle on the connection that
-  // survives the verification hop below.
+  // Every initialization reply is posted, never run inline.
+  auto reply = base::BindPostTaskToCurrentDefault(std::move(callback));
+
+  // Called synchronously from Initialize(), so the calling browser is still the
+  // current receiver.
   const mojo::ReceiverId receiver_id = host_server_->current_receiver();
+
+  if (connections_.contains(receiver_id)) {
+    // One successful Initialize() per connection. Nothing about a connection's
+    // peer can change while it lives, so a second call is a bug or not our
+    // browser.
+    VLOG(1) << "Refusing browser " << receiver_id << ": already initialized";
+    std::move(reply).Run(mojom::BrowserInitResult::kInvalidRequest);
+    return;
+  }
 
   // Every version in [kMinSupportedProtocolVersion, kProtocolVersion] is
   // accepted, so a browser and agent from different updates still interoperate.
   // A browser newer than this agent is refused, because it would go on to call
-  // methods this build does not implement.
+  // methods this build does not implement. This deliberately leaves no
+  // connection entry behind: browser may try again with a version agent speaks.
   if (protocol_version < kMinSupportedProtocolVersion ||
       protocol_version > mojom::kProtocolVersion) {
     VLOG(1) << "Refusing browser " << receiver_id << ": protocol version "
             << protocol_version << " outside supported range ["
             << kMinSupportedProtocolVersion << ", " << mojom::kProtocolVersion
             << "]";
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(std::move(callback),
-                                  mojom::BrowserAuthResult::kVersionMismatch));
+    std::move(reply).Run(mojom::BrowserInitResult::kVersionMismatch);
     return;
   }
 
-  Connection* connection = ResolveConnection(receiver_id);
-  if (!connection) {
-    // No capture for this connection: it was never accepted, its peer could not
-    // be pinned just now, its pid resolves to another process's capture, or the
-    // capture expired. None is a verdict about the peer, so this is retryable
-    // rather than terminal.
+  // Resolve the peer now: the call arrives one round trip after the connection
+  // was accepted, so the capture is all but certain to still be live.
+  scoped_refptr<BrowserIdentity> identity =
+      ResolvePeer(host_server_->current_connection_info());
+  if (!identity) {
     VLOG(1) << "Refusing browser " << receiver_id
             << ": no accept-time identity for the connection (expires "
             << kCapturedPeerIdleTimeout << " after connect)";
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(std::move(callback),
-                                  mojom::BrowserAuthResult::kInconclusive));
+    std::move(reply).Run(mojom::BrowserInitResult::kNotIdentified);
     return;
   }
 
-  // One BrowserHost per connection, whether it is already bound or still being
-  // verified. A browser that drops its host may ask again on the same
-  // connection, which is the kIdentified state.
+  // TODO(https://github.com/brave/brave-browser/issues/54608)
+  // Send agent identity message on |identity_channel| on platforms that require
+  // it (Mac). For now, |identity_channel| is unused and silently dropped.
+
+  // A connection is created and gets the captured identity from here on.
+  auto connection = std::make_unique<Connection>();
+  connection->identity = std::move(identity);
+  VLOG(1) << "Browser " << receiver_id
+          << " initialized: " << connection->identity->GetDescription();
+
+  connections_.emplace(receiver_id, std::move(connection));
+  std::move(reply).Run(mojom::BrowserInitResult::kInitialized);
+}
+
+void BrowserRegistry::AuthenticateBrowser(
+    mojo::PendingRemote<mojom::BrowserEndpoint> browser_endpoint,
+    mojo::PendingReceiver<mojom::BrowserHost> host,
+    base::OnceCallback<void(mojom::BrowserAuthResult)> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // Every authentication reply is posted, never run inline.
+  auto reply = base::BindPostTaskToCurrentDefault(std::move(callback));
+
+  // Called synchronously from BindBrowserHost(), so the calling browser is
+  // still the current receiver.
+  const mojo::ReceiverId receiver_id = host_server_->current_receiver();
+
+  Connection* connection = base::FindPtrOrNull(connections_, receiver_id);
+  if (!connection) {
+    // InitializeBrowser() is what creates the entry, so its absence means this
+    // call came first, or after the initialization this agent refused.
+    VLOG(1) << "Refusing browser " << receiver_id << ": not initialized";
+    std::move(reply).Run(mojom::BrowserAuthResult::kInvalidRequest);
+    return;
+  }
+
   if (connection->state != ConnectionState::kIdentified) {
+    // One BrowserHost per connection, whether it is already bound or still
+    // being verified. A browser that drops its host may ask again on the
+    // same connection, which is the kIdentified state.
     VLOG(1) << "Refusing browser " << receiver_id
             << ": authentication in progress or succeeded already";
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE,
-        base::BindOnce(std::move(callback),
-                       mojom::BrowserAuthResult::kHostAlreadyRequested));
+    std::move(reply).Run(mojom::BrowserAuthResult::kHostAlreadyRequested);
     return;
   }
 
@@ -263,7 +279,7 @@ void BrowserRegistry::Authenticate(
   PendingAuth pending{.receiver_id = receiver_id,
                       .browser_endpoint = std::move(browser_endpoint),
                       .host = std::move(host),
-                      .reply = std::move(callback)};
+                      .reply = std::move(reply)};
 
   // Verification may block, so it is BrowserIdentity's task to keep the
   // blocking part of the verification off the blocking pool entirely.
@@ -282,7 +298,7 @@ void BrowserRegistry::OnPeerVerified(
   // The connection may have gone away mid-verification; its entry is the only
   // thing that still says whether it is around, and it is erased by
   // OnHostProviderDisconnected().
-  auto* connection = FindConnection(receiver_id);
+  auto* connection = base::FindPtrOrNull(connections_, receiver_id);
   if (!connection) {
     VLOG(1) << "Browser " << receiver_id << " went away during verification";
     // The pipe is already closed, so this reply goes nowhere; run it anyway
@@ -355,7 +371,7 @@ void BrowserRegistry::OnHostDisconnected(mojo::ReceiverId id) {
 
   VLOG(1) << "Browser " << id << " dropped a session pipe";
 
-  auto* connection = FindConnection(id);
+  auto* connection = base::FindPtrOrNull(connections_, id);
   if (connection) {
     // The connection stays up and keeps its identity, so the browser may
     // authenticate again; only the session goes away. State is set first so

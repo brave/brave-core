@@ -5,6 +5,9 @@
 
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_browser.h"
 
+#include "base/check.h"
+#include "mojo/public/cpp/platform/platform_channel_endpoint.h"
+
 namespace brave_vpn::v2 {
 
 FakeBrowser::FakeBrowser() = default;
@@ -19,17 +22,37 @@ mojo::PendingReceiver<mojom::BrowserHost> FakeBrowser::BindHost() {
   return host_remote_.BindNewPipeAndPassReceiver();
 }
 
+mojo::PlatformHandle FakeBrowser::BindIdentityChannel() {
+  mojo::PlatformChannelEndpoint endpoint =
+      identity_channel_.TakeLocalEndpoint();
+  CHECK(endpoint.is_valid()) << "Identity channel already taken";
+  return endpoint.TakePlatformHandle();
+}
+
+base::OnceCallback<void(mojom::BrowserInitResult)>
+FakeBrowser::GetInitReplyCallback() {
+  return init_replied_.GetCallback();
+}
+
 base::OnceCallback<void(mojom::BrowserAuthResult)>
-FakeBrowser::GetReplyCallback() {
-  return replied_.GetCallback();
+FakeBrowser::GetAuthReplyCallback() {
+  return auth_replied_.GetCallback();
 }
 
-bool FakeBrowser::has_reply() const {
-  return replied_.IsReady();
+bool FakeBrowser::has_init_reply() const {
+  return init_replied_.IsReady();
 }
 
-mojom::BrowserAuthResult FakeBrowser::WaitForReply() {
-  return replied_.Get();
+bool FakeBrowser::has_auth_reply() const {
+  return auth_replied_.IsReady();
+}
+
+mojom::BrowserInitResult FakeBrowser::WaitForInitReply() {
+  return init_replied_.Get();
+}
+
+mojom::BrowserAuthResult FakeBrowser::WaitForAuthReply() {
+  return auth_replied_.Get();
 }
 
 void FakeBrowser::WatchHost() {

@@ -11,6 +11,7 @@
 
 #include "base/auto_reset.h"
 #include "base/containers/flat_map.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/process/process_handle.h"
@@ -25,6 +26,7 @@
 #include "components/named_mojo_ipc_server/connection_info.h"
 #include "components/named_mojo_ipc_server/fake_ipc_server.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/platform/platform_handle.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_vpn::v2 {
@@ -64,9 +66,14 @@ class BrowserRegistryTest : public testing::Test {
         *server_state_.current_connection_info);
   }
 
-  void CallAuthenticate(FakeBrowser& browser, uint32_t protocol_version) {
-    registry_->Authenticate(protocol_version, browser.BindEndpoint(),
-                            browser.BindHost(), browser.GetReplyCallback());
+  void CallInitialize(FakeBrowser& browser, uint32_t protocol_version) {
+    registry_->InitializeBrowser(protocol_version, mojo::PlatformHandle(),
+                                 browser.GetInitReplyCallback());
+  }
+
+  void CallAuthenticate(FakeBrowser& browser) {
+    registry_->AuthenticateBrowser(browser.BindEndpoint(), browser.BindHost(),
+                                   browser.GetAuthReplyCallback());
   }
 
   // Mojo's ReceiverSet hands out ids from a monotonic counter and never reuses
@@ -92,25 +99,53 @@ class BrowserRegistryTest : public testing::Test {
     EXPECT_TRUE(CallOnBrowserConnecting());
   }
 
-  void StartAuthenticate(FakeBrowser& browser,
-                         mojo::ReceiverId connection,
-                         uint32_t protocol_version,
-                         bool simulate_connect = true) {
+  void StartInitialize(FakeBrowser& browser,
+                       mojo::ReceiverId connection,
+                       uint32_t protocol_version,
+                       bool simulate_connect = true) {
     if (simulate_connect && !connection_pids_.contains(connection)) {
       SimulateConnect(connection, PidForConnection(connection));
     } else {
       SetDispatchingConnection(connection);
     }
-    CallAuthenticate(browser, protocol_version);
+    CallInitialize(browser, protocol_version);
   }
 
-  mojom::BrowserAuthResult Authenticate(
+  mojom::BrowserInitResult Initialize(
       FakeBrowser& browser,
       mojo::ReceiverId connection,
-      uint32_t protocol_version = mojom::kProtocolVersion) {
-    StartAuthenticate(browser, connection, protocol_version,
-                      /*simulate_connect=*/true);
-    return browser.WaitForReply();
+      uint32_t protocol_version = mojom::kProtocolVersion,
+      bool simulate_connect = true) {
+    StartInitialize(browser, connection, protocol_version, simulate_connect);
+    const mojom::BrowserInitResult result = browser.WaitForInitReply();
+    if (result == mojom::BrowserInitResult::kInitialized) {
+      initialized_connections_.insert(connection);
+    }
+    return result;
+  }
+
+  // Brings |connection| to the point where it may ask for a host: accepted and
+  // initialized, each at most once, since the registry allows one successful
+  // Initialize() per connection. A second attempt on the same connection
+  // therefore only dispatches BindBrowserHost().
+  void EnsureInitialized(FakeBrowser& browser, mojo::ReceiverId connection) {
+    if (initialized_connections_.contains(connection)) {
+      SetDispatchingConnection(connection);
+      return;
+    }
+    ASSERT_EQ(mojom::BrowserInitResult::kInitialized,
+              Initialize(browser, connection));
+  }
+
+  void StartAuthenticate(FakeBrowser& browser, mojo::ReceiverId connection) {
+    EnsureInitialized(browser, connection);
+    CallAuthenticate(browser);
+  }
+
+  mojom::BrowserAuthResult Authenticate(FakeBrowser& browser,
+                                        mojo::ReceiverId connection) {
+    StartAuthenticate(browser, connection);
+    return browser.WaitForAuthReply();
   }
 
   // Reports a dropped connection the way NamedMojoIpcServer does: the
@@ -125,6 +160,7 @@ class BrowserRegistryTest : public testing::Test {
   named_mojo_ipc_server::FakeIpcServer::TestState server_state_;
   mojo::ReceiverId last_connection_id_ = 0;
   base::flat_map<mojo::ReceiverId, base::ProcessId> connection_pids_;
+  base::flat_set<mojo::ReceiverId> initialized_connections_;
   base::ProcessId current_connection_pid_ = base::kNullProcessId;
   bool identity_capture_fails_ = false;
   bool identity_is_same_process_ = true;
@@ -155,10 +191,11 @@ TEST_F(BrowserRegistryTest, AcceptsBrowserAndBindsItsHost) {
 TEST_F(BrowserRegistryTest, RefusesProtocolVersionAboveTheAgentsOwn) {
   for (const bool simulate_connect : {false, true}) {
     FakeBrowser browser;
-    StartAuthenticate(browser, NextConnectionId(), mojom::kProtocolVersion + 1,
-                      simulate_connect);
-    EXPECT_EQ(mojom::BrowserAuthResult::kVersionMismatch,
-              browser.WaitForReply());
+    // The version is settled before the peer is resolved, so an unaccepted
+    // connection gets the same answer as an accepted one.
+    EXPECT_EQ(mojom::BrowserInitResult::kVersionMismatch,
+              Initialize(browser, NextConnectionId(),
+                         mojom::kProtocolVersion + 1, simulate_connect));
   }
 }
 
@@ -167,14 +204,66 @@ TEST_F(BrowserRegistryTest, RefusesProtocolVersionBelowTheSupportedFloor) {
   FakeBrowser browser;
 
   // Zero is below any floor the agent can declare.
-  EXPECT_EQ(mojom::BrowserAuthResult::kVersionMismatch,
-            Authenticate(browser, connection, /*protocol_version=*/0));
+  EXPECT_EQ(mojom::BrowserInitResult::kVersionMismatch,
+            Initialize(browser, connection, /*protocol_version=*/0));
 
   // A refusal must leave nothing behind: the same connection can still
-  // authenticate afterwards.
+  // initialize and authenticate afterwards.
   FakeBrowser retry;
   EXPECT_EQ(mojom::BrowserAuthResult::kAccepted,
             Authenticate(retry, connection));
+}
+
+// Nothing exists to bind against until Initialize() succeeds, and the browser
+// has to be told which of the two calls it got wrong.
+TEST_F(BrowserRegistryTest, RefusesHostBeforeInitialize) {
+  const mojo::ReceiverId connection = NextConnectionId();
+  SimulateConnect(connection, PidForConnection(connection));
+
+  FakeBrowser browser;
+  SetDispatchingConnection(connection);
+  CallAuthenticate(browser);
+  EXPECT_EQ(mojom::BrowserAuthResult::kInvalidRequest,
+            browser.WaitForAuthReply());
+
+  // The connection is still usable: a refusal is about the call, not the peer.
+  FakeBrowser retry;
+  EXPECT_EQ(mojom::BrowserAuthResult::kAccepted,
+            Authenticate(retry, connection));
+}
+
+// A refused Initialize() leaves no entry behind, so a browser that ignores the
+// result and asks for a host is told the request is invalid rather than being
+// verified against nothing.
+TEST_F(BrowserRegistryTest, RefusesHostAfterFailedInitialize) {
+  const mojo::ReceiverId connection = NextConnectionId();
+  FakeBrowser browser;
+  ASSERT_EQ(mojom::BrowserInitResult::kNotIdentified,
+            Initialize(browser, connection, mojom::kProtocolVersion,
+                       /*simulate_connect=*/false));
+
+  CallAuthenticate(browser);
+  EXPECT_EQ(mojom::BrowserAuthResult::kInvalidRequest,
+            browser.WaitForAuthReply());
+}
+
+// One successful Initialize() per connection. Nothing about a connection's peer
+// can change while it lives, so a second call is a bug or not our browser.
+TEST_F(BrowserRegistryTest, RefusesSecondInitialize) {
+  const mojo::ReceiverId connection = NextConnectionId();
+  FakeBrowser first;
+  ASSERT_EQ(mojom::BrowserInitResult::kInitialized,
+            Initialize(first, connection));
+
+  FakeBrowser second;
+  SetDispatchingConnection(connection);
+  CallInitialize(second, mojom::kProtocolVersion);
+  EXPECT_EQ(mojom::BrowserInitResult::kInvalidRequest,
+            second.WaitForInitReply());
+
+  // The refusal does not disturb what the connection already has.
+  EXPECT_EQ(mojom::BrowserAuthResult::kAccepted,
+            Authenticate(first, connection));
 }
 
 TEST_F(BrowserRegistryTest, RefusesSecondHostWhileOneIsBound) {
@@ -193,15 +282,15 @@ TEST_F(BrowserRegistryTest, RefusesSecondHostWhileOneIsBound) {
 TEST_F(BrowserRegistryTest, RefusesSecondHostWhileFirstIsStillInFlight) {
   const mojo::ReceiverId connection = NextConnectionId();
   FakeBrowser first;
-  StartAuthenticate(first, connection, mojom::kProtocolVersion);
-  ASSERT_FALSE(first.has_reply());
+  StartAuthenticate(first, connection);
+  ASSERT_FALSE(first.has_auth_reply());
 
   FakeBrowser second;
   EXPECT_EQ(mojom::BrowserAuthResult::kHostAlreadyRequested,
             Authenticate(second, connection));
 
   // The pending request is unaffected by the refused one.
-  EXPECT_EQ(mojom::BrowserAuthResult::kAccepted, first.WaitForReply());
+  EXPECT_EQ(mojom::BrowserAuthResult::kAccepted, first.WaitForAuthReply());
 }
 
 TEST_F(BrowserRegistryTest, DroppingHostEndsSessionAndAllowsRebinding) {
@@ -225,12 +314,12 @@ TEST_F(BrowserRegistryTest, DroppingHostEndsSessionAndAllowsRebinding) {
 TEST_F(BrowserRegistryTest, DroppingHostWhileVerificationPendingEndsSession) {
   const mojo::ReceiverId connection = NextConnectionId();
   FakeBrowser first;
-  StartAuthenticate(first, connection, mojom::kProtocolVersion);
+  StartAuthenticate(first, connection);
   first.WatchEndpoint();
 
   first.DropHost();
 
-  EXPECT_EQ(mojom::BrowserAuthResult::kAccepted, first.WaitForReply());
+  EXPECT_EQ(mojom::BrowserAuthResult::kAccepted, first.WaitForAuthReply());
   EXPECT_TRUE(first.WaitForEndpointClosed());
 
   // Neither the session nor the pending marker outlived the request.
@@ -280,11 +369,12 @@ TEST_F(BrowserRegistryTest, ConnectionDropTearsDownItsSession) {
 TEST_F(BrowserRegistryTest, ConnectionDropDuringVerificationAnswersRequest) {
   const mojo::ReceiverId connection = NextConnectionId();
   FakeBrowser browser;
-  StartAuthenticate(browser, connection, mojom::kProtocolVersion);
+  StartAuthenticate(browser, connection);
 
   DisconnectConnection(connection);
 
-  EXPECT_EQ(mojom::BrowserAuthResult::kInconclusive, browser.WaitForReply());
+  EXPECT_EQ(mojom::BrowserAuthResult::kInconclusive,
+            browser.WaitForAuthReply());
 
   // Nothing was left behind for the next connection.
   FakeBrowser next;
@@ -296,7 +386,7 @@ TEST_F(BrowserRegistryTest, ConnectionDropDuringVerificationAnswersRequest) {
 // answering it, which is what the weak pointer on the verification hop is for.
 TEST_F(BrowserRegistryTest, DestroyedWhileVerificationPendingIsSafe) {
   FakeBrowser browser;
-  StartAuthenticate(browser, NextConnectionId(), mojom::kProtocolVersion);
+  StartAuthenticate(browser, NextConnectionId());
   browser.WatchEndpoint();
 
   registry_.reset();
@@ -304,7 +394,7 @@ TEST_F(BrowserRegistryTest, DestroyedWhileVerificationPendingIsSafe) {
   // The abandoned request takes the browser's endpoint down with it, which is
   // how the browser learns the agent will not answer.
   EXPECT_TRUE(browser.WaitForEndpointClosed());
-  EXPECT_FALSE(browser.has_reply());
+  EXPECT_FALSE(browser.has_auth_reply());
 }
 
 TEST_F(BrowserRegistryTest, KeepsOneSessionPerConnection) {
@@ -337,18 +427,31 @@ TEST_F(BrowserRegistryTest, RefusesConnectionWhosePeerCannotBeCaptured) {
   EXPECT_FALSE(CallOnBrowserConnecting());
 }
 
-// A BindBrowserHost() on a connection the agent never accepted has no peer to
+// An Initialize() on a connection the agent never accepted has no peer to
 // verify. That is not a verdict about the caller, so it must be the retryable
 // answer rather than a rejection.
 TEST_F(BrowserRegistryTest, RefusesBrowserWithNoCaptureForItsConnection) {
   FakeBrowser browser;
-  StartAuthenticate(browser, NextConnectionId(), mojom::kProtocolVersion,
-                    /*simulate_connect=*/false);
-  EXPECT_EQ(mojom::BrowserAuthResult::kInconclusive, browser.WaitForReply());
+  EXPECT_EQ(mojom::BrowserInitResult::kNotIdentified,
+            Initialize(browser, NextConnectionId(), mojom::kProtocolVersion,
+                       /*simulate_connect=*/false));
+}
+
+// The dispatch-time capture is how the peer's pid is read, so a capture that
+// fails there leaves nothing to resolve against. This is the branch a broken
+// platform implementation hits first.
+TEST_F(BrowserRegistryTest, RefusesBrowserWhosePeerCannotBeCapturedAtDispatch) {
+  const mojo::ReceiverId connection = NextConnectionId();
+  SimulateConnect(connection, PidForConnection(connection));
+
+  identity_capture_fails_ = true;
+  FakeBrowser browser;
+  EXPECT_EQ(mojom::BrowserInitResult::kNotIdentified,
+            Initialize(browser, connection));
 }
 
 // The capture is only good for a bounded window, so a connection that sits
-// silent past it can no longer authenticate.
+// silent past it can no longer initialize.
 TEST_F(BrowserRegistryTest, RefusesBrowserAfterItsCaptureExpires) {
   const mojo::ReceiverId connection = NextConnectionId();
   SimulateConnect(connection, PidForConnection(connection));
@@ -356,8 +459,8 @@ TEST_F(BrowserRegistryTest, RefusesBrowserAfterItsCaptureExpires) {
   task_environment_.FastForwardBy(base::Minutes(5));
 
   FakeBrowser browser;
-  EXPECT_EQ(mojom::BrowserAuthResult::kInconclusive,
-            Authenticate(browser, connection));
+  EXPECT_EQ(mojom::BrowserInitResult::kNotIdentified,
+            Initialize(browser, connection));
 }
 
 // A browser process holds one connection per profile and they arrive together,
@@ -393,9 +496,9 @@ TEST_F(BrowserRegistryTest, DoesNotResolveAgainstAnotherProcessCapture) {
   connection_pids_[uncaptured] = 2;
 
   FakeBrowser browser;
-  StartAuthenticate(browser, uncaptured, mojom::kProtocolVersion,
-                    /*simulate_connect=*/false);
-  EXPECT_EQ(mojom::BrowserAuthResult::kInconclusive, browser.WaitForReply());
+  EXPECT_EQ(mojom::BrowserInitResult::kNotIdentified,
+            Initialize(browser, uncaptured, mojom::kProtocolVersion,
+                       /*simulate_connect=*/false));
 
   // The captured connection is unaffected.
   FakeBrowser other;
@@ -412,8 +515,8 @@ TEST_F(BrowserRegistryTest, RefusesBrowserWhosePidWasRecycled) {
   SimulateConnect(connection, PidForConnection(connection));
 
   FakeBrowser browser;
-  EXPECT_EQ(mojom::BrowserAuthResult::kInconclusive,
-            Authenticate(browser, connection));
+  EXPECT_EQ(mojom::BrowserInitResult::kNotIdentified,
+            Initialize(browser, connection));
 }
 
 // The mismatched capture is dropped, so the process that really holds the pid
@@ -425,8 +528,8 @@ TEST_F(BrowserRegistryTest, RecapturesAfterPidWasRecycled) {
   const mojo::ReceiverId stale_connection = NextConnectionId();
   SimulateConnect(stale_connection, kSharedPid);
   FakeBrowser stale;
-  ASSERT_EQ(mojom::BrowserAuthResult::kInconclusive,
-            Authenticate(stale, stale_connection));
+  ASSERT_EQ(mojom::BrowserInitResult::kNotIdentified,
+            Initialize(stale, stale_connection));
 
   identity_is_same_process_ = true;
   const mojo::ReceiverId fresh_connection = NextConnectionId();
@@ -454,23 +557,23 @@ TEST_F(BrowserRegistryTest, AllowsRebindingAfterTheCaptureExpires) {
 }
 
 // Dropping the connection drops its identity with it, so the new connection
-// with the same receiver id cannot resolve against it and must authenticate on
-// a fresh capture (which we intentionally leave out). This is not supposed to
+// with the same receiver id cannot resolve against it and must initialize on a
+// fresh capture (which we intentionally leave out). This is not supposed to
 // happen in practice, since ReceiverSet never reuses ids, but it is a safety
 // check.
 TEST_F(BrowserRegistryTest, ForgetsIdentityWhenTheConnectionGoesAway) {
   const mojo::ReceiverId connection = NextConnectionId();
   FakeBrowser first;
   ASSERT_EQ(mojom::BrowserAuthResult::kAccepted,
-            Authenticate(first, connection, mojom::kProtocolVersion));
+            Authenticate(first, connection));
 
   DisconnectConnection(connection);
   task_environment_.FastForwardBy(base::Minutes(5));
 
   FakeBrowser second;
-  StartAuthenticate(second, connection, mojom::kProtocolVersion,
-                    /*simulate_connect=*/false);
-  EXPECT_EQ(mojom::BrowserAuthResult::kInconclusive, second.WaitForReply());
+  EXPECT_EQ(mojom::BrowserInitResult::kNotIdentified,
+            Initialize(second, connection, mojom::kProtocolVersion,
+                       /*simulate_connect=*/false));
 }
 
 // A verdict that the peer is not our browser reaches the browser as a rejection
@@ -480,10 +583,10 @@ TEST_F(BrowserRegistryTest, RejectsBrowserThatFailsVerification) {
       BrowserIdentity::VerificationResult::kRejected;
 
   FakeBrowser browser;
-  StartAuthenticate(browser, NextConnectionId(), mojom::kProtocolVersion);
+  StartAuthenticate(browser, NextConnectionId());
   browser.WatchEndpoint();
 
-  EXPECT_EQ(mojom::BrowserAuthResult::kRejected, browser.WaitForReply());
+  EXPECT_EQ(mojom::BrowserAuthResult::kRejected, browser.WaitForAuthReply());
 
   // No session was created, so the handles the request carried are gone.
   EXPECT_TRUE(browser.WaitForEndpointClosed());
@@ -497,10 +600,11 @@ TEST_F(BrowserRegistryTest, ReportsInconclusiveVerificationAsRetryable) {
       BrowserIdentity::VerificationResult::kInconclusive;
 
   FakeBrowser browser;
-  StartAuthenticate(browser, NextConnectionId(), mojom::kProtocolVersion);
+  StartAuthenticate(browser, NextConnectionId());
   browser.WatchEndpoint();
 
-  EXPECT_EQ(mojom::BrowserAuthResult::kInconclusive, browser.WaitForReply());
+  EXPECT_EQ(mojom::BrowserAuthResult::kInconclusive,
+            browser.WaitForAuthReply());
 
   // No session was created, so the handles the request carried are gone.
   EXPECT_TRUE(browser.WaitForEndpointClosed());

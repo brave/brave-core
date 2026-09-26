@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_APP_V2_AGENT_TEST_FAKE_BROWSER_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_APP_V2_AGENT_TEST_FAKE_BROWSER_H_
 
-#include <stdint.h>
-
 #include "base/functional/callback.h"
 #include "base/test/test_future.h"
 #include "brave/components/brave_vpn/app/v2/agent/test/fake_browser_endpoint.h"
@@ -16,6 +14,8 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/platform/platform_channel.h"
+#include "mojo/public/cpp/platform/platform_handle.h"
 
 namespace brave_vpn::v2 {
 
@@ -34,11 +34,21 @@ class FakeBrowser {
   mojo::PendingRemote<mojom::BrowserEndpoint> BindEndpoint();
   mojo::PendingReceiver<mojom::BrowserHost> BindHost();
 
-  // Reply callback for that request, plus its answer. WaitForReply() runs the
+  // The channel to pass into an Initialize-style request, as the browser
+  // handing over something for the agent to answer on. A valid handle whose
+  // other end this object keeps open, so it stays distinguishable from the
+  // null handle a browser sends when it is not asking to verify the agent. May
+  // only be called once.
+  mojo::PlatformHandle BindIdentityChannel();
+
+  // Reply callbacks for requests, plus their answers. WaitFor*Reply() runs the
   // sequence until the answer arrives.
-  base::OnceCallback<void(mojom::BrowserAuthResult)> GetReplyCallback();
-  bool has_reply() const;
-  mojom::BrowserAuthResult WaitForReply();
+  base::OnceCallback<void(mojom::BrowserInitResult)> GetInitReplyCallback();
+  base::OnceCallback<void(mojom::BrowserAuthResult)> GetAuthReplyCallback();
+  bool has_init_reply() const;
+  bool has_auth_reply() const;
+  mojom::BrowserInitResult WaitForInitReply();
+  mojom::BrowserAuthResult WaitForAuthReply();
 
   // Watch for the agent closing its end of either pipe, which is what a
   // destroyed session looks like from here. Call after the pipes are bound.
@@ -69,8 +79,10 @@ class FakeBrowser {
   FakeBrowserEndpoint endpoint_impl_;
   mojo::Receiver<mojom::BrowserEndpoint> endpoint_receiver_{&endpoint_impl_};
   mojo::Remote<mojom::BrowserHost> host_remote_;
+  mojo::PlatformChannel identity_channel_;
 
-  base::test::TestFuture<mojom::BrowserAuthResult> replied_;
+  base::test::TestFuture<mojom::BrowserInitResult> init_replied_;
+  base::test::TestFuture<mojom::BrowserAuthResult> auth_replied_;
   base::test::TestFuture<void> host_closed_;
   base::test::TestFuture<void> endpoint_closed_;
 };

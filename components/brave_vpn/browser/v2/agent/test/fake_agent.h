@@ -13,6 +13,7 @@
 #include <optional>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/sequence_checker.h"
 #include "base/thread_annotations.h"
@@ -23,6 +24,7 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "mojo/public/cpp/platform/named_platform_channel.h"
+#include "mojo/public/cpp/platform/platform_handle.h"
 #include "mojo/public/cpp/system/message_pipe.h"
 
 namespace base {
@@ -61,6 +63,11 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
   // not running, which the client retries. Read off-sequence.
   void set_transport_fails(bool fails) { transport_fails_.store(fails); }
 
+  // The reply to Initialize(), or nullopt to withhold it: an agent that takes
+  // the connection and goes quiet before the handshake gets anywhere. Defaults
+  // to kInitialized.
+  void set_init_result(std::optional<mojom::BrowserInitResult> result);
+
   // The reply to BindBrowserHost(), or nullopt to withhold it: an agent that
   // accepts the connection and then goes quiet. Defaults to kAccepted.
   void set_auth_result(std::optional<mojom::BrowserAuthResult> result);
@@ -69,7 +76,7 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
   // the reply against other events instead of racing two pipes: dropping the
   // session handles first and answering kAccepted after is what reproduces an
   // acceptance landing on a session that is already gone.
-  void AnswerHeldRequest(mojom::BrowserAuthResult result);
+  void AnswerHeldAuthRequest(mojom::BrowserAuthResult result);
 
   // Closes the BrowserEndpoint remotes and BrowserHost receivers handed over so
   // far, leaving the connections themselves up. Models the agent dropping a
@@ -84,11 +91,18 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
   // above. Updated off-sequence.
   int connect_attempts() const { return connect_attempts_.load(); }
 
+  // Calls to Initialize() across all connections.
+  int initialize_calls() const;
+
+  // Whether the last Initialize() carried an identity channel. False today:
+  // the browser sends a null handle until agent verification lands.
+  bool last_init_had_identity_channel() const;
+
   // Calls to BindBrowserHost() across all connections.
   int bind_browser_host_calls() const;
 
-  // The version the last BindBrowserHost() carried, or nullopt if it has not
-  // been called.
+  // The version the last Initialize() carried, or nullopt if it has not been
+  // called.
   std::optional<uint32_t> last_protocol_version() const;
 
   // Connections currently bound: a number of clients the agent could still
@@ -103,9 +117,12 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
   // a host request.
   bool has_browser_endpoint() const { return session_count() > 0u; }
 
-  bool has_held_request() const;
+  bool has_held_init_request() const;
+  bool has_held_auth_request() const;
 
  private:
+  void OnProviderDisconnected();
+
   // Both of these run on a blocking sequence, like their production
   // counterparts, so they touch only the atomics and what they create.
   std::optional<mojo::NamedPlatformChannel::ServerName> GetServerName();
@@ -118,8 +135,10 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
   void BindProvider(mojo::ScopedMessagePipeHandle pipe);
 
   // brave_vpn::mojom::BrowserHostProvider:
+  void Initialize(uint32_t protocol_version,
+                  mojo::PlatformHandle identity_channel,
+                  InitializeCallback callback) override;
   void BindBrowserHost(
-      uint32_t protocol_version,
       mojo::PendingRemote<mojom::BrowserEndpoint> browser_endpoint,
       mojo::PendingReceiver<mojom::BrowserHost> host,
       BindBrowserHostCallback callback) override;
@@ -134,12 +153,27 @@ class FakeAgent : public brave_vpn::mojom::BrowserHostProvider {
   std::atomic<bool> transport_fails_{false};
   std::atomic<int> connect_attempts_{0};
 
+  // Receiver ids that completed a successful Initialize(). The real agent
+  // scopes initialization to one connection, so the fake has to as well or it
+  // accepts a BindBrowserHost() the agent would refuse. Ids are never reused by
+  // a ReceiverSet, so stale entries are harmless.
+  base::flat_set<mojo::ReceiverId> initialized_
+      GUARDED_BY_CONTEXT(sequence_checker_);
+
+  std::optional<mojom::BrowserInitResult> init_result_ GUARDED_BY_CONTEXT(
+      sequence_checker_) = mojom::BrowserInitResult::kInitialized;
   std::optional<mojom::BrowserAuthResult> auth_result_ GUARDED_BY_CONTEXT(
       sequence_checker_) = mojom::BrowserAuthResult::kAccepted;
   std::optional<uint32_t> last_protocol_version_
       GUARDED_BY_CONTEXT(sequence_checker_);
+  bool last_init_had_identity_channel_ GUARDED_BY_CONTEXT(sequence_checker_) =
+      false;
+  // Counts of how many times the corresponding methods have been called.
+  int initialize_calls_ GUARDED_BY_CONTEXT(sequence_checker_) = 0;
   int bind_browser_host_calls_ GUARDED_BY_CONTEXT(sequence_checker_) = 0;
-  BindBrowserHostCallback held_reply_ GUARDED_BY_CONTEXT(sequence_checker_);
+  InitializeCallback held_init_reply_ GUARDED_BY_CONTEXT(sequence_checker_);
+  BindBrowserHostCallback held_auth_reply_
+      GUARDED_BY_CONTEXT(sequence_checker_);
 
   mojo::ReceiverSet<mojom::BrowserHostProvider> provider_receivers_
       GUARDED_BY_CONTEXT(sequence_checker_);

@@ -25,6 +25,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/platform/named_platform_channel.h"
+#include "mojo/public/cpp/platform/platform_handle.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_vpn::v2 {
@@ -46,11 +47,11 @@ class BrowserHostImpl;
 // process resolve through them.
 //
 // |connections_| is keyed by receiver id and holds per-connection state,
-// including a reference to that same accept-time capture. A capture taken at
-// dispatch is not used: only pid() and IsSameProcess() are meaningful on one.
-// An entry lives until its connection goes away, so it outlives the |peers_|
-// entry and lets a browser re-bind a host after the capture expires. Values are
-// heap-allocated because ResolveConnection() returns a pointer into the map.
+// including a reference to that same accept-time capture. An entry is created
+// during browser initialization call and lives until its connection goes away,
+// so it outlives the |peers_| entry and lets a browser re-bind a host after the
+// capture expires. Values are heap-allocated because authentication and
+// verification functions work with pointers into the map.
 class BrowserRegistry : public BrowserHostProviderImpl::Delegate {
  public:
   explicit BrowserRegistry(mojo::NamedPlatformChannel::ServerName server_name);
@@ -96,8 +97,8 @@ class BrowserRegistry : public BrowserHostProviderImpl::Delegate {
     base::ElapsedTimer time_since_capture;
   };
 
-  // Everything Authenticate() must carry across the verification hop, since
-  // none of it can be re-read from dispatch state afterwards.
+  // Everything AuthenticateBrowser() must carry across the verification hop,
+  // since none of it can be re-read from dispatch state afterwards.
   struct PendingAuth {
     mojo::ReceiverId receiver_id = 0;
     mojo::PendingRemote<mojom::BrowserEndpoint> browser_endpoint;
@@ -109,8 +110,12 @@ class BrowserRegistry : public BrowserHostProviderImpl::Delegate {
   void StartHostServer();
 
   // BrowserHostProviderImpl::Delegate:
-  void Authenticate(
+  void InitializeBrowser(
       uint32_t protocol_version,
+      mojo::PlatformHandle identity_channel,
+      base::OnceCallback<void(mojom::BrowserInitResult)> callback) override;
+
+  void AuthenticateBrowser(
       mojo::PendingRemote<mojom::BrowserEndpoint> browser_endpoint,
       mojo::PendingReceiver<mojom::BrowserHost> host,
       base::OnceCallback<void(mojom::BrowserAuthResult)> callback) override;
@@ -120,16 +125,16 @@ class BrowserRegistry : public BrowserHostProviderImpl::Delegate {
   brave_vpn::mojom::BrowserHostProvider* OnBrowserConnecting(
       const named_mojo_ipc_server::ConnectionInfo& info);
 
-  // Null if the connection is not known.
-  Connection* FindConnection(mojo::ReceiverId receiver_id);
+  // Returns the accept-time capture belonging to the connection described by
+  // |info|, or null if there is none to verify against. Called from
+  // InitializeBrowser(): at most once per successful initialization, but a
+  // refused attempt leaves no connection entry, so the same connection may call
+  // again. Drops the capture it looked at when that capture has expired or
+  // belongs to another process.
+  scoped_refptr<BrowserIdentity> ResolvePeer(
+      const named_mojo_ipc_server::ConnectionInfo& info);
 
-  // Returns the entry for the connection currently dispatching, creating it
-  // from the accept-time capture on first use so a browser that drops its host
-  // and asks again resolves to the same peer. Null if the connection was never
-  // captured or its accept-time entry already timed out.
-  Connection* ResolveConnection(mojo::ReceiverId receiver_id);
-
-  // Second half of Authenticate(): creates the browser host on success.
+  // Second half of AuthenticateBrowser(): creates the browser host on success.
   void OnPeerVerified(PendingAuth pending,
                       BrowserIdentity::VerificationResult result);
 
