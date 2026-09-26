@@ -10,6 +10,10 @@ import type { PropertyValues } from '//resources/lit/v3_0/lit.rollup.js'
 import { SettingsAboutPageElement } from '../about_page/about_page.js'
 
 injectStyle(SettingsAboutPageElement, css`
+  .product-title {
+    font-weight: 600;
+  }
+
   #release-notes {
     display: block;
     margin-inline-start: unset;
