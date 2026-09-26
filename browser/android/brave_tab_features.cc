@@ -13,6 +13,7 @@
 #include "brave/components/misc_metrics/features.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 
 namespace tabs {
@@ -20,6 +21,10 @@ namespace tabs {
 BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
                                    Profile* profile)
     : TabFeatures_Chromium(web_contents, profile) {
+  // Clients should rely on this for observing web contents based changes.
+  tabs::TabInterface& tab_interface =
+      *TabInterface::GetFromContents(web_contents);
+
   if (ai_chat::IsAllowedForContext(profile)) {
     tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
         TabAndroid::FromWebContents(web_contents)->GetAndroidId(),
@@ -31,9 +36,8 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
 
   if (base::FeatureList::IsEnabled(
           misc_metrics::features::kCaptchaMetricsCollection)) {
-    cloudflare_js_detection_tab_helper_ =
-        misc_metrics::CaptchaMetrics::CloudflareJsDetectionTabHelper::
-            MaybeCreate(*TabInterface::GetFromContents(web_contents));
+    cloudflare_js_detection_tab_helper_ = misc_metrics::CaptchaMetrics::
+        CloudflareJsDetectionTabHelper::MaybeCreate(tab_interface);
   }
 }
 

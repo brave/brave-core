@@ -7,10 +7,12 @@
 #define BRAVE_BROWSER_MISC_METRICS_CAPTCHA_METRICS_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
 #include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
+#include "url/origin.h"
 
 class GURL;
 class PrefRegistrySimple;
@@ -112,15 +114,14 @@ class CaptchaMetrics {
                            content::WebContents* old_contents,
                            content::WebContents* new_contents) override;
 
-    // At most one javascript-detection hit per WebContents. Reset when the
-    // tab discards its contents, because this feature outlives that
-    // WebContents.
-    bool recorded_javascript_detection_ = false;
     // This is needed to trigger calls to record events to local state.
     raw_ptr<CaptchaMetrics> captcha_metrics_;
-    // Keeps track locally of the last origin for which this class may have
-    // recorded the captcha.
-    url::Origin last_recorded_main_frame_origin_;
+
+    // Main-frame origin at the time a javascript detection was recorded, or
+    // nullopt if none has been recorded for the current page. Limits recording
+    // to one detection per origin. Cleared on a cross-origin primary page
+    // change and when the tab discards its contents.
+    std::optional<url::Origin> last_recorded_main_frame_origin_;
   };
 
   // Schedules the first P3A report. Does not emit on a first-ever registration.

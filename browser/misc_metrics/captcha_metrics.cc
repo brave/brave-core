@@ -231,7 +231,7 @@ void CaptchaMetrics::CloudflareJsDetectionTabHelper::ResourceLoadComplete(
     const GURL& original_url,
     const blink::mojom::ResourceLoadInfo&) {
   if (!original_url.path().contains(kCloudflareJavascriptDetectionPath) ||
-      recorded_javascript_detection_) {
+      last_recorded_main_frame_origin_.has_value()) {
     return;
   }
 
@@ -245,7 +245,6 @@ void CaptchaMetrics::CloudflareJsDetectionTabHelper::ResourceLoadComplete(
     return;
   }
 
-  recorded_javascript_detection_ = true;
   // This helps to prevent over counting when the same origin redirects to
   // another resource which can trigger PrimaryPageChanged.
   last_recorded_main_frame_origin_ =
@@ -258,17 +257,14 @@ void CaptchaMetrics::CloudflareJsDetectionTabHelper::PrimaryPageChanged(
     content::Page& page) {
   const url::Origin new_origin =
       page.GetMainDocument().GetLastCommittedOrigin();
-  // We have already recorded the captcha for this origin in
-  // ResourceLoadComplete. So, if true, this current flow is for a re-direct to
-  // another document in the same origin which will also
-  // re-trigger ResourceLoadComplete which checks
-  // recorded_javascript_detection_. So we don't reset the
-  // recorded_javascript_detection_ flag here to not overcount.
-  if (recorded_javascript_detection_ &&
-      new_origin.IsSameOriginWith(last_recorded_main_frame_origin_)) {
+  // A detection was already recorded for this origin. A same-origin navigation
+  // re-triggers ResourceLoadComplete for the detection scripts, so keep the
+  // origin to avoid overcounting.
+  if (last_recorded_main_frame_origin_.has_value() &&
+      new_origin.IsSameOriginWith(last_recorded_main_frame_origin_.value())) {
     return;
   }
-  recorded_javascript_detection_ = false;
+  last_recorded_main_frame_origin_.reset();
   tabs::ContentsObservingTabFeature::PrimaryPageChanged(page);
 }
 
@@ -276,8 +272,7 @@ void CaptchaMetrics::CloudflareJsDetectionTabHelper::OnDiscardContents(
     tabs::TabInterface* tab,
     content::WebContents* old_contents,
     content::WebContents* new_contents) {
-  recorded_javascript_detection_ = false;
-  last_recorded_main_frame_origin_ = url::Origin();
+  last_recorded_main_frame_origin_.reset();
   tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
                                                        new_contents);
 }
