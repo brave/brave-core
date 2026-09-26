@@ -28,6 +28,7 @@
 #include "content/public/browser/storage_partition.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace playlist {
 
@@ -286,6 +287,13 @@ void PlaylistMediaFileDownloader::DownloadMediaFile(const GURL& url) {
       url, GetNetworkTrafficAnnotationTagForURLLoad());
   params->set_file_path(destination_path_);
   params->set_guid(current_download_item_guid_);
+
+  // Without these, the request looks nothing like the one the page itself
+  // made to fetch this same URL during playback. CDNs that hotlink-protect
+  // media on Referer/Origin (Dailymotion, Rumble, and others) accept the
+  // page's request but reject this one, so the item plays but never caches.
+  params->set_referrer(current_item_->page_source);
+  params->set_initiator(url::Origin::Create(current_item_->page_source));
 
   params->set_transient(true);
   params->set_require_safety_checks(false);
