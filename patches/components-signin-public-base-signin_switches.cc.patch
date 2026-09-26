@@ -1,8 +1,8 @@
 diff --git a/components/signin/public/base/signin_switches.cc b/components/signin/public/base/signin_switches.cc
-index 9b5c0e17950f56fcd5643fd5de35640af5132df3..f5068e22fdcfa34227bb4beb88a3870d814ddaad 100644
+index 944f03f27e7df09d320d6bdb245236e0426c74eb..dd378e588f64dae5a30dd2435517ab3ecf591fe6 100644
 --- a/components/signin/public/base/signin_switches.cc
 +++ b/components/signin/public/base/signin_switches.cc
-@@ -675,9 +675,9 @@ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
+@@ -655,9 +655,9 @@ BASE_FEATURE(kFirstRunDesktopChoiceScreenRefresh,
  
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
  #if BUILDFLAG(IS_WIN)
@@ -14,7 +14,7 @@ index 9b5c0e17950f56fcd5643fd5de35640af5132df3..f5068e22fdcfa34227bb4beb88a3870d
  #endif
  bool IsFirstRunDesktopRefreshEnabled(bool is_in_search_engine_choice_region) {
    if (is_in_search_engine_choice_region &&
-@@ -984,13 +984,8 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
+@@ -945,13 +945,8 @@ BASE_FEATURE(kSupportWebSigninAddSession, base::FEATURE_ENABLED_BY_DEFAULT);
  BASE_FEATURE(kSwitchToIncognitoInSettings, base::FEATURE_DISABLED_BY_DEFAULT);
  #endif  // BUILDFLAG(IS_ANDROID)
  

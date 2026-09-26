@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/tools/build_webui.gni b/ui/webui/resources/tools/build_webui.gni
-index 341c2953d06d3163e91bfcc94d80ae2208039ca2..e7dfc0077cd28c5ec2d99b91d5f1a88a3bb90467 100644
+index a540948cca3c88e9360357e216f4ec36df6cde88..1294806eea2834f6462a11dc387054d4fb673585 100644
 --- a/ui/webui/resources/tools/build_webui.gni
 +++ b/ui/webui/resources/tools/build_webui.gni
 @@ -2,6 +2,7 @@
@@ -53,7 +53,7 @@ index 341c2953d06d3163e91bfcc94d80ae2208039ca2..e7dfc0077cd28c5ec2d99b91d5f1a88a
  
        if (is_android) {
          no_explicit_any_exceptions +=
-@@ -876,7 +890,8 @@ template("build_webui") {
+@@ -877,7 +891,8 @@ template("build_webui") {
    }
  
    if (!generate_grdp) {

@@ -1,5 +1,5 @@
 diff --git a/content/browser/hid/hid_service.cc b/content/browser/hid/hid_service.cc
-index d538b842a30b87b230c4d629b5602dad536d976a..4c21fb9b51a5d66419647a708bec7128a0d37c77 100644
+index e2edcbceed244e422151f69d5fe08b50eb495abc..8d5c3a05f1feb9f0350514dd2ce8c7dfc6f97aec 100644
 --- a/content/browser/hid/hid_service.cc
 +++ b/content/browser/hid/hid_service.cc
 @@ -446,11 +446,13 @@ void HidService::RequestDevice(

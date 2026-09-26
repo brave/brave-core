@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/startup/BUILD.gn b/chrome/browser/ui/startup/BUILD.gn
-index 8b593031e4160c7c8a26943abe46b7f442b6d263..ab0c05e854ea18edf3138a7c3e7d2b0eff0d2d0c 100644
+index 8057566864cf3e7cc962c1eeb6f56aea675f600a..6e5848d57e19bda2e2cd626381d593e0e6823a48 100644
 --- a/chrome/browser/ui/startup/BUILD.gn
 +++ b/chrome/browser/ui/startup/BUILD.gn
 @@ -2,6 +2,7 @@

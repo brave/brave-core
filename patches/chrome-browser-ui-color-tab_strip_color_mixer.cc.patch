@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/color/tab_strip_color_mixer.cc b/chrome/browser/ui/color/tab_strip_color_mixer.cc
-index cbb8807bcf5bdc03b35da4d9ecd96ee72202f807..bc97b7f41c0c8fba1e47bf61f0b51afa27c03719 100644
+index 74327209dc9c723681a0f1fc34751323c36fbcbd..3dd1ae378194bb48610166bbd9a765f0425714e3 100644
 --- a/chrome/browser/ui/color/tab_strip_color_mixer.cc
 +++ b/chrome/browser/ui/color/tab_strip_color_mixer.cc
 @@ -18,6 +18,7 @@
@@ -10,7 +10,7 @@ index cbb8807bcf5bdc03b35da4d9ecd96ee72202f807..bc97b7f41c0c8fba1e47bf61f0b51afa
    const bool dark_mode =
        key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
    using TP = ThemeProperties;
-@@ -218,4 +219,11 @@ void AddTabStripColorMixer(ui::ColorProvider* provider,
+@@ -222,4 +223,11 @@ void AddTabStripColorMixer(ui::ColorProvider* provider,
        SetAlpha(ui::kColorSysNeutralOutline, std::ceil(0.60f * 255.0f));
    mixer[kColorVerticalTabPinnedOutline] = {
        dark_mode ? kColorVerticalTabStripShadow : kColorTabDividerFrameActive};

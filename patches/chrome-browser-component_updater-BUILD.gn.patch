@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/component_updater/BUILD.gn b/chrome/browser/component_updater/BUILD.gn
-index 60dab2ab24db6e596859d767c37ab7870a5cef7b..ecd45b5fa0cdef5167c2d2ff8f819de71989e720 100644
+index b1c69ef94e4ea41b1cbcbdc05fffb4ab846fe7e8..d843a3596115b0f3a4a84829c7b79d12b30911fd 100644
 --- a/chrome/browser/component_updater/BUILD.gn
 +++ b/chrome/browser/component_updater/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 60dab2ab24db6e596859d767c37ab7870a5cef7b..ecd45b5fa0cdef5167c2d2ff8f819de7
  import("//build/config/chrome_build.gni")
  import("//components/on_device_translation/buildflags/features.gni")
  import("//components/safe_browsing/buildflags.gni")
-@@ -189,6 +190,7 @@ source_set("impl") {
+@@ -188,6 +189,7 @@ source_set("impl") {
      "//services/cert_verifier/public/mojom",
      "//services/network/public/cpp",
    ]

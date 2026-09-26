@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/BUILD.gn b/chrome/browser/sessions/BUILD.gn
-index 3c44e7f7a5b7646f756aa2488abe26040a6e68e8..325a0d764dd0e2896245de61fb25d44c0be54647 100644
+index 0aa2afdb9e71c8d17147c0e64cd806d22a1457b4..f47737d6780308d9f8b6148bb10908da7b18e8ec 100644
 --- a/chrome/browser/sessions/BUILD.gn
 +++ b/chrome/browser/sessions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 3c44e7f7a5b7646f756aa2488abe26040a6e68e8..325a0d764dd0e2896245de61fb25d44c
  import("//build/config/ozone.gni")
  import("//chrome/common/features.gni")
  import("//extensions/buildflags/buildflags.gni")
-@@ -173,6 +174,7 @@ source_set("impl") {
+@@ -177,6 +178,7 @@ source_set("impl") {
          "//chromeos/components/kiosk",
        ]
      }

@@ -1,5 +1,5 @@
 diff --git a/content/public/common/content_features.cc b/content/public/common/content_features.cc
-index a30c4921ab0d51ec0ae3e123bb862f99c3ec4623..6763a0462801326425949d0d81277b074179d785 100644
+index 2cc4b16c408b346de71cfa1a3952e104d07ce403..cc6a4343b6ac687f7473ae649189371787bb1ecc 100644
 --- a/content/public/common/content_features.cc
 +++ b/content/public/common/content_features.cc
 @@ -302,13 +302,8 @@ BASE_FEATURE(kDeviceBoundSessionTerminationEvictBackForwardCache,
@@ -51,7 +51,7 @@ index a30c4921ab0d51ec0ae3e123bb862f99c3ec4623..6763a0462801326425949d0d81277b07
  
  // Puts network quality estimate related Web APIs in the holdback mode. When the
  // holdback is enabled the related Web APIs return network quality estimate
-@@ -803,7 +798,7 @@ const base::FeatureParam<bool>
+@@ -818,7 +813,7 @@ const base::FeatureParam<bool>
  BASE_FEATURE(kPrefetchPrerenderIntegration, base::FEATURE_ENABLED_BY_DEFAULT);
  
  // If explicitly disabled, prefetch proxy is not used.
@@ -60,7 +60,7 @@ index a30c4921ab0d51ec0ae3e123bb862f99c3ec4623..6763a0462801326425949d0d81277b07
  
  // Make `PrefetchRequestStatusListener` notifications async.
  // https://crbug.com/496807663
-@@ -845,7 +840,7 @@ BASE_FEATURE(kPreviewHandwritingGesture, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -860,7 +855,7 @@ BASE_FEATURE(kPreviewHandwritingGesture, base::FEATURE_DISABLED_BY_DEFAULT);
  // Enables exposure of ads APIs in the renderer: Attribution Reporting,
  // FLEDGE, Topics, along with a number of other features actively in development
  // within these APIs.
@@ -69,7 +69,7 @@ index a30c4921ab0d51ec0ae3e123bb862f99c3ec4623..6763a0462801326425949d0d81277b07
  
  // When enabled, ProcessSelectionDeferringConditions will be run. This allows
  // the embedder to provide conditions that may delay the final process selection
-@@ -1028,7 +1023,7 @@ constexpr base::FeatureParam<double> kProcessPerSiteMainFrameTotalMemoryLimit{
+@@ -1043,7 +1038,7 @@ constexpr base::FeatureParam<double> kProcessPerSiteMainFrameTotalMemoryLimit{
  // it doesn't require a developer opt-in.
  //
  // crbug.com/1472634 for more details.
@@ -78,7 +78,7 @@ index a30c4921ab0d51ec0ae3e123bb862f99c3ec4623..6763a0462801326425949d0d81277b07
  
  // Improve ServiceWorkerAutoPreload coverage by using more accurate web request
  // proxy detection.
-@@ -1116,7 +1111,7 @@ BASE_FEATURE(kUserMediaCaptureOnFocus, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -1131,7 +1126,7 @@ BASE_FEATURE(kUserMediaCaptureOnFocus, base::FEATURE_DISABLED_BY_DEFAULT);
  
  // This is intended as a kill switch for the WebOTP Service feature. To enable
  // this feature, the experimental web platform features flag should be set.
@@ -87,7 +87,7 @@ index a30c4921ab0d51ec0ae3e123bb862f99c3ec4623..6763a0462801326425949d0d81277b07
  
  // Trial to disable synchronous draw for synchronous compositor (ie Android
  // WebView).
-@@ -1549,7 +1544,13 @@ BASE_FEATURE(kIOThreadInteractiveThreadType, base::FEATURE_DISABLED_BY_DEFAULT);
+@@ -1568,7 +1563,13 @@ BASE_FEATURE(kIOThreadInteractiveThreadType, base::FEATURE_DISABLED_BY_DEFAULT);
  const base::FeatureParam<int> kNavigationCapturingIPHGuardrailStorageDuration{
      &kPwaNavigationCapturing, "link_capturing_guardrail_storage_duration", 30};
  

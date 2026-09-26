@@ -1,8 +1,8 @@
 diff --git a/ui/views/bubble/bubble_dialog_delegate_view.h b/ui/views/bubble/bubble_dialog_delegate_view.h
-index 23820b4ffa4549f591c220ed0ea40d8e041c0cc1..4574b7baf8ff0ea69f2e8a1a786d194c4c5ad955 100644
+index 95863cf27bd047205d41e94ccfab09dd4e0dd8d1..6df9499cf48895967240a400810bda3440096be0 100644
 --- a/ui/views/bubble/bubble_dialog_delegate_view.h
 +++ b/ui/views/bubble/bubble_dialog_delegate_view.h
-@@ -828,6 +828,15 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,
+@@ -836,6 +836,15 @@ class VIEWS_EXPORT BubbleDialogDelegateView : public View,
    gfx::Size GetMaximumSize() const final;
  
   private:

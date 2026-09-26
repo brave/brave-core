@@ -1,8 +1,8 @@
 diff --git a/base/feature_list.cc b/base/feature_list.cc
-index bba1fd091685b33f4963f693d0194899d9b44d21..3f3007fc71828f0e76c78fa8194c850113bc001a 100644
+index e8f9091d2a1c1126a6b01abb70535ac5bce94aff..debcb43b392bc7eee7d95fe3b65a6c833d8c6aec 100644
 --- a/base/feature_list.cc
 +++ b/base/feature_list.cc
-@@ -728,6 +728,9 @@ base::flat_set<std::string> FeatureList::GetFeaturesAssociatedWithTrial(
+@@ -748,6 +748,9 @@ base::flat_set<std::string> FeatureList::GetFeaturesAssociatedWithTrial(
  }
  
  bool FeatureList::IsFeatureOverridden(std::string_view feature_name) const {
@@ -12,7 +12,7 @@ index bba1fd091685b33f4963f693d0194899d9b44d21..3f3007fc71828f0e76c78fa8194c8501
    return GetOverrideEntryByFeatureName(feature_name);
  }
  
-@@ -1184,6 +1187,7 @@ bool FeatureList::IsFeatureEnabled(const Feature& feature) const {
+@@ -1224,6 +1227,7 @@ bool FeatureList::IsFeatureEnabled(const Feature& feature) const {
  
  std::optional<bool> FeatureList::IsFeatureEnabledIfOverridden(
      const Feature& feature) const {
@@ -20,7 +20,7 @@ index bba1fd091685b33f4963f693d0194899d9b44d21..3f3007fc71828f0e76c78fa8194c8501
    OverrideState overridden_state = GetOverrideState(feature);
  
    // If marked as OVERRIDE_USE_DEFAULT, fall through to returning empty.
-@@ -1192,6 +1196,11 @@ std::optional<bool> FeatureList::IsFeatureEnabledIfOverridden(
+@@ -1232,6 +1236,11 @@ std::optional<bool> FeatureList::IsFeatureEnabledIfOverridden(
    }
  
    return std::nullopt;

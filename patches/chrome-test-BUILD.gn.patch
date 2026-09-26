@@ -1,5 +1,5 @@
 diff --git a/chrome/test/BUILD.gn b/chrome/test/BUILD.gn
-index 167b043f9a1f7ec59d8e10705b4956b5647f6886..7950130972c40300bc25600b1e4c30711a2afa07 100644
+index 39c6c442967a62f2ad556cb83d854f411b867eb7..47b49ccce5dc533f36e20fac5516cfca20ea8397 100644
 --- a/chrome/test/BUILD.gn
 +++ b/chrome/test/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 167b043f9a1f7ec59d8e10705b4956b5647f6886..7950130972c40300bc25600b1e4c3071
  import("//build/cipd/cipd.gni")
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
-@@ -147,6 +148,7 @@ static_library("test_support") {
+@@ -150,6 +151,7 @@ static_library("test_support") {
      "//chrome/browser/profiles:profile_manager",
      "//chrome/browser/ui/browser_window",
    ]
@@ -18,7 +18,7 @@ index 167b043f9a1f7ec59d8e10705b4956b5647f6886..7950130972c40300bc25600b1e4c3071
  
    if (is_android || is_mac || is_win || is_chromeos) {
      deps += [
-@@ -183,6 +185,7 @@ static_library("test_support") {
+@@ -180,6 +182,7 @@ static_library("test_support") {
    }
  
    sources = [ "../app/startup_timestamps.h" ]
@@ -26,7 +26,7 @@ index 167b043f9a1f7ec59d8e10705b4956b5647f6886..7950130972c40300bc25600b1e4c3071
  
    if (enable_guest_view) {
      public_deps += [ "//components/guest_view/browser:test_support" ]
-@@ -5529,6 +5532,7 @@ test("unit_tests") {
+@@ -5540,6 +5543,7 @@ test("unit_tests") {
      "//ui/webui",
      "//v8",
    ]
@@ -34,7 +34,7 @@ index 167b043f9a1f7ec59d8e10705b4956b5647f6886..7950130972c40300bc25600b1e4c3071
  
    if (enable_devtools_frontend) {
      deps += [ "//chrome/browser/ui/webui/devtools:unit_tests" ]
-@@ -8091,6 +8095,7 @@ if (!is_android && !is_chromeos_device) {
+@@ -8140,6 +8144,7 @@ if (!is_android && !is_chromeos_device) {
      deps = [
        ":test_support",
        ":test_support_ui",

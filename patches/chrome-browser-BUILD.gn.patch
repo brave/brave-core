@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index b58905ddb371f96377320c2948fe64bb17257663..f5fd9c4f920348caebd681e33503f5d0efd14eca 100644
+index 477cc32a0ba432122506cc210d34824b61d67f0a..0bb88683b84a82e17c16eabc85cf7371168c80b4 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index b58905ddb371f96377320c2948fe64bb17257663..f5fd9c4f920348caebd681e33503f5d0
  import("//base/allocator/allocator.gni")
  import("//build/buildflag_header.gni")
  import("//build/config/buildflags_paint_preview.gni")
-@@ -2014,6 +2015,7 @@ source_set("browser") {
+@@ -2022,6 +2023,7 @@ source_set("browser") {
      # should be added to browser_generated_files.
      ":browser_public_dependencies",
      ":core",
@@ -18,7 +18,7 @@ index b58905ddb371f96377320c2948fe64bb17257663..f5fd9c4f920348caebd681e33503f5d0
      "//chrome/browser/accessibility/accessibility_prefs",
      "//chrome/browser/browsing_data",
      "//chrome/browser/download",
-@@ -3441,6 +3443,7 @@ group("browser_public_dependencies") {
+@@ -3450,6 +3452,7 @@ group("browser_public_dependencies") {
      "//sql",
      "//ui/lottie",
    ]

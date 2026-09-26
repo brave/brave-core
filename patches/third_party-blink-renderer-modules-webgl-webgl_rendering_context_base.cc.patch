@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
-index b452298c2400304cfaa6b137726144ceaa976b6d..e8bdffd8dd0d781d2098cb2a1e1f1c49736ba735 100644
+index b17f336f90c46575d6fc0668a9e85183cdd8c0e6..87f4ee4d84df089cd1faa932ff320d8d53fa4155 100644
 --- a/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 +++ b/third_party/blink/renderer/modules/webgl/webgl_rendering_context_base.cc
 @@ -3664,6 +3664,7 @@ WebGLActiveInfo* WebGLRenderingContextBase::getActiveAttrib(

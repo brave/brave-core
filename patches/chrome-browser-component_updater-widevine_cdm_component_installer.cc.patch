@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/component_updater/widevine_cdm_component_installer.cc b/chrome/browser/component_updater/widevine_cdm_component_installer.cc
-index 12b3303c9be33167b6ec86cd9cc9de34857d5389..0655d751751daa304b4ed1d13842ba1422811805 100644
+index c88a637e72725f6a67b652fe1cb74e7bd0d404e0..7fe635e3387f63ef14b9079eda27eca873848472 100644
 --- a/chrome/browser/component_updater/widevine_cdm_component_installer.cc
 +++ b/chrome/browser/component_updater/widevine_cdm_component_installer.cc
 @@ -281,7 +281,7 @@ bool WidevineCdmComponentInstallerPolicy::

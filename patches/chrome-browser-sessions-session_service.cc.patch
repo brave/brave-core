@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/sessions/session_service.cc b/chrome/browser/sessions/session_service.cc
-index 8fc9f314991f8ea5e9e06195def1294ce3418fb7..b48e694db9b255fac8b0bfe4566b129fecb01d70 100644
+index 2293349695e51d7d62e37329219e5dbfcae4efc2..a3ab99e9260618e86dcbb6f75ca783518f0fcc5e 100644
 --- a/chrome/browser/sessions/session_service.cc
 +++ b/chrome/browser/sessions/session_service.cc
-@@ -398,6 +398,7 @@ void SessionService::TabClosed(SessionID window_id, SessionID tab_id) {
+@@ -411,6 +411,7 @@ void SessionService::TabClosed(SessionID window_id, SessionID tab_id) {
      ScheduleCommand(sessions::CreateTabClosedCommand(tab_id));
      if (!window_closing_ids_.contains(window_id) && IsOnlyOneTabLeft()) {
        // This is the last tab in the last tabbed browser.

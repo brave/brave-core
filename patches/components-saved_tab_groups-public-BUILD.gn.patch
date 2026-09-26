@@ -1,5 +1,5 @@
 diff --git a/components/saved_tab_groups/public/BUILD.gn b/components/saved_tab_groups/public/BUILD.gn
-index c37f3419ad70ad0c4844e0c661b53de8c77ec991..aa13470e956467d597d5c60eb0252f02cc98b5a9 100644
+index f3764e0ac57f7389b2b88dd944c3a9e17736574c..e50a248d4c176e02264e9cf405de771695419db4 100644
 --- a/components/saved_tab_groups/public/BUILD.gn
 +++ b/components/saved_tab_groups/public/BUILD.gn
 @@ -32,7 +32,6 @@ source_set("public") {

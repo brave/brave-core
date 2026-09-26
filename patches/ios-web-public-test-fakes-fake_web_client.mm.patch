@@ -1,5 +1,5 @@
 diff --git a/ios/web/public/test/fakes/fake_web_client.mm b/ios/web/public/test/fakes/fake_web_client.mm
-index 29b1297bffe2585e3e45bb8cde3b162c5dce8efc..8c9189cafc2262026feb072b31db01e1af92541f 100644
+index abbb3fc33c805f2e0ddf800fc708e391756f7a65..61e5b4f1b50c350ad1766b2c7f049149057fe2ee 100644
 --- a/ios/web/public/test/fakes/fake_web_client.mm
 +++ b/ios/web/public/test/fakes/fake_web_client.mm
 @@ -23,8 +23,11 @@ FakeWebClient::FakeWebClient() = default;

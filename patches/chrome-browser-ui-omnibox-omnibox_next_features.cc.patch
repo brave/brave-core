@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_next_features.cc b/chrome/browser/ui/omnibox/omnibox_next_features.cc
-index 713f6fa62a3e09053b8e4c4464dadeed568e0bb3..f27a8489047231537987a6b92171fab7523faa66 100644
+index 0b8ebeed5b40a292351d9a0757d2ff9281b6c57d..a2e57248f929990e41dedfb1b5d7b5664389b13e 100644
 --- a/chrome/browser/ui/omnibox/omnibox_next_features.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_next_features.cc
 @@ -45,11 +45,11 @@ namespace omnibox {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/common/tab_group_style.cc b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
-index 8fdffc5a7eff4b7d45c46e05494fb67020d55697..37537d303bee0095f7cc2a6d79af81f5aece9deb 100644
+index e9881c7aa323849320d8b0317da423ff044af0a9..0f152207db2cf7e957917c8cf1c552e36aa76b17 100644
 --- a/chrome/browser/ui/views/tabs/common/tab_group_style.cc
 +++ b/chrome/browser/ui/views/tabs/common/tab_group_style.cc
 @@ -30,6 +30,10 @@ int TabGroupStyle::GetTabGroupOverlapAdjustment() {

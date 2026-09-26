@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/hid/BUILD.gn b/chrome/browser/ui/hid/BUILD.gn
-index be02bd97b52b52b2369c06899886ed9d44ff03f4..639ffa28c2c7482039002e5afa569ab1e4c8f959 100644
+index 360101c48742c22342a97f85ca5eef9a096e1186..b56b8d0010d21765478084822a190677d72a3d2c 100644
 --- a/chrome/browser/ui/hid/BUILD.gn
 +++ b/chrome/browser/ui/hid/BUILD.gn
 @@ -2,6 +2,8 @@

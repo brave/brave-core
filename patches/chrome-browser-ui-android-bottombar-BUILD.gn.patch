@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/android/bottombar/BUILD.gn b/chrome/browser/ui/android/bottombar/BUILD.gn
-index 62fd9ae8d090a6b45f8c2558bf82c7a307fcd7fe..0c29f0fd80bf195dc8c14484e057fa6be7ff502f 100644
+index 1068fb1c5dcb8f181ab3a63609afd4045d08b765..6ecef5ea56d8bfb61bc3814485dd7b07b01dde3c 100644
 --- a/chrome/browser/ui/android/bottombar/BUILD.gn
 +++ b/chrome/browser/ui/android/bottombar/BUILD.gn
 @@ -33,6 +33,7 @@ android_library("config_java") {

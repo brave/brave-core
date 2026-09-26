@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/printing/print_view_manager.h b/chrome/browser/printing/print_view_manager.h
-index 324f2d4002545fd624505995043cdad2b08b800b..bb410bea421f2de64bd4ad75d4062d55e58e0653 100644
+index fa223e1adde9d8ece32184bb44ce46d488e5bfdf..5b16294485fca55405c0f2552bb539757d52b7d9 100644
 --- a/chrome/browser/printing/print_view_manager.h
 +++ b/chrome/browser/printing/print_view_manager.h
 @@ -96,6 +96,10 @@ class PrintViewManager : public PrintViewManagerBase,

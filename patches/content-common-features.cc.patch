@@ -1,5 +1,5 @@
 diff --git a/content/common/features.cc b/content/common/features.cc
-index 7ac35b5a84b62f12df43761599b8d65fcbf3f95a..9768f89313d7f3e3fd83634c77aa91fb147b5ffe 100644
+index cb30689fc9f638648a6ce14de98f2d502a370d97..f9cddc7901b817f8878c331b077b2dc113e92117 100644
 --- a/content/common/features.cc
 +++ b/content/common/features.cc
 @@ -597,8 +597,8 @@ BASE_FEATURE(kPriorityOverridePendingViews, base::FEATURE_ENABLED_BY_DEFAULT);
