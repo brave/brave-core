@@ -2790,6 +2790,117 @@ TEST_F(KeyringServiceUnitTest, SetSelectedAccount_CardanoEnabled) {
   observer.WaitAndVerify();
 }
 
+TEST_F(KeyringServiceUnitTest, SetSelectedAccount_PolkadotDappSupportEnabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletPolkadotFeature,
+        {{"polkadot_dapp_support", "true"}}},
+       {features::kBraveWalletCardanoFeature, {}}},
+      {});
+
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto first_account = GetAccountUtils(&service).EnsureEthAccount(0);
+  auto first_sol_account = GetAccountUtils(&service).EnsureSolAccount(0);
+  auto first_ada_account = GetAccountUtils(&service).EnsureAdaAccount(0);
+  auto second_ada_account = GetAccountUtils(&service).EnsureAdaAccount(1);
+  auto first_dot_account = GetAccountUtils(&service).EnsureDotAccount(0);
+  auto second_dot_account = GetAccountUtils(&service).EnsureDotAccount(1);
+  auto second_account = GetAccountUtils(&service).EnsureEthAccount(1);
+  ASSERT_TRUE(first_account);
+  ASSERT_TRUE(first_sol_account);
+  ASSERT_TRUE(first_ada_account);
+  ASSERT_TRUE(second_ada_account);
+  ASSERT_TRUE(first_dot_account);
+  ASSERT_TRUE(second_dot_account);
+  ASSERT_TRUE(second_account);
+
+  EXPECT_EQ(second_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
+  EXPECT_EQ(second_ada_account, service.GetSelectedCardanoDappAccount());
+  EXPECT_EQ(second_dot_account, service.GetSelectedPolkadotDappAccount());
+
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(first_dot_account))));
+  EXPECT_CALL(observer,
+              SelectedDappAccountChanged(mojom::CoinType::DOT,
+                                         Eq(std::ref(first_dot_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ETH, _))
+      .Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
+      .Times(0);
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ADA, _))
+      .Times(0);
+
+  // Select the first DOT account. No other accounts should be disturbed.
+  EXPECT_TRUE(SetSelectedAccount(&service, first_dot_account->account_id));
+  EXPECT_EQ(first_dot_account, service.GetSelectedWalletAccount());
+  EXPECT_EQ(second_account, service.GetSelectedEthereumDappAccount());
+  EXPECT_EQ(first_sol_account, service.GetSelectedSolanaDappAccount());
+  EXPECT_EQ(second_ada_account, service.GetSelectedCardanoDappAccount());
+  EXPECT_EQ(first_dot_account, service.GetSelectedPolkadotDappAccount());
+  observer.WaitAndVerify();
+
+  EXPECT_EQ(first_dot_account->account_id->unique_key,
+            GetPrefs()->GetString(kBraveWalletSelectedDotDappAccount));
+  EXPECT_EQ(second_ada_account->account_id->unique_key,
+            GetPrefs()->GetString(kBraveWalletSelectedAdaDappAccount));
+  EXPECT_EQ(second_account->account_id->unique_key,
+            GetPrefs()->GetString(kBraveWalletSelectedEthDappAccount));
+  EXPECT_EQ(first_sol_account->account_id->unique_key,
+            GetPrefs()->GetString(kBraveWalletSelectedSolDappAccount));
+
+  EXPECT_CALL(observer,
+              SelectedWalletAccountChanged(Eq(std::ref(first_ada_account))));
+  EXPECT_CALL(observer,
+              SelectedDappAccountChanged(mojom::CoinType::ADA,
+                                         Eq(std::ref(first_ada_account))));
+  EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::DOT, _))
+      .Times(0);
+
+  // Selecting a Cardano account shouldn't interfere with our DOT selection.
+  EXPECT_TRUE(SetSelectedAccount(&service, first_ada_account->account_id));
+  EXPECT_EQ(first_ada_account, service.GetSelectedCardanoDappAccount());
+  EXPECT_EQ(first_dot_account, service.GetSelectedPolkadotDappAccount());
+  observer.WaitAndVerify();
+
+  EXPECT_EQ(first_dot_account->account_id->unique_key,
+            GetPrefs()->GetString(kBraveWalletSelectedDotDappAccount));
+  EXPECT_EQ(first_ada_account->account_id->unique_key,
+            GetPrefs()->GetString(kBraveWalletSelectedAdaDappAccount));
+
+  auto all_accounts = service.GetAllAccountsSync();
+  EXPECT_EQ(second_account, all_accounts->eth_dapp_selected_account);
+  EXPECT_EQ(first_sol_account, all_accounts->sol_dapp_selected_account);
+  EXPECT_EQ(first_ada_account, all_accounts->ada_dapp_selected_account);
+  EXPECT_EQ(first_dot_account, all_accounts->dot_dapp_selected_account);
+}
+
+TEST_F(KeyringServiceUnitTest, SetSelectedAccount_PolkadotDappSupportDisabled) {
+  KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
+  ASSERT_TRUE(CreateWallet(&service, "brave"));
+
+  auto first_account = GetAccountUtils(&service).EnsureEthAccount(0);
+  auto dot_account = GetAccountUtils(&service).EnsureDotAccount(0);
+  ASSERT_TRUE(dot_account);
+
+  NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+  EXPECT_CALL(observer, SelectedDappAccountChanged(_, _)).Times(0);
+  EXPECT_TRUE(SetSelectedAccount(&service, dot_account->account_id));
+  EXPECT_EQ(dot_account, service.GetSelectedWalletAccount());
+  EXPECT_FALSE(service.GetSelectedPolkadotDappAccount());
+  EXPECT_EQ(first_account, service.GetSelectedEthereumDappAccount());
+  observer.WaitAndVerify();
+
+  EXPECT_TRUE(
+      GetPrefs()->GetString(kBraveWalletSelectedDotDappAccount).empty());
+}
+
 TEST_F(KeyringServiceUnitTest, SetSelectedAccount_CardanoDisabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitWithFeatures({}, {features::kBraveWalletCardanoFeature});
@@ -3437,9 +3548,12 @@ TEST_F(KeyringServiceUnitTest, HiddenAccountsFeatureDisabled) {
 
 TEST_F(KeyringServiceUnitTest, HiddenAccounts_AccountSelection) {
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitWithFeatures({features::kBraveWalletAccountHidingFeature,
-                                 features::kBraveWalletCardanoFeature},
-                                {});
+  feature_list.InitWithFeaturesAndParameters(
+      {{features::kBraveWalletAccountHidingFeature, {}},
+       {features::kBraveWalletCardanoFeature, {}},
+       {features::kBraveWalletPolkadotFeature,
+        {{"polkadot_dapp_support", "true"}}}},
+      {});
 
   KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
   ASSERT_TRUE(CreateWallet(&service, "brave"));
@@ -3461,6 +3575,14 @@ TEST_F(KeyringServiceUnitTest, HiddenAccounts_AccountSelection) {
                  mojom::KeyringId::kCardanoMainnet, "Cardano Account 2");
   ASSERT_TRUE(second_ada_account);
   auto second_ada_account_id = second_ada_account->account_id.Clone();
+  auto first_dot_account = GetAccountUtils(&service).EnsureDotAccount(0);
+  ASSERT_TRUE(first_dot_account);
+  auto first_dot_account_id = first_dot_account->account_id.Clone();
+  auto second_dot_account =
+      AddAccount(&service, mojom::CoinType::DOT,
+                 mojom::KeyringId::kPolkadotMainnet, "Polkadot Account 2");
+  ASSERT_TRUE(second_dot_account);
+  auto second_dot_account_id = second_dot_account->account_id.Clone();
 
   auto second_account = AddAccount(&service, mojom::CoinType::ETH,
                                    mojom::KeyringId::kDefault, "Account 2");
@@ -3480,6 +3602,8 @@ TEST_F(KeyringServiceUnitTest, HiddenAccounts_AccountSelection) {
         .Times(0);
     EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
         .Times(0);
+    EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::DOT, _))
+        .Times(0);
     EXPECT_CALL(observer,
                 SelectedDappAccountChanged(mojom::CoinType::ADA,
                                            Eq(std::ref(first_ada_account))));
@@ -3487,6 +3611,43 @@ TEST_F(KeyringServiceUnitTest, HiddenAccounts_AccountSelection) {
     EXPECT_TRUE(AddHiddenAccount(&service, second_ada_account_id.Clone()));
     observer.WaitAndVerify();
 
+    ASSERT_TRUE(service.GetSelectedCardanoDappAccount());
+    EXPECT_EQ(first_ada_account_id->unique_key,
+              service.GetSelectedCardanoDappAccount()->account_id->unique_key);
+
+    // Hiding an ADA account must not disturb the DOT selection.
+    ASSERT_TRUE(service.GetSelectedPolkadotDappAccount());
+    EXPECT_EQ(second_dot_account_id->unique_key,
+              service.GetSelectedPolkadotDappAccount()->account_id->unique_key);
+  }
+
+  // Test case: Selected DOT dapp account falls back to first visible account.
+  {
+    NiceMock<TestKeyringServiceObserver> observer(service, task_environment_);
+
+    ASSERT_TRUE(service.GetSelectedPolkadotDappAccount());
+    EXPECT_EQ(second_dot_account_id->unique_key,
+              service.GetSelectedPolkadotDappAccount()->account_id->unique_key);
+
+    EXPECT_CALL(observer, SelectedWalletAccountChanged(_)).Times(0);
+    EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ETH, _))
+        .Times(0);
+    EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::SOL, _))
+        .Times(0);
+    EXPECT_CALL(observer, SelectedDappAccountChanged(mojom::CoinType::ADA, _))
+        .Times(0);
+    EXPECT_CALL(observer,
+                SelectedDappAccountChanged(mojom::CoinType::DOT,
+                                           Eq(std::ref(first_dot_account))));
+    EXPECT_CALL(observer, AccountsChanged());
+    EXPECT_TRUE(AddHiddenAccount(&service, second_dot_account_id.Clone()));
+    observer.WaitAndVerify();
+
+    ASSERT_TRUE(service.GetSelectedPolkadotDappAccount());
+    EXPECT_EQ(first_dot_account_id->unique_key,
+              service.GetSelectedPolkadotDappAccount()->account_id->unique_key);
+
+    // Hiding a DOT account must not disturb the ADA selection.
     ASSERT_TRUE(service.GetSelectedCardanoDappAccount());
     EXPECT_EQ(first_ada_account_id->unique_key,
               service.GetSelectedCardanoDappAccount()->account_id->unique_key);
@@ -5464,8 +5625,9 @@ TEST_F(KeyringServiceUnitTest, ZCashIronwoodSyncStateResetPref) {
 TEST_F(KeyringServiceUnitTest, GetOrchardRawBytes) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitWithFeaturesAndParameters(
-      {{features::kBraveWalletZCashFeature,
-        {{"zcash_shielded_transactions_enabled", "true"}}},
+      {
+          {features::kBraveWalletZCashFeature,
+           {{"zcash_shielded_transactions_enabled", "true"}}},
       },
       {}  // disabled features
   );
