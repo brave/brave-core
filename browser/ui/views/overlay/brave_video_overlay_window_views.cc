@@ -28,9 +28,9 @@
 #if BUILDFLAG(IS_LINUX)
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/shell_integration_linux.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_init_state.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/picture_in_picture_window_controller.h"
 #endif  // BUILDFLAG(IS_LINUX)

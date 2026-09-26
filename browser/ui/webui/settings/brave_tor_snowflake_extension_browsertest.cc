@@ -7,7 +7,6 @@
 #include "base/path_service.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "chrome/browser/extensions/extension_service.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/policy/core/browser/browser_policy_connector.h"

@@ -17,13 +17,14 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/sync/sync_service_factory.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/infobars/content/content_infobar_manager.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "base/android/jni_android.h"
 #include "brave/build/android/jni_headers/BraveSyncAccountDeletedInformer_jni.h"
 #else
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #endif
 
 using syncer::BraveSyncServiceImpl;
