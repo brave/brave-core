@@ -32,9 +32,12 @@ namespace brave_ads {
 
 class Ads;
 class AdsClient;
+class AdsFactory;
+
 class AdsServiceImplIOS : public AdsService {
  public:
-  explicit AdsServiceImplIOS(PrefService& prefs);
+  AdsServiceImplIOS(PrefService& prefs,
+                    std::unique_ptr<AdsFactory> ads_factory);
 
   AdsServiceImplIOS(const AdsServiceImplIOS&) = delete;
   AdsServiceImplIOS& operator=(const AdsServiceImplIOS&) = delete;
@@ -173,6 +176,8 @@ class AdsServiceImplIOS : public AdsService {
   void MaybeClearAdsData(const std::string& path);
 
   const raw_ref<PrefService> prefs_;
+
+  const std::unique_ptr<AdsFactory> ads_factory_;
 
   PrefChangeRegistrar pref_change_registrar_;
 
