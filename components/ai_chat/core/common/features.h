@@ -185,6 +185,11 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsBraveSyncAIChatEnabled();
 // off from an existing conversation entry.
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatThreads);
 
+// The maximum number of threads that can be created from a single origin
+// conversation entry. Attempts to create more are no-ops.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<size_t> kMaxThreadsPerOriginEntry;
+
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatThreadsEnabled();
 
 // Enables sharing a conversation from the conversation header.

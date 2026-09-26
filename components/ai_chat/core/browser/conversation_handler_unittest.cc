@@ -469,6 +469,24 @@ MATCHER_P(TurnEq, expected_turn, "") {
          arg->model_key == expected_turn->model_key;
 }
 
+// Matches a conversation history or an engine ConversationHistoryView whose
+// entries have the given texts, in order.
+MATCHER_P(HistoryTextsAre, expected_texts, "") {
+  if (arg.size() != expected_texts.size()) {
+    *result_listener << "history size " << arg.size() << " does not equal "
+                     << expected_texts.size();
+    return false;
+  }
+  for (size_t i = 0; i < expected_texts.size(); i++) {
+    if (arg[i]->text != expected_texts[i]) {
+      *result_listener << "entry " << i << " text '" << arg[i]->text
+                       << "' does not equal '" << expected_texts[i] << "'";
+      return false;
+    }
+  }
+  return true;
+}
+
 TEST_F(ConversationHandlerUnitTest, State) {
   NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
   NiceMock<MockUntrustedConversationHandlerClient> entries_client(
@@ -1160,6 +1178,210 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   EXPECT_EQ(entries[2]->text, "thread response");
 }
 
+TEST_F(ConversationHandlerUnitTest, CreateConversationThread_SubmitEntry) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kAIChatThreads);
+
+  conversation_handler_->associated_content_manager()->ClearContent();
+
+  // Start with three root entries; the second is the assistant response that
+  // the new thread will branch off from.
+  SetupHistory({{"hello", false}, {"response", false}, {"third", false}});
+  ASSERT_EQ(conversation_handler_->GetConversationHistory().size(), 3u);
+  const std::string origin_entry_uuid =
+      conversation_handler_->GetConversationHistory()[1]->uuid.value();
+
+  // Create a conversation thread based off the second entry.
+  base::test::TestFuture<const std::optional<std::string>&> thread_future;
+  conversation_handler_->CreateConversationThread(origin_entry_uuid,
+                                                  thread_future.GetCallback());
+  std::optional<std::string> thread_uuid = thread_future.Take();
+  ASSERT_TRUE(thread_uuid.has_value());
+
+  // The origin entry should now reference the new thread.
+  const auto& root_history = conversation_handler_->GetConversationHistory();
+  ASSERT_EQ(root_history.size(), 3u);
+  ASSERT_EQ(root_history[1]->child_thread_uuids.size(), 1u);
+  EXPECT_EQ(root_history[1]->child_thread_uuids[0], *thread_uuid);
+
+  // Thread metadata should be populated immediately, with no entries yet.
+  auto* container =
+      base::FindOrNull(conversation_handler_->threads_, *thread_uuid);
+  ASSERT_TRUE(container);
+  EXPECT_EQ(container->thread->conversation_uuid, "uuid");
+  EXPECT_EQ(container->thread->origin_conversation_entry_uuid,
+            origin_entry_uuid);
+  EXPECT_EQ(container->thread->entry_count, 0u);
+  EXPECT_TRUE(container->entries.empty());
+
+  base::test::TestFuture<std::vector<mojom::ThreadPtr>> threads_future;
+  conversation_handler_->GetConversationThreads(threads_future.GetCallback());
+  auto threads = threads_future.Take();
+  ASSERT_EQ(threads.size(), 1u);
+  EXPECT_EQ(threads[0]->uuid, *thread_uuid);
+  EXPECT_EQ(threads[0]->entry_count, 0u);
+
+  MockEngineConsumer* engine = static_cast<MockEngineConsumer*>(
+      conversation_handler_->GetEngineForTesting());
+
+  testing::NiceMock<MockConversationHandlerObserver> observer;
+  observer.Observe(conversation_handler_.get());
+  // The thread's first entry should notify observers of the new thread
+  // before the entry itself.
+  EXPECT_CALL(observer,
+              OnNewConversationThread(conversation_handler_.get(), _))
+      .Times(1);
+  // Human entry and assistant response, both on the thread.
+  EXPECT_CALL(observer,
+              OnConversationEntryAdded(conversation_handler_.get(), _, _))
+      .Times(2);
+
+  // The engine should receive the root entries up to and including the origin
+  // entry, followed by the new thread entry.
+  EXPECT_CALL(*engine,
+              GenerateAssistantResponse(
+                  _, HistoryTextsAre(std::vector<std::string>{
+                                          "hello", "response", "thread query"}),
+                  _, _, _, _, _, _))
+      .WillOnce(::testing::DoAll(
+          base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
+              mojom::ConversationEntryEvent::NewCompletionEvent(
+                  mojom::CompletionEvent::New("thread response")),
+              std::nullopt /* model_key */)),
+          base::test::RunOnceCallback<7>(
+              base::ok(EngineConsumer::GenerationResultData(
+                  mojom::ConversationEntryEvent::NewCompletionEvent(
+                      mojom::CompletionEvent::New("")),
+                  std::nullopt /* model_key */)))));
+
+  // Submit an entry on the new thread.
+  NiceMock<MockConversationHandlerClient> client(conversation_handler_.get());
+  EXPECT_CALL(client, OnAPIRequestInProgress(true)).Times(testing::AtLeast(1));
+
+  base::RunLoop loop;
+  EXPECT_CALL(client, OnAPIRequestInProgress(false))
+      .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
+
+  conversation_handler_->SubmitHumanConversationEntry("thread query",
+                                                      std::nullopt, thread_uuid);
+
+  loop.Run();
+
+  testing::Mock::VerifyAndClearExpectations(&observer);
+
+  // The root history should be unchanged by the thread submission.
+  EXPECT_EQ(conversation_handler_->GetConversationHistory().size(), 3u);
+
+  // The thread should now contain the human entry and the assistant response,
+  // and its metadata should count both entries.
+  container = base::FindOrNull(conversation_handler_->threads_, *thread_uuid);
+  ASSERT_TRUE(container);
+  EXPECT_EQ(container->thread->entry_count, 2u);
+  ASSERT_EQ(container->entries.size(), 2u);
+  EXPECT_EQ(container->entries[0]->text, "thread query");
+  EXPECT_EQ(container->entries[0]->character_type, mojom::CharacterType::HUMAN);
+  EXPECT_EQ(container->entries[0]->thread_uuid, thread_uuid);
+  EXPECT_EQ(container->entries[1]->text, "thread response");
+  EXPECT_EQ(container->entries[1]->character_type,
+            mojom::CharacterType::ASSISTANT);
+
+  // The full thread history for the UI should prepend the origin entry.
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> history_future;
+  conversation_handler_->GetConversationHistory(*thread_uuid,
+                                                 history_future.GetCallback());
+  auto entries = history_future.Take();
+  ASSERT_EQ(entries.size(), 3u);
+  EXPECT_EQ(entries[0]->uuid, origin_entry_uuid);
+  EXPECT_EQ(entries[0]->text, "response");
+  EXPECT_EQ(entries[1]->text, "thread query");
+  EXPECT_EQ(entries[2]->text, "thread response");
+
+  conversation_handler_->GetConversationThreads(threads_future.GetCallback());
+  threads = threads_future.Take();
+  ASSERT_EQ(threads.size(), 1u);
+  EXPECT_EQ(threads[0]->uuid, *thread_uuid);
+  EXPECT_EQ(threads[0]->entry_count, 2u);
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       CreateConversationThread_FeatureDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(features::kAIChatThreads);
+
+  SetupHistory({{"hello", false}, {"response", false}});
+  const std::string origin_entry_uuid =
+      conversation_handler_->GetConversationHistory()[1]->uuid.value();
+
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  conversation_handler_->CreateConversationThread(origin_entry_uuid,
+                                                  future.GetCallback());
+  EXPECT_FALSE(future.Take().has_value());
+  EXPECT_TRUE(conversation_handler_->GetConversationHistory()[1]
+                  ->child_thread_uuids.empty());
+  base::test::TestFuture<std::vector<mojom::ThreadPtr>> threads_future;
+  conversation_handler_->GetConversationThreads(threads_future.GetCallback());
+  EXPECT_TRUE(threads_future.Take().empty());
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       CreateConversationThread_NonExistentOriginEntry) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kAIChatThreads);
+
+  SetupHistory({{"hello", false}, {"response", false}});
+
+  base::test::TestFuture<const std::optional<std::string>&> future;
+  conversation_handler_->CreateConversationThread("non-existent-uuid",
+                                                  future.GetCallback());
+  EXPECT_FALSE(future.Take().has_value());
+  EXPECT_TRUE(conversation_handler_->GetConversationHistory()[1]
+                  ->child_thread_uuids.empty());
+  base::test::TestFuture<std::vector<mojom::ThreadPtr>> threads_future;
+  conversation_handler_->GetConversationThreads(threads_future.GetCallback());
+  EXPECT_TRUE(threads_future.Take().empty());
+}
+
+TEST_F(ConversationHandlerUnitTest,
+       CreateConversationThread_EmptyExistingThread) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeature(features::kAIChatThreads);
+
+  SetupHistory({{"hello", false}, {"response", false}});
+  const std::string origin_entry_uuid =
+      conversation_handler_->GetConversationHistory()[1]->uuid.value();
+
+  // The first creation succeeds and creates a thread with entry_count == 0.
+  base::test::TestFuture<const std::optional<std::string>&> first_future;
+  conversation_handler_->CreateConversationThread(origin_entry_uuid,
+                                                  first_future.GetCallback());
+  std::optional<std::string> thread_uuid = first_future.Take();
+  ASSERT_TRUE(thread_uuid.has_value());
+  EXPECT_EQ(conversation_handler_->GetConversationHistory()[1]
+                ->child_thread_uuids.size(),
+            1u);
+
+  auto* container =
+      base::FindOrNull(conversation_handler_->threads_, *thread_uuid);
+  ASSERT_TRUE(container);
+  EXPECT_EQ(container->thread->entry_count, 0u);
+
+  // Attempting to create another thread while the existing one is still empty
+  // should fail.
+  base::test::TestFuture<const std::optional<std::string>&> second_future;
+  conversation_handler_->CreateConversationThread(origin_entry_uuid,
+                                                  second_future.GetCallback());
+  EXPECT_FALSE(second_future.Take().has_value());
+  EXPECT_EQ(conversation_handler_->GetConversationHistory()[1]
+                ->child_thread_uuids.size(),
+            1u);
+
+  base::test::TestFuture<std::vector<mojom::ThreadPtr>> threads_future;
+  conversation_handler_->GetConversationThreads(threads_future.GetCallback());
+  auto threads = threads_future.Take();
+  ASSERT_EQ(threads.size(), 1u);
+  EXPECT_EQ(threads[0]->uuid, *thread_uuid);
+}
+
 TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
   // Tests that history combines completion events when the engine provides
   // delta text responses.
@@ -1175,7 +1397,8 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("This")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1193,7 +1416,8 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New(" is ")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1211,7 +1435,8 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("successful.")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1243,7 +1468,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewSearchStatusEvent(
             mojom::SearchStatusEvent::New()),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
     EXPECT_EQ(history.size(), 1u);
@@ -1256,7 +1482,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New(" This is")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1275,7 +1502,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New(" successful.")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1306,7 +1534,8 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("This")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1325,7 +1554,8 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New(" This is ")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1343,7 +1573,8 @@ TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_NotDelta) {
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("This is successful.")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1375,7 +1606,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewSearchStatusEvent(
             mojom::SearchStatusEvent::New()),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
     EXPECT_EQ(history.size(), 1u);
@@ -1388,7 +1620,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New(" This is ")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1406,7 +1639,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("This is successful.")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1439,7 +1673,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New(" This is")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1455,7 +1690,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewInlineSearchEvent(
             mojom::InlineSearchEvent::New("query", "[]")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1472,7 +1708,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New(" successful.")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1504,7 +1741,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New(" This is")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1518,7 +1756,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewInlineSearchEvent(
             mojom::InlineSearchEvent::New("query", "[]")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1533,7 +1772,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New(" This is successful.")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1564,7 +1804,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("Let me check the weather.")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
   }
   {
     auto result = EngineConsumer::GenerationResultData(
@@ -1572,7 +1813,8 @@ TEST_F(ConversationHandlerUnitTest,
             "weather_tool", "tool_id_1", "{}", std::nullopt, std::nullopt,
             nullptr, false)),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
   }
   {
     // Completion after the tool use must not merge into the first completion.
@@ -1580,7 +1822,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("It is sunny.")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1613,21 +1856,24 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New(" This is")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
   }
   {
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewSearchStatusEvent(
             mojom::SearchStatusEvent::New()),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
   }
   {
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewInlineSearchEvent(
             mojom::InlineSearchEvent::New("query", "[]")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
   }
   {
     // Delta after both non-splitting events merges into the first completion.
@@ -1635,7 +1881,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New(" successful.")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1669,14 +1916,16 @@ TEST_F(ConversationHandlerUnitTest,
             "search_tool", "tool_id_1", "{\"query\":", std::nullopt,
             std::nullopt, nullptr, false)),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
   }
   {
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewInlineSearchEvent(
             mojom::InlineSearchEvent::New("query", "[]")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
   }
   {
     // Continuation chunk: empty name/id, no output - must append to the
@@ -1685,7 +1934,8 @@ TEST_F(ConversationHandlerUnitTest,
         mojom::ConversationEntryEvent::NewToolUseEvent(mojom::ToolUseEvent::New(
             "", "", "\"bars\"}", std::nullopt, std::nullopt, nullptr, false)),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -1716,14 +1966,16 @@ TEST_F(ConversationHandlerUnitTest,
             mojom::ToolUseEvent::New("tool_a", "tool_id_1", "{}", std::nullopt,
                                      std::nullopt, nullptr, false)),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
   }
   {
     auto result = EngineConsumer::GenerationResultData(
         mojom::ConversationEntryEvent::NewCompletionEvent(
             mojom::CompletionEvent::New("Now another tool.")),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
   }
   {
     // Tool use after the completion is a separate request, not a continuation.
@@ -1732,7 +1984,8 @@ TEST_F(ConversationHandlerUnitTest,
             mojom::ToolUseEvent::New("tool_b", "tool_id_2", "{}", std::nullopt,
                                      std::nullopt, nullptr, false)),
         std::nullopt /* model_key */);
-    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::move(result));
+    conversation_handler_->UpdateOrCreateLastAssistantEntry(std::nullopt,
+                                                            std::move(result));
 
     const std::vector<mojom::ConversationTurnPtr>& history =
         conversation_handler_->GetConversationHistory();
@@ -2879,6 +3132,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
   // OnConversationTokenInfoChanged should be called
   EXPECT_CALL(observer, OnConversationTokenInfoChanged(
                             conversation_handler_->metadata_->uuid,
+                            std::optional<std::string_view>{},
                             expected_total_tokens, expected_trimmed_tokens))
       .Times(1);
 
@@ -3900,7 +4154,7 @@ TEST_F(ConversationHandlerUnitTest, ToolUseEvents_DuplicateToolIds) {
   // an assistant response that contained two tool_use events
   // sharing the same `id` could cause infinite synchronous recursion through
   // MaybeRespondToNextToolUseRequest -> RespondToToolUseRequest. The lookup
-  // helper GetToolUseEventForLastResponse returned the first event matching
+  // helper FindLatestToolUseEvent returned the first event matching
   // the id, so both completions resolved to the same event, the second
   // event's output was never assigned, and the next iteration kept
   // re-dispatching the same pending tool.
