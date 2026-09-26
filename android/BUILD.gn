@@ -80,6 +80,13 @@ android_library("qrreader_java") {
   ]
 }
 
+android_library("settings_insets_java") {
+  sources = [
+    "java/org/chromium/chrome/browser/settings/BottomInsetViewProvider.java",
+  ]
+  deps = [ "//build/android:build_java" ]
+}
+
 # Brave-specific resources.
 android_resources("java_resources") {
   sources = [

@@ -11,7 +11,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 
 /**
- * Implemented by Settings fragments whose content does not use the standard preference list.
+ * Implemented by Settings fragments that need a custom bottom system-bar inset target.
  *
  * <p>Returns the view that should receive the bottom system-bar inset.
  */
