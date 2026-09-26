@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
+#include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
 
 // Override invocation of Browser::SupportsWindowFeature() and
 // WebUITabStripContainerView::SupportsTouchableTabStrip() in the constructor in
