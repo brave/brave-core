@@ -92,10 +92,7 @@ GURL AppendFilterParams(
     url = net::AppendQueryParameter(url, key, val);
   }
 
-  url = net::AppendQueryParameter(
-      url, "statuses",
-      filter ? filter->statuses.value_or(kDefaultMeldStatuses)
-             : kDefaultMeldStatuses);
+  url = net::AppendQueryParameter(url, "statuses", kDefaultMeldStatuses);
 
   if (!filter) {
     return url;
