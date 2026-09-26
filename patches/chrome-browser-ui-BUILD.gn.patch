@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index 0ab25c63c9f39dc0e96f154eedd3b03ad14fa638..026477baf1ed413f84f0d004b829e46e7592e70f 100644
+index 82f397571fefaff0096247d0e98c28c20db709bd..57954585dbb821f98bf9ceabee5dd28971042c36 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 0ab25c63c9f39dc0e96f154eedd3b03ad14fa638..026477baf1ed413f84f0d004b829e46e
  import("//build/config/buildflags_paint_preview.gni")
  import("//build/config/chrome_build.gni")
  import("//build/config/compiler/compiler.gni")
-@@ -630,6 +631,7 @@ static_library("ui") {
+@@ -811,6 +812,7 @@ static_library("ui") {
      ":simple_message_box_headers",
      ":tab_dialogs",
      ":tab_modal_confirm_dialog",
@@ -18,7 +18,7 @@ index 0ab25c63c9f39dc0e96f154eedd3b03ad14fa638..026477baf1ed413f84f0d004b829e46e
      "//chrome/browser:browser_public_dependencies",
      "//chrome/browser/feedback",
      "//chrome/browser/headless",
-@@ -906,6 +908,8 @@ static_library("ui") {
+@@ -1087,6 +1089,8 @@ static_library("ui") {
      "//ui/strings",
      "//ui/webui",
    ]
@@ -27,7 +27,7 @@ index 0ab25c63c9f39dc0e96f154eedd3b03ad14fa638..026477baf1ed413f84f0d004b829e46e
  
    allow_circular_includes_from = [
      # page_load_metrics's :impl includes headers from //chrome/browser/ui that
-@@ -929,6 +933,8 @@ static_library("ui") {
+@@ -1110,6 +1114,8 @@ static_library("ui") {
      # - c/b/ui/views/frame/browser_view.h
      "//chrome/browser/ui/views/file_system_access:impl",
    ]
@@ -36,7 +36,7 @@ index 0ab25c63c9f39dc0e96f154eedd3b03ad14fa638..026477baf1ed413f84f0d004b829e46e
  
    # Desktop-Android-only dependencies.
    if (is_desktop_android) {
-@@ -3533,11 +3539,13 @@ static_library("ui") {
+@@ -3802,11 +3808,13 @@ static_library("ui") {
  group("ui_public_dependencies") {
    visibility = [ "//chrome/browser:browser_public_dependencies" ]
    public_deps = [

@@ -22,7 +22,7 @@ substitutions:
     add_literal_to_list:
       target: build
       list_name: css_files
-      literal: brave_settings_css_files
+      literal: brave_settings_local_css_files
       import: //brave/browser/resources/settings/sources.gni
 
   - description:
@@ -30,7 +30,7 @@ substitutions:
     add_literal_to_list:
       target: build
       list_name: exclude_html_css_preprocess_files
-      literal: brave_settings_exclude_html_css_preprocess_files
+      literal: brave_settings_local_html_files + brave_settings_local_css_files
       import: //brave/browser/resources/settings/sources.gni
 
   - description:
@@ -38,7 +38,7 @@ substitutions:
     add_literal_to_list:
       target: build
       list_name: exclude_ts_preprocess_files
-      literal: brave_settings_exclude_ts_preprocess_files
+      literal: brave_settings_local_ts_files
       import: //brave/browser/resources/settings/sources.gni
 
   - description: Depend on the Brave settings preprocessing.

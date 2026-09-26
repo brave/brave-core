@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
-index fad9fef728445ebc7da75f6cbd8a2e826c52b923..76f771a33b03977abca8b4f538c194619bcf59b2 100644
+index d5e3323fb5a644e075d0aeb6852c132581f01e5d..7b45bd5c7ebd6e353236c023473e4152f1147458 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
-@@ -281,6 +281,10 @@ public class FullscreenVideoPictureInPictureController {
+@@ -332,6 +332,10 @@ public class FullscreenVideoPictureInPictureController {
              }
          }
  
@@ -13,7 +13,7 @@ index fad9fef728445ebc7da75f6cbd8a2e826c52b923..76f771a33b03977abca8b4f538c19461
          try {
              if (!mActivity.enterPictureInPictureMode(builder.build())) return;
          } catch (IllegalStateException | IllegalArgumentException e) {
-@@ -406,6 +410,10 @@ public class FullscreenVideoPictureInPictureController {
+@@ -458,6 +462,10 @@ public class FullscreenVideoPictureInPictureController {
      // Closing used to suspend media as a side-effect of hiding the page, but that no longer happens
      // on large form factors (see IsBackgroundMediaSuspendEnabled), so suspend it here.
      public void onStop() {
@@ -24,7 +24,7 @@ index fad9fef728445ebc7da75f6cbd8a2e826c52b923..76f771a33b03977abca8b4f538c19461
          if (mShouldSuspendMediaOnStop) {
              mShouldSuspendMediaOnStop = false;
  
-@@ -417,6 +425,10 @@ public class FullscreenVideoPictureInPictureController {
+@@ -469,6 +477,10 @@ public class FullscreenVideoPictureInPictureController {
      }
  
      public void onResume() {
@@ -35,7 +35,7 @@ index fad9fef728445ebc7da75f6cbd8a2e826c52b923..76f771a33b03977abca8b4f538c19461
          // Pip was restored rather than closed, so media should keep playing.
          mShouldSuspendMediaOnStop = false;
          // Unconditionally dismiss pip, because the activity has been resumed.  This can happen if
-@@ -615,6 +627,16 @@ public class FullscreenVideoPictureInPictureController {
+@@ -667,6 +679,16 @@ public class FullscreenVideoPictureInPictureController {
       * This will also update our auto-PiP preference with the framework, if it's changed.
       */
      private void dismissActivityIfNeeded(Activity activity, @MetricsEndReason int reason) {

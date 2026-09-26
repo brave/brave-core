@@ -58,6 +58,7 @@ mojom_component("mojom") {
     "//url/mojom:url_mojom_gurl",
   ]
 
+  generate_blink = true
   export_class_attribute_blink = "BLINK_PLATFORM_EXPORT"
   export_define_blink = "BLINK_PLATFORM_IMPLEMENTATION=1"
   export_header_blink = "third_party/blink/public/platform/web_common.h"

@@ -1,5 +1,5 @@
 diff --git a/components/browser_actuator/public/features.cc b/components/browser_actuator/public/features.cc
-index bf26063345e6b9b9f1a9b1f6711eb6cb278d0fa0..6711bd2c66a62e638f399902ab6d74aaf5f7f21c 100644
+index c254ff63474c85e82986b0c31cfd87fc5ad467fb..ceeafd4a18a1aecd5d0860e02314ea0b87a6bda8 100644
 --- a/components/browser_actuator/public/features.cc
 +++ b/components/browser_actuator/public/features.cc
 @@ -6,7 +6,7 @@
@@ -8,6 +8,6 @@ index bf26063345e6b9b9f1a9b1f6711eb6cb278d0fa0..6711bd2c66a62e638f399902ab6d74aa
  
 -BASE_FEATURE(kBrowserActuator, base::FEATURE_DISABLED_BY_DEFAULT);
 +BASE_OVERRIDDEN_FEATURE(kBrowserActuator, base::FEATURE_DISABLED_BY_DEFAULT);
+ BASE_FEATURE(kBrowserActuatorInternals, base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kEnableBrowserActuatorForGlicExperimentalTriggering,
               base::FEATURE_DISABLED_BY_DEFAULT);
- 

@@ -34,19 +34,19 @@ std::u16string Sanitize(content::ContentBrowserClient* client,
   return data;
 }
 
+void MaybeSanitizeClipboardText(bool* sanitize_on_next_write_text,
+                                content::ContentBrowserClient* client,
+                                content::RenderFrameHost* render_frame_host,
+                                std::u16string* text) {
+  if (*sanitize_on_next_write_text) {
+    *text = Sanitize(client, render_frame_host, std::move(*text));
+  }
+  *sanitize_on_next_write_text = false;
+}
+
 }  // namespace
 
-#define BRAVE_CLIPBOARD_HOST_IMPL_SANITIZE                                  \
-  if (sanitize_on_next_write_text_) {                                       \
-    data.text =                                                             \
-        Sanitize(GetContentClient()->browser(),                             \
-                 render_frame_host().GetMainFrame(), std::move(data.text)); \
-  }                                                                         \
-  sanitize_on_next_write_text_ = false;
-
 #include <content/browser/renderer_host/clipboard_host_impl.cc>
-
-#undef BRAVE_CLIPBOARD_HOST_IMPL_SANITIZE
 
 namespace content {
 

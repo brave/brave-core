@@ -1,5 +1,5 @@
 diff --git a/base/test/BUILD.gn b/base/test/BUILD.gn
-index bd2e9da070de2e65e15629f1c7349cbdfb4d77d5..c341224aa29a77d49741ad9cd70869b12b335d2c 100644
+index afddfd4a555750837875292fee037329f4b0e585..02e9bbd9d334f1665c6921e5cb1f761d3f32a4d6 100644
 --- a/base/test/BUILD.gn
 +++ b/base/test/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index bd2e9da070de2e65e15629f1c7349cbdfb4d77d5..c341224aa29a77d49741ad9cd70869b1
  import("//build/compiled_action.gni")
  import("//build/config/features.gni")
  import("//build/config/ui.gni")
-@@ -243,6 +244,7 @@ static_library("test_support") {
+@@ -270,6 +271,7 @@ static_library("test_support") {
      "with_feature_override.cc",
      "with_feature_override.h",
    ]

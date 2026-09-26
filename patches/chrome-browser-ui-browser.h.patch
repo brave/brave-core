@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index a80862e7642648370b91c2c0962fd3538f5fa366..6f597fd4bd89adeba407d8bca84df93ab7d23e6a 100644
+index 8fd1c3584b38ac31b512c7fe112962d2731342ca..2839b3226c5c1a2636ec940f8211680bd9a371ca 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
 @@ -171,6 +171,8 @@ class Browser : public TabStripModelObserver,
@@ -10,8 +10,8 @@ index a80862e7642648370b91c2c0962fd3538f5fa366..6f597fd4bd89adeba407d8bca84df93a
 +  friend class BraveBrowser;
    friend BrowserWindowInterface* CreateBrowserWindow(
        BrowserWindowCreateParams create_params);
-   friend std::unique_ptr<Browser> DeprecatedCreateOwnedBrowserWindowForTesting(
-@@ -216,7 +218,7 @@ class Browser : public TabStripModelObserver,
+   friend std::unique_ptr<BrowserWindowInterface>
+@@ -217,7 +219,7 @@ class Browser : public TabStripModelObserver,
  
    // Handle changes to tab strip model.
    void OnTabInsertedAt(content::WebContents* contents, int index);

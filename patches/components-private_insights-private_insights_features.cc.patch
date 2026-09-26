@@ -1,5 +1,5 @@
 diff --git a/components/private_insights/private_insights_features.cc b/components/private_insights/private_insights_features.cc
-index 87ce78873e3a81966b57f607474d61d174545249..d86eb31dccd478ae727b6a9cd70d19eb39462aa4 100644
+index 4e52046a2438425606cb5bd9fe6c3a29e312175f..d69e96c85b55950d8faef84fd5b18b10b1d9726e 100644
 --- a/components/private_insights/private_insights_features.cc
 +++ b/components/private_insights/private_insights_features.cc
 @@ -8,7 +8,7 @@

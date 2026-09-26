@@ -1,5 +1,5 @@
 diff --git a/components/sync/protocol/proto_value_conversions_unittest.cc b/components/sync/protocol/proto_value_conversions_unittest.cc
-index cfe2280d06e8ce21f8c49236396864d563794066..2e41053f3d73c47985f8b472a6f94e2181ed3bc1 100644
+index 118040dbd8d55ef536cdbc587db883aeee662df3..9b117e39e6df534529f6d0f3188332fb37c0022b 100644
 --- a/components/sync/protocol/proto_value_conversions_unittest.cc
 +++ b/components/sync/protocol/proto_value_conversions_unittest.cc
 @@ -71,7 +71,7 @@ using ::testing::Pointee;

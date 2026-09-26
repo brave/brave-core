@@ -9,7 +9,7 @@
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_highlight.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_underline.h"
-#include "chrome/browser/ui/views/tabs/tab_group_style.h"
+#include "chrome/browser/ui/views/tabs/tab_group_style_views.h"
 #include "ui/views/view_utils.h"
 
 #define TabGroupHeader BraveTabGroupHeader

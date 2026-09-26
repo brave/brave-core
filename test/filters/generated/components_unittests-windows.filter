@@ -5,64 +5,64 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 2.3% flake rate over 30 days per LUCI Analysis (23326 passed, 0 failed, 547 flaky).
+# 2.1% flake rate over 30 days per LUCI Analysis (23942 passed, 0 failed, 519 flaky).
 -All/HeapProfilerControllerChannelTest.CanaryChannel/2
 
-# 50.2% flake rate over 30 days per LUCI Analysis (11895 passed, 0 failed, 11968 flaky).
+# 46.3% flake rate over 30 days per LUCI Analysis (13140 passed, 0 failed, 11312 flaky).
 -All/HeapProfilerControllerChannelTest.CanaryChannel/4
 
-# 1.5% flake rate over 30 days per LUCI Analysis (23525 passed, 0 failed, 348 flaky).
+# 1.3% flake rate over 30 days per LUCI Analysis (24139 passed, 0 failed, 320 flaky).
 -All/HeapProfilerControllerChannelTest.StableChannel/2
 
-# 40.8% flake rate over 30 days per LUCI Analysis (14143 passed, 2 failed, 9729 flaky).
+# 38.1% flake rate over 30 days per LUCI Analysis (15133 passed, 2 failed, 9325 flaky).
 -All/HeapProfilerControllerChannelTest.UnknownChannel/2
 
-# 45.7% flake rate over 30 days per LUCI Analysis (12955 passed, 0 failed, 10909 flaky).
+# 42.3% flake rate over 30 days per LUCI Analysis (14108 passed, 0 failed, 10345 flaky).
 -All/HeapProfilerControllerChannelTest.UnknownChannel/3
 
-# 59.4% flake rate over 30 days per LUCI Analysis (9683 passed, 453 failed, 13729 flaky).
+# 56.1% flake rate over 30 days per LUCI Analysis (10729 passed, 432 failed, 13292 flaky).
 -All/HeapProfilerControllerMultipleChildTest.EndToEnd/0
 
-# 50.8% flake rate over 30 days per LUCI Analysis (11740 passed, 6 failed, 12118 flaky).
+# 46.9% flake rate over 30 days per LUCI Analysis (12996 passed, 6 failed, 11451 flaky).
 -All/HeapProfilerControllerProcessTest.BrowserProcess/0
 
-# 48.0% flake rate over 30 days per LUCI Analysis (12407 passed, 1 failed, 11466 flaky).
+# 44.1% flake rate over 30 days per LUCI Analysis (13661 passed, 1 failed, 10798 flaky).
 -All/HeapProfilerControllerProcessTest.BrowserProcess/1
 
-# 35.8% flake rate over 30 days per LUCI Analysis (15332 passed, 0 failed, 8543 flaky).
+# 33.6% flake rate over 30 days per LUCI Analysis (16244 passed, 0 failed, 8217 flaky).
 -All/HeapProfilerControllerProcessTest.BrowserProcess/10
 
-# 48.6% flake rate over 30 days per LUCI Analysis (12279 passed, 0 failed, 11595 flaky).
+# 44.8% flake rate over 30 days per LUCI Analysis (13502 passed, 0 failed, 10960 flaky).
 -All/HeapProfilerControllerProcessTest.BrowserProcess/11
 
-# 49.0% flake rate over 30 days per LUCI Analysis (12165 passed, 0 failed, 11698 flaky).
+# 45.2% flake rate over 30 days per LUCI Analysis (13404 passed, 0 failed, 11048 flaky).
 -All/HeapProfilerControllerProcessTest.BrowserProcess/12
 
-# 62.4% flake rate over 30 days per LUCI Analysis (8974 passed, 0 failed, 14899 flaky).
+# 57.7% flake rate over 30 days per LUCI Analysis (10336 passed, 0 failed, 14123 flaky).
 -All/HeapProfilerControllerProcessTest.BrowserProcess/13
 
-# 54.9% flake rate over 30 days per LUCI Analysis (10764 passed, 6 failed, 13104 flaky).
+# 50.7% flake rate over 30 days per LUCI Analysis (12070 passed, 6 failed, 12384 flaky).
 -All/HeapProfilerControllerProcessTest.BrowserProcess/14
 
-# 54.9% flake rate over 30 days per LUCI Analysis (10753 passed, 10 failed, 13100 flaky).
+# 51.2% flake rate over 30 days per LUCI Analysis (11927 passed, 10 failed, 12515 flaky).
 -All/HeapProfilerControllerProcessTest.BrowserProcess/2
 
-# 51.7% flake rate over 30 days per LUCI Analysis (11529 passed, 9 failed, 12336 flaky).
+# 48.1% flake rate over 30 days per LUCI Analysis (12687 passed, 9 failed, 11764 flaky).
 -All/HeapProfilerControllerProcessTest.BrowserProcess/3
 
-# 51.1% flake rate over 30 days per LUCI Analysis (11680 passed, 6 failed, 12188 flaky).
+# 47.2% flake rate over 30 days per LUCI Analysis (12916 passed, 6 failed, 11538 flaky).
 -All/HeapProfilerControllerProcessTest.BrowserProcess/4
 
-# 7.4% flake rate over 30 days per LUCI Analysis (22089 passed, 0 failed, 1773 flaky).
+# 6.9% flake rate over 30 days per LUCI Analysis (22767 passed, 0 failed, 1684 flaky).
 -All/HeapProfilerControllerProcessTest.ChildProcess/11
 
-# 7.6% flake rate over 30 days per LUCI Analysis (22052 passed, 0 failed, 1810 flaky).
+# 7.0% flake rate over 30 days per LUCI Analysis (22734 passed, 0 failed, 1717 flaky).
 -All/HeapProfilerControllerProcessTest.ChildProcess/12
 
-# 8.0% flake rate over 30 days per LUCI Analysis (21950 passed, 0 failed, 1912 flaky).
+# 7.5% flake rate over 30 days per LUCI Analysis (22610 passed, 0 failed, 1841 flaky).
 -All/HeapProfilerControllerProcessTest.ChildProcess/13
 
-# 22.8% flake rate over 30 days per LUCI Analysis (18423 passed, 0 failed, 5451 flaky).
+# 20.9% flake rate over 30 days per LUCI Analysis (19361 passed, 0 failed, 5101 flaky).
 -All/HeapProfilerControllerTest.SamplingIntervalVariance/0
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
@@ -110,11 +110,8 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -FilenameGenerationTest.TestEnsureMimeExtension
 
-# 7.5% flake rate over 30 days per LUCI Analysis (22076 passed, 0 failed, 1797 flaky).
+# 6.9% flake rate over 30 days per LUCI Analysis (22772 passed, 0 failed, 1688 flaky).
 -HintsManagerTest.OptimizationFiltersAreOnlyLoadedIfTypeIsRegistered
-
-# 1.9% flake rate over 30 days per LUCI Analysis (23423 passed, 0 failed, 451 flaky).
--LocalStorageImplStaleDeletionTest.Orphan/LevelDB
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -ManualTestingImportTest.LoadProfilesFromFile_Invalid_NotFullyStructured
@@ -122,13 +119,13 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -OnDeviceTailModelExecutorTest.TestGenerateSuggestionsWithBadwordFilter
 
-# 3.0% flake rate over 30 days per LUCI Analysis (23163 passed, 0 failed, 713 flaky).
+# 3.2% flake rate over 30 days per LUCI Analysis (23667 passed, 5 failed, 790 flaky).
 -SiteEngagementHelperTest.MediaEngagement
 
-# 1.1% flake rate over 30 days per LUCI Analysis (23623 passed, 0 failed, 251 flaky).
+# 1.0% flake rate over 30 days per LUCI Analysis (24206 passed, 0 failed, 256 flaky).
 -SmallAndLargeFiles/FileMetricsProviderTest.RecordInitialHistogramSnapshotsStabilityHistograms/1
 
-# 2.0% flake rate over 30 days per LUCI Analysis (23407 passed, 0 failed, 469 flaky).
+# 2.0% flake rate over 30 days per LUCI Analysis (23979 passed, 0 failed, 484 flaky).
 -StorageAreaImplTest.MapForkingPseudoFuzzer/LevelDB
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
@@ -137,5 +134,5 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -TabGroupSyncCoordinatorTest.SaveUnsavedLocalGroupsOnStartupForFirstTimeFeatureLaunch
 
-# 88.2% flake rate over 30 days per LUCI Analysis (2824 passed, 1 failed, 21044 flaky).
+# 88.7% flake rate over 30 days per LUCI Analysis (2754 passed, 5 failed, 21698 flaky).
 -UmaPageLoadMetricsObserverTest.TestTracingDomContentLoadedEventStart

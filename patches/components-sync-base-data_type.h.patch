@@ -1,23 +1,23 @@
 diff --git a/components/sync/base/data_type.h b/components/sync/base/data_type.h
-index d16c4997d7049d79ad6298b67d362004f2ab7e99..37fd153f1eb1458eed563da825bd226d98fbabb6 100644
+index afa594ef9a352e4ecc7cd3abff959218facdd810..cdad45ae50b8b89b26268e1480236d5f901fb852 100644
 --- a/components/sync/base/data_type.h
 +++ b/components/sync/base/data_type.h
-@@ -204,7 +204,8 @@ enum DataType {
-   // Information about a history journey.
-   JOURNEY,
+@@ -205,7 +205,8 @@ enum DataType {
+   // User entity suppression records for Autofill AI.
+   AUTOFILL_ENTITY_SUPPRESSION,
  
--  LAST_USER_DATA_TYPE = JOURNEY,
+-  LAST_USER_DATA_TYPE = AUTOFILL_ENTITY_SUPPRESSION,
 +  AI_CHAT_CONVERSATION,
 +  LAST_USER_DATA_TYPE = AI_CHAT_CONVERSATION,
  
    // ---- Control Types ----
    // An object representing a set of Nigori keys.
-@@ -318,7 +319,8 @@ enum class DataTypeForHistograms {
-   kEncryptedTabContextItem = 82,
+@@ -320,7 +321,8 @@ enum class DataTypeForHistograms {
    kNotebook = 83,
    kJourney = 84,
--  kMaxValue = kJourney,
-+  kAIChatConversation = 84 + 1,
+   kAutofillEntitySuppression = 85,
+-  kMaxValue = kAutofillEntitySuppression,
++  kAIChatConversation = 85 + 1,
 +  kMaxValue = kAIChatConversation,
  };
  // LINT.ThenChange(/tools/metrics/histograms/metadata/sync/enums.xml:SyncDataTypes)

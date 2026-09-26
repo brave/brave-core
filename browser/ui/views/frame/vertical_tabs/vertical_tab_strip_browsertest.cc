@@ -43,6 +43,7 @@
 #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/tab_menu_model_delegate.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
@@ -1160,8 +1161,7 @@ class VerticalTabStripStringBrowserTest : public VerticalTabStripBrowserTest {
       TabContextMenuController* context_menu_controller,
       int tab_index) {
     auto model = std::make_unique<BraveTabMenuModel>(
-        context_menu_controller,
-        browser()->GetFeatures().tab_menu_model_delegate(),
+        context_menu_controller, TabMenuModelDelegate::From(browser()),
         browser()->tab_strip_model(), tab_index);
 
     auto* model_ptr = model.get();

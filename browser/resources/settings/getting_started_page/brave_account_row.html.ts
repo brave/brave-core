@@ -14,7 +14,7 @@ import {
 import { SettingsBraveAccountRowElement } from './brave_account_row.js'
 
 export function getHtml(this: SettingsBraveAccountRowElement) {
-  return this.state === undefined ? nothing
+  return html`${this.state === undefined ? nothing
     : whichAccountState(this.state) === AccountStateFieldTags.LOGGED_IN
       ? html`
         <brave-account-logged-in-row
@@ -27,5 +27,5 @@ export function getHtml(this: SettingsBraveAccountRowElement) {
             .browserProxy=${this.browserProxy}
             .initiatingServiceName=${this.initiatingServiceName}
             .state=${this.state.loggedOut}>
-        </brave-account-logged-out-row>`
+        </brave-account-logged-out-row>`}`
 }

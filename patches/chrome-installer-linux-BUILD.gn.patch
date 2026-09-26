@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index 5ddd3e4cd5a0e611ee179f59cc971c59431f234a..389d1e5b346ef8852d630428fa4c1c2fcd2eaedd 100644
+index 26c3bd1dd651042dd5e62ade7415c6d903f2f5eb..9a85412b7c843d844b26d2841966c8990ae5d48e 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
 @@ -18,6 +18,7 @@ import("//third_party/angle/gni/angle.gni")
@@ -66,7 +66,7 @@ index 5ddd3e4cd5a0e611ee179f59cc971c59431f234a..389d1e5b346ef8852d630428fa4c1c2f
    }
  
    deb_target_name = "${target_name}_deb"
-@@ -577,7 +586,7 @@ template("linux_package") {
+@@ -578,7 +587,7 @@ template("linux_package") {
      script = "debian/build.py"
  
      inputs = packaging_files
@@ -75,7 +75,7 @@ index 5ddd3e4cd5a0e611ee179f59cc971c59431f234a..389d1e5b346ef8852d630428fa4c1c2f
  
      args = [
        "-a",
-@@ -614,7 +623,7 @@ template("linux_package") {
+@@ -616,7 +625,7 @@ template("linux_package") {
        script = "rpm/build.py"
  
        inputs = packaging_files
@@ -84,7 +84,7 @@ index 5ddd3e4cd5a0e611ee179f59cc971c59431f234a..389d1e5b346ef8852d630428fa4c1c2f
  
        args = [
          "-a",
-@@ -696,6 +705,9 @@ linux_package("unstable") {
+@@ -702,6 +711,9 @@ linux_package("unstable") {
  linux_package("canary") {
    channel = "canary"
  }

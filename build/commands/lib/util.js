@@ -33,6 +33,27 @@ async function generateInstrumentationFile(instrumentationFile) {
   await writeFile(instrumentationFile, paths.join('\n'), 'utf-8')
 }
 
+/**
+ * Prefixes the repo a patch status came from onto its path, so that statuses
+ * from the several repos patches are applied to can be told apart once logged.
+ *
+ * A status carries no path when the files its patch applies to could not be
+ * read out of it, which is what a patch too malformed to parse reports. There
+ * is nothing to prefix for those, so they are left as they are.
+ *
+ * Exported for tests.
+ *
+ * @param {{path?: string}[]} patchStatus The statuses, prefixed in place.
+ * @param {...string} prefix The path segments of the repo they came from.
+ */
+export function prefixPatchPaths(patchStatus, ...prefix) {
+  for (const status of patchStatus) {
+    if (status.path) {
+      status.path = path.join(...prefix, status.path)
+    }
+  }
+}
+
 async function applyPatches(printPatchFailuresInJson) {
   Log.progressStart('apply patches')
   // Always detect if we need to apply patches, since user may have modified

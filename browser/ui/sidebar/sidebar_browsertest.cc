@@ -133,7 +133,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   // but `IsSidePanelShowing()` only flips once the entry finishes loading
   // asynchronously. Toggling again before the panel is actually showing makes
   // SidePanelCoordinator::Toggle() re-show instead of close, so wait on both.
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   chrome::BrowserCommandController::From(browser())->ExecuteCommand(
       IDC_TOGGLE_SIDEBAR);
   WaitUntil(base::BindLambdaForTesting([&]() {
@@ -292,7 +292,7 @@ class SidebarBrowserTestWalletSidePanel : public SidebarBrowserTest {
 
     controller()->ActivatePanelItem(SidebarItem::BuiltInItemType::kWallet);
 
-    auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+    auto* panel_ui = SidePanelUI::From(browser());
     EXPECT_TRUE(panel_ui);
     EXPECT_TRUE(base::test::RunUntil([&]() {
       return panel_ui &&
@@ -317,7 +317,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel, WalletSidePanel) {
 
   ActivateWalletPanel();
 
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   ASSERT_TRUE(panel_ui);
   auto current_entry = panel_ui->GetCurrentEntryId();
   ASSERT_TRUE(current_entry.has_value());
@@ -346,7 +346,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel,
   // Returning to the original tab restores the contextual wallet panel.
   tab_model()->ActivateTabAt(0);
   EXPECT_EQ(model()->active_index(), wallet_item_index);
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   ASSERT_TRUE(panel_ui);
   EXPECT_EQ(SidePanelEntryId::kWallet, panel_ui->GetCurrentEntryId());
 }
@@ -369,7 +369,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel,
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_LastlyUsedSidePanelItemTest) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Show(SidePanelEntryId::kBookmarks);
 
   // Wait till panel UI opens.
@@ -384,7 +384,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_LastlyUsedSidePanelItemTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, LastlyUsedSidePanelItemTest) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Toggle();
 
   // Wait till panel UI opens.
@@ -399,7 +399,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, LastlyUsedSidePanelItemTest) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DefaultEntryTest) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   auto bookmark_item_index =
       model()->GetIndexOf(SidebarItem::BuiltInItemType::kBookmarks);
   panel_ui->Show(SidePanelEntryId::kBookmarks);
@@ -645,7 +645,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithWebPanelTest, WebPanelTest) {
 
     // Test toggle existing panel doesn't have any issue even web panel type
     // exists.
-    auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+    auto* panel_ui = SidePanelUI::From(browser());
     panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
     ASSERT_TRUE(
         base::test::RunUntil([&]() { return GetSidePanel()->GetVisible(); }));
@@ -878,7 +878,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemActivatedScrollTest) {
   EXPECT_TRUE(NeedScrollForItemAt(*bookmark_item_index, scroll_view));
 
   // Open bookmark panel.
-  browser()->GetFeatures().side_panel_ui()->Show(SidePanelEntryId::kBookmarks);
+  SidePanelUI::From(browser())->Show(SidePanelEntryId::kBookmarks);
 
   // Wait till bookmarks item is visible.
   WaitUntil(base::BindLambdaForTesting([&]() {
@@ -1068,7 +1068,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
 
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   if (GetParam()) {
     // Wait till browser has active panel.
     WaitUntil(base::BindLambdaForTesting(
@@ -1239,7 +1239,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithTabSpecificAIChat,
 
   // Open a unmanaged "global" panel from Tab 0
   tab_model()->ActivateTabAt(0);
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   // Wait till sidebar show ends.
   WaitUntil(base::BindLambdaForTesting([&]() {
@@ -1444,9 +1444,9 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelPositionTest) {
   panel->DisableAnimationsForTesting();
   SidebarContainerView* sidebar = GetSidebarContainerView();
   auto* prefs = browser()->GetProfile()->GetPrefs();
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
 
-  browser()->GetFeatures().side_panel_ui()->Toggle();
+  SidePanelUI::From(browser())->Toggle();
   RunScheduledLayouts();
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
@@ -1535,7 +1535,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelPositionTest) {
 //   SidebarContainerView does not monitor panel show/hide events, so
 //   BraveSidePanelCoordinator updates the active state in Show() and Close().
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarActiveItemStateSync) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->DisableAnimationsForTesting();
 
   const auto bookmark_item_index =
@@ -1586,7 +1586,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarActiveItemStateSync) {
 // Verify the Brave-styled side panel header is attached for reading list and
 // bookmarks and absent for other entries.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BraveSidePanelHeaderTest) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* side_panel = browser_view->side_panel();
   side_panel->DisableAnimationsForTesting();
@@ -1644,7 +1644,7 @@ void ExpectContentChildLayerCorners(SidePanel* panel,
 //   (c) panel reopened after the pref changed while it was closed.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
                        PanelContentCornersUpdateOnStateChange) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   auto* side_panel =
       BrowserView::GetBrowserViewForBrowser(browser())->side_panel();
   auto* prefs = browser()->GetProfile()->GetPrefs();
@@ -1728,7 +1728,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 // child layers.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
                        PanelContentCornersFollowSidebarVisibility) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   auto* side_panel = browser_view()->side_panel();
   auto* prefs = browser()->GetProfile()->GetPrefs();
   auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
@@ -1804,7 +1804,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 // the overlapping content edge.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
                        PanelResizeAreaPositionMatchesBorderState) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* side_panel = browser_view->side_panel();
   side_panel->DisableAnimationsForTesting();
@@ -1885,7 +1885,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 // SidePanel::UpdateBorder(). The content-facing edge owns the separator/margin
 // and the outer edge owns the rounded-corner gap.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelBorderInsetsFollowAlignment) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
   auto* side_panel = browser_view->side_panel();
   side_panel->DisableAnimationsForTesting();
@@ -1981,7 +1981,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
   ASSERT_TRUE(separator);
   EXPECT_TRUE(separator->GetVisible());
 
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   panel_ui->Show(SidePanelEntryId::kBookmarks);
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
@@ -2238,7 +2238,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
 //     header/content would otherwise be flush with the panel edge), so the
 //     outline has room to show on all four sides.
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelRoundedOutline) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   auto* side_panel = browser_view()->side_panel();
   side_panel->DisableAnimationsForTesting();
   auto* prefs = browser()->GetProfile()->GetPrefs();
@@ -2284,7 +2284,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelRoundedOutline) {
 }
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarItemHighlightState) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  auto* panel_ui = SidePanelUI::From(browser());
   auto* side_panel = browser_view()->side_panel();
   auto* service = SidebarServiceFactory::GetForProfile(browser()->GetProfile());
   auto items_contents_view = GetSidebarItemsContentsView(controller());

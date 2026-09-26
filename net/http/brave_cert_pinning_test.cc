@@ -46,6 +46,9 @@ static_assert(BUILDFLAG(INCLUDE_TRANSPORT_SECURITY_STATE_PRELOAD_LIST));
 
 namespace net {
 namespace {
+#include "net/http/transport_security_state_static_pins.h"
+// Pins header must be included first because this header uses kFindHostPin
+// defined in the pins header.
 #include "net/http/transport_security_state_static.h"
 }  // namespace
 }  // namespace net

@@ -134,7 +134,10 @@ export function createSearchStore() {
         }
         return match
       })
-      store.update({ searchMatches })
+      store.update({
+        searchMatches,
+        searchResultSequenceId: result.sequenceId,
+      })
     },
   })
 
@@ -205,6 +208,7 @@ export function createSearchStore() {
         store.update({
           activeSearchInputKey: key,
           searchMatches: [],
+          searchResultSequenceId: 0,
         })
       }
     },
@@ -231,11 +235,13 @@ export function createSearchStore() {
       if (index < 0) {
         return
       }
-      const match = store.getState().searchMatches.at(index)
+      const { searchMatches, searchResultSequenceId } = store.getState()
+      const match = searchMatches.at(index)
       if (!match) {
         return
       }
       searchProxy.handler.openAutocompleteMatch(
+        searchResultSequenceId,
         index,
         match.destinationUrl,
         true,

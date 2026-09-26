@@ -11,7 +11,7 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -CubicBytesTest.AboveOrigin
 
-# 4.2% flake rate over 30 days per LUCI Analysis (23 passed, 0 failed, 1 flaky).
+# 8.3% flake rate over 30 days per LUCI Analysis (22 passed, 0 failed, 2 flaky).
 -DiskCacheBackendTest.SimpleCachePrioritizedEntryOrder
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
@@ -23,7 +23,7 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -OgHttp2AdapterTest.ClientHandlesInvalidTrailers
 
-# 21.4% flake rate over 30 days per LUCI Analysis (88 passed, 24 failed, 0 flaky).
+# 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -QpackDecodedHeadersAccumulatorTest.ExceedLimitBlocked
 
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
@@ -38,11 +38,5 @@
 # 100.0% flake rate over 30 days per LUCI Analysis (0 passed, 24 failed, 0 flaky).
 -Tests/QuicSpdyStreamTest.HeadersAccumulatorNullptr/draft29
 
-# 4.6% flake rate over 30 days per LUCI Analysis (10031 passed, 0 failed, 488 flaky).
--URLFetcherTest.BasicSuccess
-
-# 1.3% flake rate over 30 days per LUCI Analysis (10380 passed, 0 failed, 139 flaky).
+# 1.3% flake rate over 30 days per LUCI Analysis (10410 passed, 0 failed, 139 flaky).
 -URLFetcherTest.Non2xxResponse
-
-# 4.0% flake rate over 30 days per LUCI Analysis (10099 passed, 0 failed, 420 flaky).
--URLFetcherTest.RedirectInsecureProtocolDowngradeBlocked

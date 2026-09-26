@@ -11,15 +11,12 @@
 
 namespace translate {
 
-namespace features {
 BASE_DECLARE_FEATURE(kUseBraveTranslateGo);
 
 extern const base::FeatureParam<bool> kUpdateLanguageListParam;
 extern const base::FeatureParam<bool> kReplaceSecurityOriginParam;
 
 BASE_DECLARE_FEATURE(kBraveEnableAutoTranslate);
-
-}  // namespace features
 
 // The translate engine can work the folowing ways:
 // 1. IsBraveTranslateGoAvailable() == true: The internal translation engine

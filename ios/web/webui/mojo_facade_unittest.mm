@@ -344,8 +344,8 @@ INSTANTIATE_TEST_SUITE_P(FrameTypes,
 // counter restarts at 1 per JS context, so AI Chat's WebUI page and the
 // chrome-untrusted:// conversation iframe it embeds routinely mint the same
 // ids. Sharing one pipe table across frames, the close below erased the
-// entry the main frame was still using and the write that follows hit
-// CHECK(pipe.is_valid()) in HandleMojoHandleWriteMessage.
+// entry the main frame was still using, so the write that follows failed
+// with MOJO_RESULT_INVALID_ARGUMENT.
 TEST_F(MojoFacadeTest, HandleIdsAreIndependentPerFrame) {
   uint32_t main_handle0, main_handle1;
   CreateMessagePipeWithIds(facade(), 1, 2, &main_handle0, &main_handle1);

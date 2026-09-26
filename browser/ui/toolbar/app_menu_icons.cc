@@ -83,7 +83,7 @@ constexpr auto kCommandIcons =
         {IDC_SHOW_PASSWORD_MANAGER, &kLeoKeyIcon},
         {IDC_SHOW_EMAIL_ALIASES, &kLeoEmailShieldIcon},
         {IDC_SHOW_PAYMENT_METHODS, &kLeoCreditCardIcon},
-        {IDC_SHOW_ADDRESSES, &kLeoLocationOnIcon},
+        {IDC_SHOW_CONTACT_INFO, &kLeoLocationOnIcon},
 
         // The `Find and edit` submenu
         {IDC_FIND, &kLeoSearchIcon},

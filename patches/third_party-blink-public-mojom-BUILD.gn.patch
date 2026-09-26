@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/public/mojom/BUILD.gn b/third_party/blink/public/mojom/BUILD.gn
-index 99f0bf2c5d58e77c18ffd63ac69cadf9a4ccfd6b..50165da1f5888c07d408ece857de75657fdfac2b 100644
+index c7d64821ece619a7d99d441d57c4af954e862345..0b4ccadf6e2072fe987c31214a809a3c1a39a7d4 100644
 --- a/third_party/blink/public/mojom/BUILD.gn
 +++ b/third_party/blink/public/mojom/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 99f0bf2c5d58e77c18ffd63ac69cadf9a4ccfd6b..50165da1f5888c07d408ece857de7565
  import("//build/config/features.gni")
  import("//build/config/ui.gni")
  import("//mojo/public/tools/bindings/mojom.gni")
-@@ -378,6 +379,7 @@ mojom("mojom_platform") {
+@@ -380,6 +381,7 @@ mojom("mojom_platform") {
      "//url/mojom:url_mojom_origin",
      "//url/mojom:url_mojom_scheme_host_port",
    ]

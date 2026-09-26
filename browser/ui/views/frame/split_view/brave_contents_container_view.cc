@@ -12,7 +12,6 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view_mini_toolbar.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -265,7 +264,7 @@ bool BraveContentsContainerView::ShouldAlwaysShowDomain() const {
 
 bool BraveContentsContainerView::IsTabFullscreen() const {
   auto* exclusive_access_manager =
-      browser_view_->browser()->GetFeatures().exclusive_access_manager();
+      ExclusiveAccessManager::From(browser_view_->browser());
   return exclusive_access_manager &&
          exclusive_access_manager->fullscreen_controller()->IsTabFullscreen();
 }

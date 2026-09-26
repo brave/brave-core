@@ -184,6 +184,10 @@ class WriteBuildDirTest(unittest.TestCase):
         self.assertEqual(secrets_path.read_text(encoding='utf-8'),
                          'fake_secret_key = "abc123"\n')
 
+    # Windows' `chmod()` only maps the read-only bit, so a file written
+    # there always reads back as 0o666.
+    @unittest.skipIf(sys.platform == 'win32',
+                     'POSIX permission bits are not supported')
     def test_secrets_file_is_readable_only_by_owner(self):
         tmp = tempfile.TemporaryDirectory()
         self.addCleanup(tmp.cleanup)

@@ -643,8 +643,15 @@ def CheckPlasterFiles(input_api, output_api):
     if not affected_files:
         return []
 
-    cmd = [input_api.python3_executable, 'tools/cr/plaster.py', 'check'
-           ] + affected_files
+    # Pass the paths through a response file, as a large change (e.g. a
+    # Chromium rebase) exceeds the Windows command line length limit.
+    with input_api.CreateTemporaryFile(mode='w', suffix='.txt') as f:
+        f.write('\n'.join(affected_files))
+
+    cmd = [
+        input_api.python3_executable, 'tools/cr/plaster.py', 'check',
+        f'@{f.name}'
+    ]
     kwargs = {'cwd': input_api.PresubmitLocalPath()}
     return input_api.RunTests([
         input_api.Command(name='plaster_check',

@@ -25,6 +25,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.test.filters.LargeTest;
 import androidx.test.filters.SmallTest;
 
 import org.hamcrest.Description;
@@ -83,8 +84,11 @@ public class BraveSettingsSearchTest {
      * Verifies that key Brave-specific settings entries appear in the global Settings search
      * results.
      */
+    // LargeTest: this walks the whole main settings screen, and @SmallTest caps a test at 10
+    // seconds — less than the search-and-assert cycles below need, which turns any single missing
+    // result into an unhelpful process timeout instead of a failed assertion.
     @Test
-    @SmallTest
+    @LargeTest
     @Feature({"Preferences"})
     @EnableFeatures(BraveFeatureList.BRAVE_PLAYLIST)
     public void testBraveMainSettingsAreSearchable() {
@@ -467,8 +471,9 @@ public class BraveSettingsSearchTest {
      * Verifies that key Brave-specific settings entries appear in the `Site settings` Settings
      * search results.
      */
+    // LargeTest: see the note on testBraveMainSettingsAreSearchable.
     @Test
-    @SmallTest
+    @LargeTest
     @Feature({"Preferences"})
     public void testSiteSettingsAreSearchable() {
         mSettingsActivityTestRule.startSettingsActivity();
@@ -1103,8 +1108,9 @@ public class BraveSettingsSearchTest {
     // ---------------------------------------------------------------------------
     // Category 2 — Chrome settings removed by Brave must NOT appear in search
     // ---------------------------------------------------------------------------
+    // LargeTest: see the note on testBraveMainSettingsAreSearchable.
     @Test
-    @SmallTest
+    @LargeTest
     @Feature({"Preferences"})
     public void testRemovedChromeSettingsNotFoundInSearch() {
         mSettingsActivityTestRule.startSettingsActivity();

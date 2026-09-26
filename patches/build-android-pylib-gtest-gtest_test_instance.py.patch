@@ -1,8 +1,8 @@
 diff --git a/build/android/pylib/gtest/gtest_test_instance.py b/build/android/pylib/gtest/gtest_test_instance.py
-index 1e320f3adda01086ed24f735373d1f37af43e2ab..77d9dcc9bca207ce1b7123fe0559e3fdd1e76b78 100644
+index 578186ab76aa601e326722a95d7de7de9a17f56b..c6d7ecdc46891cd60d5c312e3db3c10b8ab0b876 100644
 --- a/build/android/pylib/gtest/gtest_test_instance.py
 +++ b/build/android/pylib/gtest/gtest_test_instance.py
-@@ -838,3 +838,4 @@ class GtestTestInstance(test_instance.TestInstance):
+@@ -843,3 +843,4 @@ class GtestTestInstance(test_instance.TestInstance):
          if self._deobfuscator:
              self._deobfuscator.Close()
              self._deobfuscator = None

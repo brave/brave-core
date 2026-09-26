@@ -1,5 +1,5 @@
 diff --git a/chrome/installer/util/BUILD.gn b/chrome/installer/util/BUILD.gn
-index b42bb7360183112028b6b41e8c43608677716134..225d93f1026b93b5d81ed8cae144ed3530d60ab3 100644
+index 50897db71742d60af5be85d2a91cdd798a7c8134..d0058a70d07191034dd49f42ee06d6838ba79c0c 100644
 --- a/chrome/installer/util/BUILD.gn
 +++ b/chrome/installer/util/BUILD.gn
 @@ -2,7 +2,9 @@
@@ -7,7 +7,7 @@ index b42bb7360183112028b6b41e8c43608677716134..225d93f1026b93b5d81ed8cae144ed35
  # found in the LICENSE file.
  
 +import("//brave/installer/util/sources.gni")
- import("//base/win/embedded_i18n/generate_embedded_i18n.gni")
+ import("//base/i18n/win/embedded_i18n/generate_embedded_i18n.gni")
 +import("//brave/chromium_src/chrome/installer/util/sources.gni")
  import("//build/config/chrome_build.gni")
  

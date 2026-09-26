@@ -492,8 +492,7 @@ void BraveVerticalTabStripRegionView::StopListeningFullscreenChanges() {
 
 FullscreenController* BraveVerticalTabStripRegionView::GetFullscreenController()
     const {
-  auto* exclusive_access_manager =
-      browser_->GetFeatures().exclusive_access_manager();
+  auto* exclusive_access_manager = ExclusiveAccessManager::From(browser_);
   if (!exclusive_access_manager) {
     return nullptr;
   }

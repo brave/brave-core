@@ -145,6 +145,7 @@
 -AccountUtilsTest.*
 -ContextualTasksServiceImplTest.CreateTaskFromUrl_MatchesPrimaryAccount
 -IdentityUtilsTest.GetOrderedAccountsForDisplayCookieOrderOnDesktop
+-LensIdentityDelegationHelperTest.FetchIdentityDelegationHeaders_*
 -WebSigninTrackerTest.FreshCookiesWithSigninAccountShouldTriggerSuccessResult
 
 # These tests fail because we do not record permissions UKM, see

@@ -5,56 +5,59 @@
 ## Regenerate with:
 ##   vpython3 tools/chromium_tests_analysis/update-upstream-flake-filters.py
 
-# 14.4% flake rate over 30 days per LUCI Analysis (250 passed, 0 failed, 42 flaky).
+# 14.8% flake rate over 30 days per LUCI Analysis (247 passed, 0 failed, 43 flaky).
 -ActorUiStateManagerTest.OnActorTaskState_FinalStateCrashes
 
-# 3.8% flake rate over 30 days per LUCI Analysis (281 passed, 0 failed, 11 flaky).
--All/LocalPrinterHandlerDefaultTest.StartGetCapabilityAccessDenied/1
+# 1.4% flake rate over 30 days per LUCI Analysis (286 passed, 0 failed, 4 flaky).
+-ActorUiStateManagerTest.OnActorTaskState_kCreatedNewStateCrashes
 
-# 2.7% flake rate over 30 days per LUCI Analysis (284 passed, 0 failed, 8 flaky).
+# 2.8% flake rate over 30 days per LUCI Analysis (282 passed, 0 failed, 8 flaky).
 -AutofillClientProviderBaseTest.ProvidesNoServiceWithoutProfile
 
-# 39.7% flake rate over 30 days per LUCI Analysis (176 passed, 0 failed, 116 flaky).
+# 43.4% flake rate over 30 days per LUCI Analysis (164 passed, 0 failed, 126 flaky).
 -AutomationManifestTest.DesktopFalse
 
-# 1.0% flake rate over 30 days per LUCI Analysis (289 passed, 0 failed, 3 flaky).
+# 1.0% flake rate over 30 days per LUCI Analysis (287 passed, 0 failed, 3 flaky).
 -FromGWSPageLoadMetricsObserverTest.CloseBeforeCommit
 
-# 2.4% flake rate over 30 days per LUCI Analysis (285 passed, 0 failed, 7 flaky).
+# 1.7% flake rate over 30 days per LUCI Analysis (285 passed, 0 failed, 5 flaky).
 -GeminiHandlerTest.AcceptConsent
 
-# 1.0% flake rate over 30 days per LUCI Analysis (289 passed, 0 failed, 3 flaky).
--LocalPrinterHandlerDefaultWithServiceTest.GetDefaultPrinterTerminatedService
-
-# 7.9% flake rate over 30 days per LUCI Analysis (269 passed, 0 failed, 23 flaky).
+# 6.9% flake rate over 30 days per LUCI Analysis (270 passed, 0 failed, 20 flaky).
 -LocalPrinterHandlerDefaultWithServiceTest.GetPrintersInvalidPrinterDataFails
 
-# 5.8% flake rate over 30 days per LUCI Analysis (275 passed, 0 failed, 17 flaky).
+# 1.0% flake rate over 30 days per LUCI Analysis (287 passed, 0 failed, 3 flaky).
+-LocalPrinterHandlerDefaultWithServiceTest.GetPrintersTerminatedService
+
+# 1.0% flake rate over 30 days per LUCI Analysis (287 passed, 0 failed, 3 flaky).
+-LocalPrinterHandlerDefaultWithServiceTest.StartGetCapabilityElevatedPermissionsSucceeds
+
+# 4.5% flake rate over 30 days per LUCI Analysis (277 passed, 0 failed, 13 flaky).
+-LocalPrinterHandlerDefaultWithServiceTest.StartGetCapabilityInvalidPrinterDataFails
+
+# 5.2% flake rate over 30 days per LUCI Analysis (275 passed, 0 failed, 15 flaky).
 -PageInfoPreviewsCoordinatorDeathTest.NeitherCameraNorMic
 
-# 9.2% flake rate over 30 days per LUCI Analysis (265 passed, 0 failed, 27 flaky).
+# 8.6% flake rate over 30 days per LUCI Analysis (265 passed, 0 failed, 25 flaky).
 -PasswordChangePageStabilityWaiterTest.DisconnectDuringNavigation
 
-# 9.2% flake rate over 30 days per LUCI Analysis (265 passed, 0 failed, 27 flaky).
+# 9.0% flake rate over 30 days per LUCI Analysis (264 passed, 0 failed, 26 flaky).
 -SafeBrowsingEnvironmentDataCollectionWinTest.CollectDlls
 
-# 1.4% flake rate over 30 days per LUCI Analysis (288 passed, 0 failed, 4 flaky).
+# 1.4% flake rate over 30 days per LUCI Analysis (286 passed, 0 failed, 4 flaky).
 -ShareOperationUnitTest.WithoutTitle
 
-# 2.1% flake rate over 30 days per LUCI Analysis (286 passed, 0 failed, 6 flaky).
+# 2.1% flake rate over 30 days per LUCI Analysis (284 passed, 0 failed, 6 flaky).
 -ShareServiceUnitTest.PortableDocumentFormat
 
-# 1.7% flake rate over 30 days per LUCI Analysis (287 passed, 0 failed, 5 flaky).
+# 2.1% flake rate over 30 days per LUCI Analysis (284 passed, 0 failed, 6 flaky).
 -TabStripModelTest.AppendTab
 
-# 8.6% flake rate over 30 days per LUCI Analysis (267 passed, 0 failed, 25 flaky).
+# 9.0% flake rate over 30 days per LUCI Analysis (264 passed, 0 failed, 26 flaky).
 -ThemeLocalDataBatchUploaderDeathTest.TriggerLocalDataMigrationForItemsWithInvalidItemId
 
-# 7.2% flake rate over 30 days per LUCI Analysis (271 passed, 0 failed, 21 flaky).
+# 7.6% flake rate over 30 days per LUCI Analysis (268 passed, 0 failed, 22 flaky).
 -ThemeLocalDataBatchUploaderDeathTest.TriggerLocalDataMigrationForItemsWithInvalidItemIdType
 
-# 8.2% flake rate over 30 days per LUCI Analysis (268 passed, 0 failed, 24 flaky).
+# 9.0% flake rate over 30 days per LUCI Analysis (264 passed, 0 failed, 26 flaky).
 -ThemeLocalDataBatchUploaderDeathTest.TriggerLocalDataMigrationForItemsWithMoreThanOneItem
-
-# 1.0% flake rate over 30 days per LUCI Analysis (289 passed, 0 failed, 3 flaky).
--ThemesAndCustomizationHandlerTest.ThemeChangedRecordsMetric
