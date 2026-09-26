@@ -326,6 +326,19 @@
 # https://github.com/brave/brave-browser/issues/58147
 -PaymentHandlerWebFlowViewMandatoryUiEnabledTest.DialogClosedOnErrorAfterUserInteraction
 
+# Segfault in RenderFrameHostImpl::RenderProcessGone() during browser
+# shutdown at the end of the test, no Brave frames in the stack. Upstream
+# LUCI Analysis over 30 days: 0.2% flake rate (155 failed and 86 flaky
+# verdicts out of 124k). Of the individual failed runs behind those
+# verdicts, 82 are dangling raw_ptr checks and 50 are segfaults in
+# shutdown-era objects, i.e. the same class of use-after-free. Brave only
+# patches the contextual_tasks feature flags to be disabled by default, and
+# no Brave override on the shutdown path (unload_controller,
+# browser_close_manager) could plausibly cause this.
+#
+# https://github.com/brave/brave-browser/issues/59273
+-ContextualTasksUiServiceRearchitectureEnabledTest.SidePanelNavigation_PostRearchitecture_AIMUrl_AppendsGscParams
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccessCodeCastHandlerBrowserTest.*
 -AdsPageLoadMetricsObserverBrowserTest.*
