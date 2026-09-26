@@ -24,7 +24,7 @@ class Profile;
 namespace ai_chat {
 class TabDataWebContentsObserver;
 class WebMcpInjector;
-}
+}  // namespace ai_chat
 #endif
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -127,6 +127,13 @@ class BraveTabFeatures : public TabFeatures {
 #endif
 
  private:
+  // Holds stripped image copies dropped onto this tab. Null when metadata
+  // stripping is disabled.
+  std::unique_ptr<ContentsObservingTabFeature> drop_strip_temp_dirs_;
+  // Records Cloudflare javascript-detection script loads.
+  std::unique_ptr<ContentsObservingTabFeature>
+      cloudflare_js_detection_tab_helper_;
+
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
   std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;

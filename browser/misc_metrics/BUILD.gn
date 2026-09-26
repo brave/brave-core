@@ -34,6 +34,11 @@ static_library("misc_metrics_impl") {
     "//brave/browser:core",
     "//brave/browser/misc_metrics/*",
   ]
+  if (!is_android) {
+    visibility += [ "//brave/browser/ui/tabs:impl" ]
+  } else {
+    visibility += [ "//brave/browser/android:tabs_impl" ]
+  }
 
   sources = [
     "//brave/browser/misc_metrics/captcha_metrics.cc",
@@ -72,6 +77,7 @@ static_library("misc_metrics_impl") {
     "//chrome/browser/search_engines",
     "//chrome/browser/ui",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tabs_public",
     "//chrome/common:constants",
     "//components/keyed_service/content",
     "//components/keyed_service/core",

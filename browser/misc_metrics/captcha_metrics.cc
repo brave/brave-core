@@ -10,6 +10,7 @@
 #include <string_view>
 
 #include "base/check.h"
+#include "base/memory/ptr_util.h"
 #include "base/notreached.h"
 #include "base/time/time.h"
 #include "base/values.h"
@@ -23,10 +24,15 @@
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
+#include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/global_request_id.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/page.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace misc_metrics {
 
@@ -69,6 +75,9 @@ inline constexpr char kCaptchaHcaptchaDictKey[] = "hcaptcha";
 // provider.
 inline constexpr char kCaptchaDictValueTotalKey[] = "total";
 inline constexpr char kCaptchaDictValueUserActivatedKey[] = "user_activated";
+
+constexpr char kCloudflareJavascriptDetectionPath[] =
+    "/cdn-cgi/challenge-platform/";
 
 constexpr base::TimeDelta kReportInterval = base::Days(1);
 
@@ -179,6 +188,95 @@ class BraveCaptchaPageLoadMetricsObserver
   raw_ptr<CaptchaMetrics> captcha_metrics_;
 };
 
+CaptchaMetrics::CloudflareJsDetectionTabHelper::CloudflareJsDetectionTabHelper(
+    tabs::TabInterface& tab,
+    CaptchaMetrics* captcha_metrics)
+    : tabs::ContentsObservingTabFeature(tab),
+      captcha_metrics_(captcha_metrics) {}
+
+CaptchaMetrics::CloudflareJsDetectionTabHelper::
+    ~CloudflareJsDetectionTabHelper() = default;
+
+// static
+std::unique_ptr<CaptchaMetrics::CloudflareJsDetectionTabHelper>
+CaptchaMetrics::CloudflareJsDetectionTabHelper::MaybeCreate(
+    tabs::TabInterface& tab) {
+  content::WebContents* web_contents = tab.GetContents();
+  CHECK(web_contents);
+
+  Profile* profile =
+      Profile::FromBrowserContext(web_contents->GetBrowserContext());
+  if (!profile || !profile->IsRegularProfile()) {
+    return nullptr;
+  }
+
+  if (!g_brave_browser_process ||
+      !g_brave_browser_process->process_misc_metrics()) {
+    return nullptr;
+  }
+
+  CaptchaMetrics* captcha_metrics =
+      g_brave_browser_process->process_misc_metrics()->captcha_metrics();
+  if (!captcha_metrics) {
+    return nullptr;
+  }
+
+  return base::WrapUnique(
+      new CloudflareJsDetectionTabHelper(tab, captcha_metrics));
+}
+
+void CaptchaMetrics::CloudflareJsDetectionTabHelper::ResourceLoadComplete(
+    content::RenderFrameHost*,
+    const content::GlobalRequestID&,
+    const GURL& original_url,
+    const blink::mojom::ResourceLoadInfo&) {
+  if (!original_url.path().contains(kCloudflareJavascriptDetectionPath) ||
+      last_recorded_main_frame_origin_.has_value()) {
+    return;
+  }
+
+  // A committed frame whose URL matches a provider is already recorded by
+  // BraveCaptchaPageLoadMetricsObserver, and this callback also sees that
+  // document request. Same-origin javascript-detection scripts do not match a
+  // provider.
+  if (page_load_metrics::CaptchaProviderManager::GetInstance()
+          ->GetCaptchaProviderForUrl(original_url)
+          .has_value()) {
+    return;
+  }
+
+  // This helps to prevent over counting when the same origin redirects to
+  // another resource which can trigger PrimaryPageChanged.
+  last_recorded_main_frame_origin_ =
+      web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
+  captcha_metrics_->MaybeRecordCaptchaForUrl(original_url,
+                                             /*is_user_activated=*/false);
+}
+
+void CaptchaMetrics::CloudflareJsDetectionTabHelper::PrimaryPageChanged(
+    content::Page& page) {
+  const url::Origin new_origin =
+      page.GetMainDocument().GetLastCommittedOrigin();
+  // A detection was already recorded for this origin. A same-origin navigation
+  // re-triggers ResourceLoadComplete for the detection scripts, so keep the
+  // origin to avoid overcounting.
+  if (last_recorded_main_frame_origin_.has_value() &&
+      new_origin.IsSameOriginWith(last_recorded_main_frame_origin_.value())) {
+    return;
+  }
+  last_recorded_main_frame_origin_.reset();
+  tabs::ContentsObservingTabFeature::PrimaryPageChanged(page);
+}
+
+void CaptchaMetrics::CloudflareJsDetectionTabHelper::OnDiscardContents(
+    tabs::TabInterface* tab,
+    content::WebContents* old_contents,
+    content::WebContents* new_contents) {
+  last_recorded_main_frame_origin_.reset();
+  tabs::ContentsObservingTabFeature::OnDiscardContents(tab, old_contents,
+                                                       new_contents);
+}
+
 CaptchaMetrics::CaptchaMetrics(PrefService* local_state)
     : local_state_(local_state) {
   MaybeReport();
@@ -244,23 +342,13 @@ void CaptchaMetrics::MaybeRecordCaptchaForUrl(const GURL& url,
       page_load_metrics::CaptchaProviderManager::GetInstance()
           ->GetCaptchaProviderForUrl(url);
 
-  // TODO(https://github.com/brave/brave-browser/issues/59024): Add support for
-  // javascript detections.
-  //
-  // For Cloudflare the captcha providers only matches if a frame
-  // document was navigated to a URL matching "*challenges.cloudflare.com/*"
-  // which is the complete turnstile check.
-  // However, Cloudflare also provides a lightweight technique for security
-  // checks via their javascript detections solution which are scripts embedded
-  // directly in the same origin and is located in
-  // "<origin>/cdn-cgi/challenge-platform/...". To observe that, we need to
-  // hook into WebContentsObserver and observe the resource load events.
-  //
-  // See
-  // https://developers.cloudflare.com/cloudflare-challenges/challenge-types/javascript-detections/
-  // for more details.
+  // Provider patterns only match challenges.cloudflare.com frame URLs.
+  // Javascript detections are same-origin scripts under this path.
   if (!captcha_provider.has_value()) {
-    return;
+    if (!url.path().contains(kCloudflareJavascriptDetectionPath)) {
+      return;
+    }
+    captcha_provider = page_load_metrics::CaptchaProvider::kCloudflareTurnstile;
   }
 
   ScopedDictPrefUpdate update(local_state_, kMiscMetricsCaptchaDictionaryPref);

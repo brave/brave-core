@@ -7,18 +7,36 @@
 #define BRAVE_BROWSER_MISC_METRICS_CAPTCHA_METRICS_H_
 
 #include <memory>
+#include <optional>
 
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
+#include "chrome/browser/ui/tabs/contents_observing_tab_feature.h"
+#include "url/origin.h"
 
 class GURL;
 class PrefRegistrySimple;
 class PrefService;
 class Profile;
 
+namespace content {
+class RenderFrameHost;
+class WebContents;
+struct GlobalRequestID;
+class Page;
+}  // namespace content
+
+namespace blink::mojom {
+class ResourceLoadInfo;
+}  // namespace blink::mojom
+
 namespace page_load_metrics {
 class PageLoadMetricsObserverInterface;
 }  // namespace page_load_metrics
+
+namespace tabs {
+class TabInterface;
+}  // namespace tabs
 
 namespace misc_metrics {
 
@@ -49,6 +67,63 @@ inline constexpr char kCaptchaHCaptchaCountUserActivatedHistogramName[] =
 // once the captcha was detected by the BraveCaptchaPageLoadMetricsObserver.
 class CaptchaMetrics {
  public:
+  // Observes Cloudflare javascript-detection script loads. A same-origin
+  // resource whose path contains "/cdn-cgi/challenge-platform/" is recorded
+  // once per WebContents. Unrelated resources that happen to use that path
+  // can be counted as well.
+  //
+  // Owned by tab features, like CommerceUiTabHelper, so the observer follows
+  // the tab's WebContents across discards.
+  class CloudflareJsDetectionTabHelper
+      : public tabs::ContentsObservingTabFeature {
+   public:
+    ~CloudflareJsDetectionTabHelper() override;
+
+    CloudflareJsDetectionTabHelper(const CloudflareJsDetectionTabHelper&) =
+        delete;
+    CloudflareJsDetectionTabHelper& operator=(
+        const CloudflareJsDetectionTabHelper&) = delete;
+
+    // Returns nullptr unless captcha metrics are enabled for a regular
+    // profile.
+    static std::unique_ptr<CloudflareJsDetectionTabHelper> MaybeCreate(
+        tabs::TabInterface& tab);
+
+   private:
+    CloudflareJsDetectionTabHelper(tabs::TabInterface& tab,
+                                   CaptchaMetrics* captcha_metrics);
+
+    // content::WebContentsObserver override.
+    // This is the core callback responsible to identify Cloudflare js detection
+    // script loads which is not visible from
+    // page_load_metrics::PageLoadMetricsObserver.
+    void ResourceLoadComplete(
+        content::RenderFrameHost* render_frame_host,
+        const content::GlobalRequestID& request_id,
+        const GURL& original_url,
+        const blink::mojom::ResourceLoadInfo& resource_load_info) override;
+
+    // content::WebContentsObserver override.
+    // This helps to detect cases when a new navigation was initiated in the
+    // same tab but for another site that may show a captcha.
+    // `OnDiscardContents` is not called for such cases.
+    void PrimaryPageChanged(content::Page& page) override;
+
+    // tabs::ContentsObservingTabFeature:
+    void OnDiscardContents(tabs::TabInterface* tab,
+                           content::WebContents* old_contents,
+                           content::WebContents* new_contents) override;
+
+    // This is needed to trigger calls to record events to local state.
+    raw_ptr<CaptchaMetrics> captcha_metrics_;
+
+    // Main-frame origin at the time a javascript detection was recorded, or
+    // nullopt if none has been recorded for the current page. Limits recording
+    // to one detection per origin. Cleared on a cross-origin primary page
+    // change and when the tab discards its contents.
+    std::optional<url::Origin> last_recorded_main_frame_origin_;
+  };
+
   // Schedules the first P3A report. Does not emit on a first-ever registration.
   explicit CaptchaMetrics(PrefService* local_state);
   ~CaptchaMetrics();
@@ -72,7 +147,8 @@ class CaptchaMetrics {
   // Seeds CaptchaProviderManager with Chromium's URL patterns when empty.
   static void EnsureDefaultCaptchaProviders();
 
-  // Records a captcha if |url| matches a known provider. Does not emit P3A.
+  // Records a captcha if |url| matches a known provider, or a Cloudflare
+  // javascript-detection script. Does not emit P3A.
   // |is_user_activated| is a signal fired by
   // PageLoadMetricsObserver.FrameReceivedUserActivation which is true when
   // the user interacted with the frame like click, mouse events etc and false
