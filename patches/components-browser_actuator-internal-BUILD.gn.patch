@@ -1,5 +1,5 @@
 diff --git a/components/browser_actuator/internal/BUILD.gn b/components/browser_actuator/internal/BUILD.gn
-index 62636b70f7c8d2c8f3ce4a137b20edd6bde7f287..64bb5e391933b85e96f8d5259cbc44d19b85d27b 100644
+index 7c7b747c83a677b1035b477a1936221725ac8093..930988431ae6bda02f20740113ab56cdeb5c742e 100644
 --- a/components/browser_actuator/internal/BUILD.gn
 +++ b/components/browser_actuator/internal/BUILD.gn
 @@ -34,6 +34,7 @@ source_set("features") {
@@ -9,4 +9,4 @@ index 62636b70f7c8d2c8f3ce4a137b20edd6bde7f287..64bb5e391933b85e96f8d5259cbc44d1
 +  visibility += [ "//brave/app:unit_tests" ]
  }
  
- source_set("internal") {
+ source_set("session_stream_recorder") {
