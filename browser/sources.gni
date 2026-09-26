@@ -69,6 +69,17 @@ if (enable_playlist) {
   import("//brave/browser/playlist/sources.gni")
 }
 
+# Circular-include allowances for Brave sources injected into upstream's
+# `//chrome/browser:browser` target (see the `import("//brave/browser/
+# sources.gni")` line in `//chrome/browser/BUILD.gn`). Each entry permits a
+# Brave source compiled into `:browser` to include a header from one of the
+# listed `:impl`/circular targets, resolving a dependency cycle.
+#
+# TODO(https://github.com/brave/brave-browser/issues/56332): now that upstream
+# has split most of `chrome/browser` into a separate `:core` target, revisit
+# this componentization (inject into `:core` vs `:browser` where appropriate)
+# and audit every entry below to determine where each cycle actually lives,
+# dropping any allowance upstream's split now makes unnecessary.
 brave_chrome_browser_allow_circular_includes_from = []
 
 brave_chrome_browser_visibility = [
