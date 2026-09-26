@@ -980,6 +980,19 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <message name="IDS_BOOKMARK_BAR_SETTING_SUBTITLE" desc="Subtitle hint for the bookmark bar setting.">
         Hidden on narrow screens
       </message>
+      <!-- Tab position settings. -->
+      <message name="IDS_TAB_POSITION_SETTINGS_TITLE" desc="Title for the tab position settings page and preference row.">
+        Tab position
+      </message>
+      <message name="IDS_TAB_POSITION_SETTINGS_DESCRIPTION" desc="Description for the tab position settings subpage.">
+        Customize your tab layout to appear at the top or along the side of your browser.
+      </message>
+      <message name="IDS_TAB_POSITION_HORIZONTAL" desc="Label for the horizontal tab position option.">
+        Horizontal
+      </message>
+      <message name="IDS_TAB_POSITION_VERTICAL" desc="Label for the vertical tab position option.">
+        Vertical
+      </message>
       <if expr="enable_extensions_core">
         <message name="IDS_EXTENSIONS_PIN_TO_TOOLBAR_SETTING" desc="Title Text of the button that pins the extensions menu icon (the puzzle piece icon) to the toolbar.">
           Pin to toolbar
@@ -2568,9 +2581,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_IDENTITY_ERROR_CARD_BUTTON_VERIFY" desc="Button label for all errors requiring re-auth (auth error, degreaded recoverability, encryption error). Also used for error message and notification title.">
         Verify it’s you
       </message>
-      <message name="IDS_IDENTITY_ERROR_CARD_BUTTON_OKAY" desc="Button label for the message shown in the Sync Error Card (due to missing trusted vault keys) for confirming that a user wants to get all their passwords on their device.">
-        Okay
-      </message>
       <message name="IDS_IDENTITY_ERROR_CARD_BUTTON_GET" desc="Button label for the message shown in the Sync Error Card (due to missing trusted vault keys) for fixing the issue and getting all passwords of a user on their device.">
         Get
       </message>
@@ -3603,7 +3613,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Sign in to Brave
       </message>
       <message name="IDS_SIGNIN_FRE_SUBTITLE_SIGNIN_FORCED_BY_POLICY" desc="Subtitle of a dialog to sign in to Brave when sign-in is required because of an enterprise policy.">
-        Your organization requires you to sign in to use Brave.
+        Your organization requires you to sign in to use Brave
       </message>
       <message name="IDS_FRE_SIGNING_IN" desc="Text to show below a progress spinner in the signin FRE to notify the user that signing in is in progress and that the user's data is being fetched.">
         Getting your stuff\u2026
@@ -3826,9 +3836,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SYNC_PROMO_CONTINUE" desc="Button to sign into Brave, similar to IDS_SYNC_PROMO_CONTINUE_AS. Used when the user's display names are not available and the email address cannot be displayed.">
         Continue
       </message>
-      <message name="IDS_SIGNIN_PROMO_CHOOSE_ACCOUNT" desc="Button that the user can press if they are not the profile that Brave found (opposite of 'Continue as Joe Doe').">
-        Not <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>?
-      </message>
 
       <!-- Strings for Web Signin Loading Dialog -->
       <message name="IDS_SIGNIN_WEB_SIGNIN_LOADING_DIALOG_TITLE" desc="Title of the web signin loading dialog. When users need to sign in to access a link the web signin loading dialog is shown while cookies are being minted before being redirected to the link. Pressing cancel stops the redirection.">
@@ -3847,23 +3854,8 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Strings for Seamless Sign-in -->
-      <message name="IDS_SIGNIN_PROMO_TITLE_NTP_SIGN_IN_AS_BUTTON" desc="This string is the headline of a card that appears when the user visits Brave's new tab page; the user isn't signed in to Brave. The line below this string is ether 'To get your passwords and more on all your devices, sign in to Brave' or 'To get your passwords and more on all your devices, sign in to Brave as john.doe@example.com'.">
-        Your Brave, everywhere
-      </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_NTP_GROUP1" desc="This string is the body of a message promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to passwords, etc.). We want users to understand why signing in is beneficial, and click 'Continue as John' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
-        To get your passwords and more on all your devices, sign in as <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>
-      </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_NTP_GROUP2" desc="This string is the body of a message promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to passwords, etc.). We want users to understand why signing in is beneficial, and click 'Continue as John' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_NTP_WITH_ACCOUNT" desc="This string is the body of a message promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to passwords, etc.). We want users to understand why signing in is beneficial, and click 'Continue as John' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
         Get your passwords and more on all your devices
-      </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_NTP_GROUP3" desc="This string is the body of a message promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to passwords, etc.). We want users to understand why signing in is beneficial, and click 'Sign in as John' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
-        To get your passwords and more on all your devices, sign in to Brave as <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>
-      </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_NTP_GROUP4" desc="This string is the body of a message promotion about signing in to Brave with the user's Brave sync chain. It explains the overarching user benefit of signing in (access to passwords, etc.). We want users to understand why signing in is beneficial, and click 'Sign in as John' to sign in to their Brave sync chain. The tone should be informative and lightweight.">
-        To get your passwords and more on all your devices, sign in to Brave
-      </message>
-      <message name="IDS_SIGNIN_PROMO_SIGN_IN_AS" desc="Button to sign into Brave with the displayed account and without having to reenter a password. ‘John’ is replaced with the user’s given name, or the user’s full name if the given name is not available.">
-        Sign in as <ph name="USER_FULL_NAME">%1$s<ex>John</ex></ph>
       </message>
       <message name="IDS_SIGNIN_PROMO_SIGN_IN" desc="Button to sign into Brave, similar to IDS_SIGNIN_PROMO_SIGN_IN_AS. Used when the user's display names are not available.">
         Sign in
@@ -3871,29 +3863,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_SIGNIN_HISTORY_SYNC_PROMO_TITLE_RECENT_TABS" desc="This string is the headline of a card that appears when the user opens Brave's recent tabs. The user may be signed in to Brave, but has not opted in for syncing History and Tabs. The line below this string is 'To see tabs from your other devices, sync your tabs and history'. This headline means that the user can see some of their recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Turn on' button and turn on history and tabs syncing. The tone should be inviting.">
         Browse across devices
       </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS_GROUP1" desc="This message means that the user can get the recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Continue as John' button and sign-in. The tone should be inviting.">
-        To get your tabs and more on all your devices, sign in as <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>
-      </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS_GROUP2" desc="This message means that the user can get the recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Continue as John' button and sign-in. The tone should be inviting.">
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS_WITH_ACCOUNT" desc="This message means that the user can get the recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Continue as John' button and sign-in. The tone should be inviting.">
         Get your tabs and more on all your devices
       </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS_GROUP3" desc="This message means that the user can get the recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Sign in as John' button and sign-in. The tone should be inviting.">
-        To get your tabs and more on all your devices, sign in to Brave as <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>
-      </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS_GROUP4" desc="This message means that the user can get the recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Sign in as John' button and sign-in. The tone should be inviting.">
-        To get your tabs and more on all your devices, sign in to Brave
-      </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS_GROUP1" desc="This string is the description of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The headline above this string is 'Sign in to Brave'." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue as John' button and sign-in. The tone should be inviting.">
-        To get your bookmarks and more on all your devices, sign in as <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>
-      </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS_GROUP2" desc="This string is the description of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The headline above this string is 'Sign in to Brave'." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue as John' button and sign-in. The tone should be inviting.">
+      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS_WITH_ACCOUNT" desc="This string is the description of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The headline above this string is 'Sign in to Brave'." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue as John' button and sign-in. The tone should be inviting.">
         Get your bookmarks and more on all your devices
-      </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS_GROUP3" desc="This string is the description of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The headline above this string is 'Get all your bookmarks'." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Sign in as John' button and sign-in. The tone should be inviting.">
-        To get your bookmarks and more on all your devices, sign in to Brave as <ph name="EMAIL">%1$s<ex>john.doe@example.com</ex></ph>
-      </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS_GROUP4" desc="This string is the description of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The headline above this string is 'Get all your bookmarks'." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Sign in as John' button and sign-in. The tone should be inviting.">
-        To get your bookmarks and more on all your devices, sign in to Brave
       </message>
       <message name="IDS_HISTORY_SYNC_RECENT_TABS_TITLE" desc="Title of a page that asks users to start syncing their tabs and browsing history, so they can get back to sites they visited more quickly without having to type them, for example by seeing these sites suggested in the Omnibox. This also allows users to access their recent tabs and browsing history across all their devices.">
         Sync tabs and history
@@ -3912,29 +3886,11 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ACCOUNT_SETTINGS_PROMO_DESCRIPTION_BOOKMARKS" desc="This string is on a promo intended to promote reviewing the user's Brave sync chain settings page to enable bookmarks toggle. It appears on the Bookmarks page when the user is signed in and not syncing bookmarks.">
         To get your bookmarks on all your devices, turn on “Bookmarks” in settings
       </message>
-      <message name="IDS_SIGNIN_PROMO_TITLE_BOOKMARKS" desc="This string is the headline of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The line below this string is 'Sign in to get your bookmarks and more from your other devices'. [CHAR_LIMIT=70]" meaning="This headline means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue' button and turn on sync. The tone should be inviting.">
-        Get all your bookmarks
-      </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_BOOKMARKS" desc="This string is the title of a card that appears when the user opens Brave's bookmarks; the user is signed out of Brave. The headline above this string is 'Get all your bookmarks'. There's no character limit but try to keep the translation under 120 characters." meaning="This message means that the user can get the bookmarks from their computer on their phone, and their phone's bookmarks on their computer. We want users to read this card and tap the 'Continue' button and sign-in. The tone should be inviting.">
         Sign in to get your bookmarks and more on all your devices
       </message>
-      <message name="IDS_SIGNIN_PROMO_TITLE_AUTOFILL_AND_PASSWORDS" desc="This string is the headline of a card that appears in the Autofill and Passwords settings; the user is signed out of Brave. The line below this string is 'Sign in to get your passwords and more on all your devices'. [CHAR_LIMIT=70]">
-        Get all your saved info
-      </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_AUTOFILL_AND_PASSWORDS" desc="This string is the description of a card that appears in the Autofill and Passwords settings; the user is signed out of Brave. The headline above this string is 'Get all your saved info'. We want users to read this card and tap the 'Sign-in' button and sign-in. The tone should be inviting.">
-        Sign in to get your passwords and more on all your devices
-      </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_AUTOFILL_AND_PASSWORDS_SEAMLESS" desc="This string is the description of a card that appears in the Autofill and Passwords settings; the user is signed out of Brave. The headline above this string is 'Sign in to Brave'.">
         Get your passwords and more on all your devices
-      </message>
-      <message name="IDS_SIGNIN_PROMO_TITLE_NTP_FEED_TOP_PROMO" desc="This string is the headline of a card that appears when the user visits Brave's new tab page; the user isn't signed in to Brave. The line below this string is 'Sign in to get content based on your interests'. [CHAR_LIMIT=70]">
-        Get better content
-      </message>
-      <message name="IDS_SIGNIN_PROMO_DESCRIPTION_NTP_FEED_TOP_PROMO" desc="This string is the body of a card that appears when the user visits Brave's new tab page; the user isn't signed in to Brave. The headline above this string is 'Get better content'. There's no character limit but try to keep the translation under 120 characters." meaning="This message means that the user is missing out on more interesting and relevant news articles. We want users to read this card and tap the 'Continue' button and sign-in. The tone should be inviting.">
-        Sign in to get content based on your interests
-      </message>
-      <message name="IDS_SIGNIN_PROMO_TITLE_RECENT_TABS" desc="This string is the headline of a card that appears when the user opens Brave's recent tabs. The user may be signed in to Brave, but has not opted in for syncing History and Tabs. The line below this string is 'To see tabs from your other devices, sync your tabs and history'. This headline means that the user can see some of their recent tabs from their computer on their phone, and their phone's recent tabs on their computer. We want users to read this card and tap the 'Turn on' button and turn on history and tabs syncing. The tone should be inviting. [CHAR_LIMIT=70]">
-        You’ll find your tabs from other devices here
       </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_RECENT_TABS" desc="This string is the body of a card that appears when the user opens Brave's recent tabs. The user may be signed in to Brave, but has not opted in for syncing History and Tabs. This message means that the user can see some of their recent tabs from their computer on their phone, and their phone's recent tabs on their computer once opted in history and tabs syncing. We want users to read this card and tap the 'Turn on' button and turn on History and Tabs syncing. The tone should be inviting. There's no character limit but try to keep the translation under 120 characters.">
         To see tabs from your other devices, sync your tabs and history
@@ -3944,9 +3900,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
       <message name="IDS_SIGNIN_PROMO_DESCRIPTION_HISTORY_PAGE" desc="This string is the body of a card that appears when the user opens Brave's history page. The user is signed in to Brave, but has not opted in for syncing History and Tabs. We want users to read this card and tap the button below to turn on History and Tabs syncing. The tone should be inviting. There's no character limit but try to keep the translation under 120 characters.">
         To easily pick up where you left off, sync your history and tabs
-      </message>
-      <message name="IDS_SIGNIN_PROMO_CHOOSE_ANOTHER_ACCOUNT" desc="Button that the user can press if they want to select a different account before signing in. This button is shown below 'Continue as Joe Doe' button that signs user in with default account.">
-        Choose another account
       </message>
       <message name="IDS_SIGNIN_PROMO_TURN_ON" desc="Button to turn on sync for history and tabs">
         Turn on
@@ -7287,9 +7240,6 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       </message>
 
       <!-- Touch To Fill No Passkeys Sheet -->
-      <message name="IDS_NO_PASSKEYS_SHEET_CONTENT_DESCRIPTION" is_accessibility_with_no_ui="true" desc="Accessibility string read when the no passkeys sheet is opened. It describes the bottom sheet informing users that no passkeys are available.">
-        No passkeys sheet
-      </message>
       <message name="IDS_NO_PASSKEYS_SHEET_FULL_HEIGHT" is_accessibility_with_no_ui="true" desc="Accessibility string read upon opening the bottom sheet that informs users that no passkeys are available. Even at full height, the sheet will occupy the bottom half of the screen.">
         No passkeys sheet opened at full height
       </message>
@@ -7992,7 +7942,7 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
         Gemini wants to use your microphone
       </message>
       <message name="IDS_GLIC_MIC_PERMISSION_DIALOG_MESSAGE" desc="Explanation for why Gemini needs microphone permission, with a link to Settings.">
-        To talk to Gemini, give it permission to use your microphone. You can also manage this in <ph name="BEGIN_LINK">&lt;link&gt;</ph>Settings<ph name="END_LINK">&lt;/link&gt;</ph>
+        To talk to Gemini, give it permission to use your microphone. You can also manage this in <ph name="BEGIN_LINK">&lt;link&gt;</ph>settings.<ph name="END_LINK">&lt;/link&gt;</ph>
       </message>
       <message name="IDS_GLIC_MIC_PERMISSION_DIALOG_ALLOW" desc="Positive button text to allow microphone permission for Gemini.">
         Allow

@@ -170,9 +170,6 @@
     <ph name="CARD_NICKNAME">$1<ex>Groceries</ex></ph>, <ph name="CARD_NETWORK_NAME">$2<ex>Visa</ex></ph>, <ph name="CARD_LAST_FOUR_DIGITS">$3<ex>4444</ex></ph>, expires <ph name="CARD_EXPIRATION">$4<ex>01/2025</ex></ph>
   </message>
   <if expr="is_android">
-    <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="The description of the Autofill save card prompt bottom sheet. 'Swipe down to close.' will automatically by appended." formatter_data="android_java">
-      Save card
-    </message>
     <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_BOTTOM_SHEET_FULL_HEIGHT" desc="The announcement when the Autofill save card prompt bottom sheet is opened." formatter_data="android_java">
       Save card opened at full height.
     </message>
@@ -302,9 +299,6 @@
     </message>
     <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_CVC_LABEL" desc="The label text for the security code textfield.">
       Security code
-    </message>
-    <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_CVC_PLACEHOLDER" desc="The placeholder text for security code textfield">
-      Optional
     </message>
     <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_EXPIRATION_DATE_LABEL" desc="The label text for the expiration date textfield.">
       Expiration date
@@ -737,9 +731,6 @@
   </message>
   <!-- Autofill save IBAN bottom sheet prompt -->
   <if expr="is_android">
-    <message name="IDS_AUTOFILL_SAVE_IBAN_PROMPT_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="The description of the Autofill save IBAN bottom sheet. 'Swipe down to close.' will automatically be appended." formatter_data="android_java">
-      Save IBAN
-    </message>
     <message name="IDS_AUTOFILL_SAVE_IBAN_PROMPT_BOTTOM_SHEET_FULL_HEIGHT" desc="The announcement when the Autofill save IBAN bottom sheet is opened." formatter_data="android_java">
       Save IBAN opened at full height.
     </message>
@@ -907,9 +898,6 @@
   <if expr="is_android">
     <message name="IDS_AUTOFILL_VIRTUAL_CARD_CONTAINER_ACCESSIBILITY_DESCRIPTION" desc="The accessibility description for a UI element that contains the credit card icon, the card name and last four digits (in placeholder), and the text 'Virtual card'. This UI element is in the dialog that lets users enroll their credit card into the virtual card number feature." formatter_data="android_java">
       <ph name="IDS_AUTOFILL_VIRTUAL_CARD_NAME_AND_LAST_FOUR_DIGITS">%1$s<ex>Visa **** 1234</ex></ph>, virtual card
-    </message>
-    <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLL_CONTENT_DESCRIPTION" desc="The description of the virtual card enrollment dialog for the accessbility screen reader." formatter_data="android_java">
-      Virtual card enrollment
     </message>
     <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLL_FULL_HEIGHT_CONTENT_DESCRIPTION" desc="The description of the full height virtual card enrollment dialog for the accessbility screen reader." formatter_data="android_java">
       Virtual card enrollment opened at full height
@@ -1359,8 +1347,14 @@
   <message name="IDS_AUTOFILL_OFFERS_REMINDER_POSITIVE_BUTTON_LABEL" desc="Label for the positive button for the bubble/infobar shown on the merchant website when an offer is available to use.">
     Got it
   </message>
-  <message name="IDS_AUTOFILL_PROMO_CODE_SUGGESTIONS_FOOTER_TEXT" desc="Label for the footer text of the autofill suggestions popup when a user clicks on a promo code field. It redirects the user to the offer webview page for more details on the promo code offers suggested. An example of details the user can see is the terms and conditions of the promo code offers that are shown in the autofill suggestions popup.">
-    See promo code details
+  <message name="IDS_AUTOFILL_PROMO_CODE_SUGGESTION_CODE_LABEL" desc="Label for the promo code in the autofill suggestions popup.">
+    Code: <ph name="PROMO_CODE">$1<ex>WELCOME15</ex></ph>
+  </message>
+  <message name="IDS_AUTOFILL_MANAGE_OFFERS_FOOTER_TEXT" desc="Label for the footer text of the autofill suggestions popup when a user clicks on a promo code field and Wallet Direct Offers are available. It redirects the user to the Brave settings page to manage their offers.">
+    Manage offers
+  </message>
+  <message name="IDS_AUTOFILL_OFFERS_EXPIRES_ON" desc="Text shown on the third line of the suggestion dropdown for Wallet Direct Offers indicating when the offer expires.">
+    Expires: <ph name="EXPIRATION_DATE">$1<ex>Sept 20, 2026</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_WALLET_DIRECT_OFFERS_IPH_BUBBLE_LABEL" desc="Text shown in the IPH bubble for merchant promo code fields when direct offers from Brave Wallet are available.">
     Select the promo code field to view and fill your saved offers
@@ -1399,6 +1393,9 @@
     <message name="IDS_AUTOFILL_GPAY_PROMO_CODE_OFFERS_REMINDER_VALUE_PROP_TEXT" desc="The first line of the GPay promo code notification bubble, consisting of the value prop text and a see details link">
       <ph name="VALUE_PROP">$1<ex>5% off on shoes. Up to $50.</ex></ph> <ph name="DETAILS">$2<ex>See Details</ex></ph>
     </message>
+    <message name="IDS_AUTOFILL_WALLET_DIRECT_OFFER_REMINDER_BODY_TEXT" desc="The body text of the bubble shown on the merchant website when an offer saved in the user's Brave Wallet is available to use. It explains that the offer can be filled into the promo code field at checkout. The text between BEGIN_LINK and END_LINK is a link which opens a page describing the terms and conditions of the offer.">
+      Your saved offer will be available at checkout using autofill. <ph name="BEGIN_LINK">$1</ph>View terms and conditions<ph name="END_LINK">$2</ph>
+    </message>
   </if>
 
   <!-- Autofill Payments OTP verification dialog -->
@@ -1429,8 +1426,8 @@
   </if>
 
   <!-- Payments Wallet Reminder Notice strings -->
-  <message name="IDS_AUTOFILL_PAYMENT_METHODS_WALLET_REMINDER_NOTICE" desc="Shown in the payments section of settings. Descriptive text to inform the user that data and privacy preferences, payment methods, and passes can be accessed via link. Brave Wallet should not be translated because it is the product name. Has three links that open different pages on Brave Wallet." formatter_data="android_java">
-    Visit Brave Wallet to control <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>data and privacy preferences<ph name="END_LINK1">&lt;/link1&gt;</ph> or manage <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>payment methods<ph name="END_LINK2">&lt;/link2&gt;</ph> and <ph name="BEGIN_LINK3">&lt;link3&gt;</ph>passes<ph name="END_LINK3">&lt;/link3&gt;</ph> like loyalty cards and IDs
+  <message name="IDS_AUTOFILL_PAYMENT_METHODS_WALLET_REMINDER_NOTICE" desc="Shown in the payments section of settings. Descriptive text to inform the user that data and privacy preferences can be accessed via link. Brave Wallet should not be translated because it is the product name." formatter_data="android_java">
+    Visit Brave Wallet to manage <ph name="BEGIN_LINK">&lt;link&gt;</ph>data and privacy preferences<ph name="END_LINK">&lt;/link&gt;</ph>.
   </message>
 
   <!-- Autofill credit card preferences -->
@@ -1465,7 +1462,7 @@
   <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_SECURITY_TITLE" desc="Security title for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown.">
     Check out securely with autofill
   </message>
-  <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_CONVENIENCE_TITLE" desc="Convenience title for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown.">
+  <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_CONVENIENCE_TITLE" desc="Convenience title for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown." formatter_data="android_java">
     Check out faster with autofill
   </message>
   <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_SECURITY_DESCRIPTION" desc="Security description for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown.">
@@ -1473,6 +1470,12 @@
   </message>
   <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_CONVENIENCE_DESCRIPTION" desc="Convenience description for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown.">
     Fill card details automatically when you check out online. Cards are saved in Brave Wallet securely.
+  </message>
+  <message name="IDS_AUTOFILL_CHURNED_USERS_MESSAGE_TITLE" desc="Title for the payments churned users Android message banner. Prompts the user to turn on payment autofill.">
+    Securely check out with autofill
+  </message>
+  <message name="IDS_AUTOFILL_CHURNED_USERS_MESSAGE_DESCRIPTION" desc="Description for the payments churned users Android message banner. Prompts the user to turn on payment autofill.">
+    Turn on autofill to make shopping easier
   </message>
   <message name="IDS_AUTOFILL_CHURNED_USERS_CONFIRMATION_BUBBLE_TITLE" desc="Title for the churned users confirmation bubble, which comes after the user has accepted the churned users bubble, letting the user know that autofill is turned on.">
     Autofill turned on
@@ -1540,9 +1543,6 @@
     <message name="IDS_AUTOFILL_LOYALTY_CARD_WALLET_SETTINGS_BUTTON" desc="The label of the button, which redirects the user to the Brave Wallet loyalty card settings in Brave." formatter_data="android_java">
       Wallet settings
     </message>
-    <message name="IDS_AUTOFILL_PAYMENT_METHOD_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string read when the bottom sheet is opened. It describes the bottom sheet where a user can pick a payment method to fill into a form." formatter_data="android_java">
-      Payment methods available to be filled on touch. Keyboard hidden.
-    </message>
     <message name="IDS_AUTOFILL_PAYMENT_METHOD_BOTTOM_SHEET_HALF_HEIGHT" desc="Accessibility string read when the bottom sheet showing a list of the user's payment methods is opened at half height. The sheet will occupy the bottom half the screen." formatter_data="android_java">
       Payment methods available to be filled on touch opened at half height.
     </message>
@@ -1551,9 +1551,6 @@
     </message>
     <message name="IDS_AUTOFILL_PAYMENT_METHOD_BOTTOM_SHEET_CLOSED" desc="Accessibility string read when the bottom sheet showing a list of the user's payment methods is closed." formatter_data="android_java">
       List of payment methods is closed.
-    </message>
-    <message name="IDS_AUTOFILL_LOYALTY_CARD_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string read when the bottom sheet is opened. It describes the bottom sheet where a user can pick a loyalty card to fill into a form." formatter_data="android_java">
-      Loyalty cards available to be filled on touch. Keyboard hidden.
     </message>
     <message name="IDS_AUTOFILL_LOYALTY_CARD_BOTTOM_SHEET_HALF_HEIGHT" desc="Accessibility string read when the bottom sheet showing a list of the user's loyalty cards is opened at half height. The sheet will occupy the bottom half the screen." formatter_data="android_java">
       Loyalty cards available to be filled on touch opened at half height.
@@ -1564,9 +1561,6 @@
     <message name="IDS_AUTOFILL_LOYALTY_CARD_BOTTOM_SHEET_CLOSED" desc="Accessibility string read when the bottom sheet showing a list of the user's loyalty cards is closed." formatter_data="android_java">
       List of loyalty cards is closed.
     </message>
-    <message name="IDS_AUTOFILL_BNPL_PROGRESS_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string read when the bottom sheet is opened. It describes the bottom sheet which shows a progress spinner for a Buy-Now-Pay-Later flow." formatter_data="android_java">
-      Buy-Now-Pay-Later progress screen. Keyboard hidden.
-    </message>
     <message name="IDS_AUTOFILL_BNPL_PROGRESS_SHEET_HALF_HEIGHT" desc="Accessibility string read when the bottom sheet showing a Buy-Now-Pay-Later progress spinner is opened at half height. The sheet will occupy the bottom half the screen." formatter_data="android_java">
       Buy-Now-Pay-Later progress screen opened at half height.
     </message>
@@ -1575,9 +1569,6 @@
     </message>
     <message name="IDS_AUTOFILL_BNPL_PROGRESS_SHEET_CLOSED" desc="Accessibility string read when the bottom sheet showing a Buy-Now-Pay-Later progress spinner is closed." formatter_data="android_java">
       Buy-Now-Pay-Later progress screen is closed.
-    </message>
-    <message name="IDS_AUTOFILL_BNPL_ISSUER_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string read when the bottom sheet is opened. It describes the bottom sheet where a user can pick a BNPL issuer for pay over time." formatter_data="android_java">
-      Buy-Now-Pay-Later issuers available for pay over time. Keyboard hidden.
     </message>
     <message name="IDS_AUTOFILL_BNPL_ISSUER_BOTTOM_SHEET_HALF_HEIGHT" desc="Accessibility string read when the bottom sheet showing a list of the BNPL issuers is opened at half height. The sheet will occupy the bottom half the screen." formatter_data="android_java">
       Buy-Now-Pay-Later issuers available for pay over time opened at half height.
@@ -1588,9 +1579,6 @@
     <message name="IDS_AUTOFILL_BNPL_ISSUER_BOTTOM_SHEET_CLOSED" desc="Accessibility string read when the bottom sheet showing a list of BNPL issuers is closed." formatter_data="android_java">
       List of Buy-Now-Pay-Later issuers is closed.
     </message>
-    <message name="IDS_AUTOFILL_BNPL_ISSUER_TOS_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string read when the bottom sheet is opened. It describes the bottom sheet where a user can read and accept terms for linking a new BNPL issuer." formatter_data="android_java">
-      Buy-Now-Pay-Later terms of service screen. Keyboard hidden.
-    </message>
     <message name="IDS_AUTOFILL_BNPL_ISSUER_TOS_BOTTOM_SHEET_HALF_HEIGHT" desc="Accessibility string read when the bottom sheet showing terms for linking a new issuer is opened at half height. The sheet will occupy the bottom half the screen." formatter_data="android_java">
       Buy-Now-Pay-Later terms of service screen opened at half height.
     </message>
@@ -1599,9 +1587,6 @@
     </message>
     <message name="IDS_AUTOFILL_BNPL_ISSUER_TOS_BOTTOM_SHEET_CLOSED" desc="Accessibility string read when the bottom sheet showing terms for linking a new issuer is closed." formatter_data="android_java">
       Buy-Now-Pay-Later terms of service screen is closed.
-    </message>
-    <message name="IDS_AUTOFILL_BNPL_ERROR_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string read when the bottom sheet is opened. It describes the bottom sheet which shows an error for a Buy-Now-Pay-Later flow." formatter_data="android_java">
-      Buy-Now-Pay-Later error screen. Keyboard hidden.
     </message>
     <message name="IDS_AUTOFILL_BNPL_ERROR_SHEET_HALF_HEIGHT" desc="Accessibility string read when the bottom sheet showing a Buy-Now-Pay-Later error is opened at half height. The sheet will occupy the bottom half the screen." formatter_data="android_java">
       Buy-Now-Pay-Later error screen opened at half height.
