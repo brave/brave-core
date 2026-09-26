@@ -825,10 +825,15 @@ sync_pb::AIChatConversationSpecifics EntryToSpecifics(
   // content stays linked to the original turn's uuid even after an edit (the
   // associated content manager records only the first turn a content appears
   // with), so match on |entry.uuid|.
+  // Workspace content is not synced because it is ephemeral and can only be
+  // restored on the device where the workspace was created.
   if (entry.uuid) {
     for (const auto& content : associated_content) {
       if (!content->conversation_turn_uuid ||
           *content->conversation_turn_uuid != *entry.uuid) {
+        continue;
+      }
+      if (content->content_type == mojom::ContentType::Workspace) {
         continue;
       }
       std::optional<std::string_view> text;

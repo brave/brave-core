@@ -329,6 +329,8 @@ class ConversationHandler : public mojom::ConversationHandler,
     return associated_content_manager_.get();
   }
 
+  AIChatService* ai_chat_service() { return ai_chat_service_; }
+
   void SetRequestInProgressForTesting(bool in_progress) {
     is_request_in_progress_ = in_progress;
   }

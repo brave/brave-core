@@ -69,7 +69,7 @@ TEST(AssociatedContentDelegateTest, OnNewPage) {
         EXPECT_EQ(delegate->url(), GURL("https://www.brave.com"));
         EXPECT_EQ(delegate->uuid(), uuid);
         EXPECT_EQ(delegate->cached_page_content(),
-                  PageContent("Content 1", false));
+                  PageContent("Content 1", mojom::ContentType::PageContent));
       });
   observer.Observe(&delegate);
 
@@ -96,7 +96,7 @@ TEST(AssociatedContentDelegateTest, DestroyNotificationShouldBeAbleToSnapshot) {
         EXPECT_EQ(delegate->url(), GURL("https://www.brave.com"));
         EXPECT_EQ(delegate->uuid(), uuid);
         EXPECT_EQ(delegate->cached_page_content(),
-                  PageContent("Content 1", false));
+                  PageContent("Content 1", mojom::ContentType::PageContent));
         EXPECT_EQ(delegate->content_id(), 5);
         observer.StopObserving();
       });

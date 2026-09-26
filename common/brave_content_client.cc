@@ -90,6 +90,12 @@ void BraveContentClient::AddAdditionalSchemes(Schemes* schemes) {
   schemes->secure_schemes.push_back(content::kBraveUIScheme);
   schemes->cors_enabled_schemes.push_back(content::kBraveUIScheme);
   schemes->savable_schemes.push_back(content::kBraveUIScheme);
+
+  // The workspace:// scheme is used to persist AI Chat workspace content URLs
+  // for sync and restoration. It needs to be a standard scheme so that
+  // url::Origin::Create() returns a non-opaque origin (required for tool
+  // permission lookups).
+  schemes->standard_schemes.push_back("workspace");
 }
 
 void BraveContentClient::AddContentDecryptionModules(

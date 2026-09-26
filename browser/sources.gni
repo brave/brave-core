@@ -890,6 +890,11 @@ if (enable_ai_chat) {
   # Remove this once webui/ai_chat does not depend on chrome/browser.
   brave_chrome_browser_allow_circular_includes_from +=
       [ "//brave/browser/ui/webui/ai_chat" ]
+
+  # ai_chat_service_factory needs brave_tab_helpers.h to set up workspace
+  # content restoration with privacy-sensitive tab helpers.
+  brave_chrome_browser_allow_circular_includes_from +=
+      [ "//brave/browser/ai_chat" ]
 }
 
 if (enable_playlist) {

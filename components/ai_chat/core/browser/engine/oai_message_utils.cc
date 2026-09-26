@@ -18,6 +18,7 @@
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/prefs/pref_service.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
@@ -100,12 +101,17 @@ mojom::ContentBlockPtr GetContentBlockFromAssociatedContent(
   std::string truncated(
       base::TruncateUTF8ToByteSize(content.content, remaining_length));
   sanitize_input(truncated);
-  if (content.is_video) {
+  if (content.content_type == mojom::ContentType::VideoTranscript) {
     return mojom::ContentBlock::NewVideoTranscriptContentBlock(
         mojom::VideoTranscriptContentBlock::New(std::move(truncated)));
-  } else {
+  } else if (content.content_type == mojom::ContentType::PageContent) {
     return mojom::ContentBlock::NewPageTextContentBlock(
         mojom::PageTextContentBlock::New(std::move(truncated)));
+  } else {
+    // This check is just to ensure that things are being handled here.
+    CHECK(content.content_type == mojom::ContentType::Workspace);
+    return mojom::ContentBlock::NewPageTextContentBlock(
+        mojom::PageTextContentBlock::New(""));
   }
 }
 

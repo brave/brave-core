@@ -127,7 +127,9 @@ void AssociatedContentDriver::OnGeneratePageContentComplete(
     // Cache page content on instance so we don't always have to re-fetch
     // if the content fetcher knows the content won't have changed and the fetch
     // operation is expensive (e.g. network).
-    set_cached_page_content(PageContent(std::move(contents_text), is_video));
+    set_cached_page_content(PageContent(
+        std::move(contents_text), is_video ? mojom::ContentType::VideoTranscript
+                                           : mojom::ContentType::PageContent));
 
     if (cached_page_content().content.empty()) {
       DVLOG(1) << __func__ << ": No data";
