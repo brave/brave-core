@@ -84,7 +84,6 @@ struct MeldFilter {
   string? crypto_currencies;
   string? service_providers;
   string? payment_method_types;
-  string? statuses;
 };
 
 struct CryptoBuySessionData {
