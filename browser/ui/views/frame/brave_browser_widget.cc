@@ -13,7 +13,6 @@
 #include "brave/browser/ui/views/frame/brave_browser_root_view.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/browser_widget.h"
