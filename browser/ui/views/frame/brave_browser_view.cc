@@ -899,6 +899,7 @@ void BraveBrowserView::OnTabStripModelChanged(
     // Stop tab cycling if tab is closed dusing the cycle.
     // This can happen when tab is closed by shortcut (ex, ctrl + F4).
     // After stopping, current tab cycling, new tab cycling will be started.
+    static_cast<BraveTabStripModel*>(tab_strip_model)->CancelMRUCycling();
     StopTabCycling();
   }
 
@@ -1465,6 +1466,9 @@ bool BraveBrowserView::ShouldDisableFocusModeForActiveTab() const {
 }
 
 void BraveBrowserView::StartTabCycling() {
+  if (tab_cycling_event_handler_) {
+    return;
+  }
   tab_cycling_event_handler_ = std::make_unique<TabCyclingEventHandler>(this);
 }
 
