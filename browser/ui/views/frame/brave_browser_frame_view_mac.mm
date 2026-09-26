@@ -22,7 +22,6 @@
 #include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/fullscreen_util_mac.h"
 #include "chrome/browser/ui/immersive/immersive_mode_controller.h"
