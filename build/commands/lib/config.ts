@@ -60,6 +60,7 @@ export class Config {
   gclientFile: string
   gclientVerbose: boolean
   disableGclientConfigUpdate: boolean
+  gerritMirrorSupport: boolean
   leanSync: boolean
   gclientGlobalVars: Record<string, any>
   targetArch: string
@@ -169,6 +170,10 @@ export class Config {
     this.gclientVerbose = envConfig.getBoolean(['gclient_verbose'], false)
     this.disableGclientConfigUpdate = envConfig.getBoolean(
       ['disable_gclient_config_update'],
+      false,
+    )
+    this.gerritMirrorSupport = envConfig.getBoolean(
+      ['gerrit_mirror_support'],
       false,
     )
     this.leanSync = envConfig.getBoolean(['lean_sync'], false)
