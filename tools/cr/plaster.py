@@ -844,7 +844,15 @@ def _namespace_of_source(plaster_path: Path) -> str | None:
 
     Never returns `all`: that namespace claims no suffixes.
     """
-    namespace = _NAMESPACE_BY_SUFFIX.get(plaster_path.with_suffix('').suffix)
+    source_name = plaster_path.with_suffix('').name
+    # `pathlib` treats a dotfile name with a single dot (e.g. `.gn`) as having
+    # no suffix, but we want to have those files picked up too as part of the
+    # namespace resolution.
+    if source_name.startswith('.') and source_name.count('.') == 1:
+        suffix = source_name
+    else:
+        suffix = Path(source_name).suffix
+    namespace = _NAMESPACE_BY_SUFFIX.get(suffix)
     return namespace.name if namespace else None
 
 

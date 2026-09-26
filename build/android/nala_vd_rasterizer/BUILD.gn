@@ -11,7 +11,7 @@ import("//build/config/android/rules.gni")
 # ship without their transitive deps, so re-declare them here, pointing at the
 # same CIPD jars, with the deps VdPreview needs at runtime. guava and the
 # Kotlin stdlib are public, so they are referenced directly.
-_android_tools_dir = "//third_party/android_deps/cipd/libs"
+_android_tools_dir = "//third_party/android_deps/autorolled/cipd/libs"
 
 java_prebuilt("layoutlib_api_java") {
   jar_path = "$_android_tools_dir/com_android_tools_layoutlib_layoutlib_api/layoutlib-api.jar"

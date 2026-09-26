@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index 179817e58cabf2686bf30258cfa27a8c8c0ec9b8..cdd7e61abc365b980fd1d79aaa2d189297b08241 100644
+index 19b3b15155ad4e541db69c1c5c66112f34eed241..3caf2551c29eef992c505d5bacd4e11066b5df5a 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -408,12 +408,21 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -415,12 +415,21 @@ class CORE_EXPORT HTMLCanvasElement final
      return hit_testable_descendants_;
    }
  

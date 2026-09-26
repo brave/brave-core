@@ -311,8 +311,7 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
     }
 
     private static String getTabArchiveSettingsSummary(Resources resources) {
-        TabArchiveSettings archiveSettings =
-                new TabArchiveSettings(ChromeSharedPreferences.getInstance());
+        TabArchiveSettings archiveSettings = TabArchiveSettings.getInstance();
         try {
             return getTabArchiveSettingsSummary(resources, archiveSettings);
         } finally {

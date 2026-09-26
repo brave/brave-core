@@ -13,12 +13,10 @@
 #include "brave/components/brave_wayback_machine/wayback_state.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
-#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
+#include "chrome/browser/ui/views/page_action/page_action_view.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
@@ -62,11 +60,7 @@ class WaybackMachinePageActionBrowserTest : public InProcessBrowserTest {
   }
 
   IconLabelBubbleView* GetIcon() {
-    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
-    auto* button_provider = browser_view->toolbar_button_provider();
-    return GetIconLabelBubbleViewForTesting(
-        button_provider->GetPageActionViewInterface(kActionShowWaybackMachine),
-        kActionShowWaybackMachine);
+    return PageActionTestAccessor(browser(), kActionShowWaybackMachine).view();
   }
 
   void ClickButton(views::Button* button) {

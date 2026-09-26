@@ -33,6 +33,17 @@ substitutions:
       literal: brave_chrome_browser_ui_allow_circular_includes_from
       import: //brave/browser/sources.gni
 
+  - description: |
+      Let Brave targets depend on :browser_header.
+
+      Upstream restricted browser.h to :ui, but Brave code still includes it
+      directly (e.g. BraveBrowser subclasses Browser).
+    add_literal_to_list:
+      target: browser_header
+      list_name: visibility
+      literal: brave_chrome_browser_ui_browser_header_visibility
+      import: //brave/browser/sources.gni
+
   - description: Add the Brave UI public dependencies.
     insert_into_list:
       target: ui_public_dependencies

@@ -39,7 +39,7 @@ class BorderWithArrow : public views::BubbleBorder {
 
   explicit BorderWithArrow(Arrow arrow, ui::ColorVariant color_id)
       : views::BubbleBorder(arrow, BubbleBorder::Shadow::STANDARD_SHADOW) {
-    SetColor(color_id);
+    set_color(color_id);
     set_visible_arrow(true);
   }
 
@@ -180,7 +180,6 @@ std::unique_ptr<FrameView> BraveHelpBubbleDelegateView::CreateFrameView(
 
   std::unique_ptr<BorderWithArrow> border =
       std::make_unique<BorderWithArrow>(arrow(), background_color());
-  border->SetColor(background_color());
 
   if (GetParams().round_corners) {
     border->set_rounded_corners(gfx::RoundedCornersF(GetCornerRadius()));

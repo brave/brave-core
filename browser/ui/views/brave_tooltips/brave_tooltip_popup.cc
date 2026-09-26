@@ -188,7 +188,7 @@ void BraveTooltipPopup::OnPaintBackground(gfx::Canvas* canvas) {
   cc::PaintFlags shadow_flags;
   shadow_flags.setAntiAlias(true);
   const ui::decoration::ShadowDetails& shadow_details = GetShadowDetails();
-  shadow_flags.setLooper(gfx::CreateShadowDrawLooper(shadow_details.values));
+  shadow_flags.setLooper(gfx::CreateShadowDrawLooper(shadow_details.spec));
   canvas->DrawRoundRect(bounds, kCornerRadius, shadow_flags);
 
   // Draw background
@@ -310,8 +310,7 @@ const ui::decoration::ShadowDetails& BraveTooltipPopup::GetShadowDetails()
 
 gfx::Insets BraveTooltipPopup::GetShadowMargin() const {
   const ui::decoration::ShadowDetails& shadow_details = GetShadowDetails();
-  gfx::Insets shadow_margin =
-      gfx::ShadowValue::GetMargin(shadow_details.values);
+  gfx::Insets shadow_margin = gfx::ShadowValue::GetMargin(shadow_details.spec);
   shadow_margin.set_left(-kBorderThickness);
   shadow_margin.set_top(0);
   return shadow_margin;

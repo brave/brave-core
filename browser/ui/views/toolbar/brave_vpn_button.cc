@@ -29,14 +29,9 @@
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/color/color_provider_manager.h"
-#include "ui/compositor/layer.h"
 #include "ui/gfx/canvas.h"
-#include "ui/gfx/color_utils.h"
-#include "ui/gfx/geometry/rect_f.h"
-#include "ui/gfx/geometry/rrect_f.h"
 #include "ui/gfx/image/image_skia_operations.h"
 #include "ui/gfx/paint_vector_icon.h"
-#include "ui/gfx/skia_util.h"
 #include "ui/menus/simple_menu_model.h"
 #include "ui/views/animation/ink_drop.h"
 #include "ui/views/animation/ink_drop_host.h"
@@ -54,7 +49,7 @@ constexpr int kBadgeSize = 10;
 // For error icon's inner color.
 class ConnectErrorIconBackground : public views::Background {
  public:
-  explicit ConnectErrorIconBackground(SkColor color) { SetColor(color); }
+  explicit ConnectErrorIconBackground(SkColor color) { set_color(color); }
 
   ConnectErrorIconBackground(const ConnectErrorIconBackground&) = delete;
   ConnectErrorIconBackground& operator=(const ConnectErrorIconBackground&) =

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator_params.h b/chrome/browser/ui/navigator/browser_navigator_params.h
-index 79275e8a51bec6903828babc21c820ee9d4aa2be..d19e50153f7c22deb60fb638f2efa4398a14b1a6 100644
+index 75d739d6e76c2dca8db4fceb59bff0720d069429..21d22d6410134d4061d8528f6016c6db877028f7 100644
 --- a/chrome/browser/ui/navigator/browser_navigator_params.h
 +++ b/chrome/browser/ui/navigator/browser_navigator_params.h
 @@ -71,6 +71,9 @@ struct OpenURLParams;

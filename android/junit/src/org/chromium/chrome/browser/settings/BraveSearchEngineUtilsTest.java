@@ -14,15 +14,6 @@ import static org.mockito.Mockito.when;
 
 import androidx.test.filters.SmallTest;
 
-import org.chromium.base.BravePreferenceKeys;
-import org.chromium.base.test.BaseRobolectricTestRunner;
-import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
-import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
-import org.chromium.components.search_engines.TemplateUrl;
-import org.chromium.components.search_engines.TemplateUrlService;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -32,6 +23,16 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
+
+import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.search_engines.settings.BraveSearchEngineAdapter;
+import org.chromium.components.search_engines.TemplateUrl;
+import org.chromium.components.search_engines.TemplateUrlService;
 
 import java.util.Arrays;
 
@@ -95,7 +96,6 @@ public class BraveSearchEngineUtilsTest {
     }
 
     @Test
-    @SmallTest
     public void testDefaultSearchEngineIsGoogleWithoutSearchChoiceFlag() {
         // When SEARCH_CHOICE_SCREEN_INSTALL flag is not set (default behavior)
         // the default search engine should be whatever the system default is (Google in this mock)
@@ -112,7 +112,6 @@ public class BraveSearchEngineUtilsTest {
     }
 
     @Test
-    @SmallTest
     public void testDefaultSearchEngineIsBraveWithSearchChoiceFlag() {
         // When SEARCH_CHOICE_SCREEN_INSTALL flag is set to true
         // the default search engine should be Brave Search
@@ -132,7 +131,6 @@ public class BraveSearchEngineUtilsTest {
     }
 
     @Test
-    @SmallTest
     public void testDSEPrefsNotOverwrittenOnSubsequentCalls() {
         // First initialization without the flag
         BraveSearchEngineUtils.initializeDSEPrefsForTesting(mProfile);

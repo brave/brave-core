@@ -607,6 +607,35 @@ class XcodeRepinTest(_FakeRepoTest):
             message)
         self.assertIn('mac: Switch to SDK 26.5', message)
 
+    def test_size_taken_from_archive_when_index_lacks_it(self):
+        # Indices published before `size_bytes` existed still repin, with the
+        # size taken from the archive's `Content-Length`.
+        self._seed_mac_sdk_bump()
+        self.fetch_index.return_value = {
+            k: v
+            for k, v in FAKE_INDEX.items() if k != 'size_bytes'
+        }
+
+        with patch('toolchain.requests.head') as head:
+            head.return_value = MagicMock(headers={'Content-Length': '4242'})
+            self.xcode.repin(Version(CHROMIUM_TAG), culprit=None)
+
+        self.assertEqual(head.call_args.args[0], FAKE_INDEX['url'])
+        self.assertIn('MAC_BINARIES_SIZE = 4242',
+                      self._read_hermetic_xcode_script())
+
+    def test_missing_size_and_failed_head_raises(self):
+        self._seed_mac_sdk_bump()
+        self.fetch_index.return_value = {
+            k: v
+            for k, v in FAKE_INDEX.items() if k != 'size_bytes'
+        }
+
+        with patch('toolchain.requests.head',
+                   side_effect=toolchain.requests.RequestException('boom')):
+            with self.assertRaises(toolchain.BadOutcomeException):
+                self.xcode.repin(Version(CHROMIUM_TAG), culprit=None)
+
     def test_culprit_override_skips_auto_detection(self):
         autodetect = self._seed_mac_sdk_bump()
         self.repo.write_and_stage_file('docs/unrelated.txt', 'noise\n',

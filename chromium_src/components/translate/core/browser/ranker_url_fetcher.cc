@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/assist_ranker/ranker_url_fetcher.h"
+#include "components/translate/core/browser/ranker_url_fetcher.h"
 
 #include "services/network/public/cpp/simple_url_loader.h"
 
-namespace assist_ranker {
+namespace translate {
 
 RankerURLFetcher::RankerURLFetcher() = default;
 
@@ -24,4 +24,4 @@ bool RankerURLFetcher::Request(
   return false;
 }
 
-}  // namespace assist_ranker
+}  // namespace translate

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/messages/android/BUILD.gn b/chrome/browser/ui/messages/android/BUILD.gn
-index 8784617eb55c8a0db2f87c3b0401d678c04bf67c..65689a8be279a7e081b1d1d23c9628298b5e0f8b 100644
+index 6aea71fdfe3e90a464c9326075a3a5a37b1ca5a3..8eedf226a056bc822d8048866fab2200b10d5814 100644
 --- a/chrome/browser/ui/messages/android/BUILD.gn
 +++ b/chrome/browser/ui/messages/android/BUILD.gn
 @@ -30,6 +30,7 @@ android_library("java") {

@@ -1,5 +1,5 @@
 diff --git a/components/feature_engagement/public/feature_constants.cc b/components/feature_engagement/public/feature_constants.cc
-index c7dcb2b7d1a7dda1c0b61a551cc21ba9ac84fb51..7b69ad78638fb26b7004413baf626b79f69e4bd5 100644
+index 387b72a853c4664a210bbe861b7379c6b2ca6ecc..5aa68f727c60f278f1ebb8e4c3d2f9bccaadaa63 100644
 --- a/components/feature_engagement/public/feature_constants.cc
 +++ b/components/feature_engagement/public/feature_constants.cc
 @@ -74,9 +74,9 @@ BASE_FEATURE(kIPHDesktopCustomizeChromeAutoOpenFeature,
@@ -14,7 +14,7 @@ index c7dcb2b7d1a7dda1c0b61a551cc21ba9ac84fb51..7b69ad78638fb26b7004413baf626b79
  BASE_FEATURE(kIPHDownloadEsbPromoFeature,
               "IPH_DownloadEsbPromo",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -119,9 +119,9 @@ BASE_FEATURE_ENUM_PARAM(
+@@ -118,9 +118,9 @@ BASE_FEATURE_ENUM_PARAM(IPHExtensionsZeroStatePromoVariant,
  BASE_FEATURE(kIPHFocusHelpBubbleScreenReaderPromoFeature,
               "IPH_FocusHelpBubbleScreenReaderPromo",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -26,7 +26,7 @@ index c7dcb2b7d1a7dda1c0b61a551cc21ba9ac84fb51..7b69ad78638fb26b7004413baf626b79
  BASE_FEATURE(kIPHGMCLocalMediaCastingFeature,
               "IPH_GMCLocalMediaCasting",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -175,9 +175,9 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
+@@ -170,9 +170,9 @@ BASE_FEATURE(kIPHPasswordsSavePrimingPromoFeature,
  BASE_FEATURE(kIPHPasswordsSaveRecoveryPromoFeature,
               "IPH_PasswordsSaveRecoveryPromo",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -38,7 +38,7 @@ index c7dcb2b7d1a7dda1c0b61a551cc21ba9ac84fb51..7b69ad78638fb26b7004413baf626b79
  BASE_FEATURE(kIPHPasswordsManagementBubbleDuringSigninFeature,
               "IPH_PasswordsManagementBubbleDuringSignin",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -193,9 +193,9 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
+@@ -188,9 +188,9 @@ BASE_FEATURE(kIPHPasswordSharingFeature,
  BASE_FEATURE(kIPHPdfGlicSummarizeFeature,
               "IPH_PdfGlicSummarizeFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -50,7 +50,7 @@ index c7dcb2b7d1a7dda1c0b61a551cc21ba9ac84fb51..7b69ad78638fb26b7004413baf626b79
  BASE_FEATURE(kIPHPdfSearchifyFeature,
               "IPH_PdfSearchifyFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -226,7 +226,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
+@@ -221,7 +221,7 @@ BASE_FEATURE(kIPHReadingListDiscoveryFeature,
  BASE_FEATURE(kIPHReadingListEntryPointFeature,
               "IPH_ReadingListEntryPoint",
               base::FEATURE_DISABLED_BY_DEFAULT);
@@ -59,7 +59,7 @@ index c7dcb2b7d1a7dda1c0b61a551cc21ba9ac84fb51..7b69ad78638fb26b7004413baf626b79
               "IPH_ReadingListInSidePanel",
               base::FEATURE_DISABLED_BY_DEFAULT);
  BASE_FEATURE(kIPHReadingModeKeyboardShortcutFeature,
-@@ -259,21 +259,21 @@ BASE_FEATURE(kIPHSmartTabSharingFeature,
+@@ -254,21 +254,21 @@ BASE_FEATURE(kIPHSmartTabSharingFeature,
  BASE_FEATURE(kIPHSmartTabSharingTryItFeature,
               "IPH_SmartTabSharingTryItFeature",
               base::FEATURE_DISABLED_BY_DEFAULT);
@@ -87,7 +87,7 @@ index c7dcb2b7d1a7dda1c0b61a551cc21ba9ac84fb51..7b69ad78638fb26b7004413baf626b79
  BASE_FEATURE(kIPHSidePanelGenericPinnableFeature,
               "IPH_SidePanelGenericPinnableFeature",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -295,9 +295,9 @@ BASE_FEATURE(kIPHSideSearchPageActionLabelFeature,
+@@ -290,9 +290,9 @@ BASE_FEATURE(kIPHSideSearchPageActionLabelFeature,
  BASE_FEATURE(kIPHPwaQuietNotificationFeature,
               "IPH_PwaQuietNotification",
               base::FEATURE_ENABLED_BY_DEFAULT);
@@ -99,7 +99,7 @@ index c7dcb2b7d1a7dda1c0b61a551cc21ba9ac84fb51..7b69ad78638fb26b7004413baf626b79
  BASE_FEATURE(kIPHTabGroupsSaveV2CloseGroupFeature,
               "IPH_TabGroupsSaveV2CloseGroup",
               base::FEATURE_ENABLED_BY_DEFAULT);
-@@ -1033,9 +1033,9 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
+@@ -1028,9 +1028,9 @@ BASE_FEATURE(kIPHAutofillExternalAccountProfileSuggestionFeature,
  BASE_FEATURE(kIPHAutofillHomeWorkProfileSuggestionFeature,
               "IPH_AutofillHomeWorkProfileSuggestion",
               base::FEATURE_ENABLED_BY_DEFAULT);

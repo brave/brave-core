@@ -1,8 +1,8 @@
 diff --git a/components/network_time/network_time_tracker.cc b/components/network_time/network_time_tracker.cc
-index ada56340053a010e8cd88045ae96ce3695b51619..959c25184d6d25ba5dcd31d74a81992915276a86 100644
+index 3bb0f02378021fc2703be508d95af77c65bdaa23..e38cefb0ceb43549e7e1989dd3244edb6b6bf9ef 100644
 --- a/components/network_time/network_time_tracker.cc
 +++ b/components/network_time/network_time_tracker.cc
-@@ -60,9 +60,9 @@ namespace network_time {
+@@ -72,9 +72,9 @@ namespace network_time {
  // Network time queries are enabled on Android and all desktop platforms except
  // Chrome OS, which uses tlsdated to set the system time.
  #if BUILDFLAG(IS_CHROMEOS) || BUILDFLAG(IS_IOS)

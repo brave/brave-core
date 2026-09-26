@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index f86f528b027c77f4662749f0d0ca2d449d05cc8c..955e7ab75df873f3891e60bedd3c4e516442cb1d 100644
+index 1b23c0dcfc83fac904d1f14a71ef21d487a90b2f..67c9ec18a94fd8c60fa215e25662d4b5e31ea0c4 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -200,7 +200,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
@@ -19,7 +19,17 @@ index f86f528b027c77f4662749f0d0ca2d449d05cc8c..955e7ab75df873f3891e60bedd3c4e51
          if (mSyncService.isUsingExplicitPassphrase()
                  && preference
                          .getKey()
-@@ -542,7 +543,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -362,6 +363,9 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+         CentralAccountCardPreference centralAccountCardPreference =
+                 findPreference(PREF_CENTRAL_ACCOUNT_CARD_PREFERENCE);
+         IdentityManager identityManager = getIdentityManager(profile);
++        if (identityManager.getPrimaryAccountInfo() == null) {
++            return;
++        }
+         centralAccountCardPreference.initialize(
+                 assumeNonNull(identityManager.getPrimaryAccountInfo()),
+                 ProfileDataCache.createWithDefaultImageSizeAndNoBadge(
+@@ -542,7 +546,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
       * this state.
       */
      private void updateSyncPreferences() {

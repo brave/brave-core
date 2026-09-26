@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_ui_prefs.cc b/chrome/browser/ui/browser_ui_prefs.cc
-index 6997bb36d901fdeb10c035ed015e3a8945c183cf..d78e6e4a5b910b9e000f1e49d0bc69c1cd5e907b 100644
+index d2264ce903105d12d76e111befbc55e8ce4428c9..ec8c0d25e073e36d0bb7da4fb0312b894932adf1 100644
 --- a/chrome/browser/ui/browser_ui_prefs.cc
 +++ b/chrome/browser/ui/browser_ui_prefs.cc
 @@ -146,7 +146,7 @@ void RegisterBrowserUserPrefs(user_prefs::PrefRegistrySyncable* registry) {

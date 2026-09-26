@@ -1,0 +1,13 @@
+diff --git a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGroupsPaneFactory.java b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGroupsPaneFactory.java
+index dfb9b2811ce6484a87fa49e3fd4890f0db1f45fa..4bafc34c4416796c68ae1233eff981830816aa9a 100644
+--- a/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGroupsPaneFactory.java
++++ b/chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGroupsPaneFactory.java
+@@ -58,7 +58,7 @@ public class TabGroupsPaneFactory {
+         LazyOneshotSupplier<TabModel> tabModelSupplier =
+                 LazyOneshotSupplier.fromSupplier(
+                         () -> tabModelSelector.getModel(/* incognito= */ false));
+-        return new TabGroupsPane(
++        return new BraveTabGroupsPane(
+                 context,
+                 tabModelSupplier,
+                 onToolbarAlphaChange,

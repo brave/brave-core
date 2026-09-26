@@ -89,6 +89,7 @@ source_set("widevine_permission_android_unittest") {
     "//chrome/browser",
     "//chrome/browser/profiles:profile",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_render_view_host_test_harness",
     "//components/permissions",
     "//components/pref_registry",
     "//components/prefs",
@@ -150,6 +151,7 @@ if (is_win && !skip_signing) {
     flags = "1"
     deps = [ "//brave:signed_brave_exe" ]
   }
+
   widevine_sign_file("chrome_dll_sig") {
     file = "$root_out_dir/presigned_binaries/chrome.dll"
     signature_file = "$root_out_dir/chrome.dll.sig"

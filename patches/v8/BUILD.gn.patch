@@ -1,5 +1,5 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index c6132807ff6c488543b4df1f3ba8793d9dea98d5..5952ba023ed75fc50eb9af1514bbbe93c83fc202 100644
+index aca0d6613d326b42cf04db6737d55f40a81acbe8..185e189d67823595fdd23e4cba3909e05e0db5bc 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
 @@ -4,6 +4,7 @@
@@ -10,7 +10,7 @@ index c6132807ff6c488543b4df1f3ba8793d9dea98d5..5952ba023ed75fc50eb9af1514bbbe93
  import("//build/config/android/config.gni")
  import("//build/config/arm.gni")
  import("//build/config/c++/c++.gni")
-@@ -963,6 +964,9 @@ config("internal_config_base") {
+@@ -967,6 +968,9 @@ config("internal_config_base") {
      "$target_gen_dir",
      "$target_gen_dir/include",
    ]
@@ -20,7 +20,7 @@ index c6132807ff6c488543b4df1f3ba8793d9dea98d5..5952ba023ed75fc50eb9af1514bbbe93
  }
  
  config("internal_config") {
-@@ -3847,6 +3851,7 @@ v8_header_set("v8_headers") {
+@@ -3861,6 +3865,7 @@ v8_header_set("v8_headers") {
      "include/v8-weak-callback-info.h",
      "include/v8.h",
    ]
@@ -28,7 +28,7 @@ index c6132807ff6c488543b4df1f3ba8793d9dea98d5..5952ba023ed75fc50eb9af1514bbbe93
  
    sources += [
      # The following headers cannot be platform-specific. The include validation
-@@ -3857,6 +3862,7 @@ v8_header_set("v8_headers") {
+@@ -3871,6 +3876,7 @@ v8_header_set("v8_headers") {
    ]
  
    public_deps = [ ":v8_config_headers" ]

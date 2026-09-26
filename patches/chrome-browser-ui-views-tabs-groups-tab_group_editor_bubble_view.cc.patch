@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc b/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
+index ecd5fe5cd904d7920154449205b0266fbad8626b..f451a80284ae0e1ef7b21423c66168d388741fbd 100644
+--- a/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
++++ b/chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.cc
+@@ -273,6 +273,9 @@ std::unique_ptr<views::Widget> TabGroupEditorBubbleView::Show(
+ 
+   std::unique_ptr<views::Widget> widget =
+       BubbleDialogDelegate::CreateBubble(tab_group_editor_bubble_view);
++  MaybeRemoveFooter(tab_group_editor_bubble_view,
++                    tab_group_editor_bubble_view->footer_.ExtractAsDangling());
++  tab_group_editor_bubble_view->footer_ = nullptr;
+   tab_group_editor_bubble_view->set_adjust_if_offscreen(true);
+   tab_group_editor_bubble_view->GetBubbleFrameView()
+       ->SetPreferredArrowAdjustment(

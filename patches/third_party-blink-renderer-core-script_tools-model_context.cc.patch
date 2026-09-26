@@ -1,8 +1,8 @@
 diff --git a/third_party/blink/renderer/core/script_tools/model_context.cc b/third_party/blink/renderer/core/script_tools/model_context.cc
-index 9c1e6e82b7af68fb3574fed34ec4875b20196549..f184848e30075a8c586f6a2d0f3cfd3926b41792 100644
+index 86fab626900eec3989449fc57f371a6ac6deca94..70a3478a496da3fac9e6cfbc476934643b3b8e1d 100644
 --- a/third_party/blink/renderer/core/script_tools/model_context.cc
 +++ b/third_party/blink/renderer/core/script_tools/model_context.cc
-@@ -895,6 +895,9 @@ void ModelContext::PauseExecution() {
+@@ -898,6 +898,9 @@ void ModelContext::PauseExecution() {
  }
  
  void ModelContext::NotifyToolChange() {
@@ -12,7 +12,7 @@ index 9c1e6e82b7af68fb3574fed34ec4875b20196549..f184848e30075a8c586f6a2d0f3cfd39
    DispatchEvent(*Event::Create(event_type_names::kToolchange));
  }
  
-@@ -962,7 +965,11 @@ bool ModelContext::IsModelContextAllowed() const {
+@@ -965,7 +968,11 @@ bool ModelContext::IsModelContextAllowed() const {
                url::kFileScheme &&
            key.IsUniversalFileAgent()) ||
           (document_->GetSettings() &&

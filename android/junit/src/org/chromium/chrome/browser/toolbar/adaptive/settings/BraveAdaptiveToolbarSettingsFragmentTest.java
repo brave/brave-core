@@ -18,7 +18,6 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentFactory;
 import androidx.fragment.app.testing.FragmentScenario;
-import androidx.test.filters.SmallTest;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -98,7 +97,6 @@ public class BraveAdaptiveToolbarSettingsFragmentTest {
     }
 
     @Test
-    @SmallTest
     public void testSelectShortcuts() {
         FragmentScenario<AdaptiveToolbarSettingsFragment> scenario = buildFragmentScenario();
         scenario.onFragment(

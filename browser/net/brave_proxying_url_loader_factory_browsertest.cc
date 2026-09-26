@@ -3,30 +3,41 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <cstdint>
 #include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 
 #include "base/strings/string_util.h"
-#include "extensions/buildflags/buildflags.h"
-#include "net/dns/mock_host_resolver.h"
-#include "net/http/http_status_code.h"
-#include "net/test/embedded_test_server/http_request.h"
-#include "net/test/embedded_test_server/http_response.h"
-
-#if BUILDFLAG(ENABLE_EXTENSIONS)
-#include "chrome/browser/extensions/chrome_test_extension_loader.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
+#include "extensions/buildflags/buildflags.h"
+#include "mojo/public/cpp/bindings/remote.h"
+#include "mojo/public/cpp/test_support/test_utils.h"
+#include "net/dns/mock_host_resolver.h"
+#include "net/http/http_status_code.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
+#include "net/test/embedded_test_server/http_request.h"
+#include "net/test/embedded_test_server/http_response.h"
+#include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
+#include "services/network/public/cpp/http_request_headers_update_params.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/mojom/url_loader.mojom.h"
+#include "services/network/public/mojom/url_loader_factory.mojom.h"
+#include "services/network/test/test_url_loader_client.h"
+#include "url/gurl.h"
+#include "url/origin.h"
+
+#if BUILDFLAG(ENABLE_EXTENSIONS)
+#include "chrome/browser/extensions/chrome_test_extension_loader.h"
 #include "extensions/common/extension.h"
 #include "extensions/test/test_extension_dir.h"
-#include "url/gurl.h"
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
 
 namespace {
@@ -154,3 +165,155 @@ IN_PROC_BROWSER_TEST_F(BraveProxyingURLLoaderFactoryBrowserTest,
 }
 
 #endif  // BUILDFLAG(ENABLE_EXTENSIONS)
+
+// Test fixture for validation of URLLoader::FollowRedirect() in
+// BraveProxyingURLLoaderFactory. Regression coverage for the hardening ported
+// into BraveProxyingURLLoaderFactory::InProgressRequest::FollowRedirect() from
+// WebRequestProxyingURLLoaderFactory (crbug.com/497494634): without it, a
+// compromised renderer could send an unsolicited FollowRedirect() to swap the
+// request URL out from under Brave's ad-block/shields request handling.
+//
+// Mirrors WebRequestProxyingURLLoaderFactoryFollowRedirectTest in
+// chrome/browser/extensions/api/web_request/
+// web_request_proxying_url_loader_factory_browsertest.cc, but drives
+// BraveProxyingURLLoaderFactory directly and needs no extension, since that
+// proxy is unconditionally installed for every frame request.
+class BraveProxyingURLLoaderFactoryFollowRedirectTest
+    : public InProcessBrowserTest {
+ public:
+  void SetUpOnMainThread() override {
+    InProcessBrowserTest::SetUpOnMainThread();
+    host_resolver()->AddRule("*", "127.0.0.1");
+    ASSERT_TRUE(embedded_test_server()->Start());
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(
+        browser(), embedded_test_server()->GetURL("/simple.html")));
+    initiator_origin_ =
+        GetActiveWebContents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
+  }
+
+ protected:
+  content::WebContents* GetActiveWebContents() {
+    return browser()->tab_strip_model()->GetActiveWebContents();
+  }
+
+  // Binds a URLLoaderFactory equivalent to the one the renderer holds, i.e.
+  // one wrapped by BraveProxyingURLLoaderFactory.
+  mojo::Remote<network::mojom::URLLoaderFactory> CreateFrameFactory() {
+    mojo::Remote<network::mojom::URLLoaderFactory> factory;
+    EXPECT_TRUE(GetActiveWebContents()
+                    ->GetPrimaryMainFrame()
+                    ->CreateNetworkServiceDefaultFactory(
+                        factory.BindNewPipeAndPassReceiver()));
+    return factory;
+  }
+
+  void StartRequest(network::mojom::URLLoaderFactory* factory,
+                    mojo::Remote<network::mojom::URLLoader>& loader,
+                    network::TestURLLoaderClient& client,
+                    const GURL& url) {
+    network::ResourceRequest request;
+    request.url = url;
+    request.request_initiator = initiator_origin_;
+    factory->CreateLoaderAndStart(
+        loader.BindNewPipeAndPassReceiver(), next_request_id_++,
+        network::mojom::kURLLoadOptionNone, request, client.CreateRemote(),
+        net::MutableNetworkTrafficAnnotationTag(TRAFFIC_ANNOTATION_FOR_TESTS));
+  }
+
+  // Returns a URL which server-redirects to `target`.
+  GURL RedirectingUrlTo(const GURL& target) {
+    return embedded_test_server()->GetURL("/server-redirect?" + target.spec());
+  }
+
+ private:
+  url::Origin initiator_origin_;
+  int32_t next_request_id_ = 1;
+};
+
+// Verifies that calls to FollowRedirect() that are unexpected (either in their
+// arguments or ordering) are rejected.
+IN_PROC_BROWSER_TEST_F(BraveProxyingURLLoaderFactoryFollowRedirectTest,
+                       BadFollowRedirectCallsAreRejected) {
+  mojo::Remote<network::mojom::URLLoaderFactory> factory = CreateFrameFactory();
+  const GURL echo_url = embedded_test_server()->GetURL("/echo");
+  const GURL redirect_url = RedirectingUrlTo(echo_url);
+
+  // 1. Calling FollowRedirect() when no redirect is pending.
+  {
+    mojo::test::BadMessageObserver bad_message_observer;
+    network::TestURLLoaderClient client;
+    mojo::Remote<network::mojom::URLLoader> loader;
+    StartRequest(factory.get(), loader, client, echo_url);
+
+    loader->FollowRedirect(network::HttpRequestHeadersUpdateParams(),
+                           std::nullopt);
+
+    EXPECT_EQ("Unexpected FollowRedirect",
+              bad_message_observer.WaitForBadMessage());
+    client.RunUntilComplete();
+    EXPECT_EQ(net::ERR_INVALID_ARGUMENT, client.completion_status().error_code);
+  }
+
+  // 2. Calling FollowRedirect() twice sequentially for a single redirect.
+  {
+    mojo::test::BadMessageObserver bad_message_observer;
+    network::TestURLLoaderClient client;
+    mojo::Remote<network::mojom::URLLoader> loader;
+    StartRequest(factory.get(), loader, client, redirect_url);
+
+    client.RunUntilRedirectReceived();
+    ASSERT_TRUE(client.has_received_redirect());
+
+    loader->FollowRedirect(network::HttpRequestHeadersUpdateParams(),
+                           std::nullopt);
+    loader->FollowRedirect(network::HttpRequestHeadersUpdateParams(),
+                           std::nullopt);
+
+    EXPECT_EQ("Unexpected FollowRedirect",
+              bad_message_observer.WaitForBadMessage());
+    client.RunUntilComplete();
+    EXPECT_EQ(net::ERR_INVALID_ARGUMENT, client.completion_status().error_code);
+  }
+
+  // 3. Calling FollowRedirect() with a cross-origin `new_url`.
+  {
+    mojo::test::BadMessageObserver bad_message_observer;
+    network::TestURLLoaderClient client;
+    mojo::Remote<network::mojom::URLLoader> loader;
+    StartRequest(factory.get(), loader, client, redirect_url);
+
+    client.RunUntilRedirectReceived();
+    ASSERT_TRUE(client.has_received_redirect());
+
+    loader->FollowRedirect(network::HttpRequestHeadersUpdateParams(),
+                           GURL("https://example.com/other"));
+
+    EXPECT_EQ("Unexpected new_url in FollowRedirect",
+              bad_message_observer.WaitForBadMessage());
+    client.RunUntilComplete();
+    EXPECT_EQ(net::ERR_INVALID_ARGUMENT, client.completion_status().error_code);
+  }
+
+  // 4. Calling FollowRedirect() with same-origin but credentialed `new_url`.
+  {
+    GURL::Replacements add_credentials;
+    add_credentials.SetUsernameStr("user");
+    add_credentials.SetPasswordStr("password");
+
+    mojo::test::BadMessageObserver bad_message_observer;
+    network::TestURLLoaderClient client;
+    mojo::Remote<network::mojom::URLLoader> loader;
+    StartRequest(factory.get(), loader, client, redirect_url);
+
+    client.RunUntilRedirectReceived();
+    ASSERT_TRUE(client.has_received_redirect());
+
+    loader->FollowRedirect(network::HttpRequestHeadersUpdateParams(),
+                           echo_url.ReplaceComponents(add_credentials));
+
+    EXPECT_EQ("new_url with credentials in FollowRedirect",
+              bad_message_observer.WaitForBadMessage());
+    client.RunUntilComplete();
+    EXPECT_EQ(net::ERR_INVALID_ARGUMENT, client.completion_status().error_code);
+  }
+}

@@ -1,5 +1,5 @@
 diff --git a/chrome/common/extensions/api/developer_private.webidl b/chrome/common/extensions/api/developer_private.webidl
-index f86ad741b99daa51d489b60daa0a991a54df9652..3c0f4cdfc6ffeaffbb83eb7bc4e9509277671816 100644
+index 7969e26c3bf7057fecf18ac87d29ed5254ec849c..d80bdc998d696ac5351c447d434574f6d63eb619 100644
 --- a/chrome/common/extensions/api/developer_private.webidl
 +++ b/chrome/common/extensions/api/developer_private.webidl
 @@ -226,6 +226,7 @@ dictionary ExtensionInfo {

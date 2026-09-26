@@ -1,20 +1,18 @@
 /* Copyright (c) 2019 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "components/assist_ranker/ranker_model_loader_impl.h"
+#include "components/translate/core/browser/ranker_model_loader_impl.h"
 
-#include <initializer_list>
 #include <memory>
 
 #include "base/notreached.h"
 #include "base/test/bind.h"
-#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
-#include "components/assist_ranker/proto/ranker_model.pb.h"
-#include "components/assist_ranker/proto/translate_ranker_model.pb.h"
-#include "components/assist_ranker/ranker_model.h"
+#include "components/translate/core/browser/ranker_model.h"
+#include "components/translate/core/browser/ranker_model.pb.h"
+#include "components/translate/core/browser/translate_ranker_model.pb.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
@@ -22,9 +20,9 @@
 
 namespace {
 
-using assist_ranker::RankerModel;
-using assist_ranker::RankerModelLoaderImpl;
-using assist_ranker::RankerModelStatus;
+using translate::RankerModel;
+using translate::RankerModelLoaderImpl;
+using translate::RankerModelStatus;
 
 class RankerModelLoaderImplTest : public ::testing::Test {
  public:
@@ -111,14 +109,16 @@ void RankerModelLoaderImplTest::InitModel(const GURL& model_url,
   model->mutable_proto()->Clear();
 
   auto* metadata = model->mutable_proto()->mutable_metadata();
-  if (!model_url.is_empty())
+  if (!model_url.is_empty()) {
     metadata->set_source(model_url.spec());
+  }
   if (!last_modified.is_null()) {
     auto last_modified_sec = (last_modified - base::Time()).InSeconds();
     metadata->set_last_modified_sec(last_modified_sec);
   }
-  if (!cache_duration.is_zero())
+  if (!cache_duration.is_zero()) {
     metadata->set_cache_duration_sec(cache_duration.InSeconds());
+  }
 
   auto* translate = model->mutable_proto()->mutable_translate();
   translate->set_version(1);
@@ -145,9 +145,9 @@ void RankerModelLoaderImplTest::OnModelAvailable(
 TEST_F(RankerModelLoaderImplTest, LoadRemoteRankerNoFetch) {
   bool network_access_occurred = false;
   test_loader_factory_.SetInterceptor(
-    base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
-                                   network_access_occurred = true;
-                               }));
+      base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
+        network_access_occurred = true;
+      }));
   ASSERT_TRUE(DoLoaderTest(base::FilePath(), remote_model_url_));
   EXPECT_FALSE(network_access_occurred);
 }

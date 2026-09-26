@@ -89,6 +89,7 @@ source_set("unit_tests") {
     "//brave/components/ntp_background_images/common",
     "//brave/components/p3a",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_render_view_host_test_harness",
     "//components/infobars/content",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",

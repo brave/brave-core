@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/public/common/BUILD.gn b/third_party/blink/public/common/BUILD.gn
-index 5a5d9a64a4b70f09447022021d03f95f69f2fbb2..4fc11a90dd425b67bd45a55cf2ab975d398df8a8 100644
+index 4d7fbfa778338a65fb058567b19c2734981efb8f..75916dfd864ebb4e583b335db352b935e311770c 100644
 --- a/third_party/blink/public/common/BUILD.gn
 +++ b/third_party/blink/public/common/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -10,7 +10,7 @@ index 5a5d9a64a4b70f09447022021d03f95f69f2fbb2..4fc11a90dd425b67bd45a55cf2ab975d
  import("//build/buildflag_header.gni")
  import("//build/config/compiler/compiler.gni")
  import("//build/config/features.gni")
-@@ -358,6 +359,7 @@ source_set("headers") {
+@@ -357,6 +358,7 @@ source_set("headers") {
      "//net",
      "//ui/base",
    ]

@@ -1,8 +1,8 @@
 diff --git a/services/network/public/cpp/BUILD.gn b/services/network/public/cpp/BUILD.gn
-index 1a96b81d4e53c7cedaa5bfcb1bd27cec99c2a440..52a881dea0ec4096519e741185320c2785cf523a 100644
+index cecc3966675edd77b775385d626b8da20bbca421..90a89216a30cd0f7190c232fd93e633f7032c01e 100644
 --- a/services/network/public/cpp/BUILD.gn
 +++ b/services/network/public/cpp/BUILD.gn
-@@ -201,6 +201,7 @@ component("cpp") {
+@@ -203,6 +203,7 @@ component("cpp") {
      ":cpp_base",
      ":flags_and_switches",
      ":is_potentially_trustworthy",

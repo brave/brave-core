@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/extensions/extensions_menu_view.cc b/chrome/browser/ui/views/extensions/extensions_menu_view.cc
+index c5e88c382f28685b6bed8b6c7cda616f28f729df..4f3ecf5b7aa7d3f98a86cfc1f62a299d402769e5 100644
+--- a/chrome/browser/ui/views/extensions/extensions_menu_view.cc
++++ b/chrome/browser/ui/views/extensions/extensions_menu_view.cc
+@@ -323,7 +323,7 @@ void ExtensionsMenuView::CreateAndInsertNewItem(
+ 
+   // The bare `new` is safe here, because InsertMenuItem is guaranteed to
+   // be added to the view hierarchy, which takes ownership.
+-  auto* item = new ExtensionMenuItemView(
++  auto* item = new BraveExtensionMenuItemView(
+       browser_, std::move(model),
+       ToolbarActionsModel::CanShowActionsInToolbar(*browser_));
+   extensions_menu_items_.insert(item);

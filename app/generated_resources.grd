@@ -757,7 +757,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Print...
           </message>
           <message name="IDS_CONTENT_CONTEXT_PRINT_SELECTION" desc="The name of the Print command in the content area context menu when there is a text selection.">
-            &amp;Print “<ph name="SELECTION">$1<ex>selected text</ex></ph>”
+            &amp;Print text selection...
           </message>
           <message name="IDS_CONTENT_CONTEXT_VIEWPAGESOURCE" desc="The name of the View Page Source command in the content area context menu">
             &amp;View page source
@@ -880,7 +880,11 @@ are declared in tools/grit/grit_args.gni.
             Copy link to highlight
           </message>
 
-          <message name="IDS_CONTENT_CONTEXT_ADD_LINK_TO_READING_LIST" desc="In Title Case: The name of the Add link to reading list command in the content area context menu">
+          <message name="IDS_CONTENT_CONTEXT_COPYLINKTOTEXT_V2" desc="The name of the Copy Link to Highlight command in the content area context menu when text is selected.">
+            Copy link to "<ph name="SELECTION">$1<ex>selected text</ex></ph>"
+          </message>
+
+          <message name="IDS_CONTENT_CONTEXT_ADD_LINK_TO_READING_LIST" desc="The name of the Add link to reading list command in the content area context menu">
             Add link to reading list
           </message>
 
@@ -981,9 +985,6 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_COPY" desc="The name of the Copy command in the content area context menu">
             &amp;Copy
           </message>
-          <message name="IDS_CONTENT_CONTEXT_COPY_SELECTION" desc="The name of the Copy command with selection in the content area context menu">
-            &amp;Copy “<ph name="SELECTION">$1<ex>text</ex></ph>”
-          </message>
           <message name="IDS_CONTENT_CONTEXT_PASTE" desc="The name of the Paste command in the content area context menu" meaning="'Paste' menu command in sentence case">
             &amp;Paste
           </message>
@@ -1034,14 +1035,11 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE" desc="The name of the Partial Translate command in the content area context menu">
             &amp;Translate selection to <ph name="LANGUAGE">$1<ex>English</ex></ph>
           </message>
-          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_V2" desc="The name of the Partial Translate command in the content area context menu when simplified menu is enabled and there is no specific selection text to display.">
-            &amp;Translate selection
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_V2" desc="The name of the Partial Translate command in the content area context menu when simplified menu is enabled.">
+            &amp;Translate
           </message>
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION" desc="The name of the Translate command in the content area context menu when there is a text selection.">
             &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>” to <ph name="LANGUAGE">$2<ex>English</ex></ph>
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION_V2" desc="The name of the Translate command in the content area context menu when there is a text selection and menu simplification is enabled.">
-            &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>”
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
@@ -1110,7 +1108,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Print...
           </message>
           <message name="IDS_CONTENT_CONTEXT_PRINT_SELECTION" desc="In Title Case: The name of the Print command in the content area context menu when there is a text selection.">
-            &amp;Print “<ph name="SELECTION">$1<ex>selected text</ex></ph>”
+            &amp;Print Text Selection...
           </message>
           <message name="IDS_CONTENT_CONTEXT_VIEWPAGESOURCE" desc="In Title Case: The name of the View Page Source command in the content area context menu">
             &amp;View Page Source
@@ -1236,6 +1234,10 @@ are declared in tools/grit/grit_args.gni.
             Copy Link to Highlight
           </message>
 
+          <message name="IDS_CONTENT_CONTEXT_COPYLINKTOTEXT_V2" desc="In Title Case: The name of the Copy Link to Highlight command in the content area context menu when text is selected.">
+            Copy Link to “<ph name="SELECTION">$1<ex>selected text</ex></ph>”
+          </message>
+
           <message name="IDS_CONTENT_CONTEXT_ADD_LINK_TO_READING_LIST" desc="In Title Case: The name of the Add link to reading list command in the content area context menu">
             Add Link to Reading List
           </message>
@@ -1338,9 +1340,6 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_COPY" desc="In Title Case: The name of the Copy command in the content area context menu">
             &amp;Copy
           </message>
-          <message name="IDS_CONTENT_CONTEXT_COPY_SELECTION" desc="The name of the Copy command with selection in the content area context menu">
-            &amp;Copy “<ph name="SELECTION">$1<ex>text</ex></ph>”
-          </message>
           <!-- Paste and Match Style / Paste as Plain Text -->
           <if expr="is_macosx">
             <message name="IDS_CONTENT_CONTEXT_PASTE" desc="Mac/In Title Case: The name of the Paste command in the content area context menu" meaning="'Paste' menu command for Mac">
@@ -1405,11 +1404,8 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE" desc="In Title Case: The name of the Partial Translate command in the content area context menu">
             &amp;Translate Selection to <ph name="LANGUAGE">$1<ex>English</ex></ph>
           </message>
-          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_V2" desc="In Title Case: The name of the Partial Translate command in the content area context menu when simplified menu is enabled and there is no specific selection text to display.">
-            &amp;Translate Selection
-          </message>
-          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION_V2" desc="In Title Case: The name of the Translate command in the content area context menu when there is a text selection and menu simplification is enabled.">
-            &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>”
+          <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_V2" desc="In Title Case: The name of the Partial Translate command in the content area context menu when simplified menu is enabled.">
+            &amp;Translate
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="In Title Case: The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
@@ -2383,6 +2379,12 @@ are declared in tools/grit/grit_args.gni.
 
       <message name="IDS_EMAIL_VERIFIED" desc="Toast message to notify the user when their email is automatically verified by the browser.">
         <ph name="ISSUER">$1<ex>google.com</ex></ph> verified your email
+      </message>
+      <message name="IDS_EMAIL_VERIFICATION_LOADING" desc="Accessibility announcement and toast message to notify the user that background email verification is in progress." formatter_data="android_java">
+        Verifying email
+      </message>
+      <message name="IDS_EMAIL_VERIFICATION_ERROR" desc="Toast message to notify the user when background email verification failed.">
+        Couldn't verify your email
       </message>
 
       <if expr="is_chromeos">
@@ -4537,6 +4539,9 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_TASK_MANAGER_SEARCH_HINT" desc="The placeholder text for the Task Manager search box" formatter_data="android_java">
           Search
         </message>
+        <message name="IDS_TASK_MANAGER_EMPTY_VIEW_TEXT" desc="The text displayed when there are no tasks or no search results in the Task Manager." formatter_data="android_java">
+          No tasks
+        </message>
         <message name="IDS_TASK_MANAGER_KILL_V2" desc="The caption of the Task Manager kill button">
           End task
         </message>
@@ -4807,12 +4812,6 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_TASK_MANAGER_PORTAL_INCOGNITO_PREFIX" desc="The prefix for a Private portal row in the Task Manager (these processes are created when portals is enabled, in Private mode)">
         Private Portal: <ph name="SUBFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
-      </message>
-      <message name="IDS_TASK_MANAGER_FENCED_FRAME_PREFIX" desc="The prefix for a fenced frame row in the Task Manager">
-        Fenced Frame: <ph name="FENCEDFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
-      </message>
-      <message name="IDS_TASK_MANAGER_FENCED_FRAME_INCOGNITO_PREFIX" desc="The prefix for a Private fenced frame row in the Task Manager">
-        Private Fenced Frame: <ph name="FENCEDFRAME_SITE">$1<ex>https://youtube.com/</ex></ph>
       </message>
       <message name="IDS_TASK_MANAGER_ARC_PREFIX" desc="The prefix for an ARC general process row">
         App: <ph name="ARC_PROCESS_NAME">$1<ex>com.android.systemui</ex></ph>
@@ -6544,14 +6543,13 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
 
       <!-- Remote Actor Credential Sharing Dialog -->
-      <!-- TODO(crbug.com/558163687): Enable translations closer to launch. -->
-      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_TITLE" desc="Title of the dialog asking the user to share credentials with Gemini Spark." translateable="false">
-        Allow Gemini Spark to sign in to <ph name="DOMAIN">$1<ex>example.com</ex></ph> for you?
+      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_TITLE" desc="Title of the dialog asking the user to share credentials with Gemini.">
+        Allow Gemini to sign in to <ph name="DOMAIN">$1<ex>example.com</ex></ph> for you?
       </message>
-      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_SUBTITLE" desc="Subtitle of the dialog asking the user to share credentials with Gemini Spark." translateable="false">
-        Spark can use Brave Password Manager to sign in for you. <ph name="BEGIN_LINK">$1</ph>Learn how Spark handles your data<ph name="END_LINK">$2</ph>
+      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_SUBTITLE" desc="Subtitle of the dialog asking the user to share credentials with Gemini.">
+        Gemini can use Brave Password Manager to sign in for you. <ph name="BEGIN_LINK">$1</ph>Learn how Gemini handles your data<ph name="END_LINK">$2</ph>
       </message>
-      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_ALLOW_BUTTON" desc="Button label to allow password sharing for Gemini Spark this time." translateable="false">
+      <message name="IDS_REMOTE_ACTOR_SHARING_DIALOG_ALLOW_BUTTON" desc="Button label to allow password sharing for Gemini this time.">
         Allow this time
       </message>
 
@@ -7201,8 +7199,8 @@ Keep your key file in a safe place. You will need it to create new versions of y
           Quit
         </message>
       </if>
-      <message name="IDS_OMNIBOX_EVERYWHERE_LENS_PROMO_BODY" desc="Body text for the promo highlighting screen sharing and Google Lens search in Omnibox Everywhere." translateable="false">
-        Ask about what's on your screen
+      <message name="IDS_OMNIBOX_EVERYWHERE_LENS_PROMO_BODY" desc="Body text for the promo highlighting screen sharing and Google Lens search in Omnibox Everywhere.">
+        Ask about anything on your screen
       </message>
       <message name="IDS_OMNIBOX_EVERYWHERE_LENS_PROMO_ACCESSIBLE_TEXT" desc="Accessible text for the promo highlighting screen sharing and Google Lens search in Omnibox Everywhere." translateable="false">
         Ask anything about what's on your screen by sharing your screen.
@@ -9312,32 +9310,11 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BOOKMARK_FOLDER_CHILD_COUNT" desc="Text description for the number of children of a bookmark folder">
         (<ph name="COUNT">$1<ex>1</ex></ph>)
       </message>
-      <message name="IDS_BOOKMARKS_EDIT_BOOKMARK" desc="Title for the bookmarks side panel edit dialog when full editing is available">
-        Edit Bookmark
-      </message>
       <message name="IDS_BOOKMARKS_EDIT_MOVE_TO_ANOTHER_FOLDER" desc="Tooltip for the button in the bookmarks side panel bulk edit mode that allows the user to move the selected bookmarks to a different folder.">
         Move
       </message>
       <message name="IDS_BOOKMARKS_EDIT_MORE" desc="Tooltip for the menu button in the bookmarks side panel bulk edit mode that shows more actions the user can take on selected bookmarks.">
         More
-      </message>
-      <message name="IDS_BOOKMARKS_EDIT_MOVE_TO" desc="Title for the bookmarks side panel edit dialog when move-only editing is available">
-        Move to…
-      </message>
-      <message name="IDS_BOOKMARKS_EDIT_NEW_FOLDER" desc="Label for the button to add a new folder in the bookmarks side panel edit dialog">
-        New Folder
-      </message>
-      <message name="IDS_BOOKMARKS_EDIT_CANCEL" desc="Label for the button to close the bookmarks side panel edit dialog">
-        Cancel
-      </message>
-      <message name="IDS_BOOKMARKS_EDIT_SAVE" desc="Label for the button to save changes from the bookmarks side panel edit dialog">
-        Save
-      </message>
-      <message name="IDS_BOOKMARKS_EDIT_NAME" desc="Label for the name text field in the bookmarks side panel edit dialog">
-        Name
-      </message>
-      <message name="IDS_BOOKMARKS_EDIT_URL" desc="Label for the url text field in the bookmarks side panel edit dialog">
-        URL
       </message>
       <message name="IDS_BOOKMARK_DELETION_COUNT" desc="Text description for the number of deleted bookmarks">
         {NUM_BOOKMARKS, plural, =1 {1 bookmark deleted} other {# bookmarks deleted}}
@@ -9368,9 +9345,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_BOOKMARKS_BACK_BUTTON_TOOLTIP" desc="Tooltip for the bookmarks side panel folder header back button">
         Back
-      </message>
-      <message name="IDS_BOOKMARKS_FORWARD_BUTTON_LABEL" is_accessibility_with_no_ui="true" desc="Accessible label for the bookmarks side panel edit dialog button to view a folder's children">
-        <ph name="FOLDER_TITLE">$1<ex>All Bookmarks</ex></ph> folder
       </message>
       <message name="IDS_BOOKMARK_OPTIONS_LABEL" is_accessibility_with_no_ui="true" desc="Accessible label for the bookmarks side panel context menu button">
         More options for <ph name="FOLDER_TITLE">$1<ex>All Bookmarks</ex></ph> bookmark
@@ -10346,6 +10320,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ORGANIZER_PANEL" desc="The name of the organizer panel announced by screenreaders." is_accessibility_with_no_ui="true">
         Organizer
       </message>
+      <message name="IDS_ORGANIZER_PANEL_NO_RESULTS" desc="Text shown in an organizer panel list section when a search yields no matching items.">
+        No results
+      </message>
       <message name="IDS_ORGANIZER_PANEL_TAB_GROUPS" desc="The label on the organizer panel list section corresponding to tab groups.">
         Tab Groups
       </message>
@@ -10641,6 +10618,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <!--Accessible name/action strings-->
       <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a Private window">
         <ph name="WINDOW_TITLE">$1</ph> (Private)
+      </message>
+      <message name="IDS_ACCESSIBLE_ISOLATED_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of an Isolated mode window">
+        <ph name="WINDOW_TITLE">$1</ph> (Isolated)
       </message>
       <message name="IDS_ACCESSIBLE_GUEST_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a guest mode window">
         <ph name="WINDOW_TITLE">$1</ph> (Guest)
@@ -11516,6 +11496,17 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_FEEDBACK_OFFLINE_DIALOG_TEXT" desc="The content of the message box displayed when the user attempts to send a report while offline">
           Thank you for your feedback. You are offline now, and your report will be sent later.
         </message>
+        <if expr="is_win or is_macosx or is_linux">
+          <message name="IDS_FEEDBACK_DISABLED_DIALOG_TITLE" desc="The title of a dialog informing the user that feedback cannot be submitted for their account.">
+            Can't send feedback
+          </message>
+          <message name="IDS_FEEDBACK_DISABLED_DIALOG_BODY" desc="The body text of a dialog that explains why feedback cannot be sent due to account restrictions, specifically for underaged accounts.">
+            Feedback isn't available for your account. An adult can use their device or profile to report an issue for you.
+          </message>
+          <message name="IDS_FEEDBACK_DISABLED_DIALOG_BODY_ENTERPRISE" desc="The body text of a dialog that explains why feedback cannot be sent due to enterprise policy restrictions.">
+            Feedback isn't available for your account. Your enterprise administrator can use their device or profile to report an issue for you.
+          </message>
+        </if>
         <if expr="not is_chromeos">
           <message name="IDS_FEEDBACK_INCLUDE_SYSTEM_INFORMATION_CHKBOX" desc="Checkbox for including system information on the bug report dialog box">
             Send <ph name="BEGIN_LINK1">&lt;a href="#" id="sys-info-url"&gt;</ph>system information<ph name="END_LINK1">&lt;/a&gt;</ph>
@@ -11896,6 +11887,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_TAB_CXMENU_UNFOCUS_TAB_GROUP" desc="The label of the tab context menu item for unfocusing the tab group containing the tab.">
           Unfocus tab group
         </message>
+        <message name="IDS_TAB_CXMENU_FOCUS_TABS" desc="The label of the tab context menu item for focusing one or more tabs. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Focus tab} other {Focus # tabs}}
+        </message>
         <message name="IDS_TAB_CXMENU_PLACEHOLDER_GROUP_TITLE" desc="The descriptive placeholder title of a group used when the user has not explicitly named a group. The plural value refers to the number of tabs in the group other than the one explicitly named. [ICU Syntax]">
           {NUM_OTHER_TABS, plural, =0 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>"} =1 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and 1 other tab} other {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and # other tabs}}
         </message>
@@ -12017,6 +12011,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
         <message name="IDS_TAB_CXMENU_UNFOCUS_TAB_GROUP" desc="In Title Case: The label of the tab context menu item for unfocusing the tab group containing the tab.">
           Unfocus Tab Group
+        </message>
+        <message name="IDS_TAB_CXMENU_FOCUS_TABS" desc="In Title Case: The label of the tab context menu item for focusing one or more tabs. [ICU Syntax]">
+          {NUM_TABS, plural, =1 {Focus Tab} other {Focus # Tabs}}
         </message>
         <message name="IDS_TAB_CXMENU_PLACEHOLDER_GROUP_TITLE" desc="In Title Case: The descriptive placeholder title of a group used when the user has not explicitly named a group. The plural value refers to the number of tabs in the group other than the one explicitly named. [ICU Syntax]">
           {NUM_OTHER_TABS, plural, =0 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>"} =1 {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and 1 Other Tab} other {"<ph name="TAB_TITLE">$1<ex>Brave News</ex></ph>" and # Other Tabs}}
@@ -12522,6 +12519,15 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_TAB_GROUP_HEADER_CXMENU_UNFOCUS_GROUP" desc="The label for unfocus group in the tab group editor bubble.">
         Unfocus group
+      </message>
+      <message name="IDS_TAB_GROUP_HEADER_CXMENU_CREATE_GROUP" desc="The label for create button in the tab group editor bubble when creating a permanent tab group from an ephemeral one.">
+        Create
+      </message>
+      <message name="IDS_TAB_GROUP_HEADER_CXMENU_CONVERT_TO_GROUP" desc="Title shown at top of the tab group editor bubble when in non group focus mode.">
+        Add Tabs to New Group
+      </message>
+      <message name="IDS_TAB_GROUP_HEADER_EPHEMERAL_TAB_COUNT" desc="The title shown on the tab group header for an ephemeral tab group indicating the number of tabs in the group. [ICU Syntax]">
+        {NUM_TABS, plural, =1 {1 Tab} other {# Tabs}}
       </message>
       <message name="IDS_TAB_GROUP_HEADER_CXMENU_SHARE_GROUP" desc="The label of the tab group header context menu item for sharing the current group.">
         Share group
@@ -13372,6 +13378,9 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
       </message>
       <message name="IDS_DEFAULT_BROWSER_MODAL_CONFIRM_BUTTON" desc="Label for the button to confirm setting the default browser.">
         Open settings
+      </message>
+      <message name="IDS_DEFAULT_BROWSER_MODAL_TRY_AGAIN_BUTTON" desc="Retry button for the sticky default browser modal.">
+        Try again
       </message>
       <message name="IDS_DEFAULT_BROWSER_MODAL_CANCEL_BUTTON" desc="Label for the button to cancel setting the default browser.">
         Set later
@@ -14560,6 +14569,114 @@ This can include information about installed software, files, your browser, the 
         <message name="IDS_ACCOUNT_PREVIEW_PROMO_SUBTITLE_EXTENSIONS" desc="Subtitle of a sign-in promo informing the user they can access their extensions on all your devices.">
           Sign in to get your extensions and more on all your devices
         </message>
+
+        <!-- Account Preview Profile Menu Signin Promo Subtitles -->
+        <message name="IDS_ACCOUNT_PREVIEW_PROFILE_MENU_SUBTITLE_PASSWORDS_WITH_DEVICE" desc="Subtitle of the profile menu sign-in promo informing the user they can access their passwords from their other device.">
+          To get your passwords and more from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sign in as <ph name="EMAIL">$2<ex>elisa.g.beckett@gmail.com</ex></ph>
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROFILE_MENU_SUBTITLE_BOOKMARKS_WITH_DEVICE" desc="Subtitle of the profile menu sign-in promo informing the user they can access their bookmarks from their other device.">
+          To get your bookmarks and more from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sign in as <ph name="EMAIL">$2<ex>elisa.g.beckett@gmail.com</ex></ph>
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROFILE_MENU_SUBTITLE_SAVED_INFO_WITH_DEVICE" desc="Subtitle of the profile menu sign-in promo informing the user they can access their saved info (such as autofill data, addresses, and payment methods) from their other device.">
+          To get your saved info and more from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sign in as <ph name="EMAIL">$2<ex>elisa.g.beckett@gmail.com</ex></ph>
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROFILE_MENU_SUBTITLE_READING_LIST_WITH_DEVICE" desc="Subtitle of the profile menu sign-in promo informing the user they can access their reading list from their other device.">
+          To get your reading list and more from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sign in as <ph name="EMAIL">$2<ex>elisa.g.beckett@gmail.com</ex></ph>
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROFILE_MENU_SUBTITLE_EXTENSIONS_WITH_DEVICE" desc="Subtitle of the profile menu sign-in promo informing the user they can access their extensions from their computer. Only desktop/computer DEVICE are supported for extensions.">
+          To get your extensions and more from <ph name="DEVICE">$1<ex>your computer</ex></ph>, sign in as <ph name="EMAIL">$2<ex>elisa.g.beckett@gmail.com</ex></ph>
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROFILE_MENU_SUBTITLE_PASSWORDS" desc="Subtitle of the profile menu sign-in promo informing the user they can access their passwords on all their devices.">
+          To get your passwords and more on all your devices, sign in as <ph name="EMAIL">$1<ex>elisa.g.beckett@gmail.com</ex></ph>
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROFILE_MENU_SUBTITLE_BOOKMARKS" desc="Subtitle of the profile menu sign-in promo informing the user they can access their bookmarks on all their devices.">
+          To get your bookmarks and more on all your devices, sign in as <ph name="EMAIL">$1<ex>elisa.g.beckett@gmail.com</ex></ph>
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROFILE_MENU_SUBTITLE_SAVED_INFO" desc="Subtitle of the profile menu sign-in promo informing the user they can access their saved info (such as autofill data, addresses, and payment methods) on all their devices.">
+          To get your saved info and more on all your devices, sign in as <ph name="EMAIL">$1<ex>elisa.g.beckett@gmail.com</ex></ph>
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROFILE_MENU_SUBTITLE_READING_LIST" desc="Subtitle of the profile menu sign-in promo informing the user they can access their reading list on all their devices.">
+          To get your reading list and more on all your devices, sign in as <ph name="EMAIL">$1<ex>elisa.g.beckett@gmail.com</ex></ph>
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_PROFILE_MENU_SUBTITLE_EXTENSIONS" desc="Subtitle of the profile menu sign-in promo informing the user they can access their extensions on all your devices.">
+          To get your extensions and more on all your devices, sign in as <ph name="EMAIL">$1<ex>elisa.g.beckett@gmail.com</ex></ph>
+        </message>
+
+        <!-- Account Preview History Signin Promo Subtitles -->
+        <message name="IDS_ACCOUNT_PREVIEW_HISTORY_SIGNED_IN_HISTORY_SYNC_PROMO_SUBTITLE" desc="Subtitle of the history page sign-in promo when the user is signed in without history sync.">
+          To get your history from your other devices, sync history. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_HISTORY_SIGNED_IN_HISTORY_SYNC_PROMO_SUBTITLE_WITH_DEVICE" desc="Subtitle of the history page sign-in promo when the user is signed in without history sync, informing them they can access their history from their other device.">
+          To get your history from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sync history. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_HISTORY_PROMO_SUBTITLE_PASSWORDS_WITH_DEVICE" desc="Subtitle of the history page sign-in promo informing the user they can access their history from their other device and passwords on all their devices.">
+          To get your history from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sign in and sync your history and tabs to <ph name="EMAIL">$2<ex>elisa.g.beckett@gmail.com</ex></ph>. You’ll also get your passwords and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_HISTORY_PROMO_SUBTITLE_BOOKMARKS_WITH_DEVICE" desc="Subtitle of the history page sign-in promo informing the user they can access their history from their other device and bookmarks on all their devices.">
+          To get your history from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sign in and sync your history and tabs to <ph name="EMAIL">$2<ex>elisa.g.beckett@gmail.com</ex></ph>. You’ll also get your bookmarks and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_HISTORY_PROMO_SUBTITLE_SAVED_INFO_WITH_DEVICE" desc="Subtitle of the history page sign-in promo informing the user they can access their history from their other device and saved info (such as autofill data, addresses, and payment methods) on all their devices.">
+          To get your history from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sign in and sync your history and tabs to <ph name="EMAIL">$2<ex>elisa.g.beckett@gmail.com</ex></ph>. You’ll also get your saved info and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_HISTORY_PROMO_SUBTITLE_READING_LIST_WITH_DEVICE" desc="Subtitle of the history page sign-in promo informing the user they can access their history from their other device and reading list on all their devices.">
+          To get your history from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sign in and sync your history and tabs to <ph name="EMAIL">$2<ex>elisa.g.beckett@gmail.com</ex></ph>. You’ll also get your reading list and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_HISTORY_PROMO_SUBTITLE_EXTENSIONS_WITH_DEVICE" desc="Subtitle of the history page sign-in promo informing the user they can access their history from their computer and extensions on all their devices. Only desktop/computer DEVICE are supported for extensions.">
+          To get your history from <ph name="DEVICE">$1<ex>your computer</ex></ph>, sign in and sync your history and tabs to <ph name="EMAIL">$2<ex>elisa.g.beckett@gmail.com</ex></ph>. You’ll also get your extensions and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_HISTORY_PROMO_SUBTITLE_PASSWORDS" desc="Subtitle of the history page sign-in promo informing the user they can access their history and passwords on all their devices.">
+          To get your history from your other devices, sign in and sync your history and tabs to <ph name="EMAIL">$1<ex>elisa.g.beckett@gmail.com</ex></ph>. You’ll also get your passwords and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_HISTORY_PROMO_SUBTITLE_BOOKMARKS" desc="Subtitle of the history page sign-in promo informing the user they can access their history and bookmarks on all their devices.">
+          To get your history from your other devices, sign in and sync your history and tabs to <ph name="EMAIL">$1<ex>elisa.g.beckett@gmail.com</ex></ph>. You’ll also get your bookmarks and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_HISTORY_PROMO_SUBTITLE_SAVED_INFO" desc="Subtitle of the history page sign-in promo informing the user they can access their history and saved info (such as autofill data, addresses, and payment methods) on all their devices.">
+          To get your history from your other devices, sign in and sync your history and tabs to <ph name="EMAIL">$1<ex>elisa.g.beckett@gmail.com</ex></ph>. You’ll also get your saved info and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_HISTORY_PROMO_SUBTITLE_READING_LIST" desc="Subtitle of the history page sign-in promo informing the user they can access their history and reading list on all their devices.">
+          To get your history from your other devices, sign in and sync your history and tabs to <ph name="EMAIL">$1<ex>elisa.g.beckett@gmail.com</ex></ph>. You’ll also get your reading list and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_HISTORY_PROMO_SUBTITLE_EXTENSIONS" desc="Subtitle of the history page sign-in promo informing the user they can access their history and extensions on all their devices.">
+          To get your history from your other devices, sign in and sync your history and tabs to <ph name="EMAIL">$1<ex>elisa.g.beckett@gmail.com</ex></ph>. You’ll also get your extensions and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+
+        <!-- Account Preview Recent Tabs Signin Promo Subtitles -->
+        <message name="IDS_ACCOUNT_PREVIEW_RECENT_TABS_SIGNED_IN_PROMO_SUBTITLE" desc="Subtitle of the recent tabs sign-in promo when the user is signed in without history sync.">
+          To get your tabs from your other devices, sync your history and tabs to <ph name="EMAIL">$1<ex>elisa.g.beckett@gmail.com</ex></ph>. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_RECENT_TABS_SIGNED_IN_PROMO_SUBTITLE_WITH_DEVICE" desc="Subtitle of the recent tabs sign-in promo when the user is signed in without history sync, informing them they can access their tabs from their other device.">
+          To get your tabs from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sync your history and tabs to <ph name="EMAIL">$2<ex>elisa.g.beckett@gmail.com</ex></ph>. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_RECENT_TABS_PROMO_SUBTITLE_PASSWORDS_WITH_DEVICE" desc="Subtitle of the recent tabs sign-in promo informing the user they can access their tabs from their other device and passwords on all their devices.">
+          To get your tabs from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sign in and sync history. You’ll also get your passwords and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_RECENT_TABS_PROMO_SUBTITLE_BOOKMARKS_WITH_DEVICE" desc="Subtitle of the recent tabs sign-in promo informing the user they can access their tabs from their other device and bookmarks on all their devices.">
+          To get your tabs from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sign in and sync history. You’ll also get your bookmarks and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_RECENT_TABS_PROMO_SUBTITLE_SAVED_INFO_WITH_DEVICE" desc="Subtitle of the recent tabs sign-in promo informing the user they can access their tabs from their other device and saved info (such as autofill data, addresses, and payment methods) on all their devices.">
+          To get your tabs from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sign in and sync history. You’ll also get your saved info and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_RECENT_TABS_PROMO_SUBTITLE_READING_LIST_WITH_DEVICE" desc="Subtitle of the recent tabs sign-in promo informing the user they can access their tabs from their other device and reading list on all their devices.">
+          To get your tabs from <ph name="DEVICE">$1<ex>your phone</ex></ph>, sign in and sync history. You’ll also get your reading list and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_RECENT_TABS_PROMO_SUBTITLE_EXTENSIONS_WITH_DEVICE" desc="Subtitle of the recent tabs sign-in promo informing the user they can access their tabs from their computer and extensions on all their devices. Only desktop/computer DEVICE are supported for extensions.">
+          To get your tabs from <ph name="DEVICE">$1<ex>your computer</ex></ph>, sign in and sync history. You’ll also get your extensions and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_RECENT_TABS_PROMO_SUBTITLE_PASSWORDS" desc="Subtitle of the recent tabs sign-in promo informing the user they can access their tabs and passwords on all their devices.">
+          To get your tabs from your other devices, sign in and sync history. You’ll also get your passwords and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_RECENT_TABS_PROMO_SUBTITLE_BOOKMARKS" desc="Subtitle of the recent tabs sign-in promo informing the user they can access their tabs and bookmarks on all their devices.">
+          To get your tabs from your other devices, sign in and sync history. You’ll also get your bookmarks and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_RECENT_TABS_PROMO_SUBTITLE_SAVED_INFO" desc="Subtitle of the recent tabs sign-in promo informing the user they can access their tabs and saved info (such as autofill data, addresses, and payment methods) on all their devices.">
+          To get your tabs from your other devices, sign in and sync history. You’ll also get your saved info and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_RECENT_TABS_PROMO_SUBTITLE_READING_LIST" desc="Subtitle of the recent tabs sign-in promo informing the user they can access their tabs and reading list on all their devices.">
+          To get your tabs from your other devices, sign in and sync history. You’ll also get your reading list and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
+        <message name="IDS_ACCOUNT_PREVIEW_RECENT_TABS_PROMO_SUBTITLE_EXTENSIONS" desc="Subtitle of the recent tabs sign-in promo informing the user they can access their tabs and extensions on all their devices.">
+          To get your tabs from your other devices, sign in and sync history. You’ll also get your extensions and more on all your devices. You can stop syncing anytime in settings. Brave may personalize Search and other services based on your history.
+        </message>
         <message name="IDS_SIGNIN_DICE_WEB_INTERCEPT_ENTERPRISE_BUBBLE_DESC_MANAGED_BY_TOKEN" desc="Body of the web signin interception bubble when the new account is managed via a token">
           You just signed in a managed account, creating a new managed profile will allow you to access some resources linked to that account.
         </message>
@@ -15256,6 +15373,11 @@ Please help our engineers fix this problem. Tell us what happened right before y
             Reset
         </message>
       </if>
+
+      <!-- TTC -->
+      <message name="IDS_TTC_ENTRYPOINT_LABEL" desc="The text label of the TTC menu item" translateable="false">
+        TTC
+      </message>
 
       <!-- Web and message center notifications -->
       <message name="IDS_NOTIFICATION_BUTTON_SETTINGS" desc="Short button label to go to the notification settings panel">
@@ -17532,8 +17654,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_TRANSPORT_WINDOWS_HELLO" desc="Menu item text. The user selects this to use Windows Hello. Windows Hello is a Microsoft brand and should be translated the same as it is in Windows. If you edit the language code in https://support.microsoft.com/en-us/windows/learn-about-windows-hello-and-set-it-up-dae28983-8242-bb2a-d3d1-87c9d265a5f0 you can see how Microsoft translates it in several languages. (It is often left untranslated.)">
         Windows Hello
       </message>
-      <message name="IDS_WEBAUTHN_TRANSPORT_ICLOUD_KEYCHAIN" desc="Menu item text. The user selects this to use iCloud Keychain. iCloud Keychain is an Apple brand and should be translated the same as it is in Apple devices. If you edit the language code in https://support.apple.com/es-es/HT204085 you can see how Apple translates it in several languages. ('Keychain' is usually localized.)">
-        iCloud Keychain
+      <message name="IDS_WEBAUTHN_TRANSPORT_ICLOUD_KEYCHAIN" desc="Menu item text. The user selects this to use Apple Passwords. Apple Passwords is an Apple brand and should be translated the same as it is in Apple devices. If you edit the language code in https://support.apple.com/es-es/104955 you can see how Apple translates it in several languages. ('Passwords' is usually localized.)">
+        Apple Passwords
       </message>
       <message name="IDS_WEBAUTHN_TRANSPORT_EXTERNAL_SECURITY_KEY" desc="Menu item text. The user selects this to use a security key (an external physical device for user authentication).">
         Use an external security key
@@ -17785,8 +17907,8 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_SOURCE_CHROME_PROFILE" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in the user's Brave Profile.">
         Your Brave profile
       </message>
-      <message name="IDS_WEBAUTHN_SOURCE_ICLOUD_KEYCHAIN" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in the user's iCloud Keychain.">
-        iCloud Keychain
+      <message name="IDS_WEBAUTHN_SOURCE_ICLOUD_KEYCHAIN" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in Apple Passwords. Apple Passwords is an Apple brand and should be translated the same as it is in Apple devices. If you edit the language code in https://support.apple.com/es-es/104955 you can see how Apple translates it in several languages. ('Passwords' is usually localized.)">
+        Apple Passwords
       </message>
       <message name="IDS_WEBAUTHN_SOURCE_WINDOWS_HELLO" desc="The subtitle shown in a button that lets the user select a passkey to sign in, indicating that the passkey resides in Windows Hello.">
         Windows Hello
@@ -17832,7 +17954,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_WEBAUTHN_GPM_CREATE_PASSKEY_DESC" desc="This string appears in a dialog users see after they choose to create a sign-in method called a passkey on a website. The first sentence means they can sign in to the site faster on any device. The second sentence tells users that the passkey will be saved to Brave Password Manager for the Brave email address they are using. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
         You can use this passkey to sign in faster across your devices. It will be saved to Brave Password Manager for <ph name="ACCOUNT_NAME">$1<ex>example@gmail.com</ex></ph>.
       </message>
-      <message name="IDS_WEBAUTHN_SAVE_ANOTHER_WAY" desc="Text link that appears on a button to save the passkey another way. For example, in their iCloud Keychain account or by using Windows Hello.">
+      <message name="IDS_WEBAUTHN_SAVE_ANOTHER_WAY" desc="Text link that appears on a button to save the passkey another way. For example, in Apple Passwords or by using Windows Hello.">
         Save another way
       </message>
       <message name="IDS_WEBAUTHN_GPM_TRUST_THIS_COMPUTER_CREATION_TITLE" desc="This string appears in a dialog users see after they choose to create a sign-in method called a passkey on a website. It means that before the user can create the passkey, they need to verify their identity by, e.g., entering their Brave Password Manager PIN or the lockscreen of a phone they own. Refer to Glossary for the meaning of 'passkey'; do not translate it as 'password'.">
@@ -18094,6 +18216,31 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Close Private
     </message>
     <message name="IDS_INCOGNITO_HISTORY_BUBBLE_CANCEL_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close the bubble action.">
+      Got it
+    </message>
+
+    <!-- Isolated Delete Browsing Data dialog bubble. -->
+    <message name="IDS_ISOLATED_CLEAR_BROWSING_DATA_DIALOG_PRIMARY_TEXT" desc="The primary text of the delete browsing data dialog which is shown in Isolated Mode when a user invokes a delete browsing data action in Isolated Mode. The text describes how Isolated Mode users can delete the browsing data by closing all Isolated Mode windows.">
+      To delete data, close all Isolated windows
+    </message>
+    <message name="IDS_ISOLATED_CLEAR_BROWSING_DATA_DIALOG_SECONDARY_TEXT" desc="The secondary text of the clear browsing data dialog which is shown in Isolated Mode when a user invokes a clear browsing data action in Isolated Mode. The text describes how the clear browsing data action affects only the Isolated Mode windows.">
+      This only affects Isolated windows
+    </message>
+    <message name="IDS_ISOLATED_CLEAR_BROWSING_DATA_DIALOG_CLOSE_WINDOWS_BUTTON" desc="The text of the button offering to close all Isolated windows in the dialog.">
+      Close windows
+    </message>
+
+    <!-- Isolated History Disclaimer dialog bubble. -->
+    <message name="IDS_ISOLATED_HISTORY_BUBBLE_PRIMARY_TEXT" desc="Header in bubble view that states visited sites aren't saved in Isolated mode.">
+      Sites you visit aren’t saved in Isolated
+    </message>
+    <message name="IDS_ISOLATED_HISTORY_BUBBLE_SECONDARY_TEXT" desc="Description in bubble view that states closing all Isolated tabs is necessary to delete Isolated browsing history from the device.">
+      To delete Isolated browsing history from your device, close all Isolated tabs
+    </message>
+    <message name="IDS_ISOLATED_HISTORY_BUBBLE_CLOSE_ISOLATED_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close all Isolated tabs action.">
+      Close Isolated
+    </message>
+    <message name="IDS_ISOLATED_HISTORY_BUBBLE_CANCEL_BUTTON_TEXT" desc="Text of button in bubble view for calling to the close the bubble action.">
       Got it
     </message>
 

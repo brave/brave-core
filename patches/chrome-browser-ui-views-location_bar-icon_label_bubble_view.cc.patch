@@ -1,19 +1,13 @@
 diff --git a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-index 56d118ee6851d013b5cadfbd4165738e65c6f141..30f1a90d308897dd622785fe93dba9b42b488a5d 100644
+index ff8506d5965dbc48adaa1700452fda50bec1795c..30f1a90d308897dd622785fe93dba9b42b488a5d 100644
 --- a/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
 +++ b/chrome/browser/ui/views/location_bar/icon_label_bubble_view.cc
-@@ -803,14 +803,10 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
+@@ -803,8 +803,10 @@ SkPath IconLabelBubbleView::GetHighlightPath() const {
    }
    highlight_bounds = GetMirroredRect(highlight_bounds);
  
--  const SkRect rect = RectToSkRect(highlight_bounds);
--  gfx::RoundedCornersF radii = GetCornerRadii();
--  const SkVector sk_radii[4] = {{radii.upper_left(), radii.upper_left()},
--                                {radii.upper_right(), radii.upper_right()},
--                                {radii.lower_right(), radii.lower_right()},
--                                {radii.lower_left(), radii.lower_left()}};
--
--  return SkPath::RRect(SkRRect::MakeRectRadii(rect, sk_radii));
+-  return SkPath::RRect(
+-      RoundedRectToSkRRect(highlight_bounds, GetCornerRadii()));
 +  const int layout_radius =
 +      GetLayoutConstant(LayoutConstant::kLocationBarChildCornerRadius);
 +  return SkPath::RRect(gfx::RectToSkRect(highlight_bounds), layout_radius,

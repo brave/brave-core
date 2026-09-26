@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Remove the "learn more" footer after the bubble is created.
+
+      Brave doesn't want the upstream footer, but it can only be removed once
+      the bubble (and its layout) exists. `MaybeRemoveFooter` lives in this
+      file's chromium_src override.
+    regex:
+      pattern: 'BubbleDialogDelegate::CreateBubble(tab_group_editor_bubble_view);'
+      replace: |-
+        BubbleDialogDelegate::CreateBubble(tab_group_editor_bubble_view);
+          MaybeRemoveFooter(tab_group_editor_bubble_view,
+                            tab_group_editor_bubble_view->footer_.ExtractAsDangling());
+          tab_group_editor_bubble_view->footer_ = nullptr;

@@ -22,7 +22,6 @@ import android.util.AttributeSet;
 import android.view.ActionMode;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
@@ -139,8 +138,6 @@ import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
-import org.chromium.chrome.browser.tasks.tab_management.TabGroupCreationUiDelegate;
-import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneCoordinatorFactory;
 import org.chromium.chrome.browser.tasks.tab_management.vertical_tabs.VerticalTabsActionDelegate;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
@@ -163,7 +160,6 @@ import org.chromium.chrome.browser.toolbar.top.ToolbarControlContainer;
 import org.chromium.chrome.browser.toolbar.top.ToolbarLayout;
 import org.chromium.chrome.browser.toolbar.top.tab_strip.TabStripTransitionCoordinator.TabStripTransitionHandler;
 import org.chromium.chrome.browser.ui.actions.ActionRegistry;
-import org.chromium.chrome.browser.ui.actions.button.ResourceButtonData;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuBlocker;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuDelegate;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuPropertiesDelegate;
@@ -218,6 +214,7 @@ import org.chromium.components.omnibox.action.OmniboxActionDelegate;
 import org.chromium.components.permissions.PermissionDialogDelegate;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.search_engines.TemplateUrl;
+import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.components.signin.base.AccountInfo;
 import org.chromium.components.variations.firstrun.VariationsSeedFetcher;
 import org.chromium.content_public.browser.BrowserContextHandle;
@@ -250,7 +247,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.function.Consumer;
-import java.util.function.DoubleConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -616,7 +612,8 @@ public class BytecodeTest {
                         Profile.class,
                         String.class,
                         Bundle.class,
-                        ModalDialogManager.class));
+                        ModalDialogManager.class,
+                        boolean.class));
 
         Assert.assertTrue(
                 methodExists(
@@ -1712,7 +1709,8 @@ public class BytecodeTest {
                         Supplier.class,
                         OneshotSupplier.class,
                         HomeSurfaceTracker.class,
-                        BackPressManager.class));
+                        BackPressManager.class,
+                        TemplateUrlService.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/ntp/IncognitoNewTabPage",
@@ -1957,17 +1955,14 @@ public class BytecodeTest {
                         OmniboxResourceProvider.class,
                         LocationBarEmbedderUiOverrides.class,
                         MonotonicObservableSupplier.class,
-                        OverrideUrlLoadingDelegate.class,
-                        BraveLocationBarMediator.getLocaleManagerClass(),
+                        BraveLocationBarMediator.getLocationBarNavigatorClass(),
                         OneshotSupplier.class,
                         BackKeyBehaviorDelegate.class,
                         WindowAndroid.class,
                         boolean.class,
                         BraveLocationBarMediator.getLensControllerClass(),
-                        BraveLocationBarMediator.getOmniboxUmaClass(),
                         BooleanSupplier.class,
                         BraveLocationBarMediator.getOmniboxSuggestionsDropdownEmbedderImplClass(),
-                        MonotonicObservableSupplier.class,
                         BrowserControlsStateProvider.class,
                         Supplier.class,
                         PageZoomIndicatorCoordinator.class,
@@ -2225,6 +2220,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/settings/FragmentDependencyProvider",
                         "org/chromium/chrome/browser/settings/BraveFragmentDependencyProvider",
                         Activity.class,
+                        boolean.class,
                         Profile.class,
                         OneshotSupplier.class,
                         ActivityResultTracker.class,
@@ -2349,22 +2345,6 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/browsing_data/ClearBrowsingDataFragment", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/browsing_data/BraveClearBrowsingDataFragment")); // presubmit: ignore-long-line
-
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane", // presubmit: ignore-long-line
-                        "org/chromium/chrome/browser/tasks/tab_management/BraveIncognitoTabSwitcherPane", // presubmit: ignore-long-line
-                        Context.class,
-                        TabSwitcherPaneCoordinatorFactory.class,
-                        Supplier.class,
-                        OnClickListener.class,
-                        OneshotSupplier.class,
-                        DoubleConsumer.class,
-                        UserEducationHelper.class,
-                        MonotonicObservableSupplier.class,
-                        MonotonicObservableSupplier.class,
-                        TabGroupCreationUiDelegate.class,
-                        NonNullObservableSupplier.class));
 
         Assert.assertTrue(
                 constructorsMatch(
@@ -2855,12 +2835,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/ui/system/StatusBarColorController",
                         "mBackgroundColorForNtp"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/tasks/tab_management/IncognitoTabSwitcherPane",
-                        "mReferenceButtonData",
-                        true,
-                        ResourceButtonData.class));
         Assert.assertFalse(
                 fieldExists(
                         "org/chromium/chrome/browser/tabbed_mode/TabbedNavigationBarColorController", // presubmit: ignore-long-line

@@ -182,7 +182,7 @@
     Test address from <ph name="ENTRY_VOICEOVER">$1<ex>United states</ex></ph> selected.
   </message>
 
-  <message name="IDS_AUTOFILL_EMAIL_VERIFIER_PROMPT_TITLE" desc="Title of the prompt asking user to verify their email." formatter_data="android_java">
+  <message name="IDS_AUTOFILL_EMAIL_VERIFIER_PROMPT_TITLE" desc="Title of the prompt asking user to verify their email.">
     Verify this email automatically?
   </message>
   <message name="IDS_AUTOFILL_EMAIL_VERIFIER_PROMPT_BODY" desc="Body of the prompt asking user to verify their email. $1 is the issuer domain (e.g., gmail.com) and $2 is the email address.">
@@ -447,6 +447,25 @@
   </message>
   <message name="IDS_AUTOFILL_GMAIL_OTP_REQUIRED_STEP_2" desc="Second step in the Gmail OTP settings required dialog prompting the user to turn on smart features in other Brave products.">
     Turn on “<ph name="BEGIN_LINK">&lt;a href="$1" tabindex="0" aria-description="$2" target="_blank"&gt;</ph>Smart features in other Brave products<ph name="LINK_END">&lt;/a&gt;</ph>”
+  </message>
+  <!-- TODO(crbug.com/556170227): Make this string translateable once UI is finalized. -->
+  <message name="IDS_AUTOFILL_OPEN_GMAIL_FOR_OTP" desc="The text of the suggestion that opens Gmail to view one time passwords." translateable="false">
+    Open Gmail
+  </message>
+  <message name="IDS_AUTOFILL_GMAIL_OTP_OPT_IN_TITLE" desc="Title of the bubble prompting the user to opt in to autofilling verification codes from Gmail.">
+    Autofill verification codes from Gmail
+  </message>
+  <message name="IDS_AUTOFILL_GMAIL_OTP_OPT_IN_DESCRIPTION" desc="Body text of the bubble prompting the user to opt in to autofilling verification codes from Gmail. Explains that Brave Password Manager can retrieve verification codes from the user's Gmail account and contains a link to learn more in settings.">
+    Brave Password Manager can get these codes for you from your Gmail <ph name="EMAIL">$1<ex>elisa.g.beckett@gmail.com</ex></ph>. You can change your mind and <ph name="IDS_AUTOFILL_GMAIL_OTP_OPT_IN_LEARN_MORE_LINK">$2<ex>learn more about this feature in settings</ex></ph>.
+  </message>
+  <message name="IDS_AUTOFILL_GMAIL_OTP_OPT_IN_LEARN_MORE_LINK" desc="Link text within the body of the Gmail OTP opt-in bubble that opens settings to learn more about autofilling verification codes from Gmail.">
+    learn more about this feature in settings
+  </message>
+  <message name="IDS_AUTOFILL_GMAIL_OTP_OPT_IN_TURN_ON_BUTTON" desc="Label for the accept button in the Gmail OTP opt-in bubble that turns on autofilling verification codes from Gmail.">
+    Turn on
+  </message>
+  <message name="IDS_AUTOFILL_GMAIL_OTP_OPT_IN_NO_THANKS_BUTTON" desc="Label for the cancel button in the Gmail OTP opt-in bubble that declines autofilling verification codes from Gmail.">
+    No thanks
   </message>
   <message name="IDS_AUTOFILL_DISABLE_SETTINGS_EXPLANATION_TITLE" desc="Title of the card explaining why the settings page was disabled. Sentence-Cased." formatter_data="android_java">
     Brave isn’t your autofill provider
@@ -896,11 +915,29 @@
   <message name="IDS_AUTOFILL_AT_MEMORY_PREVIOUSLY_FILLED" desc="Title shown in the AtMemory suggestions above suggestions that was previously filled on this page." translateable="false">
     Previously filled
   </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_YOUR_SAVED_AUTOFILL_INFO" desc="Title shown in the AtMemory suggestions above Autofill-sourced suggestions." translateable="false">
+    Your saved autofill info
+  </message>
+  <message name="IDS_AT_MEMORY_NOTICE_TEXT" desc="Body text of an informational notice introducing a new enhanced autofill feature. 'Personal Intelligence' and 'Gemini' are proper branding names and should remain unlocalized and match standard guidelines across languages. 'Manage settings' is a hyperlink that navigates the user to the Brave settings page to adjust their preferences." formatter_data="android_java">
+    Powered by Personal Intelligence with Gemini. Your requests, page titles, and URLs may be reviewed to improve enhanced autofill. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Manage settings<ph name="END_LINK">&lt;/link&gt;</ph>
+  </message>
   <message name="IDS_AT_MEMORY_NOTICE_TEXT_NO_LOGGING" desc="Body text of an informational notice introducing a new enhanced autofill feature. 'Personal Intelligence' and 'Gemini' are proper branding names and should remain unlocalized and match standard guidelines across languages. 'Manage settings' is a hyperlink that navigates the user to the Brave settings page to adjust their preferences." formatter_data="android_java">
     Powered by Personal Intelligence with Gemini. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Manage settings<ph name="END_LINK">&lt;/link&gt;</ph>
   </message>
   <message name="IDS_AT_MEMORY_NOTICE_TITLE" desc="Headline of an informational notice introducing a new enhanced autofill feature. 'Gmail' is a proper branding name and should remain unlocalized and match standard guidelines across languages." formatter_data="android_java">
     Now you can find and fill info from Gmail and more
+  </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE_ORDER_NUMBER" desc="Example search query shown in the AtMemory zero state for finding an order number." translateable="false">
+    Try "running shoes order number"
+  </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE_FLIGHT_CONFIRMATION_CODE" desc="Example search query shown in the AtMemory zero state for finding a flight confirmation code." translateable="false">
+    Try "confirmation code for LAX flight"
+  </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE_TRACKING_NUMBER" desc="Example search query shown in the AtMemory zero state for finding a shipment tracking number." translateable="false">
+    Try "running shoes tracking number"
+  </message>
+  <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_SUBTITLE_HOTEL_ADDRESS" desc="Example search query shown in the AtMemory zero state for finding a hotel address." translateable="false">
+    Try "address for my hotel in Tokyo"
   </message>
   <if expr="is_android">
     <message name="IDS_AT_MEMORY_SEARCH_HINT" desc="Hint text for the search bar in the AtMemory bottom sheet." formatter_data="android_java" translateable="false">
@@ -912,11 +949,11 @@
     <message name="IDS_AUTOFILL_AT_MEMORY_ZERO_STATE_TITLE" desc="Title text shown in zero state when there are no autofill suggestions in the bottom sheet." formatter_data="android_java" translateable="false">
       You’ll find your autofill suggestions here
     </message>
-    <message name="IDS_AT_MEMORY_NOTICE_TEXT" desc="Body text of an informational notice introducing a new enhanced autofill feature. 'Personal Intelligence' and 'Gemini' are proper branding names and should remain unlocalized and match standard guidelines across languages. 'Manage settings' is a hyperlink that navigates the user to the Brave settings page to adjust their preferences." formatter_data="android_java">
-      Powered by Personal Intelligence with Gemini. Your requests, page titles, and URLs may be reviewed to improve enhanced autofill. <ph name="BEGIN_LINK">&lt;link&gt;</ph>Manage settings<ph name="END_LINK">&lt;/link&gt;</ph>
-    </message>
     <message name="IDS_AT_MEMORY_NOTICE_OK_BUTTON" desc="Standard acknowledgment button label to dismiss the informational notice." formatter_data="android_java">
       OK
+    </message>
+    <message name="IDS_AT_MEMORY_NOTICE_OK_BUTTON_A11Y_LABEL" translateable="false" is_accessibility_with_no_ui="true" desc="Accessibility label for a standard acknowledgment button label to dismiss the informational notice. Clicking the button will close only the notice row, but not the whole bottom sheet." formatter_data="android_java">
+      OK, close notice
     </message>
     <message name="IDS_AT_MEMORY_AI_DISCLOSURE" desc="The text shown at the bottom of the AtMemory bottom sheet to set user expectations regarding potential incorrect suggestions." formatter_data="android_java" translateable="false">
       Gemini is AI and can make mistakes. <ph name="BEGIN_LINK">&lt;link&gt;</ph>More about relevant data sent to Brave<ph name="END_LINK">&lt;/link&gt;</ph>
@@ -1170,48 +1207,58 @@
   </message>
 
   <!-- Attributes of the order entity -->
-  <!-- TODO(crbug.com/485269384): Make Order entity attributes translatable. -->
-  <message name="IDS_AUTOFILL_AI_ORDER_ID_ATTRIBUTE_NAME" desc="Used as a general label for the order id attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_ORDER_ID_ATTRIBUTE_NAME" desc="Used as a general label for the order id attribute.">
     Id
   </message>
-  <message name="IDS_AUTOFILL_AI_ORDER_ACCOUNT_ATTRIBUTE_NAME" desc="Used as a general label for the order account attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_ORDER_ACCOUNT_ATTRIBUTE_NAME" desc="Used as a general label for the order account attribute.">
     Account
   </message>
-  <message name="IDS_AUTOFILL_AI_ORDER_DATE_ATTRIBUTE_NAME" desc="Used as a general label for the order date attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_ORDER_DATE_ATTRIBUTE_NAME" desc="Used as a general label for the order date attribute.">
     Date
   </message>
-  <message name="IDS_AUTOFILL_AI_ORDER_MERCHANT_NAME_ATTRIBUTE_NAME" desc="Used as a general label for the order merchant name attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_ORDER_MERCHANT_NAME_ATTRIBUTE_NAME" desc="Used as a general label for the order merchant name attribute.">
     Merchant name
   </message>
-  <message name="IDS_AUTOFILL_AI_ORDER_MERCHANT_DOMAIN_ATTRIBUTE_NAME" desc="Used as a general label for the order merchant domain attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_ORDER_MERCHANT_DOMAIN_ATTRIBUTE_NAME" desc="Used as a general label for the order merchant domain attribute.">
     Merchant domain
   </message>
-  <message name="IDS_AUTOFILL_AI_ORDER_PRODUCT_NAMES_ATTRIBUTE_NAME" desc="Used as a general label for the order product names attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_ORDER_PRODUCT_NAMES_ATTRIBUTE_NAME" desc="Used as a general label for the order product names attribute.">
     Product names
+  </message>
+  <message name="IDS_AUTOFILL_AI_ORDER_GRAND_TOTAL_ATTRIBUTE_NAME" desc="Used as a general label for the total amount of money paid for an order, including taxes and shipping costs.">
+    Total
   </message>
 
   <!-- Attributes of the shipment entity -->
-  <!-- TODO(crbug.com/485363832): Make Shipment entity attributes translatable. -->
-  <message name="IDS_AUTOFILL_AI_SHIPMENT_TRACKING_NUMBER_ATTRIBUTE_NAME" desc="Used as a general label for the shipment tracking number attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_SHIPMENT_TRACKING_NUMBER_ATTRIBUTE_NAME" desc="Used as a general label for the shipment tracking number attribute.">
     Tracking number
   </message>
-  <message name="IDS_AUTOFILL_AI_SHIPMENT_DELIVERY_ZIP_CODE_ATTRIBUTE_NAME" desc="Used as a general label for the shipment delivery zip code attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_SHIPMENT_DELIVERY_ZIP_CODE_ATTRIBUTE_NAME" desc="Used as a general label for the shipment delivery zip code attribute.">
     Delivery zip code
   </message>
-  <message name="IDS_AUTOFILL_AI_SHIPMENT_CARRIER_NAME_ATTRIBUTE_NAME" desc="Used as a general label for the shipment carrier name attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_SHIPMENT_CARRIER_NAME_ATTRIBUTE_NAME" desc="Used as a general label for the shipment carrier name attribute.">
     Carrier name
   </message>
-  <message name="IDS_AUTOFILL_AI_SHIPMENT_CARRIER_DOMAIN_ATTRIBUTE_NAME" desc="Used as a general label for the shipment carrier domain attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_SHIPMENT_CARRIER_DOMAIN_ATTRIBUTE_NAME" desc="Used as a general label for the shipment carrier domain attribute.">
     Carrier domain
   </message>
-  <message name="IDS_AUTOFILL_AI_SHIPMENT_SHIPPED_DATE_ATTRIBUTE_NAME" desc="Used as a general label for the shipment shipped date attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_SHIPMENT_SHIPPED_DATE_ATTRIBUTE_NAME" desc="Used as a general label for the shipment shipped date attribute.">
     Shipped date
   </message>
-  <message name="IDS_AUTOFILL_AI_SHIPMENT_MERCHANT_NAME_ATTRIBUTE_NAME" desc="Used as a general label for the shipment merchant name attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_SHIPMENT_MERCHANT_NAME_ATTRIBUTE_NAME" desc="Used as a general label for the shipment merchant name attribute.">
     Merchant name
   </message>
-  <message name="IDS_AUTOFILL_AI_SHIPMENT_PRODUCT_NAMES_ATTRIBUTE_NAME" desc="Used as a general label for the shipment product names attribute." translateable="false">
+  <message name="IDS_AUTOFILL_AI_SHIPMENT_PRODUCT_NAMES_ATTRIBUTE_NAME" desc="Used as a general label for the shipment product names attribute.">
     Product names
+  </message>
+  <message name="IDS_AUTOFILL_AI_SHIPMENT_DELIVERY_ADDRESS_ATTRIBUTE_NAME" desc="Used as a general label for the address a shipment is delivered to.">
+    Delivery address
+  </message>
+  <message name="IDS_AUTOFILL_AI_SHIPMENT_ESTIMATED_DELIVERY_DATE_ATTRIBUTE_NAME" desc="Used as a general label for the date a shipment is expected to be delivered on.">
+    Estimated delivery date
+  </message>
+  <message name="IDS_AUTOFILL_AI_SHIPMENT_ASSOCIATED_ORDER_ID_ATTRIBUTE_NAME" desc="Used as a general label for the id of the order that a shipment belongs to. The id of the order itself is IDS_AUTOFILL_AI_ORDER_ID_ATTRIBUTE_NAME.">
+    Order ID
   </message>
 
   <!-- Attributes of the flight reservation entity -->
@@ -1616,9 +1663,22 @@
     Got it
   </message>
 
-  <message name="IDS_AUTOFILL_AI_ENTITY_SUPPRESSION_UNDO_TOAST_TEXT" desc="Text displayed in a toast notification when an Autofill AI suggestion has been removed by the user, explaining that the suggestion is removed and the original source data is not deleted." translateable="false">
-    <!-- TODO(crbug.com/501036619): Make string translateable once finalized. -->
-    Suggestion removed. Your original source won't be deleted.
+  <message name="IDS_AUTOFILL_AI_ENTITY_SUPPRESSION_UNDO_TOAST_TEXT" desc="Text displayed in a toast notification when an Autofill AI suggestion has been removed by the user, explaining that the suggestion is removed and the original source data is not deleted. The plural selector is the number of such sources. [ICU Syntax]">
+    {NUM_SOURCES, plural,
+     =1 {Suggestion removed. Your original source won't be deleted.}
+     other {Suggestion removed. Your original sources won't be deleted.}}
+  </message>
+
+  <message name="IDS_AUTOFILL_AI_ENTITY_SUPPRESSION_CONFIRMATION_TITLE" desc="Title of the dialog that asks the user to confirm that an Autofill AI suggestion should no longer be suggested by Brave.">
+    Remove from Brave?
+  </message>
+  <message name="IDS_AUTOFILL_AI_ENTITY_SUPPRESSION_CONFIRMATION_BODY" desc="Body text of the dialog that asks the user to confirm that an Autofill AI suggestion should no longer be suggested by Brave. It explains that only the suggestion disappears, while the data that the suggestion was extracted from (e.g. an email or a photo) is untouched. The plural selector is the number of such sources. [ICU Syntax]">
+    {NUM_SOURCES, plural,
+     =1 {Brave will stop suggesting this info. Your original source won't be deleted.}
+     other {Brave will stop suggesting this info. Your original sources won't be deleted.}}
+  </message>
+  <message name="IDS_AUTOFILL_AI_ENTITY_SUPPRESSION_CONFIRMATION_ACCEPT_BUTTON" desc="Label of the button that confirms that Brave should stop suggesting an Autofill AI suggestion.">
+    Remove
   </message>
 
   <message name="IDS_AUTOFILL_AI_PRIVATE_INFERENCE_NOTICE_TITLE" desc="A title of the notice that infroms the user that page content will be processed privately in the cloud.">
@@ -1833,15 +1893,30 @@
     </message>
 
     <!-- Autofill AI Suppression Dialog Strings (Android) -->
+    <!-- LINT.IfChange(SuppressionDialogTags) -->
     <message name="IDS_AUTOFILL_AI_SUPPRESSION_DIALOG_BODY" desc="Description for the modal confirmation dialog on Android.">
       Suggested by Gemini · <ph name="SRC_LINK">&lt;src_link&gt;</ph>View sources<ph name="END_SRC_LINK">&lt;/src_link&gt;</ph>
 You can remove this suggestion from Brave. Your original source won't be deleted. <ph name="MANAGE_LINK">&lt;manage_link&gt;</ph>Manage enhanced autofill<ph name="END_MANAGE_LINK">&lt;/manage_link&gt;</ph>
     </message>
+    <!-- LINT.ThenChange(/chrome/android/features/keyboard_accessory/internal/java/src/org/chromium/chrome/browser/keyboard_accessory/ManualFillingMediator.java:SuppressionDialogTags) -->
     <message name="IDS_AUTOFILL_AI_SUPPRESSION_DIALOG_PRIMARY_BUTTON" desc="Label for the primary acknowledgment button in the Autofill AI suppression dialog on Android.">
       Got it
     </message>
     <message name="IDS_AUTOFILL_AI_SUPPRESSION_DIALOG_SECONDARY_BUTTON" desc="Label for the secondary suppression action button in the Autofill AI suppression dialog on Android.">
       Remove from Brave
+    </message>
+    <message name="IDS_AUTOFILL_AI_ATTRIBUTION_BOTTOM_SHEET_TITLE" desc="Title for the Autofill AI source attribution bottom sheet on Android." formatter_data="android_java">
+      Sources
+    </message>
+  </if>
+
+  <!-- Autofill AI Suppression Snackbar Strings (Android) -->
+  <if expr="is_android">
+    <message name="IDS_AUTOFILL_AI_SUPPRESSION_UNDO_SNACKBAR_MESSAGE" desc="Informational message shown in the snackbar after an Autofill AI suggestion has been removed from Brave on Android.">
+      Suggestion removed from Brave
+    </message>
+    <message name="IDS_AUTOFILL_AI_SUPPRESSION_UNDO_SNACKBAR_ACTION" meaning="Verb: action button to undo removal of an Autofill AI suggestion" desc="Action button label shown in the snackbar for ~10 seconds allowing the user to undo removal of an Autofill AI suggestion on Android. Keep label concise.">
+      Undo
     </message>
   </if>
 
@@ -2016,9 +2091,6 @@ You can remove this suggestion from Brave. Your original source won't be deleted
   </if>
 
   <!-- Personal Context Notice in Autofill Bottomsheet -->
-  <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string read when the autofill personal context notice sheet is opened." formatter_data="android_java">
-    Autofill from Gmail and more notice opened
-  </message>
   <message name="IDS_AUTOFILL_PERSONAL_CONTEXT_NOTICE_SHEET_FULL_HEIGHT" desc="Accessibility string read upon opening the autofill personal context notice sheet." formatter_data="android_java">
     Autofill from Gmail and more notice opened at full height
   </message>

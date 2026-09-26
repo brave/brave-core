@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h
+index 4c949b172a72c04b1d31542e3158e692156cf70d..ad8fc55921495b99b9f2712ec43e57058db77a29 100644
+--- a/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h
++++ b/chrome/browser/ui/views/extensions/extensions_menu_main_page_view.h
+@@ -95,6 +95,7 @@ class ExtensionsMenuMainPageView : public views::View {
+       const extensions::ExtensionId& extension_id);
+ 
+  private:
++  friend class BraveExtensionsMenuMainPageView;
+   // Returns the header builder, which contains information about the site.
+   [[nodiscard]] views::Builder<views::FlexLayoutView> CreateHeaderBuilder(
+       gfx::Insets margins,

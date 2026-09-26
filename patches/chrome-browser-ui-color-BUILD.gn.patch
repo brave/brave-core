@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/color/BUILD.gn b/chrome/browser/ui/color/BUILD.gn
-index 0943df4390a8fad2acb988085863eb7af1dfb8a1..d52b7fcc20237b2aafed467dac8ca565b45c6c08 100644
+index 42f66c6cce565ea6aa6f55bd75e61b6788eec601..5c7d36d789d0dbef19ece1445dffd11a1dfbf5f2 100644
 --- a/chrome/browser/ui/color/BUILD.gn
 +++ b/chrome/browser/ui/color/BUILD.gn
 @@ -46,6 +46,7 @@ source_set("mixers") {
@@ -10,7 +10,7 @@ index 0943df4390a8fad2acb988085863eb7af1dfb8a1..d52b7fcc20237b2aafed467dac8ca565
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
  
-@@ -63,6 +64,7 @@ source_set("mixers") {
+@@ -64,6 +65,7 @@ source_set("mixers") {
      "//ui/color",
      "//ui/color:mixers",
    ]

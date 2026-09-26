@@ -49,7 +49,7 @@
    Done
   </message>
   <message name="IDS_EXPERIMENTAL_TRIGGERING_TASK_LIST_BUBBLE_ROW_COMPLETED_TASK_SUBTITLE" desc="Subtitle shown for an experimental triggering task in the task list bubble informing the user that the task is completed.">
-   Task done and returned to Gemini Spark
+   Task done and returned to Gemini
   </message>
   <message name="IDS_ACTOR_TASK_LIST_BUBBLE_ROW_FAILED_TASK_SUBTITLE" desc="Subtitle shown for a task in the task list bubble informing the user that the task has failed." formatter_data="android_java">
    Something went wrong
@@ -87,6 +87,9 @@
   <!-- Android specific strings. -->
   <message name="IDS_ACTOR_OVERLAY_SNACKBAR_MESSAGE" desc="Message shown in a snackbar when the user clicks on the actor overlay but they cannot interact with the tab until the task is paused or complete." formatter_data="android_java">
     To interact with this site, pause the current task or wait for Gemini to finish working
+  </message>
+  <message name="IDS_ACTOR_SNACKBAR_BACK_TO_GEMINI" desc="Text on the snackbar action button that takes the user back to the Gemini app. The snackbar is shown in Brave when a task triggered from the Gemini app could not be completed." formatter_data="android_java">
+    Back to Gemini
   </message>
   <message name="IDS_GLIC_BUTTON_STATUS_REVIEW" desc="Label on the Gemini entry point button when Gemini requires user attention." formatter_data="android_java">
     Review

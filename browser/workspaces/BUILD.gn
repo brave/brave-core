@@ -22,6 +22,7 @@ source_set("impl") {
     "//base",
     "//chrome/browser/ui",
     "//chrome/browser/ui:browser_tabrestore",
+    "//chrome/browser/ui:browser_window_header",
     "//chrome/browser/ui/browser_window:create_browser_window",
     "//chrome/browser/ui/tabs:tab_strip",
   ]

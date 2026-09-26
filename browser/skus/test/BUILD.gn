@@ -16,6 +16,7 @@ source_set("browser_tests") {
     "//brave/components/skus/common",
     "//chrome/browser:browser_process",
     "//chrome/test:test_support",
+    "//chrome/test/base:chrome_test_utils",
     "//components/prefs",
     "//content/public/common",
     "//content/test:test_support",

@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.tasks.tab_management;
 import android.content.Context;
 import android.view.View.OnClickListener;
 
-import org.chromium.base.BraveReflectionUtil;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
@@ -53,16 +52,10 @@ public class BraveIncognitoTabSwitcherPane extends IncognitoTabSwitcherPane {
                 tabGroupCreationUiDelegate,
                 xrSpaceModeObservableSupplier);
 
-        ResourceButtonData newReferenceButtonData =
+        mReferenceButtonData =
                 new ResourceButtonData(
                         R.string.accessibility_tab_switcher_incognito_stack,
                         R.string.accessibility_tab_switcher_incognito_stack,
                         R.drawable.brave_menu_new_private_tab);
-
-        BraveReflectionUtil.setField(
-                IncognitoTabSwitcherPane.class,
-                "mReferenceButtonData",
-                this,
-                newReferenceButtonData);
     }
 }

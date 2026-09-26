@@ -4,9 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
-      Report Brave's Chromium version in the User-Agent product string by
-      swapping Chromium's PRODUCT_VERSION for our BRAVE_CHROMIUM_VERSION.
-    regex:
-      re_pattern: '\bPRODUCT_VERSION\b'
-      replace: 'BRAVE_CHROMIUM_VERSION'
+  - description: 'Let BraveExtensionsMenuMainPageView reach private members.'
+    add_friend:
+      class_name: ExtensionsMenuMainPageView
+      friend_type: class BraveExtensionsMenuMainPageView

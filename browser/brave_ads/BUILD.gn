@@ -148,7 +148,10 @@ source_set("impl") {
       "application_state/notification_helper/notification_helper_impl_win.h",
     ]
 
-    deps += [ "//chrome/installer/util:with_no_strings" ]
+    deps += [
+      "//chrome/browser/ui:browser_window_header",
+      "//chrome/installer/util:with_no_strings",
+    ]
   }
 }
 
@@ -156,11 +159,14 @@ source_set("browser_tests") {
   testonly = true
 
   sources = [
-    "ads_service_delegate_browsertest.cc",
     "analytics/p3a/brave_stats_helper_browsertest.cc",
     "application_state/notification_helper/notification_helper_impl_mock.cc",
     "application_state/notification_helper/notification_helper_impl_mock.h",
   ]
+
+  if (!is_android) {
+    sources += [ "ads_service_delegate_browsertest.cc" ]
+  }
 
   deps = [
     ":brave_ads",

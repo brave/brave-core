@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/omnibox/omnibox_edit_model.cc b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-index c5ab90438bc5d29c247436ce1fb07cc059b857f9..22461e6380a895f83c24c16ab23274fe7e9ca57f 100644
+index dffdb341246db08fa44e7605261b0f9643b02ffd..11803d034bcca974214360938466bcf2f8363c61 100644
 --- a/chrome/browser/ui/omnibox/omnibox_edit_model.cc
 +++ b/chrome/browser/ui/omnibox/omnibox_edit_model.cc
-@@ -544,6 +544,10 @@ bool OmniboxEditModel::ShouldShowCurrentPageIcon() const {
+@@ -543,6 +543,10 @@ bool OmniboxEditModel::ShouldShowCurrentPageIcon() const {
  
  ui::ImageModel OmniboxEditModel::GetSuperGIcon(int image_size,
                                                 bool dark_mode) const {
@@ -13,7 +13,7 @@ index c5ab90438bc5d29c247436ce1fb07cc059b857f9..22461e6380a895f83c24c16ab23274fe
  #if BUILDFLAG(GOOGLE_CHROME_BRANDING)
    if (dark_mode) {
      return ui::ImageModel::FromVectorIcon(
-@@ -690,6 +694,8 @@ void OmniboxEditModel::Revert() {
+@@ -689,6 +693,8 @@ void OmniboxEditModel::Revert() {
  }
  
  void OmniboxEditModel::StartAutocomplete(bool prevent_inline_autocomplete) {

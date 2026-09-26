@@ -7,12 +7,11 @@
 #define BRAVE_BROWSER_NET_BRAVE_PROXYING_URL_LOADER_FACTORY_H_
 
 #include <cstdint>
-#include <map>
 #include <memory>
 #include <optional>
 #include <set>
 #include <string>
-#include <utility>
+#include <string_view>
 #include <vector>
 
 #include "base/containers/unique_ptr_adapters.h"
@@ -22,7 +21,6 @@
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
-#include "base/time/time.h"
 #include "base/timer/elapsed_timer.h"
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
@@ -31,6 +29,7 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/base/completion_once_callback.h"
+#include "net/base/net_errors.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/http_request_headers_update_params.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -48,7 +47,12 @@ class RenderFrameHost;
 }  // namespace content
 
 // Cargoculted from WebRequestProxyingURLLoaderFactory and
-// signin::ProxyingURLLoaderFactory
+// signin::ProxyingURLLoaderFactory.
+//
+// NOTE: FollowRedirect()'s validation against an unsolicited/malformed call
+// (see `deferred_redirect_url_` and `RejectFollowRedirect()` below) is ported
+// from WebRequestProxyingURLLoaderFactory::InProgressRequest::FollowRedirect()
+// (crbug.com/497494634). Re-diff against it when rebasing.
 template <template <typename> class T>
 class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
  public:
@@ -141,6 +145,13 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     void OnRequestError(const network::URLLoaderCompletionStatus& status);
     void HandleBeforeRequestRedirect();
 
+    // Terminates a request whose client violated the URLLoader contract for
+    // FollowRedirect(), and reports `reason` as a bad message if the client is
+    // a renderer process. Deletes `this`.
+    void RejectFollowRedirect(
+        std::string_view reason,
+        net::Error error_code = net::ERR_INVALID_ARGUMENT);
+
     base::ElapsedTimer elapsed_timer_;
 
     std::unique_ptr<brave::BraveRequestInfo> ctx_owned_;
@@ -179,7 +190,15 @@ class BraveProxyingURLLoaderFactory : public network::mojom::URLLoaderFactory {
     network::mojom::URLResponseHeadPtr current_response_head_;
     mojo::ScopedDataPipeConsumerHandle current_response_body_;
     scoped_refptr<net::HttpResponseHeaders> override_headers_;
+    // A redirect *requested by an extension/onHeadersReceived handler*, which
+    // this class then synthesizes. Not to be confused with
+    // `deferred_redirect_url_` below.
     GURL redirect_url_;
+
+    // The target of a redirect already forwarded to `target_client_` via
+    // OnReceiveRedirect(), but not yet followed. Must be set for a legitimate
+    // call to FollowRedirect(). See RejectFollowRedirect().
+    std::optional<GURL> deferred_redirect_url_;
 
     // This stores the parameters to FollowRedirect that came from
     // the client. That way we can combine it with any other changes that

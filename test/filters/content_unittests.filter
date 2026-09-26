@@ -76,6 +76,7 @@
 -FencedFrameReporterTest.SendFledgeReportsBeforeMapsReceivedWithErrors
 -FencedFrameReporterTest.SendFledgeReportsNoMapReceived
 -FileBackedBlobFactoryFrameImplTest.Register_FencedFrameWithScopedFileAccessDelegate
+-PictureInPictureServiceImplTest.Bind_BlockedForFencedFrame
 -RequestTest.DisconnectFromFencedFrame
 
 # Flaky upstream and on CI (passes locally)

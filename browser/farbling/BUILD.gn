@@ -45,6 +45,7 @@ if (!is_android) {
       "//chrome/browser",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/ui",
+      "//chrome/browser/ui:browser_window_header",
       "//chrome/browser/usb",
       "//chrome/common",
       "//chrome/test:test_support",
