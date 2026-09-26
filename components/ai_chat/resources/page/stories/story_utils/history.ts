@@ -147,13 +147,19 @@ export const taskConversationEntries: Mojom.ConversationTurn[] = [
       getToolUseEvent({
         id: 'abc123e',
         toolName: 'user_choice_tool',
-        argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+        argumentsJson: JSON.stringify({
+          choice_type: 'preference',
+          choices: ['7:00pm', '8:00pm'],
+        }),
         output: undefined,
       }),
       getToolUseEvent({
         id: 'abc123f',
         toolName: 'user_choice_tool',
-        argumentsJson: JSON.stringify({ choices: ['7:00pm', '8:00pm'] }),
+        argumentsJson: JSON.stringify({
+          choice_type: 'preference',
+          choices: ['7:00pm', '8:00pm'],
+        }),
         output: undefined,
       }),
     ],
