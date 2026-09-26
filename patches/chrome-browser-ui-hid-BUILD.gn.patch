@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/hid/BUILD.gn b/chrome/browser/ui/hid/BUILD.gn
-index be02bd97b52b52b2369c06899886ed9d44ff03f4..639ffa28c2c7482039002e5afa569ab1e4c8f959 100644
+index be02bd97b52b52b2369c06899886ed9d44ff03f4..2638fe968586f55f6507a13a627e285a91c67c94 100644
 --- a/chrome/browser/ui/hid/BUILD.gn
 +++ b/chrome/browser/ui/hid/BUILD.gn
 @@ -2,6 +2,8 @@
  # Use of this source code is governed by a BSD-style license that can be
  # found in the LICENSE file.
  
-+import("//brave/components/brave_wallet/sources.gni")
++import("//brave/browser/ui/hid/sources.gni")
 +
  source_set("hid") {
    sources = [
@@ -15,7 +15,7 @@ index be02bd97b52b52b2369c06899886ed9d44ff03f4..639ffa28c2c7482039002e5afa569ab1
      "//services/device/public/cpp/hid",
      "//ui/base",
    ]
-+  deps += brave_hid_deps
++  deps += brave_browser_ui_hid_deps
  }
  
  source_set("unit_tests") {
