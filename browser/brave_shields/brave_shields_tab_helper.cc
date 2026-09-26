@@ -324,10 +324,13 @@ void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModePromptDismissed() {
 }
 
 GURL BraveShieldsTabHelper::GetCurrentSiteURL() const {
-  return web_contents()
-      ->GetPrimaryMainFrame()
-      ->GetLastCommittedOrigin()
-      .GetURL();
+  url::Origin origin =
+      web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
+  // An opaque origin GURL can be empty. So, we can't do much here then
+  // simply relying on GetLastCommittedURL() in such cases.
+  return origin.GetURL().is_empty()
+             ? web_contents()->GetPrimaryMainFrame()->GetLastCommittedURL()
+             : origin.GetURL();
 }
 
 GURL BraveShieldsTabHelper::GetFaviconURL(bool refresh) {

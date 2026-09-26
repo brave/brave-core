@@ -316,22 +316,45 @@ void BraveShieldsWebContentsObserver::SetReceiverImplForTesting(
   g_receiver_impl_for_testing = impl;
 }
 
+GURL BraveShieldsWebContentsObserver::GetPrimaryUrlFromHandle(
+    NavigationHandle* navigation_handle) {
+  // Relying on url::Origin::Create correctly extracts the embedded origin for
+  // blob: URLs (e.g. blob:https://example.com/uuid to https://example.com) and
+  // works for all other schemes as well. Origin is more secure than working
+  // with last committed URLs.
+  url::Origin navigation_handle_origin =
+      navigation_handle->GetParentFrameOrOuterDocument()
+          ? navigation_handle->GetParentFrameOrOuterDocument()
+                ->GetOutermostMainFrame()
+                ->GetLastCommittedOrigin()
+          : url::Origin::Create(navigation_handle->GetURL());
+
+  // Shields settings are always derived from the mainframe and then a subset of
+  // supported settings are then passed down to the renderer via
+  // SendShieldsSettings. In the above call, if
+  // |navigation_handle|->GetParentFrameOrOuterDocument() succeeds it always
+  // gives back the outermost document. The outermost document corresponds to
+  // the main frame for us to get the shields settings. However, from
+  // RenderFrameHost* GetParentOrOuterDocument() documentation, when the
+  // |navigation_handle| already belongs to the outermost frame
+  // GetParentOrOuterDocument can return nullptr. Therefore, we do
+  // url::Origin::Create(navigation_handle->GetURL()). We need to go through
+  // url::Origin::Create, to ensure URLs like
+  // blob://https://example.com/550e8400-e29b-41d4-a716-4466 turns into
+  // "https://example.com" and not blob://https://example.com/ before we query
+  // the GURL to fetch the shields settings. blob://https://example.com and
+  // https://example.com are not the same origin since the scheme is different.
+  return navigation_handle_origin.GetURL().is_empty()
+             ? navigation_handle->GetURL()
+             : navigation_handle_origin.GetURL();
+}
+
 void BraveShieldsWebContentsObserver::SendShieldsSettings(
     NavigationHandle* navigation_handle) {
   DCHECK(navigation_handle);
   RenderFrameHost* rfh = navigation_handle->GetRenderFrameHost();
 
-  // Relying on url::Origin::Create correctly extracts the embedded origin for
-  // blob: URLs (e.g. blob:https://example.com/uuid to https://example.com) and
-  // works for all other schemes as well. Origin is more secure than working
-  // with last committed URLs.
-  const GURL primary_url =
-      navigation_handle->GetParentFrameOrOuterDocument()
-          ? navigation_handle->GetParentFrameOrOuterDocument()
-                ->GetOutermostMainFrame()
-                ->GetLastCommittedOrigin()
-                .GetURL()
-          : url::Origin::Create(navigation_handle->GetURL()).GetURL();
+  const GURL primary_url = GetPrimaryUrlFromHandle(navigation_handle);
 
   HostContentSettingsMap* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
