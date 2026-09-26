@@ -25,7 +25,6 @@
 #include "brave/components/traffic_control/core/common/features.h"
 #include "brave/components/traffic_control/core/mojom/traffic_control.mojom.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"

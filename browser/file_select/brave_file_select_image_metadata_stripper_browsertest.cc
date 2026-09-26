@@ -27,7 +27,6 @@
 #include "base/thread_annotations.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/image_metadata_stripper/common/features.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"

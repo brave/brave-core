@@ -8,7 +8,6 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/common/content_features.h"

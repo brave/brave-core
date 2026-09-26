@@ -18,7 +18,6 @@
 #include "brave/browser/ntp_background/constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_task_environment.h"
 #include "content/public/test/browser_test.h"
