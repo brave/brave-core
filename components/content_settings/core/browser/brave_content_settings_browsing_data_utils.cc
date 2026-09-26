@@ -6,9 +6,11 @@
 
 #include "brave/components/content_settings/core/browser/brave_content_settings_browsing_data_utils.h"
 
+#include "base/values.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/browser/permission_settings_registry.h"
 #include "components/content_settings/core/browser/website_settings_registry.h"
+#include "url/gurl.h"
 
 namespace browsing_data {
 
@@ -45,6 +47,16 @@ void BraveRemoveSiteSettingsData(
         type, delete_begin, delete_end,
         HostContentSettingsMap::PatternSourcePredicate());
   }
+}
+
+void BraveRemoveNonModelDataForOrigin(
+    HostContentSettingsMap* host_content_settings_map,
+    const GURL& url) {
+  // base::Value() is a default value which removes the setting internally.
+  host_content_settings_map->SetWebsiteSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_SHIELDS_METADATA, base::Value());
+  host_content_settings_map->SetWebsiteSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_PSST, base::Value());
 }
 
 }  // namespace browsing_data

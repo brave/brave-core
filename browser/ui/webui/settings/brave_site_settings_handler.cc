@@ -10,6 +10,7 @@
 #include "base/check_op.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/content_settings/core/browser/brave_content_settings_browsing_data_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/ui/webui/settings/site_settings_helper.h"
 #include "components/grit/brave_components_strings.h"
@@ -75,10 +76,8 @@ void BraveSiteSettingsHandler::RemoveNonModelData(
 
   auto* settings_map = HostContentSettingsMapFactory::GetForProfile(profile_);
   for (const auto& origin : origins) {
-    const auto& url = origin.GetURL();
-    // base::Value() is a default value which removes the setting internally.
-    settings_map->SetWebsiteSettingDefaultScope(
-        url, url, ContentSettingsType::BRAVE_SHIELDS_METADATA, base::Value());
+    browsing_data::BraveRemoveNonModelDataForOrigin(settings_map,
+                                                    origin.GetURL());
   }
 }
 
