@@ -21,7 +21,6 @@ export { BraveWallet }
 export { Url } from 'gen/url/mojom/url.mojom.m.js'
 export {
   MeldFiatCurrency,
-  MeldFilter,
   MeldCountry,
   MeldCryptoQuote,
   MeldServiceProvider,

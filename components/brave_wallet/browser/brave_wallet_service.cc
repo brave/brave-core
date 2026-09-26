@@ -257,7 +257,8 @@ BraveWalletService::BraveWalletService(
           std::make_unique<AssetRatioService>(url_loader_factory)),
       swap_service_(std::make_unique<SwapService>(url_loader_factory)),
       meld_integration_service_(
-          std::make_unique<MeldIntegrationService>(url_loader_factory)),
+          std::make_unique<MeldIntegrationService>(profile_prefs,
+                                                   url_loader_factory)),
       simulation_service_(
           std::make_unique<SimulationService>(url_loader_factory, this)),
       ipfs_service_(std::make_unique<BraveWalletIpfsService>(profile_prefs)),
