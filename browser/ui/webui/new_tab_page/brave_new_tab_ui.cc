@@ -167,9 +167,9 @@ BraveNewTabUI::BraveNewTabUI(
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      absl::StrFormat("frame-src %s;", kNTPNewTabTakeoverRichMediaUrl));
+      absl::StrFormat("frame-src %s;", kNTPDynamicNewTabTakeoverUrl));
   source->AddString("ntpNewTabTakeoverRichMediaUrl",
-                    kNTPNewTabTakeoverRichMediaUrl);
+                    kNTPDynamicNewTabTakeoverUrl);
 
   rich_media_ad_event_handler_ = std::make_unique<
       ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(ads_service);

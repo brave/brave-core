@@ -24,7 +24,7 @@ namespace ntp_background_images {
 namespace {
 
 base::FilePath GetComponentPath() {
-  return test::GetSponsoredImagesComponentPath().AppendASCII("image");
+  return test::GetSponsoredImagesComponentPath().AppendASCII("site");
 }
 
 }  // namespace

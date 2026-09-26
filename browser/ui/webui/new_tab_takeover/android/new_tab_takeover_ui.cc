@@ -17,7 +17,7 @@
 #include "brave/components/new_tab_takeover/grit/new_tab_takeover_generated_map.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 #include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_ad_event_handler.h"
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_provider_client.h"
 #include "chrome/browser/autocomplete/chrome_autocomplete_scheme_classifier.h"
 #include "chrome/browser/profiles/profile.h"
@@ -68,9 +68,9 @@ NewTabTakeoverUI::NewTabTakeoverUI(
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      absl::StrFormat("frame-src %s;", kNTPNewTabTakeoverRichMediaUrl));
+      absl::StrFormat("frame-src %s;", kNTPDynamicNewTabTakeoverUrl));
   source->AddString("ntpNewTabTakeoverRichMediaUrl",
-                    kNTPNewTabTakeoverRichMediaUrl);
+                    kNTPDynamicNewTabTakeoverUrl);
 }
 
 NewTabTakeoverUI::~NewTabTakeoverUI() {
@@ -137,15 +137,15 @@ void NewTabTakeoverUI::GetCurrentWallpaper(
         /*target_url=*/std::nullopt);
   };
 
-  const ntp_background_images::NTPSponsoredImagesData* sponsored_images_data =
-      ntp_background_images_service_->GetSponsoredImagesData(
-          /*supports_rich_media=*/true);
-  if (!sponsored_images_data) {
+  const ntp_background_images::NTPSponsoredContentData* sponsored_content_data =
+      ntp_background_images_service_->GetNewTabTakeover(
+          /*supports_dynamic_new_tab_takeover=*/true);
+  if (!sponsored_content_data) {
     return failed();
   }
 
   const ntp_background_images::Creative* creative =
-      sponsored_images_data->GetCreativeByInstanceId(creative_instance_id);
+      sponsored_content_data->GetCreativeByInstanceId(creative_instance_id);
   if (!creative) {
     return failed();
   }

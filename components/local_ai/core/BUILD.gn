@@ -23,6 +23,22 @@ mojom_component("speech_recognition_mojom") {
   ]
 }
 
+source_set("test_support") {
+  testonly = true
+
+  sources = [
+    "test/fake_asr_session.cc",
+    "test/fake_asr_session.h",
+  ]
+
+  public_deps = [
+    ":speech_recognition_mojom",
+    "//base/test:test_support",
+    "//mojo/public/cpp/bindings",
+    "//services/on_device_model/public/mojom",
+  ]
+}
+
 component("features") {
   defines = [ "IS_LOCAL_AI_FEATURES_IMPL" ]
 

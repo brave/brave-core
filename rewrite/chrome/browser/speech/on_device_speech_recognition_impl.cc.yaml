@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# The function body opens with a BUILDFLAG(IS_ANDROID) conditional that
+# tree-sitter cannot parse, so blank parse-blocking macros before AST matching.
+blank_macros_for_ast_parsing: true
+
+substitutions:
+  - description: |
+      Brave's policy already answers `kDictation`, but upstream refuses it
+      before asking unless `kOnDeviceWebSpeechSmallExpertModel` is enabled.
+      Treating it as `kCommand` gets past that gate, so `available()` reaches
+      the policy as `kCommand`.
+    preempt_function_impl:
+      function_name: OnDeviceSpeechRecognitionImpl::Available
+      code: |-
+        if (quality == media::mojom::SpeechRecognitionQuality::kDictation) {
+          quality = media::mojom::SpeechRecognitionQuality::kCommand;
+        }

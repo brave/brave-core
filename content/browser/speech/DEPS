@@ -12,6 +12,7 @@ include_rules = [
 
 specific_include_rules = {
   ".*_unittest\.cc": [
+    "+brave/components/local_ai/core/test",
     "+components/speech",
     "+content/public/test",
     "+media/audio",

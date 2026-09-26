@@ -96,10 +96,10 @@ import {
 import { FromAsset } from '../../composer_ui/from_asset/from_asset'
 import {
   DefaultPanelHeader, //
-} from '../../../../components/desktop/card-headers/default-panel-header'
+} from '$wallet/page/components/card_headers/default_panel_header'
 import {
   PanelActionHeader, //
-} from '../../../../components/desktop/card-headers/panel-action-header'
+} from '$wallet/page/components/card_headers/panel_action_header'
 import {
   OrdinalsWarningMessage, //
 } from '../components/ordinals-warning-message/ordinals-warning-message'

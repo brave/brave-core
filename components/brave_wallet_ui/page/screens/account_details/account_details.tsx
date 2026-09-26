@@ -86,7 +86,7 @@ import {
 import { PortfolioAssetItem } from '$wallet/page/components/portfolio_asset_item/portfolio_asset_item'
 import {
   AccountDetailsHeader, //
-} from '../../../components/desktop/card-headers/account-details-header'
+} from '$wallet/page/components/card_headers/account_details_header'
 import {
   SegmentedControl, //
 } from '../../../components/shared/segmented_control/segmented_control'

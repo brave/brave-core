@@ -1,0 +1,364 @@
+// Copyright (c) 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import * as React from 'react'
+import { useHistory } from 'react-router'
+import { skipToken } from '@reduxjs/toolkit/query/react'
+
+// Selectors
+import {
+  useSafeUISelector,
+  useSafeWalletSelector, //
+} from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors, WalletSelectors } from '$wallet/common/selectors'
+
+// Types
+import {
+  AccountButtonOptionsObjectType,
+  AccountModalTypes,
+  BraveWallet,
+  WalletRoutes,
+} from '$wallet/constants/types'
+
+// Options
+import {
+  AccountDetailsMenuOptions, //
+} from '$wallet/options/account-details-menu-options'
+
+// Utils
+import { reduceAddress } from '$wallet/utils/reduce-address'
+import { getBalance } from '$wallet/utils/balance-utils'
+import {
+  computeFiatAmount,
+  getPriceRequestsForTokens,
+} from '$wallet/utils/pricing-utils'
+import { getAccountTypeDescription } from '$wallet/utils/account-utils'
+import { getLocale } from '$web-common/locale'
+import Amount from '$wallet/utils/amount'
+
+// Queries
+import {
+  useCanHideAccountQuery,
+  useGetDefaultFiatCurrencyQuery,
+  useGetUserTokensRegistryQuery,
+  useGetZCashAccountInfoQuery,
+} from '$wallet/common/slices/api.slice'
+import {
+  usePersistedTokenSpotPricesQuery, //
+} from '$wallet/common/hooks/use-persisted-spot-prices'
+import {
+  selectAllVisibleUserAssetsFromQueryResult, //
+} from '$wallet/common/slices/entities/blockchain-token.entity'
+import {
+  TokenBalancesRegistry, //
+} from '$wallet/common/slices/entities/token-balance.entity'
+import { querySubscriptionOptions60s } from '$wallet/common/slices/constants'
+
+// Components
+import {
+  CreateAccountIcon, //
+} from '$wallet/components/shared/create-account-icon/create-account-icon'
+import CopyTooltip from '$wallet/components/shared/copy-tooltip/copy-tooltip'
+import { AccountDetailsMenu } from '$wallet/page/components/wallet_menus/account_details_menu'
+import { LoadingSkeleton } from '$wallet/components/shared/loading-skeleton/index'
+
+// Styled Components
+import {
+  AccountNameText,
+  AddressText,
+  AccountsNetworkText,
+  AccountBalanceText,
+  CopyIcon,
+} from './account_details_header.style'
+import {
+  MenuButton,
+  MenuButtonIcon,
+  HorizontalDivider,
+} from './shared_card_headers.style'
+import { Row, Column, HorizontalSpace } from '$wallet/components/shared/style'
+import { Button, ButtonIcon } from './shared_panel_headers.style'
+
+interface Props {
+  account: BraveWallet.AccountInfo
+  onClickMenuOption: (option: AccountModalTypes) => void
+  tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
+}
+
+export const AccountDetailsHeader = (props: Props) => {
+  const { account, onClickMenuOption, tokenBalancesRegistry } = props
+
+  // UI Selectors (safe)
+  const isMobile = useSafeUISelector(UISelectors.isMobile)
+  const isPanel = useSafeUISelector(UISelectors.isPanel)
+  const isMobileOrPanel = isMobile || isPanel
+
+  // routing
+  const history = useHistory()
+
+  // redux
+  const isZCashShieldedTransactionsEnabled = useSafeWalletSelector(
+    WalletSelectors.isZCashShieldedTransactionsEnabled,
+  )
+
+  // Queries
+  const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
+    selectFromResult: (result) => ({
+      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(result),
+    }),
+  })
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+  const { data: canHideAccount = false } = useCanHideAccountQuery({
+    accountId: account.accountId,
+  })
+  const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
+    isZCashShieldedTransactionsEnabled
+      && account.accountId.coin === BraveWallet.CoinType.ZEC
+      ? account.accountId
+      : skipToken,
+  )
+
+  // Memos
+  const accountsFungibleTokens = React.useMemo(() => {
+    return userVisibleTokensInfo
+      .filter((asset) => asset.visible)
+      .filter((token) => token.coin === account.accountId.coin)
+      .filter((token) => !token.isErc721 && !token.isErc1155 && !token.isNft)
+  }, [userVisibleTokensInfo, account])
+
+  const tokenPriceRequests = React.useMemo(
+    () => getPriceRequestsForTokens(accountsFungibleTokens),
+    [accountsFungibleTokens],
+  )
+
+  const { data: spotPrices, isLoading: isLoadingSpotPrices } =
+    usePersistedTokenSpotPricesQuery(
+      tokenPriceRequests.length && defaultFiatCurrency
+        ? { requests: tokenPriceRequests, vsCurrency: defaultFiatCurrency }
+        : skipToken,
+      querySubscriptionOptions60s,
+    )
+
+  const accountsFiatValue = React.useMemo(() => {
+    // Return an empty string to display a loading
+    // skeleton while assets are populated.
+    if (userVisibleTokensInfo.length === 0 || isLoadingSpotPrices) {
+      return Amount.empty()
+    }
+    // Return a 0 balance if the account has no
+    // assets to display.
+    if (accountsFungibleTokens.length === 0) {
+      return new Amount(0)
+    }
+
+    const amounts = accountsFungibleTokens.map((asset) => {
+      const balance = getBalance(
+        account.accountId,
+        asset,
+        tokenBalancesRegistry,
+      )
+
+      if (!spotPrices) {
+        return Amount.empty()
+      }
+
+      return computeFiatAmount({
+        spotPrices,
+        value: balance,
+        token: asset,
+      })
+    })
+
+    const reducedAmounts = amounts.reduce(function (a, b) {
+      return a.plus(b)
+    })
+
+    return !reducedAmounts.isUndefined() ? reducedAmounts : Amount.empty()
+  }, [
+    account,
+    userVisibleTokensInfo,
+    accountsFungibleTokens,
+    tokenBalancesRegistry,
+    spotPrices,
+    isLoadingSpotPrices,
+  ])
+
+  const canResetShieldedAccountBirthday =
+    isZCashShieldedTransactionsEnabled
+    && account.accountId.coin === BraveWallet.CoinType.ZEC
+    && zcashAccountInfo
+    && !!zcashAccountInfo.accountShieldBirthday
+
+  const menuOptions = React.useMemo((): AccountButtonOptionsObjectType[] => {
+    let options = AccountDetailsMenuOptions
+    const canToggleHiddenAccount = canHideAccount
+    if (!canResetShieldedAccountBirthday) {
+      options = options.filter(
+        (option: AccountButtonOptionsObjectType) =>
+          option.id !== 'resetBirthday',
+      )
+    }
+    // We are not able to remove a Derived account
+    // so we filter out this option.
+    if (account.accountId.kind === BraveWallet.AccountKind.kDerived) {
+      options = options.filter(
+        (option: AccountButtonOptionsObjectType) => option.id !== 'remove',
+      )
+    }
+    // We are not able to fetch Private Keys for
+    // a Hardware account so we filter out this option.
+    // BTC, ZEC and ADA are not yet supported.
+    if (
+      account.accountId.coin === BraveWallet.CoinType.BTC
+      || account.accountId.coin === BraveWallet.CoinType.ZEC
+      || account.accountId.coin === BraveWallet.CoinType.ADA
+      || account.accountId.kind === BraveWallet.AccountKind.kHardware
+    ) {
+      options = options.filter(
+        (option: AccountButtonOptionsObjectType) => option.id !== 'privateKey',
+      )
+    }
+    // We are currently not able to support viewing a
+    // BTC, ZEC or ADA account on a block explorer.
+    // Link to issue https://github.com/brave/brave-browser/issues/39699
+    if (
+      account.accountId.coin === BraveWallet.CoinType.BTC
+      || account.accountId.coin === BraveWallet.CoinType.ZEC
+      || account.accountId.coin === BraveWallet.CoinType.ADA
+    ) {
+      options = options.filter(
+        (option: AccountButtonOptionsObjectType) => option.id !== 'explorer',
+      )
+    }
+    if (!canToggleHiddenAccount) {
+      options = options.filter(
+        (option: AccountButtonOptionsObjectType) => option.id !== 'hide',
+      )
+    }
+    options = options.map((option) =>
+      option.id === 'hide'
+        ? {
+            ...option,
+            id: 'hide',
+            name: S.BRAVE_WALLET_ACCOUNTS_HIDE,
+            icon: 'eye-off',
+          }
+        : option,
+    )
+    return options
+  }, [account, canHideAccount, canResetShieldedAccountBirthday])
+
+  const headerPadding = React.useMemo(() => {
+    if (isMobileOrPanel) {
+      return '16px'
+    }
+    return '24px 0px'
+  }, [isMobileOrPanel])
+
+  // Methods
+  const goBack = React.useCallback(() => {
+    history.push(WalletRoutes.Accounts)
+  }, [history])
+
+  return (
+    <Row
+      padding={headerPadding}
+      justifyContent='space-between'
+      data-key='account-details-header'
+    >
+      <Row width='unset'>
+        {isMobileOrPanel ? (
+          <Row
+            width='unset'
+            margin='0px 12px 0px 0px'
+          >
+            <Button onClick={goBack}>
+              <ButtonIcon name='carat-left' />
+            </Button>
+          </Row>
+        ) : (
+          <MenuButton
+            marginRight={16}
+            onClick={goBack}
+          >
+            <MenuButtonIcon
+              size={16}
+              name='arrow-left'
+            />
+          </MenuButton>
+        )}
+        <CreateAccountIcon
+          account={account}
+          size='huge'
+          marginRight={8}
+        />
+        <Column alignItems='flex-start'>
+          <AccountNameText
+            textSize='16px'
+            isBold={true}
+          >
+            {account.name}
+          </AccountNameText>
+          {account.address && (
+            <Row
+              width='unset'
+              alignItems='center'
+              justifyContent='flex-start'
+            >
+              <AddressText>{reduceAddress(account.address)}</AddressText>
+              <CopyTooltip text={account.address}>
+                <CopyIcon />
+              </CopyTooltip>
+            </Row>
+          )}
+          <AccountsNetworkText>
+            {getAccountTypeDescription(account.accountId)}
+          </AccountsNetworkText>
+        </Column>
+      </Row>
+
+      <Row width='unset'>
+        {!isMobileOrPanel && (
+          <>
+            <Column
+              alignItems='flex-end'
+              data-key='account-balance-column'
+            >
+              <AccountsNetworkText>
+                {getLocale(S.BRAVE_WALLET_ACCOUNT_BALANCE)}
+              </AccountsNetworkText>
+              {accountsFiatValue.isUndefined() ? (
+                <LoadingSkeleton
+                  width={120}
+                  height={32}
+                />
+              ) : (
+                <AccountBalanceText>
+                  {accountsFiatValue.compactAsFiat(defaultFiatCurrency)}
+                </AccountBalanceText>
+              )}
+            </Column>
+            <HorizontalSpace space='16px' />
+            <HorizontalDivider />
+            <HorizontalSpace space='16px' />
+          </>
+        )}
+        <AccountDetailsMenu
+          options={menuOptions}
+          onClickMenuOption={onClickMenuOption}
+        >
+          {isMobileOrPanel ? (
+            <Button slot='anchor-content'>
+              <ButtonIcon name='more-vertical' />
+            </Button>
+          ) : (
+            <MenuButton slot='anchor-content'>
+              <MenuButtonIcon name='more-vertical' />
+            </MenuButton>
+          )}
+        </AccountDetailsMenu>
+      </Row>
+    </Row>
+  )
+}

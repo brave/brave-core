@@ -20,7 +20,7 @@ import { getAssetIdKey } from '../../../utils/asset-utils'
 import { NftScreen } from '../../../nft/components/nft-details/nft-screen'
 import {
   NftAssetHeader, //
-} from '../../../components/desktop/card-headers/nft-asset-header'
+} from '$wallet/page/components/card_headers/nft_asset_header'
 
 // Hooks
 import {

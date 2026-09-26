@@ -85,7 +85,7 @@ import { Pagination } from '../../../components/shared/pagination/pagination'
 import {
   WalletPageWrapper, //
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
-import NftAssetHeader from '../../../components/desktop/card-headers/nft-asset-header'
+import { NftAssetHeader } from '$wallet/page/components/card_headers/nft_asset_header'
 import { NftsEmptyState } from './components/nfts_empty_state/nfts_empty_state'
 import {
   AddOrEditNftModal, //

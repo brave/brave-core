@@ -844,7 +844,7 @@ public class BraveSettingsSearchTest {
     @Test
     @SmallTest
     @Feature({"Preferences"})
-    public void testNewTabPageSponsoredImagesNotSearchable_RewardsDisabledByPolicy() {
+    public void testNewTabPageSponsoredContentNotSearchable_RewardsDisabledByPolicy() {
         BraveRewardsPolicy.setDisabledByPolicyForTesting(true);
         mSettingsActivityTestRule.startSettingsActivity();
 

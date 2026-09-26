@@ -8,7 +8,7 @@ package org.chromium.chrome.browser.ntp_background_images.model;
 import org.chromium.base.Callback;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
-import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.SponsoredContentUtil;
 
 public class SponsoredTab {
     private final NTPBackgroundImagesBridge mNTPBackgroundImagesBridge;
@@ -16,11 +16,11 @@ public class SponsoredTab {
     private boolean mNTPImageReady;
 
     public SponsoredTab(
-            NTPBackgroundImagesBridge mNTPBackgroundImagesBridge, boolean allowSponsoredImage) {
+            NTPBackgroundImagesBridge mNTPBackgroundImagesBridge, boolean allowSponsoredContent) {
         this.mNTPBackgroundImagesBridge = mNTPBackgroundImagesBridge;
     }
 
-    public void getNTPImage(boolean allowSponsoredImage, Callback<NTPImage> callback) {
+    public void getNTPImage(boolean allowSponsoredContent, Callback<NTPImage> callback) {
         // Return cached NTP image if available. We maintain only one NTP image per tab.
         if (mNTPImageReady) {
             callback.onResult(mNtpImage);
@@ -29,7 +29,7 @@ public class SponsoredTab {
 
         NTPImageUtil.getNTPImage(
                 mNTPBackgroundImagesBridge,
-                allowSponsoredImage,
+                allowSponsoredContent,
                 ntpImage -> getNTPImageCallback(ntpImage, callback));
     }
 
@@ -37,11 +37,11 @@ public class SponsoredTab {
         mNtpImage = ntpImage;
 
         if (mNtpImage == null) {
-            mNtpImage = SponsoredImageUtil.getBackgroundImage();
+            mNtpImage = SponsoredContentUtil.getBackgroundImage();
         } else if (mNtpImage instanceof Wallpaper) {
             Wallpaper wallpaper = (Wallpaper) mNtpImage;
             if (wallpaper == null) {
-                mNtpImage = SponsoredImageUtil.getBackgroundImage();
+                mNtpImage = SponsoredContentUtil.getBackgroundImage();
             }
         }
 

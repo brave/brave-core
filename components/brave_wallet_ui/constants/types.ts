@@ -1117,3 +1117,11 @@ export const SupportedBridgeCoinTypes = [
  * Used when selecting phrase length and creating a wallet.
  */
 export type RecoveryPhraseLengths = '12' | '24'
+
+export type WalletCardIds = 'crypto' | 'brave-rewards' | 'brave-rewards-card'
+
+export type WalletCardOption = {
+  id: WalletCardIds
+  label: string
+  icon: string
+}

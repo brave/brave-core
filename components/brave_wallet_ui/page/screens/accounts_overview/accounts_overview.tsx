@@ -34,7 +34,7 @@ import { AccountListItem } from './components/account_list_item/account_list_ite
 import {
   WalletPageWrapper, //
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
-import AccountsHeader from '$wallet/components/desktop/card-headers/accounts-header'
+import { AccountsHeader } from '$wallet/page/components/card_headers/accounts_header'
 
 // Hooks
 import {

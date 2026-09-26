@@ -14,7 +14,7 @@
 #include "brave/components/ntp_background_images/browser/features.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/ntp_sponsored_content_data.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_background_image+private.h"
 #include "brave/ios/browser/api/ntp_background_images/ntp_sponsored_image+private.h"
 
@@ -26,8 +26,8 @@
 @required
 - (void)onUpdatedNTPBackgroundImagesData:
     (ntp_background_images::NTPBackgroundImagesData*)data;
-- (void)onUpdatedNTPSponsoredImagesData:
-    (ntp_background_images::NTPSponsoredImagesData*)data;
+- (void)onDeprecatedUpdatedNTPSponsoredContentData:
+    (ntp_background_images::NTPSponsoredContentData*)data;
 - (void)onUpdatedNTPSponsoredContent:(const base::DictValue&)data;
 @end
 
@@ -43,9 +43,9 @@ class NTPBackgroundImagesServiceObserverBridge
     [bridge_ onUpdatedNTPBackgroundImagesData:data];
   }
 
-  void OnSponsoredImagesDataDidUpdate(
-      ntp_background_images::NTPSponsoredImagesData* data) override {
-    [bridge_ onUpdatedNTPSponsoredImagesData:data];
+  void DeprecatedOnSponsoredContentDidUpdate(
+      ntp_background_images::NTPSponsoredContentData* data) override {
+    [bridge_ onDeprecatedUpdatedNTPSponsoredContentData:data];
   }
 
   void OnSponsoredContentDidUpdate(const base::DictValue& data) override {
@@ -130,7 +130,7 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
 }
 
 - (NTPSponsoredImageData*)sponsoredImageData {
-  auto* data = _service->GetSponsoredImagesData(/*supports_rich_media=*/false);
+  auto* data = _service->GetNewTabTakeover(/*supports_rich_media=*/false);
   if (data == nullptr) {
     return nil;
   }
@@ -156,8 +156,8 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
   }
 }
 
-- (void)onUpdatedNTPSponsoredImagesData:
-    (ntp_background_images::NTPSponsoredImagesData*)data {
+- (void)onDeprecatedUpdatedNTPSponsoredContentData:
+    (ntp_background_images::NTPSponsoredContentData*)data {
   if (self.sponsoredImageDataUpdated) {
     NTPSponsoredImageData* wrappedData = nil;
     if (data != nullptr) {

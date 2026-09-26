@@ -6,11 +6,20 @@
 #include "brave/components/local_ai/core/utils.h"
 
 #include "base/containers/span.h"
+#include "base/feature_list.h"
 #include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
+#include "brave/components/local_ai/core/features.h"
+#include "brave/components/local_ai/core/pref_names.h"
+#include "components/prefs/pref_service.h"
 
 namespace local_ai {
+
+bool IsOnDeviceSpeechRecognitionAllowed(const PrefService* local_state) {
+  return base::FeatureList::IsEnabled(kBraveOnDeviceSpeechRecognition) &&
+         (!local_state || local_state->GetBoolean(prefs::kBraveLocalAIEnabled));
+}
 
 std::optional<mojo_base::BigBuffer> ReadFileToBigBuffer(
     const base::FilePath& path) {

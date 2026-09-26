@@ -45,19 +45,21 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
 
     // deprecated preferences from browser-android-tabs
     public static final String PREF_SHOW_BACKGROUND_IMAGES = "show_background_images";
-    public static final String PREF_SHOW_SPONSORED_IMAGES = "show_sponsored_images";
+    // The string value is intentionally left as the legacy name so existing
+    // users' persisted setting isn't lost; only the Java constant is renamed.
+    public static final String PREF_SHOW_SPONSORED_CONTENT = "show_sponsored_images";
     public static final String PREF_SHOW_TOP_SITES = "show_top_sites";
     public static final String PREF_SHOW_BRAVE_STATS = "show_brave_stats";
     public static final String PREF_OPENING_SCREEN = "opening_screen_option";
     public static final String PREF_OPENING_SCREEN_CATEGORY = "opening_screen";
 
-    public static final String PREF_SPONSORED_IMAGES_LEARN_MORE = "sponsored_images_learn_more";
+    public static final String PREF_SPONSORED_CONTENT_LEARN_MORE = "sponsored_images_learn_more";
 
     public static final String NEW_TAB_TAKEOVER_LEARN_MORE_LINK_URL =
             "https://support.brave.app/hc/en-us/articles/35182999599501";
 
     private ChromeSwitchPreference mShowBackgroundImagesPref;
-    private ChromeSwitchPreference mShowSponsoredImagesPref;
+    private ChromeSwitchPreference mShowSponsoredContentPref;
     private ChromeSwitchPreference mShowBraveStatsPref;
     private ChromeSwitchPreference mShowTopSitesPref;
     private BraveTextButtonPreference mLearnMorePreference;
@@ -86,20 +88,20 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             mShowBackgroundImagesPref.setOnPreferenceChangeListener(this);
         }
         boolean rewardsDisabledByPolicy = BraveRewardsPolicy.isDisabledByPolicy(getProfile());
-        mShowSponsoredImagesPref =
-                (ChromeSwitchPreference) findPreference(PREF_SHOW_SPONSORED_IMAGES);
-        if (mShowSponsoredImagesPref != null && rewardsDisabledByPolicy) {
-            mShowSponsoredImagesPref.setVisible(false);
-        } else if (mShowSponsoredImagesPref != null) {
-            mShowSponsoredImagesPref.setEnabled(
+        mShowSponsoredContentPref =
+                (ChromeSwitchPreference) findPreference(PREF_SHOW_SPONSORED_CONTENT);
+        if (mShowSponsoredContentPref != null && rewardsDisabledByPolicy) {
+            mShowSponsoredContentPref.setVisible(false);
+        } else if (mShowSponsoredContentPref != null) {
+            mShowSponsoredContentPref.setEnabled(
                     UserPrefs.get(getProfile())
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
-            mShowSponsoredImagesPref.setChecked(
+            mShowSponsoredContentPref.setChecked(
                     UserPrefs.get(getProfile()).getBoolean(BravePref.SPONSORED_ENABLED));
-            mShowSponsoredImagesPref.setOnPreferenceChangeListener(this);
+            mShowSponsoredContentPref.setOnPreferenceChangeListener(this);
         }
         mLearnMorePreference =
-                (BraveTextButtonPreference) findPreference(PREF_SPONSORED_IMAGES_LEARN_MORE);
+                (BraveTextButtonPreference) findPreference(PREF_SPONSORED_CONTENT_LEARN_MORE);
         if (mLearnMorePreference != null && rewardsDisabledByPolicy) {
             mLearnMorePreference.setVisible(false);
         } else if (mLearnMorePreference != null) {
@@ -173,13 +175,13 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String key = preference.getKey();
         if (PREF_SHOW_BACKGROUND_IMAGES.equals(key)) {
-            if (mShowSponsoredImagesPref != null) {
-                mShowSponsoredImagesPref.setEnabled((boolean) newValue);
+            if (mShowSponsoredContentPref != null) {
+                mShowSponsoredContentPref.setEnabled((boolean) newValue);
             }
             UserPrefs.get(getProfile())
                     .setBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE, (boolean) newValue);
             BraveRelaunchUtils.askForRelaunch(getActivity());
-        } else if (PREF_SHOW_SPONSORED_IMAGES.equals(key)) {
+        } else if (PREF_SHOW_SPONSORED_CONTENT.equals(key)) {
             UserPrefs.get(getProfile()).setBoolean(BravePref.SPONSORED_ENABLED, (boolean) newValue);
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_SHOW_TOP_SITES.equals(key)) {
@@ -241,8 +243,8 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
                     // Sponsored images and their "learn more" link are hidden when Brave Rewards
                     // is disabled by policy, mirroring onActivityCreated().
                     if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {
-                        indexData.removeEntryForKey(frag, PREF_SHOW_SPONSORED_IMAGES);
-                        indexData.removeEntryForKey(frag, PREF_SPONSORED_IMAGES_LEARN_MORE);
+                        indexData.removeEntryForKey(frag, PREF_SHOW_SPONSORED_CONTENT);
+                        indexData.removeEntryForKey(frag, PREF_SPONSORED_CONTENT_LEARN_MORE);
                     }
                     // The opening-screen section (PREF_OPENING_SCREEN_CATEGORY) is shown only when
                     // the Fresh NTP feature is enabled with a non-"A" variant, but it needs no

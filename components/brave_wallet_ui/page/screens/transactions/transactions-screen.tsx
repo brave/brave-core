@@ -46,7 +46,7 @@ import {
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import {
   ActivityPageHeader, //
-} from '../../../components/desktop/card-headers/activity_page_header'
+} from '$wallet/page/components/card_headers/activity_page_header'
 import { SearchBar } from '../../../components/shared/search-bar'
 import {
   TransactionDetailsModal, //

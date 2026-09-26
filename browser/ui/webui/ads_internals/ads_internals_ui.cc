@@ -114,8 +114,8 @@ GetIsSponsoredImagesLoadedCallback() {
 
   return base::BindRepeating(
       [](ntp_background_images::NTPBackgroundImagesService* service) {
-        return service->GetSponsoredImagesData(
-                   /*supports_rich_media=*/true) != nullptr;
+        return service->GetNewTabTakeover(
+                   /*supports_dynamic_new_tab_takeover=*/true) != nullptr;
       },
       base::Unretained(ntp_background_images_service));
 }
