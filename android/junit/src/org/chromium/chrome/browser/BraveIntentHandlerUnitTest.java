@@ -14,9 +14,6 @@ import static org.mockito.Mockito.lenient;
 import android.content.Intent;
 import android.net.Uri;
 
-import org.chromium.base.test.BaseRobolectricTestRunner;
-import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
-import org.chromium.url.GURL;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -25,6 +22,10 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 import org.robolectric.annotation.Config;
+
+import org.chromium.base.test.BaseRobolectricTestRunner;
+import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
+import org.chromium.url.GURL;
 
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
