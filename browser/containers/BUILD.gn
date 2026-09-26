@@ -90,6 +90,7 @@ source_set("unit_tests") {
     "//brave/components/containers/core/common:features",
     "//brave/components/containers/core/mojom",
     "//chrome/browser",
+    "//chrome/browser/ui/browser_window",
     "//chrome/test:test_support",
     "//components/permissions",
     "//components/sessions:test_support",

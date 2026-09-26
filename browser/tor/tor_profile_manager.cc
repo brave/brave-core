@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/functional/callback_helpers.h"
+#include "base/scoped_observation.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/tor/tor_constants.h"
@@ -20,7 +21,6 @@
 #include "brave/components/tor/tor_profile_service.h"
 #include "chrome/browser/lifetime/application_lifetime_desktop.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
@@ -29,6 +29,7 @@
 #include "chrome/browser/ui/browser_window/public/create_browser_window.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/safe_browsing/core/common/safe_browsing_prefs.h"
@@ -205,7 +206,7 @@ BrowserWindowInterface* TorProfileManager::SwitchToTorProfile(
   auto* collection = ProfileBrowserCollection::GetForProfile(tor_profile);
   auto* browser = collection ? collection->FindTabbedBrowser() : nullptr;
   if (!browser && GetBrowserWindowCreationStatusForProfile(*tor_profile) ==
-                      Browser::CreationStatus::kOk) {
+                      BrowserWindowInterface::CreationStatus::kOk) {
     browser = CreateBrowserWindow(BrowserWindowCreateParams(tor_profile, true));
   }
   if (browser) {
