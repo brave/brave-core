@@ -246,7 +246,6 @@ struct PendingTransactionView: View {
         TransactionHeader(
           txCoinType: confirmationStore.activeParsedTransaction.transaction.coin,
           fromAccountInfo: confirmationStore.activeParsedTransaction.fromAccountInfo,
-          fromAccountName: confirmationStore.activeParsedTransaction.namedFromAddress,
           toAccountAddress: confirmationStore.activeParsedTransaction.toAddress,
           toAccountName: confirmationStore.activeParsedTransaction.namedToAddress,
           isContractAddress: confirmationStore.isContractAddress,
