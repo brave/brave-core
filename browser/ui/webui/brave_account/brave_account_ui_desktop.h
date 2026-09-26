@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_DESKTOP_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_ACCOUNT_BRAVE_ACCOUNT_UI_DESKTOP_H_
 
-#include <string>
-
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/components/brave_account/brave_account_ui_base.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
@@ -40,10 +38,6 @@ class BraveAccountUIDesktop
 
  private:
   // brave_account::mojom::DialogController:
-  // No-op: the rows live in brave://settings, whose own binding of this
-  // interface opens the dialog.
-  void OpenDialog(const std::string& initiating_service_name,
-                  brave_account::mojom::DialogMode dialog_mode) override {}
   void CloseDialog() override;
   void GetDialogMode(GetDialogModeCallback callback) override;
 

@@ -104,7 +104,7 @@ export abstract class BraveAccountRowBaseElement<
   // dialog over the page, mobile presents them over the page serving the rows.
   // Either way the browser does it, so both go through the same call.
   private openDialog(dialogMode: DialogMode) {
-    this.browserProxy.dialogController.openDialog(
+    this.browserProxy.dialogOpener.openDialog(
       this.initiatingServiceName,
       dialogMode,
     )

@@ -81,9 +81,8 @@ class BraveSettingsUI : public settings::SettingsUI {
 #endif
   void BindInterface(mojo::PendingReceiver<brave_account::mojom::Authentication>
                          pending_receiver);
-  void BindInterface(
-      mojo::PendingReceiver<brave_account::mojom::DialogController>
-          pending_receiver);
+  void BindInterface(mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+                         pending_receiver);
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
   void BindInterface(
