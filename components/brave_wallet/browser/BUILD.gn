@@ -877,6 +877,16 @@ source_set("unit_tests") {
     ]
   }
 
+  if (enable_snaps) {
+    sources += [
+      "snap/installer/snap_installer_checksum_calculator_unittest.cc",
+      "snap/installer/snap_installer_tar_decompressor_unittest.cc",
+      "snap/installer/snap_tar_utils_unittest.cc",
+      "snap/installer/tar_test_helpers.cc",
+      "snap/installer/tar_test_helpers.h",
+    ]
+  }
+
   deps = [
     ":browser",
     ":constants",
@@ -947,6 +957,13 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser/internal/orchard_storage",
     "//sql",
   ]
+
+  if (enable_snaps) {
+    deps += [
+      "//brave/components/brave_wallet/browser/snap/installer:tar_decompressor",
+      "//testing/gmock",
+    ]
+  }
 
   if (use_blink) {
     sources += [ "permission_utils_unittest.cc" ]
