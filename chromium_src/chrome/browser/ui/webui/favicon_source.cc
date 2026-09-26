@@ -3,22 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
-#include "build/build_config.h"
+#include "ui/resources/grit/ui_resources.h"
 
-#if BUILDFLAG(IS_ANDROID)
-
+// ui_resources.grd ships the larger favicons only on some platforms.
+#if !defined(IDR_DEFAULT_FAVICON_32)
+// CHROMIUM_SRC_INTERNAL_USE
+#define BRAVE_ALIASED_DEFAULT_FAVICONS
 #define IDR_DEFAULT_FAVICON_32 IDR_DEFAULT_FAVICON
 #define IDR_DEFAULT_FAVICON_64 IDR_DEFAULT_FAVICON
 #define IDR_DEFAULT_FAVICON_DARK_32 IDR_DEFAULT_FAVICON_DARK
 #define IDR_DEFAULT_FAVICON_DARK_64 IDR_DEFAULT_FAVICON_DARK
-
-#endif  // #if BUILDFLAG(IS_ANDROID)
+#endif  // !defined(IDR_DEFAULT_FAVICON_32)
 
 #include <chrome/browser/ui/webui/favicon_source.cc>
 
-#if BUILDFLAG(IS_ANDROID)
+#if defined(BRAVE_ALIASED_DEFAULT_FAVICONS)
 #undef IDR_DEFAULT_FAVICON_DARK_64
 #undef IDR_DEFAULT_FAVICON_DARK_32
 #undef IDR_DEFAULT_FAVICON_64
 #undef IDR_DEFAULT_FAVICON_32
-#endif  // #if BUILDFLAG(IS_ANDROID)
+#undef BRAVE_ALIASED_DEFAULT_FAVICONS
+#endif  // defined(BRAVE_ALIASED_DEFAULT_FAVICONS)

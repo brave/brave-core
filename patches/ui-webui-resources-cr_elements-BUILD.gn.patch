@@ -1,12 +1,12 @@
 diff --git a/ui/webui/resources/cr_elements/BUILD.gn b/ui/webui/resources/cr_elements/BUILD.gn
-index 94f8d770fc8d345d0b74d5d04e2d393ddb5400ba..ede316b53fc10f95d73d1f7b6a8c3c093ee9481b 100644
+index 94f8d770fc8d345d0b74d5d04e2d393ddb5400ba..5fdbfc3afdf10913c6c1cca297a4195e6ec13f88 100644
 --- a/ui/webui/resources/cr_elements/BUILD.gn
 +++ b/ui/webui/resources/cr_elements/BUILD.gn
 @@ -252,6 +252,7 @@ build_webui("build") {
      "//tools/typescript/definitions/pending.d.ts",
      "//tools/typescript/definitions/settings_private.d.ts",
    ]
-+  if (!is_android && !is_ios) { ts_deps += ["//brave/ui/webui/resources:build_ts"] }
++  if ((!is_android && !is_ios) || enable_extensions_core) { ts_deps += ["//brave/ui/webui/resources:build_ts"] }
    webui_context_type = "relative"
    generate_grdp = true
    grd_resource_path_prefix = rebase_path(".", "//ui/webui/resources")

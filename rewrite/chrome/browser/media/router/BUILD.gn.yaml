@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Gate the discovery test support on desktop Android, not on extensions.
+
+      discovery:test_support asserts is_desktop_android, which Brave's
+      enable_desktop_android_extensions on mobile Android does not imply.
+    regex:
+      re_pattern:
+        'if \(!is_android \|\| enable_desktop_android_extensions\)(\s*\{\s*deps
+        \+= \[\s*"//chrome/browser/media/router/discovery:test_support")'
+      replace: 'if (!is_android || is_desktop_android)\1'

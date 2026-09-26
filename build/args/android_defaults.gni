@@ -14,3 +14,8 @@ enable_mdns = true
 
 # We want it to be enabled for all configurations
 disable_android_lint = false
+
+# Compile the extension system on Android. Runtime use is gated by the
+# BraveAndroidExtensions feature, so this only controls whether the code is in
+# the APK.
+enable_desktop_android_extensions = true

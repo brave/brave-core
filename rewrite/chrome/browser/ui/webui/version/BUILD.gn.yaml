@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Make `enable_extensions_core` available.
+    add_import:
+      import: //extensions/buildflags/buildflags.gni
+  - description: |-
+      Depend on theme_source wherever it exists.
+
+      theme_source exists on Android with extensions core, which Brave enables
+      on mobile Android without enable_webui_ntp.
+    regex:
+      re_pattern:
+        'if \(!is_android \|\| enable_webui_ntp\)(\s*\{\s*deps \+= \[
+        "//chrome/browser/ui/webui:theme_source" \])'
+      replace:
+        'if (!is_android || enable_webui_ntp || enable_extensions_core)\1'

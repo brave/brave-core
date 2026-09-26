@@ -1,22 +1,38 @@
 diff --git a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-index 0f93ea0ccf25e8125ecb835da1ca62669db66545..321aa3b16aa67db8f304b856b8c3c5e6f9a69520 100644
+index 0f93ea0ccf25e8125ecb835da1ca62669db66545..3ea0973ac3b7b214ef21af77eef777b4682bd7a1 100644
 --- a/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
 +++ b/chrome/browser/extensions/chrome_component_extension_resource_manager.cc
-@@ -101,6 +101,7 @@ class ChromeComponentExtensionResourceManager::Data {
+@@ -101,6 +101,8 @@ class ChromeComponentExtensionResourceManager::Data {
  };
  
  ChromeComponentExtensionResourceManager::Data::Data() {
 +  [&]() -> void {
++#if !BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID)
    static const webui::ResourcePath kExtraComponentExtensionResources[] = {
  #if BUILDFLAG(IS_CHROMEOS)
      {"web_store/webstore_icon_128.png", IDR_WEBSTORE_APP_ICON_128},
-@@ -189,6 +190,9 @@ ChromeComponentExtensionResourceManager::Data::Data() {
+@@ -115,9 +117,12 @@ ChromeComponentExtensionResourceManager::Data::Data() {
+     {"chrome_app/chrome_app_icon_192.png", IDR_CHROME_APP_ICON_192},
+ #endif  // BUILDFLAG(IS_CHROMEOS)
+   };
++#endif
+ 
+   AddComponentResourceEntries(kComponentExtensionResources);
++#if !BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID)
+   AddComponentResourceEntries(kExtraComponentExtensionResources);
++#endif
+   if (base::FeatureList::IsEnabled(
+           omnibox::kAimEligibilityComponentExtension)) {
+     AddComponentResourceEntries(kAimEligibilityExtensionResources);
+@@ -189,6 +194,11 @@ ChromeComponentExtensionResourceManager::Data::Data() {
          std::move(pdf_viewer_replacements);
    }
  #endif
 +  }();
++  #if BUILDFLAG(ENABLE_EXTENSIONS)
 +  AddComponentResourceEntries(kBraveExtension);
 +  AddComponentResourceEntries(kBraveExtensionGenerated);
++  #endif
  }
  
  void ChromeComponentExtensionResourceManager::Data::AddComponentResourceEntries(

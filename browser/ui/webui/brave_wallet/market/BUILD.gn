@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 assert(enable_brave_wallet)
 
@@ -25,7 +26,7 @@ source_set("market") {
     "//ui/webui/resources:resources_grit",
   ]
 
-  if (!is_android) {
+  if (!is_android || enable_extensions_core) {
     deps += [ "//chrome/browser/ui/webui:theme_source" ]
   }
 }

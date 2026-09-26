@@ -1,0 +1,32 @@
+diff --git a/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc b/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
+index 6f4953f01d03e7ad741c9371ffa89a129a25b320..e2d228ac66f61027a6e9a9d62f41d96c91b312c1 100644
+--- a/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
++++ b/chrome/browser/extensions/api/api_browser_context_keyed_service_factories.cc
+@@ -25,6 +25,7 @@
+ #include "chrome/browser/extensions/api/tabs/tabs_windows_api.h"
+ #include "chrome/browser/extensions/api/web_navigation/web_navigation_api.h"
+ #include "chrome/browser/extensions/commands/command_service.h"
++#include "build/android_buildflags.h"
+ #include "chrome/common/buildflags.h"
+ #include "extensions/buildflags/buildflags.h"
+ #include "printing/buildflags/buildflags.h"
+@@ -69,7 +70,8 @@
+ #include "extensions/browser/api/bluetooth_low_energy/bluetooth_low_energy_api.h"
+ #endif
+ 
+-#if BUILDFLAG(ENABLE_SERVICE_DISCOVERY)
++#if BUILDFLAG(ENABLE_SERVICE_DISCOVERY) && \
++    (!BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID))
+ #include "chrome/browser/extensions/api/mdns/mdns_api.h"
+ #endif
+ 
+@@ -93,7 +95,8 @@ void EnsureApiBrowserContextKeyedServiceFactoriesBuilt() {
+   extensions::HistoryAPI::GetFactoryInstance();
+   extensions::IdentityAPI::GetFactoryInstance();
+   extensions::IncognitoConnectability::EnsureFactoryBuilt();
+-#if BUILDFLAG(ENABLE_SERVICE_DISCOVERY)
++#if BUILDFLAG(ENABLE_SERVICE_DISCOVERY) && \
++    (!BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_DESKTOP_ANDROID))
+   extensions::MDnsAPI::GetFactoryInstance();
+ #endif
+   extensions::OmniboxAPI::GetFactoryInstance();

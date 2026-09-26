@@ -1,0 +1,13 @@
+diff --git a/ui/webui/resources/cr_components/color_change_listener/BUILD.gn b/ui/webui/resources/cr_components/color_change_listener/BUILD.gn
+index f89af6f6537286699fee8fa59dd6e2ce6c9a1605..c236f1486de9b1c1c616aad00db1b675f35a6c6f 100644
+--- a/ui/webui/resources/cr_components/color_change_listener/BUILD.gn
++++ b/ui/webui/resources/cr_components/color_change_listener/BUILD.gn
+@@ -7,7 +7,7 @@ import("//mojo/public/tools/bindings/mojom.gni")
+ import("//ui/webui/resources/tools/build_webui.gni")
+ import("//ui/webui/webui_features.gni")
+ 
+-assert((!is_android && !is_ios) || is_desktop_android)
++assert((!is_android && !is_ios) || enable_extensions_core)
+ 
+ mojom("mojom") {
+   sources = [ "color_change_listener.mojom" ]

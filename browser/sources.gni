@@ -441,6 +441,11 @@ if (!is_android) {
   }
 }
 
+if (!is_android || enable_extensions_core) {
+  brave_chrome_browser_deps +=
+      [ "//ui/webui/resources/cr_components/color_change_listener:mojom" ]
+}
+
 if (!is_android) {
   # Already included on android by upstream
 
@@ -710,6 +715,18 @@ if (enable_extensions) {
     "//extensions/common:common_constants",
     "//extensions/common:extension_features",
   ]
+} else if (enable_extensions_core) {
+  brave_chrome_browser_sources += [
+    "//brave/browser/extensions/android/brave_extension_management.cc",
+    "//brave/browser/extensions/android/brave_extension_management.h",
+  ]
+  brave_chrome_browser_deps += [
+    "//brave/browser/extensions:core",
+    "//chrome/browser/extensions",
+    "//chrome/browser/extensions:chrome_extensions_browser_client",
+    "//extensions/browser",
+    "//extensions/common",
+  ]
 }
 
 if (enable_brave_wayback_machine) {
@@ -862,6 +879,12 @@ if (enable_local_ai) {
   brave_chrome_browser_ui_deps += [
     "//brave/browser/history_embeddings:open_tab_search",
     "//brave/components/history_embeddings:open_tab_passages",
+  ]
+}
+if (is_android && !is_desktop_android && enable_extensions_core) {
+  brave_chrome_browser_ui_deps += [
+    "//brave/browser/extensions/android:side_panel_stub",
+    "//chrome/browser/ui/android/extensions/windowing/internal",
   ]
 }
 if (enable_brave_wallet) {

@@ -34,7 +34,7 @@
         android:layout_height="24dp"
         android:layout_margin="8dp"
         android:layout_gravity="center"
-        app:srcCompat="@drawable/ic_settings"
+        app:srcCompat="@drawable/brave_ic_settings"
         android:contentDescription="@null"/>
 
 </LinearLayout>

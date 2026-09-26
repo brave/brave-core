@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/BUILD.gn b/chrome/browser/extensions/BUILD.gn
-index 563383fc71d7bc73f0af0fd2130879d0844ba2af..d1a3691b05c1ad8d3ea5424e7f1289f4420375e7 100644
+index 563383fc71d7bc73f0af0fd2130879d0844ba2af..abdda9b28dd5e4fe81a6a4ee504e7f8c0781e040 100644
 --- a/chrome/browser/extensions/BUILD.gn
 +++ b/chrome/browser/extensions/BUILD.gn
 @@ -2,6 +2,7 @@
@@ -18,3 +18,28 @@ index 563383fc71d7bc73f0af0fd2130879d0844ba2af..d1a3691b05c1ad8d3ea5424e7f1289f4
    public_deps = [
      "//chrome/browser/extensions/api/messaging",
      "//chrome/browser/media/webrtc",
+@@ -2188,7 +2190,7 @@ source_set("unit_tests") {
+       ]
+     }
+ 
+-    if (enable_service_discovery) {
++    if (enable_service_discovery && (!is_android || is_desktop_android)) {
+       sources += [ "api/mdns/mdns_api_unittest.cc" ]
+       deps += [ "//chrome/browser/extensions/api/mdns" ]
+     }
+@@ -2286,6 +2288,7 @@ source_set("unit_tests") {
+ }
+ 
+ # By default these tests run on Win, Mac, Linux, Chrome OS and desktop Android.
++if (!is_android || is_desktop_android) {
+ source_set("browser_tests") {
+   testonly = true
+ 
+@@ -3186,6 +3189,7 @@ source_set("browser_tests") {
+     deps += [ "//chrome/browser/ui/views/web_apps:launch_dialogs" ]
+   }
+ }
++}
+ 
+ source_set("interactive_ui_tests") {
+   testonly = true
