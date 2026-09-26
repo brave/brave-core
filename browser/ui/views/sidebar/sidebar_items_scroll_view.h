@@ -30,7 +30,7 @@ namespace sidebar {
 class SidebarBrowserTest;
 }  // namespace sidebar
 
-class BraveBrowser;
+class BrowserWindowInterface;
 class BrowserWindowInterface;
 class SidebarItemDragContext;
 class SidebarItemsContentsView;
@@ -45,7 +45,7 @@ class SidebarItemsScrollView : public views::View,
                                public sidebar::SidebarModel::Observer {
   METADATA_HEADER(SidebarItemsScrollView, views::View)
  public:
-  explicit SidebarItemsScrollView(BraveBrowser* browser);
+  explicit SidebarItemsScrollView(BrowserWindowInterface* browser);
   ~SidebarItemsScrollView() override;
 
   SidebarItemsScrollView(const SidebarItemsScrollView&) = delete;
