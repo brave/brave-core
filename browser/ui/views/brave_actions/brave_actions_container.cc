@@ -18,7 +18,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/metadata/metadata_impl_macros.h"

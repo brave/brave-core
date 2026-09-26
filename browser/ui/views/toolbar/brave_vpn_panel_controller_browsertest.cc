@@ -7,7 +7,6 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/skus/common/features.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/test/test_browser_dialog.h"
 #include "content/public/test/browser_test.h"

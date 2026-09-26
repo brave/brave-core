@@ -72,7 +72,6 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_test_util.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/ui_test_utils.h"
 #endif
 
