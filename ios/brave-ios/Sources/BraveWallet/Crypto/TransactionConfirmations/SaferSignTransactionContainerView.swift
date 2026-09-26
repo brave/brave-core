@@ -15,10 +15,8 @@ struct SaferSignTransactionContainerView: View {
   /// The network the transaction belongs to
   let network: BraveWallet.NetworkInfo?
 
-  /// The address of the account making the swap
-  let fromAddress: String?
-  /// The name of the account
-  let namedFromAddress: String?
+  /// Signing account
+  let fromAccountInfo: BraveWallet.AccountInfo
 
   /// The token being swapped from.
   let fromToken: BraveWallet.BlockchainToken?
@@ -48,8 +46,7 @@ struct SaferSignTransactionContainerView: View {
   ) {
     self.originInfo = parsedTransaction.transaction.originInfo
     self.network = parsedTransaction.network
-    self.fromAddress = parsedTransaction.fromAccountInfo.address
-    self.namedFromAddress = parsedTransaction.namedFromAddress
+    self.fromAccountInfo = parsedTransaction.fromAccountInfo
     if case .ethSwap(let details) = parsedTransaction.details {
       self.fromToken = details.fromToken
       self.fromAmount = details.fromAmount
@@ -72,8 +69,7 @@ struct SaferSignTransactionContainerView: View {
 
       SaferSignTransactionView(
         network: network,
-        fromAddress: fromAddress,
-        namedFromAddress: namedFromAddress,
+        fromAccountInfo: fromAccountInfo,
         receiverAddress: nil,
         namedReceiverAddress: nil,
         fromToken: fromToken,

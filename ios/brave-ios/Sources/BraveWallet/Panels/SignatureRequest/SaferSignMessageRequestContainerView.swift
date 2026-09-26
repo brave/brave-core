@@ -15,7 +15,6 @@ struct SaferSignMessageRequestContainerView: View {
   let requestIndex: Int
   let requestCount: Int
 
-  let namedFromAddress: String
   let receiverAddress: String
   let namedReceiverAddress: String
   let cowSwapOrder: BraveWallet.CowSwapOrder
@@ -59,8 +58,7 @@ struct SaferSignMessageRequestContainerView: View {
         } else {
           SaferSignTransactionView(
             network: network,
-            fromAddress: account.address,
-            namedFromAddress: namedFromAddress,
+            fromAccountInfo: account,
             receiverAddress: receiverAddress,
             namedReceiverAddress: namedReceiverAddress,
             fromToken: ethSwapDetails?.fromToken,
