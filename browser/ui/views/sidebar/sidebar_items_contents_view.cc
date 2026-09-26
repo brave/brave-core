@@ -34,6 +34,7 @@
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -322,6 +323,13 @@ void SidebarItemsContentsView::SetDefaultImageFor(
   SkColor text_color = SK_ColorWHITE;
   if (const ui::ColorProvider* color_provider = GetColorProvider()) {
     text_color = color_provider->GetColor(kColorSidebarButtonBase);
+  }
+
+  if (item.url.host() == kRewardsPageHost) {
+    SetImageForItem(item,
+                    gfx::CreateVectorIcon(kBatIcon, kIconSize.width(),
+                                          text_color));
+    return;
   }
 
   const int scale = GetWidget()->GetCompositor()->device_scale_factor();
