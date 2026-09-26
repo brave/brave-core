@@ -10,7 +10,6 @@
 #include "base/test/bind.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"

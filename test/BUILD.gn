@@ -797,6 +797,10 @@ static_library("browser_test_support") {
     "//chrome/browser/ui",
     "//chrome/test/base:chrome_test_launcher",
   ]
+
+  if (!is_android) {
+    deps += [ "//brave/browser/ui:brave_browser_header" ]
+  }
 }
 
 static_library("browser_tests_runner") {

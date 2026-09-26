@@ -11,7 +11,6 @@
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -19,6 +18,8 @@
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -41,7 +42,7 @@ namespace {
 
 constexpr gfx::Size kAddItemBubbleEntrySize{242, 40};
 
-sidebar::SidebarService* GetSidebarService(Browser* browser) {
+sidebar::SidebarService* GetSidebarService(BrowserWindowInterface* browser) {
   return sidebar::SidebarServiceFactory::GetForProfile(browser->GetProfile());
 }
 
@@ -105,7 +106,7 @@ END_METADATA
 
 // static
 views::Widget* SidebarAddItemBubbleDelegateView::Create(
-    BraveBrowser* browser,
+    BrowserWindowInterface* browser,
     views::View* anchor_view) {
   auto* delegate = new SidebarAddItemBubbleDelegateView(browser, anchor_view);
   auto* bubble = views::BubbleDialogDelegateView::CreateBubble(delegate);
@@ -121,7 +122,7 @@ views::Widget* SidebarAddItemBubbleDelegateView::Create(
 }
 
 SidebarAddItemBubbleDelegateView::SidebarAddItemBubbleDelegateView(
-    BraveBrowser* browser,
+    BrowserWindowInterface* browser,
     views::View* anchor_view)
     : BubbleDialogDelegateView(
           anchor_view,
@@ -191,8 +192,9 @@ void SidebarAddItemBubbleDelegateView::AddChildViews() {
 
   const auto hidden_default_items =
       GetSidebarService(browser_)->GetHiddenDefaultSidebarItems();
-  if (hidden_default_items.empty())
+  if (hidden_default_items.empty()) {
     return;
+  }
 
   auto* separator = AddChildView(std::make_unique<views::Separator>());
   if (color_provider) {

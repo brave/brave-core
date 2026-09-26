@@ -24,7 +24,6 @@
 #include "brave/browser/brave_ads/ads_service_factory.h"
 #include "brave/browser/net/brave_network_audit_allowed_lists.h"
 #include "brave/browser/net/brave_network_audit_test_helper.h"
-#include "brave/browser/ui/brave_browser.h"
 #include "brave/components/brave_ads/core/browser/service/ads_service.h"
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_waiter.h"
 #include "brave/components/constants/brave_paths.h"
