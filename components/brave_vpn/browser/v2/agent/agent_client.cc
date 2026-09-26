@@ -46,9 +46,9 @@ constexpr net::BackoffEntry::Policy kBackoffPolicy = {
     .always_use_initial_delay = false,
 };
 
-// How long the agent gets to finish the handshake, Initialize() through
-// BindBrowserHost(), before the connection is treated as failed.
-constexpr base::TimeDelta kHandshakeTimeout = base::Seconds(10);
+// How long the agent gets to finish the handshake: Initialize(), verifying the
+// agent, then BindBrowserHost(), before the connection is treated as failed.
+constexpr base::TimeDelta kHandshakeTimeout = base::Seconds(15);
 
 // How long connecting may keep failing before a customer is told, for failures
 // a retry could still fix.
@@ -59,23 +59,29 @@ constexpr base::TimeDelta kMinStableSession = base::Seconds(3);
 
 // A helper that establishes the transport to the agent's IPC server and returns
 // the pipe its BrowserHostProvider is bound to.
-mojo::ScopedMessagePipeHandle ConnectToAgentServer(
+std::optional<AgentClient::Transport> ConnectToAgentServer(
     const mojo::NamedPlatformChannel::ServerName& server_name) {
   mojo::PlatformChannelEndpoint endpoint =
       named_mojo_ipc_server::ConnectToServer(server_name);
   if (!endpoint.is_valid()) {
     // The ordinary case on a cold browser: nothing is listening yet.
-    return mojo::ScopedMessagePipeHandle();
+    return std::nullopt;
   }
-  mojo::ScopedMessagePipeHandle pipe =
+  // Identity capture should happen before the invitation is accepted, because
+  // that consumes the endpoint and with it any chance of pinning the peer from
+  // the transport.
+  AgentClient::Transport transport;
+  transport.identity = AgentIdentity::Create(endpoint);
+  transport.pipe =
       mojo::IncomingInvitation::AcceptIsolated(std::move(endpoint));
-  if (!pipe.is_valid()) {
+  if (!transport.pipe.is_valid()) {
     // Reached the agent's channel but couldn't turn it into a connection, which
     // is not something a retry usually fixes. Logged here because this is the
     // only place that can tell the two failures apart.
     LOG(ERROR) << "Agent did not accept an isolated invitation";
+    return std::nullopt;
   }
-  return pipe;
+  return transport;
 }
 
 bool IsRetryableError(AgentClient::Error error) {
@@ -209,22 +215,11 @@ AgentClient::ConnectResult AgentClient::ConnectBlocking(
     // Already logged by the resolver.
     return base::unexpected(ConnectFailure::kNoServerName);
   }
-
-  // TODO(https://github.com/brave/brave-browser/issues/54608)
-  // Verify the agent server's identity here, before the endpoint is
-  // handed to mojo. The agent verifies the browser after BindBrowserHost()
-  // arrives, but this direction is unchecked: a malicious process in the
-  // session can create a pipe with the agent's name, and the name is
-  // enumerable. The handle is still a plain pipe at this point, so the server
-  // pid can be fetched and fed to the same signature check the agent uses to
-  // verify the browser. Until then, treat everything reachable through this
-  // connection as talking to a peer we have not authenticated.
-
-  mojo::ScopedMessagePipeHandle pipe = connector.Run(*server_name);
-  if (!pipe.is_valid()) {
+  std::optional<Transport> transport = connector.Run(*server_name);
+  if (!transport || !transport->pipe.is_valid()) {
     return base::unexpected(ConnectFailure::kNoAgentRunning);
   }
-  return pipe;
+  return std::move(*transport);
 }
 
 void AgentClient::StartConnect() {
@@ -263,11 +258,20 @@ void AgentClient::OnConnectBlockingCompleted(ConnectResult result) {
   // lasts is evidence that connecting works.
   not_running_reported_ = false;
 
+  // The transport is up but the peer could not be pinned, so there is nothing
+  // to verify the agent against. Local and likely transient, hence retryable.
+  agent_identity_ = std::move(result->identity);
+  if (!agent_identity_) {
+    VLOG(1) << "Could not capture the agent's identity";
+    TeardownAndRetry(Error::kAgentNotResponding);
+    return;
+  }
+
   // The pipe the transport was established on is what the agent bound its
   // BrowserHostProvider to. Dropping it later drops the transport with it. Pass
   // 0 as version as we don't support [MinVersion]-based versioning yet.
   provider_.Bind(mojo::PendingRemote<mojom::BrowserHostProvider>(
-      std::move(result.value()), /*version=*/0));
+      std::move(result->pipe), /*version=*/0));
 
   provider_.set_disconnect_handler(base::BindOnce(
       &AgentClient::OnProviderDisconnected, weak_factory_.GetWeakPtr()));
@@ -276,12 +280,8 @@ void AgentClient::OnConnectBlockingCompleted(ConnectResult result) {
                          base::BindOnce(&AgentClient::OnHandshakeTimeout,
                                         weak_factory_.GetWeakPtr()));
 
-  // TODO(https://github.com/brave/brave-browser/issues/54608)
-  // No identity channel yet: an invalid handle is how the optional argument is
-  // sent as null, and it tells the agent this browser is not asking to verify
-  // it. Agent verification comes in a follow-up.
   provider_->Initialize(
-      mojom::kProtocolVersion, mojo::PlatformHandle(),
+      mojom::kProtocolVersion, agent_identity_->TakeSendHandle(),
       base::BindOnce(&AgentClient::OnInitResult, weak_factory_.GetWeakPtr()));
 }
 
@@ -322,6 +322,41 @@ void AgentClient::OnInitResult(mojom::BrowserInitResult result) {
       // or the peer is not the agent.
       VLOG(1) << "Agent reports an invalid initialization request";
       EnterUnavailable(Error::kUnexpectedBehavior);
+      return;
+  }
+
+  // Verify the agent before handing it anything.
+  agent_identity_->Verify(base::BindOnce(
+      &AgentClient::OnAgentVerified, connection_weak_factory_.GetWeakPtr()));
+}
+
+void AgentClient::OnAgentVerified(AgentIdentity::VerificationResult result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  // Unlike the Mojo handshake replies, this one is not carried by |provider_|,
+  // and it is cancelled by the weak pointer invalidation rather than by
+  // dropping the remote. The check covers arriving in a state no longer
+  // expecting it, which is a condition rather than an invariant.
+  if (state_ != State::kConnecting) {
+    return;
+  }
+
+  switch (result) {
+    case AgentIdentity::VerificationResult::kAccepted:
+      break;
+
+    case AgentIdentity::VerificationResult::kRejected:
+      // A verdict about the binary serving this connection, which does not
+      // change while it runs.
+      VLOG(1) << "Agent failed verification";
+      EnterUnavailable(Error::kUnexpectedBehavior);
+      return;
+
+    case AgentIdentity::VerificationResult::kInconclusive:
+      // No identity message, image replaced mid-update, cert rotated. Not a
+      // verdict, so a fresh connection may succeed.
+      VLOG(1) << "Agent could not be verified";
+      TeardownAndRetry(Error::kAgentNotResponding);
       return;
   }
 
@@ -541,6 +576,13 @@ void AgentClient::ResetSession() {
 void AgentClient::ResetConnection() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ResetSession();
+
+  // Cancels everything still pointing at this attempt, including whatever comes
+  // back from a thread pool. Every callback is rebound after this runs, so
+  // nothing bound earlier may be needed later.
+  connection_weak_factory_.InvalidateWeakPtrs();
+
+  agent_identity_.reset();
   provider_.reset();
 }
 

@@ -11,6 +11,8 @@ static_library("agent") {
   sources = [
     "agent_client.cc",
     "agent_client.h",
+    "agent_identity.cc",
+    "agent_identity.h",
     "agent_launcher.cc",
     "agent_launcher.h",
     "agent_launcher_internal.h",
@@ -19,11 +21,20 @@ static_library("agent") {
   ]
 
   if (is_mac) {
-    sources += [ "agent_launcher_mac.mm" ]
+    sources += [
+      "agent_identity_mac.cc",
+      "agent_launcher_mac.mm",
+    ]
   } else if (is_linux) {
-    sources += [ "agent_launcher_linux.cc" ]
+    sources += [
+      "agent_identity_linux.cc",
+      "agent_launcher_linux.cc",
+    ]
   } else if (is_win) {
-    sources += [ "agent_launcher_win.cc" ]
+    sources += [
+      "agent_identity_win.cc",
+      "agent_launcher_win.cc",
+    ]
   }
 
   public_deps = [
@@ -49,6 +60,8 @@ source_set("test_support") {
   sources = [
     "test/fake_agent.cc",
     "test/fake_agent.h",
+    "test/fake_agent_identity.cc",
+    "test/fake_agent_identity.h",
     "test/fake_agent_launcher.cc",
     "test/fake_agent_launcher.h",
   ]
