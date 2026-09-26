@@ -3,9 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+#include <optional>
 #include <string>
 #include <string_view>
 #include <tuple>
+#include <utility>
 
 #include "base/command_line.h"
 #include "base/files/file_path.h"
@@ -14,7 +17,9 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/brave_content_browser_client.h"
+#include "brave/components/brave_component_updater/browser/mock_on_demand_updater.h"
 #include "brave/components/local_ai/core/features.h"
+#include "brave/components/local_ai/core/on_device_speech_models_component_installer.h"
 #include "brave/components/local_ai/core/on_device_speech_models_state.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "brave/components/local_ai/core/pref_names.h"
@@ -23,7 +28,9 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_service.h"
+#include "components/update_client/update_client_errors.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/common/content_client.h"
@@ -46,14 +53,16 @@ namespace {
 
 constexpr char kUnavailable[] = "unavailable";
 constexpr char kDownloadable[] = "downloadable";
+constexpr char kAvailable[] = "available";
 constexpr char kTranscript[] = "hello";
 constexpr char kError[] = "error: ";
 
-// What a page is told by `available()`, `install()` and then `start()`.
-// `start` is the transcript, or the start of an error.
+// What a page is told by `available()`, `install()`, `available()` again and
+// then `start()`. `start` is the transcript, or the start of an error.
 struct Expected {
   std::string_view available;
   bool installed;
+  std::string_view available_again;
   std::string_view start;
 };
 
@@ -102,6 +111,20 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
         GetChromeTestDataDir());
     ASSERT_TRUE(embedded_https_test_server().Start());
 
+    // Replaces the on-demand updater browser startup installed, so it cannot
+    // be built with the fixture.
+    on_demand_updater_ =
+        std::make_unique<brave_component_updater::MockOnDemandUpdater>();
+
+    // Browser tests run with `--disable-component-update`
+    // (`chrome/test/base/test_launcher_utils.cc`), so startup registers no
+    // components and the registrar has no update service. Start it here
+    // instead. Nothing reaches the network, since the updater is mocked.
+    local_ai::ManageOnDeviceSpeechModelsComponentRegistration(
+        g_browser_process->component_updater(),
+        g_browser_process->local_state());
+    DrainRegistrationRequest();
+
     original_client_ = content::SetBrowserClientForTesting(&client_);
     // Only a recognition run by Brave's engine can read this back.
     fake_session_.RespondOnNextAudioChunk(kTranscript);
@@ -109,9 +132,13 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
 
   void TearDownOnMainThread() override {
     content::SetBrowserClientForTesting(original_client_);
+    // Drops the registrar's pointers to this browser, so the next `Manage...`
+    // call can start it again.
+    local_ai::ShutdownOnDeviceSpeechModelsComponentRegistration();
     // Process-wide, so leave it as a fresh browser would have it.
     local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
         base::FilePath());
+    on_demand_updater_.reset();
     InProcessBrowserTest::TearDownOnMainThread();
   }
 
@@ -126,6 +153,25 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
   void PublishModel() {
     local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
         base::FilePath(FILE_PATH_LITERAL("/brave/speech/models")));
+  }
+
+  // Answers the download `BraveSodaInstaller::InstallLanguage` asks for, and
+  // expects to be asked. `publish_model` stands in for the component
+  // arriving, which a real download does before the request it answers is
+  // settled.
+  void AnswerDownloadWith(update_client::Error error, bool publish_model) {
+    EXPECT_CALL(
+        *on_demand_updater_,
+        EnsureInstalled(local_ai::kOnDeviceSpeechModelsComponentId, testing::_))
+        .Times(testing::AtLeast(1))
+        .WillRepeatedly(
+            [this, error, publish_model](const std::string& id,
+                                         component_updater::Callback callback) {
+              if (publish_model) {
+                PublishModel();
+              }
+              std::move(callback).Run(error);
+            });
   }
 
   void NavigateToUrl(const std::string& host) {
@@ -192,6 +238,7 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
                         const Expected& expected) {
     EXPECT_EQ(expected.available, Available(quality));
     EXPECT_EQ(expected.installed, Install(quality));
+    EXPECT_EQ(expected.available_again, Available(quality));
     EXPECT_THAT(StartRecognition(quality, process_locally).ExtractString(),
                 testing::StartsWith(expected.start));
 
@@ -204,6 +251,26 @@ class BraveOnDeviceSpeechBrowserTest : public InProcessBrowserTest {
   TestContentBrowserClient client_{fake_session_};
 
  private:
+  // Starting the registrar asks for a download of its own while the feature
+  // is on. Draining it leaves a test body's request to start a fresh one
+  // rather than join this.
+  void DrainRegistrationRequest() {
+    EXPECT_CALL(
+        *on_demand_updater_,
+        EnsureInstalled(local_ai::kOnDeviceSpeechModelsComponentId, testing::_))
+        .WillRepeatedly(
+            [](const std::string& id, component_updater::Callback callback) {
+              std::move(callback).Run(update_client::Error::NONE);
+            });
+    base::test::TestFuture<bool> answered;
+    local_ai::MaybeRegisterOnDeviceSpeechModelsComponent(
+        answered.GetCallback());
+    ASSERT_TRUE(answered.Wait());
+    testing::Mock::VerifyAndClearExpectations(on_demand_updater_.get());
+  }
+
+  std::unique_ptr<brave_component_updater::MockOnDemandUpdater>
+      on_demand_updater_;
   raw_ptr<content::ContentBrowserClient> original_client_ = nullptr;
   base::test::ScopedFeatureList feature_list_;
 };
@@ -213,19 +280,22 @@ namespace {
 struct ServedCase {
   bool model_on_disk;
   bool process_locally;
+  // How the download `install()` asks for is answered, when it asks for one.
+  std::optional<update_client::Error> download;
   Expected expected;
 };
 
 // What a fresh origin is told for a quality Brave's model serves, in the order
-// `available()`, `install()`, then `start()`. The global `SodaInstaller` is a
-// stub that installs nothing, so `install()` is refused in every row.
+// `available()`, `install()`, `available()` again, then `start()`. The first
+// `available()` is downloadable in every row, because upstream masks the
+// answer for an origin that has not installed.
 constexpr ServedCase kServedCases[] = {
-    // The model is on disk, but upstream masks it as downloadable for an
-    // origin that has not installed, and nothing can unmask it. The renderer
-    // refuses a `processLocally` recognition unless the page reads available.
+    // The model is already on disk, so `install()` succeeds without a download
+    // and unmasks the origin. The page then reads available, which the
+    // renderer needs before it starts a `processLocally` recognition.
     {.model_on_disk = true,
      .process_locally = true,
-     .expected = {kDownloadable, false, kError}},
+     .expected = {kDownloadable, true, kAvailable, kTranscript}},
     // Upstream masks only what `OnDeviceSpeechRecognitionImpl` answers, which
     // `start()` without `processLocally` never asks, so it runs on Brave's
     // engine. Upstream would hand a recognition on a MediaStreamTrack to its
@@ -233,17 +303,32 @@ constexpr ServedCase kServedCases[] = {
     // instead.
     {.model_on_disk = true,
      .process_locally = false,
-     .expected = {kDownloadable, false, kTranscript}},
-    // No model, so the page is told it can download one, and the renderer
-    // refuses the `processLocally` recognition.
+     .expected = {kDownloadable, true, kAvailable, kTranscript}},
+    // `install()` downloads the model and unmasks the origin, so the
+    // `processLocally` recognition starts.
     {.model_on_disk = false,
      .process_locally = true,
-     .expected = {kDownloadable, false, kError}},
-    // No model, so the recognition falls back to the cloud engine, which
-    // fails.
+     .download = update_client::Error::NONE,
+     .expected = {kDownloadable, true, kAvailable, kTranscript}},
+    // The download puts the model on disk, so the recognition runs on Brave's
+    // engine.
     {.model_on_disk = false,
      .process_locally = false,
-     .expected = {kDownloadable, false, kError}},
+     .download = update_client::Error::NONE,
+     .expected = {kDownloadable, true, kAvailable, kTranscript}},
+    // The download fails, and the installer's error report settles `install()`
+    // as false rather than leaving it waiting. The page stays at downloadable,
+    // so the renderer refuses the `processLocally` recognition.
+    {.model_on_disk = false,
+     .process_locally = true,
+     .download = update_client::Error::INVALID_ARGUMENT,
+     .expected = {kDownloadable, false, kDownloadable, kError}},
+    // The download fails, so with no model the recognition falls back to the
+    // cloud engine, which fails.
+    {.model_on_disk = false,
+     .process_locally = false,
+     .download = update_client::Error::INVALID_ARGUMENT,
+     .expected = {kDownloadable, false, kDownloadable, kError}},
 };
 
 std::string ServedCaseName(
@@ -252,6 +337,10 @@ std::string ServedCaseName(
   const auto& [quality, served_case] = info.param;
   return std::string(quality == "command" ? "Command" : "Dictation") +
          (served_case.model_on_disk ? "WithModel" : "WithoutModel") +
+         (served_case.download &&
+                  *served_case.download != update_client::Error::NONE
+              ? "DownloadFails"
+              : "") +
          (served_case.process_locally ? "ProcessLocally"
                                       : "WithoutProcessLocally");
 }
@@ -269,6 +358,11 @@ IN_PROC_BROWSER_TEST_P(BraveOnDeviceSpeechServedBrowserTest,
   const auto& [quality, served_case] = GetParam();
   if (served_case.model_on_disk) {
     PublishModel();
+  }
+  if (served_case.download) {
+    AnswerDownloadWith(
+        *served_case.download,
+        /*publish_model=*/*served_case.download == update_client::Error::NONE);
   }
   NavigateToUrl("foo.com");
 
@@ -296,8 +390,8 @@ IN_PROC_BROWSER_TEST_P(BraveOnDeviceSpeechQualityBrowserTest,
   NavigateToUrl("foo.com");
 
   EXPECT_EQ(kDownloadable, Available(GetParam()));
-  EXPECT_EQ(false, Install(GetParam()));
-  EXPECT_EQ(kDownloadable, Available(GetParam()));
+  EXPECT_EQ(true, Install(GetParam()));
+  EXPECT_EQ(kAvailable, Available(GetParam()));
 
   g_browser_process->local_state()->SetBoolean(
       local_ai::prefs::kBraveLocalAIEnabled, false);
@@ -337,7 +431,7 @@ IN_PROC_BROWSER_TEST_P(BraveOnDeviceSpeechConversationBrowserTest, Refused) {
   NavigateToUrl("foo.com");
 
   ExpectPageIsTold("conversation", process_locally(),
-                   {kUnavailable, false, kError});
+                   {kUnavailable, false, kUnavailable, kError});
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -394,7 +488,8 @@ IN_PROC_BROWSER_TEST_P(BraveOnDeviceSpeechFeatureOffBrowserTest, Refused) {
   }
   NavigateToUrl("foo.com");
 
-  ExpectPageIsTold(quality(), process_locally(), {kUnavailable, false, kError});
+  ExpectPageIsTold(quality(), process_locally(),
+                   {kUnavailable, false, kUnavailable, kError});
 }
 
 INSTANTIATE_TEST_SUITE_P(
