@@ -8,19 +8,25 @@
 #include <stddef.h>
 
 #include <limits>
+#include <memory>
 #include <string>
 #include <string_view>
 #include <type_traits>
 #include <utility>
 
+#include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
 #include "base/numerics/clamped_math.h"
-#include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/skus/common/skus_sdk.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/testing_pref_service.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -37,12 +43,19 @@ class AIChatMetricsUnitTest : public testing::Test {
     profile_prefs_.registry()->RegisterBooleanPref(
         prefs::kBraveAIChatTabOrganizationEnabled, false);
     profile_prefs_.registry()->RegisterTimePref(prefs::kLastAcceptedDisclaimer,
-                                                base::Time::Now());
+                                                base::Time());
     profile_prefs_.registry()->RegisterDictionaryPref(
         prefs::kBraveAIChatSkills);
     task_environment_.FastForwardBy(base::Days(30));
-    ai_chat_metrics_ =
-        std::make_unique<AIChatMetrics>(&local_state_, &profile_prefs_);
+    auto credential_manager = std::make_unique<MockAIChatCredentialManager>();
+    mock_credential_manager_ = credential_manager.get();
+    ai_chat_metrics_ = std::make_unique<AIChatMetrics>(
+        &local_state_, &profile_prefs_, std::move(credential_manager));
+  }
+
+  void EnableAIChat(bool is_new_user) {
+    profile_prefs_.SetTime(prefs::kLastAcceptedDisclaimer, base::Time::Now());
+    ai_chat_metrics_->RecordEnabled(is_new_user);
   }
 
   void RecordPrompts(std::string id, size_t prompt_count) {
@@ -54,16 +67,6 @@ class AIChatMetricsUnitTest : public testing::Test {
                                         conversation_info.first,
                                         conversation_info.second);
     }
-  }
-
-  AIChatMetrics::RetrievePremiumStatusCallback GetPremiumCallback() {
-    bool is_premium = is_premium_;
-    return base::BindLambdaForTesting(
-        [is_premium](mojom::Service::GetPremiumStatusCallback callback) {
-          std::move(callback).Run(is_premium ? mojom::PremiumStatus::Active
-                                             : mojom::PremiumStatus::Inactive,
-                                  nullptr);
-        });
   }
 
  protected:
@@ -83,6 +86,25 @@ class AIChatMetricsUnitTest : public testing::Test {
     size_t current_history_size_ = 0;
     bool should_send_page_contents_ = false;
     mojom::APIError current_error_ = mojom::APIError::None;
+  };
+
+  class MockAIChatCredentialManager : public AIChatCredentialManager {
+   public:
+    MockAIChatCredentialManager()
+        : AIChatCredentialManager(
+              base::BindRepeating([]() {
+                return mojo::PendingRemote<skus::mojom::SkusService>();
+              }),
+              nullptr) {}
+
+    void GetPremiumStatus(
+        mojom::Service::GetPremiumStatusCallback callback) override {
+      std::move(callback).Run(is_premium ? mojom::PremiumStatus::Active
+                                         : mojom::PremiumStatus::Inactive,
+                              nullptr);
+    }
+
+    bool is_premium = false;
   };
 
   std::pair<mojom::ConversationPtr, mojom::ConversationTurnPtr>
@@ -105,41 +127,43 @@ class AIChatMetricsUnitTest : public testing::Test {
   }
 
   MockConversationHandler conversation_handler_;
-  bool is_premium_ = false;
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
   TestingPrefServiceSimple profile_prefs_;
   base::HistogramTester histogram_tester_;
   std::unique_ptr<AIChatMetrics> ai_chat_metrics_;
+  raw_ptr<MockAIChatCredentialManager> mock_credential_manager_ = nullptr;
 };
 
 TEST_F(AIChatMetricsUnitTest, Enabled) {
-  ai_chat_metrics_->RecordEnabled(false, false, GetPremiumCallback());
+  ai_chat_metrics_->RecordEnabled(/*is_new_user=*/false);
   histogram_tester_.ExpectTotalCount(kEnabledHistogramName, 0);
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+
+  EnableAIChat(/*is_new_user=*/false);
   histogram_tester_.ExpectUniqueSample(kEnabledHistogramName, 1, 1);
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  ai_chat_metrics_->RecordEnabled(/*is_new_user=*/false);
   histogram_tester_.ExpectUniqueSample(kEnabledHistogramName, 1, 2);
 
-  is_premium_ = true;
-  ai_chat_metrics_->OnPremiumStatusUpdated(
-      true, false, mojom::PremiumStatus::Active, nullptr);
+  // Advance past premium check interval and re-check with premium active
+  mock_credential_manager_->is_premium = true;
+  task_environment_.FastForwardBy(base::Days(1));
+  ai_chat_metrics_->RecordEnabled(/*is_new_user=*/false);
   histogram_tester_.ExpectBucketCount(kEnabledHistogramName, 2, 1);
 
-  is_premium_ = false;
+  mock_credential_manager_->is_premium = false;
   // should check premium status only after 24 hours have elapsed
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  ai_chat_metrics_->RecordEnabled(/*is_new_user=*/false);
   histogram_tester_.ExpectBucketCount(kEnabledHistogramName, 2, 2);
 
   task_environment_.FastForwardBy(base::Days(1));
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  ai_chat_metrics_->RecordEnabled(/*is_new_user=*/false);
   histogram_tester_.ExpectBucketCount(kEnabledHistogramName, 1, 3);
 
   histogram_tester_.ExpectTotalCount(kEnabledHistogramName, 5);
 }
 
 TEST_F(AIChatMetricsUnitTest, ChatCount) {
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/false);
   histogram_tester_.ExpectTotalCount(kChatCountHistogramName, 0);
 
   RecordPrompts("abc", 5);
@@ -174,7 +198,7 @@ TEST_F(AIChatMetricsUnitTest, ChatCount) {
 }
 
 TEST_F(AIChatMetricsUnitTest, AvgPromptsPerChat) {
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/false);
   histogram_tester_.ExpectTotalCount(kAvgPromptCountHistogramName, 0);
 
   RecordPrompts("abc", 1);
@@ -209,9 +233,7 @@ TEST_F(AIChatMetricsUnitTest, AvgPromptsPerChat) {
 }
 
 TEST_F(AIChatMetricsUnitTest, UsageDailyWeeklyAndMonthly) {
-  is_premium_ = false;
-
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/false);
   task_environment_.RunUntilIdle();
   histogram_tester_.ExpectTotalCount(kUsageDailyHistogramName, 0);
   histogram_tester_.ExpectTotalCount(kUsageWeeklyHistogramName, 0);
@@ -223,9 +245,9 @@ TEST_F(AIChatMetricsUnitTest, UsageDailyWeeklyAndMonthly) {
   histogram_tester_.ExpectUniqueSample(kUsageWeeklyHistogramName, 1, 1);
   histogram_tester_.ExpectUniqueSample(kUsageMonthlyHistogramName, 1, 1);
 
-  is_premium_ = true;
-  ai_chat_metrics_->OnPremiumStatusUpdated(
-      true, false, mojom::PremiumStatus::Active, nullptr);
+  mock_credential_manager_->is_premium = true;
+  task_environment_.FastForwardBy(base::Days(1));
+  ai_chat_metrics_->RecordEnabled(/*is_new_user=*/false);
   RecordPrompts("def", 1);
   task_environment_.FastForwardBy(base::Seconds(5));
   histogram_tester_.ExpectBucketCount(kUsageDailyHistogramName, 2, 1);
@@ -238,7 +260,7 @@ TEST_F(AIChatMetricsUnitTest, UsageDailyWeeklyAndMonthly) {
 }
 
 TEST_F(AIChatMetricsUnitTest, FeatureUsageNotNewUser) {
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/false);
 
   // Should not mark as new user, even if first/last timestamps were not
   // recorded internally
@@ -250,10 +272,10 @@ TEST_F(AIChatMetricsUnitTest, FeatureUsageNotNewUser) {
 }
 
 TEST_F(AIChatMetricsUnitTest, FeatureUsage) {
-  ai_chat_metrics_->RecordEnabled(false, false, GetPremiumCallback());
+  ai_chat_metrics_->RecordEnabled(/*is_new_user=*/false);
   histogram_tester_.ExpectUniqueSample(kNewUserReturningHistogramName, 0, 1);
 
-  ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/true);
   histogram_tester_.ExpectUniqueSample(kNewUserReturningHistogramName, 0, 2);
   histogram_tester_.ExpectTotalCount(kLastUsageTimeHistogramName, 0);
 
@@ -270,19 +292,20 @@ TEST_F(AIChatMetricsUnitTest, FeatureUsage) {
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 TEST_F(AIChatMetricsUnitTest, AcquisitionSource) {
+  EnableAIChat(/*is_new_user=*/false);
   histogram_tester_.ExpectTotalCount(kAcquisitionSourceHistogramName, 0);
 
   ai_chat_metrics_->HandleOpenViaEntryPoint(EntryPoint::kSidebar);
   histogram_tester_.ExpectTotalCount(kAcquisitionSourceHistogramName, 0);
 
-  ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
+  ai_chat_metrics_->RecordEnabled(/*is_new_user=*/true);
   histogram_tester_.ExpectUniqueSample(kAcquisitionSourceHistogramName, 1, 1);
 
   ai_chat_metrics_->RecordOmniboxOpen();
   histogram_tester_.ExpectUniqueSample(kAcquisitionSourceHistogramName, 1, 1);
 
   ai_chat_metrics_->OnSendingPromptWithNTP();
-  ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
+  ai_chat_metrics_->RecordEnabled(/*is_new_user=*/true);
   histogram_tester_.ExpectTotalCount(kAcquisitionSourceHistogramName, 2);
   histogram_tester_.ExpectBucketCount(kAcquisitionSourceHistogramName, 7, 1);
 }
@@ -295,7 +318,7 @@ TEST_F(AIChatMetricsUnitTest, OmniboxOpens) {
   }
   histogram_tester_.ExpectTotalCount(kOmniboxOpensHistogramName, 0);
 
-  ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/true);
   histogram_tester_.ExpectUniqueSample(kOmniboxOpensHistogramName, 0, 1);
 
   ai_chat_metrics_->RecordOmniboxOpen();
@@ -323,7 +346,7 @@ TEST_F(AIChatMetricsUnitTest, OmniboxOpens) {
 }
 
 TEST_F(AIChatMetricsUnitTest, OmniboxWeekCompare) {
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/false);
   histogram_tester_.ExpectTotalCount(kOmniboxWeekCompareHistogramName, 0);
 
   for (size_t i = 0; i < 10; i++) {
@@ -331,7 +354,7 @@ TEST_F(AIChatMetricsUnitTest, OmniboxWeekCompare) {
   }
   histogram_tester_.ExpectTotalCount(kOmniboxWeekCompareHistogramName, 0);
 
-  ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
+  ai_chat_metrics_->RecordEnabled(/*is_new_user=*/true);
   for (size_t i = 0; i < 2; i++) {
     ai_chat_metrics_->RecordOmniboxOpen();
   }
@@ -361,7 +384,7 @@ TEST_F(AIChatMetricsUnitTest, MostUsedContextMenuAction) {
   histogram_tester_.ExpectTotalCount(kMostUsedContextMenuActionHistogramName,
                                      0);
 
-  ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/true);
 
   histogram_tester_.ExpectUniqueSample(
       kMostUsedContextMenuActionHistogramName,
@@ -396,7 +419,7 @@ TEST_F(AIChatMetricsUnitTest, MostUsedEntryPoint) {
 
   histogram_tester_.ExpectTotalCount(kMostUsedEntryPointHistogramName, 0);
 
-  ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/true);
 
   histogram_tester_.ExpectUniqueSample(kMostUsedEntryPointHistogramName,
                                        static_cast<int>(EntryPoint::kSidebar),
@@ -446,7 +469,7 @@ TEST_F(AIChatMetricsUnitTest, Reset) {
 }
 
 TEST_F(AIChatMetricsUnitTest, ChatHistory) {
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/false);
 
   // Record some prompts with single turns
   RecordPrompts("chat1", 1);
@@ -478,7 +501,7 @@ TEST_F(AIChatMetricsUnitTest, ChatHistory) {
 }
 
 TEST_F(AIChatMetricsUnitTest, ChatDuration) {
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/false);
 
   task_environment_.FastForwardBy(base::Seconds(30));
 
@@ -527,7 +550,7 @@ TEST_F(AIChatMetricsUnitTest, ChatDuration) {
 }
 
 TEST_F(AIChatMetricsUnitTest, FirstChatPrompts) {
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/false);
 
   histogram_tester_.ExpectTotalCount(kFirstChatPromptsHistogramName, 0);
 
@@ -553,7 +576,7 @@ TEST_F(AIChatMetricsUnitTest, FirstChatPrompts) {
 
 #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 TEST_F(AIChatMetricsUnitTest, FullPageSwitch) {
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/false);
 
   ai_chat_metrics_->RecordSidebarUsage();
   ai_chat_metrics_->RecordSidebarUsage();
@@ -576,7 +599,7 @@ TEST_F(AIChatMetricsUnitTest, FullPageSwitch) {
 #endif
 
 TEST_F(AIChatMetricsUnitTest, ContextSource) {
-  ai_chat_metrics_->RecordEnabled(true, false, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/false);
 
   histogram_tester_.ExpectTotalCount(kMostUsedContextSourceHistogramName, 0);
 
@@ -664,7 +687,7 @@ TEST_F(AIChatMetricsUnitTest, ContextSource) {
 }
 
 TEST_F(AIChatMetricsUnitTest, RateLimitMetrics) {
-  ai_chat_metrics_->RecordEnabled(true, true, GetPremiumCallback());
+  EnableAIChat(/*is_new_user=*/true);
 
   histogram_tester_.ExpectTotalCount(kRateLimitStopsHistogramName, 0);
 

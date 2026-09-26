@@ -11,11 +11,11 @@
 #include <string>
 
 #include "base/containers/flat_map.h"
-#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "base/timer/wall_clock_timer.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_tab_focus_metrics.h"
 #include "brave/components/ai_chat/core/browser/skills_metrics.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -138,10 +138,9 @@ class AIChatMetrics : public mojom::Metrics,
                       public AIChatTabFocusMetrics::Delegate,
                       public SkillsMetrics::Delegate {
  public:
-  using RetrievePremiumStatusCallback =
-      base::OnceCallback<void(mojom::Service::GetPremiumStatusCallback)>;
-
-  AIChatMetrics(PrefService* local_state, PrefService* profile_prefs);
+  AIChatMetrics(PrefService* local_state,
+                PrefService* profile_prefs,
+                std::unique_ptr<AIChatCredentialManager> credential_manager);
   ~AIChatMetrics() override;
 
   AIChatMetrics(const AIChatMetrics&) = delete;
@@ -155,10 +154,7 @@ class AIChatMetrics : public mojom::Metrics,
     return tab_focus_metrics_.get();
   }
 
-  void RecordEnabled(
-      bool is_enabled,
-      bool is_new_user,
-      RetrievePremiumStatusCallback retrieve_premium_status_callback);
+  void RecordEnabled(bool is_new_user);
   void RecordReset();
 
   void RecordNewPrompt(ConversationHandlerForMetrics* handler,
@@ -178,10 +174,6 @@ class AIChatMetrics : public mojom::Metrics,
   void RecordFullPageSwitch();
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
 
-  void OnPremiumStatusUpdated(bool is_enabled,
-                              bool is_new_user,
-                              mojom::PremiumStatus premium_status,
-                              mojom::PremiumInfoPtr);
   void MaybeRecordLastError(ConversationHandlerForMetrics* handler);
 
   // Metrics:
@@ -213,6 +205,13 @@ class AIChatMetrics : public mojom::Metrics,
   void ReportEntryPointUsageMetric();
   void ReportFullPageUsageMetric();
 #endif  // !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+
+  // If is_new_user is provided, RecordEnabled will be called after the check.
+  bool MaybeUpdatePremiumStatus(std::optional<bool> is_new_user);
+
+  void OnPremiumStatusUpdated(std::optional<bool> is_new_user,
+                              mojom::PremiumStatus premium_status,
+                              mojom::PremiumInfoPtr);
 
   void MaybeReportFirstChatPrompts(bool new_prompt_made);
   void RecordContextSource(ConversationHandlerForMetrics* handler,
@@ -256,6 +255,8 @@ class AIChatMetrics : public mojom::Metrics,
 
   raw_ptr<PrefService> local_state_;
   raw_ptr<PrefService> profile_prefs_;
+
+  std::unique_ptr<AIChatCredentialManager> credential_manager_;
 
   mojo::ReceiverSet<mojom::Metrics> receivers_;
 

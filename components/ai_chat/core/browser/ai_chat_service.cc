@@ -192,9 +192,6 @@ AIChatService::AIChatService(
           weak_ptr_factory_.GetWeakPtr()));
 
   MaybeInitStorage();
-
-  // Get current premium status to report metrics
-  GetPremiumStatus(base::DoNothing());
 }
 
 AIChatService::~AIChatService() = default;
@@ -982,10 +979,6 @@ void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
 #endif
 
   last_premium_status_ = status;
-  if (ai_chat_metrics_ != nullptr) {
-    ai_chat_metrics_->OnPremiumStatusUpdated(
-        ai_chat::HasUserOptedIn(profile_prefs_), false, status, info.Clone());
-  }
   model_service_->OnPremiumStatus(status);
   std::move(callback).Run(status, std::move(info));
 }
@@ -1476,7 +1469,7 @@ void AIChatService::OnUserOptedIn() {
     kv.second->OnUserOptedIn();
   }
   if (ai_chat_metrics_ != nullptr) {
-    ai_chat_metrics_->RecordEnabled(true, true, {});
+    ai_chat_metrics_->RecordEnabled(/*is_new_user=*/true);
   }
 }
 
