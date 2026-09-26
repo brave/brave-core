@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/path_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
+#include "brave/browser/password_manager/android/brave_account_to_profile_password_migration.h"
 #include "brave/browser/perf/brave_perf_features_processor.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/request_otr/request_otr_service_factory.h"
@@ -31,6 +32,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile_attributes_entry.h"
@@ -264,6 +266,9 @@ void BraveProfileManager::DoFinalInitForServices(Profile* profile,
   misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(profile);
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
   request_otr::RequestOTRServiceFactory::GetForBrowserContext(profile);
+#endif
+#if BUILDFLAG(IS_ANDROID)
+  brave_password_manager::MaybeMigrateAccountPasswordsToProfileStore(profile);
 #endif
 }
 
