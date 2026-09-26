@@ -34,6 +34,17 @@ BraveAccountUIIOS::~BraveAccountUIIOS() {
   RemoveInterface<password_strength_meter::mojom::PasswordStrengthMeter>();
 }
 
+void BraveAccountUIIOS::CloseDialog() {
+  web_ui()->GetWebState()->CloseWebState();
+}
+
+void BraveAccountUIIOS::GetDialogMode(GetDialogModeCallback callback) {
+  auto* holder =
+      brave_account::DialogModeHolder::FromWebState(web_ui()->GetWebState());
+  std::move(callback).Run(holder ? holder->dialog_mode()
+                                 : brave_account::mojom::DialogMode::kDefault);
+}
+
 void BraveAccountUIIOS::OpenDialog(
     const std::string& initiating_service_name,
     brave_account::mojom::DialogMode dialog_mode) {
@@ -50,17 +61,6 @@ void BraveAccountUIIOS::OpenDialog(
                                                static_cast<
                                                    BraveAccountDialogMode>(
                                                    dialog_mode)];
-}
-
-void BraveAccountUIIOS::CloseDialog() {
-  web_ui()->GetWebState()->CloseWebState();
-}
-
-void BraveAccountUIIOS::GetDialogMode(GetDialogModeCallback callback) {
-  auto* holder =
-      brave_account::DialogModeHolder::FromWebState(web_ui()->GetWebState());
-  std::move(callback).Run(holder ? holder->dialog_mode()
-                                 : brave_account::mojom::DialogMode::kDefault);
 }
 
 void BraveAccountUIIOS::BindInterface(

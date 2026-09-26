@@ -41,13 +41,6 @@ void BraveAccountUIAndroid::BindInterface(
   dialog_opener_receiver_.Bind(std::move(pending_receiver));
 }
 
-void BraveAccountUIAndroid::OpenDialog(
-    const std::string& initiating_service_name,
-    brave_account::mojom::DialogMode dialog_mode) {
-  brave_account::OpenBraveAccountDialog(CHECK_DEREF(web_ui()->GetWebContents()),
-                                        initiating_service_name, dialog_mode);
-}
-
 void BraveAccountUIAndroid::CloseDialog() {
   web_ui()->GetWebContents()->Close();
 }
@@ -55,6 +48,13 @@ void BraveAccountUIAndroid::CloseDialog() {
 void BraveAccountUIAndroid::GetDialogMode(GetDialogModeCallback callback) {
   std::move(callback).Run(brave_account::DialogModeHolder::GetDialogMode(
       CHECK_DEREF(web_ui()->GetWebContents())));
+}
+
+void BraveAccountUIAndroid::OpenDialog(
+    const std::string& initiating_service_name,
+    brave_account::mojom::DialogMode dialog_mode) {
+  brave_account::OpenBraveAccountDialog(CHECK_DEREF(web_ui()->GetWebContents()),
+                                        initiating_service_name, dialog_mode);
 }
 
 WEB_UI_CONTROLLER_TYPE_IMPL(BraveAccountUIAndroid)
