@@ -35,6 +35,24 @@
           preferences.allowsContentJavaScript = false;
         }
 
+#if defined(OFFICIAL_BUILD)
+        // Check if we want to override lockdown mode on the page. The default
+        // value of `preferences.lockdownModeEnabled` reflects the OS-level
+        // lockdown mode and Chromium's browser-level lockdown mode pref, and
+        // is passed along so the override can opt to keep the default.
+        // The 'com.apple.developer.web-browser' restricted entitlement is
+        // required to disable lockdown mode.
+        if (preferences) {
+          bool lockdownModeEnabled =
+              web::GetWebClient()->ShouldEnableLockdownMode(
+                  static_cast<web::WebState*>(self.webStateImpl),
+                  action.request, preferences.lockdownModeEnabled);
+          if (lockdownModeEnabled != preferences.lockdownModeEnabled) {
+            preferences.lockdownModeEnabled = lockdownModeEnabled;
+          }
+        }
+#endif  // defined(OFFICIAL_BUILD)
+
 #if defined(__IPHONE_27_0) && __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_27_0
         if (@available(iOS 27, *)) {
           bool isGPCEnabled =
