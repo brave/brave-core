@@ -32,7 +32,6 @@
 #include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "components/history/core/browser/url_row.h"
 #include "components/history_embeddings/core/history_embeddings_features.h"
 #include "components/history_embeddings/core/history_embeddings_search.h"
