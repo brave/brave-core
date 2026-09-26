@@ -113,10 +113,6 @@ GURL AppendFilterParams(
     url = net::AppendQueryParameter(url, "serviceProviders",
                                     *filter->service_providers);
   }
-  if (filter->payment_method_types) {
-    url = net::AppendQueryParameter(url, "paymentMethodTypes",
-                                    *filter->payment_method_types);
-  }
   return url;
 }
 
