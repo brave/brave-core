@@ -32,7 +32,6 @@
 #include "net/test/embedded_test_server/http_response.h"
 
 #if !BUILDFLAG(IS_ANDROID)
-#include "chrome/browser/ui/browser.h"
 #endif
 
 namespace {
