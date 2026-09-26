@@ -173,7 +173,7 @@ platform :ios do
     {
       project: "App/Client.xcodeproj",
       scheme: "Debug (No Core)",
-      devices: ["iPhone 17 (26.2)"],
+      devices: ["iPhone 18 Pro (27.0)"],
       code_coverage: true,
       output_types: "junit",
       output_files: "junit.xml",
