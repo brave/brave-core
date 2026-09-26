@@ -595,8 +595,6 @@ void AddBraveThemeColorMixer(ui::ColorProvider* provider,
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  mixer[kColorWaybackMachineURLLoaded] = {
-      nala::kColorSystemfeedbackSuccessIcon};
   mixer[kColorWaybackMachineURLNotAvailable] = {
       nala::kColorSystemfeedbackErrorIcon};
 #endif
