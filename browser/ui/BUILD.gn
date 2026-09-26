@@ -54,6 +54,16 @@ group("ui_public_dependencies") {
   ]
 }
 
+if (!is_android) {
+  source_set("brave_browser_header") {
+    public = [ "brave_browser.h" ]
+    public_deps = [
+      "//base",
+      "//chrome/browser/ui:browser_header",
+    ]
+  }
+}
+
 source_set("ui") {
   # Depend on //chrome/browser/ui instead of //brave/browser/ui.
   visibility = [
@@ -360,7 +370,6 @@ source_set("ui") {
       "bookmark/brave_bookmark_prefs.cc",
       "bookmark/brave_bookmark_prefs.h",
       "brave_browser.cc",
-      "brave_browser.h",
       "brave_browser_actions.cc",
       "brave_browser_actions.h",
       "brave_browser_command_controller.cc",
@@ -478,6 +487,7 @@ source_set("ui") {
     }
 
     deps += [
+      ":brave_browser_header",
       "//base",
       "//brave/browser/brave_account",
       "//brave/browser/ntp_background",
@@ -522,7 +532,6 @@ source_set("ui") {
       "//chrome/browser/themes",
       "//chrome/browser/ui:browser_actions",
       "//chrome/browser/ui:browser_content_setting_bubble_model_delegate",
-      "//chrome/browser/ui:browser_header",
       "//chrome/browser/ui:browser_window_header",
       "//chrome/browser/ui:chrome_pages",
       "//chrome/browser/ui:layout_constants",
@@ -1668,6 +1677,7 @@ source_set("browser_tests") {
     ]
 
     deps = [
+      ":brave_browser_header",
       "//brave/app:command_ids",
       "//brave/components/constants",
       "//chrome/browser",
