@@ -78,16 +78,6 @@ struct MeldCountry {
   array<MeldRegion>? regions;
 };
 
-struct MeldFilter {
-  string? countries;
-  string? fiat_currencies;
-  string? crypto_currencies;
-  string? crypto_chains;
-  string? service_providers;
-  string? payment_method_types;
-  string? statuses;
-};
-
 struct CryptoBuySessionData {
   string country_code;
   string destination_currency_code;
