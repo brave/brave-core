@@ -3,12 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import BraveCore
 import BraveUI
-import CoreData
-import Data
 import Foundation
-import Preferences
 import Shared
 import UIKit
 
@@ -54,7 +50,7 @@ class FavoritesOverflowButton: SpringButton {
   }
 }
 
-class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
+class TopsitesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   let action: () -> Void
   var sectionDidChange: (() -> Void)?
 
@@ -62,15 +58,18 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     FavoritesOverflowButton
   >
 
-  private var frc: NSFetchedResultsController<Favorite>
+  private let tileSource: TopsitesTileSource
 
-  init(action: @escaping () -> Void) {
+  init(
+    action: @escaping () -> Void,
+    tileSource: TopsitesTileSource
+  ) {
     self.action = action
-    frc = Favorite.frc()
-    frc.fetchRequest.fetchLimit = 20
+    self.tileSource = tileSource
+
     super.init()
-    try? frc.performFetch()
-    frc.delegate = self
+
+    tileSource.addObserver(self)
   }
 
   @objc private func tappedButton() {
@@ -82,11 +81,10 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     numberOfItemsInSection section: Int
   ) -> Int {
     let width = fittingSizeForCollectionView(collectionView, section: section).width
-    let count = frc.fetchedObjects?.count ?? 0
 
     let isShowShowMoreButtonVisible =
-      count > FavoritesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
-      && Preferences.NewTabPage.topsitesMode.value != TopsitesMode.none
+      tileSource.count
+      > TopsitesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
     return isShowShowMoreButtonVisible ? 1 : 0
   }
 
@@ -120,18 +118,15 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   ) -> UIEdgeInsets {
     let insets = horizontalInsets(
       for: collectionView,
-      maxWidth: FavoritesSectionProvider.maxWidth,
+      maxWidth: TopsitesSectionProvider.maxWidth,
       minimumInset: 16
     )
     return UIEdgeInsets(top: 0, left: insets.left, bottom: 0, right: insets.right)
   }
 }
 
-extension FavoritesOverflowSectionProvider: NSFetchedResultsControllerDelegate {
-  func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
-    try? frc.performFetch()
-    DispatchQueue.main.async {
-      self.sectionDidChange?()
-    }
+extension TopsitesOverflowSectionProvider: TopsitesTileSourceObserver {
+  func topsitesTileSourceDidChangeTiles(_ source: TopsitesTileSource) {
+    sectionDidChange?()
   }
 }
