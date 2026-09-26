@@ -1,5 +1,5 @@
 diff --git a/BUILD.gn b/BUILD.gn
-index c6132807ff6c488543b4df1f3ba8793d9dea98d5..5952ba023ed75fc50eb9af1514bbbe93c83fc202 100644
+index c6132807ff6c488543b4df1f3ba8793d9dea98d5..df45c0f459b6c9582280f6b0b8e35c7da0e8e28d 100644
 --- a/BUILD.gn
 +++ b/BUILD.gn
 @@ -4,6 +4,7 @@
@@ -20,7 +20,15 @@ index c6132807ff6c488543b4df1f3ba8793d9dea98d5..5952ba023ed75fc50eb9af1514bbbe93
  }
  
  config("internal_config") {
-@@ -3847,6 +3851,7 @@ v8_header_set("v8_headers") {
+@@ -2503,6 +2507,7 @@ if (v8_use_metagen_instance_types) {
+     # configuration an explicit input. In particular, changing a feature define
+     # must re-run the driver even though the action command is unchanged.
+     deps = [ ":v8_dump_build_config" ]
++    deps += brave_v8_headers_public_deps
+ 
+     if (v8_generate_external_defines_header) {
+       # v8config.h includes the generated v8-gn.h in this configuration.
+@@ -3847,6 +3852,7 @@ v8_header_set("v8_headers") {
      "include/v8-weak-callback-info.h",
      "include/v8.h",
    ]
@@ -28,7 +36,7 @@ index c6132807ff6c488543b4df1f3ba8793d9dea98d5..5952ba023ed75fc50eb9af1514bbbe93
  
    sources += [
      # The following headers cannot be platform-specific. The include validation
-@@ -3857,6 +3862,7 @@ v8_header_set("v8_headers") {
+@@ -3857,6 +3863,7 @@ v8_header_set("v8_headers") {
    ]
  
    public_deps = [ ":v8_config_headers" ]
