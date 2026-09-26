@@ -32,3 +32,13 @@ substitutions:
       list_name: public_deps
       literal: brave_v8_headers_public_deps
       import: //brave/v8/sources.gni
+
+  - description: |
+      metagen parses v8 headers that reach Brave's generated page graph
+      buildflags header, so it must be generated before the harvest runs.
+    add_literal_to_list:
+      target: metagen_instance_types_h
+      type: action
+      list_name: deps
+      literal: brave_v8_headers_public_deps
+      import: //brave/v8/sources.gni
