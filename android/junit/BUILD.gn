@@ -181,15 +181,16 @@ if (is_android) {
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.ntp") {
     resources_package = "org.chromium.chrome.browser.ntp"
     sources = [
-      "src/org/chromium/chrome/browser/ntp/BraveNewTabPageUtilUnitTest.java",
       "src/org/chromium/chrome/browser/ntp/BraveNewTabTakeoverInfobarTest.java",
       "src/org/chromium/chrome/browser/ntp/BraveRecentTabsCoordinatorTest.java",
+      "src/org/chromium/chrome/browser/ntp/BraveNtpTopSitesModeUnitTest.java",
       "src/org/chromium/chrome/browser/ntp/NewTabTakeoverSafeAreaReporterTest.java",
     ]
 
     deps = [
       "//brave/browser/android/preferences:pref_names_java",
       "//brave/browser/ntp_customization:java",
+      "//brave/browser/ui/android/ntp_widgets:java",
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/tab:java",
@@ -205,6 +206,27 @@ if (is_android) {
     sources = [ "src/org/chromium/chrome/browser/suggestions/BraveSuggestionsConfigTest.java" ]
 
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.suggestions.mostvisited") {
+    sources = [ "src/org/chromium/chrome/browser/suggestions/mostvisited/BraveMostVisitedSitesTest.java" ]
+    deps = [
+      "//brave/browser/ntp_customization:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.suggestions.tile") {
+    sources = [
+      "src/org/chromium/chrome/browser/suggestions/tile/BraveTileViewTest.java",
+    ]
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//components/browser_ui/test/android:test_support_java",
+      "//components/browser_ui/widget/android:java",
+    ]
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.tasks") {
@@ -399,6 +421,7 @@ if (is_android) {
 
     deps = [
       "//base:base_java",
+      "//brave/browser/ui/android/ntp_widgets:java",
       "//chrome/android:chrome_java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//chrome/browser/preferences:java",

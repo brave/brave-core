@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  sources = [
+    "java/src/org/chromium/chrome/browser/ntp/NtpUtil.java",
+    "java/src/org/chromium/chrome/browser/settings/BraveRadioButtonGroupTopSitesDisplayModePreference.java",
+  ]
+
+  deps = [
+    ":java_resources",
+    "//base:base_java",
+    "//brave/build/android:android_brave_strings_grd",
+    "//build/android:build_java",
+    "//content/public/android:content_full_java",
+    "//chrome/browser/preferences:java",
+    "//chrome/browser/profiles/android:java",
+    "//components/browser_ui/widget/android:java",
+    "//components/prefs/android:java",
+    "//components/user_prefs/android:java",
+    "//third_party/androidx:androidx_preference_preference_java",
+  ]
+
+  resources_package = "org.chromium.brave.browser.ntp_widgets"
+}
+
+android_resources("java_resources") {
+  sources = [ "java/res/layout/radio_button_group_top_sites_display_mode_preference.xml" ]
+}

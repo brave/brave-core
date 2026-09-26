@@ -50,6 +50,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     public static final String PREF_SHOW_SPONSORED_CONTENT = "show_sponsored_images";
     public static final String PREF_SHOW_TOP_SITES = "show_top_sites";
     public static final String PREF_SHOW_BRAVE_STATS = "show_brave_stats";
+    public static final String PREF_TOP_SITES_DISPLAY_MODE = "top_sites_display_mode";
     public static final String PREF_OPENING_SCREEN = "opening_screen_option";
     public static final String PREF_OPENING_SCREEN_CATEGORY = "opening_screen";
 
@@ -62,6 +63,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     private ChromeSwitchPreference mShowSponsoredContentPref;
     private ChromeSwitchPreference mShowBraveStatsPref;
     private ChromeSwitchPreference mShowTopSitesPref;
+    private BraveRadioButtonGroupTopSitesDisplayModePreference mTopSitesDisplayModePref;
     private BraveTextButtonPreference mLearnMorePreference;
     private BraveRadioButtonGroupOpeningScreenPreference mOpeningScreenPref;
 
@@ -118,11 +120,20 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
                     });
         }
 
+        boolean showTopSites = NtpUtil.shouldDisplayTopSites();
         mShowTopSitesPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_TOP_SITES);
         if (mShowTopSitesPref != null) {
             mShowTopSitesPref.setEnabled(true);
-            mShowTopSitesPref.setChecked(NtpUtil.shouldDisplayTopSites());
+            mShowTopSitesPref.setChecked(showTopSites);
             mShowTopSitesPref.setOnPreferenceChangeListener(this);
+        }
+        mTopSitesDisplayModePref =
+                (BraveRadioButtonGroupTopSitesDisplayModePreference)
+                        findPreference(PREF_TOP_SITES_DISPLAY_MODE);
+        if (mTopSitesDisplayModePref != null) {
+            mTopSitesDisplayModePref.initialize(NtpUtil.getTopSitesDisplayMode());
+            mTopSitesDisplayModePref.setVisible(showTopSites);
+            mTopSitesDisplayModePref.setOnPreferenceChangeListener(this);
         }
         mShowBraveStatsPref = (ChromeSwitchPreference) findPreference(PREF_SHOW_BRAVE_STATS);
         if (mShowBraveStatsPref != null) {
@@ -186,6 +197,11 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             BraveRelaunchUtils.askForRelaunch(getActivity());
         } else if (PREF_SHOW_TOP_SITES.equals(key)) {
             NtpUtil.setDisplayTopSites((boolean) newValue);
+            if (mTopSitesDisplayModePref != null) {
+                mTopSitesDisplayModePref.setVisible((boolean) newValue);
+            }
+        } else if (PREF_TOP_SITES_DISPLAY_MODE.equals(key)) {
+            NtpUtil.setTopSitesDisplayMode((int) newValue);
         } else if (PREF_SHOW_BRAVE_STATS.equals(key)) {
             NtpUtil.setDisplayBraveStats((boolean) newValue);
         } else if (PREF_OPENING_SCREEN.equals(key)) {

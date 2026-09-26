@@ -552,14 +552,6 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp_customization/NtpCustomizationUtils",
-                        "isInNarrowWindowOnLff",
-                        MethodModifier.STATIC,
-                        boolean.class,
-                        boolean.class,
-                        UiConfig.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/ntp_customization/NtpCustomizationUtils",
                         "isNtpThemeCustomizationEnabled",
                         MethodModifier.STATIC,
                         boolean.class));
@@ -2758,9 +2750,6 @@ public class BytecodeTest {
                 fieldExists(
                         "org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
                         "mLocationBarMediator"));
-        Assert.assertTrue(
-                fieldExists(
-                        "org/chromium/chrome/browser/omnibox/LocationBarCoordinator", "mUrlBar"));
         Assert.assertTrue(
                 fieldExists(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
