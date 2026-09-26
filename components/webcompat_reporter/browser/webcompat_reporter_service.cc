@@ -129,6 +129,16 @@ struct ReportFiller {
     return *this;
   }
 
+  #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_IOS)
+    ReportFiller& FillAdblockExtensionInstalled() {
+      if (!(*report_info)->adblock_extension_installed) {
+        (*report_info)->adblock_extension_installed =
+            service_delegate->GetAdblockExtensionInstalled();
+      }
+      return *this;
+    }
+  #endif
+
   raw_ref<webcompat_reporter::mojom::ReportInfoPtr> report_info;
   const raw_ptr<webcompat_reporter::WebcompatReporterService::Delegate>
       service_delegate;
@@ -245,7 +255,8 @@ void WebcompatReporterService::SubmitWebcompatReport(
       .FillReportWithAdblockListNames()
       .FillCookiePolicy()
       .FillScriptBlockingFlag()
-      .FillAdblockOnlyModeEnabled();
+      .FillAdblockOnlyModeEnabled()
+      .FillAdblockExtensionInstalled();
 
   ProcessContactInfo(profile_prefs_, report_info);
 
