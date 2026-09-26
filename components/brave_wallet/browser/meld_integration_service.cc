@@ -17,6 +17,7 @@
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/no_destructor.h"
+#include "base/strings/strcat.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -25,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/meld_integration_response_parser.h"
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
 #include "brave/components/json/json_helper.h"
 #include "net/base/url_util.h"
@@ -33,6 +35,10 @@
 #include "ui/base/l10n/l10n_util.h"
 
 namespace {
+
+constexpr char kMeldSupportedChains[] =
+    "BTC,FIL,ZEC,ETH,ANA,FTM,BSC,GON,ISM,ORA,ELO,RUM,AXC,ADA";
+constexpr char kMeldSupportedChainPolkdadot[] = "ASSETHUB";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("meld_integration_service", R"(
@@ -105,10 +111,6 @@ GURL AppendFilterParams(
   if (filter->crypto_currencies) {
     url = net::AppendQueryParameter(url, "cryptoCurrencies",
                                     *filter->crypto_currencies);
-  }
-  if (filter->crypto_chains) {
-    url =
-        net::AppendQueryParameter(url, "cryptoChains", *filter->crypto_chains);
   }
   if (filter->service_providers) {
     url = net::AppendQueryParameter(url, "serviceProviders",
@@ -602,11 +604,17 @@ void MeldIntegrationService::OnParseFiatCurrencies(
 // static
 GURL MeldIntegrationService::GetCryptoCurrenciesURL(
     const mojom::MeldFilterPtr& filter) {
+  std::string supported_chains = kMeldSupportedChains;
+  if (IsPolkadotEnabled()) {
+    supported_chains += base::StrCat({",", kMeldSupportedChainPolkdadot});
+  }
+
   return AppendFilterParams(
       GURL(kMeldRpcEndpoint)
           .Resolve("/service-providers/properties/crypto-currencies"),
       filter,
       base::flat_map<std::string, std::string>{
+          {"cryptoChains", supported_chains},
           {"includeServiceProviderDetails", "false"},
           {"accountFilter", "false"}});
 }
