@@ -131,6 +131,9 @@ class BraveTabFeatures : public TabFeatures {
   // Holds stripped image copies dropped onto this tab. Null when metadata
   // stripping is disabled.
   std::unique_ptr<ContentsObservingTabFeature> drop_strip_temp_dirs_;
+  // Records Cloudflare javascript-detection script loads.
+  std::unique_ptr<ContentsObservingTabFeature>
+      cloudflare_js_detection_tab_helper_;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;

@@ -6,12 +6,15 @@
 #include "brave/browser/misc_metrics/captcha_metrics.h"
 
 #include <memory>
+#include <string>
 #include <string_view>
 
 #include "base/strings/string_util.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/components/misc_metrics/features.h"
@@ -25,6 +28,7 @@
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_observer.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -60,6 +64,30 @@ std::unique_ptr<HttpResponse> HandleCaptchaPath(const HttpRequest& request) {
   return response;
 }
 
+// Counts completed subresource loads whose path contains `path_substring`.
+class ResourceLoadCounter : public content::WebContentsObserver {
+ public:
+  ResourceLoadCounter(content::WebContents* web_contents,
+                      std::string_view path_substring)
+      : content::WebContentsObserver(web_contents),
+        path_substring_(path_substring) {}
+
+  void ResourceLoadComplete(content::RenderFrameHost*,
+                            const content::GlobalRequestID&,
+                            const GURL& original_url,
+                            const blink::mojom::ResourceLoadInfo&) override {
+    if (original_url.path().contains(path_substring_)) {
+      ++count_;
+    }
+  }
+
+  int count() const { return count_; }
+
+ private:
+  const std::string path_substring_;
+  int count_ = 0;
+};
+
 }  // namespace
 
 class CaptchaMetricsBrowserTestBase : public PlatformBrowserTest {
@@ -69,7 +97,7 @@ class CaptchaMetricsBrowserTestBase : public PlatformBrowserTest {
 
     host_resolver()->AddRule("*", "127.0.0.1");
     embedded_https_test_server().SetCertHostnames(
-        {"www.google.com", "example.com", "www.hcaptcha.com",
+        {"www.google.com", "example.com", "example.org", "www.hcaptcha.com",
          "challenges.cloudflare.com"});
     embedded_https_test_server().RegisterRequestHandler(
         base::BindRepeating(&HandleCaptchaPath));
@@ -145,6 +173,27 @@ class CaptchaMetricsBrowserTest : public CaptchaMetricsBrowserTestBase {
     g_brave_browser_process->process_misc_metrics()
         ->captcha_metrics()
         ->MaybeReport();
+  }
+
+  // Fetches a Cloudflare javascript-detection script from the current page and
+  // waits until its ResourceLoadComplete has been dispatched to the browser.
+  void LoadCloudflareDetectionScript() {
+    ResourceLoadCounter load_counter(web_contents(),
+                                     "/cdn-cgi/challenge-platform/");
+    ASSERT_TRUE(content::ExecJs(
+        web_contents(),
+        "fetch('/cdn-cgi/challenge-platform/scripts/jsd/main.js')",
+        content::EXECUTE_SCRIPT_NO_USER_GESTURE));
+    ASSERT_TRUE(
+        base::test::RunUntil([&] { return load_counter.count() == 1; }));
+  }
+
+  int GetRecordedCloudflareCount() {
+    const base::DictValue* cloudflare =
+        g_browser_process->local_state()
+            ->GetDict(kMiscMetricsCaptchaDictionaryPref)
+            .FindDict("cloudflare");
+    return cloudflare ? cloudflare->FindInt("total").value_or(0) : 0;
   }
 
  protected:
@@ -312,6 +361,72 @@ IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest,
   histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 1, 1);
   histogram_tester_.ExpectUniqueSample(kCaptchaCloudflareCountHistogramName, 1,
                                        1);
+}
+
+IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest,
+                       RecordsCloudflareJavascriptDetectionOnce) {
+  NavigateAndWaitForLoad(GetURL("example.com", "/simple.html"));
+
+  ResourceLoadCounter load_counter(web_contents(),
+                                   "/cdn-cgi/challenge-platform/");
+  // Website loading 2 CF scripts.
+  ASSERT_TRUE(content::EvalJs(
+                  web_contents(),
+                  "Promise.all(["
+                  "fetch('/cdn-cgi/challenge-platform/scripts/jsd/main.js'),"
+                  "fetch('/cdn-cgi/challenge-platform/h/g/jsd/oneshot/1')"
+                  "]).then(() => true)")
+                  .ExtractBool());
+
+  // The 2 CF resource requests above by example.com should be intercepted
+  // correctly.
+  ASSERT_TRUE(base::test::RunUntil([&] { return load_counter.count() == 2; }));
+
+  // and recorded once.
+  const base::DictValue* cloudflare =
+      g_browser_process->local_state()
+          ->GetDict(kMiscMetricsCaptchaDictionaryPref)
+          .FindDict("cloudflare");
+  ASSERT_TRUE(cloudflare);
+  EXPECT_EQ(cloudflare->FindInt("total"), 1);
+
+  ReportPendingCounts();
+
+  histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 1, 1);
+  histogram_tester_.ExpectUniqueSample(kCaptchaCloudflareCountHistogramName, 1,
+                                       1);
+  histogram_tester_.ExpectTotalCount(kCaptchaGoogleCountHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(kCaptchaHCaptchaCountHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(
+      kCaptchaTotalCountUserActivatedHistogramName, 0);
+  histogram_tester_.ExpectTotalCount(
+      kCaptchaCloudflareCountUserActivatedHistogramName, 0);
+}
+
+IN_PROC_BROWSER_TEST_F(CaptchaMetricsBrowserTest,
+                       CloudflareJavascriptDetectionResetsOnCrossOrigin) {
+  NavigateAndWaitForLoad(GetURL("example.com", "/simple.html"));
+  LoadCloudflareDetectionScript();
+  EXPECT_EQ(GetRecordedCloudflareCount(), 1);
+
+  // A same-origin navigation keeps the detection flag set, so loading the
+  // script again on the new document is not counted.
+  NavigateAndWaitForLoad(GetURL("example.com", "/title1.html"));
+  LoadCloudflareDetectionScript();
+  EXPECT_EQ(GetRecordedCloudflareCount(), 1);
+
+  // A cross-origin navigation clears the flag, so the next load is counted.
+  NavigateAndWaitForLoad(GetURL("example.org", "/simple.html"));
+  LoadCloudflareDetectionScript();
+  EXPECT_EQ(GetRecordedCloudflareCount(), 2);
+
+  ReportPendingCounts();
+
+  histogram_tester_.ExpectUniqueSample(kCaptchaTotalCountHistogramName, 2, 1);
+  histogram_tester_.ExpectUniqueSample(kCaptchaCloudflareCountHistogramName, 2,
+                                       1);
+  histogram_tester_.ExpectTotalCount(
+      kCaptchaCloudflareCountUserActivatedHistogramName, 0);
 }
 
 }  // namespace misc_metrics
