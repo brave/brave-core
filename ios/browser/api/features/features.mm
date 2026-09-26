@@ -158,9 +158,9 @@
       initWithFeature:&brave_shields::features::kBraveDomainBlock1PES];
 }
 
-+ (Feature*)kBraveNTPBrandedWallpaper {
++ (Feature*)kBraveNTPNewTabTakeoverWallpaper {
   return [[Feature alloc] initWithFeature:&ntp_background_images::features::
-                                              kBraveNTPBrandedWallpaper];
+                                              kBraveNTPNewTabTakeoverWallpaper];
 }
 
 + (Feature*)kBraveNewsCardPeekFeature {

@@ -60,8 +60,8 @@
 #endif
 
 using ntp_background_images::ViewCounterServiceFactory;
-using ntp_background_images::prefs::kBrandedWallpaperNotificationDismissed;
 using ntp_background_images::prefs::kNewTabPageShowBackgroundImage;
+using ntp_background_images::prefs::kNewTabTakeoverNotificationDismissed;
 
 namespace {
 
@@ -109,7 +109,7 @@ base::DictValue GetPreferencesDictionary(PrefService* prefs) {
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
   pref_data.Set("showRewards", prefs->GetBoolean(kNewTabPageShowRewards));
   pref_data.Set("isBrandedWallpaperNotificationDismissed",
-                prefs->GetBoolean(kBrandedWallpaperNotificationDismissed));
+                prefs->GetBoolean(kNewTabTakeoverNotificationDismissed));
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   pref_data.Set("isBraveNewsOptedIn",
                 prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
@@ -249,7 +249,7 @@ void BraveNewTabMessageHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "recordClickedAdEvent",
       base::BindRepeating(
-          &BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked,
+          &BraveNewTabMessageHandler::HandleNewTabTakeoverLogoClicked,
           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "getWallpaperData",
@@ -347,7 +347,7 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
-      kBrandedWallpaperNotificationDismissed,
+      kNewTabTakeoverNotificationDismissed,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -471,7 +471,7 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
   } else if (settings_key_input == "showRewards") {
     settings_key = kNewTabPageShowRewards;
   } else if (settings_key_input == "isBrandedWallpaperNotificationDismissed") {
-    settings_key = kBrandedWallpaperNotificationDismissed;
+    settings_key = kNewTabTakeoverNotificationDismissed;
   } else if (settings_key_input == "hideAllWidgets") {
     settings_key = kNewTabPageHideAllWidgets;
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
@@ -511,7 +511,7 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
   }
 }
 
-void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(
+void BraveNewTabMessageHandler::HandleNewTabTakeoverLogoClicked(
     const base::ListValue& args) {
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
   AllowJavascript();
@@ -629,8 +629,8 @@ void BraveNewTabMessageHandler::HandleGetWallpaperDataCallback(
       MaybeDisplayAndIncrementCounter(web_ui()->GetWebContents(),
                                       profile_->GetPrefs());
 
-  constexpr char kBrandedWallpaperKey[] = "brandedWallpaper";
-  wallpaper.Set(kBrandedWallpaperKey, std::move(*data));
+  constexpr char kNewTabTakeoverWallpaperKey[] = "brandedWallpaper";
+  wallpaper.Set(kNewTabTakeoverWallpaperKey, std::move(*data));
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   ResolveJavascriptCallback(callback_id, wallpaper);

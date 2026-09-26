@@ -144,7 +144,8 @@ NTPBackgroundImagesBridge::CreateWallpaper(const base::DictValue& data) {
 }
 
 base::android::ScopedJavaLocalRef<jobject>
-NTPBackgroundImagesBridge::CreateBrandedWallpaper(const base::DictValue& data) {
+NTPBackgroundImagesBridge::CreateNewTabTakeoverWallpaper(
+    const base::DictValue& data) {
   JNIEnv* env = AttachCurrentThread();
 
   auto* image_path =
@@ -195,7 +196,7 @@ NTPBackgroundImagesBridge::CreateBrandedWallpaper(const base::DictValue& data) {
   view_counter_service_->RecordViewedAdEvent(
       *wallpaper_id, *creative_instance_id, metric_type);
 
-  return Java_NTPBackgroundImagesBridge_createBrandedWallpaper(
+  return Java_NTPBackgroundImagesBridge_createNewTabTakeoverWallpaper(
       env, ConvertUTF8ToJavaString(env, *image_path), focal_point_x,
       focal_point_y, ConvertUTF8ToJavaString(env, *logo_image_path),
       ConvertUTF8ToJavaString(env, *logo_destination_url), is_sponsored,
@@ -236,7 +237,8 @@ void NTPBackgroundImagesBridge::GetCurrentWallpaperCallback(
   const bool is_background =
       data->FindBool(ntp_background_images::kIsBackgroundKey).value_or(false);
   base::android::ScopedJavaLocalRef<jobject> wallpaper =
-      is_background ? CreateWallpaper(*data) : CreateBrandedWallpaper(*data);
+      is_background ? CreateWallpaper(*data)
+                    : CreateNewTabTakeoverWallpaper(*data);
   base::android::RunObjectCallbackAndroid(callback, wallpaper);
 }
 

@@ -60,16 +60,18 @@ class NewTabTakeoverBrowserTest : public InProcessBrowserTest {
     // for tests, so the view counter is not incremented when trying to display
     // NTP background.
     // TODO(https://github.com/brave/brave-browser/issues/51437): Add proper
-    // values for kInitialCountToBrandedWallpaper and kCountToBrandedWallpaper
-    // once NTP background images data is available for tests.
+    // values for kInitialCountToNewTabTakeoverWallpaper and
+    // kCountToNewTabTakeoverWallpaper once NTP background images data is
+    // available for tests.
     base::FieldTrialParams parameters;
     std::vector<base::test::FeatureRefAndParams> enabled_features;
-    parameters[ntp_background_images::features::kInitialCountToBrandedWallpaper
+    parameters[ntp_background_images::features::
+                   kInitialCountToNewTabTakeoverWallpaper.name] = "1";
+    parameters[ntp_background_images::features::kCountToNewTabTakeoverWallpaper
                    .name] = "1";
-    parameters[ntp_background_images::features::kCountToBrandedWallpaper.name] =
-        "1";
     enabled_features.emplace_back(
-        ntp_background_images::features::kBraveNTPBrandedWallpaper, parameters);
+        ntp_background_images::features::kBraveNTPNewTabTakeoverWallpaper,
+        parameters);
     feature_list_.InitWithFeaturesAndParameters(enabled_features, {});
   }
   ~NewTabTakeoverBrowserTest() override = default;

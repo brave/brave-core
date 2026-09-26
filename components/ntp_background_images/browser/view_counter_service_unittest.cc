@@ -141,8 +141,8 @@ brave_ads::mojom::NewTabPageAdInfoPtr BuildNewTabPageAd() {
   return mojom_ad;
 }
 
-int GetInitialCountToBrandedWallpaper() {
-  return features::kInitialCountToBrandedWallpaper.Get() - 1;
+int GetInitialCountToNewTabTakeoverWallpaper() {
+  return features::kInitialCountToNewTabTakeoverWallpaper.Get() - 1;
 }
 
 }  // namespace
@@ -275,9 +275,9 @@ class ViewCounterServiceTest : public testing::Test {
     return result;
   }
 
-  std::optional<base::DictValue> GetCurrentBrandedWallpaper() {
+  std::optional<base::DictValue> GetNewTabTakeoverWallpaper() {
     base::test::TestFuture<std::optional<base::DictValue>> future;
-    view_counter_service_->GetCurrentBrandedWallpaper(future.GetCallback());
+    view_counter_service_->GetNewTabTakeoverWallpaper(future.GetCallback());
     return future.Take();
   }
 
@@ -294,7 +294,7 @@ class ViewCounterServiceTest : public testing::Test {
   std::optional<base::DictValue>
   CycleThroughPageViewsAndMaybeGetNewTabTakeoverWallpaper() {
     // Loading initial count times.
-    for (int i = 0; i < GetInitialCountToBrandedWallpaper(); ++i) {
+    for (int i = 0; i < GetInitialCountToNewTabTakeoverWallpaper(); ++i) {
       const auto wallpaper =
           GetCurrentWallpaperForDisplay(/*allow_sponsored_content=*/true);
       EXPECT_TRUE(wallpaper);
@@ -412,7 +412,7 @@ TEST_F(ViewCounterServiceTest, IsActiveOptedIn) {
 }
 
 TEST_F(ViewCounterServiceTest, PrefsWithModelTest) {
-  EXPECT_EQ(features::kInitialCountToBrandedWallpaper.Get() - 1,
+  EXPECT_EQ(features::kInitialCountToNewTabTakeoverWallpaper.Get() - 1,
             view_counter_service_->model_
                 .count_to_new_tab_takeover_wallpaper_for_testing());
   EXPECT_TRUE(view_counter_service_->model_.show_wallpaper_for_testing());
@@ -506,7 +506,7 @@ TEST_F(
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
   EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd)
       .WillOnce(base::test::RunOnceCallback<0>(std::move(ad)));
-  EXPECT_TRUE(GetCurrentBrandedWallpaper());
+  EXPECT_TRUE(GetNewTabTakeoverWallpaper());
 }
 
 TEST_F(
@@ -522,7 +522,7 @@ TEST_F(
   ASSERT_FALSE(view_counter_service_->CanShowNewTabTakeover());
 
   EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd).Times(0);
-  EXPECT_FALSE(GetCurrentBrandedWallpaper());
+  EXPECT_FALSE(GetNewTabTakeoverWallpaper());
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -539,7 +539,7 @@ TEST_F(ViewCounterServiceTest,
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
   EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd)
       .WillOnce(base::test::RunOnceCallback<0>(std::move(ad)));
-  EXPECT_TRUE(GetCurrentBrandedWallpaper());
+  EXPECT_TRUE(GetNewTabTakeoverWallpaper());
 }
 
 TEST_F(ViewCounterServiceTest,
@@ -556,7 +556,7 @@ TEST_F(ViewCounterServiceTest,
   brave_ads::mojom::NewTabPageAdInfoPtr ad = BuildNewTabPageAd();
   EXPECT_CALL(ads_service_mock_, MaybeServeNewTabPageAd)
       .WillOnce(base::test::RunOnceCallback<0>(std::move(ad)));
-  EXPECT_TRUE(GetCurrentBrandedWallpaper());
+  EXPECT_TRUE(GetNewTabTakeoverWallpaper());
 }
 
 TEST_F(ViewCounterServiceTest,

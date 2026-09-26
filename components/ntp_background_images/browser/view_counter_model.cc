@@ -24,7 +24,7 @@ ViewCounterModel::ViewCounterModel(PrefService* prefs)
   // When browser is restarted we reset to "initial" count. This will also get
   // set again in the Reset() function, called e.g. when component is updated.
   count_to_new_tab_takeover_wallpaper_ =
-      features::kInitialCountToBrandedWallpaper.Get() - 1;
+      features::kInitialCountToNewTabTakeoverWallpaper.Get() - 1;
 
   // We also reset when a specific amount of time is elapsed while sponsored
   // content is enabled.
@@ -72,7 +72,7 @@ void ViewCounterModel::RegisterPageViewForNewTabTakeoverCreatives() {
   if (count_to_new_tab_takeover_wallpaper_ < 0) {
     // Reset count for next time.
     count_to_new_tab_takeover_wallpaper_ =
-        features::kCountToBrandedWallpaper.Get() - 1;
+        features::kCountToNewTabTakeoverWallpaper.Get() - 1;
   }
 }
 
@@ -107,7 +107,7 @@ void ViewCounterModel::MaybeResetNewTabTakeoverCount() {
   if (show_new_tab_takeover_wallpaper_) {
     count_to_new_tab_takeover_wallpaper_ =
         std::min(count_to_new_tab_takeover_wallpaper_,
-                 features::kInitialCountToBrandedWallpaper.Get() - 1);
+                 features::kInitialCountToNewTabTakeoverWallpaper.Get() - 1);
   }
 }
 

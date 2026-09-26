@@ -80,9 +80,9 @@ class ViewCounterService : public KeyedService,
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
       bool allow_sponsored_content = true);
   std::optional<base::DictValue> GetCurrentWallpaper() const;
-  void GetCurrentBrandedWallpaper(
+  void GetNewTabTakeoverWallpaper(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback);
-  void GetCurrentBrandedWallpaperFromAdsService(
+  void GetNewTabTakeoverWallpaperFromAdsService(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback);
 
   NTPSponsoredContentData* GetNewTabTakeover() const;
@@ -165,17 +165,17 @@ class ViewCounterService : public KeyedService,
 
   void ResetModel();
 
-  void OnGetCurrentBrandedWallpaper(
+  void OnGetNewTabTakeoverWallpaper(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
-      std::optional<base::DictValue> branded_wallpaper);
-  void CheckBrandedWallpaperCreativeFileExists(
+      std::optional<base::DictValue> new_tab_takeover_wallpaper);
+  void CheckNewTabTakeoverCreativeFileExists(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
-      base::DictValue branded_wallpaper);
-  void OnCheckBrandedWallpaperCreativeFileExists(
+      base::DictValue new_tab_takeover_wallpaper);
+  void OnCheckNewTabTakeoverCreativeFileExists(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
-      base::DictValue branded_wallpaper,
+      base::DictValue new_tab_takeover_wallpaper,
       bool file_exists);
-  void GetCurrentBrandedWallpaperFromAdsServiceCallback(
+  void GetNewTabTakeoverWallpaperFromAdsServiceCallback(
       base::OnceCallback<void(std::optional<base::DictValue>)> callback,
       brave_ads::mojom::NewTabPageAdInfoPtr ad);
 
