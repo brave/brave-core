@@ -96,13 +96,13 @@ class CollapsedURLBarView: UIView {
     return configuration
   }
 
-  var secureContentState: SecureContentState = .unknown {
+  private var secureContentState: SecureContentState = .unknown {
     didSet {
       updateLockImageView()
     }
   }
 
-  var currentURL: URL? {
+  private var currentURL: URL? {
     didSet {
       urlLabel.attributedText = currentURL.map {
         if let internalURL = InternalURL($0), internalURL.isBasicAuthURL {
@@ -138,9 +138,11 @@ class CollapsedURLBarView: UIView {
 
   private var topConstraint: Constraint?
   private var bottomConstraint: Constraint?
+  private let toolbarState: BrowserToolbarState
 
-  override init(frame: CGRect) {
-    super.init(frame: frame)
+  init(toolbarState: BrowserToolbarState) {
+    self.toolbarState = toolbarState
+    super.init(frame: .zero)
 
     isUserInteractionEnabled = false
     clipsToBounds = false
@@ -166,6 +168,38 @@ class CollapsedURLBarView: UIView {
 
     registerForTraitChanges([UITraitPreferredContentSizeCategory.self]) { (self: Self, _) in
       self.updateForTraitCollectionAndBrowserColors()
+    }
+
+    if #unavailable(iOS 26) {
+      startObservingProperties()
+    }
+  }
+
+  @available(iOS 26.0, *)
+  override func updateProperties() {
+    super.updateProperties()
+    updateObservedProperties()
+  }
+
+  func updateObservedProperties() {
+    if currentURL != toolbarState.displayedURL {
+      currentURL = toolbarState.displayedURL
+    }
+    if secureContentState != toolbarState.secureContentState {
+      secureContentState = toolbarState.secureContentState
+    }
+  }
+
+  @available(iOS, introduced: 18, obsoleted: 26, message: "Use updateProperties directly")
+  private func startObservingProperties() {
+    withObservationTracking {
+      updateObservedProperties()
+    } onChange: { [weak self] in
+      DispatchQueue.main.async {
+        MainActor.assumeIsolated {
+          self?.startObservingProperties()
+        }
+      }
     }
   }
 

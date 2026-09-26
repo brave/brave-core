@@ -606,24 +606,21 @@ extension BrowserViewController {
 
     // The challenge may come from a background tab, so ensure it's the one visible.
     tabManager.selectTab(tab)
-    tab.isDisplayingBasicAuthPrompt = true
-    defer {
-      tab.isDisplayingBasicAuthPrompt = false
-      updateToolbarCurrentURL(tab.visibleURL)
-    }
 
     let isHidden = tab.view.isHidden
     defer { tab.view.isHidden = isHidden }
 
-    // Manually trigger a `url` change notification
+    // Hide the page and its URL when a different origin is requesting credentials so that neither
+    // can be mistaken for the origin making the request
     if host != tab.visibleURL?.host {
       tab.view.isHidden = true
-
-      if tabManager.selectedTab === tab {
-        updateToolbarCurrentURL(
-          URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.basicAuth.rawValue)")
-        )
-      }
+      tab.isDisplayingCrossOriginBasicAuthPrompt = true
+      toolbarState.isDisplayingCrossOriginBasicAuthPrompt = true
+    }
+    defer {
+      tab.isDisplayingCrossOriginBasicAuthPrompt = false
+      toolbarState.isDisplayingCrossOriginBasicAuthPrompt =
+        tabManager.selectedTab?.browserData?.isDisplayingCrossOriginBasicAuthPrompt == true
     }
 
     do {
