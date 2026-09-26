@@ -1627,6 +1627,11 @@ void BraveContentBrowserClient::OverrideWebPreferences(
       web_contents, main_frame_site, web_prefs);
   UpdateGlobalPrivacyControlWebPreference(web_contents, web_prefs);
 
+  // WebPreferences are rebuilt from defaults on every recompute (theme, font
+  // and other pref changes), so derive `is_tor_window` here. Otherwise the
+  // renderer would drop its Tor-only restrictions (e.g. RTCPeerConnection).
+  web_prefs->is_tor_window = web_contents->GetBrowserContext()->IsTor();
+
 #if BUILDFLAG(ENABLE_PLAYLIST)
   if (playlist::PlaylistBackgroundWebContentsHelper::FromWebContents(
           web_contents)) {

@@ -29,16 +29,6 @@ void TorTabHelper::MaybeCreateForWebContents(
   TorTabHelper::CreateForWebContents(web_contents);
 }
 
-void TorTabHelper::ReadyToCommitNavigation(
-    content::NavigationHandle* navigation_handle) {
-  blink::web_pref::WebPreferences prefs =
-      web_contents()->GetOrCreateWebPreferences();
-  if (!prefs.is_tor_window) {
-    prefs.is_tor_window = true;
-    web_contents()->SetWebPreferences(prefs);
-  }
-}
-
 void TorTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
   // We will keep retrying every second if we can't establish connection to tor
