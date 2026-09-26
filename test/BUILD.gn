@@ -31,7 +31,9 @@ import("//brave/components/traffic_control/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//brave/updater/config.gni")
+import("//build/config/rust.gni")
 import("//build/config/ui.gni")
+import("//build/rust/rust_unit_tests_group.gni")
 import("//chrome/common/features.gni")
 import("//components/captive_portal/core/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -712,6 +714,15 @@ copy("teamcity_reporter_integration_runner") {
   sources =
       [ "//brave/base/test/launcher/teamcity_reporter_integration_test.py" ]
   outputs = [ "$root_out_dir/teamcity_reporter_integration_test.py" ]
+}
+
+# Native Rust #[cfg(test)] unit tests. These build as standalone executables
+# rather than gtest binaries, so they are wrapped in a single runner script at
+# $root_out_dir/bin/run_brave_rust_unittests. Add new Rust crates here.
+if (can_build_rust_unit_tests) {
+  rust_unit_tests_group("brave_rust_unittests") {
+    deps = [ "//brave/components/skus/browser/rs/lib:skus_rust_unittests" ]
+  }
 }
 
 source_set("crypto_unittests") {

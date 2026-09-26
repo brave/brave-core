@@ -21,6 +21,7 @@ import {
   getApplicableFilters,
   getChromiumTestsSuites,
   getDefaultTestSuiteArgs,
+  isRustTestSuite,
 } from '../lib/testUtils.ts'
 import { isCI, isTeamcity } from '../lib/ciDetect.ts'
 import { getPassthroughArgs } from '../lib/commandsUtils.ts'
@@ -53,58 +54,69 @@ async function runTests(
     }
 
     const isJunitTestSuite = testSuite.endsWith('_junit_tests')
+    // Native Rust unit tests run through an isolated-script wrapper that
+    // rejects unknown args, so none of the gtest/test launcher flags below
+    // apply to them.
+    const isRustSuite = isRustTestSuite(testSuite)
 
     let braveArgs: string[] = []
 
-    if (!isJunitTestSuite) {
-      braveArgs.push('--enable-logging=stderr')
-    }
-
-    // Android and ios don't support --v
-    if (!config.isMobile()) {
-      braveArgs.push('--v=' + options.v)
-
-      if (options.vmodule) {
-        braveArgs.push('--vmodule=' + options.vmodule)
-      }
-    }
-
-    if (options.filter) {
-      braveArgs.push('--gtest_filter=' + options.filter)
-    }
-
-    if (options.run_disabled_tests) {
-      if (config.isIOS()) {
-        braveArgs.push('--gtest_also_run_disabled_tests')
-      } else {
-        braveArgs.push('--output-disabled-tests')
-      }
-    }
-
-    if (options.disable_brave_extension && !config.isIOS()) {
-      braveArgs.push('--disable-brave-extension')
-    }
-
-    if (options.single_process && !config.isIOS()) {
-      braveArgs.push('--single_process')
-    }
-
-    if (!isJunitTestSuite) {
-      if (
-        options.test_launcher_jobs != null
-        // --clones doesn't produce any test results and fails with AppLaunchError
-        && !config.isIOS()
-      ) {
-        braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
+    if (isRustSuite) {
+      if (options.filter) {
+        braveArgs.push('--test-filter=' + options.filter)
       }
       braveArgs = braveArgs.concat(passthroughArgs)
     } else {
-      // Retain --json-results-file for junit tests.
-      const jsonResultsArg = passthroughArgs.find((arg) =>
-        arg.startsWith('--json-results-file='),
-      )
-      if (jsonResultsArg) {
-        braveArgs.push(jsonResultsArg)
+      if (!isJunitTestSuite) {
+        braveArgs.push('--enable-logging=stderr')
+      }
+
+      // Android and ios don't support --v
+      if (!config.isMobile()) {
+        braveArgs.push('--v=' + options.v)
+
+        if (options.vmodule) {
+          braveArgs.push('--vmodule=' + options.vmodule)
+        }
+      }
+
+      if (options.filter) {
+        braveArgs.push('--gtest_filter=' + options.filter)
+      }
+
+      if (options.run_disabled_tests) {
+        if (config.isIOS()) {
+          braveArgs.push('--gtest_also_run_disabled_tests')
+        } else {
+          braveArgs.push('--output-disabled-tests')
+        }
+      }
+
+      if (options.disable_brave_extension && !config.isIOS()) {
+        braveArgs.push('--disable-brave-extension')
+      }
+
+      if (options.single_process && !config.isIOS()) {
+        braveArgs.push('--single_process')
+      }
+
+      if (!isJunitTestSuite) {
+        if (
+          options.test_launcher_jobs != null
+          // --clones doesn't produce any test results and fails with AppLaunchError
+          && !config.isIOS()
+        ) {
+          braveArgs.push('--test-launcher-jobs=' + options.test_launcher_jobs)
+        }
+        braveArgs = braveArgs.concat(passthroughArgs)
+      } else {
+        // Retain --json-results-file for junit tests.
+        const jsonResultsArg = passthroughArgs.find((arg) =>
+          arg.startsWith('--json-results-file='),
+        )
+        if (jsonResultsArg) {
+          braveArgs.push(jsonResultsArg)
+        }
       }
     }
 
@@ -155,7 +167,9 @@ async function runTests(
     let convertJSONToXML = false
     let outputFilename = path.join(config.srcDir, testSuite)
 
-    if (isCI || options.output_xml) {
+    // Rust suites produce no results file, so their exit code has to be
+    // meaningful - never ignore it.
+    if ((isCI || options.output_xml) && !isRustSuite) {
       // When test results are saved to a file, callers (such as CI) generate
       // and analyze test reports as a next step. These callers are typically
       // not interested in the exit code of running the tests, because they
@@ -167,7 +181,12 @@ async function runTests(
       runOptions.continueOnFail = true
     }
 
-    if (options.output_xml) {
+    if (options.output_xml && isRustSuite) {
+      // The Rust runner reports results as isolated-script JSON, which the
+      // xml-based reporting below cannot consume. Results come from the exit
+      // code instead.
+      Log.warn(`${testSuite} does not support xml output, skipping`)
+    } else if (options.output_xml) {
       // Add filename of xml output of each test suite into the results file
       if (config.isAndroid()) {
         // android only supports json output so use that here and convert
