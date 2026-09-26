@@ -12,6 +12,7 @@
 #include "base/callback_list.h"
 #include "base/containers/span.h"
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
 #include "brave/components/tabs/public/brave_tab_strip_collection.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -39,6 +40,9 @@ class BraveTabStripModel : public TabStripModel {
 
   // Stop MRU cycling, called when releasing the Ctrl key
   void StopMRUCycling();
+
+  // Cancels MRU cycling when tab structure changes during a gesture.
+  void CancelMRUCycling();
 
   // Exposes a |TabStripModel| api to |BraveTabMenuModel|.
   std::vector<int> GetTabIndicesForCommandAt(int tab_index);
@@ -101,6 +105,7 @@ class BraveTabStripModel : public TabStripModel {
   void NotifyTreeTabNodeCreated(const tabs::TreeTabNode& node);
   void NotifyTreeTabNodeWillBeDestroyed(const tree_tab::TreeTabNodeId& id);
   void NotifyTreeTabNodeReparented(const tree_tab::TreeTabNodeId& id);
+  void ResetMRUCyclingState();
 
   tabs::BraveTabStripCollection* contents_data() {
     return static_cast<tabs::BraveTabStripCollection*>(contents_data_.get());
@@ -112,6 +117,10 @@ class BraveTabStripModel : public TabStripModel {
 
   // List of tab indexes sorted by most recently used
   std::vector<int> mru_cycle_list_;
+  std::vector<int> mru_cycle_start_list_;
+  int mru_cycle_start_index_ = kNoTab;
+  base::TimeTicks mru_cycle_commit_time_;
+  bool mru_cycle_in_progress_ = false;
 
   BooleanPrefMember tree_tabs_enabled_;
   BooleanPrefMember vertical_tabs_enabled_;

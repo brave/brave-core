@@ -4,6 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/run_loop.h"
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"
@@ -79,6 +80,68 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelTest, MRUCyclingBasic) {
   // 1 -> 2
   chrome::ExecuteCommand(browser(), IDC_SELECT_PREVIOUS_TAB);
   EXPECT_EQ(tab_strip_model->active_index(), 2);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTabStripModelTest,
+                       MRUCyclingDoesNotPromoteIntermediateTabs) {
+  auto* tab_strip_model =
+      static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
+
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  EXPECT_EQ(tab_strip_model->active_index(), 3);
+
+  TabVisibilityWaiter tab_visibility_waiter(
+      tab_strip_model->GetWebContentsAt(0));
+  chrome::ExecuteCommand(browser(), IDC_SELECT_NEXT_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 0);
+  tab_visibility_waiter.WaitForTabToBecomeVisible();
+
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kMRUCyclingEnabled, true);
+
+  // Cycle A -> D -> C and commit C. D is only a preview and must not become
+  // more recent than the tab that was active when cycling started.
+  chrome::ExecuteCommand(browser(), IDC_SELECT_NEXT_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 3);
+  chrome::ExecuteCommand(browser(), IDC_SELECT_NEXT_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 2);
+  tab_strip_model->StopMRUCycling();
+
+  chrome::ExecuteCommand(browser(), IDC_SELECT_NEXT_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 0);
+  tab_strip_model->StopMRUCycling();
+  chrome::ExecuteCommand(browser(), IDC_SELECT_NEXT_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 2);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTabStripModelTest,
+                       ReverseMRUCyclingDoesNotPromoteIntermediateTabs) {
+  auto* tab_strip_model =
+      static_cast<BraveTabStripModel*>(browser()->tab_strip_model());
+
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  EXPECT_EQ(tab_strip_model->active_index(), 3);
+
+  TabVisibilityWaiter tab_visibility_waiter(
+      tab_strip_model->GetWebContentsAt(0));
+  chrome::ExecuteCommand(browser(), IDC_SELECT_NEXT_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 0);
+  tab_visibility_waiter.WaitForTabToBecomeVisible();
+
+  browser()->GetProfile()->GetPrefs()->SetBoolean(kMRUCyclingEnabled, true);
+
+  // Cycle A -> B -> C in reverse and commit C. B must not be promoted.
+  chrome::ExecuteCommand(browser(), IDC_SELECT_PREVIOUS_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 1);
+  chrome::ExecuteCommand(browser(), IDC_SELECT_PREVIOUS_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 2);
+  tab_strip_model->StopMRUCycling();
+
+  chrome::ExecuteCommand(browser(), IDC_SELECT_NEXT_TAB);
+  EXPECT_EQ(tab_strip_model->active_index(), 0);
 }
 
 // Check MRU Cycling is restarted when tab is closed during the mru cycling.

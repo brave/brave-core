@@ -143,7 +143,7 @@ bool BraveTabStripModel::IsOnlyActiveTabAndTreeDescendantsSelected() {
 
 void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
                                       TabStripUserGestureDetails detail) {
-  if (mru_cycle_list_.empty()) {
+  if (!mru_cycle_in_progress_) {
     // Start cycling
 
     BrowserWindow* browser_window =
@@ -152,16 +152,58 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
       return;
     }
 
-    // Create a list of tab indexes sorted by time of last activation
-    for (int i = 0; i < count(); ++i) {
-      mru_cycle_list_.push_back(i);
+    // Reuse the order committed by the previous cycle. Timestamps recorded
+    // while previewing tabs cannot distinguish those previews from normal
+    // activation, so merge only activations that happened after the commit.
+    if (mru_cycle_list_.size() != static_cast<size_t>(count()) ||
+        mru_cycle_list_.empty()) {
+      mru_cycle_list_.clear();
+      for (int i = 0; i < count(); ++i) {
+        mru_cycle_list_.push_back(i);
+      }
+
+      std::sort(mru_cycle_list_.begin(), mru_cycle_list_.end(),
+                [this](int a, int b) {
+                  return GetWebContentsAt(a)->GetLastActiveTimeTicks() >
+                         GetWebContentsAt(b)->GetLastActiveTimeTicks();
+                });
+    } else {
+      std::vector<int> tabs_activated_since_commit;
+      for (const int index : mru_cycle_list_) {
+        if (GetWebContentsAt(index)->GetLastActiveTimeTicks() >
+            mru_cycle_commit_time_) {
+          tabs_activated_since_commit.push_back(index);
+        }
+      }
+
+      std::sort(tabs_activated_since_commit.begin(),
+                tabs_activated_since_commit.end(), [this](int a, int b) {
+                  return GetWebContentsAt(a)->GetLastActiveTimeTicks() >
+                         GetWebContentsAt(b)->GetLastActiveTimeTicks();
+                });
+      if (!tabs_activated_since_commit.empty() ||
+          mru_cycle_list_.front() != active_index()) {
+        if (std::find(tabs_activated_since_commit.begin(),
+                      tabs_activated_since_commit.end(),
+                      active_index()) == tabs_activated_since_commit.end()) {
+          tabs_activated_since_commit.insert(
+              tabs_activated_since_commit.begin(), active_index());
+        }
+
+        std::vector<int> mru_order = std::move(tabs_activated_since_commit);
+        for (const int index : mru_cycle_list_) {
+          if (std::find(mru_order.begin(), mru_order.end(), index) ==
+              mru_order.end()) {
+            mru_order.push_back(index);
+          }
+        }
+        mru_cycle_list_ = std::move(mru_order);
+      }
     }
 
-    std::sort(mru_cycle_list_.begin(), mru_cycle_list_.end(),
-              [this](int a, int b) {
-                return GetWebContentsAt(a)->GetLastActiveTimeTicks() >
-                       GetWebContentsAt(b)->GetLastActiveTimeTicks();
-              });
+    mru_cycle_start_list_ = mru_cycle_list_;
+    mru_cycle_start_index_ = active_index();
+    mru_cycle_in_progress_ = true;
 
     // Tell the cycling controller that we start cycling to handle tabs keys
     BraveBrowserWindow::From(browser_window)->StartTabCycling();
@@ -179,7 +221,41 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
 }
 
 void BraveTabStripModel::StopMRUCycling() {
+  if (!mru_cycle_in_progress_ ||
+      mru_cycle_start_list_.size() != static_cast<size_t>(count()) ||
+      mru_cycle_start_index_ == kNoTab) {
+    ResetMRUCyclingState();
+    return;
+  }
+
+  const int active_tab_index = active_index();
   mru_cycle_list_.clear();
+  mru_cycle_list_.push_back(active_tab_index);
+  if (mru_cycle_start_index_ != active_tab_index) {
+    mru_cycle_list_.push_back(mru_cycle_start_index_);
+  }
+  for (const int index : mru_cycle_start_list_) {
+    if (index != active_tab_index && index != mru_cycle_start_index_) {
+      mru_cycle_list_.push_back(index);
+    }
+  }
+
+  mru_cycle_start_list_.clear();
+  mru_cycle_start_index_ = kNoTab;
+  mru_cycle_commit_time_ = base::TimeTicks::Now();
+  mru_cycle_in_progress_ = false;
+}
+
+void BraveTabStripModel::CancelMRUCycling() {
+  ResetMRUCyclingState();
+}
+
+void BraveTabStripModel::ResetMRUCyclingState() {
+  mru_cycle_list_.clear();
+  mru_cycle_start_list_.clear();
+  mru_cycle_start_index_ = kNoTab;
+  mru_cycle_commit_time_ = base::TimeTicks();
+  mru_cycle_in_progress_ = false;
 }
 
 std::vector<int> BraveTabStripModel::GetTabIndicesForCommandAt(int tab_index) {
