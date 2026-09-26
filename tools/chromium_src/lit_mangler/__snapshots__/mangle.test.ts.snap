@@ -232,7 +232,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
    <div id="history-sync-optin" class="history-sync-optin">
      \${this.isSignInState_(HistorySignInState.SIGNED_OUT) ||
              this.isSignInState_(HistorySignInState.WEB_ONLY_SIGNED_IN) ?
-@@ -124,12 +120,11 @@
+@@ -132,12 +128,11 @@
        </cr-button>
      \`}
    </div>
