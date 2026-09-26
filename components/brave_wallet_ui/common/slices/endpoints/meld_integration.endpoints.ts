@@ -16,7 +16,6 @@ import {
   CryptoWidgetCustomerData,
   CryptoBuySessionData,
   MeldCryptoWidget,
-  WalletState,
 } from '../../../constants/types'
 
 // Utils
@@ -43,23 +42,6 @@ type CreateMeldBuyWidgetArgs = {
   customerData: CryptoWidgetCustomerData
 }
 
-const supportedChains = [
-  'BTC',
-  'FIL',
-  'ZEC',
-  'ETH',
-  'SOLANA',
-  'FTM',
-  'BSC',
-  'POLYGON',
-  'OPTIMISM',
-  'AURORA',
-  'CELO',
-  'ARBITRUM',
-  'AVAXC',
-  'ADA',
-]
-
 export const meldIntegrationEndpoints = ({
   query,
   mutation,
@@ -78,7 +60,6 @@ export const meldIntegrationEndpoints = ({
             serviceProviders: undefined,
             paymentMethodTypes: undefined,
             statuses: undefined,
-            cryptoChains: undefined,
           }
           const { fiatCurrencies, error } =
             await meldIntegrationService.getFiatCurrencies(filter)
@@ -115,15 +96,6 @@ export const meldIntegrationEndpoints = ({
           const { meldIntegrationService, blockchainRegistry } =
             baseQuery(undefined).data
 
-          const { isPolkadotEnabled } = (getState() as { wallet: WalletState })
-            .wallet
-
-          // Asset Hub Polkadot buys are only available when the Polkadot
-          // feature is enabled.
-          const cryptoChains = isPolkadotEnabled
-            ? [...supportedChains, 'ASSETHUB']
-            : supportedChains
-
           // get all crypto currencies
           const filter: MeldFilter = {
             countries: undefined,
@@ -132,7 +104,6 @@ export const meldIntegrationEndpoints = ({
             serviceProviders: undefined,
             paymentMethodTypes: undefined,
             statuses: undefined,
-            cryptoChains: cryptoChains.join(','),
           }
           const { fiatCurrencies: cryptoCurrencies, error } =
             await meldIntegrationService.getCryptoCurrencies(filter)
@@ -200,7 +171,6 @@ export const meldIntegrationEndpoints = ({
             serviceProviders: undefined,
             paymentMethodTypes: undefined,
             statuses: undefined,
-            cryptoChains: undefined,
           }
           const { countries, error } =
             await meldIntegrationService.getCountries(filter)
@@ -238,7 +208,6 @@ export const meldIntegrationEndpoints = ({
             serviceProviders: undefined,
             paymentMethodTypes: undefined,
             statuses: undefined,
-            cryptoChains: undefined,
           }
           const { serviceProviders, error } =
             await meldIntegrationService.getServiceProviders(filter)
@@ -318,7 +287,6 @@ export const meldIntegrationEndpoints = ({
             serviceProviders: undefined,
             paymentMethodTypes: undefined,
             statuses: undefined,
-            cryptoChains: undefined,
           }
           const { paymentMethods, error } =
             await meldIntegrationService.getPaymentMethods(filter)
