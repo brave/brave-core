@@ -14,6 +14,7 @@
 namespace net {
 namespace features {
 
+NET_EXPORT BASE_DECLARE_FEATURE(kBraveCookieJarSharedVersion);
 NET_EXPORT BASE_DECLARE_FEATURE(kBraveEphemeralStorageKeepAlive);
 NET_EXPORT extern const base::FeatureParam<int>
     kBraveEphemeralStorageKeepAliveTimeInSeconds;
