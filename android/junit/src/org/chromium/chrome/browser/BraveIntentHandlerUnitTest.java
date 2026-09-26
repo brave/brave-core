@@ -14,8 +14,6 @@ import static org.mockito.Mockito.lenient;
 import android.content.Intent;
 import android.net.Uri;
 
-import androidx.test.filters.SmallTest;
-
 import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
 import org.chromium.url.GURL;
@@ -205,8 +203,6 @@ public class BraveIntentHandlerUnitTest {
     }
 
     @Test
-<<<<<<< HEAD
-    @SmallTest
     public void maybeReplaceBraveSearchSource_quickSearch_rewritesSource() {
         String result =
                 BraveIntentHandler.maybeReplaceBraveSearchSource(
@@ -217,7 +213,6 @@ public class BraveIntentHandlerUnitTest {
     }
 
     @Test
-    @SmallTest
     public void maybeReplaceBraveSearchSource_quickSearch_preservesLiteralPlusInQuery() {
         String result =
                 BraveIntentHandler.maybeReplaceBraveSearchSource(
@@ -230,7 +225,6 @@ public class BraveIntentHandlerUnitTest {
     }
 
     @Test
-    @SmallTest
     public void maybeReplaceBraveSearchSource_nonBraveSearchHost_isUnchanged() {
         String url = "https://example.com/search?q=test&source=android";
 
@@ -241,7 +235,6 @@ public class BraveIntentHandlerUnitTest {
     }
 
     @Test
-    @SmallTest
     public void maybeReplaceBraveSearchSource_sourceNotAndroid_isUnchanged() {
         String url = "https://search.brave.com/search?q=test&source=web";
 
@@ -252,7 +245,6 @@ public class BraveIntentHandlerUnitTest {
     }
 
     @Test
-    @SmallTest
     public void maybeReplaceBraveSearchSource_noSourceParam_isUnchanged() {
         String url = "https://search.brave.com/search?q=test";
 
@@ -263,9 +255,6 @@ public class BraveIntentHandlerUnitTest {
     }
 
     @Test
-    @SmallTest
-=======
->>>>>>> cb7a6a0f6c5 ([cr156][Android] Drop test size annotations from Robolectric tests)
     public void isUrlUnsafe_braveScheme_isBlocked() {
         assertTrue(BraveIntentHandler.isUrlUnsafe("brave://flags/"));
     }
