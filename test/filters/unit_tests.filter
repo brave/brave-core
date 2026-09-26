@@ -191,6 +191,7 @@
 -MaterialTabStripColorMixerTest.*
 
 # These tests fail because we disable kFirstPartySets.
+-DefaultFirstPartySetsPolicyServiceTest.*
 -FirstPartySetsPolicyServicePrefTest.*
 -PageInfoRelatedWebsiteSetsTest.ShowAutograntedRWSPermissions
 -RelatedWebsiteSetsSourceTest.RWS
