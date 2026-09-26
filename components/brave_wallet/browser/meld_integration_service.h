@@ -16,6 +16,8 @@
 #include "brave/components/brave_wallet/common/meld_integration.mojom.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 
+class PrefService;
+
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
@@ -24,7 +26,8 @@ namespace brave_wallet {
 
 class MeldIntegrationService : public mojom::MeldIntegrationService {
  public:
-  explicit MeldIntegrationService(
+  MeldIntegrationService(
+      PrefService* profile_prefs,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~MeldIntegrationService() override;
   MeldIntegrationService(const MeldIntegrationService&) = delete;
@@ -34,10 +37,9 @@ class MeldIntegrationService : public mojom::MeldIntegrationService {
 
   void Bind(mojo::PendingReceiver<mojom::MeldIntegrationService> receiver);
 
-  static GURL GetServiceProviderURL(const mojom::MeldFilterPtr& filter);
+  static GURL GetServiceProviderURL();
 
-  void GetServiceProviders(mojom::MeldFilterPtr filter,
-                           GetServiceProvidersCallback callback) override;
+  void GetServiceProviders(GetServiceProvidersCallback callback) override;
 
   void GetCryptoQuotes(const std::string& country,
                        const std::string& source_currency_code,
@@ -47,25 +49,23 @@ class MeldIntegrationService : public mojom::MeldIntegrationService {
                        const std::optional<std::string>& payment_method,
                        GetCryptoQuotesCallback callback) override;
 
-  static GURL GetPaymentMethodsURL(const mojom::MeldFilterPtr& filter);
+  static GURL GetPaymentMethodsURL(const std::string& country,
+                                   const std::string& base_currency);
 
-  void GetPaymentMethods(mojom::MeldFilterPtr filter,
+  void GetPaymentMethods(const std::string& country,
                          GetPaymentMethodsCallback callback) override;
 
-  static GURL GetFiatCurrenciesURL(const mojom::MeldFilterPtr& filter);
+  static GURL GetFiatCurrenciesURL();
 
-  void GetFiatCurrencies(mojom::MeldFilterPtr filter,
-                         GetFiatCurrenciesCallback callback) override;
+  void GetFiatCurrencies(GetFiatCurrenciesCallback callback) override;
 
-  static GURL GetCryptoCurrenciesURL(const mojom::MeldFilterPtr& filter);
+  static GURL GetCryptoCurrenciesURL();
 
-  void GetCryptoCurrencies(mojom::MeldFilterPtr filter,
-                           GetCryptoCurrenciesCallback callback) override;
+  void GetCryptoCurrencies(GetCryptoCurrenciesCallback callback) override;
 
-  static GURL GetCountriesURL(const mojom::MeldFilterPtr& filter);
+  static GURL GetCountriesURL();
 
-  void GetCountries(mojom::MeldFilterPtr filter,
-                    GetCountriesCallback callback) override;
+  void GetCountries(GetCountriesCallback callback) override;
 
   void CryptoBuyWidgetCreate(mojom::CryptoBuySessionDataPtr session_data,
                              mojom::CryptoWidgetCustomerDataPtr customer_data,
@@ -146,6 +146,7 @@ class MeldIntegrationService : public mojom::MeldIntegrationService {
       CryptoTransferWidgetCreateCallback callback,
       mojom::MeldCryptoWidgetPtr crypto_widget) const;
 
+  raw_ptr<PrefService> profile_prefs_ = nullptr;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   base::WeakPtrFactory<MeldIntegrationService> weak_ptr_factory_{this};
 };

@@ -13,7 +13,6 @@ import {
   BraveWallet,
   MeldCryptoCurrency,
   MeldFiatCurrency,
-  MeldFilter,
 } from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
@@ -516,9 +515,7 @@ export class MockedWalletApiProxy {
   meldIntegrationService: Partial<
     InstanceType<typeof BraveWallet.MeldIntegrationServiceInterface>
   > = {
-    getFiatCurrencies: async (
-      filter: MeldFilter,
-    ): Promise<{
+    getFiatCurrencies: async (): Promise<{
       fiatCurrencies: MeldFiatCurrency[] | null
       error: string[] | null
     }> => ({
@@ -531,9 +528,7 @@ export class MockedWalletApiProxy {
       ],
       error: null,
     }),
-    getCryptoCurrencies: async (
-      filter: MeldFilter,
-    ): Promise<{
+    getCryptoCurrencies: async (): Promise<{
       fiatCurrencies: MeldCryptoCurrency[] | null
       error: string[] | null
     }> => ({

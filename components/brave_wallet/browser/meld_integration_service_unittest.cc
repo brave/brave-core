@@ -20,9 +20,11 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "net/base/url_search_params.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -57,8 +59,10 @@ namespace brave_wallet {
 class MeldIntegrationServiceUnitTest : public testing::Test {
  public:
   MeldIntegrationServiceUnitTest() {
+    RegisterProfilePrefs(prefs_.registry());
+
     meld_integration_service_ = std::make_unique<MeldIntegrationService>(
-        url_loader_factory_.GetSafeWeakWrapper());
+        &prefs_, url_loader_factory_.GetSafeWeakWrapper());
   }
 
   ~MeldIntegrationServiceUnitTest() override = default;
@@ -93,8 +97,6 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
 
   void TestGetServiceProvider(
       const std::string& content,
-      const std::string& countries,
-      const std::string& fiat_currencies,
       MeldIntegrationService::GetServiceProvidersCallback callback,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
     SetInterceptor(content, http_status);
@@ -110,10 +112,8 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
               std::move(callback).Run(std::move(sps), errors);
               run_loop.Quit();
             });
-    auto filter = mojom::MeldFilter::New(countries, fiat_currencies);
 
-    meld_integration_service_->GetServiceProviders(std::move(filter),
-                                                   mock_callback.Get());
+    meld_integration_service_->GetServiceProviders(mock_callback.Get());
     run_loop.Run();
   }
 
@@ -175,8 +175,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
 
   void TestGetPaymentMethods(
       const std::string& content,
-      const std::string& countries,
-      const std::string& fiat_currencies,
+      const std::string& country,
       MeldIntegrationService::GetPaymentMethodsCallback callback,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
     SetInterceptor(content, http_status);
@@ -194,17 +193,12 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
               run_loop.Quit();
             });
 
-    auto filter = mojom::MeldFilter::New(countries, fiat_currencies);
-
-    meld_integration_service_->GetPaymentMethods(std::move(filter),
-                                                 mock_callback.Get());
+    meld_integration_service_->GetPaymentMethods(country, mock_callback.Get());
     run_loop.Run();
   }
 
   void TestGetFiatCurrencies(
       const std::string& content,
-      const std::string& countries,
-      const std::string& fiat_currencies,
       MeldIntegrationService::GetFiatCurrenciesCallback callback,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
     SetInterceptor(content, http_status);
@@ -221,17 +215,12 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
               std::move(callback).Run(std::move(fiat_currencies), errors);
               run_loop.Quit();
             });
-    auto filter = mojom::MeldFilter::New(countries, fiat_currencies);
-
-    meld_integration_service_->GetFiatCurrencies(std::move(filter),
-                                                 mock_callback.Get());
+    meld_integration_service_->GetFiatCurrencies(mock_callback.Get());
     run_loop.Run();
   }
 
   void TestGetCryptoCurrencies(
       const std::string& content,
-      const std::string& countries,
-      const std::string& fiat_currencies,
       MeldIntegrationService::GetCryptoCurrenciesCallback callback,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
     SetInterceptor(content, http_status);
@@ -248,15 +237,11 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
               std::move(callback).Run(std::move(crypto_currencies), errors);
               run_loop.Quit();
             });
-    auto filter = mojom::MeldFilter::New(countries, fiat_currencies);
-    meld_integration_service_->GetCryptoCurrencies(std::move(filter),
-                                                   mock_callback.Get());
+    meld_integration_service_->GetCryptoCurrencies(mock_callback.Get());
     run_loop.Run();
   }
 
   void TestGetCountries(const std::string& content,
-                        const std::string& countries,
-                        const std::string& fiat_currencies,
                         MeldIntegrationService::GetCountriesCallback callback,
                         const net::HttpStatusCode http_status = net::HTTP_OK) {
     SetInterceptor(content, http_status);
@@ -272,9 +257,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
               std::move(callback).Run(std::move(countries), errors);
               run_loop.Quit();
             });
-    auto filter = mojom::MeldFilter::New(countries, fiat_currencies);
-    meld_integration_service_->GetCountries(std::move(filter),
-                                            mock_callback.Get());
+    meld_integration_service_->GetCountries(mock_callback.Get());
     run_loop.Run();
   }
 
@@ -614,18 +597,16 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
 
  private:
+  sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
 };
 
 TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
-  auto filter = mojom::MeldFilter::New("US,CA", "USD,EUR");
-  const auto url = MeldIntegrationService::GetServiceProviderURL(filter);
+  const auto url = MeldIntegrationService::GetServiceProviderURL();
   EXPECT_EQ(url.path(), "/service-providers");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
               ElementsAre(Pair("accountFilter", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED"),
-                          Pair("countries", "US,CA"),  //
-                          Pair("fiatCurrencies", "USD,EUR")));
+                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
   TestGetServiceProvider(
       R"([
   {
@@ -659,7 +640,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "websiteUrl": "https://www.blockchain.com",
     "logos": null
   }])",
-      "US", "USD",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
@@ -711,7 +691,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
       "CRYPTO_ONRAMP": "LIVE"
     }
   }])",
-      "US", "USD",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
@@ -727,7 +706,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "requestId": "315a",
     "timestamp": "2024-04-24T18:55:09.327818Z"
   })",
-      "US", "USD",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
@@ -737,7 +715,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
           }),
       net::HTTP_UNAUTHORIZED);
   TestGetServiceProvider(
-      "some wrone data", "US", "USD",
+      "some wrone data",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
@@ -747,7 +725,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
                           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)});
           }));
   TestGetServiceProvider(
-      "some wrone data", "US", "USD",
+      "some wrone data",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
@@ -768,7 +746,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetServiceProviders) {
     "requestId": "356d",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US", "USD",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldServiceProviderPtr>> sps,
               const std::optional<std::vector<std::string>>& errors) {
@@ -936,16 +913,14 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoQuotes) {
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
-  auto filter = mojom::MeldFilter::New("US,CA", "USD,EUR");
-
-  const auto url = MeldIntegrationService::GetPaymentMethodsURL(filter);
+  const auto url = MeldIntegrationService::GetPaymentMethodsURL("US", "USD");
   EXPECT_EQ(url.path(), "/service-providers/properties/payment-methods");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
-              ElementsAre(Pair("accountFilter", "false"),
+              ElementsAre(Pair("accountFilter", "false"),  //
+                          Pair("countries", "US"),         //
+                          Pair("fiatCurrencies", "USD"),   //
                           Pair("includeServiceProviderDetails", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED"),
-                          Pair("countries", "US,CA"),  //
-                          Pair("fiatCurrencies", "USD,EUR")));
+                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
   TestGetPaymentMethods(
       R"([
   {
@@ -958,7 +933,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
     }
   }
   ])",
-      "US,CA", "USD,EUR",
+      "US",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                  payment_methods,
@@ -995,7 +970,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
     }
   }
   ])",
-      "US,CA", "USD,EUR",
+      "US",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                  payment_methods,
@@ -1028,7 +1003,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
   })",
-      "US,CA", "USD,EUR",
+      "US",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                  payment_methods,
@@ -1048,7 +1023,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
   }])",
-      "US,CA", "USD,EUR",
+      "US",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                  payment_methods,
@@ -1060,7 +1035,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
           }));
 
   TestGetPaymentMethods(
-      "some wrong data", "US,CA", "USD,EUR",
+      "some wrong data", "US",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                  payment_methods,
@@ -1083,7 +1058,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US,CA", "USD,EUR",
+      "US",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                   payment_methods,
@@ -1097,15 +1072,12 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
-  auto filter = mojom::MeldFilter::New("US,CA", "USD,EUR");
-  const auto url = MeldIntegrationService::GetFiatCurrenciesURL(filter);
+  const auto url = MeldIntegrationService::GetFiatCurrenciesURL();
   EXPECT_EQ(url.path(), "/service-providers/properties/fiat-currencies");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
               ElementsAre(Pair("accountFilter", "false"),
                           Pair("includeServiceProviderDetails", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED"),
-                          Pair("countries", "US,CA"),  //
-                          Pair("fiatCurrencies", "USD,EUR")));
+                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
 
   TestGetFiatCurrencies(
       R"([
@@ -1119,7 +1091,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
     "name": "Algerian Dinar",
     "symbolImageUrl": "https://images-currency.meld.io/fiat/DZD/symbol.png"
   }])",
-      "US,CA", "USD,EUR",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
                  fiat_currencies,
@@ -1153,7 +1124,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
     "name": null,
     "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
   })",
-      "US,CA", "USD,EUR",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
                  fiat_currencies,
@@ -1169,7 +1139,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
     "name": null,
     "symbolImageUrl": "https://images-currency.meld.io/fiat/AFN/symbol.png"
   }])",
-      "US,CA", "USD,EUR",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
                  fiat_currencies,
@@ -1181,7 +1150,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
           }));
 
   TestGetFiatCurrencies(
-      "some wrong data", "US,CA", "USD,EUR",
+      "some wrong data",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
                  fiat_currencies,
@@ -1204,7 +1173,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US,CA", "USD,EUR",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldFiatCurrencyPtr>>
                   fiat_currencies,
@@ -1218,8 +1186,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
-  auto filter = mojom::MeldFilter::New("US,CA", "USD,EUR");
-  const auto url = MeldIntegrationService::GetCryptoCurrenciesURL(filter);
+  const auto url = MeldIntegrationService::GetCryptoCurrenciesURL();
   EXPECT_EQ(url.path(), "/service-providers/properties/crypto-currencies");
   EXPECT_THAT(
       net::UrlSearchParams(url).params(),
@@ -1228,9 +1195,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
                        "BTC,FIL,ZEC,ETH,ANA,FTM,BSC,GON,ISM,ORA,ELO,RUM,AXC,"
                        "ADA,ASSETHUB"),
                   Pair("includeServiceProviderDetails", "false"),
-                  Pair("statuses", "LIVE,RECENTLY_ADDED"),
-                  Pair("countries", "US,CA"),  //
-                  Pair("fiatCurrencies", "USD,EUR")));
+                  Pair("statuses", "LIVE,RECENTLY_ADDED")));
 
   TestGetCryptoCurrencies(
       R"([
@@ -1252,7 +1217,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
     "contractAddress": "0x111111111117dc0aa78b770fa6a738034120c302",
     "symbolImageUrl": "https://images-currency.meld.io/crypto/00/symbol.png"
   }])",
-      "US,CA", "USD,EUR",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
                  crypto_currencies,
@@ -1300,7 +1264,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
     "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
     "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
   })",
-      "US,CA", "USD,EUR",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
                  crypto_currencies,
@@ -1320,7 +1283,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
     "contractAddress": "0xe41d2489571d322189246dafa5ebde1f4699f498",
     "symbolImageUrl": "https://images-currency.meld.io/crypto/USDT_KCC/symbol.png"
   }])",
-      "US,CA", "USD,EUR",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
                  crypto_currencies,
@@ -1332,7 +1294,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
           }));
 
   TestGetCryptoCurrencies(
-      "some wrong data", "US,CA", "USD,EUR",
+      "some wrong data",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
                  crypto_currencies,
@@ -1355,7 +1317,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US,CA", "USD,EUR",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldCryptoCurrencyPtr>>
                   crypto_currencies,
@@ -1369,15 +1330,12 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
 }
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
-  auto filter = mojom::MeldFilter::New("US,CA", "USD,EUR");
-  const auto url = MeldIntegrationService::GetCountriesURL(filter);
+  const auto url = MeldIntegrationService::GetCountriesURL();
   EXPECT_EQ(url.path(), "/service-providers/properties/countries");
   EXPECT_THAT(net::UrlSearchParams(url).params(),
               ElementsAre(Pair("accountFilter", "false"),
                           Pair("includeServiceProviderDetails", "false"),
-                          Pair("statuses", "LIVE,RECENTLY_ADDED"),
-                          Pair("countries", "US,CA"),  //
-                          Pair("fiatCurrencies", "USD,EUR")));
+                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
   TestGetCountries(
       R"([
   {
@@ -1401,7 +1359,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
     "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
     "regions": null
   }])",
-      "US,CA", "USD,EUR",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1438,7 +1395,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
     "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
     "regions": null
   }])",
-      "US,CA", "USD,EUR",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1449,7 +1405,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
           }));
 
   TestGetCountries(
-      "some wrong data", "US,CA", "USD,EUR",
+      "some wrong data",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1460,7 +1416,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
           }));
 
   TestGetCountries(
-      "some wrong data", "US,CA", "USD,EUR",
+      "some wrong data",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
              const std::optional<std::vector<std::string>>& errors) {
@@ -1482,7 +1438,6 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US,CA", "USD,EUR",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
               const std::optional<std::vector<std::string>>& errors) {

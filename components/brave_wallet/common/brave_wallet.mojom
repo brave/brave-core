@@ -1367,10 +1367,8 @@ interface AssetRatioService {
 
 interface MeldIntegrationService {
   // Obtains the list of Service Providers
-  // All parameters are optional
-  GetServiceProviders(MeldFilter filter)
-      => (array<MeldServiceProvider>? service_providers,
-          array<string>? error);
+  GetServiceProviders() => (array<MeldServiceProvider>? service_providers,
+                            array<string>? error);
 
   // Obtains the crypto quotes
   // Note that next parameters are mandatory:
@@ -1384,24 +1382,19 @@ interface MeldIntegrationService {
       => (array<MeldCryptoQuote>? crypto_quotes, array<string>? error);
 
   // Obtains the list of payment methods
-  // All parameters are optional
-  GetPaymentMethods(MeldFilter filter)
+  GetPaymentMethods(string country)
       => (array<MeldPaymentMethod>? payment_methods, array<string>? error);
 
   // Obtains the list of fiat currencies
-  // All parameters are optional
-  GetFiatCurrencies(MeldFilter filter)
+  GetFiatCurrencies()
       => (array<MeldFiatCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of crypto currencies
-  // All parameters are optional
-  GetCryptoCurrencies(MeldFilter filter)
+  GetCryptoCurrencies()
       => (array<MeldCryptoCurrency>? fiat_currencies, array<string>? error);
 
   // Obtains the list of countries
-  // All parameters are optional
-  GetCountries(MeldFilter filter)
-      => (array<MeldCountry>? countries, array<string>? error);
+  GetCountries() => (array<MeldCountry>? countries, array<string>? error);
 
   CryptoBuyWidgetCreate(CryptoBuySessionData session_data,
                         CryptoWidgetCustomerData? customer_data)
