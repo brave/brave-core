@@ -48,9 +48,9 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
-#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
-#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
+#include "chrome/browser/ui/views/page_action/page_action_view.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_bubble_view.h"
 #include "chrome/browser/ui/views/tabs/hovercard/tab_hover_card_test_util.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -1825,11 +1825,9 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   ASSERT_EQ(1, tab_strip_model->count());
 
   IconLabelBubbleView* partitioned_storage_view =
-      page_actions::GetIconLabelBubbleViewForTesting(
-          BrowserView::GetBrowserViewForBrowser(browser())
-              ->toolbar_button_provider()
-              ->GetPageActionViewInterface(kActionShowPartitionedStorage),
-          kActionShowPartitionedStorage);
+      page_actions::PageActionTestAccessor(browser(),
+                                           kActionShowPartitionedStorage)
+          .view();
   ASSERT_NE(nullptr, partitioned_storage_view);
 
   const GURL url("https://a.test/simple.html");
@@ -1870,11 +1868,9 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_NE(nullptr, partitioned_storage_action);
 
   IconLabelBubbleView* const partitioned_storage_view =
-      page_actions::GetIconLabelBubbleViewForTesting(
-          BrowserView::GetBrowserViewForBrowser(browser())
-              ->toolbar_button_provider()
-              ->GetPageActionViewInterface(kActionShowPartitionedStorage),
-          kActionShowPartitionedStorage);
+      page_actions::PageActionTestAccessor(browser(),
+                                           kActionShowPartitionedStorage)
+          .view();
   ASSERT_NE(nullptr, partitioned_storage_view);
 
   const GURL url("https://a.test/simple.html");
