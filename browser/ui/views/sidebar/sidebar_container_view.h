@@ -73,6 +73,11 @@ class SidebarContainerView : public sidebar::Sidebar,
   void SetSidebarControlViewVisibilityChangedCallback(
       base::RepeatingClosure callback);
 
+  // Drops the opaque backgrounds of this view and the control view so the
+  // macOS glass frame shows through the sidebar, and restores them when the
+  // glass frame goes away.
+  void SetUseGlassBackground(bool use_glass);
+
   // Sidebar overrides:
   void SetSidebarShowOption(
       sidebar::SidebarService::ShowSidebarOption show_option) override;
@@ -132,6 +137,8 @@ class SidebarContainerView : public sidebar::Sidebar,
   void StartBrowserWindowEventMonitoring();
   void StopBrowserWindowEventMonitoring();
 
+  void ApplyGlassBackground();
+
   // Casts |browser_| to BraveBrowser, as storing it as BraveBrowser would cause
   // a precocious downcast.
   BraveBrowser* GetBraveBrowser() const;
@@ -140,6 +147,7 @@ class SidebarContainerView : public sidebar::Sidebar,
   raw_ptr<SidebarControlView> sidebar_control_view_ = nullptr;
   bool initialized_ = false;
   bool sidebar_on_left_ = true;
+  bool use_glass_background_ = false;
   base::OneShotTimer sidebar_hide_timer_;
   sidebar::SidebarService::ShowSidebarOption show_sidebar_option_ =
       sidebar::SidebarService::ShowSidebarOption::kShowAlways;

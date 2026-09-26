@@ -37,9 +37,11 @@ source_set("vertical_tabs") {
     "//chrome/browser/ui/frame",
     "//chrome/browser/ui/tabs",
     "//chrome/browser/ui/views:layout_provider",
+    "//chrome/browser/ui/views/frame:glass_frame_service",
     "//chrome/browser/ui/views/toolbar",
     "//chrome/common:constants",
     "//components/prefs",
+    "//ui/compositor",
     "//ui/views",
   ]
 }
