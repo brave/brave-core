@@ -5,10 +5,11 @@
 
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
 
+#include <algorithm>
+#include <array>
 #include <memory>
 #include <optional>
 #include <string>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
@@ -16,7 +17,6 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
-#include "base/no_destructor.h"
 #include "base/strings/strcat.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
@@ -27,7 +27,6 @@
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
 #include "brave/components/json/json_helper.h"
 #include "net/base/url_util.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -105,17 +104,13 @@ GURL AppendFilterParams(
     url = net::AppendQueryParameter(url, "fiatCurrencies",
                                     *filter->fiat_currencies);
   }
-  if (filter->crypto_currencies) {
-    url = net::AppendQueryParameter(url, "cryptoCurrencies",
-                                    *filter->crypto_currencies);
-  }
   return url;
 }
 
 bool NeedsToParseResponse(const int http_error_code) {
-  static const base::NoDestructor<std::unordered_set<int>>
-      kRespCodesAllowedToContinueParsing({400, 401, 403});
-  return kRespCodesAllowedToContinueParsing->contains(http_error_code);
+  constexpr std::array kRespCodesAllowedToContinueParsing = {400, 401, 403};
+  return std::ranges::contains(kRespCodesAllowedToContinueParsing,
+                               http_error_code);
 }
 
 void FillCustomerData(

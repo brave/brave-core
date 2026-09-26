@@ -81,7 +81,6 @@ struct MeldCountry {
 struct MeldFilter {
   string? countries;
   string? fiat_currencies;
-  string? crypto_currencies;
 };
 
 struct CryptoBuySessionData {
