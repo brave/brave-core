@@ -747,6 +747,7 @@ if (is_win) {
   ]
 
   brave_chrome_browser_deps += [
+    "//brave/browser/os_crypt",
     "//brave/components/windows_recall",
     "//chrome/browser/win",
     "//chrome/install_static:install_static_util",
