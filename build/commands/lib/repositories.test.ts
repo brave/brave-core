@@ -5,7 +5,7 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
-import rootDir from './rootDir.cjs'
+import rootDir from './rootDir.ts'
 import type { PatchedRepository } from './repositories.ts'
 import {
   getPatchedRepositories,
