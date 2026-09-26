@@ -96,6 +96,7 @@ ShouldBlockDomainOnTaskRunner(
       info.filter->raw_line = std::string(result.filter->raw_line);
       info.filter->line_number = result.filter->line_number;
       info.filter->source_index = result.filter->source_index;
+      info.filter->source_title = std::string(result.filter->list_title);
     }
     if (result.exception) {
       info.exception =
@@ -103,6 +104,7 @@ ShouldBlockDomainOnTaskRunner(
       info.exception->raw_line = std::string(result.exception->raw_line);
       info.exception->line_number = result.exception->line_number;
       info.exception->source_index = result.exception->source_index;
+      info.exception->source_title = std::string(result.exception->list_title);
     }
     block_result.info = std::move(info);
   }
