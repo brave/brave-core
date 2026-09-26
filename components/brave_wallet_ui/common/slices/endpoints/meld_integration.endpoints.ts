@@ -57,7 +57,6 @@ export const meldIntegrationEndpoints = ({
             countries: undefined,
             fiatCurrencies: undefined,
             cryptoCurrencies: undefined,
-            serviceProviders: undefined,
           }
           const { fiatCurrencies, error } =
             await meldIntegrationService.getFiatCurrencies(filter)
@@ -99,7 +98,6 @@ export const meldIntegrationEndpoints = ({
             countries: undefined,
             fiatCurrencies: undefined,
             cryptoCurrencies: undefined,
-            serviceProviders: undefined,
           }
           const { fiatCurrencies: cryptoCurrencies, error } =
             await meldIntegrationService.getCryptoCurrencies(filter)
@@ -164,7 +162,6 @@ export const meldIntegrationEndpoints = ({
             countries: undefined,
             fiatCurrencies: undefined,
             cryptoCurrencies: undefined,
-            serviceProviders: undefined,
           }
           const { countries, error } =
             await meldIntegrationService.getCountries(filter)
@@ -199,7 +196,6 @@ export const meldIntegrationEndpoints = ({
             countries: undefined,
             fiatCurrencies: undefined,
             cryptoCurrencies: undefined,
-            serviceProviders: undefined,
           }
           const { serviceProviders, error } =
             await meldIntegrationService.getServiceProviders(filter)
@@ -276,7 +272,6 @@ export const meldIntegrationEndpoints = ({
             countries: country,
             fiatCurrencies: sourceCurrencyCode,
             cryptoCurrencies: undefined,
-            serviceProviders: undefined,
           }
           const { paymentMethods, error } =
             await meldIntegrationService.getPaymentMethods(filter)
