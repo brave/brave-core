@@ -39,8 +39,8 @@
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
+#include "chrome/browser/ui/views/page_action/page_action_view.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/browser/ui/views/tabs/tab.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/prefs/pref_service.h"
@@ -69,11 +69,9 @@ class PlaylistBrowserTest : public PlatformBrowserTest {
   }
 
   views::View* GetPlaylistIcon() {
-    auto* provider = BrowserView::GetBrowserViewForBrowser(browser())
-                         ->toolbar_button_provider();
-    return page_actions::GetIconLabelBubbleViewForTesting(
-        provider->GetPageActionViewInterface(kActionShowPlaylistPageAction),
-        kActionShowPlaylistPageAction);
+    return page_actions::PageActionTestAccessor(browser(),
+                                                kActionShowPlaylistPageAction)
+        .view();
   }
 
   PlaylistBubbleView* GetBubble() {

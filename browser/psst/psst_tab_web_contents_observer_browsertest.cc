@@ -36,12 +36,11 @@
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/infobars/confirm_infobar.h"
 #include "chrome/browser/ui/views/infobars/infobar_view.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
-#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
+#include "chrome/browser/ui/views/page_action/page_action_view.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_accessor.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
 #include "components/infobars/content/content_infobar_manager.h"
@@ -729,15 +728,9 @@ class PsstTabWebContentsObserverBrowserTest : public PlatformBrowserTest {
   // or nullptr if it can't be resolved.
   IconLabelBubbleView* GetPsstPageActionViewForBrowser(
       BrowserWindowInterface* target_browser) {
-    BrowserView* const browser_view =
-        BrowserView::GetBrowserViewForBrowser(target_browser);
-    if (!browser_view || !browser_view->toolbar_button_provider()) {
-      return nullptr;
-    }
-    return page_actions::GetIconLabelBubbleViewForTesting(
-        browser_view->toolbar_button_provider()->GetPageActionViewInterface(
-            kActionShowPsstIcon),
-        kActionShowPsstIcon);
+    return page_actions::PageActionTestAccessor(target_browser,
+                                                kActionShowPsstIcon)
+        .view();
   }
 
   // Navigates `otr_browser`'s active tab to a PSST-matching URL and verifies
