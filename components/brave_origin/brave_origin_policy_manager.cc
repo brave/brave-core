@@ -181,9 +181,11 @@ void BraveOriginPolicyManager::SetPurchased(bool purchased) {
   }
   is_purchased_ = purchased;
   // Persist purchase state so policies can be applied immediately on next
-  // startup, before the async SKU credential check completes.
-  if (local_state_) {
-    local_state_->SetBoolean(kOriginPurchaseValidated, purchased);
+  // startup, before the async SKU credential check completes. Never persist
+  // false: a later credential summary can pick a different cached Origin order
+  // that has no local credentials, which would lock out a valid purchase.
+  if (local_state_ && purchased) {
+    local_state_->SetBoolean(kOriginPurchaseValidated, true);
   }
   if (initialized_) {
     observers_.Notify(&brave_policy::BravePolicyObserver::OnBravePoliciesReady);

@@ -159,6 +159,7 @@ TEST_F(BraveOriginHandlerTest,
   // Reset purchase state - without a SKU service and no prior purchase,
   // the user should not be considered a BraveOrigin user.
   BraveOriginPolicyManager::GetInstance()->SetPurchased(false);
+  local_state_.ClearPref(kOriginPurchaseValidated);
 
   base::test::TestFuture<bool> result;
   handler_->IsBraveOriginUser(result.GetCallback());
@@ -340,6 +341,7 @@ TEST_F(BraveOriginHandlerTest, RefreshPurchaseState_NoSkus_ReturnsFalse) {
   // Reset purchase state - without a SKU service and no prior purchase,
   // refresh should return false.
   BraveOriginPolicyManager::GetInstance()->SetPurchased(false);
+  local_state_.ClearPref(kOriginPurchaseValidated);
 
   base::test::TestFuture<bool> result;
   handler_->RefreshPurchaseState(result.GetCallback());

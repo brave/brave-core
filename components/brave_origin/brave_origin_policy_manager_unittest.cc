@@ -141,6 +141,18 @@ TEST_F(BraveOriginPolicyManagerTest, Init_SetsInitializedState) {
   EXPECT_TRUE(manager->IsInitialized());
 }
 
+TEST_F(BraveOriginPolicyManagerTest, SetPurchased_FalseKeepsPersistedPurchase) {
+  InitializeManager();
+  auto* manager = BraveOriginPolicyManager::GetInstance();
+
+  manager->SetPurchased(true);
+  EXPECT_TRUE(pref_service_.GetBoolean(kOriginPurchaseValidated));
+
+  manager->SetPurchased(false);
+  EXPECT_TRUE(pref_service_.GetBoolean(kOriginPurchaseValidated));
+  EXPECT_TRUE(manager->IsPurchased());
+}
+
 TEST_F(BraveOriginPolicyManagerTest, Init_NotifiesObservers) {
   TestObserver observer;
   auto* manager = BraveOriginPolicyManager::GetInstance();
