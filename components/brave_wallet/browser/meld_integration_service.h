@@ -16,8 +16,6 @@
 #include "brave/components/brave_wallet/common/meld_integration.mojom.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 
-class PrefService;
-
 namespace network {
 class SharedURLLoaderFactory;
 }  // namespace network
@@ -26,8 +24,7 @@ namespace brave_wallet {
 
 class MeldIntegrationService : public mojom::MeldIntegrationService {
  public:
-  MeldIntegrationService(
-      PrefService* profile_prefs,
+  explicit MeldIntegrationService(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~MeldIntegrationService() override;
   MeldIntegrationService(const MeldIntegrationService&) = delete;
@@ -50,9 +47,10 @@ class MeldIntegrationService : public mojom::MeldIntegrationService {
                        GetCryptoQuotesCallback callback) override;
 
   static GURL GetPaymentMethodsURL(const std::string& country,
-                                   const std::string& base_currency);
+                                   const std::string& source_currency_code);
 
   void GetPaymentMethods(const std::string& country,
+                         const std::string& source_currency_code,
                          GetPaymentMethodsCallback callback) override;
 
   static GURL GetFiatCurrenciesURL();
@@ -146,7 +144,6 @@ class MeldIntegrationService : public mojom::MeldIntegrationService {
       CryptoTransferWidgetCreateCallback callback,
       mojom::MeldCryptoWidgetPtr crypto_widget) const;
 
-  raw_ptr<PrefService> profile_prefs_ = nullptr;
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
   base::WeakPtrFactory<MeldIntegrationService> weak_ptr_factory_{this};
 };

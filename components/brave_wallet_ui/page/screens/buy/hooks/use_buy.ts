@@ -160,9 +160,10 @@ export const useBuy = () => {
   const [createMeldBuyWidget] = useCreateMeldBuyWidgetMutation()
   const { data: paymentMethods, isLoading: isLoadingPaymentMethods } =
     useGetMeldPaymentMethodsQuery(
-      selectedCountryCode
+      selectedCountryCode && defaultFiatCurrency
         ? {
             country: selectedCountryCode,
+            sourceCurrencyCode: defaultFiatCurrency,
           }
         : skipToken,
     )

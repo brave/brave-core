@@ -20,11 +20,8 @@
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
-#include "brave/components/brave_wallet/browser/pref_names.h"
-#include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom.h"
 #include "components/grit/brave_components_strings.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "net/base/url_search_params.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/resource_request.h"
@@ -59,10 +56,8 @@ namespace brave_wallet {
 class MeldIntegrationServiceUnitTest : public testing::Test {
  public:
   MeldIntegrationServiceUnitTest() {
-    RegisterProfilePrefs(prefs_.registry());
-
     meld_integration_service_ = std::make_unique<MeldIntegrationService>(
-        &prefs_, url_loader_factory_.GetSafeWeakWrapper());
+        url_loader_factory_.GetSafeWeakWrapper());
   }
 
   ~MeldIntegrationServiceUnitTest() override = default;
@@ -176,6 +171,7 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
   void TestGetPaymentMethods(
       const std::string& content,
       const std::string& country,
+      const std::string& source_currency_code,
       MeldIntegrationService::GetPaymentMethodsCallback callback,
       const net::HttpStatusCode http_status = net::HTTP_OK) {
     SetInterceptor(content, http_status);
@@ -193,7 +189,8 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
               run_loop.Quit();
             });
 
-    meld_integration_service_->GetPaymentMethods(country, mock_callback.Get());
+    meld_integration_service_->GetPaymentMethods(country, source_currency_code,
+                                                 mock_callback.Get());
     run_loop.Run();
   }
 
@@ -597,7 +594,6 @@ class MeldIntegrationServiceUnitTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
 
  private:
-  sync_preferences::TestingPrefServiceSyncable prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
 };
 
@@ -933,7 +929,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
     }
   }
   ])",
-      "US",
+      "US", "USD",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                  payment_methods,
@@ -970,7 +966,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
     }
   }
   ])",
-      "US",
+      "US", "USD",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                  payment_methods,
@@ -1003,7 +999,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
   })",
-      "US",
+      "US", "USD",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                  payment_methods,
@@ -1023,7 +1019,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
       "light": "https://images-paymentMethod.meld.io/ACH/logo_light.png"
     }
   }])",
-      "US",
+      "US", "USD",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                  payment_methods,
@@ -1035,7 +1031,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
           }));
 
   TestGetPaymentMethods(
-      "some wrong data", "US",
+      "some wrong data", "US", "USD",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                  payment_methods,
@@ -1058,7 +1054,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetPaymentMethods) {
     "requestId": "356dd2b40fa55037bfe9d190b6438f59",
     "timestamp": "2024-04-05T07:54:01.318455Z"
   })",
-      "US",
+      "US", "USD",
       base::BindLambdaForTesting(
           [&](std::optional<std::vector<mojom::MeldPaymentMethodPtr>>
                   payment_methods,
@@ -1192,8 +1188,8 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
       net::UrlSearchParams(url).params(),
       ElementsAre(Pair("accountFilter", "false"),
                   Pair("cryptoChains",
-                       "BTC,FIL,ZEC,ETH,ANA,FTM,BSC,GON,ISM,ORA,ELO,RUM,AXC,"
-                       "ADA,ASSETHUB"),
+                       "BTC,FIL,ZEC,ETH,SOLANA,FTM,BSC,POLYGON,OPTIMISM,"
+                       "AURORA,CELO,ARBITRUM,AVAXC,ADA,ASSETHUB"),
                   Pair("includeServiceProviderDetails", "false"),
                   Pair("statuses", "LIVE,RECENTLY_ADDED")));
 
@@ -1341,23 +1337,12 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
   {
     "countryCode": "AF",
     "name": "Afghanistan",
-    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg",
-    "regions": [
-      {
-        "regionCode": "CA-AB",
-        "name": "Alberta"
-      },
-      {
-        "regionCode": "CA-BC",
-        "name": "British Columbia"
-      }
-    ]
+    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg"
   },
   {
     "countryCode": "AL",
     "name": "Albania",
-    "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
-    "regions": null
+    "flagImageUrl": "https://images-country.meld.io/AL/flag.svg"
   }])",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,
@@ -1370,10 +1355,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
                       return item->country_code == "AF" &&
                              item->name == "Afghanistan" &&
                              item->flag_image_url ==
-                                 "https://images-country.meld.io/AF/flag.svg" &&
-                             item->regions &&
-                             (*item->regions)[0]->region_code == "CA-AB" &&
-                             (*item->regions)[0]->name == "Alberta";
+                                 "https://images-country.meld.io/AF/flag.svg";
                     }),
                 1);
             EXPECT_EQ(
@@ -1383,8 +1365,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
                       return item->country_code == "AL" &&
                              item->name == "Albania" &&
                              item->flag_image_url ==
-                                 "https://images-country.meld.io/AL/flag.svg" &&
-                             !item->regions;
+                                 "https://images-country.meld.io/AL/flag.svg";
                     }),
                 1);
           }));
@@ -1392,8 +1373,7 @@ TEST_F(MeldIntegrationServiceUnitTest, GetCountries) {
       R"([
   {
     "name": "Albania",
-    "flagImageUrl": "https://images-country.meld.io/AL/flag.svg",
-    "regions": null
+    "flagImageUrl": "https://images-country.meld.io/AL/flag.svg"
   }])",
       base::BindLambdaForTesting(
           [](std::optional<std::vector<mojom::MeldCountryPtr>> countries,

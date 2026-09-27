@@ -66,16 +66,10 @@ struct MeldCryptoCurrency {
   string? symbol_image_url;
 };
 
-struct MeldRegion {
-  string? region_code;
-  string? name;
-};
-
 struct MeldCountry {
   string country_code;
   string? name;
   string? flag_image_url;
-  array<MeldRegion>? regions;
 };
 
 struct CryptoBuySessionData {

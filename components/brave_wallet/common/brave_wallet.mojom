@@ -1382,7 +1382,7 @@ interface MeldIntegrationService {
       => (array<MeldCryptoQuote>? crypto_quotes, array<string>? error);
 
   // Obtains the list of payment methods
-  GetPaymentMethods(string country)
+  GetPaymentMethods(string country, string source_currency_code)
       => (array<MeldPaymentMethod>? payment_methods, array<string>? error);
 
   // Obtains the list of fiat currencies

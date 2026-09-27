@@ -33,6 +33,7 @@ type GetCryptoQuotesArgs = {
 
 type GetPaymentMethodsArg = {
   country: string
+  sourceCurrencyCode: string
 }
 
 type CreateMeldBuyWidgetArgs = {
@@ -242,7 +243,10 @@ export const meldIntegrationEndpoints = ({
         try {
           const { meldIntegrationService } = baseQuery(undefined).data
           const { paymentMethods, error } =
-            await meldIntegrationService.getPaymentMethods(params.country)
+            await meldIntegrationService.getPaymentMethods(
+              params.country,
+              params.sourceCurrencyCode,
+            )
 
           if (error) {
             return handleEndpointError(
