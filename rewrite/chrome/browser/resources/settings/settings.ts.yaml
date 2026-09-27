@@ -8,4 +8,4 @@ substitutions:
       Import Brave's settings entry point, which adds the Brave sections to
       the page.
     add_import:
-      import: import './br/index.js';
+      entry: import './br/index.js';

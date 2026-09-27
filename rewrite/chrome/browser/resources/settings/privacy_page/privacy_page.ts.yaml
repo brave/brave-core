@@ -7,4 +7,4 @@ substitutions:
   - description: |
       Load Brave's personalization options, which this page hosts.
     add_import:
-      import: import './personalization_options.js';
+      entry: import './personalization_options.js';

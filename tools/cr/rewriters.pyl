@@ -726,8 +726,8 @@ has:
         },
 
         # The file's first statement, which an import is inserted above so it
-        # lands at the top of the file, but below the copyright header, since
-        # a comment is not a statement.
+        # lands after the copyright comment block at the top, or at the first
+        # line in the file if there is no copyright header.
         #
         # The `any` is the `statement` supertype transcribed: the declaration
         # kinds WebUI sources open with, plus `import_statement` and the

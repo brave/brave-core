@@ -6,4 +6,4 @@
 substitutions:
   - description: Load Brave's Polymer overrides before this page's components.
     add_import:
-      import: import 'chrome://resources/brave/polymer_overriding.js';
+      entry: import 'chrome://resources/brave/polymer_overriding.js';

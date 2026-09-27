@@ -3407,22 +3407,23 @@ class GnAddImportRewriter(_AstGrepRewriter):
 
 
 class TsAddImportRewriter(_AstGrepRewriter):
-    """Adds an `import` to the top of a TypeScript file."""
+    """Adds one or more `import` statements to the top of a TypeScript file."""
 
     NAME: Final = 'add_import'
     OP_ID: Final = 'ts.add_import'
-    SUMMARY: Final = 'Add an import to the top of a .ts file.'
+    SUMMARY: Final = 'Add import(s) to the top of a .ts file.'
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
-        Adds an `import` at the top of a `.ts` file, below its copyright
-        header. It joins the file's imports (or exports) when the file opens
-        with them, and is otherwise separated from the code below by a blank
-        line.
+        Adds one or more `import` statements at the top of a `.ts` file, below
+        its copyright header. They join the file's imports (or exports) when
+        the file opens with them, and are otherwise separated from the code
+        below by a blank line.
 
         Fields:
 
-        - `import` — the full import statement, e.g.
-          `import './br/index.js';`.
+        - `entry` — the full import statement, e.g.
+          `import './br/index.js';`. May be a single string, or a list
+          of them.
 
         Example:
 
@@ -3430,7 +3431,13 @@ class TsAddImportRewriter(_AstGrepRewriter):
         substitutions:
           - description: Load Brave's Polymer overrides first.
             add_import:
-              import: import 'chrome://resources/brave/polymer_overriding.js';
+              entry: import 'chrome://resources/brave/polymer_overriding.js';
+
+          - description: Load Brave's modules.
+            add_import:
+              entry:
+                - import './brave_routes.js'
+                - import './brave_settings.js'
         ```
 
         ```diff
@@ -3441,15 +3448,15 @@ class TsAddImportRewriter(_AstGrepRewriter):
         ```
     """
 
-    def __init__(self, *, import_statement: str):
+    def __init__(self, *, import_statements: list[str]):
         super().__init__()
-        self._import_statement = import_statement
+        self._import_statements = import_statements
 
     @classmethod
     def validate_count(cls, count: int, description: str) -> None:
-        # The import is added once, so no other count means anything here.
+        # Each import is added once, so no other count means anything here.
         if count != 1:
-            raise ValueError(f'{cls.NAME} adds the import exactly once and '
+            raise ValueError(f'{cls.NAME} adds the import(s) exactly once and '
                              f'does not accept a count other than 1 '
                              f'(in "{description}")')
 
@@ -3465,34 +3472,52 @@ class TsAddImportRewriter(_AstGrepRewriter):
         engine = AstRewriter(RewritersEval.load(),
                              contents,
                              blank_for_parse=blank_for_parse)
-        # Adding the import is the whole substitution, so a file that has it
-        # means the entry has gone stale.
-        if self._import_statement in contents:
-            return contents, [
-                f'{self.NAME} found {self._import_statement!r} already '
-                f'imported (in "{description}")'
-            ]
-        error = _add_ts_import(engine, self._import_statement, self.NAME)
-        return engine.content, [f'{error} (in "{description}")'
-                                ] if error else []
+        errors: list[str] = []
+        # `_add_ts_import` inserts each import as the *first* statement, so a
+        # later insertion ends up above an earlier one. Iterate in reverse so
+        # the imports land in the order the user listed them.
+        for import_statement in reversed(self._import_statements):
+            # Adding the import is the whole substitution, so a file that has
+            # it means the entry has gone stale.
+            if import_statement in engine.content:
+                errors.append(
+                    f'{self.NAME} found {import_statement!r} already '
+                    f'imported (in "{description}")')
+                continue
+            error = _add_ts_import(engine, import_statement, self.NAME)
+            if error:
+                errors.append(f'{error} (in "{description}")')
+        return engine.content, errors
 
     @classmethod
     def parse(cls, body: object, *, description: str) -> TsAddImportRewriter:
-        """Validate an `add_import:` body."""
+        """Validate an `add_import:` body, accepting a single entry or a list.
+
+        `entry` may be a string (one import) or a non-empty list of
+        strings (several).
+        """
         if not isinstance(body, dict):
             raise ValueError(
                 f'"{cls.NAME}" must be a mapping (in "{description}")')
-        unknown = sorted(set(body) - {'import'})
+        unknown = sorted(set(body) - {'entry'})
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
                 f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
-        import_statement = body.get('import')
-        if not isinstance(import_statement,
-                          str) or not import_statement.strip():
-            raise ValueError(f'{cls.NAME} `import` must be a non-empty '
-                             f'string (in "{description}")')
-        return cls(import_statement=import_statement)
+        entry = body.get('entry')
+        return cls(import_statements=cls._parse_entries(entry, description))
+
+    @staticmethod
+    def _parse_entries(value: object, description: str) -> list[str]:
+        """Normalise `entry` to a non-empty list of strings."""
+        if isinstance(value, str) and value.strip():
+            return [value]
+        if (isinstance(value, list) and value and all(
+                isinstance(item, str) and item.strip() for item in value)):
+            return list(value)
+        raise ValueError(
+            f'{TsAddImportRewriter.NAME} `entry` must be a non-empty '
+            f'string or a non-empty list of strings (in "{description}")')
 
 
 class TsDropCustomElementRegistrationRewriter(_AstGrepRewriter):

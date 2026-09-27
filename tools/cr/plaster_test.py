@@ -5185,7 +5185,7 @@ class RewriterFormsTest(unittest.TestCase):
     _TS_IMPORT_YAML = ('substitutions:\n'
                        '  - description: load Brave overrides first\n'
                        '    add_import:\n'
-                       "      import: import 'chrome://resources/brave/"
+                       "      entry: import 'chrome://resources/brave/"
                        "polymer_overriding.js';\n")
 
     def test_ts_add_import_adds_below_the_copyright(self):
@@ -5239,7 +5239,7 @@ class RewriterFormsTest(unittest.TestCase):
             'substitutions:\n'
             '  - description: no statement\n'
             '    add_import: {}\n',
-            'must be a non-empty string',
+            'must be a non-empty string or a non-empty list of strings',
             name='validation.ts')
 
     def test_ts_add_import_unknown_arg_rejected(self):
@@ -5247,8 +5247,8 @@ class RewriterFormsTest(unittest.TestCase):
             'substitutions:\n'
             '  - description: typo arg\n'
             '    add_import:\n'
-            "      module: './br/index.js'\n",
-            "Unrecognised add_import arg(s): 'module'",
+            "      import: './br/index.js'\n",
+            "Unrecognised add_import arg(s): 'import'",
             name='validation.ts')
 
     def test_ts_add_import_count_other_than_one_rejected(self):
@@ -5257,8 +5257,57 @@ class RewriterFormsTest(unittest.TestCase):
             '  - description: bogus count\n'
             '    count: 2\n'
             '    add_import:\n'
-            "      import: import './br/index.js';\n",
+            "      entry: import './br/index.js';\n",
             'does not accept a count other than 1',
+            name='validation.ts')
+
+    def test_ts_add_import_list_inserts_in_authored_order(self):
+        # Multiple imports in a list are added in the order listed, earlier
+        # ones landing above later ones (unlike add_friend which reverses).
+        result = self._apply(
+            'multi_import.ts', self._TS_HEADER +
+            "import './existing.js';\n\nexport const x = 1\n",
+            'substitutions:\n'
+            '  - description: load Brave modules\n'
+            '    add_import:\n'
+            '      entry:\n'
+            "        - import './br/first.js';\n"
+            "        - import './br/second.js';\n")
+        self.assertEqual(
+            result, self._TS_HEADER + "import './br/first.js';\n"
+            "import './br/second.js';\n"
+            "import './existing.js';\n\nexport const x = 1\n")
+
+    def test_ts_add_import_list_one_already_present_fails(self):
+        # If any import in the list is already present, the whole substitution
+        # should fail for that import.
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            self._apply(
+                'one_dup.ts', self._TS_HEADER + "import './br/first.js';\n",
+                'substitutions:\n'
+                '  - description: load Brave modules\n'
+                '    add_import:\n'
+                '      entry:\n'
+                "        - import './br/first.js';\n"
+                "        - import './br/second.js';\n")
+        self.assertIn('already imported', str(ctx.exception))
+
+    def test_ts_add_import_entry_empty_list_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: empty list\n'
+            '    add_import:\n'
+            '      entry: []\n',
+            'must be a non-empty string or a non-empty list of strings',
+            name='validation.ts')
+
+    def test_ts_add_import_entry_must_be_string_or_list(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: integer entry\n'
+            '    add_import:\n'
+            '      entry: 42\n',
+            'must be a non-empty string or a non-empty list of strings',
             name='validation.ts')
 
     # -- ts.drop_custom_element_registration op (real ast-grep) --------------

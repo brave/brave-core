@@ -7,4 +7,4 @@ substitutions:
   - description: |
       Load Brave's config, which registers the Brave sections this page shows.
     add_import:
-      import: import '../br/config.js'
+      entry: import '../br/config.js'

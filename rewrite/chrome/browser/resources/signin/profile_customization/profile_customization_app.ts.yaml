@@ -14,7 +14,7 @@ substitutions:
       module; a chromium_src shadow file cannot do this, since importing the
       upstream module is what runs its imports.
     add_import:
-      import: import 'chrome://resources/brave/polymer_overriding.js';
+      entry: import 'chrome://resources/brave/polymer_overriding.js';
 
   - description: >-
       Free `profile-customization-app` for the Brave subclass to register.

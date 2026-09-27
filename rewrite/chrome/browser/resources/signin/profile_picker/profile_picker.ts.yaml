@@ -11,4 +11,4 @@ substitutions:
       overrides (e.g. for `cr-button`) are picked up as each component is
       defined, which means it has to run before any of them.
     add_import:
-      import: import 'chrome://resources/brave/polymer_overriding.js'
+      entry: import 'chrome://resources/brave/polymer_overriding.js'
