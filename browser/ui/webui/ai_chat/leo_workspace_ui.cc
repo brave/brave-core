@@ -85,8 +85,8 @@ void AddViewerDataSource(content::WebUI* web_ui,
 
 bool LeoWorkspaceUIConfig::IsWebUIEnabled(
     content::BrowserContext* browser_context) {
-  return IsAIChatEnabled(user_prefs::UserPrefs::Get(browser_context)) &&
-         base::FeatureList::IsEnabled(features::kAIChatWorkspaceTools);
+  return base::FeatureList::IsEnabled(features::kAIChatWorkspaceTools) &&
+         IsAIChatEnabled(user_prefs::UserPrefs::Get(browser_context));
 }
 
 bool LeoWorkspaceUIConfig::ShouldHandleSubdomains() const {

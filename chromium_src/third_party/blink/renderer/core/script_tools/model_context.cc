@@ -58,6 +58,9 @@ namespace {
 // tests the shape of the host rather than a fixed host, and excludes the
 // workspace's viewer document at chrome-untrusted://view.<uuid>.leo-workspace,
 // which has no tools of its own.
+//
+// This document can only exist when the kAIChatWorkspaceTools feature is
+// enabled, as checked by LeoWorkspaceUIConfig::IsWebUIEnabled().
 bool IsAIChatLeoWorkspaceDocument(const Document& document) {
   const SecurityOrigin* origin =
       document.GetExecutionContext()->GetSecurityOrigin();
