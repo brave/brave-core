@@ -33,7 +33,7 @@ import os
 import re
 import sys
 
-DEFAULT_CHUNK_SIZE = 10
+DEFAULT_CHUNK_SIZE = 35
 
 
 def split_into_rules(text):
