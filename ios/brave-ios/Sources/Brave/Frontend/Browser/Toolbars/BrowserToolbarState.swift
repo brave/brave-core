@@ -33,6 +33,11 @@ final class BrowserToolbarState {
     observeSelectedTab(tabManager.selectedTab, previous: nil)
   }
 
+  isolated deinit {
+    tabManager.removeDelegate(self)
+    observedTab?.removeObserver(self)
+  }
+
   // MARK: - Selected Tab State
 
   /// The URL to display in the location bar
