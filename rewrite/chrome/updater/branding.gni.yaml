@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Override the updater branding with Brave's
+
+      Appended at the end of the file, so it overrides every upstream value.
+    add_at_end_of_the_file:
+      code: |-
+        import("//brave/chromium_src/chrome/updater/branding.gni")
+        forward_variables_from(brave_updater_branding, "*")
