@@ -2,13 +2,13 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Collect subagent result files and feed them to post-review.py.
+"""Collect the validators' result files and feed them to post-review.py.
 
-Replaces what the LLM used to do manually: parsing subagent output,
-building JSON for post-review.py.
+An unfinished review is neither posted nor cached, so the next run retries it.
 
 Usage:
-    python3 collect-results.py --work-dir /tmp/review-prs-XXXXX [--auto]
+    python3 collect-results.py \
+        --work-dir /var/tmp/review-prs/review-prs-XXXXX [--auto]
 """
 
 import argparse
@@ -38,37 +38,24 @@ def load_manifest(work_dir):
 
 
 def collect_violations(pr):
-    """Collect all violations and validation logs from a PR's subagent results.
+    """Returns (violations, validation_log, skip_reason).
 
-    Returns (violations_list, validation_log_list).
+    skip_reason is set only for an unfinished review.
     """
-    all_violations = []
-    all_validation_log = []
-
-    for prompt_entry in pr.get("subagent_prompts", []):
-        results_file = prompt_entry.get("results_file")
-        if not results_file:
-            continue
-
-        if not os.path.isfile(results_file):
-            chunk_id = prompt_entry.get("chunk_id", "unknown")
-            log(f"WARNING: results file missing for PR #{pr['number']} "
-                f"chunk {chunk_id}: {results_file}")
-            continue
-
-        try:
-            with open(results_file) as f:
-                data = json.load(f)
-        except (json.JSONDecodeError, OSError) as e:
-            chunk_id = prompt_entry.get("chunk_id", "unknown")
-            log(f"WARNING: invalid results file for PR #{pr['number']} "
-                f"chunk {chunk_id}: {e}")
-            continue
-
-        all_violations.extend(data.get("violations", []))
-        all_validation_log.extend(data.get("validation_log", []))
-
-    return all_violations, all_validation_log
+    if pr.get("review_incomplete"):
+        return [], [], "no detect subagent wrote results"
+    if "validation" not in pr:
+        return [], [], "select-candidates.py did not run"
+    validation = pr["validation"]
+    if validation is None:
+        return [], [], None
+    results_file = validation.get("results_file", "")
+    try:
+        with open(results_file) as f:
+            data = json.load(f)
+    except (OSError, json.JSONDecodeError) as e:
+        return [], [], f"the validator wrote no results ({e})"
+    return data.get("violations", []), data.get("validation_log", []), None
 
 
 def build_post_review_input(manifest):
@@ -76,18 +63,56 @@ def build_post_review_input(manifest):
     pr_results = []
 
     for pr in manifest.get("prs", []):
-        violations, validation_log = collect_violations(pr)
+        violations, validation_log, skip_reason = collect_violations(pr)
+        if skip_reason:
+            log(f"NOT REVIEWED: PR #{pr['number']} — {skip_reason}; nothing "
+                "posted and not cached, so the next run reviews it again")
+            continue
 
         pr_results.append({
             "number": pr["number"],
             "title": pr.get("title", ""),
             "headRefOid": pr.get("headRefOid", ""),
             "hasApproval": pr.get("hasApproval", False),
+            "fileHashesFile": pr.get("file_hashes_file"),
             "violations": violations,
             "validation_log": validation_log,
         })
 
     return {"pr_results": pr_results}
+
+
+def cleanup_worktrees(manifest):
+    """Remove git worktrees created by prepare-review.py for each PR."""
+    target_repo_path = manifest.get("target_repo_path", "")
+    if not target_repo_path:
+        return
+    for pr in manifest.get("prs", []):
+        worktree_path = pr.get("worktree_path")
+        if not worktree_path:
+            continue
+        if not os.path.isdir(worktree_path):
+            continue
+        result = subprocess.run(
+            [
+                "git",
+                "-C",
+                target_repo_path,
+                "worktree",
+                "remove",
+                worktree_path,
+                "--force",
+            ],
+            capture_output=True,
+            text=True,
+            timeout=30,
+            check=False,
+        )
+        if result.returncode != 0:
+            log(f"WARNING: failed to remove worktree {worktree_path}: "
+                f"{result.stderr.strip()}")
+        else:
+            log(f"Removed worktree: {worktree_path}")
 
 
 def print_cached_and_progress(manifest):
@@ -105,9 +130,11 @@ def print_cached_and_progress(manifest):
 def main():
     parser = argparse.ArgumentParser(
         description="Collect subagent results and run post-review.py")
-    parser.add_argument("--work-dir",
-                        required=True,
-                        help="Temp directory with manifest.json and results")
+    parser.add_argument(
+        "--work-dir",
+        required=True,
+        help="Temp directory with manifest.json and results",
+    )
     parser.add_argument("--auto",
                         action="store_true",
                         help="Pass --auto to post-review.py")
@@ -146,17 +173,13 @@ def main():
     post_review_data = build_post_review_input(manifest)
 
     # Collection stats
-    total_chunks = sum(
-        len(pr.get("subagent_prompts", [])) for pr in manifest.get("prs", []))
-    results_found = 0
-    results_missing = 0
-    for pr in manifest.get("prs", []):
-        for sp in pr.get("subagent_prompts", []):
-            rf = sp.get("results_file", "")
-            if rf and os.path.isfile(rf):
-                results_found += 1
-            else:
-                results_missing += 1
+    prs = manifest.get("prs", [])
+    total_chunks = sum(len(pr.get("subagent_prompts", [])) for pr in prs)
+    results_found = sum(1 for pr in prs
+                        for sp in pr.get("subagent_prompts", [])
+                        if os.path.isfile(sp.get("results_file", "")))
+    validations = [pr["validation"] for pr in prs if pr.get("validation")]
+    candidates = sum(v.get("candidates", 0) for v in validations)
 
     total_violations = sum(
         len(pr_r.get("violations", []))
@@ -168,9 +191,13 @@ def main():
     log(f"\n{'=' * 60}")
     log("COLLECTION SUMMARY")
     log(f"{'=' * 60}")
-    log(f"Total subagent chunks: {total_chunks}")
-    log(f"Results files found: {results_found}")
-    log(f"Results files missing: {results_missing}")
+    log(f"Detect prompts: {total_chunks}")
+    log(f"Detect results found: {results_found}")
+    log(f"Detect results missing: {total_chunks - results_found}")
+    log(f"Candidates validated: {candidates} across "
+        f"{len(validations)} validators")
+    left = len(prs) - len(post_review_data["pr_results"])
+    log(f"PRs left for the next run: {left}")
     log(f"Total violations collected: {total_violations}")
     log(f"Total validation log entries: {total_validated}")
     for pr_r in post_review_data.get("pr_results", []):
@@ -214,6 +241,8 @@ def main():
     # Pass through stdout (result JSON)
     if result.stdout:
         print(result.stdout, end="")
+
+    cleanup_worktrees(manifest)
 
     sys.exit(result.returncode)
 

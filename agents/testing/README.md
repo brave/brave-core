@@ -64,7 +64,7 @@ headless runs.
      canned PR (diff + metadata) and records — never performs — any mutating
      call, so real GitHub is never touched,
    - runs Claude Code headless in the repo root,
-   - harvests the skill's `pr_*/*_results.json` into
+   - harvests the skill's `pr_*/validated.json` into
      `agents/testing/.last_run/results.json` (deterministic path for asserts).
 3. Asserts (`check_changes.py:check_file_content` + promptfoo `icontains`) check
    the results _structurally_ — e.g. the flagged violation names the rule ID and
@@ -83,5 +83,5 @@ exact result.
 - **Headless auth.** How Claude Code authenticates in CI/headless is not yet
   settled; locally it uses the developer's existing Claude Code auth.
 - **Results path.** `.last_run/results.json` is harvested by globbing the run's
-  temp dir for `pr_*/*_results.json`; confirm against a live `review-prs` run
+  temp dir for `pr_*/validated.json`; confirm against a live `review-prs` run
   and tighten if its output layout changes.

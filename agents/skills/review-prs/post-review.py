@@ -144,18 +144,23 @@ def correct_line_for_diff(repo, pr_number, file_path, line):
     return best_line
 
 
-def update_cache(pr_number, head_ref_oid, approve=False):
+def update_cache(pr_number,
+                 head_ref_oid,
+                 approve=False,
+                 file_hashes_file=None):
     """Update the review cache for a PR."""
     cmd = ["python3", UPDATE_CACHE, str(pr_number), head_ref_oid]
     if approve:
         cmd.append("--approve")
+    if file_hashes_file:
+        cmd.append(f"--file-hashes={file_hashes_file}")
     rc, _out, err = run_cmd(cmd)
     if rc != 0:
         log(f"WARNING: cache update failed for PR #{pr_number}: {err}")
     return rc == 0
 
 
-def prioritize_violations(violations, has_approval):
+def prioritize_violations(violations, has_approval, limit=MAX_COMMENTS_PER_PR):
     """Sort and cap violations per the rules.
 
     Returns (kept, dropped_count).
@@ -175,24 +180,23 @@ def prioritize_violations(violations, has_approval):
             log(f"CAPPED: dropped {dropped} "
                 "medium/low violations "
                 "(PR has approval)")
-        return kept[:MAX_COMMENTS_PER_PR], dropped
+        return kept[:limit], dropped
 
     high = [v for v in violations if v.get("severity") == "high"]
     medium = [v for v in violations if v.get("severity") == "medium"]
     low = [v for v in violations if v.get("severity") == "low"]
 
     kept = list(high)
-    remaining_slots = MAX_COMMENTS_PER_PR - len(kept)
+    remaining_slots = limit - len(kept)
 
     # Fill with medium
     if remaining_slots > 0:
         kept.extend(medium[:remaining_slots])
-        remaining_slots = MAX_COMMENTS_PER_PR - len(kept)
+        remaining_slots = limit - len(kept)
 
     # Only include low (nits) if fewer than
     # NITS_THRESHOLD higher-severity comments
-    higher_count = len(high) + min(len(medium),
-                                   MAX_COMMENTS_PER_PR - len(high))
+    higher_count = len(high) + min(len(medium), limit - len(high))
     if higher_count < NITS_THRESHOLD and remaining_slots > 0:
         kept.extend(low[:remaining_slots])
 
@@ -591,7 +595,9 @@ def process_pr(pr_data, repo, bot_username, auto_mode):
     }
 
     # 1. Always update cache
-    update_cache(number, head_sha)
+    update_cache(number,
+                 head_sha,
+                 file_hashes_file=pr_data.get("fileHashesFile"))
 
     try:
         # 2. Filter violations missing rule_link (unless high-severity)

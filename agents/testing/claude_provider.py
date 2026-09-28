@@ -28,10 +28,11 @@ Per-test provider `config` keys:
 Isolation notes:
   * The run executes with cwd = brave-core root so the skill's repo-root
     detection and docs/best-practices lookups resolve correctly.
-  * TMPDIR is pointed at a fresh per-run dir; skills that mkdtemp their work
-    dir land inside it, so we can harvest their `*_results.json` afterwards and
-    write a merged, deterministic artifact at agents/testing/.last_run/ that
-    asserts can read without knowing the random temp path.
+  * TMPDIR and REVIEW_PRS_WORK_DIR point at a fresh per-run dir, so the
+    skill's work dir lands inside it and we can harvest its validated results
+    afterwards into a merged, deterministic artifact at
+    agents/testing/.last_run/ that asserts can read without knowing the random
+    temp path.
 
 Open items (need a live, authenticated Claude Code run to finalize — see the
 spec's open questions): the exact headless auth Claude Code needs in CI, and
@@ -159,10 +160,10 @@ def _write_fake_gh(fake_gh_cfg, run_dir):
 
 
 def _harvest_results(run_dir):
-    """Merge every subagent *_results.json under run_dir into .last_run/."""
+    """Merge every validator's validated.json under run_dir into .last_run/."""
     _LAST_RUN_DIR.mkdir(parents=True, exist_ok=True)
     result_files = sorted(
-        glob.glob(str(run_dir / '**' / 'pr_*' / '*_results.json'),
+        glob.glob(str(run_dir / '**' / 'pr_*' / 'validated.json'),
                   recursive=True))
     merged = {'result_files': [], 'violations': []}
     for rf in result_files:
@@ -207,6 +208,7 @@ def call_api(prompt, options, context):  # pylint: disable=unused-argument
     run_dir = Path(tempfile.mkdtemp(prefix='brave-skill-eval-'))
     env = os.environ.copy()
     env['TMPDIR'] = str(run_dir)
+    env['REVIEW_PRS_WORK_DIR'] = str(run_dir)
     # Strip the parent Claude Code session markers so the nested headless run
     # starts clean (also correct when this provider itself runs under CI/an
     # outer agent). Harmless when unset.
@@ -225,6 +227,9 @@ def call_api(prompt, options, context):  # pylint: disable=unused-argument
         org_members_file = run_dir / 'org-members.txt'
         org_members_file.write_text('', encoding='utf-8')
         env['BRAVE_ORG_MEMBERS_PATH'] = str(org_members_file)
+        # The fake PR head can't be fetched, so review-prs reads this tree
+        # instead of a worktree at the PR head.
+        env['REVIEW_PRS_SOURCE_PATH'] = str(_BRAVE_SRC)
 
     try:
         _apply_changes(config.get('changes'), cwd=str(_BRAVE_SRC))
