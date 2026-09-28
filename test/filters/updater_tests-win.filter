@@ -9,3 +9,9 @@
 # fork, see chromium_src/chrome/updater/branding.gni. Brave's equivalent is
 # BraveLegacyCOMClassesTest.CheckLegacyInterfaceIDs in brave_updater_unittests.
 -LegacyCOMClassesTest.CheckLegacyInterfaceIDs
+
+# These need previously released updaters, which we don't have yet on Windows.
+# See rewrite/chrome/updater/test/integration_tests_win.cc.yaml.
+# https://github.com/brave/brave-browser/issues/59863
+-IntegrationTestDeviceManagement.QualifyUpdaterWhenNextCheckDelayIsZero
+-IntegrationTestDeviceManagement.QualifyUpdaterWhenUpdateDisabled
