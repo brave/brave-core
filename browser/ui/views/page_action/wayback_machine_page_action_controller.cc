@@ -10,7 +10,6 @@
 
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_helpers.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/page_action/wayback_machine_bubble_view.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
@@ -29,7 +28,6 @@
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/actions/actions.h"
 #include "ui/base/models/image_model.h"
-#include "ui/color/color_id.h"
 #include "ui/color/color_provider.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/canvas_image_source.h"
@@ -109,7 +107,6 @@ WaybackMachinePageActionController::~WaybackMachinePageActionController() {
     bubble_tracker_.view()->GetWidget()->CloseWithReason(
         views::Widget::ClosedReason::kUnspecified);
   }
-  DetachFromTabHelper(tab_->GetContents());
 }
 
 void WaybackMachinePageActionController::Init() {
@@ -122,13 +119,7 @@ void WaybackMachinePageActionController::Init() {
   will_discard_contents_subscription_ =
       tab_->RegisterWillDiscardContents(base::BindRepeating(
           [](WaybackMachinePageActionController* self, tabs::TabInterface*,
-             content::WebContents* old_contents,
-             content::WebContents* new_contents) {
-            // TabInterface::GetContents() still returns |old_contents| at
-            // this point, so both sides of the swap have to be driven by the
-            // arguments. Detaching matters: the helper holds a single callback
-            // and CHECKs that it was cleared before it's destroyed.
-            self->DetachFromTabHelper(old_contents);
+             content::WebContents*, content::WebContents* new_contents) {
             self->AttachToTabHelper(new_contents);
             self->UpdatePageAction(new_contents);
           },
@@ -163,6 +154,15 @@ void WaybackMachinePageActionController::ShowBubble(actions::ActionItem* item,
   }
 
   if (bubble_tracker_.view()) {
+    return;
+  }
+
+  auto* tab_helper = BraveWaybackMachineTabHelper::FromWebContents(contents);
+  if (!tab_helper) {
+    return;
+  }
+  const WaybackState state = tab_helper->wayback_state();
+  if (state == WaybackState::kInitial || state == WaybackState::kLoaded) {
     return;
   }
 
@@ -215,6 +215,7 @@ void WaybackMachinePageActionController::MaybeAutoShowBubble() {
 
 void WaybackMachinePageActionController::AttachToTabHelper(
     content::WebContents* contents) {
+  wayback_state_changed_subscription_ = {};
   if (!contents) {
     return;
   }
@@ -222,20 +223,10 @@ void WaybackMachinePageActionController::AttachToTabHelper(
   if (!tab_helper) {
     return;
   }
-  tab_helper->SetWaybackStateChangedCallback(base::BindRepeating(
-      &WaybackMachinePageActionController::OnWaybackStateChanged,
-      weak_factory_.GetWeakPtr()));
-}
-
-void WaybackMachinePageActionController::DetachFromTabHelper(
-    content::WebContents* contents) {
-  if (!contents) {
-    return;
-  }
-  if (auto* tab_helper =
-          BraveWaybackMachineTabHelper::FromWebContents(contents)) {
-    tab_helper->SetWaybackStateChangedCallback(base::NullCallback());
-  }
+  wayback_state_changed_subscription_ =
+      tab_helper->RegisterWaybackStateChangedCallback(base::BindRepeating(
+          &WaybackMachinePageActionController::OnWaybackStateChanged,
+          base::Unretained(this)));
 }
 
 void WaybackMachinePageActionController::UpdatePageAction(
@@ -258,7 +249,7 @@ void WaybackMachinePageActionController::UpdatePageAction(
   }
 
   const WaybackState state = tab_helper->wayback_state();
-  if (state == WaybackState::kInitial) {
+  if (state == WaybackState::kInitial || state == WaybackState::kLoaded) {
     page_action_controller_->Hide(kActionShowWaybackMachine);
     return;
   }
@@ -266,7 +257,7 @@ void WaybackMachinePageActionController::UpdatePageAction(
   page_action_controller_->Show(kActionShowWaybackMachine);
 
   const ui::ColorProvider& color_provider = contents->GetColorProvider();
-  if (state != WaybackState::kLoaded && state != WaybackState::kNotAvailable) {
+  if (state != WaybackState::kNotAvailable) {
     page_action_controller_->OverrideImage(
         kActionShowWaybackMachine,
         ui::ImageModel::FromVectorIcon(
@@ -278,15 +269,9 @@ void WaybackMachinePageActionController::UpdatePageAction(
   const gfx::IconDescription icon_description(
       kLeoCalendarTimeIcon, kIconSize,
       color_provider.GetColor(kColorToolbarButtonIcon));
-
-  const bool loaded = state == WaybackState::kLoaded;
-  const ui::ColorId badge_color_id = loaded
-                                         ? kColorWaybackMachineURLLoaded
-                                         : kColorWaybackMachineURLNotAvailable;
-  const gfx::VectorIcon& badge_icon =
-      loaded ? kLeoDesktopVpnOnColorIcon : kLeoDesktopVpnErrorColorIcon;
   const gfx::IconDescription badge_description(
-      badge_icon, kBadgeSize, color_provider.GetColor(badge_color_id));
+      kLeoDesktopVpnErrorColorIcon, kBadgeSize,
+      color_provider.GetColor(kColorWaybackMachineURLNotAvailable));
 
   gfx::ImageSkia icon_image(
       std::make_unique<WaybackIconImageSource>(icon_description,

@@ -54,9 +54,7 @@ BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
 
 }
 
-BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() {
-  CHECK(!wayback_state_changed_callback_);
-}
+BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() = default;
 
 void BraveWaybackMachineTabHelper::FetchWaybackURL() {
   CHECK(wayback_enabled_.GetValue());
@@ -64,9 +62,10 @@ void BraveWaybackMachineTabHelper::FetchWaybackURL() {
   wayback_machine_url_fetcher_.Fetch(web_contents()->GetVisibleURL());
 }
 
-void BraveWaybackMachineTabHelper::SetWaybackStateChangedCallback(
+base::CallbackListSubscription
+BraveWaybackMachineTabHelper::RegisterWaybackStateChangedCallback(
     WaybackStateChangedCallback callback) {
-  wayback_state_changed_callback_ = std::move(callback);
+  return wayback_state_changed_callbacks_.Add(std::move(callback));
 }
 
 void BraveWaybackMachineTabHelper::DidFinishNavigation(
@@ -140,10 +139,7 @@ void BraveWaybackMachineTabHelper::SetWaybackState(WaybackState state) {
   }
 
   wayback_state_ = state;
-
-  if (wayback_state_changed_callback_) {
-    wayback_state_changed_callback_.Run(wayback_state_);
-  }
+  wayback_state_changed_callbacks_.Notify(wayback_state_);
 }
 
 void BraveWaybackMachineTabHelper::OnWaybackEnabledChanged(
