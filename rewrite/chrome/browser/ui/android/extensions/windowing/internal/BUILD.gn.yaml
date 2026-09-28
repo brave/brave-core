@@ -13,4 +13,4 @@ substitutions:
       windows APIs.
     regex:
       pattern: 'assert(is_desktop_android)'
-      replace: 'assert(is_desktop_android || enable_extensions_core)'
+      replace: 'assert(is_android && enable_extensions_core)'
