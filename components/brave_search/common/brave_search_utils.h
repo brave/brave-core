@@ -30,9 +30,10 @@ inline constexpr auto kVettedHosts = base::MakeFixedFlatSet<std::string_view>(
 bool IsAllowedHost(const GURL& url);
 bool IsDefaultAPIEnabled();
 
-// Appends the `source` query param (`newtab`, `newtab_v1b` or `newtab_v2b`) to
-// `url` so Brave Search can distinguish NTP searchbox traffic from other
-// entry points. Should only be called when `url` is a Brave Search URL.
+// Appends the `source` query param (`newtab`, `newtab_v1{b,c}` or
+// `newtab_v2{b,c}`) to `url` so Brave Search can distinguish NTP searchbox
+// traffic from other entry points. Should only be called when `url` is a Brave
+// Search URL.
 GURL OverrideWithNewTabSource(GURL url,
                               PrefService* local_state,
                               bool is_first_run);

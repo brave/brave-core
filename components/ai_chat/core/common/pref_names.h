@@ -133,6 +133,10 @@ inline constexpr char kBraveAIChatTabOrganizationSendPageContent[] =
 
 inline constexpr char kNtpInputDayZeroEnabled[] =
     "brave.ai_chat.ntp_input_day_zero_enabled";
+// Suffix appended to the `newtab_v2` search source: "c" if the NTP input was
+// enabled at first run, otherwise "b".
+inline constexpr char kNtpInputSourceSuffix[] =
+    "brave.ai_chat.ntp_input_source_suffix";
 
 inline constexpr char kBraveAIChatUserCustomizationEnabled[] =
     "brave.ai_chat.user_customization_enabled";

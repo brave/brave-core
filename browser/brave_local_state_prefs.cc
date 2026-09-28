@@ -242,6 +242,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   SearchEngineTrackerFactory::RegisterLocalStatePrefs(registry);
   registry->RegisterBooleanPref(
       brave_search::prefs::kNewTabV1SourceEnabledAtFirstRun, false);
+  registry->RegisterStringPref(brave_search::prefs::kNewTabV1SourceSuffix, "");
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::RegisterLocalStatePrefs(registry);
