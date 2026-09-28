@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <memory>
 #include <utility>
-#include <variant>
 #include <vector>
 
 #include "base/barrier_closure.h"
@@ -23,23 +22,22 @@
 #include "base/supports_user_data.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_sync/features.h"
 #include "chrome/browser/password_manager/factories/account_password_store_factory.h"
 #include "chrome/browser/password_manager/factories/profile_password_store_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/keyed_service/core/service_access_type.h"
-#include "components/password_manager/core/browser/password_form.h"
 #include "components/password_manager/core/browser/password_store/password_form_converters.h"
+#include "components/password_manager/core/browser/password_store/password_store_backend_error.h"
 #include "components/password_manager/core/browser/password_store/password_store_consumer.h"
 #include "components/password_manager/core/browser/password_store/password_store_interface.h"
+#include "components/password_manager/core/browser/password_store/stored_credential.h"
 
 namespace brave_password_manager {
 
 namespace {
 
-using password_manager::LoginsResult;
-using password_manager::LoginsResultOrError;
-using password_manager::PasswordForm;
 using password_manager::PasswordStoreBackendError;
 using password_manager::PasswordStoreInterface;
 using password_manager::StoredCredential;
@@ -55,40 +53,45 @@ void FinishAsync(base::OnceClosure on_complete) {
       FROM_HERE, std::move(on_complete));
 }
 
-// The most recent of a form's last-used, password-modified and creation times.
-// Used to decide which side wins when the same credential exists in both
+// The most recent of a credential's last-used, password-modified and creation
+// times. Used to decide which side wins when the same credential exists in both
 // stores with different passwords (mirrors the logic in
 // PasswordLocalDataBatchUploader).
-base::Time LatestTimestamp(const PasswordForm& form) {
-  return std::ranges::max(
-      {form.date_last_used, form.date_password_modified, form.date_created});
+base::Time LatestTimestamp(const StoredCredential& credential) {
+  return std::ranges::max({credential.date_last_used,
+                           credential.date_password_modified,
+                           credential.date_created});
 }
 
-// True if the profile-store copy already reflects `account_form`, i.e. it holds
+// True if the profile-store copy already reflects `account_credential`, i.e. it
+// holds
 // the same password or a more recently changed one. This is the condition under
 // which the account copy needs no write, and equally the condition under which
 // it is safe to drop from the account store: a same-key profile copy with an
 // older, different password means the write did not land.
-// Both forms are expected to have equal unique keys; callers establish that
-// with ArePasswordFormUniqueKeysEqual before asking.
-bool ProfileCopyIsUpToDate(const PasswordForm& profile_form,
-                           const PasswordForm& account_form) {
-  return profile_form.password_value == account_form.password_value ||
-         LatestTimestamp(account_form) <= LatestTimestamp(profile_form);
+// Both credentials are expected to have equal unique keys; callers establish
+// that with AreStoredCredentialUniqueKeysEqual before asking.
+bool ProfileCopyIsUpToDate(const StoredCredential& profile_credential,
+                           const StoredCredential& account_credential) {
+  return profile_credential.password_value ==
+             account_credential.password_value ||
+         LatestTimestamp(account_credential) <=
+             LatestTimestamp(profile_credential);
 }
 
-// Converts an account-store form into a StoredCredential for the profile store,
-// clearing the username/password of blocklisted ("never save") entries. The
-// profile store CHECKs that blocklisted credentials have empty username and
-// password (PasswordStore::AddLogins / UpdateLogins), so a malformed synced
-// entry could otherwise trip that CHECK during migration.
-StoredCredential ToProfileStoreCredential(const PasswordForm& form) {
-  PasswordForm sanitized = form;
+// Copies an account-store credential for the profile store, clearing the
+// username/password of blocklisted ("never save") entries. The profile store
+// CHECKs that blocklisted credentials have empty username and password
+// (PasswordStore::AddLogins / UpdateLogins), so a malformed synced entry could
+// otherwise trip that CHECK during migration.
+StoredCredential ToProfileStoreCredential(const StoredCredential& credential) {
+  StoredCredential sanitized =
+      password_manager::CloneStoredCredential(credential);
   if (sanitized.blocked_by_user) {
     sanitized.username_value.clear();
     sanitized.password_value.clear();
   }
-  return password_manager::FromPasswordForm(std::move(sanitized));
+  return sanitized;
 }
 
 // Reads all logins from a single store and runs `done_callback` when finished.
@@ -109,17 +112,17 @@ class PasswordFetchRequest : public password_manager::PasswordStoreConsumer {
     store->GetAllLogins(weak_ptr_factory_.GetWeakPtr());
   }
 
-  std::vector<PasswordForm> TakeResults() { return std::move(results_); }
+  std::vector<StoredCredential> TakeResults() { return std::move(results_); }
   bool succeeded() const { return succeeded_; }
 
  private:
   // PasswordStoreConsumer:
   void OnGetPasswordStoreResultsOrErrorFrom(
       PasswordStoreInterface* store,
-      LoginsResultOrError results_or_error) override {
-    if (!std::holds_alternative<PasswordStoreBackendError>(results_or_error)) {
-      results_ = password_manager::ToPasswordForms(
-          std::get<LoginsResult>(std::move(results_or_error)));
+      base::expected<std::vector<StoredCredential>, PasswordStoreBackendError>
+          results_or_error) override {
+    if (results_or_error.has_value()) {
+      results_ = std::move(*results_or_error);
     } else {
       succeeded_ = false;
     }
@@ -128,7 +131,7 @@ class PasswordFetchRequest : public password_manager::PasswordStoreConsumer {
   }
 
   bool succeeded_ = true;
-  std::vector<PasswordForm> results_;
+  std::vector<StoredCredential> results_;
   base::OnceClosure done_callback_;
   base::WeakPtrFactory<PasswordFetchRequest> weak_ptr_factory_{this};
 };
@@ -203,8 +206,8 @@ class AccountToProfilePasswordMigrator : public base::SupportsUserData::Data {
 
   void OnAccountLogins() {
     std::unique_ptr<PasswordFetchRequest> request = TakePendingRequest();
-    account_forms_ = request->TakeResults();
-    if (account_forms_.empty()) {
+    account_credentials_ = request->TakeResults();
+    if (account_credentials_.empty()) {
       Finish();  // Nothing to migrate, either no records or failed to read.
       return;
     }
@@ -226,22 +229,23 @@ class AccountToProfilePasswordMigrator : public base::SupportsUserData::Data {
       return;
     }
 
-    std::vector<PasswordForm> profile_forms = request->TakeResults();
+    std::vector<StoredCredential> profile_credentials = request->TakeResults();
 
     // Copy/merge: add credentials missing from the profile store, and overwrite
     // ones whose account copy has a newer, different password.
     std::vector<StoredCredential> to_add;
     std::vector<StoredCredential> to_update;
-    for (const PasswordForm& account_form : account_forms_) {
+    for (const StoredCredential& account_credential : account_credentials_) {
       auto it = std::ranges::find_if(
-          profile_forms, [&account_form](const PasswordForm& profile_form) {
-            return password_manager::ArePasswordFormUniqueKeysEqual(
-                profile_form, account_form);
+          profile_credentials,
+          [&account_credential](const StoredCredential& profile_credential) {
+            return password_manager::AreStoredCredentialUniqueKeysEqual(
+                profile_credential, account_credential);
           });
-      if (it == profile_forms.end()) {
-        to_add.push_back(ToProfileStoreCredential(account_form));
-      } else if (!ProfileCopyIsUpToDate(*it, account_form)) {
-        to_update.push_back(ToProfileStoreCredential(account_form));
+      if (it == profile_credentials.end()) {
+        to_add.push_back(ToProfileStoreCredential(account_credential));
+      } else if (!ProfileCopyIsUpToDate(*it, account_credential)) {
+        to_update.push_back(ToProfileStoreCredential(account_credential));
       }
       // Otherwise the profile copy already wins; it will still be drained from
       // the account store in the verify step below.
@@ -280,21 +284,22 @@ class AccountToProfilePasswordMigrator : public base::SupportsUserData::Data {
 
   void OnProfileLoginsForVerify() {
     std::unique_ptr<PasswordFetchRequest> request = TakePendingRequest();
-    std::vector<PasswordForm> profile_forms = request->TakeResults();
+    std::vector<StoredCredential> profile_credentials = request->TakeResults();
     // Remove from the account store only the credentials whose profile-store
     // copy is confirmed present and up to date. A failed write leaves the
     // profile copy stale, in which case the account copy is kept for the next
     // launch to retry.
-    for (const PasswordForm& account_form : account_forms_) {
+    for (const StoredCredential& account_credential : account_credentials_) {
       const bool up_to_date_in_profile = std::ranges::any_of(
-          profile_forms, [&account_form](const PasswordForm& profile_form) {
-            return password_manager::ArePasswordFormUniqueKeysEqual(
-                       profile_form, account_form) &&
-                   ProfileCopyIsUpToDate(profile_form, account_form);
+          profile_credentials,
+          [&account_credential](const StoredCredential& profile_credential) {
+            return password_manager::AreStoredCredentialUniqueKeysEqual(
+                       profile_credential, account_credential) &&
+                   ProfileCopyIsUpToDate(profile_credential,
+                                         account_credential);
           });
       if (up_to_date_in_profile) {
-        account_store_->RemoveLogin(
-            FROM_HERE, password_manager::FromPasswordForm(account_form));
+        account_store_->RemoveLogin(FROM_HERE, account_credential);
       }
     }
     // Finish only after the removals above have been processed. RemoveLogin has
@@ -321,7 +326,7 @@ class AccountToProfilePasswordMigrator : public base::SupportsUserData::Data {
   const raw_ptr<Profile> profile_;
   const scoped_refptr<PasswordStoreInterface> account_store_;
   const scoped_refptr<PasswordStoreInterface> profile_store_;
-  std::vector<PasswordForm> account_forms_;
+  std::vector<StoredCredential> account_credentials_;
   base::OnceClosure on_complete_;
   std::unique_ptr<PasswordFetchRequest> pending_request_;
   base::WeakPtrFactory<AccountToProfilePasswordMigrator> weak_factory_{this};

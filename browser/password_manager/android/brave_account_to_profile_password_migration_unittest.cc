@@ -19,6 +19,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
+#include "base/types/expected.h"
 #include "brave/components/brave_sync/features.h"
 #include "chrome/browser/password_manager/factories/account_password_store_factory.h"
 #include "chrome/browser/password_manager/factories/profile_password_store_factory.h"
@@ -109,8 +110,8 @@ class FailingPasswordStore : public TestPasswordStore {
   void ReplyWithError(base::WeakPtr<PasswordStoreConsumer> consumer) {
     if (consumer) {
       consumer->OnGetPasswordStoreResultsOrErrorFrom(
-          this, PasswordStoreBackendError(
-                    PasswordStoreBackendErrorType::kUncategorized));
+          this, base::unexpected(PasswordStoreBackendError(
+                    PasswordStoreBackendErrorType::kUncategorized)));
     }
   }
 
