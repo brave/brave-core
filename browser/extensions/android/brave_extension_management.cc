@@ -10,11 +10,14 @@
 
 #include "base/feature_list.h"
 #include "base/notreached.h"
+#include "base/strings/utf_string_conversions.h"
 #include "build/android_buildflags.h"
 #include "extensions/browser/disable_reason.h"
 #include "extensions/browser/management_policy.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/manifest.h"
+#include "extensions/strings/grit/extensions_strings.h"
+#include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(IS_DESKTOP_ANDROID)
 #include "brave/browser/brave_browser_features.h"
@@ -41,7 +44,16 @@ class AndroidExtensionsPolicyProvider : public ManagementPolicy::Provider {
 
   bool UserMayLoad(const Extension* extension,
                    std::u16string* error) const override {
-    return IsAllowed(*extension);
+    if (IsAllowed(*extension)) {
+      return true;
+    }
+    if (error) {
+      *error = l10n_util::GetStringFUTF16(
+          IDS_EXTENSION_CANT_INSTALL_POLICY_BLOCKED,
+          base::UTF8ToUTF16(extension->name()),
+          base::UTF8ToUTF16(extension->id()), std::u16string());
+    }
+    return false;
   }
 
   // Keeps installed extensions on disk, so they come back once allowed.

@@ -51,7 +51,11 @@ class BraveExtensionManagementAndroidTestBase : public testing::Test {
 
   bool UserMayLoad(mojom::ManifestLocation location) {
     std::u16string error;
-    return provider().UserMayLoad(BuildExtension(location).get(), &error);
+    bool allowed =
+        provider().UserMayLoad(BuildExtension(location).get(), &error);
+    // Install checks require an error for every rejection.
+    EXPECT_EQ(allowed, error.empty());
+    return allowed;
   }
 
  private:

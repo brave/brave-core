@@ -726,6 +726,7 @@ if (enable_extensions) {
     "//chrome/browser/extensions:chrome_extensions_browser_client",
     "//extensions/browser",
     "//extensions/common",
+    "//extensions/strings",
   ]
 }
 

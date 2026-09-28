@@ -1211,8 +1211,9 @@ public abstract class BraveActivity extends ChromeActivity
         setForegroundSessionEndsTriggered();
     }
 
-    // Replaces the upstream registration: its key lacks the tab model, so an emptied incognito
-    // model destroys the browser window while the bridge still references it.
+    // Upstream binds the bridge to the current model's profile. When recreated in incognito that
+    // is the incognito browser window, which closing the incognito tabs destroys under the bridge.
+    // The regular window lives as long as the activity.
     @Override
     protected void addWindowingFeatures(
             ChromeAndroidTask chromeAndroidTask,
@@ -1221,9 +1222,8 @@ public abstract class BraveActivity extends ChromeActivity
         chromeAndroidTask.addFeature(
                 new ChromeAndroidTaskFeatureKey(
                         ExtensionWindowControllerBridge.class,
-                        profile,
-                        activityWindowAndroid,
-                        getTabModelSelector().getModel(profile.isOffTheRecord())),
+                        getTabModelSelector().getModel(/* incognito= */ false).getProfile(),
+                        activityWindowAndroid),
                 ExtensionWindowControllerBridgeFactory::create);
     }
 
