@@ -148,7 +148,7 @@ IN_PROC_BROWSER_TEST_P(AIChatPolicyTest, Autocomplete) {
   const auto& providers = autocomplete_controller->providers();
   bool is_in_providers =
       std::ranges::any_of(providers, [](const auto& provider) {
-        return provider->type() == AutocompleteProvider::TYPE_BRAVE_LEO;
+        return provider->type() == AutocompleteProvider::Type::kBraveLeo;
       });
   if (IsAIChatEnabledTest()) {
     EXPECT_TRUE(is_in_providers);

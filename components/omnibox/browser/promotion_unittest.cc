@@ -56,7 +56,7 @@ class DummyProvider : public AutocompleteProvider {
 
   // AutocompleteProvider overrides:
   void Start(const AutocompleteInput& input, bool minimal_changes) override {
-    if (type_ == AutocompleteProvider::TYPE_SEARCH) {
+    if (type_ == AutocompleteProvider::Type::kSearch) {
       AutocompleteMatch match(
           nullptr, 800, true,
           omnibox::AutocompleteMatchType::kSearchWhatYouTyped);
@@ -123,12 +123,12 @@ class OmniboxPromotionTest : public testing::Test {
     ON_CALL(*client_fake, IsOffTheRecord()).WillByDefault(Return(incognito));
     auto controller = std::make_unique<AutocompleteController>(
         std::move(client_fake),
-        AutocompleteControllerConfig{.provider_types =
-                                         AutocompleteProvider::TYPE_SEARCH});
+        AutocompleteControllerConfig{.provider_types = static_cast<int>(
+                                         AutocompleteProvider::Type::kSearch)});
     controller->providers_.push_back(
-        new DummyProvider(AutocompleteProvider::TYPE_SEARCH));
+        new DummyProvider(AutocompleteProvider::Type::kSearch));
     controller->providers_.push_back(
-        new DummyProvider(AutocompleteProvider::TYPE_BOOKMARK));
+        new DummyProvider(AutocompleteProvider::Type::kBookmark));
     return controller;
   }
 
