@@ -2260,6 +2260,7 @@ public class BrowserViewController: UIViewController {
 
   func updateStatusBarOverlayColor() {
     if #available(iOS 26.0, *) {
+      statusBarOverlay.backgroundColor = privateBrowsingManager.browserColors.chromeBackground
       return
     }
     defer { setNeedsStatusBarAppearanceUpdate() }
