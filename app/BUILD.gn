@@ -81,8 +81,20 @@ brave_grit("brave_generated_resources_grit") {
     "brave_generated_resources.pak",
   ]
 
+  if (translate_genders) {
+    grit_flags = [ "--translate-genders" ]
+  }
+
+  # grit clones every data_package <output> node per gender, including the
+  # lang-less "brave_generated_resources.pak" above.
+  foreach(gender_suffix, gender_suffixes - [ "" ]) {
+    outputs += [ "brave_generated_resources${gender_suffix}.pak" ]
+  }
+
   foreach(locale, all_chrome_locales) {
-    outputs += [ "brave_generated_resources_$locale.pak" ]
+    foreach(gender_suffix, gender_suffixes) {
+      outputs += [ "brave_generated_resources_${locale}${gender_suffix}.pak" ]
+    }
   }
 }
 
