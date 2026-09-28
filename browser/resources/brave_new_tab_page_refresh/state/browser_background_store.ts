@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { loadTimeData } from '$web-common/loadTimeData'
-import { SponsoredRichMediaAdEventHandler } from 'gen/brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.m.js'
+import { SponsoredContentAdEventHandler } from 'gen/brave/components/ntp_background_images/browser/mojom/ntp_background_images.mojom.m.js'
 import { NewTabPageProxy } from './new_tab_page_proxy'
 import { debounce } from '$web-common/debounce'
 import { preloadedBackgrounds } from './background_images/preloaded'
@@ -14,8 +14,8 @@ export function createBackgroundStore() {
   const store = defaultBackgroundStore()
   const newTabProxy = NewTabPageProxy.getInstance()
   const { handler } = newTabProxy
-  const sponsoredRichMediaAdEventHandler =
-    SponsoredRichMediaAdEventHandler.getRemote()
+  const sponsoredContentAdEventHandler =
+    SponsoredContentAdEventHandler.getRemote()
 
   store.update({
     braveBackgrounds: preloadedBackgrounds,
@@ -138,7 +138,7 @@ export function createBackgroundStore() {
       if (!sponsoredImageBackground) {
         return
       }
-      sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
+      sponsoredContentAdEventHandler.maybeReportSponsoredContentAdEvent(
         sponsoredImageBackground.wallpaperId,
         sponsoredImageBackground.creativeInstanceId,
         sponsoredImageBackground.metricType,

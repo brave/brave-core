@@ -9,7 +9,7 @@ import { loadTimeData } from '$web-common/loadTimeData'
 import * as BraveAds from 'gen/brave/components/brave_ads/core/mojom/brave_ads.mojom.m.js'
 import type { RectF } from 'gen/ui/webui/resources/tsc/mojo/ui/gfx/geometry/mojom/geometry.mojom-webui'
 
-export interface SponsoredRichMediaBackgroundInfo {
+export interface DynamicNewTabTakeoverInfo {
   url: string
   placementId: string
   creativeInstanceId: string
@@ -17,9 +17,9 @@ export interface SponsoredRichMediaBackgroundInfo {
   targetUrl: string
 }
 
-// The subset of an autocomplete match posted back to the rich media
+// The subset of an autocomplete match posted back to the dynamic-content
 // background iframe as `richMediaSearchMatches`.
-export interface RichMediaSearchMatch {
+export interface DynamicContentSearchMatch {
   contents: string
   description: string
   destinationUrl: string
@@ -29,12 +29,12 @@ export interface RichMediaSearchMatch {
 }
 
 interface StatusProps {
-  richMediaHasLoaded: boolean
+  dynamicContentHasLoaded: boolean
 }
 
 interface Props extends StatusProps {
-  sponsoredRichMediaBackgroundInfo: SponsoredRichMediaBackgroundInfo
-  searchMatches?: RichMediaSearchMatch[]
+  dynamicNewTabTakeoverInfo: DynamicNewTabTakeoverInfo
+  searchMatches?: DynamicContentSearchMatch[]
   // Reports an ad event and, for a click, also navigates to the ad's
   // destination URL. Only appropriate for the generic `richMediaEvent`
   // message; other messages that separately trigger their own navigation
@@ -70,9 +70,9 @@ const iframeAllow = `
   usb 'none'
 `.trim().replace(/\n/g, '')
 
-const SponsoredRichMediaBackgroundIframe =
-  styled('iframe') <{ $richMediaHasLoaded: boolean }>`
-  opacity: ${p => p.$richMediaHasLoaded ? 1 : 0};
+const DynamicNewTabTakeoverIframe =
+  styled('iframe') <{ $dynamicContentHasLoaded: boolean }>`
+  opacity: ${p => p.$dynamicContentHasLoaded ? 1 : 0};
   position: fixed;
   top: 0;
   left: 0;
@@ -106,7 +106,7 @@ function getEventType(value: unknown): BraveAds.NewTabPageAdEventType | undefine
   return eventMap[value as string]
 }
 
-export interface RichMediaMessageCapabilities {
+export interface DynamicContentMessageCapabilities {
   onEventReported: (name: BraveAds.NewTabPageAdEventType) => void
   onAdEventReported?: (name: BraveAds.NewTabPageAdEventType) => void
   onOpenBraveSearch?: (query: string) => void
@@ -114,11 +114,11 @@ export interface RichMediaMessageCapabilities {
   onMakeBraveSearchDefault?: () => void
 }
 
-// Reads a message posted from the rich media background iframe and executes
+// Reads a message posted from the dynamic-content background iframe and executes
 // the appropriate capability. Exported for testing.
-export function dispatchRichMediaMessage(
+export function dispatchDynamicContentMessage(
   data: any,
-  capabilities: RichMediaMessageCapabilities,
+  capabilities: DynamicContentMessageCapabilities,
 ) {
   if (!data) {
     return
@@ -158,20 +158,20 @@ export function dispatchRichMediaMessage(
   }
 }
 
-function getRichMediaOrigin(): string {
-  return new URL(loadTimeData.getString('ntpNewTabTakeoverRichMediaUrl')).origin
+function getDynamicContentOrigin(): string {
+  return new URL(loadTimeData.getString('ntpNewTabTakeoverDynamicContentUrl')).origin
 }
 
-export function SponsoredRichMediaBackground(props: Props) {
+export function DynamicNewTabTakeover(props: Props) {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null)
-  const { sponsoredRichMediaBackgroundInfo, safeArea } = props
+  const { dynamicNewTabTakeoverInfo, safeArea } = props
 
   React.useEffect(() => {
     try {
-      const ntpNewTabTakeoverRichMediaUrlOrigin = getRichMediaOrigin()
+      const dynamicContentOrigin = getDynamicContentOrigin()
 
       const listener = (event: MessageEvent) => {
-        if (event.origin !== ntpNewTabTakeoverRichMediaUrlOrigin) {
+        if (event.origin !== dynamicContentOrigin) {
           return
         }
 
@@ -184,7 +184,7 @@ export function SponsoredRichMediaBackground(props: Props) {
           return
         }
 
-        dispatchRichMediaMessage(event.data, {
+        dispatchDynamicContentMessage(event.data, {
           onEventReported: props.onEventReported,
           onAdEventReported: props.onAdEventReported,
           onOpenBraveSearch: props.onOpenBraveSearch,
@@ -196,7 +196,7 @@ export function SponsoredRichMediaBackground(props: Props) {
       window.addEventListener('message', listener)
       return () => { window.removeEventListener('message', listener) }
     } catch (e) {
-      console.error('Error setting up sponsored rich media event listener')
+      console.error('Error setting up dynamic New Tab Takeover event listener')
       return () => { }
     }
   }, [props.onEventReported, props.onAdEventReported, props.onOpenBraveSearch, props.onQueryAutocomplete, props.onMakeBraveSearchDefault])
@@ -206,19 +206,17 @@ export function SponsoredRichMediaBackground(props: Props) {
       return
     }
     try {
-      const ntpNewTabTakeoverRichMediaUrlOrigin =
-        new URL(loadTimeData.getString('ntpNewTabTakeoverRichMediaUrl')).origin
       iframeRef.current.contentWindow.postMessage({
         type: 'richMediaSearchMatches',
         value: props.searchMatches
-      }, ntpNewTabTakeoverRichMediaUrlOrigin)
+      }, getDynamicContentOrigin())
     } catch (e) {
-      console.error('Error posting search matches to sponsored rich media iframe')
+      console.error('Error posting search matches to dynamic New Tab Takeover iframe')
     }
   }, [props.searchMatches])
 
   React.useEffect(() => {
-    if (!safeArea || !props.richMediaHasLoaded) {
+    if (!safeArea || !props.dynamicContentHasLoaded) {
       return
     }
 
@@ -230,20 +228,20 @@ export function SponsoredRichMediaBackground(props: Props) {
     try {
       contentWindow.postMessage(
         { type: 'richMediaSafeRect', value: safeArea },
-        getRichMediaOrigin())
+        getDynamicContentOrigin())
     } catch (e) {
-      console.error('Error posting sponsored rich media safe area')
+      console.error('Error posting dynamic New Tab Takeover safe area')
     }
-  }, [safeArea, props.richMediaHasLoaded])
+  }, [safeArea, props.dynamicContentHasLoaded])
 
   return (
-    <SponsoredRichMediaBackgroundIframe
+    <DynamicNewTabTakeoverIframe
       ref={iframeRef}
-      $richMediaHasLoaded={props.richMediaHasLoaded}
+      $dynamicContentHasLoaded={props.dynamicContentHasLoaded}
       allow={iframeAllow}
-      src={sponsoredRichMediaBackgroundInfo.url}
+      src={dynamicNewTabTakeoverInfo.url}
       sandbox='allow-scripts allow-same-origin'
       onLoad={props.onLoaded}>
-    </SponsoredRichMediaBackgroundIframe>
+    </DynamicNewTabTakeoverIframe>
   )
 }

@@ -10,15 +10,15 @@ import * as BraveAds from 'gen/brave/components/brave_ads/core/mojom/brave_ads.m
 import type { RectF } from 'gen/ui/webui/resources/tsc/mojo/ui/gfx/geometry/mojom/geometry.mojom-webui'
 
 import {
-  SponsoredRichMediaBackground,
-  SponsoredRichMediaBackgroundInfo,
-  dispatchRichMediaMessage,
-  RichMediaMessageCapabilities,
-} from './sponsored_rich_media_background'
+  DynamicNewTabTakeover,
+  DynamicNewTabTakeoverInfo,
+  dispatchDynamicContentMessage,
+  DynamicContentMessageCapabilities,
+} from './dynamic_new_tab_takeover'
 
-const ntpNewTabTakeoverRichMediaUrl = 'chrome-untrusted://new-tab-takeover/'
-const backgroundInfo: SponsoredRichMediaBackgroundInfo = {
-  url: ntpNewTabTakeoverRichMediaUrl,
+const ntpNewTabTakeoverDynamicContentUrl = 'chrome-untrusted://new-tab-takeover/'
+const backgroundInfo: DynamicNewTabTakeoverInfo = {
+  url: ntpNewTabTakeoverDynamicContentUrl,
   placementId: 'e1cb0d20-8b6e-4b1e-9c1e-1e6ff5b2f8e7',
   creativeInstanceId: '7f0e2f1d-9c3a-4f2b-8a1d-2e5c7b9f4a3d',
   metricType: BraveAds.NewTabPageAdMetricType.kConfirmation,
@@ -28,7 +28,7 @@ const backgroundInfo: SponsoredRichMediaBackgroundInfo = {
 jest.mock('$web-common/loadTimeData', () => ({
   loadTimeData: {
     getString: (key: string) =>
-      key === 'ntpNewTabTakeoverRichMediaUrl'
+      key === 'ntpNewTabTakeoverDynamicContentUrl'
         ? 'chrome-untrusted://new-tab-takeover/'
         : key
   }
@@ -45,14 +45,14 @@ afterEach(() => {
   jest.restoreAllMocks()
 })
 
-function sponsoredRichMediaBackground(
+function dynamicNewTabTakeover(
   safeArea?: RectF,
-  richMediaHasLoaded = true
+  dynamicContentHasLoaded = true
 ) {
   return (
-    <SponsoredRichMediaBackground
-      sponsoredRichMediaBackgroundInfo={backgroundInfo}
-      richMediaHasLoaded={richMediaHasLoaded}
+    <DynamicNewTabTakeover
+      dynamicNewTabTakeoverInfo={backgroundInfo}
+      dynamicContentHasLoaded={dynamicContentHasLoaded}
       safeArea={safeArea}
       onEventReported={() => {}}
       onLoaded={() => {}}
@@ -60,9 +60,9 @@ function sponsoredRichMediaBackground(
   )
 }
 
-describe('SponsoredRichMediaBackground safe area', () => {
+describe('DynamicNewTabTakeover safe area', () => {
   it('posts safe area', () => {
-    render(sponsoredRichMediaBackground({
+    render(dynamicNewTabTakeover({
       x: 0,
       y: 42,
       width: 360,
@@ -79,32 +79,32 @@ describe('SponsoredRichMediaBackground safe area', () => {
   })
 
   it('does not post safe area when undefined', () => {
-    render(sponsoredRichMediaBackground(undefined))
+    render(dynamicNewTabTakeover(undefined))
 
     expect(postMessage).not.toHaveBeenCalled()
   })
 
-  it('does not post safe area before rich media has loaded', () => {
-    render(sponsoredRichMediaBackground(
+  it('does not post safe area before dynamic content has loaded', () => {
+    render(dynamicNewTabTakeover(
       { x: 0, y: 42, width: 360, height: 200 },
-      /* richMediaHasLoaded= */ false
+      /* dynamicContentHasLoaded= */ false
     ))
 
     expect(postMessage).not.toHaveBeenCalled()
   })
 
-  it('posts safe area once rich media has loaded', () => {
+  it('posts safe area once dynamic content has loaded', () => {
     const safeArea = { x: 0, y: 42, width: 360, height: 200 }
-    const { rerender } = render(sponsoredRichMediaBackground(
+    const { rerender } = render(dynamicNewTabTakeover(
       safeArea,
-      /* richMediaHasLoaded= */ false
+      /* dynamicContentHasLoaded= */ false
     ))
 
     expect(postMessage).not.toHaveBeenCalled()
 
-    rerender(sponsoredRichMediaBackground(
+    rerender(dynamicNewTabTakeover(
       safeArea,
-      /* richMediaHasLoaded= */ true
+      /* dynamicContentHasLoaded= */ true
     ))
 
     expect(postMessage).toHaveBeenCalledTimes(1)
@@ -118,14 +118,14 @@ describe('SponsoredRichMediaBackground safe area', () => {
   })
 
   it('reposts safe area when it changes', () => {
-    const { rerender } = render(sponsoredRichMediaBackground({
+    const { rerender } = render(dynamicNewTabTakeover({
       x: 0,
       y: 42,
       width: 360,
       height: 200
     }))
 
-    rerender(sponsoredRichMediaBackground({
+    rerender(dynamicNewTabTakeover({
       x: 0,
       y: 42,
       width: 360,
@@ -143,8 +143,8 @@ describe('SponsoredRichMediaBackground safe area', () => {
   })
 })
 
-describe('dispatchRichMediaMessage', () => {
-  let capabilities: RichMediaMessageCapabilities
+describe('dispatchDynamicContentMessage', () => {
+  let capabilities: DynamicContentMessageCapabilities
 
   beforeEach(() => {
     capabilities = {
@@ -157,14 +157,14 @@ describe('dispatchRichMediaMessage', () => {
   })
 
   it('should ignore null or undefined data', () => {
-    dispatchRichMediaMessage(null, capabilities)
-    dispatchRichMediaMessage(undefined, capabilities)
+    dispatchDynamicContentMessage(null, capabilities)
+    dispatchDynamicContentMessage(undefined, capabilities)
 
     expect(capabilities.onEventReported).not.toHaveBeenCalled()
   })
 
   it('should ignore unknown message types', () => {
-    dispatchRichMediaMessage({ type: 'unknownType', value: 'click' }, capabilities)
+    dispatchDynamicContentMessage({ type: 'unknownType', value: 'click' }, capabilities)
 
     expect(capabilities.onEventReported).not.toHaveBeenCalled()
     expect(capabilities.onAdEventReported).not.toHaveBeenCalled()
@@ -175,7 +175,7 @@ describe('dispatchRichMediaMessage', () => {
 
   describe('richMediaEvent', () => {
     it('should report a click event', () => {
-      dispatchRichMediaMessage(
+      dispatchDynamicContentMessage(
         { type: 'richMediaEvent', value: 'click' },
         capabilities,
       )
@@ -186,7 +186,7 @@ describe('dispatchRichMediaMessage', () => {
     })
 
     it('should report an interaction event', () => {
-      dispatchRichMediaMessage(
+      dispatchDynamicContentMessage(
         { type: 'richMediaEvent', value: 'interaction' },
         capabilities,
       )
@@ -197,7 +197,7 @@ describe('dispatchRichMediaMessage', () => {
     })
 
     it('should ignore an unrecognized event value', () => {
-      dispatchRichMediaMessage(
+      dispatchDynamicContentMessage(
         { type: 'richMediaEvent', value: 'notAnEvent' },
         capabilities,
       )
@@ -208,7 +208,7 @@ describe('dispatchRichMediaMessage', () => {
 
   describe('richMediaOpenBraveSearchWithQuery', () => {
     it('should call onOpenBraveSearch with the query value', () => {
-      dispatchRichMediaMessage(
+      dispatchDynamicContentMessage(
         { type: 'richMediaOpenBraveSearchWithQuery', value: 'weather' },
         capabilities,
       )
@@ -217,7 +217,7 @@ describe('dispatchRichMediaMessage', () => {
     })
 
     it('should report a click event without navigating to the ad destination', () => {
-      dispatchRichMediaMessage(
+      dispatchDynamicContentMessage(
         { type: 'richMediaOpenBraveSearchWithQuery', value: 'weather' },
         capabilities,
       )
@@ -229,7 +229,7 @@ describe('dispatchRichMediaMessage', () => {
     })
 
     it('should ignore a missing value', () => {
-      dispatchRichMediaMessage(
+      dispatchDynamicContentMessage(
         { type: 'richMediaOpenBraveSearchWithQuery' },
         capabilities,
       )
@@ -240,7 +240,7 @@ describe('dispatchRichMediaMessage', () => {
 
   describe('richMediaQueryBraveSearchAutocomplete', () => {
     it('should call onQueryAutocomplete with the query value', () => {
-      dispatchRichMediaMessage(
+      dispatchDynamicContentMessage(
         { type: 'richMediaQueryBraveSearchAutocomplete', value: 'weath' },
         capabilities,
       )
@@ -249,7 +249,7 @@ describe('dispatchRichMediaMessage', () => {
     })
 
     it('should ignore a missing value', () => {
-      dispatchRichMediaMessage(
+      dispatchDynamicContentMessage(
         { type: 'richMediaQueryBraveSearchAutocomplete' },
         capabilities,
       )
@@ -258,7 +258,7 @@ describe('dispatchRichMediaMessage', () => {
     })
 
     it('should call onQueryAutocomplete with an empty string to clear matches', () => {
-      dispatchRichMediaMessage(
+      dispatchDynamicContentMessage(
         { type: 'richMediaQueryBraveSearchAutocomplete', value: '' },
         capabilities,
       )
@@ -269,7 +269,7 @@ describe('dispatchRichMediaMessage', () => {
 
   describe('richMediaMakeBraveSearchDefault', () => {
     it('should call onMakeBraveSearchDefault', () => {
-      dispatchRichMediaMessage(
+      dispatchDynamicContentMessage(
         { type: 'richMediaMakeBraveSearchDefault' },
         capabilities,
       )
@@ -280,7 +280,7 @@ describe('dispatchRichMediaMessage', () => {
 
   describe('richMediaHideBraveSearchBox', () => {
     it('should be recognized but have no effect', () => {
-      dispatchRichMediaMessage(
+      dispatchDynamicContentMessage(
         { type: 'richMediaHideBraveSearchBox' },
         capabilities,
       )

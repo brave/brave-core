@@ -24,7 +24,7 @@
 
 namespace ntp_background_images {
 class NTPBackgroundImagesService;
-class NTPSponsoredRichMediaAdEventHandler;
+class NTPDynamicNewTabTakeoverAdEventHandler;
 }  // namespace ntp_background_images
 
 // On desktop, we use a Web UI to display new tab pages. On Android, however,
@@ -43,8 +43,8 @@ class NewTabTakeoverUI : public ui::MojoWebUIController,
       ntp_background_images::NTPBackgroundImagesService&
           ntp_background_images_service,
       std::unique_ptr<
-          ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
-          rich_media_ad_event_handler);
+          ntp_background_images::NTPDynamicNewTabTakeoverAdEventHandler>
+          sponsored_content_ad_event_handler);
 
   NewTabTakeoverUI(const NewTabTakeoverUI&) = delete;
   NewTabTakeoverUI& operator=(const NewTabTakeoverUI&) = delete;
@@ -64,9 +64,9 @@ class NewTabTakeoverUI : public ui::MojoWebUIController,
   // new_tab_takeover::mojom::NewTabTakeover:
   void SetPage(mojo::PendingRemote<new_tab_takeover::mojom::NewTabTakeoverPage>
                    page) override;
-  void SetSponsoredRichMediaAdEventHandler(
+  void SetSponsoredContentAdEventHandler(
       mojo::PendingReceiver<
-          ntp_background_images::mojom::SponsoredRichMediaAdEventHandler>
+          ntp_background_images::mojom::SponsoredContentAdEventHandler>
           event_handler) override;
   void GetCurrentWallpaper(const std::string& creative_instance_id,
                            GetCurrentWallpaperCallback callback) override;
@@ -90,8 +90,8 @@ class NewTabTakeoverUI : public ui::MojoWebUIController,
   const raw_ref<ntp_background_images::NTPBackgroundImagesService>
       ntp_background_images_service_;  // Not owned.
 
-  std::unique_ptr<ntp_background_images::NTPSponsoredRichMediaAdEventHandler>
-      rich_media_ad_event_handler_;
+  std::unique_ptr<ntp_background_images::NTPDynamicNewTabTakeoverAdEventHandler>
+      sponsored_content_ad_event_handler_;
 
   std::unique_ptr<AutocompleteController> autocomplete_controller_;
 

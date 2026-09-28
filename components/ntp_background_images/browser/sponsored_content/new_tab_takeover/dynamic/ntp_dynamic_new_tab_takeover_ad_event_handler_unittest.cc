@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_ad_event_handler.h"
 
 #include "brave/components/brave_ads/core/browser/service/test/ads_service_mock.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
@@ -22,7 +22,7 @@ void VerifyReportAdEventExpectation(
     bool should_report) {
   brave_ads::AdsServiceMock ads_service;
 
-  NTPSponsoredRichMediaAdEventHandler ad_event_handler(&ads_service);
+  NTPDynamicNewTabTakeoverAdEventHandler ad_event_handler(&ads_service);
 
   if (should_report) {
     EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent(
@@ -34,16 +34,16 @@ void VerifyReportAdEventExpectation(
     EXPECT_CALL(ads_service, TriggerNewTabPageAdEvent).Times(0);
   }
 
-  ad_event_handler.MaybeReportRichMediaAdEvent(
+  ad_event_handler.MaybeReportSponsoredContentAdEvent(
       kPlacementId, kCreativeInstanceId, mojom_ad_metric_type,
       mojom_ad_event_type);
 }
 
 }  // namespace
 
-class NTPSponsoredRichMediaAdEventHandlerTest : public testing::Test {};
+class NTPDynamicNewTabTakeoverAdEventHandlerTest : public testing::Test {};
 
-TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
+TEST_F(NTPDynamicNewTabTakeoverAdEventHandlerTest,
        ReportAdEventWhenMetricTypeIsConfirmation) {
   VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kClicked,
@@ -67,7 +67,7 @@ TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
       /*should_report=*/true);
 }
 
-TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
+TEST_F(NTPDynamicNewTabTakeoverAdEventHandlerTest,
        DoNotReportAdEventWhenMetricTypeIsConfirmation) {
   VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kServedImpression,
@@ -79,7 +79,7 @@ TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
       /*should_report=*/false);
 }
 
-TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
+TEST_F(NTPDynamicNewTabTakeoverAdEventHandlerTest,
        ReportAdEventWhenMetricTypeIsDisabled) {
   VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kClicked,
@@ -103,7 +103,7 @@ TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
       /*should_report=*/true);
 }
 
-TEST_F(NTPSponsoredRichMediaAdEventHandlerTest,
+TEST_F(NTPDynamicNewTabTakeoverAdEventHandlerTest,
        DoNotReportAdEventWhenMetricTypeIsDisabled) {
   VerifyReportAdEventExpectation(
       brave_ads::mojom::NewTabPageAdEventType::kServedImpression,

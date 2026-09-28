@@ -11,8 +11,8 @@ import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import type { RectF } from 'gen/ui/webui/resources/tsc/mojo/ui/gfx/geometry/mojom/geometry.mojom-webui'
 
 import {
-  SponsoredRichMediaBackgroundInfo, SponsoredRichMediaBackground, RichMediaSearchMatch
-} from '../brave_new_tab_ui/containers/newTab/sponsored_rich_media_background'
+  DynamicNewTabTakeoverInfo, DynamicNewTabTakeover, DynamicContentSearchMatch
+} from '../brave_new_tab_ui/containers/newTab/dynamic_new_tab_takeover'
 
 // Mirrors `kBraveSearchHost` (brave/components/constants/url_constants.h).
 // Not imported directly since that constant is only exposed to C++/desktop's
@@ -49,12 +49,12 @@ function useParametersFromQuery(): { placementId: string | null;
 
 export default function App(props: React.PropsWithChildren) {
   const { placementId, creativeInstanceId } = useParametersFromQuery();
-  const [sponsoredRichMediaBackgroundInfo, setSponsoredRichMediaBackgroundInfo] = React.useState<SponsoredRichMediaBackgroundInfo | null>(null)
-  const [sponsoredRichMediaAdEventHandler, setSponsoredRichMediaAdEventHandler] = React.useState<NTPBackgroundMediaMojom.SponsoredRichMediaAdEventHandlerRemote | null>(null)
+  const [dynamicNewTabTakeoverInfo, setDynamicNewTabTakeoverInfo] = React.useState<DynamicNewTabTakeoverInfo | null>(null)
+  const [sponsoredContentAdEventHandler, setSponsoredContentAdEventHandler] = React.useState<NTPBackgroundMediaMojom.SponsoredContentAdEventHandlerRemote | null>(null)
   const [newTabTakeover, setNewTabTakeover] = React.useState<NewTabTakeoverMojom.NewTabTakeoverRemote | null>(null)
-  const [richMediaHasLoaded, setRichMediaHasLoaded] = React.useState(false)
+  const [dynamicContentHasLoaded, setDynamicContentHasLoaded] = React.useState(false)
   const [safeArea, setSafeArea] = React.useState<RectF | undefined>()
-  const [searchMatches, setSearchMatches] = React.useState<RichMediaSearchMatch[] | undefined>(undefined)
+  const [searchMatches, setSearchMatches] = React.useState<DynamicContentSearchMatch[] | undefined>(undefined)
 
   const getCurrentWallpaper = React.useCallback(async () => {
     if (!newTabTakeover || !placementId || !creativeInstanceId) {
@@ -68,14 +68,14 @@ export default function App(props: React.PropsWithChildren) {
         return
       }
 
-      const sponsoredRichMediaBackgroundInfo: SponsoredRichMediaBackgroundInfo = {
+      const dynamicNewTabTakeoverInfo: DynamicNewTabTakeoverInfo = {
         url: response.url.url,
         placementId: placementId,
         creativeInstanceId: creativeInstanceId,
         metricType: response.metricType,
         targetUrl: response.targetUrl.url
       }
-      setSponsoredRichMediaBackgroundInfo(sponsoredRichMediaBackgroundInfo)
+      setDynamicNewTabTakeoverInfo(dynamicNewTabTakeoverInfo)
     } catch (error) {
       console.error('Failed to get last displayed branded wallpaper:', error);
     }
@@ -91,15 +91,15 @@ export default function App(props: React.PropsWithChildren) {
     })
     newTabTakeover.setPage(pageCallbackRouter.$.bindNewPipeAndPassRemote())
 
-    const sponsoredRichMediaAdEventHandler = new NTPBackgroundMediaMojom.SponsoredRichMediaAdEventHandlerRemote()
-    newTabTakeover.setSponsoredRichMediaAdEventHandler(sponsoredRichMediaAdEventHandler.$.bindNewPipeAndPassReceiver())
-    setSponsoredRichMediaAdEventHandler(sponsoredRichMediaAdEventHandler)
+    const sponsoredContentAdEventHandler = new NTPBackgroundMediaMojom.SponsoredContentAdEventHandlerRemote()
+    newTabTakeover.setSponsoredContentAdEventHandler(sponsoredContentAdEventHandler.$.bindNewPipeAndPassReceiver())
+    setSponsoredContentAdEventHandler(sponsoredContentAdEventHandler)
 
     return () => {
       pageCallbackRouter.$.close()
-      setSponsoredRichMediaBackgroundInfo(null)
+      setDynamicNewTabTakeoverInfo(null)
       setNewTabTakeover(null)
-      setSponsoredRichMediaAdEventHandler(null)
+      setSponsoredContentAdEventHandler(null)
       setSafeArea(undefined)
     }
   }, [])
@@ -123,7 +123,7 @@ export default function App(props: React.PropsWithChildren) {
     }
     try {
       const { matches } = await newTabTakeover.queryAutocomplete(query);
-      setSearchMatches(matches.map((match): RichMediaSearchMatch => ({
+      setSearchMatches(matches.map((match): DynamicContentSearchMatch => ({
         contents: match.contents,
         description: match.description,
         destinationUrl: match.destinationUrl.url,
@@ -151,35 +151,35 @@ export default function App(props: React.PropsWithChildren) {
   }, [newTabTakeover])
 
   const reportAdEvent = React.useCallback((adEventType: BraveAdsMojom.NewTabPageAdEventType) => {
-    if (!sponsoredRichMediaAdEventHandler || !sponsoredRichMediaBackgroundInfo) {
+    if (!sponsoredContentAdEventHandler || !dynamicNewTabTakeoverInfo) {
       return
     }
-    sponsoredRichMediaAdEventHandler.maybeReportRichMediaAdEvent(
-      sponsoredRichMediaBackgroundInfo.placementId,
-      sponsoredRichMediaBackgroundInfo.creativeInstanceId,
-      sponsoredRichMediaBackgroundInfo.metricType,
+    sponsoredContentAdEventHandler.maybeReportSponsoredContentAdEvent(
+      dynamicNewTabTakeoverInfo.placementId,
+      dynamicNewTabTakeoverInfo.creativeInstanceId,
+      dynamicNewTabTakeoverInfo.metricType,
       adEventType
     );
-  }, [sponsoredRichMediaAdEventHandler, sponsoredRichMediaBackgroundInfo])
+  }, [sponsoredContentAdEventHandler, dynamicNewTabTakeoverInfo])
 
   const onEventReported = React.useCallback((adEventType: BraveAdsMojom.NewTabPageAdEventType) => {
     reportAdEvent(adEventType)
 
-    if (adEventType === BraveAdsMojom.NewTabPageAdEventType.kClicked && sponsoredRichMediaBackgroundInfo) {
+    if (adEventType === BraveAdsMojom.NewTabPageAdEventType.kClicked && dynamicNewTabTakeoverInfo) {
       const mojomUrl = new Url();
-      mojomUrl.url = sponsoredRichMediaBackgroundInfo.targetUrl;
+      mojomUrl.url = dynamicNewTabTakeoverInfo.targetUrl;
       newTabTakeover?.navigateToUrl(mojomUrl);
     }
-  }, [reportAdEvent, sponsoredRichMediaBackgroundInfo, newTabTakeover])
+  }, [reportAdEvent, dynamicNewTabTakeoverInfo, newTabTakeover])
 
   return (
     <React.Fragment>
-      {sponsoredRichMediaBackgroundInfo && sponsoredRichMediaAdEventHandler && newTabTakeover && (
-        <SponsoredRichMediaBackground
-          sponsoredRichMediaBackgroundInfo={sponsoredRichMediaBackgroundInfo}
-          richMediaHasLoaded={richMediaHasLoaded}
+      {dynamicNewTabTakeoverInfo && sponsoredContentAdEventHandler && newTabTakeover && (
+        <DynamicNewTabTakeover
+          dynamicNewTabTakeoverInfo={dynamicNewTabTakeoverInfo}
+          dynamicContentHasLoaded={dynamicContentHasLoaded}
           safeArea={safeArea}
-          onLoaded={() => setRichMediaHasLoaded(true)}
+          onLoaded={() => setDynamicContentHasLoaded(true)}
           onEventReported={onEventReported}
           onAdEventReported={reportAdEvent}
           searchMatches={searchMatches}

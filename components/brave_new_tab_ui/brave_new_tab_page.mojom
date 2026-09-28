@@ -47,7 +47,9 @@ interface PageHandlerFactory {
   CreatePageHandler(pending_remote<Page> page,
                     pending_receiver<PageHandler> handler,
                     pending_receiver<NewTabMetrics> new_tab_metrics,
-                    pending_receiver<ntp_background_images.mojom.SponsoredRichMediaAdEventHandler> rich_media_events_handler);
+                    pending_receiver<
+                        ntp_background_images.mojom.SponsoredContentAdEventHandler>
+                        sponsored_content_ad_event_handler);
 };
 
 struct SearchEngineInfo {

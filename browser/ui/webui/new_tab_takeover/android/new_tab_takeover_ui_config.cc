@@ -12,7 +12,7 @@
 #include "brave/browser/ui/webui/new_tab_takeover/android/new_tab_takeover_ui.h"
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_sponsored_rich_media_ad_event_handler.h"
+#include "brave/components/ntp_background_images/browser/sponsored_content/new_tab_takeover/dynamic/ntp_dynamic_new_tab_takeover_ad_event_handler.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/common/url_constants.h"
@@ -28,8 +28,8 @@ NewTabTakeoverUIConfig::NewTabTakeoverUIConfig()
 std::unique_ptr<content::WebUIController>
 NewTabTakeoverUIConfig::CreateWebUIController(content::WebUI* web_ui,
                                               const GURL& url) {
-  auto rich_media_ad_event_handler = std::make_unique<
-      ntp_background_images::NTPSponsoredRichMediaAdEventHandler>(
+  auto sponsored_content_ad_event_handler = std::make_unique<
+      ntp_background_images::NTPDynamicNewTabTakeoverAdEventHandler>(
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
       brave_ads::AdsServiceFactory::GetForProfile(Profile::FromWebUI(web_ui))
 #else
@@ -44,5 +44,5 @@ NewTabTakeoverUIConfig::CreateWebUIController(content::WebUI* web_ui,
 
   return std::make_unique<NewTabTakeoverUI>(
       web_ui, *ntp_background_images_service,
-      std::move(rich_media_ad_event_handler));
+      std::move(sponsored_content_ad_event_handler));
 }
