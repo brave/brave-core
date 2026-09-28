@@ -327,13 +327,19 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
   nw_path_monitor_set_queue(networkMonitor, monitorQueue);
   nw_path_monitor_set_update_handler(
       networkMonitor, ^(nw_path_t _Nonnull path) {
-        const auto strongSelf = weakSelf;
-        if (!strongSelf) {
-          return;
-        }
-        strongSelf.networkConnectivityAvailable =
+        const BOOL networkConnectivityAvailable =
             (nw_path_get_status(path) == nw_path_status_satisfied ||
              nw_path_get_status(path) == nw_path_status_satisfiable);
+        // Ensure `dealloc`, which destroys sequence-checked members, can
+        // only run on the main sequence.
+        dispatch_async(dispatch_get_main_queue(), ^{
+          const auto strongSelf = weakSelf;
+          if (!strongSelf) {
+            return;
+          }
+          strongSelf.networkConnectivityAvailable =
+              networkConnectivityAvailable;
+        });
       });
   nw_path_monitor_start(networkMonitor);
 }
