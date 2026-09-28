@@ -6,12 +6,12 @@
 import * as React from 'react'
 
 // Selectors
-import { useSafeWalletSelector } from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../common/selectors'
+import { useSafeWalletSelector } from '$wallet/common/hooks/use-safe-selector'
+import { WalletSelectors } from '$wallet/common/selectors'
 
 // Utils
-import { getLocale } from '../../../../../common/locale'
-import { openTab } from '../../../../utils/routes-utils'
+import { getLocale } from '$web-common/locale'
+import { openTab } from '$wallet/utils/routes-utils'
 
 // Styled Components
 import { Alert, Button } from './zcash_migration_banner.style'

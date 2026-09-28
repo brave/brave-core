@@ -107,7 +107,7 @@ import {
   SelectAddressButton, //
 } from '../../composer_ui/select_address_button/select_address_button'
 import { AddMemo } from '../components/add_memo/add_memo'
-import { ZCashMigrationBanner } from '../../../../components/desktop/banners/zcash_migration_banner/zcash_migration_banner'
+import { ZCashMigrationBanner } from '$wallet/page/components/banners/zcash_migration_banner/zcash_migration_banner'
 
 type SendAmountValidationErrorType =
   | 'fromAmountDecimalsOverflow'

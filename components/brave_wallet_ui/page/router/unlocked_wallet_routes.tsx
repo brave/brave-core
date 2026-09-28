@@ -39,7 +39,7 @@ import {
   WalletPageWrapper, //
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper'
 import { NftCollection } from '../screens/nfts/nft_collection'
-import { Banners } from '../../components/desktop/banners/banners'
+import { Banners } from '$wallet/page/components/banners/banners'
 import {
   BackupWalletRoutes, //
 } from '../screens/backup-wallet/backup-wallet.routes'
