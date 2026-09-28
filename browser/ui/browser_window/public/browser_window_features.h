@@ -94,12 +94,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return brave_non_client_hit_test_helper_.get();
   }
 
-  // Can be null when the browser isn't a normal browser or when the tree tab
-  // feature is disabled.
-  TreeTabSessionManager* GetTreeTabSessionManager() {
-    return tree_tab_session_manager_.get();
-  }
-
   VerticalTabController* vertical_tab_controller() {
     return vertical_tab_controller_.get();
   }

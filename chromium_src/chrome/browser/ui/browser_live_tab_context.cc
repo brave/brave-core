@@ -8,7 +8,6 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
 
@@ -25,8 +24,7 @@ void MaybePopulateTreeTabExtraData(
     return;
   }
 
-  auto* tree_tab_session_manager =
-      browser.GetFeatures().GetTreeTabSessionManager();
+  auto* tree_tab_session_manager = TreeTabSessionManager::From(&browser);
   if (!tree_tab_session_manager) {
     // Can be null if the browser isn't a normal browser.
     return;

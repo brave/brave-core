@@ -190,12 +190,15 @@ if (!is_android) {
       "tree_tab_session_manager.h",
     ]
 
+    public_deps = [ "//ui/base/unowned_user_data" ]
+
     deps = [
       "//base",
       "//brave/browser/sessions",
       "//brave/browser/ui/tabs:tab_strip",
       "//brave/components/tabs",
       "//chrome/browser/sessions",
+      "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/tabs:tab_strip",
       "//components/sessions",

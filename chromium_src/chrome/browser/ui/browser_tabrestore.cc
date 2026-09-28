@@ -7,7 +7,6 @@
 
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/components/containers/buildflags/buildflags.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
@@ -50,8 +49,7 @@ content::WebContents* MaybeRestoreTabTreeHierarchy(
     BrowserWindowInterface* browser,
     content::WebContents* restored_web_contents,
     const std::map<std::string, std::string>& extra_data) {
-  if (auto* tree_tab_session_manager =
-          browser->GetFeatures().GetTreeTabSessionManager()) {
+  if (auto* tree_tab_session_manager = TreeTabSessionManager::From(browser)) {
     // tree tab session manager is only available when the browser is normal
     // browser.
     tree_tab_session_manager->MaybeRestoreTabTreeHierarchy(
