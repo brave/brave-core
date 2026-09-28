@@ -235,13 +235,13 @@ void ParseAndVerifyDocument(
   CoseSign1 cose_doc;
 
   if (!cose_doc.DecodeFromBytes(*cose_encoded) ||
-      !cose_doc.payload().is_map()) {
+      !cose_doc.payload()->is_map()) {
     LOG(ERROR) << "Nitro verification: Failed to decode COSE/CBOR document";
     std::move(result_callback).Run(scoped_refptr<net::X509Certificate>());
     return;
   }
 
-  const cbor::Value::MapValue& cose_map = cose_doc.payload().GetMap();
+  const cbor::Value::MapValue& cose_map = cose_doc.payload()->GetMap();
 
   if (!VerifyNonce(cose_map, nonce)) {
     std::move(result_callback).Run(scoped_refptr<net::X509Certificate>());
