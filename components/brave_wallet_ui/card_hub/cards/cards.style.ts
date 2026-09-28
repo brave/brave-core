@@ -6,6 +6,9 @@
 import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
 
+// Shared Styles
+import { WalletButton } from '$wallet/components/shared/style'
+
 export const StyledCard = styled.div`
   --card-height: 220px;
   --card-thickness: 2px;
@@ -68,6 +71,46 @@ export const StyledCard = styled.div`
 
   @media (prefers-reduced-motion: reduce) {
     transform: translateY(var(--card-lift));
+  }
+`
+
+export const HideButton = styled(WalletButton)`
+  --leo-icon-size: 16px;
+  --leo-icon-color: ${leo.color.white};
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  border-radius: ${leo.radius.full};
+  background-color: color-mix(in srgb, ${leo.color.black} 62%, transparent);
+  box-shadow: 0 1px 4px color-mix(in srgb, ${leo.color.black} 25%, transparent);
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity ${leo.duration.m} ${leo.easing.out};
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 24px;
+    height: 24px;
+  }
+
+  &:hover,
+  &:focus-visible {
+    opacity: 1;
+  }
+
+  &:hover {
+    background-color: color-mix(in srgb, ${leo.color.black} 78%, transparent);
   }
 `
 

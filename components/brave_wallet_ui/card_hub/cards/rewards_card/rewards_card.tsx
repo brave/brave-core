@@ -28,10 +28,11 @@ import { Column, Row, Text } from '$wallet/components/shared/style'
 
 interface Props {
   onClick?: () => void
+  onHide?: () => void
 }
 
 export const RewardsCard = (props: Props) => {
-  const { onClick } = props
+  const { onClick, onHide } = props
 
   // Local Storage
   const [hidePortfolioBalances] = useSyncedLocalStorage(
@@ -40,7 +41,10 @@ export const RewardsCard = (props: Props) => {
   )
 
   return (
-    <Card onClick={onClick}>
+    <Card
+      onClick={onClick}
+      onHide={onHide}
+    >
       <RewardsCardBackground />
       <Column
         justifyContent='space-between'

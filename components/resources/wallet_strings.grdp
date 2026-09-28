@@ -1300,4 +1300,6 @@
   <message name="IDS_BRAVE_WALLET_APPEARANCE" desc="Section label for appearance settings in the wallet card hub settings screen" formatter_data="webui=Wallet">Appearance</message>
   <message name="IDS_BRAVE_WALLET_SECURITY" desc="Section label for security settings in the wallet card hub settings screen" formatter_data="webui=Wallet">Security</message>
   <message name="IDS_BRAVE_WALLET_REQUIRE_UNLOCK_NEXT_TIME" desc="Description under the lock wallet button in the wallet card hub settings screen" formatter_data="webui=Wallet">Require unlock next time</message>
+  <message name="IDS_BRAVE_WALLET_HIDE_CARD_FROM_HOME" desc="Title of the confirmation dialog for hiding a wallet card hub card from home" formatter_data="webui=Wallet">Hide <ph name="CARD_NAME">$1<ex>Crypto</ex></ph> from home?</message>
+  <message name="IDS_BRAVE_WALLET_HIDE_CARD_FROM_HOME_DESCRIPTION" desc="Description of the confirmation dialog for hiding a wallet card hub card from home" formatter_data="webui=Wallet">Your <ph name="CARD_NAME">$1<ex>Crypto</ex></ph> balance is unchanged. This only hides the card from home. You can show it again anytime in Settings, under Wallet.</message>
 </grit-part>
