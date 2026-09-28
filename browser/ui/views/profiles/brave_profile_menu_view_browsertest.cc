@@ -81,6 +81,9 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
     views::test::WidgetVisibleWaiter(avatar_toolbar_button->GetWidget()).Wait();
     ASSERT_TRUE(avatar_toolbar_button);
     ClickAvatarToolbarButton(avatar_toolbar_button);
+    if (auto* menu = profile_menu_view(browser)) {
+      menu->set_close_on_deactivate(false);
+    }
     // `ProfileMenuCoordinator::Show()` may compute avatar button promo info
     // asynchronously before creating the bubble, so it can still be null right
     // after the click.
@@ -101,6 +104,7 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
 
   void CheckIdentity(BrowserWindowInterface* browser) {
     ProfileMenuViewBase* menu = profile_menu_view(browser);
+    ASSERT_TRUE(menu);
     // Profile image and title container
     EXPECT_EQ(2u, menu->identity_info_container_->children().size());
     // Profile image has no children
@@ -133,7 +137,7 @@ IN_PROC_BROWSER_TEST_F(BraveProfileMenuViewTest, TestCurrentProfileView) {
   // Avatar menu button is not visible unless we have more than one profile.
   CreateAdditionalProfile();
 
-  OpenProfileMenu(browser());
+  ASSERT_NO_FATAL_FAILURE(OpenProfileMenu(browser()));
   CheckIdentity(browser());
 }
 
@@ -144,6 +148,6 @@ IN_PROC_BROWSER_TEST_F(BraveProfileMenuViewTest, OpenGuestWindowProfile) {
   BrowserWindowInterface* guest_browser = ui_test_utils::WaitForBrowserToOpen();
   EXPECT_EQ(2U, GlobalBrowserCollection::GetInstance()->GetSize());
 
-  OpenProfileMenu(guest_browser);
+  ASSERT_NO_FATAL_FAILURE(OpenProfileMenu(guest_browser));
   CheckIdentity(guest_browser);
 }
