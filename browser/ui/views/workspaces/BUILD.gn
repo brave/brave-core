@@ -27,6 +27,7 @@ source_set("workspaces") {
   public_deps = [
     "//base",
     "//brave/browser/workspaces",
+    "//ui/base/unowned_user_data",
     "//ui/menus",
     "//ui/views",
   ]
@@ -34,6 +35,7 @@ source_set("workspaces") {
   deps = [
     "//brave/app:brave_generated_resources_grit",
     "//brave/components/vector_icons",
+    "//chrome/browser/ui/browser_window",
     "//components/constrained_window",
     "//ui/base",
   ]

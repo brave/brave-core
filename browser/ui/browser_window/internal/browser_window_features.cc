@@ -207,7 +207,8 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
   if (base::FeatureList::IsEnabled(features::kWorkspaces) &&
       browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
     workspaces_bubble_controller_ =
-        std::make_unique<WorkspacesBubbleController>();
+        GetUserDataFactory().CreateInstance<WorkspacesBubbleController>(
+            *browser_, browser_->GetUnownedUserDataHost());
   }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)

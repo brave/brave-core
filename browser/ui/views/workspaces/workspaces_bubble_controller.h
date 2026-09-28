@@ -10,9 +10,11 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "ui/gfx/native_ui_types.h"
 #include "ui/views/widget/widget.h"
 
+class BrowserWindowInterface;
 class Profile;
 class SaveWorkspaceDialog;
 class WorkspacesBubbleView;
@@ -30,12 +32,19 @@ class View;
 // by the tab strip region view that hosts the workspaces button.
 class WorkspacesBubbleController {
  public:
-  WorkspacesBubbleController();
+  DECLARE_USER_DATA(WorkspacesBubbleController);
+
+  // `host` is the UnownedUserDataHost of the browser window this controller
+  // belongs to.
+  explicit WorkspacesBubbleController(ui::UnownedUserDataHost& host);
   ~WorkspacesBubbleController();
 
   WorkspacesBubbleController(const WorkspacesBubbleController&) = delete;
   WorkspacesBubbleController& operator=(const WorkspacesBubbleController&) =
       delete;
+
+  // Returns the instance owned by `browser`, or nullptr.
+  static WorkspacesBubbleController* From(BrowserWindowInterface* browser);
 
   // Shows the workspaces bubble anchored to |anchor_view|. |profile| is used
   // for workspace service lookups. Does nothing if the bubble is already
@@ -66,6 +75,9 @@ class WorkspacesBubbleController {
   std::unique_ptr<views::Widget> bubble_widget_;
   std::unique_ptr<SaveWorkspaceDialog> save_dialog_;
   std::unique_ptr<views::Widget> save_dialog_widget_;
+
+  ui::ScopedUnownedUserData<WorkspacesBubbleController>
+      scoped_unowned_user_data_;
 
   base::WeakPtrFactory<WorkspacesBubbleController> weak_factory_{this};
 };
