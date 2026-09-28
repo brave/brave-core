@@ -15,7 +15,7 @@ namespace brave_account {
 // WebStateUserData that holds onto the bridge for opening the Brave Account
 // dialog over the WebUI page. Set by the host surface before the page is
 // loaded; used when the page asks via
-// `mojom::DialogController::OpenDialog()`.
+// `mojom::DialogOpener::OpenDialog()`.
 class DialogOpenerBridgeHolder
     : public web::WebStateUserData<DialogOpenerBridgeHolder> {
  public:

@@ -23,13 +23,26 @@ BraveAccountUIIOS::BraveAccountUIIOS(web::WebUIIOS* web_ui, const GURL& url)
       web::WebUIIOSController(web_ui, url.GetHost()) {
   AddInterface<brave_account::mojom::Authentication>();
   AddInterface<brave_account::mojom::DialogController>();
+  AddInterface<brave_account::mojom::DialogOpener>();
   AddInterface<password_strength_meter::mojom::PasswordStrengthMeter>();
 }
 
 BraveAccountUIIOS::~BraveAccountUIIOS() {
   RemoveInterface<brave_account::mojom::Authentication>();
   RemoveInterface<brave_account::mojom::DialogController>();
+  RemoveInterface<brave_account::mojom::DialogOpener>();
   RemoveInterface<password_strength_meter::mojom::PasswordStrengthMeter>();
+}
+
+void BraveAccountUIIOS::CloseDialog() {
+  web_ui()->GetWebState()->CloseWebState();
+}
+
+void BraveAccountUIIOS::GetDialogMode(GetDialogModeCallback callback) {
+  auto* holder =
+      brave_account::DialogModeHolder::FromWebState(web_ui()->GetWebState());
+  std::move(callback).Run(holder ? holder->dialog_mode()
+                                 : brave_account::mojom::DialogMode::kDefault);
 }
 
 void BraveAccountUIIOS::OpenDialog(
@@ -50,22 +63,18 @@ void BraveAccountUIIOS::OpenDialog(
                                                    dialog_mode)];
 }
 
-void BraveAccountUIIOS::CloseDialog() {
-  web_ui()->GetWebState()->CloseWebState();
-}
-
-void BraveAccountUIIOS::GetDialogMode(GetDialogModeCallback callback) {
-  auto* holder =
-      brave_account::DialogModeHolder::FromWebState(web_ui()->GetWebState());
-  std::move(callback).Run(holder ? holder->dialog_mode()
-                                 : brave_account::mojom::DialogMode::kDefault);
-}
-
 void BraveAccountUIIOS::BindInterface(
     mojo::PendingReceiver<brave_account::mojom::DialogController>
         pending_receiver) {
-  receiver_.reset();
-  receiver_.Bind(std::move(pending_receiver));
+  dialog_controller_receiver_.reset();
+  dialog_controller_receiver_.Bind(std::move(pending_receiver));
+}
+
+void BraveAccountUIIOS::BindInterface(
+    mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+        pending_receiver) {
+  dialog_opener_receiver_.reset();
+  dialog_opener_receiver_.Bind(std::move(pending_receiver));
 }
 
 template <typename Interface>

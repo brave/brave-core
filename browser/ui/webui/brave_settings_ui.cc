@@ -21,7 +21,7 @@
 #include "brave/browser/shell_integrations/buildflags/buildflags.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/page_info/features.h"
-#include "brave/browser/ui/webui/settings/brave_account/brave_account_dialog_controller.h"
+#include "brave/browser/ui/webui/settings/brave_account/brave_account_dialog_opener.h"
 #include "brave/browser/ui/webui/settings/brave_adblock_handler.h"
 #include "brave/browser/ui/webui/settings/brave_appearance_handler.h"
 #include "brave/browser/ui/webui/settings/brave_default_extensions_handler.h"
@@ -425,12 +425,11 @@ void BraveSettingsUI::BindInterface(
 }
 
 void BraveSettingsUI::BindInterface(
-    mojo::PendingReceiver<brave_account::mojom::DialogController>
+    mojo::PendingReceiver<brave_account::mojom::DialogOpener>
         pending_receiver) {
-  MakeOwnedReceiver(
-      std::make_unique<brave_account::BraveAccountDialogController>(
-          CHECK_DEREF(web_ui())),
-      std::move(pending_receiver));
+  MakeOwnedReceiver(std::make_unique<brave_account::BraveAccountDialogOpener>(
+                        CHECK_DEREF(web_ui())),
+                    std::move(pending_receiver));
 }
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

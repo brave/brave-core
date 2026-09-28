@@ -25,7 +25,8 @@ class BraveAccountUIAndroid
     : public BraveAccountUIBase<content::WebUIDataSource,
                                 brave_account::BraveAccountServiceFactory>,
       public content::WebUIController,
-      public brave_account::mojom::DialogController {
+      public brave_account::mojom::DialogController,
+      public brave_account::mojom::DialogOpener {
  public:
   using BraveAccountUIBase::BindInterface;
 
@@ -37,14 +38,22 @@ class BraveAccountUIAndroid
       mojo::PendingReceiver<brave_account::mojom::DialogController>
           pending_receiver);
 
+  void BindInterface(mojo::PendingReceiver<brave_account::mojom::DialogOpener>
+                         pending_receiver);
+
  private:
   // brave_account::mojom::DialogController:
-  void OpenDialog(const std::string& initiating_service_name,
-                  brave_account::mojom::DialogMode dialog_mode) override;
   void CloseDialog() override;
   void GetDialogMode(GetDialogModeCallback callback) override;
 
-  mojo::Receiver<brave_account::mojom::DialogController> receiver_{this};
+  // brave_account::mojom::DialogOpener:
+  void OpenDialog(const std::string& initiating_service_name,
+                  brave_account::mojom::DialogMode dialog_mode) override;
+
+  mojo::Receiver<brave_account::mojom::DialogController>
+      dialog_controller_receiver_{this};
+  mojo::Receiver<brave_account::mojom::DialogOpener> dialog_opener_receiver_{
+      this};
 
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
