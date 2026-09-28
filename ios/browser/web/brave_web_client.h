@@ -51,6 +51,8 @@ class BraveWebClient : public ChromeWebClient {
                                    NSURLRequest* request) override;
   bool ShouldBlockUniversalLinks(web::WebState* web_state,
                                  NSURLRequest* request) override;
+  bool ShouldBlockUniversalLinksForURL(web::BrowserState* browser_state,
+                                       const GURL& url) const override;
   bool IsGlobalPrivacyControlEnabled(web::BrowserState* browser_state) override;
 
   bool CanRunOpenPanel(web::WebState* web_state) const override
