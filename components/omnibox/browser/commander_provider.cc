@@ -95,7 +95,7 @@ void CommanderProvider::OnCommanderUpdated() {
     }
 
     AutocompleteMatch match(this, rank--, false,
-                            AutocompleteMatchType::BOOKMARK_TITLE);
+                            omnibox::AutocompleteMatchType::kBookmarkTitle);
     match.RecordAdditionalInfo(kCommanderMatchMarker, true);
     match.takeover_action =
         base::MakeRefCounted<CommanderAction>(i, delegate->GetResultSetId());

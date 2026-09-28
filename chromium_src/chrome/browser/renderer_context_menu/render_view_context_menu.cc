@@ -109,7 +109,7 @@ GURL GetSelectionNavigationURL(Profile* profile, const std::u16string& text) {
 std::optional<GURL> GetSelectedURL(Profile* profile,
                                    const std::u16string& text) {
   auto match = GetAutocompleteMatchForText(profile, text);
-  if (match.type != AutocompleteMatchType::URL_WHAT_YOU_TYPED) {
+  if (match.type != omnibox::AutocompleteMatchType::kUrlWhatYouTyped) {
     return std::nullopt;
   }
   return match.destination_url;
