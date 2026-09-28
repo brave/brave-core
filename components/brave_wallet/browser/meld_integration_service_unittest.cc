@@ -15,11 +15,13 @@
 #include <vector>
 
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/test/bind.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom.h"
 #include "components/grit/brave_components_strings.h"
 #include "net/base/url_search_params.h"
@@ -1183,15 +1185,20 @@ TEST_F(MeldIntegrationServiceUnitTest, GetFiatCurrencies) {
 
 TEST_F(MeldIntegrationServiceUnitTest, GetCryptoCurrencies) {
   const auto url = MeldIntegrationService::GetCryptoCurrenciesURL();
+
+  std::string expected_crypto_chains =
+      "BTC,FIL,ZEC,ETH,SOLANA,FTM,BSC,POLYGON,OPTIMISM,"
+      "AURORA,CELO,ARBITRUM,AVAXC,ADA";
+  if (IsPolkadotEnabled()) {
+    expected_crypto_chains += ",ASSETHUB";
+  }
+
   EXPECT_EQ(url.path(), "/service-providers/properties/crypto-currencies");
-  EXPECT_THAT(
-      net::UrlSearchParams(url).params(),
-      ElementsAre(Pair("accountFilter", "false"),
-                  Pair("cryptoChains",
-                       "BTC,FIL,ZEC,ETH,SOLANA,FTM,BSC,POLYGON,OPTIMISM,"
-                       "AURORA,CELO,ARBITRUM,AVAXC,ADA,ASSETHUB"),
-                  Pair("includeServiceProviderDetails", "false"),
-                  Pair("statuses", "LIVE,RECENTLY_ADDED")));
+  EXPECT_THAT(net::UrlSearchParams(url).params(),
+              ElementsAre(Pair("accountFilter", "false"),
+                          Pair("cryptoChains", expected_crypto_chains),
+                          Pair("includeServiceProviderDetails", "false"),
+                          Pair("statuses", "LIVE,RECENTLY_ADDED")));
 
   TestGetCryptoCurrencies(
       R"([

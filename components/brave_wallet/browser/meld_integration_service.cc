@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/meld_integration_service.h"
 
-#include <algorithm>
-#include <array>
 #include <memory>
 #include <optional>
 #include <string>
@@ -17,7 +15,6 @@
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
 #include "base/json/json_writer.h"
-#include "base/strings/strcat.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -38,7 +35,7 @@ namespace {
 constexpr char kMeldSupportedChains[] =
     "BTC,FIL,ZEC,ETH,SOLANA,FTM,BSC,POLYGON,OPTIMISM,AURORA,CELO,ARBITRUM,"
     "AVAXC,ADA";
-constexpr char kMeldSupportedChainPolkadot[] = "ASSETHUB";
+constexpr char kMeldSupportedChainPolkadotSuffix[] = ",ASSETHUB";
 
 net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
   return net::DefineNetworkTrafficAnnotation("meld_integration_service", R"(
@@ -97,10 +94,9 @@ GURL AppendFilterParams(
 }
 
 bool NeedsToParseResponse(const int http_error_code) {
-  constexpr std::array kRespCodesAllowedToContinueParsing = {400, 401, 403};
-  static_assert(std::ranges::is_sorted(kRespCodesAllowedToContinueParsing));
-  return std::ranges::binary_search(kRespCodesAllowedToContinueParsing,
-                                    http_error_code);
+  static constexpr auto kRespCodesAllowedToContinueParsing =
+      base::MakeFixedFlatSet<int>({400, 401, 403});
+  return kRespCodesAllowedToContinueParsing.contains(http_error_code);
 }
 
 void FillCustomerData(
@@ -577,7 +573,7 @@ void MeldIntegrationService::OnParseFiatCurrencies(
 GURL MeldIntegrationService::GetCryptoCurrenciesURL() {
   std::string supported_chains = kMeldSupportedChains;
   if (IsPolkadotEnabled()) {
-    supported_chains += base::StrCat({",", kMeldSupportedChainPolkadot});
+    supported_chains += kMeldSupportedChainPolkadotSuffix;
   }
 
   return AppendFilterParams(
