@@ -45,8 +45,19 @@ public class BraveRadioButtonGroupTopSitesDisplayModePreference extends Preferen
         }
     }
 
+    /**
+     * Sets the checked option, validating it first since it may come straight from a persisted pref
+     * value that could be out of range (e.g. corrupted, or from a future app version). Also updates
+     * the currently-checked button directly if the view is already bound, so this can be used both
+     * for the initial bind and to refresh the UI after an external change.
+     */
     public void initialize(int option) {
-        mSetting = option;
+        mSetting =
+                (option >= 0 && option < OPTIONS_SIZE) ? option : NtpUtil.TOP_SITES_MODE_SHORTCUTS;
+        RadioButtonWithDescription settingRadioButton = mButtons.get(mSetting);
+        if (settingRadioButton != null) {
+            settingRadioButton.setChecked(true);
+        }
     }
 
     @Override

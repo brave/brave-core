@@ -20,6 +20,8 @@ import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.native_page.BraveNtpDelegate;
 import org.chromium.chrome.browser.native_page.ContextMenuManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.settings.AppearancePreferences;
+import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 
 /**
  * Unit tests for the NTP top-sites display-mode preference ({@link NtpUtil#getTopSitesDisplayMode}
@@ -38,19 +40,21 @@ public class BraveNtpTopSitesModeUnitTest {
     }
 
     @Test
-    public void testDefaultModeIsShortcuts() {
-        assertEquals(NtpUtil.TOP_SITES_MODE_SHORTCUTS, NtpUtil.getTopSitesDisplayMode());
+    public void testDefaultModeIsFrequent() {
+        assertEquals(NtpUtil.TOP_SITES_MODE_FREQUENT, NtpUtil.getTopSitesDisplayMode());
     }
 
     @Test
     public void testSetFrequentModeAndReadBack() {
+        // FREQUENT is now the default, so set SHORTCUTS first to prove the write path is
+        // actually exercised rather than vacuously matching the fallback default.
+        NtpUtil.setTopSitesDisplayMode(NtpUtil.TOP_SITES_MODE_SHORTCUTS);
         NtpUtil.setTopSitesDisplayMode(NtpUtil.TOP_SITES_MODE_FREQUENT);
         assertEquals(NtpUtil.TOP_SITES_MODE_FREQUENT, NtpUtil.getTopSitesDisplayMode());
     }
 
     @Test
     public void testSetShortcutsModeAndReadBack() {
-        NtpUtil.setTopSitesDisplayMode(NtpUtil.TOP_SITES_MODE_FREQUENT);
         NtpUtil.setTopSitesDisplayMode(NtpUtil.TOP_SITES_MODE_SHORTCUTS);
         assertEquals(NtpUtil.TOP_SITES_MODE_SHORTCUTS, NtpUtil.getTopSitesDisplayMode());
     }
@@ -97,5 +101,47 @@ public class BraveNtpTopSitesModeUnitTest {
     @Test
     public void testFrequentModeIsOne() {
         assertEquals(1, NtpUtil.TOP_SITES_MODE_FREQUENT);
+    }
+
+    /**
+     * NtpUtil duplicates these pref key string literals rather than importing the settings package
+     * (see the comment above them), so nothing at compile time catches the two copies drifting
+     * apart. Writing through the settings-side constant and reading through NtpUtil (or vice versa)
+     * only agrees if the literals are still identical.
+     */
+    @Test
+    public void testShowTopSitesPrefKeyMatchesSettings() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BackgroundImagesPreferences.PREF_SHOW_TOP_SITES, false);
+        try {
+            assertFalse(NtpUtil.shouldDisplayTopSites());
+        } finally {
+            ChromeSharedPreferences.getInstance()
+                    .removeKey(BackgroundImagesPreferences.PREF_SHOW_TOP_SITES);
+        }
+    }
+
+    @Test
+    public void testShowBraveStatsPrefKeyMatchesSettings() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS, false);
+        try {
+            assertFalse(NtpUtil.shouldDisplayBraveStats());
+        } finally {
+            ChromeSharedPreferences.getInstance()
+                    .removeKey(BackgroundImagesPreferences.PREF_SHOW_BRAVE_STATS);
+        }
+    }
+
+    @Test
+    public void testShowBraveRewardsIconPrefKeyMatchesSettings() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, false);
+        try {
+            assertFalse(NtpUtil.shouldShowRewardsIcon());
+        } finally {
+            ChromeSharedPreferences.getInstance()
+                    .removeKey(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON);
+        }
     }
 }

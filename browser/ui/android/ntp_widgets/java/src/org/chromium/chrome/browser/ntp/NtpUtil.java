@@ -46,10 +46,13 @@ public class NtpUtil {
     }
 
     public static int getTopSitesDisplayMode() {
+        // Default to frequent: shortcuts mode shows only manually-pinned custom links, which are
+        // empty until the user adds one, so defaulting to shortcuts would show an empty widget
+        // for most users (existing users upgrading, and new installs alike).
         return ChromeSharedPreferences.getInstance()
                 .readInt(
                         BravePreferenceKeys.BRAVE_NTP_TOP_SITES_DISPLAY_MODE,
-                        TOP_SITES_MODE_SHORTCUTS);
+                        TOP_SITES_MODE_FREQUENT);
     }
 
     public static void setTopSitesDisplayMode(int mode) {

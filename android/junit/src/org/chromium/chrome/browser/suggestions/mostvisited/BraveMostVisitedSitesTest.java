@@ -6,10 +6,13 @@
 package org.chromium.chrome.browser.suggestions.mostvisited;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentCaptor.forClass;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -38,8 +41,9 @@ import java.util.List;
 /**
  * Unit tests for {@link BraveMostVisitedSites}.
  *
- * <p>Tests the Java-level tile filtering that separates "Show shortcuts" (custom links) from "Show
- * frequently visited" (top sites) without relying on C++ {@code EnableTileTypes()} changes.
+ * <p>Tests the Java-level tile filtering that separates "Show shortcuts" (custom links only) from
+ * "Show frequently visited" (everything except custom links) without relying on C++ {@code
+ * EnableTileTypes()} changes.
  */
 @RunWith(BaseRobolectricTestRunner.class)
 @Config(manifest = Config.NONE)
@@ -102,41 +106,53 @@ public class BraveMostVisitedSitesTest {
     }
 
     @Test
-    public void testFilterForMode_frequent_emptyWhenNoTopSites() {
+    public void testFilterForMode_frequent_emptyWhenOnlyCustomLinks() {
         List<SiteSuggestion> customOnly =
                 List.of(makeSuggestion("My Site", "https://mysite.com", TileSource.CUSTOM_LINKS));
         List<SiteSuggestion> result =
                 BraveMostVisitedSites.filterForMode(customOnly, NtpUtil.TOP_SITES_MODE_FREQUENT);
-        assertTrue("Frequent mode with no top-sites must be empty", result.isEmpty());
+        assertTrue("Frequent mode with only custom links must be empty", result.isEmpty());
     }
 
     @Test
-    public void testFilterForMode_ignoresOtherSources() {
-        List<SiteSuggestion> withPopular = new ArrayList<>();
-        withPopular.add(makeSuggestion("Popular", "https://popular.com", TileSource.POPULAR));
-        withPopular.add(makeSuggestion("Top", "https://top.com", TileSource.TOP_SITES));
-        withPopular.add(makeSuggestion("Custom", "https://custom.com", TileSource.CUSTOM_LINKS));
+    public void testFilterForMode_shortcutsExcludesNonCustomSources() {
+        List<SiteSuggestion> mixedSources = new ArrayList<>();
+        mixedSources.add(makeSuggestion("Popular", "https://popular.com", TileSource.POPULAR));
+        mixedSources.add(makeSuggestion("Top", "https://top.com", TileSource.TOP_SITES));
+        mixedSources.add(makeSuggestion("Custom", "https://custom.com", TileSource.CUSTOM_LINKS));
 
         List<SiteSuggestion> shortcuts =
-                BraveMostVisitedSites.filterForMode(withPopular, NtpUtil.TOP_SITES_MODE_SHORTCUTS);
+                BraveMostVisitedSites.filterForMode(mixedSources, NtpUtil.TOP_SITES_MODE_SHORTCUTS);
         assertEquals(1, shortcuts.size());
         assertEquals(TileSource.CUSTOM_LINKS, shortcuts.get(0).source);
-
-        List<SiteSuggestion> frequent =
-                BraveMostVisitedSites.filterForMode(withPopular, NtpUtil.TOP_SITES_MODE_FREQUENT);
-        assertEquals(1, frequent.size());
-        assertEquals(TileSource.TOP_SITES, frequent.get(0).source);
     }
 
     @Test
-    public void testBridgeCallbackFiltersForCurrentMode_defaultShortcutsMode() {
+    public void testFilterForMode_frequentIncludesNonCustomSources() {
+        // Frequent mode isn't just TOP_SITES: fallback sources like POPULAR must still show up
+        // for profiles with little or no browsing history.
+        List<SiteSuggestion> mixedSources = new ArrayList<>();
+        mixedSources.add(makeSuggestion("Popular", "https://popular.com", TileSource.POPULAR));
+        mixedSources.add(makeSuggestion("Top", "https://top.com", TileSource.TOP_SITES));
+        mixedSources.add(makeSuggestion("Custom", "https://custom.com", TileSource.CUSTOM_LINKS));
+
+        List<SiteSuggestion> frequent =
+                BraveMostVisitedSites.filterForMode(mixedSources, NtpUtil.TOP_SITES_MODE_FREQUENT);
+        assertEquals(2, frequent.size());
+        assertFalse(
+                "Frequent mode must still exclude custom links",
+                allMatch(frequent, TileSource.CUSTOM_LINKS));
+    }
+
+    @Test
+    public void testBridgeCallbackFiltersForCurrentMode_defaultFrequentMode() {
         mFilteringObserver.onSiteSuggestionsAvailable(false, mixedSuggestions());
 
         ArgumentCaptor<List<SiteSuggestion>> captor = captorForSuggestions();
         verify(mMockOuterObserver).onSiteSuggestionsAvailable(eq(false), captor.capture());
         List<SiteSuggestion> delivered = captor.getValue();
-        assertTrue(allMatch(delivered, TileSource.CUSTOM_LINKS));
-        assertEquals(1, delivered.size());
+        assertTrue(allMatch(delivered, TileSource.TOP_SITES));
+        assertEquals(2, delivered.size());
     }
 
     @Test
@@ -153,33 +169,32 @@ public class BraveMostVisitedSitesTest {
 
     @Test
     public void testModeChangeRefiltersCachedTiles() {
-        // Start in shortcuts mode (default), receive tiles.
+        // Start in frequent mode (default), receive tiles.
         mFilteringObserver.onSiteSuggestionsAvailable(false, mixedSuggestions());
 
-        // Now switch to frequent mode — outer observer should be called again without any new
+        // Now switch to shortcuts mode — outer observer should be called again without any new
         // bridge callback, using the cached raw tile list.
-        NtpUtil.setTopSitesDisplayMode(NtpUtil.TOP_SITES_MODE_FREQUENT);
+        NtpUtil.setTopSitesDisplayMode(NtpUtil.TOP_SITES_MODE_SHORTCUTS);
 
         ArgumentCaptor<List<SiteSuggestion>> captor = captorForSuggestions();
-        // Called once initially (shortcuts) and once on mode change (frequent).
+        // Called once initially (frequent) and once on mode change (shortcuts).
         verify(mMockOuterObserver, times(2))
                 .onSiteSuggestionsAvailable(anyBoolean(), captor.capture());
         List<SiteSuggestion> secondCall = captor.getAllValues().get(1);
         assertTrue(
-                "After mode change, only TOP_SITES tiles",
-                allMatch(secondCall, TileSource.TOP_SITES));
-        assertEquals(2, secondCall.size());
+                "After mode change, only CUSTOM_LINKS tiles",
+                allMatch(secondCall, TileSource.CUSTOM_LINKS));
+        assertEquals(1, secondCall.size());
     }
 
     @Test
-    public void testModeChangeWithNoCachedTiles_notifiesWithEmptyList() {
-        // No bridge callback yet; cache is empty.
-        NtpUtil.setTopSitesDisplayMode(NtpUtil.TOP_SITES_MODE_FREQUENT);
+    public void testModeChangeWithNoCachedTiles_doesNotNotify() {
+        // No bridge callback yet, so there's nothing to re-filter. Notifying here would flash an
+        // empty list right before the bridge's first real callback (which already applies the
+        // current mode) arrives.
+        NtpUtil.setTopSitesDisplayMode(NtpUtil.TOP_SITES_MODE_SHORTCUTS);
 
-        // Observer is notified with an empty list immediately (the C++ callback will arrive later).
-        ArgumentCaptor<List<SiteSuggestion>> captor = captorForSuggestions();
-        verify(mMockOuterObserver).onSiteSuggestionsAvailable(eq(true), captor.capture());
-        assertTrue(captor.getValue().isEmpty());
+        verify(mMockOuterObserver, never()).onSiteSuggestionsAvailable(anyBoolean(), any());
     }
 
     @Test
@@ -191,7 +206,8 @@ public class BraveMostVisitedSitesTest {
 
     @Test
     public void testSwitchingModesTwice_correctFinalState() {
-        // Receive tiles then flip mode twice: shortcuts → frequent → shortcuts.
+        // Receive tiles then flip mode twice: frequent (default) → frequent (explicit,
+        // exercising the write path) → shortcuts.
         mFilteringObserver.onSiteSuggestionsAvailable(false, mixedSuggestions());
 
         NtpUtil.setTopSitesDisplayMode(NtpUtil.TOP_SITES_MODE_FREQUENT);

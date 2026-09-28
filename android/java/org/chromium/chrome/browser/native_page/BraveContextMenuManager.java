@@ -9,6 +9,7 @@ import androidx.annotation.DrawableRes;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.ui.native_page.TouchEnabledDelegate;
 import org.chromium.components.browser_ui.widget.ListItemBuilder;
@@ -153,9 +154,10 @@ public class BraveContextMenuManager extends ContextMenuManager {
         for (int i = 0; i < widgetItemIds.length; i++) {
             if (!braveDelegate.isBraveItemSupported(widgetItemIds[i])) continue;
             boolean isSelected =
-                    (widgetItemIds[i] == BraveNtpDelegate.BRAVE_SHOW_FREQUENT && currentMode == 1)
+                    (widgetItemIds[i] == BraveNtpDelegate.BRAVE_SHOW_FREQUENT
+                                    && currentMode == NtpUtil.TOP_SITES_MODE_FREQUENT)
                             || (widgetItemIds[i] == BraveNtpDelegate.BRAVE_SHOW_SHORTCUTS
-                                    && currentMode == 0);
+                                    && currentMode == NtpUtil.TOP_SITES_MODE_SHORTCUTS);
             ListItemBuilder builder =
                     new ListItemBuilder()
                             .withTitleRes(widgetItemRes[i])

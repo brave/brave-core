@@ -31,7 +31,9 @@ import java.util.List;
  *   <li><b>Shortcuts mode</b> — passes only {@link TileSource#CUSTOM_LINKS} tiles. Because the
  *       bridge runs in mixed mode (both custom links and top-sites enabled), custom link tiles are
  *       empty until the user adds a shortcut, so the NTP correctly shows only "+" buttons.
- *   <li><b>Frequently visited mode</b> — passes only {@link TileSource#TOP_SITES} tiles.
+ *   <li><b>Frequently visited mode</b> — passes every tile except {@link TileSource#CUSTOM_LINKS}
+ *       (see {@link #filterForMode}), so fallback content such as {@link TileSource#POPULAR} tiles
+ *       still shows up for profiles with little or no browsing history.
  * </ul>
  *
  * <p>Filtering in Java rather than by changing {@code EnableTileTypes()} in C++ avoids the {@code
@@ -53,6 +55,7 @@ public class BraveMostVisitedSites implements MostVisitedSites {
     private final MostVisitedSites mBridge;
     private MostVisitedSites.@Nullable Observer mOuterObserver;
     private List<SiteSuggestion> mCachedSuggestions;
+    private boolean mHasReceivedData;
 
     private final SharedPreferences.OnSharedPreferenceChangeListener mPrefListener;
 
@@ -147,15 +150,24 @@ public class BraveMostVisitedSites implements MostVisitedSites {
         return mBridge.reorderCustomLink(keyUrl, newPos);
     }
 
+    /**
+     * Shortcuts mode keeps only manually-pinned {@link TileSource#CUSTOM_LINKS} tiles. Frequent
+     * mode keeps everything else (not just {@link TileSource#TOP_SITES}): the bridge can also
+     * surface {@link TileSource#POPULAR}/{@code POPULAR_BAKED_IN} tiles as fallback content for
+     * profiles with little or no browsing history, plus other upstream sources (allowlisted,
+     * enterprise-shortcut, homepage tiles). Excluding everything but TOP_SITES would leave
+     * "frequently visited" empty for exactly the profiles that fallback content exists for.
+     */
     @VisibleForTesting
     static List<SiteSuggestion> filterForMode(List<SiteSuggestion> all, int displayMode) {
-        int targetSource =
-                (displayMode == NtpUtil.TOP_SITES_MODE_SHORTCUTS)
-                        ? TileSource.CUSTOM_LINKS
-                        : TileSource.TOP_SITES;
         List<SiteSuggestion> result = new ArrayList<>(all.size());
         for (SiteSuggestion s : all) {
-            if (s.source == targetSource) {
+            boolean isCustomLink = s.source == TileSource.CUSTOM_LINKS;
+            boolean keep =
+                    (displayMode == NtpUtil.TOP_SITES_MODE_SHORTCUTS)
+                            ? isCustomLink
+                            : !isCustomLink;
+            if (keep) {
                 result.add(s);
             }
         }
@@ -163,7 +175,11 @@ public class BraveMostVisitedSites implements MostVisitedSites {
     }
 
     private void onModeChanged() {
-        if (mOuterObserver == null) return;
+        // Skip if the bridge hasn't delivered its first batch of suggestions yet:
+        // mCachedSuggestions
+        // is only an empty placeholder at that point, and notifying with it would flash an empty
+        // list right before the real data (already correctly filtered) arrives.
+        if (mOuterObserver == null || !mHasReceivedData) return;
         int mode = NtpUtil.getTopSitesDisplayMode();
         mOuterObserver.onSiteSuggestionsAvailable(
                 /* isUserTriggered= */ true, filterForMode(mCachedSuggestions, mode));
@@ -173,6 +189,7 @@ public class BraveMostVisitedSites implements MostVisitedSites {
         @Override
         public void onSiteSuggestionsAvailable(
                 boolean isUserTriggered, List<SiteSuggestion> suggestions) {
+            mHasReceivedData = true;
             mCachedSuggestions = new ArrayList<>(suggestions);
             if (mOuterObserver != null) {
                 mOuterObserver.onSiteSuggestionsAvailable(

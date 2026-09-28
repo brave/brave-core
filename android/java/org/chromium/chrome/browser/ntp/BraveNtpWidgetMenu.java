@@ -30,7 +30,13 @@ import org.chromium.content_public.browser.LoadUrlParams;
  */
 @NullMarked
 public class BraveNtpWidgetMenu {
-    /** Shows the widget-control menu anchored to {@code anchorView}. */
+    /**
+     * Shows the widget-control menu anchored to {@code anchorView}.
+     *
+     * <p>A fresh {@link BraveContextMenuManager} is created per call rather than cached, since it
+     * holds the anchor {@link View} (and transitively its {@code Activity}) in a field for the
+     * lifetime of the shown menu.
+     */
     public static void show(View anchorView) {
         BraveContextMenuManager manager =
                 new BraveContextMenuManager(

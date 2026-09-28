@@ -40,7 +40,7 @@ public class BraveMostVisitedTilesMediator extends MostVisitedTilesMediator {
     }
 
     @Override
-    void updateMvtWidth(@Nullable Integer totalWidth) {
+    void updateMvtWidth(int totalWidth, int mvtWidth) {
         // BraveNewTabPageLayout#initializeSiteSectionView detaches the tiles container from the
         // NTP layout tree and reparents it as a RecyclerView item (see BraveNtpAdapter), which
         // owns its width/margins from then on. Letting upstream's width/margin logic keep running

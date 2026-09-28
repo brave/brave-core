@@ -11,6 +11,7 @@ import android.util.AttributeSet;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.VisibleForTesting;
 import androidx.core.widget.ImageViewCompat;
 
 import org.chromium.base.Log;
@@ -28,6 +29,12 @@ public class BraveTileView extends TileView {
 
     public BraveTileView(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @VisibleForTesting
+    @Override
+    protected void onFinishInflate() {
+        super.onFinishInflate();
     }
 
     @Override
