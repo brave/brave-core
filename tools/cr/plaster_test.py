@@ -5263,7 +5263,7 @@ class RewriterFormsTest(unittest.TestCase):
 
     def test_ts_add_import_list_inserts_in_authored_order(self):
         # Multiple imports in a list are added in the order listed, earlier
-        # ones landing above later ones (unlike add_friend which reverses).
+        # ones landing above later ones.
         result = self._apply(
             'multi_import.ts', self._TS_HEADER +
             "import './existing.js';\n\nexport const x = 1\n",

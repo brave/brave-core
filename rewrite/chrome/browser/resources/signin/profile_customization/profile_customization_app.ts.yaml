@@ -9,10 +9,9 @@ substitutions:
 
       polymer_overriding.js hooks Polymer's registration so Brave's branding
       overrides (e.g. for `cr-button`) are picked up as each component is
-      defined, which means it has to run before any of them. Anchoring on the
-      end of the license header puts the import ahead of every other one in the
-      module; a chromium_src shadow file cannot do this, since importing the
-      upstream module is what runs its imports.
+      defined, which means it has to run before any of them. A chromium_src
+      shadow file cannot do this, since importing the upstream module is what
+      runs its imports.
     add_import:
       entry: import 'chrome://resources/brave/polymer_overriding.js';
 

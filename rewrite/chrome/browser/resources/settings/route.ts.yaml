@@ -12,11 +12,8 @@ substitutions:
   - description: |
       Wire Brave's routes into the router `createRoutes()` builds.
     regex:
-      re_pattern: '(\n  \}\n)\n(  return r as unknown as SettingsRoutes;)'
-      replace: |-
-        \1
-          addBraveRoutes(r);
-        \2
+      pattern: '  return r as unknown as SettingsRoutes;'
+      replace: "  addBraveRoutes(r);\n  return r as unknown as SettingsRoutes;"
 
   - description: |
       Send guests to Brave's get-started route instead of upstream's.
