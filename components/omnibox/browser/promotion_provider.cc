@@ -19,7 +19,7 @@ using brave_search_conversion::GetConversionType;
 using brave_search_conversion::GetPromoURL;
 
 PromotionProvider::PromotionProvider(AutocompleteProviderClient* client)
-    : AutocompleteProvider(AutocompleteProvider::TYPE_SEARCH),
+    : AutocompleteProvider(AutocompleteProvider::Type::kSearch),
       prefs_(client->GetPrefs()),
       template_url_service_(client->GetTemplateURLService()) {}
 
