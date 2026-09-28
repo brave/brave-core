@@ -13,7 +13,9 @@
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/sessions/core/session_id.h"
 #include "components/tabs/public/tab_interface.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 
+class BrowserWindowInterface;
 class Profile;
 class TabStripModel;
 
@@ -32,12 +34,21 @@ class TreeTabNode;
 // calls keyed on this browser's SessionID.
 class TreeTabSessionManager : public TabStripModelObserver {
  public:
-  TreeTabSessionManager(Profile* profile,
+  DECLARE_USER_DATA(TreeTabSessionManager);
+
+  // `host` is the UnownedUserDataHost of the browser window this manager
+  // belongs to.
+  TreeTabSessionManager(ui::UnownedUserDataHost& host,
+                        Profile* profile,
                         TabStripModel* tab_strip_model,
                         SessionID session_id);
   TreeTabSessionManager(const TreeTabSessionManager&) = delete;
   TreeTabSessionManager& operator=(const TreeTabSessionManager&) = delete;
   ~TreeTabSessionManager() override;
+
+  // Returns the instance owned by `browser`, or nullptr. Null unless the tree
+  // tab feature is enabled and `browser` is a normal browser.
+  static TreeTabSessionManager* From(BrowserWindowInterface* browser);
 
   // Called from BrowserLiveTabContext::GetExtraDataForTab to record the
   // tree-tab position of the tab being closed. Writes kBraveTreeNodeIdKey and
@@ -90,6 +101,7 @@ class TreeTabSessionManager : public TabStripModelObserver {
   raw_ptr<Profile> profile_;
   raw_ptr<TabStripModel> tab_strip_model_;
   const SessionID session_id_;
+  ui::ScopedUnownedUserData<TreeTabSessionManager> scoped_unowned_user_data_;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_TREE_TAB_SESSION_MANAGER_H_

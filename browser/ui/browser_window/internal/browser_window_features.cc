@@ -136,8 +136,10 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
 
   if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab) &&
       browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
-    tree_tab_session_manager_ = std::make_unique<TreeTabSessionManager>(
-        profile, browser->GetTabStripModel(), browser->GetSessionID());
+    tree_tab_session_manager_ =
+        GetUserDataFactory().CreateInstance<TreeTabSessionManager>(
+            *browser, browser->GetUnownedUserDataHost(), profile,
+            browser->GetTabStripModel(), browser->GetSessionID());
   }
 }
 
