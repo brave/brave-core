@@ -1,16 +1,8 @@
 diff --git a/net/BUILD.gn b/net/BUILD.gn
-index 54a40951c09aa31ff0d1b74757b201024939fc86..aeb00826df5f31d91e51001eb56465cd3410e3b4 100644
+index 54a40951c09aa31ff0d1b74757b201024939fc86..070492522dc8976d39e4587cc4d4ce1c7543f6f0 100644
 --- a/net/BUILD.gn
 +++ b/net/BUILD.gn
-@@ -2,6 +2,7 @@
- # Use of this source code is governed by a BSD-style license that can be
- # found in the LICENSE file.
- 
-+import("//brave/components/brave_wallet/sources.gni")
- import("//build/buildflag_header.gni")
- import("//build/config/cast.gni")
- import("//build/config/compiler/compiler.gni")
-@@ -1200,6 +1201,7 @@ component("net") {
+@@ -1200,6 +1200,7 @@ component("net") {
      "url_request/websocket_handshake_userdata_key.cc",
      "url_request/websocket_handshake_userdata_key.h",
    ]
@@ -18,7 +10,7 @@ index 54a40951c09aa31ff0d1b74757b201024939fc86..aeb00826df5f31d91e51001eb56465cd
  
    if (is_posix || is_fuchsia) {
      sources += [ "base/net_errors_posix.cc" ]
-@@ -1227,6 +1229,7 @@ component("net") {
+@@ -1227,6 +1228,7 @@ component("net") {
      "//third_party/rust/sfv/v0_15/wrapper",
      "//third_party/simdutf",
    ]

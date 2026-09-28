@@ -9,4 +9,4 @@ substitutions:
       target: headers
       list_name: deps
       literal: brave_blink_public_common_deps
-      import: //brave/components/brave_wallet/sources.gni
+      import: //brave/third_party/blink/public/common/sources.gni

@@ -1,12 +1,12 @@
 diff --git a/third_party/blink/public/common/BUILD.gn b/third_party/blink/public/common/BUILD.gn
-index 5a5d9a64a4b70f09447022021d03f95f69f2fbb2..4fc11a90dd425b67bd45a55cf2ab975d398df8a8 100644
+index 5a5d9a64a4b70f09447022021d03f95f69f2fbb2..b518a40cf23b4005b9e656fced42410160be68dc 100644
 --- a/third_party/blink/public/common/BUILD.gn
 +++ b/third_party/blink/public/common/BUILD.gn
 @@ -2,6 +2,7 @@
  # Use of this source code is governed by a BSD-style license that can be
  # found in the LICENSE file.
  
-+import("//brave/components/brave_wallet/sources.gni")
++import("//brave/third_party/blink/public/common/sources.gni")
  import("//build/buildflag_header.gni")
  import("//build/config/compiler/compiler.gni")
  import("//build/config/features.gni")

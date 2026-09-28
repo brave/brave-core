@@ -4,9 +4,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: Add the deps the Brave HID additions need.
+  - description: Add the Brave deps to the permissions module.
     add_literal_to_list:
-      target: hid
+      target: permissions
       list_name: deps
-      literal: brave_browser_ui_hid_deps
-      import: //brave/browser/ui/hid/sources.gni
+      literal: brave_blink_renderer_modules_permissions_deps
+      import: //brave/third_party/blink/renderer/modules/permissions/sources.gni
