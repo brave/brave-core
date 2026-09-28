@@ -56,7 +56,7 @@ void PromotionProvider::AddMatchForBraveSearchPromotion(
   // entry could not be visible when other providers supply many related matches
   // from history.
   AutocompleteMatch match(this, kRelavance, false,
-                          AutocompleteMatchType::NAVSUGGEST);
+                          omnibox::AutocompleteMatchType::kNavsuggest);
   const GURL promo_url = GetPromoURL(input);
   const auto contents = base::UTF8ToUTF16(promo_url.spec());
   // URL is displayed at omnibox edit box when this match is selected.

@@ -86,8 +86,8 @@ void LeoProvider::Start(const AutocompleteInput& input, bool minimal_changes) {
 
   // Use SEARCH_SUGGEST_ENTITY match type so that the match.description can be
   // visible from OmniboxResultView.
-  constexpr AutocompleteMatchType::Type kMatchType =
-      AutocompleteMatchType::SEARCH_SUGGEST_ENTITY;
+  constexpr omnibox::AutocompleteMatchType kMatchType =
+      omnibox::AutocompleteMatchType::kSearchSuggestEntity;
 
   AutocompleteMatch match(/*provider*/ this, relevance, /*deletable*/ false,
                           kMatchType);

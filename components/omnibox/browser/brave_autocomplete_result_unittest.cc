@@ -24,7 +24,7 @@ class BraveAutocompleteResultTest : public testing::Test {
 
 AutocompleteMatch CreateMatch(const GURL& url, bool has_tab_match) {
   AutocompleteMatch result(nullptr, 0, false,
-                           AutocompleteMatchType::HISTORY_TITLE);
+                           omnibox::AutocompleteMatchType::kHistoryTitle);
   result.contents = base::UTF8ToUTF16(url.spec());
   result.destination_url = url;
   result.has_tab_match = has_tab_match;
@@ -126,7 +126,7 @@ TEST_F(BraveAutocompleteResultTest,
 TEST_F(BraveAutocompleteResultTest,
        GetOmniboxEventResultTypeWithOpenHereActionDoesNotCrash) {
   AutocompleteMatch match(nullptr, 0, false,
-                          AutocompleteMatchType::HISTORY_TITLE);
+                          omnibox::AutocompleteMatchType::kHistoryTitle);
   match.destination_url = GURL("https://example.com");
   match.actions.push_back(
       base::MakeRefCounted<OpenHereAction>(match.destination_url));
