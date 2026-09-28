@@ -32,6 +32,7 @@
 #include "net/proxy_resolution/proxy_config.h"
 #include "net/proxy_resolution/proxy_config_service.h"
 #include "net/proxy_resolution/proxy_config_with_annotation.h"
+#include "net/proxy_resolution/proxy_info.h"
 #include "net/proxy_resolution/proxy_resolution_service.h"
 
 namespace net {
@@ -203,7 +204,6 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
   const net::ProxyChain& chain = proxy_rules.single_proxies.First();
   CHECK(chain.is_single_proxy());
   const net::ProxyServer& server = chain.GetProxyServer(/*chain_index=*/0);
-  const std::string& proxy_uri = net::ProxyServerToProxyUri(server);
   HostPortPair host_port_pair = server.host_port_pair();
 
   if (!username.empty()) {
@@ -219,15 +219,16 @@ void ProxyConfigServiceTor::SetProxyAuthorization(
     host_port_pair.set_username(username);
     host_port_pair.set_password(map->Get(username));
 
-    ProxyConfigServiceTor tor_proxy_config_service(proxy_uri);
-    tor_proxy_config_service.proxy_server_ =
-        ProxyServer(ProxyServer::SCHEME_SOCKS5, host_port_pair);
-
-    ProxyConfigWithAnnotation fetched_config;
-    tor_proxy_config_service.GetLatestProxyConfig(&fetched_config);
-    fetched_config.value().proxy_rules().Apply(url, result);
-    result->set_traffic_annotation(MutableNetworkTrafficAnnotationTag(
-        fetched_config.traffic_annotation()));
+    // Build the chain directly from the configured Tor SOCKS endpoint. Do not
+    // serialize it to a proxy-rules string and parse it back: |username| is a
+    // site host, and it can contain characters (',', ';', '=') that the
+    // proxy-rules grammar treats as separators. Only the credentials differ
+    // from the configured server, so the result is always exactly one SOCKS5
+    // chain to the Tor endpoint and never DIRECT.
+    result->UseProxyChain(
+        ProxyChain(ProxyServer(ProxyServer::SCHEME_SOCKS5, host_port_pair)));
+    result->set_traffic_annotation(
+        MutableNetworkTrafficAnnotationTag(kTorProxyTrafficAnnotation));
   }
 }
 
@@ -248,8 +249,12 @@ ProxyConfigServiceTor::GetLatestProxyConfig(
 
   ProxyConfig proxy_config;
   proxy_config.proxy_rules().bypass_rules.AddRulesToSubtractImplicit();
-  proxy_config.proxy_rules().ParseFromString(
-      net::ProxyServerToProxyUri(proxy_server_));
+  // Set the rules directly instead of round-tripping |proxy_server_| through
+  // ProxyServerToProxyUri() and ProxyRules::ParseFromString(). After
+  // SetNewTorCircuit() the SOCKS username is a site host, which can contain
+  // proxy-rules separators (',', ';', '=') and would change the parsed rules.
+  proxy_config.proxy_rules().type = ProxyConfig::ProxyRules::Type::PROXY_LIST;
+  proxy_config.proxy_rules().single_proxies.SetSingleProxyServer(proxy_server_);
   *config =
       net::ProxyConfigWithAnnotation(proxy_config, kTorProxyTrafficAnnotation);
 
