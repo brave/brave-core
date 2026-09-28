@@ -78,13 +78,22 @@ void NotifyDisplayModeChanged(content::WebContents* web_contents,
 
 }  // namespace
 
+DEFINE_USER_DATA(AIChatSidePanelTabTransferBridge);
+
 AIChatSidePanelTabTransferBridge::AIChatSidePanelTabTransferBridge(
     BrowserWindowInterface* browser)
-    : browser_(browser) {
+    : browser_(browser),
+      scoped_unowned_user_data_(browser->GetUnownedUserDataHost(), *this) {
   CHECK(browser_);
 }
 
 AIChatSidePanelTabTransferBridge::~AIChatSidePanelTabTransferBridge() = default;
+
+// static
+AIChatSidePanelTabTransferBridge* AIChatSidePanelTabTransferBridge::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 void AIChatSidePanelTabTransferBridge::TransferFullPageContentsToSidePanel(
     std::unique_ptr<content::WebContents> web_contents,

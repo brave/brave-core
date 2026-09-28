@@ -68,14 +68,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   }
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  // Null unless the `kAIChatMoveFullPageToSidePanel` feature is enabled and
-  // this is a normal window with AI Chat available.
-  AIChatSidePanelTabTransferBridge* ai_chat_side_panel_tab_transfer_bridge() {
-    return ai_chat_side_panel_tab_transfer_bridge_.get();
-  }
-#endif
-
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   email_aliases::EmailAliasesController* email_aliases_controller() {
     return email_aliases_controller_.get();

@@ -16,7 +16,6 @@
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/file_select_helper.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
@@ -81,9 +80,8 @@ std::unique_ptr<views::View> AIChatMovableSidePanelWebView::CreateView(
   auto web_view = std::make_unique<AIChatMovableSidePanelWebView>(profile);
 
   AIChatSidePanelTabTransferBridge* transfer_bridge =
-      scope.GetBrowserWindowInterface()
-          .GetFeatures()
-          .ai_chat_side_panel_tab_transfer_bridge();
+      AIChatSidePanelTabTransferBridge::From(
+          &scope.GetBrowserWindowInterface());
 
   if (transfer_bridge && transfer_bridge->HasPendingTransfer()) {
     // A full-page AI Chat is being moved into the side panel: adopt that live
