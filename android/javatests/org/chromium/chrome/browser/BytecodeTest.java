@@ -1710,6 +1710,8 @@ public class BytecodeTest {
                         Activity.class,
                         NativePageHost.class,
                         Profile.class,
+                        TabModelSelector.class,
+                        Tab.class,
                         MonotonicObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
