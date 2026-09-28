@@ -76,10 +76,11 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::JoinString({"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
-                        kUntrustedLineChartURL, kUntrustedNftURL,
-                        base::StrCat({kUntrustedMarketURL, ";"})},
-                       " "));
+      base::JoinString(
+          {"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
+           kUntrustedPolkadotURL, kUntrustedLineChartURL, kUntrustedNftURL,
+           base::StrCat({kUntrustedMarketURL, ";"})},
+          " "));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");

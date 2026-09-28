@@ -33,6 +33,9 @@ inline constexpr char kUntrustedMarketURL[] =
 inline constexpr char kUntrustedTrezorHost[] = "trezor-bridge";
 inline constexpr char kUntrustedTrezorURL[] =
     "chrome-untrusted://trezor-bridge/";
+inline constexpr char kUntrustedPolkadotHost[] = "polkadot-bridge";
+inline constexpr char kUntrustedPolkadotURL[] =
+    "chrome-untrusted://polkadot-bridge/";
 inline constexpr char kUntrustedSnapHost[] = "snap-host";
 inline constexpr char kUntrustedSnapURL[] = "chrome-untrusted://snap-host/";
 
