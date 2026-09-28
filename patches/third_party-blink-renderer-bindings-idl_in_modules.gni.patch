@@ -1,12 +1,10 @@
 diff --git a/third_party/blink/renderer/bindings/idl_in_modules.gni b/third_party/blink/renderer/bindings/idl_in_modules.gni
-index c0f9f669bb374020ec212e184596c4df202014a6..6fd42d6428fa93f55e75049d5eb2d0597f9f87d1 100644
+index c0f9f669bb374020ec212e184596c4df202014a6..0daba525dafc33fbd12b6820f225ab0e2666fefb 100644
 --- a/third_party/blink/renderer/bindings/idl_in_modules.gni
 +++ b/third_party/blink/renderer/bindings/idl_in_modules.gni
-@@ -1312,6 +1312,7 @@ static_idl_files_in_modules = [
-   "//third_party/blink/renderer/modules/xr/xr_webgl_layer_init.idl",
-   "//third_party/blink/renderer/modules/xr/xr_webgl_sub_image.idl",
- ]
-+static_idl_files_in_modules += brave_static_idl_files_in_modules static_idl_files_in_modules -= brave_static_idl_files_to_exclude_in_modules
- 
- # Direct Sockets
- # This uses target_os rather than current_os (which is what is_android is set
+@@ -1431,3 +1431,5 @@ if (enable_compute_pressure) {
+     "//third_party/blink/renderer/modules/compute_pressure/testing/internals_compute_pressure.idl",
+   ]
+ }
++static_idl_files_in_modules += brave_static_idl_files_in_modules
++static_idl_files_in_modules -= brave_static_idl_files_to_exclude_in_modules
