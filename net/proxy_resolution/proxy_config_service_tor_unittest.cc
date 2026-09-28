@@ -478,6 +478,9 @@ TEST_F(ProxyConfigServiceTorTest, SetNewTorCircuit_SeparatorCharsInSite) {
     CheckProxyServer(FROM_HERE,
                      info.proxy_chain().GetProxyServer(/*server_index=*/0),
                      ProxyConfigServiceTor::CircuitAnonymizationKey(other_url));
+    EXPECT_EQ(info.traffic_annotation().unique_id_hash_code,
+              ProxyConfigServiceTor::GetTorAnnotationTagForTesting()
+                  .unique_id_hash_code);
   }
 }
 
