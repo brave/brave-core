@@ -428,7 +428,8 @@ def section_hash(section):
     return hashlib.sha256("\n".join(kept).encode()).hexdigest()[:16]
 
 
-# No rule reads these, yet every subagent paid for them; each becomes one stub line.
+# No rule reads these, yet every subagent paid for them; each becomes one stub
+# line.
 _LOCKFILES = frozenset({
     "package-lock.json",
     "npm-shrinkwrap.json",
@@ -589,7 +590,8 @@ def classify_files(files):
     }
 
 
-# A family's doc skips other families' source but keeps neutral files (BUILD.gn, .grd).
+# A family's doc skips other families' source but keeps neutral files
+# (BUILD.gn, .grd).
 _FAMILY_PREDICATES = {
     "has_cpp_files": lambda f: f.lower().endswith(
         (".cc", ".h", ".mm", ".c", ".cpp", ".mojom")),
@@ -1029,9 +1031,11 @@ def chunk_doc(doc_path):
 
 
 # ---------------------------------------------------------------------------
-# Subagent prompts: detect reads the diff only; one validator per PR reads the source
+# Subagent prompts: detect reads the diff only; one validator per PR reads the
+# source
 # ---------------------------------------------------------------------------
 
+# pylint: disable=line-too-long
 _DETECT_RULES = """\
 Review Rules:
 - You work from the diff. A validator reads the source tree afterwards and drops what the source disproves, so report what the diff shows. When a finding depends on code the diff does not show (a deps list, an include elsewhere in the file, a caller, an upstream class), say what to check in `issue`.
@@ -1113,6 +1117,9 @@ CRITICAL: `line` MUST fall within one of the valid line ranges above; a comment 
 {_SEVERITY_GUIDE}
 
 {_NEVER_POST} When the file is written, reply with one line and nothing else: `{chunk_id}: <number of violations> candidates`."""
+
+
+# pylint: enable=line-too-long
 
 
 def _prompt_header(ctx, base_note=True):
@@ -1215,6 +1222,7 @@ def build_correctness_prompt(ctx, diff_text, ranges, candidates_file,
     return "\n".join(parts)
 
 
+# pylint: disable=line-too-long
 _VALIDATE_INSTRUCTIONS = """\
 Validation:
 The source tree at the PR head is at: {source_path}
@@ -1245,6 +1253,7 @@ Write the results with the Write tool to: {results_file}
 Write the file even when every candidate is dropped.
 
 {never_post} {gh_note}When the file is written, reply with one line and nothing else: `PR #{pr_number}: <kept> of <total> candidates kept`."""
+# pylint: enable=line-too-long
 
 
 def build_validate_prompt(ctx, candidates, cited_rules, diff_text, ranges,

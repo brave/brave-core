@@ -119,7 +119,8 @@ def save_cache(updates, approved_removals=()):
 
 
 def fetch_single_pr(pr_number):
-    fields = "number,title,updatedAt,author,isDraft,headRefOid,baseRefName,reviewDecision,latestReviews,reviewRequests"
+    fields = ("number,title,updatedAt,author,isDraft,headRefOid,baseRefName,"
+              "reviewDecision,latestReviews,reviewRequests")
     result = subprocess.run(
         [
             "gh",
@@ -155,7 +156,8 @@ def fetch_prs(mode, page, pr_number, state):
     if mode == "single":
         return fetch_single_pr(pr_number)
 
-    fields = "number,title,updatedAt,author,isDraft,headRefOid,baseRefName,reviewDecision,latestReviews,reviewRequests"
+    fields = ("number,title,updatedAt,author,isDraft,headRefOid,baseRefName,"
+              "reviewDecision,latestReviews,reviewRequests")
     base_cmd = [
         "gh",
         "pr",
