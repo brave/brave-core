@@ -86,8 +86,10 @@ std::optional<tabs::TabData> MaybeGetSharedPinnedTabData(
 }
 
 // Overrides favicon theming for Brave WebUIs and surfaces unloaded-tab status.
-tabs::TabData& MaybeApplyBraveTabDataOverrides(tabs::TabInterface* tab,
-                                               tabs::TabData& data) {
+// Returning value so thate it can be moved from outer function, instead of
+// copying.
+tabs::TabData MaybeApplyBraveTabDataOverrides(tabs::TabInterface* tab,
+                                              tabs::TabData data) {
   auto* const bwi = tab->GetBrowserWindowInterface();
   content::WebContents* const contents = tab->GetContents();
   const GURL& url = contents->GetVisibleURL();

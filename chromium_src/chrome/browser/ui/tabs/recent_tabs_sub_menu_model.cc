@@ -23,10 +23,9 @@ constexpr char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
 
 #include <chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc>
 
-// Method for RecentTabsSubMenuModel's
-// RecentTabsSubMenuModel::BuildTabsFromOtherDevices(). As tabs in a session is
-// not added if they exceed the maximum number of tabs to show, this function
-// appends an overflow stub tab.
+// Methods of BraveRecentTabsSubMenuModel are implemented below instead of
+// brave_recent_tabs_sub_menu_model.cc to have the access to functions in
+// anonymous namespace in recent_tabs_sub_menu_model.cc
 void RecentTabsSubMenuModel::MaybeAppendOverflowStubTab(
     std::vector<const sessions::SessionTab*>& tabs_in_session,
     size_t max_tabs_to_show,

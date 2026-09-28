@@ -18,4 +18,4 @@ substitutions:
       function_name: TabData::FromTabInterface
       result_var: tab_data
       code: |-
-        return MaybeApplyBraveTabDataOverrides(tab_interface, tab_data);
+        return MaybeApplyBraveTabDataOverrides(tab_interface, std::move(tab_data));
