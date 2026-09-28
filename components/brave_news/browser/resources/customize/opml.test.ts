@@ -42,7 +42,11 @@ const makeActions = (overrides: Partial<ImportActions>): ImportActions => ({
   channels: [],
   locale: 'en_US',
   followPublisher: jest.fn(),
-  addDirectFeed: jest.fn(async () => {}),
+  addDirectFeed: jest.fn(async () => ({
+    isValidFeed: true,
+    isDuplicate: false,
+    publishers: {}
+  })),
   subscribeChannel: jest.fn(),
   ...overrides
 })
@@ -312,5 +316,94 @@ describe('importOpml', () => {
 
   it('rejects on malformed OPML', async () => {
     await expect(importOpml('<opml></body>', makeActions({}))).rejects.toThrow()
+  })
+})
+
+describe('OPML direct feed result accounting', () => {
+  it.each([
+    [false, false],
+    [true, true],
+    [false, true]
+  ])('skips isValidFeed=%s isDuplicate=%s', async (isValidFeed, isDuplicate) => {
+    const actions = makeActions({
+      addDirectFeed: jest.fn(async () => ({
+        isValidFeed,
+        isDuplicate,
+        publishers: null
+      }))
+    })
+    const xml = serializeOpml({
+      items: [{ title: 'Feed', xmlUrl: 'https://result.example/feed' }],
+      channels: []
+    })
+    const result = await importOpml(xml, actions)
+    expect(result.addedDirectFeeds).toBe(0)
+    expect(result.skipped).toBe(1)
+  })
+
+  it('counts successful and invalid feeds independently in a batch', async () => {
+    const actions = makeActions({
+      addDirectFeed: jest.fn(async (url: string) => ({
+        isValidFeed: url === 'https://valid.example/feed',
+        isDuplicate: false,
+        publishers: null
+      }))
+    })
+    const xml = serializeOpml({
+      items: [
+        { title: 'Valid', xmlUrl: 'https://valid.example/feed' },
+        { title: 'Invalid', xmlUrl: 'https://invalid.example/feed' }
+      ],
+      channels: []
+    })
+    const result = await importOpml(xml, actions)
+    expect(result.addedDirectFeeds).toBe(1)
+    expect(result.skipped).toBe(1)
+  })
+})
+
+describe('OPML direct feed asynchronous completion', () => {
+  it('waits for all results when they complete out of order', async () => {
+    type Response = Awaited<ReturnType<ImportActions['addDirectFeed']>>
+    let finishFirst!: (value: Response) => void
+    let finishSecond!: (value: Response) => void
+    const first = new Promise<Response>((resolve) => { finishFirst = resolve })
+    const second = new Promise<Response>((resolve) => { finishSecond = resolve })
+    const actions = makeActions({
+      addDirectFeed: jest.fn()
+        .mockReturnValueOnce(first)
+        .mockReturnValueOnce(second)
+    })
+    const xml = serializeOpml({
+      items: [
+        { title: 'First', xmlUrl: 'https://first.example/feed' },
+        { title: 'Second', xmlUrl: 'https://second.example/feed' }
+      ],
+      channels: []
+    })
+    let completed = false
+    const promise = importOpml(xml, actions).then((result) => {
+      completed = true
+      return result
+    })
+    expect(actions.addDirectFeed).toHaveBeenCalledTimes(2)
+    finishSecond({ isValidFeed: false, isDuplicate: false, publishers: null })
+    await second
+    expect(completed).toBe(false)
+    finishFirst({ isValidFeed: true, isDuplicate: false, publishers: {} })
+    const result = await promise
+    expect(result.addedDirectFeeds).toBe(1)
+    expect(result.skipped).toBe(1)
+  })
+
+  it('preserves backend connection errors', async () => {
+    const actions = makeActions({
+      addDirectFeed: jest.fn().mockRejectedValue(new Error('connection lost'))
+    })
+    const xml = serializeOpml({
+      items: [{ title: 'Feed', xmlUrl: 'https://feed.example/rss' }],
+      channels: []
+    })
+    await expect(importOpml(xml, actions)).rejects.toThrow('connection lost')
   })
 })
