@@ -353,8 +353,8 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
       isPlaylistAvailable: profileController.profile.prefs.isPlaylistAvailable,
       searchDelegate: self,
       delegate: self,
-      topsiteAction: { [weak self] action in
-        self?.handleTopsiteAction(action: action)
+      topSiteAction: { [weak self] action in
+        self?.handleTopSiteAction(action: action)
       },
       recentSearchAction: { [weak self] recentSearch, shouldSubmitSearch in
         self?.handleRecentSearch(recentSearch, shouldSubmitSearch: shouldSubmitSearch)

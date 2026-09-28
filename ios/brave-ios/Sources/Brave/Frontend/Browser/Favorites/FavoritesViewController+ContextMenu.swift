@@ -25,15 +25,15 @@ extension FavoritesViewController {
     switch section {
     case .favorites:
       guard let favorite = favoritesFRC.fetchedObjects?[indexPath.item] else { return nil }
-      let topsiteViewModel = TopsiteViewModel(source: .favorite(favorite))
       return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
         _ -> UIMenu? in
         let openInNewTab = UIAction(
           title: Strings.openNewTabButtonTitle,
           handler: UIAction.deferredActionHandler { _ in
-            self.topsiteAction(
+            self.topSiteAction(
               .opened(
-                topsiteViewModel: topsiteViewModel,
+                url: favorite.url?.asURL,
+                isFavorite: true,
                 inNewTab: true,
                 switchingToPrivateMode: false
               )
@@ -43,7 +43,7 @@ extension FavoritesViewController {
         let edit = UIAction(
           title: Strings.editFavorite,
           handler: UIAction.deferredActionHandler { _ in
-            self.topsiteAction(.edited(favorite: favorite))
+            self.topSiteAction(.edited(favorite: favorite))
           }
         )
         let delete = UIAction(
@@ -59,9 +59,10 @@ extension FavoritesViewController {
           let openInNewPrivateTab = UIAction(
             title: Strings.openNewPrivateTabButtonTitle,
             handler: UIAction.deferredActionHandler { _ in
-              self.topsiteAction(
+              self.topSiteAction(
                 .opened(
-                  topsiteViewModel: topsiteViewModel,
+                  url: favorite.url?.asURL,
+                  isFavorite: true,
                   inNewTab: true,
                   switchingToPrivateMode: true
                 )
