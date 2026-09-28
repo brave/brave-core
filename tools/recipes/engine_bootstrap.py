@@ -56,6 +56,9 @@ VPYTHON_SPEC = '.vpython3'
 DEPOT_TOOLS_URL = 'https://chromium.googlesource.com/chromium/tools/depot_tools'
 DEPOT_TOOLS_DEST = 'depot_tools_bootstrap'
 
+# The hard-coded path for depot_tools in git cache.
+DEPOT_TOOLS_MIRROR_DIR = 'chromium.googlesource.com-chromium-tools-depot_tools'
+
 
 def _run(*cmd: str | Path, cwd: str | Path | None = None) -> None:
     """Run *cmd*, logging the invocation, and raise on a non-zero exit."""
@@ -109,11 +112,21 @@ def _deploy_recipes(dest: str | Path) -> Path:
     return engine
 
 
-def _deploy_depot_tools(dest: str | Path) -> Path:
-    """Shallow-clone depot_tools into *dest* and return its directory.
+def _depot_tools_mirror() -> Path | None:
+    """The depot_tools mirror in `$GIT_CACHE_PATH`, or None if there is none."""
+    cache_path = os.environ.get('GIT_CACHE_PATH')
+    if not cache_path:
+        return None
+    mirror = Path(cache_path).expanduser() / DEPOT_TOOLS_MIRROR_DIR
+    return mirror if (mirror / 'config').is_file() else None
 
-    An existing checkout that already has a `vpython3` is reused if found,
-    otherwise a fresh shallow clone is made.
+
+def _deploy_depot_tools(dest: str | Path) -> Path:
+    """Clone depot_tools into *dest* and return its directory.
+
+    An existing checkout that already has a `vpython3` is reused if found.
+    Otherwise depot_tools is shared-cloned from its git cache mirror when one
+    exists, falling back to a shallow clone from `DEPOT_TOOLS_URL`.
     """
     dest = Path(dest).expanduser().resolve()
     vpython3 = dest / VPYTHON3
@@ -127,7 +140,14 @@ def _deploy_depot_tools(dest: str | Path) -> Path:
         _rmtree(dest)
 
     dest.parent.mkdir(parents=True, exist_ok=True)
-    _run('git', 'clone', '--depth', '1', DEPOT_TOOLS_URL, dest)
+    mirror = _depot_tools_mirror()
+    if mirror:
+        logging.info('Cloning depot_tools from git cache at %s', mirror)
+        _run('git', 'clone', '--shared', mirror, dest)
+        # Point at the real remote, so depot_tools self-updates from it.
+        _run('git', '-C', dest, 'remote', 'set-url', 'origin', DEPOT_TOOLS_URL)
+    else:
+        _run('git', 'clone', '--depth', '1', DEPOT_TOOLS_URL, dest)
     if not vpython3.is_file():
         raise RuntimeError(
             f'vpython3 not found after depot_tools clone: {vpython3}')
@@ -137,8 +157,8 @@ def _deploy_depot_tools(dest: str | Path) -> Path:
 def _ensure_vpython3(depot_tools_dest: str | Path) -> str:
     """Return a runnable `vpython3`, deploying depot_tools if none is found.
 
-    If no `vpython3` is found on PATH, a shallow clone of depot_tools is
-    and that clone is added to PATH.
+    If no `vpython3` is found on PATH, depot_tools is cloned (see
+    `_deploy_depot_tools`) and that clone is added to PATH.
     """
     if shutil.which(VPYTHON3):
         return VPYTHON3
