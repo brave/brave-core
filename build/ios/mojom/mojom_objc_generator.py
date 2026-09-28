@@ -370,16 +370,11 @@ class PendingRemoteMojoTypemap(MojoTypemap):
     def DefaultObjCValue(self, default):
         return None
     def ObjCToCpp(self, accessor):
+        # The bridge's lifetime is tied to the Obj-C object passed in, see
+        # private_interface_bridge_implementation.tmpl
         name = (ObjCPrefixFromKind(self.kind.kind) + self.kind.kind.name +
                 "Bridge")
-        args = (name, accessor, UnderToLowerCamel(name))
-        return """^{
-            auto bridge = std::make_unique<%s>(%s);
-            auto bridgePtr = bridge.get();
-            self->_%sReceivers.push_back(base::SequenceBound<decltype(bridge)>(
-                web::GetUIThreadTaskRunner({}), std::move(bridge)));
-            return bridgePtr->GetRemote();
-        }()""" % args
+        return "%s::CreateRemote(%s)" % (name, accessor)
     def CppToObjC(self, accessor):
         # Convert pending_remote<Interface> to id<BraveWalletInterface>
         # by creating the MojoImpl wrapper
@@ -478,23 +473,12 @@ class Generator(generator.Generator):
             "cpp_namespace_from_kind": CppNamespaceFromKind,
             "under_to_camel": UnderToCamel,
             "under_to_lower_camel": UnderToLowerCamel,
-            "interface_remote_sets": self._GetInterfaceRemoteSets,
             "objc_import_module_name": self._GetObjCImportModuleName,
         }
         return objc_filters
 
     def _GetObjCImportModuleName(self, module):
         return os.path.basename(module.path)
-
-    def _GetInterfaceRemoteSets(self, interface):
-        remotes = []
-        for method in interface.methods:
-            for param in method.parameters:
-                if mojom.IsPendingRemoteKind(param.kind):
-                    name = "%s%sBridge" % (ObjCPrefixFromKind(param.kind.kind),
-                                           param.kind.kind.name)
-                    remotes.append(name)
-        return set(remotes)
 
     def _GetExpectedCppParamType(self, kind):
         should_pass_param_by_value = self._ShouldPassParamByValue(kind)

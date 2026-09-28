@@ -4,11 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #import <Foundation/Foundation.h>
+#import <objc/runtime.h>
 #import "{{module_name}}.objc+private.h"
 #include "base/containers/flat_map.h"
 #include "base/strings/sys_string_conversions.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
 #include "ios/web/public/thread/web_task_traits.h"

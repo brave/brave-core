@@ -4,10 +4,51 @@
 
 #pragma mark - {{objc_name}}Bridge
 
-mojo::PendingRemote<{{cpp_namespace}}::{{interface.name}}>
-{{objc_name}}Bridge::GetRemote() {
-  return receiver_.BindNewPipeAndPassRemote(web::GetUIThreadTaskRunner({}));
+// Owns a `{{objc_name}}Bridge` and is attached to the Obj-C object it forwards
+// to as an associated object.
+@interface {{objc_name}}BridgeHolder : NSObject {
+@public
+  std::unique_ptr<{{objc_name}}Bridge> _bridge;
 }
+@end
+
+@implementation {{objc_name}}BridgeHolder
+- (void)dealloc {
+  // The associated Obj-C object may be deallocated on any thread, but the
+  // bridge's receiver is bound to the UI thread.
+  if (_bridge && !web::GetUIThreadTaskRunner({})->RunsTasksInCurrentSequence()) {
+    web::GetUIThreadTaskRunner({})->DeleteSoon(FROM_HERE, std::move(_bridge));
+  }
+}
+@end
+
+// static
+mojo::PendingRemote<{{cpp_namespace}}::{{interface.name}}>
+{{objc_name}}Bridge::CreateRemote(id<{{objc_name}}> bridge) {
+  DCHECK_CURRENTLY_ON(web::WebThread::UI);
+  if (!bridge) {
+    // Nothing to forward to, hand back a remote that is already disconnected.
+    mojo::PendingReceiver<{{cpp_namespace}}::{{interface.name}}> receiver;
+    return receiver.InitWithNewPipeAndPassRemote();
+  }
+  auto* holder = [[{{objc_name}}BridgeHolder alloc] init];
+  holder->_bridge = std::make_unique<{{objc_name}}Bridge>(bridge);
+  auto remote = holder->_bridge->receiver_.BindNewPipeAndPassRemote();
+  // Each holder is its own association key so that the same Obj-C object can
+  // be registered multiple times.
+  const void* key = (__bridge const void*)holder;
+  __weak id weak_bridge = bridge;
+  holder->_bridge->receiver_.set_disconnect_handler(base::BindOnce(^{
+    // Releases the holder, and in turn this bridge.
+    objc_setAssociatedObject(weak_bridge, key, nil,
+                             OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  }));
+  objc_setAssociatedObject(bridge, key, holder,
+                           OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  return remote;
+}
+
+{{objc_name}}Bridge::~{{objc_name}}Bridge() = default;
 
 {% for method in interface.methods %}
 void {{objc_name}}Bridge::{{method.name}}({{interface_macros.cpp_declare_request_params(method, cpp_namespace)}}) {

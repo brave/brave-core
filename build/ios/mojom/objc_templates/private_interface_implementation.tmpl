@@ -59,9 +59,6 @@ base::BindOnce(callback)
 {%- set cpp_namespace = interface|cpp_namespace_from_kind %}
 @implementation {{class_prefix}}{{interface.name}}MojoImpl {
   mojo::Remote<{{cpp_namespace}}::{{interface.name}}> _wrappedValue;
-{%- for bridge in interface|interface_remote_sets %}
-  std::vector<base::SequenceBound<std::unique_ptr<{{bridge}}>>> _{{bridge|under_to_lower_camel}}Receivers;
-{%- endfor %}
 }
 
 - (instancetype)initWith{{interface.name}}:(mojo::PendingRemote<{{cpp_namespace}}::{{interface.name}}>)obj {
