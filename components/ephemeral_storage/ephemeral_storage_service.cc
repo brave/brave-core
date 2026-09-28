@@ -18,7 +18,6 @@
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/brave_shields/core/common/features.h"
-#include "brave/components/ephemeral_storage/fpsa_entry.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_pref_names.h"
 #include "brave/components/ephemeral_storage/url_storage_checker.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -40,6 +39,18 @@ namespace {
 
 GURL GetFirstPartyStorageURL(const std::string& ephemeral_domain) {
   return GURL(base::StrCat({url::kHttpsScheme, "://", ephemeral_domain}));
+}
+
+base::Value GetFirstPartyStorageValueToCleanup(
+    const GURL& url,
+    const content::StoragePartitionConfig& storage_partition_config) {
+  if (storage_partition_config.is_default()) {
+    return base::Value(url.spec());
+  }
+  return base::Value(base::DictValue()
+                         .Set("u", url.spec())
+                         .Set("pd", storage_partition_config.partition_domain())
+                         .Set("pn", storage_partition_config.partition_name()));
 }
 
 std::optional<std::pair<GURL, content::StoragePartitionConfig>>
@@ -65,36 +76,6 @@ GetFirstPartyStorageURLAndStoragePartitionConfig(
       GURL(*url_spec),
       content::StoragePartitionConfig::Create(
           browser_context, *partition_domain, *partition_name, false));
-}
-
-std::optional<base::Value> FindFpEntry(
-    PrefService* prefs,
-    content::BrowserContext* context,
-    const GURL& url,
-    const content::StoragePartitionConfig& storage_partition_config,
-    base::TimeDelta tld_ephemeral_area_keep_alive,
-    std::optional<bool> select_expired) {
-  CHECK(prefs);
-  auto& first_party_storage_areas_to_cleanup_on_startup =
-      prefs->GetList(kFirstPartyStorageOriginsToCleanup);
-  auto result = std::ranges::find_if(
-      first_party_storage_areas_to_cleanup_on_startup,
-      [&](const base::Value& value) {
-        const auto entry =
-            FirstPartyStorageAreaEntry::FromValue(value, context);
-
-        return entry && entry->Matches(url, storage_partition_config) &&
-               (!select_expired ? true
-                                : (select_expired.value() ==
-                                   entry->IsKeepAliveExpired(
-                                       tld_ephemeral_area_keep_alive)));
-      });
-
-  if (result == first_party_storage_areas_to_cleanup_on_startup.end()) {
-    return std::nullopt;
-  }
-
-  return result->Clone();
 }
 
 }  // namespace
@@ -356,28 +337,23 @@ void EphemeralStorageService::FirstPartyStorageAreaInUse(
     return;
   }
 
-  if (context_->IsOffTheRecord()) {
-    return;
-  }
-
-  const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
-  const auto auto_shred_mode = delegate_->GetAutoShredMode(url);
-  DVLOG(1) << __func__ << " url:" << url;
-
-  if (auto_shred_mode.has_value() &&
-      auto_shred_mode.value() ==
-          brave_shields::mojom::AutoShredMode::APP_EXIT) {
-    DVLOG(1) << __func__ << " Skipped for app exit mode url:" << url;
-    return;
-  }
-
-  if (auto entry =
-          FindFpEntry(prefs_, context_, url, storage_partition_config,
-                        tld_ephemeral_area_keep_alive_, false);
-      entry.has_value()) {
+  if (!context_->IsOffTheRecord()) {
+    const GURL url(GetFirstPartyStorageURL(ephemeral_domain));
+    const base::Value value_to_cleanup =
+        GetFirstPartyStorageValueToCleanup(url, storage_partition_config);
+    auto auto_shred_mode = delegate_->GetAutoShredMode(url);
+    if (auto_shred_mode.has_value() &&
+        auto_shred_mode.value() ==
+            brave_shields::mojom::AutoShredMode::APP_EXIT) {
+      return;
+    }
     ScopedListPrefUpdate pref_update(prefs_,
                                      kFirstPartyStorageOriginsToCleanup);
-    pref_update->EraseValue(entry.value());
+    pref_update->EraseValue(value_to_cleanup);
+
+    // Make sure to cancel the scheduled cleanup for this area.
+    first_party_storage_areas_to_cleanup_on_startup_.EraseValue(
+        value_to_cleanup);
   }
 }
 
@@ -434,8 +410,7 @@ bool EphemeralStorageService::FirstPartyStorageAreaNotInUse(
     ScopedListPrefUpdate pref_update(prefs_,
                                      kFirstPartyStorageOriginsToCleanup);
     pref_update->Append(
-        FirstPartyStorageAreaEntry::Create(url, storage_partition_config)
-            .ToValue());
+        GetFirstPartyStorageValueToCleanup(url, storage_partition_config));
   }
   return true;
 }
@@ -477,17 +452,12 @@ void EphemeralStorageService::CleanupFirstPartyStorageArea(
     const TLDEphemeralAreaKey& key) {
   DVLOG(1) << __func__ << " " << key.first << " " << key.second;
   delegate_->CleanupFirstPartyStorageArea(key);
-  if (context_->IsOffTheRecord()) {
-    return;
-  }
-
-  if (auto entry =
-          FindFpEntry(prefs_, context_, GetFirstPartyStorageURL(key.first),
-                      key.second, tld_ephemeral_area_keep_alive_, std::nullopt);
-      entry.has_value()) {
+  if (!context_->IsOffTheRecord()) {
+    const base::Value value_to_cleanup = GetFirstPartyStorageValueToCleanup(
+        GetFirstPartyStorageURL(key.first), key.second);
     ScopedListPrefUpdate pref_update(prefs_,
                                      kFirstPartyStorageOriginsToCleanup);
-    pref_update->EraseValue(entry.value());
+    pref_update->EraseValue(value_to_cleanup);
   }
 }
 
@@ -520,19 +490,13 @@ LOG(INFO)
 
   for (const auto& url_to_cleanup :
        first_party_storage_areas_to_cleanup_on_startup_) {
-    auto entry = FirstPartyStorageAreaEntry::FromValue(url_to_cleanup, context_);
-    if (!entry->IsKeepAliveExpired(tld_ephemeral_area_keep_alive_)) {
-      continue;
-    }
-    pref_update->EraseValue(url_to_cleanup);
-
     const auto url_and_storage_partition_config =
         GetFirstPartyStorageURLAndStoragePartitionConfig(url_to_cleanup,
                                                          context_);
+    pref_update->EraseValue(url_to_cleanup);
     if (!url_and_storage_partition_config) {
       continue;
     }
-
     const auto& [url, storage_partition_config] =
         *url_and_storage_partition_config;
     if (!url.is_valid()) {
