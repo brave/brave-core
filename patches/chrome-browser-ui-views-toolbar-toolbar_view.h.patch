@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index 0520c2901223d569f0266421d2e6c6f7dbaff718..8d4d2938cc9882fdabad4f04924f3a68783ffdbb 100644
+index 0520c2901223d569f0266421d2e6c6f7dbaff718..844ac74306e1cc4ee2c2d850c9b376ceb008c80b 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
 @@ -118,13 +118,13 @@ class ToolbarView : public views::AccessiblePaneView,
@@ -27,16 +27,18 @@ index 0520c2901223d569f0266421d2e6c6f7dbaff718..8d4d2938cc9882fdabad4f04924f3a68
  
    // Returns true if the view is a descendant of the ToolbarView and should be
    // treated as caption area for window dragging purposes.
-@@ -274,6 +274,8 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -274,6 +274,10 @@ class ToolbarView : public views::AccessiblePaneView,
    // Updates glic button parenting after hiding glic actor task icon.
    void FinalizeHideGlicActorTaskIcon();
  
 +  BrowserAppMenuButton* app_menu_button() const { return app_menu_button_; }
 +
++  ToolbarView::DisplayMode display_mode() const { return display_mode_; }
++
   protected:
    // This controls Toolbar, LocationBar and CustomTabBar visibility.
    // If we don't set all three, tab navigation from the app menu breaks
-@@ -281,6 +283,9 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -281,6 +285,9 @@ class ToolbarView : public views::AccessiblePaneView,
    void SetToolbarVisibility(bool visible);
  
   private:
@@ -46,7 +48,7 @@ index 0520c2901223d569f0266421d2e6c6f7dbaff718..8d4d2938cc9882fdabad4f04924f3a68
    FRIEND_TEST_ALL_PREFIXES(ToolbarViewCircularContextualTasksBrowserTest,
                             CircularButtonRetainsInteriorMarginsAndPosition);
    FRIEND_TEST_ALL_PREFIXES(ToolbarViewCircularContextualTasksBrowserTest,
-@@ -359,7 +364,7 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -359,7 +366,7 @@ class ToolbarView : public views::AccessiblePaneView,
    void OnChromeLabsPrefChanged();
  
    // Loads the images for all the child views.
