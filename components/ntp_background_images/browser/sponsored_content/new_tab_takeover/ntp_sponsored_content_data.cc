@@ -215,7 +215,8 @@ std::optional<Campaign> MaybeParseCampaign(
         creative.file_path = installed_dir.Append(*relative_file_path);
         const std::string creative_url_string = base::ReplaceStringPlaceholders(
             "$1://$2/$3",
-            {content::kChromeUIScheme, kBrandedWallpaperHost, *relative_url},
+            {content::kChromeUIScheme, kNewTabTakeoverWallpaperHost,
+             *relative_url},
             nullptr);
         creative.url = GURL(creative_url_string);
 
@@ -250,7 +251,7 @@ std::optional<Campaign> MaybeParseCampaign(
             installed_dir.Append(*relative_button_image_path);
         creative.logo.image_url = base::ReplaceStringPlaceholders(
             "$1://$2/$3",
-            {content::kChromeUIScheme, kBrandedWallpaperHost,
+            {content::kChromeUIScheme, kNewTabTakeoverWallpaperHost,
              *button_image_relative_url},
             nullptr);
       } else if (*wallpaper_type == kDynamicNewTabTakeoverWallpaperType) {
@@ -498,7 +499,7 @@ NTPSponsoredContentData::NTPSponsoredContentData(
   }
 
   url_prefix = absl::StrFormat("%s://%s/", content::kChromeUIScheme,
-                               kBrandedWallpaperHost);
+                               kNewTabTakeoverWallpaperHost);
   url_prefix += kSponsoredImagesPath;
 
   if (const base::ListValue* const value = dict.FindList(kCampaignsKey)) {

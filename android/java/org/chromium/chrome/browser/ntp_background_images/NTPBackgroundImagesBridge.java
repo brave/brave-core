@@ -90,7 +90,7 @@ public class NTPBackgroundImagesBridge {
     }
 
     @CalledByNative
-    public static Wallpaper createBrandedWallpaper(
+    public static Wallpaper createNewTabTakeoverWallpaper(
             String imagePath,
             int focalPointX,
             int focalPointY,

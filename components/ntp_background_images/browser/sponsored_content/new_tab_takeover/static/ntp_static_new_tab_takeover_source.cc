@@ -28,7 +28,7 @@ NTPStaticNewTabTakeoverSource::NTPStaticNewTabTakeoverSource(
 NTPStaticNewTabTakeoverSource::~NTPStaticNewTabTakeoverSource() = default;
 
 std::string NTPStaticNewTabTakeoverSource::GetSource() {
-  return kBrandedWallpaperHost;
+  return kNewTabTakeoverWallpaperHost;
 }
 
 void NTPStaticNewTabTakeoverSource::StartDataRequest(

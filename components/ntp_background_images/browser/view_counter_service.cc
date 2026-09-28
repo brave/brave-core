@@ -182,8 +182,8 @@ void ViewCounterService::GetCurrentWallpaperForDisplay(
     base::OnceCallback<void(std::optional<base::DictValue>)> callback,
     bool allow_sponsored_content) {
   if (allow_sponsored_content && ShouldShowNewTabTakeover()) {
-    return GetCurrentBrandedWallpaper(
-        base::BindOnce(&ViewCounterService::OnGetCurrentBrandedWallpaper,
+    return GetNewTabTakeoverWallpaper(
+        base::BindOnce(&ViewCounterService::OnGetNewTabTakeoverWallpaper,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
   }
 
@@ -215,22 +215,22 @@ std::optional<base::DictValue> ViewCounterService::GetCurrentWallpaper() const {
       .Set(kWallpaperRandomKey, true);
 }
 
-void ViewCounterService::GetCurrentBrandedWallpaper(
+void ViewCounterService::GetNewTabTakeoverWallpaper(
     base::OnceCallback<void(std::optional<base::DictValue>)> callback) {
   NTPSponsoredContentData* sponsored_content_data = GetNewTabTakeover();
   if (!sponsored_content_data) {
     return std::move(callback).Run(std::nullopt);
   }
 
-  GetCurrentBrandedWallpaperFromAdsService(std::move(callback));
+  GetNewTabTakeoverWallpaperFromAdsService(std::move(callback));
 }
 
-void ViewCounterService::GetCurrentBrandedWallpaperFromAdsService(
+void ViewCounterService::GetNewTabTakeoverWallpaperFromAdsService(
     base::OnceCallback<void(std::optional<base::DictValue>)> callback) {
   DCHECK(ads_service_);
 
   ads_service_->MaybeServeNewTabPageAd(base::BindOnce(
-      &ViewCounterService::GetCurrentBrandedWallpaperFromAdsServiceCallback,
+      &ViewCounterService::GetNewTabTakeoverWallpaperFromAdsServiceCallback,
       weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
@@ -319,7 +319,7 @@ void ViewCounterService::OnPreferenceChanged(const std::string& pref_name) {
 }
 
 void ViewCounterService::ResetNotificationState() {
-  prefs_->SetBoolean(prefs::kBrandedWallpaperNotificationDismissed, false);
+  prefs_->SetBoolean(prefs::kNewTabTakeoverNotificationDismissed, false);
 }
 
 void ViewCounterService::RegisterPageView() {
@@ -381,22 +381,22 @@ bool ViewCounterService::CanShowNewTabTakeoverWallpaper() const {
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 }
 
-void ViewCounterService::OnGetCurrentBrandedWallpaper(
+void ViewCounterService::OnGetNewTabTakeoverWallpaper(
     base::OnceCallback<void(std::optional<base::DictValue>)> callback,
-    std::optional<base::DictValue> branded_wallpaper) {
-  if (!branded_wallpaper) {
+    std::optional<base::DictValue> new_tab_takeover_wallpaper) {
+  if (!new_tab_takeover_wallpaper) {
     return std::move(callback).Run(GetNextWallpaperForDisplay());
   }
 
-  return CheckBrandedWallpaperCreativeFileExists(std::move(callback),
-                                                 std::move(*branded_wallpaper));
+  return CheckNewTabTakeoverCreativeFileExists(
+      std::move(callback), std::move(*new_tab_takeover_wallpaper));
 }
 
-void ViewCounterService::CheckBrandedWallpaperCreativeFileExists(
+void ViewCounterService::CheckNewTabTakeoverCreativeFileExists(
     base::OnceCallback<void(std::optional<base::DictValue>)> callback,
-    base::DictValue branded_wallpaper) {
+    base::DictValue new_tab_takeover_wallpaper) {
   const std::string* const file_path =
-      branded_wallpaper.FindString(kWallpaperFilePathKey);
+      new_tab_takeover_wallpaper.FindString(kWallpaperFilePathKey);
 
   if (!file_path) {
     SCOPED_CRASH_KEY_STRING64(
@@ -412,18 +412,18 @@ void ViewCounterService::CheckBrandedWallpaperCreativeFileExists(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&base::PathExists, creative_file_path),
       base::BindOnce(
-          &ViewCounterService::OnCheckBrandedWallpaperCreativeFileExists,
+          &ViewCounterService::OnCheckNewTabTakeoverCreativeFileExists,
           weak_ptr_factory_.GetWeakPtr(), std::move(callback),
-          std::move(branded_wallpaper)));
+          std::move(new_tab_takeover_wallpaper)));
 }
 
-void ViewCounterService::OnCheckBrandedWallpaperCreativeFileExists(
+void ViewCounterService::OnCheckNewTabTakeoverCreativeFileExists(
     base::OnceCallback<void(std::optional<base::DictValue>)> callback,
-    base::DictValue branded_wallpaper,
+    base::DictValue new_tab_takeover_wallpaper,
     bool file_exists) {
   if (!file_exists) {
     if (const std::string* const creative_instance_id =
-            branded_wallpaper.FindString(kCreativeInstanceIDKey)) {
+            new_tab_takeover_wallpaper.FindString(kCreativeInstanceIDKey)) {
       SCOPED_CRASH_KEY_STRING64("Issue55874", "creative_instance_id",
                                 *creative_instance_id);
     }
@@ -433,10 +433,10 @@ void ViewCounterService::OnCheckBrandedWallpaperCreativeFileExists(
     DUMP_WILL_BE_NOTREACHED();
     return std::move(callback).Run(std::nullopt);
   }
-  std::move(callback).Run(std::move(branded_wallpaper));
+  std::move(callback).Run(std::move(new_tab_takeover_wallpaper));
 }
 
-void ViewCounterService::GetCurrentBrandedWallpaperFromAdsServiceCallback(
+void ViewCounterService::GetNewTabTakeoverWallpaperFromAdsServiceCallback(
     base::OnceCallback<void(std::optional<base::DictValue>)> callback,
     brave_ads::mojom::NewTabPageAdInfoPtr ad) {
   if (!ad) {

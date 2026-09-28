@@ -22,7 +22,7 @@ namespace ntp_background_images {
 namespace {
 
 // Added 09/2023.
-constexpr char kCountToBrandedWallpaperPref[] =
+constexpr char kCountToNewTabTakeoverWallpaperPref[] =
     "brave.count_to_branded_wallpaper";
 
 // Added 05/2025.
@@ -54,7 +54,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-  registry->RegisterBooleanPref(prefs::kBrandedWallpaperNotificationDismissed,
+  registry->RegisterBooleanPref(prefs::kNewTabTakeoverNotificationDismissed,
                                 false);
   registry->RegisterBooleanPref(prefs::kNewTabPageShowBackgroundImage, true);
   registry->RegisterIntegerPref(
@@ -66,7 +66,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 void RegisterProfilePrefsForMigration(
     user_prefs::PrefRegistrySyncable* registry) {
   // Added 09/2023.
-  registry->RegisterIntegerPref(kCountToBrandedWallpaperPref, 0);
+  registry->RegisterIntegerPref(kCountToNewTabTakeoverWallpaperPref, 0);
 
   // Added 05/2025.
   registry->RegisterIntegerPref(kNewTabTakeoverInfobarShowCount, 0);
@@ -85,7 +85,7 @@ void RegisterProfilePrefsForMigration(
 
 void MigrateObsoleteProfilePrefs(PrefService* prefs) {
   // Added 09/2023.
-  prefs->ClearPref(kCountToBrandedWallpaperPref);
+  prefs->ClearPref(kCountToNewTabTakeoverWallpaperPref);
 
   // Added 05/2025.
   prefs->ClearPref(kNewTabTakeoverInfobarShowCount);

@@ -67,7 +67,7 @@ class NTPBackgroundImagesBridge
 
   base::android::ScopedJavaLocalRef<jobject> CreateWallpaper(
       const base::DictValue& data);
-  base::android::ScopedJavaLocalRef<jobject> CreateBrandedWallpaper(
+  base::android::ScopedJavaLocalRef<jobject> CreateNewTabTakeoverWallpaper(
       const base::DictValue& data);
 
   raw_ptr<Profile> profile_ = nullptr;

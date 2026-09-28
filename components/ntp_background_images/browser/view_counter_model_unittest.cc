@@ -42,9 +42,9 @@ class ViewCounterModelTest : public testing::Test {
 
     base::FieldTrialParams parameters;
     std::vector<base::test::FeatureRefAndParams> enabled_features;
-    parameters[features::kInitialCountToBrandedWallpaper.name] = "2";
-    parameters[features::kCountToBrandedWallpaper.name] = "4";
-    enabled_features.emplace_back(features::kBraveNTPBrandedWallpaper,
+    parameters[features::kInitialCountToNewTabTakeoverWallpaper.name] = "2";
+    parameters[features::kCountToNewTabTakeoverWallpaper.name] = "4";
+    enabled_features.emplace_back(features::kBraveNTPNewTabTakeoverWallpaper,
                                   parameters);
     feature_list_.InitWithFeaturesAndParameters(enabled_features, {});
   }
@@ -81,8 +81,8 @@ TEST_F(ViewCounterModelTest, NTPSponsoredContentTest) {
       kTestCampaignsTotalImageCount);
 
   // Loading initial count times.
-  for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
-       ++i) {
+  for (int i = 0;
+       i < features::kInitialCountToNewTabTakeoverWallpaper.Get() - 1; ++i) {
     EXPECT_FALSE(model.ShouldShowNewTabTakeover());
     model.RegisterPageView();
   }
@@ -93,7 +93,8 @@ TEST_F(ViewCounterModelTest, NTPSponsoredContentTest) {
     model.RegisterPageView();
 
     // Loading regular-count times.
-    for (int j = 0; j < features::kCountToBrandedWallpaper.Get() - 1; ++j) {
+    for (int j = 0; j < features::kCountToNewTabTakeoverWallpaper.Get() - 1;
+         ++j) {
       EXPECT_FALSE(model.ShouldShowNewTabTakeover());
       model.RegisterPageView();
     }
@@ -114,9 +115,10 @@ TEST_F(ViewCounterModelTest, NTPSponsoredContentCountToNewTabTakeoverTest) {
   EXPECT_TRUE(model.ShouldShowNewTabTakeover());
   model.RegisterPageView();
 
-  // Loading regular-count times from kCountToBrandedWallpaper to 0 and do not
-  // show the New Tab Takeover wallpaper.
-  for (int i = 0; i < features::kCountToBrandedWallpaper.Get() - 1; ++i) {
+  // Loading regular-count times from kCountToNewTabTakeoverWallpaper to 0 and
+  // do not show the New Tab Takeover wallpaper.
+  for (int i = 0; i < features::kCountToNewTabTakeoverWallpaper.Get() - 1;
+       ++i) {
     EXPECT_FALSE(model.ShouldShowNewTabTakeover());
     model.RegisterPageView();
   }
@@ -202,8 +204,8 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesTest) {
   // Loading initial count times. Each page view selects a background image at
   // random, so verify the model adopts exactly the index returned by the RNG
   // and that the RNG is queried for the full image range.
-  for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
-       ++i) {
+  for (int i = 0;
+       i < features::kInitialCountToNewTabTakeoverWallpaper.Get() - 1; ++i) {
     next_background_image_index_ = (i + 1) % static_cast<int>(kTestImageCount);
     model.RegisterPageView();
     EXPECT_EQ(0, last_rand_min_);
@@ -216,7 +218,8 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesTest) {
   model.RegisterPageView();
 
   // Loading regular-count times.
-  for (int i = 0; i < features::kCountToBrandedWallpaper.Get() - 1; ++i) {
+  for (int i = 0; i < features::kCountToNewTabTakeoverWallpaper.Get() - 1;
+       ++i) {
     next_background_image_index_ = (i + 2) % static_cast<int>(kTestImageCount);
     model.RegisterPageView();
     EXPECT_EQ(next_background_image_index_,
@@ -301,8 +304,8 @@ TEST_F(ViewCounterModelTest, NTPFailedToLoadSponsoredImagesTest) {
 
   // Loading initial count model. Each page view selects a background image at
   // random, so verify the model adopts exactly the index returned by the RNG.
-  for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
-       ++i) {
+  for (int i = 0;
+       i < features::kInitialCountToNewTabTakeoverWallpaper.Get() - 1; ++i) {
     next_background_image_index_ = (i + 1) % static_cast<int>(kTestImageCount);
     model.RegisterPageView();
     EXPECT_EQ(next_background_image_index_,

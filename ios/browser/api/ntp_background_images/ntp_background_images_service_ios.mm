@@ -137,12 +137,13 @@ class AdsServiceObserverBridge : public brave_ads::AdsServiceObserver {
   return [[NTPSponsoredImageData alloc] initWithData:*data];
 }
 
-- (NSInteger)initialCountToBrandedWallpaper {
-  return ntp_background_images::features::kInitialCountToBrandedWallpaper.Get();
+- (NSInteger)initialCountToNewTabTakeoverWallpaper {
+  return ntp_background_images::features::kInitialCountToNewTabTakeoverWallpaper
+      .Get();
 }
 
-- (NSInteger)countToBrandedWallpaper {
-  return ntp_background_images::features::kCountToBrandedWallpaper.Get();
+- (NSInteger)countToNewTabTakeoverWallpaper {
+  return ntp_background_images::features::kCountToNewTabTakeoverWallpaper.Get();
 }
 
 - (void)updateSponsoredImageComponentIfNeeded {
