@@ -57,8 +57,9 @@ class DummyProvider : public AutocompleteProvider {
   // AutocompleteProvider overrides:
   void Start(const AutocompleteInput& input, bool minimal_changes) override {
     if (type_ == AutocompleteProvider::TYPE_SEARCH) {
-      AutocompleteMatch match(nullptr, 800, true,
-                              AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED);
+      AutocompleteMatch match(
+          nullptr, 800, true,
+          omnibox::AutocompleteMatchType::kSearchWhatYouTyped);
       match.keyword = u"brave";
       matches_.push_back(match);
 
@@ -66,7 +67,7 @@ class DummyProvider : public AutocompleteProvider {
       matches_.push_back(match);
     } else {
       AutocompleteMatch match(nullptr, 600, true,
-                              AutocompleteMatchType::BOOKMARK_TITLE);
+                              omnibox::AutocompleteMatchType::kBookmarkTitle);
       matches_.push_back(match);
       matches_.push_back(match);
     }
@@ -134,10 +135,11 @@ class OmniboxPromotionTest : public testing::Test {
   ACMatches CreateTestMatches() {
     ACMatches matches;
     // Make first item is search query with default provider.
-    AutocompleteMatch match(nullptr, 800, true,
-                            AutocompleteMatchType::SEARCH_WHAT_YOU_TYPED);
+    AutocompleteMatch match(
+        nullptr, 800, true,
+        omnibox::AutocompleteMatchType::kSearchWhatYouTyped);
     matches.push_back(match);
-    match.type = AutocompleteMatchType::NAVSUGGEST;
+    match.type = omnibox::AutocompleteMatchType::kNavsuggest;
     matches.push_back(match);
     matches.push_back(match);
     matches.push_back(match);
@@ -246,7 +248,7 @@ TEST_F(OmniboxPromotionTest, AutocompleteResultTest) {
   SetConversionTypeToMatch(ConversionType::kBannerTypeB, &matches[2]);
   result.AppendMatches(matches);
   // Make first match is not search query with default provider.
-  result.begin()->type = AutocompleteMatchType::NAVSUGGEST;
+  result.begin()->type = omnibox::AutocompleteMatchType::kNavsuggest;
   // Check promotion match is deleted from |result|.
   SortBraveSearchPromotionMatch(&result);
   for (const auto& match : result) {
