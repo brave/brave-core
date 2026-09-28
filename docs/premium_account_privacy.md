@@ -8,7 +8,7 @@ service verifies you have a valid subscription without learning who you are.
 ## Overview
 
 The system uses a **Verifiable Oblivious Pseudorandom Function (VOPRF)** via the
-[challenge-bypass-ristretto](https://github.com/nickel-city/challenge-bypass-ristretto)
+[challenge-bypass-ristretto](https://github.com/brave-intl/challenge-bypass-ristretto)
 library. The core idea: the server signs tokens it cannot see, and the client
 later presents those tokens to access services. Because the server never saw the
 original tokens, it cannot link a presented credential back to the signing
