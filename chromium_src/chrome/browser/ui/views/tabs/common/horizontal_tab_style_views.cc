@@ -16,6 +16,7 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
+#include "ui/gfx/color_utils.h"
 #include "ui/views/view_utils.h"
 
 #include <chrome/browser/ui/views/tabs/common/horizontal_tab_style_views.cc>
@@ -699,17 +700,21 @@ std::optional<SkColor> BraveVerticalTabStyle::GetTargetTabBackgroundColor(
     return cp->GetColor(kColorBraveVerticalTabActiveBackground);
   }
 
-  if (hovered) {
-    return cp->GetColor(kColorBraveVerticalTabHoveredBackground);
+  float hover_animation_value = static_cast<float>(GetHoverAnimationValue());
+  SkColor unhovered_color =
+      selection_state == TabStyle::TabSelectionState::kSelected
+          ? HorizontalTabStyleViews::GetCurrentTabBackgroundColor(
+                selection_state, /*hovered=*/false)
+          : cp->GetColor(kColorBraveVerticalTabInactiveBackground);
+
+  if (hover_animation_value == 0.0f) {
+    return unhovered_color;
   }
 
-  if (selection_state == TabStyle::TabSelectionState::kSelected) {
-    // Use the same color if the tab is selected via multiselection. Fallback on
-    // upstream code.
-    return std::nullopt;
-  }
-
-  return cp->GetColor(kColorBraveVerticalTabInactiveBackground);
+  // Blend between unhovered and hovered colors based on hover animation value.
+  SkColor hovered_color = cp->GetColor(kColorBraveVerticalTabHoveredBackground);
+  return color_utils::AlphaBlend(hovered_color, unhovered_color,
+                                 hover_animation_value);
 }
 
 std::unique_ptr<HorizontalTabStyleViews> CreateBraveVerticalTabStyle(

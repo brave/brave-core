@@ -93,6 +93,7 @@ class BraveTab : public Tab
   void MaybeUpdateHoverStatus(const ui::MouseEvent& event) override;
   void AddedToWidget() override;
   void RemovedFromWidget() override;
+  bool IsHovering() const override;
 
   // Returns whether this tab should have an accent painted.
   bool ShouldPaintTabAccent() const;
