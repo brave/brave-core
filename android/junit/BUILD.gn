@@ -182,8 +182,8 @@ if (is_android) {
     resources_package = "org.chromium.chrome.browser.ntp"
     sources = [
       "src/org/chromium/chrome/browser/ntp/BraveNewTabTakeoverInfobarTest.java",
-      "src/org/chromium/chrome/browser/ntp/BraveRecentTabsCoordinatorTest.java",
       "src/org/chromium/chrome/browser/ntp/BraveNtpTopSitesModeUnitTest.java",
+      "src/org/chromium/chrome/browser/ntp/BraveRecentTabsCoordinatorTest.java",
       "src/org/chromium/chrome/browser/ntp/NewTabTakeoverSafeAreaReporterTest.java",
     ]
 

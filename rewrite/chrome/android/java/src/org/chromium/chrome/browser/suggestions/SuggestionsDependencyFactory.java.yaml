@@ -10,7 +10,6 @@ substitutions:
       NTP improvements in PR#39092
     regex:
       re_pattern: |-
-        new MostVisitedSitesBridge\(profile\)
+        new MostVisitedSitesBridge\(
       replace: |-
         new org.chromium.chrome.browser.suggestions.mostvisited.BraveMostVisitedSites(
-                        profile)

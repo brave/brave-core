@@ -5,18 +5,27 @@
 
 substitutions:
   - description: |-
-      Split the public constructor so BraveMostVisitedSites can force
-      enableCustomLinks on regardless of the ChromeFeatureList state.
+      Split the public constructor's body into a new package-visible overload,
+      so BraveMostVisitedSites can force enableCustomLinks on regardless of the
+      ChromeFeatureList state.
       Part of NTP improvements in PR#39092
+    regex:
+      re_pattern: |-
+        (public MostVisitedSitesBridge\(Profile profile\) \{.*?)(mNativeMostVisitedSitesBridge =\s*MostVisitedSitesBridgeJni\.get\(\)\.init\(profile, enableCustomLinks\);\s*\})
+      re_flags: [DOTALL]
+      replace: |-
+        \1\2
+
+            MostVisitedSitesBridge(Profile profile, boolean enableCustomLinks) {
+                \2
+
+  - description: |-
+      Have the public constructor delegate to the new overload instead of
+      duplicating its body.
     regex:
       re_pattern: '(public MostVisitedSitesBridge\(Profile profile\) \{).*?\}'
       re_flags: [DOTALL]
       replace: |-
         \1
                 this(profile, ChromeFeatureList.sMostVisitedTilesCustomization.isEnabled());
-            }
-
-            MostVisitedSitesBridge(Profile profile, boolean enableCustomLinks) {
-                mNativeMostVisitedSitesBridge =
-                        MostVisitedSitesBridgeJni.get().init(profile, enableCustomLinks);
             }

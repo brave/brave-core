@@ -8,7 +8,8 @@ substitutions:
       Let subclasses customize the built menu model before showListContextMenu
       checks whether it ended up empty. Part of NTP improvements in PR#39092
     regex:
-      re_pattern: '(?<=\n)( +)(if \(menuModel\.isEmpty\(\)\) \{\n\s+return false;\n\s+\})'
+      re_pattern:
+        '(?<=\n)( +)(if \(menuModel\.isEmpty\(\)\) \{\n\s+return false;\n\s+\})'
       replace: |-
         \1customizeMenuModel(menuModel, delegate);
         \1\2
@@ -21,4 +22,3 @@ substitutions:
       re_pattern: 'public class ContextMenuManager \{\n'
       replace: |
         \g<0>    protected void customizeMenuModel(MVCListAdapter.ModelList menuModel, Delegate delegate) {}
-
