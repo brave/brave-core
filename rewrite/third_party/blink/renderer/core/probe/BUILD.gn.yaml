@@ -1,0 +1,12 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Add the Brave instrumentation probe deps.
+    add_literal_to_list:
+      target: generated_target_name
+      list_name: deps
+      literal: brave_third_party_blink_renderer_core_probe_instrumentation_probes_deps
+      import: //brave/third_party/blink/renderer/core/probe/sources.gni
