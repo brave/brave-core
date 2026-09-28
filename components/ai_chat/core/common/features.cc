@@ -203,6 +203,10 @@ const base::FeatureParam<bool> kShowAIChatInputOnNewTabPageDayZero{
 bool IsShowAIChatInputOnNewTabPageEnabled(PrefService* local_state,
                                           bool is_first_run) {
   CHECK(local_state);
+  if (local_state->GetString(ai_chat::prefs::kNtpInputSourceSuffix).empty()) {
+    local_state->SetString(ai_chat::prefs::kNtpInputSourceSuffix,
+                           is_first_run ? "c" : "b");
+  }
   // If feature was enabled via day zero experiment at install time, leave
   // the feature enabled forever.
   if (local_state->GetBoolean(ai_chat::prefs::kNtpInputDayZeroEnabled)) {
