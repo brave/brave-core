@@ -1,0 +1,10 @@
+##
+## Upstream tests to disable on Windows
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# Same as updater_tests-win.filter: both binaries contain these suites.
+-GoogleTestVerification.UninstantiatedParameterizedTestSuite<IntegrationLowerVersionTest>
+-GoogleTestVerification.UninstantiatedParameterizedTestSuite<IntegrationSansInstallIdTest>

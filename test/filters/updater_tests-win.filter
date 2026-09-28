@@ -1,0 +1,13 @@
+##
+## Upstream tests to disable on Windows
+##
+## When adding a new filter to this list, please include a short description of
+## why the filter is required and create an associated tracking issue.
+##
+
+# These suites are parameterized over previously released updaters, which we
+# don't have yet. See GetRealUpdaterLowerVersions() in
+# chromium_src/chrome/updater/test/integration_tests_win.cc. Because their
+# parameter lists are empty, gtest reports one failing test per suite.
+-GoogleTestVerification.UninstantiatedParameterizedTestSuite<IntegrationLowerVersionTest>
+-GoogleTestVerification.UninstantiatedParameterizedTestSuite<IntegrationSansInstallIdTest>
