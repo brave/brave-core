@@ -1,0 +1,18 @@
+diff --git a/chrome/browser/ui/android/extensions/windowing/internal/BUILD.gn b/chrome/browser/ui/android/extensions/windowing/internal/BUILD.gn
+index 93e62ab11243e909963cbb8aeb11e83454cc227a..e242a9a8e63781465003db2c26454e198f8d6b05 100644
+--- a/chrome/browser/ui/android/extensions/windowing/internal/BUILD.gn
++++ b/chrome/browser/ui/android/extensions/windowing/internal/BUILD.gn
+@@ -2,11 +2,12 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//extensions/buildflags/buildflags.gni")
+ import("//build/config/android/rules.gni")
+ import("//build/config/chrome_build.gni")
+ import("//third_party/jni_zero/jni_zero.gni")
+ 
+-assert(is_desktop_android)
++assert(is_desktop_android || enable_extensions_core)
+ 
+ source_set("internal") {
+   sources = [
