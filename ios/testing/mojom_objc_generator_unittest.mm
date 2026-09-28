@@ -104,3 +104,44 @@ TEST_F(MojomObjcGeneratorOptionalEnumTest,
   EXPECT_TRUE(completionCalled);
   EXPECT_EQ(receivedResult, nil);
 }
+
+using MojomObjcGeneratorEmptyResponseTest = PlatformTest;
+
+TEST_F(MojomObjcGeneratorEmptyResponseTest, MethodWithParamTakesCompletion) {
+  MojomObjcTestTestEmptyResponseInterface* test_interface =
+      [[MojomObjcTestTestEmptyResponseInterface alloc] init];
+
+  __block NSString* receivedValue = nil;
+  test_interface._withParam = ^(NSString* value, void (^completion)(void)) {
+    receivedValue = value;
+    completion();
+  };
+
+  id<MojomObjcTestEmptyResponseInterface> proto = test_interface;
+
+  __block BOOL completionCalled = NO;
+  [proto withParam:@"value"
+        completion:^{
+          completionCalled = YES;
+        }];
+  EXPECT_NSEQ(receivedValue, @"value");
+  EXPECT_TRUE(completionCalled);
+}
+
+TEST_F(MojomObjcGeneratorEmptyResponseTest,
+       MethodWithoutParamsTakesCompletion) {
+  MojomObjcTestTestEmptyResponseInterface* test_interface =
+      [[MojomObjcTestTestEmptyResponseInterface alloc] init];
+
+  test_interface._withoutParams = ^(void (^completion)(void)) {
+    completion();
+  };
+
+  id<MojomObjcTestEmptyResponseInterface> proto = test_interface;
+
+  __block BOOL completionCalled = NO;
+  [proto withoutParams:^{
+    completionCalled = YES;
+  }];
+  EXPECT_TRUE(completionCalled);
+}
