@@ -6,7 +6,7 @@
 module mojom_objc_test.mojom;
 
 // Test fixture used only by mojom_objc_generator_unittest.mm to exercise
-// optional (nullable) enum support in the iOS Obj-C mojom generator.
+// the iOS Obj-C mojom generator.
 enum SomeEnum {
   kAlpha,
   kBeta,
@@ -28,4 +28,9 @@ interface NullableEnumInterface {
   // Exercises a nullable enum as both a method parameter and a
   // response/callback parameter.
   DoSomething(SomeEnum? maybe_enum) => (SomeEnum? result);
+};
+
+interface EmptyResponseInterface {
+  WithParam(string value) => ();
+  WithoutParams() => ();
 };

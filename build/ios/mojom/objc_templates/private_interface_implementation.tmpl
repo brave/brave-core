@@ -3,7 +3,7 @@
 {%  for method in interface.methods %}
 {%-   set name = method|objc_method_name_formatter %}
 - (void){{name}}
-{%- if method.parameters or method.response_parameters %}:{%- endif -%}
+{%- if method.parameters or method.response_parameters is not none %}:{%- endif -%}
 {%- for param in method.parameters -%}
 {%-   if not loop.first -%}{{param.name|under_to_lower_camel}}:{%- endif -%}
 {%-   set nullable = param.kind|objc_argument_modifiers -%}
@@ -11,11 +11,11 @@
 ({{type}}){{param.name|under_to_lower_camel}}
 {%- if not loop.last %} {% endif -%}
 {%- endfor -%}
-{%- if method.response_parameters -%}
+{%- if method.response_parameters is not none -%}
 {%- if method.parameters %} completion:{% endif -%}
 (void (^){{ result_or_response_callback_type(method) }})completion
 {%- endif %} {
-{%- if method.response_parameters %}
+{%- if method.response_parameters is not none %}
 {%- if method.result_response %}
   auto callback = ^({{method|cpp_result_callback_type}} result) {
     if (result.has_value()) {
@@ -46,7 +46,7 @@
 {{param|objc_to_cpp_assign}}
 {%- if not loop.last -%},{{" "}}{%- endif -%}
 {%- endfor -%}
-{%- if method.response_parameters -%}
+{%- if method.response_parameters is not none -%}
 {%- if method.parameters %}, {% endif -%}
 base::BindOnce(callback)
 {%- endif -%}
