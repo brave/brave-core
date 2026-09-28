@@ -7,15 +7,15 @@ import * as React from 'react'
 import Button from '@brave/leo/react/button'
 
 // Utils
-import { getLocale } from '../../../../../common/locale'
+import { getLocale } from '$web-common/locale'
 
 // Selectors
-import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../../common/selectors'
+import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors } from '$wallet/common/selectors'
 
 // Styled Components
 import { StyledWrapper, Alert, Icon } from './banner.style'
-import { Row } from '../../../shared/style'
+import { Row } from '$wallet/components/shared/style'
 
 export interface Props {
   onClick: () => void

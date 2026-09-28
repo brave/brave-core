@@ -1,25 +1,24 @@
-// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
 import LeoAlert from '@brave/leo/react/alert'
-import LeoIcon from '@brave/leo/react/icon'
+import LeoButton from '@brave/leo/react/button'
 
 // Shared Styles
+import { Row } from '$wallet/components/shared/style'
 import {
   layoutPanelWidth, //
 } from '$wallet/page/components/wallet_page_wrapper/wallet_page_wrapper.style'
-import { Row } from '../../../shared/style'
 
-export const StyledWrapper = styled(Row)`
-  overflow: hidden;
-  margin-bottom: 16px;
-  position: relative;
-  padding: 0px 12px;
+export const Wrapper = styled(Row)`
+  padding: 0px 32px;
+  margin: 0px 0px 32px 0px;
   @media screen and (max-width: ${layoutPanelWidth}px) {
-    padding: 0px 16px;
+    padding: 16px 16px 0px 16px;
+    margin: 0px;
   }
 `
 
@@ -28,6 +27,6 @@ export const Alert = styled(LeoAlert)`
   --leo-alert-padding: 16px;
 `
 
-export const Icon = styled(LeoIcon)`
-  --leo-icon-size: 20px;
+export const Button = styled(LeoButton)`
+  flex-grow: 0;
 `

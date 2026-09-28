@@ -7,18 +7,18 @@ import * as React from 'react'
 import { useHistory } from 'react-router-dom'
 
 // Page API Proxy
-import getWalletPageApiProxy from '../../../page/wallet_page_api_proxy'
+import getWalletPageApiProxy from '$wallet/page/wallet_page_api_proxy'
 
 // Utils
-import { getLocale } from '../../../../common/locale'
-import { openWalletSettings } from '../../../utils/routes-utils'
+import { getLocale } from '$web-common/locale'
+import { openWalletSettings } from '$wallet/utils/routes-utils'
 
 // Selectors
-import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../common/selectors'
+import { useSafeUISelector } from '$wallet/common/hooks/use-safe-selector'
+import { UISelectors } from '$wallet/common/selectors'
 
 // Types
-import { WalletRoutes, BraveWallet } from '../../../constants/types'
+import { WalletRoutes, BraveWallet } from '$wallet/constants/types'
 
 // Components
 import { Banner } from './banner/banner'
@@ -27,7 +27,7 @@ import {
   useGetIsWalletBackedUpQuery,
   useGetDefaultSolanaWalletQuery,
   useGetIsMetaMaskInstalledQuery,
-} from '../../../common/slices/api.slice'
+} from '$wallet/common/slices/api.slice'
 
 export const Banners = () => {
   // Selectors

@@ -125,7 +125,7 @@ import {
 } from '../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
 import {
   ZCashMigrationBanner, //
-} from '../../../components/desktop/banners/zcash_migration_banner/zcash_migration_banner'
+} from '$wallet/page/components/banners/zcash_migration_banner/zcash_migration_banner'
 
 // options
 import { AccountDetailsOptions } from '../../../options/nav-options'

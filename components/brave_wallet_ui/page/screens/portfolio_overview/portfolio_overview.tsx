@@ -95,7 +95,7 @@ import {
 import {
   PortfolioOverviewHeader, //
 } from '$wallet/page/components/card_headers/portfolio_overview_header'
-import { Banners } from '../../../components/desktop/banners/banners'
+import { Banners } from '$wallet/page/components/banners/banners'
 import {
   LastPricesUpdatedTooltip, //
 } from '../../../components/shared/last_prices_updated_tooltip/last_prices_updated_tooltip'
