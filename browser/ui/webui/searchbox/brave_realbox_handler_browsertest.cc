@@ -71,8 +71,8 @@ class BraveRealboxHandlerTest : public InProcessBrowserTest {
     handler.omnibox_controller()->client()->OnAutocompleteAccept(
         url, nullptr, WindowOpenDisposition::CURRENT_TAB,
         ui::PageTransition::PAGE_TRANSITION_TYPED,
-        AutocompleteMatchType::SEARCH_SUGGEST, base::TimeTicks::Now(), false,
-        false, u"", match, match);
+        omnibox::AutocompleteMatchType::kSearchSuggest, base::TimeTicks::Now(),
+        false, false, u"", match, match);
     content::WaitForLoadStop(contents());
   }
 
