@@ -25,7 +25,7 @@
 namespace commander {
 CommanderProvider::CommanderProvider(AutocompleteProviderClient* client,
                                      AutocompleteProviderListener* listener)
-    : AutocompleteProvider(AutocompleteProvider::TYPE_BRAVE_COMMANDER),
+    : AutocompleteProvider(AutocompleteProvider::Type::kBraveCommander),
       client_(client) {
   if (listener) {
     AddListener(listener);

@@ -48,7 +48,7 @@ bool LeoProvider::IsMatchFromLeoProvider(const AutocompleteMatch& match) {
 }
 
 LeoProvider::LeoProvider(AutocompleteProviderClient* client)
-    : AutocompleteProvider(TYPE_BRAVE_LEO), client_(client) {
+    : AutocompleteProvider(Type::kBraveLeo), client_(client) {
   CHECK(base::FeatureList::IsEnabled(ai_chat::features::kAIChat));
   CHECK(client_);
 }

@@ -191,8 +191,8 @@ void NewTabTakeoverUI::QueryAutocomplete(const std::string& input,
         std::make_unique<ChromeAutocompleteProviderClient>(profile);
     autocomplete_controller_ = std::make_unique<AutocompleteController>(
         std::move(autocomplete_provider_client),
-        AutocompleteControllerConfig{
-            .provider_types = AutocompleteProvider::TYPE_SEARCH});
+        AutocompleteControllerConfig{.provider_types = static_cast<int>(
+                                         AutocompleteProvider::Type::kSearch)});
     autocomplete_controller_->AddObserver(this);
   }
 
