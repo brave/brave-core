@@ -87,6 +87,7 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
   private let appIconRowUUID: UUID = .init()
 
   private var cancellables: Set<AnyCancellable> = []
+  private weak var braveAccountDialog: UIViewController?
 
   init(
     profile: LegacyBrowserProfile,
@@ -378,10 +379,11 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
     return Static.Section(rows: rows)
   }()
 
+  @discardableResult
   private func openBraveAccountWebUI(
     url: URL,
     dialogMode: BraveAccount.DialogMode? = nil
-  ) {
+  ) -> UIViewController {
     let controller = ChromeWebUIController(braveCore: braveCore, isPrivateBrowsing: false)
     let container = UINavigationController(rootViewController: controller)
     controller.title = L10nUtils.string(messageId: .BRAVE_ACCOUNT_TITLE)
@@ -401,6 +403,7 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
       presenter = presented
     }
     presenter.present(container, animated: true)
+    return container
   }
 
   private func openBraveAccountSettings() {
@@ -417,6 +420,10 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
     initiatingServiceName: String = "",
     dialogMode: BraveAccount.DialogMode = .default
   ) {
+    if braveAccountDialog?.presentingViewController != nil {
+      return
+    }
+
     var components = URLComponents(string: "brave://account")!
     if !initiatingServiceName.isEmpty {
       components.queryItems = [
@@ -427,7 +434,7 @@ class SettingsViewController: TableViewController, BraveAccountDialogOpenerBridg
       ]
     }
 
-    openBraveAccountWebUI(
+    braveAccountDialog = openBraveAccountWebUI(
       url: components.url!,
       dialogMode: dialogMode
     )
