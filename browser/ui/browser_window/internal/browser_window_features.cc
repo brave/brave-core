@@ -220,7 +220,8 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
       ai_chat::AIChatServiceFactory::GetForBrowserContext(
           browser_->GetProfile())) {
     ai_chat_side_panel_tab_transfer_bridge_ =
-        std::make_unique<AIChatSidePanelTabTransferBridge>(browser_);
+        GetUserDataFactory().CreateInstance<AIChatSidePanelTabTransferBridge>(
+            *browser_, browser_);
   }
 #endif
 
