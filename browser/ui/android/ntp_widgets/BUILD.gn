@@ -17,10 +17,7 @@ android_library("java") {
     "//brave/build/android:android_brave_strings_grd",
     "//build/android:build_java",
     "//chrome/browser/preferences:java",
-    "//chrome/browser/profiles/android:java",
     "//components/browser_ui/widget/android:java",
-    "//components/prefs/android:java",
-    "//components/user_prefs/android:java",
     "//content/public/android:content_full_java",
     "//third_party/androidx:androidx_preference_preference_java",
   ]

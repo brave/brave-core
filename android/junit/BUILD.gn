@@ -212,7 +212,7 @@ if (is_android) {
       "brave_junit_tests_org.chromium.chrome.browser.suggestions.mostvisited") {
     sources = [ "src/org/chromium/chrome/browser/suggestions/mostvisited/BraveMostVisitedSitesTest.java" ]
     deps = [
-      "//brave/browser/ntp_customization:java",
+      "//brave/browser/ui/android/ntp_widgets:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
     ]
   }
@@ -223,6 +223,7 @@ if (is_android) {
       "src/org/chromium/chrome/browser/suggestions/tile/BraveTileViewTest.java",
     ]
     deps = [
+      "//brave/browser/ui/android/ntp_widgets:java",
       "//chrome/android/junit:chrome_junit_tests_helper",
       "//components/browser_ui/test/android:test_support_java",
       "//components/browser_ui/widget/android:java",

@@ -55,7 +55,7 @@ public class BraveMostVisitedSitesTest {
 
     @Before
     public void setUp() {
-        mSubject = new BraveMostVisitedSites(/* profile= */ null, mMockBridge);
+        mSubject = new BraveMostVisitedSites(mMockBridge);
         mSubject.setObserver(mMockOuterObserver, 8);
 
         // Capture the FilteringObserver that BraveMostVisitedSites passed to the bridge.

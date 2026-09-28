@@ -40,48 +40,37 @@ import java.util.List;
  * identical top-sites data.
  *
  * <p>Mode is stored locally in Android SharedPreferences via {@link NtpUtil#getTopSitesDisplayMode}
- * / {@link NtpUtil#setTopSitesDisplayMode}, which every other tile-related call site uses directly.
- * This class is the sole bridge to the Chrome profile pref {@code ntp.custom_links_visible} (for
- * Desktop sync compatibility): it seeds the local pref from the profile pref on construction, and
- * mirrors subsequent local changes back into the profile pref, since it is the only object in this
- * feature with a legitimately-scoped {@link Profile} reference.
+ * / {@link NtpUtil#setTopSitesDisplayMode}, which every tile-related call site (including this
+ * class) uses directly. The underlying Chrome profile pref {@code ntp.custom_links_visible} is not
+ * mirrored: it is registered upstream without {@code SYNCABLE_PREF}, so it never receives an
+ * incoming Desktop-sync change to react to, and Brave's own tile filtering never reads it (this
+ * bridge always runs the native side in mixed mode, filtering by display mode purely in Java — see
+ * the class doc above).
  */
 @NullMarked
 public class BraveMostVisitedSites implements MostVisitedSites {
 
     private final MostVisitedSites mBridge;
-    private final @Nullable Profile mProfile;
     private MostVisitedSites.@Nullable Observer mOuterObserver;
     private List<SiteSuggestion> mCachedSuggestions;
 
     private final SharedPreferences.OnSharedPreferenceChangeListener mPrefListener;
 
     public BraveMostVisitedSites(Profile profile) {
-        this(profile, new MostVisitedSitesBridge(profile, /* enableCustomLinks= */ true));
+        this(new MostVisitedSitesBridge(profile, /* enableCustomLinks= */ true));
     }
 
     // The chromium wrapper is not usable for us, it has no listener registration API.
     @SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
     @VisibleForTesting
-    BraveMostVisitedSites(@Nullable Profile profile, MostVisitedSites bridge) {
+    BraveMostVisitedSites(MostVisitedSites bridge) {
         mBridge = bridge;
-        mProfile = profile;
         mCachedSuggestions = new ArrayList<>();
-
-        // Pick up any mode change synced in from another device since our last local write,
-        // before registering the listener below so this doesn't write the value straight back.
-        if (mProfile != null) {
-            NtpUtil.setTopSitesDisplayMode(NtpUtil.getProfileTopSitesDisplayMode(mProfile));
-        }
 
         mPrefListener =
                 (prefs, key) -> {
                     if (BravePreferenceKeys.BRAVE_NTP_TOP_SITES_DISPLAY_MODE.equals(key)) {
                         onModeChanged();
-                        if (mProfile != null) {
-                            NtpUtil.setProfileTopSitesDisplayMode(
-                                    mProfile, NtpUtil.getTopSitesDisplayMode());
-                        }
                     }
                 };
         ContextUtils.getAppSharedPreferences()
