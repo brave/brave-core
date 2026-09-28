@@ -692,13 +692,13 @@ If the fix is disabling a test:
 
 **CRITICAL: Use the most specific filter file possible.**
 
-Filter files follow the pattern: `{test_suite}-{platform}-{variant}.filter`
+Filter files follow the pattern: `{test_suite}-{target_os}-{variant}.filter`.
 
 Available specificity levels (prefer most specific):
 
-1. `browser_tests-windows-asan.filter` - Platform + sanitizer specific (MOST
+1. `browser_tests-win-asan.filter` - Target OS + sanitizer specific (MOST
    SPECIFIC)
-2. `browser_tests-windows.filter` - Platform specific
+2. `browser_tests-win.filter` - Platform specific
 3. `browser_tests.filter` - All platforms (LEAST SPECIFIC - avoid if possible)
 
 **Before accepting a test disable, verify:**
@@ -713,7 +713,7 @@ Available specificity levels (prefer most specific):
 
 **Examples:**
 
-- Test fails only on Windows ASAN → use `browser_tests-windows-asan.filter`
+- Test fails only on Windows ASAN → use `browser_tests-win-asan.filter`
 - Test fails only on Linux → use `browser_tests-linux.filter`
 - Test fails on all platforms due to Brave-specific code → use
   `browser_tests.filter`
