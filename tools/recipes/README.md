@@ -30,9 +30,6 @@ curl -sL https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/to
         --properties '{ "brave_subrevision": 2, "chromium_ref": "151.0.7917.1" }'
 ```
 
-The engine requires `vpython3` and the bootsrap will take care of these
-requirements.
-
 ## Properties
 
 A recipe observes its input by defining protobuf messages and setting them as

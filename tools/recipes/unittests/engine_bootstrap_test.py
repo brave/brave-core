@@ -118,21 +118,57 @@ class DeployDepotToolsTest(unittest.TestCase):
         run.assert_not_called()
         self.assertEqual(result, dest.resolve())
 
+    def _fake_clone(self, dest):
+        """A `_run` side effect simulating the clone producing a vpython3."""
+
+        def fake_clone(*_cmd, cwd=None):  # pylint: disable=unused-argument
+            dest.mkdir(parents=True, exist_ok=True)
+            (dest / bootstrap.VPYTHON3).write_text('',
+                                                   encoding='utf-8',
+                                                   newline='')
+
+        return fake_clone
+
     def test_clones_when_absent(self):
         with tempfile.TemporaryDirectory() as work:
             dest = Path(work) / 'depot_tools'
-
-            # _run is mocked, so simulate the clone producing a vpython3.
-            def fake_clone(*_cmd, cwd=None):  # pylint: disable=unused-argument
-                dest.mkdir(parents=True, exist_ok=True)
-                (dest / bootstrap.VPYTHON3).write_text('',
-                                                       encoding='utf-8',
-                                                       newline='')
-
-            with mock.patch.object(bootstrap, '_run',
-                                   side_effect=fake_clone) as run:
+            with mock.patch.dict(os.environ), \
+                 mock.patch.object(bootstrap, '_run',
+                                   side_effect=self._fake_clone(dest)) as run:
+                os.environ.pop('GIT_CACHE_PATH', None)
                 result = bootstrap._deploy_depot_tools(dest)
-        run.assert_called_once()
+        run.assert_called_once_with('git', 'clone', '--depth', '1',
+                                    bootstrap.DEPOT_TOOLS_URL, dest.resolve())
+        self.assertEqual(result, dest.resolve())
+
+    def test_clones_remotely_when_cache_has_no_mirror(self):
+        with tempfile.TemporaryDirectory() as work:
+            dest = Path(work) / 'depot_tools'
+            cache = Path(work) / 'cache'
+            cache.mkdir()
+            with mock.patch.dict(os.environ, {'GIT_CACHE_PATH': str(cache)}), \
+                 mock.patch.object(bootstrap, '_run',
+                                   side_effect=self._fake_clone(dest)) as run:
+                bootstrap._deploy_depot_tools(dest)
+        run.assert_called_once_with('git', 'clone', '--depth', '1',
+                                    bootstrap.DEPOT_TOOLS_URL, dest.resolve())
+
+    def test_shared_clones_from_cache_mirror(self):
+        with tempfile.TemporaryDirectory() as work:
+            dest = Path(work) / 'depot_tools'
+            cache = Path(work) / 'cache'
+            mirror = cache / bootstrap.DEPOT_TOOLS_MIRROR_DIR
+            mirror.mkdir(parents=True)
+            (mirror / 'config').write_text('', encoding='utf-8', newline='')
+            with mock.patch.dict(os.environ, {'GIT_CACHE_PATH': str(cache)}), \
+                 mock.patch.object(bootstrap, '_run',
+                                   side_effect=self._fake_clone(dest)) as run:
+                result = bootstrap._deploy_depot_tools(dest)
+        self.assertEqual(run.call_args_list, [
+            mock.call('git', 'clone', '--shared', mirror, dest.resolve()),
+            mock.call('git', '-C', dest.resolve(), 'remote', 'set-url',
+                      'origin', bootstrap.DEPOT_TOOLS_URL),
+        ])
         self.assertEqual(result, dest.resolve())
 
 
