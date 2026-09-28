@@ -109,7 +109,7 @@ class FavoritesViewController: UIViewController {
   )
 
   // Actions
-  var topsiteAction: (TopsiteAction) -> Void
+  var topSiteAction: (TopSiteAction) -> Void
   var recentSearchAction: (RecentSearch?, Bool) -> Void
 
   // Fetched Result
@@ -150,10 +150,10 @@ class FavoritesViewController: UIViewController {
   init(
     privateBrowsingManager: PrivateBrowsingManager,
     defaultSearchEngine: OpenSearchEngine?,
-    topsiteAction: @escaping (TopsiteAction) -> Void,
+    topSiteAction: @escaping (TopSiteAction) -> Void,
     recentSearchAction: @escaping (RecentSearch?, Bool) -> Void
   ) {
-    self.topsiteAction = topsiteAction
+    self.topSiteAction = topSiteAction
     self.recentSearchAction = recentSearchAction
     self.privateBrowsingManager = privateBrowsingManager
     self.defaultSearchEngine = defaultSearchEngine
@@ -442,7 +442,7 @@ extension FavoritesViewController: UICollectionViewDelegateFlowLayout {
       guard let favorite = favoritesFRC.fetchedObjects?[safe: indexPath.item] else {
         return
       }
-      topsiteAction(.opened(topsiteViewModel: .init(source: .favorite(favorite))))
+      topSiteAction(.opened(url: favorite.url?.asURL, isFavorite: true))
     case .recentSearches:
       guard let searchItem = recentSearchesFRC.fetchedObjects?[safe: indexPath.item] else {
         return
