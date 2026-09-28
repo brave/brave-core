@@ -12,16 +12,10 @@ namespace meld_integration_responses {
         DOMString? lightShort;
     };
 
-    dictionary Region {
-        DOMString? regionCode;
-        DOMString? name;
-    };
-
     dictionary Country {
         DOMString countryCode;
         DOMString? name;
         DOMString? flagImageUrl;
-        Region[]? regions;
     };
 
     dictionary CryptoCurrency {

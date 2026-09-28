@@ -9,14 +9,12 @@ import {
   MeldCountry,
   MeldCryptoCurrency,
   MeldFiatCurrency,
-  MeldFilter,
   MeldCryptoQuote,
   MeldServiceProvider,
   MeldPaymentMethod,
   CryptoWidgetCustomerData,
   CryptoBuySessionData,
   MeldCryptoWidget,
-  WalletState,
 } from '../../../constants/types'
 
 // Utils
@@ -43,23 +41,6 @@ type CreateMeldBuyWidgetArgs = {
   customerData: CryptoWidgetCustomerData
 }
 
-const supportedChains = [
-  'BTC',
-  'FIL',
-  'ZEC',
-  'ETH',
-  'SOLANA',
-  'FTM',
-  'BSC',
-  'POLYGON',
-  'OPTIMISM',
-  'AURORA',
-  'CELO',
-  'ARBITRUM',
-  'AVAXC',
-  'ADA',
-]
-
 export const meldIntegrationEndpoints = ({
   query,
   mutation,
@@ -70,18 +51,8 @@ export const meldIntegrationEndpoints = ({
         try {
           const { meldIntegrationService } = baseQuery(undefined).data
 
-          // get all fiat currencies
-          const filter: MeldFilter = {
-            countries: undefined,
-            fiatCurrencies: undefined,
-            cryptoCurrencies: undefined,
-            serviceProviders: undefined,
-            paymentMethodTypes: undefined,
-            statuses: undefined,
-            cryptoChains: undefined,
-          }
           const { fiatCurrencies, error } =
-            await meldIntegrationService.getFiatCurrencies(filter)
+            await meldIntegrationService.getFiatCurrencies()
 
           if (error) {
             return handleEndpointError(
@@ -115,27 +86,8 @@ export const meldIntegrationEndpoints = ({
           const { meldIntegrationService, blockchainRegistry } =
             baseQuery(undefined).data
 
-          const { isPolkadotEnabled } = (getState() as { wallet: WalletState })
-            .wallet
-
-          // Asset Hub Polkadot buys are only available when the Polkadot
-          // feature is enabled.
-          const cryptoChains = isPolkadotEnabled
-            ? [...supportedChains, 'ASSETHUB']
-            : supportedChains
-
-          // get all crypto currencies
-          const filter: MeldFilter = {
-            countries: undefined,
-            fiatCurrencies: undefined,
-            cryptoCurrencies: undefined,
-            serviceProviders: undefined,
-            paymentMethodTypes: undefined,
-            statuses: undefined,
-            cryptoChains: cryptoChains.join(','),
-          }
           const { fiatCurrencies: cryptoCurrencies, error } =
-            await meldIntegrationService.getCryptoCurrencies(filter)
+            await meldIntegrationService.getCryptoCurrencies()
 
           const tokenList = await mapLimit(
             cryptoCurrencies || [],
@@ -192,18 +144,8 @@ export const meldIntegrationEndpoints = ({
         try {
           const { meldIntegrationService } = baseQuery(undefined).data
 
-          // get all countries
-          const filter: MeldFilter = {
-            countries: undefined,
-            fiatCurrencies: undefined,
-            cryptoCurrencies: undefined,
-            serviceProviders: undefined,
-            paymentMethodTypes: undefined,
-            statuses: undefined,
-            cryptoChains: undefined,
-          }
           const { countries, error } =
-            await meldIntegrationService.getCountries(filter)
+            await meldIntegrationService.getCountries()
           if (error) {
             return handleEndpointError(
               endpoint,
@@ -230,18 +172,8 @@ export const meldIntegrationEndpoints = ({
         try {
           const { meldIntegrationService } = baseQuery(undefined).data
 
-          // get all countries
-          const filter: MeldFilter = {
-            countries: undefined,
-            fiatCurrencies: undefined,
-            cryptoCurrencies: undefined,
-            serviceProviders: undefined,
-            paymentMethodTypes: undefined,
-            statuses: undefined,
-            cryptoChains: undefined,
-          }
           const { serviceProviders, error } =
-            await meldIntegrationService.getServiceProviders(filter)
+            await meldIntegrationService.getServiceProviders()
 
           if (error) {
             return handleEndpointError(
@@ -310,18 +242,11 @@ export const meldIntegrationEndpoints = ({
       queryFn: async (params, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { meldIntegrationService } = baseQuery(undefined).data
-          const { country, sourceCurrencyCode } = params
-          const filter: MeldFilter = {
-            countries: country,
-            fiatCurrencies: sourceCurrencyCode,
-            cryptoCurrencies: undefined,
-            serviceProviders: undefined,
-            paymentMethodTypes: undefined,
-            statuses: undefined,
-            cryptoChains: undefined,
-          }
           const { paymentMethods, error } =
-            await meldIntegrationService.getPaymentMethods(filter)
+            await meldIntegrationService.getPaymentMethods(
+              params.country,
+              params.sourceCurrencyCode,
+            )
 
           if (error) {
             return handleEndpointError(

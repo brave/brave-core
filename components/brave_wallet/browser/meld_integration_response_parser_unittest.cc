@@ -320,16 +320,16 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_FiatCurrencies) {
 
   auto fiat_currencies = ParseFiatCurrencies(ParseJson(json));
   EXPECT_TRUE(fiat_currencies);
-  EXPECT_EQ(std::ranges::count_if(
-                *fiat_currencies,
-                [](const auto& item) {
-                  return item->currency_code == "AFN" &&
-                         item->name == "Afghani" &&
-                         item->symbol_image_url ==
-                             "https://images-currency.meld.io/fiat/"
-                             "AFN/symbol.png";
-                }),
-            1);
+  EXPECT_EQ(
+      std::ranges::count_if(*fiat_currencies,
+                            [](const auto& item) {
+                              return item->currency_code == "AFN" &&
+                                     item->name == "Afghani" &&
+                                     item->symbol_image_url ==
+                                         "https://images-currency.meld.io/fiat/"
+                                         "AFN/symbol.png";
+                            }),
+      1);
 
   EXPECT_FALSE(ParsePaymentMethods(ParseJson(R"([
   {
@@ -392,17 +392,7 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
   {
     "countryCode": "AF",
     "name": "Afghanistan",
-    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg",
-    "regions": [
-      {
-        "regionCode": "CA-AB",
-        "name": "Alberta"
-      },
-      {
-        "regionCode": "CA-BC",
-        "name": "British Columbia"
-      }
-    ]
+    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg"
   }])");
   auto countries = ParseCountries(ParseJson(json));
   EXPECT_TRUE(countries);
@@ -412,27 +402,13 @@ TEST(MeldIntegrationResponseParserUnitTest, Parse_Countries) {
                   return item->country_code == "AF" &&
                          item->name == "Afghanistan" &&
                          item->flag_image_url ==
-                             "https://images-country.meld.io/AF/flag.svg" &&
-                         (*item->regions)[0]->region_code == "CA-AB" &&
-                         (*item->regions)[0]->name == "Alberta" &&
-                         (*item->regions)[1]->region_code == "CA-BC" &&
-                         (*item->regions)[1]->name == "British Columbia";
+                             "https://images-country.meld.io/AF/flag.svg";
                 }),
             1);
   EXPECT_FALSE(ParseCountries(ParseJson(R"([
   {
     "name": "Afghanistan",
-    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg",
-    "regions": [
-      {
-        "regionCode": "CA-AB",
-        "name": "Alberta"
-      },
-      {
-        "regionCode": "CA-BC",
-        "name": "British Columbia"
-      }
-    ]
+    "flagImageUrl": "https://images-country.meld.io/AF/flag.svg"
   }])")));
   EXPECT_FALSE(ParseCountries(base::Value()));
 

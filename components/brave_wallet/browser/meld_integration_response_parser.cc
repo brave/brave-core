@@ -14,7 +14,6 @@
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/meld_integration_responses.h"
-#include "brave/components/brave_wallet/common/brave_wallet.mojom-forward.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/meld_integration.mojom-forward.h"
@@ -30,24 +29,6 @@ brave_wallet::mojom::MeldLogoImagesPtr ParseMeldLogos(
 
   return brave_wallet::mojom::MeldLogoImages::New(
       logos->dark, logos->dark_short, logos->light, logos->light_short);
-}
-
-std::optional<std::vector<brave_wallet::mojom::MeldRegionPtr>> ParseMeldRegions(
-    const std::optional<
-        std::vector<brave_wallet::meld_integration_responses::Region>>&
-        regions) {
-  if (!regions) {
-    return std::nullopt;
-  }
-
-  std::vector<brave_wallet::mojom::MeldRegionPtr> result;
-  for (const auto& region_value : *regions) {
-    auto reg = brave_wallet::mojom::MeldRegion::New(region_value.region_code,
-                                                    region_value.name);
-    result.emplace_back(std::move(reg));
-  }
-
-  return result;
 }
 
 base::flat_map<std::string, std::string> ParseOptionalMapOfStrings(
@@ -369,10 +350,9 @@ std::optional<std::vector<mojom::MeldCountryPtr>> ParseCountries(
       return std::nullopt;
     }
 
-    auto country = mojom::MeldCountry::New(
-        country_value->country_code, country_value->name,
-        country_value->flag_image_url,
-        ParseMeldRegions(country_value->regions));
+    auto country = mojom::MeldCountry::New(country_value->country_code,
+                                           country_value->name,
+                                           country_value->flag_image_url);
 
     countries.emplace_back(std::move(country));
   }
