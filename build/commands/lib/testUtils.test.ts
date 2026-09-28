@@ -102,6 +102,24 @@ describe('getApplicableFilters', () => {
     ).toEqual([])
   })
 
+  it('adds the updater_tests filters to updater_tests_system', () => {
+    const sharedFilterPath = writeFilter(
+      braveFilterDir,
+      'updater_tests-win.filter',
+    )
+    const systemFilterPath = writeFilter(
+      braveFilterDir,
+      'updater_tests_system-win.filter',
+    )
+
+    expect(
+      getApplicableFilters(
+        makeConfig({ targetOS: 'win' }),
+        'updater_tests_system',
+      ),
+    ).toEqual([sharedFilterPath, systemFilterPath])
+  })
+
   it('appends the upstream filter to the brave ones', () => {
     const braveFilterPath = writeFilter(
       braveFilterDir,
