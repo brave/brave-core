@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
-#define BRAVE_BROWSER_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
+#ifndef BRAVE_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
+#define BRAVE_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
 
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "content/public/browser/web_contents_user_data.h"
@@ -19,12 +19,14 @@ namespace brave_account {
 // page was opened in. Set by the host surface that opens the page, before the
 // page is loaded; read back when the page asks via
 // `mojom::DialogController::GetDialogMode()`.
-class DialogModeHolder : public content::WebContentsUserData<DialogModeHolder> {
+class BraveAccountDialogModeHolder
+    : public content::WebContentsUserData<BraveAccountDialogModeHolder> {
  public:
-  DialogModeHolder(const DialogModeHolder&) = delete;
-  DialogModeHolder& operator=(const DialogModeHolder&) = delete;
+  BraveAccountDialogModeHolder(const BraveAccountDialogModeHolder&) = delete;
+  BraveAccountDialogModeHolder& operator=(const BraveAccountDialogModeHolder&) =
+      delete;
 
-  ~DialogModeHolder() override;
+  ~BraveAccountDialogModeHolder() override;
 
   // Replaces any dialog mode already set on `web_contents`.
   static void SetDialogMode(content::WebContents& web_contents,
@@ -34,10 +36,10 @@ class DialogModeHolder : public content::WebContentsUserData<DialogModeHolder> {
   static mojom::DialogMode GetDialogMode(content::WebContents& web_contents);
 
  private:
-  friend class content::WebContentsUserData<DialogModeHolder>;
+  friend class content::WebContentsUserData<BraveAccountDialogModeHolder>;
 
-  DialogModeHolder(content::WebContents* web_contents,
-                   mojom::DialogMode dialog_mode);
+  BraveAccountDialogModeHolder(content::WebContents* web_contents,
+                               mojom::DialogMode dialog_mode);
 
   const mojom::DialogMode dialog_mode_;
 
@@ -46,4 +48,4 @@ class DialogModeHolder : public content::WebContentsUserData<DialogModeHolder> {
 
 }  // namespace brave_account
 
-#endif  // BRAVE_BROWSER_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
+#endif  // BRAVE_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
