@@ -1471,6 +1471,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             ImageViewCompat.setImageTintList(mYouTubePipButton, tint);
         }
 
+        // On the NTP ToolbarPhone paints the buttons with its own location bar color, which the
+        // text box color below does not match, e.g. over the bottom bar colored toolbar.
+        if (BraveReflectionUtil.equalTypes(this.getClass(), ToolbarPhone.class)
+                && !isIncognito()
+                && UrlUtilities.isNtpUrl(getToolbarDataProvider().getCurrentGurl())) {
+            return;
+        }
         final int textBoxColor =
                 ThemeUtils.getTextBoxColorForToolbarBackgroundInNonNativePage(
                         getContext(), color, isIncognito(), isCustomTab());
