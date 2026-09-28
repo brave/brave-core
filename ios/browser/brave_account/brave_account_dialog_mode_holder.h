@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
-#define BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
+#ifndef BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
+#define BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
 
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "ios/web/public/web_state_user_data.h"
@@ -16,8 +16,9 @@ namespace brave_account {
 // page is loaded; read back when the page asks via
 // `mojom::DialogController::GetDialogMode()`.
 //
-// iOS counterpart of browser/brave_account/dialog_mode_holder.h.
-class DialogModeHolder : public web::WebStateUserData<DialogModeHolder> {
+// iOS counterpart of browser/brave_account/brave_account_dialog_mode_holder.h.
+class BraveAccountDialogModeHolder
+    : public web::WebStateUserData<BraveAccountDialogModeHolder> {
  public:
   void SetDialogMode(mojom::DialogMode dialog_mode) {
     dialog_mode_ = dialog_mode;
@@ -26,13 +27,13 @@ class DialogModeHolder : public web::WebStateUserData<DialogModeHolder> {
   mojom::DialogMode dialog_mode() const { return dialog_mode_; }
 
  private:
-  friend class web::WebStateUserData<DialogModeHolder>;
+  friend class web::WebStateUserData<BraveAccountDialogModeHolder>;
 
-  explicit DialogModeHolder(web::WebState*);
+  explicit BraveAccountDialogModeHolder(web::WebState*);
 
   mojom::DialogMode dialog_mode_ = mojom::DialogMode::kDefault;
 };
 
 }  // namespace brave_account
 
-#endif  // BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_
+#endif  // BRAVE_IOS_BROWSER_BRAVE_ACCOUNT_BRAVE_ACCOUNT_DIALOG_MODE_HOLDER_H_

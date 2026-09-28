@@ -3,13 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/brave_account/brave_account_dialog_opener.h"
-
 #include <memory>
 
 #include "base/check_deref.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/browser/brave_account/dialog_mode_holder.h"
+#include "brave/browser/brave_account/brave_account_dialog_mode_holder.h"
+#include "brave/browser/ui/brave_account/brave_account_dialog_opener.h"
 #include "brave/components/brave_account/brave_account_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -96,8 +95,8 @@ void OpenBraveAccountDialog(content::WebContents& web_contents,
 
   // On the dialog's own `WebContents` - the one that hosts brave://account,
   // not the opener's.
-  DialogModeHolder::SetDialogMode(CHECK_DEREF(delegate.GetWebContents()),
-                                  dialog_mode);
+  BraveAccountDialogModeHolder::SetDialogMode(
+      CHECK_DEREF(delegate.GetWebContents()), dialog_mode);
 
   auto* widget =
       views::Widget::GetWidgetForNativeWindow(delegate.GetNativeDialog());
