@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include <optional>
+#include <string>
 
 #include "brave/components/brave_shields/core/browser/ad_block_service_helper.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -13,18 +14,8 @@ namespace brave_shields {
 
 const std::optional<std::string> NO_POLICY = std::nullopt;
 
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] const auto POLICY1 =
-    std::optional<std::string>("script-src 'self' 'unsafe-inline'");
-// TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
-// `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
-// added in the meantime to fix the build error. Remove this attribute and
-// provide a proper fix.
-[[clang::no_destroy]] const auto POLICY2 =
-    std::optional<std::string>("media-src 'self' https://example.com");
+constexpr char kPolicy1[] = "script-src 'self' 'unsafe-inline'";
+constexpr char kPolicy2[] = "media-src 'self' https://example.com";
 
 TEST(CspMergeTest, MergeTwoEmptyPolicies) {
   const auto a = NO_POLICY;
@@ -36,26 +27,26 @@ TEST(CspMergeTest, MergeTwoEmptyPolicies) {
 }
 
 TEST(CspMergeTest, MergeEmptyIntoNonEmpty) {
-  const auto a = POLICY1;
+  const std::optional<std::string> a(kPolicy1);
   auto b = NO_POLICY;
 
   MergeCspDirectiveInto(a, &b);
 
-  ASSERT_EQ(b, POLICY1);
+  ASSERT_EQ(b, kPolicy1);
 }
 
 TEST(CspMergeTest, MergeNonEmptyIntoEmpty) {
   const auto a = NO_POLICY;
-  auto b = POLICY1;
+  std::optional<std::string> b(kPolicy1);
 
   MergeCspDirectiveInto(a, &b);
 
-  ASSERT_EQ(b, POLICY1);
+  ASSERT_EQ(b, kPolicy1);
 }
 
 TEST(CspMergeTest, MergeNonEmptyIntoNonEmpty) {
-  const auto a = POLICY1;
-  auto b = POLICY2;
+  const std::optional<std::string> a(kPolicy1);
+  std::optional<std::string> b(kPolicy2);
 
   const std::string expected =
       "script-src 'self' 'unsafe-inline', media-src 'self' https://example.com";
