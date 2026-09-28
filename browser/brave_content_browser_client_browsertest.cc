@@ -123,10 +123,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadChromeURL) {
           ui_test_utils::NavigateToURL(browser(), GURL(scheme + page + "/")));
       ASSERT_TRUE(WaitForLoadStop(contents));
 
-      EXPECT_EQ(base::UTF16ToUTF8(browser()
-                                      ->GetFeatures()
-                                      .location_bar_model()
-                                      ->GetFormattedFullURL()),
+      EXPECT_EQ(base::UTF16ToUTF8(
+                    LocationBarModel::From(browser())->GetFormattedFullURL()),
                 ("brave://" + page));
       EXPECT_EQ(contents->GetController()
                     .GetLastCommittedEntry()
@@ -158,10 +156,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadCustomBravePages) {
           ui_test_utils::NavigateToURL(browser(), GURL(scheme + page + "/")));
       ASSERT_TRUE(WaitForLoadStop(contents));
 
-      EXPECT_EQ(base::UTF16ToUTF8(browser()
-                                      ->GetFeatures()
-                                      .location_bar_model()
-                                      ->GetFormattedFullURL()),
+      EXPECT_EQ(base::UTF16ToUTF8(
+                    LocationBarModel::From(browser())->GetFormattedFullURL()),
                 ("brave://" + page));
       EXPECT_EQ(contents->GetController()
                     .GetLastCommittedEntry()
@@ -188,10 +184,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, CanLoadAboutHost) {
         ui_test_utils::NavigateToURL(browser(), GURL(scheme + "about/")));
     ASSERT_TRUE(WaitForLoadStop(contents));
 
-    EXPECT_EQ(base::UTF16ToUTF8(browser()
-                                    ->GetFeatures()
-                                    .location_bar_model()
-                                    ->GetFormattedFullURL()),
+    EXPECT_EQ(base::UTF16ToUTF8(
+                  LocationBarModel::From(browser())->GetFormattedFullURL()),
               "brave://about");
     EXPECT_EQ(contents->GetController()
                   .GetLastCommittedEntry()
@@ -216,10 +210,8 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteChromeSync) {
                                     GURL(scheme + chrome::kBraveUISyncHost),
                                     GURL("chrome://sync"));
 
-    EXPECT_EQ(base::UTF16ToUTF8(browser()
-                                    ->GetFeatures()
-                                    .location_bar_model()
-                                    ->GetFormattedFullURL()),
+    EXPECT_EQ(base::UTF16ToUTF8(
+                  LocationBarModel::From(browser())->GetFormattedFullURL()),
               "brave://sync");
     EXPECT_EQ(
         contents->GetController().GetLastCommittedEntry()->GetVirtualURL(),
@@ -240,12 +232,10 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, RewriteAdblock) {
         browser()->tab_strip_model()->GetActiveWebContents();
     NavigateToURLAndWaitForRewrites(contents, GURL(scheme + "adblock"),
                                     GURL("chrome://settings/shields/filters"));
-    EXPECT_EQ(base::UTF16ToUTF8(browser()
-                                    ->GetFeatures()
-                                    .location_bar_model()
-                                    ->GetFormattedFullURL()),
+    EXPECT_EQ(base::UTF16ToUTF8(
+                  LocationBarModel::From(browser())->GetFormattedFullURL()),
               "brave://settings/shields/filters");
-    EXPECT_EQ(browser()->GetFeatures().location_bar_model()->GetURL(),
+    EXPECT_EQ(LocationBarModel::From(browser())->GetURL(),
               GURL("chrome://settings/shields/filters"));
     EXPECT_EQ(
         contents->GetController().GetLastCommittedEntry()->GetVirtualURL(),
