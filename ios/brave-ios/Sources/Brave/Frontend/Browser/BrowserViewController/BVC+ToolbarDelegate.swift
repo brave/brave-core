@@ -986,8 +986,8 @@ extension BrowserViewController: ToolbarDelegate {
   }
 
   func tabToolbarDidSelectNewTab(_ tabToolbar: ToolbarProtocol, isPrivate: Bool) {
-    func openNewTab() {
-      openBlankNewTab(
+    let openNewTab = { [weak self] in
+      self?.openBlankNewTab(
         attemptLocationFieldFocus: Preferences.General.openKeyboardOnNTPSelection.value,
         isPrivate: isPrivate
       )

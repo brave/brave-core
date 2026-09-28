@@ -21,6 +21,7 @@ import Web
 /// This state exists to update toolbar UI only. Browser logic must query the underlying source
 /// (e.g. the selected tab or its tab helpers) rather than reading it from here.
 @Observable
+@MainActor
 final class BrowserToolbarState {
   @ObservationIgnored private let tabManager: TabManager
   @ObservationIgnored private weak var observedTab: (any TabState)?
@@ -79,9 +80,6 @@ final class BrowserToolbarState {
   /// Whether or not the selected tab is presenting an HTTP authentication prompt for an origin
   /// other than the one currently visible
   var isDisplayingCrossOriginBasicAuthPrompt: Bool = false
-  /// Whether or not a navigation is being resolved before the tab begins loading it, such as a
-  /// decentralized DNS lookup
-  var isResolvingNavigation: Bool = false
   /// The state of the playlist button in the location bar
   var playlistButtonState: PlaylistURLBarButton.State = .none
   /// The translation state of the displayed page

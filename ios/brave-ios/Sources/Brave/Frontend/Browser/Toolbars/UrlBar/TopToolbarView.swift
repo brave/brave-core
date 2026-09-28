@@ -470,8 +470,12 @@ class TopToolbarView: UIView, ToolbarProtocol {
     forwardButton.isEnabled = toolbarState.canGoForward
     shareButton.isEnabled = toolbarState.isWebPage
     tabsButton.updateTabCount(toolbarState.tabCount)
-    locationView.url = toolbarState.displayedURL
-    refreshShieldsStatus()
+    let displayURL = toolbarState.displayedURL
+    let needsShieldsStatusRefresh = displayURL == nil || locationView.url != displayURL
+    locationView.url = displayURL
+    if needsShieldsStatusRefresh {
+      refreshShieldsStatus()
+    }
 
     let secureContentState = toolbarState.secureContentState
     if locationView.secureContentState != secureContentState {
