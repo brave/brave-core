@@ -6,7 +6,7 @@
 #include "base/android/jni_android.h"
 #include "base/check_deref.h"
 #include "brave/browser/brave_account/android/jni_headers/BraveAccountDialogMode_jni.h"
-#include "brave/browser/brave_account/dialog_mode_holder.h"
+#include "brave/browser/brave_account/brave_account_dialog_mode_holder.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "content/public/browser/web_contents.h"
 
@@ -16,7 +16,7 @@ static void JNI_BraveAccountDialogMode_Set(
     JNIEnv* env,
     const base::android::JavaRef<jobject>& java_web_contents,
     int32_t dialog_mode) {
-  DialogModeHolder::SetDialogMode(
+  BraveAccountDialogModeHolder::SetDialogMode(
       CHECK_DEREF(content::WebContents::FromJavaWebContents(java_web_contents)),
       static_cast<mojom::DialogMode>(dialog_mode));
 }
