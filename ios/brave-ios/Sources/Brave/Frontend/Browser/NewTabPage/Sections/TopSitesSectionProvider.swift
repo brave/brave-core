@@ -7,73 +7,59 @@ import BraveCore
 import BraveUI
 import Data
 import Foundation
+import Observation
 import Shared
 import UIKit
 
-enum TopsiteAction {
+enum TopSiteAction {
   case opened(
-    topsiteViewModel: TopsiteViewModel,
+    url: URL?,
+    isFavorite: Bool = false,
     inNewTab: Bool = false,
     switchingToPrivateMode: Bool = false
   )
   case edited(favorite: Favorite)
-  case excluded(onConfirm: () -> Void)
+  case excluded(tile: TopSiteTile)
 }
 
-struct TopsiteViewModel {
-  enum Source {
-    case favorite(Favorite)
-    case mostVisited(NTPTile)
-  }
-
-  let source: Source
-
-  var url: URL? {
-    switch source {
-    case .favorite(let favorite): return favorite.url?.asURL
-    case .mostVisited(let tile): return tile.url as URL
-    }
-  }
-
-  var title: String? {
-    switch source {
-    case .favorite(let favorite): return favorite.displayTitle ?? favorite.url
-    case .mostVisited(let tile): return tile.title
-    }
-  }
-
-  var isFavorite: Bool {
-    if case .favorite = source { return true }
-    return false
-  }
-}
-
-class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
+class TopSitesSectionProvider: NSObject, NTPObservableSectionProvider {
   var sectionDidChange: (() -> Void)?
-  var action: (TopsiteAction) -> Void
-  var legacyLongPressAction: (UIAlertController) -> Void
+  var action: (TopSiteAction) -> Void
 
   private let isPrivateBrowsing: Bool
-  private let tileSource: TopsitesTileSource
+  private let tileSource: TopSitesTileSource
+  /// The tiles the collection view is currently showing. Kept separate from the source so that the
+  /// item count and the items themselves can't disagree while a reload is pending (drag to order)
+  private var tiles: [TopSiteTile] = []
 
   var isReorderingEnabled: Bool {
     tileSource.isReorderingEnabled
   }
 
   init(
-    action: @escaping (TopsiteAction) -> Void,
-    legacyLongPressAction: @escaping (UIAlertController) -> Void,
+    action: @escaping (TopSiteAction) -> Void,
     isPrivateBrowsing: Bool,
-    tileSource: TopsitesTileSource
+    tileSource: TopSitesTileSource
   ) {
     self.action = action
-    self.legacyLongPressAction = legacyLongPressAction
     self.isPrivateBrowsing = isPrivateBrowsing
     self.tileSource = tileSource
 
     super.init()
 
-    tileSource.addObserver(self)
+    updateTiles()
+  }
+
+  /// Snapshots the source's tiles and re-arms tracking for the next change.
+  private func updateTiles() {
+    tiles = withObservationTracking {
+      tileSource.tiles
+    } onChange: { [weak self] in
+      DispatchQueue.main.async {
+        self?.updateTiles()
+        self?.sectionDidChange?()
+      }
+    }
   }
 
   static var defaultIconSize = CGSize(width: 64, height: FavoritesCell.height(forWidth: 64))
@@ -99,7 +85,7 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
   /// favorites and the maximum number of items that fit in the row.
   func displayedItemCount(in collectionView: UICollectionView, section: Int) -> Int {
     return min(
-      tileSource.count,
+      tiles.count,
       Self.numberOfItems(
         in: collectionView,
         availableWidth: fittingSizeForCollectionView(collectionView, section: section).width
@@ -108,8 +94,8 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
   }
 
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-    guard let item = tileSource[indexPath.item] else { return }
-    action(.opened(topsiteViewModel: item))
+    guard let item = tiles[safe: indexPath.item] else { return }
+    action(.opened(url: item.url, isFavorite: item.isFavorite))
   }
 
   func collectionView(
@@ -136,15 +122,19 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
   ) {
 
     guard let cell = cell as? FavoritesCell,
-      let item = tileSource[indexPath.item]
+      let item = tiles[safe: indexPath.item]
     else {
       return
     }
     cell.title = item.title
-    // Reset Fav-icon loading and image-view to default
-    cell.imageView.cancelLoading()
-    if let url = item.url {
-      cell.imageView.loadFavicon(siteURL: url, isPrivateBrowsing: isPrivateBrowsing)
+    // Any change to the tiles reloads the whole collection view, so most cells come back showing
+    // the favicon they already had. Reloading those would blank the icon until the load finishes,
+    // which reads as every tile flashing away when only one of them changed.
+    if cell.loadedSiteURL != item.url {
+      // Reset Fav-icon loading and image-view to default
+      cell.imageView.cancelLoading()
+      cell.imageView.loadFavicon(siteURL: item.url, isPrivateBrowsing: isPrivateBrowsing)
+      cell.loadedSiteURL = item.url
     }
     cell.accessibilityLabel = cell.title
   }
@@ -205,7 +195,7 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
     point: CGPoint
   ) -> UIContextMenuConfiguration? {
     guard let indexPath = indexPaths.first,
-      let item = tileSource[indexPath.item]
+      let item = tiles[safe: indexPath.item]
     else { return nil }
 
     return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
@@ -215,7 +205,8 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
         handler: UIAction.deferredActionHandler { _ in
           self.action(
             .opened(
-              topsiteViewModel: item,
+              url: item.url,
+              isFavorite: item.isFavorite,
               inNewTab: true,
               switchingToPrivateMode: false
             )
@@ -230,7 +221,8 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
             handler: UIAction.deferredActionHandler { _ in
               self.action(
                 .opened(
-                  topsiteViewModel: item,
+                  url: item.url,
+                  isFavorite: item.isFavorite,
                   inNewTab: true,
                   switchingToPrivateMode: true
                 )
@@ -241,12 +233,13 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
       }
 
       let modeChildren: [UIAction]
-      switch item.source {
-      case .favorite(let favorite):
+      switch item.id {
+      case .favorite(let objectID):
         modeChildren = [
           UIAction(
             title: Strings.editFavorite,
             handler: UIAction.deferredActionHandler { _ in
+              guard let favorite = Favorite.get(with: objectID) else { return }
               self.action(.edited(favorite: favorite))
             }
           ),
@@ -254,22 +247,17 @@ class TopsitesSectionProvider: NSObject, NTPObservableSectionProvider {
             title: Strings.removeFavorite,
             attributes: .destructive,
             handler: UIAction.deferredActionHandler { _ in
-              favorite.delete()
+              Favorite.get(with: objectID)?.delete()
             }
           ),
         ]
-      case .mostVisited(let ntpTile):
+      case .mostVisited:
         modeChildren = [
           UIAction(
             title: Strings.excludeMostVisitedSite,
             attributes: .destructive,
             handler: UIAction.deferredActionHandler { _ in
-              self.action(
-                .excluded(
-                  onConfirm: { [weak self] in
-                    self?.tileSource.exclude(ntpTile)
-                  })
-              )
+              self.action(.excluded(tile: item))
             }
           )
         ]
@@ -341,12 +329,4 @@ extension TopsitesSectionProvider: NSFetchedResultsControllerDelegate {
     // observe item counts that differ from what the collection view currently has cached.
     sectionDidChange?()
   }
-}
-
-extension TopsitesSectionProvider: TopsitesTileSourceObserver {
-  func topsitesTileSourceDidChangeTiles(_ source: TopsitesTileSource) {
-    sectionDidChange?()
-  }
-
-  // Favicons are loaded by the cell itself, so favicon updates are ignored here.
 }

@@ -5,6 +5,7 @@
 
 import BraveUI
 import Foundation
+import Observation
 import Shared
 import UIKit
 
@@ -50,7 +51,7 @@ class FavoritesOverflowButton: SpringButton {
   }
 }
 
-class TopsitesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
+class TopSitesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   let action: () -> Void
   var sectionDidChange: (() -> Void)?
 
@@ -58,18 +59,34 @@ class TopsitesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     FavoritesOverflowButton
   >
 
-  private let tileSource: TopsitesTileSource
+  private let tileSource: TopSitesTileSource
+  /// The tiles the top sites section is currently showing, whose count decides whether there is
+  /// any overflow to reveal. Kept separate from the source for the same reason as the top sites
+  /// section: so that it can't change underneath the collection view while a reload is pending.
+  private var tiles: [TopSiteTile] = []
 
   init(
     action: @escaping () -> Void,
-    tileSource: TopsitesTileSource
+    tileSource: TopSitesTileSource
   ) {
     self.action = action
     self.tileSource = tileSource
 
     super.init()
 
-    tileSource.addObserver(self)
+    updateTiles()
+  }
+
+  /// Snapshots the source's tiles and re-arms tracking for the next change.
+  private func updateTiles() {
+    tiles = withObservationTracking {
+      tileSource.tiles
+    } onChange: { [weak self] in
+      DispatchQueue.main.async {
+        self?.updateTiles()
+        self?.sectionDidChange?()
+      }
+    }
   }
 
   @objc private func tappedButton() {
@@ -83,8 +100,8 @@ class TopsitesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     let width = fittingSizeForCollectionView(collectionView, section: section).width
 
     let isShowShowMoreButtonVisible =
-      tileSource.count
-      > TopsitesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
+      tiles.count
+      > TopSitesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
     return isShowShowMoreButtonVisible ? 1 : 0
   }
 
@@ -118,7 +135,7 @@ class TopsitesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   ) -> UIEdgeInsets {
     let insets = horizontalInsets(
       for: collectionView,
-      maxWidth: TopsitesSectionProvider.maxWidth,
+      maxWidth: TopSitesSectionProvider.maxWidth,
       minimumInset: 16
     )
     return UIEdgeInsets(top: 0, left: insets.left, bottom: 0, right: insets.right)
@@ -142,12 +159,6 @@ extension TopsitesOverflowSectionProvider: NSFetchedResultsControllerDelegate {
     try? frc.performFetch()
     // Notify synchronously so the collection view is reloaded before anything else can run and
     // observe item counts that differ from what the collection view currently has cached.
-    sectionDidChange?()
-  }
-}
-
-extension TopsitesOverflowSectionProvider: TopsitesTileSourceObserver {
-  func topsitesTileSourceDidChangeTiles(_ source: TopsitesTileSource) {
     sectionDidChange?()
   }
 }

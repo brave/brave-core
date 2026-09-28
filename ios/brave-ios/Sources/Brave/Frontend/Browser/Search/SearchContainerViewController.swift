@@ -52,7 +52,7 @@ class SearchContainerViewController: UIViewController {
     isPlaylistAvailable: Bool,
     searchDelegate: SearchViewControllerDelegate,
     delegate: SearchContainerViewControllerDelegate,
-    topsiteAction: @escaping (TopsiteAction) -> Void,
+    topSiteAction: @escaping (TopSiteAction) -> Void,
     recentSearchAction: @escaping (RecentSearch?, Bool) -> Void
   ) {
     self.delegate = delegate
@@ -82,7 +82,7 @@ class SearchContainerViewController: UIViewController {
       defaultSearchEngine: searchEngines.defaultEngine(
         forType: privateBrowsingManager.isPrivateBrowsing ? .privateMode : .standard
       ),
-      topsiteAction: topsiteAction,
+      topSiteAction: topSiteAction,
       recentSearchAction: recentSearchAction
     )
 

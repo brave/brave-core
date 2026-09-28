@@ -182,6 +182,13 @@ public class BrowserViewController: UIViewController {
   let bookmarkManager: BookmarkManager
   public let privateBrowsingManager: PrivateBrowsingManager
 
+  /// The most visited sites shown by the top sites section of every NTP in this window.
+  private lazy var mostVisitedSites: MostVisitedSites = {
+    let mostVisitedSites = MostVisitedSitesFactory.get(for: profileController.profile)
+    mostVisitedSites.enableTopSitesOnlyTileTypes()
+    return mostVisitedSites
+  }()
+
   /// Whether last session was a crash or not
   private let crashedLastSession: Bool
 
@@ -1656,6 +1663,7 @@ public class BrowserViewController: UIViewController {
       let ntpController = NewTabPageViewController(
         tab: selectedTab,
         profilePrefs: profileController.profile.prefs,
+        mostVisitedSites: selectedTab.isPrivate ? nil : mostVisitedSites,
         dataSource: backgroundDataSource,
         feedDataSource: feedDataSource,
         rewards: rewards,
@@ -2812,10 +2820,10 @@ extension BrowserViewController: NewTabPageDelegate {
     )
   }
 
-  func handleTopsiteAction(action: TopsiteAction) {
+  func handleTopSiteAction(action: TopSiteAction) {
     switch action {
-    case .opened(let viewModel, let inNewTab, let switchingToPrivateMode):
-      guard let url = viewModel.url else { return }
+    case .opened(let url, let isFavorite, let inNewTab, let switchingToPrivateMode):
+      guard let url else { return }
       if switchingToPrivateMode, Preferences.Privacy.privateBrowsingLock.value {
         self.askForLocalAuthentication { [weak self] success, error in
           if success {
@@ -2823,7 +2831,7 @@ extension BrowserViewController: NewTabPageDelegate {
               url.absoluteString,
               inNewTab: inNewTab,
               switchingToPrivateMode: switchingToPrivateMode,
-              isFavourite: viewModel.isFavorite
+              isFavourite: isFavorite
             )
           }
         }
@@ -2832,7 +2840,7 @@ extension BrowserViewController: NewTabPageDelegate {
           url.absoluteString,
           inNewTab: inNewTab,
           switchingToPrivateMode: switchingToPrivateMode,
-          isFavourite: viewModel.isFavorite
+          isFavourite: isFavorite
         )
       }
     case .edited(let favorite):
@@ -2854,15 +2862,16 @@ extension BrowserViewController: NewTabPageDelegate {
           }
         }
       self.present(editPopup, animated: true)
-    case .excluded(let onConfirm):
+    case .excluded(let tile):
       let alert = UIAlertController(
         title: Strings.excludeMostVisitedSiteAlertTitle,
         message: Strings.excludeMostVisitedSiteAlertMessage,
         preferredStyle: .alert
       )
       alert.addAction(
-        UIAlertAction(title: Strings.excludeMostVisitedSite, style: .destructive) { _ in
-          onConfirm()
+        UIAlertAction(title: Strings.excludeMostVisitedSite, style: .destructive) {
+          [weak self] _ in
+          self?.mostVisitedSites.setBlocked(true, for: tile.url)
         }
       )
       alert.addAction(UIAlertAction(title: Strings.CancelString, style: .default))
