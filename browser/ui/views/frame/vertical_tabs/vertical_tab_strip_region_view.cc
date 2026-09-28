@@ -434,6 +434,21 @@ BraveVerticalTabStripRegionView::~BraveVerticalTabStripRegionView() {
   UpdateLayout();
 }
 
+void BraveVerticalTabStripRegionView::AddedToWidget() {
+  // Retry the placement, in case it was skipped while we weren't attached.
+  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+    coordinator->UpdatePlacement();
+  }
+}
+
+void BraveVerticalTabStripRegionView::RemovedFromWidget() {
+  // Only clear the placement data here, no reparenting: Views may be
+  // mid-iteration tearing down the tree at this point.
+  if (auto* coordinator = GetPlacementCoordinator(browser_view_)) {
+    coordinator->ClearPlacement(TabStripPlacementKind::kVerticalTabStrip);
+  }
+}
+
 void BraveVerticalTabStripRegionView::ToggleState() {
   if (state_ == State::kExpanded) {
     collapsed_pref_.SetValue(true);

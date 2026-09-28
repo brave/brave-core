@@ -116,6 +116,8 @@ class BraveVerticalTabStripRegionView : public views::View,
       const views::SizeBounds& available_size) const override;
   gfx::Size GetMinimumSize() const override;
   void Layout(PassKey) override;
+  void AddedToWidget() override;
+  void RemovedFromWidget() override;
   void OnThemeChanged() override;
   void OnMouseExited(const ui::MouseEvent& event) override;
   void OnMouseEntered(const ui::MouseEvent& event) override;
