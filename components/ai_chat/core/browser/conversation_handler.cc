@@ -1585,9 +1585,7 @@ void ConversationHandler::TakeFollowUpSuggestionsFromLastEntry() {
   }
 
   std::vector<std::string> follow_ups;
-  bool had_follow_up_request = false;
-  auto to_remove =
-      std::ranges::remove_if(*last_entry->events, [&](const auto& event) {
+  if (std::erase_if(*last_entry->events, [&follow_ups](const auto& event) {
         if (!event->is_tool_use_event()) {
           return false;
         }
@@ -1599,21 +1597,23 @@ void ConversationHandler::TakeFollowUpSuggestionsFromLastEntry() {
         if (!suggestions) {
           return false;
         }
-        had_follow_up_request = true;
         std::ranges::move(*suggestions, std::back_inserter(follow_ups));
         return true;
-      });
-  if (!had_follow_up_request) {
+      }) == 0) {
     return;
   }
-  last_entry->events->erase(to_remove.begin(), to_remove.end());
+
+  // The request is removed above regardless, so the loop isn't left waiting on
+  // it, but with nothing usable to offer leave any existing suggestions alone.
+  if (follow_ups.empty()) {
+    return;
+  }
 
   // These supersede any suggestions offered before this response, but leave
   // content-specific actions (e.g. summarize page) in place.
-  auto stale = std::ranges::remove_if(suggestions_, [](const auto& suggestion) {
+  std::erase_if(suggestions_, [](const auto& suggestion) {
     return suggestion.action_type == mojom::ActionType::SUGGESTION;
   });
-  suggestions_.erase(stale.begin(), stale.end());
 
   for (auto& follow_up : follow_ups) {
     suggestions_.emplace_back(std::move(follow_up));
@@ -1631,14 +1631,11 @@ void ConversationHandler::MaybeSeedOrClearSuggestions() {
     if (!chat_history_.empty()) {
       // Suggestions which act on associated content are stale now there is
       // none.
-      auto stale =
-          std::ranges::remove_if(suggestions_, [](const auto& suggestion) {
+      if (std::erase_if(suggestions_, [](const auto& suggestion) {
             return suggestion.action_type ==
                        mojom::ActionType::SUMMARIZE_PAGE ||
                    suggestion.action_type == mojom::ActionType::SUMMARIZE_VIDEO;
-          });
-      if (!stale.empty()) {
-        suggestions_.erase(stale.begin(), stale.end());
+          }) > 0) {
         OnSuggestedQuestionsChanged();
       }
       return;
