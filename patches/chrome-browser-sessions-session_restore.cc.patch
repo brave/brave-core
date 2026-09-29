@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..08bc727ca6a57d69f7161ca1a34d384ddad5adf3 100644
+index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..c9361f4d723ce5dae685b4accbf060229f44a636 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
 @@ -1076,6 +1076,13 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
@@ -16,20 +16,19 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..08bc727ca6a57d69f7161ca1a34d384d
    }
  
    // |tab_index| is ignored for pinned tabs which will always be pushed behind
-@@ -1105,6 +1112,12 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1105,6 +1112,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
      SessionRestore::NotifySessionRestoreStartedLoadingTabs();
      int selected_index = GetNavigationIndexToSelect(tab);
  
-+    const bool scheduled_for_cleanup = IsScheduledForCleanup(
-+        tab.navigations[selected_index].virtual_url(), profile_);
-+    if (scheduled_for_cleanup) {
++    if (IsScheduledForCleanup(tab.navigations[selected_index].virtual_url(),
++                              profile_)) {
 +      return;
 +    }
 +
      RecordAppLaunchForTab(browser, tab, selected_index);
  
      // Associate sessionStorage (if any) to the restored tab.
-@@ -1370,6 +1383,9 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1370,6 +1382,9 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
      bool is_first_tab = true;
      for (const auto& startup_tab : startup_tabs) {
        const GURL& url = startup_tab.url;
@@ -39,7 +38,7 @@ index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..08bc727ca6a57d69f7161ca1a34d384d
  #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
        if (url == whats_new::GetWebUIStartupURL()) {
          whats_new::StartWhatsNewFetch(browser);
-@@ -1386,8 +1402,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1386,8 +1401,11 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
                                 : WindowOpenDisposition::NEW_BACKGROUND_TAB;
        params.tabstrip_add_types = add_types;
        is_first_tab = false;
