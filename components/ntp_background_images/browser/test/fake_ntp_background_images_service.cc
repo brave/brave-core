@@ -29,6 +29,11 @@ void FakeNTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   ++register_sponsored_images_component_call_count_;
 }
 
+void FakeNTPBackgroundImagesService::UnregisterSponsoredImagesComponent() {
+  NTPBackgroundImagesService::UnregisterSponsoredImagesComponent();
+  ++unregister_sponsored_images_component_call_count_;
+}
+
 void FakeNTPBackgroundImagesService::OnGetSponsoredComponentJsonData(
     const std::string& json) {
   sponsored_content_installed_dir_ =
