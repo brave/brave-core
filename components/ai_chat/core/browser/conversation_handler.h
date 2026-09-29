@@ -436,6 +436,8 @@ class ConversationHandler : public mojom::ConversationHandler,
                            CreateConversationThread_SubmitEntry);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
                            CreateConversationThread_EmptyExistingThread);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest,
+                           CreateConversationThread_MaxThreads);
 
   struct ThreadContainer {
     explicit ThreadContainer(mojom::ThreadPtr thread);

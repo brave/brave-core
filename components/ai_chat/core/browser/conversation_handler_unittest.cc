@@ -1267,8 +1267,7 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_SubmitEntry) {
   observer.Observe(conversation_handler_.get());
   // The thread's first entry should notify observers of the new thread
   // before the entry itself.
-  EXPECT_CALL(observer,
-              OnNewConversationThread(conversation_handler_.get(), _))
+  EXPECT_CALL(observer, OnNewConversationThread(conversation_handler_.get(), _))
       .Times(1);
   // Human entry and assistant response, both on the thread.
   EXPECT_CALL(observer,
@@ -1277,11 +1276,11 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_SubmitEntry) {
 
   // The engine should receive the root entries up to and including the origin
   // entry, followed by the new thread entry.
-  EXPECT_CALL(*engine,
-              GenerateAssistantResponse(
-                  _, HistoryTextsAre(std::vector<std::string>{
-                                          "hello", "response", "thread query"}),
-                  _, _, _, _, _, _))
+  EXPECT_CALL(*engine, GenerateAssistantResponse(
+                           _,
+                           HistoryTextsAre(std::vector<std::string>{
+                               "hello", "response", "thread query"}),
+                           _, _, _, _, _, _))
       .WillOnce(::testing::DoAll(
           base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -1301,8 +1300,8 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_SubmitEntry) {
   EXPECT_CALL(client, OnAPIRequestInProgress(false))
       .WillOnce(testing::InvokeWithoutArgs(&loop, &base::RunLoop::Quit));
 
-  conversation_handler_->SubmitHumanConversationEntry("thread query",
-                                                      std::nullopt, thread_uuid);
+  conversation_handler_->SubmitHumanConversationEntry(
+      "thread query", std::nullopt, thread_uuid);
 
   loop.Run();
 
@@ -1325,9 +1324,10 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_SubmitEntry) {
             mojom::CharacterType::ASSISTANT);
 
   // The full thread history for the UI should prepend the origin entry.
-  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> history_future;
+  base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>>
+      history_future;
   conversation_handler_->GetConversationHistory(*thread_uuid,
-                                                 history_future.GetCallback());
+                                                history_future.GetCallback());
   auto entries = history_future.Take();
   ASSERT_EQ(entries.size(), 3u);
   EXPECT_EQ(entries[0]->uuid, origin_entry_uuid);
@@ -1342,8 +1342,7 @@ TEST_F(ConversationHandlerUnitTest, CreateConversationThread_SubmitEntry) {
   EXPECT_EQ(threads[0]->entry_count, 2u);
 }
 
-TEST_F(ConversationHandlerUnitTest,
-       CreateConversationThread_FeatureDisabled) {
+TEST_F(ConversationHandlerUnitTest, CreateConversationThread_FeatureDisabled) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndDisableFeature(features::kAIChatThreads);
 
@@ -1383,7 +1382,8 @@ TEST_F(ConversationHandlerUnitTest,
 TEST_F(ConversationHandlerUnitTest,
        CreateConversationThread_EmptyExistingThread) {
   base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndEnableFeature(features::kAIChatThreads);
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChatThreads, {{"max_threads_per_origin_entry", "3"}});
 
   SetupHistory({{"hello", false}, {"response", false}});
   const std::string origin_entry_uuid =
@@ -1406,6 +1406,49 @@ TEST_F(ConversationHandlerUnitTest,
 
   // Attempting to create another thread while the existing one is still empty
   // should fail.
+  base::test::TestFuture<const std::optional<std::string>&> second_future;
+  conversation_handler_->CreateConversationThread(origin_entry_uuid,
+                                                  second_future.GetCallback());
+  EXPECT_FALSE(second_future.Take().has_value());
+  EXPECT_EQ(conversation_handler_->GetConversationHistory()[1]
+                ->child_thread_uuids.size(),
+            1u);
+
+  base::test::TestFuture<std::vector<mojom::ThreadPtr>> threads_future;
+  conversation_handler_->GetConversationThreads(threads_future.GetCallback());
+  auto threads = threads_future.Take();
+  ASSERT_EQ(threads.size(), 1u);
+  EXPECT_EQ(threads[0]->uuid, *thread_uuid);
+}
+
+TEST_F(ConversationHandlerUnitTest, CreateConversationThread_MaxThreads) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChatThreads, {{"max_threads_per_origin_entry", "1"}});
+
+  SetupHistory({{"hello", false}, {"response", false}});
+  const std::string origin_entry_uuid =
+      conversation_handler_->GetConversationHistory()[1]->uuid.value();
+
+  base::test::TestFuture<const std::optional<std::string>&> first_future;
+  conversation_handler_->CreateConversationThread(origin_entry_uuid,
+                                                  first_future.GetCallback());
+  std::optional<std::string> thread_uuid = first_future.Take();
+  ASSERT_TRUE(thread_uuid.has_value());
+
+  // Add an entry to the thread so it is no longer empty.
+  conversation_handler_->AddToConversationHistory(mojom::ConversationTurn::New(
+      std::nullopt, thread_uuid, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "thread query", std::nullopt, std::nullopt,
+      std::nullopt, base::Time::Now(), std::nullopt, std::nullopt, nullptr,
+      false, std::nullopt, nullptr, std::vector<std::string>{}));
+
+  auto* container =
+      base::FindOrNull(conversation_handler_->threads_, *thread_uuid);
+  ASSERT_TRUE(container);
+  EXPECT_EQ(container->thread->entry_count, 1u);
+
+  // Creating another thread should fail since the max has been reached.
   base::test::TestFuture<const std::optional<std::string>&> second_future;
   conversation_handler_->CreateConversationThread(origin_entry_uuid,
                                                   second_future.GetCallback());
