@@ -13,6 +13,11 @@ namespace brave_search::prefs {
 inline constexpr char kNewTabV1SourceEnabledAtFirstRun[] =
     "brave.brave_search.new_tab_v1_first_run";
 
+// Suffix appended to the `newtab_v1` source: "c" if the source was enabled at
+// first run, otherwise "b".
+inline constexpr char kNewTabV1SourceSuffix[] =
+    "brave.brave_search.new_tab_v1_source_suffix";
+
 }  // namespace brave_search::prefs
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SEARCH_COMMON_PREF_NAMES_H_
