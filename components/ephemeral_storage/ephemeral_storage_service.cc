@@ -327,6 +327,34 @@ void EphemeralStorageService::CleanupTLDFirstPartyStorage(
       {std::move(ephemeral_domain)}, enforced_by_user);
 }
 
+bool EphemeralStorageService::IsScheduledForCleanup(
+    const std::string& ephemeral_domain) {
+  DCHECK(!context_->IsOffTheRecord());
+  base::ListValue first_party_storage_areas_to_cleanup_on_startup =
+      prefs_->GetList(kFirstPartyStorageOriginsToCleanup).Clone();
+
+  for (base::Value& area_to_cleanup :
+       first_party_storage_areas_to_cleanup_on_startup) {
+    const auto url_and_storage_partition_config =
+        GetFirstPartyStorageURLAndStoragePartitionConfig(area_to_cleanup,
+                                                         context_);
+    if (!url_and_storage_partition_config) {
+      continue;
+    }
+
+    const auto& [url, storage_partition_config] =
+        *url_and_storage_partition_config;
+    if (!url.is_valid()) {
+      continue;
+    }
+
+    if (url == GetFirstPartyStorageURL(ephemeral_domain)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 void EphemeralStorageService::FirstPartyStorageAreaInUse(
     const std::string& ephemeral_domain,
     const content::StoragePartitionConfig& storage_partition_config) {

@@ -1,8 +1,35 @@
 diff --git a/chrome/browser/sessions/session_restore.cc b/chrome/browser/sessions/session_restore.cc
-index e21bf8de37e7c9ac9e3a3e6412e0e4949274114b..c6f70c8736e0de75913ddd30d2be2b62e410ea2d 100644
+index 684340e2ae22a97ffcbb010bc31c9f7c9433492e..1493287c517e526f8db63306edb9ba61f954ffdf 100644
 --- a/chrome/browser/sessions/session_restore.cc
 +++ b/chrome/browser/sessions/session_restore.cc
-@@ -1401,6 +1401,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+@@ -1076,6 +1076,13 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+             split_id, tab_index_list, split_tabs::SplitTabVisualData());
+       }
+     }
++
++    if (content::WebContents* fallback_contents =
++            MaybeAddFallbackTabIfEmpty(browser)) {
++      ShowBrowser(browser, browser->GetTabStripModel()->GetIndexOfWebContents(
++                               fallback_contents));
++      did_show_browser = true;
++    }
+   }
+ 
+   // |tab_index| is ignored for pinned tabs which will always be pushed behind
+@@ -1105,6 +1112,12 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
+     SessionRestore::NotifySessionRestoreStartedLoadingTabs();
+     int selected_index = GetNavigationIndexToSelect(tab);
+ 
++    const bool scheduled_for_cleanup = IsScheduledForCleanup(
++        tab.navigations[selected_index].virtual_url(), profile_);
++    if (scheduled_for_cleanup) {
++      return;
++    }
++
+     RecordAppLaunchForTab(browser, tab, selected_index);
+ 
+     // Associate sessionStorage (if any) to the restored tab.
+@@ -1386,6 +1399,7 @@ class SessionRestoreImpl : public BrowserCollectionObserver {
                                 : WindowOpenDisposition::NEW_BACKGROUND_TAB;
        params.tabstrip_add_types = add_types;
        is_first_tab = false;
