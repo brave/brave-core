@@ -3,18 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { html } from '//resources/lit/v3_0/lit.rollup.js'
+import { html, nothing } from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import { BraveAccountLoggedOutRowElement } from './brave_account_logged_out_row.js'
+import { ROW_BUTTON_SIZE } from './brave_account_row_base.js'
 import { BraveAccountSettingsStrings } from './brave_components_webui_strings.js'
 import { LoggedOutVerificationIntent } from './brave_account.mojom-webui.js'
 
 export function getHtml(this: BraveAccountLoggedOutRowElement) {
   return html`${this.state.verification
     ? html` <div class="first-row">
-          <leo-icon name="social-brave-release-favicon-fullheight-color">
-          </leo-icon>
+          <if expr="not is_android and not is_ios">
+            <leo-icon name="social-brave-release-favicon-fullheight-color">
+            </leo-icon>
+          </if>
           <div class="title-and-description">
             <div class="title">
               ${loadTimeData.getString(
@@ -28,17 +31,27 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
                 ? loadTimeData.getString(
                     BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_RESET_PASSWORD_VERIFIED_ROW_DESCRIPTION,
                   )
-                : html`${this.getVerificationDescription().beforeLink}<leo-link
-                      @click=${this.onResendConfirmationEmailLinkClicked}
-                      >${this.getVerificationDescription().linkLabel}</leo-link
-                    >${this.getVerificationDescription().afterLink}`}
+                : html`<if expr="not is_android and not is_ios">
+                      ${this.getVerificationDescription().beforeLink}<leo-link
+                        @click=${this.onResendConfirmationEmailLinkClicked}
+                        >${this.getVerificationDescription().linkLabel}</leo-link
+                      >${this.getVerificationDescription().afterLink}
+                    </if>
+                    <if expr="is_android or is_ios">
+                      ${this.verificationDescription}
+                    </if>`}
             </div>
           </div>
         </div>
         <div class="second-row">
           <leo-button
+<if expr="not is_android and not is_ios">
             kind="plain"
-            size="small"
+</if>
+<if expr="is_android or is_ios">
+            kind="filled"
+</if>
+            size=${ROW_BUTTON_SIZE}
             @click=${this.openDialogInDefaultMode}
           >
             ${loadTimeData.getString(
@@ -49,9 +62,25 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
                 : BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_ENTER_VERIFICATION_CODE_BUTTON_LABEL,
             )}
           </leo-button>
+<if expr="is_android or is_ios">
+          ${this.state.verification.intent
+            === LoggedOutVerificationIntent.kResetPassword
+            && this.state.verification.verifiedEmail
+            ? nothing
+            : html`<leo-button
+                kind="plain"
+                size=${ROW_BUTTON_SIZE}
+                ?isDisabled=${this.isResendingConfirmationEmail}
+                @click=${this.onResendConfirmationEmailLinkClicked}
+              >
+                ${loadTimeData.getString(
+                  BraveAccountSettingsStrings.BRAVE_ACCOUNT_RESEND_EMAIL_CODE_BUTTON_LABEL,
+                )}
+              </leo-button>`}
+</if>
           <leo-button
             kind="plain"
-            size="small"
+            size=${ROW_BUTTON_SIZE}
             class="cancel-verification-button"
             @click=${this.onCancelVerificationButtonClicked}
           >
@@ -64,8 +93,10 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
           </leo-button>
         </div>`
     : html` <div class="first-row">
-        <leo-icon name="social-brave-release-favicon-fullheight-color">
-        </leo-icon>
+        <if expr="not is_android and not is_ios">
+          <leo-icon name="social-brave-release-favicon-fullheight-color">
+          </leo-icon>
+        </if>
         <div class="title-and-description">
           <div class="title">
             ${loadTimeData.getString(
@@ -89,7 +120,7 @@ export function getHtml(this: BraveAccountLoggedOutRowElement) {
         </div>
         <leo-button
           kind="filled"
-          size="small"
+          size=${ROW_BUTTON_SIZE}
           @click=${this.openDialogInDefaultMode}
         >
           ${loadTimeData.getString(

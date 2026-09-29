@@ -1,11 +1,17 @@
 <style include="settings-shared md-select">
 </style>
 
+<template is="dom-if" if="[[showBraveAccountDetailsSection_]]">
+  <settings-section page-title="[[getBraveAccountDetailsTitle_()]]">
+    <brave-account-row detailed></brave-account-row>
+  </settings-section>
+</template>
+
 <settings-section
   id="getStarted"
   page-title="$i18n{braveGetStartedTitle}">
-  <template is="dom-if" if="[[isBraveAccountEnabled_]]">
-    <brave-account-row></brave-account-row>
+  <template is="dom-if" if="[[showBraveAccountLoggedOutRow_]]">
+    <brave-account-row detailed></brave-account-row>
   </template>
   <settings-people-page
     prefs="{{prefs}}"

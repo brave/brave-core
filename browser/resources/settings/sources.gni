@@ -140,8 +140,10 @@ brave_settings_local_css_files = []
 # not out of this directory like the brave_settings_local_* lists. They land
 # flat in the same preprocessed/ folder, hence no directory prefix.
 brave_account_settings_ts_files = [
-  "brave_account_logged_in_row.html.ts",
-  "brave_account_logged_in_row.ts",
+  "brave_account_compact_row.html.ts",
+  "brave_account_compact_row.ts",
+  "brave_account_details.html.ts",
+  "brave_account_details.ts",
   "brave_account_logged_out_row.html.ts",
   "brave_account_logged_out_row.ts",
   "brave_account_row.html.ts",
@@ -149,10 +151,11 @@ brave_account_settings_ts_files = [
   "brave_account_row_base.ts",
   "brave_account_row_browser_proxy.ts",
   "brave_account_shared.ts",
+  "brave_account_text_truncator.ts",
 ]
 
 brave_account_settings_css_files = [
-  "brave_account_logged_in_row.css",
+  "brave_account_details.css",
   "brave_account_row_common.css",
 ]
 

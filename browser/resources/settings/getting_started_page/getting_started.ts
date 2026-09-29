@@ -7,6 +7,12 @@ import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bu
 import {loadTimeData} from 'chrome://resources/js/load_time_data.js'
 
 import '../brave_account_row.js'
+import {
+  AccountState,
+  Authentication,
+  AuthenticationObserverCallbackRouter,
+} from '../brave_account.mojom-webui.js'
+import {BraveAccountSettingsStrings} from '../brave_components_webui_strings.js'
 import '../people_page/people_page.js'
 import '../settings_page/settings_section.js'
 import '../default_browser_page/default_browser_page.js'
@@ -31,14 +37,52 @@ export class BraveSettingsGettingStarted extends SettingsViewMixin(PolymerElemen
 
   static get properties() {
     return {
-      isBraveAccountEnabled_: {
+      showBraveAccountLoggedOutRow_: {
         type: Boolean,
-        value: () => loadTimeData.getBoolean('isBraveAccountEnabled'),
+        value: false,
+      },
+      showBraveAccountDetailsSection_: {
+        type: Boolean,
+        value: false,
       },
     }
   }
 
-  declare private isBraveAccountEnabled_: boolean
+  declare private showBraveAccountLoggedOutRow_: boolean
+  declare private showBraveAccountDetailsSection_: boolean
+  private authenticationObserverCallbackRouter_:
+      AuthenticationObserverCallbackRouter|null = null
+
+  override connectedCallback() {
+    super.connectedCallback()
+
+    if (!loadTimeData.getBoolean('isBraveAccountEnabled')) {
+      return
+    }
+
+    this.authenticationObserverCallbackRouter_ =
+        new AuthenticationObserverCallbackRouter()
+    Authentication.getRemote().addObserver(
+        this.authenticationObserverCallbackRouter_.$
+            .bindNewPipeAndPassRemote())
+    this.authenticationObserverCallbackRouter_.onAccountStateChanged
+        .addListener((state: AccountState) => {
+          this.showBraveAccountLoggedOutRow_ = !state.loggedIn
+          this.showBraveAccountDetailsSection_ = !!state.loggedIn
+        })
+  }
+
+  override disconnectedCallback() {
+    super.disconnectedCallback()
+
+    this.authenticationObserverCallbackRouter_?.$.close()
+    this.authenticationObserverCallbackRouter_ = null
+  }
+
+  private getBraveAccountDetailsTitle_() {
+    return loadTimeData.getString(
+        BraveAccountSettingsStrings.SETTINGS_BRAVE_ACCOUNT_DETAILS_SECTION_TITLE)
+  }
 
   override getAssociatedControlFor(childViewId: string): HTMLElement {
     switch (childViewId) {
