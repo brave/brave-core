@@ -16,7 +16,15 @@ import("//build/config/apple/swift_source_set.gni")
 swift_source_set("swift") {
   module_name = "SwiftMojo"
 
-  sources = [ "mojo_system.swift" ]
+  sources = [
+    "decoder.swift",
+    "encoder.swift",
+    "handle.swift",
+    "interface.swift",
+    "message.swift",
+    "mojo_system.swift",
+    "mojom_types.swift",
+  ]
 
   # Resilient compilation keeps modules imported with an access level below
   # public (i.e. BraveMojoSystem) out of SwiftMojo.framework's interface.
@@ -30,4 +38,20 @@ swift_source_set("swift") {
   # Public as `-enable-testing` requires importers to resolve every module this
   # one imports.
   public_deps = [ "//brave/ios/browser/mojo:headers" ]
+}
+
+swift_source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "test/encoding_tests.swift",
+    "test/handle_tests.swift",
+    "test/test_types.swift",
+  ]
+
+  deps = [
+    ":swift",
+    "//brave/ios/browser/mojo",
+    "//build/config/ios:xctest",
+  ]
 }
