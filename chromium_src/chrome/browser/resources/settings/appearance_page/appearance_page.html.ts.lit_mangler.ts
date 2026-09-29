@@ -67,6 +67,14 @@ mangle((root) => {
     throw new Error(
       `[Settings] Appearance page: couldn't find tabStripPosition row`)
   }
+  // Remove the indented toggles (expand on hover, organizer panel, everything menu)
+  // that appear when vertical tabs are enabled.
+  const verticalTabsToggles = tabStripPositionRow.nextElementSibling
+  if (!verticalTabsToggles || !verticalTabsToggles.getAttribute('class')?.includes('indented-toggles')) {
+    throw new Error(
+      `[Settings] Appearance page: couldn't find vertical tabs toggles`)
+  }
+  verticalTabsToggles.remove()
   tabStripPositionRow.remove()
 
   // showSavedTabGroups and autoPinNewTabGroups are shown in
