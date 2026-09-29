@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/converters/tab_converters.cc b/chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/converters/tab_converters.cc
-index da690ad08d9875e87930c5507e5182f1c4afc409..fd93875bda05527035209fe26b91c0b2f551a32b 100644
+index da690ad08d9875e87930c5507e5182f1c4afc409..0020b965cf2ace687bd07e65c953d666d9689225 100644
 --- a/chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/converters/tab_converters.cc
 +++ b/chrome/browser/ui/tabs/tab_strip_api/tab_strip_model_impl/converters/tab_converters.cc
 @@ -164,6 +164,11 @@ tabs_api::mojom::DataPtr BuildMojoTabCollectionData(
        mojo_tab_group->data = *tab_group->visual_data();
        return tabs_api::mojom::Data::NewTabGroup(std::move(mojo_tab_group));
      }
-+    case tabs::TabCollection::Type::TREE_NODE: {
-+        auto mojo_container = tabs_api::mojom::UnpinnedTabs::New();
-+        mojo_container->id = node_id;
-+        return tabs_api::mojom::Data::NewUnpinnedTabs(std::move(mojo_container));
-+      }
++case tabs::TabCollection::Type::TREE_NODE: {
++  auto mojo_container = tabs_api::mojom::UnpinnedTabs::New();
++  mojo_container->id = node_id;
++  return tabs_api::mojom::Data::NewUnpinnedTabs(std::move(mojo_container));
++}
      case tabs::TabCollection::Type::SPLIT: {
        auto mojo_split_tab = tabs_api::mojom::SplitTab::New();
        mojo_split_tab->id = node_id;
