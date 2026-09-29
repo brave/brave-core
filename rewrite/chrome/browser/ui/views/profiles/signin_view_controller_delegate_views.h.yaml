@@ -14,10 +14,3 @@ substitutions:
         void RunFileChooser(content::RenderFrameHost* render_frame_host,
                             scoped_refptr<content::FileSelectListener> listener,
                             const blink::mojom::FileChooserParams& params) override;
-
-  - description: |-
-      Keep the generated declaration beside existing members without an extra gap.
-
-    regex:
-      re_pattern: '\n(  void RunFileChooser\([^;]+;)'
-      replace: '\1'

@@ -1,0 +1,26 @@
+diff --git a/chrome/browser/ui/views/profiles/BUILD.gn b/chrome/browser/ui/views/profiles/BUILD.gn
+index 65a890b86c0c0369943c3db3748311d0fc160b36..f84efbd9d5b7995eee3b17995231c201b0b4782c 100644
+--- a/chrome/browser/ui/views/profiles/BUILD.gn
++++ b/chrome/browser/ui/views/profiles/BUILD.gn
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
+ 
++import("//brave/ui/webui/custom_profile_image/buildflags/buildflags.gni")
+ import("//build/config/ui.gni")
+ import("//components/safe_browsing/buildflags.gni")
+ import("//components/signin/features.gni")
+@@ -102,6 +103,13 @@ if (is_win || is_mac || is_linux || is_chromeos) {
+     if (enable_dice_support) {
+       deps += [ "//chrome/browser/ui/webui/signin/signout_confirmation" ]
+     }
++    deps += [ "//brave/ui/webui/custom_profile_image/buildflags" ]
++    if (enable_brave_custom_profile_image_webui) {
++      deps += [
++        "//brave/browser/ui/webui/custom_profile_image",
++        "//chrome/browser:file_select_helper",
++      ]
++    }
+   }
+ }
+ 

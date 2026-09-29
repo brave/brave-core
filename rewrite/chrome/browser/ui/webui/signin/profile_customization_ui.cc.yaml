@@ -26,10 +26,10 @@ substitutions:
   - description: |-
       Supply custom profile image data after the profile page registers resources.
 
-      Keep the feature and string setup in the Brave-owned signin target.
+      Keep the feature and string setup in the Chromium override.
     regex:
       re_pattern: '(ProfileCustomizationUI::ProfileCustomizationUI\([^)]*\).*?webui::SetupWebUIDataSource\([^;]+;)'
       re_flags: [DOTALL]
       replace: |-
         \1
-          brave::AddProfileCustomizationData(source);
+          AddProfileCustomizationData(source);

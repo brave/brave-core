@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/signin/profile_customization_ui.cc b/chrome/browser/ui/webui/signin/profile_customization_ui.cc
-index 7b0a5c3cf2e879d4298110c6cfb8873ec2606929..81714bf52026a0652adc27273fb3b623ab8f7ceb 100644
+index 7b0a5c3cf2e879d4298110c6cfb8873ec2606929..d4859f4aa4d2e9e9fdebcbfa5648b655d4b66f1a 100644
 --- a/chrome/browser/ui/webui/signin/profile_customization_ui.cc
 +++ b/chrome/browser/ui/webui/signin/profile_customization_ui.cc
 @@ -42,6 +42,8 @@ ProfileCustomizationUI::ProfileCustomizationUI(content::WebUI* web_ui)
@@ -15,7 +15,7 @@ index 7b0a5c3cf2e879d4298110c6cfb8873ec2606929..81714bf52026a0652adc27273fb3b623
    webui::SetupWebUIDataSource(
        source, kResources,
        IDR_SIGNIN_PROFILE_CUSTOMIZATION_PROFILE_CUSTOMIZATION_HTML);
-+  brave::AddProfileCustomizationData(source);
++  AddProfileCustomizationData(source);
  
    // Localized strings.
    static constexpr webui::LocalizedString kLocalizedStrings[] = {

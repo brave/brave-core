@@ -2,6 +2,7 @@ from brave_chromium_utils import inline_file
 inline_file("//chrome/browser/ui/DEPS", globals(), locals())
 
 include_rules += [
+  "+brave/ui/webui/custom_profile_image/buildflags",
   "+brave/components/vector_icons",
   "+brave/components/commander/common",
   "+brave/components/constants",

@@ -3,14 +3,28 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-namespace content {
-class WebUIDataSource;
+#include "base/feature_list.h"
+#include "brave/ui/webui/custom_profile_image/buildflags/buildflags.h"
+#include "content/public/browser/web_ui_data_source.h"
+
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+#include "brave/browser/ui/webui/custom_profile_image/features.h"
+#include "brave/grit/brave_generated_resources_webui_strings.h"
+#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+
+namespace {
+
+void AddProfileCustomizationData(content::WebUIDataSource* source) {
+  bool enabled = false;
+#if BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+  source->AddLocalizedStrings(webui::kCustomProfileImageStrings);
+  enabled = base::FeatureList::IsEnabled(
+      custom_profile_image::features::kBraveCustomProfileImage);
+#endif  // BUILDFLAG(ENABLE_CUSTOM_PROFILE_IMAGE)
+
+  source->AddBoolean("customProfileImageEnabled", enabled);
 }
 
-namespace brave {
-// Supplies the custom profile image feature value and strings to the upstream
-// page. Implemented in //brave/browser/ui/webui/signin.
-void AddProfileCustomizationData(content::WebUIDataSource* source);
-}  // namespace brave
+}  // namespace
 
 #include <chrome/browser/ui/webui/signin/profile_customization_ui.cc>

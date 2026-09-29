@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: Import custom profile image availability for the override.
+    add_import:
+      import: //brave/ui/webui/custom_profile_image/buildflags/buildflags.gni
+  - description: Declare the custom profile image override dependencies.
+    append_to_target:
+      target: signin_view_controller_delegate_views_impl
+      code: |-
+        deps += [ "//brave/ui/webui/custom_profile_image/buildflags" ]
+        if (enable_brave_custom_profile_image_webui) {
+          deps += [
+            "//brave/browser/ui/webui/custom_profile_image",
+            "//chrome/browser:file_select_helper",
+          ]
+        }
