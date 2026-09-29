@@ -74,7 +74,7 @@ extension BrowserViewController: TopToolbarDelegate, SearchContainerViewControll
   }
 
   func topToolbarDidPressReload(_ topToolbar: TopToolbarView) {
-    if let url = tabManager.selectedTab?.visibleURL?.displayURL {
+    if let url = tabManager.selectedTab?.visibleURL {
       if let decentralizedDNSHelper = decentralizedDNSHelperFor(url: url) {
         topToolbarDidPressReloadTask?.cancel()
         topToolbarDidPressReloadTask = Task { @MainActor in
