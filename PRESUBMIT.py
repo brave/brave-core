@@ -219,12 +219,51 @@ def CheckPylint(input_api, output_api):
     disabled_warnings = [
         'import-outside-toplevel',
         'line-too-long',
+        # Kept off from pylintrc-2.7, which pylintrc-3.2 would enable.
+        'anomalous-backslash-in-string',
+        'bad-indentation',
+        'cell-var-from-loop',
+        'deprecated-method',
+        'deprecated-module',
+        'duplicate-code',
+        'eval-used',
+        'function-redefined',
+        'missing-module-docstring',
+        'no-self-argument',
+        'not-an-iterable',
+        'not-callable',
+        'protected-access',
+        'singleton-comparison',
+        'superfluous-parens',
+        'trailing-whitespace',
+        'undefined-variable',
+        'unused-import',
+        # New or broadened since pylint 2.7; to be fixed and re-enabled.
+        'comparison-of-constants',
+        'consider-using-dict-items',
+        'consider-using-from-import',
+        'consider-using-in',
+        'consider-using-max-builtin',
+        'consider-using-with',
+        'global-variable-not-assigned',
+        'possibly-used-before-assignment',
+        'unnecessary-dunder-call',
+        'unnecessary-lambda-assignment',
+        'unnecessary-list-index-lookup',
+        'unspecified-encoding',
+        'use-dict-literal',
+        'use-implicit-booleaness-not-comparison',
+        'use-implicit-booleaness-not-len',
+        'use-maxsplit-arg',
+        'used-before-assignment',
+        'useless-option-value',
     ]
     return input_api.canned_checks.RunPylint(
         input_api,
         output_api,
         extra_paths_list=extra_paths_list,
-        disabled_warnings=disabled_warnings)
+        disabled_warnings=disabled_warnings,
+        version='3.2')
 
 
 def CheckLicense(input_api, output_api):
