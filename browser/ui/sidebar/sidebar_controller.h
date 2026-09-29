@@ -56,6 +56,13 @@ class SidebarController : public SidebarService::Observer {
   void ActivateItemAt(
       std::optional<size_t> index,
       WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
+
+  // Called when the item at |index| is pressed by the user. Deactivates the
+  // current panel if the item is already active.
+  // |disposition| is only used for shortcut type items.
+  void OnItemPressed(
+      size_t index,
+      WindowOpenDisposition disposition = WindowOpenDisposition::CURRENT_TAB);
   void AddItemWithCurrentTab();
   void UpdateActiveItemState(std::optional<SidebarItem::BuiltInItemType>
                                  active_panel_item = std::nullopt);

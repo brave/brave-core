@@ -101,7 +101,6 @@ class SidebarItemsContentsView : public views::View,
                    int index,
                    bool user_gesture);
   void UpdateItemViewStateAt(size_t index, bool active);
-  bool IsBuiltInTypeItemView(views::View* view) const;
   void SetDefaultImageFor(const sidebar::SidebarItem& item);
 
   // Called when each item is pressed.
