@@ -25,10 +25,11 @@ interface Props {
   children: React.ReactNode
   onClick?: () => void
   onHide?: () => void
+  locked?: boolean
 }
 
 export const Card = (props: Props) => {
-  const { children, onClick, onHide } = props
+  const { children, onClick, onHide, locked } = props
 
   // Refs
   const cardRef = React.useRef<HTMLDivElement>(null)
@@ -46,10 +47,16 @@ export const Card = (props: Props) => {
     card.style.setProperty('--shadow-y', '4px')
   }, [])
 
+  React.useEffect(() => {
+    if (locked) {
+      resetTilt()
+    }
+  }, [locked, resetTilt])
+
   const onMouseMove = React.useCallback(
     (event: React.MouseEvent<HTMLDivElement>) => {
       const card = cardRef.current
-      if (!card || prefersReducedMotion()) {
+      if (!card || locked || prefersReducedMotion()) {
         return
       }
 
@@ -73,7 +80,7 @@ export const Card = (props: Props) => {
       card.style.setProperty('--shadow-x', `${shadowX.toFixed(1)}px`)
       card.style.setProperty('--shadow-y', `${shadowY.toFixed(1)}px`)
     },
-    [],
+    [locked],
   )
 
   const onHideClick = (event: React.MouseEvent<HTMLButtonElement>) => {

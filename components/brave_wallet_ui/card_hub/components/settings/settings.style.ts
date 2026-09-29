@@ -4,38 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as leo from '@brave/leo/tokens/css/variables'
-import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
 import styled from 'styled-components'
 
 // Shared Styles
-import {
-  Text,
-  Column,
-  Row,
-  WalletButton,
-} from '$wallet/components/shared/style'
-
-export const Header = styled(Row)`
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
-
-  &::after {
-    content: '';
-  }
-
-  & > :first-child {
-    justify-self: start;
-  }
-`
-
-export const BackButton = styled(Button)`
-  flex-grow: 0;
-`
-
-export const BackIcon = styled(Icon)`
-  --leo-icon-color: ${leo.color.icon.default};
-`
+import { Text, Column, WalletButton } from '$wallet/components/shared/style'
 
 export const SectionLabel = styled(Text)`
   text-transform: uppercase;

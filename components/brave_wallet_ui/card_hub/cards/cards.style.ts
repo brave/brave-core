@@ -12,7 +12,6 @@ import { WalletButton } from '$wallet/components/shared/style'
 export const StyledCard = styled.div`
   --card-height: 220px;
   --card-thickness: 2px;
-  --card-lift: 0px;
   --tilt-x: 0deg;
   --tilt-y: 0deg;
   --rotate-z: 0deg;
