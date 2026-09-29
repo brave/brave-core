@@ -595,8 +595,8 @@
     <message name="IDS_AUTOFILL_EDIT_SERVER_CREDIT_CARD" desc="The text shown in the secondary action menu button to direct users to pay.google.com to edit the information of credit cards stored in Google Payments.">
       Edit in Google Pay
     </message>
-    <message name="IDS_AUTOFILL_EDIT_SERVER_CREDIT_CARD_IN_WALLET" desc="The text shown in the secondary action menu button to direct users to wallet.google.com to edit the information of credit cards stored in Brave Wallet.">
-      Edit in Brave Wallet
+    <message name="IDS_AUTOFILL_EDIT_SERVER_CREDIT_CARD_IN_WALLET" desc="The text shown in the secondary action menu button to direct users to wallet.google.com to edit the information of credit cards stored in Google Wallet.">
+      Edit in Google Wallet
     </message>
     <message name="IDS_AUTOFILL_VIRTUAL_CARD_TURNED_ON_LABEL" desc="The text shown next to the card summary to indicate that a virtual card has been enabled for the credit card. Virtual cards are credit cards generated from the actual cards and provide extra security.">
       Virtual card turned on
@@ -637,17 +637,17 @@
     <message name="IDS_SETTINGS_LOCAL_PAYMENT_METHOD_REMOVE_CONFIRMATION_DESCRIPTION" desc="The notice/warning for the user before the card or IBAN (International Bank Account Number) deletion.">
       This payment method will be deleted from this device
     </message>
-    <message name="IDS_SETTINGS_GOOGLE_WALLET" desc="Label used to differentiate when an Autofill AI entity (such as vehicle information) is stored in Brave Wallet.">
-      Brave Wallet
+    <message name="IDS_SETTINGS_GOOGLE_WALLET" desc="Label used to differentiate when an Autofill AI entity (such as vehicle information) is stored in Google Wallet.">
+      Google Wallet
     </message>
-    <message name="IDS_SETTINGS_PAYMENTS_MANAGE_LOYALTY_CARDS_AND_PAYMENT_METHODS" desc="Shown in the payments section of settings. Descriptive text to inform the user that payment methods and loyalty cards can be accessed via link. Brave Wallet should not be translated because it is the product name. Has two links that opens different pages on Brave Wallet.">
-     Visit Brave Wallet to add or manage <ph name="BEGIN_LINK_LOYALTY_CARDS">&lt;a href="$1" target="_blank"&gt;</ph>loyalty cards<ph name="END_LINK_LOYALTY_CARDS">&lt;/a&gt;</ph> or Google Pay <ph name="BEGIN_LINK_PAYMENT_METHODS">&lt;a href="$2" target="_blank"&gt;</ph>payment methods<ph name="END_LINK_PAYMENT_METHODS">&lt;/a&gt;</ph>
+    <message name="IDS_SETTINGS_PAYMENTS_MANAGE_LOYALTY_CARDS_AND_PAYMENT_METHODS" desc="Shown in the payments section of settings. Descriptive text to inform the user that payment methods and loyalty cards can be accessed via link. Google Wallet should not be translated because it is the product name. Has two links that opens different pages on Google Wallet.">
+     Visit Google Wallet to add or manage <ph name="BEGIN_LINK_LOYALTY_CARDS">&lt;a href="$1" target="_blank"&gt;</ph>loyalty cards<ph name="END_LINK_LOYALTY_CARDS">&lt;/a&gt;</ph> or Google Pay <ph name="BEGIN_LINK_PAYMENT_METHODS">&lt;a href="$2" target="_blank"&gt;</ph>payment methods<ph name="END_LINK_PAYMENT_METHODS">&lt;/a&gt;</ph>
     </message>
-    <message name="IDS_SETTINGS_PAYMENTS_MANAGE_WALLET_DATA" desc="Shown in the payments section of settings. Descriptive text to inform the user that data and privacy preferences, payment methods, and passes can be accessed via link. Brave Wallet should not be translated because it is the product name. Has three links that open different pages on Brave Wallet.">
-      Visit Brave Wallet to control <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph>data and privacy preferences<ph name="END_LINK1">&lt;/a&gt;</ph> or manage <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank"&gt;</ph>payment methods<ph name="END_LINK2">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK3">&lt;a href="$3" target="_blank"&gt;</ph>passes<ph name="END_LINK3">&lt;/a&gt;</ph> like loyalty cards and IDs
+    <message name="IDS_SETTINGS_PAYMENTS_MANAGE_WALLET_DATA" desc="Shown in the payments section of settings. Descriptive text to inform the user that data and privacy preferences, payment methods, and passes can be accessed via link. Google Wallet should not be translated because it is the product name. Has three links that open different pages on Google Wallet.">
+      Visit Google Wallet to control <ph name="BEGIN_LINK1">&lt;a href="$1" target="_blank"&gt;</ph>data and privacy preferences<ph name="END_LINK1">&lt;/a&gt;</ph> or manage <ph name="BEGIN_LINK2">&lt;a href="$2" target="_blank"&gt;</ph>payment methods<ph name="END_LINK2">&lt;/a&gt;</ph> and <ph name="BEGIN_LINK3">&lt;a href="$3" target="_blank"&gt;</ph>passes<ph name="END_LINK3">&lt;/a&gt;</ph> like loyalty cards and IDs
     </message>
     <message name="IDS_SETTINGS_REMOTE_WALLET_PASSES_LINK_LABEL" desc="The title and ARIA (accessibility) label for a link in Brave settings that opens the payment methods settings on https://wallet.google.com/wallet/passes. Note that the ARIA role and the link icon already convey that this is a link that will be opened when you click on it. Therefore, the message does not contain a verb.">
-      Your Brave Wallet passes
+      Your Google Wallet passes
     </message>
     <message name="IDS_SETTINGS_PAYMENTS_SAVED_TO_THIS_DEVICE_ONLY" desc="Shown in the payments section of settings. Descriptive text to inform the user that this credit card will be saved to local device only.">
      This card will be saved to this device only
@@ -662,7 +662,7 @@
       Your payment methods in Google Pay
     </message>
     <message name="IDS_SETTINGS_REMOTE_PAYMENT_METHODS_WALLET_LINK_LABEL" desc="The title and ARIA (accessibility) label for a link in chrome://settings/payments that opens the payment methods settings on https://wallet.google.com. Note that the ARIA role and the link icon already convey that this is a link that will be opened when you click on it. Therefore, the message does not contain a verb.">
-      Your payment methods in Brave Wallet
+      Your payment methods in Google Wallet
     </message>
     <message name="IDS_SETTINGS_NAME_ON_CREDIT_CARD" desc="The title for the input that lets users modify the name on the credit card.">
       Name on card
@@ -809,7 +809,7 @@
       * <ph name="FIELD_LIST">$1<ex>Name, Address, or Phone Number</ex></ph> is required
     </message>
     <message name="IDS_SETTINGS_WALLETABLE_PASS_DETECTION_TOGGLE_LABEL" desc="Label for the toggle in Settings that allows managing the full page save settings for wallet.">
-      Save info to Brave Wallet from pages you view
+      Save info to Google Wallet from pages you view
     </message>
     <message name="IDS_SETTINGS_WALLETABLE_PASS_DETECTION_TOGGLE_SUB_LABEL" desc="The sub-label of the page in Settings that allows managing the full page save settings for wallet.">
       Access your passes, like event tickets and loyalty cards, from your device
@@ -824,7 +824,7 @@
       To offer suggestions and improve this feature, the URL and full page content of the site you visit are shared with Brave
     </message>
     <message name="IDS_SETTINGS_WALLETABLE_PASS_DETECTION_TO_CONSIDER_DATA_STORAGE" desc="Bullet 2 of 2 that appears beneath the 'Things to consider' title for wallet.">
-      Your info is available in Brave Wallet on any signed-in device
+      Your info is available in Google Wallet on any signed-in device
     </message>
 
     <if expr="is_win or is_macosx">

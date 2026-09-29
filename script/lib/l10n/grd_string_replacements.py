@@ -60,6 +60,7 @@ fixup_replacements = [
     (r'Brave Projects', r'Chromium Projects'),
     (r'Brave Root Program', r'Chrome Root Program'),
     (r'BraveVox', r'ChromeVox'),
+    (r'Brave Wallet', r'Google Wallet'),
     (r'powered by Brave AI', r'powered by Google AI'),
     (r'Brave Extension developer documentation',
      r'Google Extension developer documentation'),

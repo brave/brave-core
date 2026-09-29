@@ -59,8 +59,8 @@
   <message name="IDS_AUTOFILL_GOOGLE_PAY_LOGO_ACCESSIBLE_NAME" desc="The accessible name for the Google Pay logo." formatter_data="android_java">
     Google Pay logo
   </message>
-  <message name="IDS_AUTOFILL_GOOGLE_WALLET_LOGO_ACCESSIBLE_NAME" desc="The accessible name for the Brave Wallet logo.">
-    Brave Wallet logo
+  <message name="IDS_AUTOFILL_GOOGLE_WALLET_LOGO_ACCESSIBLE_NAME" desc="The accessible name for the Google Wallet logo.">
+    Google Wallet logo
   </message>
   <message name="IDS_AUTOFILL_CHROME_LOGO_ACCESSIBLE_NAME" desc="The accessible name for the Brave logo.">
     Brave logo
@@ -157,8 +157,8 @@
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_TITLE_TO_CLOUD_SECURITY" desc="Title text for the credit card upload save prompt on Desktop, using security-focused messaging. Became the new default for Desktop in Dec. 2024 and new default for Android and IOS (bottomsheet only) in H1 2025.">
     Save card securely?
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_IN_GOOGLE_WALLET_PROMPT_TITLE" desc="Title text for the save credit card in Brave Wallet save prompt. This title specifically references Brave Wallet instead of Brave sync chain.">
-    Save card in Brave Wallet
+  <message name="IDS_AUTOFILL_SAVE_CARD_IN_GOOGLE_WALLET_PROMPT_TITLE" desc="Title text for the save credit card in Google Wallet save prompt. This title specifically references Google Wallet instead of Brave sync chain.">
+    Save card in Google Wallet
   </message>
   <message name="IDS_AUTOFILL_SAVE_CVC_PROMPT_TITLE_TO_CLOUD" desc="Title text for the Autofill CVC upload prompt that offers to upload CVC to the Sync server for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission.">
     Save security code?
@@ -194,23 +194,23 @@
       To pay faster next time, save your card and billing address in your Brave sync chain
     </message>
   </if>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_TO_WALLET_EXPLANATION" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Brave Wallet. The prompt will be shown either in a bubble below the omnibox, or in a bottom sheet, or in an infobar.">
-    To pay faster next time, save your card and billing address in Brave Wallet
+  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_TO_WALLET_EXPLANATION" desc="Explanation of the effect of the Autofill save card prompt when the card is to be saved by uploading it to Google Wallet. The prompt will be shown either in a bubble below the omnibox, or in a bottom sheet, or in an infobar.">
+    To pay faster next time, save your card and billing address in Google Wallet
   </message>
   <message name="IDS_AUTOFILL_SAVE_CVC_PROMPT_EXPLANATION_UPLOAD" desc="Explanation text for the Autofill save CVC prompt that offers to upload CVC to the Sync server for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission.">
     This card's CVC will be encrypted and saved in your Brave sync chain for faster checkout
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CVC_TO_WALLET_PROMPT_EXPLANATION_UPLOAD" desc="Explanation text for the Autofill save CVC to Brave Wallet prompt that offers to upload CVC to the Sync server for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission.">
-    This card's CVC will be encrypted and saved in Brave Wallet for faster checkout
+  <message name="IDS_AUTOFILL_SAVE_CVC_TO_WALLET_PROMPT_EXPLANATION_UPLOAD" desc="Explanation text for the Autofill save CVC to Google Wallet prompt that offers to upload CVC to the Sync server for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission.">
+    This card's CVC will be encrypted and saved in Google Wallet for faster checkout
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_EXPLANATION_SECURITY" desc="Explanation of the benefit of credit card upload save on Desktop, using security-focused messaging. Became the new default for Desktop in Dec. 2024 and new default for Android and IOS (bottomsheet only) in H1 2025.">
     Pay faster when your card is saved. Card details are encrypted in your Brave sync chain.
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_TO_WALLET_EXPLANATION_SECURITY" desc="Explanation of the benefit of credit card upload save on Desktop, using security-focused messaging. Became the new default for Desktop in Dec. 2024 and new default for Android and IOS (bottomsheet only) in H1 2025. The final line specifically references Brave Wallet instead of Brave sync chain.">
-    Pay faster when your card is saved. Card details are encrypted in Brave Wallet.
+  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_TO_WALLET_EXPLANATION_SECURITY" desc="Explanation of the benefit of credit card upload save on Desktop, using security-focused messaging. Became the new default for Desktop in Dec. 2024 and new default for Android and IOS (bottomsheet only) in H1 2025. The final line specifically references Google Wallet instead of Brave sync chain.">
+    Pay faster when your card is saved. Card details are encrypted in Google Wallet.
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_TO_WALLET_V2_EXPLANATION" desc="Explanation of the benefit of credit card upload save to Brave Wallet. The final line specifically references Brave Wallet instead of Brave sync chain.">
-    Pay faster with Google Pay when your card is saved. Card details are encrypted in Brave Wallet.
+  <message name="IDS_AUTOFILL_SAVE_CARD_PROMPT_UPLOAD_TO_WALLET_V2_EXPLANATION" desc="Explanation of the benefit of credit card upload save to Google Wallet. The final line specifically references Google Wallet instead of Brave sync chain.">
+    Pay faster with Google Pay when your card is saved. Card details are encrypted in Google Wallet.
   </message>
   <if expr="is_android or is_ios">
     <message name="IDS_AUTOFILL_SAVE_CVC_MESSAGE_SAVE_ACCEPT" desc="Positive button label for the Autofill save CVC prompt that offers to save CVC for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission. The prompt is shown on Android and IOS devices.">
@@ -221,8 +221,8 @@
     <message name="IDS_AUTOFILL_SAVE_CVC_PROMPT_EXPLANATION_UPLOAD_IOS" desc="Explanation text for the Autofill save CVC prompt that offers to upload CVC to the Sync server for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission on IOS devices.">
       For faster checkout, save this CVC in your account, <ph name="ACCOUNT_EMAIL">$1<ex>youraccount@email.com</ex></ph>
     </message>
-    <message name="IDS_AUTOFILL_SAVE_CVC_TO_WALLET_PROMPT_EXPLANATION_UPLOAD_IOS" desc="Explanation text for the Autofill save CVC prompt that offers to upload CVC to the Sync server for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission on IOS devices. The wording specifically references Brave Wallet instead of Brave sync chain.">
-      For faster checkout, save this CVC in Brave Wallet (<ph name="ACCOUNT_EMAIL">$1<ex>youraccount@email.com</ex></ph>)
+    <message name="IDS_AUTOFILL_SAVE_CVC_TO_WALLET_PROMPT_EXPLANATION_UPLOAD_IOS" desc="Explanation text for the Autofill save CVC prompt that offers to upload CVC to the Sync server for existing server cards. This prompt is shown if a CVC is detected for an existing server card on form submission on IOS devices. The wording specifically references Google Wallet instead of Brave sync chain.">
+      For faster checkout, save this CVC in Google Wallet (<ph name="ACCOUNT_EMAIL">$1<ex>youraccount@email.com</ex></ph>)
     </message>
     <message name="IDS_AUTOFILL_SAVE_CVC_PROMPT_EXPLANATION_LOCAL_SAVE_IOS" desc="Explanation text for the Autofill save CVC prompt that offers to save CVC to this device for existing local cards. This prompt is shown if a CVC is detected for an existing local card on form submission on IOS devices.">
       For faster checkout, save this CVC on your device
@@ -282,8 +282,8 @@
       <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_EXPLANATION_UPLOAD" desc="Explanation text for the Autofill Save and Fill dialog for cards that will be saved to the GPay server.">
         Autofill this card for purchases made in Brave when it's saved to use with Google Pay
       </message>
-      <message name="IDS_AUTOFILL_SAVE_AND_FILL_TO_WALLET_DIALOG_EXPLANATION_UPLOAD" desc="Explanation text for the Autofill Save and Fill dialog for cards that will be saved to Brave Wallet.">
-        Autofill this card for purchases made in Brave when it's saved in Brave Wallet
+      <message name="IDS_AUTOFILL_SAVE_AND_FILL_TO_WALLET_DIALOG_EXPLANATION_UPLOAD" desc="Explanation text for the Autofill Save and Fill dialog for cards that will be saved to Google Wallet.">
+        Autofill this card for purchases made in Brave when it's saved in Google Wallet
       </message>
     </if>
     <if expr="not _google_chrome">
@@ -293,8 +293,8 @@
       <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_EXPLANATION_UPLOAD" desc="Explanation text for the Autofill Save and Fill dialog for cards that will be saved to the GPay server.">
         Autofill this card for purchases made in Brave when it's saved to use with Google Pay
       </message>
-      <message name="IDS_AUTOFILL_SAVE_AND_FILL_TO_WALLET_DIALOG_EXPLANATION_UPLOAD" desc="Explanation text for the Autofill Save and Fill dialog for cards that will be saved to Brave Wallet.">
-        Autofill this card for purchases made in Brave when it's saved in Brave Wallet
+      <message name="IDS_AUTOFILL_SAVE_AND_FILL_TO_WALLET_DIALOG_EXPLANATION_UPLOAD" desc="Explanation text for the Autofill Save and Fill dialog for cards that will be saved to Google Wallet.">
+        Autofill this card for purchases made in Brave when it's saved in Google Wallet
       </message>
     </if>
     <message name="IDS_AUTOFILL_SAVE_AND_FILL_DIALOG_CARD_NUMBER_LABEL" desc="The label text for the card number textfield.">
@@ -726,14 +726,14 @@
   <message name="IDS_AUTOFILL_SAVE_IBAN_PROMPT_TITLE_SERVER" desc="Title text for the Autofill save IBAN (International Bank Account Number) to the GPay server prompt when a user submits a form with a valid IBAN.">
     Save IBAN?
   </message>
-  <message name="IDS_AUTOFILL_SAVE_IBAN_TO_WALLET_PROMPT_TITLE" desc="Title text for the Autofill save IBAN (International Bank Account Number) to the Brave Wallet server prompt when a user submits a form with a valid IBAN.">
-    Save IBAN in Brave Wallet
+  <message name="IDS_AUTOFILL_SAVE_IBAN_TO_WALLET_PROMPT_TITLE" desc="Title text for the Autofill save IBAN (International Bank Account Number) to the Google Wallet server prompt when a user submits a form with a valid IBAN.">
+    Save IBAN in Google Wallet
   </message>
   <message name="IDS_AUTOFILL_UPLOAD_IBAN_PROMPT_EXPLANATION" desc="Explanation text for the Autofill save IBAN (International Bank Account Number) to the GPay server prompt when a user submits a form with a valid IBAN.">
     To autofill this IBAN next time, save it in your Brave sync chain
   </message>
-  <message name="IDS_AUTOFILL_UPLOAD_IBAN_TO_WALLET_PROMPT_EXPLANATION" desc="Explanation text for the Autofill save IBAN (International Bank Account Number) to the Brave Wallet server prompt when a user submits a form with a valid IBAN.">
-    To autofill this IBAN next time, save it in Brave Wallet
+  <message name="IDS_AUTOFILL_UPLOAD_IBAN_TO_WALLET_PROMPT_EXPLANATION" desc="Explanation text for the Autofill save IBAN (International Bank Account Number) to the Google Wallet server prompt when a user submits a form with a valid IBAN.">
+    To autofill this IBAN next time, save it in Google Wallet
   </message>
   <!-- Autofill save IBAN bottom sheet prompt -->
   <if expr="is_android">
@@ -872,8 +872,8 @@
   <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_CONTENT_LABEL" desc="Text explaining the benefit of enrolling a credit card as a virtual card. Also contains a link to learn more about virtual cards from IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL.">
     A virtual card hides your actual card to help protect you from potential fraud. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL">$1<ex>Learn about virtual cards</ex></ph>
   </message>
-  <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_CONTENT_LABEL_V2" desc="Text explaining the benefit of enrolling a credit card as a virtual card and manage on Brave Wallet. Also contains a link to learn more about virtual cards from IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL.">
-    A virtual card number will be filled when you check out with this card to protect your actual details. Manage in Brave Wallet. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL">$1<ex>Learn about virtual cards</ex></ph>
+  <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DIALOG_CONTENT_LABEL_V2" desc="Text explaining the benefit of enrolling a credit card as a virtual card and manage on Google Wallet. Also contains a link to learn more about virtual cards from IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL.">
+    A virtual card number will be filled when you check out with this card to protect your actual details. Manage in Google Wallet. <ph name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_LEARN_MORE_LINK_LABEL">$1<ex>Learn about virtual cards</ex></ph>
   </message>
   <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLLMENT_DECLINE_BUTTON_LABEL_SKIP" desc="Text displayed in the decline button in the virtual card enroll bubble. It is displayed only if the bubble/infobar will still be shown again at a later date after this one is declined.">
     Skip
@@ -1077,10 +1077,10 @@
       Cards not accepted by this merchant are disabled such as virtual cards.
   </message>
   <message name="IDS_AUTOFILL_DOWNSTREAM_CARD_AWARENESS_IPH_BUBBLE_LABEL" desc="Text shown in the `In-Product Help(IPH)` bubble for externally-saved card suggestions. This IPH is displayed when a user interacts with a payment form for the first time after adding a card through other Brave services outside of Brave.">
-      You can autofill cards that are saved in Brave Wallet
+      You can autofill cards that are saved in Google Wallet
   </message>
   <message name="IDS_AUTOFILL_DOWNSTREAM_CARD_AWARENESS_IPH_BUBBLE_LABEL_SCREENREADER" is_accessibility_with_no_ui="true" desc="Screenreader text for the `In-Product Help(IPH)` bubble for downstream card awareness. This IPH is displayed when a user interacts with a payment form for the first time after adding a card through other Brave services outside of Brave.">
-      You can autofill cards that are saved in Brave Wallet.
+      You can autofill cards that are saved in Google Wallet.
   </message>
   <!-- virtual cards related strings - end -->
   <message name="IDS_AUTOFILL_CARD_AUTH_SELECTION_DIALOG_TITLE_MULTIPLE_OPTIONS" desc="Title for the credit card unmasking dialog for multiple challenge options. Used in VCN authentication, and once a challenge option is selected a new dialog is rendered where the user authenticates with the selected challenge option." formatter_data="android_java">
@@ -1234,8 +1234,8 @@
       <message name="IDS_AUTOFILL_BNPL_TOS_REVIEW_TEXT" desc="The text informing the user that they will be asked to review their order in the Buy-Now-Pay-Later Terms of Service dialog.">
         After you review your order, you must sign into or create an account with <ph name="BNPL_ISSUER_NAME">%1$s</ph>. This account will be automatically linked to Google Pay.
       </message>
-      <message name="IDS_AUTOFILL_BNPL_TOS_REVIEW_TEXT_WALLET_BRANDING" desc="The text informing the user that they will be asked to review their order in the Buy-Now-Pay-Later Terms of Service dialog with Brave Wallet branding." formatter_data="android_java">
-        After you review your order, you must sign into or create an account with <ph name="BNPL_ISSUER_NAME">%1$s</ph>. This account will be automatically linked in Brave Wallet.
+      <message name="IDS_AUTOFILL_BNPL_TOS_REVIEW_TEXT_WALLET_BRANDING" desc="The text informing the user that they will be asked to review their order in the Buy-Now-Pay-Later Terms of Service dialog with Google Wallet branding." formatter_data="android_java">
+        After you review your order, you must sign into or create an account with <ph name="BNPL_ISSUER_NAME">%1$s</ph>. This account will be automatically linked in Google Wallet.
       </message>
       <message name="IDS_AUTOFILL_BNPL_TOS_APPROVE_TEXT" desc="The text informing the user that that BNPL issuer will check and approve their eligibility in the Buy-Now-Pay-Later Terms of Service dialog." formatter_data="android_java">
         <ph name="BNPL_ISSUER_NAME">%1$s</ph> will check your eligibility (this won't affect your credit score). If approved, <ph name="BNPL_ISSUER_NAME">%1$s</ph> will provide payment plans for you to choose from and complete your purchase.
@@ -1254,8 +1254,8 @@
       <message name="IDS_AUTOFILL_BNPL_TOS_REVIEW_TEXT" desc="The text informing the user that they will be asked to review their order in the Buy-Now-Pay-Later Terms of Service dialog.">
         After you review your order, you must sign into or create an account with <ph name="BNPL_ISSUER_NAME">$1</ph>. This account will be automatically linked to Google Pay.
       </message>
-      <message name="IDS_AUTOFILL_BNPL_TOS_REVIEW_TEXT_WALLET_BRANDING" desc="The text informing the user that they will be asked to review their order in the Buy-Now-Pay-Later Terms of Service dialog with Brave Wallet branding.">
-        After you review your order, you must sign into or create an account with <ph name="BNPL_ISSUER_NAME">$1</ph>. This account will be automatically linked in Brave Wallet.
+      <message name="IDS_AUTOFILL_BNPL_TOS_REVIEW_TEXT_WALLET_BRANDING" desc="The text informing the user that they will be asked to review their order in the Buy-Now-Pay-Later Terms of Service dialog with Google Wallet branding.">
+        After you review your order, you must sign into or create an account with <ph name="BNPL_ISSUER_NAME">$1</ph>. This account will be automatically linked in Google Wallet.
       </message>
       <message name="IDS_AUTOFILL_BNPL_TOS_APPROVE_TEXT" desc="The text informing the user that that BNPL issuer will check and approve their eligibility in the Buy-Now-Pay-Later Terms of Service dialog.">
         <ph name="BNPL_ISSUER_NAME">$1</ph> will check your eligibility (this won't affect your credit score). If approved, <ph name="BNPL_ISSUER_NAME">$1</ph> will provide payment plans for you to choose from and complete your purchase.
@@ -1362,10 +1362,10 @@
   <message name="IDS_AUTOFILL_PROMO_CODE_SUGGESTIONS_FOOTER_TEXT" desc="Label for the footer text of the autofill suggestions popup when a user clicks on a promo code field. It redirects the user to the offer webview page for more details on the promo code offers suggested. An example of details the user can see is the terms and conditions of the promo code offers that are shown in the autofill suggestions popup.">
     See promo code details
   </message>
-  <message name="IDS_AUTOFILL_WALLET_DIRECT_OFFERS_IPH_BUBBLE_LABEL" desc="Text shown in the IPH bubble for merchant promo code fields when direct offers from Brave Wallet are available.">
+  <message name="IDS_AUTOFILL_WALLET_DIRECT_OFFERS_IPH_BUBBLE_LABEL" desc="Text shown in the IPH bubble for merchant promo code fields when direct offers from Google Wallet are available.">
     Select the promo code field to view and fill your saved offers
   </message>
-  <message name="IDS_AUTOFILL_WALLET_DIRECT_OFFERS_IPH_BUBBLE_LABEL_SCREENREADER" is_accessibility_with_no_ui="true" desc="Screenreader text for the IPH bubble for merchant promo code fields when direct offers from Brave Wallet are available.">
+  <message name="IDS_AUTOFILL_WALLET_DIRECT_OFFERS_IPH_BUBBLE_LABEL_SCREENREADER" is_accessibility_with_no_ui="true" desc="Screenreader text for the IPH bubble for merchant promo code fields when direct offers from Google Wallet are available.">
     Select the promo code field to view and fill your saved offers
   </message>
   <if expr="not is_ios and not is_android">
@@ -1429,8 +1429,8 @@
   </if>
 
   <!-- Payments Wallet Reminder Notice strings -->
-  <message name="IDS_AUTOFILL_PAYMENT_METHODS_WALLET_REMINDER_NOTICE" desc="Shown in the payments section of settings. Descriptive text to inform the user that data and privacy preferences, payment methods, and passes can be accessed via link. Brave Wallet should not be translated because it is the product name. Has three links that open different pages on Brave Wallet." formatter_data="android_java">
-    Visit Brave Wallet to control <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>data and privacy preferences<ph name="END_LINK1">&lt;/link1&gt;</ph> or manage <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>payment methods<ph name="END_LINK2">&lt;/link2&gt;</ph> and <ph name="BEGIN_LINK3">&lt;link3&gt;</ph>passes<ph name="END_LINK3">&lt;/link3&gt;</ph> like loyalty cards and IDs
+  <message name="IDS_AUTOFILL_PAYMENT_METHODS_WALLET_REMINDER_NOTICE" desc="Shown in the payments section of settings. Descriptive text to inform the user that data and privacy preferences, payment methods, and passes can be accessed via link. Google Wallet should not be translated because it is the product name. Has three links that open different pages on Google Wallet." formatter_data="android_java">
+    Visit Google Wallet to control <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>data and privacy preferences<ph name="END_LINK1">&lt;/link1&gt;</ph> or manage <ph name="BEGIN_LINK2">&lt;link2&gt;</ph>payment methods<ph name="END_LINK2">&lt;/link2&gt;</ph> and <ph name="BEGIN_LINK3">&lt;link3&gt;</ph>passes<ph name="END_LINK3">&lt;/link3&gt;</ph> like loyalty cards and IDs
   </message>
 
   <!-- Autofill credit card preferences -->
@@ -1469,10 +1469,10 @@
     Check out faster with autofill
   </message>
   <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_SECURITY_DESCRIPTION" desc="Security description for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown.">
-    Turn on autofill to safely check out online. Your card details are encrypted in Brave Wallet.
+    Turn on autofill to safely check out online. Your card details are encrypted in Google Wallet.
   </message>
   <message name="IDS_AUTOFILL_CHURNED_USERS_BUBBLE_CONVENIENCE_DESCRIPTION" desc="Convenience description for the payments churned users bubble. On acceptance, payments autofill is turned on for a user and a confirmation bubble is shown.">
-    Fill card details automatically when you check out online. Cards are saved in Brave Wallet securely.
+    Fill card details automatically when you check out online. Cards are saved in Google Wallet securely.
   </message>
   <message name="IDS_AUTOFILL_CHURNED_USERS_CONFIRMATION_BUBBLE_TITLE" desc="Title for the churned users confirmation bubble, which comes after the user has accepted the churned users bubble, letting the user know that autofill is turned on.">
     Autofill turned on
@@ -1516,20 +1516,20 @@
     <message name="IDS_AUTOFILL_BOTTOM_SHEET_BACK_BUTTON_DESCRIPTION" desc="Accessibility string for the icon that allows closing the current screen and going back to the intial screen on a bottomsheet." formatter_data="android_java">
       Back
     </message>
-    <message name="IDS_AUTOFILL_BOTTOM_SHEET_MANAGE_LOYALTY_CARDS" desc="An option in the autofill bottom sheet that triggers navigation to the loyalty cards management UI in Brave Wallet." formatter_data="android_java">
+    <message name="IDS_AUTOFILL_BOTTOM_SHEET_MANAGE_LOYALTY_CARDS" desc="An option in the autofill bottom sheet that triggers navigation to the loyalty cards management UI in Google Wallet." formatter_data="android_java">
       Manage loyalty cards
     </message>
     <message name="IDS_AUTOFILL_PAYMENT_METHOD_BOTTOM_SHEET_TITLE" desc="The title of the touch to fill bottom sheet for payments that appears under the GPay icon." formatter_data="android_java">
       Autofill payment info
     </message>
-    <message name="IDS_AUTOFILL_LOYALTY_CARD_BOTTOM_SHEET_TITLE" desc="The title of the touch to fill bottom sheet for loyalty cards that appears under the Brave Wallet icon." formatter_data="android_java">
+    <message name="IDS_AUTOFILL_LOYALTY_CARD_BOTTOM_SHEET_TITLE" desc="The title of the touch to fill bottom sheet for loyalty cards that appears under the Google Wallet icon." formatter_data="android_java">
       Autofill loyalty card
     </message>
-    <message name="IDS_AUTOFILL_LOYALTY_CARD_FIRST_TIME_USAGE_BOTTOM_SHEET_TITLE" desc="The title of the touch to fill bottom sheet for loyalty cards that appears under the Brave Wallet icon. This title is shown to promote loyalty card filling to users." formatter_data="android_java">
-      Now you can autofill loyalty cards from Brave Wallet
+    <message name="IDS_AUTOFILL_LOYALTY_CARD_FIRST_TIME_USAGE_BOTTOM_SHEET_TITLE" desc="The title of the touch to fill bottom sheet for loyalty cards that appears under the Google Wallet icon. This title is shown to promote loyalty card filling to users." formatter_data="android_java">
+      Now you can autofill loyalty cards from Google Wallet
     </message>
     <message name="IDS_AUTOFILL_LOYALTY_CARD_FIRST_TIME_USAGE_BOTTOM_SHEET_SUBTITLE" desc="The subtitle of the touch to fill bottom sheet for loyalty cards that appears under the title. This subtitle is shown to promote loyalty card filling to users." formatter_data="android_java">
-      Manage loyalty cards or turn these suggestions off in Brave Wallet
+      Manage loyalty cards or turn these suggestions off in Google Wallet
     </message>
     <message name="IDS_AUTOFILL_PAYMENT_METHOD_CONTINUE_BUTTON" desc="The label of the button, which would fill in the web form with card credentials." formatter_data="android_java">
       Continue
@@ -1537,7 +1537,7 @@
     <message name="IDS_AUTOFILL_LOYALTY_CARD_AUTOFILL_BUTTON" desc="The label of the button, which would fill in the web form with a loyalty card number." formatter_data="android_java">
       Autofill
     </message>
-    <message name="IDS_AUTOFILL_LOYALTY_CARD_WALLET_SETTINGS_BUTTON" desc="The label of the button, which redirects the user to the Brave Wallet loyalty card settings in Brave." formatter_data="android_java">
+    <message name="IDS_AUTOFILL_LOYALTY_CARD_WALLET_SETTINGS_BUTTON" desc="The label of the button, which redirects the user to the Google Wallet loyalty card settings in Brave." formatter_data="android_java">
       Wallet settings
     </message>
     <message name="IDS_AUTOFILL_PAYMENT_METHOD_BOTTOM_SHEET_CONTENT_DESCRIPTION" desc="Accessibility string read when the bottom sheet is opened. It describes the bottom sheet where a user can pick a payment method to fill into a form." formatter_data="android_java">
@@ -1674,7 +1674,7 @@ To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment 
       All security codes saved on your device and in Brave sync chain will be deleted
     </message>
     <message name="IDS_AUTOFILL_SETTINGS_PAGE_BULK_REMOVE_CVC_FROM_WALLET_DESCRIPTION" desc="Description for the modal dialog when the user is trying to bulk remove/delete all the CVCs stored locally and on Brave servers.">
-      All security codes saved on your device and in Brave Wallet will be deleted
+      All security codes saved on your device and in Google Wallet will be deleted
     </message>
     <message name="IDS_AUTOFILL_SETTINGS_PAGE_CVC_TAG_FOR_CREDIT_CARD_LIST_ENTRY" desc="Tag present on each entry in the credit card list on the payments settings page if that entry has a cvc saved to it.">
       CVC saved
@@ -1717,8 +1717,8 @@ To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment 
     <message name="IDS_AUTOFILL_SAVE_SERVER_IBAN_SUCCESS_SNACKBAR_MESSAGE_TEXT" desc="Text to be displayed in the snackbar shown after a server IBAN is saved.">
       IBAN saved to your Brave sync chain
     </message>
-    <message name="IDS_AUTOFILL_SAVE_SERVER_IBAN_TO_WALLET_SUCCESS_SNACKBAR_MESSAGE_TEXT" desc="Text to be displayed in the snackbar shown after a server IBAN is saved in Brave Wallet.">
-      IBAN saved in Brave Wallet
+    <message name="IDS_AUTOFILL_SAVE_SERVER_IBAN_TO_WALLET_SUCCESS_SNACKBAR_MESSAGE_TEXT" desc="Text to be displayed in the snackbar shown after a server IBAN is saved in Google Wallet.">
+      IBAN saved in Google Wallet
     </message>
     <message name="IDS_AUTOFILL_SAVE_SERVER_IBAN_SUCCESS_SNACKBAR_BUTTON_TEXT" desc="Text shown on the ok button of the confirmation prompt after an IBAN is saved.">
       Got it
@@ -1748,35 +1748,35 @@ To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment 
   <message name="IDS_AUTOFILL_SAVE_CARD_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT" desc="Description text for confirmation shown after save card is successfully uploaded and saved to the server.">
     Your card is saved in your Brave sync chain so you can autofill it for future purchases
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_TO_WALLET_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT" desc="Description text for confirmation shown after Brave Wallet save card is successfully uploaded and saved to the server.">
-    Your card is saved in Brave Wallet so you can autofill it for future purchases
+  <message name="IDS_AUTOFILL_SAVE_CARD_TO_WALLET_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT" desc="Description text for confirmation shown after Google Wallet save card is successfully uploaded and saved to the server.">
+    Your card is saved in Google Wallet so you can autofill it for future purchases
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_TO_WALLET_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT_V2" desc="Description text for confirmation shown after Brave Wallet save card is successfully uploaded and saved to the server.">
-    This card is saved in Brave Wallet so you can use it across Brave products
+  <message name="IDS_AUTOFILL_SAVE_CARD_TO_WALLET_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT_V2" desc="Description text for confirmation shown after Google Wallet save card is successfully uploaded and saved to the server.">
+    This card is saved in Google Wallet so you can use it across Brave products
   </message>
   <message name="IDS_AUTOFILL_SAVE_CARD_CONFIRMATION_FAILURE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after save card upload to the server was unsuccessful.">
     This card couldn't be saved in your Brave sync chain. It's saved to Brave on this device instead.
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_TO_WALLET_CONFIRMATION_FAILURE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after Brave Wallet save card upload to the server was unsuccessful.">
-    This card couldn't be saved in Brave Wallet. It's saved to Brave on this device instead.
+  <message name="IDS_AUTOFILL_SAVE_CARD_TO_WALLET_CONFIRMATION_FAILURE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after Google Wallet save card upload to the server was unsuccessful.">
+    This card couldn't be saved in Google Wallet. It's saved to Brave on this device instead.
   </message>
   <message name="IDS_AUTOFILL_SAVE_IBAN_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT" desc="Description text for confirmation shown after upload save IBAN attempt was successful and it was uploaded to the server.">
     This IBAN is saved in your Brave sync chain so you can use it across Brave services.
   </message>
-  <message name="IDS_AUTOFILL_SAVE_IBAN_TO_WALLET_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT" desc="Description text for confirmation shown after upload save IBAN attempt was successful and it was uploaded to the server. The wording specifically references Brave Wallet.">
-    This IBAN is saved in Brave Wallet so you can use it across Brave products.
+  <message name="IDS_AUTOFILL_SAVE_IBAN_TO_WALLET_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT" desc="Description text for confirmation shown after upload save IBAN attempt was successful and it was uploaded to the server. The wording specifically references Google Wallet.">
+    This IBAN is saved in Google Wallet so you can use it across Brave products.
   </message>
   <message name="IDS_AUTOFILL_SAVE_IBAN_CONFIRMATION_FAILURE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after upload save IBAN attempt was failed and and it was not uploaded to the server.">
     This IBAN couldn't be saved in your Brave sync chain. It's saved to Brave on this device instead. Brave will ask you again the next time you use this IBAN.
   </message>
-  <message name="IDS_AUTOFILL_SAVE_IBAN_TO_WALLET_CONFIRMATION_FAILURE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after upload save IBAN to Brave Wallet attempt was failed and and it was not uploaded to the server.">
-     This IBAN couldn't be saved in Brave Wallet. It's saved to Brave on this device instead. Brave will ask you again the next time you use this IBAN.
+  <message name="IDS_AUTOFILL_SAVE_IBAN_TO_WALLET_CONFIRMATION_FAILURE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after upload save IBAN to Google Wallet attempt was failed and and it was not uploaded to the server.">
+     This IBAN couldn't be saved in Google Wallet. It's saved to Brave on this device instead. Brave will ask you again the next time you use this IBAN.
   </message>
   <message name="IDS_AUTOFILL_SAVE_IBAN_CONFIRMATION_FAILURE_HIT_MAX_STRIKE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after upload save IBAN attempt was failed and and it was not uploaded to the server. Other than that, the number of offer-to-upload has hit the max strike.">
     This IBAN couldn't be saved in your Brave sync chain. It's saved to Brave on this device instead.
   </message>
-  <message name="IDS_AUTOFILL_SAVE_IBAN_TO_WALLET_CONFIRMATION_FAILURE_HIT_MAX_STRIKE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after upload save IBAN to Brave Wallet attempt was failed and and it was not uploaded to the server. Other than that, the number of offer-to-upload has hit the max strike.">
-    This IBAN couldn't be saved in Brave Wallet. It's saved to Brave on this device instead.
+  <message name="IDS_AUTOFILL_SAVE_IBAN_TO_WALLET_CONFIRMATION_FAILURE_HIT_MAX_STRIKE_DESCRIPTION_TEXT" desc="Description text for confirmation shown after upload save IBAN to Google Wallet attempt was failed and and it was not uploaded to the server. Other than that, the number of offer-to-upload has hit the max strike.">
+    This IBAN couldn't be saved in Google Wallet. It's saved to Brave on this device instead.
   </message>
   <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLL_CONFIRMATION_SUCCESS_DESCRIPTION_TEXT" desc="Description text for confirmation shown after virtual card enrollment is successful.">
     You can now use a virtual card to check out more securely with autofill.
