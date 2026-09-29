@@ -112,12 +112,9 @@ mojom::TransactionInfoPtr EthTxMeta::ToTransactionInfo() const {
               Uint256ValueToHex(tx_->gas_limit()), tx_->GetToChecksumAddress(),
               Uint256ValueToHex(tx_->value()), tx_->data()),
           max_priority_fee_per_gas, max_fee_per_gas)),
-      status_, tx_type, tx_params, tx_args,
-      base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
-      base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
-      base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
-      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
-      final_recipient, IsRetriable(), std::move(swap_info), nullptr);
+      status_, tx_type, tx_params, tx_args, created_time_, submitted_time_,
+      confirmed_time_, origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr,
+      chain_id_, final_recipient, IsRetriable(), std::move(swap_info), nullptr);
 }
 
 mojom::CoinType EthTxMeta::GetCoinType() const {

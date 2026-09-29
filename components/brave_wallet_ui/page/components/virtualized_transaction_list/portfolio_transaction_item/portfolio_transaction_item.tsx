@@ -19,10 +19,7 @@ import {
 } from '$wallet/common/constants/registry'
 
 // Utils
-import {
-  formatDateAsRelative,
-  serializedTimeDeltaToJSDate,
-} from '$wallet/utils/datetime-utils'
+import { formatDateAsRelative } from '$wallet/utils/datetime-utils'
 import { getLocale } from '$web-common/locale'
 import {
   getTransactionFormattedSendCurrencyTotal,
@@ -374,9 +371,7 @@ export const PortfolioTransactionItem = React.forwardRef<HTMLDivElement, Props>(
               textSize='12px'
               isBold={false}
             >
-              {formatDateAsRelative(
-                serializedTimeDeltaToJSDate(transaction.createdTime),
-              )}
+              {formatDateAsRelative(new Date(transaction.createdTime.msec))}
             </DateText>
             <TransactionTypeIcon name={transactionTypeIcon} />
             <TransactionTypeText

@@ -7,25 +7,9 @@ import type {
   BraveWallet,
   SerializableSolanaTxData,
   SerializableSolanaTxDataSendOptions,
-  SerializableTimeDelta,
   SerializableTransactionInfo,
   SerializableTxDataUnion,
-  TimeDelta,
 } from '../constants/types'
-
-export function makeSerializableTimeDelta(
-  td: TimeDelta | SerializableTimeDelta,
-): SerializableTimeDelta {
-  return {
-    microseconds: Number(td.microseconds),
-  }
-}
-
-export function deserializeTimeDelta(td: SerializableTimeDelta): TimeDelta {
-  return {
-    microseconds: BigInt(td.microseconds),
-  }
-}
 
 export function makeSerializableSolanaTxDataSendOptions(
   solanaTxData: BraveWallet.SolanaTxData,
@@ -102,9 +86,6 @@ export function makeSerializableTransaction(
           ),
         }
       : (tx.txDataUnion as SerializableTxDataUnion),
-    confirmedTime: makeSerializableTimeDelta(tx.confirmedTime),
-    createdTime: makeSerializableTimeDelta(tx.createdTime),
-    submittedTime: makeSerializableTimeDelta(tx.submittedTime),
   }
 }
 
@@ -118,8 +99,5 @@ export function deserializeTransaction(
   return {
     ...tx,
     txDataUnion: txDataUnion as BraveWallet.TxDataUnion,
-    confirmedTime: deserializeTimeDelta(tx.confirmedTime),
-    createdTime: deserializeTimeDelta(tx.createdTime),
-    submittedTime: deserializeTimeDelta(tx.submittedTime),
   }
 }
