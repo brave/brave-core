@@ -558,6 +558,7 @@ if (is_mac) {
     "//chrome/browser:app_controller_mac",
     "//chrome/browser:chrome_browser_main_mac",
     "//chrome/browser/mac",
+    "//chrome/browser/ui:browser_commands",
     "//chrome/common:non_code_constants",
   ]
   brave_chrome_framework_contents = []
