@@ -40,3 +40,21 @@ substitutions:
                                        fallback_contents));
               did_show_browser = true;
             }
+  - description: 'Skip appending a startup URL scheduled for ephemeral storage cleanup'
+    regex:
+      re_pattern: |-
+        const GURL& url = startup_tab\.url;
+      replace: |-
+        const GURL& url = startup_tab.url;
+              if (IsScheduledForCleanup(url, profile_)) {
+                continue;
+              }
+  - description: 'Add a fallback tab if all startup URLs were skipped'
+    regex:
+      re_pattern: |-
+        Navigate\(&params\);\n    \}
+      replace: |-
+        Navigate(&params);
+            }
+
+            MaybeAddFallbackTabIfEmpty(browser);

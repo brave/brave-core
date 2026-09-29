@@ -5,13 +5,17 @@
 
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 
+#include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/browser/ui/startup/brave_startup_tab_provider_impl.h"
 #include "brave/components/containers/buildflags/buildflags.h"
+#include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 #include "chrome/browser/ui/startup/startup_tab_provider.h"
+#include "net/base/url_util.h"
+#include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/browser/containers/container_specifier_utils.h"
@@ -29,6 +33,16 @@ void BraveModifyStartupTabNavigationParams(const StartupTab& tab,
             browser->GetProfile(), tab.container);
   }
 #endif
+}
+
+bool IsScheduledForCleanup(const GURL& url, Profile* profile) {
+  auto* service = EphemeralStorageServiceFactory::GetForContext(profile);
+  if (!service) {
+    return false;
+  }
+
+  return service->IsScheduledForCleanup(
+      net::URLToEphemeralStorageDomain(url));
 }
 
 }  // namespace
