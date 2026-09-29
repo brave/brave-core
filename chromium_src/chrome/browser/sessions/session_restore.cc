@@ -47,17 +47,21 @@ bool IsScheduledForCleanup(const GURL& url, Profile* profile) {
       net::URLToEphemeralStorageDomain(url));
 }
 
-// Skipping tabs scheduled for ephemeral storage cleanup can leave a restored
-// browser with no tabs at all (e.g. a single-tab window whose only tab was
-// scheduled for cleanup). Adds a new tab if that happens so the caller has a
-// tab to show/activate. Returns the tab's WebContents, or nullptr if the
-// browser already has tabs.
-content::WebContents* MaybeAddFallbackTabIfEmpty(
-    BrowserWindowInterface* browser) {
-  if (!browser->GetTabStripModel()->empty()) {
-    return nullptr;
+int MaybeAddFallbackTabIfEmpty(BrowserWindowInterface* browser) {
+  if (!browser) {
+    return TabStripModel::kNoTab;
   }
-  return chrome::AddAndReturnTabAt(browser, GURL(), -1, true);
+
+  if (!browser->GetTabStripModel()->empty()) {
+    auto index = browser->GetTabStripModel()->active_index();
+    return index == TabStripModel::kNoTab ? 0 : index;
+  }
+  if (const auto* contents =
+          chrome::AddAndReturnTabAt(browser, GURL(), -1, true)) {
+    return browser->GetTabStripModel()->GetIndexOfWebContents(contents);
+  }
+
+  return TabStripModel::kNoTab;
 }
 
 }  // namespace
