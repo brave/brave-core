@@ -32,6 +32,7 @@ import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//brave/test/testing.gni")
 import("//brave/updater/config.gni")
 import("//build/config/ui.gni")
+import("//build/config/vpython.gni")
 import("//chrome/common/features.gni")
 import("//components/captive_portal/core/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -1223,7 +1224,6 @@ test("brave_browser_tests") {
   ]
 
   data = [
-    "//.vpython3",
     "//brave/test/data/",
     "//chrome/test/data/",
     "//content/test/data/",
@@ -1238,6 +1238,7 @@ test("brave_browser_tests") {
     "//third_party/depot_tools/vpython3",
     "//third_party/pywebsocket3/",
   ]
+  data += vpython_spec_files
 
   if (is_mac) {
     sources += [
