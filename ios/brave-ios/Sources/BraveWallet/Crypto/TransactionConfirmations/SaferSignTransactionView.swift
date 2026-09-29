@@ -13,10 +13,8 @@ struct SaferSignTransactionView: View {
   /// The network the transaction belongs to
   let network: BraveWallet.NetworkInfo?
 
-  /// The address of the account making the swap
-  let fromAddress: String?
-  /// The name of the account
-  let namedFromAddress: String?
+  /// Signing Account
+  let fromAccountInfo: BraveWallet.AccountInfo
 
   /// The address of the recipient (applicable to CoW Swap)
   let receiverAddress: String?
@@ -47,8 +45,7 @@ struct SaferSignTransactionView: View {
 
   init(
     network: BraveWallet.NetworkInfo?,
-    fromAddress: String?,
-    namedFromAddress: String?,
+    fromAccountInfo: BraveWallet.AccountInfo,
     receiverAddress: String?,
     namedReceiverAddress: String?,
     fromToken: BraveWallet.BlockchainToken?,
@@ -59,8 +56,7 @@ struct SaferSignTransactionView: View {
     minBuyAmount: String?
   ) {
     self.network = network
-    self.fromAddress = fromAddress
-    self.namedFromAddress = namedFromAddress
+    self.fromAccountInfo = fromAccountInfo
     self.receiverAddress = receiverAddress
     self.namedReceiverAddress = namedReceiverAddress
     self.fromToken = fromToken
@@ -103,11 +99,11 @@ struct SaferSignTransactionView: View {
           .fontWeight(.medium)
           .foregroundColor(Color(braveSystemName: .textSecondary))
         Spacer()
-        AddressView(address: fromAddress ?? "") {
+        AddressView(address: fromAccountInfo.address) {
           HStack(spacing: 2) {
-            Blockie(address: fromAddress ?? "")
+            Blockie(address: fromAccountInfo.address)
               .frame(width: 15, height: 15)
-            Text(namedFromAddress ?? "")
+            Text(fromAccountInfo.name)
               .font(.footnote)
           }
           .padding(4)
@@ -271,7 +267,6 @@ struct SaferSignTransactionView_Previews: PreviewProvider {
   static var previews: some View {
     let parsedTransaction: ParsedTransaction = .init(
       transaction: transaction,
-      namedFromAddress: "Ethereum Account 1",
       fromAccountInfo: BraveWallet.AccountInfo.previewAccount,
       namedToAddress: "0x Exchange",
       toAddress: "0x1111111111222222222233333333334444444444",
@@ -297,8 +292,7 @@ struct SaferSignTransactionView_Previews: PreviewProvider {
         ScrollView {
           SaferSignTransactionView(
             network: parsedTransaction.network,
-            fromAddress: parsedTransaction.fromAccountInfo.address,
-            namedFromAddress: parsedTransaction.namedFromAddress,
+            fromAccountInfo: parsedTransaction.fromAccountInfo,
             receiverAddress: nil,
             namedReceiverAddress: nil,
             fromToken: .mockUSDCToken,
