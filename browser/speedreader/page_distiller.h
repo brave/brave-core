@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/functional/callback_forward.h"
+#include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -52,6 +52,10 @@ class PageDistiller {
   void GetDistilledText(DistillContentCallback callback);
   void GetTextToSpeak(TextToSpeechContentCallback callback);
 
+  void DelayNextPageDistillationForTesting();
+  bool CanResumePageDistillationForTesting();
+  void ResumePageDistillationForTesting();
+
  protected:
   explicit PageDistiller(content::WebContents* web_contents);
   virtual ~PageDistiller();
@@ -80,6 +84,9 @@ class PageDistiller {
   raw_ptr<content::WebContents> web_contents_ = nullptr;
 
   base::ObserverList<Observer> observers_;
+
+  bool delay_next_page_distillation_for_testing_ = false;
+  base::OnceClosure distillation_callback_for_testing_;
 
   base::WeakPtrFactory<PageDistiller> weak_factory_{this};
 };

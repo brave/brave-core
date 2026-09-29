@@ -1285,6 +1285,38 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
   ExpectVictimPageIsIntact();
 }
 
+// The page starts the reader mode and navigates the tab to another origin while
+// the distillation is still in flight. The distilled content belongs to the
+// document it was distilled from, so the page navigated to must never receive
+// it, not even when its url is the url the speedreader's reload was sent to.
+IN_PROC_BROWSER_TEST_F(SpeedReaderContentSpoofBrowserTest,
+                       DistilledContentIsNotSentToAnotherDocument) {
+  ASSERT_NO_FATAL_FAILURE(NavigateToReadablePage(""));
+
+  // The reload is never answered, so the content distilled from the readable
+  // page is still waiting to be sent.
+
+  tab_helper()->DelayNextPageDistillationForTesting();
+  TurnOnReaderMode();
+  ASSERT_TRUE(base::test::RunUntil([this]() {
+    return tab_helper()->CanResumePageDistillationForTesting();
+  }));
+
+  // The page navigates the tab away. This navigation must not be answered with
+  // the content distilled from the previous document.
+  content::TestNavigationObserver navigation_observer(victim_url());
+  navigation_observer.WatchExistingWebContents();
+  content::ExecuteScriptAsync(
+      ActiveWebContents(),
+      content::JsReplace("location.href = $1", victim_url()));
+  navigation_observer.Wait();
+
+  tab_helper()->ResumePageDistillationForTesting();
+  ASSERT_TRUE(content::WaitForLoadStop(ActiveWebContents()));
+
+  ExpectVictimPageIsIntact();
+}
+
 class SpeedReaderWithSplitViewBrowserTest : public SpeedReaderBrowserTest {
  public:
   SpeedReaderWithSplitViewBrowserTest() = default;

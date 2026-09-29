@@ -8,6 +8,7 @@
 #include <string>
 #include <utility>
 
+#include "base/check_is_test.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
@@ -59,6 +60,23 @@ void PageDistiller::GetTextToSpeak(TextToSpeechContentCallback callback) {
       base::BindOnce(&PageDistiller::OnGetTextToSpeak,
                      weak_factory_.GetWeakPtr(), std::move(callback)),
       ISOLATED_WORLD_ID_BRAVE_INTERNAL);
+}
+
+void PageDistiller::DelayNextPageDistillationForTesting() {
+  CHECK(!delay_next_page_distillation_for_testing_);
+  delay_next_page_distillation_for_testing_ = true;
+}
+
+bool PageDistiller::CanResumePageDistillationForTesting() {
+  CHECK(delay_next_page_distillation_for_testing_);
+  return !!distillation_callback_for_testing_;
+}
+
+void PageDistiller::ResumePageDistillationForTesting() {
+  CHECK(delay_next_page_distillation_for_testing_);
+  CHECK(distillation_callback_for_testing_);
+  delay_next_page_distillation_for_testing_ = false;
+  std::move(distillation_callback_for_testing_).Run();
 }
 
 void PageDistiller::UpdateState(State state) {
@@ -128,6 +146,13 @@ void PageDistiller::OnPageDistilled(DistillContentCallback callback,
                                     std::string transformed) {
   if (!web_contents_ || result != DistillationResult::kSuccess) {
     return std::move(callback).Run(false, {});
+  }
+
+  if (delay_next_page_distillation_for_testing_) {
+    CHECK_IS_TEST();
+    distillation_callback_for_testing_ =
+        base::BindOnce(std::move(callback), true, std::move(transformed));
+    return;
   }
 
   return std::move(callback).Run(true, std::move(transformed));
