@@ -1836,7 +1836,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +      \${this.isCustomProfileImageEnabled_() ? html\`
 +        <br-custom-profile-image-row hide-title="">
 +        </br-custom-profile-image-row>
-+      \` : ''}
++      \` : nothing}
 +    <cr-profile-avatar-selector .avatars="\${this.availableIcons_}" .selectedAvatar="\${this.selectedAvatar_}" @selected-avatar-changed="\${this.onSelectedAvatarChanged_}" columns="5">
          </cr-profile-avatar-selector>
        </div>

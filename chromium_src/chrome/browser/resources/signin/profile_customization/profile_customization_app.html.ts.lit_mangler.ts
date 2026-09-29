@@ -19,7 +19,7 @@ mangle(
       \${this.isCustomProfileImageEnabled_() ? html\`
         <br-custom-profile-image-row hide-title>
         </br-custom-profile-image-row>
-      \` : ''}
+      \` : nothing}
     `)
   },
   (template) => template.text.includes('id="selectAvatarWrapper"'),
