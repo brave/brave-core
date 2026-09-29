@@ -474,6 +474,8 @@ class Generator(generator.Generator):
             "cpp_to_objc_assign_kind": self._CppToObjCAssignFromKind,
             "const_objc_assign": self._ConstObjCAssign,
             "objc_to_cpp_assign": self._ObjCToCppAssign,
+            "objc_to_cpp_assign_kind": self._ObjCToCppAssignFromKind,
+            "expected_cpp_type": self._GetExpectedCppType,
             "expected_cpp_param_type": self._GetExpectedCppParamType,
             "cpp_namespace_from_kind": CppNamespaceFromKind,
             "under_to_camel": UnderToCamel,
@@ -484,6 +486,9 @@ class Generator(generator.Generator):
 
     def _GetObjCImportModuleName(self, module):
         return os.path.basename(module.path)
+
+    def _GetExpectedCppType(self, kind):
+        return MojoTypemapForKind(kind, False).ExpectedCppType()
 
     def _GetExpectedCppParamType(self, kind):
         should_pass_param_by_value = self._ShouldPassParamByValue(kind)
@@ -604,9 +609,14 @@ class Generator(generator.Generator):
         return UnderToCamel(name)
 
     def _ObjCToCppAssign(self, field, obj=None):
-        kind = field.kind
         accessor = "%s%s" % (obj + "." if obj else "",
                              self._ObjCPropertyFormatter(field.name))
+        return self._ObjCToCppAssignImpl(kind=field.kind, accessor=accessor)
+
+    def _ObjCToCppAssignFromKind(self, kind, accessor):
+        return self._ObjCToCppAssignImpl(kind=kind, accessor=accessor)
+
+    def _ObjCToCppAssignImpl(self, *, kind, accessor):
         typemap = MojoTypemapForKind(kind)
         if typemap is None:
             raise Exception("No typemap found for the given kind: %s" % kind)
