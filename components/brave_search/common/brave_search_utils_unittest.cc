@@ -26,9 +26,13 @@ class BraveSearchUtilsUnitTest : public testing::Test {
   void SetUp() override {
     local_state_.registry()->RegisterBooleanPref(
         prefs::kNewTabV1SourceEnabledAtFirstRun, false);
+    local_state_.registry()->RegisterStringPref(prefs::kNewTabV1SourceSuffix,
+                                                "");
 #if BUILDFLAG(ENABLE_AI_CHAT)
     local_state_.registry()->RegisterBooleanPref(
         ai_chat::prefs::kNtpInputDayZeroEnabled, false);
+    local_state_.registry()->RegisterStringPref(
+        ai_chat::prefs::kNtpInputSourceSuffix, "");
 #endif
   }
 
@@ -62,14 +66,28 @@ TEST_F(BraveSearchUtilsUnitTest, AppendsNewTabSource) {
 TEST_F(BraveSearchUtilsUnitTest, AppendsNewTabV1Source) {
   feature_list_.InitAndEnableFeature(features::kSearchNewTabV1Source);
   const GURL url("https://search.brave.com/search?q=test");
+  EXPECT_EQ("https://search.brave.com/search?q=test&source=newtab_v1c",
+            OverrideWithNewTabSource(url, &local_state_, true).spec());
+  // Once enabled at first run, it stays enabled.
+  EXPECT_EQ("https://search.brave.com/search?q=test&source=newtab_v1c",
+            OverrideWithNewTabSource(url, &local_state_, false).spec());
+}
+
+TEST_F(BraveSearchUtilsUnitTest, NewTabV1SourceNotEnabledAfterFirstRun) {
+  feature_list_.InitAndEnableFeature(features::kSearchNewTabV1Source);
+  const GURL url("https://search.brave.com/search?q=test");
   // The feature is only enabled for users who installed while it was enabled.
   EXPECT_EQ("https://search.brave.com/search?q=test&source=newtab",
             OverrideWithNewTabSource(url, &local_state_, false).spec());
-  EXPECT_EQ("https://search.brave.com/search?q=test&source=newtab_v1b",
-            OverrideWithNewTabSource(url, &local_state_, true).spec());
-  // Once enabled at first run, it stays enabled.
+}
+
+TEST_F(BraveSearchUtilsUnitTest, AppendsNewTabV1BSourceForExistingPref) {
+  local_state_.SetBoolean(prefs::kNewTabV1SourceEnabledAtFirstRun, true);
+  const GURL url("https://search.brave.com/search?q=test");
   EXPECT_EQ("https://search.brave.com/search?q=test&source=newtab_v1b",
             OverrideWithNewTabSource(url, &local_state_, false).spec());
+  EXPECT_EQ("https://search.brave.com/search?q=test&source=newtab_v1b",
+            OverrideWithNewTabSource(url, &local_state_, true).spec());
 }
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -77,6 +95,23 @@ TEST_F(BraveSearchUtilsUnitTest, AppendsNewTabV2Source) {
   feature_list_.InitWithFeatures(
       /*enabled_features=*/{ai_chat::features::kShowAIChatInputOnNewTabPage},
       /*disabled_features=*/{});
+  const GURL url("https://search.brave.com/search?q=test");
+  EXPECT_EQ("https://search.brave.com/search?q=test&source=newtab_v2b",
+            OverrideWithNewTabSource(url, &local_state_, false).spec());
+}
+
+TEST_F(BraveSearchUtilsUnitTest, AppendsNewTabV2CSourceAtFirstRun) {
+  feature_list_.InitAndEnableFeatureWithParameters(
+      ai_chat::features::kShowAIChatInputOnNewTabPage, {{"day_zero", "true"}});
+  const GURL url("https://search.brave.com/search?q=test");
+  EXPECT_EQ("https://search.brave.com/search?q=test&source=newtab_v2c",
+            OverrideWithNewTabSource(url, &local_state_, true).spec());
+  EXPECT_EQ("https://search.brave.com/search?q=test&source=newtab_v2c",
+            OverrideWithNewTabSource(url, &local_state_, false).spec());
+}
+
+TEST_F(BraveSearchUtilsUnitTest, AppendsNewTabV2BSourceForExistingPref) {
+  local_state_.SetBoolean(ai_chat::prefs::kNtpInputDayZeroEnabled, true);
   const GURL url("https://search.brave.com/search?q=test");
   EXPECT_EQ("https://search.brave.com/search?q=test&source=newtab_v2b",
             OverrideWithNewTabSource(url, &local_state_, false).spec());

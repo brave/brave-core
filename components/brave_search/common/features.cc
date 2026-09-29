@@ -106,6 +106,10 @@ BASE_FEATURE(kSearchNewTabV1Source, base::FEATURE_DISABLED_BY_DEFAULT);
 bool IsSearchNewTabV1SourceEnabled(PrefService* local_state,
                                    bool is_first_run) {
   CHECK(local_state);
+  if (local_state->GetString(prefs::kNewTabV1SourceSuffix).empty()) {
+    local_state->SetString(prefs::kNewTabV1SourceSuffix,
+                           is_first_run ? "c" : "b");
+  }
   // If the feature was enabled at install time, leave it enabled forever.
   if (local_state->GetBoolean(prefs::kNewTabV1SourceEnabledAtFirstRun)) {
     return true;
