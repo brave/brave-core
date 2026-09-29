@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/apple/swift_source_set.gni")
+
+# The SwiftMojo runtime. Exported by //brave/ios/swift_mojo as
+# SwiftMojo.framework, and linked statically into unit tests.
+#
+# Nothing that is linked into BraveCore.framework (//mojo, //base, etc.) may be
+# depended on here, as it would be linked into SwiftMojo.framework a second
+# time. Mojo is only reached through //brave/ios/browser/mojo:headers, which is
+# implemented by BraveCore.framework or, in unit tests, by
+# //brave/ios/browser/mojo.
+swift_source_set("swift") {
+  module_name = "SwiftMojo"
+
+  sources = [ "mojo_system.swift" ]
+
+  # Resilient compilation keeps modules imported with an access level below
+  # public (i.e. BraveMojoSystem) out of SwiftMojo.framework's interface.
+  swiftflags = [ "-enable-library-evolution" ]
+
+  if (!is_official_build) {
+    # Allows `@testable import SwiftMojo`.
+    swiftflags += [ "-enable-testing" ]
+  }
+
+  # Public as `-enable-testing` requires importers to resolve every module this
+  # one imports.
+  public_deps = [ "//brave/ios/browser/mojo:headers" ]
+}

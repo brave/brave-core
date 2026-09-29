@@ -1,0 +1,4 @@
+module BraveMojoSystem {
+  header "brave_mojo_system.h"
+  export *
+}

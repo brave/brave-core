@@ -86,6 +86,15 @@ _swift_module_triple =
 #       list of source files. The `.swift` files are compiled into the exported
 #       module, any other file is handed to ios_framework_bundle as-is.
 #
+#   swift_module_target
+#       (optional) label of an existing swift_source_set to export instead of
+#       compiling `.swift` files listed in `sources`, which allows the same
+#       module to also be linked statically elsewhere (e.g. into unit tests).
+#       Its `module_name` must match the framework's output name and it has to
+#       apply `enable_library_evolution`/`enable_testability` itself, so those
+#       as well as `bridge_header`, `cxx_import_deps` and `swiftflags` may not
+#       be set. `deps` and friends then only apply to the framework.
+#
 #   bridge_header, cxx_import_deps, swiftflags
 #       (optional) forwarded to the target compiling the Swift sources. Note
 #       that a bridging header is not usable by consumers of the framework,
@@ -98,12 +107,29 @@ _swift_module_triple =
 #
 # All other arguments are forwarded to ios_framework_bundle.
 template("ios_swift_framework_bundle") {
-  assert(defined(invoker.sources), "sources must be defined for $target_name")
+  _sources = []
+  if (defined(invoker.sources)) {
+    _sources = invoker.sources
+  }
+  _swift_sources = filter_include(_sources, [ "*.swift" ])
+  _other_sources = filter_exclude(_sources, [ "*.swift" ])
 
-  _swift_sources = filter_include(invoker.sources, [ "*.swift" ])
-  _other_sources = filter_exclude(invoker.sources, [ "*.swift" ])
-  assert(_swift_sources != [],
-         "sources must contain Swift sources for $target_name")
+  _has_swift_module_target = defined(invoker.swift_module_target)
+  if (_has_swift_module_target) {
+    assert(_swift_sources == [],
+           "sources may not contain Swift sources for $target_name when " +
+               "swift_module_target is set")
+    assert(
+        !defined(invoker.bridge_header) && !defined(invoker.cxx_import_deps) &&
+            !defined(invoker.enable_library_evolution) &&
+            !defined(invoker.enable_testability) &&
+            !defined(invoker.swiftflags),
+        "Swift compile options must be set on swift_module_target for " +
+            "$target_name")
+  } else {
+    assert(_swift_sources != [],
+           "sources must contain Swift sources for $target_name")
+  }
 
   _target_name = target_name
   _output_name = target_name
@@ -111,7 +137,11 @@ template("ios_swift_framework_bundle") {
     _output_name = invoker.output_name
   }
 
-  _swift_target = "${_target_name}_swift_module"
+  if (_has_swift_module_target) {
+    _swift_target = invoker.swift_module_target
+  } else {
+    _swift_target = ":${_target_name}_swift_module"
+  }
   _stage_target = "${_target_name}_swift_module_stage"
   _bundle_data_target = "${_target_name}_swift_module_bundle_data"
   _enable_testability = false
@@ -121,8 +151,10 @@ template("ios_swift_framework_bundle") {
 
   # Matches the layout used by the `swift` tool: the module artifacts are
   # written to `{{target_out_dir}}/{{label_name}}/{{module_name}}.*`.
-  _module_dir = "$target_out_dir/$_swift_target"
-  _staging_dir = "$target_gen_dir/$_swift_target/$_output_name.swiftmodule"
+  _module_dir = get_label_info(_swift_target, "target_out_dir") + "/" +
+                get_label_info(_swift_target, "name")
+  _staging_dir =
+      "$target_gen_dir/${_target_name}_swift_module/$_output_name.swiftmodule"
 
   # The `swift` tool does not substitute {{framework_dirs}}, so the framework
   # search paths that configs contribute (such as the public config of
@@ -137,62 +169,64 @@ template("ios_swift_framework_bundle") {
     ]
   }
 
-  swift_source_set(_swift_target) {
-    forward_variables_from(invoker,
-                           [
-                             "bridge_header",
-                             "cxx_import_deps",
-                             "deps",
-                             "public_configs",
-                             "public_deps",
-                             "testonly",
-                           ])
+  if (!_has_swift_module_target) {
+    swift_source_set("${_target_name}_swift_module") {
+      forward_variables_from(invoker,
+                             [
+                               "bridge_header",
+                               "cxx_import_deps",
+                               "deps",
+                               "public_configs",
+                               "public_deps",
+                               "testonly",
+                             ])
 
-    if (!defined(public_configs)) {
-      public_configs = []
+      if (!defined(public_configs)) {
+        public_configs = []
+      }
+      public_configs += [ ":${_target_name}_swift_module_framework_config" ]
+
+      swiftflags = [
+        "-F",
+        rebase_path(root_out_dir, root_build_dir),
+      ]
+
+      # Resilient compilation, which keeps dependencies imported with an access
+      # level below public out of the module's interface, so consumers do not
+      # have to resolve modules that only exist within this build.
+      if (!defined(invoker.enable_library_evolution) ||
+          invoker.enable_library_evolution) {
+        swiftflags += [ "-enable-library-evolution" ]
+      }
+
+      # Enable importing this module with `@testable` to access internal symbols
+      # in unit tests.
+      if (_enable_testability) {
+        swiftflags += [ "-enable-testing" ]
+      }
+
+      if (defined(invoker.swiftflags)) {
+        swiftflags += invoker.swiftflags
+      }
+
+      visibility = [
+        ":$_stage_target",
+        ":${_target_name}_shared_library",
+
+        # ios_framework_bundle forwards `deps` to the signed bundle as well.
+        ":${_target_name}_signed_bundle",
+      ]
+
+      # Replaces the swift_source_set defaults, which are a subset of the
+      # default_shared_library_configs this template defaults to.
+      configs = []
+      configs = invoker.configs
+
+      # The Swift module name must match the framework name for consumers to be
+      # able to `import $_output_name`.
+      module_name = _output_name
+      sources = _swift_sources
     }
-    public_configs += [ ":${_target_name}_swift_module_framework_config" ]
-
-    swiftflags = [
-      "-F",
-      rebase_path(root_out_dir, root_build_dir),
-    ]
-
-    # Resilient compilation, which keeps dependencies imported with an access
-    # level below public out of the module's interface, so consumers do not
-    # have to resolve modules that only exist within this build.
-    if (!defined(invoker.enable_library_evolution) ||
-        invoker.enable_library_evolution) {
-      swiftflags += [ "-enable-library-evolution" ]
-    }
-
-    # Enable importing this module with `@testable` to access internal symbols
-    # in unit tests.
-    if (_enable_testability) {
-      swiftflags += [ "-enable-testing" ]
-    }
-
-    if (defined(invoker.swiftflags)) {
-      swiftflags += invoker.swiftflags
-    }
-
-    visibility = [
-      ":$_stage_target",
-      ":${_target_name}_shared_library",
-
-      # ios_framework_bundle forwards `deps` to the signed bundle as well.
-      ":${_target_name}_signed_bundle",
-    ]
-
-    # Replaces the swift_source_set defaults, which are a subset of the
-    # default_shared_library_configs this template defaults to.
-    configs = []
-    configs = invoker.configs
-
-    # The Swift module name must match the framework name for consumers to be
-    # able to `import $_output_name`.
-    module_name = _output_name
-    sources = _swift_sources
   }
 
   # GN does not treat the Swift module artifacts as outputs of the target that
@@ -205,7 +239,7 @@ template("ios_swift_framework_bundle") {
     visibility = [ ":$_bundle_data_target" ]
 
     script = "//brave/build/ios/stage_swiftmodule.py"
-    deps = [ ":$_swift_target" ]
+    deps = [ _swift_target ]
 
     _names = [
       _swift_module_triple,
@@ -261,6 +295,7 @@ template("ios_swift_framework_bundle") {
                              "enable_library_evolution",
                              "enable_testability",
                              "sources",
+                             "swift_module_target",
                              "swiftflags",
                              "visibility",
                            ])
@@ -280,7 +315,7 @@ template("ios_swift_framework_bundle") {
       public_deps += deps
     }
 
-    deps += [ ":$_swift_target" ]
+    deps += [ _swift_target ]
 
     if (!defined(bundle_deps)) {
       bundle_deps = []

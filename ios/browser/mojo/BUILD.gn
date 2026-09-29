@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Lets Swift `import BraveMojoSystem`.
+config("module_config") {
+  swiftflags = [ "-Xcc=-fmodule-map-file=" +
+                 rebase_path("brave_mojo_system.modulemap", root_build_dir) ]
+}
+
+# The header alone, for code that links against the implementation provided by
+# BraveCore.framework rather than :mojo.
+source_set("headers") {
+  sources = [ "brave_mojo_system.h" ]
+  inputs = [ "brave_mojo_system.modulemap" ]
+  public_configs = [ ":module_config" ]
+  frameworks = [ "Foundation.framework" ]
+}
+
+source_set("mojo") {
+  sources = [ "brave_mojo_system.mm" ]
+  public_deps = [ ":headers" ]
+  deps = [ "//mojo/public/c/system" ]
+}
