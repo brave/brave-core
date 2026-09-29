@@ -111,6 +111,7 @@ source_set("ui") {
     "//chrome/browser/ui/toolbar",
     "//chrome/browser/ui/webui:chrome_web_ui_controller_factory",
     "//media",
+    "//ui/base/unowned_user_data",
   ]
 
   if (toolkit_views) {

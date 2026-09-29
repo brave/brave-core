@@ -132,7 +132,8 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
           *browser, browser->GetUnownedUserDataHost());
 
   brave_non_client_hit_test_helper_ =
-      std::make_unique<BraveNonClientHitTestHelper>();
+      GetUserDataFactory().CreateInstance<BraveNonClientHitTestHelper>(
+          *browser, browser->GetUnownedUserDataHost());
 
   if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab) &&
       browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {

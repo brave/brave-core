@@ -7,12 +7,24 @@
 
 #include "base/check_deref.h"
 #include "base/check_op.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/hit_test.h"
 #include "ui/views/window/hit_test_utils.h"
 
-BraveNonClientHitTestHelper::BraveNonClientHitTestHelper() = default;
+DEFINE_USER_DATA(BraveNonClientHitTestHelper);
+
+BraveNonClientHitTestHelper::BraveNonClientHitTestHelper(
+    ui::UnownedUserDataHost& host)
+    : scoped_unowned_user_data_(host, *this) {}
+
 BraveNonClientHitTestHelper::~BraveNonClientHitTestHelper() = default;
+
+// static
+BraveNonClientHitTestHelper* BraveNonClientHitTestHelper::From(
+    BrowserWindowInterface* browser) {
+  return Get(browser->GetUnownedUserDataHost());
+}
 
 int BraveNonClientHitTestHelper::NonClientHitTest(
     BrowserView* browser_view,

@@ -82,10 +82,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return focus_mode_controller_.get();
   }
 
-  BraveNonClientHitTestHelper* brave_non_client_hit_test_helper() {
-    return brave_non_client_hit_test_helper_.get();
-  }
-
   VerticalTabController* vertical_tab_controller() {
     return vertical_tab_controller_.get();
   }
