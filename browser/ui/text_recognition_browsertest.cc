@@ -205,7 +205,7 @@ IN_PROC_BROWSER_TEST_F(TextRecognitionBrowserTest, TextRecognitionTest) {
     EXPECT_FALSE(menu.IsItemPresent(IDC_CONTENT_CONTEXT_COPY_TEXT_FROM_IMAGE));
   }
 
-  RunTextRecognitionFlow(browser());
+  ASSERT_NO_FATAL_FAILURE(RunTextRecognitionFlow(browser()));
 
   // A normal profile copy stays eligible for OS clipboard history and cloud
   // clipboard sync.
@@ -217,7 +217,7 @@ IN_PROC_BROWSER_TEST_F(TextRecognitionBrowserTest, TextRecognitionTest) {
 // OS clipboard history or cloud clipboard sync.
 IN_PROC_BROWSER_TEST_F(TextRecognitionBrowserTest,
                        OffTheRecordTextIsNotSharedWithOS) {
-  RunTextRecognitionFlow(CreateIncognitoBrowser());
+  ASSERT_NO_FATAL_FAILURE(RunTextRecognitionFlow(CreateIncognitoBrowser()));
 
   constexpr uint32_t kExpectedPrivacyTypes =
       ui::Clipboard::kNoLocalClipboardHistory |
