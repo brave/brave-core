@@ -4,7 +4,7 @@ Python tooling maintained by the Chromium Rebase team to support upgrading
 `brave-core` to new Chromium versions and to manage the patches and shadow files
 that live on top of upstream.
 
-All scripts here are intended to run via `vpython3`; the `.vpython3` spec in
+All scripts here are intended to run via `vpython3`; the `vpython.toml` spec in
 this directory pulls in `rich`, `requests`, and the other wheels they need. Most
 scripts accept `--verbose` to switch logging to `DEBUG`.
 

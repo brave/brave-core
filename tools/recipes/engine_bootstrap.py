@@ -50,7 +50,7 @@ RECIPES_ENGINE_DEST = 'recipes_engine_bootstrap'
 # the vpython3 runtime.
 IS_WIN = sys.platform.startswith(('win', 'cygwin'))
 VPYTHON3 = 'vpython3' + ('.bat' if IS_WIN else '')
-VPYTHON_SPEC = '.vpython3'
+VPYTHON_SPEC = 'vpython.toml'
 
 # The URL to clone depot_tools from if vpython3 is not found.
 DEPOT_TOOLS_URL = 'https://chromium.googlesource.com/chromium/tools/depot_tools'

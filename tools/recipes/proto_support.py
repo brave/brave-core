@@ -35,7 +35,7 @@ import tempfile
 from pathlib import Path
 from typing import Callable
 
-import google.protobuf  # pinned in .vpython3
+import google.protobuf  # pinned in vpython.toml
 import google.protobuf.message
 from google.protobuf import descriptor_pb2
 
