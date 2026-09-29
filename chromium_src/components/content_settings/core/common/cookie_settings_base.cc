@@ -270,9 +270,43 @@ bool CookieSettingsBase::ShouldBlockThirdPartyIfSettingIsExplicit(
   if (false)
 
 #define IsFullCookieAccessAllowed IsFullCookieAccessAllowed_ChromiumImpl
+#define IsAnyStorageAccessAllowed IsAnyStorageAccessAllowed_ChromiumImpl
 
 #include <components/content_settings/core/common/cookie_settings_base.cc>
 
+#undef IsAnyStorageAccessAllowed
 #undef IsFullCookieAccessAllowed
 #undef BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS
 #undef BRAVE_COOKIE_SETTINGS_BASE_GET_COOKIES_SETTINGS_INTERNAL_IS_EXPLICIT_SETTING
+
+namespace content_settings {
+
+bool CookieSettingsBase::IsAnyStorageAccessAllowed(
+    const GURL& url,
+    const net::SiteForCookies& site_for_cookies,
+    base::optional_ref<const url::Origin> top_frame_origin,
+    net::CookieSettingOverrides overrides,
+    base::optional_ref<const net::CookiePartitionKey> cookie_partition_key,
+    CookieSettingWithMetadata* cookie_settings) const {
+  if (!IsAnyStorageAccessAllowed_ChromiumImpl(
+          url, site_for_cookies, top_frame_origin, overrides,
+          cookie_partition_key, cookie_settings)) {
+    return false;
+  }
+
+  if (!base::FeatureList::IsEnabled(
+          net::features::kBraveFirstPartyEphemeralStorage)) {
+    return true;
+  }
+
+  // Re-apply the main-frame-ephemeral (1PES) block that
+  // IsFullCookieAccessAllowed() above applies, since the ChromiumImpl call just
+  // above doesn't go through our override
+  const GURL first_party_url =
+      GetFirstPartyURL(site_for_cookies, top_frame_origin.as_ptr());
+  CookieSettingWithMetadata main_frame_setting = GetCookieSettingInternal(
+      first_party_url, site_for_cookies, first_party_url, overrides, nullptr);
+  return !IsSessionOnlyExplicit(main_frame_setting);
+}
+
+}  // namespace content_settings
