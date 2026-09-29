@@ -333,6 +333,11 @@ void AdsTabHelper::DidStartNavigation(
     return;
   }
 
+  // Not restricted by URL scheme. Some `chrome://` pages, such as
+  // `chrome://wallet`, are supported ad targets, so their navigations must
+  // still reach the redirect chain that page land and conversion tracking
+  // check against.
+
   was_restored_ =
       navigation_handle->GetRestoreType() == content::RestoreType::kRestored;
 
