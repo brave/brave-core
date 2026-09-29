@@ -230,4 +230,62 @@ IN_PROC_BROWSER_TEST_F(EphemeralStorageStartupTabsBrowserTest,
            tab_strip->GetWebContentsAt(0)->GetVisibleURL());
 }
 
+// When the active tab's domain is in Forgetful Mode, session restore must
+// skip it while restoring the rest, and since none of the restored tabs were
+// marked active in the session data, the first remaining tab becomes active.
+IN_PROC_BROWSER_TEST_F(
+    EphemeralStorageStartupTabsBrowserTest,
+    SessionRestoreActivatesFirstTabWhenActiveForgetfulTabSkipped) {
+  Profile* profile = browser()->GetProfile();
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+      true, c_site_ephemeral_storage_url_);
+  SessionStartupPref::SetStartupPref(
+      profile, SessionStartupPref(SessionStartupPref::LAST));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+  ASSERT_TRUE(LoadURLInNewTab(b_site_ephemeral_storage_url_));
+  ASSERT_TRUE(LoadURLInNewTab(c_site_ephemeral_storage_url_));
+  ASSERT_EQ(2, browser()->GetTabStripModel()->active_index());
+
+  BrowserWindowInterface* new_browser = QuitBrowserAndRestore(browser());
+  ASSERT_TRUE(new_browser);
+
+  TabStripModel* tab_strip = new_browser->GetTabStripModel();
+  ASSERT_EQ(2, tab_strip->count());
+  EXPECT_EQ(a_site_ephemeral_storage_url_,
+           tab_strip->GetWebContentsAt(0)->GetVisibleURL());
+  EXPECT_EQ(b_site_ephemeral_storage_url_,
+           tab_strip->GetWebContentsAt(1)->GetVisibleURL());
+  EXPECT_EQ(0, tab_strip->active_index());
+}
+
+// When an inactive tab's domain is in Forgetful Mode, session restore must
+// skip only that tab and keep the originally active tab active.
+IN_PROC_BROWSER_TEST_F(
+    EphemeralStorageStartupTabsBrowserTest,
+    SessionRestoreKeepsActiveTabWhenInactiveForgetfulTabSkipped) {
+  Profile* profile = browser()->GetProfile();
+  brave_shields_settings_->SetForgetFirstPartyStorageEnabled(
+      true, c_site_ephemeral_storage_url_);
+  SessionStartupPref::SetStartupPref(
+      profile, SessionStartupPref(SessionStartupPref::LAST));
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), a_site_ephemeral_storage_url_));
+  ASSERT_TRUE(LoadURLInNewTab(b_site_ephemeral_storage_url_));
+  ASSERT_TRUE(LoadURLInNewTab(c_site_ephemeral_storage_url_));
+  browser()->GetTabStripModel()->ActivateTabAt(1);
+  ASSERT_EQ(1, browser()->GetTabStripModel()->active_index());
+
+  BrowserWindowInterface* new_browser = QuitBrowserAndRestore(browser());
+  ASSERT_TRUE(new_browser);
+
+  TabStripModel* tab_strip = new_browser->GetTabStripModel();
+  ASSERT_EQ(2, tab_strip->count());
+  EXPECT_EQ(a_site_ephemeral_storage_url_,
+           tab_strip->GetWebContentsAt(0)->GetVisibleURL());
+  EXPECT_EQ(b_site_ephemeral_storage_url_,
+           tab_strip->GetWebContentsAt(1)->GetVisibleURL());
+  EXPECT_EQ(1, tab_strip->active_index());
+}
+
 }  // namespace ephemeral_storage
