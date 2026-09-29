@@ -9,6 +9,7 @@
 #include <memory>
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 
@@ -60,8 +61,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
 
   brave_rewards::RewardsPanelCoordinator* rewards_panel_coordinator();
 
-  BraveVPNController* brave_vpn_controller();
-
 #if BUILDFLAG(ENABLE_PLAYLIST)
   PlaylistSidePanelCoordinator* playlist_side_panel_coordinator() {
     return playlist_side_panel_coordinator_.get();
@@ -95,7 +94,9 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
 
  private:
   std::unique_ptr<sidebar::SidebarController> sidebar_controller_;
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
   std::unique_ptr<BraveVPNController> brave_vpn_controller_;
+#endif
   std::unique_ptr<brave_rewards::RewardsPanelCoordinator>
       rewards_panel_coordinator_;
 #if BUILDFLAG(ENABLE_PLAYLIST)

@@ -10,6 +10,8 @@ assert(enable_brave_vpn)
 source_set("brave_vpn") {
   sources = [ "brave_vpn_controller.h" ]
 
+  public_deps = [ "//ui/base/unowned_user_data" ]
+
   deps = [
     "//base",
     "//brave/components/brave_vpn/common/mojom",

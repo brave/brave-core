@@ -285,7 +285,7 @@ void MaybeDistillAndShowSpeedreaderBubble(Browser* browser) {
 
 void ShowBraveVPNBubble(Browser* browser) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
-  browser->GetFeatures().brave_vpn_controller()->ShowBraveVPNBubble();
+  BraveVPNController::From(browser)->ShowBraveVPNBubble();
 #endif
 }
 

@@ -7,7 +7,6 @@
 
 #include "base/types/to_address.h"
 #include "brave/components/constants/pref_names.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "components/tabs/public/tab_interface.h"
 
@@ -57,9 +56,7 @@ std::optional<std::string> VPNFacade::GetWidgetPrefName() {
 BraveVPNController* VPNFacade::GetBraveVPNController() {
   if (auto* tab = tabs::TabInterface::MaybeGetFromContents(
           base::to_address(web_contents_))) {
-    return tab->GetBrowserWindowInterface()
-        ->GetFeatures()
-        .brave_vpn_controller();
+    return BraveVPNController::From(tab->GetBrowserWindowInterface());
   }
 
   return nullptr;
