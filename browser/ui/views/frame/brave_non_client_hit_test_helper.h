@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_NON_CLIENT_HIT_TEST_HELPER_H_
 
 #include "base/scoped_multi_source_observation.h"
+#include "ui/base/unowned_user_data/scoped_unowned_user_data.h"
 #include "ui/views/view_observer.h"
 
 namespace gfx {
@@ -18,13 +19,19 @@ class View;
 }  // namespace views
 
 class BrowserView;
+class BrowserWindowInterface;
 
 // Helper class to set additional draggable area in client view.
 // Returns HTNOWHERE if the point is not what we're interested in.
 class BraveNonClientHitTestHelper : public views::ViewObserver {
  public:
-  BraveNonClientHitTestHelper();
+  DECLARE_USER_DATA(BraveNonClientHitTestHelper);
+
+  explicit BraveNonClientHitTestHelper(ui::UnownedUserDataHost& host);
   ~BraveNonClientHitTestHelper() override;
+
+  // Returns the instance owned by `browser`, or nullptr.
+  static BraveNonClientHitTestHelper* From(BrowserWindowInterface* browser);
 
   int NonClientHitTest(BrowserView* browser_view,
                        const gfx::Point& point_in_widget);
@@ -42,6 +49,8 @@ class BraveNonClientHitTestHelper : public views::ViewObserver {
  private:
   base::ScopedMultiSourceObservation<views::View, views::ViewObserver>
       observation_{this};
+  ui::ScopedUnownedUserData<BraveNonClientHitTestHelper>
+      scoped_unowned_user_data_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_NON_CLIENT_HIT_TEST_HELPER_H_
