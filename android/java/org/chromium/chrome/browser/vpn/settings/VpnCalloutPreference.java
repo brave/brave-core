@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.vpn.settings;
 
-import static org.chromium.ui.base.ViewUtils.dpToPx;
-
 import android.app.Activity;
 import android.content.Context;
 import android.view.View;
@@ -21,11 +19,8 @@ import androidx.preference.PreferenceViewHolder;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.InternetConnection;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
-import org.chromium.chrome.browser.util.ConfigurationUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnUtils;
-import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.widget.Toast;
 
 public class VpnCalloutPreference extends Preference {
@@ -50,19 +45,10 @@ public class VpnCalloutPreference extends Preference {
 
         View mainView = holder.findViewById(R.id.callout_cardview);
 
-        boolean isTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getContext());
+        // With containment the card lives inside a padded rounded container — let it
+        // fill the available width rather than forcing the raw screen pixel width.
+        int width = CardView.LayoutParams.MATCH_PARENT;
 
-        int width;
-        if (ChromeFeatureList.sAndroidSettingsContainment.isEnabled()) {
-            // With containment the card lives inside a padded rounded container — let it
-            // fill the available width rather than forcing the raw screen pixel width.
-            width = CardView.LayoutParams.MATCH_PARENT;
-        } else {
-            width = (int) (getContext().getResources().getDisplayMetrics().widthPixels * 1.00);
-            if (isTablet || ConfigurationUtils.isLandscape(getContext())) {
-                width = (int) dpToPx(getContext(), 390);
-            }
-        }
         int height = CardView.LayoutParams.WRAP_CONTENT;
         ViewGroup.LayoutParams params = mainView.getLayoutParams();
         params.width = width;
