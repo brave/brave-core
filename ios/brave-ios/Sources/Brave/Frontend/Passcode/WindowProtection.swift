@@ -113,6 +113,10 @@ public class WindowProtection {
     return true
   }
 
+  func dismissAuthentication() {
+    isVisible = false
+  }
+
   var isCancellable: Bool = false {
     didSet {
       viewModel.isCancellable = isCancellable
