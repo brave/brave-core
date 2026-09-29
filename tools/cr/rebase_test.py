@@ -20,6 +20,7 @@ This file is organised in three layers:
   dispatch via subprocess, exactly as in production -- nothing is mocked out.
 """
 
+import contextlib
 import os
 import subprocess
 import tempfile
@@ -371,9 +372,10 @@ class RewritePlanTest(unittest.TestCase):
     """
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self._tmp_root = Path(tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self._tmp_root = Path(tmp)
 
     def _todo(self, content: str) -> Path:
         path = self._tmp_root / 'git-rebase-todo'
@@ -816,9 +818,10 @@ class MessageWriterTest(unittest.TestCase):
     """
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self._tmp_root = Path(tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self._tmp_root = Path(tmp)
 
     def _file(self, content: str) -> Path:
         path = self._tmp_root / 'COMMIT_EDITMSG'
@@ -1083,9 +1086,10 @@ class RebaseRecommitHelperTest(unittest.TestCase):
     """Tests for the `brockit.Rebase.recommit_in_rebase_plan` transformer."""
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self._tmp_root = Path(tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self._tmp_root = Path(tmp)
 
     def _todo(self, content: str) -> Path:
         """Writes `content` to a fresh todo file and returns its path."""

@@ -431,12 +431,12 @@ def _compile_protos(proto_files: list[tuple[str, str]], proto_tree: str,
         every .proto file in proto_tree on its own line.
       * dest: Path to the destination where the compiled protos should go.
     """
-    protoc_proc = subprocess.Popen(
+    with subprocess.Popen(
         [protoc, '--python_out', dest, '--pyi_out', dest, '@' + argfile],
-        cwd=proto_tree,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT)
-    output, _ = protoc_proc.communicate()
+            cwd=proto_tree,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT) as protoc_proc:
+        output, _ = protoc_proc.communicate()
     try:
         os.remove(argfile)
     except OSError:
@@ -488,14 +488,14 @@ def _install_protos(proto_package_path: str, dgst: str,
       * Ensures that `{proto_package_path}/protoc` contains the correct
         `protoc` compiler from CIPD.
     """
-    cipd_proc = subprocess.Popen([
-        'cipd' + _BAT, 'ensure', '-root',
-        os.path.join(proto_package_path, 'protoc'), '-ensure-file', '-'
-    ],
-                                 stdin=subprocess.PIPE)
     protoc_version = PROTOC_VERSION.split(b'.', 1)[1]
-    cipd_proc.communicate(b'infra/3pp/tools/protoc/${platform} version:3@' +
-                          protoc_version)
+    with subprocess.Popen([
+            'cipd' + _BAT, 'ensure', '-root',
+            os.path.join(proto_package_path, 'protoc'), '-ensure-file', '-'
+    ],
+                          stdin=subprocess.PIPE) as cipd_proc:
+        cipd_proc.communicate(
+            b'infra/3pp/tools/protoc/${platform} version:3@' + protoc_version)
     if cipd_proc.returncode != 0:
         raise ValueError('failed to install protoc: retcode %d' %
                          cipd_proc.returncode)

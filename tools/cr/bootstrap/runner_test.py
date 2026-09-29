@@ -32,9 +32,10 @@ class EnsureDepotToolsTest(unittest.TestCase):
     """Exercises deploying `vendor/depot_tools` into a checkout."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(self._tmp.cleanup)
-        self.root = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self._tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.root = Path(self._tmp)
         self.checkout = self.root / 'src' / 'brave'
         self.checkout.mkdir(parents=True)
         self.dest = self.checkout / 'vendor' / 'depot_tools'

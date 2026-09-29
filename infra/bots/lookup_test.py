@@ -30,22 +30,21 @@ from generated_output_test import _make_generated_output_dir
 class CmdLookupTest(unittest.TestCase):
 
     def test_quiet_prints_only_args_gn(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        _make_generated_output_dir(tmp.name, ['b'])
+        with tempfile.TemporaryDirectory() as tmp:
+            _make_generated_output_dir(tmp, ['b'])
 
-        original = gen_paths.BUILDERS_OUTPUT_DIR
-        gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp.name)
-        try:
-            args = argparse.Namespace(builder='b', quiet=True)
-            buf = io.StringIO()
-            with contextlib.redirect_stdout(buf):
-                ret = lookup.cmd_lookup(args)
-        finally:
-            gen_paths.BUILDERS_OUTPUT_DIR = original
+            original = gen_paths.BUILDERS_OUTPUT_DIR
+            gen_paths.BUILDERS_OUTPUT_DIR = Path(tmp)
+            try:
+                args = argparse.Namespace(builder='b', quiet=True)
+                buf = io.StringIO()
+                with contextlib.redirect_stdout(buf):
+                    ret = lookup.cmd_lookup(args)
+            finally:
+                gen_paths.BUILDERS_OUTPUT_DIR = original
 
-        self.assertEqual(ret, 0)
-        self.assertEqual(buf.getvalue(), 'is_asan = true\n')
+            self.assertEqual(ret, 0)
+            self.assertEqual(buf.getvalue(), 'is_asan = true\n')
 
     def test_unknown_builder_raises(self):
         args = argparse.Namespace(builder='does-not-exist', quiet=True)

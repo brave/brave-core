@@ -244,7 +244,6 @@ def CheckPylint(input_api, output_api):
         'consider-using-from-import',
         'consider-using-in',
         'consider-using-max-builtin',
-        'consider-using-with',
         'global-variable-not-assigned',
         'possibly-used-before-assignment',
         'unnecessary-dunder-call',

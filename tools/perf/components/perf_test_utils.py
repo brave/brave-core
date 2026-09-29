@@ -58,33 +58,33 @@ def GetProcessOutput(args: List[str],
                      env=None) -> Tuple[bool, str]:
   if logging.root.isEnabledFor(logging.DEBUG):
     logging.debug('Run binary: %s, cwd = %s  output:', ' '.join(args), cwd)
-    process = subprocess.Popen(args,
-                               stdout=subprocess.PIPE,
-                               stderr=subprocess.STDOUT,
-                               env=env,
-                               cwd=cwd,
-                               bufsize=0,
-                               universal_newlines=True)
-    timer = None
-    if timeout:
-      timer = Timer(timeout, lambda: TerminateProcess(process))
-    output = ''
-    try:
-      if timer:
-        timer.start()
-      while True:
-        assert process.stdout is not None
-        line = process.stdout.readline()
-        if line:
-          output += line
-          if output_to_debug:
-            logging.debug(line.rstrip())
-        if not line and process.poll() is not None:
-          break
-    finally:
-      if timer:
-        timer.cancel()
-    rc = process.poll()
+    with subprocess.Popen(args,
+                          stdout=subprocess.PIPE,
+                          stderr=subprocess.STDOUT,
+                          env=env,
+                          cwd=cwd,
+                          bufsize=0,
+                          universal_newlines=True) as process:
+      timer = None
+      if timeout:
+        timer = Timer(timeout, lambda: TerminateProcess(process))
+      output = ''
+      try:
+        if timer:
+          timer.start()
+        while True:
+          assert process.stdout is not None
+          line = process.stdout.readline()
+          if line:
+            output += line
+            if output_to_debug:
+              logging.debug(line.rstrip())
+          if not line and process.poll() is not None:
+            break
+      finally:
+        if timer:
+          timer.cancel()
+      rc = process.poll()
     if check and rc != 0:
       logging.debug('Binary failed. Exit code: %d', rc)
       if not rc:
@@ -114,8 +114,8 @@ def DownloadFile(url: str, output: str, timeout_sec=3 * 60):
     for _ in range(3):
       try:
         logging.info('Downloading %s to %s', url, output)
-        f = urlopen(url, timeout=timeout_sec)
-        return f.read()
+        with urlopen(url, timeout=timeout_sec) as f:
+          return f.read()
       except Exception:
         logging.error('Download attempt failed')
         time.sleep(5)

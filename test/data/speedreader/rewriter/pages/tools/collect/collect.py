@@ -35,21 +35,21 @@ def collect_data(browser, out_dir, url):
     time.sleep(1)
 
     print(f"Processing {url} to {out}")
-    process = subprocess.Popen([
-        browser, url, f"--user-data-dir={temp_dir}",
-        f"--speedreader-collect-test-data={out}"
-    ])
+    with subprocess.Popen([
+            browser, url, f"--user-data-dir={temp_dir}",
+            f"--speedreader-collect-test-data={out}"
+    ]) as process:
+        while not os.path.exists(distilled_path) and process.poll() == None:
+            time.sleep(1)
 
-    while not os.path.exists(distilled_path) and process.poll() == None:
+        if ticket != '':
+            with open(f"{out}/ticket.url", "w") as f:
+                f.write(
+                    f"https://github.com/brave/brave-browser/issues/{ticket}")
+
         time.sleep(1)
-
-    if ticket != '':
-        with open(f"{out}/ticket.url", "w") as f:
-            f.write(f"https://github.com/brave/brave-browser/issues/{ticket}")
-
-    time.sleep(1)
-    process.terminate()
-    process.kill()
+        process.terminate()
+        process.kill()
     time.sleep(1)
     shutil.rmtree(temp_dir)
     return 0

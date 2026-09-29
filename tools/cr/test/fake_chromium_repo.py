@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import contextlib
 import json
 import os
 import subprocess
@@ -44,13 +45,14 @@ class FakeChromiumRepo:
         # Every repository initialised by this fixture, in creation order.
         self._repos: list[Path] = []
 
-        self.temp_dir: tempfile.TemporaryDirectory = (
+        self._exit_stack = contextlib.ExitStack()
+        self.temp_dir: str = self._exit_stack.enter_context(
             tempfile.TemporaryDirectory())
         # Resolve the temp dir so derived paths are symlink-canonical. On
         # macOS, tempfile returns paths under /var/folders/..., but /var is a
         # symlink to /private/var; without resolving here, equality checks
         # against `Repository.root.resolve()` (which follows the symlink) fail.
-        self.base_path: Path = Path(self.temp_dir.name).resolve() / 'workspace'
+        self.base_path: Path = Path(self.temp_dir).resolve() / 'workspace'
         self._init_repo(self.chromium)
 
         # Set a brave repository under src/.
@@ -656,10 +658,10 @@ class FakeChromiumRepo:
             os.chdir(self._original_cwd)
             self._original_cwd = None
         try:
-            self.temp_dir.cleanup()
+            self._exit_stack.close()
         except OSError:
-            print(f'Failed to clean up temp dir: {self.temp_dir.name}')
-            for dirpath, dirnames, filenames in os.walk(self.temp_dir.name):
+            print(f'Failed to clean up temp dir: {self.temp_dir}')
+            for dirpath, dirnames, filenames in os.walk(self.temp_dir):
                 for name in dirnames + filenames:
                     full = os.path.join(dirpath, name)
                     try:

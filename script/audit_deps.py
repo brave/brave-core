@@ -117,8 +117,9 @@ def npm_audit_deps(path, args):
         # Don't support npm audit --production until dev dependencies are
         # correctly identified in package.json
         print('npm audit --production not supported; auditing dev dependencies')
-    audit_process = subprocess.Popen(npm_args, stdout=subprocess.PIPE, cwd=path)
-    output, _ = audit_process.communicate()
+    with subprocess.Popen(npm_args, stdout=subprocess.PIPE,
+                          cwd=path) as audit_process:
+        output, _ = audit_process.communicate()
 
     try:
         # results from audit
@@ -154,10 +155,9 @@ def pnpm_audit_deps(path, args):
         # Don't support pnpm audit --prod until dev dependencies are
         # correctly identified in package.json
         print('pnpm audit --prod not supported; auditing dev dependencies')
-    audit_process = subprocess.Popen(pnpm_args,
-                                     stdout=subprocess.PIPE,
-                                     cwd=path)
-    output, _ = audit_process.communicate()
+    with subprocess.Popen(pnpm_args, stdout=subprocess.PIPE,
+                          cwd=path) as audit_process:
+        output, _ = audit_process.communicate()
 
     try:
         # results from audit

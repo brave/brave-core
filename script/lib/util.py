@@ -100,15 +100,16 @@ def make_zip(zip_file_path, files, dirs):
         files += dirs
         execute(['zip', '-r', '-y', zip_file_path] + files)
     else:
-        zip_file = zipfile.ZipFile(zip_file_path, "w", zipfile.ZIP_DEFLATED,
-                                   allowZip64=True)
-        for filename in files:
-            zip_file.write(filename, filename)
-        for dirname in dirs:
-            for root, _, filenames in os.walk(dirname):
-                for f in filenames:
-                    zip_file.write(os.path.join(root, f))
-        zip_file.close()
+        with zipfile.ZipFile(zip_file_path,
+                             "w",
+                             zipfile.ZIP_DEFLATED,
+                             allowZip64=True) as zip_file:
+            for filename in files:
+                zip_file.write(filename, filename)
+            for dirname in dirs:
+                for root, _, filenames in os.walk(dirname):
+                    for f in filenames:
+                        zip_file.write(os.path.join(root, f))
 
 
 def make_7z(archive_file_path, files, dirs):
@@ -145,26 +146,18 @@ def execute(argv, env=os.environ):  # pylint: disable=dangerous-default-value
         print(' '.join(argv))
     argv_string = argv if isinstance(argv, str) else ' '.join(argv)
     try:
-        if sys.version_info.major == 2:
-            process = subprocess.Popen(
-                argv, env=env, stdout=subprocess.PIPE, stderr=subprocess.PIPE,
-                universal_newlines=True)
-        else:
-            process = subprocess.Popen(argv,
-                                       env=env,
-                                       stdout=subprocess.PIPE,
-                                       stderr=subprocess.PIPE,
-                                       encoding='utf-8',
-                                       universal_newlines=True)
-        stdout, stderr = process.communicate()
+        with subprocess.Popen(argv,
+                              env=env,
+                              stdout=subprocess.PIPE,
+                              stderr=subprocess.PIPE,
+                              encoding='utf-8',
+                              universal_newlines=True) as process:
+            stdout, stderr = process.communicate()
         if is_verbose_mode() or process.returncode != 0:
-            if sys.version_info.major == 2:
-                printable_stdout = stdout
-            else:
-                # Fix any unsupported characters in print encoder.
-                printable_stdout = stdout.encode(  # pylint: disable=no-member
-                    sys.stdout.encoding,
-                    'backslashreplace').decode(sys.stdout.encoding)
+            # Fix any unsupported characters in print encoder.
+            printable_stdout = stdout.encode(sys.stdout.encoding,
+                                             'backslashreplace').decode(
+                                                 sys.stdout.encoding)
             # Print the output instead of raising it, so that we get pretty
             # output. Most useful erroroutput from typescript / webpack is in
             # stdout and not stderr.
@@ -176,8 +169,7 @@ def execute(argv, env=os.environ):  # pylint: disable=dangerous-default-value
     except subprocess.CalledProcessError as e:
         print('Error in subprocess:')
         print(argv_string)
-        if sys.version_info.major > 2:
-            print(e.stderr)  # pylint: disable=no-member
+        print(e.stderr)
         raise e
 
 

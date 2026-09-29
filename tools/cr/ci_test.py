@@ -21,6 +21,7 @@ The remaining classes unit-test the watch helpers (`_WatchedJob`,
 
 from __future__ import annotations
 
+import contextlib
 import json
 import tempfile
 import unittest
@@ -49,9 +50,10 @@ class FromConfigTest(unittest.TestCase):
     """Tests for `JenkinsCi.from_config`."""
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self.config_path = Path(tmp.name) / '.jenkins.json'
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.config_path = Path(tmp) / '.jenkins.json'
         patcher = patch.object(ci, 'JENKINS_CONFIG_FILE', self.config_path)
         patcher.start()
         self.addCleanup(patcher.stop)

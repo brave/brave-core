@@ -74,7 +74,8 @@ def main(original_function, argv):
     manifest_path = os.path.join(args.gen_dir,
                                  f'{args.output_suffix}_manifest.json')
     if os.path.exists(manifest_path):
-        manifest = json.load(open(manifest_path))
+        with open(manifest_path, encoding='utf-8') as f:
+            manifest = json.load(f)
 
         preprocess_dir = os.path.join(args.gen_dir, 'preprocessed')
         for override_file in get_webui_overridden_but_referenced_files(

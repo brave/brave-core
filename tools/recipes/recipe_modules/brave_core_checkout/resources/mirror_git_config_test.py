@@ -5,6 +5,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Tests for mirror_git_config.py."""
 
+import contextlib
 import json
 import os
 import subprocess
@@ -104,11 +105,9 @@ class TestGitConfigRewritesUrls(unittest.TestCase):
     """End-to-end: the generated config actually redirects git, correctly."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
-
-    def tearDown(self):
-        self._tmp.cleanup()
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
 
     def _make_bare_repo_with_commit(self, path: Path, message: str) -> str:
         subprocess.run(['git', 'init', '-q', '--bare', str(path)], check=True)
@@ -225,11 +224,9 @@ class TestBuildOutput(unittest.TestCase):
     """The generated file layers the redirects on top of the global config."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
-
-    def tearDown(self):
-        self._tmp.cleanup()
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
 
     def _git_config(self, output: Path, *args: str) -> str:
         env = {
@@ -343,8 +340,9 @@ class TestMain(unittest.TestCase):
     """Integration tests for the CLI entry point."""
 
     def setUp(self):
-        self._tmp = tempfile.TemporaryDirectory()
-        self.tmp = Path(self._tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        self.tmp = Path(stack.enter_context(tempfile.TemporaryDirectory()))
         self.output = self.tmp / '.gitconfig_gerrit_mirror_redirect'
         self.global_config = self.tmp / 'gitconfig'
         _write(self.global_config, '[user]\n\tname = Test\n')
@@ -357,9 +355,6 @@ class TestMain(unittest.TestCase):
         ):
             patcher.start()
             self.addCleanup(patcher.stop)
-
-    def tearDown(self):
-        self._tmp.cleanup()
 
     def _main(self, *argv: str, projects: list[str] | None = None):
         """Run `main` with *argv*; return the `list_mirror_projects` mock."""

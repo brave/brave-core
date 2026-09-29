@@ -7,6 +7,7 @@
 
 from __future__ import annotations
 
+import contextlib
 import importlib.util
 import io
 import os
@@ -106,18 +107,15 @@ class SuiteUpdaterTestCase(QuietConsoleTestCase):
 
     def setUp(self) -> None:
         super().setUp()
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
         self.filters_dir = Path(
-            self.enter_context(tempfile.TemporaryDirectory()))
+            stack.enter_context(tempfile.TemporaryDirectory()))
         self.client = mock.Mock()
         self.client.cluster_summaries.return_value = []
         self.client.cluster_failures.return_value = []
         self.client.history.return_value = []
         self.client.variants.return_value = []
-
-    def enter_context(self, context_manager: Any) -> Any:
-        value = context_manager.__enter__()
-        self.addCleanup(context_manager.__exit__, None, None, None)
-        return value
 
     def updater(self,
                 suite: str = "unit_tests",

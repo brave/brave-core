@@ -55,8 +55,8 @@ class CrowdinClientWrapper():
         return branch['data']['id']
 
     def __create_storage(self, resource_path):
-        storage_data = self._client.storages.add_storage(
-            open(resource_path, 'rb'))
+        with open(resource_path, 'rb') as f:
+            storage_data = self._client.storages.add_storage(f)
         return storage_data['data']['id']
 
     def __get_resource_file(self, branch_id, resource_name):

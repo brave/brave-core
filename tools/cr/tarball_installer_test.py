@@ -107,9 +107,10 @@ class TarballInstallerTest(unittest.TestCase):
     """Tests for `TarballInstaller` fetch/extract/sidecar mechanics."""
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self.root = Path(tmp.name).resolve()
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.root = Path(tmp).resolve()
         self.dest = self.root / 'dest'
 
     def _installer(self,

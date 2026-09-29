@@ -29,9 +29,10 @@ import validate
 def _patch_dotenv(test_case, contents: str) -> None:
     """Points `dotenv.DEFAULT_PATH` at a temp file with `contents` for
     the duration of `test_case`."""
-    tmp = tempfile.TemporaryDirectory()
-    test_case.addCleanup(tmp.cleanup)
-    path = Path(tmp.name) / '.env'
+    stack = contextlib.ExitStack()
+    test_case.addCleanup(stack.close)
+    tmp = stack.enter_context(tempfile.TemporaryDirectory())
+    path = Path(tmp) / '.env'
     path.write_text(contents, encoding='utf-8')
 
     original = dotenv.DEFAULT_PATH
@@ -83,9 +84,10 @@ class _OutputDirTestCase(unittest.TestCase):
     duration of each test."""
 
     def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self.output_dir = Path(tmp.name)
+        stack = contextlib.ExitStack()
+        self.addCleanup(stack.close)
+        tmp = stack.enter_context(tempfile.TemporaryDirectory())
+        self.output_dir = Path(tmp)
 
         original = gen_paths.BUILDERS_OUTPUT_DIR
         gen_paths.BUILDERS_OUTPUT_DIR = self.output_dir
@@ -178,25 +180,24 @@ class ValidatorRunTest(_OutputDirTestCase):
 
     def test_args_file_present_on_disk_is_fine(self):
         original_src_dir = validate._CHROMIUM_SRC_DIR
-        fake_src_root = tempfile.TemporaryDirectory()
-        self.addCleanup(fake_src_root.cleanup)
-        args_file_path = Path(fake_src_root.name) / 'build' / 'args' / 'x.gni'
-        args_file_path.parent.mkdir(parents=True)
-        args_file_path.write_text('', encoding='utf-8')
-        validate._CHROMIUM_SRC_DIR = Path(fake_src_root.name)
-        self.addCleanup(setattr, validate, '_CHROMIUM_SRC_DIR',
-                        original_src_dir)
+        with tempfile.TemporaryDirectory() as fake_src_root:
+            args_file_path = Path(fake_src_root) / 'build' / 'args' / 'x.gni'
+            args_file_path.parent.mkdir(parents=True)
+            args_file_path.write_text('', encoding='utf-8')
+            validate._CHROMIUM_SRC_DIR = Path(fake_src_root)
+            self.addCleanup(setattr, validate, '_CHROMIUM_SRC_DIR',
+                            original_src_dir)
 
-        _write_builder(self.output_dir,
-                       'b',
-                       gn_args={
-                           'gn_args': {
-                               'target_os': 'linux',
-                               'target_cpu': 'x64',
-                           },
-                           'args_file': '//build/args/x.gni',
-                       })
-        self.assertEqual(validate._Validator().run(), [])
+            _write_builder(self.output_dir,
+                           'b',
+                           gn_args={
+                               'gn_args': {
+                                   'target_os': 'linux',
+                                   'target_cpu': 'x64',
+                               },
+                               'args_file': '//build/args/x.gni',
+                           })
+            self.assertEqual(validate._Validator().run(), [])
 
     def test_args_file_not_source_absolute_is_reported(self):
         _write_builder(self.output_dir,

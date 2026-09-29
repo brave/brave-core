@@ -37,8 +37,8 @@ def GetCommandOutput(command):
 
     From chromium_utils.
     """
-    proc = subprocess.Popen(command, stdout=subprocess.PIPE)
-    output = proc.communicate()[0]
+    with subprocess.Popen(command, stdout=subprocess.PIPE) as proc:
+        output = proc.communicate()[0]
     return output.decode('utf-8')
 
 
@@ -200,9 +200,10 @@ def GenerateSymbols(options, binaries):
                                            module_line.group(1))
                 mkdir_p(output_path)
                 symbol_file = "%s.sym" % module_line.group(2)
-                f = open(os.path.join(output_path, symbol_file), 'w')
-                f.write(syms)
-                f.close()
+                with open(os.path.join(output_path, symbol_file),
+                          'w',
+                          encoding='utf-8') as f:
+                    f.write(syms)
             except Exception as inst:
                 with print_lock:
                     print(f'Symbol failure {binary} {type(inst)} {inst}')
