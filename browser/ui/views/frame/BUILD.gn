@@ -171,6 +171,9 @@ source_set("browser_tests") {
   }
 
   if (is_mac) {
-    deps += [ "//chrome/browser/ui:fullscreen_util_mac" ]
+    deps += [
+      "//chrome/browser/ui:fullscreen_util_mac",
+      "//ui/base:test_support",
+    ]
   }
 }
