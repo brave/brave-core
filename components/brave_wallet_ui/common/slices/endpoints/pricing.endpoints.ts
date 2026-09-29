@@ -17,7 +17,6 @@ import { maxConcurrentPriceRequests } from '../constants'
 import { SKIP_PRICE_LOOKUP_COINGECKO_ID } from '../../constants/magics'
 
 // Utils
-import { makeSerializableTimeDelta } from '../../../utils/model-serialization-utils'
 import { getPriceIdForToken } from '../../../utils/pricing-utils'
 import Amount from '../../../utils/amount'
 import { findTokenByAssetId } from '../../../utils/asset-utils'
@@ -147,7 +146,7 @@ export const pricingEndpoints = ({
           if (success && values) {
             return {
               data: values.map((value) => ({
-                date: makeSerializableTimeDelta(value.date),
+                date: value.date.msec,
                 close: Number(value.price),
               })),
             }
@@ -204,7 +203,7 @@ export const pricingEndpoints = ({
                 id,
                 values: success
                   ? values.map((value) => ({
-                      date: makeSerializableTimeDelta(value.date),
+                      date: value.date.msec,
                       close: Number(value.price),
                     }))
                   : [],
