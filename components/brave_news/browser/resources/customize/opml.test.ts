@@ -346,7 +346,7 @@ describe('OPML direct feed result accounting', () => {
       addDirectFeed: jest.fn(async (url: string) => ({
         isValidFeed: url === 'https://valid.example/feed',
         isDuplicate: false,
-        publishers: null
+        publishers: url === 'https://valid.example/feed' ? {} : null
       }))
     })
     const xml = serializeOpml({
@@ -363,7 +363,7 @@ describe('OPML direct feed result accounting', () => {
 })
 
 describe('OPML direct feed asynchronous completion', () => {
-  it('waits for all results when they complete out of order', async () => {
+  it.each([true, false])('waits for both results (first resolves first: %s)', async (firstResolvesFirst) => {
     type Response = Awaited<ReturnType<ImportActions['addDirectFeed']>>
     let finishFirst!: (value: Response) => void
     let finishSecond!: (value: Response) => void
@@ -387,10 +387,25 @@ describe('OPML direct feed asynchronous completion', () => {
       return result
     })
     expect(actions.addDirectFeed).toHaveBeenCalledTimes(2)
-    finishSecond({ isValidFeed: false, isDuplicate: false, publishers: null })
-    await second
+    const firstResponse: Response = {
+      isValidFeed: true, isDuplicate: false, publishers: {}
+    }
+    const secondResponse: Response = {
+      isValidFeed: false, isDuplicate: false, publishers: null
+    }
+    if (firstResolvesFirst) {
+      finishFirst(firstResponse)
+    } else {
+      finishSecond(secondResponse)
+    }
+    // Let promise continuations drain before checking the unresolved request.
+    await new Promise<void>((resolve) => setTimeout(resolve, 0))
     expect(completed).toBe(false)
-    finishFirst({ isValidFeed: true, isDuplicate: false, publishers: {} })
+    if (firstResolvesFirst) {
+      finishSecond(secondResponse)
+    } else {
+      finishFirst(firstResponse)
+    }
     const result = await promise
     expect(result.addedDirectFeeds).toBe(1)
     expect(result.skipped).toBe(1)
