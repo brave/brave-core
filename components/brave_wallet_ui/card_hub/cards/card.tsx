@@ -4,9 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import Icon from '@brave/leo/react/icon'
+
+// Utils
+import { getLocale } from '$web-common/locale'
 
 // Styles
-import { CardFace, StyledCard } from './cards.style'
+import { CardFace, HideButton, StyledCard } from './cards.style'
 
 // Constants
 const maxTiltDeg = 12
@@ -20,10 +24,11 @@ const prefersReducedMotion = () => {
 interface Props {
   children: React.ReactNode
   onClick?: () => void
+  onHide?: () => void
 }
 
 export const Card = (props: Props) => {
-  const { children, onClick } = props
+  const { children, onClick, onHide } = props
 
   // Refs
   const cardRef = React.useRef<HTMLDivElement>(null)
@@ -71,6 +76,11 @@ export const Card = (props: Props) => {
     [],
   )
 
+  const onHideClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.stopPropagation()
+    onHide?.()
+  }
+
   return (
     <StyledCard
       ref={cardRef}
@@ -79,7 +89,18 @@ export const Card = (props: Props) => {
       onMouseLeave={resetTilt}
       onClick={onClick}
     >
-      <CardFace>{children}</CardFace>
+      <CardFace>
+        {children}
+        {onHide && (
+          <HideButton
+            type='button'
+            onClick={onHideClick}
+            aria-label={getLocale(S.BRAVE_WALLET_CONFIRM_HIDING_TOKEN)}
+          >
+            <Icon name='close' />
+          </HideButton>
+        )}
+      </CardFace>
     </StyledCard>
   )
 }

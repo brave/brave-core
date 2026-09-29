@@ -24,12 +24,16 @@ import { Rewards } from './cards/rewards/rewards'
 import { RewardsCard } from './cards/rewards_card/rewards_card'
 import { HubMenu } from './components/hub_menu/hub_menu'
 import { Settings } from './components/settings/settings'
+import { HideCardPopup } from './components/hide_card_popup/hide_card_popup'
 
 // Styles
 import { CardStack, FabButton, WalletLogo, Wrapper } from './card_hub.style'
 import { Column, Row } from '$wallet/components/shared/style'
 
-const walletCardComponents: Record<WalletCardIds, React.ComponentType> = {
+const walletCardComponents: Record<
+  WalletCardIds,
+  React.ComponentType<{ onHide: () => void }>
+> = {
   crypto: Crypto,
   'brave-rewards': Rewards,
   'brave-rewards-card': RewardsCard,
@@ -38,6 +42,7 @@ const walletCardComponents: Record<WalletCardIds, React.ComponentType> = {
 export const CardHub = () => {
   // State
   const [showSettings, setShowSettings] = React.useState(false)
+  const [hidingCard, setHidingCard] = React.useState<WalletCardIds>()
 
   const [filteredOutWalletCards] = useLocalStorage<WalletCardIds[]>(
     LOCAL_STORAGE_KEYS.FILTERED_OUT_WALLET_CARDS,
@@ -83,12 +88,22 @@ export const CardHub = () => {
                   return null
                 }
                 const Card = walletCardComponents[option.id]
-                return <Card key={option.id} />
+                return (
+                  <Card
+                    key={option.id}
+                    onHide={() => setHidingCard(option.id)}
+                  />
+                )
               })}
             </CardStack>
           </Column>
         </>
       )}
+      <HideCardPopup
+        card={hidingCard}
+        isOpen={!!hidingCard}
+        onClose={() => setHidingCard(undefined)}
+      />
     </Wrapper>
   )
 }
