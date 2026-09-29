@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/build/config.gni")
+import("//brave/build/config/v8_snapshot_deps.gni")
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
 import("//brave/tools/crates/build_crate.gni")
@@ -224,6 +225,7 @@ if (!is_ios) {
 if (is_win) {
   packed_files_rc_file =
       "$root_out_dir/gen/chrome/installer/mini_installer/packed_delta_files.rc"
+
   action("delta_installer_archive") {
     script = "//brave/tools/win/create_delta_archive.py"
     if (skip_signing) {
@@ -278,11 +280,13 @@ if (is_win) {
       outputs = [ "$root_out_dir/presigned_binaries/setup.exe" ]
       deps = [ "//chrome/installer/setup" ]
     }
+
     sign("signed_brave_exe") {
       sources = [ "$root_out_dir/brave.exe" ]
       outputs = [ "$root_out_dir/presigned_binaries/brave.exe" ]
       deps = [ "//brave/build/win:copy_exe" ]
     }
+
     sign("signed_chrome_dll") {
       sources = [ "$root_out_dir/chrome.dll" ]
       outputs = [ "$root_out_dir/presigned_binaries/chrome.dll" ]
@@ -415,6 +419,7 @@ if (!is_ios) {
 branding_dir = "//chrome/app/theme/$branding_path_component"
 branding_dir_100 =
     "//chrome/app/theme/default_100_percent/$branding_path_component"
+
 copy("theme_files") {
   visibility = [ ":*" ]
   if (is_linux) {
@@ -583,6 +588,7 @@ if (!is_android && !is_ios) {
           deps += [ "//tools/v8_context_snapshot" ]
         } else {
           sources += [ "$root_out_dir/snapshot_blob.bin" ]
+          deps += brave_v8_run_mksnapshot_default_deps
         }
       }
     }
