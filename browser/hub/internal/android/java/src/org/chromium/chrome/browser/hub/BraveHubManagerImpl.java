@@ -26,6 +26,7 @@ import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.toolbar.menu_button.MenuButtonCoordinator;
 import org.chromium.chrome.browser.toolbar.settings.AddressBarPreference;
+import org.chromium.chrome.browser.ui.bottombar.BottomBarConfigUtils;
 import org.chromium.chrome.browser.ui.bottombar.BottomBarHostManager;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeControllerFactory;
@@ -150,7 +151,7 @@ public class BraveHubManagerImpl extends HubManagerImpl {
     }
 
     private void maybeUpdateBottomMarginForContainerView() {
-        if (mIsTablet || isToolbarBottomAnchored()) return;
+        if (mIsTablet || shouldShowToolbarAtBottom()) return;
 
         // We want to prevent crash at cr136
         // which happened at:
@@ -191,12 +192,12 @@ public class BraveHubManagerImpl extends HubManagerImpl {
     }
 
     /**
-     * Repositions the hub toolbar from top to bottom when the address bar is at the bottom. This
-     * moves all hub controls (new tab, menu, pane switcher, search) to the bottom of the tab
-     * switcher for one-handed accessibility.
+     * Repositions the hub toolbar from top to bottom when the address bar is at the bottom or the
+     * bottom bar is enabled. This moves all hub controls (new tab, menu, pane switcher, search) to
+     * the bottom of the tab switcher for one-handed accessibility.
      */
     private void maybeRepositionToolbarToBottom() {
-        if (mIsTablet || !isToolbarBottomAnchored()) return;
+        if (mIsTablet || !shouldShowToolbarAtBottom()) return;
 
         HubContainerView containerView = getContainerView();
         if (containerView == null) return;
@@ -269,7 +270,9 @@ public class BraveHubManagerImpl extends HubManagerImpl {
                 });
     }
 
-    private boolean isToolbarBottomAnchored() {
-        return !AddressBarPreference.isToolbarConfiguredToShowOnTop();
+    // The bottom bar is not shown in the hub, so its controls take its place at the bottom.
+    private boolean shouldShowToolbarAtBottom() {
+        return !AddressBarPreference.isToolbarConfiguredToShowOnTop()
+                || BottomBarConfigUtils.isBottomBarEnabled(mActivity);
     }
 }
