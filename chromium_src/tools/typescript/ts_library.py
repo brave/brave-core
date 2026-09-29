@@ -40,7 +40,7 @@ def main(original_function, argv):
     rsp_args, _ = rsp_parser.parse_known_args(argv)
 
     if rsp_args.rsp:
-        with open(rsp_args.rsp, 'r') as f:
+        with open(rsp_args.rsp, 'r', encoding='utf-8') as f:
             # Do not prepend argv[0], because original script strips it.
             argv = shlex.split(f.read())
 
@@ -82,5 +82,5 @@ def main(original_function, argv):
                 preprocess_dir, args.in_files):
             manifest['files'].append(re.sub(r'\.ts$', '.js', override_file))
 
-        with open(manifest_path, 'w') as f:
+        with open(manifest_path, 'w', encoding='utf-8') as f:
             json.dump(manifest, f)

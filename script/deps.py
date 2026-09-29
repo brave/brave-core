@@ -121,11 +121,11 @@ def DownloadIfChanged(url,
     '.url' file inside dest_dir so subsequent calls can skip."""
     url_file = os.path.join(dest_dir, '.url')
     try:
-        with open(url_file) as f:
+        with open(url_file, encoding='utf-8') as f:
             if f.read() == url:
                 return
     except FileNotFoundError:
         pass
     download_fn(url, dest_dir, *args, **kwargs)
-    with open(url_file, 'w', newline='\n') as f:
+    with open(url_file, 'w', newline='\n', encoding='utf-8') as f:
         f.write(url)

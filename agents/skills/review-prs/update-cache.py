@@ -45,7 +45,7 @@ approve = "--approve" in flags
 file_hashes = None
 for flag in flags:
     if flag.startswith("--file-hashes="):
-        with open(flag.split("=", 1)[1]) as f:
+        with open(flag.split("=", 1)[1], encoding='utf-8') as f:
             file_hashes = json.load(f)
 
 # Oldest entries go first: a PR that stops moving stops being reviewed.

@@ -31,7 +31,7 @@ def GetDashboardToken(file: Optional[io.TextIOWrapper]) -> str:
     if key_path is None:
       raise RuntimeError(
           f'Can\'t get the token, set ENV {SERVICE_ACCOUNT_FILE_ENV_NAME}')
-    with open(key_path, 'r') as f:
+    with open(key_path, 'r', encoding='utf-8') as f:
       service_account_info = json.load(f)
   credentials = service_account.Credentials.from_service_account_info(
       service_account_info, scopes=SCOPES)

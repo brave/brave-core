@@ -60,7 +60,7 @@ def load_candidates(pr):
     for entry in prompts:
         path = entry.get("results_file", "")
         try:
-            with open(path) as f:
+            with open(path, encoding='utf-8') as f:
                 data = json.load(f)
         except (OSError, json.JSONDecodeError) as e:
             missing += 1
@@ -85,7 +85,7 @@ def rule_text(rule_link, bp_dir):
     key = (bp_dir, doc)
     if key not in _RULES_BY_DOC:
         try:
-            with open(os.path.join(bp_dir, doc)) as f:
+            with open(os.path.join(bp_dir, doc), encoding='utf-8') as f:
                 _RULES_BY_DOC[key] = _prep._cb_mod.split_into_rules(
                     f.read())[1]
         except OSError:
@@ -122,7 +122,7 @@ def select(pr, violations, existing_comments, bp_dir):
 def validator_diff(diff_file, files):
     """The reviewed diff of just the files the candidates are on."""
     try:
-        with open(diff_file) as f:
+        with open(diff_file, encoding='utf-8') as f:
             sections = _prep.split_diff(f.read())
     except OSError:
         return "", {}
@@ -150,7 +150,7 @@ def write_validator(pr, candidates, bot_username, bp_dir):
                                         for v in candidates})
     prior = ""
     try:
-        with open(pr.get("prior_comments_file", "")) as f:
+        with open(pr.get("prior_comments_file", ""), encoding='utf-8') as f:
             prior = f.read()
     except OSError:
         pass
@@ -175,7 +175,7 @@ def write_validator(pr, candidates, bot_username, bp_dir):
         or _prep.TARGET_REPO_PATH,
         results_file,
     )
-    with open(prompt_file, "w") as f:
+    with open(prompt_file, "w", encoding='utf-8') as f:
         f.write(prompt)
     return {
         "prompt_file": prompt_file,
@@ -198,7 +198,7 @@ def main():
     args = parser.parse_args()
 
     manifest_path = os.path.join(args.work_dir, "manifest.json")
-    with open(manifest_path) as f:
+    with open(manifest_path, encoding='utf-8') as f:
         manifest = json.load(f)
     repo = manifest["pr_repo"]
     bot_username = manifest["bot_username"]

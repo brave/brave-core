@@ -119,7 +119,7 @@ def chunk_rules(rules, chunk_size=DEFAULT_CHUNK_SIZE):
 
 def process_doc(doc_path, chunk_size=DEFAULT_CHUNK_SIZE):
     """Process a best-practice document and return chunks as dicts."""
-    with open(doc_path) as f:
+    with open(doc_path, encoding='utf-8') as f:
         text = f.read()
 
     header, rules = split_into_rules(text)

@@ -73,7 +73,7 @@ FLAG_TO_CONDITION = {
 def extract_applicability(filepath):
     """Read first 10 lines looking for <!-- applicability: CONDITION -->."""
     try:
-        with open(filepath) as f:
+        with open(filepath, encoding='utf-8') as f:
             for i, line in enumerate(f):
                 if i >= 10:
                     break

@@ -33,7 +33,7 @@ def log(msg):
 def load_manifest(work_dir):
     """Load and return manifest.json from work_dir."""
     manifest_path = os.path.join(work_dir, "manifest.json")
-    with open(manifest_path) as f:
+    with open(manifest_path, encoding='utf-8') as f:
         return json.load(f)
 
 
@@ -51,7 +51,7 @@ def collect_violations(pr):
         return [], [], None
     results_file = validation.get("results_file", "")
     try:
-        with open(results_file) as f:
+        with open(results_file, encoding='utf-8') as f:
             data = json.load(f)
     except (OSError, json.JSONDecodeError) as e:
         return [], [], f"the validator wrote no results ({e})"
@@ -207,7 +207,7 @@ def main():
 
     # Write input file
     input_path = os.path.join(args.work_dir, "post-review-input.json")
-    with open(input_path, "w") as f:
+    with open(input_path, "w", encoding='utf-8') as f:
         json.dump(post_review_data, f, indent=2)
 
     # Log any errors from manifest

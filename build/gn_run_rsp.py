@@ -38,7 +38,7 @@ def main():
 
     response_file = sys.argv[1]
     try:
-        with open(response_file, 'r') as f:
+        with open(response_file, 'r', encoding='utf-8') as f:
             content = f.read()
     except IOError as e:
         print(f'Error reading response file {response_file}: {e}',

@@ -1,5 +1,3 @@
-#!/usr/bin/env python
-
 from __future__ import print_function
 import json
 import os
@@ -41,7 +39,7 @@ def output_dir(target_os, target_arch):
 
 def brave_core_package():
     pjson = os.path.join(BRAVE_CORE_ROOT, 'package.json')
-    with open(pjson) as f:
+    with open(pjson, encoding='utf-8') as f:
         obj = json.load(f)
         return obj
 

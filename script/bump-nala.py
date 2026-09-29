@@ -85,14 +85,14 @@ def get_full_sha(target, clone_dir):
 
 def get_nala_current_sha():
     """Gets the current sha of Nala from the package.json file."""
-    with open('package.json', 'r') as f:
+    with open('package.json', 'r', encoding='utf-8') as f:
         package_json = json.load(f)
     return package_json['dependencies']['@brave/leo'].split('#')[1]
 
 
 def get_sf_symbols_current_sha():
     """Gets the current sha of leo-sf-symbols from the package.json file."""
-    with open('package.json', 'r') as f:
+    with open('package.json', 'r', encoding='utf-8') as f:
         package_json = json.load(f)
     return package_json['dependencies']['@brave/leo-sf-symbols'].split('#')[1]
 

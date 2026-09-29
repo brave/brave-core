@@ -683,7 +683,7 @@ def main():
 
     # Read input
     if args.input_file:
-        with open(args.input_file) as f:
+        with open(args.input_file, encoding='utf-8') as f:
             data = json.load(f)
     else:
         data = json.load(sys.stdin)

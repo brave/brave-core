@@ -198,7 +198,7 @@ def fetch_prs(mode, page, pr_number, state):
 
 def load_cache():
     try:
-        with open(CACHE_PATH) as f:
+        with open(CACHE_PATH, encoding='utf-8') as f:
             return json.load(f)
     except (FileNotFoundError, json.JSONDecodeError):
         return {}
@@ -213,7 +213,7 @@ def load_org_members():
             file=sys.stderr,
         )
         sys.exit(1)
-    with open(ORG_MEMBERS_PATH) as f:
+    with open(ORG_MEMBERS_PATH, encoding='utf-8') as f:
         return set(line.strip() for line in f if line.strip())
 
 

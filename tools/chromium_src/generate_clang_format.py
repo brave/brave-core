@@ -57,7 +57,7 @@ def add_chromium_src_include_categories_rule(data):
 
 
 def load_clang_format(path):
-    with open(path, 'r') as file:
+    with open(path, 'r', encoding='utf-8') as file:
         return yaml.safe_load(file)
 
 
@@ -69,14 +69,14 @@ def save_clang_format(data, path):
 
     # Load the existing content.
     if os.path.exists(path):
-        with open(path, 'r') as file:
+        with open(path, 'r', encoding='utf-8') as file:
             existing_content = file.read()
     else:
         existing_content = None
 
     # Write the changes to output .clang-format file if needed.
     if new_content != existing_content:
-        with open(path, 'w', newline='\n') as file:
+        with open(path, 'w', newline='\n', encoding='utf-8') as file:
             file.write(new_content)
 
 

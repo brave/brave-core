@@ -248,7 +248,6 @@ def CheckPylint(input_api, output_api):
         'unnecessary-dunder-call',
         'unnecessary-lambda-assignment',
         'unnecessary-list-index-lookup',
-        'unspecified-encoding',
         'use-dict-literal',
         'use-implicit-booleaness-not-comparison',
         'use-implicit-booleaness-not-len',

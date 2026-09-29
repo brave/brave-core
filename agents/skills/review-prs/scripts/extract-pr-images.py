@@ -80,7 +80,7 @@ def get_org_members():
             file=sys.stderr,
         )
         sys.exit(1)
-    return set(cache_file.read_text().strip().splitlines())
+    return set(cache_file.read_text(encoding='utf-8').strip().splitlines())
 
 
 def get_trusted_reviewers():

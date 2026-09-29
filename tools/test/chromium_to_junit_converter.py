@@ -234,7 +234,7 @@ def main():
 
     # Read input file
     try:
-        with open(args.input_file, 'r') as f:
+        with open(args.input_file, 'r', encoding='utf-8') as f:
             data = json.load(f)
     except (FileNotFoundError, json.JSONDecodeError) as e:
         print(f"Error reading input file: {e}", file=sys.stderr)
@@ -260,7 +260,7 @@ def main():
     # Write output
     if args.output:
         try:
-            with open(args.output, 'w') as f:
+            with open(args.output, 'w', encoding='utf-8') as f:
                 f.write(xml_output)
             print(f"JUnit XML written to {args.output}")
         except IOError as e:

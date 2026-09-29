@@ -43,7 +43,7 @@ def collect_data(browser, out_dir, url):
             time.sleep(1)
 
         if ticket != '':
-            with open(f"{out}/ticket.url", "w") as f:
+            with open(f"{out}/ticket.url", "w", encoding='utf-8') as f:
                 f.write(
                     f"https://github.com/brave/brave-browser/issues/{ticket}")
 
@@ -75,7 +75,7 @@ def main(argv):
                       help='Url')
     options, _ = parser.parse_args(argv)
 
-    with open(options.urls_file, "r") as f:
+    with open(options.urls_file, "r", encoding='utf-8') as f:
         for url in f:
             collect_data(options.browser, options.out_dir, url.strip())
 

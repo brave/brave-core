@@ -29,7 +29,7 @@ def Main():
     args = parser.parse_args()
 
     # sign file with the specified algorithm
-    with open(args.output, 'w') as file:
+    with open(args.output, 'w', encoding='utf-8') as file:
         if args.dsa:
             if not args.sign_key_file:
                 print('--sign-key-file argument is required with --dsa.', file=sys.stderr)

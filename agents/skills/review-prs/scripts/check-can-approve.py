@@ -239,7 +239,7 @@ def main():
     # Also check the local review cache — prevents double approval within
     # the same run if the GitHub API hasn't propagated the first approval yet.
     try:
-        with open(REVIEW_CACHE_PATH) as f:
+        with open(REVIEW_CACHE_PATH, encoding='utf-8') as f:
             cache = json.load(f)
         if str(args.pr_number) in set(cache.get("_approved", [])):
             fail(

@@ -71,7 +71,7 @@ def locked_json_update(path, default=None, timeout=DEFAULT_TIMEOUT_S):
     lock_file = f"{path}.lock"
     with file_lock(lock_file, timeout=timeout, what=path):
         try:
-            with open(path) as f:
+            with open(path, encoding='utf-8') as f:
                 data = json.load(f)
         except (FileNotFoundError, json.JSONDecodeError):
             data = {} if default is None else default
