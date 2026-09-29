@@ -5,7 +5,6 @@
 
 import { EntityId } from '@reduxjs/toolkit'
 
-import { TimeDelta } from 'gen/mojo/public/mojom/base/time.mojom.m.js'
 import * as BraveWallet from 'gen/brave/components/brave_wallet/common/brave_wallet.mojom.m.js'
 import {
   ExternalWallet,
@@ -34,7 +33,6 @@ export type NftDropdownOptionId = 'collected' | 'hidden'
 export type DAppConnectionOptionsType = 'networks' | 'accounts' | 'main'
 
 export { Origin } from 'gen/url/mojom/origin.mojom.m.js'
-export { TimeDelta }
 
 export type HardwareWalletResponseCodeType =
   | 'deviceNotConnected'
@@ -43,7 +41,7 @@ export type HardwareWalletResponseCodeType =
   | 'transactionRejected'
 
 export type TokenPriceHistory = {
-  date: SerializableTimeDelta
+  date: number
   close: number
 }
 
@@ -297,12 +295,6 @@ export interface SendPolkadotTransactionParams extends BaseTransactionParams {
   assetId: number | undefined
 }
 
-/**
- * Used to properly store BraveWallet.TransactionInfo in redux store,
- * since bigints are not serializable by default
- */
-export type SerializableTimeDelta = Record<keyof TimeDelta, number>
-
 export type Defined<T> = Exclude<T, undefined>
 
 export type SerializableSolanaTxDataMaxRetries = {
@@ -345,11 +337,8 @@ export type SerializableTxDataUnion = {
  */
 export type SerializableTransactionInfo = Omit<
   BraveWallet.TransactionInfo,
-  'confirmedTime' | 'createdTime' | 'submittedTime' | 'txDataUnion'
+  'txDataUnion'
 > & {
-  confirmedTime: SerializableTimeDelta
-  createdTime: SerializableTimeDelta
-  submittedTime: SerializableTimeDelta
   txDataUnion: SerializableTxDataUnion
 }
 

@@ -94,13 +94,10 @@ mojom::TransactionInfoPtr CardanoTxMeta::ToTransactionInfo() const {
           ? mojom::TransactionType::CardanoSendToken
           : mojom::TransactionType::CardanoSendLovelace,
       std::vector<std::string>() /* tx_params */,
-      std::vector<std::string>() /* tx_args */,
-      base::Milliseconds(created_time_.InMillisecondsSinceUnixEpoch()),
-      base::Milliseconds(submitted_time_.InMillisecondsSinceUnixEpoch()),
-      base::Milliseconds(confirmed_time_.InMillisecondsSinceUnixEpoch()),
-      origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr, chain_id_,
-      std::nullopt /* effective_recipient */, false /* is_retriable */,
-      swap_info_.Clone(), nullptr);
+      std::vector<std::string>() /* tx_args */, created_time_, submitted_time_,
+      confirmed_time_, origin_.has_value() ? MakeOriginInfo(*origin_) : nullptr,
+      chain_id_, std::nullopt /* effective_recipient */,
+      false /* is_retriable */, swap_info_.Clone(), nullptr);
 }
 
 mojom::CoinType CardanoTxMeta::GetCoinType() const {

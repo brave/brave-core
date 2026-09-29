@@ -29,7 +29,7 @@ import org.chromium.brave_wallet.mojom.ZecTxData;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.crypto_wallet.presenters.SolanaInstructionPresenter;
-import org.chromium.mojo_base.mojom.TimeDelta;
+import org.chromium.mojo_base.mojom.JSTime;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -56,7 +56,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
     public double marketPrice;
     private String mHash = "";
     private String mNonce = "";
-    @Nullable private TimeDelta mCreatedTime;
+    @Nullable private JSTime mCreatedTime;
     private int mStatus; // mojo loses enum type info in struct
     private int mType; // mojo loses enum type info in struct
     private String mSender = "";
@@ -469,7 +469,7 @@ public class ParsedTransaction extends ParsedTransactionFees {
     }
 
     @Nullable
-    public TimeDelta getCreatedTime() {
+    public JSTime getCreatedTime() {
         return this.mCreatedTime;
     }
 

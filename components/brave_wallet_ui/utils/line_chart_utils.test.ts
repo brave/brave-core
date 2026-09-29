@@ -5,7 +5,6 @@
 
 import {
   hasDangerousKeys,
-  sanitizeTimeDelta,
   sanitizeTokenPriceHistory,
   sanitizeLineChartIframeData,
 } from './line_chart_utils'
@@ -42,82 +41,8 @@ describe('hasDangerousKeys', () => {
   })
 })
 
-describe('sanitizeTimeDelta', () => {
-  it('should return valid SerializableTimeDelta for valid input', () => {
-    const result = sanitizeTimeDelta({ microseconds: 1234567890 })
-    expect(result).toEqual({ microseconds: 1234567890 })
-  })
-
-  it('should return undefined for null', () => {
-    expect(sanitizeTimeDelta(null)).toBeUndefined()
-  })
-
-  it('should return undefined for undefined', () => {
-    expect(sanitizeTimeDelta(undefined)).toBeUndefined()
-  })
-
-  it('should return undefined for arrays', () => {
-    expect(sanitizeTimeDelta([1, 2, 3])).toBeUndefined()
-  })
-
-  it('should return undefined for strings', () => {
-    expect(sanitizeTimeDelta('1234567890')).toBeUndefined()
-  })
-
-  it('should return undefined for numbers', () => {
-    expect(sanitizeTimeDelta(1234567890)).toBeUndefined()
-  })
-
-  it('should return undefined for booleans', () => {
-    expect(sanitizeTimeDelta(true)).toBeUndefined()
-  })
-
-  it('should return undefined if microseconds is missing', () => {
-    expect(sanitizeTimeDelta({})).toBeUndefined()
-  })
-
-  it('should return undefined if microseconds is not a number', () => {
-    expect(sanitizeTimeDelta({ microseconds: '1234' })).toBeUndefined()
-    expect(sanitizeTimeDelta({ microseconds: null })).toBeUndefined()
-    expect(sanitizeTimeDelta({ microseconds: undefined })).toBeUndefined()
-    expect(sanitizeTimeDelta({ microseconds: {} })).toBeUndefined()
-  })
-
-  it('should strip extra properties from the result', () => {
-    const result = sanitizeTimeDelta({
-      microseconds: 1000,
-      extraProp: 'should be stripped',
-      anotherProp: { nested: 'value' },
-    })
-    expect(result).toEqual({ microseconds: 1000 })
-    expect(result).not.toHaveProperty('extraProp')
-    expect(result).not.toHaveProperty('anotherProp')
-  })
-
-  it('should reject objects with __proto__ pollution', () => {
-    const malicious = JSON.parse(
-      '{"microseconds": 1000, "__proto__": {"polluted": true}}',
-    )
-    expect(sanitizeTimeDelta(malicious)).toBeUndefined()
-  })
-
-  it('should reject objects with constructor pollution', () => {
-    const malicious = JSON.parse(
-      '{"microseconds": 1000, "constructor": {"prototype": {}}}',
-    )
-    expect(sanitizeTimeDelta(malicious)).toBeUndefined()
-  })
-
-  it('should reject objects with prototype pollution', () => {
-    const malicious = JSON.parse(
-      '{"microseconds": 1000, "prototype": {"polluted": true}}',
-    )
-    expect(sanitizeTimeDelta(malicious)).toBeUndefined()
-  })
-})
-
 describe('sanitizeTokenPriceHistory', () => {
-  const validDate = { microseconds: 1234567890 }
+  const validDate = 1234567890
 
   it('should return valid TokenPriceHistory for valid input', () => {
     const result = sanitizeTokenPriceHistory({
@@ -125,7 +50,7 @@ describe('sanitizeTokenPriceHistory', () => {
       close: 42.5,
     })
     expect(result).toEqual({
-      date: { microseconds: 1234567890 },
+      date: 1234567890,
       close: 42.5,
     })
   })
@@ -161,6 +86,18 @@ describe('sanitizeTokenPriceHistory', () => {
     ).toBeUndefined()
   })
 
+  it('should return undefined if close is NaN or Infinity', () => {
+    expect(
+      sanitizeTokenPriceHistory({ date: validDate, close: NaN }),
+    ).toBeUndefined()
+    expect(
+      sanitizeTokenPriceHistory({ date: validDate, close: Infinity }),
+    ).toBeUndefined()
+    expect(
+      sanitizeTokenPriceHistory({ date: validDate, close: -Infinity }),
+    ).toBeUndefined()
+  })
+
   it('should return undefined if date is missing', () => {
     expect(sanitizeTokenPriceHistory({ close: 42.5 })).toBeUndefined()
   })
@@ -177,6 +114,18 @@ describe('sanitizeTokenPriceHistory', () => {
     ).toBeUndefined()
   })
 
+  it('should return undefined if date is NaN or Infinity', () => {
+    expect(
+      sanitizeTokenPriceHistory({ date: NaN, close: 42.5 }),
+    ).toBeUndefined()
+    expect(
+      sanitizeTokenPriceHistory({ date: Infinity, close: 42.5 }),
+    ).toBeUndefined()
+    expect(
+      sanitizeTokenPriceHistory({ date: -Infinity, close: 42.5 }),
+    ).toBeUndefined()
+  })
+
   it('should strip extra properties from the result', () => {
     const result = sanitizeTokenPriceHistory({
       date: validDate,
@@ -185,7 +134,7 @@ describe('sanitizeTokenPriceHistory', () => {
       malicious: { nested: 'data' },
     })
     expect(result).toEqual({
-      date: { microseconds: 1234567890 },
+      date: 1234567890,
       close: 42.5,
     })
     expect(result).not.toHaveProperty('extraProp')
@@ -194,16 +143,7 @@ describe('sanitizeTokenPriceHistory', () => {
 
   it('should reject objects with prototype pollution', () => {
     const malicious = JSON.parse(
-      '{"date": {"microseconds": 1000}, "close": 42.5, '
-        + '"__proto__": {"polluted": true}}',
-    )
-    expect(sanitizeTokenPriceHistory(malicious)).toBeUndefined()
-  })
-
-  it('should reject if nested date has prototype pollution', () => {
-    const malicious = JSON.parse(
-      '{"date": {"microseconds": 1000, "__proto__": {"bad": true}}, '
-        + '"close": 42.5}',
+      '{"date": 1000, "close": 42.5, "__proto__": {"polluted": true}}',
     )
     expect(sanitizeTokenPriceHistory(malicious)).toBeUndefined()
   })
@@ -211,8 +151,8 @@ describe('sanitizeTokenPriceHistory', () => {
 
 describe('sanitizeLineChartIframeData', () => {
   const validPriceData = [
-    { date: { microseconds: 1000 }, close: 100.5 },
-    { date: { microseconds: 2000 }, close: 105.25 },
+    { date: 1000, close: 100.5 },
+    { date: 2000, close: 105.25 },
   ]
 
   const validData = {
@@ -225,8 +165,8 @@ describe('sanitizeLineChartIframeData', () => {
     const result = sanitizeLineChartIframeData(validData)
     expect(result).toEqual({
       priceData: [
-        { date: { microseconds: 1000 }, close: 100.5 },
-        { date: { microseconds: 2000 }, close: 105.25 },
+        { date: 1000, close: 100.5 },
+        { date: 2000, close: 105.25 },
       ],
       defaultFiatCurrency: 'USD',
       hidePortfolioBalances: false,
@@ -350,9 +290,26 @@ describe('sanitizeLineChartIframeData', () => {
     expect(
       sanitizeLineChartIframeData({
         priceData: [
-          { date: { microseconds: 1000 }, close: 100 },
-          { date: { microseconds: 2000 }, close: 'invalid' }, // invalid close
+          { date: 1000, close: 100 },
+          { date: 2000, close: 'invalid' }, // invalid close
         ],
+        defaultFiatCurrency: 'USD',
+        hidePortfolioBalances: false,
+      }),
+    ).toBeUndefined()
+  })
+
+  it('should return undefined if a priceData item has a non-finite value', () => {
+    expect(
+      sanitizeLineChartIframeData({
+        priceData: [{ date: 1000, close: Infinity }],
+        defaultFiatCurrency: 'USD',
+        hidePortfolioBalances: false,
+      }),
+    ).toBeUndefined()
+    expect(
+      sanitizeLineChartIframeData({
+        priceData: [{ date: NaN, close: 100 }],
         defaultFiatCurrency: 'USD',
         hidePortfolioBalances: false,
       }),
@@ -369,8 +326,8 @@ describe('sanitizeLineChartIframeData', () => {
     })
     expect(result).toEqual({
       priceData: [
-        { date: { microseconds: 1000 }, close: 100.5 },
-        { date: { microseconds: 2000 }, close: 105.25 },
+        { date: 1000, close: 100.5 },
+        { date: 2000, close: 105.25 },
       ],
       defaultFiatCurrency: 'USD',
       hidePortfolioBalances: true,
@@ -397,18 +354,9 @@ describe('sanitizeLineChartIframeData', () => {
 
   it('should reject if priceData items have prototype pollution', () => {
     const malicious = JSON.parse(
-      '{"priceData": [{"date": {"microseconds": 1000}, "close": 100, '
+      '{"priceData": [{"date": 1000, "close": 100, '
         + '"__proto__": {"bad": true}}], "defaultFiatCurrency": "USD", '
         + '"hidePortfolioBalances": false}',
-    )
-    expect(sanitizeLineChartIframeData(malicious)).toBeUndefined()
-  })
-
-  it('should reject deeply nested prototype pollution in dates', () => {
-    const malicious = JSON.parse(
-      '{"priceData": [{"date": {"microseconds": 1000, '
-        + '"__proto__": {"bad": true}}, "close": 100}], '
-        + '"defaultFiatCurrency": "USD", "hidePortfolioBalances": false}',
     )
     expect(sanitizeLineChartIframeData(malicious)).toBeUndefined()
   })
@@ -420,13 +368,13 @@ describe('integration: JSON parsing from external sources', () => {
 
   it('should safely parse and sanitize valid JSON', () => {
     const jsonString =
-      '{"priceData":[{"date":{"microseconds":1000},"close":50}],'
+      '{"priceData":[{"date":1000,"close":50}],'
       + '"defaultFiatCurrency":"USD","hidePortfolioBalances":false}'
     const parsed = JSON.parse(jsonString)
     const result = sanitizeLineChartIframeData(parsed)
 
     expect(result).toEqual({
-      priceData: [{ date: { microseconds: 1000 }, close: 50 }],
+      priceData: [{ date: 1000, close: 50 }],
       defaultFiatCurrency: 'USD',
       hidePortfolioBalances: false,
     })

@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import { assert, assertNotReached } from 'chrome://resources/js/assert.js'
+import { JSTime } from 'gen/mojo/public/mojom/base/time.mojom.m'
 
 import { EntityState } from '@reduxjs/toolkit'
 
@@ -11,8 +12,6 @@ import { EntityState } from '@reduxjs/toolkit'
 import {
   BraveWallet,
   SerializableTransactionInfo,
-  TimeDelta,
-  SerializableTimeDelta,
   SortingOrder,
   TransactionInfo,
   ParsedSwapInfo,
@@ -42,7 +41,6 @@ import {
 } from './pricing-utils'
 import { makeNetworkAsset } from '../options/asset-options'
 import { getAccountLabel, getAddressLabel } from './account-utils'
-import { makeSerializableTimeDelta } from './model-serialization-utils'
 import {
   NetworksRegistry,
   networkSelectors,
@@ -115,7 +113,7 @@ export interface ParsedTransaction
   id: string
   hash: string
   nonce: string
-  createdTime: SerializableTimeDelta
+  createdTime: JSTime
   status: BraveWallet.TransactionStatus
   senderLabel: string
   recipient: string
@@ -176,9 +174,7 @@ export type ParsedTransactionWithoutFiatValues = Omit<
   'fiatTotal' | 'fiatValue' | 'gasFeeFiat'
 >
 
-export const sortTransactionByDate = <
-  T extends { createdTime: TimeDelta | SerializableTimeDelta },
->(
+export const sortTransactionByDate = <T extends { createdTime: JSTime }>(
   transactions: T[],
   order: SortingOrder = 'ascending',
 ): T[] => {
@@ -215,14 +211,14 @@ export const getTransactionStatusString = (statusId: number) => {
 }
 
 export const transactionSortByDateComparer = <
-  T extends { createdTime: TimeDelta | SerializableTimeDelta },
+  T extends { createdTime: JSTime },
 >(
   order: SortingOrder = 'ascending',
 ): ((a: T, b: T) => number) | undefined => {
   return function (x: T, y: T) {
     return order === 'ascending'
-      ? Number(x.createdTime.microseconds) - Number(y.createdTime.microseconds)
-      : Number(y.createdTime.microseconds) - Number(x.createdTime.microseconds)
+      ? x.createdTime.msec - y.createdTime.msec
+      : y.createdTime.msec - x.createdTime.msec
   }
 }
 
@@ -1939,7 +1935,6 @@ export const parseTransactionWithoutPrices = ({
 
   const approvalTargetLabel = getAddressLabel(approvalTarget, accounts)
   const coinType = getCoinFromTxDataUnion(tx.txDataUnion)
-  const createdTime = makeSerializableTimeDelta(tx.createdTime)
 
   const contractAddressError = isSendingToKnownTokenContractAddress(
     tx,
@@ -2002,7 +1997,7 @@ export const parseTransactionWithoutPrices = ({
     chainId: transactionNetwork?.chainId || '',
     coinType,
     contractAddressError,
-    createdTime,
+    createdTime: tx.createdTime,
     decimals,
     erc721BlockchainToken,
     erc721TokenId,
