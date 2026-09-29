@@ -49,7 +49,6 @@ class PageDistiller {
   void RemoveObserver(Observer* observer);
 
   void GetDistilledHTML(DistillContentCallback callback);
-  void GetDistilledText(DistillContentCallback callback);
   void GetTextToSpeak(TextToSpeechContentCallback callback);
 
   void DelayNextPageDistillationForTesting();

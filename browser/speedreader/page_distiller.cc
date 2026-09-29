@@ -42,11 +42,6 @@ void PageDistiller::GetDistilledHTML(DistillContentCallback callback) {
                               weak_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void PageDistiller::GetDistilledText(DistillContentCallback callback) {
-  StartDistill(base::BindOnce(&PageDistiller::ExtractText,
-                              weak_factory_.GetWeakPtr(), std::move(callback)));
-}
-
 void PageDistiller::GetTextToSpeak(TextToSpeechContentCallback callback) {
   if (state_ != State::kDistilled) {
     return std::move(callback).Run(base::Value());
@@ -171,17 +166,6 @@ void PageDistiller::AddStyleSheet(DistillContentCallback callback,
   std::move(callback).Run(true,
                           speedreader_service_rewriter->GetContentStylesheet() +
                               std::move(html_content));
-}
-
-void PageDistiller::ExtractText(DistillContentCallback callback,
-                                bool success,
-                                std::string html_content) {
-  if (!success || html_content.empty()) {
-    return std::move(callback).Run(false, {});
-  }
-
-  re2::RE2::GlobalReplace(&html_content, "<[^>]*>", " ");
-  std::move(callback).Run(true, html_content);
 }
 
 }  // namespace speedreader
