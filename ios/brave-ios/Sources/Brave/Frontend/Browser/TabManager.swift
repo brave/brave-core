@@ -1303,8 +1303,38 @@ class TabManager: NSObject {
     SessionTab.updateScreenshot(tabId: tab.id, screenshot: screenshot)
   }
 
+  /// The Auto Shred level configured for the given URL.
+  ///
+  /// `TabState` is unavailable during restore, so this doesn't go through
+  /// `BraveShieldsTabHelper`.
+  @MainActor private func autoShredLevel(for url: URL, isPrivate: Bool) -> SiteShredLevel {
+    if FeatureList.kBraveShieldsContentSettings.enabled {
+      let profile = isPrivate ? self.profile.offTheRecordProfile : self.profile
+      guard let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
+      else { return .never }
+      return braveShieldsSettings.autoShredMode(
+        for: url,
+        considerAllShieldsOption: true
+      ).siteShredLevel
+    }
+    // Deprecated direct access until `kBraveShieldsContentSettings` is removed.
+    return Domain.getOrCreate(forUrl: url, persistent: !isPrivate).shredLevel
+  }
+
   @MainActor fileprivate var restoreTabsInternal: (any TabState)? {
     var savedTabs = [SessionTab]()
+
+    /// Cache of the Auto Shred level per domain.
+    var shredLevelCache: [String: SiteShredLevel] = [:]
+    let shredLevel: (_ tabURL: URL, _ isPrivate: Bool) -> SiteShredLevel = { url, isPrivate in
+      let cacheKey = "\(url.domainURL.absoluteString)\(isPrivate)"
+      if let cachedLevel = shredLevelCache[cacheKey] {
+        return cachedLevel
+      }
+      let level = self.autoShredLevel(for: url, isPrivate: isPrivate)
+      shredLevelCache[cacheKey] = level
+      return level
+    }
 
     if let autocloseTime = Preferences.Debug.autocloseTabsMinutesOverride.value?.minutes
       ?? Preferences.AutoCloseTabsOption(
@@ -1314,45 +1344,29 @@ class TabManager: NSObject {
       // To avoid db problems, we first retrieve fresh tabs(on main thread context)
       // then delete old tabs(background thread context)
       savedTabs = SessionTab.all(noOlderThan: autocloseTime)
+      // Auto closed tabs never go through `removeTab`, so sites set to Shred when
+      // their last tab closes need to be Shred here.
+      let remainingDomains = Set(savedTabs.compactMap { $0.url?.urlToShred?.baseDomain })
+      let urlsToShred = SessionTab.all(olderThan: autocloseTime).compactMap {
+        (sessionTab) -> URL? in
+        guard !sessionTab.isPrivate,
+          let url = sessionTab.url?.urlToShred,
+          let baseDomain = url.baseDomain,
+          !remainingDomains.contains(baseDomain),
+          shredLevel(url, sessionTab.isPrivate) == .whenSiteClosed
+        else { return nil }
+        return url
+      }
       SessionTab.deleteAll(olderThan: autocloseTime)
+      if FeatureList.kBraveShredFeature.enabled, !urlsToShred.isEmpty {
+        Task { await forgetData(for: urlsToShred) }
+      }
     } else {
       savedTabs = SessionTab.all()
     }
 
     savedTabs = savedTabs.filter({ $0.sessionWindow?.windowId == windowId })
     if savedTabs.isEmpty { return nil }
-
-    /// Cache on if we should shred a given domain.
-    var shouldShredDomainCache: [String: Bool] = [:]
-    /// Checks if we should shred a Tab
-    let shouldShredDomain: (_ tabURL: URL, _ isPrivate: Bool) -> Bool = { url, isPrivate in
-      var shouldShredTab = false
-      let cacheKey = "\(url.domainURL.absoluteString)\(isPrivate)"
-      if let shouldShredDomain = shouldShredDomainCache[cacheKey] {
-        shouldShredTab = shouldShredDomain
-      } else {
-        if FeatureList.kBraveShieldsContentSettings.enabled {
-          let profile = isPrivate ? self.profile.offTheRecordProfile : self.profile
-          let braveShieldsSettings = BraveShieldsSettingsServiceFactory.get(profile: profile)
-          shouldShredTab =
-            braveShieldsSettings?.autoShredMode(
-              for: url,
-              considerAllShieldsOption: true
-            ).siteShredLevel.shredOnAppExit ?? false
-        } else {
-          // Don't access `shredLevel` directly, but `TabState` is unavailable
-          // to access via `BraveShieldsTabHelper`. Deprecated access here until
-          // `kBraveShieldsContentSettings` feature flag is removed.
-          let siteDomain = Domain.getOrCreate(
-            forUrl: url,
-            persistent: !isPrivate
-          )
-          shouldShredTab = siteDomain.shredLevel.shredOnAppExit
-        }
-        shouldShredDomainCache[cacheKey] = shouldShredTab
-      }
-      return shouldShredTab
-    }
 
     var tabToSelect: (any TabState)?
     for savedTab in savedTabs {
@@ -1363,7 +1377,7 @@ class TabManager: NSObject {
           ? PrivilegedRequest(url: tabURL) as URLRequest : URLRequest(url: tabURL)
 
         if FeatureList.kBraveShredFeature.enabled,
-          shouldShredDomain(tabURL, savedTab.isPrivate)
+          shredLevel(tabURL, savedTab.isPrivate).shredOnAppExit
         {
           // Delete SessionTab to prevent restore next launch
           SessionTab.delete(tabId: savedTab.tabId)
