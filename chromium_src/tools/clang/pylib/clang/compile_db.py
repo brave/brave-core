@@ -13,6 +13,7 @@ CMD_PATTERN_TO_REPLACE = (r'rewrapper(\.exe)',
                           r'(rewrapper|redirect_cc)(\.exe)')
 
 _CLANG_WRAPPER_CMD_LINE_RE: object  # Injected from upstream compile_db.py.
+# pylint: disable-next=used-before-assignment
 assert CMD_PATTERN_TO_REPLACE[0] in _CLANG_WRAPPER_CMD_LINE_RE.pattern
 _CLANG_WRAPPER_CMD_LINE_RE = re.compile(
     _CLANG_WRAPPER_CMD_LINE_RE.pattern.replace(*CMD_PATTERN_TO_REPLACE),

@@ -246,7 +246,6 @@ def CheckPylint(input_api, output_api):
         'consider-using-max-builtin',
         'consider-using-with',
         'global-variable-not-assigned',
-        'possibly-used-before-assignment',
         'unnecessary-dunder-call',
         'unnecessary-lambda-assignment',
         'unnecessary-list-index-lookup',
@@ -255,7 +254,6 @@ def CheckPylint(input_api, output_api):
         'use-implicit-booleaness-not-comparison',
         'use-implicit-booleaness-not-len',
         'use-maxsplit-arg',
-        'used-before-assignment',
         'useless-option-value',
     ]
     return input_api.canned_checks.RunPylint(

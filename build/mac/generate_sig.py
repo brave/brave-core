@@ -35,7 +35,7 @@ def Main():
                 print('--sign-key-file argument is required with --dsa.', file=sys.stderr)
                 return 1
             command = [args.sign_update_path, args.target, args.sign_key_file]
-        if args.eddsa:
+        else:
             if not args.sign_key:
                 print('--sign-key argument is required with --eddsa.', file=sys.stderr)
                 return 1

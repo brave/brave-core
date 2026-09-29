@@ -193,8 +193,9 @@ def main():
     parser.add_argument("--repo", default=PR_REPO, help="owner/repo for PRs")
     args = parser.parse_args()
 
-    if "/" in args.repo:
-        repo_owner, repo_name = args.repo.split("/", 1)
+    if "/" not in args.repo:
+        parser.error("--repo must be in owner/repo form")
+    repo_owner, repo_name = args.repo.split("/", 1)
 
     head_sha, threads_info, body_comments, already_approved = fetch_pr_data(
         args.pr_number, args.bot_username, repo_owner, repo_name)
